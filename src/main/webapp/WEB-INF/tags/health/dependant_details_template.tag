@@ -17,8 +17,10 @@
 
         <form_new:row>
             <div class="inlineHeadingWithButton">
-                <h5>Dependant {{= obj.dependantId }}</h5>{{ if(obj.dependantId != 1) { }}<a href="javascript:void(0);" class="remove-dependent btn btn-danger" title="Remove last dependent"
-                                                                                            data-id="{{= obj.dependantId }}">Remove Dependant</a>{{ } }}
+                <h5>Dependant {{= obj.dependantId }}</h5>{{ if(obj.dependantId != 1) { }}
+                <a href="javascript:void(0);" class="remove-dependent btn btn-danger" title="Remove last dependent"
+                                                                                            data-id="{{= obj.dependantId }}">Remove Dependant</a>
+                {{ } }}
             </div>
         </form_new:row>
 
@@ -66,13 +68,14 @@
             {{ if(dependantsConfig.showSchoolFields === true) { }}
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/school"/>
-            <form_new:row fieldXpath="${fieldXpath}" label="{{= usesSchoolDropdown ? 'Educational institute this dependant is attending' : 'Name of school your child is attending' }}" id="${name}_schoolGroup"
-                          className="health_dependant_details_schoolGroup" helpId="{{= usesSchoolDropdown ? '' : 290 }}">
+            <form_new:row fieldXpath="${fieldXpath}" label="{{= (usesSchoolDropdown ? 'Educational institute this dependant is attending' : 'Name of school your child is attending') }}" id="${name}_schoolGroup"
+                          className="health_dependant_details_schoolGroup hidden" helpId="{{= usesSchoolDropdown ? '' : 290 }}">
                 {{ if(usesSchoolDropdown === true) { }}
                 <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
                 <div class="select">
                     <span class="input-group-addon"><i class="icon-sort"></i></span>
                     <select name="${storeGroupName}" id="${storeGroupName}" class="form-control" required title="dependant {{= obj.dependantId }}'s educational institute">
+                        {{= meerkat.modules.healthDependants.getEducationalInstitutionsOptions() }}
                     </select>
                 </div>
                 {{ } else { }}
@@ -84,7 +87,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolID"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Student ID Number" id="${name}_schoolIDGroup"
                           className="health_dependant_details_schoolIDGroup">
-                <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="false" className="sessioncamexclude" maxlength="{{= schoolIdMaxLength || ''} "/>
+                <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="false" className="sessioncamexclude" maxlength="{{= (schoolIdMaxLength || '') }} "/>
             </form_new:row>
             {{ } }}
 
@@ -98,7 +101,7 @@
 
             {{ } }}
                 <%-- Only  exists in GMF which has been turned off. --%>
-            {{ if(dependantsConfig.showDefactoField === true) { }}
+            {{ if(dependantsConfig.showMaritalStatusField === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/maritalincomestatus"/>
             <form_new:row fieldXpath="${fieldXpath}"
                           label="Is this dependant not married or living in a defacto relationship and earning less than $20,500 p/annum?"

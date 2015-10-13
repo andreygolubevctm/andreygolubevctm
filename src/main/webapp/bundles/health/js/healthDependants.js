@@ -26,27 +26,27 @@
         dependantsArr = [],
         /**
          * Default configuration for the dependant template.
-         * @type {{showMiddleName: boolean, fulltime: boolean, school: boolean, schoolMin: number, schoolMax: number, schoolID: boolean, schoolIDMandatory: boolean, schoolDate: boolean, schoolDateMandatory: boolean, defacto: boolean, defactoMin: number, defactoMax: number, apprentice: boolean}}
+         * @type {{showMiddleName: boolean, fulltime: boolean, school: boolean, schoolMinAge: number, schoolMaxAge: number, schoolID: boolean, schoolIDMandatory: boolean, schoolDate: boolean, schoolDateMandatory: boolean, defacto: boolean, defactoMinAge: number, defactoMaxAge: number, apprentice: boolean}}
          */
         defaultProviderConfig = {
             showMiddleName: false,
             showFullTimeField: false,
             /**
              * In order to show school date or ID, showSchoolFields must be set to true.
-             * Note: these fields only display based on schoolMin/Max
+             * Note: these fields only display based on schoolMinAge/Max
              */
             showSchoolFields: true,
             useSchoolDropdownMenu: false,
-            schoolMin: 22,
-            schoolMax: 24,
+            schoolMinAge: 22,
+            schoolMaxAge: 24,
             showSchoolIdField: false,
             schoolIdRequired: false,
             schoolIdMaxLength: false,
             showSchoolCommencementField: false,
             schoolDateRequired: false,
-            showDefactoField: false,
-            defactoMin: 21,
-            defactoMax: 24,
+            showMaritalStatusField: false,
+            defactoMinAge: 21,
+            defactoMaxAge: 24,
             showApprenticeField: false
         },
         providerConfig = {},
@@ -340,10 +340,19 @@
         "VUT": "Victoria University of Technology",
         "WA": "Western Australia-High Schools",
         "WAT": "WA TAFE"
-    };
+        },
+        cachedList;
 
-    function getEducationalInstitutions() {
-        return educationalInstitutions;
+    function getEducationalInstitutionsOptions() {
+        if(cachedList) {
+            return cachedList;
+        }
+        cachedList = '';
+        var keys = _.keys(educationalInstitutions);
+        for (var i = 0; i < keys.length; i++) {
+            cachedList += '<option value="' + keys[i] + '">' + educationalInstitutions[keys[i]] + '</option>';
+        }
+        return cachedList;
     }
 
     meerkat.modules.register("healthDependants", {
@@ -355,7 +364,7 @@
         getMaxAge: getMaxAge,
         setMaxAge: setMaxAge,
         updateDependantConfiguration: updateDependantConfiguration,
-        getEducationalInstitutions: getEducationalInstitutions
+        getEducationalInstitutionsOptions: getEducationalInstitutionsOptions
     });
 
 })(jQuery);

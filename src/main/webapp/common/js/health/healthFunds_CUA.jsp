@@ -92,7 +92,7 @@ set: function () {
 			<%--change age of dependants and school --%>
 			meerkat.modules.healthDependants.setMaxAge(25);
 			<%--schoolgroups and defacto --%>
-	meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMin': 23, 'schoolMax': 25, showSchoolIdField: true, 'schoolIdRequired': true, showSchoolCommencementField: true, 'schoolDateRequired': true });
+	meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMinAge': 23, 'schoolMaxAge': 25, showSchoolIdField: true, 'schoolIdRequired': true, showSchoolCommencementField: true, 'schoolDateRequired': true });
 
 		</c:if>
 

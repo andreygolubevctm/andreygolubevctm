@@ -105,12 +105,12 @@
             var getAge = meerkat.modules.utils.returnAge(value);
             var dependantConfig = meerkat.modules.healthDependants.getConfig();
             var maxAge = meerkat.modules.healthDependants.getMaxAge();
-            var suffix = dependantConfig.schoolMin == 21 ? 'st' : dependantConfig.schoolMin == 22 ? 'nd' : dependantConfig.schoolMin == 23 ? 'rd' : 'th';
+            var suffix = dependantConfig.schoolMinAge == 21 ? 'st' : dependantConfig.schoolMinAge == 22 ? 'nd' : dependantConfig.schoolMinAge == 23 ? 'rd' : 'th';
             if (getAge >= maxAge) {
                 $.validator.messages.validateFulltime = 'Dependants over ' + maxAge + ' are considered adult dependants and can still be covered by applying for a separate singles policy';
                 return false;
-            } else if (fullTime === 'N' && getAge >= dependantConfig.schoolMin) {
-                $.validator.messages.validateFulltime = 'This policy provides cover for children until their ' + dependantConfig.schoolMin + suffix + ' birthday';
+            } else if (fullTime === 'N' && getAge >= dependantConfig.schoolMinAge) {
+                $.validator.messages.validateFulltime = 'This policy provides cover for children until their ' + dependantConfig.schoolMinAge + suffix + ' birthday';
                 return false;
             }
             return true;

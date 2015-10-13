@@ -26,7 +26,7 @@ var healthFunds_GMH = {
 
         <%--schoolgroups and defacto
         TODO: TEST THIS --%>
-        meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, 'schoolMin':21, 'schoolMax':24 });
+        meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24 });
 
         <%--school labels--%>
         healthFunds._schoolLabel = $('.health_dependant_details_schoolGroup').first().find('.control-label').text();

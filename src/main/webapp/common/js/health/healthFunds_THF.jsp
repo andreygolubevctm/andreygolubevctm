@@ -143,7 +143,7 @@ var healthFunds_THF = {
 			<%--change age of dependants and school --%>
 			meerkat.modules.healthDependants.setMaxAge(25);
 			<%--schoolgroups and defacto --%>
-			meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, 'schoolMin': 23, 'schoolMax': 24, showSchoolIdField: false, 'schoolIdRequired': false, showSchoolCommencementField: false, 'schoolDateRequired': false });
+			meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, 'schoolMinAge': 23, 'schoolMaxAge': 24, showSchoolIdField: false, 'schoolIdRequired': false, showSchoolCommencementField: false, 'schoolDateRequired': false });
 		}
 
 		<%--calendar for start cover--%>
