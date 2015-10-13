@@ -435,7 +435,7 @@
                                     <goal>gulp</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>build</arguments>
+                                    <arguments>build --targetFolder=${project.name}-${project.version}</arguments>
                                     <workingDirectory>src/main/pipeline</workingDirectory>
                                 </configuration>
                             </execution>
