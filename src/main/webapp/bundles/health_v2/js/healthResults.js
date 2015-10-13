@@ -54,7 +54,7 @@
 
         initResults();
 
-        initCompare();
+        meerkat.modules.compare.initCompare();
 
         Features.init();
 
@@ -207,172 +207,6 @@
         }
     }
 
-    function initCompare() {
-
-        // Init the comparison bar
-        var compareSettings = {
-            compareBarRenderer: ListModeCompareBarRenderer,
-            elements: {
-                button: ".compareBtn",
-                bar: ".compareBar",
-                boxes: ".compareBox"
-            },
-            dictionary: {
-                compareLabel: 'Compare <span class="icon icon-arrow-right"></span>',
-                clearBasketLabel: 'Clear Shortlist <span class="icon icon-arrow-right"></span>'
-            }
-        };
-
-        Compare.init(compareSettings);
-
-        $compareBasket = $(Compare.settings.elements.bar);
-
-        $compareBasket.on("compareAdded", function (event, productId) {
-
-            // Close the more info panel if open.
-            if (meerkat.modules.moreInfo.getOpenProduct() !== null && meerkat.modules.moreInfo.getOpenProduct().productId !== productId) {
-                meerkat.modules.moreInfo.close();
-            }
-
-            $compareBasket.addClass("active");
-            $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']").addClass('compared');
-
-            if (Compare.view.resultsFiltered === false && (Compare.model.products.length === Compare.settings.maximum)) {
-                $(".compareBtn").addClass("compareInActive"); // disable the button straight away as slow devices still let you tap it.
-                _.delay(function () {
-                    compareResults();
-                }, 250);
-
-            }
-        });
-
-        $compareBasket.on("compareRemoved", function (event, productId) {
-
-            if (Compare.view.resultsFiltered && (Compare.model.products.length >= Compare.settings.minimum)) {
-                compareResults();
-            }
-            $element = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']");
-            $element.removeClass('compared');
-            $element.find(".compareCheckbox input").prop("checked", false);
-
-            if (Compare.model.products.length === 0) {
-                $(".compareBar").removeClass("active");
-                toggleMarketingMessage(false);
-                toggleResultsLowNumberMessage(true);
-            }
-        });
-
-        $compareBasket.on("compareNonAvailable", function (event) {
-            if (Compare.view.resultsFiltered) {
-                resetCompare(); // was just unfilter
-            }
-        });
-
-        // Prevent the user from adding too many items to the bucket.
-        $compareBasket.on("compareBucketFull", function (event) {
-            $(".result .compareCheckbox :input").not(":checked").prop('disabled', true);
-        });
-
-        $compareBasket.on("compareBucketAvailable", function (event) {
-            $(".result .compareCheckbox :input").prop('disabled', false);
-        });
-
-        // Compare button clicked.
-        $compareBasket.on("compareClick", function (event) {
-            if (!Compare.view.resultsFiltered) {
-                compareResults();
-
-            } else {
-                resetCompare();
-            }
-        });
-
-
-    }
-
-    function resetCompare() {
-        $container = $(Results.settings.elements.container);
-        // Do this stuff now (even though we don't have to) so low performing devices look good
-        if (Results.settings.animation.filter.active) {
-            $container.find('.compared').removeClass('compared');
-        } else {
-            // Do even more stuff for lower performance devices look reasonable.
-            $container.find('.compared').removeClass('compared notfiltered').addClass('filtered');
-        }
-
-        $container.find('.compareCheckbox input').prop("checked", false);
-        $(".compareBtn").addClass("compareInActive");
-
-        _.defer(function () {
-            Compare.unfilterResults();
-            _.defer(function () {
-                Compare.reset();
-            });
-        });
-    }
-
-    function compareResults() {
-
-        _.defer(function () {
-
-            Compare.filterResults();
-
-            _.defer(function () {
-
-                toggleMarketingMessage(true, 5 - Results.getFilteredResults().length);
-                toggleResultsLowNumberMessage(false);
-
-                _.delay(function () {
-
-                    // Expand hospital and extra sections
-                    if (Results.settings.render.features.expandRowsOnComparison) {
-                        $(".featuresHeaders .featuresList > .section.expandable.collapsed > .content").trigger('click');
-
-                        // Expand selected items details.
-                        $(".featuresHeaders .featuresList > .selectionHolder > .children > .category.expandable.collapsed > .content").trigger('click');
-                    }
-
-                    // Close the more info panel if open.
-                    if (meerkat.modules.moreInfo.getOpenProduct() !== null) {
-                        meerkat.modules.moreInfo.close();
-                    }
-
-                    // Publish tracking events.
-                    meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
-                        touchType: 'H',
-                        touchComment: 'ResCompare',
-                        simplesUser: meerkat.site.isCallCentreUser
-                    });
-
-                    var compareArray = [];
-                    var items = Results.getFilteredResults();
-                    for (var i = 0; i < items.length; i++) {
-                        var product = items[i];
-                        compareArray.push({productID: product.productId});
-                    }
-
-                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                        method: 'trackQuoteComparison',
-                        object: {
-                            products: compareArray,
-                            simplesUser: meerkat.site.isCallCentreUser
-                        }
-                    });
-
-                }, Results.settings.animation.features.scroll.duration + 100);
-            });
-
-        });
-    }
-
-
-    function updateBasketCount() {
-        var items = Results.getFilteredResults().length;
-        var label = items + ' product';
-        if (items != 1) label = label + 's';
-        $(".compareBar .productCount").text(label);
-    }
-
     function eventSubscriptions() {
 
         $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function () {
@@ -401,7 +235,7 @@
         $(document).on("resultsLoaded", onResultsLoaded);
 
         $(document).on("resultsReturned", function () {
-            Compare.reset();
+
             meerkat.modules.utils.scrollPageTo($("header"));
 
             // Reset the feature header to match the new column content.
@@ -420,7 +254,6 @@
         });
 
         $(document).on("resultsDataReady", function () {
-            updateBasketCount();
             if (meerkat.site.isCallCentreUser) {
                 createPremiumsPopOver();
             }
@@ -535,36 +368,35 @@
         $(document).on("resultPageChange", function (event) {
 
             var pageData = event.pageData;
-            if (pageData.measurements === null) return false;
-
+            if (_.isNull(pageData.measurements)) {
+                return false;
+            }
+            var pageNumber = pageData.pageNumber;
             var numberOfPages = pageData.measurements.numberOfPages;
             var items = Results.getFilteredResults().length;
             var columnsPerPage = pageData.measurements.columnsPerPage;
             var freeColumns = (columnsPerPage * numberOfPages) - items;
-            var pageNumber = pageData.pageNumber;
 
             meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
                 additionalData: {
                     pageNumber: pageNumber,
                     numberOfPages: numberOfPages
                 },
-                onAfterEventMode: 'Load'
+                onAfterEventMode: 'Pagination'
             });
 
             if (freeColumns > 1 && numberOfPages === 1) {
                 toggleResultsLowNumberMessage(true);
                 toggleMarketingMessage(false);
-
             } else {
                 toggleResultsLowNumberMessage(false);
-                if (Compare.view.resultsFiltered === false) {
-
+                if (!meerkat.modules.compare.isCompareOpen()) {
                     if (pageNumber === pageData.measurements.numberOfPages && freeColumns > 2) {
                         toggleMarketingMessage(true, freeColumns);
-                        return true;
-                    }
+                    } else {
                     toggleMarketingMessage(false);
                 }
+            }
             }
 
         });
@@ -587,15 +419,9 @@
 
         // When the excess filter changes, fetch new results
         meerkat.messaging.subscribe(meerkatEvents.healthFilters.CHANGED, function onFilterChange(obj) {
-            resetCompare();
-
             if (obj && obj.hasOwnProperty('filter-frequency-change')) {
                 meerkat.modules.resultsTracking.setResultsEventMode('Refresh'); // Only for events that dont cause a new TranId
             }
-        });
-
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function onHealthResultsXsEnterChange() {
-            resetCompare();
         });
 
     }
@@ -811,6 +637,7 @@
                 var targetPosition = $targetProduct.data('position') + 1;
                 $targetProduct.addClass("active");
                 Results.pagination.gotoPosition(targetPosition, true, false);
+            }
 
                 // update transaction details otherwise we will have to wait until people get to payment page
                 meerkat.modules.writeQuote.write({
@@ -819,7 +646,7 @@
                     health_application_productName: selectedProduct.info.productCode,
                     health_application_productTitle: selectedProduct.info.productTitle
                 }, false);
-            }
+
         }
 
     }
@@ -899,7 +726,7 @@
 
         // If on the results step, reload the results data. Can this be more generic?
         if (typeof callback === 'undefined') {
-            if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 4) {
+            if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 3) {
                 get();
             }
         } else {
@@ -913,33 +740,6 @@
 
         if (meerkat.modules.deviceMediaState.get() == "xs") {
             startColumnWidthTracking();
-        }
-
-        updateBasketCount();
-
-        // Listen to compare events
-        try {
-            // Compare checkboxes and top result
-            $("#resultsPage .compare").unbind().on("click", function () {
-
-                var $checkbox = $(this);
-                var productId = $checkbox.parents(Results.settings.elements.rows).attr("data-productId");
-                var productObject = Results.getResult("productId", productId);
-
-                var product = {
-                    id: productId,
-                    object: productObject
-                };
-
-                if ($checkbox.is(":checked")) {
-                    Compare.add(product);
-                } else {
-                    Compare.remove(productId);
-                }
-
-            });
-        } catch (e) {
-            Results.onError('Sorry, an error occurred processing results', 'results.tag', 'FeaturesResults.setResultsActions(); ' + e.message, e);
         }
         if (meerkat.site.isCallCentreUser) {
             createPremiumsPopOver();
@@ -1005,7 +805,7 @@
         var freeColumns;
         if (show) {
             var pageMeasurements = Results.pagination.calculatePageMeasurements();
-            if (pageMeasurements == null) {
+            if (pageMeasurements === null || meerkat.modules.compare.isCompareOpen()) {
                 show = false;
             } else {
                 var items = Results.getFilteredResults().length;

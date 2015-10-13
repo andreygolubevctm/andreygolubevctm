@@ -28,21 +28,21 @@ function isLessThan31Or31AndBeforeJuly1(_dobString) {
 	if(_dobString === '') return false;
 	var age = Math.floor(meerkat.modules.utils.returnAge(_dobString));
 	if( age < 31 ) {
-		return false;
+		return true;
 	} else if( age == 31 ){
 		var dob = returnDate(_dobString);
 		var birthday = returnDate(_dobString);
 		birthday.setFullYear(dob.getFullYear() + 31);
 		var now = new Date();
 		if ( dob.getMonth() + 1 < 7 && (now.getMonth() + 1 >= 7 || now.getFullYear() > birthday.getFullYear()) ) {
-			return true;
-		} else if (dob.getMonth() + 1 >= 7 && now.getMonth() + 1 >= 7 && now.getFullYear() > birthday.getFullYear()) {
-			return true;
-		} else {
 			return false;
+		} else if (dob.getMonth() + 1 >= 7 && now.getMonth() + 1 >= 7 && now.getFullYear() > birthday.getFullYear()) {
+			return false;
+		} else {
+			return true;
 		}
 	} else if(age > 31){
-		return true;
+		return false;
 	} else {
 		return false;
 	}
@@ -91,7 +91,7 @@ var FatalErrorDialog = {
 		meerkat.modules.errorHandling.error(params);
 
 	}
-}
+};
 
 
 // Used in split_test.tag
@@ -102,7 +102,7 @@ var Track = {
 			splitTestName: supertagName
 		});
 	}
-}
+};
 
 // from choices.tag
 var healthChoices = {
@@ -424,7 +424,7 @@ var healthFunds = {
 		if( effectiveDateString == ''){
 			return false;
 		};
-		var effectiveDate = returnDate(effectiveDateString)
+		var effectiveDate = returnDate(effectiveDateString);
 		var today = new Date();
 
 		var _baseDate = null;
@@ -692,7 +692,7 @@ var healthDependents = {
 			healthDependents.hasChanged();
 
 			if(healthDependents._dependents > 0){
-				$_obj = $('#health_application_dependants_dependant' + healthDependents._dependents)
+				$_obj = $('#health_application_dependants_dependant' + healthDependents._dependents);
 			}else{
 				$_obj = $('#health_application_dependants-selection');
 			}
