@@ -84,7 +84,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolID"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Student ID Number" id="${name}_schoolIDGroup"
                           className="health_dependant_details_schoolIDGroup">
-                <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="false" className="sessioncamexclude"/>
+                <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="false" className="sessioncamexclude" maxlength="{{= schoolIdMaxLength || ''} "/>
             </form_new:row>
             {{ } }}
 

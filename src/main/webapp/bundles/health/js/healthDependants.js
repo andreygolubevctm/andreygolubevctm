@@ -41,6 +41,7 @@
             schoolMax: 24,
             showSchoolIdField: false,
             schoolIdRequired: false,
+            schoolIdMaxLength: false,
             showSchoolCommencementField: false,
             schoolDateRequired: false,
             showDefactoField: false,

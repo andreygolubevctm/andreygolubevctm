@@ -94,26 +94,7 @@ set: function () {
 			<%--change age of dependants and school --%>
 			meerkat.modules.healthDependants.setMaxAge(25);
 			<%--schoolgroups and defacto --%>
-			meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, 'schoolMin': 23, 'schoolMax': 25, showSchoolIdField: true, 'schoolIdRequired': true, showSchoolCommencementField: true, 'schoolDateRequired': true });
-
-			<%--School list--%>
-			var instituteElement = '<select>
-				<option value="">Please choose...</option>
-				<c:import url="/WEB-INF/option_data/educationalInstitute.html" />
-			</select>';
-			$('.health_dependant_details_schoolGroup .fieldrow_value').each(function (i) {
-				var name = $(this).find('input').attr('name');
-				var id = $(this).find('input').attr('id');
-				$(this).append(instituteElement);
-				$(this).find('select').attr('name', name).attr('id', id + 'select').setRequired(true, 'Please select dependant '+(i+1)+'\'s educational institute');
-				$('#health_application_dependants_dependant' + (i+1) + '_school').hide();
-			});
-			$('.health_dependant_details_schoolIDGroup input').attr('maxlength', '10');
-
-			<%--Change the Name of School label--%>
-			healthFunds.$_tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
-			$('.health_dependant_details_schoolGroup .control-label').html('Educational institute this dependant is attending');
-			$('.health_dependant_details_schoolGroup .help_icon').hide();
+			meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMin': 23, 'schoolMax': 25, showSchoolIdField: true, 'schoolIdRequired': true, showSchoolCommencementField: true, 'schoolDateRequired': true });
 		</c:if>
 
 		<%--calendar for start cover--%>
@@ -164,11 +145,6 @@ set: function () {
 		$('#health_application_partner_dob').addRule('oldestDOB', dob_health_application_partner_dob.ageMax, "applicant's partner's age cannot be over 120");
 
 		<c:if test="${data.health.situation.healthCvr == 'F' || data.health.situation.healthCvr == 'SPF' }">
-			$('.health_dependant_details_schoolGroup select').remove();
-			$('.health_dependant_details_schoolIDGroup input').removeAttr('maxlength');
-			$('.health_dependant_details_schoolGroup .control-label').html(healthFunds.$_tmpSchoolLabel);
-			delete healthFunds.$_tmpSchoolLabel;
-			$('.health_dependant_details_schoolGroup .help_icon').show();
 			$('.health_application_dependants_dependant_schoolIDGroup').show();
 			$('.health_dependant_details_schoolDateGroup').show();
 		</c:if>

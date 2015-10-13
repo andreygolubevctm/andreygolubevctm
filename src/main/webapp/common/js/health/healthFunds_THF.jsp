@@ -35,9 +35,6 @@ var healthFunds_THF = {
 		healthFunds_THF.state = $('#health_situation_state').val();
 		healthFunds_THF.healthCvr = $('#health_situation_healthCvr').val();
 
-		<%--schoolgroups and defacto--%>
-		meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, 'schoolMin': 21, 'schoolMax': 24 });
-
 		<%-- Previous fund --%>
 		$('#health_previousfund_primary_authority').setRequired(true,'Teachers Health Fund require authorisation to contact your previous fund');
 		$('#health_previousfund_partner_authority').setRequired(true, 'Teachers Health Fund require authorisation to contact your partner\'s previous fund');
@@ -146,27 +143,7 @@ var healthFunds_THF = {
 			<%--change age of dependants and school --%>
 			meerkat.modules.healthDependants.setMaxAge(25);
 			<%--schoolgroups and defacto --%>
-			meerkat.modules.healthDependants.updateConfig({ 'school': true, 'schoolMin': 23, 'schoolMax': 24, showSchoolIdField: false, 'schoolIdRequired': false, showSchoolCommencementField: false, 'schoolDateRequired': false });
-
-			<%--School list--%>
-			var instituteElement =  '<select>
-				<option value="">Please choose...</option>
-				<c:import url="/WEB-INF/option_data/educationalInstitute.html" />
-			</select>';
-			$('.health_dependant_details_schoolGroup .fieldrow_value').each(function (i) {
-				var name = $(this).find('input').attr('name');
-				var id = $(this).find('input').attr('id');
-				$(this).append(instituteElement);
-				$(this).find('select').attr('name', name).attr('id', id + 'select');
-				$(this).find('select').setRequired(true, 'Please select dependant '+(i+1)+'\'s educational institute');
-				$('#health_application_dependants_dependant' + (i+1) + '_school').hide();
-			});
-			$('.health_dependant_details_schoolIDGroup input').attr('maxlength', '10');
-
-			<%--Change the Name of School label--%>
-			healthFunds.$_tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
-			$('.health_dependant_details_schoolGroup .control-label').html('Educational institute this dependant is attending');
-			$('.health_dependant_details_schoolGroup .help_icon').hide();
+			meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, 'schoolMin': 23, 'schoolMax': 24, showSchoolIdField: false, 'schoolIdRequired': false, showSchoolCommencementField: false, 'schoolDateRequired': false });
 		}
 
 		<%--calendar for start cover--%>
@@ -266,11 +243,7 @@ var healthFunds_THF = {
 		$('.thf-payment-legend').remove();
 
 		if(healthFunds_THF.healthCvr == 'F' || healthFunds_THF.healthCvr == 'SPF') {
-			$('.health_dependant_details_schoolGroup select').remove();
-			$('.health_dependant_details_schoolIDGroup input').removeAttr('maxlength');
-			$('.health_dependant_details_schoolGroup .control-label').html(healthFunds.$_tmpSchoolLabel);
-			delete healthFunds.$_tmpSchoolLabel;
-			$('.health_dependant_details_schoolGroup .help_icon').show();
+			<%-- TODO: Are these necessary? --%>
 			$('.health_application_dependants_dependant_schoolIDGroup').show();
 			$('.health_dependant_details_schoolDateGroup').show();
 		}
