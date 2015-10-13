@@ -18,6 +18,8 @@
 <layout:generic_page title="Kitchen sink: Current &amp; new">
 
 	<jsp:attribute name="head">
+		<link href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/kitchensink.css" rel="stylesheet">
+
 		<go:script>
 			<go:insertmarker format="SCRIPT" name="js-head"/>
 		</go:script>
@@ -53,6 +55,7 @@
 
 	<jsp:attribute name="body_end">
 		<script src="${assetUrl}js/bundles/kitchensink.js"></script>
+		<script src="${assetUrl}js/bundles/kitchensink.deferred.js"></script>
 		<%--<script src="${assetUrl}framework/jquery/plugins/bootstrap-datepicker/bootstrap-datepicker-2.0.js"></script>--%>
 		<%--<script src="${assetUrl}framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.min.js"></script>--%>
 		<%--<script src="${assetUrl}framework/jquery/plugins/bootstrap-switch-2.0.0.min.js"></script>--%>

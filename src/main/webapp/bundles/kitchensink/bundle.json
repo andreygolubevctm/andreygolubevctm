@@ -2,6 +2,11 @@
   "brandCodes": ["ctm"],
   "dependencies": [
     "meerkat",
-    "core"
+    "core",
+    "shared/addressLookup",
+    "shared/currency",
+    "shared/datepicker",
+    "shared/commencementDate",
+    "shared/checkboxIE8"
   ]
 }
