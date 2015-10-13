@@ -5,7 +5,6 @@
 <jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
 <jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
 <jsp:useBean id="newPage" class="com.ctm.web.NewPage" />
-<jsp:useBean id="fileUtils" class="com.disc_au.web.go.FileUtils" scope="page" />
 ${newPage.init(pageSettings)}
 
 <%@ attribute name="title"				required="false"  rtexprvalue="true"	 description="The title of the page" %>
@@ -387,20 +386,15 @@ ${newPage.init(pageSettings)}
 		$(document).ready(function() {
 			<go:insertmarker format="SCRIPT" name="onready" />
 
-			<c:set var="filePath" value="js/bundles/${fileName}.deferred${pageSettings.getSetting('minifiedFileString')}.js" />
-			<c:set var="checkFilePath" value="${pageContext.servletContext.getRealPath('/')}assets/${filePath}" />
-			<c:if test="${pageSettings.getVerticalCode() ne 'generic' and fileUtils.exists(checkFilePath)}">
-				<c:set var="readFilePath">assets/${filePath}</c:set>
-				<c:if test="${not empty fileUtils.readFile(readFilePath)}">
-					yepnope.injectJs({
-						src: '${assetUrl}${filePath}?${revision}',
-						attrs: {
-							async: true
-						} <%-- We need to now initialise the deferred modules --%>
-					}, function initDeferredModules() {
-						meerkat.modules.init();
-					});
-				</c:if>
+			<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
+				yepnope.injectJs({
+					src: '${assetUrl}js/bundles/${fileName}.deferred${pageSettings.getSetting('minifiedFileString')}.js?${revision}',
+					attrs: {
+						async: true
+					} <%-- We need to now initialise the deferred modules --%>
+				}, function initDeferredModules() {
+					meerkat.modules.init();
+				});
 			</c:if>});
 	</go:script>
 </body>
