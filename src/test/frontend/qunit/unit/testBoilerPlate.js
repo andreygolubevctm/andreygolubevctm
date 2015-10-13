@@ -1,8 +1,8 @@
 setupBoilerplate = function(base) {
-    document.write('<script src="' + base + 'common/js/ipp/jquery.min.js">\x3C/script>');
-    document.write('<script src="' + base + 'assets/libraries/jquery/js/jquery-2.1.4.min.js">\x3C/script>');
+    document.write('<script src="' + base + '/common/js/ipp/jquery.min.js">\x3C/script>');
+    document.write('<script src="' + base + '/assets/libraries/jquery/js/jquery-2.1.4.min.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/plugins/modernizr/js/modernizr-2.8.3.js">\x3C/script>');
-    document.write('<script src="' + base + 'assets/libraries/underscore-1.8.3.min.js">\x3C/script>');
+    document.write('<script src="' + base + '/assets/libraries/underscore-1.8.3.min.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/validation/js/jquery.validate.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/meerkat/js/meerkat.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/meerkat/js/meerkat.logging.js">\x3C/script>');
