@@ -1,8 +1,8 @@
 package com.ctm.providers.travel.travelquote.model.request;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class TravelQuoteRequest {
     private int numberOfAdults;
     private int numberOfChildren;
 
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonSerialize(contentUsing = LocalDateSerializer.class)
     private List<LocalDate> travellersDOB;
     private ArrayList<String> providerFilter = new ArrayList<String>();
     private SingleTripDetails singleTripDetails;

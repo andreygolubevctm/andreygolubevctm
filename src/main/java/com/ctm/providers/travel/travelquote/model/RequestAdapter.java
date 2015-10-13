@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
@@ -69,4 +71,5 @@ public class RequestAdapter {
         return quoteRequest;
 
     }
+
 }
