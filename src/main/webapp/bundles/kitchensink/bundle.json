@@ -1,0 +1,7 @@
+{
+  "brandCodes": ["ctm"],
+  "dependencies": [
+    "meerkat",
+    "core"
+  ]
+}

@@ -11,8 +11,8 @@ function BundleTasks(gulp) {
 
     for(var bundle in bundlesCollection) {
         (function(bundle) {
-            var lessFiles = bundles.getBundleFiles(bundle, "less", false),
-                jsFiles = bundles.getBundleFiles(bundle, "js", false);
+            var lessFiles = bundles.getWatchableBundlesFilePaths(bundle, "less"),
+                jsFiles = bundles.getWatchableBundlesFilePaths(bundle, "js");
 
             var bundleTasks = [];
 
