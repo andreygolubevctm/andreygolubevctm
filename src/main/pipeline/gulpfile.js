@@ -40,6 +40,7 @@ gulp.task("clean:noexit", function() {
     // We delete file contents instead of folders in case gulp tries writing to a folder and permissions haven't been set yet by the OS
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "maps", "*.*"));
+    fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "plugins", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "libraries", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "brand", "*", "css", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "brand", "*", "css", "maps", "*.*"));
