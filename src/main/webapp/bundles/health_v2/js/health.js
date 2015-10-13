@@ -136,11 +136,6 @@
 					healthChoices.setLocation($healthSitLocation.val());
 				}
 
-				// if coming from brochure site and all prefilled data are valid, let's hide the fields
-				if (meerkat.site.isFromBrochureSite === true && $healthSitHealthCvr.isValid() && $healthSitLocation.isValid() && $healthSitHealthSitu.isValid()) {
-					$healthSitHealthCvr.add($healthSitLocation).add($healthSitHealthSitu).attr('data-attach', 'true').parents('.fieldrow').hide();
-				}
-
 				if($("#health_privacyoptin").val() === 'Y'){
 					$(".slide-feature-emailquote").addClass("privacyOptinChecked");
 				}
@@ -180,6 +175,25 @@
 					});
 				}
 
+			},
+			onAfterEnter: function healthV2AfterEnter() {
+				// if coming from brochure site and all prefilled data are valid, let's hide the fields
+				if (meerkat.site.isFromBrochureSite === true) {
+
+					var $healthSitLocation = $('#health_situation_location'),
+						$healthSitHealthCvr = $('#health_situation_healthCvr'),
+						$healthSitHealthSitu = $('#health_situation_healthSitu');
+
+					if($healthSitHealthCvr.isValid()) {
+						$healthSitHealthCvr.attr('data-attach', 'true').parents('.fieldrow').hide();
+					}
+					if($healthSitHealthSitu.isValid()) {
+						$healthSitHealthSitu.attr('data-attach', 'true').parents('.fieldrow').hide();
+					}
+					if($healthSitLocation.isValid(true)) {
+						$healthSitLocation.attr('data-attach', 'true').parents('.fieldrow').hide();
+					}
+				}
 			}
 		};
 
@@ -785,8 +799,8 @@
 
 		var postData = {
 			dependants: $('#health_healthCover_dependants').val(),
-			income: $healthDetailsHiddenFields.find('input[name="health_healthCover_income"]').val() || '0',
-			rebate_choice: $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val() || 'Y',
+			income: $healthDetailsHiddenFields.find('input[name="health_healthCover_income"]').val() || '0', // must default, otherwise fetchRates fails.
+			rebate_choice: $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val() || 'Y',  // must default, otherwise fetchRates fails.
 			primary_loading: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_healthCoverLoading"]').val(),
 			primary_current: $(':input[name="health_healthCover_primary_cover"]:checked').val(),
 			primary_loading_manual: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_lhc"]').val(),
@@ -800,20 +814,20 @@
 
 			// before application stage
 			postData.primary_dob = $('#health_healthCover_primary_dob').val();
-			postData.partner_dob = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_dob"]').val();
+			postData.partner_dob = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_dob"]').val() || postData.primary_dob;  // must default, otherwise fetchRates fails.
 
 		} else {
 
 			// in application stage
 			postData.primary_dob = $('#health_application_primary_dob').val();
-			postData.partner_dob = $('#health_application_partner_dob').val();
+			postData.partner_dob = $('#health_application_partner_dob').val() || postData.primary_dob;  // must default, otherwise fetchRates fails.
 			postData.primary_current = ( $('#clientFund').find(':selected').val() == 'NONE' )?'N':'Y';
 			postData.partner_current = ( $('#partnerFund').find(':selected').val() == 'NONE' )?'N':'Y';
 
 		}
 
 		if(!fetchRates(postData, true, callback)) {
-			exception("Failed to fetch rates");
+			exception("Failed to Fetch Health Rebate Rates");
 		}
 	}
 

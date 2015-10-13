@@ -9,21 +9,21 @@ module.exports = {
         dir: rootDir
     },
     tasks: {
-        dir: path.normalize(rootDir + "/tasks"),
+        dir: rootDir + "/tasks",
         entryPoint: "gulpfile.js"
     },
     build: {
-        dir: path.normalize(rootDir + "/../webapp/bundles/build")
+        dir: rootDir + "/../webapp/bundles/build"
     },
     brand: {
-        dir: path.normalize(rootDir + "/../webapp/brand")
+        dir: rootDir + "/../webapp/brand"
     },
     bundles: {
-        dir: path.normalize(rootDir + "/../webapp/bundles"),
+        dir: rootDir + "/../webapp/bundles",
         entryPoint: "bundle.json"
     },
     bootstrap: {
-        dir: path.normalize(rootDir + "/../webapp/assets/libraries/bootstrap"),
+        dir: rootDir + "/../webapp/assets/libraries/bootstrap",
         jsModules: [
             "transition",
             "button",
@@ -35,7 +35,7 @@ module.exports = {
         ]
     },
     target: {
-        dir: path.normalize(rootDir + "/../webapp/assets"),
+        dir: rootDir + "/../webapp/assets",
         inc: {
             extension: ".html"
         }
