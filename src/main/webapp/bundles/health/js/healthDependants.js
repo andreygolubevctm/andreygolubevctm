@@ -116,6 +116,13 @@
         $('#dependents_list_options').on('click', ".add-new-dependent", function () {
             addNewDependant();
         });
+
+        $('#someinput').on('change', 'some-dobfield', function() {
+
+            // If showFullTimeField === true and age between schoolMin and schoolMax, remove hidden class.
+            // If showSchoolFields === true  and age between schoolMin and schoolMax, remove hidden class. BUT don't show this one if showFullTimeField !== true || fulltime_Y is checked.
+
+        })
     }
 
     /**

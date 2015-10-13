@@ -89,7 +89,7 @@
 
     //DOB validation message
     $.validator.addMethod("limitDependentAgeToUnder25", function (value) {
-        var getAge = meerkat.modules.utils.returnAge(value);
+        var getAge = meerkat.modules.utils.returnAge(value, true);
         if (getAge >= meerkat.modules.healthDependants.getMaxAge()) {
             // Change the element message on the fly
             $.validator.messages.limitDependentAgeToUnder25 = 'Your child cannot be added to the policy as they are aged ' + meerkat.modules.healthDependants.getMaxAge() + ' years or older. You can still arrange cover for this dependant by applying for a separate singles policy or please contact us if you require assistance.';
@@ -102,7 +102,7 @@
     //If fulltime student toggle is enabled, use this validator instead of the above one
     $.validator.addMethod("validateFulltime", function (value, element) {
             var fullTime = $(element).parents('.health_dependant_details').find('.health_dependant_details_fulltimeGroup input[type=radio]:checked').val();
-            var getAge = meerkat.modules.utils.returnAge(value);
+            var getAge = meerkat.modules.utils.returnAge(value, true);
             var dependantConfig = meerkat.modules.healthDependants.getConfig();
             var maxAge = meerkat.modules.healthDependants.getMaxAge();
             var suffix = dependantConfig.schoolMinAge == 21 ? 'st' : dependantConfig.schoolMinAge == 22 ? 'nd' : dependantConfig.schoolMinAge == 23 ? 'rd' : 'th';

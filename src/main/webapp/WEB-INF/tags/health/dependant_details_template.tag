@@ -56,12 +56,12 @@
                 <field_new:person_dob xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s date of birth" required="true" ageMin="0"
                                       additionalAttributes=" data-rule-limitDependentAgeToUnder25='true' " outputJS="${false}"/>
             </form_new:row>
-
+            <%-- Only shows if showFullTimeField is true, AND the school age is between schoolMinAge and schoolMaxAge --%>
             {{ if(dependantsConfig.showFullTimeField === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/fulltime"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Full-time student" id="${name}_fulltimeGroup"
-                          className="health_dependant_details_fulltimeGroup">
-                <field_new:array_radio xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="dependant {{= obj.dependantId }}'s fulltime status" className="sessioncamexclude"/>
+                          className="health_dependant_details_fulltimeGroup hidden">
+                <field_new:array_radio xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="dependant {{= obj.dependantId }}'s full-time status" className="sessioncamexclude"/>
             </form_new:row>
             {{ } }}
 
@@ -87,7 +87,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolID"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Student ID Number" id="${name}_schoolIDGroup"
                           className="health_dependant_details_schoolIDGroup">
-                <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="false" className="sessioncamexclude" maxlength="{{= (schoolIdMaxLength || '') }} "/>
+                <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="{{= dependantsConfig.schoolIdRequired }}" className="sessioncamexclude" maxlength="{{= (schoolIdMaxLength || '') }} "/>
             </form_new:row>
             {{ } }}
 
@@ -95,7 +95,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolDate"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Date Study Commenced" id="${name}_schoolDateGroup"
                           className="health_dependant_details_schoolDateGroup">
-                <field_new:basic_date xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s study commencement date" required="false"/>
+                <field_new:basic_date xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s study commencement date" required="{{= dependantsConfig.schoolDateRequired }}" />
             </form_new:row>
             {{ } }}
 

@@ -31,15 +31,12 @@
 					$component.find('.dateinput-nativePicker')
 						.removeClass('hidden')
 						.find('input')
-							.on('change', serialise)
-					;
+							.on('change', serialise);
 				}
 				else {
 					$component.find('input.dateinput-day, input.dateinput-month, input.dateinput-year')
 						.on('input', moveToNextInput)
-						.on('change', serialise)
-						//.on('focus', function() { this.select(); });
-					;
+						.on('change', serialise);
 				}
 
 				// If the main form element changes, populate it back into the input fields
