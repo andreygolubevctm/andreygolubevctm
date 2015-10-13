@@ -58,15 +58,13 @@ public class WebServiceUtils {
 		}
 		XMLOutputWriter writer = new XMLOutputWriter(fileName, path);
 
-		if(LOGGER.isDebugEnabled()){
-			Map<String, Object> outProperties = new HashMap<>();
-			WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor( outProperties );
-			endPoint.getOutInterceptors().add( wssOut );
-			endPoint.getOutInterceptors().add( new SAAJOutInterceptor() );
-			endPoint.getInInterceptors().add( new CxfLoggingInInterceptor(writer, transactionId) );
-			endPoint.getOutInterceptors().add( new CxfLoggingOutInterceptor(writer, transactionId) );
-			endPoint.getOutInterceptors().add(wssOut);
-		}
+		Map<String, Object> outProperties = new HashMap<>();
+		WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor( outProperties );
+		endPoint.getOutInterceptors().add( wssOut );
+		endPoint.getOutInterceptors().add( new SAAJOutInterceptor() );
+		endPoint.getInInterceptors().add( new CxfLoggingInInterceptor(writer, transactionId) );
+		endPoint.getOutInterceptors().add( new CxfLoggingOutInterceptor(writer, transactionId) );
+		endPoint.getOutInterceptors().add(wssOut);
 	}
 
 }

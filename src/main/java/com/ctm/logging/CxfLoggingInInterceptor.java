@@ -26,9 +26,6 @@ public class CxfLoggingInInterceptor extends LoggingInInterceptor {
     }
 
     private void writeLog(Message message) {
-
-        String type = XMLOutputWriter.RESP_IN;
-
         String id = (String) message.getExchange().get(LoggingMessage.ID_KEY);
         if (id == null) {
             id = LoggingMessage.nextId();
@@ -49,8 +46,8 @@ public class CxfLoggingInInterceptor extends LoggingInInterceptor {
             }
         }
 
-        xmloutputWriter.writeXmlToFile(buffer.getPayload().toString(), type);
-        LOGGER.info("{}:{}", xmloutputWriter.getLoggerName(), buffer.toString());
+        xmloutputWriter.writeXmlToFile(buffer.getPayload().toString(), XMLOutputWriter.RESP_IN);
+        LOGGER.info(xmloutputWriter.getLoggerName());
 
     }
 }
