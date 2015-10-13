@@ -48,8 +48,10 @@ public class CxfLoggingOutInterceptor extends LoggingOutInterceptor {
     }
 
     private void writeLog(final StringBuilder builder) {
-        xmloutputWriter.writeXmlToFile(builder.toString(), XMLOutputWriter.RESP_OUT);
-        LOGGER.info(builder.toString());
+        String type = XMLOutputWriter.REQ_OUT;
+        xmloutputWriter.writeXmlToFile(builder.toString(), type);
+        // Just log that we've written the request-out to a file
+        LOGGER.info("{}:{}", type, xmloutputWriter.getLoggerName());
     }
 
     private LoggingMessage setupBuffer(Message message) {
