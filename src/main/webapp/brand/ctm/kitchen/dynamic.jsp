@@ -56,9 +56,6 @@
 	<jsp:attribute name="body_end">
 		<script src="${assetUrl}js/bundles/kitchensink.js"></script>
 		<script src="${assetUrl}js/bundles/kitchensink.deferred.js"></script>
-		<%--<script src="${assetUrl}framework/jquery/plugins/bootstrap-datepicker/bootstrap-datepicker-2.0.js"></script>--%>
-		<%--<script src="${assetUrl}framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.min.js"></script>--%>
-		<%--<script src="${assetUrl}framework/jquery/plugins/bootstrap-switch-2.0.0.min.js"></script>--%>
 		<script>
             $('#mainform').submit(function (event) {
                 event.preventDefault();

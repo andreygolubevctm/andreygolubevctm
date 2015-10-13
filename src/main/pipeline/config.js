@@ -4,6 +4,15 @@ var path = require("path");
 
 var rootDir = __dirname;
 
+var fs = require("graceful-fs-extra"),
+    parseXML = require("xml2js").parseString;
+
+var JavaConfigXML = fs.readFileSync(rootDir + "../../../../pom.xml").toString(),
+    JavaConfig;
+parseXML(JavaConfigXML, function(err, result) {
+   JavaConfig = result;
+});
+
 var Config = {
     pipeline: {
         dir: rootDir
@@ -40,7 +49,7 @@ var Config = {
         }
     },
     target: {
-        dir: rootDir + "/../webapp/assets",
+        dir: rootDir + "/../../../target/" + JavaConfig.project.name[0] + "-" + JavaConfig.project.version[0] + "/assets",
         inc: {
             extension: ".html"
         }
