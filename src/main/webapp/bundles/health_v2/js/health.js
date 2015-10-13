@@ -394,6 +394,10 @@
 					healthApplicationDetails.testStatesParity();
 				});
 
+				// Sync income tier value (which can be changed if you change the number of dependants you have).
+				$('#health_application_dependants_income').on('change', function () {
+					$('#mainform').find('.health_cover_details_income').val($(this).val());
+				});
 
 				// initialise start date datepicker from payment step as it will be used by selected fund
 				$("#health_payment_details_start_calendar")
@@ -430,7 +434,7 @@
 					$('#health_declaration input:checked').prop('checked', false).change();
 
 					// Update the state of the dependants object.
-					meerkat.modules.healthDependants.setDependants();
+					meerkat.modules.healthDependants.updateDependantConfiguration();
 
 					// Check okToCall optin - show if no phone numbers in questionset and NOT Simples
 					if($('#health_contactDetails_contactNumber_mobile').val() === '' &&	$('#health_contactDetails_contactNumber_other').val() === '' &&	meerkat.site.isCallCentreUser === false) {
@@ -455,8 +459,9 @@
 				// show edit button in policy summary side bar
 				$(".policySummaryContainer").find('.footer').removeClass('hidden');
 
+				// TODO: This won't be required.
 				// Need to call this after the form is visible because of the show/hiding of buttons based on visibility.
-				meerkat.modules.healthDependants.updateDependantOptionsDOM();
+				//meerkat.modules.healthDependants.updateDependantOptionsDOM();
 			}
 		};
 

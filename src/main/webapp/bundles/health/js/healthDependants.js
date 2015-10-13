@@ -7,85 +7,235 @@
     var events = {
             healthDependants: {}
         },
-        moduleEvents = events.healthDependants;
-
-    var _dependents = 0,
-        _limit = 12,
-        maxAge = 25,
-        defaultConfig = {
-            'fulltime': false,
-            'school': true,
-            'schoolMin': 22,
-            'schoolMax': 24,
-            'schoolID': false,
-            'schoolIDMandatory': false,
-            'schoolDate': false,
-            'schoolDateMandatory': false,
-            'defacto': false,
-            'defactoMin': 21,
-            'defactoMax': 24,
-            'apprentice': false
+        $dependantsTemplateWrapper,
+        dependantTemplate,
+        defaultDependant = {
+            dependantId: 1,
+            title: "",
+            firstName: "",
+            middleName: "",
+            lastName: "",
+            fulltime: "",
+            school: "",
+            schoolDate: "",
+            schoolID: "",
+            maritalincomestatus: "",
+            apprentice: ""
         },
-        config = {},
-        dependantTemplate;
+        dependantLimit = 12,
+        dependantsArr = [],
+        /**
+         * Default configuration for the dependant template.
+         * @type {{showMiddleName: boolean, fulltime: boolean, school: boolean, schoolMin: number, schoolMax: number, schoolID: boolean, schoolIDMandatory: boolean, schoolDate: boolean, schoolDateMandatory: boolean, defacto: boolean, defactoMin: number, defactoMax: number, apprentice: boolean}}
+         */
+        defaultProviderConfig = {
+            showMiddleName: false,
+            showFullTimeField: false,
+            /**
+             * In order to show school date or ID, showSchoolFields must be set to true.
+             * Note: these fields only display based on schoolMin/Max
+             */
+            showSchoolFields: true,
+            useSchoolDropdownMenu: false,
+            schoolMin: 22,
+            schoolMax: 24,
+            showSchoolIdField: false,
+            schoolIdRequired: false,
+            showSchoolCommencementField: false,
+            schoolDateRequired: false,
+            showDefactoField: false,
+            defactoMin: 21,
+            defactoMax: 24,
+            showApprenticeField: false
+        },
+        providerConfig = {},
+        maxDependantAge = 25;
 
     function initHealthDependants() {
+        $dependantsTemplateWrapper = $("#health-dependants-wrapper");
+        if (!situationEnablesDependants()) {
+            clearDependants();
+            return;
+        }
+
+        // setup default provider config.
         resetConfig();
 
-        $(document).ready(function () {
-            //var $tpl = $('#health-dependants-template').html();
-            //dependantTemplate = _.template($tpl);
-            // var htmlString = dependantTemplate(currentProduct);
-            // $productSnapshot.html(htmlString);
-            applyEventListeners();
-        });
+        // set up template
+        dependantTemplate = _.template($('#health-dependants-template').html());
 
+        if (getNumberOfDependants() === 0) {
+            dependantsArr.push(defaultDependant);
+        }
 
+        renderDependants();
+        applyEventListeners();
     }
 
+    /**
+     * Whenever you enter into application phase, it is possible that you had 6 dependants before
+     * and then you went back and set it to 3. So in this case, it should delete the 3.
+     */
+    function updateDependantConfiguration() {
+
+        var dependantCountSpecified = $('#health_healthCover_dependants').val() || 0;
+        // TODO: unsure if this is necessary. Would create x dependant entries from what was specified.
+        /*if(healthCoverDetails.getRebateChoice() == 'Y' && dependantCountSpecified > 0) {
+         for(var i = 0; i < dependantCountSpecified;i++) {
+         dependantsArr.push(defaultDependant);
+         }
+         }*/
+        var hasChildren = healthChoices.hasChildren();
+        $('#health_application_dependants-selection').toggle(hasChildren);
+        $('#health_application_dependants_threshold').toggle(dependantCountSpecified <= 0);
+
+        if (!hasChildren) {
+            return;
+        }
+
+        // If you have 7 dependants and you specify 3 in the situation step,
+        // it should iterate in reverse and delete 7,6,5,4
+        // TODO: test with 1,2,3 etc.
+        for (var i = getNumberOfDependants(); i >= dependantCountSpecified; i--) {
+            deleteDependant(i, false);
+        }
+        updateApplicationDetails();
+    }
+
+    /**
+     * Event Listeners for Health Dependants
+     */
     function applyEventListeners() {
-        // Sync income tier value (which can be changed if you change the number of dependants you have).
-        $('#health_application_dependants_income').on('change', function () {
-            $('#mainform').find('.health_cover_details_income').val($(this).val());
+
+        $dependantsTemplateWrapper.on('click', ".remove-dependent", function () {
+            deleteDependant($(this).attr('data-id'), true);
+            updateApplicationDetails();
         });
 
-        // Perform checks and show/hide questions when the dependant's DOB changes
-        $('.health_dependant_details .dateinput_container input.serialise').on('change', function (event) {
-            checkDependant($(this).closest('.health_dependant_details').attr('data-id'));
-            $(this).valid();
-        });
-
-        // Perform checks and show/hide questions when the fulltime radio button changes
-        $('.health_dependant_details_fulltimeGroup input').on('change', function (event) {
-            checkDependant($(this).closest('.health_dependant_details').attr('data-id'));
-            $(this).parents('.health_dependant_details').find('.dateinput_container input.serialise').valid();
-        });
-
-        // Add/Remove dependants
-        $('#health_application_dependants-selection').find(".remove-last-dependent").on("click", function () {
-            dropDependant();
-        }).end().find(".add-new-dependent").on("click", function () {
-            addDependant();
+        $('#dependents_list_options').on('click', ".add-new-dependent", function () {
+            addNewDependant();
         });
     }
 
+    /**
+     * Remove the data from the object
+     * Remove the template
+     * @param index
+     * @param {bool} doAnimate - whether or not to animate to the previous dependant.
+     * NOTE: would have to reflow all the ids, or run renderDependants()
+     *          if you wanted to delete dependents from the middle instead of end.
+     */
+    function deleteDependant(index, doAnimate) {
+
+        // Wipe the HTML to remove events and content from the DOM.
+        $('#health_application_dependants_dependant' + index).empty();
+        dependantsArr.splice(index, 1);
+
+        doAnimate = typeof doAnimate == 'undefined' ? true : doAnimate;
+        //TODO: test this with 1 and 2 dependants.
+        if (doAnimate && getNumberOfDependants() > 1) {
+            animateToDependant($('#health_application_dependants_dependant' + getNumberOfDependants() - 1));
+        }
+        //TODO hide all remove-dependant options except for last one.
+    }
+
+    /**
+     * Displays the estimated taxable income menu if the
+     * customer has selected to apply the rebate and has dependants.
+     */
+    function updateApplicationDetails() {
+
+        var $applyPageIncomeTierMenu = $('.health-dependants-tier', $('#health_application_dependants-selection')),
+            depCount = getNumberOfDependants();
+        if (depCount > 0) {
+            // Refresh the dependants on the situation step
+            $('#health_healthCover_dependants').val(depCount).trigger('change');
+            // Refresh rebate tiers on apply step.
+            var $situationIncomeTierWrapper = $('#health_healthCover_tier');
+            $applyPageIncomeTierMenu.find('select').html($situationIncomeTierWrapper.find('select').html());
+            $('#health_application_dependants_incomeMessage').text($situationIncomeTierWrapper.find('span').text());
+            $applyPageIncomeTierMenu.slideDown();
+        } else {
+            $applyPageIncomeTierMenu.slideUp();
+        }
+    }
+
+    function animateToDependant($el) {
+        if (!$el.length) {
+            return;
+        }
+        $('html, body').animate({
+            scrollTop: $el.offset().top - 50
+        }, 250);
+    }
+
+    /**
+     * Render all the available dependant templates.
+     * This only runs once onInitialise, as it renders for the
+     * count of dependants (this could be from preload, or a quote)
+     * To add dependants, use "addNewDependant()"
+     */
+    function renderDependants() {
+        var outHtml = "";
+        for (var i = 0; i < getNumberOfDependants(); i++) {
+            // Dependants array is indexed at 0, but needs to display as 1.
+            dependantsArr[i].dependantId = i + 1;
+            outHtml += dependantTemplate(dependantsArr[i]);
+        }
+        $dependantsTemplateWrapper.html(outHtml);
+    }
+
+    /**
+     * Extending the default Dependant because otherwise it may pass by reference.
+     * We also always add a blank dependant to the object.
+     */
+    function addNewDependant() {
+        var numDependants = getNumberOfDependants();
+        if (numDependants < dependantLimit) {
+            var blankDependant = $.extend({}, defaultDependant, {dependantId: numDependants + 1});
+            console.log(blankDependant);
+            $dependantsTemplateWrapper.append(dependantTemplate(blankDependant));
+            // push their data onto the array
+            dependantsArr.push(blankDependant);
+            updateApplicationDetails();
+            //TODO: test this animation
+            animateToDependant($('#health_application_dependants_dependant' + getNumberOfDependants() - 1));
+            //TODO hide all remove-dependant options except for last one.
+        }
+    }
+
+    /**
+     * Reset all the dependant information.
+     */
+    function clearDependants() {
+        $dependantsTemplateWrapper.empty();
+        dependantsArr = [];
+        resetConfig();
+    }
+
+    /**
+     * Get the number that have been added.
+     * @returns {Number|number}
+     */
+    function getNumberOfDependants() {
+        return dependantsArr.length || 0;
+    }
+
+    /**
+     * Whether or not to bother rendering anything for dependants.
+     * Only Family and Single Parent Family render Dependants.
+     * @returns {boolean}
+     */
+    function situationEnablesDependants() {
+        return healthChoices._cover == 'SPF' || healthChoices._cover == 'F';
+    }
+
+    /**
+     * Set the default configuration and maxAge variables.
+     */
     function resetConfig() {
-
-        config = defaultConfig;
-
-        maxAge = 25;
-    }
-
-    function getMaxAge() {
-        return maxAge;
-    }
-
-    function setMaxAge(age) {
-        maxAge = age;
-    }
-
-    function getConfig() {
-        return config;
+        providerConfig = defaultProviderConfig;
+        maxDependantAge = 25;
     }
 
     /**
@@ -93,256 +243,106 @@
      * @param updatedConfig
      */
     function updateConfig(updatedConfig) {
-        config = $.extend({}, defaultConfig, updatedConfig);
+        providerConfig = $.extend({}, defaultProviderConfig, updatedConfig);
     }
 
-    function renderDependant() {
-
+    function getConfig() {
+        return providerConfig;
     }
 
-    function setDependants() {
-        var _dependants = $('#mainform').find('.health_cover_details_dependants').find('select').val();
-        if (healthCoverDetails.getRebateChoice() == 'Y' && !isNaN(_dependants)) {
-            _dependents = _dependants;
-        } else {
-            _dependents = 1;
-        }
-
-        if (healthChoices.hasChildren()) {
-            $('#health_application_dependants-selection').show();
-        } else {
-            $('#health_application_dependants-selection').hide();
-            return;
-        }
-
-        updateDependantOptionsDOM();
-
-        $('#health_application_dependants-selection').find('.health_dependant_details').each(function () {
-            var index = parseInt($(this).attr('data-id'));
-            if (index > _dependents) {
-                $(this).hide();
-            }
-            else {
-                $(this).show();
-            }
-
-
-            checkDependant(index);
-        });
+    function getMaxAge() {
+        return maxDependantAge;
     }
 
-    function addDependant() {
-        if (_dependents < _limit) {
-            _dependents++;
-            var $_obj = $('#health_application_dependants_dependant' + _dependents);
-
-            // Reset values
-            $_obj.find('input[type=text], select').val('');
-            resetRadio($_obj.find('.health_dependant_details_maritalincomestatus'), '');
-
-            // Reset validation
-            $_obj.find('.error-field label').remove();
-            $_obj.find('.has-error, .has-success').removeClass('has-error').removeClass('has-success');
-
-            $_obj.show();
-            updateDependantOptionsDOM();
-            hasChanged();
-
-            $('html').animate({
-                scrollTop: $_obj.offset().top - 50
-            }, 250);
-        }
+    function setMaxAge(age) {
+        maxDependantAge = age;
     }
 
-    function dropDependant() {
-        if (_dependents > 0) {
-            $('#health_application_dependants_dependant' + _dependents).find("input[type=text]").each(function () {
-                $(this).val("");
-            });
-            $('#health_application_dependants_dependant' + _dependents).find("input[type=radio]:checked").each(function () {
-                this.checked = false;
-            });
-            $('#health_application_dependants_dependant' + _dependents).find("select").each(function () {
-                $(this).removeAttr("selected");
-            });
-            $('#health_application_dependants_dependant' + _dependents).hide();
-            _dependents--;
-            updateDependantOptionsDOM();
-            hasChanged();
+    var educationalInstitutions = {
+        "ACP": "Australian College of Phys. Ed",
+        "ACT": "Australian College of Theology",
+        "ACTH": "ACT High Schools",
+        "ACU": "Australian Catholic University",
+        "ADA": "Australian Defence Force Academy",
+        "AFTR": "Australian Film, TV &amp; Radio School",
+        "AIR": "Air Academy, Brit Aerospace Flight Trng",
+        "AMC": "Austalian Maritime College",
+        "ANU": "Australian National University",
+        "AVO": "Avondale College",
+        "BC": "Batchelor College",
+        "BU": "Bond University",
+        "CQU": "Central Queensland Universty",
+        "CSU": "Charles Sturt University",
+        "CUT": "Curtin University of Technology",
+        "DU": "Deakin University",
+        "ECU": "Edith Cowan University",
+        "EDUC": "Education Institute Default",
+        "FU": "Flinders University of SA",
+        "GC": "Gatton College",
+        "GU": "Griffith University",
+        "JCUNQ": "James Cook University of Northern QLD",
+        "KVBVC": "KvB College of Visual Communication",
+        "LTU": "La Trobe University",
+        "MAQ": "Maquarie University",
+        "MMCM": "Melba Memorial Conservatorium of Music",
+        "MTC": "Moore Theological College",
+        "MU": "Monash University",
+        "MURUN": "Murdoch University",
+        "NAISD": "Natn&apos;l Aborign&apos;l &amp; Islander Skills Dev Ass.",
+        "NDUA": "Notre Dame University Australia",
+        "NIDA": "National Institute of Dramatic Art",
+        "NSWH": "NSW High Schools",
+        "NSWT": "NSW TAFE",
+        "NT": "Northern Territory High Schools",
+        "NTT": "NT TAFE",
+        "NTU": "Northern Territory University",
+        "OLA": "Open Learnng Australia",
+        "OTHER": "Other Registered Tertiary Institutions",
+        "PSC": "Photography Studies College",
+        "QCM": "Queensland Conservatorium of Music",
+        "QCU": "Queensland College of Art",
+        "QLDH": "QLD High Schools",
+        "QLDT": "QLD TAFE",
+        "QUT": "Queensland University of Technology",
+        "RMIT": "Royal Melbourne Institute of Techn.",
+        "SA": "South Australian High Schools",
+        "SAT": "SA TAFE",
+        "SCD": "Sydney College of Divinity",
+        "SCM": "Sydney Conservatorium of Music",
+        "SCU": "Southern Cross University",
+        "SCUC": "Sunshine Coast University College",
+        "SIT": "Swinburn Institute of Technology",
+        "SJC": "St Johns College",
+        "SYD": "University of Sydney",
+        "TAS": "TAS High Schools",
+        "TT": "TAS TAFE",
+        "UA": "University of Adelaide",
+        "UB": "University of Ballarat",
+        "UC": "University of Canberra",
+        "UM": "University of Melbourne",
+        "UN": "University of Newcastle",
+        "UNC": "University of Capricornia Rockhampton",
+        "UNE": "University of New England",
+        "UNSW": "University Of New South Wales",
+        "UQ": "University of Queensland",
+        "USA": "University of South Australia",
+        "USQ": "University of Southern Queensland",
+        "UT": "University of Tasmania",
+        "UTS": "University of Technlogy Sydney",
+        "UW": "University of Wollongong",
+        "UWA": "University of Western Australia",
+        "UWS": "University of Western Sydney",
+        "VCAH": "VIC College of Agriculture &amp; Horticulture",
+        "VIC": "Victorian High Schools",
+        "VICT": "VIC TAFE",
+        "VU": "Victoria University",
+        "VUT": "Victoria University of Technology",
+        "WA": "Western Australia-High Schools",
+        "WAT": "WA TAFE"
+    };
 
-            if (_dependents > 0) {
-                $_obj = $('#health_application_dependants_dependant' + _dependents);
-            } else {
-                $_obj = $('#health_application_dependants-selection');
-            }
-
-            $('html').animate({
-                scrollTop: $_obj.offset().top - 50
-            }, 250);
-        }
-    }
-
-    function checkDependant(e) {
-        var index = e;
-        if (isNaN(e) && typeof e == 'object') {
-            index = e.data;
-        }
-        // Create an age check mechanism
-        var dob = $('#health_application_dependants_dependant' + index + '_dob').val();
-        var age;
-
-        if (!dob.length) {
-            age = 0;
-        } else {
-            age = getAge(dob);
-            if (isNaN(age)) {
-                return false;
-            }
-        }
-
-        // Check the individual questions
-        addFullTime(index, age);
-        addSchool(index, age);
-        addDefacto(index, age);
-        addApprentice(index, age);
-    }
-
-    function updateDependantOptionsDOM() {
-        if (_dependents <= 0) {
-            // hide all remove dependant buttons
-            $("#health_application_dependants-selection").find(".remove-last-dependent").hide();
-
-            $('#health_application_dependants_threshold').slideDown();
-            //$("#health_application_dependants_dependantrequired").val("").addClass("validate");
-        } else if (!$("#dependents_list_options").find(".remove-last-dependent").is(":visible")) {
-            $('#health_application_dependants_threshold').slideUp();
-
-            // Show ONLY the last remove dependant button
-            $("#health_application_dependants-selection").find(".remove-last-dependent").hide(); // 1st, hide all.
-            $("#health_application_dependants-selection .health_dependant_details:visible:last").find(".remove-last-dependent").show();
-
-
-            //$("#health_application_dependants_dependantrequired").val("ignoreme").removeClass("validate");
-        }
-
-        if (_dependents >= _limit) {
-            $("#health-dependants").find(".add-new-dependent").hide();
-        } else if ($("#health-dependants").find(".add-new-dependent").not(":visible")) {
-            $("#health-dependants").find(".add-new-dependent").show();
-        }
-    }
-
-    function addFullTime(index, age) {
-        if (config.fulltime !== true) {
-            $('#health_application_dependants-selection').find('.health_dependant_details_fulltimeGroup').hide();
-            // reset validation of dob to original
-            //TODO: Fix this to ensure the rules are added/removed properly.
-            $('#health_application_dependants_dependant' + index + '_dob').removeRule('validateFulltime').addRule('limitDependentAgeToUnder25');
-            return false;
-        }
-
-        if ((age >= config.schoolMin) && (age <= config.schoolMax)) {
-            $('#health_application_dependants-selection').find('.dependant' + index).find('.health_dependant_details_fulltimeGroup').show();
-        } else {
-            $('#health_application_dependants-selection').find('.dependant' + index).find('.health_dependant_details_fulltimeGroup').hide();
-        }
-
-        // change validation method for dob field if fulltime is enabled
-        //TODO: Fix this to ensure the rules are added/removed properly.
-        $('#health_application_dependants_dependant' + index + '_dob').removeRule('limitDependentAgeToUnder25').addRule('validateFulltime');
-    }
-
-    function addSchool(index, age) {
-        if (config.school === false) {
-            $('#health_application_dependants-selection').find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup').hide();
-            return false;
-        }
-        if ((age >= config.schoolMin) && (age <= config.schoolMax)
-            && (config.fulltime !== true || $('#health_application_dependants_dependant' + index + '_fulltime_Y').is(':checked'))) {
-            $('#health_application_dependants-selection').find('.dependant' + index).find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup').show();
-            // Show/hide ID number field, with optional validation
-            if (config.schoolID === false) {
-                $('#health_application_dependants-selection').find('.dependant' + index).find('.health_dependant_details_schoolIDGroup').hide();
-            }
-            else {
-                $('#health_application_dependants_dependant' + index + '_schoolID').setRequired(config.schoolIDMandatory, 'Please enter dependant ' + index + '\'s student ID');
-            }
-            // Show/hide date study commenced field, with optional validation
-            if (config.schoolDate !== true) {
-                $('#health_application_dependants-selection').find('.dependant' + index).find('.health_dependant_details_schoolDateGroup').hide();
-            }
-            else {
-                $('#health_application_dependants_dependant' + index + '_schoolDate').setRequired(config.schoolDateMandatory, 'Please enter date that dependant ' + index + ' commenced study');
-            }
-        } else {
-            $('#health_application_dependants-selection').find('.dependant' + index).find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup').hide();
-        }
-    }
-
-    function addApprentice(index, age) {
-        if (config.apprentice !== true) {
-            $('#health_application_dependants-selection').find('.health_dependant_details_apprenticeGroup').hide();
-            return false;
-        }
-
-        if ((age >= config.schoolMin) && (age <= config.schoolMax)) {
-            $('#health_application_dependants-selection').find('.dependant' + index).find('.health_dependant_details_apprenticeGroup').show();
-        } else {
-            $('#health_application_dependants-selection').find('.dependant' + index).find('.health_dependant_details_apprenticeGroup').hide();
-        }
-
-        // change validation method for dob field if fulltime is enabled
-        //$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('remove', 'limitDependentAgeToUnder25');
-        //$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('add', 'validateFulltime');
-
-    }
-
-    function addDefacto(index, age) {
-        if (config.defacto === false) {
-            return false;
-        }
-        if ((age >= config.defactoMin) && (age <= config.defactoMax)) {
-            $('#health_application_dependants-selection').find('.dependant' + index).find('.health_dependant_details_maritalincomestatus').show();
-        } else {
-            $('#health_application_dependants-selection').find('.dependant' + index).find('.health_dependant_details_maritalincomestatus').hide();
-        }
-    }
-
-    function hasChanged() {
-        var $_obj = $('#health_application_dependants-selection').find('.health-dependants-tier');
-        if (healthCoverDetails.getRebateChoice() == 'N') {
-            $_obj.slideUp();
-        } else if (_dependents > 0) {
-            // Call the summary panel error message
-            //healthPolicyDetails.error();
-
-            // Refresh/Call the Dependants and rebate tiers
-            $('#health_healthCover_dependants').val(_dependents).trigger('change');
-
-            // Change the income questions
-            var $_original = $('#health_healthCover_tier');
-            $_obj.find('select').html($_original.find('select').html());
-            $_obj.find('#health_application_dependants_incomeMessage').text($_original.find('span').text());
-            if ($_obj.is(':hidden')) {
-                $_obj.slideDown();
-            }
-        } else {
-            $_obj.slideUp();
-        }
-    }
-
-    function getAge(dob) {
-        var dob_pieces = dob.split("/");
-        var year = Number(dob_pieces[2]);
-        var month = Number(dob_pieces[1]) - 1;
-        var day = Number(dob_pieces[0]);
-        var today = new Date();
-        var age = today.getFullYear() - year;
-        if (today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)) {
-            age--;
-        }
-
-        return age;
+    function getEducationalInstitutions() {
+        return educationalInstitutions;
     }
 
     meerkat.modules.register("healthDependants", {
@@ -353,10 +353,8 @@
         updateConfig: updateConfig,
         getMaxAge: getMaxAge,
         setMaxAge: setMaxAge,
-        setDependants: setDependants,
-        updateDependantOptionsDOM: updateDependantOptionsDOM
+        updateDependantConfiguration: updateDependantConfiguration,
+        getEducationalInstitutions: getEducationalInstitutions
     });
 
 })(jQuery);
-
-

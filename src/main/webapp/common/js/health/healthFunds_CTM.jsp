@@ -62,7 +62,7 @@ set: function () {
 		healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 24 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
 
 		<%--schoolgroups and defacto--%>
-		meerkat.modules.healthDependants.updateConfig({ 'school': true, 'defacto':false, 'schoolMin': 21, 'schoolMax': 24 });
+		meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, 'schoolMin': 21, 'schoolMax': 24 });
 
 		<%--credit card & bank account frequency & day frequency--%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly': true, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true });
@@ -94,7 +94,7 @@ set: function () {
 			<%--change age of dependants and school --%>
 			meerkat.modules.healthDependants.setMaxAge(25);
 			<%--schoolgroups and defacto --%>
-			meerkat.modules.healthDependants.updateConfig({ 'school': true, 'schoolMin': 23, 'schoolMax': 25, 'schoolID': true, 'schoolIDMandatory': true, 'schoolDate': true, 'schoolDateMandatory': true });
+			meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, 'schoolMin': 23, 'schoolMax': 25, showSchoolIdField: true, 'schoolIdRequired': true, showSchoolCommencementField: true, 'schoolDateRequired': true });
 
 			<%--School list--%>
 			var instituteElement = '<select>
@@ -114,7 +114,6 @@ set: function () {
 			healthFunds.$_tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
 			$('.health_dependant_details_schoolGroup .control-label').html('Educational institute this dependant is attending');
 			$('.health_dependant_details_schoolGroup .help_icon').hide();
-			meerkat.modules.healthDependants.updateConfig({schoolID: false, schoolDate: false});
 		</c:if>
 
 		<%--calendar for start cover--%>

@@ -39,7 +39,8 @@
 			<field:hidden required="true" validationRule="validateMinDependants" validationParam="{'prefix':'${name}'}" validationMessage="A dependant is required." defaultValue="" xpath="${xpath}/dependantrequired" />
 		</div>
 
-		<health:dependant_details xpath="${xpath}/dependant" count="1" />
+		<health:dependant_details_template xpath="${xpath}/dependant" />
+		<%--<health:dependant_details xpath="${xpath}/dependant" count="1" />
 
 		<health:dependant_details xpath="${xpath}/dependant" count="2" />
 
@@ -61,11 +62,10 @@
 
 		<health:dependant_details xpath="${xpath}/dependant" count="11" />
 
-		<health:dependant_details xpath="${xpath}/dependant" count="12" />
+		<health:dependant_details xpath="${xpath}/dependant" count="12" />--%>
 
 		<form_new:row id="dependents_list_options">
 			<a href="javascript:void(0);" class="add-new-dependent btn btn-form" title="Add new dependent">Add New Dependant</a>
-
 		</form_new:row>
 		
 		<%-- If the user changes the amount of dependants here, we will need to re-confirm their selection --%>

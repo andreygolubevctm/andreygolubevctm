@@ -21,23 +21,11 @@ GMF
 var healthFunds_GMF = {
 	set: function () {
 
-		<%-- Inject CSS --%>
-		<c:set var="html">
-			<style type="text/css">
-
-				body.GMF .health_dependant_details_schoolGroup {
-					display:none !important;
-				}
-
-			</style>
-		</c:set>
-
-		$('head').append('<c:out value="${html}" escapeXml="false" />');
 	<%-- dependant definition --%>
 		healthFunds._dependants('This policy provides cover for your children up to their 21st birthday. Dependants aged under 25 may also be added to the policy provided they are not married or in a defacto relationship and earn less than $20,500 p/annum. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
 
 		<%-- schoolgroups and defacto --%>
-		healthDependents.config = { 'school': false, 'defacto': true, 'defactoMin': 21, 'defactoMax': 24 };
+		healthDependents.config = { showSchoolFields: false, showDefactoField: true, 'defactoMin': 21, 'defactoMax': 24 };
 
 		<%-- medicare message - once a medicare number has been added - show the message (or if prefilled show the message) --%>
 		healthFunds_GMF.$_medicareMessage = $('#health_medicareDetails_message');

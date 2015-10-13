@@ -14,7 +14,7 @@ function returnDate(_dateString){
 	var dateComponents = _dateString.split('/');
 	if(dateComponents.length < 3) return null;
 	return new Date(dateComponents[2], dateComponents[1] - 1, dateComponents[0]);
-};
+}
 
 /**
  * isLessThan31Or31AndBeforeJuly1() test whether the dob provided makes the user less than
@@ -60,7 +60,7 @@ function resetRadio($_obj, value){
 		}
 	}
 
-};
+}
 
 //return a number with comma for thousands
 function formatMoney(value){
@@ -124,7 +124,7 @@ var healthChoices = {
 				return true;
 			default:
 				return false;
-		};
+		}
 	},
 
 	hasChildren : function() {
@@ -134,7 +134,7 @@ var healthChoices = {
 				return true;
 			default:
 				return false;
-		};
+		}
 	},
 
 	setCover : function(cover, ignore_rebate_reset, initMode) {
@@ -152,14 +152,15 @@ var healthChoices = {
 			$('#partner-health-cover, #partner, .health-person-details-partner, #partnerFund').hide();
 		} else {
 			$('#partner-health-cover, #partner, .health-person-details-partner, #partnerFund').show();
-		};
+		}
 
 		//// See if Children should be on or off
 		healthChoices.dependants(initMode);
 
 		//// Set the auxillary data
 		//Health.setRates();
-		healthCoverDetails.displayHealthFunds();
+		if(typeof healthCoverDetails !== 'undefined')
+			healthCoverDetails.displayHealthFunds();
 		meerkat.modules.healthTiers.setTiers(initMode);
 	},
 
@@ -170,7 +171,7 @@ var healthChoices = {
 		//// Change the message
 		if (situation != healthChoices._situation) {
 			healthChoices._situation = situation;
-		};
+		}
 
 		$('#health_benefits_healthSitu, #health_situation_healthSitu').val( situation );
 
@@ -305,7 +306,7 @@ var healthCoverDetails = {
 			}else{
 				$('#health_healthCover-selection').find('.health_cover_details_incomeBasedOn').slideUp();
 			}
-		};
+		}
 	},
 
 	//// Previous funds, settings
@@ -360,20 +361,20 @@ var healthCoverDetails = {
 		} else {
 			if( _primary == 'N'){
 				resetRadio($('#health-continuous-cover-primary'),'N');
-			};
+			}
 			if(initMode){
 				$('#health-continuous-cover-primary').hide();
 			}else{
 				$('#health-continuous-cover-primary').slideUp();
 			}
 
-		};
+		}
 
 		if( _primary == 'Y' && $_primaryFund.val() == 'NONE'){
 			$_primaryFund.val('');
 		} else if(_primary == 'N'){
 			$_primaryFund.val('NONE');
-		};
+		}
 
 		//// Partner Specific
 		if( _partner == 'Y' ) {
@@ -396,20 +397,20 @@ var healthCoverDetails = {
 		} else {
 			if( _partner == 'N'){
 				resetRadio($('#health-continuous-cover-partner'),'N');
-			};
+			}
 			if(initMode){
 				$('#health-continuous-cover-partner').hide();
 			}else{
 				$('#health-continuous-cover-partner').slideUp();
 			}
 
-		};
+		}
 
 			if( _partner == 'Y' && $_partnerFund.val() == 'NONE'){
 				$_partnerFund.val('');
 			} else if(_partner == 'N'){
 				$_partnerFund.val('NONE');
-			};
+			}
 
 		//// Adjust the questions further along
 		healthCoverDetails.displayHealthFunds();
@@ -605,7 +606,7 @@ var healthFunds = {
 			healthFunds.$_dependantDefinition.html( healthFunds.HTML_dependantDefinition );
 			healthFunds.$_dependantDefinition = undefined;
 			healthFunds.HTML_dependantDefinition = undefined;
-		};
+		}
 	},
 
 	_previousfund_authority: function(message) {
@@ -621,7 +622,7 @@ var healthFunds = {
 			healthFunds.$_authority = undefined;
 			healthFunds.$_authorityText = undefined;
 			$('.health_previous_fund_authority').addClass('hidden');
-		};
+		}
 	},
 
 	_partner_authority: function(display) {
@@ -690,8 +691,8 @@ var healthFunds = {
 				_html += '<option value="'+ _date.getFullYear() +'-'+ _monthString +'-'+ _dayString +'">'+ healthFunds._getNiceDate(_date) +'</option>';
 				_days++;
 				_count++;
-			};
-		};
+			}
+		}
 
 		// Return the html
 		return _html;
@@ -701,7 +702,7 @@ var healthFunds = {
 	_earliestDays: function(euroDate, a_Match, _exclusion){
 			if( !$.isArray(a_Match) || euroDate == '' ){
 				return false;
-			};
+			}
 			// creating the base date from the exclusion
 			var _now = returnDate(euroDate);
 			// 2014-03-05 Leto: Why is this hardcoded when it's also a function argument?
@@ -719,9 +720,9 @@ var healthFunds = {
 						/*var*/ _html = '<option value="'+ _date.getFullYear() +'-'+ _monthString +'-'+ _dayString +'" selected="selected">'+ healthFunds._getNiceDate(_date) +'</option>';
 						i = 99;
 						break;
-					};
-				};
-			};
+					}
+				}
+			}
 			return _html;
 	},
 
@@ -730,7 +731,7 @@ var healthFunds = {
 		if(_html === false){
 			healthFunds._payments = { 'min':0, 'max':5, 'weekends':false };
 			_html = '<option value="">Please choose...</option>';
-		};
+		}
 		$_object.html(_html);
 		$_object.parent().siblings('p').text( 'Your payment will be deducted on: ' + $_object.find('option').first().text() );
 		$('.health-bank_details-policyDay, .health-credit-card_details-policyDay').html(_html);
