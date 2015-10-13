@@ -74,6 +74,36 @@
     }
 
     /**
+     * Event Listeners for Health Dependants
+     */
+    function applyEventListeners() {
+
+        $dependantsTemplateWrapper.on('click', ".remove-dependent", function removeDependantClick() {
+            deleteDependant($(this).attr('data-id'), true);
+            updateApplicationDetails();
+        }).on('change', '.dateinput_container input.serialise, .health_dependant_details_fulltimeGroup input', function dependantAgeFullTimeChange() {
+            var $wrapper = $(this).closest('.health_dependant_details');
+            toggleDependantFields($wrapper);
+
+            // todo: necessary? $(this).valid();
+        });
+
+        $('#dependents_list_options').on('click', ".add-new-dependent", function addDependantClick() {
+            addNewDependant();
+        });
+
+        $('#someinput').on('change', 'some-dobfield', function () {
+
+
+        });
+
+        // Sync income tier value (which can be changed if you change the number of dependants you have).
+        $('#health_application_dependants_income').on('change', function () {
+            $('.health_cover_details_income').val($(this).val());
+        });
+    }
+
+    /**
      * Whenever you enter into application phase, it is possible that you had 6 dependants before
      * and then you went back and set it to 3. So in this case, it should delete the 3.
      */
@@ -104,25 +134,32 @@
     }
 
     /**
-     * Event Listeners for Health Dependants
+     * Displays or hides fields for dependants based on the age.
+     * In order for these fields to be rendered into a dependants template, the provider has to specify
+     * the configuration that it wants to show full time, or school id, etc.
      */
-    function applyEventListeners() {
+    function toggleDependantFields($wrapper) {
 
-        $dependantsTemplateWrapper.on('click', ".remove-dependent", function () {
-            deleteDependant($(this).attr('data-id'), true);
-            updateApplicationDetails();
-        });
+        var dependantId = $wrapper.attr('data-id'),
+            selectorPrefix = '#health_application_dependants_dependant' + dependantId,
+            $dob = $(selectorPrefix + '_dob');
+        var age = meerkat.modules.utils.returnAge($dob.val()) || 0;
 
-        $('#dependents_list_options').on('click', ".add-new-dependent", function () {
-            addNewDependant();
-        });
+        // If the dependant is between the school age
+        if (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) {
+            $(selectorPrefix + '_fulltimeGroup').toggleClass('hidden', providerConfig.showFullTimeField === false);
+            $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', providerConfig.showSchoolIdField === false);
+            $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', providerConfig.showSchoolCommencementField === false);
+            $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', providerConfig.showApprenticeField === false);
+        } else {
+            // Hide them all if they aren't in the date range.
+            $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
+        }
 
-        $('#someinput').on('change', 'some-dobfield', function() {
+        // If showFullTimeField === true and age between schoolMin and schoolMax, remove hidden class.
+        // If showSchoolFields === true  and age between schoolMin and schoolMax, remove hidden class. BUT don't show this one if showFullTimeField !== true || fulltime_Y is checked.
 
-            // If showFullTimeField === true and age between schoolMin and schoolMax, remove hidden class.
-            // If showSchoolFields === true  and age between schoolMin and schoolMax, remove hidden class. BUT don't show this one if showFullTimeField !== true || fulltime_Y is checked.
 
-        })
     }
 
     /**
@@ -267,91 +304,91 @@
     }
 
     var educationalInstitutions = {
-        "ACP": "Australian College of Phys. Ed",
-        "ACT": "Australian College of Theology",
-        "ACTH": "ACT High Schools",
-        "ACU": "Australian Catholic University",
-        "ADA": "Australian Defence Force Academy",
-        "AFTR": "Australian Film, TV &amp; Radio School",
-        "AIR": "Air Academy, Brit Aerospace Flight Trng",
-        "AMC": "Austalian Maritime College",
-        "ANU": "Australian National University",
-        "AVO": "Avondale College",
-        "BC": "Batchelor College",
-        "BU": "Bond University",
-        "CQU": "Central Queensland Universty",
-        "CSU": "Charles Sturt University",
-        "CUT": "Curtin University of Technology",
-        "DU": "Deakin University",
-        "ECU": "Edith Cowan University",
-        "EDUC": "Education Institute Default",
-        "FU": "Flinders University of SA",
-        "GC": "Gatton College",
-        "GU": "Griffith University",
-        "JCUNQ": "James Cook University of Northern QLD",
-        "KVBVC": "KvB College of Visual Communication",
-        "LTU": "La Trobe University",
-        "MAQ": "Maquarie University",
-        "MMCM": "Melba Memorial Conservatorium of Music",
-        "MTC": "Moore Theological College",
-        "MU": "Monash University",
-        "MURUN": "Murdoch University",
-        "NAISD": "Natn&apos;l Aborign&apos;l &amp; Islander Skills Dev Ass.",
-        "NDUA": "Notre Dame University Australia",
-        "NIDA": "National Institute of Dramatic Art",
-        "NSWH": "NSW High Schools",
-        "NSWT": "NSW TAFE",
-        "NT": "Northern Territory High Schools",
-        "NTT": "NT TAFE",
-        "NTU": "Northern Territory University",
-        "OLA": "Open Learnng Australia",
-        "OTHER": "Other Registered Tertiary Institutions",
-        "PSC": "Photography Studies College",
-        "QCM": "Queensland Conservatorium of Music",
-        "QCU": "Queensland College of Art",
-        "QLDH": "QLD High Schools",
-        "QLDT": "QLD TAFE",
-        "QUT": "Queensland University of Technology",
-        "RMIT": "Royal Melbourne Institute of Techn.",
-        "SA": "South Australian High Schools",
-        "SAT": "SA TAFE",
-        "SCD": "Sydney College of Divinity",
-        "SCM": "Sydney Conservatorium of Music",
-        "SCU": "Southern Cross University",
-        "SCUC": "Sunshine Coast University College",
-        "SIT": "Swinburn Institute of Technology",
-        "SJC": "St Johns College",
-        "SYD": "University of Sydney",
-        "TAS": "TAS High Schools",
-        "TT": "TAS TAFE",
-        "UA": "University of Adelaide",
-        "UB": "University of Ballarat",
-        "UC": "University of Canberra",
-        "UM": "University of Melbourne",
-        "UN": "University of Newcastle",
-        "UNC": "University of Capricornia Rockhampton",
-        "UNE": "University of New England",
-        "UNSW": "University Of New South Wales",
-        "UQ": "University of Queensland",
-        "USA": "University of South Australia",
-        "USQ": "University of Southern Queensland",
-        "UT": "University of Tasmania",
-        "UTS": "University of Technlogy Sydney",
-        "UW": "University of Wollongong",
-        "UWA": "University of Western Australia",
-        "UWS": "University of Western Sydney",
-        "VCAH": "VIC College of Agriculture &amp; Horticulture",
-        "VIC": "Victorian High Schools",
-        "VICT": "VIC TAFE",
-        "VU": "Victoria University",
-        "VUT": "Victoria University of Technology",
-        "WA": "Western Australia-High Schools",
-        "WAT": "WA TAFE"
+            "ACP": "Australian College of Phys. Ed",
+            "ACT": "Australian College of Theology",
+            "ACTH": "ACT High Schools",
+            "ACU": "Australian Catholic University",
+            "ADA": "Australian Defence Force Academy",
+            "AFTR": "Australian Film, TV &amp; Radio School",
+            "AIR": "Air Academy, Brit Aerospace Flight Trng",
+            "AMC": "Austalian Maritime College",
+            "ANU": "Australian National University",
+            "AVO": "Avondale College",
+            "BC": "Batchelor College",
+            "BU": "Bond University",
+            "CQU": "Central Queensland Universty",
+            "CSU": "Charles Sturt University",
+            "CUT": "Curtin University of Technology",
+            "DU": "Deakin University",
+            "ECU": "Edith Cowan University",
+            "EDUC": "Education Institute Default",
+            "FU": "Flinders University of SA",
+            "GC": "Gatton College",
+            "GU": "Griffith University",
+            "JCUNQ": "James Cook University of Northern QLD",
+            "KVBVC": "KvB College of Visual Communication",
+            "LTU": "La Trobe University",
+            "MAQ": "Maquarie University",
+            "MMCM": "Melba Memorial Conservatorium of Music",
+            "MTC": "Moore Theological College",
+            "MU": "Monash University",
+            "MURUN": "Murdoch University",
+            "NAISD": "Natn&apos;l Aborign&apos;l &amp; Islander Skills Dev Ass.",
+            "NDUA": "Notre Dame University Australia",
+            "NIDA": "National Institute of Dramatic Art",
+            "NSWH": "NSW High Schools",
+            "NSWT": "NSW TAFE",
+            "NT": "Northern Territory High Schools",
+            "NTT": "NT TAFE",
+            "NTU": "Northern Territory University",
+            "OLA": "Open Learnng Australia",
+            "OTHER": "Other Registered Tertiary Institutions",
+            "PSC": "Photography Studies College",
+            "QCM": "Queensland Conservatorium of Music",
+            "QCU": "Queensland College of Art",
+            "QLDH": "QLD High Schools",
+            "QLDT": "QLD TAFE",
+            "QUT": "Queensland University of Technology",
+            "RMIT": "Royal Melbourne Institute of Techn.",
+            "SA": "South Australian High Schools",
+            "SAT": "SA TAFE",
+            "SCD": "Sydney College of Divinity",
+            "SCM": "Sydney Conservatorium of Music",
+            "SCU": "Southern Cross University",
+            "SCUC": "Sunshine Coast University College",
+            "SIT": "Swinburn Institute of Technology",
+            "SJC": "St Johns College",
+            "SYD": "University of Sydney",
+            "TAS": "TAS High Schools",
+            "TT": "TAS TAFE",
+            "UA": "University of Adelaide",
+            "UB": "University of Ballarat",
+            "UC": "University of Canberra",
+            "UM": "University of Melbourne",
+            "UN": "University of Newcastle",
+            "UNC": "University of Capricornia Rockhampton",
+            "UNE": "University of New England",
+            "UNSW": "University Of New South Wales",
+            "UQ": "University of Queensland",
+            "USA": "University of South Australia",
+            "USQ": "University of Southern Queensland",
+            "UT": "University of Tasmania",
+            "UTS": "University of Technlogy Sydney",
+            "UW": "University of Wollongong",
+            "UWA": "University of Western Australia",
+            "UWS": "University of Western Sydney",
+            "VCAH": "VIC College of Agriculture &amp; Horticulture",
+            "VIC": "Victorian High Schools",
+            "VICT": "VIC TAFE",
+            "VU": "Victoria University",
+            "VUT": "Victoria University of Technology",
+            "WA": "Western Australia-High Schools",
+            "WAT": "WA TAFE"
         },
         cachedList;
 
     function getEducationalInstitutionsOptions() {
-        if(cachedList) {
+        if (cachedList) {
             return cachedList;
         }
         cachedList = '';

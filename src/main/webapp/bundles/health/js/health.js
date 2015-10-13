@@ -473,11 +473,6 @@
 					healthApplicationDetails.testStatesParity();
 				});
 
-				// Sync income tier value (which can be changed if you change the number of dependants you have).
-				$('#health_application_dependants_income').on('change', function () {
-					$('#mainform').find('.health_cover_details_income').val($(this).val());
-				});
-
 				// initialise start date datepicker from payment step as it will be used by selected fund
 				$("#health_payment_details_start_calendar")
 					.datepicker({ clearBtn:false, format:"dd/mm/yyyy" })
@@ -529,11 +524,6 @@
 					$("#health_payment_details_start_calendar").datepicker('setStartDate', min).datepicker('setEndDate', max);
 
 				}
-			},
-			onAfterEnter: function afterEnterApplyStep(event){
-				//TODO: This won't be needed.
-				// Need to call this after the form is visible because of the show/hiding of buttons based on visibility.
-				//meerkat.modules.healthDependants.updateDependantOptionsDOM();
 			}
 		};
 

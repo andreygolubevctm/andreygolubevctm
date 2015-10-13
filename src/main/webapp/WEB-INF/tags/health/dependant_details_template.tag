@@ -86,7 +86,7 @@
             {{ if(dependantsConfig.showSchoolIdField === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolID"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Student ID Number" id="${name}_schoolIDGroup"
-                          className="health_dependant_details_schoolIDGroup">
+                          className="health_dependant_details_schoolIDGroup hidden">
                 <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="{{= dependantsConfig.schoolIdRequired }}" className="sessioncamexclude" maxlength="{{= (schoolIdMaxLength || '') }} "/>
             </form_new:row>
             {{ } }}
@@ -94,7 +94,7 @@
             {{ if(dependantsConfig.showSchoolCommencementField === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolDate"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Date Study Commenced" id="${name}_schoolDateGroup"
-                          className="health_dependant_details_schoolDateGroup">
+                          className="health_dependant_details_schoolDateGroup hidden">
                 <field_new:basic_date xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s study commencement date" required="{{= dependantsConfig.schoolDateRequired }}" />
             </form_new:row>
             {{ } }}
@@ -105,7 +105,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/maritalincomestatus"/>
             <form_new:row fieldXpath="${fieldXpath}"
                           label="Is this dependant not married or living in a defacto relationship and earning less than $20,500 p/annum?"
-                          id="${name}_maritalincomestatusGroup" className="health_dependant_details_maritalincomestatus">
+                          id="${name}_maritalincomestatusGroup" className="health_dependant_details_maritalincomestatus hidden">
                 <field_new:array_radio id="${name}_maritalincomestatus" xpath="${fieldXpath}" required="true"
                                        items="Y=Yes,N=No" additionalAttributes=" data-rule-defactoConfirmation='true' "
                                        title="if dependant {{= obj.dependantId }} is not married or living in a defacto relationship and earning less than $20,500 p/annum?"
@@ -118,7 +118,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/apprentice"/>
             <form_new:row fieldXpath="${fieldXpath}"
                           label="Apprentice earning less than $30,000pa?"
-                          id="${name}_apprenticeGroup" className="health_dependant_details_apprenticeGroup">
+                          id="${name}_apprenticeGroup" className="health_dependant_details_apprenticeGroup hidden">
                 <field_new:array_radio id="${name}_apprentice" xpath="${fieldXpath}" required="true"
                                        items="Y=Yes,N=No"
                                        title="if dependant {{= obj.dependantId }} is an apprentice earning less than $30,000pa?"
