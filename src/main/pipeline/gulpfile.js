@@ -4,6 +4,12 @@
  */
 "use strict";
 
+var argv = require("yargs").argv;
+
+if(!!argv.disableNotify) {
+    process.env["DISABLE_NOTIFIER"] = true;
+}
+
 var fs = require("graceful-fs-extra");
 
 // Important!
@@ -22,6 +28,11 @@ var BundlesHelper = require("./helpers/bundlesHelper");
 // we can use it easily in our bundles
 gulp.pipelineConfig = require("./config");
 gulp.bundles = new BundlesHelper(gulp.pipelineConfig);
+
+// Sometimes plugins need to access environment variables so we use this to ensure that the single plugin instance has received that value
+gulp.globalPlugins = {
+    notify: require("gulp-notify")
+};
 
 // Meerkat Ascii. Do not remove or Sergei gets it.
 console.log("\r\nCompare the Market");

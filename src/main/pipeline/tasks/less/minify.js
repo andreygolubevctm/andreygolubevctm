@@ -2,14 +2,13 @@ var minifyCSS = require("gulp-minify-css"),
     intercept = require("gulp-intercept"),
     cached = require("gulp-cached"),
     plumber = require("gulp-plumber"),
-    notify = require("gulp-notify"),
     rename = require("gulp-rename"),
     path = require("path");
 
 module.exports = function(gulp, filePath, brandCode, bundle, done) {
     return gulp.src(filePath)
         .pipe(plumber({
-            errorHandler: notify.onError("Error: <%= error.message %>")
+            errorHandler: gulp.globalPlugins.notify.onError("Error: <%= error.message %>")
         }))
         // Options are listed at https://github.com/jakubpawlowicz/clean-css
         .pipe(minifyCSS({
@@ -29,7 +28,7 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
         .pipe(gulp.dest(function(file){
             return file.targetDir;
         }))
-        .pipe(notify("Minified: " + brandCode + " " + bundle + " CSS"))
+        .pipe(gulp.globalPlugins.notify("Minified: " + brandCode + " " + bundle + " CSS"))
         // We do this to ensure that the file object is sent back
         .pipe(intercept(function(file){
             return file;

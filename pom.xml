@@ -435,7 +435,7 @@
                                     <goal>gulp</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>build --targetFolder=${project.name}-${project.version}</arguments>
+                                    <arguments>build --targetFolder=${project.name}-${project.version} --disableNotify=true</arguments>
                                     <workingDirectory>src/main/pipeline</workingDirectory>
                                 </configuration>
                             </execution>

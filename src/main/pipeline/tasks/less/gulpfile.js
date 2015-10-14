@@ -17,7 +17,6 @@ var less = require("gulp-less"),
     intercept = require("gulp-intercept"),
     sourcemaps = require("gulp-sourcemaps"),
     plumber = require("gulp-plumber"),
-    notify = require("gulp-notify"),
     fs = require("graceful-fs-extra"),
     runSequence = require('run-sequence'),
     path = require("path");
@@ -63,7 +62,7 @@ function LessTasks(gulp) {
 
         var stream = gulp.src(glob)
             .pipe(plumber({
-                errorHandler: notify.onError("Error: <%= error.message %>")
+                errorHandler: gulp.globalPlugins.notify.onError("Error: <%= error.message %>")
             }))
             // Insert LESS dependencies
             .pipe(
@@ -152,7 +151,7 @@ function LessTasks(gulp) {
             .pipe(rename(bundle + ".css"))
             .pipe(sourcemaps.write("./maps"))
             .pipe(gulp.dest(targetDir))
-            .pipe(notify({
+            .pipe(gulp.globalPlugins.notify({
                 title: taskName + " compiled",
                 message: bundle + " successfully compiled"
             }))

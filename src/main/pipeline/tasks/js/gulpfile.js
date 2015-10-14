@@ -12,7 +12,6 @@ var path = require("path");
 var concat = require("gulp-concat"),
     beautify = require("gulp-beautify"),
     uglify = require("gulp-uglify"),
-    notify = require("gulp-notify"),
     intercept = require("gulp-intercept"),
     sourcemaps = require("gulp-sourcemaps"),
     plumber = require("gulp-plumber"),
@@ -41,19 +40,19 @@ function JSTasks(gulp) {
 
         gulp.src(fileArray)
             .pipe(plumber({
-                errorHandler: notify.onError("Error: <%= error.message %>")
+                errorHandler: gulp.globalPlugins.notify.onError("Error: <%= error.message %>")
             }))
             .pipe(concat(fileName + ".js"))
             .pipe(beautify())
             .pipe(gulp.dest(targetDirectory))
-            .pipe(notify({
+            .pipe(gulp.globalPlugins.notify({
                 title: taskName + " compiled",
                 message: fileName + " successfully compiled"
             }))
             .pipe(uglify())
             .pipe(rename(fileName + ".min.js"))
             .pipe(gulp.dest(targetDirectory))
-            .pipe(notify({
+            .pipe(gulp.globalPlugins.notify({
                 title: taskName + " minified",
                 message: fileName + " successfully minified"
             }))

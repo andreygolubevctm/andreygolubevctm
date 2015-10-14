@@ -3,7 +3,6 @@ var minifyCSS = require("gulp-minify-css"),
     cached = require("gulp-cached"),
     plumber = require("gulp-plumber"),
     sakugawa = require("gulp-sakugawa"),
-    notify = require("gulp-notify"),
     rename = require("gulp-rename"),
     path = require("path"),
     fs = require("fs"),
@@ -32,7 +31,7 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
 
     return gulp.src(filePath)
         .pipe(plumber({
-            errorHandler: notify.onError("Error: <%= error.message %>")
+            errorHandler: gulp.globalPlugins.notify.onError("Error: <%= error.message %>")
         }))
         .pipe(intercept(function(file) {
             var file = addExtraFileInfo(file);
@@ -73,7 +72,7 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
         .pipe(gulp.dest(function(file){
             return file.targetDir;
         }))
-        .pipe(notify("Blessed: " + brandCode + " " + bundle + " CSS"))
+        .pipe(gulp.globalPlugins.notify("Blessed: " + brandCode + " " + bundle + " CSS"))
         // We do this to ensure that the file object is sent back
         .pipe(intercept(function(file) {
             return file;
