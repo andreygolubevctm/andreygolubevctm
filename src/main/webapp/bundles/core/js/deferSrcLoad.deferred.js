@@ -7,14 +7,12 @@
     var meerkat = window.meerkat;
 
     function init() {
-
-        $(window).load(function () {
+        $(document).ready(function () {
             $("[data-defer-src]").each(function allDeferSrcLoadLoop() {
                 var $this = $(this);
                 $this.attr('src', $this.attr('data-defer-src')).removeAttr('data-defer-src');
             });
         });
-
     }
 
     meerkat.modules.register("deferSrcLoad", {
