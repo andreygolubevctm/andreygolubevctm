@@ -1,8 +1,5 @@
 package com.ctm.providers.health.healthapply.model.request.fundData;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 public enum HealthFund {
 
     ACA ("ACA Health Benefits Fund"),
@@ -72,12 +69,10 @@ public enum HealthFund {
         this.description = description;
     }
 
-    @JsonValue
     public String getDescription() {
         return description;
     }
 
-    @JsonCreator
     public static HealthFund findByCode(final String code) {
         if(code == null) {
             return NONE;

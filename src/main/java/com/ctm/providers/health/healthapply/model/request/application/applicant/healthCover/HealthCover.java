@@ -16,4 +16,11 @@ public class HealthCover {
         this.healthCoverLoading = healthCoverLoading;
     }
 
+    public Cover getHealthCover() {
+        return healthCover;
+    }
+
+    public HealthCoverLoading getHealthCoverLoading() {
+        return healthCoverLoading;
+    }
 }
