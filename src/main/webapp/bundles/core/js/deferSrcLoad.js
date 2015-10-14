@@ -1,5 +1,6 @@
 /**
  * Description: Waits for the page to load and then loads of all the images src that have been set with data-src instead of src. This has for effect to increase the initial page load
+ * IMPORTANT: This file cannot be loaded asynchronously
  */
 
 ;(function ($) {
