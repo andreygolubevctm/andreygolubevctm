@@ -162,10 +162,10 @@
 
                         <%-- START XS Top Row --%>
                     <div class="row visible-xs">
-                        <div class="col-xs-3 logoContainer">
+                        <div class="col-xs-4 logoContainer">
                             {{= logo }}
                         </div>
-                        <div class="col-xs-9">
+                        <div class="col-xs-8">
                             <div class="row">
                                 <div class="priceExcessContainer clearfix">
                                     <h2 class="productTitle singleProductTitle">
