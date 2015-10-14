@@ -9,7 +9,6 @@ var path = require("path"),
     concat = require("gulp-concat"),
     beautify = require("gulp-beautify"),
     uglify = require("gulp-uglify"),
-    plumber = require("gulp-plumber"),
     rename = require("gulp-rename");
 
 function BootstrapTasks(gulp) {
@@ -24,7 +23,7 @@ function BootstrapTasks(gulp) {
             targetDirectory = path.join(gulp.pipelineConfig.target.dir, "js", "libraries");
 
         gulp.src(bootstrapJSFiles)
-            .pipe(plumber({
+            .pipe(gulp.globalPlugins.plumber({
                 errorHandler: gulp.globalPlugins.notify.onError("Error: <%= error.message %>")
             }))
             .pipe(concat(fileName + ".min.js"))

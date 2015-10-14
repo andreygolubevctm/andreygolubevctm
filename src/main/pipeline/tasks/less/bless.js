@@ -1,9 +1,6 @@
 var minifyCSS = require("gulp-minify-css"),
-    intercept = require("gulp-intercept"),
     cached = require("gulp-cached"),
-    plumber = require("gulp-plumber"),
     sakugawa = require("gulp-sakugawa"),
-    rename = require("gulp-rename"),
     path = require("path"),
     fs = require("fs"),
     mkdirp = require("mkdirp");
@@ -30,10 +27,10 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
     };
 
     return gulp.src(filePath)
-        .pipe(plumber({
+        .pipe(gulp.globalPlugins.plumber({
             errorHandler: gulp.globalPlugins.notify.onError("Error: <%= error.message %>")
         }))
-        .pipe(intercept(function(file) {
+        .pipe(gulp.globalPlugins.intercept(function(file) {
             var file = addExtraFileInfo(file);
 
             mkdirp.sync(file.includesFolder);
@@ -45,7 +42,7 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
             maxSelectors: 4090,
             suffix: "."
         }))
-        .pipe(intercept(function(file) {
+        .pipe(gulp.globalPlugins.intercept(function(file) {
             var file = addExtraFileInfo(file);
 
             file.targetDir = path.join(gulp.pipelineConfig.target.dir, "brand", brandCode, "css");
@@ -57,7 +54,7 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
 
             return file;
         }))
-        .pipe(rename(function(renameFile) {
+        .pipe(gulp.globalPlugins.rename(function(renameFile) {
             renameFile.extname = ".min.css";
         }))
         // Sakugawa beautifies the CSS for some reason so we do this to keep file sizes down
@@ -72,9 +69,11 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
         .pipe(gulp.dest(function(file){
             return file.targetDir;
         }))
-        .pipe(gulp.globalPlugins.notify("Blessed: " + brandCode + " " + bundle + " CSS"))
+        .pipe(gulp.globalPlugins.debug({
+            title: "Finished Bless CSS"
+        }))
         // We do this to ensure that the file object is sent back
-        .pipe(intercept(function(file) {
+        .pipe(gulp.globalPlugins.intercept(function(file) {
             return file;
         }));
 };

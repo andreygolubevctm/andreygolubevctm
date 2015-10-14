@@ -31,7 +31,11 @@ gulp.bundles = new BundlesHelper(gulp.pipelineConfig);
 
 // Sometimes plugins need to access environment variables so we use this to ensure that the single plugin instance has received that value
 gulp.globalPlugins = {
-    notify: require("gulp-notify")
+    notify: require("gulp-notify"),
+    debug: require("gulp-debug"),
+    intercept: require("gulp-intercept"),
+    plumber: require("gulp-plumber"),
+    rename: require("gulp-rename")
 };
 
 // Meerkat Ascii. Do not remove or Sergei gets it.

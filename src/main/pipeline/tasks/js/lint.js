@@ -1,8 +1,6 @@
 var path = require("path"),
-    plumber = require("gulp-plumber"),
     cached = require("gulp-cached"),
     stylish = require("jshint-stylish"),
-    intercept = require("gulp-intercept"),
     jshint = require("gulp-jshint");
 
 module.exports = function(gulp, fileArray) {
@@ -12,7 +10,7 @@ module.exports = function(gulp, fileArray) {
     });
 
     return gulp.src(fileArray)
-        .pipe(plumber({
+        .pipe(gulp.globalPlugins.plumber({
             errorHandler: gulp.globalPlugins.notify.onError("Error: <%= error.message %>")
         }))
         .pipe(cached())
