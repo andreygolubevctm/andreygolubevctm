@@ -6,13 +6,16 @@
 <c:if test="${competitionEnabled == true}">
     <c:set var="competitionId"><content:get key="competitionId"/></c:set>
     <c:set var="xpath" value="${pageSettings.getVerticalCode()}/resultsDisplayed"/>
-
-    <c:if test="${competitionId eq '21'}">
-        <form_new:row label="" className="promotion-container" hideHelpIconCol="true">
-            <div class="promo-image ${pageSettings.getVerticalCode()}"></div>
-        </form_new:row>
-    </c:if>
-
+    <c:choose>
+        <c:when test="${competitionId eq '21'}">
+            <form_new:row label="" className="promotion-container" hideHelpIconCol="true">
+                <div class="promo-image ${pageSettings.getVerticalCode()}"></div>
+            </form_new:row>
+        </c:when>
+        <c:otherwise>
+            <content:get key="competitionPromoImage"/>
+        </c:otherwise>
+    </c:choose>
     <form_new:row label="" hideHelpIconCol="true">
         <c:set var="competitionCheckboxText"><content:get key="competitionCheckboxText"/></c:set>
         <field_new:checkbox xpath="${xpath}/competition/optin" value="Y" title=" ${competitionCheckboxText}" required="false" label="${true}"/>
