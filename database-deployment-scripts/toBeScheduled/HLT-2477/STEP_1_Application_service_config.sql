@@ -181,10 +181,9 @@ INSERT INTO service_properties (serviceMasterId, environmentCode, styleCodeId, p
   (@HEALTH_APP_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'url', 'https://www.hcf.com.au/EAPP/EAPPService.svc/EnrolNewMember', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'serviceName', @SERVICE_NAME, @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'user', '', @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'password', '', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'password', 'P@$$w0rd', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'password', 'C@oDm*T7M*', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'errorProductCode', '-ERROR', @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'outboundParams', 'keycode=P@$$w0rd', @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'outboundParams', 'keycode=C@oDm*T7M*', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'inboundParams', '', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'timeout', '240', @STARTDATE, @ENDDATE, 'SERVICE')
 ;
