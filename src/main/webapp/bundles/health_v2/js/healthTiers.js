@@ -47,7 +47,6 @@ Handling of the rebate tiers based off situation
 
 	// Manages the descriptive titles of the tier drop-down
 	setTiers =  function(initMode){
-
 		// Set the dependants allowance and income message
 		var _allowance = ($dependants.val() - 1);
 
