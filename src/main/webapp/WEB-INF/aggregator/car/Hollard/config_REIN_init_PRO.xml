@@ -5,7 +5,6 @@
 
 	<merge-root>soap-response</merge-root>
 	<config-dir>aggregator/car</config-dir>
-	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/get_prices/errors</error-dir>
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/get_prices/debug-rein</debug-dir>
 
 	<service name="REININIT" type="soap">
