@@ -236,8 +236,7 @@ var healthFunds_THF = {
 		healthFunds._reset();
 
 		<%-- turn back on credit card option --%>
-		$('#health_payment_details_type_cc').prop('disabled', false);
-		$('#health_payment_details_type_cc').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
+		$('#health_payment_details_type_cc').prop('disabled', false).parent('label').removeClass('disabled').removeClass('disabled-by-fund');
 
 		$('#thf_eligibility').hide();
 		$('.thf-payment-legend').remove();

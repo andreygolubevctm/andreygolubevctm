@@ -10,8 +10,8 @@
 <div id="health-dependants-wrapper"></div>
 <core:js_template id="health-dependants-template">
 
-    {{ var dependantsConfig = meerkat.modules.healthDependants.getConfig(); }}
-    {{ var usesSchoolDropdown = dependantsConfig.useSchoolDropdownMenu === true; }}
+    {{ var providerConfig = meerkat.modules.healthDependants.getConfig(); }}
+    {{ var usesSchoolDropdown = providerConfig.useSchoolDropdownMenu === true; }}
     <%-- HTML --%>
     <div id="${name}" class="health_dependant_details dependant{{= obj.dependantId }}" data-id="{{= obj.dependantId }}">
 
@@ -37,7 +37,7 @@
                                  additionalAttributes=" data-rule-personName='true' "/>
             </form_new:row>
 
-            {{ if(dependantsConfig.showMiddleName === true) { }}
+            {{ if(providerConfig.showMiddleName === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/middleName"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Middle Name" className="health_dependant_details_middleName">
                 <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s middle name" required="false" className="sessioncamexclude"
@@ -57,7 +57,7 @@
                                       additionalAttributes=" data-rule-limitDependentAgeToUnder25='true' " outputJS="${false}"/>
             </form_new:row>
             <%-- Only shows if showFullTimeField is true, AND the school age is between schoolMinAge and schoolMaxAge --%>
-            {{ if(dependantsConfig.showFullTimeField === true) { }}
+            {{ if(providerConfig.showFullTimeField === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/fulltime"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Full-time student" id="${name}_fulltimeGroup"
                           className="health_dependant_details_fulltimeGroup hidden">
@@ -65,7 +65,7 @@
             </form_new:row>
             {{ } }}
 
-            {{ if(dependantsConfig.showSchoolFields === true) { }}
+            {{ if(providerConfig.showSchoolFields === true) { }}
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/school"/>
             <form_new:row fieldXpath="${fieldXpath}" label="{{= (usesSchoolDropdown ? 'Educational institute this dependant is attending' : 'Name of school your child is attending') }}" id="${name}_schoolGroup"
@@ -83,25 +83,25 @@
                 {{ } }}
             </form_new:row>
 
-            {{ if(dependantsConfig.showSchoolIdField === true) { }}
+            {{ if(providerConfig.showSchoolIdField === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolID"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Student ID Number" id="${name}_schoolIDGroup"
                           className="health_dependant_details_schoolIDGroup hidden">
-                <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="{{= dependantsConfig.schoolIdRequired }}" className="sessioncamexclude" maxlength="{{= (schoolIdMaxLength || '') }} "/>
+                <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="{{= providerConfig.schoolIdRequired }}" className="sessioncamexclude" maxlength="{{= (providerConfig.schoolIdMaxLength || '') }} "/>
             </form_new:row>
             {{ } }}
 
-            {{ if(dependantsConfig.showSchoolCommencementField === true) { }}
+            {{ if(providerConfig.showSchoolCommencementField === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolDate"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Date Study Commenced" id="${name}_schoolDateGroup"
                           className="health_dependant_details_schoolDateGroup hidden">
-                <field_new:basic_date xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s study commencement date" required="{{= dependantsConfig.schoolDateRequired }}" />
+                <field_new:basic_date xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s study commencement date" required="{{= providerConfig.schoolDateRequired }}" />
             </form_new:row>
             {{ } }}
 
             {{ } }}
                 <%-- Only  exists in GMF which has been turned off. --%>
-            {{ if(dependantsConfig.showMaritalStatusField === true) { }}
+            {{ if(providerConfig.showMaritalStatusField === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/maritalincomestatus"/>
             <form_new:row fieldXpath="${fieldXpath}"
                           label="Is this dependant not married or living in a defacto relationship and earning less than $20,500 p/annum?"
@@ -114,7 +114,7 @@
             {{ } }}
 
 
-            {{ if(dependantsConfig.showApprenticeField === true) { }}
+            {{ if(providerConfig.showApprenticeField === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/apprentice"/>
             <form_new:row fieldXpath="${fieldXpath}"
                           label="Apprentice earning less than $30,000pa?"

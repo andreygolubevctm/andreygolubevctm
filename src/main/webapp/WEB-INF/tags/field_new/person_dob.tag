@@ -36,10 +36,18 @@
 	</c:if>
 </c:set>
 <c:set var="youngestDOB">
-	data-rule-youngestDOB='{"ageMin":"dob_${name}.ageMin"}' data-msg-youngestDOB='${fn:escapeXml(title)} age cannot be under ${ageMin}'
+	<c:choose>
+		<c:when test="${outputJS}"> data-rule-youngestDOB='{"ageMin":"dob_${name}.ageMin"}'</c:when>
+		<c:otherwise> data-rule-youngestDOB='${ageMin}' </c:otherwise>
+	</c:choose>
+	data-msg-youngestDOB='${fn:escapeXml(title)} age cannot be under ${ageMin}'
 </c:set>
 <c:set var="oldestDOB">
-	data-rule-oldestDOB='{ "ageMax":"dob_${name}.ageMax"}' data-msg-oldestDOB='${fn:escapeXml(title)} age cannot be over ${ageMax}'
+	<c:choose>
+		<c:when test="${outputJS}"> data-rule-oldestDOB='{ "ageMax":"dob_${name}.ageMax"}' </c:when>
+		<c:otherwise> data-rule-oldestDOB='${ageMax}' </c:otherwise>
+	</c:choose>
+	 data-msg-oldestDOB='${fn:escapeXml(title)} age cannot be over ${ageMax}'
 </c:set>
 
 <c:set var="youngRegularDriversAgeCheck">
