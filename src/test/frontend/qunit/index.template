@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>CTM Test Suite</title>
+
+    <!-- qunit -->
+    <link rel="stylesheet" href="vendor/qunit.css" media="screen">
+    <script src="vendor/qunit.js"></script>
+
+    <!--  plugin sources -->
+    <script src="${webappLocation}/common/js/ipp/jquery.min.js"></script>
+    <script src="unit/testBoilerPlate.js"></script>
+    <script>setupBoilerplate('${webappLocation}')</script>
+
+    <!-- modules under test -->
+    ${modulesUnderTest}
+    <!-- unit tests -->
+    ${unitTests}
+
+</head>
+    <body>
+        <div>
+            <div id="qunit"></div>
+            <div id="qunit-fixture"></div>
+            <div id="testBody"></div>
+        </div>
+    </body>
+</html>

@@ -24,7 +24,6 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
             return file;
         }))
         .pipe(rename(function(renameFile) {
-            renameFile.dirname = path.join(gulp.pipelineConfig.target.dir, "brand", brandCode, "css");
             renameFile.extname = ".min.css";
         }))
         .pipe(gulp.dest(function(file){

@@ -87,6 +87,7 @@ public class CappingLimitsDao {
                         "                ON pm.providerID = pp.providerID \n" +
                         " WHERE  pp.propertyId IN ( 'DailyLimit', 'MonthlyLimit' ) \n" +
                         "        AND pp.EffectiveStart > DATE_ADD(NOW(), INTERVAL -15 MONTH) \n" +
+                        "        AND pp.EffectiveEnd <= curDate() \n" +
                         " ORDER  BY providerName, \n" +
                         "           pp.PropertyId, \n" +
                         "           pp.EffectiveStart, \n" +

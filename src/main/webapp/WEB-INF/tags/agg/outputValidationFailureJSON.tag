@@ -6,6 +6,7 @@
 <%@ attribute name="validationErrors" required="true"  type="java.util.List" rtexprvalue="true" %>
 <%@ attribute name="origin" required="true" rtexprvalue="false" %>
 <%@ attribute name="transactionId" required="false" rtexprvalue="true" %>
+<%@ attribute name="verificationToken" required="false" rtexprvalue="true" %>
 
 {
 	"error" : {
@@ -26,5 +27,6 @@
 			</c:forEach>
 			]
 		}
-	}
+	},
+	"verificationToken" : "${verificationToken}"
 }
