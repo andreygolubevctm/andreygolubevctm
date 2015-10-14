@@ -40,21 +40,15 @@ Handling of the rebate tiers based off situation
 		$income;
 
 	initHealthTiers =  function(){
-		if(!initialised) {
-			initialised = true;
-
-			$dependants = $('#health_healthCover_dependants');
-			$incomeMessage = $('#health_healthCover_incomeMessage');
-			$incomeBase = $('#health_healthCover_incomeBase');
-			$income = $('#health_healthCover_income');
-		}
+		$dependants = $('#health_healthCover_dependants');
+		$incomeMessage = $('#health_healthCover_incomeMessage');
+		$incomeBase = $('#health_healthCover_incomeBase');
+		$income = $('#health_healthCover_income');
 	};
 
 	// Manages the descriptive titles of the tier drop-down
 	setTiers =  function(initMode){
-		if(!initialised) {
-			initHealthTiers();
-		}
+		initHealthTiers();
 
 		// Set the dependants allowance and income message
 		var _allowance = ($dependants.val() - 1);
