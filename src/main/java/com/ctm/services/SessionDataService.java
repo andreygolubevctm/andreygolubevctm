@@ -10,25 +10,25 @@ package com.ctm.services;
  *
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.exceptions.BrandException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.session.SessionData;
 import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.security.token.JwtTokenCreator;
+import com.ctm.utils.RequestUtils;
 import com.disc_au.web.go.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Optional;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
@@ -37,9 +37,15 @@ public class SessionDataService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SessionDataService.class);
 
-	private static int MAX_DATA_OBJECTS_IN_SESSION = 10;
-
 	private static final int SESSION_EXPIRY_DIFFERENCE = 5;
+	private JwtTokenCreator transactionVerifier;
+
+	public SessionDataService(JwtTokenCreator transactionVerifier) {
+		this.transactionVerifier = transactionVerifier;
+	}
+
+	public SessionDataService() {
+	}
 
 	/**
 	 * Return the authenticated session from the session object.
@@ -114,9 +120,9 @@ public class SessionDataService {
 			sessionData = getSessionDataFromSession(request);
 		}
 		if(sessionData != null){
-		sessionData.setShouldEndSession(false);
-		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
-		String brandCode =  ApplicationService.getBrandCodeFromRequest(request);
+			sessionData.setShouldEndSession(false);
+			String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
+			String brandCode =  ApplicationService.getBrandCodeFromRequest(request);
 
 			cleanUpSessions(sessionData);
 			newSession = sessionData.addTransactionDataInstance();
@@ -126,8 +132,8 @@ public class SessionDataService {
 			LOGGER.warn("No vertical code provided; using generic instead");
 		}
 
-		newSession.put("current/verticalCode", verticalCode);
-		newSession.put("current/brandCode", brandCode);
+			newSession.put("current/verticalCode", verticalCode);
+			newSession.put("current/brandCode", brandCode);
 		}
 
 		return newSession;
@@ -151,7 +157,7 @@ public class SessionDataService {
 			data = sessionData.getSessionDataForPreviousTransactionId(Long.parseLong(transactionId));
 		}
 
-		if (data == null && searchPreviousIds == true) {
+		if (data == null && searchPreviousIds) {
 			// Check for previous id as the transaction might have been incremented (should only be true when called from get_transaction_id.jsp)
 			data = sessionData.getSessionDataForPreviousTransactionId(Long.parseLong(transactionId));
 		}
@@ -271,10 +277,11 @@ public class SessionDataService {
 		transactionSessions.removeAll(itemsToDelete);
 
 		// Remove old sessions (will make 10 sessions the max number... could be anything, just worried about the size of the session object and server)
+		int MAX_DATA_OBJECTS_IN_SESSION = 10;
 		if(transactionSessions.size() >= MAX_DATA_OBJECTS_IN_SESSION){
 			// Trim the oldest data objects.
 			itemsToDelete = new ArrayList<>();
-			itemsToDelete.addAll(transactionSessions.subList(0, transactionSessions.size()-MAX_DATA_OBJECTS_IN_SESSION));
+			itemsToDelete.addAll(transactionSessions.subList(0, transactionSessions.size()- MAX_DATA_OBJECTS_IN_SESSION));
 			transactionSessions.removeAll(itemsToDelete);
 		}
 	}
@@ -331,6 +338,20 @@ public class SessionDataService {
 	}
 
 	/**
+	 * Get the client's next expected timeout (for JS timeout)
+	 * @param request
+	 */
+	public long getClientSessionTimeoutSeconds(HttpServletRequest request) {
+		long timeout = getClientSessionTimeout(request);
+		if(timeout == -1){
+			return -1;
+		} else {
+			return timeout /1000;
+		}
+	}
+
+
+	/**
 	 * Get a cookie's value by name
 	 * used by write_quote.jsp
 	 * @param request
@@ -360,9 +381,29 @@ public class SessionDataService {
 		return ((request.getSession(false).getMaxInactiveInterval() / 60) - SESSION_EXPIRY_DIFFERENCE) * 60 * 1000;
 	}
 
+	/**
+	 * Get the default session timeout period (for JS timeout)
+	 * used in session_pop.tag
+	 * page.tag
+	 * @param request
+	 */
+	public long getClientDefaultExpiryTimeoutSeconds(HttpServletRequest request) {
+		return getClientDefaultExpiryTimeout(request) / 1000;
+	}
+
 	public void setShouldEndSession(HttpServletRequest request, boolean shouldEnd) {
 		SessionData sessionData = getSessionDataFromSession(request, false);
 		sessionData.setShouldEndSession(shouldEnd);
+	}
+
+	public Optional<String> updateToken(HttpServletRequest request)  {
+		Optional<String> verificationTokenMaybe = Optional.empty();
+			String currentVerificationToken = RequestUtils.getTokenFromRequest(request);
+			if(currentVerificationToken != null && !currentVerificationToken.isEmpty()) {
+				long timeoutSeconds = getClientSessionTimeoutSeconds(request);
+                verificationTokenMaybe = Optional.ofNullable(transactionVerifier.refreshToken(currentVerificationToken, timeoutSeconds));
+			}
+		return verificationTokenMaybe;
 	}
 
 }

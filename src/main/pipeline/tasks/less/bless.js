@@ -59,7 +59,6 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
             return file;
         }))
         .pipe(rename(function(renameFile) {
-            renameFile.dirname = path.join(gulp.pipelineConfig.target.dir, "brand", brandCode, "css");
             renameFile.extname = ".css";
         }))
         // Sakugawa beautifies the CSS for some reason so we do this to keep file sizes down

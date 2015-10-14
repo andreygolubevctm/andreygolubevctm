@@ -144,7 +144,6 @@
 	function ajax(settings, ajaxProperties){
 
 		var tranId = meerkat.modules.transactionId.get();
-
 		try{
 			if(ajaxProperties.data === null) {
 				ajaxProperties.data = {};
@@ -167,6 +166,7 @@
 						name: 'transactionId',
 						value: tranId
 					});
+
 				}
 
 				if(meerkat.site.isCallCentreUser) {
@@ -190,13 +190,15 @@
 				}
 			}
 
+			meerkat.modules.verificationToken.addTokenToRequest(ajaxProperties);
 		}catch(e){
 		}
 
 		var jqXHR = $.ajax(ajaxProperties);
 		var deferred = jqXHR.then(
 					function onAjaxSuccess(result, textStatus, jqXHR){
-					var data = (typeof settings.data !== "undefined") ? settings.data : null;
+						meerkat.modules.verificationToken.readTokenFromResponse(result);
+						var data = (typeof settings.data !== "undefined") ? settings.data : null;
 
 						if(containsServerGeneratedError(result) === true) {
 					handleError(jqXHR, "Server generated error", getServerGeneratedError(result), settings, data, ajaxProperties);
