@@ -26,7 +26,7 @@
 <layout:generic_page title="Start New Quote" outputTitle="${false}">
 
 <jsp:attribute name="head">
-   <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/components/retrievequotes.${pageSettings.getBrandCode()}.css?${revision}" media="all"/>
+   <link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/unsubscribe${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 </jsp:attribute>
 
 <jsp:attribute name="head_meta">

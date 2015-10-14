@@ -85,20 +85,7 @@ public class TokenDao {
             PreparedStatement stmt;
             Connection conn = dbSource.getConnection();
             if(conn != null) {
-                // unsubscribe should never expiry from privacy point of view.
-                if(!action.equalsIgnoreCase("unsubscribe")) {
-                    stmt = conn.prepareStatement(
-                            "UPDATE aggregator.email_token et SET totalAttempts = totalAttempts + 1 " +
-                                    "WHERE et.transactionId = ? AND et.emailId = ? AND et.emailTokenType = ? AND et.action = ?"
-                    );
-
-                    int index = 1;
-                    stmt.setLong(index++, transactionId);
-                    stmt.setLong(index++, emailId);
-                    stmt.setString(index++, emailTokenType);
-                    stmt.setString(index++, action);
-                    stmt.executeUpdate();
-                }
+                incrementTotalAttempts(transactionId, emailId, emailTokenType, action);
 
                 stmt = conn.prepareStatement(
                         "SELECT em.emailId, em.firstName , em.lastName, em.emailAddress, em.hashedEmail, h.ProductType\n" +
@@ -109,6 +96,7 @@ public class TokenDao {
                                 "WHERE et.transactionId = ? AND et.emailId = ? AND et.emailTokenType = ? AND et.action = ? " +
                                 "LIMIT 1"
                 );
+
                 int index = 1;
                 stmt.setLong(index++, transactionId);
                 stmt.setLong(index++, emailId);
@@ -142,6 +130,34 @@ public class TokenDao {
             }
         }
         return emailMaster;
+    }
+
+    public void incrementTotalAttempts(Long transactionId, Long emailId, String emailTokenType, String action) {
+        Connection conn = null;
+        try {
+            conn = dbSource.getConnection();
+
+            if(conn != null) {
+                PreparedStatement stmt;
+                stmt = conn.prepareStatement(
+                        "UPDATE aggregator.email_token et SET totalAttempts = totalAttempts + 1 " +
+                                "WHERE et.transactionId = ? AND et.emailId = ? AND et.emailTokenType = ? AND et.action = ?"
+                );
+
+                int index = 1;
+                stmt.setLong(index++, transactionId);
+                stmt.setLong(index++, emailId);
+                stmt.setString(index++, emailTokenType);
+                stmt.setString(index++, action);
+                stmt.executeUpdate();
+            }
+        } catch (SQLException | NamingException e) {
+            LOGGER.error("Failed to increment total attempts {},{},{},{},{}",
+                    kv("emailId", emailId),
+                    kv("transactionId", transactionId),
+                    kv("emailTokenType", emailTokenType),
+                    kv("emailTokenAction", action));
+        }
     }
 
     public boolean hasLogin(Long transactionId, Long emailId, String emailTokenType, String action) {

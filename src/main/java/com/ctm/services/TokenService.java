@@ -23,7 +23,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 public class TokenService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenService.class);
 
-    private static final String privateKey = "7T7XVh0UCtM7JNzcZX1e-2";
+    private static final String encryptionKey = "7T7XVh0UCtM7JNzcZX1e-2";
 
     public String generateToken(Map<String, String> params) {
         return generateToken(params, true);
@@ -87,7 +87,7 @@ public class TokenService {
                 count++;
             }
 
-            return StringEncryption.encrypt(privateKey, content.toString());
+            return StringEncryption.encrypt(encryptionKey, content.toString());
         } catch (DaoException | GeneralSecurityException e) {
             LOGGER.error("Error generating token {},{},{},{},{}",
                     kv("hashedEmail", hashedEmail),
@@ -114,12 +114,12 @@ public class TokenService {
         Map<String, String> map = new HashMap<>();
 
         try {
-            String decrypted[] = StringEncryption.decrypt(privateKey, token).split("&");
+            String decrypted[] = StringEncryption.decrypt(encryptionKey, token).split("&");
             for(String param : decrypted) {
                 map.put(param.split("=")[0], param.split("=")[1]);
             }
         } catch (GeneralSecurityException e) {
-            LOGGER.error("Error decrypting token {},{},{}", kv("token", token));
+            LOGGER.error("Error decrypting token {}", kv("token", token));
         }
 
         return map;

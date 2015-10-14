@@ -57,6 +57,8 @@ public class UnsubscribeService {
 			if(emailMaster != null) {
 				unsubscribe.setVertical(emailMaster.getVertical());
 				unsubscribe.setEmailDetails(emailMaster);
+			} else {
+				LOGGER.info("Unsubscribe token has expired {}", kv("parameters", tokenService.decryptToken(token)));
 			}
 
 		} else {

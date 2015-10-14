@@ -1,10 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.load_from_email')}" />
+
 <c:choose>
 	<c:when test="${not empty param.token}">
 		<jsp:useBean id="tokenService" class="com.ctm.services.TokenService"/>
+
 		<c:set var="parametersMap" value="${tokenService.decryptToken(param.token)}"/>
+		<c:set var="emailData" value="${tokenService.getIncomingEmailDetails(param.token)}"/>
+
+		<c:if test="${empty emailData}">
+			<c:set var="hasLogin" value="${tokenService.hasLogin(param.token)}"/>
+			<c:choose>
+				<c:when test="${hasLogin}">
+					${logger.info('Token has expired and user can login. Redirecting to retrieve_quotes.jsp {}', log:kv('parameters', parametersMap))}
+					<c:redirect url="${pageSettings.getBaseUrl()}retrieve_quotes.jsp"/>
+				</c:when>
+				<c:otherwise>
+					${logger.info('Token has expired and user cannot login. Redirecting to start_quote.jsp {}', log:kv('parameters', parametersMap))}
+					<c:redirect url="${pageSettings.getBaseUrl()}start_quote.jsp"/>
+				</c:otherwise>
+			</c:choose>
+
+		</c:if>
 
 		<c:set var="vertical"><c:out value="${parametersMap.vertical}" escapeXml="true"/></c:set>
 		<c:set var="id"><c:out value="${parametersMap.transactionId}" escapeXml="true"/></c:set>

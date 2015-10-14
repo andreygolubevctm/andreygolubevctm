@@ -39,7 +39,8 @@ public class IncomingEmailRouter extends HttpServlet {
 		// Get common parameters ////////////////////////////////////////////////////////////////////////////
 		IncomingEmail emailData = null;
 
-		if(request.getParameter("token") != null) {
+		String token = request.getParameter("token");
+		if(token != null) {
 			TokenService tokenService = new TokenService();
 			emailData = tokenService.getIncomingEmailDetails(request.getParameter("token"));
 		} else {
@@ -89,7 +90,7 @@ public class IncomingEmailRouter extends HttpServlet {
 			PageSettings settings = null;
 
 			TokenService tokenService = new TokenService();
-			Map<String, String> params = tokenService.decryptToken(request.getParameter("token"));
+			Map<String, String> params = tokenService.decryptToken(token);
 
 			String styleCodeId = params.get("styleCodeId");
 			if( styleCodeId!= null && !styleCodeId.isEmpty()) {
@@ -102,8 +103,10 @@ public class IncomingEmailRouter extends HttpServlet {
 
 				boolean hasLogin = tokenService.hasLogin(request.getParameter("token"));
 				if(hasLogin) {
+					LOGGER.info("Token has expired and user can login. Redirecting to retrieve_quotes.jsp {}", kv("parameters", params));
 					response.sendRedirect(brandRootUrl + "retrieve_quotes.jsp");
 				} else {
+					LOGGER.info("Token has expired and user cannot login. Redirecting to start_quote.jsp {}", kv("parameters", params));
 					response.sendRedirect(brandRootUrl  + "start_quote.jsp");
 				}
 			} catch (ConfigSettingException e) {
