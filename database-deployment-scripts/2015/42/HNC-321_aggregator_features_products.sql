@@ -1,4 +1,5 @@
 -- Dumping structure for table aggregator.features_products
+use aggregator;
 DROP TABLE IF EXISTS aggregator.features_products;
 CREATE TABLE IF NOT EXISTS aggregator.features_products (
   `id` int(11) NOT NULL AUTO_INCREMENT,
