@@ -8,7 +8,6 @@ Handling of the rebate tiers based off situation
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info,
-		initialised = false,
 		rebateTiers = {
 			single:{
 				incomeBaseTier:90000,
@@ -48,8 +47,6 @@ Handling of the rebate tiers based off situation
 
 	// Manages the descriptive titles of the tier drop-down
 	setTiers =  function(initMode){
-		initHealthTiers();
-
 		// Set the dependants allowance and income message
 		var _allowance = ($dependants.val() - 1);
 
