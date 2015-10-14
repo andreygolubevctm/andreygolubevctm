@@ -3,6 +3,9 @@ SET @providerId = (SELECT ProviderId FROM ctm.provider_master WHERE providerCode
 ALTER TABLE ctm.travel_product ALTER `productCode` DROP DEFAULT;
 ALTER TABLE ctm.travel_product CHANGE COLUMN `productCode` `productCode` VARCHAR(64) NOT NULL AFTER `providerId`;
 
+ALTER TABLE ctm.product_master ALTER `productCode` DROP DEFAULT;
+ALTER TABLE ctm.product_master CHANGE COLUMN `productCode` `productCode` VARCHAR(64) NOT NULL AFTER `ProductCat`;
+
 ALTER TABLE aggregator.results_properties ALTER `productId` DROP DEFAULT;
 -- The following will be take some time to run
 ALTER TABLE aggregator.results_properties CHANGE COLUMN `productId` `productId` VARCHAR(64) NOT NULL AFTER `transactionId`;
