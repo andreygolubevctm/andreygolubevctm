@@ -16,7 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-public class HealthQuoteServiceTest {
+public class HealthQuoteTokenServiceTest {
 
     private HttpServletRequest request = mock(HttpServletRequest.class);
     private javax.servlet.http.HttpSession session = mock(HttpSession.class);
@@ -31,15 +31,15 @@ public class HealthQuoteServiceTest {
         when(request.getSession()).thenReturn(session);
 
         HealthTokenValidationService tokenService = mock(HealthTokenValidationService.class);
-        HealthQuoteService healthQuoteService = new HealthQuoteService(tokenService, requestService);
+        HealthQuoteTokenService healthQuoteTokenService = new HealthQuoteTokenService(tokenService, requestService);
 
         when(tokenService.validateToken(anyObject())).thenReturn(true);
-        healthQuoteService.init(request, pageSettings);
-        assertTrue(healthQuoteService.validToken());
+        healthQuoteTokenService.init(request, pageSettings);
+        assertTrue(healthQuoteTokenService.validToken());
 
         when(tokenService.validateToken(anyObject())).thenReturn(false);
-        healthQuoteService.init(request, pageSettings);
-        assertFalse(healthQuoteService.validToken());
+        healthQuoteTokenService.init(request, pageSettings);
+        assertFalse(healthQuoteTokenService.validToken());
         when(tokenService.validateToken(anyObject())).thenReturn(false);
 
     }

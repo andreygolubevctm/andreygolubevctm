@@ -2,6 +2,7 @@ package com.ctm.router.health;
 
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
+import com.ctm.exceptions.RouterException;
 import com.ctm.model.CompetitionEntry;
 import com.ctm.model.content.Content;
 import com.ctm.model.health.form.*;
@@ -17,6 +18,7 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.ContentService;
 import com.ctm.services.health.HealthQuoteService;
 import com.ctm.services.health.HealthQuoteSummaryService;
+import com.ctm.services.health.HealthQuoteTokenService;
 import com.ctm.services.tracking.TrackingKeyService;
 import com.ctm.utils.ObjectMapperUtil;
 import com.disc_au.web.go.Data;
@@ -48,9 +50,18 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
 
         Vertical.VerticalType vertical = HEALTH;
 
+
         // Initialise request
         Brand brand = initRouter(context, vertical);
         updateTransactionIdAndClientIP(context, data);
+
+        HealthQuoteTokenService healthQuoteTokenService = new HealthQuoteTokenService();
+        healthQuoteTokenService.init(context.getHttpServletRequest(), getPageSettingsByCode(brand, vertical));
+
+        // throw an exception when invalid token
+        if (!healthQuoteTokenService.validToken()) {
+            throw new RouterException("Invalid token");
+        }
 
         InfoHealth info = new InfoHealth();
         info.setTransactionId(data.getTransactionId());
@@ -86,7 +97,8 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
             results.setInfo(info);
             results.setResult(Collections.singletonList(noResults));
 
-            return new ResultsWrapper(results);
+            // create resultsWrapper with the token
+            return healthQuoteTokenService.createResultsWrapper(context.getHttpServletRequest(), data.getTransactionId(), results);
         } else {
 
             String trackingKey = TrackingKeyService.generate(
@@ -99,8 +111,6 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
             results.setResult(quotes.getRight());
             results.setInfo(info);
             info.setPricesHaveChanged(quotes.getLeft());
-
-            final ResultsWrapper resultsWrapper = new ResultsWrapper(results);
 
             if (!isShowAll) {
 
@@ -116,8 +126,8 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
                 details.setText("<![CDATA[" + ObjectMapperUtil.getObjectMapper().writeValueAsString(results) + "]]>");
             }
 
-            return resultsWrapper;
-
+            // create resultsWrapper with the token
+            return healthQuoteTokenService.createResultsWrapper(context.getHttpServletRequest(), data.getTransactionId(), results);
         }
 
     }

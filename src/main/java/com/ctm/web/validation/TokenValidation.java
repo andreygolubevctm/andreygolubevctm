@@ -2,6 +2,8 @@ package com.ctm.web.validation;
 
 import com.ctm.model.Touch;
 import com.ctm.model.request.TokenRequest;
+import com.ctm.model.resultsData.*;
+import com.ctm.model.resultsData.Error;
 import com.ctm.model.settings.Vertical;
 import com.ctm.security.token.JwtTokenCreator;
 import com.ctm.security.token.JwtTokenValidator;
@@ -113,6 +115,18 @@ public abstract class TokenValidation<T extends TokenRequest> {
             LOGGER.error("Failed to create JSON response. {}",kv("baseJsonResponse", baseJsonResponse) , e);
         }
         return output;
+    }
+
+    public ResultsWrapper createResultsWrapper(Long transactionId, HttpServletRequest request, BaseResultObj results) {
+        if (validToken) {
+            TokenCreatorConfig config = TokenConfigFactory.getInstance(vertical, getCurrentTouch(), request);
+            String token = TokenValidation.createToken(transactionId, sessionDataService, settingsService, config , request.getServletPath(), request);
+            return new ResultsWrapper(results, token);
+        } else {
+            String message = "token expired";
+            Error error = new Error(message, message, transactionId, new ErrorDetails(""));
+            return new ResultsWrapper(results, error);
+        }
     }
 
     private JSONObject createValidTokenResponse(Long transactionId, HttpServletRequest request, JSONObject response) throws JSONException {

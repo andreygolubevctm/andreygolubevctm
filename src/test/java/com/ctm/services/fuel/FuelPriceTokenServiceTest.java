@@ -15,7 +15,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-public class FuelPriceServiceTest {
+public class FuelPriceTokenServiceTest {
 
     private HttpServletRequest request = mock(HttpServletRequest.class);
     private PageSettings pageSettings = new PageSettings();
@@ -25,15 +25,15 @@ public class FuelPriceServiceTest {
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
         TokenValidation<PageRequest> tokenService = mock(TokenValidation.class);
-        FuelPriceService fuelPriceService = new FuelPriceService(tokenService);
+        FuelPriceTokenService fuelPriceTokenService = new FuelPriceTokenService(tokenService);
 
         when(tokenService.validateToken(anyObject())).thenReturn(true);
-        fuelPriceService.init(request, pageSettings);
-        assertTrue(fuelPriceService.validToken());
+        fuelPriceTokenService.init(request, pageSettings);
+        assertTrue(fuelPriceTokenService.validToken());
 
         when(tokenService.validateToken(anyObject())).thenReturn(false);
-        fuelPriceService.init(request, pageSettings);
-        assertFalse(fuelPriceService.validToken());
+        fuelPriceTokenService.init(request, pageSettings);
+        assertFalse(fuelPriceTokenService.validToken());
         when(tokenService.validateToken(anyObject())).thenReturn(false);
 
     }

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * TODO: move code from fuel_price_results.jsp and turn this into a Router
  */
-public class FuelPriceService {
+public class FuelPriceTokenService {
 
     private boolean validToken;
     private TokenValidation<PageRequest> tokenService;
@@ -24,11 +24,11 @@ public class FuelPriceService {
      * used by fuel_price_results.jsp
      */
     @SuppressWarnings("unused")
-    public FuelPriceService() {
+    public FuelPriceTokenService() {
         this.sessionDataService = new SessionDataService();
     }
 
-    public FuelPriceService(TokenValidation<PageRequest> tokenService) {
+    public FuelPriceTokenService(TokenValidation<PageRequest> tokenService) {
         this.tokenService = tokenService;
         this.sessionDataService = new SessionDataService();
     }
