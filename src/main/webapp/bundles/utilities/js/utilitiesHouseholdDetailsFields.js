@@ -6,7 +6,13 @@
 
     var useInitProviders,
 		$competitionRequiredElems,
-        providerResults;
+        providerResults,
+        firstname_comp_label,
+        email_comp_label,
+        phone_comp_label,
+        $utilities_resultsDisplayed_firstName,
+        $utilities_resultsDisplayed_email,
+        $utilities_resultsDisplayed_phoneinput;
 
 
 
@@ -14,6 +20,16 @@
         if(meerkat.site.pageAction === "confirmation") {
             return;
         }
+
+        $utilities_resultsDisplayed_firstName = $('#utilities_resultsDisplayed_firstName');
+        $utilities_resultsDisplayed_email = $('#utilities_resultsDisplayed_email');
+        $utilities_resultsDisplayed_phoneinput = $('#utilities_resultsDisplayed_phoneinput');
+
+        // save a copy of the competition text
+        firstname_comp_label = $utilities_resultsDisplayed_firstName.attr('data-msg-required');
+        email_comp_label = $utilities_resultsDisplayed_email.attr('data-msg-required');
+        phone_comp_label = $utilities_resultsDisplayed_phoneinput.attr('data-msg-required');
+
         if(meerkat.site.providerResults !== null &&  (
                 ( typeof meerkat.site.providerResults.gasProviders !== "undefined"
                      && meerkat.site.providerResults.gasProviders.length )
@@ -76,6 +92,21 @@
         $("#utilities_privacyoptin").change(_onPrivacyOptinChange);
         $("#utilities_householdDetails_location").on("typeahead:selected", _onTypeaheadSelected);
         meerkat.modules.ie8SelectMenuAutoExpand.bindEvents($('#startForm'), '#utilities_householdDetails_howToEstimate');
+        $('#utilities_resultsDisplayed_competition_optin').on('change.applyValidationRules', _applyCompetitionValidationRules);
+    }
+
+    function _applyCompetitionValidationRules(e) {
+        if($competitionRequiredElems) {
+            if ($(this).prop('checked')) {
+                $utilities_resultsDisplayed_firstName.data('msgRequired', firstname_comp_label);
+                $utilities_resultsDisplayed_email.data('msgRequired', email_comp_label);
+                $utilities_resultsDisplayed_phoneinput.data('msgRequired', phone_comp_label);
+            } else {
+                $utilities_resultsDisplayed_firstName.data('msgRequired', "Please enter your name");
+                $utilities_resultsDisplayed_email.data('msgRequired', "Please enter your email address");
+                $utilities_resultsDisplayed_phoneinput.data('msgRequired', "Please include your phone number");
+            }
+        }
     }
 
     /**

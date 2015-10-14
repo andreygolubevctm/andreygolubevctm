@@ -120,6 +120,7 @@
             },
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
+                $('#utilities_resultsDisplayed_competition_optin').trigger('change.applyValidationRules');
             },
             validation: {
                 validate: true,

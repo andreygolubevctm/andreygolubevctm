@@ -13,18 +13,18 @@
 <%-- The email and phone are required on load to set the proper validation rules, and on initialise, have their required attribute removed --%>
 <form_new:fieldset legend="Your Contact Details" className="contact-details">
     <c:set var="fieldXPath" value="${xpath}/firstName" />
-    <form_new:row label="First name" fieldXpath="${fieldXPath}" className="clear">
+    <form_new:row label="First name *" fieldXpath="${fieldXPath}" className="clear">
         <%--<field_new:input xpath="${fieldXPath}" required="false"/>--%>
         <field:person_name xpath="${fieldXPath}" required="${true}" title="your first name${competitionValidationText}" />
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/email"/>
-    <form_new:row label="Your email address" fieldXpath="${fieldXPath}" className="clear">
+    <form_new:row label="Your email address *" fieldXpath="${fieldXPath}" className="clear">
         <field_new:email xpath="${fieldXPath}" required="${true}" title="your email address${competitionValidationText}" />
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/phone"/>
-    <form_new:row label="Your phone number" fieldXpath="${fieldXPath}" className="clear">
+    <form_new:row label="Your phone number *" fieldXpath="${fieldXPath}" className="clear">
         <field:contact_telno xpath="${fieldXPath}"
                              required="${true}"
                              className="sessioncamexclude"
