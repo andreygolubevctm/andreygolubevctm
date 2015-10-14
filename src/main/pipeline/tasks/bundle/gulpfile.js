@@ -16,6 +16,8 @@ function BundleTasks(gulp) {
 
             var bundleTasks = [];
 
+            bundleTasks.push("dependencies:" + bundle);
+
             if(lessFiles.length)
                 bundleTasks.push("less:" + bundle);
 
@@ -25,7 +27,7 @@ function BundleTasks(gulp) {
             if(bundleTasks.length)
                 gulp.task("bundle:" + bundle, bundleTasks);
         })(bundle);
-    };
+    }
 
     gulp.task("bundle", function() {});
 }
