@@ -23,6 +23,7 @@ public class RequestAdapterTest {
     public void setup() throws Exception {
         initMocks(this);
         when(carQuote.getVehicle()).thenReturn(vehicle);
+        when(vehicle.getYear()).thenReturn("2015");
 
 //        when(carQuote.getConvertedAccs()).thenReturn();
     }
