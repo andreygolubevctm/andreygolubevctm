@@ -31,14 +31,13 @@
                              labelName="phone number${competitionValidationText}" />
     </form_new:row>
 
-    <c:if test="${competitionEnabled}">
-        <utilities_new:competition/>
-    </c:if>
-
     <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
     <c:set var="privacyOptinText">I understand ${brandedName} compares energy plans based on a standard tariff from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide. I confirm that I have read the
         <form:link_privacy_statement/>.</c:set>
     <form_new:privacy_optin vertical="utilities" labelText="${privacyOptinText}"/>
+    <c:if test="${competitionEnabled}">
+        <utilities_new:competition/>
+    </c:if>
     <field:hidden xpath="${xpath}/optinPhone" defaultValue="N"/>
     <field:hidden xpath="${xpath}/optinMarketing" defaultValue="N"/>
 </form_new:fieldset>

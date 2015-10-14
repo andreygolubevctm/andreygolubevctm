@@ -75,20 +75,7 @@
         $(".moving-in").change(_toggleMovingInDate);
         $("#utilities_privacyoptin").change(_onPrivacyOptinChange);
         $("#utilities_householdDetails_location").on("typeahead:selected", _onTypeaheadSelected);
-        $('#utilities_resultsDisplayed_competition_optin').on('change.applyValidationRules', _applyCompetitionValidationRules);
         meerkat.modules.ie8SelectMenuAutoExpand.bindEvents($('#startForm'), '#utilities_householdDetails_howToEstimate');
-    }
-
-    function _applyCompetitionValidationRules(e) {
-        if($competitionRequiredElems) {
-            if ($(this).prop('checked')) {
-                $competitionRequiredElems.attr('required', 'required');
-            } else {
-                $competitionRequiredElems.removeAttr('required').each(function () {
-                    $(this).valid();
-                });
-            }
-        }
     }
 
     /**
