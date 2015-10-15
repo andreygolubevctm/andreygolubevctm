@@ -4,6 +4,7 @@ import com.ctm.model.health.form.*;
 import com.ctm.providers.health.healthapply.model.request.HealthApplicationRequest;
 import com.ctm.providers.health.healthapply.model.request.application.ApplicationGroup;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.Applicant;
+import com.ctm.providers.health.healthapply.model.request.application.applicant.CertifiedAgeEntry;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.healthCover.Cover;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.healthCover.HealthCover;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.healthCover.HealthCoverLoading;
@@ -77,7 +78,10 @@ public class RequestAdapter {
                         quote.map(HealthQuote::getApplication)
                                 .map(Application::getPrimary),
                         quote.map(HealthQuote::getPreviousFund)
-                                .map(com.ctm.model.health.form.PreviousFund::getPrimary)),
+                                .map(com.ctm.model.health.form.PreviousFund::getPrimary),
+                        quote.map(HealthQuote::getPrimaryCAE),
+                        quote.map(HealthQuote::getHealthCover)
+                                .map(com.ctm.model.health.form.HealthCover::getPrimary)),
                 quote.map(HealthQuote::getApplication)
                     .map(Application::getPartner)
                     .map(Person::getTitle).isPresent()
@@ -85,7 +89,10 @@ public class RequestAdapter {
                         quote.map(HealthQuote::getApplication)
                                 .map(Application::getPartner),
                         quote.map(HealthQuote::getPreviousFund)
-                                .map(com.ctm.model.health.form.PreviousFund::getPartner)) : null,
+                                .map(com.ctm.model.health.form.PreviousFund::getPartner),
+                        quote.map(HealthQuote::getPartnerCAE),
+                        quote.map(HealthQuote::getHealthCover)
+                                .map(com.ctm.model.health.form.HealthCover::getPartner)) : null,
                 createDependants(quote.map(HealthQuote::getApplication)
                         .map(Application::getDependants)),
 
@@ -106,7 +113,7 @@ public class RequestAdapter {
         }
     }
 
-    protected static Applicant createApplicant(Optional<Person> person, Optional<Fund> previousFund) {
+    protected static Applicant createApplicant(Optional<Person> person, Optional<Fund> previousFund, Optional<Integer> certifiedAgeEntry, Optional<Insured> insured) {
         if (person.isPresent()) {
             return new Applicant(
                     person.map(Person::getTitle)
@@ -125,13 +132,16 @@ public class RequestAdapter {
                             .map(v -> LocalDate.parse(v, AUS_FORMAT))
                             .orElse(null),
                     new HealthCover(
-                            person.map(Person::getCover)
+                            insured.map(Insured::getCover)
                                     .map(Cover::valueOf)
                                     .orElse(null),
-                            person.map(Person::getHealthCoverLoading)
+                            insured.map(Insured::getHealthCoverLoading)
                                     .map(HealthCoverLoading::valueOf)
                                     .orElse(null)),
-                    createPreviousFund(previousFund));
+                    createPreviousFund(previousFund),
+                    certifiedAgeEntry
+                            .map(CertifiedAgeEntry::new)
+                            .orElse(null));
         }
         return null;
     }
@@ -181,6 +191,7 @@ public class RequestAdapter {
             return new Payment(
                     createPaymentDetails(quote, payment),
                     createCreditCard(quote.map(HealthQuote::getPayment)),
+                    createCreditIppCreditCard(quote.map(HealthQuote::getPayment)),
                     createBank(quote.map(HealthQuote::getPayment)),
                     createMedicare(quote.map(HealthQuote::getPayment)
                             .map(com.ctm.model.health.form.Payment::getMedicare)),
@@ -402,7 +413,10 @@ public class RequestAdapter {
                                     }
                                 }).orElse(null),
                         null);
-            } else if (payment.map(com.ctm.model.health.form.Payment::getCredit).isPresent()) {
+            } else if (payment.map(com.ctm.model.health.form.Payment::getCredit).isPresent() &&
+                    !payment.map(com.ctm.model.health.form.Payment::getCredit)
+                            .map(Credit::getIpp)
+                            .map(Ipp::getTokenisation).isPresent()) {
                 final Optional<Credit> credit = payment.map(com.ctm.model.health.form.Payment::getCredit);
                 return new CreditCard(
                         credit.map(Credit::getType)
@@ -430,6 +444,43 @@ public class RequestAdapter {
             } else {
                 return null;
             }
+        } else {
+            return null;
+        }
+    }
+
+    private static IppCreditCard createCreditIppCreditCard(Optional<com.ctm.model.health.form.Payment> payment) {
+        if (payment.map(com.ctm.model.health.form.Payment::getDetails)
+                .map(PaymentDetails::getType).filter(t -> "cc".equals(t)).isPresent() &&
+                payment.map(com.ctm.model.health.form.Payment::getCredit)
+                        .map(Credit::getIpp)
+                        .map(Ipp::getTokenisation).isPresent()) {
+            final Optional<Credit> credit = payment.map(com.ctm.model.health.form.Payment::getCredit);
+            return new IppCreditCard(
+                    credit.map(Credit::getType)
+                            .map(Type::new)
+                            .orElse(null),
+                    credit.map(Credit::getName)
+                            .map(Name::new)
+                            .orElse(null),
+                    credit.map(Credit::getIpp)
+                            .map(Ipp::getMaskedNumber)
+                            .map(Number::new)
+                            .orElse(null),
+                    credit.map(Credit::getIpp)
+                            .map(Ipp::getTokenisation)
+                            .map(Token::new)
+                            .orElse(null),
+                    credit.map(Credit::getExpiry)
+                            .map(e -> {
+                                Optional<com.ctm.model.health.form.Expiry> expiry = Optional.ofNullable(e);
+                                return new Expiry(
+                                        expiry.map(com.ctm.model.health.form.Expiry::getCardExpiryMonth)
+                                                .map(ExpiryMonth::new).orElse(null),
+                                        expiry.map(com.ctm.model.health.form.Expiry::getCardExpiryYear)
+                                                .map(ExpiryYear::new).orElse(null)
+                                );})
+                            .orElse(null));
         } else {
             return null;
         }

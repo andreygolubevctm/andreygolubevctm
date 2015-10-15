@@ -22,6 +22,8 @@ public class Credit {
     // Format yyyy-MM-dd
     private String paymentDay;
 
+    private Ipp ipp;
+
     public String getType() {
         return type;
     }
@@ -84,5 +86,13 @@ public class Credit {
 
     public void setPolicyDay(String policyDay) {
         this.policyDay = policyDay;
+    }
+
+    public Ipp getIpp() {
+        return ipp;
+    }
+
+    public void setIpp(Ipp ipp) {
+        this.ipp = ipp;
     }
 }

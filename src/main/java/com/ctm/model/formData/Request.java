@@ -1,10 +1,8 @@
 package com.ctm.model.formData;
 
-public interface Request<QUOTE> {
+public interface Request {
 
     Long getTransactionId();
-
-    QUOTE getQuote();
 
     void setTransactionId(Long transactionId);
 
@@ -12,5 +10,8 @@ public interface Request<QUOTE> {
 
     String getClientIpAddress();
 
+    void setEnvironmentOverride(String environmentOverride);
+
     String getEnvironmentOverride();
+
 }

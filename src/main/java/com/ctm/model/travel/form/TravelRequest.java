@@ -1,8 +1,8 @@
 package com.ctm.model.travel.form;
 
-import com.ctm.model.formData.Request;
+import com.ctm.model.formData.RequestWithQuote;
 
-public class TravelRequest implements Request<TravelQuote> {
+public class TravelRequest implements RequestWithQuote<TravelQuote> {
 
     private String clientIpAddress;
     private TravelQuote travel;

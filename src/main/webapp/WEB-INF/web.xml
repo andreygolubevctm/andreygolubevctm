@@ -35,7 +35,9 @@
 				com.ctm.router.travel.TravelRouter,
 				com.ctm.router.car.CarQuoteRouter,
 				com.ctm.router.home.HomeQuoteRouter,
-				com.ctm.router.health.HealthApplicationRouter
+				com.ctm.router.health.HealthApplicationRouter,
+				com.ctm.router.health.HealthAuthorisePaymentRouter,
+				com.ctm.router.health.HealthRegisterPaymentRouter
 			</param-value>
 		</init-param>
 		<init-param>

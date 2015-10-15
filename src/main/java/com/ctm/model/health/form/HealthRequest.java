@@ -1,8 +1,8 @@
 package com.ctm.model.health.form;
 
-import com.ctm.model.formData.Request;
+import com.ctm.model.formData.RequestWithQuote;
 
-public class HealthRequest implements Request<HealthQuote> {
+public class HealthRequest implements RequestWithQuote<HealthQuote> {
 
     private String clientIpAddress;
 

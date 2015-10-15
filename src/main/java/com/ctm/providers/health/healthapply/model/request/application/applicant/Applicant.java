@@ -32,8 +32,12 @@ public class Applicant {
 
     private final PreviousFund previousFund;
 
+    @JsonSerialize(using = TypeSerializer.class)
+    private final CertifiedAgeEntry certifiedAgeEntry;
+
     public Applicant(final Title title, final FirstName firstName, final LastName lastName, final Gender gender,
-                     final LocalDate dateOfBirth, final HealthCover healthCover, final PreviousFund previousFund) {
+                     final LocalDate dateOfBirth, final HealthCover healthCover, final PreviousFund previousFund,
+                     final CertifiedAgeEntry certifiedAgeEntry) {
         this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,6 +45,7 @@ public class Applicant {
         this.dateOfBirth = dateOfBirth;
         this.healthCover = healthCover;
         this.previousFund = previousFund;
+        this.certifiedAgeEntry = certifiedAgeEntry;
     }
 
     public Title getTitle() {
@@ -69,5 +74,9 @@ public class Applicant {
 
     public PreviousFund getPreviousFund() {
         return previousFund;
+    }
+
+    public CertifiedAgeEntry getCertifiedAgeEntry() {
+        return certifiedAgeEntry;
     }
 }

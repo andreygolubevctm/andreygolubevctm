@@ -2,6 +2,8 @@ package com.ctm.providers.health.healthapply.model.response;
 
 import java.util.List;
 
+import static java.util.Collections.emptyList;
+
 public class HealthApplicationResponse {
 
     public String fundId;
@@ -27,7 +29,7 @@ public class HealthApplicationResponse {
     }
 
     public List<PartnerError> getErrorList() {
-        return errorList;
+        return errorList == null ? emptyList() : errorList;
     }
 
     public String getBccEmail() {

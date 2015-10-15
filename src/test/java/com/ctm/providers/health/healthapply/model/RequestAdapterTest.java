@@ -46,7 +46,7 @@ public class RequestAdapterTest {
 
     @Test
     public void testCreateApplicantEmpty() throws Exception {
-        final Applicant applicant = RequestAdapter.createApplicant(Optional.empty(), Optional.empty());
+        final Applicant applicant = RequestAdapter.createApplicant(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
         assertNull(applicant);
     }
 
@@ -68,7 +68,7 @@ public class RequestAdapterTest {
     @Test
     public void testCreateApplicant() throws Exception {
         final Person person = mock(Person.class);
-        final Applicant applicant = RequestAdapter.createApplicant(Optional.ofNullable(person), Optional.empty());
+        final Applicant applicant = RequestAdapter.createApplicant(Optional.ofNullable(person), Optional.empty(), Optional.empty(), Optional.empty());
         assertNotNull(applicant);
         assertNotNull(applicant.getHealthCover());
         assertNull(applicant.getPreviousFund());

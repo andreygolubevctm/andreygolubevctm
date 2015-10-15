@@ -1,8 +1,8 @@
 package com.ctm.model.home.form;
 
-import com.ctm.model.formData.Request;
+import com.ctm.model.formData.RequestWithQuote;
 
-public class HomeRequest implements Request<HomeQuote> {
+public class HomeRequest implements RequestWithQuote<HomeQuote> {
 
     private Long transactionId;
 

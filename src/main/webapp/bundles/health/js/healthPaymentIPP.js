@@ -74,13 +74,21 @@ Process:
 		$maskedNumber.val('Loading...');
 		reset();
 
+		var useHealthApplicationWebService = meerkat.site.healthApplicationExcludeProviders.split(',').indexOf($("#health_application_provider").val()) == -1;
+
+		var authoriseUrl = "ajax/json/ipp/ipp_payment.jsp?ts=" + (new Date().getTime());
+		if (meerkat.modules.splitTest.isActive(401) && useHealthApplicationWebService) {
+			authoriseUrl = "rest/health/payment/authorise.json";
+		}
+
 		meerkat.modules.comms.post({
-			url: "ajax/json/ipp/ipp_payment.jsp?ts=" + (new Date().getTime()),
+			url: authoriseUrl,
 			dataType: 'json',
 			cache: false,
 			errorLevel: "silent",
 			data:{
-				transactionId:meerkat.modules.transactionId.get()
+				transactionId:meerkat.modules.transactionId.get(),
+				providerId: $("#health_application_provider").val()
 			},
 			onSuccess: createModalContent,
 			onError: function onIPPAuthError(obj, txt, errorThrown) {
@@ -195,9 +203,17 @@ Process:
 	function register(jsonData) {
 
 		jsonData.transactionId = meerkat.modules.transactionId.get();
+		jsonData.providerId = $("#health_application_provider").val();
+
+		var useHealthApplicationWebService = meerkat.site.healthApplicationExcludeProviders.split(',').indexOf($("#health_application_provider").val()) == -1;
+
+		var registerUrl = "ajax/json/ipp/ipp_log.jsp?ts=" + (new Date().getTime());
+		if (meerkat.modules.splitTest.isActive(401) && useHealthApplicationWebService) {
+			registerUrl = "rest/health/payment/register.json";
+		}
 
 		meerkat.modules.comms.post({
-			url: "ajax/json/ipp/ipp_log.jsp?ts=" + (new Date().getTime()),
+			url: registerUrl,
 			data: jsonData,
 			dataType: 'json',
 			cache: false,

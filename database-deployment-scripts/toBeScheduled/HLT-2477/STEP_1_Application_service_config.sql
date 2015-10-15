@@ -82,7 +82,7 @@ INSERT INTO service_properties (serviceMasterId, environmentCode, styleCodeId, p
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'user', '', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'password', '', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'errorProductCode', 'BUP-ERROR', @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'outboundParams', '', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'outboundParams', 'clientType=BupaCTM', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'inboundParams', '', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'timeout', '240', @STARTDATE, @ENDDATE, 'SERVICE')
 ;
