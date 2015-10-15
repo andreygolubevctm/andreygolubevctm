@@ -61,7 +61,7 @@ public class CxfLoggingOutInterceptor extends LoggingOutInterceptor {
             message.getExchange().put(LoggingMessage.ID_KEY, id);
         }
         final LoggingMessage buffer
-                = new LoggingMessage("Outbound Message\n---------------------------",
+                = new LoggingMessage("CXF Outbound Message\n---------------------------",
                 id);
 
         Integer responseCode = (Integer) message.get(Message.RESPONSE_CODE);

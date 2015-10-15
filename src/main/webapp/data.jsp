@@ -174,6 +174,32 @@
 			<%-- /SESSION DATA --%>
 
 		</c:if>
-				
+
+			<B>These are your current properties: </B><BR> <BR>
+			<%
+				out.println("<table width=600 border=1>");
+				out.println("<tr>");
+				out.println("<td width=150><b>PROPERTY</b></td>");
+				out.println("<td width=450><b>VALUE</b></td>");
+				out.println("</tr>");
+				out.println("<tr>");
+				Properties props = System.getProperties();
+				Enumeration enums = props.propertyNames();
+				while (enums.hasMoreElements()){
+					Object o = enums.nextElement();
+					String key = (String)o;
+					out.println("<td width=150><b>" + key + "</b></td>");
+					String val = props.getProperty(key);
+					StringTokenizer st = new StringTokenizer(val,":");
+					out.println("<td width=450>");
+					while (st.hasMoreTokens()){
+						String valind = st.nextToken();
+						out.println(valind + "<BR>");
+					}
+					out.println("</td>");
+					out.println("</tr>");
+				}
+			%>
+
 	</body>
 </html>

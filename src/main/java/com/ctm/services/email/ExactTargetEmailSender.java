@@ -128,7 +128,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 
         Map<String, Object> ctx = ((BindingProvider) port).getRequestContext();
         WebServiceUtils.setWsSecurity(cxfEndpoint, ctx, WEBSERVICE_USER, WEBSERVICE_PASSWORD);
-        WebServiceUtils.setLogging(cxfEndpoint, pageSettings, transactionId );
+        WebServiceUtils.setLogging(client, pageSettings, transactionId, "EXACT_TARGET_EMAIL");
         return port;
     }
 

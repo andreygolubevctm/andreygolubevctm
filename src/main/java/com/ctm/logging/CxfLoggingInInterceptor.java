@@ -32,7 +32,7 @@ public class CxfLoggingInInterceptor extends LoggingInInterceptor {
             message.getExchange().put(LoggingMessage.ID_KEY, id);
         }
 
-        final LoggingMessage buffer = new LoggingMessage("Inbound Message\n----------------------------", id);
+        final LoggingMessage buffer = new LoggingMessage("CXF Inbound Message\n----------------------------", id);
         String encoding = (String) message.get(Message.ENCODING);
         String ct = (String) message.get(Message.CONTENT_TYPE);
 
