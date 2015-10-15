@@ -44,6 +44,10 @@ public class XMLOutputWriter {
 		LOGGER.info(FINALIZE_SESSION_MARKER, "{} {} {}", v("name", name), v("type", RESP_OUT), v("message", removeLineEndings(message)));
 	}
 
+	public void lastWriteXmlToFile(String message, String type) {
+		LOGGER.info(FINALIZE_SESSION_MARKER, "{} {} {}", v("name", name), v("type", type), v("message", removeLineEndings(message)));
+	}
+
 	private String removeLineEndings(String maskXml) {
 		return maskXml.replace("\n", "").replace("\r", "");
 	}
