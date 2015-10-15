@@ -1,7 +1,7 @@
 {
-"dependencies": [
-"plugins/bootstrapDatepicker",
-"shared/placeholder",
-"shared/formDateInput"
-]
+  "dependencies": [
+    "plugins/bootstrapDatepicker",
+    "shared/placeholder",
+    "shared/formDateInput"
+  ]
 }

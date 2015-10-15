@@ -4,7 +4,7 @@
 -- Server OS:                    Linux
 -- HeidiSQL Version:             8.0.0.4458
 -- --------------------------------------------------------
-
+use aggregator;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;

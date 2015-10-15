@@ -104,12 +104,9 @@
 				object:meerkat.modules.travel.getTrackingFieldsObject
 			},
 			onInitialise : function onStartInit(event) {
-
-				meerkat.modules.jqueryValidate.initJourneyValidator();
-
 				// Call initialisers
+				meerkat.modules.jqueryValidate.initJourneyValidator();
 				meerkat.modules.travelCountrySelector.initTravelCountrySelector();
-				meerkat.modules.datesSelection.initTravelDatesSelection();
 				meerkat.modules.travelContactDetails.initContactDetails();
 
 				if (meerkat.modules.splitTest.isActive([5,6])) {

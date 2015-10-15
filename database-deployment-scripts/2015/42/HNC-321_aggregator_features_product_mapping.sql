@@ -1,4 +1,6 @@
 -- Dumping structure for table aggregator.features_product_mapping
+
+use aggregator;
 DROP TABLE IF EXISTS aggregator.features_product_mapping;
 CREATE TABLE IF NOT EXISTS aggregator.features_product_mapping (
   `lmi_Ref` varchar(45) NOT NULL,
