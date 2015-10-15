@@ -460,7 +460,6 @@
 					this.tracking.productId = selectedProduct.productId.replace("PHIO-HEALTH-", "");
 
 					// Load the selected product details.
-					meerkat.modules.healthPaymentStep.initHealthPaymentStep();
 					healthFunds.load(selectedProduct.info.provider);
 
 					// Clear any previous validation errors on Apply or Payment
