@@ -85,7 +85,16 @@
         </div>
 	</jsp:attribute>
 
+    <jsp:attribute name="progress_bar">
+      <div class="progress-bar-row">
+        <div class="container">
+          <ul class="journeyProgressBar_v2"></ul>
+        </div>
+      </div>
+    </jsp:attribute>
+
 	<jsp:attribute name="navbar">
+
 
 		<ul class="nav navbar-nav">
           <li class="slide-feature-back">
@@ -183,8 +192,8 @@
     <health_new_layout:slide_all_about_you />
     <health_new_layout:slide_your_contact />
     <health_layout:slide_results />
-    <health_layout:slide_application_details />
-    <health_layout:slide_payment_details />
+    <health_new_layout:slide_application_details />
+    <health_new_layout:slide_payment_details />
 
     <health_new:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />
 

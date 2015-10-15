@@ -17,10 +17,8 @@
 
 		<jsp:attribute name="rightColumn">
 			<c:if test="${not empty callCentreNumber}">
-				<ui:bubble variant="info">
 					<health_content:call_centre_help />
 					${callCentreHoursBubble}
-				</ui:bubble>
 			</c:if>
 		</jsp:attribute>
 

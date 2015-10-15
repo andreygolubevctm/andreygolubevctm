@@ -96,6 +96,13 @@
 			meerkat.modules.journeyProgressBar.render(true);
 		}
 	}
+	function adjustLayout () {
+		console.log("Adjusting Layout");
+		$('.col-sm-8').removeClass('col-sm-8').addClass('col-sm-9');
+		$('.col-sm-4').removeClass('col-sm-4').addClass('col-sm-3');
+		$('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
+
+	}
 
 	function setJourneyEngineSteps(){
 
@@ -600,6 +607,11 @@
 	}
 
 	function configureProgressBar(){
+		// Changing the location of the progressBar for v2 only as it needs to be moved from its default location
+		meerkat.modules.journeyProgressBar.changeTargetElement(".journeyProgressBar_v2");
+		//Better progressBar just works...
+		meerkat.modules.journeyProgressBar.setWidth(100);
+		meerkat.modules.journeyProgressBar.setEndPadding(false);
 		meerkat.modules.journeyProgressBar.configure([
 			{
 				label:'Your Situation',
@@ -626,6 +638,7 @@
 				navigationId: steps.paymentStep.navigationId
 			}
 		]);
+
 	}
 
 	function configureContactDetails(){
@@ -1306,8 +1319,10 @@
 				meerkat.modules.simplesSnapshot.initSimplesSnapshot();
 			}
 
+			adjustLayout();
 
 		});
+
 
 	}
 

@@ -1,0 +1,96 @@
+#journeyEngineContainer {
+	position: inherit;
+}
+.journeyEngineSlide.resultsSlide{
+	padding-top: 0;
+	@media (@xs-only) {
+		padding-top: @page-offset-xs;
+	}
+}
+
+#pageContent{
+	position: relative;
+	.transition(~"background-color 1000ms ease-in-out");
+  	background-color: @main-bg-colour;
+}
+
+&[data-step=benefits],
+&[data-step=results]{
+	#pageContent{
+		background-color: @page-content-bg;
+		.transition(~"background-color 250ms ease-in-out");
+	}
+	#pageContentTop{
+		opacity: 1;
+		.transition(~"opacity 250ms ease-in-out");
+	}
+}
+
+.fieldset-column-side {
+
+	@media (min-width: @screen-sm-min) {
+		padding-top: 32px; //47px
+	}
+}
+.btn-modal {
+	&:extend(.btn-email all);
+}
+.btn-next, .btn-cta, .btn-save, .btn-cancel {
+  border-radius: 22px;
+
+}
+.slideAction,
+.confirm-step {
+  div:first-child {
+	float: right;
+  }
+}
+
+.fieldset,
+.fieldset-column-side{
+  border: 1px solid @border-colour;
+  background-color: white;
+  &.lhc-group,
+  &.rebate-group{
+	border: none;
+	h2{
+	  margin-left: 0px;
+	}
+  }
+  h2{
+	border-bottom: none;
+	color: @header-color;
+	font-weight: bold;
+	font-size: 40px;
+	margin-left: 20px;
+	margin-top: 13px;
+  }
+  .well-chatty {
+	margin-left: 14px;
+	margin-right: 14px;
+  }
+  .required_input label:after {
+	content: "\002A";
+	color: @required-color;
+	padding-left: 2px;
+  }
+  .health-contact-details-optin-group .col-sm-offset-3,
+  .competition-optin-group .col-sm-offset-3{
+	margin-left: 2%;
+	width: 93%;
+  }
+}
+.fieldset-column-side{
+  padding-bottom: 25px;
+}
+
+/* Policy summary in right hand column */
+.policySummaryContainer{
+  @media (@sm) {
+	&:not(.formMode){
+	  margin-bottom: 20px;
+	  margin-top: -30px;
+	}
+  }
+}
+
