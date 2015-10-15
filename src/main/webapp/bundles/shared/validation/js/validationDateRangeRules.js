@@ -82,14 +82,6 @@
         },
         "Custom message"
     );
-/* todo: well this would never be doing anything...
-    $.validator.addMethod("${name}notPublicHolidays",
-        function(value, element) {
-            //return ${name}Handler.isNotPublicHoliday( $(element).datepicker("getDate") )[0];
-            return true;
-        },
-        "Custom message"
-    );*/
 
     /** Moved this into this file as the dateEUR validation was firing after youngestDOB/oldestDOB due to compilation order into main file */
     function checkDob(value, age, selector) {
