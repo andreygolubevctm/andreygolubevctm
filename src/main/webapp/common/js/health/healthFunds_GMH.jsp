@@ -28,10 +28,6 @@ var healthFunds_GMH = {
         TODO: TEST THIS --%>
         meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:true });
 
-        <%--school labels--%>
-        healthFunds._schoolLabel = $('.health_dependant_details_schoolGroup').first().find('.control-label').text();
-        $('.health_dependant_details_schoolGroup').find('.control-label').text('Name of school/employer/educational institution your child is attending');
-
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true });
         meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true });
@@ -70,10 +66,6 @@ var healthFunds_GMH = {
 
         <%--dependant definition off--%>
         healthFunds._dependants(false);
-
-
-        <%--school labels off--%>
-        $('#mainform').find('.health_dependant_details_schoolGroup').find('.control-label').text( healthFunds._schoolLabel );
 
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.resetConfig();

@@ -1,24 +1,27 @@
 (function ($, undefined) {
 
-    var meerkat = window.meerkat,
-        meerkatEvents = meerkat.modules.events,
-        log = meerkat.logging.info;
+    var meerkat = window.meerkat;
 
-    var events = {
-            healthDependants: {}
-        },
-        $dependantsTemplateWrapper,
+    var $dependantsTemplateWrapper,
         dependantTemplate,
+        /**
+         * The data that makes up a dependant.
+         * @type {{dependantId: number, title: string, firstName: string, middleName: string, lastname: string, fulltime: string, school: string, schoolDate: string, schoolID: string, dob: string, dobInputD: string, dobInputY: string, dobInputM: string, maritalincomestatus: string, apprentice: string}}
+         */
         defaultDependant = {
             dependantId: 1,
             title: "",
             firstName: "",
             middleName: "",
-            lastName: "",
+            lastname: "",
             fulltime: "",
             school: "",
             schoolDate: "",
             schoolID: "",
+            dob: "",
+            dobInputD: "",
+            dobInputY: "",
+            dobInputM: "",
             maritalincomestatus: "",
             apprentice: ""
         },
@@ -41,7 +44,7 @@
             schoolMaxAge: 24,
             showSchoolIdField: false,
             schoolIdRequired: false,
-            schoolIdMaxLength: false,
+            schoolIdMaxLength: 50,
             showSchoolCommencementField: false,
             schoolDateRequired: false,
             showMaritalStatusField: false,
@@ -66,6 +69,9 @@
         // set up template
         dependantTemplate = _.template($('#health-dependants-template').html());
 
+        if (typeof meerkat.site.dependants != 'undefined') {
+            dependantsArr = addDataBucketDependantsToList();
+        }
         if (getNumberOfDependants() === 0) {
             dependantsArr.push(defaultDependant);
         }
@@ -85,12 +91,17 @@
         }).on('change', '.dateinput_container input.serialise, .health_dependant_details_fulltimeGroup input', function dependantAgeFullTimeChange() {
             var $wrapper = $(this).closest('.health_dependant_details');
             toggleDependantFields($wrapper);
-
-            // todo: necessary? $(this).valid();
+            $(this).valid();
+        }).on('change', ':input', function changeInput() {
+            var $el = $(this),
+                dependantId = $el.closest('.health_dependant_details').attr('data-id'),
+                objIndex = $el.attr('id').replace(/health_application_dependants_dependant[0-9]{1}_/, '');
+            dependantsArr[dependantId - 1][objIndex] = $(this).val();
+            console.log("Storing ", $(this).val(), "In ", objIndex);
         });
 
         $('#dependents_list_options').on('click', ".add-new-dependent", function addDependantClick() {
-            addNewDependant();
+            addNewDependant(true);
         });
 
         // Sync income tier value (which can be changed if you change the number of dependants you have).
@@ -100,45 +111,52 @@
     }
 
     /**
+     * Apply events to the date elements, only after the template has been rendered.
+     */
+    function applyDateEvents() {
+        $('[data-provide=dateinput]', $dependantsTemplateWrapper).each(function () {
+            meerkat.modules.formDateInput.initDateComponent($(this));
+        });
+    }
+
+    /**
      * Whenever you enter into application phase, it is possible that you had 6 dependants before
      * and then you went back and set it to 3. So in this case, it should delete the 3.
      */
     function updateDependantConfiguration() {
-        if (!situationEnablesDependants()) {
+
+        var dependantCountSpecified = $('#health_healthCover_dependants').val() || 1;
+        var hasChildren = situationEnablesDependants();
+        $('#health_application_dependants-selection').toggle(hasChildren);
+        $('#health_application_dependants_threshold').toggle(dependantCountSpecified <= 0);
+        if (!hasChildren) {
             clearDependants();
             return;
         }
-        var dependantCountSpecified = $('#health_healthCover_dependants').val() || 1;
-        console.log(dependantCountSpecified);
-        // TODO: unsure if this is necessary. Would create x dependant entries from what was specified.
-        /*if(healthCoverDetails.getRebateChoice() == 'Y' && dependantCountSpecified > 0) {
-         for(var i = 0; i < dependantCountSpecified;i++) {
-         dependantsArr.push(defaultDependant);
-         }
-         }*/
-        var hasChildren = healthChoices.hasChildren();
-        $('#health_application_dependants-selection').toggle(hasChildren);
-        $('#health_application_dependants_threshold').toggle(dependantCountSpecified <= 0);
 
-        if (!hasChildren) {
-            return;
+        // If you had set 5 dependants, then went back and changed to 3...
+        if (dependantCountSpecified < getNumberOfDependants()) {
+            for (var i = getNumberOfDependants(); i > dependantCountSpecified; i--) {
+                deleteDependant(i, false);
+            }
+        } else {
+            // Generate X number of dependants.
+            var hasChosenToApplyRebate = typeof healthCoverDetails !== 'undefined' ? healthCoverDetails.getRebateChoice() === 'Y' : meerkat.modules.healthCoverDetails.isRebateApplied();
+            if (hasChosenToApplyRebate && dependantCountSpecified > 0) {
+                // Add to existing dependants
+                while (getNumberOfDependants() < dependantCountSpecified) {
+                    addNewDependant(false);
+                }
+            }
         }
 
-        // If you have 7 dependants and you specify 3 in the situation step,
-        // it should iterate in reverse and delete 7,6,5,4
-        // TODO: test with 1,2,3 etc.
-        console.log(dependantsArr);
-        for (var i = getNumberOfDependants(); i > dependantCountSpecified; i--) {
-            console.log("Deleting dependent", i);
-            deleteDependant(i, false);
-        }
         updateApplicationDetails();
     }
 
     /**
      * Displays or hides fields for dependants based on the age.
      * In order for these fields to be rendered into a dependants template, the provider has to specify
-     * the configuration that it wants to show full time, or school id, etc.
+     * the configuration that it wants to show full time, or school id, etc in the healthFund JSP
      */
     function toggleDependantFields($wrapper) {
 
@@ -148,7 +166,8 @@
         var age = meerkat.modules.utils.returnAge($dob.val(), true) || 0;
         // If the dependant is between the school age
         if (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) {
-            // If the config is set to true, we want to remove the class. To remove a class, toggleClass needs false, so we flip the config option.
+            // If the config is set to true, we want to remove the class.
+            // To remove a class, toggleClass needs false, so we flip the config option.
             $(selectorPrefix + '_fulltimeGroup').toggleClass('hidden', !providerConfig.showFullTimeField);
             $(selectorPrefix + '_schoolGroup').toggleClass('hidden', !providerConfig.showSchoolFields);
             $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', !providerConfig.showSchoolIdField);
@@ -163,25 +182,32 @@
     /**
      * Remove the data from the object
      * Remove the template
-     * @param index
+     * @param index The dependants ID in the html
      * @param {bool} doAnimate - whether or not to animate to the previous dependant.
-     * NOTE: would have to reflow all the ids, or run renderDependants()
-     *          if you wanted to delete dependents from the middle instead of end.
      */
     function deleteDependant(index, doAnimate) {
+
         index = parseInt(index, 10);
-        console.log("Deleting dependent", "element id", index, "array id", index);
-        // Wipe the HTML to remove events and content from the DOM.
-        $('#health_application_dependants_dependant' + index).empty();
-        dependantsArr.splice(index-1, 1);
-        //todo this isn't working??? NOTE: it needs to splice at the index-1, but empty at the index.
-        console.log(dependantsArr);
-        doAnimate = typeof doAnimate == 'undefined' ? true : doAnimate;
-        //TODO: test this with 1 and 2 dependants.
-        if (doAnimate && getNumberOfDependants() > 1) {
-            animateToDependant($('#health_application_dependants_dependant' + getNumberOfDependants() - 1));
+
+        var isLastDependant = index == getNumberOfDependants();
+        console.log("Removing dependant", index, getNumberOfDependants(), "is last: ", isLastDependant);
+        // Remove it
+        dependantsArr.splice(index - 1, 1);
+        // Render stuff
+        if (isLastDependant) {
+            renderDependants();
+        } else {
+            // Wipe the HTML to remove events and content from the DOM.
+            $('#health_application_dependants_dependant' + index).empty().remove();
+            // Don't animate when deleting in the middle, its confusing.
+            doAnimate = false;
         }
-        //TODO hide all remove-dependant options except for last one.
+
+        doAnimate = typeof doAnimate == 'undefined' ? true : doAnimate;
+        console.log("Do animate is:", doAnimate, getNumberOfDependants());
+        if (doAnimate && getNumberOfDependants() > 1) {
+            animateToDependant($('#health_application_dependants_dependant' + getNumberOfDependants()));
+        }
     }
 
     /**
@@ -199,25 +225,63 @@
         }
         $dependantsTemplateWrapper.html(outHtml);
         applyDateEvents();
+        updateNonTextFieldsValues();
+    }
+
+    /**
+     * In order to maintain the proper state when returning, we need to manually populate.
+     * This is because the radio/select menu/dob components don't accept a defaultValue which is a
+     * template variable. The tag wouldn't render the HTML properly.
+     */
+    function updateNonTextFieldsValues() {
+
+        for (var i = 0; i < getNumberOfDependants(); i++) {
+            var prefix = '#health_application_dependants_dependant' + (i + 1),
+                dobParts = dependantsArr[i].dob.split('/');
+            $(prefix + '_title').val(dependantsArr[i].title);
+            if (dobParts.length) {
+                $(prefix + '_dobInputD').val(dobParts[0]);
+                $(prefix + '_dobInputM').val(dobParts[1]);
+                $(prefix + '_dobInputY').val(dobParts[2]);
+                $(prefix + '_dob').val(dependantsArr[i].dob);
+            }
+
+            if (providerConfig.useSchoolDropdownMenu) {
+                $(prefix + '_school').val(dependantsArr[i].school);
+            }
+            if (providerConfig.showMaritalStatusField) {
+                $(prefix + '_maritalincomestatus').val(dependantsArr[i].maritalincomestatus);
+            }
+            if (providerConfig.showApprenticeField) {
+                $(prefix + '_apprentice').val(dependantsArr[i].apprentice);
+            }
+        }
+
+        $dependantsTemplateWrapper.find('.serialise').change();
     }
 
     /**
      * Extending the default Dependant because otherwise it may pass by reference.
      * We also always add a blank dependant to the object.
+     * @param {bool} doAnimate whether or not to animate down to the next dependant.
      */
-    function addNewDependant() {
+    function addNewDependant(doAnimate) {
         var numDependants = getNumberOfDependants();
         if (numDependants < dependantLimit) {
-            var blankDependant = $.extend({}, defaultDependant, {dependantId: numDependants + 1});
+            var dependantId = numDependants + 1;
+
+            var blankDependant = $.extend({}, defaultDependant, {dependantId: dependantId});
             $dependantsTemplateWrapper.append(dependantTemplate(blankDependant));
-            applyDateEvents();
-            // push their data onto the array
-            console.log("Adding new dependant", numDependants + 1);
             dependantsArr.push(blankDependant);
+
+            applyDateEvents();
+
             updateApplicationDetails();
-            //TODO: test this animation
-            animateToDependant($('#health_application_dependants_dependant' + getNumberOfDependants() - 1));
-            //TODO hide all remove-dependant options except for last one.
+
+            doAnimate = typeof doAnimate == 'undefined' ? true : doAnimate;
+            if (doAnimate) {
+                animateToDependant($('#health_application_dependants_dependant' + getNumberOfDependants()));
+            }
         }
     }
 
@@ -230,23 +294,18 @@
         resetConfig();
     }
 
-    function applyDateEvents() {
-        $('[data-provide=dateinput]', $dependantsTemplateWrapper).each(function () {
-            meerkat.modules.formDateInput.initDateComponent($(this));
-        });
-    }
-
     /**
      * Displays the estimated taxable income menu if the
      * customer has selected to apply the rebate and has dependants.
+     * Also populates the dependants tier menu with content from the initial cover step.
      */
-    // todo: this is always showing??? should be hidden until certain conditions are met... not sure.
     function updateApplicationDetails() {
         var $applyPageIncomeTierMenu = $('.health-dependants-tier', $('#health_application_dependants-selection')),
             depCount = getNumberOfDependants();
 
-        //todo: fix this for v2. it would use meerkat.modules.healthCoverDetails.isRebateApplied()=== true
-        if($('input[name="health_healthCover_rebate"]').val() !== 'Y') {
+        // Difference between health v1 and health v2 can be removed when v1 is removed.
+        var hasChosenToNotApplyRebate = typeof healthCoverDetails !== 'undefined' ? healthCoverDetails.getRebateChoice() == 'N' : !meerkat.modules.healthCoverDetails.isRebateApplied();
+        if (hasChosenToNotApplyRebate) {
             $applyPageIncomeTierMenu.slideUp();
         } else if (depCount > 0) {
             var $depCount = $('#health_healthCover_dependants');
@@ -256,6 +315,7 @@
             var $situationIncomeTierWrapper = $('#health_healthCover_tier');
             $applyPageIncomeTierMenu.find('select').html($situationIncomeTierWrapper.find('select').html());
             $('#health_application_dependants_incomeMessage').text($situationIncomeTierWrapper.find('span').text());
+            // TODO: this needs to hide if the dependant count is the same.
             $applyPageIncomeTierMenu.slideDown();
         } else {
             $applyPageIncomeTierMenu.slideUp();
@@ -264,10 +324,28 @@
 
     /**
      * Get the number that have been added.
+     * This function will return 1 if there is 1 dependant.
+     * The first dependant will be at index 0 of the array.
      * @returns {Number|number}
      */
     function getNumberOfDependants() {
         return dependantsArr.length || 0;
+    }
+
+    /**
+     * Dependants are currently dumped into settings.tag. Ideally, this would be pulled in via an XHR
+     * request when the application step loads.
+     * @returns {*}
+     */
+    function addDataBucketDependantsToList() {
+        var list = meerkat.site.dependants.dependants;
+        return _.keys(list).map(function (key) {
+            var keyId = key.replace('dependant', ''), newObj = list[key];
+            newObj.order = parseInt(keyId, 10);
+            return newObj;
+        }).sort(function (a, b) { // sort(from smallest to largest)
+            return a['order'] - b['order'];
+        });
     }
 
     /**
@@ -283,9 +361,9 @@
         if (!$el.length) {
             return;
         }
-        $('html, body').animate({
+        $('html, body').stop(true, true).animate({
             scrollTop: $el.offset().top - 50
-        }, 250);
+        }, 500);
     }
 
     /**
@@ -414,7 +492,6 @@
 
     meerkat.modules.register("healthDependants", {
         initHealthDependants: initHealthDependants,
-        events: events,
         resetConfig: resetConfig,
         getConfig: getConfig,
         updateConfig: updateConfig,

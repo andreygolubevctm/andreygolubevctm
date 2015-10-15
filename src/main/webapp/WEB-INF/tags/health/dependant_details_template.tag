@@ -34,21 +34,21 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/firstName"/>
             <form_new:row fieldXpath="${fieldXpath}" label="First Name">
                 <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s first name" required="true" className="sessioncamexclude"
-                                 additionalAttributes=" data-rule-personName='true' "/>
+                                 additionalAttributes=" data-rule-personName='true' " defaultValue="{{= obj.firstName }}" />
             </form_new:row>
 
             {{ if(providerConfig.showMiddleName === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/middleName"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Middle Name" className="health_dependant_details_middleName">
                 <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s middle name" required="false" className="sessioncamexclude"
-                                 additionalAttributes=" data-rule-personName='true' "/>
+                                 additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.middleName }}" />
             </form_new:row>
             {{ } }}
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/lastname"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Last Name">
                 <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s last name" required="true" className="sessioncamexclude"
-                                 additionalAttributes=" data-rule-personName='true' "/>
+                                 additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.lastname }}" />
             </form_new:row>
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/dob"/>
@@ -79,7 +79,7 @@
                     </select>
                 </div>
                 {{ } else { }}
-                <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s school" required="true" className="sessioncamexclude"/>
+                <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s school" required="true" className="sessioncamexclude" defaultValue="{{= obj.school }}"/>
                 {{ } }}
             </form_new:row>
 
@@ -87,7 +87,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolID"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Student ID Number" id="${name}_schoolIDGroup"
                           className="health_dependant_details_schoolIDGroup hidden">
-                <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="{{= providerConfig.schoolIdRequired }}" className="sessioncamexclude" maxlength="{{= (providerConfig.schoolIdMaxLength || '') }} "/>
+                <field_new:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="{{= providerConfig.schoolIdRequired }}" className="sessioncamexclude" maxlength="{{= providerConfig.schoolIdMaxLength }}" defaultValue="{{= obj.schoolID }}"/>
             </form_new:row>
             {{ } }}
 

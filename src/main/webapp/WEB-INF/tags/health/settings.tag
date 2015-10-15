@@ -107,5 +107,6 @@
 		state: '${state}',
 		performHealthChoicesUpdate: ${performHealthChoicesUpdate}
 	},
+	<c:if test="${not empty data.health.application.dependants}">dependants:  <c:out value="${go:XMLtoJSON(data.health.application.dependants)}" escapeXml="false" />,</c:if>
 	alternatePricing: <health:alternate_pricing_json />
 }
