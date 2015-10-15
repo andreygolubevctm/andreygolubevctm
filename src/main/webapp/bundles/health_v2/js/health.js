@@ -97,7 +97,6 @@
 		}
 	}
 	function adjustLayout () {
-		console.log("Adjusting Layout");
 		$('.col-sm-8').removeClass('col-sm-8').addClass('col-sm-9');
 		$('.col-sm-4').removeClass('col-sm-4').addClass('col-sm-3');
 		$('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
@@ -500,6 +499,8 @@
 
 				// Need to call this after the form is visible because of the show/hiding of buttons based on visibility.
 				healthDependents.updateDependentOptionsDOM();
+
+				adjustLayout();
 			}
 		};
 

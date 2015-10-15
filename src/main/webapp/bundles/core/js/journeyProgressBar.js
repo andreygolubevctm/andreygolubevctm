@@ -134,6 +134,8 @@
 		$target.html( html );
 
 		$target.find('li').css("width", progressBarElementWidthPercentage + "%");
+		if (includeEndPadding) { $target.find('li:last-child').css("width", "");}
+
 
 		if(fireEvent){
 			meerkat.messaging.publish(moduleEvents.INIT);	
