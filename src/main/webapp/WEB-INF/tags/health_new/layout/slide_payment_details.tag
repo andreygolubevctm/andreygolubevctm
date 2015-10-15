@@ -22,9 +22,13 @@
 				</ui:bubble>
 
 				<health:payment xpath="${pageSettings.getVerticalCode()}/payment" />
-				<health:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
-				<health:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
-				<health:whats-next />
+
+				<form_new:fieldset legend="Declaration" className="${pageSettings.getVerticalCode()}_declaration-group">
+					<health_new:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
+					<health:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
+					<health_new:whats-next />
+				</form_new:fieldset>
+
 				<simples:dialogue id="31" vertical="health" mandatory="true" />
 
 				<form_new:row id="confirm-step" hideHelpIconCol="true">
