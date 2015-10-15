@@ -131,13 +131,14 @@ public class RequestAdapter {
                     person.map(Person::getDob)
                             .map(v -> LocalDate.parse(v, AUS_FORMAT))
                             .orElse(null),
-                    new HealthCover(
-                            insured.map(Insured::getCover)
+                    insured.map(i -> new HealthCover(
+                            Optional.ofNullable(i.getCover())
                                     .map(Cover::valueOf)
                                     .orElse(null),
-                            insured.map(Insured::getHealthCoverLoading)
+                            Optional.ofNullable(i.getHealthCoverLoading())
                                     .map(HealthCoverLoading::valueOf)
-                                    .orElse(null)),
+                                    .orElse(null)))
+                            .orElse(null),
                     createPreviousFund(previousFund),
                     certifiedAgeEntry
                             .map(CertifiedAgeEntry::new)

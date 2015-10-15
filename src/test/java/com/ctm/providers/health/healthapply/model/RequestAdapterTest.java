@@ -68,17 +68,38 @@ public class RequestAdapterTest {
     @Test
     public void testCreateApplicant() throws Exception {
         final Person person = mock(Person.class);
-        final Applicant applicant = RequestAdapter.createApplicant(Optional.ofNullable(person), Optional.empty(), Optional.empty(), Optional.empty());
+        final Fund previousFund = mock(Fund.class);
+        final Integer certifiedAge = 1;
+        final Insured insured = mock(Insured.class);
+        final Applicant applicant = RequestAdapter.createApplicant(Optional.of(person), Optional.of(previousFund),
+                Optional.of(certifiedAge), Optional.of(insured));
         assertNotNull(applicant);
         assertNotNull(applicant.getHealthCover());
-        assertNull(applicant.getPreviousFund());
+        assertNotNull(applicant.getPreviousFund());
+        assertNotNull(applicant.getCertifiedAgeEntry());
         verify(person, times(1)).getTitle();
         verify(person, times(1)).getFirstname();
         verify(person, times(1)).getSurname();
         verify(person, times(1)).getGender();
         verify(person, times(1)).getDob();
-        verify(person, times(1)).getCover();
-        verify(person, times(1)).getHealthCoverLoading();
+        verify(insured, times(1)).getCover();
+        verify(insured, times(1)).getHealthCoverLoading();
+    }
+
+    @Test
+    public void testCreateApplicantEmptyExceptPerson() throws Exception {
+        final Person person = mock(Person.class);
+        final Applicant applicant = RequestAdapter.createApplicant(Optional.of(person), Optional.empty(),
+                Optional.empty(), Optional.empty());
+        assertNotNull(applicant);
+        assertNull(applicant.getHealthCover());
+        assertNull(applicant.getPreviousFund());
+        assertNull(applicant.getCertifiedAgeEntry());
+        verify(person, times(1)).getTitle();
+        verify(person, times(1)).getFirstname();
+        verify(person, times(1)).getSurname();
+        verify(person, times(1)).getGender();
+        verify(person, times(1)).getDob();
     }
 
     @Test
@@ -386,7 +407,20 @@ public class RequestAdapterTest {
         when(payment.getDetails()).thenReturn(paymentDetails);
         when(paymentDetails.getType()).thenReturn("cc");
         when(payment.getCredit()).thenReturn(credit);
+        when(credit.getDay()).thenReturn(null);
         assertNull(RequestAdapter.paymentStartDate(Optional.ofNullable(payment)));
+    }
+
+    @Test
+    public void testPaymentStartDateCreditCardDay() throws Exception {
+        final com.ctm.model.health.form.Payment payment = mock(com.ctm.model.health.form.Payment.class);
+        final PaymentDetails paymentDetails = mock(PaymentDetails.class);
+        final Credit credit = mock(Credit.class);
+        when(payment.getDetails()).thenReturn(paymentDetails);
+        when(paymentDetails.getType()).thenReturn("cc");
+        when(payment.getCredit()).thenReturn(credit);
+        when(credit.getDay()).thenReturn(1);
+        assertEquals(LocalDate.now().withDayOfMonth(1), RequestAdapter.paymentStartDate(Optional.ofNullable(payment)));
     }
 
     @Test
@@ -433,7 +467,20 @@ public class RequestAdapterTest {
         when(payment.getDetails()).thenReturn(paymentDetails);
         when(paymentDetails.getType()).thenReturn("ba");
         when(payment.getBank()).thenReturn(bank);
+        when(bank.getDay()).thenReturn(null);
         assertNull(RequestAdapter.paymentStartDate(Optional.ofNullable(payment)));
+    }
+
+    @Test
+    public void testPaymentStartDateBankDay() throws Exception {
+        final com.ctm.model.health.form.Payment payment = mock(com.ctm.model.health.form.Payment.class);
+        final PaymentDetails paymentDetails = mock(PaymentDetails.class);
+        final Bank bank = mock(Bank.class);
+        when(payment.getDetails()).thenReturn(paymentDetails);
+        when(paymentDetails.getType()).thenReturn("ba");
+        when(payment.getBank()).thenReturn(bank);
+        when(bank.getDay()).thenReturn(1);
+        assertEquals(LocalDate.now().withDayOfMonth(1), RequestAdapter.paymentStartDate(Optional.ofNullable(payment)));
     }
 
     @Test
