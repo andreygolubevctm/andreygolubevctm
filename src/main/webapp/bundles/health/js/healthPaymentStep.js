@@ -20,8 +20,6 @@
 	var $frequncyCell;
 	var $lhcCell;
 
-	var initialised = false;
-
 	var settings = {
 		bank: [],
 		credit: [],
@@ -36,7 +34,7 @@
 
 	function initHealthPaymentStep() {
 
-		if(!initialised){
+		$(document).ready(function(){
 			initialised = true;
 
 			if(meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
@@ -124,7 +122,7 @@
 			$updatePremiumButtonContainer.show();
 			$paymentContainer.hide();
 
-		}
+		});
 	}
 
 	// Reset the step
@@ -493,7 +491,7 @@
 
 
 	meerkat.modules.register("healthPaymentStep", {
-		initHealthPaymentStep: initHealthPaymentStep,
+		init: initHealthPaymentStep,
 		events: moduleEvents,
 		getSetting: getSetting,
 		overrideSettings: overrideSettings,
