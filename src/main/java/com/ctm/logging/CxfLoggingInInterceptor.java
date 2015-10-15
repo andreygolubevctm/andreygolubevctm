@@ -13,11 +13,9 @@ public class CxfLoggingInInterceptor extends LoggingInInterceptor {
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(CxfLoggingInInterceptor.class);
 
     XMLOutputWriter xmloutputWriter;
-    Long transactionId;
 
-    public CxfLoggingInInterceptor(XMLOutputWriter xmloutputWriter, Long transactionId) {
+    public CxfLoggingInInterceptor(XMLOutputWriter xmloutputWriter) {
         this.xmloutputWriter = xmloutputWriter;
-        this.transactionId = transactionId;
     }
 
     @Override
