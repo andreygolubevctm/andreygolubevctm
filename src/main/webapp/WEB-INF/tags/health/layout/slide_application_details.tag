@@ -8,6 +8,9 @@
 
 		<jsp:attribute name="rightColumn">
 			<health:policySummary showProductDetails="true" />
+		</jsp:attribute>
+
+		<jsp:attribute name="rightColumn">
 			<health_content:needHelpBubble />
 		</jsp:attribute>
 

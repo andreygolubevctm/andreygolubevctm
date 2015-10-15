@@ -18,6 +18,7 @@
 <%@ attribute fragment="true" required="false" name="navbar" %>
 <%@ attribute fragment="true" required="false" name="navbar_additional" %>
 <%@ attribute fragment="true" required="false" name="navbar_outer" %>
+<%@ attribute fragment="true" required="false" name="progress_bar" %>
 <%@ attribute fragment="true" required="false" name="xs_results_pagination" %>
 <%@ attribute fragment="true" required="true" name="vertical_settings" %>
 
@@ -59,6 +60,10 @@
 
 	<jsp:attribute name="navbar_outer">
 		<jsp:invoke fragment="navbar_outer" />
+	</jsp:attribute>
+
+	<jsp:attribute name="progress_bar">
+		<jsp:invoke fragment="progress_bar" />
 	</jsp:attribute>
 
 	<jsp:attribute name="xs_results_pagination">
