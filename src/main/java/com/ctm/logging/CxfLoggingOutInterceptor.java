@@ -49,7 +49,7 @@ public class CxfLoggingOutInterceptor extends LoggingOutInterceptor {
         String type = XMLOutputWriter.REQ_OUT;
         xmloutputWriter.writeXmlToFile(builder.toString(), type);
         // Just log that we've written the request-out to a file
-        LOGGER.info("{}:{}", type, xmloutputWriter.getLoggerName());
+        LOGGER.debug("{}:{}", type, xmloutputWriter.getLoggerName());
     }
 
     private LoggingMessage setupBuffer(Message message) {

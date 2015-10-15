@@ -47,7 +47,7 @@ public class CxfLoggingInInterceptor extends LoggingInInterceptor {
         String type = XMLOutputWriter.RESP_IN;
         xmloutputWriter.writeXmlToFile(buffer.getPayload().toString(), type);
         // Just log that we've written the response-in to a file
-        LOGGER.info("{}:{}", type, xmloutputWriter.getLoggerName());
+        LOGGER.debug("{}:{}", type, xmloutputWriter.getLoggerName());
 
     }
 }
