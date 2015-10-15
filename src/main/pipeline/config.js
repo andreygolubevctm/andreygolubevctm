@@ -4,7 +4,7 @@ var path = require("path");
 
 var rootDir = __dirname;
 
-module.exports = {
+var Config = {
     pipeline: {
         dir: rootDir
     },
@@ -34,6 +34,11 @@ module.exports = {
             "affix"
         ]
     },
+    sprite: {
+        source: {
+            dir: path.join(rootDir, "..", "webapp", "assets", "graphics", "logos")
+        }
+    },
     target: {
         dir: rootDir + "/../webapp/assets",
         inc: {
@@ -41,3 +46,5 @@ module.exports = {
         }
     }
 };
+
+module.exports = Config;

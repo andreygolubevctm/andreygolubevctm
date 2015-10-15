@@ -15,6 +15,7 @@
     "shared/showMoreQuotesPrompt",
     "shared/resultsRankings",
     "shared/contentPopulation",
-    "shared/leavePageWarning"
+    "shared/leavePageWarning",
+    "shared/formNumberFormatInputs"
   ]
 }

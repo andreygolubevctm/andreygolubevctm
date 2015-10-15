@@ -5,7 +5,7 @@
 <%@ attribute name="formName" 			required="true" 	description=""%>
 <%@ attribute name="errorContainer" 	required="false" 	description="The error container (defaults to #slideErrorContainer)"%>
 
-<go:script marker="js-href"	href="framework/jquery/plugins/jquery.validate-1.11.1.js"/>
+<go:script marker="js-href"	href="common/js/jquery.validate-1.11.1.js"/>
 <go:script marker="js-href"	href="common/js/jquery.validate.custom.js"/>
 
 <c:choose>

@@ -126,14 +126,15 @@
 
 	<jsp:attribute name="body_end">
 
-		<script src="framework/jquery/plugins/jquery.scrollTo.min.js"></script>
 		<jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
 		<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 	</jsp:attribute>
 
 	<jsp:attribute name="additional_meerkat_scripts">
 		<c:if test="${callCentre}">
-			<script src="${assetUrl}assets/js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+			<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
+			<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
+			<script src="${assetUrl}js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 		</c:if>
 	</jsp:attribute>
 
