@@ -76,6 +76,8 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
     @Produces("application/json")
     public HealthResult getHealthApply(@Context MessageContext context, @FormParam("") final HealthRequest data) throws DaoException, IOException, ServiceConfigurationException, ConfigSettingException {
 
+        // TODO: implement tokenisation validate
+
         Vertical.VerticalType vertical = HEALTH;
 
         // Initialise request
