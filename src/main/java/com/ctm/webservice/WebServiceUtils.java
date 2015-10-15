@@ -63,8 +63,8 @@ public class WebServiceUtils {
         clearLoggingInterceptor(client.getInInterceptors());
         clearLoggingInterceptor(client.getOutInterceptors());
 
-        client.getEndpoint().getInInterceptors().add(new CxfLoggingInInterceptor(writer, transactionId));
-        client.getEndpoint().getOutInterceptors().add(new CxfLoggingOutInterceptor(writer, transactionId));
+        client.getEndpoint().getInInterceptors().add(new CxfLoggingInInterceptor(writer));
+        client.getEndpoint().getOutInterceptors().add(new CxfLoggingOutInterceptor(writer));
 
     }
 
