@@ -5,6 +5,7 @@
 
 
 <c:if test="${not empty callCentreNumber}">
+	<span class="callCentreNumberSection">
 		<h4>Do you need a hand?</h4>
 		<p class="larger">
 			Call <span class="noWrap callCentreNumber">${callCentreNumber}</span>
@@ -18,4 +19,5 @@
 				</a>
 			</div>
 		</c:if>
+	</span>
 </c:if>
