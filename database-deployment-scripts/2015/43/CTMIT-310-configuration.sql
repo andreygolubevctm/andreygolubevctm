@@ -46,6 +46,10 @@ INSERT INTO `ctm`.`configuration`
 VALUES
 ('jwtSecretKey','0','0',@vertical,'SFrE6xJ9kYusG2Pl7z-I8IiVPjHZfo-EGcWNOXSG');
 
+/*
+
 -- rollback
 DELETE from `ctm`.`configuration`
 WHERE configCode IN('jwtSecretKey','jwtEnabled','jwtSecondsUntilNextTokenR','jwtSecondsUntilNextTokenN', 'jwtSecondsUntilNextTokenA');
+
+*/
