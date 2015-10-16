@@ -5,11 +5,12 @@
 			.companyLogo{
 				width: 90px;
 				line-height: 18px;
-				float: left;
-				@media (@sm) {
+			  	@media (@sm) {
+				  float: right;
+				}
+				@media (@lg) {
 				  float: left;
 				}
-
 				@media (@xs-only) {
 					height: 45px;
 					position: absolute;
@@ -31,7 +32,7 @@
 		.price{
 			margin-top: 5px;
 			@media (@md) {
-			  max-width: 129px;
+			  max-width: 119px;
 			}
 			@media (@lg) {
 			  max-width: 170px;
@@ -86,7 +87,6 @@
 
 		&.horizontal{
 			overflow: hidden;
-
 
 			.price{
 				@media (@xs-only) {
