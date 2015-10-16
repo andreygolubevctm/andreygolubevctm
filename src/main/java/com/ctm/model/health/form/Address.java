@@ -10,6 +10,8 @@ public class Address {
 
     private String streetName;
 
+    private String suburb;
+
     private String suburbName;
 
     private String fullAddressLineOne;
@@ -19,6 +21,10 @@ public class Address {
     private String dpId;
 
     private String state;
+
+    private String unitSel;
+
+    private String unitShop;
 
     public String getType() {
         return type;
@@ -50,6 +56,14 @@ public class Address {
 
     public void setStreetName(String streetName) {
         this.streetName = streetName;
+    }
+
+    public String getSuburb() {
+        return suburb;
+    }
+
+    public void setSuburb(String suburb) {
+        this.suburb = suburb;
     }
 
     public String getSuburbName() {
@@ -90,5 +104,21 @@ public class Address {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getUnitSel() {
+        return unitSel;
+    }
+
+    public void setUnitSel(String unitSel) {
+        this.unitSel = unitSel;
+    }
+
+    public String getUnitShop() {
+        return unitShop;
+    }
+
+    public void setUnitShop(String unitShop) {
+        this.unitShop = unitShop;
     }
 }

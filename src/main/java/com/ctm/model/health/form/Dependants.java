@@ -26,6 +26,8 @@ public class Dependants {
 
     private Dependant dependant12;
 
+    private Integer income;
+
     public Dependant getDependant1() {
         return dependant1;
     }
@@ -120,5 +122,13 @@ public class Dependants {
 
     public void setDependant12(Dependant dependant12) {
         this.dependant12 = dependant12;
+    }
+
+    public Integer getIncome() {
+        return income;
+    }
+
+    public void setIncome(Integer income) {
+        this.income = income;
     }
 }
