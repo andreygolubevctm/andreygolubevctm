@@ -96,11 +96,15 @@
 			meerkat.modules.journeyProgressBar.render(true);
 		}
 	}
+	/* This is a temporary function for the split test by altering the layout. */
 	function adjustLayout () {
 		$('.col-sm-8').removeClass('col-sm-8').addClass('col-sm-9');
-		$('.col-sm-4').removeClass('col-sm-4').addClass('col-sm-3');
+		$('.col-sm-4')
+			.not("label[for*=health_healthCover]")
+			.add("label[for=health_healthCover_primary_dob]")
+			.add("label[for=health_healthCover_primary_cover]")
+			.removeClass('col-sm-4').addClass('col-sm-3');
 		$('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
-
 	}
 
 	function setJourneyEngineSteps(){

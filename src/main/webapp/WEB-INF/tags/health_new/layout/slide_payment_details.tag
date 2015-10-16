@@ -16,10 +16,10 @@
 
 			<layout:slide_content>
 
-				<ui:bubble variant="chatty">
+				<form_new:fieldset id="${name}_payment_text" legend="" className="instructional">
 					<h4>Almost done!</h4>
 					<p>Just fill in your payment details below using our secure form. These details will be provided to your new health fund.</p>
-				</ui:bubble>
+				</form_new:fieldset>
 
 				<health:payment xpath="${pageSettings.getVerticalCode()}/payment" />
 
