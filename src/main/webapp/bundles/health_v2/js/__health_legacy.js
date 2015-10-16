@@ -55,7 +55,7 @@ function resetRadio($_obj, value){
 		$_obj.find('input').prop('checked', false);
 		$_obj.find('label').removeClass('active');
 
-		if(value != null){
+		if(typeof value !== "undefined"){
 			$_obj.find('input[value='+ value +']').prop('checked', 'checked');
 			$_obj.find('input[value='+ value +']').parent().addClass("active");
 		}
@@ -423,7 +423,7 @@ var healthFunds = {
 		// main check for real value
 		if( effectiveDateString == ''){
 			return false;
-		};
+		}
 		var effectiveDate = returnDate(effectiveDateString);
 		var today = new Date();
 
@@ -529,6 +529,23 @@ var healthFunds = {
 		var day = dateObj.getDate();
 		var year = dateObj.getFullYear();
 		return healthFunds._getDayOfWeek(dateObj) + ", " + day + " " + healthFunds._getMonth(dateObj) + " " + year;
+	},
+
+	_setPolicyDate : function (dateObj, addDays) {
+
+		var dateSplit = dateObj.split('/');
+		var dateFormated = dateSplit[2]+'-'+dateSplit[1]+'-'+dateSplit[0];
+
+		var newdate = new Date(dateFormated);
+		newdate.setDate(newdate.getDate() + addDays);
+
+		var dd = ("0" + newdate.getDate()).slice(-2);
+		var mm = ("0" + (newdate.getMonth() + 1)).slice(-2);
+		var y = newdate.getFullYear();
+
+		var newPolicyDate = y + '-' + mm + '-' + dd;
+
+		return newPolicyDate;
 	}
 };
 
