@@ -5,14 +5,47 @@ import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletRequest;
+import com.ctm.model.settings.Vertical;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class SettingsService {
+
+
+	private HttpServletRequest request;
+
+	public SettingsService(HttpServletRequest request){
+		this.request = request;
+	}
+
+	/**
+	 * Used by jsp
+	 */
+	@SuppressWarnings("unused")
+	public SettingsService(){
+
+	}
+
+	/**
+	 * This method also checks to see if the vertical is enabled for the brand. (and by extension that the brand code is set)
+	 * Call this on vertical start pages like health_quote.jsp
+	 *
+	 * @param verticalCode this value is not case sensitive
+	 * @return
+	 * @throws DaoException
+	 * @throws ConfigSettingException
+	 * @throws BrandException if there is no brand code or it is not enabled for the vertical
+	 */
+	public Vertical getVertical(String verticalCode) throws DaoException {
+		// Check for the vertical enabled setting for this brand/vertical combination.
+		if(ApplicationService.isVerticalEnabledForBrand(request, verticalCode) == false){
+			throw new BrandException("Vertical not enabled for brand.");
+		}
+		Brand brand = ApplicationService.getBrandFromRequest(request);
+		PageSettings pageSettings = new PageSettings();
+		pageSettings.setBrand(brand);
+		return brand.getVerticalByCode(verticalCode);
+	}
 
 	/**
 	 * Sets the vertical code for the page request scope and loads the settings object.
@@ -56,7 +89,6 @@ public class SettingsService {
 
 		return pageSettings;
 	}
-
 
 
 	/**

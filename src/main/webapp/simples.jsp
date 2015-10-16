@@ -38,8 +38,6 @@
 		<layout:simples_page fullWidth="true">
 
 			<jsp:attribute name="head">
-				<script src="${assetUrl}framework/lib/js/Inspector-JSON-0.1.0/inspector-json.js"></script>
-				<link rel="stylesheet" href="${assetUrl}framework/lib/js/Inspector-JSON-0.1.0/inspector-json.css">
 			</jsp:attribute>
 
 			<jsp:body>

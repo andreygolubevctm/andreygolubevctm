@@ -8,17 +8,17 @@
 	<script>
 		window.Modernizr
 		|| document
-				.write('<script src="../../../main/webapp/framework/lib/js/modernizr-2.8.3.min.js">\x3C/script>')
+				.write('<script src="../../../main/webapp/assets/js/bundles/plugins/modernizr.min.js">\x3C/script>')
 	</script>
 
-	<script src="../../../main/webapp/framework/lib/js/underscore-1.8.3.min.js"></script>
+	<script src="../../../main/webapp/assets/libraries/underscore-1.8.3.min.js"></script>
 
 	<!-- qunit -->
 	<link rel="stylesheet" href="vendor/qunit.css" media="screen">
 	<script src="vendor/qunit.js"></script>
 
 	<script>
-		// See https://github.com/axemclion/grunt-saucelabs#test-result-details-with-qunit
+		// See https://github.com/axemclion/grunt-saucelabs#test-+result-details-with-qunit
 		QUnit.done(function(results) {
 			window.global_test_results = results
 		});

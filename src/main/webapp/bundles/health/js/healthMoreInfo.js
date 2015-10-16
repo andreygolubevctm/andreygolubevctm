@@ -262,6 +262,14 @@
         $this.parents(".result").removeClass("faded");
         // replace clicked button with close button
         $this.removeClass("btn-more-info").addClass("btn-close-more-info");
+
+        var data = {
+            actionStep: 'Health More Info'
+        };
+        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+            method: 'trackQuoteForms',
+            object: data
+        });
     }
 
     function onAfterHideTemplate() {

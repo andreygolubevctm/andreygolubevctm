@@ -18,7 +18,8 @@ var less = require("gulp-less"),
     sourcemaps = require("gulp-sourcemaps"),
     plumber = require("gulp-plumber"),
     notify = require("gulp-notify"),
-    fs = require("fs"),
+    fs = require("graceful-fs-extra"),
+    runSequence = require('run-sequence'),
     path = require("path");
 
 var EventEmitter = require("events").EventEmitter,
@@ -47,8 +48,7 @@ function LessTasks(gulp) {
 
         // Functionality for "extension bundles"
         // replaceImports builds a list of files to replace the paths of in the supplied build file
-        var replaceImports = [],
-            useParentBundleBuild = false;
+        var replaceImports = [];
 
         if (typeof bundles.collection[bundle] !== "undefined" && typeof bundles.collection[bundle].extends !== "undefined") {
             replaceImports = bundles.getBundleFiles(bundle, "less", null, false);
@@ -56,7 +56,6 @@ function LessTasks(gulp) {
             // Update the glob to point to the parent bundle if no build file is present
             if (replaceImports.length && replaceImports.indexOf("build.less") === -1) {
                 glob = glob.replace("bundles\\" + bundle, "bundles\\" + bundles.collection[bundle].extends);
-                useParentBundleBuild = true;
             }
         }
 
@@ -112,19 +111,27 @@ function LessTasks(gulp) {
                     if (replaceImports.length) {
                         var contents = file.contents.toString();
 
-                        if (useParentBundleBuild) {
-                            // If using the parent build, we should update the import paths to be relative
-                            // to the parent bundle
-                            for (var i = 0; i < replaceImports.length; i++) {
-                                contents = contents.replace("\"" + replaceImports[i], "\"../../" + bundle + "/less/" + replaceImports[i])
-                            }
-                        } else {
-                            // Use import paths relative to the extended bundle
-                            contents = contents.replace(/(\")([a-z])/g, "\"../../" + bundles.collection[bundle].extends + "/less/$2");
+                        contents = contents.split(";").map(function(line) {
+                            if(line.match(/(webapp)/)) {
+                                var matchAt = "bundles",
+                                    parsedLine = line
+                                        .replace(/\\/g, "/")
+                                        .substring(line.indexOf(matchAt) + matchAt.length, line.length)
+                                        .replace("/", "");
 
-                            for (var i = 0; i < replaceImports.length; i++) {
-                                contents = contents.replace("\"../../" + bundles.collection[bundle].extends + "/less/" + replaceImports[i], "\"" + replaceImports[i])
+                                line = "@import \"../../" + parsedLine;
                             }
+
+                            return line;
+                        }).join(";\r\n").replace(/\s{2,}/g, "\r\n");
+
+                        var parentBundlePath = "\"../../" + bundles.collection[bundle].extends + "/less/";
+
+                        // Use import paths relative to the extended bundle
+                        contents = contents.replace(/(\")([a-z])/g, parentBundlePath + "$2");
+
+                        for (var i = 0; i < replaceImports.length; i++) {
+                            contents = contents.replace(parentBundlePath + replaceImports[i], "\"" + replaceImports[i]);
                         }
 
                         file.contents = new Buffer(contents);
@@ -210,7 +217,18 @@ function LessTasks(gulp) {
         })(bundle);
     }
 
-    gulp.task("less", lessTasks);
+    // Because there are so damn many LESS tasks, we split them up and only run a few concurrently at a time
+    gulp.task("less", function(callback){
+        var tasksArray = [],
+            chunkSize = 5;
+
+        while(lessTasks.length > 0)
+            tasksArray.push(lessTasks.splice(0, chunkSize));
+
+        tasksArray.push(callback);
+
+        runSequence.apply(this, tasksArray);
+    });
 };
 
 module.exports = LessTasks;

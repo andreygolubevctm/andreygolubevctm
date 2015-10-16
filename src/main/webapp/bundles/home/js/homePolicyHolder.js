@@ -11,6 +11,7 @@
 	var moduleEvents = {}, steps = null;
 
 	/* Variables */
+	var initialised = false;
 	var elements = {
 			name:						'home_policyHolder',
 			anyoneOlder:				'home_policyHolder_anyoneOlder',
@@ -113,9 +114,10 @@
 	}
 	/* main entrypoint for the module to run first */
 	function initHomePolicyHolder() {
-		log("[HomePolicyHolder] Initialised"); //purely informational
-		applyEventListeners();
-		$(document).ready(function() {
+		if(!initialised) {
+			initialised = true;
+			log("[HomePolicyHolder] Initialised"); //purely informational
+			applyEventListeners();
 			togglePolicyHolderFields(0);
 			toggleOldestPerson(0);
 			toggleOver55(0);
@@ -123,7 +125,7 @@
 			if ($("#home_policyHolder_jointFirstName").val() !== "" || $("#home_policyHolder_jointLastName").val() !== "" || $("#home_policyHolder_jointDob").val() !== "" || $("#home_policyHolder_jointDob").val() !== "") {
 				elements.toggleJointPolicyHolder.click();
 			}
-		});
+		}
 	}
 
 	meerkat.modules.register('homePolicyHolder', {

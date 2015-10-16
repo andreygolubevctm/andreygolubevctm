@@ -24,6 +24,8 @@
 /src/main/frontend/node_modules
 /src/main/pipeline/node
 /src/main/pipeline/node_modules
+/src/test/pipeline/node
+/src/test/pipeline/node_modules
 /src/test/frontend/node
 /src/test/frontend/node_modules
 /src/test/frontend/npm-debug.log
