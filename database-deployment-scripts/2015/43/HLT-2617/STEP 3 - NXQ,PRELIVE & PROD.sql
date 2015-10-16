@@ -6,12 +6,6 @@ SET @providerID = 3;
 
 /* -- BEGIN TEST -- */
 
-TRUNCATE `ctm`.`export_product_master`;
-TRUNCATE `ctm`.`export_product_properties_ext`;
-TRUNCATE `ctm`.`export_product_properties`;
-TRUNCATE `ctm`.`export_product_properties_search`;
-TRUNCATE `ctm`.`export_product_capping_exclusions`;
-
 /* Test the products count matches expected */
 SELECT 'Export', count(epm.productId) AS 'Total'
 FROM `ctm`.`export_product_master` epm
@@ -48,7 +42,7 @@ WHERE productId IN
 /* Disable current products product master */
 UPDATE `ctm`.`product_master` pm
 SET STATUS = 'X'
-WHERE pm.EffectiveStart = '2015-10-01'
+WHERE pm.EffectiveStart = @EffectiveStart
 AND pm.EffectiveEnd = @EffectiveEnd
 AND providerID = @providerID
 AND Status != 'X'
