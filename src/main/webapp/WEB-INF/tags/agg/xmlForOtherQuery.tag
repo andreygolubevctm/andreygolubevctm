@@ -28,7 +28,8 @@
 
 	<c:set var="productCount" value="0" />
 
-	<jsp:useBean id="tokenService" class="com.ctm.services.TokenService"/>
+	<jsp:useBean id="tokenServiceFactory" class="com.ctm.services.email.token.EmailTokenServiceFactory"/>
+	<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
 	<c:set var="emailVar" value="${tokenService.insertEmailTokenRecord(tranId, hashedEmail, pageSettings.getBrandId(), emailTokenType, 'load')}" />
 
 	<c:forEach var="ranking" items="${rankings}" varStatus="status">

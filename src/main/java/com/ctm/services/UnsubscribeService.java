@@ -2,7 +2,10 @@ package com.ctm.services;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.model.EmailMaster;
+import com.ctm.services.email.token.EmailTokenService;
+import com.ctm.services.email.token.EmailTokenServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,22 +46,20 @@ public class UnsubscribeService {
 	 * @param email
 	 * @param isDisc
 	 * @param pageSettings
-	 * @param request
 	 * @return
 	 */
 	public Unsubscribe getUnsubscribeDetails(String vertical, int  brandId,
-			String hashedEmail, String email, boolean isDisc, PageSettings pageSettings, HttpServletRequest request, String token) {
+			String hashedEmail, String email, boolean isDisc, PageSettings pageSettings, String token, EmailTokenService emailTokenService) throws ConfigSettingException {
 		Unsubscribe unsubscribe = new Unsubscribe();
 
 		if(token != null && !token.isEmpty()) {
-			TokenService tokenService = new TokenService();
-			EmailMaster emailMaster = tokenService.getEmailAddressDetails(token);
+			EmailMaster emailMaster = emailTokenService.getEmailAddressDetails(token);
 
 			if(emailMaster != null) {
 				unsubscribe.setVertical(emailMaster.getVertical());
 				unsubscribe.setEmailDetails(emailMaster);
 			} else {
-				LOGGER.info("Unsubscribe token has expired {}", kv("parameters", tokenService.decryptToken(token)));
+				LOGGER.info("Unsubscribe token has expired {}", kv("parameters", emailTokenService.decryptToken(token)));
 			}
 
 		} else {

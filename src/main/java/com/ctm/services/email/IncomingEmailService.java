@@ -13,6 +13,8 @@ import com.ctm.model.results.ResultProperty;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.SettingsService;
 import com.ctm.services.TransactionAccessService;
+import com.ctm.services.email.token.EmailTokenService;
+import com.ctm.services.email.token.EmailTokenServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +34,6 @@ public class IncomingEmailService {
 	/**
 	 * Create a URL for viewing a confirmation that is brand and vertical aware.
 	 *
-	 * @param confirmationKey
 	 * @return confirmationUrl
 	 */
 	public String getRedirectionUrl(IncomingEmail emailData) {
@@ -60,7 +61,8 @@ public class IncomingEmailService {
 				// Get latest results properties for specific product
 				ArrayList<ResultProperty> resultData = resultsDao.getResultPropertiesForTransaction(emailData.getTransactionId(), emailData.getProductId());
 
-				EmailUrlService emailUrlService = new EmailUrlService(pageSettings.getVertical().getType(), pageSettings.getBaseUrl());
+				EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(pageSettings);
+				EmailUrlService emailUrlService = new EmailUrlService(pageSettings.getVertical().getType(), pageSettings.getBaseUrl(), emailTokenService);
 
 				Boolean flagAsExpired = false;
 

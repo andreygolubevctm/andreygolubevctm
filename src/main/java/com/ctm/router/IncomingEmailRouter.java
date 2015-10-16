@@ -1,14 +1,17 @@
 package com.ctm.router;
 
 import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
 import com.ctm.model.email.EmailMode;
 import com.ctm.model.email.IncomingEmail;
 import com.ctm.model.settings.PageSettings;
+import com.ctm.model.settings.Vertical;
 import com.ctm.services.AccessTouchService;
 import com.ctm.services.SettingsService;
-import com.ctm.services.TokenService;
+import com.ctm.services.email.token.EmailTokenService;
 import com.ctm.services.email.EmailUrlService;
 import com.ctm.services.email.IncomingEmailService;
+import com.ctm.services.email.token.EmailTokenServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,8 +44,14 @@ public class IncomingEmailRouter extends HttpServlet {
 
 		String token = request.getParameter("token");
 		if(token != null) {
-			TokenService tokenService = new TokenService();
-			emailData = tokenService.getIncomingEmailDetails(request.getParameter("token"));
+			PageSettings settings = null;
+			try {
+				settings = SettingsService.getPageSettings(0, "GENERIC");
+				EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(settings);
+				emailData = emailTokenService.getIncomingEmailDetails(request.getParameter("token"));
+			} catch (ConfigSettingException e) {
+				LOGGER.error("Error getting base url {}", kv("settings", settings));
+			}
 		} else {
 			emailData = new IncomingEmail();
 			if (request.getParameter("type") != null) {
@@ -88,20 +97,20 @@ public class IncomingEmailRouter extends HttpServlet {
 			response.sendRedirect(emailUrl);
 		} else {
 			PageSettings settings = null;
-
-			TokenService tokenService = new TokenService();
-			Map<String, String> params = tokenService.decryptToken(token);
-
-			String styleCodeId = params.get("styleCodeId");
-			if( styleCodeId!= null && !styleCodeId.isEmpty()) {
-				settings = SettingsService.getPageSettings(Integer.parseInt(styleCodeId), "GENERIC");
-			} else {
-				settings = SettingsService.getPageSettings(0, "GENERIC");
-			}
 			try {
+				EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(SettingsService.getPageSettings(0, "GENERIC"));
+				Map<String, String> params = emailTokenService.decryptToken(token);
+
+				String styleCodeId = params.get("styleCodeId");
+				if( styleCodeId!= null && !styleCodeId.isEmpty()) {
+					settings = SettingsService.getPageSettings(Integer.parseInt(styleCodeId), "GENERIC");
+				} else {
+					settings = SettingsService.getPageSettings(0, "GENERIC");
+				}
+
 				String brandRootUrl = settings.getBaseUrl();
 
-				boolean hasLogin = tokenService.hasLogin(request.getParameter("token"));
+				boolean hasLogin = emailTokenService.hasLogin(request.getParameter("token"));
 				if(hasLogin) {
 					LOGGER.info("Token has expired and user can login. Redirecting to retrieve_quotes.jsp {}", kv("parameters", params));
 					response.sendRedirect(brandRootUrl + "retrieve_quotes.jsp");

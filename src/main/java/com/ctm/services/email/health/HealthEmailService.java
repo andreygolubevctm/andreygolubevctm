@@ -178,7 +178,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(emailBrochureRequest.transactionId));
 			emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
 			emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
-			emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, "bestprice");
+			emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, "brochures");
 			emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "load");
 			emailParameters.put(EmailUrlService.VERTICAL, "health");
 			emailParameters.put(EmailUrlService.PRODUCT_ID, productId);

@@ -20,6 +20,8 @@ import com.ctm.services.email.mapping.EmailDetailsMappings;
 import com.ctm.services.email.mapping.HealthEmailDetailMappings;
 import com.ctm.services.email.mapping.LifeEmailDetailMappings;
 import com.ctm.services.email.mapping.TravelEmailDetailMappings;
+import com.ctm.services.email.token.EmailTokenService;
+import com.ctm.services.email.token.EmailTokenServiceFactory;
 import com.ctm.services.email.travel.TravelEmailService;
 import com.disc_au.web.go.Data;
 
@@ -96,7 +98,8 @@ public class EmailServiceFactory {
 			throws SendEmailException {
 		EmailUrlService urlService;
 		try {
-			urlService = new EmailUrlService(vertical, pageSettings.getBaseUrl());
+			EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(pageSettings);
+			urlService = new EmailUrlService(vertical, pageSettings.getBaseUrl(), emailTokenService);
 		} catch (EnvironmentException | VerticalException
 				| ConfigSettingException e) {
 			throw new SendEmailException("failed to create UnsubscribeService", e);

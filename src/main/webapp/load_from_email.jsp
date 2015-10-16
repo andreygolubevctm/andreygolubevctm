@@ -5,7 +5,8 @@
 
 <c:choose>
 	<c:when test="${not empty param.token}">
-		<jsp:useBean id="tokenService" class="com.ctm.services.TokenService"/>
+		<jsp:useBean id="tokenServiceFactory" class="com.ctm.services.email.token.EmailTokenServiceFactory"/>
+		<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstanceAlt(pageContext.getRequest())}" />
 
 		<c:set var="parametersMap" value="${tokenService.decryptToken(param.token)}"/>
 		<c:set var="emailData" value="${tokenService.getIncomingEmailDetails(param.token)}"/>

@@ -4,7 +4,7 @@ import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.email.IncomingEmail;
 import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.services.TokenService;
+import com.ctm.services.email.token.EmailTokenService;
 import com.ctm.utils.FormDateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +22,7 @@ public class EmailUrlService {
 
 	private VerticalType vertical;
 	private String baseUrl;
+	private EmailTokenService emailTokenService;
 
 	public static final String TRANSACTION_ID = "transactionId";
 	public static final String EMAIL_ID = "emailId";
@@ -36,9 +37,10 @@ public class EmailUrlService {
 	public static final String STYLE_CODE_ID = "styleCodeId";
 	public static final String EMAIL_ADDRESS = "emailAddress";
 
-	public EmailUrlService(VerticalType vertical, String baseUrl) {
+	public EmailUrlService(VerticalType vertical, String baseUrl, EmailTokenService emailTokenService) {
 		this.vertical = vertical;
 		this.baseUrl = baseUrl;
+		this.emailTokenService = emailTokenService;
 	}
 
 	/**
@@ -46,9 +48,8 @@ public class EmailUrlService {
 	 *
 	 * @param params
 	 */
-	public String getUnsubscribeUrl(Map<String, String> params) {
-		TokenService tokenService = new TokenService();
-		String token = tokenService.generateToken(params);
+	public String getUnsubscribeUrl(Map<String, String> params) throws ConfigSettingException {
+		String token = emailTokenService.generateToken(params);
 		return baseUrl + "unsubscribe.jsp?token=" + token;
 	}
 
@@ -60,13 +61,12 @@ public class EmailUrlService {
 	public String getApplyUrl(EmailMaster emailDetails, Map<String, String> params) throws ConfigSettingException {
 		params.put(EmailUrlService.EMAIL_ADDRESS, createEmailParam(emailDetails));
 
-		TokenService tokenService = new TokenService();
-		String token = tokenService.generateToken(params);
+		String token = emailTokenService.generateToken(params);
 
 		return baseUrl + "load_from_email.jsp?token=" + token;
 	}
 
-	private String createVericalParam()  {
+	private String createVerticalParam()  {
 		return "vertical=" + vertical.getCode().toLowerCase();
 	}
 
@@ -79,7 +79,7 @@ public class EmailUrlService {
 	public void updateWithLoadQuoteUrl(StringBuilder redirectionUrl, IncomingEmail emailData) {
 		redirectionUrl.append(baseUrl);
 		redirectionUrl.append("load_from_email.jsp?action=load&id=" + emailData.getTransactionId());
-		redirectionUrl.append("&hash=" + emailData.getHashedEmail() + "&" + createVericalParam());
+		redirectionUrl.append("&hash=" + emailData.getHashedEmail() + "&" + createVerticalParam());
 		if(emailData.getEmailType() != null) {
 			redirectionUrl.append("&type=" + emailData.getEmailType());
 		}

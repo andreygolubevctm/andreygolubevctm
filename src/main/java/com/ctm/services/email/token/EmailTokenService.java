@@ -1,12 +1,13 @@
-package com.ctm.services;
+package com.ctm.services.email.token;
 
 import com.ctm.dao.EmailMasterDao;
-import com.ctm.dao.TokenDao;
+import com.ctm.dao.EmailTokenDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.email.EmailMode;
 import com.ctm.model.email.IncomingEmail;
 import com.ctm.security.StringEncryption;
+import com.ctm.services.FatalErrorService;
 import com.ctm.services.email.EmailUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +21,17 @@ import static com.ctm.logging.LoggingArguments.kv;
 /**
  * Created by voba on 14/08/2015.
  */
-public class TokenService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TokenService.class);
+public class EmailTokenService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailTokenService.class);
+    private String encryptionKey;
+    private EmailTokenDao emailTokenDao;
+    private EmailMasterDao emailMasterDao;
 
-    private static final String encryptionKey = "7T7XVh0UCtM7JNzcZX1e-2";
+    public EmailTokenService(String encryptionKey, EmailTokenDao emailTokenDao, EmailMasterDao emailMasterDao) {
+        this.encryptionKey = encryptionKey;
+        this.emailTokenDao = emailTokenDao;
+        this.emailMasterDao = emailMasterDao;
+    }
 
     public String generateToken(Map<String, String> params) {
         return generateToken(params, true);
@@ -69,7 +77,6 @@ public class TokenService {
             if(createEmailTokenRecord) {
                 emailMaster = insertEmailTokenRecord(transactionId, hashedEmail, styleCodeId, emailTokenType, emailTokenAction);
             } else {
-                EmailMasterDao emailMasterDao = new EmailMasterDao();
                 emailMaster = emailMasterDao.getEmailMasterFromHashedEmail(hashedEmail, styleCodeId);
             }
             params.put(EmailUrlService.EMAIL_ID, Integer.toString(emailMaster.getEmailId()));
@@ -101,11 +108,9 @@ public class TokenService {
     }
 
     public EmailMaster insertEmailTokenRecord(Long transactionId, String hashedEmail, int styleCodeId, String emailTokenType, String action) throws DaoException, GeneralSecurityException {
-        EmailMasterDao emailMasterDao = new EmailMasterDao();
         EmailMaster emailMaster = emailMasterDao.getEmailMasterFromHashedEmail(hashedEmail, styleCodeId);
 
-        TokenDao tokenDao = new TokenDao();
-        tokenDao.addEmailToken(transactionId, new Long(emailMaster.getEmailId()), emailTokenType, action);
+        emailTokenDao.addEmailToken(transactionId, new Long(emailMaster.getEmailId()), emailTokenType, action);
 
         return emailMaster;
     }
@@ -128,27 +133,23 @@ public class TokenService {
     public EmailMaster getEmailAddressDetails(String token) {
         Map<String, String> map = decryptToken(token);
 
-        TokenDao tokenDao = new TokenDao();
-
         Long transactionId = Long.parseLong(map.get(EmailUrlService.TRANSACTION_ID));
         Long emailId = Long.parseLong(map.get(EmailUrlService.EMAIL_ID));
         String emailTokenType = map.get(EmailUrlService.EMAIL_TOKEN_TYPE);
         String emailTokenAction = map.get(EmailUrlService.EMAIL_TOKEN_ACTION);
 
-        return tokenDao.getEmailDetails(transactionId, emailId, emailTokenType, emailTokenAction);
+        return emailTokenDao.getEmailDetails(transactionId, emailId, emailTokenType, emailTokenAction);
     }
 
     public IncomingEmail getIncomingEmailDetails(String token) {
         Map<String, String> map = decryptToken(token);
 
-        TokenDao tokenDao = new TokenDao();
-
         Long transactionId = Long.parseLong(map.get(EmailUrlService.TRANSACTION_ID));
         Long emailId = Long.parseLong(map.get(EmailUrlService.EMAIL_ID));
         String emailTokenType = map.get(EmailUrlService.EMAIL_TOKEN_TYPE);
         String emailTokenAction = map.get(EmailUrlService.EMAIL_TOKEN_ACTION);
 
-        EmailMaster emailMaster = tokenDao.getEmailDetails(transactionId, emailId, emailTokenType, emailTokenAction);
+        EmailMaster emailMaster = emailTokenDao.getEmailDetails(transactionId, emailId, emailTokenType, emailTokenAction);
 
         IncomingEmail incomingEmail = null;
         if(emailMaster != null) {
@@ -166,13 +167,11 @@ public class TokenService {
     public boolean hasLogin(String token) {
         Map<String, String> map = decryptToken(token);
 
-        TokenDao tokenDao = new TokenDao();
-
         Long transactionId = Long.parseLong(map.get(EmailUrlService.TRANSACTION_ID));
         Long emailId = Long.parseLong(map.get(EmailUrlService.EMAIL_ID));
         String emailTokenType = map.get(EmailUrlService.EMAIL_TOKEN_TYPE);
         String emailTokenAction = map.get(EmailUrlService.EMAIL_TOKEN_ACTION);
 
-        return tokenDao.hasLogin(transactionId, emailId, emailTokenType, emailTokenAction);
+        return emailTokenDao.hasLogin(transactionId, emailId, emailTokenType, emailTokenAction);
     }
 }

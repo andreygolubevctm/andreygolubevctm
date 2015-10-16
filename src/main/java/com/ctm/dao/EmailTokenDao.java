@@ -17,12 +17,12 @@ import static com.ctm.logging.LoggingArguments.kv;
 /**
  * Created by voba on 13/08/2015.
  */
-public class TokenDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TokenDao.class);
+public class EmailTokenDao {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailTokenDao.class);
 
     private final SimpleDatabaseConnection dbSource;
 
-    public TokenDao() {
+    public EmailTokenDao() {
         this.dbSource = new SimpleDatabaseConnection();
     }
 
