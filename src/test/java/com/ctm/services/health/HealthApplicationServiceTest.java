@@ -2,6 +2,7 @@ package com.ctm.services.health;
 
 import com.ctm.dao.health.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
+import com.ctm.model.Provider;
 import com.ctm.model.Touch;
 import com.ctm.model.health.Frequency;
 import com.ctm.model.health.HealthPricePremium;
@@ -21,7 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
@@ -92,12 +95,12 @@ public class HealthApplicationServiceTest {
 
 	@Test
 	public void testShouldRespondWithValidationResponse() throws  Exception {
-		assertEquals("{\"success\":false,\"pendingID\":\""+ sessionId + "-" + transactionId + "\",\"error\":{\"code\":\"Token Validation\",\"original\":\"Token Validation\"}}" ,healthApplicationService.createTokenValidationFailedResponse(transactionId, sessionId));
+		assertEquals("{\"success\":false,\"pendingID\":\"" + sessionId + "-" + transactionId + "\",\"error\":{\"code\":\"Token Validation\",\"original\":\"Token Validation\"}}", healthApplicationService.createTokenValidationFailedResponse(transactionId, sessionId));
 	}
 
 
 	@Test
-	public void testShouldGetIsValidToken() throws JspException {
+	public void shouldInitToken() throws JspException {
 		when(session.getAttribute("callCentre")).thenReturn(false);
 
 		Long transactionId= 1000L;
@@ -110,10 +113,6 @@ public class HealthApplicationServiceTest {
 		healthApplicationService.setUpApplication(setupData(), request, changeOverDate);
 		assertTrue(healthApplicationService.isValidToken());
 
-		when(requestService.getToken()).thenReturn("invalidToken");
-		when(tokenService.validateToken(anyObject())).thenReturn(false);
-		healthApplicationService.setUpApplication(setupData(), request, changeOverDate);
-		assertFalse(healthApplicationService.isValidToken());
 	}
 
 	@Test
@@ -124,8 +123,8 @@ public class HealthApplicationServiceTest {
 		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult =  (String) data.get("health/application/paymentFreq");
-		assertEquals("1707.6000000000001" ,paymentAmtResult);
-		assertEquals("142.3" ,paymentFreqResult);
+		assertEquals("1707.6000000000001", paymentAmtResult);
+		assertEquals("142.3", paymentFreqResult);
 	}
 
 	@Test
@@ -232,6 +231,18 @@ public class HealthApplicationServiceTest {
 	private void setChangeOverDate() {
 		String changeOverDateString = "01/04/2015";
 		this.changeOverDate = FormDateUtils.parseDateFromForm(changeOverDateString);
+	}
+
+	@Test
+	public void shouldGetAllProviders() throws Exception {
+		int styleCode = 0;
+		List<Provider> providerList = new ArrayList<>();
+		Provider provider = new Provider();
+		providerList.add(provider);
+		when(healthPriceDao.getAllProviders(styleCode)).thenReturn(providerList);
+		List<Provider> result = healthApplicationService.getAllProviders(styleCode);
+		assertEquals(providerList, result);
+
 	}
 
 }
