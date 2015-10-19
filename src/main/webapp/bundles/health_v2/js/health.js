@@ -1087,7 +1087,7 @@
 
 					meerkat.modules.leavePageWarning.disable();
 
-					var redirectURL = "health_confirmation.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+"&token=";
+					var redirectURL = "health_confirmation_v2.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+"&token=";
 					var extraParameters = "";
 
 					if (meerkat.site.utm_source !== '' && meerkat.site.utm_medium !== '' && meerkat.site.utm_campaign !== ''){

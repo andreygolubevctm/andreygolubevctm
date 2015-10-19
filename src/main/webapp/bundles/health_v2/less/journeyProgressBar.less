@@ -62,25 +62,28 @@
 		outline: none;
 	  }
 	}
-	.complete {
-	  background-color: @main-bg-colour;
-
-	  &:hover {
-		background-color: @journeyProgressBar-color-current;
-		border-color: darken(@journeyProgressBar-color-current, 10%);
-		color: white;
-		&:before {
-		  color: white;
-		}
-	  }
-	  a, div {
+	&:not(.complete) { /* Top level UL .complete shows on confirmation page which doesnt need hover */
+	  .complete {
 		&:hover {
+		  background-color: @journeyProgressBar-color-current;
+		  border-color: darken(@journeyProgressBar-color-current, 10%);
 		  color: white;
 		  &:before {
 			color: white;
 		  }
 		}
+		a, div {
+		  &:hover {
+			color: white;
+			&:before {
+			  color: white;
+			}
+		  }
+		}
 	  }
+	}
+	.complete {
+	  background-color: @main-bg-colour;
 	}
 	.current {
 	  color: white;
