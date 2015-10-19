@@ -15,6 +15,7 @@ import com.ctm.services.SettingsService;
 import com.ctm.utils.FormDateUtils;
 import com.ctm.web.validation.health.HealthApplicationTokenValidation;
 import com.disc_au.web.go.Data;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -92,10 +93,15 @@ public class HealthApplicationServiceTest {
 		return data;
 	}
 
-
 	@Test
 	public void testShouldRespondWithValidationResponse() throws  Exception {
-		assertEquals("{\"result\":{\"success\":false,\"pendingID\":\"sessionId-1000\",\"errors\":{\"error\":{\"code\":\"Token Validation\",\"original\":\"Token Validation\"}}}}", healthApplicationService.createTokenValidationFailedResponse(transactionId, sessionId));
+		String response = healthApplicationService.createTokenValidationFailedResponse(transactionId, sessionId);
+		JSONObject responseJson = new JSONObject(response);
+		JSONObject result =(JSONObject)responseJson.get("result");
+		JSONObject errors =(JSONObject)result.get("errors");
+		JSONObject error =(JSONObject) errors.get("error");
+		String code = (String)error.get("code");
+		assertEquals(code, "Token Validation");
 	}
 
 
