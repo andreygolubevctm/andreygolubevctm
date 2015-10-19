@@ -257,17 +257,17 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 			<%-- Was not successful --%>
 							<%-- If no fail has been recorded yet --%>
 			<x:otherwise>
-								<c:choose>
-									<%-- if online user record a join --%>
-									<c:when test="${empty callCentre && empty errorMessage}">
-										<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
-									</c:when>
-									<%-- else just record a failure --%>
-									<c:when test="${empty errorMessage}">
-					<core:transaction touch="F" comment="Application success=false" noResponse="true" productId="${productId}"/>
-										${go:XMLtoJSON(resultXml)}
-									</c:when>
-								</c:choose>
+				<c:choose>
+					<%-- if online user record a join --%>
+					<c:when test="${empty callCentre && empty errorMessage}">
+						<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
+					</c:when>
+					<%-- else just record a failure --%>
+					<c:when test="${empty errorMessage}">
+						<core:transaction touch="F" comment="Application success=false" noResponse="true" productId="${productId}"/>
+						${go:XMLtoJSON(resultXml)}
+					</c:when>
+				</c:choose>
 			</x:otherwise>
 		</x:choose>
 		${logger.trace('Health application complete. {},{}', log:kv('resultXml', resultXml),log:kv( 'debugXml', debugXml))}
@@ -290,5 +290,5 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 		</c:choose>
 	</c:otherwise>
 		</c:choose>
-	</c:otherwise>
+		</c:otherwise>
 </c:choose>

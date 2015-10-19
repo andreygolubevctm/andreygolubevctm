@@ -35,9 +35,8 @@
 .btn-modal {
 	&:extend(.btn-email all);
 }
-.btn-next, .btn-cta, .btn-save, .btn-cancel {
+.btn-next, .btn-cta, .btn-save, .btn-cancel, .btn-download {
   border-radius: 22px;
-
 }
 .slideAction,
 .confirm-step {
@@ -64,6 +63,16 @@
 	font-size: 40px;
 	margin-left: 20px;
 	margin-top: 13px;
+  }
+  &.confirmation,
+  .confirmation {
+	.content{
+	  margin-left: 20px;
+	}
+	h2 {
+	  font-size:24px;
+	  margin-left: 0px;
+	}
   }
   .well-chatty {
 	margin-left: 14px;
@@ -100,5 +109,9 @@
 	  margin-top: -30px;
 	}
   }
+}
+
+#confirmation.more-info-content {
+  background-color: @main-bg-colour;
 }
 

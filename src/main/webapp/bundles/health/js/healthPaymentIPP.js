@@ -49,7 +49,6 @@ Process:
 	}
 
 	function launch() {
-		//console.log('launch');
 
 		// Check that the precursor is ok
 		if ($maskedNumber.is(':visible') && isValid()) {
@@ -62,7 +61,6 @@ Process:
 	}
 
 	function authorise() {
-		//console.log('authorise');
 
 		if (ajaxInProgress === true || isModalCreated()) {
 			return false;
@@ -92,7 +90,6 @@ Process:
 	}
 
 	function createModalContent(data) {
-		//console.log('createModalContent');
 
 		if (isModalCreated()) {
 			return false;
@@ -114,7 +111,6 @@ Process:
 	}
 
 	function openModal(htmlContent) {
-		//console.log('openModal');
 
 		launchTime = new Date().getTime();
 

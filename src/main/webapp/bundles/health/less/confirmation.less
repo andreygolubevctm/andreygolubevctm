@@ -1,6 +1,8 @@
 /**********************************************
 	LESS PORTED FROM core/confirmation.less
 **********************************************/
+@success-color: #0db14b;
+@pending-color: #0db14b;
 
 #health_confirmation-warning {
 	ul {
@@ -10,4 +12,15 @@
 			padding-bottom: 0px;
 		}
 	}
+}
+.confirmation {
+  .success {
+	color: @success-color;
+  }
+  .pending {
+	color: @pending-color;
+  }
+  .providerName {
+	color: @success-color;
+  }
 }

@@ -143,13 +143,10 @@
 				extraHeights += $('header .dynamicTopHeaderContent').outerHeight();
 				extraHeights += $('header .navbar-header').outerHeight();
 
-				//console.log('header', $('header .navbar-header').outerHeight());
 
 				extraHeights += $dropdown.find('.activator').outerHeight();
-				//console.log('activator', $dropdown.find('.activator').outerHeight());
 
 				$dropdown.prevAll('li:visible').each(function () {
-					//console.log($(this).outerHeight(), this);
 
 					extraHeights += $(this).outerHeight();
 				});
@@ -165,9 +162,6 @@
 
 			// Find how tall the scrollable area is
 			extraHeights += $dropdown.find('form').outerHeight() - $dropdown.find('.scrollable').outerHeight();
-
-			//log('extraHeights:' + extraHeights);
-			//log('form height:' + $dropdown.find('form').outerHeight());
 
 			// Calc the maxheight of the scrollable area
 			maxHeight = viewportHeight - extraHeights;
