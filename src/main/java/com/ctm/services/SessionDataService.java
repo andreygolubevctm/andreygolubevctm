@@ -349,7 +349,7 @@ public class SessionDataService {
 	public long getClientSessionTimeoutSeconds(HttpServletRequest request) {
 		long timeout = getClientSessionTimeout(request);
 		if(timeout == -1){
-			return -1;
+			return getClientDefaultExpiryTimeoutSeconds(request);
 		} else {
 			return timeout /1000;
 		}
