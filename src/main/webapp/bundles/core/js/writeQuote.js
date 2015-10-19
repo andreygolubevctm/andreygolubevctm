@@ -245,7 +245,6 @@
 			cache: false,
 			errorLevel: triggerFatalError ? "fatal" : "silent",
 			onSuccess:  function writeQuoteSuccess(result){
-				meerkat.modules.verificationToken.set(result);
 				if( typeof callback === "function" ) callback(result);
 			}
 		});
