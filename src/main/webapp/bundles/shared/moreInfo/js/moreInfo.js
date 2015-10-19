@@ -158,14 +158,6 @@
         var productId = $this.attr("data-productId"),
             showApply = $this.hasClass('more-info-showapply');
 
-        var data = {
-            actionStep: 'Health More Info'
-        };
-        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-            method:	'trackQuoteForms',
-            object:	data
-        });
-
         setProduct(Results.getResult("productId", productId), showApply);
 
         // load, parse and show the bridging page
