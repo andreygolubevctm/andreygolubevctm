@@ -62,7 +62,7 @@
 		<li><a href="javascript:window.print();" class="btn-email"><span class="icon icon-blog"></span> <span>Print Page</span></a></li>
 		<c:if test="${empty callCentre}">
 			<li>
-				<a href="${pageSettings.getBaseUrl()}health_quote.jsp" class="btn-dropdown needsclick"><span class="icon icon-undo"></span> <span>Start a new quote</span> <span class="icon icon-arrow-right hidden-xs"></span></a>
+				<a href="${pageSettings.getBaseUrl()}health_quote_v2.jsp" class="btn-dropdown needsclick"><span class="icon icon-undo"></span> <span>Start a new quote</span> <span class="icon icon-arrow-right hidden-xs"></span></a>
 			</li>
 		</c:if>
 		</ul>
