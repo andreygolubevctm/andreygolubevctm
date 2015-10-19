@@ -194,25 +194,44 @@ public class HealthApplicationService extends CTMEndpointService {
 
 
 	public String createTokenValidationFailedResponse(Long transactionId, String sessionId) {
-		String responseString = "";
 		try {
-			JSONObject response = new JSONObject();
-			response.put("success", false);
-			JSONObject error = new JSONObject();
-			response.put("error", error);
-			error.put("code", "Token Validation");
-			error.put("original", "Token Validation");
-			String pendingId = sessionId + "-" + transactionId;
-			response.put("pendingID", pendingId);
-			if(isCallCentre) {
-				response.put("callcentre", true);
-			}
-			responseString = response.toString();
+			return createFailedResponseObject(transactionId, sessionId, "Token Validation").toString();
 		} catch (JSONException e) {
-			LOGGER.warn("Failed to create response. ", e);
+			LOGGER.error("failed to create Response");
 		}
-		return responseString;
+		return "";
 	}
+
+	public String createFailedResponse(Long transactionId, String sessionId) {
+		try {
+			JSONObject response = createFailedResponseObject(transactionId, sessionId, "Failed Application");
+			appendValuesToResponse(response, transactionId);
+			return response.toString();
+		} catch (JSONException e) {
+			LOGGER.error("failed to create Response");
+		}
+		return "";
+	}
+
+	private JSONObject createFailedResponseObject(Long transactionId, String sessionId, String reason) throws JSONException {
+			JSONObject response = new JSONObject();
+			JSONObject result = new JSONObject();
+			response.put("result" , result);
+			result.put("success", false);
+			JSONObject errors = new JSONObject();
+			result.put("errors", errors);
+			JSONObject error = new JSONObject();
+			error.put("code", reason);
+			error.put("original", reason);
+			errors.put("error", error);
+			String pendingId = sessionId + "-" + transactionId;
+			result.put("pendingID", pendingId);
+			if(isCallCentre) {
+				result.put("callcentre", true);
+			}
+			return response;
+	}
+
 
 	public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
 		return healthPriceDao.getAllProviders(styleCodeId);

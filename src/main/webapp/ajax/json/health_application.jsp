@@ -198,7 +198,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 
 		<%-- Collate fund error messages, add fail touch and add quote comment --%>
 			<c:if test="${not empty errorMessage}">
-								<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
+			    <health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
 			</c:if>
 		</x:if>
 
@@ -260,7 +260,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
             	<c:choose>
 					<%-- if online user record a join --%>
 					<c:when test="${empty callCentre && empty errorMessage}">
-						<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
+						<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" resultJson="${healthApplicationService.createFailedResponse(tranId, pageContext.session.id)}" />
 					</c:when>
 					<%-- else just record a failure --%>
 					<c:when test="${empty errorMessage}">

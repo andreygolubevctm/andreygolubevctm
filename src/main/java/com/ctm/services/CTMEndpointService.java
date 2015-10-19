@@ -2,6 +2,8 @@ package com.ctm.services;
 
 import com.ctm.model.PageRequest;
 import com.ctm.web.validation.TokenValidation;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,6 +26,10 @@ public class CTMEndpointService {
 
     public String createErrorResponse(Long transactionId, String errorMessage, String type) {
         return tokenService.createErrorResponse(transactionId, errorMessage, httpRequest, type);
+    }
+
+    public JSONObject appendValuesToResponse(JSONObject jSONObject , Long transactionId) throws JSONException {
+        return tokenService.createResponse(transactionId, httpRequest, jSONObject);
     }
 
     public boolean isValidToken() {

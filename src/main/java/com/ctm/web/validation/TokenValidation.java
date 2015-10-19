@@ -136,7 +136,13 @@ public abstract class TokenValidation<T extends TokenRequest> {
         return responseString;
     }
 
-    ;
+    public JSONObject createResponse(Long transactionId, HttpServletRequest request, JSONObject response) throws JSONException {
+        if (isValidToken()) {
+            setNewToken(response, transactionId, request);
+            response.put("transactionId", transactionId);
+        }
+        return response;
+    }
 
     private JSONObject createValidTokenResponse(Long transactionId, HttpServletRequest request, JSONObject response) throws JSONException {
         setNewToken(response, transactionId, request);

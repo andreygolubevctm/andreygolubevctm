@@ -17,6 +17,7 @@ import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.session.SessionData;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.security.token.JwtTokenCreator;
+import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.utils.RequestUtils;
 import com.ctm.utils.ResponseUtils;
 import com.disc_au.web.go.Data;
@@ -428,6 +429,7 @@ public class SessionDataService {
 	 */
 	@SuppressWarnings("unused")
 	public String updateTokenWithNewTransactionIdResponse(HttpServletRequest request, String baseJsonResponse, Long newTransactionId)  {
+		tokenCreator = new JwtTokenCreator( new SettingsService(request) ,  new TokenCreatorConfig());
 		String output = baseJsonResponse;
 		try {
 			JSONObject response;
