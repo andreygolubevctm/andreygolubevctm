@@ -649,7 +649,6 @@ Write = {
                 setting.url = url;
             },
             success: function (jsonResult) {
-                meerkat.modules.verificationToken.readTokenFromResponse(jsonResult);
                 var success = Number(jsonResult.result.success);
                 var transactionId = Number(jsonResult.result.transactionId);
                 if (transactionId > 0) {
