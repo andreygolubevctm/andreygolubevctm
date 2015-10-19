@@ -42,6 +42,7 @@
             data: data,
             errorLevel: "silent",
             onSuccess: function recordTouchSuccess(response) {
+                meerkat.modules.verificationToken.set(response);
                 if (_.has(response, "result") && _.has(response.result, "transactionId") && _.isNumber(response.result.transactionId) && response.result.transactionId > 0) {
                     meerkat.modules.transactionId.set(response.result.transactionId);
                 }

@@ -18,7 +18,10 @@ import com.ctm.model.session.SessionData;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.security.token.JwtTokenCreator;
 import com.ctm.utils.RequestUtils;
+import com.ctm.utils.ResponseUtils;
 import com.disc_au.web.go.Data;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
@@ -38,10 +42,10 @@ public class SessionDataService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SessionDataService.class);
 
 	private static final int SESSION_EXPIRY_DIFFERENCE = 5;
-	private JwtTokenCreator transactionVerifier;
+	private JwtTokenCreator tokenCreator;
 
-	public SessionDataService(JwtTokenCreator transactionVerifier) {
-		this.transactionVerifier = transactionVerifier;
+	public SessionDataService(JwtTokenCreator tokenCreator) {
+		this.tokenCreator = tokenCreator;
 	}
 
 	public SessionDataService() {
@@ -397,13 +401,47 @@ public class SessionDataService {
 	}
 
 	public Optional<String> updateToken(HttpServletRequest request)  {
-		Optional<String> verificationTokenMaybe = Optional.empty();
-			String currentVerificationToken = RequestUtils.getTokenFromRequest(request);
-			if(currentVerificationToken != null && !currentVerificationToken.isEmpty()) {
-				long timeoutSeconds = getClientSessionTimeoutSeconds(request);
-                verificationTokenMaybe = Optional.ofNullable(transactionVerifier.refreshToken(currentVerificationToken, timeoutSeconds));
-			}
+		return updateToken(request, currentToken ->
+				tokenCreator.refreshToken(currentToken, getClientSessionTimeoutSeconds(request)));
+	}
+
+	private Optional<String> updateToken(HttpServletRequest request, final Long newTransactionId)  {
+		return updateToken(request, currentVerificationToken -> {
+			return tokenCreator.refreshToken(currentVerificationToken, newTransactionId , getClientSessionTimeoutSeconds(request));
+		});
+	}
+
+	private Optional<String> updateToken(HttpServletRequest request, Function<String,String> createToken)  {
+		Optional<String> verificationTokenMaybe;
+		String currentVerificationToken = RequestUtils.getTokenFromRequest(request);
+		if(currentVerificationToken != null && !currentVerificationToken.isEmpty()) {
+
+			verificationTokenMaybe = Optional.ofNullable(createToken.apply(currentVerificationToken));
+		} else {
+			verificationTokenMaybe = Optional.empty();
+		}
 		return verificationTokenMaybe;
+	}
+
+	/**
+	 * Used in access_touch.jsp
+	 */
+	@SuppressWarnings("unused")
+	public String updateTokenWithNewTransactionIdResponse(HttpServletRequest request, String baseJsonResponse, Long newTransactionId)  {
+		String output = baseJsonResponse;
+		try {
+			JSONObject response;
+			if (baseJsonResponse != null && !baseJsonResponse.isEmpty()) {
+				response = new JSONObject(baseJsonResponse);
+			} else {
+				response = new JSONObject();
+			}
+			ResponseUtils.setToken(response, updateToken(request, newTransactionId));
+			output = response.toString();
+		} catch (JSONException e) {
+			LOGGER.error("Failed to create JSON response. {}", kv("baseJsonResponse", baseJsonResponse), e);
+		}
+		return output;
 	}
 
 }

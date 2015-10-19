@@ -10,6 +10,7 @@ import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.security.token.exception.InvalidTokenException;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
+import com.ctm.utils.ResponseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -76,7 +77,7 @@ public abstract class TokenValidation<T extends TokenRequest> {
         TokenCreatorConfig config = TokenConfigFactory.getInstance(vertical, getCurrentTouch(), request);
         String token = TokenValidation.createToken(transactionId, sessionDataService, settingsService, config, request.getServletPath(), request);
         try {
-            response.put("verificationToken", token);
+            ResponseUtils.setToken(response, token);
             response.put("timeout", sessionDataService.getClientSessionTimeout(request));
         } catch (JSONException e) {
             LOGGER.error("Failed to set new Token. {}", kv("transactionId", transactionId), e);

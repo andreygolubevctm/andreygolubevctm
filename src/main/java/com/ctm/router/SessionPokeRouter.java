@@ -5,6 +5,7 @@ import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
+import com.ctm.utils.ResponseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -17,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Optional;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
@@ -53,14 +53,7 @@ public class SessionPokeRouter extends HttpServlet {
 			try {
 				if (!justCheck) {
 					sessionDataService.touchSession(request);
-					Optional<String> tokenMaybe = sessionDataService.updateToken(request);
-					tokenMaybe.ifPresent(token -> {
-						try {
-							json.put("verificationToken",  token);
-						} catch (JSONException e) {
-							LOGGER.error("Failed to token for JSON object for Session Poke {}", kv("token", token), e);
-						}
-					});
+					ResponseUtils.setToken(json, sessionDataService.updateToken(request));
 				}
 				long timeout = sessionDataService.getClientSessionTimeout(request);
 
@@ -69,7 +62,7 @@ public class SessionPokeRouter extends HttpServlet {
 					json.put("bigIP", bigIPCookieValue);
 				}
 
-				json.put("timeout",  timeout);
+				json.put("timeout", timeout);
 			} catch (JSONException e) {
 				LOGGER.error("Failed to produce JSON object for Session Poke {}", kv("check", check), e);
 			}

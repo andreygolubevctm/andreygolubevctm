@@ -15,7 +15,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-public class HealthQuoteServiceTest {
+public class HealthQuoteEndpointServiceTest {
 
     private HttpServletRequest request = mock(HttpServletRequest.class);
     private javax.servlet.http.HttpSession session = mock(HttpSession.class);
