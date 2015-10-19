@@ -95,7 +95,7 @@ public class HealthApplicationServiceTest {
 
 	@Test
 	public void testShouldRespondWithValidationResponse() throws  Exception {
-		assertEquals("{\"success\":false,\"pendingID\":\"" + sessionId + "-" + transactionId + "\",\"error\":{\"code\":\"Token Validation\",\"original\":\"Token Validation\"}}", healthApplicationService.createTokenValidationFailedResponse(transactionId, sessionId));
+		assertEquals("{\"result\":{\"success\":false,\"pendingID\":\"sessionId-1000\",\"errors\":{\"error\":{\"code\":\"Token Validation\",\"original\":\"Token Validation\"}}}}", healthApplicationService.createTokenValidationFailedResponse(transactionId, sessionId));
 	}
 
 

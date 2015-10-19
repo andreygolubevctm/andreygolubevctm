@@ -346,7 +346,7 @@ public class SessionDataService {
 	 * Get the client's next expected timeout (for JS timeout)
 	 * @param request
 	 */
-	public long getClientSessionTimeoutSeconds(HttpServletRequest request) {
+	public Long getClientSessionTimeoutSeconds(HttpServletRequest request) {
 		long timeout = getClientSessionTimeout(request);
 		if(timeout == -1){
 			return getClientDefaultExpiryTimeoutSeconds(request);
