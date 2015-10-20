@@ -3,6 +3,7 @@ package com.ctm.services.fuel;
 import com.ctm.model.PageRequest;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
+import com.ctm.services.CTMEndpointService;
 import com.ctm.services.RequestService;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
@@ -14,9 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * TODO: move code from fuel_price_results.jsp and turn this into a Router
  */
-public class FuelPriceService {
+public class FuelPriceEndpointService extends CTMEndpointService {
 
-    private boolean validToken;
     private TokenValidation<PageRequest> tokenService;
     private final SessionDataService sessionDataService;
 
@@ -24,23 +24,20 @@ public class FuelPriceService {
      * used by fuel_price_results.jsp
      */
     @SuppressWarnings("unused")
-    public FuelPriceService() {
+    public FuelPriceEndpointService() {
         this.sessionDataService = new SessionDataService();
     }
 
-    public FuelPriceService(TokenValidation<PageRequest> tokenService) {
+    public FuelPriceEndpointService(TokenValidation<PageRequest> tokenService) {
         this.tokenService = tokenService;
         this.sessionDataService = new SessionDataService();
     }
 
     public void init(HttpServletRequest httpRequest,  PageSettings pageSettings) {
         if(tokenService == null) {
-            Vertical vertical = pageSettings.getVertical();
-            SettingsService settingsService = new SettingsService(httpRequest);
-            this.tokenService = new ResultsTokenValidation<>(settingsService, sessionDataService, vertical);
+            this.tokenService = new ResultsTokenValidation<>(new SettingsService(httpRequest), sessionDataService, pageSettings.getVertical());
         }
-        PageRequest request = parseRequest(httpRequest);
-        validToken = tokenService.validateToken(request);
+        super.validateToken(httpRequest, tokenService, parseRequest(httpRequest));
     }
 
     private PageRequest parseRequest(HttpServletRequest httpRequest) {
@@ -50,19 +47,4 @@ public class FuelPriceService {
         return request;
     }
 
-    /**
-     * used by fuel_price_results.jsp
-     */
-    @SuppressWarnings("unused")
-    public boolean validToken() {
-        return validToken;
-    }
-
-    /**
-     * used by fuel_price_results.jsp
-     */
-    @SuppressWarnings("unused")
-    public String createResponse(Long transactionId, String baseJsonResponse , HttpServletRequest request) {
-        return tokenService.createResponse(transactionId,  baseJsonResponse ,  request);
-    }
 }

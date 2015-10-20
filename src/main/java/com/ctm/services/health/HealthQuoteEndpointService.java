@@ -3,6 +3,7 @@ package com.ctm.services.health;
 import com.ctm.model.request.health.HealthRequest;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
+import com.ctm.services.CTMEndpointService;
 import com.ctm.services.RequestService;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
@@ -16,24 +17,21 @@ import javax.servlet.jsp.JspException;
 /**
  * TODO: move code away from health_quote_results.jsp and turn this into a router
  */
-public class HealthQuoteService {
+public class HealthQuoteEndpointService extends CTMEndpointService {
 
-    private final RequestService requestService;
     private final SessionDataService sessionDataService;
-    private HealthTokenValidationService tokenService;
-    private boolean tokenValidationEnabled;
-    private boolean valid;
+    private final RequestService requestService;
 
     /**
      * used by health_quote_results.jsp
      */
     @SuppressWarnings("unused")
-    public HealthQuoteService() {
+    public HealthQuoteEndpointService() {
         sessionDataService = new SessionDataService();
         this.requestService = new RequestService(Vertical.VerticalType.HEALTH );
     }
 
-    public HealthQuoteService(HealthTokenValidationService tokenService , RequestService requestService) {
+    public HealthQuoteEndpointService(HealthTokenValidationService tokenService, RequestService requestService) {
         sessionDataService = new SessionDataService();
         this.tokenService = tokenService;
         this.requestService = requestService;
@@ -43,28 +41,10 @@ public class HealthQuoteService {
         requestService.setRequest(httpRequest);
         HealthRequest request = HealthRequestParser.getHealthRequestToken(requestService, SessionUtils.isCallCentre(httpRequest.getSession()));
         if (tokenService == null) {
-            SettingsService settingsService = new SettingsService(httpRequest);
-            this.tokenService = new HealthTokenValidationService(settingsService , sessionDataService, pageSettings.getVertical());
+            this.tokenService = new HealthTokenValidationService(new SettingsService(httpRequest) , sessionDataService, pageSettings.getVertical());
         }
-        valid = tokenService.validateToken(request);
+        super.validateToken(httpRequest, tokenService, request);
     }
 
-
-    /**
-     * used by health_quote_results.jsp
-     */
-    @SuppressWarnings("unused")
-    public boolean validToken() {
-        return valid;
-    }
-
-    /**
-     * used by health_quote_results.jsp
-     */
-    @SuppressWarnings("unused")
-    public String createResponse(Long transactionId, String baseJsonResponse) {
-        return tokenService.createResponse(transactionId,  baseJsonResponse ,  requestService.getRequest());
-
-    }
 
 }
