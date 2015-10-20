@@ -55,11 +55,6 @@ var ResultsModel = {
 					value: meerkat.modules.transactionId.get()
 				});
 
-				data.push({
-					name: 'verificationToken',
-					value: meerkat.modules.verificationToken.get()
-				});
-
 				if(meerkat.site.isCallCentreUser) {
 					data.push({
 						name: meerkat.modules.comms.getCheckAuthenticatedLabel(),

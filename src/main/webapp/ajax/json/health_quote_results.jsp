@@ -6,10 +6,10 @@
 <core_new:no_cache_header/>
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true" />
-<jsp:useBean id="healthQuoteResults" class="com.ctm.services.health.HealthQuoteService" />
+<jsp:useBean id="healthQuoteResults" class="com.ctm.services.health.HealthQuoteEndpointService" />
 ${healthQuoteResults.init(pageContext.request, pageSettings)}
 <%-- Only continue if token is valid --%>
-<c:if test="${healthQuoteResults.validToken()}">
+<c:if test="${healthQuoteResults.validToken}">
 
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
