@@ -75,7 +75,7 @@ public class RequestAdapterTest {
                 Optional.of(certifiedAge), Optional.of(insured));
         assertNotNull(applicant);
         assertNotNull(applicant.getHealthCover());
-        assertNotNull(applicant.getPreviousFund());
+        assertNull(applicant.getPreviousFund());
         assertNotNull(applicant.getCertifiedAgeEntry());
         verify(person, times(1)).getTitle();
         verify(person, times(1)).getFirstname();
@@ -111,6 +111,7 @@ public class RequestAdapterTest {
     @Test
     public void testPreviousFund() throws Exception {
         final Fund fund = mock(Fund.class);
+        when(fund.getFundName()).thenReturn("BUPA");
         final PreviousFund previousFund = RequestAdapter.createPreviousFund(Optional.ofNullable(fund));
         assertNotNull(previousFund);
         verify(fund, times(1)).getFundName();
