@@ -321,4 +321,5 @@
 	</c:otherwise>
 </c:choose>
 ${logger.debug("Get transaction id complete. {},{}", log:kv('rootId', data.current.rootId), log:kv('method',method ))}
-{"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}
+<c:set var="transactionIdResponse">{"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}</c:set>
+${sessionDataService.updateTokenWithNewTransactionIdResponse(pageContext.request, transactionIdResponse, data.current.transactionId)}

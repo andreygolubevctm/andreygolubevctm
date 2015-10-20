@@ -27,6 +27,7 @@ public class SessionDataServiceTest {
         SessionData sessionData = new SessionData();
         when(session.getAttribute("sessionData")).thenReturn(sessionData);
         when(request.getSession()).thenReturn(session);
+        when(request.getSession(false)).thenReturn(session);
         JwtTokenCreator jwtTokenCreator = mock(JwtTokenCreator.class);
 
         String refreshedToken = "refreshedToken";
