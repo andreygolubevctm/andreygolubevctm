@@ -148,11 +148,12 @@ public class RequestAdapter {
     }
 
     protected static PreviousFund createPreviousFund(Optional<Fund> previousFund) {
-        if (previousFund.isPresent()) {
+        final HealthFund healthFund = previousFund.map(Fund::getFundName)
+                .map(HealthFund::findByCode)
+                .orElse(HealthFund.NONE);
+        if (previousFund.isPresent() && !HealthFund.NONE.equals(healthFund)) {
             return new PreviousFund(
-                    previousFund.map(Fund::getFundName)
-                            .map(HealthFund::findByCode)
-                            .orElse(null),
+                    healthFund,
                     previousFund.map(Fund::getMemberId)
                             .map(MemberId::new)
                             .orElse(null),
