@@ -57,7 +57,11 @@ public class WebCtmDataAccessConfiguration implements Lifecycle, InitializingBea
     }
 
     public static DataSource getDataSource() {
-        return dataSourceFactory.build();
+        if (dataSourceFactory != null) {
+            return dataSourceFactory.build();
+        } else {
+            return null;
+        }
     }
 
 }

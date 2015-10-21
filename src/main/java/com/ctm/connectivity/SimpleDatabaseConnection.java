@@ -18,12 +18,15 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleDatabaseConnection.class);
 
-	private static final DataSource dataSource = WebCtmDataAccessConfiguration.getDataSource();
+	private DataSource dataSource;
 	private Connection connection;
-
-	private Map<String ,DataSource> dataSources = new HashMap<>();
+//	private Map<String ,DataSource> dataSources = new HashMap<>();
 
 	private static SimpleDatabaseConnection instance;
+
+	public SimpleDatabaseConnection() {
+		dataSource = WebCtmDataAccessConfiguration.getDataSource();
+	}
 
 	public static SimpleDatabaseConnection getInstance() {
 		if(instance == null){
@@ -116,4 +119,5 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 		sb.append("?");
 		return sb.toString();
 	}
+
 }

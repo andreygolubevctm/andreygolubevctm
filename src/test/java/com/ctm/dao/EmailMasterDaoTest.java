@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 
+import com.ctm.spring.WebCtmDataAccessConfiguration;
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -30,6 +32,7 @@ public class EmailMasterDaoTest {
 	public void setup() throws SQLException, NamingException{
 		Connection connection = mock(Connection.class);
 		when(dbSource.getConnection()).thenReturn(connection);
+		when(dbSource.getConnection(any(String.class), any(Boolean.class))).thenReturn(connection);
 		statement = mock(PreparedStatement.class);
 		when(connection.prepareStatement(anyString())).thenReturn(statement);
 		resultSet = mock(ResultSet.class);
