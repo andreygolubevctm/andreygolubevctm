@@ -15,6 +15,16 @@
 	</c:otherwise>
 </c:choose>
 
+<c:choose>
+	<c:when test="${not empty param.createEmailToken}">
+		<c:set var="createEmailToken" value="${param.createEmailToken}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="createEmailToken" value="${true}" />
+	</c:otherwise>
+</c:choose>
+
+
 <c:set var="gomezhashedEmail"><security:hashed_email email="gomez.testing@aihco.com.au" brand="${pageSettings.getBrandCode()}" /></c:set>
 <c:set var="paramSend">${param.send}</c:set>
 	
@@ -119,9 +129,18 @@
 		</c:if>
 		<go:setData dataVar="data" value="*DELETE" xpath="tempSQL" />
 
-		<jsp:useBean id="tokenServiceFactory" class="com.ctm.services.email.token.EmailTokenServiceFactory"/>
-		<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
-		<c:set var="unsubscribeToken" value="${tokenService.generateToken(param.transactionId, param.hashedEmail, pageSettings.getBrandId(), emailTokenType, 'unsubscribe', null, null, 'car', null, true)}" />
+		<c:if test="${createEmailToken}">
+			<c:choose>
+				<c:when test="${empty param.unsubscribeToken}">
+					<jsp:useBean id="tokenServiceFactory" class="com.ctm.services.email.token.EmailTokenServiceFactory"/>
+					<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
+					<c:set var="unsubscribeToken" value="${tokenService.generateToken(param.transactionId, param.hashedEmail, pageSettings.getBrandId(), emailTokenType, 'unsubscribe', null, null, pageSettings.getVerticalCode(), null, true)}" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="unsubscribeToken" value="${param.unsubscribeToken}"/>
+				</c:otherwise>
+			</c:choose>
+		</c:if>
 
 		<c:choose>
 
@@ -186,6 +205,7 @@
 							<x:param name="ImageUrlSuffix">${pageSettings.getSetting('imageUrlSuffix')}</x:param>
 						</c:if>
 						<x:param name="unsubscribeToken">${unsubscribeToken}</x:param>
+						<x:param name="continueOnlineToken">${param.continueOnlineToken}</x:param>
 				</x:transform>
 			</c:set>
 

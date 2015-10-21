@@ -7,6 +7,8 @@
 <%-- Set authenticatedData to scope of request --%>
 <session:new verticalCode="GENERIC" authenticated="${true}"/>
 
+<c:set var="logger" value="${log:getLogger('jsp.retrieve_quotes')}" />
+
 <%-- Block Save/Retrieve if it is not enabled for a brand --%>
 <c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 <c:if test="${saveQuoteEnabled == 'N'}">
@@ -19,8 +21,28 @@
 </c:if>
 
 <%-- VARS --%>
-<c:set var="paramHashedEmail"><c:out value="${param.hashedEmail}" escapeXml="true"/></c:set>
-<c:set var="paramEmail"><c:out value="${param.email}" escapeXml="true"/></c:set>
+<c:choose>
+    <c:when test="${not empty param.token}">
+        <jsp:useBean id="tokenServiceFactory" class="com.ctm.services.email.token.EmailTokenServiceFactory"/>
+        <c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
+        <c:set var="emailData" value="${tokenService.getIncomingEmailDetails(param.token)}"/>
+
+        <c:if test="${empty emailData}">
+            <c:set var="hasLogin" value="${tokenService.hasLogin(param.token)}"/>
+            <c:if test="${not hasLogin}">
+                ${logger.info('Token has expired and user cannot login. Redirecting to start_quote.jsp {}', log:kv('parameters', parametersMap))}
+                <c:redirect url="${pageSettings.getBaseUrl()}start_quote.jsp"/>
+            </c:if>
+        </c:if>
+
+        <c:set var="paramEmail" value="${emailData.emailMaster.emailAddress}"/>
+        <c:set var="paramHashedEmail" value="${parametersMap.hashedEmail}"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="paramHashedEmail"><c:out value="${param.hashedEmail}" escapeXml="true"/></c:set>
+        <c:set var="paramEmail"><c:out value="${param.email}" escapeXml="true"/></c:set>
+    </c:otherwise>
+</c:choose>
 
 <%-- HTML --%>
 <c:choose>

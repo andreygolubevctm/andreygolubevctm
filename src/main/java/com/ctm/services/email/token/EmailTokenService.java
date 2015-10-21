@@ -65,8 +65,6 @@ public class EmailTokenService {
     }
 
     public String generateToken(Map<String, String> params, boolean createEmailTokenRecord) {
-        EmailMaster emailMaster = null;
-
         Long transactionId = Long.parseLong(params.get(EmailUrlService.TRANSACTION_ID));
         String emailTokenType = params.get(EmailUrlService.EMAIL_TOKEN_TYPE);
         String emailTokenAction = params.get(EmailUrlService.EMAIL_TOKEN_ACTION);
@@ -74,6 +72,8 @@ public class EmailTokenService {
         int styleCodeId = Integer.parseInt(params.get(EmailUrlService.STYLE_CODE_ID));
 
         try {
+            EmailMaster emailMaster = null;
+
             if(createEmailTokenRecord) {
                 emailMaster = insertEmailTokenRecord(transactionId, hashedEmail, styleCodeId, emailTokenType, emailTokenAction);
             } else {
@@ -103,8 +103,9 @@ public class EmailTokenService {
                     kv("emailTokenType", emailTokenType),
                     kv("emailTokenAction", emailTokenAction));
             FatalErrorService.logFatalError(e, styleCodeId, "failed to generate token", "", true);
+
+            throw new RuntimeException("Unable to generate token", e);
         }
-        throw new RuntimeException("Unable to generate token");
     }
 
     public EmailMaster insertEmailTokenRecord(Long transactionId, String hashedEmail, int styleCodeId, String emailTokenType, String action) throws DaoException, GeneralSecurityException {
@@ -123,11 +124,11 @@ public class EmailTokenService {
             for(String param : decrypted) {
                 map.put(param.split("=")[0], param.split("=")[1]);
             }
+            return map;
         } catch (GeneralSecurityException e) {
             LOGGER.error("Error decrypting token {}", kv("token", token));
+            throw new RuntimeException("Unable to decrypt token", e);
         }
-
-        return map;
     }
 
     public EmailMaster getEmailAddressDetails(String token) {
@@ -138,7 +139,16 @@ public class EmailTokenService {
         String emailTokenType = map.get(EmailUrlService.EMAIL_TOKEN_TYPE);
         String emailTokenAction = map.get(EmailUrlService.EMAIL_TOKEN_ACTION);
 
-        return emailTokenDao.getEmailDetails(transactionId, emailId, emailTokenType, emailTokenAction);
+        try {
+            return emailTokenDao.getEmailDetails(transactionId, emailId, emailTokenType, emailTokenAction);
+        } catch (DaoException e) {
+            LOGGER.error("Failed to get email details {},{},{},{},{}",
+                    kv("emailId", emailId),
+                    kv("transactionId", transactionId),
+                    kv("emailTokenType", emailTokenType),
+                    kv("emailTokenAction", emailTokenAction));
+            throw new RuntimeException("Failed to get email details", e);
+        }
     }
 
     public IncomingEmail getIncomingEmailDetails(String token) {
@@ -149,19 +159,28 @@ public class EmailTokenService {
         String emailTokenType = map.get(EmailUrlService.EMAIL_TOKEN_TYPE);
         String emailTokenAction = map.get(EmailUrlService.EMAIL_TOKEN_ACTION);
 
-        EmailMaster emailMaster = emailTokenDao.getEmailDetails(transactionId, emailId, emailTokenType, emailTokenAction);
+        try {
+            EmailMaster emailMaster = emailTokenDao.getEmailDetails(transactionId, emailId, emailTokenType, emailTokenAction);
 
-        IncomingEmail incomingEmail = null;
-        if(emailMaster != null) {
-            incomingEmail = new IncomingEmail();
-            incomingEmail.setCampaignId(map.get(EmailUrlService.CAMPAIGN_ID));
-            incomingEmail.setEmailAddress(EmailUrlService.decodeEmailAddress(emailMaster.getEmailAddress()));
-            incomingEmail.setEmailHash(emailMaster.getHashedEmail());
-            incomingEmail.setEmailType(EmailMode.findByCode(emailTokenType));
-            incomingEmail.setProductId(map.get(EmailUrlService.PRODUCT_ID));
-            incomingEmail.setTransactionId(transactionId);
+            IncomingEmail incomingEmail = null;
+            if (emailMaster != null) {
+                incomingEmail = new IncomingEmail();
+                incomingEmail.setCampaignId(map.get(EmailUrlService.CAMPAIGN_ID));
+                incomingEmail.setEmailAddress(EmailUrlService.decodeEmailAddress(emailMaster.getEmailAddress()));
+                incomingEmail.setEmailHash(emailMaster.getHashedEmail());
+                incomingEmail.setEmailType(EmailMode.findByCode(emailTokenType));
+                incomingEmail.setProductId(map.get(EmailUrlService.PRODUCT_ID));
+                incomingEmail.setTransactionId(transactionId);
+            }
+            return incomingEmail;
+        } catch (DaoException e) {
+            LOGGER.error("Failed to get email details {},{},{},{},{}",
+                    kv("emailId", emailId),
+                    kv("transactionId", transactionId),
+                    kv("emailTokenType", emailTokenType),
+                    kv("emailTokenAction", emailTokenAction));
+            throw new RuntimeException("Failed to get email details", e);
         }
-        return incomingEmail;
     }
 
     public boolean hasLogin(String token) {
@@ -172,6 +191,15 @@ public class EmailTokenService {
         String emailTokenType = map.get(EmailUrlService.EMAIL_TOKEN_TYPE);
         String emailTokenAction = map.get(EmailUrlService.EMAIL_TOKEN_ACTION);
 
-        return emailTokenDao.hasLogin(transactionId, emailId, emailTokenType, emailTokenAction);
+        try {
+            return emailTokenDao.hasLogin(transactionId, emailId, emailTokenType, emailTokenAction);
+        } catch (DaoException e) {
+            LOGGER.error("Failed to check if user has login {},{},{},{},{}",
+                    kv("emailId", emailId),
+                    kv("transactionId", transactionId),
+                    kv("emailTokenType", emailTokenType),
+                    kv("emailTokenAction", emailTokenAction));
+            throw new RuntimeException("Failed to check if user has login", e);
+        }
     }
 }

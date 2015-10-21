@@ -13,13 +13,10 @@
         <c:set var="brandId" value="2"/>
     </c:if>
 
-    <jsp:useBean id="tokenServiceFactory" class="com.ctm.services.email.token.EmailTokenServiceFactory"/>
-    <c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
-
     <c:set var="unsubscribe"
-           value="${unsubscribeService.getUnsubscribeDetails(param.vertical, brandId, fn:substring(param.unsubscribe_email, 0, 256), param.email, false, pageSettings, param.token, tokenService)}"
+           value="${unsubscribeService.getUnsubscribeDetails(param.vertical, brandId, fn:substring(param.unsubscribe_email, 0, 256), param.email, false, pageSettings, param.token)}"
            scope="session"/>
-x
+
     <%-- #WHITELABEL TODO: support meerkat brand--%>
     <c:if test="${fn:toUpperCase(param.brand) == 'MEER'}">
         <c:set var="ignore">

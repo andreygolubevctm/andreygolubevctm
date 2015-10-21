@@ -1,7 +1,5 @@
 package com.ctm.services;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.model.EmailMaster;
 import com.ctm.services.email.token.EmailTokenService;
@@ -49,10 +47,11 @@ public class UnsubscribeService {
 	 * @return
 	 */
 	public Unsubscribe getUnsubscribeDetails(String vertical, int  brandId,
-			String hashedEmail, String email, boolean isDisc, PageSettings pageSettings, String token, EmailTokenService emailTokenService) throws ConfigSettingException {
+			String hashedEmail, String email, boolean isDisc, PageSettings pageSettings, String token) throws ConfigSettingException {
 		Unsubscribe unsubscribe = new Unsubscribe();
 
 		if(token != null && !token.isEmpty()) {
+			EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(pageSettings);
 			EmailMaster emailMaster = emailTokenService.getEmailAddressDetails(token);
 
 			if(emailMaster != null) {

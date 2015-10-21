@@ -31,6 +31,7 @@
 	<xsl:param name="ClientId"></xsl:param>
 	<xsl:param name="baseURL"></xsl:param>
 	<xsl:param name="unsubscribeToken"></xsl:param>
+	<xsl:param name="continueOnlineToken"></xsl:param>
 	
 	<xsl:template match="/">
 			<xsl:apply-templates select="/tempSQL"/>
@@ -77,7 +78,7 @@
 </xsl:variable>
 
 <xsl:variable name="actionURL">
-	<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'retrieve_quotes.jsp?email=',$escapedEmailAddress,'&amp;hashedEmail=',$hashedEmail,'&amp;transactionId=',$tranId,'&amp;vertical=health]]&gt;')" />
+	<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'retrieve_quotes.jsp?token=',$continueOnlineToken, ']]&gt;')" />
 </xsl:variable>
 
 <xsl:variable name="unsubscribeURL">

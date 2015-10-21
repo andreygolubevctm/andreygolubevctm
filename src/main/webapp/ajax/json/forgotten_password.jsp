@@ -64,6 +64,9 @@
 
 						<%-- This is new - the token for reset --%>
 						<c:param name="token" value="${tokenUrl}" />
+
+						<%-- Flag to not create email token --%>
+						<c:param name="createEmailToken" value="false" />
 					</c:import>
 				</c:catch>
 				<c:if test="${error}">
