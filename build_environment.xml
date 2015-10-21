@@ -210,15 +210,15 @@
 				<not><isset property="web.dir" /></not>
 				<not><isset property="webinf.dir" /></not>
 				<not><isset property="classes.dir" /></not>
-				<not><isset property="svn.revision" /></not>
+				<not><isset property="git.revision" /></not>
 				<not><isset property="build-info.release" /></not>
 				<not><isset property="build-info.datestamp" /></not>
 			</or>
 		</condition>
 		<fail if="makewar.abort">Make WAR is missing one or more required properties, and the build cannot continue.</fail>
 
-		<echo message="Making WAR file of ${war.context} app release ${build-info.release} (r${svn.revision}) for the ${target.prefix} environment -- started ${build-info.datestamp}" />
-		<property name="war.id" value="${war.context}-${target.prefix}-${build-info.release}-r${svn.revision}" />
+		<echo message="Making WAR file of ${war.context} app release ${build-info.release} (${git.revision}) for the ${target.prefix} environment -- started ${build-info.datestamp}" />
+		<property name="war.id" value="${war.context}-${target.prefix}-${build-info.release}-${git.revision}" />
 
 		<copy todir="${classes.dir}/aggregator" includeemptydirs="false">
 			<fileset dir="${aggregator.dir}" />
@@ -238,7 +238,7 @@
 				<section name="AGH-Build">
 					<attribute name="App" value="${war.context}" />
 					<attribute name="Target" value="${target.prefix}" />
-					<attribute name="Revision" value="${svn.revision}" />
+					<attribute name="Revision" value="${git.revision}" />
 					<attribute name="Release" value="${build-info.release}" />
 					<attribute name="Built-On" value="${build-info.datestamp}" />
 					<attribute name="Identifier" value="${war.id}" />

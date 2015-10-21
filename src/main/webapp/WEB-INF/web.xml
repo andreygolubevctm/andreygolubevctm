@@ -19,6 +19,15 @@
 		<param-value>CTM</param-value>
 	</context-param>
 
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>com.ctm.Application</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>com.ctm.spring.CtmContextListener</listener-class>
+	</listener>
+
 	<!-- SESSIONS: This over-rides the settings in Tomcat -->
 	<session-config>
 		<session-timeout>60</session-timeout><!-- Previous default in Tomcat is 30 -->

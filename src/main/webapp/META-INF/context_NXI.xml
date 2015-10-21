@@ -7,7 +7,7 @@
 
 <Context>
 
-	<Resource name="jdbc/ctm" auth="Container"
+	<!-- Resource name="jdbc/ctm" auth="Container"
 		type="javax.sql.DataSource"
 		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
 		username="server" password="server"
@@ -29,7 +29,7 @@
 		logAbandoned="true"
 		testOnBorrow="true"
 		defaultAutoCommit="true"
-	/>
+	/-->
 
 <!--
 	AGH Active Directory Login Realm

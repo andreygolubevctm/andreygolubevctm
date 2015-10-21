@@ -29,7 +29,7 @@
 </c:forTokens>
 
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
  <%-- insert test case into DB --%>
 <c:choose>
 	<c:when test="${testInstance != ''}">

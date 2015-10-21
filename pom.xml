@@ -21,7 +21,11 @@
 
         <powermock.version>1.6.2</powermock.version>
         <cxf.version>3.0.1</cxf.version>
-        <spring.version>4.0.5.RELEASE</spring.version>
+
+        <spring-boot.version>1.2.6.RELEASE</spring-boot.version>
+        <spring-boot-legacy.version>1.0.1.RELEASE</spring-boot-legacy.version>
+
+        <spring.version>4.1.7.RELEASE</spring.version> <!-- must match spring version -->
         <spring.ws.version>2.2.0.RELEASE</spring.ws.version>
         <tomcat.version>7.0.35</tomcat.version>
         <jaxws-maven-plugin.version>2.3</jaxws-maven-plugin.version>
@@ -37,7 +41,53 @@
         <jspc-maven-plugin.version>2.0.0</jspc-maven-plugin.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-jdbc</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-legacy</artifactId>
+            <version>${spring-boot-legacy.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Test libraries -->
 
@@ -388,9 +438,6 @@
             <activation>
                 <!-- only activate if build.environment set. for local development this will not be set.
                  in local the grunt watcher should be running so maven doesn't need to run grunt -->
-                <property>
-                    <name>build.environment</name>
-                </property>
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
@@ -500,7 +547,7 @@
                             <goal>war</goal>
                         </goals>
                         <configuration>
-                            <classifier>${branch.classifier}</classifier>
+                            <!--<classifier>${branch.classifier}</classifier>-->
                             <packagingExcludes>**/**</packagingExcludes>
                         </configuration>
                     </execution>
@@ -528,9 +575,9 @@
                                     </else>
                                 </if>
 
-                                <ant antfile="build_environment.xml" target="build.${build.environment}">
+                                <ant antfile="build_environment.xml" target="build.NXI">
                                     <property name="classes.output.dir" value="${project.build.outputDirectory}"/>
-                                    <property name="svn.revision" value="${bamboo_repository_revision_number}"/>
+                                    <property name="git.revision" value="${bamboo_repository_revision_number}"/>
                                     <property name="web.dir" value="${project.build.directory}/${project.build.finalName}"/>
                                     <property name="war.dir" value="${project.build.directory}"/>
                                     <property name="war.filename" value="${project.build.finalName}${branch.classifier.war}.${project.packaging}"/>
@@ -563,6 +610,31 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <id>repack-war</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <classifier>${branch.classifier}</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <addResources>false</addResources>
+                    <jvmArguments>
+                        -Dhttps.proxyHost=192.168.1.111 -Dhttps.proxyPort=8080 -Dhttp.proxyHost=192.168.1.111 -Dhttp.proxyPort=8080 -Dhttp.nonProxyHosts="*.ecommerce.disconline.com.au|*.captaincompare.com.au|*.intranet|localhost|127.0.0.1" -Dhttps.proxyUser=ittest -Dhttps.proxyPassword=1tt3st -Dspring.datasource.username=${nxi.db.username} -Dspring.datasource.password=${nxi.db.password} -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+                    </jvmArguments>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.jvnet.jax-ws-commons</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
@@ -686,6 +758,9 @@
             <resource>
                 <directory>src/main/resources/webservice-api</directory>
                 <targetPath>webservice-api</targetPath>
+            </resource>
+            <resource>
+                <directory>src/main/resources/spring</directory>
             </resource>
         </resources>
     </build>

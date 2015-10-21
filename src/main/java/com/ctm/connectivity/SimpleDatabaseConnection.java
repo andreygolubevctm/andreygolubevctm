@@ -1,5 +1,6 @@
 package com.ctm.connectivity;
 
+import com.ctm.spring.WebCtmDataAccessConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,9 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleDatabaseConnection.class);
 
+	private static final DataSource dataSource = WebCtmDataAccessConfiguration.getDataSource();
 	private Connection connection;
+
 	private Map<String ,DataSource> dataSources = new HashMap<>();
 
 	private static SimpleDatabaseConnection instance;
@@ -36,25 +39,32 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 	public Connection getConnection(boolean fresh) throws SQLException, NamingException {
 		return getConnection("jdbc/ctm" , fresh);
 	}
-	
+
 	public Connection getConnection(String context) throws SQLException, NamingException {
 		return getConnection(context , false);
 	}
 
 	public Connection getConnection(String context , boolean fresh) throws SQLException, NamingException {
-		if(dataSources.get(context) == null) {
-			Context initCtx = new InitialContext();
-			Context envCtx = (Context) initCtx.lookup("java:comp/env");
-			dataSources.put(context ,(DataSource) envCtx.lookup(context));
+		LOGGER.info("Calling getConnection({})", fresh);
+
+		if (fresh || connection == null || connection.isClosed()) {
+			this.connection = dataSource.getConnection();
 		}
-		if(fresh) {
-			return dataSources.get(context).getConnection();
-		} else {
-			if(connection == null || connection.isClosed()) {
-				setConnection(dataSources.get(context).getConnection());
-			}
-			return connection;
-		}
+		return connection;
+
+//		if(dataSources.get(context) == null) {
+//			Context initCtx = new InitialContext();
+//			Context envCtx = (Context) initCtx.lookup("java:comp/env");
+//			dataSources.put(context ,(DataSource) envCtx.lookup(context));
+//		}
+//		if(fresh) {
+//			return dataSources.get(context).getConnection();
+//		} else {
+//			if(connection == null || connection.isClosed()) {
+//				setConnection(dataSources.get(context).getConnection());
+//			}
+//			return connection;
+//		}
 	}
 
 	@Override
@@ -93,9 +103,9 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 		}
 	}
 
-	private void setConnection(Connection connection) {
-		this.connection = connection;
-	}
+//	private void setConnection(Connection connection) {
+//		this.connection = connection;
+//	}
 
 	public static String createSqlArrayParams(int numParams) {
 		StringBuilder sb = new StringBuilder();
