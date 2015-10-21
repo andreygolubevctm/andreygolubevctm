@@ -326,7 +326,12 @@
 			},
 			onInitialise: function onInitResults(event){
 
+				meerkat.modules.healthFilters.initHealthFilters();
+				meerkat.modules.healthSafariColumnCountFix.initHealthSafariColumnCountFix();
+				meerkat.modules.healthPriceRangeFilter.initHealthPriceRangeFilter();
+				meerkat.modules.healthAltPricing.initHealthAltPricing();
 				meerkat.modules.healthMoreInfo.initMoreInfo();
+				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
 
 			},
 			onBeforeEnter:function enterResultsStep(event){
@@ -522,6 +527,9 @@
 				object:meerkat.modules.health.getTrackingFieldsObject
 			},
 			onInitialise: function initPaymentStep(event){
+
+				meerkat.modules.healthPaymentDate.initPaymentDate();
+				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
@@ -979,22 +987,22 @@
 
 			switch (current_step) {
 				case 0:
-					actionStep = "health situation 2";
+					actionStep = "health situation";
 					break;
 				case 1:
-					actionStep = 'health cover 2';
+					actionStep = 'health cover';
 					break;
 				case 2:
-					actionStep = 'health cover contact 2';
+					actionStep = 'health cover contact';
 					break;
 				case 4:
-					actionStep = 'health application 2';
+					actionStep = 'health application';
 					break;
 				case 5:
-					actionStep = 'health payment 2';
+					actionStep = 'health payment';
 					break;
 				case 6:
-					actionStep = 'health confirmation 2';
+					actionStep = 'health confirmation';
 					break;
 			}
 

@@ -56,25 +56,39 @@ public class JwtTokenCreator {
 
     public String refreshToken(String token, long timeoutSeconds) {
         String tokenToReturn = token;
-        Jws<Claims> decodedPayloadFull = null;
-        try {
-            JwtParser parser = Jwts.parser();
-            decodedPayloadFull = parser.setSigningKeyResolver(new SigningKeyResolverAdapter() {
-                @Override
-                public byte[] resolveSigningKeyBytes(JwsHeader header, Claims claims) {
-                    //inspect the header or claims, lookup and return the signing key
-                    String keyId = header.getKeyId();
-                    return getSigningKey(keyId);
-                }}).parseClaimsJws(token);
-
-        } catch (ClaimJwtException  e) {
-            LOGGER.warn("Failed to update token. {},{}", kv("originalToken", token), kv("timeoutSeconds", timeoutSeconds), e);
-        }
+        Jws<Claims> decodedPayloadFull = getClaimsJws(token);
         if(decodedPayloadFull != null) {
             Claims decodedPayload = decodedPayloadFull.getBody();
             tokenToReturn = createToken((String) decodedPayload.get("source"), decodedPayload.get(TRANSACTION_ID_CLAIM), decodedPayload.get(SECONDS_UNTIL_NEXT_CLAIM), timeoutSeconds, decodedPayload.get(TOUCH_CLAIM));
         }
         return tokenToReturn;
+    }
+
+    public String refreshToken(String token, Long transactionId,  long timeoutSeconds) {
+        String tokenToReturn = token;
+        Jws<Claims>  decodedPayloadFull = getClaimsJws(token);
+        if(decodedPayloadFull != null) {
+            Claims decodedPayload = decodedPayloadFull.getBody();
+            tokenToReturn = createToken((String) decodedPayload.get("source"), transactionId, decodedPayload.get(SECONDS_UNTIL_NEXT_CLAIM), timeoutSeconds, decodedPayload.get(TOUCH_CLAIM));
+        }
+        return tokenToReturn;
+    }
+
+    public Jws<Claims> getClaimsJws(String token) {
+        Jws<Claims> decodedPayloadFull = null;
+        try {
+        JwtParser parser = Jwts.parser();
+        decodedPayloadFull = parser.setSigningKeyResolver(new SigningKeyResolverAdapter() {
+            @Override
+            public byte[] resolveSigningKeyBytes(JwsHeader header, Claims claims) {
+                //inspect the header or claims, lookup and return the signing key
+                String keyId = header.getKeyId();
+                return getSigningKey(keyId);
+            }}).parseClaimsJws(token);
+        } catch (ClaimJwtException  e) {
+            LOGGER.warn("Failed to update token. {},{}", kv("originalToken", token), e);
+        }
+        return decodedPayloadFull;
     }
 
 

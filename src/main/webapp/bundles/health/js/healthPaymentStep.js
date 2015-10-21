@@ -32,9 +32,10 @@
 		maxStartDate: ''
 	};
 
-	function init() {
+	function initHealthPaymentStep() {
 
 		$(document).ready(function(){
+			initialised = true;
 
 			if(meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
 
@@ -485,7 +486,7 @@
 
 
 	meerkat.modules.register("healthPaymentStep", {
-		init: init,
+		init: initHealthPaymentStep,
 		events: moduleEvents,
 		getSetting: getSetting,
 		overrideSettings: overrideSettings,

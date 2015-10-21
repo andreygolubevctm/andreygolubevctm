@@ -3,10 +3,15 @@ SET @providerId = (SELECT ProviderId FROM ctm.provider_master WHERE providerCode
 ALTER TABLE ctm.travel_product ALTER `productCode` DROP DEFAULT;
 ALTER TABLE ctm.travel_product CHANGE COLUMN `productCode` `productCode` VARCHAR(64) NOT NULL AFTER `providerId`;
 
+ALTER TABLE ctm.product_master ALTER `productCode` DROP DEFAULT;
+ALTER TABLE ctm.product_master CHANGE COLUMN `productCode` `productCode` VARCHAR(64) NOT NULL AFTER `ProductCat`;
+
 ALTER TABLE aggregator.results_properties ALTER `productId` DROP DEFAULT;
+-- The following will be take some time to run
 ALTER TABLE aggregator.results_properties CHANGE COLUMN `productId` `productId` VARCHAR(64) NOT NULL AFTER `transactionId`;
 
-
+-- Removing the inserts from PROD as they are not needed
+/*
 INSERT INTO ctm.product_master (`ProductCat`, `providerId`, `productCode`, `ShortTitle`, `LongTitle`, `effectiveStart`, `effectiveEnd`) VALUES ('TRAVEL', @providerId, 'GOIN-TRAVEL-st-go-base-region-1-excess-200', 'GO Insurance - Go Base', 'GO Insurance - Go Base', '2015-09-20 00:00:00', '2040-12-31 00:00:00');
 INSERT INTO ctm.product_master (`ProductCat`, `providerId`, `productCode`, `ShortTitle`, `LongTitle`, `effectiveStart`, `effectiveEnd`) VALUES ('TRAVEL', @providerId, 'GOIN-TRAVEL-st-go-base-region-2-excess-200', 'GO Insurance - Go Base', 'GO Insurance - Go Base', '2015-09-20 00:00:00', '2040-12-31 00:00:00');
 INSERT INTO ctm.product_master (`ProductCat`, `providerId`, `productCode`, `ShortTitle`, `LongTitle`, `effectiveStart`, `effectiveEnd`) VALUES ('TRAVEL', @providerId, 'GOIN-TRAVEL-st-go-base-region-3-excess-200', 'GO Insurance - Go Base', 'GO Insurance - Go Base', '2015-09-20 00:00:00', '2040-12-31 00:00:00');
@@ -45,7 +50,7 @@ INSERT INTO ctm.product_master (`ProductCat`, `providerId`, `productCode`, `Shor
 INSERT INTO ctm.product_master (`ProductCat`, `providerId`, `productCode`, `ShortTitle`, `LongTitle`, `effectiveStart`, `effectiveEnd`) VALUES ('TRAVEL', @providerId, 'GOIN-TRAVEL-amt-60-go-basic-region-4-excess-100', 'Go Insurance AMT 60 Worldwide - Go Basic (60 days)', 'Go Insurance AMT 60 Worldwide - Go Basic (60 days)', '2015-09-20 00:00:00', '2040-12-31 00:00:00');
 INSERT INTO ctm.product_master (`ProductCat`, `providerId`, `productCode`, `ShortTitle`, `LongTitle`, `effectiveStart`, `effectiveEnd`) VALUES ('TRAVEL', @providerId, 'GOIN-TRAVEL-amt-31-go-plus-region-3-excess-200', 'Go Insurance AMT 31 Worldwide Excl North America, Canada and Antarctica - Go Plus (31 days)', 'Go Insurance AMT 31 Worldwide Excl North America, Canada and Antarctica - Go Plus (31 days)', '2015-09-20 00:00:00', '2040-12-31 00:00:00');
 INSERT INTO ctm.product_master (`ProductCat`, `providerId`, `productCode`, `ShortTitle`, `LongTitle`, `effectiveStart`, `effectiveEnd`) VALUES ('TRAVEL', @providerId, 'GOIN-TRAVEL-amt-31-go-plus-region-4-excess-200', 'Go Insurance AMT 31 Worldwide - Go Plus (31 days)', 'Go Insurance AMT 31 Worldwide - Go Plus (31 days)', '2015-09-20 00:00:00', '2040-12-31 00:00:00');
-
+*/
 
 -- INSERT INTO ctm.product_master (`ProductCat`, `productCode`, `providerId`, `ShortTitle`, `LongTitle`, `effectiveStart`, `effectiveEnd`, `Status`) VALUES ('TRAVEL', 'GOIN-TRAVEL-S06', 324, 'Go Insurance - Go Plus', 'Go Insurance - Go Plus', '2015-08-05', '2040-12-31', '');
 -- INSERT INTO ctm.product_master (`ProductCat`, `productCode`, `providerId`, `ShortTitle`, `LongTitle`, `effectiveStart`, `effectiveEnd`, `Status`) VALUES ('TRAVEL', 'GOIN-TRAVEL-S05', 324, 'Go Insurance - Go Plus', 'Go Insurance - Go Plus', '2015-08-05', '2040-12-31', '');
