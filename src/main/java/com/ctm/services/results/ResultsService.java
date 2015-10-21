@@ -1,5 +1,16 @@
 package com.ctm.services.results;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.model.results.ResultsSimpleItem;
+import com.ctm.model.results.ResultsTemplateItem;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
+import org.json.simple.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,25 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
-import com.ctm.spring.WebCtmDataAccessConfiguration;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.XML;
-import org.json.simple.JSONArray;
-
-import com.ctm.model.results.ResultsSimpleItem;
-import com.ctm.model.results.ResultsTemplateItem;
-
 public class ResultsService {
 
     private DataSource ds;
@@ -34,25 +26,16 @@ public class ResultsService {
     private static Logger LOGGER = LoggerFactory.getLogger(ResultsService.class);
 
     public ResultsService() {
-        ds = WebCtmDataAccessConfiguration.getDataSource();
-//        Context initCtx;
-//        try {
-//            initCtx = new InitialContext();
-//            Context envCtx = (Context) initCtx.lookup("java:comp/env");
-//            // Look up our data source
-//            ds = (DataSource) envCtx.lookup("jdbc/ctm");
-//        } catch (NamingException e) {
-//            LOGGER.error("Failed to get InitialContext for jdbc/ctm" , e);
-//        }
+        ds = SimpleDatabaseConnection.getDataSourceJdbcCtm();
     }
 
     public List<ResultsTemplateItem> getResultsPageStructure(String vertical) throws SQLException {
 
         Connection conn = null;
 
-        unorganisedList = new ArrayList<ResultsTemplateItem>();
+        unorganisedList = new ArrayList<>();
 
-        try{
+        try {
             PreparedStatement stmt;
             conn = ds.getConnection();
             stmt = conn.prepareStatement(
@@ -91,7 +74,7 @@ public class ResultsService {
             }
         }
 
-        ArrayList<ResultsTemplateItem> list = new ArrayList<ResultsTemplateItem>();
+        ArrayList<ResultsTemplateItem> list = new ArrayList<>();
         list = findItemInList(0); // start at top level (0) and work recursively through the data.
         Collections.sort(list);
 

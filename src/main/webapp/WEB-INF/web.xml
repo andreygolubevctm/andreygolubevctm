@@ -25,7 +25,7 @@
 	</context-param>
 
 	<listener>
-		<listener-class>com.ctm.spring.CtmContextListener</listener-class>
+		<listener-class>org.springframework.boot.legacy.context.web.SpringBootContextLoaderListener</listener-class>
 	</listener>
 
 	<!-- SESSIONS: This over-rides the settings in Tomcat -->
