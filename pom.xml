@@ -547,7 +547,8 @@
                             <goal>war</goal>
                         </goals>
                         <configuration>
-                            <classifier>${branch.classifier}</classifier>
+                            <!-- Dont use the classifier here until ant packaging goes away -->
+                            <!--<classifier>${branch.classifier}</classifier>-->
                             <packagingExcludes>**/**</packagingExcludes>
                         </configuration>
                     </execution>
@@ -563,7 +564,7 @@
                         <configuration>
                             <target>
                                 <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath"/>
-                                <!-- prefix the branch.classifier with '-' -->
+                                <!-- prefix the branch.classifier with '-'
                                 <if>
                                     <isset property="branch.classifier" />
                                     <then>
@@ -574,13 +575,14 @@
                                         <property name="branch.classifier.war" value=""/>
                                     </else>
                                 </if>
+                                -->
 
                                 <ant antfile="build_environment.xml" target="build.NXI">
                                     <property name="classes.output.dir" value="${project.build.outputDirectory}"/>
                                     <property name="git.revision" value="${bamboo_repository_revision_number}"/>
                                     <property name="web.dir" value="${project.build.directory}/${project.build.finalName}"/>
                                     <property name="war.dir" value="${project.build.directory}"/>
-                                    <property name="war.filename" value="${project.build.finalName}${branch.classifier.war}.${project.packaging}"/>
+                                    <property name="war.filename" value="${project.build.finalName}.${project.packaging}"/>
                                 </ant>
                             </target>
                         </configuration>
@@ -635,31 +637,6 @@
                     </jvmArguments>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-                <executions>
-                    <execution>
-                        <id>repack-war</id>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <configuration>
-                            <classifier>${branch.classifier}</classifier>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <addResources>false</addResources>
-                    <jvmArguments>
-                        -Dhttps.proxyHost=192.168.1.111 -Dhttps.proxyPort=8080 -Dhttp.proxyHost=192.168.1.111 -Dhttp.proxyPort=8080 -Dhttp.nonProxyHosts="*.ecommerce.disconline.com.au|*.captaincompare.com.au|*.intranet|localhost|127.0.0.1" -Dhttps.proxyUser=ittest -Dhttps.proxyPassword=1tt3st -Dspring.datasource.username=${nxi.db.username} -Dspring.datasource.password=${nxi.db.password} -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
-                    </jvmArguments>
-                </configuration>
-            </plugin>
-
 
             <plugin>
                 <groupId>org.jvnet.jax-ws-commons</groupId>
