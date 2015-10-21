@@ -1,18 +1,5 @@
 package com.ctm.services;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.ctm.cache.ApplicationCacheManager;
-
 import com.ctm.dao.BrandsDao;
 import com.ctm.dao.ConfigSettingsDao;
 import com.ctm.dao.VerticalsDao;
@@ -23,6 +10,8 @@ import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.elasticsearch.AddressSearchService;
 import com.disc_au.web.go.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import javax.servlet.ServletRequest;

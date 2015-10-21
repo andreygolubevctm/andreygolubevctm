@@ -5,6 +5,7 @@ import com.ctm.services.FatalErrorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Optional;
 
 import static com.ctm.logging.LoggingArguments.kv;
 import static java.util.Arrays.asList;
@@ -71,5 +73,19 @@ public class ResponseUtils {
         } catch (IOException e) {
             LOGGER.error("Failed to output json to response. {}",kv("json" , json), e);
         }
+    }
+
+    public static void setToken(JSONObject json, String token) {
+        try {
+            json.put("verificationToken",  token);
+        } catch (JSONException e) {
+            LOGGER.error("Failed to set token to JSON response. {}", kv("token", token), e);
+        }
+    }
+
+    public static void setToken(JSONObject json, Optional<String> tokenMaybe ) {
+        tokenMaybe.ifPresent(token -> {
+            setToken(json,  token);
+        });
     }
 }

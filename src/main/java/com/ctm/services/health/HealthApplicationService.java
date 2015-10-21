@@ -1,22 +1,28 @@
 package com.ctm.services.health;
 
 import com.ctm.dao.health.HealthPriceDao;
+import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Provider;
 import com.ctm.model.health.Frequency;
 import com.ctm.model.health.HealthPricePremium;
 import com.ctm.model.request.health.HealthApplicationRequest;
-import com.ctm.services.FatalErrorService;
-import com.ctm.services.RequestService;
+import com.ctm.model.settings.PageSettings;
+import com.ctm.model.settings.Vertical;
+import com.ctm.services.*;
+import com.ctm.utils.SessionUtils;
 import com.ctm.utils.health.HealthApplicationParser;
+import com.ctm.utils.health.HealthRequestParser;
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
+import com.ctm.web.validation.health.HealthApplicationTokenValidation;
 import com.ctm.web.validation.health.HealthApplicationValidation;
 import com.disc_au.price.health.PremiumCalculator;
 import com.disc_au.web.go.Data;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
@@ -25,7 +31,7 @@ import java.util.List;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
-public class HealthApplicationService {
+public class HealthApplicationService extends CTMEndpointService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplicationService.class);
 	private final FatalErrorService fatalErrorService;
@@ -40,6 +46,7 @@ public class HealthApplicationService {
 	public static final String REBATE_HIDDEN_XPATH = PREFIX + "/rebate";
 	public static final String LOADING_XPATH = PREFIX + "/loading";
 	private boolean valid;
+	private boolean isCallCentre;
 	private RequestService requestService;
 
 	/**
@@ -51,18 +58,30 @@ public class HealthApplicationService {
 		this.fatalErrorService = new FatalErrorService();
 	}
 
-	public HealthApplicationService(HealthPriceDao healthPriceDao) {
+	public HealthApplicationService(HealthPriceDao healthPriceDao, FatalErrorService fatalErrorService, HealthApplicationTokenValidation tokenService) {
+		this.tokenService = tokenService;
 		this.healthPriceDao = healthPriceDao;
-		this.fatalErrorService = new FatalErrorService();
+		this.fatalErrorService = fatalErrorService;
 	}
 
 	public JSONObject setUpApplication(Data data, HttpServletRequest httpRequest, Date changeOverDate) throws JspException {
 		// TODO: refactor this when are away from jsp
-		if(requestService == null) {
-			requestService = new RequestService(httpRequest, "HEALTH", data);
+		if (requestService == null) {
+			requestService = new RequestService(httpRequest, Vertical.VerticalType.HEALTH);
+		} else {
+			requestService.setRequest(httpRequest);
 		}
+		SessionDataService sessionDataService = new SessionDataService();
+		isCallCentre = SessionUtils.isCallCentre(httpRequest.getSession());
 		List<SchemaValidationError> validationErrors;
 		try {
+
+			if (tokenService == null) {
+				PageSettings pageSettings = SettingsService.getPageSettingsForPage(httpRequest);
+				SettingsService  settingsService = new SettingsService(httpRequest);
+				tokenService = new HealthApplicationTokenValidation(settingsService, sessionDataService, pageSettings.getVertical());
+			}
+			super.validateToken(httpRequest, tokenService, HealthRequestParser.getHealthRequestToken(requestService, isCallCentre));
 			request = HealthApplicationParser.parseRequest(data, changeOverDate);
 			HealthApplicationValidation validationService = new HealthApplicationValidation();
 			validationErrors = validationService.validate(request);
@@ -70,16 +89,14 @@ public class HealthApplicationService {
 				calculatePremiums();
 				updateDataBucket(data);
 			}
-		} catch (DaoException e) {
+		} catch (DaoException | ConfigSettingException e) {
 			LOGGER.error("Failed to calculate health premiums {},{}", kv("data", data), kv("changeOverDate", changeOverDate), e);
 			fatalErrorService.logFatalError(e, 0, "HealthApplicationService", true, data.getString("current.transactionId"));
 			throw new JspException(e);
 		}
 		return handleValidationResult(requestService, validationErrors);
 	}
-public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
-	return healthPriceDao.getAllProviders(styleCodeId);
-}
+
 	private void calculatePremiums() throws DaoException {
 		Frequency frequency = request.payment.details.frequency;
 		HealthPricePremium premium = fetchHealthResult();
@@ -167,15 +184,56 @@ public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
 		}
 	}
 
-	/**
-	 * used by health_application.jsp
-	 */
-	@SuppressWarnings("unused")
 	public boolean isValid(){
 		return valid;
 	}
 
 	public void setRequestService(RequestService requestService) {
 		this.requestService = requestService;
+	}
+
+
+	public String createTokenValidationFailedResponse(Long transactionId, String sessionId) {
+		try {
+			return createFailedResponseObject(transactionId, sessionId, "Token Validation").toString();
+		} catch (JSONException e) {
+			LOGGER.error("failed to create Response");
+		}
+		return "";
+	}
+
+	public String createFailedResponse(Long transactionId, String sessionId) {
+		try {
+			JSONObject response = createFailedResponseObject(transactionId, sessionId, "Failed Application");
+			appendValuesToResponse(response, transactionId);
+			return response.toString();
+		} catch (JSONException e) {
+			LOGGER.error("failed to create Response");
+		}
+		return "";
+	}
+
+	private JSONObject createFailedResponseObject(Long transactionId, String sessionId, String reason) throws JSONException {
+			JSONObject response = new JSONObject();
+			JSONObject result = new JSONObject();
+			response.put("result" , result);
+			result.put("success", false);
+			JSONObject errors = new JSONObject();
+			result.put("errors", errors);
+			JSONObject error = new JSONObject();
+			error.put("code", reason);
+			error.put("original", reason);
+			errors.put("error", error);
+			String pendingId = sessionId + "-" + transactionId;
+			result.put("pendingID", pendingId);
+			if(isCallCentre) {
+				result.put("callcentre", true);
+			}
+			return response;
+	}
+
+
+	public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
+		return healthPriceDao.getAllProviders(styleCodeId);
 	}
 }

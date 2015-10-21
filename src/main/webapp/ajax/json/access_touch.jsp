@@ -61,4 +61,5 @@
 </c:set>
 
 <%-- Return the results as json --%>
-${go:XMLtoJSON(result)}
+<c:set var="accessTouchResponse" >${go:XMLtoJSON(result)}</c:set>
+${sessionDataService.updateTokenWithNewTransactionIdResponse(pageContext.request, accessTouchResponse, data.current.transactionId)}

@@ -209,6 +209,7 @@
                 includeFormData: true
             },
             onInitialise: function () {
+                meerkat.modules.carCommencementDate.initCarCommencementDate();
                 meerkat.modules.carYoungDrivers.initCarYoungDrivers();
             }
         };
@@ -261,6 +262,7 @@
             onInitialise: function onResultsInit(event) {
                 meerkat.modules.carResults.initPage();
                 meerkat.modules.carMoreInfo.initMoreInfo();
+                meerkat.modules.carFilters.initCarFilters();
                 meerkat.modules.carEditDetails.initEditDetails();
             },
             onBeforeEnter: function enterResultsStep(event) {

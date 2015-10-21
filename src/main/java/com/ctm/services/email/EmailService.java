@@ -1,12 +1,5 @@
 package com.ctm.services.email;
 
-import javax.servlet.http.HttpServletRequest;
-
-import com.ctm.utils.RequestUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONObject;
-
 import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
@@ -20,8 +13,14 @@ import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
+import com.ctm.utils.RequestUtils;
 import com.ctm.web.validation.EmailValidation;
 import com.disc_au.web.go.Data;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
@@ -112,7 +111,7 @@ public class EmailService {
 			EmailServiceHandler emailService = EmailServiceFactory.newInstance(pageSettings, mode, data);
 			emailService.send(request, emailAddress, transactionId);
 		} else {
-			throw new SendEmailException(transactionId + ": invalid email recieved emailAddress:" +  emailAddress);
+			throw new SendEmailException(transactionId + ": invalid email received emailAddress:" +  emailAddress);
 		}
 	}
 }

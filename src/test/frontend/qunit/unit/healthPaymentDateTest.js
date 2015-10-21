@@ -1,35 +1,56 @@
-// mock all ajax calls
-meerkat.modules.comms.post = function (instanceSettings) {
-};
-meerkat.modules.comms.get = function (instanceSettings) {
-};
+$(document).ready( function() {
 
-test("should set to second day of month", function () {
-    meerkat.modules.healthPaymentDate.init();
-    var $policyDateHiddenField = $('.health_details-policyDate');
-    var $messageField = $(".health_credit-card-details_policyDay-message");
-    meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay($messageField, "10/08/2014", [2], 1);
+	// mock all ajax calls
 
-    ok($policyDateHiddenField.val() === '2014-09-02', "field value does not match!" + $policyDateHiddenField.val());
-    ok($messageField.text() == 'Your payment will be deducted on: Tuesday, 2 September 2014', "message value does not match!" + $messageField.val());
-});
+	var commsOldPost = meerkat.modules.comms.post;
+	var commsOldGet = meerkat.modules.comms.get;
 
-test("should set to 15th day of month", function () {
-    meerkat.modules.healthPaymentDate.init();
-    var $policyDateHiddenField = $('.health_details-policyDate');
-    var $messageField = $(".health_credit-card-details_policyDay-message");
-    meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay($messageField, "10/08/2014", [2, 20], 1);
+	function setup() {
+		meerkat.modules.comms.post = function (instanceSettings) {
+		};
+		meerkat.modules.comms.get = function (instanceSettings) {
+		};
+	}
 
-    ok($policyDateHiddenField.val() === '2014-08-20', "field value does not match!" + $policyDateHiddenField.val());
-    ok($messageField.text() == 'Your payment will be deducted on: Wednesday, 20 August 2014', "message value does not match!" + $messageField.text());
-});
+	function cleanup() {
+		meerkat.modules.comms.post = commsOldPost;
+		meerkat.modules.comms.get = commsOldGet;
+	}
 
-test("should default day of month", function () {
-    meerkat.modules.healthPaymentDate.init();
-    var $policyDateHiddenField = $('.health_details-policyDate');
-    var $messageField = $(".health_credit-card-details_policyDay-message");
-    meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay($messageField, "10/08/2014");
+	test("should set to second day of month", function () {
+		setup();
+		meerkat.modules.healthPaymentDate.initPaymentDate();
+		var $policyDateHiddenField = $('.health_details-policyDate');
+		var $messageField = $(".health_credit-card-details_policyDay-message");
+		meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay($messageField, "10/08/2014", [2], 1);
 
-    ok($policyDateHiddenField.val() === '2014-09-01', "field value does not match!" + $policyDateHiddenField.val());
-    ok($messageField.text() == 'Your payment will be deducted on: Monday, 1 September 2014', "message value does not match!" + $messageField.val());
+		ok($policyDateHiddenField.val() === '2014-09-02', "field value does not match!" + $policyDateHiddenField.val());
+		ok($messageField.text() == 'Your payment will be deducted on: Tuesday, 2 September 2014', "message value does not match!" + $messageField.val());
+		cleanup();
+	});
+
+	test("should set to 15th day of month", function () {
+		setup();
+		meerkat.modules.healthPaymentDate.initPaymentDate();
+		var $policyDateHiddenField = $('.health_details-policyDate');
+		var $messageField = $(".health_credit-card-details_policyDay-message");
+		meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay($messageField, "10/08/2014", [2, 20], 1);
+
+		ok($policyDateHiddenField.val() === '2014-08-20', "field value does not match!" + $policyDateHiddenField.val());
+		ok($messageField.text() == 'Your payment will be deducted on: Wednesday, 20 August 2014', "message value does not match!" + $messageField.text());
+		cleanup();
+	});
+
+	test("should default day of month", function () {
+		setup();
+		meerkat.modules.healthPaymentDate.initPaymentDate();
+		var $policyDateHiddenField = $('.health_details-policyDate');
+		var $messageField = $(".health_credit-card-details_policyDay-message");
+		meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay($messageField, "10/08/2014");
+
+		ok($policyDateHiddenField.val() === '2014-09-01', "field value does not match!" + $policyDateHiddenField.val());
+		ok($messageField.text() == 'Your payment will be deducted on: Monday, 1 September 2014', "message value does not match!" + $messageField.val());
+		cleanup();
+	});
+
 });

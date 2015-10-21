@@ -37,7 +37,7 @@ public class LoggingVariables {
         MDC.put(BRAND_CODE_KEY, brandCode);
         setVerticalCode(vertical);
         correlationIdMaybe.ifPresent(correlationId -> {
-             MDC.put(CORRELATION_ID_KEY, correlationId);
+            MDC.put(CORRELATION_ID_KEY, correlationId);
         });
     }
 

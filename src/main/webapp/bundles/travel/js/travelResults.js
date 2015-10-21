@@ -11,18 +11,21 @@
 	var $component, //Stores the jQuery object for the component group
 	previousBreakpoint,
 	best_price_count = 5, price_log_count = 10,
-	needToBuildFeatures = false;
+	needToBuildFeatures = false,
+	initialised = false;
 
 	function initPage(){
+		if(!initialised) {
+			initialised = true;
 
-		initResults();
+			initResults();
 
-		//Features.init();
+			//Features.init();
 
-		eventSubscriptions();
+			eventSubscriptions();
 
-//		breakpointTracking();
-
+			//breakpointTracking();
+		}
 	}
 
 	function onReturnToPage(){
