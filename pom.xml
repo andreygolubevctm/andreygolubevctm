@@ -547,7 +547,7 @@
                             <goal>war</goal>
                         </goals>
                         <configuration>
-                            <!--<classifier>${branch.classifier}</classifier>-->
+                            <classifier>${branch.classifier}</classifier>
                             <packagingExcludes>**/**</packagingExcludes>
                         </configuration>
                     </execution>
@@ -635,6 +635,31 @@
                     </jvmArguments>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <id>repack-war</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <classifier>${branch.classifier}</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <addResources>false</addResources>
+                    <jvmArguments>
+                        -Dhttps.proxyHost=192.168.1.111 -Dhttps.proxyPort=8080 -Dhttp.proxyHost=192.168.1.111 -Dhttp.proxyPort=8080 -Dhttp.nonProxyHosts="*.ecommerce.disconline.com.au|*.captaincompare.com.au|*.intranet|localhost|127.0.0.1" -Dhttps.proxyUser=ittest -Dhttps.proxyPassword=1tt3st -Dspring.datasource.username=${nxi.db.username} -Dspring.datasource.password=${nxi.db.password} -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+                    </jvmArguments>
+                </configuration>
+            </plugin>
+
 
             <plugin>
                 <groupId>org.jvnet.jax-ws-commons</groupId>
