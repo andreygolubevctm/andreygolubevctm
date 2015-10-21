@@ -44,15 +44,15 @@ UPDATE `ctm`.`product_master` pm
  WHERE pm.EffectiveStart = @EffectiveStart
 AND pm.EffectiveEnd = @EffectiveEnd
 AND providerID = @providerID
- AND Status != 'X';
-
-/* Disable current products product master */
-UPDATE `ctm`.`product_master` pm 
- SET pm.EffectiveEnd = STR_TO_DATE(@EffectiveStart, '%Y-%m-%d') - INTERVAL 1 DAY 
-  WHERE(pm.EffectiveStart != @EffectiveStart AND pm.EffectiveEnd != @EffectiveEnd)
-AND @EffectiveStart between EffectiveStart AND EffectiveEnd 
-AND providerID = @providerID 
- AND Status != 'X'; 
+ AND Status != 'X'
+ AND pm.longtitle IN ("GoldSaver Hospital $200 Excess",
+"GoldSaver Hospital $200 Excess and Saver Options",
+"GoldSaver Hospital $200 Excess and Special Options",
+"GoldSaver Hospital $200 Excess and Super Options",
+"GoldStarter Hospital $200 Excess",
+"GoldStarter Hospital $200 Excess and Saver Options",
+"GoldStarter Hospital $200 Excess and Special Options",
+"GoldStarter Hospital $200 Excess and Super Options");
 
 
 /* INSERT product properties */
@@ -74,7 +74,7 @@ SELECT * FROM `ctm`.`export_product_capping_exclusions`;
 INSERT INTO `ctm`.`product_master`
 SELECT * FROM `ctm`.`export_product_master`;
 
-/* Test import has worked there should be 77 products 
+/* Test import has worked there should be 77 products
 
 SELECT pm.* FROM `ctm`.`product_master` pm
 INNER JOIN ctm.product_properties_search pps
@@ -84,6 +84,14 @@ AND pm.providerID =  @providerID
 AND pm.EffectiveStart = @EffectiveStart
 and pm.EffectiveEnd = @EffectiveEnd
 AND pm.ProductCat = 'HEALTH'
+ AND pm.longtitle IN ("GoldSaver Hospital $200 Excess",
+"GoldSaver Hospital $200 Excess and Saver Options",
+"GoldSaver Hospital $200 Excess and Special Options",
+"GoldSaver Hospital $200 Excess and Super Options",
+"GoldStarter Hospital $200 Excess",
+"GoldStarter Hospital $200 Excess and Saver Options",
+"GoldStarter Hospital $200 Excess and Special Options",
+"GoldStarter Hospital $200 Excess and Super Options")
 limit 99999999;
 
 */
