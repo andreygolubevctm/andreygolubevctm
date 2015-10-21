@@ -24,6 +24,7 @@
     <form_new:row label="Standard usage (peak/anytime)" className="clear additional-estimate-details-row usage">
         <utilities_new_fieldset:additional_estimate_details_input xpath="${xpath}"
                                                                   utilityType="Electricity"
+
                                                                   inputType="peak"
                                                                   helpId="536"
                                                                   required="true"

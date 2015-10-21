@@ -29,6 +29,16 @@
         <field:hidden xpath="${xpath}/state" defaultValue="N" />
     </form_new:row>
 
+    <c:set var="fieldXPath" value="${xpath}/whatToCompare" />
+    <form_new:row label="What would you like to compare?" fieldXpath="${fieldXPath}" className="clear" helpId="528">
+        <field_new:array_radio xpath="${fieldXPath}"
+                               required="true"
+                               className="what-to-compare"
+                               items="E=Electricity,G=Gas,EG=Electricity and Gas"
+                               id="${go:nameFromXpath(fieldXPath)}"
+                               title="which energies to compare." />
+    </form_new:row>
+
     <c:set var="fieldXPath" value="${xpath}/movingIn" />
     <form_new:row label="Are you moving to this property?" fieldXpath="${fieldXPath}" className="clear moving-in" helpId="413">
         <field_new:array_radio xpath="${fieldXPath}"
@@ -45,16 +55,6 @@
                               required="true"
                               title="moving in date"
                               minDate="${nowPlusDay_Date}" />
-    </form_new:row>
-
-    <c:set var="fieldXPath" value="${xpath}/whatToCompare" />
-    <form_new:row label="What would you like to compare?" fieldXpath="${fieldXPath}" className="clear" helpId="528">
-        <field_new:array_radio xpath="${fieldXPath}"
-                               required="true"
-                               className="what-to-compare"
-                               items="E=Electricity,G=Gas,EG=Electricity and Gas"
-                               id="${go:nameFromXpath(fieldXPath)}"
-                               title="which energies to compare." />
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/howToEstimate" />
