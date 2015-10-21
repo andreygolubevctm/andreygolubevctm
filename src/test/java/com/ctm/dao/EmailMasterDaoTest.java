@@ -6,9 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.naming.NamingException;
-import javax.sql.DataSource;
 
-import com.ctm.spring.WebCtmDataAccessConfiguration;
 import org.junit.*;
 
 import static org.junit.Assert.*;
