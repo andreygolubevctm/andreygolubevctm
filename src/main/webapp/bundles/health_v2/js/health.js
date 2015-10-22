@@ -211,8 +211,7 @@
 		var benefitsStep = {
 			title: 'Your Cover',
 			navigationId: 'benefits',
-			slideIndex: 0,
-			slideScrollTo: '#navbar-main',
+			slideIndex: 1,
 			tracking: {
 				touchType: 'H',
 				touchComment: 'HLT benefi',
@@ -230,25 +229,8 @@
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefits.close();
-				meerkat.modules.navMenu.disable();
 			},
 			onAfterEnter: function(event) {
-				//Because it has no idea where the #navbar-main is on mobile because it's hidden and position: fixed... we force it to the top.
-				if (meerkat.modules.deviceMediaState.get() === 'xs'){
-					meerkat.modules.utils.scrollPageTo('html',0,1);
-				}
-				// Hide any Simples dialogues
-				if (meerkat.site.isCallCentreUser === true) {
-					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').hide();
-				}
-
-				// Defer the open for next js cycle so that the navbar button is visible and we can read the dropdown's height
-				if(event.isStartMode === false){
-					_.defer(function() {
-						meerkat.modules.healthBenefits.open('journey-mode');
-					});
-				}
-
 				// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter segment
 				_.delay(function() {
 					meerkat.modules.healthSegment.filterSegments();
@@ -257,17 +239,23 @@
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
+
+				// Defer the open for next js cycle so that the navbar button is visible and we can read the dropdown's height
+				if(event.isStartMode === false){
+					_.defer(function() {
+						meerkat.modules.healthBenefits.open('journey-mode');
+					});
+				}
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefits.getSelectedBenefits();
 				meerkat.modules.healthResults.onBenefitsSelectionChange(selectedBenefits);
-				meerkat.modules.navMenu.enable();
 			}
 		};
 		var contactStep = {
 			title: 'Your Contact Details',
 			navigationId: 'contact',
-			slideIndex: 1,
+			slideIndex: 2,
 			tracking: {
 				touchType: 'H',
 				touchComment: 'HLT contac',
@@ -286,8 +274,6 @@
 			onBeforeEnter:function enterContactStep(event) {
 			},
 			onAfterEnter: function enteredContactStep(event) {
-				meerkat.modules.navMenu.enable();
-
 			},
 			onAfterLeave:function leaveContactStep(event){
 				/*
@@ -302,7 +288,7 @@
 		var resultsStep = {
 			title: 'Your Results',
 			navigationId: 'results',
-			slideIndex: 2,
+			slideIndex: 3,
 			validation: {
 				validate: false,
 				customValidation: function validateSelection(callback) {
@@ -378,7 +364,7 @@
 		var applyStep = {
 			title: 'Your Application',
 			navigationId: 'apply',
-			slideIndex: 3,
+			slideIndex: 4,
 			tracking:{
 				touchType:'A'
 			},
@@ -495,7 +481,7 @@
 		var paymentStep = {
 			title: 'Your Payment',
 			navigationId: 'payment',
-			slideIndex: 4,
+			slideIndex: 5,
 			tracking:{
 				touchType:'H',
 				touchComment: 'HLT paymnt',
@@ -623,19 +609,19 @@
 		meerkat.modules.journeyProgressBar.setEndPadding(false);
 		meerkat.modules.journeyProgressBar.configure([
 			{
-				label:'Your Situation',
+				label:'About you',
 				navigationId: steps.startStep.navigationId
 			},
 			{
-				label:'Your Cover',
+				label:'Choose your benefits',
 				navigationId: steps.benefitsStep.navigationId
 			},
 			{
-				label:'Your details',
+				label:'Contact details',
 				navigationId: steps.contactStep.navigationId
 			},
 			{
-				label:'Your Results',
+				label:'Your health insurance quotes',
 				navigationId: steps.resultsStep.navigationId
 			},
 			{
@@ -969,10 +955,10 @@
 					actionStep = "health situation";
 					break;
 				case 1:
-					actionStep = 'health cover';
+					actionStep = 'health benefits';
 					break;
 				case 2:
-					actionStep = 'health cover contact';
+					actionStep = 'health contact';
 					break;
 				case 4:
 					actionStep = 'health application';
