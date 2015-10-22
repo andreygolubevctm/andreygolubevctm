@@ -5,7 +5,7 @@
 <jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
 <jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
 <jsp:useBean id="newPage" class="com.ctm.web.NewPage" />
-${newPage.init(pageSettings)}
+${newPage.init(pageContext.request, pageSettings)}
 
 <%@ attribute name="title"				required="false"  rtexprvalue="true"	 description="The title of the page" %>
 <%@ attribute name="skipJSCSS"	required="false"  rtexprvalue="true"	 description="Provide if wanting to exclude loading normal js/css (except jquery)" %>
