@@ -7,6 +7,8 @@ import com.ctm.providers.health.healthapply.model.request.application.applicant.
 import com.ctm.providers.health.healthapply.model.request.application.situation.Situation;
 import com.ctm.providers.health.healthapply.model.request.fundData.Declaration;
 import com.ctm.providers.health.healthapply.model.request.fundData.FundData;
+import com.ctm.providers.health.healthapply.model.request.fundData.membership.Membership;
+import com.ctm.providers.health.healthapply.model.request.fundData.membership.PartnerDetails;
 import com.ctm.providers.health.healthapply.model.request.payment.Payment;
 import com.ctm.providers.health.healthapply.model.request.payment.credit.CreditCard;
 import org.junit.Test;
@@ -84,6 +86,7 @@ public class RequestAdapterTest {
         verify(person, times(1)).getDob();
         verify(insured, times(1)).getCover();
         verify(insured, times(1)).getHealthCoverLoading();
+        verify(person, times(1)).getAuthority();
     }
 
     @Test
@@ -127,6 +130,7 @@ public class RequestAdapterTest {
         assertEquals(Declaration.Y, result.getDeclaration());
         assertNull(result.getStartDate());
         assertNull(result.getBenefits());
+        assertNull(result.getMembership());
     }
 
     @Test
@@ -147,6 +151,96 @@ public class RequestAdapterTest {
         verify(paymentDetails, times(1)).getStart();
         verify(situation, times(1)).getHealthSitu();
     }
+
+    @Test
+    public void testMembershipEmpty() throws Exception {
+        assertNull(RequestAdapter.createMembership(Optional.empty()));
+    }
+
+    @Test
+    public void testMembership() throws Exception {
+        final Cbh cbh = mock(Cbh.class);
+        final Membership membership = RequestAdapter.createMembership(Optional.ofNullable(cbh));
+        assertNull(membership.getCurrentMember());
+        assertNull(membership.getRegisteredMember());
+        assertNull(membership.getMembershipNumber());
+        assertNull(membership.getMembershipGroup());
+        final PartnerDetails partnerDetails = membership.getPartnerDetails();
+        assertNotNull(partnerDetails);
+        assertNull(partnerDetails.getRelationshipToPrimary());
+        assertNull(partnerDetails.getSameGroupMember());
+        assertNull(membership.getRegisterForGroupServices());
+        verify(cbh, times(1)).getCurrentemployee();
+        verify(cbh, never()).getCurrentnumber();
+        verify(cbh, never()).getCurrentwork();
+        verify(cbh, times(1)).getFormeremployee();
+        verify(cbh, never()).getFormernumber();
+        verify(cbh, never()).getFormerwork();
+        verify(cbh, times(1)).getFamilymember();
+        verify(cbh, never()).getFamilynumber();
+        verify(cbh, never()).getFamilywork();
+        verify(cbh, times(1)).getPartnerrel();
+        verify(cbh, times(1)).getPartneremployee();
+        verify(cbh, times(1)).getRegister();
+    }
+
+    @Test
+    public void testMembershipCurrent() throws Exception {
+        final Cbh cbh = mock(Cbh.class);
+        when(cbh.getCurrentemployee()).thenReturn("Y");
+        RequestAdapter.createMembership(Optional.ofNullable(cbh));
+        verify(cbh, times(1)).getCurrentemployee();
+        verify(cbh, times(1)).getCurrentnumber();
+        verify(cbh, times(1)).getCurrentwork();
+        verify(cbh, never()).getFormeremployee();
+        verify(cbh, never()).getFormernumber();
+        verify(cbh, never()).getFormerwork();
+        verify(cbh, never()).getFamilymember();
+        verify(cbh, never()).getFamilynumber();
+        verify(cbh, never()).getFamilywork();
+        verify(cbh, times(1)).getPartnerrel();
+        verify(cbh, times(1)).getPartneremployee();
+        verify(cbh, times(1)).getRegister();
+    }
+
+    @Test
+    public void testMembershipFormer() throws Exception {
+        final Cbh cbh = mock(Cbh.class);
+        when(cbh.getFormeremployee()).thenReturn("Y");
+        RequestAdapter.createMembership(Optional.ofNullable(cbh));
+        verify(cbh, times(1)).getCurrentemployee();
+        verify(cbh, never()).getCurrentnumber();
+        verify(cbh, never()).getCurrentwork();
+        verify(cbh, times(1)).getFormeremployee();
+        verify(cbh, times(1)).getFormernumber();
+        verify(cbh, times(1)).getFormerwork();
+        verify(cbh, never()).getFamilymember();
+        verify(cbh, never()).getFamilynumber();
+        verify(cbh, never()).getFamilywork();
+        verify(cbh, times(1)).getPartnerrel();
+        verify(cbh, times(1)).getPartneremployee();
+        verify(cbh, times(1)).getRegister();
+    }
+
+    @Test
+    public void testMembershipFamily() throws Exception {
+        final Cbh cbh = mock(Cbh.class);
+        when(cbh.getFamilymember()).thenReturn("Y");
+        RequestAdapter.createMembership(Optional.ofNullable(cbh));
+        verify(cbh, times(1)).getCurrentemployee();
+        verify(cbh, never()).getCurrentnumber();
+        verify(cbh, never()).getCurrentwork();
+        verify(cbh, times(1)).getFormeremployee();
+        verify(cbh, never()).getFormernumber();
+        verify(cbh, never()).getFormerwork();
+        verify(cbh, times(1)).getFamilymember();
+        verify(cbh, times(1)).getFamilynumber();
+        verify(cbh, times(1)).getFamilywork();
+        verify(cbh, times(1)).getPartnerrel();
+        verify(cbh, times(1)).getPartneremployee();
+        verify(cbh, times(1)).getRegister();
+    }
+
 
     @Test
     public void testCreatePaymentEmpty() throws Exception {
@@ -210,8 +304,8 @@ public class RequestAdapterTest {
         verify(contactDetails, times(1)).getEmail();
         verify(contactDetails, times(1)).getOptin();
         verify(contactDetails, times(1)).getCall();
-        verify(contactNumber, times(1)).getMobile();
-        verify(contactNumber, times(1)).getOther();
+        verify(application, times(1)).getMobile();
+        verify(application, times(1)).getOther();
         verify(application, times(1)).getPostalMatch();
         verify(application, times(1)).getPostal();
     }
@@ -230,8 +324,8 @@ public class RequestAdapterTest {
         verify(contactDetails, times(1)).getEmail();
         verify(contactDetails, times(1)).getOptin();
         verify(contactDetails, times(1)).getCall();
-        verify(contactNumber, times(1)).getMobile();
-        verify(contactNumber, times(1)).getOther();
+        verify(application, times(1)).getMobile();
+        verify(application, times(1)).getOther();
         verify(application, times(1)).getPostalMatch();
         verify(application, never()).getPostal();
     }

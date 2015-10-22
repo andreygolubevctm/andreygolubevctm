@@ -16,6 +16,8 @@ public class Person {
 
     private String healthCoverLoading;
 
+    private String authority;
+
     public String getTitle() {
         return title;
     }
@@ -70,5 +72,13 @@ public class Person {
 
     public void setHealthCoverLoading(String healthCoverLoading) {
         this.healthCoverLoading = healthCoverLoading;
+    }
+
+    public String getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
 }

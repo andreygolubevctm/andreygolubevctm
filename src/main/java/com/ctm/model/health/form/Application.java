@@ -32,6 +32,8 @@ public class Application {
 
     private String postalMatch;
 
+    private Cbh cbh;
+
     public Address getAddress() {
         return address;
     }
@@ -150,5 +152,13 @@ public class Application {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Cbh getCbh() {
+        return cbh;
+    }
+
+    public void setCbh(Cbh cbh) {
+        this.cbh = cbh;
     }
 }

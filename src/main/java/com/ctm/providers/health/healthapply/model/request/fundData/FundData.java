@@ -2,6 +2,7 @@ package com.ctm.providers.health.healthapply.model.request.fundData;
 
 import com.ctm.providers.health.healthapply.model.helper.TypeSerializer;
 import com.ctm.providers.health.healthapply.model.request.fundData.benefits.Benefits;
+import com.ctm.providers.health.healthapply.model.request.fundData.membership.Membership;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -26,13 +27,16 @@ public class FundData {
 
     private final Benefits benefits;
 
-    public FundData(final Provider provider, final ProductId product,
-                    final Declaration declaration, final LocalDate startDate, final Benefits benefits) {
+    private final Membership membership;
+
+    public FundData(final Provider provider, final ProductId product, final Declaration declaration,
+                    final LocalDate startDate, final Benefits benefits, final Membership membership) {
         this.provider = provider;
         this.product = product;
         this.declaration = declaration;
         this.startDate = startDate;
         this.benefits = benefits;
+        this.membership = membership;
     }
 
     public Provider getProvider() {
@@ -53,5 +57,9 @@ public class FundData {
 
     public Benefits getBenefits() {
         return benefits;
+    }
+
+    public Membership getMembership() {
+        return membership;
     }
 }

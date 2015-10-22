@@ -8,7 +8,7 @@ import com.ctm.providers.health.healthapply.model.request.application.applicant.
 import com.ctm.providers.health.healthapply.model.request.application.applicant.healthCover.Cover;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.healthCover.HealthCover;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.healthCover.HealthCoverLoading;
-import com.ctm.providers.health.healthapply.model.request.application.applicant.previousFund.Authority;
+import com.ctm.providers.health.healthapply.model.request.application.common.Authority;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.previousFund.ConfirmCover;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.previousFund.MemberId;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.previousFund.PreviousFund;
@@ -29,6 +29,7 @@ import com.ctm.providers.health.healthapply.model.request.contactDetails.Contact
 import com.ctm.providers.health.healthapply.model.request.fundData.*;
 import com.ctm.providers.health.healthapply.model.request.fundData.FundData;
 import com.ctm.providers.health.healthapply.model.request.fundData.benefits.Benefits;
+import com.ctm.providers.health.healthapply.model.request.fundData.membership.*;
 import com.ctm.providers.health.healthapply.model.request.payment.Claims;
 import com.ctm.providers.health.healthapply.model.request.payment.Payment;
 import com.ctm.providers.health.healthapply.model.request.payment.bank.Bank;
@@ -142,7 +143,10 @@ public class RequestAdapter {
                     createPreviousFund(previousFund),
                     certifiedAgeEntry
                             .map(CertifiedAgeEntry::new)
-                            .orElse(null));
+                            .orElse(null),
+                    person.map(Person::getAuthority)
+                        .map(Authority::valueOf)
+                        .orElse(null));
         }
         return null;
     }
@@ -184,8 +188,85 @@ public class RequestAdapter {
                 quote.map(HealthQuote::getSituation)
                     .map(com.ctm.model.health.form.Situation::getHealthSitu)
                     .map(v -> new Benefits(HealthSituation.valueOf(v)))
-                    .orElse(null));
+                    .orElse(null),
+                createMembership(quote.map(HealthQuote::getApplication)
+                    .map(Application::getCbh)));
     }
+
+    protected static Membership createMembership(Optional<Cbh> cbh) {
+        if (cbh.isPresent()) {
+            final RegisteredMember registeredMember;
+            final CurrentMember currentMember;
+            final MembershipNumber membershipNumber;
+            final MembershipGroup membershipGroup;
+            if (cbh.map(Cbh::getCurrentemployee)
+                    .filter(s -> "Y".equals(s)).isPresent()) {
+                registeredMember = RegisteredMember.PRIMARY;
+                currentMember = CurrentMember.Y;
+                membershipNumber = cbh.map(Cbh::getCurrentnumber)
+                        .map(MembershipNumber::new)
+                        .orElse(null);
+                membershipGroup = cbh.map(Cbh::getCurrentwork)
+                        .map(MembershipGroup::new)
+                        .orElse(null);
+            } else if (cbh.map(Cbh::getFormeremployee)
+                    .filter(s -> "Y".equals(s)).isPresent()) {
+                registeredMember = RegisteredMember.PRIMARY;
+                currentMember = CurrentMember.N;
+                membershipNumber = cbh.map(Cbh::getFormernumber)
+                        .map(MembershipNumber::new)
+                        .orElse(null);
+                membershipGroup = cbh.map(Cbh::getFormerwork)
+                        .map(MembershipGroup::new)
+                        .orElse(null);
+            } else if (cbh.map(Cbh::getFamilymember)
+                    .filter(s -> "Y".equals(s)).isPresent()) {
+                registeredMember = cbh.map(Cbh::getFamilyrel)
+                        .map(StringUtils::upperCase)
+                        .map(RegisteredMember::valueOf)
+                        .orElse(null);
+                currentMember = null;
+                membershipNumber = cbh.map(Cbh::getFamilynumber)
+                        .map(MembershipNumber::new)
+                        .orElse(null);
+                membershipGroup = cbh.map(Cbh::getFamilywork)
+                        .map(MembershipGroup::new)
+                        .orElse(null);
+            } else {
+                registeredMember = null;
+                currentMember = null;
+                membershipNumber = null;
+                membershipGroup = null;
+            }
+
+            return new Membership(
+                    registeredMember,
+                    currentMember,
+                    membershipNumber,
+                    membershipGroup,
+                    createPartnerDetails(cbh),
+                    cbh.map(Cbh::getRegister)
+                        .map(RegisterForGroupServices::valueOf)
+                        .orElse(null));
+        } else {
+            return null;
+        }
+    }
+
+    private static PartnerDetails createPartnerDetails(Optional<Cbh> cbh) {
+        if (cbh.isPresent()) {
+            return new PartnerDetails(
+                    cbh.map(Cbh::getPartnerrel)
+                            .map(RelationshipToPrimary::new)
+                            .orElse(null),
+                    cbh.map(Cbh::getPartneremployee)
+                            .map(SameGroupMember::valueOf)
+                            .orElse(null));
+        } else {
+            return null;
+        }
+    }
+
 
     protected static Payment createPayment(Optional<HealthQuote> quote) {
         final Optional<com.ctm.model.health.form.Payment> payment = quote.map(HealthQuote::getPayment);
@@ -249,12 +330,12 @@ public class RequestAdapter {
                     contactDetails.map(com.ctm.model.health.form.ContactDetails::getOptin)
                             .map(OptInEmail::valueOf)
                             .orElse(null),
-                    contactDetails.map(com.ctm.model.health.form.ContactDetails::getContactNumber)
-                            .map(ContactNumber::getMobile)
-                            .map(MobileNumber::new)
-                            .orElse(null),
-                    contactDetails.map(com.ctm.model.health.form.ContactDetails::getContactNumber)
-                            .map(ContactNumber::getOther)
+                    quote.map(HealthQuote::getApplication)
+                        .map(Application::getMobile)
+                        .map(MobileNumber::new)
+                        .orElse(null),
+                    quote.map(HealthQuote::getApplication)
+                            .map(Application::getOther)
                             .map(OtherNumber::new)
                             .orElse(null),
                     contactDetails.map(com.ctm.model.health.form.ContactDetails::getCall)
@@ -511,7 +592,11 @@ public class RequestAdapter {
             } else if (credit.map(Credit::getDay).isPresent()) {
                 return LocalDate.now().withDayOfMonth(credit.map(Credit::getDay).get());
             } else {
-                return null;
+                return payment
+                        .map(com.ctm.model.health.form.Payment::getDetails)
+                        .map(com.ctm.model.health.form.PaymentDetails::getStart)
+                        .map(v -> LocalDate.parse(v, AUS_FORMAT))
+                        .orElse(null);
             }
         } else if (PaymentType.BANK.equals(paymentType)) {
             final Optional<com.ctm.model.health.form.Bank> bank = payment.map(com.ctm.model.health.form.Payment::getBank);
@@ -531,7 +616,11 @@ public class RequestAdapter {
             } else if (bank.map(com.ctm.model.health.form.Bank::getDay).isPresent()) {
                 return LocalDate.now().withDayOfMonth(bank.map(com.ctm.model.health.form.Bank::getDay).get());
             } else {
-                return null;
+                return payment
+                        .map(com.ctm.model.health.form.Payment::getDetails)
+                        .map(com.ctm.model.health.form.PaymentDetails::getStart)
+                        .map(v -> LocalDate.parse(v, AUS_FORMAT))
+                        .orElse(null);
             }
         } else {
             //
