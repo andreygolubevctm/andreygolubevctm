@@ -523,94 +523,27 @@
                 </dependencies>
             </plugin>
 
+            <!-- Copy aggregator dir across into the classes dir -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <warSourceDirectory>src/main/webapp</warSourceDirectory>
-                    <warSourceExcludes>WEB-INF/classes/logback.xml,WEB-INF/classes/environment.properties</warSourceExcludes>
-                </configuration>
+                <artifactId>maven-resources-plugin</artifactId>
                 <executions>
-                    <!-- create as exploded war that ant will do the rest of the build will be completed in ant -->
                     <execution>
-                        <id>war-exploded</id>
-                        <phase>prepare-package</phase>
+                        <id>copy-extra-classes-resources</id>
+                        <phase>process-resources</phase>
                         <goals>
-                            <goal>exploded</goal>
-                        </goals>
-                    </execution>
-                    <!-- creating the artifact is done by ant -->
-                    <execution>
-                        <id>default-war</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>war</goal>
+                            <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <!-- Dont use the classifier here until ant packaging goes away -->
-                            <!--<classifier>${branch.classifier}</classifier>-->
-                            <packagingExcludes>**/**</packagingExcludes>
+                            <outputDirectory>${project.build.outputDirectory}/aggregator</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/webapp/WEB-INF/aggregator</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <configuration>
-                            <target>
-                                <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath"/>
-                                <!-- prefix the branch.classifier with '-'
-                                <if>
-                                    <isset property="branch.classifier" />
-                                    <then>
-                                        <property name="branch.classifier.war" value="-${branch.classifier}"/>
-                                    </then>
-                                    <else>
-                                        <echo message="branch.classifier is not set" />
-                                        <property name="branch.classifier.war" value=""/>
-                                    </else>
-                                </if>
-                                -->
-
-                                <ant antfile="build_environment.xml" target="build.NXI">
-                                    <property name="classes.output.dir" value="${project.build.outputDirectory}"/>
-                                    <property name="git.revision" value="${bamboo_repository_revision_number}"/>
-                                    <property name="web.dir" value="${project.build.directory}/${project.build.finalName}"/>
-                                    <property name="war.dir" value="${project.build.directory}"/>
-                                    <property name="war.filename" value="${project.build.finalName}.${project.packaging}"/>
-                                </ant>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>ant-contrib</groupId>
-                        <artifactId>ant-contrib</artifactId>
-                        <version>1.0b3</version>
-                        <exclusions>
-                            <exclusion>
-                                <groupId>ant</groupId>
-                                <artifactId>ant</artifactId>
-                            </exclusion>
-                        </exclusions>
-                        <scope>runtime</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.ant</groupId>
-                        <artifactId>ant-nodeps</artifactId>
-                        <version>1.8.0</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                </dependencies>
             </plugin>
 
             <plugin>
@@ -683,6 +616,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>com.github.klieber</groupId>
                 <artifactId>phantomjs-maven-plugin</artifactId>
@@ -738,7 +672,6 @@
                         </configuration>
                     </execution>
 
-
                     <execution>
                         <id>grunt build test</id>
                         <phase>test</phase>
@@ -754,17 +687,5 @@
                 </executions>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources/${build.environment}/classes</directory>
-            </resource>
-            <resource>
-                <directory>src/main/resources/webservice-api</directory>
-                <targetPath>webservice-api</targetPath>
-            </resource>
-            <resource>
-                <directory>src/main/resources/spring</directory>
-            </resource>
-        </resources>
     </build>
 </project>
