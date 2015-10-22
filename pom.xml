@@ -16,9 +16,6 @@
     <packaging>war</packaging>
 
     <properties>
-        <!-- Overridden in bamboo builds -->
-        <build.environment>localhost</build.environment>
-
         <powermock.version>1.6.2</powermock.version>
         <cxf.version>3.0.1</cxf.version>
 
@@ -435,11 +432,6 @@
     <profiles>
         <profile>
             <id>build-frontend</id>
-            <activation>
-                <!-- only activate if build.environment set. for local development this will not be set.
-                 in local the grunt watcher should be running so maven doesn't need to run grunt -->
-                <activeByDefault>false</activeByDefault>
-            </activation>
             <build>
                 <plugins>
                     <plugin>
