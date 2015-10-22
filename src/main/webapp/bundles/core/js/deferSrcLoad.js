@@ -1,26 +1,23 @@
 /**
-* Description: Waits for the page to load and then loads of all the images src that have been set with data-src instead of src. This has for effect to increase the initial page load
-*/
+ * Description: Waits for the page to load and then loads of all the images src that have been set with data-src instead of src. This has for effect to increase the initial page load
+ * IMPORTANT: This file cannot be loaded asynchronously
+ */
 
-;(function($){
+;(function ($) {
 
-	var meerkat = window.meerkat;
+    var meerkat = window.meerkat;
 
-	function init(){
+    function init() {
+        $(document).ready(function () {
+            $("[data-defer-src]").each(function allDeferSrcLoadLoop() {
+                var $this = $(this);
+                $this.attr('src', $this.attr('data-defer-src')).removeAttr('data-defer-src');
+            });
+        });
+    }
 
-		jQuery(document).ready(function($) {
-			$(window).load(function() {
-				$("[data-defer-src]").each(function allDeferSrcLoadLoop(){
-					var $this = $(this);
-					$this.attr('src', $this.attr('data-defer-src')).removeAttr('data-defer-src');
-				});
-			}); 
-		});
-
-	}
-
-	meerkat.modules.register("deferSrcLoad", {
-		init: init
-	});
+    meerkat.modules.register("deferSrcLoad", {
+        init: init
+    });
 
 })(jQuery);

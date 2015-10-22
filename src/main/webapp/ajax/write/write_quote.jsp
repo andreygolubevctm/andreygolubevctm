@@ -123,5 +123,7 @@
 		{"result":"FAIL", "errors":[${errorPool}]}
 	</c:when>
 	<c:otherwise>
-		{"result":"OK","transactionId":"${transID}"}</c:otherwise>
+		<c:set var="transactionIdResponse">{"result":"OK","transactionId":"${transID}"}</c:set>
+		${sessionDataService.updateTokenWithNewTransactionIdResponse(pageContext.request, transactionIdResponse, transID)}
+	</c:otherwise>
 </c:choose>
