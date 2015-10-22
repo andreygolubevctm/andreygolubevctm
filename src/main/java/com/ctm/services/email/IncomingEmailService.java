@@ -32,7 +32,6 @@ public class IncomingEmailService {
 	/**
 	 * Create a URL for viewing a confirmation that is brand and vertical aware.
 	 *
-	 * @param confirmationKey
 	 * @return confirmationUrl
 	 */
 	public String getRedirectionUrl(IncomingEmail emailData) {
@@ -70,7 +69,18 @@ public class IncomingEmailService {
 					String quoteUrl = this.getResultProperty(resultData, "quoteUrl");
 					String validateDate = this.getResultProperty(resultData, "validateDate/normal");
 
-					if(quoteUrl != null && validateDate != null && this.validateDateNotExpired(validateDate)) {
+					// The following is a fix for CRM-492.
+					// eDM for CRM-467 has quoteURL with quotes that haven't expired and have no productId in the URL
+					if(emailData.getProductId() == null || emailData.getProductId().isEmpty()) {
+						// Redirect to the first page of the journey
+						emailUrlService.updateWithLoadQuoteUrl(redirectionUrl, emailData);
+
+						// Add expired flag for front-end to handle
+						if(emailData.getEmailType() == EmailMode.PROMOTION) {
+							// Add expired flag by default for promotion emails
+							flagAsExpired = true;
+						}
+					} else if(quoteUrl != null && validateDate != null && this.validateDateNotExpired(validateDate)) {
 						// Set to the quoteUrl recorded in the result set
 						redirectionUrl.append(quoteUrl);
 					} else {
