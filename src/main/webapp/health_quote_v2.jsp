@@ -179,6 +179,7 @@
 
     <%-- Slides --%>
     <health_new_layout:slide_all_about_you />
+    <health_new_layout:slide_benefits />
     <health_new_layout:slide_your_contact />
     <health_layout:slide_results />
     <health_new_layout:slide_application_details />
