@@ -1,8 +1,10 @@
 package com.ctm.router.car;
 
 import com.ctm.dao.car.CarRegoLookupDao;
+import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RegoLookupException;
+import com.ctm.exceptions.VerticalException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.ApplicationService;
@@ -52,11 +54,14 @@ public class RegoLookupRouter {
             Optional<String> plateOptional = Stream.of(plateNumber).map(String::toUpperCase).
                     map(s -> s.replaceAll(REG_EXP_FOR_PLATE, "")).
                     findFirst();
-            PageSettings pageSettings = new PageSettings();
+            PageSettings pageSettings;
             try {
                 pageSettings = SettingsService.getPageSettingsForPage(request);
-            } catch (Exception ex) {
-                LOGGER.error("Failed to get pageSettings, should never happen");
+            } catch (DaoException | ConfigSettingException ex) {
+                LOGGER.error("Failed to get pageSettings", ex);
+                VerticalException vex = new VerticalException(ex.getMessage());
+                vex.initCause(ex);
+                throw vex;
             }
 
             Map<String, Object> carDetails =
