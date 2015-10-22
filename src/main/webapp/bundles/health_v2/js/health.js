@@ -103,6 +103,7 @@
 			.not("label[for*=health_healthCover]")
 			.add("label[for=health_healthCover_primary_dob]")
 			.add("label[for=health_healthCover_primary_cover]")
+			.add("label[for=health_healthCover_primary_coverType]")
 			.removeClass('col-sm-4').addClass('col-sm-3');
 		$('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
 	}
