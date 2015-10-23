@@ -49,7 +49,7 @@
 			<c:set var="emailAddress" value="${authenticatedData.userData.authentication.emailAddress}" />
 			${logger.info('login of successful. {},{}', log:kv('loginAttempts',loginAttempts ), log:kv('email',emailAddress))}
 			<c:set var="password"><go:HmacSHA256 username="${authenticatedData.userData.authentication.emailAddress}" password="${authenticatedData.userData.authentication.password}" brand="${pageSettings.getBrandCode()}" /></c:set>
-			<sql:setDataSource dataSource="jdbc/ctm" />
+			<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 			<go:setData dataVar="authenticatedData" xpath="tmp" value="*DELETE" />
 
 			<%-- Load in quotes from MySQL --%>

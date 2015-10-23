@@ -1,5 +1,6 @@
 package com.ctm.connectivity;
 
+import com.ctm.exceptions.EnvironmentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,10 +18,13 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleDatabaseConnection.class);
 
+	public static final String JDBC_CTM = "jdbc/ctm";
+
 	private Connection connection;
 	private Map<String ,DataSource> dataSources = new HashMap<>();
 
 	private static SimpleDatabaseConnection instance;
+	private static Context envCtx;
 
 	public static SimpleDatabaseConnection getInstance() {
 		if(instance == null){
@@ -30,11 +34,11 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 	}
 
 	public Connection getConnection() throws SQLException, NamingException {
-		return getConnection("jdbc/ctm");
+		return getConnection(JDBC_CTM);
 	}
 
 	public Connection getConnection(boolean fresh) throws SQLException, NamingException {
-		return getConnection("jdbc/ctm" , fresh);
+		return getConnection(JDBC_CTM , fresh);
 	}
 	
 	public Connection getConnection(String context) throws SQLException, NamingException {
@@ -105,5 +109,27 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 		}
 		sb.append("?");
 		return sb.toString();
+	}
+
+	public static DataSource getDataSourceJdbcCtm() {
+		DataSource ds;
+		if (envCtx == null) {
+			try {
+				Context initCtx = new InitialContext();
+				envCtx = (Context)initCtx.lookup("java:comp/env");
+			} catch (NamingException ne) {
+				LOGGER.error("Failed to lookup initialcontext", ne);
+				throw new EnvironmentException("Failed to lookup initialcontext");
+			}
+		}
+
+		try {
+			ds = (DataSource)envCtx.lookup(JDBC_CTM);
+		} catch (NamingException ne) {
+			LOGGER.error("Failed to lookup environmental jdbc context",ne);
+			throw new EnvironmentException("Failed to lookup environmental jdbc context");
+		}
+
+		return ds;
 	}
 }
