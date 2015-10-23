@@ -53,9 +53,10 @@ public class SessionPokeRouter extends HttpServlet {
 			try {
 				if (!justCheck) {
 					sessionDataService.touchSession(request);
-					ResponseUtils.setToken(json, sessionDataService.updateToken(request));
 				}
 				long timeout = sessionDataService.getClientSessionTimeout(request);
+				ResponseUtils.setToken(json, sessionDataService.updateToken(request));
+
 
 				if(timeout == -1) {
 					String bigIPCookieValue = sessionDataService.getCookieByName(request, EnvironmentService.getBIGIPCookieId());

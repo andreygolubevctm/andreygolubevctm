@@ -87,7 +87,7 @@ public abstract class TokenValidation<T extends TokenRequest> {
     public static String createToken(Long transactionId, SessionDataService sessionDataService, SettingsService settingsService, TokenCreatorConfig config, String servletPath, HttpServletRequest request) {
         long timeoutSec = sessionDataService.getClientSessionTimeoutSeconds(request);
         if (timeoutSec == -1) {
-            timeoutSec = sessionDataService.getClientDefaultExpiryTimeoutSeconds(request);
+            timeoutSec = sessionDataService.getClientDefaultExpiryTimeoutSeconds(request) + 10;
         }
         JwtTokenCreator creator = new JwtTokenCreator(settingsService, config);
         return creator.createToken(servletPath, transactionId, timeoutSec);

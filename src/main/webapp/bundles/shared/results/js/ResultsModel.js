@@ -123,7 +123,7 @@ var ResultsModel = {
 							});
 						}
 
-					} else if(typeof jsonResult.error !== 'undefined' && jsonResult.error.type == "validation") {
+					}  else if(typeof jsonResult.error !== 'undefined' && jsonResult.error.type == "validation") {
 						if (typeof Loading !== "undefined") {
 							Loading.hide();
 						}
@@ -135,8 +135,9 @@ var ResultsModel = {
 							validationErrors: jsonResult.error.errorDetails.validationErrors,
 							startStage: 'start'
 						});
-					}
-					else if( !jsonResult || typeof( Object.byString( jsonResult, Results.settings.paths.results.rootElement ) ) == "undefined" ){
+					} else if(typeof jsonResult.error !== 'undefined') {
+						meerkat.modules.verificationToken.readIfTokenError(jsonResult.error);
+					} else if( !jsonResult || typeof( Object.byString( jsonResult, Results.settings.paths.results.rootElement ) ) == "undefined" ){
 						Results.model.handleFetchError( jsonResult, "Returned results did not have the expected format" );
 					}
 					else {
