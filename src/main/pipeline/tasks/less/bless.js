@@ -1,10 +1,6 @@
 var minifyCSS = require("gulp-minify-css"),
-    intercept = require("gulp-intercept"),
     cached = require("gulp-cached"),
-    plumber = require("gulp-plumber"),
     sakugawa = require("gulp-sakugawa"),
-    notify = require("gulp-notify"),
-    rename = require("gulp-rename"),
     path = require("path"),
     fs = require("fs"),
     mkdirp = require("mkdirp");
@@ -31,10 +27,10 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
     };
 
     return gulp.src(filePath)
-        .pipe(plumber({
-            errorHandler: notify.onError("Error: <%= error.message %>")
+        .pipe(gulp.globalPlugins.plumber({
+            errorHandler: gulp.globalPlugins.notify.onError("Error: <%= error.message %>")
         }))
-        .pipe(intercept(function(file) {
+        .pipe(gulp.globalPlugins.intercept(function(file) {
             var file = addExtraFileInfo(file);
 
             mkdirp.sync(file.includesFolder);
@@ -46,20 +42,20 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
             maxSelectors: 4090,
             suffix: "."
         }))
-        .pipe(intercept(function(file) {
+        .pipe(gulp.globalPlugins.intercept(function(file) {
             var file = addExtraFileInfo(file);
 
             file.targetDir = path.join(gulp.pipelineConfig.target.dir, "brand", brandCode, "css");
 
             var tempPath = file.path,
-                appendContent = "<link rel=\"stylesheet\" type=\"text\/css\" href=\"" + tempPath.slice(tempPath.indexOf("assets"), tempPath.length).replace(/\\/g, "/") + "?rev=" + revDate + "\" media=\"all\" />";
+                appendContent = "<link rel=\"stylesheet\" type=\"text\/css\" href=\"" + tempPath.slice(tempPath.indexOf("assets"), tempPath.length).replace(/\\/g, "/").replace(".css", ".min.css") + "?rev=" + revDate + "\" media=\"all\" />";
 
             fileHelper.appendToFile(file.includesFolder, file.bundle.split(".")[0] + gulp.pipelineConfig.target.inc.extension, appendContent);
 
             return file;
         }))
-        .pipe(rename(function(renameFile) {
-            renameFile.extname = ".css";
+        .pipe(gulp.globalPlugins.rename(function(renameFile) {
+            renameFile.extname = ".min.css";
         }))
         // Sakugawa beautifies the CSS for some reason so we do this to keep file sizes down
         // Options are listed at https://github.com/jakubpawlowicz/clean-css
@@ -73,9 +69,11 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
         .pipe(gulp.dest(function(file){
             return file.targetDir;
         }))
-        .pipe(notify("Blessed: " + brandCode + " " + bundle + " CSS"))
+        .pipe(gulp.globalPlugins.debug({
+            title: "Finished Bless CSS"
+        }))
         // We do this to ensure that the file object is sent back
-        .pipe(intercept(function(file) {
+        .pipe(gulp.globalPlugins.intercept(function(file) {
             return file;
         }));
 };

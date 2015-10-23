@@ -4,6 +4,12 @@
  */
 "use strict";
 
+var argv = require("yargs").argv;
+
+if(!!argv.disableNotify) {
+    process.env["DISABLE_NOTIFIER"] = true;
+}
+
 var fs = require("graceful-fs-extra");
 
 // Important!
@@ -23,6 +29,15 @@ var BundlesHelper = require("./helpers/bundlesHelper");
 gulp.pipelineConfig = require("./config");
 gulp.bundles = new BundlesHelper(gulp.pipelineConfig);
 
+// Sometimes plugins need to access environment variables so we use this to ensure that the single plugin instance has received that value
+gulp.globalPlugins = {
+    notify: require("gulp-notify"),
+    debug: require("gulp-debug"),
+    intercept: require("gulp-intercept"),
+    plumber: require("gulp-plumber"),
+    rename: require("gulp-rename")
+};
+
 // Meerkat Ascii. Do not remove or Sergei gets it.
 console.log("\r\nCompare the Market");
 console.log("Meerkat Pipeline\r\n");
@@ -33,6 +48,7 @@ gulp.task("clean:noexit", function() {
     // We delete file contents instead of folders in case gulp tries writing to a folder and permissions haven't been set yet by the OS
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "maps", "*.*"));
+    fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "plugins", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "libraries", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "brand", "*", "css", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "brand", "*", "css", "maps", "*.*"));
