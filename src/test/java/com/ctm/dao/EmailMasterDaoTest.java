@@ -30,6 +30,7 @@ public class EmailMasterDaoTest {
 	public void setup() throws SQLException, NamingException{
 		Connection connection = mock(Connection.class);
 		when(dbSource.getConnection()).thenReturn(connection);
+		when(dbSource.getConnection(any(String.class), any(Boolean.class))).thenReturn(connection);
 		statement = mock(PreparedStatement.class);
 		when(connection.prepareStatement(anyString())).thenReturn(statement);
 		resultSet = mock(ResultSet.class);
