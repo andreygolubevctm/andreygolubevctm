@@ -5,7 +5,7 @@
 <session:get settings="true"/>
 <security:populateDataFromParams rootPath="fuel" />
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <c:set var="sessionid" value="${pageContext.session.id}" />
 <c:set var="brand" value="CTM" />
 <c:set var="vertical" value="FUEL" />

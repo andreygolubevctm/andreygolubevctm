@@ -26,7 +26,7 @@
 
 <%-- Database Query --%>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- This is used to return a full list of providers, such as where a client can select their current fund so does not need to go through provider validation --%>
 <%-- Added the check to exclude expired products/providers --%>

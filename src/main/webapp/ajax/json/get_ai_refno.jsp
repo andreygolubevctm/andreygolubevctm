@@ -21,7 +21,7 @@
 <go:setData dataVar="data" xpath="quote/ai/ExcessQuoted" value="${param.ExcessQuoted}" />
 
 <%-- Add the vehicle details --%>
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <sql:query var="result">
 	SELECT make, model, des
 	   FROM aggregator.vehicles

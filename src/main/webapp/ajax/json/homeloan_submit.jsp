@@ -76,7 +76,7 @@ ${logger.debug('Submit opportunity called. {}', log:kv('submitResult',submitResu
 		<go:setData dataVar="data" xpath="homeloan/confirmationkey" value="${confirmationkey}" />
 
 		<%-- Check that confirmation not already written --%>
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<sql:query var="conf_entry">
 			SELECT KeyID FROM ctm.confirmations WHERE KeyID = ? AND TransID = ? LIMIT 1;
 			<sql:param value="${confirmationkey}" />

@@ -28,7 +28,7 @@
 	<c:set var="property" value="CTM" />
 </c:if>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 ${logger.warn('About to log to error_log {},{},{},{}', log:kv('property', property), log:kv('origin',origin), log:kv('errorMessage',errorMessage), log:kv('errorCode',errorCode))}
 <c:set var="currentTransactionId" value="${data.current.transactionId}" />
