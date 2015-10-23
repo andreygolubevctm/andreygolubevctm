@@ -126,6 +126,7 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 		try {
 			ds = (DataSource)envCtx.lookup(JDBC_CTM);
 		} catch (NamingException ne) {
+			envCtx = null;
 			LOGGER.error("Failed to lookup environmental jdbc context",ne);
 			throw new EnvironmentException("Failed to lookup environmental jdbc context");
 		}
