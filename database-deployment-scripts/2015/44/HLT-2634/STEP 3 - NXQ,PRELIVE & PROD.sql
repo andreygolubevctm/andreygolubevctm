@@ -6,12 +6,6 @@ SET @providerID = 12;
 
 /* -- BEGIN TEST -- */
 
-TRUNCATE `ctm`.`export_product_master`;
-TRUNCATE `ctm`.`export_product_properties_ext`;
-TRUNCATE `ctm`.`export_product_properties`;
-TRUNCATE `ctm`.`export_product_properties_search`;
-TRUNCATE `ctm`.`export_product_capping_exclusions`;
-
 /* Test the products count matches expected */
 SELECT 'Export', count(epm.productId) AS 'Total'
 FROM `ctm`.`export_product_master` epm
