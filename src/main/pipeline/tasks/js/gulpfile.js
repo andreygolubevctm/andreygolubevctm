@@ -104,21 +104,19 @@ function JSTasks(gulp) {
             // JS loaded on page load
             gulp.task(bundleTaskOnLoad, function (done) {
                 var fileName = bundle;
+                gulp.watch(onLoadFileArray, [bundleTaskOnLoad]);
                 return gulpAction(bundleTaskOnLoad, onLoadFileArray, fileName, done);
             });
 
             // JS loaded after page load
             gulp.task(bundleTaskAsync, function (done) {
                 var fileName = bundle + ".deferred";
+                gulp.watch(deferredFileArray, [bundleTaskAsync]);
                 return gulpAction(bundleTaskAsync, deferredFileArray, fileName, done);
             });
 
             gulp.task(bundleTask, [bundleTaskOnLoad, bundleTaskAsync]);
             bundleTasks.push(bundleTask);
-
-            // Files paths to watch
-            var bundleDependencies = bundles.getWatchableBundlesFilePaths(bundle);
-            gulp.watch(bundleDependencies, [bundleTask]);
         })(bundle);
     }
 
