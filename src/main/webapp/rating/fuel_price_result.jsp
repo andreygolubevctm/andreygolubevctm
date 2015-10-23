@@ -30,7 +30,7 @@
 	<c:set var="fuels"><c:out value="${fuels}" />,9</c:set>
 </c:if>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- MAKE the postcode, suburb and state variables by splitting the location string (Suburb PCODE STATE) --%>
 <c:forTokens items="${location}" delims=" " var="locationToken">

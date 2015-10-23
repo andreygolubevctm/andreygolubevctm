@@ -32,7 +32,7 @@
 
 <%-- Appears to retrieve the post codes for the dropdown list in nonstd. Moved up higher because its required sooner. --%>
 <c:if test="${not empty address.postCode or not empty address.nonStdPostCode}">
-    <sql:query var="result" dataSource="jdbc/ctm">
+    <sql:query var="result" dataSource="${datasource:getDataSource()}">
         SELECT suburb, count(street) as streetCount, suburbSeq, state, street
         FROM aggregator.streets
         WHERE postCode = ?

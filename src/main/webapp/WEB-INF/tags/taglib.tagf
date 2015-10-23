@@ -3,6 +3,7 @@
 <%@ taglib uri="/WEB-INF/tlds/file.tld" prefix="file" %>
 <%@ taglib uri="/WEB-INF/tlds/url.tld" prefix="url" %>
 <%@ taglib uri="/WEB-INF/tlds/miscUtils.tld" prefix="miscUtils" %>
+<%@ taglib uri="/WEB-INF/tlds/datasource.tld" prefix="datasource" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" 		prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/xml" 		prefix="x" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"		prefix="fmt"%>

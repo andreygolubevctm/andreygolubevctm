@@ -44,7 +44,7 @@ Process:
 <c:set var="sqlCount">0</c:set>
 
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 
 
