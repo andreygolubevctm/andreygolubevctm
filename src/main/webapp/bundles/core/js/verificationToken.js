@@ -1,12 +1,12 @@
 (function($, undefined) {
     var meerkat = window.meerkat,
-        meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info;
-    var events = {};
+
     var REQUEST_PARAM = "verificationToken";
     var verificationToken;
 
-    function initVerificationToken() {
+    function initVerificationToken(){
+
     }
 
     function get() {
@@ -50,12 +50,23 @@
         }
     }
 
+    function readIfTokenError(error){
+        if(error !== 'undefined' && error.type == "InvalidVerificationToken") {
+            meerkat.modules.session.expire();
+        }
+    }
+
+    function getDecodedToken(){
+        return jwt_decode(get());
+    }
+
     meerkat.modules.register("verificationToken", {
         init: initVerificationToken,
-        events: events,
         get: get,
         set: set,
         addTokenToRequest : addTokenToRequest,
-        readTokenFromResponse : readTokenFromResponse
+        readTokenFromResponse : readTokenFromResponse,
+        getDecodedToken : getDecodedToken,
+        readIfTokenError : readIfTokenError
     });
 })(jQuery);
