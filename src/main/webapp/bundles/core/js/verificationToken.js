@@ -1,7 +1,8 @@
 (function($, undefined) {
     var meerkat = window.meerkat,
+        meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info;
-
+    var events = {};
     var REQUEST_PARAM = "verificationToken";
     var verificationToken;
 
@@ -62,6 +63,7 @@
 
     meerkat.modules.register("verificationToken", {
         init: initVerificationToken,
+        events: events,
         get: get,
         set: set,
         addTokenToRequest : addTokenToRequest,
