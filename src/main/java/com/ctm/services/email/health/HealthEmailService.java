@@ -110,7 +110,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 								   long transactionId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(ApplicationEmailHandler.MAILING_NAME_KEY);
-		ExactTargetEmailSender<HealthApplicationEmailModel> emailSender = new ExactTargetEmailSender<>(pageSettings);
+		ExactTargetEmailSender<HealthApplicationEmailModel> emailSender = new ExactTargetEmailSender<>(pageSettings, transactionId);
 		try {
 			EmailMaster emailDetails = new EmailMaster();
 			emailDetails.setEmailAddress(emailAddress);

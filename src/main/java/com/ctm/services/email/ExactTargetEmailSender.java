@@ -27,7 +27,6 @@ import org.w3c.dom.DOMException;
 
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
@@ -91,7 +90,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
         }
     }
 
-    public void sendToExactTarget(ExactTargetFormatter<T> formatter, T emailModel)
+    public String sendToExactTarget(ExactTargetFormatter<T> formatter, T emailModel)
             throws SendEmailException {
         ExactTargetEmailModel exactTargetEmailModel = formatter.convertToExactTarget(emailModel);
         try {
@@ -108,6 +107,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
                 exception.setDescription("failed to call exact target message:" + response.getMessage() + " OverallStatus: " + response.getOverallStatus() + " requestID:" + response.getRequestID());
                 throw exception;
             }
+            return response.getRequestID();
         } catch (ConfigSettingException e) {
             LOGGER.error("Failed to call exact target web service {}", kv("emailModel", emailModel), e);
             throw new SendEmailException("failed to call exact target web service", e);
