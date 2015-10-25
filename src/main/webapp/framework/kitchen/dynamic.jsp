@@ -316,8 +316,8 @@
 		<field_new:account_number xpath="${xpath}/new/accountNumber" title="account number" minLength="5" maxLength="9" required="true" />
 	</form_new:row>
 
-	<form_new:row label="group_new:address">
-		<group_new:address xpath="new/group/address" type="RES" />
+	<form_new:row label="group_new:elastic_address">
+		<group_new:elastic_address xpath="new/group/address" type="RES" />
 	</form_new:row>
 
 	<form_new:row label="array_radio">

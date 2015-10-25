@@ -2,7 +2,7 @@
 <%@ tag description="Load the confirmation page info based on the key passed in the URL"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <c:set var="token"><c:out value="${param.token}" escapeXml="true" /></c:set>

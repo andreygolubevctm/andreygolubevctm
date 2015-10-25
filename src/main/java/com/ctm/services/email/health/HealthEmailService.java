@@ -88,7 +88,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(BestPriceEmailHandler.MAILING_NAME_KEY);
 		optInMailingName = getPageSetting(BestPriceEmailHandler.OPT_IN_MAILING_NAME);
-		ExactTargetEmailSender<HealthBestPriceEmailModel> emailSender = new ExactTargetEmailSender<HealthBestPriceEmailModel>(pageSettings);
+		ExactTargetEmailSender<HealthBestPriceEmailModel> emailSender = new ExactTargetEmailSender<>(pageSettings, transactionId);
 		try {
 			EmailMaster emailDetails = new EmailMaster();
 			emailDetails.setEmailAddress(emailAddress);
@@ -155,7 +155,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(ProductBrochuresEmailHandler.MAILING_NAME_KEY);
-		ExactTargetEmailSender<HealthProductBrochuresEmailModel> emailSender = new ExactTargetEmailSender<>(pageSettings);
+		ExactTargetEmailSender<HealthProductBrochuresEmailModel> emailSender = new ExactTargetEmailSender<>(pageSettings,transactionId);
 		try {
 			EmailMaster emailDetails = new EmailMaster();
 

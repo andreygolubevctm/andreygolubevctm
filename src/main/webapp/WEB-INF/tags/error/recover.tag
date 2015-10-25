@@ -32,7 +32,7 @@ ${logger.info('core:recover START. {},{}', log:kv('quoteType',quoteType ), log:k
 
 <%-- Log the error into the database, as this is an error recovery --%>
 <c:catch var="error">
-	<sql:update var="results" dataSource="jdbc/ctm">
+	<sql:update var="results" dataSource="${datasource:getDataSource()}">
 		INSERT INTO aggregator.error_log
 		  (styleCodeId,id, property, origin, message, code, datetime)
 		VALUES

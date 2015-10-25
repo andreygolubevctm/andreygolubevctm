@@ -46,7 +46,7 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(BestPriceEmailHandler.MAILING_NAME_KEY);
 		optInMailingName = getPageSetting(BestPriceEmailHandler.OPT_IN_MAILING_NAME);
-		ExactTargetEmailSender<LifeBestPriceEmailModel> emailSender = new ExactTargetEmailSender<LifeBestPriceEmailModel>(pageSettings, 6, ConfigSetting.ALL_BRANDS, 63);
+		ExactTargetEmailSender<LifeBestPriceEmailModel> emailSender = new ExactTargetEmailSender<>(pageSettings, transactionId, 6, ConfigSetting.ALL_BRANDS, 63);
 		EmailMaster emailDetails = new EmailMaster();
 		emailDetails.setEmailAddress(emailAddress);
 		emailDetails.setSource("QUOTE");

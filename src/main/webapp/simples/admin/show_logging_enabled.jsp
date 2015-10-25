@@ -33,7 +33,7 @@
 			environment == 'NXI'  ||
 			environment == 'NXS' ||
 			environment == 'NXQ'}">
-	<sql:setDataSource dataSource="jdbc/ctm"/>
+	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 	<sql:query  var="ServicePropertiesLocal">
 		SELECT sm.serviceCode , vm.verticalName,  environmentCode , servicePropertyValue , 

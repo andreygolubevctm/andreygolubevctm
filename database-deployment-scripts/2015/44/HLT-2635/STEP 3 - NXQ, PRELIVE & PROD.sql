@@ -1,16 +1,9 @@
--- Step 3.
-use ctm;
-SET @EffectiveStart = '2015-04-01';
+-- Step 3. 
+ SET @EffectiveStart = '2015-04-01';
 SET @EffectiveEnd = '2016-03-31';
-SET @providerID = 12;
+SET @providerID = 11;
 
 /* -- BEGIN TEST -- */
-
-TRUNCATE `ctm`.`export_product_master`;
-TRUNCATE `ctm`.`export_product_properties_ext`;
-TRUNCATE `ctm`.`export_product_properties`;
-TRUNCATE `ctm`.`export_product_properties_search`;
-TRUNCATE `ctm`.`export_product_capping_exclusions`;
 
 /* Test the products count matches expected */
 SELECT 'Export', count(epm.productId) AS 'Total'
@@ -47,9 +40,19 @@ WHERE productId IN
 
 /* Disable current products product master */
 UPDATE `ctm`.`product_master` pm
-SET STATUS = 'X'
-WHERE providerID = @providerID
-AND Status != 'X';
+ SET STATUS = 'X'
+ WHERE pm.EffectiveStart = @EffectiveStart
+AND pm.EffectiveEnd = @EffectiveEnd
+AND providerID = @providerID
+ AND Status != 'X'
+ AND pm.longtitle IN ("GoldSaver Hospital $200 Excess",
+"GoldSaver Hospital $200 Excess and Saver Options",
+"GoldSaver Hospital $200 Excess and Special Options",
+"GoldSaver Hospital $200 Excess and Super Options",
+"GoldStarter Hospital $200 Excess",
+"GoldStarter Hospital $200 Excess and Saver Options",
+"GoldStarter Hospital $200 Excess and Special Options",
+"GoldStarter Hospital $200 Excess and Super Options");
 
 
 /* INSERT product properties */
@@ -71,7 +74,7 @@ SELECT * FROM `ctm`.`export_product_capping_exclusions`;
 INSERT INTO `ctm`.`product_master`
 SELECT * FROM `ctm`.`export_product_master`;
 
-/* Test import has worked there should be 336 products
+/* Test import has worked there should be 56 products
 
 SELECT pm.* FROM `ctm`.`product_master` pm
 INNER JOIN ctm.product_properties_search pps
@@ -81,7 +84,14 @@ AND pm.providerID =  @providerID
 AND pm.EffectiveStart = @EffectiveStart
 and pm.EffectiveEnd = @EffectiveEnd
 AND pm.ProductCat = 'HEALTH'
-
+ AND pm.longtitle IN ("GoldSaver Hospital $200 Excess",
+"GoldSaver Hospital $200 Excess and Saver Options",
+"GoldSaver Hospital $200 Excess and Special Options",
+"GoldSaver Hospital $200 Excess and Super Options",
+"GoldStarter Hospital $200 Excess",
+"GoldStarter Hospital $200 Excess and Saver Options",
+"GoldStarter Hospital $200 Excess and Special Options",
+"GoldStarter Hospital $200 Excess and Super Options")
 limit 99999999;
 
 */
