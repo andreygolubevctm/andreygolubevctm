@@ -39,7 +39,7 @@ INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT category
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,500.0,'500',NULL,'23-10-2015','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'nab-low-rate',NULL,'23-10-2015','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'23-10-2015','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'0% p.a. on balance transfers for 24 months, with a one off 2.5% balance transfer fee. You?ll also enjoy the benefits of our lowest ongoing rate on everday purchases.',NULL,'23-10-2015','2040-12-31','',0);
+INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'0% p.a. on balance transfers for 24 months, with a one off 2.5% balance transfer fee. You''ll also enjoy the benefits of our lowest ongoing rate on everday purchases.',NULL,'23-10-2015','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'interest-free-days',0,55.0,'55',NULL,'23-10-2015','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'product-type',0,0,'Low Rate',NULL,'23-10-2015','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'foreign-exchange-fees',0,1,'Yes',NULL,'23-10-2015','2040-12-31','',0);
