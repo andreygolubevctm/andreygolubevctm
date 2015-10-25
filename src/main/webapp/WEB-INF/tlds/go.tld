@@ -705,19 +705,7 @@
 			]]>
 		</example>
 	</function>
-	<function>
-		<description>Writes the passed string to the filename provided</description>
-		<name>writeToFile</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
-		<function-signature>
-			void writeToFile(java.lang.String,java.lang.String)
-		</function-signature>
-		<example>
-			<![CDATA[
-				${go:writeToFile('myfile.txt',myString)}
-			]]>
-		</example>
-	</function>
+
 	<function>
 		<description>Writes the passed string to an AES256 encrypted ZIP file, using the filename, internalFilename and password provided</description>
 		<name>writeToEncZipFile</name>

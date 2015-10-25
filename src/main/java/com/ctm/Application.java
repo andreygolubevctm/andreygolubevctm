@@ -25,10 +25,6 @@ public class Application extends SpringBootServletInitializer {
         return application;
     }
 
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        LOGGER.info("Start onStartup");
-    }
-
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Application.class, args);
     }
