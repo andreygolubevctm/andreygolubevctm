@@ -7,12 +7,10 @@
 	 * as needed. Better to have this functionality common.
 	 **/
 
-	var meerkat = window.meerkat,
-		meerkatEvents =  meerkat.modules.events,
-		events = {};
+	var meerkat = window.meerkat;
 
 	function init() {
-		jQuery(document).ready(function($) {
+		$(document).ready(function($) {
 			if($('#provider-testing-key-required').length) {
 				meerkat.modules.dialogs.show({
 					htmlContent: $('#provider-testing-key-required').html(),
@@ -26,8 +24,7 @@
 	}
 
 	meerkat.modules.register("providerTesting", {
-		init: init,
-		events: events
+		init: init
 	});
 
 })(jQuery);

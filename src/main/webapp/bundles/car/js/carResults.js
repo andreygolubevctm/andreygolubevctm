@@ -22,6 +22,8 @@
 
 	function initPage(){
 
+		initCompare();
+
 		initResults();
 
 		Features.init();
@@ -610,7 +612,7 @@
 		meerkat.modules.carMoreInfo.runDisplayMethod();
 	}
 
-	function init(){
+	function initCompare(){
 
 		$component = $("#resultsPage");
 
@@ -632,7 +634,6 @@
 	}
 
 	meerkat.modules.register('carResults', {
-		init: init,
 		initPage: initPage,
 		onReturnToPage: onReturnToPage,
 		get: get,

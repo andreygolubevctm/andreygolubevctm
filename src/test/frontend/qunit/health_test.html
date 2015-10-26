@@ -9,17 +9,25 @@
     <link rel="shortcut icon" type="image/x-icon" href="brand/ctm/graphics/favicon.ico">
     <link rel="stylesheet" href="vendor/qunit.css">
     <script src="vendor/qunit.js"></script>
-    <script src="../../../main/webapp/framework/jquery/lib/jquery-2.1.4.min.js"></script>
+    <script src="../../../main/webapp/assets/libraries/jquery/js/jquery-2.1.4.min.js"></script>
     <script src="unit/testBoilerPlate.js"></script>
     <!--  Modernizr -->
     <script>
-       document.write('<script src="../../../main/webapp/framework/lib/js/modernizr-2.8.3.min.js">\x3C/script>');
-       document.write('<script src="../../../main/webapp/framework/lib/js/underscore-1.8.3.min.js">\x3C/script>');
+       document.write('<script src="../../../main/webapp/bundles/plugins/modernizr/js/modernizr-2.8.3.js">\x3C/script>');
+       document.write('<script src="../../../main/webapp/assets/libraries/underscore-1.8.3.min.js">\x3C/script>');
     </script>
 
     <!-- default site config -->
-
-    <script src="../../../main/webapp/assets/js/bundles/health.js"></script>
+    <script src="../../../main/webapp/bundles/meerkat/js/meerkat.js"></script>
+    <script src="../../../main/webapp/bundles/meerkat/js/meerkat.logging.js"></script>
+    <script src="../../../main/webapp/bundles/meerkat/js/meerkat.modules.js"></script>
+    <script src="../../../main/webapp/bundles/meerkat/js/meerkat.utilities.js"></script>
+    <script src="../../../main/webapp/bundles/core/js/comms.js"></script>
+    <script src="../../../main/webapp/bundles/core/js/utils.js"></script>
+    <script src="../../../main/webapp/bundles/shared/numberUtils/js/numberUtils.js"></script>
+    <script src="../../../main/webapp/bundles/health/js/health.js"></script>
+    <script src="../../../main/webapp/bundles/health/js/healthPaymentDate.js"></script>
+    <script src="../../../main/webapp/bundles/health/js/__health_legacy.js"></script>
 
     <script src="unit/healthPaymentDateTest.js"></script>
 </head>

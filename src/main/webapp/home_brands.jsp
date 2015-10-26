@@ -94,7 +94,6 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
-		<script src="framework/jquery/plugins/jquery.scrollTo.min.js"></script>
 	</jsp:attribute>
 
 	<jsp:body>
