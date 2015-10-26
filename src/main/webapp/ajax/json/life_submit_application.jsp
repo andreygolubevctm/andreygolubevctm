@@ -41,7 +41,7 @@
 						<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 						
 						<%-- Check if email already sent and who it was sent to --%>
-						<sql:setDataSource dataSource="jdbc/ctm" />
+						<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 						
 						<c:catch var="error">
 							<sql:query var="companies">

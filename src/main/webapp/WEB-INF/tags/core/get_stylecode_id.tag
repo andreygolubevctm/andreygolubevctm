@@ -5,7 +5,7 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="transactionId"	required="true" rtexprvalue="true"	description="" %>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <sql:query var="styleCode">
 	SELECT styleCodeID FROM ctm.transaction_stylecode where transactionID = ?

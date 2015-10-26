@@ -31,7 +31,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 	</data>
 </c:set>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <c:catch var="detailsError">
 	<sql:update>
  		INSERT INTO aggregator.transaction_details 
@@ -127,7 +127,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 					</x:choose>
 				</c:set>
 				
-				<sql:setDataSource dataSource="jdbc/ctm"/>
+				<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 				<sql:update>
 			 		INSERT INTO aggregator.transaction_details 
 			 		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 

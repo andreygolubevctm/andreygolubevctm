@@ -24,7 +24,7 @@
 <c:if test="${fn:contains(fuels, '3') and not fn:contains(fuels, '9')}">
 	<c:set var="fuels"><c:out value="${fuels}" />,9</c:set>
 </c:if>
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- Retrieve the list of sites for the postcodes provided --%>
 <c:catch var="error">

@@ -14,7 +14,7 @@
 	<c:set var="xml_data" value="none" />
 </c:if>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- Save the form information to the database  --%>
 <c:catch var="error">

@@ -12,7 +12,7 @@
 <%@ attribute name="comment"	 	required="true"	 rtexprvalue="true"	 description="Any comment" %>
 <%@ attribute name="operator"	 	required="false" rtexprvalue="true"	 description="Manually define the operator, otherwise is logged-in user" %>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- VARIABLES --%>
 <c:set var="operator">
