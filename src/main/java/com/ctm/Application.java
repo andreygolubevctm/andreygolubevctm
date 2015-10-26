@@ -25,6 +25,10 @@ public class Application extends SpringBootServletInitializer {
         return application;
     }
 
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        LOGGER.info("Override onStartup so that spring does not takeover the web context with its own listener");
+    }
+
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Application.class, args);
     }
