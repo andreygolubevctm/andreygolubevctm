@@ -18,6 +18,7 @@
 
 	var MODE_POPOVER = 'popover-mode'; // Triggered as pop over
 	var MODE_JOURNEY = 'journey-mode'; // Triggered by journey engine step. Different buttons are shown and different events are triggered.
+	var MODE_SLIDE = 'slide-mode'; // Triggered by journey engine step as an actual slide. Different buttons are shown and different events are triggered.
 
 
 	function getProductCategory() {
@@ -91,24 +92,28 @@
 	}
 
 	function populateDisplayComponent(){
+		console.log("populateDisplayComponent: "+mode);
 
 		resetDisplayComponent();
 
 		// Get values from hidden fields and display them.//
 		$( "#mainform input.benefit-item" ).each(function( index, element ) {
 			var $element = $(element);
+			console.log("$element: ",$element);
 			if($element.val() == 'Y'){
 				var key = $element.attr('name');
 				$component.find(".benefits-list :input[name='"+key+"']").prop('checked', true);
 				if (isIE8) $component.find(".benefits-list :input[name='"+key+"']").change();
 			}
 		});
-
+		console.log("Component",$component);
 		// Redraw bootstrap switches.
-		$component.find('input.checkbox-switch').bootstrapSwitch('setState');
+		//$component.find('input.checkbox-switch').bootstrapSwitch('setState');
 
 		// Set disabled/enabled states on checkboxes
 		$component.find('input.hasChildren').each(function( index, element ) {
+			console.log("Enabling");
+			console.log("element: ",element);
 			updateEnableSectionState(element);
 		});
 
@@ -303,12 +308,15 @@
 			}
 		}
 	}
+	function setMode (modeParam){
+		mode = modeParam;
+	}
 	// Open the dropdown with code (public method). Specify a 'mode' of 'journey-mode' to apply different UI options.
 	function open(modeParam) {
 
 		// reset benefits for devs when use product title to search
 		resetBenefitsForProductTitleSearch();
-		mode = modeParam;
+		setMode(modeParam);
 
 		// Open the menu on mobile too.
 		meerkat.modules.navMenu.open();
@@ -321,6 +329,7 @@
 
 	// Add event listeners when dropdown is opened.
 	function afterOpen() {
+		console.log("Afteropen mode: "+mode + " component: ",$component);
 		$component.find(':input.hasChildren').on('change.benefits', onSectionChange);
 		$component.find('.btn-save').on('click.benefits', saveSelection);
 		$component.find('.btn-cancel').on('click.benefits', close);
@@ -347,6 +356,7 @@
 
 	// Remove event listeners and reset class state when dropdown is closed.
 	function afterClose(){
+		console.log('afterclose');
 		$component.find('input.hasChildren').off('change.benefits');
 		$component.find('.btn-save').off('click.benefits');
 		$component.find('.btn-cancel').off('click.benefits');
@@ -362,6 +372,8 @@
 	function init(){
 
 		$(document).ready(function(){
+			console.log("init benefits");
+			console.log("Mode"+mode);
 
 			if (meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
 
@@ -372,6 +384,7 @@
 			isIE8 = meerkat.modules.performanceProfiling.isIE8();
 
 			$dropdown.on('show.bs.dropdown', function () {
+
 				if(mode === null) mode = MODE_POPOVER;
 				afterOpen();
 				populateDisplayComponent();
@@ -439,7 +452,10 @@
 		close: close,
 		getProductCategory: getProductCategory,
 		getSelectedBenefits:getSelectedBenefits,
-		getBenefitsForSituation:getBenefitsForSituation
+		getBenefitsForSituation:getBenefitsForSituation,
+		afterOpen: afterOpen,
+		populateDisplayComponent: populateDisplayComponent,
+		setMode: setMode
 	});
 
 })(jQuery);
