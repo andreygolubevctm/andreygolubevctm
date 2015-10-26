@@ -16,11 +16,11 @@
 </c:choose>
 
 <c:choose>
-	<c:when test="${not empty param.createEmailToken}">
-		<c:set var="createEmailToken" value="${param.createEmailToken}" />
+	<c:when test="${not empty param.createUnsubscribeEmailToken}">
+		<c:set var="createUnsubscribeEmailToken" value="${param.createUnsubscribeEmailToken}" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="createEmailToken" value="${true}" />
+		<c:set var="createUnsubscribeEmailToken" value="${true}" />
 	</c:otherwise>
 </c:choose>
 
@@ -111,12 +111,12 @@
 					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:when test="${param.tmpl eq 'home_bestprice'}">
-					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="home" emailAction="load" emailTokenType="bestprice" hashedEmail="${param.hashedEmail}"></agg:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="home" emailAction="load" emailTokenType="bestprice" hashedEmail="${param.hashedEmail}" emailTokenEnabled="${pageSettings.getSetting('emailTokenEnabled')}"></agg:xmlForOtherQuery></c:set>
 					<c:set var="emailTokenType" value="bestprice" />
 					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:when test="${param.tmpl eq 'car_bestprice'}">
-					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="car" emailAction="load" emailTokenType="bestprice" hashedEmail="${param.hashedEmail}"></agg:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="car" emailAction="load" emailTokenType="bestprice" hashedEmail="${param.hashedEmail}" emailTokenEnabled="${pageSettings.getSetting('emailTokenEnabled')}"></agg:xmlForOtherQuery></c:set>
 					<c:set var="emailTokenType" value="bestprice" />
 					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
@@ -129,7 +129,7 @@
 		</c:if>
 		<go:setData dataVar="data" value="*DELETE" xpath="tempSQL" />
 
-		<c:if test="${createEmailToken}">
+		<c:if test="${createUnsubscribeEmailToken}">
 			<c:choose>
 				<c:when test="${empty param.unsubscribeToken}">
 					<jsp:useBean id="tokenServiceFactory" class="com.ctm.services.email.token.EmailTokenServiceFactory"/>
@@ -206,6 +206,7 @@
 						</c:if>
 						<x:param name="unsubscribeToken">${unsubscribeToken}</x:param>
 						<x:param name="continueOnlineToken">${param.continueOnlineToken}</x:param>
+						<x:param name="emailTokenEnabled">${pageSettings.getSetting('emailTokenEnabled')}</x:param>
 				</x:transform>
 			</c:set>
 

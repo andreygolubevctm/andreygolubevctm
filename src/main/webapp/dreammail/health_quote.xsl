@@ -32,6 +32,7 @@
 	<xsl:param name="baseURL"></xsl:param>
 	<xsl:param name="unsubscribeToken"></xsl:param>
 	<xsl:param name="continueOnlineToken"></xsl:param>
+	<xsl:param name="emailTokenEnabled"></xsl:param>
 	
 	<xsl:template match="/">
 			<xsl:apply-templates select="/tempSQL"/>
@@ -78,11 +79,25 @@
 </xsl:variable>
 
 <xsl:variable name="actionURL">
-	<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'retrieve_quotes.jsp?token=',$continueOnlineToken, ']]&gt;')" />
+	<xsl:choose>
+		<xsl:when test="$emailTokenEnabled = 'true'">
+			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'retrieve_quotes.jsp?token=',$continueOnlineToken, ']]&gt;')" />
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'retrieve_quotes.jsp?email=',$escapedEmailAddress,'&amp;hashedEmail=',$hashedEmail,'&amp;transactionId=',$tranId,'&amp;vertical=health]]&gt;')" />
+		</xsl:otherwise>
+	</xsl:choose>
 </xsl:variable>
 
 <xsl:variable name="unsubscribeURL">
-	<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?token=',$unsubscribeToken,']]&gt;')" />
+	<xsl:choose>
+		<xsl:when test="$emailTokenEnabled = 'true'">
+			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?token=',$unsubscribeToken,']]&gt;')" />
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?unsubscribe_email=',$hashedEmail,'&amp;vertical=health&amp;email=',$EmailAddress,']]&gt;')" />
+		</xsl:otherwise>
+	</xsl:choose>
 </xsl:variable>
 
 	<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"

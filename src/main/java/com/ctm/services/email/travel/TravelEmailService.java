@@ -29,13 +29,15 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 	EmailDetailsService emailDetailsService;
 	protected TransactionDao transactionDao = new TransactionDao();
 	private final EmailUrlService urlService;
+	private final EmailUrlServiceOld urlServiceOld;
 	private Data data;
 
-	public TravelEmailService(PageSettings pageSettings, EmailMode emailMode, EmailDetailsService emailDetailsService, EmailUrlService urlService, Data data) {
+	public TravelEmailService(PageSettings pageSettings, EmailMode emailMode, EmailDetailsService emailDetailsService, EmailUrlService urlService, Data data, EmailUrlServiceOld urlServiceOld) {
 		super(pageSettings, emailMode);
 		this.emailDetailsService = emailDetailsService;
 		this.urlService = urlService;
 		this.data = data;
+		this.urlServiceOld = urlServiceOld;
 	}
 
 	@Override
@@ -109,8 +111,13 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			emailParameters.put(EmailUrlService.VERTICAL, "travel");
 			emailParameters.put(EmailUrlService.TRAVEL_POLICY_TYPE, (String) data.get("travel/policyType"));
 
-			String price_presentation_url = urlService.getApplyUrl(emailDetails, emailParameters);
-			emailModel.setCompareResultsURL(price_presentation_url);
+			String pricePresentationUrl;
+			if(Boolean.valueOf(pageSettings.getSetting("emailTokenEnabled"))) {
+				pricePresentationUrl = urlService.getApplyUrl(emailDetails, emailParameters);
+			} else {
+				pricePresentationUrl = pageSettings.getBaseUrl() + "travel_quote.jsp?action=load&type=bestprice&id=" + transactionId + "&hash=" + emailDetails.getHashedEmail() + "&vertical=travel&type="+(String) data.get("travel/policyType");
+			}
+			emailModel.setCompareResultsURL(pricePresentationUrl);
 
 			String pt = (String) data.get("travel/policyType");
 			emailModel.setPolicyType(pt.equals("S") ? "ST" : "AMT");
@@ -121,13 +128,16 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			setupRankingDetails(emailModel, transactionId);
 			emailModel.setTransactionId(transactionId);
 
-			emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
-			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailParameters));
-			emailModel.setApplyUrl(price_presentation_url);
-			} catch (DaoException|EnvironmentException | VerticalException
-				| ConfigSettingException e) {
+			if(Boolean.valueOf(pageSettings.getSetting("emailTokenEnabled"))) {
+				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
+				emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailParameters));
+			} else {
+				emailModel.setUnsubscribeURL(urlServiceOld.getUnsubscribeUrl(emailDetails));
+			}
+			emailModel.setApplyUrl(pricePresentationUrl);
+		} catch (DaoException|EnvironmentException | VerticalException | ConfigSettingException e) {
 			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
-					" transactionId:" +  transactionId  ,  e);
+				" transactionId:" +  transactionId  ,  e);
 		}
 		String splitTest = (String) data.get("travel/bestPriceSplitTest");
 		String mailingKey;

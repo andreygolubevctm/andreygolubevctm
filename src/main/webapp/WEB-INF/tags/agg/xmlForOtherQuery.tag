@@ -6,6 +6,7 @@
 	<%@ attribute name="hashedEmail" required="true" rtexprvalue="true" description="Hashed Email"%>
 	<%@ attribute name="emailTokenType" required="true" rtexprvalue="true" description="Email Token Type"%>
 	<%@ attribute name="emailAction" required="true" rtexprvalue="true" description="Email Action"%>
+	<%@ attribute name="emailTokenEnabled" required="true" rtexprvalue="true" description="Flag to check if email token creating is enabled"%>
 
 	<%--
 		You will need these if you don't already have them
@@ -28,9 +29,11 @@
 
 	<c:set var="productCount" value="0" />
 
-	<jsp:useBean id="tokenServiceFactory" class="com.ctm.services.email.token.EmailTokenServiceFactory"/>
-	<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
-	<c:set var="emailVar" value="${tokenService.insertEmailTokenRecord(tranId, hashedEmail, pageSettings.getBrandId(), emailTokenType, 'load')}" />
+	<c:if test="${emailTokenEnabled}">
+		<jsp:useBean id="tokenServiceFactory" class="com.ctm.services.email.token.EmailTokenServiceFactory"/>
+		<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
+		<c:set var="emailVar" value="${tokenService.insertEmailTokenRecord(tranId, hashedEmail, pageSettings.getBrandId(), emailTokenType, 'load')}" />
+	</c:if>
 
 	<c:forEach var="ranking" items="${rankings}" varStatus="status">
 
@@ -46,8 +49,10 @@
 				<c:if test="${property.getProductId() eq productId}">
 					<go:setData dataVar="data" xpath="tempSQL/results/product${ranking.getRankPosition()}/${property.getProperty()}" value="${property.getValue()}" />
 
-					<c:set var="loadQuoteToken" value="${tokenService.generateToken(tranId, hashedEmail, pageSettings.getBrandId(), emailTokenType, emailAction, productId, null, vertical, null, false)}" />
-					<go:setData dataVar="data" xpath="tempSQL/results/product${ranking.getRankPosition()}/loadQuoteToken" value="${loadQuoteToken}" />
+					<c:if test="${emailTokenEnabled}">
+						<c:set var="loadQuoteToken" value="${tokenService.generateToken(tranId, hashedEmail, pageSettings.getBrandId(), emailTokenType, emailAction, productId, null, vertical, null, false)}" />
+						<go:setData dataVar="data" xpath="tempSQL/results/product${ranking.getRankPosition()}/loadQuoteToken" value="${loadQuoteToken}" />
+					</c:if>
 				</c:if>
 			</c:forEach>
 
