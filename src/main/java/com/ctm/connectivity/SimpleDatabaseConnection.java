@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 @Component
 public class SimpleDatabaseConnection implements AutoCloseable, InitializingBean {
 
@@ -52,7 +54,7 @@ public class SimpleDatabaseConnection implements AutoCloseable, InitializingBean
     }
 
     public Connection getConnection(String context, boolean fresh) throws SQLException, NamingException {
-        LOGGER.debug("Calling getConnection({},{})", context, fresh);
+        LOGGER.trace("Calling getConnection({},{})", kv("context", context), kv("fresh", fresh));
         Connection conn = null;
         if (context.equals(JDBC_CTM)) {
             if (fresh) {
