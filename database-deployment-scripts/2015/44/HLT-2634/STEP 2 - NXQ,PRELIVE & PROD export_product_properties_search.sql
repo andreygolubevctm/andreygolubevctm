@@ -9,7 +9,7 @@
 /*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-
+use ctm;
 -- Dumping structure for table ctm.export_product_properties_search
 DROP TABLE IF EXISTS `export_product_properties_search`;
 CREATE TABLE IF NOT EXISTS `export_product_properties_search` (
