@@ -14,7 +14,7 @@
 <%@ attribute name="email_id"		required="true"	 rtexprvalue="true"	 description="The entrants emailId" %>
 <%@ attribute name="items" 			required="true"  rtexprvalue="true"  description="comma seperated list of values in propertyId=value format" %>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- Get the next entry_id to use --%>
 <c:set var="entry_id">

@@ -91,7 +91,7 @@
 
             var healthQuoteResultsUrl = "ajax/json/health_quote_results.jsp";
             if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
-                healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp"
+                healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp";
             }
 
             // Init the main Results object
@@ -687,7 +687,7 @@
 
                 var healthQuoteResultsUrl = "ajax/json/health_quote_results.jsp";
                 if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
-                    healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp"
+                    healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp";
                 }
 
                 meerkat.modules.comms.post({
@@ -743,7 +743,8 @@
             startColumnWidthTracking();
         }
         if (meerkat.site.isCallCentreUser) {
-            createPremiumsPopOver();
+            // Not too sure how else to check if popovers exist without loading them separately.
+            meerkat.modules.utils.pluginReady("popovers").done(createPremiumsPopOver);
         }
     }
 
@@ -765,6 +766,7 @@
                     product: product,
                     frequency: Results.getFrequency()
                 });
+
 
                 meerkat.modules.popovers.create({
                     element: $this,

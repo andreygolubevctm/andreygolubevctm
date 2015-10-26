@@ -81,7 +81,7 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 				${logger.info('About to load quote. {}, {}', log:kv('requestedTransaction',requestedTransaction), log:kv('user',parm))}
 				${logger.debug('About to load quote. {}', log:kv('param',param))}
 
-				<sql:setDataSource dataSource="jdbc/ctm"/>
+				<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 				<%-- If is Simples Operator opening quote owned by a client then will need
 					to duplicate the transaction and make the operator the owner --%>

@@ -4,21 +4,20 @@
  */
 "use strict";
 
-// Sometimes we hit our open file limit on our OS... So we use this library to calm gulp down
-var realFs = require('fs'),
-    gracefulFs = require('graceful-fs');
-gracefulFs.gracefulify(realFs);
+var argv = require("yargs").argv;
+
+if(!!argv.disableNotify) {
+    process.env["DISABLE_NOTIFIER"] = true;
+}
+
+var fs = require("graceful-fs-extra");
 
 // Important!
 // The watch method used by gulp plugins doesn't seem to appreciate having so many active listeners
 // To get around it, we set the default number of listeners to be greater than the default (10)
 require('events').EventEmitter.prototype._maxListeners = 200;
 
-// TODO: Create task for compiling plugins
-// TODO: Create task for sprites (see Mark)
-
 var gulp = require("gulp"),
-    fs = require("fs-extra"),
     path = require("path");
 
 var tasks = {};
@@ -30,6 +29,15 @@ var BundlesHelper = require("./helpers/bundlesHelper");
 gulp.pipelineConfig = require("./config");
 gulp.bundles = new BundlesHelper(gulp.pipelineConfig);
 
+// Sometimes plugins need to access environment variables so we use this to ensure that the single plugin instance has received that value
+gulp.globalPlugins = {
+    notify: require("gulp-notify"),
+    debug: require("gulp-debug"),
+    intercept: require("gulp-intercept"),
+    plumber: require("gulp-plumber"),
+    rename: require("gulp-rename")
+};
+
 // Meerkat Ascii. Do not remove or Sergei gets it.
 console.log("\r\nCompare the Market");
 console.log("Meerkat Pipeline\r\n");
@@ -40,6 +48,7 @@ gulp.task("clean:noexit", function() {
     // We delete file contents instead of folders in case gulp tries writing to a folder and permissions haven't been set yet by the OS
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "maps", "*.*"));
+    fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "plugins", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "libraries", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "brand", "*", "css", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "brand", "*", "css", "maps", "*.*"));
@@ -52,7 +61,7 @@ gulp.task("clean", ["clean:noexit"], function() {
 });
 
 // Load in our tasks
-gracefulFs.readdirSync(gulp.pipelineConfig.tasks.dir)
+fs.readdirSync(gulp.pipelineConfig.tasks.dir)
     .forEach(function (folder) {
         var entryPoint = path.join(gulp.pipelineConfig.tasks.dir, folder, gulp.pipelineConfig.tasks.entryPoint);
         tasks[folder] = require(entryPoint)(gulp);

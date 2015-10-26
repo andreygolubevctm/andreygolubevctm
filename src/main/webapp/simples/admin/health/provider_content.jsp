@@ -9,9 +9,12 @@
 <c:set var="providers" value="${providerDao.getProviders('HEALTH', 0, true)}" />
 <c:set var="providerContentTypes" value="${providerContentDao.fetchProviderContentTypes()}" />
 
+<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
+<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
+
 <layout:simples_page fullWidth="true">
 	<jsp:attribute name="head">
-		<script src="${assetUrl}../../../framework/lib/js/trumbowyg.min.js?${revision}"></script>
+		<script src="${assetUrl}js/bundles/plugins/trumbowyg.min.js?${revision}"></script>
 	</jsp:attribute>
   <jsp:body>
     <div class="sortable-header data-sorter container-fluid" data-refreshcallback="meerkat.modules.adminProviderContent.refresh">

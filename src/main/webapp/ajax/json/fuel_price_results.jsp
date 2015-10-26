@@ -7,7 +7,7 @@
 
 <%-- Check IP address to see if its permitted. --%>
 <jsp:useBean id="ipCheckService" class="com.ctm.services.IPCheckService" />
-<jsp:useBean id="quoteResults" class="com.ctm.services.fuel.FuelPriceTokenService" />
+<jsp:useBean id="quoteResults" class="com.ctm.services.fuel.FuelPriceEndpointService" />
 ${quoteResults.init(pageContext.request, pageSettings)}
 <c:choose>
     <%-- Check and increment counter for IP address --%>
@@ -34,7 +34,7 @@ ${quoteResults.init(pageContext.request, pageSettings)}
         ${logger.debug('Invalid transaction id returning called response. {}', log:kv('resultXml',resultXml))}
         ${go:XMLtoJSON(resultXml)}
     </c:when>
-    <c:when test="${quoteResults.validToken()}">
+    <c:when test="${quoteResults.validToken}">
 
         <c:set var="continueOnValidationError" value="${true}"/>
 
@@ -91,7 +91,7 @@ ${quoteResults.init(pageContext.request, pageSettings)}
                 <%-- Add the results to the current session data --%>
                 <go:setData dataVar="data" xpath="soap-response" value="*DELETE"/>
                 <c:set var="resultJson">${go:XMLtoJSON(resultXml)}</c:set>
-                ${quoteResults.createResponse(data.text['current/transactionId'], resultJson,pageContext.request)}
+                ${quoteResults.createResponse(data.text['current/transactionId'], resultJson)}
             </c:when>
             <c:otherwise>
                 <agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="fuel_price_results.jsp"/>
