@@ -194,14 +194,14 @@
         // Remove it
         dependantsArr.splice(index - 1, 1);
         // Render stuff
-        if (isLastDependant) {
-            renderDependants();
-        } else {
+        if (!isLastDependant) {
             // Wipe the HTML to remove events and content from the DOM.
             $('#health_application_dependants_dependant' + index).empty().remove();
             // Don't animate when deleting in the middle, its confusing.
             doAnimate = false;
         }
+
+        renderDependants();
 
         doAnimate = typeof doAnimate == 'undefined' ? true : doAnimate;
         console.log("Do animate is:", doAnimate, getNumberOfDependants());
