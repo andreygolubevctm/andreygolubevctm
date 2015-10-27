@@ -10,7 +10,7 @@ import static com.ctm.logging.WrappedLoggingArgument.wrappedLoggingArgument;
 /**
  * A factory for creating {@link LoggingArgument}s. These are used for inserting key value pairs into log statements.
  *
- * This is facade around logstash-logback-encoder so there isn't a direct depedency on logback for our logging.
+ * This is facade around logstash-logback-encoder so there isn't a direct dependency on logback for our logging.
  */
 public class LoggingArguments {
     private LoggingArguments() {}
