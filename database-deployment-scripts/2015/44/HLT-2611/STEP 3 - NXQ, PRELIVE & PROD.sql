@@ -1,7 +1,5 @@
------------------------------- 
-Step 2. export all products from export_* to file 
 -- Step 3. 
- SET @EffectiveStart = '2015-04-01';
+SET @EffectiveStart = '2015-04-01';
 SET @EffectiveEnd = '2016-03-31';
 SET @providerID = 1;
 
@@ -73,14 +71,6 @@ AND providerID = @providerID
 "Starter 60% with Smile and Health Boost",
 "Starter 60% with Smile, Repair and Health Boost");
 
-/* Disable current products product master */
-UPDATE `ctm`.`product_master` pm 
- SET pm.EffectiveEnd = STR_TO_DATE(@EffectiveStart, '%Y-%m-%d') - INTERVAL 1 DAY 
-  WHERE(pm.EffectiveStart != @EffectiveStart AND pm.EffectiveEnd != @EffectiveEnd)
-AND @EffectiveStart between EffectiveStart AND EffectiveEnd 
-AND providerID = @providerID 
- AND Status != 'X'; 
-
 
 /* INSERT product properties */
 INSERT INTO `ctm`.`product_properties`
@@ -101,7 +91,7 @@ SELECT * FROM `ctm`.`export_product_capping_exclusions`;
 INSERT INTO `ctm`.`product_master`
 SELECT * FROM `ctm`.`export_product_master`;
 
-/* Test import has worked there should be 1246 products 
+/* Test import has worked there should be 546 products 
 
 SELECT pm.* FROM `ctm`.`product_master` pm
 INNER JOIN ctm.product_properties_search pps

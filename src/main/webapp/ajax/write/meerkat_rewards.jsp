@@ -47,7 +47,7 @@
 			brand=""
 			vertical="" />
 
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<sql:query var="emailId">
 			SELECT emailId
 				FROM aggregator.email_master

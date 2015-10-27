@@ -11,10 +11,12 @@ function BundleTasks(gulp) {
 
     for(var bundle in bundlesCollection) {
         (function(bundle) {
-            var lessFiles = bundles.getBundleFiles(bundle, "less", false, true),
-                jsFiles = bundles.getBundleFiles(bundle, "js", false);
+            var lessFiles = bundles.getWatchableBundlesFilePaths(bundle, "less"),
+                jsFiles = bundles.getWatchableBundlesFilePaths(bundle, "js");
 
             var bundleTasks = [];
+
+            bundleTasks.push("dependencies:" + bundle);
 
             if(lessFiles.length)
                 bundleTasks.push("less:" + bundle);
@@ -25,7 +27,7 @@ function BundleTasks(gulp) {
             if(bundleTasks.length)
                 gulp.task("bundle:" + bundle, bundleTasks);
         })(bundle);
-    };
+    }
 
     gulp.task("bundle", function() {});
 }

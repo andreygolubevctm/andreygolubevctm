@@ -9,7 +9,7 @@ update ctm.travel_product_benefits set benefitValue = 100, benefitValueText = '$
 
 
 -- Rollback
---update ctm.travel_product_benefits set benefitValue = 200, benefitValueText = '$200' where providerId = @PVIDER_WOM
+-- update ctm.travel_product_benefits set benefitValue = 200, benefitValueText = '$200' where providerId = @PVIDER_WOM
 -- and label = 'Excess on claims' limit 5;
 
 -- Test Expect 5

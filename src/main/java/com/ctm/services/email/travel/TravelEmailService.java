@@ -65,7 +65,7 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 
 		splitTestEnabledKey = BestPriceEmailHandler.SPLIT_TESTING_ENABLED;
 
-		ExactTargetEmailSender<TravelBestPriceEmailModel> emailSender = new ExactTargetEmailSender<TravelBestPriceEmailModel>(pageSettings);
+		ExactTargetEmailSender<TravelBestPriceEmailModel> emailSender = new ExactTargetEmailSender<>(pageSettings, transactionId);
 
 		try {
 			EmailMaster emailDetails = new EmailMaster();

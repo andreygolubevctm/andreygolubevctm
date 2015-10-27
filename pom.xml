@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -378,7 +378,7 @@
         <dependency>
             <groupId>com.ctm.webservices</groupId>
             <artifactId>motorweb</artifactId>
-            <version>1.4.0</version>
+            <version>1.5.0</version>
         </dependency>
 
         <dependency>
@@ -453,7 +453,7 @@
                                     <goal>gulp</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>build</arguments>
+                                    <arguments>build --targetFolder=${project.name}-${project.version} --disableNotify=true</arguments>
                                     <workingDirectory>src/main/pipeline</workingDirectory>
                                 </configuration>
                             </execution>

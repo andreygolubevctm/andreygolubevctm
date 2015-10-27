@@ -24,7 +24,7 @@
 	</c:set>
 
 	<c:catch var="error">
-		<sql:query var="result" dataSource="jdbc/ctm" maxRows="1">
+		<sql:query var="result" dataSource="${datasource:getDataSource()}" maxRows="1">
 			SELECT text FROM ctm.dialogue
 			WHERE dialogueID = ?
 			AND (styleCodeId = ? OR styleCodeId = 0)

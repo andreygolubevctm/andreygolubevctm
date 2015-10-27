@@ -11,7 +11,7 @@
 	<c:set var="isSimplesUser" value="${false}" />
 </c:if>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:catch var="error">
 	<sql:query var="touches">
