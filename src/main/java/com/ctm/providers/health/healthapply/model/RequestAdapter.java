@@ -275,6 +275,7 @@ public class RequestAdapter {
                     createPaymentDetails(quote, payment),
                     createCreditCard(quote.map(HealthQuote::getPayment)),
                     createCreditIppCreditCard(quote.map(HealthQuote::getPayment)),
+                    createGatewayCreditCard(quote.map(HealthQuote::getPayment)),
                     createBank(quote.map(HealthQuote::getPayment)),
                     createMedicare(quote.map(HealthQuote::getPayment)
                             .map(com.ctm.model.health.form.Payment::getMedicare)),
@@ -470,13 +471,37 @@ public class RequestAdapter {
         }
     }
 
-    protected static CreditCard createCreditCard(Optional<com.ctm.model.health.form.Payment> payment) {
+    protected static GatewayCreditCard createGatewayCreditCard(Optional<com.ctm.model.health.form.Payment> payment) {
         if (payment.map(com.ctm.model.health.form.Payment::getDetails)
                 .map(PaymentDetails::getType).filter(t -> "cc".equals(t)).isPresent()) {
-            // check if gateway is available first
-            if (payment.map(com.ctm.model.health.form.Payment::getGateway).isPresent()) {
+            if (payment.map(com.ctm.model.health.form.Payment::getGateway)
+                    .map(Gateway::getNab).isPresent()) {
+                final Optional<Nab> nab = payment.map(com.ctm.model.health.form.Payment::getGateway)
+                        .map(Gateway::getNab);
+                return new GatewayCreditCard(
+                        nab.map(Nab::getCardType)
+                                .map(StringUtils::trim)
+                                .map(Type::new)
+                                .orElse(null),
+                        null,
+                        nab.map(Nab::getCardNumber)
+                                .map(Number::new)
+                                .orElse(null),
+                        nab.map(n ->
+                                new Expiry(
+                                        Optional.ofNullable(n.getExpiryMonth())
+                                                .map(ExpiryMonth::new)
+                                                .orElse(null),
+                                        Optional.ofNullable(n.getExpiryYear())
+                                                .map(ExpiryYear::new)
+                                                .orElse(null)))
+                                .orElse(null),
+                        nab.map(Nab::getCrn)
+                                .map(CRN::new)
+                                .orElse(null));
+            } else if (payment.map(com.ctm.model.health.form.Payment::getGateway).isPresent()) {
                 final Optional<Gateway> gateway = payment.map(com.ctm.model.health.form.Payment::getGateway);
-                return new CreditCard(
+                return new GatewayCreditCard(
                         gateway.map(Gateway::getType)
                                 .map(Type::new)
                                 .orElse(null),
@@ -496,7 +521,19 @@ public class RequestAdapter {
                                     }
                                 }).orElse(null),
                         null);
-            } else if (payment.map(com.ctm.model.health.form.Payment::getCredit).isPresent() &&
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    protected static CreditCard createCreditCard(Optional<com.ctm.model.health.form.Payment> payment) {
+        if (payment.map(com.ctm.model.health.form.Payment::getDetails)
+                .map(PaymentDetails::getType).filter(t -> "cc".equals(t)).isPresent() &&
+                !payment.map(com.ctm.model.health.form.Payment::getGateway).isPresent() &&
+                payment.map(com.ctm.model.health.form.Payment::getCredit).isPresent() &&
                     !payment.map(com.ctm.model.health.form.Payment::getCredit)
                             .map(Credit::getIpp)
                             .map(Ipp::getTokenisation).isPresent()) {
@@ -524,9 +561,6 @@ public class RequestAdapter {
                         credit.map(Credit::getCcv)
                                 .map(CCV::new)
                                 .orElse(null));
-            } else {
-                return null;
-            }
         } else {
             return null;
         }

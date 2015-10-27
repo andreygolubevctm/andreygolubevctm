@@ -11,6 +11,7 @@ import com.ctm.providers.health.healthapply.model.request.fundData.membership.Me
 import com.ctm.providers.health.healthapply.model.request.fundData.membership.PartnerDetails;
 import com.ctm.providers.health.healthapply.model.request.payment.Payment;
 import com.ctm.providers.health.healthapply.model.request.payment.credit.CreditCard;
+import com.ctm.providers.health.healthapply.model.request.payment.credit.GatewayCreditCard;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -450,13 +451,37 @@ public class RequestAdapterTest {
         when(payment.getDetails()).thenReturn(paymentDetails);
         when(payment.getGateway()).thenReturn(gateway);
         when(paymentDetails.getType()).thenReturn("cc");
-        final CreditCard result = RequestAdapter.createCreditCard(Optional.of(payment));
+        final GatewayCreditCard result = RequestAdapter.createGatewayCreditCard(Optional.of(payment));
         assertNotNull(result);
-        assertNull(result.getCcv());
         verify(gateway, times(1)).getType();
         verify(gateway, times(1)).getName();
         verify(gateway, times(1)).getNumber();
         verify(gateway, times(1)).getExpiry();
+        verify(gateway, times(1)).getNab();
+    }
+
+    @Test
+    public void testCreateCreditCardGatewayNab() throws Exception {
+        final com.ctm.model.health.form.Payment payment = mock(com.ctm.model.health.form.Payment.class);
+        final PaymentDetails paymentDetails = mock(PaymentDetails.class);
+        final Gateway gateway = mock(Gateway.class);
+        final Nab nab = mock(Nab.class);
+        when(payment.getDetails()).thenReturn(paymentDetails);
+        when(payment.getGateway()).thenReturn(gateway);
+        when(paymentDetails.getType()).thenReturn("cc");
+        when(gateway.getNab()).thenReturn(nab);
+        final GatewayCreditCard result = RequestAdapter.createGatewayCreditCard(Optional.of(payment));
+        assertNotNull(result);
+        verify(gateway, never()).getType();
+        verify(gateway, never()).getName();
+        verify(gateway, never()).getNumber();
+        verify(gateway, never()).getExpiry();
+        verify(gateway, times(2)).getNab();
+        verify(nab, times(1)).getCardNumber();
+        verify(nab, times(1)).getCardType();
+        verify(nab, times(1)).getCrn();
+        verify(nab, times(1)).getExpiryMonth();
+        verify(nab, times(1)).getExpiryYear();
     }
 
     @Test

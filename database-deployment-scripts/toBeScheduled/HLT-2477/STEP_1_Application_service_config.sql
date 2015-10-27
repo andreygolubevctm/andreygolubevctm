@@ -128,10 +128,13 @@ INSERT INTO service_properties (serviceMasterId, environmentCode, styleCodeId, p
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'url', 'https://testservices.cuahealth.com.au/Service.svc', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'url', 'https://onlineservices.cuahealth.com.au/Service.svc', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'serviceName', @SERVICE_NAME, @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'user', 'Choosi', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'password', 'Choosi17', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, 'NXS'  , 0, @PROVIDERID, 'user', 'Choosi', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, 'NXS'  , 0, @PROVIDERID, 'password', 'CTM27ctm', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, 'PRO'  , 0, @PROVIDERID, 'user', 'CTM', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, 'PRO'  , 0, @PROVIDERID, 'password', 'CTM27ctm', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'errorProductCode', 'CUA-ERROR', @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'outboundParams', 'keyname=Choosi,keycode=Choosi17', @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, 'NXS', 0, @PROVIDERID, 'outboundParams', 'keyname=Choosi,keycode=CTM27ctm', @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'outboundParams', 'keyname=CTM,keycode=CTM27ctm', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'timeout', '240', @STARTDATE, @ENDDATE, 'SERVICE')
 ;
 --  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'soap-action', 'http://HSL.OMS.Public.API.Service/IService/SubmitMembership', @STARTDATE, @ENDDATE, 'SERVICE')

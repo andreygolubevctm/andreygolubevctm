@@ -12,6 +12,8 @@ public class Gateway {
 
     private String name;
 
+    private Nab nab;
+
     public String getRegistered() {
         return registered;
     }
@@ -50,5 +52,13 @@ public class Gateway {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Nab getNab() {
+        return nab;
+    }
+
+    public void setNab(Nab nab) {
+        this.nab = nab;
     }
 }
