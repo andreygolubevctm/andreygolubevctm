@@ -17,7 +17,7 @@
 		<durable>true</durable>
 		<exchangeName>logs</exchangeName>
 		<deliveryMode>PERSISTENT</deliveryMode>
-		<host>dev-vm-ken-ctm-elk-x1</host>
+		<host>192.168.1.51</host>
 		<layout class="net.logstash.logback.layout.LogstashLayout">
 			<provider class="net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider"/>
 			<customFields>{"appname":"webctm"}</customFields>
