@@ -20,11 +20,18 @@ public class ApplicationGroup {
 
     private Situation situation;
 
-    public ApplicationGroup(final Applicant primary, final Applicant partner, final List<Dependant> dependants, final Situation situation) {
+    private Emigrate emigrate;
+
+    public ApplicationGroup(final Applicant primary,
+                            final Applicant partner,
+                            final List<Dependant> dependants,
+                            final Situation situation,
+                            final Emigrate emigrate) {
         this.primary = primary;
         this.partner = partner;
         this.dependants = dependants;
         this.situation = situation;
+        this.emigrate = emigrate;
     }
 
     public Applicant getPrimary() {
@@ -41,5 +48,9 @@ public class ApplicationGroup {
 
     public Situation getSituation() {
         return situation;
+    }
+
+    public Emigrate getEmigrate() {
+        return emigrate;
     }
 }

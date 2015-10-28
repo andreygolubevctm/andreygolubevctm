@@ -18,6 +18,8 @@ public class Dependant {
 
     private String schoolID;
 
+    private String fulltime;
+
     public String getSchool() {
         return school;
     }
@@ -80,5 +82,13 @@ public class Dependant {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getFulltime() {
+        return fulltime;
+    }
+
+    public void setFulltime(String fulltime) {
+        this.fulltime = fulltime;
     }
 }

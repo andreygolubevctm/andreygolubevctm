@@ -4,6 +4,8 @@ public class Nab {
 
     private String cardNumber;
 
+    private String cardName;
+
     private String crn;
 
     private String rescode;
@@ -22,6 +24,14 @@ public class Nab {
 
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
     }
 
     public String getCrn() {

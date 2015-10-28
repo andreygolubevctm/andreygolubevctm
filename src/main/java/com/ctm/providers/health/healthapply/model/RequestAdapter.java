@@ -3,6 +3,7 @@ package com.ctm.providers.health.healthapply.model;
 import com.ctm.model.health.form.*;
 import com.ctm.providers.health.healthapply.model.request.HealthApplicationRequest;
 import com.ctm.providers.health.healthapply.model.request.application.ApplicationGroup;
+import com.ctm.providers.health.healthapply.model.request.application.Emigrate;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.Applicant;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.CertifiedAgeEntry;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.healthCover.Cover;
@@ -17,6 +18,7 @@ import com.ctm.providers.health.healthapply.model.request.application.common.Gen
 import com.ctm.providers.health.healthapply.model.request.application.common.LastName;
 import com.ctm.providers.health.healthapply.model.request.application.common.Title;
 import com.ctm.providers.health.healthapply.model.request.application.dependant.Dependant;
+import com.ctm.providers.health.healthapply.model.request.application.dependant.FullTimeStudent;
 import com.ctm.providers.health.healthapply.model.request.application.dependant.School;
 import com.ctm.providers.health.healthapply.model.request.application.dependant.SchoolId;
 import com.ctm.providers.health.healthapply.model.request.application.situation.HealthCoverCategory;
@@ -96,8 +98,12 @@ public class RequestAdapter {
                                 .map(com.ctm.model.health.form.HealthCover::getPartner)) : null,
                 createDependants(quote.map(HealthQuote::getApplication)
                         .map(Application::getDependants)),
-
-                createSituation(quote.map(HealthQuote::getSituation)));
+                createSituation(quote.map(HealthQuote::getSituation)),
+                quote.map(HealthQuote::getApplication)
+                        .map(Application::getHif)
+                        .map(Hif::getEmigrate)
+                        .map(Emigrate::valueOf)
+                        .orElse(null));
     }
 
     protected static Situation createSituation(Optional<com.ctm.model.health.form.Situation> situation) {
@@ -339,7 +345,8 @@ public class RequestAdapter {
                             .map(Application::getOther)
                             .map(OtherNumber::new)
                             .orElse(null),
-                    contactDetails.map(com.ctm.model.health.form.ContactDetails::getCall)
+                    quote.map(HealthQuote::getApplication)
+                            .map(Application::getCall)
                             .map(Call::valueOf)
                             .orElse(null),
                     postalMatch,
@@ -347,7 +354,12 @@ public class RequestAdapter {
                             .map(Application::getAddress)),
                     !PostalMatch.Y.equals(postalMatch) ?
                             createAddress(quote.map(HealthQuote::getApplication)
-                                    .map(Application::getPostal)) : null);
+                                    .map(Application::getPostal)) : null,
+                    quote.map(HealthQuote::getApplication)
+                        .map(Application::getContactPoint)
+                        .filter(c -> c.equals("E") || c.equals("P"))
+                        .map(c -> c.equals("E") ? PreferredContact.EMAIL : PreferredContact.PHONE)
+                        .orElse(null));
         } else {
             return null;
         }
@@ -483,7 +495,9 @@ public class RequestAdapter {
                                 .map(StringUtils::trim)
                                 .map(Type::new)
                                 .orElse(null),
-                        null,
+                        nab.map(Nab::getCardName)
+                                .map(Name::new)
+                                .orElse(null),
                         nab.map(Nab::getCardNumber)
                                 .map(Number::new)
                                 .orElse(null),
@@ -723,7 +737,10 @@ public class RequestAdapter {
                         .map(Title::valueOf)
                         .filter(t -> Title.MR.equals(t))
                         .map(v -> Gender.M)
-                        .orElse(Gender.F));
+                        .orElse(Gender.F),
+                    dependant.map(com.ctm.model.health.form.Dependant::getFulltime)
+                        .map(FullTimeStudent::valueOf)
+                        .orElse(null));
         } else {
             return null;
         }

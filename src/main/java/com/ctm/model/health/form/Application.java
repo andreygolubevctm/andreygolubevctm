@@ -32,7 +32,13 @@ public class Application {
 
     private String postalMatch;
 
+    private String contactPoint;
+
+    private String call;
+
     private Cbh cbh;
+
+    private Hif hif;
 
     public Address getAddress() {
         return address;
@@ -160,5 +166,29 @@ public class Application {
 
     public void setCbh(Cbh cbh) {
         this.cbh = cbh;
+    }
+
+    public String getContactPoint() {
+        return contactPoint;
+    }
+
+    public void setContactPoint(String contactPoint) {
+        this.contactPoint = contactPoint;
+    }
+
+    public Hif getHif() {
+        return hif;
+    }
+
+    public void setHif(Hif hif) {
+        this.hif = hif;
+    }
+
+    public String getCall() {
+        return call;
+    }
+
+    public void setCall(String call) {
+        this.call = call;
     }
 }

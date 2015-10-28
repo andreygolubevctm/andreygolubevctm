@@ -33,9 +33,11 @@ public class RequestAdapterTest {
     public void testCreateApplicationGroup() throws Exception {
         final HealthQuote healthQuote = mock(HealthQuote.class);
         final Application application = mock(Application.class);
+        final Hif hif = mock(Hif.class);
         final com.ctm.model.health.form.PreviousFund previousFund = mock(com.ctm.model.health.form.PreviousFund.class);
         when(healthQuote.getApplication()).thenReturn(application);
         when(healthQuote.getPreviousFund()).thenReturn(previousFund);
+        when(application.getHif()).thenReturn(hif);
         final ApplicationGroup applicationGroup = RequestAdapter.createApplicationGroup(Optional.ofNullable(healthQuote));
         assertNotNull(applicationGroup);
         assertNull(applicationGroup.getSituation());
@@ -45,6 +47,7 @@ public class RequestAdapterTest {
         verify(application, times(1)).getPartner();
         verify(application, times(1)).getDependants();
         verify(healthQuote, times(1)).getSituation();
+        verify(hif, times(1)).getEmigrate();
     }
 
     @Test
@@ -304,7 +307,7 @@ public class RequestAdapterTest {
         assertNotNull(RequestAdapter.createContactDetails(Optional.of(healthQuote)));
         verify(contactDetails, times(1)).getEmail();
         verify(contactDetails, times(1)).getOptin();
-        verify(contactDetails, times(1)).getCall();
+        verify(application, times(1)).getCall();
         verify(application, times(1)).getMobile();
         verify(application, times(1)).getOther();
         verify(application, times(1)).getPostalMatch();
@@ -324,7 +327,7 @@ public class RequestAdapterTest {
         assertNotNull(RequestAdapter.createContactDetails(Optional.of(healthQuote)));
         verify(contactDetails, times(1)).getEmail();
         verify(contactDetails, times(1)).getOptin();
-        verify(contactDetails, times(1)).getCall();
+        verify(application, times(1)).getCall();
         verify(application, times(1)).getMobile();
         verify(application, times(1)).getOther();
         verify(application, times(1)).getPostalMatch();
@@ -700,5 +703,6 @@ public class RequestAdapterTest {
         verify(dependant, times(1)).getSchool();
         verify(dependant, times(1)).getSchoolDate();
         verify(dependant, times(1)).getSchoolID();
+        verify(dependant, times(1)).getFulltime();
     }
 }

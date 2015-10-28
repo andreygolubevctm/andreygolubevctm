@@ -30,9 +30,11 @@ public class ContactDetails {
 
     private Address postal;
 
+    private PreferredContact preferredContact;
+
     public ContactDetails(final Email email, final OptInEmail optInEmail, final MobileNumber mobileNumber,
                           final OtherNumber otherNumber, final Call call, final PostalMatch postalMatch,
-                          final Address address, final Address postal) {
+                          final Address address, final Address postal, final PreferredContact preferredContact) {
         this.email = email;
         this.optInEmail = optInEmail;
         this.mobileNumber = mobileNumber;
@@ -41,5 +43,6 @@ public class ContactDetails {
         this.postalMatch = postalMatch;
         this.address = address;
         this.postal = postal;
+        this.preferredContact = preferredContact;
     }
 }

@@ -38,9 +38,11 @@ public class Dependant {
 
     private Gender gender;
 
+    private FullTimeStudent fullTimeStudent;
+
     public Dependant(final Title title, final FirstName firstName, final LastName lastName,
                      final LocalDate dateOfBirth, final School school, final LocalDate schoolDate,
-                     final SchoolId schoolID, final Gender gender) {
+                     final SchoolId schoolID, final Gender gender, final FullTimeStudent fullTimeStudent) {
         this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -49,5 +51,6 @@ public class Dependant {
         this.schoolDate = schoolDate;
         this.schoolID = schoolID;
         this.gender = gender;
+        this.fullTimeStudent = fullTimeStudent;
     }
 }
