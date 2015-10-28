@@ -55,12 +55,13 @@
         providerConfig,
         maxDependantAge = 25;
 
-    function initHealthDependants() {
+    function initHealthDependants(reset) {
         $dependantsTemplateWrapper = $("#health-dependants-wrapper");
-        if (!situationEnablesDependants()) {
+        if (!situationEnablesDependants() || reset) {
             clearDependants();
-            return;
         }
+
+        if(!situationEnablesDependants()) return;
 
         // setup default provider config.
         if (!providerConfig)
