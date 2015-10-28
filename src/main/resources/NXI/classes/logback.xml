@@ -17,10 +17,10 @@
 		<durable>true</durable>
 		<exchangeName>logs</exchangeName>
 		<deliveryMode>PERSISTENT</deliveryMode>
-		<host>192.168.1.51</host>
+		<host>dev-vm-ken-ctm-elk-x1</host>
 		<layout class="net.logstash.logback.layout.LogstashLayout">
 			<provider class="net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider"/>
-			<customFields>{"appname":"webctm"}</customFields>
+			<customFields>{"appname":"webctm", "env":"NXI"}</customFields>
 		</layout>
 	</appender>
 
