@@ -32,6 +32,7 @@
 <%@ attribute name="loadjQuery" 		required="false" 	description="Flag as to whether jQuery is loaded"%>
 <%@ attribute name="jqueryVersion"	 	required="false" 	description="Optional jquery version to load rather than the default"%>
 <%@ attribute name="loadjQueryUI" 		required="false" 	description="Flag as to whether jQueryUI is loaded"%>
+<%@ attribute name="jqueryuiversion" 	required="false" 	description="Specify a jQueryUI version"%>
 
 <c:if test="${empty loadjQuery}"><c:set var="loadjQuery">true</c:set></c:if>
 <c:if test="${empty loadjQueryUI}"><c:set var="loadjQueryUI">true</c:set></c:if>
@@ -158,7 +159,10 @@
 	</c:if>
 
 	<c:if test="${loadjQueryUI == true}">
-		<go:script href="common/js/jquery-ui-1.8.22.custom.min.js" marker="js-href" />
+		<c:if test="${empty jqueryuiversion}">
+			<c:set var="jqueryuiversion" value="1.8.22" />
+		</c:if>
+		<go:script href="common/js/jquery-ui-${jqueryuiversion}.custom.min.js" marker="js-href" />
 	</c:if>
 
 	<go:script href="common/js/modernizr-2.7.1.min.js" marker="js-href" />
