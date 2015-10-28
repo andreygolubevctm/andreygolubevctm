@@ -5,13 +5,13 @@ SET @HNCWOOLComprehensiveTest = (SELECT homeProductId FROM ctm.home_product WHER
 SET @yesterday = DATE_SUB(CURDATE(), INTERVAL 1 DAY);
 SET @today = CURDATE();
 
-UPDATE `ctm`.`home_product_disclosure_statements` SET `effectiveEnd`='2015-10-29' WHERE `homeProductContentId` IN (SELECT homeproductcontentid FROM `ctm`.`home_product_content` WHERE homeProductId IN (@HNCREALEssentialTest, @HNCREALTopTest, @HNCWOOLStandardTest, @HNCWOOLComprehensiveTest) AND EffectiveEnd = @yesterday) AND `effectiveEnd`= @yesterday LIMIT 6;
--- SELECT * FROM `ctm`.`home_product_disclosure_statements` WHERE `homeProductContentId` IN (SELECT homeproductcontentid FROM `ctm`.`home_product_content` WHERE homeProductId IN (@HNCREALEssentialTest, @HNCREALTopTest, @HNCWOOLStandardTest, @HNCWOOLComprehensiveTest) AND EffectiveEnd = @yesterday) AND `effectiveEnd`=@yesterday;
+UPDATE `ctm`.`home_product_disclosure_statements` SET `effectiveEnd`='2015-10-29' WHERE `homeProductContentId` IN (SELECT homeproductcontentid FROM `ctm`.`home_product_content` WHERE homeProductId IN (@HNCREALEssentialTest, @HNCREALTopTest, @HNCWOOLStandardTest, @HNCWOOLComprehensiveTest)) AND `effectiveEnd`= @yesterday LIMIT 18;
+-- SELECT * FROM `ctm`.`home_product_disclosure_statements` WHERE `homeProductContentId` IN (SELECT homeproductcontentid FROM `ctm`.`home_product_content` WHERE homeProductId IN (@HNCREALEssentialTest, @HNCREALTopTest, @HNCWOOLStandardTest, @HNCWOOLComprehensiveTest)) AND `effectiveEnd`=@yesterday;
 -- TEST AFTER UPDATE: 6
 
 
-UPDATE `ctm`.`home_product_disclosure_statements` SET `effectiveStart`='2015-10-30' WHERE `homeProductContentId` IN (SELECT homeproductcontentid FROM `ctm`.`home_product_content` WHERE homeProductId IN (@HNCREALEssentialTest, @HNCREALTopTest, @HNCWOOLStandardTest, @HNCWOOLComprehensiveTest) AND `effectiveStart`=@today) AND `effectiveStart`=@today LIMIT 6;
- -- SELECT * FROM `ctm`.`home_product_disclosure_statements` WHERE `homeProductContentId` IN (SELECT homeproductcontentid FROM `ctm`.`home_product_content` WHERE homeProductId IN (@HNCREALEssentialTest, @HNCREALTopTest, @HNCWOOLStandardTest, @HNCWOOLComprehensiveTest) AND `effectiveStart`=@today) AND `effectiveStart`=@today;
+UPDATE `ctm`.`home_product_disclosure_statements` SET `effectiveStart`='2015-10-30' WHERE `homeProductContentId` IN (SELECT homeproductcontentid FROM `ctm`.`home_product_content` WHERE homeProductId IN (@HNCREALEssentialTest, @HNCREALTopTest, @HNCWOOLStandardTest, @HNCWOOLComprehensiveTest)) AND `effectiveStart`=@today LIMIT 18;
+ -- SELECT * FROM `ctm`.`home_product_disclosure_statements` WHERE `homeProductContentId` IN (SELECT homeproductcontentid FROM `ctm`.`home_product_content` WHERE homeProductId IN (@HNCREALEssentialTest, @HNCREALTopTest, @HNCWOOLStandardTest, @HNCWOOLComprehensiveTest)) AND `effectiveStart`=@today;
 -- TEST AFTER UPDATE: 6
 
 UPDATE `ctm`.`home_product_features` SET EffectiveEnd = '2015-10-29' WHERE homeproductcontentid IN (SELECT homeproductcontentid FROM `ctm`.`home_product_content` WHERE homeProductId IN (@HNCREALEssentialTest, @HNCREALTopTest, @HNCWOOLStandardTest, @HNCWOOLComprehensiveTest) AND EffectiveEnd = @yesterday)  AND EffectiveEnd = @yesterday LIMIT 192;
