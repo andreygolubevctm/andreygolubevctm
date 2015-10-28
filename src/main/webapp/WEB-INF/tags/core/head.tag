@@ -32,7 +32,6 @@
 <%@ attribute name="loadjQuery" 		required="false" 	description="Flag as to whether jQuery is loaded"%>
 <%@ attribute name="jqueryVersion"	 	required="false" 	description="Optional jquery version to load rather than the default"%>
 <%@ attribute name="loadjQueryUI" 		required="false" 	description="Flag as to whether jQueryUI is loaded"%>
-<%@ attribute name="jqueryuiversion" 	required="false" 	description="Specify a jQueryUI version"%>
 
 <c:if test="${empty loadjQuery}"><c:set var="loadjQuery">true</c:set></c:if>
 <c:if test="${empty loadjQueryUI}"><c:set var="loadjQueryUI">true</c:set></c:if>
@@ -58,11 +57,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta http-equiv="Cache-Control" content="no-cache, max-age=0" />
 	<meta http-equiv="Expires" content="-1">
-	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Pragma" content="no-cache">	
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="format-detection" content="telephone=no">
-
-
+	
+	
 <%-- PAGE TITLE --%>
 	<title>
 		<c:choose>
@@ -98,7 +97,7 @@
 	<c:if test="${pageSettings.getSetting('stylesheet') != ''}">
 		<go:style marker="css-href" href="brand/${pageSettings.getSetting('stylesheet')}"></go:style>
 	</c:if>
-
+		
 		</c:otherwise>
 	</c:choose>
 	<%-- WHITELABEL: END OF HORRIBLE IF STATEMENT CHECK --%>
@@ -159,10 +158,7 @@
 	</c:if>
 
 	<c:if test="${loadjQueryUI == true}">
-		<c:if test="${empty jqueryuiversion}">
-			<c:set var="jqueryuiversion" value="1.8.22" />
-		</c:if>
-		<go:script href="common/js/jquery-ui-${jqueryuiversion}.custom.min.js" marker="js-href" />
+		<go:script href="common/js/jquery-ui-1.8.22.custom.min.js" marker="js-href" />
 	</c:if>
 
 	<go:script href="common/js/modernizr-2.7.1.min.js" marker="js-href" />
