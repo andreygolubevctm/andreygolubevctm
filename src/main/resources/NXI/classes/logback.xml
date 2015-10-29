@@ -21,7 +21,12 @@
 		<layout class="net.logstash.logback.layout.LogstashLayout">
 			<fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
 			<includeContext>false</includeContext>
-			<includeMdcKeyName>context</includeMdcKeyName>
+			<mdc>
+				<includeMdcKeyName>transactionId</includeMdcKeyName>
+				<includeMdcKeyName>brandCode</includeMdcKeyName>
+				<includeMdcKeyName>verticalCode</includeMdcKeyName>
+				<includeMdcKeyName>correlationId</includeMdcKeyName>
+			</mdc>
 			<customFields>{"hostname":"${HOSTNAME}", "appname":"webctm"}</customFields>
 			<provider class="net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider">
 				<pattern>{"env":"%env{name}","context":"%env{context}"}</pattern>
