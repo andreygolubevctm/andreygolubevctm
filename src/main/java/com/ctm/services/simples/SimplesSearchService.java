@@ -1,8 +1,8 @@
 package com.ctm.services.simples;
 
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.dao.DatabaseQueryMapping;
-import com.ctm.dao.SqlDao;
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.dao.DatabaseQueryMapping;
+import com.ctm.web.core.dao.SqlDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
 import com.ctm.services.ApplicationService;

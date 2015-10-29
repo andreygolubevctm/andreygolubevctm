@@ -1,7 +1,7 @@
 package com.ctm.services.email;
 
-import com.ctm.dao.ResultsDao;
-import com.ctm.dao.transaction.TransactionDao;
+import com.ctm.web.core.dao.ResultsDao;
+import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.EnvironmentException;

@@ -1,7 +1,7 @@
 package com.ctm.web.car.services;
 
-import com.ctm.connectivity.SimpleConnection;
-import com.ctm.dao.ProviderFilterDao;
+import com.ctm.web.core.connectivity.SimpleConnection;
+import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.exceptions.*;
 import com.ctm.model.QuoteServiceProperties;
 import com.ctm.web.car.model.form.CarQuote;

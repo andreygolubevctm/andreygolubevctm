@@ -1,6 +1,6 @@
 package com.ctm.services;
 
-import com.ctm.dao.LogAuditDao;
+import com.ctm.web.core.dao.LogAuditDao;
 import com.ctm.model.LogAudit;
 import com.ctm.security.StringEncryption;
 import org.slf4j.Logger;

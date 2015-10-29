@@ -1,7 +1,7 @@
 package com.ctm.services.utilities;
 
-import com.ctm.connectivity.JsonConnection;
-import com.ctm.connectivity.SimpleConnection;
+import com.ctm.web.core.connectivity.JsonConnection;
+import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
 import com.ctm.model.settings.Brand;

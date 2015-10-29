@@ -1,11 +1,11 @@
 package com.ctm.services;
 
-import com.ctm.dao.CommentDao;
-import com.ctm.dao.TouchDao;
-import com.ctm.dao.health.HealthTransactionDao;
-import com.ctm.dao.simples.MessageAuditDao;
-import com.ctm.dao.simples.MessageDao;
-import com.ctm.dao.transaction.TransactionDao;
+import com.ctm.web.core.dao.CommentDao;
+import com.ctm.web.core.dao.TouchDao;
+import com.ctm.web.health.dao.HealthTransactionDao;
+import com.ctm.web.simples.dao.MessageAuditDao;
+import com.ctm.web.simples.dao.MessageDao;
+import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
 import com.ctm.model.TransactionProperties;

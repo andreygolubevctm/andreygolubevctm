@@ -1,6 +1,6 @@
 package com.ctm.services;
 
-import com.ctm.dao.FatalErrorDao;
+import com.ctm.web.core.dao.FatalErrorDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.FatalError;
 import org.apache.commons.lang3.exception.ExceptionUtils;

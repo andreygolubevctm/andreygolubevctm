@@ -1,6 +1,6 @@
 package com.ctm.router;
 
-import com.ctm.dao.AddressDao;
+import com.ctm.web.core.dao.AddressDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Address;

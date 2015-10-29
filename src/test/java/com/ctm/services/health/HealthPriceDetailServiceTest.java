@@ -1,6 +1,6 @@
 package com.ctm.services.health;
 
-import com.ctm.dao.health.HealthPriceDao;
+import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.HealthAltPriceException;
 import com.ctm.model.content.Content;

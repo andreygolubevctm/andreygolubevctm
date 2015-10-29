@@ -1,16 +1,14 @@
 package com.ctm.services;
 
-import com.ctm.dao.ProviderFilterDao;
-import com.ctm.exceptions.TravelServiceException;
+import com.ctm.web.core.dao.ProviderFilterDao;
+
 import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Date;
-import com.ctm.dao.ProviderDao;
+import com.ctm.web.core.dao.ProviderDao;
 import com.ctm.model.Provider;
 import com.ctm.exceptions.DaoException;
-
-import static com.ctm.logging.LoggingArguments.kv;
 
 public class ProviderService {
 

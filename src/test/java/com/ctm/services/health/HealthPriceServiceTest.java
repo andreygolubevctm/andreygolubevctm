@@ -12,8 +12,8 @@ import java.util.GregorianCalendar;
 import com.ctm.model.health.HealthPriceRequest;
 import org.junit.Test;
 
-import com.ctm.dao.StyleCodeDao;
-import com.ctm.dao.health.HealthPriceDao;
+import com.ctm.web.core.dao.StyleCodeDao;
+import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.health.HealthPricePremiumRange;
 import com.ctm.services.results.ProviderRestrictionsService;

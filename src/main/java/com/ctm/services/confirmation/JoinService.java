@@ -1,6 +1,6 @@
 package com.ctm.services.confirmation;
 
-import com.ctm.dao.JoinDao;
+import com.ctm.web.core.dao.JoinDao;
 
 import java.sql.SQLException;
 

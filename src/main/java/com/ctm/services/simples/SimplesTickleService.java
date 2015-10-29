@@ -1,6 +1,6 @@
 package com.ctm.services.simples;
 
-import com.ctm.dao.UserDao;
+import com.ctm.web.core.dao.UserDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.AuthenticatedData;

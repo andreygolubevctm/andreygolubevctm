@@ -13,7 +13,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ctm.dao.GeneralDao;
+import com.ctm.web.core.dao.GeneralDao;
 import com.disc_au.web.go.CallCenterHours;
 
 public class CallCenterHoursTest {

@@ -6,8 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ctm.dao.UserDao;
-import com.ctm.dao.simples.UserStatsDao;
+import com.ctm.web.core.dao.UserDao;
+import com.ctm.web.simples.dao.UserStatsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.simples.User;

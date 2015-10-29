@@ -1,7 +1,7 @@
 package com.ctm.services;
 
-import com.ctm.cache.ContentControlCache;
-import com.ctm.dao.ContentDao;
+import com.ctm.web.core.cache.ContentControlCache;
+import com.ctm.web.core.dao.ContentDao;
 import com.ctm.model.content.Content;
 import org.junit.Before;
 import org.junit.Test;

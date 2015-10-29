@@ -5,7 +5,7 @@
 
 package com.disc_au.soap;
 
-import com.ctm.constants.ErrorCode;
+import com.ctm.web.core.constants.ErrorCode;
 import com.ctm.logging.CorrelationIdUtils;
 import com.ctm.logging.XMLOutputWriter;
 import com.ctm.model.settings.SoapAggregatorConfiguration;

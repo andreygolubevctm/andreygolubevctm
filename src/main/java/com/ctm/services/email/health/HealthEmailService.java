@@ -1,8 +1,8 @@
 package com.ctm.services.email.health;
 
-import com.ctm.dao.ContentDao;
-import com.ctm.dao.RankingDetailsDao;
-import com.ctm.dao.transaction.TransactionDao;
+import com.ctm.web.core.dao.ContentDao;
+import com.ctm.web.core.dao.RankingDetailsDao;
+import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.exceptions.*;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.RankingDetail;

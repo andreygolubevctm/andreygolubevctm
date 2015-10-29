@@ -1,6 +1,6 @@
 package com.ctm.web.homecontents.leadfeed.services;
 
-import com.ctm.dao.leadfeed.BestPriceLeadsDao;
+import com.ctm.web.core.dao.leadfeed.BestPriceLeadsDao;
 import com.ctm.exceptions.LeadFeedException;
 import com.ctm.model.Touch.TouchType;
 import com.ctm.model.leadfeed.LeadFeedData;

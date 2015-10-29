@@ -1,6 +1,6 @@
 package com.ctm.services;
 
-import com.ctm.dao.ProviderFilterDao;
+import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;

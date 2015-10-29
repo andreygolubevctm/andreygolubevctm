@@ -1,7 +1,7 @@
 package com.ctm.services;
 
-import com.ctm.dao.IpAddressDao;
-import com.ctm.dao.transaction.TransactionDetailsDao;
+import com.ctm.web.core.dao.IpAddressDao;
+import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.IpAddress;

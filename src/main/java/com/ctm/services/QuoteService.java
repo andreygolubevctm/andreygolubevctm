@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ctm.dao.transaction.TransactionDetailsDao;
+import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.HttpRequestHandler;
 

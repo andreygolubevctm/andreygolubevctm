@@ -1,7 +1,7 @@
 package com.ctm.services.simples;
 
-import com.ctm.dao.simples.SpecialOffersDao;
-import com.ctm.dao.transaction.TransactionDetailsDao;
+import com.ctm.web.simples.dao.SpecialOffersDao;
+import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.helper.simples.SpecialOffersHelper;
 import com.ctm.model.SpecialOffers;

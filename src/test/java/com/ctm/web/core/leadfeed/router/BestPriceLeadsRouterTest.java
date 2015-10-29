@@ -1,6 +1,6 @@
 package com.ctm.web.core.leadfeed.router;
 
-import com.ctm.dao.leadfeed.BestPriceLeadsDao;
+import com.ctm.web.core.dao.leadfeed.BestPriceLeadsDao;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.ApplicationService;

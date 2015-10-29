@@ -10,9 +10,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ctm.dao.EmailMasterDao;
-import com.ctm.dao.transaction.TransactionDao;
-import com.ctm.dao.transaction.TransactionDetailsDao;
+import com.ctm.web.core.dao.EmailMasterDao;
+import com.ctm.web.core.dao.transaction.TransactionDao;
+import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.EmailDetailsException;
 import com.ctm.model.EmailMaster;

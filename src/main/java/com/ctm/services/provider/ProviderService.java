@@ -9,7 +9,7 @@ import com.ctm.exceptions.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.dao.ProviderDao;
+import com.ctm.web.core.dao.ProviderDao;
 import com.ctm.model.Provider;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.SettingsService;

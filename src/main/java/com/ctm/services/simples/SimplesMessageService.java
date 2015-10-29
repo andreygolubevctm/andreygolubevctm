@@ -1,9 +1,9 @@
 package com.ctm.services.simples;
 
-import com.ctm.dao.BlacklistDao;
-import com.ctm.dao.UserDao;
-import com.ctm.dao.simples.MessageDao;
-import com.ctm.dao.simples.MessageDuplicatesDao;
+import com.ctm.web.core.dao.BlacklistDao;
+import com.ctm.web.core.dao.UserDao;
+import com.ctm.web.simples.dao.MessageDao;
+import com.ctm.web.simples.dao.MessageDuplicatesDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;

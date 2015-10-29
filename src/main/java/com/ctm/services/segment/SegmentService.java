@@ -3,7 +3,7 @@ package com.ctm.services.segment;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ctm.dao.SegmentDao;
+import com.ctm.web.core.dao.SegmentDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.segment.Segment;
 import com.ctm.model.segment.SegmentRequest;

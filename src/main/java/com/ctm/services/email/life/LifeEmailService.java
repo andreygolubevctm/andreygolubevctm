@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.dao.RankingDetailsDao;
-import com.ctm.dao.transaction.TransactionDao;
-import com.ctm.dao.transaction.TransactionDetailsDao;
-import com.ctm.dao.life.OccupationsDao;
+import com.ctm.web.core.dao.RankingDetailsDao;
+import com.ctm.web.core.dao.transaction.TransactionDao;
+import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
+import com.ctm.web.life.dao.OccupationsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.EmailDetailsException;
 import com.ctm.exceptions.EnvironmentException;

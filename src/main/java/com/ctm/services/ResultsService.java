@@ -3,8 +3,8 @@ package com.ctm.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ctm.dao.RankingDetailsDao;
-import com.ctm.dao.ResultsDao;
+import com.ctm.web.core.dao.RankingDetailsDao;
+import com.ctm.web.core.dao.ResultsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.RankingDetail;
 import com.ctm.model.results.ResultProperty;

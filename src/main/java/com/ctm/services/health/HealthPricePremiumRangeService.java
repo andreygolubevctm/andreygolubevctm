@@ -2,7 +2,7 @@ package com.ctm.services.health;
 
 import java.math.BigDecimal;
 
-import com.ctm.dao.health.HealthPriceDao;
+import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.health.HealthPricePremiumRange;
 import com.ctm.model.health.HealthPriceRequest;

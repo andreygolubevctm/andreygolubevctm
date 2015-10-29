@@ -1,6 +1,6 @@
 package com.ctm.services;
 
-import com.ctm.dao.IpAddressDao;
+import com.ctm.web.core.dao.IpAddressDao;
 import com.ctm.model.IpAddress;
 import com.ctm.model.settings.PageSettings;
 import org.junit.Before;
@@ -8,9 +8,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.sql.Date;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

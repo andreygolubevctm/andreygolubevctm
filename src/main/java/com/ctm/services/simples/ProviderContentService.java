@@ -1,7 +1,7 @@
 package com.ctm.services.simples;
 
-import com.ctm.dao.ProviderDao;
-import com.ctm.dao.simples.ProviderContentDao;
+import com.ctm.web.core.dao.ProviderDao;
+import com.ctm.web.simples.dao.ProviderContentDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.CrudValidationException;
 import com.ctm.exceptions.DaoException;

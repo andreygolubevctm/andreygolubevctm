@@ -1,6 +1,6 @@
 package com.ctm.services;
 
-import com.ctm.dao.HandoverConfirmationDao;
+import com.ctm.web.core.dao.HandoverConfirmationDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.HandoverConfirmation;
 import com.ctm.model.settings.Vertical;

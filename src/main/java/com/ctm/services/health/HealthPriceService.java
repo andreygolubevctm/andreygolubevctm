@@ -1,7 +1,7 @@
 package com.ctm.services.health;
 
-import com.ctm.dao.StyleCodeDao;
-import com.ctm.dao.health.HealthPriceDao;
+import com.ctm.web.core.dao.StyleCodeDao;
+import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.logging.LoggingVariables;
 import com.ctm.model.health.*;

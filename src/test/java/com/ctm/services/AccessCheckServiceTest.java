@@ -1,7 +1,7 @@
 package com.ctm.services;
 
-import com.ctm.dao.TouchDao;
-import com.ctm.dao.transaction.TransactionLockDao;
+import com.ctm.web.core.dao.TouchDao;
+import com.ctm.web.core.dao.transaction.TransactionLockDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;

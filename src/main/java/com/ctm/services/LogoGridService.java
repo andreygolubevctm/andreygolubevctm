@@ -1,6 +1,6 @@
 package com.ctm.services;
 
-import com.ctm.dao.ProviderCodesDao;
+import com.ctm.web.core.dao.ProviderCodesDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;

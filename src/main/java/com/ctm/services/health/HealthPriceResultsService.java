@@ -7,7 +7,7 @@ import com.ctm.model.health.HealthPriceRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.dao.health.HealthPriceDao;
+import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.health.HealthPriceResult;import com.ctm.model.health.ProductStatus;
 

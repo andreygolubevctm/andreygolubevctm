@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.dao.transaction.TransactionDetailsDao;
-import com.ctm.dao.homeloan.HomeloanUnconfirmedLeadsDao;
+import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
+import com.ctm.web.homeloan.dao.HomeloanUnconfirmedLeadsDao;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.CronService;
 import com.ctm.services.SettingsService;

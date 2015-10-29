@@ -1,8 +1,8 @@
 package com.ctm.services;
 
-import com.ctm.connectivity.JsonConnection;
-import com.ctm.connectivity.SimpleConnection;
-import com.ctm.dao.InboundPhoneNumberDao;
+import com.ctm.web.core.connectivity.JsonConnection;
+import com.ctm.web.core.connectivity.SimpleConnection;
+import com.ctm.web.core.dao.InboundPhoneNumberDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.EnvironmentException;

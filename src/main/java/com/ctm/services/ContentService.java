@@ -1,8 +1,8 @@
 package com.ctm.services;
 
-import com.ctm.cache.ApplicationCacheManager;
-import com.ctm.cache.ContentControlCache;
-import com.ctm.dao.ContentDao;
+import com.ctm.web.core.cache.ApplicationCacheManager;
+import com.ctm.web.core.cache.ContentControlCache;
+import com.ctm.web.core.dao.ContentDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.content.Content;

@@ -1,6 +1,6 @@
 package com.ctm.services.simples.admin;
 
-import com.ctm.dao.simples.CappingLimitsDao;
+import com.ctm.web.simples.dao.CappingLimitsDao;
 import com.ctm.exceptions.CrudValidationException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.helper.simples.CappingLimitsHelper;

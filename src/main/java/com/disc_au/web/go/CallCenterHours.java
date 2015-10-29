@@ -1,6 +1,6 @@
 package com.disc_au.web.go;
 
-import com.ctm.dao.GeneralDao;
+import com.ctm.web.core.dao.GeneralDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

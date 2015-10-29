@@ -1,8 +1,8 @@
 package com.ctm.services.email;
 
-import com.ctm.dao.EmailMasterDao;
-import com.ctm.dao.StampingDao;
-import com.ctm.dao.transaction.TransactionDao;
+import com.ctm.web.core.dao.EmailMasterDao;
+import com.ctm.web.core.dao.StampingDao;
+import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.EmailDetailsException;
 import com.ctm.model.EmailMaster;

@@ -1,6 +1,6 @@
 package com.ctm.services.home;
 
-import com.ctm.connectivity.SimpleConnection;
+import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
 import com.ctm.exceptions.SessionException;
@@ -40,7 +40,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 

@@ -5,8 +5,8 @@ import java.net.URLEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.dao.ConfirmationDao;
-import com.ctm.dao.transaction.TransactionDao;
+import com.ctm.web.core.dao.ConfirmationDao;
+import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Confirmation;
 import com.ctm.model.TransactionProperties;

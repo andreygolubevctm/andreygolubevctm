@@ -1,8 +1,8 @@
 package com.ctm.services.email.travel;
 
-import com.ctm.dao.CountryMappingDao;
-import com.ctm.dao.RankingDetailsDao;
-import com.ctm.dao.transaction.TransactionDao;
+import com.ctm.web.core.dao.CountryMappingDao;
+import com.ctm.web.core.dao.RankingDetailsDao;
+import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.exceptions.*;
 import com.ctm.model.CountryMapping;
 import com.ctm.model.EmailMaster;

@@ -1,6 +1,6 @@
 package com.ctm.services.simples;
 
-import com.ctm.connectivity.SimpleConnection;
+import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.ServiceException;

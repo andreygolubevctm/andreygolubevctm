@@ -1,6 +1,6 @@
 package com.ctm.router;
 
-import com.ctm.dao.simples.CappingLimitsDao;
+import com.ctm.web.simples.dao.CappingLimitsDao;
 import com.ctm.router.core.CrudRouter;
 import com.ctm.services.simples.ProviderContentService;
 import com.ctm.services.simples.admin.CappingLimitsService;

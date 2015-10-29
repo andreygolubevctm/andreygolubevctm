@@ -15,8 +15,8 @@ import com.ctm.model.homeloan.HomeLoanContact;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ctm.dao.transaction.TransactionDetailsDao;
-import com.ctm.dao.homeloan.HomeloanUnconfirmedLeadsDao;
+import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
+import com.ctm.web.homeloan.dao.HomeloanUnconfirmedLeadsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.homeloan.HomeLoanModel;
 

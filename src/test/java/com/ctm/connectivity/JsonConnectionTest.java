@@ -1,5 +1,7 @@
 package com.ctm.connectivity;
 
+import com.ctm.web.core.connectivity.JsonConnection;
+import com.ctm.web.core.connectivity.SimpleConnection;
 import junit.framework.TestCase;
 
 import static org.mockito.Mockito.mock;

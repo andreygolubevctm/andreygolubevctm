@@ -5,12 +5,10 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ctm.model.FormValidationLog;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.ctm.constants.PrivacyBlacklist;
-import com.ctm.dao.FormValidationDao;
-import com.ctm.dao.transaction.TransactionDetailsDao;
+import com.ctm.web.core.constants.PrivacyBlacklist;
+import com.ctm.web.core.dao.FormValidationDao;
+import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.exceptions.DaoException;
 
 public class FormValidationService {

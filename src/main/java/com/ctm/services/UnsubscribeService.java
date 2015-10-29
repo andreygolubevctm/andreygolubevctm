@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.dao.EmailMasterDao;
+import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Unsubscribe;
 import com.ctm.model.settings.PageSettings;

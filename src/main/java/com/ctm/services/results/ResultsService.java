@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;

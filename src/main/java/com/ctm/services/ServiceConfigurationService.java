@@ -1,7 +1,7 @@
 package com.ctm.services;
 
-import com.ctm.dao.ProviderExclusionsDao;
-import com.ctm.dao.ServiceConfigurationDao;
+import com.ctm.web.core.dao.ProviderExclusionsDao;
+import com.ctm.web.core.dao.ServiceConfigurationDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.model.ProviderExclusion;

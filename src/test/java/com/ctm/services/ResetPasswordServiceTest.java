@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ctm.dao.EmailMasterDao;
+import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.LogAudit;

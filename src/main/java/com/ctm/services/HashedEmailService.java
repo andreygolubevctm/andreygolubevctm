@@ -1,6 +1,6 @@
 package com.ctm.services;
 
-import com.ctm.dao.EmailMasterDao;
+import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.EmailMaster;
 

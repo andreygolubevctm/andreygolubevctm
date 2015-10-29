@@ -1,6 +1,6 @@
 package com.ctm.services;
 
-import com.ctm.dao.IsoLocationsDao;
+import com.ctm.web.core.dao.IsoLocationsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.IsoLocations;
 import org.slf4j.Logger;

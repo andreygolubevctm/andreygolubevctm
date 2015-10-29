@@ -1,6 +1,6 @@
 package com.ctm.services.simples;
 
-import com.ctm.dao.simples.OpeningHoursDao;
+import com.ctm.web.simples.dao.OpeningHoursDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.helper.simples.OpeningHoursHelper;

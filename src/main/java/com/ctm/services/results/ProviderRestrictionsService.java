@@ -1,6 +1,6 @@
 package com.ctm.services.results;
 
-import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.model.health.HealthPriceRequest;
 import com.ctm.model.settings.Vertical.VerticalType;
 import org.slf4j.Logger;

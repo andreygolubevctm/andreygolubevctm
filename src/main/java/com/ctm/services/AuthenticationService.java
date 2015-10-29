@@ -1,7 +1,7 @@
 package com.ctm.services;
 
-import com.ctm.dao.SessionTokenDao;
-import com.ctm.dao.TouchDao;
+import com.ctm.web.core.dao.SessionTokenDao;
+import com.ctm.web.core.dao.TouchDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.TokenSecurityException;
 import com.ctm.model.EmailMaster;

@@ -1,6 +1,6 @@
 package com.ctm.statistics;
 
-import com.ctm.dao.StatisticsDao;
+import com.ctm.web.core.dao.StatisticsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.statistics.dao.StatisticDetail;
 import org.slf4j.Logger;

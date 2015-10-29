@@ -1,6 +1,6 @@
 package com.ctm.router;
 
-import com.ctm.dao.UserDao;
+import com.ctm.web.core.dao.UserDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
@@ -26,13 +26,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
-import java.util.Collections;
 import java.util.List;
 
 import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.services.PhoneService.makeCall;
 import static java.lang.Integer.parseInt;
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static javax.servlet.http.HttpServletResponse.*;
 

@@ -6,7 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.dao.transaction.TransactionDetailsDao;
+import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.TransactionDetail;
 import com.ctm.model.email.EmailMode;

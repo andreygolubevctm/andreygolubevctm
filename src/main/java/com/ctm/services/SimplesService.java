@@ -1,6 +1,6 @@
 package com.ctm.services;
 
-import com.ctm.dao.CommentDao;
+import com.ctm.web.core.dao.CommentDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Comment;
 import org.slf4j.Logger;

@@ -1,6 +1,6 @@
 package com.ctm.services.travel;
 
-import com.ctm.connectivity.SimpleConnection;
+import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.TravelServiceException;
 import com.ctm.model.settings.Brand;

@@ -1,6 +1,6 @@
 package com.ctm.services.homeloan;
 
-import com.ctm.connectivity.JsonConnection;
+import com.ctm.web.core.connectivity.JsonConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
 import com.ctm.model.homeloan.HomeLoanModel;

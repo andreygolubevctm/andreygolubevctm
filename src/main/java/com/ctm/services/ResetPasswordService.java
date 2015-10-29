@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ctm.dao.EmailMasterDao;
+import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.LogAudit;

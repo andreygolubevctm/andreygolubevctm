@@ -1,6 +1,6 @@
 package com.ctm.web.car.dao;
 
-import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.web.car.model.VehicleNonStandard;
 import com.ctm.web.car.model.VehicleNonStandardMapping;

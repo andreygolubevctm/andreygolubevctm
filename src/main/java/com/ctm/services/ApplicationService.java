@@ -1,8 +1,8 @@
 package com.ctm.services;
 
-import com.ctm.dao.BrandsDao;
-import com.ctm.dao.ConfigSettingsDao;
-import com.ctm.dao.VerticalsDao;
+import com.ctm.web.core.dao.BrandsDao;
+import com.ctm.web.core.dao.ConfigSettingsDao;
+import com.ctm.web.core.dao.VerticalsDao;
 import com.ctm.exceptions.BrandException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.Brand;

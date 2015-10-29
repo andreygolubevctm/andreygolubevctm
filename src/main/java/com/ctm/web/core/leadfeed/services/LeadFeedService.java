@@ -1,6 +1,6 @@
 package com.ctm.web.core.leadfeed.services;
 
-import com.ctm.dao.leadfeed.BestPriceLeadsDao;
+import com.ctm.web.core.dao.leadfeed.BestPriceLeadsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
