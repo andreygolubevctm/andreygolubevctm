@@ -20,7 +20,7 @@ import org.json.JSONObject;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

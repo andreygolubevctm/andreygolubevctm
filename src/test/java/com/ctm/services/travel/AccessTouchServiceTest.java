@@ -4,7 +4,7 @@ import com.ctm.web.core.dao.TouchDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
-import com.ctm.services.AccessTouchService;
+import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.services.SessionDataService;
 import org.junit.Test;
 

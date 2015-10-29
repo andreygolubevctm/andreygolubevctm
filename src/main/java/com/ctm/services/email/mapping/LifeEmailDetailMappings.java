@@ -1,6 +1,6 @@
 package com.ctm.services.email.mapping;
 
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 
 public class LifeEmailDetailMappings implements EmailDetailsMappings {
 

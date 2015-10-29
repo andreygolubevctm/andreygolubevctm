@@ -17,7 +17,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.services.FormValidationService;
 import com.ctm.services.SessionDataService;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 
 /**
  * To handle writing and retrieving of quotes.

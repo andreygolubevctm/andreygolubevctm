@@ -1,7 +1,6 @@
 package com.ctm.services.homeloan;
 
-import com.ctm.model.homeloan.HomeLoanContact;
-import com.ctm.model.homeloan.HomeLoanModel;
+import com.ctm.web.homeloan.model.HomeLoanContact;
 
 import javax.servlet.http.HttpServletRequest;
 

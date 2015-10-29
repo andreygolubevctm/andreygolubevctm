@@ -2,12 +2,12 @@ package com.ctm.services.tracking;
 
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.security.StringEncryption;
-import com.ctm.services.ContentService;
+import com.ctm.web.core.content.services.ContentService;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

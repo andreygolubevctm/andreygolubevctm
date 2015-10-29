@@ -1,6 +1,6 @@
 package com.ctm.web.core.dao;
 
-import com.ctm.utils.common.utils.DateUtils;
+import com.ctm.web.core.utils.common.utils.DateUtils;
 
 import java.sql.*;
 

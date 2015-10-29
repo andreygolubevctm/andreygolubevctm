@@ -5,7 +5,7 @@ import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
-import com.ctm.utils.ResponseUtils;
+import com.ctm.web.core.utils.ResponseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;

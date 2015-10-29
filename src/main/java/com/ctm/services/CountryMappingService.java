@@ -5,7 +5,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.CountryMapping;
 import com.ctm.model.session.SessionData;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

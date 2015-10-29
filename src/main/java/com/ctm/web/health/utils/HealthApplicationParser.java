@@ -2,10 +2,10 @@ package com.ctm.web.health.utils;
 
 import com.ctm.web.health.model.Frequency;
 import com.ctm.web.health.model.PaymentType;
-import com.ctm.model.request.Person;
-import com.ctm.utils.FormDateUtils;
+import com.ctm.web.core.model.request.Person;
+import com.ctm.web.core.utils.FormDateUtils;
 import com.ctm.web.health.model.request.*;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 
 import java.util.Date;
 import java.util.List;

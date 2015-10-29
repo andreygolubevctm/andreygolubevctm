@@ -1,8 +1,8 @@
 package com.ctm.web.validation;
 
 import com.ctm.model.Touch;
-import com.ctm.model.request.TokenRequest;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.request.TokenRequest;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.security.token.JwtTokenCreator;
 import com.ctm.security.token.JwtTokenValidator;
 import com.ctm.security.token.config.TokenConfigFactory;
@@ -10,7 +10,7 @@ import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.security.token.exception.InvalidTokenException;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
-import com.ctm.utils.ResponseUtils;
+import com.ctm.web.core.utils.ResponseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;

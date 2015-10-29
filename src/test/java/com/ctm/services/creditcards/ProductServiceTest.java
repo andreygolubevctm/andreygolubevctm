@@ -5,7 +5,7 @@ import com.ctm.web.creditcards.exceptions.CreditCardServiceException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Product;
 import com.ctm.web.creditcards.model.CreditCardProduct;
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.creditcards.services.ProductService;
 import org.junit.Before;
 import org.junit.Test;

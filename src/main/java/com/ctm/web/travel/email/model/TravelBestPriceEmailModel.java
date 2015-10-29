@@ -1,6 +1,6 @@
 package com.ctm.web.travel.email.model;
 
-import com.ctm.model.email.BestPriceEmailModel;
+import com.ctm.web.core.model.email.BestPriceEmailModel;
 
 import java.util.List;
 

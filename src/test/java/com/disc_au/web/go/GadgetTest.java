@@ -1,4 +1,5 @@
 package com.disc_au.web.go;
+import com.ctm.web.core.web.go.Gadget;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

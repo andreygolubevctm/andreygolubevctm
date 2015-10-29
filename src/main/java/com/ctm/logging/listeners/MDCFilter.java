@@ -1,7 +1,7 @@
 package com.ctm.logging.listeners;
 
 import com.ctm.logging.CorrelationIdUtils;
-import com.ctm.utils.RequestUtils;
+import com.ctm.web.core.utils.RequestUtils;
 
 import javax.servlet.*;
 import java.io.IOException;
@@ -12,8 +12,8 @@ import static com.ctm.logging.CorrelationIdUtils.clearCorrelationId;
 import static com.ctm.logging.CorrelationIdUtils.setCorrelationId;
 import static com.ctm.logging.LoggingVariables.clearLoggingVariables;
 import static com.ctm.logging.LoggingVariables.setLoggingVariables;
-import static com.ctm.utils.RequestUtils.BRAND_CODE_PARAM;
-import static com.ctm.utils.RequestUtils.TRANSACTION_ID_PARAM;
+import static com.ctm.web.core.utils.RequestUtils.BRAND_CODE_PARAM;
+import static com.ctm.web.core.utils.RequestUtils.TRANSACTION_ID_PARAM;
 
 public class MDCFilter implements Filter {
 

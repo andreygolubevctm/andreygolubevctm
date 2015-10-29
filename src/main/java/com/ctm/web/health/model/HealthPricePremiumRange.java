@@ -1,6 +1,6 @@
 package com.ctm.web.health.model;
 
-import com.disc_au.web.go.xml.XmlNode;
+import com.ctm.web.core.web.go.xml.XmlNode;
 
 public class HealthPricePremiumRange {
 

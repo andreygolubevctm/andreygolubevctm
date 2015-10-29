@@ -15,7 +15,7 @@ import com.ctm.services.ApplicationService;
 import com.ctm.web.car.services.CarQuoteService;
 import com.ctm.web.car.services.CarVehicleSelectionService;
 import com.ctm.services.tracking.TrackingKeyService;
-import com.ctm.web.validation.SchemaValidationError;
+import com.ctm.web.core.web.validation.SchemaValidationError;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 

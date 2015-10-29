@@ -19,7 +19,7 @@
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
 <c:set var="continueOnAggregatorValidationError" value="${true}" />
 
-<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="page" />
+<jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
 <c:set var="touch_count"><core:access_count touch="P" /></c:set>
 
 <c:choose>
@@ -143,7 +143,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 		${logger.debug('Queried product properties. {},{}', log:kv('fund', fund), log:kv('productId', productId))}
 
 		<%-- This will be deleted once health application is moved to it's own service --%>
-		<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+		<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 		<c:set var="configUrl">/WEB-INF/aggregator/health_application/${fund}/config.xml</c:set>
 
 		<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, configUrl)}" />

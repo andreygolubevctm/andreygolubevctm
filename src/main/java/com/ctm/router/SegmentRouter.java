@@ -22,8 +22,8 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.SettingsService;
 import com.ctm.services.segment.SegmentService;
-import com.ctm.utils.RequestUtils;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.utils.RequestUtils;
+import com.ctm.web.core.web.go.Data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 

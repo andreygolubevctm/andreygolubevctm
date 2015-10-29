@@ -1,17 +1,17 @@
 package com.ctm.web.core.leadfeed.services;
 
-import com.ctm.web.core.dao.leadfeed.BestPriceLeadsDao;
+import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.services.AccessTouchService;
-import com.ctm.services.ContentService;
+import com.ctm.web.core.services.AccessTouchService;
+import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.LeadFeedException;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
-import com.ctm.model.content.Content;
-import com.ctm.model.leadfeed.LeadFeedData;
+import com.ctm.web.core.content.model.Content;
+import com.ctm.web.core.leadfeed.model.LeadFeedData;
 
 import java.util.ArrayList;
 import java.util.Date;

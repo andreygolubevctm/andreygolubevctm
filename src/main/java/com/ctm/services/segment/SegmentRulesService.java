@@ -16,8 +16,8 @@ import com.ctm.model.segment.Segment;
 import com.ctm.model.segment.SegmentRule;
 import com.ctm.model.segment.SegmentRule.FilterBy;
 import com.ctm.model.segment.SegmentRule.Option;
-import com.ctm.utils.FormDateUtils;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.utils.FormDateUtils;
+import com.ctm.web.core.web.go.Data;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

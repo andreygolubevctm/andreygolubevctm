@@ -4,7 +4,7 @@
 <c:set var="logger" value="${log:getLogger('jsp.simples.ajax.search_quotes')}" />
 
 <session:getAuthenticated  />
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 <jsp:useBean id="searchService" class="com.ctm.web.simples.services.SimplesSearchService" scope="request" />
 
 <go:setData dataVar="data" xpath="search_results" value="*DELETE" />

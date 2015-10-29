@@ -7,7 +7,7 @@ import com.ctm.web.core.dao.SegmentDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.segment.Segment;
 import com.ctm.model.segment.SegmentRequest;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 
 public class SegmentService {
 

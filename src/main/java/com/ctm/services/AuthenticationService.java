@@ -9,8 +9,8 @@ import com.ctm.model.Touch;
 import com.ctm.model.session.SessionToken;
 import com.ctm.security.StringEncryption;
 import com.ctm.services.email.EmailUrlService;
-import com.ctm.utils.SessionUtils;
-import com.disc_au.web.LDAPDetails;
+import com.ctm.web.core.utils.SessionUtils;
+import com.ctm.web.core.web.LDAPDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

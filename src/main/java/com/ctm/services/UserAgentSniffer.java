@@ -3,6 +3,7 @@
  */
 package com.ctm.services;
 
+import com.ctm.web.core.content.services.ContentService;
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;

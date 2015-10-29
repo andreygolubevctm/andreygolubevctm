@@ -1,6 +1,6 @@
 package com.ctm.web.car.model.form;
 
-import com.ctm.model.formData.Request;
+import com.ctm.web.core.model.formData.Request;
 
 public class CarRequest implements Request<CarQuote> {
 

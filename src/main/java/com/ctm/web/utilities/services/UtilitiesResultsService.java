@@ -3,7 +3,7 @@ package com.ctm.web.utilities.services;
 import com.ctm.exceptions.UtilitiesWebServiceException;
 import com.ctm.web.utilities.model.UtilitiesResultsModel;
 import com.ctm.web.utilities.model.UtilitiesResultsRequestModel;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 import org.json.JSONArray;
 
 import javax.servlet.http.HttpServletRequest;

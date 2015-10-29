@@ -4,6 +4,7 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.VerticalException;
 import com.ctm.services.EnvironmentService;
+import com.ctm.web.core.model.settings.Vertical;
 
 public class PageSettings {
 

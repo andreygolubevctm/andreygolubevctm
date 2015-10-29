@@ -9,7 +9,7 @@
 <%@ attribute name="vertical" required="false" rtexprvalue="true" description="vertical" %>
 <%@ attribute name="justChecking" required="false" rtexprvalue="true" description="If just checking if a user exists (not a login attempt)"%>
 
-<jsp:useBean id="userData" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="userData" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 <c:set var="loginExists" value="false" />
 <c:set var="validCredentials" value="false" />

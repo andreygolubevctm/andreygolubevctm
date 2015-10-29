@@ -11,14 +11,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.ctm.model.homeloan.HomeLoanContact;
+import com.ctm.web.homeloan.model.HomeLoanContact;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.web.homeloan.dao.HomeloanUnconfirmedLeadsDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.homeloan.HomeLoanModel;
+import com.ctm.web.homeloan.model.HomeLoanModel;
 
 public class HomeLoanServiceTest {
 

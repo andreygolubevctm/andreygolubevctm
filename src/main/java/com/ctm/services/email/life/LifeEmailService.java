@@ -20,19 +20,19 @@ import com.ctm.exceptions.VerticalException;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.RankingDetail;
 import com.ctm.model.TransactionDetail;
-import com.ctm.model.email.EmailMode;
-import com.ctm.model.email.LifeBestPriceEmailModel;
-import com.ctm.model.formatter.email.life.LifeBestPriceExactTargetFormatter;
-import com.ctm.model.life.Occupation;
+import com.ctm.web.core.model.email.EmailMode;
+import com.ctm.web.life.email.model.LifeBestPriceEmailModel;
+import com.ctm.web.life.email.model.LifeBestPriceExactTargetFormatter;
+import com.ctm.web.life.model.Occupation;
 import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.services.email.BestPriceEmailHandler;
 import com.ctm.services.email.EmailDetailsService;
 import com.ctm.services.email.EmailServiceHandler;
 import com.ctm.services.email.EmailUrlService;
 import com.ctm.services.email.ExactTargetEmailSender;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

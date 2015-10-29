@@ -1,7 +1,7 @@
 package com.ctm.services.email;
 
 import com.ctm.exceptions.SendEmailException;
-import com.ctm.model.email.EmailMode;
+import com.ctm.web.core.model.email.EmailMode;
 import com.ctm.model.settings.PageSettings;
 import org.junit.Test;
 

@@ -18,9 +18,9 @@ import com.ctm.exceptions.EmailDetailsException;
 import com.ctm.model.EmailMaster;
 import com.ctm.web.core.model.Transaction;
 import com.ctm.model.TransactionDetail;
-import com.ctm.model.email.EmailMode;
-import com.ctm.model.email.IncomingEmail;
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.email.EmailMode;
+import com.ctm.web.core.model.email.IncomingEmail;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 
 import static com.ctm.services.TransactionAccessService.HEALTH_BEST_PRICE_EMAIL_XPATH;
 

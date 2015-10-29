@@ -9,7 +9,7 @@ import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.services.EnvironmentService;
 import com.ctm.web.travel.services.TravelService;
-import com.ctm.web.validation.SchemaValidationError;
+import com.ctm.web.core.web.validation.SchemaValidationError;
 import org.junit.Before;
 import org.junit.Test;
 

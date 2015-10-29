@@ -2,9 +2,9 @@ package com.ctm.web.utilities.model;
 
 import com.ctm.model.AbstractJsonModel;
 import com.ctm.model.Address;
-import com.ctm.utils.FormAddressUtils;
-import com.ctm.utils.FormDateUtils;
-import com.ctm.utils.NGram;
+import com.ctm.web.core.utils.FormAddressUtils;
+import com.ctm.web.core.utils.FormDateUtils;
+import com.ctm.web.core.utils.NGram;
 import org.json.JSONException;
 import org.json.JSONObject;
 

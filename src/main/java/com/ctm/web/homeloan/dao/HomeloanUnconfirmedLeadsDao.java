@@ -2,10 +2,10 @@ package com.ctm.web.homeloan.dao;
 
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Touch;
-import com.ctm.model.homeloan.HomeLoanContact;
-import com.ctm.model.homeloan.HomeLoanModel;
-import com.ctm.model.homeloan.HomeLoanModel.CustomerGoal;
-import com.ctm.model.homeloan.HomeLoanModel.CustomerSituation;
+import com.ctm.web.homeloan.model.HomeLoanContact;
+import com.ctm.web.homeloan.model.HomeLoanModel;
+import com.ctm.web.homeloan.model.HomeLoanModel.CustomerGoal;
+import com.ctm.web.homeloan.model.HomeLoanModel.CustomerSituation;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

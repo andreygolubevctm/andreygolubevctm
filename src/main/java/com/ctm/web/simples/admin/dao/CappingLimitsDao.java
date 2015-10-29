@@ -7,8 +7,8 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.simples.admin.helper.CappingLimitsHelper;
 import com.ctm.web.simples.admin.model.request.CappingLimitDeleteRequest;
 import com.ctm.web.health.model.request.CappingLimit;
-import com.ctm.model.response.CappingLimitInformation;
-import com.ctm.utils.common.utils.DateUtils;
+import com.ctm.web.simples.admin.model.response.CappingLimitInformation;
+import com.ctm.web.core.utils.common.utils.DateUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

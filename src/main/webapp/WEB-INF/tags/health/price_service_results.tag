@@ -3,7 +3,7 @@
 
 <c:set var="logger" value="${log:getLogger('tag.health.price_service_result')}" />
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 <%@ attribute name="rows" type="java.util.ArrayList" required="true" rtexprvalue="true"	 description="recordset" %>
 <%@ attribute name="healthXML" required="true" rtexprvalue="true" description="loading" type="org.apache.xerces.dom.NodeImpl" %>

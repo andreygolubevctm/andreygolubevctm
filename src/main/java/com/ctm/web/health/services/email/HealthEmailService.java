@@ -1,15 +1,15 @@
 package com.ctm.web.health.services.email;
 
-import com.ctm.web.core.dao.ContentDao;
+import com.ctm.web.core.content.dao.ContentDao;
 import com.ctm.web.core.dao.RankingDetailsDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.exceptions.*;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.RankingDetail;
 import com.ctm.model.Touch;
-import com.ctm.model.content.Content;
-import com.ctm.model.email.BestPriceRanking;
-import com.ctm.model.email.EmailMode;
+import com.ctm.web.core.content.model.Content;
+import com.ctm.web.core.model.email.BestPriceRanking;
+import com.ctm.web.core.model.email.EmailMode;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.health.model.email.HealthBestPriceEmailModel;
@@ -18,8 +18,8 @@ import com.ctm.web.health.model.formatter.email.HealthBestPriceExactTargetFormat
 import com.ctm.web.health.model.formatter.email.HealthProductBrochuresExactTargetFormatter;
 import com.ctm.web.health.model.request.HealthEmailBrochureRequest;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.services.AccessTouchService;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.email.*;
 import com.ctm.web.simples.admin.services.OpeningHoursService;

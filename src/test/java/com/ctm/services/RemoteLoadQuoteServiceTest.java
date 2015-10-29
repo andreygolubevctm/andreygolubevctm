@@ -20,8 +20,8 @@ import com.ctm.exceptions.EmailDetailsException;
 import com.ctm.model.EmailMaster;
 import com.ctm.web.core.model.Transaction;
 import com.ctm.model.TransactionDetail;
-import com.ctm.model.email.EmailMode;
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.email.EmailMode;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 
 public class RemoteLoadQuoteServiceTest {
 

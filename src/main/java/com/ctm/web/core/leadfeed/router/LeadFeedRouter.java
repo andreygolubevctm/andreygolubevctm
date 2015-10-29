@@ -1,8 +1,8 @@
 package com.ctm.web.core.leadfeed.router;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.leadfeed.LeadFeedData;
-import com.ctm.model.leadfeed.LeadFeedData.CallType;
+import com.ctm.web.core.leadfeed.model.LeadFeedData;
+import com.ctm.web.core.leadfeed.model.LeadFeedData.CallType;
 import com.ctm.model.settings.Brand;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.SettingsService;

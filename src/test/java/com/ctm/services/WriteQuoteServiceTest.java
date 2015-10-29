@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ctm.model.session.SessionData;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 
 public class WriteQuoteServiceTest {
 

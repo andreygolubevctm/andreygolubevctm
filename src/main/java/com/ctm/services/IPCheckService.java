@@ -6,8 +6,8 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.IpAddress;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
-import com.ctm.utils.RequestUtils;
+import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.utils.RequestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

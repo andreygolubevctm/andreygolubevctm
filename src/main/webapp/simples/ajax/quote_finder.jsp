@@ -4,7 +4,7 @@
 <c:set var="logger" value="${log:getLogger('jsp.simples.ajax.quote_finder')}" />
 
 <session:getAuthenticated />
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 

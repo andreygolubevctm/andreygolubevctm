@@ -7,7 +7,7 @@ import com.ctm.model.resultsData.ResultsObj;
 import com.ctm.model.resultsData.ResultsWrapper;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.web.travel.model.results.TravelResult;
 import com.ctm.router.CommonQuoteRouter;
@@ -16,7 +16,7 @@ import com.ctm.services.IPCheckService;
 import com.ctm.services.SettingsService;
 import com.ctm.services.tracking.TrackingKeyService;
 import com.ctm.web.travel.services.TravelService;
-import com.ctm.web.validation.SchemaValidationError;
+import com.ctm.web.core.web.validation.SchemaValidationError;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 
 import javax.ws.rs.*;

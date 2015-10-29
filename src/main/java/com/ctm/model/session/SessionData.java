@@ -13,12 +13,12 @@ package com.ctm.model.session;
 
 import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.ctm.utils.SessionDataUtils.getTransactionId;
+import static com.ctm.web.core.utils.SessionDataUtils.getTransactionId;
 
 public class SessionData {
 

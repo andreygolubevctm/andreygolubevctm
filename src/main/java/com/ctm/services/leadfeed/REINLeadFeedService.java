@@ -3,7 +3,7 @@ package com.ctm.services.leadfeed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ctm.exceptions.LeadFeedException;
-import com.ctm.model.leadfeed.LeadFeedData;
+import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType;
 import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus;
 

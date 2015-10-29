@@ -2,12 +2,12 @@ package com.ctm.web.health.services;
 
 import com.ctm.web.health.model.request.HealthRequest;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.services.CTMEndpointService;
 import com.ctm.services.RequestService;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
-import com.ctm.utils.SessionUtils;
+import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.health.utils.HealthRequestParser;
 import com.ctm.web.health.validation.HealthTokenValidationService;
 

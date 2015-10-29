@@ -4,8 +4,8 @@ import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

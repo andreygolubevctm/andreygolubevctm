@@ -8,6 +8,8 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ctm.web.core.web.go.xml.HttpRequestHandler;
+import com.ctm.web.core.web.go.xml.XmlNode;
 import org.junit.Before;
 import org.junit.Test;
 

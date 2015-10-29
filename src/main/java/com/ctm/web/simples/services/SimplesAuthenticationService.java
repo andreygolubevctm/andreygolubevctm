@@ -4,7 +4,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.TokenSecurityException;
 import com.ctm.model.session.SessionToken;
 import com.ctm.services.AuthenticationService;
-import com.ctm.utils.SessionUtils;
+import com.ctm.web.core.utils.SessionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

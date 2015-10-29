@@ -1,7 +1,7 @@
 package com.ctm.web.car.leadfeed.model;
 
-import com.ctm.model.leadfeed.AGISLeadFeedRequest;
-import com.ctm.model.leadfeed.LeadFeedData;
+import com.ctm.web.core.leadfeed.model.AGISLeadFeedRequest;
+import com.ctm.web.core.leadfeed.model.LeadFeedData;
 
 public class AGISCarLeadFeedRequest extends AGISLeadFeedRequest {
 

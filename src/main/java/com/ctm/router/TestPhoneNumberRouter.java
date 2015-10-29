@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
-import com.ctm.utils.NGram;
+import com.ctm.web.core.utils.NGram;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

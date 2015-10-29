@@ -1,6 +1,6 @@
 package com.ctm.web.life.dao;
 
-import com.ctm.model.life.Occupation;
+import com.ctm.web.life.model.Occupation;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

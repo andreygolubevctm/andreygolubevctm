@@ -8,7 +8,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.simples.helper.ProviderContentHelper;
 import com.ctm.model.ProviderContent;
 import com.ctm.model.ProviderContentType;
-import com.ctm.utils.common.utils.DateUtils;
+import com.ctm.web.core.utils.common.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

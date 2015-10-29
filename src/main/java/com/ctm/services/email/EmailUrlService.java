@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.model.EmailMaster;
-import com.ctm.model.email.IncomingEmail;
-import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.utils.FormDateUtils;
+import com.ctm.web.core.model.email.IncomingEmail;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.utils.FormDateUtils;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

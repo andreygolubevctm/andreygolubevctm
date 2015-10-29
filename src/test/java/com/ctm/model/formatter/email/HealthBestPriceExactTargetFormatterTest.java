@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.ctm.model.email.ExactTargetEmailModel;
+import com.ctm.web.core.model.email.ExactTargetEmailModel;
 import com.ctm.web.health.model.email.HealthBestPriceEmailModel;
 import com.ctm.web.health.model.formatter.email.HealthBestPriceExactTargetFormatter;
 import com.ctm.services.email.EmailUtils;

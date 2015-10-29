@@ -2,7 +2,7 @@ package com.ctm.model.session;
 
 import com.ctm.web.core.model.Role;
 import com.ctm.web.core.model.Rule;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

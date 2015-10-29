@@ -9,8 +9,8 @@ import javax.naming.NamingException;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.settings.Vertical;
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

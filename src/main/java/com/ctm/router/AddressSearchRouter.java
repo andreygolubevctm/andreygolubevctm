@@ -5,7 +5,7 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Address;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.services.SettingsService;
 import com.ctm.services.elasticsearch.AddressSearchService;
 import org.json.JSONArray;

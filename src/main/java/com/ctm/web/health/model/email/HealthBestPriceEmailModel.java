@@ -1,7 +1,7 @@
 package com.ctm.web.health.model.email;
 
-import com.ctm.model.email.BestPriceEmailModel;
-import com.ctm.model.email.BestPriceRanking;
+import com.ctm.web.core.model.email.BestPriceEmailModel;
+import com.ctm.web.core.model.email.BestPriceRanking;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.ctm.web.health.validation;
 
 import com.ctm.web.health.model.request.HealthRequest;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
 import com.ctm.web.validation.ResultsTokenValidation;

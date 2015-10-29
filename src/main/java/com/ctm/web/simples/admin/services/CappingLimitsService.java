@@ -7,10 +7,10 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.simples.admin.helper.CappingLimitsHelper;
 import com.ctm.web.simples.admin.model.request.CappingLimitDeleteRequest;
 import com.ctm.web.health.model.request.CappingLimit;
-import com.ctm.model.response.CappingLimitInformation;
-import com.ctm.utils.RequestUtils;
+import com.ctm.web.simples.admin.model.response.CappingLimitInformation;
+import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.validation.FormValidation;
-import com.ctm.web.validation.SchemaValidationError;
+import com.ctm.web.core.web.validation.SchemaValidationError;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

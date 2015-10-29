@@ -3,7 +3,7 @@ package com.ctm.web.creditcards.router;
 import com.ctm.exceptions.UploaderException;
 import com.ctm.web.core.model.Error;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.SettingsService;

@@ -4,10 +4,10 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.exceptions.ServiceException;
 import com.ctm.model.QuoteServiceProperties;
-import com.ctm.model.formData.Request;
+import com.ctm.web.core.model.formData.Request;
 import com.ctm.model.settings.*;
 import com.ctm.web.validation.FormValidation;
-import com.ctm.web.validation.SchemaValidationError;
+import com.ctm.web.core.web.validation.SchemaValidationError;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;

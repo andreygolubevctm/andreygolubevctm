@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ctm.services.FatalErrorService;
-import com.ctm.utils.RequestUtils;
+import com.ctm.web.core.utils.RequestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
@@ -20,7 +20,7 @@ import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.SessionData;
 import com.ctm.services.QuoteService;
 import com.ctm.services.SessionDataService;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

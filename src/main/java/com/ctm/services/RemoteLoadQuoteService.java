@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.TransactionDetail;
-import com.ctm.model.email.EmailMode;
-import com.ctm.model.email.IncomingEmail;
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.email.EmailMode;
+import com.ctm.web.core.model.email.IncomingEmail;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.services.email.EmailUrlService;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;

@@ -23,6 +23,10 @@ public class TravelIsoLocationsService extends IsoLocationsService {
         super(dao);
     }
 
+    public TravelIsoLocationsService() {
+        super(new IsoLocationsDao());
+    }
+
     public JSONObject addTopTenTravelDestinations(JSONObject json) throws DaoException {
 
         ArrayList<String> list = new ArrayList<String>();

@@ -1,7 +1,8 @@
 package com.ctm.webservice;
 
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.webservice.WebServiceUtils;
 import com.exacttarget.wsdl.partnerapi.PartnerAPI;
 import com.exacttarget.wsdl.partnerapi.Soap;
 import org.apache.cxf.endpoint.Client;

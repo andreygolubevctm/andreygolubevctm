@@ -1,3 +1,4 @@
+<%@ tag import="com.ctm.web.core.model.email.EmailMode" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -141,7 +142,7 @@
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.travel.email && empty data.userData.emailSent}">
 
 					<%-- enums are not will handled in jsp --%>
-				<% request.setAttribute("BEST_PRICE", com.ctm.model.email.EmailMode.BEST_PRICE); %>
+				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
 					${emailService.send(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
 				</c:catch>
@@ -161,7 +162,7 @@
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">
 				<%-- <jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />--%>
 				<%-- enums are not will handled in jsp --%>
-				<% request.setAttribute("BEST_PRICE", com.ctm.model.email.EmailMode.BEST_PRICE); %>
+				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
 					${emailService.send(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
 				</c:catch>

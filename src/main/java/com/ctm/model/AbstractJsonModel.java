@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ctm.model.formatter.JsonFormatter;
-import com.ctm.model.formatter.JsonUtils;
+import com.ctm.web.core.model.formatter.JsonFormatter;
+import com.ctm.web.core.model.formatter.JsonUtils;
 
 @JsonIgnoreProperties({"errors"})
 public abstract class AbstractJsonModel implements JsonFormatter {

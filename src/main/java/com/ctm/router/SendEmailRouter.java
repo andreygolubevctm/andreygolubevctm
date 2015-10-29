@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import com.ctm.model.email.EmailMode;
+import com.ctm.web.core.model.email.EmailMode;
 import com.ctm.services.email.EmailService;
 
 

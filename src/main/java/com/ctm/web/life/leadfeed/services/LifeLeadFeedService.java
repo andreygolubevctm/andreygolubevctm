@@ -1,11 +1,11 @@
 package com.ctm.web.life.leadfeed.services;
 
-import com.ctm.web.core.dao.leadfeed.BestPriceLeadsDao;
+import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.exceptions.LeadFeedException;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
-import com.ctm.model.leadfeed.LeadFeedData;
-import com.ctm.services.AccessTouchService;
+import com.ctm.web.core.leadfeed.model.LeadFeedData;
+import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.services.leadfeed.IProviderLeadFeedService;
 import com.ctm.services.leadfeed.life.AGIS.AGISLifeLeadFeedService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;

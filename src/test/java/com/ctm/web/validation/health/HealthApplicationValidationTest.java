@@ -16,7 +16,7 @@ import com.ctm.web.health.model.request.Dependant;
 import com.ctm.web.health.model.request.HealthApplicationRequest;
 import com.ctm.web.health.model.request.Medicare;
 import com.ctm.web.health.model.request.Payment;
-import com.ctm.web.validation.SchemaValidationError;
+import com.ctm.web.core.web.validation.SchemaValidationError;
 
 public class HealthApplicationValidationTest {
 

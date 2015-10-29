@@ -2,9 +2,9 @@
 <%@ tag description="The Page" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
+<jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
 <jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
-<jsp:useBean id="newPage" class="com.ctm.web.NewPage" />
+<jsp:useBean id="newPage" class="com.ctm.web.core.web.NewPage" />
 ${newPage.init(pageSettings)}
 
 <%@ attribute name="title"				required="false"  rtexprvalue="true"	 description="The title of the page" %>

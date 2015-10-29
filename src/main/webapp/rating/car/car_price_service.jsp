@@ -4,7 +4,7 @@
 
 <c:set var="logger" value="${log:getLogger('jsp.rating.car.car_price_service')}" />
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
@@ -81,7 +81,7 @@
 
 		<c:set var="xmlData" value="${go:getEscapedXml(data['temp/quote'])}" />
 
-		<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+		<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 		<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/car/Hollard/config_${service}_quote.xml')}" />
 		<go:soapAggregator config="${config}" transactionId="${tranId}" xml="${xmlData}" var="resultXml" debugVar="debugXml" />
 		<c:out value="${resultXml}" escapeXml="false" />

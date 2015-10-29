@@ -12,7 +12,7 @@
 
 <c:set var="fetch_count"><c:out value="${param.fetchcount}" escapeXml="true" /></c:set>
 
-<jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="soapdata" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 <jsp:useBean id="roadsideService" class="com.ctm.services.roadside.RoadsideService" scope="page" />
 <c:set var="serviceRespone" value="${roadsideService.validate(pageContext.request, data)}" />
@@ -40,7 +40,7 @@
 
 <c:if test="${not empty tranId && roadsideService.isValid()}">
 			<%-- Load the config and send quotes to the aggregator gadget --%>
-	<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+	<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 	<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/roadside/config.xml')}" />
 			<go:soapAggregator config = "${config}"
 					transactionId = "${tranId}"

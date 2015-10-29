@@ -1,9 +1,9 @@
 package com.ctm.web.life.leadfeed.services;
 
-import com.ctm.web.core.dao.leadfeed.BestPriceLeadsDao;
+import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.web.core.model.Transaction;
-import com.ctm.model.leadfeed.LeadFeedData;
+import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.ApplicationService;

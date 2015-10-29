@@ -1,6 +1,6 @@
 package com.ctm.web.car.model.request;
 
-import com.ctm.model.request.Person;
+import com.ctm.web.core.model.request.Person;
 
 import javax.validation.Valid;
 

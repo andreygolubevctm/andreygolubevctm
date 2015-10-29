@@ -1,7 +1,7 @@
 package com.ctm.model.settings;
 
 import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
-import com.disc_au.web.go.xml.XmlNode;
+import com.ctm.web.core.web.go.xml.XmlNode;
 
 public class SoapClientThreadConfiguration {
 

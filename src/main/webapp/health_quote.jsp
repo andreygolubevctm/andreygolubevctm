@@ -13,7 +13,7 @@
 
 <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
 <jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
-<jsp:useBean id="callCenterHours" class="com.disc_au.web.go.CallCenterHours" scope="page" />
+<jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.go.CallCenterHours" scope="page" />
 <jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" scope="request" />
 
 <c:set var="resultTemplateItems" value="${resultsService.getResultsPageStructure('health')}" scope="request"  />
@@ -126,7 +126,7 @@
 
 	<jsp:attribute name="body_end">
 
-		<jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
+		<jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
 		<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 	</jsp:attribute>
 

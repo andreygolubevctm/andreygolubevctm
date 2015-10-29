@@ -4,13 +4,13 @@ import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.health.exceptions.HealthAltPriceException;
-import com.ctm.model.content.Content;
-import com.ctm.model.content.ContentSupplement;
+import com.ctm.web.core.content.model.Content;
+import com.ctm.web.core.content.model.ContentSupplement;
 import com.ctm.web.health.model.HealthAlternatePricing;
 import com.ctm.web.health.model.HealthPriceResult;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.ApplicationService;
-import com.ctm.services.ContentService;
+import com.ctm.web.core.content.services.ContentService;
 import com.ctm.services.SettingsService;
 import org.json.JSONException;
 

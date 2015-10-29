@@ -11,7 +11,7 @@ import com.ctm.model.session.AuthenticatedData;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.simples.admin.CrudService;
-import com.ctm.utils.RequestUtils;
+import com.ctm.web.core.utils.RequestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;

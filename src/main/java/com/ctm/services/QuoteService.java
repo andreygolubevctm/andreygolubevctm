@@ -8,8 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
-import com.disc_au.web.go.Data;
-import com.disc_au.web.go.xml.HttpRequestHandler;
+import com.ctm.web.core.web.go.Data;
+import com.ctm.web.core.web.go.xml.HttpRequestHandler;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

@@ -1,9 +1,9 @@
 package com.ctm.web.car.utils;
 
-import com.ctm.model.request.Person;
+import com.ctm.web.core.model.request.Person;
 import com.ctm.web.car.model.request.CarRequest;
 import com.ctm.web.car.model.request.Driver;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 
 /**
  * Created by voba on 6/07/2015.

@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.web.homeloan.dao.HomeloanUnconfirmedLeadsDao;
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.services.CronService;
 import com.ctm.services.SettingsService;
 import com.ctm.services.homeloan.HomeLoanOpportunityService;

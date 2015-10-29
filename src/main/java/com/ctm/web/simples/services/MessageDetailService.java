@@ -8,7 +8,7 @@ import com.ctm.web.simples.dao.MessageDetailDao;
 import com.ctm.web.simples.dao.MessageDuplicatesDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Transaction;
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.simples.model.Message;
 import com.ctm.web.simples.model.MessageDetail;
 

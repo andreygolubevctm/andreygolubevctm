@@ -1,7 +1,7 @@
 package com.ctm.web.utilities.model;
 
 import com.ctm.model.AbstractJsonModel;
-import com.ctm.model.formatter.JsonUtils;
+import com.ctm.web.core.model.formatter.JsonUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

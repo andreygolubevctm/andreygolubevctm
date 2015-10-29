@@ -1,9 +1,9 @@
 package com.ctm.web.utilities.utils;
 
-import com.ctm.model.request.utilities.Application;
-import com.ctm.model.request.utilities.Details;
-import com.ctm.model.request.utilities.UtilitiesRequest;
-import com.disc_au.web.go.Data;
+import com.ctm.web.utilities.model.request.Application;
+import com.ctm.web.utilities.model.request.Details;
+import com.ctm.web.utilities.model.request.UtilitiesRequest;
+import com.ctm.web.core.web.go.Data;
 
 /**
  * Created by voba on 15/06/2015.

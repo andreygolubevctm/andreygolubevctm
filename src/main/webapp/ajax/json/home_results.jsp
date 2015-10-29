@@ -7,7 +7,7 @@
 
 <session:get settings="true" authenticated="true" verticalCode="${verticalCode}" />
 
-<jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="soapdata" class="com.ctm.web.core.web.go.Data" scope="request" />
 <jsp:useBean id="sessionError" class="java.util.ArrayList" scope="request" />
 
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
@@ -18,7 +18,7 @@
 <c:set var="touch" value="R" />
 <c:set var="valid" value="true" />
 
-<jsp:useBean id="homeService" class="com.ctm.services.home.HomeService" scope="page" />
+<jsp:useBean id="homeService" class="com.ctm.web.homecontents.services.HomeService" scope="page" />
 <c:set var="serviceRespone" value="${homeService.validate(pageContext.request, data)}" />
 
 <%--

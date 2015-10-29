@@ -1,7 +1,7 @@
 package com.ctm.web.core.leadfeed.router;
 
 import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.services.ApplicationService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
 import org.slf4j.Logger;

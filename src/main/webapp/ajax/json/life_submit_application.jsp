@@ -1,8 +1,9 @@
+<%@ page import="com.ctm.web.core.model.email.EmailMode" %>
 <%@ page language="java" contentType="text/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.life_submit_application')}" />
 
 <session:get settings="true" authenticated="true" />
@@ -65,7 +66,7 @@
 								<jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
 								
 								<%-- enums are not will handled in jsp --%>
-								<% request.setAttribute("BEST_PRICE", com.ctm.model.email.EmailMode.BEST_PRICE); %>
+								<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 								<c:catch var="error">
 									${emailService.send(pageContext.request, BEST_PRICE, data.life.contactDetails.email, tranId)}
 									<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/emailSentBy" value="ozicare" />
@@ -101,7 +102,7 @@
 									styleCodeId="${pageSettings.getBrandId()}"  />
 
 				<%-- Record lead feed touch event --%>
-				<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="page" />
+				<jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
 				<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(data.current.transactionId, "C", "lifebroker")}</c:set>
 				
 				<x:parse xml="${newQuoteResults}" var="newQuoteResultsOutput" />

@@ -4,7 +4,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.web.core.model.Error;
 import com.ctm.services.FatalErrorService;
-import com.ctm.utils.RequestUtils;
+import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.services.IsoLocationsService;
 import org.json.JSONObject;
 import org.slf4j.Logger;

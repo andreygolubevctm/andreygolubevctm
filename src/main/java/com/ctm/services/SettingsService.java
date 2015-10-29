@@ -5,7 +5,7 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical;
 
 import javax.servlet.http.HttpServletRequest;
 

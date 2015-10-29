@@ -8,7 +8,7 @@ import com.ctm.model.ProviderExclusion;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.ServiceConfiguration;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

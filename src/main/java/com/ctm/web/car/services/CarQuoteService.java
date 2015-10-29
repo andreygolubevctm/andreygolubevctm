@@ -10,8 +10,8 @@ import com.ctm.web.car.model.results.CarResult;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.resultsData.AvailableType;
 import com.ctm.model.settings.Brand;
-import com.ctm.providers.Request;
-import com.ctm.providers.ResultPropertiesBuilder;
+import com.ctm.web.homecontents.providers.model.request.Request;
+import com.ctm.web.homecontents.providers.model.request.ResultPropertiesBuilder;
 import com.ctm.web.car.quote.model.RequestAdapter;
 import com.ctm.web.car.quote.model.ResponseAdapter;
 import com.ctm.web.car.quote.model.request.CarQuoteRequest;
@@ -24,8 +24,8 @@ import com.ctm.web.car.exceptions.CarServiceException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.validation.CommencementDateValidation;
 import com.ctm.logging.XMLOutputWriter;
-import com.disc_au.web.go.Data;
-import com.disc_au.web.go.xml.XmlNode;
+import com.ctm.web.core.web.go.Data;
+import com.ctm.web.core.web.go.xml.XmlNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
@@ -43,7 +43,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
-import static com.ctm.model.settings.Vertical.VerticalType.CAR;
+import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 
 public class CarQuoteService extends CommonQuoteService<CarQuote> {

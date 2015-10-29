@@ -4,7 +4,7 @@ import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Transaction;
 import com.ctm.web.simples.model.ConfirmationOperator;
-import com.ctm.utils.common.utils.StringUtils;
+import com.ctm.web.core.utils.common.utils.StringUtils;
 
 import javax.naming.NamingException;
 

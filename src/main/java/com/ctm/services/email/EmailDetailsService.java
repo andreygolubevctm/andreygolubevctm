@@ -11,7 +11,7 @@ import com.ctm.security.StringEncryption;
 import com.ctm.services.StampingService;
 import com.ctm.services.email.mapping.EmailDetailsMappings;
 import com.ctm.web.validation.EmailValidation;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

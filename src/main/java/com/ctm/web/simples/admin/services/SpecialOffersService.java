@@ -11,8 +11,8 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.SettingsService;
 import com.ctm.web.health.services.HealthPriceService;
-import com.ctm.utils.RequestUtils;
-import com.ctm.web.validation.SchemaValidationError;
+import com.ctm.web.core.utils.RequestUtils;
+import com.ctm.web.core.web.validation.SchemaValidationError;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;

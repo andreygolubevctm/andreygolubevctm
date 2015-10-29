@@ -5,7 +5,7 @@ import com.ctm.web.core.dao.AuditTableDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.simples.helper.SpecialOffersHelper;
 import com.ctm.model.SpecialOffers;
-import com.ctm.utils.common.utils.DateUtils;
+import com.ctm.web.core.utils.common.utils.DateUtils;
 import com.mysql.jdbc.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

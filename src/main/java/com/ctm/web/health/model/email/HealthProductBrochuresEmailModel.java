@@ -1,7 +1,7 @@
 package com.ctm.web.health.model.email;
 
 
-import com.ctm.model.email.EmailModel;
+import com.ctm.web.core.model.email.EmailModel;
 
 public class HealthProductBrochuresEmailModel extends EmailModel {
 

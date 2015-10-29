@@ -1,6 +1,6 @@
 package com.ctm.router.database;
 
-import static com.ctm.utils.ResponseUtils.handleError;
+import static com.ctm.web.core.utils.ResponseUtils.handleError;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import java.io.IOException;

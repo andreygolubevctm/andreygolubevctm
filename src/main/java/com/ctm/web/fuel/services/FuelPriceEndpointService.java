@@ -2,7 +2,7 @@ package com.ctm.web.fuel.services;
 
 import com.ctm.model.PageRequest;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.services.CTMEndpointService;
 import com.ctm.services.RequestService;
 import com.ctm.services.SessionDataService;

@@ -1,15 +1,16 @@
 package com.ctm.factory;
 
+import com.ctm.web.core.content.dao.ContentDao;
 import com.ctm.web.core.dao.*;
 import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.SendEmailException;
 import com.ctm.exceptions.VerticalException;
-import com.ctm.model.email.EmailMode;
+import com.ctm.web.core.model.email.EmailMode;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.services.AccessTouchService;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.email.EmailDetailsService;
 import com.ctm.services.email.EmailServiceHandler;
@@ -21,7 +22,7 @@ import com.ctm.web.health.services.email.mapping.HealthEmailDetailMappings;
 import com.ctm.services.email.mapping.LifeEmailDetailMappings;
 import com.ctm.web.travel.services.email.TravelEmailDetailMappings;
 import com.ctm.web.travel.email.services.TravelEmailService;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 
 public class EmailServiceFactory {
 

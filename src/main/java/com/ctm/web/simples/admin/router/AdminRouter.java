@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
-import static com.ctm.utils.ResponseUtils.writeError;
+import static com.ctm.web.core.utils.ResponseUtils.writeError;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**

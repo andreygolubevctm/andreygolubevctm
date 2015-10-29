@@ -1,7 +1,7 @@
 package com.ctm.web.creditcards.utils;
 
 import com.ctm.web.creditcards.model.CreditCardRequest;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 
 /**
  * Created by voba on 26/06/2015.

@@ -1,6 +1,6 @@
 package com.ctm.model;
 
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

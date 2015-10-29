@@ -5,7 +5,7 @@
 
 <session:get settings="true" authenticated="true" verticalCode="CAR" />
 
-<jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="soapdata" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
@@ -250,7 +250,7 @@
 
 					<%-- Knockout REAL when driver is Male, under 21 and REIN-01-02 (Comprehensive) --%>
 					<c:if test="${brandCode eq 'REIN' and productId eq 'REIN-01-02'}">
-						<jsp:useBean id="dateUtils" class="com.ctm.utils.common.utils.DateUtils" scope="request" />
+						<jsp:useBean id="dateUtils" class="com.ctm.web.core.utils.common.utils.DateUtils" scope="request" />
 						<c:set var="regDob" value="${data.quote.drivers.regular.dob}" />
 						<c:set var="yngDob" value="${data.quote.drivers.young.dob}" />
 						<c:if test="${(data.quote.drivers.regular.gender eq 'M' && dateUtils.getAgeFromDOBStr(regDob) < 21) || (not empty yngDob && data.quote.drivers.young.gender eq 'M' && dateUtils.getAgeFromDOBStr(yngDob) < 21)}">

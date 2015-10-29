@@ -1,8 +1,8 @@
 package com.ctm.web.validation;
 
 import com.ctm.model.Touch;
-import com.ctm.model.request.TokenRequest;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.request.TokenRequest;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
 

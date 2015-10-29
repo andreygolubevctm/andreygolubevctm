@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static com.ctm.utils.ResponseUtils.write;
-import static com.ctm.utils.ResponseUtils.writeErrors;
+import static com.ctm.web.core.utils.ResponseUtils.write;
+import static com.ctm.web.core.utils.ResponseUtils.writeErrors;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 public class CrudRouter {

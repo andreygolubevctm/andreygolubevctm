@@ -1,12 +1,12 @@
 package com.ctm.web.car.services;
 
 import com.ctm.web.car.model.request.CarRequest;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.services.RequestService;
 import com.ctm.web.car.utils.CarRequestParser;
 import com.ctm.web.validation.FormValidation;
-import com.ctm.web.validation.SchemaValidationError;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.validation.SchemaValidationError;
+import com.ctm.web.core.web.go.Data;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

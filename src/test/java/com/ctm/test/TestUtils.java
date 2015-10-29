@@ -2,8 +2,8 @@ package com.ctm.test;
 
 import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
-import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.EnvironmentService.Environment;
 

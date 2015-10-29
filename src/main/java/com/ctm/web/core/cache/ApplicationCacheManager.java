@@ -1,5 +1,6 @@
 package com.ctm.web.core.cache;
 
+import com.ctm.web.core.content.cache.ContentControlCache;
 import net.sf.ehcache.CacheManager;
 
 public class ApplicationCacheManager {

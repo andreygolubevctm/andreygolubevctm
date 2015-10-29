@@ -5,7 +5,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
 import com.ctm.model.TouchProductProperty;
-import com.ctm.services.AccessTouchService;
+import com.ctm.web.core.services.AccessTouchService;
 
 import javax.naming.NamingException;
 

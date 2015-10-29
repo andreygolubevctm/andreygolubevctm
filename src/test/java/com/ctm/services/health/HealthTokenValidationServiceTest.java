@@ -3,7 +3,7 @@ package com.ctm.services.health;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.web.health.model.request.HealthRequest;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.security.token.JwtTokenCreator;
 import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.services.SessionDataService;

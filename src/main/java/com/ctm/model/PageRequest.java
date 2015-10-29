@@ -1,6 +1,6 @@
 package com.ctm.model;
 
-import com.ctm.model.request.TokenRequest;
+import com.ctm.web.core.model.request.TokenRequest;
 
 
 public class PageRequest implements TokenRequest {

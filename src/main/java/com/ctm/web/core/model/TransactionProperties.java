@@ -2,7 +2,7 @@ package com.ctm.web.core.model;
 
 import com.ctm.model.Comment;
 import com.ctm.model.Touch;
-import com.ctm.model.formatter.JsonUtils;
+import com.ctm.web.core.model.formatter.JsonUtils;
 import com.ctm.model.simples.MessageAudit;
 import com.ctm.web.health.model.HealthTransaction;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -3,12 +3,12 @@ package com.ctm.router;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
 import com.ctm.exceptions.SessionException;
-import com.ctm.model.formData.Request;
+import com.ctm.web.core.model.formData.Request;
 import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.SessionDataService;
-import com.disc_au.web.go.Data;
+import com.ctm.web.core.web.go.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 

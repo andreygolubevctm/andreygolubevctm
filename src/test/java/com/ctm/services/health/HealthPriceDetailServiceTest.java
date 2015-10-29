@@ -3,10 +3,10 @@ package com.ctm.services.health;
 import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.health.exceptions.HealthAltPriceException;
-import com.ctm.model.content.Content;
-import com.ctm.model.content.ContentSupplement;
+import com.ctm.web.core.content.model.Content;
+import com.ctm.web.core.content.model.ContentSupplement;
 import com.ctm.web.health.model.HealthPriceResult;
-import com.ctm.services.ContentService;
+import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.health.services.HealthPriceDetailService;
 import org.junit.Test;
 

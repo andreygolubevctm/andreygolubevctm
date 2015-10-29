@@ -1,6 +1,6 @@
 package com.ctm.logging;
 
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical;
 import org.slf4j.MDC;
 
 import java.util.Optional;

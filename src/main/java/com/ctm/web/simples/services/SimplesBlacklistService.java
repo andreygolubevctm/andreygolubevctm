@@ -9,7 +9,7 @@ import com.ctm.web.simples.dao.BlacklistDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.simples.model.BlacklistChannel;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.SettingsService;
