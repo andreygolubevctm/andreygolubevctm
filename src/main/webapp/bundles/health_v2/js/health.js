@@ -239,13 +239,7 @@
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
-
-				// Defer the open for next js cycle so that the navbar button is visible and we can read the dropdown's height
-				if(event.isStartMode === false){
-					_.defer(function() {
-						meerkat.modules.healthBenefits.open('journey-mode');
-					});
-				}
+				//meerkat.modules.healthBenefits.open(MODE_POPOVER);
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefits.getSelectedBenefits();

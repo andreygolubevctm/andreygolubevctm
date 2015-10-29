@@ -7,7 +7,7 @@
 
 
 <%-- HTML --%>
-<div id="${name}-selection" class="health-benefits benefits-component">
+<div id="${name}-selection" class="health-benefits">
 
 	<form_new:fieldset_columns sideHidden="true">
 
@@ -21,18 +21,6 @@
 
 
 			<div class="scrollable row">
-
-				<div class="hidden-xs col-sm-12">
-					<h4>Hospital Benefits</h4>
-					<p>Hospital cover gives you the power to choose amongst a fund's participating hispitals, choose your own doctor and help you avoid public hospital waiting lists.</p>
-
-				</div>
-
-				<div class="hidden-xs col-sm-12">
-					<h4>Extras Benefits</h4>
-					<p>Extras cover gives you money back for day to day services like dental, optical and physiotherapy.</p>
-
-				</div>
 
 				<div class="benefits-list col-sm-12">
 					<div class="row">
