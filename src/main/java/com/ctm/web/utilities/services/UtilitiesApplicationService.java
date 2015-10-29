@@ -1,14 +1,13 @@
-package com.ctm.services.utilities;
+package com.ctm.web.utilities.services;
 
-import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
-
+import com.ctm.exceptions.UtilitiesWebServiceException;
+import com.ctm.web.utilities.model.UtilitiesApplicationModel;
+import com.ctm.web.utilities.model.UtilitiesApplicationRequestModel;
 import com.disc_au.web.go.Data;
 import org.json.JSONObject;
 
-import com.ctm.exceptions.UtilitiesWebServiceException;
-import com.ctm.model.utilities.UtilitiesApplicationModel;
-import com.ctm.model.utilities.UtilitiesApplicationRequestModel;
+import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
 
 public class UtilitiesApplicationService extends UtilitiesBaseService {
 

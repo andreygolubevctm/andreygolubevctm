@@ -1,30 +1,23 @@
-package com.ctm.router.utilities;
+package com.ctm.web.utilities.router;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import com.ctm.model.Error;
+import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.services.SettingsService;
+import com.ctm.web.utilities.model.*;
+import com.ctm.web.utilities.services.UtilitiesProductService;
+import com.ctm.web.utilities.services.UtilitiesProviderService;
+import com.ctm.web.utilities.services.UtilitiesResultsService;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONObject;
-
-import com.ctm.model.Error;
-import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.model.utilities.UtilitiesProductModel;
-import com.ctm.model.utilities.UtilitiesProductRequestModel;
-import com.ctm.model.utilities.UtilitiesProviderServiceModel;
-import com.ctm.model.utilities.UtilitiesProviderServiceRequest;
-import com.ctm.model.utilities.UtilitiesResultsModel;
-import com.ctm.model.utilities.UtilitiesResultsRequestModel;
-import com.ctm.services.SettingsService;
-import com.ctm.services.utilities.UtilitiesProductService;
-import com.ctm.services.utilities.UtilitiesProviderService;
-import com.ctm.services.utilities.UtilitiesResultsService;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import static com.ctm.logging.LoggingArguments.kv;
 

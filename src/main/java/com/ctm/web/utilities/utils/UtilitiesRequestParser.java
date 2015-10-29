@@ -1,4 +1,4 @@
-package com.ctm.utils.utilities;
+package com.ctm.web.utilities.utils;
 
 import com.ctm.model.request.utilities.Application;
 import com.ctm.model.request.utilities.Details;

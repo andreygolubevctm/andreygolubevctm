@@ -1,15 +1,14 @@
-package com.ctm.services.utilities;
+package com.ctm.web.utilities.services;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.ctm.exceptions.UtilitiesWebServiceException;
+import com.ctm.web.utilities.model.UtilitiesResultsModel;
+import com.ctm.web.utilities.model.UtilitiesResultsRequestModel;
 import com.disc_au.web.go.Data;
 import org.json.JSONArray;
 
-import com.ctm.exceptions.UtilitiesWebServiceException;
-import com.ctm.model.utilities.UtilitiesResultsModel;
-import com.ctm.model.utilities.UtilitiesResultsRequestModel;
+import javax.servlet.http.HttpServletRequest;
 
-public class UtilitiesResultsService extends UtilitiesBaseService{
+public class UtilitiesResultsService extends UtilitiesBaseService {
 
 	public String getFromJsp(HttpServletRequest request, Data data){
 		String validationResult = validate(request, data);

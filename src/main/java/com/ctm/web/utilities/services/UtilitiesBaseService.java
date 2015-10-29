@@ -1,4 +1,4 @@
-package com.ctm.services.utilities;
+package com.ctm.web.utilities.services;
 
 import com.ctm.web.core.connectivity.JsonConnection;
 import com.ctm.web.core.connectivity.SimpleConnection;
@@ -11,7 +11,7 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.RequestService;
 import com.ctm.services.ServiceConfigurationService;
-import com.ctm.utils.utilities.UtilitiesRequestParser;
+import com.ctm.web.utilities.utils.UtilitiesRequestParser;
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
 import com.disc_au.web.go.Data;

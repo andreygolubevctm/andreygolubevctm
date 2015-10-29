@@ -1,4 +1,4 @@
-package com.ctm.services.utilities;
+package com.ctm.web.utilities.services;
 
 import com.ctm.web.core.connectivity.JsonConnection;
 import com.ctm.web.core.connectivity.SimpleConnection;
@@ -9,7 +9,7 @@ import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.settings.ServiceConfigurationProperty;
 import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
-import com.ctm.model.utilities.UtilitiesLeadfeedModel;
+import com.ctm.web.utilities.model.UtilitiesLeadfeedModel;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.ServiceConfigurationService;

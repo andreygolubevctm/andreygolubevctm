@@ -1,4 +1,4 @@
-package com.ctm.model.utilities;
+package com.ctm.web.utilities.model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

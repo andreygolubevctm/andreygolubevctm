@@ -1,12 +1,11 @@
-package com.ctm.services.utilities;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.json.JSONObject;
+package com.ctm.web.utilities.services;
 
 import com.ctm.exceptions.UtilitiesWebServiceException;
-import com.ctm.model.utilities.UtilitiesProductModel;
-import com.ctm.model.utilities.UtilitiesProductRequestModel;
+import com.ctm.web.utilities.model.UtilitiesProductModel;
+import com.ctm.web.utilities.model.UtilitiesProductRequestModel;
+import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class UtilitiesProductService extends UtilitiesBaseService {
 

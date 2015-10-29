@@ -1,4 +1,4 @@
-package com.ctm.model.utilities;
+package com.ctm.web.utilities.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;

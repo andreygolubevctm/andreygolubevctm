@@ -1,12 +1,11 @@
-package com.ctm.model.utilities;
+package com.ctm.web.utilities.model;
 
-import java.util.Date;
-import java.text.SimpleDateFormat;
-
+import com.ctm.model.AbstractJsonModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ctm.model.AbstractJsonModel;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class UtilitiesLeadfeedModel extends AbstractJsonModel {
