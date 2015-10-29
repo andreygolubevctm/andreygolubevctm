@@ -1,0 +1,117 @@
+/* ***********************
+This is from core/less and is duplicated here to override the core file as a part of the health_v2 split test. it should be here only temporarily
+*********************** */
+
+// Checkbox
+.checkbox-v2 {
+	display: block;
+	vertical-align: baseline; //CSSLINT error - vertical-align can't be used with display: block. Certain properties shouldn't be used with certain display property values. (display-property-grouping)
+	padding-top:3px;
+
+	input {
+		opacity: 0;
+		filter: alpha(opacity=0);
+
+		& + label {
+			position: relative;
+			display: block;
+			/* Use the icon-tick from CTM icon font */
+			.icon-tick;
+			font-size:1.16em;
+			line-height: 1.1em;
+			padding-top:12px;
+		}
+
+		& + label:before {
+			.user-select(none);
+			border-radius: @border-radius-base -4px;
+			/* By default, apply the success theme */
+			border: 1px solid @input-border;
+			font-family: 'framework_font';
+			font-size: 19px; //Icon font is built at this base size
+			display: block;
+			float: left;
+			visibility: visible;
+			left: 0;
+			margin: 0;
+			margin-top:-6px;
+		  	margin-right: 11px;
+			padding:0.22em;
+			padding-top:0.26em;
+			padding-bottom:0.17em;
+			line-height: 1;
+			text-align: center;
+			/* Put checkbox styles here: */
+			color: #fff;
+			background-color: white;
+
+			&:hover,
+			&:focus {
+				color: @form-input-common-selected-text-colour;
+				text-decoration: none;
+			}
+			&.disabled,
+			&[disabled],
+			fieldset[disabled] & {
+				cursor: not-allowed;
+				pointer-events: none; // Future-proof disabling of clicks
+				//.opacity(.65);
+				.box-shadow(none);
+				background-color: @input-bg-disabled;
+				border-color: @input-border-disabled;
+			}
+		} 
+
+		/* Checked state */
+		&:checked {
+			& + label:before {
+				background-color: @form-input-common-selected-bg-colour;
+				border-color: @form-input-common-selected-bg-colour;
+			}
+		}
+
+		/* This should be combined with the :checked above but I couldn't get IE8 to pick up the rule */
+		.lt-ie9 &.checked {
+			& + label:before {
+				background-color: @form-input-common-selected-bg-colour;
+				border-color: @form-input-common-selected-bg-colour;
+				//.icon-tick:before;
+				content: "\e600 "; //Unicode for .icon-tick - requires this space to trigger content change which forces pseudo-element redraw.
+			}
+		}
+
+		&.has-error + label:before {
+			border-color: @state-danger-border;
+			background-color: @state-danger-bg;
+			color: @state-danger-bg;
+		}
+
+		/* Focused state */
+		&:focus + label:before {
+    		border-color: darken(@form-input-common-selected-border-colour, 10%);
+		}
+
+		/* Parent Disabled state */
+		&[disabled] {
+			& + label {
+				cursor: default;
+			}
+			//&:checked + label:before {
+			//}
+			& + label:before {
+				//.opacity(.5);
+				cursor: default;
+				color: @input-bg-disabled;
+				background-color: @input-bg-disabled;
+				border-color: @input-border-disabled;
+			}
+			&:checked + label:before {
+				color: #fff;
+			}
+		}
+	}
+}
+
+.form-horizontal .checkbox-v2{
+	padding-top:3px;
+}

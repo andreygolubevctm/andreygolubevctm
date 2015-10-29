@@ -2,8 +2,9 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="item" required="true" type="com.ctm.model.results.ResultsTemplateItem" %>
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.benefits')}" />
 
-
+${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 <c:if test="${item.isShortlistable()}">
 
 	<%-- Get the correct cell width for sections v. categories --%>
@@ -22,11 +23,19 @@
 			<c:when test="${item.getType() == 'section'}">
 				<div class="title">
 					<h3>${item.getName()}</h3>
-					<field_new:switch xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" className="switch-small ${item.hasShortlistableChildren() ? 'hasChildren' : ''}" onText="&nbsp;YES" offText="NO" />
+
+					<c:choose>
+						<c:when test="${fn:contains(item.getName(), 'Hospital')}">
+							<p>Hospital cover gives you the power to choose amongst a fund's participating hispitals, choose your own doctor and help you avoid public hospital waiting lists.</p>
+						</c:when>
+						<c:when test="${fn:contains(item.getName(), 'Extras')}">
+							<p>Extras cover gives you money back for day to day services like dental, optical and physiotherapy.</p>
+						</c:when>
+					</c:choose>
 				</div>
 			</c:when>
 			<c:otherwise>
-				<field_new:checkbox id="${item.getShortlistKey()}" label="true" xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" title="${item.getName()}" helpId="${item.getHelpId()}" helpClassName="benefitsHelpTooltips" />
+				<field_new:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" errorMsg="Please tick" helpId="${item.getHelpId()}" helpClassName="benefitsHelpTooltips" theme="v2"/>
 			</c:otherwise>
 		</c:choose>
 
