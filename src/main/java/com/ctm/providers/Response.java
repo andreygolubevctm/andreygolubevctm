@@ -1,5 +1,7 @@
 package com.ctm.providers;
 
+import com.ctm.web.travel.quote.model.QuoteResponse;
+
 import java.util.List;
 
 public class Response<T> {

@@ -19,8 +19,8 @@ import com.ctm.services.email.life.LifeEmailService;
 import com.ctm.services.email.mapping.EmailDetailsMappings;
 import com.ctm.web.health.services.email.mapping.HealthEmailDetailMappings;
 import com.ctm.services.email.mapping.LifeEmailDetailMappings;
-import com.ctm.services.email.mapping.TravelEmailDetailMappings;
-import com.ctm.services.email.travel.TravelEmailService;
+import com.ctm.web.travel.services.email.TravelEmailDetailMappings;
+import com.ctm.web.travel.email.services.TravelEmailService;
 import com.disc_au.web.go.Data;
 
 public class EmailServiceFactory {

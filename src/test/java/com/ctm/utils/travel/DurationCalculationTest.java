@@ -2,6 +2,7 @@ package com.ctm.utils.travel;
 
 import static org.junit.Assert.assertEquals;
 
+import com.ctm.web.travel.utils.DurationCalculation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;

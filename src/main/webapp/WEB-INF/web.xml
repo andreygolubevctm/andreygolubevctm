@@ -32,7 +32,7 @@
 			<param-name>jaxrs.serviceClasses</param-name>
 			<param-value>com.ctm.web.car.router.CarRouter,
 				com.ctm.web.car.router.RegoLookupRouter,
-				com.ctm.router.travel.TravelRouter,
+				com.ctm.web.travel.router.TravelRouter,
 				com.ctm.web.car.router.CarQuoteRouter,
 				com.ctm.router.home.HomeQuoteRouter
 			</param-value>

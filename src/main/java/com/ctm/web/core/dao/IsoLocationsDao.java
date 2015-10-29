@@ -1,8 +1,8 @@
 package com.ctm.web.core.dao;
 
-import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.IsoLocations;
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
@@ -102,7 +103,7 @@ public class IsoLocationsDao {
      * @param isoCodes
      * @return
      */
-    public ArrayList<IsoLocations> getCountriesByIsoCodes(ArrayList<String> isoCodes) throws DaoException {
+    public List<IsoLocations> getCountriesByIsoCodes(ArrayList<String> isoCodes) throws DaoException {
 
         SimpleDatabaseConnection dbSource = null;
         ArrayList<IsoLocations> countries = new ArrayList<IsoLocations>();

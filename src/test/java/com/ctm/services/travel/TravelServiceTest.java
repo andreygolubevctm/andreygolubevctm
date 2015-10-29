@@ -2,12 +2,13 @@ package com.ctm.services.travel;
 
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.TravelServiceException;
+import com.ctm.web.travel.exceptions.TravelServiceException;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.ServiceConfiguration;
-import com.ctm.model.travel.form.TravelQuote;
-import com.ctm.model.travel.form.TravelRequest;
+import com.ctm.web.travel.model.form.TravelQuote;
+import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.services.EnvironmentService;
+import com.ctm.web.travel.services.TravelService;
 import com.ctm.web.validation.SchemaValidationError;
 import org.junit.Before;
 import org.junit.Test;

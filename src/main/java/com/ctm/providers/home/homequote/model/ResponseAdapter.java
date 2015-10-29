@@ -10,7 +10,7 @@ import com.ctm.model.home.results.Price;
 import com.ctm.model.home.results.ProductDisclosure;
 import com.ctm.model.home.results.Underwriter;
 import com.ctm.model.resultsData.AvailableType;
-import com.ctm.providers.QuoteResponse;
+import com.ctm.web.travel.quote.model.QuoteResponse;
 import com.ctm.providers.home.homequote.model.request.HomeQuoteRequest;
 import com.ctm.providers.home.homequote.model.response.*;
 
