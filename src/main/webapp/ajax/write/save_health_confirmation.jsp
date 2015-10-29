@@ -69,7 +69,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 
 	<%-- ENTER FEB 2015 JEEP COMPETITION - HLT-1737 --%>
 	<c:if test="${empty jeepCompetitionEnabledFlag}">
-		<jsp:useBean id="competitionService" class="com.ctm.services.competition.CompetitionService" />
+		<jsp:useBean id="competitionService" class="com.ctm.web.core.competition.services.CompetitionService" />
 		<c:set var="jeepCompetitionEnabledFlag" scope="session" value="${competitionService.isActive(pageContext.getRequest(), 15)}" />
 	</c:if>
 	<c:if test="${jeepCompetitionEnabledFlag eq true}">

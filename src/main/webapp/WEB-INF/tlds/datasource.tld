@@ -16,7 +16,7 @@
     <function>
         <description>Get DataSource</description>
         <name>getDataSource</name>
-        <function-class>com.ctm.connectivity.SimpleDatabaseConnection</function-class>
+        <function-class>com.ctm.web.core.connectivity.SimpleDatabaseConnection</function-class>
         <function-signature>javax.sql.DataSource getDataSourceJdbcCtm()</function-signature>
     </function>
 

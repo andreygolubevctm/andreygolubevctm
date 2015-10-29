@@ -6,7 +6,7 @@
 <c:set var="logger" value="${log:getLogger('tag.agg.write_quote')}" />
 
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
-<jsp:useBean id="tranDao" class="com.ctm.dao.transaction.TransactionDetailsDao" scope="request" />
+<jsp:useBean id="tranDao" class="com.ctm.web.core.dao.transaction.TransactionDetailsDao" scope="request" />
 
 <%@ attribute name="productType" 	required="true"	 rtexprvalue="true"	 description="The product type (e.g. TRAVEL)" %>
 <%@ attribute name="rootPath" 	required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>

@@ -223,7 +223,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 												<c:set var="allowedErrors">${allowedErrors},</c:set>
 											</c:if>
 										</x:forEach>
-										<jsp:useBean id="healthTransactionDao" class="com.ctm.dao.health.HealthTransactionDao" scope="page" />
+										<jsp:useBean id="healthTransactionDao" class="com.ctm.web.health.dao.HealthTransactionDao" scope="page" />
 										${healthTransactionDao.writeAllowableErrors(tranId , allowedErrors)}
 									</c:if>
 								</c:catch>

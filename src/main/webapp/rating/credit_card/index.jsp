@@ -2,7 +2,7 @@
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.SQLException"%>
-<%@page import="com.ctm.connectivity.SimpleDatabaseConnection"%>
+<%@page import="com.ctm.web.core.connectivity.SimpleDatabaseConnection"%>
 <%@page import="com.ctm.exceptions.DaoException"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="java.io.*,java.util.*,java.text.*,java.math.*"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
