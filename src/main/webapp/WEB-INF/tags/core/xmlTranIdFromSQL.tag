@@ -10,7 +10,7 @@
     <go:setData dataVar="data" value="*DELETE" xpath="tempSQL" />
 
 	<%-- You should already have this bit --%>
-	<sql:setDataSource dataSource="jdbc/ctm"/>
+	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 	<%-- Get the tranId from the query string params --%>
 	<c:set var="myTranId" value="${tranId}" />

@@ -14,7 +14,7 @@
 	<c:set var="operator" value="ONLINE" />
 </c:if>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:catch var="error">
 	<sql:update>

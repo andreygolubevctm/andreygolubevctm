@@ -289,7 +289,7 @@
 <%-- Logo template --%>
 <core:js_template id="provider-logo-template">
 	{{ var img = 'default_w'; }}
-	{{ if (obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
+	{{ if (obj.hasOwnProperty('serviceName') && obj.serviceName.length > 1) img = obj.serviceName; }}
 	<div class="travelCompanyLogo logo_{{= img }}"></div>
 </core:js_template>
 

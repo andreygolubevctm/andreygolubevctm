@@ -6,7 +6,7 @@
 
 <session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}"/>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 
 <%-- Set Security --%>

@@ -10,6 +10,7 @@ import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.security.token.exception.InvalidTokenException;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
+import com.ctm.utils.ResponseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -39,15 +40,16 @@ public abstract class TokenValidation<T extends TokenRequest> {
         setVertical(vertical);
         this.vertical = vertical;
     }
-    
+
 
     /**
      * Checks if the token is valid right step, not expired and valid transaction id
+     *
      * @param request contains jwt token and transactionId to validate against
      * @return boolean to state if token is valid
      */
     public boolean validateToken(T request) {
-        if(TokenConfigFactory.getEnabled(vertical)) {
+        if (TokenConfigFactory.getEnabled(vertical)) {
             validToken = false;
             try {
                 tokenValidation.validateToken(request, getValidTouchTypes());
@@ -73,34 +75,34 @@ public abstract class TokenValidation<T extends TokenRequest> {
 
     public void setNewToken(JSONObject response, Long transactionId, HttpServletRequest request) {
         TokenCreatorConfig config = TokenConfigFactory.getInstance(vertical, getCurrentTouch(), request);
-        String token = TokenValidation.createToken(transactionId, sessionDataService, settingsService, config , request.getServletPath(), request);
+        String token = TokenValidation.createToken(transactionId, sessionDataService, settingsService, config, request.getServletPath(), request);
         try {
-            response.put("verificationToken", token);
+            ResponseUtils.setToken(response, token);
             response.put("timeout", sessionDataService.getClientSessionTimeout(request));
         } catch (JSONException e) {
-            LOGGER.error("Failed to set new Token. {}", kv("transactionId" , transactionId),  e);
+            LOGGER.error("Failed to set new Token. {}", kv("transactionId", transactionId), e);
         }
     }
 
     public static String createToken(Long transactionId, SessionDataService sessionDataService, SettingsService settingsService, TokenCreatorConfig config, String servletPath, HttpServletRequest request) {
         long timeoutSec = sessionDataService.getClientSessionTimeoutSeconds(request);
-        if(timeoutSec == -1){
+        if (timeoutSec == -1) {
             timeoutSec = sessionDataService.getClientDefaultExpiryTimeoutSeconds(request);
         }
         JwtTokenCreator creator = new JwtTokenCreator(settingsService, config);
         return creator.createToken(servletPath, transactionId, timeoutSec);
     }
 
-    public String createResponse(Long transactionId, String baseJsonResponse , HttpServletRequest request) {
+    public String createResponse(Long transactionId, String baseJsonResponse, HttpServletRequest request) {
         String output = "";
         try {
             JSONObject response;
-            if(baseJsonResponse != null && !baseJsonResponse.isEmpty()){
+            if (baseJsonResponse != null && !baseJsonResponse.isEmpty()) {
                 response = new JSONObject(baseJsonResponse);
             } else {
                 response = new JSONObject();
             }
-            if(validToken) {
+            if (validToken) {
                 response = createValidTokenResponse(transactionId, request, response);
             } else {
                 response = createInvalidTokenResponse(transactionId, response);
@@ -110,9 +112,36 @@ public abstract class TokenValidation<T extends TokenRequest> {
             response.put("transactionId", transactionId);
             output = response.toString();
         } catch (JSONException e) {
-            LOGGER.error("Failed to create JSON response. {}",kv("baseJsonResponse", baseJsonResponse) , e);
+            LOGGER.error("Failed to create JSON response. {}", kv("baseJsonResponse", baseJsonResponse), e);
         }
         return output;
+    }
+
+
+    public String createErrorResponse(Long transactionId, String errorMessage, HttpServletRequest request, String type) {
+        String responseString = "";
+        try {
+            JSONObject response = new JSONObject();
+            JSONObject error = new JSONObject();
+            error.put("type", type);
+            error.put("message", errorMessage);
+            response.put("error", error);
+            if (isValidToken()) {
+                setNewToken(response, transactionId, request);
+            }
+            responseString = response.toString();
+        } catch (JSONException e) {
+            LOGGER.warn("Failed to create response. {}", kv("errorMessage", errorMessage), e);
+        }
+        return responseString;
+    }
+
+    public JSONObject createResponse(Long transactionId, HttpServletRequest request, JSONObject response) throws JSONException {
+        if (isValidToken()) {
+            setNewToken(response, transactionId, request);
+            response.put("transactionId", transactionId);
+        }
+        return response;
     }
 
     private JSONObject createValidTokenResponse(Long transactionId, HttpServletRequest request, JSONObject response) throws JSONException {
@@ -129,7 +158,7 @@ public abstract class TokenValidation<T extends TokenRequest> {
         JSONObject errorDetails = new JSONObject();
         errorDetails.put("errorType", "");
         error.put("errorDetails", errorDetails);
-        response.put("error",error);
+        response.put("error", error);
         response.put("timeout", -1);
         return response;
     }

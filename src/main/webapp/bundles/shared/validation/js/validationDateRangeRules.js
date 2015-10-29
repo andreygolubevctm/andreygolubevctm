@@ -76,13 +76,6 @@
         "Custom message"
     );
 
-    $.validator.addMethod("notWeekends",
-        function(value, element) {
-            return BasicDateHandler.isNotWeekEnd( $(element).datepicker("getDate") );
-        },
-        "Custom message"
-    );
-
     /** Moved this into this file as the dateEUR validation was firing after youngestDOB/oldestDOB due to compilation order into main file */
     function checkDob(value, age, selector) {
         if (selector) {

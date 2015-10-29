@@ -1,15 +1,17 @@
 var path = require("path"),
-    plumber = require("gulp-plumber"),
-    notify = require("gulp-notify"),
     cached = require("gulp-cached"),
     stylish = require("jshint-stylish"),
-    intercept = require("gulp-intercept"),
     jshint = require("gulp-jshint");
 
-module.exports = function(gulp, filePath) {
-    return gulp.src(filePath)
-        .pipe(plumber({
-            errorHandler: notify.onError("Error: <%= error.message %>")
+module.exports = function(gulp, fileArray) {
+    // Remove plugins from lintable fileArray
+    fileArray = fileArray.filter(function(file) {
+        return file.indexOf("plugins") === -1;
+    });
+
+    return gulp.src(fileArray)
+        .pipe(gulp.globalPlugins.plumber({
+            errorHandler: gulp.globalPlugins.notify.onError("Error: <%= error.message %>")
         }))
         .pipe(cached())
         .pipe(jshint({
