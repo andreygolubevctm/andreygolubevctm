@@ -34,10 +34,12 @@ public class RequestAdapterTest {
         final HealthQuote healthQuote = mock(HealthQuote.class);
         final Application application = mock(Application.class);
         final Hif hif = mock(Hif.class);
+        final Qch qch = mock(Qch.class);
         final com.ctm.model.health.form.PreviousFund previousFund = mock(com.ctm.model.health.form.PreviousFund.class);
         when(healthQuote.getApplication()).thenReturn(application);
         when(healthQuote.getPreviousFund()).thenReturn(previousFund);
         when(application.getHif()).thenReturn(hif);
+        when(application.getQch()).thenReturn(qch);
         final ApplicationGroup applicationGroup = RequestAdapter.createApplicationGroup(Optional.ofNullable(healthQuote));
         assertNotNull(applicationGroup);
         assertNull(applicationGroup.getSituation());
@@ -48,6 +50,7 @@ public class RequestAdapterTest {
         verify(application, times(1)).getDependants();
         verify(healthQuote, times(1)).getSituation();
         verify(hif, times(1)).getEmigrate();
+        verify(qch, times(1)).getEmigrate();
     }
 
     @Test
@@ -312,6 +315,7 @@ public class RequestAdapterTest {
         verify(application, times(1)).getOther();
         verify(application, times(1)).getPostalMatch();
         verify(application, times(1)).getPostal();
+        verify(healthQuote, times(1)).getContactAuthority();
     }
 
     @Test

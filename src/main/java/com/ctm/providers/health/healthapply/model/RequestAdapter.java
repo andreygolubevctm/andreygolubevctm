@@ -103,7 +103,11 @@ public class RequestAdapter {
                         .map(Application::getHif)
                         .map(Hif::getEmigrate)
                         .map(Emigrate::valueOf)
-                        .orElse(null));
+                        .orElse(quote.map(HealthQuote::getApplication)
+                                    .map(Application::getQch)
+                                    .map(Qch::getEmigrate)
+                                    .map(Emigrate::valueOf)
+                                    .orElse(null)));
     }
 
     protected static Situation createSituation(Optional<com.ctm.model.health.form.Situation> situation) {
@@ -168,7 +172,9 @@ public class RequestAdapter {
                             .map(MemberId::new)
                             .orElse(null),
                     ConfirmCover.Y,
-                    Authority.Y);
+                    previousFund.map(Fund::getAuthority)
+                        .map(Authority::valueOf)
+                        .orElse(null));
         } else {
             return null;
         }
@@ -359,6 +365,9 @@ public class RequestAdapter {
                         .map(Application::getContactPoint)
                         .filter(c -> c.equals("E") || c.equals("P"))
                         .map(c -> c.equals("E") ? PreferredContact.EMAIL : PreferredContact.PHONE)
+                        .orElse(null),
+                    quote.map(HealthQuote::getContactAuthority)
+                        .map(Contactable::valueOf)
                         .orElse(null));
         } else {
             return null;

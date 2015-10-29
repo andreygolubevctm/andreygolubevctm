@@ -40,6 +40,8 @@ public class Application {
 
     private Hif hif;
 
+    private Qch qch;
+
     public Address getAddress() {
         return address;
     }
@@ -190,5 +192,13 @@ public class Application {
 
     public void setCall(String call) {
         this.call = call;
+    }
+
+    public Qch getQch() {
+        return qch;
+    }
+
+    public void setQch(Qch qch) {
+        this.qch = qch;
     }
 }

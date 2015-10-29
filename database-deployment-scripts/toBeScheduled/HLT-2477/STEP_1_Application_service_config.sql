@@ -223,11 +223,13 @@ INSERT INTO service_properties (serviceMasterId, environmentCode, styleCodeId, p
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'url', 'https://services-review.nib.com.au/brokertest/joinservice.asmx', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'url', 'https://services.nib.com.au/asmx/broker/joinService.asmx', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'serviceName', @SERVICE_NAME, @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'user', '', @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'password', '', @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'errorProductCode', '-ERROR', @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'inboundParams', 'brokerId=45211,password=AD12890C-2BB3-4499-85C6-2F2849D64439', @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'inboundParams', 'brokerId=45249,password=AD12890C-2BB3-4499-85C6-2F2849D64439', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'user', 'broker', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'password', 'AD12890C-2BB3-4499-85C6-2F2849D64439', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, 'PRO'  , 0, @PROVIDERID, 'user', 'broker', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, 'PRO'  , 0, @PROVIDERID, 'password', 'AD12890C-2BB3-4499-85C6-2F2849D64439', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'outboundParams', 'brokerId=45211', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, 'PRO'  , 0, @PROVIDERID, 'outboundParams', 'brokerId=45249', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'errorProductCode', 'NIB-ERROR', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'timeout', '240', @STARTDATE, @ENDDATE, 'SERVICE')
 ;
 --  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'soap-action', 'http://www.nib.com.au/Broker/Gateway/Enrol', @STARTDATE, @ENDDATE, 'SERVICE'),
@@ -239,9 +241,16 @@ SET @SERVICE_NAME = 'QCH';
 SET @PROVIDERID = (SELECT ProviderId FROM provider_properties WHERE PropertyId = 'FundCode' AND Text = @SERVICE_NAME);
 INSERT INTO service_properties (serviceMasterId, environmentCode, styleCodeId, providerId, servicePropertyKey, servicePropertyValue, effectiveStart, effectiveEnd, scope) VALUES
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'serviceType', 'soap', @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'url', '', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'url', 'https://testservices.qchfund.com.au/Service.svc', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, 'PRO'  , 0, @PROVIDERID, 'url', 'https://members.qldcountryhealth.com.au/Service.svc', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'user', 'CTM', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'password', 'compare2015', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, 'NXS'  , 0, @PROVIDERID, 'user', 'CTM', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, 'NXS'  , 0, @PROVIDERID, 'password', 'CTMtest', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, 'PRO'  , 0, @PROVIDERID, 'user', 'CTM', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, 'PRO'  , 0, @PROVIDERID, 'password', 'CTMLive', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'serviceName', @SERVICE_NAME, @STARTDATE, @ENDDATE, 'SERVICE'),
-  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'errorProductCode', 'QCF-ERROR', @STARTDATE, @ENDDATE, 'SERVICE'),
+  (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'errorProductCode', 'QCH-ERROR', @STARTDATE, @ENDDATE, 'SERVICE'),
   (@HEALTH_APP_BASE_MASTER_ID, '0'  , 0, @PROVIDERID, 'timeout', '240', @STARTDATE, @ENDDATE, 'SERVICE')
 ;
 

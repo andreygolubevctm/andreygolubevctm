@@ -52,6 +52,8 @@ public class HealthQuote {
 
     private FundData fundData;
 
+    private String contactAuthority;
+
     public Application getApplication() {
         return application;
     }
@@ -250,5 +252,13 @@ public class HealthQuote {
 
     public void setFundData(FundData fundData) {
         this.fundData = fundData;
+    }
+
+    public String getContactAuthority() {
+        return contactAuthority;
+    }
+
+    public void setContactAuthority(String contactAuthority) {
+        this.contactAuthority = contactAuthority;
     }
 }
