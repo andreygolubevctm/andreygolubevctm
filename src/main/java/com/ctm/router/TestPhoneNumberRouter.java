@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 import com.ctm.utils.NGram;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 @WebServlet(urlPatterns = {
 		"/ngram/test.json"

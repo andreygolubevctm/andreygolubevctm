@@ -2,7 +2,7 @@ package com.ctm.services;
 
 import com.ctm.web.core.dao.TouchDao;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
 import com.ctm.model.TouchCommentProperty;
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class AccessTouchService {
 

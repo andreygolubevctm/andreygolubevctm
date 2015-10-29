@@ -3,7 +3,7 @@ package com.ctm.web.core.dao.transaction;
 import com.ctm.web.core.dao.DatabaseQueryMapping;
 import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.transaction.TransactionLock;
 
 import java.sql.ResultSet;

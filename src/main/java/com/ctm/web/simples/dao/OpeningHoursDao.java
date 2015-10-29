@@ -2,9 +2,9 @@ package com.ctm.web.simples.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.AuditTableDao;
-import com.ctm.exceptions.DaoException;
-import com.ctm.helper.simples.OpeningHoursHelper;
-import com.ctm.model.OpeningHours;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.simples.admin.model.request.OpeningHoursHelper;
+import com.ctm.web.simples.admin.model.OpeningHours;
 import com.ctm.utils.common.utils.DateUtils;
 import com.mysql.jdbc.Statement;
 import org.slf4j.Logger;
@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class OpeningHoursDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpeningHoursDao.class);

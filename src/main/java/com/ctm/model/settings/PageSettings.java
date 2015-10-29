@@ -1,6 +1,6 @@
 package com.ctm.model.settings;
 
-import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.VerticalException;
 import com.ctm.services.EnvironmentService;

@@ -1,7 +1,7 @@
 package com.ctm.statistics;
 
 import com.ctm.web.core.dao.StatisticsDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.statistics.dao.StatisticDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.SQLException;
 import java.util.List;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class StatisticsService {
 

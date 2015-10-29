@@ -9,6 +9,8 @@ import com.ctm.model.EmailMaster;
 import com.ctm.model.RankingDetail;
 import com.ctm.model.content.Content;
 import com.ctm.model.email.EmailMode;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.travel.email.model.TravelBestPriceEmailModel;
 import com.ctm.web.travel.email.model.TravelBestPriceRanking;
 import com.ctm.web.travel.email.model.formatter.TravelBestPriceExactTargetFormatter;
@@ -116,7 +118,7 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			emailModel.setTransactionId(transactionId);
 			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailDetails));
 			emailModel.setApplyUrl(price_presentation_url);
-			} catch (DaoException|EnvironmentException | VerticalException
+			} catch (DaoException |EnvironmentException | VerticalException
 				| ConfigSettingException e) {
 			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
 					" transactionId:" +  transactionId  ,  e);

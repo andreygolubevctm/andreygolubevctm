@@ -1,7 +1,7 @@
 package com.ctm.web.creditcards.category.router;
 
 import com.ctm.web.creditcards.category.model.Category;
-import com.ctm.model.Error;
+import com.ctm.web.core.model.Error;
 import com.ctm.services.SettingsService;
 import com.ctm.web.creditcards.services.CategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;

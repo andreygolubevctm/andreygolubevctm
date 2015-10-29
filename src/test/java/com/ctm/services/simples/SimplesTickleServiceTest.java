@@ -1,8 +1,8 @@
 package com.ctm.services.simples;
 
-import com.ctm.web.core.dao.UserDao;
+import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.core.dao.transaction.TransactionLockDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.SessionDataService;

@@ -2,8 +2,8 @@ package com.ctm.services;
 
 import com.ctm.web.core.dao.IpAddressDao;
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.IpAddress;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.ctm.logging.LoggingArguments.kv;
-import static com.ctm.logging.LoggingArguments.v;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.v;
 
 public class IPCheckService {
 

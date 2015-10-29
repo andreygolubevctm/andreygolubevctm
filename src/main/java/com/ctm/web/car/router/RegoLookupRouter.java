@@ -1,8 +1,8 @@
 package com.ctm.web.car.router;
 
 import com.ctm.web.car.dao.CarRegoLookupDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.car.exceptions.RegoLookupException;
 import com.ctm.exceptions.VerticalException;
 import com.ctm.model.settings.PageSettings;
@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 @Path("/rego")
 public class RegoLookupRouter {

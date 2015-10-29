@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.model.Error;
+import com.ctm.web.core.model.Error;
 import com.ctm.model.coupon.Coupon;
 import com.ctm.model.coupon.CouponRule;
 import com.ctm.model.coupon.CouponRule.FilterBy;
@@ -18,7 +18,7 @@ import com.ctm.model.coupon.CouponRule.Option;
 import com.ctm.utils.FormDateUtils;
 import com.disc_au.web.go.Data;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class CouponRulesService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CouponRulesService.class);

@@ -11,7 +11,7 @@ import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.HttpRequestHandler;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 /**
  * A service to write quote data from the journey.

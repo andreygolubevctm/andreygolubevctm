@@ -2,7 +2,7 @@ package com.ctm.web.car.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.car.dao.CarModelDao;
 
 public class PopularModelsService {

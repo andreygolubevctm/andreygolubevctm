@@ -12,7 +12,7 @@ import com.ctm.web.core.dao.RankingDetailsDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.web.life.dao.OccupationsDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.EmailDetailsException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.SendEmailException;
@@ -34,7 +34,7 @@ import com.ctm.services.email.EmailUrlService;
 import com.ctm.services.email.ExactTargetEmailSender;
 import com.disc_au.web.go.Data;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class LifeEmailService extends EmailServiceHandler implements BestPriceEmailHandler {
 	

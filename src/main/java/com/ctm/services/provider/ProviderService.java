@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,7 @@ import com.ctm.model.Provider;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.SettingsService;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class ProviderService {
 

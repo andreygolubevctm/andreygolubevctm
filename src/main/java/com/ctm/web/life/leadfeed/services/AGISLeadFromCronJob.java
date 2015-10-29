@@ -2,7 +2,7 @@ package com.ctm.web.life.leadfeed.services;
 
 import com.ctm.web.core.dao.leadfeed.BestPriceLeadsDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
-import com.ctm.model.Transaction;
+import com.ctm.web.core.model.Transaction;
 import com.ctm.model.leadfeed.LeadFeedData;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.SortedMap;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class AGISLeadFromCronJob {
 

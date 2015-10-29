@@ -15,6 +15,7 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.ProviderService;
 import com.ctm.services.ServiceConfigurationService;
 import com.ctm.services.SettingsService;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus;
 import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import java.io.IOException;
 import java.util.List;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus.FAILURE;
 import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus.SUCCESS;
 import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType.CALL_DIRECT;

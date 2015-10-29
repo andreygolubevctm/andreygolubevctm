@@ -21,6 +21,7 @@ import com.ctm.services.EnvironmentService;
 import com.ctm.services.ResultsService;
 import com.ctm.services.SessionDataService;
 import com.ctm.web.car.exceptions.CarServiceException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.validation.CommencementDateValidation;
 import com.ctm.logging.XMLOutputWriter;
 import com.disc_au.web.go.Data;
@@ -41,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static com.ctm.model.settings.Vertical.VerticalType.CAR;
 import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.security.GeneralSecurityException;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 /**
  * Inspiration:

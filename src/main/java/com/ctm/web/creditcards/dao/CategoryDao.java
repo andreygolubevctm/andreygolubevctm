@@ -1,6 +1,6 @@
 package com.ctm.web.creditcards.dao;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.creditcards.category.model.Category;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import org.slf4j.Logger;

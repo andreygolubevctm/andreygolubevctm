@@ -19,7 +19,7 @@ import com.ctm.services.SettingsService;
 import com.ctm.services.homeloan.HomeLoanOpportunityService;
 import com.ctm.services.homeloan.HomeLoanService;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 /**
  * Use the pattern of:

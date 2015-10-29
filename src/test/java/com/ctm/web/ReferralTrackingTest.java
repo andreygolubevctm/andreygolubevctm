@@ -1,7 +1,7 @@
 package com.ctm.web;
 
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.services.ContentService;
 import com.disc_au.web.go.Data;
 import org.junit.Before;

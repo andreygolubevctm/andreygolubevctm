@@ -1,7 +1,7 @@
 package com.ctm.services;
 
 import com.ctm.web.core.dao.HandoverConfirmationDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.HandoverConfirmation;
 import com.ctm.model.settings.Vertical.VerticalType;
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static com.ctm.model.Touch.TouchType.SOLD;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;

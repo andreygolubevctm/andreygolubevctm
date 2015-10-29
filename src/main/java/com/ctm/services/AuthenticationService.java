@@ -2,7 +2,7 @@ package com.ctm.services;
 
 import com.ctm.web.core.dao.SessionTokenDao;
 import com.ctm.web.core.dao.TouchDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.TokenSecurityException;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.Touch;
@@ -20,7 +20,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class AuthenticationService {
 
@@ -110,7 +110,7 @@ public class AuthenticationService {
 	 * @throws NoSuchAlgorithmException
 	 * @throws InvalidKeyException
 	 */
-	private static String generateLastTouchToken(SessionToken.IdentityType identityType, String identityValue, String transactionId) throws DaoException, InvalidKeyException, NoSuchAlgorithmException {
+	public static String generateLastTouchToken(SessionToken.IdentityType identityType, String identityValue, String transactionId) throws DaoException, InvalidKeyException, NoSuchAlgorithmException {
 
 		TouchDao touchDao = new TouchDao();
 		Touch touch = null;
@@ -158,7 +158,7 @@ public class AuthenticationService {
 	 * @throws DaoException
 	 * @throws Exception
 	 */
-	private String consumeLastTouchToken(SessionToken.IdentityType identityType, String token) throws TokenSecurityException {
+	public String consumeLastTouchToken(SessionToken.IdentityType identityType, String token) throws TokenSecurityException {
 		SessionTokenDao sessionTokenDao = new SessionTokenDao();
 		try {
 			SessionToken sessionToken = sessionTokenDao.getToken(token, identityType);

@@ -8,12 +8,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ctm.web.core.dao.EmailMasterDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.LogAudit;
 import com.ctm.security.StringEncryption;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class ResetPasswordService {
 	

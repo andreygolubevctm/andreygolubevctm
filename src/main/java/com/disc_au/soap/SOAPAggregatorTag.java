@@ -36,7 +36,7 @@ import java.util.Optional;
 
 import static com.ctm.logging.CorrelationIdUtils.clearCorrelationId;
 import static com.ctm.logging.CorrelationIdUtils.setCorrelationId;
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static com.ctm.logging.LoggingVariables.clearLoggingVariables;
 import static com.ctm.logging.LoggingVariables.setLoggingVariables;
 import static com.ctm.services.EnvironmentService.Environment.*;

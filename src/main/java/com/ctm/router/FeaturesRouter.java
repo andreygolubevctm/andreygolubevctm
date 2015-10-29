@@ -1,6 +1,5 @@
 package com.ctm.router;
 
-import com.ctm.model.AbstractJsonModel;
 import com.ctm.services.results.ResultsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 @WebServlet(urlPatterns = {
         "/features/getStructure.json"

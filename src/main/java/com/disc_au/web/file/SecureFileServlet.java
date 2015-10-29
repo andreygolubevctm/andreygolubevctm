@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.Vector;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 /**
   * This Servlet is used to allow client access to files located in a secured folder.

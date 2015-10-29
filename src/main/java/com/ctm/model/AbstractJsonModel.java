@@ -2,6 +2,7 @@ package com.ctm.model;
 
 import java.util.ArrayList;
 
+import com.ctm.web.core.model.Error;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ public abstract class AbstractJsonModel implements JsonFormatter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractJsonModel.class);
 
-	private ArrayList<Error> errors = new ArrayList<>();
+	private ArrayList<com.ctm.web.core.model.Error> errors = new ArrayList<>();
 
 
 	/**

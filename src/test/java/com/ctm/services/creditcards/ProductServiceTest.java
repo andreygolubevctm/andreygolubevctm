@@ -2,7 +2,7 @@ package com.ctm.services.creditcards;
 
 import com.ctm.web.core.dao.ProductDao;
 import com.ctm.web.creditcards.exceptions.CreditCardServiceException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Product;
 import com.ctm.web.creditcards.model.CreditCardProduct;
 import com.ctm.model.settings.Vertical.VerticalType;

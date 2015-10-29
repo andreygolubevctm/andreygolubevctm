@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
-import com.ctm.model.Error;
+import com.ctm.web.core.model.Error;
 import com.ctm.model.Provider;
 import com.ctm.services.SettingsService;
 import com.ctm.services.provider.ProviderService;

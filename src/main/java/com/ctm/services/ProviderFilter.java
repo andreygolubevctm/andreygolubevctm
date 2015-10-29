@@ -1,8 +1,8 @@
 package com.ctm.services;
 
 import com.ctm.web.core.dao.ProviderFilterDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.disc_au.web.go.Data;
@@ -15,7 +15,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class ProviderFilter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderFilter.class);

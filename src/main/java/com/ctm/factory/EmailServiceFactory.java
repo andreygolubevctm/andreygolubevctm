@@ -2,7 +2,7 @@ package com.ctm.factory;
 
 import com.ctm.web.core.dao.*;
 import com.ctm.web.core.dao.transaction.TransactionDao;
-import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.SendEmailException;
 import com.ctm.exceptions.VerticalException;

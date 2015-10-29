@@ -1,6 +1,6 @@
 package com.ctm.router;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.formData.Request;

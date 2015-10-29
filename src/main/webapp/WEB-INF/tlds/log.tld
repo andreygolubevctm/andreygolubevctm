@@ -24,7 +24,7 @@
 	<function>
 		<description>Key Values</description>
 		<name>kv</name>
-		<function-class>com.ctm.logging.LoggingArguments</function-class>
+		<function-class>com.ctm.web.core.logging.LoggingArguments</function-class>
 		<function-signature>com.ctm.logging.LoggingArgument kv(java.lang.String, java.lang.Object)</function-signature>
 	</function>
 

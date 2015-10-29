@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class TravelBestPriceExactTargetFormatter extends ExactTargetFormatter<TravelBestPriceEmailModel> {
 

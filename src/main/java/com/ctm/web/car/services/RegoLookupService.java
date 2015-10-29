@@ -15,6 +15,8 @@ import com.ctm.services.IPCheckService;
 import com.ctm.services.ServiceConfigurationService;
 import com.ctm.utils.RequestUtils;
 import com.ctm.web.car.exceptions.RegoLookupException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.webservice.WebServiceUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.cxf.endpoint.Client;
@@ -28,7 +30,7 @@ import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static com.ctm.webservice.motorweb.MotorWebProvider.createClient;
 
 /**

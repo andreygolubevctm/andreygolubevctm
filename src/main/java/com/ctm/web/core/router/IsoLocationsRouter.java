@@ -1,8 +1,8 @@
 package com.ctm.web.core.router;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
-import com.ctm.model.Error;
+import com.ctm.web.core.model.Error;
 import com.ctm.services.FatalErrorService;
 import com.ctm.utils.RequestUtils;
 import com.ctm.web.core.services.IsoLocationsService;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 
 /**

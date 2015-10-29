@@ -12,7 +12,7 @@ import com.ctm.web.car.leadfeed.services.REIN.REINCarLeadFeedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 
 public class CarLeadFeedService extends LeadFeedService {

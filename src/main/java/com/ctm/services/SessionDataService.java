@@ -11,7 +11,7 @@ package com.ctm.services;
  */
 
 import com.ctm.exceptions.BrandException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.session.SessionData;
@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 
 public class SessionDataService {

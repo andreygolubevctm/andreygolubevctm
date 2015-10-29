@@ -8,16 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ctm.web.core.dao.ProductDao;
-import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.creditcards.exceptions.CreditCardServiceException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Product;
 import com.ctm.web.creditcards.model.CreditCardProduct;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.SettingsService;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class ProductService {
 

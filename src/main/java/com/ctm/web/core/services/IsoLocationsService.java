@@ -1,6 +1,6 @@
 package com.ctm.web.core.services;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.IsoLocations;
 import com.ctm.web.core.dao.IsoLocationsDao;
 import org.json.JSONException;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 
 public class IsoLocationsService {

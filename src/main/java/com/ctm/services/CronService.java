@@ -1,7 +1,7 @@
 package com.ctm.services;
 
 import com.ctm.web.core.dao.CronDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.CronJob;
 
 import javax.servlet.http.HttpServletRequest;

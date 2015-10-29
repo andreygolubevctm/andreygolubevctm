@@ -10,19 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ctm.exceptions.BrandException;
 import com.ctm.model.*;
-import com.ctm.model.Error;
+import com.ctm.web.core.model.Error;
 import com.ctm.model.settings.Brand;
 import com.ctm.services.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 @WebServlet(urlPatterns = {
 		// GET
@@ -95,7 +95,7 @@ public class GenericRouter extends HttpServlet {
 			styleCodeId = brand.getId();
 		}
 		fatalErrorService.logFatalError(exception, styleCodeId, uri , sessionId, true);
-		com.ctm.model.Error error = new Error();
+		Error error = new Error();
 		error.addError(new Error("Failed to reset password"));
 		JSONObject json = error.toJsonObject(true);
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

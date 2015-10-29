@@ -2,14 +2,14 @@ package com.ctm.services;
 
 import com.ctm.web.core.dao.TouchDao;
 import com.ctm.web.core.dao.transaction.TransactionLockDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.AccessTouch;
 import com.ctm.model.Touch;
 import com.ctm.model.transaction.TransactionLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 
 public class AccessCheckService {

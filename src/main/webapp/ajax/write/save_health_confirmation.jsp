@@ -4,7 +4,7 @@
 <c:set var="logger" value="${log:getLogger('jsp.ajax.write.save_health_confirmation')}" />
 
 <session:get />
-<jsp:useBean id="providerContentService" class="com.ctm.services.simples.ProviderContentService" scope="page" />
+<jsp:useBean id="providerContentService" class="com.ctm.web.simples.services.ProviderContentService" scope="page" />
 
 <%--
 SAVING A SUCCESSFUL HEALTH APPLICATION

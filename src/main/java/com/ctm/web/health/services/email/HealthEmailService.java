@@ -10,6 +10,8 @@ import com.ctm.model.Touch;
 import com.ctm.model.content.Content;
 import com.ctm.model.email.BestPriceRanking;
 import com.ctm.model.email.EmailMode;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.health.model.email.HealthBestPriceEmailModel;
 import com.ctm.web.health.model.email.HealthProductBrochuresEmailModel;
 import com.ctm.web.health.model.formatter.email.HealthBestPriceExactTargetFormatter;
@@ -20,7 +22,7 @@ import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.AccessTouchService;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.email.*;
-import com.ctm.services.simples.OpeningHoursService;
+import com.ctm.web.simples.admin.services.OpeningHoursService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -137,7 +139,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			emailModel.setTransactionId(transactionId);
 			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailDetails));
 			emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, transactionId, "bestprice"));
-		} catch (DaoException|EnvironmentException | VerticalException
+		} catch (DaoException |EnvironmentException | VerticalException
 				| ConfigSettingException e) {
 			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
 					" transactionId:" +  transactionId  ,  e);

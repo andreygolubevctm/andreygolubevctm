@@ -15,7 +15,7 @@ import com.ctm.web.health.services.HealthPriceResultsService;
 import org.junit.Test;
 
 import com.ctm.web.health.dao.HealthPriceDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.health.model.HealthPricePremiumRange;
 import com.ctm.web.health.model.HealthPriceResult;
 import com.ctm.web.health.model.Membership;

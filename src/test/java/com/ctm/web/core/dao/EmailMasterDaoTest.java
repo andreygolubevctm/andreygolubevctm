@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.EmailMaster;
 
 public class EmailMasterDaoTest {

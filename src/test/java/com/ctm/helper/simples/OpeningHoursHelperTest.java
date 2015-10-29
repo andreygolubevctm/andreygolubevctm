@@ -3,12 +3,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
 
+import com.ctm.web.simples.admin.model.request.OpeningHoursHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.ctm.model.OpeningHours;
+import com.ctm.web.simples.admin.model.OpeningHours;
 @RunWith(MockitoJUnitRunner.class)
 public class OpeningHoursHelperTest {
 	OpeningHoursHelper openingHoursHelper;

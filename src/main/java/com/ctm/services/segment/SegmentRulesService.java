@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 
-import com.ctm.model.Error;
+import com.ctm.web.core.model.Error;
 import com.ctm.model.segment.Segment;
 import com.ctm.model.segment.SegmentRule;
 import com.ctm.model.segment.SegmentRule.FilterBy;
@@ -19,7 +19,7 @@ import com.ctm.model.segment.SegmentRule.Option;
 import com.ctm.utils.FormDateUtils;
 import com.disc_au.web.go.Data;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class SegmentRulesService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SegmentRulesService.class);

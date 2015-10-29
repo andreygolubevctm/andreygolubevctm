@@ -1,7 +1,7 @@
 package com.ctm.services.travel;
 
 import com.ctm.web.core.dao.TouchDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
 import com.ctm.services.AccessTouchService;

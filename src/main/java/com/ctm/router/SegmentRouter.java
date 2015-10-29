@@ -14,8 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.Error;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.Error;
 import com.ctm.model.segment.Segment;
 import com.ctm.model.segment.SegmentRequest;
 import com.ctm.model.settings.PageSettings;
@@ -27,7 +27,7 @@ import com.disc_au.web.go.Data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 @WebServlet(urlPatterns = {
 		"/segment/filter.json"

@@ -1,7 +1,7 @@
 package com.ctm.services.home;
 
 import com.ctm.web.core.connectivity.SimpleConnection;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.logging.XMLOutputWriter;
@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 import static com.ctm.model.settings.Vertical.VerticalType.HOME;
 import static java.util.Arrays.asList;

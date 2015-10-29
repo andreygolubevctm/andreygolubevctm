@@ -1,6 +1,6 @@
 package com.ctm.logging;
 
-import static com.ctm.logging.LoggingArguments.v;
+import static com.ctm.web.core.logging.LoggingArguments.v;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.text.SimpleDateFormat;

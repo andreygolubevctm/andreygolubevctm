@@ -1,7 +1,7 @@
 package com.ctm.web.core.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.session.SessionToken;
 import com.mysql.jdbc.Statement;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 
 public class SessionTokenDao {

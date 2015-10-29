@@ -1,6 +1,6 @@
 package com.ctm.web.core.competition.services;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
 import com.ctm.services.ApplicationService;
 import com.ctm.web.core.competition.dao.CompetitionDao;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class CompetitionService {
 

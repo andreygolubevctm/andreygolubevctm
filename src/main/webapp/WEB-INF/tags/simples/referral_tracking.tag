@@ -5,7 +5,7 @@
 
 <c:set var="logger" value="${log:getLogger('tag.simples.referral_tracking')}" />
 
-<jsp:useBean id="phoneService" class="com.ctm.services.PhoneService" scope="application" />
+<jsp:useBean id="phoneService" class="com.ctm.web.simples.services.PhoneService" scope="application" />
 <jsp:useBean id="quoteService" class="com.ctm.services.QuoteService" scope="application" />
 
 <%@ attribute name="vertical"	required="true"	 	rtexprvalue="true" 	description="Vertical to associate this tracking with e.g. health" %>

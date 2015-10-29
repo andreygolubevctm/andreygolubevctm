@@ -1,7 +1,7 @@
 package com.ctm.web.core.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.settings.ServiceConfigurationProperty;
@@ -14,7 +14,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 
 public class ServiceConfigurationDao {

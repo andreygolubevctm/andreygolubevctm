@@ -1,7 +1,7 @@
 package com.ctm.web.health.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Provider;
 import com.ctm.web.health.model.*;
 import org.slf4j.Logger;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class HealthPriceDao {
 	private static final String DISC_PREFIX = "disc";

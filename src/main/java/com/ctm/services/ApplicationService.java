@@ -4,7 +4,7 @@ import com.ctm.web.core.dao.BrandsDao;
 import com.ctm.web.core.dao.ConfigSettingsDao;
 import com.ctm.web.core.dao.VerticalsDao;
 import com.ctm.exceptions.BrandException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.Vertical;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class ApplicationService {
 

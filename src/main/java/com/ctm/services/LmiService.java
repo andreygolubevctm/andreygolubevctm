@@ -1,14 +1,14 @@
 package com.ctm.services;
 
 import com.ctm.web.core.dao.LmiDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.LmiModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 /**
  * Created by bthompson on 26/06/2015.

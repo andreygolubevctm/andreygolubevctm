@@ -1,8 +1,8 @@
 package com.ctm.services;
 
 import com.ctm.exceptions.BrandException;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;

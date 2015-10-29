@@ -14,8 +14,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.ctm.logging.LoggingArguments.kv;
-
 public class StringEncryption {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StringEncryption.class);

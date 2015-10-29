@@ -3,8 +3,8 @@ package com.ctm.services;
 import com.ctm.web.core.cache.ApplicationCacheManager;
 import com.ctm.web.core.cache.ContentControlCache;
 import com.ctm.web.core.dao.ContentDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.content.Content;
 import com.ctm.model.settings.PageSettings;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class ContentService {
 

@@ -1,8 +1,8 @@
 package com.ctm.services.homeloan;
 
 import com.ctm.web.core.connectivity.JsonConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.Error;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.Error;
 import com.ctm.model.homeloan.HomeLoanModel;
 import com.ctm.model.homeloan.HomeLoanOpportunityProduct;
 import com.ctm.model.homeloan.HomeLoanOpportunityRequest;
@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class HomeLoanOpportunityService {
 

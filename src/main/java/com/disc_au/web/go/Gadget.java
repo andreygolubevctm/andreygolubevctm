@@ -41,7 +41,7 @@ import com.disc_au.web.go.xml.XmlNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 // TODO: Auto-generated Javadoc
 /**

@@ -1,6 +1,6 @@
 package com.ctm.security.token;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.security.token.config.TokenConfigFactory;
 import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.services.SettingsService;
@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static com.ctm.security.token.config.TokenCreatorConfig.SIGNATURE_ALGORITHM;
 import static com.ctm.security.token.config.TokenCreatorConfig.TRANSACTION_ID_CLAIM;
 import static com.ctm.security.token.config.TokenCreatorConfig.TOUCH_CLAIM;

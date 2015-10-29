@@ -1,6 +1,6 @@
 package com.ctm.services;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.exceptions.ServiceException;
 import com.ctm.model.QuoteServiceProperties;

@@ -2,8 +2,8 @@ package com.ctm.services.homeloan;
 
 import com.ctm.web.core.connectivity.JsonConnection;
 import com.ctm.web.core.connectivity.SimpleConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.Error;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.Error;
 import com.ctm.model.homeloan.HomeLoanProductSearchRequest;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.ConfigSetting;
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class HomeLoanResultsService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HomeLoanResultsService.class);

@@ -1,6 +1,6 @@
 package com.ctm.utils;
 
-import com.ctm.model.Error;
+import com.ctm.web.core.model.Error;
 import com.ctm.services.FatalErrorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Optional;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static java.util.Arrays.asList;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
@@ -64,8 +64,8 @@ public class ResponseUtils {
         String sessionId = "";
         int styleCodeId = 0;
         fatalErrorService.logFatalError(exception, styleCodeId, uri , sessionId, true);
-        com.ctm.model.Error error = new com.ctm.model.Error();
-        error.addError(new com.ctm.model.Error(message));
+        Error error = new Error();
+        error.addError(new Error(message));
         JSONObject json = error.toJsonObject(true);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         try {

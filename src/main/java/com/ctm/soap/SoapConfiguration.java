@@ -1,6 +1,6 @@
 package com.ctm.soap;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.model.settings.*;
 import com.ctm.model.settings.ServiceConfigurationProperty.Scope;

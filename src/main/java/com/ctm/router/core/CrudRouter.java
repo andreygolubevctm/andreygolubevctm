@@ -1,7 +1,7 @@
 package com.ctm.router.core;
 
 import com.ctm.exceptions.CrudValidationException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.services.simples.admin.CrudService;
 
 import javax.servlet.http.HttpServletRequest;

@@ -2,7 +2,7 @@ package com.ctm.web.health.services;
 
 import com.ctm.web.core.dao.StyleCodeDao;
 import com.ctm.web.health.dao.HealthPriceDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.logging.LoggingVariables;
 import com.ctm.model.settings.Vertical;
 import com.ctm.web.health.services.results.ProviderRestrictionsService;
@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static com.ctm.web.health.model.Frequency.ANNUALLY;
 import static com.ctm.web.health.model.Frequency.HALF_YEARLY;
 

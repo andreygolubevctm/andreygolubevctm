@@ -6,7 +6,7 @@ import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.ElasticSearchConfigurationException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.model.settings.ServiceConfiguration;

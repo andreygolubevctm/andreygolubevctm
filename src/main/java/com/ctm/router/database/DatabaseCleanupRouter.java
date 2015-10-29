@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ctm.web.core.dao.transaction.TransactionLockDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 
 @WebServlet(urlPatterns = {
 		"/cron/database/transactionLockTable/cleanup.json"

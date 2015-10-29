@@ -1,6 +1,6 @@
 package com.disc_au.price.health;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.health.price.PremiumCalculator;
 import org.junit.Test;
 

@@ -13,13 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.coupon.Coupon;
 import com.ctm.model.coupon.CouponChannel;
 import com.ctm.model.coupon.CouponRule;
 import com.ctm.model.request.coupon.CouponRequest;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class CouponDao {
 

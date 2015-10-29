@@ -1,6 +1,6 @@
 package com.ctm.web.car.services;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.ServiceException;
 import com.ctm.web.car.dao.*;
 import com.ctm.web.car.model.*;
@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 import java.util.*;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class CarVehicleSelectionService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CarVehicleSelectionService.class);

@@ -2,10 +2,13 @@ package com.ctm.web.simples.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.CommentDao;
-import com.ctm.web.core.dao.UserDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Comment;
 import com.ctm.model.simples.*;
+import com.ctm.web.core.model.Rule;
+import com.ctm.web.simples.model.Message;
+import com.ctm.web.simples.model.MessageStatus;
+import com.ctm.web.simples.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,8 +22,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static com.ctm.logging.LoggingArguments.kv;
-import static com.ctm.model.simples.MessageStatus.*;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.web.simples.model.MessageStatus.*;
 
 public class MessageDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MessageDao.class);

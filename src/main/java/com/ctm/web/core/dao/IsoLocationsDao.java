@@ -1,6 +1,6 @@
 package com.ctm.web.core.dao;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.IsoLocations;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import org.slf4j.Logger;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 /**
  * Fetches the list of countries from ctm.country_master

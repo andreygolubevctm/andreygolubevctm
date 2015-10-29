@@ -9,7 +9,7 @@ import com.ctm.web.health.validation.HealthApplicationValidation;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.health.model.request.Application;
 import com.ctm.web.health.model.request.Dependants;
 import com.ctm.web.health.model.request.Dependant;

@@ -1,7 +1,7 @@
 package com.ctm.web.travel.utils;
 
 import com.ctm.web.core.dao.ProductPropertiesDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

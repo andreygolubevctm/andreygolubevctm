@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.SendEmailException;
 import com.ctm.exceptions.VerticalException;
@@ -19,7 +19,7 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.EnvironmentService.Environment;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public abstract class EmailServiceHandler {
 

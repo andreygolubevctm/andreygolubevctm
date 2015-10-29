@@ -1,8 +1,8 @@
 package com.ctm.web.health.services;
 
 import com.ctm.web.health.dao.HealthPriceDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.health.exceptions.HealthAltPriceException;
 import com.ctm.model.content.Content;
 import com.ctm.model.content.ContentSupplement;

@@ -13,7 +13,7 @@ import com.ctm.logging.SpringWSLoggingInterceptor;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.logging.XMLOutputWriter;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 /**
  * This class should only be used by Life/IP.

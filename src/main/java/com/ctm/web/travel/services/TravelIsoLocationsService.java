@@ -1,6 +1,6 @@
 package com.ctm.web.travel.services;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.IsoLocations;
 import com.ctm.web.core.dao.IsoLocationsDao;
 import com.ctm.web.core.services.IsoLocationsService;
@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 
 public class TravelIsoLocationsService extends IsoLocationsService {

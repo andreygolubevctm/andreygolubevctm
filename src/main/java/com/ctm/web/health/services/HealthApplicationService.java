@@ -1,8 +1,8 @@
 package com.ctm.web.health.services;
 
 import com.ctm.web.health.dao.HealthPriceDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Provider;
 import com.ctm.web.health.model.Frequency;
 import com.ctm.web.health.model.HealthPricePremium;
@@ -29,7 +29,7 @@ import javax.servlet.jsp.JspException;
 import java.util.Date;
 import java.util.List;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class HealthApplicationService extends CTMEndpointService {
 

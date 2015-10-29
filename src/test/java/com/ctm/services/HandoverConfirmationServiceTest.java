@@ -1,7 +1,7 @@
 package com.ctm.services;
 
 import com.ctm.web.core.dao.HandoverConfirmationDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.HandoverConfirmation;
 import com.ctm.model.settings.Vertical;
 import org.junit.Before;

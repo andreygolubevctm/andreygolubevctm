@@ -1,7 +1,7 @@
 package com.ctm.services.simples;
 
-import com.ctm.web.core.dao.UserDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.simples.dao.UserDao;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.services.FatalErrorService;
@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 
 public class SimplesTickleService {

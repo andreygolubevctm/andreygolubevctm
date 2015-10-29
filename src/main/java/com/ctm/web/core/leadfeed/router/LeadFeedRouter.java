@@ -1,6 +1,6 @@
 package com.ctm.web.core.leadfeed.router;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.leadfeed.LeadFeedData;
 import com.ctm.model.leadfeed.LeadFeedData.CallType;
 import com.ctm.model.settings.Brand;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public abstract class LeadFeedRouter extends HttpServlet {
 

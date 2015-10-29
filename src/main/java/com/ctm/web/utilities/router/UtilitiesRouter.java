@@ -1,6 +1,6 @@
 package com.ctm.web.utilities.router;
 
-import com.ctm.model.Error;
+import com.ctm.web.core.model.Error;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.SettingsService;
 import com.ctm.web.utilities.model.*;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 
 @WebServlet(urlPatterns = {

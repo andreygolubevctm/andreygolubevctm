@@ -13,7 +13,7 @@ import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.model.LogAudit;
 import com.ctm.services.confirmation.JoinService;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class LogAuditDao {
 

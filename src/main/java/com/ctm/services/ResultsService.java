@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.ctm.web.core.dao.RankingDetailsDao;
 import com.ctm.web.core.dao.ResultsDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.RankingDetail;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.results.ResultRanking;

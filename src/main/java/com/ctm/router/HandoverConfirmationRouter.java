@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 @WebServlet(asyncSupported = true, urlPatterns = {"/handover/confirm"})
 public class HandoverConfirmationRouter extends HttpServlet {

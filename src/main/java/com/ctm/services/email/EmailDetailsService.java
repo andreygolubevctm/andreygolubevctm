@@ -3,10 +3,10 @@ package com.ctm.services.email;
 import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.web.core.dao.StampingDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.EmailDetailsException;
 import com.ctm.model.EmailMaster;
-import com.ctm.model.Transaction;
+import com.ctm.web.core.model.Transaction;
 import com.ctm.security.StringEncryption;
 import com.ctm.services.StampingService;
 import com.ctm.services.email.mapping.EmailDetailsMappings;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.security.GeneralSecurityException;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class EmailDetailsService {
 

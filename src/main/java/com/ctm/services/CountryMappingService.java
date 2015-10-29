@@ -1,7 +1,7 @@
 package com.ctm.services;
 
 import com.ctm.web.core.dao.CountryMappingDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.CountryMapping;
 import com.ctm.model.session.SessionData;

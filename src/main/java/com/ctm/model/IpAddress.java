@@ -1,6 +1,6 @@
 package com.ctm.model;
 
-import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.model.settings.PageSettings;
 
 public class IpAddress {

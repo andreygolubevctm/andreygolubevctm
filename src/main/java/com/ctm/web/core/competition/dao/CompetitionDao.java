@@ -1,7 +1,7 @@
 package com.ctm.web.core.competition.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;

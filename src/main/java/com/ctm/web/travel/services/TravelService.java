@@ -2,7 +2,7 @@ package com.ctm.web.travel.services;
 
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.travel.exceptions.TravelServiceException;
 import com.ctm.logging.XMLOutputWriter;
 import com.ctm.model.QuoteServiceProperties;
@@ -33,7 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 
 public class TravelService extends CommonQuoteService<TravelQuote> {

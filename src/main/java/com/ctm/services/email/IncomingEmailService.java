@@ -2,11 +2,11 @@ package com.ctm.services.email;
 
 import com.ctm.web.core.dao.ResultsDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.VerticalException;
-import com.ctm.model.TransactionProperties;
+import com.ctm.web.core.model.TransactionProperties;
 import com.ctm.model.email.EmailMode;
 import com.ctm.model.email.IncomingEmail;
 import com.ctm.model.results.ResultProperty;
@@ -23,7 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class IncomingEmailService {
 

@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 /**
  * The Class URLUtils.

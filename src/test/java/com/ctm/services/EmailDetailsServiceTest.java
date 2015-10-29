@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.web.core.dao.StampingDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.EmailDetailsException;
 import com.ctm.model.EmailMaster;
 import com.ctm.services.email.EmailDetailsService;

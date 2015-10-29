@@ -9,7 +9,7 @@ import com.ctm.model.FormValidationLog;
 import com.ctm.web.core.constants.PrivacyBlacklist;
 import com.ctm.web.core.dao.FormValidationDao;
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 
 public class FormValidationService {
 

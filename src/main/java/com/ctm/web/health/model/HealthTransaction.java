@@ -3,7 +3,7 @@ package com.ctm.web.health.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ctm.model.TransactionProperties;
+import com.ctm.web.core.model.TransactionProperties;
 
 
 public class HealthTransaction extends TransactionProperties {

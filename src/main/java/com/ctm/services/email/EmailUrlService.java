@@ -7,13 +7,13 @@ import java.net.URLEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.email.IncomingEmail;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.utils.FormDateUtils;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class EmailUrlService {
 

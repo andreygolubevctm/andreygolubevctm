@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ctm.services.AccessTouchService;
 import com.ctm.services.ContentService;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.LeadFeedException;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
@@ -16,7 +16,7 @@ import com.ctm.model.leadfeed.LeadFeedData;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public abstract class LeadFeedService {
 

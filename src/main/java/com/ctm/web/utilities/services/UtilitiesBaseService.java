@@ -2,7 +2,7 @@ package com.ctm.web.utilities.services;
 
 import com.ctm.web.core.connectivity.JsonConnection;
 import com.ctm.web.core.connectivity.SimpleConnection;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.exceptions.UtilitiesWebServiceException;
 import com.ctm.model.request.utilities.UtilitiesRequest;
@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 /**
  * Common functions for the Utilities Services

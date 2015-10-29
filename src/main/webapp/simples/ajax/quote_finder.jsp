@@ -112,7 +112,7 @@ ${logger.debug('Got uid from session. {}', log:kv('isOperator', isOperator))}
 
 					<c:if test="${empty error and not empty findquote and findquote.rowCount > 0}">
 						<%-- Put found transactions into a flat list and pull out the transactions --%>
-						<jsp:useBean id="searchService" class="com.ctm.services.simples.SimplesSearchService" scope="page" />
+						<jsp:useBean id="searchService" class="com.ctm.web.simples.services.SimplesSearchService" scope="page" />
 						${searchService.mapResults(findquote , true)}
 
 						${logger.debug('TRAN IDS found. {},{}', log:kv('transactionIdsHot', searchService.getHotTransactionIdsCsv()), log:kv('transactionIdsCold',searchService.getColdTransactionIdsCsv() ))}

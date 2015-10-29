@@ -13,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.Error;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.Error;
 import com.ctm.model.coupon.CouponChannel;
 import com.ctm.model.request.coupon.CouponRequest;
 import com.ctm.model.session.AuthenticatedData;
@@ -26,7 +26,7 @@ import com.ctm.services.coupon.CouponService;
 import com.ctm.utils.RequestUtils;
 import com.disc_au.web.go.Data;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 @WebServlet(urlPatterns = {
 		"/coupon/id/get.json",

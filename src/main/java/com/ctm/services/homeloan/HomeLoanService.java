@@ -2,7 +2,7 @@ package com.ctm.services.homeloan;
 
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.web.homeloan.dao.HomeloanUnconfirmedLeadsDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.TransactionDetail;
 import com.ctm.model.homeloan.HomeLoanModel;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class HomeLoanService {
 

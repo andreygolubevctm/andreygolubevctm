@@ -1,8 +1,8 @@
 package com.ctm.services.email;
 
 import com.ctm.web.core.dao.transaction.TransactionDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.SendEmailException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.factory.EmailServiceFactory;
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class EmailService {
 

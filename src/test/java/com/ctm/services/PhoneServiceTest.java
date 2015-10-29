@@ -1,7 +1,8 @@
 package com.ctm.services;
 
-import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.model.settings.PageSettings;
+import com.ctm.web.simples.services.PhoneService;
 import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;

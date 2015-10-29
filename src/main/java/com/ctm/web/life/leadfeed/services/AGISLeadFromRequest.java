@@ -1,7 +1,7 @@
 package com.ctm.web.life.leadfeed.services;
 
 import com.ctm.web.core.dao.leadfeed.BestPriceLeadsDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.leadfeed.LeadFeedData;
 import com.ctm.model.settings.Brand;
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class AGISLeadFromRequest {
 

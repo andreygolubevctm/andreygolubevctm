@@ -5,7 +5,7 @@
 
 <session:getAuthenticated  />
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
-<jsp:useBean id="searchService" class="com.ctm.services.simples.SimplesSearchService" scope="request" />
+<jsp:useBean id="searchService" class="com.ctm.web.simples.services.SimplesSearchService" scope="request" />
 
 <go:setData dataVar="data" xpath="search_results" value="*DELETE" />
 

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 import com.ctm.web.core.dao.ProviderDao;
 import com.ctm.model.Provider;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 
 public class ProviderService {
 

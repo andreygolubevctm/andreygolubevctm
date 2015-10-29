@@ -7,16 +7,16 @@ import org.slf4j.LoggerFactory;
 
 import com.ctm.web.core.dao.ConfirmationDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Confirmation;
-import com.ctm.model.TransactionProperties;
+import com.ctm.web.core.model.TransactionProperties;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.SettingsService;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class ConfirmationService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfirmationService.class);

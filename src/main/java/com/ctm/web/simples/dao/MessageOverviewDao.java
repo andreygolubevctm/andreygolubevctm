@@ -1,7 +1,7 @@
 package com.ctm.web.simples.dao;
 
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.simples.MessageOverview;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.simples.model.MessageOverview;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 
 import javax.naming.NamingException;

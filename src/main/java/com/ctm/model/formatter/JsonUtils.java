@@ -10,8 +10,7 @@ import org.json.simple.JSONArray;
 
 import com.ctm.model.AbstractJsonModel;
 
-import static com.ctm.logging.LoggingArguments.array;
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class JsonUtils {
 	private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtils.class);

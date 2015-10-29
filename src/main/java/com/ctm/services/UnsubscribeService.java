@@ -6,12 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ctm.web.core.dao.EmailMasterDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Unsubscribe;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.email.EmailUrlService;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class UnsubscribeService {
 	

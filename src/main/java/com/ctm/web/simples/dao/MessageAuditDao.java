@@ -1,6 +1,6 @@
 package com.ctm.web.simples.dao;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.simples.MessageAudit;
 import com.ctm.services.FatalErrorService;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;

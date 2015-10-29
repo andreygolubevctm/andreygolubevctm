@@ -9,9 +9,9 @@ import java.util.List;
 import javax.naming.NamingException;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.simples.MessageStatus;
-import com.ctm.model.simples.UserStats;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.simples.model.MessageStatus;
+import com.ctm.web.simples.model.UserStats;
 
 public class UserStatsDao {
 

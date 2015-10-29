@@ -1,6 +1,6 @@
 package com.ctm.services.health;
 
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.web.health.model.request.HealthRequest;
 import com.ctm.model.settings.Vertical;

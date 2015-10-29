@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class EnvironmentService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EnvironmentService.class);

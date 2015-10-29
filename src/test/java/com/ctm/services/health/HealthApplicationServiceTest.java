@@ -1,7 +1,7 @@
 package com.ctm.services.health;
 
 import com.ctm.web.health.dao.HealthPriceDao;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Provider;
 import com.ctm.model.Touch;
 import com.ctm.web.health.model.Frequency;

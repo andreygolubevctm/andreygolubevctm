@@ -1,7 +1,7 @@
 package com.ctm.web.creditcards.router;
 
 import com.ctm.exceptions.UploaderException;
-import com.ctm.model.Error;
+import com.ctm.web.core.model.Error;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.ApplicationService;
@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 
 @WebServlet(urlPatterns = {

@@ -1,7 +1,7 @@
 package com.ctm.services.email;
 
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.exceptions.SendEmailException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.model.email.EmailModel;
@@ -27,13 +27,12 @@ import org.w3c.dom.DOMException;
 
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.Map;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static java.lang.Integer.parseInt;
 
 public class ExactTargetEmailSender<T extends EmailModel> {
