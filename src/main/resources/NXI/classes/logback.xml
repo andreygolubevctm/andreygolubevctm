@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="false" >
-
+<configuration debug="false">
+	<conversionRule conversionWord="env" converterClass="com.ctm.logging.EnvironmentConverter" />
 	<property resource="environment.properties" />
     
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
@@ -19,8 +19,13 @@
 		<deliveryMode>PERSISTENT</deliveryMode>
 		<host>dev-vm-ken-ctm-elk-x1</host>
 		<layout class="net.logstash.logback.layout.LogstashLayout">
-			<provider class="net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider"/>
-			<customFields>{"appname":"webctm", "env":"NXI"}</customFields>
+			<fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
+			<includeContext>false</includeContext>
+			<includeMdcKeyName>context</includeMdcKeyName>
+			<customFields>{"hostname":"${HOSTNAME}", "appname":"webctm"}</customFields>
+			<provider class="net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider">
+				<pattern>{"env":"%env{name}","context":"%env{context}"}</pattern>
+			</provider>
 		</layout>
 	</appender>
 
