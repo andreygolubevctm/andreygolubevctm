@@ -103,7 +103,7 @@ public class IsoLocationsDao {
      * @param isoCodes
      * @return
      */
-    public List<IsoLocations> getCountriesByIsoCodes(ArrayList<String> isoCodes) throws DaoException {
+    public List<IsoLocations> getCountriesByIsoCodes(List<String> isoCodes) throws DaoException {
 
         SimpleDatabaseConnection dbSource = null;
         ArrayList<IsoLocations> countries = new ArrayList<IsoLocations>();
@@ -143,7 +143,7 @@ public class IsoLocationsDao {
         return countries;
     }
 
-    private String buildQuery(ArrayList<String> isoCodes) {
+    private String buildQuery(List<String> isoCodes) {
 
         String stmt = "SELECT isoCode, countryName " +
                 "FROM ctm.country_master ";
