@@ -30,10 +30,10 @@
 		<servlet-class>org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet</servlet-class>
 		<init-param>
 			<param-name>jaxrs.serviceClasses</param-name>
-			<param-value>com.ctm.router.CarRouter,
-				com.ctm.router.car.RegoLookupRouter,
+			<param-value>com.ctm.web.car.router.CarRouter,
+				com.ctm.web.car.router.RegoLookupRouter,
 				com.ctm.router.travel.TravelRouter,
-				com.ctm.router.car.CarQuoteRouter,
+				com.ctm.web.car.router.CarQuoteRouter,
 				com.ctm.router.home.HomeQuoteRouter
 			</param-value>
 		</init-param>

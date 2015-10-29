@@ -15,8 +15,8 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.ProviderService;
 import com.ctm.services.ServiceConfigurationService;
 import com.ctm.services.SettingsService;
-import com.ctm.services.leadfeed.LeadFeedService.LeadResponseStatus;
-import com.ctm.services.leadfeed.LeadFeedService.LeadType;
+import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus;
+import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -26,9 +26,9 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.ctm.logging.LoggingArguments.kv;
-import static com.ctm.services.leadfeed.LeadFeedService.LeadResponseStatus.FAILURE;
-import static com.ctm.services.leadfeed.LeadFeedService.LeadResponseStatus.SUCCESS;
-import static com.ctm.services.leadfeed.LeadFeedService.LeadType.CALL_DIRECT;
+import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus.FAILURE;
+import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus.SUCCESS;
+import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType.CALL_DIRECT;
 
 public abstract class AGISLeadFeedService extends WebServiceGatewaySupport implements IProviderLeadFeedService{
 

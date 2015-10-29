@@ -97,7 +97,7 @@
 					<c:choose>
 						<c:when test="${company eq 'ozicare'}">
 							<%-- SEND AGIS LEAD --%>
-							<jsp:useBean id="AGISLeadFromCronJob" class="com.ctm.services.life.AGISLeadFromCronJob" scope="page" />
+							<jsp:useBean id="AGISLeadFromCronJob" class="com.ctm.web.life.leadfeed.services.AGISLeadFromCronJob" scope="page" />
 							<c:set var="leadResultStatus" value="${AGISLeadFromCronJob.newLeadFeed(result.transaction_id, transactionData, rankingData, pageSettings)}" />
 
 							<c:if test="${leadResultStatus eq 'OK'}">

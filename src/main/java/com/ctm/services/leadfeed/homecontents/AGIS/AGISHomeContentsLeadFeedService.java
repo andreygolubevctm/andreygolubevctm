@@ -5,7 +5,7 @@ import com.ctm.model.leadfeed.AGISLeadFeedRequest;
 import com.ctm.model.leadfeed.LeadFeedData;
 import com.ctm.model.leadfeed.homecontents.AGISHomeContentsLeadFeedRequest;
 import com.ctm.services.leadfeed.AGISLeadFeedService;
-import com.ctm.services.leadfeed.LeadFeedService.LeadType;
+import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType;
 
 public class AGISHomeContentsLeadFeedService extends AGISLeadFeedService {
 

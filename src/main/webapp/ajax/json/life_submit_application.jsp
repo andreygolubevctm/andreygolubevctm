@@ -32,7 +32,7 @@
 				<c:set var="paramPartnerBrand"><c:out value="${param.partnerBrand}" /></c:set>
 				<go:setData dataVar="data" xpath="lead/brand" value="${paramPartnerBrand}" />
 
-				<jsp:useBean id="AGISLeadFromRequest" class="com.ctm.services.life.AGISLeadFromRequest" scope="page" />
+				<jsp:useBean id="AGISLeadFromRequest" class="com.ctm.web.life.leadfeed.services.AGISLeadFromRequest" scope="page" />
 				<c:set var="leadResultStatus" value="${AGISLeadFromRequest.newPolicySold(pageContext.request, pageSettings, tranId)}" />
 
 				<c:choose>

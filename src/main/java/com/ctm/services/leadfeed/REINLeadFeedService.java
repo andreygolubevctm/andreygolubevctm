@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ctm.exceptions.LeadFeedException;
 import com.ctm.model.leadfeed.LeadFeedData;
-import com.ctm.services.leadfeed.LeadFeedService.LeadType;
-import com.ctm.services.leadfeed.LeadFeedService.LeadResponseStatus;
+import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType;
+import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus;
 
 import static com.ctm.logging.LoggingArguments.kv;
 

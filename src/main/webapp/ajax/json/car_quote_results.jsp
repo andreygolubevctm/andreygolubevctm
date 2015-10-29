@@ -83,7 +83,7 @@
 
 <%-- Add accessorie descriptions to databucket --%>
 
-<jsp:useBean id="carService" class="com.ctm.services.car.CarVehicleSelectionService" scope="request"/>
+<jsp:useBean id="carService" class="com.ctm.web.car.services.CarVehicleSelectionService" scope="request"/>
 <c:set var="accListResult" value="${carService.getVehicleNonStandardMappings()}"/>
 
 <c:set var="accsList" value="${data['quote/accs/*']}"/>
@@ -136,7 +136,7 @@
 
 <%-- Accessories End --%>
 
-<jsp:useBean id="carValidationService" class="com.ctm.services.car.CarService" scope="page" />
+<jsp:useBean id="carValidationService" class="com.ctm.web.car.services.CarService" scope="page" />
 <c:set var="serviceRespone" value="${carValidationService.validate(pageContext.request, data)}" />
 
 <c:choose>

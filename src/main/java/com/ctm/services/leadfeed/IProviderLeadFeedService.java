@@ -2,6 +2,7 @@ package com.ctm.services.leadfeed;
 
 import com.ctm.exceptions.LeadFeedException;
 import com.ctm.model.leadfeed.LeadFeedData;
+import com.ctm.web.core.leadfeed.services.LeadFeedService;
 
 /**
  * Created by msmerdon on 28/04/2015.
