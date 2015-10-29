@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false" >
-
+	<conversionRule conversionWord="env" converterClass="com.ctm.logging.EnvironmentConverter" />
 	<property resource="environment.properties" />
     
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
@@ -9,7 +9,26 @@
 			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c:%L:%X{transactionId}:%X{brandCode}:%X{verticalCode}:%X{correlationId} - %m%n</pattern>
 		</encoder>
   	</appender>
-  
+
+	<appender name="AMQP" class="org.springframework.amqp.rabbit.logback.AmqpAppender">
+		<applicationId>webctm</applicationId>
+		<generateId>true</generateId>
+		<charset>UTF-8</charset>
+		<durable>true</durable>
+		<exchangeName>logs</exchangeName>
+		<deliveryMode>PERSISTENT</deliveryMode>
+		<host>dev-vm-ken-ctm-elk-x1</host>
+		<layout class="net.logstash.logback.layout.LogstashLayout">
+			<fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
+			<includeContext>false</includeContext>
+			<includeMdcKeyName>context</includeMdcKeyName>
+			<customFields>{"hostname":"${HOSTNAME}", "appname":"webctm"}</customFields>
+			<provider class="net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider">
+				<pattern>{"env":"%env{name}","context":"%env{context}"}</pattern>
+			</provider>
+		</layout>
+	</appender>
+
 	<appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
 		<!-- in the absence of the class attribute, it is assumed that the
 				desired discriminator type is
@@ -50,10 +69,12 @@
 
 	<logger name="log4j.logger.org.elasticsearch" level="INFO" additivity="false">
 		<appender-ref ref="stdout" />
+		<appender-ref ref="AMQP" />
 	</logger>
 
 	<root level="info">
    		<appender-ref ref="stdout" />
+		<appender-ref ref="AMQP" />
 	</root>
 	
 </configuration>
