@@ -6,7 +6,7 @@ import com.ctm.web.core.dao.SqlDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
 import com.ctm.services.ApplicationService;
-import com.ctm.services.health.HealthPriceService;
+import com.ctm.web.health.services.HealthPriceService;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;

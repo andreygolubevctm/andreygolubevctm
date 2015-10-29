@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ctm.model.email.BestPriceRanking;
-import com.ctm.model.email.HealthBestPriceEmailModel;
+import com.ctm.web.health.model.email.HealthBestPriceEmailModel;
 
 public class EmailUtils {
 

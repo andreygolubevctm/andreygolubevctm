@@ -1,6 +1,6 @@
 package com.ctm.model.request;
 
-import com.ctm.model.request.health.CappingLimit;
+import com.ctm.web.health.model.request.CappingLimit;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;

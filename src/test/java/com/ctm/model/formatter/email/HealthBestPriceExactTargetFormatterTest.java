@@ -7,8 +7,8 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.ctm.model.email.ExactTargetEmailModel;
-import com.ctm.model.email.HealthBestPriceEmailModel;
-import com.ctm.model.formatter.email.health.HealthBestPriceExactTargetFormatter;
+import com.ctm.web.health.model.email.HealthBestPriceEmailModel;
+import com.ctm.web.health.model.formatter.email.HealthBestPriceExactTargetFormatter;
 import com.ctm.services.email.EmailUtils;
 
 public class HealthBestPriceExactTargetFormatterTest {

@@ -5,16 +5,17 @@ import static org.junit.Assert.assertEquals;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.ctm.web.health.validation.HealthApplicationValidation;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.request.health.Application;
-import com.ctm.model.request.health.Dependants;
-import com.ctm.model.request.health.Dependant;
-import com.ctm.model.request.health.HealthApplicationRequest;
-import com.ctm.model.request.health.Medicare;
-import com.ctm.model.request.health.Payment;
+import com.ctm.web.health.model.request.Application;
+import com.ctm.web.health.model.request.Dependants;
+import com.ctm.web.health.model.request.Dependant;
+import com.ctm.web.health.model.request.HealthApplicationRequest;
+import com.ctm.web.health.model.request.Medicare;
+import com.ctm.web.health.model.request.Payment;
 import com.ctm.web.validation.SchemaValidationError;
 
 public class HealthApplicationValidationTest {

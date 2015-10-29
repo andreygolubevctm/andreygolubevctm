@@ -2,11 +2,12 @@ package com.ctm.services.health;
 
 import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.HealthAltPriceException;
+import com.ctm.web.health.exceptions.HealthAltPriceException;
 import com.ctm.model.content.Content;
 import com.ctm.model.content.ContentSupplement;
-import com.ctm.model.health.HealthPriceResult;
+import com.ctm.web.health.model.HealthPriceResult;
 import com.ctm.services.ContentService;
+import com.ctm.web.health.services.HealthPriceDetailService;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;

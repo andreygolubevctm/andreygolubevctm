@@ -16,7 +16,7 @@ import com.ctm.exceptions.EmailDetailsException;
 import com.ctm.model.EmailMaster;
 import com.ctm.services.email.EmailDetailsService;
 import com.ctm.services.email.mapping.EmailDetailsMappings;
-import com.ctm.services.email.mapping.HealthEmailDetailMappings;
+import com.ctm.web.health.services.email.mapping.HealthEmailDetailMappings;
 import com.disc_au.web.go.Data;
 
 public class EmailDetailsServiceTest {

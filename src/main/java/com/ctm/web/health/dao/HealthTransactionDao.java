@@ -2,7 +2,7 @@ package com.ctm.web.health.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.health.HealthTransaction;
+import com.ctm.web.health.model.HealthTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -5,7 +5,7 @@ import com.ctm.exceptions.CrudValidationException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.helper.simples.CappingLimitsHelper;
 import com.ctm.model.request.CappingLimitDeleteRequest;
-import com.ctm.model.request.health.CappingLimit;
+import com.ctm.web.health.model.request.CappingLimit;
 import com.ctm.model.response.CappingLimitInformation;
 import com.ctm.utils.RequestUtils;
 import com.ctm.web.validation.FormValidation;

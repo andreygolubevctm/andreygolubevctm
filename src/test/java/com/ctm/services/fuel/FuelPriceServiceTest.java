@@ -2,6 +2,7 @@ package com.ctm.services.fuel;
 
 import com.ctm.model.PageRequest;
 import com.ctm.model.settings.PageSettings;
+import com.ctm.web.fuel.services.FuelPriceEndpointService;
 import com.ctm.web.validation.TokenValidation;
 import org.junit.Test;
 

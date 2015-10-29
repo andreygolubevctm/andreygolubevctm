@@ -3,7 +3,7 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="providerId" 	required="true"	 rtexprvalue="true"	 description="Id of provider to link the promo content" %>
-<%@ attribute name="healthPriceService" type="com.ctm.services.health.HealthPriceService" required="true" rtexprvalue="true" description="service to get tranId and application date" %>
+<%@ attribute name="healthPriceService" type="com.ctm.web.health.services.HealthPriceService" required="true" rtexprvalue="true" description="service to get tranId and application date" %>
 
 <jsp:useBean id="specialOffersService" class="com.ctm.services.simples.SpecialOffersService" scope="page" />
 <%-- VARIABLES --%>

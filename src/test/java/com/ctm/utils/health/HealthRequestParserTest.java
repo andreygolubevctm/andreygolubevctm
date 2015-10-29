@@ -1,6 +1,7 @@
 package com.ctm.utils.health;
 
 import com.ctm.services.RequestService;
+import com.ctm.web.health.utils.HealthRequestParser;
 import com.disc_au.web.go.Data;
 import org.junit.Before;
 import org.junit.Test;

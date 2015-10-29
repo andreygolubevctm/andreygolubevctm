@@ -1,6 +1,6 @@
 package com.ctm.helper.simples;
 
-import com.ctm.model.request.health.CappingLimit;
+import com.ctm.web.health.model.request.CappingLimit;
 import com.ctm.model.response.CappingLimitInformation;
 import com.ctm.web.validation.SchemaValidationError;
 

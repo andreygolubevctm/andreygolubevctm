@@ -3,7 +3,7 @@ package com.ctm.factory;
 import com.ctm.model.email.EmailMode;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.email.EmailServiceHandler;
-import com.ctm.services.email.health.HealthEmailService;
+import com.ctm.web.health.services.email.HealthEmailService;
 import com.ctm.test.TestUtils;
 import com.disc_au.web.go.Data;
 import org.junit.Test;

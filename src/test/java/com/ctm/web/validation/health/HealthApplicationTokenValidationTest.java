@@ -2,12 +2,13 @@ package com.ctm.web.validation.health;
 
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;
-import com.ctm.model.request.health.HealthRequest;
+import com.ctm.web.health.model.request.HealthRequest;
 import com.ctm.model.settings.Vertical;
 import com.ctm.security.token.JwtTokenCreator;
 import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
+import com.ctm.web.health.validation.HealthApplicationTokenValidation;
 import org.junit.Before;
 import org.junit.Test;
 

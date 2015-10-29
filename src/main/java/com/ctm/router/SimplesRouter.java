@@ -11,6 +11,7 @@ import com.ctm.model.simples.Message;
 import com.ctm.services.*;
 import com.ctm.services.simples.*;
 import com.ctm.utils.RequestUtils;
+import com.ctm.web.health.services.TransactionService;
 import com.ctm.web.validation.SchemaValidationError;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

@@ -10,7 +10,7 @@ import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.SettingsService;
-import com.ctm.services.health.HealthPriceService;
+import com.ctm.web.health.services.HealthPriceService;
 import com.ctm.utils.RequestUtils;
 import com.ctm.web.validation.SchemaValidationError;
 

@@ -9,7 +9,7 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
 import com.ctm.model.Transaction;
 import com.ctm.model.simples.*;
-import com.ctm.services.TransactionService;
+import com.ctm.web.health.services.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

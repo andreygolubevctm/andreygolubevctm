@@ -5,9 +5,9 @@
 <c:set var="logger" value="${log:getLogger('jsp.rating.health_price_service_PHIO')}" />
 
 <jsp:useBean id="resultsList" class="java.util.ArrayList" scope="request" />
-<jsp:useBean id="healthPriceService" class="com.ctm.services.health.HealthPriceService" scope="page" />
-<jsp:useBean id="healthPriceResultsService" class="com.ctm.services.health.HealthPriceResultsService" scope="page" />
-<jsp:useBean id="healthPriceRequest" class="com.ctm.model.health.HealthPriceRequest" scope="page" />
+<jsp:useBean id="healthPriceService" class="com.ctm.web.health.services.HealthPriceService" scope="page" />
+<jsp:useBean id="healthPriceResultsService" class="com.ctm.web.health.services.HealthPriceResultsService" scope="page" />
+<jsp:useBean id="healthPriceRequest" class="com.ctm.web.health.model.HealthPriceRequest" scope="page" />
 
 <x:parse var="healthXML" xml="${param.QuoteData}" />
 

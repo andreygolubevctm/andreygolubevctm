@@ -1,7 +1,7 @@
 package com.ctm.model.response;
 
 
-import com.ctm.model.request.health.CappingLimit;
+import com.ctm.web.health.model.request.CappingLimit;
 
 /**
  * Extends the capping limit model that is used by CappingLimitsDao

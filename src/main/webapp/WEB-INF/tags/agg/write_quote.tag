@@ -402,7 +402,7 @@
 	</c:catch>
 		</c:when>
 		<c:when test="${hasPrivacyOptin eq true and rootPath eq 'health'}">
-			<jsp:useBean id="userDetails" class="com.ctm.model.request.health.UserDetails" scope="page" />
+			<jsp:useBean id="userDetails" class="com.ctm.web.health.model.request.UserDetails" scope="page" />
 			${userDetails.setFirstname(firstName)}
 			${userDetails.setLastname(lastName)}
 			${userDetails.setRootPath(rootPath)}
