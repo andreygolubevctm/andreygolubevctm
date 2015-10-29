@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.lang.reflect.Field;
+
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -20,11 +22,22 @@ public class EnvironmentConverterTest {
     }
 
     @Test
-    public void getsEnvironmentValue() throws Exception {
+    public void getEmptyValueForInvalidEnvironmentValues() throws Exception {
         final EnvironmentConverter converter = new EnvironmentConverter();
+
+        final Field field = EnvironmentService.class.getDeclaredField("currentEnvironment");
+        field.setAccessible(true);
+        field.set(null, null);
+        EnvironmentService.setContextPath("");
+
         checkTransform(loggingEvent, "empty value returns empty string", converter, "", "name");
         checkTransform(loggingEvent, "empty value returns empty string", converter, "", "context");
         checkTransform(loggingEvent, "empty value returns empty string", converter, "", "");
+    }
+
+    @Test
+    public void getsEnvironmentValue() throws Exception {
+        final EnvironmentConverter converter = new EnvironmentConverter();
 
         EnvironmentService.setEnvironment("localhost");
         checkTransform(loggingEvent, "environment name", converter, "localhost", "name");
