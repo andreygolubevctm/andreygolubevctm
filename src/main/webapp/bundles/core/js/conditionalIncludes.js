@@ -7,11 +7,6 @@
 
         $(document).ready(function() {
             // Scripts that are important to be included earlier should go here.
-        });
-
-        $(window).load(function() {
-
-            // Scripts that don't matter when they are included should go here
 
             if (meerkat.site.kampyleId) {
                 yepnope.injectJs({
@@ -23,6 +18,12 @@
                     meerkat.modules.init();
                 });
             }
+        });
+
+        $(window).load(function() {
+
+            // Scripts that don't matter when they are included should go here
+
         });
 
 
