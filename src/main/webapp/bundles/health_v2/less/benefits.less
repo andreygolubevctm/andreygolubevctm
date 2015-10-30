@@ -1,3 +1,65 @@
 .benefits-list {
     margin-left: 23px;
+    font-family: 'framework_font';
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+
+    .category {
+        &:before {
+            font-size: 90px;
+            /* Hide the checkbox for icons */
+
+        }
+        &[class*="CTM-"] {
+            label{
+                &:before {
+                    display:none;
+                }
+            }
+            float:left;
+        }
+    }
+    .CTM-hospital {
+        &:before { content: "\e720"; }
+    }
+    .CTM-acupuncture {
+        &:before { content: "\e900"; }
+    }
+    .CTM-birth{
+        &:before { content: "\e901"; }
+    }
+    .CTM-chiropractor{
+        &:before { content: "\e902"; }
+    }
+    .CTM-dental{
+        &:before { content: "\e903"; }
+    }
+    .CTM-generaldental{
+        &:before { content: "\e904"; }
+    }
+    .CTM-heartsurgery{
+        &:before { content: "\e905"; }
+    }
+    .CTM-joint{
+        &:before { content: "\e906"; }
+    }
+    .CTM-massage{
+        &:before { content: "\e907"; }
+    }
+    .CTM-naturopathy{
+        &:before { content: "\e908"; }
+    }
+    .CTM-optical{
+        &:before { content: "\e909"; }
+    }
+    .CTM-physiotherapy{
+        &:before { content: "\e90a"; }
+    }
+    .CTM-podiatry{
+        &:before { content: "\e90b"; }
+    }
+    .CTM-psychology{
+        &:before { content: "\e90c"; }
+    }
 }

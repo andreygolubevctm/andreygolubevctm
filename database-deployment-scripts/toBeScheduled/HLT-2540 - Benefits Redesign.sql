@@ -9,3 +9,34 @@ SELECT * FROM aggregator.general where type = 'healthCvrType';
 
 -- Test - Should be 1 record
 SELECT * FROM aggregator.transaction_fields where fieldcode = 'health/situation/coverType';
+
+-- Add classnames to certain benefits so that they can get the icons
+UPDATE `aggregator`.`features_details` SET `className`='CTM-acupuncture' WHERE `id`='7062';
+UPDATE `aggregator`.`features_details` SET `className`='CTM-birth' WHERE `id`='6957';
+UPDATE `aggregator`.`features_details` SET `className`='CTM-chiropractor' WHERE `id`='7045';
+UPDATE `aggregator`.`features_details` SET `className`='CTM-dental' WHERE `id`='7002';
+UPDATE `aggregator`.`features_details` SET `className`='CTM-generaldental' WHERE `id`='6991';
+UPDATE `aggregator`.`features_details` SET `className`='CTM-heartsurgery' WHERE `id`='6954';
+UPDATE `aggregator`.`features_details` SET `className`='CTM-joint' WHERE `id`='6966';
+UPDATE `aggregator`.`features_details` SET `className`='CTM-massage' WHERE `id`='7078';
+UPDATE `aggregator`.`features_details` SET `className`='CTM-naturopathy' WHERE `id`='7070';
+UPDATE `aggregator`.`features_details` SET `className`='CTM-optical' WHERE `id`='7028';
+UPDATE `aggregator`.`features_details` SET `className`='CTM-physiotherapy' WHERE `id`='7036';
+UPDATE `aggregator`.`features_details` SET `className`='CTM-podiatry' WHERE `id`='7054';
+UPDATE `aggregator`.`features_details` SET `className`='CTM-hospital' WHERE `id`='6953';
+UPDATE `aggregator`.`features_details` SET `className`='CTM-psychology' WHERE `id`='6984';
+
+-- Reorder the benefits so the icons are the first elements
+UPDATE `aggregator`.`features_details` SET `sequence`='3' WHERE `id`='6954';
+UPDATE `aggregator`.`features_details` SET `sequence`='4' WHERE `id`='6957';
+UPDATE `aggregator`.`features_details` SET `sequence`='5' WHERE `id`='6966';
+UPDATE `aggregator`.`features_details` SET `sequence`='6' WHERE `id`='6984';
+UPDATE `aggregator`.`features_details` SET `sequence`='7' WHERE `id`='6969';
+UPDATE `aggregator`.`features_details` SET `sequence`='8' WHERE `id`='6952';
+UPDATE `aggregator`.`features_details` SET `sequence`='9' WHERE `id`='6972';
+UPDATE `aggregator`.`features_details` SET `sequence`='10' WHERE `id`='6975';
+UPDATE `aggregator`.`features_details` SET `sequence`='11' WHERE `id`='6978';
+UPDATE `aggregator`.`features_details` SET `sequence`='12' WHERE `id`='6960';
+UPDATE `aggregator`.`features_details` SET `sequence`='13' WHERE `id`='6981';
+UPDATE `aggregator`.`features_details` SET `sequence`='14' WHERE `id`='6963';
+
