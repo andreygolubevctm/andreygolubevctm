@@ -45,8 +45,6 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 			_endStrip : "\"></script>",
 			_cssStartStrip : "<link rel=\"stylesheet\" href=\"",
 			_cssEndStrip : "\">",
-			_headStart : "<head>",
-			_headEnd : "</head>",
 			_counter2 : 0,
 			_ext_code : [],
 			_css_code : '',
@@ -154,12 +152,7 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 				}
 
 				if (targetBrowser == null || bodgyBrowser == true) {
-					if (type == "head"){
-						var new_code = code.replace (${id}_wrapper._headStart,"");
-						new_code = new_code.replace(${id}_wrapper._headEnd,"");
-						${id}_wrapper._head.innerHTML = ${id}_wrapper._head.innerHTML + new_code;
-					}
-					else if (loc == 'int'){
+					if (loc == 'int'){
 						code = ${id}_wrapper.addServerURI(code);
 						if (code != "" && code != "{}"){
 
@@ -331,9 +324,6 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 			loadRemainingScripts : function () {
 
 				<%-- _jsonobj.extJs is loaded first on purpose as we need jquery so isnt here --%>
-				<c:if test="${loadHead == true}">
-					//${id}_wrapper.addheadercode('head', 'int', 'no', ${id}_wrapper._jsonobj.head);
-				</c:if>
 				<c:if test="${loadCSS == true}">
 				${id}_wrapper.addheadercode('css', 'ext', 'no', ${id}_wrapper._jsonobj.extCss);
 				${id}_wrapper.addheadercode('css', 'int', 'no', ${id}_wrapper._jsonobj.css);
