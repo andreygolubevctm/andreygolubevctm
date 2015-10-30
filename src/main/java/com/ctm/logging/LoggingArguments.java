@@ -4,6 +4,7 @@ import net.logstash.logback.argument.StructuredArgument;
 import net.logstash.logback.argument.StructuredArguments;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static com.ctm.logging.WrappedLoggingArgument.wrappedLoggingArgument;
 
@@ -14,25 +15,31 @@ import static com.ctm.logging.WrappedLoggingArgument.wrappedLoggingArgument;
  */
 public class LoggingArguments {
     private LoggingArguments() {}
+    private static final Pattern KEYNAME_PATTERN = Pattern.compile("\\.");
+
+    // remove all . in key name as elasticsearch 2 doesn't support .'s
+    private static String clean(final String key) {
+        return KEYNAME_PATTERN.matcher(key).replaceAll("");
+    }
 
     private static LoggingArgument wrap(StructuredArgument structuredArgument) {
         return wrappedLoggingArgument(structuredArgument);
     }
 
     public static LoggingArgument keyValue(final String key, final Object value) {
-        return wrap(StructuredArguments.keyValue(key, value));
+        return wrap(StructuredArguments.keyValue(clean(key), value));
     }
 
     public static LoggingArgument kv(final String key, final Object value) {
-        return wrap(StructuredArguments.kv(key, value));
+        return wrap(StructuredArguments.kv(clean(key), value));
     }
 
     public static LoggingArgument value(final String key, final Object value) {
-        return wrap(StructuredArguments.value(key, value));
+        return wrap(StructuredArguments.value(clean(key), value));
     }
 
     public static LoggingArgument v(final String key, final Object value) {
-        return wrap(StructuredArguments.v(key, value));
+        return wrap(StructuredArguments.v(clean(key), value));
     }
 
     public static LoggingArgument entries(final Map<?, ?> map) {
