@@ -3,7 +3,7 @@
 
 <jsp:useBean id="now" class="java.util.Date"/>
 
-<sql:setDataSource dataSource="jdbc/ctm" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 
 <core_new:no_cache_header />
 

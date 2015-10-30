@@ -1,0 +1,14 @@
+{
+  "brandCodes": ["ctm"],
+  "dependencies": [
+    "meerkat",
+    "core",
+    "plugins/bootstrapSwitch",
+    "shared/addressLookup",
+    "shared/currency",
+    "shared/datepicker",
+    "shared/commencementDate",
+    "shared/checkboxIE8",
+    "shared/sliders"
+  ]
+}
