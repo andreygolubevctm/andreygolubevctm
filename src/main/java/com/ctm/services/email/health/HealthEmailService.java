@@ -212,6 +212,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 		Optional<HealthRequest> data = Optional.ofNullable((HealthRequest) request.getAttribute("requestData"));
 
+		final String confirmationId = (String)request.getAttribute("confirmationId");
+
 		HealthApplicationEmailModel emailModel = new HealthApplicationEmailModel();
 		emailModel.setEmailAddress(emailDetails.getEmailAddress());
 		emailModel.setFirstName(emailDetails.getFirstName());
@@ -230,7 +232,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		emailModel.setTransactionId(transactionId);
 		try {
 			emailModel.setPhoneNumber(getCallCentreNumber());
-		    emailModel.setActionUrl(createActionUrl(applicationResponse));
+		    emailModel.setActionUrl(createActionUrl(confirmationId));
 		} catch (ConfigSettingException | DaoException e) {
 			LOGGER.error("Failed to buildApplicationEmailModel {} ", kv("emailAddress", emailDetails.getEmailAddress()));
 			throw new SendEmailException("Failed to buildApplicationEmailModel", e);
@@ -260,11 +262,11 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		return emailModel;
 	}
 
-	private String createActionUrl(final HealthApplyResponse applicationResponse) throws ConfigSettingException {
+	private String createActionUrl(final String confirmationId) throws ConfigSettingException {
 		StringBuilder sb = new StringBuilder()
 				.append(pageSettings.getBaseUrl())
 				.append("health_quote.jsp?action=confirmation&ConfirmationID=")
-				.append(applicationResponse.getConfirmationID());
+				.append(confirmationId);
 
 		if(EnvironmentService.getEnvironment() == EnvironmentService.Environment.PRO){
 			sb.append("&sssdmh=dm14.240054");

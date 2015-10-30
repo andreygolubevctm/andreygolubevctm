@@ -151,7 +151,7 @@ public class HealthTransactionDao {
 				"(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) " +
 				"values (?, ?, ?, ?,default, now()); "
 			);
-			stmt.setLong(1, transactionId!=null?0:transactionId);
+			stmt.setLong(1, transactionId == null ? 0 : transactionId);
 			stmt.setInt(2, HealthTransactionSequenceNo.ALLOWABLE_ERRORS);
 			stmt.setString (3, "health/allowedErrors");
 			stmt.setString(4, errors);

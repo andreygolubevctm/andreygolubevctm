@@ -1,16 +1,7 @@
 package com.ctm.model.health.results;
 
-import com.ctm.providers.health.healthapply.model.response.HealthApplyResponse;
+public interface HealthResult {
 
-public class HealthResult {
+    boolean isSuccess();
 
-    private HealthApplyResponse result;
-
-    public HealthApplyResponse getResult() {
-        return result;
-    }
-
-    public void setResult(HealthApplyResponse result) {
-        this.result = result;
-    }
 }

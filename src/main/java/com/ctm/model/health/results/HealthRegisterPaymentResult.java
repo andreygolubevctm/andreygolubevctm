@@ -1,6 +1,6 @@
 package com.ctm.model.health.results;
 
-public class HealthRegisterPaymentResult implements HealthPaymentResult {
+public class HealthRegisterPaymentResult implements HealthResult {
 
     private boolean success;
 

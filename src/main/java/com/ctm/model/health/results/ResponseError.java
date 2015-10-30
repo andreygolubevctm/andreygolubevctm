@@ -1,4 +1,4 @@
-package com.ctm.providers;
+package com.ctm.model.health.results;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;

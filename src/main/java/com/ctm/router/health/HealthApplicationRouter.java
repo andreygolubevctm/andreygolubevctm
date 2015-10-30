@@ -12,10 +12,11 @@ import com.ctm.model.health.form.Application;
 import com.ctm.model.health.form.ContactDetails;
 import com.ctm.model.health.form.HealthQuote;
 import com.ctm.model.health.form.HealthRequest;
-import com.ctm.model.health.results.HealthResult;
+import com.ctm.model.health.results.HealthApplicationResult;
+import com.ctm.model.health.results.HealthResultWrapper;
+import com.ctm.model.health.results.ResponseError;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.Vertical;
-import com.ctm.providers.ResponseError;
 import com.ctm.providers.health.healthapply.model.request.payment.details.Frequency;
 import com.ctm.providers.health.healthapply.model.response.HealthApplicationResponse;
 import com.ctm.providers.health.healthapply.model.response.HealthApplyResponse;
@@ -24,6 +25,7 @@ import com.ctm.providers.health.healthapply.model.response.Status;
 import com.ctm.router.CommonQuoteRouter;
 import com.ctm.services.TouchService;
 import com.ctm.services.TransactionAccessService;
+import com.ctm.services.TransactionService;
 import com.ctm.services.confirmation.ConfirmationService;
 import com.ctm.services.confirmation.JoinService;
 import com.ctm.services.email.EmailServiceHandler;
@@ -43,13 +45,12 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.model.settings.Vertical.VerticalType.HEALTH;
-import static java.lang.Boolean.TRUE;
+import static java.util.stream.Collectors.toList;
 
 @Path("/health")
 public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
@@ -74,9 +75,7 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
     @Path("/apply/get.json")
     @Consumes({"multipart/form-data", "application/x-www-form-urlencoded"})
     @Produces("application/json")
-    public HealthResult getHealthApply(@Context MessageContext context, @FormParam("") final HealthRequest data) throws DaoException, IOException, ServiceConfigurationException, ConfigSettingException {
-
-        // TODO: implement tokenisation validate
+    public HealthResultWrapper getHealthApply(@Context MessageContext context, @FormParam("") final HealthRequest data) throws DaoException, IOException, ServiceConfigurationException, ConfigSettingException {
 
         Vertical.VerticalType vertical = HEALTH;
 
@@ -96,39 +95,18 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
         final String productId = data.getQuote().getApplication().getProductId()
                 .substring(data.getQuote().getApplication().getProductId().indexOf("HEALTH-") + 7);
 
-        // Check for internal or provider errors and record the failed submission and add comments to the quote for call centre staff
-        // Collate the error list messages
-        StringBuilder sb = new StringBuilder();
-        if (!response.getErrorList().isEmpty()) {
-            List<ResponseError> responseErrors = new ArrayList<>();
-            for (int i = 0; i < response.getErrorList().size(); i++) {
-                // Expects 1 base position value
-                final PartnerError partnerError = response.getErrorList().get(i);
-                sb.append("[").append(i + 1).append("] ").append(partnerError.getMessage());
-                // add the errors as ResponseError
-                final ResponseError e = new ResponseError();
-                e.setCode(partnerError.getCode());
-                e.setDescription(partnerError.getMessage());
-                e.setOriginal(partnerError.getMessage());
-                e.setText(partnerError.getMessage());
-                responseErrors.add(e);
-            }
-            applyResponse.setErrors(responseErrors);
-        }
 
-        // Record touch of the error list messages
-        final String errorMessage = sb.toString();
-        if (!errorMessage.isEmpty()) {
-            setToPending(context, data, confirmationId, productId, errorMessage);
-        }
+        HealthApplicationResult result = new HealthApplicationResult();
+
 
         if (Status.Success.equals(response.getSuccess())) {
 
-            applyResponse.setSuccess(true);
-            applyResponse.setConfirmationID(confirmationId);
+            result.setSuccess(true);
+            result.setConfirmationID(confirmationId);
 
             context.getHttpServletRequest().setAttribute("applicationResponse", applyResponse);
             context.getHttpServletRequest().setAttribute("requestData", data);
+            context.getHttpServletRequest().setAttribute("confirmationId", confirmationId);
 
             // Record Confirmation touch
             recordTouch(context, data, productId, Touch.TouchType.SOLD);
@@ -136,7 +114,7 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
             // Write to the join table
             joinService.writeJoin(data.getTransactionId(), productId);
 
-            // TODO: allowable errors???
+            TransactionService.writeAllowableErrors(data.getTransactionId(), getErrors(response.getErrorList(), true));
 
             // write to transaction_details the policy_no
             writePolicyNoToTransactionDetails(data, response);
@@ -147,7 +125,7 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
 
             // TODO: add competition entry
 
-            sendEmail(context, data, vertical, brand, applyResponse, dataBucket);
+            sendEmail(context, data, vertical, brand, dataBucket);
 
             // Check outcome was ok --%>
             LOGGER.info("Transaction has been set to confirmed. {},{}", kv("transactionId", data.getTransactionId()), kv("confirmationID", confirmationId));
@@ -156,30 +134,63 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
 
             // Set callCentre property only when it's not a success
             final String callCentre = (String)context.getHttpServletRequest().getSession().getAttribute("callCentre");
-            applyResponse.setCallcentre("true".equals(callCentre));
-            applyResponse.setSuccess(false);
-            applyResponse.setPendingID(confirmationId);
+            result.setCallcentre("true".equals(callCentre));
+            result.setSuccess(false);
+            result.setPendingID(confirmationId);
 
-            if (StringUtils.isBlank(errorMessage)) {
-                // if online user record a join
-                if (!TRUE.equals(callCentre)) {
-                    setToPending(context, data, confirmationId, productId, "");
-                } else {
-                    // just record a failure
-                    recordTouch(context, data, productId, Touch.TouchType.FAIL);
-                }
+            // Check for internal or provider errors and record the failed submission and add comments to the quote for call centre staff
+            // Collate the error list messages
+            result.setErrors(response.getErrorList()
+                    .stream()
+                    .map(partnerError -> {
+                        // add the errors as ResponseError
+                        final ResponseError e = new ResponseError();
+                        e.setCode(partnerError.getCode());
+                        e.setDescription(partnerError.getMessage());
+                        e.setOriginal(partnerError.getMessage());
+                        e.setText(partnerError.getMessage());
+                        return e;
+                    }).collect(toList()));
+
+            // if online user record a join and add to transaction details
+            if (!"true".equals(callCentre)) {
+                setToPending(context, data, confirmationId, productId, getErrors(response.getErrorList(), false));
+            } else {
+                // just record a failure
+                recordTouch(context, data, productId, Touch.TouchType.FAIL);
             }
 
         }
 
-        LOGGER.debug("Health application complete. {},{}", kv("transactionId", data.getTransactionId()), kv("response", applyResponse));
+        LOGGER.debug("Health application complete. {},{}", kv("transactionId", data.getTransactionId()), kv("response", result));
 
-        HealthResult healthResult = new HealthResult();
-        healthResult.setResult(applyResponse);
-        return healthResult;
+        final HealthResultWrapper resultWrapper = new HealthResultWrapper();
+        resultWrapper.setResult(result);
+        return resultWrapper;
     }
 
-    private void sendEmail(MessageContext context, HealthRequest data, Vertical.VerticalType vertical, Brand brand, HealthApplyResponse applyResponse, Data dataBucket) {
+    private String getErrors(List<PartnerError> errors, boolean nonFatalErrors) {
+        // Check for internal or provider errors and record the failed submission and add comments to the quote for call centre staff
+        // Collate the error list messages
+        final StringBuilder sb = new StringBuilder();
+        if (!errors.isEmpty()) {
+            int i = 0;
+            for (PartnerError error : errors) {
+                // Non fatal errors
+                final PartnerError partnerError = errors.get(i);
+                if (nonFatalErrors && !error.isFatal()) {
+                    sb.append("[").append(i + 1).append("] ").append(partnerError.getMessage());
+                    i++;
+                } else {
+                    sb.append("[").append(i + 1).append("] ").append(partnerError.getMessage());
+                    i++;
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    private void sendEmail(MessageContext context, HealthRequest data, Vertical.VerticalType vertical, Brand brand, Data dataBucket) {
         String confirmationEmailCode;
         try {
 
@@ -227,10 +238,8 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
         confirmation.setTransactionId(data.getTransactionId());
         confirmation.setXmlData(ObjectMapperUtil.getXmlMapper().writeValueAsString(confirmationData));
 
-        boolean confirmed = false;
-
         try {
-            confirmed = confirmationService.addConfirmation(confirmation);
+            confirmationService.addConfirmation(confirmation);
         } catch (Exception e) {
             LOGGER.warn("Failed to add confirmation {}", kv("confirmationId", confirmationId), e);
         }
@@ -246,11 +255,6 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
 
     private void setToPending(MessageContext context, HealthRequest data, String confirmationId, String productId, String errorMessage) throws DaoException {
         recordTouch(context, data, productId, Touch.TouchType.FAIL);
-
-        // TODO: verify if needed to do write optins
-
-        // Save to store error and pendingId
-        // TODO: check that the the transaction is not yet confirmed
 
         // Add trigger
         transactionAccessService.addTransactionDetailsWithDuplicateKeyUpdate(data.getTransactionId(), -5, "pending", ZonedDateTime.now().format(LONG_FORMAT));

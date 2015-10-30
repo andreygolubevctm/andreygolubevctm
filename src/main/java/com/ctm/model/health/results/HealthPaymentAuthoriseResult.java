@@ -3,7 +3,7 @@ package com.ctm.model.health.results;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class HealthPaymentAuthoriseResult implements HealthPaymentResult{
+public class HealthPaymentAuthoriseResult implements HealthResult {
 
     private boolean success;
 

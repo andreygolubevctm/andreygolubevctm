@@ -12,6 +12,7 @@ import com.ctm.model.TransactionProperties;
 import com.ctm.model.health.HealthTransaction;
 import com.ctm.model.simples.ConfirmationOperator;
 import com.ctm.model.simples.Message;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,6 +86,13 @@ public class TransactionService {
 		}
 
 		return details;
+	}
+
+	public static void writeAllowableErrors(Long transactionId, String allowedErrors) throws DaoException {
+		if (StringUtils.isNotBlank(allowedErrors)) {
+			final HealthTransactionDao transactionHealthDao = new HealthTransactionDao();
+			transactionHealthDao.writeAllowableErrors(transactionId, allowedErrors);
+		}
 	}
 
 	/**

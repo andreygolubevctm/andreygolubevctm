@@ -1,7 +1,5 @@
 package com.ctm.model.health.results;
 
-import com.ctm.providers.ResponseError;
-import com.ctm.providers.health.healthapply.model.response.HealthApplyResponse;
 import com.ctm.utils.ObjectMapperUtil;
 import org.junit.Test;
 
@@ -17,21 +15,21 @@ public class HealthResultTest {
 
         final String expected = "{\"result\":{\"transactionId\":0,\"success\":true,\"confirmationID\":\"123-123\"}}";
 
-        HealthResult result = new HealthResult();
-        final HealthApplyResponse response = new HealthApplyResponse();
+        HealthResultWrapper resultWrapper = new HealthResultWrapper();
+        final HealthApplicationResult response = new HealthApplicationResult();
         response.setSuccess(true);
         response.setConfirmationID("123-123");
-        result.setResult(response);
-        assertEquals(expected, ObjectMapperUtil.getObjectMapper().writeValueAsString(result));
+        resultWrapper.setResult(response);
+        assertEquals(expected, ObjectMapperUtil.getObjectMapper().writeValueAsString(resultWrapper));
     }
 
     @Test
     public void testToJsonFailureWithErrors() throws Exception {
 
-        final String expected = "{\"result\":{\"transactionId\":0,\"errors\":[{\"code\":\"000\",\"text\":\"Error 000\"},{\"code\":\"111\",\"text\":\"Error 111\"}],\"success\":false,\"pendingID\":\"123-123\"}}";
+        final String expected = "{\"result\":{\"transactionId\":0,\"success\":false,\"pendingID\":\"123-123\",\"errors\":[{\"code\":\"000\",\"text\":\"Error 000\"},{\"code\":\"111\",\"text\":\"Error 111\"}]}}";
 
-        HealthResult result = new HealthResult();
-        final HealthApplyResponse response = new HealthApplyResponse();
+        HealthResultWrapper resultWrapper = new HealthResultWrapper();
+        final HealthApplicationResult response = new HealthApplicationResult();
         response.setSuccess(false);
         response.setPendingID("123-123");
         List<ResponseError> responseErrors = new ArrayList<>();
@@ -44,18 +42,18 @@ public class HealthResultTest {
         e2.setText("Error 111");
         responseErrors.add(e2);
         response.setErrors(responseErrors);
-        result.setResult(response);
-        assertEquals(expected, ObjectMapperUtil.getObjectMapper().writeValueAsString(result));
+        resultWrapper.setResult(response);
+        assertEquals(expected, ObjectMapperUtil.getObjectMapper().writeValueAsString(resultWrapper));
 
     }
 
     @Test
     public void testToJsonFailureWithErrorsAndCallCentre() throws Exception {
 
-        final String expected = "{\"result\":{\"transactionId\":0,\"errors\":[{\"code\":\"000\",\"text\":\"Error 000\"},{\"code\":\"111\",\"text\":\"Error 111\"}],\"success\":false,\"callcentre\":true,\"pendingID\":\"123-123\"}}";
+        final String expected = "{\"result\":{\"transactionId\":0,\"success\":false,\"callcentre\":true,\"pendingID\":\"123-123\",\"errors\":[{\"code\":\"000\",\"text\":\"Error 000\"},{\"code\":\"111\",\"text\":\"Error 111\"}]}}";
 
-        HealthResult result = new HealthResult();
-        final HealthApplyResponse response = new HealthApplyResponse();
+        HealthResultWrapper resultWrapper = new HealthResultWrapper();
+        final HealthApplicationResult response = new HealthApplicationResult();
         response.setSuccess(false);
         response.setPendingID("123-123");
         response.setCallcentre(true);
@@ -69,8 +67,8 @@ public class HealthResultTest {
         e2.setText("Error 111");
         responseErrors.add(e2);
         response.setErrors(responseErrors);
-        result.setResult(response);
-        assertEquals(expected, ObjectMapperUtil.getObjectMapper().writeValueAsString(result));
+        resultWrapper.setResult(response);
+        assertEquals(expected, ObjectMapperUtil.getObjectMapper().writeValueAsString(resultWrapper));
 
     }
 

@@ -5,6 +5,7 @@ public class PartnerError {
     private ErrorType type;
     private String code;
     private String message;
+    private Boolean fatal;
 
     public ErrorType getType() {
         return type;
@@ -18,4 +19,7 @@ public class PartnerError {
         return message;
     }
 
+    public Boolean isFatal() {
+        return fatal;
+    }
 }

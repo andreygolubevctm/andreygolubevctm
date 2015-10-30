@@ -4,7 +4,7 @@ import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.model.health.form.HealthAuthorisePaymentRequest;
-import com.ctm.model.health.results.HealthPaymentResultWrapper;
+import com.ctm.model.health.results.HealthResultWrapper;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.Vertical;
 import com.ctm.router.CommonQuoteRouter;
@@ -26,7 +26,7 @@ public class HealthAuthorisePaymentRouter extends CommonQuoteRouter<HealthAuthor
     @Path("/payment/authorise.json")
     @Consumes({"multipart/form-data", "application/x-www-form-urlencoded"})
     @Produces("application/json")
-    public HealthPaymentResultWrapper authorise(@Context MessageContext context, @FormParam("") final HealthAuthorisePaymentRequest data) throws
+    public HealthResultWrapper authorise(@Context MessageContext context, @FormParam("") final HealthAuthorisePaymentRequest data) throws
             DaoException, IOException, ServiceConfigurationException, ConfigSettingException {
 
         Vertical.VerticalType vertical = HEALTH;
@@ -37,7 +37,7 @@ public class HealthAuthorisePaymentRouter extends CommonQuoteRouter<HealthAuthor
 
         data.setReturnUrl(getPageSettingsByCode(brand, vertical).getBaseUrl());
 
-        HealthPaymentResultWrapper wrapper = new HealthPaymentResultWrapper();
+        HealthResultWrapper wrapper = new HealthResultWrapper();
         wrapper.setResult(healthPaymentService.authorise(brand, data));
 
         return wrapper;
