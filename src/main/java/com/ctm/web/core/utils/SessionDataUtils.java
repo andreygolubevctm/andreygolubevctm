@@ -1,6 +1,6 @@
 package com.ctm.web.core.utils;
 
-import com.ctm.logging.LoggingVariables;
+import com.ctm.web.core.logging.LoggingVariables;
 import com.ctm.web.core.web.go.Data;
 
 public class SessionDataUtils {

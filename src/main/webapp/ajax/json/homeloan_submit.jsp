@@ -51,8 +51,8 @@
 
 
 <%-- SUBMIT TO PARTNER --%>
-<jsp:useBean id="appService" class="com.ctm.services.homeloan.HomeLoanOpportunityService" scope="page" />
-<jsp:useBean id="homeloanService" class="com.ctm.services.homeloan.HomeLoanService" scope="page" />
+<jsp:useBean id="appService" class="com.ctm.web.homeloan.services.HomeLoanOpportunityService" scope="page" />
+<jsp:useBean id="homeloanService" class="com.ctm.web.homeloan.services.HomeLoanService" scope="page" />
 <c:set var="secret_key" value="${appService.getSecretKey()}" />
 <c:set var="model" value="${homeloanService.mapParametersToModel(pageContext.getRequest())}" />
 <c:set var="submitResult" value="${appService.submitOpportunity(pageContext.getRequest(), model)}" />

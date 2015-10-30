@@ -1,6 +1,6 @@
 package com.ctm.web.homecontents.model.results;
 
-import com.ctm.model.resultsData.Result;
+import com.ctm.web.core.resultsData.model.Result;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.List;

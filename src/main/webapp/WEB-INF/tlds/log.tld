@@ -17,7 +17,7 @@
 	<function>
 		<description>Get Logger</description>
 		<name>getLogger</name>
-		<function-class>com.ctm.logging.jstl.JstlLoggerFactory</function-class>
+		<function-class>com.ctm.web.core.logging.jstl.JstlLoggerFactory</function-class>
 		<function-signature>com.ctm.logging.jstl.JstlLogger getLogger(java.lang.String)</function-signature>
 	</function>
 

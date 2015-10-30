@@ -14,7 +14,7 @@
 
 <jsp:useBean id="soapdata" class="com.ctm.web.core.web.go.Data" scope="request" />
 
-<jsp:useBean id="roadsideService" class="com.ctm.services.roadside.RoadsideService" scope="page" />
+<jsp:useBean id="roadsideService" class="com.ctm.web.roadside.services.RoadsideService" scope="page" />
 <c:set var="serviceRespone" value="${roadsideService.validate(pageContext.request, data)}" />
 <c:choose>
 <%-- RECOVER: if things have gone pear shaped --%>

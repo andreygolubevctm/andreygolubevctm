@@ -4,7 +4,7 @@ import com.ctm.web.homecontents.model.results.*;
 import com.ctm.web.homecontents.model.results.Price;
 import com.ctm.web.homecontents.model.results.ProductDisclosure;
 import com.ctm.web.homecontents.model.results.Underwriter;
-import com.ctm.model.resultsData.AvailableType;
+import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.homecontents.providers.model.response.HomeQuote;
 import com.ctm.web.homecontents.providers.model.response.HomeResponse;
 import com.ctm.web.homecontents.providers.model.response.MoreInfo;

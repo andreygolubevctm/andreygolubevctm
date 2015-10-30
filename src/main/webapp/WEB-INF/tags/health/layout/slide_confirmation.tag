@@ -193,7 +193,7 @@
 	</script>
 
 <%-- JAVASCRIPT --%>
-	<jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
+	<jsp:useBean id="resultsService" class="com.ctm.web.core.services.results.ResultsService" scope="request" />
 	<c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString('health', 'category')}" scope="request"  />
 	<script>
 		var resultLabels = ${jsonString};

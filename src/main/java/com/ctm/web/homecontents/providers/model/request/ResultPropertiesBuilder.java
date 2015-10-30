@@ -1,6 +1,6 @@
 package com.ctm.web.homecontents.providers.model.request;
 
-import com.ctm.model.results.ResultProperty;
+import com.ctm.web.core.results.model.ResultProperty;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

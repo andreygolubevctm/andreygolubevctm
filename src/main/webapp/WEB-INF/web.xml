@@ -40,8 +40,8 @@
 		<init-param>
 			<param-name>jaxrs.providers</param-name>
 			<param-value>
-				com.ctm.router.RouterJacksonJsonProvider,
-				com.ctm.router.exceptionhandlers.ServiceExceptionHandler
+				com.ctm.web.core.router.RouterJacksonJsonProvider,
+				com.ctm.web.core.router.exceptionhandlers.ServiceExceptionHandler
 			</param-value>
 		</init-param>
 		<init-param>
@@ -147,7 +147,7 @@
 
 	<filter>
 		<filter-name>mdcFilter</filter-name>
-		<filter-class>com.ctm.logging.listeners.MDCFilter</filter-class>
+		<filter-class>com.ctm.web.core.logging.listeners.MDCFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>mdcFilter</filter-name>

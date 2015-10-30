@@ -1,7 +1,7 @@
 package com.ctm.web.core.utils;
 
 
-import com.ctm.services.EnvironmentService;
+import com.ctm.web.core.services.EnvironmentService;
 import org.junit.Test;
 
 import javax.servlet.ServletContext;

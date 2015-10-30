@@ -1,6 +1,6 @@
 package com.ctm.web.life.email.model;
 
-import com.ctm.web.core.model.email.BestPriceEmailModel;
+import com.ctm.web.core.email.model.BestPriceEmailModel;
 
 public class LifeBestPriceEmailModel extends BestPriceEmailModel {
 

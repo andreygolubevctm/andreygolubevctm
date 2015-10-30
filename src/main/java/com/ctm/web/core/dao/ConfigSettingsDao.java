@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static com.ctm.model.settings.ConfigSetting.ALL_ENVIRONMENTS;
-import static com.ctm.services.EnvironmentService.getEnvironmentAsString;
+import static com.ctm.web.core.services.EnvironmentService.getEnvironmentAsString;
 
 public class ConfigSettingsDao {
 

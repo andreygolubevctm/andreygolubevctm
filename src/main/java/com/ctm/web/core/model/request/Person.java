@@ -1,6 +1,6 @@
 package com.ctm.web.core.model.request;
 
-import com.ctm.web.validation.Name;
+import com.ctm.web.core.validation.Name;
 
 public class Person {
 

@@ -1,6 +1,6 @@
 package com.ctm.web.homecontents.model;
 
-import com.ctm.web.validation.Name;
+import com.ctm.web.core.validation.Name;
 
 public class PolicyHolder {
 	

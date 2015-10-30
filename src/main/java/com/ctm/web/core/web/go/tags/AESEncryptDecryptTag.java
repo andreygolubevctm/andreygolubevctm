@@ -1,6 +1,6 @@
 package com.ctm.web.core.web.go.tags;
 
-import com.ctm.security.StringEncryption;
+import com.ctm.web.core.security.StringEncryption;
 
 import javax.servlet.jsp.JspException;
 import java.io.IOException;

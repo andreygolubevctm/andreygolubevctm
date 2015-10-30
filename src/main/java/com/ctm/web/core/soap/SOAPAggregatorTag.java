@@ -5,15 +5,15 @@
 
 package com.ctm.web.core.soap;
 
-import com.ctm.logging.CorrelationIdUtils;
+import com.ctm.web.core.logging.CorrelationIdUtils;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.EnvironmentService;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.soap.SoapConfiguration;
-import com.ctm.web.validation.SchemaValidation;
+import com.ctm.web.core.validation.SchemaValidation;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.core.web.go.xml.XmlParser;
 import org.slf4j.Logger;
@@ -34,12 +34,12 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Optional;
 
-import static com.ctm.logging.CorrelationIdUtils.clearCorrelationId;
-import static com.ctm.logging.CorrelationIdUtils.setCorrelationId;
+import static com.ctm.web.core.logging.CorrelationIdUtils.clearCorrelationId;
+import static com.ctm.web.core.logging.CorrelationIdUtils.setCorrelationId;
 import static com.ctm.web.core.logging.LoggingArguments.kv;
-import static com.ctm.logging.LoggingVariables.clearLoggingVariables;
-import static com.ctm.logging.LoggingVariables.setLoggingVariables;
-import static com.ctm.services.EnvironmentService.Environment.*;
+import static com.ctm.web.core.logging.LoggingVariables.clearLoggingVariables;
+import static com.ctm.web.core.logging.LoggingVariables.setLoggingVariables;
+import static com.ctm.web.core.services.EnvironmentService.Environment.*;
 
 /**
  * The Class SOAPAggregatorTag with WAR compatibility.

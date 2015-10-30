@@ -1,10 +1,10 @@
 package com.ctm.web.simples.admin.router;
 
 import com.ctm.web.simples.admin.dao.CappingLimitsDao;
-import com.ctm.router.core.CrudRouter;
+import com.ctm.web.core.router.core.CrudRouter;
 import com.ctm.web.simples.services.ProviderContentService;
 import com.ctm.web.simples.admin.services.CappingLimitsService;
-import com.ctm.services.simples.admin.CrudService;
+import com.ctm.web.core.services.CrudService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

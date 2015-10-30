@@ -1,9 +1,9 @@
 package com.ctm.web.travel.email.model.formatter;
 
-import com.ctm.web.core.model.email.ExactTargetEmailModel;
+import com.ctm.web.core.email.model.ExactTargetEmailModel;
 import com.ctm.web.travel.email.model.TravelBestPriceEmailModel;
 import com.ctm.web.travel.email.model.TravelBestPriceRanking;
-import com.ctm.web.core.model.formatter.email.ExactTargetFormatter;
+import com.ctm.web.core.email.formatter.ExactTargetFormatter;
 import com.ctm.web.core.utils.FormDateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

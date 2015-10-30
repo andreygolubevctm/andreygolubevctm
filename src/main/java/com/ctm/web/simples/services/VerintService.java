@@ -2,11 +2,11 @@ package com.ctm.web.simples.services;
 
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.exceptions.ConfigSettingException;
-import com.ctm.exceptions.EnvironmentException;
-import com.ctm.exceptions.ServiceException;
+import com.ctm.web.core.exceptions.EnvironmentException;
+import com.ctm.web.core.exceptions.ServiceException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.services.SessionDataService;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.core.web.go.xml.XmlParser;
 import org.slf4j.Logger;

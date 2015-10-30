@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
-<jsp:useBean id="simplesService" class="com.ctm.services.SimplesService" scope="request" />
+<jsp:useBean id="simplesService" class="com.ctm.web.simples.services.SimplesService" scope="request" />
 <jsp:useBean id="transactionService" class="com.ctm.web.health.services.TransactionService" scope="request" />
 
 <session:get authenticated="true" />

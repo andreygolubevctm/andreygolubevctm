@@ -1,4 +1,4 @@
-<%@ tag import="com.ctm.web.core.model.email.EmailMode" %>
+<%@ tag import="com.ctm.web.core.email.model.EmailMode" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -12,7 +12,7 @@
 <%@ attribute name="rankBy"			required="true"	 rtexprvalue="true"	 description="eg. price-asc, benefitsSort-asc" %>
 <%@ attribute name="rankParamName"	required="false"	 rtexprvalue="true"	 description="rankParamName" %>
 
-<jsp:useBean id="fatalErrorService" class="com.ctm.services.FatalErrorService" scope="page" />
+<jsp:useBean id="fatalErrorService" class="com.ctm.web.core.services.FatalErrorService" scope="page" />
 
 
 	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
@@ -135,7 +135,7 @@
 		</sql:update>
 	</c:if>
 
-<jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
+<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
 	<c:choose>
 		<c:when test="${pageSettings.getVerticalCode() == 'travel'}">
 			<%-- Attempt to send email only after best price has been set and only if not call centre user --%>

@@ -4,8 +4,8 @@ import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
-import com.ctm.services.EnvironmentService;
-import com.ctm.services.EnvironmentService.Environment;
+import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.services.EnvironmentService.Environment;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

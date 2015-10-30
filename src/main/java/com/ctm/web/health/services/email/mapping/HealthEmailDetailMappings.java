@@ -1,6 +1,6 @@
 package com.ctm.web.health.services.email.mapping;
 
-import com.ctm.services.email.mapping.EmailDetailsMappings;
+import com.ctm.web.core.services.email.mapping.EmailDetailsMappings;
 import com.ctm.web.core.web.go.Data;
 
 public class HealthEmailDetailMappings implements EmailDetailsMappings {

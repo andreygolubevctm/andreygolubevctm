@@ -2,28 +2,29 @@ package com.ctm.web.car.services;
 
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
-import com.ctm.exceptions.*;
 import com.ctm.model.QuoteServiceProperties;
 import com.ctm.web.car.model.form.CarQuote;
 import com.ctm.web.car.model.form.CarRequest;
 import com.ctm.web.car.model.results.CarResult;
-import com.ctm.model.results.ResultProperty;
-import com.ctm.model.resultsData.AvailableType;
+import com.ctm.web.core.results.model.ResultProperty;
+import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.model.settings.Brand;
+import com.ctm.web.core.exceptions.RouterException;
+import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.homecontents.providers.model.request.Request;
 import com.ctm.web.homecontents.providers.model.request.ResultPropertiesBuilder;
 import com.ctm.web.car.quote.model.RequestAdapter;
 import com.ctm.web.car.quote.model.ResponseAdapter;
 import com.ctm.web.car.quote.model.request.CarQuoteRequest;
 import com.ctm.web.car.quote.model.response.CarResponse;
-import com.ctm.services.CommonQuoteService;
-import com.ctm.services.EnvironmentService;
-import com.ctm.services.ResultsService;
-import com.ctm.services.SessionDataService;
+import com.ctm.web.core.services.CommonQuoteService;
+import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.results.services.ResultsService;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.car.exceptions.CarServiceException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.validation.CommencementDateValidation;
-import com.ctm.logging.XMLOutputWriter;
+import com.ctm.web.core.validation.CommencementDateValidation;
+import com.ctm.web.core.logging.XMLOutputWriter;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,7 +45,7 @@ import java.util.List;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
-import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
+import static com.ctm.web.core.logging.XMLOutputWriter.REQ_OUT;
 
 public class CarQuoteService extends CommonQuoteService<CarQuote> {
 

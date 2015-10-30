@@ -2,8 +2,8 @@ package com.ctm.web.health.validation;
 
 import com.ctm.model.Touch;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.services.SessionDataService;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.SettingsService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;

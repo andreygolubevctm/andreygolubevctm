@@ -2,9 +2,9 @@ package com.ctm.web.creditcards.services.creditcards;
 
 import com.ctm.web.creditcards.model.CreditCardRequest;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.services.RequestService;
+import com.ctm.web.core.services.RequestService;
 import com.ctm.web.creditcards.utils.CreditCardRequestParser;
-import com.ctm.web.validation.FormValidation;
+import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.web.validation.SchemaValidationError;
 import com.ctm.web.core.web.go.Data;
 

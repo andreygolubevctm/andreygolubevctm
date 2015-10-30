@@ -1,6 +1,6 @@
 package com.ctm.web.core.utils;
 
-import com.ctm.services.EnvironmentService;
+import com.ctm.web.core.services.EnvironmentService;
 import org.apache.commons.io.IOUtils;
 
 import javax.servlet.ServletContext;

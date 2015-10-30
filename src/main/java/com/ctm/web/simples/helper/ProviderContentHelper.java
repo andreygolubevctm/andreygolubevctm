@@ -1,8 +1,8 @@
 package com.ctm.web.simples.helper;
 
-import com.ctm.exceptions.CrudValidationException;
+import com.ctm.web.core.exceptions.CrudValidationException;
 import com.ctm.model.ProviderContent;
-import com.ctm.web.validation.FormValidation;
+import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.web.validation.SchemaValidationError;
 
 import java.util.Date;

@@ -6,7 +6,7 @@ import com.ctm.web.core.model.Transaction;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.services.ApplicationService;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
 import org.apache.taglibs.standard.tag.common.sql.ResultImpl;
 import org.slf4j.Logger;

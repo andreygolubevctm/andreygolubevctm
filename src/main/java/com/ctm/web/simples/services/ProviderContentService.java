@@ -3,14 +3,14 @@ package com.ctm.web.simples.services;
 import com.ctm.web.core.dao.ProviderDao;
 import com.ctm.web.simples.dao.ProviderContentDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
-import com.ctm.exceptions.CrudValidationException;
+import com.ctm.web.core.exceptions.CrudValidationException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.simples.helper.ProviderContentHelper;
 import com.ctm.model.ProviderContent;
 import com.ctm.model.session.AuthenticatedData;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.SessionDataService;
-import com.ctm.services.simples.admin.CrudService;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.CrudService;
 import com.ctm.web.core.utils.RequestUtils;
 
 import javax.servlet.http.HttpServletRequest;

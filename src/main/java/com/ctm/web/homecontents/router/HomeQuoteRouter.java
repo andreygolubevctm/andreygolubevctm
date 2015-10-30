@@ -1,16 +1,16 @@
 package com.ctm.web.homecontents.router;
 
-import com.ctm.exceptions.RouterException;
+import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.homecontents.model.form.HomeRequest;
 import com.ctm.web.homecontents.model.results.HomeMoreInfo;
 import com.ctm.web.homecontents.model.results.HomeResult;
-import com.ctm.model.resultsData.Info;
-import com.ctm.model.resultsData.ResultsObj;
-import com.ctm.model.resultsData.ResultsWrapper;
+import com.ctm.web.core.resultsData.model.Info;
+import com.ctm.web.core.resultsData.model.ResultsObj;
+import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.model.settings.Brand;
-import com.ctm.router.CommonQuoteRouter;
+import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.homecontents.services.HomeQuoteService;
-import com.ctm.services.tracking.TrackingKeyService;
+import com.ctm.web.core.services.tracking.TrackingKeyService;
 import com.ctm.web.core.web.validation.SchemaValidationError;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 

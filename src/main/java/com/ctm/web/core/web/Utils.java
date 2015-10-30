@@ -1,6 +1,6 @@
 package com.ctm.web.core.web;
 
-import com.ctm.services.EnvironmentService;
+import com.ctm.web.core.services.EnvironmentService;
 
 public class Utils {
 

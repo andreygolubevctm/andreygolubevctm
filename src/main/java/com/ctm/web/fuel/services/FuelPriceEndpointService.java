@@ -3,12 +3,12 @@ package com.ctm.web.fuel.services;
 import com.ctm.model.PageRequest;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.services.CTMEndpointService;
-import com.ctm.services.RequestService;
-import com.ctm.services.SessionDataService;
-import com.ctm.services.SettingsService;
-import com.ctm.web.validation.ResultsTokenValidation;
-import com.ctm.web.validation.TokenValidation;
+import com.ctm.web.core.services.CTMEndpointService;
+import com.ctm.web.core.services.RequestService;
+import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.core.validation.ResultsTokenValidation;
+import com.ctm.web.core.validation.TokenValidation;
 
 import javax.servlet.http.HttpServletRequest;
 

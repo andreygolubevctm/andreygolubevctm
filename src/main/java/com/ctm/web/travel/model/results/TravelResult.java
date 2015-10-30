@@ -1,6 +1,6 @@
 package com.ctm.web.travel.model.results;
 
-import com.ctm.model.resultsData.Result;
+import com.ctm.web.core.resultsData.model.Result;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

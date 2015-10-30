@@ -9,9 +9,9 @@ import com.ctm.web.core.content.model.ContentSupplement;
 import com.ctm.web.health.model.HealthAlternatePricing;
 import com.ctm.web.health.model.HealthPriceResult;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.services.ApplicationService;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.content.services.ContentService;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.services.SettingsService;
 import org.json.JSONException;
 
 import javax.servlet.http.HttpServletRequest;

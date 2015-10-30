@@ -1,7 +1,7 @@
 package com.ctm.web.car.services;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.ServiceException;
+import com.ctm.web.core.exceptions.ServiceException;
 import com.ctm.web.car.dao.*;
 import com.ctm.web.car.model.*;
 import com.fasterxml.jackson.core.JsonProcessingException;

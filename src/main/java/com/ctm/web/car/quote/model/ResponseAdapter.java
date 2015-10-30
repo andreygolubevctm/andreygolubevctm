@@ -6,7 +6,7 @@ import com.ctm.web.car.model.results.Feature;
 import com.ctm.web.car.model.results.Price;
 import com.ctm.web.car.model.results.ProductDisclosure;
 import com.ctm.web.car.model.results.Underwriter;
-import com.ctm.model.resultsData.AvailableType;
+import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.travel.quote.model.QuoteResponse;
 import com.ctm.web.car.model.results.CarResult;
 import com.ctm.web.car.quote.model.response.CarQuote;

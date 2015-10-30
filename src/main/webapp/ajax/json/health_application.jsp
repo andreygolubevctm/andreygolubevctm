@@ -208,7 +208,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 				<core:transaction touch="C" noResponse="true" productId="${productId}"/>
 
 						<c:set var="ignore">
-								<jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService" scope="page" />
+								<jsp:useBean id="joinService" class="com.ctm.web.core.confirmation.services.JoinService" scope="page" />
 						${joinService.writeJoin(tranId,productId)}
 						</c:set>
 

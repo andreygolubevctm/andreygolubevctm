@@ -1,8 +1,8 @@
 package com.ctm.web.simples.router;
 
 import com.ctm.web.core.model.Error;
-import com.ctm.services.SessionDataService;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.simples.services.VerintService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

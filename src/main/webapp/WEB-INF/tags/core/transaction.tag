@@ -234,7 +234,7 @@
 
 <%-- If RESULTS touch then ensure trackingKey is generated and added to session --%>
 <c:if test="${touch eq 'R'}">
-	<jsp:useBean id="trackingKeyService" class="com.ctm.services.tracking.TrackingKeyService" scope="request" />
+	<jsp:useBean id="trackingKeyService" class="com.ctm.web.core.services.tracking.TrackingKeyService" scope="request" />
 	<c:catch var="trackingKeyError">
 		<c:set var="ignore">
 			${trackingKeyService.generate(pageContext.getRequest(), data.current.transactionId)}

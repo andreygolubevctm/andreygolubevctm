@@ -1,6 +1,6 @@
 package com.ctm.web.utilities.services;
 
-import com.ctm.exceptions.UtilitiesWebServiceException;
+import com.ctm.web.utilities.exceptions.UtilitiesWebServiceException;
 import com.ctm.web.utilities.model.UtilitiesProductModel;
 import com.ctm.web.utilities.model.UtilitiesProductRequestModel;
 import org.json.JSONObject;

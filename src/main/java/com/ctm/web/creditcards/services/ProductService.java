@@ -14,8 +14,8 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.Product;
 import com.ctm.web.creditcards.model.CreditCardProduct;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SettingsService;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

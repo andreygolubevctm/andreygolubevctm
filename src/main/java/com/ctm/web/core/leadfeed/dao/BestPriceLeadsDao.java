@@ -7,7 +7,7 @@ import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.model.leadfeed.LeadFeedRootTransaction;
 import com.ctm.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.services.ApplicationService;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.VerticalsDao;

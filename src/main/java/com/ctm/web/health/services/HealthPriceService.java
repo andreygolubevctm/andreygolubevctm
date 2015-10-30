@@ -3,7 +3,7 @@ package com.ctm.web.health.services;
 import com.ctm.web.core.dao.StyleCodeDao;
 import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.logging.LoggingVariables;
+import com.ctm.web.core.logging.LoggingVariables;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.health.services.results.ProviderRestrictionsService;
 import com.ctm.web.core.utils.FormDateUtils;

@@ -1,7 +1,7 @@
 package com.ctm.web.core.content.services;
 
-import com.ctm.services.ApplicationService;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.cache.ApplicationCacheManager;
 import com.ctm.web.core.content.cache.ContentControlCache;
 import com.ctm.web.core.content.dao.ContentDao;

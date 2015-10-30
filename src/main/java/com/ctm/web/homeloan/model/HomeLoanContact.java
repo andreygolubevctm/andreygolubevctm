@@ -1,6 +1,6 @@
 package com.ctm.web.homeloan.model;
 
-import com.ctm.web.validation.Name;
+import com.ctm.web.core.validation.Name;
 
 /**
  * Created by lbuchanan on 15/12/2014.

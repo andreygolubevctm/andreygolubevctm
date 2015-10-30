@@ -1,6 +1,6 @@
 package com.ctm.web.utilities.services;
 
-import com.ctm.exceptions.UtilitiesWebServiceException;
+import com.ctm.web.utilities.exceptions.UtilitiesWebServiceException;
 import com.ctm.web.utilities.model.UtilitiesApplicationModel;
 import com.ctm.web.utilities.model.UtilitiesApplicationRequestModel;
 import com.ctm.web.core.web.go.Data;

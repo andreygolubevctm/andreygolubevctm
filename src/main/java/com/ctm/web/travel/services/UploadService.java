@@ -1,6 +1,6 @@
 package com.ctm.web.travel.services;
 
-import com.ctm.exceptions.UploaderException;
+import com.ctm.web.core.exceptions.UploaderException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;

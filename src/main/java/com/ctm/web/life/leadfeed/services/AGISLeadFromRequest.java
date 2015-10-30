@@ -2,12 +2,12 @@ package com.ctm.web.life.leadfeed.services;
 
 import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.SessionDataService;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
 import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;

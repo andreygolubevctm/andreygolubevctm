@@ -3,7 +3,7 @@ package com.ctm.web.simples.dao;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.simples.model.InboundPhoneNumber;
-import com.ctm.services.ApplicationService;
+import com.ctm.web.core.services.ApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

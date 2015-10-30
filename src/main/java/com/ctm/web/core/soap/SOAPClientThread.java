@@ -6,8 +6,8 @@
 package com.ctm.web.core.soap;
 
 import com.ctm.web.core.constants.ErrorCode;
-import com.ctm.logging.CorrelationIdUtils;
-import com.ctm.logging.XMLOutputWriter;
+import com.ctm.web.core.logging.CorrelationIdUtils;
+import com.ctm.web.core.logging.XMLOutputWriter;
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
 import com.ctm.web.core.utils.function.Action;
@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
-import static com.ctm.logging.XMLOutputWriter.*;
+import static com.ctm.web.core.logging.XMLOutputWriter.*;
 
 
 /**

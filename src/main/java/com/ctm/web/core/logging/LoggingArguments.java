@@ -1,6 +1,5 @@
 package com.ctm.web.core.logging;
 
-import com.ctm.logging.LoggingArgument;
 import net.logstash.logback.argument.StructuredArgument;
 import net.logstash.logback.argument.StructuredArguments;
 

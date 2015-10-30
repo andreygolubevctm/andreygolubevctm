@@ -1,6 +1,6 @@
 package com.ctm.web.health.model.request;
 
-import com.ctm.web.validation.DateRange;
+import com.ctm.web.core.validation.DateRange;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;

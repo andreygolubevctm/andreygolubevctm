@@ -74,7 +74,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 		<go:setData dataVar="data" xpath="previous/transactionId" value="${requestedTransaction}" />
 		${logger.info('Transaction Id has been updated. {},{}', log:kv('requestedTransaction',requestedTransaction ) ,log:kv('data.current.transactionId', data.current.transactionId))}
 		<%-- Now we get back to basics and load the data for the requested transaction --%>
-		<jsp:useBean id="remoteLoadQuoteService" class="com.ctm.services.RemoteLoadQuoteService" scope="page" />
+		<jsp:useBean id="remoteLoadQuoteService" class="com.ctm.web.core.services.RemoteLoadQuoteService" scope="page" />
 
 				<c:catch var="error">
 			<c:set var="details" value="${remoteLoadQuoteService.getTransactionDetails(emailHash, quoteType, param.type, param.email, requestedTransaction, styleCodeId)}" />

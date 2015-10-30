@@ -13,8 +13,8 @@
 </c:if>
 
 <%-- Check requests from IP and throw 429 if limit exceeded. --%>
-<jsp:useBean id="sessionDataService" class="com.ctm.services.SessionDataService" />
-<jsp:useBean id="ipCheckService" class="com.ctm.services.IPCheckService" />
+<jsp:useBean id="sessionDataService" class="com.ctm.web.core.services.SessionDataService" />
+<jsp:useBean id="ipCheckService" class="com.ctm.web.core.services.IPCheckService" />
 <c:choose>
 	<%-- Remove session and throw 429 error if request limit exceeded --%>
 	<c:when test="${!ipCheckService.isWithinLimitAsBoolean(pageContext.request, pageSettings)}">

@@ -1,6 +1,6 @@
 package com.ctm.web.creditcards.router;
 
-import com.ctm.exceptions.UploaderException;
+import com.ctm.web.core.exceptions.UploaderException;
 import com.ctm.web.creditcards.model.UploadRequest;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;

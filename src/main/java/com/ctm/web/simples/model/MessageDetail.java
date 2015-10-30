@@ -2,7 +2,7 @@ package com.ctm.web.simples.model;
 
 import com.ctm.model.Comment;
 import com.ctm.model.Touch;
-import com.ctm.model.simples.MessageAudit;
+import com.ctm.web.core.model.MessageAudit;
 import com.ctm.web.core.model.Transaction;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

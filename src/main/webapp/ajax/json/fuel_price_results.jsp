@@ -6,7 +6,7 @@
 <session:get settings="true" authenticated="true" verticalCode="FUEL"/>
 
 <%-- Check IP address to see if its permitted. --%>
-<jsp:useBean id="ipCheckService" class="com.ctm.services.IPCheckService" />
+<jsp:useBean id="ipCheckService" class="com.ctm.web.core.services.IPCheckService" />
 <jsp:useBean id="quoteResults" class="com.ctm.web.fuel.services.FuelPriceEndpointService" />
 ${quoteResults.init(pageContext.request, pageSettings)}
 <c:choose>

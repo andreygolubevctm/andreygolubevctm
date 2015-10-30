@@ -7,8 +7,8 @@ import com.ctm.web.simples.admin.model.request.OpeningHoursHelper;
 import com.ctm.web.simples.admin.model.OpeningHours;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.validation.SchemaValidationError;
 

@@ -1,6 +1,6 @@
 package com.ctm.web.travel.email.model;
 
-import com.ctm.web.core.model.email.BestPriceRanking;
+import com.ctm.web.core.email.model.BestPriceRanking;
 
 public class TravelBestPriceRanking extends BestPriceRanking {
 

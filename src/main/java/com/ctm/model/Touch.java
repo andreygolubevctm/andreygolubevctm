@@ -1,6 +1,6 @@
 package com.ctm.model;
 
-import com.ctm.model.simples.DisplayDateSerializer;
+import com.ctm.web.core.model.DisplayDateSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.json.JSONException;

@@ -1,6 +1,6 @@
 package com.ctm.web.car.leadfeed.services.REIN;
 
-import com.ctm.services.leadfeed.REINLeadFeedService;
+import com.ctm.web.core.leadfeed.services.REINLeadFeedService;
 
 public class REINCarLeadFeedService extends REINLeadFeedService {
 

@@ -4,10 +4,10 @@ import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.travel.exceptions.TravelServiceException;
-import com.ctm.logging.XMLOutputWriter;
+import com.ctm.web.core.logging.XMLOutputWriter;
 import com.ctm.model.QuoteServiceProperties;
-import com.ctm.model.results.ResultProperty;
-import com.ctm.model.resultsData.AvailableType;
+import com.ctm.web.core.results.model.ResultProperty;
+import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.web.travel.model.form.TravelQuote;
@@ -18,9 +18,9 @@ import com.ctm.web.travel.quote.model.RequestAdapter;
 import com.ctm.web.travel.quote.model.ResponseAdapter;
 import com.ctm.web.travel.quote.model.request.TravelQuoteRequest;
 import com.ctm.web.travel.quote.model.response.TravelResponse;
-import com.ctm.services.CommonQuoteService;
-import com.ctm.services.EnvironmentService;
-import com.ctm.services.ResultsService;
+import com.ctm.web.core.services.CommonQuoteService;
+import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.results.services.ResultsService;
 import com.ctm.web.travel.model.form.TravelRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
-import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
+import static com.ctm.web.core.logging.XMLOutputWriter.REQ_OUT;
 
 public class TravelService extends CommonQuoteService<TravelQuote> {
 

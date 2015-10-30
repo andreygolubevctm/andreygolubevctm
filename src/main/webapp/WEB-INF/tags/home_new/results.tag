@@ -42,13 +42,13 @@
 <home_new:results_filterbar_xs />
 
 <%-- Get data to build sections/categories/features --%>
-<jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
+<jsp:useBean id="resultsService" class="com.ctm.web.core.services.results.ResultsService" scope="request" />
 <c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString('hncams', 'category')}" scope="request"  />
 <script>
 	var resultLabels = ${jsonString};
 </script>
 
-<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
+<jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
 <c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
 <div id="deviceType" data-deviceType="${deviceType}"></div>
 

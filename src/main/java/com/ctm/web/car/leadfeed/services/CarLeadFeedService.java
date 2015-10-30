@@ -1,10 +1,10 @@
 package com.ctm.web.car.leadfeed.services;
 
 import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
-import com.ctm.exceptions.LeadFeedException;
+import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.model.Touch.TouchType;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
-import com.ctm.services.leadfeed.IProviderLeadFeedService;
+import com.ctm.web.core.leadfeed.services.IProviderLeadFeedService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
 import com.ctm.web.car.leadfeed.services.AGIS.AGISCarLeadFeedService;
 import com.ctm.web.car.leadfeed.services.AI.AICarLeadFeedService;

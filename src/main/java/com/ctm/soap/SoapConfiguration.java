@@ -1,12 +1,12 @@
 package com.ctm.soap;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.model.settings.*;
 import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
-import com.ctm.services.EnvironmentService;
-import com.ctm.services.EnvironmentService.Environment;
-import com.ctm.services.ServiceConfigurationService;
+import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.services.EnvironmentService.Environment;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.core.web.go.xml.XmlParser;

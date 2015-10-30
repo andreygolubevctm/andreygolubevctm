@@ -1,7 +1,7 @@
 package com.ctm.web.creditcards.model;
 
-import com.ctm.web.validation.Name;
-import com.ctm.web.validation.Numeric;
+import com.ctm.web.core.validation.Name;
+import com.ctm.web.core.validation.Numeric;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 

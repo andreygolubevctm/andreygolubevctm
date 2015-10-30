@@ -1,8 +1,8 @@
 package com.ctm.web.simples.dao;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.simples.MessageAudit;
-import com.ctm.services.FatalErrorService;
+import com.ctm.web.core.model.MessageAudit;
+import com.ctm.web.core.services.FatalErrorService;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

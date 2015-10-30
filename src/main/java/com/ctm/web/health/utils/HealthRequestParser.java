@@ -1,7 +1,7 @@
 package com.ctm.web.health.utils;
 
 import com.ctm.web.health.model.request.HealthRequest;
-import com.ctm.services.RequestService;
+import com.ctm.web.core.services.RequestService;
 
 import javax.validation.constraints.NotNull;
 

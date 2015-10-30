@@ -1,12 +1,12 @@
 package com.ctm.web.simples.services;
 
-import com.ctm.services.QuoteService;
+import com.ctm.web.core.services.QuoteService;
 import com.ctm.web.core.connectivity.JsonConnection;
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.simples.dao.InboundPhoneNumberDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.EnvironmentException;
+import com.ctm.web.core.exceptions.EnvironmentException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.web.simples.model.CallInfo;

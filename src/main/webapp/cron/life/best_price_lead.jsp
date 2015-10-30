@@ -1,4 +1,4 @@
-<%@ page import="com.ctm.web.core.model.email.EmailMode"%><%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.ctm.web.core.email.model.EmailMode"%><%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="logger" value="${log:getLogger('jsp.cron.life.best_price_lead')}" />
@@ -102,7 +102,7 @@
 
 							<c:if test="${leadResultStatus eq 'OK'}">
 								<%-- SEND AGIS EMAIL --%>
-								<jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
+								<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
 								
 								<%-- enums are not will handled in jsp --%>
 								<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>

@@ -1,6 +1,6 @@
 package com.ctm.web.roadside.model.request;
 
-import com.ctm.web.validation.Year;
+import com.ctm.web.core.validation.Year;
 
 public class RoadsideRequest {
 

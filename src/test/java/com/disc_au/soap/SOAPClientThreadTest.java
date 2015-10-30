@@ -1,6 +1,6 @@
 package com.disc_au.soap;
 
-import com.ctm.logging.CorrelationIdUtils;
+import com.ctm.web.core.logging.CorrelationIdUtils;
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
 import com.ctm.test.TestUtils;

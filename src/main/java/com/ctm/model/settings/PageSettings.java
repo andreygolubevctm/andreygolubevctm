@@ -1,9 +1,9 @@
 package com.ctm.model.settings;
 
 import com.ctm.web.core.exceptions.ConfigSettingException;
-import com.ctm.exceptions.EnvironmentException;
-import com.ctm.exceptions.VerticalException;
-import com.ctm.services.EnvironmentService;
+import com.ctm.web.core.exceptions.EnvironmentException;
+import com.ctm.web.core.exceptions.VerticalException;
+import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.model.settings.Vertical;
 
 public class PageSettings {

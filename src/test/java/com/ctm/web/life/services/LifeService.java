@@ -1,9 +1,9 @@
 package com.ctm.web.life.services;
 
 import com.ctm.web.life.model.request.LifeRequest;
-import com.ctm.services.RequestService;
+import com.ctm.web.core.services.RequestService;
 import com.ctm.web.core.utils.life.LifeRequestParser;
-import com.ctm.web.validation.FormValidation;
+import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.web.validation.SchemaValidationError;
 import com.ctm.web.core.web.go.Data;
 

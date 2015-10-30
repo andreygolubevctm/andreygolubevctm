@@ -1,6 +1,6 @@
 package com.ctm.connectivity;
 
-import com.ctm.logging.CorrelationIdUtils;
+import com.ctm.web.core.logging.CorrelationIdUtils;
 import com.ctm.test.TestUtils;
 import com.ctm.web.core.connectivity.SimpleConnection;
 import org.junit.Before;

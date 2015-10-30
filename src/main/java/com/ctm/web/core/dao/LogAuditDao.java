@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.model.LogAudit;
-import com.ctm.services.confirmation.JoinService;
+import com.ctm.web.core.confirmation.services.JoinService;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

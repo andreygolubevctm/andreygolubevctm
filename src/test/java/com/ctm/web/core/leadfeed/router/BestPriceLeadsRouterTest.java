@@ -3,7 +3,7 @@ package com.ctm.web.core.leadfeed.router;
 import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.services.ApplicationService;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,5 +1,6 @@
 package com.ctm.web.simples.router;
 
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
@@ -8,8 +9,7 @@ import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.simples.model.Message;
-import com.ctm.services.*;
-import com.ctm.services.simples.*;
+import com.ctm.web.core.services.*;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.health.services.TransactionService;
 import com.ctm.web.simples.admin.router.AdminRouter;
@@ -17,6 +17,7 @@ import com.ctm.web.simples.admin.services.OpeningHoursService;
 import com.ctm.web.simples.admin.services.SpecialOffersService;
 import com.ctm.web.simples.services.PhoneService;
 import com.ctm.web.simples.services.SimplesMessageService;
+import com.ctm.web.simples.services.SimplesTickleService;
 import com.ctm.web.simples.services.SimplesUserService;
 import com.ctm.web.core.web.validation.SchemaValidationError;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,9 +1,9 @@
 package com.ctm.web.core.router;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.Error;
-import com.ctm.services.FatalErrorService;
+import com.ctm.web.core.services.FatalErrorService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.services.IsoLocationsService;
 import org.json.JSONObject;

@@ -1,7 +1,7 @@
 package com.ctm.web.core.connectivity;
 
 
-import com.ctm.logging.CorrelationIdUtils;
+import com.ctm.web.core.logging.CorrelationIdUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

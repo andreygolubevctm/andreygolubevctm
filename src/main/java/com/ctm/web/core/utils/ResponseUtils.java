@@ -1,7 +1,7 @@
 package com.ctm.web.core.utils;
 
 import com.ctm.web.core.model.Error;
-import com.ctm.services.FatalErrorService;
+import com.ctm.web.core.services.FatalErrorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;

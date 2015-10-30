@@ -21,7 +21,7 @@
 	<c:when test="${empty emailAddress}">
 	</c:when>
 	<c:when test="${not empty hashedEmail}">
-		<jsp:useBean id="authenticationService" class="com.ctm.services.AuthenticationService" scope="request" />
+		<jsp:useBean id="authenticationService" class="com.ctm.web.core.services.AuthenticationService" scope="request" />
 		<c:set var="emailDetails" value="${authenticationService.onlineUserAuthenticate(hashedEmail, emailAddress, styleCodeId)}" />
 		<c:set var="validCredentials" value="${emailDetails.isValid()}" />
 		<c:choose>

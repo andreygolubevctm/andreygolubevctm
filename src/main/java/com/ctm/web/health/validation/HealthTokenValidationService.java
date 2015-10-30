@@ -2,9 +2,9 @@ package com.ctm.web.health.validation;
 
 import com.ctm.web.health.model.request.HealthRequest;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.services.SessionDataService;
-import com.ctm.services.SettingsService;
-import com.ctm.web.validation.ResultsTokenValidation;
+import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.core.validation.ResultsTokenValidation;
 
 
 public class HealthTokenValidationService extends ResultsTokenValidation<HealthRequest> {

@@ -1,5 +1,6 @@
 package com.ctm.web.health.services;
 
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
@@ -9,11 +10,11 @@ import com.ctm.web.health.model.HealthPricePremium;
 import com.ctm.web.health.model.request.HealthApplicationRequest;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.services.*;
+import com.ctm.web.core.services.*;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.health.utils.HealthApplicationParser;
 import com.ctm.web.health.utils.HealthRequestParser;
-import com.ctm.web.validation.FormValidation;
+import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.web.validation.SchemaValidationError;
 import com.ctm.web.health.validation.HealthApplicationTokenValidation;
 import com.ctm.web.health.validation.HealthApplicationValidation;

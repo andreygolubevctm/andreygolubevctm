@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.LeadFeedException;
+import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
 import com.ctm.web.core.content.model.Content;

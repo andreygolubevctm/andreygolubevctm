@@ -1,6 +1,6 @@
 package com.ctm.model.settings;
 
-import com.ctm.services.EnvironmentService;
+import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.model.settings.Vertical;
 import org.junit.Before;
 import org.junit.Test;

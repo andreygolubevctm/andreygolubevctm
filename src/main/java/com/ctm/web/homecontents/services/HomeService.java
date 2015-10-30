@@ -2,9 +2,9 @@ package com.ctm.web.homecontents.services;
 
 import com.ctm.web.homecontents.model.HomeRequest;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.services.RequestService;
+import com.ctm.web.core.services.RequestService;
 import com.ctm.web.homecontents.utils.HomeRequestParser;
-import com.ctm.web.validation.FormValidation;
+import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.web.validation.SchemaValidationError;
 import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;

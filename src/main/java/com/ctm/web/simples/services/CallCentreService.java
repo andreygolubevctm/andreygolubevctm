@@ -10,8 +10,9 @@ import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.session.SessionData;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.simples.model.InboundPhoneNumber;
-import com.ctm.services.*;
+import com.ctm.web.core.services.*;
 
 public class CallCentreService {
 

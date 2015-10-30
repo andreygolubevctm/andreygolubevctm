@@ -1,8 +1,8 @@
 package com.ctm.web.core.coupon.services;
 
 import com.ctm.model.settings.PageSettings;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.coupon.model.Coupon;
 import com.ctm.web.core.coupon.model.CouponChannel;
 import com.ctm.web.core.coupon.model.request.CouponRequest;

@@ -1,8 +1,9 @@
 package com.ctm.factory;
 
-import com.ctm.web.core.model.email.EmailMode;
+import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.services.email.EmailServiceHandler;
+import com.ctm.web.core.email.services.EmailServiceHandler;
+import com.ctm.web.factory.EmailServiceFactory;
 import com.ctm.web.health.services.email.HealthEmailService;
 import com.ctm.test.TestUtils;
 import com.ctm.web.core.web.go.Data;
@@ -18,7 +19,7 @@ public class EmailServiceFactoryTest {
 		PageSettings pageSettings = TestUtils.getCTMHealthPageSettings();
 		EmailMode mode = EmailMode.BEST_PRICE;
 		Data data = new Data();
-		EmailServiceHandler emailServiceHandler = EmailServiceFactory.newInstance(pageSettings, mode, data );
+		EmailServiceHandler emailServiceHandler = EmailServiceFactory.newInstance(pageSettings, mode, data);
 		assertEquals(emailServiceHandler.getClass() , HealthEmailService.class);
 
 	}

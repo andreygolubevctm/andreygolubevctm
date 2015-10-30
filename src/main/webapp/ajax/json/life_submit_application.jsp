@@ -1,4 +1,4 @@
-<%@ page import="com.ctm.web.core.model.email.EmailMode" %>
+<%@ page import="com.ctm.web.core.email.model.EmailMode" %>
 <%@ page language="java" contentType="text/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
@@ -63,7 +63,7 @@
 
 							<c:if test="${companyName ne 'ozicare'}">
 								<%-- SEND AGIS EMAIL --%>
-								<jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
+								<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
 								
 								<%-- enums are not will handled in jsp --%>
 								<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>

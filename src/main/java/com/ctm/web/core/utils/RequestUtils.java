@@ -1,9 +1,9 @@
 package com.ctm.web.core.utils;
 
-import com.ctm.exceptions.SessionException;
+import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.model.session.SessionData;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.services.SessionDataService;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

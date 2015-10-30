@@ -2,7 +2,7 @@ package com.ctm.web.core.competition.services;
 
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
-import com.ctm.services.ApplicationService;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.competition.dao.CompetitionDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
