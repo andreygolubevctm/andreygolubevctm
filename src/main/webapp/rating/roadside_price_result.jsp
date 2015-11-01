@@ -26,7 +26,7 @@ ${logger.trace('Starting results jsp. {}', log:kv('param.QuoteData ', param.Quot
 
 <c:set var="providerId" >${param.providerId}</c:set>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- Get products that match the passed criteria --%>
 <%-- StyleCode is referenced once in the parent roadside_rates to knockout disabled products --%>

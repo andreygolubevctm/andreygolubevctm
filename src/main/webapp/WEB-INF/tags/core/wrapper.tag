@@ -2,6 +2,7 @@
 <%@ tag description="Dynamically load a tag from an external source"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%@ attribute name="jqueryuiversion"	required="false" rtexprvalue="true"	 description="jQueryUI version to be loaded" %>
 <%@ attribute name="loadjQuery" 	required="false" rtexprvalue="true"	 description="If jquery is needed to be loaded" %>
 <%@ attribute name="loadExtJs" 		required="false" rtexprvalue="true"	 description="If extJs is needed to be loaded" %>
 <%@ attribute name="loadjQueryUI" 	required="false" rtexprvalue="true"	 description="If jqueryUI is needed to be loaded" %>
@@ -81,7 +82,8 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 				"html":"<go:insertmarker name="body" format="JSON"/>"
 			},
 			<go:script marker="body"><jsp:doBody /></go:script>
-			<go:script marker="head"><core:head quoteType="main" title="${title }" loadjQuery="${loadjQuery}" loadjQueryUI="${loadjQueryUI}" jqueryVersion="1.7.2.min" nonQuotePage="${true}"/></go:script>
+
+			<go:script marker="head"><core:head quoteType="main" title="${title }" loadjQuery="${loadjQuery}" jqueryuiversion="${jqueryuiversion}" loadjQueryUI="${loadjQueryUI}" jqueryVersion="1.7.2.min" nonQuotePage="${true}"/></go:script>
 
 
 			init: function(){

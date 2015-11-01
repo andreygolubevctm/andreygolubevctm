@@ -59,7 +59,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 		${logger.info('PROCEEDINATOR PASSED. {},{}',log:kv('quoteType', quoteType),log:kv('transactionId',id_for_access_check))}
 		<c:set var="requestedTransaction" value="${id_for_access_check}" />
 
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 				<%-- 30/1/13: Increment TranID when 'ANYONE' opens a quote --%>
 				<c:set var="id_handler" value="increment_tranId" />

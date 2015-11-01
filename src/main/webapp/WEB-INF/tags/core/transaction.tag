@@ -67,7 +67,7 @@
 	</c:choose>
 </c:set>
 
-<sql:setDataSource dataSource="jdbc/ctm" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 
 
 
