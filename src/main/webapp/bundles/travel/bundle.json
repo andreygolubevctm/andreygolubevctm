@@ -2,6 +2,7 @@
   "brandCodes": ["ctm"],
   "dependencies": [
     "shared/results",
+    "shared/optIn",
     "shared/validation",
     "core",
     "shared/selectTags",
