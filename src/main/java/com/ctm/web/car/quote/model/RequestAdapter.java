@@ -2,10 +2,6 @@ package com.ctm.web.car.quote.model;
 
 import com.ctm.web.car.model.form.*;
 import com.ctm.web.car.quote.model.request.*;
-import com.ctm.web.car.quote.model.request.Contact;
-import com.ctm.web.car.quote.model.request.Drivers;
-import com.ctm.web.car.quote.model.request.RiskAddress;
-import com.ctm.web.car.quote.model.request.Vehicle;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -44,11 +40,11 @@ public class RequestAdapter {
         return quoteRequest;
     }
 
-    private static final Vehicle createVehicle(CarQuote carQuote) {
+    private static final com.ctm.web.car.quote.model.request.Vehicle createVehicle(CarQuote carQuote) {
 
         com.ctm.web.car.model.form.Vehicle quoteVehicle = carQuote.getVehicle();
 
-        Vehicle vehicle = new Vehicle();
+        com.ctm.web.car.quote.model.request.Vehicle vehicle = new com.ctm.web.car.quote.model.request.Vehicle();
         vehicle.setMake(quoteVehicle.getMake());
         vehicle.setModel(quoteVehicle.getModel());
         vehicle.setYear(Integer.parseInt(quoteVehicle.getYear()));
@@ -95,8 +91,8 @@ public class RequestAdapter {
     }
 
 
-    private static RiskAddress createRiskAddress(CarQuote carQuote) {
-        RiskAddress riskAddress = new RiskAddress();
+    private static com.ctm.web.car.quote.model.request.RiskAddress createRiskAddress(CarQuote carQuote) {
+        com.ctm.web.car.quote.model.request.RiskAddress riskAddress = new com.ctm.web.car.quote.model.request.RiskAddress();
         final com.ctm.web.car.model.form.RiskAddress quoteAddress = carQuote.getRiskAddress();
         riskAddress.setFullAddressLineOne(quoteAddress.getFullAddressLineOne());
         if (StringUtils.isNotBlank(quoteAddress.getStreetNum())) {
@@ -137,8 +133,8 @@ public class RequestAdapter {
         }
     }
 
-    private static Drivers createDrivers(CarQuote carQuote) {
-        Drivers drivers = new Drivers();
+    private static com.ctm.web.car.quote.model.request.Drivers createDrivers(CarQuote carQuote) {
+        com.ctm.web.car.quote.model.request.Drivers drivers = new com.ctm.web.car.quote.model.request.Drivers();
         final com.ctm.web.car.model.form.Drivers quoteDrivers = carQuote.getDrivers();
         drivers.setRegularDriver(createRegularDriver(quoteDrivers.getRegular()));
         drivers.setYoungestDriver(createYoungestDriver(quoteDrivers.getYoung()));
@@ -169,8 +165,8 @@ public class RequestAdapter {
         return regularDriver;
     }
 
-    private static Contact createContact(com.ctm.web.car.model.form.Contact carContact) {
-        Contact contact = new Contact();
+    private static com.ctm.web.car.quote.model.request.Contact createContact(com.ctm.web.car.model.form.Contact carContact) {
+        com.ctm.web.car.quote.model.request.Contact contact = new com.ctm.web.car.quote.model.request.Contact();
         contact.setEmail(carContact.getEmail());
         contact.setPhone(carContact.getPhone());
         return contact;

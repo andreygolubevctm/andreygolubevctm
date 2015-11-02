@@ -3,25 +3,24 @@ package com.ctm.web.travel.services;
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.travel.exceptions.TravelServiceException;
 import com.ctm.web.core.logging.XMLOutputWriter;
-import com.ctm.model.QuoteServiceProperties;
+import com.ctm.web.core.model.QuoteServiceProperties;
+import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.ServiceConfiguration;
+import com.ctm.web.core.providers.Request;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.ServiceConfiguration;
+import com.ctm.web.core.services.CommonQuoteService;
+import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.services.ResultsService;
+import com.ctm.web.homecontents.providers.request.ResultPropertiesBuilder;
+import com.ctm.web.travel.exceptions.TravelServiceException;
 import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.results.TravelResult;
-import com.ctm.web.homecontents.providers.model.request.Request;
-import com.ctm.web.homecontents.providers.model.request.ResultPropertiesBuilder;
 import com.ctm.web.travel.quote.model.RequestAdapter;
 import com.ctm.web.travel.quote.model.ResponseAdapter;
 import com.ctm.web.travel.quote.model.request.TravelQuoteRequest;
 import com.ctm.web.travel.quote.model.response.TravelResponse;
-import com.ctm.web.core.services.CommonQuoteService;
-import com.ctm.web.core.services.EnvironmentService;
-import com.ctm.web.core.results.services.ResultsService;
-import com.ctm.web.travel.model.form.TravelRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;
@@ -57,7 +56,7 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
      * @param data
      * @return
      */
-    public List<TravelResult> getQuotes(Brand brand, String verticalCode, TravelRequest data) throws TravelServiceException{
+    public List<TravelResult> getQuotes(Brand brand, String verticalCode, com.ctm.web.travel.model.form.TravelRequest data) throws TravelServiceException{
 
         // Get quote from Form Request
         final TravelQuote quote = data.getQuote();

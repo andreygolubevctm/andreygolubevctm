@@ -1,13 +1,13 @@
-package com.ctm.services.health;
+package com.ctm.web.core.services.health;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Touch;
+import com.ctm.web.core.model.Touch;
 import com.ctm.web.health.model.request.HealthRequest;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.security.token.JwtTokenCreator;
-import com.ctm.security.token.config.TokenCreatorConfig;
-import com.ctm.services.SessionDataService;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.security.token.JwtTokenCreator;
+import com.ctm.web.core.security.token.config.TokenCreatorConfig;
+import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.health.validation.HealthTokenValidationService;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.ctm.exceptions;
+package com.ctm.web.core.leadfeed.exceptions;
 
 
 public class LeadFeedException extends Exception{

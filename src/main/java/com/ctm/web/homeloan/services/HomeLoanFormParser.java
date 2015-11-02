@@ -1,4 +1,4 @@
-package com.ctm.services.homeloan;
+package com.ctm.web.homeloan.services;
 
 import com.ctm.web.homeloan.model.HomeLoanContact;
 

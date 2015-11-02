@@ -1,4 +1,4 @@
-package com.ctm.model.resultsData;
+package com.ctm.web.core.resultsData.model;
 
 /**
  * This class is used to hold the results java classes when returning to the front end

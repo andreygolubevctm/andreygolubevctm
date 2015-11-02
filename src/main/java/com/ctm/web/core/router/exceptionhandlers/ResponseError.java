@@ -1,4 +1,4 @@
-package com.ctm.router.exceptionhandlers;
+package com.ctm.web.core.router.exceptionhandlers;
 
 import java.util.ArrayList;
 import java.util.List;

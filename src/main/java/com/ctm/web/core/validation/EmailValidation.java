@@ -1,4 +1,4 @@
-package com.ctm.web.validation;
+package com.ctm.web.core.validation;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

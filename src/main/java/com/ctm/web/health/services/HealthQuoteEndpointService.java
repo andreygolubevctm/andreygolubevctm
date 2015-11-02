@@ -1,7 +1,7 @@
 package com.ctm.web.health.services;
 
 import com.ctm.web.health.model.request.HealthRequest;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.CTMEndpointService;
 import com.ctm.web.core.services.RequestService;

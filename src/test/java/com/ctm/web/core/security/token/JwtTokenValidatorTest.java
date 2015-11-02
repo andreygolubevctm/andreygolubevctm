@@ -1,12 +1,12 @@
-package com.ctm.security.token;
+package com.ctm.web.core.security.token;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Touch;
+import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.request.TokenRequest;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.security.token.config.TokenCreatorConfig;
-import com.ctm.security.token.exception.InvalidTokenException;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.security.token.config.TokenCreatorConfig;
+import com.ctm.web.core.security.token.exception.InvalidTokenException;
+import com.ctm.web.core.services.SettingsService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

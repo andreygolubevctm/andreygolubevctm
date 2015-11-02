@@ -1,6 +1,6 @@
-package com.ctm.exceptions;
+package com.ctm.web.core.exceptions;
 
-import com.ctm.web.core.web.validation.SchemaValidationError;
+import com.ctm.web.core.validation.SchemaValidationError;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.ctm.web.simples.services;
 
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.TokenSecurityException;
-import com.ctm.model.session.SessionToken;
+import com.ctm.web.core.model.session.SessionToken;
 import com.ctm.web.core.services.AuthenticationService;
 import com.ctm.web.core.utils.SessionUtils;
 

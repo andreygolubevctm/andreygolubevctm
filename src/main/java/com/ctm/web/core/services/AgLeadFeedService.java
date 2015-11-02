@@ -1,24 +1,23 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
-import java.io.IOException;
-
+import com.ctm.aglead.ws.Request;
+import com.ctm.aglead.ws.Response;
+import com.ctm.web.core.logging.SpringWSLoggingInterceptor;
+import com.ctm.web.core.logging.XMLOutputWriter;
+import com.ctm.web.core.model.settings.PageSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
-import com.ctm.aglead.ws.Request;
-import com.ctm.aglead.ws.Response;
-import com.ctm.logging.SpringWSLoggingInterceptor;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.logging.XMLOutputWriter;
+import java.io.IOException;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 /**
  * This class should only be used by Life/IP.
  * A more current refactor was started for AGIS leads to be used on Car.
- * Use com.ctm.services.leadfeed.AGISLeadFeedService.java instead
+ * Use com.ctm.web.core.services.leadfeed.AGISLeadFeedService.java instead
  */
 public class AgLeadFeedService extends WebServiceGatewaySupport {
 

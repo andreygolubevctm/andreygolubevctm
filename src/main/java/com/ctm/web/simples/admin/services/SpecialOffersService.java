@@ -1,18 +1,18 @@
 package com.ctm.web.simples.admin.services;
 
-import com.ctm.web.simples.admin.dao.SpecialOffersDao;
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.simples.helper.SpecialOffersHelper;
-import com.ctm.model.SpecialOffers;
-import com.ctm.model.TransactionDetail;
-import com.ctm.model.session.AuthenticatedData;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.TransactionDetail;
+import com.ctm.web.core.model.session.AuthenticatedData;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
-import com.ctm.web.health.services.HealthPriceService;
 import com.ctm.web.core.utils.RequestUtils;
-import com.ctm.web.core.web.validation.SchemaValidationError;
+import com.ctm.web.core.validation.SchemaValidationError;
+import com.ctm.web.health.services.HealthPriceService;
+import com.ctm.web.simples.admin.dao.SpecialOffersDao;
+import com.ctm.web.simples.admin.model.SpecialOffers;
+import com.ctm.web.simples.helper.SpecialOffersHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;

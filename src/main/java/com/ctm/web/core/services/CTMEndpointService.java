@@ -1,7 +1,7 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
-import com.ctm.model.PageRequest;
-import com.ctm.web.validation.TokenValidation;
+import com.ctm.web.core.model.PageRequest;
+import com.ctm.web.core.validation.TokenValidation;
 import org.json.JSONException;
 import org.json.JSONObject;
 

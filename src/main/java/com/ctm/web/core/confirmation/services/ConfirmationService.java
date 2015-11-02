@@ -1,20 +1,19 @@
-package com.ctm.services.confirmation;
-
-import java.net.URLEncoder;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package com.ctm.web.core.confirmation.services;
 
 import com.ctm.web.core.dao.ConfirmationDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Confirmation;
+import com.ctm.web.core.model.Confirmation;
 import com.ctm.web.core.model.TransactionProperties;
-import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.EnvironmentService;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.services.SettingsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URLEncoder;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

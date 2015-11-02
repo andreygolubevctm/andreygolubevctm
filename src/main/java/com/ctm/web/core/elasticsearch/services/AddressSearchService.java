@@ -1,6 +1,6 @@
 package com.ctm.web.core.elasticsearch.services;
 
-import com.ctm.exceptions.ElasticSearchConfigurationException;
+import com.ctm.web.core.exceptions.ElasticSearchConfigurationException;
 import org.elasticsearch.client.Client;
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,7 +1,7 @@
 package com.ctm.web.core.web;
 
-import com.ctm.model.Touch;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.Touch;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.security.token.config.TokenConfigFactory;
 import com.ctm.web.core.security.token.config.TokenCreatorConfig;
 import com.ctm.web.core.services.SessionDataService;

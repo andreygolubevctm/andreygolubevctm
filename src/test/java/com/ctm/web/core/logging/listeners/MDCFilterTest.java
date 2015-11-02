@@ -1,6 +1,6 @@
-package com.ctm.logging.listeners;
+package com.ctm.web.core.logging.listeners;
 
-import com.ctm.logging.LoggingVariables;
+import com.ctm.web.core.logging.LoggingVariables;
 import org.junit.Test;
 import org.slf4j.MDC;
 

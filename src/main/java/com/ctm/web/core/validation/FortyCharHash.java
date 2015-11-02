@@ -1,4 +1,4 @@
-package com.ctm.web.validation;
+package com.ctm.web.core.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -18,7 +18,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = {})
 @Documented
 public @interface FortyCharHash {
-    String message() default "{com.ctm.web.validation.fortycharhash}";
+    String message() default "{com.ctm.web.core.validation.fortycharhash}";
 
     Class<?>[] groups() default { };
 

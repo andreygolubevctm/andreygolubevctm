@@ -1,4 +1,4 @@
-package com.ctm.model.results;
+package com.ctm.web.core.model.results;
 
 public class ResultRanking {
 

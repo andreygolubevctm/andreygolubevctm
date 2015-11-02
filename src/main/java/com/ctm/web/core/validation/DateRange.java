@@ -1,4 +1,4 @@
-package com.ctm.web.validation;
+package com.ctm.web.core.validation;
 
 
 import javax.validation.Constraint;
@@ -31,7 +31,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface DateRange
 {
-    String message() default "{com.ctm.web.validation.daterange}";
+    String message() default "{com.ctm.web.core.validation.daterange}";
 
     Class<?>[] groups() default {};
 

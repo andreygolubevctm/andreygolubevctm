@@ -1,15 +1,12 @@
 package com.ctm.web.homecontents.providers.model;
 
-import com.ctm.web.homecontents.model.results.*;
-import com.ctm.web.homecontents.model.results.Price;
-import com.ctm.web.homecontents.model.results.ProductDisclosure;
-import com.ctm.web.homecontents.model.results.Underwriter;
 import com.ctm.web.core.resultsData.model.AvailableType;
+import com.ctm.web.homecontents.model.results.*;
+import com.ctm.web.homecontents.providers.model.request.HomeQuoteRequest;
 import com.ctm.web.homecontents.providers.model.response.HomeQuote;
 import com.ctm.web.homecontents.providers.model.response.HomeResponse;
 import com.ctm.web.homecontents.providers.model.response.MoreInfo;
 import com.ctm.web.travel.quote.model.QuoteResponse;
-import com.ctm.web.homecontents.providers.model.request.HomeQuoteRequest;
 
 import java.util.ArrayList;
 import java.util.Collections;

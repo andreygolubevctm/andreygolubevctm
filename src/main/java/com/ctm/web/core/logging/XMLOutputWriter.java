@@ -1,4 +1,4 @@
-package com.ctm.logging;
+package com.ctm.web.core.logging;
 
 import static com.ctm.web.core.logging.LoggingArguments.v;
 import static org.slf4j.LoggerFactory.getLogger;

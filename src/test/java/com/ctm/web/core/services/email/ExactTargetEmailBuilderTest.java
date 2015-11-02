@@ -1,7 +1,7 @@
-package com.ctm.services.email;
+package com.ctm.web.core.email.services;
 
-import com.ctm.logging.CorrelationIdUtils;
-import com.ctm.web.core.model.email.ExactTargetEmailModel;
+import com.ctm.web.core.logging.CorrelationIdUtils;
+import com.ctm.web.core.email.model.ExactTargetEmailModel;
 import com.exacttarget.wsdl.partnerapi.CreateRequest;
 import org.junit.Test;
 

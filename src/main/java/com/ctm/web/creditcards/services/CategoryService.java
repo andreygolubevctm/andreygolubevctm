@@ -1,8 +1,8 @@
 package com.ctm.web.creditcards.services;
 
-import com.ctm.web.creditcards.category.model.Category;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.creditcards.category.model.Category;
 import com.ctm.web.creditcards.dao.CategoryDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

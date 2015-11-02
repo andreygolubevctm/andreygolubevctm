@@ -63,7 +63,7 @@ public class PhoneRouter extends HttpServlet {
 
     }
     private void writeErrors(final Exception e, final PrintWriter writer, final HttpServletResponse response) {
-        final Error error = new Error();
+        final com.ctm.web.core.model.Error error = new Error();
         error.addError(new Error(e.getMessage()));
         JSONObject json = error.toJsonObject(true);
         response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);

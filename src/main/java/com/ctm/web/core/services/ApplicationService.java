@@ -1,12 +1,12 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.BrandsDao;
 import com.ctm.web.core.dao.ConfigSettingsDao;
 import com.ctm.web.core.dao.VerticalsDao;
-import com.ctm.exceptions.BrandException;
+import com.ctm.web.core.exceptions.BrandException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.ConfigSetting;
+import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.ConfigSetting;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.elasticsearch.services.AddressSearchService;
 import com.ctm.web.core.web.go.Data;

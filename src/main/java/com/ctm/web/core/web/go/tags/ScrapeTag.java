@@ -6,7 +6,6 @@ import java.net.URLConnection;
 
 import javax.servlet.jsp.JspException;
 
-import com.ctm.web.core.web.go.tags.BaseTag;
 import org.apache.commons.codec.binary.Base64;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

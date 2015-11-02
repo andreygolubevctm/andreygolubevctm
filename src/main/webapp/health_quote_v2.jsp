@@ -12,7 +12,7 @@
 <core_new:load_preload />
 
 <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
-<jsp:useBean id="resultsService" class="com.ctm.web.core.services.results.ResultsService" scope="request" />
+<jsp:useBean id="resultsService" class="com.ctm.web.core.services.ResultsService" scope="request" />
 <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.go.CallCenterHours" scope="page" />
 <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" scope="request" />
 

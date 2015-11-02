@@ -1,4 +1,4 @@
-package com.ctm.model.results;
+package com.ctm.web.core.model.results;
 
 import org.json.simple.JSONObject;
 

@@ -1,4 +1,4 @@
-package com.ctm.services.health;
+package com.ctm.web.core.services.health;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;

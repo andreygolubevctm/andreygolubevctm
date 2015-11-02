@@ -1,8 +1,8 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.IpAddressDao;
-import com.ctm.model.IpAddress;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.IpAddress;
+import com.ctm.web.core.model.settings.PageSettings;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

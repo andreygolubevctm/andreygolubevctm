@@ -1,6 +1,7 @@
 package com.ctm.web.simples.model;
 
-import com.ctm.model.Confirmation;
+
+import com.ctm.web.core.model.Confirmation;
 
 public class ConfirmationOperator extends Confirmation {
 

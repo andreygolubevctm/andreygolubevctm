@@ -1,4 +1,4 @@
-package com.ctm.model.segment;
+package com.ctm.web.core.model.segment;
 
 import java.util.Date;
 

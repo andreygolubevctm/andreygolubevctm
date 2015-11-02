@@ -1,6 +1,4 @@
-package com.ctm.model.resultsData;
-
-import com.ctm.model.resultsData.ResultsObj;
+package com.ctm.web.core.resultsData.model;
 
 /**
  * This class is used to hold the results java classes when returning to the front end

@@ -1,4 +1,4 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

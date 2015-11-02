@@ -1,9 +1,9 @@
 package com.ctm.web.core.web.go.xml;
 
-import com.ctm.web.core.web.go.Gadget;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
+import javax.servlet.http.HttpServletRequest;
+
+import com.ctm.web.core.web.go.Gadget;
 
 // TODO: Auto-generated Javadoc
 /**

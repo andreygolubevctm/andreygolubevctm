@@ -1,26 +1,24 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
-import java.io.IOException;
+import com.ctm.web.core.exceptions.BrandException;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.Error;
+import com.ctm.web.core.model.LogAudit;
+import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.services.*;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.ctm.exceptions.BrandException;
-import com.ctm.model.*;
-import com.ctm.web.core.model.Error;
-import com.ctm.model.settings.Brand;
-import com.ctm.services.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONObject;
-
-import com.ctm.web.core.exceptions.ConfigSettingException;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import java.io.IOException;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 
@@ -95,7 +93,7 @@ public class GenericRouter extends HttpServlet {
 			styleCodeId = brand.getId();
 		}
 		fatalErrorService.logFatalError(exception, styleCodeId, uri , sessionId, true);
-		Error error = new Error();
+		com.ctm.web.core.model.Error error = new Error();
 		error.addError(new Error("Failed to reset password"));
 		JSONObject json = error.toJsonObject(true);
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

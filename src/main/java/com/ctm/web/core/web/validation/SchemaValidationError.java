@@ -1,9 +1,9 @@
-package com.ctm.web.core.web.validation;
+package com.ctm.web.core.validation;
 
+import com.ctm.web.core.model.AbstractJsonModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ctm.model.AbstractJsonModel;
 
 public class SchemaValidationError extends AbstractJsonModel {
 

@@ -1,18 +1,14 @@
 package com.ctm.web.creditcards.services.creditcards;
 
-import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.web.creditcards.model.UploadRequest;
-
-import javax.naming.NamingException;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.creditcards.model.UploadRequest;
+import javax.naming.NamingException;
+import java.io.*;
+import java.util.*;
+import java.util.regex.*;
 
 public class UploadService {
 

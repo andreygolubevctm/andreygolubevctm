@@ -1,9 +1,9 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.PageRequest;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.PageRequest;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;

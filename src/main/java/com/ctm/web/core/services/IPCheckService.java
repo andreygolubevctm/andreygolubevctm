@@ -1,11 +1,11 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.IpAddressDao;
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.IpAddress;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.IpAddress;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.utils.RequestUtils;
 import org.slf4j.Logger;

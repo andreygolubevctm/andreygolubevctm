@@ -1,14 +1,15 @@
 package com.ctm.web.simples.model;
 
-import com.ctm.model.AbstractJsonModel;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import com.ctm.web.core.model.Role;
 import com.ctm.web.core.model.Rule;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.ctm.web.core.model.AbstractJsonModel;
 
 public class User extends AbstractJsonModel {
 

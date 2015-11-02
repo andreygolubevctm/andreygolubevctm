@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.EmailMaster;
+import com.ctm.web.core.model.EmailMaster;
 
 public class EmailMasterDaoTest {
 

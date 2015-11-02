@@ -1,4 +1,4 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -13,7 +13,7 @@ import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ctm.model.session.SessionData;
+import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.web.go.Data;
 
 public class WriteQuoteServiceTest {

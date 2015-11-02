@@ -1,4 +1,4 @@
-package com.ctm.logging;
+package com.ctm.web.core.logging;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

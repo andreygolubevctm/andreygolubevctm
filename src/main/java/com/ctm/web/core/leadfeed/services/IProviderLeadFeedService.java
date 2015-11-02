@@ -1,8 +1,7 @@
-package com.ctm.services.leadfeed;
+package com.ctm.web.core.leadfeed.services;
 
-import com.ctm.exceptions.LeadFeedException;
+import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
-import com.ctm.web.core.leadfeed.services.LeadFeedService;
 
 /**
  * Created by msmerdon on 28/04/2015.

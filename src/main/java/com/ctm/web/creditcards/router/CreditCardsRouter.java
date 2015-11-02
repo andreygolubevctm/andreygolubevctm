@@ -1,8 +1,34 @@
 package com.ctm.web.creditcards.router;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.json.JSONObject;
+
 import com.ctm.web.core.exceptions.UploaderException;
 import com.ctm.web.core.model.Error;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.creditcards.model.CreditCardProduct;
+import com.ctm.web.creditcards.model.UploadRequest;
+import com.ctm.web.creditcards.model.Views.ComparisonView;
+import com.ctm.web.creditcards.model.Views.DetailedView;
+import com.ctm.web.creditcards.model.Views.MapView;
+import com.ctm.web.creditcards.model.Views.SummaryView;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.FatalErrorService;
@@ -10,28 +36,8 @@ import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.creditcards.services.ProductService;
 import com.ctm.web.creditcards.services.creditcards.UploadService;
 import com.ctm.web.creditcards.utils.CreditCardsSortAlgorithms;
-import com.ctm.web.creditcards.model.CreditCardProduct;
-import com.ctm.web.creditcards.model.UploadRequest;
-import com.ctm.web.creditcards.model.Views.ComparisonView;
-import com.ctm.web.creditcards.model.Views.DetailedView;
-import com.ctm.web.creditcards.model.Views.MapView;
-import com.ctm.web.creditcards.model.Views.SummaryView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

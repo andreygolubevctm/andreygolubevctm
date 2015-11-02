@@ -1,14 +1,14 @@
 package com.ctm.web.core.content.services;
 
-import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.cache.ApplicationCacheManager;
 import com.ctm.web.core.content.cache.ContentControlCache;
 import com.ctm.web.core.content.dao.ContentDao;
+import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.content.model.Content;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SettingsService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

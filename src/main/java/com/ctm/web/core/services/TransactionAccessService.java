@@ -1,17 +1,16 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.model.TransactionDetail;
 import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.EmailMaster;
-import com.ctm.web.core.model.Transaction;
-import com.ctm.model.TransactionDetail;
-import com.ctm.web.core.model.email.EmailMode;
 import com.ctm.web.core.email.model.IncomingEmail;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.Transaction;
+import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

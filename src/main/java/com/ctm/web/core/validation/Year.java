@@ -1,4 +1,4 @@
-package com.ctm.web.validation;
+package com.ctm.web.core.validation;
 
 
 import javax.validation.Constraint;
@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface Year
 {
-    String message() default "{com.ctm.web.validation.year}";
+    String message() default "{com.ctm.web.core.validation.year}";
 
     Class<?>[] groups() default {};
 

@@ -1,16 +1,16 @@
 package com.ctm.web.simples.services;
 
+import com.ctm.web.core.model.Role;
+import com.ctm.web.core.model.Rule;
+import com.ctm.web.simples.dao.BlacklistDao;
+import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
-import com.ctm.web.core.model.Role;
-import com.ctm.web.core.model.Rule;
 import com.ctm.web.core.model.Transaction;
 import com.ctm.web.health.services.TransactionService;
-import com.ctm.web.simples.dao.BlacklistDao;
 import com.ctm.web.simples.dao.MessageDao;
 import com.ctm.web.simples.dao.MessageDuplicatesDao;
-import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.simples.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +90,7 @@ public class SimplesMessageService {
 				int styleCodeId = messageDetail.getTransaction().getStyleCodeId();
 				final BlacklistDao blacklistDao = new BlacklistDao();
 				if (blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber1()) ||
-						blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber2())) {
+					blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber2())) {
 
 					setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED, MessageStatus.STATUS_DONOTCONTACT);
 
@@ -157,7 +157,7 @@ public class SimplesMessageService {
 		}
 		catch (DaoException | ParseException e) {
 			LOGGER.error("Could not postpone message {},{},{},{},{},{},{}", kv("messageId", messageId), kv("statusId", statusId), kv("reasonStatusId", reasonStatusId),
-					kv("postponeDate", postponeDate), kv("postponeAMPM", postponeAMPM), kv("comment", comment), kv("assignToUser", assignToUser), e);
+				kv("postponeDate", postponeDate), kv("postponeAMPM", postponeAMPM), kv("comment", comment), kv("assignToUser", assignToUser), e);
 
 			Error error = new Error(e.getMessage());
 			details.addError(error);
@@ -219,7 +219,7 @@ public class SimplesMessageService {
 		}
 		catch (DaoException e) {
 			LOGGER.error("Could not set message {},{}", kv("actionIsPerformedByUserId", actionIsPerformedByUserId),
-					kv("messageId", messageId), e);
+				kv("messageId", messageId), e);
 
 			Error error = new Error(e.getMessage());
 			details.addError(error);
@@ -242,7 +242,7 @@ public class SimplesMessageService {
 		}
 		catch (DaoException e) {
 			LOGGER.error("Could not set message {},{},{}", kv("actionIsPerformedByUserId", actionIsPerformedByUserId),
-					kv("messageId", messageId), kv("reasonStatusId", reasonStatusId), e);
+				kv("messageId", messageId), kv("reasonStatusId", reasonStatusId), e);
 
 			Error error = new Error(e.getMessage());
 			details.addError(error);

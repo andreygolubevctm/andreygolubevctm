@@ -1,4 +1,4 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import java.security.GeneralSecurityException;
 
@@ -9,9 +9,9 @@ import org.json.JSONObject;
 
 import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.EmailMaster;
-import com.ctm.model.LogAudit;
-import com.ctm.security.StringEncryption;
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.model.LogAudit;
+import com.ctm.web.core.security.StringEncryption;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

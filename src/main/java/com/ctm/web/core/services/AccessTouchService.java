@@ -3,11 +3,11 @@ package com.ctm.web.core.services;
 import com.ctm.web.core.dao.TouchDao;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Touch;
-import com.ctm.model.Touch.TouchType;
-import com.ctm.model.TouchCommentProperty;
-import com.ctm.model.TouchProductProperty;
-import com.ctm.model.session.AuthenticatedData;
+import com.ctm.web.core.model.Touch;
+import com.ctm.web.core.model.Touch.TouchType;
+import com.ctm.web.core.model.TouchCommentProperty;
+import com.ctm.web.core.model.TouchProductProperty;
+import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.router.IncomingEmailRouter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

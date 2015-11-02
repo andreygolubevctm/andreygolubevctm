@@ -1,6 +1,6 @@
 package com.ctm.web.simples.model;
 
-import com.ctm.model.AbstractJsonModel;
+import com.ctm.web.core.model.AbstractJsonModel;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.json.JSONException;
 import org.json.JSONObject;

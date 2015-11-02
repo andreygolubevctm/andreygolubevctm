@@ -1,4 +1,4 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.SessionException;
-import com.ctm.services.FormValidationService;
-import com.ctm.services.SessionDataService;
+import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.services.FormValidationService;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.web.go.Data;
 
 /**

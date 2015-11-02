@@ -5,10 +5,10 @@ import com.ctm.web.core.dao.DatabaseQueryMapping;
 import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.simples.helper.ProviderContentHelper;
-import com.ctm.model.ProviderContent;
-import com.ctm.model.ProviderContentType;
+import com.ctm.web.core.model.ProviderContent;
+import com.ctm.web.core.model.ProviderContentType;
 import com.ctm.web.core.utils.common.utils.DateUtils;
+import com.ctm.web.simples.helper.ProviderContentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

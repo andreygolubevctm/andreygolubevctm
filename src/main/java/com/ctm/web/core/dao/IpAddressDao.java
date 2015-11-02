@@ -2,8 +2,8 @@ package com.ctm.web.core.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.IpAddress;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.IpAddress;
+import com.ctm.web.core.model.settings.PageSettings;
 
 import javax.naming.NamingException;
 import java.sql.Connection;

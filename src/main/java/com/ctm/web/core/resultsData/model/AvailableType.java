@@ -1,4 +1,4 @@
-package com.ctm.model.resultsData;
+package com.ctm.web.core.resultsData.model;
 
 public enum AvailableType {
     Y, // Yes

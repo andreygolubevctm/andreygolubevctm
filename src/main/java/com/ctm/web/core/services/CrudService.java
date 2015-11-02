@@ -1,6 +1,6 @@
-package com.ctm.services.simples.admin;
+package com.ctm.web.core.services;
 
-import com.ctm.exceptions.CrudValidationException;
+import com.ctm.web.core.exceptions.CrudValidationException;
 import com.ctm.web.core.exceptions.DaoException;
 
 import javax.servlet.http.HttpServletRequest;

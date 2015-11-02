@@ -1,4 +1,4 @@
-package com.ctm.services.health;
+package com.ctm.web.core.services.health;
 
 import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.web.core.exceptions.DaoException;

@@ -1,4 +1,4 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -10,10 +10,10 @@ import org.junit.Test;
 
 import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.EmailDetailsException;
-import com.ctm.model.EmailMaster;
-import com.ctm.model.Unsubscribe;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.email.exceptions.EmailDetailsException;
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.model.Unsubscribe;
+import com.ctm.web.core.model.settings.PageSettings;
 
 public class UnsubscribeServiceTest {
 

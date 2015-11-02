@@ -3,7 +3,7 @@ package com.ctm.web.core.leadfeed.router;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.model.LeadFeedData.CallType;
-import com.ctm.model.settings.Brand;
+import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
+
 
 public abstract class LeadFeedRouter extends HttpServlet {
 
@@ -141,7 +142,6 @@ public abstract class LeadFeedRouter extends HttpServlet {
 	}
 
 	protected abstract String getVerticalCode();
-
+	
 	protected abstract LeadFeedService getLeadFeedService();
 }
-

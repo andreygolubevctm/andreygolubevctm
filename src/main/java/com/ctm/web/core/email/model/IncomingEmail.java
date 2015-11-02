@@ -1,7 +1,6 @@
 package com.ctm.web.core.email.model;
 
-import com.ctm.model.EmailMaster;
-import com.ctm.web.core.model.email.EmailMode;
+import com.ctm.web.core.model.EmailMaster;
 
 public class IncomingEmail {
 

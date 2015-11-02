@@ -1,14 +1,15 @@
 package com.ctm.web.car.dao;
 
-import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.car.model.CarFuel;
-
-import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.naming.NamingException;
+
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.car.model.CarFuel;
 
 public class CarFuelDao {
 

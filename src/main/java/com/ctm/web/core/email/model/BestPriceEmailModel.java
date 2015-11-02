@@ -1,7 +1,5 @@
 package com.ctm.web.core.email.model;
 
-import com.ctm.web.core.model.email.EmailModel;
-
 public abstract class BestPriceEmailModel extends EmailModel {
 	private String emailAddress;
 	private String firstName;

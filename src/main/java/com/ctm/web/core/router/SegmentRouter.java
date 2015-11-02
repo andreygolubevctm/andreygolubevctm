@@ -1,31 +1,29 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.Error;
+import com.ctm.web.core.model.segment.SegmentRequest;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.segment.model.Segment;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.core.services.segment.SegmentService;
+import com.ctm.web.core.utils.RequestUtils;
+import com.ctm.web.core.web.go.Data;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONObject;
-
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.Error;
-import com.ctm.model.segment.Segment;
-import com.ctm.model.segment.SegmentRequest;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.SettingsService;
-import com.ctm.services.segment.SegmentService;
-import com.ctm.web.core.utils.RequestUtils;
-import com.ctm.web.core.web.go.Data;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

@@ -6,4 +6,4 @@
 <jsp:useBean id="settingsService" class="com.ctm.web.core.services.SettingsService" scope="application" />
 <jsp:useBean id="environmentService" class="com.ctm.web.core.services.EnvironmentService" scope="application" />
 <jsp:useBean id="contentService" class="com.ctm.web.core.content.services.ContentService" scope="application" />
-<jsp:useBean id="sessionData" class="com.ctm.model.session.SessionData" scope="session" />
+<jsp:useBean id="sessionData" class="com.ctm.web.core.model.session.SessionData" scope="session" />

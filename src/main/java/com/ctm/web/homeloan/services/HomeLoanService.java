@@ -1,18 +1,18 @@
-package com.ctm.services.homeloan;
+package com.ctm.web.homeloan.services;
 
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.web.homeloan.dao.HomeloanUnconfirmedLeadsDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Touch;
-import com.ctm.model.TransactionDetail;
+import com.ctm.web.core.model.Touch;
+import com.ctm.web.core.model.TransactionDetail;
 import com.ctm.web.homeloan.model.HomeLoanModel;
 import com.ctm.web.homeloan.model.HomeLoanModel.CustomerGoal;
 import com.ctm.web.homeloan.model.HomeLoanModel.CustomerSituation;
 import com.ctm.web.homeloan.model.HomeLoanModel.RepaymentOptions;
-import com.ctm.router.homeloan.HomeLoanRouter;
-import com.ctm.security.StringEncryption;
+import com.ctm.web.homeloan.router.HomeLoanRouter;
+import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.AccessTouchService;
-import com.ctm.services.FatalErrorService;
+import com.ctm.web.core.services.FatalErrorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONException;

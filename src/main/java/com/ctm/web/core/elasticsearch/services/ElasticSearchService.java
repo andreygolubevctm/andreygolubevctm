@@ -1,5 +1,6 @@
 package com.ctm.web.core.elasticsearch.services;
 
+import com.ctm.web.core.services.FatalErrorService;
 import org.elasticsearch.action.suggest.SuggestRequestBuilder;
 import org.elasticsearch.action.suggest.SuggestResponse;
 import org.elasticsearch.client.Client;
@@ -9,8 +10,6 @@ import org.elasticsearch.search.suggest.completion.CompletionSuggestionFuzzyBuil
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.ctm.services.FatalErrorService;
 
 public class ElasticSearchService {
 

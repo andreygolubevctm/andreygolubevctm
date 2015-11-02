@@ -5,7 +5,7 @@
 
 <c:set var="json" value='{"error": "Oops, something seems to have gone wrong! We couldn\'t unsubscribe you. Please try again."}'/>
 <c:catch var="error">
-    <jsp:useBean id="unsubscribe" class="com.ctm.model.Unsubscribe" scope="session"/>
+    <jsp:useBean id="unsubscribe" class="com.ctm.web.core.model.Unsubscribe" scope="session"/>
     <jsp:useBean id="unsubscribeService" class="com.ctm.web.core.services.UnsubscribeService" scope="request"/>
     <settings:setVertical verticalCode="GENERIC"/>
     <c:choose>

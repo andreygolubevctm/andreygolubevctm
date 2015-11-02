@@ -1,17 +1,16 @@
 package com.ctm.web.core.elasticsearch.services;
 
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ElasticSearchConfigurationException;
+import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.model.settings.ServiceConfiguration;
+import com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.ElasticSearchConfigurationException;
-import com.ctm.exceptions.ServiceConfigurationException;
-import com.ctm.model.settings.ServiceConfiguration;
-import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
-import com.ctm.services.ServiceConfigurationService;
 
 public class ElasticClientProvider {
 

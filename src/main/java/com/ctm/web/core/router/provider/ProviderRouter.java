@@ -1,4 +1,4 @@
-package com.ctm.router.provider;
+package com.ctm.web.core.router.provider;
 
 
 import java.io.IOException;
@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.web.core.model.Error;
-import com.ctm.model.Provider;
-import com.ctm.services.SettingsService;
-import com.ctm.services.provider.ProviderService;
+import com.ctm.web.core.model.Provider;
+import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.core.services.provider.ProviderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 

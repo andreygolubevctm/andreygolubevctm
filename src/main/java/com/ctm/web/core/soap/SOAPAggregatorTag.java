@@ -5,14 +5,13 @@
 
 package com.ctm.web.core.soap;
 
+import com.ctm.web.core.core.soap.settings.SoapAggregatorConfiguration;
+import com.ctm.web.core.core.soap.settings.SoapClientThreadConfiguration;
 import com.ctm.web.core.logging.CorrelationIdUtils;
-import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.SoapAggregatorConfiguration;
-import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.EnvironmentService;
-import com.ctm.soap.SoapConfiguration;
 import com.ctm.web.core.validation.SchemaValidation;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.core.web.go.xml.XmlParser;

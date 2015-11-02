@@ -2,8 +2,8 @@ package com.ctm.web.utilities.router;
 
 import com.ctm.web.core.model.Error;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
-import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.utilities.model.*;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.utilities.services.UtilitiesProductService;
 import com.ctm.web.utilities.services.UtilitiesProviderService;
 import com.ctm.web.utilities.services.UtilitiesResultsService;

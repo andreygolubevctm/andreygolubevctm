@@ -1,21 +1,21 @@
-package com.ctm.services.leadfeed;
+package com.ctm.web.core.leadfeed.services;
 
 import com.ctm.aglead.ws.*;
-import com.ctm.exceptions.*;
-import com.ctm.logging.SpringWSLoggingInterceptor;
-import com.ctm.logging.XMLOutputWriter;
-import com.ctm.model.Provider;
+import com.ctm.web.core.exceptions.*;
+import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
+import com.ctm.web.core.logging.SpringWSLoggingInterceptor;
+import com.ctm.web.core.logging.XMLOutputWriter;
+import com.ctm.web.core.model.Provider;
 import com.ctm.web.core.leadfeed.model.AGISLeadFeedRequest;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.ServiceConfiguration;
-import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.ServiceConfiguration;
+import com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.ProviderService;
-import com.ctm.services.ServiceConfigurationService;
-import com.ctm.services.SettingsService;
-import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.ProviderService;
+import com.ctm.web.core.services.ServiceConfigurationService;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus;
 import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseSta
 import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus.SUCCESS;
 import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType.CALL_DIRECT;
 
-public abstract class AGISLeadFeedService extends WebServiceGatewaySupport implements IProviderLeadFeedService{
+public abstract class AGISLeadFeedService extends WebServiceGatewaySupport implements IProviderLeadFeedService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AGISLeadFeedService.class);
 
@@ -213,7 +213,7 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 			return (Response) getWebServiceTemplate().marshalSendAndReceive(serviceUrl, request);
 		} catch (Exception e) {
 			LOGGER.error("[Lead feed] Failed sending lead feed message to AGIS {}, {}, {}", kv("settings", settings),
-				kv("serviceUrl", serviceUrl), kv("transactionId", transactionId), e);
+					kv("serviceUrl", serviceUrl), kv("transactionId", transactionId), e);
 			throw new IOException(e);
 		}
 	}

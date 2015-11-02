@@ -6,10 +6,10 @@
 package com.ctm.web.core.soap;
 
 import com.ctm.web.core.constants.ErrorCode;
+import com.ctm.web.core.core.soap.settings.SoapAggregatorConfiguration;
 import com.ctm.web.core.logging.CorrelationIdUtils;
 import com.ctm.web.core.logging.XMLOutputWriter;
-import com.ctm.model.settings.SoapAggregatorConfiguration;
-import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.web.core.core.soap.settings.SoapClientThreadConfiguration;
 import com.ctm.web.core.utils.function.Action;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -19,7 +19,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import javax.net.ssl.*;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;

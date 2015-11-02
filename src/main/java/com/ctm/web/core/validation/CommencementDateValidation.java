@@ -1,4 +1,4 @@
-package com.ctm.web.validation;
+package com.ctm.web.core.validation;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

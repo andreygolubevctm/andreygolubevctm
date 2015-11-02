@@ -1,4 +1,4 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
@@ -16,11 +16,11 @@ import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.EmailDetailsException;
-import com.ctm.model.EmailMaster;
+import com.ctm.web.core.email.exceptions.EmailDetailsException;
+import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.Transaction;
-import com.ctm.model.TransactionDetail;
-import com.ctm.web.core.model.email.EmailMode;
+import com.ctm.web.core.model.TransactionDetail;
+import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 
 public class RemoteLoadQuoteServiceTest {

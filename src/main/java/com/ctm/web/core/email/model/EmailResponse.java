@@ -1,11 +1,11 @@
-package com.ctm.web.core.model.email;
+package com.ctm.web.core.email.model;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.ctm.web.core.model.AbstractJsonModel;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.ctm.model.AbstractJsonModel;
 
 public class EmailResponse extends AbstractJsonModel {
 

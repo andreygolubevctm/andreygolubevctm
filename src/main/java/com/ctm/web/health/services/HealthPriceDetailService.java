@@ -1,17 +1,17 @@
 package com.ctm.web.health.services;
 
-import com.ctm.web.health.dao.HealthPriceDao;
-import com.ctm.web.core.exceptions.ConfigSettingException;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.health.exceptions.HealthAltPriceException;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.model.ContentSupplement;
+import com.ctm.web.core.content.services.ContentService;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.health.dao.HealthPriceDao;
+import com.ctm.web.health.exceptions.HealthAltPriceException;
 import com.ctm.web.health.model.HealthAlternatePricing;
 import com.ctm.web.health.model.HealthPriceResult;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.content.services.ContentService;
-import com.ctm.web.core.services.SettingsService;
 import org.json.JSONException;
 
 import javax.servlet.http.HttpServletRequest;

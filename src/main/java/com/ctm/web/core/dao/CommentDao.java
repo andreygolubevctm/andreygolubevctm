@@ -3,7 +3,7 @@ package com.ctm.web.core.dao;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.transaction.TransactionDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Comment;
+import com.ctm.web.core.model.Comment;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;

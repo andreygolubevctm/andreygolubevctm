@@ -1,8 +1,8 @@
 package com.ctm.web.core.services;
 
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.IsoLocations;
 import com.ctm.web.core.dao.IsoLocationsDao;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.IsoLocations;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class IsoLocationsService {
         this.isoLocationsDao = new IsoLocationsDao();
     }
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IsoLocationsService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(IsoLocationsService.class);
 
     public IsoLocationsService(IsoLocationsDao dao) {
         this.isoLocationsDao = dao;

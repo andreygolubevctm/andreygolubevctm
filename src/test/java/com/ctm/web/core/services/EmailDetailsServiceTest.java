@@ -1,23 +1,22 @@
-package com.ctm.services;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import java.sql.SQLException;
-
-import org.junit.Before;
-import org.junit.Test;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.web.core.dao.StampingDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.EmailDetailsException;
-import com.ctm.model.EmailMaster;
-import com.ctm.services.email.EmailDetailsService;
+import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.mapping.EmailDetailsMappings;
-import com.ctm.web.health.services.email.mapping.HealthEmailDetailMappings;
+import com.ctm.web.core.email.services.EmailDetailsService;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.health.services.email.mapping.HealthEmailDetailMappings;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.sql.SQLException;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class EmailDetailsServiceTest {
 

@@ -1,9 +1,9 @@
-package com.ctm.security.token;
+package com.ctm.web.core.security.token;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.security.token.config.TokenConfigFactory;
-import com.ctm.security.token.config.TokenCreatorConfig;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.security.token.config.TokenConfigFactory;
+import com.ctm.web.core.security.token.config.TokenCreatorConfig;
+import com.ctm.web.core.services.SettingsService;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
-import static com.ctm.security.token.config.TokenCreatorConfig.SIGNATURE_ALGORITHM;
-import static com.ctm.security.token.config.TokenCreatorConfig.TRANSACTION_ID_CLAIM;
-import static com.ctm.security.token.config.TokenCreatorConfig.TOUCH_CLAIM;
-import static com.ctm.security.token.config.TokenCreatorConfig.SECONDS_UNTIL_NEXT_CLAIM;
+import static com.ctm.web.core.security.token.config.TokenCreatorConfig.SIGNATURE_ALGORITHM;
+import static com.ctm.web.core.security.token.config.TokenCreatorConfig.TRANSACTION_ID_CLAIM;
+import static com.ctm.web.core.security.token.config.TokenCreatorConfig.TOUCH_CLAIM;
+import static com.ctm.web.core.security.token.config.TokenCreatorConfig.SECONDS_UNTIL_NEXT_CLAIM;
 
 public class JwtTokenCreator {
 

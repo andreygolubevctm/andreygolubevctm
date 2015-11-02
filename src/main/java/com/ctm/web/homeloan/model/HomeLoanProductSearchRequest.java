@@ -1,8 +1,9 @@
 package com.ctm.web.homeloan.model;
 
-import com.ctm.model.AbstractJsonModel;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.ctm.web.core.model.AbstractJsonModel;
 
 
 public class HomeLoanProductSearchRequest extends AbstractJsonModel {

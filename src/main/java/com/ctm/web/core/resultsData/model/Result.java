@@ -1,8 +1,7 @@
-package com.ctm.model.resultsData;
+package com.ctm.web.core.resultsData.model;
 
-import com.ctm.model.resultsData.AvailableType;
 
-import static com.ctm.model.resultsData.AvailableType.Y;
+import static com.ctm.web.core.resultsData.model.AvailableType.Y;
 
 /**
  * This class is used to hold the results java classes when returning to the front end

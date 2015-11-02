@@ -1,7 +1,7 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
-import com.ctm.model.HandoverConfirmation;
-import com.ctm.services.HandoverConfirmationService;
+import com.ctm.web.core.model.HandoverConfirmation;
+import com.ctm.web.core.services.HandoverConfirmationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

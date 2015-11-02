@@ -1,10 +1,9 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.HandoverConfirmationDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.HandoverConfirmation;
+import com.ctm.web.core.model.HandoverConfirmation;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.web.core.services.AccessTouchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -14,7 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ctm.model.Touch.TouchType.SOLD;
+import static com.ctm.web.core.model.Touch.TouchType.SOLD;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;

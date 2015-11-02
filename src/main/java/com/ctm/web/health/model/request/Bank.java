@@ -1,9 +1,9 @@
 package com.ctm.web.health.model.request;
 
-import com.ctm.web.core.validation.Name;
-
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Size;
+
+import com.ctm.web.core.validation.Name;
 
 public class Bank {
 

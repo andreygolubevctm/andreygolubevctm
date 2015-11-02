@@ -1,8 +1,8 @@
-package com.ctm.services.health;
+package com.ctm.web.core.services.health;
 
-import com.ctm.model.settings.PageSettings;
+import  com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.services.RequestService;
+import com.ctm.web.core.services.RequestService;
 import com.ctm.web.health.services.HealthQuoteEndpointService;
 import com.ctm.web.health.validation.HealthTokenValidationService;
 import org.junit.Test;

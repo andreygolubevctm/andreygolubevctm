@@ -1,5 +1,16 @@
-package com.ctm.services.results;
+package com.ctm.web.core.results.services;
 
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.model.results.ResultsSimpleItem;
+import com.ctm.web.core.model.results.ResultsTemplateItem;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
+import org.json.simple.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,19 +18,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.sql.DataSource;
-
-import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONException;
-import org.json.simple.JSONArray;
-
-import com.ctm.model.results.ResultsSimpleItem;
-import com.ctm.model.results.ResultsTemplateItem;
 
 public class ResultsService {
 

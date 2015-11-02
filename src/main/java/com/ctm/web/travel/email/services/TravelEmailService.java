@@ -1,25 +1,28 @@
 package com.ctm.web.travel.email.services;
 
+import com.ctm.web.core.content.model.Content;
+import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.dao.CountryMappingDao;
 import com.ctm.web.core.dao.RankingDetailsDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
-import com.ctm.model.CountryMapping;
-import com.ctm.model.EmailMaster;
-import com.ctm.model.RankingDetail;
-import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.exceptions.SendEmailException;
-import com.ctm.web.core.email.services.*;
-import com.ctm.web.core.exceptions.*;
 import com.ctm.web.core.email.model.EmailMode;
+import com.ctm.web.core.email.services.*;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.EnvironmentException;
+import com.ctm.web.core.exceptions.VerticalException;
+import com.ctm.web.core.model.CountryMapping;
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.model.RankingDetail;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.web.go.Data;
 import com.ctm.web.travel.email.model.TravelBestPriceEmailModel;
 import com.ctm.web.travel.email.model.TravelBestPriceRanking;
 import com.ctm.web.travel.email.model.formatter.TravelBestPriceExactTargetFormatter;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.web.core.model.settings.Vertical.VerticalType;
-import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.content.services.ContentService;
-import com.ctm.web.core.web.go.Data;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -118,7 +121,7 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			emailModel.setTransactionId(transactionId);
 			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailDetails));
 			emailModel.setApplyUrl(price_presentation_url);
-			} catch (DaoException |EnvironmentException | VerticalException
+			} catch (DaoException|EnvironmentException | VerticalException
 				| ConfigSettingException e) {
 			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
 					" transactionId:" +  transactionId  ,  e);

@@ -1,18 +1,16 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import com.ctm.web.core.email.model.EmailMode;
+import com.ctm.web.core.email.services.EmailService;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONObject;
-
-import com.ctm.web.core.model.email.EmailMode;
-import com.ctm.services.email.EmailService;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 
 @WebServlet(urlPatterns = {

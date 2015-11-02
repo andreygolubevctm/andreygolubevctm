@@ -1,7 +1,7 @@
 package com.ctm.test;
 
-import com.ctm.model.settings.ConfigSetting;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.ConfigSetting;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.services.EnvironmentService;

@@ -1,7 +1,7 @@
 package com.ctm.web.homecontents.providers.model;
 
-import com.ctm.model.settings.Brand;
 import com.ctm.web.homecontents.model.form.*;
+import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.homecontents.providers.model.request.*;
 import com.ctm.web.homecontents.providers.model.request.Address;
 import com.ctm.web.homecontents.providers.model.request.BusinessActivity;

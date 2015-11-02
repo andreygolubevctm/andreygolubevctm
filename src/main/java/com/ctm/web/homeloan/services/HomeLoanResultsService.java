@@ -1,18 +1,18 @@
-package com.ctm.services.homeloan;
+package com.ctm.web.homeloan.services;
 
 import com.ctm.web.core.connectivity.JsonConnection;
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.homeloan.model.HomeLoanProductSearchRequest;
-import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.ConfigSetting;
-import com.ctm.model.settings.ServiceConfiguration;
-import com.ctm.model.settings.ServiceConfigurationProperty;
-import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.FatalErrorService;
-import com.ctm.services.ServiceConfigurationService;
+import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.ConfigSetting;
+import com.ctm.web.core.model.settings.ServiceConfiguration;
+import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
+import com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.FatalErrorService;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.web.go.Data;
 import org.json.JSONArray;
 import org.json.JSONObject;

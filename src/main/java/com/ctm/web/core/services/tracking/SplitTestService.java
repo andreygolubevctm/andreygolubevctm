@@ -1,10 +1,10 @@
-package com.ctm.services.tracking;
+package com.ctm.web.core.services.tracking;
 
-import com.ctm.exceptions.SessionException;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
-import com.ctm.services.SessionDataService;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.web.go.Data;
 
 import javax.servlet.http.HttpServletRequest;

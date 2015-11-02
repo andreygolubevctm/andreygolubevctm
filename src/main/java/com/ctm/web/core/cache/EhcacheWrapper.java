@@ -7,7 +7,7 @@ import net.sf.ehcache.Element;
 /**
  * Ehcache implementation wrapper
  */
-public abstract class EhcacheWrapper<K, V> implements CacheWrapper<K, V> {
+public abstract class EhcacheWrapper<K, V> implements CacheWrapper<K, V>{
     private final String cacheName;
     private final CacheManager cacheManager;
 

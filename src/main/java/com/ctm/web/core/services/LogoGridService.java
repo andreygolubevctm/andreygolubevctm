@@ -1,9 +1,9 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.ProviderCodesDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

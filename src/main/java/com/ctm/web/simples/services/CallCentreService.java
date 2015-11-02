@@ -6,13 +6,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.session.AuthenticatedData;
-import com.ctm.model.session.SessionData;
-import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.web.core.services.SettingsService;
-import com.ctm.web.simples.model.InboundPhoneNumber;
+import com.ctm.web.core.model.session.AuthenticatedData;
+import com.ctm.web.core.model.session.SessionData;
+import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.*;
+import com.ctm.web.simples.model.InboundPhoneNumber;
 
 public class CallCentreService {
 
@@ -81,7 +80,7 @@ public class CallCentreService {
 			AuthenticatedData authData = sessionData.getAuthenticatedSessionData();
 			String uid = authData.getUid();
 
-			String token = URLEncoder.encode(AuthenticationService.generateTokenForSimplesUser(uid), "UTF-8");
+			String token = URLEncoder.encode(SimplesAuthenticationService.generateTokenForSimplesUser(uid), "UTF-8");
 
 			redirectUrl.append("&token=").append(token);
 		}

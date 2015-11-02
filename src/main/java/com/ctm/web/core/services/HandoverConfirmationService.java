@@ -1,10 +1,9 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.HandoverConfirmationDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.HandoverConfirmation;
+import com.ctm.web.core.model.HandoverConfirmation;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
-import com.ctm.web.core.services.AccessTouchService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +13,7 @@ import java.util.Date;
 import java.util.Map;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
-import static com.ctm.model.Touch.TouchType.SOLD;
+import static com.ctm.web.core.model.Touch.TouchType.SOLD;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 

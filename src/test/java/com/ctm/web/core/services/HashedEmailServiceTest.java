@@ -1,4 +1,4 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -11,8 +11,8 @@ import org.junit.Test;
 
 import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.EmailDetailsException;
-import com.ctm.model.EmailMaster;
+import com.ctm.web.core.email.exceptions.EmailDetailsException;
+import com.ctm.web.core.model.EmailMaster;
 
 public class HashedEmailServiceTest {
 

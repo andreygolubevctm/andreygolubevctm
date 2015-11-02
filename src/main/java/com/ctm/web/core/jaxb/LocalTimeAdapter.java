@@ -1,4 +1,4 @@
-package com.ctm.jaxb;
+package com.ctm.web.core.jaxb;
 
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;

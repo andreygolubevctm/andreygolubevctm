@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.simples.dao.UserStatsDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.simples.model.User;
 import com.ctm.web.simples.model.UserStats;
 

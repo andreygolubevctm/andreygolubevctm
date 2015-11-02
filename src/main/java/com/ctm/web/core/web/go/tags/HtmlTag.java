@@ -5,11 +5,11 @@
 
 package com.ctm.web.core.web.go.tags;
 
-import com.ctm.web.core.web.go.InsertMarkerCache;
-
-import javax.servlet.jsp.JspException;
 import java.io.IOException;
 
+import javax.servlet.jsp.JspException;
+
+import com.ctm.web.core.web.go.InsertMarkerCache;
 /**
  * The Class HtmlTag.
  * 

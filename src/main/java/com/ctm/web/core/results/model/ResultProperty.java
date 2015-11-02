@@ -1,4 +1,4 @@
-package com.ctm.model.results;
+package com.ctm.web.core.results.model;
 
 public class ResultProperty {
 

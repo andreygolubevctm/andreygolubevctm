@@ -5,11 +5,12 @@
 
 package com.ctm.web.core.soap;
 
+import java.io.InputStream;
+
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
-import java.io.InputStream;
 
 /**
  * The Class SOAPResolver SOAP XSLT Import Resolver for WAR compatibility.

@@ -1,4 +1,4 @@
-package com.ctm.logging;
+package com.ctm.web.core.logging;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 

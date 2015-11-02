@@ -1,7 +1,7 @@
 package com.ctm.web.core.dao;
 
-import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.confirmation.services.JoinService;
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

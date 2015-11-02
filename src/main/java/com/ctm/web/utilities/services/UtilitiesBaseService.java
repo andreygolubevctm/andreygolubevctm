@@ -4,18 +4,17 @@ import com.ctm.web.core.connectivity.JsonConnection;
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
-import com.ctm.web.utilities.exceptions.UtilitiesWebServiceException;
-import com.ctm.web.utilities.model.request.UtilitiesRequest;
-import com.ctm.model.settings.*;
+import com.ctm.web.core.model.settings.*;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.FatalErrorService;
 import com.ctm.web.core.services.RequestService;
 import com.ctm.web.core.services.ServiceConfigurationService;
-import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.web.utilities.utils.UtilitiesRequestParser;
 import com.ctm.web.core.validation.FormValidation;
-import com.ctm.web.core.web.validation.SchemaValidationError;
+import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.utilities.exceptions.UtilitiesWebServiceException;
+import com.ctm.web.utilities.model.request.UtilitiesRequest;
+import com.ctm.web.utilities.utils.UtilitiesRequestParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -43,7 +42,7 @@ public class UtilitiesBaseService {
 	 * @return
 	 * @throws Exception
 	 */
-	private String getConfigValue(ServiceConfiguration serviceConfig, String key) throws UtilitiesWebServiceException{
+	private String getConfigValue(ServiceConfiguration serviceConfig, String key) throws UtilitiesWebServiceException {
 		String string = serviceConfig.getPropertyValueByKey(key, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
 
 		if(string == null){

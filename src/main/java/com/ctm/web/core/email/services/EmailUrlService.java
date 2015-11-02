@@ -1,4 +1,4 @@
-package com.ctm.services.email;
+package com.ctm.web.core.email.services;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ctm.web.core.exceptions.ConfigSettingException;
-import com.ctm.model.EmailMaster;
+import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.email.model.IncomingEmail;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.utils.FormDateUtils;

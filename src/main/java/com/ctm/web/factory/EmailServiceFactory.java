@@ -1,28 +1,30 @@
-package com.ctm.factory;
+package com.ctm.web.factory;
 
 import com.ctm.web.core.content.dao.ContentDao;
-import com.ctm.web.core.dao.*;
+import com.ctm.web.core.dao.EmailMasterDao;
+import com.ctm.web.core.dao.StampingDao;
+import com.ctm.web.core.dao.TouchDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
+import com.ctm.web.core.email.exceptions.SendEmailException;
+import com.ctm.web.core.email.mapping.EmailDetailsMappings;
+import com.ctm.web.core.email.mapping.LifeEmailDetailMappings;
+import com.ctm.web.core.email.model.EmailMode;
+import com.ctm.web.core.email.services.EmailDetailsService;
+import com.ctm.web.core.email.services.EmailServiceHandler;
+import com.ctm.web.core.email.services.EmailUrlService;
 import com.ctm.web.core.exceptions.ConfigSettingException;
-import com.ctm.exceptions.EnvironmentException;
-import com.ctm.exceptions.SendEmailException;
-import com.ctm.exceptions.VerticalException;
-import com.ctm.web.core.model.email.EmailMode;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.exceptions.EnvironmentException;
+import com.ctm.web.core.exceptions.VerticalException;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.services.AccessTouchService;
-import com.ctm.services.SessionDataService;
-import com.ctm.services.email.EmailDetailsService;
-import com.ctm.services.email.EmailServiceHandler;
-import com.ctm.services.email.EmailUrlService;
-import com.ctm.web.health.services.email.HealthEmailService;
-import com.ctm.services.email.life.LifeEmailService;
-import com.ctm.web.core.email.mapping.EmailDetailsMappings;
-import com.ctm.web.health.services.email.mapping.HealthEmailDetailMappings;
-import com.ctm.services.email.mapping.LifeEmailDetailMappings;
-import com.ctm.web.travel.services.email.TravelEmailDetailMappings;
-import com.ctm.web.travel.email.services.TravelEmailService;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.health.services.email.HealthEmailService;
+import com.ctm.web.health.services.email.mapping.HealthEmailDetailMappings;
+import com.ctm.web.life.email.services.LifeEmailService;
+import com.ctm.web.travel.email.services.TravelEmailService;
+import com.ctm.web.travel.services.email.TravelEmailDetailMappings;
 
 public class EmailServiceFactory {
 

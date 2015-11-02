@@ -1,15 +1,17 @@
 package com.ctm.web.utilities.model;
 
-import com.ctm.model.AbstractJsonModel;
-import com.ctm.model.Address;
-import com.ctm.web.core.utils.FormAddressUtils;
-import com.ctm.web.core.utils.FormDateUtils;
-import com.ctm.web.core.utils.NGram;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import com.ctm.web.core.model.AbstractJsonModel;
+import com.ctm.web.core.model.Address;
+import com.ctm.web.core.utils.FormAddressUtils;
+import com.ctm.web.core.utils.FormDateUtils;
+import com.ctm.web.core.utils.NGram;
 
 
 public class UtilitiesApplicationRequestModel extends AbstractJsonModel {

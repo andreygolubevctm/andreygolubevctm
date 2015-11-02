@@ -2,7 +2,7 @@ package com.ctm.web.simples.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.simples.model.CallInfo;
 import com.ctm.web.core.model.Role;
 import com.ctm.web.core.model.Rule;

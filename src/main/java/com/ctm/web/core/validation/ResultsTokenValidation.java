@@ -1,10 +1,10 @@
-package com.ctm.web.validation;
+package com.ctm.web.core.validation;
 
-import com.ctm.model.Touch;
+import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.request.TokenRequest;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.services.SessionDataService;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.SettingsService;
 
 import java.util.ArrayList;
 import java.util.List;

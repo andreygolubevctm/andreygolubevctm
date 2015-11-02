@@ -1,7 +1,7 @@
 package com.ctm.web.core.soap;
 
-import com.ctm.model.settings.SoapAggregatorConfiguration;
-import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.web.core.core.soap.settings.SoapAggregatorConfiguration;
+import com.ctm.web.core.core.soap.settings.SoapClientThreadConfiguration;
 import com.ctm.web.core.utils.function.Action;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;

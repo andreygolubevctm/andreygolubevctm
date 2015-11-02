@@ -1,6 +1,6 @@
-package com.ctm.security.token.config;
+package com.ctm.web.core.security.token.config;
 
-import com.ctm.model.Touch;
+import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.utils.RequestUtils;
 

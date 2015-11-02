@@ -1,10 +1,10 @@
 package com.ctm.web.core.web.go.bridge;
 
+import java.math.BigDecimal;
+
 import com.ibm.as400.access.AS400DataType;
 import com.ibm.as400.access.AS400PackedDecimal;
 import com.ibm.as400.access.AS400ZonedDecimal;
-
-import java.math.BigDecimal;
 
 // TODO: Auto-generated Javadoc
 /**

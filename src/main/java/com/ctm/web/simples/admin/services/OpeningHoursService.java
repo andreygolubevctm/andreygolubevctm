@@ -1,16 +1,16 @@
 package com.ctm.web.simples.admin.services;
 
-import com.ctm.web.simples.dao.OpeningHoursDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.simples.admin.model.request.OpeningHoursHelper;
-import com.ctm.web.simples.admin.model.OpeningHours;
-import com.ctm.model.session.AuthenticatedData;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.session.AuthenticatedData;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
-import com.ctm.web.core.web.validation.SchemaValidationError;
+import com.ctm.web.core.validation.SchemaValidationError;
+import com.ctm.web.simples.admin.model.OpeningHours;
+import com.ctm.web.simples.admin.model.request.OpeningHoursHelper;
+import com.ctm.web.simples.dao.OpeningHoursDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

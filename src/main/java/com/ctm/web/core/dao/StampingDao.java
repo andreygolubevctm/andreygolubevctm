@@ -1,8 +1,8 @@
 package com.ctm.web.core.dao;
 
+import com.ctm.web.core.model.Stamping;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Stamping;
 
 import javax.naming.NamingException;
 import java.sql.Connection;

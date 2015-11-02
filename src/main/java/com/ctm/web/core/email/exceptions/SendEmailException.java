@@ -1,4 +1,4 @@
-package com.ctm.exceptions;
+package com.ctm.web.core.email.exceptions;
 
 
 public class SendEmailException extends Exception {

@@ -1,12 +1,10 @@
-package com.ctm.model.simples;
-
-import java.util.Date;
+package com.ctm.web.core.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ctm.model.AbstractJsonModel;
+import java.util.Date;
 
 /**
  * "MessageAudit" simples.message_audit database table.

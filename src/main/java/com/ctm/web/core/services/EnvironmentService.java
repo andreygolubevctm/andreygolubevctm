@@ -1,6 +1,6 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
-import com.ctm.exceptions.EnvironmentException;
+import com.ctm.web.core.exceptions.EnvironmentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

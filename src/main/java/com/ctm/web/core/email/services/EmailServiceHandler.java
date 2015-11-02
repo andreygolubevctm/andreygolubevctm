@@ -1,23 +1,20 @@
-package com.ctm.services.email;
+package com.ctm.web.core.email.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.ctm.web.core.email.exceptions.SendEmailException;
+import com.ctm.web.core.email.model.EmailMode;
+import com.ctm.web.core.email.model.EmailModel;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.EnvironmentException;
+import com.ctm.web.core.exceptions.VerticalException;
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.services.EnvironmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.web.core.exceptions.ConfigSettingException;
-import com.ctm.exceptions.EnvironmentException;
-import com.ctm.exceptions.SendEmailException;
-import com.ctm.exceptions.VerticalException;
-import com.ctm.model.EmailMaster;
-import com.ctm.web.core.model.email.EmailMode;
-import com.ctm.web.core.model.email.EmailModel;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.services.EnvironmentService;
-import com.ctm.services.EnvironmentService.Environment;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 
@@ -61,7 +58,7 @@ public abstract class EmailServiceHandler {
 		String key;
 		
 		if(prefixCustomerKey) {
-		if(EnvironmentService.getEnvironment() == Environment.PRO){
+		if(EnvironmentService.getEnvironment() == EnvironmentService.Environment.PRO){
 				key = pageSettings.getBrandCode().toUpperCase() + "_" + mailingName;
 		} else {
 				key = "QA_" + pageSettings.getBrandCode().toUpperCase() + "_" + mailingName;

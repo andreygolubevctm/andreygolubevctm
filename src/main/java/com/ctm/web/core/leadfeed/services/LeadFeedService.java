@@ -1,17 +1,16 @@
 package com.ctm.web.core.leadfeed.services;
 
-import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
-import com.ctm.model.Touch;
-import com.ctm.model.Touch.TouchType;
-import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
+import com.ctm.web.core.model.Touch;
+import com.ctm.web.core.model.Touch.TouchType;
+import com.ctm.web.core.content.model.Content;
+import com.ctm.web.core.services.AccessTouchService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -129,7 +128,7 @@ public abstract class LeadFeedService {
 			}
 		} catch(DaoException e) {
 			LOGGER.error("[Lead feed] Exception processing lead feed message {},{},{},{}", kv("brandCodeId", brandCodeId),
-					kv("verticalCode", verticalCode), kv("frequency", frequency), kv("serverDate", serverDate), e);
+				kv("verticalCode", verticalCode), kv("frequency", frequency), kv("serverDate", serverDate), e);
 		}
 
 		return "{\"styleCode\":" + brandCodeId + ",\"success\":" + successCount + ",\"failure\":" + failureCount + "}";
@@ -161,7 +160,7 @@ public abstract class LeadFeedService {
 			}
 			if(ignorePhoneRule != null && !ignorePhoneRule.isEmpty() && ignorePhoneRule.contains(leadData.getPhoneNumber())) {
 				LOGGER.debug("[Lead feed] Lead identified as test-only because of phone number {},{}", kv("phoneNumber", leadData.getPhoneNumber()),
-						kv("transactionId", leadData.getTransactionId()));
+					kv("transactionId", leadData.getTransactionId()));
 				return true;
 			} else {
 				return false;

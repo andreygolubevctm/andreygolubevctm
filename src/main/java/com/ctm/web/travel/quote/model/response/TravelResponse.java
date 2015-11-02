@@ -1,6 +1,6 @@
 package com.ctm.web.travel.quote.model.response;
 
-import com.ctm.web.homecontents.providers.model.request.Response;
+import com.ctm.web.core.providers.Response;
 
 /**
  * The response model from calling CtM's travel-quote application.

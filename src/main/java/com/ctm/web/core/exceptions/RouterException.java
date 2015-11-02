@@ -1,4 +1,4 @@
-package com.ctm.exceptions;
+package com.ctm.web.core.exceptions;
 
 public class RouterException extends RuntimeException {
 

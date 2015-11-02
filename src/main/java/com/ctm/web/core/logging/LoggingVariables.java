@@ -1,4 +1,4 @@
-package com.ctm.logging;
+package com.ctm.web.core.logging;
 
 import com.ctm.web.core.model.settings.Vertical;
 import org.slf4j.MDC;

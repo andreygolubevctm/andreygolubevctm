@@ -1,8 +1,8 @@
 package com.ctm.web.core.web.go.tags;
 
-import com.ctm.web.core.security.StringEncryption;
-
 import javax.servlet.jsp.JspException;
+
+import com.ctm.web.core.security.StringEncryption;
 
 public class HmacSHA256Tag extends BaseTag {
 

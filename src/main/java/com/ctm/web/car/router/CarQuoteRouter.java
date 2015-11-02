@@ -1,21 +1,21 @@
 package com.ctm.web.car.router;
 
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.car.model.CarProduct;
 import com.ctm.web.car.model.Views;
 import com.ctm.web.car.model.form.CarRequest;
 import com.ctm.web.car.model.results.CarResult;
-import com.ctm.web.core.resultsData.model.Info;
-import com.ctm.web.core.resultsData.model.ResultsObj;
-import com.ctm.web.core.resultsData.model.ResultsWrapper;
-import com.ctm.model.settings.Brand;
-import com.ctm.web.core.router.CommonQuoteRouter;
-import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.car.services.CarQuoteService;
 import com.ctm.web.car.services.CarVehicleSelectionService;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.RouterException;
+import com.ctm.web.core.resultsData.model.ResultsObj;
+import com.ctm.web.core.resultsData.model.ResultsWrapper;
+import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.resultsData.model.Info;
+import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.tracking.TrackingKeyService;
-import com.ctm.web.core.web.validation.SchemaValidationError;
+import com.ctm.web.core.validation.SchemaValidationError;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 

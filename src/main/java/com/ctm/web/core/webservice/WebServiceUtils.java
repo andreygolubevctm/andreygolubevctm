@@ -3,7 +3,7 @@ package com.ctm.web.core.webservice;
 import com.ctm.web.core.logging.CxfLoggingInInterceptor;
 import com.ctm.web.core.logging.CxfLoggingOutInterceptor;
 import com.ctm.web.core.logging.XMLOutputWriter;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.endpoint.Client;

@@ -1,4 +1,4 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,17 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ctm.services.FatalErrorService;
+import com.ctm.web.core.services.FatalErrorService;
 import com.ctm.web.core.utils.RequestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.SessionException;
-import com.ctm.model.session.SessionData;
-import com.ctm.services.QuoteService;
-import com.ctm.services.SessionDataService;
+import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.model.session.SessionData;
+import com.ctm.web.core.services.QuoteService;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.web.go.Data;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;

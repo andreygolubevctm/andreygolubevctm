@@ -1,18 +1,18 @@
-package com.ctm.services.email;
+package com.ctm.web.core.email.services;
 
-import com.ctm.web.core.results.dao.ResultsDao;
 import com.ctm.web.core.dao.transaction.TransactionDao;
+import com.ctm.web.core.email.model.EmailMode;
+import com.ctm.web.core.email.model.IncomingEmail;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.EnvironmentException;
-import com.ctm.exceptions.VerticalException;
+import com.ctm.web.core.exceptions.EnvironmentException;
+import com.ctm.web.core.exceptions.VerticalException;
 import com.ctm.web.core.model.TransactionProperties;
-import com.ctm.web.core.model.email.EmailMode;
-import com.ctm.web.core.email.model.IncomingEmail;
-import com.ctm.model.results.ResultProperty;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.services.SettingsService;
-import com.ctm.services.TransactionAccessService;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.results.dao.ResultsDao;
+import com.ctm.web.core.results.model.ResultProperty;
+import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.core.services.TransactionAccessService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

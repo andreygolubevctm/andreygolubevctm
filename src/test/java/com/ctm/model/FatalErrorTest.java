@@ -1,4 +1,4 @@
-package com.ctm.model;
+package com.ctm.web.core.model;
 
 import org.junit.Test;
 

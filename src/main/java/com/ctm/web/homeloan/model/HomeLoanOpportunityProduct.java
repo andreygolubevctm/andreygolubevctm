@@ -3,7 +3,7 @@ package com.ctm.web.homeloan.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ctm.model.AbstractJsonModel;
+import com.ctm.web.core.model.AbstractJsonModel;
 import com.ctm.web.homeloan.model.HomeLoanModel.RepaymentOptions;
 
 public class HomeLoanOpportunityProduct extends AbstractJsonModel {

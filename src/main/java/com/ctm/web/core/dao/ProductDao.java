@@ -1,21 +1,16 @@
 package com.ctm.web.core.dao;
 
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.*;
+
+import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-
-import javax.naming.NamingException;
-
-import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Product;
-import com.ctm.model.ProductProperty;
-import com.ctm.model.ProductPropertyExt;
-import com.ctm.model.ProductPropertyText;
-import com.ctm.model.Provider;
 
 public class ProductDao {
 

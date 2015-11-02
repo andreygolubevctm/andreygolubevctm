@@ -1,4 +1,4 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -9,9 +9,9 @@ import org.junit.Test;
 
 import com.ctm.web.core.dao.StampingDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.EmailDetailsException;
-import com.ctm.model.EmailMaster;
-import com.ctm.model.Stamping;
+import com.ctm.web.core.email.exceptions.EmailDetailsException;
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.model.Stamping;
 
 public class StampingServiceTest {
 

@@ -1,7 +1,7 @@
 package com.ctm.web.core.coupon.router;
 
-import com.ctm.model.session.AuthenticatedData;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.session.AuthenticatedData;
+import  com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.SettingsService;

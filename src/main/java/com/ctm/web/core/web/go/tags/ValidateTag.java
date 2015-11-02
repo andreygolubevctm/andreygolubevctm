@@ -1,9 +1,9 @@
 package com.ctm.web.core.web.go.tags;
 
+import javax.servlet.jsp.JspException;
+
 import com.ctm.web.core.web.go.InsertMarkerCache;
 import com.ctm.web.core.web.go.jQuery.ValidationRules;
-
-import javax.servlet.jsp.JspException;
 
 // TODO: Auto-generated Javadoc
 /**

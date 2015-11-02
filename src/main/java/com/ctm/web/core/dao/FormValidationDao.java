@@ -8,7 +8,7 @@ import javax.naming.NamingException;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.FormValidationLog;
+import com.ctm.web.core.model.FormValidationLog;
 
 /**
  * Data Access Object to interface with the form_validation table.

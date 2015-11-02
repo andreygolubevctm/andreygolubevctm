@@ -1,6 +1,6 @@
 package com.ctm.web.creditcards.model;
 
-import com.ctm.model.Product;
+import com.ctm.web.core.model.Product;
 
 public class Information {
 

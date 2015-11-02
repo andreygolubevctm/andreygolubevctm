@@ -1,4 +1,4 @@
-package com.ctm.services.confirmation;
+package com.ctm.web.core.confirmation.services;
 
 import com.ctm.web.core.dao.JoinDao;
 

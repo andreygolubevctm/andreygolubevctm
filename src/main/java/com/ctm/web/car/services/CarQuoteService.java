@@ -1,28 +1,26 @@
 package com.ctm.web.car.services;
 
+import com.ctm.web.car.exceptions.CarServiceException;
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
-import com.ctm.model.QuoteServiceProperties;
+import com.ctm.web.core.exceptions.*;
+import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.car.model.form.CarQuote;
 import com.ctm.web.car.model.form.CarRequest;
 import com.ctm.web.car.model.results.CarResult;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.model.settings.Brand;
-import com.ctm.web.core.exceptions.RouterException;
-import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.homecontents.providers.model.request.Request;
-import com.ctm.web.homecontents.providers.model.request.ResultPropertiesBuilder;
+import com.ctm.web.homecontents.providers.request.ResultPropertiesBuilder;
 import com.ctm.web.car.quote.model.RequestAdapter;
 import com.ctm.web.car.quote.model.ResponseAdapter;
 import com.ctm.web.car.quote.model.request.CarQuoteRequest;
 import com.ctm.web.car.quote.model.response.CarResponse;
 import com.ctm.web.core.services.CommonQuoteService;
 import com.ctm.web.core.services.EnvironmentService;
-import com.ctm.web.core.results.services.ResultsService;
+import com.ctm.web.core.services.ResultsService;
 import com.ctm.web.core.services.SessionDataService;
-import com.ctm.web.car.exceptions.CarServiceException;
-import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.validation.CommencementDateValidation;
 import com.ctm.web.core.logging.XMLOutputWriter;
 import com.ctm.web.core.web.go.Data;
@@ -49,7 +47,7 @@ import static com.ctm.web.core.logging.XMLOutputWriter.REQ_OUT;
 
 public class CarQuoteService extends CommonQuoteService<CarQuote> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(CarQuoteService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarQuoteService.class);
 
     public List<CarResult> getQuotes(Brand brand, CarRequest data) {
 
@@ -81,10 +79,10 @@ public class CarQuoteService extends CommonQuoteService<CarQuote> {
         EnvironmentService environmentService = new EnvironmentService();
 
         if(
-            environmentService.getEnvironment() == EnvironmentService.Environment.LOCALHOST ||
-            environmentService.getEnvironment() == EnvironmentService.Environment.NXI ||
-            environmentService.getEnvironment() == EnvironmentService.Environment.NXS
-        ) {
+                environmentService.getEnvironment() == EnvironmentService.Environment.LOCALHOST ||
+                        environmentService.getEnvironment() == EnvironmentService.Environment.NXI ||
+                        environmentService.getEnvironment() == EnvironmentService.Environment.NXS
+                ) {
             // Check if AuthToken provided and use as filter if available
             // It is acceptable to throw exceptions here as provider key is checked
             // when page loaded so technically should not reach here otherwise.

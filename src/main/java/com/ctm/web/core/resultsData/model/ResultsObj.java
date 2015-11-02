@@ -1,7 +1,5 @@
-package com.ctm.model.resultsData;
+package com.ctm.web.core.resultsData.model;
 
-import com.ctm.model.resultsData.Info;
-import com.ctm.model.resultsData.Result;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 

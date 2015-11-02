@@ -3,12 +3,10 @@ package com.ctm.web.simples.dao;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.CommentDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Comment;
+import com.ctm.web.core.model.Comment;
 import com.ctm.web.core.model.MessageAudit;
 import com.ctm.web.core.model.Rule;
-import com.ctm.web.simples.model.Message;
-import com.ctm.web.simples.model.MessageStatus;
-import com.ctm.web.simples.model.User;
+import com.ctm.web.simples.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

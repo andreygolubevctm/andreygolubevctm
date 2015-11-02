@@ -1,4 +1,4 @@
-package com.ctm.exceptions;
+package com.ctm.web.utilities.exceptions;
 
 public class UtilitiesWebServiceException extends RuntimeException {
 

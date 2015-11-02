@@ -1,9 +1,9 @@
 package com.ctm.web.core.leadfeed.router;
 
-import com.ctm.model.settings.Brand;
+import com.ctm.web.core.leadfeed.services.LeadFeedService;
+import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.leadfeed.services.LeadFeedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,23 +41,23 @@ public abstract class BestPriceLeadsRouter extends HttpServlet {
 			if (uri.endsWith("/triggerBestPriceLeads.json")) {
 				LeadFeedService leadService = getLeadFeedService();
 
-				Integer frequency = 10;
-				if (request.getParameter("freq") != null) {
-					frequency = Integer.valueOf(request.getParameter("freq")).intValue();
-				}
+					Integer frequency = 10;
+					if (request.getParameter("freq") != null) {
+						frequency = Integer.valueOf(request.getParameter("freq")).intValue();
+					}
 
-				// Look for each brand which is enabled for H&C
-				for(Brand brand :  ApplicationService.getBrands()){
-					Vertical vertical = brand.getVerticalByCode(getVerticalCode());
-					if(vertical != null){
-						output += leadService.processBestPriceLeads(brand.getId(), getVerticalCode(), frequency, serverDate);
+					// Look for each brand which is enabled for H&C
+					for(Brand brand :  ApplicationService.getBrands()){
+						Vertical vertical = brand.getVerticalByCode(getVerticalCode());
+						if(vertical != null){
+							output += leadService.processBestPriceLeads(brand.getId(), getVerticalCode(), frequency, serverDate);
+						}
 					}
 				}
-			}
 
-			if(!output.isEmpty()) {
-				writer.print(output);
-			}
+				if(!output.isEmpty()) {
+					writer.print(output);
+				}
 
 		} catch (Exception e) {
 			LOGGER.error("[Lead feed] Best price lead feed failed {}", request.getRequestURI(), e);
@@ -69,4 +69,3 @@ public abstract class BestPriceLeadsRouter extends HttpServlet {
 
 	protected abstract LeadFeedService getLeadFeedService();
 }
-

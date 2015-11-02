@@ -1,8 +1,8 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.CronDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.CronJob;
+import com.ctm.web.core.model.CronJob;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;

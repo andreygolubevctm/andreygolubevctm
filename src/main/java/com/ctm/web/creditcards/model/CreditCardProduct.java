@@ -1,7 +1,7 @@
 package com.ctm.web.creditcards.model;
 
-import com.ctm.model.Product;
-import com.ctm.model.Provider;
+import com.ctm.web.core.model.Product;
+import com.ctm.web.core.model.Provider;
 import com.ctm.web.creditcards.model.Views.ComparisonView;
 import com.ctm.web.creditcards.model.Views.DetailedView;
 import com.ctm.web.creditcards.model.Views.MapView;

@@ -7,11 +7,11 @@ import com.ctm.web.homecontents.model.results.HomeResult;
 import com.ctm.web.core.resultsData.model.Info;
 import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
-import com.ctm.model.settings.Brand;
+import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.homecontents.services.HomeQuoteService;
 import com.ctm.web.core.services.tracking.TrackingKeyService;
-import com.ctm.web.core.web.validation.SchemaValidationError;
+import com.ctm.web.core.validation.SchemaValidationError;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 
 import javax.ws.rs.*;

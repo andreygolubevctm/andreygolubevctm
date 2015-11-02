@@ -1,6 +1,6 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
-import com.ctm.services.results.ResultsService;
+import com.ctm.web.core.results.services.ResultsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

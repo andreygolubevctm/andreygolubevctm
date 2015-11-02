@@ -1,7 +1,7 @@
 package com.ctm.web.life.email.model;
 
-import com.ctm.web.core.email.formatter.ExactTargetFormatter;
 import com.ctm.web.core.email.model.ExactTargetEmailModel;
+import com.ctm.web.core.email.formatter.ExactTargetFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

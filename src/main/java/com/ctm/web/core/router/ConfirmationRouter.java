@@ -1,14 +1,13 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
-import java.io.IOException;
+import com.ctm.web.core.confirmation.services.ConfirmationService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.ctm.services.confirmation.ConfirmationService;
+import java.io.IOException;
 
 
 @WebServlet(urlPatterns = {

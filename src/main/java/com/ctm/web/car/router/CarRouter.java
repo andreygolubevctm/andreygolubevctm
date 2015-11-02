@@ -1,7 +1,7 @@
 package com.ctm.web.car.router;
 
-import com.ctm.web.car.services.CarVehicleSelectionService;
 import com.ctm.web.car.model.*;
+import com.ctm.web.car.services.CarVehicleSelectionService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

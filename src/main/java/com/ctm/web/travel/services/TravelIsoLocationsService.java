@@ -1,8 +1,8 @@
 package com.ctm.web.travel.services;
 
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.IsoLocations;
 import com.ctm.web.core.dao.IsoLocationsDao;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.IsoLocations;
 import com.ctm.web.core.services.IsoLocationsService;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,10 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
-
 
 public class TravelIsoLocationsService extends IsoLocationsService {
 
@@ -21,10 +19,6 @@ public class TravelIsoLocationsService extends IsoLocationsService {
 
     public TravelIsoLocationsService(IsoLocationsDao dao) {
         super(dao);
-    }
-
-    public TravelIsoLocationsService() {
-        super(new IsoLocationsDao());
     }
 
     public JSONObject addTopTenTravelDestinations(JSONObject json) throws DaoException {
@@ -41,7 +35,7 @@ public class TravelIsoLocationsService extends IsoLocationsService {
         list.add("GBR");
         list.add("USA");
 
-        List<IsoLocations> topTen = isoLocationsDao.getCountriesByIsoCodes(list);
+        ArrayList<IsoLocations> topTen = isoLocationsDao.getCountriesByIsoCodes(list);
 
         try {
             json.put("topTen" , topTen);

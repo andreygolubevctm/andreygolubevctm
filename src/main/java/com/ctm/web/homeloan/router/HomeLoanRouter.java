@@ -1,4 +1,4 @@
-package com.ctm.router.homeloan;
+package com.ctm.web.homeloan.router;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,10 +18,10 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.homeloan.model.HomeLoanModel;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
-import com.ctm.services.SettingsService;
-import com.ctm.services.homeloan.HomeLoanOpportunityService;
-import com.ctm.services.homeloan.HomeLoanResultsService;
-import com.ctm.services.homeloan.HomeLoanService;
+import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.homeloan.services.HomeLoanOpportunityService;
+import com.ctm.web.homeloan.services.HomeLoanResultsService;
+import com.ctm.web.homeloan.services.HomeLoanService;
 
 
 @WebServlet(urlPatterns = {

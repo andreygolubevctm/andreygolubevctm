@@ -1,12 +1,11 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.model.Stamping;
 import com.ctm.web.core.dao.StampingDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.EmailMaster;
-import com.ctm.model.Stamping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

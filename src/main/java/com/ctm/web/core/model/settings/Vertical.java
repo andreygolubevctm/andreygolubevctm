@@ -1,7 +1,5 @@
 package com.ctm.web.core.model.settings;
 
-import com.ctm.model.settings.ConfigSetting;
-
 import java.util.ArrayList;
 
 

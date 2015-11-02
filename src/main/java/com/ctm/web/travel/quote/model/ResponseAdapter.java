@@ -179,8 +179,8 @@ public class ResponseAdapter {
 
                     String handoverVarString = "";
                     String handoverDataString = "";
-                        Iterator it = travelQuote.getQuoteData().entrySet().iterator();
-                        while (it.hasNext()) {
+                    Iterator it = travelQuote.getQuoteData().entrySet().iterator();
+                    while (it.hasNext()) {
                         Map.Entry pair = (Map.Entry)it.next();
                         handoverVarString += (String)pair.getKey();
                         handoverDataString += (String)pair.getValue();

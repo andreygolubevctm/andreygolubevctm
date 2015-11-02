@@ -1,20 +1,18 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.SessionTokenDao;
 import com.ctm.web.core.dao.TouchDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.TokenSecurityException;
-import com.ctm.model.EmailMaster;
-import com.ctm.model.Touch;
-import com.ctm.model.session.SessionToken;
-import com.ctm.security.StringEncryption;
-import com.ctm.services.email.EmailUrlService;
-import com.ctm.web.core.utils.SessionUtils;
+import com.ctm.web.core.exceptions.TokenSecurityException;
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.model.Touch;
+import com.ctm.web.core.model.session.SessionToken;
+import com.ctm.web.core.security.StringEncryption;
+import com.ctm.web.core.email.services.EmailUrlService;
 import com.ctm.web.core.web.LDAPDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -25,48 +23,6 @@ import static com.ctm.web.core.logging.LoggingArguments.kv;
 public class AuthenticationService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
-	
-	static AuthenticationService authenticationService = new AuthenticationService();
-
-	/**
-	 * Generate a token for a simples users. This is using their LDAP user id.
-	 *
-	 * @param uid
-	 * @return
-	 * @throws DaoException
-	 * @throws NoSuchAlgorithmException
-	 * @throws InvalidKeyException
-	 */
-	public static String generateTokenForSimplesUser(String uid) throws DaoException, InvalidKeyException, NoSuchAlgorithmException {
-		return generateLastTouchToken(SessionToken.IdentityType.LDAP, uid, null);
-	}
-
-	/**
-	 * Authenticate a user using a token - creates a databucket for the user as if they logged in.
-	 * This doesn't replace the Tomcat Security layer so the user is not 'fully' logged in, but have enough in their databucket
-	 * to make their way through a journey.
-	 *
-	 * @param session
-	 * @param token
-	 * @return
-	 * @throws DaoException
-	 * @throws Exception
-	 */
-	public static boolean authenticateWithTokenForSimplesUser(HttpServletRequest request, String token) throws DaoException {
-		String uid = authenticationService.consumeLastTouchToken(SessionToken.IdentityType.LDAP, token);
-		HttpSession session = request.getSession();
-
-		if (uid != null) {
-			getUserDetailsFromLdap(session, uid);
-			// These would have been set in the login tag but because we are not using proper JSESSION log in they are not.
-			session.setAttribute("isLoggedIn", true);
-			SessionUtils.setIsCallCentre(session, true);
-			return true;
-		}
-		else {
-			throw new TokenSecurityException("Token mismatch");
-		}
-	}
 
 
 

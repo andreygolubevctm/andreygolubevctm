@@ -1,7 +1,7 @@
 package com.ctm.web.life.services;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.web.validation.SchemaValidationError;
+import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.life.model.request.LifePerson;
 import com.ctm.web.life.model.request.LifeRequest;
 import org.junit.Test;

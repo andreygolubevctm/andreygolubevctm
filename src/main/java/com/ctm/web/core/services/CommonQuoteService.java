@@ -1,21 +1,21 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.ServiceConfigurationException;
-import com.ctm.exceptions.ServiceException;
-import com.ctm.model.QuoteServiceProperties;
+import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.exceptions.ServiceException;
+import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.formData.Request;
-import com.ctm.model.settings.*;
-import com.ctm.web.validation.FormValidation;
-import com.ctm.web.core.web.validation.SchemaValidationError;
+import com.ctm.web.core.model.settings.*;
+import com.ctm.web.core.validation.FormValidation;
+import com.ctm.web.core.validation.SchemaValidationError;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
 
-import static com.ctm.model.settings.ConfigSetting.ALL_BRANDS;
-import static com.ctm.model.settings.ServiceConfigurationProperty.ALL_PROVIDERS;
-import static com.ctm.model.settings.ServiceConfigurationProperty.Scope.SERVICE;
+import static com.ctm.web.core.model.settings.ConfigSetting.ALL_BRANDS;
+import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.ALL_PROVIDERS;
+import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope.SERVICE;
 
 public abstract class CommonQuoteService<T> {
 

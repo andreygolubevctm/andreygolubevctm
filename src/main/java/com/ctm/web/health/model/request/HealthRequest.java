@@ -1,6 +1,6 @@
 package com.ctm.web.health.model.request;
 
-import com.ctm.model.PageRequest;
+import com.ctm.web.core.model.PageRequest;
 
 
 public class HealthRequest extends PageRequest {

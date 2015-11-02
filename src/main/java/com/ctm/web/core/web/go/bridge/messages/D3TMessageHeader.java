@@ -1,9 +1,9 @@
 package com.ctm.web.core.web.go.bridge.messages;
 
+import java.math.BigDecimal;
+
 import com.ibm.as400.access.AS400Text;
 import com.ibm.as400.access.AS400ZonedDecimal;
-
-import java.math.BigDecimal;
 
 /**
  * The Class D3TMessageHeader.
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  */
 
 @SuppressWarnings("unused")
-public class D3TMessageHeader implements MessageHeader {
+public class D3TMessageHeader implements MessageHeader{
 
 	/** The Constant DEFAULT_MODE. */
 	public static final String DEFAULT_MODE = "D";

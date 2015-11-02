@@ -1,7 +1,7 @@
 /**
  * Source: https://github.com/HaraldWalker/user-agent-utils
  */
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.content.services.ContentService;
 import eu.bitwalker.useragentutils.Browser;

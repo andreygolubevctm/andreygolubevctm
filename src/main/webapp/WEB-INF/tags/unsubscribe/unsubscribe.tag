@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="unsubscribe" class="com.ctm.model.Unsubscribe" scope="session"/>
+<jsp:useBean id="unsubscribe" class="com.ctm.web.core.model.Unsubscribe" scope="session"/>
 
 <%-- VARS --%>
 <c:set var="customerName"> <c:out escapeXml="true" value="${unsubscribe.getCustomerName()}"/></c:set>

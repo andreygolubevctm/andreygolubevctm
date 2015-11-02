@@ -1,6 +1,6 @@
 package com.ctm.web.core.coupon.model;
 
-import com.ctm.model.AbstractJsonModel;
+import com.ctm.web.core.model.AbstractJsonModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 

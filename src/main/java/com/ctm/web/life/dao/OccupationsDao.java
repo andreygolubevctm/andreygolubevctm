@@ -1,15 +1,16 @@
 package com.ctm.web.life.dao;
 
-import com.ctm.web.life.model.Occupation;
-import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.naming.NamingException;
+
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.life.model.Occupation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

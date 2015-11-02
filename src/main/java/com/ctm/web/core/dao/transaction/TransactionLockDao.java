@@ -4,7 +4,7 @@ import com.ctm.web.core.dao.DatabaseQueryMapping;
 import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.transaction.TransactionLock;
+import com.ctm.web.core.model.transaction.TransactionLock;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

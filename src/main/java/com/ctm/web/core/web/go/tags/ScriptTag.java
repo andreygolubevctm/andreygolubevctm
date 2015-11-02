@@ -1,10 +1,10 @@
 package com.ctm.web.core.web.go.tags;
 
-import com.ctm.web.core.web.Utils;
-import com.ctm.web.core.web.go.InsertMarkerCache;
+import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
-import java.io.IOException;
+
+import com.ctm.web.core.web.go.InsertMarkerCache;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -33,7 +33,7 @@ public class ScriptTag extends BaseTag {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<script type=\"text/javascript\" src=\"");
 		//sb.append(addTimeStampToHref(href));
-		sb.append(Utils.addBuildRevisionToUrl(href));
+		sb.append(com.ctm.web.core.web.Utils.addBuildRevisionToUrl(href));
 		sb.append("\"></script>");
 		sb.append('\n');
 		return sb.toString();

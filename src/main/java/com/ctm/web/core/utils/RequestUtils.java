@@ -1,7 +1,7 @@
 package com.ctm.web.core.utils;
 
 import com.ctm.web.core.exceptions.SessionException;
-import com.ctm.model.session.SessionData;
+import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.web.go.Data;

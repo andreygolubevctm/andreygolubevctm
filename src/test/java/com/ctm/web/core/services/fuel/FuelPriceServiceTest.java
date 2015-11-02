@@ -1,9 +1,9 @@
-package com.ctm.services.fuel;
+package com.ctm.web.core.services.fuel;
 
-import com.ctm.model.PageRequest;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.PageRequest;
+import  com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.fuel.services.FuelPriceEndpointService;
-import com.ctm.web.validation.TokenValidation;
+import com.ctm.web.core.validation.TokenValidation;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;

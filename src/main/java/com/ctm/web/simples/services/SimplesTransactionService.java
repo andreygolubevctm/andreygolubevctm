@@ -1,9 +1,8 @@
 package com.ctm.web.simples.services;
 
-
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.simples.model.ConfirmationOperator;
 import com.ctm.web.simples.dao.SimplesTransactionDao;
+import com.ctm.web.simples.model.ConfirmationOperator;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
-import com.ctm.web.core.model.email.EmailMode;
+import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.model.IncomingEmail;
 import com.ctm.web.core.services.AccessTouchService;
-import com.ctm.services.email.EmailUrlService;
-import com.ctm.services.email.IncomingEmailService;
+import com.ctm.web.core.email.services.EmailUrlService;
+import com.ctm.web.core.email.services.IncomingEmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

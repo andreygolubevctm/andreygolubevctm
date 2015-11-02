@@ -1,14 +1,15 @@
 package com.ctm.web.homeloan.model;
 
-import com.ctm.model.AbstractJsonModel;
-import com.ctm.web.core.model.formatter.JsonUtils;
-import com.ctm.web.homeloan.model.HomeLoanModel.CustomerSituation;
+import java.util.ArrayList;
+import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Date;
+import com.ctm.web.core.model.AbstractJsonModel;
+import com.ctm.web.core.model.formatter.JsonUtils;
+import com.ctm.web.homeloan.model.HomeLoanModel.CustomerSituation;
 
 public class HomeLoanOpportunityRequest extends AbstractJsonModel {
 

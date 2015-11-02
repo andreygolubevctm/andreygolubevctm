@@ -5,12 +5,14 @@
 
 package com.ctm.web.core.web.go.tags;
 
-import com.ctm.web.core.web.go.CallCenterHours;
+import static com.ctm.web.core.web.go.CallCenterHours.AFTERNOON_HOUR;
+import static com.ctm.web.core.web.go.CallCenterHours.EVENING_HOUR;
+import static com.ctm.web.core.web.go.CallCenterHours.MORNING_HOUR;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
-import static com.ctm.web.core.web.go.CallCenterHours.*;
+import com.ctm.web.core.web.go.CallCenterHours;
 
 /**
  * Tag to get the call centre hours.

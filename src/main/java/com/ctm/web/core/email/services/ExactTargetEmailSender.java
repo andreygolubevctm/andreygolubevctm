@@ -1,20 +1,19 @@
-package com.ctm.services.email;
+package com.ctm.web.core.email.services;
 
+import com.ctm.web.core.email.exceptions.SendEmailException;
+import com.ctm.web.core.email.formatter.ExactTargetFormatter;
+import com.ctm.web.core.email.model.EmailModel;
+import com.ctm.web.core.email.model.EmailResponse;
+import com.ctm.web.core.email.model.ExactTargetEmailModel;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.SendEmailException;
-import com.ctm.exceptions.ServiceConfigurationException;
-import com.ctm.web.core.model.email.EmailModel;
-import com.ctm.web.core.model.email.EmailResponse;
-import com.ctm.web.core.model.email.ExactTargetEmailModel;
-import com.ctm.web.core.email.formatter.ExactTargetFormatter;
-import com.ctm.model.settings.ConfigSetting;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.ServiceConfiguration;
-import com.ctm.model.settings.ServiceConfigurationProperty;
-import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
-import com.ctm.security.StringEncryption;
-import com.ctm.services.ServiceConfigurationService;
+import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.model.settings.ConfigSetting;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.ServiceConfiguration;
+import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
+import com.ctm.web.core.security.StringEncryption;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.webservice.WebServiceUtils;
 import com.exacttarget.wsdl.partnerapi.*;
 import org.apache.cxf.endpoint.Client;
@@ -66,9 +65,9 @@ public class ExactTargetEmailSender<T extends EmailModel> {
             if (serviceConfig == null)
                 throw new SendEmailException("Unable to find service 'exactTarget'");
 
-            WEBSERVICE_URL = serviceConfig.getPropertyValueByKey("serviceUrl", brandId, providerId, Scope.SERVICE);
-            WEBSERVICE_USER = serviceConfig.getPropertyValueByKey("serviceUser", brandId, providerId, Scope.SERVICE);
-            WEBSERVICE_PASSWORD = serviceConfig.getPropertyValueByKey("servicePassword", brandId, providerId, Scope.SERVICE);
+            WEBSERVICE_URL = serviceConfig.getPropertyValueByKey("serviceUrl", brandId, providerId, ServiceConfigurationProperty.Scope.SERVICE);
+            WEBSERVICE_USER = serviceConfig.getPropertyValueByKey("serviceUser", brandId, providerId, ServiceConfigurationProperty.Scope.SERVICE);
+            WEBSERVICE_PASSWORD = serviceConfig.getPropertyValueByKey("servicePassword", brandId, providerId, ServiceConfigurationProperty.Scope.SERVICE);
         } catch (DaoException | ServiceConfigurationException e1) {
             throw new SendEmailException("Could not successfully get default exact target service configuration from database", e1);
         }

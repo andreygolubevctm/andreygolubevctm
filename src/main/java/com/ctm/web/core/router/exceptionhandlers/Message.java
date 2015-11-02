@@ -1,4 +1,4 @@
-package com.ctm.router.exceptionhandlers;
+package com.ctm.web.core.router.exceptionhandlers;
 
 public class Message {
 

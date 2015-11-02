@@ -1,4 +1,4 @@
-package com.ctm.logging.jstl;
+package com.ctm.web.core.logging.jstl;
 
 
 import org.slf4j.Logger;

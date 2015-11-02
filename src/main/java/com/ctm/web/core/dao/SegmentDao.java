@@ -1,8 +1,8 @@
 package com.ctm.web.core.dao;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.segment.model.segment.Segment;
-import com.ctm.web.core.segment.model.segment.SegmentRequest;
+import com.ctm.web.core.model.segment.SegmentRequest;
+import com.ctm.web.core.segment.model.Segment;
 import com.ctm.web.core.segment.model.segment.SegmentRule;
 
 import java.sql.ResultSet;

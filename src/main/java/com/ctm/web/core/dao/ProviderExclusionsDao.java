@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.ProviderExclusion;
+import com.ctm.web.core.model.ProviderExclusion;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

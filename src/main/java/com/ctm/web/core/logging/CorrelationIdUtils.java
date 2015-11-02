@@ -1,4 +1,4 @@
-package com.ctm.logging;
+package com.ctm.web.core.logging;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;

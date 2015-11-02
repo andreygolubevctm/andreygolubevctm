@@ -1,10 +1,11 @@
 package com.ctm.web.utilities.model;
 
-import com.ctm.model.AbstractJsonModel;
+import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
+import com.ctm.web.core.model.AbstractJsonModel;
 
 public class UtilitiesProductModel extends AbstractJsonModel {
 

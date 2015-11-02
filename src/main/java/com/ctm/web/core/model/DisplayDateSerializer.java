@@ -1,4 +1,4 @@
-package com.ctm.model.simples;
+package com.ctm.web.core.model;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;

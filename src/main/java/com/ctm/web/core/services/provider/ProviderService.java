@@ -1,4 +1,4 @@
-package com.ctm.services.provider;
+package com.ctm.web.core.services.provider;
 
 import java.util.ArrayList;
 
@@ -10,9 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ctm.web.core.dao.ProviderDao;
-import com.ctm.model.Provider;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.model.Provider;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.services.SettingsService;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

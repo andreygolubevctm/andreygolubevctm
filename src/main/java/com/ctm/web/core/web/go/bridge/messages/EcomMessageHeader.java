@@ -1,9 +1,9 @@
 package com.ctm.web.core.web.go.bridge.messages;
 
+import java.math.BigDecimal;
+
 import com.ibm.as400.access.AS400Text;
 import com.ibm.as400.access.AS400ZonedDecimal;
-
-import java.math.BigDecimal;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @version 1.0
  */
 
-public class EcomMessageHeader implements MessageHeader {
+public class EcomMessageHeader implements MessageHeader{
 	
 	/** The Constant DEFAULT_MODE. */
 	public static final String DEFAULT_MODE = "D";

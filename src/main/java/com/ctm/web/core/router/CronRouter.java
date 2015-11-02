@@ -1,23 +1,15 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
-import java.io.IOException;
+import com.ctm.web.core.services.CronService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
-import com.ctm.web.homeloan.dao.HomeloanUnconfirmedLeadsDao;
-import com.ctm.web.core.model.settings.Vertical.VerticalType;
-import com.ctm.services.CronService;
-import com.ctm.services.SettingsService;
-import com.ctm.services.homeloan.HomeLoanOpportunityService;
-import com.ctm.services.homeloan.HomeLoanService;
+import java.io.IOException;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 
@@ -29,7 +21,6 @@ import static com.ctm.web.core.logging.LoggingArguments.kv;
  * This will help guide INF in setup, and gives us visibility over Cron schedules.
  */
 @WebServlet(urlPatterns = {
-		"/cron/hourly/homeloan/flexOutboundLead.json",
 		"/cron/monthly.json",
 		"/cron/fortnightly.json",
 		"/cron/weekly.json",
@@ -60,17 +51,6 @@ public class CronRouter extends HttpServlet {
 		}
 
 		// Route the requests ///////////////////////////////////////////////////////////////////////////////
-		if (uri.endsWith("/cron/hourly/homeloan/flexOutboundLead.json")) {
-
-			HomeLoanService homeLoanService = new HomeLoanService(new TransactionDetailsDao() ,  new HomeloanUnconfirmedLeadsDao() , new HomeLoanOpportunityService());
-			try {
-				SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.HOMELOAN.getCode());
-				homeLoanService.scheduledLeadGenerator(request);
-			} catch(Exception e) {
-				LOGGER.error("Cron homeload flexOutbound Lead failed", e);
-			}
-
-		} else {
 			String frequency = null;
 			if (uri.endsWith("/cron/monthly.json")) {
 				frequency = "monthly";
@@ -105,6 +85,5 @@ public class CronRouter extends HttpServlet {
 					LOGGER.error("Cron job failed {}, {}", kv("frequency", frequency), kv("uri", request.getRequestURI()), e);
 				}
 			}
-		}
 	}
 }

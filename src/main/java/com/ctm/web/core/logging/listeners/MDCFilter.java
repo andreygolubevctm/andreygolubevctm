@@ -1,6 +1,6 @@
-package com.ctm.logging.listeners;
+package com.ctm.web.core.logging.listeners;
 
-import com.ctm.logging.CorrelationIdUtils;
+import com.ctm.web.core.logging.CorrelationIdUtils;
 import com.ctm.web.core.utils.RequestUtils;
 
 import javax.servlet.*;
@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.ctm.logging.CorrelationIdUtils.clearCorrelationId;
-import static com.ctm.logging.CorrelationIdUtils.setCorrelationId;
-import static com.ctm.logging.LoggingVariables.clearLoggingVariables;
-import static com.ctm.logging.LoggingVariables.setLoggingVariables;
+import static com.ctm.web.core.logging.CorrelationIdUtils.clearCorrelationId;
+import static com.ctm.web.core.logging.CorrelationIdUtils.setCorrelationId;
+import static com.ctm.web.core.logging.LoggingVariables.clearLoggingVariables;
+import static com.ctm.web.core.logging.LoggingVariables.setLoggingVariables;
 import static com.ctm.web.core.utils.RequestUtils.BRAND_CODE_PARAM;
 import static com.ctm.web.core.utils.RequestUtils.TRANSACTION_ID_PARAM;
 

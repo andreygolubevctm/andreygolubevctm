@@ -18,7 +18,7 @@ public class IsoLocationsServiceTest {
 
     @Test
     public void testFetchCountryList() throws Exception {
-        service.fetchCountryList();
+         service.fetchCountryList();
 
     }
 

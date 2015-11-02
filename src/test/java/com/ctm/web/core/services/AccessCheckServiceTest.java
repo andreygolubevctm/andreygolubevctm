@@ -1,11 +1,11 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.TouchDao;
 import com.ctm.web.core.dao.transaction.TransactionLockDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Touch;
-import com.ctm.model.Touch.TouchType;
-import com.ctm.model.transaction.TransactionLock;
+import com.ctm.web.core.model.Touch;
+import com.ctm.web.core.model.Touch.TouchType;
+import com.ctm.web.core.model.transaction.TransactionLock;
 import org.junit.Test;
 
 import java.sql.SQLException;

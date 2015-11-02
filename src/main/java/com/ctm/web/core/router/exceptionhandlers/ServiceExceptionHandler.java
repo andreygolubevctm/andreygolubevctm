@@ -1,7 +1,6 @@
-package com.ctm.router.exceptionhandlers;
+package com.ctm.web.core.router.exceptionhandlers;
 
-import com.ctm.exceptions.ServiceException;
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import com.ctm.web.core.exceptions.ServiceException;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

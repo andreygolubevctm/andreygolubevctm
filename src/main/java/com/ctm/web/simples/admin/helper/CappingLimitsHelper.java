@@ -1,8 +1,8 @@
 package com.ctm.web.simples.admin.helper;
 
+import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.health.model.request.CappingLimit;
 import com.ctm.web.simples.admin.model.response.CappingLimitInformation;
-import com.ctm.web.core.web.validation.SchemaValidationError;
 
 import java.util.Date;
 import java.util.List;

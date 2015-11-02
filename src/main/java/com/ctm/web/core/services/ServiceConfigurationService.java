@@ -1,13 +1,13 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.ProviderExclusionsDao;
 import com.ctm.web.core.dao.ServiceConfigurationDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.ServiceConfigurationException;
-import com.ctm.model.ProviderExclusion;
-import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.ConfigSetting;
-import com.ctm.model.settings.ServiceConfiguration;
+import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.model.ProviderExclusion;
+import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.ConfigSetting;
+import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
 
 import javax.servlet.http.HttpServletRequest;

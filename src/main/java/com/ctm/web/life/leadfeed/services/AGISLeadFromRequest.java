@@ -1,11 +1,11 @@
 package com.ctm.web.life.leadfeed.services;
 
-import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
-import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
@@ -28,7 +28,7 @@ public class AGISLeadFromRequest {
 	public String newLeadFeed(HttpServletRequest request, PageSettings pageSettings, String transactionId) {
 		return process(request, pageSettings, transactionId, false);
 	}
-
+	
 	public String process(HttpServletRequest request, PageSettings pageSettings, String transactionId, Boolean policySold) {
 
 		LeadFeedService.LeadResponseStatus output = LeadFeedService.LeadResponseStatus.FAILURE;
@@ -77,7 +77,7 @@ public class AGISLeadFromRequest {
 			}
 		} catch (Exception e) {
 			LOGGER.error("[lead feed] Failed creating new lead feed {}, {}, {}", kv("pageSettings", pageSettings),
-					kv("transactionId", transactionId), kv("policySold", policySold));
+				kv("transactionId", transactionId), kv("policySold", policySold));
 		}
 
 		if(output == LeadFeedService.LeadResponseStatus.SUCCESS) {

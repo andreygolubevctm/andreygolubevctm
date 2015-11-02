@@ -1,11 +1,11 @@
-package com.ctm.services.travel;
+package com.ctm.web.core.services.travel;
 
 import com.ctm.web.core.dao.TouchDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Touch;
-import com.ctm.model.Touch.TouchType;
+import com.ctm.web.core.model.Touch;
+import com.ctm.web.core.model.Touch.TouchType;
 import com.ctm.web.core.services.AccessTouchService;
-import com.ctm.services.SessionDataService;
+import com.ctm.web.core.services.SessionDataService;
 import org.junit.Test;
 
 import java.util.Date;

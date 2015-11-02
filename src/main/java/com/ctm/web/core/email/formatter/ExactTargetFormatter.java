@@ -1,7 +1,7 @@
 package com.ctm.web.core.email.formatter;
 
-import com.ctm.web.core.model.email.EmailModel;
-import com.ctm.web.core.model.email.ExactTargetEmailModel;
+import com.ctm.web.core.email.model.EmailModel;
+import com.ctm.web.core.email.model.ExactTargetEmailModel;
 
 public abstract class ExactTargetFormatter<T extends EmailModel> {
 

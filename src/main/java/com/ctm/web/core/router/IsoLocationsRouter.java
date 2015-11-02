@@ -4,8 +4,8 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.core.services.FatalErrorService;
-import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.services.IsoLocationsService;
+import com.ctm.web.core.utils.RequestUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +69,7 @@ public abstract class IsoLocationsRouter extends HttpServlet {
                 LOGGER.error("Failed to fetch locations {}", kv("search", search),e);
                 FatalErrorService.logFatalError(e, 0, uri, request.getSession().getId(), true);
 
-                Error error = new Error();
+                com.ctm.web.core.model.Error error = new Error();
                 error.addError(new Error(e.getMessage()));
                 json = error.toJsonObject(true);
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

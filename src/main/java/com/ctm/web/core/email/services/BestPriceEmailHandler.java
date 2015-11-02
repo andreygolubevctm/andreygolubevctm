@@ -1,8 +1,9 @@
-package com.ctm.services.email;
+package com.ctm.web.core.email.services;
+
+import com.ctm.web.core.email.exceptions.SendEmailException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.ctm.exceptions.SendEmailException;
 
 public interface BestPriceEmailHandler {
 

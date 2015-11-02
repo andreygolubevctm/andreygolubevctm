@@ -1,6 +1,6 @@
 package com.ctm.web.utilities.model;
 
-import com.ctm.model.AbstractJsonModel;
+import com.ctm.web.core.model.AbstractJsonModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;

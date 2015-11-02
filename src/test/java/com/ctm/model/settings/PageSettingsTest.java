@@ -1,4 +1,4 @@
-package com.ctm.model.settings;
+package com.ctm.web.core.model.settings;
 
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.model.settings.Vertical;

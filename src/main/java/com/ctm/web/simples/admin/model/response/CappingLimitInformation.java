@@ -1,6 +1,5 @@
 package com.ctm.web.simples.admin.model.response;
 
-
 import com.ctm.web.health.model.request.CappingLimit;
 
 /**

@@ -1,8 +1,9 @@
 package com.ctm.web.health.model.request;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 public class Dependants {
 

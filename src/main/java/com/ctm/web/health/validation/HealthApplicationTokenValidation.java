@@ -1,6 +1,6 @@
 package com.ctm.web.health.validation;
 
-import com.ctm.model.Touch;
+import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.SettingsService;

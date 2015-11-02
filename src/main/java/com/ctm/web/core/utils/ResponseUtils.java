@@ -64,8 +64,8 @@ public class ResponseUtils {
         String sessionId = "";
         int styleCodeId = 0;
         fatalErrorService.logFatalError(exception, styleCodeId, uri , sessionId, true);
-        Error error = new Error();
-        error.addError(new Error(message));
+        com.ctm.web.core.model.Error error = new com.ctm.web.core.model.Error();
+        error.addError(new com.ctm.web.core.model.Error(message));
         JSONObject json = error.toJsonObject(true);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         try {

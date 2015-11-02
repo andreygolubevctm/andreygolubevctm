@@ -1,17 +1,15 @@
 package com.ctm.web.core.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
-
+import com.ctm.web.core.confirmation.services.JoinService;
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.model.LogAudit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.model.LogAudit;
-import com.ctm.web.core.confirmation.services.JoinService;
+import javax.naming.NamingException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

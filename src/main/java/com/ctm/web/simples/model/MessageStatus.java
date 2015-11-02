@@ -3,7 +3,7 @@ package com.ctm.web.simples.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ctm.model.AbstractJsonModel;
+import com.ctm.web.core.model.AbstractJsonModel;
 
 /**
  * "MessageStatus" represents the simples.message_status database table.

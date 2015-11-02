@@ -1,9 +1,9 @@
-package com.ctm.security.token;
+package com.ctm.web.core.security.token;
 
-import com.ctm.model.Touch;
+import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.request.TokenRequest;
-import com.ctm.security.token.config.TokenCreatorConfig;
-import com.ctm.security.token.exception.InvalidTokenException;
+import com.ctm.web.core.security.token.config.TokenCreatorConfig;
+import com.ctm.web.core.security.token.exception.InvalidTokenException;
 import io.jsonwebtoken.*;
 import org.springframework.util.NumberUtils;
 
@@ -12,8 +12,8 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
-import static com.ctm.security.token.config.TokenCreatorConfig.SIGNATURE_ALGORITHM;
-import static com.ctm.security.token.config.TokenCreatorConfig.TRANSACTION_ID_CLAIM;
+import static com.ctm.web.core.security.token.config.TokenCreatorConfig.SIGNATURE_ALGORITHM;
+import static com.ctm.web.core.security.token.config.TokenCreatorConfig.TRANSACTION_ID_CLAIM;
 
 
 public class JwtTokenValidator {

@@ -1,6 +1,6 @@
 package com.ctm.web.travel.services.email;
 
-import com.ctm.web.core.services.email.mapping.EmailDetailsMappings;
+import com.ctm.web.core.email.mapping.EmailDetailsMappings;
 import com.ctm.web.core.web.go.Data;
 
 public class TravelEmailDetailMappings implements EmailDetailsMappings {

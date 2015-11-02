@@ -1,13 +1,13 @@
-package com.ctm.services.segment;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.ctm.web.core.services.segment;
 
 import com.ctm.web.core.dao.SegmentDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.segment.Segment;
-import com.ctm.model.segment.SegmentRequest;
+import com.ctm.web.core.model.segment.SegmentRequest;
+import com.ctm.web.core.segment.model.Segment;
 import com.ctm.web.core.web.go.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SegmentService {
 

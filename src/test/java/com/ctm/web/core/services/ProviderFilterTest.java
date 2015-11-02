@@ -1,10 +1,10 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.exceptions.SessionException;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.web.go.Data;

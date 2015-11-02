@@ -1,8 +1,8 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.LmiDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.LmiModel;
+import com.ctm.web.core.model.LmiModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

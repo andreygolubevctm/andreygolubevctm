@@ -1,13 +1,13 @@
 package com.ctm.web.health.services;
 
 import com.ctm.web.core.dao.StyleCodeDao;
-import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.health.dao.HealthPriceDao;
+import com.ctm.web.health.model.*;
 import com.ctm.web.core.logging.LoggingVariables;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.health.services.results.ProviderRestrictionsService;
 import com.ctm.web.core.utils.FormDateUtils;
-import com.ctm.web.health.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,9 +18,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
 import static com.ctm.web.health.model.Frequency.ANNUALLY;
 import static com.ctm.web.health.model.Frequency.HALF_YEARLY;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class HealthPriceService {
 

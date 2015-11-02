@@ -1,4 +1,4 @@
-package com.ctm.model.segment;
+package com.ctm.web.core.segment.model.segment;
 
 /**
  * This model represents the ctm.conpon_rules database table.

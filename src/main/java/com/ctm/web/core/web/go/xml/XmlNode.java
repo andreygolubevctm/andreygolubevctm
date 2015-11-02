@@ -5,11 +5,15 @@
 
 package com.ctm.web.core.web.go.xml;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 // TODO: Auto-generated Javadoc
 /**

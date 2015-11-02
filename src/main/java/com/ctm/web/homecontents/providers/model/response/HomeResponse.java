@@ -1,6 +1,6 @@
 package com.ctm.web.homecontents.providers.model.response;
 
-import com.ctm.web.homecontents.providers.model.request.Response;
+import com.ctm.web.core.providers.Response;
 
 public class HomeResponse extends Response<HomeQuote> {
 }

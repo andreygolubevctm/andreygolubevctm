@@ -1,10 +1,11 @@
 package com.ctm.web.utilities.model;
 
-import com.ctm.model.AbstractJsonModel;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
+import com.ctm.web.core.model.AbstractJsonModel;
 
 public class UtilitiesProductRequestModel  extends AbstractJsonModel{
 

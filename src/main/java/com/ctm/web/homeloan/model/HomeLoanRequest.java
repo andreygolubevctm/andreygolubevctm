@@ -1,8 +1,8 @@
 package com.ctm.web.homeloan.model;
 
-import com.ctm.web.core.model.request.Person;
-
 import javax.validation.Valid;
+
+import com.ctm.web.core.model.request.Person;
 
 public class HomeLoanRequest {
 	

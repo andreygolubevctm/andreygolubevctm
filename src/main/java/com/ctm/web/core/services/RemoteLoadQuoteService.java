@@ -1,4 +1,4 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
 
 import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.TransactionDetail;
-import com.ctm.web.core.model.email.EmailMode;
+import com.ctm.web.core.model.TransactionDetail;
+import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.model.IncomingEmail;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
-import com.ctm.services.email.EmailUrlService;
+import com.ctm.web.core.email.services.EmailUrlService;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

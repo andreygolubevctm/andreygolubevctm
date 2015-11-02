@@ -1,8 +1,8 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.FatalErrorDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.FatalError;
+import com.ctm.web.core.model.FatalError;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

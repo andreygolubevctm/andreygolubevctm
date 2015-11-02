@@ -8,7 +8,7 @@ import javax.naming.NamingException;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Confirmation;
+import com.ctm.web.core.model.Confirmation;
 
 public class ConfirmationDao {
 

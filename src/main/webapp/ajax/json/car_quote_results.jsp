@@ -167,7 +167,7 @@
 			<c:set var="choosiCustomerPhone" value="${data.quote.contact.phoneinput}" />
 			<c:set var="choosiCustomerCallOptIn" value="${okToCall}" />
 			<c:set var="choosiCustomerMarketingOptIn" value="${marketing}" />
-			<jsp:useBean id="ChoosiLeadFeedService" class="com.ctm.services.leadfeed.ChoosiLeadFeedService" scope="application" />
+			<jsp:useBean id="ChoosiLeadFeedService" class="com.ctm.web.core.services.leadfeed.ChoosiLeadFeedService" scope="application" />
 			${ChoosiLeadFeedService.setChoosiLeadFeed(insuranceTypeId, choosiCustomerFirstName, choosiCustomerEmail, choosiCustomerPhone, choosiCustomerCallOptIn, choosiCustomerMarketingOptIn, choosiCustomerLastName)}
 		</c:if>--%>
 

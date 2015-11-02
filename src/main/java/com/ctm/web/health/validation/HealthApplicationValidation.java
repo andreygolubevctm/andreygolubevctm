@@ -2,7 +2,7 @@ package com.ctm.web.health.validation;
 
 import com.ctm.web.health.model.request.HealthApplicationRequest;
 import com.ctm.web.core.validation.FormValidation;
-import com.ctm.web.core.web.validation.SchemaValidationError;
+import com.ctm.web.core.validation.SchemaValidationError;
 
 import java.util.List;
 

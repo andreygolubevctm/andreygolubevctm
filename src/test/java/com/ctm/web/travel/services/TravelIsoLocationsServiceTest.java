@@ -1,7 +1,7 @@
 package com.ctm.web.travel.services;
 
-import com.ctm.model.IsoLocations;
 import com.ctm.web.core.dao.IsoLocationsDao;
+import com.ctm.web.core.model.IsoLocations;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,8 +22,8 @@ public class TravelIsoLocationsServiceTest {
     private IsoLocationsDao dao;
 
     private TravelIsoLocationsService service;
-    private java.util.ArrayList<IsoLocations> countries;
-    private java.util.ArrayList<IsoLocations> countriesNotTopTen;
+    private java.util.ArrayList<com.ctm.web.core.model.IsoLocations> countries;
+    private java.util.ArrayList<com.ctm.web.core.model.IsoLocations> countriesNotTopTen;
 
     @Before
     public void setUp() throws Exception {

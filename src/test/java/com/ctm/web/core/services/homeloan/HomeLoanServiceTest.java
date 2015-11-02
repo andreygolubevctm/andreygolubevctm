@@ -1,24 +1,20 @@
-package com.ctm.services.homeloan;
+package com.ctm.web.core.services.homeloan;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.homeloan.dao.HomeloanUnconfirmedLeadsDao;
 import com.ctm.web.homeloan.model.HomeLoanContact;
+import com.ctm.web.homeloan.model.HomeLoanModel;
+import com.ctm.web.homeloan.services.HomeLoanOpportunityService;
+import com.ctm.web.homeloan.services.HomeLoanService;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
-import com.ctm.web.homeloan.dao.HomeloanUnconfirmedLeadsDao;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.homeloan.model.HomeLoanModel;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Mockito.*;
 
 public class HomeLoanServiceTest {
 

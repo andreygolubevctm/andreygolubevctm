@@ -1,20 +1,18 @@
 package com.ctm.web.core.model;
 
-import com.ctm.model.Comment;
-import com.ctm.model.Touch;
-import com.ctm.web.core.model.formatter.JsonUtils;
-import com.ctm.web.health.model.HealthTransaction;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.ctm.web.core.model.formatter.JsonUtils;
 
 /**
  * TransactionProperties model kind of glues {@link Transaction} to other related tables such as ctm.touches and ctm.quote_comments
  *
- * It is not the "transaction_details" of a transaction -- details should be vertical-specific e.g. {@link HealthTransaction}
+ * It is not the "transaction_details" of a transaction -- details should be vertical-specific e.g. {@link com.ctm.web.health.model.health.HealthTransaction}
  *
  */
 public class TransactionProperties extends Transaction {

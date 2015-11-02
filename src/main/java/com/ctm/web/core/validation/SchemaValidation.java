@@ -1,6 +1,6 @@
-package com.ctm.web.validation;
+package com.ctm.web.core.validation;
 
-import com.ctm.web.core.web.validation.SchemaValidationError;
+import com.ctm.web.core.validation.SchemaValidationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXParseException;

@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 
-import com.ctm.web.core.web.Utils;
 import com.ctm.web.core.web.go.InsertMarkerCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +39,7 @@ public class StyleTag extends BaseTag {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<link rel=\"stylesheet\" href=\"");
 		//sb.append(addTimeStampToHref(this.href));
-		sb.append(Utils.addBuildRevisionToUrl(href));
+		sb.append(com.ctm.web.core.web.Utils.addBuildRevisionToUrl(href));
 		sb.append("\">");
 		sb.append('\n');
 		return sb.toString();

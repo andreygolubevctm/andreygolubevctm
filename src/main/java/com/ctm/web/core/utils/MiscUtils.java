@@ -1,9 +1,10 @@
 package com.ctm.web.core.utils;
 
+import com.ctm.web.core.content.model.Content;
+
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.ctm.web.core.content.model.Content;
 
 public class MiscUtils {
 

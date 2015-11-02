@@ -1,4 +1,4 @@
-package com.ctm.web.core.model.email;
+package com.ctm.web.core.email.model;
 
 public abstract class EmailModel {
 

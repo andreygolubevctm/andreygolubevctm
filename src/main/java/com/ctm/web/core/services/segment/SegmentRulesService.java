@@ -1,23 +1,20 @@
-package com.ctm.services.segment;
+package com.ctm.web.core.services.segment;
+
+import com.ctm.web.core.model.Error;
+import com.ctm.web.core.segment.model.Segment;
+import com.ctm.web.core.segment.model.segment.SegmentRule;
+import com.ctm.web.core.utils.FormDateUtils;
+import com.ctm.web.core.web.go.Data;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.LocalDate;
+import org.joda.time.Years;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.joda.time.LocalDate;
-import org.joda.time.Years;
-
-import com.ctm.web.core.model.Error;
-import com.ctm.model.segment.Segment;
-import com.ctm.model.segment.SegmentRule;
-import com.ctm.model.segment.SegmentRule.FilterBy;
-import com.ctm.model.segment.SegmentRule.Option;
-import com.ctm.web.core.utils.FormDateUtils;
-import com.ctm.web.core.web.go.Data;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 
@@ -37,7 +34,7 @@ public class SegmentRulesService {
 		return true; // also pass when no rules
 	}
 
-	private boolean filterSingle(FilterBy filterBy, String formValue, String ruleValue, Option option) {
+	private boolean filterSingle(SegmentRule.FilterBy filterBy, String formValue, String ruleValue, SegmentRule.Option option) {
 		if (formValue != null && ruleValue != null) {
 			switch(filterBy){
 				case VALUE:
@@ -53,7 +50,7 @@ public class SegmentRulesService {
 		return false;
 	}
 
-	private boolean filterByValue(String formValue, String ruleValue, Option option) {
+	private boolean filterByValue(String formValue, String ruleValue, SegmentRule.Option option) {
 		switch(option){
 			case EQUALS:
 				return formValue.equalsIgnoreCase(ruleValue);
@@ -67,7 +64,7 @@ public class SegmentRulesService {
 		}
 	}
 
-	private boolean filterByRange(String formValue, String ruleValue, Option option) {
+	private boolean filterByRange(String formValue, String ruleValue, SegmentRule.Option option) {
 		try{
 			// parser for string value in case the number format is currency
 			BigDecimal formValueDecimal = new BigDecimal(formValue.replaceAll("$|,", ""));
@@ -89,7 +86,7 @@ public class SegmentRulesService {
 		return false;
 	}
 
-	private boolean filterByDateRange(String formValue, String ruleValue, Option option) {
+	private boolean filterByDateRange(String formValue, String ruleValue, SegmentRule.Option option) {
 		try{
 			Date formValueDate = FormDateUtils.parseDateFromForm(formValue);
 			Date ruleValueDate = FormDateUtils.parseDateFromForm(ruleValue);
@@ -110,7 +107,7 @@ public class SegmentRulesService {
 		return false;
 	}
 
-	private boolean filterByAge(String formValue, String ruleValue, Option option) {
+	private boolean filterByAge(String formValue, String ruleValue, SegmentRule.Option option) {
 		try{
 			LocalDate birthDate = new LocalDate(FormDateUtils.parseDateFromForm(formValue));
 			LocalDate now = new LocalDate();

@@ -2,9 +2,9 @@ package com.ctm.web.core.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.settings.ConfigSetting;
-import com.ctm.model.settings.ServiceConfiguration;
-import com.ctm.model.settings.ServiceConfigurationProperty;
+import com.ctm.web.core.model.settings.ConfigSetting;
+import com.ctm.web.core.model.settings.ServiceConfiguration;
+import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
 import com.ctm.web.core.services.EnvironmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

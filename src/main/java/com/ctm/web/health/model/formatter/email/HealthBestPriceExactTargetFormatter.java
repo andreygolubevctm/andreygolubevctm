@@ -1,9 +1,9 @@
 package com.ctm.web.health.model.formatter.email;
 
+import com.ctm.web.core.email.formatter.ExactTargetFormatter;
+import com.ctm.web.core.email.model.BestPriceRanking;
 import com.ctm.web.core.email.model.ExactTargetEmailModel;
 import com.ctm.web.health.model.email.HealthBestPriceEmailModel;
-import com.ctm.web.core.email.model.BestPriceRanking;
-import com.ctm.web.core.email.formatter.ExactTargetFormatter;
 
 public class HealthBestPriceExactTargetFormatter extends ExactTargetFormatter<HealthBestPriceEmailModel> {
 

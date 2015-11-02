@@ -1,6 +1,6 @@
-package com.ctm.web.validation;
+package com.ctm.web.core.validation;
 
-import com.ctm.web.core.web.validation.SchemaValidationError;
+import com.ctm.web.core.validation.SchemaValidationError;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

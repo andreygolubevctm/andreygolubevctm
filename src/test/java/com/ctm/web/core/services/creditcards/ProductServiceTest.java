@@ -1,9 +1,9 @@
-package com.ctm.services.creditcards;
+package com.ctm.web.core.services.creditcards;
 
 import com.ctm.web.core.dao.ProductDao;
 import com.ctm.web.creditcards.exceptions.CreditCardServiceException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Product;
+import com.ctm.web.core.model.Product;
 import com.ctm.web.creditcards.model.CreditCardProduct;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.creditcards.services.ProductService;

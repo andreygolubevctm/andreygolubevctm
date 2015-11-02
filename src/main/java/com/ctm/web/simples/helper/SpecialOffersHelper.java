@@ -1,9 +1,9 @@
 package com.ctm.web.simples.helper;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.SpecialOffers;
 import com.ctm.web.core.validation.FormValidation;
-import com.ctm.web.core.web.validation.SchemaValidationError;
+import com.ctm.web.core.validation.SchemaValidationError;
+import com.ctm.web.simples.admin.model.SpecialOffers;
 
 import java.util.List;
 

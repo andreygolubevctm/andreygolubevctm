@@ -1,13 +1,13 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
+import com.ctm.web.core.model.Address;
 import com.ctm.web.core.dao.AddressDao;
+import com.ctm.web.core.elasticsearch.services.AddressSearchService;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Address;
-import com.ctm.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
-import com.ctm.services.SettingsService;
-import com.ctm.web.core.elasticsearch.services.AddressSearchService;
+import com.ctm.web.core.services.SettingsService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

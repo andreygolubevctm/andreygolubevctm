@@ -1,12 +1,13 @@
 package com.ctm.web.utilities.model;
 
-import com.ctm.model.AbstractJsonModel;
-import com.ctm.web.core.model.formatter.JsonUtils;
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import com.ctm.web.core.model.AbstractJsonModel;
+import com.ctm.web.core.model.formatter.JsonUtils;
 
 public class UtilitiesProviderServiceModel extends AbstractJsonModel {
 

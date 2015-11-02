@@ -1,10 +1,10 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.ctm.model.FormValidationLog;
+import com.ctm.web.core.model.FormValidationLog;
 
 import com.ctm.web.core.constants.PrivacyBlacklist;
 import com.ctm.web.core.dao.FormValidationDao;

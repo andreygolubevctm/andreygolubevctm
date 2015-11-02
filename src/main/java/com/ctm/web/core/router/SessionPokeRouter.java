@@ -1,10 +1,10 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
-import com.ctm.security.token.JwtTokenCreator;
-import com.ctm.security.token.config.TokenCreatorConfig;
-import com.ctm.services.EnvironmentService;
-import com.ctm.services.SessionDataService;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.security.token.JwtTokenCreator;
+import com.ctm.web.core.security.token.config.TokenCreatorConfig;
+import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.ResponseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;

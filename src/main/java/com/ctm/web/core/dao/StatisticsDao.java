@@ -1,9 +1,9 @@
 package com.ctm.web.core.dao;
 
 
-import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.statistics.dao.StatisticDescription;
 import com.ctm.statistics.dao.StatisticDetail;
+import com.ctm.web.core.exceptions.DaoException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

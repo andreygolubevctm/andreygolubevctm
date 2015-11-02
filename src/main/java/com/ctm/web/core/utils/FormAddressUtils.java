@@ -1,6 +1,6 @@
 package com.ctm.web.core.utils;
 
-import com.ctm.model.Address;
+import com.ctm.web.core.model.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

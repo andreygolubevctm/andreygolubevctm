@@ -1,4 +1,4 @@
-package com.ctm.services;
+package com.ctm.web.core.services;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.model.Unsubscribe;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.services.email.EmailUrlService;
+import com.ctm.web.core.model.Unsubscribe;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.email.services.EmailUrlService;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 
