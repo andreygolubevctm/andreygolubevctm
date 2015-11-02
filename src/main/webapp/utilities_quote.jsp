@@ -139,6 +139,7 @@
 							
         <%-- Slides --%>
         <utilities_new_layout:slide_your_details/>
+        <utilities_new_layout:slide_contact_details/>
         <utilities_new_layout:slide_results/>
         <utilities_new_layout:slide_enquiry/>
 							

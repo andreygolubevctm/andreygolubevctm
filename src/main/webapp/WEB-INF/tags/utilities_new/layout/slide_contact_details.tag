@@ -4,7 +4,7 @@
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}"/>
 
-<layout:slide formId="startForm" firstSlide="true" nextLabel="Get Quotes">
+<layout:slide formId="contactForm" firstSlide="false" nextLabel="Get Quotes">
     <layout:slide_columns>
 
          <jsp:attribute name="rightColumn">
@@ -13,6 +13,7 @@
 
         <jsp:body>
             <layout:slide_content>
+                <utilities_new_fieldset:preferences xpath="${xpath}/resultsDisplayed" />
                 <utilities_new_fieldset:contact_details xpath="${xpath}/resultsDisplayed" />
 
                 <utilities_new:not_provided />
