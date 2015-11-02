@@ -1,4 +1,4 @@
-package com.ctm.statistics.dao;
+package com.ctm.web.core.statistics.model;
 
 public class StatisticDescription {
 
