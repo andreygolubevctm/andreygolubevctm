@@ -658,7 +658,7 @@
 					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","QCHF"];
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF"];
 
 					if( $('input[name=health_healthCover_rebate]:checked').val() == "N" && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
