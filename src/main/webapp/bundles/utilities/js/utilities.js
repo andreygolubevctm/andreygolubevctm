@@ -119,8 +119,6 @@
                 object: meerkat.modules.utilities.getTrackingFieldsObject
             },
             onInitialise: function onStartInit(event) {
-                meerkat.modules.jqueryValidate.initJourneyValidator();
-                $('#utilities_resultsDisplayed_competition_optin').trigger('change.applyValidationRules');
             },
             validation: {
                 validate: true,
@@ -140,6 +138,23 @@
                     callback(doContinue);
 
                 }
+            }
+        };
+
+        var contactStep = {
+            title: 'Contact details',
+            navigationId: 'contact',
+            slideIndex: 0,
+            externalTracking: {
+                method: 'trackQuoteForms',
+                object: meerkat.modules.utilities.getTrackingFieldsObject
+            },
+            onInitialise: function onStartInit(event) {
+                meerkat.modules.jqueryValidate.initJourneyValidator();
+                $('#utilities_resultsDisplayed_competition_optin').trigger('change.applyValidationRules');
+            },
+            validation: {
+                validate: true
             }
         };
 
@@ -204,6 +219,7 @@
 
         steps = {
             startStep: startStep,
+            contactStep: contactStep,
             resultsStep: resultsStep,
             enquiryStep: enquiryStep
         };
@@ -215,6 +231,10 @@
             {
                 label: 'Household details',
                 navigationId: steps.startStep.navigationId
+            },
+            {
+                label: 'Contact details',
+                navigationId: steps.contactStep.navigationId
             },
             {
                 label: 'Choose a plan',
