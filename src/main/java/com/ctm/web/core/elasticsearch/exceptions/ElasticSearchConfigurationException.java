@@ -1,4 +1,4 @@
-package com.ctm.web.core.exceptions;
+package com.ctm.web.core.elasticsearch.exceptions;
 
 public class ElasticSearchConfigurationException extends Exception {
 

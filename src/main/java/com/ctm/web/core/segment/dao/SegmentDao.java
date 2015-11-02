@@ -1,5 +1,7 @@
-package com.ctm.web.core.dao;
+package com.ctm.web.core.segment.dao;
 
+import com.ctm.web.core.dao.DatabaseQueryMapping;
+import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.segment.SegmentRequest;
 import com.ctm.web.core.segment.model.Segment;

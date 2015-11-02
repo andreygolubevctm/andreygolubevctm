@@ -11,7 +11,7 @@ package com.ctm.web.core.model.session;
  *
  */
 
-import com.ctm.web.core.dao.transaction.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.web.go.Data;
 

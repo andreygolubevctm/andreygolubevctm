@@ -1,11 +1,11 @@
-package com.ctm.web.core.dao.transaction;
+package com.ctm.web.core.transaction.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.constants.PrivacyBlacklist;
 import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.TransactionDetail;
+import com.ctm.web.core.transaction.model.TransactionDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

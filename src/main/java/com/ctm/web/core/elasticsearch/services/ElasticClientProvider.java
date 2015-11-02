@@ -1,7 +1,7 @@
 package com.ctm.web.core.elasticsearch.services;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.exceptions.ElasticSearchConfigurationException;
+import com.ctm.web.core.elasticsearch.exceptions.ElasticSearchConfigurationException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope;

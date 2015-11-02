@@ -1,4 +1,4 @@
-package com.ctm.web.core.model;
+package com.ctm.web.core.confirmation.model;
 
 import java.util.Date;
 

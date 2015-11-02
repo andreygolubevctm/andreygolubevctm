@@ -5,7 +5,7 @@ import com.ctm.web.core.model.RankingDetail;
 import com.ctm.web.core.content.dao.ContentDao;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.dao.RankingDetailsDao;
-import com.ctm.web.core.dao.transaction.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.BestPriceRanking;

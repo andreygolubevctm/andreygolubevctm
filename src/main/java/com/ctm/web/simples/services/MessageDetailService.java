@@ -2,12 +2,12 @@ package com.ctm.web.simples.services;
 
 import com.ctm.web.core.dao.CommentDao;
 import com.ctm.web.core.dao.TouchDao;
-import com.ctm.web.core.dao.transaction.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.simples.dao.MessageAuditDao;
 import com.ctm.web.simples.dao.MessageDetailDao;
 import com.ctm.web.simples.dao.MessageDuplicatesDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.Transaction;
+import com.ctm.web.core.transaction.model.Transaction;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.simples.model.Message;
 import com.ctm.web.simples.model.MessageDetail;

@@ -1,5 +1,6 @@
-package com.ctm.web.core.model;
+package com.ctm.web.core.transaction.model;
 
+import com.ctm.web.core.model.AbstractJsonModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 

@@ -1,9 +1,9 @@
 package com.ctm.web.core.confirmation.services;
 
-import com.ctm.web.core.dao.ConfirmationDao;
-import com.ctm.web.core.dao.transaction.TransactionDao;
+import com.ctm.web.core.confirmation.dao.ConfirmationDao;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.Confirmation;
+import com.ctm.web.core.confirmation.model.Confirmation;
 import com.ctm.web.core.model.TransactionProperties;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;

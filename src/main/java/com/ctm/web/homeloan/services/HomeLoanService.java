@@ -1,10 +1,10 @@
 package com.ctm.web.homeloan.services;
 
-import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
+import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.homeloan.dao.HomeloanUnconfirmedLeadsDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Touch;
-import com.ctm.web.core.model.TransactionDetail;
+import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.web.homeloan.model.HomeLoanModel;
 import com.ctm.web.homeloan.model.HomeLoanModel.CustomerGoal;
 import com.ctm.web.homeloan.model.HomeLoanModel.CustomerSituation;

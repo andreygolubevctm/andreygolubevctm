@@ -2,7 +2,7 @@ package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.web.core.dao.StampingDao;
-import com.ctm.web.core.dao.transaction.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.mapping.EmailDetailsMappings;
 import com.ctm.web.core.email.services.EmailDetailsService;

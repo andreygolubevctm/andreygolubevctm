@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ctm.web.core.dao.transaction.TransactionLockDao;
+import com.ctm.web.core.transaction.dao.TransactionLockDao;
 import com.ctm.web.core.exceptions.DaoException;
 
 @WebServlet(urlPatterns = {

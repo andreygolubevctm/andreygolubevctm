@@ -1,6 +1,6 @@
 package com.ctm.web.core.email.services;
 
-import com.ctm.web.core.dao.transaction.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.model.EmailResponse;

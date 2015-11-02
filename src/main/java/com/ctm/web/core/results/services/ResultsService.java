@@ -1,8 +1,8 @@
 package com.ctm.web.core.results.services;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.web.core.model.results.ResultsSimpleItem;
-import com.ctm.web.core.model.results.ResultsTemplateItem;
+import com.ctm.web.core.results.model.ResultsSimpleItem;
+import com.ctm.web.core.results.model.ResultsTemplateItem;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.ctm.web.core.dao;
+package com.ctm.web.core.confirmation.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,7 +8,7 @@ import javax.naming.NamingException;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.Confirmation;
+import com.ctm.web.core.confirmation.model.Confirmation;
 
 public class ConfirmationDao {
 

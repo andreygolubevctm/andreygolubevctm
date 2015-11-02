@@ -1,8 +1,8 @@
-package com.ctm.web.core.dao.transaction;
+package com.ctm.web.core.transaction.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.Transaction;
+import com.ctm.web.core.transaction.model.Transaction;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;

@@ -11,13 +11,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ctm.web.core.dao.EmailMasterDao;
-import com.ctm.web.core.dao.transaction.TransactionDao;
-import com.ctm.web.core.dao.transaction.TransactionDetailsDao;
+import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.model.EmailMaster;
-import com.ctm.web.core.model.Transaction;
-import com.ctm.web.core.model.TransactionDetail;
+import com.ctm.web.core.transaction.model.Transaction;
+import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.model.IncomingEmail;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;

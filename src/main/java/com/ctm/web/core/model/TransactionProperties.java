@@ -3,6 +3,7 @@ package com.ctm.web.core.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ctm.web.core.transaction.model.Transaction;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.json.JSONException;
 import org.json.JSONObject;

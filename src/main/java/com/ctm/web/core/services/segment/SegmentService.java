@@ -1,6 +1,6 @@
 package com.ctm.web.core.services.segment;
 
-import com.ctm.web.core.dao.SegmentDao;
+import com.ctm.web.core.segment.dao.SegmentDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.segment.SegmentRequest;
 import com.ctm.web.core.segment.model.Segment;

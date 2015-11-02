@@ -2,7 +2,7 @@ package com.ctm.web.health.services;
 
 import com.ctm.web.core.dao.CommentDao;
 import com.ctm.web.core.dao.TouchDao;
-import com.ctm.web.core.dao.transaction.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.core.model.TransactionProperties;

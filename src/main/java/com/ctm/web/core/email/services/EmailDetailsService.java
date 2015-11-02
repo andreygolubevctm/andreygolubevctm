@@ -2,12 +2,12 @@ package com.ctm.web.core.email.services;
 
 import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.web.core.dao.StampingDao;
-import com.ctm.web.core.dao.transaction.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.mapping.EmailDetailsMappings;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.EmailMaster;
-import com.ctm.web.core.model.Transaction;
+import com.ctm.web.core.transaction.model.Transaction;
 import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.StampingService;
 import com.ctm.web.core.validation.EmailValidation;

@@ -4,7 +4,7 @@ import com.ctm.web.core.content.dao.ContentDao;
 import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.web.core.dao.StampingDao;
 import com.ctm.web.core.dao.TouchDao;
-import com.ctm.web.core.dao.transaction.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.mapping.EmailDetailsMappings;
 import com.ctm.web.core.email.mapping.LifeEmailDetailMappings;

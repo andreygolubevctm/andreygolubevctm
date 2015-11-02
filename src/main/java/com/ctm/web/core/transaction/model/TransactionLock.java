@@ -1,4 +1,4 @@
-package com.ctm.web.core.model.transaction;
+package com.ctm.web.core.transaction.model;
 
 import java.util.Date;
 
