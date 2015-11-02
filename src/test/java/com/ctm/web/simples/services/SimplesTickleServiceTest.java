@@ -1,12 +1,11 @@
-package com.ctm.web.core.services.simples;
+package com.ctm.web.simples.services;
 
-import com.ctm.web.core.transaction.dao.TransactionLockDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.services.FatalErrorService;
 import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.transaction.dao.TransactionLockDao;
 import com.ctm.web.simples.dao.UserDao;
-import com.ctm.web.simples.services.SimplesTickleService;
 import org.junit.Before;
 import org.junit.Test;
 

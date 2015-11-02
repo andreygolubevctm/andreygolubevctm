@@ -1,6 +1,5 @@
-package com.ctm.web.core.services.simples;
+package com.ctm.web.simples.services;
 
-import com.ctm.web.simples.services.SimplesSearchService;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
