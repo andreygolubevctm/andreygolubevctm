@@ -144,7 +144,7 @@
         var contactStep = {
             title: 'Contact details',
             navigationId: 'contact',
-            slideIndex: 0,
+            slideIndex: 1,
             externalTracking: {
                 method: 'trackQuoteForms',
                 object: meerkat.modules.utilities.getTrackingFieldsObject
@@ -161,7 +161,7 @@
         var resultsStep = {
             title: 'Choose a plan',
             navigationId: 'results',
-            slideIndex: 1,
+            slideIndex: 2,
             externalTracking: {
                 method: 'trackQuoteForms',
                 object: meerkat.modules.utilities.getTrackingFieldsObject
@@ -200,7 +200,7 @@
         var enquiryStep = {
             title: 'Fill out your details',
             navigationId: 'enquiry',
-            slideIndex: 2,
+            slideIndex: 3,
             externalTracking: {
                 method: 'trackQuoteForms',
                 object: meerkat.modules.utilities.getTrackingFieldsObject
