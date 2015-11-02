@@ -1,4 +1,4 @@
-package com.ctm.web.travel.quote.model;
+package com.ctm.web.core.providers;
 
 import java.util.List;
 

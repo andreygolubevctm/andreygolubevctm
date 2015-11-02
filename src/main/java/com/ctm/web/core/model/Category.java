@@ -1,4 +1,4 @@
-package com.ctm.web.creditcards.category.model;
+package com.ctm.web.core.model;
 
 public class Category {
 

@@ -1,7 +1,5 @@
 package com.ctm.web.core.model;
 
-import com.ctm.web.creditcards.category.model.Category;
-
 public class CategoryProductMapping {
 
 	private Product product;

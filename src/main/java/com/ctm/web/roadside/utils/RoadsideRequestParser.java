@@ -1,4 +1,4 @@
-package com.ctm.web.core.utils.roadside;
+package com.ctm.web.roadside.utils;
 
 import com.ctm.web.roadside.model.request.RoadsideRequest;
 import com.ctm.web.core.web.go.Data;

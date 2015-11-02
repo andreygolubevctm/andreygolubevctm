@@ -1,4 +1,4 @@
-package com.ctm.web.core.utils.life;
+package com.ctm.web.life.utils;
 
 import com.ctm.web.life.model.request.LifePerson;
 import com.ctm.web.life.model.request.LifeRequest;

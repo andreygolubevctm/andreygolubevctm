@@ -6,7 +6,7 @@ import com.ctm.web.homecontents.providers.model.request.HomeQuoteRequest;
 import com.ctm.web.homecontents.providers.model.response.HomeQuote;
 import com.ctm.web.homecontents.providers.model.response.HomeResponse;
 import com.ctm.web.homecontents.providers.model.response.MoreInfo;
-import com.ctm.web.travel.quote.model.QuoteResponse;
+import com.ctm.web.core.providers.QuoteResponse;
 
 import java.util.ArrayList;
 import java.util.Collections;

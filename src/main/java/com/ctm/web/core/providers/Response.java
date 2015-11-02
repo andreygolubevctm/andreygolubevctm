@@ -1,8 +1,5 @@
 package com.ctm.web.core.providers;
 
-import com.ctm.web.homecontents.providers.model.request.ResponseError;
-import com.ctm.web.travel.quote.model.QuoteResponse;
-
 import java.util.List;
 
 public class Response<T> {
