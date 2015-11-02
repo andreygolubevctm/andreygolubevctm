@@ -1,23 +1,21 @@
 package com.ctm.web.core.router;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.services.FormValidationService;
+import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.web.go.Data;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONObject;
-
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.exceptions.SessionException;
-import com.ctm.web.core.services.FormValidationService;
-import com.ctm.web.core.services.SessionDataService;
-import com.ctm.web.core.web.go.Data;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * To handle writing and retrieving of quotes.

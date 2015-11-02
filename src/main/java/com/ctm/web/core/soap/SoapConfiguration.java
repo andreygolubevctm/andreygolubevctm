@@ -1,13 +1,13 @@
 package com.ctm.web.core.soap;
 
-import com.ctm.web.core.core.soap.settings.SoapAggregatorConfiguration;
-import com.ctm.web.core.core.soap.settings.SoapClientThreadConfiguration;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.model.soap.settings.SoapAggregatorConfiguration;
+import com.ctm.web.core.model.soap.settings.SoapClientThreadConfiguration;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.EnvironmentService.Environment;
 import com.ctm.web.core.services.ServiceConfigurationService;

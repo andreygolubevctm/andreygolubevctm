@@ -6,10 +6,10 @@
 package com.ctm.web.core.soap;
 
 import com.ctm.web.core.constants.ErrorCode;
-import com.ctm.web.core.core.soap.settings.SoapAggregatorConfiguration;
 import com.ctm.web.core.logging.CorrelationIdUtils;
 import com.ctm.web.core.logging.XMLOutputWriter;
-import com.ctm.web.core.core.soap.settings.SoapClientThreadConfiguration;
+import com.ctm.web.core.model.soap.settings.SoapAggregatorConfiguration;
+import com.ctm.web.core.model.soap.settings.SoapClientThreadConfiguration;
 import com.ctm.web.core.utils.function.Action;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;

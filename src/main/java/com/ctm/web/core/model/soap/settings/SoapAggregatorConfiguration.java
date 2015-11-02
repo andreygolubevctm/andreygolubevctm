@@ -1,4 +1,4 @@
-package com.ctm.web.core.core.soap.settings;
+package com.ctm.web.core.model.soap.settings;
 
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope;

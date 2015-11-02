@@ -1,19 +1,16 @@
 package com.ctm.web.core.services;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.sql.SQLException;
-
-import org.junit.Test;
-
 import com.ctm.web.core.dao.EmailMasterDao;
-import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.Unsubscribe;
 import com.ctm.web.core.model.settings.PageSettings;
+import org.junit.Test;
+
+import java.sql.SQLException;
+
+import static org.mockito.Mockito.*;
 
 public class UnsubscribeServiceTest {
 

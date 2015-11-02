@@ -1,9 +1,9 @@
 package com.ctm.web.core.soap;
 
 import com.ctm.test.TestUtils;
-import com.ctm.web.core.core.soap.settings.SoapAggregatorConfiguration;
-import com.ctm.web.core.core.soap.settings.SoapClientThreadConfiguration;
 import com.ctm.web.core.logging.CorrelationIdUtils;
+import com.ctm.web.core.model.soap.settings.SoapAggregatorConfiguration;
+import com.ctm.web.core.model.soap.settings.SoapClientThreadConfiguration;
 import com.ctm.web.core.utils.function.Action;
 import org.junit.Before;
 import org.junit.Test;

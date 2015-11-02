@@ -1,15 +1,14 @@
 package com.ctm.web.core.logging;
 
-import static com.ctm.web.core.logging.LoggingArguments.v;
-import static org.slf4j.LoggerFactory.getLogger;
+import org.slf4j.Logger;
+import org.slf4j.MDC;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.slf4j.Logger;
-import org.slf4j.MDC;
-
 import static ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER;
+import static com.ctm.web.core.logging.LoggingArguments.v;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class XMLOutputWriter {
 	

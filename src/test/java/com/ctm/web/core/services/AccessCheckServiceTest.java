@@ -5,7 +5,7 @@ import com.ctm.web.core.transaction.dao.TransactionLockDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.Touch.TouchType;
-import com.ctm.web.core.model.transaction.TransactionLock;
+import com.ctm.web.core.transaction.model.TransactionLock;
 import org.junit.Test;
 
 import java.sql.SQLException;
