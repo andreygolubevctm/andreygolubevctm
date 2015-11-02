@@ -270,7 +270,7 @@ public class ApplicationService {
 			brands = brandsList;
 
 			LOGGER.debug("Loaded brands and verticals from database {}, {}", kv("brandsListSize", brandsList.size()),
-					kv("verticalsListSize()", verticalsList.size()));
+					kv("verticalsListSize", verticalsList.size()));
 
 		}
 
