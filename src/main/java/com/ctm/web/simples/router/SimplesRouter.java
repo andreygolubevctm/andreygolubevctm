@@ -1,9 +1,5 @@
 package com.ctm.web.simples.router;
 
-import com.ctm.web.simples.admin.router.AdminRouter;
-import com.ctm.web.simples.admin.services.OpeningHoursService;
-import com.ctm.web.simples.admin.services.SpecialOffersService;
-import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
@@ -14,8 +10,15 @@ import com.ctm.web.core.services.*;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.health.services.TransactionService;
+import com.ctm.web.simples.admin.router.AdminRouter;
+import com.ctm.web.simples.admin.services.OpeningHoursAdminService;
+import com.ctm.web.simples.admin.services.SpecialOffersService;
+import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.simples.model.Message;
-import com.ctm.web.simples.services.*;
+import com.ctm.web.simples.services.PhoneService;
+import com.ctm.web.simples.services.SimplesMessageService;
+import com.ctm.web.simples.services.SimplesTickleService;
+import com.ctm.web.simples.services.SimplesUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -172,7 +175,7 @@ public class SimplesRouter extends HttpServlet {
 				}
 			}
 		} else if (uri.endsWith("/simples/admin/openinghours/getAllRecords.json")) {
-			objectMapper.writeValue(writer, new OpeningHoursService().getAllHours(request));
+			objectMapper.writeValue(writer, new OpeningHoursAdminService().getAllHours(request));
 		} else if (uri.endsWith("/simples/admin/offers/getAllRecords.json")) {
 			objectMapper.writeValue(writer, new SpecialOffersService().getAllOffers());
 		} else if(uri.contains("/simples/admin/")){
@@ -197,7 +200,7 @@ public class SimplesRouter extends HttpServlet {
 		}
 
 		if(uri.endsWith("/simples/admin/openinghours/update.json")){
-			OpeningHoursService service = new OpeningHoursService();
+			OpeningHoursAdminService service = new OpeningHoursAdminService();
 			List<SchemaValidationError> errors = service.validateOpeningHoursData(request);
 			if(errors==null || errors.isEmpty()){
 				objectMapper.writeValue(writer,service.updateOpeningHours(request,authenticatedData));
@@ -206,7 +209,7 @@ public class SimplesRouter extends HttpServlet {
 				objectMapper.writeValue(writer,jsonObjectNode("error",errors));
 			}
 		}else if(uri.endsWith("/simples/admin/openinghours/create.json")){
-			OpeningHoursService service = new OpeningHoursService();
+			OpeningHoursAdminService service = new OpeningHoursAdminService();
 			List<SchemaValidationError> errors = service.validateOpeningHoursData(request);
 			if(errors==null || errors.isEmpty()){
 				objectMapper.writeValue(writer,service.createOpeningHours(request,authenticatedData));
@@ -215,7 +218,7 @@ public class SimplesRouter extends HttpServlet {
 				objectMapper.writeValue(writer,jsonObjectNode("error",errors));
 			}
 		} else if(uri.endsWith("/simples/admin/openinghours/delete.json")){
-            String result = new OpeningHoursService().deleteOpeningHours(request, authenticatedData);
+            String result = new OpeningHoursAdminService().deleteOpeningHours(request, authenticatedData);
             if (!result.equalsIgnoreCase("success")) {
 				response.setStatus(400);
                 objectMapper.writeValue(writer, jsonObjectNode("error", result));

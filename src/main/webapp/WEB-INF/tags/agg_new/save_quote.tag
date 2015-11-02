@@ -4,7 +4,7 @@
 
 <%@ attribute name="includeCallMeback"	required="false"	description="display call back after save quote"%>
 
-<jsp:useBean id="openingHoursService" class="com.ctm.web.simples.admin.services.OpeningHoursService" scope="page" />
+<jsp:useBean id="openingHoursService" class="com.ctm.web.core.services.OpeningHoursService" scope="page" />
 
 <c:if test="${not empty authenticatedData.userData && not empty authenticatedData.userData.emailAddress}">
 	<c:set var="savedEmail" value="${authenticatedData.userData.emailAddress}" />

@@ -17,13 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
-public class OpeningHoursService {
+public class OpeningHoursAdminService {
 
 	private final OpeningHoursDao openingHoursDao = new OpeningHoursDao();
 	private final OpeningHoursHelper openingHoursHelper = new OpeningHoursHelper();
 	public static final String dateField = "date";
 	public static final String sequenceField = "daySequence";
-	public OpeningHoursService() {
+	public OpeningHoursAdminService() {
 	}
 
 	public List<OpeningHours> getAllHours(HttpServletRequest request)  {
@@ -99,18 +99,6 @@ public class OpeningHoursService {
 		} catch (DaoException d) {
 			throw new RuntimeException(d);
 		}
-	}
-
-	public List<OpeningHours> getAllOpeningHoursForDisplay(
-			HttpServletRequest request, boolean isSpecial) throws DaoException,
-			ConfigSettingException {
-		PageSettings pageSettings = SettingsService
-				.getPageSettingsForPage(request);
-		int verticalId = pageSettings.getVertical().getId();
-		Date serverDate = ApplicationService.getApplicationDate(request);
-
-		return openingHoursDao.getAllOpeningHoursForDisplay(verticalId,
-				serverDate, isSpecial);
 	}
 
 	public String getOpeningHoursForDisplay(HttpServletRequest request,String dayType) throws DaoException,ConfigSettingException {

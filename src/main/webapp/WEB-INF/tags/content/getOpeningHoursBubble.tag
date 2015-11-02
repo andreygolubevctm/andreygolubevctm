@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:core />
-<jsp:useBean id="openingHoursService" class="com.ctm.web.simples.admin.services.OpeningHoursService" scope="page" />
+<jsp:useBean id="openingHoursService" class="com.ctm.web.core.services.OpeningHoursService" scope="page" />
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 
 <div class="opening-hours-bubble callCentreNumberSection">
