@@ -1,17 +1,17 @@
 package com.ctm.web.car.leadfeed.services;
 
+import com.ctm.web.car.leadfeed.services.AGIS.AGISCarLeadFeedService;
+import com.ctm.web.car.leadfeed.services.AI.AICarLeadFeedService;
+import com.ctm.web.car.leadfeed.services.REIN.REINCarLeadFeedService;
+import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
+import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
+import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.services.IProviderLeadFeedService;
+import com.ctm.web.core.leadfeed.services.LeadFeedService;
+import com.ctm.web.core.model.Touch.TouchType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
-import com.ctm.web.core.model.Touch.TouchType;
-import com.ctm.web.core.leadfeed.model.LeadFeedData;
-import com.ctm.web.core.leadfeed.services.LeadFeedService;
-import com.ctm.web.car.leadfeed.services.AGIS.AGISCarLeadFeedService;
-import com.ctm.web.car.leadfeed.services.REIN.REINCarLeadFeedService;
-import com.ctm.web.car.leadfeed.services.AI.AICarLeadFeedService;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 
@@ -21,7 +21,7 @@ public class CarLeadFeedService extends LeadFeedService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CarLeadFeedService.class);
 
 	public CarLeadFeedService(BestPriceLeadsDao bestPriceDao) {
-		super(bestPriceDao);
+		super(bestPriceDao, new ContentService());
 	}
 
 	protected LeadResponseStatus process(LeadType leadType, LeadFeedData leadData, TouchType touchType) {

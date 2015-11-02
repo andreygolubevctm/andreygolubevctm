@@ -22,8 +22,8 @@ public class TravelIsoLocationsServiceTest {
     private IsoLocationsDao dao;
 
     private TravelIsoLocationsService service;
-    private java.util.ArrayList<com.ctm.web.core.model.IsoLocations> countries;
-    private java.util.ArrayList<com.ctm.web.core.model.IsoLocations> countriesNotTopTen;
+    private java.util.ArrayList<IsoLocations> countries;
+    private java.util.ArrayList<IsoLocations> countriesNotTopTen;
 
     @Before
     public void setUp() throws Exception {

@@ -21,12 +21,14 @@ public abstract class LeadFeedService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LeadFeedService.class);
 	private final BestPriceLeadsDao bestPriceDao;
+	private final ContentService contentService;
 
 	protected Content ignoreBecauseOfField = null;
 	protected String ignorePhoneRule = null;
 
-	public LeadFeedService(BestPriceLeadsDao bestPriceDao) {
+	public LeadFeedService(BestPriceLeadsDao bestPriceDao, ContentService contentService) {
 		this.bestPriceDao = bestPriceDao;
+		this.contentService = contentService;
 	}
 
 	public static enum LeadType{
@@ -65,7 +67,6 @@ public abstract class LeadFeedService {
 
 		Content content = null;
 		try {
-			ContentService contentService = new ContentService();
 			content = contentService.getContent("noSaleLeadOn", 0, leadData.getVerticalId(), leadData.getEventDate(), false);
 		} catch(Exception e) {
 			LOGGER.error("[Lead feed] Exception checking noSaleLead is turned on in content_control {}", kv("leadData", leadData), e);
@@ -154,7 +155,6 @@ public abstract class LeadFeedService {
 	protected Boolean isTestOnlyLead(LeadFeedData leadData) throws LeadFeedException {
 		try {
 			if(ignoreBecauseOfField instanceof Content == false) {
-				ContentService contentService = new ContentService();
 				ignoreBecauseOfField = contentService.getContent("ignoreMatchingFormField", leadData.getBrandId(), leadData.getVerticalId(), leadData.getEventDate(), true);
 				ignorePhoneRule = ignoreBecauseOfField.getSupplementaryValueByKey("phone");
 			}

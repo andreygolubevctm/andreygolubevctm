@@ -41,8 +41,6 @@ public class IsoLocationsService {
     }
 
     public JSONObject fetchSearchResults(String searchTerm) throws DaoException {
-
-        IsoLocationsDao isoLocationsDao = new IsoLocationsDao();
         ArrayList<IsoLocations> isoLocations = isoLocationsDao.getIsoLocations(searchTerm);
 
         JSONObject json = new JSONObject();

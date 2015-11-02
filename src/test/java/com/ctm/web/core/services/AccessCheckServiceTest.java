@@ -1,10 +1,9 @@
 package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.TouchDao;
-import com.ctm.web.core.transaction.dao.TransactionLockDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Touch;
-import com.ctm.web.core.model.Touch.TouchType;
+import com.ctm.web.core.transaction.dao.TransactionLockDao;
 import com.ctm.web.core.transaction.model.TransactionLock;
 import org.junit.Test;
 
@@ -62,7 +61,7 @@ public class AccessCheckServiceTest {
 	private Touch getNewAccessTouch() throws DaoException {
 		Touch accessTouch = new Touch();
 		accessTouch.setDatetime(new Date());
-		accessTouch.setType(TouchType.PRICE_PRESENTATION);
+		accessTouch.setType(Touch.TouchType.PRICE_PRESENTATION);
 		accessTouch.setOperator("test2");
 		when(touchDao.getLatestTouchByTransactionId(transactionId)).thenReturn(accessTouch );
 		return accessTouch;

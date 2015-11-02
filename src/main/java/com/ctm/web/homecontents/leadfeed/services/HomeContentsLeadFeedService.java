@@ -1,15 +1,15 @@
 package com.ctm.web.homecontents.leadfeed.services;
 
+import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
+import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
+import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.services.IProviderLeadFeedService;
+import com.ctm.web.core.leadfeed.services.LeadFeedService;
+import com.ctm.web.core.model.Touch.TouchType;
+import com.ctm.web.homecontents.leadfeed.services.AGIS.AGISHomeContentsLeadFeedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
-import com.ctm.web.core.model.Touch.TouchType;
-import com.ctm.web.core.leadfeed.model.LeadFeedData;
-import com.ctm.web.core.leadfeed.services.LeadFeedService;
-import com.ctm.web.homecontents.leadfeed.services.AGIS.AGISHomeContentsLeadFeedService;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 
@@ -18,7 +18,7 @@ public class HomeContentsLeadFeedService extends LeadFeedService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HomeContentsLeadFeedService.class);
 
 	public HomeContentsLeadFeedService(BestPriceLeadsDao bestPriceDao) {
-		super(bestPriceDao);
+		super(bestPriceDao, new ContentService());
 	}
 
 	protected LeadResponseStatus process(LeadType leadType, LeadFeedData leadData, TouchType touchType) {

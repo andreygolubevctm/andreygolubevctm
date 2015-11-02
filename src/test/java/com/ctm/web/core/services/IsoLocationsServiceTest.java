@@ -1,19 +1,25 @@
 package com.ctm.web.core.services;
 
+import com.ctm.web.core.dao.IsoLocationsDao;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
-/**
- * Created by lbuchanan on 29/10/2015.
- */
+import static org.mockito.MockitoAnnotations.initMocks;
+
+
 public class IsoLocationsServiceTest {
+
+    @Mock
+    IsoLocationsDao dao;
 
     private IsoLocationsService service;
 
 
     @Before
     public void setUp() throws Exception {
-        service = new IsoLocationsService();
+        initMocks(this);
+        service = new IsoLocationsService(dao);
     }
 
     @Test
