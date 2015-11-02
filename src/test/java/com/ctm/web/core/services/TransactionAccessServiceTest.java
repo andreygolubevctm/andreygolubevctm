@@ -1,28 +1,27 @@
 package com.ctm.web.core.services;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import com.ctm.web.core.dao.EmailMasterDao;
+import com.ctm.web.core.email.exceptions.EmailDetailsException;
+import com.ctm.web.core.email.model.EmailMode;
+import com.ctm.web.core.email.model.IncomingEmail;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
+import com.ctm.web.core.transaction.model.Transaction;
+import com.ctm.web.core.transaction.model.TransactionDetail;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import com.ctm.web.core.dao.EmailMasterDao;
-import com.ctm.web.core.transaction.dao.TransactionDao;
-import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.email.exceptions.EmailDetailsException;
-import com.ctm.web.core.model.EmailMaster;
-import com.ctm.web.core.transaction.model.Transaction;
-import com.ctm.web.core.transaction.model.TransactionDetail;
-import com.ctm.web.core.email.model.EmailMode;
-import com.ctm.web.core.email.model.IncomingEmail;
-import com.ctm.web.core.model.settings.Vertical.VerticalType;
-
 import static com.ctm.web.core.services.TransactionAccessService.HEALTH_BEST_PRICE_EMAIL_XPATH;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 
 public class TransactionAccessServiceTest {

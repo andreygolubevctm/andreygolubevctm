@@ -1,17 +1,17 @@
 package com.ctm.web.core.services;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
+import com.ctm.web.core.dao.EmailMasterDao;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.model.LogAudit;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ctm.web.core.dao.EmailMasterDao;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.EmailMaster;
-import com.ctm.web.core.model.LogAudit;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ResetPasswordServiceTest {
 
