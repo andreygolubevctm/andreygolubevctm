@@ -108,14 +108,4 @@ public class OpeningHoursAdminService {
 		Date serverDate = ApplicationService.getApplicationDate(request);
 		return openingHoursDao.getOpeningHoursForDisplay(dayType, serverDate,verticalId);
 	}
-
-	public String getCurrentOpeningHoursForEmail(HttpServletRequest request) throws DaoException, ConfigSettingException {
-		String currentOpeningHours;
-		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
-		int verticalId = pageSettings.getVertical().getId();
-		Date serverDate = ApplicationService.getApplicationDate(request);
-		List<OpeningHours> openingHoursList = openingHoursDao.getCurrentNormalOpeningHoursForEmail(verticalId, serverDate);
-		currentOpeningHours = openingHoursDao.toHTMLString(openingHoursList);
-		return currentOpeningHours;
-	}
 }

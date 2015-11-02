@@ -1,11 +1,8 @@
 package com.ctm.web.health.services.email;
 
-import com.ctm.web.core.model.EmailMaster;
-import com.ctm.web.core.model.RankingDetail;
 import com.ctm.web.core.content.dao.ContentDao;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.dao.RankingDetailsDao;
-import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.BestPriceRanking;
@@ -15,17 +12,20 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.EnvironmentException;
 import com.ctm.web.core.exceptions.VerticalException;
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.model.RankingDetail;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.OpeningHoursService;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.health.model.email.HealthBestPriceEmailModel;
 import com.ctm.web.health.model.email.HealthProductBrochuresEmailModel;
 import com.ctm.web.health.model.formatter.email.HealthBestPriceExactTargetFormatter;
 import com.ctm.web.health.model.formatter.email.HealthProductBrochuresExactTargetFormatter;
 import com.ctm.web.health.model.request.HealthEmailBrochureRequest;
-import com.ctm.web.simples.admin.services.OpeningHoursService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

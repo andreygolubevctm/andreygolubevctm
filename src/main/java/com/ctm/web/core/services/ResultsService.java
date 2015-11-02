@@ -3,9 +3,9 @@ package com.ctm.web.core.services;
 import com.ctm.web.core.dao.RankingDetailsDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.RankingDetail;
-import com.ctm.web.core.model.results.ResultRanking;
 import com.ctm.web.core.results.dao.ResultsDao;
 import com.ctm.web.core.results.model.ResultProperty;
+import com.ctm.web.core.results.model.ResultRanking;
 
 import java.util.ArrayList;
 import java.util.List;
