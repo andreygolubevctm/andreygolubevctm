@@ -40,4 +40,12 @@ public class OpeningHoursService {
         currentOpeningHours = openingHoursDao.toHTMLString(openingHoursList);
         return currentOpeningHours;
     }
+
+    public String getOpeningHoursForDisplay(HttpServletRequest request,String dayType) throws DaoException,ConfigSettingException {
+        PageSettings pageSettings = SettingsService
+                .getPageSettingsForPage(request);
+        int verticalId = pageSettings.getVertical().getId();
+        Date serverDate = ApplicationService.getApplicationDate(request);
+        return openingHoursDao.getOpeningHoursForDisplay(dayType, serverDate,verticalId);
+    }
 }

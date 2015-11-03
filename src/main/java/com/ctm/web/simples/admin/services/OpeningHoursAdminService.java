@@ -4,7 +4,6 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
-import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.validation.SchemaValidationError;
@@ -14,7 +13,6 @@ import com.ctm.web.simples.dao.OpeningHoursDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
 
 public class OpeningHoursAdminService {
@@ -99,13 +97,5 @@ public class OpeningHoursAdminService {
 		} catch (DaoException d) {
 			throw new RuntimeException(d);
 		}
-	}
-
-	public String getOpeningHoursForDisplay(HttpServletRequest request,String dayType) throws DaoException,ConfigSettingException {
-		PageSettings pageSettings = SettingsService
-				.getPageSettingsForPage(request);
-		int verticalId = pageSettings.getVertical().getId();
-		Date serverDate = ApplicationService.getApplicationDate(request);
-		return openingHoursDao.getOpeningHoursForDisplay(dayType, serverDate,verticalId);
 	}
 }
