@@ -4,8 +4,8 @@
 
 
 <%-- Get data to build sections/categories/features --%>
-<jsp:useBean id="resultsService" class="com.ctm.web.core.services.ResultsService" scope="request" />
-<c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString(pageSettings.getVerticalCode(), 'category')}" scope="request"  />
+<jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
+<c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString(pageSettings.getVerticalCode(), 'category')}" scope="request"  />
 <script>
     var resultLabels = ${jsonString};
 </script>
