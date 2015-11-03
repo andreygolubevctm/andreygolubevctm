@@ -17,7 +17,6 @@
 
     function init() {
         var baseUrl;
-        baseUrl = meerkat.site.urls.base;
 
         if (!isKampyleEnabled()) {
             return;
@@ -26,6 +25,7 @@
         $(document).ready(function () {
             // Check if its already there, just in case...
             $component = $('#kampyle');
+            baseUrl = meerkat.site.urls.base;
             // If not (first load), prepend to footer.
             if (!$component.length) {
                 $('#footer .container').prepend('<div id="kampyle" data-kampyle-formid="' + _formId + '"><a href="https://www.kampyle.com/feedback_form/ff-feedback-form.php?site_code=7343362&amp;lang=en&amp;form_id=' + _formId + '" target="kampyleWindow" id="kampylink" class="k_static btn btn-cta"><span class="visible-xs">Feedback</span></a></div>');
