@@ -2,6 +2,7 @@
 <%@ tag description="Dynamically load a tag from an external source"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%@ attribute name="jqueryuiversion"	required="false" rtexprvalue="true"	 description="jQueryUI version to be loaded" %>
 <%@ attribute name="loadjQuery" 	required="false" rtexprvalue="true"	 description="If jquery is needed to be loaded" %>
 <%@ attribute name="loadExtJs" 		required="false" rtexprvalue="true"	 description="If extJs is needed to be loaded" %>
 <%@ attribute name="loadjQueryUI" 	required="false" rtexprvalue="true"	 description="If jqueryUI is needed to be loaded" %>
@@ -44,8 +45,6 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 			_endStrip : "\"></script>",
 			_cssStartStrip : "<link rel=\"stylesheet\" href=\"",
 			_cssEndStrip : "\">",
-			_headStart : "<head>",
-			_headEnd : "</head>",
 			_counter2 : 0,
 			_ext_code : [],
 			_css_code : '',
@@ -81,7 +80,8 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 				"html":"<go:insertmarker name="body" format="JSON"/>"
 			},
 			<go:script marker="body"><jsp:doBody /></go:script>
-			<go:script marker="head"><core:head quoteType="main" title="${title }" loadjQuery="${loadjQuery}" loadjQueryUI="${loadjQueryUI}" jqueryVersion="1.7.2.min" nonQuotePage="${true}"/></go:script>
+
+			<go:script marker="head"><core:head quoteType="main" title="${title }" loadjQuery="${loadjQuery}" jqueryuiversion="${jqueryuiversion}" loadjQueryUI="${loadjQueryUI}" jqueryVersion="1.7.2.min" nonQuotePage="${true}"/></go:script>
 
 
 			init: function(){
@@ -152,12 +152,7 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 				}
 
 				if (targetBrowser == null || bodgyBrowser == true) {
-					if (type == "head"){
-						var new_code = code.replace (${id}_wrapper._headStart,"");
-						new_code = new_code.replace(${id}_wrapper._headEnd,"");
-						${id}_wrapper._head.innerHTML = ${id}_wrapper._head.innerHTML + new_code;
-					}
-					else if (loc == 'int'){
+					if (loc == 'int'){
 						code = ${id}_wrapper.addServerURI(code);
 						if (code != "" && code != "{}"){
 
@@ -329,9 +324,6 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 			loadRemainingScripts : function () {
 
 				<%-- _jsonobj.extJs is loaded first on purpose as we need jquery so isnt here --%>
-				<c:if test="${loadHead == true}">
-					//${id}_wrapper.addheadercode('head', 'int', 'no', ${id}_wrapper._jsonobj.head);
-				</c:if>
 				<c:if test="${loadCSS == true}">
 				${id}_wrapper.addheadercode('css', 'ext', 'no', ${id}_wrapper._jsonobj.extCss);
 				${id}_wrapper.addheadercode('css', 'int', 'no', ${id}_wrapper._jsonobj.css);
