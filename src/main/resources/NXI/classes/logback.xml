@@ -31,6 +31,7 @@
 			<provider class="net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider">
 				<pattern>{"env":"%env{name}","context":"%env{context}"}</pattern>
 			</provider>
+			<provider class="net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider"/>
 		</layout>
 	</appender>
 
