@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 
@@ -33,7 +35,7 @@ public class RequestAdapter {
         // Convert front end quote request to travel-quote request
         TravelQuoteRequest quoteRequest = new TravelQuoteRequest();
 
-        quoteRequest.setOldestPerson(quote.getOldest());
+        quoteRequest.setTravellersDOB(quote.getTravellers().getTravellersDOB());
         quoteRequest.setNumberOfAdults(quote.getAdults());
         quoteRequest.setNumberOfChildren(quote.getChildren());
 
@@ -69,4 +71,5 @@ public class RequestAdapter {
         return quoteRequest;
 
     }
+
 }

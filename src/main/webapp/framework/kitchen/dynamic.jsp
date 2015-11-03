@@ -426,10 +426,6 @@
 		<p id="inputDate_val"></p>
 	</form_new:row>
 
-	<form_new:row label="input_age">
-		<field_new:input_age validationNoun="traveller" maxlength="2" xpath="${xpath}/new/inputAge" title="field_new:input_age" required="true" />
-	</form_new:row>
-
 	<form_new:row label="medicare_number">
 		<field_new:medicare_number xpath="${xpath}/new/medicareNumber" required="true" title="field:medicare_number" />
 	</form_new:row>

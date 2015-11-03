@@ -1,6 +1,12 @@
 package com.ctm.web.travel.quote.model.request;
 
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The request model for calling CtM's travel-quote application.
@@ -14,7 +20,9 @@ public class TravelQuoteRequest {
     private boolean mobileUrls = false;
     private int numberOfAdults;
     private int numberOfChildren;
-    private int oldestPerson;
+
+    @JsonSerialize(contentUsing = LocalDateSerializer.class)
+    private List<LocalDate> travellersDOB;
     private ArrayList<String> providerFilter = new ArrayList<String>();
     private SingleTripDetails singleTripDetails;
 
@@ -53,12 +61,12 @@ public class TravelQuoteRequest {
         this.numberOfChildren = numberOfChildren;
     }
 
-    public int getOldestPerson() {
-        return oldestPerson;
+    public List<LocalDate> getTravellersDOB() {
+        return travellersDOB;
     }
 
-    public void setOldestPerson(int oldestPerson) {
-        this.oldestPerson = oldestPerson;
+    public void setTravellersDOB(List<LocalDate> travellersDOBs) {
+        this.travellersDOB = travellersDOBs;
     }
 
     public ArrayList<String> getProviderFilter() {

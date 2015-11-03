@@ -55,7 +55,9 @@ public abstract class LeadFeedService {
 	};
 
 	public LeadResponseStatus callDirect(LeadFeedData leadData) throws LeadFeedException {
-		recordTouch(Touch.TouchType.CALL_DIRECT.getCode(), leadData);
+		if(!isTestOnlyLead(leadData)) {
+			recordTouch(Touch.TouchType.CALL_DIRECT.getCode(), leadData);
+		}
 		return LeadResponseStatus.SUCCESS;
 	}
 

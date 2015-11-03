@@ -1,8 +1,8 @@
-package com.ctm.web.travel.model.form;
+package com.ctm.model.travel.form;
 
-import com.ctm.web.travel.quote.model.request.Filter;
-import com.ctm.web.core.validation.Destinations;
-import com.ctm.web.core.validation.Name;
+import com.ctm.providers.travel.travelquote.model.request.Filter;
+import com.ctm.web.validation.Destinations;
+import com.ctm.web.validation.Name;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -45,18 +45,14 @@ public class TravelQuote {
     @NotNull(message = "Please choose how many children")
     private Integer children;
 
-    @NotNull(message = "Please enter a valid number")
-    private Integer oldest;
+    private Travellers travellers;
 
     private ArrayList<String> destinations;
-
-
 
 
     public TravelQuote(){
         filter = new Filter();
     }
-
 
     public Dates getDates() {
         return dates;
@@ -82,12 +78,12 @@ public class TravelQuote {
         this.adults = adults;
     }
 
-    public Integer getOldest() {
-        return oldest;
+    public Travellers getTravellers() {
+        return travellers;
     }
 
-    public void setOldest(Integer oldest) {
-        this.oldest = oldest;
+    public void setTravellers(Travellers travellers) {
+        this.travellers = travellers;
     }
 
     public String getCurrentJourney() {
