@@ -35,10 +35,8 @@
                     yepnope.injectJs({
                         src: baseUrl + 'assets/js/bundles/plugins/kampyle.deferred.min.js',
                         attrs: {
-                            async: false
+                            async: true
                         }
-                    }, function initDeferredModules() {
-                        meerkat.modules.init();
                     });
                 }
             }
