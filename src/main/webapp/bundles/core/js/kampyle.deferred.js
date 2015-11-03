@@ -52,4 +52,18 @@
         init: init
     });
 
+    var baseUrl;
+    baseUrl = meerkat.site.urls.base;
+
+    if (meerkat.site.kampyleId) {
+        yepnope.injectJs({
+            src: baseUrl + 'assets/js/bundles/plugins/kampyle.deferred.min.js',
+            attrs: {
+                async: false
+            }
+        }, function initDeferredModules() {
+            meerkat.modules.init();
+        });
+    }
+
 })(jQuery);

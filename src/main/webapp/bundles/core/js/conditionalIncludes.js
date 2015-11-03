@@ -8,16 +8,6 @@
         $(document).ready(function() {
             // Scripts that are important to be included earlier should go here.
 
-            if (meerkat.site.kampyleId) {
-                yepnope.injectJs({
-                    src: baseUrl + 'assets/js/bundles/plugins/kampyle.deferred.min.js',
-                    attrs: {
-                        async: true
-                    }
-                }, function initDeferredModules() {
-                    meerkat.modules.init();
-                });
-            }
         });
 
         $(window).load(function() {
