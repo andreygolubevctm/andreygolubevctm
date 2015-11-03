@@ -66,7 +66,7 @@
 	 * {additionalData: {"Foo":"Bar"}, onAfterEventMode: "Refresh|Load"}
 	 */
 	function trackQuoteResultsList(eventObject) {
-		if(meerkat.has("compare")) {
+		if(meerkat.has("compare") && meerkat.modules.compare.isCompareOpen() !== true) {
 			log("[trackQuoteResultsList]", eventObject);
 
 			eventObject = eventObject || {};
