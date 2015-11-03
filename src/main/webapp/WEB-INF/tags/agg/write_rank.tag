@@ -14,7 +14,7 @@
 <jsp:useBean id="fatalErrorService" class="com.ctm.services.FatalErrorService" scope="page" />
 
 
-	<sql:setDataSource dataSource="jdbc/ctm"/>
+	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <c:set var="transactionId" value="${data['current/transactionId']}" />
 <c:set var="calcSequenceSUFF" value="/calcSequence" />
 <c:set var="prefix"><c:out value="${rootPath}" escapeXml="true"/></c:set>

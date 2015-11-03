@@ -12,7 +12,7 @@
 <%@ attribute name="product_long_title" 	required="true"	 rtexprvalue="true"	 description="The looong title for the product" %>
 <%@ attribute name="record_expiry" 			required="true"	 rtexprvalue="true"	 description="Number of days a record is to be current for" %>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- VARIABLES --%>
 <c:set var="alt_table" value="" />
@@ -86,7 +86,7 @@ ${logger.info('Starting tag. {},{},{},{},{}',
 <%-- 2] Store the product in the database including required properties --%>
 <%-- ================================================================== --%>
 		<c:if test="${not empty ctm_product_id}">
-			<sql:transaction dataSource="jdbc/ctm" isolation="repeatable_read">
+			<sql:transaction dataSource="${datasource:getDataSource()}" isolation="repeatable_read">
 
 				<%-- Update the product_master record located in the previous section --%>
 				<sql:update>

@@ -26,7 +26,7 @@
 		<c:set var="validCredentials" value="${emailDetails.isValid()}" />
 		<c:choose>
 			<c:when test="${validCredentials}">
-				<sql:query var="emailResults" dataSource="jdbc/ctm">
+				<sql:query var="emailResults" dataSource="${datasource:getDataSource()}">
 					SELECT em.emailPword as emailPword,
 					ep.value
 					FROM aggregator.email_master em
@@ -64,7 +64,7 @@
 	</c:when>
 	<c:otherwise>
 
-		<sql:query var="emailResults" dataSource="jdbc/ctm">
+		<sql:query var="emailResults" dataSource="${datasource:getDataSource()}">
 			SELECT em.emailPword as emailPword,
 				em.hashedEmail, ep.value
 				FROM aggregator.email_master em
