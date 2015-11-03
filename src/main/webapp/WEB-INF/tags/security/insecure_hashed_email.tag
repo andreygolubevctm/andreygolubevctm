@@ -8,7 +8,7 @@
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%@ attribute name="email" 			required="true"	 	rtexprvalue="true"	 description="plain text email coming from an unsubscribe link" %>
 <%@ attribute name="unsubscribe"	type="com.ctm.model.Unsubscribe"	required="true"		rtexprvalue="true"  %>

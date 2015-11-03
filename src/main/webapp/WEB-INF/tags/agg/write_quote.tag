@@ -34,7 +34,7 @@
 	</c:otherwise>
 </c:choose>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <c:set var="brand" value="${pageSettings.getBrandCode()}" />
 <c:set var="source">
 	<c:choose>

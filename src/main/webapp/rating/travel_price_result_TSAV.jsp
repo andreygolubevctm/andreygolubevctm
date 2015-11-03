@@ -8,7 +8,7 @@
 <c:set var="transactionId"><x:out select="$travel/request/header/partnerReference" /></c:set>
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%--
 	The data will arrive in a single parameter called QuoteData

@@ -63,7 +63,7 @@
 
 		msg.subscribe( meerkatEvents.contactDetails.email.FIELD_CHANGED, settings.fieldChangedFunction);
 
-		settings.emailInput.on("keyup change", settings.emailInputOnChangeFunction);
+		settings.emailInput.on("keydown change", settings.emailInputOnChangeFunction);
 		settings.emailInput.on('blur', settings.emailInputBlurFunction) ;
 
 //		TODO: get population between tabs working
@@ -77,7 +77,7 @@
 
 	function tearDown(settings){
 		settings.emailInput.off('blur', settings.emailInputBlurFunction) ;
-		settings.emailInput.off("keyup change", settings.emailInputOnChangeFunction);
+		settings.emailInput.off("keydown change", settings.emailInputOnChangeFunction);
 		settings.submitButton.off("click", settings.submitClickButtonFunction);
 		msg.unsubscribe( meerkatEvents.contactDetails.email.FIELD_CHANGED, settings.fieldChangedFunction);
 	}
@@ -92,6 +92,7 @@
 	}
 
 	function emailKeyChange(event , settings){
+		if (event.keyCode == 13) event.preventDefault();
 		if (event.keyCode == 13 || event.keyCode == 9) {
 			emailChanged(settings);
 		} else {

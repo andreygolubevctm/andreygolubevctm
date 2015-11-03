@@ -12,11 +12,7 @@ var path = require("path");
 var concat = require("gulp-concat"),
     beautify = require("gulp-beautify"),
     uglify = require("gulp-uglify"),
-    notify = require("gulp-notify"),
-    intercept = require("gulp-intercept"),
-    sourcemaps = require("gulp-sourcemaps"),
-    plumber = require("gulp-plumber"),
-    rename = require("gulp-rename");
+    sourcemaps = require("gulp-sourcemaps");
 
 var fileHelper = require("./../../helpers/fileHelper");
 
@@ -40,24 +36,23 @@ function JSTasks(gulp) {
         }).join("\r\n"));
 
         gulp.src(fileArray)
-            .pipe(plumber({
-                errorHandler: notify.onError("Error: <%= error.message %>")
+            .pipe(gulp.globalPlugins.plumber({
+                errorHandler: gulp.globalPlugins.notify.onError("Error: <%= error.message %>")
             }))
             .pipe(concat(fileName + ".js"))
             .pipe(beautify())
             .pipe(gulp.dest(targetDirectory))
-            .pipe(notify({
+            .pipe(gulp.globalPlugins.notify({
                 title: taskName + " compiled",
                 message: fileName + " successfully compiled"
             }))
             .pipe(uglify())
-            .pipe(rename(fileName + ".min.js"))
+            .pipe(gulp.globalPlugins.rename(fileName + ".min.js"))
             .pipe(gulp.dest(targetDirectory))
-            .pipe(notify({
-                title: taskName + " minified",
-                message: fileName + " successfully minified"
+            .pipe(gulp.globalPlugins.debug({
+                title: "Finished Minify JS"
             }))
-            .pipe(intercept(function(file){
+            .pipe(gulp.globalPlugins.intercept(function(file){
                 return file;
             }))
             .on("end", function() {
@@ -104,21 +99,19 @@ function JSTasks(gulp) {
             // JS loaded on page load
             gulp.task(bundleTaskOnLoad, function (done) {
                 var fileName = bundle;
+                gulp.watch(onLoadFileArray, [bundleTaskOnLoad]);
                 return gulpAction(bundleTaskOnLoad, onLoadFileArray, fileName, done);
             });
 
             // JS loaded after page load
             gulp.task(bundleTaskAsync, function (done) {
                 var fileName = bundle + ".deferred";
+                gulp.watch(deferredFileArray, [bundleTaskAsync]);
                 return gulpAction(bundleTaskAsync, deferredFileArray, fileName, done);
             });
 
             gulp.task(bundleTask, [bundleTaskOnLoad, bundleTaskAsync]);
             bundleTasks.push(bundleTask);
-
-            // Files paths to watch
-            var bundleDependencies = bundles.getWatchableBundlesFilePaths(bundle);
-            gulp.watch(bundleDependencies, [bundleTask]);
         })(bundle);
     }
 
