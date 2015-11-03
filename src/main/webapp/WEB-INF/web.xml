@@ -47,7 +47,7 @@
 		<init-param>
 			<param-name>jaxrs.inInterceptors</param-name>
 			<param-value>
-				com.ctm.soap.FormParamMapInInterceptor,
+				com.ctm.web.core.soap.FormParamMapInInterceptor,
 				org.apache.cxf.transport.common.gzip.GZIPInInterceptor
 			</param-value>
 		</init-param>
