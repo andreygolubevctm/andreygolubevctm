@@ -20,7 +20,7 @@
 		<c:set var="serviceId"><x:out select="$thisPrice/@service" /></c:set>
 		<c:set var="productId"><x:out select="$thisPrice/@productId" /></c:set>
 		<%
-			StatisticDetail statisticDetail = new StatisticDetail();
+			com.ctm.web.core.statistics.model.StatisticDetail statisticDetail = new com.ctm.web.core.statistics.model.StatisticDetail();
 			request.setAttribute("statisticDetail", statisticDetail);
 		%>
 		${statisticDetail.setServiceId(serviceId)}
