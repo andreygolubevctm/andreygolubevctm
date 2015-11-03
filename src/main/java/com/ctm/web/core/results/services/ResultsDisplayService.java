@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ResultsService {
+public class ResultsDisplayService {
 
     private DataSource ds;
     private ArrayList<ResultsTemplateItem> unorganisedList;
-    private static Logger LOGGER = LoggerFactory.getLogger(ResultsService.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(ResultsDisplayService.class);
 
-    public ResultsService() {
+    public ResultsDisplayService() {
         ds = SimpleDatabaseConnection.getDataSourceJdbcCtm();
     }
 

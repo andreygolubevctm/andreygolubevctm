@@ -9,7 +9,7 @@
 	<%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 
-	<jsp:useBean id="resultsService" class="com.ctm.web.core.results.services.ResultsService" scope="request" />
+	<jsp:useBean id="resultsService" class="com.ctm.web.core.services.ResultsService" scope="request" />
 
 	<%-- GET RANKING FROM DB --%>
 	<c:set var="rankings" value="${resultsService.getRankingsForTransactionId(tranId, 5)}" />

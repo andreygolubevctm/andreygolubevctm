@@ -1,6 +1,6 @@
 package com.ctm.web.core.router;
 
-import com.ctm.web.core.results.services.ResultsService;
+import com.ctm.web.core.results.services.ResultsDisplayService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,11 +35,11 @@ public class FeaturesRouter extends HttpServlet {
         // Route the requests ///////////////////////////////////////////////////////////////////////////////
         if (uri.endsWith("/features/getStructure.json")) {
 
-            ResultsService resultsService = new ResultsService();
+            ResultsDisplayService resultsDisplayService = new ResultsDisplayService();
             String results = null;
             final String vertical = request.getParameter("vertical");
             try {
-                results = resultsService.getPageStructureAsJsonString(vertical);
+                results = resultsDisplayService.getPageStructureAsJsonString(vertical);
                 writer.print(results);
             } catch (Exception e) {
                 LOGGER.error("Features couldn't be retrieved {}", kv("vertical", vertical), e);

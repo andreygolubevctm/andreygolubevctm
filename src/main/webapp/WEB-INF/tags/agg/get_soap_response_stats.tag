@@ -9,7 +9,7 @@
 <%@ tag import="java.util.List" %>
 <%@ tag import="java.util.ArrayList" %>
 <%
-	List<StatisticDetail> statisticDetails = new ArrayList<>();
+	List<StatisticDetail> statisticDetails = new ArrayList<StatisticDetail>();
 	request.setAttribute("statisticDetailsResults", statisticDetails);
 %>
 
