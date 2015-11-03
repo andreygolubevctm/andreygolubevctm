@@ -1,15 +1,16 @@
-package com.ctm.services.travel;
+package com.ctm.web.travel.services;
 
-import com.ctm.connectivity.SimpleConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.TravelServiceException;
-import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.ServiceConfiguration;
-import com.ctm.model.travel.form.TravelQuote;
-import com.ctm.model.travel.form.TravelRequest;
-import com.ctm.model.travel.form.Travellers;
-import com.ctm.services.EnvironmentService;
-import com.ctm.web.validation.SchemaValidationError;
+
+import com.ctm.web.core.connectivity.SimpleConnection;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.ServiceConfiguration;
+import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.validation.SchemaValidationError;
+import com.ctm.web.travel.exceptions.TravelServiceException;
+import com.ctm.web.travel.model.form.TravelQuote;
+import com.ctm.web.travel.model.form.TravelRequest;
+import com.ctm.web.travel.model.form.Travellers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class TravelServiceTest {
 

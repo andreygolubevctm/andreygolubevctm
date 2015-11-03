@@ -1,4 +1,4 @@
-package com.ctm.model.travel.form;
+package com.ctm.web.travel.model.form;
 
 
 

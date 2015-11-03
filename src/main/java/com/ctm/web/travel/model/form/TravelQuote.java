@@ -1,8 +1,9 @@
-package com.ctm.model.travel.form;
+package com.ctm.web.travel.model.form;
 
-import com.ctm.providers.travel.travelquote.model.request.Filter;
-import com.ctm.web.validation.Destinations;
-import com.ctm.web.validation.Name;
+
+import com.ctm.web.core.validation.Destinations;
+import com.ctm.web.core.validation.Name;
+import com.ctm.web.travel.quote.model.request.Filter;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
