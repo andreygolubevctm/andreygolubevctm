@@ -9,7 +9,7 @@
 <%@ attribute name="provider_name" 	required="true"	 rtexprvalue="true"	 description="The Provider's Name" %>
 <%@ attribute name="record_expiry" 	required="true"	 rtexprvalue="true"	 description="Number of days a record is to be current for" %>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:set var="alt_table" value="" />
 ${logger.info('Starting tag. {},{},{}', log:kv('provider_id',provider_id ),log:kv('provider_code',provider_code ),log:kv('provider_name',provider_name ))}
@@ -68,7 +68,7 @@ ${logger.info('Starting tag. {},{},{}', log:kv('provider_id',provider_id ),log:k
 <%-- 2] Store the provider in the database including required properties --%>
 <%-- =================================================================== --%>
 		<c:if test="${not empty ctm_provider_id}">
-			<sql:transaction dataSource="jdbc/ctm" isolation="repeatable_read">
+			<sql:transaction dataSource="${datasource:getDataSource()}" isolation="repeatable_read">
 
 				<%-- Update the provider_master record located in the previous section --%>
 				<sql:update>

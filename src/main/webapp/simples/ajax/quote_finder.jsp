@@ -6,7 +6,7 @@
 <session:getAuthenticated />
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <go:setData dataVar="data" xpath="findQuotes" value="*DELETE" />
 

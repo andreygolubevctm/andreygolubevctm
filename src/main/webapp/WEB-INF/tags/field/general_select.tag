@@ -29,7 +29,7 @@
 </c:if>
 
 <%-- HTML --%>
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:choose>
 	<c:when test="${not empty type && type eq 'occupation'}">
