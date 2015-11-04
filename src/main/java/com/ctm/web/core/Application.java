@@ -1,4 +1,4 @@
-package com.ctm;
+package com.ctm.web.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 @SpringBootApplication
-@ComponentScan({"com.ctm.connectivity"})
+@ComponentScan({"com.ctm.web.core.connectivity"})
 public class Application extends SpringBootServletInitializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);

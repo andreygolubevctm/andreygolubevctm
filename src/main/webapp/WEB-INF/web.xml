@@ -21,7 +21,7 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>com.ctm.Application</param-value>
+		<param-value>com.ctm.web.core.Application</param-value>
 	</context-param>
 
 	<listener>
