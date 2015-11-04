@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="false" >
+<configuration debug="false">
 	<conversionRule conversionWord="env" converterClass="com.ctm.logging.EnvironmentConverter" />
     
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
@@ -54,27 +54,19 @@
 		<appender-ref ref="SIFT" />
 	</appender>
 
-
 	<logger name="com.ctm.logging.XMLOutputWriter" additivity="false">
 		<appender-ref ref="ASYNC" />
   	</logger>
 
-	<logger name="org.springframework.ws.client.MessageTracing.sent" additivity="false">
-		<appender-ref ref="stdout" />
-  	</logger>
-
-	<logger name="org.springframework.ws.client.MessageTracing.received" additivity="false">
-		<appender-ref ref="stdout" />
-	</logger>
-
-	<logger name="log4j.logger.org.elasticsearch" level="INFO" additivity="false">
-		<appender-ref ref="stdout" />
-		<appender-ref ref="AMQP" />
-	</logger>
+	<logger name="log4j.logger.org.elasticsearch" level="INFO"/>
 
 	<root level="info">
    		<appender-ref ref="stdout" />
-		<appender-ref ref="AMQP" />
+		<if condition='!p("spring.profiles.active").contains("PRO")'>
+			<then>
+				<appender-ref ref="AMQP" />
+			</then>
+		</if>
 	</root>
 	
 </configuration>
