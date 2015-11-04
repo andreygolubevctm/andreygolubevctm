@@ -40,6 +40,14 @@ public class RequestService {
         init(request);
     }
 
+    public RequestService(HttpServletRequest request, String vertical, Data data, PageSettings pageSettings){
+        this.pageSettings = pageSettings;
+        this.request = request;
+        this.vertical = Vertical.VerticalType.findByCode(vertical);
+        transactionId = data.getLong("current/transactionId");
+        init(request);
+    }
+
     public RequestService(Vertical.VerticalType vertical, PageSettings pageSettings){
         this.vertical = vertical;
         this.pageSettings = pageSettings;
@@ -47,6 +55,14 @@ public class RequestService {
 
     public RequestService(Vertical.VerticalType vertical) {
         this.vertical = vertical;
+    }
+
+    public RequestService(HttpServletRequest httpRequest, Vertical.VerticalType vertical, PageSettings pageSettings) {
+        transactionId = RequestUtils.getTransactionIdFromRequest(httpRequest);
+        this.request = httpRequest;
+        this.vertical = vertical;
+        this.pageSettings = pageSettings;
+        init(request);
     }
 
     public void setRequest(HttpServletRequest request) {
