@@ -35,7 +35,7 @@ public class ResultsDisplayService {
 
         unorganisedList = new ArrayList<>();
 
-        try{
+        try {
             PreparedStatement stmt;
             conn = ds.getConnection();
             stmt = conn.prepareStatement(
@@ -74,7 +74,7 @@ public class ResultsDisplayService {
             }
         }
 
-        ArrayList<ResultsTemplateItem> list = new ArrayList<ResultsTemplateItem>();
+        ArrayList<ResultsTemplateItem> list = new ArrayList<>();
         list = findItemInList(0); // start at top level (0) and work recursively through the data.
         Collections.sort(list);
 
