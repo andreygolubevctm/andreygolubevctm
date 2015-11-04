@@ -8,10 +8,13 @@
 /build
 /lib
 /log
-/node
-/node_modules
 /out
 /WebContent
+/src/main/pipeline/node
+/src/main/pipeline/node_modules
+/src/test/frontend/node
+/src/test/frontend/node_modules
+/src/test/frontend/npm-debug.log
 /target
 /test
 /*.eml
