@@ -1,5 +1,7 @@
 package com.ctm.web.core.model;
 
+import com.ctm.web.core.provider.model.Provider;
+
 import java.util.ArrayList;
 import java.util.Date;
 

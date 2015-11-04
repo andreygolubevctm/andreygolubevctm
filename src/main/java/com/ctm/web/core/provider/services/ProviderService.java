@@ -1,18 +1,16 @@
-package com.ctm.web.core.services.provider;
+package com.ctm.web.core.provider.services;
 
-import java.util.ArrayList;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.ctm.web.core.dao.ProviderDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.provider.model.Provider;
+import com.ctm.web.core.services.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.web.core.dao.ProviderDao;
-import com.ctm.web.core.model.Provider;
-import com.ctm.web.core.model.settings.PageSettings;
-import com.ctm.web.core.services.SettingsService;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

@@ -13,7 +13,7 @@
 <body>
 <jsp:useBean id="environmentService" class="com.ctm.web.core.services.EnvironmentService" scope="request" />
 <c:set var="environment" value="${environmentService.getEnvironmentAsString()}" />
-<jsp:useBean id="providers" class="com.ctm.web.core.services.provider.ProviderService" scope="request" />
+<jsp:useBean id="providers" class="com.ctm.web.core.provider.services.ProviderService" scope="request" />
 <c:set var="providerHTML" value="${providers.fetchProviders('TRAVEL', 1)}" />
 
 <div class="container"><div class="row" style="padding-top: 80px;">

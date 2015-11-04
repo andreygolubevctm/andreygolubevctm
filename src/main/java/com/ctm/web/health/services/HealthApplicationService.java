@@ -3,7 +3,7 @@ package com.ctm.web.health.services;
 import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.Provider;
+import com.ctm.web.core.provider.model.Provider;
 import com.ctm.web.health.model.Frequency;
 import com.ctm.web.health.model.HealthPricePremium;
 import com.ctm.web.health.model.request.HealthApplicationRequest;

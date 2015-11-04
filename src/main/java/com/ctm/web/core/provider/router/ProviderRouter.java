@@ -1,25 +1,23 @@
-package com.ctm.web.core.router.provider;
+package com.ctm.web.core.provider.router;
 
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
+import com.ctm.web.core.model.Error;
+import com.ctm.web.core.provider.model.Provider;
+import com.ctm.web.core.provider.services.ProviderService;
+import com.ctm.web.core.services.SettingsService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONObject;
-
-import com.ctm.web.core.model.Error;
-import com.ctm.web.core.model.Provider;
-import com.ctm.web.core.services.SettingsService;
-import com.ctm.web.core.services.provider.ProviderService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
 
 @WebServlet(urlPatterns = {

@@ -1,7 +1,7 @@
 package com.ctm.web.health.services;
 
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.Provider;
+import com.ctm.web.core.provider.model.Provider;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.security.token.JwtTokenCreator;

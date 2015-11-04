@@ -5,7 +5,7 @@ import com.ctm.web.core.exceptions.*;
 import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.logging.SpringWSLoggingInterceptor;
 import com.ctm.web.core.logging.XMLOutputWriter;
-import com.ctm.web.core.model.Provider;
+import com.ctm.web.core.provider.model.Provider;
 import com.ctm.web.core.leadfeed.model.AGISLeadFeedRequest;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.model.settings.PageSettings;

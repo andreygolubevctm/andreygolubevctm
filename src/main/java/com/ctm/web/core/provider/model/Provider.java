@@ -1,5 +1,6 @@
-package com.ctm.web.core.model;
+package com.ctm.web.core.provider.model;
 
+import com.ctm.web.core.model.AbstractJsonModel;
 import org.hibernate.validator.constraints.Range;
 import org.json.JSONException;
 import org.json.JSONObject;
