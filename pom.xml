@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.ctm.pom</groupId>
         <artifactId>uber-pom</artifactId>
-        <version>1.4.0</version>
+        <version>1.5.0</version>
     </parent>
 
     <groupId>com.ctm.web</groupId>
@@ -27,7 +27,7 @@
         <tomcat.version>7.0.35</tomcat.version>
         <jaxws-maven-plugin.version>2.3</jaxws-maven-plugin.version>
         <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
-        <frontend-maven-plugin.version>0.0.23</frontend-maven-plugin.version>
+        <frontend-maven-plugin.version>0.0.26</frontend-maven-plugin.version>
         <javax.el.version>2.2.4</javax.el.version>
         <javax.servlet.version>3.0.1</javax.servlet.version>
         <jackson.version>2.4.3</jackson.version>
@@ -36,6 +36,9 @@
         <!-- Compile as this version -->
         <java.version>1.8</java.version>
         <jspc-maven-plugin.version>2.0.0</jspc-maven-plugin.version>
+
+        <node.version>v4.2.1</node.version>
+        <npm.version>2.14.8</npm.version>
     </properties>
 
     <dependencyManagement>
@@ -453,10 +456,10 @@
                                     <goal>install-node-and-npm</goal>
                                 </goals>
                                 <configuration>
-                                    <nodeVersion>v0.12.2</nodeVersion>
-                                    <npmVersion>1.4.12</npmVersion>
+                                    <nodeVersion>${node.version}</nodeVersion>
+                                    <npmVersion>${npm.version}</npmVersion>
                                     <nodeDownloadRoot>${node.download.root}/</nodeDownloadRoot>
-                                    <npmDownloadRoot>${node.download.root}/npm/</npmDownloadRoot>
+                                    <npmDownloadRoot>${npm.download.root}/</npmDownloadRoot>
                                     <workingDirectory>src/main/pipeline</workingDirectory>
                                 </configuration>
                             </execution>
@@ -494,6 +497,35 @@
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>clean-node-dirs</id>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <phase>clean</phase>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${project.basedir}/src/main/pipeline/node</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${project.basedir}/src/main/pipeline/node_modules</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${project.basedir}/src/test/frontend/node</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${project.basedir}/src/test/frontend/node_modules</directory>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </execution>
+                </executions>
+
+            </plugin>
             <plugin>
                 <groupId>org.jasig.mojo.jspc</groupId>
                 <artifactId>jspc-maven-plugin</artifactId>
@@ -648,10 +680,10 @@
                             <goal>install-node-and-npm</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>v0.12.2</nodeVersion>
-                            <npmVersion>1.4.12</npmVersion>
+                            <nodeVersion>${node.version}</nodeVersion>
+                            <npmVersion>${npm.version}</npmVersion>
                             <nodeDownloadRoot>${node.download.root}/</nodeDownloadRoot>
-                            <npmDownloadRoot>${node.download.root}/npm/</npmDownloadRoot>
+                            <npmDownloadRoot>${npm.download.root}/</npmDownloadRoot>
                             <workingDirectory>src/test/frontend</workingDirectory>
                             <skip>${maven.test.skip}</skip>
                         </configuration>
