@@ -676,7 +676,7 @@
 		<name>addDocument</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
 		<function-signature>
-			java.lang.String addDocument(com.disc_au.web.go.Data,java.lang.String)
+			void addDocument(com.disc_au.web.go.Data,java.lang.String)
 		</function-signature>
 	</function>
 	<function>
@@ -705,19 +705,7 @@
 			]]>
 		</example>
 	</function>
-	<function>
-		<description>Writes the passed string to the filename provided</description>
-		<name>writeToFile</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
-		<function-signature>
-			java.lang.String writeToFile(java.lang.String,java.lang.String)
-		</function-signature>
-		<example>
-			<![CDATA[
-				${go:writeToFile('myfile.txt',myString)}
-			]]>
-		</example>
-	</function>
+
 	<function>
 		<description>Writes the passed string to an AES256 encrypted ZIP file, using the filename, internalFilename and password provided</description>
 		<name>writeToEncZipFile</name>
@@ -825,7 +813,7 @@
 		</example>
 	</function>
 	<function>
-		<description></description>
+		<description>Create String Builder</description>
 		<name>getStringBuilder</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
 		<function-signature>
@@ -931,7 +919,7 @@
      <function>
          <name>replaceAll</name>
          <function-class>com.disc_au.web.go.Gadget</function-class>
-         <function-signature>String replaceAll(java.lang.String, java.lang.String, java.lang.String)</function-signature>
+         <function-signature>java.lang.String replaceAll(java.lang.String, java.lang.String, java.lang.String)</function-signature>
          <example>
 			<![CDATA[
 				${go:replaceAll(haystack, pattern, replace)}
@@ -941,7 +929,7 @@
 	<function>
 		<name>urlEncode</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
-		<function-signature>String urlEncode(java.lang.String)</function-signature>
+		<function-signature>java.lang.String urlEncode(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
 				${go:urlEncode(string)}
@@ -951,7 +939,7 @@
 	<function>
 		<name>base64Encode</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
-		<function-signature>String base64Encode(java.lang.String)</function-signature>
+		<function-signature>java.lang.String base64Encode(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
 				${go:base64Encode(string)}
@@ -961,7 +949,7 @@
 	<function>
 		<name>hexToDec</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
-		<function-signature>String hexToDec(java.lang.String)</function-signature>
+		<function-signature>java.lang.String hexToDec(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
 				${go:hexToDec(decimalString)}
@@ -971,7 +959,7 @@
 	<function>
 		<name>decToHex</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
-		<function-signature>String decToHex(java.lang.String)</function-signature>
+		<function-signature>java.lang.String decToHex(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
 				${go:decToHex(hexadecimalString)}
@@ -981,7 +969,7 @@
 	<function>
 		<name>jsEscape</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
-		<function-signature>String jsEscape(java.lang.String)</function-signature>
+		<function-signature>java.lang.String jsEscape(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
 				Escape quotes, \, /, \r, \n, \b, \f, \t and other control characters (U+0000 through U+001F).
@@ -992,7 +980,7 @@
 	<function>
 		<name>htmlEscape</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
-		<function-signature>String htmlEscape(java.lang.String)</function-signature>
+		<function-signature>java.lang.String htmlEscape(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
 				${go:htmlEscape(string)}
@@ -1002,7 +990,7 @@
 	<function>
 		<name>formatCurrency</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
-		<function-signature>String formatCurrency(java.lang.String , boolean, boolean)</function-signature>
+		<function-signature>java.lang.String formatCurrency(java.lang.String , boolean, boolean)</function-signature>
 		<example>
 			<![CDATA[
 				${go:formatCurrency('100.05' , showSymbol, true)}
@@ -1012,7 +1000,7 @@
 	<function>
 		<name>formatCurrencyPrecise</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
-		<function-signature>String formatCurrency(java.math.BigDecimal , boolean, boolean)</function-signature>
+		<function-signature>java.lang.String formatCurrency(java.math.BigDecimal , boolean, boolean)</function-signature>
 		<example>
 			<![CDATA[
 				${go:formatCurrencyPrecise(java.math.BigDecimal , showSymbol, true)}
@@ -1022,7 +1010,7 @@
 	<function>
 		<name>unescapeXml</name>
 		<function-class>org.apache.commons.lang3.StringEscapeUtils</function-class>
-		<function-signature>String unescapeXml(java.lang.String)</function-signature>
+		<function-signature>java.lang.String unescapeXml(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
 				${go:unescapeXml(string)}
@@ -1032,7 +1020,7 @@
 		<function>
 		<name>decodeUrl</name>
 		<function-class>java.net.URLDecoder</function-class>
-		<function-signature>String decode(java.lang.String)</function-signature>
+		<function-signature>java.lang.String decode(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
 				${go:decodeUrl(string)}
