@@ -27,7 +27,7 @@
         <tomcat.version>7.0.35</tomcat.version>
         <jaxws-maven-plugin.version>2.3</jaxws-maven-plugin.version>
         <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
-        <frontend-maven-plugin.version>0.0.23</frontend-maven-plugin.version>
+        <frontend-maven-plugin.version>0.0.26</frontend-maven-plugin.version>
         <javax.el.version>2.2.4</javax.el.version>
         <javax.servlet.version>3.0.1</javax.servlet.version>
         <jackson.version>2.4.3</jackson.version>
