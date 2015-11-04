@@ -142,10 +142,12 @@ public class EnvironmentService {
 
 				// Append the build timestamp to the implementation version
 				if (attr.getValue("Bamboo-BuildTimestamp") != null) {
-					buildIdentifier = buildIdentifier + " " + attr.getValue("Bamboo-BuildTimestamp");
+					buildIdentifier = buildIdentifier + "_" + attr.getValue("Bamboo-BuildTimestamp");
 				}
 				if (attr.getValue("Scm-Revision") != null) {
 					buildRevision = attr.getValue("Scm-Revision");
+					// Append buildRevision to build identifier
+					buildIdentifier = buildIdentifier + "_" + buildRevision;
 				}
 			}
 		}
