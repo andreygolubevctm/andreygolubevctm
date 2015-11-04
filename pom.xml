@@ -515,10 +515,10 @@
                                     <directory>${project.basedir}/src/main/pipeline/node_modules</directory>
                                 </fileset>
                                 <fileset>
-                                    <directory>${project.basedir}/src/test/pipeline/node</directory>
+                                    <directory>${project.basedir}/src/test/frontend/node</directory>
                                 </fileset>
                                 <fileset>
-                                    <directory>${project.basedir}/src/test/pipeline/node_modules</directory>
+                                    <directory>${project.basedir}/src/test/frontend/node_modules</directory>
                                 </fileset>
                             </filesets>
                         </configuration>
