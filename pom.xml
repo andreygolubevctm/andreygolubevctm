@@ -33,6 +33,7 @@
         <jackson.version>2.4.3</jackson.version>
         <javax.jsp.version>2.2</javax.jsp.version>
         <mysql.connector.version>5.1.29</mysql.connector.version>
+        <spring-rabbit.version>1.4.6.RELEASE</spring-rabbit.version>
         <!-- Compile as this version -->
         <java.version>1.8</java.version>
         <jspc-maven-plugin.version>2.0.0</jspc-maven-plugin.version>
@@ -232,7 +233,7 @@
         <dependency>
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit</artifactId>
-            <version>1.5.1.RELEASE</version>
+            <version>${spring-rabbit.version}</version>
         </dependency>
 
         <!-- Other 3rd Party -->
@@ -264,7 +265,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.6.2</version>
+            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>
