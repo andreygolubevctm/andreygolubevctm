@@ -2,13 +2,13 @@ package com.ctm.web.simples.admin.services;
 
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.OpeningHours;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.validation.SchemaValidationError;
-import com.ctm.web.core.model.OpeningHours;
-import com.ctm.web.simples.admin.model.request.OpeningHoursHelper;
+import com.ctm.web.simples.admin.helper.AdminOpeningHoursHelper;
 import com.ctm.web.simples.dao.OpeningHoursAdminDao;
 
 import javax.servlet.ServletException;
@@ -18,7 +18,7 @@ import java.util.List;
 public class OpeningHoursAdminService {
 
 	private final OpeningHoursAdminDao openingHoursAdminDao = new OpeningHoursAdminDao();
-	private final OpeningHoursHelper openingHoursHelper = new OpeningHoursHelper();
+	private final AdminOpeningHoursHelper adminOpeningHoursHelper = new AdminOpeningHoursHelper();
 	public static final String dateField = "date";
 	public static final String sequenceField = "daySequence";
 	public OpeningHoursAdminService() {
@@ -51,7 +51,7 @@ public class OpeningHoursAdminService {
 			openingHours = RequestUtils.createObjectFromRequest(request, openingHours);
 			openingHours.setVerticalId(verticalId);
 			List<OpeningHours> clashingOpeningHours = openingHoursAdminDao.findClashingHoursCount(openingHours);
-			validations = openingHoursHelper.validateHoursRowData(openingHours);
+			validations = adminOpeningHoursHelper.validateHoursRowData(openingHours);
 			if (clashingOpeningHours.size() > 0) {
 				SchemaValidationError error = new SchemaValidationError();
 				error.setElements("effectiveStart , effectiveEnd");
