@@ -30,7 +30,7 @@
         <c:if test="${empty emailData}">
             <c:set var="hasLogin" value="${tokenService.hasLogin(param.token)}"/>
             <c:if test="${not hasLogin}">
-                ${logger.info('Token has expired and user cannot login. Redirecting to start_quote.jsp {}', log:kv('parameters', parametersMap))}
+                ${logger.info('Token has expired and user cannot login. Redirecting to start_quote.jsp {}', log:kv('token', param.token))}
                 <c:redirect url="${pageSettings.getBaseUrl()}start_quote.jsp"/>
             </c:if>
         </c:if>
