@@ -7,7 +7,7 @@ import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.logging.XMLOutputWriter;
 import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.settings.Brand;
-import com.ctm.web.core.providers.Request;
+import com.ctm.web.core.providers.model.Request;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.services.CommonQuoteService;

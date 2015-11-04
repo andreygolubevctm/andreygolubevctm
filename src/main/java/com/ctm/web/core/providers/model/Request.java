@@ -1,4 +1,4 @@
-package com.ctm.web.homecontents.providers.model.request;
+package com.ctm.web.core.providers.model;
 
 public class Request<T> {
 

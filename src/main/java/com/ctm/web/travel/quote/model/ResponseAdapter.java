@@ -1,6 +1,6 @@
 package com.ctm.web.travel.quote.model;
 
-import com.ctm.web.core.providers.QuoteResponse;
+import com.ctm.web.core.providers.model.QuoteResponse;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.travel.model.results.ExemptedBenefit;
 import com.ctm.web.travel.model.results.Info;

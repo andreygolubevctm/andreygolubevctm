@@ -11,7 +11,7 @@ import com.ctm.web.car.model.results.CarResult;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.model.settings.Brand;
-import com.ctm.web.homecontents.providers.model.request.Request;
+import com.ctm.web.core.providers.model.Request;
 import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.car.quote.model.RequestAdapter;
 import com.ctm.web.car.quote.model.ResponseAdapter;

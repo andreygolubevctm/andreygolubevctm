@@ -1,4 +1,4 @@
-package com.ctm.web.core.providers;
+package com.ctm.web.core.providers.model;
 
 public class ResponseError {
 

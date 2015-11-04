@@ -10,7 +10,7 @@ import com.ctm.web.car.model.results.Underwriter;
 import com.ctm.web.car.quote.model.response.CarQuote;
 import com.ctm.web.car.quote.model.response.CarResponse;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.web.core.providers.QuoteResponse;
+import com.ctm.web.core.providers.model.QuoteResponse;
 
 import java.util.ArrayList;
 import java.util.Collections;
