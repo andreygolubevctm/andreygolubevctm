@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
-	<conversionRule conversionWord="env" converterClass="com.ctm.logging.EnvironmentConverter" />
+	<conversionRule conversionWord="env" converterClass="com.ctm.logging.ServletContextConverter" />
+	<property name="ENV" value="${spring.profiles.active:-localhost}"/>
     
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 	    <Target>System.out</Target>
@@ -23,7 +24,7 @@
 			<includeMdcKeyName>context</includeMdcKeyName>
 			<customFields>{"hostname":"${HOSTNAME}", "appname":"webctm"}</customFields>
 			<provider class="net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider">
-				<pattern>{"env":"%env{name}","context":"%env{context}"}</pattern>
+				<pattern>{"env":"${ENV}","context":"%env{context}"}</pattern>
 			</provider>
 			<provider class="net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider"/>
 		</layout>
@@ -62,7 +63,7 @@
 
 	<root level="info">
    		<appender-ref ref="stdout" />
-		<if condition='!p("spring.profiles.active").contains("PRO")'>
+		<if condition='!(p("ENV").contains("PRO") || p("ENV").contains("localhost"))'>
 			<then>
 				<appender-ref ref="AMQP" />
 			</then>
