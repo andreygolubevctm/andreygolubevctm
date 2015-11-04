@@ -448,6 +448,30 @@ XML PARSE AND SQL UPDATE
 	</c:forTokens>	
 </c:if>
 
+
+<%-- CHECK FOR CONTINUED ERRORS AND SAVE THE XML FILE 
+<c:if test="${empty errorPool}">
+
+	<c:catch var="error">
+		<c:set var="updateIdMax">_NEWROOTDIR_/WEB-INF/aggregator/fuel/downloads/stateSearchAllPrices_<fmt:formatNumber groupingUsed="false" type="number" minIntegerDigits="8" value="${updateId}" />.txt</c:set>
+		<c:set var="newString" value="Hello World!!!" /> 
+		${go:writeToFile(updateIdMax,newString)}
+	</c:catch>
+
+	<c:if test="${not empty error}">
+		<c:set var="errorPool" value="${errorPool} <error f='write'>${error.rootCause}</error>" />
+		<sql:update>
+			UPDATE aggregator.fuel_updates SET Status = ?
+			WHERE UpdateId = ?;
+			<sql:param>500</sql:param>
+			<sql:param>${updateId}</sql:param>
+		</sql:update>		
+	</c:if>			
+	
+</c:if>
+--%>
+
+
 <%-- Sound the all clear --%>
 <c:if test="${empty errorPool }">
 	<sql:update>

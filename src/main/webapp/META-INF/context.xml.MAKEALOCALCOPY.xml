@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ========================================== -->
+<!-- ========  AGH Compare The Market  ======== -->
+<!-- CTM Web Application Context Descriptor
+<!   $Id: context.xml 2776 2013-05-07 05:57:37Z xplooy $
+<! ©2012 Auto & General Holdings Pty Ltd        -->
+
+<Context>
+
+	<Resource name="jdbc/ctm" auth="Container"
+		type="javax.sql.DataSource"
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+		username="user" password="pass"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://taws02_dbi:3306/ctm?useOldAliasMetadataBehavior=true&amp;zeroDateTimeBehavior=convertToNull"
+		initialSize="1"
+		maxActive="10"
+		maxTotal="10"
+		validationQuery="SELECT 1"
+		validationInterval="34000"
+		maxWait="6000"
+		maxWaitMillis="6000"
+		removeAbandoned="true"
+		maxIdle="2"
+		minIdle="1"
+		removeAbandonedTimeout="54"
+		timeBetweenEvictionRunsMillis="34000"
+		minEvictableIdleTimeMillis="55000"
+		logAbandoned="true"
+		testOnBorrow="true"
+		defaultAutoCommit="true"
+	/>
+
+<!--
+	AGH Active Directory Login Realm
+-->
+	<Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
+		connectionURL="ldap://argon.budgetdirect.com.au:389"
+		connectionName="CTM LDAP"
+		connectionPassword="Bind_Ldap$"
+		userBase="OU=AIH Users,DC=budgetdirect,DC=com,DC=au"
+		userSearch="(sAMAccountName={0})"
+		userSubtree="true"
+		userRoleName="memberOf"
+		roleBase="OU=AIH Security Groups,OU=Security Groups,DC=budgetdirect,DC=com,DC=au"
+		roleName="cn"
+		roleSubtree="true"
+		roleSearch="(member={0})"
+	/>
+
+</Context>
