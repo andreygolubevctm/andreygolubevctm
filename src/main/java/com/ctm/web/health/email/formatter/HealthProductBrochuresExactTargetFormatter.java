@@ -1,8 +1,8 @@
-package com.ctm.web.health.model.formatter.email;
+package com.ctm.web.health.email.formatter;
 
 import com.ctm.web.core.email.formatter.ExactTargetFormatter;
 import com.ctm.web.core.email.model.ExactTargetEmailModel;
-import com.ctm.web.health.model.email.HealthProductBrochuresEmailModel;
+import com.ctm.web.health.email.model.HealthProductBrochuresEmailModel;
 
 public class HealthProductBrochuresExactTargetFormatter extends ExactTargetFormatter<HealthProductBrochuresEmailModel> {
 

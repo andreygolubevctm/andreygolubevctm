@@ -5,7 +5,7 @@ import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.EmailServiceHandler;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.health.services.email.HealthEmailService;
+import com.ctm.web.health.email.services.HealthEmailService;
 import org.junit.Assert;
 import org.junit.Test;
 

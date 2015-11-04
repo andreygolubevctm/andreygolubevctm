@@ -9,7 +9,7 @@ import com.ctm.web.core.email.services.EmailDetailsService;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.health.services.email.mapping.HealthEmailDetailMappings;
+import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
 import org.junit.Before;
 import org.junit.Test;
 

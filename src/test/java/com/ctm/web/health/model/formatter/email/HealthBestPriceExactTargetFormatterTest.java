@@ -2,7 +2,8 @@ package com.ctm.web.health.model.formatter.email;
 
 import com.ctm.web.core.email.model.ExactTargetEmailModel;
 import com.ctm.web.core.utils.EmailTestUtils;
-import com.ctm.web.health.model.email.HealthBestPriceEmailModel;
+import com.ctm.web.health.email.model.HealthBestPriceEmailModel;
+import com.ctm.web.health.email.formatter.HealthBestPriceExactTargetFormatter;
 import org.junit.Test;
 
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 public class HealthBestPriceExactTargetFormatterTest {
 
-	private class HealthBestPriceExactTargetFormatterStub extends HealthBestPriceExactTargetFormatter{
+	private class HealthBestPriceExactTargetFormatterStub extends HealthBestPriceExactTargetFormatter {
 		public ExactTargetEmailModel formatXml(HealthBestPriceEmailModel model) {
 			return super.formatXml(model);
 		}

@@ -1,4 +1,4 @@
-package com.ctm.web.health.services.email.mapping;
+package com.ctm.web.health.email.mapping;
 
 import com.ctm.web.core.email.mapping.EmailDetailsMappings;
 import com.ctm.web.core.web.go.Data;

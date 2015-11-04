@@ -1,4 +1,4 @@
-package com.ctm.web.health.model.email;
+package com.ctm.web.health.email.model;
 
 
 import com.ctm.web.core.email.model.EmailModel;

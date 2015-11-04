@@ -1,4 +1,4 @@
-package com.ctm.web.health.services.email;
+package com.ctm.web.health.email.services;
 
 import com.ctm.web.core.content.dao.ContentDao;
 import com.ctm.web.core.content.model.Content;
@@ -21,10 +21,10 @@ import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.OpeningHoursService;
 import com.ctm.web.core.transaction.dao.TransactionDao;
-import com.ctm.web.health.model.email.HealthBestPriceEmailModel;
-import com.ctm.web.health.model.email.HealthProductBrochuresEmailModel;
-import com.ctm.web.health.model.formatter.email.HealthBestPriceExactTargetFormatter;
-import com.ctm.web.health.model.formatter.email.HealthProductBrochuresExactTargetFormatter;
+import com.ctm.web.health.email.model.HealthBestPriceEmailModel;
+import com.ctm.web.health.email.model.HealthProductBrochuresEmailModel;
+import com.ctm.web.health.email.formatter.HealthBestPriceExactTargetFormatter;
+import com.ctm.web.health.email.formatter.HealthProductBrochuresExactTargetFormatter;
 import com.ctm.web.health.model.request.HealthEmailBrochureRequest;
 
 import javax.servlet.http.HttpServletRequest;
