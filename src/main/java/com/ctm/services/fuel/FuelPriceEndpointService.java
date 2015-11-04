@@ -37,11 +37,11 @@ public class FuelPriceEndpointService extends CTMEndpointService {
         if(tokenService == null) {
             this.tokenService = new ResultsTokenValidation<>(new SettingsService(httpRequest), sessionDataService, pageSettings.getVertical());
         }
-        super.validateToken(httpRequest, tokenService, parseRequest(httpRequest, pageSettings));
+        super.validateToken(httpRequest, tokenService, parseRequest(httpRequest));
     }
 
-    private PageRequest parseRequest(HttpServletRequest httpRequest, PageSettings pageSettings) {
-        RequestService requestService = new RequestService(httpRequest, Vertical.VerticalType.FUEL, pageSettings);
+    private PageRequest parseRequest(HttpServletRequest httpRequest) {
+        RequestService requestService = new RequestService(httpRequest, Vertical.VerticalType.FUEL);
         PageRequest request = new PageRequest();
         requestService.parseCommonValues(request);
         return request;
