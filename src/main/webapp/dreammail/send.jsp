@@ -129,7 +129,7 @@
 		</c:if>
 		<go:setData dataVar="data" value="*DELETE" xpath="tempSQL" />
 
-		<c:if test="${createUnsubscribeEmailToken}">
+		<c:if test="${createUnsubscribeEmailToken && pageSettings.getSetting('emailTokenEnabled')}">
 			<c:choose>
 				<c:when test="${empty param.unsubscribeToken}">
 					<jsp:useBean id="tokenServiceFactory" class="com.ctm.services.email.token.EmailTokenServiceFactory"/>
