@@ -138,11 +138,14 @@
 				$travel_adults.focus(function hideCalendar() {
 					$travel_dates_toDate.datepicker('hide');
 				});
+
+				meerkat.modules.travelAdultAges.initAdultAges();
+
 			},
 			onBeforeEnter: function(event) {
 			},
 			onBeforeLeave: function(event) {
-
+				meerkat.modules.travelAdultAges.updateHiddenField();
 			}
 		};
 
