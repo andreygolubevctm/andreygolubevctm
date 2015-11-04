@@ -3,16 +3,15 @@
  *   $Id: CallTag.java 3390 2013-07-02 07:22:37Z xplooy $
  * (c)2012 Auto & General Holdings Pty Ltd       */
 
-package com.ctm.web.core.web.go.tags;
+package com.ctm.web.core.web.openinghours.go.tags;
 
-import static com.ctm.web.core.web.go.CallCenterHours.AFTERNOON_HOUR;
-import static com.ctm.web.core.web.go.CallCenterHours.EVENING_HOUR;
-import static com.ctm.web.core.web.go.CallCenterHours.MORNING_HOUR;
+import com.ctm.web.core.web.go.tags.BaseTag;
+import com.ctm.web.core.web.openinghours.go.CallCenterHours;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
-import com.ctm.web.core.web.go.CallCenterHours;
+import static com.ctm.web.core.web.openinghours.go.CallCenterHours.*;
 
 /**
  * Tag to get the call centre hours.

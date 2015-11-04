@@ -1,8 +1,10 @@
-package com.ctm.web.core.web.go;
+package com.ctm.web.core.web.openinghours.go;
 
 import com.ctm.web.core.dao.GeneralDao;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -10,9 +12,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class CallCenterHoursTest {
 
@@ -85,7 +84,7 @@ public class CallCenterHoursTest {
 
 		sundayAfternoon =(Calendar) sundayMorning.clone();
 		sundayAfternoon.set(Calendar.HOUR_OF_DAY, 14);
-		GeneralDao generalDao = mock(GeneralDao.class);
+		GeneralDao generalDao = Mockito.mock(GeneralDao.class);
 		Map<String, String> values = new HashMap<String, String>();
 		values.put(MON, "08:30,20:00");
 		values.put(TUES, "08:30,20:00");
@@ -95,7 +94,7 @@ public class CallCenterHoursTest {
 		values.put(SAT, "10:00,16:00");
 		values.put(SUN, "");
 		values.put(MON, "08:30,20:00");
-		when(generalDao.getValues("healthCallCentreHours")).thenReturn(values );
+		Mockito.when(generalDao.getValues("healthCallCentreHours")).thenReturn(values );
 		callCenterHours = new CallCenterHours("health", generalDao );
 	}
 
@@ -264,7 +263,7 @@ public class CallCenterHoursTest {
 	protected void assertDayOfMonth(int expected, Date result) {
 		Calendar returnedResult = getBaseCalendar();
 		returnedResult.setTime(result);
-		assertEquals(expected, returnedResult.get(Calendar.DAY_OF_MONTH));
+		Assert.assertEquals(expected, returnedResult.get(Calendar.DAY_OF_MONTH));
 	}
 
 	protected void assertDayOfWeek(String expected, Date result) {
@@ -294,7 +293,7 @@ public class CallCenterHoursTest {
 				resultDay =SAT;
 				break;
 		}
-		assertEquals(expected, resultDay);
+		Assert.assertEquals(expected, resultDay);
 	}
 
 
@@ -302,6 +301,6 @@ public class CallCenterHoursTest {
 		Calendar returnedResult = getBaseCalendar();
 		returnedResult.setTime(result);
 		System.out.println("returnedResult " + returnedResult.getTime());
-		assertEquals(hour, returnedResult.get(Calendar.HOUR_OF_DAY));
+		Assert.assertEquals(hour, returnedResult.get(Calendar.HOUR_OF_DAY));
 	}
 }

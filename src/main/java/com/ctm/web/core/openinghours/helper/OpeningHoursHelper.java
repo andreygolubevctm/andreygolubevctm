@@ -1,6 +1,6 @@
-package com.ctm.web.core.helper.request;
+package com.ctm.web.core.openinghours.helper;
 
-import com.ctm.web.core.model.OpeningHours;
+import com.ctm.web.core.openinghours.model.OpeningHours;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

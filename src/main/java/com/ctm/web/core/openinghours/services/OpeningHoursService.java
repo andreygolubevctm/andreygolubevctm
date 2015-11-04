@@ -1,10 +1,12 @@
-package com.ctm.web.core.services;
+package com.ctm.web.core.openinghours.services;
 
-import com.ctm.web.core.dao.OpeningHoursDao;
+import com.ctm.web.core.openinghours.dao.OpeningHoursDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.settings.PageSettings;
-import com.ctm.web.core.model.OpeningHours;
+import com.ctm.web.core.openinghours.model.OpeningHours;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SettingsService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;

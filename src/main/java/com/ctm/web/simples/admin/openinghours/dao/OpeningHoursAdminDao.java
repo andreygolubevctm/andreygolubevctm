@@ -1,10 +1,10 @@
-package com.ctm.web.simples.dao;
+package com.ctm.web.simples.admin.openinghours.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.AuditTableDao;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.OpeningHours;
-import com.ctm.web.core.helper.request.OpeningHoursHelper;
+import com.ctm.web.core.openinghours.model.OpeningHours;
+import com.ctm.web.core.openinghours.helper.OpeningHoursHelper;
 import com.mysql.jdbc.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.ctm.web.core.model;
+package com.ctm.web.core.openinghours.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;

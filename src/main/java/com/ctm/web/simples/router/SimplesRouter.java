@@ -11,7 +11,7 @@ import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.simples.services.TransactionService;
 import com.ctm.web.simples.admin.router.AdminRouter;
-import com.ctm.web.simples.admin.services.OpeningHoursAdminService;
+import com.ctm.web.simples.admin.openinghours.services.OpeningHoursAdminService;
 import com.ctm.web.simples.admin.services.SpecialOffersService;
 import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.simples.model.Message;

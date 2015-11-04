@@ -2,7 +2,7 @@
 <%@ tag description="Call Me Back form"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<jsp:useBean id="openingHoursService" class="com.ctm.web.core.services.OpeningHoursService" scope="page" />
+<jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
 
 <%@ attribute name="id" required="true" rtexprvalue="true"	description="ID to assign to the form" %>
 <%@ attribute name="displayBubble" required="false" rtexprvalue="true"	description="Whether to display the right hand side column with the speech bubble" %>

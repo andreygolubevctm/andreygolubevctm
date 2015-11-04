@@ -1,4 +1,4 @@
-package com.ctm.web.core.web.go;
+package com.ctm.web.core.web.openinghours.go;
 
 import com.ctm.web.core.dao.GeneralDao;
 import org.slf4j.Logger;

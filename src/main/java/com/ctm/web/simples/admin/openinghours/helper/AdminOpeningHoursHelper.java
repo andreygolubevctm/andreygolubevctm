@@ -1,9 +1,9 @@
-package com.ctm.web.simples.admin.helper;
+package com.ctm.web.simples.admin.openinghours.helper;
 
-import com.ctm.web.core.model.OpeningHours;
+import com.ctm.web.core.openinghours.model.OpeningHours;
 import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.validation.SchemaValidationError;
-import com.ctm.web.simples.admin.services.OpeningHoursAdminService;
+import com.ctm.web.simples.admin.openinghours.services.OpeningHoursAdminService;
 
 import java.util.List;
 

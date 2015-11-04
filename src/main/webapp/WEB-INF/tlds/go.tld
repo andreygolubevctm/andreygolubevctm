@@ -536,7 +536,7 @@
 	<tag>
 		<description>get the next available call back date and time</description>
 		<name>callCenterHours</name>
-		<tag-class>com.ctm.web.core.web.go.tags.CallCenterHoursTag</tag-class>
+		<tag-class>com.ctm.web.core.web.openinghours.go.tags.CallCenterHoursTag</tag-class>
 		<body-content>tagdependent</body-content>
 		<attribute>
 			<description>The time of day that the callback should be set to can be M , A  or E</description>

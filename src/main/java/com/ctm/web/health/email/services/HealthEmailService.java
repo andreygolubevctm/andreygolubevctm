@@ -19,7 +19,7 @@ import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.services.OpeningHoursService;
+import com.ctm.web.core.openinghours.services.OpeningHoursService;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.health.email.model.HealthBestPriceEmailModel;
 import com.ctm.web.health.email.model.HealthProductBrochuresEmailModel;
