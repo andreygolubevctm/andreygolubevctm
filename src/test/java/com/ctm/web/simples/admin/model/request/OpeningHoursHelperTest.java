@@ -1,6 +1,6 @@
 package com.ctm.web.simples.admin.model.request;
 
-import com.ctm.web.simples.admin.model.OpeningHours;
+import com.ctm.web.core.model.OpeningHours;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

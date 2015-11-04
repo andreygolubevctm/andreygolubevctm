@@ -1,6 +1,6 @@
 package com.ctm.web.simples.admin.model.request;
 
-import com.ctm.web.simples.admin.model.OpeningHours;
+import com.ctm.web.core.model.OpeningHours;
 import com.ctm.web.simples.admin.services.OpeningHoursAdminService;
 import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.validation.SchemaValidationError;

@@ -1,4 +1,4 @@
-package com.ctm.web.simples.helper;
+package com.ctm.web.health.helper;
 
 import com.ctm.web.core.exceptions.CrudValidationException;
 import com.ctm.web.core.model.ProviderContent;

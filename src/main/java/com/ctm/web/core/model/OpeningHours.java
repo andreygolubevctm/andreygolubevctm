@@ -1,4 +1,4 @@
-package com.ctm.web.simples.admin.model;
+package com.ctm.web.core.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;

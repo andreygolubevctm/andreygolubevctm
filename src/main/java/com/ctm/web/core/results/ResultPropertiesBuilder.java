@@ -1,4 +1,4 @@
-package com.ctm.web.homecontents.providers.request;
+package com.ctm.web.core.results;
 
 import com.ctm.web.core.results.model.ResultProperty;
 import org.apache.commons.lang3.StringUtils;

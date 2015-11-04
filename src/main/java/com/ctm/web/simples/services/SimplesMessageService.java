@@ -8,7 +8,6 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.core.transaction.model.Transaction;
-import com.ctm.web.health.services.TransactionService;
 import com.ctm.web.simples.dao.MessageDao;
 import com.ctm.web.simples.dao.MessageDuplicatesDao;
 import com.ctm.web.simples.model.*;

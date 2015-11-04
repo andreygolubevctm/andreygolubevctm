@@ -1,10 +1,10 @@
 package com.ctm.web.simples.admin.router;
 
-import com.ctm.web.simples.admin.dao.CappingLimitsDao;
 import com.ctm.web.core.router.core.CrudRouter;
-import com.ctm.web.simples.services.ProviderContentService;
-import com.ctm.web.simples.admin.services.CappingLimitsService;
 import com.ctm.web.core.services.CrudService;
+import com.ctm.web.simples.admin.dao.CappingLimitsDao;
+import com.ctm.web.simples.admin.services.AdminProviderContentService;
+import com.ctm.web.simples.admin.services.CappingLimitsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +48,7 @@ public class AdminRouter {
                         crudRouter.routePostRequest(writer, getAction(uri), crudService);
                         break;
                 case PROVIDER_CONTENT:
-                        crudService = new ProviderContentService();
+                        crudService = new AdminProviderContentService();
                         crudRouter.routePostRequest(writer, getAction(uri), crudService);
                         break;
                 default:
@@ -74,7 +74,7 @@ public class AdminRouter {
                     crudRouter.routGetRequest(writer, getAction(uri), crudService);
                     break;
                 case PROVIDER_CONTENT:
-                    crudService = new ProviderContentService();
+                    crudService = new AdminProviderContentService();
                     crudRouter.routGetRequest(writer, getAction(uri), crudService);
                     break;
                 default:

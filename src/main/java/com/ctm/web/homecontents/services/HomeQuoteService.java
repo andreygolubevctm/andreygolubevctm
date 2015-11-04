@@ -26,7 +26,7 @@ import com.ctm.web.homecontents.providers.model.ResponseAdapter;
 import com.ctm.web.homecontents.providers.model.request.HomeQuoteRequest;
 import com.ctm.web.homecontents.providers.model.response.HomeResponse;
 import com.ctm.web.homecontents.providers.model.response.MoreInfo;
-import com.ctm.web.homecontents.providers.request.ResultPropertiesBuilder;
+import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;

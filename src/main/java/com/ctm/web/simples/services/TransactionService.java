@@ -1,4 +1,4 @@
-package com.ctm.web.health.services;
+package com.ctm.web.simples.services;
 
 import com.ctm.web.core.dao.CommentDao;
 import com.ctm.web.core.dao.TouchDao;

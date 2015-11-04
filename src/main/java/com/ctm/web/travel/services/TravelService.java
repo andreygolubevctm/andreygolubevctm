@@ -13,7 +13,7 @@ import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.services.CommonQuoteService;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.ResultsService;
-import com.ctm.web.homecontents.providers.request.ResultPropertiesBuilder;
+import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.travel.exceptions.TravelServiceException;
 import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.results.TravelResult;

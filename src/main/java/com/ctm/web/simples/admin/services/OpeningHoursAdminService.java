@@ -7,9 +7,9 @@ import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.validation.SchemaValidationError;
-import com.ctm.web.simples.admin.model.OpeningHours;
+import com.ctm.web.core.model.OpeningHours;
 import com.ctm.web.simples.admin.model.request.OpeningHoursHelper;
-import com.ctm.web.simples.dao.OpeningHoursDao;
+import com.ctm.web.simples.dao.OpeningHoursAdminDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class OpeningHoursAdminService {
 
-	private final OpeningHoursDao openingHoursDao = new OpeningHoursDao();
+	private final OpeningHoursAdminDao openingHoursAdminDao = new OpeningHoursAdminDao();
 	private final OpeningHoursHelper openingHoursHelper = new OpeningHoursHelper();
 	public static final String dateField = "date";
 	public static final String sequenceField = "daySequence";
@@ -28,7 +28,7 @@ public class OpeningHoursAdminService {
 		try {
 			List<OpeningHours> openingHours;
 			String hoursType = request.getParameter("hoursType");
-			openingHours = openingHoursDao.fetchOpeningHours(!(hoursType != null && hoursType.trim().equalsIgnoreCase("n")), 0);
+			openingHours = openingHoursAdminDao.fetchOpeningHours(!(hoursType != null && hoursType.trim().equalsIgnoreCase("n")), 0);
 			return openingHours;
 		} catch (DaoException d) {
 			throw new RuntimeException(d);
@@ -50,7 +50,7 @@ public class OpeningHoursAdminService {
 			OpeningHours openingHours = new OpeningHours();
 			openingHours = RequestUtils.createObjectFromRequest(request, openingHours);
 			openingHours.setVerticalId(verticalId);
-			List<OpeningHours> clashingOpeningHours = openingHoursDao.findClashingHoursCount(openingHours);
+			List<OpeningHours> clashingOpeningHours = openingHoursAdminDao.findClashingHoursCount(openingHours);
 			validations = openingHoursHelper.validateHoursRowData(openingHours);
 			if (clashingOpeningHours.size() > 0) {
 				SchemaValidationError error = new SchemaValidationError();
@@ -71,7 +71,7 @@ public class OpeningHoursAdminService {
 			openingHours = RequestUtils.createObjectFromRequest(request, openingHours);
 			final String userName = authenticatedData.getUid();
 			final String ipAddress = request.getRemoteAddr();
-			return openingHoursDao.updateOpeningHours(openingHours,userName,ipAddress);
+			return openingHoursAdminDao.updateOpeningHours(openingHours,userName,ipAddress);
 		} catch (DaoException d) {
 			throw new RuntimeException(d);
 		}
@@ -83,7 +83,7 @@ public class OpeningHoursAdminService {
 			openingHours = RequestUtils.createObjectFromRequest(request, openingHours);
 			final String userName = authenticatedData.getUid();
 			final String ipAddress = request.getRemoteAddr();
-			return openingHoursDao.createOpeningHours(openingHours, userName, ipAddress);
+			return openingHoursAdminDao.createOpeningHours(openingHours, userName, ipAddress);
 		} catch (DaoException d) {
 			throw new RuntimeException(d);
 		}
@@ -93,7 +93,7 @@ public class OpeningHoursAdminService {
 		try {
 			final String userName = authenticatedData.getUid();
 			final String ipAddress = request.getRemoteAddr();
-			return openingHoursDao.deleteOpeningHours(request.getParameter("openingHoursId"), userName, ipAddress);
+			return openingHoursAdminDao.deleteOpeningHours(request.getParameter("openingHoursId"), userName, ipAddress);
 		} catch (DaoException d) {
 			throw new RuntimeException(d);
 		}

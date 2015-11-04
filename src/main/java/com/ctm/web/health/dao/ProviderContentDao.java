@@ -1,4 +1,4 @@
-package com.ctm.web.simples.dao;
+package com.ctm.web.health.dao;
 
 import com.ctm.web.core.dao.AuditTableDao;
 import com.ctm.web.core.dao.DatabaseQueryMapping;
@@ -8,7 +8,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.ProviderContent;
 import com.ctm.web.core.model.ProviderContentType;
 import com.ctm.web.core.utils.common.utils.DateUtils;
-import com.ctm.web.simples.helper.ProviderContentHelper;
+import com.ctm.web.health.helper.ProviderContentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

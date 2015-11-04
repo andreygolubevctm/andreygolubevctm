@@ -3,7 +3,7 @@ package com.ctm.web.health.router;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
-import com.ctm.web.simples.services.ProviderContentService;
+import com.ctm.web.health.services.ProviderContentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.json.JSONException;
