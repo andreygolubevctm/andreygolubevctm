@@ -16,12 +16,13 @@
     <packaging>war</packaging>
 
     <properties>
-        <!-- Overridden in bamboo builds -->
-        <build.environment>localhost</build.environment>
-
         <powermock.version>1.6.2</powermock.version>
         <cxf.version>3.0.1</cxf.version>
-        <spring.version>4.0.5.RELEASE</spring.version>
+
+        <spring-boot.version>1.2.7.RELEASE</spring-boot.version>
+        <spring-boot-legacy.version>1.0.1.RELEASE</spring-boot-legacy.version>
+
+        <spring.version>4.1.8.RELEASE</spring.version> <!-- must match spring version -->
         <spring.ws.version>2.2.0.RELEASE</spring.ws.version>
         <tomcat.version>7.0.35</tomcat.version>
         <jaxws-maven-plugin.version>2.3</jaxws-maven-plugin.version>
@@ -37,7 +38,53 @@
         <jspc-maven-plugin.version>2.0.0</jspc-maven-plugin.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-jdbc</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-legacy</artifactId>
+            <version>${spring-boot-legacy.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Test libraries -->
 
@@ -212,6 +259,12 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.6.2</version>
         </dependency>
 
         <dependency>
@@ -392,14 +445,6 @@
     <profiles>
         <profile>
             <id>build-frontend</id>
-            <activation>
-                <!-- only activate if build.environment set. for local development this will not be set.
-                 in local the grunt watcher should be running so maven doesn't need to run grunt -->
-                <property>
-                    <name>build.environment</name>
-                </property>
-                <activeByDefault>false</activeByDefault>
-            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -483,93 +528,54 @@
                 </dependencies>
             </plugin>
 
+            <!-- Copy aggregator dir across into the classes dir -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <warSourceDirectory>src/main/webapp</warSourceDirectory>
-                    <warSourceExcludes>WEB-INF/classes/logback.xml,WEB-INF/classes/environment.properties</warSourceExcludes>
-                </configuration>
+                <artifactId>maven-resources-plugin</artifactId>
                 <executions>
-                    <!-- create as exploded war that ant will do the rest of the build will be completed in ant -->
                     <execution>
-                        <id>war-exploded</id>
-                        <phase>prepare-package</phase>
+                        <id>copy-extra-classes-resources</id>
+                        <phase>process-resources</phase>
                         <goals>
-                            <goal>exploded</goal>
-                        </goals>
-                    </execution>
-                    <!-- creating the artifact is done by ant -->
-                    <execution>
-                        <id>default-war</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>war</goal>
+                            <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <classifier>${branch.classifier}</classifier>
-                            <packagingExcludes>**/**</packagingExcludes>
+                            <outputDirectory>${project.build.outputDirectory}/aggregator</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/webapp/WEB-INF/aggregator</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
 
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
                 <executions>
                     <execution>
+                        <id>repack-war</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
                         <phase>package</phase>
                         <configuration>
-                            <target>
-                                <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath"/>
-                                <!-- prefix the branch.classifier with '-' -->
-                                <if>
-                                    <isset property="branch.classifier" />
-                                    <then>
-                                        <property name="branch.classifier.war" value="-${branch.classifier}"/>
-                                    </then>
-                                    <else>
-                                        <echo message="branch.classifier is not set" />
-                                        <property name="branch.classifier.war" value=""/>
-                                    </else>
-                                </if>
-
-                                <ant antfile="build_environment.xml" target="build.${build.environment}">
-                                    <property name="classes.output.dir" value="${project.build.outputDirectory}"/>
-                                    <property name="svn.revision" value="${bamboo_repository_revision_number}"/>
-                                    <property name="web.dir" value="${project.build.directory}/${project.build.finalName}"/>
-                                    <property name="war.dir" value="${project.build.directory}"/>
-                                    <property name="war.filename" value="${project.build.finalName}${branch.classifier.war}.${project.packaging}"/>
-                                </ant>
-                            </target>
+                            <classifier>${branch.classifier}</classifier>
+                            <mainClass>com.ctm.Application</mainClass>
                         </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>ant-contrib</groupId>
-                        <artifactId>ant-contrib</artifactId>
-                        <version>1.0b3</version>
-                        <exclusions>
-                            <exclusion>
-                                <groupId>ant</groupId>
-                                <artifactId>ant</artifactId>
-                            </exclusion>
-                        </exclusions>
-                        <scope>runtime</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.ant</groupId>
-                        <artifactId>ant-nodeps</artifactId>
-                        <version>1.8.0</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                </dependencies>
+                <configuration>
+                    <addResources>false</addResources>
+                    <jvmArguments>
+                        -Dhttps.proxyHost=192.168.1.111 -Dhttps.proxyPort=8080 -Dhttp.proxyHost=192.168.1.111 -Dhttp.proxyPort=8080 -Dhttp.nonProxyHosts="*.ecommerce.disconline.com.au|*.captaincompare.com.au|*.intranet|localhost|127.0.0.1" -Dhttps.proxyUser=ittest -Dhttps.proxyPassword=1tt3st -Dspring.datasource.username=${nxi.db.username} -Dspring.datasource.password=${nxi.db.password} -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+                    </jvmArguments>
+                </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.jvnet.jax-ws-commons</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
@@ -615,6 +621,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>com.github.klieber</groupId>
                 <artifactId>phantomjs-maven-plugin</artifactId>
@@ -670,7 +677,6 @@
                         </configuration>
                     </execution>
 
-
                     <execution>
                         <id>grunt build test</id>
                         <phase>test</phase>
@@ -686,14 +692,5 @@
                 </executions>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources/${build.environment}/classes</directory>
-            </resource>
-            <resource>
-                <directory>src/main/resources/webservice-api</directory>
-                <targetPath>webservice-api</targetPath>
-            </resource>
-        </resources>
     </build>
 </project>
