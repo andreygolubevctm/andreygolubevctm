@@ -16,14 +16,14 @@
 
 	//Elements and Variables:
 	var $fromDateInput, $toDateInput,
-	now = new Date(),
-	fromDateCurrent,
-	fromDate_StartDateRange,
-	fromDate_EndDateRange,
-	fromDate_PlusYear,
-	toDateCurrent,
-	toDate_StartDateRange,
-	toDate_EndDateRange;
+		now = new Date(),
+		fromDateCurrent,
+		fromDate_StartDateRange,
+		fromDate_EndDateRange,
+		fromDate_PlusYear,
+		toDateCurrent,
+		toDate_StartDateRange,
+		toDate_EndDateRange;
 
 	//------------------------------------------------------------------
 
@@ -167,9 +167,9 @@
 	}
 
 
-	function init(){
+	function initTravelDatesSelection(){
 		//Elements need to be in the page
-		$(document).ready(function() {
+		$(document).ready(function(){
 			//Grab the elements on the page
 			$fromDateInput = $("#travel_dates_fromDate");
 			$toDateInput = $("#travel_dates_toDate");
@@ -180,11 +180,10 @@
 			initDatePickers();
 			initDateEvents();
 		});
-
 	}
 
 	meerkat.modules.register("datesSelection", {
-		init: init
+		init: initTravelDatesSelection
 	});
 
 })(jQuery);

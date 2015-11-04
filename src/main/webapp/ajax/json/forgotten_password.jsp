@@ -28,7 +28,7 @@
 
 		<%-- Check email on MySQL --%> <%-- This seems like it's only to say, OK to the ajax request... we don't actually take any action to email or create a token here. I'm changing this now. --%>
 
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<sql:query var="emailMasterRecord">
 			SELECT emailId, transactionId
 			    FROM aggregator.email_master

@@ -21,6 +21,17 @@
 	<fmt:formatDate var="preloadToDate" pattern="dd/MM/yyyy" value="${preloadToDate.time}" />
 	<go:setData dataVar="data" xpath="travel/dates/fromDate" value="${preloadFromDate}" />
 	<go:setData dataVar="data" xpath="travel/dates/toDate" value="${preloadToDate}" />
+
+	<jsp:useBean id="traveller1DOB" class="java.util.GregorianCalendar" />
+	<jsp:useBean id="traveller2DOB" class="java.util.GregorianCalendar" />
+	<% traveller1DOB.add(java.util.GregorianCalendar.YEAR, -23); %>
+	<% traveller2DOB.add(java.util.GregorianCalendar.YEAR, -35); %>
+
+	<fmt:formatDate var="preloadTraveller1DOB" pattern="dd/MM/yyyy" value="${traveller1DOB.time}" />
+	<fmt:formatDate var="preloadTraveller2DOB" pattern="dd/MM/yyyy" value="${traveller2DOB.time}" />
+
+	<go:setData dataVar="data" xpath="travel/travellers/traveller1DOB" value="${preloadTraveller1DOB}" />
+	<go:setData dataVar="data" xpath="travel/travellers/traveller2DOB" value="${preloadTraveller2DOB}" />
 </c:if>
 
 
@@ -84,12 +95,15 @@
 					<form_new:row label="How many adults?" className="smallWidth" helpId="216">
 						<field_new:array_select items="1=1,2=2" xpath="travel/adults" title="how many adults" required="true" className="thinner_input" />
 					</form_new:row>
+					<form_new:row label="Your date of birth?" className="smallWidth">
+						<field_new:person_dob xpath="travel/travellers/traveller1DOB" title="your" required="true" ageMin="16" ageMax="99" />
+					</form_new:row>
+					<form_new:row label="Second traveller's date of birth" className="second_traveller_age_row">
+						<field_new:person_dob xpath="travel/travellers/traveller2DOB" title="the second traveller's" required="false" ageMin="16" ageMax="99" />
+					</form_new:row>
+					<field:hidden xpath="travel/travellers/travellersDOB" />
 					<form_new:row label="How many children?"  className="smallWidth" helpId="217">
 						<field_new:array_select items="0=0,1=1,2=2,3=3,4=4,5=5,6=6,7=7,8=8,9=9,10=10" xpath="travel/children" title="how many children" required="true" className="thinner_input" />
-					</form_new:row>
-
-					<form_new:row label="What is the age of the oldest traveller?">
-						<field_new:input_age maxlength="2" xpath="travel/oldest" title="age of oldest traveller" required="true" className="age_input" validationNoun="traveller" />
 					</form_new:row>
 				</form_new:fieldset>
 				<c:set var="fieldSetHeading">

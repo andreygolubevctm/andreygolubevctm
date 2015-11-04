@@ -11,7 +11,7 @@
 
 <c:set var="providerId" >${param.providerId}</c:set>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- 
 	The data will arrive in a single parameter called QuoteData 

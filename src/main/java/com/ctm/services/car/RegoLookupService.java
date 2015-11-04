@@ -6,6 +6,7 @@ import com.ctm.dao.car.CarRedbookDao;
 import com.ctm.dao.car.CarRegoLookupDao;
 import com.ctm.exceptions.*;
 import com.ctm.model.car.CarDetails;
+import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.settings.ServiceConfigurationProperty;
 import com.ctm.model.settings.Vertical;
@@ -13,7 +14,10 @@ import com.ctm.services.ContentService;
 import com.ctm.services.IPCheckService;
 import com.ctm.services.ServiceConfigurationService;
 import com.ctm.utils.RequestUtils;
+import com.ctm.webservice.WebServiceUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -174,7 +178,8 @@ public class RegoLookupService {
         return isBlocked;
     }
 
-    public Map<String, Object> execute(HttpServletRequest request, String plateNumber, String stateIn) throws RegoLookupException {
+    public Map<String, Object> execute(HttpServletRequest request, PageSettings pageSettings,
+                                       Long transactionId, String plateNumber, String stateIn) throws RegoLookupException {
 
         Map<String, Object> response = null;
 
@@ -192,7 +197,7 @@ public class RegoLookupService {
 
             try {
                 // Step 1 - get the redbook code from MotorWeb
-                redbookCode = getRedbookCode(plateNumber, state);
+                redbookCode = getRedbookCode(pageSettings, transactionId, plateNumber, state);
             } catch (Exception e) {
                 LOGGER.debug("[rego lookup] Error geting redbook code {},{}", kv("plateNumber", plateNumber), kv("stateIn", stateIn), e);
                 throw new RegoLookupException(RegoLookupStatus.SERVICE_ERROR, e);
@@ -232,8 +237,9 @@ public class RegoLookupService {
         return response;
     }
 
-    private String getRedbookCode(String plateNumber, JurisdictionEnum state) throws RegoLookupException {
-        ServiceConfiguration serviceConfig = null;
+    private String getRedbookCode(PageSettings pageSettings, Long transactionId, String plateNumber,
+                                  JurisdictionEnum state) throws RegoLookupException {
+        ServiceConfiguration serviceConfig;
         try {
             serviceConfig = ServiceConfigurationService.getServiceConfiguration("motorwebRegoLookupService", 0, 0);
         } catch (DaoException | ServiceConfigurationException e) {
@@ -243,10 +249,9 @@ public class RegoLookupService {
 
         try {
 
-
             String certificate = serviceConfig.getPropertyValueByKey("certificate", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);
 
-            InputStream certificateFile = null;
+            InputStream certificateFile;
 
             if(certificate.contains("WEB-INF/classes")){
                 // Read certificate from WAR (test envs)
@@ -265,6 +270,10 @@ public class RegoLookupService {
             String password = serviceConfig.getPropertyValueByKey("password", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);
 
             AutoId client = createClient(url, certificateFile, password);
+            Client clientProxy = ClientProxy.getClient(client);
+
+            // Setup logging
+            WebServiceUtils.setLogging(clientProxy, pageSettings, transactionId, "REGO_LOOKUP");
 
             AutoIdRequest autoIdRequest = new AutoIdRequest();
             PlateType plateType = new PlateType();

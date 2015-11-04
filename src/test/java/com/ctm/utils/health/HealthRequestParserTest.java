@@ -1,5 +1,6 @@
 package com.ctm.utils.health;
 
+import com.ctm.model.settings.PageSettings;
 import com.ctm.services.RequestService;
 import com.disc_au.web.go.Data;
 import org.junit.Before;
@@ -15,6 +16,7 @@ import static org.mockito.Mockito.when;
 public class HealthRequestParserTest {
 
     private HttpServletRequest httpRequest;
+    private PageSettings pageSettings = new PageSettings();
 
     @Before
     public void setup(){
@@ -27,7 +29,7 @@ public class HealthRequestParserTest {
     public void testGetHealthRequestToken() throws Exception {
         HealthRequestParser healthRequestParser = new HealthRequestParser();
         Data data = new Data();
-        RequestService requestService = new RequestService( httpRequest,  "",  data);
+        RequestService requestService = new RequestService( httpRequest,  "",  data, pageSettings);
         healthRequestParser.getHealthRequestToken(requestService, false);
 
     }
