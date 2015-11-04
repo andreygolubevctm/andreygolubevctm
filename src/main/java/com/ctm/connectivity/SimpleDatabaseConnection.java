@@ -1,136 +1,130 @@
 package com.ctm.connectivity;
 
-import com.ctm.exceptions.EnvironmentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
 
-public class SimpleDatabaseConnection implements AutoCloseable {
+import static com.ctm.logging.LoggingArguments.kv;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleDatabaseConnection.class);
+@Component
+public class SimpleDatabaseConnection implements AutoCloseable, InitializingBean {
 
-	public static final String JDBC_CTM = "jdbc/ctm";
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleDatabaseConnection.class);
 
-	private Connection connection;
-	private Map<String ,DataSource> dataSources = new HashMap<>();
+    public static final String JDBC_CTM = "jdbc/ctm";
 
-	private static SimpleDatabaseConnection instance;
-	private static Context envCtx;
+    private Connection connection;
 
-	public static SimpleDatabaseConnection getInstance() {
-		if(instance == null){
-			instance = new SimpleDatabaseConnection();
-		}
-		return instance;
-	}
+    @Autowired
+    private DataSource dataSourceJdbcCtmInstance;
 
-	public Connection getConnection() throws SQLException, NamingException {
-		return getConnection(JDBC_CTM);
-	}
+    private static DataSource dataSourceJdbcCtm;
 
-	public Connection getConnection(boolean fresh) throws SQLException, NamingException {
-		return getConnection(JDBC_CTM , fresh);
-	}
-	
-	public Connection getConnection(String context) throws SQLException, NamingException {
-		return getConnection(context , false);
-	}
+    private static SimpleDatabaseConnection instance;
 
-	public Connection getConnection(String context , boolean fresh) throws SQLException, NamingException {
-		if(dataSources.get(context) == null) {
-			Context initCtx = new InitialContext();
-			Context envCtx = (Context) initCtx.lookup("java:comp/env");
-			dataSources.put(context ,(DataSource) envCtx.lookup(context));
-		}
-		if(fresh) {
-			return dataSources.get(context).getConnection();
-		} else {
-			if(connection == null || connection.isClosed()) {
-				setConnection(dataSources.get(context).getConnection());
-			}
-			return connection;
-		}
-	}
+    public SimpleDatabaseConnection() {
 
-	@Override
-	public void close() throws Exception {
-		closeConnection();
-	}
+    }
 
-	public void closeConnection() {
-		try {
-			if(this.connection != null && !this.connection.isClosed()){
-				this.connection.close();
-			}
-		} catch (SQLException e) {
-			LOGGER.error("Failed to close db connection", e);
-		}
-	}
+    public static SimpleDatabaseConnection getInstance() {
+        if (instance == null) {
+            instance = new SimpleDatabaseConnection();
+        }
+        return instance;
+    }
 
-	public void closeConnection(Connection connection, Statement statement) {
-		closeStatement(statement);
-		try {
-			if(connection != null && !connection.isClosed()){
-				connection.close();
-			}
-		} catch (SQLException e) {
-			LOGGER.error("Failed to close db connection", e);
-		}
-	}
+    public Connection getConnection() throws SQLException, NamingException {
+        return getConnection(JDBC_CTM);
+    }
 
-	public void closeStatement(Statement statement) {
-		try {
-			if(statement != null && !statement.isClosed()){
-				statement.close();
-			}
-		} catch (SQLException e) {
-			LOGGER.error("Failed to close statement", e);
-		}
-	}
+    public Connection getConnection(boolean fresh) throws SQLException, NamingException {
+        return getConnection(JDBC_CTM, fresh);
+    }
 
-	private void setConnection(Connection connection) {
-		this.connection = connection;
-	}
+    public Connection getConnection(String context) throws SQLException, NamingException {
+        return getConnection(context, false);
+    }
 
-	public static String createSqlArrayParams(int numParams) {
-		StringBuilder sb = new StringBuilder();
-		if(numParams <= 0) return sb.toString();
-		for(int i = 0; i < numParams - 1; i++) {
-			sb.append("?,");
-		}
-		sb.append("?");
-		return sb.toString();
-	}
+    public Connection getConnection(String context, boolean fresh) throws SQLException, NamingException {
+        LOGGER.trace("Calling getConnection({},{})", kv("context", context), kv("fresh", fresh));
+        Connection conn = null;
+        if (context.equals(JDBC_CTM)) {
+            if (fresh) {
+                return dataSourceJdbcCtm.getConnection();
+            } else {
+                if (connection == null || connection.isClosed()) {
+                    setConnection(dataSourceJdbcCtm.getConnection());
+                }
+                conn = connection;
+            }
+        }
+        return conn;
+    }
 
-	public static DataSource getDataSourceJdbcCtm() {
-		DataSource ds;
-		if (envCtx == null) {
-			try {
-				Context initCtx = new InitialContext();
-				envCtx = (Context)initCtx.lookup("java:comp/env");
-			} catch (NamingException ne) {
-				LOGGER.error("Failed to lookup initialcontext", ne);
-				throw new EnvironmentException("Failed to lookup initialcontext");
-			}
-		}
+    @Override
+    public void close() throws Exception {
+        closeConnection();
+    }
 
-		try {
-			ds = (DataSource)envCtx.lookup(JDBC_CTM);
-		} catch (NamingException ne) {
-			envCtx = null;
-			LOGGER.error("Failed to lookup environmental jdbc context",ne);
-			throw new EnvironmentException("Failed to lookup environmental jdbc context");
-		}
+    public void closeConnection() {
+        try {
+            if (this.connection != null && !this.connection.isClosed()) {
+                this.connection.close();
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Failed to close db connection", e);
+        }
+    }
 
-		return ds;
-	}
+    public void closeConnection(Connection connection, Statement statement) {
+        closeStatement(statement);
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Failed to close db connection", e);
+        }
+    }
+
+    public void closeStatement(Statement statement) {
+        try {
+            if (statement != null && !statement.isClosed()) {
+                statement.close();
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Failed to close statement", e);
+        }
+    }
+
+    private void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public static String createSqlArrayParams(int numParams) {
+        StringBuilder sb = new StringBuilder();
+        if (numParams <= 0) return sb.toString();
+        for (int i = 0; i < numParams - 1; i++) {
+            sb.append("?,");
+        }
+        sb.append("?");
+        return sb.toString();
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        dataSourceJdbcCtm = dataSourceJdbcCtmInstance;
+    }
+
+    public static DataSource getDataSourceJdbcCtm() {
+        return dataSourceJdbcCtm;
+    }
 }
