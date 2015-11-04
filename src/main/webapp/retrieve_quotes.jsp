@@ -36,7 +36,7 @@
         </c:if>
 
         <c:set var="paramEmail" value="${emailData.emailMaster.emailAddress}"/>
-        <c:set var="paramHashedEmail" value="${parametersMap.hashedEmail}"/>
+        <c:set var="paramHashedEmail" value="${emailData.emailMaster.hashedEmail}"/>
     </c:when>
     <c:otherwise>
         <c:set var="paramHashedEmail"><c:out value="${param.hashedEmail}" escapeXml="true"/></c:set>
