@@ -310,7 +310,7 @@
 					<%-- TODO: Do some xsl magic to order the quotes by date --%>
 				</c:if>
 			</c:if>
-			${logger.debug('RETRIEVE QUOTES COMPILED. {},{},{}', log:kv('authenticatedData.tmp',authenticatedData.tmp ), log:kv('tmp/previousQuotes',authenticatedData['tmp/previousQuotes'] ), log:kv('email',emailAddress))}
+			${logger.debug('RETRIEVE QUOTES COMPILED. {},{},{}', log:kv('tmp',authenticatedData.tmp ), log:kv('tmp/previousQuotes',authenticatedData['tmp/previousQuotes'] ), log:kv('email',emailAddress))}
 			<%-- Return the results as json --%>
 			${go:XMLtoJSON(go:getEscapedXml(authenticatedData['tmp/previousQuotes']))}
 			<go:setData dataVar="authenticatedData" xpath="tmp" value="*DELETE" />

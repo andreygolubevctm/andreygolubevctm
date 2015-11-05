@@ -33,6 +33,7 @@
         <jackson.version>2.4.3</jackson.version>
         <javax.jsp.version>2.2</javax.jsp.version>
         <mysql.connector.version>5.1.29</mysql.connector.version>
+        <spring-rabbit.version>1.4.6.RELEASE</spring-rabbit.version>
         <!-- Compile as this version -->
         <java.version>1.8</java.version>
         <jspc-maven-plugin.version>2.0.0</jspc-maven-plugin.version>
@@ -217,6 +218,32 @@
             <version>${cxf.version}</version>
         </dependency>
 
+        <!-- logging -->
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>2.6.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>4.5.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+            <version>${spring-rabbit.version}</version>
+        </dependency>
+
         <!-- Other 3rd Party -->
 
         <dependency>
@@ -271,20 +298,6 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>5.1.3.Final</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.1.2</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
-            <version>4.5.1</version>
         </dependency>
 
         <dependency>

@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * Adapts the logstash-logback-encoder {@link StructuredArgument} to a {@link @LoggingArgument}
  */
-class WrappedLoggingArgument implements LoggingArgument {
+class WrappedLoggingArgument implements LoggingArgument, StructuredArgument {
     private StructuredArgument structuredArgument;
 
     private WrappedLoggingArgument(final StructuredArgument structuredArgument) {
