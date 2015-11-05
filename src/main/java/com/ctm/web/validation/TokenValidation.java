@@ -55,7 +55,7 @@ public abstract class TokenValidation<T extends TokenRequest> {
                 tokenValidation.validateToken(request, getValidTouchTypes());
                 validToken = true;
             } catch (InvalidTokenException exception) {
-                LOGGER.warn("Token is invalid. ", exception);
+                LOGGER.warn("Token is invalid. {}", request , exception);
             }
         } else {
             validToken = true;
