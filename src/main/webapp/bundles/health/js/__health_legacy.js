@@ -143,11 +143,11 @@ var healthChoices = {
 
 		healthChoices._cover = cover;
 
-		if( !ignore_rebate_reset ) {
+		if (!ignore_rebate_reset) {
 			healthChoices.resetRebateForm();
 		}
 
-		if(!healthChoices.hasSpouse()) {
+		if (!healthChoices.hasSpouse()) {
 			healthChoices.flushPartnerDetails();
 			$('#partner-health-cover, #partner, .health-person-details-partner, #partnerFund').hide();
 		} else {
@@ -159,8 +159,9 @@ var healthChoices = {
 
 		//// Set the auxillary data
 		//Health.setRates();
-		if(typeof healthCoverDetails !== 'undefined')
+		if (typeof healthCoverDetails !== 'undefined') {
 			healthCoverDetails.displayHealthFunds();
+		}
 		meerkat.modules.healthTiers.setTiers(initMode);
 	},
 
