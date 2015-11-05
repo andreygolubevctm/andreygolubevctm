@@ -36,7 +36,6 @@
 				Frank					FRA
 				AHM						AHM
 				CBHS					CBH
-				HIF						HIF
 				CUA						CUA
 				Teachers Health Fund	THF
 				Compare the Market		CTM

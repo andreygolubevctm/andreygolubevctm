@@ -403,12 +403,12 @@ public class SessionDataService {
 
 	public Optional<String> updateToken(HttpServletRequest request)  {
 		return updateToken(request, currentToken ->
-				tokenCreator.refreshToken(currentToken, getClientSessionTimeoutSeconds(request)));
+				tokenCreator.refreshToken(currentToken, getClientSessionTimeoutSeconds(request) + 10));
 	}
 
 	private Optional<String> updateToken(HttpServletRequest request, final Long newTransactionId)  {
 		return updateToken(request, currentVerificationToken -> {
-			return tokenCreator.refreshToken(currentVerificationToken, newTransactionId , getClientSessionTimeoutSeconds(request));
+			return tokenCreator.refreshToken(currentVerificationToken, newTransactionId , getClientSessionTimeoutSeconds(request) + 10);
 		});
 	}
 
@@ -416,7 +416,6 @@ public class SessionDataService {
 		Optional<String> verificationTokenMaybe;
 		String currentVerificationToken = RequestUtils.getTokenFromRequest(request);
 		if(currentVerificationToken != null && !currentVerificationToken.isEmpty()) {
-
 			verificationTokenMaybe = Optional.ofNullable(createToken.apply(currentVerificationToken));
 		} else {
 			verificationTokenMaybe = Optional.empty();

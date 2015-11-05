@@ -271,12 +271,6 @@
                 if (typeof settings.callbacks.switchMode === 'function') {
                     settings.callbacks.switchMode(previousMode);
                 }
-            } else {
-                var verticalToUse = meerkat.site.vertical.indexOf('lmi') ? 'lmi' : meerkat.site.vertical;
-                if (typeof meerkat.modules[verticalToUse + 'Results'] !== 'undefined' &&
-                    typeof meerkat.modules[verticalToUse + 'Results'].publishExtraSuperTagEvents === 'function') {
-                    meerkat.modules[verticalToUse + 'Results'].publishExtraSuperTagEvents();
-                }
             }
 
             settings.elements.exitCompareButton.addClass('hidden');
@@ -314,12 +308,6 @@
         if (previousMode == "price") {
             if (typeof settings.callbacks.switchMode === 'function') {
                 settings.callbacks.switchMode("features");
-            }
-        } else {
-            var verticalToUse = meerkat.site.vertical.indexOf('lmi') ? 'lmi' : meerkat.site.vertical;
-            if (typeof meerkat.modules[verticalToUse + 'Results'] !== 'undefined' &&
-                typeof meerkat.modules[verticalToUse + 'Results'].publishExtraSuperTagEvents === 'function') {
-                meerkat.modules[verticalToUse + 'Results'].publishExtraSuperTagEvents();
             }
         }
         filterResults();
