@@ -98,7 +98,6 @@
                 dependantId = $el.closest('.health_dependant_details').attr('data-id'),
                 objIndex = $el.attr('id').replace(/health_application_dependants_dependant[0-9]{1}_/, '');
             dependantsArr[dependantId - 1][objIndex] = $(this).val();
-            console.log("Storing ", $(this).val(), "In ", objIndex);
         });
 
         $('#dependents_list_options').on('click', ".add-new-dependent", function addDependantClick() {
@@ -191,7 +190,6 @@
         index = parseInt(index, 10);
 
         var isLastDependant = index == getNumberOfDependants();
-        console.log("Removing dependant", index, getNumberOfDependants(), "is last: ", isLastDependant);
         // Remove it
         dependantsArr.splice(index - 1, 1);
         // Render stuff
@@ -205,7 +203,6 @@
         renderDependants();
 
         doAnimate = typeof doAnimate == 'undefined' ? true : doAnimate;
-        console.log("Do animate is:", doAnimate, getNumberOfDependants());
         if (doAnimate && getNumberOfDependants() > 1) {
             animateToDependant($('#health_application_dependants_dependant' + getNumberOfDependants()));
         }
