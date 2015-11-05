@@ -760,7 +760,7 @@
                     <backgroundProcessorDelay>2</backgroundProcessorDelay>
                     <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
                     <contextFile>${project.basedir}/src/test/resources/embedded/tomcat7/context.xml</contextFile>
-                    <port>9080</port>
+                    <port>8080</port>
                     <systemProperties>
                         <nxi.db.username>${nxi.db.username}</nxi.db.username>
                         <nxi.db.password>${nxi.db.password}</nxi.db.password>
