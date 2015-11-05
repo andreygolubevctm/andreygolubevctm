@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
-	<conversionRule conversionWord="env" converterClass="com.ctm.logging.ServletContextConverter" />
+	<conversionRule conversionWord="servletctx" converterClass="com.ctm.logging.ServletContextConverter" />
 	<property name="ENV" value="${spring.profiles.active:-localhost}"/>
     
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
@@ -24,7 +24,7 @@
 			<includeMdcKeyName>context</includeMdcKeyName>
 			<customFields>{"hostname":"${HOSTNAME}", "appname":"webctm"}</customFields>
 			<provider class="net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider">
-				<pattern>{"env":"${ENV}","context":"%env{context}"}</pattern>
+				<pattern>{"env":"${ENV}","context":"%servletctx"}</pattern>
 			</provider>
 			<provider class="net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider"/>
 		</layout>
