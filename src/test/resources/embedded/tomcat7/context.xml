@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context docBase="/" path="/ctm">
+    <!-- ${project.basedir}/src/test/resources/embedded/webapp = provides MANIFEST.MF -->
+    <!-- ${project.build.directory}/${project.build.finalName} = provides war resources and gulp post-processing (when its run in separate task) -->
+    <Resources className="org.apache.naming.resources.VirtualDirContext" extraResourcePaths="/=${project.basedir}/src/test/resources/embedded/webapp,/=${project.build.directory}/${project.build.finalName}"/>
+
+    <!-- ${project.build.outputDirectory} = provides local classes -->
+    <!-- ${project.basedir}/../core/target/classes = provides core classes -->
+    <!-- ${project.basedir}/../core/target/core-${project.version} = provides remaining core assets -->
+    <Loader searchVirtualFirst="true" className="org.apache.catalina.loader.VirtualWebappLoader" virtualClasspath="${project.build.outputDirectory}"/>
+</Context>
