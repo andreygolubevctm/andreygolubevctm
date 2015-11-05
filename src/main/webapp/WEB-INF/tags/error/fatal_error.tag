@@ -76,7 +76,7 @@
 </c:set>
 --%>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- Add log entry --%>
 <sql:update var="addlog">

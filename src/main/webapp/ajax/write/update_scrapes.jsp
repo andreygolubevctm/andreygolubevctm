@@ -5,7 +5,7 @@
 <c:set var="styleCodeId" value="0" />
 
 <%-- Get all the URLs for scrapes --%>
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:set var="errorPool" value="" />
 
