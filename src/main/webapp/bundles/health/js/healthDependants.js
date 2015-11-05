@@ -64,8 +64,9 @@
         if(!situationEnablesDependants()) return;
 
         // setup default provider config.
-        if (!providerConfig)
+        if (!providerConfig) {
             resetConfig();
+        }
 
         // set up template
         dependantTemplate = _.template($('#health-dependants-template').html());
