@@ -68,7 +68,7 @@ public class SoapClientThreadConfiguration {
 	}
 
 	public void setUrl(String url) {
-		this.url = overrideUrlPort(url, localPort);
+		this.url = url;
 	}
 
 	public String getUser() {
