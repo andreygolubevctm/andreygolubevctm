@@ -62,7 +62,7 @@
 <c:set var="ct_outcome"><core:transaction touch="P" /></c:set>
 ${logger.info('Application has been set to pending. {}', log:kv('productId', productId))}
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:choose>
 	<c:when test="${ct_outcome == 'C'}">

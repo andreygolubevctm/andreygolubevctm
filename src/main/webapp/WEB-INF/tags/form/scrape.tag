@@ -16,7 +16,7 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="id" required="true" description="The ID of the scrape record to be displayed"%>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:catch var="error">
 	<sql:query var="result">

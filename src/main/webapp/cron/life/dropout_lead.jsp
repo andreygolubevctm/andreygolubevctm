@@ -5,7 +5,7 @@
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/ctm" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 <jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="request" />
 
 <%-- This query only runs on Life for now as IP sends the lead directly. --%>

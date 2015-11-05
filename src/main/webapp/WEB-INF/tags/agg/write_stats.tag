@@ -14,7 +14,7 @@
 		<agg:get_soap_response_stats debugXml="${debugXml}" />
 	</c:if>
 
-	<sql:setDataSource dataSource="jdbc/ctm"/>
+	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 	<jsp:useBean id="statisticsService" class="com.ctm.statistics.StatisticsService" scope="request" />
 	<c:catch var="error">

@@ -10,7 +10,7 @@
 
 <session:get settings="true"/>
 
-<sql:setDataSource dataSource="jdbc/ctm" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 

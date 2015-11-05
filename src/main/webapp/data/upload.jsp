@@ -7,7 +7,7 @@
 
 <settings:setVertical verticalCode="GENERIC" />
 
-<sql:setDataSource dataSource="jdbc/ctm" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 
 
 <c:set var="environment">${environmentService.getEnvironmentAsString()}</c:set>
