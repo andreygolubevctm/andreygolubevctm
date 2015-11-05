@@ -20,7 +20,7 @@ public class SoapConfiguration {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SoapConfiguration.class);
 
 	public static void setUpConfigurationFromDatabase(String configDbKey , SoapAggregatorConfiguration configuration, Brand brand,
-			String verticalCode, String manuallySetProviderIds, String authToken) {
+			String verticalCode, String manuallySetProviderIds, String authToken, int localPort) {
 		// If the configDbKey is specified, attempt to load the config from the database and/or config xml.
 		if(configDbKey != null && !configDbKey.isEmpty()){
 			try {
@@ -47,7 +47,7 @@ public class SoapConfiguration {
 				}
 
 				for(Integer providerId : providerIds){
-					SoapClientThreadConfiguration item = new SoapClientThreadConfiguration();
+					SoapClientThreadConfiguration item = new SoapClientThreadConfiguration(localPort);
 					if (serviceConfig.isProviderEnabledForBrand(providerId, brand.getId())) {
 						item.setFromDb(serviceConfig, providerId, brand.getId(), configuration.getRootPath());
 
@@ -89,7 +89,7 @@ public class SoapConfiguration {
 	 * @param configXmlString the new configuration xml
 	 * @throws SAXException thrown as a result of an error parsing the config xml
 	 */
-	public static SoapAggregatorConfiguration setUpConfigurationFromXml(String configXmlString, XmlParser parser) throws SAXException {
+	public static SoapAggregatorConfiguration setUpConfigurationFromXml(String configXmlString, XmlParser parser, int localPort) throws SAXException {
 		SoapAggregatorConfiguration configuration = new SoapAggregatorConfiguration();
 		// Load up the configuration
 		if(!configXmlString.isEmpty()) {
@@ -98,7 +98,7 @@ public class SoapConfiguration {
 			configuration.setFromXml(config);
 
 			for (XmlNode service : config.getChildNodes("service")) {
-				SoapClientThreadConfiguration item = new SoapClientThreadConfiguration();
+				SoapClientThreadConfiguration item = new SoapClientThreadConfiguration(localPort);
 				item.setFromXml(service, configuration.getRootPath());
 				configuration.getServices().add(item);
 			}

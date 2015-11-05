@@ -448,9 +448,8 @@
                         <artifactId>frontend-maven-plugin</artifactId>
                         <version>${frontend-maven-plugin.version}</version>
                         <executions>
-
                             <execution>
-                                <id>install node and npm</id>
+                                <id>node-and-npm-install</id>
                                 <phase>generate-resources</phase>
                                 <goals>
                                     <goal>install-node-and-npm</goal>
@@ -465,7 +464,7 @@
                             </execution>
 
                             <execution>
-                                <id>npm install</id>
+                                <id>npm-install</id>
                                 <phase>generate-resources</phase>
                                 <goals>
                                     <goal>npm</goal>
@@ -477,7 +476,7 @@
                             </execution>
 
                             <execution>
-                                <id>gulp build</id>
+                                <id>gulp-build</id>
                                 <phase>generate-resources</phase>
                                 <goals>
                                     <goal>gulp</goal>
@@ -487,7 +486,34 @@
                                     <workingDirectory>src/main/pipeline</workingDirectory>
                                 </configuration>
                             </execution>
-
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>clean-node-dirs</id>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                                <phase>clean</phase>
+                                <configuration>
+                                    <filesets>
+                                        <fileset>
+                                            <directory>${project.basedir}/src/main/pipeline/node</directory>
+                                        </fileset>
+                                        <fileset>
+                                            <directory>${project.basedir}/src/main/pipeline/node_modules</directory>
+                                        </fileset>
+                                        <fileset>
+                                            <directory>${project.basedir}/src/test/frontend/node</directory>
+                                        </fileset>
+                                        <fileset>
+                                            <directory>${project.basedir}/src/test/frontend/node_modules</directory>
+                                        </fileset>
+                                    </filesets>
+                                </configuration>
+                            </execution>
                         </executions>
                     </plugin>
                 </plugins>
@@ -497,35 +523,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>clean-node-dirs</id>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                        <phase>clean</phase>
-                        <configuration>
-                            <filesets>
-                                <fileset>
-                                    <directory>${project.basedir}/src/main/pipeline/node</directory>
-                                </fileset>
-                                <fileset>
-                                    <directory>${project.basedir}/src/main/pipeline/node_modules</directory>
-                                </fileset>
-                                <fileset>
-                                    <directory>${project.basedir}/src/test/frontend/node</directory>
-                                </fileset>
-                                <fileset>
-                                    <directory>${project.basedir}/src/test/frontend/node_modules</directory>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </execution>
-                </executions>
-
-            </plugin>
             <plugin>
                 <groupId>org.jasig.mojo.jspc</groupId>
                 <artifactId>jspc-maven-plugin</artifactId>
@@ -553,13 +550,13 @@
                 </dependencies>
             </plugin>
 
-            <!-- Copy aggregator dir across into the classes dir -->
+            <!-- Copy aggregator dir across into the classes dir, dothis in prepare-package so it doesnt upset tomcat7-plugin -->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>copy-extra-classes-resources</id>
-                        <phase>process-resources</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -712,6 +709,110 @@
                             <arguments>--phantomPath=${phantomjs.binary}</arguments>
                             <workingDirectory>src/test/frontend</workingDirectory>
                             <skip>${maven.test.skip}</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Pull down springloaded for tomcat7 plugin running -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-springloaded</id>
+                        <phase>none</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.springframework</groupId>
+                                    <artifactId>springloaded</artifactId>
+                                    <version>1.2.4.RELEASE</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <destFileName>springloaded.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/springloaded</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <id>tomcat7-run</id>
+                        <phase>none</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <additionalConfigFilesDir>${project.basedir}/src/test/resources/embedded/tomcat7/conf</additionalConfigFilesDir>
+                    <backgroundProcessorDelay>2</backgroundProcessorDelay>
+                    <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
+                    <contextFile>${project.basedir}/src/test/resources/embedded/tomcat7/context.xml</contextFile>
+                    <port>9080</port>
+                    <systemProperties>
+                        <nxi.db.username>${nxi.db.username}</nxi.db.username>
+                        <nxi.db.password>${nxi.db.password}</nxi.db.password>
+                        <spring.profiles.active>LOCALHOST</spring.profiles.active>
+
+                        <https.proxyHost>192.168.1.111</https.proxyHost>
+                        <https.proxyPort>8080</https.proxyPort>
+                        <https.proxyUser>ittest</https.proxyUser>
+                        <https.proxyPassword>1tt3st</https.proxyPassword>
+
+                        <http.proxyHost>192.168.1.111</http.proxyHost>
+                        <http.proxyPort>8080</http.proxyPort>
+                        <http.proxyUser>ittest</http.proxyUser>
+                        <http.proxyPassword>1tt3st</http.proxyPassword>
+                        <http.nonProxyHosts>*.ecommerce.disconline.com.au|*.captaincompare.com.au|*.intranet|localhost|127.0.0.1</http.nonProxyHosts>
+                    </systemProperties>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.connector.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>start-gulp</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>none</phase>
+                        <configuration>
+                            <executable>${project.basedir}/scripts/start_gulp.bat</executable>
+                            <arguments>
+                                <argument>${project.build.finalName}</argument>
+                            </arguments>
+                            <workingDirectory>${project.basedir}/scripts</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>start-tomcat7</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>none</phase>
+                        <configuration>
+                            <executable>${project.basedir}/scripts/start_tomcat7.bat</executable>
+                            <workingDirectory>${project.basedir}/scripts</workingDirectory>
                         </configuration>
                     </execution>
                 </executions>
