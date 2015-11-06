@@ -67,7 +67,7 @@
 					</c:import>
 				</c:catch>
 				<c:if test="${error}">
-					${logger.error('Reset Email Error. {}' , log:kv('param.email',param.email ) , error)}
+					${logger.error('Reset Email Error. {}' , log:kv('email',param.email ) , error)}
 				</c:if>
 				${logger.debug('Reset Email: MYSQL - Code for send run.')}
 				<%-- JSON result success --%>
