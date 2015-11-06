@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.6.0-SNAPSHOT</version>
+    <version>1.5.0-RC10</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -773,7 +773,7 @@
                     <backgroundProcessorDelay>2</backgroundProcessorDelay>
                     <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
                     <contextFile>${project.basedir}/src/test/resources/embedded/tomcat7/context.xml</contextFile>
-                    <port>9080</port>
+                    <port>8080</port>
                     <systemProperties>
                         <nxi.db.username>${nxi.db.username}</nxi.db.username>
                         <nxi.db.password>${nxi.db.password}</nxi.db.password>

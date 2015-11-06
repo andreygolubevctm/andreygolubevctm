@@ -68,7 +68,7 @@ public class SoapClientThreadConfiguration {
 	}
 
 	public void setUrl(String url) {
-		this.url = overrideUrlPort(url, localPort);
+		this.url = url;
 	}
 
 	public String getUser() {
@@ -342,7 +342,7 @@ public class SoapClientThreadConfiguration {
 		String ret = url;
 		try {
 			URI testURI = new URI(url);
-			if (port != -1 && testURI.getHost().equals("127.0.0.1") && testURI.getPort() != port) {
+			if (port != -1 && port != 80 && testURI.getHost().equals("127.0.0.1") && testURI.getPort() != port) {
 				URI newUri = new URI(testURI.getScheme(), testURI.getUserInfo(), testURI.getHost(), port, testURI.getPath(), testURI.getQuery(), testURI.getFragment());
 				ret = newUri.toString();
 			}
