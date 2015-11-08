@@ -14,7 +14,7 @@
 <jsp:useBean id="fatalErrorService" class="com.ctm.services.FatalErrorService" scope="page" />
 
 
-	<sql:setDataSource dataSource="jdbc/ctm"/>
+	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <c:set var="transactionId" value="${data['current/transactionId']}" />
 <c:set var="calcSequenceSUFF" value="/calcSequence" />
 <c:set var="prefix"><c:out value="${rootPath}" escapeXml="true"/></c:set>
@@ -151,7 +151,7 @@
 				If this fails it is not a show stopper so log and keep calm and carry on
 				--%>
 				<c:if test="${not empty error}">
-					${logger.error('Failed to send best price for {}', log:kv('data.travel.email',data.travel.email ), error)}
+					${logger.error('Failed to send best price for {}', log:kv('email',data.travel.email ), error)}
 					${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
 				</c:if>
 				</c:if>

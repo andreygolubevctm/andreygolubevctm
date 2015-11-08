@@ -316,8 +316,8 @@
 		<field_new:account_number xpath="${xpath}/new/accountNumber" title="account number" minLength="5" maxLength="9" required="true" />
 	</form_new:row>
 
-	<form_new:row label="group_new:address">
-		<group_new:address xpath="new/group/address" type="RES" />
+	<form_new:row label="group_new:elastic_address">
+		<group_new:elastic_address xpath="new/group/address" type="RES" />
 	</form_new:row>
 
 	<form_new:row label="array_radio">
@@ -424,10 +424,6 @@
 			document.write('<p>User agent: ' + navigator.userAgent + '</p>');
 		</script>
 		<p id="inputDate_val"></p>
-	</form_new:row>
-
-	<form_new:row label="input_age">
-		<field_new:input_age validationNoun="traveller" maxlength="2" xpath="${xpath}/new/inputAge" title="field_new:input_age" required="true" />
 	</form_new:row>
 
 	<form_new:row label="medicare_number">

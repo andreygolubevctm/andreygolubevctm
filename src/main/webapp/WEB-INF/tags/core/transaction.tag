@@ -67,7 +67,7 @@
 	</c:choose>
 </c:set>
 
-<sql:setDataSource dataSource="jdbc/ctm" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 
 
 
@@ -91,7 +91,7 @@
 	</c:when>
 
 	<c:when test="${empty vertical}">
-		${logger.error('Vertical setting can not be empty. {}', log:kv('param.vertical',param.vertical ))}
+		${logger.error('Vertical setting can not be empty. {}', log:kv('vertical',param.vertical ))}
 		<c:set var="response" value="V" />
 		<c:set var="write_quote" value="N" />
 		<c:set var="touch" value="" /><%-- unset --%>

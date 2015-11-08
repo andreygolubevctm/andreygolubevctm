@@ -5,7 +5,7 @@
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/ctm" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 <jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="request" />
 
 <%-- This query only runs on Life for now as IP sends the lead directly. --%>
@@ -59,7 +59,7 @@
 			<c:choose>
 				<c:when test="${not empty getTransactionDataError}">
 					<c:set var="errorPool">The CTM life_lead_feed cron job could not get a transaction's details - ${getTransactionDataError.rootCause}</c:set>
-					${logger.error('The CTM life_lead_feed cron job could not get a transaction\'s details. {}', log:kv('result.transaction_id',result.transaction_id ), getTransactionDataError)}
+					${logger.error('The CTM life_lead_feed cron job could not get a transaction\'s details. {}', log:kv('transaction_id',result.transaction_id ), getTransactionDataError)}
 				</c:when>
 				<%-- if there are some results --%>
 				<c:when test="${not empty transactionData and transactionData.rowCount > 0}">

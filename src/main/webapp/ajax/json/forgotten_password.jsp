@@ -28,7 +28,7 @@
 
 		<%-- Check email on MySQL --%> <%-- This seems like it's only to say, OK to the ajax request... we don't actually take any action to email or create a token here. I'm changing this now. --%>
 
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<sql:query var="emailMasterRecord">
 			SELECT emailId, transactionId
 			    FROM aggregator.email_master
@@ -67,7 +67,7 @@
 					</c:import>
 				</c:catch>
 				<c:if test="${error}">
-					${logger.error('Reset Email Error. {}' , log:kv('param.email',param.email ) , error)}
+					${logger.error('Reset Email Error. {}' , log:kv('email',param.email ) , error)}
 				</c:if>
 				${logger.debug('Reset Email: MYSQL - Code for send run.')}
 				<%-- JSON result success --%>

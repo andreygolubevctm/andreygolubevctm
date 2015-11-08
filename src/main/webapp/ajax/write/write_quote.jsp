@@ -29,7 +29,7 @@
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
 		${logger.debug('WRITE QUOTE PROCEEDINATOR PASSED')}
 
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 		<c:set var="sessionid" value="${pageContext.session.id}" />
 		<c:set var="stylecode" value="${pageSettings.getBrandCode()}" />

@@ -7,7 +7,7 @@
 
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:set var="continueOnValidationError" value="${false}" />
 

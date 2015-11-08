@@ -10,7 +10,7 @@
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 <jsp:useBean id="sessionError" class="java.util.ArrayList" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:set var="continueOnValidationError" value="${false}" />
 
@@ -89,7 +89,7 @@
 			<c:set var="commencementDateUpdated" value="true" />
 		</c:if>
 
-		${logger.trace('About to call soap aggregator. {}', log:kv('data.home', data.home))}
+		${logger.trace('About to call soap aggregator. {}', log:kv('home', data.home))}
 		<%-- Save client data --%>
 		<core:transaction touch="${touch}" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
 

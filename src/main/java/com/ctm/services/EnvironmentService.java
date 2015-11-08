@@ -125,7 +125,7 @@ public class EnvironmentService {
 			Manifest manifest = new Manifest(inputStream);
 
 			// Get the manifest attributes for our section as defined in Ant's build.xml
-			Attributes attr = manifest.getAttributes("AGH-Build");
+			Attributes attr = manifest.getMainAttributes();
 
 			if (attr != null) {
 				StringBuffer sb = new StringBuffer();
@@ -136,11 +136,18 @@ public class EnvironmentService {
 				}
 				LOGGER.debug("manifest details {}", kv("properties", sb));
 
-				if (attr.getValue("Identifier") != null) {
-					buildIdentifier = attr.getValue("Identifier");
+				if (attr.getValue("Implementation-Version") != null) {
+					buildIdentifier = attr.getValue("Implementation-Version");
 				}
-				if (attr.getValue("Revision") != null) {
-					buildRevision = attr.getValue("Revision");
+
+				// Append the build timestamp to the implementation version
+				if (attr.getValue("Bamboo-BuildTimestamp") != null) {
+					buildIdentifier = buildIdentifier + "_" + attr.getValue("Bamboo-BuildTimestamp");
+				}
+				if (attr.getValue("Scm-Revision") != null) {
+					buildRevision = attr.getValue("Scm-Revision");
+					// Append buildRevision to build identifier
+					buildIdentifier = buildIdentifier + "_" + buildRevision;
 				}
 			}
 		}

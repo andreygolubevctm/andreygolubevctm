@@ -10,14 +10,10 @@
 
 var less = require("gulp-less"),
     concat = require("gulp-concat"),
-    rename = require("gulp-rename"),
     insert = require("gulp-insert"),
     watchLess = require("gulp-watch-less"),
     gulpIf = require("gulp-if"),
-    intercept = require("gulp-intercept"),
     sourcemaps = require("gulp-sourcemaps"),
-    plumber = require("gulp-plumber"),
-    notify = require("gulp-notify"),
     fs = require("graceful-fs-extra"),
     runSequence = require('run-sequence'),
     path = require("path");
@@ -62,8 +58,8 @@ function LessTasks(gulp) {
         var hasVariablesLess = (fileList.indexOf("variables.less") !== -1);
 
         var stream = gulp.src(glob)
-            .pipe(plumber({
-                errorHandler: notify.onError("Error: <%= error.message %>")
+            .pipe(gulp.globalPlugins.plumber({
+                errorHandler: gulp.globalPlugins.notify.onError("Error: <%= error.message %>")
             }))
             // Insert LESS dependencies
             .pipe(
@@ -106,7 +102,7 @@ function LessTasks(gulp) {
         }
 
         stream.pipe(
-                intercept(function (file) {
+                gulp.globalPlugins.intercept(function (file) {
                     // Check if there are imports to replace (from a bundle extending another bundle)
                     if (replaceImports.length) {
                         var contents = file.contents.toString();
@@ -149,14 +145,14 @@ function LessTasks(gulp) {
                     path.join(gulp.pipelineConfig.bootstrap.dir, "less")
                 ]
             }))
-            .pipe(rename(bundle + ".css"))
+            .pipe(gulp.globalPlugins.rename(bundle + ".css"))
             .pipe(sourcemaps.write("./maps"))
             .pipe(gulp.dest(targetDir))
-            .pipe(notify({
+            .pipe(gulp.globalPlugins.notify({
                 title: taskName + " compiled",
                 message: bundle + " successfully compiled"
             }))
-            .pipe(intercept(function(file){
+            .pipe(gulp.globalPlugins.intercept(function(file){
                 return file;
             }))
             .on("end", function () {

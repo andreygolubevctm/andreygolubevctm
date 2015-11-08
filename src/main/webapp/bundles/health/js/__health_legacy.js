@@ -565,6 +565,7 @@ var healthFunds = {
 	// Remove the main provider piece
 	unload: function(){
 		if(healthFunds._fund !== false){
+			$('.health-credit_card_details .fieldrow').show();
 			healthFunds.unset();
 			$('body').removeClass( healthFunds._fund );
 			healthFunds._fund = false;

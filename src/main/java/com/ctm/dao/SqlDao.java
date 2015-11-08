@@ -24,7 +24,7 @@ public class SqlDao<T> {
 
     public SqlDao() {
 		databaseConnection = SimpleDatabaseConnection.getInstance();
-		this.context = "jdbc/ctm";
+		this.context = SimpleDatabaseConnection.JDBC_CTM;
 	}
 
 

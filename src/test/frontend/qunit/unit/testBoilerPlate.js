@@ -15,7 +15,6 @@ setupBoilerplate = function(base) {
     document.write('<script src="' + base + '/bundles/core/js/dialogs.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/loadingAnimation.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/performanceProfiling.js">\x3C/script>');
-    document.write('<script src="' + base + '/assets/js/libraries/bootstrap.min.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/results/js/Results.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/results/js/ResultsView.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/results/js/ResultsPagination.js">\x3C/script>');
