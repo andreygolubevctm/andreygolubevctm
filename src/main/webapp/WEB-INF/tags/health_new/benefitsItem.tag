@@ -10,7 +10,23 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 	<%-- Get the correct cell width for sections v. categories --%>
 	<c:choose>
 		<c:when test="${item.getType() == 'section'}">
-			<c:set var="colWidthValue" value="col-sm-6" />
+			<c:choose>
+				<c:when test="${item.getClassName() == 'hospitalCover'}">
+					<c:set var="colWidthValue" value="custom-col-sm" />
+					<c:set var="colContent">Hospital cover gives you the power to choose amongst a fund's participating hispitals, choose your own doctor and help you avoid public hospital waiting lists.</c:set>
+					<c:set var="coverType">Hospital</c:set>
+					<c:set var="coverTypeToAdd">Extras</c:set>
+					<%-- Hospital needs to loop one more time because the first child of hospital is not shortListAable --%>
+					<c:set var="loopCount" value="5" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="colWidthValue" value="custom-col-lg" />
+					<c:set var="colContent">Extras cover gives you money back for day to day services like dental, optical and physiotherapy.</c:set>
+					<c:set var="coverType">Extras</c:set>
+					<c:set var="coverTypeToAdd">Hospital</c:set>
+					<c:set var="loopCount" value="4" />
+				</c:otherwise>
+			</c:choose>
 		</c:when>
 		<c:otherwise>
 			<c:set var="colWidthValue" value="categoriesCell" />
@@ -23,30 +39,53 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 			<c:when test="${item.getType() == 'section'}">
 				<div class="title">
 					<h3>${item.getName()}</h3>
-
-					<c:choose>
-						<c:when test="${fn:contains(item.getName(), 'Hospital')}">
-							<p>Hospital cover gives you the power to choose amongst a fund's participating hispitals, choose your own doctor and help you avoid public hospital waiting lists.</p>
-						</c:when>
-						<c:when test="${fn:contains(item.getName(), 'Extras')}">
-							<p>Extras cover gives you money back for day to day services like dental, optical and physiotherapy.</p>
-						</c:when>
-					</c:choose>
+					<p>${colContent}</p>
 				</div>
 			</c:when>
 			<c:otherwise>
-				<field_new:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" errorMsg="Please tick" helpId="${item.getHelpId()}" helpClassName="benefitsHelpTooltips" theme="v2"/>
+				<field_new:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" errorMsg="Please tick" />
 			</c:otherwise>
 		</c:choose>
 
 		<c:if test="${item.hasShortlistableChildren()}">
 			<div class="children">
+				<h3 class="subTitle">More ${coverType} Benefits</h3>
 				<c:forEach items="${item.getChildren()}" var="selectedValue">
-					<health:benefitsItem item="${selectedValue}" />
+					<health_new:benefitsItem item="${selectedValue}" />
 				</c:forEach>
+				<div class="categoriesCell category CTM-plus">
+					<div class="checkbox">
+						<input type="hidden" name="CTM_plus" class="checkbox" />
+						<label>View more benefits</label>
+					</div>
+				</div>
 			</div>
 		</c:if>
 
 	</div>
+
+	<%-- Hospital/Extra only side bar --%>
+	<c:if test="${item.getType() == 'section'}">
+		<div class="custom-col-sm benefits-side-bar sidebar${coverType} section">
+			<div class="sidebar-wrapper">
+				<div class="title">
+					<h3>Interested in ${coverType} cover?</h3>
+					<p>${colContent}</p>
+				</div>
+				<c:if test="${item.hasShortlistableChildren()}">
+					<ul class="top-5-benefits">
+						<c:forEach items="${item.getChildren()}" var="selectedValue" end="${loopCount}">
+							<c:if test="${selectedValue.isShortlistable()}">
+								<li class="${selectedValue.getClassString()}">${selectedValue.getName()}</li>
+							</c:if>
+						</c:forEach>
+					</ul>
+				</c:if>
+				<div class="footer">
+					<a class="btn btn-edit" href="javascript:;">Add ${coverTypeToAdd} Cover</a>
+				</div>
+			</div>
+		</div>
+	</c:if>
 
 </c:if>

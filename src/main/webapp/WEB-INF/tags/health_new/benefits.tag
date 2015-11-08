@@ -18,8 +18,6 @@
 
 		<form_new:fieldset legend="Choose your benefits" >
 
-
-
 			<div class="scrollable row">
 
 				<div class="benefits-list col-sm-12">
@@ -30,7 +28,6 @@
 						</c:forEach>
 					</div>
 				</div>
-
 
 			</div>
 

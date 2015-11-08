@@ -173,7 +173,7 @@
     <%-- generate the benefit fields (hidden) for form selection. --%>
     <div class="hiddenFields">
       <c:forEach items="${resultTemplateItems}" var="selectedValue">
-        <health:benefitsHiddenItem item="${selectedValue}" />
+        <health_new:benefitsHiddenItem item="${selectedValue}" />
       </c:forEach>
 
       <field:hidden xpath="health/renderingMode" />
