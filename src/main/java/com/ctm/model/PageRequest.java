@@ -22,5 +22,12 @@ public class PageRequest implements TokenRequest {
         this.transactionId = transactionId;
     }
 
+    public String toString(){
+        return "PageRequest {" +
+                "token:" + token + "," +
+                "transactionId:" + transactionId + "" +
+                "}";
+    }
+
 
 }

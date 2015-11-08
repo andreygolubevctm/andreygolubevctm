@@ -39,7 +39,8 @@ public class TravelBestPriceExactTargetFormatter extends ExactTargetFormatter<Tr
 
 		emailModel.setAttribute("AdultsTravelling", model.getAdults());
 		emailModel.setAttribute("ChildrenTravelling", model.getChildren());
-		emailModel.setAttribute("OldestTraveller", model.getOldestAge());
+		emailModel.setAttribute("Adult1DOBTraveller", model.getAdult1DOB());
+		emailModel.setAttribute("Adult2DOBTraveller", model.getAdult2DOB());
 		emailModel.setAttribute("OptIn",parseOptIn(model.getOptIn()));
 		emailModel.setAttribute("CoverLevelType", model.getCoverLevelTabsType());
 		emailModel.setAttribute("CoverLevelDesc", model.getCoverLevelTabsDescription());

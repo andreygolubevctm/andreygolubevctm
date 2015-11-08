@@ -47,13 +47,13 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 
 <c:choose>
 	<c:when test="${not empty param.simples and empty isOperator}">
-		${logger.warn('Operator not logged in - force to login screen. {},{}' , log:kv('param.simples',param.simples ) , log:kv('isOperator',isOperator ))}
+		${logger.warn('Operator not logged in - force to login screen. {},{}' , log:kv('simples',param.simples ) , log:kv('isOperator',isOperator ))}
 		<c:set var="result">
 			<result><error>login</error></result>
 		</c:set>
 	</c:when>
 	<c:when test="${empty isOperator and (empty authenticatedData.userData || empty authenticatedData.userData.authentication || !authenticatedData.userData.authentication.validCredentials)}">
-		${logger.warn('User not logged in - force to login screen {},{}', log:kv('isOperator',isOperator ), log:kv('authenticatedData.userData',authenticatedData.userData ))}
+		${logger.warn('User not logged in - force to login screen {},{}', log:kv('isOperator',isOperator ), log:kv('userData',authenticatedData.userData ))}
 		<c:set var="result">
 			<result><error>login</error></result>
 		</c:set>
