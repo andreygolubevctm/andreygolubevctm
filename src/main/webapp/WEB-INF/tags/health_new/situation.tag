@@ -96,7 +96,7 @@
 				</c:if>
 
 				<c:set var="fieldXpath" value="${xpath}/coverType" />
-				<form_new:row label="What type of cover are you looking for?" fieldXpath="${fieldXpath}" id="${name}_coverType">
+				<form_new:row label="What type of cover are you looking for?" fieldXpath="${fieldXpath}">
 					<field_new:general_select xpath="${fieldXpath}" type="healthCvrType" className="health-situation-healthCvrType" required="true" title="your cover type" />
 				</form_new:row>
 

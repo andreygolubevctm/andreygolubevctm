@@ -98,14 +98,18 @@
 	}
 	/* This is a temporary function for the split test by altering the layout. */
 	function adjustLayout () {
-		$('.col-sm-8').removeClass('col-sm-8').addClass('col-sm-9');
-		$('.col-sm-4')
+		var $mainform = $('#mainform');
+		$mainform.find('.col-sm-8')
+			.not('.short-list-item')
+			.removeClass('col-sm-8').addClass('col-sm-9');
+		$mainform.find('.col-sm-4')
 			.not("label[for*=health_healthCover]")
+			.not('.short-list-item')
 			.add("label[for=health_healthCover_primary_dob]")
 			.add("label[for=health_healthCover_primary_cover]")
 			.add("label[for=health_healthCover_primary_coverType]")
 			.removeClass('col-sm-4').addClass('col-sm-3');
-		$('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
+		$mainform.find('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
 	}
 
 	function setJourneyEngineSteps(){
@@ -131,7 +135,8 @@
 
 				var $healthSitLocation = $('#health_situation_location'),
 					$healthSitHealthCvr = $('#health_situation_healthCvr'),
-					$healthSitHealthSitu = $('#health_situation_healthSitu');
+					$healthSitHealthSitu = $('#health_situation_healthSitu'),
+					$healthSitCoverType = $('#health_situation_coverType');
 
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
@@ -147,17 +152,22 @@
 					healthChoices.setLocation($healthSitLocation.val());
 				}
 
+				// change benefits page layout when change the coverType
+				$healthSitCoverType.on('change', function() {
+					meerkat.modules.healthBenefitsStep.changeLayoutByCoverType($(this).val());
+					meerkat.modules.healthBenefitsStep.updateHiddenFields($(this).val());
+				});
+
 				if($("#health_privacyoptin").val() === 'Y'){
 					$(".slide-feature-emailquote").addClass("privacyOptinChecked");
 				}
 
 				// Don't fire the change event by default if amend mode and the user has selected items.
-				if (meerkat.site.pageAction !== 'amend' && meerkat.site.pageAction !== 'start-again' && meerkat.modules.healthBenefits.getSelectedBenefits().length === 0) {
+				if (meerkat.site.pageAction !== 'amend' && meerkat.site.pageAction !== 'start-again' && meerkat.modules.healthBenefitsStep.getSelectedBenefits().length === 0) {
 					if($healthSitHealthSitu.val() !== ''){
 						$healthSitHealthSitu.change();
 					}
 				}
-
 
 				// This on Start step instead of Details because Simples interacts with it
 				var emailQuoteBtn = $(".slide-feature-emailquote");
@@ -222,13 +232,14 @@
 				object:meerkat.modules.health.getTrackingFieldsObject
 			},
 			validation:{
-				validate: false
+				validate: true
 			},
 			onInitialise: function onResultsInit(event){
 				meerkat.modules.healthResults.initPage();
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
-				meerkat.modules.healthBenefits.close();
+				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
+				meerkat.modules.healthBenefitsStep.checkAndHideMoreBenefits();
 			},
 			onAfterEnter: function(event) {
 				// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter segment
@@ -239,10 +250,12 @@
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
-				//meerkat.modules.healthBenefits.open(MODE_POPOVER);
+
+				meerkat.modules.healthBenefitsStep.alignTitle();
+				meerkat.modules.healthBenefitsStep.alignSidebarHeight();
 			},
 			onAfterLeave:function(event){
-				var selectedBenefits = meerkat.modules.healthBenefits.getSelectedBenefits();
+				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
 				meerkat.modules.healthResults.onBenefitsSelectionChange(selectedBenefits);
 			}
 		};
