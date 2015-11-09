@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
 	<conversionRule conversionWord="servletctx" converterClass="com.ctm.logging.ServletContextConverter" />
-	<property name="ENV" value="${spring.profiles.active:-localhost}"/>
+	<property name="ENV" value="${spring.profiles.active:-LOCALHOST}"/>
     
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 	    <Target>System.out</Target>
@@ -68,7 +68,7 @@
 
 	<root level="info">
    		<appender-ref ref="stdout" />
-		<if condition='!(p("ENV").contains("PRO") || p("ENV").contains("localhost"))'>
+		<if condition='!(p("ENV").equalsIgnoreCase("PRO") || p("ENV").equalsIgnoreCase("LOCALHOST"))'>
 			<then>
 				<appender-ref ref="AMQP" />
 			</then>
