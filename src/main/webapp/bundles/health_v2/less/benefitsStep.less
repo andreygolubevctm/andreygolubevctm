@@ -28,6 +28,9 @@
 
             &.hasShortlistableChildren {
                 padding-bottom:15px;
+                h4 {
+                    color: #000;
+                }
             }
 
             @media (@sm) {
@@ -107,6 +110,13 @@
         .noIcons {
             label{
                 font-size: 1em;
+                &:before{
+                    border-color: @benefits-checkbox-border;
+                }
+            }
+            // hack for the css3 multi columns, it is buggy when two columns doesn't have the same amount of children
+            .categoriesCell:nth-child(5) {
+                display: inline-block;
             }
         }
 
