@@ -1,7 +1,7 @@
-package com.ctm.logging;
+package com.ctm.web.core.logging;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import com.ctm.services.EnvironmentService;
+import com.ctm.web.core.services.EnvironmentService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

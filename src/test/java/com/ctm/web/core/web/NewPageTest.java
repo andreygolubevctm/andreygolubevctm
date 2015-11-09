@@ -1,16 +1,16 @@
-package com.ctm.web;
+package com.ctm.web.core.web;
 
-import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
-import com.ctm.utils.SessionUtils;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.utils.SessionUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.powermock.api.mockito.PowerMockito.when;
 

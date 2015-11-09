@@ -6,6 +6,7 @@ import com.ctm.web.core.security.token.config.TokenConfigFactory;
 import com.ctm.web.core.security.token.config.TokenCreatorConfig;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.validation.TokenValidation;
 
 import javax.servlet.http.HttpServletRequest;
