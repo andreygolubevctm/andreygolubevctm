@@ -10,6 +10,8 @@ public class SessionUtils {
         Object isCallCentreObj = session.getAttribute(CALL_CENTRE_ATTR);
         if(isCallCentreObj instanceof Boolean){
             return (Boolean) isCallCentreObj;
+        } else if(isCallCentreObj instanceof String){
+            return isCallCentreObj.equals("true");
         }
         return false;
     }

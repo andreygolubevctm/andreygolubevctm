@@ -25,8 +25,8 @@ public class NewPage {
         return "";
     }
 
-    public void init(PageSettings pageSettings){
-        enabled = TokenConfigFactory.getEnabled(pageSettings.getVertical());
+    public void init(HttpServletRequest request, PageSettings pageSettings){
+        enabled = TokenConfigFactory.getEnabled(pageSettings.getVertical()) && !SessionUtils.isCallCentre(request.getSession());
     }
 
     public boolean isTokenEnabled(){

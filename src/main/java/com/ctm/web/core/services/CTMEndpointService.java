@@ -28,6 +28,10 @@ public class CTMEndpointService {
         return tokenService.createErrorResponse(transactionId, errorMessage, httpRequest, type);
     }
 
+    public String createErrorResponseInvalidToken(Long transactionId) {
+        return tokenService.createErrorResponse(transactionId, "Token has expired or is invalid", httpRequest, "InvalidVerificationToken");
+    }
+
     public JSONObject appendValuesToResponse(JSONObject jSONObject , Long transactionId) throws JSONException {
         return tokenService.createResponse(transactionId, httpRequest, jSONObject);
     }

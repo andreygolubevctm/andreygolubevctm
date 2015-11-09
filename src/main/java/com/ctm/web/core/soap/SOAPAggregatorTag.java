@@ -105,6 +105,7 @@ public class SOAPAggregatorTag extends TagSupport {
 			correlationIdMaybe = CorrelationIdUtils.getCorrelationId();
 			configuration.setSendCorrelationId(sendCorrelationId);
 			XmlParser parser = new XmlParser();
+
 			setUpConfiguration();
 
 		/* validate the xml if a xsd has been specified in the config */
@@ -264,7 +265,7 @@ public class SOAPAggregatorTag extends TagSupport {
 			configuration = new SoapAggregatorConfiguration();
 		}
 		
-		SoapConfiguration.setUpConfigurationFromDatabase(configDbKey, configuration, brand, verticalCode, manuallySetProviderIds, authToken);
+		SoapConfiguration.setUpConfigurationFromDatabase(configDbKey, configuration, brand, verticalCode, manuallySetProviderIds, authToken, pageContext.getRequest().getLocalPort());
 	}
 
 	private void cleanUp() {
@@ -313,7 +314,7 @@ public class SOAPAggregatorTag extends TagSupport {
 	 */
 	public void setConfig(String configXmlString) throws JspException {
 		try {
-			configuration = SoapConfiguration.setUpConfigurationFromXml(configXmlString, new XmlParser());
+			configuration = SoapConfiguration.setUpConfigurationFromXml(configXmlString, new XmlParser(), pageContext.getRequest().getLocalPort());
 		} catch (SAXException e) {
 			throw new JspException(e);
 		}

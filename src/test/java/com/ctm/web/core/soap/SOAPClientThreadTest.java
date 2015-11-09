@@ -38,7 +38,7 @@ public class SOAPClientThreadTest {
 
         String tranId ="10000";
         String configRoot = "test";
-        SoapClientThreadConfiguration configuration = new SoapClientThreadConfiguration();
+        SoapClientThreadConfiguration configuration = new SoapClientThreadConfiguration(8080);
         configuration.setUrl(urlString);
         String threadName = "test";
         aggregatorConfiguration = new SoapAggregatorConfiguration();

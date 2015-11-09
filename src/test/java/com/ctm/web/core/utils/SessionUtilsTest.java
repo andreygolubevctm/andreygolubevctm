@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 public class SessionUtilsTest {
 
     @Test
-    public void testIsCallCentre() throws Exception {
+    public void testIsCallCentreBooleanInSessions() throws Exception {
         HttpSession session = new TestHttpSession();
         assertFalse(SessionUtils.isCallCentre(session));
 
@@ -21,6 +21,20 @@ public class SessionUtilsTest {
         assertTrue(SessionUtils.isCallCentre(session));
 
         SessionUtils.setIsCallCentre(session, false);
+
+        assertFalse(SessionUtils.isCallCentre(session));
+    }
+
+
+    @Test
+    public void testIsCallCentreStringInSession() throws Exception {
+        HttpSession session = new TestHttpSession();
+        assertFalse(SessionUtils.isCallCentre(session));
+
+        session.setAttribute(SessionUtils.CALL_CENTRE_ATTR, "true");
+        assertTrue(SessionUtils.isCallCentre(session));
+
+        session.setAttribute(SessionUtils.CALL_CENTRE_ATTR, "false");
 
         assertFalse(SessionUtils.isCallCentre(session));
     }

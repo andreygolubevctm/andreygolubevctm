@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ResultsTokenValidation<T extends TokenRequest> extends TokenValidation<T> {
 
-    public ResultsTokenValidation(SettingsService settingsService,  SessionDataService sessionDataService, Vertical vertical) {
+    public ResultsTokenValidation(SettingsService settingsService, SessionDataService sessionDataService, Vertical vertical) {
         super(settingsService, sessionDataService , vertical);
     }
 
@@ -28,4 +28,5 @@ public class ResultsTokenValidation<T extends TokenRequest> extends TokenValidat
     protected Touch.TouchType getCurrentTouch(){
         return Touch.TouchType.PRICE_PRESENTATION;
     }
+
 }

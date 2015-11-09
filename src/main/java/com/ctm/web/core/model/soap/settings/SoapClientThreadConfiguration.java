@@ -3,8 +3,14 @@ package com.ctm.web.core.model.soap.settings;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.web.go.xml.XmlNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URI;
+import java.net.URL;
 
 public class SoapClientThreadConfiguration {
+	private static final Logger LOGGER = LoggerFactory.getLogger(SoapClientThreadConfiguration.class);
 
 	private String name;
 	private String type;
@@ -29,14 +35,17 @@ public class SoapClientThreadConfiguration {
 	private String contentType;
 	private String encoding;
 	private String accept;
-
+	private int localPort = -1;
 
 	/**
 	 * This class holds the configuration properties for the SOAP Client thread class
 	 *
 	 */
-	public SoapClientThreadConfiguration(){
+	public SoapClientThreadConfiguration() {
+	}
 
+	public SoapClientThreadConfiguration(int localPort){
+		this.localPort = localPort;
 	}
 
 	public String getName() {
@@ -328,6 +337,21 @@ public class SoapClientThreadConfiguration {
 		setEncoding(config.getPropertyValueByKey("encoding", styleCodeId, providerId, Scope.SERVICE));
 		setAccept(config.getPropertyValueByKey("accept", styleCodeId, providerId, Scope.SERVICE));
 
+	}
+
+	private String overrideUrlPort(String url, int port) {
+		String ret = url;
+		try {
+			URI testURI = new URI(url);
+			if (port != -1 && port != 80 && testURI.getHost().equals("127.0.0.1") && testURI.getPort() != port) {
+				URI newUri = new URI(testURI.getScheme(), testURI.getUserInfo(), testURI.getHost(), port, testURI.getPath(), testURI.getQuery(), testURI.getFragment());
+				ret = newUri.toString();
+			}
+		} catch (Exception ex) {
+			LOGGER.info("Failed to override url: {}",url,ex);
+		}
+		LOGGER.debug("URL={}",ret);
+		return ret;
 	}
 
 	@Override
