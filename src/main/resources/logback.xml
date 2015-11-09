@@ -21,7 +21,7 @@
 		<layout class="net.logstash.logback.layout.LogstashLayout">
 			<fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
 			<includeContext>false</includeContext>
-			<provider class="net.logstash.logback.composite.loggingevent">
+			<provider class="net.logstash.logback.composite.loggingevent.MdcJsonProvider">
 				<includeMdcKeyName>transactionId</includeMdcKeyName>
 				<includeMdcKeyName>brandCode</includeMdcKeyName>
 				<includeMdcKeyName>verticalCode</includeMdcKeyName>
