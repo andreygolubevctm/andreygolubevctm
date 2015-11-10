@@ -51,20 +51,20 @@
 		<div class="navbar-collapse header-collapse-contact collapse">
 			<ul class="nav navbar-nav navbar-right callCentreNumberSection">
 				<c:if test="${not empty callCentreNumber}">
-			<li>
-				<div class="navbar-text visible-xs">
-						<h4>Do you need a hand?</h4>
-							<h1><a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></a></h1>
-							${openingHoursHeader }
-				</div>
-				<div class="navbar-text hidden-xs" data-livechat="target">
-					<h4>Call us on</h4>
-							<h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
-							${openingHoursHeader }
+					<li>
+						<div class="navbar-text visible-xs">
+								<h4>Do you need a hand?</h4>
+									<h1><a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></a></h1>
+									${openingHoursHeader }
+						</div>
+						<div class="navbar-text hidden-xs" data-livechat="target">
+							<h4>Call us on</h4>
+								<h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
+								${openingHoursHeader }
 						</div>
 						<div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
 						<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
-			</li>
+					</li>
 				</c:if>
 		</ul>
 		</div>
