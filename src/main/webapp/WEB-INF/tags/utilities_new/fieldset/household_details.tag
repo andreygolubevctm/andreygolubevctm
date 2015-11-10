@@ -57,6 +57,26 @@
                               minDate="${nowPlusDay_Date}" />
     </form_new:row>
 
+    <c:set var="fieldXPath" value="${xpath}/recentElectricityBill" />
+    <form_new:row label="Do you have a recent electricity bill in front of you?" fieldXpath="${fieldXPath}" className="clear recent-electricity-bill">
+        <field_new:array_radio xpath="${fieldXPath}"
+                               required="true"
+                               className=""
+                               items="Y=Yes,N=No"
+                               id="${go:nameFromXpath(fieldXPath)}"
+                               title="if you have a recent electricity bill." />
+    </form_new:row>
+
+    <c:set var="fieldXPath" value="${xpath}/recentGasBill" />
+    <form_new:row label="Do you have a recent gas bill in front of you?" fieldXpath="${fieldXPath}" className="clear recent-gas-bill">
+        <field_new:array_radio xpath="${fieldXPath}"
+                               required="true"
+                               className=""
+                               items="Y=Yes,N=No"
+                               id="${go:nameFromXpath(fieldXPath)}"
+                               title="if you have arecent gas bill." />
+    </form_new:row>
+
     <c:set var="fieldXPath" value="${xpath}/howToEstimate" />
     <form_new:row label="Would you like us to estimate how much energy you use?" fieldXpath="${fieldXPath}" className="clear" helpId="526">
         <field_new:array_select xpath="${fieldXPath}"

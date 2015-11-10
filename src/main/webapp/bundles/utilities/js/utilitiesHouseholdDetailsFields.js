@@ -238,6 +238,8 @@
     function _toggleMovingInDate() {
         var val = $(".moving-in").find("input[type='radio']:checked").val();
         $(".moving-in-date").toggle(val === "Y");
+        $(".recent-electricity-bill").toggle(val === "N");
+        $(".recent-gas-bill").toggle(val === "N");
     }
 
     /**
@@ -262,13 +264,20 @@
             $gasInputs = $additionalEstimateDetails.find(".gas");
 
         var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val(),
+            recentElectricityBill = $(".recent-electricity-bill").find("input[type='radio']:checked").val(),
+            recentGasBill = $(".recent-electricity-bill").find("input[type='radio']:checked").val(),
             howToEstimate = $(".how-to-estimate").val();
 
         if (whatToCompare && howToEstimate) {
             $hideableFieldsets.show();
 
-            $electricityInputs.toggle(whatToCompare === "E" || whatToCompare === "EG");
-            $gasInputs.toggle(whatToCompare === "G" || whatToCompare === "EG");
+            if (recentElectricityBill === 'Yes"') {
+                $electricityInputs.toggle(whatToCompare === "E" || whatToCompare === "EG");
+            }
+
+            if (recentGasBill === 'Yes"') {
+                $gasInputs.toggle(whatToCompare === "G" || whatToCompare === "EG");
+            }
 
             $("#current-electricity-provider-field").toggle(whatToCompare === "E" || whatToCompare === "EG");
             $("#current-gas-provider-field").toggle(whatToCompare === "G" || whatToCompare === "EG");
