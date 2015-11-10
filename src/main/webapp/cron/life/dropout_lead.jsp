@@ -3,10 +3,10 @@
 
 <c:set var="logger" value="${log:getLogger('jsp.cron.life.dropout_lead')}" />
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 <sql:setDataSource dataSource="${datasource:getDataSource()}" />
-<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="request" />
+<jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="request" />
 
 <%-- This query only runs on Life for now as IP sends the lead directly. --%>
 <c:set var="vertical" value="life" />
@@ -74,7 +74,7 @@
 					</c:forEach>
 
 					<%-- Load the config for the contact lead sender --%>
-					<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+					<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 					<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_contact_lead.xml')}" />
 
 					<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", "lifebroker")}</c:set>

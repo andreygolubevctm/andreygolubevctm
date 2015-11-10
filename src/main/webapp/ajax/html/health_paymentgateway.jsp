@@ -4,7 +4,7 @@
 <session:get settings="true" verticalCode="HEALTH" />
 <c:set var="logger"  value="${log:getLogger('jsp.ajax.html.health_paymentgateway')}" />
 
-<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 
 <c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health_application/ahm/config.xml')}" />
 <x:parse doc="${config}" var="configXml" />

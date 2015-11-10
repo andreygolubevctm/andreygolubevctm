@@ -39,7 +39,7 @@
 			<c:choose>
 				<c:when test="${multiTrip == 'Y'}">365</c:when>
 				<c:otherwise>
-					<jsp:useBean id="utilCalc" class="com.ctm.utils.travel.DurationCalculation" scope="request" />
+					<jsp:useBean id="utilCalc" class="com.ctm.web.travel.utils.DurationCalculation" scope="request" />
 					${utilCalc.calculateDayDuration(reqStartDate, reqEndDate)}
 				</c:otherwise>
 			</c:choose>

@@ -18,7 +18,7 @@
 	<tag>
 		<description>Gadget Object for inserting css/stylesheet code</description>
 		<name>style</name>
-		<tag-class>com.disc_au.web.go.tags.StyleTag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.StyleTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
 			<description>HREF location to an external .css file</description>
@@ -54,7 +54,7 @@
 	<tag>
 		<description>Gadget Object for inserting css/stylesheet code</description>
 		<name>compress-css</name>
-		<tag-class>com.disc_au.web.go.tags.CompressCssTag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.CompressCssTag</tag-class>
 		<body-content>JSP</body-content>
 		<example>
 			<![CDATA[
@@ -71,7 +71,7 @@
 	<tag>
 		<description>Gadget object HTML tag (replaces the standard HTML tag)</description>
 		<name>html</name>
-		<tag-class>com.disc_au.web.go.tags.HtmlTag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.HtmlTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
 			<description>optional opening tag content</description>
@@ -95,7 +95,7 @@
 	<tag>
 		<description>Gadget object Root tag (wraps around all gadgets)</description>
 		<name>root</name>
-		<tag-class>com.disc_au.web.go.tags.RootTag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.RootTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
 			<description>Should Quotes be encoded?</description>
@@ -120,7 +120,7 @@
 	<tag>
 		<description>Gadget Object for inserting JavaScript code</description>
 		<name>script</name>
-		<tag-class>com.disc_au.web.go.tags.ScriptTag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.ScriptTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
 			<description>HREF location to an external .js file</description>
@@ -156,7 +156,7 @@
 	<tag>
 		<description>Specifies a location where go:script or go:style content can later be added</description>
 		<name>insertmarker</name>
-		<tag-class>com.disc_au.web.go.tags.InsertMarkerTag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.InsertMarkerTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>Name of the insert marker</description>
@@ -187,7 +187,7 @@
 	<tag>
 		<description>Utility gadget for adding form field validation rules (via jQuery)</description>
 		<name>validate</name>
-		<tag-class>com.disc_au.web.go.tags.ValidateTag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.ValidateTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>jQuery selector to use for field</description>
@@ -226,7 +226,7 @@
 	<tag>
 		<description>Multithreaded SOAP aggregator gadget</description>
 		<name>soapAggregator</name>
-		<tag-class>com.disc_au.soap.SOAPAggregatorTag</tag-class>
+		<tag-class>com.ctm.web.core.soap.SOAPAggregatorTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>Config to use. See WEB-INF/aggregator/schema/config.xsd for details</description>
@@ -323,7 +323,7 @@
 	<tag>
 		<description>Set a value in the request's data object</description>
 		<name>setData</name>
-		<tag-class>com.disc_au.web.go.tags.SetDataTag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.SetDataTag</tag-class>
 		<body-content>tagdependent</body-content>
 		<attribute>
 			<description>The name of the data object</description>
@@ -362,7 +362,7 @@
 	<tag>
 		<description>Imports the data from the specified URL to a variable, or directly into the page</description>
 		<name>import</name>
-		<tag-class>com.disc_au.web.go.tags.ImportTag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.ImportTag</tag-class>
 		<body-content>scriptless</body-content>
 		<attribute>
 			<description>The URL to retrieve content from</description>
@@ -401,7 +401,7 @@
 	<tag>
 		<description>Gadget Object for scraping content</description>
 		<name>scrape</name>
-		<tag-class>com.disc_au.web.go.tags.ScrapeTag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.ScrapeTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>Url to scrape</description>
@@ -461,7 +461,7 @@
 		<tag>
 		<description>Convert a CSV into an array that uses the format of the template</description>
 		<name>importCsvToToken</name>
-		<tag-class>com.disc_au.web.go.tags.ImportCsvToTokenTag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.ImportCsvToTokenTag</tag-class>
 		<body-content>tagdependent</body-content>
 		<attribute>
 			<description>The output from token replacing</description>
@@ -536,7 +536,7 @@
 	<tag>
 		<description>get the next available call back date and time</description>
 		<name>callCenterHours</name>
-		<tag-class>com.disc_au.web.go.tags.CallCenterHoursTag</tag-class>
+		<tag-class>com.ctm.web.core.web.openinghours.go.tags.CallCenterHoursTag</tag-class>
 		<body-content>tagdependent</body-content>
 		<attribute>
 			<description>The time of day that the callback should be set to can be M , A  or E</description>
@@ -567,7 +567,7 @@
 	<tag>
 		<description>Generates an AES secret key of the specified length (default 128)</description>
 		<name>AESGenerateKey</name>
-		<tag-class>com.disc_au.web.go.tags.AESGenerateKeyTag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.AESGenerateKeyTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>The bit size of the secret key (128, 192 or 256)</description>
@@ -586,7 +586,7 @@
 	<tag>
 		<description>Encrypts/Decrypts a string using AES using the secret key provided</description>
 		<name>AESEncryptDecrypt</name>
-		<tag-class>com.disc_au.web.go.tags.AESEncryptDecryptTag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.AESEncryptDecryptTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>The action to apply to the content - either 'encrypt' or 'decrypt'</description>
@@ -617,7 +617,7 @@
 	<tag>
 		<description>Encrypts a string using a high level encryption algorithm with a salt</description>
 		<name>HmacSHA256</name>
-		<tag-class>com.disc_au.web.go.tags.HmacSHA256Tag</tag-class>
+		<tag-class>com.ctm.web.core.web.go.tags.HmacSHA256Tag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>The username.</description>
@@ -648,7 +648,7 @@
 	<function>
 		<description>Converts an XPath in the format root/parent/node ... to be a field name in the form: root_parent_node suitable for use as an HTML form field name</description>
 		<name>nameFromXpath</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.String getNameFromXpath(java.lang.String)
 		</function-signature>
@@ -661,7 +661,7 @@
 	<function>
 		<description>Converts a name in the format root_parent_node ... to be an XPath in the form: root/parent/node</description>
 		<name>xpathFromName</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.String getXpathFromName(java.lang.String)
 		</function-signature>
@@ -674,15 +674,15 @@
 	<function>
 		<description>Adds a document to the Data object (replaced by setData)</description>
 		<name>addDocument</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
-			void addDocument(com.disc_au.web.go.Data,java.lang.String)
+			void addDocument(com.ctm.web.core.web.go.Data,java.lang.String)
 		</function-signature>
 	</function>
 	<function>
 		<description>Retrieves an XML string representation of the XmlNode passed</description>
 		<name>getXml</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.String getXml(java.lang.Object)
 		</function-signature>
@@ -695,7 +695,7 @@
 	<function>
 		<description>Retrieves an XML string representation of the XmlNode passed (escaping HTML entities)</description>
 		<name>getEscapedXml</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.String getEscapedXml(java.lang.Object)
 		</function-signature>
@@ -707,9 +707,22 @@
 	</function>
 
 	<function>
+		<description>Writes the passed string to the filename provided</description>
+		<name>writeToFile</name>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String writeToFile(java.lang.String,java.lang.String)
+		</function-signature>
+		<example>
+			<![CDATA[
+				${go:writeToFile('myfile.txt',myString)}
+			]]>
+		</example>
+	</function>
+	<function>
 		<description>Writes the passed string to an AES256 encrypted ZIP file, using the filename, internalFilename and password provided</description>
 		<name>writeToEncZipFile</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			boolean writeToEncZipFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
 		</function-signature>
@@ -724,7 +737,7 @@
 	<function>
 		<description>Returns true if the passed object is a String</description>
 		<name>isText</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.String isText(java.lang.Object)
 		</function-signature>
@@ -737,7 +750,7 @@
 	<function>
 		<description>Returns true if the passed object is an XmlNode</description>
 		<name>isNode</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.String isNode(java.lang.Object)
 		</function-signature>
@@ -750,7 +763,7 @@
 	<function>
 		<description>Returns true if the passed object is a coollection of items</description>
 		<name>isArray</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.String isArray(java.lang.Object)
 		</function-signature>
@@ -763,7 +776,7 @@
 	<function>
 		<description>Returns the type of the passed object [type|node|array]</description>
 		<name>getType</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.String getType(java.lang.Object)
 		</function-signature>
@@ -776,7 +789,7 @@
 	<function>
 		<description>Converts XML data to a JSON object</description>
 		<name>XMLtoJSON</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.String XMLtoJSON(java.lang.String)
 		</function-signature>
@@ -789,7 +802,7 @@
 	<function>
 		<description>Converts JSON data to XML</description>
 		<name>JSONtoXML</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.String JSONtoXML(java.lang.String)
 		</function-signature>
@@ -802,7 +815,7 @@
 	<function>
 		<description>Converts text to sentence case</description>
 		<name>SentenceCase</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.String SentenceCase(java.lang.String)
 		</function-signature>
@@ -815,7 +828,7 @@
 	<function>
 		<description>Create String Builder</description>
 		<name>getStringBuilder</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.StringBuilder getStringBuilder()
 		</function-signature>
@@ -828,7 +841,7 @@
 	<function>
 		<description>append to a StringBuilder object</description>
 		<name>appendString</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.String appendString(java.lang.StringBuilder, java.lang.String)
 		</function-signature>
@@ -841,7 +854,7 @@
 	<function>
 		<description>Converts text to title case</description>
 		<name>TitleCase</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.lang.String TitleCase(java.lang.String)
 		</function-signature>
@@ -854,7 +867,7 @@
 	<function>
 		<description>Adds days to a date</description>
 		<name>AddDays</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>
 			java.util.Date AddDays(java.util.Date,int)
 		</function-signature>
@@ -867,7 +880,7 @@
 	<function>
 		<description>Adds timestamp to the end of a given URL</description>
 		<name>AddTimestampToHref</name>
-		<function-class>com.disc_au.web.go.tags.BaseTag</function-class>
+		<function-class>com.ctm.web.core.web.go.tags.BaseTag</function-class>
 		<function-signature>
 			java.lang.String addTimeStampToHref(java.lang.String)
 		</function-signature>
@@ -880,7 +893,7 @@
 	<function>
 		<description>Adds build revision to the end of a given URL</description>
 		<name>addBuildRevisionToUrl</name>
-		<function-class>com.ctm.web.Utils</function-class>
+		<function-class>com.ctm.web.core.web.Utils</function-class>
 		<function-signature>
 			java.lang.String addBuildRevisionToUrl(java.lang.String)
 		</function-signature>
@@ -893,7 +906,7 @@
 	<function>
 		<description>Send a request to Dreammail</description>
 		<name>Dreammail</name>
-		<function-class>com.disc_au.web.Dreammail</function-class>
+		<function-class>com.ctm.web.core.web.Dreammail</function-class>
 		<function-signature>
 			java.lang.String send(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean)
 		</function-signature>
@@ -918,7 +931,7 @@
 	</function>
      <function>
          <name>replaceAll</name>
-         <function-class>com.disc_au.web.go.Gadget</function-class>
+         <function-class>com.ctm.web.core.web.go.Gadget</function-class>
          <function-signature>java.lang.String replaceAll(java.lang.String, java.lang.String, java.lang.String)</function-signature>
          <example>
 			<![CDATA[
@@ -928,7 +941,7 @@
      </function>
 	<function>
 		<name>urlEncode</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>java.lang.String urlEncode(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
@@ -938,7 +951,7 @@
 	</function>
 	<function>
 		<name>base64Encode</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>java.lang.String base64Encode(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
@@ -948,7 +961,7 @@
 	</function>
 	<function>
 		<name>hexToDec</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>java.lang.String hexToDec(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
@@ -958,7 +971,7 @@
 	</function>
 	<function>
 		<name>decToHex</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>java.lang.String decToHex(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
@@ -968,7 +981,7 @@
 	</function>
 	<function>
 		<name>jsEscape</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>java.lang.String jsEscape(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
@@ -979,7 +992,7 @@
 	</function>
 	<function>
 		<name>htmlEscape</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>java.lang.String htmlEscape(java.lang.String)</function-signature>
 		<example>
 			<![CDATA[
@@ -989,7 +1002,7 @@
 	</function>
 	<function>
 		<name>formatCurrency</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>java.lang.String formatCurrency(java.lang.String , boolean, boolean)</function-signature>
 		<example>
 			<![CDATA[
@@ -999,7 +1012,7 @@
 	</function>
 	<function>
 		<name>formatCurrencyPrecise</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-class>com.ctm.web.core.web.go.Gadget</function-class>
 		<function-signature>java.lang.String formatCurrency(java.math.BigDecimal , boolean, boolean)</function-signature>
 		<example>
 			<![CDATA[

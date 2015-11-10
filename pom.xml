@@ -599,7 +599,7 @@
                         <phase>package</phase>
                         <configuration>
                             <classifier>${branch.classifier}</classifier>
-                            <mainClass>com.ctm.Application</mainClass>
+                            <mainClass>com.ctm.web.core.Application</mainClass>
                         </configuration>
                     </execution>
                 </executions>

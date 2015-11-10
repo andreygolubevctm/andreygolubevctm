@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
-	<conversionRule conversionWord="servletctx" converterClass="com.ctm.logging.ServletContextConverter" />
+	<conversionRule conversionWord="servletctx" converterClass="com.ctm.web.core.logging.ServletContextConverter" />
 	<property name="ENV" value="${spring.profiles.active:-localhost}"/>
     
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
@@ -60,7 +60,7 @@
 		<appender-ref ref="SIFT" />
 	</appender>
 
-	<logger name="com.ctm.logging.XMLOutputWriter" additivity="false">
+	<logger name="com.ctm.web.core.logging.XMLOutputWriter" additivity="false">
 		<appender-ref ref="ASYNC" />
   	</logger>
 

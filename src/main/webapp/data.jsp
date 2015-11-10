@@ -7,8 +7,8 @@
 <c:set var="buildIdentifier"><core:buildIdentifier></core:buildIdentifier></c:set>
 <c:set var="remoteAddr" value="${pageContext.request.remoteAddr}" />
 
-<jsp:useBean id="sessionDataService" class="com.ctm.services.SessionDataService" scope="application" />
-<jsp:useBean id="applicationService" class="com.ctm.services.ApplicationService" scope="page" />
+<jsp:useBean id="sessionDataService" class="com.ctm.web.core.services.SessionDataService" scope="application" />
+<jsp:useBean id="applicationService" class="com.ctm.web.core.services.ApplicationService" scope="page" />
 
 
 <core:doctype />
