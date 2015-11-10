@@ -11,9 +11,9 @@
 	<function>
 		<description>MiscUtils</description>
 		<name>randomiseContent</name>
-		<function-class>com.ctm.utils.MiscUtils</function-class>
+		<function-class>com.ctm.web.core.utils.MiscUtils</function-class>
 		<function-signature>
-			com.ctm.model.content.Content randomiseContent(com.ctm.model.content.Content)
+			com.ctm.web.core.content.model.Content randomiseContent(com.ctm.web.core.content.model.Content)
 		</function-signature>
 		<example>
 			<![CDATA[

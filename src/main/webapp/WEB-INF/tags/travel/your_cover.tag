@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <security:populateDataFromParams rootPath="travel" delete="false"/>
-<jsp:useBean id="splitTests" class="com.ctm.services.tracking.SplitTestService" />
+<jsp:useBean id="splitTests" class="com.ctm.web.core.services.tracking.SplitTestService" />
 <%-- HTML --%>
 
 <c:set var="fieldXpath" value="travel/policyType" />

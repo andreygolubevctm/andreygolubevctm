@@ -117,7 +117,7 @@
     function eventSubscriptions() {
 
         meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function bridgingPageHashChange(event) {
-            if (meerkat.modules.deviceMediaState.get() != 'xs' && event.hash.indexOf('results/moreinfo') == -1) {
+            if (meerkat.modules.deviceMediaState.get() != 'xs' && event.hash.indexOf('/moreinfo') == -1) {
                 meerkat.modules.moreInfo.hideTemplate($bridgingContainer);
             }
         });

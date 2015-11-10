@@ -20,7 +20,7 @@ if(argv.targetFolder) {
         JavaConfig = result;
     });
 
-    targetFolderName = JavaConfig.project.name[0] + "-" + JavaConfig.project.version[0]
+    targetFolderName = JavaConfig.project.artifactId[0] + "-" + JavaConfig.project.version[0]
 }
 
 var Config = {

@@ -4,7 +4,7 @@
 <c:set var="logger" value="${log:getLogger('jsp.ajax.write.save_health_confirmation')}" />
 
 <session:get />
-<jsp:useBean id="providerContentService" class="com.ctm.services.simples.ProviderContentService" scope="page" />
+<jsp:useBean id="providerContentService" class="com.ctm.web.health.services.ProviderContentService" scope="page" />
 
 <%--
 SAVING A SUCCESSFUL HEALTH APPLICATION
@@ -69,7 +69,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 
 	<%-- ENTER FEB 2015 JEEP COMPETITION - HLT-1737 --%>
 	<c:if test="${empty jeepCompetitionEnabledFlag}">
-		<jsp:useBean id="competitionService" class="com.ctm.services.competition.CompetitionService" />
+		<jsp:useBean id="competitionService" class="com.ctm.web.core.competition.services.CompetitionService" />
 		<c:set var="jeepCompetitionEnabledFlag" scope="session" value="${competitionService.isActive(pageContext.getRequest(), 15)}" />
 	</c:if>
 	<c:if test="${jeepCompetitionEnabledFlag eq true}">
