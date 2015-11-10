@@ -3,7 +3,7 @@ package com.ctm.security.token.config;
 import com.ctm.model.Touch;
 import com.ctm.model.settings.Vertical;
 import com.ctm.utils.RequestUtils;
-
+import com.ctm.utils.SessionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -50,5 +50,8 @@ public class TokenConfigFactory {
         return Boolean.valueOf(vertical.getSettingValueForName("jwtEnabled"));
     }
 
+    public static boolean getEnabled(Vertical vertical, HttpServletRequest request) {
+        return TokenConfigFactory.getEnabled(vertical) && !SessionUtils.isCallCentre(request.getSession());
+    }
 
 }
