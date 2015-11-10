@@ -15,7 +15,7 @@
     <description>Main web application</description>
     <packaging>war</packaging>
 
-    <properties>
+    <properties>A
         <powermock.version>1.6.2</powermock.version>
         <cxf.version>3.0.1</cxf.version>
 
