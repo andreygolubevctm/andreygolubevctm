@@ -1,17 +1,16 @@
 package com.ctm.web.core.services;
 
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.model.EmailMaster;
+import com.ctm.web.core.dao.EmailMasterDao;
+import com.ctm.web.core.email.services.EmailUrlService;
 import com.ctm.web.core.email.services.token.EmailTokenService;
 import com.ctm.web.core.email.services.token.EmailTokenServiceFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ctm.web.core.dao.EmailMasterDao;
+import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.Unsubscribe;
 import com.ctm.web.core.model.settings.PageSettings;
-import com.ctm.web.core.email.services.EmailUrlService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 

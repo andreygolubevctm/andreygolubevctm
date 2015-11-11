@@ -1,24 +1,19 @@
-package com.ctm.router;
+package com.ctm.web.core.router;
 
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.model.email.IncomingEmail;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.services.AccessTouchService;
-import com.ctm.services.SettingsService;
-import com.ctm.services.email.IncomingEmailService;
+import com.ctm.web.core.email.model.IncomingEmail;
+import com.ctm.web.core.email.services.IncomingEmailService;
 import com.ctm.web.core.email.services.token.EmailTokenService;
 import com.ctm.web.core.email.services.token.EmailTokenServiceFactory;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.services.AccessTouchService;
+import com.ctm.web.core.services.SettingsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import static org.mockito.Mockito.*;
-
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import static org.powermock.api.mockito.PowerMockito.*;
-import static org.powermock.api.mockito.PowerMockito.when;
-
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -28,6 +23,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.*;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 /**
  * Created by voba on 19/10/2015.
