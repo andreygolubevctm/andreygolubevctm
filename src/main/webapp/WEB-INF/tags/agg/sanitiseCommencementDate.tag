@@ -1,6 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Ensures the commencement date is not in the past"%>
-<%@ tag import="com.ctm.web.validation.CommencementDateValidation" %>
+<%@ tag import="com.ctm.web.core.validation.CommencementDateValidation" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="commencementDate"	required="true"	 	rtexprvalue="true"	 description="The commencement date string" %>

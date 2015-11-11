@@ -1,4 +1,4 @@
-<%@page import="com.ctm.utils.NGram"%>
+<%@page import="com.ctm.web.core.utils.NGram"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" import="java.io.*,java.util.*,java.text.*,java.math.*"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 

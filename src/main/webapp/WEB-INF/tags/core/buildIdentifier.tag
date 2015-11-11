@@ -1,6 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="environmentService" class="com.ctm.services.EnvironmentService" scope="request" />
+<jsp:useBean id="environmentService" class="com.ctm.web.core.services.EnvironmentService" scope="request" />
 
 <c:set var="buildIdentifier" value="${ environmentService.getBuildIdentifier() }" />
 

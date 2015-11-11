@@ -6,12 +6,12 @@
 <core_new:no_cache_header/>
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true" />
-<jsp:useBean id="healthQuoteResults" class="com.ctm.services.health.HealthQuoteEndpointService" />
+<jsp:useBean id="healthQuoteResults" class="com.ctm.web.health.services.HealthQuoteEndpointService" />
 ${healthQuoteResults.init(pageContext.request, pageSettings)}
 <c:choose>
 <%-- Only continue if token is valid --%>
 <c:when test="${healthQuoteResults.validToken}">
-	<jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
+	<jsp:useBean id="soapdata" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 	<%-- First check owner of the quote --%>
 	<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
@@ -47,7 +47,7 @@ ${healthQuoteResults.init(pageContext.request, pageSettings)}
 
 			<%-- Set custom application date from data.jsp --%>
 			<go:setData dataVar="data" xpath="health/applicationDate" value="${applicationService.getApplicationDate(pageContext.getRequest())}" />
-			<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+			<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 			<%-- Removed specific email writing operations from here as they're handled in core:transaction above --%>
 			<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health/config_ALL.xml')}" />
 			 <%--Load the config and send quotes to the aggregator gadget--%>

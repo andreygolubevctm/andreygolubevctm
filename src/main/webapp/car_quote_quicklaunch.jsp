@@ -9,7 +9,7 @@
 <c:set var="pageSettings" value="${settingsService.getPageSettingsForPage(pageContext.getRequest())}" scope="request"  />
 
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
-<jsp:useBean id="service" class="com.ctm.services.car.CarVehicleSelectionService" scope="request" />
+<jsp:useBean id="service" class="com.ctm.web.car.services.CarVehicleSelectionService" scope="request" />
 <c:set var="json" value="${service.getVehicleSelection('', '', '', '', '', '') }" />
 
 <%-- HTML --%>

@@ -11,7 +11,7 @@
 	<function>
 		<description>Returns the list of files in a directory</description>	
 		<name>listFiles</name>
-		<function-class>com.disc_au.web.go.FileUtils</function-class>
+		<function-class>com.ctm.web.core.web.go.FileUtils</function-class>
 		<function-signature>
 			java.lang.Vector listFiles(java.lang.String)
 		</function-signature>
@@ -24,7 +24,7 @@
 	<function>
 		<description>Returns the local path for a passed relative path</description>	
 		<name>localPath</name>
-		<function-class>com.disc_au.web.go.FileUtils</function-class>
+		<function-class>com.ctm.web.core.web.go.FileUtils</function-class>
 		<function-signature>
 			java.lang.String localPath(java.lang.String)
 		</function-signature>
@@ -38,7 +38,7 @@
 	<function>
 		<description>File Exists</description>	
 		<name>exists</name>
-		<function-class>com.disc_au.web.go.FileUtils</function-class>
+		<function-class>com.ctm.web.core.web.go.FileUtils</function-class>
 		<function-signature>
 			java.lang.Boolean exists(java.lang.String)
 		</function-signature>

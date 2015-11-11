@@ -2,7 +2,7 @@
 <%@ tag description="Group for vehicle selection"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+<jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 
 <%-- MANDATORY CONTACT FIELDS --%>
 <c:set var="mandatoryContactFieldsSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" />
@@ -17,7 +17,7 @@
 <c:set var="addressFormSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 32)}" />
 
 <%-- REGO LOOKUP --%>
-<jsp:useBean id="regoLookupService" class="com.ctm.services.car.RegoLookupService" />
+<jsp:useBean id="regoLookupService" class="com.ctm.web.car.services.RegoLookupService" />
 <c:set var="showRegoLookupContent" scope="request">
     <c:choose>
         <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 13)}">

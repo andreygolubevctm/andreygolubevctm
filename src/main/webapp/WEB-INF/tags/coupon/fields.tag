@@ -4,7 +4,7 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 	required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
-<jsp:useBean id="couponService" class="com.ctm.services.coupon.CouponService" />
+<jsp:useBean id="couponService" class="com.ctm.web.core.coupon.services.CouponService" />
 
 <c:set var="couponChannelCode">
 	<c:choose>

@@ -3,8 +3,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- Setup variables needed for dual pricing --%>
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.services.health.HealthPriceDetailService" scope="page" />
-<jsp:useBean id="openingHoursService" class="com.ctm.services.simples.OpeningHoursService" scope="page" />
+<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
+<jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 <c:if test="${healthAlternatePricingActive eq true}">
 	<c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
@@ -42,8 +42,8 @@
 
 
 
-<jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
-<c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString('health', 'category')}" scope="request"  />
+<jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
+<c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('health', 'category')}" scope="request"  />
 <script>
 	var resultLabels = ${jsonString};
 </script>

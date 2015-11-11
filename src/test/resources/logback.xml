@@ -33,8 +33,7 @@
 		<appender-ref ref="SIFT" />
 	</appender>
 
-
-	<logger name="com.ctm.logging.XMLOutputWriter" additivity="false">
+	<logger name="com.ctm.web.core.web.core.logging.XMLOutputWriter" additivity="false">
 		<appender-ref ref="ASYNC" />
   	</logger>
 
