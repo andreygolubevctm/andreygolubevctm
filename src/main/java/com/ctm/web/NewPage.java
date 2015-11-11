@@ -6,6 +6,7 @@ import com.ctm.security.token.config.TokenConfigFactory;
 import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
+import com.ctm.utils.SessionUtils;
 import com.ctm.web.validation.TokenValidation;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +26,8 @@ public class NewPage {
         return "";
     }
 
-    public void init(PageSettings pageSettings){
-        enabled = TokenConfigFactory.getEnabled(pageSettings.getVertical());
+    public void init(HttpServletRequest request, PageSettings pageSettings){
+        enabled = TokenConfigFactory.getEnabled(pageSettings.getVertical()) && !SessionUtils.isCallCentre(request.getSession());
     }
 
     public boolean isTokenEnabled(){

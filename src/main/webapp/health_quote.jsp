@@ -23,9 +23,7 @@
 
 <%-- Call centre numbers --%>
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
-<c:set var="callCentreNumberApplication" scope="request"><content:get key="callCentreNumberApplication"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber"/></c:set>
-<c:set var="callCentreHelpNumberApplication" scope="request"><content:get key="callCentreHelpNumberApplication"/></c:set>
 
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
 <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
@@ -53,20 +51,20 @@
 		<div class="navbar-collapse header-collapse-contact collapse">
 			<ul class="nav navbar-nav navbar-right callCentreNumberSection">
 				<c:if test="${not empty callCentreNumber}">
-			<li>
-				<div class="navbar-text visible-xs">
-						<h4>Do you need a hand?</h4>
-							<h1><a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></a></h1>
-							${openingHoursHeader }
-				</div>
-				<div class="navbar-text hidden-xs" data-livechat="target">
-					<h4>Call us on</h4>
-							<h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
-							${openingHoursHeader }
+					<li>
+						<div class="navbar-text visible-xs">
+								<h4>Do you need a hand?</h4>
+									<h1><a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></a></h1>
+									${openingHoursHeader }
+						</div>
+						<div class="navbar-text hidden-xs" data-livechat="target">
+							<h4>Call us on</h4>
+								<h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
+								${openingHoursHeader }
 						</div>
 						<div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
 						<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
-			</li>
+					</li>
 				</c:if>
 		</ul>
 		</div>

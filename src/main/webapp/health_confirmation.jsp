@@ -6,7 +6,7 @@
 <session:new verticalCode="HEALTH" authenticated="true" />
 
 <%-- Call centre numbers --%>
-<c:set var="callCentreNumberApplication" scope="request"><content:get key="callCentreNumberApplication"/></c:set>
+<c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 
 <jsp:useBean id="callCenterHours" class="com.disc_au.web.go.CallCenterHours" scope="page" />
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
@@ -25,17 +25,17 @@
 	<jsp:attribute name="header">
 		<div class="navbar-collapse header-collapse-contact collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<c:if test="${not empty callCentreNumberApplication}">
+				<c:if test="${not empty callCentreNumber}">
 					<li>
 						<div class="navbar-text visible-xs">
 							<h4>Do you need a hand?</h4>
-							<h1><a class="needsclick callCentreNumberClick" href="tel:${callCentreNumberApplication}">Call <span class="callCentreNumber">${callCentreNumberApplication}</span></a></h1>
+							<h1><a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">Call <span class="callCentreNumber">${callCentreNumberApplication}</span></a></h1>
 							<p class="small">Our Australian based call centre hours are</p>
 							${openingHoursHeader }
 						</div>
 						<div class="navbar-text hidden-xs" data-livechat="target" data-livechat-fire='{"step":7,"confirmation":true,"navigationId":"confirmation"}'>
 							<h4>Call us on</h4>
-							<h1><span class="noWrap callCentreNumber">${callCentreNumberApplication}</span></h1>
+							<h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
 							${openingHoursHeader }
 						</div>
 						<div id="view_all_hours" class="hidden">${callCentreAllHoursContent}</div>

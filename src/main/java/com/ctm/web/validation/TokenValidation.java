@@ -55,7 +55,7 @@ public abstract class TokenValidation<T extends TokenRequest> {
                 tokenValidation.validateToken(request, getValidTouchTypes());
                 validToken = true;
             } catch (InvalidTokenException exception) {
-                LOGGER.warn("Token is invalid. ", exception);
+                LOGGER.warn("Token is invalid. {}", request , exception);
             }
         } else {
             validToken = true;
@@ -87,7 +87,7 @@ public abstract class TokenValidation<T extends TokenRequest> {
     public static String createToken(Long transactionId, SessionDataService sessionDataService, SettingsService settingsService, TokenCreatorConfig config, String servletPath, HttpServletRequest request) {
         long timeoutSec = sessionDataService.getClientSessionTimeoutSeconds(request);
         if (timeoutSec == -1) {
-            timeoutSec = sessionDataService.getClientDefaultExpiryTimeoutSeconds(request);
+            timeoutSec = sessionDataService.getClientDefaultExpiryTimeoutSeconds(request) + 10;
         }
         JwtTokenCreator creator = new JwtTokenCreator(settingsService, config);
         return creator.createToken(servletPath, transactionId, timeoutSec);
@@ -102,10 +102,12 @@ public abstract class TokenValidation<T extends TokenRequest> {
             } else {
                 response = new JSONObject();
             }
-            if (validToken) {
-                response = createValidTokenResponse(transactionId, request, response);
-            } else {
-                response = createInvalidTokenResponse(transactionId, response);
+            if (TokenConfigFactory.getEnabled(vertical, request)) {
+                if (validToken) {
+                    response = createValidTokenResponse(transactionId, request, response);
+                } else {
+                    response = createInvalidTokenResponse(transactionId, response);
+                }
             }
             long timeout = sessionDataService.getClientSessionTimeout(request);
             response.put("timeout", timeout);
@@ -126,7 +128,7 @@ public abstract class TokenValidation<T extends TokenRequest> {
             error.put("type", type);
             error.put("message", errorMessage);
             response.put("error", error);
-            if (isValidToken()) {
+            if (TokenConfigFactory.getEnabled(vertical, request) && isValidToken()) {
                 setNewToken(response, transactionId, request);
             }
             responseString = response.toString();
@@ -137,7 +139,7 @@ public abstract class TokenValidation<T extends TokenRequest> {
     }
 
     public JSONObject createResponse(Long transactionId, HttpServletRequest request, JSONObject response) throws JSONException {
-        if (isValidToken()) {
+        if (TokenConfigFactory.getEnabled(vertical, request) && isValidToken()) {
             setNewToken(response, transactionId, request);
             response.put("transactionId", transactionId);
         }

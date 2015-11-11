@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="false" >
-
+<configuration debug="false">
+	<conversionRule conversionWord="servletctx" converterClass="com.ctm.logging.ServletContextConverter" />
+	<property name="ENV" value="${spring.profiles.active:-localhost}"/>
+    
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 	    <Target>System.out</Target>
 	    <encoder>
 			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c:%L:%X{transactionId}:%X{brandCode}:%X{verticalCode}:%X{correlationId} - %m%n</pattern>
 		</encoder>
   	</appender>
-  
+
+	<appender name="AMQP" class="org.springframework.amqp.rabbit.logback.AmqpAppender">
+		<applicationId>webctm</applicationId>
+		<generateId>true</generateId>
+		<charset>UTF-8</charset>
+		<durable>true</durable>
+		<exchangeName>logs</exchangeName>
+		<deliveryMode>PERSISTENT</deliveryMode>
+		<host>dev-vm-ken-ctm-elk-x1</host>
+		<layout class="net.logstash.logback.layout.LogstashLayout">
+			<fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
+			<includeContext>false</includeContext>
+			<provider class="net.logstash.logback.composite.loggingevent">
+				<includeMdcKeyName>transactionId</includeMdcKeyName>
+				<includeMdcKeyName>brandCode</includeMdcKeyName>
+				<includeMdcKeyName>verticalCode</includeMdcKeyName>
+				<includeMdcKeyName>correlationId</includeMdcKeyName>
+			</provider>
+			<customFields>{"hostname":"${HOSTNAME}", "appname":"webctm"}</customFields>
+			<provider class="net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider">
+				<pattern>{"env":"${ENV}","context":"%servletctx"}</pattern>
+			</provider>
+			<provider class="net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider"/>
+		</layout>
+	</appender>
+
 	<appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
 		<!-- in the absence of the class attribute, it is assumed that the
 				desired discriminator type is
@@ -33,25 +60,19 @@
 		<appender-ref ref="SIFT" />
 	</appender>
 
-
 	<logger name="com.ctm.logging.XMLOutputWriter" additivity="false">
 		<appender-ref ref="ASYNC" />
   	</logger>
 
-	<logger name="org.springframework.ws.client.MessageTracing.sent" additivity="false">
-		<appender-ref ref="stdout" />
-  	</logger>
-
-	<logger name="org.springframework.ws.client.MessageTracing.received" additivity="false">
-		<appender-ref ref="stdout" />
-	</logger>
-
-	<logger name="log4j.logger.org.elasticsearch" level="INFO" additivity="false">
-		<appender-ref ref="stdout" />
-	</logger>
+	<logger name="log4j.logger.org.elasticsearch" level="INFO"/>
 
 	<root level="info">
    		<appender-ref ref="stdout" />
+		<if condition='!(p("ENV").contains("PRO") || p("ENV").contains("localhost"))'>
+			<then>
+				<appender-ref ref="AMQP" />
+			</then>
+		</if>
 	</root>
 	
 </configuration>

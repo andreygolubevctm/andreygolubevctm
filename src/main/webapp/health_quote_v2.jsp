@@ -23,9 +23,7 @@
 
 <%-- Call centre numbers --%>
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
-<c:set var="callCentreNumberApplication" scope="request"><content:get key="callCentreNumberApplication"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber"/></c:set>
-<c:set var="callCentreHelpNumberApplication" scope="request"><content:get key="callCentreHelpNumberApplication"/></c:set>
 
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
 <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>

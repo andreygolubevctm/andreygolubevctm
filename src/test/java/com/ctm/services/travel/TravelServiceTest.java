@@ -7,12 +7,15 @@ import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.travel.form.TravelQuote;
 import com.ctm.model.travel.form.TravelRequest;
+import com.ctm.model.travel.form.Travellers;
 import com.ctm.services.EnvironmentService;
 import com.ctm.web.validation.SchemaValidationError;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -25,6 +28,7 @@ public class TravelServiceTest {
 	private TravelRequest travelRequest;
     private TravelQuote travelQuote;
 	private SimpleConnection connection;
+	private Travellers travellers;
 
 	@Before
 	public void setup() throws Exception {
@@ -34,7 +38,10 @@ public class TravelServiceTest {
 		travelService = new TravelService(serviceConfig, connection);
 		travelRequest = new TravelRequest();
         travelQuote = new TravelQuote();
-		travelQuote.setOldest(80);
+
+		travellers = Travellers.of(Arrays.asList(LocalDate.of(1935, 1, 1), LocalDate.of(1965, 1, 1)));
+
+		travelQuote.setTravellers(travellers);
 		travelQuote.setAdults(2);
 		travelQuote.setChildren(1);
 		travelQuote.setPolicyType("M");
@@ -50,7 +57,7 @@ public class TravelServiceTest {
 		travelRequest.setTravel(travelQuote);
 		when(connection.get(null + "/quote")).thenReturn("result");
 		travelService.getQuotes(brand, verticalCode, travelRequest);
-		verify(connection, times(1)).setHasCorrelationId(true);
+
 	}
 
 
@@ -60,8 +67,10 @@ public class TravelServiceTest {
 		// Set defaults for mandatory fields
         travelQuote.setAdults(1);
         travelQuote.setChildren(1);
-        travelQuote.setOldest(30);
 
+		travellers = new Travellers();
+		travellers.setTravellersDOB("01/01/1985");
+		travelQuote.setTravellers(travellers);
 
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
 		boolean valid = travelService.isValid();
@@ -113,7 +122,10 @@ public class TravelServiceTest {
 		// Set defaults
         travelQuote.setAdults(1);
         travelQuote.setChildren(1);
-        travelQuote.setOldest(30);
+
+		travellers = new Travellers();
+		travellers.setTravellersDOB("01/01/1985");
+		travelQuote.setTravellers(travellers);
 
 		// Destination field only accepts 3 letter characters
         travelRequest.getQuote().setDestination("BOB");
@@ -165,7 +177,10 @@ public class TravelServiceTest {
 		// Set defaults
         travelQuote.setAdults(1);
         travelQuote.setChildren(1);
-        travelQuote.setOldest(30);
+
+		travellers = new Travellers();
+		travellers.setTravellersDOB("01/01/1985");
+		travelQuote.setTravellers(travellers);
 
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
@@ -197,14 +212,18 @@ public class TravelServiceTest {
 
 		travelQuote.setAdults(null);
 		travelQuote.setChildren(null);
-		travelQuote.setOldest(null);
+
+		travelQuote.setTravellers(null);
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
 		assertFalse(travelService.isValid());
 
 		// Set defaults
         travelQuote.setAdults(1);
         travelQuote.setChildren(1);
-        travelQuote.setOldest(30);
+
+		travellers = new Travellers();
+		travellers.setTravellersDOB("01/01/1985");
+		travelQuote.setTravellers(travellers);
 
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
 		assertTrue(travelService.isValid());
