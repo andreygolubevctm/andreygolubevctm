@@ -1,29 +1,28 @@
-package com.ctm.services.email;
+package com.ctm.web.core.email.services;
 
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.model.EmailMaster;
-import com.ctm.model.email.IncomingEmail;
-import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.services.email.token.EmailTokenService;
-import com.ctm.utils.FormDateUtils;
+import com.ctm.web.core.email.model.IncomingEmail;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.utils.FormDateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Map;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
+
 
 public class EmailUrlServiceOld {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmailUrlService.class);
 
-	private VerticalType vertical;
+	private Vertical.VerticalType vertical;
 	private String baseUrl;
 
-	public EmailUrlServiceOld(VerticalType vertical, String baseUrl) {
+	public EmailUrlServiceOld(Vertical.VerticalType vertical, String baseUrl) {
 		this.vertical = vertical;
 		this.baseUrl = baseUrl;
 	}

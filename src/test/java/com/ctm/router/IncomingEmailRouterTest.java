@@ -6,8 +6,8 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.services.AccessTouchService;
 import com.ctm.services.SettingsService;
 import com.ctm.services.email.IncomingEmailService;
-import com.ctm.services.email.token.EmailTokenService;
-import com.ctm.services.email.token.EmailTokenServiceFactory;
+import com.ctm.web.core.email.services.token.EmailTokenService;
+import com.ctm.web.core.email.services.token.EmailTokenServiceFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,6 @@ import static org.mockito.Mockito.*;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import static org.powermock.api.mockito.PowerMockito.*;
-import static org.mockito.Matchers.*;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import org.powermock.core.classloader.annotations.PrepareForTest;

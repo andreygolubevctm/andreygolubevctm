@@ -30,7 +30,7 @@
 	<c:set var="productCount" value="0" />
 
 	<c:if test="${emailTokenEnabled}">
-		<jsp:useBean id="tokenServiceFactory" class="com.ctm.services.email.token.EmailTokenServiceFactory"/>
+		<jsp:useBean id="tokenServiceFactory" class="com.ctm.web.core.email.services.token.EmailTokenServiceFactory"/>
 		<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
 		<c:set var="emailVar" value="${tokenService.insertEmailTokenRecord(tranId, hashedEmail, pageSettings.getBrandId(), emailTokenType, 'load')}" />
 	</c:if>

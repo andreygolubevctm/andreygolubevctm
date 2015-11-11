@@ -1,14 +1,14 @@
-package com.ctm.services.email.token;
+package com.ctm.web.core.email.services.token;
 
-import com.ctm.dao.EmailMasterDao;
-import com.ctm.dao.EmailTokenDao;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.EmailMaster;
-import com.ctm.model.email.EmailMode;
-import com.ctm.model.email.IncomingEmail;
-import com.ctm.security.StringEncryption;
-import com.ctm.services.FatalErrorService;
-import com.ctm.services.email.EmailUrlService;
+import com.ctm.web.core.email.dao.EmailTokenDao;
+import com.ctm.web.core.dao.EmailMasterDao;
+import com.ctm.web.core.email.model.EmailMode;
+import com.ctm.web.core.email.model.IncomingEmail;
+import com.ctm.web.core.email.services.EmailUrlService;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.security.StringEncryption;
+import com.ctm.web.core.services.FatalErrorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,8 @@ import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.web.core.logging.LoggingArguments.kv;
+
 
 /**
  * Created by voba on 14/08/2015.

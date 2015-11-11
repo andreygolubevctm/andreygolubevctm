@@ -1,12 +1,12 @@
 package com.ctm.services.email;
 
 import com.ctm.dao.EmailMasterDao;
-import com.ctm.dao.EmailTokenDao;
+import com.ctm.web.core.email.dao.EmailTokenDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.email.EmailMode;
 import com.ctm.model.email.IncomingEmail;
-import com.ctm.services.email.token.EmailTokenService;
+import com.ctm.web.core.email.services.token.EmailTokenService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

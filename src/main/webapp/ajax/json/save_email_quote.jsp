@@ -184,7 +184,7 @@
 					<%-- Send off the Email response via json/ajax/send.jsp --%>
 					<c:if test="${sendConfirmation == 'yes'}">
 						<c:catch var="silentError">
-							<jsp:useBean id="tokenServiceFactory" class="com.ctm.services.email.token.EmailTokenServiceFactory"/>
+							<jsp:useBean id="tokenServiceFactory" class="com.ctm.web.core.email.services.token.EmailTokenServiceFactory"/>
 							<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
 							<c:set var="hashedEmail"><security:hashed_email email="${emailAddress}" brand="${brand}" /></c:set>
 

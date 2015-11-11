@@ -132,7 +132,7 @@
 		<c:if test="${createUnsubscribeEmailToken && pageSettings.getSetting('emailTokenEnabled')}">
 			<c:choose>
 				<c:when test="${empty param.unsubscribeToken}">
-					<jsp:useBean id="tokenServiceFactory" class="com.ctm.services.email.token.EmailTokenServiceFactory"/>
+					<jsp:useBean id="tokenServiceFactory" class="com.ctm.web.core.email.services.token.EmailTokenServiceFactory"/>
 					<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
 					<c:set var="unsubscribeToken" value="${tokenService.generateToken(param.transactionId, param.hashedEmail, pageSettings.getBrandId(), emailTokenType, 'unsubscribe', null, null, pageSettings.getVerticalCode(), null, true)}" />
 				</c:when>

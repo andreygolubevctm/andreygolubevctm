@@ -1,12 +1,12 @@
-package com.ctm.services.email.token;
+package com.ctm.web.core.email.services.token;
 
-import com.ctm.dao.EmailMasterDao;
-import com.ctm.dao.EmailTokenDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
-import com.ctm.services.SettingsService;
+import com.ctm.web.core.dao.EmailMasterDao;
+import com.ctm.web.core.email.dao.EmailTokenDao;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.services.SettingsService;
 
 import javax.servlet.http.HttpServletRequest;
 

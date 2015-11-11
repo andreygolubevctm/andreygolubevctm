@@ -1,11 +1,16 @@
-package com.ctm.dao;
+package com.ctm.web.core.email.dao;
 
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.EmailMaster;
 
-import java.sql.*;
+import com.ctm.web.core.dao.DatabaseQueryMapping;
+import com.ctm.web.core.dao.DatabaseUpdateMapping;
+import com.ctm.web.core.dao.SqlDao;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.EmailMaster;
+
 import java.sql.Date;
-import java.util.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
 
 /**
  * Created by voba on 13/08/2015.

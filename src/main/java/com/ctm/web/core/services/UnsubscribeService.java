@@ -2,8 +2,8 @@ package com.ctm.web.core.services;
 
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.model.EmailMaster;
-import com.ctm.services.email.token.EmailTokenService;
-import com.ctm.services.email.token.EmailTokenServiceFactory;
+import com.ctm.web.core.email.services.token.EmailTokenService;
+import com.ctm.web.core.email.services.token.EmailTokenServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
