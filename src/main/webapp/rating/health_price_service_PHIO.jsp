@@ -42,10 +42,10 @@
 <c:set var="situationFilter"><x:out select="$healthXML/request/details/situation" /></c:set>
 <c:choose>
 	<c:when test="${isSimples eq false and situationFilter eq 'ATP'}">
-		<c:set var="situationFilter" value="Y" />
+		<c:set var="situationFilter" value="N" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="situationFilter" value="N" />
+		<c:set var="situationFilter" value="Y" />
 	</c:otherwise>
 </c:choose>
 <%-- Unencode apostrophes --%>
