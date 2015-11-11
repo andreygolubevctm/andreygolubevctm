@@ -7,8 +7,8 @@ INSERT INTO ctm.configuration (configCode,environmentCode,styleCodeId,verticalId
 INSERT INTO ctm.configuration (configCode,environmentCode,styleCodeId,verticalId,configValue) VALUES ('BenchMarketingScriptEnabled','PRO',1,0,'Y');
 INSERT INTO ctm.configuration (configCode,environmentCode,styleCodeId,verticalId,configValue) VALUES ('BenchMarketingScriptEnabled','PRO',1,14,'N');
 
--- Checker
+-- Checker - 0 before update, 7 after update and 0 after delete
 SELECT * FROM ctm.configuration WHERE configCode = 'BenchMarketingScriptEnabled';
 
 -- Rollback
--- ETE FROM ctm.configuration WHERE configCode = 'BenchMarketingScriptEnabled';
+-- DELETE FROM ctm.configuration WHERE configCode = 'BenchMarketingScriptEnabled';
