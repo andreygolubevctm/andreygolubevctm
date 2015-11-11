@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+		 pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.life_contact_lead')}" />
@@ -9,7 +9,7 @@
 <session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}" />
 <security:populateDataFromParams rootPath="${vertical}" />
 
-<jsp:useBean id="lifeService" class="com.ctm.services.life.LifeService" scope="page" />
+<jsp:useBean id="lifeService" class="com.ctm.web.life.services.LifeService" scope="page" />
 <c:set var="serviceResponse" value="${lifeService.contactLeadViaJSP(pageContext.request, data)}" />
 
 <c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
@@ -30,18 +30,18 @@
 				<go:setData dataVar="data" xpath="${vertical}/quoteAction" value="start" />
 
 				<%-- Load the config and send quotes to the aggregator gadget --%>
-				<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+				<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 				<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_contact_lead.xml')}" />
 				<go:soapAggregator 	config = "${config}"
-									transactionId = "${tranId}"
-									xml = "${go:getEscapedXml(data[fn:toLowerCase(vertical)])}"
-									var = "resultXml"
-									debugVar="debugXml"
-									verticalCode="${fn:toUpperCase(vertical)}"
-									configDbKey="quoteService"
-									styleCodeId="${pageSettings.getBrandId()}"
-									/>
-		
+									  transactionId = "${tranId}"
+									  xml = "${go:getEscapedXml(data[fn:toLowerCase(vertical)])}"
+									  var = "resultXml"
+									  debugVar="debugXml"
+									  verticalCode="${fn:toUpperCase(vertical)}"
+									  configDbKey="quoteService"
+									  styleCodeId="${pageSettings.getBrandId()}"
+						/>
+
 				<%-- Add the results to the current session data --%>
 				<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
@@ -51,7 +51,7 @@
 					<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/api/reference" value="${clientRef}" />
 				</c:if>
 
-				<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="request" />
+				<jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="request" />
 				<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data[vertical]}" />
 				<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "LF", "lifebroker")}</c:set>
 			</c:otherwise>
@@ -59,7 +59,7 @@
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">
-			<results><success>false</success><message>${serviceResponse}</message></results>
+				<results><success>false</success><message>${serviceResponse}</message></results>
 		</c:set>
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 	</c:otherwise>

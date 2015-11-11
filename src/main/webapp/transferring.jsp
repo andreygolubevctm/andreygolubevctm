@@ -10,7 +10,7 @@
 </c:set>
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
-<jsp:useBean id="resultsService" class="com.ctm.services.ResultsService" scope="request" />
+<jsp:useBean id="resultsService" class="com.ctm.web.core.services.ResultsService" scope="request" />
 
 <c:set var="quoteUrl" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, 'quoteUrl'),'%26','&') }" />
 

@@ -16,7 +16,7 @@
 		</div>
 --%>
 
-<jsp:useBean id="healthApplicationService" class="com.ctm.services.health.HealthApplicationService" scope="page" />
+<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService" scope="page" />
 <div class="dropdown-container">
 	<form class="filters-component">
 		<div class="scrollable filters clearfix">

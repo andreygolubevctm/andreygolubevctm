@@ -27,7 +27,7 @@
 </c:if>
 
 <%-- Retrieve the vehicle MAKE data --%>
-<jsp:useBean id="service" class="com.ctm.services.car.CarVehicleSelectionService" scope="request" />
+<jsp:useBean id="service" class="com.ctm.web.car.services.CarVehicleSelectionService" scope="request" />
 <c:set var="json" value="${service.getVehicleSelection(data.roadside.vehicle.make, '', '', '', '', '') }" />
 
 {

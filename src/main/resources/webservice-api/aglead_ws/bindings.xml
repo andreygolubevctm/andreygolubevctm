@@ -7,11 +7,11 @@
     	<!-- Raise theEnumMemberSizeCap limit -->
         <jxb:globalBindings typesafeEnumMaxMembers="2000">
             <jxb:javaType name="org.joda.time.LocalDate" xmlType="xs:date"
-               parseMethod="com.ctm.jaxb.Binder.parseLocalDate"
-               printMethod="com.ctm.jaxb.Binder.printLocalDate"/>
+               parseMethod="com.ctm.web.core.jaxb.Binder.parseLocalDate"
+               printMethod="com.ctm.web.core.jaxb.Binder.printLocalDate"/>
             <jxb:javaType name="org.joda.time.LocalTime" xmlType="xs:time"
-               parseMethod="com.ctm.jaxb.Binder.parseLocalTime"
-               printMethod="com.ctm.jaxb.Binder.printLocalTime"/>
+               parseMethod="com.ctm.web.core.jaxb.Binder.parseLocalTime"
+               printMethod="com.ctm.web.core.jaxb.Binder.printLocalTime"/>
         </jxb:globalBindings>
     </jxb:bindings>
   

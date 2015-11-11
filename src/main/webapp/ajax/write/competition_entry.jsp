@@ -20,7 +20,6 @@
 
 
 <%-- Variables --%>
-<c:set var="database" value="ctm" />
 <c:set var="competition_id" value="${2}" /><%-- 1=Robe, 2=1000grubs, 3=1000dollars --%>
 <c:set var="brand" value="CTM" />
 <c:set var="vertical" value="COMPETITION" />
@@ -148,7 +147,7 @@
 			lastName="${data['competition/lastname']}"
 			items="marketing=Y,okToCall=Y" />
 
-		<sql:setDataSource dataSource="jdbc/${database}"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<sql:query var="emailMaster">
 			SELECT emailId
 				FROM aggregator.email_master

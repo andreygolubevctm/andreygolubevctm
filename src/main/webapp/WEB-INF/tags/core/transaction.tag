@@ -91,7 +91,7 @@
 	</c:when>
 
 	<c:when test="${empty vertical}">
-		${logger.error('Vertical setting can not be empty. {}', log:kv('param.vertical',param.vertical ))}
+		${logger.error('Vertical setting can not be empty. {}', log:kv('vertical',param.vertical ))}
 		<c:set var="response" value="V" />
 		<c:set var="write_quote" value="N" />
 		<c:set var="touch" value="" /><%-- unset --%>
@@ -139,7 +139,7 @@
 <c:choose>
 	<c:when test="${empty touch}"></c:when>
  	<c:when test="${touch_with_productId and not empty productId}">
-		<jsp:useBean id="touchService" class="com.ctm.services.AccessTouchService" scope="page" />
+		<jsp:useBean id="touchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
 		<c:catch var="error">
 			<c:set var="ignore" value="${touchService.recordTouchWithProductCode(transactionId, touch , operator, productId)}" />
 		</c:catch>
@@ -234,7 +234,7 @@
 
 <%-- If RESULTS touch then ensure trackingKey is generated and added to session --%>
 <c:if test="${touch eq 'R'}">
-	<jsp:useBean id="trackingKeyService" class="com.ctm.services.tracking.TrackingKeyService" scope="request" />
+	<jsp:useBean id="trackingKeyService" class="com.ctm.web.core.services.tracking.TrackingKeyService" scope="request" />
 	<c:catch var="trackingKeyError">
 		<c:set var="ignore">
 			${trackingKeyService.generate(pageContext.getRequest(), data.current.transactionId)}

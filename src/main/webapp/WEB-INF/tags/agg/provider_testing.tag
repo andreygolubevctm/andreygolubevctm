@@ -40,7 +40,7 @@
 	</c:when>
 	<c:when test="${(not empty param[keyLabel] && (environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI')) || environmentService.getEnvironmentAsString() == 'NXS'}">
 		<c:set var="providerKey"><c:out value="${param[keyLabel]}" escapeXml="true" /></c:set>
-		<jsp:useBean id="providerService" class="com.ctm.services.ProviderService" />
+		<jsp:useBean id="providerService" class="com.ctm.web.core.services.ProviderService" />
 		<c:choose>
 			<c:when test="${not empty providerKey && ((keyLabel ne 'authToken' && providerService.providerKeyExists(providerKey)) or (providerService.authTokenExists(providerKey)))}">
 				<field:hidden xpath="${xpath}/filter/${keyLabel}" constantValue="${providerKey}"/>

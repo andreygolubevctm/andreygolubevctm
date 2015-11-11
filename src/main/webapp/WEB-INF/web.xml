@@ -19,6 +19,15 @@
 		<param-value>CTM</param-value>
 	</context-param>
 
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>com.ctm.web.core.Application</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.boot.legacy.context.web.SpringBootContextLoaderListener</listener-class>
+	</listener>
+
 	<!-- SESSIONS: This over-rides the settings in Tomcat -->
 	<session-config>
 		<session-timeout>60</session-timeout><!-- Previous default in Tomcat is 30 -->
@@ -30,27 +39,27 @@
 		<servlet-class>org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet</servlet-class>
 		<init-param>
 			<param-name>jaxrs.serviceClasses</param-name>
-			<param-value>com.ctm.router.CarRouter,
-				com.ctm.router.car.RegoLookupRouter,
-				com.ctm.router.travel.TravelRouter,
-				com.ctm.router.car.CarQuoteRouter,
-				com.ctm.router.home.HomeQuoteRouter,
-				com.ctm.router.health.HealthApplicationRouter,
-				com.ctm.router.health.HealthAuthorisePaymentRouter,
-				com.ctm.router.health.HealthRegisterPaymentRouter
+			<param-value>com.ctm.web.car.router.CarRouter,
+				com.ctm.web.car.router.RegoLookupRouter,
+				com.ctm.web.travel.router.TravelRouter,
+				com.ctm.web.car.router.CarQuoteRouter,
+				com.ctm.web.homecontents.router.HomeQuoteRouter,
+				com.ctm.web.health.router.HealthApplicationRouter,
+				com.ctm.web.health.router.HealthAuthorisePaymentRouter,
+				com.ctm.web.health.router.HealthRegisterPaymentRouter
 			</param-value>
 		</init-param>
 		<init-param>
 			<param-name>jaxrs.providers</param-name>
 			<param-value>
-				com.ctm.router.RouterJacksonJsonProvider,
-				com.ctm.router.exceptionhandlers.ServiceExceptionHandler
+				com.ctm.web.core.router.RouterJacksonJsonProvider,
+				com.ctm.web.core.router.exceptionhandlers.ServiceExceptionHandler
 			</param-value>
 		</init-param>
 		<init-param>
 			<param-name>jaxrs.inInterceptors</param-name>
 			<param-value>
-				com.ctm.soap.FormParamMapInInterceptor,
+				com.ctm.web.core.soap.FormParamMapInInterceptor,
 				org.apache.cxf.transport.common.gzip.GZIPInInterceptor
 			</param-value>
 		</init-param>
@@ -93,7 +102,7 @@
 
 	<!-- Error and Security Failure Handler Pages -->
 
-	<error-page>
+	<!--<error-page>
 		<error-code>400</error-code>
 		<location>/security/simples_loginServerFail.jsp</location>
 	</error-page>
@@ -112,7 +121,7 @@
 	<error-page>
 		<error-code>500</error-code>
 		<location>/err/error500.jsp</location>
-	</error-page>
+	</error-page>-->
 
 
 
@@ -150,7 +159,7 @@
 
 	<filter>
 		<filter-name>mdcFilter</filter-name>
-		<filter-class>com.ctm.logging.listeners.MDCFilter</filter-class>
+		<filter-class>com.ctm.web.core.logging.listeners.MDCFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>mdcFilter</filter-name>
