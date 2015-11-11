@@ -11,7 +11,7 @@
 	<c:otherwise>
 		<%-- Any email with out a transaction id would most likely be things like forgot password --%>
 		<settings:setVertical verticalCode="GENERIC" />
-		<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+		<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 	</c:otherwise>
 </c:choose>
 

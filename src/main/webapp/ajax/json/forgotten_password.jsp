@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
-<jsp:useBean id="authenticationService" class="com.ctm.services.AuthenticationService" scope="application" />
+<jsp:useBean id="authenticationService" class="com.ctm.web.core.services.AuthenticationService" scope="application" />
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.forgotten_password')}" />
 
 <settings:setVertical verticalCode="GENERIC" />
@@ -70,7 +70,7 @@
 					</c:import>
 				</c:catch>
 				<c:if test="${error}">
-					${logger.error('Reset Email Error. {}' , log:kv('param.email',param.email ) , error)}
+					${logger.error('Reset Email Error. {}' , log:kv('email',param.email ) , error)}
 				</c:if>
 				${logger.debug('Reset Email: MYSQL - Code for send run.')}
 				<%-- JSON result success --%>

@@ -1213,7 +1213,7 @@
 
 			// Only show the real error to the Call Centre operator
 			if (meerkat.site.isCallCentreUser === false) {
-				msg = "Please contact us on <span class=\"callCentreHelpNumber\">"+meerkat.site.content.callCentreHelpNumberApplication+"</span> for assistance.";
+				msg = "Please contact us on <span class=\"callCentreHelpNumber\">"+meerkat.site.content.callCentreHelpNumber+"</span> for assistance.";
 			}
 			meerkat.modules.errorHandling.error({
 				message:		"<strong>Application failed:</strong><br/>" + msg,
