@@ -175,6 +175,7 @@
 
     <health_new:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />
 
+    <field:hidden xpath="environmentOverride" />
     <input type="hidden" name="transcheck" id="transcheck" value="1" />
   </jsp:body>
 </layout:journey_engine_page>

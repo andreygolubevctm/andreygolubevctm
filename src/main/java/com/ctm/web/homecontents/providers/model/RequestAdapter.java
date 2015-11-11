@@ -11,16 +11,16 @@ import com.ctm.web.homecontents.providers.model.request.Property;
 import com.ctm.web.homecontents.providers.model.request.SecurityFeatures;
 import com.ctm.web.homecontents.providers.model.request.WhenMovedIn;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class RequestAdapter {
 
-    private static final DateTimeFormatter AUS_FORMAT = DateTimeFormat.forPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter AUS_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public final static HomeQuoteRequest adapt(HomeRequest homeRequest) {
+    public static HomeQuoteRequest adapt(HomeRequest homeRequest) {
         HomeQuoteRequest quoteRequest = new HomeQuoteRequest();
         final HomeQuote quote = homeRequest.getHome();
         CoverTypeEnum coverType = CoverTypeEnum.fromCode(quote.getCoverType());
@@ -39,7 +39,7 @@ public class RequestAdapter {
             isContentsCover = true;
         }
 
-        quoteRequest.setStartDate(AUS_FORMAT.parseLocalDate(quote.getStartDate()));
+        quoteRequest.setStartDate(LocalDate.parse(quote.getStartDate(), AUS_FORMAT));
 
         if (StringUtils.isNotBlank(quote.getHomeExcess())) {
             quoteRequest.setHomeExcess(Integer.parseInt(quote.getHomeExcess()));
@@ -93,7 +93,7 @@ public class RequestAdapter {
         PreviousCover previousCover = new PreviousCover();
         previousCover.setAtCurrentAddress(convertToBoolean(disclosures.getAtCurrentAddress()));
         previousCover.setInsurer(disclosures.getInsurer());
-        previousCover.setExpiryDate(AUS_FORMAT.parseLocalDate(disclosures.getExpiry()));
+        previousCover.setExpiryDate(LocalDate.parse(disclosures.getExpiry(), AUS_FORMAT));
         previousCover.setCoverLength(Integer.parseInt(disclosures.getCoverLength()));
         return previousCover;
     }
@@ -107,7 +107,7 @@ public class RequestAdapter {
 
     private static PolicyHolder createOldestPolicyHolder(com.ctm.web.homecontents.model.form.PolicyHolder formPolicyHolder) {
         PolicyHolder policyHolder = new PolicyHolder();
-        policyHolder.setDateOfBirth(AUS_FORMAT.parseLocalDate(formPolicyHolder.getOldestPersonDob()));
+        policyHolder.setDateOfBirth(LocalDate.parse(formPolicyHolder.getOldestPersonDob(), AUS_FORMAT));
         policyHolder.setRetried(convertToOptionalBoolean(formPolicyHolder.getOver55()));
         return policyHolder;
     }
@@ -117,7 +117,7 @@ public class RequestAdapter {
         policyHolder.setTitle(formPolicyHolder.getJointTitle());
         policyHolder.setFirstName(formPolicyHolder.getJointFirstName());
         policyHolder.setSurname(formPolicyHolder.getJointLastName());
-        policyHolder.setDateOfBirth(AUS_FORMAT.parseLocalDate(formPolicyHolder.getJointDob()));
+        policyHolder.setDateOfBirth(LocalDate.parse(formPolicyHolder.getJointDob(), AUS_FORMAT));
         return policyHolder;
     }
 
@@ -126,7 +126,7 @@ public class RequestAdapter {
         policyHolder.setTitle(formPolicyHolder.getTitle());
         policyHolder.setFirstName(formPolicyHolder.getFirstName());
         policyHolder.setSurname(formPolicyHolder.getLastName());
-        policyHolder.setDateOfBirth(AUS_FORMAT.parseLocalDate(formPolicyHolder.getDob()));
+        policyHolder.setDateOfBirth(LocalDate.parse(formPolicyHolder.getDob(), AUS_FORMAT));
         return policyHolder;
     }
 

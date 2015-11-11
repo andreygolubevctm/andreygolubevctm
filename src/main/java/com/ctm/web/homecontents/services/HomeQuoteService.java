@@ -1,6 +1,7 @@
 package com.ctm.web.homecontents.services;
 
 import com.ctm.web.core.connectivity.SimpleConnection;
+import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.SessionException;
@@ -11,6 +12,7 @@ import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.services.CommonQuoteService;
+import com.ctm.web.core.services.Endpoint;
 import com.ctm.web.core.services.ResultsService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.utils.ObjectMapperUtil;
@@ -42,10 +44,13 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteRequest, HomeResponse> {
-
     public static final List<String> HOLLARD_PROVIDERS = asList("REIN", "WOOL");
 
     private static final SessionDataService SESSION_DATA_SERVICE = new SessionDataService();
+
+    public HomeQuoteService() {
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+    }
 
     public List<HomeResult> getQuotes(Brand brand, HomeRequest data) throws Exception {
 
@@ -67,7 +72,7 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteReq
         }
 
         final HomeQuoteRequest homeQuoteRequest = RequestAdapter.adapt(data);
-        HomeResponse homeResponse = sendRequest(brand, Vertical.VerticalType.HOME, "homeQuoteServiceBER", "HOME-QUOTE", "quote", data,
+        HomeResponse homeResponse = sendRequest(brand, Vertical.VerticalType.HOME, "homeQuoteServiceBER", Endpoint.QUOTE, data,
                 homeQuoteRequest, HomeResponse.class);
 
         final List<HomeResult> homeResults = ResponseAdapter.adapt(homeQuoteRequest, homeResponse);
@@ -149,20 +154,20 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteReq
             resultDetails.addChild(results);
 
             quotes.stream()
-                .filter(row -> AvailableType.Y.equals(row.getAvailable()))
-                .forEach(row -> {
-                            String productId = row.getProductId();
-                            BigDecimal premium = row.getPrice().getAnnualPremium();
-                            XmlNode product = new XmlNode(productId);
-                            XmlNode price = new XmlNode("price");
-                            XmlNode annual = new XmlNode("annual");
-                            XmlNode total = new XmlNode("total", premium.toString());
-                            annual.addChild(total);
-                            price.addChild(annual);
-                            product.addChild(price);
-                            results.addChild(product);
-                        }
-                );
+                    .filter(row -> AvailableType.Y.equals(row.getAvailable()))
+                    .forEach(row -> {
+                                String productId = row.getProductId();
+                                BigDecimal premium = row.getPrice().getAnnualPremium();
+                                XmlNode product = new XmlNode(productId);
+                                XmlNode price = new XmlNode("price");
+                                XmlNode annual = new XmlNode("annual");
+                                XmlNode total = new XmlNode("total", premium.toString());
+                                annual.addChild(total);
+                                price.addChild(annual);
+                                product.addChild(price);
+                                results.addChild(product);
+                            }
+                    );
 
         }
 

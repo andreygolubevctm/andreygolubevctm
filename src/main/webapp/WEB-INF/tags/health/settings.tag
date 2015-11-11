@@ -32,6 +32,7 @@
 		</c:otherwise>
 	</c:choose>
 </c:set>
+<c:set var="defaultToHealthQuote"><content:get key="makeHealthQuoteMainJourney" /></c:set>
 
 <c:set var="utm_source">
 	<c:choose>
@@ -78,6 +79,7 @@
 	utm_medium: '<c:out value="${utm_medium}" />',
 	utm_campaign: '<c:out value="${utm_campaign}" />',
 	healthApplicationExcludeProviders: '<c:out value="${healthApplicationExcludeProviders}" />',
+	isDefaultToHealthQuote: ${defaultToHealthQuote},
 	liveChat: {
 		config: {
 			lpServer			: "server.lon.liveperson.net",

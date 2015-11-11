@@ -1,25 +1,15 @@
 package com.ctm.web.travel.router;
 
-import com.ctm.web.core.exceptions.RouterException;
-import com.ctm.web.travel.exceptions.TravelServiceException;
-import com.ctm.web.core.resultsData.model.Info;
+import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
-import com.ctm.web.core.model.settings.Brand;
-import com.ctm.web.core.model.settings.PageSettings;
-import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.web.travel.model.form.TravelRequest;
-import com.ctm.web.travel.model.results.TravelResult;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.EnvironmentService;
-import com.ctm.web.core.services.IPCheckService;
-import com.ctm.web.core.services.SettingsService;
-import com.ctm.web.core.services.tracking.TrackingKeyService;
+import com.ctm.web.travel.model.form.TravelRequest;
+import com.ctm.web.travel.model.results.TravelResult;
 import com.ctm.web.travel.services.TravelService;
-import com.ctm.web.core.validation.SchemaValidationError;
 import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -27,8 +17,6 @@ import java.util.List;
 
 @Path("/travel")
 public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
-
-	private static final Logger logger = LoggerFactory.getLogger(TravelRouter.class.getName());
 
     private final TravelService travelService = new TravelService();
 
@@ -53,7 +41,7 @@ public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
 
                 return response.getOutputStream();
             } catch (Exception e) {
-                logger.error("Error in country mapping inport", e);
+                LOGGER.error("Error in country mapping inport", e);
             }
             */
         }
@@ -73,7 +61,7 @@ public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
         // Initialise request
         Brand brand = initRouter(context, vertical);
 
-        updateTransactionIdAndClientIP(context, data); // TODO check IP Address is correct
+        updateTransactionIdAndClientIP(context, data);
 
         checkIPAddressCount(brand, vertical, context);
         // Check IP Address Count
@@ -81,7 +69,6 @@ public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
         travelService.validateRequest(data, vertical.getCode());
 
         // Get quotes
-
         List<TravelResult> travelQuoteResults = travelService.getQuotes(brand, data);
 
         // Build the JSON object for the front end.
@@ -92,8 +79,6 @@ public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
         return new ResultsWrapper(results);
 
     }
-
-
 
 
 }

@@ -1,5 +1,7 @@
 package com.ctm.web.core.resultsData.model;
 
+import com.ctm.web.core.model.resultsData.BaseResultObj;
+import com.ctm.web.core.model.resultsData.Error;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -9,37 +11,35 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ResultsWrapper {
 
-    private final ResultsObj results;
+    private final BaseResultObj results;
 
-    // Added for token validation
     private final String verificationToken;
 
-    // Added for token validation error
     private final Error error;
 
-    private ResultsWrapper(ResultsObj results, String verificationToken, Error error) {
+    public ResultsWrapper(BaseResultObj results) {
+        this(results, "", null);
+    }
+
+    private ResultsWrapper(BaseResultObj results, String verificationToken, Error error) {
         this.results = results;
         this.verificationToken = verificationToken;
         this.error = error;
     }
 
-    public ResultsWrapper(ResultsObj results) {
-        this(results, "", null);
-    }
-
-    public ResultsWrapper(ResultsObj results, String verificationToken) {
+    public ResultsWrapper(BaseResultObj results, String verificationToken) {
         this.results = results;
         this.verificationToken = verificationToken;
         this.error = null;
     }
 
-    public ResultsWrapper(ResultsObj results, Error error) {
+    public ResultsWrapper(BaseResultObj results, Error error) {
         this.results = results;
         this.verificationToken = null;
         this.error = error;
     }
 
-    public ResultsObj getResults() {
+    public BaseResultObj getResults() {
         return results;
     }
 
@@ -50,5 +50,4 @@ public class ResultsWrapper {
     public Error getError() {
         return error;
     }
-
 }

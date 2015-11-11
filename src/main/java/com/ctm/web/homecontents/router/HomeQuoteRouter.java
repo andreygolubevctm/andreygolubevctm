@@ -33,7 +33,7 @@ public class HomeQuoteRouter extends CommonQuoteRouter {
 
         // Initialise request
         Brand brand = initRouter(context, vertical);
-        updateTransactionIdAndClientIP(context, data); // TODO check IP Address is correct
+        updateTransactionIdAndClientIP(context, data);
 
         homeService.validateRequest(data, vertical.getCode());
 
@@ -51,7 +51,7 @@ public class HomeQuoteRouter extends CommonQuoteRouter {
     @Path("/more_info/get.json")
     @Produces("application/json")
     public HomeMoreInfo moreInfo(@Context MessageContext context, @QueryParam("code") String productId,
-                                @QueryParam("type") String type, @QueryParam(value = "environmentOverride") String environmentOverride) throws Exception {
+                                 @QueryParam("type") String type, @QueryParam(value = "environmentOverride") String environmentOverride) throws Exception {
         Brand brand = initRouter(context, HOME);
         HomeQuoteService homeService = new HomeQuoteService();
         return homeService.getMoreInfo(brand, productId, type, Optional.ofNullable(environmentOverride));

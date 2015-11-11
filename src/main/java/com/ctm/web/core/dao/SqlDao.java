@@ -109,6 +109,49 @@ public class SqlDao<T> {
 	}
 
     /**
+     *
+     * @param databaseMapping
+     * @return 0 if no row was inserted or returns the generated id
+     * @throws DaoException
+     */
+    public Long insert(DatabaseUpdateMapping databaseMapping) throws DaoException {
+        final String statement = databaseMapping.getStatement();
+        try {
+            conn = databaseConnection.getConnection(context, true);
+            stmt = conn.prepareStatement(databaseMapping.getStatement(), Statement.RETURN_GENERATED_KEYS);
+            databaseMapping.handleParams(stmt);
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows != 0) {
+                ResultSet generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    return generatedKeys.getLong(1);
+                }
+            }
+            return 0L;
+        } catch (SQLException | NamingException e) {
+            LOGGER.error("DB insert failed {}", kv("statement", statement), e);
+            throw new DaoException("failed to executeUpdate " + databaseMapping.getStatement(), e);
+        } finally {
+            cleanup();
+        }
+    }
+
+    public int[] updateBatch(DatabaseUpdateBatchMapping databaseMapping) throws DaoException {
+        final String statement = databaseMapping.getStatement();
+        try {
+            conn = databaseConnection.getConnection(context, true);
+            stmt = conn.prepareStatement(databaseMapping.getStatement());
+            databaseMapping.handleParams(stmt);
+            return stmt.executeBatch();
+        } catch (SQLException | NamingException e) {
+            LOGGER.error("DB update batch failed {}", kv("statement", statement), e);
+            throw new DaoException("failed to executeUpdate " + databaseMapping.getStatement(), e);
+        } finally {
+            cleanup();
+        }
+    }
+
+    /**
      * Method to handle some of the JDBC logic
      * @param databaseMapping logic to handle setting params and retrieving results
      * @param sql select statement

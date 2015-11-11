@@ -40,7 +40,8 @@
     }
 
     function hasAggregationService(){
-        if(meerkat.site.vertical === 'travel' || meerkat.site.vertical === 'car' || meerkat.site.vertical === 'home'){
+        if(meerkat.site.vertical === 'travel' || meerkat.site.vertical === 'car' || meerkat.site.vertical === 'home' ||
+            meerkat.site.vertical === 'health'){
             return true;
         }
         return false;

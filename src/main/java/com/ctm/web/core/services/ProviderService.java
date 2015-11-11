@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Date;
 import com.ctm.web.core.dao.ProviderDao;
 import com.ctm.web.core.provider.model.Provider;
 import com.ctm.web.core.exceptions.DaoException;
+
+import java.util.List;
 
 public class ProviderService {
 
@@ -47,7 +48,7 @@ public class ProviderService {
 		Boolean exists = false;
 		ProviderFilterDao providerFilterDAO = new ProviderFilterDao();
 		try {
-			ArrayList<String> providerCode = providerFilterDAO.getProviderDetailsByAuthToken(providerKey);
+			List<String> providerCode = providerFilterDAO.getProviderDetailsByAuthToken(providerKey);
 			if(!providerCode.isEmpty()) {
 				exists = true;
 			}

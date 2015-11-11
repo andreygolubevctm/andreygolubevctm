@@ -13,5 +13,4 @@ public interface Request {
     void setEnvironmentOverride(String environmentOverride);
 
     String getEnvironmentOverride();
-
 }
