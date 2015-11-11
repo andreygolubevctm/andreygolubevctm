@@ -40,7 +40,7 @@ public class RequestAdapter {
         return quoteRequest;
     }
 
-    private static final com.ctm.web.car.quote.model.request.Vehicle createVehicle(CarQuote carQuote) {
+    protected static final com.ctm.web.car.quote.model.request.Vehicle createVehicle(CarQuote carQuote) {
 
         com.ctm.web.car.model.form.Vehicle quoteVehicle = carQuote.getVehicle();
 

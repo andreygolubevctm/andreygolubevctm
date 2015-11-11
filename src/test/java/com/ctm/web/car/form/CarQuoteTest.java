@@ -1,5 +1,6 @@
-package com.ctm.model.car.form;
+package com.ctm.web.car.form;
 
+import com.ctm.web.car.model.form.*;
 import org.junit.Test;
 
 import java.util.HashMap;

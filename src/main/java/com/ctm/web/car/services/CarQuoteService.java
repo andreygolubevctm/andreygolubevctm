@@ -86,21 +86,24 @@ public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteReques
 
         return results.stream()
                 .filter(result -> AvailableType.Y.equals(result.getAvailable()))
-                .map(result -> new ResultPropertiesBuilder(request.getTransactionId(),
-                                result.getProductId())
-                                .addResult("leadfeedinfo", leadFeedInfo)
-                                .addResult("validateDate/display", EMAIL_DATE_FORMAT.print(validUntil))
-                                .addResult("validateDate/normal", NORMAL_FORMAT.print(validUntil))
-                                .addResult("productId", result.getProductId())
-                                .addResult("productDes", result.getProviderProductName())
-                                .addResult("excess/total", result.getExcess())
-                                .addResult("headline/name", result.getProductName())
-                                .addResult("quoteUrl", result.getQuoteUrl())
-                                .addResult("telNo", result.getContact().getPhoneNumber())
-                                .addResult("openingHours", result.getContact().getCallCentreHours())
-                                .addResult("leadNo", result.getQuoteNumber())
-                                .addResult("brandCode", result.getBrandCode())
-                                .getResultProperties()
+                .map(result -> {
+                            result.setLeadfeedinfo(leadFeedInfo);
+                            return new ResultPropertiesBuilder(request.getTransactionId(),
+                                    result.getProductId())
+                                    .addResult("leadfeedinfo", leadFeedInfo)
+                                    .addResult("validateDate/display", EMAIL_DATE_FORMAT.print(validUntil))
+                                    .addResult("validateDate/normal", NORMAL_FORMAT.print(validUntil))
+                                    .addResult("productId", result.getProductId())
+                                    .addResult("productDes", result.getProviderProductName())
+                                    .addResult("excess/total", result.getExcess())
+                                    .addResult("headline/name", result.getProductName())
+                                    .addResult("quoteUrl", result.getQuoteUrl())
+                                    .addResult("telNo", result.getContact().getPhoneNumber())
+                                    .addResult("openingHours", result.getContact().getCallCentreHours())
+                                    .addResult("leadNo", result.getQuoteNumber())
+                                    .addResult("brandCode", result.getBrandCode())
+                                    .getResultProperties();
+                        }
                 ).flatMap(Collection::stream)
                 .collect(toList());
     }

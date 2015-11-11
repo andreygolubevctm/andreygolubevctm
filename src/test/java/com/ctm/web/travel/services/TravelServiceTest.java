@@ -1,13 +1,8 @@
 package com.ctm.web.travel.services;
 
 
-import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.settings.Brand;
-import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.services.EnvironmentService;
-import com.ctm.web.core.validation.SchemaValidationError;
-import com.ctm.web.travel.exceptions.TravelServiceException;
 import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.web.travel.model.form.Travellers;
@@ -17,11 +12,10 @@ import org.junit.Test;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
+import java.util.function.Supplier;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class TravelServiceTest {
 
@@ -29,15 +23,12 @@ public class TravelServiceTest {
 	private TravelService travelService;
 	private TravelRequest travelRequest;
 	private TravelQuote travelQuote;
-	private SimpleConnection connection;
 	private Travellers travellers;
 
 	@Before
 	public void setup() throws Exception {
 		EnvironmentService.setEnvironment("localhost");
-		ServiceConfiguration serviceConfig = new ServiceConfiguration();
-		connection = mock(SimpleConnection.class);
-		travelService = new TravelService(serviceConfig, connection);
+		travelService = new TravelService();
 		travelRequest = new TravelRequest();
 		travelQuote = new TravelQuote();
 
@@ -52,18 +43,6 @@ public class TravelServiceTest {
 	}
 
 	@Test
-	public void testShouldSetCorrelationId() throws TravelServiceException {
-		String verticalCode = "travel";
-		Brand brand = new Brand();
-		travelRequest.setTransactionId(1000L);
-		travelRequest.setTravel(travelQuote);
-		when(connection.get(null + "/quote")).thenReturn("result");
-		travelService.getQuotes(brand, verticalCode, travelRequest);
-
-	}
-
-
-	@Test
 	public void testShouldValidateName() throws SQLException, DaoException {
 
 		// Set defaults for mandatory fields
@@ -74,49 +53,36 @@ public class TravelServiceTest {
 		travellers.setTravellersDOB("01/01/1985");
 		travelQuote.setTravellers(travellers);
 
-		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
-		boolean valid = travelService.isValid();
-		assertTrue(valid);
+		isValid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelQuote.setFirstName("test");
 		travelQuote.setSurname(null);
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
+		isValid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelQuote.setFirstName(null);
 		travelQuote.setSurname("Test");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
+		isValid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelQuote.setFirstName("test");
 		travelQuote.setSurname("Test");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
+		isValid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelQuote.setFirstName("test??");
 		travelQuote.setSurname("Test");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertFalse(travelService.isValid());
+		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelQuote.setFirstName("test");
 		travelQuote.setSurname("Test??");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertFalse(travelService.isValid());
+		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelQuote.setFirstName("test??");
 		travelQuote.setSurname("Test??");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertEquals(2, validationErrors.size());
+		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelQuote.setFirstName("test");
 		travelQuote.setSurname("O'Test-you");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
+		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
 	}
-
-
-
-
 
 	@Test
 	public void testShouldValidateDestination() throws SQLException, DaoException {
@@ -131,46 +97,36 @@ public class TravelServiceTest {
 
 		// Destination field only accepts 3 letter characters
 		travelRequest.getQuote().setDestination("BOB");
-		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
+		isValid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelRequest.getQuote().setDestination("BOB,ABC");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
+		isValid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelRequest.getQuote().setDestination("BOB,ABC,TED");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
+		isValid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		// INVALID TEST CASES
 		travelRequest.getQuote().setDestination("bob");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertFalse(travelService.isValid());
+		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelRequest.getQuote().setDestination("BOB,TED,");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertFalse(travelService.isValid());
+		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelRequest.getQuote().setDestination("BOB,TED, HI");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertFalse(travelService.isValid());
+		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelRequest.getQuote().setDestination("bob,bob1-sfhs3-dfk");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertFalse(travelService.isValid());
+		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelRequest.getQuote().setDestination("1");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertFalse(travelService.isValid());
+		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		// check for blank fields
 		travelRequest.getQuote().setDestination("");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertFalse(travelService.isValid());
+		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelRequest.getQuote().setDestination(" ");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertFalse(travelService.isValid());
+		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
 	}
 
 	@Test
@@ -184,40 +140,29 @@ public class TravelServiceTest {
 		travellers.setTravellersDOB("01/01/1985");
 		travelQuote.setTravellers(travellers);
 
-		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
+		isValid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelRequest.getQuote().setCurrentJourney("gggg");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
+		isValid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelRequest.getQuote().setCurrentJourney("g3");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
+		isValid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelRequest.getQuote().setCurrentJourney("3g");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
+		isValid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		travelRequest.getQuote().setCurrentJourney("36");
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
-
-
+		isValid(() -> travelService.validateRequest(travelRequest, vertical));
 	}
 
 	@Test
 	public void testShouldCheckForMandatoryValues() throws SQLException, DaoException {
 
-		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
-
 		travelQuote.setAdults(null);
 		travelQuote.setChildren(null);
 
 		travelQuote.setTravellers(null);
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertFalse(travelService.isValid());
+		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		// Set defaults
 		travelQuote.setAdults(1);
@@ -227,10 +172,19 @@ public class TravelServiceTest {
 		travellers.setTravellersDOB("01/01/1985");
 		travelQuote.setTravellers(travellers);
 
-		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
+		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+	}
 
+	private void isInvalid(Supplier<Boolean> supplier) {
+		try {
+			supplier.get();
+		} catch (Exception e) {
+			assertNotNull(e);
+		}
+	}
 
+	private void isValid(Supplier<Boolean> supplier) {
+		assertTrue(supplier.get());
 	}
 
 
