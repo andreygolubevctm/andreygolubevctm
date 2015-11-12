@@ -40,10 +40,18 @@
 		</c:choose>
 	</form_new:row>
 
+	<c:set var="fieldXPath" value="${xpath}/phone" />
 	<form_new:row label="Contact Number" id="contactNoRow">
 		<field:contact_telno xpath="${xpath}/phone" required="false" id="bestNumber"
 			className="bestNumber"
 			labelName="best number" validationAttribute=" data-rule-validateOkToCall='true' " />
+		<%--<field:flexi_contact_number xpath="${fieldXPath}"--%>
+			<%--maxLength="20"--%>
+			<%--id="bestNumber"--%>
+			<%--required="${false}"--%>
+			<%--className="bestNumber"--%>
+			<%--labelName="best number"--%>
+			<%--validationAttribute=" data-rule-validateOkToCall='true' "/>--%>
 	</form_new:row>
 
 

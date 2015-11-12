@@ -33,7 +33,7 @@
 </c:set>
 
 <%-- VALIDATION --%>
-<c:set var="additionalAttributes"> data-rule-validateTelNo='true' data-msg-validateTelNo='Please enter the ${labelText} in the format (0x)xxxx xxxx for landline or 04xx xxx xxx for mobile' </c:set>
+<c:set var="additionalAttributes"> data-rule-validateFlexiTelNo='true' data-msg-validateFlexiTelNo='Please enter the ${labelText} in the format (0x)xxxx xxxx for landline or 04xx xxx xxx for mobile' </c:set>
 
 <field:phone_number className="${className}" required="${required}" xpath="${xpath}"
 	placeHolder="${placeHolder}" placeHolderUnfocused="${placeHolderUnfocused}"
