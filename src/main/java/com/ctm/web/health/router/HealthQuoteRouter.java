@@ -5,6 +5,7 @@ import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.model.CompetitionEntry;
 import com.ctm.web.core.model.resultsData.NoResults;
 import com.ctm.web.core.model.resultsData.NoResultsObj;
@@ -21,9 +22,10 @@ import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.health.model.form.*;
-import com.ctm.web.health.model.results.HealthResult;
+import com.ctm.web.health.model.results.HealthQuoteResult;
 import com.ctm.web.health.model.results.InfoHealth;
 import com.ctm.web.health.model.results.PremiumRange;
+import com.ctm.web.health.services.HealthQuoteEndpointService;
 import com.ctm.web.health.services.HealthQuoteService;
 import com.ctm.web.health.services.HealthQuoteSummaryService;
 import org.apache.commons.lang3.StringUtils;
@@ -53,18 +55,17 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
 
         Vertical.VerticalType vertical = HEALTH;
 
-
         // Initialise request
         Brand brand = initRouter(context, vertical);
         updateTransactionIdAndClientIP(context, data);
 
-//        HealthQuoteTokenService healthQuoteTokenService = new HealthQuoteTokenService();
-//        healthQuoteTokenService.init(context.getHttpServletRequest(), getPageSettingsByCode(brand, vertical));
-//
-//        // throw an exception when invalid token
-//        if (!healthQuoteTokenService.validToken()) {
-//            throw new RouterException("Invalid token");
-//        }
+        HealthQuoteEndpointService healthQuoteTokenService = new HealthQuoteEndpointService();
+        healthQuoteTokenService.init(context.getHttpServletRequest(), getPageSettingsByCode(brand, vertical));
+
+        // throw an exception when invalid token
+        if (!healthQuoteTokenService.isValidToken()) {
+            throw new RouterException("Invalid token");
+        }
 
         InfoHealth info = new InfoHealth();
         info.setTransactionId(data.getTransactionId());
@@ -86,7 +87,7 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
                 .getContent("alternatePricingActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, true);
         final boolean competitionEnabled = StringUtils.equalsIgnoreCase(ContentService.getContentValue(context.getHttpServletRequest(), "competitionEnabled"), "Y");
 
-        final Pair<Boolean, List<HealthResult>> quotes = healthQuoteService.getQuotes(brand, data, alternatePricingActive);
+        final Pair<Boolean, List<HealthQuoteResult>> quotes = healthQuoteService.getQuotes(brand, data, alternatePricingActive);
 
         if (quotes.getValue().isEmpty()) {
 
@@ -101,8 +102,7 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
             results.setResult(Collections.singletonList(noResults));
 
             // create resultsWrapper with the token
-//            return healthQuoteTokenService.createResultsWrapper(context.getHttpServletRequest(), data.getTransactionId(), results);
-            new ResultsWrapper(results);
+            return healthQuoteTokenService.createResultsWrapper(context.getHttpServletRequest(), data.getTransactionId(), results);
         } else {
 
             String trackingKey = TrackingKeyService.generate(
@@ -111,7 +111,7 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
 
             Data dataBucket = healthCompetitionEntry(context, data, quote, competitionEnabled);
 
-            PricesObj<HealthResult> results = new PricesObj<>();
+            PricesObj<HealthQuoteResult> results = new PricesObj<>();
             results.setResult(quotes.getRight());
             results.setInfo(info);
             info.setPricesHaveChanged(quotes.getLeft());
@@ -131,11 +131,8 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
             }
 
             // create resultsWrapper with the token
-//            return healthQuoteTokenService.createResultsWrapper(context.getHttpServletRequest(), data.getTransactionId(), results);
-            return new ResultsWrapper(results);
+            return healthQuoteTokenService.createResultsWrapper(context.getHttpServletRequest(), data.getTransactionId(), results);
         }
-        return null;
-
     }
 
     private Data healthCompetitionEntry(MessageContext context, HealthRequest data, HealthQuote quote, boolean competitionEnabled) throws ConfigSettingException, DaoException, EmailDetailsException {

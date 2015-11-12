@@ -1,9 +1,12 @@
 package com.ctm.web.health.services;
 
+import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.services.CommonQuoteService;
+import com.ctm.web.core.services.Endpoint;
+import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.health.apply.model.RequestAdapter;
 import com.ctm.web.health.apply.model.request.HealthApplicationRequest;
 import com.ctm.web.health.apply.model.response.HealthApplyResponse;
@@ -20,11 +23,15 @@ public class HealthApplyService extends CommonQuoteService<HealthQuote, HealthAp
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplyService.class);
 
+    public HealthApplyService() {
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+    }
+
     public HealthApplyResponse apply(Brand brand, HealthRequest data) throws DaoException, IOException, ServiceConfigurationException {
 
         final HealthApplicationRequest request = RequestAdapter.adapt(data);
 
-        return sendRequest(brand, HEALTH, "healthApplyService", "HEALTH-APPLY", "apply", data, request, HealthApplyResponse.class);
+        return sendRequest(brand, HEALTH, "healthApplyService", Endpoint.APPLY, data, request, HealthApplyResponse.class);
     }
 
 

@@ -1,7 +1,6 @@
 package com.ctm.web.core.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.web.core.exceptions.DaoException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,8 +33,8 @@ public class ProviderFilterDao {
 			"  AND Text = ? " +
 			"LIMIT 0,1;";
 
-	public ArrayList<String> getProviderDetailsByAuthToken(String key) throws Exception {
-		final ArrayList<String> code = new ArrayList<>();
+	public List<String> getProviderDetailsByAuthToken(String key) throws Exception {
+		final List<String> code = new ArrayList<>();
 
 		try (SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection()) {
 			PreparedStatement stmt;

@@ -6,6 +6,7 @@ import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.model.ProviderFilter;
 import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.formData.Request;
+import com.ctm.web.core.model.formData.RequestWithQuote;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
@@ -63,20 +64,20 @@ public class CommonQuoteServiceTest {
 
     @Test(expected = RouterException.class)
     public void testEmptyQuoteRequest() throws Exception {
-        final Request request = mock(Request.class);
+        final RequestWithQuote request = mock(RequestWithQuote.class);
         isValid(() -> commonQuoteService.validateRequest(request, "AnyVertical"));
     }
 
     @Test
     public void testValidRequest() throws Exception {
-        final Request request = mock(Request.class);
+        final RequestWithQuote request = mock(RequestWithQuote.class);
         when(request.getQuote()).thenReturn(new Quote("name"));
         isValid(() -> commonQuoteService.validateRequest(request, "AnyVertical"));
     }
 
     @Test(expected = RouterException.class)
     public void testInvalidRequest() throws Exception {
-        final Request request = mock(Request.class);
+        final RequestWithQuote request = mock(RequestWithQuote.class);
         when(request.getQuote()).thenReturn(new Quote("name??"));
         isInvalid(() -> commonQuoteService.validateRequest(request, "AnyVertical"));
     }
@@ -84,6 +85,8 @@ public class CommonQuoteServiceTest {
     @Test
     public void testSetFilterEmpty() throws Exception {
         ProviderFilter providerFilter = mock(ProviderFilter.class);
+        when(providerFilter.getProviderKey()).thenReturn("");
+        when(providerFilter.getAuthToken()).thenReturn("");
         commonQuoteService.setFilter(providerFilter);
 
         verify(providerFilter, times(1)).getProviderKey();
@@ -122,6 +125,7 @@ public class CommonQuoteServiceTest {
     @Test
     public void testSetFilterWithAuthToken() throws Exception {
         ProviderFilter providerFilter = mock(ProviderFilter.class);
+        when(providerFilter.getProviderKey()).thenReturn("");
         when(providerFilter.getAuthToken()).thenReturn("anyKey");
 
         when(providerFilterDao.getProviderDetailsByAuthToken("anyKey")).thenReturn(Collections.singletonList("anyProviderKey"));
@@ -138,6 +142,7 @@ public class CommonQuoteServiceTest {
     @Test(expected = RouterException.class)
     public void testSetFilterWithAuthTokenException() throws Exception {
         ProviderFilter providerFilter = mock(ProviderFilter.class);
+        when(providerFilter.getProviderKey()).thenReturn("");
         when(providerFilter.getAuthToken()).thenReturn("anyKey");
 
         when(providerFilterDao.getProviderDetailsByAuthToken("anyKey")).thenReturn(Collections.emptyList());
@@ -149,6 +154,8 @@ public class CommonQuoteServiceTest {
     @Test(expected = RouterException.class)
     public void testSetFilterNXS() throws Exception {
         ProviderFilter providerFilter = mock(ProviderFilter.class);
+        when(providerFilter.getProviderKey()).thenReturn("");
+        when(providerFilter.getAuthToken()).thenReturn("");
         EnvironmentService.setEnvironment("nxs");
         commonQuoteService.setFilter(providerFilter);
     }
@@ -200,6 +207,7 @@ public class CommonQuoteServiceTest {
         Brand brand = mock(Brand.class);
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
         doReturn(serviceConfiguration).when(commonQuoteService).getServiceConfiguration("anyService", brand, verticalType.getCode());
+        Vertical vertical = mock(Vertical.class);
 
         when(serviceConfiguration.getPropertyValueByKey(SERVICE_URL, ALL_BRANDS, ALL_PROVIDERS, SERVICE)).thenReturn("http://currentUrl");
         when(serviceConfiguration.getPropertyValueByKey(DEBUG_PATH, ALL_BRANDS, ALL_PROVIDERS, SERVICE)).thenReturn("debugPath");

@@ -4,7 +4,9 @@ public enum Endpoint {
 
     QUOTE("quote"),
     APPLY("apply"),
-    SUMMARY("summary");
+    SUMMARY("summary"),
+    PAYMENT_AUTHORISE("payment/authorise"),
+    PAYMENT_REGISTER("payment/register");
 
     private final String value;
 

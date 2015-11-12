@@ -33,6 +33,7 @@
 	--%>
     <c:when test="${!healthApplicationService.validToken}">
         <health:set_to_pending errorMessage="Token is not valid." resultJson="${healthApplicationService.createTokenValidationFailedResponse(data.current.transactionId,pageContext.session.id)}"  transactionId="${resultXml}" productId="${productId}" />
+        ${healthApplicationService.createErrorResponse(data.current.transactionId, "Token is not valid", pageContext.request, "")}
     </c:when>
     <%-- only output validation errors if call centre --%>
     <c:when test="${!healthApplicationService.valid && callCentre}">

@@ -34,9 +34,9 @@ public class ResponseAdapter {
 
     public static final String HEALTH_BROCHURE_URL = "health_brochure.jsp?pdf=";
 
-    public static Pair<Boolean, List<HealthResult>> adapt(HealthRequest request, HealthResponse healthResponse, Content alternatePricingContent) {
+    public static Pair<Boolean, List<HealthQuoteResult>> adapt(HealthRequest request, HealthResponse healthResponse, Content alternatePricingContent) {
         boolean hasPriceChanged = false;
-        List<HealthResult> results = new ArrayList<>();
+        List<HealthQuoteResult> results = new ArrayList<>();
         QuoteResponse<HealthQuote> quoteResponse = healthResponse.getPayload();
 
         // Check if the response is unavailable
@@ -59,7 +59,7 @@ public class ResponseAdapter {
             if (quoteResponse != null) {
                 int index = 1;
                 for (HealthQuote quote : quoteResponse.getQuotes()) {
-                    HealthResult result = new HealthResult();
+                    HealthQuoteResult result = new HealthQuoteResult();
 
                     result.setAvailable(quote.isAvailable() ? AvailableType.Y : AvailableType.N);
                     result.setTransactionId(request.getTransactionId());
