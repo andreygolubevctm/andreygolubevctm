@@ -27,8 +27,12 @@
 			<field_new:array_select items="=Please choose...,P=Phone,E=Email" xpath="${xpath}/bestContact" title="best contact method" required="true" />
 		</form_new:row>
 
+		<c:set var="fieldXPath" value="${xpath}/contactNumber"/>
 		<form_new:row label="Your contact number" className="clear">
-			<field:contact_telno xpath="${xpath}/contactNumber" title="your contact number" required="true" size="40"/>
+			<field:flexi_contact_number xpath="${fieldXPath}"
+										maxLength="20"
+										required="${false}"
+										labelName="your contact number"/>
 		</form_new:row>
 
 		<div id="${name}_bestcontactToggleArea" class="${name}_bestcontactToggleArea show_${displayBestContact}">

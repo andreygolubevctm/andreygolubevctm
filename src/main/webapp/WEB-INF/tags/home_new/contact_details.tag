@@ -14,17 +14,17 @@
 
 
 	<%-- Email Address --%>
-	<c:set var="fieldXpath" value="${xpath}/email" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Email Address">
-		<field_new:email xpath="${fieldXpath}"
+	<c:set var="fieldXPath" value="${xpath}/email" />
+	<form_new:row fieldXpath="${fieldXPath}" label="Email Address">
+		<field_new:email xpath="${fieldXPath}"
 			required="${mandatoryFieldsSplitTest}"
 			title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 	</form_new:row>
 
 	<%-- Marketing --%>
-	<c:set var="fieldXpath" value="${xpath}/marketing" />
-	<form_new:row fieldXpath="${fieldXpath}" label="OK to email">
-		<field_new:array_radio xpath="${fieldXpath}"
+	<c:set var="fieldXPath" value="${xpath}/marketing" />
+	<form_new:row fieldXpath="${fieldXPath}" label="OK to email">
+		<field_new:array_radio xpath="${fieldXPath}"
 			required="true"
 			items="Y=Yes,N=No"
 			className="pretty_buttons"
@@ -34,17 +34,19 @@
 	</form_new:row>
 
 	<%-- Best Contact Number --%>
-	<c:set var="fieldXpath" value="${xpath}/phone" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Best contact number" helpId="524">
-		<field:contact_telno xpath="${fieldXpath}"
-			required="false"
-			title="best number for the insurance provider to contact you on (You will only be contacted by phone if you answer 'Yes' to the 'OK to call' question on this screen)" validationAttribute=" data-rule-validateOkToCall='true' " />
+	<c:set var="fieldXPath" value="${xpath}/phone" />
+	<form_new:row fieldXpath="${fieldXPath}" label="Best contact number" className="clear" helpId="524">
+		<field:flexi_contact_number xpath="${fieldXPath}"
+									maxLength="20"
+									required="${false}"
+									labelName="best number for the insurance provider to contact you on (You will only be contacted by phone if you answer 'Yes' to the 'OK to call' question on this screen)"
+									validationAttribute=" data-rule-validateOkToCall='true' "/>
 	</form_new:row>
 
 	<%-- OK to call --%>
-	<c:set var="fieldXpath" value="${xpath}/oktocall" />
-	<form_new:row fieldXpath="${fieldXpath}" label="OK to call">
-		<field_new:array_radio xpath="${fieldXpath}"
+	<c:set var="fieldXPath" value="${xpath}/oktocall" />
+	<form_new:row fieldXpath="${fieldXPath}" label="OK to call">
+		<field_new:array_radio xpath="${fieldXPath}"
 			required="true"
 			items="Y=Yes,N=No"
 			className="pretty_buttons"

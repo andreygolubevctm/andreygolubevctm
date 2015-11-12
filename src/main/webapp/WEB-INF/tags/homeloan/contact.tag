@@ -28,8 +28,12 @@
 			<field_new:email xpath="${xpath}/email" title="your email address" required="false" size="40"/>
 		</form_new:row>
 
+		<c:set var="fieldXPath" value="${xpath}/contactNumber"/>
 		<form_new:row label="Your contact number" className="clear">
-			<field:contact_telno xpath="${xpath}/contactNumber" title="your contact number" required="false" size="40"/>
+			<field:flexi_contact_number xpath="${fieldXPath}"
+										maxLength="20"
+										required="${false}"
+										labelName="your contact number"/>
 			<p class="optinText">By entering my telephone number I agree that an authorised broker from AFG, <content:optin key="brandDisplayName" useSpan="true"/>'s approved supplier of home loans, may contact me to further assist with my home loan needs.</p>
 		</form_new:row>
 
