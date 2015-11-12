@@ -1,10 +1,9 @@
 package com.ctm.web.core.email.services;
 
-import com.ctm.web.core.email.services.token.EmailTokenService;
 import com.ctm.web.core.email.model.IncomingEmail;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.model.EmailMaster;
-import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.utils.FormDateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,62 +11,56 @@ import org.slf4j.LoggerFactory;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Map;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 
-public class EmailUrlService {
+public class EmailUrlServiceOld {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmailUrlService.class);
 
-	private VerticalType vertical;
+	private Vertical.VerticalType vertical;
 	private String baseUrl;
-	private EmailTokenService emailTokenService;
 
-	public static final String TRANSACTION_ID = "transactionId";
-	public static final String EMAIL_ID = "emailId";
-	public static final String EMAIL_TOKEN_TYPE = "emailTokenType";
-	public static final String EMAIL_TOKEN_ACTION = "action";
-	public static final String PRODUCT_ID = "productId";
-	public static final String CAMPAIGN_ID = "campaignId";
-	public static final String VERTICAL = "vertical";
-	public static final String PRODUCT_NAME = "productName";
-	public static final String TRAVEL_POLICY_TYPE = "travelPolicyType";
-	public static final String HASHED_EMAIL = "hashedEmail";
-	public static final String STYLE_CODE_ID = "styleCodeId";
-	public static final String EMAIL_ADDRESS = "emailAddress";
-
-	public EmailUrlService(VerticalType vertical, String baseUrl, EmailTokenService emailTokenService) {
+	public EmailUrlServiceOld(Vertical.VerticalType vertical, String baseUrl) {
 		this.vertical = vertical;
 		this.baseUrl = baseUrl;
-		this.emailTokenService = emailTokenService;
 	}
 
 	/**
 	 * Returns the unsubscribe link
 	 *
-	 * @param params
+	 * @param emailDetails
 	 */
-	public String getUnsubscribeUrl(Map<String, String> params) throws ConfigSettingException {
-		String token = emailTokenService.generateToken(params);
-		return baseUrl + "unsubscribe.jsp?token=" + token;
+	public String getUnsubscribeUrl(EmailMaster emailDetails) {
+		return baseUrl + "unsubscribe.jsp?unsubscribe_email=" + emailDetails.getHashedEmail() + "&" + createVericalParam() + "&" + createEmailParam(emailDetails);
 	}
 
 	/**
 	 * Returns the load from link
 	 *
-	 * @param params
+	 * @param emailDetails
 	 */
-	public String getApplyUrl(EmailMaster emailDetails, Map<String, String> params) throws ConfigSettingException {
-		params.put(EmailUrlService.EMAIL_ADDRESS, createEmailParam(emailDetails));
-
-		String token = emailTokenService.generateToken(params);
-
-		return baseUrl + "load_from_email.jsp?token=" + token;
+	public String getApplyUrl(EmailMaster emailDetails, long transactionId,  String type)
+			throws ConfigSettingException {
+		return baseUrl + "load_from_email.jsp?action=load&type=" + type + "&id=" + transactionId + "&hash=" +
+				emailDetails.getHashedEmail() + "&" + createVericalParam() + "&" + createEmailParam(emailDetails);
 	}
 
-	private String createVerticalParam()  {
+	/**
+	 * Returns the load from link
+	 *
+	 * @param emailDetails
+	 * @param productId
+	 * @param productTitle
+	 * @throws UnsupportedEncodingException
+	 */
+	public String getApplyUrl(EmailMaster emailDetails, long transactionId,  String type, String productId, String productTitle)
+			throws ConfigSettingException {
+		return getApplyUrl(emailDetails, transactionId,  type) +"&productId=" + productId + "&productTitle=" + productTitle;
+	}
+
+	private String createVericalParam()  {
 		return "vertical=" + vertical.getCode().toLowerCase();
 	}
 
@@ -80,7 +73,7 @@ public class EmailUrlService {
 	public void updateWithLoadQuoteUrl(StringBuilder redirectionUrl, IncomingEmail emailData) {
 		redirectionUrl.append(baseUrl);
 		redirectionUrl.append("load_from_email.jsp?action=load&id=" + emailData.getTransactionId());
-		redirectionUrl.append("&hash=" + emailData.getHashedEmail() + "&" + createVerticalParam());
+		redirectionUrl.append("&hash=" + emailData.getHashedEmail() + "&" + createVericalParam());
 		if(emailData.getEmailType() != null) {
 			redirectionUrl.append("&type=" + emailData.getEmailType());
 		}
@@ -107,7 +100,7 @@ public class EmailUrlService {
 		} catch (UnsupportedEncodingException e) {
 			LOGGER.error("Unable to encode email address to UTF-8 {}", kv("emailAddress", email), e);
 		}
-		return email;
+		return "email=" + email;
 	}
 
 
@@ -122,4 +115,5 @@ public class EmailUrlService {
 		}
 		return email;
 	}
+
 }

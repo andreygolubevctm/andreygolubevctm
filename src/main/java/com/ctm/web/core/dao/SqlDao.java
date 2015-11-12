@@ -108,6 +108,20 @@ public class SqlDao<T> {
 		}
 	}
 
+    public void insert(DatabaseQueryMapping<T> databaseMapping, String sql) throws DaoException {
+        try {
+            conn = databaseConnection.getConnection(context, true);
+            stmt = conn.prepareStatement(sql);
+            databaseMapping.handleParams(stmt);
+            stmt.execute();
+        } catch (SQLException | NamingException e) {
+            LOGGER.error("DB insert failed {}", kv("statement", sql), e);
+            throw new DaoException(e);
+        } finally {
+            cleanup();
+        }
+    }
+
     /**
      * Method to handle some of the JDBC logic
      * @param databaseMapping logic to handle setting params and retrieving results

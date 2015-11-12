@@ -27,6 +27,12 @@ public class TestUtils {
 		setting.setName("rootUrl");
 		setting.setValue("rootUrl");
 		configSettings.add(setting);
+
+		ConfigSetting emailTokenEncryptionKey = new ConfigSetting();
+		emailTokenEncryptionKey.setName("emailTokenEncryptionKey");
+		emailTokenEncryptionKey.setValue("emailTokenEncryptionKey");
+		configSettings.add(emailTokenEncryptionKey);
+
 		vertical.setConfigSettings(configSettings );
 
 		setting = new ConfigSetting();
