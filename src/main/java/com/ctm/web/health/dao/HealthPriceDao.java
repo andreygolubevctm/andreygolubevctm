@@ -494,7 +494,7 @@ public class HealthPriceDao {
 		/* When filtering is turned on we don't want products flagged with 'Y'
 			to be returned in the results set (a little confusing) */
 		if(healthPriceRequest.getSituationFilter().equals("Y")) {
-			sqlBuilder.append("AND search.situationFilter IN ('','N')");
+			sqlBuilder.append("AND (search.situationFilter IS NULL OR situationFilter IN ('','N'))");
 		}
         sqlBuilder
             .append("GROUP BY search.ProductId ")
