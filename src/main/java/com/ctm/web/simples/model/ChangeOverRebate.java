@@ -1,4 +1,4 @@
-package com.ctm.model.simples;
+package com.ctm.web.simples.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,17 +11,15 @@ public class ChangeOverRebate {
     private BigDecimal futureMultiplier;
 
     private Date effectiveStart;
-    private Date effectiveEnd;
 
     public ChangeOverRebate() {
 
     }
 
-    public ChangeOverRebate(BigDecimal currentMultiplier, BigDecimal futureMultiplier, Date effectiveStart, Date effectiveEnd) {
+    public ChangeOverRebate(BigDecimal currentMultiplier, BigDecimal futureMultiplier, Date effectiveStart) {
         this.currentMultiplier = currentMultiplier;
         this.futureMultiplier = futureMultiplier;
         this.effectiveStart = effectiveStart;
-        this.effectiveEnd = effectiveEnd;
     }
 
     public Float getCurrentMultiplier() {
@@ -46,13 +44,5 @@ public class ChangeOverRebate {
 
     public void setEffectiveStart(Date effectiveStart) {
         this.effectiveStart = effectiveStart;
-    }
-
-    public Date getEffectiveEnd() {
-        return effectiveEnd;
-    }
-
-    public void setEffectiveEnd(Date effectiveEnd) {
-        this.effectiveEnd = effectiveEnd;
     }
 }

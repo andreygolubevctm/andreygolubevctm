@@ -1,8 +1,8 @@
-package com.ctm.services.health;
+package com.ctm.web.simples.services;
 
-import com.ctm.dao.simples.ChangeOverRebatesDao;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.simples.ChangeOverRebate;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.simples.dao.ChangeOverRebatesDao;
+import com.ctm.web.simples.model.ChangeOverRebate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +41,6 @@ public class ChangeOverRebatesService {
         calendar.set(Calendar.MONTH, 03);
         calendar.set(Calendar.DAY_OF_MONTH, 01);
 
-        return new ChangeOverRebate(new BigDecimal(1), new BigDecimal(1), calendar.getTime(), calendar.getTime());
+        return new ChangeOverRebate(new BigDecimal(1), new BigDecimal(1), calendar.getTime());
     }
 }

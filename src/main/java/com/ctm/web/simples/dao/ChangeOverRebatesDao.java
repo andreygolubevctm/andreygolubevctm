@@ -1,10 +1,8 @@
-package com.ctm.dao.simples;
+package com.ctm.web.simples.dao;
 
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.simples.ChangeOverRebate;
-import com.ctm.model.simples.MessageOverview;
-
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.simples.model.ChangeOverRebate;
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,13 +26,12 @@ public class ChangeOverRebatesDao {
 			// Execute the stored procedure for message details
 			//
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT multiplier as currentMultiplier, (SELECT multiplier FROM simples.changeover_rebates WHERE id = rebates.id + 1) as futureMultiplier," +
-						"effectiveStart, effectiveEnd\n" +
-						"FROM simples.changeover_rebates rebates \n" +
-						"WHERE ?  >= effectiveStart AND ? <= effectiveEnd; "
+				"SELECT multiplier as currentMultiplier, (SELECT multiplier FROM `ctm`.`health_changeover_rebates` WHERE id = rebates.id + 1) as futureMultiplier, " +
+						"effectiveStart " +
+						"FROM `ctm`.`health_changeover_rebates` rebates " +
+						"WHERE ? >= effectiveStart "
 			);
 			stmt.setDate(1, new java.sql.Date(commencementDate.getTime()));
-			stmt.setDate(2, new java.sql.Date(commencementDate.getTime()));
 
 			ResultSet results = stmt.executeQuery();
 
@@ -42,7 +39,6 @@ public class ChangeOverRebatesDao {
 				changeOverRebate.setCurrentMultiplier(results.getBigDecimal(1));
 				changeOverRebate.setFutureMultiplier(results.getBigDecimal(2));
 				changeOverRebate.setEffectiveStart(results.getDate(3));
-				changeOverRebate.setEffectiveEnd(results.getDate(4));
 			}
 		}
 		catch (SQLException e) {

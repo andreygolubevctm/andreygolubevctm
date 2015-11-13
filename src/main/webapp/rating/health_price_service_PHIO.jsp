@@ -48,7 +48,7 @@
 	<c:set var="selectedProductId" value="${fn:substringAfter(selectedProductId, 'PHIO-HEALTH-')}" />
 </c:if>
 
-<jsp:useBean id="changeOverRebatesService" class="com.ctm.services.health.ChangeOverRebatesService" />
+<jsp:useBean id="changeOverRebatesService" class="com.ctm.web.simples.services.ChangeOverRebatesService" />
 <c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(null)}"/>
 <c:set var="rebate_multiplier_current" value="${changeOverRebates.getCurrentMultiplier()}"/>
 <c:set var="rebate_multiplier_future" value="${changeOverRebates.getFutureMultiplier()}"/>

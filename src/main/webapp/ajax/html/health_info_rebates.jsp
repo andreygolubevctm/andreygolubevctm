@@ -11,7 +11,7 @@
 <c:set var="tier2FamilyRebateText" >$210,001-$280,000</c:set>
 <c:set var="tier3FamilyRebateText" >Over $280,001</c:set>
 
-<jsp:useBean id="changeOverRebatesService" class="com.ctm.services.health.ChangeOverRebatesService" />
+<jsp:useBean id="changeOverRebatesService" class="com.ctm.web.simples.services.ChangeOverRebatesService" />
 <c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(null)}"/>
 <c:set var="rebate_multiplier_current" value="${changeOverRebates.getCurrentMultiplier()}"/>
 <c:set var="rebate_multiplier_future" value="${changeOverRebates.getFutureMultiplier()}"/>
