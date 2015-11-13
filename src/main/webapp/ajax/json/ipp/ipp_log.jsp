@@ -11,7 +11,8 @@
 <%-- Variables --%>
 <fmt:formatDate var="date" value="${now}" pattern="YYYY-MM-dd"/>
 <c:set var="tranId" value="${data.current.transactionId}" />
-<c:import var="config" url="/WEB-INF/aggregator/health_application/bup/config_log.xml" />
+<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health_application/bup/config_log.xml')}" />
 
 <%--
 We will need to complete the xml data here for sending through

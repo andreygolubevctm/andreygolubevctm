@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.utilities_quote_results')}" />
 
 <%-- VARIABLES --%>
 <c:set var="vertical" value="${pageSettings.getVerticalCode()}" />
@@ -23,7 +23,7 @@
 <c:if test="${empty tranId}"><c:set var="tranId" value="0" /></c:if>
 
 <%-- Execute the results service --%>
-<jsp:useBean id="quoteService" class="com.ctm.services.utilities.UtilitiesResultsService" scope="page" />
+<jsp:useBean id="quoteService" class="com.ctm.web.utilities.services.UtilitiesResultsService" scope="page" />
 <c:set var="results" value="${quoteService.getFromJsp(pageContext.getRequest(), data)}" />
 
 <%-- COMPETITION APPLICATION START --%>

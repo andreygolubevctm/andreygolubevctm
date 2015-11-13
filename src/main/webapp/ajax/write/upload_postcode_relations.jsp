@@ -2,7 +2,7 @@
 <%@page import="java.util.Date,java.io.*,java.util.*,java.text.*,java.math.*, java.io.*"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.write.upload_postcode_relations')}" />
 
 <%--
 SERVICE PAGE THAT CAN BE RUN FROM MOTORMOUTH TO POPULATE POSTCODES
@@ -28,7 +28,7 @@ Process:
 <c:set var="fuelString" />
 
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 
 

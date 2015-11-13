@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.write.competition')}" />
 
 <session:get settings="true" />
 
@@ -16,7 +16,6 @@
 
 
 <%-- Variables --%>
-<c:set var="database" value="ctm" />
 <c:set var="competition_id" value="${data['competition/competitionId']}" />
 <c:set var="competition_email" value="${data['competition/email']}" />
 <c:set var="brand" value="${styleCode}" />
@@ -36,7 +35,7 @@
 			lastName="${data['competition/lastName']}"
 			items="marketing=Y,okToCall=N" />
 
-		<sql:setDataSource dataSource="jdbc/${database}"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<sql:query var="emailMaster">
 			SELECT emailId, hashedEmail
 				FROM aggregator.email_master
@@ -89,7 +88,7 @@
 			<c:set var="errorPool" value="{error:'Failed to locate registered user.'}" />
 		</c:when>
 		<c:otherwise>
-			${logger.error('Database error querying aggregator.email_master. {},{}', log:kv('transactionId', transactionId), log:kv('email', competition_email) , error)}
+			${logger.error('Database error querying aggregator.email_master. {}', log:kv('email', competition_email) , error)}
 			<c:set var="errorPool" value="{error:'${error}'}" />
 		</c:otherwise>
 	</c:choose>

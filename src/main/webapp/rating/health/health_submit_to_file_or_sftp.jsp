@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.rating.health.health_submit_to_file_or_sftp')}" />
 
 <% pageContext.setAttribute("newLineChar", "\r\n"); %>
 <% pageContext.setAttribute("quote", "\""); %>
@@ -56,7 +56,8 @@ ${logger.debug('Converted raw body of request to string. {},{}', log:kv('content
 </c:if>
 
 <c:if test="${not empty provider}">
-	<c:import var="config" url="/WEB-INF/aggregator/health_application/${provider}/config.xml" />
+	<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+	<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health_application/${provider}/config.xml')}" />
 	<x:parse doc="${config}" var="configXml" />
 
 	<%-- damn namespaces http://pro-programmers.blogspot.com.au/2008/04/jstl-xparse-not-working-for-elements.html --%>
@@ -84,7 +85,7 @@ ${logger.debug('Converted raw body of request to string. {},{}', log:kv('content
 	<c:set var="zipFilename" value="${provider}_${transId}_${millisecs}.zip" />
 	<c:set var="internalName" value="application_${transId}.csv" />
 </c:if>
-${logger.debug('transId: {},{},{},{}', log:kv('transId',transId ), log:kv('fundProductCode',fundProductCode ), log:kv('realPath',realPath ), log:kv('saveLocation',saveLocation ))}
+${logger.debug('transId: {},{},{}', log:kv('fundProductCode',fundProductCode ), log:kv('realPath',realPath ), log:kv('saveLocation',saveLocation ))}
 <?xml version="1.0" encoding="UTF-8"?>
 <result>
 	<c:choose>

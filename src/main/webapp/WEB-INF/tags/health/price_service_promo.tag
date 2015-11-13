@@ -3,10 +3,9 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="providerId" 	required="true"	 rtexprvalue="true"	 description="Id of provider to link the promo content" %>
-<%@ attribute name="healthPriceService" type="com.ctm.services.health.HealthPriceService" required="true" rtexprvalue="true" description="service to get tranId and application date" %>
+<%@ attribute name="healthPriceService" type="com.ctm.web.health.services.HealthPriceService" required="true" rtexprvalue="true" description="service to get tranId and application date" %>
 
-<jsp:useBean id="specialOffersService" class="com.ctm.services.simples.SpecialOffersService" scope="page" />
-<jsp:useBean id="brochureService" class="com.ctm.services.health.BrochureService" scope="page" />
+<jsp:useBean id="specialOffersService" class="com.ctm.web.simples.admin.services.SpecialOffersService" scope="page" />
 <%-- VARIABLES --%>
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${healthPriceService.getTransactionId()}" /></c:set>
 <c:set var="applicationDate" value="${healthPriceService.getApplicationDate()}" />
@@ -45,18 +44,12 @@
 		<c:set var="discountText" value="${item.getSupplementaryValueByKey('discountText')}" />
 		<c:set var="promoTextSummary" value="${item.getSupplementaryValueByKey('promoTextSummary')}" />
 		<c:set var="promoTextDialog" value="${item.getSupplementaryValueByKey('promoTextDialog')}" />
-		<c:set var="brochureDownloadLinkHosp" scope="request">${brochureService.downloadBrochure(pageContext.request, hospitalPDF.trim())}</c:set>
-		<c:set var="brochureDownloadLinkExtras" scope="request">${brochureService.downloadBrochure(pageContext.request, extrasPDF.trim())}</c:set>
-		<promo <c:if test="${not empty hospitalAttr }">hospital="${fn:trim(hospitalAttr)}"</c:if><c:out value=" " /><c:if test="${not empty extrasAttr}">extras="${fn:trim(extrasAttr)}"</c:if>>
-		<c:if test="${not empty brochureDownloadLinkHosp}">
-			<hospitalPDF>
-				<![CDATA[${brochureDownloadLinkHosp}]]>
-			</hospitalPDF>
+		<promo <c:if test="${not empty hospitalAttr}">hospital="${fn:trim(hospitalAttr)}"</c:if><c:out value=" " /><c:if test="${not empty extrasAttr}">extras="${fn:trim(extrasAttr)}"</c:if>>
+		<c:if test="${not empty hospitalPDF}">
+			<hospitalPDF><![CDATA[<c:out value="${pageSettings.getBaseUrl()}" />health_brochure.jsp?pdf=<c:out value="${fn:trim(hospitalPDF)}"/>]]></hospitalPDF>
 		</c:if>
-		<c:if test="${not empty brochureDownloadLinkExtras}">
-			<extrasPDF>
-				<![CDATA[${brochureDownloadLinkExtras}]]>
-			</extrasPDF>
+		<c:if test="${not empty extrasPDF}">
+			<extrasPDF><![CDATA[<c:out value="${pageSettings.getBaseUrl()}" />health_brochure.jsp?pdf=<c:out value="${fn:trim(extrasPDF)}"/>]]></extrasPDF>
 		</c:if>
 		<c:if test="${not empty discountText}">
 			<discountText>${discountText}</discountText>

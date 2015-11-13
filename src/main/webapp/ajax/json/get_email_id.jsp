@@ -2,15 +2,15 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.get_email_id')}" />
 
-<jsp:useBean id="emailDetailsService" class="com.ctm.services.email.EmailDetailsService" scope="page" />
+<jsp:useBean id="emailDetailsService" class="com.ctm.web.core.email.services.EmailDetailsService" scope="page" />
 
 <core_new:no_cache_header/>
 
 <session:get settings="true"/>
 
-<sql:setDataSource dataSource="jdbc/ctm" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 

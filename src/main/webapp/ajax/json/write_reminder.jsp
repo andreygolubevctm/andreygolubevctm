@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.write_reminder')}" />
 
 
 <c:choose>
@@ -12,9 +12,10 @@
 	</c:when>
 	<c:otherwise>
 		<settings:setVertical verticalCode="GENERIC" />
-		<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+		<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 	</c:otherwise>
 </c:choose>
+
 
 
 

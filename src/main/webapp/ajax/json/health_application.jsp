@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.health_application')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true"/>
 
@@ -11,29 +11,32 @@
 
 <%-- Adjust the base rebate using multiplier - this is to ensure the rebate applicable to the
 					commencement date is sent to the provider --%>
-<c:set var="effectiveDate" value="${data.health.payment.details.start}"/>
-<jsp:useBean id="changeOverRebatesService" class="com.ctm.services.health.ChangeOverRebatesService" />
-<c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(effectiveDate)}"/>
-<c:set var="rebate_multiplier_current" value="${changeOverRebates.getCurrentMultiplier()}"/>
-<c:set var="rebate_multiplier_future" value="${changeOverRebates.getFutureMultiplier()}"/>
-
-<jsp:useBean id="healthApplicationService" class="com.ctm.services.health.HealthApplicationService" scope="page" />
-<c:set var="validationResponse" value="${healthApplicationService.setUpApplication(data, pageContext.request, changeOverRebates.getEffectiveStart())}" />
+<health:changeover_rebates effective_date="${data.health.payment.details.start}" />
+<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService" scope="page" />
+<c:set var="validationResponse" value="${healthApplicationService.setUpApplication(data, pageContext.request, changeover_date_2)}" />
 
 <c:set var="tranId" value="${data.current.transactionId}" />
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
 <c:set var="continueOnAggregatorValidationError" value="${true}" />
 
-<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="page" />
+<jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
 <c:set var="touch_count"><core:access_count touch="P" /></c:set>
 
 <c:choose>
+	<%--
+	token can only be invalid for ONLINE.
+	If invalid send the user to the pending page and let the call centre sort out
+	TODO: move this over to HealthApplicationService
+	--%>
+	<c:when test="${!healthApplicationService.validToken}">
+		<health:set_to_pending errorMessage="Token is not valid." resultJson="${healthApplicationService.createTokenValidationFailedResponse(data.current.transactionId,pageContext.session.id)}"  transactionId="${resultXml}" productId="${productId}" />
+	</c:when>
 	<%-- only output validation errors if call centre --%>
-	<c:when test="${!healthApplicationService.isValid() && callCentre}">
+	<c:when test="${!healthApplicationService.valid && callCentre}">
 		${validationResponse}
 	</c:when>
 	<%-- set to pending if online and validation fails --%>
-	<c:when test="${!healthApplicationService.isValid() && !callCentre}">
+	<c:when test="${!healthApplicationService.valid && !callCentre}">
 		<c:set var="resultXml"><result><success>false</success><errors></c:set>
 		<c:forEach var="validationError"  items="${healthApplicationService.getValidationErrors()}">
 			<c:set var="resultXml">${resultXml}<error><code>${validationError.message}</code><original>${validationError.elementXpath}</original></error></c:set>
@@ -45,38 +48,39 @@
 	<c:when test="${empty callCentre and not empty touch_count and touch_count > 5}">
 		<c:set var="errorMessage" value="You have attempted to submit this join more than 5 times." />
 		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
-		{ "error": { "type":"submission", "message":"${errorMessage}" } }
+		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "submission")}
+
 	</c:when>
 	<%-- check the latest touch, to make sure a join is not already actively in progress [HLT-1092] --%>
 	<c:when test="${accessTouchService.isBeingSubmitted(tranId)}">
 		<c:set var="errorMessage" value="Your application is still being submitted. Please wait." />
 		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
-		{ "error": { "type":"submission", "message":"${errorMessage}" } }
-	</c:when>
+		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "submission")}
+</c:when>
 	<c:otherwise>
 <%-- Save client data; use outcome to know if this transaction is already confirmed --%>
 <c:set var="ct_outcome"><core:transaction touch="P" /></c:set>
-${logger.info('Application has been set to pending. {},{}', log:kv('transactionId', tranId), log:kv('productId', productId))}
+${logger.info('Application has been set to pending. {}', log:kv('productId', productId))}
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:choose>
 	<c:when test="${ct_outcome == 'C'}">
 		<c:set var="errorMessage" value="Quote has already been submitted and confirmed." />
-		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}" />
-		{ "error": { "type":"confirmed", "message":"${errorMessage}" } }
+		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
+		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "confirmed")}
 	</c:when>
 
 	<c:when test="${ct_outcome == 'V' or ct_outcome == 'I'}">
 		<c:set var="errorMessage" value="Important details are missing from your session. Your session may have expired." />
-		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
-		{ "error": { "type":"transaction", "message":"${errorMessage}" } }
+		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
+		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "transaction")}
 	</c:when>
 
 	<c:when test="${not empty ct_outcome}">
 		<c:set var="errorMessage" value="Application submit error. Code=${ct_outcome}" />
-		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
-		{ "error": { "type":"", "message":"${errorMessage}" } }
+		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
+		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "")}
 	</c:when>
 
 	<c:otherwise>
@@ -126,23 +130,26 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 <%-- Get the fund's code/name (e.g. hcf) --%>
 <sql:query var="prodRes">
 			SELECT lower(prov.Text) as Text, prov.ProviderId FROM provider_properties prov
-	JOIN product_master prod on prov.providerId = prod.providerId  
+	JOIN product_master prod on prov.providerId = prod.providerId
 	where prod.productid=?
 	AND prov.propertyId = 'FundCode' LIMIT 1
 	<sql:param value="${productId}" />
 </sql:query>
 <c:if test="${prodRes.rowCount != 0 }">
-	<c:set var="fund" value="${prodRes.rows[0].Text}" />		
+	<c:set var="fund" value="${prodRes.rows[0].Text}" />
 </c:if>
 		</sql:transaction>
 
-		${logger.debug('Queried product properties. {},{},{}', log:kv('tranId', tranId), log:kv('fund', fund), log:kv('productId', productId))}
+		${logger.debug('Queried product properties. {},{}', log:kv('fund', fund), log:kv('productId', productId))}
 
-		<%-- Load the config and send quotes to the aggregator gadget --%>
-<c:import var="config" url="/WEB-INF/aggregator/health_application/${fund}/config.xml" />
-<go:soapAggregator config = "${config}"
-					transactionId = "${tranId}" 
-					xml = "${go:getEscapedXml(data['health'])}" 
+		<%-- This will be deleted once health application is moved to it's own service --%>
+		<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+		<c:set var="configUrl">/WEB-INF/aggregator/health_application/${fund}/config.xml</c:set>
+
+		<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, configUrl)}" />
+		<go:soapAggregator config = "${config}"
+					transactionId = "${tranId}"
+					xml = "${go:getEscapedXml(data['health'])}"
 					var = "resultXml"
 				debugVar="debugXml"
 				validationErrorsVar="validationErrors"
@@ -150,6 +157,7 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 						isValidVar="isValid"
 						verticalCode="HEALTH"
 						configDbKey="appService"
+				   sendCorrelationId="true"
 						styleCodeId="${pageSettings.getBrandId()}"
 						/>
 		<c:choose>
@@ -160,8 +168,8 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 									errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
 					</c:forEach>
 				</c:if>
-<%-- //FIX: turn this back on when you are ready!!!! 
-<%-- Write to the stats database 
+<%-- //FIX: turn this back on when you are ready!!!!
+<%-- Write to the stats database
 <agg:write_stats tranId="${tranId}" debugXml="${debugXml}" />
 --%>
 
@@ -190,7 +198,7 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 
 		<%-- Collate fund error messages, add fail touch and add quote comment --%>
 			<c:if test="${not empty errorMessage}">
-								<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
+			    <health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
 			</c:if>
 		</x:if>
 
@@ -200,7 +208,7 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 				<core:transaction touch="C" noResponse="true" productId="${productId}"/>
 
 						<c:set var="ignore">
-								<jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService" scope="page" />
+								<jsp:useBean id="joinService" class="com.ctm.web.core.confirmation.services.JoinService" scope="page" />
 						${joinService.writeJoin(tranId,productId)}
 						</c:set>
 
@@ -215,7 +223,7 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 												<c:set var="allowedErrors">${allowedErrors},</c:set>
 											</c:if>
 										</x:forEach>
-										<jsp:useBean id="healthTransactionDao" class="com.ctm.dao.health.HealthTransactionDao" scope="page" />
+										<jsp:useBean id="healthTransactionDao" class="com.ctm.web.health.dao.HealthTransactionDao" scope="page" />
 										${healthTransactionDao.writeAllowableErrors(tranId , allowedErrors)}
 									</c:if>
 								</c:catch>
@@ -241,7 +249,7 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 					</x:when>
 					<x:otherwise></x:otherwise>
 				</x:choose>
-				${logger.info('Transaction has been set to confirmed. {},{}', log:kv('transactionId' , tranId), log:kv('confirmationID',confirmationID ))}
+				${logger.info('Transaction has been set to confirmed. {}', log:kv('confirmationID',confirmationID ))}
 				<c:set var="confirmationID"><confirmationID><c:out value="${confirmationID}" /></confirmationID></result></c:set>
 				<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', confirmationID)}" />
 								${go:XMLtoJSON(resultXml)}
@@ -249,20 +257,21 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 			<%-- Was not successful --%>
 							<%-- If no fail has been recorded yet --%>
 			<x:otherwise>
-								<c:choose>
-									<%-- if online user record a join --%>
-									<c:when test="${empty callCentre && empty errorMessage}">
-										<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
-									</c:when>
-									<%-- else just record a failure --%>
-									<c:when test="${empty errorMessage}">
-					<core:transaction touch="F" comment="Application success=false" noResponse="true" productId="${productId}"/>
-										${go:XMLtoJSON(resultXml)}
-									</c:when>
-								</c:choose>
+            	<c:choose>
+					<%-- if online user record a join --%>
+					<c:when test="${empty callCentre && empty errorMessage}">
+						<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" resultJson="${healthApplicationService.createFailedResponse(tranId, pageContext.session.id)}" />
+					</c:when>
+					<%-- else just record a failure --%>
+					<c:when test="${empty errorMessage}">
+						<core:transaction touch="F" comment="Application success=false" noResponse="true" productId="${productId}"/>
+						<c:set var="resultJson" >${go:XMLtoJSON(resultXml)}</c:set>
+						${healthApplicationService.createResponse(data.current.transactionId, resultJson)}
+					</c:when>
+				</c:choose>
 			</x:otherwise>
 		</x:choose>
-		${logger.debug('Health application complete. {},{},{}', log:kv('transactionId',tranId), log:kv('resultXml', resultXml),log:kv( 'debugXml', debugXml))}
+		${logger.trace('Health application complete. {},{}', log:kv('resultXml', resultXml),log:kv( 'debugXml', debugXml))}
 			</c:when>
 			<c:otherwise>
 						<c:choose>

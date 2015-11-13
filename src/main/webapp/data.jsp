@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.data')}" />
 
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
 <c:set var="buildIdentifier"><core:buildIdentifier></core:buildIdentifier></c:set>
 <c:set var="remoteAddr" value="${pageContext.request.remoteAddr}" />
 
-<jsp:useBean id="sessionDataService" class="com.ctm.services.SessionDataService" scope="application" />
-<jsp:useBean id="applicationService" class="com.ctm.services.ApplicationService" scope="page" />
+<jsp:useBean id="sessionDataService" class="com.ctm.web.core.services.SessionDataService" scope="application" />
+<jsp:useBean id="applicationService" class="com.ctm.web.core.services.ApplicationService" scope="page" />
 
 
 <core:doctype />

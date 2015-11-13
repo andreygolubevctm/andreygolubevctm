@@ -1,12 +1,13 @@
+<%-- TODO: FIX URLS FOR ALL REFERENCES TO ${assetUrl} -- They currently use ../ for scripts. We need to move scripts to the asset folder! --%>
 <%@ tag description="The Page" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
-<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
+<jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
+<jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
+<jsp:useBean id="newPage" class="com.ctm.web.core.web.NewPage" />
+${newPage.init(pageContext.request, pageSettings)}
 
 <%@ attribute name="title"				required="false"  rtexprvalue="true"	 description="The title of the page" %>
-<%@ attribute name="kampyle"			required="false"  rtexprvalue="true"	 description="Whether to display Kampyle or not" %>
-<%@ attribute name="sessionPop"			required="false"  rtexprvalue="true"	 description="Whether to load the session pop" %>
 <%@ attribute name="skipJSCSS"	required="false"  rtexprvalue="true"	 description="Provide if wanting to exclude loading normal js/css (except jquery)" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
@@ -31,12 +32,19 @@
 <c:set var="isDev" value="${environmentService.getEnvironmentAsString() eq 'localhost' || environmentService.getEnvironmentAsString() eq 'NXI'}"/>
 <c:set var="superTagEnabled" value="${pageSettings.getSetting('superTagEnabled') eq 'Y'}" />
 <c:set var="DTMEnabled" value="${pageSettings.getSetting('DTMEnabled') eq 'Y'}" />
+<c:set var="GTMEnabled" value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />
+
+<c:set var="separateJS" value="${param.separateJS eq 'true'}"/>
 
 <%-- Whether we want to show logging or not (for use on Production) --%>
 <c:set var="showLogging" value="${isDev or (not empty param.showLogging && param.showLogging == 'true')}" />
 
-<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}" />
+<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
+
+<%-- for Health V2 A/B testing --%>
+<c:set var="fileName" value="${pageSettings.getVerticalCode()}" />
+<c:if test="${isHealthV2 eq true}"><c:set var="fileName" value="health_v2" /></c:if>
 
 <!DOCTYPE html>
 <go:html>
@@ -61,64 +69,51 @@
 	</c:if>
 <c:choose>
 	<c:when test="${empty skipJSCSS}">
+		<c:set var="browserName" value="${userAgentSniffer.getBrowserName(pageContext.getRequest().getHeader('user-agent'))}" />
+		<c:set var="browserVersion" value="${userAgentSniffer.getBrowserVersion(pageContext.getRequest().getHeader('user-agent'))}" />
 
-	<%-- Disable session_pop on new journeys --%>
-	<c:set var="sessionPop" value="${false}" />
-
-	<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
-	<c:choose>
-		<c:when test="${pageSettings.getVerticalCode() == 'generic'}">
-		</c:when>
-		<%-- HACK FOR LMI - It needs to include a separate lmi.ctm.css file. --%>
-		<c:when test="${(pageSettings.getVerticalCode() == 'carlmi' or pageSettings.getVerticalCode() == 'homelmi') and pageSettings.getBrandCode() == 'ctm'}">
-			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/lmi.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
-			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
-		</c:when>
-		<%-- END HACK FOR LMI --%>
-		<c:otherwise>
-			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
-		</c:otherwise>
-	</c:choose>
+		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
+			<c:choose>
+				<%-- We don't include the separate inc files for Simples in IE because its path structure causes failures due to relative path issues --%>
+				<c:when test="${browserName eq 'IE' and browserVersion le 9}">
+					<c:import url="/assets/includes/styles/${pageSettings.getBrandCode()}/${fileName}.html" />
+				</c:when>
+				<c:otherwise>
+					<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${fileName}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+				</c:otherwise>
+			</c:choose>
+		</c:if>
 
 		<%--  Modernizr --%>
-		<script src='${assetUrl}framework/lib/js/modernizr-2.8.3.min.js'></script>
+		<script src='${assetUrl}js/bundles/plugins/modernizr.min.js'></script>
 
 		<!--[if lt IE 9]>
-			<script src="${assetUrl}framework/lib/js/respond.ctm.js"></script>
+			<script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-1.11.3.min.js"><\/script>')</script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
 		<![endif]-->
 		<!--[if gte IE 9]><!-->
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-2.1.4.js">\x3C/script>')</script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-2.1.4${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
 		<!--<![endif]-->
 
-			<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/bootstrap.${pageSettings.getBrandCode()}.min.js?${revision}"></script>
-		
-			<script src="${assetUrl}framework/jquery/plugins/jquery.number-2.1.5.js?${revision}"></script>
-
+			<script src="${assetUrl}js/libraries/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 
 		<go:insertmarker format="HTML" name="js-href" />
 		<go:script>
 			<go:insertmarker format="SCRIPT" name="js-head" />
 		</go:script>
 
-		<go:script>
-			$(document).ready(function(){
-				<go:insertmarker format="SCRIPT" name="onready" />
-			});
-		</go:script>
-
 	</c:when>
 	<c:otherwise>
 		<!--[if lt IE 9]>
-			<script src="${assetUrl}framework/lib/js/respond.ctm.js"></script>
+			<script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-1.11.3.min.js"><\/script>')</script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
 			<![endif]-->
 			<!--[if gte IE 9]><!-->
 				<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-				<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-2.1.4.js">\x3C/script>')</script>
+				<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-2.1.4${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
 			<!--<![endif]-->
 	</c:otherwise>
 </c:choose>
@@ -133,6 +128,16 @@
 </head>
 
 	<body class="jeinit ${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''}">
+
+    <c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
+        <c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
+            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','${pageSettings.getSetting('GTMPropertyId')}');</script>
+        </c:if>
+    </c:if>
 
 	<div class="navMenu-row">
 
@@ -223,16 +228,13 @@
 
 		</header>
 
-		<%--  Supertag --%>
-		<c:if test="${superTagEnabled eq true and not empty pageSettings and pageSettings.hasSetting('supertagInitialPageName')}">
-				<agg:supertag_top type="${go:TitleCase(pageSettings.getVerticalCode())}" initialPageName="${pageSettings.getSetting('supertagInitialPageName')}" useCustomJs="false"/>
+			<%--  Supertag --%>
+			<c:if test="${superTagEnabled eq true and not empty pageSettings and pageSettings.hasSetting('supertagInitialPageName')}">
+				<agg_new:supertag />
 			</c:if>
 
-		<!--  content -->
+			<!--  content -->
 			<jsp:doBody />
-
-		<!--  Includes -->
-		<agg:includes kampyle="${kampyle}" newKampyle="${true}" supertag="${superTagEnabled}" sessionPop="${sessionPop}" loading="false" fatalError="false"/>
 
 <c:if test="${empty skipJSCSS}">
 
@@ -250,26 +252,20 @@
 		<c:if test="${isDev eq false}">
 			<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 		</c:if>
-		<script>window._ || document.write('<script src="${assetUrl}framework/lib/js/underscore-1.8.3.min.js">\x3C/script>')</script>
-
-		<%-- Extras --%>
-<script type="text/javascript" src="${assetUrl}framework/jquery/plugins/typeahead-0.9.3_custom.js"></script>
-<script type="text/javascript" src="${assetUrl}framework/jquery/plugins/qtip2/jquery.qtip.min.js" async defer></script>
+		<script>window._ || document.write('<script src="${assetUrl}/libraries/underscore-1.8.3.min.js">\x3C/script>')</script>
 
 		<!--  Meerkat -->
-		<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-	<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/components/validation.modules.${pageSettings.getBrandCode()}.js?${revision}"></script>
-		<c:choose>
-			<%-- HACK FOR LMI - It needs to include a separate lmi.ctm.css file. --%>
-			<c:when test="${(pageSettings.getVerticalCode() == 'carlmi' or pageSettings.getVerticalCode() == 'homelmi') and pageSettings.getBrandCode() == 'ctm'}">
-				<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/lmi.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-				<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-			</c:when>
-			<%-- END HACK FOR LMI --%>
-			<c:when test="${pageSettings.getVerticalCode() != 'generic'}">
-				<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-			</c:when>
-		</c:choose>
+		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
+			<c:choose>
+				<%-- Load separateJS files, but don't include separateJS if Simples --%>
+				<c:when test="${separateJS}">
+					<c:import url="/assets/includes/js/${fileName}.html" />
+				</c:when>
+				<c:otherwise>
+					<script src="${assetUrl}js/bundles/${fileName}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+				</c:otherwise>
+			</c:choose>
+		</c:if>
 
 		<%-- Additional Meerkat Scripts --%>
 		<jsp:invoke fragment="additional_meerkat_scripts" />
@@ -285,6 +281,11 @@
 			</c:when>
 		</c:choose>
 
+			<%-- Server date for JS to access --%>
+            <jsp:useBean id="now" class="java.util.Date" />
+            <c:set var="serverMonth"><fmt:formatDate value="${now}" type="DATE" pattern="M"/></c:set>
+            <c:set var="serverMonth" value="${serverMonth-1}" />
+
 			<script>
 
 				;(function (meerkat) {
@@ -297,10 +298,11 @@
                         isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 						showLogging: <c:out value="${showLogging}" />,
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
+						serverDate: new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <c:out value="${serverMonth}" />, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>),
                         revision: '<core:buildIdentifier />',
-						<%-- could be: localhost, integration, qa, staging, prelive, pro --%>
-						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId},</c:if>
-						<%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
+						tokenEnabled: '${newPage.tokenEnabled}',
+						verificationToken: '${newPage.createTokenForNewPage(pageContext.request , data.current.transactionId ,pageSettings)}',
+						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId}, </c:if><%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
 						urls:{
 							base: '${pageSettings.getBaseUrl()}',
 							exit: '${exitUrl}',
@@ -310,11 +312,11 @@
 						content:{
 							brandDisplayName: '<content:get key="brandDisplayName"/>'
 						},
-						<%-- This is just for supertag tracking module, don't use it anywhere else --%>
 						tracking:{
 							brandCode: '${pageSettings.getBrandCode()}',
 							superTagEnabled: ${superTagEnabled},
 							DTMEnabled: ${DTMEnabled},
+                            			GTMEnabled: ${GTMEnabled},
 							userTrackingEnabled: ${isUserTrackingEnabled}
 						},
 						leavePageWarning: {
@@ -338,9 +340,11 @@
 							type: 'default',
 							direction: 'right'
 						},
-						useNewLogging: ${pageSettings.getSetting("useNewLogging")},
+						useNewLogging: ${pageSettings.getSetting("useNewLogging") and not param['automated-test']},
 						couponId: '<c:out value="${couponId}"/>',
-						vdn: '<c:out value="${go:decodeUrl(param.vdn)}" escapeXml="true" />'
+						vdn: '<c:out value="${go:decodeUrl(param.vdn)}" escapeXml="true" />'<c:if test="${pageSettings.getSetting('kampyleFeedback') eq 'Y'}">,
+						kampyleId: 112902
+						</c:if>
 					};
 
 		<%-- Vertical settings should be passed in as a JSP fragment --%>
@@ -359,42 +363,18 @@
 					meerkat != null && meerkat.init(siteConfig, options);
 
 				})(window.meerkat);
-
-			_.templateSettings = {
-				evaluate:    /\{\{(.+?)\}\}/g, <%-- {{= console.log("blah") }} --%>
-				interpolate: /\{\{=(.+?)\}\}/g, <%-- {{ title }} --%>
-				escape:      /\{\{-(.+?)\}\}/g <%-- {{{ title }}} --%>
-			};
-
 			</script>
 
 </c:if>
 
 		<%-- Body End Fragment --%>
 		<jsp:invoke fragment="body_end" />
-		<%-- Generally VerticalSettings should be declared in a <vertical>/settings.tag file placed in the body_end fragment space. --%>
-		<script>
-
-		if(typeof VerticalSettings !== 'undefined'){
-			_.extend(meerkat.site, VerticalSettings);
-		}
-
-		</script>
+		<%-- Generally vertical specific settings should be declared in a <vertical>/settings.tag file placed in the body_end fragment space. --%>
 
 		<div id="dynamic_dom"></div>
 		</div>
 
 	<jsp:invoke fragment="before_close_body" />
-
-		<%-- Fastclick --%>
-	<c:choose>
-		<c:when test="${isDev eq false}">
-			<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js" async defer></script>
-		</c:when>
-		<c:otherwise>
-			<script src="${assetUrl}framework/lib/js/fastclick-1.0.6.min.js" async defer></script>
-		</c:otherwise>
-	</c:choose>
 
 	<c:if test="${DTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('DTMSourceUrl')}">
 		<c:if test="${fn:length(pageSettings.getSetting('DTMSourceUrl')) > 0}">
@@ -402,5 +382,20 @@
 		</c:if>
 	</c:if>
 
+	<go:script>
+		$(document).ready(function() {
+			<go:insertmarker format="SCRIPT" name="onready" />
+
+			<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
+				yepnope.injectJs({
+					src: '${assetUrl}js/bundles/${fileName}.deferred${pageSettings.getSetting('minifiedFileString')}.js?${revision}',
+					attrs: {
+						async: true
+					} <%-- We need to now initialise the deferred modules --%>
+				}, function initDeferredModules() {
+					meerkat.modules.init();
+				});
+			</c:if>});
+	</go:script>
 </body>
 </go:html>

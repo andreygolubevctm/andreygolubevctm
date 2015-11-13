@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 <session:get settings="true"/>
 <security:populateDataFromParams rootPath="fuel" />
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <c:set var="sessionid" value="${pageContext.session.id}" />
 <c:set var="brand" value="CTM" />
 <c:set var="vertical" value="FUEL" />

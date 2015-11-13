@@ -2,12 +2,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.handover')}" />
 
 <session:new verticalCode="CREDITCARD" />
 <core_new:quote_check quoteType="CREDITCARD" />
 
-<jsp:useBean id="productService" class="com.ctm.services.creditcards.ProductService" scope="page" />
+<jsp:useBean id="productService" class="com.ctm.web.creditcards.services.ProductService" scope="page" />
 <c:set var="tmpProductCode">
 	<c:out escapeXml="true" value="${param.productID}" />
 </c:set>

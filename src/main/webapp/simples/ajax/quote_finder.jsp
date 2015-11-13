@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.simples.ajax.quote_finder')}" />
 
 <session:getAuthenticated />
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <go:setData dataVar="data" xpath="findQuotes" value="*DELETE" />
 
@@ -112,7 +112,7 @@ ${logger.debug('Got uid from session. {}', log:kv('isOperator', isOperator))}
 
 					<c:if test="${empty error and not empty findquote and findquote.rowCount > 0}">
 						<%-- Put found transactions into a flat list and pull out the transactions --%>
-						<jsp:useBean id="searchService" class="com.ctm.services.simples.SimplesSearchService" scope="page" />
+						<jsp:useBean id="searchService" class="com.ctm.web.simples.services.SimplesSearchService" scope="page" />
 						${searchService.mapResults(findquote , true)}
 
 						${logger.debug('TRAN IDS found. {},{}', log:kv('transactionIdsHot', searchService.getHotTransactionIdsCsv()), log:kv('transactionIdsCold',searchService.getColdTransactionIdsCsv() ))}

@@ -38,12 +38,9 @@
 		<layout:simples_page fullWidth="true">
 
 			<jsp:attribute name="head">
-				<script src="${assetUrl}framework/lib/js/Inspector-JSON-0.1.0/inspector-json.js"></script>
-				<link rel="stylesheet" href="${assetUrl}framework/lib/js/Inspector-JSON-0.1.0/inspector-json.css">
 			</jsp:attribute>
 
 			<jsp:body>
-						<core:loadsafe />
 						<simples:menu_bar bridgeToLive="N" />
 
 						<iframe id="simplesiframe" name="simplesiframe" width="100%" height="200" src="${assetUrl}simples/home.jsp"></iframe>

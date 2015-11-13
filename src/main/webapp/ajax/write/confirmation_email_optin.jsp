@@ -60,7 +60,7 @@
 		<go:setData dataVar="data" xpath="${vertical}/confirmation/confirmationOptIn/emailAddress" value="${email}" />
 		<c:set var="xmlData">${data[vertical].confirmation}</c:set>
 		<go:setData dataVar="data" xpath="${vertical}/confirmation/confirmationOptIn" value="*DELETE" />
-		<sql:setDataSource dataSource="jdbc/ctm" />
+		<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 		<c:catch var="error">
 			<sql:update>
 				UPDATE ctm.confirmations SET XMLdata = ?

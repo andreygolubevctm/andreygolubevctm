@@ -1,10 +1,10 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="This is the login procedure, which adds the user to the data bucket"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="simplesUserService" class="com.ctm.services.simples.SimplesUserService" scope="application" />
-<jsp:useBean id="phoneService" class="com.ctm.services.PhoneService" scope="page" />
+<jsp:useBean id="simplesUserService" class="com.ctm.web.simples.services.SimplesUserService" scope="application" />
+<jsp:useBean id="phoneService" class="com.ctm.web.simples.services.PhoneService" scope="page" />
 
-<c:set var="logger" value="${log:getLogger('/core/login.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.core.login')}" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="uid" 		required="true"	rtexprvalue="true"	description="The user id" %>

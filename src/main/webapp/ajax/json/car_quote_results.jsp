@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.car_quote_results')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="CAR" />
 
-<jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="soapdata" class="com.ctm.web.core.web.go.Data" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:set var="continueOnValidationError" value="${false}" />
 
@@ -83,7 +83,7 @@
 
 <%-- Add accessorie descriptions to databucket --%>
 
-<jsp:useBean id="carService" class="com.ctm.services.car.CarVehicleSelectionService" scope="request"/>
+<jsp:useBean id="carService" class="com.ctm.web.car.services.CarVehicleSelectionService" scope="request"/>
 <c:set var="accListResult" value="${carService.getVehicleNonStandardMappings()}"/>
 
 <c:set var="accsList" value="${data['quote/accs/*']}"/>
@@ -136,7 +136,7 @@
 
 <%-- Accessories End --%>
 
-<jsp:useBean id="carValidationService" class="com.ctm.services.car.CarService" scope="page" />
+<jsp:useBean id="carValidationService" class="com.ctm.web.car.services.CarService" scope="page" />
 <c:set var="serviceRespone" value="${carValidationService.validate(pageContext.request, data)}" />
 
 <c:choose>
@@ -155,7 +155,8 @@
 							  debugVar="debugXml"
 							  validationErrorsVar="validationErrors"
 							  continueOnValidationError="${continueOnValidationError}"
-							  isValidVar="isValid" />
+							  isValidVar="isValid"
+							  sendCorrelationId="false" />
 
 		<c:set var="styleCodeId" value="${pageSettings.getBrandId()}" />
 		<%--<c:if test="${styleCodeId == 8}">
@@ -166,7 +167,7 @@
 			<c:set var="choosiCustomerPhone" value="${data.quote.contact.phoneinput}" />
 			<c:set var="choosiCustomerCallOptIn" value="${okToCall}" />
 			<c:set var="choosiCustomerMarketingOptIn" value="${marketing}" />
-			<jsp:useBean id="ChoosiLeadFeedService" class="com.ctm.services.leadfeed.ChoosiLeadFeedService" scope="application" />
+			<jsp:useBean id="ChoosiLeadFeedService" class="com.ctm.web.core.services.leadfeed.ChoosiLeadFeedService" scope="application" />
 			${ChoosiLeadFeedService.setChoosiLeadFeed(insuranceTypeId, choosiCustomerFirstName, choosiCustomerEmail, choosiCustomerPhone, choosiCustomerCallOptIn, choosiCustomerMarketingOptIn, choosiCustomerLastName)}
 		</c:if>--%>
 
@@ -193,7 +194,7 @@
 				<%-- Write to the stats database --%>
 				<agg:write_stats rootPath="quote" tranId="${tranId}" debugXml="${stats}" />
 
-				${logger.debug('Got stats. {},{},{}', log:kv('tranId', tranId), log:kv('resultXml', resultXml), log:kv('stats', stats))}
+				${logger.trace('Got stats. {},{}', log:kv('resultXml', resultXml), log:kv('stats', stats))}
 				<%-- Return the results as json --%>
 
 				<%-- Calculate the end valid date for these quotes --%>
@@ -249,7 +250,7 @@
 
 					<%-- Knockout REAL when driver is Male, under 21 and REIN-01-02 (Comprehensive) --%>
 					<c:if test="${brandCode eq 'REIN' and productId eq 'REIN-01-02'}">
-						<jsp:useBean id="dateUtils" class="com.ctm.utils.common.utils.DateUtils" scope="request" />
+						<jsp:useBean id="dateUtils" class="com.ctm.web.core.utils.common.utils.DateUtils" scope="request" />
 						<c:set var="regDob" value="${data.quote.drivers.regular.dob}" />
 						<c:set var="yngDob" value="${data.quote.drivers.young.dob}" />
 						<c:if test="${(data.quote.drivers.regular.gender eq 'M' && dateUtils.getAgeFromDOBStr(regDob) < 21) || (not empty yngDob && data.quote.drivers.young.gender eq 'M' && dateUtils.getAgeFromDOBStr(yngDob) < 21)}">

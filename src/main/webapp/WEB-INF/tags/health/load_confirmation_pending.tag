@@ -2,13 +2,13 @@
 <%@ tag description="Load the confirmation page info based on the key passed in the URL"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('/health/load_confirmation_pending.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.health.load_confirmation_pending')}" />
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="token"><c:out value="${param.token}" escapeXml="true" /></c:set>
 <c:set var="PendingTranID" value="${fn:substringAfter(token, '-')}" />
 
-<sql:setDataSource dataSource="jdbc/ctm" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 
 	${logger.info('Beginning load. {},{},{}' , log:kv('token',token ), log:kv('PendingTranID',PendingTranID ), log:kv('CallCentre',CallCentre ))}
 

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.dreammail.send')}" />
 
 <c:choose>
 	<c:when test="${not empty param.transactionId}">
@@ -11,7 +11,7 @@
 	<c:otherwise>
 		<%-- Any email with out a transaction id would most likely be things like forgot password --%>
 		<settings:setVertical verticalCode="GENERIC" />
-		<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+		<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 	</c:otherwise>
 </c:choose>
 
@@ -70,7 +70,7 @@
 		<%-- Import the XSL template --%>			
 		<c:import var="myXSL" url="${template}" />
 		
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<%-- Build the xml for each row and process it. --%>
 		<%-- If we don't have xml, because we're not doing a transaction lookup with awesome data, we just pass some donkey xml, because we know the xsl doesn't check anything inside it PLEASE ENSURE YOU HAVE SOMETHING IN YOUR XML AS A BLANK VARIABLE WILL CAUSE THE EMAIL NOT TO SEND --%>
 		<c:choose>

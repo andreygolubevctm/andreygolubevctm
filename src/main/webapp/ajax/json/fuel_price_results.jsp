@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.fuel_price_results')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="FUEL"/>
 
 <%-- Check IP address to see if its permitted. --%>
-<jsp:useBean id="ipCheckService" class="com.ctm.services.IPCheckService" />
+<jsp:useBean id="ipCheckService" class="com.ctm.web.core.services.IPCheckService" />
+<jsp:useBean id="quoteResults" class="com.ctm.web.fuel.services.FuelPriceEndpointService" />
+${quoteResults.init(pageContext.request, pageSettings)}
 <c:choose>
     <%-- Check and increment counter for IP address --%>
     <c:when test="${!ipCheckService.isPermittedAccess(pageContext.request, pageSettings)}">
@@ -32,7 +34,7 @@
         ${logger.debug('Invalid transaction id returning called response. {}', log:kv('resultXml',resultXml))}
         ${go:XMLtoJSON(resultXml)}
     </c:when>
-    <c:otherwise>
+    <c:when test="${quoteResults.validToken}">
 
         <c:set var="continueOnValidationError" value="${true}"/>
 
@@ -59,7 +61,8 @@
         <c:set var="tranId" value="${data['current/transactionId']}" />
 
         <%-- Load the config and send quotes to the aggregator gadget --%>
-        <c:import var="config" url="/WEB-INF/aggregator/fuel/config.xml" />
+        <jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+        <c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/fuel/config.xml')}" />
         <go:soapAggregator config = "${config}"
             transactionId = "${tranId}"
             xml = "${go:getEscapedXml(data['fuel'])}"
@@ -70,6 +73,7 @@
             isValidVar="isValid"
             verticalCode="FUEL"
             configDbKey="quoteService"
+                           sendCorrelationId="true"
             styleCodeId="${pageSettings.getBrandId()}"
              />
 
@@ -86,11 +90,12 @@
 
                 <%-- Add the results to the current session data --%>
                 <go:setData dataVar="data" xpath="soap-response" value="*DELETE"/>
-                ${go:XMLtoJSON(resultXml)}
+                <c:set var="resultJson">${go:XMLtoJSON(resultXml)}</c:set>
+                ${quoteResults.createResponse(data.text['current/transactionId'], resultJson)}
             </c:when>
             <c:otherwise>
                 <agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="fuel_price_results.jsp"/>
             </c:otherwise>
         </c:choose>
-    </c:otherwise>
+    </c:when>
 </c:choose>

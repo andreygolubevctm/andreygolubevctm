@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.life_quote_result')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="${fn:trim(fn:toUpperCase(param.vertical))}" />
 
@@ -15,7 +15,7 @@
 	<error:recover origin="ajax/json/life_quote_results.jsp" quoteType="${vertical}" />
 </c:if>
 
-<jsp:useBean id="lifeService" class="com.ctm.services.life.LifeService" scope="page" />
+<jsp:useBean id="lifeService" class="com.ctm.web.life.services.LifeService" scope="page" />
 <c:set var="serviceRespone" value="${lifeService.contactLeadViaJSP(pageContext.request, data)}" />
 
 <c:choose>
@@ -44,7 +44,10 @@
 				</c:if>
 				
 				<%-- Load the config and send quotes to the aggregator gadget --%>
-				<c:import var="config" url="/WEB-INF/aggregator/life/config_results_${vertical}.xml" />
+				<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+				<c:set var="configUrl">/WEB-INF/aggregator/life/config_results_${vertical}.xml</c:set>
+
+				<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, configUrl)}" />
 
 				<c:set var="dataXml" value="${go:getEscapedXml(data[vertical])}" />
 				<go:soapAggregator	config = "${config}"

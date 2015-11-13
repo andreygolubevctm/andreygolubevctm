@@ -2,12 +2,12 @@
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('/health/write_optins.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.health.write_optins')}" />
 
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
 
 <%-- Attributes --%>
-<%@ attribute name="userDetails"	 type="com.ctm.model.request.health.UserDetails" required="false" rtexprvalue="true"	 description="Users first name from either questionset or application" %>
+<%@ attribute name="userDetails"	 type="com.ctm.web.health.model.request.UserDetails" required="false" rtexprvalue="true"	 description="Users first name from either questionset or application" %>
 
 <c:set var="brand" value="${pageSettings.getBrandCode()}"/>
 <%-- 1st step - optout emails in the history. Done first just in case an email in the history in questionset

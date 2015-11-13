@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.rating.health.health_submit_wfd')}" />
 
 <% pageContext.setAttribute("newLineChar", "\n"); %>
 <% pageContext.setAttribute("quote", "\""); %>
@@ -49,8 +49,8 @@ ${logger.debug('Got body content: {},{}', log:kv('contentLength', pageContext.re
 		<x:out select="$applicationXml/xml/data/FundProductCode" />
 	</c:set>
 </c:if>
-
-<c:import var="config" url="/WEB-INF/aggregator/health_application/wfd/config.xml" />
+<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health_application/wfd/config.xml')}" />
 <x:parse doc="${config}" var="configXml" />
 
 <%-- damn namespaces http://pro-programmers.blogspot.com.au/2008/04/jstl-xparse-not-working-for-elements.html --%>

@@ -1,0 +1,28 @@
+{
+  "brandCodes": ["ctm", "cc", "choo"],
+  "dependencies": [
+    "plugins/scrollTo",
+    "shared/results",
+    "shared/features",
+    "shared/validation",
+    "core",
+    "shared/currency",
+    "shared/addressLookup",
+    "shared/placeholder",
+    "shared/emailLoadQuote",
+    "shared/commencementDate",
+    "shared/datepicker",
+    "shared/sliders",
+    "shared/dropdownInteractive",
+    "shared/partnerTransfer",
+    "shared/moreInfo",
+    "shared/popovers",
+    "shared/leavePageWarning",
+    "shared/contentPopulation",
+    "shared/regoLookup",
+    "shared/saveQuote",
+    "shared/resultsRankings",
+    "shared/leadFeed",
+    "shared/formNumberFormatInputs"
+  ]
+}

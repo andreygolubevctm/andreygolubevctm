@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Places dialogue markers for call center staff"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<c:set var="logger" value="${log:getLogger('/simples/dialogue.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.simples.dialogue')}" />
 <jsp:useBean id="date" class="java.util.Date" />
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
@@ -15,7 +15,7 @@
 <%@ attribute fragment="true" required="false" name="body_start" %>
 
 <c:if test="${callCentre}">
-	<jsp:useBean id="financialYearUtils" class="com.ctm.utils.health.FinancialYearUtils" />
+	<jsp:useBean id="financialYearUtils" class="com.ctm.web.health.utils.FinancialYearUtils" />
 	<c:set var="continuousCoverYear" value="${financialYearUtils.getContinuousCoverYear()}" />
 
 	<%-- VARIABLES --%>
@@ -24,7 +24,7 @@
 	</c:set>
 
 	<c:catch var="error">
-		<sql:query var="result" dataSource="jdbc/ctm" maxRows="1">
+		<sql:query var="result" dataSource="${datasource:getDataSource()}" maxRows="1">
 			SELECT text FROM ctm.dialogue
 			WHERE dialogueID = ?
 			AND (styleCodeId = ? OR styleCodeId = 0)
@@ -41,7 +41,7 @@
 	</c:if>
 
 	<%-- OUTPUT: display and test for additional flags --%>
-	<div class="simples-dialogue-${id} simples-dialogue row-content ${className}<c:if test="${not empty mandatory && mandatory == true}"> mandatory</c:if>">
+	<div class="simples-dialogue-${id} simples-dialogue row-content ${className}<c:choose><c:when test="${not empty mandatory && mandatory == true}"> mandatory</c:when><c:otherwise> optionalDialogue</c:otherwise></c:choose>">
 		<jsp:invoke fragment="body_start" />
 
 		<c:choose>
@@ -66,15 +66,4 @@
 
 		<jsp:doBody />
 	</div>
-
-	<%-- SCRIPT --%>
-	<%-- Only allow hide/show if the dialogue is not mandatory --%>
-	<c:if test="${empty mandatory}">
-	<go:script marker="onready">
-		<%-- If dialogue text contains an <h3 class=toggle> then hook it up to a click event that will hide/show the panel contents. --%>
-		$('.simples-dialogue h3.toggle').parent('.simples-dialogue').addClass('toggle').on('click', function() {
-			$(this).find('h3 + div').slideToggle(200);
-		});
-	</go:script>
-	</c:if>
 </c:if>

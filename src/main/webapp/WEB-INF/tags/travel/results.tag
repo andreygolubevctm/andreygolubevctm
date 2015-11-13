@@ -255,7 +255,7 @@
 			<div class="resultInsert priceMode">
 				<div class="row">
 					<div class="col-xs-2 col-sm-8 col-md-6">
-						<div class="companyLogo"><img src="common/images/logos/results/{{= obj.productId }}_w.png" /></div>
+						<div class="companyLogo"><img src="assets/graphics/logos/results/{{= obj.productId }}_w.png" /></div>
 
 						<h2 class="hidden-xs">{{= productTitle }}</h2>
 
@@ -289,7 +289,7 @@
 <%-- Logo template --%>
 <core:js_template id="provider-logo-template">
 	{{ var img = 'default_w'; }}
-	{{ if (obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
+	{{ if (obj.hasOwnProperty('serviceName') && obj.serviceName.length > 1) img = obj.serviceName; }}
 	<div class="travelCompanyLogo logo_{{= img }}"></div>
 </core:js_template>
 

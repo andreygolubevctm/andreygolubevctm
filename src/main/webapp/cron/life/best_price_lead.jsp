@@ -1,12 +1,12 @@
-<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.ctm.web.core.email.model.EmailMode"%><%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.cron.life.best_price_lead')}" />
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/ctm" />
-<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="request" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
+<jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="request" />
 
 <c:catch var="error">
 	<sql:query var="transactionIds">
@@ -97,15 +97,15 @@
 					<c:choose>
 						<c:when test="${company eq 'ozicare'}">
 							<%-- SEND AGIS LEAD --%>
-							<jsp:useBean id="AGISLeadFromCronJob" class="com.ctm.services.life.AGISLeadFromCronJob" scope="page" />
+							<jsp:useBean id="AGISLeadFromCronJob" class="com.ctm.web.life.leadfeed.services.AGISLeadFromCronJob" scope="page" />
 							<c:set var="leadResultStatus" value="${AGISLeadFromCronJob.newLeadFeed(result.transaction_id, transactionData, rankingData, pageSettings)}" />
 
 							<c:if test="${leadResultStatus eq 'OK'}">
 								<%-- SEND AGIS EMAIL --%>
-								<jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
+								<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
 								
 								<%-- enums are not will handled in jsp --%>
-								<% request.setAttribute("BEST_PRICE", com.ctm.model.email.EmailMode.BEST_PRICE); %>
+								<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 								<c:catch var="error">
 									${emailService.send(pageContext.request, BEST_PRICE, data.life.contactDetails.email, result.transaction_id)}
 								</c:catch>
@@ -122,7 +122,8 @@
 						</c:when>
 						<c:otherwise>
 							<%-- Load the config for the contact lead sender --%>
-							<c:import var="config" url="/WEB-INF/aggregator/life/config_contact_lead.xml" />
+							<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+							<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_contact_lead.xml')}" />
 
 							<go:setData dataVar="data" xpath="${vertical}/quoteAction" value="delay" />
 

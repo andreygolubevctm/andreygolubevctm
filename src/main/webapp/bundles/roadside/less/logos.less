@@ -1,0 +1,35 @@
+
+/**
+	In other journeys (car, home etc), the logo is floated beside the product detail, instead of in its own row.
+	Hence we need to add these extra styles.
+*/
+.lg-logo {
+  text-align: center;
+}
+
+.companyLogo {
+  .providersHighResSpriteImages(~"roadside"; ~"logo_"; ~"24-7", ~"1FOW", ~"365R", ~"AGAR", ~"BUDD", ~"M247", ~"RACW";);
+  display:inline-block;
+  float: none;
+
+  .unavailable & {
+  	float:left;
+  	background-color: transparent;
+  	margin-right: 20px;
+  	margin-bottom: 20px;
+  }
+}
+
+@media (@sm-only) {
+  .featuresMode {
+	.companyLogo {
+	  .providersHighResSpriteImages(~"roadside"; ~"logo_"; ~"24-7", ~"1FOW", ~"365R", ~"AGAR", ~"BUDD", ~"M247", ~"RACW"; @logo-xs-scale; ~"");
+	}
+  }
+}
+
+@media (max-width: 480px) {
+  .companyLogo {
+	.providersHighResSpriteImages(~"roadside"; ~"logo_"; ~"24-7", ~"1FOW", ~"365R", ~"AGAR", ~"BUDD", ~"M247", ~"RACW"; @logo-xs-scale; ~"");
+  }
+}

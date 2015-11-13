@@ -28,18 +28,18 @@
 
 
 <%-- Get data to build sections/categories/features --%>
-<jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
-<c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString('carws_', 'category')}" scope="request"  />
+<jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
+<c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('carws_', 'category')}" scope="request"  />
 <script>
 	var resultLabels = ${jsonString};
 </script>
 
 <c:set var="brandCode" value="${pageSettings.getBrandCode()}" />
 
-<jsp:useBean id="environmentService" class="com.ctm.services.EnvironmentService" scope="request" />
+<jsp:useBean id="environmentService" class="com.ctm.web.core.services.EnvironmentService" scope="request" />
 <c:set var="environmentCode" value="${environmentService.getEnvironmentAsString()}" />
 
-<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
+<jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
 <c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
 <div id="deviceType" data-deviceType="${deviceType}"></div>
 
@@ -346,7 +346,7 @@
 			<div class="resultInsert priceMode">
 				<div class="row">
 					<div class="col-xs-2 col-sm-8 col-md-6">
-						<div class="companyLogo"><img src="common/images/logos/results/{{= obj.productId }}_w.png" /></div>
+						<div class="companyLogo"><img src="assets/graphics/logos/results/{{= obj.productId }}_w.png" /></div>
 
 						<h2 class="hidden-xs productTitle">{{= productTitle }}</h2>
 

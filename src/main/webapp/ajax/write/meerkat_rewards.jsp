@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.write.meerkat_rewards')}" />
 
 <session:get settings="true" />
 
@@ -47,7 +47,7 @@
 			brand=""
 			vertical="" />
 
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<sql:query var="emailId">
 			SELECT emailId
 				FROM aggregator.email_master

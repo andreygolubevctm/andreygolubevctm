@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('/form/header.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.form.header')}" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="quoteType" 			required="false"	 rtexprvalue="true"	description="The vertical this quote is associated with" %>

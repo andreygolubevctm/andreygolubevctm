@@ -23,7 +23,7 @@
 <%-- Call centre numbers --%>
 <c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 
-<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+<jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 
 <%-- HTML --%>
 <layout:journey_engine_page title="Home & Contents Quote">
@@ -167,7 +167,6 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
-		<script src="framework/jquery/plugins/jquery.scrollTo.min.js"></script>
 	</jsp:attribute>
 
 	<jsp:body>

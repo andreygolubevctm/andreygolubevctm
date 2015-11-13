@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.lifebroker_benefits')}" />
 
 <session:get />
 
@@ -23,7 +23,8 @@
 </c:set>
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
-<c:import var="config" url="/WEB-INF/aggregator/life/config_lifebroker_comparison.xml" />
+<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_lifebroker_comparison.xml')}" />
 <go:soapAggregator	config = "${config}"
 					transactionId = "${tranId}"
 					xml = "${requestXML}"

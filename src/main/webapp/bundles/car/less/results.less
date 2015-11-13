@@ -1,0 +1,520 @@
+//------------------------------
+
+.resultsContainer.featuresMode {
+	.generate-default-result-column-widths();
+}
+
+//------------------------------
+.nowrap {
+	white-space: nowrap;
+}
+
+.journeyEngineSlide.resultsSlide {
+	padding-top: 0;
+}
+
+//-------------------------------------------------------------------------------------
+// General result styling
+//-------------------------------------------------------------------------------------
+
+@media(@sm) {
+	.priceMode .result-row {
+		margin-bottom: (@results-price-row-padding * 2);
+	}
+}
+
+// Add some spacing around 'chose not to quote' logos
+.result_unavailable_combined {
+	.companyLogo {
+		margin-right: 20px;
+		margin-bottom: 20px;
+	}
+}
+
+.result {
+	.frequency,
+	.excess {
+		text-align: right;
+	}
+
+	.expandAllFeatures.active,
+	.collapseAllFeatures.active {
+		color: @car-results-minor-text;
+	}
+	.specialConditions {
+		color: @car-results-minor-text;
+		margin-bottom: 0;
+	}
+
+	.promotion {
+		color: @theme-tertiary;
+		@media(@md) {
+			margin-top: 20px;
+		}
+		@media(@xs-only) {
+			margin: 0.5em 0;
+		}
+	}
+
+	.monthlyBreakdown {
+		padding-top: 3px;
+	}
+
+	small {
+		font-style: italic;
+	}
+}
+.offer-terms-modal {
+	.modal-header, .modal-body {
+	.heading {
+		margin-left: 105px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	}
+}
+
+@frequencyAmountSize: 34px;
+@excessAmountSize: 24px;
+@titleSize: 12px;
+
+.frequencyAmount {
+	color: @theme-secondary;
+	font-size: @frequencyAmountSize;
+	line-height: @frequencyAmountSize;
+}
+.excessAmount, .quoteNumber {
+	font-size: @excessAmountSize;
+	line-height: @excessAmountSize;
+	margin-top: @frequencyAmountSize - @excessAmountSize;
+}
+
+.quoteNumberTitle,
+.frequencyTitle,
+.excessTitle {
+	text-transform: uppercase;
+	font-size: @titleSize;
+	line-height: @titleSize;
+	white-space: nowrap;
+}
+
+.frequency.monthly {
+	.monthlyBreakdown {
+		font-size: @titleSize;
+		line-height: @titleSize;
+
+		.priceMode & {
+			clear: both;
+		}
+
+		.totalPayment {
+			text-transform: uppercase;
+		}
+	}
+}
+
+.priceMode .result-row {
+	.frequency {
+		padding-top:1px !important;
+		.frequencyTitle {
+			display:inline-block !important;
+		}
+	}
+	.excess {
+		.excessTitle {
+			display:inline-block !important;
+		}
+	}
+}
+
+.offerTerms {
+	text-decoration:underline;
+	white-space: pre;
+}
+
+// Correct the 'trophy' icon alignment inside promotion text.
+.promotion {
+	position: relative;
+	padding-left: 32px;
+}
+.promotion .icon {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+	width: 32px;
+	height: 32px;
+	font-size: 22px;
+	line-height: 24px;
+}
+
+@media(min-width: @screen-sm-min) and (max-width: @screen-md-max) {
+	// Extra selector to make more specific than other breakpoint rules below
+	.result {
+		.frequencyAmount,
+		.excessAmount,
+		.frequencyTitle,
+		.excessTitle {
+			float: none;
+			width: auto;
+		}
+
+		.frequencyTitle,
+		.excessTitle {
+			margin-top: 0;
+			text-align: right;
+		}
+
+		.btn-more-info {
+			margin-top: 10px;
+		}
+	}
+	.offer-terms-modal {
+	.modal-header, .modal-body {
+		.heading,
+		h2 {
+			margin-left: 105px;
+			margin-top: 5px;
+		}
+	}
+	}	
+	.priceMode .result-row {
+		.frequency, .excess {
+			.frequencyTitle, .excessTitle {
+				display:block !important;
+				margin-top: 0 !important;
+	}
+		}
+		.excess {
+			.excessAmount {
+				margin-top:11px !important;
+			}
+		}
+	}
+}//media sm
+
+@media(min-width: @screen-xs) {
+	.frequencyAmount,
+	.excessAmount {
+		float: left;
+		width: 60%;
+	}
+
+	.frequencyTitle,
+	.excessTitle {
+		float: right;
+		width: 38%;
+		margin-top: @frequencyAmountSize - @titleSize - 3px;
+		margin-bottom: 3px;
+		text-align: left;
+		color: @car-results-minor-text;
+	}
+
+	.btn-more-info {
+		margin-top: 0;
+	}
+
+	.priceMode .priceMode {
+		h2,
+		.description,
+		.promotion,
+		.specialConditions {
+			margin-left: 95px;
+		}
+	}
+
+
+}//media md
+
+@media(@xs-only) {
+	.result {
+		.frequency,
+		.excess {
+			text-align: left;
+		}
+	}
+
+	.frequencyAmount,
+	.excessAmount,
+	.frequencyTitle,
+	.excessTitle {
+		float: none;
+		width: auto;
+		display: inline-block;
+	}
+
+	.priceMode .priceMode {
+		.promotion,
+		.specialConditions {
+			margin-left: 0;
+		}
+		}
+	.offer-terms-modal {
+		.modal-header, .modal-body {
+			.heading,
+			h2 {
+				margin-left: 105px;
+				margin-top: 25px;
+				margin-bottom: 40px;
+			}
+		}
+	}
+	
+	.priceMode .result-row {
+		.frequency {
+			padding-top:1px !important;
+		}
+		.frequency, .excess {
+			.frequencyTitle, .excessTitle {
+				display:inline-block !important;
+				margin-top: 0 !important;
+			}
+		}
+	}
+}
+
+@media(max-width: 480px) {
+	.offer-terms-modal {
+		.modal-header, .modal-body {
+			h2 {
+				margin-top: 15px !important;
+				margin-bottom: 30px !important;
+			}
+		}
+	}
+}
+
+//
+// Feature mode styling
+//
+.featuresMode {
+
+	.compare-toggle-wrapper {
+		margin-bottom: 0;
+	}
+	.controlContainer {
+		position: relative;
+		height: 100%;
+		.expand-collapse-toggle {
+			text-transform: uppercase;
+			position: absolute;
+			right: 10px;
+			bottom: 10px;
+		}
+	}
+	.productSummary {
+		p {
+			clear: both;
+		}
+
+		.btn-more-info {
+			clear: both;
+			width: 85%;
+			margin: 12px auto 5px;
+			@media(@sm) {
+				position: absolute;
+				bottom: 3px;
+				left: 8%;
+				width: 84%;
+			}
+		}
+
+		.frequency {
+			padding-top: 15px;
+
+			// Make room for the logo
+			margin-left: 80px;
+
+			&.annual {
+				// This makes room for monthly price content
+				margin-bottom: 13px;
+			}
+		}
+	}
+
+	.icon-tick {
+		color: @theme-secondary;
+	}
+	.icon-cross {
+		color: @cross-color;
+	}
+
+	.frequencyAmount,
+	.excessAmount,
+	.frequencyTitle,
+	.excessTitle {
+		float: none;
+		width: auto;
+		margin-top: 0;
+		text-align: right;
+	}
+
+	.result,
+	.productSummary {
+		height: 182px;
+	}
+
+	@media(@xs-only) {
+		.result,
+		.productSummary {
+			height: 150px;
+		}
+
+		.productSummary {
+			padding: (@results-feature-cell-padding * 2) @results-feature-cell-padding;
+
+			h2 {
+				margin-left: 90px;
+				line-height: 0.9;
+			}
+
+			// Using .content to pick up normal feature row styling
+			// Needs -margin to combat the padding on .productSummary
+			.content {
+				margin: 0 -@results-feature-cell-padding;
+			}
+
+		}
+
+		// Normal heading
+		.labelInColumn {
+			.content {
+				color: contrast(@feature-odd-bg-color);
+				background: @feature-odd-bg-color;
+			}
+		}
+
+		// Not a real feature, but shares the styling.
+		.fakeFeatures {
+			.labelInColumn .content {
+				color: #fff;
+				background: @theme-secondary;
+			}
+		}
+
+		// Special feature row with "inverse" colouring. Note this should be same specificity or less as expanded row.
+		.inverseRow.labelInColumn {
+			.content {
+				color: @feature-inverse-color;
+				background: @feature-inverse-bg-color;
+			}
+		}
+
+		// Special case as per design
+		.excessFeature.labelInColumn {
+			.content {
+				color: contrast(@btn-pagination-bg-color, #000, #fff, 46%);
+				background: @btn-pagination-bg-color; //Match xs-results-pagination
+			}
+		}
+	}
+
+	@media(@sm-only) {
+		.productSummary {
+			.frequency {
+				padding-top: 10px;
+
+				// Make room for the logo
+				margin-left: 65px;
+
+				&.annual {
+					// This makes room for monthly price content
+					margin-bottom: 28px;
+				}
+			}
+
+		}
+	}
+
+	@media(@md) {
+		.monthlyBreakdown .totalPayment {
+			display: block;
+		}
+	}
+}
+
+
+// This is a "sub-XS" special rule... because iPhone.
+// 615px is the max width where titles are to appear 
+// below the dollar value 
+@media(max-width: 615px) {
+	.priceMode .result-row {
+		.frequency {
+			padding-top:0px !important;
+		}
+		.frequency, .excess {
+			.frequencyTitle, .excessTitle {
+				display:block !important;
+				margin-top: 0 !important;
+	}
+		}
+	}
+}
+
+@media(@md-only) {
+	.priceMode .result-row {
+		.frequency, .excess {
+			.frequencyTitle, .excessTitle {
+				text-align:right !important;
+			}
+		}
+	}
+}
+
+@media(@lg-only) {
+	.priceMode .result-row {
+		.frequency {
+			.frequencyTitle {
+				float:left !important;
+			}
+		}
+	}
+}
+
+
+//
+// Provider chose not quote group
+//
+.result_unavailable_combined {
+	text-align: center;
+
+	.featuresMode & {
+		.result,
+		.productSummary {
+			height: auto;
+		}
+	}
+
+	&.result-row {
+		// These override the normal .result-row styling
+		background: #fff;
+		border: none !important;
+		padding: 0;
+
+		h2 {
+			color: @results-no-quote-text;
+			font-size: 20px;
+			margin-bottom: (@results-price-row-padding * 2);
+			margin-left: 0px;
+
+			@media(@xs-only) {
+				margin: (@results-price-row-padding * 2) @results-price-row-padding;
+			}
+		}
+
+		.logos {
+			background: @theme-light;
+			padding: @results-price-row-padding;
+			border: 1px solid @results-border-color;
+		}
+	}
+
+	.companyLogo {
+
+		.v2 & {
+			float: none;
+			display: inline-block;
+			background-color: transparent;
+		}
+	}
+}// chose not to quote combined

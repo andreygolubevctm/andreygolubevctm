@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<c:set var="logger" value="${log:getLogger('/agg/email_send.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.agg.email_send')}" />
 <core_new:no_cache_header/>
 
 <session:get settings="true"/>
@@ -15,7 +15,7 @@
 <%-- Need to guarantee that the transaction header record has the current email address.
 	Is needed for the quote url to link the transaction with the hashed email. --%>
 <c:if test="${not empty data.current.transactionId}">
-	<sql:setDataSource dataSource="jdbc/ctm"/>
+	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 	<c:catch var="ignoreable_error">
 		<sql:update var="result">
 			UPDATE aggregator.transaction_header

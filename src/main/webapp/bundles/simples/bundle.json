@@ -1,0 +1,10 @@
+{
+    "brandCodes": "all",
+    "dependencies": [
+        "shared/results",
+        "shared/inspectorJson",
+        "shared/sliders",
+        "core",
+        "shared/datepicker"
+    ]
+}

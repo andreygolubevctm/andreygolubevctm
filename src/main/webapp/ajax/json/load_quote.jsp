@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.load_quote')}" />
 
 <session:new verticalCode="${fn:toUpperCase(param.vertical)}" forceNew="true" authenticated="true" />
 
@@ -47,13 +47,13 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 
 <c:choose>
 	<c:when test="${not empty param.simples and empty isOperator}">
-		${logger.warn('Operator not logged in - force to login screen. {},{}' , log:kv('param.simples',param.simples ) , log:kv('isOperator',isOperator ))}
+		${logger.warn('Operator not logged in - force to login screen. {},{}' , log:kv('simples',param.simples ) , log:kv('isOperator',isOperator ))}
 		<c:set var="result">
 			<result><error>login</error></result>
 		</c:set>
 	</c:when>
 	<c:when test="${empty isOperator and (empty authenticatedData.userData || empty authenticatedData.userData.authentication || !authenticatedData.userData.authentication.validCredentials)}">
-		${logger.warn('User not logged in - force to login screen {},{}', log:kv('isOperator',isOperator ), log:kv('authenticatedData.userData',authenticatedData.userData ))}
+		${logger.warn('User not logged in - force to login screen {},{}', log:kv('isOperator',isOperator ), log:kv('userData',authenticatedData.userData ))}
 		<c:set var="result">
 			<result><error>login</error></result>
 		</c:set>
@@ -81,7 +81,7 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 				${logger.info('About to load quote. {}, {}', log:kv('requestedTransaction',requestedTransaction), log:kv('user',parm))}
 				${logger.debug('About to load quote. {}', log:kv('param',param))}
 
-				<sql:setDataSource dataSource="jdbc/ctm"/>
+				<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 				<%-- If is Simples Operator opening quote owned by a client then will need
 					to duplicate the transaction and make the operator the owner --%>

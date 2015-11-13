@@ -5,7 +5,7 @@
 
 <c:set var="baseUrl" value="${pageSettings.getBaseUrl()}" />
 
-<%-- This page is ONLY to be loaded into a frame using the core:loadsafe function --%>
+<%-- This page is ONLY to be loaded into a frame using the core loadsafe function --%>
 
 <core:doctype />
 <html lang="en">
@@ -68,27 +68,5 @@
 			<span id="loading-message">Your page is loading...</span>
 		</div>
 	</div>
-<%--
-	I've disabled this - why would be possibly want it?
-
-	<c:if test="${not fn:startsWith(clientIp,'192.168.')}">
-		<div id="dump"></div>
-		<script type="text/javascript">
-			if (window.XMLHttpRequest)
-			{// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp=new XMLHttpRequest();
-			}
-			else
-			{// code for IE6, IE5
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-			}
-			xmlhttp.open("GET","${pageSettings.getBaseUrl()}dataXML.jsp",false);
-			xmlhttp.send();
-			xmlHTML = xmlhttp.responseText
-			xmlDoc = xmlhttp.responseXML;
-			document.getElementById('dump').innerHTML=xmlhttp.responseText;
-		</script>
-	</c:if>
---%>
 </body>
 </html>

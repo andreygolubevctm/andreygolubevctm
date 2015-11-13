@@ -4,27 +4,31 @@
 	<title>CTM Test Suite</title>
 
 	<script src="../../../main/webapp/common/js/ipp/jquery.min.js"></script>
-	<script src="../../../main/webapp/framework/lib/js/underscore-1.8.3.min.js"></script>
+
+	<script>
+		window.Modernizr || document.write('<script src="../../../main/webapp/bundles/plugins/modernizr/js/modernizr-2.8.3.js">\x3C/script>');
+	</script>
+
+	<script src="../../../main/webapp/assets/libraries/underscore-1.8.3.min.js"></script>
 
 	<!-- qunit -->
 	<link rel="stylesheet" href="vendor/qunit.css" media="screen">
 	<script src="vendor/qunit.js"></script>
 
 	<script>
-		// See https://github.com/axemclion/grunt-saucelabs#test-result-details-with-qunit
+		// See https://github.com/axemclion/grunt-saucelabs#test-+result-details-with-qunit
 		QUnit.done(function(results) {
 			window.global_test_results = results
 		});
 	</script>
 
 	<!--  plugin sources -->
-	<script src="../../../main/webapp/framework/meerkat/meerkat.js"></script>
-	<script src="../../../main/webapp/framework/meerkat/meerkat.logging.js"></script>
-	<script src="../../../main/webapp/framework/meerkat/meerkat.modules.js"></script>
-	<script src="../../../main/webapp/framework/modules/js/core/comms.js"></script>
-	<script src="../../../main/webapp/framework/modules/js/simples/simples.js"></script>
-	<script src="../../../main/webapp/framework/modules/js/simples/simplesUserStats.js"></script>
-	
+	<script src="../../../main/webapp/bundles/meerkat/js/meerkat.js"></script>
+	<script src="../../../main/webapp/bundles/meerkat/js/meerkat.logging.js"></script>
+	<script src="../../../main/webapp/bundles/meerkat/js/meerkat.modules.js"></script>
+	<script src="../../../main/webapp/bundles/meerkat/js/meerkat.utilities.js"></script>
+	<script src="../../../main/webapp/bundles/core/js/comms.js"></script>
+	<script src="../../../main/webapp/bundles/simples/js/simplesUserStats.js"></script>
 
 	<!-- default site config -->
 	<script>

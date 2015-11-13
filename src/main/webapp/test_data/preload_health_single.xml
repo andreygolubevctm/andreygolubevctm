@@ -4,11 +4,9 @@
 		<firstName>Test</firstName>
 		<lastname>User</lastname>
 		<contactNumber>
-			<mobileinput>(0412) 345 678</mobileinput>
-			<mobile>0412345678</mobile>
-			<otherinput>(07) 3234 5678</otherinput>
-			<other>0732345678</other>
+
 		</contactNumber>
+		<flexiContactNumber>(0404) 123 123</flexiContactNumber>
 		<email>preload.testing@comparethemarket.com.au</email>
 		<call>Y</call>
 	</contactDetails>
@@ -68,6 +66,7 @@
 				<cardExpiryMonth>10</cardExpiryMonth>
 				<cardExpiryYear>18</cardExpiryYear>
 			</expiry>
+			<cardPosition>1</cardPosition>
 		</medicare>
 	</payment>
 	<previousfund>
@@ -127,4 +126,5 @@
 		<optInEmail></optInEmail>
 	</application>
 	<declaration>Y</declaration>
+	<contactAuthority>Y</contactAuthority>
 </health>

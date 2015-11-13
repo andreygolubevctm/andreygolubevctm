@@ -10,17 +10,15 @@
 <c:set var="contactName"	value="${go:nameFromXpath(xpath)}_name" />
 <c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumber" />
 <c:set var="optIn"			value="${go:nameFromXpath(xpath)}_call" />
-<c:set var="contactNumberText"	value="In case you need assistance" />
 
 <c:set var="val_optin"				value="Y" />
 <c:set var="val_optout"				value="N" />
 
 <%-- Vars for competition --%>
-<c:set var="competitionSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 99)}" />
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="competitionSecret"><content:get key="competitionSecret"/></c:set>
 <c:set var="competitionEnabled" value="${false}" />
-<c:if test="${competitionEnabledSetting == 'Y' && (competitionSplitTest eq true or competitionSecret == 'kSdRdpu5bdM5UkKQ8gsK')}"> <%--Split test needs to allow previous competition ($1000 promo) to remain active. TODO: Cleanup--%>
+<c:if test="${competitionEnabledSetting == 'Y' && competitionSecret == 'vU9CD4NjT3S6p7a83a4t'}"> <%--Split test needs to allow previous competition ($1000 promo) to remain active. TODO: Cleanup--%>
 	<c:set var="competitionEnabled" value="${true}" />
 </c:if>
 
@@ -70,28 +68,7 @@
 					<field:hidden xpath="${xpath}/emailhistory" />
 				</form_new:row>
 
-				<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" helptext="${contactNumberText}" />
-
-				<%-- COMPETITION START --%>
-				<c:if test="${competitionEnabled == true}">
-					<c:set var="competitionPreCheckboxContainer"><content:get key="competitionPreCheckboxContainer"/></c:set>
-					<c:if test="${!fn:contains(competitionPreCheckboxContainer, 'health1000promoImage')}">
-						<c:set var="offset_class" value=" no-offset"/>
-					</c:if>
-					<c:if test="${not empty competitionPreCheckboxContainer}">
-					<form_new:row className="competition-optin-group ${offset_class}" hideHelpIconCol="true">
-						<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
-					</form_new:row>
-					</c:if>
-					<form_new:row className="competition-optin-group" hideHelpIconCol="true">
-						<c:set var="competitionLabel">
-							<content:get key="competitionCheckboxText"/>
-						</c:set>
-						<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
-						<field:hidden xpath="${xpath}/competition/previous" />
-					</form_new:row>
-				</c:if>
-				<%-- COMPETITION END --%>
+				<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" />
 
 				<%-- Optin fields (hidden) for email and phone --%>
 				<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
@@ -127,6 +104,24 @@
 						title="${termsAndConditions}"
 						errorMsg="Please agree to the Terms &amp; Conditions" />
 				</form_new:row>
+
+				<%-- COMPETITION START --%>
+				<c:if test="${competitionEnabled == true}">
+					<c:set var="competitionPreCheckboxContainer"><content:get key="competitionPreCheckboxContainer"/></c:set>
+					<c:if test="${not empty competitionPreCheckboxContainer}">
+						<form_new:row className="competition-optin-group ${offset_class}" hideHelpIconCol="true">
+							<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
+						</form_new:row>
+					</c:if>
+					<form_new:row className="competition-optin-group" hideHelpIconCol="true">
+						<c:set var="competitionLabel">
+							<content:get key="competitionCheckboxText"/>
+						</c:set>
+						<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
+						<field:hidden xpath="${xpath}/competition/previous" />
+					</form_new:row>
+				</c:if>
+				<%-- COMPETITION END --%>
 
 				<simples:referral_tracking vertical="health" />
 

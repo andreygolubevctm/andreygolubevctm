@@ -2,7 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.utilities_submit')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES"/>
 
@@ -50,10 +50,10 @@
         <c:if test="${empty rootId}">
             <c:set var="rootId" value="0"/>
         </c:if>
-        ${logger.debug('About to call submit from jsp. {}', log:kv('transactionId', tranId))}
+        ${logger.debug('About to call submit from jsp.')}
 
         <%-- SUBMIT TO PARTNER --%>
-        <jsp:useBean id="utilitiesApplicationService" class="com.ctm.services.utilities.UtilitiesApplicationService" scope="request"/>
+        <jsp:useBean id="utilitiesApplicationService" class="com.ctm.web.utilities.services.UtilitiesApplicationService" scope="request"/>
         <c:set var="results" value="${utilitiesApplicationService.submitFromJsp(pageContext.getRequest(), data)}" scope="request" />
 
         <%-- TESTING IF REQUEST FAILED --%>
@@ -73,7 +73,7 @@
                 <go:setData dataVar="data" xpath="${vertical}/confirmationkey" value="${confirmationkey}"/>
 
                 <%-- Check that confirmation not already written --%>
-                <sql:setDataSource dataSource="jdbc/ctm"/>
+                <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
                 <sql:query var="conf_entry">
                     SELECT KeyID FROM ctm.confirmations WHERE KeyID = ? AND TransID = ? LIMIT 1;
                     <sql:param value="${confirmationkey}"/>
@@ -121,7 +121,7 @@
                                     </confirmation>
                                 </c:set>
 
-                                ${logger.debug('WRITE CONFIRM. {}', log:kv('xmlData', xmlData))}
+                                ${logger.trace('WRITE CONFIRM. {}', log:kv('xmlData', xmlData))}
                                 <agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}"
                                                         xml_data="${xmlData}" />
                                 <agg:write_quote productType="UTILITIES" rootPath="utilities"/>

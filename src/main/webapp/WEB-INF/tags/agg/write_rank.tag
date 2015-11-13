@@ -1,7 +1,8 @@
+<%@ tag import="com.ctm.web.core.email.model.EmailMode" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<c:set var="logger" value="${log:getLogger('/agg/write_rank.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.agg.write_rank')}" />
 
 <core_new:no_cache_header/>
 
@@ -11,10 +12,10 @@
 <%@ attribute name="rankBy"			required="true"	 rtexprvalue="true"	 description="eg. price-asc, benefitsSort-asc" %>
 <%@ attribute name="rankParamName"	required="false"	 rtexprvalue="true"	 description="rankParamName" %>
 
-<jsp:useBean id="fatalErrorService" class="com.ctm.services.FatalErrorService" scope="page" />
+<jsp:useBean id="fatalErrorService" class="com.ctm.web.core.services.FatalErrorService" scope="page" />
 
 
-	<sql:setDataSource dataSource="jdbc/ctm"/>
+	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <c:set var="transactionId" value="${data['current/transactionId']}" />
 <c:set var="calcSequenceSUFF" value="/calcSequence" />
 <c:set var="prefix"><c:out value="${rootPath}" escapeXml="true"/></c:set>
@@ -134,14 +135,14 @@
 		</sql:update>
 	</c:if>
 
-<jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
+<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
 	<c:choose>
 		<c:when test="${pageSettings.getVerticalCode() == 'travel'}">
 			<%-- Attempt to send email only after best price has been set and only if not call centre user --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.travel.email && empty data.userData.emailSent}">
 
 					<%-- enums are not will handled in jsp --%>
-				<% request.setAttribute("BEST_PRICE", com.ctm.model.email.EmailMode.BEST_PRICE); %>
+				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
 					${emailService.send(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
 				</c:catch>
@@ -151,7 +152,7 @@
 				If this fails it is not a show stopper so log and keep calm and carry on
 				--%>
 				<c:if test="${not empty error}">
-					${logger.error('Failed to send best price for {},{}',log:kv('transactionId',transactionId ), log:kv('data.travel.email',data.travel.email ), error)}
+					${logger.error('Failed to send best price for {}', log:kv('email',data.travel.email ), error)}
 					${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
 				</c:if>
 				</c:if>
@@ -159,9 +160,9 @@
 		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
 			<%-- Attempt to send email only once and only if not call centre user --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">
-				<%-- <jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />--%>
+				<%-- <jsp:useBean id="emailService" class="com.ctm.web.core.services.email.EmailService" scope="page" />--%>
 				<%-- enums are not will handled in jsp --%>
-				<% request.setAttribute("BEST_PRICE", com.ctm.model.email.EmailMode.BEST_PRICE); %>
+				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
 					${emailService.send(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
 				</c:catch>

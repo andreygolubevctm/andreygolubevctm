@@ -2,11 +2,11 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.rating.car.car_price_service')}" />
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- Import request data from quote page --%>
 <c:set var="param_QuoteData" value="${param.QuoteData}" />
@@ -75,13 +75,14 @@
 		<go:setData dataVar="data" xpath="temp" xml="${param_QuoteData}" />
 		<go:setData dataVar="data" xpath="temp/quote/token" value="${token}" />
 		${logger.debug('About to call car service', log:kv("params",param))}
-		<jsp:useBean id="carService" class="com.ctm.services.car.CarVehicleSelectionService"/>
+		<jsp:useBean id="carService" class="com.ctm.web.car.services.CarVehicleSelectionService"/>
 		<c:set var="glassesCode" value="${carService.getGlassesCode(data['temp/quote/vehicle/redbookCode'], data['temp/quote/vehicle/registrationYear'])}"/>
 		<go:setData dataVar="data" xpath="temp/quote/glasses" value="${glassesCode}"/>
 
 		<c:set var="xmlData" value="${go:getEscapedXml(data['temp/quote'])}" />
 
-		<c:import var="config" url="/WEB-INF/aggregator/car/Hollard/config_${service}_quote.xml" />
+		<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+		<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/car/Hollard/config_${service}_quote.xml')}" />
 		<go:soapAggregator config="${config}" transactionId="${tranId}" xml="${xmlData}" var="resultXml" debugVar="debugXml" />
 		<c:out value="${resultXml}" escapeXml="false" />
 

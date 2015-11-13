@@ -4,7 +4,7 @@
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.retrieve_quotes')}" />
 <settings:setVertical verticalCode="GENERIC" />
 <session:getAuthenticated />
 
@@ -49,7 +49,7 @@
 			<c:set var="emailAddress" value="${authenticatedData.userData.authentication.emailAddress}" />
 			${logger.info('login of successful. {},{}', log:kv('loginAttempts',loginAttempts ), log:kv('email',emailAddress))}
 			<c:set var="password"><go:HmacSHA256 username="${authenticatedData.userData.authentication.emailAddress}" password="${authenticatedData.userData.authentication.password}" brand="${pageSettings.getBrandCode()}" /></c:set>
-			<sql:setDataSource dataSource="jdbc/ctm" />
+			<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 			<go:setData dataVar="authenticatedData" xpath="tmp" value="*DELETE" />
 
 			<%-- Load in quotes from MySQL --%>
@@ -310,7 +310,7 @@
 					<%-- TODO: Do some xsl magic to order the quotes by date --%>
 				</c:if>
 			</c:if>
-			${logger.debug('RETRIEVE QUOTES COMPILED. {},{},{}', log:kv('authenticatedData.tmp',authenticatedData.tmp ), log:kv('tmp/previousQuotes',authenticatedData['tmp/previousQuotes'] ), log:kv('email',emailAddress))}
+			${logger.debug('RETRIEVE QUOTES COMPILED. {},{},{}', log:kv('tmp',authenticatedData.tmp ), log:kv('tmp/previousQuotes',authenticatedData['tmp/previousQuotes'] ), log:kv('email',emailAddress))}
 			<%-- Return the results as json --%>
 			${go:XMLtoJSON(go:getEscapedXml(authenticatedData['tmp/previousQuotes']))}
 			<go:setData dataVar="authenticatedData" xpath="tmp" value="*DELETE" />

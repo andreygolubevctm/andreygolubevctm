@@ -4,11 +4,11 @@
 <%@ attribute name="showProductDetails" rtexprvalue="true"	 description="Display the additional product details?" %>
 
 <!-- This is a deactivated split test as it is likely to be run again in the future -->
-<%-- <jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" /> --%>
+<%-- <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" /> --%>
 <%-- <c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" /> --%>
 
 <%-- Setup variables needed for dual pricing --%>
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.services.health.HealthPriceDetailService" scope="page" />
+<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 
 
@@ -28,6 +28,9 @@
 		</c:otherwise>
 	</c:choose>
 	<div class="policyPriceWarning">You have made changes that will possibly affect your policy price</div>
+	<div class="footer hidden">
+		<a href="javascript:;" class="link-health-cover-details">Edit your details</a>
+	</div>
 </div>
 
 <c:if test="${healthAlternatePricingActive eq true}">

@@ -3,10 +3,10 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('/agg/write_quote.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.agg.write_quote')}" />
 
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
-<jsp:useBean id="tranDao" class="com.ctm.dao.transaction.TransactionDetailsDao" scope="request" />
+<jsp:useBean id="tranDao" class="com.ctm.web.core.transaction.dao.TransactionDetailsDao" scope="request" />
 
 <%@ attribute name="productType" 	required="true"	 rtexprvalue="true"	 description="The product type (e.g. TRAVEL)" %>
 <%@ attribute name="rootPath" 	required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>
@@ -34,7 +34,7 @@
 	</c:otherwise>
 </c:choose>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <c:set var="brand" value="${pageSettings.getBrandCode()}" />
 <c:set var="source">
 	<c:choose>
@@ -402,7 +402,7 @@
 	</c:catch>
 		</c:when>
 		<c:when test="${hasPrivacyOptin eq true and rootPath eq 'health'}">
-			<jsp:useBean id="userDetails" class="com.ctm.model.request.health.UserDetails" scope="page" />
+			<jsp:useBean id="userDetails" class="com.ctm.web.health.model.request.UserDetails" scope="page" />
 			${userDetails.setFirstname(firstName)}
 			${userDetails.setLastname(lastName)}
 			${userDetails.setRootPath(rootPath)}
@@ -643,7 +643,7 @@
 				</c:if>
 					</c:when>
 					<c:otherwise>
-						${logger.error('WRITE_QUOTE FAILED. {}',log:kv('transactionId',transactionId ), error)}
+						${logger.error('WRITE_QUOTE FAILED.', error)}
 						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 							<c:param name="transactionId" value="${transactionId}" />
 							<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -657,7 +657,7 @@
 			</sql:transaction>
 		</c:catch>
 		<c:if test="${not empty error}">
-			${logger.error('Write quote failed. {}', log:kv('transactionId', transactionId), error)}
+			${logger.error('Write quote failed. {}', error)}
 			<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 				<c:param name="transactionId" value="${transactionId}" />
 				<c:param name="page" value="${pageContext.request.servletPath}" />

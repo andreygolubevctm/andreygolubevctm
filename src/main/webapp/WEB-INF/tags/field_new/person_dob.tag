@@ -2,20 +2,20 @@
 <%@ tag description="Represents a person's date of birth, where the min and max age can be dynamically changed"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('/field_new/person_dob.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.field_new.person_dob')}" />
 
 <%--
 	See corresponding module formDateInput.js
 --%>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 				required="true"	 	rtexprvalue="true"	 description="variable's xpath" %>
-<%@ attribute name="required" 			required="true"	 	rtexprvalue="true"	 description="is this field required?" %>
-<%@ attribute name="className" 			required="false" 	rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="title" 				required="true"	 	rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
-<%@ attribute name="ageMax" 			required="false"  	rtexprvalue="true"	 description="Min Age requirement for Person, e.g. 16" %>
-<%@ attribute name="ageMin" 			required="false"  	rtexprvalue="true"	 description="Max Age requirement for Person, e.g. 99" %>
-<%@ attribute name="validateYoungest" 	required="false"  	rtexprvalue="true"	 description="Add validation for youngest person" %>
+<%@ attribute name="xpath" 					required="true"	 	rtexprvalue="true"	 description="variable's xpath" %>
+<%@ attribute name="required" 				required="true"	 	rtexprvalue="true"	 description="is this field required?" %>
+<%@ attribute name="className" 				required="false" 	rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="title" 					required="true"	 	rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
+<%@ attribute name="ageMax" 				required="false"  	rtexprvalue="true"	 description="Min Age requirement for Person, e.g. 16" %>
+<%@ attribute name="ageMin" 				required="false"  	rtexprvalue="true"	 description="Max Age requirement for Person, e.g. 99" %>
+<%@ attribute name="validateYoungest" 		required="false"  	rtexprvalue="true"	 description="Add validation for youngest person" %>
 <%@ attribute name="additionalAttributes" 	required="false"  	rtexprvalue="true"	 description="Add additional attributes" %>
 
 <%-- VARIABLES --%>

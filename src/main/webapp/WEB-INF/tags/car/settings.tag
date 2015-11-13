@@ -15,7 +15,6 @@
 <c:if test="${param.display eq 'features'}">
 	<c:set var="priceDisplayMode" value="features"/>
 </c:if>
-<c:set var="defaultToCarQuote"><content:get key="makeCarQuoteMainJourney" /></c:set>
 
 <%-- Retrieve values passed from Brochure Site --%>
 <c:if test="${not empty param.action && param.action == 'ql'}">
@@ -31,7 +30,7 @@
 </c:if>
 
 <%-- Retrieve the vehicle MAKE data --%>
-<jsp:useBean id="service" class="com.ctm.services.car.CarVehicleSelectionService" scope="request" />
+<jsp:useBean id="service" class="com.ctm.web.car.services.CarVehicleSelectionService" scope="request" />
 <c:set var="json" value="${service.getVehicleSelection(data.quote.vehicle.make, data.quote.vehicle.model, data.quote.vehicle.year, data.quote.vehicle.body, data.quote.vehicle.trans, data.quote.vehicle.fuel) }" />
 
 <%-- Retrieve non-standard accessories list --%>
@@ -47,7 +46,6 @@
 	previousTransactionId: "<c:out value="${data['current/previousTransactionId']}"/>",
 	isNewQuote: <c:out value="${isNewQuote eq true}" />,
 	userId: '<c:out value="${authenticatedData.login.user.uid}" />',
-	isDefaultToCarQuote: ${defaultToCarQuote},
 	content:{
 		callCentreNumber: '${callCentreNumber}',
 		callCentreHelpNumber: '${callCentreHelpNumber}'
@@ -71,6 +69,10 @@
 		variant:			'${data.quote.vehicle.variant}',
 		securityOption:		'${data.quote.vehicle.securityOption}',
 		data:				${json}
+	},
+	userOptionPreselections: {
+		factory : ${go:XMLtoJSON(go:getEscapedXml(data.quote.opts))},
+		accessories : ${go:XMLtoJSON(go:getEscapedXml(data.quote.accs))}
 	},
 	nonStandardAccessoriesList : ${nonStandardAccessories},
 	resultOptions: {

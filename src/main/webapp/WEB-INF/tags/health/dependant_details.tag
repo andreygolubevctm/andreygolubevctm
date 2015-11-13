@@ -80,5 +80,15 @@
 								   className="health-person-details"/>
 		</form_new:row>
 
+		<c:set var="fieldXpath" value="${xpath}${count}/apprentice" />
+		<form_new:row fieldXpath="${fieldXpath}"
+					label="Apprentice earning less than $30,000pa?"
+					id="${name}_apprenticeGroup" className="health_dependant_details_apprenticeGroup">
+			<field_new:array_radio id="${name}_apprentice" xpath="${fieldXpath}" required="true"
+								items="Y=Yes,N=No"
+								title="if dependant ${count} is an apprentice earning less than $30,000pa?"
+								className="health-person-details"/>
+		</form_new:row>
+
 	</div>
 </div>

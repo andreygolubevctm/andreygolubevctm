@@ -5,12 +5,11 @@
 
 	<merge-root>soap-response</merge-root>
 	<config-dir>aggregator/health</config-dir>
-	<error-dir>aggregator/health/app-logs-errors</error-dir>
 	<debug-dir>health/app-logs-debug</debug-dir>
 	<validation-file>WEB-INF/xsd/health/healthQuoteResult.xsd</validation-file>
 
 	<service name="PHIO" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/health_price_service_PHIO.jsp</soap-url>
+		<soap-url>http://127.0.0.1:8080/ctm/rating/health_price_service_PHIO.jsp</soap-url>
 		<outbound-xsl>PHIO_outbound.xsl</outbound-xsl>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>

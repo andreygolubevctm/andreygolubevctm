@@ -162,10 +162,10 @@
 
                         <%-- START XS Top Row --%>
                     <div class="row visible-xs">
-                        <div class="col-xs-3 logoContainer">
+                        <div class="col-xs-4 logoContainer">
                             {{= logo }}
                         </div>
-                        <div class="col-xs-9">
+                        <div class="col-xs-8">
                             <div class="row">
                                 <div class="priceExcessContainer clearfix">
                                     <h2 class="productTitle singleProductTitle">
@@ -299,7 +299,7 @@
                 <div class="resultInsert priceMode">
                     <div class="row">
                         <div class="col-xs-2 col-sm-8 col-md-6">
-                            <div class="companyLogo"><img src="common/images/logos/results/{{= obj.productId }}_w.png" />
+                            <div class="companyLogo"><img src="assets/graphics/logos/results/{{= obj.productId }}_w.png" />
                             </div>
 
                             <h2 class="hidden-xs">{{= productTitle }}</h2>

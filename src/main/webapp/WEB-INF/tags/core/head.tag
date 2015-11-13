@@ -32,6 +32,7 @@
 <%@ attribute name="loadjQuery" 		required="false" 	description="Flag as to whether jQuery is loaded"%>
 <%@ attribute name="jqueryVersion"	 	required="false" 	description="Optional jquery version to load rather than the default"%>
 <%@ attribute name="loadjQueryUI" 		required="false" 	description="Flag as to whether jQueryUI is loaded"%>
+<%@ attribute name="jqueryuiversion" 	required="false" 	description="Specify a jQueryUI version"%>
 
 <c:if test="${empty loadjQuery}"><c:set var="loadjQuery">true</c:set></c:if>
 <c:if test="${empty loadjQueryUI}"><c:set var="loadjQueryUI">true</c:set></c:if>
@@ -150,7 +151,7 @@
 		<go:script href="common/js/jquery.address-1.3.2.min.js" marker="js-href" />
 		<go:script href="common/js/jquery.corner-2.11.js" marker="js-href" />
 		<go:script href="common/js/jquery.numeric.pack.js" marker="js-href" />
-		<go:script href="framework/jquery/plugins/jquery.scrollTo.min.js" marker="js-href" />
+		<go:script href="common/js/jquery.scrollTo.min.js" marker="js-href" />
 		<go:script href="common/js/jquery.maxlength.js" marker="js-href" />
 		<go:script href="common/js/jquery.number.format.js" marker="js-href" />
 		<go:script href="common/js/jquery.aihcustom.js" marker="js-href" />
@@ -158,11 +159,14 @@
 	</c:if>
 
 	<c:if test="${loadjQueryUI == true}">
-		<go:script href="common/js/jquery-ui-1.8.22.custom.min.js" marker="js-href" />
+		<c:if test="${empty jqueryuiversion}">
+			<c:set var="jqueryuiversion" value="1.8.22" />
+		</c:if>
+		<go:script href="common/js/jquery-ui-${jqueryuiversion}.custom.min.js" marker="js-href" />
 	</c:if>
 
-	<go:script href="framework/lib/js/modernizr-2.7.1.min.js" marker="js-href" />
-	<go:script href="framework/lib/js/underscore-1.5.2.min.js" marker="js-href" />
+	<go:script href="common/js/modernizr-2.7.1.min.js" marker="js-href" />
+	<go:script href="common/js/underscore-1.5.2.min.js" marker="js-href" />
 	<c:if test="${empty nonQuotePage or nonQuotePage eq false}">
 	<go:script href="common/js/quote-engine.js" marker="js-href" />
 	<go:script href="common/js/scrollable.js" marker="js-href" />
@@ -221,6 +225,7 @@
 		Settings.brand = '${pageSettings.getBrandCode()}';
 		Settings.superTagEnabled = <c:out value="${pageSettings.getSetting('superTagEnabled') eq 'Y'}" />;
 		Settings.DTMEnabled = <c:out value="${pageSettings.getSetting('DTMEnabled') eq 'Y'}" />;
+		Settings.GTMEnabled = <c:out value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />;
 		<c:choose><c:when test="${env eq 'localhost' or env eq 'NXI'}">Settings.environment = '<c:out value="${env}" />';</c:when><c:otherwise>Settings.environment = null;</c:otherwise></c:choose>
 
 		var UserData =  new Object();

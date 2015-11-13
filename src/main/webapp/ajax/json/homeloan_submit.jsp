@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.homeloan_submit')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="HOMELOAN" />
 
@@ -51,8 +51,8 @@
 
 
 <%-- SUBMIT TO PARTNER --%>
-<jsp:useBean id="appService" class="com.ctm.services.homeloan.HomeLoanOpportunityService" scope="page" />
-<jsp:useBean id="homeloanService" class="com.ctm.services.homeloan.HomeLoanService" scope="page" />
+<jsp:useBean id="appService" class="com.ctm.web.homeloan.services.HomeLoanOpportunityService" scope="page" />
+<jsp:useBean id="homeloanService" class="com.ctm.web.homeloan.services.HomeLoanService" scope="page" />
 <c:set var="secret_key" value="${appService.getSecretKey()}" />
 <c:set var="model" value="${homeloanService.mapParametersToModel(pageContext.getRequest())}" />
 <c:set var="submitResult" value="${appService.submitOpportunity(pageContext.getRequest(), model)}" />
@@ -76,7 +76,7 @@ ${logger.debug('Submit opportunity called. {}', log:kv('submitResult',submitResu
 		<go:setData dataVar="data" xpath="homeloan/confirmationkey" value="${confirmationkey}" />
 
 		<%-- Check that confirmation not already written --%>
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<sql:query var="conf_entry">
 			SELECT KeyID FROM ctm.confirmations WHERE KeyID = ? AND TransID = ? LIMIT 1;
 			<sql:param value="${confirmationkey}" />
@@ -167,7 +167,7 @@ ${logger.debug('Submit opportunity called. {}', log:kv('submitResult',submitResu
 								<c:if test="${tranId ne rootId}">
 									<agg:write_touch transaction_id="${rootId}" touch="C" />
 								</c:if>
-								${logger.info('Confirmation has been written. {},{}',log:kv('transactionId',tranId ),log:kv('opportunityId',flexOpportunityId ))}
+								${logger.info('Confirmation has been written. {}',log:kv('opportunityId',flexOpportunityId ))}
 								<%-- crappy hack to inject properties --%>
 								<c:set var="json" value="${fn:substringAfter(submitResult.toString(), '{')}" />
 								<c:set var="json" value='{"confirmationkey":"${confirmationkey}",${json}' />

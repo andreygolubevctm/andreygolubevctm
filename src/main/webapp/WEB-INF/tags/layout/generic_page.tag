@@ -18,7 +18,7 @@
 <c:set var="incSuperTag"><c:choose><c:when test="${not empty incSuperTag}">true</c:when><c:otherwise>false</c:otherwise></c:choose></c:set>
 <c:set var="skipJSCSS"><c:if test="${not empty skipJSCSS}">true</c:if></c:set>
 
-<layout:page skipJSCSS="${skipJSCSS}" sessionPop="false" kampyle="false" title="${title}">
+<layout:page skipJSCSS="${skipJSCSS}" title="${title}">
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />

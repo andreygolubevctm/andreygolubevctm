@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<c:set var="logger" value="${log:getLogger('/agg/email_send.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.agg.write_competition')}" />
 
 <%--
 	write_competition inserts a new competition entry to the competition_master table and
@@ -14,7 +14,7 @@
 <%@ attribute name="email_id"		required="true"	 rtexprvalue="true"	 description="The entrants emailId" %>
 <%@ attribute name="items" 			required="true"  rtexprvalue="true"  description="comma seperated list of values in propertyId=value format" %>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- Get the next entry_id to use --%>
 <c:set var="entry_id">

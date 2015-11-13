@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.common.js.ipp.ipp')}" />
 
 <%--
 This page is used as in iFrame tunnel for the IPP payment mechanism.
@@ -17,7 +17,7 @@ Example of tunneling, whether in Simples or not parent.parent will skip over the
 ]
 
 --%>
-${logger.info('IPP Tunnel being called. {}' , log:kv('param.responsecode',param.responsecode) )}
+${logger.info('IPP Tunnel being called. {}' , log:kv('responsecode',param.responsecode) )}
 <html>
 	<head>
 		<title>IPP Tunnel</title>

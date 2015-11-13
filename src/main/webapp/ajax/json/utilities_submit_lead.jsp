@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.utilities_submit_lead')}" />
 
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="utilities" />
@@ -31,7 +31,7 @@
 ${logger.debug('Utilities Tran Id. {}',log:kv('current/transactionId',data['current/transactionId'] ))}
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
-<jsp:useBean id="leadfeedService" class="com.ctm.services.utilities.UtilitiesLeadfeedService" scope="page" />
+<jsp:useBean id="leadfeedService" class="com.ctm.web.utilities.services.UtilitiesLeadfeedService" scope="page" />
 
 <c:set var="model" value="${leadfeedService.mapParametersToModel(pageContext.getRequest())}" />
 <c:set var="submitResult" value="${leadfeedService.submit(pageContext.getRequest(), model)}" />

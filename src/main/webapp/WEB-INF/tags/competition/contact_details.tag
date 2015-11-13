@@ -18,7 +18,7 @@
 <c:set var="promocode">${sessionDataService.getCookieByName(pageContext.request, "promocode")}</c:set>
 
 <c:set var="competition_valid">
-	<sql:setDataSource dataSource="jdbc/ctm"/>
+	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 	<sql:query var="results">
 		SELECT *
 			FROM ctm.competition
