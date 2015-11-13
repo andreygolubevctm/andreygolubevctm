@@ -112,7 +112,11 @@
 					<c:set var="fieldXpath" value="${xpath}/CrClientTel" />
 					<label for="home_CrClientTelinput" class="col-lg-4 col-sm-4 col-xs-12 control-label">Your Contact Number</label>
 					<div class="col-lg-8 col-sm-8 col-xs-12  row-content">
-						<field:contact_telno xpath="${fieldXpath}" required="true" title="Your contact number" className="contactField" />
+						<field:flexi_contact_number xpath="${fieldXPath}"
+													maxLength="20"
+													required="${true}"
+													className="contactField"
+													labelName="contact number"/>
 						<div class="fieldrow_legend" id="_row_legend"></div>
 					</div>
 				</div>

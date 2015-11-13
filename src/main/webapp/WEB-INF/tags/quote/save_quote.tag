@@ -990,7 +990,11 @@ SaveQuote = {
 					<field:input xpath="callmeback/save/name" title="name" required="false"  />
 				</form:row>
 						<form:row label="Your best contact number" horizontal="false">
-							<field:contact_telno xpath="callmeback/save/phone" required="true" title="contact number" />
+							<c:set var="fieldXPath" value="callmeback/save/phone" />
+							<field:flexi_contact_number xpath="${fieldXPath}"
+														maxLength="20"
+														required="${true}"
+														labelName="contact number"/>
 						</form:row>
 						<form:row label="Best time to contact you" horizontal="false">
 							<field:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)"
