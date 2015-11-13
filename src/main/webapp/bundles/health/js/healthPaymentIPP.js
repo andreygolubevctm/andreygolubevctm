@@ -74,10 +74,8 @@ Process:
 		$maskedNumber.val('Loading...');
 		reset();
 
-		var useHealthApplicationWebService = meerkat.site.healthApplicationExcludeProviders.split(',').indexOf($("#health_application_provider").val()) == -1;
-
 		var authoriseUrl = "ajax/json/ipp/ipp_payment.jsp?ts=" + (new Date().getTime());
-		if (meerkat.modules.splitTest.isActive(401) && useHealthApplicationWebService) {
+		if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
 			authoriseUrl = "rest/health/payment/authorise.json";
 		}
 
@@ -216,10 +214,8 @@ Process:
 			jsonData.environmentOverride = $("#developmentApplicationEnvironment").val();
 		}
 
-		var useHealthApplicationWebService = meerkat.site.healthApplicationExcludeProviders.split(',').indexOf($("#health_application_provider").val()) == -1;
-
 		var registerUrl = "ajax/json/ipp/ipp_log.jsp?ts=" + (new Date().getTime());
-		if (meerkat.modules.splitTest.isActive(401) && useHealthApplicationWebService) {
+		if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
 			registerUrl = "rest/health/payment/register.json";
 		}
 

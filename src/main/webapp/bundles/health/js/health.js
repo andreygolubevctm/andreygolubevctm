@@ -1091,10 +1091,8 @@
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
 
 
-			var useHealthApplicationWebService = meerkat.site.healthApplicationExcludeProviders.split(',').indexOf($("#health_application_provider").val()) == -1;
-
 			var healthApplicationUrl = "ajax/json/health_application.jsp";
-			if (meerkat.modules.splitTest.isActive(401) && useHealthApplicationWebService) {
+			if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
 				healthApplicationUrl = "ajax/json/health_application_ws.jsp";
 			}
 

@@ -12,7 +12,7 @@ import java.util.List;
 public class ResultsObj<R extends Result> extends BaseResultObj<R> {
 
     public List<R> getResult() {
-        return result;
+        return value;
     }
 
 }

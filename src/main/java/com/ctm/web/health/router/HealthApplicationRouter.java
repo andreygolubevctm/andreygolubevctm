@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,6 +61,7 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
     private static final DateTimeFormatter AUS_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private static final DateTimeFormatter LONG_FORMAT = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy");
+    public static final String PROVIDER_FAILED_MESSAGE = "The provider failed to process the application, Please contact support team.";
 
     private final HealthApplyService healthApplyService = new HealthApplyService();
 
@@ -140,7 +142,8 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
 
             // Check for internal or provider errors and record the failed submission and add comments to the quote for call centre staff
             // Collate the error list messages
-            result.setErrors(response.getErrorList()
+
+            final List<ResponseError> errors = response.getErrorList()
                     .stream()
                     .map(partnerError -> {
                         // add the errors as ResponseError
@@ -150,7 +153,18 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
                         e.setOriginal(partnerError.getMessage());
                         e.setText(partnerError.getMessage());
                         return e;
-                    }).collect(toList()));
+                    }).collect(toList());
+            if (!errors.isEmpty()) {
+                result.setErrors(errors);
+            } else {
+                final ResponseError e = new ResponseError();
+                e.setCode("SERVICE_FAILED");
+                e.setDescription(PROVIDER_FAILED_MESSAGE);
+                e.setOriginal(PROVIDER_FAILED_MESSAGE);
+                e.setText(PROVIDER_FAILED_MESSAGE);
+                result.setErrors(Collections.singletonList(e));
+            }
+
 
             // if online user record a join and add to transaction details
             if (!"true".equals(callCentre)) {
@@ -186,6 +200,8 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
                     i++;
                 }
             }
+        } else {
+            sb.append(PROVIDER_FAILED_MESSAGE);
         }
         return sb.toString();
     }

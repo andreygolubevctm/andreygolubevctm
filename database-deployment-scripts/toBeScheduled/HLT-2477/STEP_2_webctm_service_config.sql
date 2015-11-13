@@ -3,7 +3,7 @@ INSERT INTO ctm.service_master (verticalId, serviceCode) VALUES (@HEALTH_VERTICA
 SET @SERVICE_MASTER_ID = (SELECT serviceMasterId FROM ctm.service_master WHERE verticalId=@HEALTH_VERTICAL_ID AND serviceCode='healthApplyService');
 
 INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode, styleCodeId, servicePropertyKey, servicePropertyValue, effectiveStart, effectiveEnd, scope) VALUES
-  (@SERVICE_MASTER_ID, 0, '0', 0, 'serviceUrl','http://localhost:9083','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+  (@SERVICE_MASTER_ID, 0, '0', 0, 'serviceUrl','http://localhost:9084','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, 0, 'NXI', 0, 'serviceUrl','http://127.0.0.1:8080/health-apply','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, 0, 'NXS', 0, 'serviceUrl','http://127.0.0.1:8080/health-apply','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, 0, 'NXQ', 0, 'serviceUrl','http://taws01_ass2:8080/health-apply','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),

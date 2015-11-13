@@ -124,14 +124,18 @@ public abstract class TokenValidation<T extends TokenRequest> {
     }
 
     public ResultsWrapper createResultsWrapper(Long transactionId, HttpServletRequest request, BaseResultObj results) {
-        if (validToken) {
-            TokenCreatorConfig config = TokenConfigFactory.getInstance(vertical, getCurrentTouch(), request);
-            String token = TokenValidation.createToken(transactionId, sessionDataService, settingsService, config , request.getServletPath(), request);
-            return new ResultsWrapper(results, token);
+        if (TokenConfigFactory.getEnabled(vertical, request)) {
+            if (validToken) {
+                TokenCreatorConfig config = TokenConfigFactory.getInstance(vertical, getCurrentTouch(), request);
+                String token = TokenValidation.createToken(transactionId, sessionDataService, settingsService, config, request.getServletPath(), request);
+                return new ResultsWrapper(results, token);
+            } else {
+                String message = "token expired";
+                Error error = new Error(message, message, transactionId, new ErrorDetails(""));
+                return new ResultsWrapper(results, error);
+            }
         } else {
-            String message = "token expired";
-            Error error = new Error(message, message, transactionId, new ErrorDetails(""));
-            return new ResultsWrapper(results, error);
+            return new ResultsWrapper(results);
         }
     }
 

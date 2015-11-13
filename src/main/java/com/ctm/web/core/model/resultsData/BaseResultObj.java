@@ -2,6 +2,7 @@ package com.ctm.web.core.model.resultsData;
 
 import com.ctm.web.core.resultsData.model.Info;
 import com.ctm.web.core.resultsData.model.Result;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -13,7 +14,8 @@ public abstract class BaseResultObj<R extends Result> {
 
     private Info info;
 
-    protected List<R> result;
+    @JsonIgnore
+    protected List<R> value;
 
     public Info getInfo() {
         return info;
@@ -24,7 +26,7 @@ public abstract class BaseResultObj<R extends Result> {
     }
 
     public void setResult(List<R> result) {
-        this.result = result;
+        this.value = result;
     }
 
 }
