@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="serviceConfigurationService" class="com.ctm.services.ServiceConfigurationService" scope="session"/>
+<jsp:useBean id="serviceConfigurationService" class="com.ctm.web.core.services.ServiceConfigurationService" scope="session"/>
 
 <core:doctype/>
 <html>

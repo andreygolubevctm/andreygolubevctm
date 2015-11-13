@@ -5,7 +5,7 @@
 
 <%@ attribute name="vertical"	required="true"	 	rtexprvalue="true" 	description="Vertical to associate this tracking with e.g. health" %>
 
-<jsp:useBean id="referralTracking" class="com.ctm.web.ReferralTracking" scope="page" />
+<jsp:useBean id="referralTracking" class="com.ctm.web.core.web.ReferralTracking" scope="page" />
 
 <c:set var="vertical" value="${fn:toLowerCase(vertical)}" />
 <c:set var="root" value="${vertical}/tracking" />

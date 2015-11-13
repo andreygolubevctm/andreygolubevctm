@@ -4,8 +4,8 @@
 <settings:setVertical verticalCode="${param.verticalCode}" />
 <session:getAuthenticated />
 
-<jsp:useBean id="callCentreService" class="com.ctm.services.CallCentreService" scope="application" />
-<jsp:useBean id="authenticationService" class="com.ctm.services.AuthenticationService" scope="application" />
+<jsp:useBean id="callCentreService" class="com.ctm.web.simples.services.CallCentreService" scope="application" />
+<jsp:useBean id="authenticationService" class="com.ctm.web.simples.services.SimplesAuthenticationService" scope="application" />
 
 
 <%-- the following is for testing only --%>

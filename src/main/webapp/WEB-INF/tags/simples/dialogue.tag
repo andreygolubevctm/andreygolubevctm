@@ -15,7 +15,7 @@
 <%@ attribute fragment="true" required="false" name="body_start" %>
 
 <c:if test="${callCentre}">
-	<jsp:useBean id="financialYearUtils" class="com.ctm.utils.health.FinancialYearUtils" />
+	<jsp:useBean id="financialYearUtils" class="com.ctm.web.health.utils.FinancialYearUtils" />
 	<c:set var="continuousCoverYear" value="${financialYearUtils.getContinuousCoverYear()}" />
 
 	<%-- VARIABLES --%>

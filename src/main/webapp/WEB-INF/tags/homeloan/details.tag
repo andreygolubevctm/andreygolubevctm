@@ -17,7 +17,7 @@
 
 
 <%-- HTML --%>
-<%-- NOTE: situation and goal values need to be kept in sync with com.ctm.model.homeloan.HomeLoanProductSearchRequest
+<%-- NOTE: situation and goal values need to be kept in sync with com.ctm.web.core.model.homeloan.HomeLoanProductSearchRequest
 
 TODO F=Looking to Re-enter the Market to be added post relaunch
 --%>

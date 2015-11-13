@@ -7,7 +7,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
-<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+<jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 <c:set var="mandatoryFieldsSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 35)}" />
 
 <form_new:fieldset legend="Contact Details" id="${name}_FieldSet">
