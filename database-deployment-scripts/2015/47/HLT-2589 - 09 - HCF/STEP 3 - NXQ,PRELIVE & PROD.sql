@@ -1,5 +1,5 @@
--- Step 3.
- SET @EffectiveStart = '2015-08-25';
+-- Step 3. 
+ SET @EffectiveStart = '2015-04-01';
 SET @EffectiveEnd = '2016-03-31';
 SET @providerID = 2;
 
@@ -47,12 +47,12 @@ AND providerID = @providerID
  AND Status != 'X';
 
 /* Disable current products product master */
-UPDATE `ctm`.`product_master` pm
- SET pm.EffectiveEnd = STR_TO_DATE(@EffectiveStart, '%Y-%m-%d') - INTERVAL 1 DAY
+UPDATE `ctm`.`product_master` pm 
+ SET pm.EffectiveEnd = STR_TO_DATE(@EffectiveStart, '%Y-%m-%d') - INTERVAL 1 DAY 
   WHERE(pm.EffectiveStart != @EffectiveStart AND pm.EffectiveEnd != @EffectiveEnd)
-AND @EffectiveStart between EffectiveStart AND EffectiveEnd
-AND providerID = @providerID
- AND Status != 'X';
+AND @EffectiveStart between EffectiveStart AND EffectiveEnd 
+AND providerID = @providerID 
+ AND Status != 'X'; 
 
 
 /* INSERT product properties */
@@ -74,13 +74,13 @@ SELECT * FROM `ctm`.`export_product_capping_exclusions`;
 INSERT INTO `ctm`.`product_master`
 SELECT * FROM `ctm`.`export_product_master`;
 
-/* Test import has worked there should be 1930 products
+/* Test import has worked there should be 1930 products 
 
 SELECT pm.* FROM `ctm`.`product_master` pm
 INNER JOIN ctm.product_properties_search pps
 ON pps.ProductId = pm.ProductId
 WHERE pm.Status != 'X'
-AND pm.providerID =  @providerID
+AND pm.providerID =  @providerID 
 AND pm.EffectiveStart = @EffectiveStart
 and pm.EffectiveEnd = @EffectiveEnd
 AND pm.ProductCat = 'HEALTH'
