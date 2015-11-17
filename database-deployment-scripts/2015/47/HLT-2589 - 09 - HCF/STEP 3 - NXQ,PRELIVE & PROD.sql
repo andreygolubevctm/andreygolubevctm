@@ -1,5 +1,5 @@
 -- Step 3. 
- SET @EffectiveStart = '2015-04-01';
+ SET @EffectiveStart = '2015-08-25';
 SET @EffectiveEnd = '2016-03-31';
 SET @providerID = 2;
 
@@ -41,18 +41,18 @@ WHERE productId IN
 /* Disable current products product master */
 UPDATE `ctm`.`product_master` pm
  SET STATUS = 'X'
- WHERE pm.EffectiveStart = @EffectiveStart
+ WHERE pm.EffectiveStart >= '2015-04-01'
 AND pm.EffectiveEnd = @EffectiveEnd
 AND providerID = @providerID
  AND Status != 'X';
 
-/* Disable current products product master */
+/* Disable current products product master
 UPDATE `ctm`.`product_master` pm 
  SET pm.EffectiveEnd = STR_TO_DATE(@EffectiveStart, '%Y-%m-%d') - INTERVAL 1 DAY 
   WHERE(pm.EffectiveStart != @EffectiveStart AND pm.EffectiveEnd != @EffectiveEnd)
 AND @EffectiveStart between EffectiveStart AND EffectiveEnd 
 AND providerID = @providerID 
- AND Status != 'X'; 
+ AND Status != 'X'; */
 
 
 /* INSERT product properties */
