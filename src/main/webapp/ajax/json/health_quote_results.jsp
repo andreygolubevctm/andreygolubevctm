@@ -6,15 +6,11 @@
 <core_new:no_cache_header/>
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true" />
-
-<c:set var="isSalesForce" value="${param.salesForce eq 'true'}"/>
-<c:if test="${isSalesForce eq false}">
-	<jsp:useBean id="healthQuoteResults" class="com.ctm.services.health.HealthQuoteEndpointService" />
-	${healthQuoteResults.init(pageContext.request, pageSettings)}
-</c:if>
+<jsp:useBean id="healthQuoteResults" class="com.ctm.services.health.HealthQuoteEndpointService" />
+${healthQuoteResults.init(pageContext.request, pageSettings)}
 
 <%-- Only continue if token is valid --%>
-<c:if test="${isSalesForce || healthQuoteResults.validToken}">
+<c:if test="${healthQuoteResults.validToken}">
 
 	<jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
@@ -29,7 +25,7 @@
 	<%-- Test and or Increment ID if required --%>
 	<c:choose>
 		<%-- RECOVER: if things have gone pear shaped --%>
-		<c:when test="${empty data.current.transactionId && isSalesForce eq false}">
+		<c:when test="${empty data.current.transactionId}">
 			<error:recover origin="ajax/json/health_quote_results.jsp" quoteType="health" />
 		</c:when>
 		<c:otherwise>
@@ -111,9 +107,7 @@
 		<c:when test="${isValid || continueOnValidationError}" >
 			<c:set var="outputXml">
 				${go:getEscapedXml(soapdata['soap-response/results'])}
-				<c:if test="${isSalesForce eq false}">
-					<timeout>${sessionDataService.getClientSessionTimeout(pageContext.getRequest())}</timeout>
-				</c:if>
+				<timeout>${sessionDataService.getClientSessionTimeout(pageContext.getRequest())}</timeout>
 			</c:set>
 			<c:set var="baseJsonResponse">${go:XMLtoJSON(outputXml)}</c:set>
 			<%-- COMPETITION APPLICATION START --%>
@@ -152,14 +146,7 @@
 				<go:setData dataVar="data" xpath="health/contactDetails/competition/previous" value="${concat}" />
 			</c:if>
 			<%-- COMPETITION APPLICATION END --%>
-			<c:choose>
-				<c:when test="${isSalesForce eq true}">
-					${baseJsonResponse}
-				</c:when>
-				<c:otherwise>
-					${healthQuoteResults.createResponse(data.text['current/transactionId'], baseJsonResponse)}
-				</c:otherwise>
-			</c:choose>
+			${healthQuoteResults.createResponse(data.text['current/transactionId'], baseJsonResponse)}
 		</c:when>
 		<c:otherwise>
 			<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="health_quote_results.jsp"/>
