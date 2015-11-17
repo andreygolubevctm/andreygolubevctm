@@ -109,7 +109,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			emailDetails.setSource("QUOTE");
 			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE",  request.getRemoteAddr());
 			if(!isTestEmailAddress) {
-				return emailSender.sendToExactTarget(new HealthBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId,request));
+				return emailSender.sendToExactTarget(new HealthBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId, request));
 			} else {
 				return "";
 			}
@@ -165,7 +165,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		String productID = request.getParameter("productId");
 		productID = productID==null?"":productID.replaceAll("PHIO-HEALTH-","");
 		accessTouchService.recordTouchWithProductCode(emailBrochureRequest.transactionId,
-				Touch.TouchType.BROCHURE.getCode(),productID);
+				Touch.TouchType.BROCHURE.getCode(), productID);
 
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(ProductBrochuresEmailHandler.MAILING_NAME_KEY);
@@ -267,7 +267,25 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			LOGGER.error("Failed to buildApplicationEmailModel {} ", kv("emailAddress", emailDetails.getEmailAddress()));
 			throw new SendEmailException("Failed to buildApplicationEmailModel", e);
 		}
-		emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailDetails));
+
+		try {
+			if (Boolean.valueOf(getPageSetting("emailTokenEnabled"))) {
+				Map<String, String> emailParameters = new HashMap<>();
+				emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(transactionId));
+				emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
+				emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
+				emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, "app");
+				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
+				emailParameters.put(EmailUrlService.VERTICAL, "health");
+				emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailParameters));
+			} else {
+				emailModel.setUnsubscribeURL(urlServiceOld.getUnsubscribeUrl(emailDetails));
+			}
+		} catch (ConfigSettingException e) {
+			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
+					" transactionId:" +  transactionId  ,  e);
+		}
+
 		emailModel.setProductName(data.map(HealthRequest::getQuote)
 				.map(HealthQuote::getApplication)
 				.map(Application::getProductTitle)
