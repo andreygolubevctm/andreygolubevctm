@@ -16,8 +16,7 @@ DELETE FROM `ctm`.`car_product_content` WHERE carProductId IN (SELECT carProduct
 -- SELECT count(*) FROM `ctm`.`car_product_content` WHERE carProductId IN (SELECT carProductId FROM `ctm`.`car_product` WHERE providerId = @pid) AND effectiveStart = '2015-11-27' AND effectiveEnd = '2040-12-31';
 -- TEST RESULT AFTER DELETE: 0
 
-UPDATE `ctm`.`car_product_content` SET effectiveEnd = '2040-12-31' WHERE carProductId IN (SELECT carProductId FROM `ctm`.`car_product` WHERE providerId = @pid) 
-AND effectiveStart = '2011-03-01' AND effectiveEnd = '2015-11-26';
+UPDATE `ctm`.`car_product_content` SET effectiveEnd = '2040-12-31' WHERE carProductId IN (SELECT carProductId FROM `ctm`.`car_product` WHERE providerId = @pid) AND effectiveStart = '2011-03-01' AND effectiveEnd = '2015-11-26';
 
 -- SELECT * FROM `ctm`.`car_product_content` WHERE carProductId IN (SELECT carProductId FROM `ctm`.`car_product` WHERE providerId = @pid) AND effectiveStart = '2011-03-01' AND effectiveEnd = '2040-12-31';
 -- TEST RESULT AFTER UPDATE: 2
