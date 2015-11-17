@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%@ attribute name="item" required="true" type="com.ctm.model.results.ResultsTemplateItem" %>
+<%@ attribute name="item" required="true" type="com.ctm.web.core.results.model.ResultsTemplateItem" %>
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.benefits')}" />
 
 ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
