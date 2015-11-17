@@ -12,20 +12,18 @@
 <core_new:load_preload />
 
 <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
-<jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
-<jsp:useBean id="callCenterHours" class="com.disc_au.web.go.CallCenterHours" scope="page" />
-<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" scope="request" />
+<jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
+<jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
+<jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" scope="request" />
 
-<c:set var="resultTemplateItems" value="${resultsService.getResultsPageStructure('health')}" scope="request"  />
+<c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health')}" scope="request"  />
 
 <%--TODO: turn this on and off either in a settings file or in the database --%>
 <c:set var="showReducedHoursMessage" value="false" />
 
 <%-- Call centre numbers --%>
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
-<c:set var="callCentreNumberApplication" scope="request"><content:get key="callCentreNumberApplication"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber"/></c:set>
-<c:set var="callCentreHelpNumberApplication" scope="request"><content:get key="callCentreHelpNumberApplication"/></c:set>
 
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
 <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
@@ -136,7 +134,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
-		<jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
+		<jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
 		<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 	</jsp:attribute>
 

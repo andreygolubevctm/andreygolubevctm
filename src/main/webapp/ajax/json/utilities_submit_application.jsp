@@ -15,7 +15,7 @@
 	<go:setData dataVar="data" xpath="utilities/application/details/address/streetNum" value="0" />
 </c:if>
 
-<jsp:useBean id="utilitiesApplicationService" class="com.ctm.services.utilities.UtilitiesApplicationService" scope="request" />
+<jsp:useBean id="utilitiesApplicationService" class="com.ctm.web.utilities.services.UtilitiesApplicationService" scope="request" />
 <c:set var="serviceResponse" value="${utilitiesApplicationService.validate(pageContext.request, data)}" />
 
 <c:choose>

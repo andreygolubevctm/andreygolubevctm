@@ -1,11 +1,10 @@
 package com.ctm.test;
 
-import com.ctm.model.settings.ConfigSetting;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
-import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.services.EnvironmentService;
-import com.ctm.services.EnvironmentService.Environment;
+
+import com.ctm.web.core.model.settings.ConfigSetting;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.services.EnvironmentService;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -22,12 +21,18 @@ public class TestUtils {
 
 	public static Vertical getHealthVertical(){
 		Vertical vertical = new Vertical();
-		vertical.setType(VerticalType.HEALTH);
+		vertical.setType(Vertical.VerticalType.HEALTH);
 		ArrayList<ConfigSetting> configSettings = new ArrayList<ConfigSetting>();
 		ConfigSetting setting = new ConfigSetting();
 		setting.setName("rootUrl");
 		setting.setValue("rootUrl");
 		configSettings.add(setting);
+
+		ConfigSetting emailTokenEncryptionKey = new ConfigSetting();
+		emailTokenEncryptionKey.setName("emailTokenEncryptionKey");
+		emailTokenEncryptionKey.setValue("emailTokenEncryptionKey");
+		configSettings.add(emailTokenEncryptionKey);
+
 		vertical.setConfigSettings(configSettings );
 
 		setting = new ConfigSetting();
@@ -39,7 +44,7 @@ public class TestUtils {
 	}
 
 	public static PageSettings getCTMHealthPageSettings() throws Exception{
-		EnvironmentService.setEnvironment(Environment.LOCALHOST.toString());
+		EnvironmentService.setEnvironment(EnvironmentService.Environment.LOCALHOST.toString());
 		PageSettings pageSettings = new PageSettings();
 		pageSettings.setBrandCode("TEST");
 		pageSettings.setVertical(TestUtils.getHealthVertical());

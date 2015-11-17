@@ -20,7 +20,7 @@
 </c:set>
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
-<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 <c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_product_details.xml')}" />
 <go:soapAggregator 	config = "${config}"
 					transactionId = "${tranId}"
