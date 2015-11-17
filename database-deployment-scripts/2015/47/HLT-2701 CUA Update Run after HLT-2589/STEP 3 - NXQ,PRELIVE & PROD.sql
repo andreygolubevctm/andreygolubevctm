@@ -5,7 +5,7 @@ SET @providerID = 12;
 
 /* -- BEGIN TEST -- */
 
-/* Test the products count matches expected 
+/* Test the products count matches expected
 SELECT 'Export', count(epm.productId) AS 'Total'
 FROM `ctm`.`export_product_master` epm
 WHERE epm.providerID = @providerID
@@ -46,13 +46,13 @@ AND pm.EffectiveEnd = @EffectiveEnd
 AND providerID = @providerID
  AND Status != 'X';
 
-/* Disable current products product master 
+/* Disable current products product master
 UPDATE `ctm`.`product_master` pm 
  SET pm.EffectiveEnd = STR_TO_DATE(@EffectiveStart, '%Y-%m-%d') - INTERVAL 1 DAY 
   WHERE(pm.EffectiveStart != @EffectiveStart AND pm.EffectiveEnd != @EffectiveEnd)
 AND @EffectiveStart between EffectiveStart AND EffectiveEnd 
 AND providerID = @providerID 
- AND Status != 'X'; */
+ AND Status != 'X';  */
 
 
 /* INSERT product properties */
