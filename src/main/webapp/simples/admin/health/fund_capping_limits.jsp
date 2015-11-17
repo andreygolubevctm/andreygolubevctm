@@ -3,7 +3,7 @@
 <settings:setVertical verticalCode="SIMPLES" />
 <%@ include file="/WEB-INF/security/core.jsp" %>
  
- <jsp:useBean id="providerDao" class="com.ctm.dao.ProviderDao" scope="page" />
+ <jsp:useBean id="providerDao" class="com.ctm.web.core.dao.ProviderDao" scope="page" />
  
 <layout:simples_page fullWidth="true">
 	<jsp:attribute name="head"></jsp:attribute>

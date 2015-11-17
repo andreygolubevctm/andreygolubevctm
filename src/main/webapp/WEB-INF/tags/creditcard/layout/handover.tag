@@ -4,7 +4,7 @@
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" scope="request" />
 
-<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+<jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled" /></c:set>
 <div class="row handover-container journeyEngineSlide active">
 	<c:choose>

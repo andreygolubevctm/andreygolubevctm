@@ -1,7 +1,7 @@
 <%@ tag description="Journey Engine Page"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
+<jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
 
 <%@ attribute name="title"			required="false"  rtexprvalue="true"	 description="Page title" %>
 

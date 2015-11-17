@@ -11,15 +11,20 @@
 
 <%-- Adjust the base rebate using multiplier - this is to ensure the rebate applicable to the
 					commencement date is sent to the provider --%>
-<health:changeover_rebates effective_date="${data.health.payment.details.start}" />
-<jsp:useBean id="healthApplicationService" class="com.ctm.services.health.HealthApplicationService" scope="page" />
-<c:set var="validationResponse" value="${healthApplicationService.setUpApplication(data, pageContext.request, changeover_date_2)}" />
+<c:set var="effectiveDate" value="${data.health.payment.details.start}"/>
+<jsp:useBean id="changeOverRebatesService" class="com.ctm.web.simples.services.ChangeOverRebatesService" />
+<c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(effectiveDate)}"/>
+<c:set var="rebate_multiplier_current" value="${changeOverRebates.getCurrentMultiplier()}"/>
+<c:set var="rebate_multiplier_future" value="${changeOverRebates.getFutureMultiplier()}"/>
+
+<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService" scope="page" />
+<c:set var="validationResponse" value="${healthApplicationService.setUpApplication(data, pageContext.request, changeOverRebates.getEffectiveStart())}" />
 
 <c:set var="tranId" value="${data.current.transactionId}" />
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
 <c:set var="continueOnAggregatorValidationError" value="${true}" />
 
-<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="page" />
+<jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
 <c:set var="touch_count"><core:access_count touch="P" /></c:set>
 
 <c:choose>
@@ -143,7 +148,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 		${logger.debug('Queried product properties. {},{}', log:kv('fund', fund), log:kv('productId', productId))}
 
 		<%-- This will be deleted once health application is moved to it's own service --%>
-		<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+		<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 		<c:set var="configUrl">/WEB-INF/aggregator/health_application/${fund}/config.xml</c:set>
 
 		<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, configUrl)}" />
@@ -208,7 +213,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 				<core:transaction touch="C" noResponse="true" productId="${productId}"/>
 
 						<c:set var="ignore">
-								<jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService" scope="page" />
+								<jsp:useBean id="joinService" class="com.ctm.web.core.confirmation.services.JoinService" scope="page" />
 						${joinService.writeJoin(tranId,productId)}
 						</c:set>
 
@@ -223,7 +228,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 												<c:set var="allowedErrors">${allowedErrors},</c:set>
 											</c:if>
 										</x:forEach>
-										<jsp:useBean id="healthTransactionDao" class="com.ctm.dao.health.HealthTransactionDao" scope="page" />
+										<jsp:useBean id="healthTransactionDao" class="com.ctm.web.health.dao.HealthTransactionDao" scope="page" />
 										${healthTransactionDao.writeAllowableErrors(tranId , allowedErrors)}
 									</c:if>
 								</c:catch>

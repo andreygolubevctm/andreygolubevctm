@@ -4,7 +4,7 @@
 
 <c:set var="logger" value="${log:getLogger('tag.unsubcribe.redirect_with_details')}" />
 
-<jsp:useBean id="unsubscribeService" class="com.ctm.services.UnsubscribeService" scope="request"/>
+<jsp:useBean id="unsubscribeService" class="com.ctm.web.core.services.UnsubscribeService" scope="request"/>
 <c:set var="brandId" value="0"/>
 
 <c:catch var="error">
@@ -14,7 +14,7 @@
     </c:if>
 
     <c:set var="unsubscribe"
-           value="${unsubscribeService.getUnsubscribeDetails(param.vertical, brandId, fn:substring(param.unsubscribe_email, 0, 256), param.email, false, pageSettings, pageContext.getRequest())}"
+           value="${unsubscribeService.getUnsubscribeDetails(param.vertical, brandId, fn:substring(param.unsubscribe_email, 0, 256), param.email, false, pageSettings, param.token)}"
            scope="session"/>
 
     <%-- #WHITELABEL TODO: support meerkat brand--%>
