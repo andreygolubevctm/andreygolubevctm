@@ -5,6 +5,9 @@
 <settings:setVertical verticalCode="HEALTH" />
 
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
+<c:set var="provider">
+    <c:out value="${param.provider}" escapeXml="true" />
+</c:set>
 
 <html>
 <head>
@@ -28,18 +31,17 @@
     <script src="${assetUrl}js/libraries/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 </head>
 <body>
-    <div data-provide="paymentGateway">
-        <button data-gateway="launcher" type="button" class="btn btn-modal btn-md btn-open-modal hidden">Register your credit card details</button>
-    </div>
-    
     <div id="dynamic_dom"></div>
 
-    <c:set var="gatewayXPath" value="health_payment_gateway" />
+    <c:set var="gatewayXPath" value="health/payment/gateway" />
 
-    <form id="fieldsForm" action="#">
+    <form id="mainForm" action="#">
+        <div class="provider-${provider}">
+            <health:credit_card_details xpath="health/payment" />
+        </div>
+        <%--<health:bank_details xpath="health/payment/bank" />--%>
         <health:gateway_westpac xpath="${gatewayXPath}" />
         <health:gateway_nab xpath="${gatewayXPath}" />
-        <health:payment_ipp xpath="${gatewayXPath}" />
     </form>
     
     <script src="${assetUrl}js/bundles/salesforce_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
@@ -78,7 +80,7 @@
                 skipResultsPopulation: true,
                 loadSource: 'salesForce',
                 initialTransactionId: <c:out value="${param.transactionId}" escapeXml="true" />,
-                provider: '<c:out value="${param.provider}" escapeXml="true" />'
+                provider: '${provider}'
             }, {});
         })(window.meerkat);
     

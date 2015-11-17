@@ -75,7 +75,7 @@ Process:
 		reset();
 
 		meerkat.modules.comms.post({
-			url: "ajax/json/ipp/ipp_payment.jsp?ts=" + (new Date().getTime()),
+			url: "/" + meerkat.site.urls.context + "ajax/json/ipp/ipp_payment.jsp?ts=" + (new Date().getTime()),
 			dataType: 'json',
 			cache: false,
 			errorLevel: "silent",
