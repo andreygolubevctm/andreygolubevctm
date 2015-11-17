@@ -28,65 +28,76 @@
     <script src="${assetUrl}js/libraries/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 </head>
 <body>
-<div data-provide="paymentGateway">
-    <button data-gateway="launcher" type="button" class="btn btn-modal btn-md btn-open-modal hidden">Register your credit card details</button>
-</div>
+    <div data-provide="paymentGateway">
+        <button data-gateway="launcher" type="button" class="btn btn-modal btn-md btn-open-modal hidden">Register your credit card details</button>
+    </div>
+    
+    <div id="dynamic_dom"></div>
 
-<div id="dynamic_dom"></div>
+    <c:set var="gatewayXPath" value="health_payment_gateway" />
 
-<script src="${assetUrl}js/bundles/salesforce_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-
-<script>
-    (function (meerkat) {
-        meerkat != null && meerkat.init({
-            name: '${pageSettings.getSetting("brandName")}',
-            vertical: '${pageSettings.getVerticalCode()}',
-            urls:{
-                base: '${pageSettings.getBaseUrl()}',
-                exit: '${exitUrl}',
-                context: '${pageSettings.getContextFolder()}'
-            },
-            session: {
-                firstPokeEnabled: false
-            },
-            navMenu: {
-                type: "offcanvas"
-            },
-            content:{
-                callCentreNumber: "<content:get key="callCentreNumber"/>"
-            },
-            liveChat: {
-                config: {},
-                instance: {},
-                enabled: false
-            },
-            leavePageWarning: {
-                enabled: false
-            },
-            journeyStage: [],
-            skipResultsPopulation: true,
-            loadSource: 'salesForce',
-            initialTransactionId: <c:out value="${param.transactionId}" escapeXml="true" />,
-            requestData: {
-                health_application_provider: '<c:out value="${param.provider}" escapeXml="true" />',
-                health_application_productId: '<c:out value="${param.productId}" escapeXml="true" />',
-                health_application_productTitle: '<c:out value="${param.productTitle}" escapeXml="false" />',
-                health_situation_state: '<c:out value="${param.state}" escapeXml="true" />',
-                health_situation_postcode: '<c:out value="${param.postcode}" escapeXml="true" />'
-            }
-        }, {});
-    })(window.meerkat);
-
-    $(document).ready(function() {
-        yepnope.injectJs({
-            src: '${assetUrl}js/bundles/salesforce_health.deferred${pageSettings.getSetting('minifiedFileString')}.js?${revision}',
-            attrs: {
-                async: true
-            } <%-- We need to now initialise the deferred modules --%>
-        }, function initDeferredModules() {
-            meerkat.modules.init();
+    <form id="fieldsForm" action="#">
+        <health:gateway_westpac xpath="${gatewayXPath}" />
+        <health:gateway_nab xpath="${gatewayXPath}" />
+        <health:payment_ipp xpath="${gatewayXPath}" />
+    </form>
+    
+    <script src="${assetUrl}js/bundles/salesforce_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+    
+    <script>
+        dob_health_application_primary_dob = {};
+        dob_health_application_partner_dob = {};
+    
+        (function (meerkat) {
+            meerkat != null && meerkat.init({
+                name: '${pageSettings.getSetting("brandName")}',
+                vertical: '${pageSettings.getVerticalCode()}',
+                urls:{
+                    base: '${pageSettings.getBaseUrl()}',
+                    exit: '${exitUrl}',
+                    context: '${pageSettings.getContextFolder()}'
+                },
+                session: {
+                    firstPokeEnabled: false
+                },
+                navMenu: {
+                    type: "offcanvas"
+                },
+                content:{
+                    callCentreNumber: "<content:get key="callCentreNumber"/>"
+                },
+                liveChat: {
+                    config: {},
+                    instance: {},
+                    enabled: false
+                },
+                leavePageWarning: {
+                    enabled: false
+                },
+                journeyStage: [],
+                skipResultsPopulation: true,
+                loadSource: 'salesForce',
+                initialTransactionId: <c:out value="${param.transactionId}" escapeXml="true" />,
+                requestData: {
+                    health_application_provider: '<c:out value="${param.provider}" escapeXml="true" />',
+                    health_application_productId: '<c:out value="${param.productId}" escapeXml="true" />',
+                    health_application_productTitle: '<c:out value="${param.productTitle}" escapeXml="false" />',
+                    health_situation_state: '<c:out value="${param.state}" escapeXml="true" />',
+                    health_situation_postcode: '<c:out value="${param.postcode}" escapeXml="true" />'
+                }
+            }, {});
+        })(window.meerkat);
+    
+        $(document).ready(function() {
+            yepnope.injectJs({
+                src: '${assetUrl}js/bundles/salesforce_health.deferred${pageSettings.getSetting('minifiedFileString')}.js?${revision}',
+                attrs: {
+                    async: true
+                } <%-- We need to now initialise the deferred modules --%>
+            }, function initDeferredModules() {
+                meerkat.modules.init();
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>

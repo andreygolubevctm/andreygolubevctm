@@ -7,46 +7,27 @@
 
     var basePostData = {
         cache: false,
-        salesForce: true,
-        transactionId: meerkat.modules.transactionId.get()
+        salesForce: true
     };
 
     var selectedProduct = {};
 
     function initSalesforceHealthPaymentProcessor() {
         $(document).ready(function() {
+            meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
+
             basePostData.transactionId = meerkat.modules.transactionId.get();
 
-            getProductInfo().then(function (productResponse) {
-                selectedProduct = productResponse.results.price;
-                var fundCode = selectedProduct.info.FundCode;
-
-                meerkat.modules.healthResults.setSelectedProduct(selectedProduct);
-
-                getFundInfo(fundCode).then(function () {
-                    window['healthFunds_' + fundCode].set();
-
-                    $('.btn-open-modal').trigger('click');
-                });
+            // Set dummy selected product
+            meerkat.modules.healthResults.setSelectedProduct({
+                info: {}
             });
-        });
-    }
 
-    function getProductInfo() {
-        var data = basePostData;
-
-        $.extend(data, meerkat.site.requestData);
-
-        // Necessary Overrides
-        data.transcheck = '1';
-        data.health_showAll = 'N';
-        data.health_onResultsPage = 'N';
-        data.health_incrementTransactionId = 'N';
-
-        return meerkat.modules.comms.post({
-            errorLevel: 'silent',
-            url: '/' + meerkat.site.urls.context + 'ajax/json/health_quote_results.jsp',
-            data: data
+            var fundCode = meerkat.site.requestData.health_application_provider;
+            getFundInfo(fundCode).then(function () {
+                window['healthFunds_' + fundCode].set();
+                $('.btn-open-modal').trigger('click');
+            });
         });
     }
 
