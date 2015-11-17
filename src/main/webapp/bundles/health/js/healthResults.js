@@ -619,12 +619,15 @@
                 meerkat.messaging.publish(moduleEvents.healthResults.PREMIUM_UPDATED, selectedProduct);
             } else {
                 meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
-                $(Results.settings.elements.rows).removeClass("active");
 
-				var $targetProduct = $(Results.settings.elements.rows + "[data-productid='" + selectedProduct.productId + "']");
-                var targetPosition = $targetProduct.data('position') + 1;
-                $targetProduct.addClass("active");
-                Results.pagination.gotoPosition(targetPosition, true, false);
+                if(!meerkat.site.skipResultsPopulation) {
+                    $(Results.settings.elements.rows).removeClass("active");
+
+                    var $targetProduct = $(Results.settings.elements.rows + "[data-productid='" + selectedProduct.productId + "']");
+                    var targetPosition = $targetProduct.data('position') + 1;
+                    $targetProduct.addClass("active");
+                    Results.pagination.gotoPosition(targetPosition, true, false);
+                }
             }
 
             // update transaction details otherwise we will have to wait until people get to payment page

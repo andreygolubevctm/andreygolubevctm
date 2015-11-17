@@ -24,7 +24,7 @@
 		postData.applicationDateOverrideValue = (selectedDate !== '' ? newDate + " 00:00:01" : null);
 
 		meerkat.modules.comms.post({
-			url:"ajax/write/setApplicationDate.jsp",
+			url:"/" + meerkat.site.urls.context + "ajax/write/setApplicationDate.jsp",
 			data: postData,
 			cache: false,
 			errorLevel: "warning",
@@ -37,7 +37,7 @@
 
 	function setApplicationDateCalendar() {
 		meerkat.modules.comms.post({
-			url:"ajax/load/getApplicationDate.jsp",
+			url:"/" + meerkat.site.urls.context + "ajax/load/getApplicationDate.jsp",
 			cache: false,
 			errorLevel: "warning",
 			onSuccess:function onApplicationUpdateSuccess(dateResult){

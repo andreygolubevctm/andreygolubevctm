@@ -262,7 +262,7 @@ var healthFunds_CBH = {
 			<%-- Load join dec into label --%>
 			healthFunds_CBH.joinDecLabelHtml = $('#health_declaration + label').html();
 			healthFunds_CBH.ajaxJoinDec = $.ajax({
-				url: 'health_fund_info/CBH/declaration.html',
+				url: '/' + meerkat.site.urls.context + 'health_fund_info/CBH/declaration.html',
 				type: 'GET',
 				async: true,
 				dataType: 'html',

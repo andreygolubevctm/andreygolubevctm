@@ -10,7 +10,16 @@
 <x:parse doc="${config}" var="configXml" />
 
 <%-- PARAMS --%>
-<c:set var="id" value="${data.current.transactionId}"></c:set>
+<c:set var="id">
+	<c:choose>
+		<c:when test="${not empty param.transactionId and param.loadSource eq 'salesForce'}">
+			<c:out value="${param.transactionId}" escapeXml="true" />
+		</c:when>
+		<c:otherwise>
+			${data.current.transactionId}
+		</c:otherwise>
+	</c:choose>
+</c:set>
 <c:set var="accountType">
 	<c:choose>
 		<c:when test="${not empty param.type and param.type == 'DD'}">DD</c:when>

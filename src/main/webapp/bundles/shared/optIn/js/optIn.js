@@ -92,7 +92,7 @@
 		};
 
 		var settings = {
-			url: "ajax/json/get_user_exists.jsp",
+			url: '/' + meerkat.site.urls.context + "ajax/json/get_user_exists.jsp",
 			data: data,
 			dataType: 'json',
 			cache: false,
