@@ -45,7 +45,6 @@
         $(document).ready(function () {
             $competitionRequiredElems = $('#utilities_resultsDisplayed_firstName, #utilities_resultsDisplayed_phoneinput, #utilities_resultsDisplayed_phone, #utilities_resultsDisplayed_email');
 
-            _toggleMovingInDate();
             _toggleAdditionalEstimateDetails();
 
             var isIosXS = meerkat.modules.performanceProfiling.isIos() && meerkat.modules.deviceMediaState.get() == 'xs';
@@ -87,9 +86,9 @@
     }
 
     function _registerEventListeners() {
-        $(".what-to-compare, .how-to-estimate").change(_toggleAdditionalEstimateDetails);
-        $(".moving-in").change(_toggleMovingInDate);
+        $(".what-to-compare, .moving-in, .recent-electricity-bill, .recent-gas-bill").change(_toggleAdditionalEstimateDetails);
         $("#utilities_privacyoptin").change(_onPrivacyOptinChange);
+        $(".electricity-charged").change(_toggleElectricityCharged);
         $("#utilities_householdDetails_location").on("typeahead:selected", _onTypeaheadSelected);
         meerkat.modules.ie8SelectMenuAutoExpand.bindEvents($('#startForm'), '#utilities_householdDetails_howToEstimate');
         $('#utilities_resultsDisplayed_competition_optin').on('change.applyValidationRules', _applyCompetitionValidationRules);
@@ -232,17 +231,6 @@
     }
 
     /**
-     * Toggles the moving in date fields depending on if a user is moving to the property
-     * @private
-     */
-    function _toggleMovingInDate() {
-        var val = $(".moving-in").find("input[type='radio']:checked").val();
-        $(".moving-in-date").toggle(val === "Y");
-        $(".recent-electricity-bill").toggle(val === "N");
-        $(".recent-gas-bill").toggle(val === "N");
-    }
-
-    /**
      * Not actually for blocked IPs, but if their state has no providers. Kept same id for styling.
      */
     function showErrorOccurred() {
@@ -258,47 +246,68 @@
      * @private
      */
     function _toggleAdditionalEstimateDetails() {
-        var $hideableFieldsets = $(".additional-estimate-details"),
-            $additionalEstimateDetails = $(".additional-estimate-details"),
-            $electricityInputs = $additionalEstimateDetails.find(".electricity"),
-            $gasInputs = $additionalEstimateDetails.find(".gas");
+        var $additionalEstimates = $('.additional-estimate-details-row'),
+            $electricityInputs = $(".electricity-details"),
+            $gasInputs = $(".gas-details"),
+            $electricityUsage = $(".electricity-usage"),
+            $gasUsage = $(".gas-usage");
 
         var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val(),
+            movingIn = $(".moving-in").find("input[type='radio']:checked").val(),
             recentElectricityBill = $(".recent-electricity-bill").find("input[type='radio']:checked").val(),
-            recentGasBill = $(".recent-electricity-bill").find("input[type='radio']:checked").val(),
-            howToEstimate = $(".how-to-estimate").val();
+            recentGasBill = $(".recent-gas-bill").find("input[type='radio']:checked").val();
 
-        if (whatToCompare && howToEstimate) {
-            $hideableFieldsets.show();
+        if (whatToCompare === "E" || whatToCompare === "EG") {
+            if (movingIn === 'Y' || recentElectricityBill === 'N') {
+                $electricityInputs.show();
+                $electricityUsage.show();
+                $additionalEstimates.hide();
+            } else if (movingIn === 'N') {
+                $('.recent-electricity-bill').show();
 
-            if (recentElectricityBill === 'Yes"') {
-                $electricityInputs.toggle(whatToCompare === "E" || whatToCompare === "EG");
-            }
-
-            if (recentGasBill === 'Yes"') {
-                $gasInputs.toggle(whatToCompare === "G" || whatToCompare === "EG");
-            }
-
-            $("#current-electricity-provider-field").toggle(whatToCompare === "E" || whatToCompare === "EG");
-            $("#current-gas-provider-field").toggle(whatToCompare === "G" || whatToCompare === "EG");
-
-            if (!howToEstimate)
-                $hideableFieldsets.hide();
-
-            var rowClass = ".additional-estimate-details-row";
-
-            $(rowClass).hide();
-
-            if (howToEstimate === "S") {
-                $(rowClass + ".spend").show();
-            } else if (howToEstimate === "U") {
-                $(rowClass + ".usage").show();
+                if(recentElectricityBill === 'Y') {
+                    $electricityInputs.show();
+                    $electricityUsage.hide();
+                    $additionalEstimates.show();
+                }
             } else {
-                $hideableFieldsets.hide();
+                $electricityInputs.hide();
             }
         } else {
-            $hideableFieldsets.hide();
+            $electricityInputs.hide();
+            $('.recent-electricity-bill').hide();
         }
+
+        if (whatToCompare === "G" || whatToCompare === "EG") {
+            if (movingIn === 'Y' || recentGasBill === 'N') {
+                $gasInputs.show();
+                $gasUsage.show();
+                $additionalEstimates.hide();
+            } else if (movingIn === 'N') {
+                $('.recent-gas-bill').show();
+
+                if(recentGasBill === 'Y') {
+                    $gasInputs.show();
+                    $gasUsage.hide();
+                    $additionalEstimates.show();
+                }
+            } else {
+                $gasInputs.hide();
+            }
+        } else {
+            $gasInputs.hide();
+            $('.recent-gas-bill').hide();
+        }
+    }
+
+    function _toggleElectricityCharged() {
+        var charged = $(".electricity-charged").find("input[type='radio']:checked").val();
+
+        $(".standard-usage").toggle(charged === "S");
+        $(".peak-usage").toggle(charged === "T" || charged === "M");
+        $(".controlled-usage").toggle(charged === "T");
+        $(".off-peak-usage").toggle(charged === "M");
+        $(".shoulder-usage").toggle(charged === "M");
     }
 
     meerkat.modules.register("utilitiesHouseholdDetailsFields", {
