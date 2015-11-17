@@ -491,9 +491,14 @@ public class HealthPriceDao {
 		if(healthPriceRequest.getProductTitleSearch()!=null && !healthPriceRequest.getProductTitleSearch().trim().equals("")) {
 			sqlBuilder.append(" AND lower(product.LongTitle) like  lower(?) ");
 		}
-			sqlBuilder
-				.append("GROUP BY search.ProductId ")
-				.append("ORDER BY rank DESC, factoredPrice ASC ");
+		/* When filtering is turned on we don't want products flagged with 'Y'
+			to be returned in the results set (a little confusing) */
+		if(healthPriceRequest.getSituationFilter().equals("Y")) {
+			sqlBuilder.append("AND (search.situationFilter IS NULL OR situationFilter IN ('','N'))");
+		}
+        sqlBuilder
+            .append("GROUP BY search.ProductId ")
+            .append("ORDER BY rank DESC, factoredPrice ASC ");
 
 		return sqlBuilder.toString();
 	}

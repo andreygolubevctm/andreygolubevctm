@@ -39,8 +39,10 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 
@@ -58,17 +60,20 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	private ContentDao contentDao;
 	private String optInMailingName;
 	private final EmailUrlService urlService;
+	private final EmailUrlServiceOld urlServiceOld;
 
 	public HealthEmailService(PageSettings pageSettings, EmailMode emailMode,
 							  EmailDetailsService emailDetailsService,
 														ContentDao contentDao,
 														EmailUrlService urlService,
 														AccessTouchService accessTouchService,
+							  							EmailUrlServiceOld urlServiceOld,
 							  							SessionDataService sessionDataService) {
 		super(pageSettings, emailMode);
 		this.emailDetailsService = emailDetailsService;
 		this.contentDao = contentDao;
 		this.urlService = urlService;
+		this.urlServiceOld = urlServiceOld;
 		this.accessTouchService = accessTouchService;
 		this.sessionDataService = sessionDataService;
 	}
@@ -196,11 +201,27 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			emailModel.setFirstName(emailDetails.getFirstName());
 			emailModel.setOptIn(optedIn);
 			emailModel.setPhoneNumber(getCallCentreNumber());
-			setupRankingDetails(emailModel , transactionId);
+			setupRankingDetails(emailModel, transactionId);
 			emailModel.setTransactionId(transactionId);
-			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailDetails));
-			emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, transactionId, "bestprice"));
-		} catch (DaoException |EnvironmentException | VerticalException
+
+			if(Boolean.valueOf(getPageSetting("emailTokenEnabled"))) {
+				Map<String, String> emailParameters = new HashMap<>();
+				emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(transactionId));
+				emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
+				emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
+				emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, "bestprice");
+				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
+				emailParameters.put(EmailUrlService.VERTICAL, "health");
+
+				emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailParameters));
+
+				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "load");
+				emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailParameters));
+			} else {
+				emailModel.setUnsubscribeURL(urlServiceOld.getUnsubscribeUrl(emailDetails));
+				emailModel.setApplyUrl(urlServiceOld.getApplyUrl(emailDetails, transactionId, "bestprice"));
+			}
+		} catch (DaoException|EnvironmentException | VerticalException
 				| ConfigSettingException e) {
 			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
 					" transactionId:" +  transactionId  ,  e);
@@ -296,13 +317,32 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 		try {
 			emailModel.setPhoneNumber(getCallCentreNumber());
-			emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailBrochureRequest.transactionId, "bestprice", productId, emailBrochureRequest.productName));
+
 			emailModel.setCallcentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
 			emailModel.setTransactionId(emailBrochureRequest.transactionId);
 			emailModel.setFirstName(emailDetails.getFirstName());
 			emailModel.setLastName(emailDetails.getLastName());
 			emailModel.setOptIn(optedIn);
-			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailDetails));
+
+			if(Boolean.valueOf(getPageSetting("emailTokenEnabled"))) {
+				Map<String, String> emailParameters = new HashMap<>();
+				emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(emailBrochureRequest.transactionId));
+				emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
+				emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
+				emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, "brochures");
+				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "load");
+				emailParameters.put(EmailUrlService.VERTICAL, "health");
+				emailParameters.put(EmailUrlService.PRODUCT_ID, productId);
+				emailParameters.put(EmailUrlService.PRODUCT_NAME, emailBrochureRequest.productName);
+				emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailParameters));
+
+				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
+				emailParameters.remove(EmailUrlService.PRODUCT_ID);
+				emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailParameters));
+			} else {
+				emailModel.setApplyUrl(urlServiceOld.getApplyUrl(emailDetails, emailBrochureRequest.transactionId, "bestprice", productId, emailBrochureRequest.productName));
+				emailModel.setUnsubscribeURL(urlServiceOld.getUnsubscribeUrl(emailDetails));
+			}
 		} catch (DaoException|EnvironmentException | VerticalException
 				| ConfigSettingException e) {
 			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
