@@ -78,13 +78,7 @@
                 skipResultsPopulation: true,
                 loadSource: 'salesForce',
                 initialTransactionId: <c:out value="${param.transactionId}" escapeXml="true" />,
-                requestData: {
-                    health_application_provider: '<c:out value="${param.provider}" escapeXml="true" />',
-                    health_application_productId: '<c:out value="${param.productId}" escapeXml="true" />',
-                    health_application_productTitle: '<c:out value="${param.productTitle}" escapeXml="false" />',
-                    health_situation_state: '<c:out value="${param.state}" escapeXml="true" />',
-                    health_situation_postcode: '<c:out value="${param.postcode}" escapeXml="true" />'
-                }
+                provider: '<c:out value="${param.provider}" escapeXml="true" />'
             }, {});
         })(window.meerkat);
     

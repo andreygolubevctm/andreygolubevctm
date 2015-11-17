@@ -23,7 +23,7 @@
                 info: {}
             });
 
-            var fundCode = meerkat.site.requestData.health_application_provider;
+            var fundCode = meerkat.site.provider;
             getFundInfo(fundCode).then(function () {
                 window['healthFunds_' + fundCode].set();
                 $('.btn-open-modal').trigger('click');
