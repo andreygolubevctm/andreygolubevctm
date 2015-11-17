@@ -28,13 +28,17 @@
 			<field_new:email xpath="${xpath}/email" title="your email address" required="false" size="40"/>
 		</form_new:row>
 
+		<c:set var="brandName">
+			<content:optin key="brandDisplayName" useSpan="true"/>
+		</c:set>
+
 		<form_new:row label="Your contact number" className="clear">
 			<field:contact_telno xpath="${xpath}/contactNumber" title="your contact number" required="false" size="40"/>
-			<p class="optinText">By entering my telephone number I agree that an authorised broker from AFG, <content:optin key="brandDisplayName" useSpan="true"/>'s approved supplier of home loans, may contact me to further assist with my home loan needs.</p>
+			<p class="optinText">By entering my telephone number I agree that an authorised broker from AFG, ${brandName}'s approved supplier of home loans, may contact me to further assist with my home loan needs.</p>
 		</form_new:row>
 
 		<form_new:row label="" className="email-optin-row clear closer">
-			<field_new:checkbox xpath="${xpath}/optIn" value="Y" title="Stay up to date with news and offers direct to your inbox" required="false" label="true"/>
+			<field_new:checkbox xpath="${xpath}/optIn" value="Y" title="Yes, keep me updated about news, discounts and special offers from ${brandName}" required="false" label="true"/>
 		</form_new:row>
 
 		<%-- Mandatory agreement to privacy policy --%>

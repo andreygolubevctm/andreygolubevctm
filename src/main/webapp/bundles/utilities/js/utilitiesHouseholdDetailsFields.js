@@ -118,8 +118,7 @@
         var $this = $(e.target),
             isChecked = $this[0].checked,
             val = isChecked ? "Y" : "N";
-
-        $("#utilities_resultsDisplayed_optinPhone, #utilities_resultsDisplayed_optinMarketing").val(val);
+        $("#utilities_resultsDisplayed_optinPhone").val(val);
     }
 
     function _toggleInput($input, enableInput) {

@@ -20,7 +20,7 @@
 </form_new:row>
 
 <c:set var="fieldXpath" value="travel/email" />
-<form_new:row label="Email Address" fieldXpath="${fieldXpath}" className="clear" id="travel_email_note" legend="For confirming quote and transaction details.">
+<form_new:row label="Email Address" fieldXpath="${fieldXpath}" className="clear" id="travel_email_note" legend="For confirming your email quote.">
 	<field_new:email xpath="${fieldXpath}" title="your email address" required="true" />
 	<field:hidden xpath="travel/emailsecondary" />
 	<field:hidden xpath="travel/emailhistory" />
@@ -42,8 +42,8 @@
 
 <form_new:row className="travel-contact-details-optin-sgroup">
 	<%-- Mandatory agreement to privacy policy --%>
-	<c:set var="brandedName"><content:optin key="brandDisplayName"/></c:set>
-	<field_new:checkbox xpath="travel/marketing" value="Y" required="false" label="true" title="I agree to receive news &amp; offer emails from ${brandedName}" />
+	<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
+	<field_new:checkbox xpath="travel/marketing" value="Y" required="false" label="true" title="Yes, keep me updated about news, discount and special offers from ${brandedName}" />
 </form_new:row>
 
 <%-- Mandatory agreement to privacy policy --%>
