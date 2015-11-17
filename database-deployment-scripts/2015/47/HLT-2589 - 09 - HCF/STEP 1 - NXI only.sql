@@ -1,7 +1,7 @@
 -- Warning this is a generated script and may not handle things such as status 'O' 
 -- A developer should always review this before running 
 -- STEP 1 extract from NXI 
-SET @EffectiveStart = '2015-04-01';
+SET @EffectiveStart = '2015-08-25';
 SET @EffectiveEnd = '2016-03-31';
 SET @providerID = 2;
 -- TEST 
