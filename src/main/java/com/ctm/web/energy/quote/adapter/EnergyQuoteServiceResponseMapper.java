@@ -1,6 +1,6 @@
 package com.ctm.web.energy.quote.adapter;
 
-import com.ctm.web.energy.form.model.EnergyResultsWebResponse;
+import com.ctm.web.energy.form.response.model.EnergyResultsWebResponse;
 import com.ctm.web.energy.quote.response.model.EnergyResultsResponse;
 
 
