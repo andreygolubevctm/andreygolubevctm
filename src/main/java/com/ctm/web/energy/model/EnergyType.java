@@ -1,6 +1,6 @@
 package com.ctm.web.energy.model;
 
 
-public enum UtilityType {
+public enum EnergyType {
     Electricity, Gas;
 }

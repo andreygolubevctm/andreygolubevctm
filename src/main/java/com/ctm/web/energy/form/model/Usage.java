@@ -2,22 +2,22 @@ package com.ctm.web.energy.form.model;
 
 
 public class Usage {
-    private Utility electricity;
-    private Utility gas;
+    private Energy electricity;
+    private Energy gas;
 
-    public Utility getElectricity() {
+    public Energy getElectricity() {
         return electricity;
     }
 
-    public void setElectricity(Utility electricity) {
+    public void setElectricity(Energy electricity) {
         this.electricity = electricity;
     }
 
-    public Utility getGas() {
+    public Energy getGas() {
         return gas;
     }
 
-    public void setGas(Utility gas) {
+    public void setGas(Energy gas) {
         this.gas = gas;
     }
 }

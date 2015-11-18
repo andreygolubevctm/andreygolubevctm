@@ -11,7 +11,7 @@ import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.energy.form.model.EnergyResultsWebRequest;
 import com.ctm.web.energy.model.EnergyResultsModel;
-import com.ctm.web.energy.model.EnergyResultsResponseModel;
+import com.ctm.web.energy.quote.response.model.EnergyResultsResponse;
 import com.ctm.web.energy.quote.model.EnergyQuoteRequest;
 import com.ctm.web.utilities.exceptions.UtilitiesWebServiceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +27,7 @@ import static com.ctm.web.core.logging.LoggingArguments.kv;
 /**
  * Common functions for the Utilities Services
  */
-public class EnergyBaseService extends CommonRequestService<EnergyQuoteRequest,EnergyResultsResponseModel> {
+public class EnergyBaseService extends CommonRequestService<EnergyQuoteRequest,EnergyResultsResponse> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EnergyBaseService.class);
 

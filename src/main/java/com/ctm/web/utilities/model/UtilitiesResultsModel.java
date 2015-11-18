@@ -2,6 +2,7 @@ package com.ctm.web.utilities.model;
 
 import java.util.ArrayList;
 
+import com.ctm.web.energy.quote.response.model.EnergyResultsPlanModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
@@ -18,17 +19,17 @@ public class UtilitiesResultsModel extends AbstractJsonModel {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UtilitiesResultsModel.class);
 
-	private ArrayList<UtilitiesResultsPlanModel> plans = new ArrayList<UtilitiesResultsPlanModel>();
+	private ArrayList<EnergyResultsPlanModel> plans = new ArrayList<EnergyResultsPlanModel>();
 	private String uniqueCustomerId;
 
 	public UtilitiesResultsModel(){
 
 	}
-	public ArrayList<UtilitiesResultsPlanModel> getPlans() {
+	public ArrayList<EnergyResultsPlanModel> getPlans() {
 		return plans;
 	}
 
-	public void setPlans(ArrayList<UtilitiesResultsPlanModel> plans) {
+	public void setPlans(ArrayList<EnergyResultsPlanModel> plans) {
 		this.plans = plans;
 	}
 
@@ -52,7 +53,7 @@ public class UtilitiesResultsModel extends AbstractJsonModel {
 
 				JSONObject tempJson = json.getJSONObject(i);
 
-				UtilitiesResultsPlanModel provider = new UtilitiesResultsPlanModel();
+				EnergyResultsPlanModel provider = new EnergyResultsPlanModel();
 				provider.populateFromThoughtWorldJson(tempJson);
 
 				if(getUniqueCustomerId() == null){

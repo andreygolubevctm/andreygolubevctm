@@ -2,7 +2,7 @@ package com.ctm.web.energy.model;
 
 import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.validation.SchemaValidationError;
-import com.ctm.web.utilities.model.UtilitiesResultsPlanModel;
+import com.ctm.web.energy.quote.response.model.EnergyResultsPlanModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class EnergyResultsModel extends ResultsObj {
 
-	private ArrayList<UtilitiesResultsPlanModel> plans = new ArrayList<UtilitiesResultsPlanModel>();
+	private ArrayList<EnergyResultsPlanModel> plans = new ArrayList<EnergyResultsPlanModel>();
 	private String uniqueCustomerId;
 	private List<SchemaValidationError> validationErrors;
 
@@ -18,7 +18,7 @@ public class EnergyResultsModel extends ResultsObj {
 
 	}
 
-	public void setPlans(ArrayList<UtilitiesResultsPlanModel> plans) {
+	public void setPlans(ArrayList<EnergyResultsPlanModel> plans) {
 		this.plans = plans;
 	}
 
@@ -31,7 +31,7 @@ public class EnergyResultsModel extends ResultsObj {
 		this.uniqueCustomerId = uniqueCustomerId;
 	}
 
-	public List<UtilitiesResultsPlanModel> getPlans() {
+	public List<EnergyResultsPlanModel> getPlans() {
 		return plans;
 	}
 

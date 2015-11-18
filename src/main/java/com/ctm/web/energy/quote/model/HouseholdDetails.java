@@ -1,16 +1,14 @@
 package com.ctm.web.energy.quote.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-/**
- * Created by lbuchanan on 18/11/2015.
- */
-public class ServiceAddress {
+
+public class HouseholdDetails {
 
     private String suburb;
     private String postCode;
     private boolean movingIn;
-    private Date movingInDate;
+    private LocalDate movingInDate;
     private boolean hasSolarPanels;
     private String tariff;
 
@@ -38,11 +36,11 @@ public class ServiceAddress {
         this.movingIn = movingIn;
     }
 
-    public Date getMovingInDate() {
+    public LocalDate getMovingInDate() {
         return movingInDate;
     }
 
-    public void setMovingInDate(Date movingInDate) {
+    public void setMovingInDate(LocalDate movingInDate) {
         this.movingInDate = movingInDate;
     }
 

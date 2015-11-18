@@ -1,56 +1,55 @@
 package com.ctm.web.energy.quote.model;
 
-import com.ctm.web.energy.model.UtilityType;
+import com.ctm.web.energy.model.EnergyType;
 
 import java.util.List;
 
 public class EnergyQuoteRequest {
 
-    private ServiceAddress serviceAddress;
-    private List<UtilityType> utilityTypes;
-    private Utility electricity;
-    private Utility gas;
-    private EstimateMethod howToEstimate;
+    private HouseholdDetails householdDetails;
+    private List<EnergyType> energyTypes;
+    private UsageDetails usageDetails;
+    private SpendDetails spendDetails;
+    private EstimateMethod estimateMethod;
 
 
-    public Utility getElectricity() {
-        return electricity;
+    public HouseholdDetails getHouseholdDetails() {
+        return householdDetails;
     }
 
-    public void setElectricity(Utility electricity) {
-        this.electricity = electricity;
+    public List<EnergyType> getEnergyTypes() {
+        return energyTypes;
     }
 
-    public Utility getGas() {
-        return gas;
+    public void setEnergyTypes(List<EnergyType> energyTypes) {
+        this.energyTypes = energyTypes;
     }
 
-    public void setGas(Utility gas) {
-        this.gas = gas;
+    public void setHouseholdDetails(HouseholdDetails householdDetails) {
+        this.householdDetails = householdDetails;
     }
 
-    public ServiceAddress getServiceAddress() {
-        return serviceAddress;
+    public UsageDetails getUsageDetails() {
+        return usageDetails;
     }
 
-
-    public EstimateMethod getHowToEstimate() {
-        return howToEstimate;
+    public void setUsageDetails(UsageDetails usageDetails) {
+        this.usageDetails = usageDetails;
     }
 
-    public void setHowToEstimate(EstimateMethod howToEstimate) {
-        this.howToEstimate = howToEstimate;
+    public SpendDetails getSpendDetails() {
+        return spendDetails;
     }
 
-    public List<UtilityType> getUtilityTypes() {
-        return utilityTypes;
+    public void setSpendDetails(SpendDetails spendDetails) {
+        this.spendDetails = spendDetails;
     }
 
-    public void setUtilityTypes(List<UtilityType> utilityTypes) {
-        this.utilityTypes = utilityTypes;
+    public EstimateMethod getEstimateMethod() {
+        return estimateMethod;
     }
 
-    public void setServiceAddress(ServiceAddress serviceAddress) {
-        this.serviceAddress = serviceAddress;
+    public void setEstimateMethod(EstimateMethod estimateMethod) {
+        this.estimateMethod = estimateMethod;
     }
 }

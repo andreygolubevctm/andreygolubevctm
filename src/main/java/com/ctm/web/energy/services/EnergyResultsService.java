@@ -8,7 +8,7 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.services.Endpoint;
 import com.ctm.web.energy.form.model.EnergyResultsWebRequest;
-import com.ctm.web.energy.model.EnergyResultsResponseModel;
+import com.ctm.web.energy.quote.response.model.EnergyResultsResponse;
 import com.ctm.web.energy.quote.adapter.EnergyQuoteServiceRequestMapper;
 import com.ctm.web.energy.quote.model.EnergyQuoteRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,7 +41,7 @@ public class EnergyResultsService extends EnergyBaseService {
            if(isValid()) {
                EnergyQuoteServiceRequestMapper mapper = Mappers.getMapper(EnergyQuoteServiceRequestMapper.class);
                final EnergyQuoteRequest energyQuoteRequest = mapper.adapt(model);
-               final EnergyResultsResponseModel energyResultsModel = sendRequest(brand, HEALTH, "healthQuoteServiceBER", Endpoint.QUOTE, model, energyQuoteRequest, EnergyResultsResponseModel.class);
+               final EnergyResultsResponse energyResultsModel = sendRequest(brand, HEALTH, "healthQuoteServiceBER", Endpoint.QUOTE, model, energyQuoteRequest, EnergyResultsResponse.class);
                return new ResultsWrapper(energyResultsModel);
            }
         return null;
