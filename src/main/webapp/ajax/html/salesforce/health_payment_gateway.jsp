@@ -39,7 +39,7 @@
 
     <c:set var="gatewayXPath" value="health/payment/gateway" />
 
-    <div class="container">
+    <div class="container journeyEngineSlide active">
         <div class="row">
             <form id="mainForm" action="#" class="col-12">
                 <health:credit_card_details xpath="health/payment" />
