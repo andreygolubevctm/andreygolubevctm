@@ -9,13 +9,10 @@
     }
 
     function submitContent() {
-        var $mainForm = $('#mainForm'),
-            values = $mainForm.serializeArray().filter(function(val) {
-                return val.value !== '';
-            });
+        var $mainForm = $('#mainForm');
 
         if($mainForm.valid()) {
-            console.log(values);
+            parent.meerkatPaymentInfo = $mainForm.serializeArray();
         }
     }
 

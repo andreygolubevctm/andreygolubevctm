@@ -34,7 +34,7 @@
     <script src='${assetUrl}js/bundles/plugins/modernizr.min.js'></script>
     <script src="${assetUrl}js/libraries/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 </head>
-<body class="provider-${provider} ${provider}">
+<body class="${provider}">
     <div id="dynamic_dom"></div>
 
     <c:set var="gatewayXPath" value="health/payment/gateway" />
