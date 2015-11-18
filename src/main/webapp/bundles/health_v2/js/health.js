@@ -1067,9 +1067,7 @@
 
 		try {
 
-		if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
-			$("#environmentOverride").val($("#developmentApplicationEnvironment").val());
-		}
+			Results.updateApplicationEnvironment();
 
         var postData = meerkat.modules.journeyEngine.getFormData();
 
