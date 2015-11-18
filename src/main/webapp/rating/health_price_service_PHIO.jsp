@@ -5,9 +5,9 @@
 <c:set var="logger" value="${log:getLogger('jsp.rating.health_price_service_PHIO')}" />
 
 <jsp:useBean id="resultsList" class="java.util.ArrayList" scope="request" />
-<jsp:useBean id="healthPriceService" class="com.ctm.services.health.HealthPriceService" scope="page" />
-<jsp:useBean id="healthPriceResultsService" class="com.ctm.services.health.HealthPriceResultsService" scope="page" />
-<jsp:useBean id="healthPriceRequest" class="com.ctm.model.health.HealthPriceRequest" scope="page" />
+<jsp:useBean id="healthPriceService" class="com.ctm.web.health.services.HealthPriceService" scope="page" />
+<jsp:useBean id="healthPriceResultsService" class="com.ctm.web.health.services.HealthPriceResultsService" scope="page" />
+<jsp:useBean id="healthPriceRequest" class="com.ctm.web.health.model.HealthPriceRequest" scope="page" />
 
 <x:parse var="healthXML" xml="${param.QuoteData}" />
 
@@ -39,6 +39,15 @@
 <c:set var="savedTransactionId"><x:out select="$healthXML/request/header/retrieve/transactionId" /></c:set>
 <c:set var="productTitleSearch"><x:out select="$healthXML/request/header/productTitleSearch" escapeXml="false" /></c:set>
 <c:set var="productTitle"><x:out select="$healthXML/request/header/productTitle" escapeXml="false" /></c:set>
+<c:set var="situationFilter"><x:out select="$healthXML/request/details/situation" /></c:set>
+<c:choose>
+	<c:when test="${isSimples eq false and situationFilter ne 'ATP'}">
+		<c:set var="situationFilter" value="Y" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="situationFilter" value="N" />
+	</c:otherwise>
+</c:choose>
 <%-- Unencode apostrophes --%>
 <c:set var="productTitle" value="${fn:replace(productTitle, '&#039;', '\\'')}" />
 <c:set var="productTitle" value="${fn:replace(productTitle, '&#39;', '\\'')}" />
@@ -71,6 +80,7 @@ ${healthPriceRequest.setSavedTransactionId(savedTransactionId)}
 ${healthPriceRequest.setOnResultsPage(onResultsPage)}
 ${healthPriceRequest.setPreferences(preferences)}
 ${healthPriceRequest.setBrandFilter(brandFilter)}
+${healthPriceRequest.setSituationFilter(situationFilter)}
 
 ${healthPriceService.setHealthPriceRequest(healthPriceRequest)}
 

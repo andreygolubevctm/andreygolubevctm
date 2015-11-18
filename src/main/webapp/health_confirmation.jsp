@@ -8,7 +8,7 @@
 <%-- Call centre numbers --%>
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 
-<jsp:useBean id="callCenterHours" class="com.disc_au.web.go.CallCenterHours" scope="page" />
+<jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
 <c:set var="callCentreAllHoursContent" scope="request"><content:getOpeningHoursModal /></c:set>
 

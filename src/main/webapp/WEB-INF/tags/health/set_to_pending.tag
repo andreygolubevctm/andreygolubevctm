@@ -9,7 +9,7 @@
 <%@ attribute name="productId" required="true" rtexprvalue="true" description="Additional css class attribute"%>
 
 <c:set var="ignore">
-	<jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService" scope="page" />
+	<jsp:useBean id="joinService" class="com.ctm.web.core.confirmation.services.JoinService" scope="page" />
 	<c:set var="errorMessage" value="Application failed: ${errorMessage}" />
 	<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}" />
 

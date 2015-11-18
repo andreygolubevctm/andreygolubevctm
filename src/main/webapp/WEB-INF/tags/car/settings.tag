@@ -30,7 +30,7 @@
 </c:if>
 
 <%-- Retrieve the vehicle MAKE data --%>
-<jsp:useBean id="service" class="com.ctm.services.car.CarVehicleSelectionService" scope="request" />
+<jsp:useBean id="service" class="com.ctm.web.car.services.CarVehicleSelectionService" scope="request" />
 <c:set var="json" value="${service.getVehicleSelection(data.quote.vehicle.make, data.quote.vehicle.model, data.quote.vehicle.year, data.quote.vehicle.body, data.quote.vehicle.trans, data.quote.vehicle.fuel) }" />
 
 <%-- Retrieve non-standard accessories list --%>
