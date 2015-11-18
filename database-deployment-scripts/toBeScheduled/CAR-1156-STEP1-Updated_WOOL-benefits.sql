@@ -1,6 +1,6 @@
 SET @pid:= (SELECT providerId FROM ctm.provider_master WHERE providerCode = 'WOOL');
 
-UPDATE `ctm`.`car_product_content` SET `effectiveEnd`='2015-11-26' WHERE carProductId IN (SELECT carProductId FROM ctm`.`car_product WHERE providerId = @pid) AND effectiveEnd = '2040-12-31' LIMIT 2;
+UPDATE `ctm`.`car_product_content` SET `effectiveEnd`='2015-11-26' WHERE carProductId IN (SELECT carProductId FROM `ctm`.`car_product` WHERE providerId = @pid) AND effectiveEnd = '2040-12-31' LIMIT 2;
 
 -- SELECT count(*) FROM `ctm`.`car_product_content` WHERE `effectiveEnd`='2015-11-26' AND carProductId IN (SELECT carProductId FROM `ctm`.`car_product` WHERE providerId = @pid);
 -- TEST RESULT AFTER INSERT: 2
@@ -20,10 +20,10 @@ SET @UPDATED_Comprehensive := (SELECT LAST_INSERT_ID());
 UPDATE `ctm`.`car_product_features` 
 SET effectiveEnd = '2015-11-26'
 WHERE carProductContentId IN 
-   ( SELECT carProductContentId FROM `ctm`.`car_product_content` WHERE `effectiveEnd`='2015-11-26' AND carProductId IN (SELECT carProductId FROM ctm`.`car_product WHERE providerId = @pid))
+   ( SELECT carProductContentId FROM `ctm`.`car_product_content` WHERE `effectiveEnd`='2015-11-26' AND carProductId IN (SELECT carProductId FROM `ctm`.`car_product` WHERE providerId = @pid))
 AND effectiveStart = '2011-03-01';
 
--- SELECT count(*) FROM `ctm`.`car_product_features` WHERE carProductContentId IN ( SELECT carProductContentId FROM `ctm`.`car_product_content` WHERE `effectiveEnd`='2015-11-26' AND carProductId IN (SELECT carProductId FROM ctm`.`car_product WHERE providerId = @pid)) AND effectiveStart = '2011-03-01' AND effectiveEnd = '2015-11-26';
+-- SELECT count(*) FROM `ctm`.`car_product_features` WHERE carProductContentId IN ( SELECT carProductContentId FROM `ctm`.`car_product_content` WHERE `effectiveEnd`='2015-11-26' AND carProductId IN (SELECT carProductId FROM `ctm`.`car_product` WHERE providerId = @pid)) AND effectiveStart = '2011-03-01' AND effectiveEnd = '2015-11-26';
 -- TEST RESULT AFTER UPDATE: 32
 
 
