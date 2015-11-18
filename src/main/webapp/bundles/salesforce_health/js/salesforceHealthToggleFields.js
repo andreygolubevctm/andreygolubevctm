@@ -10,7 +10,7 @@
         salesForce: true
     };
 
-    function initSalesforceHealthPaymentProcessor() {
+    function initSalesforceHealthToggleFields() {
         $(document).ready(function() {
             meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
 
@@ -21,7 +21,7 @@
                 info: {}
             });
 
-            var fundCode = meerkat.site.provider;
+            var fundCode = meerkat.site.provider.toUpperCase();
             getFundInfo(fundCode).then(function () {
                 window['healthFunds_' + fundCode].set();
 
@@ -31,14 +31,12 @@
                 else
                     $launcherButton.hide();
 
-                hideFields();
+                hideFields(fundCode);
             });
         });
     }
 
-    function hideFields() {
-        var provider = meerkat.site.provider;
-
+    function hideFields(provider) {
         if(provider === 'BUP') {
             var hideableFields = ['health_payment_credit_number', 'health_payment_credit_ccv', 'health_payment_credit_day', 'health_payment_credit_paymentDay', 'health_payment_credit_policyDay'];
 
@@ -64,8 +62,8 @@
         });
     }
 
-    meerkat.modules.register('salesforce_health_payment_processor', {
-        init: initSalesforceHealthPaymentProcessor,
+    meerkat.modules.register('salesforceHealthToggleFields', {
+        init: initSalesforceHealthToggleFields,
         events: events
     });
 })(jQuery);

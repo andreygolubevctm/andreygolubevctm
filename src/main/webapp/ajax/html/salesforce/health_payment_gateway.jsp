@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="now" class="java.util.Date" />
+<c:set var="serverMonth"><fmt:formatDate value="${now}" type="DATE" pattern="M"/></c:set>
+<c:set var="serverMonth" value="${serverMonth-1}" />
+
 <session:core />
 <settings:setVertical verticalCode="HEALTH" />
 
@@ -43,6 +47,8 @@
         <health:gateway_westpac xpath="${gatewayXPath}" />
         <health:gateway_nab xpath="${gatewayXPath}" />
     </form>
+
+    <button type="button" class="submit-payment-information">Use card details</button>
     
     <script src="${assetUrl}js/bundles/salesforce_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
     
@@ -77,6 +83,7 @@
                     enabled: false
                 },
                 journeyStage: [],
+                serverDate: new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <c:out value="${serverMonth}" />, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>),
                 skipResultsPopulation: true,
                 loadSource: 'salesForce',
                 initialTransactionId: <c:out value="${param.transactionId}" escapeXml="true" />,
