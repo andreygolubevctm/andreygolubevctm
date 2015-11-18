@@ -13,7 +13,10 @@
             values = $mainForm.serializeArray().filter(function(val) {
                 return val.value !== '';
             });
-        console.log(values);
+
+        if($mainForm.valid()) {
+            console.log(values);
+        }
     }
 
     meerkat.modules.register("salesforceHealthSubmitContent", {

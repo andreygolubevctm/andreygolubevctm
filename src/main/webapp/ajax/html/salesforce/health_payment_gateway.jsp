@@ -10,7 +10,7 @@
 
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
 <c:set var="provider">
-    <c:out value="${param.provider}" escapeXml="true" />
+    <c:out value="${fn:toUpperCase(param.provider)}" escapeXml="true" />
 </c:set>
 
 <html>
@@ -34,22 +34,23 @@
     <script src='${assetUrl}js/bundles/plugins/modernizr.min.js'></script>
     <script src="${assetUrl}js/libraries/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 </head>
-<body>
+<body class="provider-${provider} ${provider}">
     <div id="dynamic_dom"></div>
 
     <c:set var="gatewayXPath" value="health/payment/gateway" />
 
-    <form id="mainForm" action="#">
-        <div class="provider-${provider}">
-            <health:credit_card_details xpath="health/payment" />
-        </div>
-        <%--<health:bank_details xpath="health/payment/bank" />--%>
-        <health:gateway_westpac xpath="${gatewayXPath}" />
-        <health:gateway_nab xpath="${gatewayXPath}" />
-    </form>
+    <div class="container">
+        <div class="row">
+            <form id="mainForm" action="#" class="col-12">
+                <health:credit_card_details xpath="health/payment" />
+                <health:gateway_westpac xpath="${gatewayXPath}" />
+                <health:gateway_nab xpath="${gatewayXPath}" />
 
-    <button type="button" class="submit-payment-information">Use card details</button>
-    
+                <button type="button" class="btn btn-success submit-payment-information">Use credit card</button>
+            </form>
+        </div>
+    </div>
+
     <script src="${assetUrl}js/bundles/salesforce_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
     
     <script>

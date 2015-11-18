@@ -11,6 +11,7 @@
 
     function initSalesforceHealthToggleFields() {
         $(document).ready(function() {
+            meerkat.modules.healthPaymentDate.initPaymentDate();
             meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
 
             basePostData.transactionId = meerkat.modules.transactionId.get();
@@ -23,31 +24,9 @@
             var fundCode = meerkat.site.provider.toUpperCase();
             getFundInfo(fundCode).then(function () {
                 window['healthFunds_' + fundCode].set();
-
-                var $launcherButton = $('button[data-gateway="launcher"]');
-                if(meerkat.site.provider !== 'BUP')
-                    $launcherButton.trigger('click');
-                else
-                    $launcherButton.hide();
-
-                hideFields(fundCode);
+                $('button[data-gateway="launcher"]').trigger('click');
             });
         });
-    }
-
-    function hideFields(provider) {
-        if(provider === 'BUP') {
-            var hideableFields = ['health_payment_credit_number', 'health_payment_credit_ccv', 'health_payment_credit_day', 'health_payment_credit_paymentDay', 'health_payment_credit_policyDay'];
-
-            for(var i = 0; i < hideableFields.length; i++) {
-                $('#' + hideableFields[i]).closest('.form-group').hide();
-            }
-        } else if(typeof $._data($('[data-provide="paymentGateway"]')[0], 'events') !== "undefined") {
-            // Hiding fields here because using "div[class*="health_credit-card"]:not(.provider-BUP div)" in the CSS randomly doesn't work for some providers
-            $('div[class*="health_credit-card"]').hide();
-        } else {
-            $('[data-gateway="launcher"]').hide();
-        }
     }
 
     function getFundInfo(fund) {
