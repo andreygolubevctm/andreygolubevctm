@@ -49,4 +49,8 @@ public class EnergyQuoteRequest {
     public void setUtilityTypes(List<UtilityType> utilityTypes) {
         this.utilityTypes = utilityTypes;
     }
+
+    public void setServiceAddress(ServiceAddress serviceAddress) {
+        this.serviceAddress = serviceAddress;
+    }
 }

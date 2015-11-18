@@ -79,9 +79,4 @@ public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
         return new ResultsWrapper(results);
 
     }
-
-    @Override
-    protected Vertical.VerticalType getVertical() {
-        return Vertical.VerticalType.TRAVEL;
-    }
 }

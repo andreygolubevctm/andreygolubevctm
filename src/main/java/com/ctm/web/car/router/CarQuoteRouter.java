@@ -69,8 +69,4 @@ public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
         return CarVehicleSelectionService.getCarProduct(applicationDate, productId, brand.getId());
     }
 
-    @Override
-    protected Vertical.VerticalType getVertical() {
-        return Vertical.VerticalType.CAR;
-    }
 }

@@ -2,16 +2,19 @@ package com.ctm.web.energy.services;
 
 import com.ctm.web.core.connectivity.JsonConnection;
 import com.ctm.web.core.connectivity.SimpleConnection;
+import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.*;
 import com.ctm.web.core.services.*;
 import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.validation.SchemaValidationError;
-import com.ctm.web.utilities.exceptions.UtilitiesWebServiceException;
-import com.ctm.web.energy.model.EnergyResultsModel;
-import com.ctm.web.energy.form.model.EnergyResultsRequestModel;
 import com.ctm.web.energy.form.model.EnergyResultsWebRequest;
+import com.ctm.web.energy.model.EnergyResultsModel;
+import com.ctm.web.energy.model.EnergyResultsResponseModel;
+import com.ctm.web.energy.quote.model.EnergyQuoteRequest;
+import com.ctm.web.utilities.exceptions.UtilitiesWebServiceException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +27,16 @@ import static com.ctm.web.core.logging.LoggingArguments.kv;
 /**
  * Common functions for the Utilities Services
  */
-public class EnergyBaseService extends CommonQuoteService<EnergyResultsRequestModel> {
+public class EnergyBaseService extends CommonRequestService<EnergyQuoteRequest,EnergyResultsResponseModel> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EnergyBaseService.class);
 
 	private boolean valid = false;
 	private static final String vertical = Vertical.VerticalType.ENERGY.getCode();
+
+	public EnergyBaseService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
+		super(providerFilterDAO, objectMapper);
+	}
 
 	/**
 	 * Simple wrapper to get a config value

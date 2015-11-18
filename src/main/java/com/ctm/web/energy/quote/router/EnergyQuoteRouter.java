@@ -1,6 +1,8 @@
 package com.ctm.web.energy.quote.router;
 
 
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
@@ -32,13 +34,10 @@ public class EnergyQuoteRouter extends CommonQuoteRouter<EnergyResultsWebRequest
     @Path("/quote/get.json")
     @Consumes({"multipart/form-data", "application/x-www-form-urlencoded"})
     @Produces("application/json")
-    public ResultsWrapper quote(@Context MessageContext context, @FormParam("") final EnergyResultsWebRequest quoteRequest) throws IOException {
-        Brand brand = initRouter(httpServletRequest);
+    public ResultsWrapper quote(@Context MessageContext context, @FormParam("")
+    final EnergyResultsWebRequest quoteRequest) throws IOException, ServiceConfigurationException, DaoException {
+        Brand brand = initRouter(context, Vertical.VerticalType.ENERGY);
         return energyResultsService.getResults(quoteRequest, brand);
     }
 
-    @Override
-    protected Vertical.VerticalType getVertical() {
-        return Vertical.VerticalType.ENERGY;
-    }
 }

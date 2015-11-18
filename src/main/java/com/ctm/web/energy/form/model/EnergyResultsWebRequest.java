@@ -3,7 +3,7 @@ package com.ctm.web.energy.form.model;
 import com.ctm.web.core.model.formData.Request;
 
 
-public class EnergyResultsWebRequest implements Request<EnergyResultsRequestModel> {
+public class EnergyResultsWebRequest implements Request {
     private String clientIpAddress;
 
     private EnergyResultsRequestModel quote;
@@ -28,7 +28,6 @@ public class EnergyResultsWebRequest implements Request<EnergyResultsRequestMode
         this.clientIpAddress = clientIpAddress;
     }
 
-    @Override
     public EnergyResultsRequestModel getQuote() {
         return quote;
     }

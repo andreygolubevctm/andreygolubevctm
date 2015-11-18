@@ -56,9 +56,4 @@ public class HomeQuoteRouter extends CommonQuoteRouter {
         HomeQuoteService homeService = new HomeQuoteService();
         return homeService.getMoreInfo(brand, productId, type, Optional.ofNullable(environmentOverride));
     }
-
-    @Override
-    protected Vertical.VerticalType getVertical() {
-        return Vertical.VerticalType.HOME;
-    }
 }
