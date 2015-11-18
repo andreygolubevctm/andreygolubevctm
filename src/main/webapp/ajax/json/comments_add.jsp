@@ -17,7 +17,7 @@
 
 ${logger.info('Add Comment TransactionId. {}', log:kv('transactionId',transactionId ))}
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
 ${logger.info('Checked if authenticated user is simples user. {}', log:kv('isOperator', isOperator))}
@@ -55,7 +55,7 @@ ${logger.debug('Add Comment RootId.{}',log:kv('rootId', rootId))}
 		<c:set var="errorPool">${errorPool}{"error":"Failed to locate rootId for transaction ${transactionId}"}</c:set>
 	</c:when>
 	<c:otherwise>
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		
 		<c:set var="comment">
 			<c:choose>

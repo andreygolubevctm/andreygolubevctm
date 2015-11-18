@@ -107,6 +107,10 @@
 		return isModule(module) && module;
 	};
 
+	meerkat.has = function (module) {
+		return _.isObject(meerkat.modules[module]);
+	};
+
 	/////////////////////////
 	// meerkat initialisation
 	/////////////////////////

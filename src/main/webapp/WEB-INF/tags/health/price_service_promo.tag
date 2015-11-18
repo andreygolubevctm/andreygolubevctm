@@ -3,9 +3,9 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="providerId" 	required="true"	 rtexprvalue="true"	 description="Id of provider to link the promo content" %>
-<%@ attribute name="healthPriceService" type="com.ctm.services.health.HealthPriceService" required="true" rtexprvalue="true" description="service to get tranId and application date" %>
+<%@ attribute name="healthPriceService" type="com.ctm.web.health.services.HealthPriceService" required="true" rtexprvalue="true" description="service to get tranId and application date" %>
 
-<jsp:useBean id="specialOffersService" class="com.ctm.services.simples.SpecialOffersService" scope="page" />
+<jsp:useBean id="specialOffersService" class="com.ctm.web.simples.admin.services.SpecialOffersService" scope="page" />
 <%-- VARIABLES --%>
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${healthPriceService.getTransactionId()}" /></c:set>
 <c:set var="applicationDate" value="${healthPriceService.getApplicationDate()}" />

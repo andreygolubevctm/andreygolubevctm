@@ -15,7 +15,7 @@
 <%@ attribute fragment="true" required="false" name="body_start" %>
 
 <c:if test="${callCentre}">
-	<jsp:useBean id="financialYearUtils" class="com.ctm.utils.health.FinancialYearUtils" />
+	<jsp:useBean id="financialYearUtils" class="com.ctm.web.health.utils.FinancialYearUtils" />
 	<c:set var="continuousCoverYear" value="${financialYearUtils.getContinuousCoverYear()}" />
 
 	<%-- VARIABLES --%>
@@ -24,7 +24,7 @@
 	</c:set>
 
 	<c:catch var="error">
-		<sql:query var="result" dataSource="jdbc/ctm" maxRows="1">
+		<sql:query var="result" dataSource="${datasource:getDataSource()}" maxRows="1">
 			SELECT text FROM ctm.dialogue
 			WHERE dialogueID = ?
 			AND (styleCodeId = ? OR styleCodeId = 0)

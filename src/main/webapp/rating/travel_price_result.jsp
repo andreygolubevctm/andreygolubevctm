@@ -11,7 +11,7 @@
 
 <c:set var="providerId" >${param.providerId}</c:set>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- 
 	The data will arrive in a single parameter called QuoteData 
@@ -36,7 +36,7 @@
 	<c:choose>
 	<c:when test="${multiTrip == 'Y'}">365</c:when>
 	<c:otherwise>
-			<jsp:useBean id="utilCalc" class="com.ctm.utils.travel.DurationCalculation" scope="request" />
+			<jsp:useBean id="utilCalc" class="com.ctm.web.travel.utils.DurationCalculation" scope="request" />
 			${utilCalc.calculateDayDuration(reqStartDate, reqEndDate)}
 	</c:otherwise>
 	</c:choose>

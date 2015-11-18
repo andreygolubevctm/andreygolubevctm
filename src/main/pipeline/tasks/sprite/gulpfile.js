@@ -57,10 +57,16 @@ function SpriteTasks(gulp) {
                         .pipe(imageop({
                             optimizationLevel: 7
                         }))
-                        .pipe(gulp.dest(path.join(spriteConfig.source.dir, bundle)));
+                        .pipe(gulp.dest(path.join(spriteConfig.source.dir, bundle)))
+                        .pipe(gulp.globalPlugins.debug({
+                            title: "Finished Spritesheet Image"
+                        }));
 
                     var cssStream = spriteData.css
-                        .pipe(gulp.dest(path.join(config.bundles.dir, bundle, "less")));
+                        .pipe(gulp.dest(path.join(config.bundles.dir, bundle, "less")))
+                        .pipe(gulp.globalPlugins.debug({
+                            title: "Finished Spritesheet LESS"
+                        }));
 
                     return merge(imgStream, cssStream);
                 });

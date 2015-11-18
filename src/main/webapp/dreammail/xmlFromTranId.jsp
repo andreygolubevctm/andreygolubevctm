@@ -4,11 +4,11 @@
 		You will need these if you don't already have them 
 	--%>
 	<%@ include file="/WEB-INF/tags/taglib.tagf" %>
-	<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+	<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
     <go:setData dataVar="data" value="*DELETE" xpath="quote" />
 
 	<%-- You should already have this bit --%>
-	<sql:setDataSource dataSource="jdbc/ctm"/>
+	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 	<%-- fetch the data --%>
 	<sql:query var="details">

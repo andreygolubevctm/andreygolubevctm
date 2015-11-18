@@ -27,21 +27,21 @@ function isLessThan31Or31AndBeforeJuly1(_dobString) {
 	if(_dobString === '') return false;
 	var age = Math.floor(meerkat.modules.utils.returnAge(_dobString));
 	if( age < 31 ) {
-		return false;
+		return true;
 	} else if( age == 31 ){
 		var dob = returnDate(_dobString);
 		var birthday = returnDate(_dobString);
 		birthday.setFullYear(dob.getFullYear() + 31);
 		var now = new Date();
 		if ( dob.getMonth() + 1 < 7 && (now.getMonth() + 1 >= 7 || now.getFullYear() > birthday.getFullYear()) ) {
-			return true;
-		} else if (dob.getMonth() + 1 >= 7 && now.getMonth() + 1 >= 7 && now.getFullYear() > birthday.getFullYear()) {
-			return true;
-		} else {
 			return false;
+		} else if (dob.getMonth() + 1 >= 7 && now.getMonth() + 1 >= 7 && now.getFullYear() > birthday.getFullYear()) {
+			return false;
+		} else {
+			return true;
 		}
 	} else if(age > 31){
-		return true;
+			return false;
 	} else {
 		return false;
 	}
@@ -343,18 +343,16 @@ var healthCoverDetails = {
 
 			if( isLessThan31Or31AndBeforeJuly1($('#health_healthCover_primary_dob').val()) ) {
 				if(initMode){
-					$('#health-continuous-cover-primary').show();
-				}else{
-					$('#health-continuous-cover-primary').slideDown();
-				}
-
-			}else{
-				if(initMode){
 					$('#health-continuous-cover-primary').hide();
 				}else{
 					$('#health-continuous-cover-primary').slideUp();
 				}
-
+			}else{
+				if(initMode){
+					$('#health-continuous-cover-primary').show();
+				}else{
+					$('#health-continuous-cover-primary').slideDown();
+				}
 			}
 
 		} else {
@@ -380,18 +378,16 @@ var healthCoverDetails = {
 
 			if( isLessThan31Or31AndBeforeJuly1($('#health_healthCover_partner_dob').val()) ) {
 				if(initMode){
-					$('#health-continuous-cover-partner').show();
-				}else{
-					$('#health-continuous-cover-partner').slideDown();
-				}
-
-			}else{
-				if(initMode){
 					$('#health-continuous-cover-partner').hide();
 				}else{
 					$('#health-continuous-cover-partner').slideUp();
 				}
-
+			}else{
+				if(initMode){
+					$('#health-continuous-cover-partner').show();
+				}else{
+					$('#health-continuous-cover-partner').slideDown();
+				}
 			}
 		} else {
 			if( _partner == 'N'){
@@ -569,6 +565,7 @@ var healthFunds = {
 	// Remove the main provider piece
 	unload: function(){
 		if(healthFunds._fund !== false){
+			$('.health-credit_card_details .fieldrow').show();
 			healthFunds.unset();
 			$('body').removeClass( healthFunds._fund );
 			healthFunds._fund = false;

@@ -21,7 +21,7 @@
 <go:setData dataVar="data" xpath="quote/ai/ExcessQuoted" value="${param.ExcessQuoted}" />
 
 <%-- Add the vehicle details --%>
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <sql:query var="result">
 	SELECT make, model, des
 	   FROM aggregator.vehicles
@@ -40,7 +40,7 @@
 <go:setData dataVar="data" xpath="quote/ai/Vehicle/Series" value="${result.rows[0].des}" />
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
-<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 <c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/get_ai_refno/config.xml')}" />
 <go:soapAggregator config = "${config}"
 					transactionId = "${data.text['current/transactionId']}" 

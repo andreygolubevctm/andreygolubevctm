@@ -4,7 +4,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <c:set var="logger" value="${log:getLogger('jsp.rating.fuel_price_monthly_averages')}" />
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 <%--
 	The data will arrive in a single parameter called QuoteData
@@ -24,7 +24,7 @@
 <c:if test="${fn:contains(fuels, '3') and not fn:contains(fuels, '9')}">
 	<c:set var="fuels"><c:out value="${fuels}" />,9</c:set>
 </c:if>
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- Retrieve the list of sites for the postcodes provided --%>
 <c:catch var="error">

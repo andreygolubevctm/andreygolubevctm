@@ -53,7 +53,7 @@
         ${logger.debug('About to call submit from jsp.')}
 
         <%-- SUBMIT TO PARTNER --%>
-        <jsp:useBean id="utilitiesApplicationService" class="com.ctm.services.utilities.UtilitiesApplicationService" scope="request"/>
+        <jsp:useBean id="utilitiesApplicationService" class="com.ctm.web.utilities.services.UtilitiesApplicationService" scope="request"/>
         <c:set var="results" value="${utilitiesApplicationService.submitFromJsp(pageContext.getRequest(), data)}" scope="request" />
 
         <%-- TESTING IF REQUEST FAILED --%>
@@ -73,7 +73,7 @@
                 <go:setData dataVar="data" xpath="${vertical}/confirmationkey" value="${confirmationkey}"/>
 
                 <%-- Check that confirmation not already written --%>
-                <sql:setDataSource dataSource="jdbc/ctm"/>
+                <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
                 <sql:query var="conf_entry">
                     SELECT KeyID FROM ctm.confirmations WHERE KeyID = ? AND TransID = ? LIMIT 1;
                     <sql:param value="${confirmationkey}"/>

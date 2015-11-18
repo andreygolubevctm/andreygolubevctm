@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
-<jsp:useBean id="authenticationService" class="com.ctm.services.AuthenticationService" scope="application" />
+<jsp:useBean id="authenticationService" class="com.ctm.web.core.services.AuthenticationService" scope="application" />
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.forgotten_password')}" />
 
 <settings:setVertical verticalCode="GENERIC" />
@@ -28,7 +28,7 @@
 
 		<%-- Check email on MySQL --%> <%-- This seems like it's only to say, OK to the ajax request... we don't actually take any action to email or create a token here. I'm changing this now. --%>
 
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<sql:query var="emailMasterRecord">
 			SELECT emailId, transactionId
 			    FROM aggregator.email_master
@@ -64,10 +64,13 @@
 
 						<%-- This is new - the token for reset --%>
 						<c:param name="token" value="${tokenUrl}" />
+
+						<%-- Flag to not create email token --%>
+						<c:param name="createUnsubscribeEmailToken" value="false" />
 					</c:import>
 				</c:catch>
 				<c:if test="${error}">
-					${logger.error('Reset Email Error. {}' , log:kv('param.email',param.email ) , error)}
+					${logger.error('Reset Email Error. {}' , log:kv('email',param.email ) , error)}
 				</c:if>
 				${logger.debug('Reset Email: MYSQL - Code for send run.')}
 				<%-- JSON result success --%>

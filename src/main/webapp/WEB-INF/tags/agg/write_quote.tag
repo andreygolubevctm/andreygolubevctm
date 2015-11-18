@@ -6,7 +6,7 @@
 <c:set var="logger" value="${log:getLogger('tag.agg.write_quote')}" />
 
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
-<jsp:useBean id="tranDao" class="com.ctm.dao.transaction.TransactionDetailsDao" scope="request" />
+<jsp:useBean id="tranDao" class="com.ctm.web.core.transaction.dao.TransactionDetailsDao" scope="request" />
 
 <%@ attribute name="productType" 	required="true"	 rtexprvalue="true"	 description="The product type (e.g. TRAVEL)" %>
 <%@ attribute name="rootPath" 	required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>
@@ -34,7 +34,7 @@
 	</c:otherwise>
 </c:choose>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <c:set var="brand" value="${pageSettings.getBrandCode()}" />
 <c:set var="source">
 	<c:choose>
@@ -402,7 +402,7 @@
 	</c:catch>
 		</c:when>
 		<c:when test="${hasPrivacyOptin eq true and rootPath eq 'health'}">
-			<jsp:useBean id="userDetails" class="com.ctm.model.request.health.UserDetails" scope="page" />
+			<jsp:useBean id="userDetails" class="com.ctm.web.health.model.request.UserDetails" scope="page" />
 			${userDetails.setFirstname(firstName)}
 			${userDetails.setLastname(lastName)}
 			${userDetails.setRootPath(rootPath)}

@@ -12,8 +12,8 @@
 <%@ attribute name="updateName"	 	required="false" rtexprvalue="true"	 description="Whether to update the first and last name when the email already exists" %>
 <%@ attribute name="items" 			required="true"  rtexprvalue="true"  description="comma seperated list of values in value=description format" %>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
-<jsp:useBean id="emailDetailsService" class="com.ctm.services.email.EmailDetailsService" scope="page" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
+<jsp:useBean id="emailDetailsService" class="com.ctm.web.core.email.services.EmailDetailsService" scope="page" />
 
 <c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}" />
 <c:set var="sessionId" 		value="${pageContext.session.id}" />

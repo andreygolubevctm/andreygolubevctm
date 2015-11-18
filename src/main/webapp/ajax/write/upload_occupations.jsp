@@ -3,7 +3,7 @@
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.write.upload_occupations')}" />
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%--
 AUTOMATIC CRON JOB FOR LIFEBROKER OCCUPATION SERVICE
