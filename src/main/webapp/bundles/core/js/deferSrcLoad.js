@@ -11,7 +11,15 @@
         $(document).ready(function () {
             $("[data-defer-src]").each(function allDeferSrcLoadLoop() {
                 var $this = $(this);
-                $this.attr('src', $this.attr('data-defer-src')).removeAttr('data-defer-src');
+                var targetSrc = $this.attr('data-defer-src');
+
+                // Little kludge to ensure that images are loaded absolutely.
+                // Used due to images previously being loaded relatively to subfolders and getting 404s
+                if(targetSrc.charAt(0) !== '/') {
+                    targetSrc = '/' + meerkat.site.urls.context + targetSrc;
+                }
+
+                $this.attr('src', targetSrc).removeAttr('data-defer-src');
             });
         });
     }

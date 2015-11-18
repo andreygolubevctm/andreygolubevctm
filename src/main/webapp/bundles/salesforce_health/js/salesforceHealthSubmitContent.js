@@ -1,5 +1,4 @@
-;
-(function($, undefined) {
+;(function($, undefined) {
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info;
