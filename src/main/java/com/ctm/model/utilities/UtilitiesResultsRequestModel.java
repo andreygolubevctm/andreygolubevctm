@@ -278,6 +278,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		json.put("tariff", getTariff());
 
 		if(getReferenceNumber() != null){
+			json.put("title", "Mr");
 			json.put("first_name", getFirstName());
 
 			if(getPhoneNumber() != null){
@@ -296,7 +297,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 	}
 
 	private boolean convertStringToBoolean(String value){
-		if(value.equalsIgnoreCase("Y")) return true;
+		if(value != null && value.equalsIgnoreCase("Y")) return true;
 		return false;
 	}
 
@@ -334,21 +335,25 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 		String householdType;
 		householdType = request.getParameter("utilities_estimateDetails_electricity_usage");
-		if(householdType.equals("Low")) {
-			setElectricityHouseholdType(HouseholdType.Low);
-		} else if(householdType.equals("Medium")) {
-			setElectricityHouseholdType(HouseholdType.Medium);
-		} else if(householdType.equals("High")) {
-			setElectricityHouseholdType(HouseholdType.High);
+		if(householdType != null) {
+			if (householdType.equals("Low")) {
+				setElectricityHouseholdType(HouseholdType.Low);
+			} else if (householdType.equals("Medium")) {
+				setElectricityHouseholdType(HouseholdType.Medium);
+			} else if (householdType.equals("High")) {
+				setElectricityHouseholdType(HouseholdType.High);
+			}
 		}
 
 		householdType = request.getParameter("utilities_estimateDetails_gas_usage");
-		if(householdType.equals("Low")) {
-			setGasHouseholdType(HouseholdType.Low);
-		} else if(householdType.equals("Medium")) {
-			setGasHouseholdType(HouseholdType.Medium);
-		} else  if(householdType.equals("High")) {
-			setGasHouseholdType(HouseholdType.High);
+		if(householdType != null) {
+			if (householdType.equals("Low")) {
+				setGasHouseholdType(HouseholdType.Low);
+			} else if (householdType.equals("Medium")) {
+				setGasHouseholdType(HouseholdType.Medium);
+			} else if (householdType.equals("High")) {
+				setGasHouseholdType(HouseholdType.High);
+			}
 		}
 
 		setElectricityMeterType(ElectricityMeterType.findByCode(request.getParameter("utilities_estimateDetails_electricity_meter")));
