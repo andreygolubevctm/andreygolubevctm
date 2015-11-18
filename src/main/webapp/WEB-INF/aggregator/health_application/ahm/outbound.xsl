@@ -210,10 +210,15 @@
 							<b:CustGivenName><xsl:value-of select="application/primary/firstname" /></b:CustGivenName>
 
 							<b:CustMedicare>
-								<xsl:if test="healthCover/rebate = 'Y'"><xsl:value-of select="translate(payment/medicare/number,' ','')" /></xsl:if>
+								<xsl:if test="healthCover/rebate = 'Y'">
+									<xsl:value-of select="translate(payment/medicare/number,' ','')" />
+								</xsl:if>
 							</b:CustMedicare>
 							<b:CustMedicareExpiry>
-								<xsl:if test="healthCover/rebate = 'Y'"><xsl:value-of select="format-number(payment/medicare/expiry/cardExpiryMonth, '00')" /><xsl:value-of select="payment/medicare/expiry/cardExpiryYear" /></xsl:if>
+								<xsl:if test="healthCover/rebate = 'Y'">
+									<xsl:value-of select="format-number(payment/medicare/expiry/cardExpiryMonth, '00')" />
+									<xsl:value-of select="payment/medicare/expiry/cardExpiryYear" />
+								</xsl:if>
 							</b:CustMedicareExpiry>
 
 							<!-- E - Email, H - Home Phone, M - Mobile Phone, P - Mail to Postal Address, W - Work Phone -->
@@ -401,25 +406,27 @@
 						</b:DirectDRStart>
 					</xsl:if>
 					<xsl:if test="payment/details/claims='Y'">
-					<xsl:choose>
+						<xsl:choose>
 							<xsl:when test="payment/details/type='cc' or payment/bank/claims='N' ">
-							<b:DirectCRAccount><xsl:value-of select="translate(payment/bank/claim/number,' ','')" /></b:DirectCRAccount>
-							<b:DirectCRAccountName><xsl:value-of select="payment/bank/claim/account" /></b:DirectCRAccountName>
-							<b:DirectCRBSB><xsl:value-of select="concat(substring(payment/bank/claim/bsb,1,3),'-',substring(payment/bank/claim/bsb,4,3))" /></b:DirectCRBSB>
-							<b:DirectCRInstitution><xsl:value-of select="payment/bank/claim/name" /></b:DirectCRInstitution>
-						</xsl:when>
-						<xsl:otherwise>
-							<b:DirectCRAccount><xsl:value-of select="translate(payment/bank/number,' ','')" /></b:DirectCRAccount>
-							<b:DirectCRAccountName><xsl:value-of select="payment/bank/account" /></b:DirectCRAccountName>
-							<b:DirectCRBSB><xsl:value-of select="concat(substring(payment/bank/bsb,1,3),'-',substring(payment/bank/bsb,4,3))" /></b:DirectCRBSB>
-							<b:DirectCRInstitution><xsl:value-of select="payment/bank/name" /></b:DirectCRInstitution>
-						</xsl:otherwise>
-					</xsl:choose>
+								<b:DirectCRAccount><xsl:value-of select="translate(payment/bank/claim/number,' ','')" /></b:DirectCRAccount>
+								<b:DirectCRAccountName><xsl:value-of select="payment/bank/claim/account" /></b:DirectCRAccountName>
+								<b:DirectCRBSB><xsl:value-of select="concat(substring(payment/bank/claim/bsb,1,3),'-',substring(payment/bank/claim/bsb,4,3))" /></b:DirectCRBSB>
+								<b:DirectCRInstitution><xsl:value-of select="payment/bank/claim/name" /></b:DirectCRInstitution>
+							</xsl:when>
+							<xsl:otherwise>
+								<b:DirectCRAccount><xsl:value-of select="translate(payment/bank/number,' ','')" /></b:DirectCRAccount>
+								<b:DirectCRAccountName><xsl:value-of select="payment/bank/account" /></b:DirectCRAccountName>
+								<b:DirectCRBSB><xsl:value-of select="concat(substring(payment/bank/bsb,1,3),'-',substring(payment/bank/bsb,4,3))" /></b:DirectCRBSB>
+								<b:DirectCRInstitution><xsl:value-of select="payment/bank/name" /></b:DirectCRInstitution>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:if>
 
 					<!-- If rebate is selected = Y -->
 					<b:EFGRInd>
-						<xsl:choose><xsl:when test="healthCover/rebate = 'Y'">Y</xsl:when><xsl:otherwise>N</xsl:otherwise></xsl:choose>
+						<xsl:choose>
+							<xsl:when test="healthCover/rebate = 'Y'">Y</xsl:when>
+							<xsl:otherwise>N</xsl:otherwise></xsl:choose>
 					</b:EFGRInd>
 
 					<!-- Optional. Email address. Data type: A string that represents String (255). -->

@@ -31,6 +31,11 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class TravelEmailService extends EmailServiceHandler implements BestPriceEmailHandler {
 
 	private static final String VERTICAL = VerticalType.TRAVEL.getCode();
@@ -50,19 +55,19 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 	}
 
 	@Override
-	public void send(HttpServletRequest request, String emailAddress,
+	public String send(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException {
 		switch (emailMode) {
 			case BEST_PRICE:
-				sendBestPriceEmail(request, emailAddress,transactionId);
-				break;
+				return sendBestPriceEmail(request, emailAddress,transactionId);
 			default:
 				break;
 		}
+		return "";
 	}
 
 	@Override
-	public void sendBestPriceEmail(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
+	public String sendBestPriceEmail(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 
 		splitTestEnabledKey = BestPriceEmailHandler.SPLIT_TESTING_ENABLED;
@@ -76,9 +81,10 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE",  request.getRemoteAddr());
 
 			if(!isTestEmailAddress) {
-				emailSender.sendToExactTarget(new TravelBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId));
+				return emailSender.sendToExactTarget(new TravelBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId));
+			} else {
+				return "";
 			}
-
 		} catch (EmailDetailsException e) {
 			throw new SendEmailException("failed to handleReadAndWriteEmailDetails emailAddress:" + emailAddress +
 						" transactionId:" +  transactionId  ,  e);

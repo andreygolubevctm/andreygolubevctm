@@ -78,4 +78,20 @@ public class TransactionAccessService {
 		return valid;
 	}
 
+	public void addTransactionDetailsWithDuplicateKeyUpdate(long transactionId, int sequenceNo, String xpath, String textValue) throws DaoException {
+		final TransactionDetail transactionDetail = new TransactionDetail();
+		transactionDetail.setSequenceNo(sequenceNo);
+		transactionDetail.setXPath(xpath);
+		transactionDetail.setTextValue(textValue);
+		transactionDetailsDao.addTransactionDetailsWithDuplicateKeyUpdate(transactionId, transactionDetail);
+	}
+
+	public void addTransactionDetails(long transactionId, int sequenceNo, String xpath, String textValue) throws DaoException {
+		final TransactionDetail transactionDetail = new TransactionDetail();
+		transactionDetail.setSequenceNo(sequenceNo);
+		transactionDetail.setXPath(xpath);
+		transactionDetail.setTextValue(textValue);
+		transactionDetailsDao.addTransactionDetails(transactionId, transactionDetail);
+	}
+
 }
