@@ -3,8 +3,9 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="logger" value="${log:getLogger('tag.core_new.load_preload')}" />
+<c:set var="backforwardslash">/\</c:set>
 
-<c:if test="${empty param.action && not empty param.preload && not fn:contains(param.preload, '/') &&  not fn:contains(param.preload, '/\') }">
+<c:if test="${empty param.action && not empty param.preload && not fn:contains(param.preload, '/') &&  not fn:contains(param.preload, backforwardslash) }">
 	<c:set var="verticalCode" value="${pageSettings.verticalCode}" />
 	<c:choose>
 		<c:when test="${param.preload eq 'true'}">
