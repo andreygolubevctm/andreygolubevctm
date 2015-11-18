@@ -1,4 +1,4 @@
-package com.ctm.web.energy.quote.model;
+package com.ctm.web.energy.quote.request.model;
 
 
 public abstract class EstimateDetails {

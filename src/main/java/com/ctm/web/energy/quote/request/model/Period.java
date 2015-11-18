@@ -1,4 +1,4 @@
-package com.ctm.web.energy.quote.model;
+package com.ctm.web.energy.quote.request.model;
 
 /**
  * Created by lbuchanan on 17/11/2015.

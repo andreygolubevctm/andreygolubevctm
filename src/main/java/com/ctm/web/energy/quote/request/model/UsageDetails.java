@@ -1,12 +1,7 @@
-package com.ctm.web.energy.quote.model;
+package com.ctm.web.energy.quote.request.model;
 
 
 public class UsageDetails extends EstimateDetails {
-
-    {
-        estimateMethod =EstimateMethod.USAGE;
-    }
-
     private float peakUsage = 0;
     private float offPeakUsage = 0;
 
@@ -20,5 +15,9 @@ public class UsageDetails extends EstimateDetails {
 
     public float getOffPeakUsage() {
         return offPeakUsage;
+    }
+
+    public void setOffPeakUsage(float offPeakUsage) {
+        this.offPeakUsage = offPeakUsage;
     }
 }

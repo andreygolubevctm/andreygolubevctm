@@ -12,7 +12,7 @@ import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.energy.form.model.EnergyResultsWebRequest;
 import com.ctm.web.energy.model.EnergyResultsModel;
 import com.ctm.web.energy.quote.response.model.EnergyResultsResponse;
-import com.ctm.web.energy.quote.model.EnergyQuoteRequest;
+import com.ctm.web.energy.quote.request.model.EnergyQuoteRequest;
 import com.ctm.web.utilities.exceptions.UtilitiesWebServiceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;

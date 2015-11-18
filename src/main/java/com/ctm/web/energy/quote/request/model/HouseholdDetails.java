@@ -1,6 +1,7 @@
-package com.ctm.web.energy.quote.model;
+package com.ctm.web.energy.quote.request.model;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 
 public class HouseholdDetails {
@@ -8,7 +9,7 @@ public class HouseholdDetails {
     private String suburb;
     private String postCode;
     private boolean movingIn;
-    private LocalDate movingInDate;
+    private Optional<LocalDate> movingInDate;
     private boolean hasSolarPanels;
     private String tariff;
 
@@ -36,11 +37,11 @@ public class HouseholdDetails {
         this.movingIn = movingIn;
     }
 
-    public LocalDate getMovingInDate() {
+    public Optional<LocalDate> getMovingInDate() {
         return movingInDate;
     }
 
-    public void setMovingInDate(LocalDate movingInDate) {
+    public void setMovingInDate(Optional<LocalDate> movingInDate) {
         this.movingInDate = movingInDate;
     }
 
