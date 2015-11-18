@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 
 public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteRouter.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteRouter.class);
 
     protected Brand initRouter(MessageContext context, Vertical.VerticalType vertical){
         // - Start common -- taken from Carlos' car branch

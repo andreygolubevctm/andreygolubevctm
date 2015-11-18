@@ -8,13 +8,11 @@ import com.ctm.web.travel.quote.model.request.TravelQuoteRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class RequestAdapter {
+import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDate;
 
-    private static final DateTimeFormatter AUS_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+public class RequestAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestAdapter.class);
 
@@ -42,8 +40,8 @@ public class RequestAdapter {
             SingleTripDetails details = new SingleTripDetails();
             details.setDestinations(quote.getDestinations());
 
-            details.setToDate(LocalDate.parse(quote.getDates().getToDate(), AUS_FORMAT));
-            details.setFromDate(LocalDate.parse(quote.getDates().getFromDate(), AUS_FORMAT));
+            details.setToDate(parseAUSLocalDate(quote.getDates().getToDate()));
+            details.setFromDate(parseAUSLocalDate(quote.getDates().getFromDate()));
 
             quoteRequest.setSingleTripDetails(details);
 
@@ -51,7 +49,7 @@ public class RequestAdapter {
             quoteRequest.setPolicyType(PolicyType.MULTI);
         }
 
-        if(quote.getFilter().getSingleProvider() != null && quote.getFilter().getSingleProvider().equals("") == false){
+        if(quote.getFilter().getSingleProvider() != null && !quote.getFilter().getSingleProvider().equals("")){
             quoteRequest.setProviderFilter(new ArrayList<>());
             quoteRequest.getProviderFilter().add(quote.getFilter().getSingleProvider());
         }

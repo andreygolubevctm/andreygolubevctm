@@ -9,11 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDate;
 import static com.ctm.web.health.model.HospitalSelection.BOTH;
 import static com.ctm.web.health.model.HospitalSelection.PRIVATE_HOSPITAL;
 import static com.ctm.web.health.model.ProductStatus.*;
@@ -21,8 +21,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
 public class RequestAdapter {
-
-    private static final DateTimeFormatter AUS_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static HealthQuoteRequest adapt(HealthRequest request) {
         return adapt(request, null);
@@ -109,7 +107,7 @@ public class RequestAdapter {
 
     protected static void addSearchDateFilter(HealthQuoteRequest quoteRequest, HealthQuote quote) {
         if (StringUtils.isNotBlank(quote.getSearchDate())) {
-            quoteRequest.setSearchDateValue(LocalDate.parse(quote.getSearchDate(), AUS_FORMAT));
+            quoteRequest.setSearchDateValue(parseAUSLocalDate(quote.getSearchDate()));
         } else {
             quoteRequest.setSearchDateValue(LocalDate.now());
         }

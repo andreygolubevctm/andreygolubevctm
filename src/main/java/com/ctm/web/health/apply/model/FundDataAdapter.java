@@ -1,5 +1,6 @@
 package com.ctm.web.health.apply.model;
 
+import com.ctm.web.core.utils.common.utils.LocalDateUtils;
 import com.ctm.web.health.apply.model.request.application.situation.HealthSituation;
 import com.ctm.web.health.apply.model.request.fundData.Declaration;
 import com.ctm.web.health.apply.model.request.fundData.FundData;
@@ -13,10 +14,7 @@ import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.PaymentDetails;
 import org.apache.commons.lang3.StringUtils;
 
-import java.time.LocalDate;
 import java.util.Optional;
-
-import static com.ctm.web.health.apply.model.Constants.AUS_FORMAT;
 
 public class FundDataAdapter {
 
@@ -35,7 +33,7 @@ public class FundDataAdapter {
                 quote.map(HealthQuote::getPayment)
                         .map(com.ctm.web.health.model.form.Payment::getDetails)
                         .map(PaymentDetails::getStart)
-                        .map(v -> LocalDate.parse(v, AUS_FORMAT))
+                        .map(LocalDateUtils::parseAUSLocalDate)
                         .orElse(null),
                 quote.map(HealthQuote::getSituation)
                         .map(com.ctm.web.health.model.form.Situation::getHealthSitu)

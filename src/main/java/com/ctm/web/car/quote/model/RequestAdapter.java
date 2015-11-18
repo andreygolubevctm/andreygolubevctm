@@ -5,21 +5,19 @@ import com.ctm.web.car.quote.model.request.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RequestAdapter {
+import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDate;
 
-    private static final DateTimeFormatter AUS_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+public class RequestAdapter {
 
     public static CarQuoteRequest adapt(CarRequest carRequest) {
 
         CarQuoteRequest quoteRequest = new CarQuoteRequest();
         final CarQuote carQuote = carRequest.getQuote();
         final Options options = carQuote.getOptions();
-        quoteRequest.setCommencementDate(LocalDate.parse(options.getCommencementDate(), AUS_FORMAT));
+        quoteRequest.setCommencementDate(parseAUSLocalDate(options.getCommencementDate()));
 
         if (StringUtils.isNotBlank(carQuote.getExcess())) {
             quoteRequest.setExcess(Integer.parseInt(carQuote.getExcess()));
@@ -40,7 +38,7 @@ public class RequestAdapter {
         return quoteRequest;
     }
 
-    protected static final com.ctm.web.car.quote.model.request.Vehicle createVehicle(CarQuote carQuote) {
+    protected static com.ctm.web.car.quote.model.request.Vehicle createVehicle(CarQuote carQuote) {
 
         com.ctm.web.car.model.form.Vehicle quoteVehicle = carQuote.getVehicle();
 
@@ -145,7 +143,7 @@ public class RequestAdapter {
     private static YoungestDriver createYoungestDriver(Young young) {
         if (young == null || !convertToBoolean(young.getExists())) return null;
         YoungestDriver youngestDriver = new YoungestDriver();
-        youngestDriver.setDateOfBirth(LocalDate.parse(young.getDob(), AUS_FORMAT));
+        youngestDriver.setDateOfBirth(parseAUSLocalDate(young.getDob()));
         youngestDriver.setLicenceAge(Integer.parseInt(young.getLicenceAge()));
         youngestDriver.setGender(GenderType.fromValue(young.getGender()));
         return youngestDriver;
@@ -155,7 +153,7 @@ public class RequestAdapter {
         RegularDriver regularDriver = new RegularDriver();
         regularDriver.setFirstName(regular.getFirstname());
         regularDriver.setSurname(regular.getSurname());
-        regularDriver.setDateOfBirth(LocalDate.parse(regular.getDob(), AUS_FORMAT));
+        regularDriver.setDateOfBirth(parseAUSLocalDate(regular.getDob()));
         regularDriver.setHasClaims(regular.getClaims());
         regularDriver.setGender(GenderType.fromValue(regular.getGender()));
         regularDriver.setEmploymentStatus(regular.getEmploymentStatus());

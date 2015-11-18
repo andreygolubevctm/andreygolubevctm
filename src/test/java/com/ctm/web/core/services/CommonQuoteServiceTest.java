@@ -19,13 +19,12 @@ import org.mockito.Mock;
 
 import java.util.Collections;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import static com.ctm.web.core.model.settings.ConfigSetting.ALL_BRANDS;
 import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.ALL_PROVIDERS;
 import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope.SERVICE;
 import static com.ctm.web.core.services.CommonQuoteService.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -59,27 +58,27 @@ public class CommonQuoteServiceTest {
 
     @Test(expected = RouterException.class)
     public void testEmptyRequest() throws Exception {
-        isValid(() -> commonQuoteService.validateRequest(null, null));
+        commonQuoteService.validateRequest(null, null);
     }
 
     @Test(expected = RouterException.class)
     public void testEmptyQuoteRequest() throws Exception {
         final RequestWithQuote request = mock(RequestWithQuote.class);
-        isValid(() -> commonQuoteService.validateRequest(request, "AnyVertical"));
+        commonQuoteService.validateRequest(request, "AnyVertical");
     }
 
     @Test
     public void testValidRequest() throws Exception {
         final RequestWithQuote request = mock(RequestWithQuote.class);
         when(request.getQuote()).thenReturn(new Quote("name"));
-        isValid(() -> commonQuoteService.validateRequest(request, "AnyVertical"));
+        commonQuoteService.validateRequest(request, "AnyVertical");
     }
 
     @Test(expected = RouterException.class)
     public void testInvalidRequest() throws Exception {
         final RequestWithQuote request = mock(RequestWithQuote.class);
         when(request.getQuote()).thenReturn(new Quote("name??"));
-        isInvalid(() -> commonQuoteService.validateRequest(request, "AnyVertical"));
+        commonQuoteService.validateRequest(request, "AnyVertical");
     }
 
     @Test
@@ -269,19 +268,6 @@ public class CommonQuoteServiceTest {
         verify(serviceConfiguration, times(1)).getPropertyValueByKey(DEBUG_PATH, ALL_BRANDS, ALL_PROVIDERS, SERVICE);
         verify(serviceConfiguration, times(1)).getPropertyValueByKey(TIMEOUT_MILLIS, ALL_BRANDS, ALL_PROVIDERS, SERVICE);
 
-    }
-
-    private void isInvalid(Supplier<Boolean> supplier) {
-        try {
-            supplier.get();
-        } catch (Exception e) {
-            assertNotNull(e);
-            throw e;
-        }
-    }
-
-    private void isValid(Supplier<Boolean> supplier) {
-        assertTrue(supplier.get());
     }
 
     public class Quote {
