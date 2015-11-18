@@ -23,12 +23,12 @@
                                 extraDataAttributes="data-default='${data[fieldXPath]}'" />
     </form_new:row>
 
-    <c:set var="fieldXPath" value="${xpath}/electricity-ussge" />
+    <c:set var="fieldXPath" value="${xpath}/electricity_usage" />
     <form_new:row label="What level best describes your typical electricity usage?" fieldXpath="${fieldXPath}" className="clear electricity-usage">
         <field_new:array_radio xpath="${fieldXPath}"
                                required="true"
                                className=""
-                               items="L=Low,M=Med,H=High"
+                               items="Low=<h3>Low</h3><span>1 to 2 people</span>,Medium=<h3>Medium</h3><span>3 to 4 people</span>,High=<h3>High</h3><span>5 or more people</span>"
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="what level best describes your electricity usage." />
     </form_new:row>
@@ -51,7 +51,7 @@
                                                                   inputGroupTextPosition="right"/>
     </form_new:row>
 
-    <c:set var="fieldXPath" value="${xpath}/electricityCharged" />
+    <c:set var="fieldXPath" value="${xpath}/electricity_meter" />
     <form_new:row label="How are you charged for electricity?" fieldXpath="${fieldXPath}" className="clear additional-estimate-details-row electricity-charged">
         <field_new:array_radio xpath="${fieldXPath}"
                                required="true"
@@ -94,7 +94,7 @@
     <form_new:row label="Controlled Load" className="clear usage controlled-usage">
     <utilities_new_fieldset:additional_estimate_details_input xpath="${xpath}"
                                                               utilityType="Electricity"
-                                                              inputType="controlled"
+                                                              inputType="offpeak"
                                                               required="false"
                                                               inputGroupText="kWh"
                                                               inputGroupTextPosition="right"/>
@@ -120,12 +120,12 @@
                                 extraDataAttributes="data-default='${data[fieldXPath]}'" />
     </form_new:row>
 
-    <c:set var="fieldXPath" value="${xpath}/gas-ussge" />
+    <c:set var="fieldXPath" value="${xpath}/gas_usage" />
     <form_new:row label="What level best describes your typical gas usage?" fieldXpath="${fieldXPath}" className="clear gas-usage">
         <field_new:array_radio xpath="${fieldXPath}"
                                required="true"
                                className=""
-                               items="L=<h1>Low</h1><span>1 to 2 people</span>,M=Med,H=High"
+                               items="Low=<h3>Low</h3><span>1 to 2 people</span>,Medium=<h3>Medium</h3><span>3 to 4 people</span>,High=<h3>High</h3><span>5 or more people</span>"
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="what level best describes your gas usage." />
     </form_new:row>

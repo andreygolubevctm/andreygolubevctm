@@ -18,17 +18,17 @@
         <field:person_name xpath="${fieldXPath}" required="${true}" title="your first name${competitionValidationText}" />
     </form_new:row>
 
-    <c:set var="fieldXPath" value="${xpath}/email"/>
-    <form_new:row label="Your email address *" fieldXpath="${fieldXPath}" className="clear">
-        <field_new:email xpath="${fieldXPath}" required="${true}" title="your email address${competitionValidationText}" />
-    </form_new:row>
-
     <c:set var="fieldXPath" value="${xpath}/phone"/>
     <form_new:row label="Your phone number *" fieldXpath="${fieldXPath}" className="clear">
         <field:contact_telno xpath="${fieldXPath}"
                              required="${true}"
                              className="sessioncamexclude"
                              labelName="phone number${competitionValidationText}" />
+    </form_new:row>
+
+    <c:set var="fieldXPath" value="${xpath}/email"/>
+    <form_new:row label="Your email address *" fieldXpath="${fieldXPath}" className="clear">
+        <field_new:email xpath="${fieldXPath}" required="${false}" title="your email address${competitionValidationText}" />
     </form_new:row>
 
     <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>

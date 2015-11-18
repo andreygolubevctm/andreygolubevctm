@@ -22,13 +22,13 @@
 
 <c:choose>
     <c:when test="${inputType eq 'spend'}">
-        <c:set var="xpath" value="${xpath}/${inputType}/${lowerCaseUtilityType}" />
+        <c:set var="xpath" value="${xpath}/${inputType}/${lowerCaseUtilityType}/amount" />
     </c:when>
     <c:when test="${inputType eq 'days'}">
-        <c:set var="xpath" value="${xpath}/${inputType}/${lowerCaseUtilityType}" />
+        <c:set var="xpath" value="${xpath}/spend/${lowerCaseUtilityType}/${inputType}" />
     </c:when>
     <c:otherwise>
-        <c:set var="xpath" value="${xpath}/usage/${lowerCaseUtilityType}/${inputType}" />
+        <c:set var="xpath" value="${xpath}/usage/${lowerCaseUtilityType}/${inputType}/amount" />
     </c:otherwise>
 </c:choose>
 
@@ -56,6 +56,6 @@
 <div class="row clear ${lowerCaseUtilityType}">
     <div class="col-md-12 row-content">
         <div class="error-field" style="display:block;"><!-- empty --></div>
-        <field_new:input type="${inputFieldType}" xpath="${xpath}/amount" required="${required}" inputGroupText="${inputGroupText}" requiredMessage="Please specify your ${lowerCaseUtilityType} usage." inputGroupTextPosition="${inputGroupTextPosition}" formattedInteger="true" additionalAttributes="${amountValidationRules}" />
+        <field_new:input type="${inputFieldType}" xpath="${xpath}" required="${required}" inputGroupText="${inputGroupText}" requiredMessage="Please specify your ${lowerCaseUtilityType} usage." inputGroupTextPosition="${inputGroupTextPosition}" formattedInteger="true" additionalAttributes="${amountValidationRules}" />
     </div>
 </div>
