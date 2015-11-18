@@ -44,7 +44,7 @@ public abstract class CommonQuoteService<T> {
     }
 
     public QuoteServiceProperties getQuoteServiceProperties(String service, Brand brand, String verticalCode, Optional<String> environmentOverride) {
-        // Get URL of home-quote service
+        // Get URL of service
         final QuoteServiceProperties properties = new QuoteServiceProperties();
         try {
             if(serviceConfig == null) {

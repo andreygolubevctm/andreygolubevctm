@@ -1,6 +1,7 @@
 package com.ctm.web.homecontents.router;
 
 import com.ctm.web.core.exceptions.RouterException;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.homecontents.model.form.HomeRequest;
 import com.ctm.web.homecontents.model.results.HomeMoreInfo;
 import com.ctm.web.homecontents.model.results.HomeResult;
@@ -78,4 +79,8 @@ public class HomeQuoteRouter extends CommonQuoteRouter {
         return homeService.getMoreInfo(brand, productId, type, Optional.ofNullable(environmentOverride));
     }
 
+    @Override
+    protected Vertical.VerticalType getVertical() {
+        return Vertical.VerticalType.HOME;
+    }
 }

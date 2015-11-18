@@ -12,14 +12,32 @@ import com.ctm.web.core.web.go.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 
+import javax.servlet.http.HttpServletRequest;
+
 public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
     protected Brand initRouter(MessageContext context){
         // - Start common -- taken from Carlos' car branch
-        ApplicationService.setVerticalCodeOnRequest(context.getHttpServletRequest(), Vertical.VerticalType.TRAVEL.getCode());
+        ApplicationService.setVerticalCodeOnRequest(context.getHttpServletRequest(), getVertical().getCode());
         Brand brand = null;
         try {
             brand = ApplicationService.getBrandFromRequest(context.getHttpServletRequest());
+
+        } catch (DaoException e) {
+            throw new RouterException(e);
+        }
+        return brand;
+    }
+
+
+    protected abstract Vertical.VerticalType getVertical();
+
+    protected Brand initRouter(HttpServletRequest httpServletRequest){
+        // - Start common -- taken from Carlos' car branch
+        ApplicationService.setVerticalCodeOnRequest(httpServletRequest, getVertical().getCode());
+        Brand brand = null;
+        try {
+            brand = ApplicationService.getBrandFromRequest(httpServletRequest);
 
         } catch (DaoException e) {
             throw new RouterException(e);

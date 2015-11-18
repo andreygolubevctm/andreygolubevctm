@@ -8,6 +8,7 @@ import com.ctm.web.car.services.CarQuoteService;
 import com.ctm.web.car.services.CarVehicleSelectionService;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.model.settings.Brand;
@@ -96,5 +97,10 @@ public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
 
         Date applicationDate = ApplicationService.getApplicationDate(context.getHttpServletRequest());
         return CarVehicleSelectionService.getCarProduct(applicationDate, productId, brand.getId());
+    }
+
+    @Override
+    protected Vertical.VerticalType getVertical() {
+        return Vertical.VerticalType.CAR;
     }
 }
