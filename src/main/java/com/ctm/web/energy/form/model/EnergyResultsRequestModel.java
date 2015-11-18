@@ -1,13 +1,11 @@
 package com.ctm.web.energy.form.model;
 
-import com.ctm.interfaces.common.aggregator.request.QuoteRequest;
-import com.ctm.web.core.utils.NGram;
 import com.ctm.web.utilities.model.request.Details;
 
 import javax.validation.Valid;
 import java.util.Date;
 
-public class EnergyResultsRequestModel implements   QuoteRequest {
+public class EnergyResultsRequestModel {
 
     private HouseHoldDetails houseHoldDetails;
 	private EstimateDetails estimateDetails;
@@ -35,13 +33,6 @@ public class EnergyResultsRequestModel implements   QuoteRequest {
 
 	public void setTariff(String tariff) {
 		this.tariff = tariff;
-	}
-
-
-	public Integer getPhoneRating() {
-		NGram ngram = new NGram(resultsDisplayed.getPhoneNumber(),3);
-
-		return ngram.score();
 	}
 
 	public String getReferenceNumber() {

@@ -43,7 +43,8 @@
 				com.ctm.web.car.router.RegoLookupRouter,
 				com.ctm.web.travel.router.TravelRouter,
 				com.ctm.web.car.router.CarQuoteRouter,
-				com.ctm.web.homecontents.router.HomeQuoteRouter
+				com.ctm.web.homecontents.router.HomeQuoteRouter,
+				com.ctm.web.energy.quote.router.EnergyQuoteRouter
 			</param-value>
 		</init-param>
 		<init-param>

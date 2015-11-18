@@ -17,7 +17,7 @@ import java.io.IOException;
 
 
 @Path("/energy")
-public class EnergyQuoteRequestRouter extends CommonQuoteRouter<EnergyResultsWebRequest> {
+public class EnergyQuoteRouter extends CommonQuoteRouter<EnergyResultsWebRequest> {
 
     @Context
     private HttpServletRequest httpServletRequest;

@@ -1,10 +1,9 @@
 package com.ctm.web.energy.form.model;
 
-import com.ctm.interfaces.common.aggregator.request.QuoteRequest;
 import com.ctm.web.core.model.formData.Request;
 
 
-public class EnergyResultsWebRequest implements Request<EnergyResultsRequestModel>, QuoteRequest {
+public class EnergyResultsWebRequest implements Request<EnergyResultsRequestModel> {
     private String clientIpAddress;
 
     private EnergyResultsRequestModel quote;
