@@ -76,6 +76,7 @@ Process:
 
 		meerkat.modules.comms.post({
 			url: "/" + meerkat.site.urls.context + "ajax/json/ipp/ipp_payment.jsp?ts=" + (new Date().getTime()),
+			//url: 'https://secure.comparethemarket.com.au/ctm/ajax/json/ipp/ipp_payment.jsp?ts=' + (new Date().getTime()),
 			dataType: 'json',
 			cache: false,
 			errorLevel: "silent",
@@ -197,7 +198,8 @@ Process:
 		jsonData.transactionId = meerkat.modules.transactionId.get();
 
 		meerkat.modules.comms.post({
-			url: "ajax/json/ipp/ipp_log.jsp?ts=" + (new Date().getTime()),
+			url: "/" + meerkat.site.urls.context + "ajax/json/ipp/ipp_log.jsp?ts=" + (new Date().getTime()),
+			//url: 'https://secure.comparethemarket.com.au/ctm/ajax/json/ipp/ipp_log.jsp?ts=' + (new Date().getTime()),
 			data: jsonData,
 			dataType: 'json',
 			cache: false,
