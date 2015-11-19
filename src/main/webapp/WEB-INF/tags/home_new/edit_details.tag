@@ -2,7 +2,7 @@
 <%@ tag description="H&C Edit Details Dropdown"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+<jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 <c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" />
 
 <form class="edit-details-form"><div class="edit-details-wrapper"></div></form>

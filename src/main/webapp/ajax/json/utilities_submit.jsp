@@ -53,7 +53,7 @@
         ${logger.debug('About to call submit from jsp.')}
 
         <%-- SUBMIT TO PARTNER --%>
-        <jsp:useBean id="utilitiesApplicationService" class="com.ctm.services.utilities.UtilitiesApplicationService" scope="request"/>
+        <jsp:useBean id="utilitiesApplicationService" class="com.ctm.web.utilities.services.UtilitiesApplicationService" scope="request"/>
         <c:set var="results" value="${utilitiesApplicationService.submitFromJsp(pageContext.getRequest(), data)}" scope="request" />
 
         <%-- TESTING IF REQUEST FAILED --%>

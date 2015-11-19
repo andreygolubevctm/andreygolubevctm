@@ -8,7 +8,7 @@
 <%@ attribute name="rebate" 			required="true" 	rtexprvalue="true"	description="rebate percentage" %>
 <%@ attribute name="lhc" 				required="true"		rtexprvalue="true"	description="lhc" %>
 
-<jsp:useBean id="premiumCalculator" class="com.disc_au.price.health.PremiumCalculator" scope="request" />
+<jsp:useBean id="premiumCalculator" class="com.ctm.web.health.price.PremiumCalculator" scope="request" />
 ${premiumCalculator.setLhc(lhc)}
 ${premiumCalculator.setLoading(loading)}
 ${premiumCalculator.setMembership(membership)}

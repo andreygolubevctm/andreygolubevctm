@@ -23,7 +23,7 @@
 <c:if test="${empty tranId}"><c:set var="tranId" value="0" /></c:if>
 
 <%-- Execute the results service --%>
-<jsp:useBean id="quoteService" class="com.ctm.services.utilities.UtilitiesResultsService" scope="page" />
+<jsp:useBean id="quoteService" class="com.ctm.web.utilities.services.UtilitiesResultsService" scope="page" />
 <c:set var="results" value="${quoteService.getFromJsp(pageContext.getRequest(), data)}" />
 
 <%-- COMPETITION APPLICATION START --%>

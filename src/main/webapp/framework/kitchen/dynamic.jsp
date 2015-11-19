@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 <p>Tags with a <del>deleted</del> title indicate they have been replaced (e.g. into a field-new version) due to changes, such as markup, that may introduce instability in current verticals.</p>
 
@@ -424,10 +424,6 @@
 			document.write('<p>User agent: ' + navigator.userAgent + '</p>');
 		</script>
 		<p id="inputDate_val"></p>
-	</form_new:row>
-
-	<form_new:row label="input_age">
-		<field_new:input_age validationNoun="traveller" maxlength="2" xpath="${xpath}/new/inputAge" title="field_new:input_age" required="true" />
 	</form_new:row>
 
 	<form_new:row label="medicare_number">

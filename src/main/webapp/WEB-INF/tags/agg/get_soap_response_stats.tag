@@ -4,8 +4,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="debugXml" 	required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>
-<%@ tag import="com.ctm.statistics.dao.StatisticDetail" %>
-<%@ tag import="com.ctm.statistics.dao.StatisticDescription" %>
+<%@ tag import="com.ctm.web.core.statistics.model.StatisticDetail" %>
+<%@ tag import="com.ctm.web.core.statistics.model.StatisticDescription" %>
 <%@ tag import="java.util.List" %>
 <%@ tag import="java.util.ArrayList" %>
 <%
@@ -20,7 +20,7 @@
 		<c:set var="serviceId"><x:out select="$thisPrice/@service" /></c:set>
 		<c:set var="productId"><x:out select="$thisPrice/@productId" /></c:set>
 		<%
-			com.ctm.statistics.dao.StatisticDetail statisticDetail = new com.ctm.statistics.dao.StatisticDetail();
+			com.ctm.web.core.statistics.model.StatisticDetail statisticDetail = new com.ctm.web.core.statistics.model.StatisticDetail();
 			request.setAttribute("statisticDetail", statisticDetail);
 		%>
 		${statisticDetail.setServiceId(serviceId)}

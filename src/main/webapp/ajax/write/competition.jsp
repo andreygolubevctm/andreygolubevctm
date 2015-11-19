@@ -16,7 +16,6 @@
 
 
 <%-- Variables --%>
-<c:set var="database" value="ctm" />
 <c:set var="competition_id" value="${data['competition/competitionId']}" />
 <c:set var="competition_email" value="${data['competition/email']}" />
 <c:set var="brand" value="${styleCode}" />
@@ -36,7 +35,7 @@
 			lastName="${data['competition/lastName']}"
 			items="marketing=Y,okToCall=N" />
 
-		<sql:setDataSource dataSource="jdbc/${database}"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<sql:query var="emailMaster">
 			SELECT emailId, hashedEmail
 				FROM aggregator.email_master
