@@ -119,6 +119,7 @@
                 object: meerkat.modules.utilities.getTrackingFieldsObject
             },
             onInitialise: function onStartInit(event) {
+                meerkat.modules.jqueryValidate.initJourneyValidator();
             },
             validation: {
                 validate: true,
@@ -149,8 +150,7 @@
                 method: 'trackQuoteForms',
                 object: meerkat.modules.utilities.getTrackingFieldsObject
             },
-            onInitialise: function onStartInit(event) {
-                meerkat.modules.jqueryValidate.initJourneyValidator();
+            onInitialise: function onContactInit(event) {
                 $('#utilities_resultsDisplayed_competition_optin').trigger('change.applyValidationRules');
             },
             validation: {

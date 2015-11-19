@@ -55,12 +55,14 @@
         {{ logo = logo(obj); }}
 
         {{ var yearlySavingsLabel = yearlySavingsValue < 0 ? "extra cost up to $" + (yearlySavingsValue*-1) : "$" + yearlySavingsValue.toFixed(2); }}
+        {{ var estimatedCostLabel = "estimated cost"; }}
         {{ var showYearlySavings = meerkat.modules.utilitiesResults.showYearlySavings(); }}
+        {{ var showEstimatedCost = meerkat.modules.utilitiesResults.showEstimatedCost(); }}
 
-        {{ var smColCountContract = showYearlySavings ? 3 : 5; }}
-        {{ var lgColCountContract = showYearlySavings ? 1 : 2; }}
-        {{ var smColCountDiscounts = showYearlySavings ? 4 : 5; }}
-        {{ var lgColCountDiscounts = showYearlySavings ? 2 : 3; }}
+        {{ var smColCountContract = (showYearlySavings || showEstimatedCost) ? 3 : 5; }}
+        {{ var lgColCountContract = (showYearlySavings || showEstimatedCost) ? 1 : 2; }}
+        {{ var smColCountDiscounts = (showYearlySavings || showEstimatedCost) ? 4 : 5; }}
+        {{ var lgColCountDiscounts = (showYearlySavings || showEstimatedCost) ? 2 : 3; }}
         <div class="result-row available result_{{= obj.productId }}" data-productId="{{= obj.productId }}"
              data-available="Y">
             <div class="result">
@@ -122,7 +124,11 @@
                         <div class="col-sm-{{= smColCountContract }} col-lg-{{= lgColCountContract }} contractPeriod">
                             <div class="dataColumn"><span>{{= contractPeriod }}</span></div>
                         </div>
-                        {{ if(showYearlySavings === true) { }}
+                        {{ if(showEstimatedCost === true) { }}
+                        <div class="col-sm-3 col-lg-2 estimatedCostContainer">
+                            <div class="dataColumn"><span class="estimatedCost">{{= estimatedCostLabel }}</span></div>
+                        </div>
+                        {{ } else if(showYearlySavings === true) { }}
                         <div class="col-sm-3 col-lg-2 yearlySavingsContainer {{= (yearlySavingsValue <= 0 ? 'noSavings' : '') }}">
                             <div class="dataColumn"><span class="yearlySavings">{{= yearlySavingsLabel }}</span></div>
                         </div>
@@ -189,7 +195,14 @@
 									</span>
 
                                     </div>
-                                    {{ if(showYearlySavings === true) { }}
+                                    {{ if(showEstimatedCost === true) { }}
+                                    <div class="col-xs-6 estimatedCostContainer">
+                                        <span class="estimatedCost">{{= estimatedCostLabel }}</span>
+                                        {{ if(estimatedCostValue >= 0) { }}
+                                        <span class="estimatedCostTitle">Cost</span>
+                                        {{ } }}
+                                    </div>
+                                    {{ } else if(showYearlySavings === true) { }}
                                     <div class="col-xs-6 yearlySavingsContainer {{= (yearlySavingsValue <= 0 ? 'noSavings' : '') }}">
                                         <span class="yearlySavings">{{= yearlySavingsLabel }}</span>
                                         {{ if(yearlySavingsValue >= 0) { }}

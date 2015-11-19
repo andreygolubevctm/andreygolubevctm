@@ -27,7 +27,7 @@
     <form_new:row label="What level best describes your typical electricity usage?" fieldXpath="${fieldXPath}" className="clear electricity-usage">
         <field_new:array_radio xpath="${fieldXPath}"
                                required="true"
-                               className=""
+                               className="col-md-12"
                                items="Low=<h3>Low</h3><span>1 to 2 people</span>,Medium=<h3>Medium</h3><span>3 to 4 people</span>,High=<h3>High</h3><span>5 or more people</span>"
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="what level best describes your electricity usage." />
@@ -52,7 +52,7 @@
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/electricity_meter" />
-    <form_new:row label="How are you charged for electricity?" fieldXpath="${fieldXPath}" className="clear additional-estimate-details-row electricity-charged">
+    <form_new:row label="How are you charged for electricity?" fieldXpath="${fieldXPath}" className="clear additional-estimate-details-row electricity-meter">
         <field_new:array_radio xpath="${fieldXPath}"
                                required="true"
                                className=""
@@ -124,7 +124,7 @@
     <form_new:row label="What level best describes your typical gas usage?" fieldXpath="${fieldXPath}" className="clear gas-usage">
         <field_new:array_radio xpath="${fieldXPath}"
                                required="true"
-                               className=""
+                               className="col-md-12"
                                items="Low=<h3>Low</h3><span>1 to 2 people</span>,Medium=<h3>Medium</h3><span>3 to 4 people</span>,High=<h3>High</h3><span>5 or more people</span>"
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="what level best describes your gas usage." />

@@ -30,6 +30,8 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 	private String otherDiscounts = "0";
 	private String discountDetails = "0";
 
+	private double newEnergyBill = 0;
+
 	private double quarterlyEnergySavings = 0;
 	private double quarterlyGasSavings = 0;
 	private double percentageElectricitySavings = 0;
@@ -139,11 +141,14 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 		this.discountDetails = discountDetails;
 	}
 
-	public double getQuarterlyEnergySavings() {
+	public double getNewEnergyBill() { return newEnergyBill; }
+	public void setNewEnergyBill(double newEnergyBill) { this.newEnergyBill = newEnergyBill; }
+
+	public double getQuarterlyEnergysSavings() {
 		return quarterlyEnergySavings;
 	}
 
-	public void setQuarterlyEnergySavings(double quarterlyEnergySavings) {
+	public void setQuarterlyEnergySavings(double quarterlyEnergysSavings) {
 		this.quarterlyEnergySavings = quarterlyEnergySavings;
 	}
 
@@ -187,6 +192,14 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 		this.yearlyGasSavings = yearlyGasSavings;
 	}
 
+	public double getAnnualNewCost() {
+		return annualNewCost;
+	}
+
+	public void setAnnualNewCost(double annualNewCost) {
+		this.annualNewCost = annualNewCost;
+	}
+
 	public double getAnnualPreviousCost() {
 		return annualPreviousCost;
 	}
@@ -195,13 +208,6 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 		this.annualPreviousCost = annualPreviousCost;
 	}
 
-	public double getAnnualNewCost() {
-		return annualNewCost;
-	}
-
-	public void setAnnualNewCost(double annualNewCost) {
-		this.annualNewCost = annualNewCost;
-	}
 
 
 	@Override
@@ -216,10 +222,12 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 		json.put("retailerName", getRetailerName());
 		json.put("retailerId", getRetailerId());
 
-		json.put("price", getAnnualNewCost());
+		json.put("price", getNewEnergyBill());
 		json.put("previousPrice", getAnnualPreviousCost());
 		json.put("contractPeriod", getContractPeriod());
 		json.put("cancellationFees", getCancellationFees());
+
+		json.put("newEnergyBill", getNewEnergyBill());
 
 		json.put("payontimeDiscounts", getPayontimeDiscounts());
 		json.put("ebillingDiscounts", getEbillingDiscounts());
@@ -263,8 +271,12 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 			if(json.isNull("yearly_elec_savings") == false) setYearlyElectricitySavings(json.getDouble("yearly_elec_savings"));
 			if(json.isNull("yearly_gas_savings") == false) setYearlyGasSavings(json.getDouble("yearly_gas_savings"));
 
-			if(json.isNull("annual_new_cost") == false) setAnnualNewCost(json.getDouble("annual_new_cost"));
-			if(json.isNull("annual_prev_cost") == false) setAnnualPreviousCost(json.getDouble("annual_prev_cost"));
+			double electricityBill = 0;
+			double gasBill = 0;
+			if(json.isNull("new_elec_bill") == false) { electricityBill = json.getDouble("new_elec_bill"); }
+			if(json.isNull("new_gas_bill") == false)  { gasBill = json.getDouble("new_elec_bill"); }
+
+			setNewEnergyBill(electricityBill + gasBill);
 
 		} catch (JSONException e) {
 			LOGGER.debug("Failed to populate utilities results plan model {}", kv("json", json), e);
@@ -290,6 +302,7 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 				", guaranteedDiscounts='" + guaranteedDiscounts + '\'' +
 				", otherDiscounts='" + otherDiscounts + '\'' +
 				", discountDetails='" + discountDetails + '\'' +
+				", newEnergyBill=" + newEnergyBill +
 				", quarterlyEnergySavings=" + quarterlyEnergySavings +
 				", quarterlyGasSavings=" + quarterlyGasSavings +
 				", percentageElectricitySavings=" + percentageElectricitySavings +

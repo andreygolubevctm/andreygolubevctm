@@ -20,7 +20,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		Low, Medium, High
 	}
 
-	public static enum ElectricityMeterType  {
+	public enum ElectricityMeterType  {
 		Single ("Single","S"),
 		TwoRate ("Two-rate","T"),
 		TimeOfUse ("Time of Use","M");
@@ -240,9 +240,13 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 			json.put("el_peak_usage", getElectricityPeakUsage());
 			if(getElectricityMeterType() == ElectricityMeterType.TwoRate || getElectricityMeterType() == ElectricityMeterType.TimeOfUse) {
 				json.put("el_controlled_load_usage", getElectricityOffpeakUsage());
+			} else {
+				json.put("el_controlled_load_usage", 0);
 			}
 			if(getElectricityMeterType() == ElectricityMeterType.TimeOfUse) {
 				json.put("el_shoulder_usage", getElectricityShoulderUsage());
+			} else {
+				json.put("el_shoulder_usage", 0);
 			}
 		}
 
@@ -343,6 +347,8 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 			} else if (householdType.equals("High")) {
 				setElectricityHouseholdType(HouseholdType.High);
 			}
+		} else {
+			setElectricityMeterType(ElectricityMeterType.findByCode(request.getParameter("utilities_estimateDetails_electricity_meter")));
 		}
 
 		householdType = request.getParameter("utilities_estimateDetails_gas_usage");
@@ -355,8 +361,6 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 				setGasHouseholdType(HouseholdType.High);
 			}
 		}
-
-		setElectricityMeterType(ElectricityMeterType.findByCode(request.getParameter("utilities_estimateDetails_electricity_meter")));
 
 		String whatToCompare = request.getParameter("utilities_householdDetails_whatToCompare");
 		if(whatToCompare.equals("EG")){

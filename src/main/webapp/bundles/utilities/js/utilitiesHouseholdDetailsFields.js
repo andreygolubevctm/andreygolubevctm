@@ -88,7 +88,7 @@
     function _registerEventListeners() {
         $(".what-to-compare, .moving-in, .recent-electricity-bill, .recent-gas-bill").change(_toggleAdditionalEstimateDetails);
         $("#utilities_privacyoptin").change(_onPrivacyOptinChange);
-        $(".electricity-charged").change(_toggleElectricityCharged);
+        $(".electricity-meter").change(_toggleElectricityMeter);
         $("#utilities_householdDetails_location").on("typeahead:selected", _onTypeaheadSelected);
         meerkat.modules.ie8SelectMenuAutoExpand.bindEvents($('#startForm'), '#utilities_householdDetails_howToEstimate');
         $('#utilities_resultsDisplayed_competition_optin').on('change.applyValidationRules', _applyCompetitionValidationRules);
@@ -250,7 +250,8 @@
             $electricityInputs = $(".electricity-details"),
             $gasInputs = $(".gas-details"),
             $electricityUsage = $(".electricity-usage"),
-            $gasUsage = $(".gas-usage");
+            $gasUsage = $(".gas-usage"),
+            $movingInDate = $(".moving-in-date");
 
         var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val(),
             movingIn = $(".moving-in").find("input[type='radio']:checked").val(),
@@ -259,11 +260,13 @@
 
         if (whatToCompare === "E" || whatToCompare === "EG") {
             if (movingIn === 'Y' || recentElectricityBill === 'N') {
+                $movingInDate.show();
                 $electricityInputs.show();
                 $electricityUsage.show();
                 $additionalEstimates.hide();
             } else if (movingIn === 'N') {
                 $('.recent-electricity-bill').show();
+                $movingInDate.hide();
 
                 if(recentElectricityBill === 'Y') {
                     $electricityInputs.show();
@@ -274,6 +277,7 @@
                 $electricityInputs.hide();
             }
         } else {
+            $movingInDate.hide();
             $electricityInputs.hide();
             $('.recent-electricity-bill').hide();
         }
@@ -300,14 +304,14 @@
         }
     }
 
-    function _toggleElectricityCharged() {
-        var charged = $(".electricity-charged").find("input[type='radio']:checked").val();
+    function _toggleElectricityMeter() {
+        var meter = $(".electricity-meter").find("input[type='radio']:checked").val();
 
-        $(".standard-usage").toggle(charged === "S");
-        $(".peak-usage").toggle(charged === "T" || charged === "M");
-        $(".controlled-usage").toggle(charged === "T");
-        $(".off-peak-usage").toggle(charged === "M");
-        $(".shoulder-usage").toggle(charged === "M");
+        $(".standard-usage").toggle(meter === "S");
+        $(".peak-usage").toggle(meter === "T" || meter === "M");
+        $(".controlled-usage").toggle(meter === "T");
+        $(".off-peak-usage").toggle(meter === "M");
+        $(".shoulder-usage").toggle(meter === "M");
     }
 
     meerkat.modules.register("utilitiesHouseholdDetailsFields", {
