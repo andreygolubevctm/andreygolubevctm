@@ -86,7 +86,6 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 	private boolean preferEBilling;
 	private boolean preferNoContract;
-	private boolean preferPayBillsOntime;
 	private boolean preferRenewableEnergy;
 
 	private String tariff;
@@ -193,9 +192,6 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 	public boolean getPreferNoContract() { return preferNoContract; }
 	public void setPreferNoContract(boolean preferNoContract) { this.preferNoContract = preferNoContract; }
 
-	public boolean getPreferPayBillsOntime() { return preferPayBillsOntime; }
-	public void setPreferPayBillsOntime(boolean preferPayBillsOntime) { this.preferPayBillsOntime = preferPayBillsOntime; }
-
 	public boolean getPreferRenewableEnergy() { return preferRenewableEnergy; }
 	public void setPreferRenewableEnergy(boolean preferRenewableEnergy) { this.preferRenewableEnergy = preferRenewableEnergy; }
 
@@ -210,20 +206,22 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		json.put("postcode", getPostcode());
 		json.put("suburb", getSuburb());
 		json.put("is_connection", convertBooleanToString(isConnection(), "Yes", "No"));
+		json.put("fuel_type", getFuelType());
+
 		if(isConnection) {
 			json.put("connection_date", FormDateUtils.convertDateToString(getConnectionDate(), "yyyy-MM-dd"));
 		} else {
 			json.put("connection_date", "0000-00-00");
-		}
-		json.put("fuel_type", getFuelType());
 
-		if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity) {
-			json.put("el_bill_available", convertBooleanToString(getHasElectricityBill(), "Yes", "No"));
+			//if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity) {
+				json.put("el_bill_available", convertBooleanToString(getHasElectricityBill(), "Yes", "No"));
+			//}
+
+			//if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity) {
+				json.put("gas_bill_available", convertBooleanToString(getHasGasBill(), "Yes", "No"));
+			//}
 		}
 
-		if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity) {
-			json.put("gas_bill_available", convertBooleanToString(getHasGasBill(), "Yes", "No"));
-		}
 
 		json.put("solar_panels", convertBooleanToString(getSolarPanels(), "Yes", "No"));
 
@@ -275,7 +273,6 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 		json.put("ebilling", convertBooleanToString(getPreferEBilling(), "Yes", "No"));
 		json.put("no_contract", convertBooleanToString(getPreferNoContract(), "Yes", "No"));
-		json.put("pay_bills_ontime", convertBooleanToString(getPreferPayBillsOntime(), "Yes", "No"));
 		json.put("renewable_energy", convertBooleanToString(getPreferRenewableEnergy(), "Important", "Not important"));
 
 
@@ -324,7 +321,6 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 		setPreferEBilling(convertStringToBoolean(request.getParameter("utilities_resultsDisplayed_preferEBilling")));
 		setPreferNoContract(convertStringToBoolean(request.getParameter("utilities_resultsDisplayed_preferNoContract")));
-		setPreferPayBillsOntime(convertStringToBoolean(request.getParameter("utilities_resultsDisplayed_preferPayBillsOntime")));
 		setPreferRenewableEnergy(convertStringToBoolean(request.getParameter("utilities_resultsDisplayed_preferRenewableEnergy")));
 
 

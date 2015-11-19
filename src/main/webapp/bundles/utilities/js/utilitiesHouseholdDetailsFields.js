@@ -258,15 +258,15 @@
             recentElectricityBill = $(".recent-electricity-bill").find("input[type='radio']:checked").val(),
             recentGasBill = $(".recent-gas-bill").find("input[type='radio']:checked").val();
 
+        $movingInDate.toggle(movingIn === 'Y');
+
         if (whatToCompare === "E" || whatToCompare === "EG") {
             if (movingIn === 'Y' || recentElectricityBill === 'N') {
-                $movingInDate.show();
                 $electricityInputs.show();
                 $electricityUsage.show();
                 $additionalEstimates.hide();
             } else if (movingIn === 'N') {
                 $('.recent-electricity-bill').show();
-                $movingInDate.hide();
 
                 if(recentElectricityBill === 'Y') {
                     $electricityInputs.show();
@@ -277,7 +277,6 @@
                 $electricityInputs.hide();
             }
         } else {
-            $movingInDate.hide();
             $electricityInputs.hide();
             $('.recent-electricity-bill').hide();
         }

@@ -233,7 +233,7 @@
                 navigationId: steps.startStep.navigationId
             },
             {
-                label: 'Contact details',
+                label: 'Preferences',
                 navigationId: steps.contactStep.navigationId
             },
             {
@@ -281,13 +281,16 @@
                     actionStep = "energy household";
                     break;
                 case 1:
+                    actionStep = "energy preferences";
+                    break;
+                case 2:
                     if (special_case === true) {
                         actionStep = 'energy more info';
                     } else {
                         actionStep = 'energy choose';
                     }
                     break;
-                case 2:
+                case 3:
                     actionStep = "energy your details";
                     break;
             }
