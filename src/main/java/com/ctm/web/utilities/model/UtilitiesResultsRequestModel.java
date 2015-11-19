@@ -343,8 +343,13 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 			} else if (householdType.equals("High")) {
 				setElectricityHouseholdType(HouseholdType.High);
 			}
-		} else {
-			setElectricityMeterType(ElectricityMeterType.findByCode(request.getParameter("utilities_estimateDetails_electricity_meter")));
+		}
+
+		String meterType;
+		meterType = request.getParameter("utilities_estimateDetails_gas_usage");
+
+		if(meterType != null) {
+			setElectricityMeterType(ElectricityMeterType.findByCode(meterType));
 		}
 
 		householdType = request.getParameter("utilities_estimateDetails_gas_usage");
