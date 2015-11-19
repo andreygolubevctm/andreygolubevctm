@@ -39,7 +39,7 @@
 		<field:flexi_contact_number xpath="${fieldXPath}"
 									maxLength="20"
 									required="${false}"
-									labelName="best number for the insurance provider to contact you on (You will only be contacted by phone if you answer 'Yes' to the 'OK to call' question on this screen)"
+									labelName="best number for the insurance provider to contact you to discuss your insurance needs"
 									validationAttribute=" data-rule-validateOkToCall='true' "/>
 	</form_new:row>
 

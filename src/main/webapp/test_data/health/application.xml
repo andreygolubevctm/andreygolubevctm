@@ -3,10 +3,7 @@
 	<contactDetails>
 		<firstName>Test</firstName>
 		<lastname>User</lastname>
-		<contactNumber>
-
-		</contactNumber>
-		<flexiContactNumber>(0404) 123 123</flexiContactNumber>
+		<flexiContactNumber>04 0412 3123</flexiContactNumber>
 		<email>e@fake.org</email>
 		<call>N</call>
 	</contactDetails>

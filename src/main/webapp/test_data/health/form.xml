@@ -6,12 +6,12 @@
 	<contactDetails>
 		<name>Guybrush</name>
 		<contactNumber>
-			<mobileinput>(0404) 000 000</mobileinput>
-			<mobile>0404000000</mobile>
+			<mobileinput>0404 040 000</mobileinput>
+			<mobile>0404040000</mobile>
 			<otherinput>(07) 3333 4444</otherinput>
 			<other>0733334444</other>
 		</contactNumber>
-		<flexiContactNumber>(0404) 123 123</flexiContactNumber>
+		<flexiContactNumber>0404 123 123</flexiContactNumber>
 		<email>preload.testing@comparethemarket.com.au</email>
 		<optInEmail>Y</optInEmail>
 		<call>Y</call>

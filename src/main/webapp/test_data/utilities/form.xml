@@ -63,6 +63,8 @@
 			<title>Mr</title>
 			<lastName>User</lastName>
 			<dob>31/12/1979</dob>
+			<mobile>0412 341 234</mobile>
+			<mobileinput>0412341234</mobileinput>
 			<address>
 				<streetNum>9</streetNum>
 				<streetSearch>1/516 Pascoe Vale Road, Pascoe Vale, VIC, 3044</streetSearch>

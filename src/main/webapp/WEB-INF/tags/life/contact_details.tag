@@ -36,6 +36,7 @@
 		</form:row>
 
 		<form:row label="Phone number">
+			<%--This should be cleaned up to use Flexi_contact_number when LIFE is refactored--%>
 			<field:contact_telno xpath="${xpath}/contactNumber" required="false" title="phone number"  />
 		</form:row>
 

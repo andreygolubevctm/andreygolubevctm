@@ -29,25 +29,26 @@
                               title="date of birth" />
     </form_new:row>
 
-    <c:set var="fieldXPath" value="${xpath}/mobileNumber" />
+    <c:set var="fieldXPath" value="${xpath}/mobile" />
     <form_new:row label="Mobile number" fieldXpath="${fieldXPath}" className="clear">
-        <field:contact_mobile xpath="${fieldXPath}"
-                             required="false"
-                             className="sessioncamexclude"
-                             placeHolder="04XX XXX XXX"
-                             placeHolderUnfocused="04XX XXX XXX"
-                             labelName="mobile phone number." additionalAttributes=" data-rule-validateEnteredPhoneNumber='true' data-msg-validateEnteredPhoneNumber='Please enter your mobile phone number or other number.'" />
+        <field:flexi_contact_number xpath="${fieldXPath}"
+                                    maxLength="20"
+                                    required="false"
+                                    className="contactField sessioncamexclude"
+                                    labelName="mobile number"
+                                    phoneType="Mobile"
+                                    requireOnePlusNumber="true"/>
     </form_new:row>
 
-    <c:set var="fieldXPath" value="${xpath}/otherPhoneNumber" />
+    <c:set var="fieldXPath" value="${xpath}/other" />
     <form_new:row label="Other phone number" fieldXpath="${fieldXPath}" className="clear">
-        <field:contact_telno xpath="${fieldXPath}"
-                             required="false"
-                             className="sessioncamexclude"
-                             isLandline="true"
-                             placeHolder="(0X) XXXX XXXX"
-                             placeHolderUnfocused="(0X) XXXX XXXX"
-                             labelName="other phone number." />
+        <field:flexi_contact_number xpath="${fieldXPath}"
+                                    maxLength="20"
+                                    required="false"
+                                    className="contactField sessioncamexclude"
+                                    labelName="other number"
+                                    phoneType="LandLine"
+                                    requireOnePlusNumber="true"/>
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/email" />

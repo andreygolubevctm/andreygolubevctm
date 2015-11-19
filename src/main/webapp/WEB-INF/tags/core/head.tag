@@ -261,7 +261,7 @@
 				})
 			});
 
-			$('.anyPhoneType' ).each( function() {
+			$('.flexiphone' ).each( function() {
 				setPhoneMask($(this));
 				$(this).keyup(function(event) {
 					setPhoneMask($(this));
