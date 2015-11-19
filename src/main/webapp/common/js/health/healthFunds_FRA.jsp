@@ -32,7 +32,7 @@ var healthFunds_FRA = {
             } else {
                 messageField = healthFunds_FRA.$policyDateBankMessage;
             }
-            meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(messageField, $('#health_payment_details_start').val(), [1,15], 7);
+            messageField.text('Your payment will be deducted on the policy start date');
         });
 
         <%--change age of dependants and school--%>

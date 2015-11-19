@@ -12,6 +12,7 @@ GMH
 var healthFunds_GMH = {
     $policyDateHiddenField : $('.health_details-policyDate'),
     $policyDateCreditMessage : $('.health_credit-card-details_policyDay-message'),
+    $policyDateBankMessage : $('.health_bank-details_policyDay-message'),
     paymentDayChange : function(value) {
         healthFunds_GMH.$policyDateHiddenField.val(value);
     },
@@ -50,12 +51,13 @@ var healthFunds_GMH = {
 
         <%--selections for payment date--%>
         $('#update-premium').on('click.GMH', function(){
+            var messageField = null;
             if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
-                meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(healthFunds_GMH.$policyDateCreditMessage, $('#health_payment_details_start').val(), [1], 7);
+                messageField = healthFunds_GMH.$policyDateCreditMessage;
+            } else {
+                messageField = healthFunds_GMH.$policyDateBankMessage;
             }
-            else {
-                meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 14, true, true);
-            }
+            messageField.text('Your payment will be deducted on the policy start date');
         });
 
     },
