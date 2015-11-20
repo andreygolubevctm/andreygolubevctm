@@ -26,10 +26,12 @@ public class ChangeOverRebatesDao {
 			// Execute the stored procedure for message details
 			//
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT multiplier as currentMultiplier, (SELECT multiplier FROM `ctm`.`health_changeover_rebates` WHERE id = rebates.id + 1) as futureMultiplier, " +
-						"effectiveStart " +
-						"FROM `ctm`.`health_changeover_rebates` rebates " +
-						"WHERE ? >= effectiveStart "
+					"SELECT multiplier as currentMultiplier, " +
+						"(SELECT multiplier FROM `ctm`.`health_changeover_rebates` WHERE id = (SELECT min(id) " +
+						"            FROM `ctm`.`health_changeover_rebates` WHERE id > rebates.id)) as futureMultiplier, " +
+						"            effectiveStart " +
+						"            FROM `ctm`.`health_changeover_rebates` rebates " +
+						"            WHERE ? >= effectiveStart ORDER BY id DESC LIMIT 1"
 			);
 			stmt.setDate(1, new java.sql.Date(commencementDate.getTime()));
 
