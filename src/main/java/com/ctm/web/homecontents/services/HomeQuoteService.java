@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.logging.XMLOutputWriter.REQ_OUT;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HOME;
 import static java.util.Arrays.asList;

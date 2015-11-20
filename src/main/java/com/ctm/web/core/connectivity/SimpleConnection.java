@@ -1,7 +1,9 @@
 package com.ctm.web.core.connectivity;
 
 
-import com.ctm.web.core.logging.CorrelationIdUtils;
+import com.ctm.commonlogging.context.LoggingVariables;
+import com.ctm.commonlogging.correlationid.CorrelationIdUtils;
+import com.ctm.interfaces.common.types.CorrelationId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,8 +11,9 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class SimpleConnection {
 
@@ -37,7 +40,8 @@ public class SimpleConnection {
 			URL u = new URL(url);
 			HttpURLConnection c = (HttpURLConnection) u.openConnection();
 			if(hasCorrelationId) {
-				CorrelationIdUtils.setCorrelationIdHeader(c);
+				final Optional<CorrelationId> correlationId = LoggingVariables.getCorrelationId();
+				correlationId.ifPresent(cId -> CorrelationIdUtils.setCorrelationIdRequestHeader(c, cId));
 			}
 			c.setRequestMethod(getRequestMethod());
 			c.setRequestProperty("Content-length", "0");

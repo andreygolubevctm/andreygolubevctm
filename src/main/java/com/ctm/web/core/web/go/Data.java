@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 // TODO: Auto-generated Javadoc
 /**

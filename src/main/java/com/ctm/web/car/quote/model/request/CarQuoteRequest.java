@@ -1,7 +1,7 @@
 package com.ctm.web.car.quote.model.request;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
