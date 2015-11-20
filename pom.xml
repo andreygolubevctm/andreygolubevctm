@@ -229,6 +229,7 @@
             <groupId>com.ctm.common</groupId>
             <artifactId>common-logging</artifactId>
             <version>${common-logging.version}</version>
+            <classifier>BER-22</classifier>
         </dependency>
 
         <dependency>
