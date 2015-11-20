@@ -20,7 +20,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		Low, Medium, High
 	}
 
-	public enum ElectricityMeterType  {
+	public  enum ElectricityMeterType  {
 		Single ("Single","S"),
 		TwoRate ("Two-rate","T"),
 		TimeOfUse ("Time of Use","M");
@@ -45,7 +45,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 					return t;
 				}
 			}
-			return null;
+			return ElectricityMeterType.Single;
 		}
 	}
 
@@ -232,16 +232,19 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 			json.put("el_bill_amount", getElectricityBillAmount());
 			json.put("el_bill_days", getElectricityBillDays());
-			ElectricityMeterType meterType = getElectricityMeterType();
+
+			//ElectricityMeterType meterType = getElectricityMeterType();
+			ElectricityMeterType meterType = ElectricityMeterType.Single;
+
 			json.put("el_meter_type", meterType.getLabel());
 
 			json.put("el_peak_usage", getElectricityPeakUsage());
-			if(getElectricityMeterType() == ElectricityMeterType.TwoRate || getElectricityMeterType() == ElectricityMeterType.TimeOfUse) {
+			if(meterType == ElectricityMeterType.TwoRate || meterType == ElectricityMeterType.TimeOfUse) {
 				json.put("el_controlled_load_usage", getElectricityOffpeakUsage());
 			} else {
 				json.put("el_controlled_load_usage", 0);
 			}
-			if(getElectricityMeterType() == ElectricityMeterType.TimeOfUse) {
+			if(meterType == ElectricityMeterType.TimeOfUse) {
 				json.put("el_shoulder_usage", getElectricityShoulderUsage());
 			} else {
 				json.put("el_shoulder_usage", 0);
@@ -346,7 +349,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		}
 
 		String meterType;
-		meterType = request.getParameter("utilities_estimateDetails_gas_usage");
+		meterType = request.getParameter("utilities_estimateDetails_electricity_meter");
 
 		if(meterType != null) {
 			setElectricityMeterType(ElectricityMeterType.findByCode(meterType));

@@ -28,7 +28,7 @@
         <field_new:array_radio xpath="${fieldXPath}"
                                required="true"
                                className="col-md-12"
-                               items="Low=<h3>Low</h3><span>1 to 2 people</span>,Medium=<h3>Medium</h3><span>3 to 4 people</span>,High=<h3>High</h3><span>5 or more people</span>"
+                               items="Low=<h3>Low</h3><span>1 to 2 people</span><span>1 to 2 bedrooms</span><span>Washing weeking<br>little heating and cooking</span><span>Employed full-time<br>spend little time at home</span>,Medium=<h3>Medium</h3><span>3 to 4 people</span><span>3 bedrooms</span><span>Washing a few times a week<br>Rregular heating and cooking</span><span>Employed full-time<br>children at school<br>home most evenings and weekends</span>,High=<h3>High</h3><span>4 to 5+ people</span><span>4+ bedrooms</span><span>Washing daily<br>Little heating and cooking. Multiple TVs and appliances</span><span>Home evenings weekends and some days</span>"
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="what level best describes your electricity usage." />
     </form_new:row>
@@ -125,7 +125,7 @@
         <field_new:array_radio xpath="${fieldXPath}"
                                required="true"
                                className="col-md-12"
-                               items="Low=<h3>Low</h3><span>1 to 2 people</span>,Medium=<h3>Medium</h3><span>3 to 4 people</span>,High=<h3>High</h3><span>5 or more people</span>"
+                               items="Low=<h3>Low</h3><span>1 to 2 people</span><span>Gas heating cooking occasionally small hot water service</span>,Medium=<h3>Medium</h3><span>3 to 4 people</span><span>Gas heating cooking regularly. Medium hto water service</span>,High=<h3>High</h3><span>4 to 5+ people</span><span>Gas heating cooking constantly. Large hot water service</span>"
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="what level best describes your gas usage." />
     </form_new:row>

@@ -276,6 +276,10 @@
             } else {
                 $electricityInputs.hide();
             }
+
+            if (movingIn === 'Y') {
+                $('.recent-electricity-bill').hide();
+            }
         } else {
             $electricityInputs.hide();
             $('.recent-electricity-bill').hide();
@@ -296,6 +300,10 @@
                 }
             } else {
                 $gasInputs.hide();
+            }
+
+            if (movingIn === 'Y') {
+                $('.recent-gas-bill').hide();
             }
         } else {
             $gasInputs.hide();

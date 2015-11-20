@@ -40,6 +40,8 @@
             Costs and savings include GST & are effective as at <fmt:formatDate value="${now}" pattern="dd/MM/yyyy"/>.
         </p>
         <core:clear/>
+        <a href="javascript:;" class="btn btn-primary btn-change-type"> Change fuel type</a>
+        <utilities_new:change_type/>
 
         <div class="featuresFooterPusher"></div>
     </div>
@@ -55,7 +57,7 @@
         {{ logo = logo(obj); }}
 
         {{ var yearlySavingsLabel = yearlySavingsValue < 0 ? "extra cost up to $" + (yearlySavingsValue*-1) : "$" + yearlySavingsValue.toFixed(2); }}
-        {{ var estimatedCostLabel = "estimated cost"; }}
+        {{ var estimatedCostLabel = "$" + estimatedCostValue.toFixed(2); }}
         {{ var showYearlySavings = meerkat.modules.utilitiesResults.showYearlySavings(); }}
         {{ var showEstimatedCost = meerkat.modules.utilitiesResults.showEstimatedCost(); }}
 
@@ -197,7 +199,7 @@
                                     </div>
                                     {{ if(showEstimatedCost === true) { }}
                                     <div class="col-xs-6 estimatedCostContainer">
-                                        <span class="estimatedCost">{{= estimatedCostLabel }}</span>
+                                        <span class="estimatedCost">{{= estimatedCostValue }}</span>
                                         {{ if(estimatedCostValue >= 0) { }}
                                         <span class="estimatedCostTitle">Cost</span>
                                         {{ } }}

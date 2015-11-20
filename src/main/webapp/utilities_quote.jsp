@@ -105,6 +105,11 @@
                                     <span class="icon"></span> <span>Savings <br class="hidden-sm hidden-md" />up to</span>
                                 </a>
                             </li>
+                            <li class="hidden col-sm-3 col-lg-2 colEstimatedCost">
+                                <a href="javascript:;" data-sort-type="estimatedCostValue" data-sort-dir="asc">
+                                    <span class="icon"></span> <span>Estimated Cost</span>
+                                </a>
+                            </li>
                             <li class="col-sm-4 col-lg-2 active colTotalDiscounts">
                                 <a href="javascript:;" data-sort-type="totalDiscountValue" data-sort-dir="desc">
                                     <span class="icon"></span> <span>Total Available <br class="hidden-sm hidden-md" />Discounts</span>
