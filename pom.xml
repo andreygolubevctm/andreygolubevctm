@@ -566,6 +566,16 @@
                         <artifactId>jspc-compiler-tomcat7</artifactId>
                         <version>${jspc-maven-plugin.version}</version>
                     </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-jasper</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-annotations-api</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
                 </dependencies>
             </plugin>
 
