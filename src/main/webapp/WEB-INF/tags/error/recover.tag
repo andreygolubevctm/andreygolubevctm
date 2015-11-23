@@ -32,15 +32,17 @@ ${logger.info('core:recover START. {},{}', log:kv('quoteType',quoteType ), log:k
 
 <%-- Log the error into the database, as this is an error recovery --%>
 <c:catch var="error">
-	<sql:update var="results" dataSource="jdbc/ctm">
+	<sql:update var="results" dataSource="${datasource:getDataSource()}">
 		INSERT INTO aggregator.error_log
-		  (styleCodeId,id, property, origin, message, code, datetime)
+		  (id, styleCodeId, property, origin, message, code, transactionId, datetime)
 		VALUES
-		  (NULL, '${pageSettings.getBrandCode()}', ?, ?, ?, NOW());
+		  (NULL, ?, ?, ?, ?, ?, ?, NOW());
 		<sql:param value="${styleCodeId}" />
+		<sql:param value="${pageSettings.getBrandCode()}" />
 		<sql:param value="${origin}" />
 		<sql:param value="${message}" />
 		<sql:param value="${code}" />
+		<sql:param value="${data['current/transactionId']}" />
 	</sql:update>
 </c:catch>
 <c:if test="${error}">

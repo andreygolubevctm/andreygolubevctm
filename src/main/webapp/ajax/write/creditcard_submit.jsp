@@ -12,7 +12,7 @@
 
 <c:if test="${competitionEnabledSetting eq 'Y' and optedInForComp eq true}">
 
-	<jsp:useBean id="creditCardService" class="com.ctm.services.creditcards.CreditCardService" scope="page" />
+	<jsp:useBean id="creditCardService" class="com.ctm.web.creditcards.services.creditcards.CreditCardService" scope="page" />
 	<c:set var="serviceResponse" value="${creditCardService.validate(pageContext.request, data)}" />
 
 	<c:if test="${creditCardService.isValid()}">

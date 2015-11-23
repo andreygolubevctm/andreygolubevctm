@@ -13,7 +13,7 @@
 <%@ attribute name="emailAddress"	required="false" rtexprvalue="true"	description="" %>
 <%@ attribute name="quoteType"		required="false" rtexprvalue="true"	description="The vertical this quote is associated with" %>
 
-<jsp:useBean id="sessionDataUtils" class="com.ctm.utils.SessionDataUtils" scope="page" />
+<jsp:useBean id="sessionDataUtils" class="com.ctm.web.core.utils.SessionDataUtils" scope="page" />
 
 <c:set var="serverIp"><%
 	String ip = request.getLocalAddr();
@@ -76,9 +76,9 @@
 		<go:setData dataVar="data" value="${requestedTransaction}" xpath="current/previousTransactionId" />
 
 		<%-- Start by getting the transaction in question --%>
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
-		<sql:query var="getTransaction" dataSource="jdbc/ctm">
+		<sql:query var="getTransaction" dataSource="${datasource:getDataSource()}">
 			SELECT `ProductType`,`EmailAddress`,`styleCodeId`,`styleCode`,`rootId`
 			FROM aggregator.transaction_header
 			WHERE TransactionId = ? AND styleCodeId = ?
@@ -109,7 +109,7 @@
 
 				<c:catch var="error">
 					<%-- New Transaction Header using the older values to help populate--%>
-					<sql:update dataSource="jdbc/ctm">
+					<sql:update dataSource="${datasource:getDataSource()}">
 						INSERT INTO aggregator.transaction_header
 						(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCodeId, styleCode, advertKey,sessionId,status)
 						values (
@@ -239,7 +239,7 @@
 		<c:set var="sessionId" 		value="${pageContext.session.id}" />
 		<c:set var="status" 		value="" />
 		<c:catch var="error">
-			<sql:update dataSource="jdbc/ctm">
+			<sql:update dataSource="${datasource:getDataSource()}">
 				INSERT INTO aggregator.transaction_header
 				(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCodeId,styleCode,advertKey,sessionId,status,prevRootId)
 				values (
@@ -263,7 +263,7 @@
 			</sql:update>
 
 			<%-- Retrieve the last result to update rootId with the transaction id --%>
-			<sql:query var="results" dataSource="jdbc/ctm">
+			<sql:query var="results" dataSource="${datasource:getDataSource()}">
 				SELECT transactionID
 				FROM aggregator.transaction_header
 				WHERE sessionid = ?
@@ -285,7 +285,7 @@
 				</c:when>
 				<c:otherwise>
 					<c:set var="tranId" value="${results.rows[0].transactionID}" />
-					<sql:update dataSource="jdbc/ctm">
+					<sql:update dataSource="${datasource:getDataSource()}">
 						UPDATE aggregator.transaction_header
 						SET rootId = ?
 						WHERE TransactionId = ?;
@@ -321,4 +321,5 @@
 	</c:otherwise>
 </c:choose>
 ${logger.debug("Get transaction id complete. {},{}", log:kv('rootId', data.current.rootId), log:kv('method',method ))}
-{"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}
+<c:set var="transactionIdResponse">{"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}</c:set>
+${sessionDataService.updateTokenWithNewTransactionIdResponse(pageContext.request, transactionIdResponse, data.current.transactionId)}

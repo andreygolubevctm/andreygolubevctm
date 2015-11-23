@@ -177,13 +177,7 @@
 
 		var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
 
-		var quoteNumber;
-		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
-			quoteNumber = product.quoteNumber;
-		} else {
-			quoteNumber = product.leadNo;
-		}
-
+		var quoteNumber = product.quoteNumber;
 
 		var defaultData = {
 			state: $("#quote_riskAddress_state").val(),
@@ -245,7 +239,7 @@
 	function eventSubscriptions() {
 
 		meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function bridgingPageHashChange(event) {
-			if (meerkat.modules.deviceMediaState.get() != 'xs' && event.hash.indexOf('results/moreinfo') == -1) {
+			if (meerkat.modules.deviceMediaState.get() != 'xs' && event.hash.indexOf('/moreinfo') == -1) {
 				meerkat.modules.moreInfo.hideTemplate($bridgingContainer);
 			}
 		});
@@ -462,33 +456,17 @@
 	 * Retrieves the data used for the bridging page.
 	 */
 	function retrieveExternalCopy(product) {
-		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
-			return meerkat.modules.comms.get({
-				url: "rest/car/more_info/get.json",
-				cache: true,
-				data: {
-					code: product.productId
-				},
-				errorLevel: "silent",
-				onSuccess: function (result) {
-					meerkat.modules.moreInfo.setDataResult(result);
-				}
-			});
-		} else {
-			return meerkat.modules.comms.get({
-				url: "ajax/json/get_scrapes.jsp",
-				cache: true,
-				data: {
-					type: 'carBrandScrapes',
-					code: product.productId,
-					group: 'car'
-				},
-				errorLevel: "silent",
-				onSuccess: function (result) {
-					meerkat.modules.moreInfo.setDataResult(result);
-				}
-			});
-		}
+		return meerkat.modules.comms.get({
+			url: "rest/car/more_info/get.json",
+			cache: true,
+			data: {
+				code: product.productId
+			},
+			errorLevel: "silent",
+			onSuccess: function (result) {
+				meerkat.modules.moreInfo.setDataResult(result);
+			}
+		});
 	}
 
 	/**
@@ -499,12 +477,8 @@
 	 */
 	function onClickApplyNow(product, applyNowCallback) {
 
-		var is_autogeneral = false;
-		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
-			is_autogeneral = product.serviceName.search(/agis_/i) === 0;
-		} else {
-			is_autogeneral = product.service.search(/agis_/i) === 0;
-		}
+		var is_autogeneral = product.serviceName.search(/agis_/i) === 0;
+
 
 		if(hasSpecialConditions === true && specialConditionContent.length > 0 && !is_autogeneral) {
 
@@ -552,8 +526,6 @@
 	 */
 	function proceedToInsurer(product, modalId, applyNowCallback) {
 
-		var toogleNewWebService = meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote;
-
 		if (modalId) {
 			$('#'+modalId).modal('hide');
 		}
@@ -563,23 +535,14 @@
 		}
 
 		if (_.isEmpty(product.quoteUrl)) {
-			if (toogleNewWebService) {
-				meerkat.modules.errorHandling.error({
-					errorLevel: 'warning',
-					message: "An error occurred. Sorry about that!<br /><br /> To purchase this policy, please contact the provider " + (product.contact.phoneNumber !== '' ? " on " + product.contact.phoneNumber : "directly") + " quoting " + product.quoteNumber + ", or select another policy.",
-					page: 'carMoreInfo.js:proceedToInsurer',
-					description: "Insurer did not provide quoteUrl in results object.",
-					data: product
-				});
-			} else {
-				meerkat.modules.errorHandling.error({
-					errorLevel:		'warning',
-					message:		"An error occurred. Sorry about that!<br /><br /> To purchase this policy, please contact the provider " + (product.telNo !== '' ? " on " + product.telNo : "directly") + " quoting " + product.leadNo + ", or select another policy.",
-					page:			'carMoreInfo.js:proceedToInsurer',
-					description:	"Insurer did not provide quoteUrl in results object.",
-					data:			product
-				});
-			}
+			meerkat.modules.errorHandling.error({
+				errorLevel: 'warning',
+				message: "An error occurred. Sorry about that!<br /><br /> To purchase this policy, please contact the provider " + (product.contact.phoneNumber !== '' ? " on " + product.contact.phoneNumber : "directly") + " quoting " + product.quoteNumber + ", or select another policy.",
+				page: 'carMoreInfo.js:proceedToInsurer',
+				description: "Insurer did not provide quoteUrl in results object.",
+				data: product
+			});
+
 			// stops the propagation to the links event handler.
 			return false;
 		}
@@ -587,64 +550,33 @@
 		var leadFeedInfoArr = product.leadfeedinfo.split("||");
 		var leadFeed = false;
 		if(!_.isEmpty(leadFeedInfoArr[0])) { // if empty then user hasn't opted in for call
-			if (toogleNewWebService) {
-				leadFeed = {
-					data: {
-						vertical: meerkat.site.vertical,
-						phonecallme: "NoSaleCall",
-						productId: product.productId,
-						clientName: leadFeedInfoArr[0],
-						phoneNumber: leadFeedInfoArr[1],
-						clientNumber: product.quoteNumber,
-						partnerReference: meerkat.modules.transactionId.get(),
-						brand: product.productId.split('-')[0],
-						state: $('#quote_riskAddress_state').val()
-					},
-					settings: {
-						errorLevel: "silent"
-					}
-				};
-			} else {
-				leadFeed = {
-					data: {
-						vertical: meerkat.site.vertical,
-						phonecallme: "NoSaleCall",
-						productId: product.productId,
-						clientName: leadFeedInfoArr[0],
-						phoneNumber: leadFeedInfoArr[1],
-						clientNumber: product.leadNo,
-						partnerReference: meerkat.modules.transactionId.get(),
-						brand: product.productId.split('-')[0],
-						state: $('#quote_riskAddress_state').val()
-					},
-					settings: {
-						errorLevel: "silent"
-					}
-				};
-			}
+			leadFeed = {
+				data: {
+					vertical: meerkat.site.vertical,
+					phonecallme: "NoSaleCall",
+					productId: product.productId,
+					clientName: leadFeedInfoArr[0],
+					phoneNumber: leadFeedInfoArr[1],
+					clientNumber: product.quoteNumber,
+					partnerReference: meerkat.modules.transactionId.get(),
+					brand: product.productId.split('-')[0],
+					state: $('#quote_riskAddress_state').val()
+				},
+				settings: {
+					errorLevel: "silent"
+				}
+			};
 		}
 
-		if (toogleNewWebService) {
-			meerkat.modules.partnerTransfer.transferToPartner({
-				encodeTransferURL: true,
-				product: product,
-				applyNowCallback: applyNowCallback,
-				productName: product.productName,
-				productBrandCode: product.brandCode,
-				brand: product.providerProductName,
-				noSaleLead: leadFeed
-			});
-		} else {
-			meerkat.modules.partnerTransfer.transferToPartner({
-				encodeTransferURL: true,
-				product: product,
-				applyNowCallback: applyNowCallback,
-				productName: product.headline.name,
-				productBrandCode: product.brandCode,
-				brand: product.productDes,
-				noSaleLead: leadFeed
-			});
-		}
+		meerkat.modules.partnerTransfer.transferToPartner({
+			encodeTransferURL: true,
+			product: product,
+			applyNowCallback: applyNowCallback,
+			productName: product.productName,
+			productBrandCode: product.brandCode,
+			brand: product.providerProductName,
+			noSaleLead: leadFeed
+		});
 
 		return true;
 	}
@@ -680,28 +612,14 @@
 	 * Tracks a click on call direct or call back.
 	 */
 	function trackCallEvent(type, product) {
-
-
-		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
-			meerkat.modules.partnerTransfer.trackHandoverEvent({
-				product: product,
-				type: type,
-				quoteReferenceNumber: product.quoteNumber,
-				productID: product.productId,
-				productName: product.productName,
-				productBrandCode: product.brandCode
-			}, false, false);
-		} else {
-			meerkat.modules.partnerTransfer.trackHandoverEvent({
-				product: product,
-				type: type,
-				quoteReferenceNumber: product.leadNo,
-				productID: product.productId,
-				productName: product.headline.name,
-				productBrandCode: product.brandCode
-			}, false, false);
-		}
-
+		meerkat.modules.partnerTransfer.trackHandoverEvent({
+			product: product,
+			type: type,
+			quoteReferenceNumber: product.quoteNumber,
+			productID: product.productId,
+			productName: product.productName,
+			productBrandCode: product.brandCode
+		}, false, false);
 	}
 
 	/**
@@ -716,22 +634,11 @@
 
 	function requestTracking() {
 
-		var settings;
-		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
-			settings = {
-				additionalTrackingData: {
-					productName: meerkat.modules.moreInfo.getOpenProduct().productName
-				}
-			};
-		} else {
-			settings = {
-				additionalTrackingData: {
-					productName: meerkat.modules.moreInfo.getOpenProduct().headline.name
-				}
-			};
-		}
-
-
+		var settings = {
+			additionalTrackingData: {
+				productName: meerkat.modules.moreInfo.getOpenProduct().productName
+			}
+		};
 		meerkat.modules.moreInfo.updateSettings(settings);
 
 		trackProductView();
@@ -740,31 +647,16 @@
 	/**
 	 *  Render the scrapes onto the placeholders in the page.
 	 */
-	function renderScrapes(data) {
+	function renderScrapes(product) {
 
-		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
+		$("#inclusions").html(product.inclusions);
+		$("#extras").html(product.optionalExtras);
+		$("#benefits").html(product.benefits);
 
-			product = data;
-			$("#inclusions").html(product.inclusions);
-			$("#extras").html(product.optionalExtras);
-			$("#benefits").html(product.benefits);
-
-		} else {
-			scrapeData = data;
-			if (typeof scrapeData != 'undefined' && typeof scrapeData.scrapes != 'undefined' && scrapeData.scrapes.length > 0) {
-				$.each(scrapeData.scrapes, function (key, scrape) {
-					if (scrape.html !== '') {
-						$(scrape.cssSelector).html(scrape.html);
-					}
-				});
-
-			}
-		}
 		// Add the icons, as we only receive li's in the scrape.
 		$('.contentRow li').each(function () {
 			$(this).prepend('<span class="icon icon-angle-right"></span>');
 		});
-
 	}
 
 	/**

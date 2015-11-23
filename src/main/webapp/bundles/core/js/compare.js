@@ -271,20 +271,25 @@
                 if (typeof settings.callbacks.switchMode === 'function') {
                     settings.callbacks.switchMode(previousMode);
                 }
-            } else {
-                var verticalToUse = meerkat.site.vertical.indexOf('lmi') ? 'lmi' : meerkat.site.vertical;
-                if (typeof meerkat.modules[verticalToUse + 'Results'] !== 'undefined' &&
-                    typeof meerkat.modules[verticalToUse + 'Results'].publishExtraSuperTagEvents === 'function') {
-                    meerkat.modules[verticalToUse + 'Results'].publishExtraSuperTagEvents();
-                }
             }
 
             settings.elements.exitCompareButton.addClass('hidden');
+
+            // Collapse hospital and extra sections
+            if (Results.settings.render.features.expandRowsOnComparison) {
+                // Collapse selected items details.
+                $(".featuresHeaders .featuresList > .selectionHolder > .children > .category.expandable.expanded > .content").trigger('click');
+
+                // Collapse hospital and extra sections
+                $(".featuresHeaders .featuresList > .section.expandable.expanded > .content").trigger('click');
+
+            }
 
             // defer the animations to prevent some jarring
             _.defer(function () {
                 unfilterResults();
             });
+
             meerkat.messaging.publish(moduleEvents.EXIT_COMPARE);
         }
 
@@ -304,14 +309,16 @@
             if (typeof settings.callbacks.switchMode === 'function') {
                 settings.callbacks.switchMode("features");
             }
-        } else {
-            var verticalToUse = meerkat.site.vertical.indexOf('lmi') ? 'lmi' : meerkat.site.vertical;
-            if (typeof meerkat.modules[verticalToUse + 'Results'] !== 'undefined' &&
-                typeof meerkat.modules[verticalToUse + 'Results'].publishExtraSuperTagEvents === 'function') {
-                meerkat.modules[verticalToUse + 'Results'].publishExtraSuperTagEvents();
-            }
         }
         filterResults();
+
+        // Expand hospital and extra sections
+        if (Results.settings.render.features.expandRowsOnComparison) {
+            $(".featuresHeaders .featuresList > .section.expandable.collapsed > .content").trigger('click');
+
+            // Expand selected items details.
+            $(".featuresHeaders .featuresList > .selectionHolder > .children > .category.expandable.collapsed > .content").trigger('click');
+        }
 
         //meerkat.modules.address.appendToHash('compare');
 

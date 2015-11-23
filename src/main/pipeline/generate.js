@@ -107,6 +107,9 @@ var generators = {
             console.log("Generated Gulp Task: " + result.task);
         });
     },
+    /**
+     * Create a new
+     */
     module: function() {
         prompt.start();
 
@@ -142,17 +145,23 @@ var generators = {
                 description: "Bundle name",
                 type: "string",
                 required: true
+            },
+            {
+                name: "directory",
+                description: "Directory",
+                type: "string",
+                required: false
             }
         ];
 
         prompt.get(schema, function(err, result){
             if(err) return console.error(err);
 
-            var folderPath = path.join(config.bundles.dir, result.bundle);
+            var folderPath = path.join(config.bundles.dir, result.directory, result.bundle);
 
             var paths = {
                 js: path.join(folderPath, "js"),
-                less: path.join(folderPath, "less"),
+                less: path.join(folderPath, "less")
             };
 
             fileHelper.writeFileToFolder(paths.js, result.bundle + ".js", generateModuleJS(result.bundle));

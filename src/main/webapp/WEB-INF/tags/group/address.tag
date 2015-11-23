@@ -61,7 +61,7 @@
 <form:row label="Suburb" className="halfrow right ${name}_nonStd_street" >
 	<c:choose>
 		<c:when test="${not empty address.postCode}">
-			<sql:query var="result" dataSource="jdbc/ctm">
+			<sql:query var="result" dataSource="${datasource:getDataSource()}">
 				SELECT suburb, count(street) as streetCount, suburbSeq, state, street
 				FROM aggregator.streets
 				WHERE postCode = ?

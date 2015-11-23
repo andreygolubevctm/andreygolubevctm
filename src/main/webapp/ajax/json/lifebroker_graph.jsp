@@ -17,7 +17,8 @@
 </c:set>
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
-<c:import var="config" url="/WEB-INF/aggregator/life/config_lifebroker_graph.xml" />
+<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_lifebroker_graph.xml')}" />
 <go:soapAggregator config = "${config}"
 					transactionId = "${data.current.transactionId}"
 					xml = "${requestXML}"

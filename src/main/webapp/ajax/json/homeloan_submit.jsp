@@ -51,8 +51,8 @@
 
 
 <%-- SUBMIT TO PARTNER --%>
-<jsp:useBean id="appService" class="com.ctm.services.homeloan.HomeLoanOpportunityService" scope="page" />
-<jsp:useBean id="homeloanService" class="com.ctm.services.homeloan.HomeLoanService" scope="page" />
+<jsp:useBean id="appService" class="com.ctm.web.homeloan.services.HomeLoanOpportunityService" scope="page" />
+<jsp:useBean id="homeloanService" class="com.ctm.web.homeloan.services.HomeLoanService" scope="page" />
 <c:set var="secret_key" value="${appService.getSecretKey()}" />
 <c:set var="model" value="${homeloanService.mapParametersToModel(pageContext.getRequest())}" />
 <c:set var="submitResult" value="${appService.submitOpportunity(pageContext.getRequest(), model)}" />
@@ -76,7 +76,7 @@ ${logger.debug('Submit opportunity called. {}', log:kv('submitResult',submitResu
 		<go:setData dataVar="data" xpath="homeloan/confirmationkey" value="${confirmationkey}" />
 
 		<%-- Check that confirmation not already written --%>
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<sql:query var="conf_entry">
 			SELECT KeyID FROM ctm.confirmations WHERE KeyID = ? AND TransID = ? LIMIT 1;
 			<sql:param value="${confirmationkey}" />

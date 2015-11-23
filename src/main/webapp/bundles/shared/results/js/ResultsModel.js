@@ -73,7 +73,7 @@ var ResultsModel = {
 			}
 		}
 
-		Results.model.ajaxRequest = $.ajax({
+		var request = {
 			url: url,
 			data: data,
 			type: "POST",
@@ -83,6 +83,7 @@ var ResultsModel = {
 			success: function(jsonResult){
 
 				Results.model.updateTransactionIdFromResult(jsonResult);
+				meerkat.modules.verificationToken.readTokenFromResponse(jsonResult);
 
 				if( typeof meerkat != 'undefined') {
 					if (jsonResult.hasOwnProperty('results')) {
@@ -122,7 +123,7 @@ var ResultsModel = {
 							});
 						}
 
-					} else if(typeof jsonResult.error !== 'undefined' && jsonResult.error.type == "validation") {
+					}  else if(typeof jsonResult.error !== 'undefined' && jsonResult.error.type == "validation") {
 						if (typeof Loading !== "undefined") {
 							Loading.hide();
 						}
@@ -134,8 +135,9 @@ var ResultsModel = {
 							validationErrors: jsonResult.error.errorDetails.validationErrors,
 							startStage: 'start'
 						});
-					}
-					else if( !jsonResult || typeof( Object.byString( jsonResult, Results.settings.paths.results.rootElement ) ) == "undefined" ){
+					} else if(typeof jsonResult.error !== 'undefined') {
+						meerkat.modules.verificationToken.readIfTokenError(jsonResult.error);
+					} else if( !jsonResult || typeof( Object.byString( jsonResult, Results.settings.paths.results.rootElement ) ) == "undefined" ){
 						Results.model.handleFetchError( jsonResult, "Returned results did not have the expected format" );
 					}
 					else {
@@ -148,7 +150,7 @@ var ResultsModel = {
 					Results.model.handleFetchError( data, "Try/Catch fail on success: "+e.message );
 				}
 
-				
+
 			},
 			error: function(jqXHR, txt, errorThrown) {
 				Results.model.ajaxRequest = false;
@@ -163,7 +165,9 @@ var ResultsModel = {
 				Results.model.ajaxRequest = false;
 				Results.model.finishResultsFetch();
 			}
-					});
+		};
+		meerkat.modules.verificationToken.addTokenToRequest(request);
+		Results.model.ajaxRequest = $.ajax(request);
 
 	},
 

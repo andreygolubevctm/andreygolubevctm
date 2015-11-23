@@ -11,7 +11,6 @@ DELETE FROM ctm.product_properties_text WHERE productId IN(SELECT productId FROM
 
 DELETE FROM ctm.product_master where productcat='CREDITCARD';
 
-
 INSERT INTO ctm.product_master (ProductCat,ProductCode,ProviderId, ShortTitle, LongTitle,EffectiveStart,EffectiveEnd,Status) VALUES('CREDITCARD','AMEX-PE',284,'The American Express&reg; Platinum Edge Credit Card','The American Express&reg; Platinum Edge Credit Card','2015-09-28','2040-12-31','');
 SET @product_id = LAST_INSERT_ID();
 DELETE FROM ctm.product_properties WHERE productid = @product_id;
@@ -131,7 +130,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points-type
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-annual-fee-period',0,NULL,'',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-rate',0,0.99,'0.99%',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'*Get the rewards you deserve faster*
-Receive up to 50,000 bonus Velocity Points when you apply by 2nd February 2016, are approved and spend $1000 within 3 months.',NULL,'2015-09-28','2040-12-31','',0);
+-Receive 50,000 bonus Velocity Points when you apply by 9th November 2015, are approved and spend $500 on your new Card within the first 3 months1. Card Members who currently hold or who have previously held any other Card product offered by American Express Australia Limited in the preceding 12 month period are ineligible for this offer.',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-3 Velocity Points per dollar spent on Virgin Australia and restaurants Australia-wide
 -2 Velocity Points per dollar spent on airlines, accommodation and in foreign currency
 -1 Velocity Point per dollar spent on everything else, except those listed in 0.5 points
@@ -143,7 +142,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,3
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'american-express-velocity-platinum',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'*Get the rewards you deserve faster*
-Receive up to 50,000 bonus Velocity Points when you apply by 2nd February 2016, are approved and spend $1000 within 3 months.',NULL,'2015-09-28','2040-12-31','',0);
+-Receive 50,000 bonus Velocity Points when you apply by 9th November 2015, are approved and spend $500 on your new Card within the first 3 months1. Card Members who currently hold or who have previously held any other Card product offered by American Express Australia Limited in the preceding 12 month period are ineligible for this offer.',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'interest-free-days',0,55.0,'55',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'product-type',0,0,'Platinum',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'foreign-exchange-fees',0,1,'Yes',NULL,'2015-09-28','2040-12-31','',0);
@@ -319,7 +318,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'card-class',0,0,'Visa',NU
 INSERT INTO ctm.product_properties VALUES(@product_id,'extended-warranty',0,1,'Yes',NULL,'2015-09-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'cash-advance-rate',0,21.49,'21.49%',NULL,'2015-09-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,NULL,'',NULL,'2015-09-06','2040-12-31','',0);
-INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-90-day purchase security insurance against loss, theft or breakage. 
+INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-90-day purchase security insurance against loss, theft or breakage.
 -ANZ Falcon&trade;- around the clock monitoring for suspicious transactions.
 -ANZ''s Fraud Money Back Guarantee
 -Worldwide emergency credit card replacement','2015-09-06','2040-12-31','');
@@ -468,7 +467,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points-type
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-annual-fee-period',0,12.0,'12',NULL,'2015-09-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-rate',0,NULL,'',NULL,'2015-09-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'No annual fee for the first year & 25,000 Reward Points when you spend $2,500 on purchases within the first three months',NULL,'2015-09-06','2040-12-31','',0);
-INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-Earn 2 Reward Points for every $1 spent on purchases using your ANZ Rewards American Express card 
+INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-Earn 2 Reward Points for every $1 spent on purchases using your ANZ Rewards American Express card
 -Earn 1.5 Reward Points for every $1 spent on purchases using your ANZ Rewards Visa card.
 -Choose from a wide range of everyday rewards: Shopping vouchers and gift cards, merchandise and gifts, frequent flyer points, travel and accomodation and entertainment.','2015-09-06','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,89.0,'$89',NULL,'2015-09-06','2040-12-31','',0);
@@ -516,7 +515,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points-type
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-annual-fee-period',0,12.0,'12',NULL,'2015-09-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-rate',0,NULL,'',NULL,'2015-09-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'No annual fee for the first year & 50,000 Reward Points when you spend $5,000 on purchases within the first three months',NULL,'2015-09-06','2040-12-31','',0);
-INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-Earn 3 Reward Points for every $1 spent on purchases using your ANZ Rewards American Express card 
+INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-Earn 3 Reward Points for every $1 spent on purchases using your ANZ Rewards American Express card
 -Earn 1.5 Reward Points for every $1 spent on purchases using your ANZ Rewards Visa card.','2015-09-06','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,149.0,'$149',NULL,'2015-09-06','2040-12-31','',0);
 DELETE FROM ctm.category_product_mapping WHERE productId = @product_id;
@@ -566,7 +565,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points-type
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-annual-fee-period',0,12.0,'12',NULL,'2015-09-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-rate',0,NULL,'',NULL,'2015-09-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'No annual fee for the first year & 75,000 Reward Points when you spend $7,500 on purchases within the first three months',NULL,'2015-09-06','2040-12-31','',0);
-INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'- Earn 3 Reward Points for every $1 spent on purchases using your ANZ Rewards American Express card 
+INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'- Earn 3 Reward Points for every $1 spent on purchases using your ANZ Rewards American Express card
 -Earn 2 Reward Points for every $1 spent on purchases using your ANZ Rewards Visa card.
 -ANZ''s highest Reward Point earn rates
 -Choice of Rewards-Including Cashback onto an ANZ credit card or transaction account.','2015-09-06','2040-12-31','');
@@ -719,7 +718,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points-type
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-annual-fee-period',0,12.0,'12',NULL,'2015-09-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-rate',0,NULL,'',NULL,'2015-09-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'No annual fee for the first year & 75,000 Qantas Points when you spend $7,500 on purchases within the first three months',NULL,'2015-09-06','2040-12-31','',0);
-INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-Earn 1.5 point per $1 spent on purchases using the ANZ American Express card 
+INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-Earn 1.5 point per $1 spent on purchases using the ANZ American Express card
 -Earn 1.5 point per $2 spent on purchases using the ANZ Visa card','2015-09-06','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,425.0,'$425',NULL,'2015-09-06','2040-12-31','',0);
 DELETE FROM ctm.category_product_mapping WHERE productId = @product_id;
@@ -857,7 +856,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'card-class',0,0,'MasterCa
 INSERT INTO ctm.product_properties VALUES(@product_id,'extended-warranty',0,1,'Yes',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'cash-advance-rate',0,21.99,'21.99%',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,50000.0,'50000',NULL,'2015-09-28','2040-12-31','',0);
-INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-No foreign transaction fees on online and overseas purchases
+INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-No fees on overseas purchases#
 -Complimentary Credit Card International travel insurance for you and your family
 - International travel insurance for you and your family
 -Up to 12 months extra warranty on top of the manufacturer''s warranty
@@ -872,7 +871,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'intro-annual-fee-period',
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-rate',0,2.99,'2.99%',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,NULL,'',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-Earn 0.75 Qantas Points^ for every $1 you spend on eligible purchases*
--Receive 8,000 introductory bonus Qantas Points*','2015-09-28','2040-12-31','');
+-Receive 50,000 introductory bonus Qantas Points*','2015-09-28','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,160.0,'$160.00',NULL,'2015-09-28','2040-12-31','',0);
 DELETE FROM ctm.category_product_mapping WHERE productId = @product_id;
 INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM category_master WHERE categoryCode IN ('REWARDS','FREQUENTFLYER','PLATINUM','BALANCETRANSFER');

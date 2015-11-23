@@ -5,7 +5,7 @@
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
-<sql:setDataSource dataSource="jdbc/ctm" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 
 <c:set var="type">${fn:trim(param.type)}</c:set>
 <c:set var="code">${fn:trim(param.code)}</c:set>

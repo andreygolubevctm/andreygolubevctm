@@ -1,5 +1,5 @@
-<%@page import="com.ctm.connectivity.SimpleDatabaseConnection"%>
-<%@page import="com.ctm.utils.travel.RatesImporter"%>
+<%@page import="com.ctm.web.core.connectivity.SimpleDatabaseConnection"%>
+<%@page import="com.ctm.web.travel.utils.RatesImporter"%>
 <%@page import="org.jsoup.helper.StringUtil"%>
 <%@page import="java.io.BufferedReader"%>
 <%@page import="java.io.FileNotFoundException"%>

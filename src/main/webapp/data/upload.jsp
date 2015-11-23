@@ -7,7 +7,7 @@
 
 <settings:setVertical verticalCode="GENERIC" />
 
-<sql:setDataSource dataSource="jdbc/ctm" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 
 
 <c:set var="environment">${environmentService.getEnvironmentAsString()}</c:set>
@@ -16,8 +16,8 @@
 <%-- EDIT THIS SHIT ONLY! --%>
 <%-- -------------------- --%>
 <%-- TODO: This would be CARLMI/HOMELMI in new version --%>
-<c:set var="vertical" value="Homelmi" /> <%-- 'Carlmi', 'Homelmi' --%>
-<c:set var="date" value="2015-09-07" /> <%-- Date in the file name --%>
+<c:set var="vertical" value="Carlmi" /> <%-- 'Carlmi', 'Homelmi' --%>
+<c:set var="date" value="2015-10-05" /> <%-- Date in the file name --%>
 <c:set var="debug" value="false"/> <%-- This will stop all Mysql transactions when true --%>
 <c:set var="restart" value="false"/> <%-- Doesn't do much anymore. Used to TRUNCATE TABLE, but was removed... --%>
 <c:set var="step_1" value="true"/>
@@ -141,7 +141,7 @@ body {
 			<c:set var="dimensionsList" value="${fn:split(dimensionsValues, ':')}"/>
 			<c:set var="columnz" value="${dimensionsList[0] - 1}"/> <%-- -1 for index starting at 0 in the data sheet shit --%>
 			<c:set var="rowz" value="${dimensionsList[1] - 1}"/> <%-- -1 for index starting at 0 in the data sheet shit --%>
-			${logger.debug('DIMENSIONS: ${columnz } (+1) x ${rowz } (+1)')}
+			${logger.debug('DIMENSIONS: {} (+1) x {} (+1)', columnz, rowz)}
 			<p>Columnz: ${columnz } (+1)</p>
 			<p>Rowz: ${rowz } (+1)</p>
 
@@ -154,13 +154,13 @@ body {
 				</c:if>
 			</c:forEach>
 			<p>Default Policy Type: ${defaultPolicyTypeName}</p>
-			${logger.debug('Default Policy Type: ${defaultPolicyTypeName}')}
+			${logger.debug('Default Policy Type: {}', defaultPolicyTypeName)}
 
 			<%-- Initial database counts for use later... --%>
 			<sql:query var="categoriesInitialData">
 				SELECT * FROM aggregator.features_category WHERE vertical = ${insertQuotedVertical};
 			</sql:query>
-			${logger.debug('categoriesInitialData: SELECT * FROM aggregator.features_category WHERE vertical = ${insertQuotedVertical};')}
+			${logger.debug('categoriesInitialData: SELECT * FROM aggregator.features_category WHERE vertical = {}', insertQuotedVertical)}
 
 
 			<%-- -------------- --%>
@@ -193,9 +193,9 @@ body {
 				<c:set var="prefix" value="," />
 			</c:forEach>
 			<p>productIdList: '${productIdList}' </p>
-			${logger.debug('productIdList: '${productIdList}' ')}
+			${logger.debug('productIdList: {}', productIdList)}
 			<p>brandIdList: '${brandIdList }'</p>
-			${logger.debug('brandIdList: '${brandIdList }'')}
+			${logger.debug('brandIdList: {}', brandIdList)}
 
 			<%-- -------------- FEATURES MAIN DATA ------------- --%>
 			<c:if test="${not empty productIdList}">
@@ -220,7 +220,7 @@ body {
 				</c:forEach>
 			</c:if>
 			<p>featureIdList: '${featureIdList }'</p>
-			${logger.debug('featureIdList: '${featureIdList }'')}
+			${logger.debug('featureIdList: {}', featureIdList)}
 
 				<%-- THIS SHOULDN'T BE NEEDED - AMS framework doesn't use feature_category to display categories of data on the page.
 				It uses a fake feature row. --%>
@@ -247,7 +247,7 @@ body {
 				</c:forEach>
 			</c:if>
 			<p>categoryIdList: '${categoryIdList }'</p>
-			${logger.debug('categoryIdList: '${categoryIdList }'')}
+			${logger.debug('categoryIdList: {}', categoryIdList)}
 
 			</c:if>
 
@@ -838,12 +838,12 @@ body {
 					<%-- Temporary Truncation of data due to database size - Pending feedback 		--%>
 					<%-- -------------------------------------------------------------------------- --%>
 					<c:if test="${(fn:length(featureValue)) > 45 }">
-						${logger.debug('VALUE: ${fn:length(featureValue)} : ${featureValue}')}
+						${logger.debug('VALUE: {} : {}', fn:length(featureValue), featureValue)}
 						<c:set var="featureValue" value="${fn:substring(featureValue, 0, 43)}'"/>
 					</c:if>
 
 					<c:if test="${(fn:length(featureExtraValue)) > 999 }">
-						${logger.debug('DESCRIPTION: ${fn:length(featureExtraValue)} : ${featureExtraValue}')}
+						${logger.debug('DESCRIPTION: {} : {}', fn:length(featureExtraValue, featureExtraValue)}
 						<c:set var="featureExtraValue" value="${fn:substring(featureExtraValue, 0, 997)}'"/>
 					</c:if>
 					${logger.debug('Done ')}
@@ -851,7 +851,7 @@ body {
 
 					<c:choose>
 						<c:when test="${detailsID eq badData || productID eq badData}">
-							${logger.debug('ERROR: Bad Data with DetailID or ProductID: OMITTING ${featureName} || ${featuresMainArray[0]} [ FID: ${detailsID} | PID: ${productID } ]')}
+							${logger.debug('ERROR: Bad Data with DetailID or ProductID: OMITTING {} || {} [FID: {} | PID: {}]', featureName, featuresMainArray[0], detailsID, productID)}
 							<div class="error">ERROR: Bad Data (Row ${row}, Col ${col}) with DetailID or ProductID: OMITTING ${featureName } || ${featuresMainArray[0] } [ FID: ${detailsID } | PID: ${productID } ]</div>
 						</c:when>
 						<c:otherwise>
@@ -869,7 +869,7 @@ body {
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
-				${logger.debug('Done Col: ${featureName}')}
+				${logger.debug('Done Col: {}', featureName)}
 			</c:forEach>
 			${logger.debug('Done here')}
 			${go:appendString(features_main ,';')}

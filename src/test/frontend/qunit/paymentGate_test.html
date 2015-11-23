@@ -8,13 +8,16 @@
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="vendor/qunit.css">
     <script src="vendor/qunit.js"></script>
+    <script src="../../../main/webapp/assets/libraries/jquery/js/jquery-2.1.4.min.js"></script>
     <script>
-        document.write('<script src="../../../main/webapp/framework/lib/js/modernizr-2.8.3.min.js">\x3C/script>');
-        document.write('<script src="../../../main/webapp/framework/lib/js/underscore-1.8.3.min.js">\x3C/script>');
+        document.write('<script src="../../../main/webapp/assets/js/bundles/plugins/modernizr.min.js">\x3C/script>');
+        document.write('<script src="../../../main/webapp/assets/libraries/underscore-1.8.3.min.js">\x3C/script>');
     </script>
-    <script src="../../../main/webapp\common\js\ipp\jquery.min.js"></script>
     <script src="unit/testBoilerPlate.js"></script>
+    <script>setupBoilerplate('../../../main/webapp/')</script>
+    <script src="../../../main/webapp/assets/libraries/bootstrap/js/modal.js"></script>
     <script src="../../../main/webapp/bundles/shared/paymentGateway/js/paymentGateway.js"></script>
+    <script src="../../../main/webapp/bundles/core/js/comms.js"></script>
     <script src="../../../main/webapp/bundles/health/js/healthPaymentGatewayNAB.js"></script>
 
     <script src="unit/paymentGatewayTest.js"></script>

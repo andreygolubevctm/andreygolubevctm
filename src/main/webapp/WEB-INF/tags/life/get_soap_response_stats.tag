@@ -4,8 +4,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="debugXml" 	required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>
-<%@ tag import="com.ctm.statistics.dao.StatisticDetail" %>
-<%@ tag import="com.ctm.statistics.dao.StatisticDescription" %>
+<%@ tag import="com.ctm.web.core.statistics.model.StatisticDetail" %>
+<%@ tag import="com.ctm.web.core.statistics.model.StatisticDescription" %>
 <%@ tag import="java.util.List" %>
 <%@ tag import="java.util.ArrayList" %>
 

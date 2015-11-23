@@ -14,9 +14,9 @@
 		<agg:get_soap_response_stats debugXml="${debugXml}" />
 	</c:if>
 
-	<sql:setDataSource dataSource="jdbc/ctm"/>
+	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
-	<jsp:useBean id="statisticsService" class="com.ctm.statistics.StatisticsService" scope="request" />
+	<jsp:useBean id="statisticsService" class="com.ctm.web.core.statistics.service.StatisticsService" scope="request" />
 	<c:catch var="error">
 		<c:set var="calcSequence" value="${statisticsService.writeStatistics(statisticDetailsResults , tranId)}" />
 <go:setData dataVar="data" xpath="${rootPath}/calcSequence" value="${calcSequence}" />

@@ -7,7 +7,7 @@
 </c:set>
 
 <%-- Setup variables needed for dual pricing --%>
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.services.health.HealthPriceDetailService" scope="page" />
+<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 <c:if test="${healthAlternatePricingActive eq true}">
 	<c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
@@ -166,19 +166,19 @@
 			<div class="row row-content brochureButtons">
 				{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
 					<div class="col-sm-6 col-xs-12">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download col-xs-12">Download <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
+						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download download-policy-brochure col-xs-12">Download <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
 					</div>
 				{{ } else { }}
 
 					{{ if(typeof hospitalCover !== 'undefined') { }}
 						<div class="col-sm-6 col-xs-12">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download col-xs-12">Download Hospital <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
+							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download download-hospital-brochure col-xs-12">Download Hospital <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
 						</div>
 					{{ } }}
 
 					{{ if(typeof extrasCover !== 'undefined') { }}
 						<div class="col-sm-6 col-xs-12 ">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-download col-xs-12">Download Extras <br class="hidden-xs hidden-lg"/>Policy Brochure</a>
+							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-download download-extras-brochure col-xs-12">Download Extras <br class="hidden-xs hidden-lg"/>Policy Brochure</a>
 						</div>
 					{{ } }}
 				{{ } }}

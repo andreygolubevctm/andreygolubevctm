@@ -1,7 +1,7 @@
 <%@ tag description="Journey Engine Page"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
+<jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
 
 <%@ attribute name="title"			required="false"  rtexprvalue="true"	 description="Page title" %>
 
@@ -35,7 +35,6 @@
 <layout:page title="${title}">
 
 	<jsp:attribute name="head">
-		<link rel="stylesheet" href="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.css">
 		<jsp:invoke fragment="head" />
 	</jsp:attribute>
 
@@ -82,12 +81,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
-		<script src="framework/jquery/plugins/bootstrap-datepicker/bootstrap-datepicker-2.0.js"></script>
-		<script src="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.min.js"></script>
-		<script src="framework/jquery/plugins/bootstrap-switch-2.0.0.min.js"></script>
-
 		<jsp:invoke fragment="body_end" />
-
 	</jsp:attribute>
 
 	<jsp:attribute name="additional_meerkat_scripts">

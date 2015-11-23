@@ -15,12 +15,23 @@
 
 <c:set var="xpath" value="life" scope="session" />
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
+<c:set var="GTMEnabled" value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />
 
 <core:doctype />
 <go:html>
 	<core:head quoteType="${xpath}" title="Life Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
 	
 	<body class="life stage-0">
+
+	<c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
+		<c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
+			<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+					new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+					j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+					'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer','${pageSettings.getSetting('GTMPropertyId')}');</script>
+		</c:if>
+	</c:if>
 
 		<%-- SuperTag Top Code --%>
 		<agg:supertag_top type="Life"/>		

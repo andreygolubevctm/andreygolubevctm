@@ -15,7 +15,7 @@
 <%--ONLY UPDATE RESERVED_NAME IF SIMPLES USER --%>
 <c:choose>
 	<c:when test="${isSimplesUser}">
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 		<c:catch var="error">
 			<sql:query var="touches">

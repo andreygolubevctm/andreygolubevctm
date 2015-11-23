@@ -1,7 +1,9 @@
+<%@ page import="com.ctm.web.core.email.model.EmailMode" %>
 <%@ page language="java" contentType="text/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.life_submit_application')}" />
 
 <session:get settings="true" authenticated="true" />
@@ -31,7 +33,7 @@
 				<c:set var="paramPartnerBrand"><c:out value="${param.partnerBrand}" /></c:set>
 				<go:setData dataVar="data" xpath="lead/brand" value="${paramPartnerBrand}" />
 
-				<jsp:useBean id="AGISLeadFromRequest" class="com.ctm.services.life.AGISLeadFromRequest" scope="page" />
+				<jsp:useBean id="AGISLeadFromRequest" class="com.ctm.web.life.leadfeed.services.AGISLeadFromRequest" scope="page" />
 				<c:set var="leadResultStatus" value="${AGISLeadFromRequest.newPolicySold(pageContext.request, pageSettings, tranId)}" />
 
 				<c:choose>
@@ -40,7 +42,7 @@
 						<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 						
 						<%-- Check if email already sent and who it was sent to --%>
-						<sql:setDataSource dataSource="jdbc/ctm" />
+						<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 						
 						<c:catch var="error">
 							<sql:query var="companies">
@@ -61,10 +63,10 @@
 
 							<c:if test="${companyName ne 'ozicare'}">
 								<%-- SEND AGIS EMAIL --%>
-								<jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
+								<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
 								
 								<%-- enums are not will handled in jsp --%>
-								<% request.setAttribute("BEST_PRICE", com.ctm.model.email.EmailMode.BEST_PRICE); %>
+								<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 								<c:catch var="error">
 									${emailService.send(pageContext.request, BEST_PRICE, data.life.contactDetails.email, tranId)}
 									<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/emailSentBy" value="ozicare" />
@@ -85,7 +87,7 @@
 				<c:set var="dataXml" value="${go:getEscapedXml(data[vertical])}" />
 
 				<%-- Load the config for the contact lead sender --%>
-				<c:import var="config" url="/WEB-INF/aggregator/life/config_contact_lead.xml" />
+				<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_contact_lead.xml')}" />
 
 				<go:soapAggregator	config = "${config}"
 									transactionId = "${tranId}"
@@ -100,7 +102,7 @@
 									styleCodeId="${pageSettings.getBrandId()}"  />
 
 				<%-- Record lead feed touch event --%>
-				<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="page" />
+				<jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
 				<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(data.current.transactionId, "C", "lifebroker")}</c:set>
 				
 				<x:parse xml="${newQuoteResults}" var="newQuoteResultsOutput" />
@@ -136,7 +138,7 @@
 				</c:set>
 		
 				<%-- Load the config and send quotes to the aggregator gadget --%>
-				<c:import var="config" url="/WEB-INF/aggregator/life/config_product_apply.xml" />
+				<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_product_apply.xml')}" />
 				<go:soapAggregator	config = "${config}"
 									transactionId = "${tranId}"
 									xml = "${requestXML}"

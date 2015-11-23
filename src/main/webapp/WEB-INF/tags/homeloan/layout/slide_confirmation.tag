@@ -12,7 +12,7 @@
 		<c:set var="confirmationData">{"message":"No confirmation token was provided"}</c:set>
 	</c:when>
 	<c:otherwise>
-		<jsp:useBean id="confirmationService" class="com.ctm.services.confirmation.ConfirmationService" scope="page" />
+		<jsp:useBean id="confirmationService" class="com.ctm.web.core.confirmation.services.ConfirmationService" scope="page" />
 		<c:set var="result" value="${confirmationService.getConfirmationByKeyAndBrandId(token, styleCodeId)}" />
 
 		<c:choose>

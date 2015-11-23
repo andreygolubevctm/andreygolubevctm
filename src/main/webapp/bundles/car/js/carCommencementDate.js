@@ -26,7 +26,7 @@
 	}
 
 	meerkat.modules.register("carCommencementDate", {
-		init : initCarCommencementDate
+		initCarCommencementDate : initCarCommencementDate
 	});
 
 })(jQuery);

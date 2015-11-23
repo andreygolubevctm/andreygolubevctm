@@ -24,7 +24,7 @@
 
 
 <%-- Execute the results service --%>
-<jsp:useBean id="quoteService" class="com.ctm.services.homeloan.HomeLoanResultsService" scope="page" />
+<jsp:useBean id="quoteService" class="com.ctm.web.homeloan.services.HomeLoanResultsService" scope="page" />
 <c:set var="results" value="${quoteService.getResults(pageContext.getRequest())}" />
 
 

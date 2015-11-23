@@ -108,7 +108,7 @@
 				displayMode: displayMode, // features, price
 				pagination: {
 					mode: 'page',
-					touchEnabled: Modernizr.touch
+					touchEnabled: false
 				},
 				sort: {
 					sortBy: false

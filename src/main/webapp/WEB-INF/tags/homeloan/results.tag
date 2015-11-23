@@ -22,8 +22,8 @@
 <field:hidden xpath="${xpath}/features/extraRepayments" defaultValue="" />
 
 <%-- Get data to build sections/categories/features --%>
-<jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
-<c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString('hmlams', 'category')}" scope="request"  />
+<jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
+<c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('hmlams', 'category')}" scope="request"  />
 <c:if test="${empty jsonString}">
 	<c:set var="jsonString" value="''" />
 </c:if>

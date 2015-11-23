@@ -60,7 +60,7 @@
 		
 		ajaxURL += (check === true) ? "?check" : "";
 		
-		return meerkat.modules.comms.get({
+		return meerkat.modules.comms.post({
 			url: ajaxURL,
 			dataType: "json",
 			onSuccess: function onPokeSuccess(data){
@@ -223,6 +223,10 @@
 		
 		sessionAlertModal = meerkat.modules.dialogs.show(modalConfig);
 	}
+
+	function expire(){
+		showModal(false);
+	}
 	
 	/**
 	 * Returns a formatted 00:00 representation of a supplied number of seconds
@@ -277,7 +281,8 @@
 		init: init,
 		poke: poke,
 		check: check,
-		update: updateTimeout
+		update: updateTimeout,
+		expire : expire
 	});
 
 })(jQuery);
