@@ -76,7 +76,6 @@ ${healthPriceRequest.setSavedTransactionId(savedTransactionId)}
 ${healthPriceRequest.setOnResultsPage(onResultsPage)}
 ${healthPriceRequest.setPreferences(preferences)}
 ${healthPriceRequest.setBrandFilter(brandFilter)}
-${healthPriceRequest.setSituationFilter(situationFilter)}
 
 ${healthPriceService.setHealthPriceRequest(healthPriceRequest)}
 
