@@ -23,8 +23,12 @@ import com.ctm.web.core.web.go.Data;
 import com.ctm.web.travel.email.model.TravelBestPriceEmailModel;
 import com.ctm.web.travel.email.model.TravelBestPriceRanking;
 import com.ctm.web.travel.email.model.formatter.TravelBestPriceExactTargetFormatter;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class TravelEmailService extends EmailServiceHandler implements BestPriceEmailHandler {
@@ -87,6 +91,7 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 		buildEmailModel(emailDetails, emailModel);
 
 		try {
+
 			emailModel.setFirstName(emailDetails.getFirstName());
 			emailModel.setLastName(emailDetails.getLastName());
 			emailModel.setProductLabel("Travel Insurance");
@@ -94,14 +99,14 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			emailModel.setChildren((String) data.get("travel/children"));
 			emailModel.setStartDate((String) data.get("travel/dates/fromDate"));
 			emailModel.setEndDate((String) data.get("travel/dates/toDate"));
-			emailModel.setAdult1DOB((String) data.get("travel/adults/dob/adult1"));
-
-			String adult2DOB = (String) data.get("travel/adults/dob/adult2");
-
-			if (adult2DOB != null && !adult2DOB.isEmpty()) {
-				emailModel.setAdult2DOB(adult2DOB);
+			String dob1 = (String) data.get("travel/travellers/traveller1DOB");
+			String dob2 = (String) data.get("travel/travellers/traveller2DOB");
+			LocalDate dob = parseStringToLocalDate(dob1);
+			emailModel.setAdult1Age(getAgeFromDob(dob)+"");
+			if(StringUtils.isNotEmpty(dob2)) {
+				dob = parseStringToLocalDate(dob2);
+				emailModel.setAdult2Age(getAgeFromDob(dob)+"");
 			}
-
 			// default to standard if travel/coverLevelTab xpath is not found
 			String coverLevelTab = (String) data.get("travel/coverLevelTab");
 			coverLevelTab = (coverLevelTab == null || coverLevelTab.equals(""))  ? "standard" : coverLevelTab;
@@ -177,6 +182,19 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			}
 
         return "";
+	}
+
+	LocalDate parseStringToLocalDate(String date) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy");
+		return LocalDate.parse(date,dtf);
+
+	}
+
+
+	int getAgeFromDob(LocalDate dob) {
+		final LocalDate today = LocalDate.now();
+		final Period age = Period.between(dob,today);
+		return age.getYears();
 	}
 
 	private void setupRankingDetails(TravelBestPriceEmailModel emailModel, Long transactionId) throws DaoException {

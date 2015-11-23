@@ -98,12 +98,23 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 			<status>OK</status>
 			<confirmationID>${pageContext.session.id}-${tranId}</confirmationID>
 		</c:set>
+
+		<jsp:useBean id="tokenServiceFactory" class="com.ctm.web.core.email.services.token.EmailTokenServiceFactory"/>
+		<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
+		<c:set var="hashedEmail"><security:hashed_email email="${data['health/application/email']}" brand="${pageSettings.getBrandCode()}" /></c:set>
+
+		<c:if test="${pageSettings.getSetting('emailTokenEnabled')}">
+			<c:set var="unsubscribeTokenVar" value="${tokenService.generateToken(tranId, hashedEmail, pageSettings.getBrandId(), 'app', 'unsubscribe', null, null, pageSettings.getVerticalCode(), null, true)}" />
+		</c:if>
+
 		<c:set var="emailResponse">
 			<c:import url="/ajax/json/send.jsp">
 				<c:param name="vertical" value="HEALTH" />
 				<c:param name="mode" value="app" />
 				<c:param name="emailAddress" value="${data['health/application/email']}" />
 				<c:param name="bccEmail" value="${param.bccEmail}" />
+				<c:param name="unsubscribeToken" value="${unsubscribeTokenVar}"/>
+				<c:param name="createUnsubscribeEmailToken" value="${true}"/>
 			</c:import>
 		</c:set>
 		
