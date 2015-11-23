@@ -25,6 +25,42 @@ fieldset {
     }
   }
 }
+.form-horizontal .electricity-usage > .control-label,
+.form-horizontal .gas-usage > .control-label,
+.electricity-usage .row-content,
+.gas-usage .row-content {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 10px;
+}
+.electricity-usage .btn,
+.gas-usage .btn {
+  color: @headings-color;
+  text-align: left;
+  white-space: normal;
+  vertical-align: top;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.electricity-usage label > span,
+.gas-usage label > span {
+  display: inline-block;
+  font-size: 10px;
+  text-align: center;
+  vertical-align: top;
+  width: 46%;
+  margin:2%;
+}
+.electricity-usage label i,
+.gas-usage  label i {
+  display: block;
+  font-size: 80px;
+  line-height: 0.6;
+}
+.electricity-usage label.active h3,
+.gas-usage label.active h3 {
+  color: #ffffff;
+}
 
 .moving-in-date,
 .recent-electricity-bill,
@@ -36,7 +72,10 @@ fieldset {
 .additional-estimate-details-row {
   display: none;
 }
-
+.change-type-modal label.btn {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
 .additional-estimate-details-row {
   .row-content {
     h5 {
@@ -52,6 +91,18 @@ fieldset {
     }
   }
 }
+@media(max-width: @screen-sm) {
+  .electricity-usage .btn,
+  .gas-usage .btn {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .electricity-usage span {
+    width: 25%;
+  }
+}
+
 @media(min-width: @screen-md) {
   .additional-estimate-details-row {
     .electricity, .gas {

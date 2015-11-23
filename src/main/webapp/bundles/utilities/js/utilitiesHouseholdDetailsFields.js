@@ -90,7 +90,6 @@
         $("#utilities_privacyoptin").change(_onPrivacyOptinChange);
         $(".electricity-meter").change(_toggleElectricityMeter);
         $("#utilities_householdDetails_location").on("typeahead:selected", _onTypeaheadSelected);
-        meerkat.modules.ie8SelectMenuAutoExpand.bindEvents($('#startForm'), '#utilities_householdDetails_howToEstimate');
         $('#utilities_resultsDisplayed_competition_optin').on('change.applyValidationRules', _applyCompetitionValidationRules);
     }
 
@@ -248,6 +247,7 @@
     function _toggleAdditionalEstimateDetails() {
         var $additionalEstimates = $('.additional-estimate-details-row'),
             $electricityInputs = $(".electricity-details"),
+            $electricityCalculations = $('.electricity-details .usage');
             $gasInputs = $(".gas-details"),
             $electricityUsage = $(".electricity-usage"),
             $gasUsage = $(".gas-usage"),
@@ -265,6 +265,7 @@
                 $electricityInputs.show();
                 $electricityUsage.show();
                 $additionalEstimates.hide();
+                $electricityCalculations.hide();
             } else if (movingIn === 'N') {
                 $('.recent-electricity-bill').show();
 

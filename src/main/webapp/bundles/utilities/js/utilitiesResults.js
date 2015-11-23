@@ -309,7 +309,21 @@
         };
 
         changeTypeId = meerkat.modules.dialogs.show(modalOptions);
+        $(".what-to-compare-reset").on('change',_toggleChangeType);
 
+    }
+
+    function _toggleChangeType() {
+        var type = $(".what-to-compare-reset").find("input[type='radio']:checked").val();
+        var whatToCompare = $('#utilities_householdDetails_whatToCompare');
+        var whatToCompareSelect = $('#utilities_householdDetails_whatToCompare_' + type);
+
+        whatToCompare.find('label').removeClass('active');
+
+        whatToCompareSelect.prop('checked',true);
+        whatToCompareSelect.parent().addClass('active');
+
+        meerkat.modules.journeyEngine.gotoPath('start');
     }
 
     function resultRowClick(event) {

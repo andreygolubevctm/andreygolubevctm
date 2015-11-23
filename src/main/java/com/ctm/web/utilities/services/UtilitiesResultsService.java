@@ -50,7 +50,7 @@ public class UtilitiesResultsService extends UtilitiesBaseService{
 
 			// Validate response
 			if (success == false || responseModel.getPlans().size() == 0) {
-				throw new UtilitiesWebServiceException("Parse problem or missing mandatory field: 'plans' in "+responseJson + "###############" + sendJsonString);
+				throw new UtilitiesWebServiceException("Parse problem or missing mandatory field: 'plans' in "+responseJson);
 			}
 
 			return responseModel;

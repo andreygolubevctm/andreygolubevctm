@@ -41,7 +41,7 @@
         </p>
         <core:clear/>
         <a href="javascript:;" class="btn btn-primary btn-change-type"> Change fuel type</a>
-        <utilities_new:change_type/>
+        <utilities_new:change_type />
 
         <div class="featuresFooterPusher"></div>
     </div>
