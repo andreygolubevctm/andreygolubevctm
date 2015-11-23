@@ -1,18 +1,20 @@
 package com.ctm.web.energy.services;
 
+import com.ctm.energy.quote.request.model.EnergyQuoteRequest;
+import com.ctm.energy.quote.response.model.EnergyResultsResponse;
 import com.ctm.web.core.connectivity.JsonConnection;
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.*;
-import com.ctm.web.core.services.*;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.CommonRequestService;
+import com.ctm.web.core.services.FatalErrorService;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.energy.form.model.EnergyResultsWebRequest;
-import com.ctm.web.energy.model.EnergyResultsModel;
-import com.ctm.web.energy.quote.response.model.EnergyResultsResponse;
-import com.ctm.web.energy.quote.request.model.EnergyQuoteRequest;
 import com.ctm.web.utilities.exceptions.UtilitiesWebServiceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
@@ -137,27 +139,12 @@ public class EnergyBaseService extends CommonRequestService<EnergyQuoteRequest,E
 
 	}
 
-	public EnergyResultsModel validate(HttpServletRequest request, EnergyResultsWebRequest energyRequest) {
-		RequestService fromFormService = new RequestService(request, vertical);
-		List<SchemaValidationError> errors = validate(energyRequest);
-		if(!valid) {
-			return outputErrors(fromFormService, errors);
-		}
-		return new EnergyResultsModel();
-	}
-
 	public List<SchemaValidationError> validate(EnergyResultsWebRequest utilitiesRequest) {
 		List<SchemaValidationError> errors = FormValidation.validate(utilitiesRequest, vertical.toLowerCase(), false);
 		valid = errors.isEmpty();
 		return errors;
 	}
 
-	private EnergyResultsModel outputErrors(RequestService fromFormService, List<SchemaValidationError> errors) {
-		EnergyResultsModel energyResultsModel = new EnergyResultsModel();
-		FormValidation.logErrors(fromFormService.sessionId, fromFormService.transactionId, fromFormService.styleCodeId, errors, "UtilitiesBaseService.java:validate");
-		energyResultsModel.setValidationErrors(errors);
-		return energyResultsModel;
-	}
 
 	public boolean isValid() {
 		return valid;

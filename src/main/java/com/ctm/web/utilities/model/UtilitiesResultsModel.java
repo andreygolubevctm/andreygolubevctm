@@ -1,16 +1,14 @@
 package com.ctm.web.utilities.model;
 
-import java.util.ArrayList;
-
-import com.ctm.web.energy.quote.response.model.EnergyResultsPlanModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.ctm.web.core.model.AbstractJsonModel;
+import com.ctm.web.core.model.formatter.JsonUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.ctm.web.core.model.AbstractJsonModel;
-import com.ctm.web.core.model.formatter.JsonUtils;
+import java.util.ArrayList;
 
 import static com.ctm.web.core.logging.LoggingArguments.kv;
 
@@ -19,17 +17,17 @@ public class UtilitiesResultsModel extends AbstractJsonModel {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UtilitiesResultsModel.class);
 
-	private ArrayList<EnergyResultsPlanModel> plans = new ArrayList<EnergyResultsPlanModel>();
+	private ArrayList<UtilitiesResultsPlanModel> plans = new ArrayList<UtilitiesResultsPlanModel>();
 	private String uniqueCustomerId;
 
 	public UtilitiesResultsModel(){
 
 	}
-	public ArrayList<EnergyResultsPlanModel> getPlans() {
+	public ArrayList<UtilitiesResultsPlanModel> getPlans() {
 		return plans;
 	}
 
-	public void setPlans(ArrayList<EnergyResultsPlanModel> plans) {
+	public void setPlans(ArrayList<UtilitiesResultsPlanModel> plans) {
 		this.plans = plans;
 	}
 
@@ -53,7 +51,7 @@ public class UtilitiesResultsModel extends AbstractJsonModel {
 
 				JSONObject tempJson = json.getJSONObject(i);
 
-				EnergyResultsPlanModel provider = new EnergyResultsPlanModel();
+				UtilitiesResultsPlanModel provider = new UtilitiesResultsPlanModel();
 				provider.populateFromThoughtWorldJson(tempJson);
 
 				if(getUniqueCustomerId() == null){

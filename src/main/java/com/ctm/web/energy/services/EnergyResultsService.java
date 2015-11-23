@@ -1,19 +1,17 @@
 package com.ctm.web.energy.services;
 
-import com.ctm.web.core.connectivity.SimpleConnection;
+import com.ctm.energy.quote.request.model.EnergyQuoteRequest;
+import com.ctm.energy.quote.response.model.EnergyResultsResponse;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
-import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.services.Endpoint;
 import com.ctm.web.energy.form.model.EnergyResultsWebRequest;
-import com.ctm.web.energy.quote.response.model.EnergyResultsResponse;
-import com.ctm.web.energy.quote.adapter.EnergyQuoteServiceRequestMapper;
-import com.ctm.web.energy.quote.request.model.EnergyQuoteRequest;
+import com.ctm.web.energy.form.response.model.EnergyResultsWebResponse;
+import com.ctm.web.energy.quote.adapter.EnergyQuoteServiceRequestAdapter;
+import com.ctm.web.energy.quote.adapter.EnergyQuoteServiceResponseAdapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,21 +26,20 @@ public class EnergyResultsService extends EnergyBaseService {
     @Context
     private HttpServletRequest httpServletRequest;
 
-    @Autowired
-    private SimpleConnection connection;
 
     public EnergyResultsService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
         super(providerFilterDAO, objectMapper);
     }
 
 
-    public ResultsWrapper getResults(EnergyResultsWebRequest model, Brand brand) throws IOException, DaoException, ServiceConfigurationException {
+    public EnergyResultsWebResponse getResults(EnergyResultsWebRequest model, Brand brand) throws IOException, DaoException, ServiceConfigurationException {
       validate( httpServletRequest,  model);
            if(isValid()) {
-               EnergyQuoteServiceRequestMapper mapper = Mappers.getMapper(EnergyQuoteServiceRequestMapper.class);
+               EnergyQuoteServiceRequestAdapter mapper= new EnergyQuoteServiceRequestAdapter();
+               EnergyQuoteServiceResponseAdapter  energyQuoteServiceResponseAdapter= new EnergyQuoteServiceResponseAdapter();
                final EnergyQuoteRequest energyQuoteRequest = mapper.adapt(model);
                final EnergyResultsResponse energyResultsModel = sendRequest(brand, HEALTH, "healthQuoteServiceBER", Endpoint.QUOTE, model, energyQuoteRequest, EnergyResultsResponse.class);
-               return new ResultsWrapper(energyResultsModel);
+               return energyQuoteServiceResponseAdapter.adapt(energyResultsModel);
            }
         return null;
 
