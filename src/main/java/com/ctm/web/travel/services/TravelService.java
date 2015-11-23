@@ -8,12 +8,12 @@ import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.providers.model.Request;
+import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.services.CommonQuoteService;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.ResultsService;
-import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.travel.exceptions.TravelServiceException;
 import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.results.TravelResult;
@@ -24,12 +24,11 @@ import com.ctm.web.travel.quote.model.response.TravelResponse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,8 +92,7 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        objectMapper.setDateFormat(df);
+        objectMapper.registerModule(new JavaTimeModule());
 
         QuoteServiceProperties serviceProperties = getQuoteServiceProperties("travelQuoteService", brand, verticalCode, data);
 
@@ -117,7 +115,7 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
             connection.setPostBody(jsonRequest);
             connection.setHasCorrelationId(true);
 
-            String response = connection.get(serviceProperties.getServiceUrl() + "/quote");
+            String response = connection.get(serviceProperties.getServiceUrl() + "quote");
             TravelResponse travelResponse = objectMapper.readValue(response, TravelResponse.class);
 
                 // Log response
