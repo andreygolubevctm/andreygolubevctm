@@ -18,6 +18,7 @@ UNION ALL
 	AND pm.providerID = @providerID
 	AND NOW() BETWEEN pm.EffectiveStart and pm.EffectiveEnd
 	AND pm.ProductCat = 'HEALTH'
+	AND pm.ShortTitle REGEXP 'Gold Extras|Platinum Extras'
 LIMIT 9999;
 
 /* -- END TEST -- */
@@ -44,6 +45,7 @@ UPDATE `ctm`.`product_master` pm
  WHERE pm.EffectiveStart = @EffectiveStart
 AND pm.EffectiveEnd = @EffectiveEnd
 AND providerID = @providerID
+AND ShortTitle REGEXP 'Gold Extras|Platinum Extras'
  AND Status != 'X';
 
 /* Disable current products product master
@@ -84,6 +86,7 @@ AND pm.providerID =  @providerID
 AND pm.EffectiveStart = @EffectiveStart
 and pm.EffectiveEnd = @EffectiveEnd
 AND pm.ProductCat = 'HEALTH'
+AND pm.ShortTitle REGEXP 'Gold Extras|Platinum Extras'
 limit 99999999;
 
 */

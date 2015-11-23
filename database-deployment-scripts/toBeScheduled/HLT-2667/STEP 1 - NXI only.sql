@@ -25,6 +25,7 @@ WHERE Status != 'X'
 AND providerID = @providerID
 AND productId > 0
 AND ProductCat = 'HEALTH'
+AND ShortTitle REGEXP 'Gold Extras|Platinum Extras'
 AND EffectiveStart = @EffectiveStart
 AND EffectiveEnd = @EffectiveEnd;
 /* 2. Copy product properties ext */
@@ -35,6 +36,7 @@ SELECT productId FROM `ctm`.`product_master` pm
 	 WHERE Status != 'X'
 	 AND providerID = @providerID
 	 AND ProductCat = 'HEALTH'
+	 AND ShortTitle REGEXP 'Gold Extras|Platinum Extras'
 	 AND EffectiveStart = @EffectiveStart
 	 AND EffectiveEnd = @EffectiveEnd )
  AND productId > 0;
@@ -46,6 +48,7 @@ SELECT productId FROM `ctm`.`product_master` pm
 	 WHERE Status != 'X'
 	 AND providerID = @providerID
 	 AND ProductCat = 'HEALTH'
+	 AND ShortTitle REGEXP 'Gold Extras|Platinum Extras'
 	 AND EffectiveStart = @EffectiveStart
 	 AND EffectiveEnd = @EffectiveEnd )
  AND productId > 0;
@@ -57,6 +60,7 @@ SELECT productId FROM `ctm`.`product_master` pm
 	 WHERE Status != 'X'
 	 AND providerID = @providerID
 	 AND ProductCat = 'HEALTH'
+	 AND ShortTitle REGEXP 'Gold Extras|Platinum Extras'
 	 AND EffectiveStart = @EffectiveStart
 	 AND EffectiveEnd = @EffectiveEnd )
  AND productId > 0;
@@ -68,6 +72,7 @@ SELECT productId FROM `ctm`.`product_master` pm
 	 WHERE Status != 'X'
 	 AND providerID = @providerID
 	 AND ProductCat = 'HEALTH'
+	 AND ShortTitle REGEXP 'Gold Extras|Platinum Extras'
 	 AND EffectiveStart = @EffectiveStart
 	 AND EffectiveEnd = @EffectiveEnd )
  AND productId > 0;
