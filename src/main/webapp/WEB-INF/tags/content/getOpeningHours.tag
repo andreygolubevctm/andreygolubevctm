@@ -4,8 +4,8 @@
 <session:core />
 <jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
 
-<c:set var="todayOpeningHours" scope="request" value="${openingHoursService.getOpeningHoursForDisplay(pageContext.getRequest(),\"today\")}" ></c:set>
-<c:set var="tomorrowOpeningHours" scope="request" value="${openingHoursService.getOpeningHoursForDisplay(pageContext.getRequest(),\"tomorrow\")}"  ></c:set>
+<c:set var="todayOpeningHours" scope="request" value="${openingHoursService.getOpeningHoursForDisplay(pageContext.getRequest(),'today')}" />
+<c:set var="tomorrowOpeningHours" scope="request" value="${openingHoursService.getOpeningHoursForDisplay(pageContext.getRequest(),'tomorrow')}" />
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 
 <div class="opening-hours">

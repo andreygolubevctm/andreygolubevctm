@@ -76,6 +76,11 @@
             </td>
         </tr>
         <tr>
+            <td>java.io.tmpdir</td>
+            <td><%= System.getProperty("java.io.tmpdir") %>
+            </td>
+        </tr>
+        <tr>
             <td>Application date</td>
             <td>${applicationService.getApplicationDate(pageContext.getRequest())}
                 (<%= org.apache.commons.lang3.time.DateFormatUtils.format(applicationService.getApplicationDate(request), "yyyy-MM-dd HH:mm:ss") %>

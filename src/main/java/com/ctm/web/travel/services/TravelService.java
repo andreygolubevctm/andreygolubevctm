@@ -21,6 +21,7 @@ import com.ctm.web.travel.quote.model.RequestAdapter;
 import com.ctm.web.travel.quote.model.ResponseAdapter;
 import com.ctm.web.travel.quote.model.request.TravelQuoteRequest;
 import com.ctm.web.travel.quote.model.response.TravelResponse;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;
@@ -91,6 +92,7 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
         // Prepare objectmapper to map java model to JSON
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         objectMapper.setDateFormat(df);
 
@@ -140,8 +142,7 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
             return travelResults;
 
         }catch(IOException e){
-            LOGGER.error("Error parsing or connecting to travel-quote {},{},{}", kv("brand", brand), kv("verticalCode", verticalCode),
-                kv("travelRequest", data));
+            LOGGER.error("Error parsing or connecting to travel-quote {},{},{}", kv("travelRequest", data), e);
         }
 
         return new ArrayList<>();
