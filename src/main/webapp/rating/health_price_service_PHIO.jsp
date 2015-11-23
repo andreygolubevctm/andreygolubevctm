@@ -39,15 +39,7 @@
 <c:set var="savedTransactionId"><x:out select="$healthXML/request/header/retrieve/transactionId" /></c:set>
 <c:set var="productTitleSearch"><x:out select="$healthXML/request/header/productTitleSearch" escapeXml="false" /></c:set>
 <c:set var="productTitle"><x:out select="$healthXML/request/header/productTitle" escapeXml="false" /></c:set>
-<c:set var="situationFilter"><x:out select="$healthXML/request/details/situation" /></c:set>
-<c:choose>
-	<c:when test="${isSimples eq false and situationFilter ne 'ATP'}">
-		<c:set var="situationFilter" value="Y" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="situationFilter" value="N" />
-	</c:otherwise>
-</c:choose>
+
 <%-- Unencode apostrophes --%>
 <c:set var="apos">'</c:set>
 <c:set var="productTitle" value="${fn:replace(productTitle, '&#039;', apos)}" />
