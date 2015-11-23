@@ -1,17 +1,21 @@
 package com.ctm.web.energy.form.model;
 
 
+
 public class HouseHoldDetails {
 
     private String movingInDate;
-    private String whatToCompare;
+    private WhatToCompare whatToCompare;
     private String postcode;
     private boolean isConnection; // true if moving to the property
     private String suburb;
     private String howToEstimate;
-    private String movingIn;
+    private YesNo movingIn;
     private String tariff;
-    private String solarPanels;
+    private YesNo solarPanels;
+
+    private YesNo recentGasBill;
+    private YesNo recentElectricityBill;
 
     public  void setMovingInDate(String movingInDate) {
         this.movingInDate = movingInDate;
@@ -50,19 +54,19 @@ public class HouseHoldDetails {
         this.isConnection = isConnection;
     }
 
-    public String getWhatToCompare() {
+    public WhatToCompare getWhatToCompare() {
         return whatToCompare;
     }
 
-    public void setWhatToCompare(String whatToCompare) {
+    public void setWhatToCompare(WhatToCompare whatToCompare) {
         this.whatToCompare = whatToCompare;
     }
 
-    public String getMovingIn() {
+    public YesNo getMovingIn() {
         return movingIn;
     }
 
-    public void setMovingIn(String movingIn) {
+    public void setMovingIn(YesNo movingIn) {
         this.movingIn = movingIn;
     }
 
@@ -78,11 +82,28 @@ public class HouseHoldDetails {
         return movingInDate;
     }
 
-    public  String getHasSolarPanels() {
+    public  YesNo getHasSolarPanels() {
         return solarPanels;
     }
 
-    public void setSolarPanels(String solarPanels) {
+    public void setSolarPanels(YesNo solarPanels) {
         this.solarPanels = solarPanels;
+    }
+
+
+    public YesNo getRecentElectricityBill() {
+        return recentElectricityBill;
+    }
+
+    public void setRecentElectricityBill(YesNo recentElectricityBill) {
+        this.recentElectricityBill = recentElectricityBill;
+    }
+
+    public YesNo getRecentGasBill() {
+        return recentGasBill;
+    }
+
+    public void setRecentGasBill(YesNo recentGasBill) {
+        this.recentGasBill = recentGasBill;
     }
 }

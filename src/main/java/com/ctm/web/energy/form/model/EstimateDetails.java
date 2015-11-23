@@ -3,14 +3,32 @@ package com.ctm.web.energy.form.model;
 
 public class EstimateDetails {
 
-    private Usage usage;
+    private Gas gas;
+    private Electricity electricity;
     private Spend spend;
 
-    public Usage getUsage() {
-        return usage;
+
+    public Electricity getElectricity() {
+        return electricity;
     }
 
-    public void setUsage(Usage usage) {
-        this.usage = usage;
+    public Gas getGas() {
+        return gas;
+    }
+
+    public void setElectricity(Electricity electricity) {
+        this.electricity = electricity;
+    }
+
+    public void setGas(Gas gas) {
+        this.gas = gas;
+    }
+
+    public Spend getSpend() {
+        return spend;
+    }
+
+    public void setSpend(Spend spend) {
+        this.spend = spend;
     }
 }

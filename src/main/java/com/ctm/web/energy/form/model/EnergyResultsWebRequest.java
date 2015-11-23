@@ -1,7 +1,6 @@
 package com.ctm.web.energy.form.model;
 
 import com.ctm.web.core.model.formData.Request;
-import com.ctm.web.utilities.model.request.Details;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -17,7 +16,7 @@ public class EnergyResultsWebRequest implements Request {
     private String tariff;
 
     @Valid
-    public Details resultsDisplayed = new Details();
+    public ResultsDisplayed resultsDisplayed;
 
     private String referenceNumber;
 
@@ -89,5 +88,9 @@ public class EnergyResultsWebRequest implements Request {
 
     public void setTransactionId(Long transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public ResultsDisplayed getResultsDisplayed() {
+        return resultsDisplayed;
     }
 }
