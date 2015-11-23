@@ -115,7 +115,7 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
             connection.setPostBody(jsonRequest);
             connection.setHasCorrelationId(true);
 
-            String response = connection.get(serviceProperties.getServiceUrl() + "quote");
+            String response = connection.get(serviceProperties.getServiceUrl() + "/quote");
             TravelResponse travelResponse = objectMapper.readValue(response, TravelResponse.class);
 
                 // Log response
