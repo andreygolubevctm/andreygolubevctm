@@ -60,7 +60,7 @@ public class UtilitiesResultsModel extends AbstractJsonModel {
 				}
 
 				// perform validation
-				if(provider.getAnnualNewCost() == 0 || provider.getPlanName().equals("")){
+				if(provider.getPlanName().equals("")){
 					LOGGER.error("Invalid utilities ThoughtWorld provider results {}", kv("provider", provider));
 					return false;
 				}
