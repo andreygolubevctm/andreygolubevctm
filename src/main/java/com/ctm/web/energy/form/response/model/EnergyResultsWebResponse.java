@@ -3,19 +3,20 @@ package com.ctm.web.energy.form.response.model;
 import com.ctm.web.core.providers.model.Response;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class EnergyResultsWebResponse extends Response {
 
 
-    private ArrayList<EnergyResultsPlanModel> plans = new ArrayList<>();
+    private List<EnergyResultsPlanModel> plans = new ArrayList<>();
     private String uniqueCustomerId;
 
-    public ArrayList<EnergyResultsPlanModel> getPlans() {
+    public List<EnergyResultsPlanModel> getPlans() {
         return plans;
     }
 
-    public void setPlans(ArrayList<EnergyResultsPlanModel> plans) {
+    public void setPlans(List<EnergyResultsPlanModel> plans) {
         this.plans = plans;
     }
 

@@ -3,25 +3,32 @@ package com.ctm.web.energy.form.response.model;
 
 public class EnergyResultsPlanModel {
 
-
-    private String available ="Y";
+    private String available;
     private int planId;
     private String planName;
     private String retailerName;
-
     private String retailerId;
+    double yearlySavings;
     private double price;
-
     private double previousPrice;
     private String contractPeriod;
     private String cancellationFees;
-    private String payontimeDiscounts;
 
+    double  estimatedCost;
+
+    private String payontimeDiscounts;
     private String ebillingDiscounts;
     private String guaranteedDiscounts;
     private String otherDiscounts;
     private String discountDetails;
-    double yearlySavings;
+
+    public double getEstimatedCost() {
+        return estimatedCost;
+    }
+
+    public void setEstimatedCost(double estimatedCost) {
+        this.estimatedCost = estimatedCost;
+    }
 
 
     public int getPlanId() {
