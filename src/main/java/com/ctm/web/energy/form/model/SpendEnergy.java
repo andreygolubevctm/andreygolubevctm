@@ -5,6 +5,7 @@ package com.ctm.web.energy.form.model;
  */
 public class SpendEnergy {
     private String amount;
+    private Integer days;
 
     public String getAmount() {
         return amount;
@@ -12,5 +13,13 @@ public class SpendEnergy {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    public Integer getDays() {
+        return days;
+    }
+
+    public void setDays(Integer days) {
+        this.days = days;
     }
 }

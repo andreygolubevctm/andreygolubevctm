@@ -26,9 +26,14 @@
 
         try {
 
+            var quoteResultsUrl = "ajax/json/utilities_quote_results.jsp";
+            if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
+                quoteResultsUrl = "ajax/json/energy_quote_results_ws.jsp";
+            }
+
             // Init the main Results object
             Results.init({
-                url: "ajax/json/utilities_quote_results.jsp",
+                url: quoteResultsUrl,
                 runShowResultsPage: false, // Don't let Results.view do it's normal thing.
                 paths: {
                     results: {

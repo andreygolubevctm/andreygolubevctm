@@ -6,6 +6,8 @@ import com.ctm.energy.quote.request.model.Gas;
 import com.ctm.energy.quote.request.model.preferences.HasEBilling;
 import com.ctm.energy.quote.request.model.preferences.NoContract;
 import com.ctm.energy.quote.request.model.preferences.RenewableEnergy;
+import com.ctm.energy.quote.request.model.usage.*;
+import com.ctm.interfaces.common.types.TransactionId;
 import com.ctm.web.energy.form.model.*;
 
 import java.math.BigDecimal;
@@ -22,10 +24,25 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
 
     @Override
     public EnergyQuoteRequest adapt(EnergyResultsWebRequest request) {
-        return new EnergyQuoteRequest( createHouseHoldDetails(request),
-                createElectricity(request),  createGas(request),
-                 createPreferences(request),
-                createEnergyTypes(request));
+        return new EnergyQuoteRequest(
+                createHouseHoldDetails(request),
+                createElectricity(request),
+                createGas(request),
+                createPreferences(request),
+                createEnergyTypes(request),
+                createTransactionId(request),
+                createContactDetails(request)
+        );
+    }
+
+    private TransactionId createTransactionId(EnergyResultsWebRequest request) {
+        return TransactionId.instanceOf(request.getTransactionId());
+    }
+
+    private ContactDetails createContactDetails(EnergyResultsWebRequest request) {
+        Optional<ResultsDisplayed> resultsDisplayedMaybe = Optional.ofNullable(request.getResultsDisplayed());
+        Boolean optinPhone = resultsDisplayedMaybe.map(ResultsDisplayed::getOptinPhone).map(getYesNoBooleanFunction()).orElse(false);
+        return new ContactDetails(optinPhone, null, resultsDisplayedMaybe.map(ResultsDisplayed :: getFirstName).orElse(null), resultsDisplayedMaybe.map(ResultsDisplayed :: getPhone).orElse(null));
     }
 
     private List<EnergyType> createEnergyTypes(EnergyResultsWebRequest quote) {
@@ -85,15 +102,48 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
     }
 
     private GasUsageDetails getGasUsageDetails(Optional<EstimateDetails> estimateDetailsMaybe) {
-        return new GasUsageDetails(estimateDetailsMaybe.map(EstimateDetails :: getSpend ).map(Spend::getGas).map( spendEnergy -> {
-            return new BigDecimal(spendEnergy.getAmount());
-        }).orElse(null), null, null);
+        Integer days =getDays(estimateDetailsMaybe.map(EstimateDetails::getSpend).map(Spend::getGas));
+        return new GasUsageDetails(estimateDetailsMaybe.map(EstimateDetails :: getSpend )
+                .map(Spend::getGas)
+                .map(spendEnergy -> new BigDecimal(spendEnergy.getAmount())).orElse(null), days, new GasUsage(null, null));
     }
 
     private static ElectricityUsageDetails  getElectricityUsageDetails(Optional<EstimateDetails> estimateDetailsMaybe) {
+        Integer days = getDays(estimateDetailsMaybe.map(EstimateDetails::getSpend).map(Spend::getElectricity));
         return new ElectricityUsageDetails(estimateDetailsMaybe.map(EstimateDetails :: getSpend ).map(Spend::getElectricity).map( spendEnergy -> {
             return new BigDecimal(spendEnergy.getAmount());
-        }).orElse(null), null, null);
+        }).orElse(null), days, getElectricityUsage(estimateDetailsMaybe));
+    }
+
+    private static Integer getDays(Optional<SpendEnergy> spendEnergyMaybe) {
+        return spendEnergyMaybe.map(SpendEnergy::getDays).orElse(null);
+    }
+
+    private static ElectricityUsage getElectricityUsage(Optional<EstimateDetails> estimateDetailsMaybe) {
+        ElectricityUsage electricityUsage;
+        ElectricityMeterType meter = getElectricityMeterType(estimateDetailsMaybe);
+        Float offPeakUsage = estimateDetailsMaybe.map(EstimateDetails::getElectricity).map(com.ctm.web.energy.form.model.Electricity::getOffpeak).map(Rate::getAmount).orElse(null);
+        Float shoulderAmount = estimateDetailsMaybe.map(EstimateDetails::getElectricity).map(com.ctm.web.energy.form.model.Electricity::getShoulder).map(Rate::getAmount).orElse(null);
+        Float peakUsage = estimateDetailsMaybe.map(EstimateDetails::getElectricity).map(com.ctm.web.energy.form.model.Electricity::getPeak).map(Rate::getAmount).orElse(null);
+
+        switch (meter) {
+            case TimeOfUse:
+                electricityUsage = new TimeOfUseUsage(new BigDecimal(peakUsage),new BigDecimal(offPeakUsage),new BigDecimal(shoulderAmount));
+                break;
+            case Single:
+                electricityUsage =new SingleRateUsage(new BigDecimal(peakUsage));
+                break;
+            case TwoRate:
+                electricityUsage = new TwoRateUsage(new BigDecimal(peakUsage), new BigDecimal(offPeakUsage));
+                break;
+            default:
+                electricityUsage = null;
+        }
+        return electricityUsage;
+    }
+
+    private static ElectricityMeterType getElectricityMeterType(Optional<EstimateDetails> estimateDetailsMaybe) {
+        return estimateDetailsMaybe.map(EstimateDetails::getElectricity).map(com.ctm.web.energy.form.model.Electricity::getMeter).orElse(null);
     }
 
     private boolean getGasHasBill(Optional<HouseHoldDetails> householdDetailsMaybe) {

@@ -7,12 +7,13 @@ public class ResultsDisplayed {
     private YesNo preferEBilling;
     private YesNo preferNoContract;
     private YesNo preferRenewableEnergy;
+    private YesNo optinPhone;
 
     @Name
     private String firstName;
 
-    @Name
-    private String lastName;
+    private String phone;
+
 
     public YesNo getPreferEBilling() {
         return preferEBilling;
@@ -46,11 +47,20 @@ public class ResultsDisplayed {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
+
+    public YesNo getOptinPhone() {
+        return optinPhone;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setOptinPhone(YesNo optinPhone) {
+        this.optinPhone = optinPhone;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
