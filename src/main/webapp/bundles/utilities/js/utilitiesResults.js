@@ -318,6 +318,7 @@
 
         $('#utilities_householdDetails_whatToCompare').find('label').removeClass('active');
 
+        $('#utilities_householdDetails_whatToCompare_' + type).parent().click();
         $('#utilities_householdDetails_whatToCompare_' + type).prop('checked',true);
         $('#utilities_householdDetails_whatToCompare_' + type).parent().addClass('active');
 
