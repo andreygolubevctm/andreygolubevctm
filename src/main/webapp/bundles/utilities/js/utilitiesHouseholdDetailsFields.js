@@ -259,8 +259,8 @@
             recentGasBill = $(".recent-gas-bill").find("input[type='radio']:checked").val();
 
         $movingInDate.toggle(movingIn === 'Y');
-        $(".recent-electricity-bill").toggle(whatToCompare === "E" || whatToCompare === "EG");
-        $(".recent-gas-bill").toggle(whatToCompare === "G" || whatToCompare === "EG");
+        $(".recent-electricity-bill").toggle((whatToCompare === "E" || whatToCompare === "EG") && movingIn === 'Y');
+        $(".recent-gas-bill").toggle((whatToCompare === "G" || whatToCompare === "EG") && movingIn === 'Y');
 
         if (whatToCompare === "E" || whatToCompare === "EG") {
             if (movingIn === 'Y' || recentElectricityBill === 'N') {
@@ -283,7 +283,10 @@
                 $('.recent-electricity-bill').hide();
                 $(".electricity-meter").find("input[type='radio']").prop('checked',false);
                 $(".electricity-meter").find('.active').removeClass('active');
+            } else {
+                $('.recent-electricity-bill').show();
             }
+
         } else {
             $electricityInputs.hide();
         }
@@ -307,6 +310,8 @@
 
             if (movingIn === 'Y') {
                 $('.recent-gas-bill').hide();
+            } else {
+                $('.recent-gas-bill').show();
             }
         } else {
             $gasInputs.hide();

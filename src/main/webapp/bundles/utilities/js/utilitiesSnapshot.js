@@ -32,12 +32,12 @@
         data.postcode = "Postcode " + $("#utilities_householdDetails_location").val().match(/\d+/)[0];
 
         var whatToCompare = $(".what-to-compare :checked").val(),
-            isSpendEstimate = $(".how-to-estimate").val() === "S";
+            movingIn = $(".moving-in").find("input[type='radio']:checked").val(),
+            recentElectricityBill = $(".recent-electricity-bill").find("input[type='radio']:checked").val(),
+            recentGasBill = $(".recent-gas-bill").find("input[type='radio']:checked").val();
 
         if(whatToCompare === "E" || whatToCompare === "EG") {
-            if(isSpendEstimate) {
-                data.electricitySpend = "$" + $("#utilities_estimateDetails_spend_electricity_amount").val() + " / " + $("#utilities_estimateDetails_spend_electricity_period").children("option").filter(":selected").text();
-            } else {
+            if(recentElectricityBill === 'Y') {
                 var elecPeakVal = $("#utilities_estimateDetails_usage_electricity_peak_amount").val(),
                     elecPeakPeriod = $("#utilities_estimateDetails_usage_electricity_peak_period").children("option").filter(":selected").text(),
                     elecOffpeakVal = $("#utilities_estimateDetails_usage_electricity_offpeak_amount").val(),
@@ -45,13 +45,20 @@
 
                 data.electricityPeak = elecPeakVal + "kWh/" + elecPeakPeriod;
                 data.electricityOffPeak = (elecOffpeakVal !== "" ? elecOffpeakVal : 0) + "kWh/" + elecOffpeakPeriod;
+            } else {
+                electricityUsage = $('utilities_estimateDetails_electricity_usage').val();
+                if (electricityUsage === 'L') {
+                    data.electricitySpend = "Low";
+                } else if (electricityUsage === 'M') {
+                    data.electricitySpend = "Medium";
+                } else {
+                    data.electricitySpend = "High";
+                }
             }
         }
 
         if(whatToCompare === "G" || whatToCompare === "EG") {
-            if(isSpendEstimate) {
-                data.gasSpend = "$" + $("#utilities_estimateDetails_spend_gas_amount").val() + " / " + $("#utilities_estimateDetails_spend_gas_period").children("option").filter(":selected").text();
-            } else {
+            if(recentGasBill === 'Y') {
                 var gasPeakVal = $("#utilities_estimateDetails_usage_gas_peak_amount").val(),
                     gasPeakPeriod = $("#utilities_estimateDetails_usage_gas_peak_period").children("option").filter(":selected").text(),
                     gasOffpeakVal = $("#utilities_estimateDetails_usage_gas_offpeak_amount").val(),
@@ -59,11 +66,22 @@
 
                 data.gasPeak = gasPeakVal + "MJ/" + gasPeakPeriod;
                 data.gasOffPeak = (gasOffpeakVal !== "" ? gasOffpeakVal : 0) + "MJ/" + gasOffpeakPeriod;
+            } else {
+                gasUsage = $('utilities_estimateDetails_electricity_usage').val();
+                if (gasUsage === 'L') {
+                    data.gasSpend = "Low";
+                } else if (gasUsage === 'M') {
+                    data.gasSpend = "Medium";
+                } else {
+                    data.gasSpend = "High";
+                }
             }
         }
 
-        data.isSpendEstimate = isSpendEstimate;
-        data.segmentClass = isSpendEstimate ? "spend" : "usage";
+        data.recentElectricityBill = recentElectricityBill;
+        data.recentGasBill = recentGasBill;
+        data.segmentClassElec = recentElectricityBill ? "spend" : "usage";
+        data.segmentClassGas = recentGasBill ? "spend" : "usage";
 
         var html = template(data);
         $("#results-summary-container").html(html);
