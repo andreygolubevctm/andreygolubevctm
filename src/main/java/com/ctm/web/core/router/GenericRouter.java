@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 @WebServlet(urlPatterns = {
 		// GET
