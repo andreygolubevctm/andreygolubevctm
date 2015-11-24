@@ -35,7 +35,7 @@
         <mysql.connector.version>5.1.29</mysql.connector.version>
 
         <spring-rabbit.version>1.4.6.RELEASE</spring-rabbit.version>
-        <common-logging.version>1.3.0-SNAPSHOT</common-logging.version>
+        <common-logging.version>1.3.0-RC1</common-logging.version>
         <common-interfaces.version>1.6.0-RC1</common-interfaces.version>
 
         <!-- Compile as this version -->
@@ -233,7 +233,6 @@
             <groupId>com.ctm.common</groupId>
             <artifactId>common-logging</artifactId>
             <version>${common-logging.version}</version>
-            <classifier>BER-22</classifier>
         </dependency>
 
         <dependency>
