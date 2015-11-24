@@ -74,7 +74,7 @@
                                className=""
                                items="Y=Yes,N=No"
                                id="${go:nameFromXpath(fieldXPath)}"
-                               title="if you have arecent gas bill." />
+                               title="if you have a recent gas bill." />
     </form_new:row>
 </form_new:fieldset>
 

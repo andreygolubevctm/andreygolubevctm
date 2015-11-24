@@ -13,7 +13,7 @@ import com.ctm.web.core.utils.NGram;
 public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 	public enum FuelType  {
-		Electricity, Gas, Dual
+		Electricity, Gas, Dual;
 	}
 
 	public enum HouseholdType  {
@@ -212,14 +212,8 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 			json.put("connection_date", FormDateUtils.convertDateToString(getConnectionDate(), "yyyy-MM-dd"));
 		} else {
 			json.put("connection_date", "0000-00-00");
-
-			//if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity) {
-				json.put("el_bill_available", convertBooleanToString(getHasElectricityBill(), "Yes", "No"));
-			//}
-
-			//if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity) {
-				json.put("gas_bill_available", convertBooleanToString(getHasGasBill(), "Yes", "No"));
-			//}
+			json.put("el_bill_available", convertBooleanToString(getHasElectricityBill(), "Yes", "No"));
+			json.put("gas_bill_available", convertBooleanToString(getHasGasBill(), "Yes", "No"));
 		}
 
 
@@ -233,9 +227,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 			json.put("el_bill_amount", getElectricityBillAmount());
 			json.put("el_bill_days", getElectricityBillDays());
 
-			//ElectricityMeterType meterType = getElectricityMeterType();
-			ElectricityMeterType meterType = ElectricityMeterType.Single;
-
+			ElectricityMeterType meterType = getElectricityMeterType();
 			json.put("el_meter_type", meterType.getLabel());
 
 			json.put("el_peak_usage", getElectricityPeakUsage());
@@ -278,11 +270,9 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		json.put("no_contract", convertBooleanToString(getPreferNoContract(), "Yes", "No"));
 		json.put("renewable_energy", convertBooleanToString(getPreferRenewableEnergy(), "Important", "Not important"));
 
-
 		json.put("tariff", getTariff());
 
 		if(getReferenceNumber() != null){
-			json.put("title", "Mr");
 			json.put("first_name", getFirstName());
 
 			if(getPhoneNumber() != null){
@@ -397,9 +387,9 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		setGasPeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_gas_peak_amount")));
 		setGasOffpeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_gas_offpeak_amount")));
 
-			if (request.getParameter("utilities_resultsDisplayed_optinPhone").equals("Y")) {
-				setFirstName(request.getParameter("utilities_resultsDisplayed_firstName"));
-				setPhoneNumber(request.getParameter("utilities_resultsDisplayed_phone"));
+		if (request.getParameter("utilities_resultsDisplayed_optinPhone").equals("Y")) {
+			setFirstName(request.getParameter("utilities_resultsDisplayed_firstName"));
+			setPhoneNumber(request.getParameter("utilities_resultsDisplayed_phone"));
 			setReferenceNumber(request.getParameter("transactionId"));
 		}
 

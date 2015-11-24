@@ -315,13 +315,11 @@
 
     function _toggleChangeType() {
         var type = $(".what-to-compare-reset").find("input[type='radio']:checked").val();
-        var whatToCompare = $('#utilities_householdDetails_whatToCompare');
-        var whatToCompareSelect = $('#utilities_householdDetails_whatToCompare_' + type);
 
-        whatToCompare.find('label').removeClass('active');
+        $('#utilities_householdDetails_whatToCompare').find('label').removeClass('active');
 
-        whatToCompareSelect.prop('checked',true);
-        whatToCompareSelect.parent().addClass('active');
+        $('#utilities_householdDetails_whatToCompare_' + type).prop('checked',true);
+        $('#utilities_householdDetails_whatToCompare_' + type).parent().addClass('active');
 
         meerkat.modules.journeyEngine.gotoPath('start');
     }
