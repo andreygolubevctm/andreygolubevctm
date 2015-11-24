@@ -259,6 +259,8 @@
             recentGasBill = $(".recent-gas-bill").find("input[type='radio']:checked").val();
 
         $movingInDate.toggle(movingIn === 'Y');
+        $(".recent-electricity-bill").toggle(whatToCompare === "E" || whatToCompare === "EG");
+        $(".recent-gas-bill").toggle(whatToCompare === "G" || whatToCompare === "EG");
 
         if (whatToCompare === "E" || whatToCompare === "EG") {
             if (movingIn === 'Y' || recentElectricityBill === 'N') {
