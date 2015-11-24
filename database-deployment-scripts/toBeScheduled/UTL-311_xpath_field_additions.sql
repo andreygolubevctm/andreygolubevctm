@@ -6,4 +6,6 @@ INSERT INTO `transaction_fields` (`fieldid`, `fieldMaster`, `fieldCategory`, `fi
 (2499, 0, 6, 'utilities/estimateDetails/spend/gas/days', 5, 1, 0, 0, 0, 0, '2014-12-31 00:00:00'),
 (2500, 0, 6, 'utilities/resultsDisplayed/preferEBilling', 5, 1, 0, 0, 0, 0, '2014-12-31 00:00:00'),
 (2501, 0, 6, 'utilities/resultsDisplayed/preferNoContract', 5, 1, 0, 0, 0, 0, '2014-12-31 00:00:00'),
-(2502, 0, 6, 'utilities/resultsDisplayed/preferRenewableEnergy', 5, 1, 0, 0, 0, 0, '2014-12-31 00:00:00');
+(2502, 0, 6, 'utilities/resultsDisplayed/preferRenewableEnergy', 5, 1, 0, 0, 0, 0, '2014-12-31 00:00:00'),
+(2503, 0, 6, 'utilities/estimateDetails/electricity/usage', 5, 1, 0, 0, 0, 0, '2014-12-31 00:00:00'),
+(2504, 0, 6, 'utilities/estimateDetails/gas/usage', 5, 1, 0, 0, 0, 0, '2014-12-31 00:00:00');
