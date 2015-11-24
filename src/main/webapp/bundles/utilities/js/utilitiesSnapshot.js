@@ -43,8 +43,8 @@
                     elecOffpeakVal = $("#utilities_estimateDetails_usage_electricity_offpeak_amount").val(),
                     elecOffpeakPeriod = $("#utilities_estimateDetails_usage_electricity_offpeak_period").children("option").filter(":selected").text();
 
-                data.electricityPeak = elecPeakVal + "kWh/" + elecPeakPeriod;
-                data.electricityOffPeak = (elecOffpeakVal !== "" ? elecOffpeakVal : 0) + "kWh/" + elecOffpeakPeriod;
+                data.electricityPeak = elecPeakVal + "kWh";
+                data.electricityOffPeak = (elecOffpeakVal !== "" ? elecOffpeakVal : 0) + "kWh";
             } else {
                 electricityUsage = $('utilities_estimateDetails_electricity_usage').val();
                 if (electricityUsage === 'L') {
@@ -64,8 +64,8 @@
                     gasOffpeakVal = $("#utilities_estimateDetails_usage_gas_offpeak_amount").val(),
                     gasOffpeakPeriod = $("#utilities_estimateDetails_usage_gas_offpeak_period").children("option").filter(":selected").text();
 
-                data.gasPeak = gasPeakVal + "MJ/" + gasPeakPeriod;
-                data.gasOffPeak = (gasOffpeakVal !== "" ? gasOffpeakVal : 0) + "MJ/" + gasOffpeakPeriod;
+                data.gasPeak = gasPeakVal + "MJ";
+                data.gasOffPeak = (gasOffpeakVal !== "" ? gasOffpeakVal : 0) + "MJ";
             } else {
                 gasUsage = $('utilities_estimateDetails_electricity_usage').val();
                 if (gasUsage === 'L') {

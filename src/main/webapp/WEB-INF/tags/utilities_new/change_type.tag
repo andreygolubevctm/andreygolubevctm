@@ -16,7 +16,7 @@
                     <field_new:array_radio xpath="${fieldXPath}"
                                            required="true"
                                            className="what-to-compare-reset"
-                                           items="E=Electricity,G=Gas,EG=Electricity and Gas"
+                                           items="E=<i class='energy-electricity'></i>Electricity,G=<i class='energy-gas'></i>Gas,EG=<i class='energy-combined'></i>Electricity and Gas"
                                            id="${go:nameFromXpath(fieldXPath)}"
                                            title="which energies to compare." />
             </div>

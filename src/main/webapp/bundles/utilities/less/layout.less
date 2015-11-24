@@ -33,6 +33,8 @@ fieldset {
   text-align: left;
   margin-bottom: 10px;
 }
+.what-to-compare .btn,
+.what-to-compare-reset .btn,
 .electricity-usage .btn,
 .gas-usage .btn {
   color: @headings-color;
@@ -41,6 +43,7 @@ fieldset {
   vertical-align: top;
   padding-left: 10px;
   padding-right: 10px;
+  text-align: center;
 }
 .electricity-usage label > span,
 .gas-usage label > span {
@@ -50,6 +53,11 @@ fieldset {
   vertical-align: top;
   width: 46%;
   margin:2%;
+}
+.what-to-compare label i,
+.what-to-compare-reset label i {
+  display: block;
+  font-size: 80px;
 }
 .electricity-usage label i,
 .gas-usage  label i {
@@ -71,10 +79,6 @@ fieldset {
 .additional-estimate-details,
 .additional-estimate-details-row {
   display: none;
-}
-.change-type-modal label.btn {
-  padding-top: 40px;
-  padding-bottom: 40px;
 }
 .additional-estimate-details-row {
   .row-content {
@@ -101,7 +105,9 @@ fieldset {
   .electricity-usage span {
     width: 25%;
   }
-}
+  .btn-group .btn + .btn {
+    border-left-width: 1px;
+  }}
 
 @media(min-width: @screen-md) {
   .additional-estimate-details-row {
