@@ -230,14 +230,12 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 		bd = bd.setScale(2, RoundingMode.HALF_UP);
 
 		double estimatedCost = bd.doubleValue();
-		json.put("yearlySavings", estimatedCost);
+		json.put("estimatedCost", estimatedCost);
 
 		json.put("price", estimatedCost);
 		json.put("previousPrice", getAnnualPreviousCost());
 		json.put("contractPeriod", getContractPeriod());
 		json.put("cancellationFees", getCancellationFees());
-
-		json.put("estimatedCost", estimatedCost);
 
 		json.put("payontimeDiscounts", getPayontimeDiscounts());
 		json.put("ebillingDiscounts", getEbillingDiscounts());
