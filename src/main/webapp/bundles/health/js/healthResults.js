@@ -531,9 +531,7 @@
         meerkat.modules.health.loadRates(function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health').done(function () {
-                if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
-                    $("#environmentOverride").val($("#developmentAggregatorEnvironment").val());
-                }
+                Results.updateAggregatorEnvironment();
                 Results.get();
             });
         });

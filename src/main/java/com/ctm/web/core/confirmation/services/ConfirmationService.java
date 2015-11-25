@@ -116,8 +116,7 @@ public class ConfirmationService {
 		return confirmationUrl.toString();
 	}
 
-	public boolean addConfirmation(final Confirmation confirmation) throws DaoException {
+	public void addConfirmation(final Confirmation confirmation) throws DaoException {
 		confirmationDao.addConfirmation(confirmation);
-		return true;
 	}
 }

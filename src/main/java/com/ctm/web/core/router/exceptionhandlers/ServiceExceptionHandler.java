@@ -14,7 +14,7 @@ public class ServiceExceptionHandler implements ExceptionMapper<ServiceException
     @Override
     public Response toResponse(ServiceException e) {
 
-        LOGGER.error("Request failed: {}", e);
+        LOGGER.error("Request failed: ", e);
 
         ResponseError responseError = new ResponseError();
         responseError.addError(e.getMessage());

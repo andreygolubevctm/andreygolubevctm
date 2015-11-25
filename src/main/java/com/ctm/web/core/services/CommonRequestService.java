@@ -88,7 +88,7 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
 
         // Log Request
         LOGGER.info("Sending request {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
-        LOGGER.debug("Outbound message {} {} {}", kv("vertical", vertical), kv("endpoint", endpoint), kv("request", jsonRequest));
+        LOGGER.debug("Outbound message {}", kv("request", jsonRequest));
 
         SimpleConnection connection = getSimpleConnection(serviceProperties, jsonRequest);
 
@@ -99,7 +99,7 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
 
         // Log response
         LOGGER.info("Receiving response {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
-        LOGGER.debug("Inbound message {} {} {}", kv("vertical", vertical), kv("endpoint", endpoint), kv("response", response));
+        LOGGER.debug("Inbound message {}", kv("response", response));
 
         return objectMapper.readValue(response, objectMapper.constructType(responseClass));
     }

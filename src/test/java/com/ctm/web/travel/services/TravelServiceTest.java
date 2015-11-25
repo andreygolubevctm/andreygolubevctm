@@ -53,35 +53,35 @@ public class TravelServiceTest {
 		travellers.setTravellersDOB("01/01/1985");
 		travelQuote.setTravellers(travellers);
 
-		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+		isValid(travelRequest, vertical);
 
 		travelQuote.setFirstName("test");
 		travelQuote.setSurname(null);
-		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+		isValid(travelRequest, vertical);
 
 		travelQuote.setFirstName(null);
 		travelQuote.setSurname("Test");
-		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+		isValid(travelRequest, vertical);
 
 		travelQuote.setFirstName("test");
 		travelQuote.setSurname("Test");
-		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+		isValid(travelRequest, vertical);
 
 		travelQuote.setFirstName("test??");
 		travelQuote.setSurname("Test");
-		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
+		isInvalid(travelRequest, vertical);
 
 		travelQuote.setFirstName("test");
 		travelQuote.setSurname("Test??");
-		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
+		isInvalid(travelRequest, vertical);
 
 		travelQuote.setFirstName("test??");
 		travelQuote.setSurname("Test??");
-		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
+		isInvalid(travelRequest, vertical);
 
 		travelQuote.setFirstName("test");
 		travelQuote.setSurname("O'Test-you");
-		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
+		isInvalid(travelRequest, vertical);
 	}
 
 	@Test
@@ -97,36 +97,36 @@ public class TravelServiceTest {
 
 		// Destination field only accepts 3 letter characters
 		travelRequest.getQuote().setDestination("BOB");
-		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+		isValid(travelRequest, vertical);
 
 		travelRequest.getQuote().setDestination("BOB,ABC");
-		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+		isValid(travelRequest, vertical);
 
 		travelRequest.getQuote().setDestination("BOB,ABC,TED");
-		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+		isValid(travelRequest, vertical);
 
 		// INVALID TEST CASES
 		travelRequest.getQuote().setDestination("bob");
-		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
+		isInvalid(travelRequest, vertical);
 
 		travelRequest.getQuote().setDestination("BOB,TED,");
-		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
+		isInvalid(travelRequest, vertical);
 
 		travelRequest.getQuote().setDestination("BOB,TED, HI");
-		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
+		isInvalid(travelRequest, vertical);
 
 		travelRequest.getQuote().setDestination("bob,bob1-sfhs3-dfk");
-		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
+		isInvalid(travelRequest, vertical);
 
 		travelRequest.getQuote().setDestination("1");
-		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
+		isInvalid(travelRequest, vertical);
 
 		// check for blank fields
 		travelRequest.getQuote().setDestination("");
-		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
+		isInvalid(travelRequest, vertical);
 
 		travelRequest.getQuote().setDestination(" ");
-		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
+		isInvalid(travelRequest, vertical);
 	}
 
 	@Test
@@ -140,19 +140,19 @@ public class TravelServiceTest {
 		travellers.setTravellersDOB("01/01/1985");
 		travelQuote.setTravellers(travellers);
 
-		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+		isValid(travelRequest, vertical);
 
 		travelRequest.getQuote().setCurrentJourney("gggg");
-		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+		isValid(travelRequest, vertical);
 
 		travelRequest.getQuote().setCurrentJourney("g3");
-		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+		isValid(travelRequest, vertical);
 
 		travelRequest.getQuote().setCurrentJourney("3g");
-		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+		isValid(travelRequest, vertical);
 
 		travelRequest.getQuote().setCurrentJourney("36");
-		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+		isValid(travelRequest, vertical);
 	}
 
 	@Test
@@ -162,7 +162,7 @@ public class TravelServiceTest {
 		travelQuote.setChildren(null);
 
 		travelQuote.setTravellers(null);
-		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
+		isInvalid(travelRequest, vertical);
 
 		// Set defaults
 		travelQuote.setAdults(1);
@@ -172,12 +172,12 @@ public class TravelServiceTest {
 		travellers.setTravellersDOB("01/01/1985");
 		travelQuote.setTravellers(travellers);
 
-		isValid(() -> travelService.validateRequest(travelRequest, vertical));
+		isValid(travelRequest, vertical);
 	}
 
-	private void isInvalid(Supplier<Boolean> supplier) {
+	private void isInvalid(TravelRequest travelRequest, String s) {
 		try {
-			supplier.get();
+			travelService.validateRequest(travelRequest, s);
 		} catch (Exception e) {
 			assertNotNull(e);
 		}
@@ -187,5 +187,8 @@ public class TravelServiceTest {
 		assertTrue(supplier.get());
 	}
 
+	private void isValid(TravelRequest travelRequest, String s) {
+		travelService.validateRequest(travelRequest, s);
+	}
 
 }

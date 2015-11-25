@@ -1,5 +1,6 @@
 package com.ctm.web.health.apply.model;
 
+import com.ctm.web.core.utils.common.utils.LocalDateUtils;
 import com.ctm.web.health.apply.model.request.application.ApplicationGroup;
 import com.ctm.web.health.apply.model.request.application.Emigrate;
 import com.ctm.web.health.apply.model.request.application.applicant.Applicant;
@@ -17,12 +18,9 @@ import com.ctm.web.health.apply.model.request.application.situation.HealthSituat
 import com.ctm.web.health.apply.model.request.fundData.HealthFund;
 import com.ctm.web.health.model.form.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static com.ctm.web.health.apply.model.Constants.AUS_FORMAT;
 
 public class ApplicationGroupAdapter {
 
@@ -91,7 +89,7 @@ public class ApplicationGroupAdapter {
                             .map(Gender::valueOf)
                             .orElse(null),
                     person.map(Person::getDob)
-                            .map(v -> LocalDate.parse(v, AUS_FORMAT))
+                            .map(LocalDateUtils::parseAUSLocalDate)
                             .orElse(null),
                     insured.map(i -> new com.ctm.web.health.apply.model.request.application.applicant.healthCover.HealthCover(
                             Optional.ofNullable(i.getCover())
@@ -158,20 +156,20 @@ public class ApplicationGroupAdapter {
                             .map(LastName::new)
                             .orElse(null),
                     dependant.map(com.ctm.web.health.model.form.Dependant::getDob)
-                            .map(v -> LocalDate.parse(v, AUS_FORMAT))
+                            .map(LocalDateUtils::parseAUSLocalDate)
                             .orElse(null),
                     dependant.map(com.ctm.web.health.model.form.Dependant::getSchool)
                             .map(School::new)
                             .orElse(null),
                     dependant.map(com.ctm.web.health.model.form.Dependant::getSchoolDate)
-                            .map(v -> LocalDate.parse(v, AUS_FORMAT))
+                            .map(LocalDateUtils::parseAUSLocalDate)
                             .orElse(null),
                     dependant.map(com.ctm.web.health.model.form.Dependant::getSchoolID)
                             .map(SchoolId::new)
                             .orElse(null),
                     dependant.map(com.ctm.web.health.model.form.Dependant::getTitle)
                             .map(Title::valueOf)
-                            .filter(t -> Title.MR.equals(t))
+                            .filter(t -> t == Title.MR)
                             .map(v -> Gender.M)
                             .orElse(Gender.F),
                     dependant.map(com.ctm.web.health.model.form.Dependant::getFulltime)

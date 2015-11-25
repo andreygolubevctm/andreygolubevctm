@@ -18,7 +18,7 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> extends Commo
         super(providerFilterDAO, objectMapper);
     }
 
-    public boolean validateRequest(RequestWithQuote<QUOTE> data, String verticalCode) {
+    public void validateRequest(RequestWithQuote<QUOTE> data, String verticalCode) {
         // Validate request
         if (data == null) {
             LOGGER.error("Invalid request: data null");
@@ -33,7 +33,6 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> extends Commo
             LOGGER.error("Invalid request: {}",errors);
             throw new RouterException("Invalid request"); // TODO pass validation errors to client
         }
-        return true;
     }
 
 }

@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-
 /**
  * This is use just by in JAVA and AccessTouchService.java is too dangerous to refactor.
  * Once the JSPs no longer use AccessTouchService it can be deleted.

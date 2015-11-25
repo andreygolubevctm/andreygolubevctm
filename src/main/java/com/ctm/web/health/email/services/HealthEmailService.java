@@ -46,7 +46,6 @@ import java.util.Map;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-
 public class HealthEmailService extends EmailServiceHandler implements BestPriceEmailHandler, ProductBrochuresEmailHandler, ApplicationEmailHandler {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HealthEmailService.class);

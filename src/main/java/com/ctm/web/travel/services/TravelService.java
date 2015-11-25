@@ -17,19 +17,11 @@ import com.ctm.web.travel.quote.model.RequestAdapter;
 import com.ctm.web.travel.quote.model.ResponseAdapter;
 import com.ctm.web.travel.quote.model.request.TravelQuoteRequest;
 import com.ctm.web.travel.quote.model.response.TravelResponse;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TravelService extends CommonQuoteService<TravelQuote, TravelQuoteRequest, TravelResponse> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TravelService.class);
 
     public TravelService() {
         super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
@@ -55,12 +47,6 @@ public class TravelService extends CommonQuoteService<TravelQuote, TravelQuoteRe
         TravelResponse travelResponse = sendRequest(brand, Vertical.VerticalType.TRAVEL, "travelQuoteService", Endpoint.QUOTE,
                 data, travelQuoteRequest, TravelResponse.class);
 
-        // Prepare objectmapper to map java model to JSON
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.registerModule(new JavaTimeModule());
-
         // Convert travel-quote java model to front end model ready for JSON conversion to the front end.
         final List<TravelResult> travelResults = ResponseAdapter.adapt(travelQuoteRequest, travelResponse);
 
@@ -74,7 +60,7 @@ public class TravelService extends CommonQuoteService<TravelQuote, TravelQuoteRe
                 resultProperties.addAll(builder.getResultProperties());
 
             }
-        }     
+        }
 
         ResultsService.saveResultsProperties(resultProperties);
 

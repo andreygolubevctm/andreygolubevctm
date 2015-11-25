@@ -1,5 +1,6 @@
 package com.ctm.web.health.apply.model;
 
+import com.ctm.web.core.utils.common.utils.LocalDateUtils;
 import com.ctm.web.health.apply.model.request.application.applicant.healthCover.Cover;
 import com.ctm.web.health.apply.model.request.application.common.FirstName;
 import com.ctm.web.health.apply.model.request.application.common.LastName;
@@ -22,9 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.util.Optional;
-
-import static com.ctm.web.health.apply.model.Constants.AUS_FORMAT;
-import static com.ctm.web.health.apply.model.Constants.ISO_FORMAT;
 
 public class PaymentAdapter {
 
@@ -321,7 +319,7 @@ public class PaymentAdapter {
                         .orElse(null);
             } else if(payment.map(com.ctm.web.health.model.form.Payment::getPolicyDate).isPresent()) { // For BUD, GMB and Frank
                 return payment.map(com.ctm.web.health.model.form.Payment::getPolicyDate)
-                        .map(v -> LocalDate.parse(v, ISO_FORMAT))
+                        .map(LocalDateUtils::parseISOLocalDate)
                         .orElse(null);
             } else if (credit.map(Credit::getDay).isPresent()) {
                 return LocalDate.now().withDayOfMonth(credit.map(Credit::getDay).get());
@@ -329,7 +327,7 @@ public class PaymentAdapter {
                 return payment
                         .map(com.ctm.web.health.model.form.Payment::getDetails)
                         .map(PaymentDetails::getStart)
-                        .map(v -> LocalDate.parse(v, AUS_FORMAT))
+                        .map(LocalDateUtils::parseAUSLocalDate)
                         .orElse(null);
             }
         } else if (PaymentType.BANK.equals(paymentType)) {
@@ -345,7 +343,7 @@ public class PaymentAdapter {
             } else if (payment.map(com.ctm.web.health.model.form.Payment::getPolicyDate).isPresent()) { // For BUD, GMB and Frank
                 // For BUD, GMB and Frank
                 return payment.map(com.ctm.web.health.model.form.Payment::getPolicyDate)
-                        .map(v -> LocalDate.parse(v, ISO_FORMAT))
+                        .map(LocalDateUtils::parseISOLocalDate)
                         .orElse(null);
             } else if (bank.map(com.ctm.web.health.model.form.Bank::getDay).isPresent()) {
                 return LocalDate.now().withDayOfMonth(bank.map(com.ctm.web.health.model.form.Bank::getDay).get());
@@ -353,7 +351,7 @@ public class PaymentAdapter {
                 return payment
                         .map(com.ctm.web.health.model.form.Payment::getDetails)
                         .map(PaymentDetails::getStart)
-                        .map(v -> LocalDate.parse(v, AUS_FORMAT))
+                        .map(LocalDateUtils::parseAUSLocalDate)
                         .orElse(null);
             }
         } else {
