@@ -32,7 +32,26 @@ var healthFunds_FRA = {
             } else {
                 messageField = healthFunds_FRA.$policyDateBankMessage;
             }
-            messageField.text('Your payment will be deducted on the policy start date');
+
+            var premiumType = $('#health_payment_details_frequency').val(),
+                    startDate = meerkat.modules.utils.returnDate($('#health_payment_details_start').val()).getTime(),
+                    <%-- Get today's date without hours --%>
+                    todayDate = new Date(new Date(meerkat.modules.utils.getUTCToday()).setHours(0,0,0,0)).getTime();
+
+            var messageText;
+            if(startDate === todayDate && premiumType === 'annually') {
+                messageText = 'Your payment will be debited in the next 24 hours';
+            } else if(startDate > todayDate && premiumType === 'annually') {
+                messageText = 'Your payment will be debited on your policy start date';
+            } else if(startDate === todayDate && premiumType === 'monthly') {
+                messageText = 'Your first payment will be debited in the next 24 hours and thereafter on the same day each month';
+            } else if(startDate > todayDate && premiumType === 'monthly') {
+                messageText = 'Your first payment will be debited on your policy start date and thereafter on the same day each month';
+            } else {
+                messageText = 'Your payment will be deducted on the policy start date';
+            }
+
+            messageField.text(messageText);
         });
 
         <%--change age of dependants and school--%>
