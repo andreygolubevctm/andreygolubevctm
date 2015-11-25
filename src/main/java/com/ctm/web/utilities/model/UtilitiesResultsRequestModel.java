@@ -12,19 +12,22 @@ import com.ctm.web.core.utils.NGram;
 
 public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
-	public static enum FuelType  {
+	public enum FuelType  {
 		Electricity, Gas, Dual;
 	}
 
-	public static enum Duration  {
-		MONTHLY ("Monthly","M"),
-		BIMONTHLY ("Bimonthly","B"),
-		QUARTERLY ("Quarterly","Q"),
-		YEARLY ("Yearly","Y");
+	public enum HouseholdType  {
+		Low, Medium, High
+	}
+
+	public  enum ElectricityMeterType  {
+		Single ("Single","S"),
+		TwoRate ("Two-rate","T"),
+		TimeOfUse ("Time of Use","M");
 
 		private final String label, code;
 
-		Duration(String label, String code) {
+		ElectricityMeterType(String label, String code) {
 			this.label = label;
 			this.code = code;
 		}
@@ -36,41 +39,56 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 			return code;
 		}
 
-		public static Duration findByCode(String code) {
-			for (Duration t : Duration.values()) {
+		public static ElectricityMeterType findByCode(String code) {
+			for (ElectricityMeterType t : ElectricityMeterType.values()) {
 				if (code.equals(t.getCode())) {
 					return t;
 				}
 			}
-			return null;
+			return ElectricityMeterType.Single;
 		}
 	}
 
-	private String postcode;
-	private String suburb;
-	private boolean isConnection; // true if moving to the property
-	private Date connectionDate; // date moving to the property
-	private FuelType fuelType;
-	private String tariff;
-	private boolean solarPanels;
+	private String postcode; // postcode
+	private String suburb; // suburb
+	private boolean isConnection; // is_connection - true if moving to the property
+	private Date connectionDate; // connection_date - date moving to the property
+	private FuelType fuelType; // fuel_type
+
+	private boolean hasElectricityBill; // el_bill_available - true if has electricity bill
+	private boolean hasGasBill; // gas_bill_available - true if has gas bill
+	private boolean solarPanels; // solar_panels
 
 	// The following is only required if the user is not moving
-	private Duration electricityDuration;
-	private Duration gasDuration;
-	private String currentElectricitySupplier;
-	private String currentGasSupplier;
 
-	// The following are only required if customer chooses 'Use my $ to work out use'
-	private float electricitySpend = 0;
-	private float gasSpend = 0;
+	private String currentElectricitySupplier; // current_elec_supplier
+	private HouseholdType electricityHouseholdType; // el_house_hold_type
+
+	private String currentGasSupplier; // current_gas_supplier
+	private HouseholdType gasHouseholdType; // gas_house_hold_type
+
+	private float electricityBillAmount = 0; // el_bill_amount
+	private float gasBillAmount = 0; // gas_bill_amount
+
+	private Integer electricityBillDays = 0; // el_bill_days
+	private Integer gasBillDays = 0; // gas_bill_days
+
+	private ElectricityMeterType electricityMeterType;
+
 
 	// The following are only required if customer chooses to enter usage
-	private float electricityPeakUsage = 0;
-	private float gasPeakUsage = 0;
-	private float electricityOffpeakUsage = 0;
-	private float gasOffpeakUsage = 0;
+	private float electricityPeakUsage = 0; // el_peak_usage
+	private float electricityOffpeakUsage = 0; // el_controlled_load_usage
+	private float electricityShoulderUsage = 0; // el_shoulder_usage
 
-	private String howToEstimate;
+	private float gasPeakUsage = 0; // gas_peak_usage
+	private float gasOffpeakUsage = 0; // gas_offpeak_usage
+
+	private boolean preferEBilling;
+	private boolean preferNoContract;
+	private boolean preferRenewableEnergy;
+
+	private String tariff;
 
 	// The following is for their lead feed
 	private String firstName;
@@ -85,7 +103,6 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 	public String getPostcode() {
 		return postcode;
 	}
-
 	public void setPostcode(String postCode) {
 		this.postcode = postCode;
 	}
@@ -93,7 +110,6 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 	public String getSuburb() {
 		return suburb;
 	}
-
 	public void setSuburb(String suburb) {
 		this.suburb = suburb;
 	}
@@ -101,7 +117,6 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 	public boolean isConnection() {
 		return isConnection;
 	}
-
 	public void setConnection(boolean isConnection) {
 		this.isConnection = isConnection;
 	}
@@ -109,7 +124,6 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 	public Date getConnectionDate() {
 		return connectionDate;
 	}
-
 	public void setConnectionDate(Date connectionDate) {
 		this.connectionDate = connectionDate;
 	}
@@ -117,106 +131,73 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 	public FuelType getFuelType() {
 		return fuelType;
 	}
-
 	public void setFuelType(FuelType fuelType) {
 		this.fuelType = fuelType;
 	}
 
-	public String getTariff() {
-		return tariff;
-	}
+	public boolean getHasElectricityBill() { return hasElectricityBill; }
+	public void setHasElectricityBill(boolean hasElectricityBill) { this.hasElectricityBill = hasElectricityBill; }
 
-	public void setTariff(String tariff) {
-		this.tariff = tariff;
-	}
+	public boolean getHasGasBill() { return hasGasBill; }
+	public void setHasGasBill(boolean hasGasBill) { this.hasGasBill = hasGasBill; }
 
-	public boolean getSolarPanels() {
-		return solarPanels;
-	}
+	public boolean getSolarPanels() { return solarPanels; }
+	public void setSolarPanels(boolean solarPanels) { this.solarPanels = solarPanels; }
 
-	public void setSolarPanels(boolean solarPanels) {
-		this.solarPanels = solarPanels;
-	}
+	public String getCurrentElectricitySupplier() { return currentElectricitySupplier; }
+	public void setCurrentElectricitySupplier(String currentElectricitySupplier) { this.currentElectricitySupplier = currentElectricitySupplier; }
 
-	public Duration getElectricityDuration() {
-		return electricityDuration;
-	}
+	public String getCurrentGasSupplier() { return currentGasSupplier; }
+	public void setCurrentGasSupplier(String currentGasSupplier) { this.currentGasSupplier = currentGasSupplier; }
 
-	public void setElectricityDuration(Duration electricityDuration) {
-		this.electricityDuration = electricityDuration;
-	}
+	public HouseholdType getElectricityHouseholdType() { return electricityHouseholdType; }
+	public void setElectricityHouseholdType(HouseholdType electricityHouseholdType) { this.electricityHouseholdType = electricityHouseholdType; }
 
-	public Duration getGasDuration() {
-		return gasDuration;
-	}
+	public HouseholdType getGasHouseholdType() { return gasHouseholdType; }
+	public void setGasHouseholdType(HouseholdType gasHouseholdType) { this.gasHouseholdType = gasHouseholdType; }
 
-	public void setGasDuration(Duration gasDuration) {
-		this.gasDuration = gasDuration;
-	}
+	public float getElectricityBillAmount() { return electricityBillAmount; }
+	public void setElectricityBillAmount(float electricityBillAmount) { this.electricityBillAmount = electricityBillAmount; }
 
-	public String getCurrentElectricitySupplier() {
-		return currentElectricitySupplier;
-	}
+	public float getGasBillAmount() { return gasBillAmount; }
+	public void setGasBillAmount(float gasBillAmount) { this.gasBillAmount = gasBillAmount; }
 
-	public void setCurrentElectricitySupplier(String currentElectricitySupplier) {
-		this.currentElectricitySupplier = currentElectricitySupplier;
-	}
+	public Integer getElectricityBillDays() { return electricityBillDays; }
+	public void setElectricityBillDays(Integer electricityBillDays) { this.electricityBillDays = electricityBillDays; }
 
-	public String getCurrentGasSupplier() {
-		return currentGasSupplier;
-	}
+	public Integer getGasBillDays() { return gasBillDays; }
+	public void setGasBillDays(Integer gasBillDays) { this.gasBillDays = gasBillDays; }
 
-	public void setCurrentGasSupplier(String currentGasSupplier) {
-		this.currentGasSupplier = currentGasSupplier;
-	}
+	public ElectricityMeterType getElectricityMeterType() { return electricityMeterType; }
+	public void setElectricityMeterType(ElectricityMeterType electricityMeterType) { this.electricityMeterType = electricityMeterType; }
 
-	public float getElectricitySpend() {
-		return electricitySpend;
-	}
+	public float getElectricityPeakUsage() { return electricityPeakUsage; }
+	public void setElectricityPeakUsage(float electricityPeakUsage) { this.electricityPeakUsage = electricityPeakUsage; }
 
-	public void setElectricitySpend(float electricitySpend) {
-		this.electricitySpend = electricitySpend;
-	}
+	public float getElectricityOffpeakUsage() { return electricityOffpeakUsage; }
+	public void setElectricityOffpeakUsage(float electricityOffpeakUsage) { this.electricityOffpeakUsage = electricityOffpeakUsage; }
 
-	public float getGasSpend() {
-		return gasSpend;
-	}
+	public float getElectricityShoulderUsage() { return electricityShoulderUsage; }
+	public void setElectricityShoulderUsage(float electricityShoulderUsage) { this.electricityShoulderUsage = electricityShoulderUsage; }
 
-	public void setGasSpend(float gasSpend) {
-		this.gasSpend = gasSpend;
-	}
+	public float getGasPeakUsage() { return gasPeakUsage; }
+	public void setGasPeakUsage(float gasPeakUsage) { this.gasPeakUsage = gasPeakUsage; }
 
-	public float getElectricityPeakUsage() {
-		return electricityPeakUsage;
-	}
+	public float getGasOffpeakUsage() { return gasOffpeakUsage; }
+	public void setGasOffpeakUsage(float gasOffpeakUsage) { this.gasOffpeakUsage = gasOffpeakUsage; }
 
-	public void setElectricityPeakUsage(float electricityPeakUsage) {
-		this.electricityPeakUsage = electricityPeakUsage;
-	}
+	public boolean getPreferEBilling() { return preferEBilling; }
+	public void setPreferEBilling(boolean preferEBilling) { this.preferEBilling = preferEBilling; }
 
-	public float getGasPeakUsage() {
-		return gasPeakUsage;
-	}
+	public boolean getPreferNoContract() { return preferNoContract; }
+	public void setPreferNoContract(boolean preferNoContract) { this.preferNoContract = preferNoContract; }
 
-	public void setGasPeakUsage(float gasPeakUsage) {
-		this.gasPeakUsage = gasPeakUsage;
-	}
+	public boolean getPreferRenewableEnergy() { return preferRenewableEnergy; }
+	public void setPreferRenewableEnergy(boolean preferRenewableEnergy) { this.preferRenewableEnergy = preferRenewableEnergy; }
 
-	public float getElectricityOffpeakUsage() {
-		return electricityOffpeakUsage;
-	}
+	public String getTariff() { return tariff; }
+	public void setTariff(String tariff) { this.tariff = tariff; }
 
-	public void setElectricityOffpeakUsage(float electricityOffpeakUsage) {
-		this.electricityOffpeakUsage = electricityOffpeakUsage;
-	}
-
-	public float getGasOffpeakUsage() {
-		return gasOffpeakUsage;
-	}
-
-	public void setGasOffpeakUsage(float gasOffpeakUsage) {
-		this.gasOffpeakUsage = gasOffpeakUsage;
-	}
 
 	@Override
 	protected JSONObject getJsonObject() throws JSONException {
@@ -224,64 +205,58 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 		json.put("postcode", getPostcode());
 		json.put("suburb", getSuburb());
-		json.put("is_connection", convertBooleanToString(isConnection()));
+		json.put("is_connection", convertBooleanToString(isConnection(), "Yes", "No"));
+		json.put("fuel_type", getFuelType());
+
 		if(isConnection) {
 			json.put("connection_date", FormDateUtils.convertDateToString(getConnectionDate(), "yyyy-MM-dd"));
 		} else {
 			json.put("connection_date", "0000-00-00");
+			json.put("el_bill_available", convertBooleanToString(getHasElectricityBill(), "Yes", "No"));
+			json.put("gas_bill_available", convertBooleanToString(getHasGasBill(), "Yes", "No"));
 		}
-		json.put("fuel_type", getFuelType());
-		json.put("solar_panels", convertBooleanToString(getSolarPanels()));
 
-		if(getHowToEstimate().equals("U")){
 
-			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
-				json.put("elec_peak_usage", getElectricityPeakUsage());
-				json.put("elec_offpeak_usage", getElectricityOffpeakUsage());
-			}else{
-				json.put("elec_peak_usage", 0);
-				json.put("elec_offpeak_usage", 0);
+		json.put("solar_panels", convertBooleanToString(getSolarPanels(), "Yes", "No"));
+
+		json.put("el_house_hold_type", getElectricityHouseholdType());
+		json.put("gas_house_hold_type", getGasHouseholdType());
+
+		if(getHasElectricityBill()) {
+
+			json.put("el_bill_amount", getElectricityBillAmount());
+			json.put("el_bill_days", getElectricityBillDays());
+
+			ElectricityMeterType meterType = getElectricityMeterType();
+			json.put("el_meter_type", meterType.getLabel());
+
+			json.put("el_peak_usage", getElectricityPeakUsage());
+			if(meterType == ElectricityMeterType.TwoRate || meterType == ElectricityMeterType.TimeOfUse) {
+				json.put("el_controlled_load_usage", getElectricityOffpeakUsage());
+			} else {
+				json.put("el_controlled_load_usage", 0);
 			}
+			if(meterType == ElectricityMeterType.TimeOfUse) {
+				json.put("el_shoulder_usage", getElectricityShoulderUsage());
+			} else {
+				json.put("el_shoulder_usage", 0);
+			}
+		}
 
-			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas){
+		if(getHasGasBill()) {
+
+			json.put("gas_bill_amount", getGasBillAmount());
+			json.put("gas_bill_days", getGasBillDays());
+
+			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas) {
 				json.put("gas_peak_usage", getGasPeakUsage());
 				json.put("gas_offpeak_usage", getGasOffpeakUsage());
-			}else{
+			} else {
 				json.put("gas_peak_usage", 0);
 				json.put("gas_offpeak_usage", 0);
 			}
-
-			json.put("elec_money_spend", 0);
-			json.put("gas_money_spend", 0);
-
-
-		} else if(getHowToEstimate().equals("S")){
-
-			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
-				json.put("elec_money_spend", getElectricitySpend());
-			}else{
-				json.put("elec_money_spend", 0);
-			}
-
-			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas){
-				json.put("gas_money_spend", getGasSpend());
-			}else{
-				json.put("gas_money_spend", 0);
-			}
 		}
 
-		if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
-			Duration elecDuration = getElectricityDuration();
-			json.put("elec_duration", elecDuration.getLabel());
-		}
-
-
-		if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas){
-			Duration gasDuration = getGasDuration();
-			json.put("gas_duration", gasDuration.getLabel());
-		}
-
-		if(isConnection() == false  || (isConnection() && getHowToEstimate().equals("U"))){
 
 			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
 				json.put("current_elec_supplier", getCurrentElectricitySupplier());
@@ -290,7 +265,10 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas){
 				json.put("current_gas_supplier", getCurrentGasSupplier());
 			}
-		}
+
+		json.put("ebilling", convertBooleanToString(getPreferEBilling(), "Yes", "No"));
+		json.put("no_contract", convertBooleanToString(getPreferNoContract(), "Yes", "No"));
+		json.put("renewable_energy", convertBooleanToString(getPreferRenewableEnergy(), "Important", "Not important"));
 
 		json.put("tariff", getTariff());
 
@@ -307,14 +285,19 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		return json;
 	}
 
-	private String convertBooleanToString(boolean value){
-		if(value) return "Yes";
-		return "No";
+	private String convertBooleanToString(boolean value, String trueString, String falseString){
+		if(value) return trueString;
+		return falseString;
 	}
 
 	private boolean convertStringToBoolean(String value){
-		if(value.equalsIgnoreCase("Y")) return true;
+		if(value != null && value.equalsIgnoreCase("Y")) return true;
 		return false;
+	}
+
+	private Integer convertStringToInteger(String value){
+		if(value == null || value.equals("")) return 0;
+		return Integer.parseInt(value);
 	}
 
 	private float convertStringToFloat(String value){
@@ -324,17 +307,54 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 	public void populateFromRequest(HttpServletRequest request){
 
-
 		setPostcode(request.getParameter("utilities_householdDetails_postcode"));
 		setSuburb(request.getParameter("utilities_householdDetails_suburb"));
 		setTariff(request.getParameter("utilities_householdDetails_tariff"));
 		setConnection(convertStringToBoolean(request.getParameter("utilities_householdDetails_movingIn")));
 
+		setPreferEBilling(convertStringToBoolean(request.getParameter("utilities_resultsDisplayed_preferEBilling")));
+		setPreferNoContract(convertStringToBoolean(request.getParameter("utilities_resultsDisplayed_preferNoContract")));
+		setPreferRenewableEnergy(convertStringToBoolean(request.getParameter("utilities_resultsDisplayed_preferRenewableEnergy")));
+
+
 		if(request.getParameter("utilities_householdDetails_movingInDate")!= null){
 			setConnectionDate(FormDateUtils.parseDateFromForm(request.getParameter("utilities_householdDetails_movingInDate")));
 		}
 
+		setHasElectricityBill(convertStringToBoolean(request.getParameter("utilities_householdDetails_recentElectricityBill")));
+		setHasGasBill(convertStringToBoolean(request.getParameter("utilities_householdDetails_recentGasBill")));
+
 		setSolarPanels(convertStringToBoolean(request.getParameter("utilities_householdDetails_solarPanels")));
+
+		String householdType;
+		householdType = request.getParameter("utilities_estimateDetails_electricity_usage");
+		if(householdType != null) {
+			if (householdType.equals("Low")) {
+				setElectricityHouseholdType(HouseholdType.Low);
+			} else if (householdType.equals("Medium")) {
+				setElectricityHouseholdType(HouseholdType.Medium);
+			} else if (householdType.equals("High")) {
+				setElectricityHouseholdType(HouseholdType.High);
+			}
+		}
+
+		String meterType;
+		meterType = request.getParameter("utilities_estimateDetails_electricity_meter");
+
+		if(meterType != null) {
+			setElectricityMeterType(ElectricityMeterType.findByCode(meterType));
+		}
+
+		householdType = request.getParameter("utilities_estimateDetails_gas_usage");
+		if(householdType != null) {
+			if (householdType.equals("Low")) {
+				setGasHouseholdType(HouseholdType.Low);
+			} else if (householdType.equals("Medium")) {
+				setGasHouseholdType(HouseholdType.Medium);
+			} else if (householdType.equals("High")) {
+				setGasHouseholdType(HouseholdType.High);
+			}
+		}
 
 		String whatToCompare = request.getParameter("utilities_householdDetails_whatToCompare");
 		if(whatToCompare.equals("EG")){
@@ -349,47 +369,30 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 			setCurrentGasSupplier(request.getParameter("utilities_estimateDetails_usage_gas_currentSupplier"));
 		}
 
-		setElectricitySpend(convertStringToFloat(request.getParameter("utilities_estimateDetails_spend_electricity_amount")));
-		setGasSpend(convertStringToFloat(request.getParameter("utilities_estimateDetails_spend_gas_amount")));
+		setElectricityBillAmount(convertStringToFloat(request.getParameter("utilities_estimateDetails_spend_electricity_amount")));
+		setElectricityBillDays(convertStringToInteger(request.getParameter("utilities_estimateDetails_spend_electricity_days")));
+
+		setGasBillAmount(convertStringToFloat(request.getParameter("utilities_estimateDetails_spend_gas_amount")));
+		setGasBillDays(convertStringToInteger(request.getParameter("utilities_estimateDetails_spend_gas_days")));
 
 		setElectricityPeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_electricity_peak_amount")));
-		setElectricityOffpeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_electricity_offpeak_amount")));
+
+		if(getElectricityMeterType() == ElectricityMeterType.TwoRate || getElectricityMeterType() == ElectricityMeterType.TimeOfUse) {
+			setElectricityOffpeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_electricity_offpeak_amount")));
+		}
+		if (getElectricityMeterType() == ElectricityMeterType.TimeOfUse) {
+			setElectricityShoulderUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_electricity_shoulder_amount")));
+		}
 
 		setGasPeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_gas_peak_amount")));
 		setGasOffpeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_gas_offpeak_amount")));
 
-		setHowToEstimate(request.getParameter("utilities_householdDetails_howToEstimate"));
-
-		if(getHowToEstimate().equals("U")){
-			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
-				setElectricityDuration(Duration.findByCode(request.getParameter("utilities_estimateDetails_usage_electricity_peak_period")));
-			}
-			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas){
-				setGasDuration(Duration.findByCode(request.getParameter("utilities_estimateDetails_usage_gas_peak_period")));
-			}
-		}else{
-			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
-				setElectricityDuration(Duration.findByCode(request.getParameter("utilities_estimateDetails_spend_electricity_period")));
-			}
-			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas){
-				setGasDuration(Duration.findByCode(request.getParameter("utilities_estimateDetails_spend_gas_period")));
-			}
-		}
-
-		if(request.getParameter("utilities_resultsDisplayed_optinPhone").equals("Y")){
+		if (request.getParameter("utilities_resultsDisplayed_optinPhone").equals("Y")) {
 			setFirstName(request.getParameter("utilities_resultsDisplayed_firstName"));
 			setPhoneNumber(request.getParameter("utilities_resultsDisplayed_phone"));
 			setReferenceNumber(request.getParameter("transactionId"));
 		}
 
-	}
-
-	public String getHowToEstimate() {
-		return howToEstimate;
-	}
-
-	public void setHowToEstimate(String howToEstimate) {
-		this.howToEstimate = howToEstimate;
 	}
 
 	public String getFirstName() {

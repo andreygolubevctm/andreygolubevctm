@@ -15,6 +15,8 @@ import java.util.List;
 public class SingleTripDetails {
 
     private List<String> destinations = new ArrayList<>();
+    private Date fromDate;
+    private Date toDate;
 
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate fromDate;

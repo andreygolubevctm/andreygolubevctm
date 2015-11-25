@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.8.0-SNAPSHOT</version>
+    <version>1.9.0-SNAPSHOT</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -33,7 +33,11 @@
         <jackson.version>2.6.2</jackson.version>
         <javax.jsp.version>2.2</javax.jsp.version>
         <mysql.connector.version>5.1.29</mysql.connector.version>
+
         <spring-rabbit.version>1.4.6.RELEASE</spring-rabbit.version>
+        <common-logging.version>1.3.0-RC1</common-logging.version>
+        <common-interfaces.version>1.6.0-RC1</common-interfaces.version>
+
         <!-- Compile as this version -->
         <java.version>1.8</java.version>
         <jspc-maven-plugin.version>2.0.0</jspc-maven-plugin.version>
@@ -81,6 +85,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-legacy</artifactId>
             <version>${spring-boot-legacy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
         <dependency>
@@ -218,30 +226,19 @@
             <version>${cxf.version}</version>
         </dependency>
 
-        <!-- logging -->
+        <!-- CTM libraries -->
+
 
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.1.2</version>
+            <groupId>com.ctm.common</groupId>
+            <artifactId>common-logging</artifactId>
+            <version>${common-logging.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.codehaus.janino</groupId>
-            <artifactId>janino</artifactId>
-            <version>2.6.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
-            <version>4.5.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.amqp</groupId>
-            <artifactId>spring-rabbit</artifactId>
-            <version>${spring-rabbit.version}</version>
+            <groupId>com.ctm.common</groupId>
+            <artifactId>common-interfaces</artifactId>
+            <version>${common-interfaces.version}</version>
         </dependency>
 
         <!-- Other 3rd Party -->
@@ -264,42 +261,37 @@
             <version>1.0</version>
         </dependency>
 
+        <!-- jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
         <dependency>
-            <groupId>com.fasterxml.jackson.jaxrs</groupId>
-            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>

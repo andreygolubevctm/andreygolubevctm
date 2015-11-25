@@ -12,7 +12,7 @@ import com.ctm.web.life.model.Occupation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class OccupationsDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OccupationsDao.class);
