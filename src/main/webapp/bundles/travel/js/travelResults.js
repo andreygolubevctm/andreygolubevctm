@@ -170,15 +170,15 @@
 					}
 
 					if (obj.excessValue <= 250 && obj.medicalValue >= medical
-						&& obj.cxdfeeValue >= 7500 && obj.luggageValue >= 7500) {
+						&& obj.cxdfeeValue >= 7500 && obj.luggageValue >= 7500 && result.price > 0) {
 						obj.coverLevel = 'C';
 						meerkat.modules.coverLevelTabs.incrementCount("C");
 					} else if (obj.excessValue <= 250 && obj.medicalValue >= medical
 						&& obj.cxdfeeValue >= 2500
-						&& obj.luggageValue >= 2500) {
+						&& obj.luggageValue >= 2500 && result.price > 0) {
 						obj.coverLevel = 'M';
 						meerkat.modules.coverLevelTabs.incrementCount("M");
-					} else {
+					} else if ( result.price > 0) {
 						obj.coverLevel = 'B';
 						meerkat.modules.coverLevelTabs.incrementCount("B");
 					}
