@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.model.settings.ConfigSetting.ALL_BRANDS;
 import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.ALL_PROVIDERS;
 import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope.SERVICE;

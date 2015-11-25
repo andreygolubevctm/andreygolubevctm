@@ -31,7 +31,6 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 
-import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 import static java.util.stream.Collectors.toList;
 

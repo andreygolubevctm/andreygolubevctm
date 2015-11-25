@@ -10,7 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
+
 
 /**
  * This is use just by in JAVA and AccessTouchService.java is too dangerous to refactor.

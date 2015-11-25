@@ -49,7 +49,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 import static java.util.stream.Collectors.toList;
 
