@@ -18,32 +18,28 @@ import com.ctm.web.energy.model.EnergyQuoteResponse;
 import com.ctm.web.energy.quote.adapter.EnergyQuoteServiceRequestAdapter;
 import com.ctm.web.energy.quote.adapter.EnergyQuoteServiceResponseAdapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Context;
 import java.io.IOException;
 import java.util.List;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.ENERGY;
 
-@Service
+@Component
 public class EnergyResultsService extends CommonRequestService<EnergyQuoteRequest,EnergyQuoteResponse> {
 
     private static final String vertical = Vertical.VerticalType.ENERGY.getCode();
 
-    @Context
-    private HttpServletRequest httpServletRequest;
-    private boolean valid;
-
-
+    @Autowired
     public EnergyResultsService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
         super(providerFilterDAO, objectMapper);
     }
 
 
     public EnergyResultsWebResponse getResults(EnergyResultsWebRequest model, Brand brand) throws IOException, DaoException, ServiceConfigurationException {
-      validate(model);
+        List<SchemaValidationError> errors = validate(model);
+        boolean valid = errors.isEmpty();
         if(valid) {
                EnergyQuoteServiceRequestAdapter mapper= new EnergyQuoteServiceRequestAdapter();
                EnergyQuoteServiceResponseAdapter  energyQuoteServiceResponseAdapter= new EnergyQuoteServiceResponseAdapter();
@@ -58,7 +54,6 @@ public class EnergyResultsService extends CommonRequestService<EnergyQuoteReques
 
     public List<SchemaValidationError> validate(EnergyResultsWebRequest utilitiesRequest) {
         List<SchemaValidationError> errors = FormValidation.validate(utilitiesRequest, vertical.toLowerCase(), false);
-         valid = errors.isEmpty();
         return errors;
     }
 }

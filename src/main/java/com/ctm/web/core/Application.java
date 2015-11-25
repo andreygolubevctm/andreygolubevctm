@@ -12,7 +12,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 @SpringBootApplication
-@ComponentScan({"com.ctm.web.core.connectivity", "com.ctm.web.energy",  "com.ctm.commonlogging"})
+@ComponentScan({"com.ctm.web.core.connectivity", "com.ctm.web.energy",  "com.ctm.commonlogging", "com.ctm.web.core.dao", "com.ctm.web.core.utils"})
 public class Application extends SpringBootServletInitializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);

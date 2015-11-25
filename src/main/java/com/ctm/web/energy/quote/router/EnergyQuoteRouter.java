@@ -12,7 +12,6 @@ import com.ctm.web.energy.services.EnergyResultsService;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
@@ -20,9 +19,6 @@ import java.io.IOException;
 
 @Path("/energy")
 public class EnergyQuoteRouter extends CommonQuoteRouter<EnergyResultsWebRequest> {
-
-    @Context
-    private HttpServletRequest httpServletRequest;
 
 
     @Autowired

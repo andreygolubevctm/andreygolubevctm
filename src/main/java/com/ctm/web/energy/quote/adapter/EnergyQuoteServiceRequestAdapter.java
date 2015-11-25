@@ -1,7 +1,7 @@
 package com.ctm.web.energy.quote.adapter;
 
-import com.ctm.energy.quote.request.model.Electricity;
 import com.ctm.energy.quote.request.model.*;
+import com.ctm.energy.quote.request.model.Electricity;
 import com.ctm.energy.quote.request.model.Gas;
 import com.ctm.energy.quote.request.model.preferences.HasEBilling;
 import com.ctm.energy.quote.request.model.preferences.NoContract;
@@ -11,13 +11,13 @@ import com.ctm.interfaces.common.types.TransactionId;
 import com.ctm.web.energy.form.model.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static com.ctm.web.health.apply.model.Constants.AUS_FORMAT;
+import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDate;
+
 
 
 public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<EnergyResultsWebRequest, EnergyQuoteRequest> {
@@ -157,7 +157,7 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
                 householdDetailsMaybe.map(HouseHoldDetails::getPostcode).orElse(null),
                 householdDetailsMaybe.map(HouseHoldDetails::getMovingIn).map(getYesNoBooleanFunction()).orElse(false),
                 householdDetailsMaybe.map(HouseHoldDetails::getMovingInDate)
-                .map(v -> LocalDate.parse(v, AUS_FORMAT))
+                .map(v -> parseAUSLocalDate(v))
                 .orElse(null), householdDetailsMaybe.map(HouseHoldDetails::getTariff).orElse(null));
     }
 
