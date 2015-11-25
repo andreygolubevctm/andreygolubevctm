@@ -18,7 +18,7 @@
 				nativePickerEnabled = true;
 			}
 			// Set up each date input component
-			$('[data-provide=dateinput]').each(function() {
+			$('[data-provide=dateinput]').each(function initDateComponentFromDataAttribute() {
 				initDateComponent($(this));
 			});
 		});

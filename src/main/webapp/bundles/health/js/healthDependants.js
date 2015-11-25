@@ -109,7 +109,7 @@
             });
 
         // Sync income tier value (which can be changed if you change the number of dependants you have).
-        $('#health_application_dependants_income').on('change', function () {
+        $('#health_application_dependants_income').on('change', function syncIncomeTierValues() {
             $('.health_cover_details_income').val($(this).val());
         });
     }
@@ -118,7 +118,7 @@
      * Apply events to the date elements, only after the template has been rendered.
      */
     function applyDateEvents() {
-        $('[data-provide=dateinput]', $dependantsTemplateWrapper).each(function () {
+        $('[data-provide=dateinput]', $dependantsTemplateWrapper).each(function applyDateEventsOnDateInputs() {
             meerkat.modules.formDateInput.initDateComponent($(this));
         });
     }
@@ -302,7 +302,7 @@
      * Also populates the dependants tier menu with content from the initial cover step.
      */
     function updateApplicationDetails() {
-        var $applyPageIncomeTierMenu = $('.health-dependants-tier', $('#health_application_dependants-selection')),
+        var $applyPageIncomeTierMenu = $('.health-dependants-tier', '#health_application_dependants-selection'),
             depCount = getNumberOfDependants();
 
         // Difference between health v1 and health v2 can be removed when v1 is removed.
