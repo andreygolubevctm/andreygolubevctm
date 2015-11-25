@@ -101,9 +101,12 @@
             dependantsArr[dependantId - 1][objIndex] = $(this).val();
         });
 
-        $('#dependents_list_options').on('click', ".add-new-dependent", function addDependantClick() {
-            addNewDependant(true);
-        });
+        $('#dependents_list_options')
+            .off('click', '.add-new-dependent')
+            .on('click', ".add-new-dependent", function addDependantClick(e) {
+                e.stopPropagation();
+                addNewDependant(true);
+            });
 
         // Sync income tier value (which can be changed if you change the number of dependants you have).
         $('#health_application_dependants_income').on('change', function () {
