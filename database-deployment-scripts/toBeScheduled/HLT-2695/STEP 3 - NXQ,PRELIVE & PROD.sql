@@ -61,7 +61,15 @@ UPDATE `ctm`.`product_master` pm
   WHERE(pm.EffectiveStart != @EffectiveStart AND pm.EffectiveEnd != @EffectiveEnd)
 AND @EffectiveStart between EffectiveStart AND EffectiveEnd 
 AND providerID = @providerID 
- AND Status != 'X'; 
+AND Status != 'X'
+AND LongTitle IN (
+	'Budget Hospital $250 Excess & Gold Extras',
+	'Budget Hospital $500 Excess & Gold Extras',
+	'Gold Extras',
+	'Top Hospital $250 Excess & Gold Extras',
+	'Top Hospital $500 Excess & Gold Extras',
+	'Top Hospital Cover & Gold Extras'
+);
 
 
 /* INSERT product properties */
