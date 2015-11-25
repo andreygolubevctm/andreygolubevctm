@@ -46,14 +46,7 @@
                 data.electricityPeak = elecPeakVal + "kWh";
                 data.electricityOffPeak = (elecOffpeakVal !== "" ? elecOffpeakVal : 0) + "kWh";
             } else {
-                electricityUsage = $('utilities_estimateDetails_electricity_usage').val();
-                if (electricityUsage === 'L') {
-                    data.electricitySpend = "Low";
-                } else if (electricityUsage === 'M') {
-                    data.electricitySpend = "Medium";
-                } else {
-                    data.electricitySpend = "High";
-                }
+                data.electricitySpend = $('utilities_estimateDetails_electricity_usage').val();
             }
         }
 
@@ -67,14 +60,7 @@
                 data.gasPeak = gasPeakVal + "MJ";
                 data.gasOffPeak = (gasOffpeakVal !== "" ? gasOffpeakVal : 0) + "MJ";
             } else {
-                gasUsage = $('utilities_estimateDetails_electricity_usage').val();
-                if (gasUsage === 'L') {
-                    data.gasSpend = "Low";
-                } else if (gasUsage === 'M') {
-                    data.gasSpend = "Medium";
-                } else {
-                    data.gasSpend = "High";
-                }
+                data.gasSpend = gasUsage = $('utilities_estimateDetails_electricity_usage').val();
             }
         }
 

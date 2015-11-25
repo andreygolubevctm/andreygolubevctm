@@ -6,7 +6,7 @@
 
 <form_new:fieldset legend="Electricity" className="electricity-details">
 
-    <c:set var="fieldXPath" value="${xpath}/solarPanels" />
+    <c:set var="fieldXPath" value="utilities/householdDetails/solarPanels" />
     <form_new:row label="Do you have solar panels installed on your property?" fieldXpath="${fieldXPath}" className="clear">
         <field_new:array_radio xpath="${fieldXPath}"
                                required="true"
