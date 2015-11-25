@@ -3,10 +3,10 @@
 <c:set var="logger" value="${log:getLogger('jsp.common.js.health.healthFunds_THF')}" />
 <session:get settings="true" />
 
-<c:set var="callCentreNumberApplication" scope="request"><content:get key="callCentreNumberApplication"/></c:set>
+<c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 <c:set var="dependentText">This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to a policy. Adult dependants outside this criteria can be covered by an additional premium on certain covers or can elect to take out their own policy.</c:set>
-<c:if test="${not empty callCentreNumberApplication}">
-	<c:set var="dependentText">${dependentText} Please call <content:get key="brandDisplayName"/> on ${callCentreNumberApplication}</c:set>
+<c:if test="${not empty callCentreNumber}">
+	<c:set var="dependentText">${dependentText} Please call <content:get key="brandDisplayName"/> on ${callCentreNumber}</c:set>
 	<c:if test="${pageSettings.getSetting('liveChatEnabled') eq 'Y'}">
 		<c:set var="dependentText">${dependentText} or chat to our consultants online</c:set>
 	</c:if>

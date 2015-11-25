@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="false" >
+<configuration>
+	<property name="APPNAME" value="webctm"/>
+	<include resource="ctmbase.xml" />
 
-    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
-	    <Target>System.out</Target>
-	    <encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c:%L:%X{transactionId}:%X{brandCode}:%X{verticalCode}:%X{correlationId} - %m%n</pattern>
-		</encoder>
-  	</appender>
-  
 	<appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
 		<!-- in the absence of the class attribute, it is assumed that the
 				desired discriminator type is
@@ -27,31 +22,16 @@
 			</appender>
 		</sift>
 	</appender>
-	
+
 	<appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
 		<queueSize>500</queueSize>
 		<appender-ref ref="SIFT" />
 	</appender>
 
-
-	<logger name="com.ctm.logging.XMLOutputWriter" additivity="false">
+	<logger name="com.ctm.web.core.logging.XMLOutputWriter" additivity="false">
 		<appender-ref ref="ASYNC" />
-  	</logger>
-
-	<logger name="org.springframework.ws.client.MessageTracing.sent" additivity="false">
-		<appender-ref ref="stdout" />
-  	</logger>
-
-	<logger name="org.springframework.ws.client.MessageTracing.received" additivity="false">
-		<appender-ref ref="stdout" />
 	</logger>
 
-	<logger name="log4j.logger.org.elasticsearch" level="INFO" additivity="false">
-		<appender-ref ref="stdout" />
-	</logger>
-
-	<root level="info">
-   		<appender-ref ref="stdout" />
-	</root>
-	
+	<!-- 3rd Party Loggers -->
+	<logger name="log4j.logger.org.elasticsearch" level="INFO"/>
 </configuration>

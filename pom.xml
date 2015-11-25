@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.ctm.pom</groupId>
         <artifactId>uber-pom</artifactId>
-        <version>1.5.0</version>
+        <version>1.6.0</version>
     </parent>
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.6.0-SNAPSHOT</version>
+    <version>1.9.0-SNAPSHOT</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -24,15 +24,20 @@
 
         <spring.version>4.1.8.RELEASE</spring.version> <!-- must match spring version -->
         <spring.ws.version>2.2.0.RELEASE</spring.ws.version>
-        <tomcat.version>7.0.35</tomcat.version>
+        <tomcat.version>7.0.65</tomcat.version>
         <jaxws-maven-plugin.version>2.3</jaxws-maven-plugin.version>
         <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
         <frontend-maven-plugin.version>0.0.26</frontend-maven-plugin.version>
         <javax.el.version>2.2.4</javax.el.version>
         <javax.servlet.version>3.0.1</javax.servlet.version>
-        <jackson.version>2.4.3</jackson.version>
+        <jackson.version>2.6.2</jackson.version>
         <javax.jsp.version>2.2</javax.jsp.version>
         <mysql.connector.version>5.1.29</mysql.connector.version>
+
+        <spring-rabbit.version>1.4.6.RELEASE</spring-rabbit.version>
+        <common-logging.version>1.3.0-RC1</common-logging.version>
+        <common-interfaces.version>1.6.0-RC1</common-interfaces.version>
+
         <!-- Compile as this version -->
         <java.version>1.8</java.version>
         <jspc-maven-plugin.version>2.0.0</jspc-maven-plugin.version>
@@ -80,6 +85,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-legacy</artifactId>
             <version>${spring-boot-legacy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
         <dependency>
@@ -217,6 +226,21 @@
             <version>${cxf.version}</version>
         </dependency>
 
+        <!-- CTM libraries -->
+
+
+        <dependency>
+            <groupId>com.ctm.common</groupId>
+            <artifactId>common-logging</artifactId>
+            <version>${common-logging.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ctm.common</groupId>
+            <artifactId>common-interfaces</artifactId>
+            <version>${common-interfaces.version}</version>
+        </dependency>
+
         <!-- Other 3rd Party -->
 
         <dependency>
@@ -237,33 +261,45 @@
             <version>1.0</version>
         </dependency>
 
+        <!-- jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-joda</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
             <version>${jackson.version}</version>
         </dependency>
 
@@ -271,20 +307,6 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>5.1.3.Final</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.1.2</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
-            <version>4.5.1</version>
         </dependency>
 
         <dependency>
@@ -448,9 +470,8 @@
                         <artifactId>frontend-maven-plugin</artifactId>
                         <version>${frontend-maven-plugin.version}</version>
                         <executions>
-
                             <execution>
-                                <id>install node and npm</id>
+                                <id>node-and-npm-install</id>
                                 <phase>generate-resources</phase>
                                 <goals>
                                     <goal>install-node-and-npm</goal>
@@ -465,7 +486,7 @@
                             </execution>
 
                             <execution>
-                                <id>npm install</id>
+                                <id>npm-install</id>
                                 <phase>generate-resources</phase>
                                 <goals>
                                     <goal>npm</goal>
@@ -477,7 +498,7 @@
                             </execution>
 
                             <execution>
-                                <id>gulp build</id>
+                                <id>gulp-build</id>
                                 <phase>generate-resources</phase>
                                 <goals>
                                     <goal>gulp</goal>
@@ -487,7 +508,34 @@
                                     <workingDirectory>src/main/pipeline</workingDirectory>
                                 </configuration>
                             </execution>
-
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>clean-node-dirs</id>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                                <phase>clean</phase>
+                                <configuration>
+                                    <filesets>
+                                        <fileset>
+                                            <directory>${project.basedir}/src/main/pipeline/node</directory>
+                                        </fileset>
+                                        <fileset>
+                                            <directory>${project.basedir}/src/main/pipeline/node_modules</directory>
+                                        </fileset>
+                                        <fileset>
+                                            <directory>${project.basedir}/src/test/frontend/node</directory>
+                                        </fileset>
+                                        <fileset>
+                                            <directory>${project.basedir}/src/test/frontend/node_modules</directory>
+                                        </fileset>
+                                    </filesets>
+                                </configuration>
+                            </execution>
                         </executions>
                     </plugin>
                 </plugins>
@@ -497,35 +545,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>clean-node-dirs</id>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                        <phase>clean</phase>
-                        <configuration>
-                            <filesets>
-                                <fileset>
-                                    <directory>${project.basedir}/src/main/pipeline/node</directory>
-                                </fileset>
-                                <fileset>
-                                    <directory>${project.basedir}/src/main/pipeline/node_modules</directory>
-                                </fileset>
-                                <fileset>
-                                    <directory>${project.basedir}/src/test/frontend/node</directory>
-                                </fileset>
-                                <fileset>
-                                    <directory>${project.basedir}/src/test/frontend/node_modules</directory>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </execution>
-                </executions>
-
-            </plugin>
             <plugin>
                 <groupId>org.jasig.mojo.jspc</groupId>
                 <artifactId>jspc-maven-plugin</artifactId>
@@ -550,16 +569,26 @@
                         <artifactId>jspc-compiler-tomcat7</artifactId>
                         <version>${jspc-maven-plugin.version}</version>
                     </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-jasper</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-annotations-api</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
                 </dependencies>
             </plugin>
 
-            <!-- Copy aggregator dir across into the classes dir -->
+            <!-- Copy aggregator dir across into the classes dir, dothis in prepare-package so it doesnt upset tomcat7-plugin -->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>copy-extra-classes-resources</id>
-                        <phase>process-resources</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -589,7 +618,7 @@
                         <phase>package</phase>
                         <configuration>
                             <classifier>${branch.classifier}</classifier>
-                            <mainClass>com.ctm.Application</mainClass>
+                            <mainClass>com.ctm.web.core.Application</mainClass>
                         </configuration>
                     </execution>
                 </executions>
@@ -712,6 +741,200 @@
                             <arguments>--phantomPath=${phantomjs.binary}</arguments>
                             <workingDirectory>src/test/frontend</workingDirectory>
                             <skip>${maven.test.skip}</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Pull down springloaded for tomcat7 plugin running -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-springloaded</id>
+                        <phase>none</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.springframework</groupId>
+                                    <artifactId>springloaded</artifactId>
+                                    <version>1.2.4.RELEASE</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <destFileName>springloaded.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/springloaded</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <id>tomcat7-run</id>
+                        <phase>none</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <additionalConfigFilesDir>${project.basedir}/src/test/resources/embedded/tomcat7/conf</additionalConfigFilesDir>
+                    <backgroundProcessorDelay>2</backgroundProcessorDelay>
+                    <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
+                    <contextFile>${project.basedir}/src/test/resources/embedded/tomcat7/context.xml</contextFile>
+                    <port>8080</port>
+                    <systemProperties>
+                        <nxi.db.username>${nxi.db.username}</nxi.db.username>
+                        <nxi.db.password>${nxi.db.password}</nxi.db.password>
+                        <spring.profiles.active>LOCALHOST</spring.profiles.active>
+
+                        <https.proxyHost>192.168.1.111</https.proxyHost>
+                        <https.proxyPort>8080</https.proxyPort>
+                        <https.proxyUser>ittest</https.proxyUser>
+                        <https.proxyPassword>1tt3st</https.proxyPassword>
+
+                        <http.proxyHost>192.168.1.111</http.proxyHost>
+                        <http.proxyPort>8080</http.proxyPort>
+                        <http.proxyUser>ittest</http.proxyUser>
+                        <http.proxyPassword>1tt3st</http.proxyPassword>
+                        <http.nonProxyHosts>*.ecommerce.disconline.com.au|*.captaincompare.com.au|*.intranet|localhost|127.0.0.1</http.nonProxyHosts>
+                    </systemProperties>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.tomcat.embed</groupId>
+                        <artifactId>tomcat-embed-core</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-util</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-coyote</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-api</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-jdbc</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-dbcp</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-servlet-api</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-jsp-api</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-jasper</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-jasper-el</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-el-api</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-catalina</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-tribes</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-catalina-ha</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-annotations-api</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat</groupId>
+                        <artifactId>tomcat-juli</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat.embed</groupId>
+                        <artifactId>tomcat-embed-logging-juli</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.tomcat.embed</groupId>
+                        <artifactId>tomcat-embed-logging-log4j</artifactId>
+                        <version>${tomcat.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.connector.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>start-gulp</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>none</phase>
+                        <configuration>
+                            <executable>${project.basedir}/scripts/start_gulp.bat</executable>
+                            <arguments>
+                                <argument>${project.build.finalName}</argument>
+                            </arguments>
+                            <workingDirectory>${project.basedir}/scripts</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>start-tomcat7</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>none</phase>
+                        <configuration>
+                            <executable>${project.basedir}/scripts/start_tomcat7.bat</executable>
+                            <workingDirectory>${project.basedir}/scripts</workingDirectory>
                         </configuration>
                     </execution>
                 </executions>

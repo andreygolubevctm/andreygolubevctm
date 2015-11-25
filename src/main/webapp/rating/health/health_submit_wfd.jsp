@@ -49,7 +49,7 @@ ${logger.debug('Got body content: {},{}', log:kv('contentLength', pageContext.re
 		<x:out select="$applicationXml/xml/data/FundProductCode" />
 	</c:set>
 </c:if>
-<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 <c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health_application/wfd/config.xml')}" />
 <x:parse doc="${config}" var="configXml" />
 

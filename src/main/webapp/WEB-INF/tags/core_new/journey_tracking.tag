@@ -1,7 +1,7 @@
 <%@ tag description="Business Activity" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="quoteService" class="com.ctm.services.QuoteService" scope="application" />
+<jsp:useBean id="quoteService" class="com.ctm.web.core.services.QuoteService" scope="application" />
 <%--
 
 This tag populates the form with a hidden element containing a
@@ -18,7 +18,7 @@ Usage: to confirm whether split test 2 is applicable
 --%>
 
 <%-- Retrieve the current split tests from backend --%>
-<jsp:useBean id="splitTests" class="com.ctm.services.tracking.SplitTestService" />
+<jsp:useBean id="splitTests" class="com.ctm.web.core.services.tracking.SplitTestService" />
 <c:set var="journeyIn" value="${splitTests.getJourney(pageContext.getRequest(), data.current.transactionId)}" />
 <c:set var="journey">
 	<c:if test="${not empty journeyIn}">${journeyIn}</c:if>

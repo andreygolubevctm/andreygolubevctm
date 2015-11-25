@@ -24,7 +24,7 @@
 	</form_new:row>
 
 	<%-- Commencement date --%>
-	<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+	<jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 	<c:if test="${not splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}">
 		<home_new:commencementDate xpath="${xpath}/startDate" />
 	</c:if>

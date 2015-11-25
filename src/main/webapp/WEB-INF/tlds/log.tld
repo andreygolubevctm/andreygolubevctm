@@ -17,15 +17,15 @@
 	<function>
 		<description>Get Logger</description>
 		<name>getLogger</name>
-		<function-class>com.ctm.logging.jstl.JstlLoggerFactory</function-class>
+		<function-class>com.ctm.web.core.logging.jstl.JstlLoggerFactory</function-class>
 		<function-signature>com.ctm.logging.jstl.JstlLogger getLogger(java.lang.String)</function-signature>
 	</function>
 
 	<function>
 		<description>Key Values</description>
 		<name>kv</name>
-		<function-class>com.ctm.logging.LoggingArguments</function-class>
-		<function-signature>com.ctm.logging.LoggingArgument kv(java.lang.String, java.lang.Object)</function-signature>
+		<function-class>com.ctm.commonlogging.common.LoggingArguments</function-class>
+		<function-signature>com.ctm.commonlogging.common.LoggingArguments kv(java.lang.String, java.lang.Object)</function-signature>
 	</function>
 
 </taglib>

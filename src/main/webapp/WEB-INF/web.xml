@@ -21,7 +21,7 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>com.ctm.Application</param-value>
+		<param-value>com.ctm.web.core.Application</param-value>
 	</context-param>
 
 	<listener>
@@ -39,24 +39,24 @@
 		<servlet-class>org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet</servlet-class>
 		<init-param>
 			<param-name>jaxrs.serviceClasses</param-name>
-			<param-value>com.ctm.router.CarRouter,
-				com.ctm.router.car.RegoLookupRouter,
-				com.ctm.router.travel.TravelRouter,
-				com.ctm.router.car.CarQuoteRouter,
-				com.ctm.router.home.HomeQuoteRouter
+			<param-value>com.ctm.web.car.router.CarRouter,
+				com.ctm.web.car.router.RegoLookupRouter,
+				com.ctm.web.travel.router.TravelRouter,
+				com.ctm.web.car.router.CarQuoteRouter,
+				com.ctm.web.homecontents.router.HomeQuoteRouter
 			</param-value>
 		</init-param>
 		<init-param>
 			<param-name>jaxrs.providers</param-name>
 			<param-value>
-				com.ctm.router.RouterJacksonJsonProvider,
-				com.ctm.router.exceptionhandlers.ServiceExceptionHandler
+				com.ctm.web.core.router.RouterJacksonJsonProvider,
+				com.ctm.web.core.router.exceptionhandlers.ServiceExceptionHandler
 			</param-value>
 		</init-param>
 		<init-param>
 			<param-name>jaxrs.inInterceptors</param-name>
 			<param-value>
-				com.ctm.soap.FormParamMapInInterceptor,
+				com.ctm.web.core.soap.FormParamMapInInterceptor,
 				org.apache.cxf.transport.common.gzip.GZIPInInterceptor
 			</param-value>
 		</init-param>
@@ -156,7 +156,7 @@
 
 	<filter>
 		<filter-name>mdcFilter</filter-name>
-		<filter-class>com.ctm.logging.listeners.MDCFilter</filter-class>
+		<filter-class>com.ctm.web.core.logging.listeners.MDCFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>mdcFilter</filter-name>

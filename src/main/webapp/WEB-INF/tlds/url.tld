@@ -11,7 +11,7 @@
 	<function>
 		<description>URL Exists</description>
 		<name>exists</name>
-		<function-class>com.ctm.web.URLUtils</function-class>
+		<function-class>com.ctm.web.core.web.URLUtils</function-class>
 		<function-signature>
 			java.lang.Boolean exists(java.lang.String)
 		</function-signature>
