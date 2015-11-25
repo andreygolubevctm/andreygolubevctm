@@ -12,12 +12,14 @@
         defaultSortStates = {
             'contractPeriodValue': 'asc',
             'totalDiscountValue': 'desc',
-            'yearlySavingsValue': 'desc'
+            'yearlySavingsValue': 'desc',
+            'estimatedCostValue': 'asc'
         },
         sortByMethods = {
             'contractPeriodValue': sortContracts, // custom defined function as callback
             'totalDiscountValue': sortDiscounts, // custom defined function as callback
-            'yearlySavingsValue': null // will default to Results.model.defaultSortMethod. Cannot specify here as Results.model is undefined when this file is parsed.
+            'yearlySavingsValue': null, // will default to Results.model.defaultSortMethod. Cannot specify here as Results.model is undefined when this file is parsed.
+            'estimatedCostValue': null // will default to Results.model.defaultSortMethod. Cannot specify here as Results.model is undefined when this file is parsed.
         },
         initialised = false;
 
@@ -162,14 +164,22 @@
     function toggleColumns() {
         var discounts = $('.colTotalDiscounts'),
             savings = $('.colYearlySavings'),
+            cost = $('.colEstimatedCost'),
             contractPeriod = $('.colContractPeriod');
 
-        if (meerkat.modules.utilitiesResults.showYearlySavings()) {
+        if (meerkat.modules.utilitiesResults.showEstimatedCost()) {
+            cost.removeClass('hidden');
+            savings.addClass('hidden');
+            contractPeriod.removeClass('col-sm-5 col-lg-2').addClass('col-sm-3 col-lg-1');
+            discounts.removeClass('col-sm-5 col-lg-3').addClass('col-sm-4 col-lg-2');
+        } else if (meerkat.modules.utilitiesResults.showYearlySavings()) {
             savings.removeClass('hidden');
+            cost.addClass('hidden');
             contractPeriod.removeClass('col-sm-5 col-lg-2').addClass('col-sm-3 col-lg-1');
             discounts.removeClass('col-sm-5 col-lg-3').addClass('col-sm-4 col-lg-2');
         } else {
             savings.addClass('hidden');
+            cost.addClass('hidden');
             contractPeriod.removeClass('col-sm-3 col-lg-1').addClass('col-sm-5 col-lg-2');
             discounts.removeClass('col-sm-4 col-lg-2').addClass('col-sm-5 col-lg-3');
         }

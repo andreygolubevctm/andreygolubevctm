@@ -1,7 +1,10 @@
 package com.ctm.web.core.utils;
 
-import com.ctm.web.core.logging.LoggingVariables;
+import com.ctm.commonlogging.context.LoggingVariables;
+import com.ctm.interfaces.common.types.TransactionId;
 import com.ctm.web.core.web.go.Data;
+
+import static java.lang.Long.parseLong;
 
 public class SessionDataUtils {
 
@@ -13,6 +16,6 @@ public class SessionDataUtils {
 
     public static void setTransactionId(Data data, String transactionId) {
         data.put(CURRENT_TRANSACTION_ID_XPATH, transactionId);
-        LoggingVariables.setTransactionId(transactionId);
+        LoggingVariables.setTransactionId(TransactionId.instanceOf(parseLong(transactionId)));
     }
 }

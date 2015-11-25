@@ -1,6 +1,6 @@
 package com.ctm.web.core.email.services;
 
-import com.ctm.web.core.logging.CorrelationIdUtils;
+import com.ctm.commonlogging.context.LoggingVariables;
 import com.ctm.web.core.email.model.ExactTargetEmailModel;
 import com.exacttarget.wsdl.partnerapi.*;
 
@@ -20,8 +20,8 @@ public class ExactTargetEmailBuilder {
 
         TriggeredSend triggeredSend = new TriggeredSend();
         //CorrelationID Identifies correlation of objects across several requests
-        CorrelationIdUtils.getCorrelationId().ifPresent(correlationId -> {
-            triggeredSend.setCorrelationID(correlationId);
+        LoggingVariables.getCorrelationId().ifPresent(correlationId -> {
+            triggeredSend.setCorrelationID(correlationId.get());
         });
 
         ClientID client = createClient(exactTargetEmailModel);
