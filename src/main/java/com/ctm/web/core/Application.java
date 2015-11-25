@@ -7,12 +7,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ImportResource;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 @SpringBootApplication
-@ComponentScan({"com.ctm.web.core.connectivity", "com.ctm.web.energy",  "com.ctm.commonlogging", "com.ctm.web.core.dao", "com.ctm.web.core.utils"})
+@ComponentScan({"com.ctm.web.core.connectivity", "com.ctm.web.energy",
+        "com.ctm.commonlogging", "com.ctm.web.core.dao", "com.ctm.web.core.utils"})
+@ImportResource("classpath:spring/cxf-config.xml")
 public class Application extends SpringBootServletInitializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);

@@ -12,18 +12,22 @@ import com.ctm.web.energy.services.EnergyResultsService;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.jws.WebService;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
 
 
-@Path("/energy")
+@WebService
 public class EnergyQuoteRouter extends CommonQuoteRouter<EnergyResultsWebRequest> {
 
 
+    public EnergyQuoteRouter(){
+
+    }
+
     @Autowired
     EnergyResultsService energyResultsService;
-
 
 
     @POST
@@ -35,5 +39,10 @@ public class EnergyQuoteRouter extends CommonQuoteRouter<EnergyResultsWebRequest
         Brand brand = initRouter(context, Vertical.VerticalType.ENERGY);
         return energyResultsService.getResults(quoteRequest, brand);
     }
+
+/*    @PostConstruct
+    public void init() {
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+    }*/
 
 }

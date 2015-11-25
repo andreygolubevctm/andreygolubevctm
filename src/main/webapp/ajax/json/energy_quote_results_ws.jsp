@@ -45,4 +45,4 @@ ${logger.debug('Got settings for competition. {},{}',log:kv('competitionEnabledS
 	</c:import>
 </c:if>
 
-<jsp:forward page="/rest/energy/quote.json"/>
+<jsp:forward page="/rest/energy/quote/get.json"/>
