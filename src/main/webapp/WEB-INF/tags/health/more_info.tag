@@ -13,39 +13,40 @@
 	<c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
 </c:if>
 
+
 <%-- MORE INFO TEMPLATE --%>
 <script id="more-info-template" type="text/html">
+	{{ var productBenefitsTemplate = $("#more-info-product-benefits-template").html(); }}
+	{{ var htmlTemplate = _.template(productBenefitsTemplate); }}
+	{{ obj.benefitsTemplate = htmlTemplate(obj); }}
+
+
+	<div class="more-info-blue-header">
+		<div class="col-sm-9 productInfo">
+			<div class="col-sm-12 col-xs-8">
+				<div class="productName">{{= info.productTitle }}</div>
+			</div>
+			<div class="visible-xs col-xs-4">
+				<div class="productName">sdafasdfasdfasdf</div>
+			</div>
+			<div class="col-sm-5 col-xs-12">{{ var logoPriceTemplate = $("#more-info-logo-price-template").html(); }}
+				{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
+				{{ obj._selectedFrequency = Results.getFrequency(); }}
+				{{ obj.mode = ''; }}
+				{{ obj.showAltPremium = false; obj.htmlString = htmlTemplatePrice(obj); }}
+				{{ obj.showAltPremium = true;  obj.htmlStringAlt = htmlTemplatePrice(obj); }}
+				{{= htmlString }}</div>
+			<div class="col-sm-3 col-xs-12 more-info-apply-container"><a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a></div>
+			<div class="col-sm-4 col-xs-12"><span class="moreInfoCallUs">or Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></span>
+				<span class="moreInfoReferenceNoText">quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span></div>
+		</div>
+		<div class="col-sm-3"></div>
+	</div>
 
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content">
 
 		<div class="col-sm-6 paragraphedContent">
 
-			<div class="moreInfoMainDetails">
-
-				<div class="productSummary horizontal visible-xs clearfix">
-
-					{{ var logoPriceTemplate = $("#logo-price-template").html(); }}
-					{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
-					{{ obj._selectedFrequency = Results.getFrequency(); }}
-					{{ obj.mode = ''; }}
-					{{ obj.showAltPremium = false; obj.htmlString = htmlTemplatePrice(obj); }}
-					{{ obj.showAltPremium = true;  obj.htmlStringAlt = htmlTemplatePrice(obj); }}
-					{{= htmlString }}
-
-				</div>
-
-				<h1 class="productName">{{= info.productTitle }}</h1>
-
-				<div class="visible-xs">
-					{{ if (showApply === true) { }}<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply ${oldCtaClass}" data-productId="{{= productId }}">Apply Online</a>{{ } }}
-					<c:if test="${not empty callCentreNumber}">
-					<a href="tel:${callCentreNumber}" class="needsclick btn btn-form btn-block phone callCentreNumberSection" data-productId="{{= productId }}">
-						<h5 class="moreInfoCallUs">Call us now on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h5>
-						<span class="moreInfoReferenceNoText">Quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span>
-					</a>
-					</c:if>
-				</div>
-			</div>
 			{{ if (promo.promoText !== ''){ }}
 				<h2 class="more-info-promotion">Promotions &amp; Offers</h2>
 				{{= promo.promoText }}
@@ -54,9 +55,30 @@
 			<h2 class="more-info-about">About the fund</h2>
 			<div class="about-the-fund">{{= aboutFund }}</div>
 
+			<div class="visible-xs">
+				{{ print(benefitsTemplate); }}
+			</div>
+
+
 			<h2 class="more-info-nextsteps">Once you press the submit button...</h2>
 			<div class="next-info">{{= whatHappensNext }}</div>
 
+			<c:set var="pricePromiseEnabled">
+				<content:get key="healthPricePromiseEnabled" />
+			</c:set>
+
+			<c:if test="${pricePromiseEnabled eq 'Y'}">
+				<div class="row pricepromise paragraphedContent hidden-xs">
+					<div class="col-xs-4 col-sm-4 col-lg-5 pricePromiseLogo"></div>
+					<div class="col-xs-8 col-sm-8 col-lg-7">
+						<h2 class="more-info-promotion">Our Price Promise To You</h2>
+						<p>
+							Buy health insurance through us and if you find a better price on the same policy within 30 days, <strong>we'll give you $50*</strong>
+							<br><small><a href="http://www.comparethemarket.com.au/health-insurance/price-promise/" target="_blank">*terms and conditions</a></small>
+						</p>
+					</div>
+				</div>
+			</c:if>
 		</div>
 
 		<div class="col-sm-6 moreInfoRightColumn">
@@ -83,7 +105,7 @@
 					<ui:bubble variant="chatty" className="moreInfoBubble contactBlock">
 						<div class="row">
 							<div class="col-xs-5">
-								<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply ${oldCtaClass}" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
+
 				</div>
 							<c:if test="${not empty callCentreNumber}">
 								<div class="col-xs-6 callCentreNumberSection">
@@ -110,8 +132,7 @@
 						<div class="row">
 							<c:if test="${not empty callCentreNumber}">
 							<div class="col-xs-6 callCentreNumberSection">
-								<h5 class="moreInfoCallUs">Call us now on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h5>
-								<span class="moreInfoReferenceNoText">Quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span>
+
 							</div>
 							</c:if>
 
@@ -127,43 +148,13 @@
 						</div>
 					</ui:bubble>
 				</c:when>
-				<c:otherwise>
-				<div class="row moreInfoCallUsContainer hidden-xs">
-					<c:if test="${not empty callCentreNumber}">
-						<div class="col-xs-6 callCentreNumberSection">
-						<h5 class="moreInfoCallUs">Call us now on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h5>
-						<span class="moreInfoReferenceNoText">Quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span>
-					</div>
-					</c:if>
-					<div class="col-xs-5">
-						<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
-					</div>
-				</div>
-				</c:otherwise>
 			</c:choose>
 			{{ } }}
 		</c:if>
 
-			<c:set var="pricePromiseEnabled">
-				<content:get key="healthPricePromiseEnabled" />
-			</c:set>
-
-			<c:if test="${pricePromiseEnabled eq 'Y'}">
-				<div class="row pricepromise paragraphedContent">
-					<div class="col-xs-4 col-sm-4 col-lg-5 pricePromiseLogo"></div>
-					<div class="col-xs-8 col-sm-8 col-lg-7">
-						<h2 class="more-info-promotion">Our Price Promise To You</h2>
-						<p>
-							Buy health insurance through us and if you find a better price on the same policy within 30 days, <strong>we'll give you $50*</strong>
-							<br><small><a href="http://www.comparethemarket.com.au/health-insurance/price-promise/" target="_blank">*terms and conditions</a></small>
-						</p>
-					</div>
-				</div>
-			</c:if>
-
 			<health:competition_jeep />
 
-			<div class="row row-content brochureButtons">
+			<div class="row row-content brochureButtons hidden-xs">
 				{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
 					<div class="col-sm-6 col-xs-12">
 						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download download-policy-brochure col-xs-12">Download <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
@@ -184,7 +175,7 @@
 				{{ } }}
 			</div>
 
-			<div class="row moreInfoEmailBrochures" novalidate="novalidate">
+			<div class="row moreInfoEmailBrochures hidden-xs" novalidate="novalidate">
 				<div class="col-xs-12">
 					<div class="row row-content formInput">
 						<div class="col-sm-7 col-xs-12">
@@ -219,101 +210,11 @@
 					</div>
 				</div>
 			</div>
-
-			<div class="row">
-
-			{{ if(typeof hospitalCover !== 'undefined') { }}
-				<div class="col-xs-6">
-
-					<h2 class="text-hospital-benefits">Hospital Benefits</h2>
-
-					{{ if(hospitalCover.inclusions.length > 0) { }}
-						<h5>You are covered for:</h5>
-						<ul class="indent">
-							{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
-							<li>{{= inclusion }}</li>
-							{{ }) }}
-						</ul>
-					{{ } }}
-
-					{{ if(hospitalCover.restrictions.length > 0) { }}
-						<h5>You have restricted cover for:</h5>
-						<ul class="indent">
-							{{ _.each(hospitalCover.restrictions, function(restriction){ }}
-							<li>{{= restriction }}</li>
-							{{ }) }}
-						</ul>
-						<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
-					{{ } }}
-
-				</div>
-			{{ } }}
-
-			{{ if(typeof extrasCover !== 'undefined') { }}
-				<div class="col-xs-6">
-					<h2 class="text-extras">Extras Benefits</h2>
-
-					{{ if(extrasCover.inclusions.length > 0) { }}
-						<h5>You are covered for:</h5>
-						<ul class="indent">
-							{{ _.each(extrasCover.inclusions, function(inclusion){ }}
-							<li>{{= inclusion }}</li>
-							{{ }) }}
-						</ul>
-						<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
-					{{ } }}
-				</div>
-			{{ } }}
-
+			<div class="hidden-xs">
+			{{ print(benefitsTemplate); }}
 			</div>
-
-			{{ if(typeof hospital.inclusions !== 'undefined') { }}
-				<div class="row moreInfoExcesses">
-					<div class="col-xs-12">
-						<p><strong>Excess:</strong> {{= hospital.inclusions.excess }}</p>
-						<p><strong>Excess Waivers:</strong> {{= hospital.inclusions.waivers }}</p>
-						<p><strong>Co-payment / % Hospital Contribution:</strong> {{= hospital.inclusions.copayment }}</p>
-					</div>
-				</div>
-			{{ } }}
-
-			{{ if(typeof hospitalCover !== 'undefined' && hospitalCover.exclusions.length > 0) { }}
-				<div class="row moreInfoExclusions">
-					<div class="col-xs-12">
-						<h5 class="text-hospital">Your Hospital Exclusions:</h5>
-						<ul class="exclusions">
-							{{ _.each(hospitalCover.exclusions, function(exclusion){ }}
-								<li><span class="icon-cross"></span>{{= exclusion }}</li>
-							{{ }) }}
-							<c:if test="${not empty callCentre}">
-								{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
-								<li class="text-danger"><span class="icon-cross" /></span>{{= custom.info.exclusions.cover }}</li>
-								{{ } }}
-							</c:if>
-						</ul>
-					</div>
-				</div>
-			{{ }else{ }}
-				<c:if test="${not empty callCentre}">
-					{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
-						<div class="row moreInfoExclusions">
-							<div class="col-xs-12">
-								<h5 class="text-hospital">Your Hospital Exclusions:</h5>
-								<ul class="exclusions">
-									<li class="text-danger"><span class="icon-cross" /></span>{{= custom.info.exclusions.cover }}</li>
-								</ul>
-							</div>
-						</div>
-					{{ } }}
-				</c:if>
-			{{ } }}
-
-
-
-
 
 		</div>
 
 	</div>
-
 </script>

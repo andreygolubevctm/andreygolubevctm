@@ -78,6 +78,87 @@
 	}
 }
 
+
+@media(@xs-only) {
+  .paragraphedContent {
+	margin-top:27px;
+  }
+}
+
+.more-info-blue-header {
+	background-color: @more-info-header-bg-color;
+  	@media(@xs-only) {
+	  min-height: 280px;
+
+	  .brochureButtons {
+		margin-left: -20px;
+	  }
+	}
+
+  	@media(@sm) {
+	  min-height: 200px;
+	}
+  	color: @more-info-header-text-color;
+
+  	.btn {
+	  border-radius: 20px;
+	}
+
+	.productInfo {
+	  padding-left:25px;
+	}
+
+  	.callCentreNumber {
+	  font-size: 38px;
+	}
+
+  	.moreInfoReferenceNoText {
+	  font-size: 14px;
+	}
+
+    .productName, .moreInfoCallUs {
+	  color:@more-info-header-text-color;
+	}
+
+  	.more-info-apply-container {
+	  margin-top: 10px;
+	}
+
+  	.moreInfoCallUs {
+	  font-size: 22px;
+	  font-weight:normal;
+	  padding-left: 18px;
+	}
+
+    @media(@xs-only) {
+	  .productName {
+		font-size: 18px;
+		margin-top: 0px;
+		margin-bottom: 0px;
+	  }
+	}
+
+  	@media(@sm) {
+	  .productName {
+
+		font-size: 29px;
+		margin-top: 25px;
+		margin-bottom: 20px;
+	  }
+	}
+
+	.frequencyAmount{
+	  font-size:45px;
+	}
+	.frequencyTitle {
+	  font-size:12px;
+	}
+
+	.lhcText, .rounding {
+	  font-size:14px;
+	}
+}
+
 .more-info-content {
 	padding-bottom:10px;
 	h2,
@@ -257,9 +338,6 @@
 	.moreInfoEmailBrochuresSuccess {
 		display : none;
 	}
-	.brochureButtons {
-		margin-top: 25px;
-	}
 
 	.btn-hospital, .sendBrochureEmailAddress {
 		@media(@xs-only){
@@ -272,6 +350,7 @@
 	}
 
 	.pricepromise {
+	    margin-top: 30px;
 		margin-left:0;
 		margin-right:0;
 		h2 {
