@@ -120,7 +120,6 @@
             },
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
-                $('#utilities_resultsDisplayed_competition_optin').trigger('change.applyValidationRules');
             },
             validation: {
                 validate: true,
@@ -143,10 +142,26 @@
             }
         };
 
+        var contactStep = {
+            title: 'Contact details',
+            navigationId: 'contact',
+            slideIndex: 1,
+            externalTracking: {
+                method: 'trackQuoteForms',
+                object: meerkat.modules.utilities.getTrackingFieldsObject
+            },
+            onInitialise: function onContactInit(event) {
+                $('#utilities_resultsDisplayed_competition_optin').trigger('change.applyValidationRules');
+            },
+            validation: {
+                validate: true
+            }
+        };
+
         var resultsStep = {
             title: 'Choose a plan',
             navigationId: 'results',
-            slideIndex: 1,
+            slideIndex: 2,
             externalTracking: {
                 method: 'trackQuoteForms',
                 object: meerkat.modules.utilities.getTrackingFieldsObject
@@ -185,7 +200,7 @@
         var enquiryStep = {
             title: 'Fill out your details',
             navigationId: 'enquiry',
-            slideIndex: 2,
+            slideIndex: 3,
             externalTracking: {
                 method: 'trackQuoteForms',
                 object: meerkat.modules.utilities.getTrackingFieldsObject
@@ -204,6 +219,7 @@
 
         steps = {
             startStep: startStep,
+            contactStep: contactStep,
             resultsStep: resultsStep,
             enquiryStep: enquiryStep
         };
@@ -215,6 +231,10 @@
             {
                 label: 'Household details',
                 navigationId: steps.startStep.navigationId
+            },
+            {
+                label: 'Preferences',
+                navigationId: steps.contactStep.navigationId
             },
             {
                 label: 'Choose a plan',
@@ -261,13 +281,16 @@
                     actionStep = "energy household";
                     break;
                 case 1:
+                    actionStep = "energy preferences";
+                    break;
+                case 2:
                     if (special_case === true) {
                         actionStep = 'energy more info';
                     } else {
                         actionStep = 'energy choose';
                     }
                     break;
-                case 2:
+                case 3:
                     actionStep = "energy your details";
                     break;
             }

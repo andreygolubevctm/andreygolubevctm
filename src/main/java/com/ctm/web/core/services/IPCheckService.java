@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
-import static com.ctm.web.core.logging.LoggingArguments.v;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.v;
 
 public class IPCheckService {
 

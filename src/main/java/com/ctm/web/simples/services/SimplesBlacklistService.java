@@ -15,7 +15,7 @@ import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.services.StampingService;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class SimplesBlacklistService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesBlacklistService.class);
