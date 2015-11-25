@@ -49,8 +49,9 @@
 	</c:otherwise>
 </c:choose>
 <%-- Unencode apostrophes --%>
-<c:set var="productTitle" value="${fn:replace(productTitle, '&#039;', '\\'')}" />
-<c:set var="productTitle" value="${fn:replace(productTitle, '&#39;', '\\'')}" />
+<c:set var="apos">'</c:set>
+<c:set var="productTitle" value="${fn:replace(productTitle, '&#039;', apos)}" />
+<c:set var="productTitle" value="${fn:replace(productTitle, '&#39;', apos)}" />
 
 <c:set var="selectedProductId"><x:out select="$healthXML/request/header/productId" /></c:set>
 <c:if test="${fn:startsWith(selectedProductId, 'PHIO-HEALTH-') and fn:length(selectedProductId) > 12}">
@@ -89,7 +90,7 @@ ${healthPriceService.setHealthPriceRequest(healthPriceRequest)}
 
 ${healthPriceService.setMembership(cover)}
 ${healthPriceService.setSearchDate(searchDate)}
-${healthPriceService.setChangeoverDate(changeOverRebates.getEffectiveStart())}
+${healthPriceService.setChangeoverDate(changeOverRebates.getEffectiveFutureStart())}
 ${healthPriceService.setRebateCurrent(rebate)}
 ${healthPriceService.setRebateChangeover(rebateChangeover)}
 ${healthPriceService.setTransactionId(transactionId)}

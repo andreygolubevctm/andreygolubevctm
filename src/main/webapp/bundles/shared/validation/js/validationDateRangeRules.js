@@ -110,19 +110,23 @@
 
             if (ageDate > now) {
                 return false;
+            } else {
+                return true;
             }
         }
-        return true;
+        return;
     }
 
     $.validator.addMethod('youngestDOB', function(value, element, params) {
         if (typeof params == 'undefined') return false;
-        return checkDob(value, params.ageMin || params, params.selector || false);
+        var result = checkDob(value, params.ageMin || params, params.selector || false);
+        return typeof result == 'undefined' ? true : result;
     });
 
     $.validator.addMethod('oldestDOB', function(value, element, params) {
         if (typeof params == 'undefined') return false;
-        return !checkDob(value, params.ageMax || params, params.selector || false);
+        var result = checkDob(value, params.ageMax || params, params.selector || false);
+        return typeof result == 'undefined' ? true : !result;
     });
 
 })(jQuery);

@@ -11,6 +11,7 @@ public class ChangeOverRebate {
     private BigDecimal futureMultiplier;
 
     private Date effectiveStart;
+    private Date effectiveFutureStart;
 
     public ChangeOverRebate() {
 
@@ -44,5 +45,13 @@ public class ChangeOverRebate {
 
     public void setEffectiveStart(Date effectiveStart) {
         this.effectiveStart = effectiveStart;
+    }
+
+    public Date getEffectiveFutureStart() {
+        return effectiveFutureStart;
+    }
+
+    public void setEffectiveFutureStart(Date effectiveFutureStart) {
+        this.effectiveFutureStart = effectiveFutureStart;
     }
 }

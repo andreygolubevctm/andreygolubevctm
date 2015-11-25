@@ -16,9 +16,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import java.util.List;
-
-import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class TransactionService {
 

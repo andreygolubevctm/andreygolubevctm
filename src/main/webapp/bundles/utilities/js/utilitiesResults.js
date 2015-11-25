@@ -46,6 +46,7 @@
                     contractPeriodValue: "contractPeriodValue",
                     totalDiscountValue: "totalDiscountValue",
                     yearlySavingsValue: "yearlySavingsValue",
+                    estimatedCostValue: "estimatedCostValue",
                     availability: {
                         product: "productAvailable"
                     }
@@ -142,6 +143,9 @@
             result.contractPeriodValue = result.contractPeriod.indexOf('Year') != -1 ? parseInt(result.contractPeriod.replace(/[^\d]/g, ''), 10) : 0;
             result.yearlySavingsValue = typeof result.yearlySavings === 'undefined' || result.yearlySavings === null ? 0 : result.yearlySavings;
             result.yearlySavingsValue = Number(result.yearlySavingsValue.toFixed(2));
+
+            result.estimatedCostValue = typeof result.estimatedCost === 'undefined' || result.estimatedCost === null ? 0 : result.estimatedCost;
+            result.estimatedCostValue = Number(result.estimatedCostValue.toFixed(2));
         });
         return products;
     }
@@ -255,6 +259,9 @@
         $(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
 
         $(document.body).on('click', '.btn-apply', enquireNowClick);
+
+        $(document.body).on('click', '.btn-change-type', changeTypeClick);
+
     }
 
     function enquireNowClick(event) {
@@ -278,6 +285,49 @@
             meerkat.modules.journeyEngine.gotoPath('next', $resultrow.find('.btn-apply'));
         });
 
+    }
+
+    function changeTypeClick(event) {
+
+        event.preventDefault();
+
+        var $e = $('#change-type-template');
+        if ($e.length > 0) {
+            templateCallback = _.template($e.html());
+        }
+
+        var htmlContent = templateCallback();
+        var modalOptions = {
+            htmlContent: htmlContent,
+            hashId: '',
+            className: 'change-type-modal',
+            closeOnHashChange: true,
+            openOnHashChange: false,
+            onOpen: function (modalId) {
+
+                $('.change-type-modal').show();
+
+            },
+            onClose: function(modalId) {
+
+            }
+        };
+
+        changeTypeId = meerkat.modules.dialogs.show(modalOptions);
+        $(".what-to-compare-reset").on('change',_toggleChangeType);
+
+    }
+
+    function _toggleChangeType() {
+        var type = $(".what-to-compare-reset").find("input[type='radio']:checked").val();
+
+        $('#utilities_householdDetails_whatToCompare').find('label').removeClass('active');
+
+        $('#utilities_householdDetails_whatToCompare_' + type).parent().click();
+        $('#utilities_householdDetails_whatToCompare_' + type).prop('checked',true);
+        $('#utilities_householdDetails_whatToCompare_' + type).parent().addClass('active');
+
+        meerkat.modules.journeyEngine.gotoPath('start');
     }
 
     function resultRowClick(event) {
@@ -331,6 +381,14 @@
         return $('#utilities_householdDetails_movingIn_N').prop('checked');
     }
 
+    function showEstimatedCost() {
+        movingIn = $('#utilities_householdDetails_movingIn_N').prop('checked');
+        hasElecBill = $('#utilities_householdDetails_recentElectricityBill_Y').prop('checked');
+        hasGasBill = $('#utilities_householdDetails_recentGasBill_Y').prop('checked');
+
+        return movingIn && (hasElecBill || hasGasBill);
+    }
+
     function getThoughtWorldReferenceNumber() {
         return thoughtWorldCustomerRef;
     }
@@ -341,6 +399,7 @@
         showNoResults: showNoResults,
         publishExtraSuperTagEvents: publishExtraSuperTagEvents,
         showYearlySavings: showYearlySavings,
+        showEstimatedCost: showEstimatedCost,
         getThoughtWorldReferenceNumber: getThoughtWorldReferenceNumber
     });
 

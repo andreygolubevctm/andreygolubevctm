@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
+
 public class RequestAdapter {
 
     private static final DateTimeFormatter AUS_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -42,8 +44,15 @@ public class RequestAdapter {
             SingleTripDetails details = new SingleTripDetails();
             details.setDestinations(quote.getDestinations());
 
-            details.setToDate(LocalDate.parse(quote.getDates().getToDate(), AUS_FORMAT));
-            details.setFromDate(LocalDate.parse(quote.getDates().getFromDate(), AUS_FORMAT));
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            try {
+                details.setToDate(LocalDate.parse(quote.getDates().getToDate(), dateFormatter));
+                details.setFromDate(LocalDate.parse(quote.getDates().getFromDate(), dateFormatter));
+            } catch (Exception e) {
+                // TODO check this
+                LOGGER.error("Failed to adapt front-end travel request to travel-quote request {}", kv("travelRequest", travelRequest));
+            }
 
             quoteRequest.setSingleTripDetails(details);
 

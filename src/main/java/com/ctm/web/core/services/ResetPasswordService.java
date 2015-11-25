@@ -13,7 +13,7 @@ import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.LogAudit;
 import com.ctm.web.core.security.StringEncryption;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class ResetPasswordService {
 	

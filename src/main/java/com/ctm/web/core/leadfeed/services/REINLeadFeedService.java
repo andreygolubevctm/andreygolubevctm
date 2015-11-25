@@ -7,7 +7,7 @@ import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType;
 import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public abstract class REINLeadFeedService implements IProviderLeadFeedService {
 

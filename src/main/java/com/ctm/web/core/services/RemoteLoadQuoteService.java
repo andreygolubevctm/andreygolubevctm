@@ -14,7 +14,7 @@ import com.ctm.web.core.email.model.IncomingEmail;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.email.services.EmailUrlService;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class RemoteLoadQuoteService {
 

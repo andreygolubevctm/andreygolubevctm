@@ -31,7 +31,7 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.Map;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static java.lang.Integer.parseInt;
 
 public class ExactTargetEmailSender<T extends EmailModel> {

@@ -29,6 +29,16 @@
         <field:hidden xpath="${xpath}/state" defaultValue="N" />
     </form_new:row>
 
+    <c:set var="fieldXPath" value="${xpath}/whatToCompare" />
+    <form_new:row label="What would you like to compare?" fieldXpath="${fieldXPath}" className="clear" helpId="528">
+        <field_new:array_radio xpath="${fieldXPath}"
+                               required="true"
+                               className="what-to-compare"
+                               items="E=<i class='energy-electricity'></i>Electricity,G=<i class='energy-gas'></i>Gas,EG=<i class='energy-combined'></i>Electricity and Gas"
+                               id="${go:nameFromXpath(fieldXPath)}"
+                               title="which energies to compare." />
+    </form_new:row>
+
     <c:set var="fieldXPath" value="${xpath}/movingIn" />
     <form_new:row label="Are you moving to this property?" fieldXpath="${fieldXPath}" className="clear moving-in" helpId="413">
         <field_new:array_radio xpath="${fieldXPath}"
@@ -47,35 +57,26 @@
                               minDate="${nowPlusDay_Date}" />
     </form_new:row>
 
-    <c:set var="fieldXPath" value="${xpath}/whatToCompare" />
-    <form_new:row label="What would you like to compare?" fieldXpath="${fieldXPath}" className="clear" helpId="528">
-        <field_new:array_radio xpath="${fieldXPath}"
-                               required="true"
-                               className="what-to-compare"
-                               items="E=Electricity,G=Gas,EG=Electricity and Gas"
-                               id="${go:nameFromXpath(fieldXPath)}"
-                               title="which energies to compare." />
-    </form_new:row>
-
-    <c:set var="fieldXPath" value="${xpath}/howToEstimate" />
-    <form_new:row label="Would you like us to estimate how much energy you use?" fieldXpath="${fieldXPath}" className="clear" helpId="526">
-        <field_new:array_select xpath="${fieldXPath}"
-                                required="true"
-                                className="how-to-estimate"
-                                title="how to estimate how much energy you use."
-                                items="=Please choose...,S=Yes - Use my $ spend to work out my usage,U=No&nbsp;&nbsp;&nbsp;- I will enter my usage in kWh/MJ from a recent bill(s)" />
-    </form_new:row>
-
-    <c:set var="fieldXPath" value="${xpath}/solarPanels" />
-    <form_new:row label="Do you have solar panels installed on your property?" fieldXpath="${fieldXPath}" className="clear">
+    <c:set var="fieldXPath" value="${xpath}/recentElectricityBill" />
+    <form_new:row label="Do you have a recent electricity bill in front of you?" fieldXpath="${fieldXPath}" className="clear recent-electricity-bill">
         <field_new:array_radio xpath="${fieldXPath}"
                                required="true"
                                className=""
                                items="Y=Yes,N=No"
                                id="${go:nameFromXpath(fieldXPath)}"
-                               title="if you have solar panels." />
+                               title="if you have a recent electricity bill." />
     </form_new:row>
 
-    <field:hidden xpath="${xpath}/tariff" required="false" />
+    <c:set var="fieldXPath" value="${xpath}/recentGasBill" />
+    <form_new:row label="Do you have a recent gas bill in front of you?" fieldXpath="${fieldXPath}" className="clear recent-gas-bill">
+        <field_new:array_radio xpath="${fieldXPath}"
+                               required="true"
+                               className=""
+                               items="Y=Yes,N=No"
+                               id="${go:nameFromXpath(fieldXPath)}"
+                               title="if you have a recent gas bill." />
+    </form_new:row>
 </form_new:fieldset>
+
+   <field:hidden xpath="${xpath}/tariff" required="false" />
 
