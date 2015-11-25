@@ -15,7 +15,7 @@ import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.ProviderExclusion;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class ProviderExclusionsDao {
 
