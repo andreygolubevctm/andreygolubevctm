@@ -20,6 +20,10 @@
 	{{ var htmlTemplate = _.template(productBenefitsTemplate); }}
 	{{ obj.benefitsTemplate = htmlTemplate(obj); }}
 
+	{{ var productBenefitsTemplate = $("#more-info-product-benefits-template-xs").html(); }}
+	{{ var htmlTemplate = _.template(productBenefitsTemplate); }}
+	{{ obj.benefitsTemplateXS = htmlTemplate(obj); }}
+
 
 	<div class="more-info-blue-header">
 		<div class="col-sm-9 productInfo">
@@ -37,8 +41,8 @@
 				{{ obj.showAltPremium = true;  obj.htmlStringAlt = htmlTemplatePrice(obj); }}
 				{{= htmlString }}</div>
 			<div class="col-sm-3 col-xs-12 more-info-apply-container"><a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a></div>
-			<div class="col-sm-4 col-xs-12"><span class="moreInfoCallUs">or Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></span>
-				<span class="moreInfoReferenceNoText">quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span></div>
+			<div class="col-sm-4 col-xs-12 moreInfoCallRefNo"><span class="moreInfoCallUs">or Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></span>
+				<p class="moreInfoReferenceNoText">quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></p></div>
 		</div>
 		<div class="col-sm-3"></div>
 	</div>
@@ -56,7 +60,7 @@
 			<div class="about-the-fund">{{= aboutFund }}</div>
 
 			<div class="visible-xs">
-				{{ print(benefitsTemplate); }}
+				{{ print(benefitsTemplateXS); }}
 			</div>
 
 
