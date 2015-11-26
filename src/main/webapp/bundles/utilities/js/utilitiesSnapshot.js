@@ -44,9 +44,9 @@
 
                 data.electricityPeak = elecPeakVal + "kWh";
                 data.electricityOffPeak = (elecOffpeakVal !== "" ? elecOffpeakVal : 0) + "kWh";
-                data.electricityShoulder = (elecShoulderVal !== "" ? elecShoulderVal : 0) + "kWh";
+                data.electricityShoulder = (elecShoulderVal !== "" ? elecShoulderVal + "kWh" : "");
             } else {
-                data.electricitySpend = $('utilities_estimateDetails_electricity_usage').val();
+                data.electricitySpend = $('#utilities_estimateDetails_electricity_usage').find("input[type='radio']:checked").val();
             }
         }
 
@@ -58,7 +58,7 @@
                 data.gasPeak = gasPeakVal + "MJ";
                 data.gasOffPeak = (gasOffpeakVal !== "" ? gasOffpeakVal : 0) + "MJ";
             } else {
-                data.gasSpend = gasUsage = $('utilities_estimateDetails_electricity_usage').val();
+                data.gasSpend = $('#utilities_estimateDetails_gas_usage').find("input[type='radio']:checked").val();
             }
         }
 
