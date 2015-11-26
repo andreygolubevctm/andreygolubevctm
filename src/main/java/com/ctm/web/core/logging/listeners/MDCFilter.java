@@ -34,6 +34,11 @@ public class MDCFilter implements Filter {
             throws IOException, ServletException {
         try {
             setLoggingVars(req);
+        } catch (Exception e) {
+            LOGGER.error("Failed to parse request logging context values", e);
+        }
+
+        try {
             chain.doFilter(req, resp);
         } finally {
             LoggingVariables.clearLoggingContext();
