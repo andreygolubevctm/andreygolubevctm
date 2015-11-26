@@ -3,9 +3,7 @@ package com.ctm.web.energy.quote.adapter;
 import com.ctm.energy.quote.request.model.*;
 import com.ctm.energy.quote.request.model.Electricity;
 import com.ctm.energy.quote.request.model.Gas;
-import com.ctm.energy.quote.request.model.preferences.HasEBilling;
-import com.ctm.energy.quote.request.model.preferences.NoContract;
-import com.ctm.energy.quote.request.model.preferences.RenewableEnergy;
+import com.ctm.energy.quote.request.model.preferences.*;
 import com.ctm.energy.quote.request.model.usage.*;
 import com.ctm.interfaces.common.types.TransactionId;
 import com.ctm.web.energy.form.model.*;
@@ -59,17 +57,25 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
     private EnergyType createGasType(Optional<WhatToCompare> whatToCompare) {
         if (whatToCompare.isPresent()) {
             WhatToCompare whatToCompareValue = whatToCompare.get();
-            if (whatToCompareValue.equals(WhatToCompare.G) || whatToCompareValue.equals(WhatToCompare.EG)) {
+            if (hasGas(whatToCompareValue)) {
                 return EnergyType.Gas;
             }
         }
             return null;
     }
 
+    private boolean hasGas(WhatToCompare whatToCompareValue) {
+        return whatToCompareValue.equals(WhatToCompare.G) || whatToCompareValue.equals(WhatToCompare.EG);
+    }
+
+    private static boolean hasElectricity(WhatToCompare whatToCompareValue) {
+        return whatToCompareValue.equals(WhatToCompare.E) || whatToCompareValue.equals(WhatToCompare.EG);
+    }
+
     private EnergyType createElectricityType(Optional<WhatToCompare> whatToCompare) {
         if (whatToCompare.isPresent()) {
             WhatToCompare whatToCompareValue = whatToCompare.get();
-            if (whatToCompareValue.equals(WhatToCompare.E) || whatToCompareValue.equals(WhatToCompare.EG)) {
+            if (hasGas(whatToCompareValue)) {
                 return EnergyType.Electricity;
             }
         }
@@ -78,14 +84,14 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
 
     private Preferences createPreferences(EnergyResultsWebRequest quote) {
         final Optional<ResultsDisplayed> resultsDisplayedMaybe = Optional.ofNullable(quote.getResultsDisplayed());
-        HasEBilling hasEBilling = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferEBilling).map( value -> new HasEBilling(value.equals(YesNo.Yes))).orElse(null);
-        NoContract noContract = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferNoContract).map( value -> new NoContract(value.equals(YesNo.Yes))).orElse(null);
-        RenewableEnergy renewableEnergy = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferRenewableEnergy).map( value -> new RenewableEnergy(value.equals(YesNo.Yes))).orElse(null);
+        HasEBilling hasEBilling = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferEBilling).map( value -> new HasEBilling(value.equals(YesNo.Yes))).orElse(new HasEBilling(false));
+        NoContract noContract = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferNoContract).map( value -> new NoContract(value.equals(YesNo.Yes))).orElse(new NoContract(false));
+        RenewableEnergy renewableEnergy = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferRenewableEnergy).map( value -> new RenewableEnergy(value.equals(YesNo.Yes))).orElse(new RenewableEnergy(false));
 
-        return new Preferences(null,
+        return new Preferences(new DisplayDiscount(false),
                 hasEBilling,
                 noContract,
-                null,
+                new HasPayBillsOnTime(false),
                 renewableEnergy);
     }
 
@@ -93,7 +99,9 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
     private Gas createGas(EnergyResultsWebRequest quote ) {
         final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseHoldDetails());
         final Optional<EstimateDetails> estimateDetails = Optional.ofNullable(quote.getEstimateDetails());
-        if (householdDetailsMaybe.isPresent() && householdDetailsMaybe.get().getWhatToCompare().equals("G") || householdDetailsMaybe.get().getWhatToCompare().equals("EG") ) {
+        boolean hasHouseholdDetails = householdDetailsMaybe.isPresent();
+        WhatToCompare whatToCompare = householdDetailsMaybe.map(HouseHoldDetails::getWhatToCompare).orElse(null);
+        if (hasHouseholdDetails && hasGas(whatToCompare) ) {
             String currentSupplier = estimateDetails.map(EstimateDetails :: getGas).map(getCurrentSupplier()).orElse(null);
             return new Gas(getGasUsageDetails(estimateDetails), getGasHouseholdType(estimateDetails) , getGasHasBill(householdDetailsMaybe), currentSupplier);
         } else {
@@ -164,7 +172,9 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
     protected static Electricity createElectricity(EnergyResultsWebRequest quote) {
         final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseHoldDetails());
         final Optional<EstimateDetails> estimateDetails = Optional.ofNullable(quote.getEstimateDetails());
-        if (householdDetailsMaybe.isPresent() && householdDetailsMaybe.get().getWhatToCompare().equals("E") || householdDetailsMaybe.get().getWhatToCompare().equals("EG") ) {
+        boolean hasHouseholdDetails = householdDetailsMaybe.isPresent();
+        WhatToCompare whatToCompare = householdDetailsMaybe.map(HouseHoldDetails::getWhatToCompare).orElse(null);
+        if (hasHouseholdDetails && hasElectricity(whatToCompare)  ) {
             String currentSupplier = estimateDetails.map(EstimateDetails :: getElectricity).map(getCurrentSupplier()).orElse(null);
             return new Electricity(getElectricityUsageDetails(estimateDetails), getHouseholdType(estimateDetails),
             getElectrityHasBill(householdDetailsMaybe), getHasSolarPanels(householdDetailsMaybe), currentSupplier);

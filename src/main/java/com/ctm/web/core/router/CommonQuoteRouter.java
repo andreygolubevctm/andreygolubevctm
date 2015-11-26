@@ -39,11 +39,15 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteRouter.class);
 
     protected Brand initRouter(MessageContext context, Vertical.VerticalType vertical){
+        return initRouter(context.getHttpServletRequest(), vertical);
+    }
+
+    protected Brand initRouter(HttpServletRequest httpServletRequest, Vertical.VerticalType vertical){
         // - Start common -- taken from Carlos' car branch
-        ApplicationService.setVerticalCodeOnRequest(context.getHttpServletRequest(), vertical.getCode());
+        ApplicationService.setVerticalCodeOnRequest(httpServletRequest, vertical.getCode());
 
         try {
-            return ApplicationService.getBrandFromRequest(context.getHttpServletRequest());
+            return ApplicationService.getBrandFromRequest(httpServletRequest);
 
         } catch (DaoException e) {
             throw new RouterException(e);

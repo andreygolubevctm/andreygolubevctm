@@ -1,32 +1,23 @@
 package com.ctm.web.energy.form.model;
 
 import com.ctm.web.core.model.formData.Request;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.validation.Valid;
-import java.util.Date;
 
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EnergyResultsWebRequest implements Request {
     private String clientIpAddress;
 
     private HouseHoldDetails houseHoldDetails;
     private EstimateDetails estimateDetails;
-
-    private Date connectionDate; // date moving to the property
     private String tariff;
 
     @Valid
     public ResultsDisplayed resultsDisplayed;
 
     private String referenceNumber;
-
-    public Date getConnectionDate() {
-        return connectionDate;
-    }
-
-    public void setConnectionDate(Date connectionDate) {
-        this.connectionDate = connectionDate;
-    }
 
     public String getTariff() {
         return tariff;

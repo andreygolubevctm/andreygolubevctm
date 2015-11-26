@@ -3,19 +3,21 @@ package com.ctm.web.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 @SpringBootApplication
 @ComponentScan({"com.ctm.web.core.connectivity", "com.ctm.web.energy",
-        "com.ctm.commonlogging", "com.ctm.web.core.dao", "com.ctm.web.core.utils"})
-@ImportResource("classpath:spring/cxf-config.xml")
+        "com.ctm.commonlogging", "com.ctm.web.core"})
+@EnableAutoConfiguration
+@Configuration
 public class Application extends SpringBootServletInitializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
