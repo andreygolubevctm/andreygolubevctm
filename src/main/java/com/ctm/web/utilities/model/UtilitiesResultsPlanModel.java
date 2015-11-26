@@ -243,11 +243,8 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 		json.put("otherDiscounts", getOtherDiscounts());
 		json.put("discountDetails", getDiscountDetails());
 
-		bd = new BigDecimal(getYearlyElectricitySavings() + getYearlyGasSavings());
-		bd = bd.setScale(2, RoundingMode.HALF_UP);
-
-		double yearlySavingsTotal = bd.doubleValue();
-		json.put("yearlySavings", yearlySavingsTotal);
+		json.put("yearlyElectricitySavings", getYearlyElectricitySavings());
+		json.put("yearlyGasSavings", getYearlyGasSavings());
 
 		return json;
 	}
