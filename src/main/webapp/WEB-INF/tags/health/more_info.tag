@@ -31,7 +31,7 @@
 				<div class="productName">{{= info.productTitle }}</div>
 			</div>
 			<div class="visible-xs col-xs-4">
-				<div class="productName">sdafasdfasdfasdf</div>
+				<div class="companyLogo {{= info.FundCode}}"></div>
 			</div>
 			<div class="col-sm-5 col-xs-12">{{ var logoPriceTemplate = $("#more-info-logo-price-template").html(); }}
 				{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
@@ -44,7 +44,7 @@
 			<div class="col-sm-4 col-xs-12 moreInfoCallRefNo"><span class="moreInfoCallUs">or Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></span>
 				<p class="moreInfoReferenceNoText">quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></p></div>
 		</div>
-		<div class="col-sm-3"></div>
+		<div class="col-sm-3"><div class="companyLogo NIB"></div></div>
 	</div>
 
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content">
