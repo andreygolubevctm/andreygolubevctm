@@ -24,7 +24,7 @@
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/electricity_usage" />
-    <form_new:row label="What level best describes your typical electricity usage?" fieldXpath="${fieldXPath}" className="clear electricity-usage">
+    <form_new:row label="Select the level that best describes your typical electricity usage" fieldXpath="${fieldXPath}" className="clear electricity-usage">
         <field_new:array_radio xpath="${fieldXPath}"
                                required="true"
                                className="col-md-12"
@@ -121,7 +121,7 @@
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/gas_usage" />
-    <form_new:row label="What level best describes your typical gas usage?" fieldXpath="${fieldXPath}" className="clear gas-usage">
+    <form_new:row label="Select the level that best describes your typical gas usage" fieldXpath="${fieldXPath}" className="clear gas-usage">
         <field_new:array_radio xpath="${fieldXPath}"
                                required="true"
                                className="col-md-12"

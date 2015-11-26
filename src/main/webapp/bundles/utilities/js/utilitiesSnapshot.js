@@ -39,12 +39,12 @@
         if(whatToCompare === "E" || whatToCompare === "EG") {
             if(recentElectricityBill === 'Y') {
                 var elecPeakVal = $("#utilities_estimateDetails_usage_electricity_peak_amount").val(),
-                    elecPeakPeriod = $("#utilities_estimateDetails_usage_electricity_peak_period").children("option").filter(":selected").text(),
                     elecOffpeakVal = $("#utilities_estimateDetails_usage_electricity_offpeak_amount").val(),
-                    elecOffpeakPeriod = $("#utilities_estimateDetails_usage_electricity_offpeak_period").children("option").filter(":selected").text();
+                    elecShoulderVal = $("#utilities_estimateDetails_usage_electricity_shoulder_amount").val();
 
                 data.electricityPeak = elecPeakVal + "kWh";
                 data.electricityOffPeak = (elecOffpeakVal !== "" ? elecOffpeakVal : 0) + "kWh";
+                data.electricityShoulder = (elecShoulderVal !== "" ? elecShoulderVal : 0) + "kWh";
             } else {
                 data.electricitySpend = $('utilities_estimateDetails_electricity_usage').val();
             }
@@ -53,9 +53,7 @@
         if(whatToCompare === "G" || whatToCompare === "EG") {
             if(recentGasBill === 'Y') {
                 var gasPeakVal = $("#utilities_estimateDetails_usage_gas_peak_amount").val(),
-                    gasPeakPeriod = $("#utilities_estimateDetails_usage_gas_peak_period").children("option").filter(":selected").text(),
-                    gasOffpeakVal = $("#utilities_estimateDetails_usage_gas_offpeak_amount").val(),
-                    gasOffpeakPeriod = $("#utilities_estimateDetails_usage_gas_offpeak_period").children("option").filter(":selected").text();
+                    gasOffpeakVal = $("#utilities_estimateDetails_usage_gas_offpeak_amount").val();
 
                 data.gasPeak = gasPeakVal + "MJ";
                 data.gasOffPeak = (gasOffpeakVal !== "" ? gasOffpeakVal : 0) + "MJ";
@@ -66,8 +64,6 @@
 
         data.recentElectricityBill = recentElectricityBill;
         data.recentGasBill = recentGasBill;
-        data.segmentClassElec = recentElectricityBill ? "spend" : "usage";
-        data.segmentClassGas = recentGasBill ? "spend" : "usage";
 
         var html = template(data);
         $("#results-summary-container").html(html);

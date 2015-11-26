@@ -11,11 +11,8 @@
         {{= obj.postcode }}
     </span>
 
-    {{ var segmentClassElec = obj.recentElectricityBill ? "vertical-middle" : obj.segmentClass }}
-    {{ var segmentClassGas = obj.recentGasBill ? "vertical-middle" : obj.segmentClass }}
-
     {{ if(obj.electricitySpend || obj.electricityPeak || obj.electricityOffPeak) { }}
-        <span class="segment {{= segmentClassElec }} ">
+        <span class="segment usage ">
             {{ if(obj.recentElectricityBill === 'Y') { }}
                 Electricity peak usage {{= obj.electricityPeak }} <br>
                 Electricity off-peak usage {{= obj.electricityOffPeak }}
@@ -26,7 +23,7 @@
     {{ } }}
 
     {{ if(obj.gasSpend || obj.gasPeak || obj.gasOffPeak) { }}
-        <span class="segment segment-last {{= segmentClassGas }}">
+        <span class="segment segment-last usage">
             {{ if(obj.recentGasBill === 'Y') { }}
                 Gas peak usage {{= obj.gasPeak }} <br>
                 Gas off-peak usage {{= obj.gasOffPeak }}
