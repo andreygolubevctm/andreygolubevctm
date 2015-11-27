@@ -62,8 +62,8 @@
         {{ var yearlySavingsLabel = yearlySavingsValue < 0 ? "extra cost up to $" + (yearlySavingsValue*-1) : "$" + yearlySavingsValue.toFixed(2); }}
 
         {{ var estimatedCostLabel = "$" + estimatedCostValue.toFixed(2); }}
-        {{ var estimatedElectricityCostLabel = estimatedElectricityCostValue > 0 ? "Electricity: $" + estimatedElectricityCostValue.toFixed(2) : ""; }}
-        {{ var estimatedGasCostLabel = estimatedGasCostValue > 0 ? "Gas: $" + estimatedGasCostValue.toFixed(2) : ""; }}
+        {{ var estimatedElectricityCostLabel = estimatedElectricityCostValue >= 0 ? "Electricity: $" + estimatedElectricityCostValue.toFixed(2) : '<a class="btn-add-bill" href="javascript:;"><span>Add bill information</span> <span class="icon icon-arrow-right"/></a>'; }}
+        {{ var estimatedGasCostLabel = estimatedGasCostValue >= 0 ? "Gas: $" + estimatedGasCostValue.toFixed(2) : '<a class="btn-add-bill" href="javascript:;"><span>Add bill information</span> <span class="icon icon-arrow-right"/></a>'; }}
 
         {{ var showYearlySavings = meerkat.modules.utilitiesResults.showYearlySavings(); }}
         {{ var showEstimatedCost = meerkat.modules.utilitiesResults.showEstimatedCost(); }}
@@ -214,7 +214,9 @@
                                     </div>
                                     {{ if(showEstimatedUsage === true) { }}
                                     <div class="col-sm-3 col-lg-2 estimatedCostContainer">
-                                        <div class="dataColumn">Add you bill information</div>
+                                        <div class="dataColumn"><a class="btn-add-bill" href="javascript:;">
+                                            <span>Add bill information</span> <span class="icon icon-arrow-right"/>
+                                        </a></div>
                                     </div>
                                     {{ } else if(showEstimatedCost === true) { }}
                                     <div class="col-xs-6 estimatedCostContainer">
