@@ -3,6 +3,7 @@ package com.ctm.web.health.quote.model;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.health.model.Frequency;
 import com.ctm.web.health.model.Membership;
+import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.*;
 import com.ctm.web.health.quote.model.request.*;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDate;
 import static com.ctm.web.health.model.HospitalSelection.BOTH;
@@ -76,6 +78,12 @@ public class RequestAdapter {
                 addProductIdSameExcessAmountFilter(filters, application);
                 addSingleProviderFilterFromApplication(filters, application);
             }
+
+            quoteRequest.setPaymentType(Optional.ofNullable(quote.getPayment())
+                    .map(Payment::getDetails)
+                    .map(PaymentDetails::getType)
+                    .map(PaymentType::findByCode)
+                    .orElse(null));
         }
 
         addCompareResultsFilter(filters, quote);
