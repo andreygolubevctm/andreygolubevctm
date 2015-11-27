@@ -1,9 +1,11 @@
+/*
 DROP TABLE `ctm`.`health_provider_rules_dependant_schools`;
 DROP TABLE `ctm`.`health_provider_rules_deductions`;
 DROP TABLE `ctm`.`health_provider_rules_declarations`;
 DROP TABLE `ctm`.`health_provider_rules_inline_creditcards`;
 DROP TABLE `ctm`.`health_provider_rules_payment_frequencies`;
 DROP TABLE `ctm`.`health_provider_rules`;
+*/
 
 CREATE TABLE `ctm`.`health_provider_rules` (
 
