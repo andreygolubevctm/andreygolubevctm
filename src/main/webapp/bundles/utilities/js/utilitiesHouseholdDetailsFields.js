@@ -245,9 +245,10 @@
      * @private
      */
     function _toggleAdditionalEstimateDetails() {
-        var $additionalEstimates = $('.additional-estimate-details-row'),
+        var $additionalEstimatesElectricity = $('.electricity-details .additional-estimate-details-row'),
+            $additionalEstimatesGas = $('.gas-details .additional-estimate-details-row'),
             $electricityInputs = $(".electricity-details"),
-            $electricityCalculations = $('.electricity-details .usage');
+            $electricityCalculations = $('.electricity-details .usage'),
             $gasInputs = $(".gas-details"),
             $electricityUsage = $(".electricity-usage"),
             $gasUsage = $(".gas-usage"),
@@ -266,14 +267,14 @@
             if (movingIn === 'Y' || recentElectricityBill === 'N') {
                 $electricityInputs.show();
                 $electricityUsage.show();
-                $additionalEstimates.hide();
+                $additionalEstimatesElectricity.hide();
                 $electricityCalculations.hide();
             } else if (movingIn === 'N') {
 
                 if(recentElectricityBill === 'Y') {
                     $electricityInputs.show();
                     $electricityUsage.hide();
-                    $additionalEstimates.show();
+                    $additionalEstimatesElectricity.show();
                 }
             } else {
                 $electricityInputs.hide();
@@ -295,14 +296,14 @@
             if (movingIn === 'Y' || recentGasBill === 'N') {
                 $gasInputs.show();
                 $gasUsage.show();
-                $additionalEstimates.hide();
+                $additionalEstimatesGas.hide();
             } else if (movingIn === 'N') {
                 $('.recent-gas-bill').show();
 
                 if(recentGasBill === 'Y') {
                     $gasInputs.show();
                     $gasUsage.hide();
-                    $additionalEstimates.show();
+                    $additionalEstimatesGas.show();
                 }
             } else {
                 $gasInputs.hide();
