@@ -22,10 +22,6 @@
 <c:set var="tranId" value="${data['current/transactionId']}" />
 <c:if test="${empty tranId}"><c:set var="tranId" value="0" /></c:if>
 
-<%-- Execute the results service --%>
-<jsp:useBean id="quoteService" class="com.ctm.web.utilities.services.UtilitiesResultsService" scope="page" />
-<c:set var="results" value="${quoteService.getFromJsp(pageContext.getRequest(), data)}" />
-
 <%-- COMPETITION APPLICATION START --%>
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="optedInForCompKey">${vertical}/resultsDisplayed/competition/optin</c:set>
