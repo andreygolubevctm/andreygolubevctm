@@ -53,7 +53,7 @@ CREATE TABLE `ctm`.`health_provider_rules_dependant_schools` (
   `schoolAgeMinimum` int(3) NOT NULL,
   `mustBeFullTimeStudent` TINYINT(1) NOT NULL,
   `schoolNameInputMethod` ENUM('SELECT','TEXT_INPUT','NONE') NOT NULL,
-  `schoolNameLabel` varchar(50) NOT NULL,
+  `schoolNameLabel` varchar(150) NOT NULL,
   `studentIdRule` ENUM('MANDATORY','OPTIONAL','FALSE') NOT NULL,
   `studentIdMaximumLength` int(3) ,
   `commencedDateRule` ENUM('MANDATORY','OPTIONAL','FALSE') NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE `ctm`.`health_provider_rules_deductions` (
 
   `selectionLabel` ENUM('DATE','DAY','NONE') ,
   `selectionValue` ENUM('DATE','DAY','NONE') ,
-  `optionsLength` int(3,
+  `optionsLength` int(3),
   `dateCalculationsStartFrom` ENUM('COVER_START','TODAY') ,
   `dateCalculationStartOffset` int(3) ,
   `dateCalculationsAcceptableDays` ENUM('1-28','1-27','1-31','1,15'),

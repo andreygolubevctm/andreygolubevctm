@@ -98,7 +98,7 @@ INSERT INTO `ctm`.`health_provider_rules_inline_creditcards` (`healthProviderRul
   **/
 INSERT INTO `ctm`.`health_provider_rules` (`providerId`, `effectiveStart`, `effectiveEnd`, `middleNameAsked`, `commencementDateStartOffset`, `commencementDateEndOffset`, `receiveInformationAsked`, `emailAddressMandatory`, `ageMinimum`, `ageMaximum`, `previousFundMemberIdRule`, `previousFundMemberIdMaximumLength`, `medicareDetailsMandatory`, `governmentRebateFormAsked`, `primaryPreviousFundAuthorityAsked`, `partnerPreviousFundAuthorityAsked`, `partnerFundAuthorityAsked`, `provideBankDetailsForRefundsRule`, `dependantsIntroductionText`, `dependantsAgeMinimum`, `dependantsAgeMaximum`, `creditCardGateway`, `declarationLabel`)
 VALUES
-  (1, '2015-11-01', '2040-01-01',
+  (54, '2015-11-01', '2040-01-01',
    0, /* middleNameAsked */
    0, /* commencementDateStartOffset */
    60, /* commencementDateEndOffset */
@@ -145,7 +145,7 @@ INSERT INTO `ctm`.`health_provider_rules_inline_creditcards` (`healthProviderRul
   **/
 INSERT INTO `ctm`.`health_provider_rules` (`providerId`, `effectiveStart`, `effectiveEnd`, `middleNameAsked`, `commencementDateStartOffset`, `commencementDateEndOffset`, `receiveInformationAsked`, `emailAddressMandatory`, `ageMinimum`, `ageMaximum`, `previousFundMemberIdRule`, `previousFundMemberIdMaximumLength`, `medicareDetailsMandatory`, `governmentRebateFormAsked`, `primaryPreviousFundAuthorityAsked`, `partnerPreviousFundAuthorityAsked`, `partnerFundAuthorityAsked`, `provideBankDetailsForRefundsRule`, `dependantsIntroductionText`, `dependantsAgeMinimum`, `dependantsAgeMaximum`, `creditCardGateway`, `declarationLabel`)
 VALUES
-  (1, '2015-11-01', '2040-01-01',
+  (15, '2015-11-01', '2040-01-01',
    1, /* middleNameAsked */
    0, /* commencementDateStartOffset */
    60, /* commencementDateEndOffset */
@@ -190,7 +190,7 @@ VALUES (@PARENT_ROW, 'BANK', 0, 1, 1, 1, 1, 1);
   **/
 INSERT INTO `ctm`.`health_provider_rules` (`providerId`, `effectiveStart`, `effectiveEnd`, `middleNameAsked`, `commencementDateStartOffset`, `commencementDateEndOffset`, `receiveInformationAsked`, `emailAddressMandatory`, `ageMinimum`, `ageMaximum`, `customQuestionSet`, `previousFundMemberIdRule`, `previousFundMemberIdMaximumLength`, `medicareDetailsMandatory`, `governmentRebateFormAsked`, `primaryPreviousFundAuthorityAsked`, `partnerPreviousFundAuthorityAsked`, `partnerFundAuthorityAsked`, `provideBankDetailsForRefundsRule`, `dependantsIntroductionText`, `dependantsAgeMinimum`, `dependantsAgeMaximum`, `creditCardGateway`, `declarationLabel`)
 VALUES
-  (1, '2015-11-01', '2040-01-01',
+  (10, '2015-11-01', '2040-01-01',
    0, /* middleNameAsked */
    0, /* commencementDateStartOffset */
    29, /* commencementDateEndOffset */
@@ -241,7 +241,7 @@ VALUES (@PARENT_ROW, 'BANK', 0, 1, 1, 0, 0, 0);
   **/
 INSERT INTO `ctm`.`health_provider_rules` (`providerId`, `effectiveStart`, `effectiveEnd`, `middleNameAsked`, `commencementDateStartOffset`, `commencementDateEndOffset`, `receiveInformationAsked`, `emailAddressMandatory`, `ageMinimum`, `ageMaximum`, `previousFundMemberIdRule`, `previousFundMemberIdMaximumLength`, `medicareDetailsMandatory`, `governmentRebateFormAsked`, `primaryPreviousFundAuthorityAsked`, `partnerPreviousFundAuthorityAsked`, `partnerFundAuthorityAsked`, `provideBankDetailsForRefundsRule`, `dependantsIntroductionText`, `dependantsAgeMinimum`, `dependantsAgeMaximum`, `creditCardGateway`, `declarationLabel`)
 VALUES
-  (1, '2015-11-01', '2040-01-01',
+  (12, '2015-11-01', '2040-01-01',
    0, /* middleNameAsked */
    0, /* commencementDateStartOffset */
    90, /* commencementDateEndOffset */
@@ -285,7 +285,7 @@ VALUES (@PARENT_ROW, 'BANK', 1, 1, 1, 1, 1, 1);
   **/
 INSERT INTO `ctm`.`health_provider_rules` (`providerId`, `effectiveStart`, `effectiveEnd`, `middleNameAsked`, `commencementDateStartOffset`, `commencementDateEndOffset`, `receiveInformationAsked`, `emailAddressMandatory`, `ageMinimum`, `ageMaximum`, `previousFundMemberIdRule`, `previousFundMemberIdMaximumLength`, `medicareDetailsMandatory`, `governmentRebateFormAsked`, `primaryPreviousFundAuthorityAsked`, `partnerPreviousFundAuthorityAsked`, `partnerFundAuthorityAsked`, `provideBankDetailsForRefundsRule`, `dependantsIntroductionText`, `dependantsAgeMinimum`, `dependantsAgeMaximum`, `creditCardGateway`, `declarationLabel`)
 VALUES
-  (1, '2015-11-01', '2040-01-01',
+  (8, '2015-11-01', '2040-01-01',
    0, /* middleNameAsked */
    0, /* commencementDateStartOffset */
    30, /* commencementDateEndOffset */
@@ -331,7 +331,7 @@ INSERT INTO `ctm`.`health_provider_rules_inline_creditcards` (`healthProviderRul
   **/
 INSERT INTO `ctm`.`health_provider_rules` (`providerId`, `effectiveStart`, `effectiveEnd`, `middleNameAsked`, `commencementDateStartOffset`, `commencementDateEndOffset`, `receiveInformationAsked`, `emailAddressMandatory`, `ageMinimum`, `ageMaximum`, `previousFundMemberIdRule`, `previousFundMemberIdMaximumLength`, `medicareDetailsMandatory`, `governmentRebateFormAsked`, `primaryPreviousFundAuthorityAsked`, `partnerPreviousFundAuthorityAsked`, `partnerFundAuthorityAsked`, `provideBankDetailsForRefundsRule`, `dependantsIntroductionText`, `dependantsAgeMinimum`, `dependantsAgeMaximum`, `creditCardGateway`, `declarationLabel`)
 VALUES
-  (1, '2015-11-01', '2040-01-01',
+  (5, '2015-11-01', '2040-01-01',
    0, /* middleNameAsked */
    0, /* commencementDateStartOffset */
    30, /* commencementDateEndOffset */
@@ -389,7 +389,7 @@ INSERT INTO `ctm`.`health_provider_rules_inline_creditcards` (`healthProviderRul
   **/
 INSERT INTO `ctm`.`health_provider_rules` (`providerId`, `effectiveStart`, `effectiveEnd`, `middleNameAsked`, `commencementDateStartOffset`, `commencementDateEndOffset`, `receiveInformationAsked`, `emailAddressMandatory`, `ageMinimum`, `ageMaximum`, `previousFundMemberIdRule`, `previousFundMemberIdMaximumLength`, `medicareDetailsMandatory`, `governmentRebateFormAsked`, `primaryPreviousFundAuthorityAsked`, `partnerPreviousFundAuthorityAsked`, `partnerFundAuthorityAsked`, `provideBankDetailsForRefundsRule`, `dependantsIntroductionText`, `dependantsAgeMinimum`, `dependantsAgeMaximum`, `creditCardGateway`, `declarationLabel`)
 VALUES
-  (1, '2015-11-01', '2040-01-01',
+  (2, '2015-11-01', '2040-01-01',
    0, /* middleNameAsked */
    0, /* commencementDateStartOffset */
    90, /* commencementDateEndOffset */
@@ -448,7 +448,7 @@ INSERT INTO `ctm`.`health_provider_rules_inline_creditcards` (`healthProviderRul
   **/
 INSERT INTO `ctm`.`health_provider_rules` (`providerId`, `effectiveStart`, `effectiveEnd`, `middleNameAsked`, `commencementDateStartOffset`, `commencementDateEndOffset`, `receiveInformationAsked`, `emailAddressMandatory`, `ageMinimum`, `ageMaximum`, `previousFundMemberIdRule`, `previousFundMemberIdMaximumLength`, `medicareDetailsMandatory`, `governmentRebateFormAsked`, `primaryPreviousFundAuthorityAsked`, `partnerPreviousFundAuthorityAsked`, `partnerFundAuthorityAsked`, `provideBankDetailsForRefundsRule`, `dependantsIntroductionText`, `dependantsAgeMinimum`, `dependantsAgeMaximum`, `creditCardGateway`, `declarationLabel`)
 VALUES
-  (1, '2015-11-01', '2040-01-01',
+  (3, '2015-11-01', '2040-01-01',
    0, /* middleNameAsked */
    0, /* commencementDateStartOffset */
    29, /* commencementDateEndOffset */
@@ -506,7 +506,7 @@ INSERT INTO `ctm`.`health_provider_rules_inline_creditcards` (`healthProviderRul
   **/
 INSERT INTO `ctm`.`health_provider_rules` (`providerId`, `effectiveStart`, `effectiveEnd`, `middleNameAsked`, `commencementDateStartOffset`, `commencementDateEndOffset`, `receiveInformationAsked`, `emailAddressMandatory`, `ageMinimum`, `ageMaximum`, `previousFundMemberIdRule`, `previousFundMemberIdMaximumLength`, `medicareDetailsMandatory`, `governmentRebateFormAsked`, `primaryPreviousFundAuthorityAsked`, `partnerPreviousFundAuthorityAsked`, `partnerFundAuthorityAsked`, `provideBankDetailsForRefundsRule`, `dependantsIntroductionText`, `dependantsAgeMinimum`, `dependantsAgeMaximum`, `creditCardGateway`, `declarationLabel`)
 VALUES
-  (1, '2015-11-01', '2040-01-01',
+  (16, '2015-11-01', '2040-01-01',
    0, /* middleNameAsked */
    0, /* commencementDateStartOffset */
    29, /* commencementDateEndOffset */
