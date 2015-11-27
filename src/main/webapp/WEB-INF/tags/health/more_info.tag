@@ -24,30 +24,48 @@
 	{{ var htmlTemplate = _.template(productBenefitsTemplate); }}
 	{{ obj.benefitsTemplateXS = htmlTemplate(obj); }}
 
-
-	<div class="more-info-blue-header">
-		<div class="col-sm-9 productInfo">
-			<div class="col-sm-12 col-xs-8">
-				<div class="productName">{{= info.productTitle }}</div>
-			</div>
-			<div class="visible-xs col-xs-4">
-				<div class="companyLogo {{= info.FundCode}}"></div>
-			</div>
-			<div class="col-sm-5 col-xs-12">{{ var logoPriceTemplate = $("#more-info-logo-price-template").html(); }}
-				{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
-				{{ obj._selectedFrequency = Results.getFrequency(); }}
-				{{ obj.mode = ''; }}
-				{{ obj.showAltPremium = false; obj.htmlString = htmlTemplatePrice(obj); }}
-				{{ obj.showAltPremium = true;  obj.htmlStringAlt = htmlTemplatePrice(obj); }}
-				{{= htmlString }}</div>
-			<div class="col-sm-3 col-xs-12 more-info-apply-container"><a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a></div>
-			<div class="col-sm-4 col-xs-12 moreInfoCallRefNo"><span class="moreInfoCallUs">or Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></span>
-				<p class="moreInfoReferenceNoText">quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></p></div>
-		</div>
-		<div class="col-sm-3"><div class="companyLogo NIB"></div></div>
-	</div>
-
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content">
+		<div class="col-xs-12 more-info-blue-header">
+			<div class="row">
+				<div class="col-xs-12 col-md-9">
+					<div class="row">
+						<div class="visible-xs col-xs-12 xs-productName-container">
+							<div class="row">
+								<div class="col-xs-8">
+									<div class="productName">{{= info.productTitle }}</div>
+								</div>
+								<div class=" col-xs-4">
+									<div class="companyLogo {{= info.FundCode}}"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12 hidden-xs">
+							<div class="productName">{{= info.productTitle }}</div>
+						</div>
+						<div class="col-sm-9 col-md-12">
+							<div class="row">
+								<div class="col-md-5 col-xs-12">{{ var logoPriceTemplate = $("#more-info-logo-price-template").html(); }}
+									{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
+									{{ obj._selectedFrequency = Results.getFrequency(); }}
+									{{ obj.mode = ''; }}
+									{{ obj.showAltPremium = false; obj.htmlString = htmlTemplatePrice(obj); }}
+									{{ obj.showAltPremium = true;  obj.htmlStringAlt = htmlTemplatePrice(obj); }}
+									{{= htmlString }}</div>
+								<div class="col-xs-12 col-md-7">
+									<div class="row">
+										<div class="col-lg-5 col-md-12 col-xs-12 col-sm-6 pull-left more-info-apply-container"><a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a></div>
+										<div class="col-lg-7 col-md-12 col-xs-12 moreInfoCallRefNo"><span class="moreInfoCallUs">or Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></span>
+											<p class="moreInfoReferenceNoText">quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></p></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="visible-sm col-sm-3"><div class="companyLogo {{= info.FundCode}}"></div></div>
+					</div>
+				</div>
+				<div class="hidden-xs hidden-sm col-md-3"><div class="companyLogo {{= info.FundCode}}"></div></div>
+			</div>
+		</div>
 
 		<div class="col-sm-6 paragraphedContent">
 
@@ -220,5 +238,6 @@
 
 		</div>
 
+	</div>
 	</div>
 </script>

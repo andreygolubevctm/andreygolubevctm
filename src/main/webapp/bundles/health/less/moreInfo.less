@@ -410,11 +410,25 @@
   background-color: @more-info-header-bg-color;
   @media(@xs-only) {
 	min-height: 300px;
+	margin-bottom: 20px;
   }
 
-  @media(@sm) {
+  @media(@sm-only) {
+	min-height: 350px;
+  }
+
+  @media(@md-only) {
+	min-height: 280px;
+  }
+
+  @media(@lg-only) {
 	min-height: 200px;
   }
+
+  .xs-productName-container {
+	padding-top:20px;
+  }
+
   color: @more-info-header-text-color;
 
   .btn {
@@ -423,6 +437,9 @@
 
   .callCentreNumber {
 	font-size: 38px;
+	@media(@md-only) {
+	  font-size: 30px;
+	}
   }
 
   .moreInfoReferenceNoText {
