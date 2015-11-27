@@ -105,24 +105,36 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         WhatToCompare whatToCompare = householdDetailsMaybe.map(HouseHoldDetails::getWhatToCompare).orElse(null);
         if (hasHouseholdDetails && hasGas(whatToCompare) ) {
             String currentSupplier = estimateDetails.map(EstimateDetails :: getUsage).map(Usage::getGas).map(getCurrentSupplier()).orElse(null);
-            return new Gas(getGasUsageDetails(estimateDetails), getGasHouseholdType(estimateDetails) , getGasHasBill(householdDetailsMaybe), currentSupplier);
+            return new Gas(getGasUsageDetails(estimateDetails, householdDetailsMaybe),
+                    getGasHouseholdType(estimateDetails) ,
+                    getGasHasBill(householdDetailsMaybe),
+                    currentSupplier);
         } else {
             return null;
         }
     }
 
-    private GasUsageDetails getGasUsageDetails(Optional<EstimateDetails> estimateDetailsMaybe) {
-        Integer days =getDays(estimateDetailsMaybe.map(EstimateDetails::getSpend).map(Spend::getGas));
-        return new GasUsageDetails(estimateDetailsMaybe.map(EstimateDetails :: getSpend )
-                .map(Spend::getGas)
-                .map(spendEnergy -> new BigDecimal(spendEnergy.getAmount())).orElse(null), days, new GasUsage(null, null));
+    private GasUsageDetails getGasUsageDetails(Optional<EstimateDetails> estimateDetailsMaybe, Optional<HouseHoldDetails> householdDetailsMaybe) {
+        boolean hasUsage = householdDetailsMaybe.map(HouseHoldDetails::getRecentGasBill).map(getYesNoBooleanFunction()).orElse(false);
+        if(hasUsage) {
+            Integer days =getDays(estimateDetailsMaybe.map(EstimateDetails::getSpend).map(Spend::getGas));
+            return new GasUsageDetails(estimateDetailsMaybe.map(EstimateDetails::getSpend)
+                    .map(Spend::getGas)
+                    .map(spendEnergy -> new BigDecimal(spendEnergy.getAmount())).orElse(null), days, new GasUsage(null, null));
+        }else {
+            return null;
+        }
     }
 
-    private static ElectricityUsageDetails  getElectricityUsageDetails(Optional<EstimateDetails> estimateDetailsMaybe) {
-        Integer days = getDays(estimateDetailsMaybe.map(EstimateDetails::getSpend).map(Spend::getElectricity));
-        return new ElectricityUsageDetails(estimateDetailsMaybe.map(EstimateDetails :: getSpend ).map(Spend::getElectricity).map( spendEnergy -> {
-            return new BigDecimal(spendEnergy.getAmount());
-        }).orElse(null), days, getElectricityUsage(estimateDetailsMaybe));
+    private static ElectricityUsageDetails  getElectricityUsageDetails(Optional<EstimateDetails> estimateDetailsMaybe, Optional<HouseHoldDetails> householdDetailsMaybe) {
+        boolean hasUsage = householdDetailsMaybe.map(HouseHoldDetails::getRecentElectricityBill).map(getYesNoBooleanFunction()).orElse(false);
+        if(hasUsage) {
+            Integer days = getDays(estimateDetailsMaybe.map(EstimateDetails::getSpend).map(Spend::getElectricity));
+            return new ElectricityUsageDetails(estimateDetailsMaybe.map(EstimateDetails::getSpend).map(Spend::getElectricity)
+                    .map(spendEnergy -> new BigDecimal(spendEnergy.getAmount())).orElse(null), days, getElectricityUsage(estimateDetailsMaybe));
+        }else {
+            return null;
+        }
     }
 
     private static Integer getDays(Optional<SpendEnergy> spendEnergyMaybe) {
@@ -178,7 +190,7 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         WhatToCompare whatToCompare = householdDetailsMaybe.map(HouseHoldDetails::getWhatToCompare).orElse(null);
         if (hasHouseholdDetails && hasElectricity(whatToCompare)  ) {
             String currentSupplier = estimateDetails.map(EstimateDetails :: getUsage).map(Usage::getElectricity).map(getCurrentSupplier()).orElse(null);
-            return new Electricity(getElectricityUsageDetails(estimateDetails), getHouseholdType(estimateDetails),
+            return new Electricity(getElectricityUsageDetails(estimateDetails, householdDetailsMaybe), getHouseholdType(estimateDetails),
             getElectrityHasBill(householdDetailsMaybe), getHasSolarPanels(estimateDetails), currentSupplier);
         } else {
             return null;

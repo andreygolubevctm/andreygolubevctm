@@ -5,7 +5,9 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.resultsData.model.Info;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.web.go.Data;
 import com.ctm.web.energy.form.model.EnergyResultsWebRequest;
 import com.ctm.web.energy.form.response.model.EnergyResultsWebResponse;
 import com.ctm.web.energy.services.EnergyResultsService;
@@ -37,7 +39,17 @@ public class EnergyQuoteController extends CommonQuoteRouter<EnergyResultsWebReq
     public EnergyResultsWebResponse getQuote(@Valid
                                                   EnergyResultsWebRequest quoteRequest, HttpServletRequest request) throws IOException, ServiceConfigurationException, DaoException {
         Brand brand = initRouter(request, Vertical.VerticalType.ENERGY);
-        return energyResultsService.getResults(quoteRequest, brand);
+        updateTransactionIdAndClientIP(request, quoteRequest);
+        EnergyResultsWebResponse outcome = energyResultsService.getResults(quoteRequest, brand);
+        if(outcome != null){
+            Data dataBucket = getDataBucket(request, quoteRequest.getTransactionId());
+            Info info = new Info();
+            info.setTrackingKey(dataBucket.getString("data/utilities/trackingKey"));
+            info.setTransactionId(quoteRequest.getTransactionId());
+            outcome.setInfo(info);
+            outcome.setTransactionId(quoteRequest.getTransactionId());
+        }
+        return outcome;
     }
 
 }

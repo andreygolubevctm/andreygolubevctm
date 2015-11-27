@@ -4,6 +4,8 @@ package com.ctm.web.energy.form.model;
 public class Usage {
     private Energy electricity;
     private Energy gas;
+    private Rate peak;
+    private Rate offPeak;
 
     public Usage(){
 
@@ -23,5 +25,21 @@ public class Usage {
 
     public void setGas(Energy gas) {
         this.gas = gas;
+    }
+
+    public Rate getPeak() {
+        return peak;
+    }
+
+    public void setPeak(Rate peak) {
+        this.peak = peak;
+    }
+
+    public Rate getOffPeak() {
+        return offPeak;
+    }
+
+    public void setOffPeak(Rate offPeak) {
+        this.offPeak = offPeak;
     }
 }

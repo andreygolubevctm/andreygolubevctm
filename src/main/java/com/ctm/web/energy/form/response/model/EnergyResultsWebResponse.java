@@ -1,30 +1,45 @@
 package com.ctm.web.energy.form.response.model;
 
-import com.ctm.web.core.providers.model.Response;
+import com.ctm.web.core.resultsData.model.Info;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class EnergyResultsWebResponse extends Response {
+public class EnergyResultsWebResponse {
 
+    private final List<EnergyResponseError> errors;
+    private EnergyResults results;
+    private Info info;
 
-    private List<EnergyResultsPlanModel> plans = new ArrayList<>();
-    private String uniqueCustomerId;
+    public EnergyResultsWebResponse(EnergyResults results, List<EnergyResponseError> errors){
+        this.results= results;
+        this.errors = errors;
 
-    public List<EnergyResultsPlanModel> getPlans() {
-        return plans;
     }
 
-    public void setPlans(List<EnergyResultsPlanModel> plans) {
-        this.plans = plans;
+    public long transactionId;
+
+    public long getTransactionId() {
+        return transactionId;
     }
 
-    public String getUniqueCustomerId() {
-        return uniqueCustomerId;
+    public void setTransactionId(long transactionId) {
+        this.transactionId = transactionId;
     }
 
-    public void setUniqueCustomerId(String uniqueCustomerId) {
-        this.uniqueCustomerId = uniqueCustomerId;
+    public EnergyResults getResults() {
+        return results;
+    }
+
+    public Info getInfo() {
+        return info;
+    }
+
+    public void setInfo(Info info) {
+        this.info = info;
+    }
+
+    public List<EnergyResponseError> getErrors() {
+        return errors;
     }
 }

@@ -1,7 +1,6 @@
 package com.ctm.web.energy.form.model;
 
 
-
 public class HouseHoldDetails {
 
     public HouseHoldDetails(){
