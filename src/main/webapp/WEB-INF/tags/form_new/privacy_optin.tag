@@ -13,9 +13,9 @@
 <c:set var="xpath"  	value="${vertical}/${suffix}" />
 <c:set var="privacyStatementLink"><form:link_privacy_statement /></c:set>
 <c:set var="fsgLink"><a href="${pageSettings.getSetting('fsgUrl')}" target="_blank" data-title="Financial Services Guide" class="termsLink showDoc">Financial Services Guide</a></c:set>
-<c:set var="error_text" value="Please confirm you have read the privacy statement" />
+<c:set var="error_text" value="Please confirm you have read the Privacy Policy" />
 <c:if test="${empty labelText}">
-	<c:set var="labelText">I have read the ${privacyStatementLink} and ${fsgLink}</c:set>
+	<c:set var="labelText">* I have read the ${privacyStatementLink} and ${fsgLink}</c:set>
 </c:if>
 <c:set var="label_text" value='${labelText}' />
 

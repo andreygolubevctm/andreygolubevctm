@@ -26,9 +26,12 @@
 	--%>
 
 	<c:set var="genericOptin">
-		<p>Yes, I have read and accept the <a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>,
+		<p>Please confirm you have read, understood and accept the
+			<a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>,
 			the <a href="${pageSettings.getSetting('fsgUrl')}" target="_blank" data-title="Financial Services Guide" class="termsLink showDoc">Financial Services Guide</a>
 			and the <form:link_privacy_statement overrideLabel="Privacy Statement" />.
+
+			You confirm that you are accessing this service to obtain an insurance quote as (or on the behalf of) a genuine customer, and not for commercial or competitive purposes (as further detailed in the <a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>).
 	</p>
 </c:set>
 

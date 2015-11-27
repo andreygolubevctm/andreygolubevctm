@@ -43,7 +43,12 @@
 <form_new:row className="travel-contact-details-optin-sgroup">
 	<%-- Mandatory agreement to privacy policy --%>
 	<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
-	<field_new:checkbox xpath="travel/marketing" value="Y" required="false" label="true" title="Yes, keep me updated about news, discount and special offers from ${brandedName}" />
+	<field_new:checkbox
+			xpath="travel/marketing"
+			value="Y"
+			required="false"
+			label="true"
+			title="Yes, keep me updated about news and special offers from ${brandedName}" />
 </form_new:row>
 
 <%-- Mandatory agreement to privacy policy --%>

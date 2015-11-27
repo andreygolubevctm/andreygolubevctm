@@ -32,6 +32,3 @@
 
 <%-- NEW CAR SERVICE --%>
 <c:set var="carServiceSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 40)}" />
-
-<%-- OPTIN CHECKBOX --%>
-<c:set var="optinCheckboxSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 99)}"/>

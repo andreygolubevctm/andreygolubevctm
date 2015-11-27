@@ -45,62 +45,30 @@
 			className="bestNumber"
 			labelName="best number" validationAttribute=" data-rule-validateOkToCall='true' " />
 	</form_new:row>
+
+
+
 	<c:set var="okToCall">
-		Yes, the lowest priced insurer may call me to discuss my car insurance needs.
+		I give permission for the insurance provider that represents the lowest price to call me within
+		the next 2 business days to discuss my car insurance needs.
 	</c:set>
 
+	<form_new:row label="OK to email" className="">
+		<field_new:array_radio xpath="quote/contact/marketing"
+			required="false"
+			items="Y=Yes,N=No"
+			title="if OK to email" additionalAttributes=" data-rule-validateOkToEmailRadio='true' " />
+		<content:optin key="okToEmail" />
+	</form_new:row>
 
-   <c:choose>
-	   <c:when test="${optinCheckboxSplitTest eq true}">
-		   <c:set var="okToEmailText">
-			   <content:optin key="okToEmail" />
-		   </c:set>
-		   <form_new:row className="" hideHelpIconCol="true">
-			   <field_new:checkbox
-					   xpath="quote/contact/marketing"
-					   value="N"
-					   className="validate"
-					   required="${false}"
-					   label="${true}"
-					   title="${okToEmailText}"
-					   errorMsg="Please agree to the Terms &amp; Conditions"
-					   customAttribute=" data-rule-validateOkToEmailRadio='true' "/>
-		   </form_new:row>
+	<form_new:row label="OK to call" className="">
+		<field_new:array_radio xpath="quote/contact/oktocall"
+			required="false"
+			items="Y=Yes,N=No"
+			title="if OK to call" additionalAttributes=" data-rule-validateOkToCallRadio='true' " />
 
-		   <form_new:row className="" hideHelpIconCol="true">
-			   <field_new:checkbox
-					   xpath="quote/contact/oktocall"
-					   value="N"
-					   className="validate"
-					   required="${false}"
-					   label="${true}"
-					   title="${okToCall}"
-					   errorMsg="Please agree to the Terms &amp; Conditions"
-					   customAttribute="  data-rule-validateOkToCallRadio='true' "/>
-		   </form_new:row>
-
-	   </c:when>
-	   <c:otherwise>
-		   <form_new:row label="OK to email" className="">
-			   <field_new:array_radio xpath="quote/contact/marketing"
-									  required="false"
-									  items="Y=Yes,N=No"
-									  title="if OK to email" additionalAttributes=" data-rule-validateOkToEmailRadio='true' " />
-			   <content:optin key="okToEmail" />
-		   </form_new:row>
-
-		   <form_new:row label="OK to call" className="">
-			   <field_new:array_radio xpath="quote/contact/oktocall"
-									  required="false"
-									  items="Y=Yes,N=No"
-									  title="if OK to call" additionalAttributes=" data-rule-validateOkToCallRadio='true' " />
-
-			   <p class="optinText">${okToCall}</p>
-		   </form_new:row>
-
-	   </c:otherwise>
-   </c:choose>
-
+		<p class="optinText">${okToCall}</p>
+	</form_new:row>
 
 	<%-- COMPETITION START --%>
 	<c:if test="${competitionEnabled == true}">

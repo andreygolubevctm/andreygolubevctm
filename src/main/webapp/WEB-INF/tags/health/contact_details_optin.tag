@@ -87,7 +87,7 @@
 
 				<c:set var="termsAndConditions">
 					<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
-					Yes, <content:optin key="brandDisplayName" useSpan="true"/> may call me during <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">call centre opening hours</a> to discuss health insurance needs,
+					* Yes, <content:optin key="brandDisplayName" useSpan="true"/> may call me during <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">call centre opening hours</a> to discuss my health insurance needs,
 					comparing from a <a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>range of funds</a>.  I have read the <form:link_privacy_statement />.
 				</c:set>
 				<c:set var="optinMarketingText">Yes, keep me updated about news, discounts and special offers from <content:optin key="brandDisplayName" useSpan="true"/></c:set>

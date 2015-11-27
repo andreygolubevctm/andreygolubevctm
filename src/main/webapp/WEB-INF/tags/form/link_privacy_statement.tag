@@ -8,7 +8,7 @@
 <c:set var="anchorLabel">
 	<c:choose>
 		<c:when test="${not empty overrideLabel}">${overrideLabel}</c:when>
-		<c:otherwise>privacy statement</c:otherwise>
+		<c:otherwise>Privacy Policy</c:otherwise>
 	</c:choose>
 </c:set>
 
