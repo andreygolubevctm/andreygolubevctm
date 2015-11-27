@@ -142,12 +142,12 @@
                         </div>
                         {{ } else if(showEstimatedCost === true) { }}
                         <div class="col-sm-3 col-lg-2 estimatedCostContainer">
-                            <div class="dataColumn"><span class="estimatedCost">{{= estimatedElectricityCostLabel }}<br>{{= estimatedGasCostLabel }}</span></div>
+                            <div class="dataColumn"><span class="estimatedCost">Electricity: {{= estimatedElectricityCostLabel }}<br>Gas: {{= estimatedGasCostLabel }}</span></div>
                         </div>
                         {{ } else if(showYearlySavings === true) { }}
                         <div class="col-sm-3 col-lg-2 yearlySavingsContainer {{= (yearlySavingsValue <= 0 ? 'noSavings' : '') }}">
-                            <div class="dataColumn"><span class="yearlySavings">{{= yearlyElectricitySavingsLabel }}<br>
-                                {{= yearlyGasSavingsLabel }}</span></div>
+                            <div class="dataColumn"><span class="yearlySavings">Electricity: {{= yearlyElectricitySavingsLabel }}<br>
+                                Gas: {{= yearlyGasSavingsLabel }}</span></div>
                         </div>
                         {{ } }}
                         <div class="col-sm-{{= smColCountDiscounts }} col-lg-{{= lgColCountDiscounts }} totalDiscountsContainer">
