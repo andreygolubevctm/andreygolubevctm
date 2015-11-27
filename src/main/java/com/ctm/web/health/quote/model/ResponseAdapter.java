@@ -151,7 +151,7 @@ public class ResponseAdapter {
         price.setText((hasDiscount ? "*" : "") + formatCurrency(quotePrice.getPayableAmount(), true, true));
         price.setValue(quotePrice.getPayableAmount());
         price.setPricing("Includes rebate of " + formatCurrency(quotePrice.getRebateAmount(), true, true) + " & LHC loading of " +
-                formatCurrency(quotePrice.getLhcAmount().add(quotePrice.getLhcFreeAmount()), true, true));
+                formatCurrency(quotePrice.getLhcAmount(), true, true));
         price.setLhcfreetext((hasDiscount ? "*" : "") + formatCurrency(quotePrice.getLhcFreeAmount(), true, true));
         price.setLhcfreevalue(quotePrice.getLhcFreeAmount());
         price.setLhcfreepricing("+ " + formatCurrency(quotePrice.getLhcAmount(), true, true) + " LHC inc " +
@@ -161,7 +161,7 @@ public class ResponseAdapter {
         price.setBaseAndLHC(formatCurrency(quotePrice.getBaseAndLHC(), true, true));
 
         price.setHospitalValue(quotePrice.getHospitalValue());
-        price.setRebate(healthQuote.getRebate().intValue());
+        price.setRebate(quotePrice.getRebatePercentage());
         price.setLhcPercentage(healthQuote.getLoading());
         price.setLhc(formatCurrency(quotePrice.getLhcAmount(), true, true));
         price.setGrossPremium(formatCurrency(quotePrice.getGrossPremium(), true, true));
