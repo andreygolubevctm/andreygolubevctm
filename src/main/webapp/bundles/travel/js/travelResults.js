@@ -183,11 +183,11 @@
 						meerkat.modules.coverLevelTabs.incrementCount("B");
 					}
 				} else {
-					if(_.isBoolean(result.isDomestic)) {
+					if(_.isBoolean(result.isDomestic) && result.price > 0) {
 						var level = result.isDomestic === true ? "D" : "I";
 						obj.coverLevel = level;
 						meerkat.modules.coverLevelTabs.incrementCount(level);
-					} else {
+					} else if( result.price > 0) {
 						if (result.des.indexOf('Australia') == -1) {
 							obj.coverLevel = 'I';
 							meerkat.modules.coverLevelTabs.incrementCount("I");
