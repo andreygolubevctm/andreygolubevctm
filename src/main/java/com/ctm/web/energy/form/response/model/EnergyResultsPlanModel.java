@@ -8,7 +8,6 @@ public class EnergyResultsPlanModel {
     private String planName;
     private String retailerName;
     private String retailerId;
-    double yearlySavings;
     private double price;
     private double previousPrice;
     private String contractPeriod;
@@ -18,9 +17,47 @@ public class EnergyResultsPlanModel {
 
     private String payontimeDiscounts;
     private String ebillingDiscounts;
+
     private String guaranteedDiscounts;
     private String otherDiscounts;
     private String discountDetails;
+
+    private double estimatedElectricityCost;
+    private double estimatedGasCost;
+    private double yearlyElectricitySavings;
+    private double yearlyGasSavings;
+
+    public double getEstimatedElectricityCost() {
+        return estimatedElectricityCost;
+    }
+
+    public void setEstimatedElectricityCost(double estimatedElectricityCost) {
+        this.estimatedElectricityCost = estimatedElectricityCost;
+    }
+
+    public double getEstimatedGasCost() {
+        return estimatedGasCost;
+    }
+
+    public void setEstimatedGasCost(double estimatedGasCost) {
+        this.estimatedGasCost = estimatedGasCost;
+    }
+
+    public double getYearlyElectricitySavings() {
+        return yearlyElectricitySavings;
+    }
+
+    public void setYearlyElectricitySavings(double yearlyElectricitySavings) {
+        this.yearlyElectricitySavings = yearlyElectricitySavings;
+    }
+
+    public double getYearlyGasSavings() {
+        return yearlyGasSavings;
+    }
+
+    public void setYearlyGasSavings(double yearlyGasSavings) {
+        this.yearlyGasSavings = yearlyGasSavings;
+    }
 
     public double getEstimatedCost() {
         return estimatedCost;
@@ -135,13 +172,8 @@ public class EnergyResultsPlanModel {
         this.discountDetails = discountDetails;
     }
 
-    public double getYearlySavings() {
-        return yearlySavings;
-    }
 
-    public void setYearlySavings(double yearlySavings) {
-        this.yearlySavings = yearlySavings;
-    }
+
 
     @Override
     public String toString() {
@@ -165,7 +197,10 @@ public class EnergyResultsPlanModel {
                 ", guaranteedDiscounts=" + guaranteedDiscounts +
                 ", otherDiscounts=" + otherDiscounts +
                 ", discountDetails=" + discountDetails +
-                ", yearlySavings=" + yearlySavings +
+                ", estimatedElectricityCost=" + estimatedElectricityCost +
+                ", estimatedGasCost=" + estimatedGasCost +
+                ", yearlyElectricitySavings=" + yearlyElectricitySavings +
+                ", yearlyGasSavings=" + yearlyGasSavings +
                 '}';
     }
 

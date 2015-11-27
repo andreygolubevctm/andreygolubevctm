@@ -3,14 +3,12 @@ package com.ctm.web.energy.quote.adapter;
 import com.ctm.energy.quote.response.model.Discount;
 import com.ctm.energy.quote.response.model.EnergyQuote;
 import com.ctm.energy.quote.response.model.Retailer;
-import com.ctm.energy.quote.response.model.Savings;
 import com.ctm.web.core.providers.model.Response;
 import com.ctm.web.energy.form.response.model.EnergyResponseError;
 import com.ctm.web.energy.form.response.model.EnergyResults;
 import com.ctm.web.energy.form.response.model.EnergyResultsPlanModel;
 import com.ctm.web.energy.form.response.model.EnergyResultsWebResponse;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +42,10 @@ public class EnergyQuoteServiceResponseAdapter implements WebResponseAdapter<Ene
                 energyResultsPlanModel.setPrice(quote.getEstimatedCost().doubleValue());
                 mapRetailer(quote, energyResultsPlanModel);
 
-                energyResultsPlanModel.setYearlySavings(quote.getYearlySavings().map(Savings::getElectricity).map(BigDecimal::doubleValue).orElse(0d));
+                energyResultsPlanModel.setEstimatedElectricityCost(quote.getElectricity().map(electricity -> electricity.getEstimatedCost().doubleValue()).orElse(0d));
+                energyResultsPlanModel.setEstimatedGasCost(quote.getGas().map(gas -> gas.getEstimatedCost().doubleValue()).orElse(0d));
+                energyResultsPlanModel.setYearlyElectricitySavings(quote.getElectricity().map(electricity -> electricity.getSavings().getYearly().doubleValue()).orElse(0d));
+                energyResultsPlanModel.setYearlyGasSavings(quote.getGas().map(gas -> gas.getSavings().getYearly().doubleValue()).orElse(0d));
 
                 results.setUniqueCustomerId(quote.getUniqueCustomerId());
                 plans.add(energyResultsPlanModel);
