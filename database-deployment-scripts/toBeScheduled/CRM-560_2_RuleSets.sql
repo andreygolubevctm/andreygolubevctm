@@ -121,7 +121,7 @@ VALUES
    'I can confirm that I have read and understood the Join Declaration and the information relating to my product choice. I declare that the information I have provided is true and correct.' /* declarationLabel */
   );
 
-SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 1);
+SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 54);
 
 INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `selectionLabel`, `selectionValue`, `optionsLength`, `dateCalculationsStartFrom`, `dateCalculationStartOffset`, `dateCalculationsAcceptableDays`, `dateCalculationsIncludeWeekends`)
 VALUES (@PARENT_ROW, 'DATE', 'DATE', 1, 'COVER_START', 7, '1,15', 1);
@@ -168,7 +168,7 @@ VALUES
    'I can confirm that I have read and understood the Join Declaration and the information relating to my product choice. I declare that the information I have provided is true and correct.' /* declarationLabel */
   );
 
-SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 1);
+SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 15);
 
 INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `deductionText`)
 VALUES (@PARENT_ROW, 'Your account will be debited within the next 24 hours. Note, fortnightly payments will be charged as one month in advance and fortnightly thereafter.');
@@ -214,7 +214,7 @@ VALUES
    'I can confirm that I have read and understood the Join Declaration and the information relating to my product choice. I declare that the information I have provided is true and correct.' /* declarationLabel */
   );
 
-SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 1);
+SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 10);
 
 INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `deductionText`)
 VALUES (@PARENT_ROW, 'Monthly payments will be deducted on the 15th of each month.
@@ -264,7 +264,7 @@ VALUES
    'I can confirm that I have read and understood the Join Declaration and the information relating to my product choice. I declare that the information I have provided is true and correct.' /* declarationLabel */
   );
 
-SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 1);
+SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 12);
 
 INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `selectionLabel`, `selectionValue`, `optionsLength`, `dateCalculationsStartFrom`, `dateCalculationStartOffset`, `dateCalculationsAcceptableDays`, `dateCalculationsIncludeWeekends`)
 VALUES (@PARENT_ROW, 'DATE', 'DATE', 14, 'COVER_START', 0, '1-28', 1);
@@ -308,7 +308,7 @@ VALUES
    null /* declarationLabel */
   );
 
-SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 1);
+SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 8);
 
 INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `selectionLabel`, `selectionValue`, `optionsLength`, `dateCalculationsStartFrom`, `dateCalculationStartOffset`, `dateCalculationsAcceptableDays`, `dateCalculationsIncludeWeekends`)
 VALUES (@PARENT_ROW, 'DATE', 'DATE', 1, 'COVER_START', 7, '1,15', 1);
@@ -354,7 +354,7 @@ VALUES
    'I can confirm that I have read and understood the Join Declaration and the information relating to my product choice. I declare that the information I have provided is true and correct.' /* declarationLabel */
   );
 
-SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 1);
+SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 5);
 
 INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `selectionLabel`, `selectionValue`, `optionsLength`, `dateCalculationsStartFrom`, `dateCalculationStartOffset`, `dateCalculationsAcceptableDays`, `dateCalculationsIncludeWeekends`)
 VALUES (@PARENT_ROW, 'DATE', 'DATE', 1, 'COVER_START', 14, '1,15', 0);
@@ -412,7 +412,7 @@ VALUES
    'I can confirm that I have read and understood the Join Declaration and the information relating to my product choice. I declare that the information I have provided is true and correct.' /* declarationLabel */
   );
 
-SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 1);
+SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 2);
 
 INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `selectionLabel`, `selectionValue`, `optionsLength`, `dateCalculationsStartFrom`, `dateCalculationStartOffset`, `dateCalculationsAcceptableDays`, `dateCalculationsIncludeWeekends`)
 VALUES (@PARENT_ROW, 'DAY', 'DAY', 31, null, null, null, null);
@@ -471,7 +471,7 @@ VALUES
    null /* declarationLabel */
   );
 
-SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 1);
+SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 3);
 
 INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `selectionLabel`, `selectionValue`, `optionsLength`, `dateCalculationsStartFrom`, `dateCalculationStartOffset`, `dateCalculationsAcceptableDays`, `dateCalculationsIncludeWeekends`)
 VALUES (@PARENT_ROW, 'DAY', 'DATE', 27, 'TODAY', 0, '1-27', 1);
@@ -529,7 +529,7 @@ VALUES
    'I can confirm that I have read and understood the Join Declaration and the information relating to my product choice. I declare that the information I have provided is true and correct.' /* declarationLabel */
   );
 
-SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 1);
+SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 16);
 
 INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `deductionText`)
 VALUES (@PARENT_ROW, 'Your first premium payment will be deducted from your nominated bank account on receipt of your application by us, or from the actual start date of your policy.');
