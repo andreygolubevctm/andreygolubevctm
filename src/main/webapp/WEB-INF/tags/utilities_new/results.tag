@@ -62,8 +62,8 @@
         {{ var yearlySavingsLabel = yearlySavingsValue < 0 ? "extra cost up to $" + (yearlySavingsValue*-1) : "$" + yearlySavingsValue.toFixed(2); }}
 
         {{ var estimatedCostLabel = "$" + estimatedCostValue.toFixed(2); }}
-        {{ var estimatedElectricityCostLabel = "$" + estimatedElectricityCostValue.toFixed(2); }}
-        {{ var estimatedGasCostLabel = "$" + estimatedGasCostValue.toFixed(2); }}
+        {{ var estimatedElectricityCostLabel = estimatedElectricityCostValue > 0 ? "Electricity: $" + estimatedElectricityCostValue.toFixed(2) : ""; }}
+        {{ var estimatedGasCostLabel = estimatedGasCostValue > 0 ? "Gas: $" + estimatedGasCostValue.toFixed(2) : ""; }}
 
         {{ var showYearlySavings = meerkat.modules.utilitiesResults.showYearlySavings(); }}
         {{ var showEstimatedCost = meerkat.modules.utilitiesResults.showEstimatedCost(); }}
