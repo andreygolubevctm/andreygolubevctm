@@ -144,6 +144,13 @@
 
             result.estimatedCostValue = typeof result.estimatedCost === 'undefined' || result.estimatedCost === null ? 0 : result.estimatedCost;
             result.estimatedCostValue = Number(result.estimatedCostValue.toFixed(2));
+
+            result.estimatedElectricityCostValue = typeof result.estimatedElectricityCost === 'undefined' || result.estimatedElectricityCost === null ? 0 : result.estimatedElectricityCost;
+            result.estimatedElectricityCostValue = Number(result.estimatedElectricityCostValue.toFixed(2));
+
+            result.estimatedGasCostValue = typeof result.estimatedGasCost === 'undefined' || result.estimatedGasCost === null ? 0 : result.estimatedGasCost;
+            result.estimatedGasCostValue = Number(result.estimatedGasCostValue.toFixed(2));
+
         });
         return products;
     }
