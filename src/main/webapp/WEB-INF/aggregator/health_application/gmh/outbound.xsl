@@ -455,7 +455,7 @@
 								<xsl:otherwise>false</xsl:otherwise>
 							</xsl:choose>
 						</EligibleMedicare>
-						<DebitOnDate><xsl:value-of select="$debitOnDate" /></DebitOnDate>
+						<DebitOnDate><xsl:value-of select="$startDate" /></DebitOnDate>
 						<Account>
 							<xsl:choose>
 								<xsl:when test="payment/details/type='cc'">

@@ -231,6 +231,8 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 
 		double estimatedCost = bd.doubleValue();
 		json.put("estimatedCost", estimatedCost);
+		json.put("estimatedElectricityCost", getNewElectricityBill());
+		json.put("estimatedGasCost", getNewGasBill());
 
 		json.put("price", estimatedCost);
 		json.put("previousPrice", getAnnualPreviousCost());
@@ -243,11 +245,8 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 		json.put("otherDiscounts", getOtherDiscounts());
 		json.put("discountDetails", getDiscountDetails());
 
-		bd = new BigDecimal(getYearlyElectricitySavings() + getYearlyGasSavings());
-		bd = bd.setScale(2, RoundingMode.HALF_UP);
-
-		double yearlySavingsTotal = bd.doubleValue();
-		json.put("yearlySavings", yearlySavingsTotal);
+		json.put("yearlyElectricitySavings", getYearlyElectricitySavings());
+		json.put("yearlyGasSavings", getYearlyGasSavings());
 
 		return json;
 	}
@@ -280,7 +279,7 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 			if(json.isNull("yearly_gas_savings") == false) setYearlyGasSavings(json.getDouble("yearly_gas_savings"));
 
 			if(json.isNull("new_elec_bill") == false) { setNewElectricityBill(json.getDouble("new_elec_bill")); }
-			if(json.isNull("new_gas_bill") == false)  { setNewGasBill(json.getDouble("new_elec_bill")); }
+			if(json.isNull("new_gas_bill") == false)  { setNewGasBill(json.getDouble("new_gas_bill")); }
 
 		} catch (JSONException e) {
 			LOGGER.debug("Failed to populate utilities results plan model {}", kv("json", json), e);
