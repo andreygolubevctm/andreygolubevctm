@@ -7,6 +7,10 @@ public class Spend {
     private SpendEnergy electricity;
     private SpendEnergy gas;
 
+    public Spend(){
+
+    }
+
     public SpendEnergy getElectricity() {
         return electricity;
     }

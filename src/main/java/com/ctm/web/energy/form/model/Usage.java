@@ -5,6 +5,10 @@ public class Usage {
     private Energy electricity;
     private Energy gas;
 
+    public Usage(){
+
+    }
+
     public Energy getElectricity() {
         return electricity;
     }

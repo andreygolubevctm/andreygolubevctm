@@ -7,6 +7,7 @@ import com.ctm.energy.quote.request.model.preferences.*;
 import com.ctm.energy.quote.request.model.usage.*;
 import com.ctm.interfaces.common.types.TransactionId;
 import com.ctm.web.energy.form.model.*;
+import com.ctm.web.energy.form.model.Usage;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,14 +23,15 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
 
     @Override
     public EnergyQuoteRequest adapt(EnergyResultsWebRequest request) {
+        EnergyPayLoad utilities = request.getUtilities();
         return new EnergyQuoteRequest(
-                createHouseHoldDetails(request),
-                createElectricity(request),
-                createGas(request),
-                createPreferences(request),
-                createEnergyTypes(request),
+                createHouseHoldDetails(utilities),
+                createElectricity(utilities),
+                createGas(utilities),
+                createPreferences(utilities),
+                createEnergyTypes(utilities),
                 createTransactionId(request),
-                createContactDetails(request)
+                createContactDetails(utilities)
         );
     }
 
@@ -37,14 +39,14 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         return TransactionId.instanceOf(request.getTransactionId());
     }
 
-    private ContactDetails createContactDetails(EnergyResultsWebRequest request) {
+    private ContactDetails createContactDetails(EnergyPayLoad request) {
         Optional<ResultsDisplayed> resultsDisplayedMaybe = Optional.ofNullable(request.getResultsDisplayed());
         Boolean optinPhone = resultsDisplayedMaybe.map(ResultsDisplayed::getOptinPhone).map(getYesNoBooleanFunction()).orElse(false);
         return new ContactDetails(optinPhone, null, resultsDisplayedMaybe.map(ResultsDisplayed :: getFirstName).orElse(null), resultsDisplayedMaybe.map(ResultsDisplayed :: getPhone).orElse(null));
     }
 
-    private List<EnergyType> createEnergyTypes(EnergyResultsWebRequest quote) {
-        final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseHoldDetails());
+    private List<EnergyType> createEnergyTypes(EnergyPayLoad quote) {
+        final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
         List<EnergyType> energyTypes = new ArrayList<>();
 
         Optional.ofNullable(createGasType(householdDetailsMaybe.map(HouseHoldDetails::getWhatToCompare)))
@@ -82,11 +84,11 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         return null;
     }
 
-    private Preferences createPreferences(EnergyResultsWebRequest quote) {
+    private Preferences createPreferences(EnergyPayLoad quote) {
         final Optional<ResultsDisplayed> resultsDisplayedMaybe = Optional.ofNullable(quote.getResultsDisplayed());
-        HasEBilling hasEBilling = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferEBilling).map( value -> new HasEBilling(value.equals(YesNo.Yes))).orElse(new HasEBilling(false));
-        NoContract noContract = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferNoContract).map( value -> new NoContract(value.equals(YesNo.Yes))).orElse(new NoContract(false));
-        RenewableEnergy renewableEnergy = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferRenewableEnergy).map( value -> new RenewableEnergy(value.equals(YesNo.Yes))).orElse(new RenewableEnergy(false));
+        HasEBilling hasEBilling = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferEBilling).map( value -> new HasEBilling(value.equals(YesNo.Y))).orElse(new HasEBilling(false));
+        NoContract noContract = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferNoContract).map( value -> new NoContract(value.equals(YesNo.Y))).orElse(new NoContract(false));
+        RenewableEnergy renewableEnergy = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferRenewableEnergy).map( value -> new RenewableEnergy(value.equals(YesNo.Y))).orElse(new RenewableEnergy(false));
 
         return new Preferences(new DisplayDiscount(false),
                 hasEBilling,
@@ -96,13 +98,13 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
     }
 
 
-    private Gas createGas(EnergyResultsWebRequest quote ) {
-        final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseHoldDetails());
+    private Gas createGas(EnergyPayLoad quote ) {
+        final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
         final Optional<EstimateDetails> estimateDetails = Optional.ofNullable(quote.getEstimateDetails());
         boolean hasHouseholdDetails = householdDetailsMaybe.isPresent();
         WhatToCompare whatToCompare = householdDetailsMaybe.map(HouseHoldDetails::getWhatToCompare).orElse(null);
         if (hasHouseholdDetails && hasGas(whatToCompare) ) {
-            String currentSupplier = estimateDetails.map(EstimateDetails :: getGas).map(getCurrentSupplier()).orElse(null);
+            String currentSupplier = estimateDetails.map(EstimateDetails :: getUsage).map(Usage::getGas).map(getCurrentSupplier()).orElse(null);
             return new Gas(getGasUsageDetails(estimateDetails), getGasHouseholdType(estimateDetails) , getGasHasBill(householdDetailsMaybe), currentSupplier);
         } else {
             return null;
@@ -128,24 +130,24 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
     }
 
     private static ElectricityUsage getElectricityUsage(Optional<EstimateDetails> estimateDetailsMaybe) {
-        ElectricityUsage electricityUsage;
+        ElectricityUsage electricityUsage = null;
         ElectricityMeterType meter = getElectricityMeterType(estimateDetailsMaybe);
         Float offPeakUsage = estimateDetailsMaybe.map(EstimateDetails::getElectricity).map(com.ctm.web.energy.form.model.Electricity::getOffpeak).map(Rate::getAmount).orElse(null);
         Float shoulderAmount = estimateDetailsMaybe.map(EstimateDetails::getElectricity).map(com.ctm.web.energy.form.model.Electricity::getShoulder).map(Rate::getAmount).orElse(null);
         Float peakUsage = estimateDetailsMaybe.map(EstimateDetails::getElectricity).map(com.ctm.web.energy.form.model.Electricity::getPeak).map(Rate::getAmount).orElse(null);
 
-        switch (meter) {
-            case TimeOfUse:
-                electricityUsage = new TimeOfUseUsage(new BigDecimal(peakUsage),new BigDecimal(offPeakUsage),new BigDecimal(shoulderAmount));
-                break;
-            case Single:
-                electricityUsage =new SingleRateUsage(new BigDecimal(peakUsage));
-                break;
-            case TwoRate:
-                electricityUsage = new TwoRateUsage(new BigDecimal(peakUsage), new BigDecimal(offPeakUsage));
-                break;
-            default:
-                electricityUsage = null;
+        if(meter != null) {
+            switch (meter) {
+                case TimeOfUse:
+                    electricityUsage = new TimeOfUseUsage(new BigDecimal(peakUsage), new BigDecimal(offPeakUsage), new BigDecimal(shoulderAmount));
+                    break;
+                case Single:
+                    electricityUsage = new SingleRateUsage(new BigDecimal(peakUsage));
+                    break;
+                case TwoRate:
+                    electricityUsage = new TwoRateUsage(new BigDecimal(peakUsage), new BigDecimal(offPeakUsage));
+                    break;
+            }
         }
         return electricityUsage;
     }
@@ -158,8 +160,8 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         return householdDetailsMaybe.map(HouseHoldDetails::getRecentGasBill).map(getYesNoBooleanFunction()).orElse(false);
     }
 
-    private HouseholdDetails createHouseHoldDetails(EnergyResultsWebRequest quote) {
-        final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseHoldDetails());
+    private HouseholdDetails createHouseHoldDetails(EnergyPayLoad quote) {
+        final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
         return new HouseholdDetails(
                 householdDetailsMaybe.map(HouseHoldDetails::getSuburb).orElse(null),
                 householdDetailsMaybe.map(HouseHoldDetails::getPostcode).orElse(null),
@@ -169,15 +171,15 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
                 .orElse(null), householdDetailsMaybe.map(HouseHoldDetails::getTariff).orElse(null));
     }
 
-    protected static Electricity createElectricity(EnergyResultsWebRequest quote) {
-        final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseHoldDetails());
+    protected static Electricity createElectricity(EnergyPayLoad quote) {
+        final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
         final Optional<EstimateDetails> estimateDetails = Optional.ofNullable(quote.getEstimateDetails());
         boolean hasHouseholdDetails = householdDetailsMaybe.isPresent();
         WhatToCompare whatToCompare = householdDetailsMaybe.map(HouseHoldDetails::getWhatToCompare).orElse(null);
         if (hasHouseholdDetails && hasElectricity(whatToCompare)  ) {
-            String currentSupplier = estimateDetails.map(EstimateDetails :: getElectricity).map(getCurrentSupplier()).orElse(null);
+            String currentSupplier = estimateDetails.map(EstimateDetails :: getUsage).map(Usage::getElectricity).map(getCurrentSupplier()).orElse(null);
             return new Electricity(getElectricityUsageDetails(estimateDetails), getHouseholdType(estimateDetails),
-            getElectrityHasBill(householdDetailsMaybe), getHasSolarPanels(householdDetailsMaybe), currentSupplier);
+            getElectrityHasBill(householdDetailsMaybe), getHasSolarPanels(estimateDetails), currentSupplier);
         } else {
             return null;
         }
@@ -191,8 +193,8 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         return quote.map(HouseHoldDetails::getRecentElectricityBill).map(getYesNoBooleanFunction()).orElse(false);
     }
 
-    private static boolean getHasSolarPanels(Optional<HouseHoldDetails> householdDetailsMaybe) {
-        return householdDetailsMaybe.map(HouseHoldDetails::getHasSolarPanels).map(getYesNoBooleanFunction()).orElse(false);
+    private static boolean getHasSolarPanels(Optional<EstimateDetails> estimateDetailsMaybe) {
+        return estimateDetailsMaybe.map(EstimateDetails::getSolarPanels).map(getYesNoBooleanFunction()).orElse(false);
     }
 
 
@@ -205,6 +207,6 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
     }
 
     private static Function<YesNo, Boolean> getYesNoBooleanFunction() {
-        return value -> value.equals(YesNo.Yes);
+        return value -> value.equals(YesNo.Y);
     }
 }

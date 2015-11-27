@@ -4,6 +4,11 @@ package com.ctm.web.energy.form.model;
 import com.ctm.web.core.validation.Name;
 
 public class ResultsDisplayed {
+
+    public ResultsDisplayed(){
+
+    }
+
     private YesNo preferEBilling;
     private YesNo preferNoContract;
     private YesNo preferRenewableEnergy;

@@ -4,15 +4,17 @@ package com.ctm.web.energy.form.model;
 
 public class HouseHoldDetails {
 
+    public HouseHoldDetails(){
+
+    }
+
     private String movingInDate;
     private WhatToCompare whatToCompare;
     private String postcode;
     private boolean isConnection; // true if moving to the property
     private String suburb;
-    private String howToEstimate;
     private YesNo movingIn;
     private String tariff;
-    private YesNo solarPanels;
 
     private YesNo recentGasBill;
     private YesNo recentElectricityBill;
@@ -38,13 +40,6 @@ public class HouseHoldDetails {
         this.suburb = suburb;
     }
 
-    public String getHowToEstimate() {
-        return howToEstimate;
-    }
-
-    public void setHowToEstimate(String howToEstimate) {
-        this.howToEstimate = howToEstimate;
-    }
 
     public boolean isConnection() {
         return isConnection;
@@ -80,14 +75,6 @@ public class HouseHoldDetails {
 
     public String getMovingInDate() {
         return movingInDate;
-    }
-
-    public  YesNo getHasSolarPanels() {
-        return solarPanels;
-    }
-
-    public void setSolarPanels(YesNo solarPanels) {
-        this.solarPanels = solarPanels;
     }
 
 

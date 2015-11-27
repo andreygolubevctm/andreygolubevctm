@@ -3,54 +3,17 @@ package com.ctm.web.energy.form.model;
 import com.ctm.web.core.model.formData.Request;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.validation.Valid;
-
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EnergyResultsWebRequest implements Request {
+
+    public EnergyResultsWebRequest(){
+
+    }
+
     private String clientIpAddress;
 
-    private HouseHoldDetails houseHoldDetails;
-    private EstimateDetails estimateDetails;
-    private String tariff;
-
-    @Valid
-    public ResultsDisplayed resultsDisplayed;
-
-    private String referenceNumber;
-
-    public String getTariff() {
-        return tariff;
-    }
-
-    public void setTariff(String tariff) {
-        this.tariff = tariff;
-    }
-
-    public String getReferenceNumber() {
-        return referenceNumber;
-    }
-
-    public void setReferenceNumber(String referenceNumber) {
-        this.referenceNumber = referenceNumber;
-    }
-
-    public HouseHoldDetails getHouseHoldDetails() {
-        return houseHoldDetails;
-    }
-
-    public void setHouseHoldDetails(HouseHoldDetails houseHoldDetails) {
-        this.houseHoldDetails = houseHoldDetails;
-    }
-
-
-    public EstimateDetails getEstimateDetails() {
-        return estimateDetails;
-    }
-
-    public void setEstimateDetails(EstimateDetails estimateDetails) {
-        this.estimateDetails = estimateDetails;
-    }
+    private EnergyPayLoad utilities;
 
     private Long transactionId;
 
@@ -81,7 +44,11 @@ public class EnergyResultsWebRequest implements Request {
         this.transactionId = transactionId;
     }
 
-    public ResultsDisplayed getResultsDisplayed() {
-        return resultsDisplayed;
+    public EnergyPayLoad getUtilities() {
+        return utilities;
+    }
+
+    public void setUtilities(EnergyPayLoad utilities) {
+        this.utilities = utilities;
     }
 }

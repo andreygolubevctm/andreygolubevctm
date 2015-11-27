@@ -154,7 +154,7 @@
 					</div>
         <input type="hidden" name="transcheck" id="transcheck" value="1"/>
         <input type="hidden" name="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" id="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" value="" />
-					
+        <field:hidden xpath="environmentOverride" />
     </jsp:body>
 					
 </layout:journey_engine_page>

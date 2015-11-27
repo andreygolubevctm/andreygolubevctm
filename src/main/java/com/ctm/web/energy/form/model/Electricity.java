@@ -9,6 +9,10 @@ public class Electricity extends Energy{
     Rate shoulder;
     ElectricityMeterType meter;
 
+    public Electricity(){
+
+    }
+
     public Rate getPeak() {
         return peak;
     }

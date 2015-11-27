@@ -350,6 +350,7 @@
 
     // Wrapper around results component, load results data
     function get() {
+        Results.updateAggregatorEnvironment();
         Results.get();
     }
 
