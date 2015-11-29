@@ -90,7 +90,7 @@ ${healthPriceService.setHealthPriceRequest(healthPriceRequest)}
 
 ${healthPriceService.setMembership(cover)}
 ${healthPriceService.setSearchDate(searchDate)}
-${healthPriceService.setChangeoverDate(changeOverRebates.getEffectiveStart())}
+${healthPriceService.setChangeoverDate(changeOverRebates.getEffectiveFutureStart())}
 ${healthPriceService.setRebateCurrent(rebate)}
 ${healthPriceService.setRebateChangeover(rebateChangeover)}
 ${healthPriceService.setTransactionId(transactionId)}

@@ -39,7 +39,7 @@ import com.ctm.web.creditcards.utils.CreditCardsSortAlgorithms;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 
 @WebServlet(urlPatterns = {
