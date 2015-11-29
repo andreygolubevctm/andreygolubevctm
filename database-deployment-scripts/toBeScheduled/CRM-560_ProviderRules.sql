@@ -12,8 +12,8 @@ CREATE TABLE `ctm`.`health_provider_rules` (
   `healthProviderRulesId` int(11) NOT NULL AUTO_INCREMENT,
   `providerId` smallint(5) UNSIGNED NOT NULL,
 
-  `effectiveStart` date NOT NULL,
-  `effectiveEnd` date NOT NULL,
+  `effectiveStart` DATETIME NOT NULL,
+  `effectiveEnd` DATETIME NOT NULL,
 
   `middleNameAsked` TINYINT(1) NOT NULL,
   `commencementDateStartOffset`int(3) NOT NULL,
@@ -32,10 +32,6 @@ CREATE TABLE `ctm`.`health_provider_rules` (
   `partnerFundAuthorityAsked` TINYINT(1) NOT NULL,
   `provideBankDetailsForRefundsRule` ENUM('MANDATORY','OPTIONAL','FALSE') NOT NULL,
 
-  /*  `aboutTheFundText` text,
-    `nextStepsText` text,
-    `fundWarningText` varchar(1000),
-  */
   `dependantsIntroductionText` varchar(1000),
   `dependantsAgeMinimum` int(3),
   `dependantsAgeMaximum` int(3),
@@ -81,19 +77,6 @@ CREATE TABLE `ctm`.`health_provider_rules_deductions` (
   PRIMARY KEY (`healthProviderRulesDeductionsId`),
   FOREIGN KEY (`healthProviderRulesId`) REFERENCES `ctm`.`health_provider_rules`(`healthProviderRulesId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*
-CREATE TABLE `ctm`.`health_provider_rules_declarations` (
-  `healthProviderRulesDeclarationsId` int(11) NOT NULL AUTO_INCREMENT,
-  `healthProviderRulesId` int(11) NOT NULL,
-
-  `label` varchar(1000) NOT NULL,
-  `onlineText` text NOT NULL,
-  `callCentreText` text NOT NULL,
-
-  PRIMARY KEY (`healthProviderRulesDeclarationsId`),
-  FOREIGN KEY (`healthProviderRulesId`) REFERENCES `ctm`.`health_provider_rules`(`healthProviderRulesId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-*/
 
 CREATE TABLE `ctm`.`health_provider_rules_inline_creditcards` (
   `healthProviderRulesInlineCreditCardsId` int(11) NOT NULL AUTO_INCREMENT,
