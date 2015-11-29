@@ -4,7 +4,7 @@ package com.ctm.web.energy.form.response.model;
 public class EnergyResultsPlanModel {
 
     private String available;
-    private int planId;
+    private String planId;
     private String planName;
     private String retailerName;
     private String retailerId;
@@ -68,11 +68,11 @@ public class EnergyResultsPlanModel {
     }
 
 
-    public int getPlanId() {
+    public String getPlanId() {
         return planId;
     }
 
-    public void setPlanId(int planId) {
+    public void setPlanId(String planId) {
         this.planId = planId;
     }
 
