@@ -14,7 +14,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 
 public class ServiceConfigurationDao {

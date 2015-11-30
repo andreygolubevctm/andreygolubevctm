@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.model.Touch.TouchType.SOLD;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;

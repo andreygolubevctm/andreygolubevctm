@@ -1,13 +1,14 @@
 package com.ctm.web.health.services;
 
+import com.ctm.commonlogging.context.LoggingVariables;
+import com.ctm.interfaces.common.types.TransactionId;
+import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.dao.StyleCodeDao;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.utils.FormDateUtils;
 import com.ctm.web.health.dao.HealthPriceDao;
 import com.ctm.web.health.model.*;
-import com.ctm.web.core.logging.LoggingVariables;
-import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.health.services.results.ProviderRestrictionsService;
-import com.ctm.web.core.utils.FormDateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,9 +19,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.health.model.Frequency.ANNUALLY;
 import static com.ctm.web.health.model.Frequency.HALF_YEARLY;
-import static com.ctm.web.core.logging.LoggingArguments.kv;
 
 public class HealthPriceService {
 
@@ -97,7 +98,7 @@ public class HealthPriceService {
 	}
 
 	public void setTransactionId(long transactionId) {
-		LoggingVariables.setTransactionId(String.valueOf(transactionId));
+		LoggingVariables.setTransactionId(TransactionId.instanceOf(transactionId));
 		this.transactionId = transactionId;
 	}
 
@@ -155,7 +156,7 @@ public class HealthPriceService {
 	}
 
 	public void setup() throws DaoException {
-		LoggingVariables.setVerticalCode(Vertical.VerticalType.HEALTH);
+		LoggingVariables.setVerticalType(VerticalType.HEALTH);
 
 		int excessMax;
 		int excessMin;

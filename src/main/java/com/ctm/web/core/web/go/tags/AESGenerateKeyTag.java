@@ -12,7 +12,7 @@ import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 /**
  * AESGenerateKeyTag generates an AES secret key based on the key size provided.

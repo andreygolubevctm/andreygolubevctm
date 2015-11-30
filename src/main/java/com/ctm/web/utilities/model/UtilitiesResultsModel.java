@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import com.ctm.web.core.model.AbstractJsonModel;
 import com.ctm.web.core.model.formatter.JsonUtils;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 
 public class UtilitiesResultsModel extends AbstractJsonModel {
@@ -60,7 +60,7 @@ public class UtilitiesResultsModel extends AbstractJsonModel {
 				}
 
 				// perform validation
-				if(provider.getAnnualNewCost() == 0 || provider.getPlanName().equals("")){
+				if(provider.getPlanName().equals("")){
 					LOGGER.error("Invalid utilities ThoughtWorld provider results {}", kv("provider", provider));
 					return false;
 				}

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class RequestUtils {
 
@@ -158,12 +158,6 @@ public class RequestUtils {
         return value;
     }
 
-    /**
-     * Sets all parameters to MDC
-     * Note: this only set variables on the current thread. This will need to be called on each thread
-     * call clearLoggingVariables() after thread is no longer being executed to prevent the logging from being in
-     * an invalid state when a thread is being reused.
-     */
     public static Vertical.VerticalType getVerticalFromRequest(ServletRequest request) {
         String verticalCode = request.getParameter(VERTICAL_PARAM);
         Vertical.VerticalType vertical = null;

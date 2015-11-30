@@ -499,12 +499,12 @@
 					<gat:PartnerPreviousFundMemberNo><xsl:value-of select="$memberID" /></gat:PartnerPreviousFundMemberNo>
 				</xsl:if>
 				<gat:PartnerPreviousNIBMember><xsl:choose><xsl:when test="$partnerFund = 'NIB'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:PartnerPreviousNIBMember>
-				<gat:YouContactPreviousFund>
+				<gat:PartnerContactPreviousFund>
 					<xsl:choose>
 						<xsl:when test="previousfund/partner/authority='Y'">true</xsl:when>
 						<xsl:otherwise>false</xsl:otherwise>
 					</xsl:choose>
-				</gat:YouContactPreviousFund>
+				</gat:PartnerContactPreviousFund>
 			</xsl:if>
 
 			<gat:EffectiveDate>
