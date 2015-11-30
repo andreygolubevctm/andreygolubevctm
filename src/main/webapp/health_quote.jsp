@@ -8,6 +8,19 @@
 
 <session:new verticalCode="HEALTH" authenticated="true" />
 
+<%-- START JOURNEY OVERRIDE - Part 1 of 2) --%>
+<c:set var="journeyOverride" value="${pageSettings.getSetting('journeyOverride') eq 'Y'}" />
+<c:choose>
+	<c:when test="${not callCentre && journeyOverride eq true}">
+		<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v2.jsp?" />
+		<c:forEach items="${param}" var="currentParam">
+			<c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
+		</c:forEach>
+		<c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
+	</c:when>
+	<c:otherwise>
+<%-- END JOURNEY OVERRIDE - Part 1 of 2) --%>
+
 <core_new:quote_check quoteType="health" />
 <core_new:load_preload />
 
@@ -178,3 +191,8 @@
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 	</jsp:body>
 </layout:journey_engine_page>
+
+<%-- START JOURNEY OVERRIDE - Part 2 of 2) --%>
+	</c:otherwise>
+</c:choose>
+<%-- END JOURNEY OVERRIDE - Part 2 of 2) --%>
