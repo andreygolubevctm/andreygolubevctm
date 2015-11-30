@@ -38,7 +38,12 @@
 		</form_new:row>
 
 		<form_new:row label="" className="email-optin-row clear closer">
-			<field_new:checkbox xpath="${xpath}/optIn" value="Y" title="Stay up to date with news and offers direct to your inbox" required="false" label="true"/>
+			<field_new:checkbox
+					xpath="${xpath}/optIn"
+					value="Y"
+					title="Yes, keep me updated about news, discounts and special offers from ${brandName}"
+					required="false"
+					label="true"/>
 		</form_new:row>
 
 		<%-- Mandatory agreement to privacy policy --%>
@@ -50,7 +55,7 @@
 			<c:otherwise>--%>
 				<form_new:row hideHelpIconCol="true">
 					<c:set var="label">
-						I have read the <form:link_privacy_statement /> and <a href="legal/CreditGuide.pdf" target="_blank">credit guide</a>.
+						* I have read the <form:link_privacy_statement /> and <a href="legal/CreditGuide.pdf" target="_blank">credit guide</a>.
 					</c:set>
 					<field_new:checkbox
 						xpath="homeloan/privacyoptin"
@@ -59,7 +64,7 @@
 						required="true"
 						label="${true}"
 						title="${label}"
-						errorMsg="Please confirm you have read the privacy statement and credit guide" />
+						errorMsg="Please confirm you have read the Privacy Policy and credit guide" />
 				</form_new:row>
 		<%--	</c:otherwise>
 		</c:choose>--%>
