@@ -18,7 +18,7 @@ CREATE OR REPLACE VIEW `simples`.`message_queue_15to35days` AS
 
 		-- Has the message expired? (created + source expiry)
 		AND (
-			(NOW() > DATE_ADD(created,INTERVAL 15 DAY) AND NOW() <  DATE_ADD(created,INTERVAL 35 DAY))
+			(NOW() > DATE_ADD(created,INTERVAL 14 DAY) AND NOW() <  DATE_ADD(created,INTERVAL 35 DAY))
 			OR statusId = 31 /*Completed as PM*/
 			OR statusId = 32 /*Changed Time for PM*/
 			OR statusId = 35 /*In Progress for PM*/
