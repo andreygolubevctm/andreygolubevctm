@@ -462,6 +462,7 @@
             <groupId>com.ctm.energy</groupId>
             <artifactId>energy-model-quote</artifactId>
             <version>${energy.quote.model.version}</version>
+            <classifier>BER-36</classifier>
         </dependency>
         <dependency>
             <groupId>org.apache.taglibs</groupId>
