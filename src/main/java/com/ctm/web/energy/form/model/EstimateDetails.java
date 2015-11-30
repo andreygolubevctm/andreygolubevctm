@@ -7,7 +7,6 @@ public class EstimateDetails {
     private Electricity electricity;
     private Spend spend;
     private Usage usage;
-    private YesNo solarPanels;
 
     public EstimateDetails(){
 
@@ -44,13 +43,5 @@ public class EstimateDetails {
 
     public void setUsage(Usage usage) {
         this.usage = usage;
-    }
-
-    public YesNo getSolarPanels() {
-        return solarPanels;
-    }
-
-    public void setSolarPanels(YesNo solarPanels) {
-        this.solarPanels = solarPanels;
     }
 }

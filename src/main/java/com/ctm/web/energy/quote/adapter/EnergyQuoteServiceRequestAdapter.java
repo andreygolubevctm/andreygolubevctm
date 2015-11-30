@@ -205,8 +205,8 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         return quote.map(HouseHoldDetails::getRecentElectricityBill).map(getYesNoBooleanFunction()).orElse(false);
     }
 
-    private static boolean getHasSolarPanels(Optional<EstimateDetails> estimateDetailsMaybe) {
-        return estimateDetailsMaybe.map(EstimateDetails::getSolarPanels).map(getYesNoBooleanFunction()).orElse(false);
+    private static boolean getHasSolarPanels(Optional<HouseHoldDetails> estimateDetailsMaybe) {
+        return estimateDetailsMaybe.map(HouseHoldDetails::getSolarPanels).map(getYesNoBooleanFunction()).orElse(false);
     }
 
 

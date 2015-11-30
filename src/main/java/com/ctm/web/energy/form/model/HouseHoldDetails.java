@@ -18,6 +18,8 @@ public class HouseHoldDetails {
     private YesNo recentGasBill;
     private YesNo recentElectricityBill;
 
+    private YesNo solarPanels;
+
     public  void setMovingInDate(String movingInDate) {
         this.movingInDate = movingInDate;
     }
@@ -91,5 +93,13 @@ public class HouseHoldDetails {
 
     public void setRecentGasBill(YesNo recentGasBill) {
         this.recentGasBill = recentGasBill;
+    }
+
+    public YesNo getSolarPanels() {
+        return solarPanels;
+    }
+
+    public void setSolarPanels(YesNo solarPanels) {
+        this.solarPanels = solarPanels;
     }
 }
