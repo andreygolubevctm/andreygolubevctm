@@ -69,6 +69,10 @@ public class EmailTokenDao {
                 set(emailId);
                 set(emailTokenType);
                 set(action);
+                set(transactionId);
+                set(emailId);
+                set(emailTokenType);
+                set(action);
             }
 
             @Override
@@ -86,10 +90,18 @@ public class EmailTokenDao {
                 return emailMaster;
             }
         }, "SELECT em.emailId as emailId, em.firstName as firstName, em.lastName as lastName, em.emailAddress as emailAddress, em.hashedEmail as hashedEmail, h.ProductType as vertical\n" +
-                "FROM aggregator.email_token et \n" +
-                "JOIN aggregator.email_token_type ett ON et.emailTokenType=ett.emailTokenType AND et.totalAttempts <= ett.maxAttempts AND et.effectiveEnd >= CURDATE() \n" +
-                "JOIN aggregator.email_master em ON et.emailId=em.emailId \n" +
-                "JOIN aggregator.transaction_header h ON h.transactionID=et.transactionId\n" +
+                "FROM aggregator.email_token et " +
+                "JOIN aggregator.email_token_type ett ON et.emailTokenType=ett.emailTokenType AND et.totalAttempts <= ett.maxAttempts AND et.effectiveEnd >= CURDATE() " +
+                "JOIN aggregator.email_master em ON et.emailId=em.emailId " +
+                "JOIN aggregator.transaction_header h ON h.transactionID=et.transactionId " +
+                "WHERE et.transactionId = ? AND et.emailId = ? AND et.emailTokenType = ? AND et.action = ? " +
+                "LIMIT 1 " +
+                "UNION " +
+                "SELECT em.emailId as emailId, em.firstName as firstName, em.lastName as lastName, em.emailAddress as emailAddress, em.hashedEmail as hashedEmail, (select verticalCode from ctm.vertical_master where verticalId = h.verticalId) as vertical " +
+                "FROM aggregator.email_token et " +
+                "JOIN aggregator.email_token_type ett ON et.emailTokenType=ett.emailTokenType AND et.totalAttempts <= ett.maxAttempts AND et.effectiveEnd >= CURDATE() " +
+                "JOIN aggregator.email_master em ON et.emailId=em.emailId " +
+                "JOIN aggregator.transaction_header2_cold h ON h.transactionID=et.transactionId " +
                 "WHERE et.transactionId = ? AND et.emailId = ? AND et.emailTokenType = ? AND et.action = ? " +
                 "LIMIT 1");
     }

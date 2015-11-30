@@ -22,7 +22,7 @@ import com.ctm.web.core.services.QuoteService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.web.go.Data;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 /**
  * To handle writing and retrieving of quotes.

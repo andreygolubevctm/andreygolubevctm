@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class OpeningHoursAdminDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpeningHoursAdminDao.class);

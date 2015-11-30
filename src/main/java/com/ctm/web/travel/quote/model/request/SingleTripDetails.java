@@ -1,7 +1,7 @@
 package com.ctm.web.travel.quote.model.request;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,8 +12,8 @@ import java.util.List;
 public class SingleTripDetails {
 
     private List<String> destinations = new ArrayList<>();
-    private Date fromDate;
-    private Date toDate;
+    private LocalDate fromDate;
+    private LocalDate toDate;
 
     public SingleTripDetails() {
     }
@@ -22,11 +22,11 @@ public class SingleTripDetails {
         this.destinations = destinations;
     }
 
-    public void setFromDate(Date fromDate) {
+    public void setFromDate(LocalDate fromDate) {
         this.fromDate = fromDate;
     }
 
-    public void setToDate(Date toDate) {
+    public void setToDate(LocalDate toDate) {
         this.toDate = toDate;
     }
 
@@ -34,11 +34,11 @@ public class SingleTripDetails {
         return destinations;
     }
 
-    public Date getFromDate() {
+    public LocalDate getFromDate() {
         return fromDate;
     }
 
-    public Date getToDate() {
+    public LocalDate getToDate() {
         return toDate;
     }
 }
