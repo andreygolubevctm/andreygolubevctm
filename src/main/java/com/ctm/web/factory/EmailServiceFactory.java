@@ -4,7 +4,6 @@ import com.ctm.web.core.content.dao.ContentDao;
 import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.web.core.dao.StampingDao;
 import com.ctm.web.core.dao.TouchDao;
-import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.mapping.EmailDetailsMappings;
 import com.ctm.web.core.email.mapping.LifeEmailDetailMappings;
@@ -12,6 +11,9 @@ import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.EmailDetailsService;
 import com.ctm.web.core.email.services.EmailServiceHandler;
 import com.ctm.web.core.email.services.EmailUrlService;
+import com.ctm.web.core.email.services.EmailUrlServiceOld;
+import com.ctm.web.core.email.services.token.EmailTokenService;
+import com.ctm.web.core.email.services.token.EmailTokenServiceFactory;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.EnvironmentException;
 import com.ctm.web.core.exceptions.VerticalException;
@@ -19,9 +21,10 @@ import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.health.email.services.HealthEmailService;
 import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
+import com.ctm.web.health.email.services.HealthEmailService;
 import com.ctm.web.life.email.services.LifeEmailService;
 import com.ctm.web.travel.email.services.TravelEmailService;
 import com.ctm.web.travel.services.email.TravelEmailDetailMappings;
@@ -63,10 +66,11 @@ public class EmailServiceFactory {
 		ContentDao contentDao = new ContentDao(pageSettings.getBrandId(), pageSettings.getVertical().getId());
 		EmailDetailsService emailDetailsService = createEmailDetailsService(pageSettings, data, vertical ,  new HealthEmailDetailMappings());
 		EmailUrlService urlService = createEmailUrlService(pageSettings, vertical);
+		EmailUrlServiceOld urlServiceOld = createEmailUrlServiceOld(pageSettings, vertical);
 		SessionDataService sessionDataService = new SessionDataService();
 		TouchDao dao = new TouchDao();
 		AccessTouchService accessTouchService = new AccessTouchService(dao , sessionDataService);
-		return new HealthEmailService(pageSettings, mode , emailDetailsService, contentDao, urlService , accessTouchService );
+		return new HealthEmailService(pageSettings, mode , emailDetailsService, contentDao, urlService , accessTouchService, urlServiceOld);
 	}
 
 	private static EmailServiceHandler getTravelEmailService(
@@ -75,8 +79,8 @@ public class EmailServiceFactory {
 				pageSettings, data, vertical, new TravelEmailDetailMappings());
 		EmailUrlService urlService = createEmailUrlService(pageSettings,
 				vertical);
-
-		return new TravelEmailService(pageSettings, mode , emailDetailsService, urlService, data);
+		EmailUrlServiceOld urlServiceOld = createEmailUrlServiceOld(pageSettings, vertical);
+		return new TravelEmailService(pageSettings, mode , emailDetailsService, urlService, data, urlServiceOld);
 	}
 	
 	private static EmailServiceHandler getLifeEmailService(PageSettings pageSettings, EmailMode mode, Data data, VerticalType vertical) throws SendEmailException {
@@ -99,7 +103,22 @@ public class EmailServiceFactory {
 			throws SendEmailException {
 		EmailUrlService urlService;
 		try {
-			urlService = new EmailUrlService(vertical, pageSettings.getBaseUrl());
+			EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(pageSettings);
+			urlService = new EmailUrlService(vertical, pageSettings.getBaseUrl(), emailTokenService);
+		} catch (EnvironmentException | VerticalException
+				| ConfigSettingException e) {
+			throw new SendEmailException("failed to create UnsubscribeService", e);
+		}
+		return urlService;
+	}
+
+	private static EmailUrlServiceOld createEmailUrlServiceOld(
+			PageSettings pageSettings, VerticalType vertical)
+			throws SendEmailException {
+		EmailUrlServiceOld urlService;
+		try {
+			EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(pageSettings);
+			urlService = new EmailUrlServiceOld(vertical, pageSettings.getBaseUrl());
 		} catch (EnvironmentException | VerticalException
 				| ConfigSettingException e) {
 			throw new SendEmailException("failed to create UnsubscribeService", e);

@@ -1,8 +1,7 @@
 package com.ctm.web.core.logging.listeners;
 
-import com.ctm.web.core.logging.LoggingVariables;
+import com.ctm.commonlogging.context.LoggingVariables;
 import org.junit.Test;
-import org.slf4j.MDC;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletRequest;
@@ -20,7 +19,6 @@ public class MDCFilterTest {
         ServletResponse resp = mock(ServletResponse.class);
         FilterChain chain = mock(FilterChain.class);
         mdcFilter.doFilter(req, resp, chain);
-        assertFalse(String.valueOf(MDC.get(LoggingVariables.CORRELATION_ID_KEY)).isEmpty());
-
+        assertFalse(LoggingVariables.getCorrelationId().toString().isEmpty());
     }
 }

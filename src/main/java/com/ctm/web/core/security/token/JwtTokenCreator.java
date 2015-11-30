@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.security.token.config.TokenCreatorConfig.SIGNATURE_ALGORITHM;
 import static com.ctm.web.core.security.token.config.TokenCreatorConfig.TRANSACTION_ID_CLAIM;
 import static com.ctm.web.core.security.token.config.TokenCreatorConfig.TOUCH_CLAIM;

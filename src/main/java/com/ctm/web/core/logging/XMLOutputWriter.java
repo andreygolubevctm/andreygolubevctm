@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER;
-import static com.ctm.web.core.logging.LoggingArguments.v;
+import static com.ctm.commonlogging.common.LoggingArguments.v;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class XMLOutputWriter {

@@ -39,16 +39,29 @@
 <c:set var="savedTransactionId"><x:out select="$healthXML/request/header/retrieve/transactionId" /></c:set>
 <c:set var="productTitleSearch"><x:out select="$healthXML/request/header/productTitleSearch" escapeXml="false" /></c:set>
 <c:set var="productTitle"><x:out select="$healthXML/request/header/productTitle" escapeXml="false" /></c:set>
+<c:set var="situationFilter"><x:out select="$healthXML/request/details/situation" /></c:set>
+<c:choose>
+	<c:when test="${isSimples eq false and situationFilter ne 'ATP'}">
+		<c:set var="situationFilter" value="Y" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="situationFilter" value="N" />
+	</c:otherwise>
+</c:choose>
 <%-- Unencode apostrophes --%>
-<c:set var="productTitle" value="${fn:replace(productTitle, '&#039;', '\\'')}" />
-<c:set var="productTitle" value="${fn:replace(productTitle, '&#39;', '\\'')}" />
+<c:set var="apos">'</c:set>
+<c:set var="productTitle" value="${fn:replace(productTitle, '&#039;', apos)}" />
+<c:set var="productTitle" value="${fn:replace(productTitle, '&#39;', apos)}" />
 
 <c:set var="selectedProductId"><x:out select="$healthXML/request/header/productId" /></c:set>
 <c:if test="${fn:startsWith(selectedProductId, 'PHIO-HEALTH-') and fn:length(selectedProductId) > 12}">
 	<c:set var="selectedProductId" value="${fn:substringAfter(selectedProductId, 'PHIO-HEALTH-')}" />
 </c:if>
 
-<health:changeover_rebates />
+<jsp:useBean id="changeOverRebatesService" class="com.ctm.web.simples.services.ChangeOverRebatesService" />
+<c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(null)}"/>
+<c:set var="rebate_multiplier_current" value="${changeOverRebates.getCurrentMultiplier()}"/>
+<c:set var="rebate_multiplier_future" value="${changeOverRebates.getFutureMultiplier()}"/>
 
 <c:if test="${not empty providerId}">${healthPriceRequest.setProviderId(providerId)}</c:if>
 <c:if test="${not empty tierHospital}">${healthPriceRequest.setTierHospital(tierHospital)}</c:if>
@@ -71,12 +84,13 @@ ${healthPriceRequest.setSavedTransactionId(savedTransactionId)}
 ${healthPriceRequest.setOnResultsPage(onResultsPage)}
 ${healthPriceRequest.setPreferences(preferences)}
 ${healthPriceRequest.setBrandFilter(brandFilter)}
+${healthPriceRequest.setSituationFilter(situationFilter)}
 
 ${healthPriceService.setHealthPriceRequest(healthPriceRequest)}
 
 ${healthPriceService.setMembership(cover)}
 ${healthPriceService.setSearchDate(searchDate)}
-${healthPriceService.setChangeoverDate(changeover_date_2)}
+${healthPriceService.setChangeoverDate(changeOverRebates.getEffectiveFutureStart())}
 ${healthPriceService.setRebateCurrent(rebate)}
 ${healthPriceService.setRebateChangeover(rebateChangeover)}
 ${healthPriceService.setTransactionId(transactionId)}

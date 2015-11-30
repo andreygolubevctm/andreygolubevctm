@@ -5,8 +5,10 @@
 
 package com.ctm.web.core.soap;
 
+import com.ctm.commonlogging.context.LoggingVariables;
+import com.ctm.commonlogging.correlationid.CorrelationIdUtils;
+import com.ctm.interfaces.common.types.CorrelationId;
 import com.ctm.web.core.constants.ErrorCode;
-import com.ctm.web.core.logging.CorrelationIdUtils;
 import com.ctm.web.core.logging.XMLOutputWriter;
 import com.ctm.web.core.model.soap.settings.SoapAggregatorConfiguration;
 import com.ctm.web.core.model.soap.settings.SoapClientThreadConfiguration;
@@ -36,8 +38,9 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.logging.XMLOutputWriter.*;
 
 
@@ -340,7 +343,8 @@ public class SOAPClientThread implements Runnable {
 
 	protected void setCorrelationIdHeader(URLConnection connection) {
 		if(aggregatorConfiguration.isSendCorrelationId()) {
-			CorrelationIdUtils.setCorrelationIdHeader(connection);
+			final Optional<CorrelationId> correlationId = LoggingVariables.getCorrelationId();
+			correlationId.ifPresent(cId -> CorrelationIdUtils.setCorrelationIdRequestHeader(connection, cId));
 		}
 	}
 

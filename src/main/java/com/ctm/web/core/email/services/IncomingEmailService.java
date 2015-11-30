@@ -1,6 +1,7 @@
 package com.ctm.web.core.email.services;
 
-import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.email.services.token.EmailTokenService;
+import com.ctm.web.core.email.services.token.EmailTokenServiceFactory;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.model.IncomingEmail;
 import com.ctm.web.core.exceptions.ConfigSettingException;
@@ -13,6 +14,7 @@ import com.ctm.web.core.results.dao.ResultsDao;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.services.TransactionAccessService;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class IncomingEmailService {
 
@@ -59,7 +61,8 @@ public class IncomingEmailService {
 				// Get latest results properties for specific product
 				ArrayList<ResultProperty> resultData = resultsDao.getResultPropertiesForTransaction(emailData.getTransactionId(), emailData.getProductId());
 
-				EmailUrlService emailUrlService = new EmailUrlService(pageSettings.getVertical().getType(), pageSettings.getBaseUrl());
+				EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(pageSettings);
+				EmailUrlService emailUrlService = new EmailUrlService(pageSettings.getVertical().getType(), pageSettings.getBaseUrl(), emailTokenService);
 
 				Boolean flagAsExpired = false;
 

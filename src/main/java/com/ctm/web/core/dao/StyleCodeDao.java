@@ -11,7 +11,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class StyleCodeDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StyleCodeDao.class);

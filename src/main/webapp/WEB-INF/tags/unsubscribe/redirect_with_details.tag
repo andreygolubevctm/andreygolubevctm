@@ -14,7 +14,7 @@
     </c:if>
 
     <c:set var="unsubscribe"
-           value="${unsubscribeService.getUnsubscribeDetails(param.vertical, brandId, fn:substring(param.unsubscribe_email, 0, 256), param.email, false, pageSettings, pageContext.getRequest())}"
+           value="${unsubscribeService.getUnsubscribeDetails(param.vertical, brandId, fn:substring(param.unsubscribe_email, 0, 256), param.email, false, pageSettings, param.token)}"
            scope="session"/>
 
     <%-- #WHITELABEL TODO: support meerkat brand--%>

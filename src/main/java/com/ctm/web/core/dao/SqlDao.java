@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class SqlDao<T> {
 	
@@ -107,6 +107,20 @@ public class SqlDao<T> {
 			cleanup();
 		}
 	}
+
+    public void insert(DatabaseQueryMapping<T> databaseMapping, String sql) throws DaoException {
+        try {
+            conn = databaseConnection.getConnection(context, true);
+            stmt = conn.prepareStatement(sql);
+            databaseMapping.handleParams(stmt);
+            stmt.execute();
+        } catch (SQLException | NamingException e) {
+            LOGGER.error("DB insert failed {}", kv("statement", sql), e);
+            throw new DaoException(e);
+        } finally {
+            cleanup();
+        }
+    }
 
     /**
      * Method to handle some of the JDBC logic

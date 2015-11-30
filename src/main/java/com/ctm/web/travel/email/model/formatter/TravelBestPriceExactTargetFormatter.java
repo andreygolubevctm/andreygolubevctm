@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class TravelBestPriceExactTargetFormatter extends ExactTargetFormatter<TravelBestPriceEmailModel> {
 
@@ -39,8 +39,8 @@ public class TravelBestPriceExactTargetFormatter extends ExactTargetFormatter<Tr
 
 		emailModel.setAttribute("AdultsTravelling", model.getAdults());
 		emailModel.setAttribute("ChildrenTravelling", model.getChildren());
-		emailModel.setAttribute("Adult1DOBTraveller", model.getAdult1DOB());
-		emailModel.setAttribute("Adult2DOBTraveller", model.getAdult2DOB());
+		emailModel.setAttribute("TravellerAge1", model.getAdult1Age());
+		emailModel.setAttribute("TravellerAge2", model.getAdult2Age());
 		emailModel.setAttribute("OptIn",parseOptIn(model.getOptIn()));
 		emailModel.setAttribute("CoverLevelType", model.getCoverLevelTabsType());
 		emailModel.setAttribute("CoverLevelDesc", model.getCoverLevelTabsDescription());

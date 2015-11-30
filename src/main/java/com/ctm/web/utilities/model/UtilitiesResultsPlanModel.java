@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 
 public class UtilitiesResultsPlanModel extends AbstractJsonModel {
@@ -29,6 +29,9 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 	private String guaranteedDiscounts = "0";
 	private String otherDiscounts = "0";
 	private String discountDetails = "0";
+
+	private double newElectricityBill = 0;
+	private double newGasBill = 0;
 
 	private double quarterlyEnergySavings = 0;
 	private double quarterlyGasSavings = 0;
@@ -139,11 +142,17 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 		this.discountDetails = discountDetails;
 	}
 
-	public double getQuarterlyEnergySavings() {
+	public double getNewElectricityBill() { return newElectricityBill; }
+	public void setNewElectricityBill(double newElectricityBill) { this.newElectricityBill = newElectricityBill; }
+
+	public double getNewGasBill() { return newGasBill; }
+	public void setNewGasBill(double newGasBill) { this.newGasBill = newGasBill; }
+
+	public double getQuarterlyEnergysSavings() {
 		return quarterlyEnergySavings;
 	}
 
-	public void setQuarterlyEnergySavings(double quarterlyEnergySavings) {
+	public void setQuarterlyEnergySavings(double quarterlyEnergysSavings) {
 		this.quarterlyEnergySavings = quarterlyEnergySavings;
 	}
 
@@ -187,6 +196,14 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 		this.yearlyGasSavings = yearlyGasSavings;
 	}
 
+	public double getAnnualNewCost() {
+		return annualNewCost;
+	}
+
+	public void setAnnualNewCost(double annualNewCost) {
+		this.annualNewCost = annualNewCost;
+	}
+
 	public double getAnnualPreviousCost() {
 		return annualPreviousCost;
 	}
@@ -195,13 +212,6 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 		this.annualPreviousCost = annualPreviousCost;
 	}
 
-	public double getAnnualNewCost() {
-		return annualNewCost;
-	}
-
-	public void setAnnualNewCost(double annualNewCost) {
-		this.annualNewCost = annualNewCost;
-	}
 
 
 	@Override
@@ -216,7 +226,13 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 		json.put("retailerName", getRetailerName());
 		json.put("retailerId", getRetailerId());
 
-		json.put("price", getAnnualNewCost());
+		BigDecimal bd = new BigDecimal(getNewElectricityBill() + getNewGasBill());
+		bd = bd.setScale(2, RoundingMode.HALF_UP);
+
+		double estimatedCost = bd.doubleValue();
+		json.put("estimatedCost", estimatedCost);
+
+		json.put("price", estimatedCost);
 		json.put("previousPrice", getAnnualPreviousCost());
 		json.put("contractPeriod", getContractPeriod());
 		json.put("cancellationFees", getCancellationFees());
@@ -227,7 +243,7 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 		json.put("otherDiscounts", getOtherDiscounts());
 		json.put("discountDetails", getDiscountDetails());
 
-		BigDecimal bd = new BigDecimal(getYearlyElectricitySavings() + getYearlyGasSavings());
+		bd = new BigDecimal(getYearlyElectricitySavings() + getYearlyGasSavings());
 		bd = bd.setScale(2, RoundingMode.HALF_UP);
 
 		double yearlySavingsTotal = bd.doubleValue();
@@ -263,8 +279,8 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 			if(json.isNull("yearly_elec_savings") == false) setYearlyElectricitySavings(json.getDouble("yearly_elec_savings"));
 			if(json.isNull("yearly_gas_savings") == false) setYearlyGasSavings(json.getDouble("yearly_gas_savings"));
 
-			if(json.isNull("annual_new_cost") == false) setAnnualNewCost(json.getDouble("annual_new_cost"));
-			if(json.isNull("annual_prev_cost") == false) setAnnualPreviousCost(json.getDouble("annual_prev_cost"));
+			if(json.isNull("new_elec_bill") == false) { setNewElectricityBill(json.getDouble("new_elec_bill")); }
+			if(json.isNull("new_gas_bill") == false)  { setNewGasBill(json.getDouble("new_elec_bill")); }
 
 		} catch (JSONException e) {
 			LOGGER.debug("Failed to populate utilities results plan model {}", kv("json", json), e);
@@ -290,6 +306,8 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 				", guaranteedDiscounts='" + guaranteedDiscounts + '\'' +
 				", otherDiscounts='" + otherDiscounts + '\'' +
 				", discountDetails='" + discountDetails + '\'' +
+				", newElectricityBill=" + newElectricityBill +
+				", newGasBill=" + newGasBill +
 				", quarterlyEnergySavings=" + quarterlyEnergySavings +
 				", quarterlyGasSavings=" + quarterlyGasSavings +
 				", percentageElectricitySavings=" + percentageElectricitySavings +
