@@ -4,6 +4,7 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="overrideLabel" required="false" rtexprvalue="true" description="Override the default label for the link"%>
+<%@ attribute name="useModalMessage" required="false" rtexprvalue="true" description="If want to see the pop-up that contains a link to the Privacy policy set to true" %>
 
 <c:set var="anchorLabel">
 	<c:choose>
@@ -21,5 +22,11 @@
 <c:if test="${fn:contains(bodyContent,'#AFG_PRIVACY_POLICY_URL#')}">
 	<c:set var="bodyContent" value="${fn:replace(bodyContent, '#AFG_PRIVACY_POLICY_URL#', pageSettings.getSetting('argPrivacyPolicyUrl'))}" />
 </c:if>
-
-<a data-toggle="dialog" data-content="${openingContent}${bodyContent}" data-cache="true" data-dialog-hash-id="privacystatement">${anchorLabel}</a>
+<c:choose>
+	<c:when test="${useModalMessage == true}">
+		<a data-toggle="dialog" data-content="${openingContent}${bodyContent}" data-cache="true" data-dialog-hash-id="privacystatement">${anchorLabel}</a>
+	</c:when>
+	<c:otherwise>
+		<a href='/ctm/legal/privacy_policy.pdf' target='_blank'>${anchorLabel}</a>
+	</c:otherwise>
+</c:choose>
