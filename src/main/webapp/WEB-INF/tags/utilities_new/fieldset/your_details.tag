@@ -1,8 +1,18 @@
+<%@ tag import="java.util.GregorianCalendar" %>
 <%@ tag description="Utilities Your Details Form (Enquire)"%>
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="Fieldset XPath" %>
+
+<fmt:setLocale value="en_AU" scope="session" />
+
+<jsp:useBean id="nowPlusDay" class="java.util.GregorianCalendar" />
+<% nowPlusDay.add(GregorianCalendar.DAY_OF_YEAR, 1); %>
+<fmt:formatDate var="nowPlusDay_Date" pattern="yyyy-MM-dd" value="${nowPlusDay.time}" />
+
+<% nowPlusDay.add(GregorianCalendar.YEAR, 5); %>
+<fmt:formatDate var="nowPlusYears_Date" pattern="yyyy-MM-dd" value="${nowPlusDay.time}" />
 
 <form_new:fieldset legend="Your Details">
     <c:set var="fieldXPath" value="${xpath}/title" />
@@ -77,6 +87,8 @@
     <form_new:row label="Move in date" fieldXpath="${fieldXPath}" id="enquiry_move_in_date_container" className="clear">
         <field_new:basic_date xpath="${fieldXPath}"
                               required="true"
+                              maxDate="${nowPlusYears_Date}"
+                              minDate="${nowPlusDay_Date}"
                               title="moving in date" />
     </form_new:row>
 </form_new:fieldset>
