@@ -22,7 +22,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 	public  enum ElectricityMeterType  {
 		Single ("Single","S"),
-		TwoRate ("Two-rate","T"),
+		TwoRate ("Two-Rate","T"),
 		TimeOfUse ("Time of Use","M");
 
 		private final String label, code;
