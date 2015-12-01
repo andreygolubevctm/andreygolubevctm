@@ -86,6 +86,11 @@
      * Event Listeners for Health Dependants
      */
     function applyEventListeners() {
+        meerkat.messaging.subscribe(meerkat.modules.journeyEngine.events.journeyEngine.STEP_CHANGED, function stepChangedEvent(navInfo) {
+            if(navInfo.isForward && navInfo.navigationId === 'apply') {
+                toggleDependantFields($('.health_dependant_details'));
+            }
+        });
 
         $dependantsTemplateWrapper.on('click', ".remove-dependent", function removeDependantClick() {
             deleteDependant($(this).attr('data-id'), true);
