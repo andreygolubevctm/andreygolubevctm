@@ -44,10 +44,10 @@ public class ChangeOverRebatesDao {
 				changeOverRebate.setFutureMultiplier(
 						results.getObject("futureMultiplier") != null ?
 								results.getBigDecimal("futureMultiplier") : results.getBigDecimal("currentMultiplier"));
-				changeOverRebate.setEffectiveStart(results.getDate(3));
+				changeOverRebate.setEffectiveStart(results.getDate("effectiveStart"));
 				changeOverRebate.setEffectiveFutureStart(
 						results.getObject("effectiveFutureStart") != null ?
-								results.getDate("effectiveFutureStart") : results.getDate(3));
+								results.getDate("effectiveFutureStart") : results.getDate("effectiveStart"));
 			}
 		}
 		catch (SQLException e) {
