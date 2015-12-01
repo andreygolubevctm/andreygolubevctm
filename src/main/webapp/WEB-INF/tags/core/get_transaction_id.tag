@@ -239,38 +239,40 @@
 		<c:set var="sessionId" 		value="${pageContext.session.id}" />
 		<c:set var="status" 		value="" />
 		<c:catch var="error">
-			<sql:update dataSource="${datasource:getDataSource()}">
-				INSERT INTO aggregator.transaction_header
-				(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCodeId,styleCode,advertKey,sessionId,status,prevRootId)
-				values (
-				0,'0','0',?,?,?,CURRENT_DATE,CURRENT_TIME,?,?,0,?,?,?
-				);
-				<sql:param value="${fn:toUpperCase(quoteType)}" />
-				<c:choose>
-					<c:when test="${not empty emailAddress}">
-						<sql:param value="${emailAddress}" />
-					</c:when>
-					<c:otherwise>
-						<sql:param value=" " />
-					</c:otherwise>
-				</c:choose>
-				<sql:param value="${ipAddress}" />
-				<sql:param value="${styleCodeId}" />
-				<sql:param value="${styleCode}" />
-				<sql:param value="${sessionId}" />
-				<sql:param value="${status}" />
-				<sql:param value="${previousRootId}" />
-			</sql:update>
+			<sql:transaction dataSource="${datasource:getDataSource()}">
+				<sql:update>
+					INSERT INTO aggregator.transaction_header
+					(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCodeId,styleCode,advertKey,sessionId,status,prevRootId)
+					values (
+					0,'0','0',?,?,?,CURRENT_DATE,CURRENT_TIME,?,?,0,?,?,?
+					);
+					<sql:param value="${fn:toUpperCase(quoteType)}" />
+					<c:choose>
+						<c:when test="${not empty emailAddress}">
+							<sql:param value="${emailAddress}" />
+						</c:when>
+						<c:otherwise>
+							<sql:param value=" " />
+						</c:otherwise>
+					</c:choose>
+					<sql:param value="${ipAddress}" />
+					<sql:param value="${styleCodeId}" />
+					<sql:param value="${styleCode}" />
+					<sql:param value="${sessionId}" />
+					<sql:param value="${status}" />
+					<sql:param value="${previousRootId}" />
+				</sql:update>
 
-			<%-- Retrieve the last result to update rootId with the transaction id --%>
-			<sql:query var="results" dataSource="${datasource:getDataSource()}">
-				SELECT transactionID
-				FROM aggregator.transaction_header
-				WHERE sessionid = ?
-				ORDER BY transactionID DESC
-				LIMIT 1
-				<sql:param value="${sessionId}" />
-			</sql:query>
+				<%-- Retrieve the last result to update rootId with the transaction id --%>
+				<sql:query var="results">
+					SELECT transactionID
+					FROM aggregator.transaction_header
+					WHERE sessionid = ?
+					ORDER BY transactionID DESC
+					LIMIT 1
+					<sql:param value="${sessionId}" />
+				</sql:query>
+			</sql:transaction>
 			<c:choose>
 				<c:when test="${results.rowCount == 0 || empty results.rows[0].transactionID}">
 					<c:set var="method" value="ERROR: NEW" />
