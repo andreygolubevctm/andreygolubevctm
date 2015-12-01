@@ -123,8 +123,8 @@ VALUES
 
 SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 54);
 
-INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `selectionLabel`, `selectionValue`, `optionsLength`, `dateCalculationsStartFrom`, `dateCalculationStartOffset`, `dateCalculationsAcceptableDays`, `dateCalculationsIncludeWeekends`)
-VALUES (@PARENT_ROW, 'DATE', 'DATE', 1, 'COVER_START', 7, '1,15', 1);
+INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `deductionText`)
+VALUES (@PARENT_ROW, 'TBC');
 
 
 INSERT INTO `ctm`.`health_provider_rules_payment_frequencies` (`healthProviderRulesId`, `type`,  `weekly`, `fortnightly`, `monthly`, `quarterly`, `halfYearly`, `annually`)
@@ -310,8 +310,8 @@ VALUES
 
 SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 8);
 
-INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `selectionLabel`, `selectionValue`, `optionsLength`, `dateCalculationsStartFrom`, `dateCalculationStartOffset`, `dateCalculationsAcceptableDays`, `dateCalculationsIncludeWeekends`)
-VALUES (@PARENT_ROW, 'DATE', 'DATE', 1, 'COVER_START', 7, '1,15', 1);
+INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `deductionText`)
+VALUES (@PARENT_ROW, 'TBC');
 
 INSERT INTO `ctm`.`health_provider_rules_payment_frequencies` (`healthProviderRulesId`, `type`,  `weekly`, `fortnightly`, `monthly`, `quarterly`, `halfYearly`, `annually`)
 VALUES (@PARENT_ROW, 'CC', 0, 1, 1, 0, 0, 1);
@@ -356,8 +356,8 @@ VALUES
 
 SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 5);
 
-INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `selectionLabel`, `selectionValue`, `optionsLength`, `dateCalculationsStartFrom`, `dateCalculationStartOffset`, `dateCalculationsAcceptableDays`, `dateCalculationsIncludeWeekends`)
-VALUES (@PARENT_ROW, 'DATE', 'DATE', 1, 'COVER_START', 14, '1,15', 0);
+INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `deductionText`)
+VALUES (@PARENT_ROW, 'TBC');
 
 INSERT INTO `ctm`.`health_provider_rules_dependant_schools` (`healthProviderRulesId`, `schoolAgeMinimum`, `mustBeFullTimeStudent`, `schoolNameInputMethod`, `schoolNameLabel`, `studentIdRule`, `studentIdMaximumLength`, `commencedDateRule`, `apprenticeRule`)
 VALUES (@PARENT_ROW,
