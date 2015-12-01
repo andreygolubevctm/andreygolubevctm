@@ -16,7 +16,7 @@
 <%-- EDIT THIS SHIT ONLY! --%>
 <%-- -------------------- --%>
 <%-- TODO: This would be CARLMI/HOMELMI in new version --%>
-<c:set var="vertical" value="Homelmi" /> <%-- 'Carlmi', 'Homelmi' --%>
+<c:set var="vertical" value="Carlmi" /> <%-- 'Carlmi', 'Homelmi' --%>
 <c:set var="date" value="2015-11-16" /> <%-- Date in the file name --%>
 <c:set var="debug" value="false"/> <%-- This will stop all Mysql transactions when true --%>
 <c:set var="restart" value="false"/> <%-- Doesn't do much anymore. Used to TRUNCATE TABLE, but was removed... --%>
