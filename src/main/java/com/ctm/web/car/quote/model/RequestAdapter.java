@@ -3,23 +3,21 @@ package com.ctm.web.car.quote.model;
 import com.ctm.web.car.model.form.*;
 import com.ctm.web.car.quote.model.request.*;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDate;
+
 public class RequestAdapter {
 
-    private static final DateTimeFormatter AUS_FORMAT = DateTimeFormat.forPattern("dd/MM/yyyy");
-
-    public final static CarQuoteRequest adapt(CarRequest carRequest) {
+    public static CarQuoteRequest adapt(CarRequest carRequest) {
 
         CarQuoteRequest quoteRequest = new CarQuoteRequest();
         final CarQuote carQuote = carRequest.getQuote();
         final Options options = carQuote.getOptions();
-        quoteRequest.setCommencementDate(AUS_FORMAT.parseLocalDate(options.getCommencementDate()));
+        quoteRequest.setCommencementDate(parseAUSLocalDate(options.getCommencementDate()));
 
         if (StringUtils.isNotBlank(carQuote.getExcess())) {
             quoteRequest.setExcess(Integer.parseInt(carQuote.getExcess()));
@@ -33,14 +31,14 @@ public class RequestAdapter {
         quoteRequest.setRiskAddress(createRiskAddress(carQuote));
         quoteRequest.setVehicle(createVehicle(carQuote));
 
-        if(carQuote.getFilter().getProviders() != null && carQuote.getFilter().getProviders().isEmpty() == false){
+        if(carQuote.getFilter().getProviders() != null && !carQuote.getFilter().getProviders().isEmpty()){
             quoteRequest.setProviderFilter(carQuote.getFilter().getProviders());
         }
 
         return quoteRequest;
     }
 
-    private static final com.ctm.web.car.quote.model.request.Vehicle createVehicle(CarQuote carQuote) {
+    protected static com.ctm.web.car.quote.model.request.Vehicle createVehicle(CarQuote carQuote) {
 
         com.ctm.web.car.model.form.Vehicle quoteVehicle = carQuote.getVehicle();
 
@@ -145,7 +143,7 @@ public class RequestAdapter {
     private static YoungestDriver createYoungestDriver(Young young) {
         if (young == null || !convertToBoolean(young.getExists())) return null;
         YoungestDriver youngestDriver = new YoungestDriver();
-        youngestDriver.setDateOfBirth(AUS_FORMAT.parseLocalDate(young.getDob()));
+        youngestDriver.setDateOfBirth(parseAUSLocalDate(young.getDob()));
         youngestDriver.setLicenceAge(Integer.parseInt(young.getLicenceAge()));
         youngestDriver.setGender(GenderType.fromValue(young.getGender()));
         return youngestDriver;
@@ -155,7 +153,7 @@ public class RequestAdapter {
         RegularDriver regularDriver = new RegularDriver();
         regularDriver.setFirstName(regular.getFirstname());
         regularDriver.setSurname(regular.getSurname());
-        regularDriver.setDateOfBirth(AUS_FORMAT.parseLocalDate(regular.getDob()));
+        regularDriver.setDateOfBirth(parseAUSLocalDate(regular.getDob()));
         regularDriver.setHasClaims(regular.getClaims());
         regularDriver.setGender(GenderType.fromValue(regular.getGender()));
         regularDriver.setEmploymentStatus(regular.getEmploymentStatus());

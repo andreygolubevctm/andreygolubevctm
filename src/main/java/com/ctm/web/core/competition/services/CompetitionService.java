@@ -4,11 +4,13 @@ import com.ctm.web.core.competition.dao.CompetitionDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.services.ApplicationService;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -36,4 +38,15 @@ public class CompetitionService {
 
 		return compActive;
 	}
+
+	public static boolean addCompetitionEntry(Integer competitionId, Integer emailId, List<Pair<String, String>> items) {
+		try {
+			CompetitionDao.addCompetitionEntry(competitionId, emailId, items);
+			return true;
+		} catch (DaoException e) {
+			return false;
+		}
+	}
+
+
 }

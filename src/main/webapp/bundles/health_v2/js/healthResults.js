@@ -89,9 +89,14 @@
 
         try {
 
+            var healthQuoteResultsUrl = "ajax/json/health_quote_results.jsp";
+            if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
+                healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp";
+            }
+
             // Init the main Results object
             Results.init({
-                url: "ajax/json/health_quote_results.jsp",
+                url: healthQuoteResultsUrl,
                 runShowResultsPage: false, // Don't let Results.view do it's normal thing.
                 paths: {
                     results: {
@@ -526,6 +531,7 @@
         meerkat.modules.health.loadRates(function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health').done(function () {
+                Results.updateAggregatorEnvironment();
                 Results.get();
             });
         });
@@ -538,6 +544,7 @@
         meerkat.modules.health.loadRatesBeforeResultsPage(function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health').done(function () {
+                Results.updateAggregatorEnvironment();
                 Results.get();
             });
         });
@@ -689,8 +696,13 @@
                     value: meerkat.modules.healthPaymentStep.getSelectedFrequency()
                 });
 
+                var healthQuoteResultsUrl = "ajax/json/health_quote_results.jsp";
+                if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
+                    healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp";
+                }
+
                 meerkat.modules.comms.post({
-                    url: "ajax/json/health_quote_results.jsp",
+                    url: healthQuoteResultsUrl,
                     data: postData,
                     cache: false,
                     errorLevel: "warning",

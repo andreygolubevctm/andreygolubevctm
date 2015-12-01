@@ -1,5 +1,8 @@
 package com.ctm.web.travel.quote.model.request;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +15,11 @@ import java.util.List;
 public class SingleTripDetails {
 
     private List<String> destinations = new ArrayList<>();
+
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate fromDate;
+
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate toDate;
 
     public SingleTripDetails() {
