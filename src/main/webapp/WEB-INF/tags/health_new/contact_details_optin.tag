@@ -112,26 +112,26 @@
 				</form_new:row>
 
 				<%-- COMPETITION START --%>
+				<c:if test="${competitionEnabled == true}">
+					<c:set var="competitionPreCheckboxContainer"><content:get key="competitionPreCheckboxContainer"/></c:set>
 
-				<c:set var="competitionPreCheckboxContainer"><content:get key="competitionPreCheckboxContainer"/></c:set>
-
-				<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
-				<c:if test="${!fn:contains(competitionPreCheckboxContainer, 'health1000promoImage')}">
-					<c:set var="offset_class" value=" no-offset"/>
-				</c:if>
-				<c:if test="${not empty competitionPreCheckboxContainer}">
-					<form_new:row className="competition-optin-group ${offset_class}" hideHelpIconCol="true">
-						<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
+					<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
+					<c:if test="${!fn:contains(competitionPreCheckboxContainer, 'health1000promoImage')}">
+						<c:set var="offset_class" value=" no-offset"/>
+					</c:if>
+					<c:if test="${not empty competitionPreCheckboxContainer}">
+						<form_new:row className="competition-optin-group ${offset_class}" hideHelpIconCol="true">
+							<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
+						</form_new:row>
+					</c:if>
+					<form_new:row className="competition-optin-group" hideHelpIconCol="true">
+						<c:set var="competitionLabel">
+							<content:get key="competitionCheckboxText"/>
+						</c:set>
+						<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
+						<field:hidden xpath="${xpath}/competition/previous" />
 					</form_new:row>
 				</c:if>
-				<form_new:row className="competition-optin-group" hideHelpIconCol="true">
-					<c:set var="competitionLabel">
-						<content:get key="competitionCheckboxText"/>
-					</c:set>
-					<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
-					<field:hidden xpath="${xpath}/competition/previous" />
-				</form_new:row>
-
 				<%-- COMPETITION END --%>
 
 				<simples:referral_tracking vertical="health" />
