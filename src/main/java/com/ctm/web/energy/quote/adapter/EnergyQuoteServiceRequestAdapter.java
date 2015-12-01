@@ -191,7 +191,7 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         if (hasHouseholdDetails && hasElectricity(whatToCompare)  ) {
             String currentSupplier = estimateDetails.map(EstimateDetails :: getUsage).map(Usage::getElectricity).map(getCurrentSupplier()).orElse(null);
             return new Electricity(getElectricityUsageDetails(estimateDetails, householdDetailsMaybe), getHouseholdType(estimateDetails),
-            getElectrityHasBill(householdDetailsMaybe), getHasSolarPanels(estimateDetails), currentSupplier);
+            getElectrityHasBill(householdDetailsMaybe), getHasSolarPanels(householdDetailsMaybe), currentSupplier);
         } else {
             return null;
         }
