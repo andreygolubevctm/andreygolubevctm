@@ -12,7 +12,7 @@ public class Price {
 
     private String rebateValue;
 
-    private Integer rebate;
+    private BigDecimal rebate;
 
     private String lhc;
 
@@ -70,11 +70,11 @@ public class Price {
         this.rebateValue = rebateValue;
     }
 
-    public Integer getRebate() {
+    public BigDecimal getRebate() {
         return rebate;
     }
 
-    public void setRebate(Integer rebate) {
+    public void setRebate(BigDecimal rebate) {
         this.rebate = rebate;
     }
 

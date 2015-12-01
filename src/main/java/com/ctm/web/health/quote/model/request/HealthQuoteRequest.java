@@ -2,6 +2,7 @@ package com.ctm.web.health.quote.model.request;
 
 import com.ctm.web.health.model.HospitalSelection;
 import com.ctm.web.health.model.Membership;
+import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.ProductStatus;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -35,6 +36,8 @@ public class HealthQuoteRequest
     private boolean includeAlternativePricing;
 
     private BigDecimal rebate;
+
+    private PaymentType paymentType;
 
     public String getState() {
         return state;
@@ -122,5 +125,13 @@ public class HealthQuoteRequest
 
     public void setRebate(BigDecimal rebate) {
         this.rebate = rebate;
+    }
+
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
     }
 }

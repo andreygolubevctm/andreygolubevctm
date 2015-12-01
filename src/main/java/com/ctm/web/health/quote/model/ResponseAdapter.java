@@ -4,15 +4,12 @@ import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.providers.model.QuoteResponse;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.health.model.Frequency;
-import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.HealthRequest;
-import com.ctm.web.health.model.form.Payment;
-import com.ctm.web.health.model.form.PaymentDetails;
 import com.ctm.web.health.model.results.*;
-import com.ctm.web.health.model.results.Info;
-import com.ctm.web.health.model.results.Premium;
-import com.ctm.web.health.model.results.Price;
-import com.ctm.web.health.quote.model.response.*;
+import com.ctm.web.health.quote.model.response.HealthQuote;
+import com.ctm.web.health.quote.model.response.HealthResponse;
+import com.ctm.web.health.quote.model.response.Promotion;
+import com.ctm.web.health.quote.model.response.SpecialOffer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.commons.lang3.StringUtils;
@@ -24,9 +21,9 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.ctm.web.health.model.Frequency.*;
+import static com.ctm.web.health.quote.model.response.Price.DEFAULT_PRICE;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
@@ -102,17 +99,12 @@ public class ResponseAdapter {
     private static com.ctm.web.health.quote.model.response.Premium createDefaultPremium() {
         com.ctm.web.health.quote.model.response.Premium premium =
                 new com.ctm.web.health.quote.model.response.Premium();
-        com.ctm.web.health.quote.model.response.Price defaultPrice = new com.ctm.web.health.quote.model.response.Price();
-        defaultPrice.setLhc(BigDecimal.ZERO);
-        defaultPrice.setLoadingAmount(BigDecimal.ZERO);
-        defaultPrice.setGrossPremium(BigDecimal.ZERO);
-        defaultPrice.setDiscountedPrice(null);
-        premium.setAnnually(defaultPrice);
-        premium.setFortnightly(defaultPrice);
-        premium.setMonthly(defaultPrice);
-        premium.setWeekly(defaultPrice);
-        premium.setHalfYearly(defaultPrice);
-        premium.setQuarterly(defaultPrice);
+        premium.setAnnually(DEFAULT_PRICE);
+        premium.setFortnightly(DEFAULT_PRICE);
+        premium.setMonthly(DEFAULT_PRICE);
+        premium.setWeekly(DEFAULT_PRICE);
+        premium.setHalfYearly(DEFAULT_PRICE);
+        premium.setQuarterly(DEFAULT_PRICE);
         return premium;
     }
 
@@ -150,125 +142,32 @@ public class ResponseAdapter {
                                      com.ctm.web.health.quote.model.response.Info info,
                                      com.ctm.web.health.model.form.HealthQuote healthQuote, Frequency frequency) {
 
-
-
         Price price = new Price();
 
+        final boolean hasDiscount = quotePrice.getDiscountPercentage().compareTo(BigDecimal.ZERO) > 0;
+        price.setDiscounted(hasDiscount ? "Y" : "N");
+        price.setDiscountAmount(formatCurrency(quotePrice.getDiscountAmount(), true, true));
+        price.setDiscountPercentage(quotePrice.getDiscountPercentage());
+        price.setText((hasDiscount ? "*" : "") + formatCurrency(quotePrice.getPayableAmount(), true, true));
+        price.setValue(quotePrice.getPayableAmount());
+        price.setPricing("Includes rebate of " + formatCurrency(quotePrice.getRebateAmount(), true, true) + " & LHC loading of " +
+                formatCurrency(quotePrice.getLhcAmount(), true, true));
+        price.setLhcfreetext((hasDiscount ? "*" : "") + formatCurrency(quotePrice.getLhcFreeAmount(), true, true));
+        price.setLhcfreevalue(quotePrice.getLhcFreeAmount());
+        price.setLhcfreepricing("+ " + formatCurrency(quotePrice.getLhcAmount(), true, true) + " LHC inc " +
+                formatCurrency(quotePrice.getRebateAmount(), true, true) + " Government Rebate");
+        price.setRebateValue(formatCurrency(quotePrice.getRebateAmount(), true, true));
+        price.setBase(formatCurrency(quotePrice.getBasePremium(), true, true));
+        price.setBaseAndLHC(formatCurrency(quotePrice.getBaseAndLHC(), true, true));
 
-        final Optional<PaymentType> type = Optional.ofNullable(healthQuote)
-                                .map(com.ctm.web.health.model.form.HealthQuote::getPayment)
-                                .map(Payment::getDetails)
-                                .map(PaymentDetails::getType)
-                                .map(PaymentType::findByCode);
-        boolean hasDiscountRates = hasDiscountRates(frequency, info.getFundCode(), type,
-                StringUtils.equalsIgnoreCase(healthQuote.getOnResultsPage(), "Y"));
-
-        price.setDiscounted(hasDiscountRates ? "Y" : "N");
-        final BigDecimal loadingAmount = quotePrice.getLoadingAmount();
-        if (hasDiscountRates && quotePrice.getDiscountedPrice() != null) {
-            final DiscountedPrice discountedPrice = quotePrice.getDiscountedPrice();
-            price.setDiscountAmount(formatCurrency(discountedPrice.getDiscountAmount(), true, true));
-            price.setDiscountPercentage(discountedPrice.getDiscountPercentage());
-            final BigDecimal lhcFreeAmount = discountedPrice.getLhcFreeAmount();
-            BigDecimal premiumWithRebateAndLHCDecimal = loadingAmount
-                    .add(lhcFreeAmount).setScale(2, BigDecimal.ROUND_HALF_UP);
-            price.setText("*" + formatCurrency(premiumWithRebateAndLHCDecimal, true, true));
-            price.setValue(premiumWithRebateAndLHCDecimal);
-
-            final BigDecimal rebateAmount = discountedPrice.getRebateAmount();
-            price.setPricing("Includes rebate of " + formatCurrency(rebateAmount, true, true) + " & LHC loading of " +
-                    formatCurrency(loadingAmount, true, true));
-            price.setLhcfreetext("*" + formatCurrency(lhcFreeAmount, true, true));
-            price.setLhcfreevalue(lhcFreeAmount);
-            price.setLhcfreepricing("+ " + formatCurrency(loadingAmount, true, true) + " LHC inc " +
-                    formatCurrency(rebateAmount, true, true) + " Government Rebate");
-            price.setRebateValue(formatCurrency(rebateAmount, true, true));
-            price.setBase(formatCurrency(discountedPrice.getDiscountedPremium(), true, true));
-            price.setBaseAndLHC(formatCurrency(loadingAmount.add(discountedPrice.getDiscountedPremium()), true, true));
-
-
-        } else {
-            price.setDiscountAmount(formatCurrency(BigDecimal.ZERO, true, true));
-            price.setDiscountPercentage(BigDecimal.ZERO);
-
-            BigDecimal premiumWithRebateAndLHCDecimal = loadingAmount
-                    .add(quotePrice.getLhcFreeAmount()).setScale(2, BigDecimal.ROUND_HALF_UP);
-            price.setText(formatCurrency(premiumWithRebateAndLHCDecimal, true, true));
-            price.setValue(premiumWithRebateAndLHCDecimal);
-
-            price.setPricing("Includes rebate of " + formatCurrency(quotePrice.getRebateAmount(), true, true) + " & LHC loading of " +
-                    formatCurrency(loadingAmount, true, true));
-            price.setLhcfreetext(formatCurrency(quotePrice.getLhcFreeAmount(), true, true));
-            price.setLhcfreevalue(quotePrice.getLhcFreeAmount());
-            price.setLhcfreepricing("+ " + formatCurrency(loadingAmount, true, true) + " LHC inc " +
-                    formatCurrency(quotePrice.getRebateAmount(), true, true) + " Government Rebate");
-            price.setRebateValue(formatCurrency(quotePrice.getRebateAmount(), true, true));
-            price.setBase(formatCurrency(quotePrice.getGrossPremium(), true, true));
-            price.setBaseAndLHC(formatCurrency(loadingAmount.add(quotePrice.getGrossPremium()), true, true));
-        }
-
-
-        price.setHospitalValue(quotePrice.getLhc());
-        price.setRebate(healthQuote.getRebate().intValue());
+        price.setHospitalValue(quotePrice.getHospitalValue());
+        price.setRebate(quotePrice.getRebatePercentage());
         price.setLhcPercentage(healthQuote.getLoading());
-        price.setLhc(formatCurrency(loadingAmount, true, true));
+        price.setLhc(formatCurrency(quotePrice.getLhcAmount(), true, true));
         price.setGrossPremium(formatCurrency(quotePrice.getGrossPremium(), true, true));
         return price;
     }
 
-    /**
-     DISCOUNT HACK: NEEDS TO BE REVISED
-     if onResultsPage = true
-     = Discount
-     Show all .. and default to discount rates
-
-     else if NIB + Bank account
-     = Discount
-
-     else if GMHBA + Bank account
-     = Discount
-
-     else if GMF + Annualy payment
-     = Discount
-
-     else if HIF + Annualy/Halfyealy payment
-     = Discount
-
-     else if BUD || AUF
-     = Discount
-
-     else
-     = No Discount
-
-     1=AUF, 3=NIB, 5=GMHBA, 6=GMF, 54=BUD, 11=HIF
-     **/
-    public static boolean hasDiscountRates(Frequency frequency, String provider, Optional<PaymentType> paymentType, boolean onResultsPage) {
-        boolean isBankAccount = paymentType
-                .filter(v -> v == PaymentType.BANK)
-                .isPresent();
-        boolean isDiscountRates ;
-        switch(provider){
-            case "NIB":
-                isDiscountRates = onResultsPage || isBankAccount;
-                break;
-            case "GMH":
-                isDiscountRates = onResultsPage || isBankAccount;
-                break;
-            case "GMF":
-                isDiscountRates = onResultsPage || frequency.equals(ANNUALLY);
-                break;
-            case "HIF":
-                isDiscountRates = onResultsPage || frequency.equals(ANNUALLY) || frequency.equals(HALF_YEARLY);
-                break;
-            case "BUD":
-            case "AUF":
-                isDiscountRates = true;
-                break;
-            default:
-                isDiscountRates = false;
-        }
-        return isDiscountRates;
-    }
 
     public static String formatCurrency(BigDecimal value, boolean showSymbol, boolean groupingUsed) {
         NumberFormat form;
