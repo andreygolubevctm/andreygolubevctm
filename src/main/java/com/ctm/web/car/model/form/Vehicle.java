@@ -6,7 +6,7 @@ public class Vehicle {
 
     private String accessoriesRadioBtns;
 
-    private Integer annualKilometres;
+    private String annualKilometres;
 
     private String body;
 
@@ -66,11 +66,11 @@ public class Vehicle {
         this.accessoriesRadioBtns = accessoriesRadioBtns;
     }
 
-    public Integer getAnnualKilometres() {
+    public String getAnnualKilometres() {
         return annualKilometres;
     }
 
-    public void setAnnualKilometres(Integer annualKilometres) {
+    public void setAnnualKilometres(String annualKilometres) {
         this.annualKilometres = annualKilometres;
     }
 
