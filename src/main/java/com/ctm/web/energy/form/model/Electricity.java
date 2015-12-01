@@ -1,13 +1,11 @@
 package com.ctm.web.energy.form.model;
 
-import com.ctm.energy.quote.request.model.ElectricityMeterType;
-
 public class Electricity extends Energy{
 
     Rate peak;
     Rate offpeak;
     Rate shoulder;
-    ElectricityMeterType meter;
+    MeterType meter;
 
     public Electricity(){
 
@@ -37,11 +35,11 @@ public class Electricity extends Energy{
         this.shoulder = shoulder;
     }
 
-    public ElectricityMeterType getMeter() {
+    public MeterType getMeter() {
         return meter;
     }
 
-    public void setMeter(ElectricityMeterType meter) {
+    public void setMeter(MeterType meter) {
         this.meter = meter;
     }
 
