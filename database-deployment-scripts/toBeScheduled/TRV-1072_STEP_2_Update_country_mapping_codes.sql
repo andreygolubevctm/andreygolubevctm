@@ -26,11 +26,11 @@ UPDATE ctm.country_provider_mapping SET regionValue = '05BF92F8-8D20-423D-B3BA-9
 UPDATE ctm.country_provider_mapping cpm SET regionValue = '840CBA6B-4907-457B-A04C-9FF60124639D' WHERE providerid = @pid AND priority = 1 AND mappingId IN (SELECT * FROM (SELECT mappingId FROM ctm.country_provider_mapping WHERE providerid = @pid AND regionValue = '37c47d9d-cc54-4543-a9f1-9ff6011349b2' AND priority = 1 AND isoCode IN ('DZA','AGO','BEN','BWA','BFA','BDI','CMR','CAI ','CPV','CAF','TCD','COM','COG','COD','DJI','EGY','GNQ','ERI','ETH','GAB','GMB','GHA','GIN','GNB','CIV','KEN','LSO','LBR','LBY','MDG','MWI','MLI','MRT','MUS','MYT','MAR','MOZ','NAM','NER','NGA','REU','RWA','SHN','STP','SEN','SYC','SLE','SOM','ZAF','SSD','SDN','SWZ','TZA','TGO','TUN','UGA','ESH','ZMB','ZWE', 'ATA','ATG','ARG','ABW','BHS','BRB','BLZ','BMU','BOL','BES','BVT','BRA','IOT','VGB','CAN','CYM','CHL','COL','CRI','CUB','CUW','DMA','DOM','ECU','SLV','FLK','GUF','GAL','GRD','GLP','GTM','GUY','HTI','HND','JAM','MTQ','MEX','MSR','NIC','PAN','PRY','PER','PRI','BLM','KNA','LCA','MAF','SPM','VCT','SXM','SA','SGS','SUR','TCA','UMI','USA','URY','VEN','VIR')) AS mappingIds) LIMIT 118;
 
 -- WORLDWIDE Excluding Americas & Africa
--- SELECT * FROM ctm.country_provider_mapping WHERE providerid = @pid AND regionValue = 'b054b9d7-41d9-470f-a487-9ff60113539c' AND priority = 2;
+-- SELECT * FROM ctm.country_provider_mapping WHERE providerid = @pid AND regionValue = 'b054b9d7-41d9-470f-a487-9ff60113539c';
 -- TEST RESULT BEFORE UPDATE: 73
 -- TEST RESULT AFTER UPDATE: 0
 
-UPDATE ctm.country_provider_mapping SET regionValue = 'C92301A0-B25E-4247-AD6F-9FF6012471AE' WHERE providerid = @pid AND priority = 2 and regionValue = 'b054b9d7-41d9-470f-a487-9ff60113539c' LIMIT 73;
+UPDATE ctm.country_provider_mapping SET regionValue = 'C92301A0-B25E-4247-AD6F-9FF6012471AE' WHERE providerid = @pid  and regionValue = 'b054b9d7-41d9-470f-a487-9ff60113539c' LIMIT 78;
 
 
 -- ====================== ROLLBACK ===================
