@@ -139,11 +139,7 @@
 						<%-- Retrieve the last result --%>
 
 						<sql:query var="results">
-							SELECT transactionID
-							FROM aggregator.transaction_header
-							WHERE rootId = ?
-							ORDER BY transactionID DESC
-							LIMIT 1
+							SELECT LAST_INSERT_ID() AS transactionID
 							<sql:param value="${rootId}" />
 						</sql:query>
 					</sql:transaction>
@@ -269,12 +265,7 @@
 
 				<%-- Retrieve the last result to update rootId with the transaction id --%>
 				<sql:query var="results">
-					SELECT transactionID
-					FROM aggregator.transaction_header
-					WHERE sessionid = ?
-					ORDER BY transactionID DESC
-					LIMIT 1
-					<sql:param value="${sessionId}" />
+					SELECT LAST_INSERT_ID() AS transactionID
 				</sql:query>
 			</sql:transaction>
 			<c:choose>
