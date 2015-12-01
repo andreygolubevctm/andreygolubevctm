@@ -140,7 +140,6 @@
 
 						<sql:query var="results">
 							SELECT LAST_INSERT_ID() AS transactionID
-							<sql:param value="${rootId}" />
 						</sql:query>
 					</sql:transaction>
 
