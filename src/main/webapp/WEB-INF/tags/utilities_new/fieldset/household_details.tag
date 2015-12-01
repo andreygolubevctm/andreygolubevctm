@@ -19,6 +19,9 @@
     <go:setData dataVar="data" xpath="${xpath}/movingInDate" value="${movingInDate}" />
 </c:if>
 
+<% nowPlusDay.add(GregorianCalendar.YEAR, 5); %>
+<fmt:formatDate var="nowPlusYears_Date" pattern="yyyy-MM-dd" value="${nowPlusDay.time}" />
+
 <form_new:fieldset legend="Household Details" className="household-details">
     <c:set var="fieldXPath" value="${xpath}/location" />
     <form_new:row label="Postcode / Suburb" fieldXpath="${fieldXPath}" className="clear">
@@ -54,6 +57,7 @@
         <field_new:basic_date xpath="${fieldXPath}"
                               required="true"
                               title="moving in date"
+                              maxDate="${nowPlusYears_Date}"
                               minDate="${nowPlusDay_Date}" />
     </form_new:row>
 

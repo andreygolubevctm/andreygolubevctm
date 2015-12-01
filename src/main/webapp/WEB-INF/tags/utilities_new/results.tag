@@ -56,14 +56,29 @@
         {{ var logo = _.template(template); }}
         {{ logo = logo(obj); }}
 
+        {{ var whatToCompare = meerkat.modules.utilities.getVerticalFilter(); }}
+        {{ var hasGas = _.indexOf(["G","EG"],whatToCompare) >= 0; }}
+        {{ var gasOnly = whatToCompare === "G"; }}
+        {{ var hasElectricity = _.indexOf(["E","EG"],whatToCompare) >= 0; }}
+        {{ var electricityOnly = whatToCompare === "E"; }}
+
         {{ var yearlySavingsValue = yearlyElectricitySavingsValue + yearlyGasSavingsValue; }}
         {{ var yearlyElectricitySavingsLabel = yearlyElectricitySavingsValue < 0 ? "extra cost up to $" + (yearlyElectricitySavingsValue*-1) : "$" + yearlyElectricitySavingsValue.toFixed(2); }}
         {{ var yearlyGasSavingsLabel = yearlyGasSavingsValue < 0 ? "extra cost up to $" + (yearlyGasSavingsValue*-1) : "$" + yearlyGasSavingsValue.toFixed(2); }}
         {{ var yearlySavingsLabel = yearlySavingsValue < 0 ? "extra cost up to $" + (yearlySavingsValue*-1) : "$" + yearlySavingsValue.toFixed(2); }}
 
         {{ var estimatedCostLabel = "$" + estimatedCostValue.toFixed(2); }}
-        {{ var estimatedElectricityCostLabel = "$" + estimatedElectricityCostValue.toFixed(2); }}
-        {{ var estimatedGasCostLabel = "$" + estimatedGasCostValue.toFixed(2); }}
+        {{ var estimatedElectricityCostLabel = ""; }}
+        {{ if(hasElectricity) { }}
+            {{ var estimatedElectricityCostLabelPrefix = electricityOnly ? "" : "Electricity: "; }}
+            {{ var estimatedElectricityCostLabel = estimatedElectricityCostValue >= 0 ? estimatedElectricityCostLabelPrefix + "$" + estimatedElectricityCostValue.toFixed(2) : estimatedElectricityCostLabelPrefix + '<a class="btn-add-bill" href="javascript:;"><span>Add bill information</span> <span class="icon icon-arrow-right"/></a>'; }}
+        {{ } }}
+        {{ var estimatedGasCostLabel = ""; }}
+        {{ if(hasGas) { }}
+            {{ var estimatedGasCostLabelPrefix = gasOnly ? "" : "Gas: "; }}
+            {{ var estimatedGasCostLabel = estimatedGasCostValue >= 0 ? estimatedGasCostLabelPrefix + "$" + estimatedGasCostValue.toFixed(2) : estimatedGasCostLabelPrefix + '<a class="btn-add-bill" href="javascript:;"><span>Add bill information</span> <span class="icon icon-arrow-right"/></a>'; }}
+        {{ } }}
+        {{ var estimatedCostLabelBreak = estimatedElectricityCostLabel !== "" && estimatedGasCostLabel !== "" ? "<br>" : ""; }}
 
         {{ var showYearlySavings = meerkat.modules.utilitiesResults.showYearlySavings(); }}
         {{ var showEstimatedCost = meerkat.modules.utilitiesResults.showEstimatedCost(); }}
@@ -142,7 +157,7 @@
                         </div>
                         {{ } else if(showEstimatedCost === true) { }}
                         <div class="col-sm-3 col-lg-2 estimatedCostContainer">
-                            <div class="dataColumn"><span class="estimatedCost">{{= estimatedElectricityCostLabel }}<br>{{= estimatedGasCostLabel }}</span></div>
+                            <div class="dataColumn"><span class="estimatedCost">{{= estimatedElectricityCostLabel }}{{= estimatedCostLabelBreak }}{{= estimatedGasCostLabel }}</span></div>
                         </div>
                         {{ } else if(showYearlySavings === true) { }}
                         <div class="col-sm-3 col-lg-2 yearlySavingsContainer {{= (yearlySavingsValue <= 0 ? 'noSavings' : '') }}">
@@ -214,7 +229,9 @@
                                     </div>
                                     {{ if(showEstimatedUsage === true) { }}
                                     <div class="col-sm-3 col-lg-2 estimatedCostContainer">
-                                        <div class="dataColumn">Add you bill information</div>
+                                        <div class="dataColumn"><a class="btn-add-bill" href="javascript:;">
+                                            <span>Add bill information</span> <span class="icon icon-arrow-right"/>
+                                        </a></div>
                                     </div>
                                     {{ } else if(showEstimatedCost === true) { }}
                                     <div class="col-xs-6 estimatedCostContainer">
