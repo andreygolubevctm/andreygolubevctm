@@ -71,7 +71,7 @@ public class Vehicle {
     }
 
     public void setAnnualKilometres(String annualKilometres) {
-        this.annualKilometres = annualKilometres;
+        this.annualKilometres = annualKilometres.replaceAll("[^\\d.]","");
     }
 
     public String getBody() {
