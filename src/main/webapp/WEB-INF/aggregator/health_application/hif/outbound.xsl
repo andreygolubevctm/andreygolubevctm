@@ -801,7 +801,7 @@
             <xsl:when test="$fundName='QTUHS'">TUH</xsl:when>
             <xsl:when test="$fundName='WDHF'">WDH</xsl:when>
             <!-- All other funds in our list -->
-            <xsl:when test="$fundName != ''">Oth</xsl:when>
+            <xsl:when test="$fundName != ''">OTH</xsl:when>
             <xsl:otherwise>NONE</xsl:otherwise>
         </xsl:choose>
     </xsl:template>
