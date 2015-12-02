@@ -212,10 +212,19 @@
             _setProviders(providerResults);
             useInitProviders = false;
         } else {
+
+            Results.updateAggregatorEnvironment();
+
+            var providersUrl = "utilities/providers/get.json";
+            if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
+                providersUrl = "spring/rest/energy/providers/get.json";
+            }
+
             var $promise = meerkat.modules.comms.post({
-                url: "utilities/providers/get.json",
+                url: providersUrl,
                 data: {
-                    postcode: postcode
+                    postcode: postcode,
+                    environmentOverride: $("#environmentOverride").val()
                 },
                 errorLevel: "silent"
             });
