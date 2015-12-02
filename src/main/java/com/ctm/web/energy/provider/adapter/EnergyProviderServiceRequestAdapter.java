@@ -19,6 +19,8 @@ public class EnergyProviderServiceRequestAdapter implements WebRequestAdapter<En
                         Optional.ofNullable(
                                 request.getPostcode())
                                 .orElseThrow(() -> new IllegalArgumentException("postcode missing"))),
-                Suburb.instanceOf(""));
+                Suburb.instanceOf(
+                        Optional.ofNullable(request.getSuburb())
+                                .orElse("")));
     }
 }

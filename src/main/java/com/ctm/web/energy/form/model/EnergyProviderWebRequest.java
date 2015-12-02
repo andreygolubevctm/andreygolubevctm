@@ -12,6 +12,8 @@ public class EnergyProviderWebRequest implements Request {
 
     private String postcode;
 
+    private String suburb;
+
     @Override
     public Long getTransactionId() {
         return transactionId;
@@ -48,5 +50,13 @@ public class EnergyProviderWebRequest implements Request {
 
     public void setPostcode(String postcode) {
         this.postcode = postcode;
+    }
+
+    public String getSuburb() {
+        return suburb;
+    }
+
+    public void setSuburb(String suburb) {
+        this.suburb = suburb;
     }
 }
