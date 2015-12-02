@@ -1,5 +1,7 @@
 package com.ctm.web.core.providers.model;
 
+import com.ctm.web.health.model.results.ResponseError;
+
 import java.util.List;
 
 public class Response<T> {

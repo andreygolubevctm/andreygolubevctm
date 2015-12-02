@@ -142,7 +142,7 @@
 						$('.health-situation-healthSitu').change();
 					}
 				}
-				
+
 
 				// This on Start step instead of Details because Simples interacts with it
 				var emailQuoteBtn = $(".slide-feature-emailquote");
@@ -378,7 +378,7 @@
 					if (meerkat.modules.healthResults.getSelectedProduct() === null) {
 						callback(false);
 					}
-					
+
 					callback(true);
 				}
 			},
@@ -1080,22 +1080,31 @@
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication' });
 
 		try {
-		var postData = meerkat.modules.journeyEngine.getFormData();
+
+			Results.updateApplicationEnvironment();
+
+        var postData = meerkat.modules.journeyEngine.getFormData();
 
 		// Disable fields must happen after the post data has been collected.
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
 
-		meerkat.modules.comms.post({
-			url: "ajax/json/health_application.jsp",
-			data: postData,
-			cache: false,
-			useDefaultErrorHandling:false,
-			errorLevel: "silent",
-			timeout: 250000, //10secs more than SOAP timeout
-			onSuccess: function onSubmitSuccess(resultData) {
+
+			var healthApplicationUrl = "ajax/json/health_application.jsp";
+			if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
+				healthApplicationUrl = "ajax/json/health_application_ws.jsp";
+			}
+
+			meerkat.modules.comms.post({
+				url: healthApplicationUrl,
+				data: postData,
+				cache: false,
+				useDefaultErrorHandling:false,
+				errorLevel: "silent",
+				timeout: 250000, //10secs more than SOAP timeout
+				onSuccess: function onSubmitSuccess(resultData) {
 
 					meerkat.modules.leavePageWarning.disable();
-					
+
 					var redirectURL = "health_confirmation.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+"&token=";
 					var extraParameters = "";
 
