@@ -1,3 +1,5 @@
 SET @MASTERID = (SELECT serviceMasterId FROM ctm.service_master WHERE serviceCode='quoteServiceBER' AND verticalId=2);
 
-UPDATE ctm.service_properties SET servicePropertyValue='10' WHERE servicePropertyKey='timeout' AND servicemasterId=@MASTERID;
+INSERT INTO ctm.service_properties (`serviceMasterId`, `environmentCode`, `styleCodeId`, `providerId`, `servicePropertyKey`, `servicePropertyValue`, `effectiveStart`, `effectiveEnd`, `scope`)
+SELECT @MASTERID, 'PRO', styleCodeId, providerId, servicePropertyKey, 10, effectiveStart, effectiveEnd, scope
+  FROM ctm.service_properties WHERE servicePropertyKey='timeout'AND environmentCode='0' AND servicemasterId=@MASTERID;
