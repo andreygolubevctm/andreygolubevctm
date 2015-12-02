@@ -87,8 +87,13 @@
      */
     function applyEventListeners() {
         meerkat.messaging.subscribe(meerkat.modules.journeyEngine.events.journeyEngine.STEP_CHANGED, function stepChangedEvent(navInfo) {
-            if(navInfo.isForward && navInfo.navigationId === 'apply') {
-                toggleDependantFields($('.health_dependant_details'));
+            if(navInfo.isForward && navInfo.navigationId === 'apply' && dependantsArr.length) {
+                $('.health_dependant_details').each(function() {
+                    var $this = $(this);
+                    toggleDependantFields($this);
+                }).promise().done(function() {
+                    renderDependants();
+                });
             }
         });
 
@@ -233,6 +238,7 @@
         $dependantsTemplateWrapper.html(outHtml);
         applyDateEvents();
         updateNonTextFieldsValues();
+        meerkat.modules.datepicker.initModule();
     }
 
     /**

@@ -69,7 +69,7 @@
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/school"/>
             <form_new:row fieldXpath="${fieldXpath}" label="{{= (usesSchoolDropdown ? 'Educational institute this dependant is attending' : 'Name of school your child is attending') }}" id="${name}_schoolGroup"
-                          className="health_dependant_details_schoolGroup hidden" helpId="{{= usesSchoolDropdown ? '' : 290 }}">
+                          className="health_dependant_details_schoolGroup hidden {{= usesSchoolDropdown ? 'hide-help-icon' : '' }}" helpId="290">
                 {{ if(usesSchoolDropdown === true) { }}
                 <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
                 <div class="select">
@@ -95,7 +95,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolDate"/>
             <form_new:row fieldXpath="${fieldXpath}" label="Date Study Commenced" id="${name}_schoolDateGroup"
                           className="health_dependant_details_schoolDateGroup hidden">
-                <field_new:basic_date xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s study commencement date" required="{{= providerConfig.schoolDateRequired }}" />
+                <field_new:basic_date xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s study commencement" required="{{= providerConfig.schoolDateRequired }}" />
             </form_new:row>
             {{ } }}
 
