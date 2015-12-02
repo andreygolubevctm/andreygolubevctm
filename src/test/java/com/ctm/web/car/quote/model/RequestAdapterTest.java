@@ -22,6 +22,7 @@ public class RequestAdapterTest {
         initMocks(this);
         when(carQuote.getVehicle()).thenReturn(vehicle);
         when(vehicle.getYear()).thenReturn("2015");
+        when(vehicle.getAnnualKilometres()).thenReturn("20000");
 
 //        when(carQuote.getConvertedAccs()).thenReturn();
     }
