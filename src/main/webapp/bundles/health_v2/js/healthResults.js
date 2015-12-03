@@ -378,10 +378,7 @@
             var freeColumns = (columnsPerPage * numberOfPages) - items;
 
             meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
-                additionalData: {
-                    pageNumber: pageNumber,
-                    numberOfPages: numberOfPages
-                },
+                additionalData: {},
                 onAfterEventMode: 'Pagination'
             });
 
