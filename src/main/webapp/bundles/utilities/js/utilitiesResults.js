@@ -27,7 +27,7 @@
         try {
 
             var quoteResultsUrl = "ajax/json/utilities_quote_results.jsp";
-            if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
+            if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToEnergyQuote) {
                 quoteResultsUrl = "ajax/json/energy_quote_results_ws.jsp";
             }
 
