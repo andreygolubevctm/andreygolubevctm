@@ -48,7 +48,8 @@
 				com.ctm.web.health.router.HealthApplicationRouter,
 				com.ctm.web.health.router.HealthAuthorisePaymentRouter,
 				com.ctm.web.health.router.HealthRegisterPaymentRouter
-			</param-value>
+
+            </param-value>
 		</init-param>
 		<init-param>
 			<param-name>jaxrs.providers</param-name>
@@ -75,6 +76,23 @@
 	<servlet-mapping>
 		<servlet-name>CXFServlet</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/dispatcher-config.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/spring/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- Required environment variables with sample (dev) values listed below:

@@ -1,15 +1,14 @@
 package com.ctm.web.utilities.model;
 
-import java.util.ArrayList;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.ctm.web.core.model.AbstractJsonModel;
+import com.ctm.web.core.model.formatter.JsonUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.ctm.web.core.model.AbstractJsonModel;
-import com.ctm.web.core.model.formatter.JsonUtils;
+import java.util.ArrayList;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 

@@ -41,7 +41,7 @@
 
     function hasAggregationService(){
         if(meerkat.site.vertical === 'travel' || meerkat.site.vertical === 'car' || meerkat.site.vertical === 'home' ||
-            meerkat.site.vertical === 'health'){
+            meerkat.site.vertical === 'health' || meerkat.site.vertical === 'utilities'){
             return true;
         }
         return false;
@@ -101,6 +101,10 @@
                         var vertical = meerkat.site.vertical;
                         if (vertical === 'home') {
                             vertical = 'homecontents';
+                        }
+
+                        if (vertical === 'utilities') {
+                            vertical = 'energy';
                         }
 
                         var verticalQuoteAppPath = "/"+ vertical +"-quote";
