@@ -7,7 +7,8 @@ public enum Endpoint {
     SUMMARY("summary"),
     PAYMENT_AUTHORISE("payment/authorise"),
     PAYMENT_REGISTER("payment/register"),
-    PROVIDER("provider");
+    PROVIDER("provider"),
+    PRODUCT_INFO("product");
 
     private final String value;
 
