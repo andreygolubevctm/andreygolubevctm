@@ -216,7 +216,7 @@
             Results.updateAggregatorEnvironment();
 
             var providersUrl = "utilities/providers/get.json";
-            if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
+            if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToEnergyQuote) {
                 providersUrl = "spring/rest/energy/providers/get.json";
             }
 
