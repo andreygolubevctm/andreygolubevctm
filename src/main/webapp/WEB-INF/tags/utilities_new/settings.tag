@@ -5,6 +5,8 @@
 
 <c:set var="providerResults" value="null" />
 
+<c:set var="defaultToEnergyQuote"><content:get key="makeEnergyQuoteMainJourney" /></c:set>
+
 <c:if test="${( not empty data.utilities.householdDetails.suburb) and (not empty data.utilities.householdDetails.postcode) }">
     <jsp:useBean id="providerService" class="com.ctm.web.utilities.services.UtilitiesProviderService" />
     <c:set var="suburb" value="${data.utilities.householdDetails.suburb}" />
@@ -29,5 +31,6 @@
     session: {
         firstPokeEnabled: <c:choose><c:when test="${param.action eq 'confirmation'}">false</c:when><c:otherwise>true</c:otherwise></c:choose>
     },
-    providerResults: ${providerResults}
+    providerResults: ${providerResults},
+    isDefaultToEnergyQuote: ${defaultToEnergyQuote},
 }
