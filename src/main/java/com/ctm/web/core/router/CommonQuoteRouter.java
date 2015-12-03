@@ -39,11 +39,15 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteRouter.class);
 
     protected Brand initRouter(MessageContext context, Vertical.VerticalType vertical){
+        return initRouter(context.getHttpServletRequest(), vertical);
+    }
+
+    protected Brand initRouter(HttpServletRequest httpServletRequest, Vertical.VerticalType vertical){
         // - Start common -- taken from Carlos' car branch
-        ApplicationService.setVerticalCodeOnRequest(context.getHttpServletRequest(), vertical.getCode());
+        ApplicationService.setVerticalCodeOnRequest(httpServletRequest, vertical.getCode());
 
         try {
-            return ApplicationService.getBrandFromRequest(context.getHttpServletRequest());
+            return ApplicationService.getBrandFromRequest(httpServletRequest);
 
         } catch (DaoException e) {
             throw new RouterException(e);
@@ -52,23 +56,31 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     }
 
     protected Data getDataBucket(MessageContext context, Long transactionId) {
+        return getDataBucket(context.getHttpServletRequest(),  transactionId);
+    }
+
+    protected Data getDataBucket(HttpServletRequest request, Long transactionId) {
         SessionDataService service = new SessionDataService();
         try {
-            return service.getDataForTransactionId(context.getHttpServletRequest(), transactionId.toString(), true);
+            return service.getDataForTransactionId(request, transactionId.toString(), true);
         } catch (DaoException | SessionException e) {
             throw new RouterException(e);
         }
     }
 
     protected String updateTransactionIdAndClientIP(MessageContext context, REQUEST data){
+        return updateTransactionIdAndClientIP(context.getHttpServletRequest(),  data);
+    }
+
+    protected String updateTransactionIdAndClientIP(HttpServletRequest request, REQUEST data){
         final String clientIpAddress;
-        Data dataBucket = getDataBucket(context, data.getTransactionId());
+        Data dataBucket = getDataBucket(request, data.getTransactionId());
 
         if(dataBucket != null && dataBucket.getString("current/transactionId") != null){
             data.setTransactionId(Long.parseLong(dataBucket.getString("current/transactionId")));
         }
         if (StringUtils.isBlank((String) dataBucket.get("quote/clientIpAddress"))) {
-            clientIpAddress = context.getHttpServletRequest().getRemoteAddr();
+            clientIpAddress = request.getRemoteAddr();
         } else {
             clientIpAddress = (String) dataBucket.get("quote/clientIpAddress");
         }
@@ -76,6 +88,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
         return clientIpAddress;
     }
+
 
     protected Info generateInfoKey(final REQUEST data, final MessageContext context) {
         // Generate the Tracking Key for Omniture tracking
@@ -201,6 +214,5 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
                     transactionId.toString(), data, brandCode);
         }
     }
-
 
 }

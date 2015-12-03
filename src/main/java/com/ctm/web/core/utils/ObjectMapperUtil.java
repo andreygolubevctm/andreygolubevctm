@@ -8,7 +8,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class ObjectMapperUtil {
 
     private static final ObjectMapper objectMapper = new ObjectMapper()
@@ -23,6 +26,7 @@ public class ObjectMapperUtil {
             .registerModule(new Jdk8Module())
             .registerModule(new JavaTimeModule());
 
+    @Bean
     public static ObjectMapper getObjectMapper() {
         return objectMapper;
     }

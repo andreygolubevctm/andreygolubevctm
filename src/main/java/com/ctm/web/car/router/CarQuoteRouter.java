@@ -68,4 +68,5 @@ public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
         Date applicationDate = ApplicationService.getApplicationDate(context.getHttpServletRequest());
         return CarVehicleSelectionService.getCarProduct(applicationDate, productId, brand.getId());
     }
+
 }
