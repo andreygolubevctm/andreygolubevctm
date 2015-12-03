@@ -27,6 +27,18 @@
 			required="true" />
 	</form_new:row>
 
+	<form_new:row label="Will the car be used for carrying passengers for payment, providing paid driving instruction or hiring out to other people?" className="passengerPayment">
+		<field_new:array_radio xpath="${xpath}/passengerPayment" required="true"
+							   className="quote_passengerPayment" id="quote_passengerPayment" items="Y=Yes,N=No"
+							   title="if the car has any accident or hail damage" />
+	</form_new:row>
+
+	<form_new:row label="Will the car be used for carrying goods for payment?" className="goodsPayment">
+		<field_new:array_radio xpath="${xpath}/goodsPayment" required="true"
+							   className="quote_goodsPayment" id="quote_goodsPayment" items="Y=Yes,N=No"
+							   title="if the car has any accident or hail damage" />
+	</form_new:row>
+
 	<form_new:row label="Is there any finance on the car?" helpId="9">
 		<field_new:import_select xpath="${xpath}/finance"
 			url="/WEB-INF/option_data/finance_type.html"

@@ -14,6 +14,7 @@
 
 	/* Variables */
 	var $editDetailsDropDown = $('#edit-details-dropdown'),
+		$carUseDropdown = $('#quote_vehicle_use'),
 	modalId = null;
 
 	/* main entrypoint for the module to run first */
@@ -39,6 +40,14 @@
 			e.stopPropagation();
 		}).on('click', '.dropdown-container', function(e) {
 			e.stopPropagation();
+		});
+
+		$carUseDropdown.on('change', function changeCarUse(){
+			if ($(this)[0].selectedIndex > 1)
+			{
+
+			}
+			console.log($(this)[0].selectedIndex);
 		});
 	}
 	function eventSubscriptions() {

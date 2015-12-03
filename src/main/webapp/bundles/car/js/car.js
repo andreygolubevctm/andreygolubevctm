@@ -211,6 +211,7 @@
             onInitialise: function () {
                 meerkat.modules.carCommencementDate.initCarCommencementDate();
                 meerkat.modules.carYoungDrivers.initCarYoungDrivers();
+                meerkat.modules.carUsingYourCar.initUsingYourCar();
             }
         };
 
