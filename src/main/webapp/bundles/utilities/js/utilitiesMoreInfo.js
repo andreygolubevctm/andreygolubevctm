@@ -303,11 +303,20 @@
      * Retrieves the data used for the bridging page.
      */
     function retrieveExternalCopy(product) {
+
+        Results.updateAggregatorEnvironment();
+
+        var productInfoUrl = "utilities/moreinfo/get.json";
+        if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToEnergyQuote) {
+            productInfoUrl = "spring/rest/energy/moreinfo/get.json";
+        }
+
         return meerkat.modules.comms.post({
-            url: "utilities/moreinfo/get.json",
+            url: productInfoUrl,
             cache: true,
             data: {
-                productId: product.productId
+                productId: product.productId,
+                environmentOverride: $("#environmentOverride").val()
             },
             errorLevel: "silent",
             onSuccess: function (result) {
