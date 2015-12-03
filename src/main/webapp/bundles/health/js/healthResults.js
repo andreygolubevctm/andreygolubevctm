@@ -383,10 +383,7 @@
             var pageNumber = pageData.pageNumber;
 
             meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
-                additionalData: {
-                    pageNumber: pageNumber,
-                    numberOfPages: numberOfPages
-                },
+                additionalData: {},
                 onAfterEventMode: 'Pagination'
             });
 
@@ -856,7 +853,6 @@
      * It has remained here so verticals can run their own unique calls.
      */
     function publishExtraSuperTagEvents() {
-
         meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
             additionalData: {
                 preferredExcess: getPreferredExcess(),
