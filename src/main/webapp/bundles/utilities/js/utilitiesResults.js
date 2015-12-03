@@ -41,6 +41,7 @@
                     contractPeriodValue: "contractPeriodValue",
                     totalDiscountValue: "totalDiscountValue",
                     yearlySavingsValue: "yearlySavingsValue",
+                    estimatedCostValue: "estimatedCostValue",
                     availability: {
                         product: "productAvailable"
                     }
@@ -118,6 +119,8 @@
             return products;
         }
         var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val() || null;
+        var recentElectricityBill = $("#utilities_householdDetails_recentElectricityBill").find("input[type='radio']:checked").val() === 'Y';
+        var recentGasBill = $("#utilities_householdDetails_recentGasBill").find("input[type='radio']:checked").val() === 'Y';
         _.each(products, function massageJson(result, index) {
 
             // Add properties
@@ -135,8 +138,28 @@
                 result.totalDiscountValue = Number(result.payontimeDiscounts) + Number(result.ebillingDiscounts) + Number(result.guaranteedDiscounts) + Number(result.otherDiscounts);
             }
             result.contractPeriodValue = result.contractPeriod.indexOf('Year') != -1 ? parseInt(result.contractPeriod.replace(/[^\d]/g, ''), 10) : 0;
-            result.yearlySavingsValue = typeof result.yearlySavings === 'undefined' || result.yearlySavings === null ? 0 : result.yearlySavings;
-            result.yearlySavingsValue = Number(result.yearlySavingsValue.toFixed(2));
+            result.yearlyElectricitySavingsValue = typeof result.yearlyElectricitySavings === 'undefined' || result.yearlyElectricitySavings === null ? 0 : result.yearlyElectricitySavings;
+            result.yearlyElectricitySavingsValue = Number(result.yearlyElectricitySavingsValue.toFixed(2));
+
+            result.yearlyGasSavingsValue = typeof result.yearlyGasSavings === 'undefined' || result.yearlyGasSavings === null ? 0 : result.yearlyGasSavings;
+            result.yearlyGasSavingsValue = Number(result.yearlyGasSavingsValue.toFixed(2));
+
+            result.estimatedCostValue = typeof result.estimatedCost === 'undefined' || result.estimatedCost === null ? 0 : result.estimatedCost;
+            result.estimatedCostValue = Number(result.estimatedCostValue.toFixed(2));
+
+            if(recentElectricityBill) {
+                result.estimatedElectricityCostValue = typeof result.estimatedElectricityCost === 'undefined' || result.estimatedElectricityCost === null ? 0 : result.estimatedElectricityCost;
+                result.estimatedElectricityCostValue = Number(result.estimatedElectricityCostValue.toFixed(2));
+            } else {
+                result.estimatedElectricityCostValue = -1;
+            }
+            if(recentGasBill) {
+                result.estimatedGasCostValue = typeof result.estimatedGasCost === 'undefined' || result.estimatedGasCost === null ? 0 : result.estimatedGasCost;
+                result.estimatedGasCostValue = Number(result.estimatedGasCostValue.toFixed(2));
+            } else {
+                result.estimatedGasCostValue = -1;
+            }
+
         });
         return products;
     }
@@ -250,6 +273,9 @@
         $(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
 
         $(document.body).on('click', '.btn-apply', enquireNowClick);
+        $(document.body).on('click', '.btn-change-type', changeTypeClick);
+        $(document.body).on('click', '.btn-add-bill', addBillClick);
+
     }
 
     function enquireNowClick(event) {
@@ -273,6 +299,59 @@
             meerkat.modules.journeyEngine.gotoPath('next', $resultrow.find('.btn-apply'));
         });
 
+    }
+
+    function changeTypeClick(event) {
+
+        event.preventDefault();
+
+        var $e = $('#change-type-template');
+        if ($e.length > 0) {
+            templateCallback = _.template($e.html());
+        }
+
+        var htmlContent = templateCallback();
+        var modalOptions = {
+            htmlContent: htmlContent,
+            hashId: '',
+            className: 'change-type-modal',
+            closeOnHashChange: true,
+            openOnHashChange: false,
+            onOpen: function (modalId) {
+
+                $('.change-type-modal').show();
+
+            },
+            onClose: function(modalId) {
+
+            }
+        };
+
+        changeTypeId = meerkat.modules.dialogs.show(modalOptions);
+        $(".what-to-compare-reset").on('change',_toggleChangeType);
+
+    }
+
+    function addBillClick(event) {
+
+        event.preventDefault();
+        $('#utilities_householdDetails_recentElectricityBill_Y').parent().click();
+        $('#utilities_householdDetails_recentGasBill_Y').parent().click();
+
+        meerkat.modules.journeyEngine.gotoPath('start');
+
+    }
+
+    function _toggleChangeType() {
+        var type = $(".what-to-compare-reset").find("input[type='radio']:checked").val();
+
+        $('#utilities_householdDetails_whatToCompare').find('label').removeClass('active');
+
+        $('#utilities_householdDetails_whatToCompare_' + type).parent().click();
+        $('#utilities_householdDetails_whatToCompare_' + type).prop('checked',true);
+        $('#utilities_householdDetails_whatToCompare_' + type).parent().addClass('active');
+
+        meerkat.modules.journeyEngine.gotoPath('start');
     }
 
     function resultRowClick(event) {
@@ -326,6 +405,21 @@
         return $('#utilities_householdDetails_movingIn_N').prop('checked');
     }
 
+    function showEstimatedUsage() {
+        var hasElecBill = $('#utilities_householdDetails_recentElectricityBill_N').prop('checked'),
+        hasGasBill = $('#utilities_householdDetails_recentGasBill_N').prop('checked');
+
+        return (hasElecBill && hasGasBill);
+    }
+
+    function showEstimatedCost() {
+        var movingIn = $('#utilities_householdDetails_movingIn_N').prop('checked'),
+        hasElecBill = $('#utilities_householdDetails_recentElectricityBill_Y').prop('checked'),
+        hasGasBill = $('#utilities_householdDetails_recentGasBill_Y').prop('checked');
+
+        return movingIn && (hasElecBill || hasGasBill);
+    }
+
     function getThoughtWorldReferenceNumber() {
         return thoughtWorldCustomerRef;
     }
@@ -336,6 +430,8 @@
         showNoResults: showNoResults,
         publishExtraSuperTagEvents: publishExtraSuperTagEvents,
         showYearlySavings: showYearlySavings,
+        showEstimatedCost: showEstimatedCost,
+        showEstimatedUsage: showEstimatedUsage,
         getThoughtWorldReferenceNumber: getThoughtWorldReferenceNumber
     });
 

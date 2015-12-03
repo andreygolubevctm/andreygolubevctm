@@ -26,7 +26,7 @@ import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import java.io.IOException;
 import java.util.List;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus.FAILURE;
 import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus.SUCCESS;
 import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType.CALL_DIRECT;

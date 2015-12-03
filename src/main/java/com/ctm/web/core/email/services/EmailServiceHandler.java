@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public abstract class EmailServiceHandler {
 
@@ -43,7 +43,7 @@ public abstract class EmailServiceHandler {
 		this.emailMode = emailMode;
 	}
 
-	public abstract void send(HttpServletRequest request, String emailAddress,
+	public abstract String send(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException;
 
 	protected boolean isTestEmailAddress(String emailAddress){

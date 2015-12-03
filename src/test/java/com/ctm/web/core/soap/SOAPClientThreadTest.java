@@ -1,10 +1,13 @@
 package com.ctm.web.core.soap;
 
+import com.ctm.commonlogging.context.LoggingVariables;
+import com.ctm.commonlogging.correlationid.CorrelationIdUtils;
+import com.ctm.interfaces.common.types.CorrelationId;
 import com.ctm.test.TestUtils;
-import com.ctm.web.core.logging.CorrelationIdUtils;
 import com.ctm.web.core.model.soap.settings.SoapAggregatorConfiguration;
 import com.ctm.web.core.model.soap.settings.SoapClientThreadConfiguration;
 import com.ctm.web.core.utils.function.Action;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,12 +30,14 @@ public class SOAPClientThreadTest {
     private SOAPClientThread soapClientThread;
     private HttpURLConnection connection;
     private String urlString = "http://www.google.com";
+    private CorrelationId correlationId = CorrelationId.instanceOf("testcorrelationid");
 
     @Before
     public void setup() throws Exception {
         URL url = PowerMockito.mock(URL.class);
         PowerMockito.whenNew(URL.class).withArguments(urlString).thenReturn(url);
         connection = TestUtils.createFakeConnection();
+        LoggingVariables.setCorrelationId(correlationId);
 
         when(url.openConnection()).thenReturn(connection);
 
@@ -49,17 +54,20 @@ public class SOAPClientThreadTest {
                 xmlData,  threadName,  aggregatorConfiguration,  beforeRun,  afterRun);
 
         PowerMockito.spy(CorrelationIdUtils.class);
+    }
 
+    @After
+    public void tearDown() throws Exception {
+        LoggingVariables.clearLoggingContext();
     }
 
     @Test
     public void shouldNotSendCorrelationId() throws Exception {
-
         aggregatorConfiguration.setSendCorrelationId(false);
         soapClientThread.processRequest(xmlData);
 
         PowerMockito.verifyStatic(Mockito.times(0));
-        CorrelationIdUtils.setCorrelationIdHeader(connection); //Now verifyStatic knows what to verify.
+        CorrelationIdUtils.setCorrelationIdRequestHeader(connection, correlationId); //Now verifyStatic knows what to verify.
     }
 
     @Test
@@ -69,6 +77,6 @@ public class SOAPClientThreadTest {
         soapClientThread.processRequest(xmlData);
 
         PowerMockito.verifyStatic(Mockito.times(1));
-        CorrelationIdUtils.setCorrelationIdHeader(connection); //Now verifyStatic knows what to verify.
+        CorrelationIdUtils.setCorrelationIdRequestHeader(connection, correlationId); //Now verifyStatic knows what to verify.
     }
 }

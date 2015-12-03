@@ -2,19 +2,23 @@ package com.ctm.web.simples.services;
 
 import com.ctm.web.core.dao.CommentDao;
 import com.ctm.web.core.dao.TouchDao;
-import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.core.model.TransactionProperties;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.health.dao.HealthTransactionDao;
 import com.ctm.web.health.model.HealthTransaction;
 import com.ctm.web.simples.dao.MessageAuditDao;
 import com.ctm.web.simples.dao.MessageDao;
+import com.ctm.web.simples.model.ConfirmationOperator;
 import com.ctm.web.simples.model.Message;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import java.util.List;
+
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class TransactionService {
 
@@ -82,6 +86,23 @@ public class TransactionService {
 		}
 
 		return details;
+	}
+
+	public static void writeAllowableErrors(Long transactionId, String allowedErrors) throws DaoException {
+		if (StringUtils.isNotBlank(allowedErrors)) {
+			final HealthTransactionDao transactionHealthDao = new HealthTransactionDao();
+			transactionHealthDao.writeAllowableErrors(transactionId, allowedErrors);
+		}
+	}
+
+	/**
+	 * Find if any transaction chained from the provided Root ID is confirmed (sold).
+	 * @param rootIds
+	 * @return Not null if confirmed
+	 */
+	public ConfirmationOperator findConfirmationByRootId(List<Long> rootIds) throws DaoException {
+		TransactionDao transactionDao = new TransactionDao();
+		return transactionDao.getConfirmationFromTransactionChain(rootIds);
 	}
 
 }

@@ -1,7 +1,9 @@
 package com.ctm.web.core.connectivity;
 
+import com.ctm.commonlogging.context.LoggingVariables;
+import com.ctm.commonlogging.correlationid.CorrelationIdUtils;
+import com.ctm.interfaces.common.types.CorrelationId;
 import com.ctm.test.TestUtils;
-import com.ctm.web.core.logging.CorrelationIdUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,12 +22,14 @@ public class SimpleConnectionTest {
     private SimpleConnection simpleConnection;
     private HttpURLConnection connection;
     private String testUrl = "testUrl";
+    private CorrelationId correlationId = CorrelationId.instanceOf("testCorrelationId");
 
     @Before
     public void setup() throws Exception {
         URL url = PowerMockito.mock(URL.class);
         connection = TestUtils.createFakeConnection();
         simpleConnection = new SimpleConnection();
+        LoggingVariables.setCorrelationId(correlationId);
         PowerMockito.whenNew(URL.class).withArguments(testUrl).thenReturn(url);
     }
 
@@ -34,23 +38,21 @@ public class SimpleConnectionTest {
         simpleConnection.setHasCorrelationId(true);
 
         PowerMockito.spy(CorrelationIdUtils.class); //Used to be: PowerMockito.mockStatic(X.class);
-        CorrelationIdUtils.setCorrelationIdHeader(connection);
+        CorrelationIdUtils.setCorrelationIdRequestHeader(connection, correlationId);
 
         simpleConnection.get(testUrl);
         PowerMockito.verifyStatic(Mockito.times(1));
-        CorrelationIdUtils.setCorrelationIdHeader(connection); //Now verifyStatic knows what to verify.
-
-
+        CorrelationIdUtils.setCorrelationIdRequestHeader(connection, correlationId); //Now verifyStatic knows what to verify.
     }
+
     @Test
     public void shouldNotSendCorrelationIdIfSetToFalse() throws Exception {
         simpleConnection.setHasCorrelationId(false);
         PowerMockito.spy(CorrelationIdUtils.class); //Used to be: PowerMockito.mockStatic(X.class);
-        CorrelationIdUtils.setCorrelationIdHeader(connection);
+        CorrelationIdUtils.setCorrelationIdRequestHeader(connection, correlationId);
 
         simpleConnection.get(testUrl);
         PowerMockito.verifyStatic(Mockito.times(0));
-        CorrelationIdUtils.setCorrelationIdHeader(connection); //Now verifyStatic knows what to verify.
-
+        CorrelationIdUtils.setCorrelationIdRequestHeader(connection, correlationId); //Now verifyStatic knows what to verify.
     }
 }

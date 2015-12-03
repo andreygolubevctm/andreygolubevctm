@@ -4,9 +4,12 @@
 <session:core />
 <settings:setVertical verticalCode="HEALTH" />
 
+<!doctype html>
 <html>
-    <head></head>
+    <head>
+        <title>Test payment gateway</title>
+    </head>
     <body>
-        <iframe src="/${pageSettings.getContextFolder()}ajax/html/salesforce/health_payment_gateway.jsp?transactionId=2659686&provider=AHM" width="800" height="600" />
+        <iframe src="/${pageSettings.getContextFolder()}ajax/html/salesforce/health_payment_gateway.jsp?transactionId=2659686&provider=AHM" width="800" height="600"></iframe>
     </body>
 </html>
