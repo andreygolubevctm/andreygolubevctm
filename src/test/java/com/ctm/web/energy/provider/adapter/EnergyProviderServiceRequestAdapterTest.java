@@ -8,6 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.Optional;
+
+import static java.util.Optional.empty;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -27,6 +30,7 @@ public class EnergyProviderServiceRequestAdapterTest {
     @Test
     public void adapt() throws Exception {
         when(request.getPostcode()).thenReturn("4000");
+        when(request.getSuburb()).thenReturn(empty());
         final EnergyProviderRequest providerRequest = requestAdapter.adapt(request);
         assertEquals(PostCode.instanceOf("4000"), providerRequest.getPostCode());
         assertEquals(Suburb.instanceOf(""), providerRequest.getSuburb());
@@ -35,7 +39,7 @@ public class EnergyProviderServiceRequestAdapterTest {
     @Test
     public void adaptWithSuburb() throws Exception {
         when(request.getPostcode()).thenReturn("4000");
-        when(request.getSuburb()).thenReturn("Brisbane");
+        when(request.getSuburb()).thenReturn(Optional.of("Brisbane"));
         final EnergyProviderRequest providerRequest = requestAdapter.adapt(request);
         assertEquals(PostCode.instanceOf("4000"), providerRequest.getPostCode());
         assertEquals(Suburb.instanceOf("Brisbane"), providerRequest.getSuburb());

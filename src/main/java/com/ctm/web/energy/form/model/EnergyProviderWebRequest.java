@@ -2,6 +2,9 @@ package com.ctm.web.energy.form.model;
 
 import com.ctm.web.core.model.formData.Request;
 
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
+
 public class EnergyProviderWebRequest implements Request {
 
     private String clientIpAddress;
@@ -10,6 +13,7 @@ public class EnergyProviderWebRequest implements Request {
 
     private String environmentOverride;
 
+    @NotNull
     private String postcode;
 
     private String suburb;
@@ -52,8 +56,8 @@ public class EnergyProviderWebRequest implements Request {
         this.postcode = postcode;
     }
 
-    public String getSuburb() {
-        return suburb;
+    public Optional<String> getSuburb() {
+        return Optional.ofNullable(suburb);
     }
 
     public void setSuburb(String suburb) {

@@ -7,20 +7,13 @@ import com.ctm.web.energy.form.model.EnergyProviderWebRequest;
 import com.ctm.web.energy.quote.adapter.WebRequestAdapter;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 public class EnergyProviderServiceRequestAdapter implements WebRequestAdapter<EnergyProviderWebRequest, EnergyProviderRequest> {
 
     @Override
     public EnergyProviderRequest adapt(EnergyProviderWebRequest request) {
         return new EnergyProviderRequest(
-                PostCode.instanceOf(
-                        Optional.ofNullable(
-                                request.getPostcode())
-                                .orElseThrow(() -> new IllegalArgumentException("postcode missing"))),
-                Suburb.instanceOf(
-                        Optional.ofNullable(request.getSuburb())
-                                .orElse("")));
+                PostCode.instanceOf(request.getPostcode()),
+                Suburb.instanceOf(request.getSuburb().orElse("")));
     }
 }
