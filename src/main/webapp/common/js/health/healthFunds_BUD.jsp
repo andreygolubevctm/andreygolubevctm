@@ -54,8 +54,8 @@ var healthFunds_BUD = {
 		});
 
 		<%-- change age of dependants and school --%>
-		healthDependents.config.school = false;
-		healthDependents.maxAge = 21;
+		meerkat.modules.healthDependants.updateConfig({school: false});
+		meerkat.modules.healthDependants.setMaxAge(21);
 
 		<%-- credit card & bank account frequency & day frequency --%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
