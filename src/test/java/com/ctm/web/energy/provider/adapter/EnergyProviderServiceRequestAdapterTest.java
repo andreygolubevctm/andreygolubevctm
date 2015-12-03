@@ -9,8 +9,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -32,8 +30,6 @@ public class EnergyProviderServiceRequestAdapterTest {
         final EnergyProviderRequest providerRequest = requestAdapter.adapt(request);
         assertEquals(PostCode.instanceOf("4000"), providerRequest.getPostCode());
         assertEquals(Suburb.instanceOf(""), providerRequest.getSuburb());
-        verify(request, times(1)).getPostcode();
-        verify(request, times(1)).getSuburb();
     }
 
     @Test
@@ -43,8 +39,6 @@ public class EnergyProviderServiceRequestAdapterTest {
         final EnergyProviderRequest providerRequest = requestAdapter.adapt(request);
         assertEquals(PostCode.instanceOf("4000"), providerRequest.getPostCode());
         assertEquals(Suburb.instanceOf("Brisbane"), providerRequest.getSuburb());
-        verify(request, times(1)).getPostcode();
-        verify(request, times(1)).getSuburb();
     }
 
     @Test(expected = IllegalArgumentException.class)
