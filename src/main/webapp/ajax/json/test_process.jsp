@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" /> 
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 <%-- Load the params into data --%>
 <go:setData dataVar="data" value="*DELETE" xpath="settings" />

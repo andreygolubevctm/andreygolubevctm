@@ -4,7 +4,7 @@
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.get_email_id')}" />
 
-<jsp:useBean id="emailDetailsService" class="com.ctm.services.email.EmailDetailsService" scope="page" />
+<jsp:useBean id="emailDetailsService" class="com.ctm.web.core.email.services.EmailDetailsService" scope="page" />
 
 <core_new:no_cache_header/>
 

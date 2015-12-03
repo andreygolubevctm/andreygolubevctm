@@ -3,7 +3,7 @@
 
 <session:new verticalCode="GENERIC" forceNew="true" authenticated="true" />
 
-<jsp:useBean id="accessCheckService" class="com.ctm.services.AccessCheckService" scope="page" />
+<jsp:useBean id="accessCheckService" class="com.ctm.web.core.services.AccessCheckService" scope="page" />
 <c:choose>
 	<c:when test="${accessCheckService.isLocked(param.transactionId , authenticatedData.login.user.uid, param.verticalCode)}">
 		<c:set var="accessTouch"  value="${accessCheckService.getLatestTouch()}" scope="request" />

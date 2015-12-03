@@ -1,3 +1,4 @@
+<%@ tag import="com.ctm.web.core.email.model.EmailMode" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -11,7 +12,7 @@
 <%@ attribute name="rankBy"			required="true"	 rtexprvalue="true"	 description="eg. price-asc, benefitsSort-asc" %>
 <%@ attribute name="rankParamName"	required="false"	 rtexprvalue="true"	 description="rankParamName" %>
 
-<jsp:useBean id="fatalErrorService" class="com.ctm.services.FatalErrorService" scope="page" />
+<jsp:useBean id="fatalErrorService" class="com.ctm.web.core.services.FatalErrorService" scope="page" />
 
 
 	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
@@ -134,14 +135,14 @@
 		</sql:update>
 	</c:if>
 
-<jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
+<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
 	<c:choose>
 		<c:when test="${pageSettings.getVerticalCode() == 'travel'}">
 			<%-- Attempt to send email only after best price has been set and only if not call centre user --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.travel.email && empty data.userData.emailSent}">
 
 					<%-- enums are not will handled in jsp --%>
-				<% request.setAttribute("BEST_PRICE", com.ctm.model.email.EmailMode.BEST_PRICE); %>
+				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
 					${emailService.send(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
 				</c:catch>
@@ -159,9 +160,9 @@
 		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
 			<%-- Attempt to send email only once and only if not call centre user --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">
-				<%-- <jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />--%>
+				<%-- <jsp:useBean id="emailService" class="com.ctm.web.core.services.email.EmailService" scope="page" />--%>
 				<%-- enums are not will handled in jsp --%>
-				<% request.setAttribute("BEST_PRICE", com.ctm.model.email.EmailMode.BEST_PRICE); %>
+				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
 					${emailService.send(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
 				</c:catch>

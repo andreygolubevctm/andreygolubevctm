@@ -7,7 +7,7 @@
 <session:new verticalCode="CREDITCARD" />
 <core_new:quote_check quoteType="CREDITCARD" />
 
-<jsp:useBean id="productService" class="com.ctm.services.creditcards.ProductService" scope="page" />
+<jsp:useBean id="productService" class="com.ctm.web.creditcards.services.ProductService" scope="page" />
 <c:set var="tmpProductCode">
 	<c:out escapeXml="true" value="${param.productID}" />
 </c:set>

@@ -129,8 +129,10 @@ GOV Rebate Factor - Calculate new rebate based on rebate multiplier variables
 -------------
 --%>
 
-<%-- Include this tag to add required rebate multiplier variables to the request --%>
-<health:changeover_rebates />
+<jsp:useBean id="changeOverRebatesService" class="com.ctm.web.simples.services.ChangeOverRebatesService" />
+<c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(null)}"/>
+<c:set var="rebate_multiplier_current" value="${changeOverRebates.getCurrentMultiplier()}"/>
+<c:set var="rebate_multiplier_future" value="${changeOverRebates.getFutureMultiplier()}"/>
 
 <c:set var="rebateChangeover">
 	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebate * rebate_multiplier_future}" />
