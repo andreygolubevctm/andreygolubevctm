@@ -22,15 +22,9 @@
 		if(isModal === true) {
 			$callCentreFields = $(".more-info-content").find(callCentreNumber);
 		}
-		if (applicationSteps.indexOf(navigationId) > -1){
-			$callCentreFields.text(meerkat.site.content.callCentreNumberApplication);
-			$callCentreFields.closest('.callCentreNumberClick').attr("href", "tel:"+meerkat.site.content.callCentreNumberApplication); // Need to change mobile clicks
-			$callCentreHelpFields.text(meerkat.site.content.callCentreHelpNumberApplication);
-		}else{
-			$callCentreFields.text(meerkat.site.content.callCentreNumber);
-			$callCentreFields.closest('.callCentreNumberClick').attr("href", "tel:"+meerkat.site.content.callCentreNumber); // Need to change mobile clicks
-			$callCentreHelpFields.text(meerkat.site.content.callCentreHelpNumber);
-		}
+		$callCentreFields.text(meerkat.site.content.callCentreNumber);
+		$callCentreFields.closest('.callCentreNumberClick').attr("href", "tel:"+meerkat.site.content.callCentreNumber); // Need to change mobile clicks
+		$callCentreHelpFields.text(meerkat.site.content.callCentreHelpNumber);
 	}
 
 	meerkat.modules.register("healthPhoneNumber", {

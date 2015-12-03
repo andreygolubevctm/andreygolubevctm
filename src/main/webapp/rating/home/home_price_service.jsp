@@ -5,7 +5,7 @@
 <fmt:setLocale value="en_US" />
 
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 

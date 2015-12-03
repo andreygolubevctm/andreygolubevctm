@@ -211,12 +211,8 @@ var healthFunds_CBH = {
 
 			<%-- Dependants --%>
 			healthFunds._dependants('CBHS policies provide cover for all dependents under the age of 18 including step and foster children. Adult dependents who are aged between 18 and 24 years and who are: studying full time (min 20 hours per week), 1st or 2nd year apprentices or employed on an unpaid internship may continue to be covered by CBHS policies. Other adult dependents can apply for a separate policy (subject to meeting eligibility criteria).');
-			if (Results.getSelectedProduct() !== false && Results.getSelectedProduct().info.productTitle == 'CBHS Prestige (with Non-student Dependant/s)') {
-				$.extend(healthDependents.config, { 'school':false, 'schoolMin':18, 'schoolMax':24, 'schoolID':false });
-			}
-			else {
-				$.extend(healthDependents.config, { 'school':true, 'schoolMin':18, 'schoolMax':24, 'schoolID':false });
-			}
+
+			meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, 'schoolMinAge':18, 'schoolMaxAge':24, showSchoolIdField:false });
 
 			<%-- Partner authority --%>
 			healthFunds._partner_authority(true);
@@ -284,7 +280,7 @@ var healthFunds_CBH = {
 		if (!$('body').hasClass('injectingFund')) {
 			<%-- Dependants --%>
 			healthFunds._dependants(false);
-			healthDependents.resetConfig();
+			meerkat.modules.healthDependants.resetConfig();
 
 			healthFunds._reset();
 

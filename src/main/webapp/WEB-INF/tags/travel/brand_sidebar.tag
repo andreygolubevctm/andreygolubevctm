@@ -7,7 +7,7 @@
 	<div class="col-xs-12">
 		<p><content:get key="briefInsurerCopy"/></p>
 	</div>
-	<jsp:useBean id="logoGridService" class="com.ctm.services.LogoGridService" scope="page" />
+	<jsp:useBean id="logoGridService" class="com.ctm.web.core.services.LogoGridService" scope="page" />
 	${logoGridService.init(pageContext.request)}
 
 	<c:forEach items="${logoGridService.getMaxProviderCodes()}" var="brand">

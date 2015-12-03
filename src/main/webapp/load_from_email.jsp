@@ -1,14 +1,52 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true"/></c:set>
-<c:set var="id"><c:out value="${param.id}" escapeXml="true"/></c:set>
-<c:set var="hash"><c:out value="${param.hash}" escapeXml="true"/></c:set>
-<c:set var="productId"><c:out value="${param.productId}" escapeXml="true"/></c:set>
-<c:set var="email"><c:out value="${param.email}" escapeXml="true"/></c:set>
-<c:set var="type"><c:out value="${param.type}" escapeXml="true"/></c:set>
-<c:set var="expired"><c:out value="${param.expired}" escapeXml="true"/></c:set>
-<c:set var="campaignId"><c:out value="${param.cid}" escapeXml="true"/></c:set>
+<c:set var="logger" value="${log:getLogger('jsp.load_from_email')}" />
+
+<c:choose>
+	<c:when test="${not empty param.token}">
+		<jsp:useBean id="tokenServiceFactory" class="com.ctm.web.core.email.services.token.EmailTokenServiceFactory"/>
+		<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstanceAlt(pageContext.getRequest())}" />
+
+		<c:set var="parametersMap" value="${tokenService.decryptToken(param.token)}"/>
+		<c:set var="emailData" value="${tokenService.getIncomingEmailDetails(param.token)}"/>
+
+		<c:if test="${empty emailData}">
+			<c:set var="hasLogin" value="${tokenService.hasLogin(param.token)}"/>
+			<c:choose>
+				<c:when test="${hasLogin}">
+					${logger.info('Token has expired and user can login. Redirecting to retrieve_quotes.jsp {}', log:kv('parameters', parametersMap))}
+					<c:redirect url="${pageSettings.getBaseUrl()}retrieve_quotes.jsp"/>
+				</c:when>
+				<c:otherwise>
+					${logger.info('Token has expired and user cannot login. Redirecting to start_quote.jsp {}', log:kv('parameters', parametersMap))}
+					<c:redirect url="${pageSettings.getBaseUrl()}start_quote.jsp"/>
+				</c:otherwise>
+			</c:choose>
+
+		</c:if>
+
+		<c:set var="vertical"><c:out value="${parametersMap.vertical}" escapeXml="true"/></c:set>
+		<c:set var="id"><c:out value="${parametersMap.transactionId}" escapeXml="true"/></c:set>
+		<c:set var="hash"><c:out value="${parametersMap.hashedEmail}" escapeXml="true"/></c:set>
+		<c:set var="productId"><c:out value="${parametersMap.productId}" escapeXml="true"/></c:set>
+		<c:set var="email"><c:out value="${parametersMap.emailAddress}" escapeXml="true"/></c:set>
+		<c:set var="type"><c:out value="${parametersMap.emailTokenType}" escapeXml="true"/></c:set>
+
+		<c:set var="expired"><c:out value="${parametersMap.expired}" escapeXml="true"/></c:set>
+		<c:set var="campaignId"><c:out value="${parametersMap.cid}" escapeXml="true"/></c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true"/></c:set>
+		<c:set var="id"><c:out value="${param.id}" escapeXml="true"/></c:set>
+		<c:set var="hash"><c:out value="${param.hash}" escapeXml="true"/></c:set>
+		<c:set var="productId"><c:out value="${param.productId}" escapeXml="true"/></c:set>
+		<c:set var="email"><c:out value="${param.email}" escapeXml="true"/></c:set>
+		<c:set var="type"><c:out value="${param.type}" escapeXml="true"/></c:set>
+		<c:set var="expired"><c:out value="${param.expired}" escapeXml="true"/></c:set>
+		<c:set var="campaignId"><c:out value="${param.cid}" escapeXml="true"/></c:set>
+	</c:otherwise>
+</c:choose>
 
 <settings:setVertical verticalCode="${fn:toUpperCase(vertical)}" />
 

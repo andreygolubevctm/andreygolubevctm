@@ -51,15 +51,15 @@
 		</jsp:attribute>
 		<jsp:body>
 			<ui:bubble variant="chatty">
-					<div class="default">
-						<content:get key="defaultStep1Marketing"/>
-					</div>
-					<div class="amt">
-						<content:get key="amtStep1Marketing"/>
-					</div>
-					<div class="single">
-						<content:get key="singleTripStep1Marketing"/>
-					</div>
+				<div class="default">
+					<content:get key="defaultStep1Marketing"/>
+				</div>
+				<div class="amt">
+					<content:get key="amtStep1Marketing"/>
+				</div>
+				<div class="single">
+					<content:get key="singleTripStep1Marketing"/>
+				</div>
 			</ui:bubble>
 			<layout:slide_content>
 				<%-- PROVIDER TESTING --%>
@@ -72,19 +72,19 @@
 
 				<%-- COUNTRY SECTION --%>
 				<form_new:fieldset showHelpText="true" legend="Where are you going?" className="travel_details_destinations" id="destinationsfs">
-					<jsp:useBean id="locationsService" class="com.ctm.services.IsoLocationsService" scope="page" />
-					<core:select_tags 
-						variableListName="countrySelectionList"
-						fieldType="autocomplete"
-						variableListArray="${locationsService.getCountrySelectionList()}"
-						xpath="travel/destinations" 
-						xpathhidden="travel/destination" 
-						label="What Country(ies) are you going to?"
-						title="Where are you travelling?"
-						validationErrorPlacementSelector=".travel_details_destinations"
-						helpId="213"
-						source="/${pageSettings.getContextFolder()}isolocations/search.json?search="
-						/>
+					<jsp:useBean id="locationsService" class="com.ctm.web.travel.services.TravelIsoLocationsService" scope="page" />
+					<core:select_tags
+							variableListName="countrySelectionList"
+							fieldType="autocomplete"
+							variableListArray="${locationsService.getCountrySelectionList()}"
+							xpath="travel/destinations"
+							xpathhidden="travel/destination"
+							label="What Country(ies) are you going to?"
+							title="Where are you travelling?"
+							validationErrorPlacementSelector=".travel_details_destinations"
+							helpId="213"
+							source="/${pageSettings.getContextFolder()}isolocations/search.json?search="
+							/>
 					<field:hidden xpath="travel/unknownDestinations" />
 				</form_new:fieldset>
 

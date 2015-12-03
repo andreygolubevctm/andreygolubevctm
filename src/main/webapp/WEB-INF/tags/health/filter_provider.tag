@@ -26,7 +26,7 @@
 <c:forEach items="${providersList}" var="provider">
 	<c:set var="FundCode"><c:out value="${provider.getCode()}" /></c:set>
 	<c:set var="Name"><c:out value="${provider.getName()}" /></c:set>
-	<c:set var="isRestricted" value="${provider.getPropertyDetail(\"isRestricted\")}"/>
+	<c:set var="isRestricted" value="${provider.getPropertyDetail('isRestricted')}"/>
 	<c:choose>
 		<c:when test="${isRestricted eq 1}">
 			<c:set var="isFundRestricted" value="restricted" />

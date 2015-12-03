@@ -76,21 +76,6 @@
         "Custom message"
     );
 
-/*    $.validator.addMethod("notWeekends",
-        function(value, element) {
-            return BasicDateHandler.isNotWeekEnd( $(element).datepicker("getDate") );
-        },
-        "Custom message"
-    );*/
-
-/*    $.validator.addMethod("${name}notPublicHolidays",
-        function(value, element) {
-            //return ${name}Handler.isNotPublicHoliday( $(element).datepicker("getDate") )[0];
-            return true;
-        },
-        "Custom message"
-    );*/
-
     /** Moved this into this file as the dateEUR validation was firing after youngestDOB/oldestDOB due to compilation order into main file */
     function checkDob(value, age, selector) {
         if (selector) {
@@ -110,19 +95,23 @@
 
             if (ageDate > now) {
                 return false;
+            } else {
+                return true;
             }
         }
-        return true;
+        return;
     }
 
     $.validator.addMethod('youngestDOB', function(value, element, params) {
         if (typeof params == 'undefined') return false;
-        return checkDob(value, params.ageMin || params, params.selector || false);
+        var result = checkDob(value, params.ageMin || params, params.selector || false);
+        return typeof result == 'undefined' ? true : result;
     });
 
     $.validator.addMethod('oldestDOB', function(value, element, params) {
         if (typeof params == 'undefined') return false;
-        return !checkDob(value, params.ageMax || params, params.selector || false);
+        var result = checkDob(value, params.ageMax || params, params.selector || false);
+        return typeof result == 'undefined' ? true : !result;
     });
 
 })(jQuery);

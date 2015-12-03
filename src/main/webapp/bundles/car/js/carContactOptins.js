@@ -101,7 +101,7 @@
 	function getValue(elementId) {
 		var $element = $(elementId);
 
-		if ($element.first().attr('type') === 'radio') {
+		if ($element.first().attr('type') === 'radio' ) {
 			return ($element.filter(':checked').val() === 'Y') ? 'Y' : 'N';
 		}
 

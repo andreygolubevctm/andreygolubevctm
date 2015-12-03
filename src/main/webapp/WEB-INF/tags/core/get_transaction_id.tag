@@ -13,7 +13,7 @@
 <%@ attribute name="emailAddress"	required="false" rtexprvalue="true"	description="" %>
 <%@ attribute name="quoteType"		required="false" rtexprvalue="true"	description="The vertical this quote is associated with" %>
 
-<jsp:useBean id="sessionDataUtils" class="com.ctm.utils.SessionDataUtils" scope="page" />
+<jsp:useBean id="sessionDataUtils" class="com.ctm.web.core.utils.SessionDataUtils" scope="page" />
 
 <c:set var="serverIp"><%
 	String ip = request.getLocalAddr();

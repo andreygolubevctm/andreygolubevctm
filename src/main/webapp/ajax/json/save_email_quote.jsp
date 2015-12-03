@@ -184,12 +184,24 @@
 					<%-- Send off the Email response via json/ajax/send.jsp --%>
 					<c:if test="${sendConfirmation == 'yes'}">
 						<c:catch var="silentError">
+							<jsp:useBean id="tokenServiceFactory" class="com.ctm.web.core.email.services.token.EmailTokenServiceFactory"/>
+							<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
+							<c:set var="hashedEmail"><security:hashed_email email="${emailAddress}" brand="${brand}" /></c:set>
+
+							<c:if test="${pageSettings.getSetting('emailTokenEnabled')}">
+								<c:set var="unsubscribeTokenVar" value="${tokenService.generateToken(data.current.transactionId, hashedEmail, pageSettings.getBrandId(), 'quote', 'unsubscribe', null, null, pageSettings.getVerticalCode(), null, true)}" />
+								<c:set var="continueOnlineTokenVar" value="${tokenService.generateToken(data.current.transactionId, hashedEmail, pageSettings.getBrandId(), 'quote', 'load', null, null, pageSettings.getVerticalCode(), null, true)}" />
+							</c:if>
+
 							<c:set var="emailResponse">
 								<c:import url="send.jsp">
 									<c:param name="vertical" value="${vertical}" />
 									<c:param name="mode" value="quote" />
 									<c:param name="emailAddress" value="${emailAddress}" />
 									<c:param name="transactionId" value="${data.current.transactionId}" /> <%-- CHECK / TODO: Would never get passed as send.jsp never looks for this as a param? --%>
+									<c:param name="unsubscribeToken" value="${unsubscribeTokenVar}"/>
+									<c:param name="continueOnlineToken" value="${continueOnlineTokenVar}"/>
+									<c:param name="createUnsubscribeEmailToken" value="${true}"/>
 								</c:import>
 							</c:set>
 						</c:catch>

@@ -3,10 +3,10 @@
 <c:set var="logger" value="${log:getLogger('jsp.common.js.health.healthFunds_THF')}" />
 <session:get settings="true" />
 
-<c:set var="callCentreNumberApplication" scope="request"><content:get key="callCentreNumberApplication"/></c:set>
+<c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 <c:set var="dependentText">This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to a policy. Adult dependants outside this criteria can be covered by an additional premium on certain covers or can elect to take out their own policy.</c:set>
-<c:if test="${not empty callCentreNumberApplication}">
-	<c:set var="dependentText">${dependentText} Please call <content:get key="brandDisplayName"/> on ${callCentreNumberApplication}</c:set>
+<c:if test="${not empty callCentreNumber}">
+	<c:set var="dependentText">${dependentText} Please call <content:get key="brandDisplayName"/> on ${callCentreNumber}</c:set>
 	<c:if test="${pageSettings.getSetting('liveChatEnabled') eq 'Y'}">
 		<c:set var="dependentText">${dependentText} or chat to our consultants online</c:set>
 	</c:if>
@@ -34,9 +34,6 @@ var healthFunds_THF = {
 		"use strict";
 		healthFunds_THF.state = $('#health_situation_state').val();
 		healthFunds_THF.healthCvr = $('#health_situation_healthCvr').val();
-
-		<%--schoolgroups and defacto--%>
-		healthDependents.config = { 'school': true, 'defacto':false, 'schoolMin': 21, 'schoolMax': 24 };
 
 		<%-- Previous fund --%>
 		$('#health_previousfund_primary_authority').setRequired(true,'Teachers Health Fund require authorisation to contact your previous fund');
@@ -144,32 +141,9 @@ var healthFunds_THF = {
 			<%--dependant definition--%>
 			healthFunds._dependants('<c:out value="${dependentText}" escapeXml="true"/>');
 			<%--change age of dependants and school --%>
-			healthDependents.maxAge = 25;
+			meerkat.modules.healthDependants.setMaxAge(25);
 			<%--schoolgroups and defacto --%>
-			$.extend(healthDependents.config, { 'school': true, 'schoolMin': 23, 'schoolMax': 24, 'schoolID': false, 'schoolIDMandatory': false, 'schoolDate': false, 'schoolDateMandatory': false });
-
-			<%--School list--%>
-			var instituteElement =  '<select>
-				<option value="">Please choose...</option>
-				<c:import url="/WEB-INF/option_data/educationalInstitute.html" />
-			</select>';
-			$('.health_dependant_details_schoolGroup .fieldrow_value').each(function (i) {
-				var name = $(this).find('input').attr('name');
-				var id = $(this).find('input').attr('id');
-				$(this).append(instituteElement);
-				$(this).find('select').attr('name', name).attr('id', id + 'select');
-				$(this).find('select').setRequired(true, 'Please select dependant '+(i+1)+'\'s educational institute');
-				$('#health_application_dependants_dependant' + (i+1) + '_school').hide();
-			});
-			$('.health_dependant_details_schoolIDGroup input').attr('maxlength', '10');
-
-			<%--Change the Name of School label--%>
-			healthFunds.$_tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
-			$('.health_dependant_details_schoolGroup .control-label').html('Educational institute this dependant is attending');
-			$('.health_dependant_details_schoolGroup .help_icon').hide();
-
-			healthDependents.config.schoolID = false;
-			healthDependents.config.schoolDate = false;
+			meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, 'schoolMinAge': 23, 'schoolMaxAge': 24, showSchoolIdField: false, 'schoolIdRequired': false, showSchoolCommencementField: false, 'schoolDateRequired': false });
 		}
 
 		<%--calendar for start cover--%>
@@ -262,18 +236,13 @@ var healthFunds_THF = {
 		healthFunds._reset();
 
 		<%-- turn back on credit card option --%>
-		$('#health_payment_details_type_cc').prop('disabled', false);
-		$('#health_payment_details_type_cc').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
+		$('#health_payment_details_type_cc').prop('disabled', false).parent('label').removeClass('disabled').removeClass('disabled-by-fund');
 
 		$('#thf_eligibility').hide();
 		$('.thf-payment-legend').remove();
 
 		if(healthFunds_THF.healthCvr == 'F' || healthFunds_THF.healthCvr == 'SPF') {
-			$('.health_dependant_details_schoolGroup select').remove();
-			$('.health_dependant_details_schoolIDGroup input').removeAttr('maxlength');
-			$('.health_dependant_details_schoolGroup .control-label').html(healthFunds.$_tmpSchoolLabel);
-			delete healthFunds.$_tmpSchoolLabel;
-			$('.health_dependant_details_schoolGroup .help_icon').show();
+			<%-- TODO: Are these necessary? --%>
 			$('.health_application_dependants_dependant_schoolIDGroup').show();
 			$('.health_dependant_details_schoolDateGroup').show();
 		}
