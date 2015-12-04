@@ -274,7 +274,8 @@
                     $electricityInputs.show();
                     $electricityUsage.hide();
                     $additionalEstimatesElectricity.show();
-                }
+                    _toggleElectricityMeter();
+                    }
             } else {
                 $electricityInputs.hide();
             }
