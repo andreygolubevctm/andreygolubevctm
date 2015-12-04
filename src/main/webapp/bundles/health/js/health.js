@@ -176,7 +176,13 @@
 				if (meerkat.site.isCallCentreUser === true) {
 					console.log("Is a call centre user");
 					// Check mandatory dialog have been ticked
-					var $_mandatory_dialogs = $('.journeyEngineSlide').find('.simples-dialogue.mandatory:visible');
+					console.log("$('.journeyEngineSlide').find('.simples-dialogue.mandatory:visible')"+$('.journeyEngineSlide').find('.simples-dialogue.mandatory:visible'));
+					console.log("$('.journeyEngineSlide').find('.simples-dialogue.mandatory')"+$('.journeyEngineSlide').find('.simples-dialogue.mandatory'));
+
+					var $_mandatory_dialogs = $('.journeyEngineSlide').find('.simples-dialogue.mandatory');
+					console.log("$_mandatory_dialogs: ",$_mandatory_dialogs);
+					console.log("$_mandatory_dialogs.length: "+$_mandatory_dialogs.length);
+					console.log("$_mandatory_dialogs.find('input:checked').length: "+$_mandatory_dialogs.find('input:checked').length);
 					if ($_mandatory_dialogs.length != $_mandatory_dialogs.find('input:checked').length) {
 						console.log("Mandatory Prompts haven't been ticked and attempting to continue;");
 						meerkat.modules.dialogs.show({
