@@ -16,7 +16,7 @@
 
 	<jsp:body>
 
-		<form_new:fieldset legend="Choose your benefits" >
+		<form_new:fieldset legend="Choose which benefits are important to you" >
 
 			<div class="scrollable row">
 
