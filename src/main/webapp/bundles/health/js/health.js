@@ -170,6 +170,21 @@
 						toggleDialogueInChatCallback();
 					});
 				}
+			},
+			onBeforeLeave:function onStartBeforeLeave(event) {
+				console.log("Attempting to leave");
+				if (meerkat.site.isCallCentreUser === true) {
+					console.log("Is a call centre user");
+					// Check mandatory dialog have been ticked
+					var $_mandatory_dialogs = $('.journeyEngineSlide').find('.simples-dialogue.mandatory:visible');
+					if ($_mandatory_dialogs.length != $_mandatory_dialogs.find('input:checked').length) {
+						console.log("Mandatory Prompts haven't been ticked and attempting to continue;");
+						meerkat.modules.dialogs.show({
+							htmlContent: 'Please complete the mandatory dialogue prompts before continuing.'
+						});
+					}
+
+				}
 			}
 		};
 
