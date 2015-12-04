@@ -202,7 +202,7 @@
 					// Check mandatory dialog have been ticked
 
 					console.log("$('input[name='health_simples_contactType'']:checked').val(): "+$('input[name="health_simples_contactType"]:checked').val());
-					if ($('input[name="health_simples_contactType"]:checked').val() !== undefined) {
+					if ($('input[name="health_simples_contactType"]:checked').val() === undefined) {
 						console.log("Mandatory Prompts haven't been ticked and attempting to continue;");
 						meerkat.modules.dialogs.show({
 							htmlContent: 'Please complete the mandatory dialogue prompts before continuing.'
