@@ -223,7 +223,8 @@
 
 						console.log("eventObject: ",eventObject);
 						console.log("eventObject.stopChangeStep :"+eventObject.stopChangeStep);
-						if (eventObject.stopChangeStep === null || eventObject.stopChangeStep !== true) {
+						console.log("eventObject.hasOwnProperty('stopChangeStep'): ", eventObject.hasOwnProperty('stopChangeStep'));
+						if (eventObject.hasOwnProperty('stopChangeStep') === false || eventObject.stopChangeStep !== true) {
 							console.log("process step after defer: ");
 							// continue to next step...
 							_.defer(function () {
