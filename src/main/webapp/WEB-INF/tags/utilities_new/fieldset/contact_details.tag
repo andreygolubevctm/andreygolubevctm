@@ -33,7 +33,7 @@
     </form_new:row>
 
     <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
-    <c:set var="privacyOptinText">* I agree that Thought World, partner of ${brandedName}, may contact me about energy plans from a range of retailers.  I confirm that I have read the <form:link_privacy_statement/>.</c:set>
+    <c:set var="privacyOptinText">* I agree that Thought World, partner of ${brandedName}, may contact me about energy plans from a <a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>range of retailers</a>.  I confirm that I have read the <form:link_privacy_statement/>.</c:set>
     <c:set var="optinMarketingText">Yes, keep me updated about news and special offers from ${brandedName}</c:set>
     <form_new:privacy_optin vertical="utilities" labelText="${privacyOptinText}"/>
     <form_new:row className="${vertical}-contact-details-optin-group" hideHelpIconCol="true">
