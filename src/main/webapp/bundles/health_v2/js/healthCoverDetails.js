@@ -411,8 +411,11 @@
     function closeModal(){
         meerkat.modules.dialogs.close(modalId);
     }
+
     function unlockAndClose() {
         unlockForm();
+        meerkat.modules.healthDependants.initHealthDependants(true);
+        meerkat.modules.healthDependants.updateDependantConfiguration();
         closeModal();
     }
 

@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class SimplesMessageService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesMessageService.class);

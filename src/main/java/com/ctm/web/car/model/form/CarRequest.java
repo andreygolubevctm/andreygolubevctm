@@ -1,8 +1,8 @@
 package com.ctm.web.car.model.form;
 
-import com.ctm.web.core.model.formData.Request;
+import com.ctm.web.core.model.formData.RequestWithQuote;
 
-public class CarRequest implements Request<CarQuote> {
+public class CarRequest implements RequestWithQuote<CarQuote> {
 
     private String clientIpAddress;
 

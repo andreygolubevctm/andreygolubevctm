@@ -22,7 +22,7 @@ import org.xml.sax.SAXException;
 
 import java.util.IllegalFormatException;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.simples.model.CallInfo.STATE_INACTIVE;
 import static java.lang.String.format;
 
