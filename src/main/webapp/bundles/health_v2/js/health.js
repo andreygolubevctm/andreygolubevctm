@@ -196,6 +196,7 @@
 				}
 			},
 			onBeforeLeave:function onStartBeforeLeave(event) {
+				console.log("event: ",event);
 				console.log("Attempting to leave");
 				if (meerkat.site.isCallCentreUser === true) {
 					console.log("Is a call centre user");
@@ -207,6 +208,7 @@
 						meerkat.modules.dialogs.show({
 							htmlContent: 'Please complete the mandatory dialogue prompts before continuing.'
 						});
+						event.stopChangeStep = true;
 					}
 				}
 			}
