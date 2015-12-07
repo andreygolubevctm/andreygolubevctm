@@ -124,7 +124,12 @@ VALUES
 SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 54);
 
 INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `deductionText`)
-VALUES (@PARENT_ROW, 'TBC');
+VALUES (@PARENT_ROW, 'Monthly Payments:
+Cover start date today – Your first payment will be debited in the next 24 hours and thereafter on the same day each month.
+Cover starts later than today - Your first payment will be debited on the policy start date and thereafter on the same day each month.
+Annual Payments:
+Cover start date today – Your payment will be debited in the next 24 hours.
+Cover starts later than today – Your payment will be debited on your policy start date.');
 
 
 INSERT INTO `ctm`.`health_provider_rules_payment_frequencies` (`healthProviderRulesId`, `type`,  `weekly`, `fortnightly`, `monthly`, `quarterly`, `halfYearly`, `annually`)
@@ -311,7 +316,12 @@ VALUES
 SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 8);
 
 INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `deductionText`)
-VALUES (@PARENT_ROW, 'TBC');
+VALUES (@PARENT_ROW, 'Monthly Payments:
+Cover start date today – Your first payment will be debited in the next 24 hours and thereafter on the same day each month.
+Cover starts later than today - Your first payment will be debited on the policy start date and thereafter on the same day each month.
+Annual Payments:
+Cover start date today – Your payment will be debited in the next 24 hours.
+Cover starts later than today – Your payment will be debited on your policy start date.');
 
 INSERT INTO `ctm`.`health_provider_rules_payment_frequencies` (`healthProviderRulesId`, `type`,  `weekly`, `fortnightly`, `monthly`, `quarterly`, `halfYearly`, `annually`)
 VALUES (@PARENT_ROW, 'CC', 0, 1, 1, 0, 0, 1);
@@ -357,7 +367,12 @@ VALUES
 SET @PARENT_ROW = (SELECT `healthProviderRulesId` FROM `ctm`.`health_provider_rules` WHERE providerId = 5);
 
 INSERT INTO `ctm`.`health_provider_rules_deductions` (`healthProviderRulesId`, `deductionText`)
-VALUES (@PARENT_ROW, 'TBC');
+VALUES (@PARENT_ROW, 'Monthly Payments:
+Cover start date today – Your first payment will be debited in the next 24 hours and thereafter on the same day each month.
+Cover starts later than today - Your first payment will be debited on the policy start date and thereafter on the same day each month.
+Annual Payments:
+Cover start date today – Your payment will be debited in the next 24 hours.
+Cover starts later than today – Your payment will be debited on your policy start date.');
 
 INSERT INTO `ctm`.`health_provider_rules_dependant_schools` (`healthProviderRulesId`, `schoolAgeMinimum`, `mustBeFullTimeStudent`, `schoolNameInputMethod`, `schoolNameLabel`, `studentIdRule`, `studentIdMaximumLength`, `commencedDateRule`, `apprenticeRule`)
 VALUES (@PARENT_ROW,
