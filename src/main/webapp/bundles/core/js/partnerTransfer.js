@@ -44,7 +44,7 @@
 		// avoid issues with the F5
 		var tracking = _.omit(settings.tracking, 'brandCode');
 		tracking.brandXCode = settings.tracking.brandCode;
-		tracking = encodeURIComponent(decodeURIComponent(JSON.stringify(tracking)));
+		tracking = encodeURIComponent(JSON.stringify(tracking));
 		try {
 
 			// build the initial url
