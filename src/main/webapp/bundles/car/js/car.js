@@ -375,10 +375,10 @@
 
             var vehUsage = $vehicleUsage.text();
 
-            if ($vehicleUsage[0].selectedIndex) {
-                if ($vehicleFieldSet.find('.passengerPayment input:checked').val() == 'Y') {
+            if ($vehicleUsage[0].selectedIndex > 1) {
+                if ($vehicleFieldSet.find('.goodsPayment input:checked').val() == 'Y') {
                     vehUsage = $vehicleFieldSet.find('.goodsPayment').text();
-                } else {
+                } else if ($vehicleFieldSet.find('.passengerPayment input:checked').val() == 'Y') {
                     vehUsage = $vehicleFieldSet.find('.passengerPayment').text();
                 }
             }
