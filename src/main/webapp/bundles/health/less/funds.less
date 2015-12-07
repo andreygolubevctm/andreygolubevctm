@@ -4,7 +4,7 @@
 #confirm-step,
 .simples-dialogue-31,
 .health-payment-details_premium,
-.health_declaration,
+.health_declaration-group,
 .health_contact_authority,
 .health-payment-details_update,
 .health-payment_details-claims-group,
@@ -248,29 +248,27 @@ body{
 		}
 
 		.health_declaration,
+		.health_declaration-group h2,
 		.health_credit-card-details_day_group,
-		.health_bank-details_day-group {
-			display:none !important;
-		}
+		.health_bank-details_day-group,
 		.health_contact_authority{
-		  display:none !important;
+			display:none !important;
 		}
 	}
 
 	/* AUF */
 	&.AUF{
 		.health_declaration,
+		.health_declaration-group h2,
 		.health_credit-card-details_day_group,
-		.health_bank-details_day-group {
+		.health_bank-details_day-group,
+		.health_contact_authority{
 			display:none !important;
 		}
 
 		.health_bank-details_policyDay-group,
 		.health_credit-card-details_policyDay-group {
 			display:block !important;
-		}
-		.health_contact_authority{
-		  display:none !important;
 		}
 	}
 
@@ -282,10 +280,7 @@ body{
 		}
 
 		.health_credit-card-details_policyDay-group,
-		.health_bank-details_policyDay-group {
-			display:block !important;
-		}
-
+		.health_bank-details_policyDay-group,
 		.health_credit-card-details_policyDay-message,
 		.health_bank-details_policyDay-message {
 			display:block !important;
@@ -293,7 +288,8 @@ body{
 
 		.health_credit-card-details_day_group,
 		.health_payment_bank_policyDay,
-		.health_bank-details_day-group {
+		.health_bank-details_day-group,
+		.health_contact_authority{
 			display:none !important;
 		}
 
@@ -306,9 +302,6 @@ body{
 		.health_credit-card-details_policyDay-group .select select,
 		.health_bank-details_policyDay-group .select select{
 			visibility: hidden !important;
-	}
-		.health_contact_authority{
-		  display:none !important;
 		}
 	}
 

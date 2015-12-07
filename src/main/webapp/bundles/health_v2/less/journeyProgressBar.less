@@ -1,0 +1,109 @@
+//
+// journeyProgressBar
+// --------------------------------------------------
+/* *********************************************
+	NOTE: THIS IS MOVED FROM CORE/LESS FOR HEALTH V2
+	IT IS OVERRIDING THE EXISTING ONE. MAYBE THIS WILL BE SUCCESSFUL... MAYBE NOT
+	IF IT IS THEN WE WILL NEED TO RUN BOTH OR MIGRATE ALL VERTICALS OVER
+ ******************************************** */
+.progress-bar-row {
+	border: 1px solid @border-colour;
+  	background-color: @main-bg-colour;
+
+  .journeyProgressBar_v2 {
+	//margin-bottom: @journeyProgressBar-margin-bottom;
+	list-style: none;
+	padding: 0 0 0 0;
+	margin-bottom: -5px;
+	ul {
+	  counter-reset: section;
+	}
+
+	li {
+	  counter-increment: section;
+	  line-height: @journeyProgressBar-lineheight;
+	  display: inline-block;
+	  font-size: @journeyProgressBar-size;
+	  font-weight: @journeyProgressBar-weight;
+	  position: relative;
+	  height: 46px;
+	  background-color: white;
+	  border-left: 1px solid @border-colour;
+	  &:last-child {
+		border-right: 1px solid @border-colour;
+	  }
+	}
+
+	a, div {
+	  color: @gray-dark;
+	  text-decoration: none;
+	  border-bottom: none;
+	  display: inline-block;
+	  text-indent: 0px;
+	  position: absolute;
+	  padding-right: @journeyProgressBar-horizontal-push;
+	  width: 100%;
+	  height: 46px;
+	  span {
+		padding-left: 8px;
+	  }
+	  &:before {
+		padding-left: 8px;
+		content: "Step " counters(section, ".") "\A";
+		white-space: pre;
+		color: @gray-dark;
+		font-size: @journeyProgressBar-separator-size+6px;
+		line-height: 25px;
+		top: 0px;
+	  }
+	}
+	a {
+	  &:focus {
+		outline: none;
+	  }
+	}
+	&:not(.complete) { /* Top level UL .complete shows on confirmation page which doesnt need hover */
+	  .complete {
+		&:hover {
+		  background-color: @journeyProgressBar-color-current;
+		  border-color: darken(@journeyProgressBar-color-current, 10%);
+		  color: white;
+		  &:before {
+			color: white;
+		  }
+		}
+		a, div {
+		  &:hover {
+			color: white;
+			&:before {
+			  color: white;
+			}
+		  }
+		}
+	  }
+	}
+	.complete {
+	  background-color: @main-bg-colour;
+	}
+	.current {
+	  color: white;
+	  background-color: @journeyProgressBar-color-current;
+	  border-color: @journeyProgressBar-border-color-current;
+	  a, div {
+		color: white;
+		&:before {
+		  color: white;
+		}
+	  }
+	}
+	a {
+	  &:hover {
+		color: @journeyProgressBar-color-hover;
+		border-color: @journeyProgressBar-border-color-hover;
+		&:before {
+		  color: @journeyProgressBar-color-hover;
+		}
+	  }
+	}
+  }
+}

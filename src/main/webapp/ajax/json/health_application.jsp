@@ -262,7 +262,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 			<%-- Was not successful --%>
 							<%-- If no fail has been recorded yet --%>
 			<x:otherwise>
-            	<c:choose>
+				<c:choose>
 					<%-- if online user record a join --%>
 					<c:when test="${empty callCentre && empty errorMessage}">
 						<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" resultJson="${healthApplicationService.createFailedResponse(tranId, pageContext.session.id)}" />

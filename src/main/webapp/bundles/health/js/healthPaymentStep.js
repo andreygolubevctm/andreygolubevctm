@@ -131,8 +131,7 @@
 		$premiumContainer.hide();
 		$updatePremiumButtonContainer.show();
 		$paymentContainer.hide();
-		$("#health_declaration-selection").hide();
-		$("#health_contactAuthority-selection").hide();
+		$(".health_declaration-group").hide();
 		$("#confirm-step").hide();
 		$(".simples-dialogue-31").hide();
 
@@ -217,7 +216,6 @@
 		today = new Date(end);
 		settings.maxStartDate = today.getUTCDate() + '/' + (today.getUTCMonth()+1) + '/' + today.getUTCFullYear();
 
-		//console.log(settings.minStartDate, settings.maxStartDate);
 	}
 
 	// Show approved listings only, this can potentially change per fund
@@ -381,10 +379,7 @@
 					}
 
 					// Show declaration checkbox
-					$("#health_declaration-selection").slideDown();
-
-					// Show Contact Authority
-					$("#health_contactAuthority-selection").slideDown();
+					$(".health_declaration-group").slideDown();
 
 					toggleClaimsBankAccountQuestion();
 

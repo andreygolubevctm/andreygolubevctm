@@ -3,14 +3,14 @@
 	.productSummary{
 		&.horizontal {
 			.companyLogo{
-				max-width: 90px;
-				max-height: @standard-logo-height;
+				width: 90px;
 				line-height: 18px;
-				float: left;
-				@media (@sm) {
+			  	@media (@sm) {
+				  float: right;
+				}
+				@media (@md) {
 				  float: left;
 				}
-
 				@media (@xs-only) {
 					height: 45px;
 					position: absolute;
@@ -30,14 +30,13 @@
 		}
 
 		.price{
-		  margin: 0 auto 0 auto;
+			margin-top: 5px;
 			@media (@md) {
-			  max-width: 129px;
+			  max-width: 119px;
 			}
 			@media (@lg) {
 			  max-width: 170px;
 			}
-			
 		}
 
 
@@ -89,7 +88,6 @@
 		&.horizontal{
 			overflow: hidden;
 
-
 			.price{
 				@media (@xs-only) {
 					margin-left:65px;
@@ -139,6 +137,8 @@
 			float: none;
 
 			.ie8 &{
+				width: 90px;
+				height: 45px;
 				margin-left: 30px !important; //This is ugly... but so is IE8! There is a -10px margin-left in core logos which this needs to combat
 			}
 		}
@@ -150,13 +150,55 @@
 
 			.companyLogo{
 
-				:not(.ie8) & {
-
-					position:absolute; /* Stops price colliding and being forced below */
+				float:left;
+				width: 26%;
 				margin-top: 10px;
 				margin-left: 3%;
 
-					.providersNormalSpriteImages(~"health"; ~""; ~"AHM",~"AUF",~"BUD",~"BUP",~"CBH",~"CTM",~"CUA",~"FRA",~"GMF",~"GMH",~"HCF",~"HIF",~"NIB",~"QCH",~"THF"; @logo-compressed-scale);
+				&.AHM{
+					background-position: 0px -45px;
+				}
+				&.AUF{
+					background-position: -90px -45px;
+				}
+				&.BUD{
+					background-position: -180px -45px;
+				}
+				&.BUP{
+					background-position: -270px -45px;
+				}
+				&.CBH{
+					background-position: -360px -45px;
+				}
+				&.CTM{
+					background-position: -450px -45px;
+				}
+				&.CUA{
+					background-position: -540px -45px;
+				}
+				&.FRA{
+					background-position: -630px -45px;
+				}
+				&.GMF{
+					background-position: -720px -45px;
+				}
+				&.GMH{
+					background-position: -810px -45px;
+				}
+				&.HCF{
+					background-position: -900px -45px;
+				}
+				&.HIF{
+					background-position: -990px -45px;
+				}
+				&.NIB{
+					background-position: -1080px -45px;
+				}
+				&.THF{
+					background-position: -1170px -45px;
+				}
+				&.QCH{
+					background-position: -1260px -45px;
 				}
 			}
 
@@ -232,13 +274,6 @@
 	}
 }
 
-.ie8 {
-	.featuresMode,
-	.policySummaryContainer {
-
-	}
-}
-
 /* Policy summary in right hand column */
 .policySummaryContainer{
 	@media (@xs-only) {
@@ -263,8 +298,9 @@
 }
 
 .companyLogo{
-	max-height: @standard-logo-height;
-	max-width: 90px;
+	height: 45px;
+	max-height: 45px;
+	width: 90px;
 
 
 	margin-left: auto;
@@ -272,5 +308,55 @@
 
 	overflow: hidden;
 
-	.providersNormalSpriteImagesVerticallyCentered(~"health"; ~""; ~"AHM",~"AUF",~"BUD",~"BUP",~"CBH",~"CTM",~"CUA",~"FRA",~"GMF",~"GMH",~"HCF",~"HIF",~"NIB",~"QCH",~"THF"; @standard-logo-height; @logo-price-spacer);
+	background-image: url('../../../graphics/logos/health/brands.png?version=20150331');
+	background-repeat: no-repeat;
+	background-size: inherit;
+
+
+
+	&.AHM{
+		background-position: 0px top;
+	}
+	&.AUF{
+		background-position: -90px top;
+	}
+	&.BUD{
+		background-position: -180px top;
+	}
+	&.BUP{
+		background-position: -270px top;
+	}
+	&.CBH{
+		background-position: -360px top;
+	}
+	&.CTM{
+		background-position: -450px top;
+	}
+	&.CUA{
+		background-position: -540px top;
+	}
+	&.FRA{
+		background-position: -630px top;
+	}
+	&.GMF{
+		background-position: -720px top;
+	}
+	&.GMH{
+		background-position: -810px top;
+	}
+	&.HCF{
+		background-position: -900px top;
+	}
+	&.HIF{
+		background-position: -990px top;
+	}
+	&.NIB{
+		background-position: -1080px top;
+	}
+	&.THF{
+		background-position: -1170px top;
+	}
+	&.QCH{
+		background-position: -1260px top;
+	}
 }

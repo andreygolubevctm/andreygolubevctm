@@ -44,10 +44,6 @@
 		<jsp:body>
 
 			<form_new:fieldset legend="Contact Details" >
-				<ui:bubble variant="chatty">
-					<h4>All About You</h4>
-					<p>By filling in your details below, we'll be able to email you your quotes and/or call you back if needed.</p>
-				</ui:bubble>
 
 				<c:set var="firstNamePlaceHolder">
 					<content:get key="firstNamePlaceHolder"/>
@@ -58,12 +54,12 @@
 				</c:set>
 
 				<c:set var="fieldXpath" value="${xpath}/name" />
-				<form_new:row label="First Name" fieldXpath="${fieldXpath}" className="clear">
+				<form_new:row label="First Name" fieldXpath="${fieldXpath}" className="clear required_input">
 					<field:person_name xpath="${fieldXpath}" title="name" required="true" placeholder="${firstNamePlaceHolder}" />
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/email" />
-				<form_new:row label="Email Address" fieldXpath="${fieldXpath}" className="clear">
+				<form_new:row label="Email Address" fieldXpath="${fieldXpath}" className="clear required_input">
 					<field_new:email xpath="${fieldXpath}" title="your email address" required="${required}" placeHolder="${emailPlaceHolder}" />
 					<field:hidden xpath="${xpath}/emailsecondary" />
 					<field:hidden xpath="${xpath}/emailhistory" />
@@ -72,7 +68,7 @@
 				<%--<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" />--%>
 
 				<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
-				<form_new:row label="Phone Number" fieldXpath="${fieldXpath}" className="clear">
+				<form_new:row label="Phone Number" fieldXpath="${fieldXpath}" className="clear required_input">
 					<field:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
 				</form_new:row>
 

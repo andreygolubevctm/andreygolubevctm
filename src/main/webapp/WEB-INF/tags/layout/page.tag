@@ -21,6 +21,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 <%@ attribute fragment="true" required="false" name="navbar" %>
 <%@ attribute fragment="true" required="false" name="navbar_outer" %>
 <%@ attribute fragment="true" required="false" name="navbar_additional" %>
+<%@ attribute fragment="true" required="false" name="progress_bar" %>
 <%@ attribute fragment="true" required="false" name="xs_results_pagination" %>
 
 <%@ attribute fragment="true" required="false" name="vertical_settings" %>
@@ -205,8 +206,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 					</nav>
 
 				</div>
-
+				<jsp:invoke fragment="progress_bar" />
 				<nav id="navbar-main" class="navbar navbar-affix navbar-default navbar-collapse navbar-collapse-menu collapse navMenu-contents" role="navigation">
+
 					<div class="row">
 						<div class="container">
 							<jsp:invoke fragment="navbar" />

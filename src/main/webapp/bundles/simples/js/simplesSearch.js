@@ -165,8 +165,6 @@
 					// Add any extra data if provided
 					$.extend(true, json, extraData);
 
-					//console.log(json);
-
 					// Render the template using the data
 					htmlContent = templateMoreInfo(json);
 				}
