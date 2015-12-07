@@ -107,6 +107,7 @@
 				object:meerkat.modules.health.getTrackingFieldsObject
 			},
 			onInitialise: function onStartInit(event){
+				console.log("onInitialise event: ",event);
 
 
 				meerkat.modules.jqueryValidate.initJourneyValidator();
@@ -183,6 +184,7 @@
 						meerkat.modules.dialogs.show({
 							htmlContent: 'Please complete the mandatory dialogue prompts before continuing.'
 						});
+						event.stopChangeStep = true;
 					}
 				}
 			}
