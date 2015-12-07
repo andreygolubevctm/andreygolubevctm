@@ -194,6 +194,21 @@
 						$healthSitLocation.attr('data-attach', 'true').parents('.fieldrow').hide();
 					}
 				}
+			},
+			onBeforeLeave:function onStartBeforeLeave(event) {
+				console.log("Attempting to leave");
+				if (meerkat.site.isCallCentreUser === true) {
+					console.log("Is a call centre user");
+					// Check mandatory dialog have been ticked
+
+					console.log("$('input[name='health_simples_contactType'']:checked').val(): "+$('input[name="health_simples_contactType"]:checked').val());
+					if ($('input[name="health_simples_contactType"]:checked').val() === undefined) {
+						console.log("Mandatory Prompts haven't been ticked and attempting to continue;");
+						meerkat.modules.dialogs.show({
+							htmlContent: 'Please complete the mandatory dialogue prompts before continuing.'
+						});
+					}
+				}
 			}
 		};
 
