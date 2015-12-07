@@ -31,6 +31,12 @@ public class RequestAdapter {
         quoteRequest.setRiskAddress(createRiskAddress(carQuote));
         quoteRequest.setVehicle(createVehicle(carQuote));
 
+        // CAR-1170. For vehicle use, two new radio button introduced. Override created here so that the data team still get Y/N values for their report
+        if ((quoteRequest.getVehicle().getGoodsPayment() != null && quoteRequest.getVehicle().getGoodsPayment().equals("Y")) || (quoteRequest.getVehicle().getPassengerPayment() != null && quoteRequest.getVehicle().getPassengerPayment().equals("Y"))) {
+            quoteRequest.getVehicle().setUse("13"); // CAR-1170
+        }
+
+
         if(carQuote.getFilter().getProviders() != null && !carQuote.getFilter().getProviders().isEmpty()){
             quoteRequest.setProviderFilter(carQuote.getFilter().getProviders());
         }
@@ -58,6 +64,8 @@ public class RequestAdapter {
         vehicle.setRegistrationYear(quoteVehicle.getRegistrationYear());
         vehicle.setSecurityOption(quoteVehicle.getSecurityOption());
         vehicle.setUse(quoteVehicle.getUse());
+        vehicle.setPassengerPayment(quoteVehicle.getPassengerPayment());
+        vehicle.setGoodsPayment(quoteVehicle.getGoodsPayment());
         vehicle.setNonStandardAccessories(createNonStandardAccessories(carQuote));
         vehicle.setFactoryOptions(createFactoryOptions(carQuote));
         return vehicle;
