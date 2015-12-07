@@ -35,7 +35,7 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.List;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.simples.services.PhoneService.makeCall;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.singletonList;

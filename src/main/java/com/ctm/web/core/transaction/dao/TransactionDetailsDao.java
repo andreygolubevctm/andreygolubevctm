@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 /**
  * Data Access Object to interface with the transaction_details table.
@@ -295,7 +295,7 @@ public class TransactionDetailsDao {
 	 */
 	// Should pass in ArrayList<TransactionDetails> so can batch insert.
 	public void addTransactionDetails(final long transactionId, final TransactionDetail transactionDetail) throws DaoException {
-		final Integer nextSequenceNo = getMaxSequenceNo(transactionId) + 1;
+		final Integer nextSequenceNo = transactionDetail.getSequenceNo() == null ? getMaxSequenceNo(transactionId) + 1 : transactionDetail.getSequenceNo();
 		DatabaseUpdateMapping databaseMapping = new DatabaseUpdateMapping(){
 			@Override
 			public void mapParams() throws SQLException {
@@ -317,6 +317,29 @@ public class TransactionDetailsDao {
 		
 	}
 
+	public void addTransactionDetailsWithDuplicateKeyUpdate(final long transactionId, final TransactionDetail transactionDetail) throws DaoException {
+		final Integer nextSequenceNo = transactionDetail.getSequenceNo() == null ? getMaxSequenceNo(transactionId) + 1 : transactionDetail.getSequenceNo();
+		DatabaseUpdateMapping databaseMapping = new DatabaseUpdateMapping(){
+			@Override
+			public void mapParams() throws SQLException {
+				set(transactionId);
+				set(nextSequenceNo);
+				set(transactionDetail.getXPath());
+				set(transactionDetail.getTextValue());
+			}
+
+			@Override
+			public String getStatement() {
+				return "INSERT INTO aggregator.transaction_details " +
+						"(transactionId, sequenceNo, xpath, textValue, dateValue) " +
+						"VALUES " +
+						"(?,?,?,?,CURDATE()) " +
+						"ON DUPLICATE KEY UPDATE xpath = VALUES(xpath), textValue = VALUES(textValue), dateValue=VALUES(dateValue);";
+			}
+		};
+		sqlDao.update(databaseMapping);
+
+	}
 
 	/** returns transaction details based off transactionId.
 	 * @param vertical

@@ -194,6 +194,21 @@
 						$healthSitLocation.attr('data-attach', 'true').parents('.fieldrow').hide();
 					}
 				}
+			},
+			onBeforeLeave:function onStartBeforeLeave(event) {
+				console.log("Attempting to leave");
+				if (meerkat.site.isCallCentreUser === true) {
+					console.log("Is a call centre user");
+					// Check mandatory dialog have been ticked
+
+					console.log("$('input[name='health_simples_contactType'']:checked').val(): "+$('input[name="health_simples_contactType"]:checked').val());
+					if ($('input[name="health_simples_contactType"]:checked').val() === undefined) {
+						console.log("Mandatory Prompts haven't been ticked and attempting to continue;");
+						meerkat.modules.dialogs.show({
+							htmlContent: 'Please complete the mandatory dialogue prompts before continuing.'
+						});
+					}
+				}
 			}
 		};
 
@@ -376,6 +391,8 @@
 			},
 			onInitialise: function onInitApplyStep(event){
 
+				meerkat.modules.healthDependants.initHealthDependants();
+
 				healthApplicationDetails.init();
 
 				// Listen to any input field which could change the premium. (on step 4 and 5)
@@ -409,31 +426,6 @@
 				// Check state selection
 				$('#health_application_address_postCode, #health_application_address_streetSearch, #health_application_address_suburb').on('change', function(){
 					healthApplicationDetails.testStatesParity();
-				});
-
-				// Sync income tier value (which can be changed if you change the number of dependants you have).
-				$('#health_application_dependants_income').on('change', function(){
-					$('#mainform').find('.health_cover_details_income').val( $(this).val() );
-				});
-
-				// Perform checks and show/hide questions when the dependant's DOB changes
-				$('.health_dependant_details .dateinput_container input.serialise').on('change', function(event){
-					healthDependents.checkDependent( $(this).closest('.health_dependant_details').attr('data-id') );
-					$(this).valid();
-				});
-
-				// Perform checks and show/hide questions when the fulltime radio button changes
-				$('.health_dependant_details_fulltimeGroup input').on('change', function(event){
-					healthDependents.checkDependent( $(this).closest('.health_dependant_details').attr('data-id') );
-					$(this).parents('.health_dependant_details').find('.dateinput_container input.serialise').valid();
-				});
-
-				// Add/Remove dependants
-				$('#health_application_dependants-selection').find(".remove-last-dependent").on("click", function(){
-					healthDependents.dropDependent();
-				});
-				$('#health_application_dependants-selection').find(".add-new-dependent").on("click", function(){
-					healthDependents.addDependent();
 				});
 
 				// initialise start date datepicker from payment step as it will be used by selected fund
@@ -471,7 +463,7 @@
 					$('#health_declaration input:checked').prop('checked', false).change();
 
 					// Update the state of the dependants object.
-					healthDependents.setDependants();
+					meerkat.modules.healthDependants.updateDependantConfiguration();
 
 					// Check okToCall optin - show if no phone numbers in questionset and NOT Simples
 					if($('#health_contactDetails_contactNumber_mobile').val() === '' &&	$('#health_contactDetails_contactNumber_other').val() === '' &&	meerkat.site.isCallCentreUser === false) {
@@ -495,9 +487,6 @@
 
 				// show edit button in policy summary side bar
 				$(".policySummaryContainer").find('.footer').removeClass('hidden');
-
-				// Need to call this after the form is visible because of the show/hiding of buttons based on visibility.
-				healthDependents.updateDependentOptionsDOM();
 			}
 		};
 
@@ -1066,13 +1055,22 @@
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication' });
 
 		try {
-			var postData = meerkat.modules.journeyEngine.getFormData();
 
-			// Disable fields must happen after the post data has been collected.
-			meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
+			Results.updateApplicationEnvironment();
+
+        var postData = meerkat.modules.journeyEngine.getFormData();
+
+		// Disable fields must happen after the post data has been collected.
+		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
+
+
+			var healthApplicationUrl = "ajax/json/health_application.jsp";
+			if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
+				healthApplicationUrl = "ajax/json/health_application_ws.jsp";
+			}
 
 			meerkat.modules.comms.post({
-				url: "ajax/json/health_application.jsp",
+				url: healthApplicationUrl,
 				data: postData,
 				cache: false,
 				useDefaultErrorHandling:false,
@@ -1318,8 +1316,6 @@
 				$('#health_application_productId').val( meerkat.site.loadProductId );
 				$('#health_application_productTitle').val( meerkat.site.loadProductTitle );
 			}
-
-			healthDependents.init();
 
 			if(meerkat.site.isCallCentreUser === true){
 				meerkat.modules.simplesSnapshot.initSimplesSnapshot();

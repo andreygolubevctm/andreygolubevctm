@@ -12,7 +12,7 @@ import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class TransactionAccessService {
 
@@ -76,6 +76,22 @@ public class TransactionAccessService {
 		Transaction transactionFromDB = transactionDao.getCoreInformation(transaction);
 		valid = transactionFromDB != null && emailDetails.getEmailAddress().equals(transactionFromDB.getEmailAddress());
 		return valid;
+	}
+
+	public void addTransactionDetailsWithDuplicateKeyUpdate(long transactionId, int sequenceNo, String xpath, String textValue) throws DaoException {
+		final TransactionDetail transactionDetail = new TransactionDetail();
+		transactionDetail.setSequenceNo(sequenceNo);
+		transactionDetail.setXPath(xpath);
+		transactionDetail.setTextValue(textValue);
+		transactionDetailsDao.addTransactionDetailsWithDuplicateKeyUpdate(transactionId, transactionDetail);
+	}
+
+	public void addTransactionDetails(long transactionId, int sequenceNo, String xpath, String textValue) throws DaoException {
+		final TransactionDetail transactionDetail = new TransactionDetail();
+		transactionDetail.setSequenceNo(sequenceNo);
+		transactionDetail.setXPath(xpath);
+		transactionDetail.setTextValue(textValue);
+		transactionDetailsDao.addTransactionDetails(transactionId, transactionDetail);
 	}
 
 }

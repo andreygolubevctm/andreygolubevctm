@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 import com.ctm.web.car.services.PopularModelsService;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 
 @WebServlet(urlPatterns = {

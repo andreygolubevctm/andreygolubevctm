@@ -11,7 +11,7 @@ import com.ctm.web.homecontents.leadfeed.services.AGIS.AGISHomeContentsLeadFeedS
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class HomeContentsLeadFeedService extends LeadFeedService {
 

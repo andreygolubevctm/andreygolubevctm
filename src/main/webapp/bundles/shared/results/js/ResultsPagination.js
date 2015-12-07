@@ -230,12 +230,14 @@ var ResultsPagination = {
 			Results.pagination.animateScroll(scrollPosition);
 		}
 
-		var event = jQuery.Event( "resultPageChange" );
-		event.pageData =  {
-			pageNumber: pageNumber,
-			measurements:info
-		};
-		$(Results.settings.elements.resultsContainer).trigger(event);
+		if(meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
+			var event = jQuery.Event("resultPageChange");
+			event.pageData = {
+				pageNumber: pageNumber,
+				measurements: info
+			};
+			$(Results.settings.elements.resultsContainer).trigger(event);
+		}
 
 	},
 

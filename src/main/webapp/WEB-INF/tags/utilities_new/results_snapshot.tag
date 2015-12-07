@@ -11,26 +11,27 @@
         {{= obj.postcode }}
     </span>
 
-    {{ var segmentClass = obj.isSpendEstimate ? "vertical-middle" : obj.segmentClass }}
-
     {{ if(obj.electricitySpend || obj.electricityPeak || obj.electricityOffPeak) { }}
-        <span class="segment {{= segmentClass }} ">
-            {{ if(obj.isSpendEstimate) { }}
-                Electricity spend of {{= obj.electricitySpend }}
-            {{ } else { }}
+        <span class="segment usage ">
+            {{ if(obj.recentElectricityBill === 'Y') { }}
                 Electricity peak usage {{= obj.electricityPeak }} <br>
                 Electricity off-peak usage {{= obj.electricityOffPeak }}
+                {{ if(obj.electricityShoulder !== '') { }}
+                    <br>Electricity shoulder usage {{= obj.electricityShoulder }}
+                {{ } }}
+            {{ } else { }}
+                Estimated electricity usage is: {{= obj.electricitySpend }}
             {{ } }}
         </span>
     {{ } }}
 
     {{ if(obj.gasSpend || obj.gasPeak || obj.gasOffPeak) { }}
-        <span class="segment segment-last {{= segmentClass }}">
-            {{ if(obj.isSpendEstimate) { }}
-                Gas spend of {{= obj.gasSpend }}
-            {{ } else { }}
+        <span class="segment segment-last usage">
+            {{ if(obj.recentGasBill === 'Y') { }}
                 Gas peak usage {{= obj.gasPeak }} <br>
                 Gas off-peak usage {{= obj.gasOffPeak }}
+            {{ } else { }}
+                Estimated gas usage: {{= obj.gasSpend }}
             {{ } }}
         </span>
     {{ } }}

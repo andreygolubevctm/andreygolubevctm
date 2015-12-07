@@ -13,7 +13,7 @@ import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.simples.model.User;
 import com.ctm.web.simples.model.UserStats;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class SimplesUserService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesUserService.class);

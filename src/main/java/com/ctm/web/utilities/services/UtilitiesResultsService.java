@@ -8,7 +8,12 @@ import org.json.JSONArray;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class UtilitiesResultsService extends UtilitiesBaseService{
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(UtilitiesResultsService.class);
 
 	public String getFromJsp(HttpServletRequest request, Data data){
 		String validationResult = validate(request, data);
