@@ -12,9 +12,7 @@
         var $mainForm = $('#mainForm');
 
         if($mainForm.valid()) {
-            parent.meerkatPaymentInfo = $mainForm.serializeArray().filter(function(entry) {
-                return entry.value !== "";
-            });
+            parent.postMessage($mainForm.serializeArray(), '*');
         }
     }
 
