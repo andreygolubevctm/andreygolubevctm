@@ -46,7 +46,7 @@
                 <health:gateway_westpac xpath="${gatewayXPath}" />
                 <health:gateway_nab xpath="${gatewayXPath}" />
 
-                <button type="button" class="btn btn-success submit-payment-information">Use credit card</button>
+                <button type="button" class="btn btn-success submit-payment-information">Complete</button>
             </form>
         </div>
     </div>
