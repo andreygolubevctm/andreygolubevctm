@@ -97,6 +97,47 @@ update ctm.travel_product_benefits set productId = 'International-Frequent Trave
 
 
 
+UPDATE ctm.travel_product SET providerProductCode = 'Domestic-Frequent Traveller'  WHERE providerId = @pid
+        AND providerProductCode = 'Domestic-Annual Trip' and productCode = 'ACET-TRAVEL-8' limit 1;
+
+UPDATE ctm.travel_product SET productName = 'Domestic Frequent Traveller'  WHERE providerId = @pid
+        AND productName = 'Domestic Annual Trip' and productCode = 'ACET-TRAVEL-8' limit 1;
+
+-- test expect 1
+select count(*) from ctm.travel_product where providerId = @pid and
+      providerProductCode = 'Domestic-Frequent Traveller' and productCode = 'ACET-TRAVEL-8';
+
+-- rollback
+
+-- UPDATE ctm.travel_product SET providerProductCode = 'Domestic-Annual Trip'  WHERE providerId = @pid
+--        AND providerProductCode = 'Domestic-Frequent Traveller' and productCode = 'ACET-TRAVEL-8' limit 1;
+
+--UPDATE ctm.travel_product SET productName = 'Domestic Annual Trip'  WHERE providerId = @pid
+--        AND productName = 'Domestic Frequent Traveller' and productCode = 'ACET-TRAVEL-8' limit 1;
+
+-- test expect 1
+--select count(*) from ctm.travel_product where providerId = @pid and
+--      providerProductCode = 'Domestic-Annual Trip' and productCode = 'ACET-TRAVEL-8';
+
+
+update ctm.travel_product_benefits set productId = 'Domestic-Frequent Traveller' where providerId = @pid
+ and productId = 'Domestic-Annual Trip' limit 12;
+
+  -- test expect 12
+ select count(*) from ctm.travel_product_benefits where providerId = @pid and productId = 'Domestic-Frequent Traveller';
+
+
+  -- rollback
+
+ -- update ctm.travel_product_benefits set productId = 'Domestic-Annual Trip' where providerId = @pid
+-- and productId = 'Domestic-Frequent Traveller' limit 15;
+
+ -- test expect 12
+-- select count(*) from ctm.travel_product_benefits where providerId = @pid and productId = 'Domestic-Annual Trip';
+
+
+
+
 
 
 
