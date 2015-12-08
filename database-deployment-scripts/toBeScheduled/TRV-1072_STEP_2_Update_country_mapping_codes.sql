@@ -57,3 +57,46 @@ UPDATE ctm.country_provider_mapping SET regionValue = 'C92301A0-B25E-4247-AD6F-9
 -- SELECT * FROM ctm.country_provider_mapping WHERE providerid = @pid AND regionValue = 'C92301A0-B25E-4247-AD6F-9FF6012471AE' AND priority = 2;
 -- TEST RESULT BEFORE ROLLBACK: 73
 -- TEST RESULT AFTER ROLLBACK: 0
+
+
+UPDATE ctm.travel_product SET providerProductCode = 'International-Frequent Traveller'  WHERE providerId = @pid
+        AND providerProductCode = 'International-Annual Trip' and productCode = 'ACET-TRAVEL-7' limit 1;
+
+UPDATE ctm.travel_product SET productName = 'International Frequent Traveller'  WHERE providerId = @pid
+        AND productName = 'International Annual Trip' and productCode = 'ACET-TRAVEL-7' limit 1;
+
+-- test expect 1
+select count(*) from ctm.travel_product where providerId = @pid and
+      providerProductCode = 'International-Frequent Traveller' and productCode = 'ACET-TRAVEL-7';
+
+-- rollback
+
+-- UPDATE ctm.travel_product SET providerProductCode = 'International-Annual Trip'  WHERE providerId = @pid
+--        AND providerProductCode = 'International-Frequent Traveller' and productCode = 'ACET-TRAVEL-7' limit 1;
+
+--UPDATE ctm.travel_product SET productName = 'International Annual Trip'  WHERE providerId = @pid
+--        AND productName = 'International Frequent Traveller' and productCode = 'ACET-TRAVEL-7' limit 1;
+
+-- test expect 1
+--select count(*) from ctm.travel_product where providerId = @pid and
+--      providerProductCode = 'International-Annual Trip' and productCode = 'ACET-TRAVEL-7';
+
+update ctm.travel_product_benefits set productId = 'International-Frequent Traveller' where providerId = @pid
+ and productId = 'International-Annual Trip' limit 15;
+
+ -- test expect 15
+ select count(*) from ctm.travel_product_benefits where providerId = @pid and productId = 'International-Frequent Traveller';
+
+ -- rollback
+
+ -- update ctm.travel_product_benefits set productId = 'International-Annual Trip' where providerId = @pid
+-- and productId = 'International-Frequent Traveller' limit 15;
+
+ -- test expect 15
+-- select count(*) from ctm.travel_product_benefits where providerId = @pid and productId = 'International-Annual Trip';
+
+
+
+
+
+
