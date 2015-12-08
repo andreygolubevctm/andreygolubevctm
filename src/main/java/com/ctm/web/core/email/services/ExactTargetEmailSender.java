@@ -31,7 +31,7 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.Map;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static java.lang.Integer.parseInt;
 
 public class ExactTargetEmailSender<T extends EmailModel> {
@@ -89,7 +89,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
         }
     }
 
-    public void sendToExactTarget(ExactTargetFormatter<T> formatter, T emailModel)
+    public String sendToExactTarget(ExactTargetFormatter<T> formatter, T emailModel)
             throws SendEmailException {
         ExactTargetEmailModel exactTargetEmailModel = formatter.convertToExactTarget(emailModel);
         try {
@@ -106,6 +106,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
                 exception.setDescription("failed to call exact target message:" + response.getMessage() + " OverallStatus: " + response.getOverallStatus() + " requestID:" + response.getRequestID());
                 throw exception;
             }
+            return response.getRequestID();
         } catch (ConfigSettingException e) {
             LOGGER.error("Failed to call exact target web service {}", kv("emailModel", emailModel), e);
             throw new SendEmailException("failed to call exact target web service", e);

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class HealthPriceDao {
 	private static final String DISC_PREFIX = "disc";
@@ -491,12 +491,7 @@ public class HealthPriceDao {
 		if(healthPriceRequest.getProductTitleSearch()!=null && !healthPriceRequest.getProductTitleSearch().trim().equals("")) {
 			sqlBuilder.append(" AND lower(product.LongTitle) like  lower(?) ");
 		}
-		/* When filtering is turned on we don't want products flagged with 'Y'
-			to be returned in the results set (a little confusing) */
-		if(healthPriceRequest.getSituationFilter().equals("Y")) {
-			sqlBuilder.append("AND (search.situationFilter IS NULL OR situationFilter IN ('','N'))");
-		}
-        sqlBuilder
+		sqlBuilder
             .append("GROUP BY search.ProductId ")
             .append("ORDER BY rank DESC, factoredPrice ASC ");
 

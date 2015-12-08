@@ -1,7 +1,11 @@
 package com.ctm.web.core.competition.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.dao.DatabaseUpdateBatchMapping;
+import com.ctm.web.core.dao.DatabaseUpdateMapping;
+import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.exceptions.DaoException;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
@@ -9,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class CompetitionDao {
 
@@ -49,4 +54,49 @@ public class CompetitionDao {
 
 		return compActive;
 	}
+
+	/**
+	 * Adds to the competition_master table the competitionId and emailId with
+	 * related details (key value pair) to the competition_data table.
+	 * @param competitionId
+	 * @param emailId
+	 * @param details
+	 * @throws DaoException
+	 */
+	public static void addCompetitionEntry(Integer competitionId, Integer emailId, List<Pair<String, String>> details) throws DaoException {
+		// FIXME: needs to be wrapped in an atomic transaction
+		SqlDao sqlDao = new SqlDao();
+		long competitionMasterId = sqlDao.insert(new DatabaseUpdateMapping() {
+			@Override
+			protected void mapParams() throws SQLException {
+				set(competitionId);
+				set(emailId);
+			}
+
+			@Override
+			public String getStatement() {
+				return "INSERT INTO ctm.competition_master (competition_id, email_id) VALUES (?,?)";
+			}
+		});
+
+		sqlDao.updateBatch(new DatabaseUpdateBatchMapping() {
+			@Override
+			protected void mapParams() throws SQLException {
+				for (Pair<String, String> data : details) {
+					set(competitionMasterId);
+					set(data.getKey());
+					set(data.getValue());
+					set(data.getValue());
+					addToBatch();
+				}
+			}
+
+			@Override
+			public String getStatement() {
+				return "INSERT INTO ctm.competition_data (entry_id, property_id, value) " +
+						"VALUES (?,?,?) ON DUPLICATE KEY UPDATE value = ?";
+			}
+		});
+	}
+
 }

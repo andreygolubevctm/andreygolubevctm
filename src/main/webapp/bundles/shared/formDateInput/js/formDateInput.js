@@ -3,7 +3,7 @@
 	var meerkat = window.meerkat,
 	log = meerkat.logging.info;
 
-
+	var nativePickerEnabled = false;
 
 	function init() {
 		var iOS = meerkat.modules.performanceProfiling.isIos();
@@ -12,45 +12,45 @@
 		var Chrome = meerkat.modules.performanceProfiling.isChrome();
 
 		$(document).ready(function() {
-			var nativePickerEnabled = false;
-
 			// Decide whether to activate an HTML5 native date picker
 			// (This is also known as Impress The Bosses On Their iPads feature)
 			if (Modernizr.inputtypes.date && ((iOS && !iOS5) || (Android && Chrome))) {
 				nativePickerEnabled = true;
 			}
-
 			// Set up each date input component
-			$('[data-provide=dateinput]').each(function setupDateInput() {
-				var $component = $(this);
-
-				if (nativePickerEnabled) {
-					$component.attr('data-dateinput-type', 'native');
-
-					$component.find('.dateinput-tripleField').addClass('hidden');
-					$component.find('.dateinput-nativePicker')
-						.removeClass('hidden')
-						.find('input')
-							.on('change', serialise)
-					;
-				}
-				else {
-					$component.find('input.dateinput-day, input.dateinput-month, input.dateinput-year')
-						.on('input', moveToNextInput)
-						.on('change', serialise)
-						//.on('focus', function() { this.select(); });
-					;
-				}
-
-				// If the main form element changes, populate it back into the input fields
-				var $serialise = $component.find('.serialise');
-				populate($component, $serialise.val());
-
-				$serialise.on('change', function() {
-					populate($component, this.value);
-				});
+			$('[data-provide=dateinput]').each(function initDateComponentFromDataAttribute() {
+				initDateComponent($(this));
 			});
+		});
+	}
 
+	/**
+	 * So it can be triggered externally for newly loaded in date elements.
+	 * @param $component
+	 */
+	function initDateComponent($component) {
+
+		if (nativePickerEnabled) {
+			$component.attr('data-dateinput-type', 'native');
+
+			$component.find('.dateinput-tripleField').addClass('hidden');
+			$component.find('.dateinput-nativePicker')
+				.removeClass('hidden')
+				.find('input')
+				.on('change', serialise);
+		}
+		else {
+			$component.find('input.dateinput-day, input.dateinput-month, input.dateinput-year')
+				.on('input', moveToNextInput)
+				.on('change', serialise);
+		}
+
+		// If the main form element changes, populate it back into the input fields
+		var $serialise = $component.find('.serialise');
+		populate($component, $serialise.val());
+
+		$serialise.on('change', function() {
+			populate($component, this.value);
 		});
 	}
 
@@ -159,6 +159,7 @@
 
 	meerkat.modules.register("formDateInput", {
 		init: init,
+		initDateComponent: initDateComponent,
 		populate: populate,
 		serialise: serialise
 	});

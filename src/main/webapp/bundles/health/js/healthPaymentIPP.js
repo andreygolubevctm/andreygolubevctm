@@ -72,14 +72,27 @@ Process:
 		$maskedNumber.val('Loading...');
 		reset();
 
+		var authoriseUrl = "ajax/json/ipp/ipp_payment.jsp?ts=" + (new Date().getTime());
+		if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
+			authoriseUrl = "rest/health/payment/authorise.json";
+		}
+
+		authoriseJsonData = {
+			transactionId:meerkat.modules.transactionId.get(),
+			providerId: $("#health_application_provider").val()
+		};
+
+		if (meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi') {
+			authoriseJsonData.environmentOverride = $("#developmentApplicationEnvironment").val();
+		}
+
+
 		meerkat.modules.comms.post({
-			url: "ajax/json/ipp/ipp_payment.jsp?ts=" + (new Date().getTime()),
+			url: authoriseUrl,
 			dataType: 'json',
 			cache: false,
 			errorLevel: "silent",
-			data:{
-				transactionId:meerkat.modules.transactionId.get()
-			},
+			data: authoriseJsonData,
 			onSuccess: createModalContent,
 			onError: function onIPPAuthError(obj, txt, errorThrown) {
 				// Display an error message + log a normal error
@@ -191,9 +204,19 @@ Process:
 	function register(jsonData) {
 
 		jsonData.transactionId = meerkat.modules.transactionId.get();
+		jsonData.providerId = $("#health_application_provider").val();
+
+		if (meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi') {
+			jsonData.environmentOverride = $("#developmentApplicationEnvironment").val();
+		}
+
+		var registerUrl = "ajax/json/ipp/ipp_log.jsp?ts=" + (new Date().getTime());
+		if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
+			registerUrl = "rest/health/payment/register.json";
+		}
 
 		meerkat.modules.comms.post({
-			url: "ajax/json/ipp/ipp_log.jsp?ts=" + (new Date().getTime()),
+			url: registerUrl,
 			data: jsonData,
 			dataType: 'json',
 			cache: false,

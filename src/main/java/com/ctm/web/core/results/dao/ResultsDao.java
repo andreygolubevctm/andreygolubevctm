@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class ResultsDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResultsDao.class);
@@ -169,30 +169,27 @@ public class ResultsDao {
 		return propertyValue;
 	}
 
-    public void saveResultsProperties(List<ResultProperty> resultProperties) {
+    public void saveResultsProperties(List<ResultProperty> resultProperties) throws Exception {
 
         try (SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection()) {
 
-            PreparedStatement stmt;
+			PreparedStatement stmt;
 
-            stmt = dbSource.getConnection().prepareStatement(
-                    "INSERT INTO aggregator.results_properties (transactionId,productId,property,value) " +
-                            "VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE `value`='DUPLICATE'"
-            );
+			stmt = dbSource.getConnection().prepareStatement(
+					"INSERT INTO aggregator.results_properties (transactionId,productId,property,value) " +
+							"VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE `value`='DUPLICATE'"
+			);
 
-            for (ResultProperty resultProperty : resultProperties) {
-                stmt.setLong(1, resultProperty.getTransactionId());
-                stmt.setString(2, resultProperty.getProductId());
-                stmt.setString(3, resultProperty.getProperty());
-                stmt.setString(4, resultProperty.getValue());
-                stmt.addBatch();
-            }
+			for (ResultProperty resultProperty : resultProperties) {
+				stmt.setLong(1, resultProperty.getTransactionId());
+				stmt.setString(2, resultProperty.getProductId());
+				stmt.setString(3, resultProperty.getProperty());
+				stmt.setString(4, resultProperty.getValue());
+				stmt.addBatch();
+			}
 
-            stmt.executeBatch();
+			stmt.executeBatch();
 
-        } catch (Exception e) {
-			LOGGER.error("Failed to save results properties {}", kv("resultProperties", resultProperties), e);
-        }
-
+		}
     }
 }

@@ -89,9 +89,14 @@
 
         try {
 
+            var healthQuoteResultsUrl = "ajax/json/health_quote_results.jsp";
+            if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
+                healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp";
+            }
+
             // Init the main Results object
             Results.init({
-                url: "ajax/json/health_quote_results.jsp",
+                url: healthQuoteResultsUrl,
                 runShowResultsPage: false, // Don't let Results.view do it's normal thing.
                 paths: {
                     results: {
@@ -378,10 +383,7 @@
             var pageNumber = pageData.pageNumber;
 
             meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
-                additionalData: {
-                    pageNumber: pageNumber,
-                    numberOfPages: numberOfPages
-                },
+                additionalData: {},
                 onAfterEventMode: 'Pagination'
             });
 
@@ -526,6 +528,7 @@
         meerkat.modules.health.loadRates(function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health').done(function () {
+                Results.updateAggregatorEnvironment();
                 Results.get();
             });
         });
@@ -677,8 +680,13 @@
                     value: meerkat.modules.healthPaymentStep.getSelectedFrequency()
                 });
 
+                var healthQuoteResultsUrl = "ajax/json/health_quote_results.jsp";
+                if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
+                    healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp";
+                }
+
                 meerkat.modules.comms.post({
-                    url: "ajax/json/health_quote_results.jsp",
+                    url: healthQuoteResultsUrl,
                     data: postData,
                     cache: false,
                     errorLevel: "warning",
@@ -845,7 +853,6 @@
      * It has remained here so verticals can run their own unique calls.
      */
     function publishExtraSuperTagEvents() {
-
         meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
             additionalData: {
                 preferredExcess: getPreferredExcess(),

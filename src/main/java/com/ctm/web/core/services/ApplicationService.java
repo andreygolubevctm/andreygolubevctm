@@ -1,18 +1,19 @@
 package com.ctm.web.core.services;
 
+import com.ctm.commonlogging.context.LoggingVariables;
+import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.dao.BrandsDao;
 import com.ctm.web.core.dao.ConfigSettingsDao;
 import com.ctm.web.core.dao.VerticalsDao;
+import com.ctm.web.core.elasticsearch.services.AddressSearchService;
 import com.ctm.web.core.exceptions.BrandException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ConfigSetting;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.web.core.elasticsearch.services.AddressSearchService;
 import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class ApplicationService {
 
@@ -189,7 +190,7 @@ public class ApplicationService {
 	 * @param verticalCode
 	 */
 	public static void setVerticalCodeOnRequest(ServletRequest request, String verticalCode) {
-		MDC.put("verticalCode", verticalCode);
+		LoggingVariables.setVerticalType(VerticalType.findByCode(verticalCode));
 		request.setAttribute("verticalCode", verticalCode);
 	}
 

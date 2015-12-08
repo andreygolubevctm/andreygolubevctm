@@ -51,36 +51,45 @@
 		<%-- COMPETITION START --%>
 		<c:if test="${competitionEnabled == true}">
 			<c:set var="competitionId"><content:get key="competitionId"/></c:set>
-			<form:row label="" className="promo-row">
-				<div class="promo-container">
-					<div class="promo-image ${vertical}-${competitionId}"></div>
-				</div>
-			</form:row>
+
 		
 			<form:row label="" className="clear">
-				<c:set var="competitionCheckboxText"><content:get key="competitionCheckboxText" /></c:set>
+				<c:set var="competitionCheckboxText">
+					<content:get key="competitionCheckboxText" />
+				</c:set>
 				<field:hidden xpath="${xpath}/competition/optin" constantValue="N" />
-				<field:checkbox xpath="${xpath}/competition/optin" value="Y" title="${competitionCheckboxText}" required="false" label="true"/>
+				<field:checkbox
+						xpath="${xpath}/competition/optin"
+						value="Y"
+						title="${competitionCheckboxText}"
+						required="false"
+						label="true"/>
 				<field:hidden xpath="${xpath}/competition/previous" />
 			</form:row>
 		</c:if>
 		<%-- COMPETITION END--%>
 		
 		<form:row label="" className="clear">
-			<field:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from ${brandedName}" required="false" label="true"/>
+			<field:checkbox
+					xpath="${xpath}/optIn"
+					value="Y"
+					title="Yes, keep me updated about news and special offers from ${brandedName}"
+					required="false"
+					label="true"/>
 		</form:row>
 		
 		<form:row label="" className="clear closer">
-			<c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${vertical}_privacyoptinInfoDialog.open()'>privacy statement</a>" />
+			<c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${vertical}_privacyoptinInfoDialog.open()'>Privacy Policy</a>" />
+			<c:set var="fsgLink" value="<a href='javascript:void(0);' class='showDoc' data-url='legal/Life_FSG.pdf' data-title='Financial Services Guide'>Financial Services Guide (Life Insurance Products)</a>"/>
 			<c:choose>
 				<c:when test="${vertical eq 'life'}">
 					<c:set var="label_text">
-						I understand ${brandedName} compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker and/or Auto and General Services, Compare the Market&#39;s trusted life insurance partners may contact me to further assist with my life insurance needs. I confirm that I have read the ${privacyLink}.
+						* I agree that Lifebroker or Auto and General Services, partners of  ${brandedName}, may contact me about life insurance.  I have read the ${fsgLink} and ${privacyLink}.
 					</c:set>
 				</c:when>
 				<c:when test="${vertical eq 'ip'}">
 					<c:set var="label_text">
-						I understand ${brandedName} compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life insurance and income protection partner may contact me to further assist with my life insurance and income protection needs. I confirm that I have read the ${privacyLink}.
+						* I agree that Lifebroker, partner of ${brandedName}, may contact me about Income Protection.  I have read the ${fsgLink} and ${privacyLink}.
 					</c:set>
 				</c:when>
 			</c:choose>
@@ -89,7 +98,7 @@
 				xpath="${vertical}_privacyoptin"
 				value="Y"
 				title="${label_text}"
-				errorMsg="Please confirm you have read the privacy statement"
+				errorMsg="Please confirm you have read the Privacy Policy"
 				required="true"
 				label="true"
 			/>
