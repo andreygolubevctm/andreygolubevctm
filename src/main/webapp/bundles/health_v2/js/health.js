@@ -1310,7 +1310,6 @@
 			$("#health_contactDetails_optin").on("click", function(){
 				var optinVal = $(this).is(":checked") ? "Y" : "N";
 				$('#health_privacyoptin').val(optinVal);
-				$("#health_contactDetails_optInEmail").val(optinVal);
 				$("#health_contactDetails_call").val(optinVal);
 			});
 
