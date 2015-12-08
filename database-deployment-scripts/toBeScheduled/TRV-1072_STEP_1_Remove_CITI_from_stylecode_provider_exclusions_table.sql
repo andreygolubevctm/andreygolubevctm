@@ -1,12 +1,15 @@
 SET @pid := (SELECT providerid FROM ctm.provider_master WHERE providerCode = 'ACET');
--- SELECT * FROM ctm.stylecode_provider_exclusions WHERE providerid = @pid AND verticalId = 2;
--- TEST RESULT BEFORE DELETE: 1
--- TEST RESULT AFTER DELETE: 0
+-- select count(*) from ctm.stylecode_provider_exclusions where providerId = @pid and verticalId = 2 and excludeDateTo = '2015-12-08';
+-- TEST RESULT BEFORE UPDATE: 0
+-- TEST RESULT AFTER UPDATE: 1
 
-DELETE FROM ctm.stylecode_provider_exclusions WHERE providerid = @pid AND verticalId = 2  LIMIT 1;
+
+UPDATE ctm.stylecode_provider_exclusions SET excludeDateTo = '2015-12-08'  WHERE providerId = @pid and verticalId = 2 limit 1;
+
 
 -- ====================== ROLLBACK
--- INSERT INTO ctm.stylecode_provider_exclusions (styleCodeId,verticalId,providerId,excludeDateFrom,excludeDateTo) VALUES ('0','2',@pID,'2015-11-13 00:00:00','2040-11-13 00:00:00');
--- SELECT * FROM ctm.stylecode_provider_exclusions WHERE providerid = @pid AND verticalId = 2;
--- TEST RESULT BEFORE ROLLBACK: 0
--- TEST RESULT AFTER ROLLBACK: 1
+ -- UPDATE ctm.stylecode_provider_exclusions SET excludeDateTo = '2040-12-30'  WHERE providerId = @pid and verticalId = 2 limit 1;
+
+-- select count(*) from ctm.stylecode_provider_exclusions where providerId = @pid and verticalId = 2 and excludeDateTo = '2015-12-08';
+-- TEST RESULT BEFORE UPDATE: 1
+-- TEST RESULT AFTER UPDATE: 0
