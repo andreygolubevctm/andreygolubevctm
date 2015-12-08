@@ -40,7 +40,7 @@
 
 				var returnString = meerkat.modules.loadingAnimation.getTemplate();
 
-				if(settings.contentValue.charAt(0) !== '/')
+				if(settings.contentValue.charAt(0) !== '/' && !settings.contentValue.startsWith('http'))
 					settings.contentValue = '/' + meerkat.site.urls.context + settings.contentValue;
 
 				meerkat.modules.comms.get({

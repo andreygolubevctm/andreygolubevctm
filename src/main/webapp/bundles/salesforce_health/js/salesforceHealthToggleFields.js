@@ -22,10 +22,18 @@
             });
 
             var fundCode = meerkat.site.provider.toUpperCase();
-            getFundInfo(fundCode).then(function () {
-                window['healthFunds_' + fundCode].set();
-                $('button[data-gateway="launcher"]').trigger('click');
-            });
+            if(typeof fundCode === 'string' && fundCode.length === 3) {
+                getFundInfo(fundCode)
+                    .done(function () {
+                        window['healthFunds_' + fundCode].set();
+                        $('button[data-gateway="launcher"]').trigger('click');
+                    })
+                    .fail(function() {
+                        alert('Could not credit card form for fund');
+                    });
+            } else {
+                alert('No fund code provided. Please reopen the credit card collection window');
+            }
         });
     }
 

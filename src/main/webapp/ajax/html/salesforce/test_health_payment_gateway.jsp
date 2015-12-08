@@ -4,6 +4,8 @@
 <session:core />
 <settings:setVertical verticalCode="HEALTH" />
 
+<c:set var="provider"><c:out escapeXml="true" value="${param.provider}"/></c:set>
+
 <!doctype html>
 <html>
     <head>
@@ -18,6 +20,6 @@
         </script>
     </head>
     <body>
-        <iframe src="/${pageSettings.getContextFolder()}ajax/html/salesforce/health_payment_gateway.jsp?transactionId=2659686&provider=AHM" width="800" height="600"></iframe>
+        <iframe src="/${pageSettings.getContextFolder()}ajax/html/salesforce/health_payment_gateway.jsp?transactionId=2659686&provider=${provider}" width="800" height="600"></iframe>
     </body>
 </html>
