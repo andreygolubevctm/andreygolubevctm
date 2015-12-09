@@ -14,7 +14,7 @@ select count(*) from ctm.country_provider_mapping where isoCode = 'IDN' and
 
 -- updating TICK
 
-uupdate ctm.country_provider_mapping set countryValue = 'ASIA',regionValue = '9', priority = 3
+update ctm.country_provider_mapping set countryValue = 'ASIA',regionValue = '9', priority = 3
    where providerId = @PVIDER2 and isoCode = 'IDN';
 
 

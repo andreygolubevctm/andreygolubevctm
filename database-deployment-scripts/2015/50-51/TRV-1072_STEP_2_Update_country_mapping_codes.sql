@@ -74,11 +74,11 @@ select count(*) from ctm.travel_product where providerId = @pid and
 -- UPDATE ctm.travel_product SET providerProductCode = 'International-Annual Trip'  WHERE providerId = @pid
 --        AND providerProductCode = 'International-Frequent Traveller' and productCode = 'ACET-TRAVEL-7' limit 1;
 
---UPDATE ctm.travel_product SET productName = 'International Annual Trip'  WHERE providerId = @pid
+-- UPDATE ctm.travel_product SET productName = 'International Annual Trip'  WHERE providerId = @pid
 --        AND productName = 'International Frequent Traveller' and productCode = 'ACET-TRAVEL-7' limit 1;
 
 -- test expect 1
---select count(*) from ctm.travel_product where providerId = @pid and
+-- select count(*) from ctm.travel_product where providerId = @pid and
 --      providerProductCode = 'International-Annual Trip' and productCode = 'ACET-TRAVEL-7';
 
 update ctm.travel_product_benefits set productId = 'International-Frequent Traveller' where providerId = @pid
@@ -112,11 +112,11 @@ select count(*) from ctm.travel_product where providerId = @pid and
 -- UPDATE ctm.travel_product SET providerProductCode = 'Domestic-Annual Trip'  WHERE providerId = @pid
 --        AND providerProductCode = 'Domestic-Frequent Traveller' and productCode = 'ACET-TRAVEL-8' limit 1;
 
---UPDATE ctm.travel_product SET productName = 'Domestic Annual Trip'  WHERE providerId = @pid
+-- UPDATE ctm.travel_product SET productName = 'Domestic Annual Trip'  WHERE providerId = @pid
 --        AND productName = 'Domestic Frequent Traveller' and productCode = 'ACET-TRAVEL-8' limit 1;
 
 -- test expect 1
---select count(*) from ctm.travel_product where providerId = @pid and
+-- select count(*) from ctm.travel_product where providerId = @pid and
 --      providerProductCode = 'Domestic-Annual Trip' and productCode = 'ACET-TRAVEL-8';
 
 
