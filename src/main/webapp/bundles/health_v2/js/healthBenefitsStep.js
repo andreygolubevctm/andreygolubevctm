@@ -61,6 +61,14 @@
             $this.find('.category[class*="CTM-"]').wrapAll('<div class="hasIcons"></div>');
             $this.find('.category:not([class*="CTM-"])').wrapAll('<div class="noIcons"></div>');
 
+            // fix positioning of label and help
+            $this.find('.category[class*="CTM-"] label').each(function(){
+                $el = $(this);
+                var labelTxt = $("<span/>").addClass('iconLabel').append($.trim($el.text().replace('Need Help?','')));
+                var helpLnk = $el.find('a').detach();
+                $el.empty().append(helpLnk).append("<br>").append(labelTxt);
+            });
+
             // Move the subtitle
             $this.find('.subTitle').insertAfter($this.find('.hasIcons'));
         });

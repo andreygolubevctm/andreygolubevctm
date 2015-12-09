@@ -26,7 +26,6 @@
 
         // custom column width because of the design
         .section{
-            position: relative;
             min-height: 1px;
             padding-left: 15px;
             padding-right: 15px;
@@ -71,6 +70,12 @@
                         margin: 0;
                         text-align: center;
 
+                        .iconLabel {
+                            display:block;
+                            height:2.4em;
+                            margin-top:0.25em;
+                        }
+
                         &:before{
                             display:table;
                             float: none;
@@ -93,6 +98,15 @@
                 }
                 @media (@md-only) {
                     .benefitsIconSize(50px, @font-size-small, -1);
+                }
+            }
+            .categoriesCell.CTM-plus {
+                .checkbox {
+                    label {
+                        .iconLabel {
+                            margin-top:0.34em;
+                        }
+                    }
                 }
             }
 
