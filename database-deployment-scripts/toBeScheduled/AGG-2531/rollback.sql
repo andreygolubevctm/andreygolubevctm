@@ -3,6 +3,8 @@ SET @IP_ID = (select verticalId from ctm.vertical_master where verticalCode = 'I
 SET @UTILITIES_ID = (select verticalId from ctm.vertical_master where verticalCode = 'UTILITIES');
 SET @CONTENT_KEY  = 'competitionCheckboxText';
 SET @STYLECODE = (select styleCodeId from ctm.stylecodes where styleCode = 'ctm');
+SET @HEALTH_ID = (select verticalId from ctm.vertical_master where verticalCode = 'HEALTH');
+SET @PARTICIPATING_SUPPLIER_LINK = 'participatingSuppliersLink';
 
 UPDATE ctm.content_control SET contentValue = 'I agree to the <a target=\'_blank\'  href=\'http://www.comparethemarket.com.au/competition/5000competition.pdf\'>terms and conditions</a>.'
   where contentKey = @CONTENT_KEY
@@ -29,3 +31,13 @@ UPDATE ctm.content_control SET contentValue = 'I agree to the <a target=\'_blank
 -- test expect 1
 select count(*) from ctm.content_control where contentKey = @CONTENT_KEY and styleCodeId = @STYLECODE and verticalId = @UTILITIES_ID
  and contentValue = 'I agree to the <a target=\'_blank\'  href=\'http://www.comparethemarket.com.au/competition/5000competition.pdf\'>terms and conditions</a>.';
+
+delete from ctm.content_control where verticalId = @UTILITIES_ID
+ and contentKey = @PARTICIPATING_SUPPLIER_LINK and styleCodeId = @STYLECODE limit 1;
+
+delete from ctm.content_control where verticalId = @HEALTH_ID
+ and contentKey = @PARTICIPATING_SUPPLIER_LINK and styleCodeId = @STYLECODE and contentValue = 'http://www.comparethemarket.com.au/health-insurance/';
+
+update ctm.content_control set effectiveEnd = '2040-12-31' where verticalId = @HEALTH_ID and
+ styleCodeId = @STYLECODE and contentKey = @PARTICIPATING_SUPPLIER_LINK limit 1;
+

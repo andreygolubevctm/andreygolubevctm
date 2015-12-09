@@ -89,12 +89,10 @@
 
 				<c:set var="termsAndConditions">
 					<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
-					I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
-					<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
-					By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
-					I confirm that I have read the <form:link_privacy_statement />.
+					* Yes, <content:optin key="brandDisplayName" useSpan="true"/> may call me during <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">call centre opening hours</a> to discuss my health insurance needs,
+					comparing from a <a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>range of funds</a>.  I have read the <form:link_privacy_statement />.
 				</c:set>
-
+				
 				<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 				<form_new_layout:row className="health-contact-details-optin-group" hideHelpIconCol="true">
 					<field_new:checkbox
@@ -155,19 +153,19 @@
 
 	phoneNumberInteractFunction = function(){
 
-	var tel = $(this).val();
+		var tel = $(this).val();
 
-	<%-- IE sees the placeholder as its value so let's clear that if necessary--%>
-	if( tel.indexOf('(00') === 0 ) {
-	tel = '';
-	}
+		<%-- IE sees the placeholder as its value so let's clear that if necessary--%>
+		if( tel.indexOf('(00') === 0 ) {
+			tel = '';
+		}
 
-	<%-- Optin for callback only if phone entered AND universal optin checked --%>
-	if( $('#${name}_optin').is(':checked') ) {
-	$('#${optIn}').prop('checked', (tel.length ? true : false));
-	} else {
-	$('#${optIn}').prop('checked', false);
-	}
+		<%-- Optin for callback only if phone entered AND universal optin checked --%>
+		if( $('#${name}_optin').is(':checked') ) {
+			$('#${optIn}').prop('checked', (tel.length ? true : false));
+		} else {
+			$('#${optIn}').prop('checked', false);
+		}
 
 
 	}
@@ -177,47 +175,47 @@
 
 	<%-- Use both elements as the checkbox sits over the label --%>
 	var universalOptinElements = [
-	$('#${name}_optin'),
-	$('#${name}_optin').siblings('label').first()
+			$('#${name}_optin'),
+			$('#${name}_optin').siblings('label').first()
 	];
 
 	<%-- Trigger blur events on phone and email elements when the
 		the optin checkbox is clicked --%>
 	for(var i = 0; i < universalOptinElements.length; i++) {
-	universalOptinElements[i].on('click', function(){
-	contactEmailElement.trigger('blur');
-	contactOtherElementInput.trigger('blur');
-	contactMobileElementInput.trigger('blur');
-	});
+		universalOptinElements[i].on('click', function(){
+			contactEmailElement.trigger('blur');
+			contactOtherElementInput.trigger('blur');
+			contactMobileElementInput.trigger('blur');
+		});
 	}
 
 	<%-- COMPETITION START --%>
 	$('#health_contactDetails_competition_optin').on('change', function() {
-	if ($(this).is(':checked')) {
-	$('#${contactName}').setRequired(true, 'Please enter your name to be eligible for the competition');
-	contactEmailElement.setRequired(true, 'Please enter your email address to be eligible for the competition');
-	contactMobileElementInput.addRule('requireOneContactNumber', true, 'Please enter your phone number to be eligible for the competition');
-	}
-	else {
-	<c:if test="${empty callCentre and required == false}">$('#${contactName}').setRequired(false);</c:if>
-	<%-- This rule applies to both call center and non call center users --%>
-	<c:if test="${not empty callCentre or required}">
-		$('#${contactName}').setRequired(true, 'Please enter name');
-	</c:if>
-	<%-- These rules are separate to the callCenter one above as they only apply to non simples uers --%>
-	<c:if test="${required}">
-		contactEmailElement.setRequired(true, 'Please enter your email address');
-		contactMobileElementInput.addRule('requireOneContactNumber', true, 'Please include at least one phone number');
-	</c:if>
-	<c:if test="${required == false}">
-		contactEmailElement.setRequired(false);
-		contactMobileElementInput.removeRule('requireOneContactNumber');
-		$('#${contactName}').valid();
-		contactEmailElement.valid();
-		contactMobileElementInput.valid();
-		contactOtherElementInput.valid();
-	</c:if>
-	}
+		if ($(this).is(':checked')) {
+			$('#${contactName}').setRequired(true, 'Please enter your name to be eligible for the competition');
+			contactEmailElement.setRequired(true, 'Please enter your email address to be eligible for the competition');
+			contactMobileElementInput.addRule('requireOneContactNumber', true, 'Please enter your phone number to be eligible for the competition');
+		}
+		else {
+			<c:if test="${empty callCentre and required == false}">$('#${contactName}').setRequired(false);</c:if>
+			<%-- This rule applies to both call center and non call center users --%>
+			<c:if test="${not empty callCentre or required}">
+				$('#${contactName}').setRequired(true, 'Please enter name');
+			</c:if>
+			<%-- These rules are separate to the callCenter one above as they only apply to non simples uers --%>
+			<c:if test="${required}">
+				contactEmailElement.setRequired(true, 'Please enter your email address');
+				contactMobileElementInput.addRule('requireOneContactNumber', true, 'Please include at least one phone number');
+			</c:if>
+			<c:if test="${required == false}">
+				contactEmailElement.setRequired(false);
+				contactMobileElementInput.removeRule('requireOneContactNumber');
+				$('#${contactName}').valid();
+				contactEmailElement.valid();
+				contactMobileElementInput.valid();
+				contactOtherElementInput.valid();
+			</c:if>
+		}
 	});
 	<%-- COMPETITION END --%>
 </go:script>
