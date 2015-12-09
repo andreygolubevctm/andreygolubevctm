@@ -33,12 +33,22 @@
     </form_new:row>
 
     <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
-    <c:set var="privacyOptinText">I understand ${brandedName} compares energy plans based on a standard tariff from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide. I confirm that I have read the
-        <form:link_privacy_statement/>.</c:set>
+    <c:set var="privacyOptinText">* I agree that Thought World, partner of ${brandedName}, may contact me about energy plans from a <a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>range of retailers</a>.  I confirm that I have read the <form:link_privacy_statement/>.</c:set>
+    <c:set var="optinMarketingText">Yes, keep me updated about news and special offers from ${brandedName}</c:set>
     <form_new:privacy_optin vertical="utilities" labelText="${privacyOptinText}"/>
+    <form_new:row className="${vertical}-contact-details-optin-group" hideHelpIconCol="true">
+        <field_new:checkbox
+                xpath="${xpath}/optinMarketing"
+                value="Y"
+                className="validate"
+                required="false"
+                label="${true}"
+                title="${optinMarketingText}"
+                errorMsg="${error_text}" />
+    </form_new:row>
     <c:if test="${competitionEnabled}">
         <utilities_new:competition/>
     </c:if>
     <field:hidden xpath="${xpath}/optinPhone" defaultValue="N"/>
-    <field:hidden xpath="${xpath}/optinMarketing" defaultValue="N"/>
+
 </form_new:fieldset>

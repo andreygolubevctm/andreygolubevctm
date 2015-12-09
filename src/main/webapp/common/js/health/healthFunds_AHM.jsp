@@ -26,9 +26,9 @@ var healthFunds_AHM = {
 
     healthFunds._dependants(dependantsString);
     <%--change age of dependants and school--%>
-    healthDependents.maxAge = 25;
+    meerkat.modules.healthDependants.setMaxAge(25);
     <%--schoolgroups and defacto--%>
-    $.extend(healthDependents.config, { 'school':true, 'schoolMin':21, 'schoolMax':24, 'schoolID':true, 'schoolIDMandatory':true, 'schoolDate':true, 'schoolDateMandatory':true });
+    meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:true, 'schoolIdRequired':true, showSchoolCommencementField:true, 'schoolDateRequired':true });
 
     <%--School list--%>
     var list = '<select class="form-control"><option value="">Please choose...</option>';
@@ -119,7 +119,6 @@ var healthFunds_AHM = {
       $(this).append(list);
       $(this).find('select').attr('name', name).attr('id', id+'select').setRequired(true, 'Please select dependant '+(i+1)+'\'s school');
     });
-    $('.health_dependant_details_schoolIDGroup input').attr('maxlength', '10');
     <%--$('.health_dependant_details_schoolDateGroup input').mask('99/99/9999', {placeholder: 'DD/MM/YYYY'});--%>
     <%--Change the Name of School label--%>
     healthFunds_AHM.tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
@@ -180,7 +179,6 @@ var healthFunds_AHM = {
 
     <%--School list--%>
     $('.health_dependant_details_schoolGroup select').remove();
-    $('.health_dependant_details_schoolIDGroup input').removeAttr('maxlength');
     <%--Change the Name of School label--%>
     $('.health_dependant_details_schoolGroup .control-label').html(healthFunds_AHM.tmpSchoolLabel);
     delete healthFunds_AHM.tmpSchoolLabel;

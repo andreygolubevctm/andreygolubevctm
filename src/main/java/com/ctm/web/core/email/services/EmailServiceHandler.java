@@ -43,7 +43,7 @@ public abstract class EmailServiceHandler {
 		this.emailMode = emailMode;
 	}
 
-	public abstract void send(HttpServletRequest request, String emailAddress,
+	public abstract String send(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException;
 
 	protected boolean isTestEmailAddress(String emailAddress){

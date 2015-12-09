@@ -34,4 +34,6 @@
 
 	<!-- 3rd Party Loggers -->
 	<logger name="log4j.logger.org.elasticsearch" level="INFO"/>
+	<!-- Change this to DEBUG if you need the request and response from the backend services -->
+	<logger name="com.ctm.web.core.services.CommonRequestService" level="INFO"/>
 </configuration>
