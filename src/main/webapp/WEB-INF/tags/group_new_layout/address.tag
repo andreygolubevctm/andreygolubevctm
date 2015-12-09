@@ -41,9 +41,9 @@
 <go:script href="common/javascript/legacy_address.js" marker="js-href"/>
 
 <c:if test="${empty showTitle or showTitle == 'true'}">
-	<form_new:row fieldXpath="${fieldXpath}" label="${isPostalAddress? 'Postal' : 'Residential'} Address" id="22">
-	&nbsp;
-	</form_new:row>
+	<form_new_layout:row fieldXpath="${fieldXpath}" label="${isPostalAddress? 'Postal' : 'Residential'} Address" id="22">
+		&nbsp;
+	</form_new_layout:row>
 </c:if>
 
 <field:hidden xpath="${xpath}/elasticSearch" defaultValue="N" />
@@ -51,13 +51,13 @@
 
 <%-- POSTCODE --%>
 <c:set var="fieldXpath" value="${xpath}/postCode" />
-<form_new:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb">
+<form_new_layout:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb">
 	<field:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode' " />
-</form_new:row>
+</form_new_layout:row>
 
 <%-- SUBURB DROPDOWN (NON STD) --%>
 <c:set var="fieldXpath" value="${xpath}/suburb" />
-<form_new:row fieldXpath="${fieldXpath}" label="Suburb" className="${name}_nonStd_street">
+<form_new_layout:row fieldXpath="${fieldXpath}" label="Suburb" className="${name}_nonStd_street">
 	<c:choose>
 		<c:when test="${not empty address.postCode}">
 			<sql:query var="result" dataSource="${datasource:getDataSource()}">
@@ -72,9 +72,9 @@
 					<i class="icon-sort"></i>
 				</span>
 				<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" data-msg-validSuburb="Please select a suburb">
-					<%-- Write the initial "Please select" option --%>
+						<%-- Write the initial "Please select" option --%>
 					<option value="">Please select</option>
-					<%-- Write the options for each row --%>
+						<%-- Write the options for each row --%>
 					<c:forEach var="row" items="${result.rows}">
 						<c:choose>
 							<c:when test="${row.suburbSeq == address.suburb || row.suburb == address.suburbName}">
@@ -99,7 +99,7 @@
 			</div>
 		</c:otherwise>
 	</c:choose>
-</form_new:row>
+</form_new_layout:row>
 
 <core:clear />
 
@@ -115,14 +115,14 @@
 
 
 <c:set var="fieldXpath" value="${xpath}/streetSearch" />
-<form_new:row fieldXpath="${fieldXpath}" label="${addressLabel}" id="${name}_std_street" className="std_street">
+<form_new_layout:row fieldXpath="${fieldXpath}" label="${addressLabel}" id="${name}_std_street" className="std_street">
 	<%--
 	<div class="${name}_streetSearch_container">
 		<input type="text" title="${addressTitle}" name="${name}_streetSearch" id="${name}_streetSearch" class="streetSearch" value="${address.streetSearch}"></div>
 	<div class="ui-corner-all ajaxdrop_streetSearch" id="ajaxdrop_${name}_streetSearch" style="display:none;"></div>
 	--%>
 	<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetSearch show-loading sessioncamexclude" title="${addressTitle}" placeHolder="${placeholder}" required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='We can&#39;t seem to find that address&#46;<br /><br />Let&#39;s try again&#58; Please start typing your street address and then select your address from our drop-down box&#46;<br /><br />If you cannot find your address in our drop down&#44; please tick the &#39;Unable to find the address&#39; checkbox to manually enter your address&#46;' "/>
-</form_new:row>
+</form_new_layout:row>
 
 
 <%-- STREET INPUT (NON STD) --%>
@@ -139,9 +139,9 @@
 	</c:otherwise>
 </c:choose>
 <c:set var="fieldXpath" value="${xpath}/nonStdStreet" />
-<form_new:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStd_street">
+<form_new_layout:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStd_street">
 	<field_new:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}' " />
-</form_new:row>
+</form_new_layout:row>
 
 <%-- STREET/HOUSE NUMBER (BOTH STD & NON STD) --%>
 <c:set var="streetLabel" value="Street No." />
@@ -150,28 +150,28 @@
 </c:if>
 
 <c:set var="fieldXpath" value="${xpath}/streetNum" />
-<form_new:row fieldXpath="${fieldXpath}" label="${streetLabel}" id="${name}_streetNumRow" className="std_streetNum">
+<form_new_layout:row fieldXpath="${fieldXpath}" label="${streetLabel}" id="${name}_streetNumRow" className="std_streetNum">
 	<div class="${name}_streetNum_container">
 		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="false" />
 	</div>
-</form_new:row>
+</form_new_layout:row>
 
 
 <%-- UNIT/SHOP (BOTH STD & NON STD) --%>
 <c:set var="fieldXpath" value="${xpath}/unitShop" />
-<form_new:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow">
+<form_new_layout:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow">
 	<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false"  />
-</form_new:row>
+</form_new_layout:row>
 
 <c:set var="fieldXpath" value="${xpath}/unitType" />
-<form_new:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStd_street ${name}_unitShopRow">
+<form_new_layout:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStd_street ${name}_unitShopRow">
 	<field_new:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" />
-</form_new:row>
+</form_new_layout:row>
 
 <c:set var="fieldXpath" value="${xpath}/nonStd" />
-<form_new:row fieldXpath="${fieldXpath}" label="" id="${name}_nonStd_row" className="nonStd">
+<form_new_layout:row fieldXpath="${fieldXpath}" label="" id="${name}_nonStd_row" className="nonStd">
 	<field_new:checkbox xpath="${fieldXpath}" value="Y" title="Tick here if you are unable to find the address" label="true" required="false" customAttribute=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter the address'" />
-</form_new:row>
+</form_new_layout:row>
 <core:clear />
 
 <field:hidden xpath="${xpath}/lastSearch" />
@@ -197,17 +197,17 @@
 	<c:choose>
 		<c:when test="${not empty address.suburb}">
 			_.defer(function() {
-                init_address("${name}" , ${isResidentialAddress} , ${isPostalAddress}, ${address.suburb});
-            });
+			init_address("${name}" , ${isResidentialAddress} , ${isPostalAddress}, ${address.suburb});
+			});
 		</c:when>
 		<c:otherwise>
-            _.defer(function() {
-	            init_address("${name}" , ${isResidentialAddress} , ${isPostalAddress});
-            });
+			_.defer(function() {
+			init_address("${name}" , ${isResidentialAddress} , ${isPostalAddress});
+			});
 		</c:otherwise>
 	</c:choose>
-		$("#${name}_streetNum").val("${address.streetNum}");
-		$("#${name}_unitShop").val("${address.unitShop}");
+	$("#${name}_streetNum").val("${address.streetNum}");
+	$("#${name}_unitShop").val("${address.unitShop}");
 	<%-- Standard Address --%>
 	<c:if test="${address.nonStd != 'Y'}">
 		<%--
@@ -231,12 +231,12 @@
 
 	<%-- Non-standard Address --%>
 	$("#${name}_nonStdStreet").change(function changeNonStdStreet(){
-		$(this).val($.trim($(this).val()));
-		$("#${name}_streetName").val($(this).val());
+	$(this).val($.trim($(this).val()));
+	$("#${name}_streetName").val($(this).val());
 	});
 	$("#${name}_streetSearch, #${name}_streetNum, #${name}_unitShop, #${name}_unitType").bind('blur', function blurStreetNumUnit(){
-		if($("#mainform").validate().numberOfInvalids() !== 0) {
-			$("#mainform").validate().element($(this));
-		}
+	if($("#mainform").validate().numberOfInvalids() !== 0) {
+	$("#mainform").validate().element($(this));
+	}
 	});
 </go:script>

@@ -39,7 +39,7 @@
 			<field:hidden required="true" validationRule="validateMinDependants" validationParam="{'prefix':'${name}'}" validationMessage="A dependant is required." defaultValue="" xpath="${xpath}/dependantrequired" />
 		</div>
 
-		<health:dependant_details_template xpath="${xpath}/dependant" />
+		<health_new:dependant_details_template xpath="${xpath}/dependant" />
 
 		<form_new_layout:row id="dependents_list_options">
 			<a href="javascript:void(0);" class="add-new-dependent btn btn-form" title="Add new dependent">Add New Dependant</a>

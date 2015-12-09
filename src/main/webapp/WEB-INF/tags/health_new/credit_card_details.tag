@@ -48,7 +48,7 @@
 			<field_new:creditcard_ccv xpath="${fieldXpath}" required="true"  />
 		</form_new_layout:row>
 
-		<health:payment_ipp xpath="${xpath}/ipp" />
+		<health_new:payment_ipp xpath="${xpath}/ipp" />
 
 		<%-- Default (HCF) payment day question --%>
 		<c:set var="fieldXpath" value="${xpath}/day" />

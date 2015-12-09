@@ -16,7 +16,7 @@
 
 
 
-		<health:bank_account_details xpath="${xpath}" />
+		<health_new:bank_account_details xpath="${xpath}" />
 
 		<%-- Default payment day --%>
 		<c:set var="fieldXpath" value="${xpath}/day" />
@@ -48,6 +48,6 @@
 
 <div id="${name}_claim-selection" class="health-bank_claim_details">
 	<form_new:fieldset legend="Please nominate a bank account for future claim payments">
-		<health:bank_account_details xpath="${xpath}/claim" />
+		<health_new:bank_account_details xpath="${xpath}/claim" />
 	</form_new:fieldset>
 </div>

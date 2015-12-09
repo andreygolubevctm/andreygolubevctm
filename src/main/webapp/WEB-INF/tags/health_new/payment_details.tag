@@ -27,7 +27,7 @@
 				<%-- insert fund warning data --%>
 		</div>
 
-		<health:calendar xpath="${xpath}" />
+		<health_new:calendar xpath="${xpath}" />
 
 		<c:set var="fieldXpath" value="${xpath}/type" />
 		<form_new_layout:row fieldXpath="${fieldXpath}" label="Payment method" className="changes-premium">

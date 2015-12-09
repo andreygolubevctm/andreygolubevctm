@@ -8,7 +8,7 @@
 
 		<jsp:attribute name="rightColumn">
 			<health:policySummary showProductDetails="true" />
-			<health_new_content:needHelpBubble />
+			<health_content:needHelpBubble />
 		</jsp:attribute>
 
 		<jsp:body>
@@ -30,19 +30,19 @@
 				<%-- The reason for the multiple forms here is because of an issue with iOS7 --%>
 
 				<form  id="applicationForm_1" autocomplete="off" class="form-horizontal" role="form">
-					<health:persons xpath="${pageSettings.getVerticalCode()}/application" />
+					<health_new:persons xpath="${pageSettings.getVerticalCode()}/application" />
 				</form>
 
 				<form  id="applicationForm_2" autocomplete="off" class="form-horizontal" role="form">
-					<health:dependants xpath="${pageSettings.getVerticalCode()}/application/dependants" />
+					<health_new:dependants xpath="${pageSettings.getVerticalCode()}/application/dependants" />
 				</form>
 
 				<form  id="applicationForm_3" autocomplete="off" class="form-horizontal" role="form">
-					<health:application_details xpath="${pageSettings.getVerticalCode()}/application" />
+					<health_new:application_details xpath="${pageSettings.getVerticalCode()}/application" />
 				</form>
 
 				<form  id="applicationForm_4" autocomplete="off" class="form-horizontal" role="form">
-					<health:previous_fund xpath="${pageSettings.getVerticalCode()}/previousfund" id="previousfund" />
+					<health_new:previous_fund xpath="${pageSettings.getVerticalCode()}/previousfund" id="previousfund" />
 				</form>
 
 			</layout_new_layout:slide_content>

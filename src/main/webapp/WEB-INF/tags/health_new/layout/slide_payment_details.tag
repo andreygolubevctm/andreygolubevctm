@@ -8,7 +8,7 @@
 
 		<jsp:attribute name="rightColumn">
 			<health:policySummary showProductDetails="true" />
-			<health_new_content:needHelpBubble />
+			<health_content:needHelpBubble />
 			<health:competition_jeep />
 		</jsp:attribute>
 
@@ -21,11 +21,11 @@
 					<p>Just fill in your payment details below using our secure form. These details will be provided to your new health fund.</p>
 				</form_new:fieldset>
 
-				<health:payment xpath="${pageSettings.getVerticalCode()}/payment" />
+				<health_new:payment xpath="${pageSettings.getVerticalCode()}/payment" />
 
 				<form_new:fieldset legend="Declaration" className="${pageSettings.getVerticalCode()}_declaration-group">
 					<health_new:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
-					<health:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
+					<health_new:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
 					<health_new:whats-next />
 				</form_new:fieldset>
 
