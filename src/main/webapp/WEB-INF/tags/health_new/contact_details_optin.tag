@@ -54,23 +54,23 @@
 				</c:set>
 
 				<c:set var="fieldXpath" value="${xpath}/name" />
-				<form_new:row label="First Name" fieldXpath="${fieldXpath}" className="clear required_input">
+				<form_new_layout:row label="First Name" fieldXpath="${fieldXpath}" className="clear required_input">
 					<field:person_name xpath="${fieldXpath}" title="name" required="true" placeholder="${firstNamePlaceHolder}" />
-				</form_new:row>
+				</form_new_layout:row>
 
 				<c:set var="fieldXpath" value="${xpath}/email" />
-				<form_new:row label="Email Address" fieldXpath="${fieldXpath}" className="clear required_input">
+				<form_new_layout:row label="Email Address" fieldXpath="${fieldXpath}" className="clear required_input">
 					<field_new:email xpath="${fieldXpath}" title="your email address" required="${required}" placeHolder="${emailPlaceHolder}" />
 					<field:hidden xpath="${xpath}/emailsecondary" />
 					<field:hidden xpath="${xpath}/emailhistory" />
-				</form_new:row>
+				</form_new_layout:row>
 
 				<%--<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" />--%>
 
 				<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
-				<form_new:row label="Phone Number" fieldXpath="${fieldXpath}" className="clear required_input">
+				<form_new_layout:row label="Phone Number" fieldXpath="${fieldXpath}" className="clear required_input">
 					<field:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
-				</form_new:row>
+				</form_new_layout:row>
 
 				<%-- Optin fields (hidden) for email and phone --%>
 				<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
@@ -96,7 +96,7 @@
 				</c:set>
 
 				<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
-				<form_new:row className="health-contact-details-optin-group" hideHelpIconCol="true">
+				<form_new_layout:row className="health-contact-details-optin-group" hideHelpIconCol="true">
 					<field_new:checkbox
 							xpath="${xpath}/optin"
 							value="Y"
@@ -105,7 +105,7 @@
 							label="${true}"
 							title="${termsAndConditions}"
 							errorMsg="Please agree to the Terms &amp; Conditions" />
-				</form_new:row>
+				</form_new_layout:row>
 
 				<%-- COMPETITION START --%>
 				<c:if test="${competitionEnabled == true}">
@@ -116,17 +116,17 @@
 						<c:set var="offset_class" value=" no-offset"/>
 					</c:if>
 					<c:if test="${not empty competitionPreCheckboxContainer}">
-						<form_new:row className="competition-optin-group ${offset_class}" hideHelpIconCol="true">
+						<form_new_layout:row className="competition-optin-group ${offset_class}" hideHelpIconCol="true">
 							<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
-						</form_new:row>
+						</form_new_layout:row>
 					</c:if>
-					<form_new:row className="competition-optin-group" hideHelpIconCol="true">
+					<form_new_layout:row className="competition-optin-group" hideHelpIconCol="true">
 						<c:set var="competitionLabel">
 							<content:get key="competitionCheckboxText"/>
 						</c:set>
 						<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
 						<field:hidden xpath="${xpath}/competition/previous" />
-					</form_new:row>
+					</form_new_layout:row>
 				</c:if>
 				<%-- COMPETITION END --%>
 

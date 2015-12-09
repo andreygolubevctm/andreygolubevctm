@@ -1331,7 +1331,7 @@
 				$('#health_application_productTitle').val( meerkat.site.loadProductTitle );
 			}
 
-			healthDependents.init();
+			healthDependents.init(); //test
 
 			if(meerkat.site.isCallCentreUser === true){
 				meerkat.modules.simplesSnapshot.initSimplesSnapshot();
