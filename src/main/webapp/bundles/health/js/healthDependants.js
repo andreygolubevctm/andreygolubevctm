@@ -330,7 +330,6 @@
             $applyPageIncomeTierMenu.find('select').html($situationIncomeTierWrapper.find('select').html());
             $('#health_application_dependants_incomeMessage').text($situationIncomeTierWrapper.find('span').text());
 
-            console.log(depCount, originalDepCount);
             // Hide if the dependant count is the same.
             if(depCount == originalDepCount) {
                 $applyPageIncomeTierMenu.slideUp();
