@@ -60,6 +60,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+
 	<c:if test="${pageSettings.getSetting('appleTouchIconsEnabled') eq 'Y'}">
 		<link rel="apple-touch-icon" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone.png">
 		<link rel="apple-touch-icon" sizes="76x76" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/tablet.png">
