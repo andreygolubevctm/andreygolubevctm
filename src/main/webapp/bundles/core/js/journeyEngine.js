@@ -189,7 +189,6 @@
 		meerkat.messaging.publish(moduleEvents.READY, this);
 
 		function processStep(index, callback){
-			console.log("processstep: ");
 
 			if(index >= settings.steps.length) callback(null); // shouldn't happen, here for safety
 			var step = settings.steps[index];
@@ -211,26 +210,17 @@
 					currentStep = step;
 
 					setFurtherestStep();
-					console.log("validating step: ");
 
 					validateStep(step, function successCallback(){
 
-						console.log("currentStep.onBeforeLeave: ",currentStep.onBeforeLeave);
-						console.log("currentStep.onAfterLeave: ",currentStep.onAfterLeave);
 
 						if(currentStep.onBeforeLeave !== null) currentStep.onBeforeLeave(eventObject);
 						if(currentStep.onAfterLeave !== null) currentStep.onAfterLeave(eventObject);
 
-						console.log("eventObject: ",eventObject);
-						console.log("eventObject.stopChangeStep :"+eventObject.stopChangeStep);
-						console.log("eventObject.hasOwnProperty('stopChangeStep'): ", eventObject.hasOwnProperty('stopChangeStep'));
-						if (eventObject.hasOwnProperty('stopChangeStep') === false || eventObject.stopChangeStep !== true) {
-							console.log("process step after defer: ");
 							// continue to next step...
 							_.defer(function () {
 								processStep(index + 1, callback);
 							});
-						}
 
 					});
 				}catch(e){
@@ -300,7 +290,6 @@
 						_goToStep(step, eventObject);
 
 					}else{
-						console.log("validating the step");
 						// Most likely this event was triggered directly by a hash change, validation must be performed now.
 						validateStep(currentStep, function afterValidation(){
 							_goToStep(step, eventObject);

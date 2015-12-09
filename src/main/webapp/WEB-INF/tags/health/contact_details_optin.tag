@@ -71,7 +71,6 @@
 				<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" />
 
 				<%-- Optin fields (hidden) for email and phone --%>
-				<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
 				<field:hidden xpath="${xpath}/call" defaultValue="${val_optout}" />
 
 				<%-- form privacy_optin --%>
@@ -105,7 +104,7 @@
 				</form_new:row>
 				<form_new:row className="${vertical}-contact-details-optin-group" hideHelpIconCol="true">
 					<field_new:checkbox
-							xpath="${xpath}/optinMarketing"
+							xpath="${xpath}/optInEmail"
 							value="Y"
 							className="validate"
 							required="false"
