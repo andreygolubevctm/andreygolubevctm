@@ -98,7 +98,7 @@
 	}
 	/* This is a temporary function for the split test by altering the layout. */
 	function adjustLayout () {
-		var $mainform = $('#mainform');
+		/*var $mainform = $('#mainform');
 		$mainform.find('.col-sm-8')
 			.not('.short-list-item')
 			.removeClass('col-sm-8').addClass('col-sm-9');
@@ -109,7 +109,7 @@
 			.add("label[for=health_healthCover_primary_cover]")
 			.add("label[for=health_healthCover_primary_coverType]")
 			.removeClass('col-sm-4').addClass('col-sm-3');
-		$mainform.find('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
+		$mainform.find('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');*/
 	}
 
 	function setJourneyEngineSteps(){
@@ -632,7 +632,7 @@
 
 	function configureProgressBar(){
 		// Changing the location of the progressBar for v2 only as it needs to be moved from its default location
-		meerkat.modules.journeyProgressBar.changeTargetElement(".journeyProgressBar_v2");
+		meerkat.modules.journeyProgressBar.changeTargetElement(".journeyProgressBar");
 		//Better progressBar just works...
 		meerkat.modules.journeyProgressBar.setWidth(100);
 		meerkat.modules.journeyProgressBar.setEndPadding(false);

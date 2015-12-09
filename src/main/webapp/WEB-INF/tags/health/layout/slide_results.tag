@@ -11,9 +11,9 @@
 	<c:set var="oldCtaClass" value="old-cta" scope="request"/>
 </c:if>
 
-<layout:slide formId="resultsForm" className="resultsSlide">
+<layout_new_layout:slide formId="resultsForm" className="resultsSlide">
 
-	<layout:slide_content>
+	<layout_new_layout:slide_content>
 		<simples:dialogue id="38" vertical="health" mandatory="true" className="hidden new-quote-only" />
 		<simples:dialogue id="28" vertical="health" mandatory="true" />
 		<simples:dialogue id="33" vertical="health" />
@@ -25,6 +25,6 @@
 		<simples:dialogue id="24" vertical="health" mandatory="true" />
 		<simples:dialogue id="39" vertical="health" />
 		<simples:dialogue id="34" vertical="health" />
-	</layout:slide_content>
+	</layout_new_layout:slide_content>
 
-</layout:slide>
+</layout_new_layout:slide>

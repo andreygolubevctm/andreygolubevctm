@@ -14,10 +14,12 @@
 <%@ taglib tagdir="/WEB-INF/tags/field_new"				prefix="field_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/form" 					prefix="form" %>
 <%@ taglib tagdir="/WEB-INF/tags/form_new"				prefix="form_new" %>
+<%@ taglib tagdir="/WEB-INF/tags/form_new_layout"		prefix="form_new_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/car"					prefix="car" %>
 <%@ taglib tagdir="/WEB-INF/tags/car/layout"			prefix="car_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/core"					prefix="core" %>
 <%@ taglib tagdir="/WEB-INF/tags/core_new"				prefix="core_new" %>
+<%@ taglib tagdir="/WEB-INF/tags/core_new_layout"		prefix="core_new_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/creditcard"			prefix="creditcard" %>
 <%@ taglib tagdir="/WEB-INF/tags/creditcard/layout"		prefix="creditcard_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/group"					prefix="group" %>
@@ -32,9 +34,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/health/layout"			prefix="health_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/health_new/layout"		prefix="health_new_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/content"		prefix="health_content" %>
-<%@ taglib tagdir="/WEB-INF/tags/health_new"			prefix="health_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/health_new/content"	prefix="health_new_content" %>
-<%@ taglib tagdir="/WEB-INF/tags/health_new/layout"		prefix="health_new_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/simples"				prefix="simples" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel"				prefix="travel" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel/layout"			prefix="travel_layout" %>
@@ -63,6 +63,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/features"				prefix="features" %>
 <%@ taglib tagdir="/WEB-INF/tags/confirmation"			prefix="confirmation" %>
 <%@ taglib tagdir="/WEB-INF/tags/layout"				prefix="layout" %>
+<%@ taglib tagdir="/WEB-INF/tags/layout_new_layout"		prefix="layout_new_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/session"				prefix="session" %>
 <%@ taglib tagdir="/WEB-INF/tags/settings"				prefix="settings" %>
 <%@ taglib tagdir="/WEB-INF/tags/content"				prefix="content" %>

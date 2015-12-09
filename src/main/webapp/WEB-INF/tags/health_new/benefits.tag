@@ -9,7 +9,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-benefits">
 
-	<form_new:fieldset_columns sideHidden="true">
+	<form_new_layout:fieldset_columns sideHidden="true">
 
 	<jsp:attribute name="rightColumn">
 	</jsp:attribute>
@@ -35,6 +35,6 @@
 
 	</jsp:body>
 
-	</form_new:fieldset_columns>
+	</form_new_layout:fieldset_columns>
 
 </div>

@@ -2,9 +2,9 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<layout:slide  nextLabel="Proceed to Payment">
+<layout_new_layout:slide  nextLabel="Proceed to Payment">
 
-	<layout:slide_columns sideHidden="true">
+	<layout_new_layout:slide_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
 			<health:policySummary showProductDetails="true" />
@@ -13,7 +13,7 @@
 
 		<jsp:body>
 
-			<layout:slide_content>
+			<layout_new_layout:slide_content>
 
 				<health:competition_jeep />
 
@@ -45,10 +45,10 @@
 					<health:previous_fund xpath="${pageSettings.getVerticalCode()}/previousfund" id="previousfund" />
 				</form>
 
-			</layout:slide_content>
+			</layout_new_layout:slide_content>
 
 		</jsp:body>
 
-	</layout:slide_columns>
+	</layout_new_layout:slide_columns>
 
-</layout:slide>
+</layout_new_layout:slide>

@@ -13,7 +13,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-situation">
 
-	<form_new:fieldset_columns sideHidden="true">
+	<form_new_layout:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
 			<c:if test="${not empty callCentreNumber}">
@@ -113,5 +113,5 @@
 
 		</jsp:body>
 
-	</form_new:fieldset_columns>
+	</form_new_layout:fieldset_columns>
 </div>

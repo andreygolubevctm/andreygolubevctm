@@ -16,7 +16,7 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 		<c:when test="${empty param.providerKey}">
 			<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:') or fn:startsWith(pageContext.request.remoteAddr,'127.0.0.1')}">
 
-				<form_new:fieldset_columns>
+				<form_new_layout:fieldset_columns>
 					<jsp:attribute name="rightColumn">
 					</jsp:attribute>
 					<jsp:body>
@@ -36,7 +36,7 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 
 						</form_new:fieldset>
 					</jsp:body>
-				</form_new:fieldset_columns>
+				</form_new_layout:fieldset_columns>
 
 			</c:if>
 		</c:when>
@@ -55,7 +55,7 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 	</c:choose>
 
 	<%-- This is separate and always available to internal and external --%>
-	<form_new:fieldset_columns>
+	<form_new_layout:fieldset_columns>
 		<jsp:attribute name="rightColumn">
 		</jsp:attribute>
 		<jsp:body>
@@ -67,6 +67,6 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 				</form_new:row>
 			</form_new:fieldset>
 		</jsp:body>
-	</form_new:fieldset_columns>
+	</form_new_layout:fieldset_columns>
 
 </c:if>
