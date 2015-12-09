@@ -45,7 +45,7 @@ update ctm.content_control set effectiveEnd = '2015-12-06' where verticalId = @H
 insert into ctm.content_control (styleCodeId,verticalId,contentCode,contentKey,effectiveStart,effectiveEnd,contentValue) values
  (@STYLECODE,@HEALTH_ID,'Content',@PARTICIPATING_SUPPLIER_LINK,'2015-12-07','2040-12-31','http://www.comparethemarket.com.au/health-insurance/');
 
- --test expect 1
+ -- test expect 1
  SELECT count(*) FROM ctm.content_control WHERE
        verticalId = @HEALTH_ID
        AND contentKey= @PARTICIPATING_SUPPLIER_LINK
