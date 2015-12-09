@@ -11,13 +11,13 @@
 <c:set var="transactionId"><x:out select="$confirmationDataXML/data/transID" /></c:set>
 
 <%-- HTML PLACEHOLDER --%>
-<layout:slide formId="confirmationForm" className="displayBlock">
+<layout_new_layout:slide formId="confirmationForm" className="displayBlock">
 
-	<layout:slide_content>
+	<layout_new_layout:slide_content>
 		<div id="confirmation" class="more-info-content"></div>
-	</layout:slide_content>
+	</layout_new_layout:slide_content>
 
-</layout:slide>
+</layout_new_layout:slide>
 
 <%-- TEMPLATES --%>
 	<%-- Logo and prices template --%>
@@ -26,7 +26,7 @@
 	<%-- Main page template --%>
 	<script id="confirmation-template" type="text/html">
 
-		<layout:slide_columns>
+		<layout_new_layout:slide_columns>
 
 			<jsp:attribute name="rightColumn">
 
@@ -58,7 +58,7 @@
 
 			<jsp:body>
 
-				<layout:slide_content >
+				<layout_new_layout:slide_content >
 
 					<form_new:fieldset legend="" className="confirmation">
 
@@ -188,11 +188,11 @@
 
 					</form_new:fieldset>
 
-				</layout:slide_content>
+				</layout_new_layout:slide_content>
 
 			</jsp:body>
 
-		</layout:slide_columns>
+		</layout_new_layout:slide_columns>
 
 	</script>
 

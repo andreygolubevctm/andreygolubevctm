@@ -16,7 +16,7 @@
 
 <core:quote_check quoteType="health" />
 
-<layout:journey_engine_page title="Health Confirmation">
+<layout_new_layout:journey_engine_page title="Health Confirmation">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -49,23 +49,13 @@
 		</div>
 	</jsp:attribute>
 
-	<jsp:attribute name="progress_bar">
-      <div class="progress-bar-row collapse navbar-collapse">
-		  <div class="container">
-			  <ul class="journeyProgressBar"></ul>
-		  </div>
-	  </div>
-    </jsp:attribute>
-
-	<jsp:attribute name="navbar">
-		<ul class="nav navbar-nav">
+	<jsp:attribute name="navbar_additional_options">
 		<li><a href="javascript:window.print();" class="btn-email"><span class="icon icon-blog"></span> <span>Print Page</span></a></li>
 		<c:if test="${empty callCentre}">
 			<li>
 				<a href="${pageSettings.getBaseUrl()}health_quote_v2.jsp" class="btn-dropdown needsclick"><span class="icon icon-undo"></span> <span>Start a new quote</span> <span class="icon icon-arrow-right hidden-xs"></span></a>
 			</li>
 		</c:if>
-		</ul>
 	</jsp:attribute>
 
 	<jsp:attribute name="form_bottom">
@@ -91,4 +81,4 @@
 		<health_new_layout:slide_confirmation />
 	</jsp:body>
 
-</layout:journey_engine_page>
+</layout_new_layout:journey_engine_page>

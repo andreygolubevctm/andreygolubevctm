@@ -4,6 +4,8 @@
 <jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
 
 <%@ attribute name="title"			required="false"  rtexprvalue="true"	 description="Page title" %>
+<%@ attribute name="navbar_show_back_button"			required="false"  rtexprvalue="true"	 description="Flag to show or hide the back button within the navbar" %>
+
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -16,11 +18,7 @@
 <%@ attribute fragment="true" required="false" name="header_button_left" %>
 
 <%@ attribute fragment="true" required="false" name="navbar_save_quote" %>
-<%@ attribute fragment="true" required="false" name="navbar_filters_heading" %>
-<%@ attribute fragment="true" required="false" name="navbar_filters" %>
-<%@ attribute fragment="true" required="false" name="navbar_benefits_heading" %>
-<%@ attribute fragment="true" required="false" name="navbar_benefits" %>
-<%@ attribute fragment="true" required="false" name="navbar_reference_number" %>
+<%@ attribute fragment="true" required="false" name="navbar_additional_options" %>
 
 <%@ attribute fragment="true" required="false" name="navbar_additional" %>
 <%@ attribute fragment="true" required="false" name="navbar_outer" %>
@@ -36,7 +34,9 @@
 <c:if test="${verticalCode eq 'car'}">
 	<c:set var="verticalCode" value="quote" />
 </c:if>
-
+<c:if test="${empty navbar_show_back_button}">
+	<c:set var="navbar_show_back_button">true</c:set>
+</c:if>
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
 <layout_new_layout:page title="${title}">
@@ -57,9 +57,11 @@
 
 	<jsp:attribute name="navbar">
 		<ul class="nav navbar-nav">
+			<c:if test="${not empty navbar_show_back_button}">
 			<li class="slide-feature-back">
 				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 			</li>
+			</c:if>
 			<c:if test="${not empty navbar_save_quote}">
 			<li class="dropdown dropdown-interactive slide-feature-emailquote" id="email-quote-dropdown">
 				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose><c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></span> <b class="caret"></b></a>
@@ -70,26 +72,8 @@
 				</div>
 			</li>
 			</c:if>
-			<c:if test="${not empty navbar_filters}">
-			<li class="dropdown dropdown-interactive slide-feature-filters" id="filters-dropdown">
-				<a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><jsp:invoke fragment="navbar_filters_heading" /> <b class="caret"></b></a>
-				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-					<jsp:invoke fragment="navbar_filters" />
-				</div>
-			</li>
-			</c:if>
-			<c:if test="${not empty navbar_benefits}">
-			<li class="dropdown dropdown-interactive slide-feature-benefits" id="benefits-dropdown">
-				<a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><jsp:invoke fragment="navbar_benefits_heading" /> <b class="caret"></b></a>
-				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-					<jsp:invoke fragment="navbar_benefits" />
-				</div>
-			</li>
-			</c:if>
-			<c:if test="${not empty navbar_reference_number}">
-			<li class="navbar-text-block">
-				<jsp:invoke fragment="navbar_reference_number" />
-			</li>
+			<c:if test="${not empty navbar_additional_options}">
+				<jsp:invoke fragment="navbar_additional_options" />
 			</c:if>
 		</ul>
 

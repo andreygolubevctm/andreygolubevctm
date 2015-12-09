@@ -88,20 +88,22 @@
     <jsp:attribute name="navbar_save_quote">
         <agg_new:save_quote includeCallMeback="true" />
     </jsp:attribute>
-    <jsp:attribute name="navbar_filters_heading">
-        <span class="icon icon-filter"></span> <span>Filter</span><span class="hidden-sm"> Results</span>
-    </jsp:attribute>
-    <jsp:attribute name="navbar_filters">
-        <health:filters />
-    </jsp:attribute>
-    <jsp:attribute name="navbar_benefits_heading">
-        <span class="icon icon-cog"></span> <span>Customise</span><span class="hidden-sm"> Cover</span>
-    </jsp:attribute>
-    <jsp:attribute name="navbar_benefits">
-        <health:benefits />
-    </jsp:attribute>
-    <jsp:attribute name="navbar_reference_number">
-        <form_new:reference_number />
+    <jsp:attribute name="navbar_additional_options">
+        <li class="dropdown dropdown-interactive slide-feature-filters" id="filters-dropdown">
+            <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter</span><span class="hidden-sm"> Results</span> <b class="caret"></b></a>
+            <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
+                <health:filters />
+            </div>
+        </li>
+        <li class="dropdown dropdown-interactive slide-feature-benefits" id="benefits-dropdown">
+            <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-cog"></span> <span>Customise</span><span class="hidden-sm"> Cover</span> <b class="caret"></b></a>
+            <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
+                <health:benefits />
+            </div>
+        </li>
+        <li class="navbar-text-block">
+            <form_new:reference_number />
+        </li>
     </jsp:attribute>
 
 	<jsp:attribute name="form_bottom">
