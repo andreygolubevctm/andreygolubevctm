@@ -12,6 +12,17 @@
   }
 }
 
+[data-step=results]{
+  #pageContent{
+    background-color: @page-content-bg;
+    .transition(~"background-color 250ms ease-in-out");
+  }
+  #pageContentTop{
+    opacity: 1;
+    .transition(~"opacity 250ms ease-in-out");
+  }
+}
+
 .fieldset,
 .fieldset-column-side {
   &.lhc-group,
