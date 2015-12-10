@@ -24,7 +24,8 @@ CREATE TABLE `leads`.`leads` (
   `email`           VARCHAR(128)     DEFAULT NULL,
   `clientIpAddress` VARCHAR(15) NOT NULL,
   `personAccountId` VARCHAR(18),
-  `status`          VARCHAR(100) NOT NULL,
+  `status`          ENUM('OPEN', 'PENDING', 'SOLD') NOT NULL,
+  `action`          ENUM('AddedToSalesForce', 'UpdatedSalesForce', 'MatchedSalesForce', 'SalesForceError', 'InvalidInput') NOT NULL,
   PRIMARY KEY (`leadId`),
   KEY `fk_sourceId_idx` (`sourceId`),
   CONSTRAINT `fk_sourceId` FOREIGN KEY (`sourceId`) REFERENCES `sources` (`sourceId`)
