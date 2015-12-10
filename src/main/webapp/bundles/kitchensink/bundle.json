@@ -2,6 +2,7 @@
   "brandCodes": ["ctm"],
   "dependencies": [
     "meerkat",
+    "shared/journeyEngine/v2",
     "core",
     "plugins/bootstrapSwitch",
     "shared/addressLookup",

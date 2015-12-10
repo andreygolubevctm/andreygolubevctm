@@ -1,6 +1,7 @@
 {
   "brandCodes": ["ctm", "yhoo"],
   "dependencies": [
+	"shared/journeyEngine/v2",
   	"plugins/scrollTo",
   	"shared/results", 
   	"shared/features",

@@ -168,7 +168,7 @@
 	<go:script href="common/js/modernizr-2.7.1.min.js" marker="js-href" />
 	<go:script href="common/js/underscore-1.5.2.min.js" marker="js-href" />
 	<c:if test="${empty nonQuotePage or nonQuotePage eq false}">
-	<go:script href="common/js/quote-engine.js" marker="js-href" />
+	<go:script href="bundles/shared/journeyEngine/v1/quote-engine.js" marker="js-href" />
 	<go:script href="common/js/scrollable.js" marker="js-href" />
 	</c:if>
 	<go:script marker="js-href" href="common/js/fields/fields.js" />

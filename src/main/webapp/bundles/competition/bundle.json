@@ -3,6 +3,7 @@
         "ctm"
     ],
     "dependencies": [
+        "shared/journeyEngine/v2",
         "shared/results",
         "core",
         "shared/validation"

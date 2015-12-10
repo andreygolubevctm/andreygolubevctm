@@ -1,38 +1,38 @@
 #journeyEngineContainer {
-	position: inherit;
+  position: inherit;
 }
 .journeyEngineSlide.resultsSlide{
-	padding-top: 0;
-	@media (@xs-only) {
-		padding-top: @page-offset-xs;
-	}
+  padding-top: 0;
+  @media (@xs-only) {
+	padding-top: @page-offset-xs;
+  }
 }
 
 #pageContent{
-	position: relative;
-	.transition(~"background-color 1000ms ease-in-out");
-  	background-color: @main-bg-colour;
+  position: relative;
+  .transition(~"background-color 1000ms ease-in-out");
+  background-color: @main-bg-colour;
 }
 
 [data-step=results]{
-	#pageContent{
-		background-color: @page-content-bg;
-		.transition(~"background-color 250ms ease-in-out");
-	}
-	#pageContentTop{
-		opacity: 1;
-		.transition(~"opacity 250ms ease-in-out");
-	}
+  #pageContent{
+	background-color: @page-content-bg;
+	.transition(~"background-color 250ms ease-in-out");
+  }
+  #pageContentTop{
+	opacity: 1;
+	.transition(~"opacity 250ms ease-in-out");
+  }
 }
 
 .fieldset-column-side {
 
-	@media (min-width: @screen-sm-min) {
-		padding-top: 32px; //47px
-	}
+  @media (min-width: @screen-sm-min) {
+	padding-top: 32px; //47px
+  }
 }
 .btn-modal {
-	&:extend(.btn-email all);
+  &:extend(.btn-email all);
 }
 .btn-next, .btn-cta, .btn-save, .btn-cancel, .btn-download, .btn-edit {
   border-radius: 22px;
@@ -115,4 +115,3 @@
 	margin-left: 20px;
   }
 }
-
