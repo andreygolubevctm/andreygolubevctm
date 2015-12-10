@@ -76,10 +76,6 @@
 				<jsp:invoke fragment="navbar_additional_options" />
 			</c:if>
 		</ul>
-
-		<div class="collapse navbar-collapse">
-			<ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
-		</div>
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar_additional">
