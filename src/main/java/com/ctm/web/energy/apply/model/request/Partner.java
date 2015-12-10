@@ -8,10 +8,6 @@ public class Partner {
         this.uniqueCustomerId = uniqueCustomerId;
     }
 
-    private Partner(){
-
-    }
-
     public String getUniqueCustomerId() {
         return uniqueCustomerId;
     }

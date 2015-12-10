@@ -1,13 +1,9 @@
 package com.ctm.web.energy.apply.model.request;
 
-
 public class EnergyApplicationPayload {
 
     private Application application;
     private Partner partner;
-
-    private EnergyApplicationPayload(){
-    }
 
     public Application getApplication() {
         return application;
@@ -16,7 +12,6 @@ public class EnergyApplicationPayload {
     public Partner getPartner() {
         return partner;
     }
-
 
     public void setApplication(Application application) {
         this.application = application;

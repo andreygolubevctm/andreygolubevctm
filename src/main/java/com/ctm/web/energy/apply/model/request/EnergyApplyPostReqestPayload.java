@@ -10,25 +10,22 @@ public class EnergyApplyPostReqestPayload implements Request {
     private String environmentOverride;
     private EnergyApplicationPayload utilities;
 
-    private EnergyApplyPostReqestPayload(){
-
-    }
-
     @Override
     public Long getTransactionId() {
         return transactionId;
     }
-
 
     @Override
     public void setTransactionId(Long transactionId) {
         this.transactionId = transactionId;
     }
 
+    @Override
     public String getClientIpAddress() {
         return clientIpAddress;
     }
 
+    @Override
     public void setClientIpAddress(String clientIpAddress) {
         this.clientIpAddress = clientIpAddress;
     }
@@ -38,6 +35,7 @@ public class EnergyApplyPostReqestPayload implements Request {
         return environmentOverride;
     }
 
+    @Override
     public void setEnvironmentOverride(String environmentOverride) {
         this.environmentOverride = environmentOverride;
     }

@@ -18,10 +18,6 @@ public class Details {
     private YesNo postalMatch;
     private String movingDate;
 
-    private Details(){
-
-    }
-
     public Title getTitle() {
         return title;
     }
