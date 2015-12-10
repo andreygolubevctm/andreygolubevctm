@@ -41,19 +41,19 @@ WHERE productId IN
 /* Disable current products product master */
 UPDATE `ctm`.`product_master` pm
  SET STATUS = 'X'
- WHERE pm.EffectiveStart = @EffectiveStart
-AND pm.EffectiveEnd = @EffectiveEnd
+ WHERE pm.EffectiveStart >= '2015-04-01'
+AND pm.EffectiveEnd <= '2016-03-31'
 AND providerID = @providerID
  AND Status != 'X';
 
-/* Disable current products product master */
+/* Disable current products product master
 UPDATE `ctm`.`product_master` pm 
  SET pm.EffectiveEnd = STR_TO_DATE(@EffectiveStart, '%Y-%m-%d') - INTERVAL 1 DAY 
   WHERE(pm.EffectiveStart != @EffectiveStart AND pm.EffectiveEnd != @EffectiveEnd)
 AND @EffectiveStart between EffectiveStart AND EffectiveEnd 
 AND providerID = @providerID 
  AND Status != 'X'; 
-
+*/
 
 /* INSERT product properties */
 INSERT INTO `ctm`.`product_properties`
