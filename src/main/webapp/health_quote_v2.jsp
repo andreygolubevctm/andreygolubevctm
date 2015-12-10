@@ -104,9 +104,11 @@
         <li class="navbar-text-block">
             <form_new:reference_number />
         </li>
+        </ul>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
         </div>
+        <ul>
     </jsp:attribute>
 
 	<jsp:attribute name="form_bottom">
