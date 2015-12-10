@@ -76,6 +76,11 @@
 
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source:'utilitiesEnquiry', disableFields:true });
 
+        var quoteResultsUrl = "ajax/json/utilities_submit.jsp";
+        if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToEnergyQuote) {
+            quoteResultsUrl = "ajax/json/energy_submit.jsp";
+        }
+
         submitXhr = meerkat.modules.comms.post({
             url: "ajax/json/utilities_submit.jsp",
             data: postData,

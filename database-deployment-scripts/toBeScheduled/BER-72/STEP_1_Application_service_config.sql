@@ -9,8 +9,9 @@ SET @VERTICAL_ID = (SELECT verticalId FROM vertical_master WHERE verticalCode = 
 -- Set master id's to use for later inserts.
 SET @STARTDATE = '2015-09-09';
 SET @ENDDATE = '2038-01-19';
-SET @PROVIDERID = 17;
 SET @SERVICE_NAME = 'TWLD';
+SET @PROVIDERID = (SELECT providerId FROM ctm.provider_master WHERE providerCode = @SERVICE_NAME  LIMIT 1);
+WHERE providerCode = 'TWLD';
 
 INSERT INTO `ctm`.`provider_properties` (`SequenceNo`, `ProviderId`, `PropertyId`, `Text`, `EffectiveStart`, `EffectiveEnd`) VALUES ('43', @PROVIDERID, 'FundCode', @SERVICE_NAME, '2011-03-01', '2040-12-31');
 INSERT INTO service_master (verticalId, serviceCode) VALUES (@VERTICAL_ID, @APPLY_SERVICE);
