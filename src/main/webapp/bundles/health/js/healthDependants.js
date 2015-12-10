@@ -321,15 +321,21 @@
         if (hasChosenToNotApplyRebate) {
             $applyPageIncomeTierMenu.slideUp();
         } else if (depCount > 0) {
-            var $depCount = $('#health_healthCover_dependants');
+            var $depCount = $('#health_healthCover_dependants'),
+                originalDepCount = $depCount.val();
             // Refresh the dependants on the situation step. Only reset it to a smaller number if
             $depCount.val(depCount).trigger('change');
             // Refresh rebate tiers on apply step.
             var $situationIncomeTierWrapper = $('#health_healthCover_tier');
             $applyPageIncomeTierMenu.find('select').html($situationIncomeTierWrapper.find('select').html());
             $('#health_application_dependants_incomeMessage').text($situationIncomeTierWrapper.find('span').text());
-            // TODO: this needs to hide if the dependant count is the same.
-            $applyPageIncomeTierMenu.slideDown();
+
+            // Hide if the dependant count is the same.
+            if(depCount == originalDepCount) {
+                $applyPageIncomeTierMenu.slideUp();
+            } else {
+                $applyPageIncomeTierMenu.slideDown();
+            }
         } else {
             $applyPageIncomeTierMenu.slideUp();
         }
