@@ -45,4 +45,8 @@ public class EnergyApplyPostReqestPayload implements Request {
     public EnergyApplicationPayload getUtilities() {
         return utilities;
     }
+
+    public void setUtilities(EnergyApplicationPayload utilities) {
+        this.utilities = utilities;
+    }
 }

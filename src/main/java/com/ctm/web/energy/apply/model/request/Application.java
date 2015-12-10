@@ -16,4 +16,12 @@ public class Application {
     public ThingsToKnow getThingsToKnow() {
         return thingsToKnow;
     }
+
+    public void setDetails(Details details) {
+        this.details = details;
+    }
+
+    public void setThingsToKnow(ThingsToKnow thingsToKnow) {
+        this.thingsToKnow = thingsToKnow;
+    }
 }

@@ -10,4 +10,8 @@ public class Hidden {
     public String getProductId() {
         return productId;
     }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 }

@@ -65,4 +65,48 @@ public class Details {
     public String getMovingDate() {
         return movingDate;
     }
+
+    public void setTitle(Title title) {
+        this.title = title;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public void setMobileNumberinput(String mobileNumberinput) {
+        this.mobileNumberinput = mobileNumberinput;
+    }
+
+    public void setOtherPhoneNumberinput(String otherPhoneNumberinput) {
+        this.otherPhoneNumberinput = otherPhoneNumberinput;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public void setPostal(Address postal) {
+        this.postal = postal;
+    }
+
+    public void setPostalMatch(YesNo postalMatch) {
+        this.postalMatch = postalMatch;
+    }
+
+    public void setMovingDate(String movingDate) {
+        this.movingDate = movingDate;
+    }
 }

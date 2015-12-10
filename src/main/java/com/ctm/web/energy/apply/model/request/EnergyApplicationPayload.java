@@ -7,7 +7,6 @@ public class EnergyApplicationPayload {
     private Partner partner;
 
     private EnergyApplicationPayload(){
-
     }
 
     public Application getApplication() {
@@ -16,5 +15,14 @@ public class EnergyApplicationPayload {
 
     public Partner getPartner() {
         return partner;
+    }
+
+
+    public void setApplication(Application application) {
+        this.application = application;
+    }
+
+    public void setPartner(Partner partner) {
+        this.partner = partner;
     }
 }
