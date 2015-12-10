@@ -15,7 +15,7 @@
     //------------------------------------------------------------------
 
     //Elements and Variables:
-    var $movingInDate;
+    var $movingInDate, $applicationMovingInDate;
     var movingDateStartRange, movingDateEndRange,movingInDateCurrent,movingInDatePlusOneYear;
     var now = new Date();
 
@@ -61,6 +61,11 @@
         $movingInDate.datepicker(
             { startDate: movingDateStartRange, endDate: movingDateEndRange}
         );
+        $applicationMovingInDate.datepicker( {
+            startDate: movingDateStartRange,
+            endDate: movingDateEndRange
+        });
+
         //update the native picker range checking
         $movingInDate.siblings(".dateinput-nativePicker").find("input")
             .attr("min", stringDate(movingDateStartRange,true))
@@ -70,19 +75,29 @@
         $movingInDate.datepicker(
             { startDate: movingDateStartRange, endDate: movingDateEndRange }
         );
-
     }
 
+    function showCalendarOnDMYTextFields() {
+        initDateRangeVars();
+        $("#utilities_householdDetails_movingInDateInputD," +
+            "#utilities_householdDetails_movingInDateInputM,"+
+            "#utilities_householdDetails_movingInDateInputY").focus(function showCalendar() {
+            $movingInDate.datepicker('hide');
+            $movingInDate.datepicker(
+                { startDate: movingDateStartRange, endDate: movingDateEndRange}
+            );
+            $("#utilities_householdDetails_movingInDate_button").trigger("click");
+        });
+        $("#utilities_application_details_movingDateInputD,"+
+          "#utilities_application_details_movingDateInputM,"+
+          "#utilities_application_details_movingDateInputY").focus(function showCalendar() {
+                $applicationMovingInDate.datepicker('hide');
+                $("#utilities_application_details_movingDate_button").trigger("click");
 
+            }
+        );
 
-
-
-
-
-
-
-
-
+    }
 
 
 
@@ -91,9 +106,29 @@
         $(document).ready(function(){
             //Grab the elements on the page
             $movingInDate = $("#utilities_householdDetails_movingInDate");
-            $movingInDate.datepicker({ orientation: "top left", numberOfMonths: 2, allowHeaderStyling: true});
-            $movingInDate.datepicker("setDaysOfWeekDisabled", [0, 6]);
-            initDatePickers();
+            $applicationMovingInDate = $("#utilities_application_details_movingDate");
+            $movingInDate.datepicker({
+                      orientation: "top left",
+                      numberOfMonths: 2,
+                      allowHeaderStyling: true,
+                      autoclose:true,
+                      setDaysOfWeekDisabled: [0,6],
+                      daysOfWeekHighlighted: [1,2,3,4,5],
+                      format: "dd/mm/yyyy"
+
+            });
+            $applicationMovingInDate.datepicker({
+                orientation: "top left",
+                numberOfMonths: 2,
+                allowHeaderStyling: true,
+                autoclose:true,
+                setDaysOfWeekDisabled: [0,6],
+                daysOfWeekHighlighted: [1,2,3,4,5],
+                format: "dd/mm/yyyy"
+
+            });
+            showCalendarOnDMYTextFields();
+            //initDatePickers();
 
         });
     }

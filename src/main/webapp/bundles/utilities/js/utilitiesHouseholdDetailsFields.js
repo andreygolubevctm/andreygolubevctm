@@ -57,7 +57,7 @@
             if ($locationField.length && $locationField.val().length)
                 _onTypeaheadSelected(null, {value: $locationField.val()});
 
-            _registerEventSubscriptions();
+            //_registerEventSubscriptions();
         });
     }
 
