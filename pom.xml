@@ -48,6 +48,7 @@
 
         <org.mapstruct.version>1.0.0.CR1</org.mapstruct.version>
         <energy.quote.model.version>1.0.0-SNAPSHOT</energy.quote.model.version>
+        <energy.apply.model.version>1.0.0-SNAPSHOT</energy.apply.model.version>
     </properties>
 
     <dependencyManagement>
@@ -452,6 +453,12 @@
             <artifactId>energy-model-quote</artifactId>
             <version>${energy.quote.model.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.ctm.energy</groupId>
+            <artifactId>energy-apply-model</artifactId>
+            <version>${energy.apply.model.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.taglibs</groupId>
             <artifactId>taglibs-standard-impl</artifactId>
