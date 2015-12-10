@@ -53,6 +53,7 @@
 
                 .checkbox {
                     padding:0;
+
                     input{
                         &:checked,
                         &.checked {
@@ -63,6 +64,7 @@
                             }
                         }
                     }
+
                     label{
                         display:inline-block;
                         padding: 0;
@@ -241,6 +243,15 @@
         .hasIcons {
             .categoriesCell {
                 width: auto;
+
+                .checkbox {
+                    label.checked:before {
+                        background-color: @health-benefits-icon-bg-checked-color !important;
+                        border-color: @health-benefits-icon-border-checked-color !important;
+                        color: #fff;
+                    }
+                }
+
                 .benefitsIconSize(60px, @font-size-base, 0);
             }
         }
