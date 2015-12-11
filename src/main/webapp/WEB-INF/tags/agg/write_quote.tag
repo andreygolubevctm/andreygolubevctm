@@ -640,6 +640,13 @@
 							AND sequenceNo > ${counter}
 							AND sequenceNo < 300;
 	</sql:update>
+					<c:if test="${rootPath eq 'health'}">
+						<sql:update>
+							DELETE FROM aggregator.transaction_details
+							WHERE transactionId = ${transactionId}
+							AND sequenceNo > 299;
+						</sql:update>
+					</c:if>
 				</c:if>
 					</c:when>
 					<c:otherwise>
