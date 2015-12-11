@@ -14,6 +14,10 @@ import java.util.TreeSet;
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 
+/**
+ * NOTE: This class will only work for endpoints which are redirected via a <jsp:forward/> tag. Cases where the endpoint is called
+ * directly and that are intercepted by this class will cause an exception since the request parameters are not able to be modified.
+ */
 public class SpringFormParamMapInInterceptor extends HandlerInterceptorAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringFormParamMapInInterceptor.class);
