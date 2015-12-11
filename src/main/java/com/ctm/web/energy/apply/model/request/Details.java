@@ -6,7 +6,7 @@ import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.model.request.Title;
 
 public class Details {
-    private Title title;
+    private String title;
     private String firstName;
     private String lastName;
     private String dob;
@@ -18,7 +18,7 @@ public class Details {
     private YesNo postalMatch;
     private String movingDate;
 
-    public Title getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -62,7 +62,7 @@ public class Details {
         return movingDate;
     }
 
-    public void setTitle(Title title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 

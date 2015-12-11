@@ -5,18 +5,15 @@ import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
-import com.ctm.web.core.services.Endpoint;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceRequestAdapter;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceResponseAdapter;
-import com.ctm.web.energy.apply.model.request.EnergyApplyPostReqestPayload;
+import com.ctm.web.energy.apply.model.request.EnergyApplyPostRequestPayload;
 import com.ctm.web.energy.apply.response.EnergyApplyWebResponseModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-
-import static com.ctm.web.core.model.settings.Vertical.VerticalType.ENERGY;
 
 @Component
 public class EnergyApplyService  { //extends CommonRequestService<EnergyApplicationDetails,EnergyApplicationResponse> {
@@ -27,7 +24,7 @@ public class EnergyApplyService  { //extends CommonRequestService<EnergyApplicat
     }
 
 
-    public EnergyApplyWebResponseModel apply(EnergyApplyPostReqestPayload model, Brand brand) throws IOException, DaoException, ServiceConfigurationException {
+    public EnergyApplyWebResponseModel apply(EnergyApplyPostRequestPayload model, Brand brand) throws IOException, DaoException, ServiceConfigurationException {
         EnergyApplyServiceResponseAdapter responseAdapter= new EnergyApplyServiceResponseAdapter();
         EnergyApplyServiceRequestAdapter requestAdapter = new EnergyApplyServiceRequestAdapter();
         final EnergyApplicationDetails energyApplicationDetails = requestAdapter.adapt(model);

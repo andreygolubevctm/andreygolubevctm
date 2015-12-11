@@ -80,7 +80,7 @@
 
         // Instead we to a forward from the jsp page
         //if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToEnergyQuote) {
-        //    applyResultsUrl = "spring/rest/energy/apply.json";
+        //    applyResultsUrl = "spring/rest/energy/apply/apply.json";
         //}
 
         submitXhr = meerkat.modules.comms.post({

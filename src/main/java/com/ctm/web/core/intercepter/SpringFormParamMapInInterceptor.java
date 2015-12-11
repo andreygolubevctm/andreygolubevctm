@@ -32,12 +32,12 @@ public class SpringFormParamMapInInterceptor extends HandlerInterceptorAdapter {
         Set<String> newSet = new TreeSet<>(params.keySet());
 
         for (String key : newSet) {
-            LOGGER.debug("Mapping {}",kv("key",key));
             if(key.contains("_")) {
                 String newKey = StringUtils.replace(key, "_", ".");
                 String[] value = params.get(key);
                 params.remove(key);
                 params.put(newKey, value);
+                LOGGER.debug("Mapped {} -> {}",kv("key",key),kv("newKey",newKey));
             }
         }
         return true;

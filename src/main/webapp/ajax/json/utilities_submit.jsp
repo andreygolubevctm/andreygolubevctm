@@ -51,9 +51,11 @@
             <c:set var="rootId" value="0"/>
         </c:if>
 
+
         <c:choose>
-            <c:when test="${param.utilities_currentJourney == '40'}">
-                <jsp:forward page="/spring/rest/energy/apply.json"/>
+            <c:when test="${data.utilities.currentJourney == '40'}">
+                ${logger.info('Fowarding to journey=40')}
+                <jsp:forward page="/spring/rest/energy/apply/apply.json"/>
             </c:when>
             <c:otherwise>
 

@@ -4,7 +4,7 @@ import com.ctm.web.core.model.formData.Request;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EnergyApplyPostReqestPayload implements Request {
+public class EnergyApplyPostRequestPayload implements Request {
     private Long transactionId;
     private String clientIpAddress;
     private String environmentOverride;
