@@ -442,6 +442,12 @@
 		</sql:update>
 	</c:catch>
 </c:if>
+
+<c:if test="${hasPrivacyOptin eq true}">
+	<jsp:useBean id="LeadServiceFactory" class="com.ctm.web.core.leadService.factories.LeadServiceFactory" scope="request" />
+	<c:set var="leadService">${LeadServiceFactory.createLeadService(pageContext.getRequest(), data)}</c:set>
+</c:if>
+
 <%-- Test for DB issue and handle - otherwise move on --%>
 <c:if test="${not empty error}">
 	<c:if test="${not empty errorPool}">

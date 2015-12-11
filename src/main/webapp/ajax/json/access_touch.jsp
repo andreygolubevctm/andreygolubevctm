@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="LeadServiceFactory" class="com.ctm.web.core.leadService.factories.LeadServiceFactory" scope="request" />
-
 <core_new:no_cache_header/>
 
 <session:get settings="true" authenticated="true" throwCheckAuthenticatedError="true" verticalCode="${fn:toUpperCase(param.quoteType)}"/>
@@ -55,7 +53,6 @@
 				</c:when>
 			</c:choose>
 			<core:transaction touch="${param.touchtype}" comment="${param.comment}" noResponse="true" productId="${param.productId}" />
-			${LeadServiceFactory.createLeadService(verticalCode, data)}
 		</c:otherwise>
 	</c:choose>
 	<transactionId>${data.current.transactionId}</transactionId>
@@ -65,5 +62,4 @@
 
 <%-- Return the results as json --%>
 <c:set var="accessTouchResponse" >${go:XMLtoJSON(result)}</c:set>
-${accessTouchResponse}
-<%--${sessionDataService.updateTokenWithNewTransactionIdResponse(pageContext.request, accessTouchResponse, data.current.transactionId)}--%>
+${sessionDataService.updateTokenWithNewTransactionIdResponse(pageContext.request, accessTouchResponse, data.current.transactionId)}

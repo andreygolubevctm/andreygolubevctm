@@ -149,4 +149,5 @@ public class LeadDataModel {
     public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
+
 }

@@ -6,23 +6,24 @@ import com.ctm.web.health.services.HealthLeadService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class LeadServiceFactory {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(LeadService.class);
 
     /**
      * Creates a new lead service based on the specified vertical
-     * @param vertical
      * @return
      */
-    public LeadService createLeadService(String vertical, Data data) {
-        vertical = vertical.toLowerCase();
+    public LeadService createLeadService(HttpServletRequest request, Data data) {
+        String vertical = data.getString("current/verticalCode").toLowerCase();
 
         LeadService leadService = null;
 
         switch (vertical) {
             case "health":
-                leadService = new HealthLeadService(vertical, data);
+                leadService = new HealthLeadService(request, data);
                 break;
         }
 
