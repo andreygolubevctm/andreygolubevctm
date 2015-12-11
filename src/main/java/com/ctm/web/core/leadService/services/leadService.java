@@ -9,6 +9,10 @@ import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
 import com.ctm.web.core.services.FatalErrorService;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.web.go.Data;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +57,10 @@ public abstract class LeadService {
             leadData = leadDataModelFactory.createLeadDataModel(vertical);
 
             updatePayloadData();
-            sendLead();
+
+            if(canSend()) {
+                sendLead();
+            }
         }
     }
 
@@ -79,6 +86,15 @@ public abstract class LeadService {
     }
 
     /**
+     * Detmermines if we have the fields required for sending
+     * @return
+     */
+    private boolean canSend() {
+        // TODO: Check required fields are set
+        return false;
+    }
+
+    /**
      * Restfully sends the collected lead data to the CtM API endpoint
      */
     private void sendLead() {
@@ -90,7 +106,8 @@ public abstract class LeadService {
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json");
 
-            String body = "{\"a\": \"b\"}";
+            // Test data
+            String body = getRequestJSONString();
 
             OutputStream outputStream = httpConnection.getOutputStream();
             outputStream.write(body.getBytes());
@@ -105,15 +122,32 @@ public abstract class LeadService {
             );
 
             // TODO: Do something with the response
+            String response;
+            String output = "";
+            while ((response = responseBuffer.readLine()) != null) {
+                output += response;
+            }
 
             httpConnection.disconnect();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            LOGGER.error("Lead Service malformed URL", e);
         } catch (ProtocolException e) {
-            e.printStackTrace();
+            LOGGER.error("Lead Service protocol exception", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Lead Service IO exception", e);
+        } catch (RuntimeException e) {
+            LOGGER.error("Lead Service HTTP Request Failed", e);
         }
+    }
+
+    /**
+     * Takes the lead data object and converts it into JSON for sending off to the rest API
+     * @return
+     * @throws JsonProcessingException
+     */
+    private String getRequestJSONString() throws JsonProcessingException {
+        ObjectWriter ow = new ObjectMapper().writer();
+        return ow.writeValueAsString(leadData);
     }
 
     /**
