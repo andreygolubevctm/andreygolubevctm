@@ -208,7 +208,7 @@ public class RequestAdapter {
                 whenMovedIn.setYear(formWhenMovedIn.getYear());
             }
             if (StringUtils.isNotBlank(formWhenMovedIn.getMonth())) {
-                whenMovedIn.setMonth(Integer.parseInt(formWhenMovedIn.getMonth()));
+                whenMovedIn.setMonth(Integer.parseInt(formWhenMovedIn.getMonth()) - 1);
             }
         }
         return whenMovedIn;
