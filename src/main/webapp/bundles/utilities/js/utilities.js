@@ -214,6 +214,10 @@
             },
             onAfterEnter: function() {
                 $("#utilities_application_details_email").trigger("change");
+                var valDate = $("#utilities_application_details_movingDateInputD").val();
+                var valMonth = $("#utilities_application_details_movingDateInputM").val();
+                var valYear = $("#utilities_application_details_movingDateInputY").val();
+                $("#utilities_application_details_movingDate").datepicker('update',new Date(valYear,(valMonth -1),valDate));
             }
         };
 
