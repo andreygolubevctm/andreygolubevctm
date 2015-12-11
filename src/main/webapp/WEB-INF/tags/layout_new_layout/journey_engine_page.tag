@@ -19,6 +19,7 @@
 
 <%@ attribute fragment="true" required="false" name="navbar_save_quote" %>
 <%@ attribute fragment="true" required="false" name="navbar_additional_options" %>
+<%@ attribute fragment="true" required="false" name="navbar_pagination" %>
 
 <%@ attribute fragment="true" required="false" name="navbar_additional" %>
 <%@ attribute fragment="true" required="false" name="navbar_outer" %>
@@ -74,6 +75,10 @@
 			</c:if>
 			<c:if test="${not empty navbar_additional_options}">
 				<jsp:invoke fragment="navbar_additional_options" />
+			</c:if>
+			</ul>
+			<c:if test="${not empty navbar_pagination}">
+				<jsp:invoke fragment="navbar_pagination" />
 			</c:if>
 		</ul>
 	</jsp:attribute>
