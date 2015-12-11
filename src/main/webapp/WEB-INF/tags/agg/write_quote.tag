@@ -640,6 +640,9 @@
 							AND sequenceNo > ${counter}
 							AND sequenceNo < 300;
 	</sql:update>
+					<%--
+					See JIRA CTMIT-721 for the below logic
+					--%>
 					<c:if test="${rootPath eq 'health'}">
 						<sql:update>
 							DELETE FROM aggregator.transaction_details
