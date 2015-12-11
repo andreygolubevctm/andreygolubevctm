@@ -22,7 +22,7 @@ public class HealthLeadService extends LeadService {
         leadData.setBrandCode(String.valueOf(data.getString("current/brandCode")));
 
         // TODO: Create enum and use based on completion of fields / current step
-        leadData.setStatus(String.valueOf(data.getString("OPEN")));
+        leadData.setStatus("OPEN");
 
         leadData.setClientIpAddress(request.getRemoteAddr());
 
