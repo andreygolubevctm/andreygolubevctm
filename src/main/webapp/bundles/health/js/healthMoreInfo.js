@@ -9,6 +9,7 @@
         moduleEvents = events.healthMoreInfo;
 
     var $bridgingContainer = $('.moreInfoDropdown'),
+        scrollPosition, //The position of the page on the modal display,
         topPosition;
 
 
@@ -17,9 +18,11 @@
         var options = {
             container: $bridgingContainer,
             updateTopPositionVariable: updateTopPositionVariable,
+            hideAction: 'fadeOut',
+            showAction: 'fadeIn',
             showActionWhenOpen: 'fadeIn',
             modalOptions: {
-                className: 'modal-breakpoint-wide modal-tight bridgingContainer',
+                className: 'modal-breakpoint-wide modal-tight moreInfoDropdown',
                 openOnHashChange: false,
                 leftBtn: {
                     label: 'All Products',
@@ -39,7 +42,7 @@
             onBeforeShowModal: onBeforeShowModal,
             onAfterShowModal: onAfterShowModal,
             onAfterShowTemplate: onAfterShowTemplate,
-            onBeforeHideTemplate: onBeforeHideTemplate,
+            onBeforeHideTemplate: null,
             onAfterHideTemplate: onAfterHideTemplate,
             onClickApplyNow: onClickApplyNow,
             onBeforeApply: onBeforeApply,
@@ -111,6 +114,12 @@
 
     function eventSubscriptions() {
 
+        meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function bridgingPageHashChange(event) {
+            if (meerkat.modules.deviceMediaState.get() != 'xs' && event.hash.indexOf('/moreinfo') == -1) {
+                meerkat.modules.moreInfo.hideTemplate($bridgingContainer);
+            }
+        });
+
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function bridgingPageEnterXsState() {
             if (meerkat.modules.moreInfo.isBridgingPageOpen()) {
                 meerkat.modules.moreInfo.close();
@@ -123,13 +132,6 @@
             }
         });
 
-        meerkat.messaging.subscribe(meerkatEvents.moreInfo.bridgingPage.SHOW, function (state) {
-           $(Results.settings.elements.page).css("overflow", "hidden").height($bridgingContainer.outerHeight());
-        });
-        meerkat.messaging.subscribe(meerkatEvents.moreInfo.bridgingPage.HIDE, function (state) {
-            $(Results.settings.elements.page).css("overflow", "visible").height("");
-        });
-
     }
 
     /**
@@ -138,7 +140,6 @@
     function runDisplayMethod(productId) {
         var currStep = meerkat.modules.journeyEngine.getCurrentStep().navigationId;
         if (meerkat.modules.deviceMediaState.get() != 'xs' &&  currStep != 'apply' && currStep != 'payment') {
-            meerkat.modules.resultsHeaderBar.disableAffixMode();
             meerkat.modules.moreInfo.showTemplate($bridgingContainer);
         } else {
             meerkat.modules.moreInfo.showModal();
@@ -206,13 +207,6 @@
         meerkat.modules.moreInfo.updateSettings(settings);
     }
 
-    function onBeforeHideTemplate() {
-        // unfade all headers
-        $(Results.settings.elements.page).find(".result").removeClass("faded");
-        // reset button to default one
-        $('.btn-close-more-info').removeClass("btn-close-more-info").addClass("btn-more-info");
-    }
-
     function initialiseBrochureEmailForm(product, parent, form) {
         var emailBrochuresElement = parent.find('.moreInfoEmailBrochures');
         emailBrochuresElement.show();
@@ -254,14 +248,20 @@
         });
     }
 
+    /**
+     * Set the current scroll position so that it can be used when modals are closed
+     */
+    function setScrollPosition() {
+        scrollPosition = $(window).scrollTop();
+    }
+
+    /**
+     * Sets the view state for when your bridging page or modal is open.
+     * Called from meerkat.modules.moreInfo.openBridgingPage
+     */
     function onBeforeShowBridgingPage($this) {
-        $(Results.settings.elements.page).find(".result").addClass("faded");
-        // reset all the close buttons (there should only be one) to default button
-        $(".btn-close-more-info").removeClass("btn-close-more-info").addClass("btn-more-info");
-        // unfade the header from the clicked button
-        $this.parents(".result").removeClass("faded");
-        // replace clicked button with close button
-        $this.removeClass("btn-more-info").addClass("btn-close-more-info");
+
+        setScrollPosition();
 
         var data = {
             actionStep: 'Health More Info'
@@ -270,10 +270,16 @@
             method: 'trackQuoteForms',
             object: data
         });
+
+        // hide the results before showing the more info page (except for xs as we use a modal)
+        if (meerkat.modules.deviceMediaState.get() != 'xs') {
+            $('.resultsContainer, .resultsHeadersBg').hide();
+        }
     }
 
     function onAfterHideTemplate() {
-        meerkat.modules.resultsHeaderBar.enableAffixMode();
+        $('.resultsContainer, .resultsHeadersBg').show();
+        $(window).scrollTop(scrollPosition);
     }
 
     //

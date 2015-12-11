@@ -96,4 +96,16 @@
 		}
 	}
 
+	&.moreInfoVisible {
+	  	// hiding the whole navbar when More Info is open
+		#navbar-main {
+		  	.slide-feature-hidden() !important;
+		}
+		// when navbar hidden, min-height for header needs to be auto again otherwise it doesn't
+		/*
+		header{
+		  	min-height: inherit;
+		}
+		*/
+	}
 }

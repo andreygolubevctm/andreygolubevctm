@@ -14,7 +14,120 @@
 </c:if>
 
 <%-- MORE INFO TEMPLATE --%>
+
 <script id="more-info-template" type="text/html">
+
+	<%-- Prepare the price and dual price templates --%>
+	{{ var logoPriceTemplate = $("#logo-price-template").html(); }}
+	{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
+	{{ obj._selectedFrequency = Results.getFrequency(); }}
+	{{ obj.mode = ''; }}
+	{{ obj.showAltPremium = false; obj.renderedPriceTemplate = htmlTemplatePrice(obj); }}
+	{{ obj.showAltPremium = true;  obj.renderedAltPriceTemplate = htmlTemplatePrice(obj); }}
+
+	<%-- Prepare the call to action bar template --%>
+	{{ var logoPriceTemplate = $("#").html(); }}
+
+	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content">
+
+		<div class="modal-closebar">
+			<a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
+		</div>
+
+		<div class="flat-design-card">
+
+			<div class="col-sm-8">
+				Quote reference number {{= transactionId }}
+
+				<h1 class="productName">{{= info.productTitle }}</h1>
+
+				{{ if (promo.promoText !== ''){ }}
+					<h2 class="more-info-promotion">Buy now and save with these promotions</h2>
+					{{= promo.promoText }}
+				{{ } }}
+
+				{{= renderedPriceTemplate }}
+
+			</div>
+
+			<div class="col-sm-4 hidden-xs">
+				<h2>You're nearly insured</h2>
+				<div class="moreInfoProgress">
+					<div>
+						<div class="moreInfoProgressBarLeft"></div>
+						<div class="moreInfoProgressDone">75%</div>
+					</div>
+					<div>
+						<p class="bold">Buy through comparethemarket</p>
+						<p>Your chosen product</p>
+						<p>Your cover preferences</p>
+						<p>About you</p>
+					</div>
+				</div>
+
+				<h2>Need help?</h2>
+				<p>Speak to one of our health insurance specialist on <span class="noWrap callCentreNumber">${callCentreNumber}</span></p>
+				<p>Quote your reference number {{= transactionId }}</p>
+			</div>
+
+		</div>
+
+		<div class="flat-design-card">
+			<div class="col-sm-6">
+				<h1>Hospital cover</h1>
+				<p><strong>Hospital Excess:</strong> {{= hospital.inclusions.excess }}</p>
+				<p><strong>Excess Waivers:</strong> {{= hospital.inclusions.waivers }}</p>
+				<p><strong>Co-payment / % Hospital Contribution:</strong> {{= hospital.inclusions.copayment }}</p>
+
+				{{ if(hospitalCover.inclusions.length > 0) { }}
+				<p><strong>You will be covered for the following services</strong></p>
+				<ul class="indent">
+					{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
+					<li>{{= inclusion }}</li>
+					{{ }) }}
+				</ul>
+				{{ } }}
+
+				{{ if(hospitalCover.restrictions.length > 0) { }}
+				<p><strong>You will have restricted cover for the following services</strong></p>
+				<ul class="indent">
+					{{ _.each(hospitalCover.restrictions, function(restriction){ }}
+					<li>{{= restriction }}</li>
+					{{ }) }}
+				</ul>
+				<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
+				{{ } }}
+
+				<p><strong>You do not have any exclusions on this policy</strong></p>
+			</div>
+
+			<div class="col-sm-6">
+				<h1>Extras cover</h1>
+
+				{{ var featureIterator = obj.childFeatureDetails || Features.getPageStructure(); }}
+				{{ for(var i = 0; i < featureIterator.length; i++) { }}
+					{{ var feature = featureIterator[i]; }}
+					{{ if(feature.doNotRender === true) { continue; } }}
+					{{= feature.safeName }}
+				{{ } }}
+			</div>
+		</div>
+
+		INSERT template
+	</div>
+
+</script>
+
+<script id="more-info-call-to-action-template" type="text/html">
+
+	<div class="moreInfoCallToActionBar">
+		<p>Found the right product for you?</p>
+		<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+	</div>
+
+</script>
+
+<script id="more-info-template-old" type="text/html">
 
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content">
 
@@ -34,10 +147,14 @@
 
 				</div>
 
+				<div class="modal-closebar">
+					<a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
+				</div>
+
 				<h1 class="productName">{{= info.productTitle }}</h1>
 
 				<div class="visible-xs">
-					{{ if (showApply === true) { }}<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply ${oldCtaClass}" data-productId="{{= productId }}">Apply Online</a>{{ } }}
+					{{ if (showApply === true) { }}<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply old-cta" data-productId="{{= productId }}">Apply Online</a>{{ } }}
 					<c:if test="${not empty callCentreNumber}">
 					<a href="tel:${callCentreNumber}" class="needsclick btn btn-form btn-block phone callCentreNumberSection" data-productId="{{= productId }}">
 						<h5 class="moreInfoCallUs">Call us now on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h5>
@@ -83,7 +200,7 @@
 					<ui:bubble variant="chatty" className="moreInfoBubble contactBlock">
 						<div class="row">
 							<div class="col-xs-5">
-								<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply ${oldCtaClass}" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
+								<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply old-cta" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
 				</div>
 							<c:if test="${not empty callCentreNumber}">
 								<div class="col-xs-6 callCentreNumberSection">
@@ -122,7 +239,7 @@
 							</c:if>
 
 							<div class="col-xs-5">
-								<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply ${oldCtaClass}" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
+								<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply old-cta" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
 							</div>
 						</div>
 					</ui:bubble>
