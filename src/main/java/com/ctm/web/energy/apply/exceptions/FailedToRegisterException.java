@@ -9,4 +9,8 @@ public class FailedToRegisterException extends RuntimeException {
     public FailedToRegisterException(ApplyResponse applyResponse) {
         this.applyResponse = applyResponse;
     }
+
+    public ApplyResponse getApplyResponse() {
+        return applyResponse;
+    }
 }

@@ -10,7 +10,9 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.CommonRequestService;
+import com.ctm.web.core.services.Endpoint;
 import com.ctm.web.core.services.TouchService;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceRequestAdapter;
@@ -54,11 +56,9 @@ public class EnergyApplyService extends CommonRequestService<EnergyApplicationDe
         EnergyApplyServiceResponseAdapter responseAdapter= new EnergyApplyServiceResponseAdapter();
         EnergyApplyServiceRequestAdapter requestAdapter = new EnergyApplyServiceRequestAdapter();
         final EnergyApplicationDetails energyApplicationDetails = requestAdapter.adapt(model);
-//        EnergyApplicationResponse energyApplicationResponseModel = sendRequest(brand, ENERGY, "applyServiceBER", Endpoint.APPLY, model, energyApplicationDetails,
-//                EnergyApplicationResponse.class);
-
-        ApplyResponse applyResponse = null;
-        if(applyResponse.getResponseStatus().equals(Status.REGISTERED)) {
+        ApplyResponse applyResponse = sendRequest(brand, Vertical.VerticalType.ENERGY, "applyServiceBER", Endpoint.APPLY, model, energyApplicationDetails,
+                ApplyResponse.class);
+        if(Status.REGISTERED.equals(applyResponse.getResponseStatus())) {
             String confirmationkey = createAndSaveConfirmation(request, model, applyResponse);
             return responseAdapter.adapt(applyResponse)
                     .transactionId(model.getTransactionId())

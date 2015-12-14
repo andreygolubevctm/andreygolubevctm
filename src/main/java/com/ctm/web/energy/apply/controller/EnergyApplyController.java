@@ -8,8 +8,8 @@ import com.ctm.energyapply.model.request.application.applicant.ApplicantDetails;
 import com.ctm.energyapply.model.request.application.contact.ContactDetails;
 import com.ctm.energyapply.model.request.relocation.RelocationDetails;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.exceptions.ServiceRequestException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.exceptions.ServiceRequestException;
 import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
@@ -18,10 +18,14 @@ import com.ctm.web.core.resultsData.model.Info;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.utils.MiscUtils;
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
-import com.ctm.web.core.web.go.Data;
-import com.ctm.web.energy.apply.model.request.*;
+import com.ctm.web.energy.apply.exceptions.FailedToRegisterException;
+import com.ctm.web.energy.apply.model.request.Address;
+import com.ctm.web.energy.apply.model.request.Details;
+import com.ctm.web.energy.apply.model.request.EnergyApplyPostRequestPayload;
+import com.ctm.web.energy.apply.model.request.Partner;
 import com.ctm.web.energy.apply.response.EnergyApplyWebResponseModel;
 import com.ctm.web.energy.apply.services.EnergyApplyService;
+import com.ctm.web.energy.form.model.HouseHoldDetailsWebRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -65,13 +69,10 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
 
         Brand brand = initRouter(request, Vertical.VerticalType.ENERGY);
         updateTransactionIdAndClientIP(request, applyPostReqestPayload);
-        EnergyApplyWebResponseModel outcome = energyService.apply(applyPostReqestPayload, brand);
+        EnergyApplyWebResponseModel outcome = energyService.apply(applyPostReqestPayload, brand, request);
         if (outcome != null) {
-            Data dataBucket = getDataBucket(request, applyPostReqestPayload.getTransactionId());
             Info info = new Info();
-            info.setTrackingKey(dataBucket.getString("data/utilities/trackingKey"));
             info.setTransactionId(applyPostReqestPayload.getTransactionId());
-            outcome.setTransactionId(applyPostReqestPayload.getTransactionId());
         }
         return outcome;
     }
@@ -161,7 +162,7 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
             }
 
             // - Household
-            Optional<HouseholdDetails> householdDetails = MiscUtils.resolve(() -> energyApplyPostRequestPayload.getUtilities().getHouseholdDetails());
+            Optional<HouseHoldDetailsWebRequest> householdDetails = MiscUtils.resolve(() -> energyApplyPostRequestPayload.getUtilities().getHouseholdDetails());
             if (householdDetails.isPresent()) {
                 RelocationDetails.Builder relocationDetailsBuilder = RelocationDetails.newBuilder();
                 if (YesNo.Y.equals(householdDetails.get().getMovingIn())) {
@@ -195,6 +196,16 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
         ErrorInfo errorInfo = new ErrorInfo();
         errorInfo.setTransactionId(e.getTransactionId());
         errorInfo.setErrors(e.getErrors());
+        return errorInfo;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorInfo handleException(final FailedToRegisterException e) {
+        LOGGER.error("Failed to handle request", e);
+        ErrorInfo errorInfo = new ErrorInfo();
+/*        errorInfo.setTransactionId(e.getTransactionId());
+        errorInfo.setErrors(e.getErrors());*/
         return errorInfo;
     }
 
