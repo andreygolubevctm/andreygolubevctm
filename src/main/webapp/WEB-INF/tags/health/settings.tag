@@ -29,6 +29,8 @@
 		</c:otherwise>
 	</c:choose>
 </c:set>
+<c:set var="defaultToHealthQuote"><content:get key="makeHealthQuoteMainJourney" /></c:set>
+<c:set var="defaultToHealthApply"><content:get key="makeHealthApplyMainJourney" /></c:set>
 
 <c:set var="utm_source">
 	<c:choose>
@@ -74,6 +76,8 @@
 	utm_source: '<c:out value="${utm_source}" />',
 	utm_medium: '<c:out value="${utm_medium}" />',
 	utm_campaign: '<c:out value="${utm_campaign}" />',
+	isDefaultToHealthQuote: ${defaultToHealthQuote},
+    isDefaultToHealthApply: ${defaultToHealthApply},
 	liveChat: {
 		config: {
 			lpServer			: "server.lon.liveperson.net",
@@ -105,5 +109,6 @@
 		state: '${state}',
 		performHealthChoicesUpdate: ${performHealthChoicesUpdate}
 	},
+	<c:if test="${not empty data.health.application.dependants}">dependants:  <c:out value="${go:XMLtoJSON(data.health.application.dependants)}" escapeXml="false" />,</c:if>
 	alternatePricing: <health:alternate_pricing_json />
 }
