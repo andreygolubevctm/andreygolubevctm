@@ -53,7 +53,7 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
             produces = MediaType.APPLICATION_JSON_VALUE)
     public EnergyApplyWebResponseModel getQuote(@ModelAttribute EnergyApplyPostRequestPayload applyPostReqestPayload,
                                                 BindingResult result, HttpServletRequest request) throws IOException, ServiceConfigurationException, DaoException {
-        LOGGER.info("Request parameters={}", MiscUtils.toJson(request.getParameterMap()));
+        LOGGER.debug("Request parameters={}", MiscUtils.toJson(request.getParameterMap()));
 
         if (result.hasErrors()) {
             for (ObjectError e : result.getAllErrors()) {
@@ -158,19 +158,18 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
                     postalAddressBuilder.streetName(postalAddress.get().getStreetName());
                 }
                 // }
+            }
 
-                // - Household
-                Optional<HouseholdDetails> householdDetails = MiscUtils.resolve(() -> energyApplyPostRequestPayload.getUtilities().getHouseholdDetails());
-                if (householdDetails.isPresent()) {
-                    RelocationDetails.Builder relocationDetailsBuilder = RelocationDetails.newBuilder();
-                    if (YesNo.Y.equals(householdDetails.get().getMovingIn())) {
-                        relocationDetailsBuilder = relocationDetailsBuilder
-                                .movingIn(true)
-                                .movingDate(LocalDateUtils.parseAUSLocalDate(details.get().getMovingDate()));
-                    }
-                    energyApplicationDetailsBuilder = energyApplicationDetailsBuilder.relocationDetails(relocationDetailsBuilder.build());
+            // - Household
+            Optional<HouseholdDetails> householdDetails = MiscUtils.resolve(() -> energyApplyPostRequestPayload.getUtilities().getHouseholdDetails());
+            if (householdDetails.isPresent()) {
+                RelocationDetails.Builder relocationDetailsBuilder = RelocationDetails.newBuilder();
+                if (YesNo.Y.equals(householdDetails.get().getMovingIn())) {
+                    relocationDetailsBuilder = relocationDetailsBuilder
+                            .movingIn(true)
+                            .movingDate(LocalDateUtils.parseAUSLocalDate(details.get().getMovingDate()));
                 }
-
+                energyApplicationDetailsBuilder = energyApplicationDetailsBuilder.relocationDetails(relocationDetailsBuilder.build());
             }
 
             ApplicationAddress address = ApplicationAddress.newBuilder()
