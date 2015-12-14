@@ -1735,6 +1735,12 @@ body.stage-0 #reference_number a {display:none;}
 	background-image: url("../brand/ctm/images/results_Life_IP/5000-journey-banner-life.jpg");
 }
 
+.promo-image.ip-29,
+.promo-image.life-29 {
+	background-image: url("../brand/ctm/images/results_Life_IP/5000Competition.png");
+	height: 158px;
+}
+
 .button-wrapper #next-step {
 	float: left;
 	margin-bottom: 20px;
