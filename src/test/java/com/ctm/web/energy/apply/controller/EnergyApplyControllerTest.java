@@ -56,7 +56,6 @@ public class EnergyApplyControllerTest {
 
     @Test
     public void apply() throws Exception {
-       //  final String requestString = TestUtils.readResource("com/ctm/energy/apply/application.txt");
         mvc.perform(
                 MockMvcRequestBuilders
                         .post("/rest/energy/apply/apply.json")
@@ -82,7 +81,7 @@ public class EnergyApplyControllerTest {
                         .param("utilities.resultsDisplayed.firstName", "Test")
                         .param("utilities.resultsDisplayed.phone", "0711223344")
                         .param("utilities.resultsDisplayed.phoneinput", "(07) 1122 3344")
-                        .param("utilities.resultsDisplayed.email", "preload.testing%40comparethemarket.com.au")
+                        .param("utilities.resultsDisplayed.email", "preload.testing@comparethemarket.com.au")
                         .param("utilities.privacyoptin", "Y")
                         .param("utilities.resultsDisplayed.optinMarketing", "Y")
                         .param("utilities.resultsDisplayed.optinPhone", "Y")
@@ -93,7 +92,7 @@ public class EnergyApplyControllerTest {
                         .param("utilities.application.details.dobInputY", "1979")
                         .param("utilities.application.details.dob", "31%2F12%2F1979")
                         .param("utilities.application.details.otherPhoneNumberinput", "(07) 1122 3344")
-                        .param("utilities.application.details.email", "preload.testing%40comparethemarket.com.au")
+                        .param("utilities.application.details.email", "preload.testing@comparethemarket.com.au")
                         .param("utilities.application.details.address.autofilllessSearch", "1%2F536 Pascoe Vale Road%2C Pascoe Vale%2C VIC%2C 3044")
                         .param("utilities.application.details.address.streetNum", "9")
                         .param("utilities.application.details.address.type", "R")
@@ -115,7 +114,8 @@ public class EnergyApplyControllerTest {
                         .param("utilities.application.thingsToKnow.hidden.productId", "2213")
                         .param("utilities.application.thingsToKnow.hidden.retailerName", "Simply Energy")
                         .param("utilities.application.thingsToKnow.hidden.planName", "Simply Summer Sale Plan (Dual Fuel)")
-                        .param("utilities.application.thingsToKnow.receiveInfo", "N&transcheck", "1")
+                        .param("utilities.application.thingsToKnow.receiveInfo", "N")
+                        .param("transcheck", "1")
                         .param("utilities.partner.uniqueCustomerId", "T009448")
                         .param("utilities.journey.stage", "enquiry")
                         .param("utilities.renderingMode", "md")
