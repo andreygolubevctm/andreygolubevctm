@@ -5,7 +5,9 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.web.travel.model.results.TravelResult;
 import com.ctm.web.travel.services.TravelService;
@@ -19,6 +21,11 @@ import java.util.List;
 public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
 
     private final TravelService travelService = new TravelService();
+
+    public TravelRouter(){
+        applicationService = ApplicationService.getInstance();
+        service = new SessionDataService();
+    }
 
     @GET
     @Path("/countrymapping/import")

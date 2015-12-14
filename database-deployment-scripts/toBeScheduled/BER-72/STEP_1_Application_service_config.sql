@@ -13,7 +13,7 @@ SET @SERVICE_NAME = 'TWLD';
 SET @PROVIDERID = (SELECT providerId FROM ctm.provider_master WHERE providerCode = @SERVICE_NAME  LIMIT 1);
 WHERE providerCode = 'TWLD';
 
-INSERT INTO `ctm`.`provider_properties` (`SequenceNo`, `ProviderId`, `PropertyId`, `Text`, `EffectiveStart`, `EffectiveEnd`) VALUES ('43', @PROVIDERID, 'FundCode', @SERVICE_NAME, '2011-03-01', '2040-12-31');
+INSERT INTO `ctm`.`provider_properties` (`ProviderId`, `PropertyId`, `Text`, `EffectiveStart`, `EffectiveEnd`) VALUES ( @PROVIDERID, 'FundCode', @SERVICE_NAME, '2011-03-01', '2040-12-31');
 INSERT INTO service_master (verticalId, serviceCode) VALUES (@VERTICAL_ID, @APPLY_SERVICE);
 SET @APP_BASE_MASTER_ID = (SELECT serviceMasterId FROM service_master where serviceCode = @APPLY_SERVICE AND verticalId = @VERTICAL_ID);
 -- ----------------------

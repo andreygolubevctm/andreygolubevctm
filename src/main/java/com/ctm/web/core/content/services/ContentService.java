@@ -181,7 +181,7 @@ public class ContentService {
 	 * @throws DaoException
 	 */
 	public static ArrayList<Content> getMultipleContentValuesForProvider(HttpServletRequest request, String contentCode, int providerId) throws DaoException{
-		int brandId = ApplicationService.getBrandFromRequest(request).getId();
+		int brandId = ApplicationService.getBrandFromRequestStatic(request).getId();
 		Date serverDate = ApplicationService.getApplicationDate(request);
 		return getMultipleContentValuesForProvider(contentCode, providerId, brandId, serverDate, true);
 	}

@@ -17,6 +17,8 @@
 
     <properties>
         <powermock.version>1.6.2</powermock.version>
+        <guava.version>18.0</guava.version>
+        <jsonassert.version>1.2.3</jsonassert.version>
         <cxf.version>3.0.1</cxf.version>
 
         <spring-boot.version>1.2.7.RELEASE</spring-boot.version>
@@ -168,6 +170,27 @@
             <groupId>org.glassfish.web</groupId>
             <artifactId>javax.el</artifactId>
             <version>${javax.el.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${jsonassert.version}</version>
             <scope>test</scope>
         </dependency>
 

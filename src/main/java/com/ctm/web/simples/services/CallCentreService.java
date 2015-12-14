@@ -64,7 +64,7 @@ public class CallCentreService {
 		SessionDataService sessionDataService = new SessionDataService();
 		SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
 
-		Brand currentBrand = ApplicationService.getBrandFromRequest(request);
+		Brand currentBrand = ApplicationService.getBrandFromRequestStatic(request);
 		Brand brand = ApplicationService.getBrandById(brandId);
 
 		PageSettings settings = SettingsService.getPageSettings(brandId, verticalCode);

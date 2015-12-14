@@ -67,7 +67,7 @@ public class GenericRouter extends HttpServlet {
 		response.setContentType("application/json");
 		Brand brand = null;
 		try {
-			brand = ApplicationService.getBrandFromRequest(request);
+			brand = ApplicationService.getBrandFromRequestStatic(request);
 			PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.GENERIC.getCode());
 			JSONObject jsonResponse = null;
 			if (uri.endsWith("/reset_password.json")) {
