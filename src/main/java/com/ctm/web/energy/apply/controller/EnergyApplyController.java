@@ -80,15 +80,21 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
     private EnergyApplicationDetails mapPostRequestToModel(EnergyApplyPostRequestPayload energyApplyPostRequestPayload) {
         LOGGER.debug("energyApplyPostRequestPayload={}", MiscUtils.toJson(energyApplyPostRequestPayload));
 
+        // Map EnergyApplicationDetails
         EnergyApplicationDetails.Builder energyApplicationDetailsBuilder = EnergyApplicationDetails.newBuilder();
 
-        // Map EnergyApplicationDetails
-        // - ApplicantDetails
-        // - ContactDetails
+        // - Partner
+        Optional<Partner> partner = MiscUtils.resolve(() -> energyApplyPostRequestPayload.getUtilities().getPartner());
+        if (partner.isPresent()) {
+            energyApplicationDetailsBuilder = energyApplicationDetailsBuilder.partnerUniqueCustomerId(partner.get().getUniqueCustomerId());
+        }
+
         Optional<Details> details = MiscUtils.resolve(() ->
                 energyApplyPostRequestPayload.getUtilities().getApplication().getDetails());
 
+
         if (details.isPresent()) {
+            // - ApplicantDetails
             ApplicantDetails applicantDetails = ApplicantDetails.newBuilder()
                     .firstName(details.get().getFirstName())
                     .lastName(details.get().getLastName())
@@ -97,33 +103,14 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
                     .build();
             energyApplicationDetailsBuilder = energyApplicationDetailsBuilder.applicantDetails(applicantDetails);
 
+            // - ContactDetails
             ContactDetails contactDetails = ContactDetails.newBuilder()
                     .email(details.get().getEmail())
                     .mobileNumber(details.get().getMobileNumberinput())
                     .otherPhoneNumber(details.get().getOtherPhoneNumberinput())
                     .build();
             energyApplicationDetailsBuilder = energyApplicationDetailsBuilder.contactDetails(contactDetails);
-        }
 
-        // - Partner
-        Optional<Partner> partner = MiscUtils.resolve(() -> energyApplyPostRequestPayload.getUtilities().getPartner());
-        if (partner.isPresent()) {
-            energyApplicationDetailsBuilder = energyApplicationDetailsBuilder.partnerUniqueCustomerId(partner.get().getUniqueCustomerId());
-        }
-
-        // - Household
-        Optional<HouseholdDetails> householdDetails = MiscUtils.resolve(() -> energyApplyPostRequestPayload.getUtilities().getHouseholdDetails());
-        if (householdDetails.isPresent()) {
-            RelocationDetails.Builder relocationDetailsBuilder = RelocationDetails.newBuilder();
-            if (YesNo.Y.equals(householdDetails.get().getMovingIn())) {
-                relocationDetailsBuilder = relocationDetailsBuilder
-                        .movingIn(true)
-                        .movingDate(LocalDateUtils.parseAUSLocalDate(details.get().getMovingDate()));
-            }
-            energyApplicationDetailsBuilder = energyApplicationDetailsBuilder.relocationDetails(relocationDetailsBuilder.build());
-        }
-
-        if (details.isPresent()) {
             // -- Supply address
             Optional<Address> houseAddress = MiscUtils.resolve(() ->
                     energyApplyPostRequestPayload.getUtilities().getApplication().getDetails().getAddress());
@@ -165,6 +152,19 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
                         .postcode(postalAddress.get().getPostCode())
                         .streetName(postalAddress.get().getStreetName());
                 // }
+
+                // - Household
+                Optional<HouseholdDetails> householdDetails = MiscUtils.resolve(() -> energyApplyPostRequestPayload.getUtilities().getHouseholdDetails());
+                if (householdDetails.isPresent()) {
+                    RelocationDetails.Builder relocationDetailsBuilder = RelocationDetails.newBuilder();
+                    if (YesNo.Y.equals(householdDetails.get().getMovingIn())) {
+                        relocationDetailsBuilder = relocationDetailsBuilder
+                                .movingIn(true)
+                                .movingDate(LocalDateUtils.parseAUSLocalDate(details.get().getMovingDate()));
+                    }
+                    energyApplicationDetailsBuilder = energyApplicationDetailsBuilder.relocationDetails(relocationDetailsBuilder.build());
+                }
+
             }
 
             ApplicationAddress address = ApplicationAddress.newBuilder()
