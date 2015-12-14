@@ -91,8 +91,10 @@
         });
     }
 
-    meerkat.modules.register("datesSelection", {
-        init: initUtilitiesDatesSelection
+    meerkat.modules.register("utilitiesDatesSelection", {
+        init: initUtilitiesDatesSelection,
+        populateCalendarViewFromFields:populateCalendarViewFromFields
+
     });
 
 })(jQuery);
