@@ -97,7 +97,7 @@
 	},
 	content:{
 		callCentreNumber: '${callCentreNumber}',
-		callCentreHelpNumber			: '${callCentreHelpNumber}',
+		callCentreHelpNumber			: '${callCentreHelpNumber}'
 	},
 	emailBrochures: {
 		enabled: <c:out value="${pageSettings.getSetting('emailBrochuresEnabled') eq 'Y'}"/>
