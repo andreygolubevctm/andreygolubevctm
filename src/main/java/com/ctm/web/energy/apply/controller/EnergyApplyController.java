@@ -142,15 +142,21 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
                         .suburbName(postalAddress.get().getSuburbName())
                         .state(State.valueOf(postalAddress.get().getState()));
 
-                // Bug in form, the postalAddress.nonStd field is not being set
+                // @TODO FIX ME !!! Bug in form, the postalAddress.nonStd field is not being set
                 // if (YesNo.Y.equals(postalAddress.get().getNonStd()) {
                 postalAddressBuilder.unitType(postalAddress.get().getNonStdUnitType())
                         .postcode(postalAddress.get().getNonStdPostCode())
                         .streetName(postalAddress.get().getNonStdStreet());
                 //} else {
-                postalAddressBuilder.unitType(postalAddress.get().getUnitType())
-                        .postcode(postalAddress.get().getPostCode())
-                        .streetName(postalAddress.get().getStreetName());
+                if (postalAddress.get().getUnitType() != null) {
+                    postalAddressBuilder.unitType(postalAddress.get().getUnitType());
+                }
+                if (postalAddress.get().getPostCode() != null) {
+                    postalAddressBuilder.postcode(postalAddress.get().getPostCode());
+                }
+                if (postalAddress.get().getStreetName() != null) {
+                    postalAddressBuilder.streetName(postalAddress.get().getStreetName());
+                }
                 // }
 
                 // - Household
