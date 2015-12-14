@@ -92,7 +92,7 @@ public class PhoneService {
      */
     public static CallInfo saveCallInfoForTransaction(PageSettings settings, String extension, Long transactionId, String xpath) throws ConfigSettingException {
         CallInfo callInfo = getCallInfoByExtension(settings, extension);
-        if(callInfo.getCallId()!=null && !callInfo.getCallId().equals("") && !callInfo.getCallId().equals("0")) {
+		if(callInfo != null && callInfo.getCallId()!=null && !callInfo.getCallId().equals("") && !callInfo.getCallId().equals("0")) {
             QuoteService quoteService = new QuoteService();
             quoteService.writeSingle(transactionId, xpath + "/callId", callInfo.getCallId());
             quoteService.writeSingle(transactionId, xpath + "/direction", callInfo.getDirection());
