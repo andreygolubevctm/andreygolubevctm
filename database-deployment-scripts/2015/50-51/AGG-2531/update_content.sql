@@ -7,7 +7,7 @@ SET @STYLECODE = (select styleCodeId from ctm.stylecodes where styleCode = 'ctm'
 SET @PARTICIPATING_SUPPLIER_LINK = 'participatingSuppliersLink';
 
 
-
+/*
 UPDATE ctm.content_control SET contentValue = 'Yes, I agree to the <a target=\'_blank\'  href=\'http://www.comparethemarket.com.au/competition/5000competition.pdf\'>competition terms and conditions</a>.'
   where contentKey = @CONTENT_KEY
   and styleCodeId = @STYLECODE and CURDATE() between effectiveStart and effectiveEnd and verticalId = @LIFE_ID limit 1;
@@ -32,7 +32,7 @@ UPDATE ctm.content_control SET contentValue = 'Yes, I agree to the <a target=\'_
 select count(*) from ctm.content_control where contentKey = @CONTENT_KEY and styleCodeId = @STYLECODE and verticalId = @UTILITIES_ID
  and contentValue = 'Yes, I agree to the <a target=\'_blank\'  href=\'http://www.comparethemarket.com.au/competition/5000competition.pdf\'>competition terms and conditions</a>.';
 
-
+*/
  insert into ctm.content_control (styleCodeId,verticalId,contentCode,contentKey,effectiveStart,effectiveEnd,contentValue) values
   (@STYLECODE,@UTILITIES_ID,'Content',@PARTICIPATING_SUPPLIER_LINK,'2015-12-07','2040-12-31','http://www.comparethemarket.com.au/energy/');
 
