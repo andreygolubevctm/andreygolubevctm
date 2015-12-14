@@ -1,9 +1,7 @@
 package com.ctm.web.energy.apply.model.request;
 
 
-import com.ctm.web.core.model.Address;
 import com.ctm.web.core.model.formData.YesNo;
-import com.ctm.web.core.model.request.Title;
 
 public class Details {
     private String title;
