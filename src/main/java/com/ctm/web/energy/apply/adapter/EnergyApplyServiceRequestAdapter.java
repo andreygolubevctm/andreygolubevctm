@@ -118,9 +118,12 @@ public class EnergyApplyServiceRequestAdapter implements WebRequestAdapter<Energ
             if (householdDetails.isPresent()) {
                 RelocationDetails.Builder relocationDetailsBuilder = RelocationDetails.newBuilder();
                 if (YesNo.Y.equals(householdDetails.get().getMovingIn())) {
-                    relocationDetailsBuilder = relocationDetailsBuilder
+                    relocationDetailsBuilder
                             .movingIn(true)
                             .movingDate(LocalDateUtils.parseAUSLocalDate(details.get().getMovingDate()));
+                } else {
+                    relocationDetailsBuilder
+                            .movingIn(false);
                 }
                 energyApplicationDetailsBuilder = energyApplicationDetailsBuilder.relocationDetails(relocationDetailsBuilder.build());
             }
