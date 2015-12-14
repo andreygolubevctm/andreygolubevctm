@@ -1,12 +1,10 @@
 package com.ctm.web.energy.apply.model.request;
 
-import com.ctm.web.energy.form.model.HouseHoldDetails;
-
 public class EnergyApplicationPayload {
 
     private Application application;
     private Partner partner;
-    private HouseHoldDetails householdDetails;
+    private HouseholdDetails householdDetails;
 
     public Application getApplication() {
         return application;
@@ -24,7 +22,11 @@ public class EnergyApplicationPayload {
         this.partner = partner;
     }
 
-    public HouseHoldDetails getHouseholdDetails() {
+    public HouseholdDetails getHouseholdDetails() {
         return householdDetails;
+    }
+
+    public void setHouseholdDetails(HouseholdDetails householdDetails) {
+        this.householdDetails = householdDetails;
     }
 }

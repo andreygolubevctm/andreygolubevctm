@@ -14,6 +14,7 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ import java.util.List;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class ApplicationService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationService.class);
