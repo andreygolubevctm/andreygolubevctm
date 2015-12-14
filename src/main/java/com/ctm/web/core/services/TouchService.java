@@ -7,6 +7,7 @@ import com.ctm.web.core.model.TouchProductProperty;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,6 +17,7 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
  * This is use just by in JAVA and AccessTouchService.java is too dangerous to refactor.
  * Once the JSPs no longer use AccessTouchService it can be deleted.
  */
+@Component
 public class TouchService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TouchService.class);
@@ -62,7 +64,6 @@ public class TouchService {
 
     /**
      *
-     * @param request
      * @param touch
      * @return
      */

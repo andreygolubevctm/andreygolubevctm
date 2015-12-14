@@ -202,10 +202,9 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorInfo handleException(final FailedToRegisterException e) {
-        LOGGER.error("Failed to handle request", e);
         ErrorInfo errorInfo = new ErrorInfo();
-/*        errorInfo.setTransactionId(e.getTransactionId());
-        errorInfo.setErrors(e.getErrors());*/
+        errorInfo.setTransactionId(e.getTransactionId());
+/*        errorInfo.setErrors(e.getErrors());*/
         return errorInfo;
     }
 

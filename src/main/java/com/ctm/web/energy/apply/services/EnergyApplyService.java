@@ -64,7 +64,7 @@ public class EnergyApplyService extends CommonRequestService<EnergyApplicationDe
                     .transactionId(model.getTransactionId())
                     .confirmationkey(confirmationkey).build();
         } else {
-            throw new FailedToRegisterException(applyResponse);
+            throw new FailedToRegisterException(applyResponse, model.getTransactionId());
         }
 	}
 

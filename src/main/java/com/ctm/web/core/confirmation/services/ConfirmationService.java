@@ -12,11 +12,13 @@ import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.net.URLEncoder;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class ConfirmationService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfirmationService.class);
 
