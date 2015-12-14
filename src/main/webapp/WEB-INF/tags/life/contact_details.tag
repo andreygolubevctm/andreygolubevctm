@@ -51,7 +51,11 @@
 		<%-- COMPETITION START --%>
 		<c:if test="${competitionEnabled == true}">
 			<c:set var="competitionId"><content:get key="competitionId"/></c:set>
-
+			<form:row label="" className="promo-row">
+				<div class="promo-container">
+					<div class="promo-image ${vertical}-${competitionId}"></div>
+				</div>
+			</form:row>
 		
 			<form:row label="" className="clear">
 				<c:set var="competitionCheckboxText">
