@@ -11,6 +11,7 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.providers.model.ApplyResponseImpl;
 import com.ctm.web.core.services.CommonRequestService;
 import com.ctm.web.core.services.Endpoint;
 import com.ctm.web.core.services.TouchService;
@@ -36,7 +37,7 @@ import java.io.IOException;
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 @Component
-public class EnergyApplyService extends CommonRequestService<EnergyApplicationDetails,ApplyResponse> {
+public class EnergyApplyService extends CommonRequestService<EnergyApplicationDetails,ApplyResponseImpl> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EnergyApplyService.class);
 
@@ -56,8 +57,8 @@ public class EnergyApplyService extends CommonRequestService<EnergyApplicationDe
         EnergyApplyServiceResponseAdapter responseAdapter= new EnergyApplyServiceResponseAdapter();
         EnergyApplyServiceRequestAdapter requestAdapter = new EnergyApplyServiceRequestAdapter();
         final EnergyApplicationDetails energyApplicationDetails = requestAdapter.adapt(model);
-        ApplyResponse applyResponse = sendRequest(brand, Vertical.VerticalType.ENERGY, "applyServiceBER", Endpoint.APPLY, model, energyApplicationDetails,
-                ApplyResponse.class);
+        ApplyResponse applyResponse = sendApplyRequest(brand, Vertical.VerticalType.ENERGY, "applyServiceBER", Endpoint.APPLY, model, energyApplicationDetails,
+                ApplyResponseImpl.class, requestAdapter.getProductId(model));
         if(Status.REGISTERED.equals(applyResponse.getResponseStatus())) {
             String confirmationkey = createAndSaveConfirmation(request, model, applyResponse);
             return responseAdapter.adapt(applyResponse)
@@ -86,12 +87,15 @@ public class EnergyApplyService extends CommonRequestService<EnergyApplicationDe
             confirmation.setTransactionId(model.getTransactionId());
             confirmation.setXmlData(ObjectMapperUtil.getXmlMapper().writeValueAsString(confirmationData));
             confirmationService.addConfirmation(confirmation);
-            long rootId = model.getCurrent().getRootId();
+            if(model.getCurrent() != null){
+                long rootId = model.getCurrent().getRootId();
+                if(confirmation.getTransactionId() != rootId) {
+                    writeTouch(rootId);
+                }
+            }
             writeTouch(confirmation.getTransactionId());
             // used so lead feed won't pick this lead up
-            if(confirmation.getTransactionId() != rootId) {
-                writeTouch(rootId);
-            }
+
         } catch (Exception e) {
             LOGGER.warn("Failed to add confirmation {}", kv("confirmationId", confirmationId), e);
             throw new RuntimeException(e);

@@ -66,6 +66,10 @@ public class EnergyApplyServiceRequestAdapter implements WebRequestAdapter<Energ
         return energyApplicationDetails;
     }
 
+    public String getProductId(EnergyApplyPostRequestPayload model) {
+        return model.getUtilities().getApplication().getThingsToKnow().getHidden().getProductId();
+    }
+
     private EnergyApplicationDetails.Builder adaptApplicantDetails(EnergyApplicationDetails.Builder energyApplicationDetailsBuilder, Optional<Details> details) {
         ApplicantDetails applicantDetails = ApplicantDetails.newBuilder()
                 .firstName(details.get().getFirstName())

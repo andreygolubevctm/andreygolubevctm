@@ -480,7 +480,6 @@
             <groupId>com.ctm.energy</groupId>
             <artifactId>energy-apply-model</artifactId>
             <version>${energy.apply.model.version}</version>
-            <classifier>BER-66</classifier>
         </dependency>
 
         <dependency>

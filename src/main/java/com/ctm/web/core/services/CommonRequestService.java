@@ -1,5 +1,6 @@
 package com.ctm.web.core.services;
 
+import com.ctm.apply.model.request.ApplyRequest;
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
@@ -74,17 +75,28 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
         }
     }
 
-    protected RESPONSE sendRequest(Brand brand, Vertical.VerticalType vertical, String serviceName, Endpoint endpoint, Request data, PAYLOAD payload, Class<RESPONSE> responseClass) throws IOException, DaoException, ServiceConfigurationException {
-        com.ctm.web.core.providers.model.Request<PAYLOAD> request = new com.ctm.web.core.providers.model.Request<>();
-        request.setBrandCode(brand.getCode());
-        request.setClientIp(data.getClientIpAddress());
-        request.setTransactionId(data.getTransactionId());
+    protected RESPONSE sendRequest(Brand brand,
+                                        Vertical.VerticalType vertical,
+                                        String serviceName,
+                                        Endpoint endpoint, Request data,
+                                        PAYLOAD payload,
+                                        Class<RESPONSE> responseClass) throws IOException, DaoException, ServiceConfigurationException {
+        return sendRequestToService(brand, vertical, serviceName, endpoint, data, responseClass,  getQuoteRequest(brand, data, payload));
+    }
 
-        request.setPayload(payload);
+    protected RESPONSE sendApplyRequest(Brand brand,
+                                        Vertical.VerticalType vertical,
+                                        String serviceName,
+                                        Endpoint endpoint, Request data,
+                                        PAYLOAD payload,
+                                        Class<RESPONSE> responseClass, String productId) throws IOException, DaoException, ServiceConfigurationException {
+        return sendRequestToService(brand, vertical, serviceName, endpoint, data, responseClass, getApplyRequest(brand, data, payload, productId));
+    }
 
+    private RESPONSE sendRequestToService(Brand brand, Vertical.VerticalType vertical, String serviceName, Endpoint endpoint, Request data, Class<RESPONSE> responseClass, Object requestObj) throws ServiceConfigurationException, DaoException, IOException {
         QuoteServiceProperties serviceProperties = getQuoteServiceProperties(serviceName, brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
-        String jsonRequest = objectMapper.writeValueAsString(request);
+        String jsonRequest = objectMapper.writeValueAsString(requestObj);
 
         // Log Request
         LOGGER.info("Sending request {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
@@ -102,6 +114,25 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
         LOGGER.debug("Inbound message {}", kv("response", response));
 
         return objectMapper.readValue(response, objectMapper.constructType(responseClass));
+    }
+
+    private ApplyRequest getApplyRequest(Brand brand, Request data, PAYLOAD payload, String productId) {
+        ApplyRequest.Builder<PAYLOAD> applyRequestBuilder= new ApplyRequest.Builder<>();
+        applyRequestBuilder.productId(productId);
+        applyRequestBuilder.brandCode(brand.getCode());
+        applyRequestBuilder.clientIp(data.getClientIpAddress());
+        applyRequestBuilder.transactionId(data.getTransactionId());
+        applyRequestBuilder.payload(payload);
+        return applyRequestBuilder.build();
+    }
+
+    private com.ctm.web.core.providers.model.Request getQuoteRequest(Brand brand, Request data, PAYLOAD payload) {
+        com.ctm.web.core.providers.model.Request<PAYLOAD> request = new com.ctm.web.core.providers.model.Request<>();
+        request.setBrandCode(brand.getCode());
+        request.setClientIp(data.getClientIpAddress());
+        request.setTransactionId(data.getTransactionId());
+        request.setPayload(payload);
+        return request;
     }
 
     protected SimpleConnection getSimpleConnection(QuoteServiceProperties serviceProperties, String jsonRequest) {
