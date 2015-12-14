@@ -60,6 +60,23 @@ public class TouchService {
         }
     }
 
+    /**
+     *
+     * @param request
+     * @param touch
+     * @return
+     */
+    public boolean recordTouch(final Touch touch){
+        try {
+            touchDao.record(touch);
+            return true;
+        } catch(DaoException e) {
+            // Failing to write the touch shouldn't be fatal - let's just log an error
+            LOGGER.warn("Failed to record {} {}", kv("touch",touch.getType()), kv("transactionId", touch.getTransactionId()));
+            return false;
+        }
+    }
+
 
 
 

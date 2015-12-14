@@ -61,6 +61,50 @@ public class ConfirmationDao {
 		return confirmation;
 	}
 
+	/**
+	 * Get a confirmation using the confirmation key (token)
+	 * @param confirmationKey
+	 */
+	public Confirmation getByKey(String confirmationKey, Long transactionId) throws DaoException {
+		Confirmation confirmation = new Confirmation();
+
+		SimpleDatabaseConnection dbSource = null;
+
+		try {
+			PreparedStatement stmt;
+			dbSource = new SimpleDatabaseConnection();
+
+			stmt = dbSource.getConnection().prepareStatement(
+					"SELECT TransID, keyID, Time, XMLdata " +
+							"FROM ctm.confirmations " +
+							"WHERE keyID = ? " +
+							"AND TransID = ?;"
+			);
+			stmt.setString(1, confirmationKey);
+			stmt.setLong(2, transactionId);
+
+			ResultSet results = stmt.executeQuery();
+
+			while (results.next()) {
+				confirmation.setTransactionId(results.getLong("TransID"));
+				confirmation.setKey(results.getString("keyID"));
+				confirmation.setDatetime(results.getTimestamp("Time"));
+				confirmation.setXmlData(results.getString("xmlData"));
+			}
+
+			results.close();
+			stmt.close();
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+
+		return confirmation;
+	}
+
 	public void addConfirmation(Confirmation confirmation) throws DaoException {
 		DatabaseUpdateMapping databaseMapping = new DatabaseUpdateMapping(){
 			@Override

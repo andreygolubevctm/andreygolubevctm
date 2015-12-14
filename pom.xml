@@ -39,7 +39,7 @@
         <spring-rabbit.version>1.4.6.RELEASE</spring-rabbit.version>
         <swagger-annotations.version>1.5.4</swagger-annotations.version>
         <common-logging.version>1.3.0-RC1</common-logging.version>
-        <common-interfaces.version>1.6.0-RC1</common-interfaces.version>
+        <common-interfaces.version>1.7.0-SNAPSHOT</common-interfaces.version>
 
         <!-- Compile as this version -->
         <java.version>1.8</java.version>

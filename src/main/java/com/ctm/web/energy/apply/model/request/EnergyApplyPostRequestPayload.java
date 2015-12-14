@@ -9,6 +9,7 @@ public class EnergyApplyPostRequestPayload implements Request {
     private String clientIpAddress;
     private String environmentOverride;
     private EnergyApplicationPayload utilities;
+    private Current current;
 
     @Override
     public Long getTransactionId() {
@@ -46,5 +47,9 @@ public class EnergyApplyPostRequestPayload implements Request {
 
     public void setUtilities(EnergyApplicationPayload utilities) {
         this.utilities = utilities;
+    }
+
+    public Current getCurrent() {
+        return current;
     }
 }

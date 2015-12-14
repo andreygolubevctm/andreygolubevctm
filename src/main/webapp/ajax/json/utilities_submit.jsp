@@ -52,6 +52,7 @@
         </c:if>
 
 
+        <agg:write_quote productType="UTILITIES" rootPath="utilities"/>
         <c:choose>
             <c:when test="${data.utilities.currentJourney == '40'}">
                 ${logger.info('Fowarding to journey=40')}
@@ -132,7 +133,6 @@
                                         ${logger.trace('WRITE CONFIRM. {}', log:kv('xmlData', xmlData))}
                                         <agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}"
                                                                 xml_data="${xmlData}" />
-                                        <agg:write_quote productType="UTILITIES" rootPath="utilities"/>
                                         <agg:write_touch touch="C" transaction_id="${tranId}"/>
                                         <c:if test="${tranId ne rootId}">
                                             <agg:write_touch transaction_id="${rootId}" touch="C" />
