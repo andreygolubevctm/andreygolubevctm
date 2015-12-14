@@ -156,15 +156,15 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
                         .state(State.valueOf(postalAddress.get().getState()));
 
                 // Bug in form, the postalAddress.nonStd field is not being set
-               // if (postalAddress.get().getNonStd().equals(YesNo.Y)) {
-                    postalAddressBuilder.unitType(postalAddress.get().getNonStdUnitType())
-                            .postcode(postalAddress.get().getNonStdPostCode())
-                            .streetName(postalAddress.get().getNonStdStreet());
+                // if (postalAddress.get().getNonStd().equals(YesNo.Y)) {
+                postalAddressBuilder.unitType(postalAddress.get().getNonStdUnitType())
+                        .postcode(postalAddress.get().getNonStdPostCode())
+                        .streetName(postalAddress.get().getNonStdStreet());
                 //} else {
-                    postalAddressBuilder.unitType(postalAddress.get().getUnitType())
-                            .postcode(postalAddress.get().getPostCode())
-                            .streetName(postalAddress.get().getStreetName());
-               // }
+                postalAddressBuilder.unitType(postalAddress.get().getUnitType())
+                        .postcode(postalAddress.get().getPostCode())
+                        .streetName(postalAddress.get().getStreetName());
+                // }
             }
 
             ApplicationAddress address = ApplicationAddress.newBuilder()
