@@ -115,7 +115,7 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
         Optional<HouseholdDetails> householdDetails = MiscUtils.resolve(() -> energyApplyPostRequestPayload.getUtilities().getHouseholdDetails());
         if (householdDetails.isPresent()) {
             RelocationDetails.Builder relocationDetailsBuilder = RelocationDetails.newBuilder();
-            if (householdDetails.get().getMovingIn().equals(YesNo.Y)) {
+            if (YesNo.Y.equals(householdDetails.get().getMovingIn())) {
                 relocationDetailsBuilder = relocationDetailsBuilder
                         .movingIn(true)
                         .movingDate(LocalDateUtils.parseAUSLocalDate(details.get().getMovingDate()));
@@ -134,7 +134,7 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
                         .streetNumber(houseAddress.get().getStreetNum())
                         .suburbName(houseAddress.get().getSuburbName())
                         .state(State.valueOf(houseAddress.get().getState()));
-                if (houseAddress.get().getNonStd().equals(YesNo.Y)) {
+                if (YesNo.Y.equals(houseAddress.get().getNonStd())) {
                     supplyAddressBuilder.unitType(houseAddress.get().getNonStdUnitType())
                             .postcode(houseAddress.get().getNonStdPostCode())
                             .streetName(houseAddress.get().getNonStdStreet());
@@ -156,7 +156,7 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
                         .state(State.valueOf(postalAddress.get().getState()));
 
                 // Bug in form, the postalAddress.nonStd field is not being set
-                // if (postalAddress.get().getNonStd().equals(YesNo.Y)) {
+                // if (YesNo.Y.equals(postalAddress.get().getNonStd()) {
                 postalAddressBuilder.unitType(postalAddress.get().getNonStdUnitType())
                         .postcode(postalAddress.get().getNonStdPostCode())
                         .streetName(postalAddress.get().getNonStdStreet());
@@ -170,7 +170,7 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
             ApplicationAddress address = ApplicationAddress.newBuilder()
                     .supplyAddressDetails(supplyAddressBuilder.build())
                     .postalAddressDetails(postalAddressBuilder.build())
-                    .postalMatch(details.get().getPostalMatch().equals(YesNo.Y))
+                    .postalMatch(YesNo.Y.equals(details.get().getPostalMatch()))
                     .build();
             energyApplicationDetailsBuilder = energyApplicationDetailsBuilder.address(address);
         }
