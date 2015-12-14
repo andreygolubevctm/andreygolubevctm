@@ -6,15 +6,15 @@ import java.util.Map;
 /**
  * Created by dkocovski on 14/12/2015.
  */
-public class FormParsingException extends RuntimeException {
+public class ServiceRequestException extends RuntimeException {
     private Long transactionId;
 
     private Map<String, String> errors = new HashMap<>();
 
-    public FormParsingException() {
+    public ServiceRequestException() {
     }
 
-    public FormParsingException(String message) {
+    public ServiceRequestException(String message) {
         super(message);
     }
 

@@ -8,7 +8,7 @@ import com.ctm.energyapply.model.request.application.applicant.ApplicantDetails;
 import com.ctm.energyapply.model.request.application.contact.ContactDetails;
 import com.ctm.energyapply.model.request.relocation.RelocationDetails;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.exceptions.FormParsingException;
+import com.ctm.web.core.exceptions.ServiceRequestException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.model.settings.Brand;
@@ -182,9 +182,10 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
     }
 
 
+    //@TODO Run the service request through the hibernate validator and then throw a ServiceRequestException
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorInfo handleException(final FormParsingException e) {
+    public ErrorInfo handleException(final ServiceRequestException e) {
         LOGGER.error("Failed to handle request", e);
         ErrorInfo errorInfo = new ErrorInfo();
         errorInfo.setTransactionId(e.getTransactionId());
