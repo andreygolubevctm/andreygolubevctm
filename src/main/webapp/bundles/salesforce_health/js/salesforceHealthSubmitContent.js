@@ -10,9 +10,9 @@
 
     function submitContent() {
         var $mainForm = $('#mainForm');
-
         if($mainForm.valid()) {
-            parent.postMessage($mainForm.serializeArray(), '*');
+            var postParent = typeof window.opener == 'object' ? window.opener : parent;
+            postParent.postMessage($mainForm.serializeArray(), '*');
         }
     }
 
