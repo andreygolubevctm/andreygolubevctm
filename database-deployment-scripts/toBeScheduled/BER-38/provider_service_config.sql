@@ -8,5 +8,6 @@ INSERT INTO ctm.service_properties (`serviceMasterId`, `environmentCode`, `style
   (@SERVICE_MASTER_ID, '0', '0', @PROVIDER_ID, 'serviceName', 'TWLD', '2015-01-01', '2040-12-31', 'SERVICE'),
   (@SERVICE_MASTER_ID, '0', '0', @PROVIDER_ID, 'serviceType', 'soap', '2015-01-01', '2040-12-31', 'SERVICE'),
   (@SERVICE_MASTER_ID, '0', '0', @PROVIDER_ID, 'url', 'http://www.utilityworld.com.au/comparethemarket/response/results_lookup_response_new.php', '2015-01-01', '2040-12-31', 'SERVICE'),
+  (@SERVICE_MASTER_ID, 'PRO', '0', @PROVIDER_ID, 'url', 'https://www.utilityworld.com.au/comparethemarket/api/response/results_lookup_response_new.php', '2015-01-01', '2040-12-31', 'SERVICE'),
   (@SERVICE_MASTER_ID, '0', '0', @PROVIDER_ID, 'timeout', '20', '2015-01-01', '2040-12-31', 'SERVICE'),
   (@SERVICE_MASTER_ID, '0', '0', @PROVIDER_ID, 'errorProductCode', 'TWLD-ERR', '2015-01-01', '2040-12-31', 'SERVICE');
