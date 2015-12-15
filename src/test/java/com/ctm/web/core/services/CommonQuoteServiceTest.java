@@ -47,12 +47,13 @@ public class CommonQuoteServiceTest {
     @Mock
     private ServiceConfiguration serviceConfiguration;
 
+
     @Before
     public void setup() throws Exception {
         initMocks(this);
 
         EnvironmentService.setEnvironment("localhost");
-        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, objectMapper) {});
+        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, objectMapper, simpleConnection) {});
 
     }
 
@@ -161,16 +162,16 @@ public class CommonQuoteServiceTest {
 
     @Test
     public void testSendRequest() throws Exception {
+        String requestUrl = "http://anyURL/quote";
         Brand brand = mock(Brand.class);
         Request request = mock(Request.class);
         Object payload = mock(Object.class);
         Object responseObject = mock(Object.class);
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
         when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
-        when(simpleConnection.get(anyString())).thenReturn("response message");
+        when(simpleConnection.get(requestUrl)).thenReturn("response message");
         when(objectMapper.readValue(anyString(), any(JavaType.class))).thenReturn(responseObject);
 
-        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
         doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
 
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);
@@ -193,7 +194,6 @@ public class CommonQuoteServiceTest {
         when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
         when(simpleConnection.get(anyString())).thenReturn(null);
 
-        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
         doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
 
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);
