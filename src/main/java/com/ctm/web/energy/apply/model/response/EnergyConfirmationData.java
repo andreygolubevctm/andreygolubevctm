@@ -3,7 +3,7 @@ package com.ctm.web.energy.apply.model.response;
 import com.ctm.web.energy.form.model.WhatToCompare;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-@JacksonXmlRootElement(localName = "data")
+@JacksonXmlRootElement(localName = "confirmation")
 public class EnergyConfirmationData {
 
 

@@ -10,11 +10,9 @@ import com.ctm.energyapply.model.request.relocation.RelocationDetails;
 import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.utils.MiscUtils;
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
-import com.ctm.web.energy.apply.model.request.Address;
-import com.ctm.web.energy.apply.model.request.Details;
-import com.ctm.web.energy.apply.model.request.EnergyApplyPostRequestPayload;
-import com.ctm.web.energy.apply.model.request.Partner;
+import com.ctm.web.energy.apply.model.request.*;
 import com.ctm.web.energy.form.model.HouseHoldDetailsWebRequest;
+import com.ctm.web.energy.form.model.WhatToCompare;
 import com.ctm.web.energy.quote.adapter.WebRequestAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +36,44 @@ public class EnergyApplyServiceRequestAdapter implements WebRequestAdapter<Energ
             energyApplicationDetailsBuilder = energyApplicationDetailsBuilder.partnerUniqueCustomerId(partner.get().getUniqueCustomerId());
         }
 
-        Optional<Details> details = MiscUtils.resolve(() ->
-                energyApplyPostRequestPayload.getUtilities().getApplication().getDetails());
+        energyApplicationDetailsBuilder = adaptDetails(energyApplyPostRequestPayload, energyApplicationDetailsBuilder);
 
+        EnergyApplicationDetails energyApplicationDetails = energyApplicationDetailsBuilder.build();
+        LOGGER.debug("energyApplicationDetails={}", MiscUtils.toJson(energyApplicationDetails));
+
+        return energyApplicationDetails;
+    }
+
+    public String getProductId(EnergyApplyPostRequestPayload model) {
+        return getThingsToKnow(model).getHidden().getProductId();
+    }
+
+    public String getRetailerName(EnergyApplyPostRequestPayload model) {
+        return getHiddenProductDetails(model).getRetailerName();
+    }
+
+    public String getPlanName(EnergyApplyPostRequestPayload model) {
+        return getHiddenProductDetails( model).getPlanName();
+    }
+
+    public WhatToCompare getWhatToCompare(EnergyApplyPostRequestPayload model) {
+        return model.getUtilities().getHouseholdDetails().getWhatToCompare();
+    }
+
+    private ThingsToKnow getThingsToKnow(EnergyApplyPostRequestPayload model) {
+        return model.getUtilities().getApplication().getThingsToKnow();
+    }
+
+    private Hidden getHiddenProductDetails(EnergyApplyPostRequestPayload model) {
+        return  getThingsToKnow(model).getHidden();
+    }
+
+    public String getFirstName(EnergyApplyPostRequestPayload model) {
+        return getFirstName(getDetails(model));
+    }
+
+    private EnergyApplicationDetails.Builder adaptDetails(EnergyApplyPostRequestPayload energyApplyPostRequestPayload, EnergyApplicationDetails.Builder energyApplicationDetailsBuilder) {
+        Optional<Details> details = getDetails(energyApplyPostRequestPayload);
 
 
         if (details.isPresent()) {
@@ -59,20 +92,17 @@ public class EnergyApplyServiceRequestAdapter implements WebRequestAdapter<Energ
             // - Household
             energyApplicationDetailsBuilder = adaptHouseHold(energyApplyPostRequestPayload, energyApplicationDetailsBuilder, details, supplyAddressBuilder, postalAddressBuilder);
         }
-
-        EnergyApplicationDetails energyApplicationDetails = energyApplicationDetailsBuilder.build();
-        LOGGER.debug("energyApplicationDetails={}", MiscUtils.toJson(energyApplicationDetails));
-
-        return energyApplicationDetails;
+        return energyApplicationDetailsBuilder;
     }
 
-    public String getProductId(EnergyApplyPostRequestPayload model) {
-        return model.getUtilities().getApplication().getThingsToKnow().getHidden().getProductId();
+    private Optional<Details> getDetails(EnergyApplyPostRequestPayload energyApplyPostRequestPayload) {
+        return MiscUtils.resolve(() ->
+                energyApplyPostRequestPayload.getUtilities().getApplication().getDetails());
     }
 
     private EnergyApplicationDetails.Builder adaptApplicantDetails(EnergyApplicationDetails.Builder energyApplicationDetailsBuilder, Optional<Details> details) {
         ApplicantDetails applicantDetails = ApplicantDetails.newBuilder()
-                .firstName(details.get().getFirstName())
+                .firstName(getFirstName(details))
                 .lastName(details.get().getLastName())
                 .title(details.get().getTitle())
                 .dateOfBirth(LocalDateUtils.parseAUSLocalDate(details.get().getDob()))
@@ -163,4 +193,9 @@ public class EnergyApplyServiceRequestAdapter implements WebRequestAdapter<Energ
         energyApplicationDetailsBuilder = energyApplicationDetailsBuilder.address(address);
         return energyApplicationDetailsBuilder;
     }
+
+    private String getFirstName(Optional<Details> details) {
+        return details.get().getFirstName();
+    }
+
 }

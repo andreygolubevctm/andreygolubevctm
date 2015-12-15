@@ -1,5 +1,6 @@
 package com.ctm.web.core.services;
 
+import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.model.formData.RequestWithQuote;
@@ -16,6 +17,7 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> extends Commo
 
     public CommonQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
         super(providerFilterDAO, objectMapper);
+        connection = new SimpleConnection();
     }
 
     public void validateRequest(RequestWithQuote<QUOTE> data, String verticalCode) {
