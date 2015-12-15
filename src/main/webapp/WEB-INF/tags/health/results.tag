@@ -21,8 +21,8 @@
 			<input type="hidden" name="health_directApplication" value="Y" />
 		</c:when>
 		<c:when test="${param.action == 'load' || param.action == 'amend'}">
-	<input type="hidden" name="health_retrieve_savedResults" value="Y" />
-	<input type="hidden" name="health_retrieve_transactionId" value="${data['current/previousTransactionId']}" />
+			<input type="hidden" name="health_retrieve_savedResults" value="Y" />
+			<input type="hidden" name="health_retrieve_transactionId" value="${data['current/previousTransactionId']}" />
 		</c:when>
 	</c:choose>
 </c:if>
@@ -35,10 +35,10 @@
 <field:hidden xpath="health/fundData/hospitalPDF" defaultValue=""/>
 <field:hidden xpath="health/fundData/extrasPDF" defaultValue=""/>
 <field:hidden xpath="health/fundData/providerPhoneNumber" defaultValue=""/>
-		<c:if test="${callCentre}">
+<c:if test="${callCentre}">
 	<field:hidden xpath="health/filter/tierHospital" />
 	<field:hidden xpath="health/filter/tierExtras" />
-		</c:if>
+</c:if>
 
 
 
@@ -50,32 +50,32 @@
 
 <div class="resultsMarketingMessages affixOnScroll">
 	<div class="resultsLowNumberMessage" >
-	<div class="insert">
-		<h4>These results are based on your selected filters.</h4>
-		<div class="subtext">
-			To adjust your filters,
-		</div>
-		<div>
-			<a href="javascript:;" class="adjustFilters">click here.</a>
+		<div class="insert">
+			<h4>These results are based on your selected filters.</h4>
+			<div class="subtext">
+				To adjust your filters,
+			</div>
+			<div>
+				<a href="javascript:;" class="adjustFilters">click here.</a>
+			</div>
 		</div>
 	</div>
-</div>
-	<c:if test="${not empty callCentreNumber}">	
+	<c:if test="${not empty callCentreNumber}">
 		<div class="resultsMarketingMessage callCentreNumberSection" >
 			<div class="insert">
 				<h4>Do you need a hand?</h4>
 				<p class="larger">
 					Call <em class="noWrap callCentreNumber">${callCentreNumber}</em>
 				</p>
-					</div>
 			</div>
+		</div>
 	</c:if>
 </div>
 <div class="resultsHeadersBg affixOnScroll">
 </div>
 
 <agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
-	<c:if test="${not empty callCentreNumber}">	
+	<c:if test="${not empty callCentreNumber}">
 		<div class="resultsMarketingMessage callCentreNumberSection" >
 			<div class="insert">
 				<ul>
@@ -91,9 +91,10 @@
 	<health:more_info_logo_price_template />
 	<health:product_benefits_template />
 	<health:product_benefits_template_xs />
+	<health:more_info_blue_header_product_details />
 
 
-<%-- RESULTS TABLE --%>
+	<%-- RESULTS TABLE --%>
 	<div class="moreInfoDropdown container"></div>
 
 	<div class="resultsContainer affixOnScroll">
@@ -106,17 +107,17 @@
 			</div>
 			<features:resultsItemTemplate_labels />
 			<div class="featuresList featuresTemplateComponent"></div>
-			</div>
+		</div>
 		<div class="resultsOverflow">
 			<div class="results-table"></div>
-			</div>
+		</div>
 		<core:clear />
 		<div class="featuresFooterPusher"></div>
 
 
-			</div>
+	</div>
 
-<%-- DEFAULT RESULT ROW --%>
+	<%-- DEFAULT RESULT ROW --%>
 	<script id="result-template" type="text/html">
 		<div class="result-row result_{{= productId }}" data-productId="{{= productId }}">
 			<div class="result">
@@ -127,11 +128,11 @@
 					</div>
 					<div class="productSummary vertical results">
 
-					{{ var logoPriceTemplate = $("#logo-price-template").html(); }}
-					{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
-					{{ obj._selectedFrequency = Results.getFrequency(); }}
-					{{ obj.showAltPremium = false; obj.htmlString = htmlTemplatePrice(obj); }}
-					{{= htmlString }}
+						{{ var logoPriceTemplate = $("#logo-price-template").html(); }}
+						{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
+						{{ obj._selectedFrequency = Results.getFrequency(); }}
+						{{ obj.showAltPremium = false; obj.htmlString = htmlTemplatePrice(obj); }}
+						{{= htmlString }}
 
 					</div>
 
@@ -140,7 +141,7 @@
 						<div class="close-text"><span class="icon icon-arrow-left" />Back to Results</div>
 					</a>
 					{{ if( info.restrictedFund === 'Y' ) { }}
-						<div class="restrictedFund" data-title="This is a Restricted Fund" data-toggle="popover" data-adjust-y="5" data-trigger="mouseenter click" data-my="top center" data-at="bottom center" data-content="#restrictedFundText" data-class="restrictedTooltips">RESTRICTED FUND</div>
+					<div class="restrictedFund" data-title="This is a Restricted Fund" data-toggle="popover" data-adjust-y="5" data-trigger="mouseenter click" data-my="top center" data-at="bottom center" data-content="#restrictedFundText" data-class="restrictedTooltips">RESTRICTED FUND</div>
 					{{ } }}
 				</div>
 			</div>
@@ -152,31 +153,31 @@
 		</div>
 	</script>
 
-<%-- FEATURE TEMPLATE --%>
+	<%-- FEATURE TEMPLATE --%>
 	<div id="restrictedFundText" class="hidden">
 		<p>Restricted funds provide private health insurance cover to members of a specific industry or group.</p>
 		<p>In some cases, family members and extended family are also eligible.</p>
-			</div>
+	</div>
 
-<%-- FEATURE TEMPLATE --%>
-		<features:resultsItemTemplate />
+	<%-- FEATURE TEMPLATE --%>
+	<features:resultsItemTemplate />
 	<%--<div id="feature-template" style="display:none;" class="featuresTemplateComponent">
 		<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
 			<features:resultsItem item="${selectedValue}" labelMode="false" index="${status.index}"/>
 		</c:forEach>
 	</div>--%>
 
-<%-- NO RESULTS --%>
+	<%-- NO RESULTS --%>
 	<div class="noResults displayNone">
 		<div class="alert alert-info">
 			No results found, please alter your filters and selections to find a match.
-			</div>
-			</div>
+		</div>
+	</div>
 
-<%-- FETCH ERROR --%>
+	<%-- FETCH ERROR --%>
 	<div class="resultsFetchError displayNone">
 		Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later.</a>
-			</div>
+	</div>
 
 	<!-- COMPARE PANEL -->
 	<core:js_template id="compare-basket-features-template">
@@ -198,12 +199,12 @@
 				{{= comparedItems }}
 
 				{{ if(comparedResultsCount < maxAllowable && isCompareOpen === false) { }}
-					{{ template = $("#compare-basket-features-placeholder-template").html(); }}
-					{{ htmlTemplate = _.template(template); }}
-					{{ var placeholderItem = htmlTemplate(); }}
-					{{ for(var m = 0; m < maxAllowable-comparedResultsCount; m++) { }}
-						{{= placeholderItem }}
-					{{ } }}
+				{{ template = $("#compare-basket-features-placeholder-template").html(); }}
+				{{ htmlTemplate = _.template(template); }}
+				{{ var placeholderItem = htmlTemplate(); }}
+				{{ for(var m = 0; m < maxAllowable-comparedResultsCount; m++) { }}
+				{{= placeholderItem }}
+				{{ } }}
 				{{ } }}
 			</ul>
 			{{ if (comparedResultsCount > 1) { }}
@@ -231,7 +232,7 @@
 		{{ var annuallyHidden = tFrequency == 'annually' ? '' : displayNone; }}
 
 		{{ for(var i = 0; i < obj.products.length; i++) { }}
-			{{var prod = products[i]; }}
+		{{var prod = products[i]; }}
 		<li>
 
 			<span class="active-product">

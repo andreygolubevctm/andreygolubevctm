@@ -33,6 +33,10 @@ function SpriteTasks(gulp) {
                         cssName: "logosSprites.less",
                         padding: 2,
                         cssSpritesheetName: bundle + "-logo",
+                        retinaSrcFilter: [path.join(srcPath, "*@2x.png")],
+                        retinaImgName: "spritesheet@2x.png",
+                        retinaImgPath: imgPathPrefix + "/spritesheet@2x.png",
+                        cssRetinaSpritesheetName: bundle + "-logo-2x",
                         cssVarMap: function(sprite) {
                             sprite.name = bundle + "-logo-" + sprite.name;
                         },
@@ -41,14 +45,6 @@ function SpriteTasks(gulp) {
                             variableNameTransforms: []
                         }
                     };
-
-                    // Not sure why, but health shouldn't have retina images
-                    if(bundle !== "health") {
-                        spriteSmithConfig.retinaSrcFilter = [path.join(srcPath, "*@2x.png")];
-                        spriteSmithConfig.retinaImgName = "spritesheet@2x.png";
-                        spriteSmithConfig.retinaImgPath = imgPathPrefix + "/spritesheet@2x.png";
-                        spriteSmithConfig.cssRetinaSpritesheetName = bundle + "-logo-2x";
-                    }
 
                     var spriteData = gulp.src(path.join(srcPath, "*.png"))
                         .pipe(spritesmith(spriteSmithConfig));

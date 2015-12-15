@@ -24,54 +24,45 @@
 	{{ var htmlTemplate = _.template(productBenefitsTemplate); }}
 	{{ obj.benefitsTemplateXS = htmlTemplate(obj); }}
 
+	{{ var productDetailsTemplate = $("#more-info-product-details-template").html(); }}
+	{{ var htmlTemplate = _.template(productDetailsTemplate); }}
+	{{ obj.productDetailsTemplate = htmlTemplate(obj); }}
+
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content">
-		<div class="col-xs-12 more-info-blue-header">
-			<div class="row">
-				<div class="col-xs-12 col-md-9">
-					<div class="row">
-						<div class="visible-xs col-xs-12 xs-productName-container">
-							<div class="row">
-								<div class="col-xs-8">
-									<div class="productName">{{= info.productTitle }}</div>
-								</div>
-								<div class=" col-xs-4">
-									<div class="companyLogo {{= info.FundCode}}"></div>
-								</div>
+		<div class="clearfix">
+			<div class="col-xs-12 more-info-blue-header">
+				<div class="row">
+					<div class="visible-xs col-xs-12 xs-productName-container">
+						<div class="row">
+							<div class="col-xs-8 productNameContainer">
+								<div class="productName">{{= info.productTitle }}</div>
+							</div>
+							<div class=" col-xs-4">
+								<div class="companyLogo {{= info.provider}}-mi"></div>
 							</div>
 						</div>
-						<div class="col-sm-12 hidden-xs">
-							<div class="productName">{{= info.productTitle }}</div>
+					</div>
+					<div class="col-sm-9">
+						<div class="productName hidden-xs">{{= info.productTitle }}</div>
+						<div class="hidden-sm">
+							{{ print(productDetailsTemplate); }}
 						</div>
-						<div class="col-sm-9 col-md-12">
-							<div class="row">
-								<div class="col-md-5 col-xs-12">{{ var logoPriceTemplate = $("#more-info-logo-price-template").html(); }}
-									{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
-									{{ obj._selectedFrequency = Results.getFrequency(); }}
-									{{ obj.mode = ''; }}
-									{{ obj.showAltPremium = false; obj.htmlString = htmlTemplatePrice(obj); }}
-									{{ obj.showAltPremium = true;  obj.htmlStringAlt = htmlTemplatePrice(obj); }}
-									{{= htmlString }}</div>
-								<div class="col-xs-12 col-md-7">
-									<div class="row">
-										<div class="col-lg-5 col-md-12 col-xs-12 col-sm-6 pull-left more-info-apply-container"><a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a></div>
-										<div class="col-lg-7 col-md-12 col-xs-12 moreInfoCallRefNo"><span class="moreInfoCallUs">or Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></span>
-											<p class="moreInfoReferenceNoText">quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></p></div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="visible-sm col-sm-3"><div class="companyLogo {{= info.FundCode}}"></div></div>
+					</div>
+					<div class="hidden-xs col-sm-3 moreInfoLogo">
+						<div class="companyLogo {{= info.provider}}-mi pull-right"></div>
+					</div>
+					<div class="visible-sm">
+						{{ print(productDetailsTemplate); }}
 					</div>
 				</div>
-				<div class="hidden-xs hidden-sm col-md-3"><div class="companyLogo {{= info.FundCode}}"></div></div>
 			</div>
 		</div>
 
 		<div class="col-sm-6 paragraphedContent">
 
 			{{ if (promo.promoText !== ''){ }}
-				<h2 class="more-info-promotion">Promotions &amp; Offers</h2>
-				{{= promo.promoText }}
+			<h2 class="more-info-promotion">Promotions &amp; Offers</h2>
+			{{= promo.promoText }}
 			{{ } }}
 
 			<h2 class="more-info-about">About the fund</h2>
@@ -105,9 +96,9 @@
 
 		<div class="col-sm-6 moreInfoRightColumn">
 
-		<%-- DUAL PRICING START --%>
-		<c:if test="${healthAlternatePricingActive eq true}">
-			{{ if (showApply === true) { }}
+			<%-- DUAL PRICING START --%>
+			<c:if test="${healthAlternatePricingActive eq true}">
+				{{ if (showApply === true) { }}
 				<div class="dualPricing">
 					<ui:bubble variant="chatty" className="moreInfoBubble">
 						<div class="row">
@@ -128,7 +119,7 @@
 						<div class="row">
 							<div class="col-xs-5">
 
-				</div>
+							</div>
 							<c:if test="${not empty callCentreNumber}">
 								<div class="col-xs-6 callCentreNumberSection">
 									<h5 class="moreInfoCallUs">Or call <span class="noWrap callCentreNumber">${callCentreNumber}</span></h5>
@@ -142,58 +133,58 @@
 						<p>Did you know, if you buy now and <strong>pay up to 12 months in advance</strong> before the rate rise applies, you can <strong>lock in the current price.</strong></p>
 					</div>
 				</div>
-			{{ } }}
-		</c:if>
-		<%-- DUAL PRICING END --%>
-		<c:if test="${healthAlternatePricingActive eq false}">
-			{{ if (showApply === true) { }}
+				{{ } }}
+			</c:if>
+			<%-- DUAL PRICING END --%>
+			<c:if test="${healthAlternatePricingActive eq false}">
+				{{ if (showApply === true) { }}
 
-			<c:choose>
-				<c:when test="${useOldCtaBtn}">
-					<ui:bubble variant="info" className="moreInfoBubble hidden-xs">
-						<div class="row">
-							<c:if test="${not empty callCentreNumber}">
-							<div class="col-xs-6 callCentreNumberSection">
+				<c:choose>
+					<c:when test="${useOldCtaBtn}">
+						<ui:bubble variant="info" className="moreInfoBubble hidden-xs">
+							<div class="row">
+								<c:if test="${not empty callCentreNumber}">
+									<div class="col-xs-6 callCentreNumberSection">
 
+									</div>
+								</c:if>
+
+								<c:if test="${not empty callCentreNumber}">
+									<div class="col-xs-1 moreInfoOr">
+										OR
+									</div>
+								</c:if>
+
+								<div class="col-xs-5">
+									<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply ${oldCtaClass}" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
+								</div>
 							</div>
-							</c:if>
-
-							<c:if test="${not empty callCentreNumber}">
-							<div class="col-xs-1 moreInfoOr">
-								OR
-							</div>
-							</c:if>
-
-							<div class="col-xs-5">
-								<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply ${oldCtaClass}" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
-							</div>
-						</div>
-					</ui:bubble>
-				</c:when>
-			</c:choose>
-			{{ } }}
-		</c:if>
+						</ui:bubble>
+					</c:when>
+				</c:choose>
+				{{ } }}
+			</c:if>
 
 			<health:competition_jeep />
 
 			<div class="row row-content brochureButtons hidden-xs">
 				{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
-					<div class="col-sm-6 col-xs-12">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download download-policy-brochure col-xs-12">Download <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
-					</div>
+				<div class="col-sm-6 col-xs-12">
+					<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download download-policy-brochure col-xs-12">Download <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
+				</div>
 				{{ } else { }}
 
-					{{ if(typeof hospitalCover !== 'undefined') { }}
-						<div class="col-sm-6 col-xs-12">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download download-hospital-brochure col-xs-12">Download Hospital <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
-						</div>
-					{{ } }}
+				{{ if(typeof hospitalCover !== 'undefined') { }}
+				<div class="col-sm-6 col-xs-12">
+					<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download download-hospital-brochure col-xs-12">Download Hospital <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
+				</div>
+				{{ } }}
 
-					{{ if(typeof extrasCover !== 'undefined') { }}
-						<div class="col-sm-6 col-xs-12 ">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-download download-extras-brochure col-xs-12">Download Extras <br class="hidden-xs hidden-lg"/>Policy Brochure</a>
-						</div>
-					{{ } }}
+				{{ if(typeof extrasCover !== 'undefined') { }}
+				<div class="col-sm-6 col-xs-12 ">
+					<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-download download-extras-brochure col-xs-12">Download Extras <br class="hidden-xs hidden-lg"/>Policy Brochure</a>
+				</div>
+				{{ } }}
 				{{ } }}
 			</div>
 
@@ -202,8 +193,8 @@
 					<div class="row row-content formInput">
 						<div class="col-sm-7 col-xs-12">
 							<field_new:email xpath="emailAddress"  required="true"
-									className="sendBrochureEmailAddress"
-									placeHolder="${emailPlaceHolder}" />
+											 className="sendBrochureEmailAddress"
+											 placeHolder="${emailPlaceHolder}" />
 						</div>
 						<div class="col-sm-5 hidden-xs">
 							<a href="javascript:;" class="btn btn-save btn-block disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
@@ -212,9 +203,9 @@
 					<div class="row row-content formInput optInMarketingRow">
 						<div class="col-xs-12">
 							<field_new:checkbox className="optInMarketing checkbox-custom"
-											xpath="health/sendBrochures/optInMarketing" required="false"
-											value="Y" label="true"
-											title="Stay up to date with news and offers direct to your inbox" />
+												xpath="health/sendBrochures/optInMarketing" required="false"
+												value="Y" label="true"
+												title="Stay up to date with news and offers direct to your inbox" />
 						</div>
 					</div>
 
@@ -233,11 +224,10 @@
 				</div>
 			</div>
 			<div class="hidden-xs">
-			{{ print(benefitsTemplate); }}
+				{{ print(benefitsTemplate); }}
 			</div>
 
 		</div>
 
-	</div>
 	</div>
 </script>
