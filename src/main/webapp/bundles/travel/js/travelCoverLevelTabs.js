@@ -18,7 +18,7 @@
 	var singleTripTabs = [{
 		label : "Comprehensive <span class='hidden-xs'>Cover</span>",
 		rankingFilter : "C",
-		defaultTab : true,
+		defaultTab : false,
 		disableAnimationsBetweenTabs : true,
 		showCount : true,
 		filter : function() {
@@ -29,7 +29,7 @@
 	}, {
 		label : "Mid Range <span class='hidden-xs'>Cover</span>",
 		rankingFilter : "M",
-		defaultTab : false,
+		defaultTab : true,
 		showCount : true,
 		filter : function() {
 			Results.filterBy("coverLevel", "value", {
@@ -78,14 +78,6 @@
 		if(!initialised) {
 			initialised = true;
 
-			// Remove this after A/B test
-			if (!meerkat.modules.splitTest.isActive([2, 3, 4, 83])) {
-				return;
-			}
-
-			setupABTestParameters();
-			// end AB test code
-
 			var options = {
 				enabled: true,
 				tabCount: 3,
@@ -117,27 +109,6 @@
 		};
 	}
 
-	/**
-	 * Remove parameter after A/B test
-	 * Temporary function to set the default tabs for A/B testing.
-	 * J2 [0]: Comprehensive
-	 * J3 [1]: Mid Range
-	 * J4 [2]: Basic
-	 */
-	function setupABTestParameters() {
-
-		singleTripTabs[0].defaultTab = false;
-		singleTripTabs[1].defaultTab = false;
-		singleTripTabs[2].defaultTab = false;
-
-		if(meerkat.modules.splitTest.isActive(2)) {
-			singleTripTabs[0].defaultTab = true;
-		} else if(meerkat.modules.splitTest.isActive([3,83])) {
-			singleTripTabs[1].defaultTab = true;
-		} else if(meerkat.modules.splitTest.isActive(4)) {
-			singleTripTabs[2].defaultTab = true;
-		}
-	}
 	/**
 	 * Retrieve the tab object to use based on specific criteria
 	 */
