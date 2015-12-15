@@ -1,20 +1,21 @@
 package com.ctm.web.core.confirmation.services;
 
 import com.ctm.web.core.confirmation.dao.ConfirmationDao;
-import com.ctm.web.core.transaction.dao.TransactionDao;
-import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.confirmation.model.Confirmation;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.TransactionProperties;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.net.URLEncoder;
+import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -61,6 +62,25 @@ public class ConfirmationService {
 		}
 		catch (DaoException e) {
 			LOGGER.error("Unable to get confirmation record {}, {}", kv("confirmationKey", confirmationKey), kv("brandId", brandId), e);
+		}
+
+		return confirmation;
+	}
+
+	/**
+	 * Get confirmation record by the key and transaction id.
+	 * @param confirmationKey
+	 * @param transactionId
+	 * @return
+	 */
+	public Optional<Confirmation> getConfirmationByKeyAndTransactionId(String confirmationKey, Long transactionId) {
+		Optional<Confirmation> confirmation = Optional.empty();
+
+		try {
+			confirmation = confirmationDao.getByKey(confirmationKey, transactionId);
+		}
+		catch (DaoException e) {
+			LOGGER.error("Unable to get confirmation record {}, {}", kv("confirmationKey", confirmationKey), kv("transactionId", transactionId), e);
 		}
 
 		return confirmation;

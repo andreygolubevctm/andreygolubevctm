@@ -20,10 +20,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-@SpringApplicationConfiguration(classes = {EnergyApplyConfirmation.class})
+@SpringApplicationConfiguration(classes = {EnergyApplyConfirmationService.class})
 @ActiveProfiles("test")
 @Component
-public class EnergyApplyConfirmationTest {
+public class EnergyApplyConfirmationServiceTest {
 
 
     @Mock
@@ -36,7 +36,7 @@ public class EnergyApplyConfirmationTest {
     private ApplyResponse applyResponse;
 
     @InjectMocks
-    private EnergyApplyConfirmation energyApplyConfirmation;
+    private EnergyApplyConfirmationService energyApplyConfirmation;
 
     private ConfirmationId confirmationId = ConfirmationId.instanceOf("confirmationId");
 

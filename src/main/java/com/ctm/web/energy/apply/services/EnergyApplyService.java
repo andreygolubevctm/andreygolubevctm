@@ -1,19 +1,16 @@
 package com.ctm.web.energy.apply.services;
 
 import com.ctm.apply.model.response.ApplyResponse;
+import com.ctm.apply.model.response.SingleApplyResponse;
 import com.ctm.energyapply.model.request.EnergyApplicationDetails;
 import com.ctm.interfaces.common.types.Status;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
-import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.web.core.providers.model.ApplyResponseImpl;
 import com.ctm.web.core.services.CommonRequestService;
 import com.ctm.web.core.services.Endpoint;
-import com.ctm.web.core.services.TouchService;
-import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceRequestAdapter;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceResponseAdapter;
 import com.ctm.web.energy.apply.exceptions.FailedToRegisterException;
@@ -27,16 +24,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Component
-public class EnergyApplyService extends CommonRequestService<EnergyApplicationDetails,ApplyResponseImpl> {
+public class EnergyApplyService extends CommonRequestService<EnergyApplicationDetails,SingleApplyResponse> {
 
     @Autowired
-    private EnergyApplyConfirmation energyApplyConfirmation;
-
-    @Autowired
-    TouchService touchService;
-
-    @Autowired
-    TransactionDao transactionDao;
+    private EnergyApplyConfirmationService energyApplyConfirmation;
 
     @Autowired
     public EnergyApplyService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
@@ -49,32 +40,15 @@ public class EnergyApplyService extends CommonRequestService<EnergyApplicationDe
         EnergyApplyServiceRequestAdapter requestAdapter = new EnergyApplyServiceRequestAdapter();
         final EnergyApplicationDetails energyApplicationDetails = requestAdapter.adapt(model);
         ApplyResponse applyResponse = sendApplyRequest(brand, Vertical.VerticalType.ENERGY, "applyServiceBER", Endpoint.APPLY, model, energyApplicationDetails,
-                ApplyResponseImpl.class, requestAdapter.getProductId(model));
+                SingleApplyResponse.class, requestAdapter.getProductId(model));
         if(Status.REGISTERED.equals(applyResponse.getResponseStatus())) {
-            long transactionId=  model.getTransactionId();
-            String confirmationkey = energyApplyConfirmation.createAndSaveConfirmation(request.getSession().getId(), model, applyResponse, requestAdapter);
-            writeSoldTouchToRootId(transactionId);
-            writeSoldTouch(transactionId);
+            String confirmationKey = energyApplyConfirmation.createAndSaveConfirmation(request.getSession().getId(), model, applyResponse, requestAdapter);
             return responseAdapter.adapt(applyResponse)
                     .transactionId(model.getTransactionId())
-                    .confirmationkey(confirmationkey).build();
+                    .confirmationkey(confirmationKey).build();
         } else {
             throw new FailedToRegisterException(applyResponse, model.getTransactionId());
         }
 	}
 
-    private void writeSoldTouchToRootId(long transactionId) throws DaoException {
-        //write touch to root id to stop lead feed cron sending lead
-        long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
-        if(transactionId != rootId) {
-            writeSoldTouch(rootId);
-        }
-    }
-
-    private void writeSoldTouch(long rootId) {
-        Touch touch = new Touch();
-        touch.setType(Touch.TouchType.SOLD);
-        touch.setTransactionId(rootId);
-        touchService.recordTouch(touch);
-    }
 }

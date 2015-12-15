@@ -10,6 +10,7 @@ import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class ConfirmationDao {
 
@@ -65,8 +66,8 @@ public class ConfirmationDao {
 	 * Get a confirmation using the confirmation key (token)
 	 * @param confirmationKey
 	 */
-	public Confirmation getByKey(String confirmationKey, Long transactionId) throws DaoException {
-		Confirmation confirmation = new Confirmation();
+	public Optional<Confirmation> getByKey(String confirmationKey, Long transactionId) throws DaoException {
+		Confirmation confirmation = null;
 
 		SimpleDatabaseConnection dbSource = null;
 
@@ -86,6 +87,7 @@ public class ConfirmationDao {
 			ResultSet results = stmt.executeQuery();
 
 			while (results.next()) {
+				confirmation = new Confirmation();
 				confirmation.setTransactionId(results.getLong("TransID"));
 				confirmation.setKey(results.getString("keyID"));
 				confirmation.setDatetime(results.getTimestamp("Time"));
@@ -102,7 +104,7 @@ public class ConfirmationDao {
 			dbSource.closeConnection();
 		}
 
-		return confirmation;
+		return Optional.ofNullable(confirmation);
 	}
 
 	public void addConfirmation(Confirmation confirmation) throws DaoException {
