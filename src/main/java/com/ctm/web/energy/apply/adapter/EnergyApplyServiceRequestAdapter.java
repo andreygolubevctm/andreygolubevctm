@@ -153,6 +153,8 @@ public class EnergyApplyServiceRequestAdapter implements WebRequestAdapter<Energ
                     .streetNumber(postalAddress.get().getStreetNum())
                     .suburbName(postalAddress.get().getSuburbName())
                     .state(State.valueOf(postalAddress.get().getState()));
+
+            // @TODO fix this see http://itsupport.intranet:8080/browse/UTL-364
             postalAddressBuilder.unitType(postalAddress.get().getNonStdUnitType())
                     .postcode(postalAddress.get().getNonStdPostCode())
                     .streetName(postalAddress.get().getNonStdStreet());
