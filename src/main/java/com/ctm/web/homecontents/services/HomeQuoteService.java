@@ -49,7 +49,7 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteReq
     private static final SessionDataService SESSION_DATA_SERVICE = new SessionDataService();
 
     public HomeQuoteService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new SimpleConnection());
     }
 
     public List<HomeResult> getQuotes(Brand brand, HomeRequest data) throws Exception {

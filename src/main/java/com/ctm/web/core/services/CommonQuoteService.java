@@ -15,9 +15,9 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> extends Commo
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteService.class);
 
-    public CommonQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
+    public CommonQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, SimpleConnection connection) {
         super(providerFilterDAO, objectMapper);
-        connection = new SimpleConnection();
+        this.connection = connection;
     }
 
     public void validateRequest(RequestWithQuote<QUOTE> data, String verticalCode) {
