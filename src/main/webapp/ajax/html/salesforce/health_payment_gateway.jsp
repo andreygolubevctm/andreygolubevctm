@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<% response.setHeader("Access-Control-Allow-Origin", "*"); %>
+
 <jsp:useBean id="now" class="java.util.Date" />
 <c:set var="serverMonth"><fmt:formatDate value="${now}" type="DATE" pattern="M"/></c:set>
 <c:set var="serverMonth" value="${serverMonth-1}" />
