@@ -8,16 +8,12 @@ import com.ctm.web.travel.quote.model.request.TravelQuoteRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
-
+import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDate;
 
 public class RequestAdapter {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestAdapter.class);
 
     /**
@@ -44,14 +40,8 @@ public class RequestAdapter {
             SingleTripDetails details = new SingleTripDetails();
             details.setDestinations(quote.getDestinations());
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
-
-            try {
-                details.setToDate(dateFormatter.parse(quote.getDates().getToDate()));
-                details.setFromDate(dateFormatter.parse(quote.getDates().getFromDate()));
-            } catch (ParseException e) {
-                LOGGER.error("Failed to adapt front-end travel request to travel-quote request {}", kv("travelRequest", travelRequest));
-            }
+            details.setToDate(parseAUSLocalDate(quote.getDates().getToDate()));
+            details.setFromDate(parseAUSLocalDate(quote.getDates().getFromDate()));
 
             quoteRequest.setSingleTripDetails(details);
 
@@ -59,7 +49,7 @@ public class RequestAdapter {
             quoteRequest.setPolicyType(PolicyType.MULTI);
         }
 
-        if(quote.getFilter().getSingleProvider() != null && quote.getFilter().getSingleProvider().equals("") == false){
+        if(quote.getFilter().getSingleProvider() != null && !quote.getFilter().getSingleProvider().equals("")){
             quoteRequest.setProviderFilter(new ArrayList<>());
             quoteRequest.getProviderFilter().add(quote.getFilter().getSingleProvider());
         }

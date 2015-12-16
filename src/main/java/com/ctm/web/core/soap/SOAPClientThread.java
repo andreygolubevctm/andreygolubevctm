@@ -5,8 +5,10 @@
 
 package com.ctm.web.core.soap;
 
+import com.ctm.commonlogging.context.LoggingVariables;
+import com.ctm.commonlogging.correlationid.CorrelationIdUtils;
+import com.ctm.interfaces.common.types.CorrelationId;
 import com.ctm.web.core.constants.ErrorCode;
-import com.ctm.web.core.logging.CorrelationIdUtils;
 import com.ctm.web.core.logging.XMLOutputWriter;
 import com.ctm.web.core.model.soap.settings.SoapAggregatorConfiguration;
 import com.ctm.web.core.model.soap.settings.SoapClientThreadConfiguration;
@@ -36,8 +38,9 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-import static com.ctm.web.core.logging.LoggingArguments.kv;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.logging.XMLOutputWriter.*;
 
 
@@ -283,9 +286,6 @@ public class SOAPClientThread implements Runnable {
 				}
 				// An error or some unknown condition occurred
 				default: {
-					// Important! keep this as debug and don't enable debug logging in production
-					// as this response may include credit card details (this is from the nib webservice)
-					LOGGER.debug("[SOAP Response] {}", kv("response", connection.getResponseMessage()));
 
 					StringBuffer errorData = new StringBuffer();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(((HttpURLConnection)connection).getErrorStream()));
@@ -340,7 +340,8 @@ public class SOAPClientThread implements Runnable {
 
 	protected void setCorrelationIdHeader(URLConnection connection) {
 		if(aggregatorConfiguration.isSendCorrelationId()) {
-			CorrelationIdUtils.setCorrelationIdHeader(connection);
+			final Optional<CorrelationId> correlationId = LoggingVariables.getCorrelationId();
+			correlationId.ifPresent(cId -> CorrelationIdUtils.setCorrelationIdRequestHeader(connection, cId));
 		}
 	}
 
@@ -434,9 +435,6 @@ public class SOAPClientThread implements Runnable {
 
 			// do we need to translate it?
 			if (configuration.getInboundXSL() != null) {
-				// Important! keep this as debug and don't enable debug logging in production
-				// as this response may include credit card details (this is from the nib webservice)
-				LOGGER.debug("[SOAP Response] {},{}", kv("name", this.name), kv("response", soapResponse));
 
 				// The following ugliness had to be added to get OTI working ..
 				//REVISE: oh please do - we need something better than this.... :(

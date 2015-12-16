@@ -77,7 +77,6 @@
 				</form_new:row>
 
 				<%-- Optin fields (hidden) for email and phone --%>
-				<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
 				<field:hidden xpath="${xpath}/call" defaultValue="${val_optout}" />
 
 				<%-- form privacy_optin --%>
@@ -93,11 +92,10 @@
 
 				<c:set var="termsAndConditions">
 					<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
-					I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
-					<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
-					By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
-					I confirm that I have read the <form:link_privacy_statement />.
+					* Yes, <content:optin key="brandDisplayName" useSpan="true"/> may call me during <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">call centre opening hours</a> to discuss my health insurance needs,
+					comparing from a <a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>range of funds</a>.  I have read the <form:link_privacy_statement />.
 				</c:set>
+				<c:set var="optinMarketingText">Yes, keep me updated about news, discounts and special offers from <content:optin key="brandDisplayName" useSpan="true"/></c:set>
 				
 				<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 				<form_new:row className="health-contact-details-optin-group" hideHelpIconCol="true">
@@ -110,28 +108,38 @@
 						title="${termsAndConditions}"
 						errorMsg="Please agree to the Terms &amp; Conditions" />
 				</form_new:row>
-
-				<%-- COMPETITION START --%>
-
-				<c:set var="competitionPreCheckboxContainer"><content:get key="competitionPreCheckboxContainer"/></c:set>
-
-				<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
-				<c:if test="${!fn:contains(competitionPreCheckboxContainer, 'health1000promoImage')}">
-					<c:set var="offset_class" value=" no-offset"/>
-				</c:if>
-				<c:if test="${not empty competitionPreCheckboxContainer}">
-					<form_new:row className="competition-optin-group ${offset_class}" hideHelpIconCol="true">
-						<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
-					</form_new:row>
-				</c:if>
-				<form_new:row className="competition-optin-group" hideHelpIconCol="true">
-					<c:set var="competitionLabel">
-						<content:get key="competitionCheckboxText"/>
-					</c:set>
-					<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
-					<field:hidden xpath="${xpath}/competition/previous" />
+				<form_new:row className="${vertical}-contact-details-optin-group" hideHelpIconCol="true">
+					<field_new:checkbox
+							xpath="${xpath}/optInEmail"
+							value="Y"
+							className="validate"
+							required="false"
+							label="${true}"
+							title="${optinMarketingText}"
+							errorMsg="${error_text}" />
 				</form_new:row>
 
+				<%-- COMPETITION START --%>
+				<c:if test="${competitionEnabled == true}">
+					<c:set var="competitionPreCheckboxContainer"><content:get key="competitionPreCheckboxContainer"/></c:set>
+
+					<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
+					<c:if test="${!fn:contains(competitionPreCheckboxContainer, 'health1000promoImage')}">
+						<c:set var="offset_class" value=" no-offset"/>
+					</c:if>
+					<c:if test="${not empty competitionPreCheckboxContainer}">
+						<form_new:row className="competition-optin-group ${offset_class}" hideHelpIconCol="true">
+							<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
+						</form_new:row>
+					</c:if>
+					<form_new:row className="competition-optin-group" hideHelpIconCol="true">
+						<c:set var="competitionLabel">
+							<content:get key="competitionCheckboxText"/>
+						</c:set>
+						<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
+						<field:hidden xpath="${xpath}/competition/previous" />
+					</form_new:row>
+				</c:if>
 				<%-- COMPETITION END --%>
 
 				<simples:referral_tracking vertical="health" />

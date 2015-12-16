@@ -5,9 +5,12 @@
 
 package com.ctm.web.core.soap;
 
-import com.ctm.web.core.logging.CorrelationIdUtils;
+import com.ctm.commonlogging.context.LoggingVariables;
+import com.ctm.interfaces.common.types.BrandCode;
+import com.ctm.interfaces.common.types.CorrelationId;
+import com.ctm.interfaces.common.types.TransactionId;
+import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.model.settings.Brand;
-import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.model.soap.settings.SoapAggregatorConfiguration;
 import com.ctm.web.core.model.soap.settings.SoapClientThreadConfiguration;
 import com.ctm.web.core.services.ApplicationService;
@@ -33,12 +36,9 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Optional;
 
-import static com.ctm.web.core.logging.CorrelationIdUtils.clearCorrelationId;
-import static com.ctm.web.core.logging.CorrelationIdUtils.setCorrelationId;
-import static com.ctm.web.core.logging.LoggingArguments.kv;
-import static com.ctm.web.core.logging.LoggingVariables.clearLoggingVariables;
-import static com.ctm.web.core.logging.LoggingVariables.setLoggingVariables;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.services.EnvironmentService.Environment.*;
+import static java.lang.Long.parseLong;
 
 /**
  * The Class SOAPAggregatorTag with WAR compatibility.
@@ -66,7 +66,7 @@ public class SOAPAggregatorTag extends TagSupport {
 
 	private boolean continueOnValidationError;
 	private Brand brand;
-	private Optional<String> correlationIdMaybe = Optional.empty();
+	private Optional<CorrelationId> correlationIdMaybe = Optional.empty();
 	private boolean sendCorrelationId;
 
 	@SuppressWarnings("unused")
@@ -102,7 +102,7 @@ public class SOAPAggregatorTag extends TagSupport {
 		String debugXml = null;
 		String resultXml = null;
 		try {
-			correlationIdMaybe = CorrelationIdUtils.getCorrelationId();
+			correlationIdMaybe = LoggingVariables.getCorrelationId();
 			configuration.setSendCorrelationId(sendCorrelationId);
 			XmlParser parser = new XmlParser();
 
@@ -245,19 +245,19 @@ public class SOAPAggregatorTag extends TagSupport {
 		}
 			return super.doEndTag();
 		} finally {
-			LOGGER.debug("Aggregator response returned. {},{}", kv("resultXml", resultXml), kv("debugXml", debugXml));
 			cleanUp();
 		}
 	}
 
 	private void clearThreadVariables() {
-		clearCorrelationId();
-		clearLoggingVariables();
+		LoggingVariables.clearLoggingContext();
 	}
 
 	private void setupThreadVariable() {
-		setLoggingVariables(transactionId, brand.getCode(), Vertical.VerticalType.findByCode(verticalCode), correlationIdMaybe);
-		setCorrelationId(correlationIdMaybe);
+		correlationIdMaybe.ifPresent(LoggingVariables::setCorrelationId);
+		LoggingVariables.setVerticalType(VerticalType.findByCode(verticalCode));
+		LoggingVariables.setBrandCode(BrandCode.instanceOf(brand.getCode()));
+		LoggingVariables.setTransactionId(TransactionId.instanceOf(parseLong(transactionId)));
 	}
 
 	private void setUpConfiguration() {

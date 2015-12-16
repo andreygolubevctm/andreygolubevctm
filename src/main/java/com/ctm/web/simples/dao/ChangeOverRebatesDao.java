@@ -26,10 +26,14 @@ public class ChangeOverRebatesDao {
 			// Execute the stored procedure for message details
 			//
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT multiplier as currentMultiplier, (SELECT multiplier FROM `ctm`.`health_changeover_rebates` WHERE id = rebates.id + 1) as futureMultiplier, " +
-						"effectiveStart " +
-						"FROM `ctm`.`health_changeover_rebates` rebates " +
-						"WHERE ? >= effectiveStart "
+					"SELECT multiplier as currentMultiplier, " +
+						"(SELECT multiplier FROM `ctm`.`health_changeover_rebates` WHERE id = (SELECT min(id) " +
+						"            FROM `ctm`.`health_changeover_rebates` WHERE id > rebates.id)) as futureMultiplier, " +
+						"(SELECT effectiveStart FROM `ctm`.`health_changeover_rebates` WHERE id = (SELECT min(id) " +
+						"            FROM `ctm`.`health_changeover_rebates` WHERE id > rebates.id)) as effectiveFutureStart, " +
+						"            effectiveStart " +
+						"            FROM `ctm`.`health_changeover_rebates` rebates " +
+						"            WHERE ? >= effectiveStart ORDER BY id DESC LIMIT 1"
 			);
 			stmt.setDate(1, new java.sql.Date(commencementDate.getTime()));
 
@@ -37,8 +41,13 @@ public class ChangeOverRebatesDao {
 
 			while (results.next()) {
 				changeOverRebate.setCurrentMultiplier(results.getBigDecimal(1));
-				changeOverRebate.setFutureMultiplier(results.getBigDecimal(2));
-				changeOverRebate.setEffectiveStart(results.getDate(3));
+				changeOverRebate.setFutureMultiplier(
+						results.getObject("futureMultiplier") != null ?
+								results.getBigDecimal("futureMultiplier") : results.getBigDecimal("currentMultiplier"));
+				changeOverRebate.setEffectiveStart(results.getDate("effectiveStart"));
+				changeOverRebate.setEffectiveFutureStart(
+						results.getObject("effectiveFutureStart") != null ?
+								results.getDate("effectiveFutureStart") : results.getDate("effectiveStart"));
 			}
 		}
 		catch (SQLException e) {
