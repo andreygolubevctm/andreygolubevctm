@@ -2,7 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('jsp.ajax.json.health_application')}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.health_application_ws')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true"/>
 
@@ -90,12 +90,24 @@
                 <c:set var="errorMessage"
                        value="Important details are missing from your session. Your session may have expired."/>
                 <core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
+
+                <c:if test="${not empty data['health/privacyoptin'] and data['health/privacyoptin'] eq 'Y'}">
+                    <jsp:useBean id="leadService" class="com.ctm.web.health.services.HealthLeadService" scope="request" />
+                    <c:set var="leadServiceResponse">${leadService.sendLead(4, data, pageContext.getRequest())}</c:set>
+                </c:if>
+
                 ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request, "transaction")}
             </c:when>
 
             <c:when test="${not empty ct_outcome}">
                 <c:set var="errorMessage" value="Application submit error. Code=${ct_outcome}"/>
                 <core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
+
+                <c:if test="${not empty data['health/privacyoptin'] and data['health/privacyoptin'] eq 'Y'}">
+                    <jsp:useBean id="leadService" class="com.ctm.web.health.services.HealthLeadService" scope="request" />
+                    <c:set var="leadServiceResponse">${leadService.sendLead(4, data, pageContext.getRequest())}</c:set>
+                </c:if>
+
                 ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request, "")}
             </c:when>
             <c:otherwise>

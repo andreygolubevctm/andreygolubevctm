@@ -9,6 +9,7 @@ import com.ctm.web.core.email.services.EmailServiceHandler;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.leadService.services.LeadService1;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
@@ -31,6 +32,7 @@ import com.ctm.web.health.model.results.HealthApplicationResult;
 import com.ctm.web.health.model.results.HealthResultWrapper;
 import com.ctm.web.health.model.results.ResponseError;
 import com.ctm.web.health.services.HealthApplyService;
+import com.ctm.web.health.services.HealthLeadService;
 import com.ctm.web.health.services.ProviderContentService;
 import com.ctm.web.simples.services.TransactionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -72,6 +74,8 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
     private final TransactionAccessService transactionAccessService = new TransactionAccessService();
 
     private final ConfirmationService confirmationService = new ConfirmationService();
+
+    private final LeadService1 leadService = new HealthLeadService();
 
     @POST
     @Path("/apply/get.json")
@@ -177,6 +181,8 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
         }
 
         LOGGER.debug("Health application complete. {},{}", kv("transactionId", data.getTransactionId()), kv("response", result));
+
+        leadService.sendLead(4, getDataBucket(context, data.getTransactionId()), context.getHttpServletRequest());
 
         final HealthResultWrapper resultWrapper = new HealthResultWrapper();
         resultWrapper.setResult(result);

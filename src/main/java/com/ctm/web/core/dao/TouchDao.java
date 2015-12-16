@@ -350,5 +350,27 @@ public class TouchDao {
 		return touch;
 	}
 
+	public String getTransactionStatus(final long transactionId) throws DaoException {
+		String sql = "SELECT CASE COALESCE(t1.type,t2.type,1) WHEN 'C' THEN 'SOLD' WHEN 'F' THEN 'PENDING' ELSE 'OPEN' END AS status " +
+				"FROM ctm.touches t0 " +
+				"LEFT JOIN ctm.touches t1 ON t0.transaction_id = t1.transaction_id AND t1.type = 'C' " +
+				"LEFT JOIN ctm.touches t2 ON t0.transaction_id = t2.transaction_id AND t2.type = 'F' " +
+				"WHERE t0.transaction_id = ? " +
+				"LIMIT 1";
 
+		DatabaseQueryMapping databaseMapping = new DatabaseQueryMapping<String>() {
+
+			@Override
+			public void mapParams() throws SQLException {
+				set(transactionId);
+			}
+
+			@Override
+			public String handleResult(ResultSet rs) throws SQLException {
+				return rs.getString("status");
+			}
+		};
+
+		return new SqlDao<String>().get(databaseMapping, sql);
+	}
 }

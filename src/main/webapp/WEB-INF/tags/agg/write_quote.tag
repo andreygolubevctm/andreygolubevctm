@@ -443,9 +443,9 @@
 	</c:catch>
 </c:if>
 
-<c:if test="${hasPrivacyOptin eq true}">
-	<jsp:useBean id="LeadServiceFactory" class="com.ctm.web.core.leadService.factories.LeadServiceFactory" scope="request" />
-	<c:set var="leadService">${LeadServiceFactory.createLeadService(pageContext.getRequest(), data)}</c:set>
+<c:if test="${hasPrivacyOptin eq true and rootPath eq 'health'}">
+	<jsp:useBean id="leadService" class="com.ctm.web.health.services.HealthLeadService" scope="request" />
+	<c:set var="leadServiceResponse">${leadService.sendLead(4, data, pageContext.getRequest())}</c:set>
 </c:if>
 
 <%-- Test for DB issue and handle - otherwise move on --%>
