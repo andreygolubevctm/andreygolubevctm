@@ -92,8 +92,8 @@
                 <core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
 
                 <c:if test="${not empty data['health/privacyoptin'] and data['health/privacyoptin'] eq 'Y'}">
-                    <jsp:useBean id="leadService" class="com.ctm.web.health.services.HealthLeadService" scope="request" />
-                    <c:set var="leadServiceResponse">${leadService.sendLead(4, data, pageContext.getRequest())}</c:set>
+                    <jsp:useBean id="leadServiceV" class="com.ctm.web.health.services.HealthLeadService" scope="request" />
+                    <c:set var="leadServiceResponse">${leadServiceV.sendLead(4, data, pageContext.getRequest())}</c:set>
                 </c:if>
 
                 ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request, "transaction")}
