@@ -9,7 +9,7 @@ public class EnergyPayLoad {
 
     }
 
-    private HouseHoldDetails householdDetails;
+    private HouseHoldDetailsWebRequest householdDetails;
     private String tariff;
     @Valid
     public ResultsDisplayed resultsDisplayed;
@@ -41,11 +41,11 @@ public class EnergyPayLoad {
     }
 
 
-    public HouseHoldDetails getHouseholdDetails() {
+    public HouseHoldDetailsWebRequest getHouseholdDetails() {
         return householdDetails;
     }
 
-    public void setHouseholdDetails(HouseHoldDetails householdDetails) {
+    public void setHouseholdDetails(HouseHoldDetailsWebRequest householdDetails) {
         this.householdDetails = householdDetails;
     }
 }

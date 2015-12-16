@@ -41,7 +41,7 @@ public class SettingsService {
 		if(ApplicationService.isVerticalEnabledForBrand(request, verticalCode) == false){
 			throw new BrandException("Vertical not enabled for brand.");
 		}
-		Brand brand = ApplicationService.getBrandFromRequest(request);
+		Brand brand = ApplicationService.getBrandFromRequestStatic(request);
 		PageSettings pageSettings = new PageSettings();
 		pageSettings.setBrand(brand);
 		return brand.getVerticalByCode(verticalCode);
@@ -77,7 +77,7 @@ public class SettingsService {
 	 * Call this method on ajax calls where the transaction id is passed through as a parameter.
 	 */
 	public static PageSettings getPageSettingsForPage(HttpServletRequest request) throws DaoException, ConfigSettingException {
-		Brand brand = ApplicationService.getBrandFromRequest(request);
+		Brand brand = ApplicationService.getBrandFromRequestStatic(request);
 		PageSettings pageSettings = new PageSettings();
 		pageSettings.setBrand(brand);
 		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);

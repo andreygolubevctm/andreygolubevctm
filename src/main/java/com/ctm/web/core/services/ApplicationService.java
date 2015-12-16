@@ -14,6 +14,7 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -26,12 +27,14 @@ import java.util.List;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class ApplicationService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationService.class);
 
-	private static List<Brand> brands = new ArrayList<>(); // Note: always use the getBrands() method so the data is loaded from the DB
+	private static List<Brand> brands = new ArrayList<>(); // Note: always use the getBrandsStatic() method so the data is loaded from the DB
 	private static final String applicationDateSessionKey = "applicationDate";
+	private static ApplicationService instance = new ApplicationService();
 
 
 	/**
@@ -41,7 +44,7 @@ public class ApplicationService {
 	public static boolean isVerticalEnabledForBrand(HttpServletRequest request, String verticalCode) throws DaoException {
 
 		// Check for the vertical enabled setting for this brand/vertical combination.
-		Brand brand = getBrandFromRequest(request);
+		Brand brand = getBrandFromRequestStatic(request);
 		if(brand == null){
 			throw new BrandException("Unable to find valid brand code");
 		}
@@ -63,7 +66,7 @@ public class ApplicationService {
 	 */
 	public static List<Brand> getEnabledBrandsForVertical(String verticalCode) throws DaoException{
 
-		List<Brand> brands = getBrands();
+		List<Brand> brands = getBrandsStatic();
 		List<Brand> enabledBrands = new ArrayList<Brand>();
 
 		for(Brand brand : brands){
@@ -81,6 +84,16 @@ public class ApplicationService {
 
 
 
+	/**
+	 * Looks at the pageContext for the brand code - this should be a param brandCode=xxx set by the F5 server's rewrite rules.
+	 * In Localhost and NXI, we have to depend on the data bucket as we don't have rewrite logic on these environments.
+	 *
+	 * @param request
+	 */
+	public static Brand getBrandFromRequestStatic(HttpServletRequest request) throws DaoException {
+		return getInstance().getBrandFromRequest( request);
+	}
+
 
 	/**
 	 * Looks at the pageContext for the brand code - this should be a param brandCode=xxx set by the F5 server's rewrite rules.
@@ -88,9 +101,9 @@ public class ApplicationService {
 	 *
 	 * @param request
 	 */
-	public static Brand getBrandFromRequest(HttpServletRequest request) throws DaoException {
+	public Brand getBrandFromRequest(HttpServletRequest request) throws DaoException {
 
-		getBrands();
+		getBrandsStatic();
 
 		HttpSession session = request.getSession();
 
@@ -170,7 +183,7 @@ public class ApplicationService {
 	 * @return Brand code
 	 */
 	public static String getBrandCodeFromRequest(HttpServletRequest request) throws DaoException {
-		Brand brand = getBrandFromRequest(request);
+		Brand brand = getBrandFromRequestStatic(request);
 		if (brand == null) return null;
 		return brand.getCode();
 	}
@@ -221,7 +234,23 @@ public class ApplicationService {
 	 * @throws DaoException
 	 * @throws Exception
 	 */
-	public static List<Brand> getBrands() throws DaoException {
+	public static List<Brand> getBrandsStatic() throws DaoException {
+		return getInstance().getBrands();
+	}
+
+	public static ApplicationService getInstance() {
+		return instance;
+	}
+
+	/**
+	 * Returns the list of brands with their verticals and vertical settings.
+	 * On first run the brands, verticals and settings are loaded from the database.
+	 *
+	 * @return
+	 * @throws DaoException
+	 * @throws Exception
+	 */
+	public List<Brand> getBrands() throws DaoException {
 
 		// If brands array empty -> get content from DB
 
@@ -349,7 +378,7 @@ public class ApplicationService {
 	 */
 	public static boolean clearCache() throws DaoException {
 		brands = new ArrayList<>();
-		getBrands();
+		getBrandsStatic();
 		ServiceConfigurationService.clearCache();
 		AddressSearchService.destroy();
 		AddressSearchService.init();

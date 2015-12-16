@@ -6,6 +6,8 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.health.model.form.HealthRegisterPaymentRequest;
 import com.ctm.web.health.model.results.HealthResultWrapper;
 import com.ctm.web.health.services.HealthRegisterPaymentService;
@@ -21,6 +23,12 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 public class HealthRegisterPaymentRouter extends CommonQuoteRouter<HealthRegisterPaymentRequest> {
 
     private HealthRegisterPaymentService healthRegisterPaymentService = new HealthRegisterPaymentService();
+
+
+    public HealthRegisterPaymentRouter(){
+        applicationService = ApplicationService.getInstance();
+        service = new SessionDataService();
+    }
 
     @POST
     @Path("/payment/register.json")

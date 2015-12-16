@@ -6,6 +6,8 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.health.model.form.HealthAuthorisePaymentRequest;
 import com.ctm.web.health.model.results.HealthResultWrapper;
 import com.ctm.web.health.services.HealthAuthorisePaymentService;
@@ -19,6 +21,12 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 
 @Path("/health")
 public class HealthAuthorisePaymentRouter extends CommonQuoteRouter<HealthAuthorisePaymentRequest> {
+
+    public HealthAuthorisePaymentRouter(){
+        applicationService = ApplicationService.getInstance();
+        service = new SessionDataService();
+    }
+
 
     private final HealthAuthorisePaymentService healthPaymentService = new HealthAuthorisePaymentService();
 

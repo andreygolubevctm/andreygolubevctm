@@ -5,6 +5,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.transaction.model.Transaction;
 import com.ctm.web.core.utils.common.utils.StringUtils;
 import com.ctm.web.simples.model.ConfirmationOperator;
+import org.springframework.stereotype.Component;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
@@ -12,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Component
 public class TransactionDao {
 
 	/**
