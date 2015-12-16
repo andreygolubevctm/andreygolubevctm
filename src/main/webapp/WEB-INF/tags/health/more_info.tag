@@ -26,15 +26,17 @@
 	{{ obj.showAltPremium = true;  obj.renderedAltPriceTemplate = htmlTemplatePrice(obj); }}
 
 	<%-- Prepare the call to action bar template --%>
-	{{ var logoPriceTemplate = $("#").html(); }}
+	{{ var template = $("#more-info-call-to-action-template").html(); }}
+	{{ var htmlTemplate = _.template(template); }}
+	{{ var callToActionBarHtml = htmlTemplate(obj); }}
 
-	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content">
+	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12">
 
 		<div class="modal-closebar">
 			<a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
 		</div>
 
-		<div class="flat-design-card">
+		<div class="flat-design-card row">
 
 			<div class="col-sm-8">
 				Quote reference number {{= transactionId }}
@@ -47,6 +49,8 @@
 				{{ } }}
 
 				{{= renderedPriceTemplate }}
+
+				<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
 
 			</div>
 
@@ -72,7 +76,11 @@
 
 		</div>
 
-		<div class="flat-design-card">
+		<div class="visible-xs">
+			{{= callToActionBarHtml }}
+		</div>
+
+		<div class="flat-design-card row">
 			<div class="col-sm-6">
 				<h1>Hospital cover</h1>
 				<p><strong>Hospital Excess:</strong> {{= hospital.inclusions.excess }}</p>
@@ -83,7 +91,7 @@
 				<p><strong>You will be covered for the following services</strong></p>
 				<ul class="indent">
 					{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
-					<li>{{= inclusion }}</li>
+					<li>{{= inclusion.name }}</li>
 					{{ }) }}
 				</ul>
 				{{ } }}
@@ -92,37 +100,161 @@
 				<p><strong>You will have restricted cover for the following services</strong></p>
 				<ul class="indent">
 					{{ _.each(hospitalCover.restrictions, function(restriction){ }}
-					<li>{{= restriction }}</li>
+					<li>{{= restriction.name }}</li>
 					{{ }) }}
 				</ul>
 				<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
 				{{ } }}
 
-				<p><strong>You do not have any exclusions on this policy</strong></p>
+				{{ if(hospitalCover.exclusions.length > 0) { }}
+				<p><strong>You will not be covered for the following services</strong></p>
+				<ul class="indent">
+					{{ _.each(hospitalCover.exclusions, function(exclusion){ }}
+					<li>{{= exclusion.name }}</li>
+					{{ }) }}
+
+					<c:if test="${not empty callCentre}">
+						{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
+						<li class="text-danger"><span class="icon-cross" /></span>{{= custom.info.exclusions.cover }}</li>
+						{{ } }}
+					</c:if>
+				</ul>
+				{{ } }}
+
 			</div>
 
 			<div class="col-sm-6">
 				<h1>Extras cover</h1>
-
-				{{ var featureIterator = obj.childFeatureDetails || Features.getPageStructure(); }}
-				{{ for(var i = 0; i < featureIterator.length; i++) { }}
-					{{ var feature = featureIterator[i]; }}
-					{{ if(feature.doNotRender === true) { continue; } }}
-					{{= feature.safeName }}
-				{{ } }}
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th>&nbsp;</th>
+						<th>Per Person</th>
+						<th>Per Policy</th>
+						<th>Waiting Period</th>
+					</tr>
+				{{ _.each(extrasCover.inclusions, function(inclusion){ }}
+					<tr>
+						<td>{{= inclusion.name }}</td>
+						<td>{{= inclusion.benefitLimits.perPerson }}</td>
+						<td>{{= inclusion.benefitLimits.perPolicy }}</td>
+						<td>{{= inclusion.waitingPeriod }}</td>
+					</tr>
+				{{ }) }}
+				</table>
 			</div>
 		</div>
 
-		INSERT template
+		{{= callToActionBarHtml }}
+
+		<div class="policyBrochures row">
+			<div class="col-xs-12">
+				<h2>Policy brochures</h2>
+				<p>See your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
+			</div>
+
+			<div class="col-sm-6">
+
+				<div class="row">
+					{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
+					<div class="col-sm-6 col-xs-12">
+						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download download-policy-brochure col-xs-12">Download <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
+					</div>
+					{{ } else { }}
+
+					{{ if(typeof hospitalCover !== 'undefined') { }}
+					<div class="col-sm-6 col-xs-12">
+						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download download-hospital-brochure col-xs-12">Download Hospital <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
+					</div>
+					{{ } }}
+
+					{{ if(typeof extrasCover !== 'undefined') { }}
+					<div class="col-sm-6 col-xs-12 ">
+						<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-download download-extras-brochure col-xs-12">Download Extras <br class="hidden-xs hidden-lg"/>Policy Brochure</a>
+					</div>
+					{{ } }}
+					{{ } }}
+				</div>
+
+			</div>
+			<div class="col-sm-6 moreInfoEmailBrochures" novalidate="novalidate">
+
+				<div class="row formInput">
+					<div class="col-sm-7 col-xs-12">
+						<field_new:email xpath="emailAddress"  required="true"
+										 className="sendBrochureEmailAddress"
+										 placeHolder="${emailPlaceHolder}" />
+					</div>
+					<div class="col-sm-5 hidden-xs">
+						<a href="javascript:;" class="btn btn-save btn-block disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
+					</div>
+				</div>
+				<div class="row row-content formInput optInMarketingRow">
+					<div class="col-xs-12">
+						<field_new:checkbox className="optInMarketing checkbox-custom"
+											xpath="health/sendBrochures/optInMarketing" required="false"
+											value="Y" label="true"
+											title="Stay up to date with news and offers direct to your inbox" />
+					</div>
+				</div>
+
+				<div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
+					<div class="col-xs-12">
+						<a href="javascript:;" class="btn btn-save btn-block disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
+					</div>
+				</div>
+				<div class="row row-content moreInfoEmailBrochuresSuccess hidden">
+					<div class="col-xs-12">
+						<div class="success alert alert-success">
+							Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+		<div class="flat-design-card row">
+			<div class="col-md-8">
+				<h1>Switching is simple</h1>
+				<ol>
+					<li>You can change your fund whenever you like</li>
+					<li>We'll pass your current fund details to your new fund, to transfer
+						any hospital waiting periods that have already been served</li>
+					<li>Most funds will give you immediate cover for the same extras benefits
+						you were able to claim previously . Your old fund will reimburse any
+						premiums paid in advance.</li>
+				</ol>
+			</div>
+			<div class="col-md-4 hidden-xs hidden-sm">
+				<div class="row">
+					<div class="col-md-4 pricePromiseLogo"></div>
+					<div class="col-md-8">You won't pay extra when you buy through comparethemarket</div>
+				</div>
+				<p>Buy health insurance through us and if you find a better price on the same policy with the same health fund within 30 days, we'll give you $50*</p>
+			</div>
+			<div class="col-xs-12">
+				<h2>Join the thousands of Australians who already have compared and saved</h2>
+				<blockquote>
+					{{= testimonial.quote }}
+					{{= testimonial.author }}
+				</blockquote>
+			</div>
+		</div>
+
+		{{= callToActionBarHtml }}
+
 	</div>
 
 </script>
 
 <script id="more-info-call-to-action-template" type="text/html">
 
-	<div class="moreInfoCallToActionBar">
-		<p>Found the right product for you?</p>
-		<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+	<div class="moreInfoCallToActionBar row">
+		<div class="col-xs-12">
+			<p>Found the right product for you?</p>
+			<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+		</div>
 	</div>
 
 </script>

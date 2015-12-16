@@ -10,7 +10,13 @@
 
     var $bridgingContainer = $('.moreInfoDropdown'),
         scrollPosition, //The position of the page on the modal display,
-        topPosition;
+        topPosition,
+        testimonials = [
+            {quote:"Compare the Market helped me choose a policy with features relevant to me. I no longer pay for benefits I don't use", author:"Andrea, WA"},
+            {quote:"With Compare the Market I was able to find the same level of cover but now save $60 a month off my premium", author:"Geoff, QLD"},
+            {quote:"Health insurance is important to us as it gives us the peace of mind that if something went wrong we'd be covered", author:"Julie Barrett, NSW"},
+            {quote:"The whole process was really simple and really easy. I’d definitely use comparethemarket.com.au again", author:"Wendy, WA"}
+        ];
 
 
     function initMoreInfo() {
@@ -273,12 +279,12 @@
 
         // hide the results before showing the more info page (except for xs as we use a modal)
         if (meerkat.modules.deviceMediaState.get() != 'xs') {
-            $('.resultsContainer, .resultsHeadersBg').hide();
+            $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage').addClass("hidden");
         }
     }
 
     function onAfterHideTemplate() {
-        $('.resultsContainer, .resultsHeadersBg').show();
+        $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage').removeClass("hidden");
         $(window).scrollTop(scrollPosition);
     }
 
@@ -295,17 +301,30 @@
 
                 prepareCoverFeatures("hospital.benefits", "hospitalCover");
 
-                coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", "Public Hospital");
-                coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", "Private Hospital");
+                coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", {name:"Public Hospital"});
+                coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", {name:"Private Hospital"});
             }
         }
 
         if (typeof product.extrasCover === "undefined") {
             // Ensure this is a Extras product before trying to use the benefits properties
             if (typeof product.extras !== 'undefined' && typeof product.extras === 'object') {
-                 prepareCoverFeatures("extras", "extrasCover");
+                prepareCoverFeatures("extras", "extrasCover");
             }
+
         }
+
+        prepareTestimonial();
+    }
+
+    /**
+     * Gets one of the testimonials from a set list
+     * @return void
+     */
+    function prepareTestimonial(){
+        // Updates by reference
+        var product = meerkat.modules.moreInfo.getProduct();
+        product.testimonial = testimonials[_.random(0,testimonials.length-1)];
     }
 
     /**
@@ -380,26 +399,25 @@
             var foundObject = _.findWhere(resultLabels, {"p": lookupKey});
 
             if (typeof foundObject !== "undefined") {
-                name = foundObject.n;
-                coverSwitch(benefit.covered, target, name);
+                coverSwitch(benefit.covered, target, $.extend(benefit, {name: foundObject.n} ));
             }
 
         });
 
     }
 
-    function coverSwitch(cover, target, name) {
+    function coverSwitch(cover, target, benefit) {
         // Updates by reference
         var product = meerkat.modules.moreInfo.getProduct();
         switch (cover) {
             case 'Y':
-                product[target].inclusions.push(name);
+                product[target].inclusions.push(benefit);
                 break;
             case 'R':
-                product[target].restrictions.push(name);
+                product[target].restrictions.push(benefit);
                 break;
             case 'N':
-                product[target].exclusions.push(name);
+                product[target].exclusions.push(benefit);
                 break;
         }
     }
