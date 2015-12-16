@@ -40,12 +40,12 @@ public class ProviderExclusionsDao {
 			PreparedStatement stmt;
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT styleCodeId, verticalId, providerId, excludeDateFrom, excludeDateTo " +
-				"FROM ctm.stylecode_provider_exclusions spe " +
-				"WHERE (styleCodeId = ? OR styleCodeId = 0) " +
-					"AND (verticalId = ? OR verticalId = 0) " +
-					"AND ? Between spe.excludeDateFrom AND spe.excludeDateTo " +
-				";"
+					"SELECT spe.styleCodeId, spe.verticalId, spe.providerId, spe.excludeDateFrom, spe.excludeDateTo, pm.providerCode " +
+							"FROM ctm.stylecode_provider_exclusions spe, ctm.provider_master pm " +
+							"WHERE (styleCodeId = ? OR styleCodeId = 0) " +
+							"AND (verticalId = ? OR verticalId = 0) " +
+							"AND ? Between spe.excludeDateFrom AND spe.excludeDateTo AND spe.providerId = pm.ProviderId" +
+							";"
 			);
 
 			stmt.setInt(1, brandId);
@@ -62,6 +62,7 @@ public class ProviderExclusionsDao {
 				providerExclusion.setProviderId(resultSet.getInt("providerId"));
 				providerExclusion.setExcludeDateFrom(resultSet.getDate("excludeDateFrom"));
 				providerExclusion.setExcludeDateTo(resultSet.getDate("excludeDateTo"));
+				providerExclusion.setCode(resultSet.getString("providerCode"));
 
 				exclusions.add(providerExclusion);
 

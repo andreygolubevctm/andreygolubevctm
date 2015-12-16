@@ -10,6 +10,16 @@ public class ProviderExclusion {
 	private Date excludeDateFrom;
 	private Date excludeDateTo;
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	private String code;
+
 	public ProviderExclusion(){
 
 	}
