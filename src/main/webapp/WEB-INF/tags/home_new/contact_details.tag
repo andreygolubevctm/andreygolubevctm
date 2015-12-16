@@ -50,7 +50,7 @@
 			className="pretty_buttons"
 			id="oktocall"
 			title="if it's OK to call the policy holder regarding the lowest price quote" />
-		<p class="optinText">I give permission for the insurance provider that presents the lowest price to call me within the next 2 business days to discuss my home &amp; contents insurance needs.</p>
+		<p class="optinText">I give permission for the insurance provider that presents the lowest price to call me within the next 4 business days to discuss my home &amp; contents insurance needs.</p>
 	</form_new:row>
 
 	<%-- Mandatory agreement to privacy policy --%>
