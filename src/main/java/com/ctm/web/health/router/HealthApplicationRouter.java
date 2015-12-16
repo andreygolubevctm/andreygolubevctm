@@ -9,7 +9,7 @@ import com.ctm.web.core.email.services.EmailServiceHandler;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
-import com.ctm.web.core.leadService.services.LeadService1;
+import com.ctm.web.core.leadService.services.LeadService;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
@@ -75,7 +75,7 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
 
     private final ConfirmationService confirmationService = new ConfirmationService();
 
-    private final LeadService1 leadService = new HealthLeadService();
+    private final LeadService leadService = new HealthLeadService();
 
     @POST
     @Path("/apply/get.json")

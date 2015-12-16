@@ -33,8 +33,8 @@ import java.util.List;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-public abstract class LeadService1 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LeadService1.class);
+public abstract class LeadService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LeadService.class);
     public static final String LAST_LEAD_SERVICE_VALUES = "LAST_LEAD_SERVICE_VALUES";
 
     private String url;

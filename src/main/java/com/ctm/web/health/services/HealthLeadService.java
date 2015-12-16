@@ -2,7 +2,7 @@ package com.ctm.web.health.services;
 
 import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.leadService.model.LeadRequest;
-import com.ctm.web.core.leadService.services.LeadService1;
+import com.ctm.web.core.leadService.services.LeadService;
 import com.ctm.web.core.results.model.ResultsTemplateItem;
 import com.ctm.web.core.results.services.ResultsDisplayService;
 import com.ctm.web.core.web.go.Data;
@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HealthLeadService extends LeadService1 {
+public class HealthLeadService extends LeadService {
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthLeadService.class);
 
     private static final String CHARS_TO_REPLACE_PHONE_NUMBER[] = {"(", ")", " "};
