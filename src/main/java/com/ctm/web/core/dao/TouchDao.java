@@ -16,7 +16,8 @@ import java.util.List;
 public class TouchDao {
 
 	private final SqlDao<Touch> sqlDao;
-	public TouchDao(){
+
+	public TouchDao() {
 		sqlDao = new SqlDao<Touch>();
 	}
 
@@ -31,27 +32,27 @@ public class TouchDao {
 	 * @return
 	 * @throws DaoException
 	 */
-	private Touch getBy(String method, final String parameter) throws DaoException{
+	private Touch getBy(String method, final String parameter) throws DaoException {
 		DatabaseQueryMapping<Touch> databaseMapping;
 		String sql;
 		if (method.equals("operator")) {
-				sql = "SELECT id, transaction_id, operator_id, type, CONCAT(date, ' ', time) AS dateTime " +
+			sql = "SELECT id, transaction_id, operator_id, type, CONCAT(date, ' ', time) AS dateTime " +
 					"FROM ctm.touches " +
 					"WHERE operator_id = ? " +
 					"ORDER BY id desc " +
 					"LIMIT 1 ;";
-				databaseMapping = new DatabaseQueryMapping<Touch>() {
+			databaseMapping = new DatabaseQueryMapping<Touch>() {
 
-					@Override
-					public void mapParams() throws SQLException {
-						set(parameter);
-					}
+				@Override
+				public void mapParams() throws SQLException {
+					set(parameter);
+				}
 
-					@Override
-					public Touch handleResult(ResultSet rs) throws SQLException {
-						return mapToObject(rs);
-					}
-				};
+				@Override
+				public Touch handleResult(ResultSet rs) throws SQLException {
+					return mapToObject(rs);
+				}
+			};
 		} else {
 			sql = "SELECT id, transaction_id, operator_id, type, CONCAT(date, ' ', time) AS dateTime " +
 					"FROM ctm.touches " +
@@ -61,16 +62,16 @@ public class TouchDao {
 
 			databaseMapping = new DatabaseQueryMapping<Touch>() {
 
-					@Override
-					public void mapParams() throws SQLException {
-						set(parameter);
-						set("online");
-					}
+				@Override
+				public void mapParams() throws SQLException {
+					set(parameter);
+					set("online");
+				}
 
-					@Override
-					public Touch handleResult(ResultSet rs) throws SQLException {
-						return mapToObject(rs);
-					}
+				@Override
+				public Touch handleResult(ResultSet rs) throws SQLException {
+					return mapToObject(rs);
+				}
 			};
 		}
 
@@ -84,8 +85,8 @@ public class TouchDao {
 	 * @return
 	 * @throws DaoException
 	 */
-	public Touch getLatestTouchByTransactionId(final long transactionId) throws DaoException{
-		DatabaseQueryMapping<Touch> databaseMapping = new DatabaseQueryMapping<Touch>(){
+	public Touch getLatestTouchByTransactionId(final long transactionId) throws DaoException {
+		DatabaseQueryMapping<Touch> databaseMapping = new DatabaseQueryMapping<Touch>() {
 
 			@Override
 			public void mapParams() throws SQLException {
@@ -99,17 +100,17 @@ public class TouchDao {
 		};
 		return sqlDao.get(databaseMapping,
 				"SELECT t.id, t.transaction_id, t.operator_id, t.type, CONCAT(date, ' ', time) AS dateTime " +
-				"FROM ctm.touches t " +
-				"WHERE transaction_id = ? " +
-				"ORDER BY id desc " +
-				"LIMIT 1 ;");
+						"FROM ctm.touches t " +
+						"WHERE transaction_id = ? " +
+						"ORDER BY id desc " +
+						"LIMIT 1 ;");
 	}
 
 	private String questionMarksBuilder(int length) {
 		StringBuilder stringBuilder = new StringBuilder();
-		for( int i = 0; i< length; i++){
+		for (int i = 0; i < length; i++) {
 			stringBuilder.append(" ?");
-			if(i != length -1) stringBuilder.append(",");
+			if (i != length - 1) stringBuilder.append(",");
 		}
 		return stringBuilder.toString();
 	}
@@ -175,7 +176,7 @@ public class TouchDao {
 				" ORDER BY " +
 				" 	t.touchId DESC, t.dateTime DESC" +
 				" LIMIT 50;";
-		SimpleDatabaseConnection dbSource  = new SimpleDatabaseConnection();
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		ArrayList<Touch> touches = new ArrayList<>();
 
 		try {
@@ -186,11 +187,11 @@ public class TouchDao {
 			PreparedStatement stmt = dbSource.getConnection().prepareStatement(sql);
 			int i = 1;
 
-			for(long transactionId : transactionIds){
+			for (long transactionId : transactionIds) {
 				stmt.setLong(i++, transactionId);
 			}
 
-			for(long transactionId : transactionIds){
+			for (long transactionId : transactionIds) {
 				stmt.setLong(i++, transactionId);
 			}
 
@@ -200,11 +201,9 @@ public class TouchDao {
 				mapResult(touches, results);
 			}
 			stmt.close();
-		}
-		catch (SQLException | NamingException e) {
+		} catch (SQLException | NamingException e) {
 			throw new DaoException(e);
-		}
-		finally {
+		} finally {
 			dbSource.closeConnection();
 		}
 
@@ -231,7 +230,6 @@ public class TouchDao {
 	}
 
 
-
 	/**
 	 * Get the most recent touch recorded for an operatorId (their LDAP userid)
 	 *
@@ -239,7 +237,7 @@ public class TouchDao {
 	 * @return
 	 * @throws DaoException
 	 */
-	public Touch getLatestByOperatorId(String operatorId) throws DaoException{
+	public Touch getLatestByOperatorId(String operatorId) throws DaoException {
 		return getBy("operator", operatorId);
 
 	}
@@ -251,7 +249,7 @@ public class TouchDao {
 	 * @return
 	 * @throws DaoException
 	 */
-	public Touch getLatestOnlineTouchByTransactionId(String transactionId) throws DaoException{
+	public Touch getLatestOnlineTouchByTransactionId(String transactionId) throws DaoException {
 		return getBy("transactionId", transactionId);
 	}
 
@@ -280,11 +278,11 @@ public class TouchDao {
 		try {
 			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
 					"INSERT INTO ctm.touches (transaction_id, date, time, operator_id, type) " +
-							"VALUES (?, NOW(), NOW(), ?, ?);" , Statement.RETURN_GENERATED_KEYS
+							"VALUES (?, NOW(), NOW(), ?, ?);", Statement.RETURN_GENERATED_KEYS
 			);
 
 			stmt.setLong(1, touch.getTransactionId());
-			if(touch.getOperator() == null || touch.getOperator().isEmpty()) {
+			if (touch.getOperator() == null || touch.getOperator().isEmpty()) {
 				touch.setOperator(Touch.ONLINE_USER);
 			}
 			stmt.setString(2, touch.getOperator());
@@ -300,7 +298,7 @@ public class TouchDao {
 			if (touch.getTouchProductProperty() != null) {
 				stmt = dbSource.getConnection().prepareStatement(
 						"INSERT INTO ctm.touches_products (touchesId, productCode) " +
-								"VALUES (?, ?);" , Statement.RETURN_GENERATED_KEYS
+								"VALUES (?, ?);", Statement.RETURN_GENERATED_KEYS
 				);
 
 				stmt.setLong(1, touch.getId());
@@ -317,7 +315,7 @@ public class TouchDao {
 			if (touch.getTouchCommentProperty() != null) {
 				stmt = dbSource.getConnection().prepareStatement(
 						"INSERT INTO ctm.touches_comments (touchesId, comment) " +
-								"VALUES (?, ?);" , Statement.RETURN_GENERATED_KEYS
+								"VALUES (?, ?);", Statement.RETURN_GENERATED_KEYS
 				);
 
 				stmt.setLong(1, touch.getId());
@@ -330,11 +328,9 @@ public class TouchDao {
 					touch.getTouchCommentProperty().setId(rs.getLong(1));
 				}
 			}
-		}
-		catch (SQLException | NamingException e) {
+		} catch (SQLException | NamingException e) {
 			throw new DaoException(e);
-		}
-		finally {
+		} finally {
 			dbSource.closeConnection();
 		}
 		return touch;
@@ -348,29 +344,5 @@ public class TouchDao {
 		touch.setOperator(rs.getString("operator_id"));
 		touch.setType(TouchType.findByCode(rs.getString("type")));
 		return touch;
-	}
-
-	public String getTransactionStatus(final long transactionId) throws DaoException {
-		String sql = "SELECT CASE COALESCE(t1.type,t2.type,1) WHEN 'C' THEN 'SOLD' WHEN 'F' THEN 'PENDING' ELSE 'OPEN' END AS status " +
-				"FROM ctm.touches t0 " +
-				"LEFT JOIN ctm.touches t1 ON t0.transaction_id = t1.transaction_id AND t1.type = 'C' " +
-				"LEFT JOIN ctm.touches t2 ON t0.transaction_id = t2.transaction_id AND t2.type = 'F' " +
-				"WHERE t0.transaction_id = ? " +
-				"LIMIT 1";
-
-		DatabaseQueryMapping databaseMapping = new DatabaseQueryMapping<String>() {
-
-			@Override
-			public void mapParams() throws SQLException {
-				set(transactionId);
-			}
-
-			@Override
-			public String handleResult(ResultSet rs) throws SQLException {
-				return rs.getString("status");
-			}
-		};
-
-		return new SqlDao<String>().get(databaseMapping, sql);
 	}
 }

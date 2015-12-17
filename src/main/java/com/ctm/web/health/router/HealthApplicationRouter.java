@@ -133,6 +133,8 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
 
             sendEmail(context, data, vertical, brand, dataBucket);
 
+            leadService.sendLead(4, dataBucket, context.getHttpServletRequest(), "SOLD");
+
             // Check outcome was ok --%>
             LOGGER.info("Transaction has been set to confirmed. {},{}", kv("transactionId", data.getTransactionId()), kv("confirmationID", confirmationId));
 
@@ -178,11 +180,10 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
                 recordTouch(context, data, productId, Touch.TouchType.FAIL);
             }
 
+            leadService.sendLead(4, getDataBucket(context, data.getTransactionId()), context.getHttpServletRequest(), "PENDING");
         }
 
         LOGGER.debug("Health application complete. {},{}", kv("transactionId", data.getTransactionId()), kv("response", result));
-
-        leadService.sendLead(4, getDataBucket(context, data.getTransactionId()), context.getHttpServletRequest());
 
         final HealthResultWrapper resultWrapper = new HealthResultWrapper();
         resultWrapper.setResult(result);
