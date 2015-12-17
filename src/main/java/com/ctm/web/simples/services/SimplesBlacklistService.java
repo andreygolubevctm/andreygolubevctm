@@ -36,7 +36,7 @@ public class SimplesBlacklistService {
 	 */
 	public String addToBlacklist(HttpServletRequest request, String channel, String value, String operator, String comment) throws DaoException, ConfigSettingException{
 		BlacklistDao blacklistDao = new BlacklistDao();
-		int styleCodeId = ApplicationService.getBrandFromRequest(request).getId();
+		int styleCodeId = ApplicationService.getBrandFromRequestStatic(request).getId();
 		String result = null;
 		try {
 			int outcome = blacklistDao.add(styleCodeId, BlacklistChannel.findByCode(channel), value);
@@ -69,7 +69,7 @@ public class SimplesBlacklistService {
 	 */
 	public String deleteFromBlacklist(HttpServletRequest request, String channel, String value, String operator, String comment) throws DaoException, ConfigSettingException{
 		BlacklistDao blacklistDao = new BlacklistDao();
-		int styleCodeId = ApplicationService.getBrandFromRequest(request).getId();
+		int styleCodeId = ApplicationService.getBrandFromRequestStatic(request).getId();
 		String result = null;
 		try {
 			int outcome = blacklistDao.delete(styleCodeId, BlacklistChannel.findByCode(channel), value);

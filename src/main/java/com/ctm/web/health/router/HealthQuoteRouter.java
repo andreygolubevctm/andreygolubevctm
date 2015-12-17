@@ -17,6 +17,7 @@ import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.tracking.TrackingKeyService;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.core.web.go.Data;
@@ -46,6 +47,12 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
     private final HealthQuoteService healthQuoteService = new HealthQuoteService();
 
     private final HealthQuoteSummaryService healthQuoteSummaryService = new HealthQuoteSummaryService();
+
+    public HealthQuoteRouter(){
+        applicationService = ApplicationService.getInstance();
+        service = new SessionDataService();
+    }
+
 
     @POST
     @Path("/quote/get.json")

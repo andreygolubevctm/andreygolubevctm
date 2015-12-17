@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +38,7 @@ import java.util.function.Function;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-
+@Component
 public class SessionDataService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SessionDataService.class);

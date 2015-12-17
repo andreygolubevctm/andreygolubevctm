@@ -5,6 +5,8 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.homecontents.model.form.HomeRequest;
 import com.ctm.web.homecontents.model.results.HomeMoreInfo;
 import com.ctm.web.homecontents.model.results.HomeResult;
@@ -22,6 +24,11 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.HOME;
 public class HomeQuoteRouter extends CommonQuoteRouter {
 
     private final HomeQuoteService homeService = new HomeQuoteService();
+
+    public HomeQuoteRouter(){
+        applicationService = ApplicationService.getInstance();
+        service = new SessionDataService();
+    }
 
     @POST
     @Path("/quote/get.json")

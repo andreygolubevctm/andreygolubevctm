@@ -76,8 +76,15 @@
 
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source:'utilitiesEnquiry', disableFields:true });
 
+        var applyResultsUrl = "ajax/json/utilities_submit.jsp";
+
+        // Instead we to a forward from the jsp page
+        //if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToEnergyQuote) {
+        //    applyResultsUrl = "spring/rest/energy/apply/apply.json";
+        //}
+
         submitXhr = meerkat.modules.comms.post({
-            url: "ajax/json/utilities_submit.jsp",
+            url: applyResultsUrl,
             data: postData,
             cache: false,
             useDefaultErrorHandling: false,

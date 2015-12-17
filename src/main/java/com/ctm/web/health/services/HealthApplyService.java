@@ -1,5 +1,6 @@
 package com.ctm.web.health.services;
 
+import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
@@ -24,7 +25,7 @@ public class HealthApplyService extends CommonQuoteService<HealthQuote, HealthAp
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplyService.class);
 
     public HealthApplyService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new SimpleConnection());
     }
 
     public HealthApplyResponse apply(Brand brand, HealthRequest data) throws DaoException, IOException, ServiceConfigurationException {

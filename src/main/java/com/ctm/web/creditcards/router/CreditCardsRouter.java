@@ -71,7 +71,7 @@ public class CreditCardsRouter extends HttpServlet {
 			// Set the vertical in the request object - required for loading of Settings and Config.
 			SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.CREDITCARD.getCode());
 			String authToken = request.getParameter("authorisationToken");
-			PageSettings settings = SettingsService.getPageSettingsByCode(ApplicationService.getBrandFromRequest(request).getCode(), VerticalType.CREDITCARD.getCode());
+			PageSettings settings = SettingsService.getPageSettingsByCode(ApplicationService.getBrandFromRequestStatic(request).getCode(), VerticalType.CREDITCARD.getCode());
 
 			if(authToken == null || (authToken != null && !authToken.equals(settings.getSetting("CreditCardsApiAuthToken")))) {
 				LOGGER.error("Credit card authToken doesn't match", kv("authToken", authToken));

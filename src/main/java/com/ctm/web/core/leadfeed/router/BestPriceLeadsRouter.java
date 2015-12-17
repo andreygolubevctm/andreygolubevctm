@@ -47,7 +47,7 @@ public abstract class BestPriceLeadsRouter extends HttpServlet {
 					}
 
 					// Look for each brand which is enabled for H&C
-					for(Brand brand :  ApplicationService.getBrands()){
+					for(Brand brand :  ApplicationService.getBrandsStatic()){
 						Vertical vertical = brand.getVerticalByCode(getVerticalCode());
 						if(vertical != null){
 							output += leadService.processBestPriceLeads(brand.getId(), getVerticalCode(), frequency, serverDate);

@@ -7,6 +7,7 @@ import com.ctm.web.car.quote.model.RequestAdapter;
 import com.ctm.web.car.quote.model.ResponseAdapter;
 import com.ctm.web.car.quote.model.request.CarQuoteRequest;
 import com.ctm.web.car.quote.model.response.CarResponse;
+import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
@@ -39,7 +40,7 @@ public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteReques
     private static final SessionDataService SESSION_DATA_SERVICE = new SessionDataService();
 
     public CarQuoteService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new SimpleConnection());
     }
 
     public List<CarResult> getQuotes(Brand brand, CarRequest data) throws Exception {

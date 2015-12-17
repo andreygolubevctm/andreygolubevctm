@@ -30,7 +30,7 @@ public class CompetitionService {
 		Date serverDate = ApplicationService.getApplicationDate(request);
 
 		try {
-			Brand brand = ApplicationService.getBrandFromRequest(request);
+			Brand brand = ApplicationService.getBrandFromRequestStatic(request);
 			compActive = CompetitionDao.isActive(brand.getId(), competitionId, serverDate);
 		} catch (DaoException e) {
 			LOGGER.error("Failed to determine if competition is active competitionId={},{}", kv("competitionId", competitionId), kv("serverDate", serverDate), e);

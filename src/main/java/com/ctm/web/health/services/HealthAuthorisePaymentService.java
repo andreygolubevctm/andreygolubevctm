@@ -1,6 +1,7 @@
 package com.ctm.web.health.services;
 
 
+import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
@@ -22,6 +23,7 @@ public class HealthAuthorisePaymentService extends CommonRequestService<Authoris
 
     public HealthAuthorisePaymentService() {
         super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+        connection = new SimpleConnection();
     }
 
     public HealthPaymentAuthoriseResult authorise(Brand brand, HealthAuthorisePaymentRequest data) throws DaoException, IOException, ServiceConfigurationException {

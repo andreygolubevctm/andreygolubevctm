@@ -88,7 +88,7 @@ public class ServiceConfigurationService {
 	 */
 	public static ServiceConfiguration getServiceConfigurationForContext(HttpServletRequest request, String code) throws DaoException, ServiceConfigurationException{
 
-		Brand brand = ApplicationService.getBrandFromRequest(request);
+		Brand brand = ApplicationService.getBrandFromRequestStatic(request);
 		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
 		Vertical vertical = brand.getVerticalByCode(verticalCode);
 

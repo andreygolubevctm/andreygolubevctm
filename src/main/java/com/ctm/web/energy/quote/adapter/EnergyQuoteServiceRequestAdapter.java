@@ -46,12 +46,12 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
     }
 
     private List<EnergyType> createEnergyTypes(EnergyPayLoad quote) {
-        final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
+        final Optional<HouseHoldDetailsWebRequest> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
         List<EnergyType> energyTypes = new ArrayList<>();
 
-        Optional.ofNullable(createGasType(householdDetailsMaybe.map(HouseHoldDetails::getWhatToCompare)))
+        Optional.ofNullable(createGasType(householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getWhatToCompare)))
                 .ifPresent(energyTypes::add);
-        Optional.ofNullable(createElectricityType(householdDetailsMaybe.map(HouseHoldDetails::getWhatToCompare)))
+        Optional.ofNullable(createElectricityType(householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getWhatToCompare)))
                 .ifPresent(energyTypes::add);
         return energyTypes;
     }
@@ -99,10 +99,10 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
 
 
     private Gas createGas(EnergyPayLoad quote ) {
-        final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
+        final Optional<HouseHoldDetailsWebRequest> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
         final Optional<EstimateDetails> estimateDetails = Optional.ofNullable(quote.getEstimateDetails());
         boolean hasHouseholdDetails = householdDetailsMaybe.isPresent();
-        WhatToCompare whatToCompare = householdDetailsMaybe.map(HouseHoldDetails::getWhatToCompare).orElse(null);
+        WhatToCompare whatToCompare = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getWhatToCompare).orElse(null);
         if (hasHouseholdDetails && hasGas(whatToCompare) ) {
             String currentSupplier = estimateDetails.map(EstimateDetails :: getUsage).map(Usage::getGas).map(getCurrentSupplier()).orElse(null);
             return new Gas(getGasUsageDetails(estimateDetails, householdDetailsMaybe),
@@ -114,8 +114,8 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         }
     }
 
-    private GasUsageDetails getGasUsageDetails(Optional<EstimateDetails> estimateDetailsMaybe, Optional<HouseHoldDetails> householdDetailsMaybe) {
-        boolean hasUsage = householdDetailsMaybe.map(HouseHoldDetails::getRecentGasBill).map(getYesNoBooleanFunction()).orElse(false);
+    private GasUsageDetails getGasUsageDetails(Optional<EstimateDetails> estimateDetailsMaybe, Optional<HouseHoldDetailsWebRequest> householdDetailsMaybe) {
+        boolean hasUsage = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getRecentGasBill).map(getYesNoBooleanFunction()).orElse(false);
         if(hasUsage) {
             Integer days =getDays(estimateDetailsMaybe.map(EstimateDetails::getSpend).map(Spend::getGas));
             return new GasUsageDetails(estimateDetailsMaybe.map(EstimateDetails::getSpend)
@@ -143,8 +143,8 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
                 .orElse(BigDecimal.ZERO));
     }
 
-    private static ElectricityUsageDetails  getElectricityUsageDetails(Optional<EstimateDetails> estimateDetailsMaybe, Optional<HouseHoldDetails> householdDetailsMaybe) {
-        boolean hasUsage = householdDetailsMaybe.map(HouseHoldDetails::getRecentElectricityBill).map(getYesNoBooleanFunction()).orElse(false);
+    private static ElectricityUsageDetails  getElectricityUsageDetails(Optional<EstimateDetails> estimateDetailsMaybe, Optional<HouseHoldDetailsWebRequest> householdDetailsMaybe) {
+        boolean hasUsage = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getRecentElectricityBill).map(getYesNoBooleanFunction()).orElse(false);
         if(hasUsage) {
             Integer days = getDays(estimateDetailsMaybe.map(EstimateDetails::getSpend).map(Spend::getElectricity));
             return new ElectricityUsageDetails(estimateDetailsMaybe.map(EstimateDetails::getSpend).map(Spend::getElectricity)
@@ -214,26 +214,26 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
     }
 
 
-    private boolean getGasHasBill(Optional<HouseHoldDetails> householdDetailsMaybe) {
-        return householdDetailsMaybe.map(HouseHoldDetails::getRecentGasBill).map(getYesNoBooleanFunction()).orElse(false);
+    private boolean getGasHasBill(Optional<HouseHoldDetailsWebRequest> householdDetailsMaybe) {
+        return householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getRecentGasBill).map(getYesNoBooleanFunction()).orElse(false);
     }
 
     private HouseholdDetails createHouseHoldDetails(EnergyPayLoad quote) {
-        final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
+        final Optional<HouseHoldDetailsWebRequest> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
         return new HouseholdDetails(
-                householdDetailsMaybe.map(HouseHoldDetails::getSuburb).orElse(null),
-                householdDetailsMaybe.map(HouseHoldDetails::getPostcode).orElse(null),
-                householdDetailsMaybe.map(HouseHoldDetails::getMovingIn).map(getYesNoBooleanFunction()).orElse(false),
-                householdDetailsMaybe.map(HouseHoldDetails::getMovingInDate)
+                householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getSuburb).orElse(null),
+                householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getPostcode).orElse(null),
+                householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getMovingIn).map(getYesNoBooleanFunction()).orElse(false),
+                householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getMovingInDate)
                 .map(LocalDateUtils::parseAUSLocalDate)
-                .orElse(null), householdDetailsMaybe.map(HouseHoldDetails::getTariff).orElse(null));
+                .orElse(null), householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getTariff).orElse(null));
     }
 
     protected static Electricity createElectricity(EnergyPayLoad quote) {
-        final Optional<HouseHoldDetails> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
+        final Optional<HouseHoldDetailsWebRequest> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
         final Optional<EstimateDetails> estimateDetails = Optional.ofNullable(quote.getEstimateDetails());
         boolean hasHouseholdDetails = householdDetailsMaybe.isPresent();
-        WhatToCompare whatToCompare = householdDetailsMaybe.map(HouseHoldDetails::getWhatToCompare).orElse(null);
+        WhatToCompare whatToCompare = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getWhatToCompare).orElse(null);
         if (hasHouseholdDetails && hasElectricity(whatToCompare)  ) {
             String currentSupplier = estimateDetails.map(EstimateDetails :: getUsage).map(Usage::getElectricity).map(getCurrentSupplier()).orElse(null);
             return new Electricity(getElectricityUsageDetails(estimateDetails, householdDetailsMaybe), getHouseholdType(estimateDetails),
@@ -247,12 +247,12 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         return Energy::getCurrentSupplier;
     }
 
-    private static boolean getElectrityHasBill(Optional<HouseHoldDetails> quote) {
-        return quote.map(HouseHoldDetails::getRecentElectricityBill).map(getYesNoBooleanFunction()).orElse(false);
+    private static boolean getElectrityHasBill(Optional<HouseHoldDetailsWebRequest> quote) {
+        return quote.map(HouseHoldDetailsWebRequest::getRecentElectricityBill).map(getYesNoBooleanFunction()).orElse(false);
     }
 
-    private static boolean getHasSolarPanels(Optional<HouseHoldDetails> estimateDetailsMaybe) {
-        return estimateDetailsMaybe.map(HouseHoldDetails::getSolarPanels).map(getYesNoBooleanFunction()).orElse(false);
+    private static boolean getHasSolarPanels(Optional<HouseHoldDetailsWebRequest> estimateDetailsMaybe) {
+        return estimateDetailsMaybe.map(HouseHoldDetailsWebRequest::getSolarPanels).map(getYesNoBooleanFunction()).orElse(false);
     }
 
 

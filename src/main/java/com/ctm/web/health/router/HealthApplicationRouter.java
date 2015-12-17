@@ -13,6 +13,8 @@ import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.TouchService;
 import com.ctm.web.core.services.TransactionAccessService;
 import com.ctm.web.core.utils.ObjectMapperUtil;
@@ -55,6 +57,12 @@ import static java.util.stream.Collectors.toList;
 
 @Path("/health")
 public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
+
+    public HealthApplicationRouter(){
+        applicationService = ApplicationService.getInstance();
+        service = new SessionDataService();
+    }
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplicationRouter.class);
 

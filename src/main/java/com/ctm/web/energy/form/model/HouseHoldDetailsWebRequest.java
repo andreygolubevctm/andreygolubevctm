@@ -1,9 +1,9 @@
 package com.ctm.web.energy.form.model;
 
 
-public class HouseHoldDetails {
+public class HouseHoldDetailsWebRequest {
 
-    public HouseHoldDetails(){
+    public HouseHoldDetailsWebRequest(){
 
     }
 

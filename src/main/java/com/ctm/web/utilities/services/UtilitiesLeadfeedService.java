@@ -148,7 +148,7 @@ public class UtilitiesLeadfeedService {
 			String transactionId = request.getParameter("transactionId") != null ? request.getParameter("transactionId") : "0";
 
 			try {
-				Brand brand = ApplicationService.getBrandFromRequest(request);
+				Brand brand = ApplicationService.getBrandFromRequestStatic(request);
 				styleCodeId = brand.getId();
 			}
 			catch (DaoException daoE) {}
