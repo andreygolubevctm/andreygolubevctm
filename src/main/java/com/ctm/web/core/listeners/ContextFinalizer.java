@@ -35,7 +35,7 @@ public class ContextFinalizer implements ServletContextListener {
 			// Initialise the CTM environment and application objects
 			String envVariable =  System.getProperty("spring.profiles.active", "localhost");
 			EnvironmentService.setEnvironment(envVariable);
-			ApplicationService.getBrandsStatic();
+			ApplicationService.getBrands();
 
 			EnvironmentService environmentService = new EnvironmentService();
 			environmentService.getBuildDetailsFromManifest(servletContext);

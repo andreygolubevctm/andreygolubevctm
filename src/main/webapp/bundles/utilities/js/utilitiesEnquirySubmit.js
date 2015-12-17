@@ -71,6 +71,8 @@
             return;
         }
 
+        Results.updateApplicationEnvironment();
+
         // Must collect the form data BEFORE the application lockdown which disables the fields on the slide
         var postData = meerkat.modules.journeyEngine.getFormData();
 

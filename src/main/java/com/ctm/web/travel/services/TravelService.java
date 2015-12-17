@@ -1,6 +1,5 @@
 package com.ctm.web.travel.services;
 
-import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
@@ -25,7 +24,7 @@ import java.util.List;
 public class TravelService extends CommonQuoteService<TravelQuote, TravelQuoteRequest, TravelResponse> {
 
     public TravelService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new SimpleConnection());
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
     }
 
     /**

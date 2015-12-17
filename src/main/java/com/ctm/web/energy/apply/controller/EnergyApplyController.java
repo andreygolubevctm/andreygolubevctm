@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
+
 @Api(basePath = "/rest/energy", value = "Energy Apply")
 @RestController
 @RequestMapping("/rest/energy")
@@ -43,7 +45,7 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
             produces = MediaType.APPLICATION_JSON_VALUE)
     public EnergyApplyWebResponseModel getQuote(@ModelAttribute EnergyApplyPostRequestPayload applyPostReqestPayload,
                                                 BindingResult result, HttpServletRequest request) throws IOException, ServiceConfigurationException, DaoException {
-        LOGGER.debug("Request parameters={}", MiscUtils.toJson(request.getParameterMap()));
+        LOGGER.debug("Request parameters={}", kv("paramters", request.getParameterMap()));
 
         if (result.hasErrors()) {
             for (ObjectError e : result.getAllErrors()) {

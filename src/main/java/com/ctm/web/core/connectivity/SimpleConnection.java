@@ -6,7 +6,6 @@ import com.ctm.commonlogging.correlationid.CorrelationIdUtils;
 import com.ctm.interfaces.common.types.CorrelationId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -16,7 +15,6 @@ import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-@Component
 public class SimpleConnection {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleConnection.class);

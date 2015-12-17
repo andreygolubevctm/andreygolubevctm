@@ -5,6 +5,7 @@ import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.exceptions.DaoException;
+import org.springframework.stereotype.Component;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
@@ -12,13 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+@Component
 public class ConfirmationDao {
-
-	private final SqlDao sqlDao;
-
-	public ConfirmationDao() {
-		this.sqlDao = new SqlDao();
-	}
 
 	/**
 	 * Get a confirmation using the confirmation key (token)
@@ -122,6 +118,6 @@ public class ConfirmationDao {
 						"(TransID, KeyId, Time, XMLdata) VALUES (?, ?, NOW(), ?);";
 			}
 		};
-		sqlDao.update(databaseMapping);
+		new SqlDao().update(databaseMapping);
 	}
 }

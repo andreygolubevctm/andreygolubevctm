@@ -1,6 +1,5 @@
 package com.ctm.web.health.services;
 
-import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
@@ -23,7 +22,7 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 public class HealthQuoteSummaryService extends CommonQuoteService<HealthQuote, HealthQuoteRequest, HealthSummaryResponse> {
 
     public HealthQuoteSummaryService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new SimpleConnection());
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
     }
 
     public PremiumRange getSummary(Brand brand, HealthRequest data) throws DaoException, IOException, ServiceConfigurationException {

@@ -28,7 +28,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -38,10 +37,6 @@ import java.util.stream.Collectors;
 public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteRouter.class);
-    @Autowired
-    protected ApplicationService applicationService;
-    @Autowired
-    protected SessionDataService service;
 
     protected Brand initRouter(MessageContext context, Vertical.VerticalType vertical){
         return initRouter(context.getHttpServletRequest(), vertical);
@@ -52,7 +47,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
         ApplicationService.setVerticalCodeOnRequest(httpServletRequest, vertical.getCode());
 
         try {
-            return applicationService.getBrandFromRequest(httpServletRequest);
+            return ApplicationService.getBrandFromRequest(httpServletRequest);
 
         } catch (DaoException e) {
             throw new RouterException(e);
@@ -65,6 +60,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     }
 
     protected Data getDataBucket(HttpServletRequest request, Long transactionId) {
+        SessionDataService service = new SessionDataService();
         try {
             return service.getDataForTransactionId(request, transactionId.toString(), true);
         } catch (DaoException | SessionException e) {
@@ -123,6 +119,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
     protected void addCompetitionEntry(MessageContext context, Long transactionId, CompetitionEntry entry) throws ConfigSettingException, DaoException, EmailDetailsException {
 
+        SessionDataService service = new SessionDataService();
 
         HttpServletRequest request = context.getHttpServletRequest();
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
@@ -217,5 +214,6 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
                     transactionId.toString(), data, brandCode);
         }
     }
+
 
 }

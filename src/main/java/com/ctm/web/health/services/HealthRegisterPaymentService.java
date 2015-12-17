@@ -1,6 +1,5 @@
 package com.ctm.web.health.services;
 
-import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
@@ -23,7 +22,6 @@ public class HealthRegisterPaymentService extends CommonRequestService<RegisterP
 
     public HealthRegisterPaymentService() {
         super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
-        connection = new SimpleConnection();
     }
 
     public HealthRegisterPaymentResult register(Brand brand, HealthRegisterPaymentRequest data) throws DaoException, IOException, ServiceConfigurationException {

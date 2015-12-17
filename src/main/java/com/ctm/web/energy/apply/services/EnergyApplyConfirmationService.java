@@ -33,10 +33,6 @@ public class EnergyApplyConfirmationService {
     private ConfirmationService confirmationService;
 
 
-    @Autowired
-    TouchService touchService;
-
-
     public String createAndSaveConfirmation(String sessionId, EnergyApplyPostRequestPayload model,
                                             ApplyResponse applyResponse, EnergyApplyServiceRequestAdapter requestAdapter) {
         long transactionId = model.getTransactionId();
@@ -83,6 +79,7 @@ public class EnergyApplyConfirmationService {
     }
 
     private void writeSoldTouch(long rootId) {
+        TouchService touchService = new TouchService();
         Touch touch = new Touch();
         touch.setType(Touch.TouchType.SOLD);
         touch.setTransactionId(rootId);

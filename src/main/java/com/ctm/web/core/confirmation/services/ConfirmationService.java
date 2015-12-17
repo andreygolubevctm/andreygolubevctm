@@ -12,6 +12,7 @@ import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URLEncoder;
@@ -23,6 +24,7 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 public class ConfirmationService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfirmationService.class);
 
+	@Autowired
 	private ConfirmationDao confirmationDao;
 
 	public ConfirmationService() {

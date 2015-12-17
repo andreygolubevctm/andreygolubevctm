@@ -48,7 +48,7 @@
     }
 
     function hasApplicationService(){
-        if(meerkat.site.vertical === 'health'){
+        if(meerkat.site.vertical === 'health' || meerkat.site.vertical === 'utilities'){
             return true;
         }
         return false;
@@ -157,6 +157,10 @@
                         // Add any travel-quote branch to the list (except for the default if viewing this on NXI)
 
                         var vertical = meerkat.site.vertical;
+
+                        if (vertical === 'utilities') {
+                            vertical = 'energy';
+                        }
 
                         var verticalQuoteAppPath = "/"+ vertical +"-apply";
                         if(obj.context.indexOf(verticalQuoteAppPath) !== -1 && (obj.context === verticalQuoteAppPath && meerkat.site.environment === 'nxi') === false){

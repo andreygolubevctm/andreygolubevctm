@@ -70,18 +70,4 @@ public class MiscUtils {
         }
     }
 
-    /**
-     * Json object dumper.
-     * @param o
-     * @return
-     */
-    public static String toJson(Object o) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        try {
-            return mapper.writeValueAsString(o);
-        } catch (Exception ex) {
-            return ex.toString();
-        }
-    }
 }

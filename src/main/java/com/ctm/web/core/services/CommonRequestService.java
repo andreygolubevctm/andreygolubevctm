@@ -18,7 +18,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,9 +41,6 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
 
     private final ProviderFilterDao providerFilterDAO;
     private final ObjectMapper objectMapper;
-
-    @Autowired
-    protected SimpleConnection connection;
 
     public CommonRequestService(final ProviderFilterDao providerFilterDAO, final ObjectMapper objectMapper) {
         this.providerFilterDAO = providerFilterDAO;
@@ -106,9 +102,8 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
         LOGGER.info("Sending request {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
         LOGGER.debug("Outbound message {}", kv("request", jsonRequest));
 
-        setupSimpleConnection(serviceProperties, jsonRequest);
-
-        String response = connection.get(serviceProperties.getServiceUrl() + "/" +endpoint.getValue());
+        String response = setupSimpleConnection(serviceProperties, jsonRequest)
+                .get(serviceProperties.getServiceUrl() + "/" + endpoint.getValue());
         if (response == null) {
             throw new RouterException("Connection failed");
         }
@@ -139,13 +134,15 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
         return request;
     }
 
-    protected void setupSimpleConnection(QuoteServiceProperties serviceProperties, String jsonRequest) {
+    protected SimpleConnection setupSimpleConnection(QuoteServiceProperties serviceProperties, String jsonRequest) {
+        SimpleConnection connection = new SimpleConnection();
         connection.setRequestMethod("POST");
         connection.setConnectTimeout(serviceProperties.getTimeout());
         connection.setReadTimeout(serviceProperties.getTimeout());
         connection.setContentType("application/json");
         connection.setPostBody(jsonRequest);
         connection.setHasCorrelationId(true);
+        return connection;
     }
 
     public QuoteServiceProperties getQuoteServiceProperties(String service, Brand brand, String verticalCode, Optional<String> environmentOverride) throws ServiceConfigurationException, DaoException {

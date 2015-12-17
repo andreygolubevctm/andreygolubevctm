@@ -19,13 +19,15 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
+
 public class EnergyApplyServiceRequestAdapter implements WebRequestAdapter<EnergyApplyPostRequestPayload, EnergyApplicationDetails> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EnergyApplyServiceRequestAdapter.class);
 
     @Override
     public EnergyApplicationDetails adapt(EnergyApplyPostRequestPayload energyApplyPostRequestPayload) {
-        LOGGER.debug("energyApplyPostRequestPayload={}", MiscUtils.toJson(energyApplyPostRequestPayload));
+        LOGGER.debug("energyApplyPostRequestPayload = {}", kv("payload", energyApplyPostRequestPayload));
 
         // Map EnergyApplicationDetails
         EnergyApplicationDetails.Builder energyApplicationDetailsBuilder = EnergyApplicationDetails.newBuilder();
@@ -39,7 +41,7 @@ public class EnergyApplyServiceRequestAdapter implements WebRequestAdapter<Energ
         energyApplicationDetailsBuilder = adaptDetails(energyApplyPostRequestPayload, energyApplicationDetailsBuilder);
 
         EnergyApplicationDetails energyApplicationDetails = energyApplicationDetailsBuilder.build();
-        LOGGER.debug("energyApplicationDetails={}", MiscUtils.toJson(energyApplicationDetails));
+        LOGGER.debug("energyApplicationDetails={}", kv("details", energyApplicationDetails));
 
         return energyApplicationDetails;
     }

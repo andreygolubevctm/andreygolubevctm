@@ -40,7 +40,7 @@ public class HomeLoanOpportunityService {
 		transactionId = request.getParameter("transactionId") != null ? request.getParameter("transactionId") : "0";
 		sessionId = request.getSession() != null ? request.getSession().getId() : "";
 		try {
-			Brand brand = ApplicationService.getBrandFromRequestStatic(request);
+			Brand brand = ApplicationService.getBrandFromRequest(request);
 			styleCodeId = brand.getId();
 		}
 		catch (DaoException daoE) {}

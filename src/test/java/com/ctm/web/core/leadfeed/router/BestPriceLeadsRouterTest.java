@@ -56,7 +56,7 @@ public class BestPriceLeadsRouterTest {
         vertical.setType(Vertical.VerticalType.HEALTH);
         verticals.add(vertical);
         brand.setVerticals(verticals);
-        PowerMockito.when(ApplicationService.getBrandsStatic()).thenReturn(brandsList);
+        PowerMockito.when(ApplicationService.getBrands()).thenReturn(brandsList);
 
         when(request.getRequestURI()).thenReturn("test/sergie/triggerBestPriceLeads.json");
         when(response.getWriter()).thenReturn(writer);

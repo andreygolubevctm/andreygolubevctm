@@ -47,13 +47,12 @@ public class CommonQuoteServiceTest {
     @Mock
     private ServiceConfiguration serviceConfiguration;
 
-
     @Before
     public void setup() throws Exception {
         initMocks(this);
 
         EnvironmentService.setEnvironment("localhost");
-        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, objectMapper, simpleConnection) {});
+        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, objectMapper) {});
 
     }
 

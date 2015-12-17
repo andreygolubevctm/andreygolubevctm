@@ -171,7 +171,7 @@ public class HomeLoanResultsService {
 			if (request.getParameter("transactionId") != null) transactionId = request.getParameter("transactionId");
 
 			try {
-				Brand brand = ApplicationService.getBrandFromRequestStatic(request);
+				Brand brand = ApplicationService.getBrandFromRequest(request);
 				styleCodeId = brand.getId();
 			}
 			catch (DaoException daoE) {}
