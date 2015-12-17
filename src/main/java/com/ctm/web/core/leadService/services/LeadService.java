@@ -1,8 +1,6 @@
 package com.ctm.web.core.leadService.services;
 
-import com.ctm.web.core.dao.TouchDao;
 import com.ctm.web.core.leadService.model.LeadRequest;
-import com.ctm.web.core.leadService.model.LeadResponse;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
 import com.ctm.web.core.services.ServiceConfigurationService;
@@ -10,16 +8,8 @@ import com.ctm.web.core.web.go.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URI;
-import java.util.Collections;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 

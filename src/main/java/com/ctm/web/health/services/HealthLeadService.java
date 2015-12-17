@@ -32,10 +32,10 @@ public class HealthLeadService extends LeadService {
 
         // Name
         if(data.hasChild("health/application/primary/firstname")) {
-            leadData.getPerson().setFirstName(data.getString("health/application/primary/firstname"));
-            leadData.getPerson().setLastName(data.getString("health/application/primary/surname"));
+            leadData.getPerson().setFirstName(StringUtils.left(data.getString("health/application/primary/firstname"), 50));
+            leadData.getPerson().setLastName(StringUtils.left(data.getString("health/application/primary/surname"), 50));
         } else {
-            leadData.getPerson().setFirstName(data.getString("health/contactDetails/name"));
+            leadData.getPerson().setFirstName(StringUtils.left(data.getString("health/contactDetails/name"), 50));
         }
 
         // DOB
@@ -46,25 +46,25 @@ public class HealthLeadService extends LeadService {
 
         // Contact Details
         if(!StringUtils.isEmpty(data.getString("health/application/email"))) {
-            leadData.getPerson().setEmail(data.getString("health/application/email"));
+            leadData.getPerson().setEmail(StringUtils.left(data.getString("health/application/email"), 128));
         } else {
-            leadData.getPerson().setEmail(data.getString("health/contactDetails/email"));
+            leadData.getPerson().setEmail(StringUtils.left(data.getString("health/contactDetails/email"), 128));
         }
 
         if(!StringUtils.isEmpty(data.getString("health/application/mobile"))) {
-            String mobile = data.getString("health/application/mobile");
-            leadData.getPerson().setMobile(StringUtils.replaceEach(mobile, CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER));
+            String mobile = StringUtils.replaceEach(data.getString("health/application/mobile"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
+            leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
         } else {
-            String mobile = data.getString("health/contactDetails/flexiContactNumber");
-            leadData.getPerson().setMobile(StringUtils.replaceEach(mobile, CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER));
+            String mobile = StringUtils.replaceEach(data.getString("health/contactDetails/flexiContactNumber"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
+            leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
         }
 
         if(!StringUtils.isEmpty(data.getString("health/application/other"))) {
-            String phone = data.getString("health/application/other");
-            leadData.getPerson().setPhone(StringUtils.replaceEach(phone, CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER));
+            String phone = StringUtils.replaceEach(data.getString("health/application/other"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
+            leadData.getPerson().setPhone(StringUtils.left(phone, 10));
         } else {
-            String phone = data.getString("health/contactDetails/contactNumber/other");
-            leadData.getPerson().setPhone(StringUtils.replaceEach(phone, CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER));
+            String phone = StringUtils.replaceEach(data.getString("health/contactDetails/contactNumber/other"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
+            leadData.getPerson().setPhone(StringUtils.left(phone, 10));
         }
 
         // Location

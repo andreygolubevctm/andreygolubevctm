@@ -31,7 +31,7 @@
     <core:access_count touch="P"/>
 </c:set>
 
-<jsp:useBean id="leadService" class="com.ctm.web.health.services.HealthLeadService" scope="request" />
+<jsp:useBean id="healthLeadService" class="com.ctm.web.health.services.HealthLeadService" scope="request" />
 
 <c:choose>
     <%--

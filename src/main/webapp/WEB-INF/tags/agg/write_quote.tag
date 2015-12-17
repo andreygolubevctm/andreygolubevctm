@@ -447,9 +447,6 @@
 	<jsp:useBean id="leadService" class="com.ctm.web.health.services.HealthLeadService" scope="request" />
 
 	<c:choose>
-		<c:when test="${confirmationQuery.rowCount == 0}">
-			${leadService.sendLead(4, data, pageContext.getRequest(), 'OPEN')}
-		</c:when>
 		<%-- If transaction is Failed/Pending (F), only call centre can edit the transaction --%>
 		<c:when test="${confirmationQuery.rows[0]['editable'] == 'F'}">
 			${leadService.sendLead(4, data, pageContext.getRequest(), 'PENDING')}
@@ -457,6 +454,9 @@
 		<c:when test="${confirmationQuery.rows[0]['editable'] == 'C'}">
 			${leadService.sendLead(4, data, pageContext.getRequest(), 'SOLD')}
 		</c:when>
+		<c:otherwise>
+			${leadService.sendLead(4, data, pageContext.getRequest(), 'OPEN')}
+		</c:otherwise>
 	</c:choose>
 </c:if>
 
