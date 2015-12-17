@@ -49,8 +49,8 @@
         <npm.version>2.14.8</npm.version>
 
         <org.mapstruct.version>1.0.0.CR1</org.mapstruct.version>
-        <energy.quote.model.version>1.0.0-SNAPSHOT</energy.quote.model.version>
-        <energy.apply.model.version>1.0.0-SNAPSHOT</energy.apply.model.version>
+        <energy-model-quote.version>1.0.0-SNAPSHOT</energy-model-quote.version>
+        <energy-apply-model.version>1.0.0-SNAPSHOT</energy-apply-model.version>
     </properties>
 
     <dependencyManagement>
@@ -474,12 +474,12 @@
         <dependency>
             <groupId>com.ctm.energy</groupId>
             <artifactId>energy-model-quote</artifactId>
-            <version>${energy.quote.model.version}</version>
+            <version>${energy-model-quote.version}</version>
         </dependency>
         <dependency>
             <groupId>com.ctm.energy</groupId>
             <artifactId>energy-apply-model</artifactId>
-            <version>${energy.apply.model.version}</version>
+            <version>${energy-apply-model.version}</version>
         </dependency>
 
         <dependency>
