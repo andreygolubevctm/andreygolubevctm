@@ -142,58 +142,59 @@
 			destinations = $('#travel_destination').val(),
 			isCoverLevelTabsEnabled = meerkat.modules.coverLevelTabs.isEnabled();
 		_.each(products, function massageJson(result, index) {
+			if(result.available == 'Y') {
 
-			if(typeof result.info !== 'object') {
-				return;
-			}
+				if (typeof result.info !== 'object') {
+					return;
+				}
+				var obj = result.info;
+				// TRV-667: replace any non digit words with $0 e.g. Optional Extra
+				if (typeof obj.luggage !== 'undefined' && obj.luggageValue <= 0) {
+					obj.luggage = "$0";
+				}
+				// TRV-769 Set value and text to $0 for quotes for JUST Australia.
+				if (destinations == 'AUS') {
+					obj.medicalValue = 0;
+					obj.medical = "N/A";
+				}
+				if (isCoverLevelTabsEnabled === true) {
 
-			var obj = result.info;
-			// TRV-667: replace any non digit words with $0 e.g. Optional Extra
-			if(typeof obj.luggage !== 'undefined' && obj.luggageValue  <= 0 ) {
-				obj.luggage = "$0";
-			}
-			// TRV-769 Set value and text to $0 for quotes for JUST Australia.
-			if(destinations == 'AUS') {
-				obj.medicalValue = 0;
-				obj.medical = "N/A";
-			}
-			if(isCoverLevelTabsEnabled === true) {
+					if (policyType == 'Single Trip') {
 
-				if (policyType == 'Single Trip') {
+						/**
+						 * Currently ignore medical if destination country is JUST AU.
+						 */
+						var medical = 5000000;
+						if (destinations == "AUS") {
+							medical = 0;
+						}
 
-					/**
-					 * Currently ignore medical if destination country is JUST AU.
-					 */
-					var medical = 5000000;
-					if (destinations == "AUS") {
-						medical = 0;
-					}
-
-					if (obj.excessValue <= 250 && obj.medicalValue >= medical
-						&& obj.cxdfeeValue >= 7500 && obj.luggageValue >= 7500 && result.price > 0) {
-						obj.coverLevel = 'C';
-						meerkat.modules.coverLevelTabs.incrementCount("C");
-					} else if (obj.excessValue <= 250 && obj.medicalValue >= medical
-						&& obj.cxdfeeValue >= 2500
-						&& obj.luggageValue >= 2500 && result.price > 0) {
-						obj.coverLevel = 'M';
-						meerkat.modules.coverLevelTabs.incrementCount("M");
-					} else if ( result.price > 0) {
-						obj.coverLevel = 'B';
-						meerkat.modules.coverLevelTabs.incrementCount("B");
-					}
-				} else {
-					if(_.isBoolean(result.isDomestic) && result.price > 0) {
-						var level = result.isDomestic === true ? "D" : "I";
-						obj.coverLevel = level;
-						meerkat.modules.coverLevelTabs.incrementCount(level);
-					} else if( result.price > 0) {
-						if (result.des.indexOf('Australia') == -1) {
-							obj.coverLevel = 'I';
-							meerkat.modules.coverLevelTabs.incrementCount("I");
-						} else {
-							obj.coverLevel = 'D';
-							meerkat.modules.coverLevelTabs.incrementCount("D");
+						if (obj.excessValue <= 250 && obj.medicalValue >= medical
+							&& obj.cxdfeeValue >= 7500 && obj.luggageValue >= 7500) {
+							obj.coverLevel = 'C';
+							meerkat.modules.coverLevelTabs.incrementCount("C");
+						} else if (obj.excessValue <= 250 && obj.medicalValue >= medical
+							&& obj.cxdfeeValue >= 2500
+							&& obj.luggageValue >= 2500) {
+							obj.coverLevel = 'M';
+							meerkat.modules.coverLevelTabs.incrementCount("M");
+						} else  {
+							obj.coverLevel = 'B';
+							meerkat.modules.coverLevelTabs.incrementCount("B");
+						}
+					} else {
+						if (_.isBoolean(result.isDomestic) ) {
+							var level = result.isDomestic === true ? "D" : "I";
+							obj.coverLevel = level;
+							meerkat.modules.coverLevelTabs.incrementCount(level);
+						} else  {
+							if (result.des.indexOf('Australia') == -1) {
+								obj.coverLevel = 'I';
+								meerkat.modules.coverLevelTabs.incrementCount("I");
+							} else {
+								obj.coverLevel = 'D';
+								meerkat.modules.coverLevelTabs.incrementCount("D");
+							}
 						}
 					}
 				}
