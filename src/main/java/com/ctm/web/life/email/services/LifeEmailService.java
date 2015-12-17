@@ -46,7 +46,7 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 	}
 
 	@Override
-	public void sendBestPriceEmail(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
+	public String sendBestPriceEmail(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(BestPriceEmailHandler.MAILING_NAME_KEY);
 		optInMailingName = getPageSetting(BestPriceEmailHandler.OPT_IN_MAILING_NAME);
@@ -62,7 +62,9 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 		}
 		
 		if(!isTestEmailAddress) {
-			emailSender.sendToExactTarget(new LifeBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId));
+			return emailSender.sendToExactTarget(new LifeBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId));
+		} else {
+			return "";
 		}
 	}
 	
@@ -145,14 +147,14 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 	}
 
 	@Override
-	public void send(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
+	public String send(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
 		switch(emailMode) {
 			case BEST_PRICE:
-				sendBestPriceEmail(request, emailAddress, transactionId);
-				break;
+				return sendBestPriceEmail(request, emailAddress, transactionId);
 			default:
 				break;
 		}
+		return "";
 	}
 	
 }

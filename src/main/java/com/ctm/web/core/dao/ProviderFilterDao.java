@@ -1,26 +1,46 @@
 package com.ctm.web.core.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.web.core.exceptions.DaoException;
 
-import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProviderFilterDao {
 
-	public ArrayList<String> getProviderDetailsByAuthToken(String key) throws DaoException {
-		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
-		ArrayList<String> code = new ArrayList<String>();
+	private final static String PROVIDER_DETAILS_QUERY_BY_AUTHTOKEN =
+			"SELECT " +
+			"  pm.providerId, " +
+			"  providerCode  " +
+			"FROM " +
+			"  ctm.provider_master pm  " +
+			"  JOIN ctm.provider_properties pp  " +
+			"    ON pm.providerId = pp.providerId  " +
+			"WHERE " +
+			"  PropertyId in 'authToken' " +
+			"  AND Text = ?";
 
-		try {
+	private final static String PROVIDER_DETAILS_QUERY_BY_KEY =
+			"SELECT " +
+			"  pm.providerId, providerCode  " +
+			"FROM " +
+			"  ctm.provider_master pm  " +
+			"  JOIN ctm.provider_properties pp  " +
+			"    ON pm.providerId = pp.providerId  " +
+			"WHERE PropertyId = 'providerKey' " +
+			"  AND Text = ? " +
+			"LIMIT 0,1;";
+
+	public List<String> getProviderDetailsByAuthToken(String key) throws Exception {
+		final List<String> code = new ArrayList<>();
+
+		try (SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection()) {
 			PreparedStatement stmt;
 			Connection conn = dbSource.getConnection();
 			if(conn != null) {
-				stmt = conn.prepareStatement("SELECT pm.providerId, providerCode  FROM ctm.provider_master pm  JOIN ctm.provider_properties pp  ON pm.providerId = pp.providerId  WHERE PropertyId = 'authToken' AND Text = ?;");
+				stmt = conn.prepareStatement(PROVIDER_DETAILS_QUERY_BY_AUTHTOKEN);
 				stmt.setString(1, key);
 
 				ResultSet results = stmt.executeQuery();
@@ -29,10 +49,6 @@ public class ProviderFilterDao {
 					code.add(results.getString("providerCode"));
 				}
 			}
-		} catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
-		} finally {
-			dbSource.closeConnection();
 		}
 
 		return code;
@@ -41,29 +57,22 @@ public class ProviderFilterDao {
 	/**
 	 * Get the provider's id and providerCode
 	 */
-	public String getProviderDetails(String key) throws DaoException {
-		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
-		String code = "invalid";
-
-		try {
+	public String getProviderDetails(String key) throws Exception {
+		try (SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection()) {
 			PreparedStatement stmt;
 			Connection conn = dbSource.getConnection();
 			if(conn != null) {
-				stmt = conn.prepareStatement("SELECT pm.providerId, providerCode  FROM ctm.provider_master pm  JOIN ctm.provider_properties pp  ON pm.providerId = pp.providerId  WHERE PropertyId = 'providerKey' AND Text = ? LIMIT 0,1;");
+				stmt = conn.prepareStatement(PROVIDER_DETAILS_QUERY_BY_KEY);
 				stmt.setString(1, key);
 
 				ResultSet results = stmt.executeQuery();
 
-				while (results.next()) {
-					code = results.getString("providerCode");
+				if (results.next()) {
+					return results.getString("providerCode");
 				}
 			}
-		} catch (SQLException | NamingException e) {
-			throw new DaoException(e);
-		} finally {
-			dbSource.closeConnection();
 		}
 
-		return code;
+		return "invalid";
 	}
 }

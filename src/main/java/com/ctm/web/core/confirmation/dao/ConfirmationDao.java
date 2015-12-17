@@ -1,16 +1,23 @@
 package com.ctm.web.core.confirmation.dao;
 
+import com.ctm.web.core.confirmation.model.Confirmation;
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.dao.DatabaseUpdateMapping;
+import com.ctm.web.core.dao.SqlDao;
+import com.ctm.web.core.exceptions.DaoException;
+
+import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.naming.NamingException;
-
-import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.confirmation.model.Confirmation;
-
 public class ConfirmationDao {
+
+	private final SqlDao sqlDao;
+
+	public ConfirmationDao() {
+		this.sqlDao = new SqlDao();
+	}
 
 	/**
 	 * Get a confirmation using the confirmation key (token)
@@ -52,5 +59,23 @@ public class ConfirmationDao {
 		}
 
 		return confirmation;
+	}
+
+	public void addConfirmation(Confirmation confirmation) throws DaoException {
+		DatabaseUpdateMapping databaseMapping = new DatabaseUpdateMapping(){
+			@Override
+			public void mapParams() throws SQLException {
+				set(confirmation.getTransactionId());
+				set(confirmation.getKey());
+				set(confirmation.getXmlData());
+			}
+
+			@Override
+			public String getStatement() {
+				return "INSERT INTO ctm.`confirmations` " +
+						"(TransID, KeyId, Time, XMLdata) VALUES (?, ?, NOW(), ?);";
+			}
+		};
+		sqlDao.update(databaseMapping);
 	}
 }

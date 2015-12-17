@@ -41,4 +41,5 @@
     </c:if>
     <field:hidden xpath="${xpath}/optinPhone" defaultValue="N"/>
     <field:hidden xpath="${xpath}/optinMarketing" defaultValue="N"/>
+
 </form_new:fieldset>

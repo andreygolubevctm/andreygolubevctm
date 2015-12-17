@@ -20,6 +20,12 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 public class ConfirmationService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfirmationService.class);
 
+	private ConfirmationDao confirmationDao;
+
+	public ConfirmationService() {
+		this.confirmationDao = new ConfirmationDao();
+	}
+
 	/**
 	 * Get confirmation record by the key with strict validation that the transaction is associated with the specified brand.
 	 * @param confirmationKey
@@ -30,7 +36,7 @@ public class ConfirmationService {
 		Confirmation confirmation = null;
 
 		try {
-			ConfirmationDao confirmationDao = new ConfirmationDao();
+
 			confirmation = confirmationDao.getByKey(confirmationKey);
 
 			if (confirmation.getTransactionId() > 0) {
@@ -108,5 +114,9 @@ public class ConfirmationService {
 		}
 
 		return confirmationUrl.toString();
+	}
+
+	public void addConfirmation(final Confirmation confirmation) throws DaoException {
+		confirmationDao.addConfirmation(confirmation);
 	}
 }

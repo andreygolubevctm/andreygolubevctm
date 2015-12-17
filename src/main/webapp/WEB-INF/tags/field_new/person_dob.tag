@@ -17,8 +17,10 @@
 <%@ attribute name="ageMin" 				required="false"  	rtexprvalue="true"	 description="Max Age requirement for Person, e.g. 99" %>
 <%@ attribute name="validateYoungest" 		required="false"  	rtexprvalue="true"	 description="Add validation for youngest person" %>
 <%@ attribute name="additionalAttributes" 	required="false"  	rtexprvalue="true"	 description="Add additional attributes" %>
+<%@ attribute name="outputJS" 	required="false"  	rtexprvalue="true"	 description="Whether to output the JS" %>
 
 <%-- VARIABLES --%>
+<c:if test="${empty outputJS}"><c:set var="outputJS" value="${true}" /></c:if>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:if test="${empty ageMin}">
 	<c:set var="ageMin" value="16" />
@@ -34,10 +36,18 @@
 	</c:if>
 </c:set>
 <c:set var="youngestDOB">
-	data-rule-youngestDOB='{"ageMin":"dob_${name}.ageMin"}' data-msg-youngestDOB='${fn:escapeXml(title)} age cannot be under ${ageMin}'
+	<c:choose>
+		<c:when test="${outputJS}"> data-rule-youngestDOB='{"ageMin":"dob_${name}.ageMin"}'</c:when>
+		<c:otherwise> data-rule-youngestDOB='${ageMin}' </c:otherwise>
+	</c:choose>
+	data-msg-youngestDOB='${fn:escapeXml(title)} age cannot be under ${ageMin}'
 </c:set>
 <c:set var="oldestDOB">
-	data-rule-oldestDOB='{ "ageMax":"dob_${name}.ageMax"}' data-msg-oldestDOB='${fn:escapeXml(title)} age cannot be over ${ageMax}'
+	<c:choose>
+		<c:when test="${outputJS}"> data-rule-oldestDOB='{ "ageMax":"dob_${name}.ageMax"}' </c:when>
+		<c:otherwise> data-rule-oldestDOB='${ageMax}' </c:otherwise>
+	</c:choose>
+	 data-msg-oldestDOB='${fn:escapeXml(title)} age cannot be over ${ageMax}'
 </c:set>
 
 <c:set var="youngRegularDriversAgeCheck">
@@ -74,6 +84,8 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 
 <%-- JAVASCRIPT --%>
 <%-- LEGACY... required by various health funds question sets --%>
+<c:if test="${outputJS}">
 <go:script marker="js-head">
 	var dob_${name} = { ageMin: ${ageMin},  ageMax: ${ageMax},  message: '' };
 </go:script>
+</c:if>
