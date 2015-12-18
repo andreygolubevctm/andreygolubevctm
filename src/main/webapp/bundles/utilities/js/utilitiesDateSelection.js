@@ -18,6 +18,7 @@
     var $movingInDate, $applicationMovingInDate,
     $houseHoldMovingDates, $houseHoldAppDates, $houseHoldMovingDateButton, $houseHoldAppDateButton;
     var $houseHoldAppDateD, $houseHoldAppDateM, $houseHoldAppDateY;
+    var fromDate, endDate;
 
     //------------------------------------------------------------------
 
@@ -50,6 +51,10 @@
 
         $houseHoldMovingDateButton = $("#utilities_householdDetails_movingInDate_button");
         $houseHoldAppDateButton = $("#utilities_application_details_movingDate_button");
+
+        fromDate = new Date();
+        endDate = new Date(fromDate.toString());
+        endDate.setYear(parseInt(fromDate.getFullYear()) + 1);
     }
 
     function populateCalendarViewFromFields() {
@@ -73,8 +78,8 @@
                       autoclose:true,
                       daysOfWeekDisabled: [0,6],
                       weekStart:1,
-                      format: "dd/mm/yyyy"
-
+                      format: "dd/mm/yyyy",
+                      endDate:endDate
             });
             $applicationMovingInDate.datepicker({
                 orientation: "top left",
@@ -83,7 +88,8 @@
                 autoclose:true,
                 daysOfWeekDisabled: [0,6],
                 weekStart:1,
-                format: "dd/mm/yyyy"
+                format: "dd/mm/yyyy",
+                endDate:endDate
 
             });
             showCalendarOnDMYTextFields();
