@@ -1,15 +1,26 @@
 .featuresMode,
 .policySummaryContainer  {
-  .productSummary{
-	&.horizontal {
-	  .companyLogo{
-		max-width: 90px;
-		max-height: @standard-logo-height;
-		line-height: 18px;
-		float: left;
+	.productSummary{
+		&.horizontal {
+			.companyLogo{
+				max-width: 90px;
+				max-height: @standard-logo-height;
+				line-height: 18px;
+				float: left;
+				@media (@sm) {
+				  float: left;
+				}
 
-		@media (@sm-only) {
-		  text-align: left;
+				@media (@xs-only) {
+					height: 45px;
+					position: absolute;
+					overflow: hidden;
+					text-align: left;
+				}
+				@media (@sm-only) {
+					text-align: left;
+				}
+			}
 		}
 	  }
 	}
@@ -20,9 +31,15 @@
 	  }
 	}
 
-	.price{
-	  margin: 0 auto 0 auto;
-	}
+		.price{
+			margin-top: 5px;
+			@media (@md) {
+			  max-width: 129px;
+			}
+			@media (@lg) {
+			  max-width: 170px;
+			}
+		}
 
 
 
@@ -79,6 +96,22 @@
 		  position: absolute;
 		  overflow: hidden;
 		  text-align: left;
+			.price{
+				@media (@xs-only) {
+					margin-left:65px;
+				}
+				@media (@sm) {
+					float: right;
+				}
+
+			}
+			.frequency{
+				.frequencyAmount,
+				.lhcText,
+				.rounding{
+					text-align: right;
+				}
+			}
 		}
 		@media (@sm) {
 		  float: left;
@@ -269,15 +302,5 @@
   .providersNormalSpriteImagesVerticallyCentered(~"health"; ~""; @providerLogoNames; @standard-logo-height; @logo-price-spacer);
 }
 
-@media(@xs-only) {
-  .xs-productName-container{
-	.companyLogo{
-	  position:absolute; /* Stops price colliding and being forced below */
-	  margin-top: 10px;
-	  margin-left: 3%;
-
-	  .providersNormalSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale);
-
-	}
-  }
+	.providersNormalSpriteImagesVerticallyCentered(~"health"; ~""; ~"AHM",~"AUF",~"BUD",~"BUP",~"CBH",~"CTM",~"CUA",~"FRA",~"GMF",~"GMH",~"HCF",~"HIF",~"NIB",~"QCH",~"THF"; @standard-logo-height; @logo-price-spacer);
 }
