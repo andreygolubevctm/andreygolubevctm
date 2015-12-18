@@ -49,10 +49,6 @@
 		try {
 			var displayMode = 'price';
 
-			if (meerkat.modules.splitTest.isActive(18)) {
-				displayMode = 'features';
-			}
-
 			var price = {
 				annually: "price.annualPremium",
 				annual: "price.annualPremium",
