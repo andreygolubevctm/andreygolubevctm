@@ -71,8 +71,8 @@
                       numberOfMonths: 2,
                       allowHeaderStyling: true,
                       autoclose:true,
-                      setDaysOfWeekDisabled: [0,6],
-                      daysOfWeekHighlighted: [1,2,3,4,5],
+                      daysOfWeekDisabled: [0,6],
+                      weekStart:1,
                       format: "dd/mm/yyyy"
 
             });
@@ -81,8 +81,8 @@
                 numberOfMonths: 2,
                 allowHeaderStyling: true,
                 autoclose:true,
-                setDaysOfWeekDisabled: [0,6],
-                daysOfWeekHighlighted: [1,2,3,4,5],
+                daysOfWeekDisabled: [0,6],
+                weekStart:1,
                 format: "dd/mm/yyyy"
 
             });
