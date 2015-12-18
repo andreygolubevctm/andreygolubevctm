@@ -6,6 +6,7 @@ import com.ctm.web.core.confirmation.services.ConfirmationService;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.services.TouchService;
+import com.ctm.web.core.services.TouchServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceRequestAdapter;
@@ -27,11 +28,13 @@ public class EnergyApplyConfirmationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EnergyApplyService.class);
 
     @Autowired
-    TransactionDao transactionDao;
+    private TransactionDao transactionDao;
 
     @Autowired
     private ConfirmationService confirmationService;
 
+    @Autowired
+    private TouchServiceBean touchServiceBean;
 
     public String createAndSaveConfirmation(String sessionId, EnergyApplyPostRequestPayload model,
                                             ApplyResponse applyResponse, EnergyApplyServiceRequestAdapter requestAdapter) {
@@ -79,11 +82,10 @@ public class EnergyApplyConfirmationService {
     }
 
     private void writeSoldTouch(long rootId) {
-        TouchService touchService = new TouchService();
         Touch touch = new Touch();
         touch.setType(Touch.TouchType.SOLD);
         touch.setTransactionId(rootId);
-        touchService.recordTouch(touch);
+        touchServiceBean.recordTouch(touch);
     }
 
 }

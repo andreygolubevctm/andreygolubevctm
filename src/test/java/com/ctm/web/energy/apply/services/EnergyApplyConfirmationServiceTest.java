@@ -3,7 +3,7 @@ package com.ctm.web.energy.apply.services;
 import com.ctm.apply.model.response.ApplyResponse;
 import com.ctm.interfaces.common.types.ConfirmationId;
 import com.ctm.web.core.confirmation.services.ConfirmationService;
-import com.ctm.web.core.services.TouchService;
+import com.ctm.web.core.services.TouchServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceRequestAdapter;
 import com.ctm.web.energy.apply.model.request.EnergyApplyPostRequestPayload;
@@ -23,6 +23,7 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringApplicationConfiguration(classes = {EnergyApplyConfirmationService.class})
@@ -32,7 +33,7 @@ public class EnergyApplyConfirmationServiceTest {
 
 
     @Mock
-    TouchService touchService;
+    TouchServiceBean touchServiceBean;
 
     @Mock
     private TransactionDao transactionDao;
@@ -52,10 +53,10 @@ public class EnergyApplyConfirmationServiceTest {
 
     @Before
     public void setup() throws Exception {
+        initMocks(this);
         when(applyResponse.getConfirmationId()).thenReturn(confirmationId);
-        when(confirmationService.getConfirmationByKeyAndTransactionId(anyObject() , anyLong())).thenReturn(Optional.empty());
+        when(confirmationService.getConfirmationByKeyAndTransactionId(anyObject(), anyLong())).thenReturn(Optional.empty());
         when(transactionDao.getRootIdOfTransactionId(anyLong())).thenReturn(1000L);
-
     }
 
     @Test

@@ -36,6 +36,12 @@ import java.util.stream.Collectors;
 
 public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
+    private SessionDataServiceBean sessionDataServiceBean;
+
+    public CommonQuoteRouter(SessionDataServiceBean sessionDataServiceBean) {
+        this.sessionDataServiceBean = sessionDataServiceBean;
+    }
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteRouter.class);
 
     protected Brand initRouter(MessageContext context, Vertical.VerticalType vertical){
@@ -60,9 +66,8 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     }
 
     protected Data getDataBucket(HttpServletRequest request, Long transactionId) {
-        SessionDataService service = new SessionDataService();
         try {
-            return service.getDataForTransactionId(request, transactionId.toString(), true);
+            return sessionDataServiceBean.getDataForTransactionId(request, transactionId.toString(), true);
         } catch (DaoException | SessionException e) {
             throw new RouterException(e);
         }
@@ -119,8 +124,6 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
     protected void addCompetitionEntry(MessageContext context, Long transactionId, CompetitionEntry entry) throws ConfigSettingException, DaoException, EmailDetailsException {
 
-        SessionDataService service = new SessionDataService();
-
         HttpServletRequest request = context.getHttpServletRequest();
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
         String brandCode = pageSettings.getBrandCode();
@@ -152,7 +155,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
                     null, stampingDao, verticalCode);
 
             String operator = "ONLINE";
-            AuthenticatedData authenticatedSessionData = service.getAuthenticatedSessionData(request);
+            AuthenticatedData authenticatedSessionData = sessionDataServiceBean.getAuthenticatedSessionData(request);
             if (authenticatedSessionData != null) {
                 operator = authenticatedSessionData.getUid();
             }

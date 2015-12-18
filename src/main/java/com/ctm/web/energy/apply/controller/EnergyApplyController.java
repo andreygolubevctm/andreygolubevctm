@@ -8,6 +8,7 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.resultsData.model.Info;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.utils.MiscUtils;
 import com.ctm.web.energy.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.energy.apply.model.request.EnergyApplyPostRequestPayload;
@@ -37,6 +38,11 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
 
     @Autowired
     EnergyApplyService energyService;
+
+    @Autowired
+    public EnergyApplyController(SessionDataServiceBean sessionDataServiceBean) {
+        super(sessionDataServiceBean);
+    }
 
     @ApiOperation(value = "apply/apply.json", notes = "Submit an energy application", produces = "application/json")
     @RequestMapping(value = "/apply/apply.json",
