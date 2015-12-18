@@ -22,8 +22,7 @@
 				}
 			}
 		}
-	  }
-	}
+
 
 	&.no-logo{
 	  .companyLogo{
@@ -31,15 +30,15 @@
 	  }
 	}
 
-		.price{
-			margin-top: 5px;
-			@media (@md) {
-			  max-width: 129px;
-			}
-			@media (@lg) {
-			  max-width: 170px;
-			}
+	.price{
+		margin-top: 5px;
+		@media (@md) {
+		  max-width: 129px;
 		}
+		@media (@lg) {
+		  max-width: 170px;
+		}
+	}
 
 
 
@@ -300,7 +299,4 @@
   overflow: hidden;
 
   .providersNormalSpriteImagesVerticallyCentered(~"health"; ~""; @providerLogoNames; @standard-logo-height; @logo-price-spacer);
-}
-
-	.providersNormalSpriteImagesVerticallyCentered(~"health"; ~""; ~"AHM",~"AUF",~"BUD",~"BUP",~"CBH",~"CTM",~"CUA",~"FRA",~"GMF",~"GMH",~"HCF",~"HIF",~"NIB",~"QCH",~"THF"; @standard-logo-height; @logo-price-spacer);
 }
