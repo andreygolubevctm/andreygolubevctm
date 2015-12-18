@@ -7,12 +7,6 @@
 <%-- MANDATORY CONTACT FIELDS --%>
 <c:set var="mandatoryContactFieldsSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" />
 
-<%-- EDIT DETAILS - REDBOOK CODE --%>
-<c:set var="editDetailsRedbookCodeSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 8)}" />
-
-<%-- MAIL CHECK --%>
-<c:set var="emailHelperSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 21)}" />
-
 <%-- ADDRESS FORM --%>
 <c:set var="addressFormSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 32)}" />
 
@@ -29,6 +23,3 @@
         <c:otherwise>${false}</c:otherwise>
     </c:choose>
 </c:set>
-
-<%-- NEW CAR SERVICE --%>
-<c:set var="carServiceSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 40)}" />
