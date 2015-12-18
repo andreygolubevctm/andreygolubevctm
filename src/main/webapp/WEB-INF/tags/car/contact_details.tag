@@ -21,16 +21,16 @@
 
 	<form_new:row label="First Name" id="firstName">
 		<field:person_name xpath="quote/drivers/regular/firstname"
-			required="${mandatoryContactFieldsSplitTest}" title="the policy holder's first name" />
+			required="false" title="the policy holder's first name" />
 	</form_new:row>
 
 	<form_new:row label="Last Name" id="lastName">
 		<field:person_name xpath="quote/drivers/regular/surname"
-			required="${mandatoryContactFieldsSplitTest}" title="the policy holder's last name" />
+			required="false" title="the policy holder's last name" />
 	</form_new:row>
 
 	<form_new:row label="Email Address" id="contactEmailRow">
-		<field_new:email xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
+		<field_new:email xpath="${xpath}/email" required="false" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 	</form_new:row>
 
 	<form_new:row label="Contact Number" id="contactNoRow">
