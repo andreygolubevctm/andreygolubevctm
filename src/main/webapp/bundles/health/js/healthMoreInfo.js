@@ -31,6 +31,12 @@
                 onClose: function() {
                     onBeforeHideTemplate();
                     meerkat.modules.moreInfo.close();
+                },
+                onOpen: function(dialogId){
+                    // just fighting Bootstrap here...
+                    // It seems to think that because the body is overflowing, it needs to add right padding to cater for the scrollbar width
+                    // so taking that off once the modal is open
+                    $("#"+dialogId).css('padding-right', '0px');
                 }
             },
             runDisplayMethod: runDisplayMethod,
@@ -124,7 +130,7 @@
         });
 
         meerkat.messaging.subscribe(meerkatEvents.moreInfo.bridgingPage.SHOW, function (state) {
-           $(Results.settings.elements.page).css("overflow", "hidden").height($bridgingContainer.outerHeight());
+            $(Results.settings.elements.page).css("overflow", "hidden").height($bridgingContainer.outerHeight());
         });
         meerkat.messaging.subscribe(meerkatEvents.moreInfo.bridgingPage.HIDE, function (state) {
             $(Results.settings.elements.page).css("overflow", "visible").height("");
@@ -297,7 +303,7 @@
         if (typeof product.extrasCover === "undefined") {
             // Ensure this is a Extras product before trying to use the benefits properties
             if (typeof product.extras !== 'undefined' && typeof product.extras === 'object') {
-                 prepareCoverFeatures("extras", "extrasCover");
+                prepareCoverFeatures("extras", "extrasCover");
             }
         }
     }
@@ -401,7 +407,7 @@
     function populateBrochureEmail() {
         var emailAddress = $('#health_contactDetails_email').val();
         if (emailAddress !== "") {
-            $('#emailAddress').val(emailAddress).trigger('blur');
+            $('input[name=emailAddress].sendBrochureEmailAddress').val(emailAddress).trigger('blur');
         }
     }
     function populateBrochureEmailForModel() {
