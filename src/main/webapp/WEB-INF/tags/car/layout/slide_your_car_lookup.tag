@@ -8,7 +8,7 @@
 
     <layout:slide_content>
         <%-- PROVIDER TESTING --%>
-        <agg:provider_testing xpath="${xpath}" displayFullWidth="true" keyLabel="authToken" filterProperty="providerList" />
+        <agg:provider_testing xpath="${xpath}" displayFullWidth="true" keyLabel="authToken" filterProperty="providerList" hideSelector="true" />
 
         <car:vehicle_selection_lookup xpath="${xpath}/vehicle" />
 

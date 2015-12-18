@@ -17,12 +17,6 @@
                 <h4>Where is the car parked at night?</h4>
                 <p>We're looking for the address where the car is parked at night which could be different to your postal address. This information will be used when determining your premium.</p>
             </ui:bubble>
-            <c:if test="${addressFormSplitTest eq true}">
-                <ui:bubble variant="info" className="point-left cantFindAddressHelper">
-                    <h4>Can&#39;t find your address?</h4>
-                    <p>If you cannot find the address in our drop down, just tick the &quot;Unable to find address&quot; box and manually enter your address.</p>
-                </ui:bubble>
-            </c:if>
 		</jsp:attribute>
 
         <jsp:body>
