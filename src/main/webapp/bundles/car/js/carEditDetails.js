@@ -41,14 +41,6 @@
 		}).on('click', '.dropdown-container', function(e) {
 			e.stopPropagation();
 		});
-
-		$carUseDropdown.on('change', function changeCarUse(){
-			if ($(this)[0].selectedIndex > 1)
-			{
-
-			}
-			console.log($(this)[0].selectedIndex);
-		});
 	}
 	function eventSubscriptions() {
 		// On application lockdown/unlock, disable/enable the dropdown
