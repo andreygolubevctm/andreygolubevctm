@@ -7,7 +7,16 @@
 				max-height: @standard-logo-height;
 				line-height: 18px;
 				float: left;
+				@media (@sm) {
+				  float: left;
+				}
 
+				@media (@xs-only) {
+					height: 45px;
+					position: absolute;
+					overflow: hidden;
+					text-align: left;
+				}
 				@media (@sm-only) {
 					text-align: left;
 				}
@@ -21,7 +30,13 @@
 		}
 
 		.price{
-			margin: 0 auto 0 auto;
+			margin-top: 5px;
+			@media (@md) {
+			  max-width: 129px;
+			}
+			@media (@lg) {
+			  max-width: 170px;
+			}
 		}
 
 
@@ -73,17 +88,7 @@
 		&.horizontal{
 			overflow: hidden;
 
-			.companyLogo{
 
-				@media (@xs-only) {
-					position: absolute;
-					overflow: hidden;
-					text-align: left;
-				}
-				@media (@sm) {
-					float: left;
-				}
-			}
 			.price{
 				@media (@xs-only) {
 					margin-left:65px;
