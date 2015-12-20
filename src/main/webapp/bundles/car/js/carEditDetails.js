@@ -14,7 +14,6 @@
 
 	/* Variables */
 	var $editDetailsDropDown = $('#edit-details-dropdown'),
-		$carUseDropdown = $('#quote_vehicle_use'),
 	modalId = null;
 
 	/* main entrypoint for the module to run first */
