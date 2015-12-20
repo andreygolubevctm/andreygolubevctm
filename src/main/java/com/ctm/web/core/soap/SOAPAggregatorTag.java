@@ -245,7 +245,6 @@ public class SOAPAggregatorTag extends TagSupport {
 		}
 			return super.doEndTag();
 		} finally {
-			LOGGER.debug("Aggregator response returned. {},{}", kv("resultXml", resultXml), kv("debugXml", debugXml));
 			cleanUp();
 		}
 	}

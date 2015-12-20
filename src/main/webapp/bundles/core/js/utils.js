@@ -67,6 +67,12 @@
 		return Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), today.getUTCHours(), 0, 0, 0);
 	}
 
+	/**
+	 * Accepts date in the format DD/MM/YYYY
+	 * @param _dobString
+	 * @param round
+	 * @returns {number}
+	 */
 	function returnAge(_dobString, round) {
 		var _now = new Date();
 			_now.setHours(0,0,0);
@@ -89,12 +95,7 @@
 		}
 
 		var _age = (_now - _dob) / (1000 * 60 * 60 * 24 * _offset1) + _offset2;
-		if (round) {
-			return Math.floor(_age);
-		}
-		else {
-			return _age;
-		}
+		return round ? Math.floor(_age) : _age;
 	}
 
 	function returnDate(_dateString){

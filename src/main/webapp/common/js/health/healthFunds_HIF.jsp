@@ -61,12 +61,12 @@
             <%-- Run these if not loading a quote --%>
             if (!$('body').hasClass('injectingFund')) {
 
-              <%-- Dependant definition --%>
-              healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
-              $.extend(healthDependents.config, { 'fulltime':true, 'school':true, 'schoolMin':21, 'schoolMax':24, 'schoolID':false });
-              healthFunds_HIF.tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
-              $('.health_dependant_details_schoolGroup .control-label').html('Educational Institutional');
-              $('.health_dependant_details_schoolGroup .help-icon').hide();
+			<%-- Dependant definition --%>
+			healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
+			meerkat.modules.healthDependants.updateConfig({ showFullTimeField:true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:false });
+			healthFunds_HIF.tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
+			$('.health_dependant_details_schoolGroup .control-label').html('Educational Institutional');
+			$('.health_dependant_details_schoolGroup .help-icon').hide();
 
               <%-- Increase minimum age requirement for applicants from 16 to 18 --%>
               <%-- Primary --%>
