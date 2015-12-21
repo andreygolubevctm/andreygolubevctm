@@ -40,6 +40,12 @@
                 onClose: function() {
                     onBeforeHideTemplate();
                     meerkat.modules.moreInfo.close();
+                },
+                onOpen: function(dialogId){
+                    // just fighting Bootstrap here...
+                    // It seems to think that because the body is overflowing, it needs to add right padding to cater for the scrollbar width
+                    // so taking that off once the modal is open
+                    $("#"+dialogId).css('padding-right', '0px');
                 }
             },
             runDisplayMethod: runDisplayMethod,
@@ -425,7 +431,7 @@
     function populateBrochureEmail() {
         var emailAddress = $('#health_contactDetails_email').val();
         if (emailAddress !== "") {
-            $('#emailAddress').val(emailAddress).trigger('blur');
+            $('input[name=emailAddress].sendBrochureEmailAddress').val(emailAddress).trigger('blur');
         }
     }
     function populateBrochureEmailForModel() {

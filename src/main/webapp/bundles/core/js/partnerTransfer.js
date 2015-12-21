@@ -44,11 +44,13 @@
 		// avoid issues with the F5
 		var tracking = _.omit(settings.tracking, 'brandCode');
 		tracking.brandXCode = settings.tracking.brandCode;
-		tracking = encodeURIComponent(JSON.stringify(tracking));
+		tracking = encodeURIComponent(decodeURIComponent(JSON.stringify(tracking)));
+
 		try {
 
 			// build the initial url
 			url = "transferring.jsp?transactionId="+meerkat.modules.transactionId.get()+"&trackCode="+product.trackCode+"&brand="+brand+"&msg="+msg+"&vertical="+meerkat.site.vertical+"&productId="+product.productId+"&tracking=" + tracking;
+
 			if (handoverType.toLowerCase() === "post")
 			{
 				url += "&handoverType="+product.handoverType+"&handoverData="+encodeURIComponent(product.handoverData)+"&handoverURL="+encodeURIComponent(product.handoverUrl)+"&handoverVar="+(product.handoverVar);
@@ -229,6 +231,7 @@
 		$(document.body).on('click', '.btn-apply', function(e) {
 			e.preventDefault();
 			var product = Results.getResultByProductId($(this).attr('data-productid'));
+
 			var options = {
 				product: product
 			};

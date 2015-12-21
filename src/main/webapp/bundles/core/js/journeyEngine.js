@@ -215,12 +215,10 @@
 						if(currentStep.onBeforeLeave !== null) currentStep.onBeforeLeave(eventObject);
 						if(currentStep.onAfterLeave !== null) currentStep.onAfterLeave(eventObject);
 
-						if (eventObject.hasOwnProperty('stopChangeStep') === false || eventObject.stopChangeStep !== true) {
 							// continue to next step...
 							_.defer(function () {
 								processStep(index + 1, callback);
 							});
-						}
 
 					});
 				}catch(e){

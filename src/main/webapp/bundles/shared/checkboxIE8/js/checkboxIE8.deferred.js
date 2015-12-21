@@ -21,12 +21,14 @@
         if($forms.length) {
             // Add listener to checkboxes
             $forms.off('change.checkedForIE').on('change.checkedForIE', '.checkbox input, .compareCheckbox input', function applyCheckboxClicks() {
-                var $this = $(this);
+                var $this = $(this),
+                    $elements = $this.add($this.next('label'));
+
                 if ($this.is(':checked')) {
-                    $this.addClass('checked');
+                    $elements.addClass('checked');
                 }
                 else {
-                    $this.removeClass('checked');
+                    $elements.removeClass('checked');
                 }
             });
 
