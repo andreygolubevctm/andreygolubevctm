@@ -9,6 +9,12 @@ UPDATE aggregator.general SET description = 'Replace your current cover'  WHERE 
 UPDATE aggregator.general SET description = 'Grow your family'  WHERE type = @TYPE
    AND code = 'CSF' and description = 'Grow my family' and (status IS NULL or status !=0) and orderSeq = 3 limit 1;
 
+
+insert into ctm.content_control (stylecodeId,verticalId,contentCode,contentKey,effectiveStart,effectiveEnd,contentValue) values
+ (1,4,'Journey','firstNamePlaceHolder','2015-12-20','2040-12-31','Your name');
+
+
+
 -- test expect 3
 select count(*) from aggregator.general where type = @TYPE
 and description like '%your%'  and (status IS NULL OR status !=0) order by orderseq;
