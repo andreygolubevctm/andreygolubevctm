@@ -51,7 +51,7 @@
 	</span>
     <select name="${name}" id="${name}" class="form-control ${className}"<c:if test="${not empty tabIndex}"> tabindex="${tabIndex}"</c:if><c:if test="${required}">required data-msg-required="Please enter the ${title}"</c:if>>
         <%-- Write the initial "please choose" option --%>
-        <option value="">${initialText}</option>
+
 
         <%-- Write the options for each row --%>
         <c:forEach var="row" items="${result.rows}">
