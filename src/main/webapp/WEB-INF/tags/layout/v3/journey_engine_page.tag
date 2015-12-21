@@ -149,9 +149,9 @@
 
 					<div id="mainform" class="form-horizontal" >
 
-						<core_new:journey_tracking />
+						<core_v2:journey_tracking />
 
-						<core_new:tracking_key />
+						<core_v2:tracking_key />
 
 						<div id="journeyEngineSlidesContainer">
 							<jsp:doBody />
@@ -169,7 +169,7 @@
 
 						<c:if test="${pageSettings.hasSetting('sendBestPriceSplitTestingEnabled')}">
 							<c:if test="${pageSettings.getSetting('sendBestPriceSplitTestingEnabled') eq 'Y' && not empty param.splitEmail }">
-								<field:hidden xpath="${verticalCode}/bestPriceSplitTest" defaultValue="${param.splitEmail eq 2 ? 2 : 1 }" />
+								<field_v1:hidden xpath="${verticalCode}/bestPriceSplitTest" defaultValue="${param.splitEmail eq 2 ? 2 : 1 }" />
 							</c:if>
 						</c:if>
 					</div>
@@ -179,9 +179,9 @@
 
 		</div>
 
-		<agg:footer_outer>
+		<agg_v1:footer_outer>
 			<jsp:invoke fragment="footer" />
-		</agg:footer_outer>
+		</agg_v1:footer_outer>
 
 	</jsp:body>
 

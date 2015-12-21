@@ -9,7 +9,7 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <%-- Dialog wrapper --%>
-<core:js_template id="quote-nonstandard-accessories-template">
+<core_v1:js_template id="quote-nonstandard-accessories-template">
 <div id="${name}Dialog">
 	<div class="tab-content">
 		<div class="tab-pane quote-optional-accessories-listed">
@@ -39,9 +39,9 @@
 						<div class="row accessoryRow">
 							<div class="col-xs-5">
 								{{ if (vehicleNonStandardAccessory.checked) { }}
-									<field_new:checkbox xpath="quote/nonstandard/acc" id="{{= index }}_checkbox" className="nonStandardAccessoryCheckbox" value="{{= vehicleNonStandardAccessory.code }}" required="false" label="{{= vehicleNonStandardAccessory.label }}" title="{{= vehicleNonStandardAccessory.label }}" customAttribute="itemIndex='{{= index }}' checked='checked'" />
+									<field_v2:checkbox xpath="quote/nonstandard/acc" id="{{= index }}_checkbox" className="nonStandardAccessoryCheckbox" value="{{= vehicleNonStandardAccessory.code }}" required="false" label="{{= vehicleNonStandardAccessory.label }}" title="{{= vehicleNonStandardAccessory.label }}" customAttribute="itemIndex='{{= index }}' checked='checked'" />
 								{{ } else { }}
-									<field_new:checkbox xpath="quote/nonstandard/acc" id="{{= index }}_checkbox" className="nonStandardAccessoryCheckbox" value="{{= vehicleNonStandardAccessory.code }}" required="false" label="{{= vehicleNonStandardAccessory.label }}" title="{{= vehicleNonStandardAccessory.label }}" customAttribute="itemIndex='{{= index }}'" />
+									<field_v2:checkbox xpath="quote/nonstandard/acc" id="{{= index }}_checkbox" className="nonStandardAccessoryCheckbox" value="{{= vehicleNonStandardAccessory.code }}" required="false" label="{{= vehicleNonStandardAccessory.label }}" title="{{= vehicleNonStandardAccessory.label }}" customAttribute="itemIndex='{{= index }}'" />
 								{{ } }}
 							</div>
 							<div class="col-xs-7">
@@ -68,4 +68,4 @@
 		</div>
 	</div>
 </div>
-</core:js_template>
+</core_v1:js_template>

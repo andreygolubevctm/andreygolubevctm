@@ -18,14 +18,14 @@
 <c:set var="xpath" value="utilities" scope="session" />
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
-<core:doctype />
+<core_v1:doctype />
 <go:html>
-	<core:head title="Utilities Insurance Quote Capture" mainCss="common/utilities.css" mainJs="common/js/utilities.js" quoteType="${xpath}" />
+	<core_v1:head title="Utilities Insurance Quote Capture" mainCss="common/utilities.css" mainJs="common/js/utilities.js" quoteType="${xpath}" />
 
 	<body class="utilities stage-0">
 
 		<%-- SuperTag Top Code --%>
-		<agg:supertag_top type="Utilities"/>
+		<agg_v1:supertag_top type="Utilities"/>
 
 		<%-- History handler --%>
 		<utilities:history />
@@ -33,24 +33,24 @@
 		<form_v1:form action="utilities_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 
 			<%-- Fields to store Switchwise specific data --%>
-			<field:hidden xpath="utilities/order/receiptid" defaultValue="" />
-			<field:hidden xpath="utilities/order/productid" defaultValue="" />
-			<field:hidden xpath="utilities/order/estimatedcosts" defaultValue="" />
-			<field:hidden xpath="utilities/partner/uniqueCustomerId" defaultValue="" />
+			<field_v1:hidden xpath="utilities/order/receiptid" defaultValue="" />
+			<field_v1:hidden xpath="utilities/order/productid" defaultValue="" />
+			<field_v1:hidden xpath="utilities/order/estimatedcosts" defaultValue="" />
+			<field_v1:hidden xpath="utilities/partner/uniqueCustomerId" defaultValue="" />
 
 	<c:choose>
 		<c:when test="${hasBill == 'yes'}">
-			<field:hidden xpath="utilities/hasBill" defaultValue="Y" />
+			<field_v1:hidden xpath="utilities/hasBill" defaultValue="Y" />
 		</c:when>
 		<c:otherwise>
-			<field:hidden xpath="utilities/hasBill" defaultValue="N" />
+			<field_v1:hidden xpath="utilities/hasBill" defaultValue="N" />
 		</c:otherwise>
 		</c:choose>
 
 			<form_v1:operator_id xpath="${xpath}/operatorid" />
 
 			<form_v1:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false" />
-			<core:referral_tracking vertical="${xpath}" />
+			<core_v1:referral_tracking vertical="${xpath}" />
 			<utilities:progress_bar />
 
 			<div id="wrapper">
@@ -128,10 +128,10 @@
 
 	<utilities:lead_footer />
 
-	<core:closing_body>
-		<agg:includes supertag="true" />
+	<core_v1:closing_body>
+		<agg_v1:includes supertag="true" />
 		<utilities:includes />
-	</core:closing_body>
+	</core_v1:closing_body>
 
 </body>
 

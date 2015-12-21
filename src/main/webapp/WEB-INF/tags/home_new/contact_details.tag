@@ -16,7 +16,7 @@
 	<%-- Email Address --%>
 	<c:set var="fieldXpath" value="${xpath}/email" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Email Address">
-		<field_new:email xpath="${fieldXpath}"
+		<field_v2:email xpath="${fieldXpath}"
 			required="${mandatoryFieldsSplitTest}"
 			title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 	</form_v2:row>
@@ -24,7 +24,7 @@
 	<%-- Marketing --%>
 	<c:set var="fieldXpath" value="${xpath}/marketing" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="OK to email">
-		<field_new:array_radio xpath="${fieldXpath}"
+		<field_v2:array_radio xpath="${fieldXpath}"
 			required="true"
 			items="Y=Yes,N=No"
 			className="pretty_buttons"
@@ -36,7 +36,7 @@
 	<%-- Best Contact Number --%>
 	<c:set var="fieldXpath" value="${xpath}/phone" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Best contact number" helpId="524">
-		<field:contact_telno xpath="${fieldXpath}"
+		<field_v1:contact_telno xpath="${fieldXpath}"
 			required="false"
 			title="best number for the insurance provider to contact you on (You will only be contacted by phone if you answer 'Yes' to the 'OK to call' question on this screen)" validationAttribute=" data-rule-validateOkToCall='true' " />
 	</form_v2:row>
@@ -44,7 +44,7 @@
 	<%-- OK to call --%>
 	<c:set var="fieldXpath" value="${xpath}/oktocall" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="OK to call">
-		<field_new:array_radio xpath="${fieldXpath}"
+		<field_v2:array_radio xpath="${fieldXpath}"
 			required="true"
 			items="Y=Yes,N=No"
 			className="pretty_buttons"

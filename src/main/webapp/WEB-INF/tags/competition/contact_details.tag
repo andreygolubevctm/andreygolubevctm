@@ -65,44 +65,44 @@
 <div class="col-md-6 col-lg-8">
 
 	<form_v2:fieldset legend="">
-		<field:hidden xpath="${xpath}/cId" constantValue="${cid}" />
-		<field:hidden xpath="${xpath}/reference" constantValue="${reference}" />
-		<field:hidden xpath="${xpath}/promocode" constantValue="${promocode}" />
-		<field:hidden xpath="${xpath}/competitionId" constantValue="${results.rows[0].competitionId}" />
-		<field:hidden xpath="${xpath}/returnUrl" constantValue="${results.rows[0].returnUrl}" />
+		<field_v1:hidden xpath="${xpath}/cId" constantValue="${cid}" />
+		<field_v1:hidden xpath="${xpath}/reference" constantValue="${reference}" />
+		<field_v1:hidden xpath="${xpath}/promocode" constantValue="${promocode}" />
+		<field_v1:hidden xpath="${xpath}/competitionId" constantValue="${results.rows[0].competitionId}" />
+		<field_v1:hidden xpath="${xpath}/returnUrl" constantValue="${results.rows[0].returnUrl}" />
 
 		<form_v2:row label="First names" className="halfrow">
-			<field:person_name xpath="${xpath}/firstName" title="first name" required="true" />
+			<field_v1:person_name xpath="${xpath}/firstName" title="first name" required="true" />
 		</form_v2:row>
 
 		<form_v2:row label="Last names" className="halfrow">
-			<field:person_name xpath="${xpath}/lastName" title="last name" required="true" />
+			<field_v1:person_name xpath="${xpath}/lastName" title="last name" required="true" />
 		</form_v2:row>
 
 		<form_v2:row label="Email" className="clear email-row">
-			<field_new:email xpath="${xpath}/email" title="your email address" required="true" size="40"/>
+			<field_v2:email xpath="${xpath}/email" title="your email address" required="true" size="40"/>
 		</form_v2:row>
 
 		<form_v2:row label="Post codings" className="halfrow">
-			<field:post_code xpath="${xpath}/postcode" title="postcode" required="true" />
+			<field_v1:post_code xpath="${xpath}/postcode" title="postcode" required="true" />
 		</form_v2:row>
 
 		<form_v2:row label="Date of births">
-			<field_new:person_dob xpath="${xpath}/dob" title="your" required="true" ageMin="16" ageMax="120" />
+			<field_v2:person_dob xpath="${xpath}/dob" title="your" required="true" ageMin="16" ageMax="120" />
 		</form_v2:row>
 
 		<%-- Mandatory agreement to privacy policy --%>
 		<%--<c:choose>--%>
 			<%-- Only render a hidden field when the checkbox has already been selected --%>
 		<%--	<c:when test="${data['homeloan/privacyoptin'] eq 'Y'}">
-				<field:hidden xpath="homeloan/privacyoptin" defaultValue="Y" constantValue="Y" />
+				<field_v1:hidden xpath="homeloan/privacyoptin" defaultValue="Y" constantValue="Y" />
 			</c:when>
 			<c:otherwise>--%>
 		<form_v2:row hideHelpIconCol="true">
 			<c:set var="label">
 				 I agrees to <a href="${contentService.getContentValue(pageContext.getRequest(), 'competitionTermsUrl')}" target="_blank" />T&Cs</a> and <a href="${pageSettings.getSetting('privacyPolicyUrl')}" target="_blank" >Privacy Policy</a>.
 			</c:set>
-			<field_new:checkbox
+			<field_v2:checkbox
 				xpath="competition/privacyoptin"
 				value="Y"
 				className="validate"

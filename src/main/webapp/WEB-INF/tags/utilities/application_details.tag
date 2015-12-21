@@ -14,34 +14,34 @@
 	<form_v1:fieldset legend="Your Details">
 		
 		<form_v1:row label="Title">
-			<field:array_select items="=Please choose...,Mr=Mr,Mrs=Mrs,Miss=Miss,Ms=Ms,Dr=Dr,Prof=Prof" xpath="${xpath}/title" title="your title" required="true" />
+			<field_v1:array_select items="=Please choose...,Mr=Mr,Mrs=Mrs,Miss=Miss,Ms=Ms,Dr=Dr,Prof=Prof" xpath="${xpath}/title" title="your title" required="true" />
 		</form_v1:row>
 		
 		<form_v1:row label="First name">
-			<field:person_name xpath="${xpath}/firstName" title="First name" required="true" maxlength="50"/>
+			<field_v1:person_name xpath="${xpath}/firstName" title="First name" required="true" maxlength="50"/>
 		</form_v1:row>
 		
 		<form_v1:row label="Last name">
-			<field:person_name xpath="${xpath}/lastName" title="Last name" required="true" maxlength="50"/>
+			<field_v1:person_name xpath="${xpath}/lastName" title="Last name" required="true" maxlength="50"/>
 		</form_v1:row>
 		
 		<form_v1:row label="Date of birth">
-			<field:person_dob xpath="${xpath}/dob" ageMin="0" ageMax="99" title="birth" required="true" />
+			<field_v1:person_dob xpath="${xpath}/dob" ageMin="0" ageMax="99" title="birth" required="true" />
 		</form_v1:row>
 		
 		<form_v1:row label="Mobile number">
-			<field:contact_mobile xpath="${xpath}/mobileNumber" required="false" />
+			<field_v1:contact_mobile xpath="${xpath}/mobileNumber" required="false" />
 		</form_v1:row>
 		
 		<form_v1:row label="Other phone number">
-			<field:contact_telno xpath="${xpath}/otherPhoneNumber" required="false" title="other phone number" isLandline="true" />
+			<field_v1:contact_telno xpath="${xpath}/otherPhoneNumber" required="false" title="other phone number" isLandline="true" />
 		</form_v1:row>
 		
 		<form_v1:row label="Email address">
-			<field:contact_email xpath="${xpath}/email" required="true" title="your email address" />
+			<field_v1:contact_email xpath="${xpath}/email" required="true" title="your email address" />
 			
 			<div id="secondOptIn_chk_container">			
-				<field:checkbox
+				<field_v1:checkbox
 					xpath="${xpath}/receiveInfoCheck"
 					value="Y"
 					title="I would like to receive electronic communication from <strong>compare</strong>the<strong>market</strong>.com.au"
@@ -54,7 +54,7 @@
 
 		<h5>Residential Address</h5>
 		<group_v1:address xpath="${xpath}/address" type="R" />
-		<core:clear />
+		<core_v1:clear />
 		
 		<%-- POSTAL defaults to Y if not pre-loaded --%>
 		<c:if test="${empty data[xpath].postalMatch}">
@@ -63,7 +63,7 @@
 		
 		<h5>Postal Address</h5>
 		<form_v1:row label=" " >		
-			<field:checkbox xpath="${xpath}/postalMatch" value="Y" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
+			<field_v1:checkbox xpath="${xpath}/postalMatch" value="Y" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
 		</form_v1:row>
 		
 		<div id="${name}_postalGroup">			
@@ -72,7 +72,7 @@
 		
 		<div id="movingDateContainer">
 			<form_v1:row label="Move in date">
-				<field:basic_date xpath="${xpath}/movingDate" title="moving date" required="true" disableWeekends="true" maxDate="+60d" />
+				<field_v1:basic_date xpath="${xpath}/movingDate" title="moving date" required="true" disableWeekends="true" maxDate="+60d" />
 			</form_v1:row>
 		</div>
 		

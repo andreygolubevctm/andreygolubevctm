@@ -21,7 +21,7 @@
 
 <%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 <form_v2:row className="${vertical}-contact-details-optin-group" hideHelpIconCol="true">
-	<field_new:checkbox
+	<field_v2:checkbox
 		xpath="${xpath}"
 		value="Y"
 		className="validate"

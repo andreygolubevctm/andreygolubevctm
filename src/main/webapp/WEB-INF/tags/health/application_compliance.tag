@@ -9,7 +9,7 @@
 <health:privacy xpath="${xpath}/compliance" make_private="${callCentre}">
 	<health:credit_card_details xpath="${xpath}" />
 	<health:bank_details xpath="${xpath}/bank" />
-	<field:hidden xpath="${xpath}/policyDate" className="health_details-policyDate" />
+	<field_v1:hidden xpath="${xpath}/policyDate" className="health_details-policyDate" />
 </health:privacy>
 
 <simples:dialogue id="29" vertical="health" mandatory="true" />

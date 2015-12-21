@@ -20,28 +20,28 @@
 <form_v2:fieldset legend="Contact Details" id="${name}FieldSet">
 
 	<form_v2:row label="First Name" id="firstName">
-		<field:person_name xpath="quote/drivers/regular/firstname"
+		<field_v1:person_name xpath="quote/drivers/regular/firstname"
 			required="${mandatoryContactFieldsSplitTest}" title="the policy holder's first name" />
 	</form_v2:row>
 
 	<form_v2:row label="Last Name" id="lastName">
-		<field:person_name xpath="quote/drivers/regular/surname"
+		<field_v1:person_name xpath="quote/drivers/regular/surname"
 			required="${mandatoryContactFieldsSplitTest}" title="the policy holder's last name" />
 	</form_v2:row>
 
 	<form_v2:row label="Email Address" id="contactEmailRow">
 		<c:choose>
 			<c:when test="${emailHelperSplitTest eq true}">
-				<field_new:email_assisted xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" additionalAttributes=" data-rule-validateOkToEmail='true' " />
+				<field_v2:email_assisted xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 			</c:when>
 			<c:otherwise>
-				<field_new:email xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
+				<field_v2:email xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 			</c:otherwise>
 		</c:choose>
 	</form_v2:row>
 
 	<form_v2:row label="Contact Number" id="contactNoRow">
-		<field:contact_telno xpath="${xpath}/phone" required="false" id="bestNumber"
+		<field_v1:contact_telno xpath="${xpath}/phone" required="false" id="bestNumber"
 			className="bestNumber"
 			labelName="best number" validationAttribute=" data-rule-validateOkToCall='true' " />
 	</form_v2:row>
@@ -54,7 +54,7 @@
 	</c:set>
 
 	<form_v2:row label="OK to email" className="">
-		<field_new:array_radio xpath="quote/contact/marketing"
+		<field_v2:array_radio xpath="quote/contact/marketing"
 			required="false"
 			items="Y=Yes,N=No"
 			title="if OK to email" additionalAttributes=" data-rule-validateOkToEmailRadio='true' " />
@@ -62,7 +62,7 @@
 	</form_v2:row>
 
 	<form_v2:row label="OK to call" className="">
-		<field_new:array_radio xpath="quote/contact/oktocall"
+		<field_v2:array_radio xpath="quote/contact/oktocall"
 			required="false"
 			items="Y=Yes,N=No"
 			title="if OK to call" additionalAttributes=" data-rule-validateOkToCallRadio='true' " />
@@ -79,8 +79,8 @@
 			<c:set var="competitionLabel">
 				<content:get key="competitionCheckboxText"/>
 			</c:set>
-			<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
-			<field:hidden xpath="${xpath}/competition/previous" />
+			<field_v2:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
+			<field_v1:hidden xpath="${xpath}/competition/previous" />
 		</form_v2:row>
 	</c:if>
 	<%-- COMPETITION END --%>

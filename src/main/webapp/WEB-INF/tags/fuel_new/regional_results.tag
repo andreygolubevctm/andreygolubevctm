@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<core:js_template id="regional-results-template">
+<core_v1:js_template id="regional-results-template">
 
     {{ var general = Results.getReturnedGeneral(); }}
     {{ var hasSecondFuel = general.fuel2Text.length; }}
@@ -61,4 +61,4 @@
         </div>
     </div>
 
-</core:js_template>
+</core_v1:js_template>

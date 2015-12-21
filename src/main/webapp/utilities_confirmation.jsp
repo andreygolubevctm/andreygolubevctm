@@ -3,7 +3,7 @@
 
 <session:new verticalCode="UTILITIES" authenticated="true" />
 
-<core_new:quote_check quoteType="utilities" />
+<core_v2:quote_check quoteType="utilities" />
 <c:set var="callCentreNumber" scope="request"><content:get key="genericCallCentreNumber"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="genericCallCentreHelpNumber"/></c:set>
 
@@ -50,7 +50,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<core:whitelabeled_footer/>
+		<core_v1:whitelabeled_footer/>
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">

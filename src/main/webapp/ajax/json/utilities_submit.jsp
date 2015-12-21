@@ -30,7 +30,7 @@
 
         <%-- REGISTER MARKETING OPTIN IF REQUIRED --%>
         <c:if test="${not empty data['utilities/application/details/email']}">
-            <agg:write_email
+            <agg_v1:write_email
                     brand="${brand}"
                     vertical="${vertical}"
                     source="QUOTE"
@@ -122,12 +122,12 @@
                                 </c:set>
 
                                 ${logger.trace('WRITE CONFIRM. {}', log:kv('xmlData', xmlData))}
-                                <agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}"
+                                <agg_v1:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}"
                                                         xml_data="${xmlData}" />
-                                <agg:write_quote productType="UTILITIES" rootPath="utilities"/>
-                                <agg:write_touch touch="C" transaction_id="${tranId}"/>
+                                <agg_v1:write_quote productType="UTILITIES" rootPath="utilities"/>
+                                <agg_v1:write_touch touch="C" transaction_id="${tranId}"/>
                                 <c:if test="${tranId ne rootId}">
-                                    <agg:write_touch transaction_id="${rootId}" touch="C" />
+                                    <agg_v1:write_touch transaction_id="${rootId}" touch="C" />
                                 </c:if>
                                 <c:set var="json" value="${fn:substringAfter(results.toString(), '{')}" />
                                 <c:set var="json" value='{"confirmationkey":"${confirmationkey}",${json}' />

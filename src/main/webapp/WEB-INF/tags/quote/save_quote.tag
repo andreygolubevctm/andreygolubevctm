@@ -939,7 +939,7 @@ SaveQuote = {
 			</c:choose>
 			
 			<form_v1:row label="Your email address" horizontal="false" className="credentials inline-state">
-				<field:contact_email
+				<field_v1:contact_email
 							xpath="save/email"
 							required="false"
 							title="your email address"
@@ -950,19 +950,19 @@ SaveQuote = {
 			<c:if test="${!isOperator}">
 				<div class="password-row" >
 					<form_v1:row label="Set password" horizontal="false" className="credentials ">
-						<field:password xpath="save/password" required="false"
+						<field_v1:password xpath="save/password" required="false"
 						title="your password" minLength="6" />
 			</form_v1:row>
 			
 					<form_v1:row label="Confirm password" horizontal="false" className="credentials required" id="save_confirm_row">
-						<field:password xpath="save/confirm" required="false" title="your password for confirmation"
+						<field_v1:password xpath="save/confirm" required="false" title="your password for confirmation"
 						onKeyUp="SaveQuote.confirmKeyChange(event);"/>
 			</form_v1:row>	
 				</div>
 			</c:if>
 						
 			<div class="save_marketing_row">
-				<field:customisable-checkbox
+				<field_v1:customisable-checkbox
 					theme="lightGrey" xpath="save/marketing"
 					value="Y" required="false"
 					className="marketing"
@@ -987,13 +987,13 @@ SaveQuote = {
 			<form novalidate name="saveQuoteCallMeBackForm" action="none" method="POST" id="saveQuoteCallMeBackForm" style="">
 				<h5>Get a call back</h5>
 				<form_v1:row label="Your name" horizontal="false">
-					<field:input xpath="callmeback/save/name" title="name" required="false"  />
+					<field_v1:input xpath="callmeback/save/name" title="name" required="false"  />
 				</form_v1:row>
 						<form_v1:row label="Your best contact number" horizontal="false">
-							<field:contact_telno xpath="callmeback/save/phone" required="true" title="contact number" />
+							<field_v1:contact_telno xpath="callmeback/save/phone" required="true" title="contact number" />
 						</form_v1:row>
 						<form_v1:row label="Best time to contact you" horizontal="false">
-							<field:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)"
+							<field_v1:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)"
 								xpath="callmeback/save/time" title="Best time to call"
 								required="false" />
 						</form_v1:row>

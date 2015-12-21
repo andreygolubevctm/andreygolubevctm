@@ -14,7 +14,7 @@
 <%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 <%--
 <form_v2:row className="" hideHelpIconCol="true">
-	<field_new:checkbox
+	<field_v2:checkbox
 			xpath="quote/contact/oktocall"
 		value="Y"
 		className="validate"
@@ -37,7 +37,7 @@
 
 <%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 	<form_v2:row className="" hideHelpIconCol="true">
-	<field_new:checkbox
+	<field_v2:checkbox
 			xpath="quote/privacyoptin"
 		value="Y"
 		className="validate"
@@ -46,8 +46,8 @@
 			title="${genericOptin}"
 		errorMsg="Please agree to the Terms &amp; Conditions" />
 
-		<field:hidden xpath="quote/terms" defaultValue="N" />
-		<field:hidden xpath="quote/fsg" defaultValue="N" />
+		<field_v1:hidden xpath="quote/terms" defaultValue="N" />
+		<field_v1:hidden xpath="quote/fsg" defaultValue="N" />
 </form_v2:row>
 
 </form_v2:fieldset>

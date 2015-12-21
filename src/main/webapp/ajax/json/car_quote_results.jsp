@@ -66,7 +66,7 @@
 
 <%-- Fix the commencement date if prior to the current date --%>
 <c:set var="sanitisedCommencementDate">
-	<agg:sanitiseCommencementDate commencementDate="${data.quote.options.commencementDate}" dateFormat="dd/MM/yyyy" />
+	<agg_v1:sanitiseCommencementDate commencementDate="${data.quote.options.commencementDate}" dateFormat="dd/MM/yyyy" />
 </c:set>
 <c:if test="${sanitisedCommencementDate ne data.quote.options.commencementDate}">
 	<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${sanitisedCommencementDate}" />
@@ -74,7 +74,7 @@
 </c:if>
 
 <%-- Save data --%>
-<core:transaction touch="R" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
+<core_v1:transaction touch="R" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
 
 <%-- Fetch and store the transaction id --%>
 <c:set var="tranId" value="${data['current/transactionId']}" />
@@ -192,14 +192,14 @@
 				</c:set>
 
 				<%-- Write to the stats database --%>
-				<agg:write_stats rootPath="quote" tranId="${tranId}" debugXml="${stats}" />
+				<agg_v1:write_stats rootPath="quote" tranId="${tranId}" debugXml="${stats}" />
 
 				${logger.trace('Got stats. {},{}', log:kv('resultXml', resultXml), log:kv('stats', stats))}
 				<%-- Return the results as json --%>
 
 				<%-- Calculate the end valid date for these quotes --%>
 				<c:set var="validateDate">
-					<agg:email_valid_date dateFormat="dd MMMMM yyyy" />
+					<agg_v1:email_valid_date dateFormat="dd MMMMM yyyy" />
 				</c:set>
 
 				<%-- Construct the best price lead info - only if opted in for call --%>
@@ -433,14 +433,14 @@
 					</c:when>
 					<c:otherwise>
 						<%-- Write result details to the database for potential later use when sending emails etc... FYI - NEVER STORE PREMIUM IN THE DATABASE FOR CAR VERTICAL --%>
-						<agg:write_result_details transactionId="${tranId}" recordXPaths="leadfeedinfo,validateDate/display,validateDate/normal,productId,productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="headline/lumpSumTotal" baseXmlNode="soap-response/results/result" />
+						<agg_v1:write_result_details transactionId="${tranId}" recordXPaths="leadfeedinfo,validateDate/display,validateDate/normal,productId,productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="headline/lumpSumTotal" baseXmlNode="soap-response/results/result" />
 						${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 					</c:otherwise>
 				</c:choose>
 
 			</c:when>
 			<c:otherwise>
-				<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="car_quote_results_jsp"/>
+				<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="car_quote_results_jsp"/>
 			</c:otherwise>
 		</c:choose>
 

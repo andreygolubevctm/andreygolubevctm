@@ -157,7 +157,7 @@
 <%-- HTML --%>
 <div id="discountDialog" class="discountDialog"></div>
 
-<core:js_template id="discount-template">
+<core_v1:js_template id="discount-template">
 
 	<div class="discount-template">
 
@@ -169,9 +169,9 @@
 						<h3>[#= retailerName #] - [#= planName #]</h3>
 						<h5>Discount Details</h5>
 					</div>
-					<core:clear />
+					<core_v1:clear />
 				</div>
-				<core:clear />
+				<core_v1:clear />
 
 				<div class="discount_details">
 					<p id="DiscountDetails_[#= planId #]">[#= discountDetails #]</p>
@@ -184,17 +184,17 @@
 			</div>
 	</div>
 
-</core:js_template>
+</core_v1:js_template>
 
 
-<core:js_template id="discount-price-info-rate-template">
+<core_v1:js_template id="discount-price-info-rate-template">
 	<tr>
 		<td>[#= Description  #]</td>
 		<td>[#= Amount #] [#= UOM #]</td>
 		<td>[#= GSTAmount #]  [#= UOM #]</td>
 		<td>[#= Period #]</td>
 	</tr>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- JAVASCRIPT --%>
 <go:script marker="jquery-ui">

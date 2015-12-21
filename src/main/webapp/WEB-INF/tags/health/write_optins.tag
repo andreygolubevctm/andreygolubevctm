@@ -14,7 +14,7 @@
 	is added again in the application phase --%>
 <c:if test="${not empty userDetails.questionSet.optOutEmailHistory}">
 	<c:forTokens items="${userDetails.questionSet.optOutEmailHistory}" delims="," var="email">
-		<agg:write_email
+		<agg_v1:write_email
 				brand="${brand}"
 				vertical="${userDetails.rootPath}"
 				source="QUOTE"
@@ -26,7 +26,7 @@
 </c:if>
 <c:if test="${not empty userDetails.application.optOutEmailHistory}">
 	<c:forTokens items="${userDetails.application.optOutEmailHistory}" delims="," var="email">
-			<agg:write_email
+			<agg_v1:write_email
 				brand="${brand}"
 				vertical="${userDetails.rootPath}"
 				source="QUOTE"
@@ -39,7 +39,7 @@
 
 <%-- 2nd step - Add optins for secondary email fields --%>
 <c:if test="${not empty userDetails.questionSet.emailAddressSecondary}">
-	<agg:write_email
+	<agg_v1:write_email
 			brand="${brand}"
 			vertical="${userDetails.rootPath}"
 			source="QUOTE"
@@ -49,7 +49,7 @@
 			items="marketing=Y" />
 </c:if>
 <c:if test="${not empty userDetails.application.emailAddressSecondary}">
-	<agg:write_email
+	<agg_v1:write_email
 			brand="${brand}"
 			vertical="${userDetails.rootPath}"
 			source="APPLICATION"
@@ -61,7 +61,7 @@
 
 <%-- 3rd step - Add primary email fields --%>
 <c:if test="${not empty userDetails.questionSet.emailAddress}">
-		<agg:write_email
+		<agg_v1:write_email
 			brand="${brand}"
 			vertical="${userDetails.rootPath}"
 			source="QUOTE"
@@ -71,7 +71,7 @@
 			items="marketing=${userDetails.questionSet.optinEmailAddress},okToCall=${userDetails.questionSet.okToCall}" />
 </c:if>
 <c:if test="${not empty userDetails.application.emailAddress}">
-	<agg:write_email
+	<agg_v1:write_email
 			brand="${brand}"
 			vertical="${userDetails.rootPath}"
 			source="APPLICATION"
@@ -89,7 +89,7 @@
 	</c:choose>
 </c:set>
 <c:if test="${not empty userDetails.questionSet.phoneOther}">
-	<agg:write_stamp
+	<agg_v1:write_stamp
 		action="toggle_okToCall"
 		vertical="${fn:toLowerCase(userDetails.rootPath)}"
 		target="${userDetails.questionSet.phoneOther}"
@@ -98,7 +98,7 @@
 	/>
 </c:if>
 <c:if test="${not empty userDetails.questionSet.phoneMobile}">
-	<agg:write_stamp
+	<agg_v1:write_stamp
 		action="toggle_okToCall"
 		vertical="${fn:toLowerCase(userDetails.rootPath)}"
 		target="${userDetails.questionSet.phoneMobile}"
@@ -114,7 +114,7 @@
 	</c:choose>
 </c:set>
 <c:if test="${not empty userDetails.application.phoneOther}">
-	<agg:write_stamp
+	<agg_v1:write_stamp
 		action="toggle_okToCall"
 		vertical="${fn:toLowerCase(userDetails.rootPath)}"
 		target="${userDetails.application.phoneOther}"
@@ -123,7 +123,7 @@
 	/>
 </c:if>
 <c:if test="${not empty userDetails.application.phoneMobile}">
-	<agg:write_stamp
+	<agg_v1:write_stamp
 		action="toggle_okToCall"
 		vertical="${fn:toLowerCase(userDetails.rootPath)}"
 		target="${userDetails.application.phoneMobile}"

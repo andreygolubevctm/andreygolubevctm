@@ -62,9 +62,9 @@
 
 		</article>
 
-		<agg:footer_outer>
+		<agg_v1:footer_outer>
 			<jsp:invoke fragment="footer" />
-		</agg:footer_outer>
+		</agg_v1:footer_outer>
 	</jsp:body>
 
 </layout:page>

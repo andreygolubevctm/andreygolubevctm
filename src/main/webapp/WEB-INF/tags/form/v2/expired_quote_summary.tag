@@ -32,7 +32,7 @@
 						<div class="form-group row fieldrow">
 							<label for="quote_options_commencementDate_mobile" class="column col-xs-12 col-sm-7 control-label">Please select a new commencement date</label>
 							<div class="column col-xs-12 col-sm-5 row-content">
-								<field_new:mobile_commencement_date_dropdown xpath="${xpath}" required="true" title="commencement" startDate="${data[xpath]}" />
+								<field_v2:mobile_commencement_date_dropdown xpath="${xpath}" required="true" title="commencement" startDate="${data[xpath]}" />
 							</div>
 							<div class="fieldrow_legend" id="quote_options_commencementDate_mobile_row_legend"></div>
 						</div>

@@ -3,20 +3,20 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- The following are hidden fields used by filters --%>
-<field:hidden xpath="home/paymentType" defaultValue="annual" />
-<field:array_select
+<field_v1:hidden xpath="home/paymentType" defaultValue="annual" />
+<field_v1:array_select
 	items="annual=Annual,monthly=Monthly"
 	xpath="filter/paymentType"
 	title=""
 	required=""
 	className="hidden" />
 
-<field:hidden xpath="home/homeExcess" />
-<field:hidden xpath="home/contentsExcess" />
-<field:hidden xpath="home/baseHomeExcess" constantValue="500" />
-<field:hidden xpath="home/baseContentsExcess" constantValue="500" />
+<field_v1:hidden xpath="home/homeExcess" />
+<field_v1:hidden xpath="home/contentsExcess" />
+<field_v1:hidden xpath="home/baseHomeExcess" constantValue="500" />
+<field_v1:hidden xpath="home/baseContentsExcess" constantValue="500" />
 
-<field:additional_excess
+<field_v1:additional_excess
 		defaultVal="500"
 		increment="100"
 		minVal="100"
@@ -27,7 +27,7 @@
 		omitPleaseChoose="Y"
 		className="hidden"
 		additionalValues="750,1000,1500,2000,3000,4000,5000"/>
-<field:additional_excess
+<field_v1:additional_excess
 		defaultVal="500"
 		increment="100"
 		minVal="100"
@@ -77,13 +77,13 @@
 			<div class="results-table"></div>
 		</div>
 
-		<core:clear />
+		<core_v1:clear />
 
 		<div class="featuresFooterPusher"></div>
 	</div>
 
 <%-- DEFAULT RESULT ROW --%>
-<core:js_template id="result-template">
+<core_v1:js_template id="result-template">
 
 	{{ var productTitle = (typeof obj.productName !== 'undefined') ? obj.productName : 'Unknown product name'; }}
 	{{ var productDescription = (typeof obj.productDescription !== 'undefined') ? obj.productDescription : 'Unknown product name'; }}
@@ -274,13 +274,13 @@
 		</div>
 
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- FEATURE TEMPLATE --%>
 	<features:resultsItemTemplate />
 
 <%-- UNAVAILABLE ROW --%>
-<core:js_template id="unavailable-template">
+<core_v1:js_template id="unavailable-template">
 	{{ var productTitle = (typeof obj.productName !== 'undefined') ? obj.productName : 'Unknown product name'; }}
 	{{ var productDescription = (typeof obj.productDescription !== 'undefined') ? obj.productDescription : 'Unknown product name'; }}
 
@@ -313,10 +313,10 @@
 			</div>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- UNAVAILABLE COMBINED ROW --%>
-<core:js_template id="unavailable-combined-template">
+<core_v1:js_template id="unavailable-combined-template">
 {{ var template = $("#provider-logo-template").html(); }}
 {{ var logo = _.template(template); }}
 {{ var logos = ''; }}
@@ -340,10 +340,10 @@
 			</div>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- ERROR ROW --%>
-<core:js_template id="error-template">
+<core_v1:js_template id="error-template">
 	{{ var productTitle = (typeof obj.productName !== 'undefined') ? obj.productName : 'Unknown product name'; }}
 	{{ var productDescription = (typeof obj.productDescription !== 'undefined') ? obj.productDescription : 'Unknown product name'; }}
 
@@ -375,7 +375,7 @@
 			</div>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- NO RESULTS --%>
 <div class="hidden">
@@ -388,16 +388,16 @@
 </div>
 
 <%-- Logo template --%>
-<core:js_template id="provider-logo-template">
+<core_v1:js_template id="provider-logo-template">
 	{{ var img = obj.brandCode; }}
 	{{ if ((typeof img === 'undefined' || img === '' || img === null) && obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
 	<div class="companyLogo logo_{{= img }}"></div>
-</core:js_template>
+</core_v1:js_template>
 
 </agg_new_results:results>
 
 <%-- Price template --%>
-<core:js_template id="monthly-price-template">
+<core_v1:js_template id="monthly-price-template">
 	<div class="frequency monthly clearfix" data-availability="{{= obj.available }}">
 		<div class="frequencyAmount">{{= obj.price.monthlyPremiumFormatted }}</div>
 		<div class="frequencyTitle">Monthly Price</div>
@@ -406,18 +406,18 @@
 			<span class="nowrap"><span class="firstPayment">Total: {{= obj.price.annualisedMonthlyPremiumFormatted }}</span></span>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- Price template --%>
-<core:js_template id="annual-price-template">
+<core_v1:js_template id="annual-price-template">
 	<div class="frequency annual clearfix" data-availability="{{= obj.available }}">
 		<div class="frequencyAmount">{{= obj.price.annualPremiumFormatted }}</div>
 		<div class="frequencyTitle">Annual Price</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- Template for H&C results list. --%>
-<core:js_template id="compare-basket-features-item-template">
+<core_v1:js_template id="compare-basket-features-item-template">
 {{ var tFrequency = Results.getFrequency(); }}
 {{ var monthlyHidden = tFrequency == 'monthly' ? '' : 'displayNone'; }}
 {{ var annualHidden = tFrequency == 'annual' ? '' : 'displayNone'; }}
@@ -442,9 +442,9 @@
 		</span>
 	</li>
 {{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="compare-basket-price-item-template">
+<core_v1:js_template id="compare-basket-price-item-template">
 {{ var tFrequency = Results.getFrequency(); }}
 {{ var tDisplayMode = Results.getDisplayMode(); }}
 {{ var monthlyHidden = tFrequency == 'monthly' ? '' : 'displayNone'; }}
@@ -467,8 +467,8 @@
 		<span class="icon icon-cross remove-compare" data-productId="{{= products[i].productId }}" title="Remove from shortlist"></span>
 	</li>
 {{ } }}
-</core:js_template>
-<core:js_template id="compare-basket-features-template">
+</core_v1:js_template>
+<core_v1:js_template id="compare-basket-features-template">
 <div class="compare-basket">
 {{ if(comparedResultsCount === 0) { }}
 	<p>
@@ -512,8 +512,8 @@
 <div class="expand-collapse-toggle small hidden-xs">
 	<a href="javascript:;" class="expandAllFeatures">Expand All</a> / <a href="javascript:;" class="collapseAllFeatures active">Collapse All</a>
 </div>
-</core:js_template>
-<core:js_template id="compare-basket-price-template">
+</core_v1:js_template>
+<core_v1:js_template id="compare-basket-price-template">
 	{{ if(comparedResultsCount > 0) { }}
 		{{ var template = $("#compare-basket-price-item-template").html(); }}
 		{{ var htmlTemplate = _.template(template); }}
@@ -529,4 +529,4 @@
 			</ul>
 		{{ } }}
 	{{ } }}
-</core:js_template>
+</core_v1:js_template>

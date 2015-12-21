@@ -12,7 +12,7 @@
 <%-- HTML --%>
 <div id="${name}" class="health_application">
 	<health_new:person_details xpath="${xpath}/primary" title="Your" id="primary" />
-	<core:clear />
+	<core_v1:clear />
 	<health_new:person_details xpath="${xpath}/partner" title="Your Partner's" id="partner" />
-	<core:clear />
+	<core_v1:clear />
 </div>

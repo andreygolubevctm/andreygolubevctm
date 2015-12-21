@@ -34,12 +34,12 @@
 	</c:when>
 	<%-- Only render a hidden field when the checkbox has already been selected --%>
 	<c:when test="${data[xpath] eq 'Y'}">
-		<field:hidden xpath="${xpath}" defaultValue="Y" constantValue="Y" />
+		<field_v1:hidden xpath="${xpath}" defaultValue="Y" constantValue="Y" />
 	</c:when>
 	<%-- OTHERS --%>
 	<c:otherwise>
 		<form_v1:row label="" id="${name}-row">
-			<field:checkbox
+			<field_v1:checkbox
 				xpath="${xpath}"
 				value="Y"
 				title="${label_text}"

@@ -17,10 +17,10 @@
 
 <%-- HTML --%>
 <div id="${name}" class="health_popup_payment_ipp hidden" data-provide="payment-ipp">
-	<field:hidden xpath="${xpath}/tokenisation" required="false" className="payment-ipp-tokenisation" />
+	<field_v1:hidden xpath="${xpath}/tokenisation" required="false" className="payment-ipp-tokenisation" />
 
 	<c:set var="fieldXpath" value="${xpath}/maskedNumber" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Credit Card Number">
-		<field_new:input xpath="${fieldXpath}" className="payment-ipp-maskedNumber sessioncamexclude" required="true" title="your secure credit card details" readOnly="${false}" />
+		<field_v2:input xpath="${fieldXpath}" className="payment-ipp-maskedNumber sessioncamexclude" required="true" title="your secure credit card details" readOnly="${false}" />
 	</form_v2:row>
 </div>

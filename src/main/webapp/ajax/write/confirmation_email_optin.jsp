@@ -43,7 +43,7 @@
 				<c:otherwise>N</c:otherwise>
 			</c:choose>
 		</c:set>
-		<agg:write_email
+		<agg_v1:write_email
 			brand="${brand}"
 			vertical="${vertical}"
 			source="${source}"

@@ -4,7 +4,7 @@
 <c:set var="xpath" value="quote" />
 
 <%-- Smaller Templates to reduce duplicate code --%>
-<core:js_template id="car-offline-discount-template">
+<core_v1:js_template id="car-offline-discount-template">
 <%-- Flag to identify Auto and General product (via the service property) --%>
 {{ obj.isAutoAndGeneral = obj.service.search(/agis_/i) === 0 }}
 <!-- This flag is for specific A&G brands which only feature online products - the balance of
@@ -42,9 +42,9 @@
 		{{ } }}
 	</div>
 {{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="car-online-discount-template">
+<core_v1:js_template id="car-online-discount-template">
 <%-- If there's a discount.online of e.g. 10 or 20 (and is not an A&G brand),
 	show x% discount included in price shown. If not, show headline.feature --%>
 {{ obj.onlinePromotionText = ''; }}
@@ -68,9 +68,9 @@
 		{{ } }}
 	</div>
 {{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="car-call-header-template">
+<core_v1:js_template id="car-call-header-template">
 
 	{{ var template = $("#provider-logo-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
@@ -88,9 +88,9 @@
 			<div class="quoteNumber">{{= leadNo }}</div>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="car-call-right-template">
+<core_v1:js_template id="car-call-right-template">
 
 	<div class="text-center">
 		<h4>Continue Online</h4>
@@ -101,9 +101,9 @@
 			{{= onlineDiscountTemplate }}
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="car-call-back-template">
+<core_v1:js_template id="car-call-back-template">
 	<!--  text center mobile -->
 	<h4>Get a Call Back</h4>
 	<div class="row">
@@ -121,7 +121,7 @@
 					<c:set var="fieldXpath" value="${xpath}/CrClientName" />
 					<label for="quote_CrClientName" class="col-lg-4 col-sm-4 col-xs-12 control-label">Your Name</label>
 					<div class="col-lg-8 col-sm-8 col-xs-12  row-content">
-						<field:person_name xpath="${fieldXpath}" required="true" title="Your name" className="contactField" />
+						<field_v1:person_name xpath="${fieldXpath}" required="true" title="Your name" className="contactField" />
 						<div class="fieldrow_legend" id="_row_legend"></div>
 					</div>
 				</div>
@@ -129,7 +129,7 @@
 					<c:set var="fieldXpath" value="${xpath}/CrClientTel" />
 					<label for="quote_CrClientTelinput" class="col-lg-4 col-sm-4 col-xs-12 control-label">Your Contact Number</label>
 					<div class="col-lg-8 col-sm-8 col-xs-12  row-content">
-						<field:contact_telno xpath="${fieldXpath}" required="true" title="Your contact number" className="contactField" />
+						<field_v1:contact_telno xpath="${fieldXpath}" required="true" title="Your contact number" className="contactField" />
 						<div class="fieldrow_legend" id="_row_legend"></div>
 					</div>
 				</div>
@@ -149,9 +149,9 @@
 			<a class="btn btn-call-inverse btn-block btn-call-actions btn-calldirect" data-productId="{{= obj.productId }}" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="car-call-direct-template">
+<core_v1:js_template id="car-call-direct-template">
 	<!--  text center mobile -->
 	{{ var noWhitespaceNum = typeof obj.telNo == 'string' ? obj.telNo.replace(/\s/g, '') : obj.telNo; }}
 	<h4>Call Insurer Direct</h4>
@@ -187,8 +187,8 @@
 			</div>
 		</div>
 	{{ } }}
-</core:js_template>
-<core:js_template id="car-call-modal-template">
+</core_v1:js_template>
+<core_v1:js_template id="car-call-modal-template">
 	<%-- Set up Reusable Templates --%>
 	{{ var template = $("#car-call-header-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
@@ -235,4 +235,4 @@
 			</div>
 		{{ } }}
 	</div>
-</core:js_template>
+</core_v1:js_template>

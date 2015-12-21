@@ -17,9 +17,9 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="GTMEnabled" value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />
 
-<core:doctype />
+<core_v1:doctype />
 <go:html>
-	<core:head quoteType="${xpath}" title="Life Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
+	<core_v1:head quoteType="${xpath}" title="Life Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
 	
 	<body class="life stage-0">
 
@@ -34,13 +34,13 @@
 	</c:if>
 
 		<%-- SuperTag Top Code --%>
-		<agg:supertag_top type="Life"/>		
+		<agg_v1:supertag_top type="Life"/>
 
 		<%-- History handler --%>
 		<life:history />
 
 		<%-- Transferring popup holder --%>
-		<core:transferring />
+		<core_v1:transferring />
 
 		<form_v1:form action="health_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 
@@ -48,7 +48,7 @@
 			<life:lifebroker_ref label="life" />
 					
 			<form_v1:operator_id xpath="${xpath}/operatorid" />
-			<core:referral_tracking vertical="${xpath}" />
+			<core_v1:referral_tracking vertical="${xpath}" />
 			
 			<form_v1:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="true"/>
 			<life:progress_bar />
@@ -117,10 +117,10 @@
 		
 		<life:footer />
 		
-		<core:closing_body>
-			<agg:includes supertag="true" />
+		<core_v1:closing_body>
+			<agg_v1:includes supertag="true" />
 		<life:includes />
-		</core:closing_body>
+		</core_v1:closing_body>
 		
 	</body>
 	

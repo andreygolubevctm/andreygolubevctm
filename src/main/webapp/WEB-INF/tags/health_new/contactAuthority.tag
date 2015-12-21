@@ -13,7 +13,7 @@
 
 	<c:set var="fieldXpath" value="${xpath}" />
 	<form_v3:row fieldXpath="${fieldXpath}" label='Do you want to be contacted by <span>Provider</span>?'>
-		<field_new:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="if you wish to be contacted." required="true" className="${name}-contact-authority" id="${name}_contact-authority"/>
+		<field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="if you wish to be contacted." required="true" className="${name}-contact-authority" id="${name}_contact-authority"/>
 	</form_v3:row>
 
 </div>

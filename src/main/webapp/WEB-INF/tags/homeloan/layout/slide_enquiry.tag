@@ -18,8 +18,8 @@
 		<jsp:body>
 
 			<layout_v1:slide_content>
-					<field:hidden xpath="${xpath}/product/id" defaultValue="" />
-					<field:hidden xpath="${xpath}/product/lender" defaultValue="" />
+					<field_v1:hidden xpath="${xpath}/product/id" defaultValue="" />
+					<field_v1:hidden xpath="${xpath}/product/lender" defaultValue="" />
 
 					<ui:bubble variant="chatty">
 						<h4>Ready to chat?</h4>

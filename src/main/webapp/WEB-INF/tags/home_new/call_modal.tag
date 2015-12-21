@@ -5,7 +5,7 @@
 
 
 
-<core:js_template id="home-promotion-offer-template">
+<core_v1:js_template id="home-promotion-offer-template">
 {{ obj.promotionText = (typeof obj.headline !== 'undefined' && typeof obj.headline.offer !== 'undefined' && obj.headline.offer.length > 0) ? obj.headline.offer : ''; }}
 {{ obj.offerTermsContent = (typeof obj.headline !== 'undefined' && typeof obj.headline.terms !== 'undefined' && obj.headline.terms.length > 0) ? obj.headline.terms : ''; }}
 
@@ -20,9 +20,9 @@
 	</div>
 {{ } }}
 
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="home-online-discount-template">
+<core_v1:js_template id="home-online-discount-template">
 <%-- If there's a discount.online of e.g. 10 or 20, show x% discount included in price shown. If not, show headline.feature --%>
 {{ obj.onlinePromotionText = ''; }}
 {{ obj.onlineText = (typeof obj.discount !== 'undefined' &&	typeof obj.discount.offline !== 'undefined' && typeof obj.discount.online !== 'undefined' && obj.discount.online > 0 && obj.discount.offline > 0 && parseInt(obj.discount.online,10) > parseInt(obj.discount.offline,10)) ? obj.discount.online : ''; }}
@@ -42,9 +42,9 @@
 		<span class="onlineOfferText">Continue Online</span>
 	</div>
 {{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="home-call-header-template">
+<core_v1:js_template id="home-call-header-template">
 
 	{{ var template = $("#provider-logo-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
@@ -62,9 +62,9 @@
 			<div class="quoteNumber">{{= leadNo }}</div>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="home-call-bottom-template">
+<core_v1:js_template id="home-call-bottom-template">
 
 	{{ if($.trim(obj.onlineDiscountTemplate) !== '' && obj.transferURL !== ""){ }}
 		<div class="col-xs-12 col-sm-6 text-right">
@@ -84,9 +84,9 @@
 	<div class="col-xs-8 visible-xs push-top-15">
 		{{= promotionOfferTemplate }}
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="home-call-back-template">
+<core_v1:js_template id="home-call-back-template">
 	<!--  text center mobile -->
 	<h4>Get a Call Back</h4>
 	<div class="row">
@@ -104,7 +104,7 @@
 					<c:set var="fieldXpath" value="${xpath}/CrClientName" />
 					<label for="home_CrClientName" class="col-lg-4 col-sm-4 col-xs-12 control-label">Your Name</label>
 					<div class="col-lg-8 col-sm-8 col-xs-12  row-content">
-						<field:person_name xpath="${fieldXpath}" required="true" title="Your name" className="contactField" />
+						<field_v1:person_name xpath="${fieldXpath}" required="true" title="Your name" className="contactField" />
 						<div class="fieldrow_legend" id="_row_legend"></div>
 					</div>
 				</div>
@@ -112,7 +112,7 @@
 					<c:set var="fieldXpath" value="${xpath}/CrClientTel" />
 					<label for="home_CrClientTelinput" class="col-lg-4 col-sm-4 col-xs-12 control-label">Your Contact Number</label>
 					<div class="col-lg-8 col-sm-8 col-xs-12  row-content">
-						<field:contact_telno xpath="${fieldXpath}" required="true" title="Your contact number" className="contactField" />
+						<field_v1:contact_telno xpath="${fieldXpath}" required="true" title="Your contact number" className="contactField" />
 						<div class="fieldrow_legend" id="_row_legend"></div>
 					</div>
 				</div>
@@ -132,9 +132,9 @@
 			<a class="btn btn-call-inverse btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="home-call-direct-template">
+<core_v1:js_template id="home-call-direct-template">
 	<!--  text center mobile -->
 	{{ var noWhitespaceNum = typeof obj.telNo == 'string' ? obj.telNo.replace(/\s/g, '') : obj.telNo; }}
 	<div class="row push-top-10">
@@ -180,8 +180,8 @@
 			{{ } }}
 		</div>
 	</div>
-</core:js_template>
-<core:js_template id="home-call-modal-template">
+</core_v1:js_template>
+<core_v1:js_template id="home-call-modal-template">
 	<%-- Set up Reusable Templates --%>
 	{{ var template = $("#home-call-header-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
@@ -234,4 +234,4 @@
 			</div>
 		{{ } }}
 	</div>
-</core:js_template>
+</core_v1:js_template>

@@ -14,7 +14,7 @@
     </c:when>
     <c:when test="${param.incrementTransactionId == true}">
         <c:set var="id_return">
-            <core:get_transaction_id quoteType="travel" id_handler="increment_tranId" transactionId="${data.current.transactionId}" />
+            <core_v1:get_transaction_id quoteType="travel" id_handler="increment_tranId" transactionId="${data.current.transactionId}" />
         </c:set>
     </c:when>
     <c:otherwise>
@@ -24,7 +24,7 @@
 
 
 <%-- Save data --%>
-<core:transaction touch="R" noResponse="true"  />
+<core_v1:transaction touch="R" noResponse="true"  />
 
 
 <jsp:forward page="/rest/travel/quote/get.json"/>

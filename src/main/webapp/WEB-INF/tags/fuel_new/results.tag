@@ -17,11 +17,11 @@
 
         <div class="resultsOverflow">
             <div class="results-table">
-                <core_new:show_more_quotes_button />
+                <core_v2:show_more_quotes_button />
             </div>
         </div>
 
-        <core:clear />
+        <core_v1:clear />
 
         <div id="provider-disclaimer" class="short-disclaimer">
             <p><span class="hidden">Last updated <span class="time"></span> ago. </span><span class="supplier">Data supplied by Motormouth</span></p>
@@ -30,7 +30,7 @@
         <div class="featuresFooterPusher"></div>
     </div>
 
-    <core:js_template id="result-template">
+    <core_v1:js_template id="result-template">
         <div class="result-row available result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
             <div class="result">
                 <div class="resultInsert priceMode">
@@ -80,15 +80,15 @@
             </div>
             <%-- END XS Bottom Row --%>
         </div>
-    </core:js_template>
+    </core_v1:js_template>
 
-    <core:js_template id="unavailable-combined-template">
+    <core_v1:js_template id="unavailable-combined-template">
         <div class="result-row result_unavailable_combined notfiltered" data-available="N" style="display:block" data-position="{{= obj.length }}" data-sort="{{= obj.length }}">
             <div class="result"></div>
         </div>
-    </core:js_template>
+    </core_v1:js_template>
 
-    <core:js_template id="error-template">
+    <core_v1:js_template id="error-template">
         <div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="E">
             <div class="result">
                 <div class="resultInsert featuresMode">
@@ -100,11 +100,11 @@
                 <div class="resultInsert priceMode"></div>
             </div>
         </div>
-    </core:js_template>
+    </core_v1:js_template>
 
-    <core:js_template id="snapshot-template">
+    <core_v1:js_template id="snapshot-template">
         {{= data.fuelTypes }} in and around <br> <strong>{{= data.location }}</strong>
-    </core:js_template>
+    </core_v1:js_template>
 
     <%-- NO RESULTS --%>
     <div class="hidden">

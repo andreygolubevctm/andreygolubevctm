@@ -31,7 +31,7 @@
 
         <div class="resultsOverflow">
             <div class="results-table">
-                <core_new:show_more_quotes_button />
+                <core_v2:show_more_quotes_button />
             </div>
         </div>
         <p class="utils-disclaimer">
@@ -39,7 +39,7 @@
             postcode and energy network.
             Costs and savings include GST & are effective as at <fmt:formatDate value="${now}" pattern="dd/MM/yyyy"/>.
         </p>
-        <core:clear/>
+        <core_v1:clear/>
         <a href="javascript:;" class="btn btn-primary btn-change-type"> Change fuel type</a>
         <utilities_new:change_type />
 
@@ -48,7 +48,7 @@
 
 
     <%-- DEFAULT RESULT ROW --%>
-    <core:js_template id="result-template">
+    <core_v1:js_template id="result-template">
         {{ var productBrand = (typeof obj.retailerName !== 'undefined') ? obj.retailerName : 'Unknown brand name'; }}
         {{ var productTitle = (typeof obj.planName !== 'undefined') ? obj.planName : 'Unknown product name'; }}
 
@@ -275,13 +275,13 @@
             </div>
 
         </div>
-    </core:js_template>
+    </core_v1:js_template>
 
     <%-- FEATURE TEMPLATE --%>
-    <core:js_template id="feature-template"></core:js_template>
+    <core_v1:js_template id="feature-template"></core_v1:js_template>
 
     <%-- UNAVAILABLE ROW --%>
-    <core:js_template id="unavailable-template">
+    <core_v1:js_template id="unavailable-template">
         {{ var productTitle = (typeof obj.planName !== 'undefined') ? obj.planName : 'Unknown product name'; }}
         {{ var productDescription = (typeof obj.planName !== 'undefined') ? obj.planName : 'Unknown product name'; }}
 
@@ -312,10 +312,10 @@
                 </div>
             </div>
         </div>
-    </core:js_template>
+    </core_v1:js_template>
 
     <%-- UNAVAILABLE COMBINED ROW --%>
-    <core:js_template id="unavailable-combined-template">
+    <core_v1:js_template id="unavailable-combined-template">
         {{ var template = $("#provider-logo-template").html(); }}
         {{ var logo = _.template(template); }}
         {{ var logos = ''; }}
@@ -340,10 +340,10 @@
                 </div>
             </div>
         </div>
-    </core:js_template>
+    </core_v1:js_template>
 
     <%-- ERROR ROW --%>
-    <core:js_template id="error-template">
+    <core_v1:js_template id="error-template">
         {{ var productTitle = (typeof obj.planName !== 'undefined') ? obj.planName : 'Unknown product name'; }}
         {{ var productDescription = (typeof obj.planName !== 'undefined') ? obj.planName : 'Unknown product name'; }}
 
@@ -376,7 +376,7 @@
                 </div>
             </div>
         </div>
-    </core:js_template>
+    </core_v1:js_template>
 
     <%-- NO RESULTS --%>
     <div class="hidden">
@@ -392,11 +392,11 @@
     </div>
 
     <%-- Logo template --%>
-    <core:js_template id="provider-logo-template">
+    <core_v1:js_template id="provider-logo-template">
         {{ var img = 'default_w'; }}
         {{ if (obj.hasOwnProperty('retailerName') && obj.retailerName.length > 1) img = obj.retailerName.toUpperCase().replace(/ /g, '_'); }}
         {{ var noShrinkClass = obj.hasOwnProperty('addNoShrinkClass') && obj.addNoShrinkClass ? 'noshrink' : ''; }}
         <div class="companyLogo logo_{{= img }} {{= noShrinkClass }}"></div>
-    </core:js_template>
+    </core_v1:js_template>
 
 </agg_new_results:results>

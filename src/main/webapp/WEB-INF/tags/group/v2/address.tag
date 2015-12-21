@@ -46,13 +46,13 @@
 	</form_v2:row>
 </c:if>
 
-<field:hidden xpath="${xpath}/elasticSearch" defaultValue="N" />
-<field:hidden xpath="${xpath}/type" defaultValue="${type}" />
+<field_v1:hidden xpath="${xpath}/elasticSearch" defaultValue="N" />
+<field_v1:hidden xpath="${xpath}/type" defaultValue="${type}" />
 
 <%-- POSTCODE --%>
 <c:set var="fieldXpath" value="${xpath}/postCode" />
 <form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb">
-	<field:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode' " />
+	<field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode' " />
 </form_v2:row>
 
 <%-- SUBURB DROPDOWN (NON STD) --%>
@@ -101,7 +101,7 @@
 	</c:choose>
 </form_v2:row>
 
-<core:clear />
+<core_v1:clear />
 
 <%-- ADDRESS LABEL AND TITLES --%>
 <c:set var="addressLabel" value="Street Address" />
@@ -121,7 +121,7 @@
 		<input type="text" title="${addressTitle}" name="${name}_streetSearch" id="${name}_streetSearch" class="streetSearch" value="${address.streetSearch}"></div>
 	<div class="ui-corner-all ajaxdrop_streetSearch" id="ajaxdrop_${name}_streetSearch" style="display:none;"></div>
 	--%>
-	<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetSearch show-loading sessioncamexclude" title="${addressTitle}" placeHolder="${placeholder}" required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='We can&#39;t seem to find that address&#46;<br /><br />Let&#39;s try again&#58; Please start typing your street address and then select your address from our drop-down box&#46;<br /><br />If you cannot find your address in our drop down&#44; please tick the &#39;Unable to find the address&#39; checkbox to manually enter your address&#46;' "/>
+	<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetSearch show-loading sessioncamexclude" title="${addressTitle}" placeHolder="${placeholder}" required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='We can&#39;t seem to find that address&#46;<br /><br />Let&#39;s try again&#58; Please start typing your street address and then select your address from our drop-down box&#46;<br /><br />If you cannot find your address in our drop down&#44; please tick the &#39;Unable to find the address&#39; checkbox to manually enter your address&#46;' "/>
 </form_v2:row>
 
 
@@ -140,7 +140,7 @@
 </c:choose>
 <c:set var="fieldXpath" value="${xpath}/nonStdStreet" />
 <form_v2:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStd_street">
-	<field_new:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}' " />
+	<field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}' " />
 </form_v2:row>
 
 <%-- STREET/HOUSE NUMBER (BOTH STD & NON STD) --%>
@@ -152,7 +152,7 @@
 <c:set var="fieldXpath" value="${xpath}/streetNum" />
 <form_v2:row fieldXpath="${fieldXpath}" label="${streetLabel}" id="${name}_streetNumRow" className="std_streetNum">
 	<div class="${name}_streetNum_container">
-		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="false" />
+		<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="false" />
 	</div>
 </form_v2:row>
 
@@ -160,37 +160,37 @@
 <%-- UNIT/SHOP (BOTH STD & NON STD) --%>
 <c:set var="fieldXpath" value="${xpath}/unitShop" />
 <form_v2:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow">
-	<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false"  />
+	<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false"  />
 </form_v2:row>
 
 <c:set var="fieldXpath" value="${xpath}/unitType" />
 <form_v2:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStd_street ${name}_unitShopRow">
-	<field_new:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" />
+	<field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" />
 </form_v2:row>
 
 <c:set var="fieldXpath" value="${xpath}/nonStd" />
 <form_v2:row fieldXpath="${fieldXpath}" label="" id="${name}_nonStd_row" className="nonStd">
-	<field_new:checkbox xpath="${fieldXpath}" value="Y" title="Tick here if you are unable to find the address" label="true" required="false" customAttribute=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter the address'" />
+	<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="Tick here if you are unable to find the address" label="true" required="false" customAttribute=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter the address'" />
 </form_v2:row>
-<core:clear />
+<core_v1:clear />
 
-<field:hidden xpath="${xpath}/lastSearch" />
-<field:hidden xpath="${xpath}/streetId" />
-<field:hidden xpath="${xpath}/houseNoSel" />
-<field:hidden xpath="${xpath}/unitSel" />
-<field:hidden xpath="${xpath}/streetName" />
-<field:hidden xpath="${xpath}/suburbName" />
+<field_v1:hidden xpath="${xpath}/lastSearch" />
+<field_v1:hidden xpath="${xpath}/streetId" />
+<field_v1:hidden xpath="${xpath}/houseNoSel" />
+<field_v1:hidden xpath="${xpath}/unitSel" />
+<field_v1:hidden xpath="${xpath}/streetName" />
+<field_v1:hidden xpath="${xpath}/suburbName" />
 <c:choose>
 	<c:when test="${not empty stateValidationField}">
-		<field_new:validatedHiddenField xpath="${xpath}/state" validationErrorPlacementSelector="${stateValidationField}" additionalAttributes=" required data-rule-matchStates='true' " />
+		<field_v2:validatedHiddenField xpath="${xpath}/state" validationErrorPlacementSelector="${stateValidationField}" additionalAttributes=" required data-rule-matchStates='true' " />
 	</c:when>
 	<c:otherwise>
-		<field:hidden xpath="${xpath}/state" />
+		<field_v1:hidden xpath="${xpath}/state" />
 	</c:otherwise>
 </c:choose>
-<field:hidden xpath="${xpath}/dpId" />
-<field:hidden xpath="${xpath}/fullAddressLineOne" />
-<field:hidden xpath="${xpath}/fullAddress" />
+<field_v1:hidden xpath="${xpath}/dpId" />
+<field_v1:hidden xpath="${xpath}/fullAddressLineOne" />
+<field_v1:hidden xpath="${xpath}/fullAddress" />
 
 
 <go:script marker="onready">

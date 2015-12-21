@@ -13,7 +13,7 @@
 
 <%-- HTML --%>
 <form_v2:row label="Current No Claims Discount (NCD) or Rating Discount?" helpId="10" id="${name}Row">
-	<field_new:import_select xpath="${ncdXpath}"
+	<field_v2:import_select xpath="${ncdXpath}"
 					url="/WEB-INF/option_data/ncd.html"
 					title="the regular driver's NCD or Rating Discount"
 					className="ncd"

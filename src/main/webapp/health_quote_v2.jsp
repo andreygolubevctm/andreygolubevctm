@@ -21,8 +21,8 @@
     <c:otherwise>
 <%-- END JOURNEY OVERRIDE - Part 1 of 2) --%>
 
-<core_new:quote_check quoteType="health" />
-<core_new:load_preload />
+<core_v2:quote_check quoteType="health" />
+<core_v2:load_preload />
 
 <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
 <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
@@ -105,7 +105,7 @@
             <a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose><c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></span> <b class="caret"></b></a>
             <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
               <div class="dropdown-container">
-                <agg_new:save_quote includeCallMeback="true" />
+                <agg_v2:save_quote includeCallMeback="true" />
               </div>
             </div>
           </li>
@@ -159,7 +159,7 @@
 
   <jsp:body>
     <health:product_title_search />
-    <core:application_date />
+    <core_v1:application_date />
 
     <%-- Product summary header for mobile --%>
     <div class="row productSummary-parent visible-xs">
@@ -176,16 +176,16 @@
         <health_new:benefitsHiddenItem item="${selectedValue}" />
       </c:forEach>
 
-      <field:hidden xpath="health/renderingMode" />
-      <field:hidden xpath="health/rebate" />
-      <field:hidden xpath="health/rebateChangeover" />
-      <field:hidden xpath="health/loading" />
-      <field:hidden xpath="health/primaryCAE" />
-      <field:hidden xpath="health/partnerCAE" />
+      <field_v1:hidden xpath="health/renderingMode" />
+      <field_v1:hidden xpath="health/rebate" />
+      <field_v1:hidden xpath="health/rebateChangeover" />
+      <field_v1:hidden xpath="health/loading" />
+      <field_v1:hidden xpath="health/primaryCAE" />
+      <field_v1:hidden xpath="health/partnerCAE" />
 
       <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
-      <core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
-      <core_new:authToken authToken="${param['authToken']}"/>
+      <core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
+      <core_v2:authToken authToken="${param['authToken']}"/>
     </div>
 
     <%-- Slides --%>
@@ -198,7 +198,7 @@
 
     <health_new:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />
 
-    <field:hidden xpath="environmentOverride" />
+    <field_v1:hidden xpath="environmentOverride" />
     <input type="hidden" name="transcheck" id="transcheck" value="1" />
   </jsp:body>
 </layout_v1:journey_engine_page>

@@ -31,18 +31,18 @@
 
 		<c:set var="fieldXpath" value="${xpath}/type" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Payment method" className="changes-premium">
-			<field_new:array_radio items="cc=Credit Card,ba=Bank Account" xpath="${fieldXpath}" title="how would you like to pay" required="true" className="health-payment_details-type" id="${name}_type"/>
+			<field_v2:array_radio items="cc=Credit Card,ba=Bank Account" xpath="${fieldXpath}" title="how would you like to pay" required="true" className="health-payment_details-type" id="${name}_type"/>
 		</form_v2:row>
 
 		<%-- Note: this form row's HTML is changed by JavaScript --%>
 		<c:set var="fieldXpath" value="${xpath}/frequency" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="How often would you like to make payments" className="changes-premium">
-			<field_new:array_select items="=Please choose..." xpath="${fieldXpath}" title="frequency of payments" required="true" delims="||" className="health-payment_details-frequency" />
+			<field_v2:array_select items="=Please choose..." xpath="${fieldXpath}" title="frequency of payments" required="true" delims="||" className="health-payment_details-frequency" />
 		</form_v2:row>
 		
 		<c:set var="fieldXpath" value="${xpath}/claims" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Do you want to supply bank account details for claims to be paid into" className="health-payment_details-claims-group">
-			<field_new:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="if you want to supply bank account details for claims to be paid into" required="true" className="health-payment_details-claims" id="${name}_claims"/>
+			<field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="if you want to supply bank account details for claims to be paid into" required="true" className="health-payment_details-claims" id="${name}_claims"/>
 		</form_v2:row>
 
 		<coupon:fields xpath="health" />
@@ -50,7 +50,7 @@
 		<c:if test="${not empty disclaimer_content}">
 			<c:set var="fieldXpath" value="${xpath}/disclaimer" />
 			<form_v2:row fieldXpath="${fieldXpath}" hideHelpIconCol="true">
-				<field_new:checkbox xpath="${fieldXpath}" value="Y" title="${disclaimer_content}" required="true" errorMsg="Please read and accept the Payment Disclaimer in order to proceed" label="true" />
+				<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="${disclaimer_content}" required="true" errorMsg="Please read and accept the Payment Disclaimer in order to proceed" label="true" />
 			</form_v2:row>
 		</c:if>
 

@@ -55,35 +55,35 @@
 
 				<c:set var="fieldXpath" value="${xpath}/name" />
 				<form_v2:row label="First Name" fieldXpath="${fieldXpath}" className="clear required_input">
-					<field:person_name xpath="${fieldXpath}" title="name" required="true" placeholder="${firstNamePlaceHolder}" />
+					<field_v1:person_name xpath="${fieldXpath}" title="name" required="true" placeholder="${firstNamePlaceHolder}" />
 				</form_v2:row>
 
 				<c:set var="fieldXpath" value="${xpath}/email" />
 				<form_v2:row label="Email Address" fieldXpath="${fieldXpath}" className="clear required_input">
-					<field_new:email xpath="${fieldXpath}" title="your email address" required="${required}" placeHolder="${emailPlaceHolder}" />
-					<field:hidden xpath="${xpath}/emailsecondary" />
-					<field:hidden xpath="${xpath}/emailhistory" />
+					<field_v2:email xpath="${fieldXpath}" title="your email address" required="${required}" placeHolder="${emailPlaceHolder}" />
+					<field_v1:hidden xpath="${xpath}/emailsecondary" />
+					<field_v1:hidden xpath="${xpath}/emailhistory" />
 				</form_v2:row>
 
 				<%--<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" />--%>
 
 				<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
 				<form_v2:row label="Phone Number" fieldXpath="${fieldXpath}" className="clear required_input">
-					<field:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
+					<field_v1:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
 				</form_v2:row>
 
 				<%-- Optin fields (hidden) for email and phone --%>
-				<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
-				<field:hidden xpath="${xpath}/call" defaultValue="${val_optout}" />
+				<field_v1:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
+				<field_v1:hidden xpath="${xpath}/call" defaultValue="${val_optout}" />
 
 				<%-- form privacy_optin --%>
 				<c:choose>
 					<%-- Only render a hidden field when the checkbox has already been selected --%>
 					<c:when test="${data['health/privacyoptin'] eq 'Y'}">
-						<field:hidden xpath="health/privacyoptin" defaultValue="Y" constantValue="Y" />
+						<field_v1:hidden xpath="health/privacyoptin" defaultValue="Y" constantValue="Y" />
 					</c:when>
 					<c:otherwise>
-						<field:hidden xpath="health/privacyoptin" className="validate" />
+						<field_v1:hidden xpath="health/privacyoptin" className="validate" />
 					</c:otherwise>
 				</c:choose>
 
@@ -97,7 +97,7 @@
 				
 				<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 				<form_v2:row className="health-contact-details-optin-group" hideHelpIconCol="true">
-					<field_new:checkbox
+					<field_v2:checkbox
 						xpath="${xpath}/optin"
 						value="Y"
 						className="validate"
@@ -124,8 +124,8 @@
 						<c:set var="competitionLabel">
 							<content:get key="competitionCheckboxText"/>
 						</c:set>
-						<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
-						<field:hidden xpath="${xpath}/competition/previous" />
+						<field_v2:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
+						<field_v1:hidden xpath="${xpath}/competition/previous" />
 					</form_v2:row>
 				</c:if>
 				<%-- COMPETITION END --%>
@@ -138,7 +138,7 @@
 
 	</form_v2:fieldset_columns>
 
-	<field:hidden xpath="health/altContactFormRendered" constantValue="Y" />
+	<field_v1:hidden xpath="health/altContactFormRendered" constantValue="Y" />
 
 
 </div>

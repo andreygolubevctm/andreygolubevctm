@@ -37,7 +37,7 @@
 
 			<c:if test="${addressFormSplitTest eq true}">
 				<form_v2:row label="Where is the car kept at night" helpId="7">
-					<field_new:import_select xpath="quote/vehicle/parking"
+					<field_v2:import_select xpath="quote/vehicle/parking"
 										url="/WEB-INF/option_data/parking_location.html"
 										title="the location where the car is parked at night"
 										className="parking_location"
@@ -49,7 +49,7 @@
 
 			<c:if test="${addressFormSplitTest eq false}">
 				<form_v2:row label="Where is the car parked at night" helpId="7">
-					<field_new:import_select xpath="quote/vehicle/parking"
+					<field_v2:import_select xpath="quote/vehicle/parking"
 										url="/WEB-INF/option_data/parking_location.html"
 										title="the location where the car is parked at night"
 										className="parking_location"

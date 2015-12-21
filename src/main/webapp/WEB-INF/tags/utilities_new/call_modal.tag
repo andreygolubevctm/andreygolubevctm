@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<core:js_template id="utilities-call-header-template">
+<core_v1:js_template id="utilities-call-header-template">
 
     {{ var template = $("#provider-logo-template").html(); }}
     {{ var htmlTemplate = _.template(template); }}
@@ -20,9 +20,9 @@
             <div class="quoteNumber">{{= leadNo }}</div>
         </div>
     </div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="utilities-call-direct-template">
+<core_v1:js_template id="utilities-call-direct-template">
     <!-- text center mobile -->
     {{ var telNo = '${callCentreNumber}'; }}
     {{ var noWhitespaceNum = typeof telNo == 'string' ? telNo.replace(/\s/g, '') : telNo; }}
@@ -48,8 +48,8 @@
             <div><content:get key="utilitiesOpeningHours"/></div>
         </div>
     </div>
-</core:js_template>
-<core:js_template id="utilities-call-modal-template">
+</core_v1:js_template>
+<core_v1:js_template id="utilities-call-modal-template">
     <%-- Set up Reusable Templates --%>
     {{ var template = $("#utilities-call-header-template").html(); }}
     {{ var htmlTemplate = _.template(template); }}
@@ -76,4 +76,4 @@
             </div>
         </div>
     </div>
-</core:js_template>
+</core_v1:js_template>

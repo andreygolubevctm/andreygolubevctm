@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<core_new:no_cache_header/>
+<core_v2:no_cache_header/>
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true" />
 
@@ -19,7 +19,7 @@
 
 	<c:when test="${param.health_incrementTransactionId}">
 		<c:set var="id_return">
-			<core:get_transaction_id quoteType="health" id_handler="increment_tranId" />
+			<core_v1:get_transaction_id quoteType="health" id_handler="increment_tranId" />
 		</c:set>
 	</c:when>
 	--%>
@@ -30,10 +30,10 @@
 		<%-- Save client data --%>
 		<c:choose>
 			<c:when test="${param.health_showAll == 'N'}">
-				<core:transaction touch="Q" noResponse="true" />
+				<core_v1:transaction touch="Q" noResponse="true" />
 			</c:when>
 			<c:otherwise>
-				<core:transaction touch="R" noResponse="true" />
+				<core_v1:transaction touch="R" noResponse="true" />
 			</c:otherwise>
 		</c:choose>
 

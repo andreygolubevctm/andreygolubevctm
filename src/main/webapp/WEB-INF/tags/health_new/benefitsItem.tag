@@ -41,7 +41,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 				</div>
 			</c:when>
 			<c:otherwise>
-				<field_new:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" />
+				<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" />
 			</c:otherwise>
 		</c:choose>
 
@@ -75,7 +75,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 						<c:forEach items="${item.getChildren()}" var="selectedValue" end="${loopCount}">
 							<c:if test="${selectedValue.isShortlistable()}">
 								<li class="${selectedValue.getClassString()}">${selectedValue.getName()}
-									<field_new:help_icon helpId="${selectedValue.getHelpId()}" position="${helpPosition}" tooltipClassName="${helpClassName}" />
+									<field_v2:help_icon helpId="${selectedValue.getHelpId()}" position="${helpPosition}" tooltipClassName="${helpClassName}" />
 								</li>
 							</c:if>
 						</c:forEach>

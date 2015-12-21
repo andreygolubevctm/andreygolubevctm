@@ -18,46 +18,46 @@
 	<form_v1:fieldset legend="Life Insurance Details">
 
 		<form_v1:row label="Who is the cover for?" id="${name}${primary_label}_partner_group" >
-			<field:array_radio items="N=Just for you,Y=You &amp; your partner" id="${name}${primary_label}_partner" xpath="${xpath}${primary_xpath}/partner" title="who the cover is for" required="true" className="" />
+			<field_v1:array_radio items="N=Just for you,Y=You &amp; your partner" id="${name}${primary_label}_partner" xpath="${xpath}${primary_xpath}/partner" title="who the cover is for" required="true" className="" />
 		</form_v1:row>
 
 		<div id="${name}_same_cover_group">
 			<form_v1:row label="Would you like to be covered<br>for the same amount?">
-				<field:array_radio items="Y=Same cover,N=Different cover" id="${name}${primary_label}_samecover" xpath="${xpath}${primary_xpath}/samecover" title="share the same amount of cover" required="true" className="" />
+				<field_v1:array_radio items="Y=Same cover,N=Different cover" id="${name}${primary_label}_samecover" xpath="${xpath}${primary_xpath}/samecover" title="share the same amount of cover" required="true" className="" />
 			</form_v1:row>
 		</div>
 
 		<form_v1:row label="Your Term Life Cover" helpId="409" className="${name}${primary_label}_term_group">
-			<field:currency xpath="${xpath}${primary_xpath}/term" symbol="" decimal="${false}" maxLength="10" required="false" title="Your Term Life Cover" className="number_only" />
+			<field_v1:currency xpath="${xpath}${primary_xpath}/term" symbol="" decimal="${false}" maxLength="10" required="false" title="Your Term Life Cover" className="number_only" />
 		</form_v1:row>
 
 		<form_v1:row label="Total and Permanent Disability (TPD)" helpId="410" className="${name}${primary_label}_tpd_group">
-			<field:currency xpath="${xpath}${primary_xpath}/tpd" symbol="" decimal="${false}" maxLength="10" required="false" title="Total and Permanent Disability" className="number_only" />
+			<field_v1:currency xpath="${xpath}${primary_xpath}/tpd" symbol="" decimal="${false}" maxLength="10" required="false" title="Total and Permanent Disability" className="number_only" />
 		</form_v1:row>
 
 		<form_v1:row label="Trauma Cover" helpId="408" className="${name}${primary_label}_trauma_group">
-			<field:currency xpath="${xpath}${primary_xpath}/trauma" symbol="" decimal="${false}" maxLength="10" required="false" title="Trauma Cover" className="number_only" />
-			<field:hidden xpath="${xpath}${primary_xpath}/tpdanyown" defaultValue="A" constantValue="A" />
+			<field_v1:currency xpath="${xpath}${primary_xpath}/trauma" symbol="" decimal="${false}" maxLength="10" required="false" title="Trauma Cover" className="number_only" />
+			<field_v1:hidden xpath="${xpath}${primary_xpath}/tpdanyown" defaultValue="A" constantValue="A" />
 		</form_v1:row>
 
 		<div id="${name}_partner_cover_group">
 			<form_v1:row label="Your Partner's Term Life Cover" helpId="409" className="${name}${partner_label}_term_group">
-				<field:currency xpath="${xpath}${partner_xpath}/term" symbol="" decimal="${false}" maxLength="10" required="false" title="Your Partner's Term Life Cover" className="number_only" />
+				<field_v1:currency xpath="${xpath}${partner_xpath}/term" symbol="" decimal="${false}" maxLength="10" required="false" title="Your Partner's Term Life Cover" className="number_only" />
 			</form_v1:row>
 
 			<form_v1:row label="Total and Permanent Disability (TPD)" helpId="410" className="${name}${partner_label}_tpd_group">
-				<field:currency xpath="${xpath}${partner_xpath}/tpd" symbol="" decimal="${false}" maxLength="10" required="false" title="Total and Permanent Disability" className="number_only" />
+				<field_v1:currency xpath="${xpath}${partner_xpath}/tpd" symbol="" decimal="${false}" maxLength="10" required="false" title="Total and Permanent Disability" className="number_only" />
 			</form_v1:row>
 
 			<form_v1:row label="Trauma Cover" helpId="408" className="${name}${partner_label}_trauma_group">
-				<field:currency xpath="${xpath}${partner_xpath}/trauma" symbol="" decimal="${false}" maxLength="10" required="false" title="Trauma Cover" className="number_only" />
-				<field:hidden xpath="${xpath}${partner_xpath}/tpdanyown" defaultValue="A" constantValue="A" />
+				<field_v1:currency xpath="${xpath}${partner_xpath}/trauma" symbol="" decimal="${false}" maxLength="10" required="false" title="Trauma Cover" className="number_only" />
+				<field_v1:hidden xpath="${xpath}${partner_xpath}/tpdanyown" defaultValue="A" constantValue="A" />
 			</form_v1:row>
 		</div>
 
-		<field:hidden xpath="${xpath}${primary_xpath}/frequency" defaultValue="M" constantValue="M" />
+		<field_v1:hidden xpath="${xpath}${primary_xpath}/frequency" defaultValue="M" constantValue="M" />
 
-		<field:hidden xpath="${xpath}${primary_xpath}/type" defaultValue="S" constantValue="S" />
+		<field_v1:hidden xpath="${xpath}${primary_xpath}/type" defaultValue="S" constantValue="S" />
 
 	</form_v1:fieldset>
 </div>

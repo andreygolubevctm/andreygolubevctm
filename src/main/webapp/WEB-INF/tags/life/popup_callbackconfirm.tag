@@ -19,7 +19,7 @@
 			<h4>Before we can call you we need your consent:</h4>
 
 			<form_v1:row label="Your phone number">
-				<field:contact_telno
+				<field_v1:contact_telno
 						xpath="${xpath}/confirmContactNumber"
 						required="true"
 						title="your phone number"
@@ -32,7 +32,7 @@
 				<div class="${xpath}_contactDetails_callConfirm">I understand comparethemarket.com.au compares life insurance policies from a range of <a href="http://www.comparethemarket.com.au/${life_link}/#tab_nav_1610_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker or Auto &amp; General Services, Compare the Market&#39;s trusted life partners may contact me to further assist with my life insurance needs</div>
 			</c:if>
 
-			<field:hidden xpath="${xpath}/confirmCall" />
+			<field_v1:hidden xpath="${xpath}/confirmCall" />
 
 			<div class="button-wrapper">
 				<a href="javascript:void(0);" class="button proceed"><span>Proceed</span></a>

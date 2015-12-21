@@ -17,7 +17,7 @@
 
 		<form_v1:fieldset legend="Terms and Conditions" className="no-background-color"  id="${name}_fieldset">
 			<p>
-			<field:checkbox
+			<field_v1:checkbox
 				xpath="${xpath}/termsAndConditions"
 				value="Y"
 				title="To process the offer and apply the discounts to your account you should read and should ensure you understand and agree to the following information:"
@@ -43,20 +43,20 @@
 		width="500"
 		extraCss="${css}" />
 
-	<field:hidden xpath="${xpath}/hidden/productId" />
-	<field:hidden xpath="${xpath}/receiveInfo" />
-	<field:hidden xpath="${xpath}/hidden/searchId" />
+	<field_v1:hidden xpath="${xpath}/hidden/productId" />
+	<field_v1:hidden xpath="${xpath}/receiveInfo" />
+	<field_v1:hidden xpath="${xpath}/hidden/searchId" />
 
 	<%-- some flags to use in the XSL outbound --%>
 
 </div>
 
-<core:js_template id="terms-template">
+<core_v1:js_template id="terms-template">
 <p>You have the right to a 10 day cooling off period (COP). This cooling off period begins on the date your agreement commences. You may cancel your agreement by contacting us at any time during the COP without penalty. Your Agreement commences with [#= retailerName #] when you give your verbal acceptance and receive the Confirmation Pack, which will include the full terms and conditions of the Energy Agreement.</p>
 <p>[#= retailerName #] will send you a Welcome Pack containing written confirmation of the energy offer accepted, the Energy Agreement and Customer Charter. You may terminate the agreement at any time by contacting [#= retailerName #]. You may be liable for termination fees with your existing provider if you are under contract with them.</p>
 <p>By accepting the Energy Offer from [#= retailerName #], you authorise us to create a new account and collect, maintain, use and disclose personal information as set out in the Privacy Statement detailed in the Energy Agreement we will send you. You give your explicit informed consent that your tariff and or discount can change from time to time, in line with the relevant code or guideline, including government price increases. If the tariff and or discount do change you will be notified on your next bill or as required by the code or guideline for your area. You give your explicit informed consent that we may bill you quarterly for electricity and bi-monthly for gas unless you have chosen a monthly billed product.</p>
 <p>You accept the terms and conditions mentioned above and you consent to entering into an agreement with [#= retailerName #] on those terms and conditions. You understand and accept that you are accepting an agreement for: [#= planName #] </p>
-</core:js_template>
+</core_v1:js_template>
 
 
 <%-- CSS --%>

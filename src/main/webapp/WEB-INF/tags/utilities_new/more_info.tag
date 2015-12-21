@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
 
-<core:js_template id="promotion-offer-template">
+<core_v1:js_template id="promotion-offer-template">
     {{ var promotionText = (typeof obj.discountDetails !== 'undefined' && obj.discountDetails.length > 0) ? obj.discountDetails : ''; }}
 
     {{ if (promotionText.length > 0) { }}
@@ -12,9 +12,9 @@
         <span class="icon icon-tag"></span> {{= promotionText }}
     </div>
     {{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="terms-disclaimer-template">
+<core_v1:js_template id="terms-disclaimer-template">
     <h5>Terms</h5>
     <a href="javascript:void(0)" target="_blank" class="showDoc btn btn-sm btn-download termsUrl">Terms &amp; Conditions</a>
     <a href="javascript:void(0)" target="_blank" class="showDoc btn btn-sm btn-download privacyPolicyUrl">Privacy
@@ -26,18 +26,18 @@
         <p>${brandedName} is an online comparison website. Energy product information is provided by our trusted
             affiliate, Thought World.</p>
     </div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="call-apply-template">
+<core_v1:js_template id="call-apply-template">
     <div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
         <a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Apply Now</a>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
         <a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-productId="{{= obj.productId }}" data-callback-toggle="calldirect" href="javascript:;">Call Us Now</a>
     </div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="more-info-template">
+<core_v1:js_template id="more-info-template">
 
     {{ var template = $("#promotion-offer-template").html(); }}
     {{ var htmlTemplate = _.template(template); }}
@@ -129,6 +129,6 @@
 
         </div>
     </div>
-</core:js_template>
+</core_v1:js_template>
 
 <utilities_new:call_modal />

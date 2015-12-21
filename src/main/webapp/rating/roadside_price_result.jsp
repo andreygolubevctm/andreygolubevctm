@@ -9,7 +9,7 @@
 ${logger.trace('Starting results jsp. {}', log:kv('quoteData ', param.QuoteData ))}
 
 <c:set var="transactionId"><x:out select="$roadside/request/header/partnerReference" /></c:set>
-<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
+<c:set var="styleCodeId"><core_v1:get_stylecode_id transactionId="${transactionId}" /></c:set>
 
 <%-- 
 	The data will arrive in a single parameter called QuoteData 

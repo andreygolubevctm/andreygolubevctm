@@ -5,7 +5,7 @@
 <c:set var="logger" value="${log:getLogger('jsp.handover')}" />
 
 <session:new verticalCode="CREDITCARD" />
-<core_new:quote_check quoteType="CREDITCARD" />
+<core_v2:quote_check quoteType="CREDITCARD" />
 
 <jsp:useBean id="productService" class="com.ctm.web.creditcards.services.ProductService" scope="page" />
 <c:set var="tmpProductCode">
@@ -102,7 +102,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<core:whitelabeled_footer />
+		<core_v1:whitelabeled_footer />
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">
@@ -113,11 +113,11 @@
 
 	<jsp:body>
 		<creditcard_layout:handover />
-		<core_new:journey_tracking />
-		<core_new:tracking_key />
+		<core_v2:journey_tracking />
+		<core_v2:tracking_key />
 		<div class="hiddenFields">
-			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
-			<field:hidden xpath="${pageSettings.getVerticalCode()}/handover/productCode" defaultValue="${productID}" />
+			<core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
+			<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/handover/productCode" defaultValue="${productID}" />
 		</div>
 	</jsp:body>
 

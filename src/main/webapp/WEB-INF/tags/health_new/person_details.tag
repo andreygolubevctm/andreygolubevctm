@@ -30,38 +30,38 @@
 
 		<c:set var="fieldXpath" value="${xpath}/title" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Title" >
-			<field_new:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' "/>
+			<field_v2:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' "/>
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/firstname" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="First Name">
-			<field:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField" />
+			<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField" />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/middleName" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Middle Name" className="health_person-details_middlename">
-			<field:person_name xpath="${fieldXpath}" required="false" title="${title} middle name" />
+			<field_v1:person_name xpath="${fieldXpath}" required="false" title="${title} middle name" />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/surname" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Last Name">
-			<field:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField" />
+			<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField" />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/dob" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium">
-			<field_new:person_dob xpath="${fieldXpath}" title="${dobTitle}" required="true" ageMin="16" ageMax="120" />
+			<field_v2:person_dob xpath="${fieldXpath}" title="${dobTitle}" required="true" ageMin="16" ageMax="120" />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/gender" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Gender" id="${name}_genderRow">
-			<field_new:array_radio id="${name}_gender" xpath="${fieldXpath}" required="true" items="M=Male,F=Female" title="${title} gender" className="health-person-details person-gender" />
+			<field_v2:array_radio id="${name}_gender" xpath="${fieldXpath}" required="true" items="M=Male,F=Female" title="${title} gender" className="health-person-details person-gender" />
 		</form_v3:row>
 
 		<c:if test="${id == 'partner'}">
 			<c:set var="fieldXpath" value="${xpath}/authority" />
 			<form_v3:row fieldXpath="${fieldXpath}" label="Would you like to give your partner authority to make claims, changes or enquire about the policy on behalf of anyone listed on the policy?" id="${name}_authority_group" className="health_person-details_authority_group hidden">
-				<field_new:array_radio id="${name}_authority" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="${title} authority permission" className="health-person-details-authority" />
+				<field_v2:array_radio id="${name}_authority" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="${title} authority permission" className="health-person-details-authority" />
 			</form_v3:row>
 		</c:if>
 

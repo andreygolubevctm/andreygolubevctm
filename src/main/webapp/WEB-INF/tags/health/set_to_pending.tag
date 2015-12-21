@@ -11,7 +11,7 @@
 <c:set var="ignore">
 	<jsp:useBean id="joinService" class="com.ctm.web.core.confirmation.services.JoinService" scope="page" />
 	<c:set var="errorMessage" value="Application failed: ${errorMessage}" />
-	<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}" />
+	<core_v1:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}" />
 
 	<%-- Application unsuccessful, provide PendingID --%>
 	<c:set var="pendingID">${pageContext.session.id}-${transactionId}</c:set>
@@ -19,7 +19,7 @@
 
 	<%-- Save to store error and pendingID --%>
 	<c:set var="sandbox">
-		<agg:write_quote rootPath="health" productType="HEALTH" triggeredsave="pending" triggeredsavereason="Pending: ${errorMessage}" />
+		<agg_v1:write_quote rootPath="health" productType="HEALTH" triggeredsave="pending" triggeredsavereason="Pending: ${errorMessage}" />
 	</c:set>
 	${joinService.writeJoin(transactionId,productId)}
 </c:set>

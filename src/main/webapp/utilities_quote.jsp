@@ -6,8 +6,8 @@
 
 <session:new verticalCode="UTILITIES" authenticated="true"/>
 
-<core_new:quote_check quoteType="utilities"/>
-<core_new:load_preload/>
+<core_v2:quote_check quoteType="utilities"/>
+<core_v2:load_preload/>
 
 <%-- Call centre numbers --%>
 <c:set var="callCentreNumber" scope="request"><content:get key="genericCallCentreNumber"/></c:set>
@@ -135,7 +135,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<core:whitelabeled_footer/>
+		<core_v1:whitelabeled_footer/>
 	</jsp:attribute>
 						
 	<jsp:attribute name="vertical_settings">
@@ -155,7 +155,7 @@
 							
         <div class="hiddenFields">
             <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
-            <core:referral_tracking vertical="${pageSettings.getVerticalCode()}"/>
+            <core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}"/>
 					</div>
         <input type="hidden" name="transcheck" id="transcheck" value="1"/>
         <input type="hidden" name="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" id="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" value="" />

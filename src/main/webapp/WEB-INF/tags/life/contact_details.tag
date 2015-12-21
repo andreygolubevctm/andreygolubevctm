@@ -32,11 +32,11 @@
 <div id="${name}-selection" class="${name}">
 	<form_v1:fieldset legend="Contact Details">
 		<form_v1:row label="Email address" className="clear email-row">
-			<field:contact_email xpath="${xpath}/email" title="your email address" required="true" size="40"/><span id="email_note">For confirming quote and transaction details</span>
+			<field_v1:contact_email xpath="${xpath}/email" title="your email address" required="true" size="40"/><span id="email_note">For confirming quote and transaction details</span>
 		</form_v1:row>
 
 		<form_v1:row label="Phone number">
-			<field:contact_telno xpath="${xpath}/contactNumber" required="false" title="phone number"  />
+			<field_v1:contact_telno xpath="${xpath}/contactNumber" required="false" title="phone number"  />
 		</form_v1:row>
 
 		<c:if test="${empty callCentre}">
@@ -45,7 +45,7 @@
 		</c:if>
 
 		<form_v1:row label="Postcode">
-			<field:post_code_and_state xpath="${vertical}/primary/postCode" title="${error_phrase_postcode}postcode" required="true" className="" />
+			<field_v1:post_code_and_state xpath="${vertical}/primary/postCode" title="${error_phrase_postcode}postcode" required="true" className="" />
 		</form_v1:row>
 
 		<%-- COMPETITION START --%>
@@ -61,20 +61,20 @@
 				<c:set var="competitionCheckboxText">
 					<content:get key="competitionCheckboxText" />
 				</c:set>
-				<field:hidden xpath="${xpath}/competition/optin" constantValue="N" />
-				<field:checkbox
+				<field_v1:hidden xpath="${xpath}/competition/optin" constantValue="N" />
+				<field_v1:checkbox
 						xpath="${xpath}/competition/optin"
 						value="Y"
 						title="${competitionCheckboxText}"
 						required="false"
 						label="true"/>
-				<field:hidden xpath="${xpath}/competition/previous" />
+				<field_v1:hidden xpath="${xpath}/competition/previous" />
 			</form_v1:row>
 		</c:if>
 		<%-- COMPETITION END--%>
 
 		<form_v1:row label="" className="clear">
-			<field:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from ${brandedName}" required="false" label="true"/>
+			<field_v1:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from ${brandedName}" required="false" label="true"/>
 		</form_v1:row>
 
 		<form_v1:row label="" className="clear closer">
@@ -92,7 +92,7 @@
 				</c:when>
 			</c:choose>
 
-			<field:checkbox
+			<field_v1:checkbox
 					xpath="${vertical}_privacyoptin"
 					value="Y"
 					title="${label_text}"
@@ -102,8 +102,8 @@
 					/>
 		</form_v1:row>
 
-		<field:hidden xpath="${xpath}/call" />
-		<field:hidden xpath="${vertical}/splitTestingJourney" constantValue="${splitTestingJourney}" />
+		<field_v1:hidden xpath="${xpath}/call" />
+		<field_v1:hidden xpath="${vertical}/splitTestingJourney" constantValue="${splitTestingJourney}" />
 
 	</form_v1:fieldset>
 

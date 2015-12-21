@@ -27,7 +27,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 <%@ attribute fragment="true" required="false" name="vertical_settings" %>
 <%@ attribute fragment="true" required="false" name="before_close_body" %>
 
-<core_new:no_cache_header/>
+<core_v2:no_cache_header/>
 
 <%-- Variables --%>
 <c:set var="isDev" value="${environmentService.getEnvironmentAsString() eq 'localhost' || environmentService.getEnvironmentAsString() eq 'NXI'}"/>
@@ -228,7 +228,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 			<%--  Supertag --%>
 			<c:if test="${superTagEnabled eq true and not empty pageSettings and pageSettings.hasSetting('supertagInitialPageName')}">
-				<agg_new:supertag />
+				<agg_v2:supertag />
 			</c:if>
 
 			<!--  content -->
@@ -237,12 +237,12 @@ ${newPage.init(pageContext.request, pageSettings)}
 <c:if test="${empty skipJSCSS}">
 
 		<%-- User Tracking --%>
-		<c:set var="isUserTrackingEnabled"><core_new:userTrackingEnabled /></c:set>
+		<c:set var="isUserTrackingEnabled"><core_v2:userTrackingEnabled /></c:set>
 		<c:if test="${empty isUserTrackingEnabled}">
 			<c:set var="isUserTrackingEnabled" value="${false}" />
 		</c:if>
 		<c:if test="${isUserTrackingEnabled eq true}">
-			<core_new:sessioncam />
+			<core_v2:sessioncam />
 		</c:if>
 
 		<%-- JS Libraries --%>
@@ -297,7 +297,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 						showLogging: <c:out value="${showLogging}" />,
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
 						serverDate: new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <c:out value="${serverMonth}" />, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>),
-                        revision: '<core:buildIdentifier />',
+                        revision: '<core_v1:buildIdentifier />',
 						tokenEnabled: '${newPage.tokenEnabled}',
 						<c:if test="${param.callStack eq 'true'}">callStack: true,</c:if>
 						verificationToken: '${newPage.createTokenForNewPage(pageContext.request , data.current.transactionId ,pageSettings)}',

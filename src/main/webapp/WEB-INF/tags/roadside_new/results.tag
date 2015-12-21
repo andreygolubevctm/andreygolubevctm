@@ -31,17 +31,17 @@
 
         <div class="resultsOverflow">
             <div class="results-table">
-                <core_new:show_more_quotes_button />
+                <core_v2:show_more_quotes_button />
             </div>
         </div>
-        <core:clear/>
+        <core_v1:clear/>
 
         <div class="featuresFooterPusher"></div>
     </div>
 
 
     <%-- DEFAULT RESULT ROW --%>
-    <core:js_template id="result-template">
+    <core_v1:js_template id="result-template">
         {{ var productBrand = (typeof obj.provider !== 'undefined') ? obj.provider : 'Unknown brand name'; }}
         {{ var productTitle = (typeof obj.des !== 'undefined') ? obj.des.replace('<br>',' ') : 'Unknown product name'; }}
 
@@ -205,13 +205,13 @@
             </div>
 
         </div>
-    </core:js_template>
+    </core_v1:js_template>
 
     <%-- FEATURE TEMPLATE --%>
-    <core:js_template id="feature-template"></core:js_template>
+    <core_v1:js_template id="feature-template"></core_v1:js_template>
 
     <%-- UNAVAILABLE ROW --%>
-    <core:js_template id="unavailable-template">
+    <core_v1:js_template id="unavailable-template">
         {{ var productTitle = (typeof obj.des !== 'undefined') ? obj.des : 'Unknown product name'; }}
         {{ var productDescription = (typeof obj.provider !== 'undefined') ? obj.provider : 'Unknown product name'; }}
 
@@ -242,10 +242,10 @@
                 </div>
             </div>
         </div>
-    </core:js_template>
+    </core_v1:js_template>
 
     <%-- UNAVAILABLE COMBINED ROW --%>
-    <core:js_template id="unavailable-combined-template">
+    <core_v1:js_template id="unavailable-combined-template">
         {{ var template = $("#provider-logo-template").html(); }}
         {{ var logo = _.template(template); }}
         {{ var logos = ''; }}
@@ -270,7 +270,7 @@
                 </div>
             </div>
         </div>
-    </core:js_template>
+    </core_v1:js_template>
 
     <%-- NO RESULTS --%>
     <div class="hidden">
@@ -286,11 +286,11 @@
     </div>
 
     <%-- Logo template --%>
-    <core:js_template id="provider-logo-template">
+    <core_v1:js_template id="provider-logo-template">
         {{ var img = 'default_w'; }}
         {{ if (obj.hasOwnProperty('providerCode') && obj.providerCode.length > 1) img = obj.providerCode.toUpperCase().replace(/ /g, '_'); }}
         {{ var noShrinkClass = obj.hasOwnProperty('addNoShrinkClass') && obj.addNoShrinkClass ? 'noshrink' : ''; }}
         <div class="companyLogo logo_{{= img }} {{= noShrinkClass }}"></div>
-    </core:js_template>
+    </core_v1:js_template>
 
 </agg_new_results:results>

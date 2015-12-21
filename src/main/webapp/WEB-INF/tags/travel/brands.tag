@@ -4,7 +4,7 @@
 <%@ attribute name="providerCodes" 	required="true" type="java.util.List" rtexprvalue="true"	 description="All the available provider codes for this vertical & brandCode combination" %>
 
 
-<core:js_template id="brands-template">
+<core_v1:js_template id="brands-template">
 
 	<%-- To add another brand, just add another item to the list and
 		remember to add a new class in framework\modules\less\homeloan\logos.less --%>
@@ -22,4 +22,4 @@
 		<div class="col-sm-12 underwriters small"><content:get key="underwriters"/></div>
 	</div>
 
-</core:js_template>
+</core_v1:js_template>

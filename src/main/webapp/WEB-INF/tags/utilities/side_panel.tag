@@ -118,7 +118,7 @@
 	}
 </go:style>
 
-<agg:panel>
+<agg_v1:panel>
 	<div id="sidePanel">
 		<h1>How we compare</h1>
 		<ul>
@@ -128,7 +128,7 @@
 
 		</ul>
 	</div>
-</agg:panel>
+</agg_v1:panel>
 
 <ui:dialog title="Energy Consumption Assumptions" id="energyConsumption" width="700">
 	

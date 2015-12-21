@@ -21,7 +21,7 @@
 	<%-- Previous Insurance --%>
 	<c:set var="fieldXpath" value="${xpath}/previousInsurance" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Have you had home and/or contents insurance in the last 5 years?">
-		<field_new:array_radio xpath="${fieldXpath}"
+		<field_v2:array_radio xpath="${fieldXpath}"
 			required="true"
 			items="Y=Yes,N=No"
 			title="if you have had insurance in the last 5 years"/>
@@ -30,7 +30,7 @@
 	<%-- At the current address --%>
 	<c:set var="fieldXpath" value="${xpath}/atCurrentAddress" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Was the insurance policy for the same address as this quote?" className="atCurrentAddress">
-		<field_new:array_radio xpath="${fieldXpath}"
+		<field_v2:array_radio xpath="${fieldXpath}"
 			required="true"
 			items="Y=Yes,N=No"
 			title="if the insurance was for this address"/>
@@ -39,7 +39,7 @@
 	<%-- Insured with whom? --%>
 	<c:set var="fieldXpath" value="${xpath}/insurer" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Who was the insurance with?" className="pastInsurer">
-		<field_new:import_select xpath="${fieldXpath}"
+		<field_v2:import_select xpath="${fieldXpath}"
 			className="insurance_companies"
 			url="/WEB-INF/option_data/home_contents_insurers.html"
 			title = "who the insurance policy was with"
@@ -49,7 +49,7 @@
 	<%-- Expiry date. Anytime within the last 5 years or up to 1 year in the future --%>
 	<c:set var="fieldXpath" value="${xpath}/expiry" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Expiry date of the policy" className="insuranceExpiry">
-			<field_new:calendar xpath="${fieldXpath}"
+			<field_v2:calendar xpath="${fieldXpath}"
 			mode="separated"
 			validateMinMax="true"
 			required="true"
@@ -63,7 +63,7 @@
 	<%-- Cover Length --%>
 	<c:set var="fieldXpath" value="${xpath}/coverLength" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="How long have you had the insurance?" className="insuranceCoverLength">
-		<field_new:import_select xpath="${fieldXpath}"
+		<field_v2:import_select xpath="${fieldXpath}"
 			className="coverLength"
 			url="/WEB-INF/option_data/home_contents_past_insurance_duration.html"
 			title = "how long you have had the insurance"
@@ -73,7 +73,7 @@
 	<%-- Claims --%>
 	<c:set var="fieldXpath" value="${xpath}/claims" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="In the last 5 years, have you or any other household member had any thefts, burglaries or made any insurance claims for home and/or contents?" id="claimsRow">
-		<field_new:array_radio xpath="${fieldXpath}"
+		<field_v2:array_radio xpath="${fieldXpath}"
 			required="true"
 			items="Y=Yes,N=No"
 			title="if the policy holder, or any other household member has had any thefts, burglaries or has made any home and/or contents insurance claims in the last 5 years." />

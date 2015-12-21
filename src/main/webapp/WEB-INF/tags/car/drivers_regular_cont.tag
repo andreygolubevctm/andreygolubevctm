@@ -28,7 +28,7 @@
 			<group_v2:ncd_selection xpath="${xpath}" />
 
 			<form_v2:row label="Any motor insurance claims in the last 5 years (regardless of who was at fault)?" helpId="2" id="quote_drivers_regular_claimsRow">
-				<field_new:array_radio xpath="${xpath}/claims" required="true"
+				<field_v2:array_radio xpath="${xpath}/claims" required="true"
 					items="Y=Yes,N=No,U=Unsure"
 					title="if the regular driver has had any motor insurance claims in the last 5 years" />
 			</form_v2:row>

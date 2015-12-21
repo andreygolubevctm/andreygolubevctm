@@ -16,18 +16,18 @@
 
 	<form_v2:fieldset legend="Credit Card Details">
 
-		<field_new:creditcard_assurance_message showCreditCards="true" />
+		<field_v2:creditcard_assurance_message showCreditCards="true" />
 
 		<health:payment_external xpath="${gatewayXpath}" />
 
 		<c:set var="fieldXpath" value="${xpath}/type" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Credit Card Type" className="health_credit-card_details_type_group">
-			<field_new:array_select xpath="${fieldXpath}" required="true" delims="||" className="health-credit_card_details-type" title="type of credit card" items="=Please choose...||v=Visa||m=Mastercard||a=AMEX" />
+			<field_v2:array_select xpath="${fieldXpath}" required="true" delims="||" className="health-credit_card_details-type" title="type of credit card" items="=Please choose...||v=Visa||m=Mastercard||a=AMEX" />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/name" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Name on Credit Card" className="health_credit-card-details_name">
-			<field_new:input xpath="${fieldXpath}"
+			<field_v2:input xpath="${fieldXpath}"
 							 title="account name" required="true"
 							 className="health-credit_card_details-name sessioncamexclude" additionalAttributes=" data-rule-regex='[^0-9]*' data-msg-regex='For credit card name, please do not use numbers' "/>
 		</form_v3:row>
@@ -35,17 +35,17 @@
 
 		<c:set var="fieldXpath" value="${xpath}/number" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Credit Card Number" className="health_credit-card-details_number_group">
-			<field_new:creditcard_number xpath="${fieldXpath}" title="Credit card number" required="true" className="health-credit_card_details-number sessioncamexclude" />
+			<field_v2:creditcard_number xpath="${fieldXpath}" title="Credit card number" required="true" className="health-credit_card_details-number sessioncamexclude" />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/expiry" />
 		<form_v3:row fieldXpath="${fieldXpath}_cardExpiryMonth" label="Credit Card Expiry" id="${name}_expiry" className="health_credit-card-details_expiry_group">
-			<field:cards_expiry rule="ccExp" xpath="${fieldXpath}" title="Credit card expiry date" required="true" className="health-credit_card_details-expiry sessioncamexclude" maxYears="7"/>
+			<field_v1:cards_expiry rule="ccExp" xpath="${fieldXpath}" title="Credit card expiry date" required="true" className="health-credit_card_details-expiry sessioncamexclude" maxYears="7"/>
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/ccv" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="CCV number" helpId="402" className="health_credit-card-details_ccv">
-			<field_new:creditcard_ccv xpath="${fieldXpath}" required="true"  />
+			<field_v2:creditcard_ccv xpath="${fieldXpath}" required="true"  />
 		</form_v3:row>
 
 		<health_new:payment_ipp xpath="${xpath}/ipp" />
@@ -53,20 +53,20 @@
 		<%-- Default (HCF) payment day question --%>
 		<c:set var="fieldXpath" value="${xpath}/day" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?" className="health_credit-card-details_day_group">
-			<field_new:count_select xpath="${fieldXpath}" min="1" max="27" step="1" title="your chosen day"
+			<field_v2:count_select xpath="${fieldXpath}" min="1" max="27" step="1" title="your chosen day"
 									required="true" className="health-credit_card_details-day"/>
 		</form_v3:row>
 
 		<%-- NIB based payment day --%>
 		<c:set var="fieldXpath" value="${xpath}/paymentDay" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?" className="health_credit-card-details_paymentDay_group">
-			<field:payment_day xpath="${fieldXpath}" title="your chosen day" required="true" className="health_payment_day health-credit-card_details-paymentDay" messageClassName="health_payment-day_message" displayDatePattern="d" startOfMonth="true" days="28" message="It can take up to 6 days to set up your direct debit so your payment may not be deducted until the following month if you chose a date within this time frame"/>
+			<field_v1:payment_day xpath="${fieldXpath}" title="your chosen day" required="true" className="health_payment_day health-credit-card_details-paymentDay" messageClassName="health_payment-day_message" displayDatePattern="d" startOfMonth="true" days="28" message="It can take up to 6 days to set up your direct debit so your payment may not be deducted until the following month if you chose a date within this time frame"/>
 		</form_v3:row>
 
 		<%-- AUF based payment day --%>
 		<c:set var="fieldXpath" value="${xpath}/policyDay" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?" className="health_credit-card-details_policyDay-group">
-			<field_new:array_select xpath="${fieldXpath}"
+			<field_v2:array_select xpath="${fieldXpath}"
 									required="true" className="health-credit-card_details-policyDay" items="=Please choose..." title="your chosen day" />
 			<p class="health_credit-card-details_policyDay-message"></p>
 		</form_v3:row>

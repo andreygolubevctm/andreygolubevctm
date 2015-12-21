@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- PRODUCT BENEFITS TEMPLATE --%>
-<core:js_template id="more-info-product-benefits-template">
+<core_v1:js_template id="more-info-product-benefits-template">
 
 	<div class="row">
 
@@ -90,4 +90,4 @@
 		{{ } }}
 	</c:if>
 	{{ } }}
-</core:js_template>
+</core_v1:js_template>

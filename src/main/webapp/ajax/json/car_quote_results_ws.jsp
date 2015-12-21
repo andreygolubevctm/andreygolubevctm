@@ -35,7 +35,7 @@
 </c:if>
 
 <%-- Save data --%>
-<core:transaction touch="R" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
+<core_v1:transaction touch="R" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
 
 <%-- Fetch and store the transaction id --%>
 <c:set var="tranId" value="${data['current/transactionId']}" />

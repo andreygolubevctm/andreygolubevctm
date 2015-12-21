@@ -28,16 +28,16 @@
 </c:if>
 
 <%-- The following are hidden fields set by filters --%>
-<field:hidden xpath="health/excess" defaultValue="4" />
-<field:hidden xpath="health/filter/providerExclude" />
-<field:hidden xpath="health/filter/priceMin" defaultValue="0" />
-<field:hidden xpath="health/filter/frequency" defaultValue="M" />
-<field:hidden xpath="health/fundData/hospitalPDF" defaultValue=""/>
-<field:hidden xpath="health/fundData/extrasPDF" defaultValue=""/>
-<field:hidden xpath="health/fundData/providerPhoneNumber" defaultValue=""/>
+<field_v1:hidden xpath="health/excess" defaultValue="4" />
+<field_v1:hidden xpath="health/filter/providerExclude" />
+<field_v1:hidden xpath="health/filter/priceMin" defaultValue="0" />
+<field_v1:hidden xpath="health/filter/frequency" defaultValue="M" />
+<field_v1:hidden xpath="health/fundData/hospitalPDF" defaultValue=""/>
+<field_v1:hidden xpath="health/fundData/extrasPDF" defaultValue=""/>
+<field_v1:hidden xpath="health/fundData/providerPhoneNumber" defaultValue=""/>
 <c:if test="${callCentre}">
-	<field:hidden xpath="health/filter/tierHospital" />
-	<field:hidden xpath="health/filter/tierExtras" />
+	<field_v1:hidden xpath="health/filter/tierHospital" />
+	<field_v1:hidden xpath="health/filter/tierExtras" />
 </c:if>
 
 
@@ -111,7 +111,7 @@
 		<div class="resultsOverflow">
 			<div class="results-table"></div>
 		</div>
-		<core:clear />
+		<core_v1:clear />
 		<div class="featuresFooterPusher"></div>
 
 
@@ -180,7 +180,7 @@
 	</div>
 
 	<!-- COMPARE PANEL -->
-	<core:js_template id="compare-basket-features-template">
+	<core_v1:js_template id="compare-basket-features-template">
 		<div class="compare-basket compareCheckbox">
 			{{ if(comparedResultsCount === 0) { }}
 			<p>
@@ -218,7 +218,7 @@
 			{{ } }}
 			{{ } }}
 		</div>
-	</core:js_template>
+	</core_v1:js_template>
 
 	<%-- COMPARE BAR ITEM --%>
 	<script id="compare-basket-features-item-template" type="text/html">

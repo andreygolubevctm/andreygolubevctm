@@ -11,7 +11,7 @@
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/"/>
 
 <%-- LOAD SETTINGS --%>
-<core_new:load_preload/>
+<core_v2:load_preload/>
 
 
 <%-- HTML --%>

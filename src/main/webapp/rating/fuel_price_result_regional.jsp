@@ -114,9 +114,9 @@ ${logger.debug('REGIONAL SEARCH')}
 	<c:if test="${timeDiff > 87300}"> <%-- FIX: 87300 --%>
 		<error>delay</error> <%-- Test if the results are too old (technical issue) --%>
 	</c:if>
-	<time><field:time_ago time="${timeDiff}" timestamp="true" /></time>
+	<time><field_v1:time_ago time="${timeDiff}" timestamp="true" /></time>
 	<c:if test="${update < 7200}">
-		<update><field:time_ago time="${update}" timestamp="true" rounding="10" /></update>
+		<update><field_v1:time_ago time="${update}" timestamp="true" rounding="10" /></update>
 	</c:if>
 	<c:if test="${not empty result}" >
 		<c:forEach var="row" items="${result.rows}">

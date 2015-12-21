@@ -26,7 +26,7 @@
 	<%-- Own the home --%>
 	<c:set var="fieldXpath" value="${xpath}/ownProperty" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Do you own the home?">
-		<field_new:array_radio xpath="${fieldXpath}"
+		<field_v2:array_radio xpath="${fieldXpath}"
 			className="ownProperty pretty_buttons"
 			required="true"
 			items="Y=Yes,N=No"
@@ -36,7 +36,7 @@
 	<%-- PPoR --%>
 	<c:set var="fieldXpath" value="${xpath}/principalResidence" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Is it your principal place of residence?" helpId="503">
-		<field_new:array_radio xpath="${fieldXpath}"
+		<field_v2:array_radio xpath="${fieldXpath}"
 			className="principalResidence pretty_buttons"
 			required="true"
 			items="Y=Yes,N=No"
@@ -46,7 +46,7 @@
 	<%-- How Occupied --%>
 	<c:set var="fieldXpath" value="${xpath}/howOccupied" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="How is the home occupied?" className="howOccupied">
-		<field_new:import_select xpath="${fieldXpath}"
+		<field_v2:import_select xpath="${fieldXpath}"
 			required="true"
 			title="how the home is occupied"
 			url="/WEB-INF/option_data/occupied_type.html"/>
@@ -55,7 +55,7 @@
 	<%-- When Moved in Year + Month --%>
 	<c:set var="fieldXpath" value="${xpath}/whenMovedIn/year" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="When did you move into the home?" className="whenMovedInYear">
-		<field_new:array_select xpath="${fieldXpath}"
+		<field_v2:array_select xpath="${fieldXpath}"
 			items="${items}"
 			title="when you moved into the home"
 			required="true" />
@@ -63,17 +63,17 @@
 
 	<c:set var="fieldXpath" value="${xpath}/whenMovedIn/month" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Month you move into the home?" helpId="504" className="whenMovedInMonth">
-		<field_new:import_select xpath="${fieldXpath}"
+		<field_v2:import_select xpath="${fieldXpath}"
 			required="true"
 			omitPleaseChoose="Y"
 			title="the month you moved into the home"
 			url="/WEB-INF/option_data/month_full.html"/>
 	</form_v2:row>
 
-	<core:js_template id="cover-type-warning-template">
+	<core_v1:js_template id="cover-type-warning-template">
 		<content:get key="coverTypeWarningCopy"/>
-	</core:js_template>
+	</core_v1:js_template>
 
-	<field:hidden xpath="${xpath}/coverTypeWarning/chosenOption"/>
+	<field_v1:hidden xpath="${xpath}/coverTypeWarning/chosenOption"/>
 
 </form_v2:fieldset>

@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- PRODUCT BENEFITS TEMPLATE --%>
-<core:js_template id="more-info-product-benefits-template-xs">
+<core_v1:js_template id="more-info-product-benefits-template-xs">
 	<div class="row row-content brochureButtons xsOnly">
 		{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
 		<div class="col-sm-6 col-xs-12">
@@ -29,7 +29,7 @@
 		<div class="col-xs-12">
 			<div class="row row-content formInput">
 				<div class="col-xs-12">
-					<field_new:email xpath="emailAddress"  required="true"
+					<field_v2:email xpath="emailAddress"  required="true"
 									 className="sendBrochureEmailAddress"
 									 placeHolder="${emailPlaceHolder}" />
 				</div>
@@ -121,4 +121,4 @@
 		</div>
 	</div>
 	{{ } }}
-</core:js_template>
+</core_v1:js_template>

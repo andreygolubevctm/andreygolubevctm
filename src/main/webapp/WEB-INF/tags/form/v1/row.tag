@@ -55,5 +55,5 @@
 	<c:if test="${readonly != true && not empty legend}">
 		<div class="fieldrow_legend" id="${id}_row_legend">${legend}</div>
 	</c:if>
-	<core:clear />
+	<core_v1:clear />
 </div>

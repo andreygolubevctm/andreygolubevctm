@@ -6,13 +6,13 @@
 
 <session:new verticalCode="CAR" authenticated="true" />
 
-<core_new:quote_check quoteType="car" />
-<core_new:load_preload />
+<core_v2:quote_check quoteType="car" />
+<core_v2:load_preload />
 
 <c:set var="trackLmiConversion" value="${data.carlmi.trackConversion}" />
 <c:if test="${trackLmiConversion == true && param['int'] != null}">
 	<go:setData dataVar="data" value="false" xpath="carlmi/trackConversion" />
-	<core:transaction touch="H" comment="getQuote" noResponse="true" writeQuoteOverride="N" />
+	<core_v1:transaction touch="H" comment="getQuote" noResponse="true" writeQuoteOverride="N" />
 </c:if>
 
 <%-- Initialise Save Quote --%>
@@ -83,7 +83,7 @@
 						</c:choose></span> <b class="caret"></b></a>
 				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<div class="dropdown-container">
-						<agg_new:save_quote includeCallMeback="false" />
+						<agg_v2:save_quote includeCallMeback="false" />
 					</div>
 				</div>
 			</li>
@@ -170,7 +170,7 @@
 	</jsp:attribute>
 			
 	<jsp:attribute name="footer">
-		<core:whitelabeled_footer />
+		<core_v1:whitelabeled_footer />
 	</jsp:attribute>
 			
 	<jsp:attribute name="vertical_settings">
@@ -185,7 +185,7 @@
 		<div class="hiddenFields">
 			<%-- These should use pageSettings.getVerticalCode() but for now don't want to change xpaths --%>
 			<form_v1:operator_id xpath="quote/operatorid" />
-			<core:referral_tracking vertical="quote" />
+			<core_v1:referral_tracking vertical="quote" />
 			<c:choose>
 				<c:when test="${param['jrny'] == 1 or param['jrny'] == 2}">
 					<c:set var="jrny" value = "${param['jrny']}"/>
@@ -194,8 +194,8 @@
 					<c:set var="jrny" value = "1"/>
 				</c:otherwise>
 			</c:choose>
-			<field:hidden xpath="quote/renderingMode" />
-			<field:hidden xpath="quote/journey/type" defaultValue="${jrny}" />
+			<field_v1:hidden xpath="quote/renderingMode" />
+			<field_v1:hidden xpath="quote/journey/type" defaultValue="${jrny}" />
 		</div>
 	
 		<%-- Slides --%>
@@ -215,7 +215,7 @@
 		</c:choose>
 		<car_layout:slide_results />
 
-        <field:hidden xpath="environmentOverride" />
+        <field_v1:hidden xpath="environmentOverride" />
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 
 	</jsp:body>

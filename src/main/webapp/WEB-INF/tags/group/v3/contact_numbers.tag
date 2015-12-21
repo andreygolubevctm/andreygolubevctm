@@ -21,10 +21,10 @@
 
 <c:set var="fieldXpath" value="${xpath}/mobile" />
 <form_v3:row label="Mobile Number" fieldXpath="${fieldXpath}input">
-	<field:contact_mobile xpath="${fieldXpath}" size="15" required="false" title="The mobile number" labelName="mobile number" placeHolder="04xx xxx xxx" className="sessioncamexclude" additionalAttributes="${additionalAttributes}" />
+	<field_v1:contact_mobile xpath="${fieldXpath}" size="15" required="false" title="The mobile number" labelName="mobile number" placeHolder="04xx xxx xxx" className="sessioncamexclude" additionalAttributes="${additionalAttributes}" />
 </form_v3:row>
 
 <c:set var="fieldXpath" value="${xpath}/other" />
 <form_v3:row label="Other Number" fieldXpath="${fieldXpath}input">
-	<field:contact_telno xpath="${fieldXpath}" size="15" required="false" isLandline="true" title="The other number" labelName="other number" />
+	<field_v1:contact_telno xpath="${fieldXpath}" size="15" required="false" isLandline="true" title="The other number" labelName="other number" />
 </form_v3:row>

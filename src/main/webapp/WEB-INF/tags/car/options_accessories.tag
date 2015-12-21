@@ -13,7 +13,7 @@
 <form_v2:fieldset legend="Non-Standard Accessories" id="${name}FieldSet">
 
 	<form_v2:row label="Does the car have any non-standard accessories fitted?" id="${name}FieldRow" className="initial" helpId="4">
-		<field_new:array_radio xpath="${xpath}RadioBtns" required="true"
+		<field_v2:array_radio xpath="${xpath}RadioBtns" required="true"
 			className="" items="Y=Yes,N=No"
 			id="${name}RadioBtns" title="if the car has any non-standard accessories" />
 		<a href="javascript:;" class="btn btn-edit" id="${name}Button" title="Edit Selections">Edit Selections</a>
@@ -26,7 +26,7 @@
 		</div>
 	</div>
 
-	<field:hidden xpath="${xpath}" defaultValue="${data[xpath]}" />
+	<field_v1:hidden xpath="${xpath}" defaultValue="${data[xpath]}" />
 
 </form_v2:fieldset>
 

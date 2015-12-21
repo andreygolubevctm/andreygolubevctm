@@ -3,8 +3,8 @@
 
 <session:new verticalCode="TRAVEL" authenticated="true" />
 
-<core_new:quote_check quoteType="travel" />
-<core_new:load_preload />
+<core_v2:quote_check quoteType="travel" />
+<core_v2:load_preload />
 
 <%-- HTML --%>
 <layout_v1:journey_engine_page title="Travel Quote">
@@ -109,12 +109,12 @@
 		<travel_layout:slide_results />
 
 		<%-- Hidden Fields --%>
-		<field:hidden xpath="transcheck" constantValue="1" />
-		<field:hidden xpath="travel/renderingMode" />
-        <field:hidden xpath="environmentOverride" />
+		<field_v1:hidden xpath="transcheck" constantValue="1" />
+		<field_v1:hidden xpath="travel/renderingMode" />
+        <field_v1:hidden xpath="environmentOverride" />
 		<%-- generate the benefit fields (hidden) for form selection. --%>
 		<div class="hiddenFields">
-			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
+			<core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>
 	</jsp:body>
 	

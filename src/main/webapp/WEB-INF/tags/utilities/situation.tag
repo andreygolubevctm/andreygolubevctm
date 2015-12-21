@@ -17,16 +17,16 @@
 	<form_v1:fieldset legend="Identification Details">
 		
 			<form_v1:row label="Identification type" id="idTypeContainer">
-				<field:array_select items="=Please choose...,Medicare=Medicare,Passport=Passport,DriversLicence=Driver's License" xpath="${xpath}/identification/idType" title="the identification type" required="true" />
+				<field_v1:array_select items="=Please choose...,Medicare=Medicare,Passport=Passport,DriversLicence=Driver's License" xpath="${xpath}/identification/idType" title="the identification type" required="true" />
 			</form_v1:row>
 			
 			<form_v1:row label="Identification number">
-				<field:input xpath="${xpath}/identification/idNo" title="identification number" required="true" maxlength="20" />
+				<field_v1:input xpath="${xpath}/identification/idNo" title="identification number" required="true" maxlength="20" />
 			</form_v1:row>
 			
 			<div class="countryRowContainer">
 				<form_v1:row label="Country of issue">
-					<field:import_select xpath="${xpath}/identification/country" 
+					<field_v1:import_select xpath="${xpath}/identification/country"
 						url="/WEB-INF/option_data/country_of_issue_name.html"
 						title="country of issue"
 						required="true" />
@@ -35,13 +35,13 @@
 			
 			<div class="stateRowContainer">
 				<form_v1:row label="State of issue">
-					<field:state_select xpath="${xpath}/identification/state" useFullNames="true" />
+					<field_v1:state_select xpath="${xpath}/identification/state" useFullNames="true" />
 				</form_v1:row>
 			</div>
 			
 			<fmt:formatDate value="${go:AddDays(now,365*10)}" var="expiryMaxDate" type="date" pattern="dd/MM/yyyy"/>
 			<form_v1:row label="Expiry date" id="idExpiryDate">
-				<field:basic_date xpath="${xpath}/identification/expiryDate" title="identification expiry date" required="true" disableWeekends="false" maxDate="${expiryMaxDate}" />
+				<field_v1:basic_date xpath="${xpath}/identification/expiryDate" title="identification expiry date" required="true" disableWeekends="false" maxDate="${expiryMaxDate}" />
 			</form_v1:row>
 
 	</form_v1:fieldset>		

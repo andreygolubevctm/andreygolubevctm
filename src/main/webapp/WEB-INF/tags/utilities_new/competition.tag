@@ -18,6 +18,6 @@
     </c:choose>
     <form_v2:row label="" hideHelpIconCol="true">
         <c:set var="competitionCheckboxText"><content:get key="competitionCheckboxText"/></c:set>
-        <field_new:checkbox xpath="${xpath}/competition/optin" value="Y" title=" ${competitionCheckboxText}" required="false" label="${true}"/>
+        <field_v2:checkbox xpath="${xpath}/competition/optin" value="Y" title=" ${competitionCheckboxText}" required="false" label="${true}"/>
     </form_v2:row>
 </c:if>

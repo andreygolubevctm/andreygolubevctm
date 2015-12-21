@@ -27,7 +27,7 @@
 	</c:set>
 </c:if>
 
-<core:js_template id="edit-details-template">
+<core_v1:js_template id="edit-details-template">
 	${introPanel}
 	<div class="clearfix"></div>
 	${expiredPanel}
@@ -314,4 +314,4 @@
 		<div class="clearfix"></div>
 	</div>
 
-</core:js_template>
+</core_v1:js_template>

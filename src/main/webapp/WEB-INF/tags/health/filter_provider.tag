@@ -38,7 +38,7 @@
 
 	<c:if test="${fn:contains(fundTypesToDisplay, isFundRestricted)}">
 		<div class="filterProviderCheckbox">
-			<field_new:checkbox
+			<field_v2:checkbox
 				required="false"
 				value="${FundCode}"
 				xpath="${xpath}/${fn:toLowerCase(FundCode)}"

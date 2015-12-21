@@ -18,7 +18,7 @@
 			<%-- Anyone Older? --%>
 			<c:set var="fieldXpath" value="${xpath}/anyoneOlder" />
 			<form_v2:row fieldXpath="${fieldXpath}" label="Will anyone older than the policy holder(s) live in the home?" id="anyoneOlder">
-				<field_new:array_radio xpath="${fieldXpath}"
+				<field_v2:array_radio xpath="${fieldXpath}"
 					items="Y=Yes,N=No"
 					className="pretty_buttons"
 					title="if anyone is older than the policy holder at the home"
@@ -28,7 +28,7 @@
 			<%-- DOB of the oldest person --%>
 			<c:set var="fieldXpath" value="${xpath}/oldestPersonDob" />
 			<form_v2:row fieldXpath="${fieldXpath}" label="Date of birth of oldest person living in the home" id="oldest_person_DOB">
-				<field_new:person_dob xpath="${fieldXpath}"
+				<field_v2:person_dob xpath="${fieldXpath}"
 					title="oldest person dob"
 					required="true"
 					ageMin="16"
@@ -38,7 +38,7 @@
 			<%-- Is anyone over 55? --%>
 			<c:set var="fieldXpath" value="${xpath}/over55" />
 			<form_v2:row fieldXpath="${fieldXpath}" label="Is any person living in the home over 55 and retired?" className="over55">
-				<field_new:array_radio xpath="${fieldXpath}"
+				<field_v2:array_radio xpath="${fieldXpath}"
 					items="Y=Yes,N=No"
 					className="pretty_buttons"
 					title="whether there is anyone over 55 and retired living at the home"

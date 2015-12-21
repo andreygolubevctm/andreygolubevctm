@@ -5,7 +5,7 @@
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.write.write_quote')}" />
 
-<core_new:no_cache_header/>
+<core_v2:no_cache_header/>
 
 <session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(param.quoteType)}" />
 
@@ -18,7 +18,7 @@
 <c:set var="vertical" value="${fn:toLowerCase(quoteType)}" />
 
 <%-- First check owner of the quote --%>
-<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" /></c:set>
+<c:set var="proceedinator"><core_v1:access_check quoteType="${quoteType}" /></c:set>
 
 <%-- Check if the save was triggered by session pop --%>
 <c:if test="${not empty param.triggeredsave && param.triggeredsave == 'sessionpop'}">
@@ -39,7 +39,7 @@
 		<%-- Ensure the current transactionID is set --%>
 		${logger.debug('write quote getTransactionId. {}', log:kv('verticalCode',data.current.verticalCode ))}
 		<c:set var="sandpit">
-			<core:get_transaction_id id_handler="preserve_tranId" quoteType="${quoteType}" />
+			<core_v1:get_transaction_id id_handler="preserve_tranId" quoteType="${quoteType}" />
 		</c:set>
 		<c:set var="transID" value="${data.current.transactionId}" />
 
@@ -52,7 +52,7 @@
 		<c:if test="${not empty emailAddress}">
 			<%-- Add/Update the user record in email_master --%>
 			<c:catch var="error">
-				<agg:write_email
+				<agg_v1:write_email
 					brand="${brand}"
 					vertical="${vertical}"
 					source="${source}"
@@ -96,7 +96,7 @@
 				</c:otherwise>
 			</c:choose>
 
-			<c:set var="write_quote"><agg:write_quote productType="${fn:toUpperCase(quoteType)}" rootPath="${vertical}" /></c:set>
+			<c:set var="write_quote"><agg_v1:write_quote productType="${fn:toUpperCase(quoteType)}" rootPath="${vertical}" /></c:set>
 
 			<c:if test="${not empty write_quote}">
 				<c:if test="${not empty errorPool}">
@@ -107,7 +107,7 @@
 			<%-- LETO
 			TODO Looks like vertical and quoteType are the same variable
 			TODO New touch 'W', or all this stuff should be handled differently.
-			<c:set var="outcome"><core:transaction vertical="${vertical}" touch="W" /></c:set>
+			<c:set var="outcome"><core_v1:transaction vertical="${vertical}" touch="W" /></c:set>
 			--%>
 		</c:if>
 	</c:when>

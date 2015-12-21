@@ -32,7 +32,7 @@
             trusted affiliate, Thought World.</p>
     </div>
 </div>
-<core:js_template id="enquire-snapshot-template">
+<core_v1:js_template id="enquire-snapshot-template">
 
     {{ var template = $("#provider-logo-template").html(); }}
     {{ var htmlTemplate = _.template(template); }}
@@ -72,4 +72,4 @@
             </div>
         </div>
     </form_v2:fieldset>
-</core:js_template>
+</core_v1:js_template>

@@ -15,7 +15,7 @@
 		<jsp:body>
 			<layout_v1:slide_content>
 				<%-- PROVIDER TESTING --%>
-				<agg:provider_testing xpath="${xpath}" displayFullWidth="true" keyLabel="authToken" filterProperty="providerList" hideSelector="${carServiceSplitTest eq false}" />
+				<agg_v1:provider_testing xpath="${xpath}" displayFullWidth="true" keyLabel="authToken" filterProperty="providerList" hideSelector="${carServiceSplitTest eq false}" />
 
 				<car:vehicle_selection xpath="${xpath}/vehicle" />
 			</layout_v1:slide_content>

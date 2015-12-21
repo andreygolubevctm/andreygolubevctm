@@ -69,10 +69,10 @@
 	<c:choose>
 		<c:when test="${not empty label and label ne ''}">
 
-			<field_new:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" addForAttr="${addForAttr}" />
+			<field_v2:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" addForAttr="${addForAttr}" />
 
 			<div class="col-xs-2 visible-xs helpIconXSColumn ${offset}">
-				<field_new:help_icon helpId="${helpId}" showText="${showHelpText}" />
+				<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" />
 			</div>
 
 			<c:set var="helpIconCol" value="hidden-xs" />
@@ -95,7 +95,7 @@
 
 	<c:if test="${empty hideHelpIconCol}">
 		<div class="col-sm-2 ${helpIconCol}">
-			<field_new:help_icon helpId="${helpId}" showText="${showHelpText}"/>
+			<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}"/>
 		</div>
 	</c:if>
 

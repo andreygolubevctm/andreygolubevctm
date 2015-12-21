@@ -17,15 +17,15 @@
 	<form_v1:fieldset legend="Your Contact Details">
 		
 		<form_v1:row label="First name">
-			<field:input xpath="${xpath}/firstName" required="false" title="your first name" />
+			<field_v1:input xpath="${xpath}/firstName" required="false" title="your first name" />
 		</form_v1:row>
 		
 		<form_v1:row label="Your email address">
-			<field:contact_email xpath="${xpath}/email" required="false" title="your email address" />
+			<field_v1:contact_email xpath="${xpath}/email" required="false" title="your email address" />
 		</form_v1:row>
 
 		<form_v1:row label="Phone">
-			<field:contact_telno xpath="${xpath}/phone" required="false" title="your phone number" />
+			<field_v1:contact_telno xpath="${xpath}/phone" required="false" title="your phone number" />
 		</form_v1:row>
 
 		<%-- COMPETITION START --%>
@@ -34,8 +34,8 @@
 				<div class="promo-container">
 					<div class="promo-image ${vertical}"></div>
 					<c:set var="competitionCheckboxText"><content:get key="competitionCheckboxText" /></c:set>
-					<field:checkbox xpath="${xpath}/competition/optin" value="Y" title=" ${competitionCheckboxText}" required="false" label="true"/>
-					<field:hidden xpath="${xpath}/competition/previous" />
+					<field_v1:checkbox xpath="${xpath}/competition/optin" value="Y" title=" ${competitionCheckboxText}" required="false" label="true"/>
+					<field_v1:hidden xpath="${xpath}/competition/previous" />
 				</div>
 			</form_v1:row>
 		</c:if>
@@ -44,8 +44,8 @@
 		<%-- Mandatory agreement to privacy policy --%>
 		<form_v1:privacy_optin vertical="utilities" />
 
-		<field:hidden xpath="${xpath}/optinPhone" defaultValue="N" />
-		<field:hidden xpath="${xpath}/optinMarketing" defaultValue="N" />
+		<field_v1:hidden xpath="${xpath}/optinPhone" defaultValue="N" />
+		<field_v1:hidden xpath="${xpath}/optinMarketing" defaultValue="N" />
 
 	</form_v1:fieldset>		
 

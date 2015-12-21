@@ -2,14 +2,14 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<core:js_template id="google-map-canvas-template">
+<core_v1:js_template id="google-map-canvas-template">
     <div class="row">
         <div class="col-xs-12" id="google-map-container">
             <div id="map-canvas" style="width: 100%; height: 100%"></div>
         </div>
     </div>
-</core:js_template>
-<core:js_template id="map-marker-template">
+</core_v1:js_template>
+<core_v1:js_template id="map-marker-template">
 
     {{ var urlHost = meerkat.modules.performanceProfiling.isIos() ? 'http://maps.apple.com' : 'https://maps.google.com'; }}
     <div class="map-info-window">
@@ -29,4 +29,4 @@
             {{ } }}
         </div>
     </div>
-</core:js_template>
+</core_v1:js_template>

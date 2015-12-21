@@ -12,10 +12,10 @@
 </c:if>
 
 <form_v2:row label="Your email address" className="clear email-row">
-    <field_new:email xpath="${xpath}/email" title="your email address" required="true" size="40"/>
+    <field_v2:email xpath="${xpath}/email" title="your email address" required="true" size="40"/>
 </form_v2:row>
 <form_v2:row label="Your password" className="clear">
-    <field:password xpath="${xpath}/password" title="your password" required="true"/>
+    <field_v1:password xpath="${xpath}/password" title="your password" required="true"/>
 </form_v2:row>
 
 <form_v2:row className="clear" hideHelpIconCol="true">
@@ -27,26 +27,26 @@
     </div>
 </form_v2:row>
 
-<core:js_template id="forgot-password-template">
+<core_v1:js_template id="forgot-password-template">
     <form action="#" id="forgot-password-form">
         <form_v2:fieldset legend="Please enter your email address to reset your password">
             <form_v2:row label="Your email address">
-                <field_new:email xpath="${xpath}/forgotten/email" title="your email address" required="true" size="40" />
+                <field_v2:email xpath="${xpath}/forgotten/email" title="your email address" required="true" size="40" />
             </form_v2:row>
         </form_v2:fieldset>
     </form>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="reset-password-success-template">
+<core_v1:js_template id="reset-password-success-template">
     <p>Your password reset email has been sent to <strong>{{= data.email }}</strong></p>
     <p>To reset your password click the link provided in that email and follow the process provided on our secure website.</p>
     <p>Once your password has been reset, follow the process to return to the "Retrieve Your Insurance Quotes" page and log in using your new password, to gain access to your previous quotes.</p>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="reset-password-failure-template">
+<core_v1:js_template id="reset-password-failure-template">
     <p>Unfortunately we were unable to send you a reset email.</p>
     {{ if(typeof message !== "undefined") { }}
         <p>{{= message }}.</p>
     {{ } }}
     <p>Click the button below to return to the "reset your password" page and try again.</p>
-</core:js_template>
+</core_v1:js_template>

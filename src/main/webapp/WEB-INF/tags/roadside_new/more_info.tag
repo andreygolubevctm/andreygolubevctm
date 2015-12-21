@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<core:js_template id="more-info-template">
+<core_v1:js_template id="more-info-template">
 
     {{ var template = $("#provider-logo-template").html(); }}
     {{ var companyLogo = _.template(template); }}
@@ -55,5 +55,5 @@
             </div>
         </div>
     </div>
-</core:js_template>
+</core_v1:js_template>
 

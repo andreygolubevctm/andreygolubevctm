@@ -107,7 +107,7 @@
         </jsp:attribute>
 
         <jsp:attribute name="footer">
-            <core:whitelabeled_footer />
+            <core_v1:whitelabeled_footer />
         </jsp:attribute>
 
         <jsp:attribute name="vertical_settings">
@@ -127,16 +127,16 @@
 
                 <div class="hiddenFields">
                     <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
-                    <core:referral_tracking vertical="retrieve_quotes"/>
+                    <core_v1:referral_tracking vertical="retrieve_quotes"/>
                 </div>
 
                 <input type="hidden" name="transcheck" id="transcheck" value="1"/>
 
-                <core:js_template id="new-quote-template">
+                <core_v1:js_template id="new-quote-template">
                     <h2>Start a New Quote</h2>
                     <br>
                     <confirmation:other_products />
-                </core:js_template>
+                </core_v1:js_template>
             </jsp:body>
 
         </layout_v1:journey_engine_page>

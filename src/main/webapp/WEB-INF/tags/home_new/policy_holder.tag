@@ -15,7 +15,7 @@
 	<%-- Policy Holder Title --%>
 	<c:set var="fieldXpath" value="${xpath}/title" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Title">
-		<field_new:import_select xpath="${fieldXpath}"
+		<field_v2:import_select xpath="${fieldXpath}"
 			title="the policy holder's title"
 			required="false"
 			url="/WEB-INF/option_data/titles_simple.html"
@@ -25,7 +25,7 @@
 	<%-- Policy Holder First Name --%>
 	<c:set var="fieldXpath" value="${xpath}/firstName" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="First Name">
-		<field:person_name xpath="${fieldXpath}"
+		<field_v1:person_name xpath="${fieldXpath}"
 			title="policy holder's first name"
 			required="true"
 			maxlength="50" />
@@ -34,7 +34,7 @@
 	<%-- Policy Holder Last Name --%>
 	<c:set var="fieldXpath" value="${xpath}/lastName" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Last Name">
-		<field:person_name xpath="${fieldXpath}"
+		<field_v1:person_name xpath="${fieldXpath}"
 			title="policy holder's last name"
 			required="true"
 			maxlength="50" />
@@ -43,7 +43,7 @@
 	<%-- Policy Holder DOB --%>
 	<c:set var="fieldXpath" value="${xpath}/dob" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Policy Holder's Date of Birth">
-		<field_new:person_dob xpath="${fieldXpath}"
+		<field_v2:person_dob xpath="${fieldXpath}"
 			title="policy holder's"
 			required="true"
 			ageMin="16"
@@ -56,7 +56,7 @@
 	<%-- Joint Policy Holder Title --%>
 	<c:set var="fieldXpath" value="${xpath}/jointTitle" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Title">
-		<field_new:import_select xpath="${fieldXpath}"
+		<field_v2:import_select xpath="${fieldXpath}"
 			title="the joint policy holder's title"
 			required="false"
 			url="/WEB-INF/option_data/titles_simple.html"
@@ -66,7 +66,7 @@
 	<%-- Joint Policy Holder First Name --%>
 	<c:set var="fieldXpath" value="${xpath}/jointFirstName" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="First Name">
-		<field:person_name xpath="${fieldXpath}"
+		<field_v1:person_name xpath="${fieldXpath}"
 			title="joint policy holder's first name"
 			required="false"
 			maxlength="50"
@@ -76,7 +76,7 @@
 	<%-- Joint Policy Holder Last Name --%>
 	<c:set var="fieldXpath" value="${xpath}/jointLastName" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Last Name">
-		<field:person_name xpath="${fieldXpath}"
+		<field_v1:person_name xpath="${fieldXpath}"
 			title="joint policy holder's last name"
 			required="false"
 			maxlength="50"
@@ -86,7 +86,7 @@
 	<%-- Joint Policy Holder DOB --%>
 	<c:set var="fieldXpath" value="${xpath}/jointDob" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Date of Birth">
-		<field_new:person_dob xpath="${fieldXpath}"
+		<field_v2:person_dob xpath="${fieldXpath}"
 			title="joint policy holder's"
 			required="true"
 			className="jointPolicyHolder"

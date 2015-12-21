@@ -28,14 +28,14 @@
 				<h2 id="orderNo"> </h2>
 
 			</div>
-			<agg:panel>
+			<agg_v1:panel>
 				<p><content:optin key="brandDisplayName" useSpan="true"/> is an online comparison website.</p>
-				<core:clear />
-			</agg:panel>
+				<core_v1:clear />
+			</agg_v1:panel>
 
-			<agg:panel>
+			<agg_v1:panel>
 				<form_v1:scrape id="2" />
-			</agg:panel>
+			</agg_v1:panel>
 		</div>
 	</div>
 </div>

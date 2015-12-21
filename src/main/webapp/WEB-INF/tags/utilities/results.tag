@@ -1447,7 +1447,7 @@ $(document).on('click','a[data-viewdiscount=true]',function(){
 <div id="resultsPage" class="clearFix">
 
 	<!-- add the more btn (itemId Id of container want to scroll too + scrollTo position of that item eg: top or bottom) -->
-	<agg:moreBtn itemId="footer" scrollTo="top"/>	
+	<agg_v1:moreBtn itemId="footer" scrollTo="top"/>
 	
 	<div id="results-container" style="height:auto; position:relative; clear:both;">
 
@@ -1470,12 +1470,12 @@ $(document).on('click','a[data-viewdiscount=true]',function(){
 		<%-- The results table will be inserted here --%>
 		
 		<div id="results-table"></div>
-		<core:clear/>
+		<core_v1:clear/>
 		<p class="results-rows-footer">Estimated annual savings are based upon you currently paying the standard rate on a peak meter within your postcode and energy network.<br>Costs and savings include GST &amp; are effective as at <fmt:formatDate value="${now}" pattern="dd/MM/yyyy" />.</p>
 		
 		
 		<%-- TEMPLATE FOR PRICE RESULTS --%>
-		<core:js_template id="result-template">
+		<core_v1:js_template id="result-template">
 			<div class="result-row" id="result_[#= planId #]" style="display:none;">
 				<div class="supplier_and_plan">
 					<div class="thumb" title="[#= retailerName #]" style="background-image:url(common/images/logos/utilities/[#= retailerId #]_logo.jpg);"><!-- company logo --></div>
@@ -1501,7 +1501,7 @@ $(document).on('click','a[data-viewdiscount=true]',function(){
 				</div>
 				<div class="link"><!-- injected dynamically --></div>
 				</div>
-		</core:js_template>
+		</core_v1:js_template>
 
 	</div>
 

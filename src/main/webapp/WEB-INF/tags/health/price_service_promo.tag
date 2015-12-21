@@ -7,7 +7,7 @@
 
 <jsp:useBean id="specialOffersService" class="com.ctm.web.simples.admin.services.SpecialOffersService" scope="page" />
 <%-- VARIABLES --%>
-<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${healthPriceService.getTransactionId()}" /></c:set>
+<c:set var="styleCodeId"><core_v1:get_stylecode_id transactionId="${healthPriceService.getTransactionId()}" /></c:set>
 <c:set var="applicationDate" value="${healthPriceService.getApplicationDate()}" />
 <%-- XML START --%>
 <fmt:setLocale value="en_US" />

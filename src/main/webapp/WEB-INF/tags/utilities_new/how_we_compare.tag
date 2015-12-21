@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<core:js_template id="energy-assumptions">
+<core_v1:js_template id="energy-assumptions">
     <h2>Assumptions Thought World makes for the underlying energy costs and savings:</h2>
     <ol>
         <li>
@@ -169,9 +169,9 @@
         range of energy suppliers. We do advise you to do your own research on the available government websites and
         respective energy retailers, so that you can make an informed decision.
     </p>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="state-energy-concession">
+<core_v1:js_template id="state-energy-concession">
     <h2>
         Information regarding concession card holders:
     </h2>
@@ -224,8 +224,8 @@
                target="_blank">NT - Dept of Health and Families</a>
         </li>
     </ul>
-</core:js_template>
-<core:js_template id="thoughtworld-calculator">
+</core_v1:js_template>
+<core_v1:js_template id="thoughtworld-calculator">
     <p>
         <em>'Thought World' is an accredited subsidiary of Comparethemarket.com.au and provides a comparison for a range
             of energy offers subject to the availability.</em>
@@ -474,4 +474,4 @@
         suppliers. We do advise you to do your own research on the available government websites and respective energy
         retailers, so that you can make an informed decision.
     </p>
-</core:js_template>
+</core_v1:js_template>

@@ -67,7 +67,7 @@
     </c:if>
     <form_v2:row fieldXpath="${fieldXpath}" label="Street Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false">
         <c:set var="placeholder" value="e.g. 5/20 Sample St"/>
-        <field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address"
+        <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address"
                          placeHolder="${placeholder}" required="false"
                          additionalAttributes=" data-rule-validAutofilllessSearch='${name}' data-msg-validAutofilllessSearch='Please select a valid address' "/>
     </form_v2:row>
@@ -75,7 +75,7 @@
     <%-- POSTCODE --%>
     <c:set var="fieldXpath" value="${xpath}/nonStdPostCode"/>
     <form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${name}_nonStdFieldRow">
-        <field:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}"/>
+        <field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}"/>
     </form_v2:row>
 
     <%-- SUBURB DROPDOWN (populated from postcode) --%>
@@ -122,12 +122,12 @@
         </c:choose>
     </form_v2:row>
 
-    <core:clear/>
+    <core_v1:clear/>
 
     <%-- STREET NAME --%>
     <c:set var="fieldXpath" value="${xpath}/nonStdStreet"/>
     <form_v2:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStdFieldRow">
-        <field_new:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude"
+        <field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude"
                          additionalAttributes=" data-rule-validAddress='${name}' data-rule-validAddress='Please enter the residential street' "/>
     </form_v2:row>
 
@@ -140,7 +140,7 @@
 
     <form_v2:row fieldXpath="${fieldXpath}" label="${streetNoLabel}" id="${name}_streetNumRow" className="${name}_nonStdFieldRow">
         <div class="${name}_streetNum_container">
-            <field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true"
+            <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true"
                              required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid street number'"/>
         </div>
     </form_v2:row>
@@ -148,7 +148,7 @@
     <%-- UNIT/SHOP NUMBER (Optional) --%>
     <c:set var="fieldXpath" value="${xpath}/unitShop"/>
     <form_v2:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="${name}_nonStdFieldRow">
-        <field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true"
+        <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true"
                          required="false"/>
     </form_v2:row>
 
@@ -156,7 +156,7 @@
     <c:set var="unitTypes">=Please choose...,CO=Cottage,DU=Duplex,FA=Factory,HO=House,KI=Kiosk,L=Level,M=Maisonette,MA=Marine Berth,OF=Office,PE=Penthouse,RE=Rear,RO=Room,SH=Shop,ST=Stall,SI=Site,SU=Suite,TO=Townhouse,UN=Unit,VI=Villa,WA=Ward,OT=Other</c:set>
     <c:set var="fieldXpath" value="${xpath}/nonStdUnitType"/>
     <form_v2:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStdFieldRow">
-        <field_new:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true"/>
+        <field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true"/>
     </form_v2:row>
 
     <!-- NON STANDARD CHECKBOX -->
@@ -168,28 +168,28 @@
             <c:set var="unableToFindCheckboxText" value="${unableToFindCheckboxText} or your address is a PO Box"/>
         </c:if>
 
-        <field_new:checkbox xpath="${fieldXpath}" value="Y" title="${unableToFindCheckboxText}" label="true" required="false"/>
+        <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="${unableToFindCheckboxText}" label="true" required="false"/>
     </form_v2:row>
 
-    <core:clear/>
+    <core_v1:clear/>
 
     <!-- HIDDEN FIELDS (Populated in autocomplete.js or elastic_search.js) -->
     <c:set var="errorPlacementSelector" value="#${name}_error_container .error-field"/>
-    <field:hidden xpath="${xpath}/type" defaultValue="${type}"/>
-    <field:hidden xpath="${xpath}/elasticSearch" defaultValue="Y"/>
-    <field:hidden xpath="${xpath}/lastSearch"/>
-    <field:hidden xpath="${xpath}/fullAddressLineOne"/>
-    <field:hidden xpath="${xpath}/fullAddress"/>
+    <field_v1:hidden xpath="${xpath}/type" defaultValue="${type}"/>
+    <field_v1:hidden xpath="${xpath}/elasticSearch" defaultValue="Y"/>
+    <field_v1:hidden xpath="${xpath}/lastSearch"/>
+    <field_v1:hidden xpath="${xpath}/fullAddressLineOne"/>
+    <field_v1:hidden xpath="${xpath}/fullAddress"/>
 
-    <field:hidden xpath="${xpath}/dpId"/>
-    <field:hidden xpath="${xpath}/unitType"/>
-    <field:hidden xpath="${xpath}/unitSel"/>
-    <field:hidden xpath="${xpath}/houseNoSel"/>
-    <field:hidden xpath="${xpath}/floorNo"/>
-    <field:hidden xpath="${xpath}/streetName"/>
-    <field:hidden xpath="${xpath}/streetId"/>
-    <field_new:validatedHiddenField xpath="${xpath}/suburbName" validationErrorPlacementSelector="${errorPlacementSelector}" additionalAttributes="${suburbAdditionalAttributes}"/>
-    <field_new:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}"
+    <field_v1:hidden xpath="${xpath}/dpId"/>
+    <field_v1:hidden xpath="${xpath}/unitType"/>
+    <field_v1:hidden xpath="${xpath}/unitSel"/>
+    <field_v1:hidden xpath="${xpath}/houseNoSel"/>
+    <field_v1:hidden xpath="${xpath}/floorNo"/>
+    <field_v1:hidden xpath="${xpath}/streetName"/>
+    <field_v1:hidden xpath="${xpath}/streetId"/>
+    <field_v2:validatedHiddenField xpath="${xpath}/suburbName" validationErrorPlacementSelector="${errorPlacementSelector}" additionalAttributes="${suburbAdditionalAttributes}"/>
+    <field_v2:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}"
                                     additionalAttributes="${postCodeAdditionalAttributes} data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode'"/>
-    <field:hidden xpath="${xpath}/state"/>
+    <field_v1:hidden xpath="${xpath}/state"/>
 </div>

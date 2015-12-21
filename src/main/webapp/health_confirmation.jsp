@@ -12,7 +12,7 @@
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
 <c:set var="callCentreAllHoursContent" scope="request"><content:getOpeningHoursModal /></c:set>
 
-<core:quote_check quoteType="health" />
+<core_v1:quote_check quoteType="health" />
 
 <layout_v1:journey_engine_page title="Health Confirmation">
 

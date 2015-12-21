@@ -3,7 +3,7 @@
 
 <session:new verticalCode="HOMELOAN" authenticated="true" />
 
-<core_new:quote_check quoteType="homeloan" />
+<core_v2:quote_check quoteType="homeloan" />
 
 <layout_v1:journey_engine_page title="Homeloan Confirmation">
 

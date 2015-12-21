@@ -28,7 +28,7 @@
 	</tr>
 </table>
 
-<core:js_template id="selected-product-template">
+<core_v1:js_template id="selected-product-template">
 	<td class="delimiter onepixel"></td>
 	<td>
 		<div class="supplier_and_plan">
@@ -50,7 +50,7 @@
 	<td class="delimiter onepixel"></td>
 	<td><a href="javascript:void(0);" data-modifyplan="true" class="green-button" title="Modify Plan"><span>Modify Plan</span></a></td>
 	<td class="delimiter onepixel"></td>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">

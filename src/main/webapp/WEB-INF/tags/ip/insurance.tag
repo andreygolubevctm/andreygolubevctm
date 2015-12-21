@@ -15,30 +15,30 @@
 	<form_v1:fieldset legend="Income Protection Details">
 
 		<form_v1:row label="Your gross annual income" helpId="411" className="${name}_income_group">
-			<field:currency xpath="${xpath}/income" symbol="" decimal="${false}" maxLength="10" title="Gross Annual Income" required="true" className="number_only" />
+			<field_v1:currency xpath="${xpath}/income" symbol="" decimal="${false}" maxLength="10" title="Gross Annual Income" required="true" className="number_only" />
 		</form_v1:row>
 
 		<form_v1:row label="Benefit Amount" helpId="412" className="${name}_amount_group">
-			<field:currency xpath="${xpath}/amount" symbol="" decimal="${false}" maxLength="10" title="Benefit Amount" required="true" className="number_only" />
+			<field_v1:currency xpath="${xpath}/amount" symbol="" decimal="${false}" maxLength="10" title="Benefit Amount" required="true" className="number_only" />
 		</form_v1:row>
 
-		<field:hidden xpath="${xpath}/frequency" defaultValue="M" constantValue="M" />
+		<field_v1:hidden xpath="${xpath}/frequency" defaultValue="M" constantValue="M" />
 
-		<field:hidden xpath="${xpath}/type" defaultValue="S" constantValue="S" />
+		<field_v1:hidden xpath="${xpath}/type" defaultValue="S" constantValue="S" />
 
 		<form_v1:row label="Indemnity or Agreed" helpId="405">
-			<field:array_select xpath="${xpath}/value" required="true" title="Indemnity or Agreed" items="=Please choose...,I=Indemnity,A=Agreed" />
+			<field_v1:array_select xpath="${xpath}/value" required="true" title="Indemnity or Agreed" items="=Please choose...,I=Indemnity,A=Agreed" />
 		</form_v1:row>
 
 		<form_v1:row label="Waiting period" helpId="406">
-			<field:array_select xpath="${xpath}/waiting" required="true" title="waiting period" items="=Please choose...,14=14 days,30=30 days,60=60 days,90=90 days,1=1 year,2=2 years" />
+			<field_v1:array_select xpath="${xpath}/waiting" required="true" title="waiting period" items="=Please choose...,14=14 days,30=30 days,60=60 days,90=90 days,1=1 year,2=2 years" />
 		</form_v1:row>
 
 		<form_v1:row label="Benefit period" helpId="407">
-			<field:array_select xpath="${xpath}/benefit" required="true" title="benefit period" items="=Please choose...,2=2 years,5=5 years,60=to Age 60,65=to Age 65,70=to Age 70" />
+			<field_v1:array_select xpath="${xpath}/benefit" required="true" title="benefit period" items="=Please choose...,2=2 years,5=5 years,60=to Age 60,65=to Age 65,70=to Age 70" />
 		</form_v1:row>
 
-		<field:hidden xpath="${xpath}/partner" defaultValue="N" constantValue="N" />
+		<field_v1:hidden xpath="${xpath}/partner" defaultValue="N" constantValue="N" />
 
 	</form_v1:fieldset>
 </div>

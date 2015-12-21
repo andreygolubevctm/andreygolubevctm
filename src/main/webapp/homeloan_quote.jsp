@@ -6,8 +6,8 @@
 
 <session:new verticalCode="HOMELOAN" authenticated="true" />
 
-<core_new:quote_check quoteType="homeloan" />
-<core_new:load_preload />
+<core_v2:quote_check quoteType="homeloan" />
+<core_v2:load_preload />
 
 <%-- Initialise Save Quote --%>
 <c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
@@ -61,7 +61,7 @@
 						</c:choose></span> <b class="caret"></b></a>
 				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<div class="dropdown-container">
-						<agg_new:save_quote includeCallMeback="false" />
+						<agg_v2:save_quote includeCallMeback="false" />
 					</div>
 				</div>
 			</li>
@@ -121,9 +121,9 @@
 	<jsp:body>
 
 		<div class="hiddenFields">
-			<field:hidden xpath="homeloan/renderingMode" />
+			<field_v1:hidden xpath="homeloan/renderingMode" />
 			<form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
-			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
+			<core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>
 
 		<%-- Slides --%>

@@ -3,7 +3,7 @@
 
 <session:new verticalCode="COMPETITION" authenticated="true" />
 
-<core_new:quote_check quoteType="competition" />
+<core_v2:quote_check quoteType="competition" />
 
 <layout_v1:journey_engine_page title="Competition">
 	<jsp:attribute name="head">

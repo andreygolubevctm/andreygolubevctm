@@ -17,22 +17,22 @@
 <form_v2:fieldset legend="Your Details">
     <c:set var="fieldXPath" value="${xpath}/title" />
     <form_v2:row label="Title" fieldXpath="${fieldXPath}" className="clear">
-        <field_new:array_select xpath="${fieldXPath}" required="true" title="your title" items="=Please choose...,Mr=Mr,Mrs=Mrs,Miss=Miss,Ms=Ms,Dr=Dr,Prof=Prof" />
+        <field_v2:array_select xpath="${fieldXPath}" required="true" title="your title" items="=Please choose...,Mr=Mr,Mrs=Mrs,Miss=Miss,Ms=Ms,Dr=Dr,Prof=Prof" />
     </form_v2:row>
 
     <c:set var="fieldXPath" value="${xpath}/firstName" />
     <form_v2:row label="First name" fieldXpath="${fieldXPath}" className="clear">
-        <field:person_name xpath="${fieldXPath}" required="true" title="First Name"/>
+        <field_v1:person_name xpath="${fieldXPath}" required="true" title="First Name"/>
     </form_v2:row>
 
     <c:set var="fieldXPath" value="${xpath}/lastName" />
     <form_v2:row label="Last name" fieldXpath="${fieldXPath}" className="clear">
-        <field:person_name xpath="${fieldXPath}" required="true" title="Last Name"/>
+        <field_v1:person_name xpath="${fieldXPath}" required="true" title="Last Name"/>
     </form_v2:row>
 
     <c:set var="fieldXPath" value="${xpath}/dob" />
     <form_v2:row label="Date of birth" fieldXpath="${fieldXPath}" className="clear date-of-birth">
-        <field_new:person_dob xpath="${fieldXPath}"
+        <field_v2:person_dob xpath="${fieldXPath}"
                               required="true"
                               ageMin="17"
                               ageMax="99"
@@ -41,7 +41,7 @@
 
     <c:set var="fieldXPath" value="${xpath}/mobileNumber" />
     <form_v2:row label="Mobile number" fieldXpath="${fieldXPath}" className="clear">
-        <field:contact_mobile xpath="${fieldXPath}"
+        <field_v1:contact_mobile xpath="${fieldXPath}"
                              required="false"
                              className="sessioncamexclude"
                              placeHolder="04XX XXX XXX"
@@ -51,7 +51,7 @@
 
     <c:set var="fieldXPath" value="${xpath}/otherPhoneNumber" />
     <form_v2:row label="Other phone number" fieldXpath="${fieldXPath}" className="clear">
-        <field:contact_telno xpath="${fieldXPath}"
+        <field_v1:contact_telno xpath="${fieldXPath}"
                              required="false"
                              className="sessioncamexclude"
                              isLandline="true"
@@ -62,13 +62,13 @@
 
     <c:set var="fieldXPath" value="${xpath}/email" />
     <form_v2:row label="Email address" fieldXpath="${fieldXPath}" className="clear">
-        <field_new:email xpath="${fieldXPath}" required="true" />
+        <field_v2:email xpath="${fieldXPath}" required="true" />
     </form_v2:row>
 
     <c:set var="fieldXPath" value="${xpath}/receiveInfoCheck" />
     <form_v2:row label="" fieldXpath="${fieldXPath}" id="receiveInfoCheckContainer" className="clear">
         <c:set var="receiveCommunicationText">I would like to receive electronic communication from <content:get key="boldedBrandDisplayName" /></c:set>
-        <field_new:checkbox xpath="${fieldXPath}" required="false" title="${receiveCommunicationText}" label="true" value="Y" />
+        <field_v2:checkbox xpath="${fieldXPath}" required="false" title="${receiveCommunicationText}" label="true" value="Y" />
     </form_v2:row>
 
     <c:set var="fieldXPath" value="${xpath}/address" />
@@ -77,7 +77,7 @@
 
     <h5 class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-xs-12 row-content">Postal Address</h5>
     <form_v2:row>
-        <field_new:checkbox xpath="${xpath}/postalMatch" required="false" title="My postal address is the same" label="true" value="Y" />
+        <field_v2:checkbox xpath="${xpath}/postalMatch" required="false" title="My postal address is the same" label="true" value="Y" />
     </form_v2:row>
 
     <c:set var="fieldXPath" value="${xpath}/postal" />
@@ -85,7 +85,7 @@
 
     <c:set var="fieldXPath" value="${xpath}/movingDate" />
     <form_v2:row label="Move in date" fieldXpath="${fieldXPath}" id="enquiry_move_in_date_container" className="clear">
-        <field_new:basic_date xpath="${fieldXPath}"
+        <field_v2:basic_date xpath="${fieldXPath}"
                               required="true"
                               maxDate="${nowPlusYears_Date}"
                               minDate="${nowPlusDay_Date}"

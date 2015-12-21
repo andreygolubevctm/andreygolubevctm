@@ -7,12 +7,12 @@
 <form_v2:fieldset legend="Preferences">
     <p>Show results that match to your chosen preferences only. Choose your "must-haves" from the list below. Leave unticked if optional.</p>
     <form_v2:row label="" className="account-fees-container">
-        <field_new:checkbox xpath="${xpath}/preferNoContract" value="Y" title="No Fixed Term or Exit Fees to avoid contract termination fees" required="false" label="true"  />
+        <field_v2:checkbox xpath="${xpath}/preferNoContract" value="Y" title="No Fixed Term or Exit Fees to avoid contract termination fees" required="false" label="true"  />
     </form_v2:row>
     <form_v2:row label="" className="account-management-container">
-        <field_new:checkbox xpath="${xpath}/preferEBilling" value="Y" title="Online account management to access your account/pay bills" required="false" label="true"  />
+        <field_v2:checkbox xpath="${xpath}/preferEBilling" value="Y" title="Online account management to access your account/pay bills" required="false" label="true"  />
     </form_v2:row>
     <form_v2:row label="" className="renewable-energy-container">
-        <field_new:checkbox xpath="${xpath}/preferRenewableEnergy" value="Y" title=" Green or renewable energy plans" required="false" label="true"  />
+        <field_v2:checkbox xpath="${xpath}/preferRenewableEnergy" value="Y" title=" Green or renewable energy plans" required="false" label="true"  />
     </form_v2:row>
 </form_v2:fieldset>

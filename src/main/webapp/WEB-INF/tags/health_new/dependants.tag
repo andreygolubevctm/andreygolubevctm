@@ -36,7 +36,7 @@
 				<strong>If you wish to continue, please add your dependants now.</strong>
 			</p>
 
-			<field:hidden required="true" validationRule="validateMinDependants" validationParam="{'prefix':'${name}'}" validationMessage="A dependant is required." defaultValue="" xpath="${xpath}/dependantrequired" />
+			<field_v1:hidden required="true" validationRule="validateMinDependants" validationParam="{'prefix':'${name}'}" validationMessage="A dependant is required." defaultValue="" xpath="${xpath}/dependantrequired" />
 		</div>
 
 		<health_new:dependant_details_template xpath="${xpath}/dependant" />
@@ -54,7 +54,7 @@
 
 			<c:set var="fieldXpath" value="${xpath}/income" />
 			<form_v3:row fieldXpath="${fieldXpath}" label="What is the estimated taxable income for your household for the financial year 1st July ${financialYearStart} to 30 June ${financialYearEnd}?" id="${name}_tier">
-				<field_new:array_select xpath="${fieldXpath}"  title="Please enter your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_dependants_details_income"/>
+				<field_v2:array_select xpath="${fieldXpath}"  title="Please enter your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_dependants_details_income"/>
 				<span class="fieldrow_legend" id="${name}_incomeMessage"></span>
 			</form_v3:row>
 		</div>

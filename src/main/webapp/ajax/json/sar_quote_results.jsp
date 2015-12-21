@@ -24,7 +24,7 @@
 	<%-- Increment tranId if fetching results again (not the first) --%>
 	<c:when test="${fetch_count > 0}">
 		<c:set var="ignoreme">
-			<core:get_transaction_id
+			<core_v1:get_transaction_id
 				quoteType="roadside"
 				id_handler="increment_tranId" />
 			</c:set>
@@ -34,7 +34,7 @@
 </c:choose>
 
 <%-- Save Client Data --%>
-<core:transaction touch="R" noResponse="true" />
+<core_v1:transaction touch="R" noResponse="true" />
 
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
@@ -65,7 +65,7 @@
 			</c:forEach>
 		</c:if>
 		<%-- Write to the stats database --%>
-		<agg:write_stats tranId="${tranId}" debugXml="${debugXml}" rootPath="roadside" />
+		<agg_v1:write_stats tranId="${tranId}" debugXml="${debugXml}" rootPath="roadside" />
 
 		<%-- Build a response object and send it through! --%>
 		<go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
@@ -74,7 +74,7 @@
 		<go:setData dataVar="soapdata" xpath="soap-response/results/info/trackingKey" value="${data.roadside.trackingKey}" />
 		<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${data.current.transactionId}" />
 
-		<agg:write_result_details transactionId="${tranId}" recordXPaths="quoteUrl" baseXmlNode="soap-response/results/price"/>
+		<agg_v1:write_result_details transactionId="${tranId}" recordXPaths="quoteUrl" baseXmlNode="soap-response/results/price"/>
 
 		${go:XMLtoJSON(go:getEscapedXml(soapdata["soap-response/results"]))}
 	</c:when>
@@ -87,6 +87,6 @@
 		${serviceRespone}
 	</c:when>
 	<c:otherwise>
-		<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="sar_quote_results.jsp" />
+		<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}" origin="sar_quote_results.jsp" />
 	</c:otherwise>
 </c:choose>

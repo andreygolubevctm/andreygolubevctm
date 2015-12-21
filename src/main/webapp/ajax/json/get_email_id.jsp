@@ -6,7 +6,7 @@
 
 <jsp:useBean id="emailDetailsService" class="com.ctm.web.core.email.services.EmailDetailsService" scope="page" />
 
-<core_new:no_cache_header/>
+<core_v2:no_cache_header/>
 
 <session:get settings="true"/>
 
@@ -48,7 +48,7 @@
 			<c:when test="${(empty result) || (result.rowCount == 0) }">
 				${emailDetailsService.init(styleCodeId, brand , vertical)}
 				<c:set var="emailId" value="${emailDetailsService.handleWriteEmailDetailsFromJsp(email, null , source, '' , '', transactionId)}" />
-				<agg:write_email_properties
+				<agg_v1:write_email_properties
 						emailId="${emailId}"
 						email="${email}"
 						items="${properties}"
@@ -58,7 +58,7 @@
 			<%-- When result exists --%>
 			<c:otherwise>
 				<%-- Write properties for existing email address --%>
-				<agg:write_email_properties
+				<agg_v1:write_email_properties
 					emailId="${result.rows[0].emailId}"
 					email="${email}"
 					items="${properties}"

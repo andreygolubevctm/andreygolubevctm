@@ -313,7 +313,7 @@
 <%-- HTML --%>
 <div id="applyOnlineDialog" class="applyOnlineDialog"></div>
 
-<core:js_template id="apply-online-template">
+<core_v1:js_template id="apply-online-template">
 
 	<div class="apply-online-template">
 
@@ -335,9 +335,9 @@
 							</tr>
 						</table>
 					</div>
-					<core:clear />
+					<core_v1:clear />
 				</div>
-				<core:clear />
+				<core_v1:clear />
 
 				<div id="aol-plan">
 					<h3>[#= retailerName #] - [#= planName #]</h3>
@@ -401,26 +401,26 @@
 					<div id="aol-partners" class="rounded-corners">
 						<%-- for some reason JS is not getting run when the modal opens --%>
 						<p><content:optin content="<strong>compare</strong>the<strong>market</strong>.com.au" useSpan="true"/> is an online comparison website. Energy product information is provided by our trusted affiliate, Thought World.</p>
-						<core:clear />
+						<core_v1:clear />
 					</div>
 
 				</div>
 
 			</div>
-			<core:clear />
+			<core_v1:clear />
 		</div>
 
-		<core:clear />
+		<core_v1:clear />
 	</div>
 
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="apply-online-features-template">
+<core_v1:js_template id="apply-online-features-template">
 	<h6>[#= Name #]</h6>
 	<div>[#= Lines #]</div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="apply-online-price-info-template">
+<core_v1:js_template id="apply-online-price-info-template">
 	<p>Network Area: [#= NetworkArea #]<span class="effectiveFromDate"> - last updated on [#= EffectiveFromDate #]</span></p>
 	<table class="price-info-table" id="price-info-table-[#= index #]">
 		<tr>
@@ -430,16 +430,16 @@
 			<th class="period">Period rates apply</th>
 		</tr>
 	</table>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="apply-online-price-info-rate-template">
+<core_v1:js_template id="apply-online-price-info-rate-template">
 	<tr>
 		<td>[#= Description  #]</td>
 		<td>[#= Amount #] [#= UOM #]</td>
 		<td>[#= GSTAmount #]  [#= UOM #]</td>
 		<td>[#= Period #]</td>
 	</tr>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- JAVASCRIPT --%>
 <go:script marker="jquery-ui">

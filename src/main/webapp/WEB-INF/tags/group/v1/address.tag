@@ -42,18 +42,18 @@
 <go:script href="common/js/address/address.js" marker="js-href"/>
 <go:script href="common/js/address/ajax_drop.js" marker="js-href"/>
 
-<field:hidden xpath="${xpath}/type" />
+<field_v1:hidden xpath="${xpath}/type" />
 
 <%-- POSTCODE --%>
 <c:choose>
 	<c:when test="${xpath == 'quote/riskAddress'}">
 		<form_v1:row label="Postcode" id="${name}_postCode_suburb" className="halfrow" helpId="28">
-			<field:input xpath="${xpath}/postCode" required="true" title="postcode" maxlength="4" />
+			<field_v1:input xpath="${xpath}/postCode" required="true" title="postcode" maxlength="4" />
 		</form_v1:row>
 	</c:when>
 	<c:otherwise>
 <form_v1:row label="Postcode" id="${name}_postCode_suburb" className="halfrow">
-	<field:input xpath="${xpath}/postCode" required="true" title="postcode" maxlength="4" />
+	<field_v1:input xpath="${xpath}/postCode" required="true" title="postcode" maxlength="4" />
 </form_v1:row>
 	</c:otherwise>
 </c:choose>
@@ -93,7 +93,7 @@
 	</c:choose>
 </form_v1:row>
 
-<core:clear />
+<core_v1:clear />
 
 <%-- ADDRESS LABEL AND TITLES --%>
 <c:set var="addressLabel" value="Street Address" />
@@ -126,7 +126,7 @@
 
 <form_v1:row label="${streetLabel}" id="${name}_streetNumRow" className="std_streetNum">
 	<div class="${name}_streetNum_container">
-		<field:input xpath="${xpath}/streetNum" required="false" title="the street no." className="streetSearchNum" />
+		<field_v1:input xpath="${xpath}/streetNum" required="false" title="the street no." className="streetSearchNum" />
 	</div>
 	<div class="ui-corner-all ajaxdrop_streetSearchNum" id="ajaxdrop_${name}_streetNum"></div>
 </form_v1:row>
@@ -140,10 +140,10 @@
 </form_v1:row>
 
 <form_v1:row label="Unit Type" className="halfrow right ${name}_nonStd_street ${name}_unitShopRow">
-	<field:array_select items="${unitTypes}" xpath="${xpath}/unitType" title="the unit type" required="false" />
+	<field_v1:array_select items="${unitTypes}" xpath="${xpath}/unitType" title="the unit type" required="false" />
 </form_v1:row>
 
-<core:clear />
+<core_v1:clear />
 
 <c:set var="nonStdChecked" value="" />
 <c:if test="${address.nonStd=='Y'}">
@@ -154,18 +154,18 @@
 	<input type="checkbox" name="${name}_nonStd" id="${name}_nonStd" value="Y"${nonStdChecked} tabIndex="-1">
 	<label for="${name}_nonStd">Tick here if you are unable to find the address</label>
 </form_v1:row>
-<core:clear />
+<core_v1:clear />
 
-<field:hidden xpath="${xpath}/lastSearch" />
-<field:hidden xpath="${xpath}/streetId" />
-<field:hidden xpath="${xpath}/houseNoSel" />
-<field:hidden xpath="${xpath}/unitSel" />
-<field:hidden xpath="${xpath}/streetName" />
-<field:hidden xpath="${xpath}/suburbName" />
-<field:hidden xpath="${xpath}/state" />
-<field:hidden xpath="${xpath}/dpId" />
-<field:hidden xpath="${xpath}/fullAddressLineOne" />
-<field:hidden xpath="${xpath}/fullAddress" />
+<field_v1:hidden xpath="${xpath}/lastSearch" />
+<field_v1:hidden xpath="${xpath}/streetId" />
+<field_v1:hidden xpath="${xpath}/houseNoSel" />
+<field_v1:hidden xpath="${xpath}/unitSel" />
+<field_v1:hidden xpath="${xpath}/streetName" />
+<field_v1:hidden xpath="${xpath}/suburbName" />
+<field_v1:hidden xpath="${xpath}/state" />
+<field_v1:hidden xpath="${xpath}/dpId" />
+<field_v1:hidden xpath="${xpath}/fullAddressLineOne" />
+<field_v1:hidden xpath="${xpath}/fullAddress" />
 
 <%-- Custom validation for address --%>
 <go:validate selector="${name}_postCode" 		rule="validAddress" parm="'${name}'"	message="Please enter a valid postcode"/>

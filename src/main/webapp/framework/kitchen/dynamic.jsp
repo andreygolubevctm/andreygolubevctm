@@ -7,7 +7,7 @@
 
 <%--
 <div style="position:relative;height:200px;width:700px;">
-<field_new:creditcard_assurance_message showCreditCards="true" />
+<field_v2:creditcard_assurance_message showCreditCards="true" />
 </div>
 --%>
 
@@ -201,111 +201,111 @@
 <form_v2:fieldset legend="'field' tags" className="">
 
 	<form_v2:row label="additional_excess">
-		<field:additional_excess increment="100" minVal="500" xpath="quote/excess" maxCount="16" title="additional excess" required="" omitPleaseChoose="Y" />
+		<field_v1:additional_excess increment="100" minVal="500" xpath="quote/excess" maxCount="16" title="additional excess" required="" omitPleaseChoose="Y" />
 	</form_v2:row>
 
 	<form_v2:row label="age">
-		<field:age dob="22/08/1970" />
+		<field_v1:age dob="22/08/1970" />
 	</form_v2:row>
 
 	<form_v2:row label="birthday">
-		<field:birthday dob="22/08/1970" />
+		<field_v1:birthday dob="22/08/1970" />
 	</form_v2:row>
 
 	<form_v2:row label="button">
-		<field:button xpath="quote_go" title="Search">Go</field:button>
+		<field_v1:button xpath="quote_go" title="Search">Go</field_v1:button>
 	</form_v2:row>
 
 	<form_v2:row label="cards_expiry">
-		<field:cards_expiry rule="ccExp" xpath="${xpath}/expiry" title="cards_expiry" required="true" />
+		<field_v1:cards_expiry rule="ccExp" xpath="${xpath}/expiry" title="cards_expiry" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="category_select" id="${categoryRow}">
-		<field:category_select xpath="${xpath}/category" title="category" type="category" required="true" />
+		<field_v1:category_select xpath="${xpath}/category" title="category" type="category" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="contact_mobile">
-		<field:contact_mobile xpath="${xpath}/mobile" size="15" required="true" title="field:contact_mobile" labelName="contact mobile" placeHolderUnfocused="Unfocused placeholder text" />
+		<field_v1:contact_mobile xpath="${xpath}/mobile" size="15" required="true" title="field:contact_mobile" labelName="contact mobile" placeHolderUnfocused="Unfocused placeholder text" />
 	</form_v2:row>
 
 	<form_v2:row label="contact_telno">
-		<field:contact_telno xpath="${xpath}/otherNumber" title="field:contact_telno" required="true" />
+		<field_v1:contact_telno xpath="${xpath}/otherNumber" title="field:contact_telno" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="count_select">
-		<field_new:count_select xpath="${xpath}/day" min="1" max="27" step="1" title="field:count_select" required="true" />
+		<field_v2:count_select xpath="${xpath}/day" min="1" max="27" step="1" title="field:count_select" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="customisable-checkbox">
-		<field:customisable-checkbox xpath="${xpath}/optin" theme="replicaLarge" value="Y" required="true" label="true" title="field:customisable-checkbox" errorMsg="field:customisable-checkbox errorMsg" />
+		<field_v1:customisable-checkbox xpath="${xpath}/optin" theme="replicaLarge" value="Y" required="true" label="true" title="field:customisable-checkbox" errorMsg="field:customisable-checkbox errorMsg" />
 	</form_v2:row>
 
 	<form_v2:row label="filler_row (not used?)">
-		<field:filler_row xpath="" required="true" />
+		<field_v1:filler_row xpath="" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="new_general_select">
-		<field_new:general_select xpath="${xpath}/new/generalSelect" type="healthSitu" title="field:new_general_select" required="true" initialText="initialText" />
+		<field_v2:general_select xpath="${xpath}/new/generalSelect" type="healthSitu" title="field:new_general_select" required="true" initialText="initialText" />
 	</form_v2:row>
 
 	<form_v2:row label="hidden">
 		(two hidden inputs here)
-		<field:hidden xpath="${xpath}/frequency" defaultValue="M" constantValue="M" />
-		<field:hidden required="true" validationRule="validateMinDependants" validationMessage="field:hidden" defaultValue="" xpath="${xpath}/dependantrequired" />
+		<field_v1:hidden xpath="${xpath}/frequency" defaultValue="M" constantValue="M" />
+		<field_v1:hidden required="true" validationRule="validateMinDependants" validationMessage="field:hidden" defaultValue="" xpath="${xpath}/dependantrequired" />
 	</form_v2:row>
 
 	<form_v2:row label="ip_address (not used?)">
-		<field:ip_address />
+		<field_v1:ip_address />
 	</form_v2:row>
 
 	<form_v2:row label="ip_number">
-		<field:ip_number ip="127.0.0.1" />
+		<field_v1:ip_number ip="127.0.0.1" />
 	</form_v2:row>
 
 	<form_v2:row label="make_select">
-		<field:make_select xpath="${xpath}/make" title="field:make_select" type="make" required="true" />
+		<field_v1:make_select xpath="${xpath}/make" title="field:make_select" type="make" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="password">
-		<field:password xpath="save/password" required="true" title="field:password" minLength="6" onKeyUp="getElementById(\"field_password_test\").innerText=this.value;" />
+		<field_v1:password xpath="save/password" required="true" title="field:password" minLength="6" onKeyUp="getElementById(\"field_password_test\").innerText=this.value;" />
 		<span id="field_password_test" class="help-block">Type password; will appear here</span>
 	</form_v2:row>
 
 	<form_v2:row label="person_name">
-		<field:person_name xpath="${xpath}/name" title="field:person_name" required="true" size="50" />
+		<field_v1:person_name xpath="${xpath}/name" title="field:person_name" required="true" size="50" />
 	</form_v2:row>
 
 	<form_v2:row label="phone_number">
-		<field:phone_number className="" required="true" xpath="foobar" placeHolder="xxx 000" title="field:phone_number" size="10" allowMobile="true" allowLandline="false" labelName="field:phone_number" />
+		<field_v1:phone_number className="" required="true" xpath="foobar" placeHolder="xxx 000" title="field:phone_number" size="10" allowMobile="true" allowLandline="false" labelName="field:phone_number" />
 	</form_v2:row>
 
 	<form_v2:row label="post_code">
-		<field:post_code xpath="${xpath}/postcode" title="field:post_code" required="true" />
+		<field_v1:post_code xpath="${xpath}/postcode" title="field:post_code" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="provider_select">
-		<field:provider_select productCategories="HEALTH" xpath="${xpath}/singleProvider" />
+		<field_v1:provider_select productCategories="HEALTH" xpath="${xpath}/singleProvider" />
 	</form_v2:row>
 
 	<form_v2:row label="slider">
-		<field:slider helpId="16" title="Excess: " id="health_excess2" value="4" />
+		<field_v1:slider helpId="16" title="Excess: " id="health_excess2" value="4" />
 	</form_v2:row>
 
 	<form_v2:row label="state_select">
-		<field:state_select xpath="${xpath}/identification/state" useFullNames="true" title="field:state_select" required="true" />
+		<field_v1:state_select xpath="${xpath}/identification/state" useFullNames="true" title="field:state_select" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="textarea">
-		<field:textarea xpath="${xpath}/message" title="field:textarea" required="true" />
+		<field_v1:textarea xpath="${xpath}/message" title="field:textarea" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="time_ago (not used?)">
-		<field:time_ago time="11:43:12" />
+		<field_v1:time_ago time="11:43:12" />
 	</form_v2:row>
 
 	<form_v2:row label="vehicle_year">
 		Disabled because I hate its autofocus
-		<%-- <field:vehicle_year xpath="${xpath}/year" required="true" /> --%>
+		<%-- <field_v1:vehicle_year xpath="${xpath}/year" required="true" /> --%>
 	</form_v2:row>
 </form_v2:fieldset>
 
@@ -313,7 +313,7 @@
 
 <form_v2:fieldset legend="'field-new' tags" className="">
 	<form_v2:row label="account_number">
-		<field_new:account_number xpath="${xpath}/new/accountNumber" title="account number" minLength="5" maxLength="9" required="true" />
+		<field_v2:account_number xpath="${xpath}/new/accountNumber" title="account number" minLength="5" maxLength="9" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="group_new:elastic_address">
@@ -321,26 +321,26 @@
 	</form_v2:row>
 
 	<form_v2:row label="array_radio">
-		<field_new:array_radio items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_arrayRadio" xpath="${xpath}/new/arrayRadio" title="array_radio" required="true" />
+		<field_v2:array_radio items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_arrayRadio" xpath="${xpath}/new/arrayRadio" title="array_radio" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="array_radio (inline)">
-		<field_new:array_radio style="inline" items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_arrayRadioInline" xpath="${xpath}/new/arrayRadioInline" title="array_radio_inline" required="true" />
+		<field_v2:array_radio style="inline" items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_arrayRadioInline" xpath="${xpath}/new/arrayRadioInline" title="array_radio_inline" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="array_radio (grouped)">
-		<field_new:array_radio style="group" items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_arrayRadioGroup" xpath="${xpath}/new/arrayRadioGroup" title="array_radio_group" required="true" />
+		<field_v2:array_radio style="group" items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_arrayRadioGroup" xpath="${xpath}/new/arrayRadioGroup" title="array_radio_group" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="bsb_number" helpId="1">
-		<field_new:bsb_number xpath="${xpath}/new/bsb" title="bsb number" required="true" />
+		<field_v2:bsb_number xpath="${xpath}/new/bsb" title="bsb number" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="checkbox">
-		<field_new:checkbox xpath="${xpath}/new/checkbox" value="Y" title="checkbox label" required="true" label="true" errorMsg="errorMsg" theme="themeA" />
-		<field_new:checkbox xpath="${xpath}/new/checkbox2" value="Y" title="second checkbox" required="true" label="true" errorMsg="errorMsg" />
-		<field_new:checkbox xpath="${xpath}/new/checkboxDisabled" value="Y" title="disabled" required="true" label="true" errorMsg="errorMsg" />
-		<field_new:checkbox xpath="${xpath}/new/checkboxDisabled2" value="Y" title="disabled checked" required="true" label="true" errorMsg="errorMsg" />
+		<field_v2:checkbox xpath="${xpath}/new/checkbox" value="Y" title="checkbox label" required="true" label="true" errorMsg="errorMsg" theme="themeA" />
+		<field_v2:checkbox xpath="${xpath}/new/checkbox2" value="Y" title="second checkbox" required="true" label="true" errorMsg="errorMsg" />
+		<field_v2:checkbox xpath="${xpath}/new/checkboxDisabled" value="Y" title="disabled" required="true" label="true" errorMsg="errorMsg" />
+		<field_v2:checkbox xpath="${xpath}/new/checkboxDisabled2" value="Y" title="disabled checked" required="true" label="true" errorMsg="errorMsg" />
 		<go:script marker="onready">
 			$('#${go:nameFromXpath(xpath)}_new_checkboxDisabled, #${go:nameFromXpath(xpath)}_new_checkboxDisabled2').prop('disabled', true);
 			$('#${go:nameFromXpath(xpath)}_new_checkboxDisabled2').prop('checked', true);
@@ -349,15 +349,15 @@
 
 
 	<form_v2:row label="creditcard_number" legend="This is a legend">
-		<field_new:creditcard_number xpath="${xpath}/new/cardNumber" title="field_new:creditcard_number" required="true" />
+		<field_v2:creditcard_number xpath="${xpath}/new/cardNumber" title="field_new:creditcard_number" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="creditcard_ccv">
-		<field_new:creditcard_ccv xpath="${xpath}/new/cardCCV"  required="true" />
+		<field_v2:creditcard_ccv xpath="${xpath}/new/cardCCV"  required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="currency">
-		<field_new:currency xpath="currency_example"
+		<field_v2:currency xpath="currency_example"
 				required="false"
 				title="Currency"
 				className=""
@@ -370,7 +370,7 @@
 
 	<form_v2:row label="filter_excess ">
 		<health:filter_excess xpath="${xpath}/new/filterExcess" />
-		<%-- <field:hidden xpath="health/excess" defaultValue="3" /> --%>
+		<%-- <field_v1:hidden xpath="health/excess" defaultValue="3" /> --%>
 		<input type="hidden" value="3" class="" id="health_excess" name="health_excess">
 	</form_v2:row>
 
@@ -379,29 +379,29 @@
 	</form_v2:row>
 
 	<form_v2:row label="input">
-		<field_new:input xpath="${xpath}/new/input" title="input" required="true" maxlength="20" />
+		<field_v2:input xpath="${xpath}/new/input" title="input" required="true" maxlength="20" />
 	</form_v2:row>
 
 	<form_v2:row label="input (search)">
-		<field_new:input type="search" xpath="${xpath}/new/inputSearch" title="input" required="true" />
+		<field_v2:input type="search" xpath="${xpath}/new/inputSearch" title="input" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="input (email)">
-		<field_new:input type="email" xpath="${xpath}/new/inputEmail" title="input" required="true" />
+		<field_v2:input type="email" xpath="${xpath}/new/inputEmail" title="input" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="input (number)">
-		<field_new:input type="number" xpath="${xpath}/new/inputNumber" title="input" required="true" />
+		<field_v2:input type="number" xpath="${xpath}/new/inputNumber" title="input" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="input (tel)">
-		<field_new:input type="tel" xpath="${xpath}/new/inputTel" title="input" required="true" />
+		<field_v2:input type="tel" xpath="${xpath}/new/inputTel" title="input" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="input (date)">
 		<go:setData dataVar="data" xpath="${xpath}/new/inputDate" value="2011-01-27" />
 
-		<field_new:input type="date" xpath="${xpath}/new/inputDate" title="input" required="true" />
+		<field_v2:input type="date" xpath="${xpath}/new/inputDate" title="input" required="true" />
 		<script>
 			if (Modernizr.inputtypes.date) {
 				document.write('<p>Modernizr says input[type="date"] is supported</p>');
@@ -427,35 +427,35 @@
 	</form_v2:row>
 
 	<form_v2:row label="medicare_number">
-		<field_new:medicare_number xpath="${xpath}/new/medicareNumber" required="true" title="field:medicare_number" />
+		<field_v2:medicare_number xpath="${xpath}/new/medicareNumber" required="true" title="field:medicare_number" />
 	</form_v2:row>
 
 	<form_v2:row label="name_on_card">
-		<field_new:name_on_card xpath="${xpath}/new/cardName" title="field:name_on_card" required="true" />
+		<field_v2:name_on_card xpath="${xpath}/new/cardName" title="field:name_on_card" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="payment_type">
-		<field_new:payment_type xpath="${xpath}/new/paymentType" title="field:payment_type" />
+		<field_v2:payment_type xpath="${xpath}/new/paymentType" title="field:payment_type" />
 	</form_v2:row>
 
 	<form_v2:row label="person_dob">
-		<field_new:person_dob xpath="${xpath}/new/dob" required="true" title="field:person_dob" ageMax="85" ageMin="16" />
+		<field_v2:person_dob xpath="${xpath}/new/dob" required="true" title="field:person_dob" ageMax="85" ageMin="16" />
 	</form_v2:row>
 
 	<form_v2:row label="calendar">
-		<field_new:calendar xpath="${xpath}/new/calendar" required="true" title="start date" />
+		<field_v2:calendar xpath="${xpath}/new/calendar" required="true" title="start date" />
 	</form_v2:row>
 
 	<form_v2:row label="basic_date">
-		<field_new:basic_date xpath="${xpath}/new/basic_date" required="true" title="Basic date" />
+		<field_v2:basic_date xpath="${xpath}/new/basic_date" required="true" title="Basic date" />
 	</form_v2:row>
 
 
 	<form_v2:row label="lookup_suburb_postcode">
-		<field_new:lookup_suburb_postcode xpath="${xpath}/new/location" required="true" placeholder="Suburb / Postcode" />
+		<field_v2:lookup_suburb_postcode xpath="${xpath}/new/location" required="true" placeholder="Suburb / Postcode" />
 	</form_v2:row>
 
-	<core:select_tags
+	<core_v1:select_tags
 		variableListName="countrySelectionList"
 		variableListArray="{ 'options': [{ 'value': 'VAL', 'text': 'Hello' }, { 'value': 'VAL2', 'text': 'Hello2' }, { 'value': 'VAL3', 'text': 'Hello3' }] }"
 		xpath="travel/destinations"
@@ -467,8 +467,8 @@
 
 	<form_v2:row label="slider">
 	<div style="background:#f8f8f8; padding:10px">
-		<field_new:slider xpath="${xpath}/new/sliderExcess" type="excess" value="2" range="1,5" markers="5" legend="None,$250,$500,$750,All" />
-		<field_new:slider xpath="${xpath}/new/sliderPrice" type="price" value="550" range="100,650" legend="NONE,BASIC,MEDIUM,COMPREHENSIVE" />
+		<field_v2:slider xpath="${xpath}/new/sliderExcess" type="excess" value="2" range="1,5" markers="5" legend="None,$250,$500,$750,All" />
+		<field_v2:slider xpath="${xpath}/new/sliderPrice" type="price" value="550" range="100,650" legend="NONE,BASIC,MEDIUM,COMPREHENSIVE" />
 	</div>
 	</form_v2:row>
 
@@ -480,7 +480,7 @@
 
 
 	<form_v2:row label="array_select">
-		<field_new:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)" xpath="callmeback/save/time" title="array_select" required="true" />
+		<field_v2:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)" xpath="callmeback/save/time" title="array_select" required="true" />
 	</form_v2:row>
 
 

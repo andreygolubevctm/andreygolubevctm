@@ -24,29 +24,29 @@
 			</div>
 
 			<form_v2:row label="First name" hideHelpIconCol="true">
-				<field_new:input xpath="${xpath}/contact/first" title="First Name" required="true" />
+				<field_v2:input xpath="${xpath}/contact/first" title="First Name" required="true" />
 			</form_v2:row>
 
 			<form_v2:row label="Last name" hideHelpIconCol="true">
-				<field_new:input xpath="${xpath}/contact/last" title="Last Name" required="true" />
+				<field_v2:input xpath="${xpath}/contact/last" title="Last Name" required="true" />
 			</form_v2:row>
 
 			<form_v2:row label="Your email address" hideHelpIconCol="true">
-				<field_new:email xpath="${xpath}/email" title="Your email address" required="true" />
+				<field_v2:email xpath="${xpath}/email" title="Your email address" required="true" />
 			</form_v2:row>
 
 			<form_v2:row hideHelpIconCol="true">
 				<c:set var="brandedDisplayName"><content:get key="boldedBrandDisplayName"/></c:set>
-				<field_new:checkbox xpath="${xpath}/terms" label="true" value="Y" title="I would like to receive news and offers from ${brandedDisplayName}" required="false" />
-				<field_new:validatedHiddenField xpath="${xpath}/termsHidden" title="Please agree to receive news and offers from ${brandedDisplayName}" additionalAttributes=" required " />
+				<field_v2:checkbox xpath="${xpath}/terms" label="true" value="Y" title="I would like to receive news and offers from ${brandedDisplayName}" required="false" />
+				<field_v2:validatedHiddenField xpath="${xpath}/termsHidden" title="Please agree to receive news and offers from ${brandedDisplayName}" additionalAttributes=" required " />
 			</form_v2:row>
 
 			<%-- Mandatory agreement to privacy policy --%>
 			<%-- Using a custom checkbox because validation doesn't work on this dropdown --%>
 			<form_v2:row hideHelpIconCol="true">
 				<c:set var="privacyStatementLink"><form_v1:link_privacy_statement /></c:set>
-				<field_new:checkbox xpath="${xpath}/privacyoptin" label="true" value="Y" title="I have read the ${privacyStatementLink}" required="false" />
-				<field_new:validatedHiddenField xpath="${xpath}/privacyoptinHidden" title="Please confirm you have read the privacy statement" additionalAttributes=" required " />
+				<field_v2:checkbox xpath="${xpath}/privacyoptin" label="true" value="Y" title="I have read the ${privacyStatementLink}" required="false" />
+				<field_v2:validatedHiddenField xpath="${xpath}/privacyoptinHidden" title="Please confirm you have read the privacy statement" additionalAttributes=" required " />
 			</form_v2:row>
 
 			<form_v2:row hideHelpIconCol="true">
@@ -56,11 +56,11 @@
 	</div>
 </form>
 
-<core:js_template id="signup-success-template">
+<core_v1:js_template id="signup-success-template">
 	<div class="row">
 		<div class="col-xs-12">
 			<h4>Success!</h4>
 			<p>You are now signed up for news and offers from <a href="http://www.comparethemarket.com.au/">www.comparethemarket.com.au</a>.</p>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>

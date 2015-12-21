@@ -10,7 +10,7 @@
 <%@ attribute name="inputGroupText" required="true" rtexprvalue="true" description="Input group text" %>
 <%@ attribute name="inputGroupTextPosition" required="false" rtexprvalue="true" description="Position of input group text" %>
 
-<c:set var="inputFieldType"><field_new:get_numeric_input_type /></c:set>
+<c:set var="inputFieldType"><field_v2:get_numeric_input_type /></c:set>
 <c:set var="formatNum">
     <c:choose>
         <c:when test='${inputType eq "text"}'>false</c:when>
@@ -34,7 +34,7 @@
 
 <c:set var="headingHelp">
     <c:if test="${helpId ne ''}">
-        <field_new:help_icon helpId="${helpId}" />
+        <field_v2:help_icon helpId="${helpId}" />
     </c:if>
 </c:set>
 
@@ -56,6 +56,6 @@
 <div class="row clear ${lowerCaseUtilityType}">
     <div class="col-md-12 row-content">
         <div class="error-field" style="display:block;"><!-- empty --></div>
-        <field_new:input type="${inputFieldType}" xpath="${xpath}" required="${required}" inputGroupText="${inputGroupText}" requiredMessage="Please specify your ${lowerCaseUtilityType} usage." inputGroupTextPosition="${inputGroupTextPosition}" formattedInteger="true" additionalAttributes="${amountValidationRules}" />
+        <field_v2:input type="${inputFieldType}" xpath="${xpath}" required="${required}" inputGroupText="${inputGroupText}" requiredMessage="Please specify your ${lowerCaseUtilityType} usage." inputGroupTextPosition="${inputGroupTextPosition}" formattedInteger="true" additionalAttributes="${amountValidationRules}" />
     </div>
 </div>

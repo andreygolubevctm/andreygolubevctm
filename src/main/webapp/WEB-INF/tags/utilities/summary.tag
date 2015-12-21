@@ -32,7 +32,7 @@
 	</div>
 
 	<%-- JS TEMPLATES --%>
-	<core:js_template id="account-holder-details-template">
+	<core_v1:js_template id="account-holder-details-template">
 		<div class="left-column">
 			<div class="${name}_row">
 				<div class="left-column rounded-corners">Full Name</div>
@@ -129,15 +129,15 @@
 				<div class="right-column">[#= billDeliveryMethod #]</div>
 			</div>
 		</div>
-	</core:js_template>
+	</core_v1:js_template>
 
 
-	<core:clear />
+	<core_v1:clear />
 	<hr />
 
 	<div id="${name}_summaryText_template_placeholder"></div>
 
-	<core:js_template id="summary-text-template">
+	<core_v1:js_template id="summary-text-template">
 		<p class="${name}_transfer">Click the Submit Application button below to submit your application to transfer your energy account(s) to [#= provider #]</p>
 		<p class="${name}_movingIn">Click the Submit Application button below to submit your application to connect your energy account(s) to [#= provider #]</p>
 
@@ -148,9 +148,9 @@
 			<li>Once your application is accepted by [#= provider #] your Energy Agreement and 10 business day cooling-off period will begin from the date of this Agreement.</li>
 			<li>Should there be any issues with your application [#= provider #] will contact you directly.</li>
 		</ul>
-	</core:js_template>
+	</core_v1:js_template>
 
-	<core:js_template id="summary-text-template-DOD">
+	<core_v1:js_template id="summary-text-template-DOD">
 		<p class="${name}_transfer">Click the Submit Application button above to submit your application to transfer your energy account(s) to [#= provider #].</p>
 		<p class="${name}_movingIn">Click the Submit Application button above to submit your application to connect your energy account(s) to [#= provider #].</p>
 
@@ -161,9 +161,9 @@
 			<li>A [#= provider #] Customer Service Representative will call you back within one business day to complete your application and collect your direct debit details</li>
 			<li>If [#= provider #] is unable to speak to you on the phone or collect your direct debit details they will not be able to complete your application to transfer to [#= provider #].</li>
 		</ul>
-	</core:js_template>
+	</core_v1:js_template>
 
-	<core:js_template id="summary-text-template-ENA">
+	<core_v1:js_template id="summary-text-template-ENA">
 		<p class="${name}_transfer">Click the Submit Application button above to submit your application to transfer your energy account(s) to [#= provider #].</p>
 		<p class="${name}_movingIn">Click the Submit Application button above to submit your application to connect your energy account(s) to [#= provider #].</p>
 
@@ -174,7 +174,7 @@
 			<li>A Switchwise Customer Service Representative will call you back within one business day to complete your application</li>
 			<li>If Switchwise is unable to speak to you on the phone they might not be able to complete your application to transfer to [#= provider #].</li>
 		</ul>
-	</core:js_template>
+	</core_v1:js_template>
 
 	<hr />
 

@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- PRODUCT DETAILS TEMPLATE --%>
-<core:js_template id="more-info-product-details-template">
+<core_v1:js_template id="more-info-product-details-template">
 	<div class="col-sm-12">
 		<div class="row product-details-container">
 			<div class="col-xs-12 col-sm-5">{{ var logoPriceTemplate = $("#more-info-logo-price-template").html(); }}
@@ -22,4 +22,4 @@
 			</div>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>

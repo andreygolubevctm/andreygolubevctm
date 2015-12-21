@@ -38,17 +38,17 @@ var healthFunds_CBH = {
 
 						<c:set var="fieldXpath" value="health/application/cbh/currentemployee" />
 						<form_v2:row fieldXpath="${fieldXpath}" label="Are you a current employee, contractor or franchisee of the CBA Group?" className="cbhmain">
-							<field_new:array_select xpath="${fieldXpath}" required="true" title="if you are a current employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
+							<field_v2:array_select xpath="${fieldXpath}" required="true" title="if you are a current employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
 						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/currentnumber" />
 						<form_v2:row fieldXpath="${fieldXpath}" label="What is your employee number?" className="cbhsub">
-							<field_new:input xpath="${fieldXpath}" title="" required="true" maxlength="16" />
+							<field_v2:input xpath="${fieldXpath}" title="" required="true" maxlength="16" />
 						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/currentwork" />
 						<form_v2:row fieldXpath="${fieldXpath}" label="Who do you currently work for?" className="cbhsub">
-							<field_new:array_select xpath="${fieldXpath}" required="true" title="" items="=Please choose...,1=Commonwealth Bank of Australia,4=Contractor/Franchisee,5=BankWest" />
+							<field_v2:array_select xpath="${fieldXpath}" required="true" title="" items="=Please choose...,1=Commonwealth Bank of Australia,4=Contractor/Franchisee,5=BankWest" />
 						</form_v2:row>
 
 					</div>
@@ -57,17 +57,17 @@ var healthFunds_CBH = {
 
 						<c:set var="fieldXpath" value="health/application/cbh/formeremployee" />
 						<form_v2:row fieldXpath="${fieldXpath}" label="Are you a former employee, contractor or franchisee of the CBA Group?" className="cbhmain">
-							<field_new:array_select xpath="${fieldXpath}" required="true" title="if you are a former employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
+							<field_v2:array_select xpath="${fieldXpath}" required="true" title="if you are a former employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
 						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/formernumber" />
 						<form_v2:row fieldXpath="${fieldXpath}" label="What was your employee number?" className="cbhsub">
-							<field_new:input xpath="${fieldXpath}" title="" required="true" maxlength="16" />
+							<field_v2:input xpath="${fieldXpath}" title="" required="true" maxlength="16" />
 						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/formerwork" />
 						<form_v2:row fieldXpath="${fieldXpath}" label="Who did you work for?" className="cbhsub">
-							<field_new:array_select xpath="${fieldXpath}" required="true" title="who you currently work for" items="=Please choose...,1=Commonwealth Bank of Australia,4=Contractor/Franchisee,5=BankWest" />
+							<field_v2:array_select xpath="${fieldXpath}" required="true" title="who you currently work for" items="=Please choose...,1=Commonwealth Bank of Australia,4=Contractor/Franchisee,5=BankWest" />
 						</form_v2:row>
 
 					</div>
@@ -76,22 +76,22 @@ var healthFunds_CBH = {
 
 						<c:set var="fieldXpath" value="health/application/cbh/familymember" />
 						<form_v2:row fieldXpath="${fieldXpath}" label="Are you an immediate family member of a current or former employee, contractor or franchisee of the CBA Group?" className="cbhmain">
-							<field_new:array_select xpath="${fieldXpath}" required="true" title="if an immediate family member is a current or former employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
+							<field_v2:array_select xpath="${fieldXpath}" required="true" title="if an immediate family member is a current or former employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
 						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/familynumber" />
 						<form_v2:row fieldXpath="${fieldXpath}" label="Name or employee number or CBHS membership number of family member" className="cbhsub">
-							<field_new:input xpath="${fieldXpath}" title="" required="true" maxlength="30" />
+							<field_v2:input xpath="${fieldXpath}" title="" required="true" maxlength="30" />
 						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/familywork" />
 						<form_v2:row fieldXpath="${fieldXpath}" label="Who did your family member work for?" className="cbhsub">
-							<field_new:array_select xpath="${fieldXpath}" required="true" title="who your family member worked for" items="=Please choose...,1=Commonwealth Bank of Australia,4=Contractor/Franchisee,5=BankWest" />
+							<field_v2:array_select xpath="${fieldXpath}" required="true" title="who your family member worked for" items="=Please choose...,1=Commonwealth Bank of Australia,4=Contractor/Franchisee,5=BankWest" />
 						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/familyrel" />
 						<form_v2:row fieldXpath="${fieldXpath}" label="What is your relationship to the family member?" className="cbhsub">
-							<field_new:array_select xpath="${fieldXpath}" required="true" title="your relationship to the family member" items="=Please choose...,partner=Partner,parent=Parent,child=Child,grandchild=Grandchild,sibling=Sibling,nephew=Nephew,niece=Niece" />
+							<field_v2:array_select xpath="${fieldXpath}" required="true" title="your relationship to the family member" items="=Please choose...,partner=Partner,parent=Parent,child=Child,grandchild=Grandchild,sibling=Sibling,nephew=Nephew,niece=Niece" />
 						</form_v2:row>
 
 					</div>
@@ -169,7 +169,7 @@ var healthFunds_CBH = {
 			<c:set var="html">
 				<c:set var="fieldXpath" value="health/application/cbh/partnerrel" />
 				<form_v2:row id="cbh_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
-					<field_new:array_select xpath="${fieldXpath}" required="true" title="relationship to you" items="=Please choose...,2=Spouse,3=Defacto" />
+					<field_v2:array_select xpath="${fieldXpath}" required="true" title="relationship to you" items="=Please choose...,2=Spouse,3=Defacto" />
 				</form_v2:row>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
@@ -184,7 +184,7 @@ var healthFunds_CBH = {
 			<c:set var="html">
 				<c:set var="fieldXpath" value="health/application/cbh/partneremployee" />
 				<form_v2:row id="cbh_partneremployee" fieldXpath="${fieldXpath}" label="Is your partner a current or former employee, contractor or franchisee of the CBA Group?">
-					<field_new:array_select xpath="${fieldXpath}" required="true" title="if your partner is a current or former employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
+					<field_v2:array_select xpath="${fieldXpath}" required="true" title="if your partner is a current or former employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
 				</form_v2:row>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
@@ -199,7 +199,7 @@ var healthFunds_CBH = {
 			<c:set var="html">
 				<c:set var="fieldXpath" value="health/application/cbh/register" />
 				<form_v2:row id="cbh_register" fieldXpath="${fieldXpath}" >
-					<field_new:checkbox xpath="${fieldXpath}" required="false" value="Y" label="true" title="Would you like to be registered for CBHS Online Services?" />
+					<field_v2:checkbox xpath="${fieldXpath}" required="false" value="Y" label="true" title="Would you like to be registered for CBHS Online Services?" />
 				</form_v2:row>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />

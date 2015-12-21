@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<core:js_template id="promotion-offer-template">
+<core_v1:js_template id="promotion-offer-template">
 {{ obj.promotionText = (typeof obj.headline !== 'undefined' && typeof obj.headline.feature !== 'undefined' && obj.headline.feature.length > 0) ? obj.headline.feature : ''; }}
 {{ obj.offerTermsContent = (typeof obj.headline !== 'undefined' && typeof obj.headline.terms !== 'undefined' && obj.headline.terms.length > 0) ? obj.headline.terms : ''; }}
 
@@ -16,9 +16,9 @@
 	</div>
 {{ } }}
 
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="pds-disclaimer-template">
+<core_v1:js_template id="pds-disclaimer-template">
 	<h5>Product Disclosure Statement</h5>
 	{{ if (obj.hasOwnProperty('pdsbUrl') === false || obj.pdsbUrl === '') { }}
 		<a href="{{= obj.pdsaUrl }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure Statement</a>
@@ -33,9 +33,9 @@
 	<h5>Disclaimer</h5>
 	<p>{{= obj.disclaimer }}</p>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="call-apply-template">
+<core_v1:js_template id="call-apply-template">
 	<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
 		{{ if(obj.isOnlineAvailable === true) { }}
 			<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
@@ -55,9 +55,9 @@
 			</div>
 		{{ } }}
 	{{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="more-info-template">
+<core_v1:js_template id="more-info-template">
 
 	<%-- Setup variables --%>
 	{{ obj.isOnlineAvailable  = false; }}
@@ -242,11 +242,11 @@
 
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <car:call_modal />
 
-<core:js_template id="special-conditions-template">
+<core_v1:js_template id="special-conditions-template">
 <div class="row">
 	<div class="col-xs-12 text-center">
 		<p>Please be aware that {{= obj.specialConditionsRule }}</p>
@@ -260,4 +260,4 @@
 		<a class="btn btn-next btn-block btn-proceed-to-insurer" href="javascript:;" target="_blank">Proceed to Insurer</a>
 	</div>
 </div>
-</core:js_template>
+</core_v1:js_template>

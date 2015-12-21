@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<core:js_template id="promotion-offer-template">
+<core_v1:js_template id="promotion-offer-template">
 {{ obj.promotionText = (typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
 {{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms != null && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 
@@ -16,9 +16,9 @@
 	</div>
 {{ } }}
 
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="pds-disclaimer-template">
+<core_v1:js_template id="pds-disclaimer-template">
 	<h5>Product Disclosure Statement</h5>
 	{{ if (obj.productDisclosures != null) { }}
 		{{ if (obj.productDisclosures.hasOwnProperty('pdsb') === false) { }}
@@ -35,9 +35,9 @@
 	<h5>Disclaimer</h5>
 	<p>{{= obj.disclaimer }}</p>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="call-apply-template">
+<core_v1:js_template id="call-apply-template">
 	<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
 		{{ if(obj.availableOnline === true) { }}
 			<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
@@ -57,9 +57,9 @@
 			</div>
 		{{ } }}
 	{{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="more-info-template">
+<core_v1:js_template id="more-info-template">
 
 	<%-- Set up Reusable Templates --%>
 	{{ var template = $("#promotion-offer-template").html(); }}
@@ -224,11 +224,11 @@
 
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <car:call_modal_ws />
 
-<core:js_template id="special-conditions-template">
+<core_v1:js_template id="special-conditions-template">
 <div class="row">
 	<div class="col-xs-12 text-center">
 		<p>Please be aware that {{= obj.specialConditionsRule }}</p>
@@ -242,4 +242,4 @@
 		<a class="btn btn-next btn-block btn-proceed-to-insurer" href="javascript:;" target="_blank">Proceed to Insurer</a>
 	</div>
 </div>
-</core:js_template>
+</core_v1:js_template>

@@ -17,7 +17,7 @@
 	<%-- Cover type --%>
 	<c:set var="fieldXpath" value="${xpath}/coverType" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Type of cover">
-		<field_new:import_select xpath="${fieldXpath}"
+		<field_v2:import_select xpath="${fieldXpath}"
 			required="true"
 			title="the type of cover"
 			url="/WEB-INF/option_data/home_contents_cover_type.html" />

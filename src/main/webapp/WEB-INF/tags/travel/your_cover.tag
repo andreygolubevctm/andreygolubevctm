@@ -7,7 +7,7 @@
 
 <c:set var="fieldXpath" value="travel/policyType" />
 <form_v2:row label="What type of cover are you looking for?" fieldXpath="${fieldXpath}" className="clear" helpId="535">
-	<field_new:array_radio xpath="${fieldXpath}" required="true"
+	<field_v2:array_radio xpath="${fieldXpath}" required="true"
 		className="" items="S=Single Trip,A=Multi-Trip"
 		id="${go:nameFromXpath(xpath)}" title="your cover type." />
 </form_v2:row>

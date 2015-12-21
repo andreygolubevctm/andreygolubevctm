@@ -15,13 +15,13 @@
     <p>Let us help you find the best energy plan for you. Supply your details below</p>
     <c:set var="fieldXPath" value="${xpath}/firstName" />
     <form_v2:row label="First name *" fieldXpath="${fieldXPath}" className="clear">
-        <%--<field_new:input xpath="${fieldXPath}" required="false"/>--%>
-        <field:person_name xpath="${fieldXPath}" required="${true}" title="your first name${competitionValidationText}" />
+        <%--<field_v2:input xpath="${fieldXPath}" required="false"/>--%>
+        <field_v1:person_name xpath="${fieldXPath}" required="${true}" title="your first name${competitionValidationText}" />
     </form_v2:row>
 
     <c:set var="fieldXPath" value="${xpath}/phone"/>
     <form_v2:row label="Your phone number *" fieldXpath="${fieldXPath}" className="clear">
-        <field:contact_telno xpath="${fieldXPath}"
+        <field_v1:contact_telno xpath="${fieldXPath}"
                              required="${true}"
                              className="sessioncamexclude"
                              labelName="phone number${competitionValidationText}" />
@@ -29,7 +29,7 @@
 
     <c:set var="fieldXPath" value="${xpath}/email"/>
     <form_v2:row label="Your email address *" fieldXpath="${fieldXPath}" className="clear">
-        <field_new:email xpath="${fieldXPath}" required="${true}" title="your email address${competitionValidationText}" />
+        <field_v2:email xpath="${fieldXPath}" required="${true}" title="your email address${competitionValidationText}" />
     </form_v2:row>
 
     <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
@@ -39,7 +39,7 @@
     <c:if test="${competitionEnabled}">
         <utilities_new:competition/>
     </c:if>
-    <field:hidden xpath="${xpath}/optinPhone" defaultValue="N"/>
-    <field:hidden xpath="${xpath}/optinMarketing" defaultValue="N"/>
+    <field_v1:hidden xpath="${xpath}/optinPhone" defaultValue="N"/>
+    <field_v1:hidden xpath="${xpath}/optinMarketing" defaultValue="N"/>
 
 </form_v2:fieldset>

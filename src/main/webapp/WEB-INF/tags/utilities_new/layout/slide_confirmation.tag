@@ -55,7 +55,7 @@
 
 <%-- TEMPLATES --%>
 <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
-<core:js_template id="confirmation-template">
+<core_v1:js_template id="confirmation-template">
     <ui:bubble variant="chatty">
         <p>
             Thank you <!-- SessionCam:Hide -->{{= obj.firstName }}<!-- /SessionCam:Hide --> for choosing ${brandedName} (powered by Thought World) to compare your energy options and save on your energy bills. Thought World's energy specialists will be in contact shortly to discuss your application. Please print this page with your reference number for your records.
@@ -64,7 +64,7 @@
         <p>If you have any questions about your energy application, please call our trusted partner Thought World on: ${callCentreNumber}</p>
         <p>Your reference number for your enquiry is <strong>{{= obj.uniquePurchaseId }}</strong>. It&#39;s a good idea to keep this handy for future communications.</p>
     </ui:bubble>
-</core:js_template>
+</core_v1:js_template>
 
 
 

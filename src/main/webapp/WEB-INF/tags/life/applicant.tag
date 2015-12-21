@@ -36,21 +36,21 @@
 		<div class="clear"><!-- empty --></div>
 
 		<form_v1:row label="Gender">
-			<field:array_radio  id="${name}_gender" xpath="${xpath}/gender" required="true" title="${error_phrase}gender" items="F=Female,M=Male" />
+			<field_v1:array_radio  id="${name}_gender" xpath="${xpath}/gender" required="true" title="${error_phrase}gender" items="F=Female,M=Male" />
 		</form_v1:row>
 
 		<form_v1:row label="Date of birth">
-			<field:person_dob xpath="${xpath}/dob" required="true" title="${error_phrase}" />
+			<field_v1:person_dob xpath="${xpath}/dob" required="true" title="${error_phrase}" />
 		</form_v1:row>
 
-		<field:hidden xpath="${xpath}/age" required="false" />
+		<field_v1:hidden xpath="${xpath}/age" required="false" />
 
 		<form_v1:row label="Smoker status">
-			<field:array_radio  id="${name}_smoker" xpath="${xpath}/smoker" required="true" title="${error_phrase}smoker status" items="N=Non-Smoker,Y=Smoker" />
+			<field_v1:array_radio  id="${name}_smoker" xpath="${xpath}/smoker" required="true" title="${error_phrase}smoker status" items="N=Non-Smoker,Y=Smoker" />
 		</form_v1:row>
 
 		<form_v1:row label="Occupation" helpId="525">
-			<field:general_select type="occupation" comboBox="true" xpath="${xpath}/occupation" hannoverXpath="${xpath}/hannover" required="true" title="${error_phrase}occupation"/>
+			<field_v1:general_select type="occupation" comboBox="true" xpath="${xpath}/occupation" hannoverXpath="${xpath}/hannover" required="true" title="${error_phrase}occupation"/>
 		</form_v1:row>
 
 	</form_v1:fieldset>

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%-- Smaller Templates to reduce duplicate code --%>
-<core:js_template id="home-offline-discount-template">
+<core_v1:js_template id="home-offline-discount-template">
 <%-- If there's a discount.offline e.g. of "10", display the static text of x% Discount included in price shown, otherwise use headline feature. --%>
 {{ obj.offlinePromotionText = ''; }}
 {{ if(typeof discount !== 'undefined' && typeof discount.offline !== 'undefined' && discount.offline > 0 && discount.offline !== discount.online) { }}
@@ -32,10 +32,10 @@
 		{{ } }}
 	</div>
 {{ } }}
-</core:js_template>
+</core_v1:js_template>
 
 
-<core:js_template id="promotion-offer-template">
+<core_v1:js_template id="promotion-offer-template">
 {{ obj.promotionText = (typeof obj.headline !== 'undefined' && typeof obj.headline.offer !== 'undefined' && obj.headline.offer.length > 0) ? obj.headline.offer : ''; }}
 {{ obj.offerTermsContent = (typeof obj.headline !== 'undefined' && typeof obj.headline.terms !== 'undefined' && obj.headline.terms.length > 0) ? obj.headline.terms : ''; }}
 
@@ -50,9 +50,9 @@
 	</div>
 {{ } }}
 
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="online-offer-template">
+<core_v1:js_template id="online-offer-template">
 {{ obj.onlineText = (typeof obj.discount !== 'undefined' &&	typeof obj.discount.offline !== 'undefined' && typeof obj.discount.online !== 'undefined' && obj.discount.online > 0 && obj.discount.offline > 0 && parseInt(obj.discount.online,10) > parseInt(obj.discount.offline,10)) ? obj.discount.online : ''; }}
 {{ obj.offerTermsContent = (typeof obj.headline !== 'undefined' && typeof obj.headline.terms !== 'undefined' && obj.headline.terms.length > 0) ? obj.headline.terms : ''; }}
 
@@ -67,9 +67,9 @@
 	</div>
 {{ } }}
 
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="quote-summary-template">
+<core_v1:js_template id="quote-summary-template">
 	<table class="quote-summary-table">
 		<thead>
 			<tr>
@@ -81,9 +81,9 @@
 		</tbody>
 	</table>
 
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="pds-disclaimer-template">
+<core_v1:js_template id="pds-disclaimer-template">
 	<h5>Product Disclosure Statement</h5>
 	{{ if (obj.hasOwnProperty('pdsbUrl') === false || obj.pdsbUrl === '') { }}
 		<a href="{{= obj.pdsaUrl }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure Statement</a>
@@ -99,9 +99,9 @@
 	<h5>Disclaimer</h5>
 	<p>{{= obj.disclaimer }}</p>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="call-apply-template">
+<core_v1:js_template id="call-apply-template">
 	<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
 		{{ if(obj.isOnlineAvailable === true) { }}
 			<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
@@ -121,9 +121,9 @@
 			</div>
 		{{ } }}
 	{{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="more-info-template">
+<core_v1:js_template id="more-info-template">
 
 	<%-- Setup variables --%>
 	{{ obj.isOnlineAvailable  = false; }}
@@ -333,11 +333,11 @@
 
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <home_new:call_modal />
 
-<core:js_template id="special-conditions-template">
+<core_v1:js_template id="special-conditions-template">
 <div class="row">
 	<div class="col-xs-12 text-center">
 		<p>Please be aware that {{= obj.specialConditionsRule }}</p>
@@ -351,4 +351,4 @@
 		<a class="btn btn-next btn-block btn-proceed-to-insurer" href="javascript:;" target="_blank">Proceed to Insurer</a>
 		</div>
 </div>
-</core:js_template>
+</core_v1:js_template>

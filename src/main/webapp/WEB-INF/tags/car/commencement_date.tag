@@ -17,7 +17,7 @@
 
 <form_v2:fieldset legend="Your preferred date to start the insurance" id="${name}FieldSet">
 	<form_v2:row label="Commencement date">
-		<field_new:commencement_date xpath="${xpath}" mode="separated" includeMobile="false" />
+		<field_v2:commencement_date xpath="${xpath}" mode="separated" includeMobile="false" />
 	</form_v2:row>
 </form_v2:fieldset>
 <car:commencement_date_expired />
