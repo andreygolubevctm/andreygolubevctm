@@ -99,11 +99,39 @@ SET @FOWPVIDER = (select providerId from ctm.provider_master where providerCode 
 
 
 delete from ctm.travel_product where providerId = @PVIDER and productCode
-in ('AGIS-TRAVEL-8-100','AGIS-TRAVEL-9-100','AGIS-TRAVEL-10-100','AGIS-TRAVEL-11-100') limit 4;
+in ('AGIS-TRAVEL-7-100-Domestic',
+   'AGIS-TRAVEL-8-100-Essential',
+   'AGIS-TRAVEL-9-100-Comprehensive',
+   'AGIS-TRAVEL-10-100-LastMinute',
+   'AGIS-TRAVEL-11-100-AnnualMultiTrip',
+   'AGIS-TRAVEL-7-100-Ski',
+   'AGIS-TRAVEL-8-100-Ski',
+   'AGIS-TRAVEL-9-100-Ski',
+   'AGIS-TRAVEL-10-100-Ski',
+   'AGIS-TRAVEL-11-100-Ski',
+   'AGIS-TRAVEL-7-200-Ski',
+   'AGIS-TRAVEL-8-200-Ski',
+   'AGIS-TRAVEL-9-200-Ski',
+   'AGIS-TRAVEL-10-200-Ski',
+   'AGIS-TRAVEL-11-200-Ski') limit 15;
 
 -- Expect 0
 select count(*) from ctm.travel_product where providerId = @PVIDER and productCode
-in ('AGIS-TRAVEL-8-100','AGIS-TRAVEL-9-100','AGIS-TRAVEL-10-100','AGIS-TRAVEL-11-100');
+in ('AGIS-TRAVEL-7-100-Domestic',
+   'AGIS-TRAVEL-8-100-Essential',
+   'AGIS-TRAVEL-9-100-Comprehensive',
+   'AGIS-TRAVEL-10-100-LastMinute',
+   'AGIS-TRAVEL-11-100-AnnualMultiTrip',
+   'AGIS-TRAVEL-7-100-Ski',
+   'AGIS-TRAVEL-8-100-Ski',
+   'AGIS-TRAVEL-9-100-Ski',
+   'AGIS-TRAVEL-10-100-Ski',
+   'AGIS-TRAVEL-11-100-Ski',
+   'AGIS-TRAVEL-7-200-Ski',
+   'AGIS-TRAVEL-8-200-Ski',
+   'AGIS-TRAVEL-9-200-Ski',
+   'AGIS-TRAVEL-10-200-Ski',
+   'AGIS-TRAVEL-11-200-Ski');
 
 update ctm.travel_product set providerProductCode = 'J' where productCode = 'AGIS-TRAVEL-7' and providerId = @PVIDER limit 1;
 update ctm.travel_product set providerProductCode = 'G' where productCode = 'AGIS-TRAVEL-8' and providerId = @PVIDER limit 1;
@@ -117,69 +145,117 @@ update ctm.travel_product set providerProductCode = 'H' where productCode = '1FO
 update ctm.travel_product set providerProductCode = 'I' where productCode = '1FOW-TRAVEL-22' and providerId = @FOWPVIDER limit 1;
 update ctm.travel_product set providerProductCode = 'K' where productCode = '1FOW-TRAVEL-23' and providerId = @FOWPVIDER limit 1;
 
+delete from ctm.travel_product where providerId = @PVIDER and productCode
+in ('1FOW-TRAVEL-19-100-Ski',
+    '1FOW-TRAVEL-20-100-Ski',
+    '1FOW-TRAVEL-21-100-Ski',
+    '1FOW-TRAVEL-22-100-Ski',
+    '1FOW-TRAVEL-23-100-Ski'
+   ) limit 5;
 
 
-update ctm.travel_product_benefits set productId = 'G' where productId = 'G-200-Essential' and providerId = @PVIDER;
-update ctm.travel_product_benefits set productId = 'H' where productId = 'H-200-Comprehensive' and providerId = @PVIDER;
-update ctm.travel_product_benefits set productId = 'I' where productId = 'I-200-LastMinute' and providerId = @PVIDER;
-update ctm.travel_product_benefits set productId = 'J' where productId = 'J-200-Domestic' and providerId = @PVIDER;
-update ctm.travel_product_benefits set productId = 'K' where productId = 'K-200-AnnualMultiTrip' and providerId = @PVIDER;
-
-update ctm.travel_product_benefits set productId = 'G' where productId = 'G-100-Essential' and providerId = @FOWPVIDER;
-update ctm.travel_product_benefits set productId = 'H' where productId = 'H-100-Comprehensive' and providerId = @FOWPVIDER;
-update ctm.travel_product_benefits set productId = 'I' where productId = 'I-100-LastMinute' and providerId = @FOWPVIDER;
-update ctm.travel_product_benefits set productId = 'J' where productId = 'J-100-Domestic' and providerId = @FOWPVIDER;
-update ctm.travel_product_benefits set productId = 'K' where productId = 'K-100-AnnualMultiTrip' and providerId = @FOWPVIDER;
+update ctm.travel_product_benefits set productId = 'G' where productId = 'G-200-Essential' and providerId = @PVIDER limit 17;
+-- expect 17
+select count(*) from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'G';
 
 
-delete from ctm.travel_benefit_master where benefitName = 'AVALANCHE_COVER';
-delete from ctm.travel_benefit_master where benefitName = 'LIFT_PASS';
-delete from ctm.travel_benefit_master where benefitName = 'SNOW_SPORTS_EQUIPMENT';
+update ctm.travel_product_benefits set productId = 'H' where productId = 'H-200-Comprehensive' and providerId = @PVIDER limit 22;
+-- expect 22
+select count(*) from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'H';
 
--- need to finish
+update ctm.travel_product_benefits set productId = 'I' where productId = 'I-200-LastMinute' and providerId = @PVIDER limit 7;
+-- expect 7
+select count(*) from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'I';
 
-delete from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'J-100-Domestic' limit 13;
+update ctm.travel_product_benefits set productId = 'J' where productId = 'J-200-Domestic' and providerId = @PVIDER limit 13;
+-- expect 13
+select count(*) from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'J';
 
-delete from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'G-100-Essential' limit 17;
+update ctm.travel_product_benefits set productId = 'K' where productId = 'K-200-AnnualMultiTrip' and providerId = @PVIDER limit 23;
+-- expect 23
+select count(*) from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'K';
+
+delete from ctm.travel_product_benefits where providerId = @PVIDER and productId in (
+'G-100-Essential',
+'G-100-Ski',
+'G-200-Ski',
+'H-100-Comprehensive',
+'H-100-Ski',
+'H-200-Ski',
+'I-100-LastMinute',
+'I-100-Ski',
+'I-200-Ski',
+'J-100-Domestic',
+'J-100-Ski',
+'J-200-Ski',
+'K-100-AnnualMultiTrip',
+'K-100-Ski',
+'K-200-Ski') limit 306;
+
 -- expect 0
-select count(*) from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'G-100';
+select count(*) from ctm.travel_product_benefits where providerId = @PVIDER and productId in (
+'G-100-Essential',
+'G-100-Ski',
+'G-200-Ski',
+'H-100-Comprehensive',
+'H-100-Ski',
+'H-200-Ski',
+'I-100-LastMinute',
+'I-100-Ski',
+'I-200-Ski',
+'J-100-Domestic',
+'J-100-Ski',
+'J-200-Ski',
+'K-100-AnnualMultiTrip',
+'K-100-Ski',
+'K-200-Ski');
 
-delete from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'H-100' limit 19;
+
+update ctm.travel_product_benefits set productId = 'G' where productId = 'G-100-Essential' and providerId = @FOWPVIDER limit 17;
+-- expect 17
+select count(*) from ctm.travel_product_benefits where productId = 'G' and providerId = @FOWPVIDER;
+
+update ctm.travel_product_benefits set productId = 'H' where productId = 'H-100-Comprehensive' and providerId = @FOWPVIDER limit 22;
+-- expect 22
+select count(*) from ctm.travel_product_benefits where productId = 'H' and providerId = @FOWPVIDER;
+
+update ctm.travel_product_benefits set productId = 'I' where productId = 'I-100-LastMinute' and providerId = @FOWPVIDER limit 7;
+-- expect 7
+select count(*) from ctm.travel_product_benefits where productId = 'I' and providerId = @FOWPVIDER;
+
+update ctm.travel_product_benefits set productId = 'J' where productId = 'J-100-Domestic' and providerId = @FOWPVIDER limit 13;
+-- expect 13
+select count(*) from ctm.travel_product_benefits where productId = 'J' and providerId = @FOWPVIDER;
+
+update ctm.travel_product_benefits set productId = 'K' where productId = 'K-100-AnnualMultiTrip' and providerId = @FOWPVIDER limit 22;
+-- expect 22
+select count(*) from ctm.travel_product_benefits where productId = 'K' and providerId = @FOWPVIDER;
+
+delete from  ctm.travel_product_benefits where providerId = @FOWPVIDER and productId in (
+'G-100-Ski',
+'H-100-Ski',
+'I-100-Ski',
+'J-100-Ski',
+'K-100-Ski') limit 111;
+
 -- expect 0
-select count(*) from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'H-100';
-
-delete from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'I-100' limit 6;
--- expect 0
-select count(*) from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'I-100';
-
-delete from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'J-100' limit 9;
--- expect 0
-select count(*) from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'J-100';
-
-delete from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'K-100' limit 18;
--- expect 0
-select count(*) from ctm.travel_product_benefits where providerId = @PVIDER and productId = 'K-100';
+select count(*) from ctm.travel_product_benefits where providerId = @FOWPVIDER and productId in (
+'G-100-Ski',
+'H-100-Ski',
+'I-100-Ski',
+'J-100-Ski',
+'K-100-Ski'
+);
 
 
--- Testing if all BUDD products benefits have the -200 or -100
- -- Expect 0
- select count(*) from ctm.travel_product_benefits where providerId = @PVIDER and productId in ('G-200','G-100',
-    'H-100','H-200'
-    'I-200','I-100'
-    'K-200','K-100'
-    );
 
--- Testing all 1FoW product benefits have -100
--- Expect 0
-select count(*) from ctm.travel_product_benefits where providerId = @FOWPVIDER and productId in ('J-100','G-100',
-    'H-100','I-100','K-100'
-    );
 
--- Testing all BUDD products have either -100 and -200
--- Expect 0
-select count(*) from ctm.travel_product where providerId = @FOWPVIDER and providerProductCode in ('J-100','G-100',
-    'H-100','I-100','K-100'
-    );
+
+delete from ctm.travel_benefit_master where benefitName = 'AVALANCHE_COVER' limit 1;
+delete from ctm.travel_benefit_master where benefitName = 'LIFT_PASS' limit 1;
+delete from ctm.travel_benefit_master where benefitName = 'SNOW_SPORTS_EQUIPMENT' limit 1;
+
+
 
 
 
