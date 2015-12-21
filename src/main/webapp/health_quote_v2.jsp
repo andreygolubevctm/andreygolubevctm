@@ -44,7 +44,7 @@
 <c:set var="isHealthV2" value="${true}" scope="request" />
 
 <%-- HTML --%>
-<layout_new_layout:journey_engine_page title="Health Quote">
+<layout:journey_engine_page title="Health Quote">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -85,32 +85,56 @@
         </div>
 	</jsp:attribute>
 
-    <jsp:attribute name="navbar_save_quote">
-        <agg_new:save_quote includeCallMeback="true" />
-    </jsp:attribute>
-    <jsp:attribute name="navbar_additional_options">
-        <li class="dropdown dropdown-interactive slide-feature-filters" id="filters-dropdown">
-            <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter</span><span class="hidden-sm"> Results</span> <b class="caret"></b></a>
-            <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-                <health:filters />
-            </div>
-        </li>
-        <li class="dropdown dropdown-interactive slide-feature-benefits" id="benefits-dropdown">
-            <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-cog"></span> <span>Customise</span><span class="hidden-sm"> Cover</span> <b class="caret"></b></a>
-            <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-                <health:benefits />
-            </div>
-        </li>
-        <li class="navbar-text-block">
-            <form_new:reference_number />
-        </li>
-    </jsp:attribute>
-    <jsp:attribute name="navbar_pagination">
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
+    <jsp:attribute name="progress_bar">
+      <div class="progress-bar-row collapse navbar-collapse">
+        <div class="container">
+          <ul class="journeyProgressBar_v2"></ul>
         </div>
+      </div>
     </jsp:attribute>
 
+	<jsp:attribute name="navbar">
+
+
+		<ul class="nav navbar-nav">
+          <li class="slide-feature-back">
+            <a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+          </li>
+
+          <li class="dropdown dropdown-interactive slide-feature-emailquote" id="email-quote-dropdown">
+            <a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose><c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></span> <b class="caret"></b></a>
+            <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
+              <div class="dropdown-container">
+                <agg_new:save_quote includeCallMeback="true" />
+              </div>
+            </div>
+          </li>
+
+          <li class="dropdown dropdown-interactive slide-feature-filters" id="filters-dropdown">
+            <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter</span><span class="hidden-sm"> Results</span> <b class="caret"></b></a>
+            <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
+              <health:filters />
+            </div>
+          </li>
+          <li class="dropdown dropdown-interactive slide-feature-benefits" id="benefits-dropdown">
+            <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-cog"></span> <span>Customise</span><span class="hidden-sm"> Cover</span> <b class="caret"></b></a>
+            <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
+              <health:benefits />
+            </div>
+          </li>
+
+            <%-- @todo = showReferenceNo needs to be an attribute, this tag should potentially be rewritten or moved in a different place + that script is loaded via a marker in the tag. Probably should be moved to journey_engine_page --%>
+          <li class="navbar-text-block">
+            <form_new:reference_number />
+          </li>
+        </ul>
+
+		<div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
+        </div>
+
+	</jsp:attribute>
+							
 	<jsp:attribute name="form_bottom">
 	</jsp:attribute>
 							
@@ -177,7 +201,7 @@
     <field:hidden xpath="environmentOverride" />
     <input type="hidden" name="transcheck" id="transcheck" value="1" />
   </jsp:body>
-</layout_new_layout:journey_engine_page>
+</layout:journey_engine_page>
 
 <%-- START JOURNEY OVERRIDE - Part 2 of 2) --%>
   </c:otherwise>

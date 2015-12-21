@@ -24,8 +24,6 @@
                 var $this = $(this),
                     $elements = $this.add($this.next('label'));
 
-                console.log($elements);
-
                 if ($this.is(':checked')) {
                     $elements.addClass('checked');
                 }

@@ -422,7 +422,7 @@ var healthFunds = {
 		// main check for real value
 		if( effectiveDateString == ''){
 			return false;
-		};
+		}
 		var effectiveDate = returnDate(effectiveDateString);
 		var today = new Date();
 
