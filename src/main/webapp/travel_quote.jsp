@@ -122,11 +122,11 @@
 				   <c:set var="brandId" value="${pageSettings.getBrandId()}"/>
 
 				   <c:set var="excludedProvidersList" value='${serviceConfigurationService.getExcludedProviders(brandId,verticalId)}' />
-				   <c:set var="thelist" value=""/>
+				   <c:set var="excludedProviders" value=""/>
 				   <c:forEach var="i" items="${excludedProvidersList}">
-					   <c:set var="thelist" value="${thelist} ${i.code}"/>
+					   <c:set var="excludedProviders" value="${excludedProviders} ${i.code}"/>
 				   </c:forEach>
-				   <field:hidden xpath="travel/excludedProviderList" constantValue="${thelist}" />
+				   <field:hidden xpath="travel/excludedProviderList" constantValue="${excludedProviders}" />
 			   </c:if>
 
 
