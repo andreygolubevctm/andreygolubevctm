@@ -22,6 +22,7 @@
 	{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
 	{{ obj._selectedFrequency = Results.getFrequency(); }}
 	{{ obj.mode = ''; }}
+	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 	{{ obj.showAltPremium = false; obj.renderedPriceTemplate = htmlTemplatePrice(obj); }}
 	{{ obj.showAltPremium = true;  obj.renderedAltPriceTemplate = htmlTemplatePrice(obj); }}
 
@@ -38,40 +39,54 @@
 
 		<div class="flat-design-card row">
 
+			<div class="col-xs-12">
+				<p>Quote reference number <span class="text-secondary">{{= transactionId }}</span></p>
+			</div>
 			<div class="col-sm-8">
-				Quote reference number {{= transactionId }}
 
-				<h1 class="productName">{{= info.productTitle }}</h1>
+				<div class="row">
+					<div class="col-xs-3">
+						<div class="companyLogo {{= info.provider }}-mi"></div>
+					</div>
+					<div class="col-xs-9">
+						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
 
-				{{ if (promo.promoText !== ''){ }}
-					<h2 class="more-info-promotion">Buy now and save with these promotions</h2>
-					{{= promo.promoText }}
-				{{ } }}
+						{{ if (promo.promoText !== ''){ }}
+						<h2>Buy now and save with these promotions</h2>
+						<p>{{= promo.promoText }}</p>
+						{{ } }}
+					</div>
+				</div>
 
-				{{= renderedPriceTemplate }}
-
-				<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+				<div class="row">
+					<div class="col-xs-6">
+						{{= renderedPriceTemplate }}
+					</div>
+					<div class="col-xs-6 col-lg-12">
+						<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+					</div>
+				</div>
 
 			</div>
 
 			<div class="col-sm-4 hidden-xs">
-				<h2>You're nearly insured</h2>
-				<div class="moreInfoProgress">
-					<div>
+				<h2 class="noTopMargin">You're nearly insured</h2>
+				<div class="moreInfoProgress row">
+					<div class="col-sm-2">
 						<div class="moreInfoProgressBarLeft"></div>
 						<div class="moreInfoProgressDone">75%</div>
 					</div>
-					<div>
-						<p class="bold">Buy through comparethemarket</p>
+					<div class="col-sm-10">
+						<p class="text-bold">Buy through comparethemarket</p>
 						<p>Your chosen product</p>
 						<p>Your cover preferences</p>
 						<p>About you</p>
 					</div>
 				</div>
 
-				<h2>Need help?</h2>
-				<p>Speak to one of our health insurance specialist on <span class="noWrap callCentreNumber">${callCentreNumber}</span></p>
-				<p>Quote your reference number {{= transactionId }}</p>
+				<h3 class="text-dark">Need help?</h3>
+				<p>Speak to one of our health insurance specialist on <span class="noWrap text-secondary">${callCentreNumber}</span></p>
+				<p>Quote your reference number <span class="text-secondary">{{= transactionId }}</span></p>
 			</div>
 
 		</div>
@@ -82,7 +97,7 @@
 
 		<div class="flat-design-card row">
 			<div class="col-sm-6">
-				<h1>Hospital cover</h1>
+				<h1 class="text-dark">Hospital cover</h1>
 				<p><strong>Hospital Excess:</strong> {{= hospital.inclusions.excess }}</p>
 				<p><strong>Excess Waivers:</strong> {{= hospital.inclusions.waivers }}</p>
 				<p><strong>Co-payment / % Hospital Contribution:</strong> {{= hospital.inclusions.copayment }}</p>
@@ -124,22 +139,26 @@
 			</div>
 
 			<div class="col-sm-6">
-				<h1>Extras cover</h1>
-				<table class="table table-bordered table-striped">
-					<tr>
-						<th>&nbsp;</th>
-						<th>Per Person</th>
-						<th>Per Policy</th>
-						<th>Waiting Period</th>
-					</tr>
-				{{ _.each(extrasCover.inclusions, function(inclusion){ }}
-					<tr>
-						<td>{{= inclusion.name }}</td>
-						<td>{{= inclusion.benefitLimits.perPerson }}</td>
-						<td>{{= inclusion.benefitLimits.perPolicy }}</td>
-						<td>{{= inclusion.waitingPeriod }}</td>
-					</tr>
-				{{ }) }}
+				<h1 class="text-dark">Extras cover</h1>
+				<table class="extrasTable table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>&nbsp;</th>
+							<th>PER PERSON</th>
+							<th>PER POLICY</th>
+							<th>WAITING PERIOD</th>
+						</tr>
+					</thead>
+					<tbody>
+						{{ _.each(extrasCover.inclusions, function(inclusion){ }}
+							<tr>
+								<th>{{= inclusion.name }}</th>
+								<td>{{= inclusion.benefitLimits.perPerson }}</td>
+								<td>{{= inclusion.benefitLimits.perPolicy }}</td>
+								<td>{{= inclusion.waitingPeriod }}</td>
+							</tr>
+						{{ }) }}
+					</tbody>
 				</table>
 			</div>
 		</div>
@@ -148,7 +167,7 @@
 
 		<div class="policyBrochures row">
 			<div class="col-xs-12">
-				<h2>Policy brochures</h2>
+				<h2 class="policyBrochuresTitle">Policy brochures</h2>
 				<p>See your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
 			</div>
 
@@ -216,7 +235,7 @@
 
 		<div class="flat-design-card row">
 			<div class="col-md-8">
-				<h1>Switching is simple</h1>
+				<h1 class="text-dark">Switching is simple</h1>
 				<ol>
 					<li>You can change your fund whenever you like</li>
 					<li>We'll pass your current fund details to your new fund, to transfer
@@ -226,19 +245,21 @@
 						premiums paid in advance.</li>
 				</ol>
 			</div>
-			<div class="col-md-4 hidden-xs hidden-sm">
+			<div class="col-md-4 hidden-xs hidden-sm pricePromise">
 				<div class="row">
-					<div class="col-md-4 pricePromiseLogo"></div>
-					<div class="col-md-8">You won't pay extra when you buy through comparethemarket</div>
+					<div class="col-md-5">
+						<div class="pricePromiseLogo"></div>
+					</div>
+					<div class="col-md-7"><h4>You won't pay extra when you buy through comparethemarket</h4></div>
 				</div>
 				<p>Buy health insurance through us and if you find a better price on the same policy with the same health fund within 30 days, we'll give you $50*</p>
 			</div>
-			<div class="col-xs-12">
+			<div class="col-xs-12 testimonials">
 				<h2>Join the thousands of Australians who already have compared and saved</h2>
 				<blockquote>
-					{{= testimonial.quote }}
-					{{= testimonial.author }}
+					<span class="openQuote">“</span>{{= testimonial.quote }}<span class="closeQuote">”</span>
 				</blockquote>
+				<p class="testimonialAuthor">{{= testimonial.author }}</p>
 			</div>
 		</div>
 
@@ -251,8 +272,10 @@
 <script id="more-info-call-to-action-template" type="text/html">
 
 	<div class="moreInfoCallToActionBar row">
-		<div class="col-xs-12">
+		<div class="col-sm-6">
 			<p>Found the right product for you?</p>
+		</div>
+		<div class="col-sm-6">
 			<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
 		</div>
 	</div>

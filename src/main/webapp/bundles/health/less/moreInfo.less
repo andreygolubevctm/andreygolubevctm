@@ -7,12 +7,12 @@
 
 /* product headers buttons */
 .btn-more-info{
-	position: relative;
-	span{
-		@media (@xs-only) {
-			display: none;
-		}
+  position: relative;
+  span{
+	@media (@xs-only) {
+	  display: none;
 	}
+  }
 	@media (@md-only) {
 		padding-left:0;
 		padding-right:0;
@@ -23,15 +23,60 @@
 
 // Bridging page
 .moreInfoDropdown{
-	display: none;
+  display: none;
+  @media(@xs-only){
+	background-color: @theme-light;
+  }
+  @media(@sm-only){
+	h2 {
+	  font-size: 20px;
+	}
+  }
+
+	.companyLogo{
+		margin: 0 20px 0 0;
+		max-height: none;
+		max-width: none;
+	}
 }
+
 
 .more-info-content {
 
-	h2{
-		font-family: @font-family-theme-bold;
+	h1{
+		font-size: 36px;
+		font-family: @font-family-theme-light;
+		&.productName{
+			font-size: 42px;
+			font-family: @font-family-theme-bold;
+		}
 	}
-	background-color: #fff;
+	h2{
+		font-size: 25px;
+		font-family: @font-family-theme-regular;
+	}
+	p, ol, blockquote{
+		font-size: 18px;
+	}
+	ol li,
+	blockquote{
+		color: @gray-slight-dark;
+	}
+	ol {
+		padding-left: 0;
+		list-style-type: none;
+		li{
+			counter-increment: step-counter;
+			margin-left: 32px;
+			&::before {
+				content: counter(step-counter) ".";
+				font-size: 30px;
+				color: @theme-tertiary;
+				padding-right: 10px;
+				margin-left: -32px;
+			}
+		}
+	}
 
 	ul{
 		.list-unstyled;
@@ -53,7 +98,171 @@
 		}
 	}
 
+	blockquote{
+		margin: 0 20%;
+		border-left: none;
+		text-align: left;
+	}
+
+	.frequencyAmount{
+		font-size: 40px;
+		font-family: @font-family-theme-bold;
+	}
+	.frequencyTitle{
+		font-size: 18px;
+		font-family: @font-family-theme-regular;
+		vertical-align: super;
+	}
+	.lhcText,
+	.rounding{
+		font-size: 16px;
+		color: @gray-light;
+	}
+
 }//.more-info-content
+
+
+.pricePromise {
+	background: @theme-tertiary;
+	color: white;
+	padding-top: 35px;
+	padding-bottom: 35px;
+
+	h4 {
+		color: white;
+		margin-left: -15px;
+	}
+	a {
+		text-decoration: underline;
+	}
+	p{
+		font-size: 14px;
+		margin-top: 15px;
+	}
+	.pricePromiseLogo {
+		.highResImg('../graphics/health/Price-Promise-White.png'; '../graphics/health/Price-Promise-White@2x.png'; 123px 86px; ~"");
+		width: 90px;
+		height: 65px;
+		background-size: contain;
+		margin: 0 auto;
+		@media (@sm) {
+			width: 105px;
+			height: 76px;
+			background-size: contain !important;
+		}
+		@media (@md) {
+			width: 123px;
+			height: 86px;
+		}
+	}
+
+}
+
+.testimonials{
+	padding-top: 40px;
+	padding-bottom: 40px;
+	h2{
+		text-align: center;
+		font-family: @font-family-theme-light;
+		padding-bottom: 20px;
+		font-size: 30px;
+	}
+	blockquote{
+		line-height: 16px;
+	}
+	.openQuote,
+	.closeQuote{
+		font-size: 100px;
+		font-family: serif;
+		margin-top: 15px;
+		color: @gray-slight-dark;
+	}
+	.openQuote{
+		float: left;
+		margin-left: -50px;
+	}
+	.closeQuote{
+		float: right;
+		margin-right: 30px;
+	}
+	.testimonialAuthor{
+		margin-right: 20%;
+		.text-tertiary;
+		text-align: right;
+		font-size: 24px;
+		margin-top: -10px;
+	}
+}
+
+.extrasTable{
+	text-align: center;
+	th{
+		text-align: center;
+	}
+
+	&.table-bordered{
+		border: none;
+		& > thead > tr{
+			border: none;
+			& > th{
+				border: none;
+				font-family: @font-family-theme-regular;
+			}
+		}
+	}
+	tbody {
+		th{
+			font-weight: normal;
+			font-size: 18px;
+		}
+		td:nth-child(2) {
+			font-weight: bold;
+			font-size: 16px;
+		}
+		th {
+			text-align: right;
+		}
+	}
+}
+.noTopMargin{
+	margin-top: 0px;
+}
+
+.moreInfoCallToActionBar{
+	background: @theme-tertiary;
+	p{
+		text-align: right;
+		color: white;
+		font-size: 30px;
+	}
+	& > div{
+		margin: 15px 0px;
+	}
+}
+
+.policyBrochures{
+	background: #F2F2F2;
+}
+
+.moreInfoProgress p {
+	margin: 10px 0;
+}
+.moreInfoProgressBarLeft {
+	border: 1px solid #b2b3b4;
+	border-bottom: none;
+	background: #e0e0e0;
+	width: 30px;
+	height: 35px;
+}
+.moreInfoProgressDone {
+	border: 1px solid #1b713a;
+	color: white;
+	text-align: center;
+	background: @theme-secondary;
+	width: 30px;
+	height: 105px;
+}
+
 
 // Old CTA buttons variables for A/B testing
 @old-btn-cta-bg-color: @theme-primary;
@@ -70,10 +279,10 @@
 
 // A/B testing for old organge color buttons
 .old-cta{
-	&.btn-cta {
-		.btn-styles(@old-btn-cta-bg-color, @old-btn-cta-color,
-		@old-btn-cta-active-bg-color, @old-btn-cta-active-color,
-		@old-btn-cta-hover-bg-color, @old-btn-cta-hover-color,
-		@old-btn-cta-border-color, @old-btn-cta-active-border-color, @old-btn-cta-hover-border-color, true);
+  &.btn-cta {
+	.btn-styles(@old-btn-cta-bg-color, @old-btn-cta-color,
+	@old-btn-cta-active-bg-color, @old-btn-cta-active-color,
+	@old-btn-cta-hover-bg-color, @old-btn-cta-hover-color,
+	@old-btn-cta-border-color, @old-btn-cta-active-border-color, @old-btn-cta-hover-border-color, true);
 	}
 }
