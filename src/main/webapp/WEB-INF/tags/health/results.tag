@@ -74,7 +74,7 @@
 <div class="resultsHeadersBg affixOnScroll">
 </div>
 
-<agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
+<agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
 	<c:if test="${not empty callCentreNumber}">
 		<div class="resultsMarketingMessage callCentreNumberSection" >
 			<div class="insert">
@@ -275,4 +275,4 @@
 		</li>
 	</script>
 
-</agg_new_results:results>
+</agg_v2_results:results>

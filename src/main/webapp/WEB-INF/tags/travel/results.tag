@@ -5,7 +5,7 @@
 <div class="resultsHeadersBg">
 </div>
 
-<agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
+<agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
 	<travel:more_info />
 
 <%-- RESULTS TABLE --%>
@@ -278,7 +278,7 @@
 
 <%-- NO RESULTS --%>
 <div class="hidden">
-	<agg_new_results:results_none />
+	<agg_v2_results:results_none />
 </div>
 
 <%-- FETCH ERROR --%>
@@ -293,4 +293,4 @@
 	<div class="travelCompanyLogo logo_{{= img }}"></div>
 </core_v1:js_template>
 
-</agg_new_results:results>
+</agg_v2_results:results>

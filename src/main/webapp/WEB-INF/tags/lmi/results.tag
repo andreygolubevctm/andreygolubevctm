@@ -21,7 +21,7 @@
 <div class="resultsHeadersBg">
 </div>
 
-<agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
+<agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
 
     <%-- RESULTS TABLE --%>
     <div class="bridgingContainer"></div>
@@ -146,7 +146,7 @@
 
     <%-- NO RESULTS --%>
     <div class="hidden">
-        <agg_new_results:results_none />
+        <agg_v2_results:results_none />
     </div>
 
     <%-- FETCH ERROR --%>
@@ -166,7 +166,7 @@
         {{ } }}
     </core_v1:js_template>
 
-</agg_new_results:results>
+</agg_v2_results:results>
 
 
 

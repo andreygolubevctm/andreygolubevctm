@@ -37,7 +37,7 @@
 </div>
 
 
-<agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
+<agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
 
 	<homeloan:more_info />
 
@@ -273,7 +273,7 @@
 
 <%-- NO RESULTS --%>
 <div class="hidden">
-	<agg_new_results:results_none />
+	<agg_v2_results:results_none />
 </div>
 
 <%-- FETCH ERROR --%>
@@ -323,7 +323,7 @@
 	<div class="companyLogo logo_{{= img }} noshrink"></div>
 </core_v1:js_template>
 
-</agg_new_results:results>
+</agg_v2_results:results>
 
 <%-- Price templates --%>
 <core_v1:js_template id="monthly-price-template">

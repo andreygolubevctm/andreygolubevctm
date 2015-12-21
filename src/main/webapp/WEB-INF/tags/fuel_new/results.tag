@@ -4,7 +4,7 @@
 
 <div class="resultsHeadersBg"></div>
 
-<agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
+<agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
     <div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
         <div class="featuresHeaders featuresElements">
             <div class="result headers">
@@ -112,14 +112,14 @@
         <c:set var="copy"><content:get key="blockedIPCopy" /></c:set>
         <confirmation:other_products heading="${heading}" copy="${copy}" id="blocked-ip-address" />
 
-        <agg_new_results:results_none />
+        <agg_v2_results:results_none />
     </div>
 
     <%-- FETCH ERROR --%>
     <div class="resultsFetchError displayNone">
         Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later</a>.
     </div>
-</agg_new_results:results>
+</agg_v2_results:results>
 
 <fuel_new:regional_results />
 <fuel_new:fuel_map />
