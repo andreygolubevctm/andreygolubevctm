@@ -9,14 +9,14 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-benefits">
 
-	<form_new:fieldset_columns sideHidden="true">
+	<form_v2:fieldset_columns sideHidden="true">
 
 	<jsp:attribute name="rightColumn">
 	</jsp:attribute>
 
 	<jsp:body>
 
-		<form_new:fieldset legend="Choose which benefits are important to you" >
+		<form_v2:fieldset legend="Choose which benefits are important to you" >
 
 			<div class="scrollable row">
 
@@ -31,10 +31,10 @@
 
 			</div>
 
-		</form_new:fieldset>
+		</form_v2:fieldset>
 
 	</jsp:body>
 
-	</form_new:fieldset_columns>
+	</form_v2:fieldset_columns>
 
 </div>

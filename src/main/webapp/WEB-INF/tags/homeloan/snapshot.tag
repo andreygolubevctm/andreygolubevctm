@@ -20,7 +20,7 @@
 	{{ var interestComparisonTemplate = htmlTemplate(obj); }}
 
 	<div>
-	<form_new:fieldset legend="Your Home Loan Product">
+	<form_v2:fieldset legend="Your Home Loan Product">
 		<%-- Header --%>
 		<div class="row snapshot-product-header">
 			<div class="col-sm-5 col-md-4 col=lg-3 logoContainer">{{= companyLogo}}</div>
@@ -109,7 +109,7 @@
 				{{ } }}
 			</div>
 		</div>
-		</form_new:fieldset>
+		</form_v2:fieldset>
 	</div>
 	<div class="comparison-rate-disclaimer">
 		<h6 class="small">Comparison rate disclaimer</h6>
@@ -118,7 +118,7 @@
 </core:js_template>
 
 
-<form_new:fieldset legend="Snapshot of Your Details" className="quoteSnapshot">
+<form_v2:fieldset legend="Snapshot of Your Details" className="quoteSnapshot">
 	<div class="row snapshot">
 		<div class="col-sm-12 snapshot-title">
 			<!-- SessionCam:Hide -->
@@ -133,5 +133,5 @@
 			<p class="snapshotGoal"></p>
 		</div>
 	</div>
-</form_new:fieldset>
+</form_v2:fieldset>
 <div class="product-snapshot"></div>

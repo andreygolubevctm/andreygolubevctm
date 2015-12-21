@@ -61,7 +61,7 @@
 	</c:otherwise>
 </c:choose>
 
-<layout:generic_page title="Transferring you to provider">
+<layout_v1:generic_page title="Transferring you to provider">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -121,4 +121,4 @@
 		</div>
 	</jsp:body>
 
-</layout:generic_page>
+</layout_v1:generic_page>

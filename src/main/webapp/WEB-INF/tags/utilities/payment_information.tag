@@ -13,7 +13,7 @@
 <%-- HTML --%>
 <div id="${name}" class="${name}">
 
-	<form:fieldset legend="Payment Information" className="no-background-color" id="${name}_fieldset">
+	<form_v1:fieldset legend="Payment Information" className="no-background-color" id="${name}_fieldset">
 
 		<div id="${name}_template_placeholder"></div>
 
@@ -22,7 +22,7 @@
 			<p>Your first instalment is paid in advance after you provide your payment details to Dodo Power &amp; Gas. Your first instalment payment amount will be $[#= monthlyEstCost #]. Once the transfer of your electricity account is completed the next instalment payment will be deducted. When your electricity meter is read each quarter and your bill calculated, any balance owing is deducted along with your next scheduled instalment. Monthly payments will be regularly reviewed, using your actual electricity usage history. You can choose the day of the month on which your payments are deducted.</p>
 		</core:js_template>
 
-	</form:fieldset>
+	</form_v1:fieldset>
 
 </div>
 

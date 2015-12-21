@@ -9,11 +9,11 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
-<form_new:fieldset legend="Terms and Conditions" id="${name}FieldSet">
+<form_v2:fieldset legend="Terms and Conditions" id="${name}FieldSet">
 
 <%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 <%--
-<form_new:row className="" hideHelpIconCol="true">
+<form_v2:row className="" hideHelpIconCol="true">
 	<field_new:checkbox
 			xpath="quote/contact/oktocall"
 		value="Y"
@@ -22,21 +22,21 @@
 		label="${true}"
 		title="${okToCall}"
 	/>
-</form_new:row>
+</form_v2:row>
 	--%>
 
 	<c:set var="genericOptin">
 		<p>Please confirm you have read, understood and accept the
 			<a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>,
 			the <a href="${pageSettings.getSetting('fsgUrl')}" target="_blank" data-title="Financial Services Guide" class="termsLink showDoc">Financial Services Guide</a>
-			and the <form:link_privacy_statement overrideLabel="Privacy Statement" />.
+			and the <form_v1:link_privacy_statement overrideLabel="Privacy Statement" />.
 
 			You confirm that you are accessing this service to obtain an insurance quote as (or on the behalf of) a genuine customer, and not for commercial or competitive purposes (as further detailed in the <a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>).
 	</p>
 </c:set>
 
 <%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
-	<form_new:row className="" hideHelpIconCol="true">
+	<form_v2:row className="" hideHelpIconCol="true">
 	<field_new:checkbox
 			xpath="quote/privacyoptin"
 		value="Y"
@@ -48,6 +48,6 @@
 
 		<field:hidden xpath="quote/terms" defaultValue="N" />
 		<field:hidden xpath="quote/fsg" defaultValue="N" />
-</form_new:row>
+</form_v2:row>
 
-</form_new:fieldset>
+</form_v2:fieldset>

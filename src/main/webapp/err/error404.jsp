@@ -22,7 +22,7 @@
         <c:catch var="error">
             ${logger.info('Page not found. {},{}', log:kv('request_uri', requestScope["javax.servlet.forward.request_uri"]), log:kv('servletPath',pageContext.request.servletPath ))}
 
-            <layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
+            <layout_v1:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
 
                 <jsp:attribute name="head">
 					<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/"/>
@@ -50,7 +50,7 @@
                 <jsp:body>
 
                     <div role="form" class="journeyEngineSlide active unsubscribeForm">
-                        <layout:slide_center xsWidth="12" mdWidth="10">
+                        <layout_v1:slide_center xsWidth="12" mdWidth="10">
                             <h1 class="error_title">Whoops, sorry... </h1>
 
                             <div class="error_message">
@@ -70,13 +70,13 @@
                             </div>
 
                             <confirmation:other_products/>
-                        </layout:slide_center>
+                        </layout_v1:slide_center>
                     </div>
 
 
                 </jsp:body>
 
-            </layout:generic_page>
+            </layout_v1:generic_page>
         </c:catch>
     </c:otherwise>
 </c:choose>

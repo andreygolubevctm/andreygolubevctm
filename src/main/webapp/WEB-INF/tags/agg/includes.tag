@@ -51,10 +51,10 @@
 <c:if test="${empty fatalError or fatalError eq true}">
 <c:choose>
 	<c:when test="${not empty fatalErrorMessage}">
-		<form:fatal_error custom="${fatalErrorMessage}" />
+		<form_v1:fatal_error custom="${fatalErrorMessage}" />
 	</c:when>
 	<c:otherwise>
-		<form:fatal_error />
+		<form_v1:fatal_error />
 	</c:otherwise>
 </c:choose>
 </c:if>

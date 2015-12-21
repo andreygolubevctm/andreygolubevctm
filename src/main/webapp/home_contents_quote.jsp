@@ -26,7 +26,7 @@
 <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 
 <%-- HTML --%>
-<layout:journey_engine_page title="Home & Contents Quote">
+<layout_v1:journey_engine_page title="Home & Contents Quote">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -97,7 +97,7 @@
 
 			<%-- Displays the Reference Number at the end of the menu. --%>
 			<li class="navbar-text hidden">
-				<form_new:reference_number />
+				<form_v2:reference_number />
 			</li>
 		</ul>
 		<div class="collapse navbar-collapse">
@@ -173,7 +173,7 @@
 
 		<div class="hiddenFields">
 			<field:hidden xpath="home/renderingMode" />
-			<form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
+			<form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
 			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 			<core_new:authToken authToken="${param['authToken']}"/>
 		</div>
@@ -205,4 +205,4 @@
 
 	</jsp:body>
 
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

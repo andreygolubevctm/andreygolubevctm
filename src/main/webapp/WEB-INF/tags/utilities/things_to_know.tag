@@ -15,7 +15,7 @@
 	<div id="${name}_template_placeholder"></div>
 
 
-		<form:fieldset legend="Terms and Conditions" className="no-background-color"  id="${name}_fieldset">
+		<form_v1:fieldset legend="Terms and Conditions" className="no-background-color"  id="${name}_fieldset">
 			<p>
 			<field:checkbox
 				xpath="${xpath}/termsAndConditions"
@@ -26,7 +26,7 @@
 			</p>
 			<div id="termsConditions"></div>
 
-		</form:fieldset>
+		</form_v1:fieldset>
 
 
 

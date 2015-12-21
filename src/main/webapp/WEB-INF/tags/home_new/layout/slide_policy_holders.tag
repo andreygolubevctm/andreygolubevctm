@@ -11,9 +11,9 @@
 	<c:set var="buttonLabel" value="Get Quotes" />
 </c:if>
 
-<layout:slide formId="policyHolderForm" nextLabel="${buttonLabel}">
+<layout_v1:slide formId="policyHolderForm" nextLabel="${buttonLabel}">
 
-	<layout:slide_columns sideHidden="false">
+	<layout_v1:slide_columns sideHidden="false">
 
 		<jsp:attribute name="rightColumn">
 			<home_new:snapshot />
@@ -22,7 +22,7 @@
 
 		<jsp:body>
 
-			<layout:slide_content>
+			<layout_v1:slide_content>
 
 <%-- 				<ui:bubble variant="chatty"> --%>
 <!-- 					<h4>Your Home, Your Contents</h4> -->
@@ -32,15 +32,15 @@
 				<home_new:policy_holder xpath="${xpath}/policyHolder" />
 
 
-			</layout:slide_content>
+			</layout_v1:slide_content>
 
 		</jsp:body>
 
-	</layout:slide_columns>
+	</layout_v1:slide_columns>
 
 	<home_new:other_occupants xpath="${xpath}/policyHolder" />
 
-	<layout:slide_columns sideHidden="false">
+	<layout_v1:slide_columns sideHidden="false">
 		<jsp:attribute name="rightColumn">
 		<%--	<home_new:snapshot />
 		--%>
@@ -48,21 +48,21 @@
 
 		<jsp:body>
 
-			<layout:slide_content>
+			<layout_v1:slide_content>
 
 				<%-- Commencement date --%>
 				<c:if test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}">
-					<form_new:fieldset legend="Your preferred date to start the insurance">
+					<form_v2:fieldset legend="Your preferred date to start the insurance">
 						<home_new:commencementDate xpath="${xpath}/startDate" />
-					</form_new:fieldset>
+					</form_v2:fieldset>
 				</c:if>
 
 				<home_new:contact_details xpath="${xpath}/policyHolder" />
 
-			</layout:slide_content>
+			</layout_v1:slide_content>
 
 		</jsp:body>
 
-	</layout:slide_columns>
+	</layout_v1:slide_columns>
 
-</layout:slide>
+</layout_v1:slide>

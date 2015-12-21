@@ -9,11 +9,11 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
-<form_new:fieldset legend="Terms and Conditions" id="${name}FieldSet">
+<form_v2:fieldset legend="Terms and Conditions" id="${name}FieldSet">
 
 	<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 <%--
-	<form_new:row className="" hideHelpIconCol="true">
+	<form_v2:row className="" hideHelpIconCol="true">
 		<field_new:checkbox
 			xpath="quote/contact/oktocall"
 			value="Y"
@@ -22,7 +22,7 @@
 			label="${true}"
 			title="${okToCall}"
 		/>
-	</form_new:row>
+	</form_v2:row>
 	--%>
 
 	<c:set var="genericOptin">
@@ -37,7 +37,7 @@
 	<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 	<%-- Previous Insurance --%>
 	<c:set var="fieldXpath" value="${xpath}/termsAccepted" />
-	<form_new:row className="" hideHelpIconCol="true">
+	<form_v2:row className="" hideHelpIconCol="true">
 		<field_new:checkbox
 			xpath="${fieldXpath}"
 			value="Y"
@@ -49,6 +49,6 @@
 
 		<field:hidden xpath="${xpath}/terms" defaultValue="N" />
 		<field:hidden xpath="${xpath}/fsg" defaultValue="N" />
-	</form_new:row>
+	</form_v2:row>
 
-</form_new:fieldset>
+</form_v2:fieldset>

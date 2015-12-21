@@ -23,35 +23,35 @@
 				Sorry, there was an error signing you up. Please try again later.
 			</div>
 
-			<form_new:row label="First name" hideHelpIconCol="true">
+			<form_v2:row label="First name" hideHelpIconCol="true">
 				<field_new:input xpath="${xpath}/contact/first" title="First Name" required="true" />
-			</form_new:row>
+			</form_v2:row>
 
-			<form_new:row label="Last name" hideHelpIconCol="true">
+			<form_v2:row label="Last name" hideHelpIconCol="true">
 				<field_new:input xpath="${xpath}/contact/last" title="Last Name" required="true" />
-			</form_new:row>
+			</form_v2:row>
 
-			<form_new:row label="Your email address" hideHelpIconCol="true">
+			<form_v2:row label="Your email address" hideHelpIconCol="true">
 				<field_new:email xpath="${xpath}/email" title="Your email address" required="true" />
-			</form_new:row>
+			</form_v2:row>
 
-			<form_new:row hideHelpIconCol="true">
+			<form_v2:row hideHelpIconCol="true">
 				<c:set var="brandedDisplayName"><content:get key="boldedBrandDisplayName"/></c:set>
 				<field_new:checkbox xpath="${xpath}/terms" label="true" value="Y" title="I would like to receive news and offers from ${brandedDisplayName}" required="false" />
 				<field_new:validatedHiddenField xpath="${xpath}/termsHidden" title="Please agree to receive news and offers from ${brandedDisplayName}" additionalAttributes=" required " />
-			</form_new:row>
+			</form_v2:row>
 
 			<%-- Mandatory agreement to privacy policy --%>
 			<%-- Using a custom checkbox because validation doesn't work on this dropdown --%>
-			<form_new:row hideHelpIconCol="true">
-				<c:set var="privacyStatementLink"><form:link_privacy_statement /></c:set>
+			<form_v2:row hideHelpIconCol="true">
+				<c:set var="privacyStatementLink"><form_v1:link_privacy_statement /></c:set>
 				<field_new:checkbox xpath="${xpath}/privacyoptin" label="true" value="Y" title="I have read the ${privacyStatementLink}" required="false" />
 				<field_new:validatedHiddenField xpath="${xpath}/privacyoptinHidden" title="Please confirm you have read the privacy statement" additionalAttributes=" required " />
-			</form_new:row>
+			</form_v2:row>
 
-			<form_new:row hideHelpIconCol="true">
+			<form_v2:row hideHelpIconCol="true">
 				<a href="javascript:;" class="btn btn-save fuel-sign-up">Sign up now</a>
-			</form_new:row>
+			</form_v2:row>
 		</div>
 	</div>
 </form>

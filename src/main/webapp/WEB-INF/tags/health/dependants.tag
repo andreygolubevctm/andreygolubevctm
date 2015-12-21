@@ -17,7 +17,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-dependants">
 
-	<form_new:fieldset legend="Your Dependants' Details" >
+	<form_v2:fieldset legend="Your Dependants' Details" >
 	
 		<%-- //FIX: need to insert fund's real definition here --%>
 		<p class="definition">
@@ -41,24 +41,24 @@
 
 		<health:dependant_details_template xpath="${xpath}/dependant" />
 
-		<form_new:row id="dependents_list_options">
+		<form_v2:row id="dependents_list_options">
 			<a href="javascript:void(0);" class="add-new-dependent btn btn-form" title="Add new dependent">Add New Dependant</a>
-		</form_new:row>
+		</form_v2:row>
 		
 		<%-- If the user changes the amount of dependants here, we will need to re-confirm their selection --%>
 		<div class="health-dependants-tier" style="display:none">
 
-			<form_new:row>
+			<form_v2:row>
 				<h5>When completed, confirm your new income tier</h5>
-			</form_new:row>
+			</form_v2:row>
 
 			<c:set var="fieldXpath" value="${xpath}/income" />
-			<form_new:row fieldXpath="${fieldXpath}" label="What is the estimated taxable income for your household for the financial year 1st July ${financialYearStart} to 30 June ${financialYearEnd}?" id="${name}_tier">
+			<form_v2:row fieldXpath="${fieldXpath}" label="What is the estimated taxable income for your household for the financial year 1st July ${financialYearStart} to 30 June ${financialYearEnd}?" id="${name}_tier">
 				<field_new:array_select xpath="${fieldXpath}"  title="Please enter your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_dependants_details_income"/>
 				<span class="fieldrow_legend" id="${name}_incomeMessage"></span>
-			</form_new:row>
+			</form_v2:row>
 		</div>
 
-	</form_new:fieldset>
+	</form_v2:fieldset>
 
 </div>

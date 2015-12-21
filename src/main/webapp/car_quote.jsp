@@ -31,7 +31,7 @@
 <car:splittest_helper />
 
 <%-- HTML --%>
-<layout:journey_engine_page title="Car Quote">
+<layout_v1:journey_engine_page title="Car Quote">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -96,7 +96,7 @@
 			<%-- @todo = showReferenceNo needs to be an attribute, this tag should potentially be rewritten or moved in a different place + that script is loaded via a marker in the tag. Probably should be moved to journey_engine_page --%>
 			<%-- Reference number is not visible on CAR yet, until the inbound call centre. --%>
 			<li class="navbar-text hidden">
-				<form_new:reference_number />
+				<form_v2:reference_number />
 			</li>
 		</ul>
 		<%-- Out of scope originally.
@@ -184,7 +184,7 @@
 		
 		<div class="hiddenFields">
 			<%-- These should use pageSettings.getVerticalCode() but for now don't want to change xpaths --%>
-			<form:operator_id xpath="quote/operatorid" />
+			<form_v1:operator_id xpath="quote/operatorid" />
 			<core:referral_tracking vertical="quote" />
 			<c:choose>
 				<c:when test="${param['jrny'] == 1 or param['jrny'] == 2}">
@@ -220,4 +220,4 @@
 
 	</jsp:body>
 
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

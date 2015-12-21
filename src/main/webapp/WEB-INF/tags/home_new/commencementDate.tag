@@ -17,7 +17,7 @@
 </c:if>
 
 <c:set var="fieldXpath" value="${xpath}" />
-<form_new:row fieldXpath="${fieldXpath}" label="Commencement date" className="${xpath}_startDateFieldset" helpId="500">
+<form_v2:row fieldXpath="${fieldXpath}" label="Commencement date" className="${xpath}_startDateFieldset" helpId="500">
 	<field_new:commencement_date xpath="${fieldXpath}" mode="separated" includeMobile="false" />
-</form_new:row>
+</form_v2:row>
 <home_new:commencement_date_expired />

@@ -25,7 +25,7 @@
 	<a href="javascript:void(0);" data-revisedetails="true" id="revise-details" class="smlbtn" title="Revise Details"><span>Revise Details</span></a>
 </div>
 
-<form:active_progress_bar />
+<form_v1:active_progress_bar />
 
 <go:script marker="onready">
 	<%-- Instantiating ActiveProgressBar will enable the progress bar steps to be clickable --%>

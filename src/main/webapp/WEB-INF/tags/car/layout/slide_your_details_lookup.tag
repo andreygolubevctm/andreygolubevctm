@@ -4,9 +4,9 @@
 
 <c:set var="xpath" value="quote" />
 
-<layout:slide formId="detailsForm" nextLabel="Next Step">
+<layout_v1:slide formId="detailsForm" nextLabel="Next Step">
 
-    <layout:slide_content>
+    <layout_v1:slide_content>
 
         <car:snapshot_row />
 
@@ -16,6 +16,6 @@
 
         <car:drivers_young xpath="${xpath}/drivers/young" />
 
-    </layout:slide_content>
+    </layout_v1:slide_content>
 
-</layout:slide>
+</layout_v1:slide>

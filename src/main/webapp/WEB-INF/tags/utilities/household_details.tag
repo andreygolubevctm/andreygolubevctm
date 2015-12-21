@@ -14,9 +14,9 @@
 <%-- HTML --%>
 <div id="${name}" class="${name}">
 	
-	<form:fieldset legend="Household Details">
+	<form_v1:fieldset legend="Household Details">
 		
-		<form:row label="Postcode / Suburb">
+		<form_v1:row label="Postcode / Suburb">
 		
 			<c:set var="autocompleteSource">
 				function( request, response ) {
@@ -93,32 +93,32 @@
 			<field:hidden xpath="${xpath}/postcode" required="false" />
 			<field:hidden xpath="${xpath}/suburb" required="false" />
 			<field:hidden xpath="${xpath}/state" required="false" />
-		</form:row>
+		</form_v1:row>
 		
-		<form:row label="Are you moving to this property?" helpId="413">
+		<form_v1:row label="Are you moving to this property?" helpId="413">
 			<field:array_radio items="Y=Yes,N=No" id="${name}_movingIn" xpath="${xpath}/movingIn" title="if you are moving to this property" required="true" />	
-		</form:row>
+		</form_v1:row>
 		
 		<div id="movingInContainer">
-		<form:row label="What date are you moving in?">
+		<form_v1:row label="What date are you moving in?">
 			<field:basic_date xpath="${xpath}/movingInDate" title="moving in date" required="true" disableWeekends="true" maxDate="+60d" />
-		</form:row>
+		</form_v1:row>
 		</div>
-		<form:row label="What would you like to compare?" helpId="528">
+		<form_v1:row label="What would you like to compare?" helpId="528">
 			<field:array_radio items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_whatToCompare" xpath="${xpath}/whatToCompare" title="which energies to compare" required="true" />	
-		</form:row>
+		</form_v1:row>
 		
-		<form:row label="Would you like us to estimate how much energy you use?" helpId="526">
+		<form_v1:row label="Would you like us to estimate how much energy you use?" helpId="526">
 			<field:array_select items="=Please choose...,S=Yes - Use my $ spend to work out my usage,U=No&nbsp;&nbsp;&nbsp;- I will enter my usage in kWh/MJ from a recent bill(s)" xpath="${xpath}/howToEstimate" title="how to estimate how much energy you use" required="true" />&nbsp;
-		</form:row>
+		</form_v1:row>
 		
-		<form:row label="Do you have solar panels installed on your property?">
+		<form_v1:row label="Do you have solar panels installed on your property?">
 			<field:array_radio items="Y=Yes,N=No" id="${name}_solarPanels" xpath="${xpath}/solarPanels" title="if you have solar panels" required="true" />
-		</form:row>
+		</form_v1:row>
 
 		<field:hidden xpath="${xpath}/tariff" required="false" />
 
-	</form:fieldset>		
+	</form_v1:fieldset>		
 
 </div>
 

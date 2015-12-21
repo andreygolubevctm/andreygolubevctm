@@ -16,27 +16,27 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 		<c:when test="${empty param.providerKey}">
 			<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:') or fn:startsWith(pageContext.request.remoteAddr,'127.0.0.1')}">
 
-				<form_new_layout:fieldset_columns>
+				<form_v3:fieldset_columns>
 					<jsp:attribute name="rightColumn">
 					</jsp:attribute>
 					<jsp:body>
-						<form_new:fieldset legend="Provider Testing">
+						<form_v2:fieldset legend="Provider Testing">
 
 							<c:set var="fieldXpath" value="${xpath}/situation/singleProvider" />
-							<form_new:row label="Provider" fieldXpath="${fieldXpath}">
+							<form_v2:row label="Provider" fieldXpath="${fieldXpath}">
 								<field:provider_select productCategories="HEALTH" xpath="${fieldXpath}" />
-							</form_new:row>
-							<form_new:row label="ProductName" fieldXpath="${xpath}/productTitleSearch">
+							</form_v2:row>
+							<form_v2:row label="ProductName" fieldXpath="${xpath}/productTitleSearch">
 								<field_new:input required="false" className="form-control" title="Product Name" xpath="${xpath}/productTitleSearch" />
-							</form_new:row>
+							</form_v2:row>
 							<c:set var="fieldXpath" value="${xpath}/searchResults" />
-							<form_new:row label="Number of results" fieldXpath="${fieldXpath}">
+							<form_v2:row label="Number of results" fieldXpath="${fieldXpath}">
 								<field_new:count_select max="36" xpath="${fieldXpath}" min="12" title="Number of Results" required="false" step="12"/>
-							</form_new:row>
+							</form_v2:row>
 
-						</form_new:fieldset>
+						</form_v2:fieldset>
 					</jsp:body>
-				</form_new_layout:fieldset_columns>
+				</form_v3:fieldset_columns>
 
 			</c:if>
 		</c:when>
@@ -55,18 +55,18 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 	</c:choose>
 
 	<%-- This is separate and always available to internal and external --%>
-	<form_new_layout:fieldset_columns>
+	<form_v3:fieldset_columns>
 		<jsp:attribute name="rightColumn">
 		</jsp:attribute>
 		<jsp:body>
-			<form_new:fieldset legend="">
+			<form_v2:fieldset legend="">
 				<c:set var="fieldXpath" value="${xpath}/searchDate" />
-				<form_new:row label="Application/Cover Date" fieldXpath="${fieldXpath}">
+				<form_v2:row label="Application/Cover Date" fieldXpath="${fieldXpath}">
 					<field_new:calendar validateMinMax="false" xpath="${fieldXpath}" required="false" title="searchDate" startView="0" nonLegacy="true"/>
 					For testing future product searches
-				</form_new:row>
-			</form_new:fieldset>
+				</form_v2:row>
+			</form_v2:fieldset>
 		</jsp:body>
-	</form_new_layout:fieldset_columns>
+	</form_v3:fieldset_columns>
 
 </c:if>

@@ -4,7 +4,7 @@
 
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="Fieldset XPath" %>
 
-<form_new:fieldset legend="Terms and Conditions">
+<form_v2:fieldset legend="Terms and Conditions">
 
     <c:set var="termsText">
         <p>To process the offer and apply the discounts to your account you should read and should ensure you understand and agree to the following information:</p>
@@ -18,7 +18,7 @@
     <field:hidden xpath="${xpath}/hidden/planName" />
     <field:hidden xpath="${xpath}/receiveInfo" defaultValue="N" />
 
-</form_new:fieldset>
+</form_v2:fieldset>
 
 <core:js_template id="terms-text-template">
     <p>You have the right to a 10 day cooling off period (COP). This cooling off period begins on the date your agreement commences. You may cancel your agreement by contacting us at any time during the COP without penalty. Your Agreement commences with {{= data.retailerName }} when you give your verbal acceptance and receive the Confirmation Pack, which will include the full terms and conditions of the Energy Agreement.</p>

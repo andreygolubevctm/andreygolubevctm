@@ -247,7 +247,7 @@
 		</c:if>
 
 		<%-- Inserts the jquery-val-rules and jquery-val-messages markers --%>
-		<form:validation formName="${formName}" errorContainer="${errorContainer}" />
+		<form_v1:validation formName="${formName}" errorContainer="${errorContainer}" />
 
 		// jQuery document.onready
 		$(document).ready(function() {

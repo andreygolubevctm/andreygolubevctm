@@ -12,7 +12,7 @@
 </c:set>
 
 <%-- HTML --%>
-<form_new:fieldset_columns sideHidden="false">
+<form_v2:fieldset_columns sideHidden="false">
 
 	<jsp:attribute name="rightColumn">
 		<ui:bubble variant="info" className="${bubbleClass}">
@@ -23,17 +23,17 @@
 
 	<jsp:body>
 
-		<form_new:fieldset legend="" id="${name}ContFieldSet" className="">
+		<form_v2:fieldset legend="" id="${name}ContFieldSet" className="">
 
-			<group_new:ncd_selection xpath="${xpath}" />
+			<group_v2:ncd_selection xpath="${xpath}" />
 
-			<form_new:row label="Any motor insurance claims in the last 5 years (regardless of who was at fault)?" helpId="2" id="quote_drivers_regular_claimsRow">
+			<form_v2:row label="Any motor insurance claims in the last 5 years (regardless of who was at fault)?" helpId="2" id="quote_drivers_regular_claimsRow">
 				<field_new:array_radio xpath="${xpath}/claims" required="true"
 					items="Y=Yes,N=No,U=Unsure"
 					title="if the regular driver has had any motor insurance claims in the last 5 years" />
-			</form_new:row>
+			</form_v2:row>
 
-		</form_new:fieldset>
+		</form_v2:fieldset>
 
 	</jsp:body>
-</form_new:fieldset_columns>
+</form_v2:fieldset_columns>

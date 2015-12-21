@@ -2,12 +2,12 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<layout:slide formId="contactForm" nextLabel="Get Prices" className="contactSlide">
+<layout_v1:slide formId="contactForm" nextLabel="Get Prices" className="contactSlide">
 
-	<layout:slide_content>
+	<layout_v1:slide_content>
 
 		<health:contact_details_optin xpath="${pageSettings.getVerticalCode()}/contactDetails" />
 
-	</layout:slide_content>
+	</layout_v1:slide_content>
 
-</layout:slide>
+</layout_v1:slide>

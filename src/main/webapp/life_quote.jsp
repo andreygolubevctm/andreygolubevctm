@@ -42,15 +42,15 @@
 		<%-- Transferring popup holder --%>
 		<core:transferring />
 
-		<form:form action="health_quote_results.jsp" method="POST" id="mainform" name="frmMain">
+		<form_v1:form action="health_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 
 			<%-- Fields to store Lifebroker specific data --%>
 			<life:lifebroker_ref label="life" />
 					
-			<form:operator_id xpath="${xpath}/operatorid" />
+			<form_v1:operator_id xpath="${xpath}/operatorid" />
 			<core:referral_tracking vertical="${xpath}" />
 			
-			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="true"/>
+			<form_v1:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="true"/>
 			<life:progress_bar />
 
 			<div id="wrapper">
@@ -91,7 +91,7 @@
 																					
 						</slider:slideContainer>
 						
-						<form:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="108" />
+						<form_v1:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="108" />
 						
 						<!-- Bottom "step" buttons -->
 						<div class="button-wrapper">
@@ -101,7 +101,7 @@
 						 
 					<!-- End main QE content -->
 					</div>
-					<form:help />
+					<form_v1:help />
 					
 				<life:side_panel />
 			</div>
@@ -113,7 +113,7 @@
 				<life:confirmation />		
 			</div>
 						
-		</form:form>
+		</form_v1:form>
 		
 		<life:footer />
 		

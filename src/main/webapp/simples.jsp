@@ -35,7 +35,7 @@
 	</c:when>
 	<c:otherwise>
 
-		<layout:simples_page fullWidth="true">
+		<layout_v1:simples_page fullWidth="true">
 
 			<jsp:attribute name="head">
 			</jsp:attribute>
@@ -57,7 +57,7 @@
 						<simples:template_blacklist_delete />
 			</jsp:body>
 
-		</layout:simples_page>
+		</layout_v1:simples_page>
 
 	</c:otherwise>
 </c:choose>

@@ -7,9 +7,9 @@
 <%-- Load in quicklaunch form values from brochure site --%>
 <home_new:quicklaunch_preload />
 
-<layout:slide formId="startForm" firstSlide="true" nextLabel="Next Step">
+<layout_v1:slide formId="startForm" firstSlide="true" nextLabel="Next Step">
 
-	<layout:slide_columns sideHidden="false">
+	<layout_v1:slide_columns sideHidden="false">
 
 		<jsp:attribute name="rightColumn">
 			<home_new:snapshot />
@@ -21,7 +21,7 @@
 
 		<jsp:body>
 
-			<layout:slide_content>
+			<layout_v1:slide_content>
 
 				<ui:bubble variant="chatty">
 					<h4>Your Home, Your Contents</h4>
@@ -30,10 +30,10 @@
 
 				<home_new:cover_type />
 
-			</layout:slide_content>
+			</layout_v1:slide_content>
 
 		</jsp:body>
 
-	</layout:slide_columns>
+	</layout_v1:slide_columns>
 
-</layout:slide>
+</layout_v1:slide>

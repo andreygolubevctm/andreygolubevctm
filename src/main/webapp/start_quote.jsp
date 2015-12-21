@@ -23,7 +23,7 @@
 <c:set var="responseJson" scope="request" value="{}" />
 <c:set var="isLoggedIn" value="false" scope="request" />
 
-<layout:generic_page title="Start New Quote" outputTitle="${false}">
+<layout_v1:generic_page title="Start New Quote" outputTitle="${false}">
 
 <jsp:attribute name="head">
    <link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/unsubscribe${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
@@ -53,4 +53,4 @@
     <jsp:attribute name="additional_meerkat_scripts">
         <%--<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/components/retrievequotes.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>--%>
     </jsp:attribute>
-</layout:generic_page>
+</layout_v1:generic_page>

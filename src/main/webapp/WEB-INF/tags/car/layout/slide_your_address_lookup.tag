@@ -4,13 +4,13 @@
 
 <c:set var="xpath" value="quote" />
 
-<layout:slide formId="addressForm" nextLabel="Get Quotes">
+<layout_v1:slide formId="addressForm" nextLabel="Get Quotes">
 
-    <layout:slide_content>
+    <layout_v1:slide_content>
         <car:snapshot_row />
-    </layout:slide_content>
+    </layout_v1:slide_content>
 
-    <layout:slide_columns sideHidden="false">
+    <layout_v1:slide_columns sideHidden="false">
 
 		<jsp:attribute name="rightColumn">
             <ui:bubble variant="info" className="point-left">
@@ -26,20 +26,20 @@
 		</jsp:attribute>
 
         <jsp:body>
-            <layout:slide_content>
+            <layout_v1:slide_content>
 
                 <car:risk_address_lookup xpath="${xpath}/riskAddress" />
 
-            </layout:slide_content>
+            </layout_v1:slide_content>
         </jsp:body>
-    </layout:slide_columns>
+    </layout_v1:slide_columns>
 
-    <layout:slide_columns sideHidden="true">
+    <layout_v1:slide_columns sideHidden="true">
 
         <jsp:attribute name="rightColumn"></jsp:attribute>
 
         <jsp:body>
-            <layout:slide_content>
+            <layout_v1:slide_content>
 
                 <car:commencement_date xpath="${xpath}/options/commencementDate" />
 
@@ -47,9 +47,9 @@
 
                 <car:contact_optins xpath="${xpath}/termsAndConditions" />
 
-            </layout:slide_content>
+            </layout_v1:slide_content>
         </jsp:body>
 
-    </layout:slide_columns>
+    </layout_v1:slide_columns>
 
-</layout:slide>
+</layout_v1:slide>

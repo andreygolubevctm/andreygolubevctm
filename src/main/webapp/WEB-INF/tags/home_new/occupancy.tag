@@ -21,54 +21,54 @@
 	</c:forEach>
 	<c:set var="items" value="${items},${currentYear - 6}=More than 5 years,NotAtThisAddress=Not yet living at this address" />
 
-<form_new:fieldset legend="Occupancy Details">
+<form_v2:fieldset legend="Occupancy Details">
 
 	<%-- Own the home --%>
 	<c:set var="fieldXpath" value="${xpath}/ownProperty" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Do you own the home?">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Do you own the home?">
 		<field_new:array_radio xpath="${fieldXpath}"
 			className="ownProperty pretty_buttons"
 			required="true"
 			items="Y=Yes,N=No"
 			title="if you own the home" />
-	</form_new:row>
+	</form_v2:row>
 
 	<%-- PPoR --%>
 	<c:set var="fieldXpath" value="${xpath}/principalResidence" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Is it your principal place of residence?" helpId="503">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Is it your principal place of residence?" helpId="503">
 		<field_new:array_radio xpath="${fieldXpath}"
 			className="principalResidence pretty_buttons"
 			required="true"
 			items="Y=Yes,N=No"
 			title="if this is your principal place of residence" />
-	</form_new:row>
+	</form_v2:row>
 
 	<%-- How Occupied --%>
 	<c:set var="fieldXpath" value="${xpath}/howOccupied" />
-	<form_new:row fieldXpath="${fieldXpath}" label="How is the home occupied?" className="howOccupied">
+	<form_v2:row fieldXpath="${fieldXpath}" label="How is the home occupied?" className="howOccupied">
 		<field_new:import_select xpath="${fieldXpath}"
 			required="true"
 			title="how the home is occupied"
 			url="/WEB-INF/option_data/occupied_type.html"/>
-	</form_new:row>
+	</form_v2:row>
 
 	<%-- When Moved in Year + Month --%>
 	<c:set var="fieldXpath" value="${xpath}/whenMovedIn/year" />
-	<form_new:row fieldXpath="${fieldXpath}" label="When did you move into the home?" className="whenMovedInYear">
+	<form_v2:row fieldXpath="${fieldXpath}" label="When did you move into the home?" className="whenMovedInYear">
 		<field_new:array_select xpath="${fieldXpath}"
 			items="${items}"
 			title="when you moved into the home"
 			required="true" />
-	</form_new:row>
+	</form_v2:row>
 
 	<c:set var="fieldXpath" value="${xpath}/whenMovedIn/month" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Month you move into the home?" helpId="504" className="whenMovedInMonth">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Month you move into the home?" helpId="504" className="whenMovedInMonth">
 		<field_new:import_select xpath="${fieldXpath}"
 			required="true"
 			omitPleaseChoose="Y"
 			title="the month you moved into the home"
 			url="/WEB-INF/option_data/month_full.html"/>
-	</form_new:row>
+	</form_v2:row>
 
 	<core:js_template id="cover-type-warning-template">
 		<content:get key="coverTypeWarningCopy"/>
@@ -76,4 +76,4 @@
 
 	<field:hidden xpath="${xpath}/coverTypeWarning/chosenOption"/>
 
-</form_new:fieldset>
+</form_v2:fieldset>

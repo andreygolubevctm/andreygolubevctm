@@ -28,7 +28,7 @@
     <c:otherwise>
         <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
         <c:catch var="error">
-            <layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
+            <layout_v1:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
 
                 <jsp:attribute name="head">
                     <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/"/>
@@ -54,7 +54,7 @@
                 <jsp:body>
 
                     <div role="form" class="journeyEngineSlide active unsubscribeForm">
-                        <layout:slide_center xsWidth="12" mdWidth="10">
+                        <layout_v1:slide_center xsWidth="12" mdWidth="10">
                             <h1 class="error_title">Whoops, sorry... 500 Internal server error </h1>
 
                             <div class="error_message">
@@ -73,13 +73,13 @@
                             </div>
 
                             <confirmation:other_products/>
-                        </layout:slide_center>
+                        </layout_v1:slide_center>
                     </div>
 
 
                 </jsp:body>
 
-            </layout:generic_page>
+            </layout_v1:generic_page>
         </c:catch>
     </c:otherwise>
 </c:choose>

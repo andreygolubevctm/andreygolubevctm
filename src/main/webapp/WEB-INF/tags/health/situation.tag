@@ -13,7 +13,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-situation">
 
-	<form_new:fieldset_columns sideHidden="true">
+	<form_v2:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
 			<c:if test="${not empty callCentreNumber}">
@@ -39,12 +39,12 @@
 			<simples:dialogue id="36" vertical="health" mandatory="true" className="hidden simples-privacycheck-statement" /> <%-- Inbound --%>
 			<simples:dialogue id="25" vertical="health" mandatory="true" className="hidden follow-up-call" /> <%-- Follow up call --%>
 
-			<form_new:fieldset legend="Cover Type">
+			<form_v2:fieldset legend="Cover Type">
 
 				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
-				<form_new:row label="I am" fieldXpath="${fieldXpath}">
+				<form_v2:row label="I am" fieldXpath="${fieldXpath}">
 					<field_new:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="type of cover" />
-				</form_new:row>
+				</form_v2:row>
 
 				<%-- If the user is coming via a broucherware site where by a state is passed in instead of a postcode, then only show state selection --%>
 
@@ -52,7 +52,7 @@
 				<c:set var="state" value="${data['health/situation/state']}" />
 				<c:set var="location" value="${data['health/situation/location']}" />
 
-				<form_new:row label="I live in" fieldXpath="${fieldXpath}">
+				<form_v2:row label="I live in" fieldXpath="${fieldXpath}">
 
 					<c:choose>
 						<c:when test="${not empty param.state || (not empty state && empty location && (param.action == 'amend' || param.action == 'load'))}">
@@ -68,22 +68,22 @@
 					<field:hidden xpath="${xpath}/postcode" />
 
 
-				</form_new:row>
+				</form_v2:row>
 
 				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
-				<form_new:row label="I&#39;m looking to" fieldXpath="${fieldXpath}">
+				<form_v2:row label="I&#39;m looking to" fieldXpath="${fieldXpath}">
 					<field_new:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="situation type" />
-				</form_new:row>
+				</form_v2:row>
 
 				<%-- Medicare card question --%>
 				<c:if test="${callCentre}">
 					<c:set var="fieldXpath" value="${xpath}/cover" />
-					<form_new:row label="Do all people to be covered on this policy have a green or blue Medicare card?" fieldXpath="${fieldXpath}" className="health_situation_medicare">
+					<form_v2:row label="Do all people to be covered on this policy have a green or blue Medicare card?" fieldXpath="${fieldXpath}" className="health_situation_medicare">
 						<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='Unfortunately we cannot continue with your quote'" />
-					</form_new:row>
+					</form_v2:row>
 				</c:if>
 
-				</form_new:fieldset>
+				</form_v2:fieldset>
 
 				<simples:dialogue id="22" vertical="health" />
 
@@ -96,5 +96,5 @@
 
 		</jsp:body>
 
-	</form_new:fieldset_columns>
+	</form_v2:fieldset_columns>
 </div>

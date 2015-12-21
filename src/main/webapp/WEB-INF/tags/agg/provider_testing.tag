@@ -23,18 +23,18 @@
 	<c:when test="${empty param[keyLabel] && (environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI')}">
 		<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:') or pageContext.request.remoteAddr == '127.0.0.1'}">
 			<c:if test="${hideSelector eq false}">
-				<form_new:fieldset_columns displayFullWidth="${displayFullWidth}">
+				<form_v2:fieldset_columns displayFullWidth="${displayFullWidth}">
 					<jsp:attribute name="rightColumn">
 					</jsp:attribute>
 					<jsp:body>
-						<form_new:fieldset legend="Provider Testing">
+						<form_v2:fieldset legend="Provider Testing">
 							<c:set var="fieldXpath" value="${xpath}/filter/${filterProperty}" />
-							<form_new:row label="Provider" fieldXpath="${fieldXpath}">
+							<form_v2:row label="Provider" fieldXpath="${fieldXpath}">
 								<field:provider_select productCategories="${pageSettings.getVerticalCode()}" xpath="${fieldXpath}" />
-							</form_new:row>
-						</form_new:fieldset>
+							</form_v2:row>
+						</form_v2:fieldset>
 					</jsp:body>
-				</form_new:fieldset_columns>
+				</form_v2:fieldset_columns>
 			</c:if>
 		</c:if>
 	</c:when>

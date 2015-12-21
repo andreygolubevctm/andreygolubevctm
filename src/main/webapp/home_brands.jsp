@@ -10,7 +10,7 @@
 <core_new:load_preload />
 
 <%-- HTML --%>
-<layout:journey_engine_page title="Home & Contents Insurance Brand Comparison">
+<layout_v1:journey_engine_page title="Home & Contents Insurance Brand Comparison">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -102,11 +102,11 @@
 		<lmi_layout:slide_results />
 
 		<div class="hiddenFields">
-			<form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
+			<form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
 			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>
 
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 	</jsp:body>
 
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

@@ -91,7 +91,7 @@
 
 
 	<%-- HTML --%>
-	<layout:simples_page fullWidth="true" >
+	<layout_v1:simples_page fullWidth="true" >
 
 		<jsp:attribute name="head">
 			<style>
@@ -161,5 +161,5 @@
 			
 		</jsp:body>
 
-	</layout:simples_page>
+	</layout_v1:simples_page>
 </c:if>

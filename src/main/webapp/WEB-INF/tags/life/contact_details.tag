@@ -30,34 +30,34 @@
 
 <%-- HTML --%>
 <div id="${name}-selection" class="${name}">
-	<form:fieldset legend="Contact Details">
-		<form:row label="Email address" className="clear email-row">
+	<form_v1:fieldset legend="Contact Details">
+		<form_v1:row label="Email address" className="clear email-row">
 			<field:contact_email xpath="${xpath}/email" title="your email address" required="true" size="40"/><span id="email_note">For confirming quote and transaction details</span>
-		</form:row>
+		</form_v1:row>
 
-		<form:row label="Phone number">
+		<form_v1:row label="Phone number">
 			<field:contact_telno xpath="${xpath}/contactNumber" required="false" title="phone number"  />
-		</form:row>
+		</form_v1:row>
 
 		<c:if test="${empty callCentre}">
 			<%-- Mandatory agreement to privacy policy --%>
-			<form:privacy_optin vertical="${vertical}" />
+			<form_v1:privacy_optin vertical="${vertical}" />
 		</c:if>
 
-		<form:row label="Postcode">
+		<form_v1:row label="Postcode">
 			<field:post_code_and_state xpath="${vertical}/primary/postCode" title="${error_phrase_postcode}postcode" required="true" className="" />
-		</form:row>
+		</form_v1:row>
 
 		<%-- COMPETITION START --%>
 		<c:if test="${competitionEnabled == true}">
 			<c:set var="competitionId"><content:get key="competitionId"/></c:set>
-			<form:row label="" className="promo-row">
+			<form_v1:row label="" className="promo-row">
 				<div class="promo-container">
 					<div class="promo-image ${vertical}-${competitionId}"></div>
 				</div>
-			</form:row>
+			</form_v1:row>
 		
-			<form:row label="" className="clear">
+			<form_v1:row label="" className="clear">
 				<c:set var="competitionCheckboxText">
 					<content:get key="competitionCheckboxText" />
 				</c:set>
@@ -69,15 +69,15 @@
 						required="false"
 						label="true"/>
 				<field:hidden xpath="${xpath}/competition/previous" />
-			</form:row>
+			</form_v1:row>
 		</c:if>
 		<%-- COMPETITION END--%>
 
-		<form:row label="" className="clear">
+		<form_v1:row label="" className="clear">
 			<field:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from ${brandedName}" required="false" label="true"/>
-		</form:row>
+		</form_v1:row>
 
-		<form:row label="" className="clear closer">
+		<form_v1:row label="" className="clear closer">
 			<c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${vertical}_privacyoptinInfoDialog.open()'>privacy statement</a>" />
 			<c:choose>
 				<c:when test="${vertical eq 'life'}">
@@ -100,12 +100,12 @@
 					required="true"
 					label="true"
 					/>
-		</form:row>
+		</form_v1:row>
 
 		<field:hidden xpath="${xpath}/call" />
 		<field:hidden xpath="${vertical}/splitTestingJourney" constantValue="${splitTestingJourney}" />
 
-	</form:fieldset>
+	</form_v1:fieldset>
 
 </div>
 

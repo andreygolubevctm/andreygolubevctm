@@ -64,32 +64,32 @@
 </div>
 <div class="col-md-6 col-lg-8">
 
-	<form_new:fieldset legend="">
+	<form_v2:fieldset legend="">
 		<field:hidden xpath="${xpath}/cId" constantValue="${cid}" />
 		<field:hidden xpath="${xpath}/reference" constantValue="${reference}" />
 		<field:hidden xpath="${xpath}/promocode" constantValue="${promocode}" />
 		<field:hidden xpath="${xpath}/competitionId" constantValue="${results.rows[0].competitionId}" />
 		<field:hidden xpath="${xpath}/returnUrl" constantValue="${results.rows[0].returnUrl}" />
 
-		<form_new:row label="First names" className="halfrow">
+		<form_v2:row label="First names" className="halfrow">
 			<field:person_name xpath="${xpath}/firstName" title="first name" required="true" />
-		</form_new:row>
+		</form_v2:row>
 
-		<form_new:row label="Last names" className="halfrow">
+		<form_v2:row label="Last names" className="halfrow">
 			<field:person_name xpath="${xpath}/lastName" title="last name" required="true" />
-		</form_new:row>
+		</form_v2:row>
 
-		<form_new:row label="Email" className="clear email-row">
+		<form_v2:row label="Email" className="clear email-row">
 			<field_new:email xpath="${xpath}/email" title="your email address" required="true" size="40"/>
-		</form_new:row>
+		</form_v2:row>
 
-		<form_new:row label="Post codings" className="halfrow">
+		<form_v2:row label="Post codings" className="halfrow">
 			<field:post_code xpath="${xpath}/postcode" title="postcode" required="true" />
-		</form_new:row>
+		</form_v2:row>
 
-		<form_new:row label="Date of births">
+		<form_v2:row label="Date of births">
 			<field_new:person_dob xpath="${xpath}/dob" title="your" required="true" ageMin="16" ageMax="120" />
-		</form_new:row>
+		</form_v2:row>
 
 		<%-- Mandatory agreement to privacy policy --%>
 		<%--<c:choose>--%>
@@ -98,7 +98,7 @@
 				<field:hidden xpath="homeloan/privacyoptin" defaultValue="Y" constantValue="Y" />
 			</c:when>
 			<c:otherwise>--%>
-		<form_new:row hideHelpIconCol="true">
+		<form_v2:row hideHelpIconCol="true">
 			<c:set var="label">
 				 I agrees to <a href="${contentService.getContentValue(pageContext.getRequest(), 'competitionTermsUrl')}" target="_blank" />T&Cs</a> and <a href="${pageSettings.getSetting('privacyPolicyUrl')}" target="_blank" >Privacy Policy</a>.
 			</c:set>
@@ -110,11 +110,11 @@
 				label="${true}"
 				title="${label}"
 				errorMsg="Please confirm you have read the T&Cs and privacy policy" />
-		</form_new:row>
+		</form_v2:row>
 		<%--	</c:otherwise>
 		</c:choose>--%>
 
-	</form_new:fieldset>
+	</form_v2:fieldset>
 	</div>
 </div>
 

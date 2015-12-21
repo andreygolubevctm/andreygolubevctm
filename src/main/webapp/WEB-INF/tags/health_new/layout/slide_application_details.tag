@@ -2,9 +2,9 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<layout:slide  nextLabel="Proceed to Payment">
+<layout_v1:slide  nextLabel="Proceed to Payment">
 
-	<layout:slide_columns sideHidden="true">
+	<layout_v1:slide_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
 			<health:policySummary showProductDetails="true" />
@@ -13,7 +13,7 @@
 
 		<jsp:body>
 
-			<layout:slide_content>
+			<layout_v1:slide_content>
 
 				<health:competition_jeep />
 
@@ -23,10 +23,10 @@
 					</div>
 				</div>
 
-				<form_new:fieldset id="${name}_application_text" legend="" className="instructional">
+				<form_v2:fieldset id="${name}_application_text" legend="" className="instructional">
 					<h4>In a few more steps, you'll be done</h4>
 					<p>Just fill in your details below and we'll pass them onto your chosen health fund, making the application process easier for you!</p>
-				</form_new:fieldset>
+				</form_v2:fieldset>
 				<%-- The reason for the multiple forms here is because of an issue with iOS7 --%>
 
 				<form  id="applicationForm_1" autocomplete="off" class="form-horizontal" role="form">
@@ -45,10 +45,10 @@
 					<health:previous_fund xpath="${pageSettings.getVerticalCode()}/previousfund" id="previousfund" />
 				</form>
 
-			</layout:slide_content>
+			</layout_v1:slide_content>
 
 		</jsp:body>
 
-	</layout:slide_columns>
+	</layout_v1:slide_columns>
 
-</layout:slide>
+</layout_v1:slide>

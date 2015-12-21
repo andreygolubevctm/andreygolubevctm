@@ -13,7 +13,7 @@
 <div id="${name}Dialog">
 	<div class="tab-content">
 		<div class="tab-pane quote-optional-accessories-listed">
-			<form_new:fieldset legend="">
+			<form_v2:fieldset legend="">
 				<p class="no-items-found">No non-standard accessories have been found for your selected vehicle.</p>
 				<div class="items-found">
 					<div class="row">
@@ -56,15 +56,15 @@
 						</div>
 					{{ }); }}
 				</div>
-			</form_new:fieldset>
+			</form_v2:fieldset>
 		</div>
 		<div class="tab-pane quote-standard-accessories">
-			<form_new:fieldset legend="These are fitted standard to your vehicle and do not need to be declared">
+			<form_v2:fieldset legend="These are fitted standard to your vehicle and do not need to be declared">
 				<p class="no-items-found">No included standard accessories have been found for your selected vehicle.</p>
 				<div class="row items-found">
 					<ul>{{= standardAccessories }}</ul>
 				</div>
-			</form_new:fieldset>
+			</form_v2:fieldset>
 		</div>
 	</div>
 </div>

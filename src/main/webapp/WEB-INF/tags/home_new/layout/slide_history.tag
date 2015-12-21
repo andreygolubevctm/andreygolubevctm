@@ -10,9 +10,9 @@
 	<c:set var="buttonLabel" value="Next Step" />
 </c:if>
 
-<layout:slide formId="coverHistoryForm" nextLabel="${buttonLabel}">
+<layout_v1:slide formId="coverHistoryForm" nextLabel="${buttonLabel}">
 
-	<layout:slide_columns sideHidden="false">
+	<layout_v1:slide_columns sideHidden="false">
 
 		<jsp:attribute name="rightColumn">
 			<home_new:snapshot />
@@ -20,16 +20,16 @@
 
 		<jsp:body>
 
-			<layout:slide_content>
+			<layout_v1:slide_content>
 
 				<home_new:cover_history xpath="${xpath}/disclosures"  />
 
 				<home_new:contact_optins xpath="${xpath}" />
 
-			</layout:slide_content>
+			</layout_v1:slide_content>
 
 		</jsp:body>
 
-	</layout:slide_columns>
+	</layout_v1:slide_columns>
 
-</layout:slide>
+</layout_v1:slide>

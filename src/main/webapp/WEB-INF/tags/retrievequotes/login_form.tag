@@ -11,29 +11,29 @@
     <go:setData dataVar="data" xpath="${xpath}/email" value="${email}" />
 </c:if>
 
-<form_new:row label="Your email address" className="clear email-row">
+<form_v2:row label="Your email address" className="clear email-row">
     <field_new:email xpath="${xpath}/email" title="your email address" required="true" size="40"/>
-</form_new:row>
-<form_new:row label="Your password" className="clear">
+</form_v2:row>
+<form_v2:row label="Your password" className="clear">
     <field:password xpath="${xpath}/password" title="your password" required="true"/>
-</form_new:row>
+</form_v2:row>
 
-<form_new:row className="clear" hideHelpIconCol="true">
+<form_v2:row className="clear" hideHelpIconCol="true">
     <div class="col-xs-12 col-md-6 loginButtonContainer">
         <a class="btn btn-block btn-login btn-block nav-next-btn show-loading journeyNavButton" data-slide-control="quotes" href="javascript:;">Login<span class="icon icon-arrow-right"></span></a>
     </div>
     <div class="col-xs-12 col-md-6">
         <a href="javascript:void(0);" class="forgot-password">forgot password?</a>
     </div>
-</form_new:row>
+</form_v2:row>
 
 <core:js_template id="forgot-password-template">
     <form action="#" id="forgot-password-form">
-        <form_new:fieldset legend="Please enter your email address to reset your password">
-            <form_new:row label="Your email address">
+        <form_v2:fieldset legend="Please enter your email address to reset your password">
+            <form_v2:row label="Your email address">
                 <field_new:email xpath="${xpath}/forgotten/email" title="your email address" required="true" size="40" />
-            </form_new:row>
-        </form_new:fieldset>
+            </form_v2:row>
+        </form_v2:fieldset>
     </form>
 </core:js_template>
 

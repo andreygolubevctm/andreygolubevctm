@@ -12,16 +12,16 @@
 <fmt:formatDate var="end_Date" pattern="yyyy-MM-dd" value="${end.time}" />
 
 
-<form_new:fieldset legend="Cover for your home">
+<form_v2:fieldset legend="Cover for your home">
 
 	<%-- Cover type --%>
 	<c:set var="fieldXpath" value="${xpath}/coverType" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Type of cover">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Type of cover">
 		<field_new:import_select xpath="${fieldXpath}"
 			required="true"
 			title="the type of cover"
 			url="/WEB-INF/option_data/home_contents_cover_type.html" />
-	</form_new:row>
+	</form_v2:row>
 
 	<%-- Commencement date --%>
 	<jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
@@ -30,6 +30,6 @@
 	</c:if>
 
 	<%-- Address --%>
-	<group_new:elastic_address xpath="${xpath}/property/address" type="R" />
+	<group_v2:elastic_address xpath="${xpath}/property/address" type="R" />
 
-</form_new:fieldset>
+</form_v2:fieldset>

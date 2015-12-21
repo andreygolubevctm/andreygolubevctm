@@ -3,9 +3,9 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" />
-<layout:slide formId="occupancyForm" firstSlide="false" nextLabel="Next Step">
+<layout_v1:slide formId="occupancyForm" firstSlide="false" nextLabel="Next Step">
 
-	<layout:slide_columns sideHidden="false">
+	<layout_v1:slide_columns sideHidden="false">
 
 		<jsp:attribute name="rightColumn">
 			<home_new:snapshot />
@@ -18,7 +18,7 @@
 
 		<jsp:body>
 
-			<layout:slide_content>
+			<layout_v1:slide_content>
 
 <%-- 				<ui:bubble variant="chatty"> --%>
 <!-- 					<h4>Your Home, Your Contents</h4> -->
@@ -29,10 +29,10 @@
 
 				<home_new:business_activity xpath="${xpath}/businessActivity" />
 
-			</layout:slide_content>
+			</layout_v1:slide_content>
 
 		</jsp:body>
 
-	</layout:slide_columns>
+	</layout_v1:slide_columns>
 
-</layout:slide>
+</layout_v1:slide>

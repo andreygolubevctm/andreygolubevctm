@@ -42,7 +42,7 @@
 <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
 
 <%-- HTML --%>
-<layout:journey_engine_page title="Health Quote">
+<layout_v1:journey_engine_page title="Health Quote">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -114,7 +114,7 @@
 
 		<%-- @todo = showReferenceNo needs to be an attribute, this tag should potentially be rewritten or moved in a different place + that script is loaded via a marker in the tag. Probably should be moved to journey_engine_page --%>
 			<li class="navbar-text-block">
-				<form_new:reference_number />
+				<form_v2:reference_number />
 		</li>
 		</ul>
 
@@ -175,7 +175,7 @@
 			<field:hidden xpath="health/primaryCAE" />
 			<field:hidden xpath="health/partnerCAE" />
 					
-			<form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
+			<form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
 			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 			<core_new:authToken authToken="${param['authToken']}"/>
 		</div>
@@ -191,7 +191,7 @@
 		<field:hidden xpath="environmentOverride" />
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 	</jsp:body>
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>
 
 <%-- START JOURNEY OVERRIDE - Part 2 of 2) --%>
 	</c:otherwise>

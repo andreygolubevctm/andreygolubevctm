@@ -14,40 +14,40 @@
 <%-- HTML --%>
 <div id="${name}" class="${name}">
 	
-	<form:fieldset legend="Your Contact Details">
+	<form_v1:fieldset legend="Your Contact Details">
 		
-		<form:row label="First name">
+		<form_v1:row label="First name">
 			<field:input xpath="${xpath}/firstName" required="false" title="your first name" />
-		</form:row>
+		</form_v1:row>
 		
-		<form:row label="Your email address">
+		<form_v1:row label="Your email address">
 			<field:contact_email xpath="${xpath}/email" required="false" title="your email address" />
-		</form:row>
+		</form_v1:row>
 
-		<form:row label="Phone">
+		<form_v1:row label="Phone">
 			<field:contact_telno xpath="${xpath}/phone" required="false" title="your phone number" />
-		</form:row>
+		</form_v1:row>
 
 		<%-- COMPETITION START --%>
 		<c:if test="${competitionEnabled == true}">
-			<form:row label="" className="promo-row">
+			<form_v1:row label="" className="promo-row">
 				<div class="promo-container">
 					<div class="promo-image ${vertical}"></div>
 					<c:set var="competitionCheckboxText"><content:get key="competitionCheckboxText" /></c:set>
 					<field:checkbox xpath="${xpath}/competition/optin" value="Y" title=" ${competitionCheckboxText}" required="false" label="true"/>
 					<field:hidden xpath="${xpath}/competition/previous" />
 				</div>
-			</form:row>
+			</form_v1:row>
 		</c:if>
 		<%-- COMPETITION END--%>
 
 		<%-- Mandatory agreement to privacy policy --%>
-		<form:privacy_optin vertical="utilities" />
+		<form_v1:privacy_optin vertical="utilities" />
 
 		<field:hidden xpath="${xpath}/optinPhone" defaultValue="N" />
 		<field:hidden xpath="${xpath}/optinMarketing" defaultValue="N" />
 
-	</form:fieldset>		
+	</form_v1:fieldset>		
 
 </div>
 

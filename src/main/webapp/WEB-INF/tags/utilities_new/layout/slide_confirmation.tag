@@ -28,28 +28,28 @@
 
 
 <%-- HTML --%>
-<layout:slide formId="confirmationForm" className="displayBlock">
+<layout_v1:slide formId="confirmationForm" className="displayBlock">
 
-    <layout:slide_content>
-        <layout:slide_columns>
+    <layout_v1:slide_content>
+        <layout_v1:slide_columns>
 
 			<jsp:attribute name="rightColumn">
 			</jsp:attribute>
 
             <jsp:body>
-                <layout:slide_content>
+                <layout_v1:slide_content>
 
                     <div id="confirmation" class="more-info-content"></div>
 
                     <confirmation:other_products />
 
-                </layout:slide_content>
+                </layout_v1:slide_content>
             </jsp:body>
 
-        </layout:slide_columns>
-    </layout:slide_content>
+        </layout_v1:slide_columns>
+    </layout_v1:slide_content>
 
-</layout:slide>
+</layout_v1:slide>
 
 
 

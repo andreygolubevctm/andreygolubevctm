@@ -11,7 +11,7 @@
 <%-- HTML --%>
 <div id="${name}" class="${name}">
 
-	<form:fieldset legend="Additional Estimate Details">
+	<form_v1:fieldset legend="Additional Estimate Details">
 
 		<div class="spend">
 			<div class="utilities-titles">
@@ -20,22 +20,22 @@
 			</div>
 			<core:clear />
 
-			<form:row label="How much do you usually spend?">
+			<form_v1:row label="How much do you usually spend?">
 				<field:currency xpath="${xpath}/spend/electricity/amount" title="Your electricity spend" required="true" symbol="$" decimal="${false}" className="${name}_input electricity" maxLength="15" />
 				<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/spend/electricity/period" title="an electricity spend period" className="electricity" required="true" />
 				<field:currency xpath="${xpath}/spend/gas/amount" title="Your gas spend" required="true" symbol="$" decimal="${false}" className="${name}_input gas" maxLength="15" />
 				<field:array_select items="=Select period,M=Month,B=2 Months,Q=Quarter,Y=Year" xpath="${xpath}/spend/gas/period" title="a gas spend period" className="gas" required="true"/>
-			</form:row>
+			</form_v1:row>
 		</div>
 
 		<div class="household">
-			<form:row label="How many people live in your home?">
+			<form_v1:row label="How many people live in your home?">
 				<field:array_select items="1=1,2=2,3=3,4=4+" xpath="${xpath}/household/people" title="household people" required="true" />
-			</form:row>
+			</form_v1:row>
 
-			<form:row label="How many bedrooms in your home?">
+			<form_v1:row label="How many bedrooms in your home?">
 				<field:array_select items="1=1,2=2,3=3,4=4+" xpath="${xpath}/household/bedrooms" title="household bedrooms" required="true" />
-			</form:row>
+			</form_v1:row>
 
 		</div>
 
@@ -46,43 +46,43 @@
 			</div>
 			<core:clear />
 
-			<form:row label="Standard usage (peak/anytime)">
+			<form_v1:row label="Standard usage (peak/anytime)">
 				<field:currency xpath="${xpath}/usage/electricity/peak/amount" title="electricity peak usage" required="true" symbol="" decimal="false" className="${name}_input electricity" /><span class="electricity"> kWh</span>
 				<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/usage/electricity/peak/period" title="the electricity peak usage period" required="true" className="${name}_select_usage electricity" />
 				<field:currency xpath="${xpath}/usage/gas/peak/amount" title="gas peak usage" required="true" symbol="" decimal="false" className="${name}_input gas" /><span class="gas"> MJ</span>
 				<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/usage/gas/peak/period" title="the gas peak usage period" required="true" className="${name}_select_usage gas" />
-			</form:row>
+			</form_v1:row>
 
-			<form:row label="Off-peak usage (if any)">
+			<form_v1:row label="Off-peak usage (if any)">
 				<field:currency xpath="${xpath}/usage/electricity/offpeak/amount" title="electricity offpeak usage" required="false" symbol="" decimal="false" className="${name}_input electricity" /><span class="electricity"> kWh</span>
 				<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/usage/electricity/offpeak/period" title="the electricity offpeak usage period" required="false" className="${name}_select_usage electricity" />
 				<field:currency xpath="${xpath}/usage/gas/offpeak/amount" title="gas offpeak usage" required="false" symbol="" decimal="false" className="${name}_input gas" /><span class="gas"> MJ</span>
 				<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/usage/gas/offpeak/period" title="the gas offpeak usage period" required="false" className="${name}_select_usage gas" />
-			</form:row>
+			</form_v1:row>
 
 			<div class="shoulderRow">
-				<form:row label="Shoulder usage (if any)">
+				<form_v1:row label="Shoulder usage (if any)">
 					<field:currency xpath="${xpath}/usage/electricity/shoulder/amount" title="electricity shoulder usage" required="false" symbol="" decimal="false" className="${name}_input electricity" /><span class="electricity"> kWh</span>
 					<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/usage/electricity/shoulder/period" title="the electricity shoulder usage period" required="false" className="${name}_select_usage electricity" />
-				</form:row>
+				</form_v1:row>
 			</div>
 
 		</div>
 
 		<div class="currentProviderContainer">
-			<form:row label="Who is your current supplier?">
+			<form_v1:row label="Who is your current supplier?">
 				<field:hidden xpath="${xpath}/usage/electricity/currentSupplierSelected" constantValue="${data['utilities/estimateDetails/usage/electricity/currentSupplier']}" />
 				<field:general_select xpath="${xpath}/usage/electricity/currentSupplier" type="elecProvider" title="current electricity provider" required="true" className="${name}_select_currentSupplier electricity" />
 				<field:hidden xpath="${xpath}/usage/gas/currentSupplierSelected" constantValue="${data['utilities/estimateDetails/usage/gas/currentSupplier']}" />
 				<field:general_select xpath="${xpath}/usage/gas/currentSupplier" type="gasProvider" title="current gas provider" required="true" className="${name}_select_currentSupplier gas" />
-			</form:row>
+			</form_v1:row>
 
-			<form:row label="" className="currentProviderContainerHelpTextRow">
+			<form_v1:row label="" className="currentProviderContainerHelpTextRow">
 				<div class="helptext">As we don't have access to your current bill details, we have assumed you are on a standard tariff <span></span>.</div>
-			</form:row>
+			</form_v1:row>
 		</div>
 
-	</form:fieldset>
+	</form_v1:fieldset>
 
 </div>
 

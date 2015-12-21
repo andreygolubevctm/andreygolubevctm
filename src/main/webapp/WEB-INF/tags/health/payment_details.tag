@@ -18,7 +18,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-payment_details">
 
-	<form_new:fieldset legend="Payment Details" >
+	<form_v2:fieldset legend="Payment Details" >
 
 		<div class="definition alert alert-info">
 			<%-- insert promo data --%>
@@ -30,35 +30,35 @@
 		<health:calendar xpath="${xpath}" />
 
 		<c:set var="fieldXpath" value="${xpath}/type" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Payment method" className="changes-premium">
+		<form_v2:row fieldXpath="${fieldXpath}" label="Payment method" className="changes-premium">
 			<field_new:array_radio items="cc=Credit Card,ba=Bank Account" xpath="${fieldXpath}" title="how would you like to pay" required="true" className="health-payment_details-type" id="${name}_type"/>
-		</form_new:row>
+		</form_v2:row>
 
 		<%-- Note: this form row's HTML is changed by JavaScript --%>
 		<c:set var="fieldXpath" value="${xpath}/frequency" />
-		<form_new:row fieldXpath="${fieldXpath}" label="How often would you like to make payments" className="changes-premium">
+		<form_v2:row fieldXpath="${fieldXpath}" label="How often would you like to make payments" className="changes-premium">
 			<field_new:array_select items="=Please choose..." xpath="${fieldXpath}" title="frequency of payments" required="true" delims="||" className="health-payment_details-frequency" />
-		</form_new:row>
+		</form_v2:row>
 		
 		<c:set var="fieldXpath" value="${xpath}/claims" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Do you want to supply bank account details for claims to be paid into" className="health-payment_details-claims-group">
+		<form_v2:row fieldXpath="${fieldXpath}" label="Do you want to supply bank account details for claims to be paid into" className="health-payment_details-claims-group">
 			<field_new:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="if you want to supply bank account details for claims to be paid into" required="true" className="health-payment_details-claims" id="${name}_claims"/>
-		</form_new:row>
+		</form_v2:row>
 
 		<coupon:fields xpath="health" />
 
 		<c:if test="${not empty disclaimer_content}">
 			<c:set var="fieldXpath" value="${xpath}/disclaimer" />
-			<form_new:row fieldXpath="${fieldXpath}" hideHelpIconCol="true">
+			<form_v2:row fieldXpath="${fieldXpath}" hideHelpIconCol="true">
 				<field_new:checkbox xpath="${fieldXpath}" value="Y" title="${disclaimer_content}" required="true" errorMsg="Please read and accept the Payment Disclaimer in order to proceed" label="true" />
-			</form_new:row>
+			</form_v2:row>
 		</c:if>
 
-		<form_new:row className="health-payment-details_update" hideHelpIconCol="true">
+		<form_v2:row className="health-payment-details_update" hideHelpIconCol="true">
 			<a href="javascript:void(0);" class="btn btn-next col-xs-12 col-sm-8 col-md-5 journeyNavButton" id="update-premium">Update Premium <span class="icon icon-arrow-right"></span></a>
-		</form_new:row>
+		</form_v2:row>
 
-		<form_new:row label="Your Premium" className="health-payment-details_premium">
+		<form_v2:row label="Your Premium" className="health-payment-details_premium">
 			<div class="policySummaryContainer formMode">
 				<c:choose>
 					<c:when test="${isAltView}">
@@ -70,9 +70,9 @@
 					</c:otherwise>
 				</c:choose>
 			</div>
-		</form_new:row>
+		</form_v2:row>
 
-	</form_new:fieldset>
+	</form_v2:fieldset>
 
 </div>
 

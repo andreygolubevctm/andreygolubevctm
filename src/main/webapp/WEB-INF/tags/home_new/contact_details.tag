@@ -10,20 +10,20 @@
 <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 <c:set var="mandatoryFieldsSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 35)}" />
 
-<form_new:fieldset legend="Contact Details" id="${name}_FieldSet">
+<form_v2:fieldset legend="Contact Details" id="${name}_FieldSet">
 
 
 	<%-- Email Address --%>
 	<c:set var="fieldXpath" value="${xpath}/email" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Email Address">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Email Address">
 		<field_new:email xpath="${fieldXpath}"
 			required="${mandatoryFieldsSplitTest}"
 			title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
-	</form_new:row>
+	</form_v2:row>
 
 	<%-- Marketing --%>
 	<c:set var="fieldXpath" value="${xpath}/marketing" />
-	<form_new:row fieldXpath="${fieldXpath}" label="OK to email">
+	<form_v2:row fieldXpath="${fieldXpath}" label="OK to email">
 		<field_new:array_radio xpath="${fieldXpath}"
 			required="true"
 			items="Y=Yes,N=No"
@@ -31,19 +31,19 @@
 			id="marketing"
 			title="if you would like to be informed via email of news and other offers" />
 		<content:optin key="okToEmail"/>
-	</form_new:row>
+	</form_v2:row>
 
 	<%-- Best Contact Number --%>
 	<c:set var="fieldXpath" value="${xpath}/phone" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Best contact number" helpId="524">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Best contact number" helpId="524">
 		<field:contact_telno xpath="${fieldXpath}"
 			required="false"
 			title="best number for the insurance provider to contact you on (You will only be contacted by phone if you answer 'Yes' to the 'OK to call' question on this screen)" validationAttribute=" data-rule-validateOkToCall='true' " />
-	</form_new:row>
+	</form_v2:row>
 
 	<%-- OK to call --%>
 	<c:set var="fieldXpath" value="${xpath}/oktocall" />
-	<form_new:row fieldXpath="${fieldXpath}" label="OK to call">
+	<form_v2:row fieldXpath="${fieldXpath}" label="OK to call">
 		<field_new:array_radio xpath="${fieldXpath}"
 			required="true"
 			items="Y=Yes,N=No"
@@ -51,9 +51,9 @@
 			id="oktocall"
 			title="if it's OK to call the policy holder regarding the lowest price quote" />
 		<p class="optinText">I give permission for the insurance provider that presents the lowest price to call me within the next 2 business days to discuss my home &amp; contents insurance needs.</p>
-	</form_new:row>
+	</form_v2:row>
 
 	<%-- Mandatory agreement to privacy policy --%>
-	<form_new:privacy_optin vertical="home" />
+	<form_v2:privacy_optin vertical="home" />
 
-</form_new:fieldset>
+</form_v2:fieldset>

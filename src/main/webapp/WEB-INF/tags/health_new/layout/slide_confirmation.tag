@@ -11,13 +11,13 @@
 <c:set var="transactionId"><x:out select="$confirmationDataXML/data/transID" /></c:set>
 
 <%-- HTML PLACEHOLDER --%>
-<layout:slide formId="confirmationForm" className="displayBlock">
+<layout_v1:slide formId="confirmationForm" className="displayBlock">
 
-	<layout:slide_content>
+	<layout_v1:slide_content>
 		<div id="confirmation" class="more-info-content"></div>
-	</layout:slide_content>
+	</layout_v1:slide_content>
 
-</layout:slide>
+</layout_v1:slide>
 
 <%-- TEMPLATES --%>
 	<%-- Logo and prices template --%>
@@ -26,7 +26,7 @@
 	<%-- Main page template --%>
 	<script id="confirmation-template" type="text/html">
 
-		<layout:slide_columns>
+		<layout_v1:slide_columns>
 
 			<jsp:attribute name="rightColumn">
 
@@ -58,9 +58,9 @@
 
 			<jsp:body>
 
-				<layout:slide_content >
+				<layout_v1:slide_content >
 
-					<form_new:fieldset legend="" className="confirmation">
+					<form_v2:fieldset legend="" className="confirmation">
 
 						<div id="health_confirmation-warning">
 							<div class="fundWarning alert alert-danger">
@@ -186,13 +186,13 @@
 
 						<simples:dialogue id="41" vertical="health" className="yellow" />
 
-					</form_new:fieldset>
+					</form_v2:fieldset>
 
-				</layout:slide_content>
+				</layout_v1:slide_content>
 
 			</jsp:body>
 
-		</layout:slide_columns>
+		</layout_v1:slide_columns>
 
 	</script>
 

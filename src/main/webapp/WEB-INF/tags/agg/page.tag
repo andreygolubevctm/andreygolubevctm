@@ -20,7 +20,7 @@
 
 		<jsp:invoke fragment="body_start" />
 
-		<form:form action="${formAction}" method="POST" id="mainform" name="frmMain">
+		<form_v1:form action="${formAction}" method="POST" id="mainform" name="frmMain">
 
 			<jsp:invoke fragment="form_top" />
 
@@ -39,8 +39,8 @@
 			<jsp:invoke fragment="form_bottom" />
 			
 	
-		</form:form>
-		<form:help />
+		</form_v1:form>
+		<form_v1:help />
 
 		<jsp:invoke fragment="footer" />
 

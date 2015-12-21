@@ -2,7 +2,7 @@
 <%@ tag description="Home & Contents Snapshot"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<form_new:fieldset legend="Snapshot of Your Quote" className="hidden quoteSnapshot">
+<form_v2:fieldset legend="Snapshot of Your Quote" className="hidden quoteSnapshot">
 	<div class="row snapshot">
 		<div class="col-sm-3">
 			<div class="icon"></div>
@@ -20,4 +20,4 @@
 			</div>
 		</div>
 	</div>
-</form_new:fieldset>
+</form_v2:fieldset>

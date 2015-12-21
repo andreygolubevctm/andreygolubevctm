@@ -84,9 +84,9 @@
 <core:js_template id="new-commencement-date-template">
     <p>The quote you selected has a commencement date in the past.</p>
     <p>Please enter a new commencement date and click the button below to view the latest prices for this quote.</p>
-    <form_new:row label="Commencement Date" className="form-horizontal">
+    <form_v2:row label="Commencement Date" className="form-horizontal">
         <field_new:commencement_date xpath="newCommencementDate" mode="component" includeMobile="false" />
-    </form_new:row>
+    </form_v2:row>
 </core:js_template>
 
 <div id="quote-result-list"></div>

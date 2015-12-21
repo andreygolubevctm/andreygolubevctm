@@ -17,7 +17,7 @@
 			</div>
 			<div class="inner left">
 				<div class="panel nobdr lgetxt">
-					<form:scrape id="1" />
+					<form_v1:scrape id="1" />
 				</div>
 			</div>
 		</div>
@@ -38,7 +38,7 @@
 				<div class="right-panel-top"><!-- empty --></div>
 				<div class="right-panel-middle">
 					<div class="innertube">
-						<form:scrape id="107" />
+						<form_v1:scrape id="107" />
 					</div>
 				</div>
 				<div class="right-panel-bottom"><!-- empty --></div>

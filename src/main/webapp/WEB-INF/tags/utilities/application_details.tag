@@ -11,33 +11,33 @@
 <%-- HTML --%>
 <div id="${name}" class="${name}">
 	
-	<form:fieldset legend="Your Details">
+	<form_v1:fieldset legend="Your Details">
 		
-		<form:row label="Title">
+		<form_v1:row label="Title">
 			<field:array_select items="=Please choose...,Mr=Mr,Mrs=Mrs,Miss=Miss,Ms=Ms,Dr=Dr,Prof=Prof" xpath="${xpath}/title" title="your title" required="true" />
-		</form:row>
+		</form_v1:row>
 		
-		<form:row label="First name">
+		<form_v1:row label="First name">
 			<field:person_name xpath="${xpath}/firstName" title="First name" required="true" maxlength="50"/>
-		</form:row>
+		</form_v1:row>
 		
-		<form:row label="Last name">
+		<form_v1:row label="Last name">
 			<field:person_name xpath="${xpath}/lastName" title="Last name" required="true" maxlength="50"/>
-		</form:row>
+		</form_v1:row>
 		
-		<form:row label="Date of birth">
+		<form_v1:row label="Date of birth">
 			<field:person_dob xpath="${xpath}/dob" ageMin="0" ageMax="99" title="birth" required="true" />
-		</form:row>
+		</form_v1:row>
 		
-		<form:row label="Mobile number">
+		<form_v1:row label="Mobile number">
 			<field:contact_mobile xpath="${xpath}/mobileNumber" required="false" />
-		</form:row>
+		</form_v1:row>
 		
-		<form:row label="Other phone number">
+		<form_v1:row label="Other phone number">
 			<field:contact_telno xpath="${xpath}/otherPhoneNumber" required="false" title="other phone number" isLandline="true" />
-		</form:row>
+		</form_v1:row>
 		
-		<form:row label="Email address">
+		<form_v1:row label="Email address">
 			<field:contact_email xpath="${xpath}/email" required="true" title="your email address" />
 			
 			<div id="secondOptIn_chk_container">			
@@ -48,12 +48,12 @@
 					required="false"
 					label="true" />
 			</div>
-		</form:row>
+		</form_v1:row>
 		
 		
 
 		<h5>Residential Address</h5>
-		<group:address xpath="${xpath}/address" type="R" />
+		<group_v1:address xpath="${xpath}/address" type="R" />
 		<core:clear />
 		
 		<%-- POSTAL defaults to Y if not pre-loaded --%>
@@ -62,21 +62,21 @@
 		</c:if>	
 		
 		<h5>Postal Address</h5>
-		<form:row label=" " >		
+		<form_v1:row label=" " >		
 			<field:checkbox xpath="${xpath}/postalMatch" value="Y" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
-		</form:row>
+		</form_v1:row>
 		
 		<div id="${name}_postalGroup">			
-			<group:address xpath="${xpath}/postal" type="P" />
+			<group_v1:address xpath="${xpath}/postal" type="P" />
 		</div>
 		
 		<div id="movingDateContainer">
-			<form:row label="Move in date">
+			<form_v1:row label="Move in date">
 				<field:basic_date xpath="${xpath}/movingDate" title="moving date" required="true" disableWeekends="true" maxDate="+60d" />
-			</form:row>
+			</form_v1:row>
 		</div>
 		
-	</form:fieldset>
+	</form_v1:fieldset>
 		
 		</div>
 		

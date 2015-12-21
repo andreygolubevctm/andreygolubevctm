@@ -33,6 +33,6 @@
 	});
 </go:script>
 
-<form:radio_button_group_validate />
+<form_v1:radio_button_group_validate />
 
 <go:script marker="js-href" href="common/js/jquery.formatCurrency-1.4.0.js" />

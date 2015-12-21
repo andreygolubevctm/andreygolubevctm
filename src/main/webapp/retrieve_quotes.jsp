@@ -64,7 +64,7 @@
             <c:set var="isLoggedIn" value="true" scope="request" />
         </c:if>
 
-        <layout:journey_engine_page title="Retrieve Your Quotes">
+        <layout_v1:journey_engine_page title="Retrieve Your Quotes">
 
         <jsp:attribute name="head">
             <link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/retrievequotes${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
@@ -126,7 +126,7 @@
                 <retrievequotes_layout:slide_quotes />
 
                 <div class="hiddenFields">
-                    <form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
+                    <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
                     <core:referral_tracking vertical="retrieve_quotes"/>
                 </div>
 
@@ -139,7 +139,7 @@
                 </core:js_template>
             </jsp:body>
 
-        </layout:journey_engine_page>
+        </layout_v1:journey_engine_page>
 
     </c:otherwise>
 </c:choose>

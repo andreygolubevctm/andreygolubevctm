@@ -16,7 +16,7 @@
 
 <core:quote_check quoteType="health" />
 
-<layout:journey_engine_page title="Health Confirmation">
+<layout_v1:journey_engine_page title="Health Confirmation">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -91,4 +91,4 @@
 		<health_new_layout:slide_confirmation />
 	</jsp:body>
 
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

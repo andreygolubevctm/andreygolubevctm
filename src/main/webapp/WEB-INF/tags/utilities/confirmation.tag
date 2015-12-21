@@ -18,7 +18,7 @@
 			</div>
 			<div class="inner left">
 				<div class="panel nobdr lgetxt">
-					<form:scrape id="1" />
+					<form_v1:scrape id="1" />
 				</div>
 			</div>
 		</div>
@@ -34,7 +34,7 @@
 			</agg:panel>
 
 			<agg:panel>
-				<form:scrape id="2" />
+				<form_v1:scrape id="2" />
 			</agg:panel>
 		</div>
 	</div>

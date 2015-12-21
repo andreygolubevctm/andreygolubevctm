@@ -4,8 +4,8 @@
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}"/>
 
-<layout:slide formId="startForm" firstSlide="true" nextLabel="Next">
-    <layout:slide_columns>
+<layout_v1:slide formId="startForm" firstSlide="true" nextLabel="Next">
+    <layout_v1:slide_columns>
 
          <jsp:attribute name="rightColumn">
 			<ui:bubble variant="info" className="hidden-xs">
@@ -21,14 +21,14 @@
 		</jsp:attribute>
 
         <jsp:body>
-            <layout:slide_content>
+            <layout_v1:slide_content>
                 <utilities_new_fieldset:household_details xpath="${xpath}/householdDetails" />
                 <utilities_new_fieldset:additional_estimate_details xpath="${xpath}/estimateDetails" />
 
                 <utilities_new:not_provided />
-            </layout:slide_content>
+            </layout_v1:slide_content>
         </jsp:body>
 
-    </layout:slide_columns>
+    </layout_v1:slide_columns>
 
-</layout:slide>
+</layout_v1:slide>

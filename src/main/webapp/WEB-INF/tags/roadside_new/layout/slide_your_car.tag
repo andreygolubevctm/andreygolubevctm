@@ -2,16 +2,16 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<layout:slide formId="startForm" firstSlide="true" nextLabel="Get Quotes">
+<layout_v1:slide formId="startForm" firstSlide="true" nextLabel="Get Quotes">
 
-    <layout:slide_columns sideHidden="false">
+    <layout_v1:slide_columns sideHidden="false">
         <jsp:attribute name="rightColumn"></jsp:attribute>
         <jsp:body>
-            <layout:slide_content>
+            <layout_v1:slide_content>
 
                 <roadside_new:your_car />
 
-            </layout:slide_content>
+            </layout_v1:slide_content>
         </jsp:body>
-    </layout:slide_columns>
-</layout:slide>
+    </layout_v1:slide_columns>
+</layout_v1:slide>

@@ -7,7 +7,7 @@
 <core_new:load_preload />
 
 <%-- HTML --%>
-<layout:journey_engine_page title="Travel Quote">
+<layout_v1:journey_engine_page title="Travel Quote">
 
 	<jsp:attribute name="head"></jsp:attribute>
 	<jsp:attribute name="head_meta"></jsp:attribute>
@@ -118,4 +118,4 @@
 		</div>
 	</jsp:body>
 	
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

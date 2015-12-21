@@ -32,13 +32,13 @@
               <c:set var="html">
             <div id="hif_questionset">
               <c:set var="fieldXpath" value="health/application/hif/emigrate" />
-              <form_new:row fieldXpath="${fieldXpath}" label="Did you or any persons included on this application emigrate to Australia after 1 July 2000?">
+              <form_v2:row fieldXpath="${fieldXpath}" label="Did you or any persons included on this application emigrate to Australia after 1 July 2000?">
               <field_new:array_radio xpath="${fieldXpath}" required="true" title="" items="Y=Yes,N=No" />
               <p class="HIF" style="display:none;">
               As you ticked "Yes", HIF will require a copy of your Medicare Eligibility letter which states the date at which you became eligible to receive Medicare benefits. This letter will assist HIF in determining if a Lifetime Health Cover age loading will need to be added to the amount quoted in this application.
               </p>
               </div>
-              </form_new:row>
+              </form_v2:row>
               </div>
               </c:set>
               $('#health_payment_medicare-selection .content').append('<c:out value="${html}" escapeXml="false" />');

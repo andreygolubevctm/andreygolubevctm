@@ -8,22 +8,22 @@
 <%-- Dialog wrapper --%>
 <core:js_template id="car-${name}-template">
 
-	<form_new:fieldset legend="" id="${name}FieldSet">
+	<form_v2:fieldset legend="" id="${name}FieldSet">
 
-		<form_new:row label="Compare by" id="${name}SortRow" className="initial">
+		<form_v2:row label="Compare by" id="${name}SortRow" className="initial">
 			<field_new:array_radio xpath="${xpath}/sort" required="true"
 				className="" items="price=Price,features=Features" title="List results by price or by features" />
-		</form_new:row>
+		</form_v2:row>
 
-		<form_new:row label="Repayments" id="${name}FreqRow">
+		<form_v2:row label="Repayments" id="${name}FreqRow">
 			<field_new:array_radio xpath="${xpath}/freq" required="true"
 				items="monthly=Monthly,annual=Annual" title="" />
-		</form_new:row>
+		</form_v2:row>
 
-		<form_new:row label="Excess" id="${name}ExcessRow">
+		<form_v2:row label="Excess" id="${name}ExcessRow">
 			<field_new:slider useDefaultOutputField="true" type="price" value="{{= startingValue}}" range="400,2000" markers="4" step="100" legend="$400,$1000,$1500,$2000" xpath="${xpath}/excess" />
-		</form_new:row>
+		</form_v2:row>
 
-	</form_new:fieldset>
+	</form_v2:fieldset>
 
 </core:js_template>

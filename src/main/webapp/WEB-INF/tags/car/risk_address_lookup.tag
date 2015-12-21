@@ -20,28 +20,28 @@
 </c:set>
 
 <%-- HTML --%>
-<form_new:fieldset legend="${fieldGroupLabel}" id="${name}FieldSet">
+<form_v2:fieldset legend="${fieldGroupLabel}" id="${name}FieldSet">
 
     <c:if test="${addressFormSplitTest eq true}">
-        <form_new:row label="Where is the car kept at night" helpId="7">
+        <form_v2:row label="Where is the car kept at night" helpId="7">
             <field_new:import_select xpath="quote/vehicle/parking"
                                      url="/WEB-INF/option_data/parking_location.html"
                                      title="the location where the car is parked at night"
                                      className="parking_location"
                                      required="true" />
-        </form_new:row>
+        </form_v2:row>
     </c:if>
 
-    <group_new:elastic_address xpath="${xpath}" type="R" />
+    <group_v2:elastic_address xpath="${xpath}" type="R" />
 
     <c:if test="${addressFormSplitTest eq false}">
-        <form_new:row label="Where is the car parked at night" helpId="7">
+        <form_v2:row label="Where is the car parked at night" helpId="7">
             <field_new:import_select xpath="quote/vehicle/parking"
                                      url="/WEB-INF/option_data/parking_location.html"
                                      title="the location where the car is parked at night"
                                      className="parking_location"
                                      required="true" />
-        </form_new:row>
+        </form_v2:row>
     </c:if>
 
-</form_new:fieldset>
+</form_v2:fieldset>

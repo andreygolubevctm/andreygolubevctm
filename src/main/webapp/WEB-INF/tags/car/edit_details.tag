@@ -12,7 +12,7 @@
 	<c:when test="${not empty param.action and (param.action eq 'expired' or param.action eq 'promotion')}">
 		<%-- Additional template copy --%>
 		<c:set var="expiredPanel">
-			<form_new:expired_quote_summary xpath="quote/options/commencementDate" action="${param.action}" />
+			<form_v2:expired_quote_summary xpath="quote/options/commencementDate" action="${param.action}" />
 		</c:set>
 	</c:when>
 	<c:otherwise>

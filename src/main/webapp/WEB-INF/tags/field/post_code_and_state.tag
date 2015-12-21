@@ -29,9 +29,9 @@
 <c:choose>
 	<c:when test="${stateRow == true}">
 		<c:set var="stateHtml">
-			<form:row label="State">
+			<form_v1:row label="State">
 				<field:array_radio items="A=A,B=B" id="${parentName}_stateRefine" xpath="${parentXpath}/stateRefine" title="the applicable state." required="true" className="" />
-			</form:row>
+			</form_v1:row>
 		</c:set>
 	</c:when>
 	<c:otherwise>

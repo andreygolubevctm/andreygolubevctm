@@ -17,7 +17,7 @@
 <c:choose>
     <c:when test="${hasAlreadyLoaded eq true}">
 
-        <layout:generic_page title="Unsubscribe" outputTitle="${false}">
+        <layout_v1:generic_page title="Unsubscribe" outputTitle="${false}">
 
         <jsp:attribute name="head">
             <link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/unsubscribe${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
@@ -65,7 +65,7 @@
                 <unsubscribe_layout:slide_unsubscribe/>
 
                 <div class="hiddenFields">
-                    <form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
+                    <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
                     <core:referral_tracking vertical="${pageSettings.getVerticalCode()}"/>
                 </div>
 
@@ -73,7 +73,7 @@
 
             </jsp:body>
 
-        </layout:generic_page>
+        </layout_v1:generic_page>
     </c:when>
     <c:when test="${getAuthenticatedUnsubscribeDetails eq true or not empty param.token}">
         <unsubscribe:redirect_with_details/>

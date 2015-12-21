@@ -3,9 +3,9 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" />
-<layout:slide formId="propertyForm" firstSlide="false" nextLabel="Next Step">
+<layout_v1:slide formId="propertyForm" firstSlide="false" nextLabel="Next Step">
 
-	<layout:slide_columns sideHidden="false">
+	<layout_v1:slide_columns sideHidden="false">
 
 		<jsp:attribute name="rightColumn">
 			<home_new:snapshot />
@@ -20,17 +20,17 @@
 
 		<jsp:body>
 
-			<layout:slide_content>
+			<layout_v1:slide_content>
 
 				<home_new:property_description xpath="${xpath}/property" />
 
 				<home_new:property_features xpath="${xpath}/property" />
 
-			</layout:slide_content>
+			</layout_v1:slide_content>
 
 		</jsp:body>
 
-	</layout:slide_columns>
+	</layout_v1:slide_columns>
 
 	<home_new:property_cover_amounts xpath="${xpath}/coverAmounts" />
-</layout:slide>
+</layout_v1:slide>

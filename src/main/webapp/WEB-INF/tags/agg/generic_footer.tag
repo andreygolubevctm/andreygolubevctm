@@ -17,7 +17,7 @@
 			</p>
 		</c:when>
 		<c:otherwise>
-			<form:scrape id="${scrapeId}" />
+			<form_v1:scrape id="${scrapeId}" />
 		</c:otherwise>
 	</c:choose>
 </agg:footer_outer>
