@@ -95,7 +95,6 @@
 	}
 
 	function moveToNextInput() {
-		//console.log('moveToNextInput', this);
 
 		var $this = $(this);
 		if (!$this.attr('maxlength')) {return;}
@@ -108,7 +107,6 @@
 	}
 
 	function serialise() {
-		//alert('serialise value: ' + this.value);
 
 		var $component = $(this).parents('[data-provide="dateinput"]'),
 			$destination = $component.find('.serialise'),
@@ -116,7 +114,6 @@
 			month = '',
 			year = '';
 
-		//console.log($component.find('.dateinput-nativePicker').val());
 		if ($component.attr('data-locked') == 1) return;
 		$component.attr('data-locked', 1);
 
