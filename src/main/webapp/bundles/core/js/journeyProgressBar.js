@@ -14,6 +14,9 @@
 
 	var $target = null;
 	var progressBarSteps = null;
+	var progressBarElementWidthPercentage = null;
+	var progressBarWidth = 99;
+	var includeEndPadding = true;
 	var currentStepNavigationId = null;
 	var isDisabled = false;
 	var isVisible = true;
@@ -33,15 +36,14 @@
 	*/
 
 	function init() {
-
 		$(document).ready(function() {
 			$target = $(".journeyProgressBar");
 		});
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function jeStepInit( step ){
 			currentStepNavigationId = step.navigationId;
 			$(document).ready(function() {
-			render(true);
-		});
+				render(true);
+			});
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function jeStepChange( step ){
@@ -50,15 +52,21 @@
 		});
 	}
 
-	function configure( progressBarStepsArgument){
 
+	function configure( progressBarStepsArgument){
 		progressBarSteps = progressBarStepsArgument;
 
-		// 99% width divided by number of steps (last li.end element takes 1% width)
-		var progressBarElementWidthPercentage = 99 / progressBarSteps.length;
-
-		// override default css width to fill 100%
-		$("head").append("<style>.journeyProgressBar>li{ width: " + progressBarElementWidthPercentage + "% }</style>");
+		// 99% width (if default) divided by number of steps (last li.end element takes 1% width)
+		progressBarElementWidthPercentage = progressBarWidth / progressBarSteps.length;
+	}
+	function changeTargetElement(element) {
+		$target = $(element);
+	}
+	function setWidth(width) {
+		progressBarWidth = width;
+	}
+	function setEndPadding(padding) {
+		includeEndPadding = padding;
 	}
 
 	function render(fireEvent){
@@ -107,9 +115,9 @@
 				closeTag = 'a';
 			}
 
-			html += '<li' + className + '><' + openTag + '>' + progressBarStep.label + '</' + closeTag + '></li>';
+			html += '<li' + className + '><' + openTag + '><span>' + progressBarStep.label + '</span></' + closeTag + '></li>';
 
-			if( index == lastIndex ){
+			if( index == lastIndex && includeEndPadding ){
 				className = "";
 				if( currentStepNavigationId == "complete"){
 					className = ' complete';
@@ -119,6 +127,10 @@
 		});
 
 		$target.html( html );
+
+		$target.find('li').css("width", progressBarElementWidthPercentage + "%");
+		if (includeEndPadding) { $target.find('li:last-child').css("width", "");}
+
 
 		if(fireEvent){
 			meerkat.messaging.publish(moduleEvents.INIT);	
@@ -182,7 +194,10 @@
 		setComplete: setComplete,
 		showSteps: showSteps,
 		checkLabel: checkLabel,
-		addAdditionalStep: addAdditionalStep
+		addAdditionalStep: addAdditionalStep,
+		changeTargetElement: changeTargetElement,
+		setWidth: setWidth,
+		setEndPadding: setEndPadding
 	});
 
 })(jQuery);
