@@ -145,7 +145,7 @@ update ctm.travel_product set providerProductCode = 'H' where productCode = '1FO
 update ctm.travel_product set providerProductCode = 'I' where productCode = '1FOW-TRAVEL-22' and providerId = @FOWPVIDER limit 1;
 update ctm.travel_product set providerProductCode = 'K' where productCode = '1FOW-TRAVEL-23' and providerId = @FOWPVIDER limit 1;
 
-delete from ctm.travel_product where providerId = @PVIDER and productCode
+delete from ctm.travel_product where providerId = @FOWPVIDER and productCode
 in ('1FOW-TRAVEL-19-100-Ski',
     '1FOW-TRAVEL-20-100-Ski',
     '1FOW-TRAVEL-21-100-Ski',
