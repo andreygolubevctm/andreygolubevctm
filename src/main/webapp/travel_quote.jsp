@@ -116,22 +116,7 @@
 		<%-- generate the benefit fields (hidden) for form selection. --%>
 		<div class="hiddenFields">
 			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
-
-			   <c:if test="${not empty param['automated-test'] and param['automated-test'] eq 'true'}">
-				   <c:set var="verticalId" value="2"/>
-				   <c:set var="brandId" value="${pageSettings.getBrandId()}"/>
-
-				   <c:set var="excludedProvidersList" value='${serviceConfigurationService.getExcludedProviders(brandId,verticalId)}' />
-				   <c:set var="excludedProviders" value=""/>
-				   <c:forEach var="i" items="${excludedProvidersList}">
-					   <c:set var="excludedProviders" value="${excludedProviders} ${i.code}"/>
-				   </c:forEach>
-				   <field:hidden xpath="travel/excludedProviderList" constantValue="${excludedProviders}" />
-			   </c:if>
-
-
-
-
+		    <core_new:excluded_providers_list/>
 		</div>
 	</jsp:body>
 	
