@@ -8,20 +8,20 @@
     var VERSION = "0.9.3";
     var utils = {
         isMsie: function () {
-            var rv = -1;
+            var rv,
+                ua = navigator.userAgent;
             if (navigator.appName == 'Microsoft Internet Explorer') {
-                var ua = navigator.userAgent;
                 var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-                if (re.exec(ua) != null)
-                    rv = parseFloat(RegExp.$1);
+                rv = utils.checkBrowserStr(re, ua);
             }
             else if (navigator.appName == 'Netscape') {
-                var ua = navigator.userAgent;
                 var re = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
-                if (re.exec(ua) != null)
-                    rv = parseFloat(RegExp.$1);
+                rv = utils.checkBrowserStr(re, ua);
             }
             return rv;
+        },
+        checkBrowserStr: function(regex, ua) {
+            return (regex.exec(ua) != null) ? parseFloat(RegExp.$1) : false;
         },
         isBlankString: function(str) {
             return !str || /^\s*$/.test(str);
