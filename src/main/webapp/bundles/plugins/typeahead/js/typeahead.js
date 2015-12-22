@@ -4,11 +4,17 @@
  * Copyright 2013 Twitter, Inc. and other contributors; Licensed MIT
  */
 
+/* ************************************************************************************************************
+**************************************************************************************************************
+** Custom modifications made by CtM within the isMsie function & added checkBrowserStr function so don't change
+**************************************************************************************************************
+* *****************************************************************************************************************/
+
 (function($) {
     var VERSION = "0.9.3";
     var utils = {
         isMsie: function () {
-            var rv,
+            var rv = false,
                 ua = navigator.userAgent;
             if (navigator.appName == 'Microsoft Internet Explorer') {
                 var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
