@@ -50,7 +50,7 @@
 
 	<c:set var="okToCall">
 		I give permission for the insurance provider that represents the lowest price to call me within
-		the next 2 business days to discuss my car insurance needs.
+		the next 4 business days to discuss my car insurance needs.
 	</c:set>
 
 	<form_new:row label="OK to email" className="">
