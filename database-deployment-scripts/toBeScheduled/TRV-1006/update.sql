@@ -648,3 +648,24 @@ INSERT INTO ctm.travel_product_benefits (providerId,productId,benefitId,label,de
 INSERT INTO ctm.travel_product_benefits (providerId,productId,benefitId,label,description,benefitValue,benefitValueText,overrideExternal,startDate,endDate) VALUES (@FOWPVIDER,'I-100-Ski',@SKI_PACK,'Ski Pack','Ski Pack',600,'$600',0,'2015-07-24 00:00:00','2040-12-31 23:59:59');
 INSERT INTO ctm.travel_product_benefits (providerId,productId,benefitId,label,description,benefitValue,benefitValueText,overrideExternal,startDate,endDate) VALUES (@FOWPVIDER,'I-100-Ski',@SNOW_SPORTS_EQUIPMENT,'Snow Sports Equipment Hire','Snow Sports Equipment Hire',500,'$500',0,'2015-07-24 00:00:00','2040-12-31 23:59:59');
 
+
+-- testing that we all the products have the new prefixes in providerProductCode
+-- test expect 20
+select count(*) from ctm.travel_product where providerId = @PVIDER and providerProductCode like '_-_00-%';
+
+-- test expect 10
+select count(*) from ctm.travel_product where providerId = @FOWPVIDER and providerProductCode like '_-_00-%';
+
+-- Testing that all the benefits for budd and 1fow have the new prefixes in providerId
+-- NOTE: As pointed out on the TRV-1006 there seems to be a descripency with the total number of benefits for all the products between NXS and NXQ
+-- Thus the number will be different. This is true for both 1FOW and BUDD
+
+-- test expect 388
+select count(*) from ctm.travel_product_benefits where providerId = @PVIDER and productId like '_-_00-%';
+
+-- test expect 192
+select count(*) from ctm.travel_product_benefits where providerId = @FOWPVIDER and productId like '_-_00-%';
+
+
+
+
