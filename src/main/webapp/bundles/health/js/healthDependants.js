@@ -304,7 +304,6 @@
     function clearDependants() {
         $dependantsTemplateWrapper.empty();
         dependantsArr = [];
-        resetConfig();
     }
 
     /**
