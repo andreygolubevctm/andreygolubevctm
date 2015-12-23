@@ -159,7 +159,7 @@ var healthFunds_AHM = {
     meerkat.modules.paymentGateway.setup({
       "paymentEngine" : meerkat.modules.healthPaymentGatewayWestpac,
       "name" : 'health_payment_gateway',
-      "src" : 'ajax/html/health_paymentgateway.jsp',
+      "src" : '/' + meerkat.site.urls.context + 'ajax/html/health_paymentgateway.jsp',
       "handledType" :  {
         "credit" : true,
         "bank" : false
