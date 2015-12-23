@@ -1,4 +1,4 @@
-package com.ctm.web.car.model.form;
+package com.ctm.web.homecontents.model.form;
 
 import com.ctm.web.core.model.ProviderFilter;
 import org.apache.commons.lang3.StringUtils;
