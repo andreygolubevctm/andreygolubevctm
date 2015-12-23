@@ -59,7 +59,8 @@ Process:
 		clearTimeout(timeout);
 		timeout = setTimeout(function() {
 			// Switch content to the iframe
-			meerkat.modules.dialogs.changeContent(id, '<iframe width="100%" height="340" frameBorder="0" src="' + settings.src + '?transactionId=' + meerkat.modules.transactionId.get() +'"></iframe>');
+			var loadSource = meerkat.site.loadSource ? '&loadSource=' + meerkat.site.loadSource : '';
+			meerkat.modules.dialogs.changeContent(id, '<iframe width="100%" height="340" frameBorder="0" src="' + settings.src + '?transactionId=' + meerkat.modules.transactionId.get() + loadSource + '"></iframe>');
 		}, 1000);
 	}
 

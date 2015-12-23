@@ -57,7 +57,7 @@
             if ($locationField.length && $locationField.val().length)
                 _onTypeaheadSelected(null, {value: $locationField.val()});
 
-            _registerEventSubscriptions();
+
         });
     }
 
@@ -78,12 +78,7 @@
             .prepend('<option value="">Please choose...</option>').val(presetValue);
     }
 
-    function _registerEventSubscriptions() {
-        // Disable weekends in our date picker
-        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.READY, function () {
-            $("#utilities_householdDetails_movingInDate").datepicker("setDaysOfWeekDisabled", [0, 6]);
-        });
-    }
+
 
     function _registerEventListeners() {
         $(".what-to-compare, .moving-in, .recent-electricity-bill, .recent-gas-bill").change(_toggleAdditionalEstimateDetails);
@@ -116,7 +111,7 @@
         var $this = $(e.target),
             isChecked = $this[0].checked,
             val = isChecked ? "Y" : "N";
-        $("#utilities_resultsDisplayed_optinPhone").val(val);
+        $("#utilities_resultsDisplayed_optinPhone, #utilities_resultsDisplayed_optinMarketing").val(val);
     }
 
     function _toggleInput($input, enableInput) {
