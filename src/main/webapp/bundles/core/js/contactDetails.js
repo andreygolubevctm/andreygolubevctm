@@ -365,11 +365,11 @@
 				} else if(fieldDetails.type === "flexiPhone" && typeof laterFieldDetails.$otherField !== "undefined") {
 					var flexiNumber = updatedElementValue.replace(/\D/g, "");
 					if (flexiNumber.match(/^(04|614|6104)/g)) {
-						$fieldElement.val(updatedElementValue);
-						laterFieldDetails.$otherFieldInput.val("").blur();
+						$fieldElement.val(updatedElementValue).change();
+						laterFieldDetails.$otherField.val("").change();
 					} else {
-						laterFieldDetails.$otherField.add(laterFieldDetails.$otherFieldInput).val(updatedElementValue).blur();
-						$fieldElement.val("");
+						laterFieldDetails.$otherField.val(updatedElementValue).change();
+						$fieldElement.val("").change();
 					}
 				} else  {
 					$fieldElement.val( updatedElementValue ).attr("data-previous-value", updatedElementValue);
