@@ -55,7 +55,7 @@
 				monthly: "price.annualisedMonthlyPremium"
 			};
 			var rank_premium = "price.annualPremium";
-			var carQuoteResultsUrl = "ajax/json/car_quote_results_ws.jsp";
+			var carQuoteResultsUrl = "ajax/json/car_quote_results.jsp";
 
 			// Init the main Results object
 			Results.init({
