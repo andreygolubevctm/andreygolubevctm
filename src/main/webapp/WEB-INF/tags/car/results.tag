@@ -48,7 +48,7 @@
 
 <agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
 
-	<car:more_info_ws />
+	<car:more_info />
 
 	<%-- RESULTS TABLE --%>
 	<div class="bridgingContainer"></div>

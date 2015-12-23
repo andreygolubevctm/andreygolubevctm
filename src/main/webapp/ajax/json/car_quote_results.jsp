@@ -15,7 +15,7 @@
 
 <%-- RECOVER: if things have gone pear shaped --%>
 <c:if test="${empty data.current.transactionId}">
-	<error:recover origin="ajax/json/car_quote_results_ws.jsp" quoteType="car" />
+	<error:recover origin="ajax/json/car_quote_results.jsp" quoteType="car" />
 </c:if>
 
 <%-- Save data --%>

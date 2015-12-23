@@ -226,7 +226,7 @@
 	</div>
 </core:js_template>
 
-<car:call_modal_ws />
+<car:call_modal />
 
 <core:js_template id="special-conditions-template">
 <div class="row">
