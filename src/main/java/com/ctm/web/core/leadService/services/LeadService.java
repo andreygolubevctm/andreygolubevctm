@@ -1,6 +1,7 @@
 package com.ctm.web.core.leadService.services;
 
 import com.ctm.web.core.leadService.model.LeadRequest;
+import com.ctm.web.core.leadService.model.LeadStatus;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
 import com.ctm.web.core.services.ServiceConfigurationService;
@@ -74,7 +75,7 @@ public abstract class LeadService {
                 leadData.setTransactionId(data.getLong("current/transactionId"));
                 leadData.setBrandCode(data.getString("current/brandCode"));
 
-                leadData.setStatus(transactionStatus);
+                leadData.setStatus(LeadStatus.valueOf(transactionStatus));
 
                 leadData.setClientIP(request.getRemoteAddr());
 

@@ -11,7 +11,7 @@ public class LeadRequest {
     private String verticalType;
     private String clientIP;
     private Person person = new Person();
-    private String status;
+    private LeadStatus status;
     private LeadMetadata metadata;
 
     public String getSource() {
@@ -62,11 +62,11 @@ public class LeadRequest {
         this.clientIP = clientIP;
     }
 
-    public String getStatus() {
+    public LeadStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(LeadStatus status) {
         this.status = status;
     }
 
