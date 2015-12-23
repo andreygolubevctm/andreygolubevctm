@@ -56,15 +56,19 @@ public class HealthLeadService extends LeadService {
             leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
         } else {
             String mobile = StringUtils.replaceEach(data.getString("health/contactDetails/flexiContactNumber"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
-            leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
+            if(mobile.startsWith("04")) {
+                leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
+            }
         }
 
         if(!StringUtils.isEmpty(data.getString("health/application/other"))) {
             String phone = StringUtils.replaceEach(data.getString("health/application/other"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
             leadData.getPerson().setPhone(StringUtils.left(phone, 10));
         } else {
-            String phone = StringUtils.replaceEach(data.getString("health/contactDetails/contactNumber/other"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
-            leadData.getPerson().setPhone(StringUtils.left(phone, 10));
+            String phone = StringUtils.replaceEach(data.getString("health/contactDetails/flexiContactNumber"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
+            if(!phone.startsWith("04")) {
+                leadData.getPerson().setPhone(StringUtils.left(phone, 10));
+            }
         }
 
         // Location
