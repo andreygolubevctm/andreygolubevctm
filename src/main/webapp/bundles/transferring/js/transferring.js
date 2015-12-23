@@ -1,3 +1,13 @@
+function loopedDecodeUriComponent(component) {
+    if(window.useLoopedTransferringURIDecoding) {
+        do {
+            component = decodeURIComponent(component);
+        } while (component.match(/%[0-9a-f]{2}/i));
+    }
+
+    return component;
+}
+
 function getUrlVars() {
     var vars = {};
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
@@ -19,11 +29,11 @@ function transferError(description, data) {
 
 $(window).load(function () {
     var urlVars = getUrlVars();
-    var transactionId = decodeURIComponent(urlVars.transactionId);
-    var productId = decodeURIComponent(urlVars.productId);
-    var vertical = decodeURIComponent(urlVars.vertical);
-    var msg = decodeURIComponent(urlVars.msg);
-    var brand = decodeURIComponent(urlVars.brand);
+    var transactionId = loopedDecodeUriComponent(urlVars.transactionId);
+    var productId = loopedDecodeUriComponent(urlVars.productId);
+    var vertical = loopedDecodeUriComponent(urlVars.vertical);
+    var msg = loopedDecodeUriComponent(urlVars.msg);
+    var brand = loopedDecodeUriComponent(urlVars.brand);
     var tracking = null;
 
     var data = {
@@ -37,7 +47,7 @@ $(window).load(function () {
 
     if (urlVars.hasOwnProperty('tracking')) {
         try {
-            var tmp = JSON.parse(decodeURIComponent(urlVars.tracking));
+            var tmp = JSON.parse(loopedDecodeUriComponent(urlVars.tracking));
             tracking = _.omit(tmp, 'brandXCode');
             tracking.brandCode = tmp.brandXCode;
         } catch (e) {/* IGNORE */
@@ -66,9 +76,9 @@ $(window).load(function () {
             var urlVars = getUrlVars();
             if (urlVars.hasOwnProperty('handoverType') && urlVars.handoverType == "post") {
                 var $mainForm = $('#mainform');
-                $mainForm.attr('method', 'POST').attr('action', decodeURIComponent(urlVars.handoverURL));
+                $mainForm.attr('method', 'POST').attr('action', loopedDecodeUriComponent(urlVars.handoverURL));
 
-                var textArea = $('<textarea>').attr('style', 'display:none').attr('name', decodeURIComponent(urlVars.handoverVar)).val(decodeURIComponent(urlVars.handoverData));
+                var textArea = $('<textarea>').attr('style', 'display:none').attr('name', loopedDecodeUriComponent(urlVars.handoverVar)).val(loopedDecodeUriComponent(urlVars.handoverData));
                 $mainForm.append(textArea);
                 $mainForm.submit();
             } else {
@@ -79,7 +89,7 @@ $(window).load(function () {
                             transferError("Duplicate productId " + productId + " encounted on " + vertical, data);
                         } else {
                             if (vertical == 'travel') {
-                                quoteUrl = decodeURIComponent(quoteUrl);
+                                quoteUrl = loopedDecodeUriComponent(quoteUrl);
                             }
                             window.location.replace(quoteUrl);
                         }

@@ -214,6 +214,7 @@
             },
             onAfterEnter: function() {
                 $("#utilities_application_details_email").trigger("change");
+                meerkat.modules.utilitiesDatesSelection.populateCalendarViewFromFields();
             }
         };
 

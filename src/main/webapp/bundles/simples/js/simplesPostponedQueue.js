@@ -162,8 +162,6 @@
 				htmlContent = 'Unsuccessful because: template not configured.';
 			}
 			else {
-				//console.log(json);
-
 				// Store the existing message queue
 				setMessageQueue(json);
 
