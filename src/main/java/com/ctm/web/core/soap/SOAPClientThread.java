@@ -286,9 +286,6 @@ public class SOAPClientThread implements Runnable {
 				}
 				// An error or some unknown condition occurred
 				default: {
-					// Important! keep this as debug and don't enable debug logging in production
-					// as this response may include credit card details (this is from the nib webservice)
-					LOGGER.debug("[SOAP Response] {}", kv("response", connection.getResponseMessage()));
 
 					StringBuffer errorData = new StringBuffer();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(((HttpURLConnection)connection).getErrorStream()));
@@ -438,9 +435,6 @@ public class SOAPClientThread implements Runnable {
 
 			// do we need to translate it?
 			if (configuration.getInboundXSL() != null) {
-				// Important! keep this as debug and don't enable debug logging in production
-				// as this response may include credit card details (this is from the nib webservice)
-				LOGGER.debug("[SOAP Response] {},{}", kv("name", this.name), kv("response", soapResponse));
 
 				// The following ugliness had to be added to get OTI working ..
 				//REVISE: oh please do - we need something better than this.... :(
