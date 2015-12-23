@@ -16,7 +16,7 @@
 
 	<jsp:body>
 
-		<form_new:fieldset legend="Choose which benefits are important to you" postlegend="Knowing what's important to you will help us display policies relevant to your needs" >
+		<form_new:fieldset legend="Choose which benefits are important to you" postLegend="Knowing what's important to you will help us display policies relevant to your needs" >
 
 			<div class="scrollable row">
 

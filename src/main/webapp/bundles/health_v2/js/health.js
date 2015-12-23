@@ -104,6 +104,7 @@
 			.removeClass('col-sm-8').addClass('col-sm-9');
 		$mainform.find('.col-sm-4')
 			.not("label[for*=health_healthCover]")
+			.not('label[for*=health_situation_coverType]')
 			.not('.short-list-item')
 			.add("label[for=health_healthCover_primary_dob]")
 			.add("label[for=health_healthCover_primary_cover]")
@@ -621,7 +622,7 @@
 				navigationId: steps.benefitsStep.navigationId
 			},
 			{
-				label:'Contact details',
+				label:'Your details',
 				navigationId: steps.contactStep.navigationId
 			},
 			{

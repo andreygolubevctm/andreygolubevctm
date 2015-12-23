@@ -49,6 +49,10 @@
   border:1px solid @border-colour;
   padding-top: 10px;
 }
+//Overriding a 40px bottom
+fieldset {
+  margin-bottom: (@padding-base-vertical);
+}
 
 .fieldset,
 .fieldset-column-side{
@@ -56,6 +60,9 @@
   &.lhc-group,
   &.rebate-group{
 	border: none;
+	.content{
+	  border: none;
+	}
 	h2{
 	  margin-left: 0px;
 	}
@@ -65,8 +72,10 @@
 	color: @header-color;
 	font-weight: bold;
 	font-size: 38px;
-	margin-left: 15px;
-	margin-top: 13px;
+	margin-bottom: 10px;
+  }
+  h4 {
+	font-family: @font-family-base;
   }
   &.confirmation,
   .confirmation {
@@ -75,7 +84,6 @@
 	}
 	h2 {
 	  font-size:24px;
-	  margin-left: 0px;
 	}
   }
   .well-chatty {
@@ -118,9 +126,11 @@
   background-color: @main-bg-colour;
 }
 &.instructional {
-  .content,
-  &.content{
-	margin-left: 20px;
+  .content {
+	h4,
+	p {
+		margin-left: 20px;
+  	}
   }
 }
 

@@ -43,7 +43,7 @@
 
 		<jsp:body>
 
-			<form_new:fieldset legend="Your Details" postlegend="Enter your details below and we'll show you products that match your needs on the next page" >
+			<form_new:fieldset legend="Your Details" postLegend="Enter your details below and we'll show you products that match your needs on the next page" >
 
 				<c:set var="firstNamePlaceHolder">
 					<content:get key="firstNamePlaceHolder"/>
