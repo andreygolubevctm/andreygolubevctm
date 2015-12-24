@@ -31,7 +31,7 @@ public class HealthLeadService extends LeadService {
         final LeadRequest leadData = new LeadRequest();
 
         // Name
-        if(data.hasChild("health/application/primary/firstname")) {
+        if(!StringUtils.isEmpty(data.getString("health/application/primary/firstname"))) {
             leadData.getPerson().setFirstName(StringUtils.left(data.getString("health/application/primary/firstname"), 50));
             leadData.getPerson().setLastName(StringUtils.left(data.getString("health/application/primary/surname"), 50));
         } else {
@@ -40,8 +40,8 @@ public class HealthLeadService extends LeadService {
 
         // DOB
         String dobXPath = "health/application/primary/dob";
-        if(data.hasChild(dobXPath) && !data.getString(dobXPath).isEmpty()) {
-            leadData.getPerson().setDob(LocalDate.parse(data.getString(dobXPath)));
+        if(!StringUtils.isEmpty(data.getString(dobXPath))) {
+            leadData.getPerson().setDob(LocalDate.parse(data.getString(dobXPath), DATE_TIME_FORMATTER));
         }
 
         // Contact Details
