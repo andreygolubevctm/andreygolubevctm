@@ -22,6 +22,8 @@
 		<jsp:body>
 
 			<layout:slide_content>
+				<%-- PROVIDER TESTING --%>
+				<agg:provider_testing xpath="${xpath}" displayFullWidth="true" keyLabel="authToken" filterProperty="providerList" hideSelector="${false}" />
 
 				<ui:bubble variant="chatty">
 					<h4>Your Home, Your Contents</h4>

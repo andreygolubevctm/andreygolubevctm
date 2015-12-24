@@ -47,7 +47,7 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
     }
 
     protected void setFilter(ProviderFilter providerFilter) throws Exception {
-        if(!providerFilter.getProviderKey().isEmpty()) {
+        if(providerFilter.getProviderKey() != null && !providerFilter.getProviderKey().isEmpty()) {
             // Check if Provider Key provided and use as filter if available
             // It is acceptable to throw exceptions here as provider key is checked
             // when page loaded so technically should not reach here otherwise.
@@ -58,17 +58,25 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
                 providerFilter.setSingleProvider(providerCode);
             }
             // Provider Key is mandatory in NXS
-        } else if (!providerFilter.getAuthToken().isEmpty()) {
-            // Check if AuthToken provided and use as filter if available
-            // It is acceptable to throw exceptions here as provider key is checked
-            // when page loaded so technically should not reach here otherwise.
-            List<String> providerCode = providerFilterDAO.getProviderDetailsByAuthToken(providerFilter.getAuthToken());
-            if (providerCode.isEmpty()) {
-                throw new RouterException("Invalid Auth Token");
-            } else {
-                providerFilter.setProviders(providerCode);
+        } else if(providerFilter.getProviders() != null && !providerFilter.getProviders().isEmpty()) {
+            // Check if Providers in list exist and throw exception if not.
+            // No need to write anything to filter as already exists
+            for (String code : providerFilter.getProviders()) {
+                String providerCode = providerFilterDAO.getProviderDetails(providerFilter.getProviderKey());
+                if (StringUtils.isBlank(providerCode)) {
+                    throw new RouterException("Invalid providerKey in providers list");
+                }
             }
-            // Provider Key is mandatory in NXS
+        } else if(providerFilter.getAuthToken() != null && !providerFilter.getAuthToken().isEmpty()) {
+            // Check if authToken exists and get let of related provider codes.
+            // Then set that list in the providerFilter
+            List<String> providers = ProviderService.getProvidersByAuthToken(providerFilter.getAuthToken());
+            if(providers == null || providers.isEmpty()) {
+                throw new RouterException("Invalid AuthToken");
+            } else {
+                providerFilter.setProviders(providers);
+            }
+        // Provider Key is mandatory in NXS
         } else if(EnvironmentService.getEnvironmentAsString().equalsIgnoreCase("nxs")) {
             throw new RouterException("Provider Key required in '" + EnvironmentService.getEnvironmentAsString() + "' environment");
         }

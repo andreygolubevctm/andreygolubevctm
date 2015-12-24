@@ -83,6 +83,10 @@ public class RequestAdapter {
 
         quoteRequest.setHadClaims(convertToBoolean(quote.getDisclosures().getClaims()));
 
+        if(quote.getFilter().getProviders() != null && !quote.getFilter().getProviders().isEmpty()){
+            quoteRequest.setProviderFilter(quote.getFilter().getProviders());
+        }
+
         return quoteRequest;
 
     }
