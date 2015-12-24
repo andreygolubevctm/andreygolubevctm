@@ -19,8 +19,6 @@
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.benefits')}" />
 
-${logger.warn('Theme. {}',log:kv('theme',theme), error)}
-
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="xpathval"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>

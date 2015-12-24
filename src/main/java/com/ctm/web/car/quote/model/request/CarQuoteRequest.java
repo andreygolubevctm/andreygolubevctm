@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CarQuoteRequest {
 
@@ -23,7 +24,7 @@ public class CarQuoteRequest {
 
     private Vehicle vehicle;
 
-    private ArrayList<String> providerFilter = new ArrayList<String>();
+    private List<String> providerFilter = new ArrayList<String>();
 
     public LocalDate getCommencementDate() {
         return commencementDate;
@@ -81,11 +82,11 @@ public class CarQuoteRequest {
         this.vehicle = vehicle;
     }
 
-    public ArrayList<String> getProviderFilter() {
+    public List<String> getProviderFilter() {
         return providerFilter;
     }
 
-    public void setProviderFilter(ArrayList<String> providerFilter) {
+    public void setProviderFilter(List<String> providerFilter) {
         this.providerFilter = providerFilter;
     }
 }
