@@ -111,6 +111,7 @@
                     label {
                         .iconLabel {
                             margin-top:0.34em;
+                            padding-top: 16px;
                         }
                     }
                 }
@@ -120,12 +121,30 @@
                 &:hover {
                     &:before{
                         background-color: @health-benefits-icon-bg-checked-color;
-                        border-color: @health-benefits-icon-border-checked-color;
                         color: #fff;
                     }
 
                 }
             }
+
+            .CTM-plus {
+                .checkbox {
+                    label {
+                        &:before {
+                            background-color: white;
+                            border-color: @health-benefits-icon-more-border-color;
+                        }
+                        &:hover {
+                            &:before {
+                                background-color: @extras-color-light;
+                                border-color: @health-benefits-icon-more-border-color;
+                            }
+
+                        }
+                    }
+                }
+            }
+
         }
 
         .subTitle{
