@@ -37,12 +37,12 @@
 			<a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
 		</div>
 
-		<div class="flat-design-card row">
+		<div class="fieldset-card row price-card">
 
-			<div class="col-xs-12">
+			<div class="col-xs-12 hidden-xs">
 				<p>Quote reference number <span class="text-secondary">{{= transactionId }}</span></p>
 			</div>
-			<div class="col-sm-8">
+			<div class="col-md-8">
 
 				<div class="row">
 					<div class="col-xs-3">
@@ -51,6 +51,26 @@
 					<div class="col-xs-9">
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
 
+						<div class="hidden-xs">
+							{{ if (promo.promoText !== ''){ }}
+							<h2>Buy now and save with these promotions</h2>
+							<p>{{= promo.promoText }}</p>
+							{{ } }}
+						</div>
+					</div>
+				</div>
+
+				<div class="row priceRow">
+					<div class="col-xs-12 col-sm-6">
+						{{= renderedPriceTemplate }}
+					</div>
+					<div class="col-sm-6 col-md-12">
+						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+					</div>
+				</div>
+
+				<div class="row visible-xs">
+					<div class="col-xs-12">
 						{{ if (promo.promoText !== ''){ }}
 						<h2>Buy now and save with these promotions</h2>
 						<p>{{= promo.promoText }}</p>
@@ -58,18 +78,9 @@
 					</div>
 				</div>
 
-				<div class="row">
-					<div class="col-xs-6">
-						{{= renderedPriceTemplate }}
-					</div>
-					<div class="col-xs-6 col-lg-12">
-						<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
-					</div>
-				</div>
-
 			</div>
 
-			<div class="col-sm-4 hidden-xs">
+			<div class="col-md-4 hidden-xs hidden-sm">
 				<h2 class="noTopMargin">You're nearly insured</h2>
 				<div class="moreInfoProgress row">
 					<div class="col-sm-2">
@@ -91,41 +102,40 @@
 
 		</div>
 
-		<div class="visible-xs">
-			{{= callToActionBarHtml }}
-		</div>
-
-		<div class="flat-design-card row">
-			<div class="col-sm-6">
+		<div class="fieldset-card row cover-card">
+			<div class="col-xs-12 col-md-6">
+				{{ if(typeof hospital.inclusions !== 'undefined') { }}
 				<h1 class="text-dark">Hospital cover</h1>
 				<p><strong>Hospital Excess:</strong> {{= hospital.inclusions.excess }}</p>
 				<p><strong>Excess Waivers:</strong> {{= hospital.inclusions.waivers }}</p>
 				<p><strong>Co-payment / % Hospital Contribution:</strong> {{= hospital.inclusions.copayment }}</p>
+				{{ } }}
 
 				{{ if(hospitalCover.inclusions.length > 0) { }}
-				<p><strong>You will be covered for the following services</strong></p>
-				<ul class="indent">
+				<h5>You will be covered for the following services</h5>
+
+				<ul class="indent benefitsIcons inclusions">
 					{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
-					<li>{{= inclusion.name }}</li>
+					<li class="{{= inclusion.className }}">{{= inclusion.name }}</li>
 					{{ }) }}
 				</ul>
 				{{ } }}
 
 				{{ if(hospitalCover.restrictions.length > 0) { }}
-				<p><strong>You will have restricted cover for the following services</strong></p>
-				<ul class="indent">
+				<h5>You will have restricted cover for the following services</h5>
+				<ul class="indent benefitsIcons restrictions">
 					{{ _.each(hospitalCover.restrictions, function(restriction){ }}
-					<li>{{= restriction.name }}</li>
+					<li class="{{= restriction.className }}">{{= restriction.name }}</li>
 					{{ }) }}
 				</ul>
 				<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
 				{{ } }}
 
 				{{ if(hospitalCover.exclusions.length > 0) { }}
-				<p><strong>You will not be covered for the following services</strong></p>
-				<ul class="indent">
+				<h5>You will not be covered for the following services</h5>
+				<ul class="indent benefitsIcons exclusions">
 					{{ _.each(hospitalCover.exclusions, function(exclusion){ }}
-					<li>{{= exclusion.name }}</li>
+					<li class="{{= exclusion.className }}">{{= exclusion.name }}</li>
 					{{ }) }}
 
 					<c:if test="${not empty callCentre}">
@@ -138,8 +148,13 @@
 
 			</div>
 
-			<div class="col-sm-6">
-				<h1 class="text-dark">Extras cover</h1>
+			<div class="visible-sm col-sm-12">
+				{{= callToActionBarHtml }}
+			</div>
+
+			{{ if(typeof extrasCover !== 'undefined') { }}
+			<div class="col-xs-12 col-md-6">
+				<h1 class="text-dark extrasCoverTitle">Extras cover</h1>
 				<table class="extrasTable table table-bordered table-striped">
 					<thead>
 						<tr>
@@ -161,6 +176,7 @@
 					</tbody>
 				</table>
 			</div>
+			{{ } }}
 		</div>
 
 		{{= callToActionBarHtml }}
@@ -171,31 +187,31 @@
 				<p>See your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
 			</div>
 
-			<div class="col-sm-6">
+			<div class="col-xs-12 col-md-6">
 
 				<div class="row">
 					{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
 					<div class="col-sm-6 col-xs-12">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download download-policy-brochure col-xs-12">Download <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
+						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12">Download <br class="hidden-xs hidden-lg"/>Policy Brochure</a>
 					</div>
 					{{ } else { }}
 
 					{{ if(typeof hospitalCover !== 'undefined') { }}
 					<div class="col-sm-6 col-xs-12">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download download-hospital-brochure col-xs-12">Download Hospital <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
+						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12">Download Hospital <br class="hidden-xs hidden-sm hidden-lg"/>Policy Brochure</a>
 					</div>
 					{{ } }}
 
 					{{ if(typeof extrasCover !== 'undefined') { }}
 					<div class="col-sm-6 col-xs-12 ">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-download download-extras-brochure col-xs-12">Download Extras <br class="hidden-xs hidden-lg"/>Policy Brochure</a>
+						<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Download Extras <br class="hidden-xs hidden-sm hidden-lg"/>Policy Brochure</a>
 					</div>
 					{{ } }}
 					{{ } }}
 				</div>
 
 			</div>
-			<div class="col-sm-6 moreInfoEmailBrochures" novalidate="novalidate">
+			<div class="col-xs-12 col-md-6 moreInfoEmailBrochures" novalidate="novalidate">
 
 				<div class="row formInput">
 					<div class="col-sm-7 col-xs-12">
@@ -204,7 +220,7 @@
 										 placeHolder="${emailPlaceHolder}" />
 					</div>
 					<div class="col-sm-5 hidden-xs">
-						<a href="javascript:;" class="btn btn-save btn-block disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
+						<a href="javascript:;" class="btn btn-save disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
 					</div>
 				</div>
 				<div class="row row-content formInput optInMarketingRow">
@@ -218,7 +234,7 @@
 
 				<div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
 					<div class="col-xs-12">
-						<a href="javascript:;" class="btn btn-save btn-block disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
+						<a href="javascript:;" class="btn btn-save disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
 					</div>
 				</div>
 				<div class="row row-content moreInfoEmailBrochuresSuccess hidden">
@@ -233,7 +249,7 @@
 		</div>
 
 
-		<div class="flat-design-card row">
+		<div class="fieldset-card row switching-card">
 			<div class="col-md-8">
 				<h1 class="text-dark">Switching is simple</h1>
 				<ol>
@@ -263,7 +279,9 @@
 			</div>
 		</div>
 
-		{{= callToActionBarHtml }}
+		<div class="hidden-xs">
+			{{= callToActionBarHtml }}
+		</div>
 
 	</div>
 
@@ -272,11 +290,11 @@
 <script id="more-info-call-to-action-template" type="text/html">
 
 	<div class="moreInfoCallToActionBar row">
-		<div class="col-sm-6">
+		<div class="col-xs-12 col-sm-8 col-md-7 col-lg-6">
 			<p>Found the right product for you?</p>
 		</div>
-		<div class="col-sm-6">
-			<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+		<div class="col-xs-12 col-sm-4 col-md-5 col-lg-6">
+			<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
 		</div>
 	</div>
 

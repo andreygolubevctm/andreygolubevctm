@@ -243,7 +243,7 @@
             emailResultsSuccessCallback: function onSendBrochuresCallback(result, settings) {
                 if (result.success) {
                     parent.find('.formInput').hide();
-                    parent.find('.moreInfoEmailBrochuresSuccess').show();
+                    parent.find('.moreInfoEmailBrochuresSuccess').removeClass("hidden");
                     meerkat.modules.emailBrochures.tearDown(settings);
                     meerkat.modules.healthResults.setSelectedProduct(product);
                 } else {
@@ -307,8 +307,8 @@
 
                 prepareCoverFeatures("hospital.benefits", "hospitalCover");
 
-                coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", {name:"Public Hospital"});
-                coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", {name:"Private Hospital"});
+                coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", {name:"Public Hospital", className: "CTM-hospital"});
+                coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", {name:"Private Hospital", className: "CTM-hospital"});
             }
         }
 
@@ -405,7 +405,7 @@
             var foundObject = _.findWhere(resultLabels, {"p": lookupKey});
 
             if (typeof foundObject !== "undefined") {
-                coverSwitch(benefit.covered, target, $.extend(benefit, {name: foundObject.n} ));
+                coverSwitch(benefit.covered, target, $.extend(benefit, {name: foundObject.n, className: foundObject.c} ));
             }
 
         });

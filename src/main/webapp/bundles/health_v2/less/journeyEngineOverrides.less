@@ -14,7 +14,7 @@
   	background-color: @main-bg-colour;
 }
 
-[data-step=results]{
+[data-step=results]:not(.moreInfoVisible){
 	#pageContent{
 		background-color: @page-content-bg;
 		.transition(~"background-color 250ms ease-in-out");
@@ -45,9 +45,15 @@
 }
 
 .fieldset,
+.fieldset-column-side,
+.fieldset-card {
+	border: 1px solid @border-colour;
+	background-color: white;
+
+	box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.1);
+}
+.fieldset,
 .fieldset-column-side{
-  border: 1px solid @border-colour;
-  background-color: white;
   &.lhc-group,
   &.rebate-group{
 	border: none;

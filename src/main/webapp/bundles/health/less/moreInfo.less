@@ -23,7 +23,7 @@
 
 // Bridging page
 .moreInfoDropdown{
-  display: none;
+
   @media(@xs-only){
 	background-color: @theme-light;
   }
@@ -34,28 +34,76 @@
   }
 
 	.companyLogo{
-		margin: 0 20px 0 0;
+		margin: 10px 20px 0 2px;
 		max-height: none;
 		max-width: none;
+		@media(@xs) {
+			.providersNormalSpriteImages(~"health"; ~""; @providerLogoNames; 0.4);
+		}
+		@media(@sm) {
+			.providersNormalSpriteImages(~"health"; ~""; @providerLogoNames; 0.9);
+		}
+		@media(@md) {
+			.providersNormalSpriteImages(~"health"; ~""; @providerLogoNames; 0.8);
+		}
 	}
+
+
 }
 
 
 .more-info-content {
 
+	background-color: @main-bg-colour;
+
+	.fieldset-card{
+		padding-top: 20px;
+		padding-bottom: 20px;
+		&.price-card{
+			margin-bottom: 20px;
+		}
+		&.switching-card{
+			@media (@sm){
+				padding-top: 0;
+			}
+		}
+	}
+
 	h1{
 		font-size: 36px;
 		font-family: @font-family-theme-light;
+
 		&.productName{
-			font-size: 42px;
+			font-size: 30px;
+			@media (@sm){
+				font-size: 42px;
+			}
 			font-family: @font-family-theme-bold;
 		}
 	}
+	.cover-card{
+		h1{
+			margin-top: 0;
+			&.extrasCoverTitle{
+				@media  (@xs-only){
+					margin-top: 20px;
+				}
+				@media  (@sm-only) {
+					margin-top: 20px;
+				}
+			}
+		}
+	}
+
 	h2{
 		font-size: 25px;
 		font-family: @font-family-theme-regular;
+		margin-top: 18px;
 	}
-	p, ol, blockquote{
+	h5{
+		margin-top: 20px;
+	}
+	p, ol, blockquote, .btn-cta{
 		font-size: 18px;
 	}
 	ol li,
@@ -99,7 +147,10 @@
 	}
 
 	blockquote{
-		margin: 0 20%;
+		margin: 0 30px;
+		@media (@md){
+			margin: 0 20%;
+		}
 		border-left: none;
 		text-align: left;
 	}
@@ -119,6 +170,26 @@
 		color: @gray-light;
 	}
 
+	.priceRow{
+		margin-top: 15px;
+		.btn-more-info-apply{
+			margin: 25px 0;
+			@media (@xs-only){
+				width: 100%;
+			}
+		}
+	}
+
+	.btn-more-info-apply{
+		box-shadow: 1px 2px 0px 0px rgba(0, 0, 0, 0.3);
+	}
+
+	.btn{
+		padding-left: 10%;
+		padding-right: 10%;
+		border-radius: 22px;
+	}
+
 }//.more-info-content
 
 
@@ -131,6 +202,9 @@
 	h4 {
 		color: white;
 		margin-left: -15px;
+		@media (@md-only){
+			margin-top: 0;
+		}
 	}
 	a {
 		text-decoration: underline;
@@ -141,18 +215,20 @@
 	}
 	.pricePromiseLogo {
 		.highResImg('../graphics/health/Price-Promise-White.png'; '../graphics/health/Price-Promise-White@2x.png'; 123px 86px; ~"");
-		width: 90px;
-		height: 65px;
-		background-size: contain;
+		width: 123px;
+		height: 86px;
 		margin: 0 auto;
-		@media (@sm) {
-			width: 105px;
-			height: 76px;
-			background-size: contain !important;
-		}
 		@media (@md) {
-			width: 123px;
-			height: 86px;
+			margin-top: 10px;
+			width: 105px;
+			height: 73px;
+			background-size: contain;
+			image-rendering: optimizeSpeed;
+			image-rendering: -moz-crisp-edges;
+			image-rendering: -o-crisp-edges;
+			image-rendering: -webkit-optimize-contrast;
+			image-rendering: optimize-contrast;
+			-ms-interpolation-mode: nearest-neighbor;
 		}
 	}
 
@@ -183,10 +259,13 @@
 	}
 	.closeQuote{
 		float: right;
-		margin-right: 30px;
+		margin-right: -45px;
 	}
 	.testimonialAuthor{
-		margin-right: 20%;
+		margin-right: 30px;
+		@media (@md) {
+			margin-right: 20%;
+		}
 		.text-tertiary;
 		text-align: right;
 		font-size: 24px;
@@ -230,22 +309,116 @@
 
 .moreInfoCallToActionBar{
 	background: @theme-tertiary;
+	@media (@xs-only){
+		padding-top: 15px;
+		padding-bottom: 15px;
+	}
 	p{
 		text-align: right;
 		color: white;
 		font-size: 30px;
+		@media (@xs-only){
+			text-align: center;
+		}
 	}
 	& > div{
-		margin: 15px 0px;
+		@media (@sm){
+			margin: 25px 0px;
+		}
+	}
+	.btn{
+		box-shadow: 1px 3px 1px 0px rgba(0,0,0,0.3);
+		@media (@xs-only){
+			display: block;
+		}
 	}
 }
 
 .policyBrochures{
 	background: #F2F2F2;
+	border-left: 1px solid #E7E7E7;
+	border-right: 1px solid #E7E7E7;
+	padding-bottom: 10px;
+}
+
+// default
+@btn-hospital-brochure-bg-color: #8AB5D8;
+@btn-hospital-brochure-color: @theme-tertiary;
+// active
+@btn-hospital-brochure-active-bg-color: @btn-hospital-brochure-bg-color;
+@btn-hospital-brochure-active-color: @theme-tertiary;
+// hover
+@btn-hospital-brochure-hover-bg-color: darken(@btn-hospital-brochure-bg-color, 10%);
+@btn-hospital-brochure-hover-color: @theme-tertiary;
+// borders
+@btn-hospital-brochure-border-color: @btn-hospital-brochure-bg-color;
+@btn-hospital-brochure-active-border-color: @btn-hospital-brochure-active-bg-color;
+@btn-hospital-brochure-hover-border-color: @btn-hospital-brochure-hover-bg-color;
+.download-policy-brochure,
+.download-hospital-brochure{
+	.btn-styles(
+		@btn-hospital-brochure-bg-color, @btn-hospital-brochure-color,
+		@btn-hospital-brochure-active-bg-color, @btn-hospital-brochure-active-color,
+		@btn-hospital-brochure-hover-bg-color, @btn-hospital-brochure-hover-color,
+		@btn-hospital-brochure-border-color, @btn-hospital-brochure-active-border-color, @btn-hospital-brochure-hover-border-color
+	);
+}
+
+// default
+@btn-extras-brochure-bg-color: #92DCB7;
+@btn-extras-brochure-color: @theme-secondary;
+// active
+@btn-extras-brochure-active-bg-color: @btn-extras-brochure-bg-color;
+@btn-extras-brochure-active-color: @theme-secondary;
+// hover
+@btn-extras-brochure-hover-bg-color: darken(@btn-extras-brochure-bg-color, 10%);
+@btn-extras-brochure-hover-color: @theme-secondary;
+// borders
+@btn-extras-brochure-border-color: @btn-extras-brochure-bg-color;
+@btn-extras-brochure-active-border-color: @btn-extras-brochure-active-bg-color;
+@btn-extras-brochure-hover-border-color: @btn-extras-brochure-hover-bg-color;
+.download-extras-brochure{
+	.btn-styles(
+	@btn-extras-brochure-bg-color, @btn-extras-brochure-color,
+	@btn-extras-brochure-active-bg-color, @btn-extras-brochure-active-color,
+	@btn-extras-brochure-hover-bg-color, @btn-extras-brochure-hover-color,
+	@btn-extras-brochure-border-color, @btn-extras-brochure-active-border-color, @btn-extras-brochure-hover-border-color
+	);
+}
+
+// default
+@btn-email-brochure-bg-color: @theme-tertiary;
+@btn-email-brochure-color: white;
+// active
+@btn-email-brochure-active-bg-color: @theme-tertiary;
+@btn-email-brochure-active-color: white;
+// hover
+@btn-email-brochure-hover-bg-color: lighten(@btn-email-brochure-bg-color, 5%);
+@btn-email-brochure-hover-color: white;
+// borders
+@btn-email-brochure-border-color: @btn-email-brochure-bg-color;
+@btn-email-brochure-active-border-color: @btn-email-brochure-active-bg-color;
+@btn-email-brochure-hover-border-color: @btn-email-brochure-hover-bg-color;
+.btn-email-brochure{
+	.btn-styles(
+	@btn-email-brochure-bg-color, @btn-email-brochure-color,
+	@btn-email-brochure-active-bg-color, @btn-email-brochure-active-color,
+	@btn-email-brochure-hover-bg-color, @btn-email-brochure-hover-color,
+	@btn-email-brochure-border-color, @btn-email-brochure-active-border-color, @btn-email-brochure-hover-border-color
+	);
+}
+
+.download-policy-brochure,
+.download-hospital-brochure,
+.download-extras-brochure,
+.moreInfoEmailBrochures{
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 .moreInfoProgress p {
-	margin: 10px 0;
+	margin: 12px 0;
+	font-size: 16px;
 }
 .moreInfoProgressBarLeft {
 	border: 1px solid #b2b3b4;
@@ -263,26 +436,83 @@
 	height: 105px;
 }
 
+ul.benefitsIcons{
+	.clearfix;
+	margin-bottom: 0;
+}
+.benefitsIcons {
+	li {
 
-// Old CTA buttons variables for A/B testing
-@old-btn-cta-bg-color: @theme-primary;
-@old-btn-cta-color: contrast(@old-btn-cta-bg-color);
-@old-btn-cta-border-color: @old-btn-cta-bg-color;
+		margin-bottom: 10px;
+		@media (@sm) {
+			display: inline-block;
+			width: 20%;
+			text-align: center;
+			vertical-align: top;
+		}
 
-@old-btn-cta-hover-bg-color: darken(@old-btn-cta-bg-color, 12%);
-@old-btn-cta-hover-color: contrast(@old-btn-cta-hover-bg-color);
-@old-btn-cta-hover-border-color: @old-btn-cta-hover-bg-color;
+		&:before {
+			font-family: 'framework_font';
+			font-size: 45px;
 
-@old-btn-cta-active-bg-color: @theme-secondary;
-@old-btn-cta-active-color: contrast(@old-btn-cta-active-bg-color);
-@old-btn-cta-active-border-color: @old-btn-cta-active-bg-color;
+			display: table;
+			vertical-align: middle;
+			@media (@sm) {
+				margin: 0 auto 10px auto;
+				border-radius: 50%;
+				padding: 0.25em 0.4em;
+			}
+			@media (@xs-only) {
+				display: inline-block;
+				margin-right: 10px;
+				color: @theme-tertiary;
+			}
 
-// A/B testing for old organge color buttons
-.old-cta{
-  &.btn-cta {
-	.btn-styles(@old-btn-cta-bg-color, @old-btn-cta-color,
-	@old-btn-cta-active-bg-color, @old-btn-cta-active-color,
-	@old-btn-cta-hover-bg-color, @old-btn-cta-hover-color,
-	@old-btn-cta-border-color, @old-btn-cta-active-border-color, @old-btn-cta-hover-border-color, true);
+		}
+	}
+	&.inclusions li:before {
+		@media (@sm) {
+			background-color: @theme-tertiary;
+			color: white;
+		}
+		@media (@xs-only) {
+			color: @theme-tertiary;
+		}
+	}
+	&.restrictions li:before {
+		@media (@sm) {
+			background-color: #EDEDED;
+			color: #888888;
+			border: 1px solid #888888;
+		}
+		@media (@xs-only) {
+			color: #EDEDED;
+		}
+	}
+	&.exclusions li:before {
+
 	}
 }
+
+	// Old CTA buttons variables for A/B testing
+	@old-btn-cta-bg-color: @theme-primary;
+	@old-btn-cta-color: contrast(@old-btn-cta-bg-color);
+	@old-btn-cta-border-color: @old-btn-cta-bg-color;
+
+	@old-btn-cta-hover-bg-color: darken(@old-btn-cta-bg-color, 12%);
+	@old-btn-cta-hover-color: contrast(@old-btn-cta-hover-bg-color);
+	@old-btn-cta-hover-border-color: @old-btn-cta-hover-bg-color;
+
+	@old-btn-cta-active-bg-color: @theme-secondary;
+	@old-btn-cta-active-color: contrast(@old-btn-cta-active-bg-color);
+	@old-btn-cta-active-border-color: @old-btn-cta-active-bg-color;
+
+	// A/B testing for old organge color buttons
+	.old-cta{
+		&.btn-cta {
+			.btn-styles(@old-btn-cta-bg-color, @old-btn-cta-color,
+			@old-btn-cta-active-bg-color, @old-btn-cta-active-color,
+			@old-btn-cta-hover-bg-color, @old-btn-cta-hover-color,
+			@old-btn-cta-border-color, @old-btn-cta-active-border-color, @old-btn-cta-hover-border-color, true);
+		}
+	}
