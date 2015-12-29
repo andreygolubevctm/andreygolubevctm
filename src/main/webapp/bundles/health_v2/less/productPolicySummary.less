@@ -267,10 +267,16 @@
   .providersNormalSpriteImagesVerticallyCentered(~"health"; ~""; @providerLogoNames; @standard-logo-height; @logo-price-spacer);
 }
 
-body[data-step='results'] {
-  	.product-details-container .companyLogo {
-	  display: none;
-	}
+body[data-step='results'] .product-details-container .companyLogo {
+  display: none;
+}
+
+body[data-step='apply'] .modal-body {
+  .btn-more-info-apply,
+  .moreInfoCallRefNo,
+  .product-details-container .companyLogo {
+	display: none;
+  }
 }
 
 @media(@xs-only) {
