@@ -75,7 +75,7 @@
 		}
 
 		meerkat.modules.comms.post({
-			url:"ajax/write/register_fatal_error.jsp",
+			url: "/" + meerkat.site.urls.context + "ajax/write/register_fatal_error.jsp",
 			data: settings,
 			useDefaultErrorHandling: false,
 			errorLevel: "silent",

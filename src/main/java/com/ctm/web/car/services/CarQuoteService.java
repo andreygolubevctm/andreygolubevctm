@@ -46,6 +46,8 @@ public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteReques
 
         CarQuote quote = data.getQuote();
 
+        setFilter(quote.getFilter());
+
         // Fix the commencement date if prior to the current date
         if (quote.getOptions() != null) {
             String sanitisedCommencementDate = quote.getOptions().getCommencementDate();
