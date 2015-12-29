@@ -3,6 +3,10 @@
 SET @EffectiveEnd = '2016-03-31';
 SET @providerID = 15;
 
+
+ALTER TABLE `ctm`.`export_product_properties_search`
+DROP COLUMN `situationFilter`;
+
 /* -- BEGIN TEST -- */
 
 /* Test the products count matches expected */
