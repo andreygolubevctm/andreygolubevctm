@@ -3,21 +3,48 @@
 SET @EffectiveEnd = '2016-03-31';
 SET @providerID = 2;
 
+ALTER TABLE `ctm`.`export_product_properties_search`
+DROP COLUMN `situationFilter`;
+
+
 /* -- BEGIN TEST -- */
 
 /* Test the products count matches expected */
-SELECT 'Export', count(epm.productId) AS 'Total'
-FROM `ctm`.`export_product_master` epm
+SELECT 'EXPORT' , count(epm.productId) AS 'Total'
+FROM ctm.export_product_master epm
 WHERE epm.providerID = @providerID
 UNION ALL
 	SELECT 'Product', count(pm.productId) AS 'Total'
-	FROM `ctm`.`product_master` pm
+	FROM ctm.product_master pm
 	INNER JOIN ctm.product_properties_search pps
 	ON pps.ProductId = pm.ProductId
 	WHERE pm.Status != 'X'
 	AND pm.providerID = @providerID
 	AND NOW() BETWEEN pm.EffectiveStart and pm.EffectiveEnd
 	AND pm.ProductCat = 'HEALTH'
+AND LongTitle IN
+('Accident Only Hospital Cover and Gold Extras',
+'Accident Only Hospital Cover and Platinum Extras ',
+'Basic Hospital $250 Excess and Gold Extras ',
+'Basic Hospital $250 Excess and Platinum Extras ',
+'Basic Hospital $500 Excess and Gold Extras ',
+'Basic Hospital $500 Excess and Platinum Extras ',
+'Gold Extras',
+'Mid Hospital $250 Excess and Gold Extras ',
+'Mid Hospital $250 Excess and Platinum Extras ',
+'Mid Hospital $500 Excess and Gold Extras ',
+'Mid Hospital $500 Excess and Platinum Extras ',
+'Mid Plus Hospital $250 Excess and Gold Extras',
+'Mid Plus Hospital $250 Excess with Gold Extras ',
+'Mid Plus Hospital $500 Excess and Gold Extras',
+'Mid Plus Hospital $500 Excess with Gold Extras ',
+'Platinum Extras',
+'Premium Hospital $250 Excess and Gold Extras ',
+'Premium Hospital $250 Excess and Platinum Extras ',
+'Premium Hospital $500 Excess and Gold Extras ',
+'Premium Hospital $500 Excess and Platinum Extras ',
+'Premium Hospital Nil Excess and Gold Extras',
+'Premium Hospital Nil Excess and Platinum Extras')
 LIMIT 9999;
 
 /* -- END TEST -- */
@@ -44,7 +71,31 @@ UPDATE `ctm`.`product_master` pm
  WHERE pm.EffectiveStart >= '2015-04-01'
 AND pm.EffectiveEnd <= '2016-03-31'
 AND providerID = @providerID
- AND Status != 'X';
+ AND Status != 'X'
+AND pm.LongTitle IN
+('Accident Only Hospital Cover and Gold Extras',
+'Accident Only Hospital Cover and Platinum Extras ',
+'Basic Hospital $250 Excess and Gold Extras ',
+'Basic Hospital $250 Excess and Platinum Extras ',
+'Basic Hospital $500 Excess and Gold Extras ',
+'Basic Hospital $500 Excess and Platinum Extras ',
+'Gold Extras',
+'Mid Hospital $250 Excess and Gold Extras ',
+'Mid Hospital $250 Excess and Platinum Extras ',
+'Mid Hospital $500 Excess and Gold Extras ',
+'Mid Hospital $500 Excess and Platinum Extras ',
+'Mid Plus Hospital $250 Excess and Gold Extras',
+'Mid Plus Hospital $250 Excess with Gold Extras ',
+'Mid Plus Hospital $500 Excess and Gold Extras',
+'Mid Plus Hospital $500 Excess with Gold Extras ',
+'Platinum Extras',
+'Premium Hospital $250 Excess and Gold Extras ',
+'Premium Hospital $250 Excess and Platinum Extras ',
+'Premium Hospital $500 Excess and Gold Extras ',
+'Premium Hospital $500 Excess and Platinum Extras ',
+'Premium Hospital Nil Excess and Gold Extras',
+'Premium Hospital Nil Excess and Platinum Extras')
+;
 
 /* Disable current products product master
 UPDATE `ctm`.`product_master` pm 
@@ -84,6 +135,29 @@ AND pm.providerID =  @providerID
 AND pm.EffectiveStart = @EffectiveStart
 and pm.EffectiveEnd = @EffectiveEnd
 AND pm.ProductCat = 'HEALTH'
+AND LongTitle IN
+('Accident Only Hospital Cover and Gold Extras',
+'Accident Only Hospital Cover and Platinum Extras ',
+'Basic Hospital $250 Excess and Gold Extras ',
+'Basic Hospital $250 Excess and Platinum Extras ',
+'Basic Hospital $500 Excess and Gold Extras ',
+'Basic Hospital $500 Excess and Platinum Extras ',
+'Gold Extras',
+'Mid Hospital $250 Excess and Gold Extras ',
+'Mid Hospital $250 Excess and Platinum Extras ',
+'Mid Hospital $500 Excess and Gold Extras ',
+'Mid Hospital $500 Excess and Platinum Extras ',
+'Mid Plus Hospital $250 Excess and Gold Extras',
+'Mid Plus Hospital $250 Excess with Gold Extras ',
+'Mid Plus Hospital $500 Excess and Gold Extras',
+'Mid Plus Hospital $500 Excess with Gold Extras ',
+'Platinum Extras',
+'Premium Hospital $250 Excess and Gold Extras ',
+'Premium Hospital $250 Excess and Platinum Extras ',
+'Premium Hospital $500 Excess and Gold Extras ',
+'Premium Hospital $500 Excess and Platinum Extras ',
+'Premium Hospital Nil Excess and Gold Extras',
+'Premium Hospital Nil Excess and Platinum Extras')
 limit 99999999;
 
 */
