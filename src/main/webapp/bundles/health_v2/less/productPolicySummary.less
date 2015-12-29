@@ -267,6 +267,12 @@
   .providersNormalSpriteImagesVerticallyCentered(~"health"; ~""; @providerLogoNames; @standard-logo-height; @logo-price-spacer);
 }
 
+body[data-step='results'] {
+	.companyLogo:not(.pull-right) {
+	  display: none;
+	}
+}
+
 @media(@xs-only) {
   .xs-productName-container{
 	.companyLogo{
