@@ -70,11 +70,6 @@
 					<field:hidden xpath="${xpath}/emailhistory" />
 				</form_new:row>
 
-				<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
-				<form_new:row label="Phone Number" fieldXpath="${fieldXpath}" className="clear required_input">
-					<field:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
-				</form_new:row>
-
 				<group_new:contact_numbers_hidden xpath="${xpath}/contactNumber" />
 
 				<%-- Optin fields (hidden) for email and phone --%>
