@@ -25,28 +25,12 @@
 
 	function applyEventListeners() {
 		$carUseDropdown.on('change', function changeCarUse(){
-			if ($(this)[0].selectedIndex > 1)
-			{
+			if ($(this)[0].selectedIndex > 1){
 				$passengerPaymentRadio.slideDown();
+				$goodsPaymentRadio.slideDown();
 			} else {
 				$passengerPaymentRadio.slideUp();
 				$goodsPaymentRadio.slideUp();
-			}
-		});
-
-		$passengerPaymentRadio.on('click', function goodsPaymentOption() {
-			if ($(this).find("input:checked").val() === 'Y') {
-				$goodsPaymentRadio.slideDown();
-			} else {
-				$goodsPaymentRadio.slideUp();
-			}
-		});
-
-		$goodsPaymentRadio.on('click', function goodsPaymentOption() {
-			if ($(this).find("input:checked").val() === 'Y') {
-				// $goodsPaymentRadio.slideDown();
-			} else {
-				//$goodsPaymentRadio.slideUp();
 			}
 		});
 	}

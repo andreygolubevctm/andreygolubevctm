@@ -33,7 +33,7 @@
 							   title="if the car has any accident or hail damage" />
 	</form_new:row>
 
-	<form_new:row label="Will the car be used for carrying goods for payment?" className="goodsPayment">
+	<form_new:row label="Will the car be used for carrying goods for payment?" className="goodsPayment"  helpId="541">
 		<field_new:array_radio xpath="${xpath}/goodsPayment" required="true"
 							   className="quote_goodsPayment" id="quote_goodsPayment" items="Y=Yes,N=No"
 							   title="if the car has any accident or hail damage" />
