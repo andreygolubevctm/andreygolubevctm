@@ -50,7 +50,7 @@
             $healthCoverlhcGroup = $healthCoverDetailsContainer.find('.lhc-group');
             $healthCoverlhcQuestion = $healthCoverlhcGroup.find('.lhc-question');
 
-            $primaryContinuousCover = $healthCoverDetailsContainer.find('#health-continuous-cover-primary');
+            $primaryContinuousCover = $healthCoverDetailsContainer.find('#health_healthCover_primary_cover');
 
             $partnerDob = $healthCoverDetailsContainer.find('#health_healthCover_partner_dob');
             $partnerCurrentCover = $healthCoverDetailsContainer.find('#health_healthCover_partnerCover');
@@ -487,6 +487,7 @@
 
         // reset ratesChanged for Journey mode
         if (mode === MODE_JOURNEY) ratesChanged = false;
+
 
         var htmlTemplate = _.template($('#health-cover-details-template').html());
 
