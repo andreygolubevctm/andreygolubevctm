@@ -75,7 +75,9 @@
 
 				<%-- Moved from details page. To keep the same xpath we have to manually setup them again --%>
 				<c:set var="xpath_hlthcvr" value="${pageSettings.getVerticalCode()}/healthCover" />
+				<c:set var="name_hlthcvr" value="${go:nameFromXpath(xpath_hlthcvr)}" />
 				<c:set var="name" value="${go:nameFromXpath(xpath)}" />
+
 
 				<c:set var="fieldXpath" value="${xpath_hlthcvr}/primary/dob" />
 				<form_new:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
@@ -83,8 +85,8 @@
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath_hlthcvr}/primary/cover" />
-				<form_new:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
-					<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="if you currently hold private health insurance" required="true" id="${name}_health_cover"/>
+				<form_new:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name_hlthcvr}_primaryCover">
+					<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="if you currently hold private health insurance" required="true" id="${name_hlthcvr}_health_cover"/>
 				</form_new:row>
 
 				<%-- Medicare card question --%>

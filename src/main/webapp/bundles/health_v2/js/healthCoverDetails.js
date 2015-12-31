@@ -36,7 +36,7 @@
         $(document).ready(function () {
             // Setup jQuery objects already available
             $primaryDob = $('#health_application_primary_dob');
-            $primaryCurrentCover = $('#health_healthCover_primary_cover_Y');
+            $primaryCurrentCover = $('#health_healthCover_primaryCover');
             $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
             $healthCoversituation = $('#health_situation_healthCvr');
         });
@@ -140,29 +140,28 @@
 
     function setHealthFunds(initMode) {
         //// Quick variables
-        var _primary = $primaryCurrentCover.prop('checked');
+        var _primary = $primaryCurrentCover.find(':checked').val();
         var _partner = $partnerCurrentCover.find(':checked').val();
         var $_primaryFund = $('#clientFund').find('select');
         var $_partnerFund = $('#partnerFund').find('select');
 
         //// Primary Specific
-        if (_primary === true) {
-
+        if (_primary == 'Y') {
             if (isLessThan31Or31AndBeforeJuly1($primaryDob.val())) {
                 initMode ? $primaryContinuousCover.hide() : $primaryContinuousCover.slideUp();
             } else {
                 initMode ? $primaryContinuousCover.show() : $primaryContinuousCover.slideDown();
             }
         } else {
-            if (_primary === false) {
+            if (_primary == 'N') {
                 resetRadio($primaryContinuousCover, 'N');
             }
             initMode ? $primaryContinuousCover.hide() : $primaryContinuousCover.slideUp();
         }
 
-        if (_primary === true && $_primaryFund.val() == 'NONE') {
+        if (_primary == 'Y' && $_primaryFund.val() == 'NONE') {
             $_primaryFund.val('');
-        } else if (_primary === false) {
+        } else if (_primary == 'N') {
             $_primaryFund.val('NONE');
         }
 
@@ -192,10 +191,10 @@
     }
 
     function toggleLHCApplicability(){
-        var _primary = $primaryCurrentCover.prop('checked');
+        var _primary = $primaryCurrentCover.find(':checked').val();
 
         isLessThan31Or31AndBeforeJuly1($primaryDob.val()) && isSinglePolicy() ? $healthCoverlhcGroup.hide() : $healthCoverlhcGroup.show();
-        !isLessThan31Or31AndBeforeJuly1($primaryDob.val()) && isSinglePolicy() && _primary === false  ? $healthCoverlhcQuestion.hide() : $healthCoverlhcQuestion.show();
+        !isLessThan31Or31AndBeforeJuly1($primaryDob.val()) && isSinglePolicy() && _primary === 'N'  ? $healthCoverlhcQuestion.hide() : $healthCoverlhcQuestion.show();
     }
     function isSinglePolicy(){
         var legitTypes = ['S','SF','SM','SPF'];
@@ -455,7 +454,7 @@
             rebate_choice: forceRebate === true ? 'Y' : $healthCoverRebate.find(':checked').val(),
             primary_dob: $primaryDob.val(),
             primary_loading:$healthCoverDetailsContainer.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
-            primary_current: $primaryCurrentCover.prop('checked') ? 'Y' : 'N',
+            primary_current: $primaryCurrentCover.find(':checked').val(),
             primary_loading_manual: $healthCoverDetailsContainer.find('.primary-lhc').val(),
             partner_dob: $partnerDob.val(),
             partner_loading: $healthCoverDetailsContainer.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),
@@ -488,7 +487,6 @@
 
         // reset ratesChanged for Journey mode
         if (mode === MODE_JOURNEY) ratesChanged = false;
-
 
         var htmlTemplate = _.template($('#health-cover-details-template').html());
 
