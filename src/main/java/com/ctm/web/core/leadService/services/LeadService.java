@@ -5,6 +5,7 @@ import com.ctm.web.core.leadService.model.LeadStatus;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
 import com.ctm.web.core.services.ServiceConfigurationService;
+import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -61,35 +62,37 @@ public abstract class LeadService {
      * Restfully sends the collected lead data to the CtM API endpoint
      */
     public void sendLead(final int verticalId, final Data data, final HttpServletRequest request, final String transactionStatus) {
-        try {
-            ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", verticalId, 0);
+        if(!SessionUtils.isCallCentre(request.getSession())) {
+            try {
+                ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", verticalId, 0);
 
-            Boolean enabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
-            String url = serviceConfig.getPropertyValueByKey("url", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);
+                Boolean enabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
+                String url = serviceConfig.getPropertyValueByKey("url", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);
 
-            if(enabled) {
-                LeadRequest leadData = updatePayloadData(data);
+                if (enabled) {
+                    LeadRequest leadData = updatePayloadData(data);
 
-                leadData.setSource("SECURE");
-                leadData.setRootId(data.getLong("current/rootId"));
-                leadData.setTransactionId(data.getLong("current/transactionId"));
-                leadData.setBrandCode(data.getString("current/brandCode"));
+                    leadData.setSource("SECURE");
+                    leadData.setRootId(data.getLong("current/rootId"));
+                    leadData.setTransactionId(data.getLong("current/transactionId"));
+                    leadData.setBrandCode(data.getString("current/brandCode"));
 
-                leadData.setStatus(LeadStatus.valueOf(transactionStatus));
+                    leadData.setStatus(LeadStatus.valueOf(transactionStatus));
 
-                leadData.setClientIP(request.getRemoteAddr());
+                    leadData.setClientIP(request.getRemoteAddr());
 
-                String previousValues = (String) request.getSession().getAttribute(LAST_LEAD_SERVICE_VALUES);
-                String currentValues = leadData.getValues();
+                    String previousValues = (String) request.getSession().getAttribute(LAST_LEAD_SERVICE_VALUES);
+                    String currentValues = leadData.getValues();
 
-                if(canSend(leadData) && !currentValues.equals(previousValues)) {
-                    request.getSession().setAttribute(LAST_LEAD_SERVICE_VALUES, currentValues);
+                    if (canSend(leadData) && !currentValues.equals(previousValues)) {
+                        request.getSession().setAttribute(LAST_LEAD_SERVICE_VALUES, currentValues);
 
-                    LeadServiceUtil.sendRequest(leadData, url);
+                        LeadServiceUtil.sendRequest(leadData, url);
+                    }
                 }
+            } catch (Throwable e) {
+                LOGGER.error("Error sending lead request {}", kv("data", data), e);
             }
-        } catch(Throwable e) {
-            LOGGER.error("Error sending lead request {}", kv("data", data), e);
         }
     }
 
