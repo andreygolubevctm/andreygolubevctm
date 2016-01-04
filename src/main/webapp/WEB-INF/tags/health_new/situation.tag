@@ -37,10 +37,10 @@
 			<simples:dialogue id="36" vertical="health" mandatory="true" className="hidden simples-privacycheck-statement" /> <%-- Inbound --%>
 			<simples:dialogue id="25" vertical="health" mandatory="true" className="hidden follow-up-call" /> <%-- Follow up call --%>
 
-			<form_new:fieldset legend="About you">
+			<form_new:fieldset legend="" postLegend="">
 
 				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
-				<form_new:row label="I am" fieldXpath="${fieldXpath}">
+				<form_new:row label="You are a" fieldXpath="${fieldXpath}">
 					<field_new:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" />
 				</form_new:row>
 
@@ -50,7 +50,7 @@
 				<c:set var="state" value="${data['health/situation/state']}" />
 				<c:set var="location" value="${data['health/situation/location']}" />
 
-				<form_new:row label="I live in" fieldXpath="${fieldXpath}">
+				<form_new:row label="Living in" fieldXpath="${fieldXpath}">
 
 					<c:choose>
 						<c:when test="${not empty param.state || (not empty state && empty location && (param.action == 'amend' || param.action == 'load'))}">
@@ -69,13 +69,15 @@
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
-				<form_new:row label="I&#39;m looking to" fieldXpath="${fieldXpath}">
+				<form_new:row label="Looking to" fieldXpath="${fieldXpath}">
 					<field_new:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="reason you are looking to quote" />
 				</form_new:row>
 
 				<%-- Moved from details page. To keep the same xpath we have to manually setup them again --%>
 				<c:set var="xpath_hlthcvr" value="${pageSettings.getVerticalCode()}/healthCover" />
+				<c:set var="name_hlthcvr" value="${go:nameFromXpath(xpath_hlthcvr)}" />
 				<c:set var="name" value="${go:nameFromXpath(xpath)}" />
+
 
 				<c:set var="fieldXpath" value="${xpath_hlthcvr}/primary/dob" />
 				<form_new:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
@@ -83,8 +85,8 @@
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath_hlthcvr}/primary/cover" />
-				<form_new:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
-					<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="if you currently hold private health insurance" required="true" id="${name}_health_cover"/>
+				<form_new:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name_hlthcvr}_primaryCover">
+					<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="if you currently hold private health insurance" required="true" id="${name_hlthcvr}_health_cover"/>
 				</form_new:row>
 
 				<%-- Medicare card question --%>
@@ -95,10 +97,7 @@
 					</form_new:row>
 				</c:if>
 
-				<c:set var="fieldXpath" value="${xpath}/coverType" />
-				<form_new:row label="What type of cover are you looking for?" fieldXpath="${fieldXpath}">
-					<field_new:general_select xpath="${fieldXpath}" type="healthCvrType" className="health-situation-healthCvrType" required="true" title="your cover type" />
-				</form_new:row>
+
 
 				</form_new:fieldset>
 

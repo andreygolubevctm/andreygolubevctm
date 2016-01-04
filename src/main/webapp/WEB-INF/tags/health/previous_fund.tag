@@ -14,7 +14,7 @@
 
 	<form_new:fieldset id="${id}" legend="Previous Fund Details" className="health-previous_fund">
 
-		<div class="instructional content">
+		<div class="instructional">
 			<h4>Switching made simple</h4>
 			<p>By providing your current fund's details, your new fund can quickly organise the transfer of your cover.</p>
 		</div>

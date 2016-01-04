@@ -53,6 +53,12 @@ public class HomeQuote {
 
     private String termsAccepted;
 
+    private Filter filter;
+
+    public HomeQuote() {
+        filter = new Filter();
+    }
+
     public String getContentsExcess() {
         return contentsExcess;
     }
@@ -266,4 +272,11 @@ public class HomeQuote {
         return StringUtils.trimToEmpty(policyHolder.getFirstName() + " " + policyHolder.getLastName());
     }
 
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
+    }
 }

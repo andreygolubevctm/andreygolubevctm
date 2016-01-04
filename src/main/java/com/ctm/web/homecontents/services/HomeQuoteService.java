@@ -56,6 +56,8 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteReq
 
         HomeQuote quote = data.getQuote();
 
+        setFilter(quote.getFilter());
+
         // Fix the commencement date if prior to the current date
         String sanitisedCommencementDate = quote.getStartDate();
         // Fix the commencement date if prior to the current date

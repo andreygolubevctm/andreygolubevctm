@@ -9,6 +9,8 @@
 		<%-- PROVIDER TESTING --%>
 		<health:provider_testing xpath="${pageSettings.getVerticalCode()}" />
 
+		<%--This is empty since we want to align the right hand box below this	--%>
+		<form_new:fieldset legend="About you" postLegend="Tell us about yourself, so we can find the right cover for you"></form_new:fieldset>
 		<%-- COVER TYPE / SITUATION --%>
 		<div id="${pageSettings.getVerticalCode()}_situation">
 			<health_new:situation xpath="${pageSettings.getVerticalCode()}/situation" />

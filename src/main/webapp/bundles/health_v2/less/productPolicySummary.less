@@ -3,7 +3,7 @@
   .productSummary{
 	&.horizontal {
 	  .companyLogo{
-		width: 90px;
+		max-width: 90px;
 		line-height: 18px;
 		@media (@sm) {
 		  float: right;
@@ -137,7 +137,7 @@
 	  float: none;
 
 	  .ie8 &{
-		width: 90px;
+		max-width: 90px;
 		height: 45px;
 		margin-left: 30px !important; //This is ugly... but so is IE8! There is a -10px margin-left in core logos which this needs to combat
 	  }
@@ -265,6 +265,35 @@
   overflow: hidden;
 
   .providersNormalSpriteImagesVerticallyCentered(~"health"; ~""; @providerLogoNames; @standard-logo-height; @logo-price-spacer);
+}
+
+body[data-step='results'] .product-details-container .companyLogo {
+  display: none;
+}
+
+.modal-body {
+  .btn-more-info-apply,
+  .moreInfoCallRefNo,
+  .product-details-container .companyLogo {
+	display: none;
+  }
+
+  @media (@xs-only) {
+	.productNameContainer {
+	  height: auto !important;
+	}
+
+	.more-info-blue-header .xs-productName-container {
+	  height: 80px;
+	}
+
+	body[data-step='results'] & {
+	  .btn-more-info-apply,
+	  .moreInfoCallRefNo {
+		display: block;
+	  }
+	}
+  }
 }
 
 @media(@xs-only) {
