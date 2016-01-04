@@ -38,7 +38,7 @@
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber"/></c:set>
 
-<c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
+<c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours displayTodayOnly="true"/></c:set>
 <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
 
 <c:set var="isHealthV2" value="${true}" scope="request" />
@@ -69,11 +69,15 @@
               <li>
                 <div class="navbar-text visible-xs">
                   <h4>Do you need a hand?</h4>
-                  <h1><a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></a></h1>
+                  <h1>
+                      <a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">
+                          Call <span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                      </a>
+                  </h1><br/>
                     ${openingHoursHeader }
                 </div>
                 <div class="navbar-text hidden-xs" data-livechat="target">
-                  <h4>Call us on</h4>
+                  <span class="icon-phone"></span>
                   <h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
                     ${openingHoursHeader }
                 </div>
