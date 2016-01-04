@@ -5,7 +5,8 @@
 	.slide-feature-emailquote,
 	.slide-feature-emailresults,
 	.slide-feature-filters,
-	.slide-feature-benefits
+	.slide-feature-benefits,
+	.slide-feature-close-more-info
 	{
 		.slide-feature-hidden();
 
@@ -21,32 +22,25 @@
 
 	// Add your slide feature to the particular step that it needs to be visible
 	&[data-step="start"] {
-		.slide-feature-emailquote.privacyOptinChecked
-		{
-			.slide-feature-is-visible();
+		#navbar-main{
+			.slide-feature-hidden() !important;
 		}
 	}
 
 	&[data-step="details"] {
-		.slide-feature-back,
-		.slide-feature-emailquote.privacyOptinChecked
-		{
-			.slide-feature-is-visible();
+		#navbar-main{
+			.slide-feature-hidden() !important;
 		}
 	}
 
 	&[data-step="benefits"] {
-		.slide-feature-back,
-		.slide-feature-emailquote.privacyOptinChecked
-		{
-			.slide-feature-is-visible();
+		#navbar-main{
+			.slide-feature-hidden() !important;
 		}
 	}
 	&[data-step="contact"] {
-		.slide-feature-back,
-		.slide-feature-emailquote.privacyOptinChecked
-		{
-			.slide-feature-is-visible();
+		#navbar-main{
+			.slide-feature-hidden() !important;
 		}
 	}
 
@@ -54,14 +48,44 @@
 		.slide-feature-back,
 		.slide-feature-emailquote.privacyOptinChecked,
 		.slide-feature-filters,
-		.slide-feature-benefits
-		{
+		.slide-feature-benefits,
+		.slide-feature-pagination {
 			.slide-feature-is-visible();
 		}
 
-		.slide-feature-pagination {
-			display: block;
+		.progress-bar-row{
+			.slide-feature-hidden() !important;
 		}
+
+		header{
+			@media (@sm){
+				min-height: inherit;
+			}
+		}
+
+		&.moreInfoVisible {
+			#navbar-main{
+				background: @theme-tertiary;
+				border: none;
+			}
+
+			// hiding the whole navbar when More Info is open
+			.slide-feature-back,
+			.slide-feature-emailquote.privacyOptinChecked,
+			.slide-feature-filters,
+			.slide-feature-benefits,
+			.slide-feature-pagination,
+			.slide-feature-reference{
+				.slide-feature-hidden();
+			}
+			.slide-feature-close-more-info{
+				.slide-feature-is-visible();
+			}
+			#pageContent{
+				padding-top: 10px;
+			}
+		}
+
 	}
 
 	&[data-step="apply"] {

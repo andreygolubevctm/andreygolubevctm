@@ -83,7 +83,7 @@
             // open bridging page
             $(Results.settings.elements.page).on("click", ".btn-more-info", openBridgingPage);
             // close bridging page
-            $(Results.settings.elements.page).on("click", ".btn-close-more-info", closeBridgingPage);
+            $(Results.settings.elements.page + ", header").on("click", ".btn-close-more-info", closeBridgingPage);
         }
 
         // Close any more info panels when fetching new results

@@ -33,10 +33,6 @@
 
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12">
 
-		<div class="modal-closebar">
-			<a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
-		</div>
-
 		<div class="fieldset-card row price-card">
 
 			<div class="col-xs-12 hidden-xs">
