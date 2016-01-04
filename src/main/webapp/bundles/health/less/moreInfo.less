@@ -1,119 +1,126 @@
 //More Info Panels
 
-.more-info-promotion	{ color: @more-info-promotion-color;	}
-.more-info-about 		{ color: @more-info-about-color;		}
-.more-info-nextsteps	{ color: @more-info-nextsteps-color;	}
+.more-info-promotion {
+	color: @more-info-promotion-color;
+}
 
+.more-info-about {
+	color: @more-info-about-color;
+}
+
+.more-info-nextsteps {
+	color: @more-info-nextsteps-color;
+}
 
 /* product headers buttons */
-.btn-more-info{
-  position: relative;
-  span{
-	@media (@xs-only) {
-	  display: none;
+.btn-more-info {
+	position: relative;
+	span {
+		@media (@xs-only) {
+			display: none;
+		}
 	}
-  }
 	@media (@md-only) {
-		padding-left:0;
-		padding-right:0;
+		padding-left: 0;
+		padding-right: 0;
 		font-size: 13px;
 		line-height: 14px;
 	}
 }
 
 // Bridging page
-.moreInfoDropdown{
+.moreInfoDropdown {
 
-  @media(@xs-only){
-	background-color: @theme-light;
-  }
-  @media(@sm-only){
-	h2 {
-	  font-size: 20px;
+	@media (@xs-only) {
+		background-color: @theme-light;
 	}
-  }
+	@media (@sm-only) {
+		h2 {
+			font-size: 20px;
+		}
+	}
 
-	.companyLogo{
+	.companyLogo {
 		margin: 10px 20px 0 2px;
 		max-height: none;
 		max-width: none;
-		@media(@xs) {
+		@media (@xs) {
 			.providersNormalSpriteImages(~"health"; ~""; @providerLogoNames; 0.4);
 		}
-		@media(@sm) {
+		@media (@sm) {
 			.providersNormalSpriteImages(~"health"; ~""; @providerLogoNames; 0.9);
 		}
-		@media(@md) {
+		@media (@md) {
 			.providersNormalSpriteImages(~"health"; ~""; @providerLogoNames; 0.8);
 		}
 	}
 
-
 }
-
 
 .more-info-content {
 
 	background-color: @main-bg-colour;
 
-	.fieldset-card{
+	.fieldset-card {
 		padding-top: 20px;
 		padding-bottom: 20px;
-		&.price-card{
+		&.price-card {
 			margin-bottom: 20px;
 		}
-		&.switching-card{
-			@media (@sm){
+		&.switching-card {
+			@media (@sm) {
 				padding-top: 0;
 			}
 		}
 	}
 
-	h1{
+	h1 {
 		font-size: 36px;
 		font-family: @font-family-theme-light;
 
-		&.productName{
+		&.productName {
 			font-size: 30px;
-			@media (@sm){
+			@media (@sm) {
 				font-size: 42px;
 			}
 			font-family: @font-family-theme-bold;
 		}
 	}
-	.cover-card{
-		h1{
+	.cover-card {
+		h1 {
 			margin-top: 0;
-			&.extrasCoverTitle{
-				@media  (@xs-only){
+			&.extrasCoverTitle {
+				@media (@xs-only) {
 					margin-top: 20px;
 				}
-				@media  (@sm-only) {
+				@media (@sm-only) {
 					margin-top: 20px;
 				}
 			}
 		}
 	}
 
-	h2{
+	h2 {
 		font-size: 25px;
 		font-family: @font-family-theme-regular;
-		margin-top: 18px;
+		@media (@xs-only) {
+			margin-top: 18px;
+		}
 	}
-	h5{
+	h5 {
 		margin-top: 20px;
 	}
-	p, ol, blockquote, .btn-cta{
+	p, ol, blockquote, .btn-cta {
 		font-size: 18px;
 	}
 	ol li,
-	blockquote{
+	blockquote {
 		color: @gray-slight-dark;
 	}
 	ol {
 		padding-left: 0;
 		list-style-type: none;
-		li{
+		li {
 			counter-increment: step-counter;
 			margin-left: 32px;
 			&::before {
@@ -126,19 +133,19 @@
 		}
 	}
 
-	ul{
+	ul {
 		.list-unstyled;
 	}
-	ul.indent{
+	ul.indent {
 		padding-left: 15px;
 	}
-	ul.exclusions{
+	ul.exclusions {
 		.content-columns(2, @grid-gutter-width);
-		li{
+		li {
 			padding-left: 20px;
 			position: relative;
 		}
-		.icon-cross{
+		.icon-cross {
 			position: absolute;
 			color: @cross-color;
 			margin-left: -20px;
@@ -146,52 +153,53 @@
 		}
 	}
 
-	blockquote{
+	blockquote {
 		margin: 0 30px;
-		@media (@md){
+		@media (@md) {
 			margin: 0 20%;
 		}
 		border-left: none;
 		text-align: left;
 	}
 
-	.frequencyAmount{
+	.frequencyAmount {
 		font-size: 40px;
 		font-family: @font-family-theme-bold;
 	}
-	.frequencyTitle{
+	.frequencyTitle {
 		font-size: 18px;
 		font-family: @font-family-theme-regular;
 		vertical-align: super;
 	}
 	.lhcText,
-	.rounding{
+	.rounding {
 		font-size: 16px;
 		color: @gray-light;
 	}
 
-	.priceRow{
+	.priceRow {
 		margin-top: 15px;
-		.btn-more-info-apply{
+		.btn-more-info-apply {
 			margin: 25px 0;
-			@media (@xs-only){
+			@media (@xs-only) {
 				width: 100%;
 			}
 		}
 	}
 
-	.btn-more-info-apply{
+	.btn-more-info-apply {
 		box-shadow: 1px 2px 0px 0px rgba(0, 0, 0, 0.3);
 	}
 
-	.btn{
+	.btn {
 		padding-left: 10%;
 		padding-right: 10%;
 		border-radius: 22px;
 	}
 
-}//.more-info-content
+}
 
+//.more-info-content
 
 .pricePromise {
 	background: @theme-tertiary;
@@ -202,14 +210,14 @@
 	h4 {
 		color: white;
 		margin-left: -15px;
-		@media (@md-only){
+		@media (@md-only) {
 			margin-top: 0;
 		}
 	}
 	a {
 		text-decoration: underline;
 	}
-	p{
+	p {
 		font-size: 14px;
 		margin-top: 15px;
 	}
@@ -234,34 +242,34 @@
 
 }
 
-.testimonials{
+.testimonials {
 	padding-top: 40px;
 	padding-bottom: 40px;
-	h2{
+	h2 {
 		text-align: center;
 		font-family: @font-family-theme-light;
 		padding-bottom: 20px;
 		font-size: 30px;
 	}
-	blockquote{
+	blockquote {
 		line-height: 16px;
 	}
 	.openQuote,
-	.closeQuote{
+	.closeQuote {
 		font-size: 100px;
 		font-family: serif;
 		margin-top: 15px;
 		color: @gray-slight-dark;
 	}
-	.openQuote{
+	.openQuote {
 		float: left;
 		margin-left: -50px;
 	}
-	.closeQuote{
+	.closeQuote {
 		float: right;
 		margin-right: -45px;
 	}
-	.testimonialAuthor{
+	.testimonialAuthor {
 		margin-right: 30px;
 		@media (@md) {
 			margin-right: 20%;
@@ -273,24 +281,24 @@
 	}
 }
 
-.extrasTable{
+.extrasTable {
 	text-align: center;
-	th{
+	th {
 		text-align: center;
 	}
 
-	&.table-bordered{
+	&.table-bordered {
 		border: none;
-		& > thead > tr{
+		& > thead > tr {
 			border: none;
-			& > th{
+			& > th {
 				border: none;
 				font-family: @font-family-theme-regular;
 			}
 		}
 	}
 	tbody {
-		th{
+		th {
 			font-weight: normal;
 			font-size: 18px;
 		}
@@ -303,38 +311,39 @@
 		}
 	}
 }
-.noTopMargin{
+
+.noTopMargin {
 	margin-top: 0px;
 }
 
-.moreInfoCallToActionBar{
+.moreInfoCallToActionBar {
 	background: @theme-tertiary;
-	@media (@xs-only){
+	@media (@xs-only) {
 		padding-top: 15px;
 		padding-bottom: 15px;
 	}
-	p{
+	p {
 		text-align: right;
 		color: white;
 		font-size: 30px;
-		@media (@xs-only){
+		@media (@xs-only) {
 			text-align: center;
 		}
 	}
-	& > div{
-		@media (@sm){
+	& > div {
+		@media (@sm) {
 			margin: 25px 0px;
 		}
 	}
-	.btn{
-		box-shadow: 1px 3px 1px 0px rgba(0,0,0,0.3);
-		@media (@xs-only){
+	.btn {
+		box-shadow: 1px 3px 1px 0px rgba(0, 0, 0, 0.3);
+		@media (@xs-only) {
 			display: block;
 		}
 	}
 }
 
-.policyBrochures{
+.policyBrochures {
 	background: #F2F2F2;
 	border-left: 1px solid #E7E7E7;
 	border-right: 1px solid #E7E7E7;
@@ -355,12 +364,12 @@
 @btn-hospital-brochure-active-border-color: @btn-hospital-brochure-active-bg-color;
 @btn-hospital-brochure-hover-border-color: @btn-hospital-brochure-hover-bg-color;
 .download-policy-brochure,
-.download-hospital-brochure{
+.download-hospital-brochure {
 	.btn-styles(
-		@btn-hospital-brochure-bg-color, @btn-hospital-brochure-color,
-		@btn-hospital-brochure-active-bg-color, @btn-hospital-brochure-active-color,
-		@btn-hospital-brochure-hover-bg-color, @btn-hospital-brochure-hover-color,
-		@btn-hospital-brochure-border-color, @btn-hospital-brochure-active-border-color, @btn-hospital-brochure-hover-border-color
+	@btn-hospital-brochure-bg-color, @btn-hospital-brochure-color,
+	@btn-hospital-brochure-active-bg-color, @btn-hospital-brochure-active-color,
+	@btn-hospital-brochure-hover-bg-color, @btn-hospital-brochure-hover-color,
+	@btn-hospital-brochure-border-color, @btn-hospital-brochure-active-border-color, @btn-hospital-brochure-hover-border-color
 	);
 }
 
@@ -377,7 +386,7 @@
 @btn-extras-brochure-border-color: @btn-extras-brochure-bg-color;
 @btn-extras-brochure-active-border-color: @btn-extras-brochure-active-bg-color;
 @btn-extras-brochure-hover-border-color: @btn-extras-brochure-hover-bg-color;
-.download-extras-brochure{
+.download-extras-brochure {
 	.btn-styles(
 	@btn-extras-brochure-bg-color, @btn-extras-brochure-color,
 	@btn-extras-brochure-active-bg-color, @btn-extras-brochure-active-color,
@@ -399,7 +408,7 @@
 @btn-email-brochure-border-color: @btn-email-brochure-bg-color;
 @btn-email-brochure-active-border-color: @btn-email-brochure-active-bg-color;
 @btn-email-brochure-hover-border-color: @btn-email-brochure-hover-bg-color;
-.btn-email-brochure{
+.btn-email-brochure {
 	.btn-styles(
 	@btn-email-brochure-bg-color, @btn-email-brochure-color,
 	@btn-email-brochure-active-bg-color, @btn-email-brochure-active-color,
@@ -411,7 +420,7 @@
 .download-policy-brochure,
 .download-hospital-brochure,
 .download-extras-brochure,
-.moreInfoEmailBrochures{
+.moreInfoEmailBrochures {
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
@@ -420,6 +429,7 @@
 	margin: 12px 0;
 	font-size: 16px;
 }
+
 .moreInfoProgressBarLeft {
 	border: 1px solid #b2b3b4;
 	border-bottom: none;
@@ -427,6 +437,7 @@
 	width: 30px;
 	height: 35px;
 }
+
 .moreInfoProgressDone {
 	border: 1px solid #1b713a;
 	color: white;
@@ -436,10 +447,11 @@
 	height: 105px;
 }
 
-ul.benefitsIcons{
+ul.benefitsIcons {
 	.clearfix;
 	margin-bottom: 0;
 }
+
 .benefitsIcons {
 	li {
 
@@ -494,25 +506,25 @@ ul.benefitsIcons{
 	}
 }
 
-	// Old CTA buttons variables for A/B testing
-	@old-btn-cta-bg-color: @theme-primary;
-	@old-btn-cta-color: contrast(@old-btn-cta-bg-color);
-	@old-btn-cta-border-color: @old-btn-cta-bg-color;
+// Old CTA buttons variables for A/B testing
+@old-btn-cta-bg-color: @theme-primary;
+@old-btn-cta-color: contrast(@old-btn-cta-bg-color);
+@old-btn-cta-border-color: @old-btn-cta-bg-color;
 
-	@old-btn-cta-hover-bg-color: darken(@old-btn-cta-bg-color, 12%);
-	@old-btn-cta-hover-color: contrast(@old-btn-cta-hover-bg-color);
-	@old-btn-cta-hover-border-color: @old-btn-cta-hover-bg-color;
+@old-btn-cta-hover-bg-color: darken(@old-btn-cta-bg-color, 12%);
+@old-btn-cta-hover-color: contrast(@old-btn-cta-hover-bg-color);
+@old-btn-cta-hover-border-color: @old-btn-cta-hover-bg-color;
 
-	@old-btn-cta-active-bg-color: @theme-secondary;
-	@old-btn-cta-active-color: contrast(@old-btn-cta-active-bg-color);
-	@old-btn-cta-active-border-color: @old-btn-cta-active-bg-color;
+@old-btn-cta-active-bg-color: @theme-secondary;
+@old-btn-cta-active-color: contrast(@old-btn-cta-active-bg-color);
+@old-btn-cta-active-border-color: @old-btn-cta-active-bg-color;
 
-	// A/B testing for old organge color buttons
-	.old-cta{
-		&.btn-cta {
-			.btn-styles(@old-btn-cta-bg-color, @old-btn-cta-color,
-			@old-btn-cta-active-bg-color, @old-btn-cta-active-color,
-			@old-btn-cta-hover-bg-color, @old-btn-cta-hover-color,
-			@old-btn-cta-border-color, @old-btn-cta-active-border-color, @old-btn-cta-hover-border-color, true);
-		}
+// A/B testing for old organge color buttons
+.old-cta {
+	&.btn-cta {
+		.btn-styles(@old-btn-cta-bg-color, @old-btn-cta-color,
+		@old-btn-cta-active-bg-color, @old-btn-cta-active-color,
+		@old-btn-cta-hover-bg-color, @old-btn-cta-hover-color,
+		@old-btn-cta-border-color, @old-btn-cta-active-border-color, @old-btn-cta-hover-border-color, true);
 	}
+}
