@@ -104,6 +104,7 @@
 			.removeClass('col-sm-8').addClass('col-sm-9');
 		$mainform.find('.col-sm-4')
 			.not("label[for*=health_healthCover]")
+			.not('label[for*=health_situation_coverType]')
 			.not('.short-list-item')
 			.add("label[for=health_healthCover_primary_dob]")
 			.add("label[for=health_healthCover_primary_cover]")
@@ -621,7 +622,7 @@
 				navigationId: steps.benefitsStep.navigationId
 			},
 			{
-				label:'Contact details',
+				label:'Your details',
 				navigationId: steps.contactStep.navigationId
 			},
 			{
@@ -693,7 +694,6 @@
 				// mobile from details step
 				{
 					$field: $("#health_contactDetails_contactNumber_mobile"),
-					$fieldInput: $("#health_contactDetails_contactNumber_mobileinput"),
 					$optInField: contactDetailsOptinField
 				},
 				// mobile from application step
@@ -705,8 +705,7 @@
 			otherPhone: [
 				// otherPhone from details step
 				{
-					$field: $("#health_contactDetails_otherNumber"),
-					$fieldInput: $("#health_contactDetails_otherNumberinput"),
+					$field: $("#health_contactDetails_contactNumber_other"),
 					$optInField: contactDetailsOptinField
 				},
 				// otherPhone from application step
@@ -723,10 +722,8 @@
 				},
 				// otherPhone from application step
 				{
-					$field: $("#health_application_mobile"),
-					$fieldInput: $("#health_application_mobileinput"),
-					$otherField: $("#health_application_other"),
-					$otherFieldInput: $("#health_application_otherinput")
+					$field: $("#health_contactDetails_contactNumber_mobile"),
+					$otherField: $("#health_contactDetails_contactNumber_other")
 				}
 			],
 			postcode: [

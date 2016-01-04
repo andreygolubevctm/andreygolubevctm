@@ -19,7 +19,7 @@ public class ProviderFilterDao {
 			"  JOIN ctm.provider_properties pp  " +
 			"    ON pm.providerId = pp.providerId  " +
 			"WHERE " +
-			"  PropertyId in 'authToken' " +
+			"  PropertyId = 'authToken' " +
 			"  AND Text = ?";
 
 	private final static String PROVIDER_DETAILS_QUERY_BY_KEY =
