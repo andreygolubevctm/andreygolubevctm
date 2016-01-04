@@ -31,7 +31,7 @@
                 className: 'modal-breakpoint-wide modal-tight moreInfoDropdown',
                 openOnHashChange: false,
                 leftBtn: {
-                    label: 'All Products',
+                    label: 'Back to results',
                     icon: '<span class="icon icon-arrow-left"></span>',
                     callback: function (eventObject) {
                         $(eventObject.currentTarget).closest('.modal').modal('hide');
@@ -40,12 +40,6 @@
                 onClose: function() {
                     onBeforeHideTemplate();
                     meerkat.modules.moreInfo.close();
-                },
-                onOpen: function(dialogId){
-                    // just fighting Bootstrap here...
-                    // It seems to think that because the body is overflowing, it needs to add right padding to cater for the scrollbar width
-                    // so taking that off once the modal is open
-                    $("#"+dialogId).css('padding-right', '0px');
                 }
             },
             runDisplayMethod: runDisplayMethod,
@@ -54,7 +48,7 @@
             onBeforeShowModal: onBeforeShowModal,
             onAfterShowModal: onAfterShowModal,
             onAfterShowTemplate: onAfterShowTemplate,
-            onBeforeHideTemplate: null,
+            onBeforeHideTemplate: onBeforeHideTemplate,
             onAfterHideTemplate: onAfterHideTemplate,
             onClickApplyNow: onClickApplyNow,
             onBeforeApply: onBeforeApply,
@@ -184,7 +178,6 @@
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
-
         $('#'+dialogId).find('.modal-body').children().wrap("<form class='healthMoreInfoModel'></form>");
 
         if (meerkat.site.emailBrochures.enabled) {
@@ -194,6 +187,11 @@
         // Move dual-pricing panel
         $('.more-info-content .moreInfoRightColumn > .dualPricing').insertAfter($('.more-info-content .moreInfoMainDetails'));
         populateBrochureEmailForModel();
+
+        // just fighting Bootstrap here...
+        // It seems to think that because the body is overflowing, it needs to add right padding to cater for the scrollbar width
+        // so taking that off once the modal is open
+        $("#"+dialogId).css('padding-right', '0px');
     }
 
     function onAfterShowModal() {
@@ -217,6 +215,11 @@
             }
         };
         meerkat.modules.moreInfo.updateSettings(settings);
+    }
+
+    function onBeforeHideTemplate() {
+        // unfade all headers
+        $(Results.settings.elements.page).find(".result").removeClass("faded");
     }
 
     function initialiseBrochureEmailForm(product, parent, form) {
