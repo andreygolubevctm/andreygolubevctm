@@ -37,8 +37,11 @@
 							<div class="col-xs-8 productNameContainer">
 								<div class="productName">{{= info.productTitle }}</div>
 							</div>
-							<div class=" col-xs-4">
+							<div class="hidden-xs col-xs-4">
 								<div class="companyLogo {{= info.provider}}-mi"></div>
+							</div>
+							<div class="visible-xs col-xs-4">
+								<div class="companyLogo {{= info.provider}}"></div>
 							</div>
 						</div>
 					</div>

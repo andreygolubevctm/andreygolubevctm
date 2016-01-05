@@ -300,3 +300,32 @@
 
   .providersNormalSpriteImagesVerticallyCentered(~"health"; ~""; @providerLogoNames; @standard-logo-height; @logo-price-spacer);
 }
+
+body[data-step='results'] .product-details-container .companyLogo {
+  display: none;
+}
+
+.modal-body {
+  .btn-more-info-apply,
+  .moreInfoCallRefNo,
+  .product-details-container .companyLogo {
+	display: none;
+  }
+
+  @media (@xs-only) {
+	.productNameContainer {
+	  height: auto !important;
+	}
+
+	.more-info-blue-header .xs-productName-container {
+	  height: 80px;
+	}
+
+	body[data-step='results'] & {
+	  .btn-more-info-apply,
+	  .moreInfoCallRefNo {
+		display: block;
+	  }
+	}
+  }
+}

@@ -80,7 +80,7 @@
 					<div class="productSummary horizontal visible-xs clearfix">
 
 
-						{{ var logoPriceTemplate = $("#logo-price-template").html(); }}
+						{{ var logoPriceTemplate = $("#more-info-logo-price-template").html(); }}
 						{{ var htmlTemplate = _.template(logoPriceTemplate); }}
 						{{ obj.htmlString = htmlTemplate(obj); }}
 						{{= htmlString }}
