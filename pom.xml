@@ -49,8 +49,8 @@
         <npm.version>2.14.8</npm.version>
 
         <org.mapstruct.version>1.0.0.CR1</org.mapstruct.version>
-        <energy-model-quote.version>1.0.0-SNAPSHOT</energy-model-quote.version>
-        <energy-apply-model.version>1.0.0-SNAPSHOT</energy-apply-model.version>
+        <energy-model-quote.version>1.0.0-RC1</energy-model-quote.version>
+        <energy-apply-model.version>1.1.0-RC2</energy-apply-model.version>
     </properties>
 
     <dependencyManagement>
