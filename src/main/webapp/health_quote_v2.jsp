@@ -77,8 +77,8 @@
                     ${openingHoursHeader }
                 </div>
                 <div class="navbar-text hidden-xs" data-livechat="target">
-                  <span class="icon-phone"></span>
-                  <h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
+                    <span class="icon-phone"></span>
+                    <h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
                     ${openingHoursHeader }
                 </div>
                 <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
