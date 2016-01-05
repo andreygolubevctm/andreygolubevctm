@@ -1,7 +1,7 @@
 DELETE FROM ctm.category_product_mapping WHERE productid IN (SELECT productid FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid=48);
 DELETE FROM ctm.product_properties_text WHERE productid IN (SELECT productid FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid=48);
 DELETE FROM ctm.product_properties WHERE productid IN (SELECT productid FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid=48);
-DELETE FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid=48);
+DELETE FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid=48;
 
 
 INSERT INTO ctm.product_master (ProductCat,ProductCode,ProviderId, ShortTitle, LongTitle,EffectiveStart,EffectiveEnd,Status) VALUES('CREDITCARD','ANZ-P',48,'ANZ Platinum','ANZ Platinum','2015-01-05','2040-12-31','');
