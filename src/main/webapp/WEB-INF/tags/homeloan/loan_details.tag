@@ -16,33 +16,21 @@
 
 
 <%-- HTML --%>
-<form_v2:fieldset_columns sideAbove="true">
-	<jsp:attribute name="rightColumn">
-			<ui:bubble variant="info" className="yourLoanDetails-bubble">
-				<h4>Your Loan Details</h4>
-				<p>If you're unsure about the purchase price or the amount you would like to borrow, please enter an estimate. You'll then be able to chat to your broker who will help you confirm these details.</p>
-			</ui:bubble>
-	</jsp:attribute>
-	<jsp:body>
+<form_v2:fieldset legend="Your New Home Loan" >
+	<div id="${name}_purchasePriceToggleArea" class="${name}_purchasePriceToggleArea show_${displayPurchasePrice}">
+		<form_v2:row label="What is the purchase price of the new property?">
+			<field_v2:currency xpath="${xpath}/purchasePrice" title="Purchase price" decimal="${false}" required="true" maxValue="1000000000" pattern="[0-9]*" />
+		</form_v2:row>
+	</div>
+	<form_v2:row label="How much would you like to borrow?">
+		<field_v2:currency xpath="${xpath}/loanAmount" title="Amount to borrow" decimal="${false}" required="true" maxValue="1000000000" pattern="[0-9]*" />
+	</form_v2:row>
+	<form_v2:row label="Product type" className="product-type-container" helpId="532">
+		<field_v2:checkbox xpath="${xpath}/productVariable" value="Y" title="Variable" required="false" label="true"  />
+		<field_v2:checkbox xpath="${xpath}/productFixed" value="Y" title="Fixed" required="false" label="true"/>
+	</form_v2:row>
+	<form_v2:row label="Interest Rate Type" helpId="534">
+		<field_v2:array_radio id="${name}_interestRate" xpath="${xpath}/interestRate" required="true" items="P=Principal & Interest,I=Interest Only" title="${title} the interest rate type" />
+	</form_v2:row>
 
-		<form_v2:fieldset legend="Your New Home Loan" >
-			<div id="${name}_purchasePriceToggleArea" class="${name}_purchasePriceToggleArea show_${displayPurchasePrice}">
-			<form_v2:row label="What is the purchase price of the new property?">
-				<field_v2:currency xpath="${xpath}/purchasePrice" title="Purchase price" decimal="${false}" required="true" maxValue="1000000000" pattern="[0-9]*" />
-			</form_v2:row>
-			</div>
-			<form_v2:row label="How much would you like to borrow?">
-				<field_v2:currency xpath="${xpath}/loanAmount" title="Amount to borrow" decimal="${false}" required="true" maxValue="1000000000" pattern="[0-9]*" />
-			</form_v2:row>
-			<form_v2:row label="Product type" className="product-type-container" helpId="532">
-				<field_v2:checkbox xpath="${xpath}/productVariable" value="Y" title="Variable" required="false" label="true"  />
-				<field_v2:checkbox xpath="${xpath}/productFixed" value="Y" title="Fixed" required="false" label="true"/>
-			</form_v2:row>
-			<form_v2:row label="Interest Rate Type" helpId="534">
-				<field_v2:array_radio id="${name}_interestRate" xpath="${xpath}/interestRate" required="true" items="P=Principal & Interest,I=Interest Only" title="${title} the interest rate type" />
-			</form_v2:row>
-
-		</form_v2:fieldset>
-
-	</jsp:body>
-</form_v2:fieldset_columns>
+</form_v2:fieldset>

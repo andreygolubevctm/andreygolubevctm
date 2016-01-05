@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:new verticalCode="TRAVEL" authenticated="true" />
+<jsp:useBean id="serviceConfigurationService" class="com.ctm.web.core.services.ServiceConfigurationService" scope="session"/>
 
 <core_v2:quote_check quoteType="travel" />
 <core_v2:load_preload />
@@ -115,6 +116,7 @@
 		<%-- generate the benefit fields (hidden) for form selection. --%>
 		<div class="hiddenFields">
 			<core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
+		    <core_v2:excluded_providers_list/>
 		</div>
 	</jsp:body>
 	

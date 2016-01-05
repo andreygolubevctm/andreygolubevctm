@@ -31,7 +31,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 		</c:otherwise>
 	</c:choose>
 
-	<div class="${colWidthValue} short-list-item ${item.getClassString()}">
+	<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">
 
 		<c:choose>
 			<c:when test="${item.getType() == 'section'}">

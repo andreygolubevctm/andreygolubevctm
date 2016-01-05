@@ -11,11 +11,16 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.validation.Name;
+import com.ctm.web.simples.services.PhoneService;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -28,6 +33,8 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ProviderService.class)
 public class CommonQuoteServiceTest {
 
     private CommonQuoteService commonQuoteService;
@@ -50,6 +57,7 @@ public class CommonQuoteServiceTest {
     @Before
     public void setup() throws Exception {
         initMocks(this);
+        PowerMockito.mockStatic(ProviderService.class);
 
         EnvironmentService.setEnvironment("localhost");
         commonQuoteService = spy(new CommonQuoteService(providerFilterDao, objectMapper) {});
@@ -86,10 +94,11 @@ public class CommonQuoteServiceTest {
         ProviderFilter providerFilter = mock(ProviderFilter.class);
         when(providerFilter.getProviderKey()).thenReturn("");
         when(providerFilter.getAuthToken()).thenReturn("");
+        // when(providerFilter.getProviders()).thenReturn(null);
         commonQuoteService.setFilter(providerFilter);
 
-        verify(providerFilter, times(1)).getProviderKey();
-        verify(providerFilter, times(1)).getAuthToken();
+        verify(providerFilter, times(2)).getProviderKey();
+        verify(providerFilter, times(2)).getAuthToken();
         verify(providerFilter, never()).setSingleProvider(anyString());
         verify(providerFilter, never()).setProviders(anyList());
 
@@ -104,7 +113,7 @@ public class CommonQuoteServiceTest {
 
         commonQuoteService.setFilter(providerFilter);
 
-        verify(providerFilter, times(2)).getProviderKey();
+        verify(providerFilter, times(3)).getProviderKey();
         verify(providerFilter, never()).getAuthToken();
         verify(providerFilter, times(1)).setSingleProvider("anyProviderKey");
         verify(providerFilter, never()).setProviders(anyList());
@@ -127,12 +136,12 @@ public class CommonQuoteServiceTest {
         when(providerFilter.getProviderKey()).thenReturn("");
         when(providerFilter.getAuthToken()).thenReturn("anyKey");
 
-        when(providerFilterDao.getProviderDetailsByAuthToken("anyKey")).thenReturn(Collections.singletonList("anyProviderKey"));
+        PowerMockito.when(ProviderService.getProvidersByAuthToken("anyKey")).thenReturn(Collections.singletonList("anyProviderKey"));
 
         commonQuoteService.setFilter(providerFilter);
 
-        verify(providerFilter, times(1)).getProviderKey();
-        verify(providerFilter, times(2)).getAuthToken();
+        verify(providerFilter, times(2)).getProviderKey();
+        verify(providerFilter, times(3)).getAuthToken();
         verify(providerFilter, never()).setSingleProvider(anyString());
         verify(providerFilter, times(1)).setProviders(Collections.singletonList("anyProviderKey"));
 

@@ -28,7 +28,7 @@ public class SplitTestService {
 
 		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 		VerticalType vertical = pageSettings.getVertical().getType();
-		String splitTests = null;
+		String splitTests = "1";
 		String tempSplitTests = request.getParameter("j");
 		if (tempSplitTests != null) {
 			splitTests = tempSplitTests.trim();

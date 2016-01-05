@@ -2,7 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('jsp.ajax.json.health_application')}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.health_application_ws')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true"/>
 
@@ -31,6 +31,8 @@
     <core_v1:access_count touch="P"/>
 </c:set>
 
+<jsp:useBean id="healthLeadService" class="com.ctm.web.health.services.HealthLeadService" scope="request" />
+
 <c:choose>
     <%--
 	token can only be invalid for ONLINE.
@@ -39,7 +41,7 @@
 	--%>
     <c:when test="${!healthApplicationService.validToken}">
         <health_v1:set_to_pending errorMessage="Token is not valid." resultJson="${healthApplicationService.createTokenValidationFailedResponse(data.current.transactionId,pageContext.session.id)}"  transactionId="${resultXml}" productId="${productId}" />
-        ${healthApplicationService.createErrorResponse(data.current.transactionId, "Token is not valid", pageContext.request, "")}
+        ${healthApplicationService.createErrorResponse(data.current.transactionId, "Token is not valid", "")}
     </c:when>
     <%-- only output validation errors if call centre --%>
     <c:when test="${!healthApplicationService.valid && callCentre}">
@@ -64,12 +66,17 @@
     <c:when test="${empty callCentre and not empty touch_count and touch_count > 5}">
         <c:set var="errorMessage" value="You have attempted to submit this join more than 5 times."/>
         <core_v1:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
-        ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request, "submission")}
+
+        <c:if test="${not empty data['health/privacyoptin'] and data['health/privacyoptin'] eq 'Y'}">
+            ${healthLeadService.sendLead(4, data, pageContext.getRequest(), 'PENDING')}
+        </c:if>
+
+        ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "submission")}
     </c:when>
     <%-- check the latest touch, to make sure a join is not already actively in progress [HLT-1092] --%>
     <c:when test="${accessTouchService.isBeingSubmitted(tranId)}">
         <c:set var="errorMessage" value="Your application is still being submitted. Please wait."/>
-        <core_v1:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
+        <core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
         ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request, "submission")}
     </c:when>
     <c:otherwise>
@@ -83,20 +90,26 @@
             <c:when test="${ct_outcome == 'C'}">
                 <c:set var="errorMessage" value="Quote has already been submitted and confirmed."/>
                 <core_v1:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
-                ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request, "confirmed")}
+                ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "confirmed")}
             </c:when>
 
             <c:when test="${ct_outcome == 'V' or ct_outcome == 'I'}">
                 <c:set var="errorMessage"
                        value="Important details are missing from your session. Your session may have expired."/>
                 <core_v1:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
-                ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request, "transaction")}
+
+                ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "transaction")}
             </c:when>
 
             <c:when test="${not empty ct_outcome}">
                 <c:set var="errorMessage" value="Application submit error. Code=${ct_outcome}"/>
                 <core_v1:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
-                ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request, "")}
+
+                <c:if test="${not empty data['health/privacyoptin'] and data['health/privacyoptin'] eq 'Y'}">
+                    ${healthLeadService.sendLead(4, data, pageContext.getRequest(), 'PENDING')}
+                </c:if>
+
+                ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "")}
             </c:when>
             <c:otherwise>
                 <jsp:forward page="/rest/health/apply/get.json"/>

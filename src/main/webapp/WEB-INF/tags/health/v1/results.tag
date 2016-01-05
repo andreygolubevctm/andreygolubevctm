@@ -184,8 +184,8 @@
 		<div class="compare-basket compareCheckbox">
 			{{ if(comparedResultsCount === 0) { }}
 			<p>
+				Displayed are the <span class="products-returned-count">{{= resultsCount }} cheapest products</span> matching your needs from our participating funds.
 				Click the <input type="checkbox" class="compare-tick" checked disabled><label></label> to add up to <span class="compare-max-count-label">{{= maxAllowable }} products</span> to your shortlist.
-				We've found <span class="products-returned-count">{{= resultsCount }} products</span> <span class="smaller">matching your needs.</span>
 			</p>
 			{{ }  else { }}
 
