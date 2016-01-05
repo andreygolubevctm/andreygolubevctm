@@ -65,10 +65,10 @@
 					<div class="dropdown-container">
 						<c:choose>
 							<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 34) or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 35)}">
-								<home_new:edit_details_v2 />
+								<home:edit_details_v2 />
 							</c:when>
 							<c:otherwise>
-								<home_new:edit_details />
+								<home:edit_details />
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -163,7 +163,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">
-		<home_new:settings />
+		<home:settings />
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
@@ -183,22 +183,22 @@
 		<c:set var="splitTestB" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 35)}" />
 
 		<%-- Slides --%>
-		<home_new_layout:slide_cover_type />
-		<home_new_layout:slide_occupancy />
-		<home_new_layout:slide_your_property />
+		<home_layout:slide_cover_type />
+		<home_layout:slide_occupancy />
+		<home_layout:slide_your_property />
 		<c:choose>
 			<%-- When splittest is ON --%>
 			<c:when test="${splitTestA eq true or splitTestB eq true}">
-				<home_new_layout:slide_history />
-				<home_new_layout:slide_policy_holders />
+				<home_layout:slide_history />
+				<home_layout:slide_policy_holders />
 			</c:when>
 			<%-- When splittest is OFF --%>
 			<c:otherwise>
-				<home_new_layout:slide_policy_holders />
-				<home_new_layout:slide_history />
+				<home_layout:slide_policy_holders />
+				<home_layout:slide_history />
 			</c:otherwise>
 		</c:choose>
-		<home_new_layout:slide_results />
+		<home_layout:slide_results />
 
 		<field_v1:hidden xpath="environmentOverride" />
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
