@@ -274,7 +274,7 @@ public class UploadService {
 
 										switch(idx) {
 										case 42:
-											update.append("INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM category_master WHERE categoryCode IN ('"+part[idx].replaceAll(",", "','")+"');\r\n");
+											update.append("INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM ctm.category_master WHERE categoryCode IN ('"+part[idx].replaceAll(",", "','")+"');\r\n");
 
 											break;
 										case 24:
