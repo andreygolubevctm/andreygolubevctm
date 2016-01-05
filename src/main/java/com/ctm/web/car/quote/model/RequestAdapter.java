@@ -31,13 +31,14 @@ public class RequestAdapter {
         quoteRequest.setRiskAddress(createRiskAddress(carQuote));
         quoteRequest.setVehicle(createVehicle(carQuote));
 
-        // CAR-1170. For vehicle use, two new radio button introduced. Override created here so that the data team still get Y/N values for their report
-        if (quoteRequest.getVehicle().getGoodsPayment() != null && quoteRequest.getVehicle().getGoodsPayment().equals("Y")) {
-            quoteRequest.getVehicle().setUse("13"); // CAR-1170
-        }
 
         if (quoteRequest.getVehicle().getPassengerPayment() != null && quoteRequest.getVehicle().getPassengerPayment().equals("Y")) {
-            quoteRequest.getVehicle().setUse("15"); // CAR-1170
+            quoteRequest.getVehicle().setUse("13"); // CAR-1170
+        } else {
+            // CAR-1170. For vehicle use, two new radio button introduced. Override created here so that the data team still get Y/N values for their report
+            if (quoteRequest.getVehicle().getGoodsPayment() != null && quoteRequest.getVehicle().getGoodsPayment().equals("Y")) {
+                quoteRequest.getVehicle().setUse("15"); // CAR-1170
+            }
         }
 
 
