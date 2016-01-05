@@ -49,7 +49,7 @@ public class UploadService {
 			update.append("DELETE FROM ctm.category_product_mapping WHERE productid IN (SELECT productid FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid="+providerId+");\r\n");
 			update.append("DELETE FROM ctm.product_properties_text WHERE productid IN (SELECT productid FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid="+providerId+");\r\n");
 			update.append("DELETE FROM ctm.product_properties WHERE productid IN (SELECT productid FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid="+providerId+");\r\n");
-			update.append("DELETE FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid="+providerId+");\r\n");
+			update.append("DELETE FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid="+providerId+";\r\n");
 
 			int PRODUCT_CODE_COLUMN_NUMBER = 0;
 				//int PROVIDER_NAME_COLUMN_NUMBER = 1;
