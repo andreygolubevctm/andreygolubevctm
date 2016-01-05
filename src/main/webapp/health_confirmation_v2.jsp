@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<health:redirect_rules />
+<health_v1:redirect_rules />
 
 <session:new verticalCode="HEALTH" authenticated="true" />
 
@@ -72,11 +72,11 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<health:footer />
+		<health_v1:footer />
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">
-		<health:settings />
+		<health_v1:settings />
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
@@ -88,7 +88,7 @@
 	</jsp:attribute>
 
 	<jsp:body>
-		<health_new_layout:slide_confirmation />
+		<health_v2_layout:slide_confirmation />
 	</jsp:body>
 
 </layout_v1:journey_engine_page>

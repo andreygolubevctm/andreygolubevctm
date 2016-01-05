@@ -420,7 +420,7 @@
 			${userDetails.application.setPhoneOther(app_phoneOther)}
 			${userDetails.application.setPhoneMobile(app_phoneMobile)}
 			${userDetails.application.setOkToCall(app_okToCall)}
-			<health:write_optins
+			<health_v1:write_optins
 				userDetails = "${userDetails}"
 			/>
 		</c:when>

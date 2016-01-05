@@ -38,7 +38,7 @@
 	TODO: move this over to HealthApplicationService
 	--%>
     <c:when test="${!healthApplicationService.validToken}">
-        <health:set_to_pending errorMessage="Token is not valid." resultJson="${healthApplicationService.createTokenValidationFailedResponse(data.current.transactionId,pageContext.session.id)}"  transactionId="${resultXml}" productId="${productId}" />
+        <health_v1:set_to_pending errorMessage="Token is not valid." resultJson="${healthApplicationService.createTokenValidationFailedResponse(data.current.transactionId,pageContext.session.id)}"  transactionId="${resultXml}" productId="${productId}" />
         ${healthApplicationService.createErrorResponse(data.current.transactionId, "Token is not valid", pageContext.request, "")}
     </c:when>
     <%-- only output validation errors if call centre --%>
@@ -57,7 +57,7 @@
             </c:set>
         </c:forEach>
         <c:set var="resultXml">${resultXml}</errors></result></c:set>
-        <health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}"
+        <health_v1:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}"
                                productId="${productId}"/>
     </c:when>
     <%-- check the if ONLINE user submitted more than 5 times [HLT-1092] --%>

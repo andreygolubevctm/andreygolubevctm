@@ -110,7 +110,7 @@
 			</c:set>
 
 			<c:if test="${pageSettings.getVerticalCode() == 'health'}">
-				<health:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
+				<health_v1:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
 			</c:if>
 
 			<c:if test="${pageSettings.getVerticalCode() == 'travel'}">

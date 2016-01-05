@@ -105,8 +105,8 @@
 					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:when test="${param.tmpl eq 'health_bestprice'}">
-					<c:set var="rowXML"><health:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" ></health:xmlForOtherQuery></c:set>
-					<c:set var="rowXML"><health:xmlForCallCentreHoursQuery /></c:set>
+					<c:set var="rowXML"><health_v1:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" ></health_v1:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><health_v1:xmlForCallCentreHoursQuery /></c:set>
 					<c:set var="emailTokenType" value="bestprice" />
 					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>

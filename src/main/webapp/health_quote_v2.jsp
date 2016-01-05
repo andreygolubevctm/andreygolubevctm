@@ -4,7 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<health:redirect_rules />
+<health_v1:redirect_rules />
 
 <session:new verticalCode="HEALTH" authenticated="true" />
 
@@ -113,13 +113,13 @@
           <li class="dropdown dropdown-interactive slide-feature-filters" id="filters-dropdown">
             <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter</span><span class="hidden-sm"> Results</span> <b class="caret"></b></a>
             <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-              <health:filters />
+              <health_v1:filters />
             </div>
           </li>
           <li class="dropdown dropdown-interactive slide-feature-benefits" id="benefits-dropdown">
             <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-cog"></span> <span>Customise</span><span class="hidden-sm"> Cover</span> <b class="caret"></b></a>
             <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-              <health:benefits />
+              <health_v1:benefits />
             </div>
           </li>
 
@@ -139,11 +139,11 @@
 	</jsp:attribute>
 							
 	<jsp:attribute name="footer">
-		<health:footer />
+		<health_v1:footer />
 	</jsp:attribute>
 							
 	<jsp:attribute name="vertical_settings">
-		<health:settings />
+		<health_v1:settings />
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
@@ -158,22 +158,22 @@
 	</jsp:attribute>
 
   <jsp:body>
-    <health:product_title_search />
+    <health_v1:product_title_search />
     <core_v1:application_date />
 
     <%-- Product summary header for mobile --%>
     <div class="row productSummary-parent visible-xs">
       <div class="productSummary-affix affix-top visible-xs">
-        <health:policySummary />
+        <health_v1:policySummary />
       </div>
     </div>
 
-    <health:choices xpathBenefits="${pageSettings.getVerticalCode()}/benefits" xpathSituation="${pageSettings.getVerticalCode()}/situation" />
+    <health_v1:choices xpathBenefits="${pageSettings.getVerticalCode()}/benefits" xpathSituation="${pageSettings.getVerticalCode()}/situation" />
 
     <%-- generate the benefit fields (hidden) for form selection. --%>
     <div class="hiddenFields">
       <c:forEach items="${resultTemplateItems}" var="selectedValue">
-        <health_new:benefitsHiddenItem item="${selectedValue}" />
+        <health_v2:benefitsHiddenItem item="${selectedValue}" />
       </c:forEach>
 
       <field_v1:hidden xpath="health/renderingMode" />
@@ -189,14 +189,14 @@
     </div>
 
     <%-- Slides --%>
-    <health_new_layout:slide_all_about_you />
-    <health_new_layout:slide_benefits />
-    <health_new_layout:slide_your_contact />
-    <health_layout:slide_results />
-    <health_new_layout:slide_application_details />
-    <health_new_layout:slide_payment_details />
+    <health_v2_layout:slide_all_about_you />
+    <health_v2_layout:slide_benefits />
+    <health_v2_layout:slide_your_contact />
+    <health_v1_layout:slide_results />
+    <health_v2_layout:slide_application_details />
+    <health_v2_layout:slide_payment_details />
 
-    <health_new:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />
+    <health_v2:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />
 
     <field_v1:hidden xpath="environmentOverride" />
     <input type="hidden" name="transcheck" id="transcheck" value="1" />

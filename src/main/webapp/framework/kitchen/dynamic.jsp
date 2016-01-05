@@ -369,13 +369,13 @@
 	</form_v2:row>
 
 	<form_v2:row label="filter_excess ">
-		<health:filter_excess xpath="${xpath}/new/filterExcess" />
+		<health_v1:filter_excess xpath="${xpath}/new/filterExcess" />
 		<%-- <field_v1:hidden xpath="health/excess" defaultValue="3" /> --%>
 		<input type="hidden" value="3" class="" id="health_excess" name="health_excess">
 	</form_v2:row>
 
 	<form_v2:row label="filter_price">
-		<health:filter_price xpath="${xpath}/new/filterPrice" />
+		<health_v1:filter_price xpath="${xpath}/new/filterPrice" />
 	</form_v2:row>
 
 	<form_v2:row label="input">
