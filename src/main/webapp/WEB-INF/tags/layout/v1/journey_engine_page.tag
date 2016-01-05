@@ -33,7 +33,7 @@
 
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
-<layout:page title="${title}">
+<layout_v1:page title="${title}">
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />
@@ -151,4 +151,4 @@
 
 	</jsp:body>
 
-</layout:page>
+</layout_v1:page>

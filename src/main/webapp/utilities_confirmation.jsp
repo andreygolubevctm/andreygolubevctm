@@ -54,7 +54,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">
-		<utilities_new:settings/>
+		<utilities_v2:settings/>
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
@@ -65,7 +65,7 @@
 	</jsp:attribute>
 
   <jsp:body>
-    <utilities_new_layout:slide_confirmation />
+    <utilities_v2_layout:slide_confirmation />
   </jsp:body>
 
 </layout_v1:journey_engine_page>

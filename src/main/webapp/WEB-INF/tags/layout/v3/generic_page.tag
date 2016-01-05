@@ -18,7 +18,7 @@
 <c:set var="incSuperTag"><c:choose><c:when test="${not empty incSuperTag}">true</c:when><c:otherwise>false</c:otherwise></c:choose></c:set>
 <c:set var="skipJSCSS"><c:if test="${not empty skipJSCSS}">true</c:if></c:set>
 
-<layout:page skipJSCSS="${skipJSCSS}" title="${title}">
+<layout_v3:page skipJSCSS="${skipJSCSS}" title="${title}">
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />
@@ -67,4 +67,4 @@
 		</agg_v1:footer_outer>
 	</jsp:body>
 
-</layout:page>
+</layout_v3:page>

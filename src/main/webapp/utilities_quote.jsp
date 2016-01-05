@@ -139,7 +139,7 @@
 	</jsp:attribute>
 						
 	<jsp:attribute name="vertical_settings">
-		<utilities_new:settings/>
+		<utilities_v2:settings/>
 	</jsp:attribute>
 							
 	<jsp:attribute name="body_end">
@@ -148,10 +148,10 @@
     <jsp:body>
 							
         <%-- Slides --%>
-        <utilities_new_layout:slide_your_details/>
-        <utilities_new_layout:slide_contact_details/>
-        <utilities_new_layout:slide_results/>
-        <utilities_new_layout:slide_enquiry/>
+        <utilities_v2_layout:slide_your_details/>
+        <utilities_v2_layout:slide_contact_details/>
+        <utilities_v2_layout:slide_results/>
+        <utilities_v2_layout:slide_enquiry/>
 							
         <div class="hiddenFields">
             <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>

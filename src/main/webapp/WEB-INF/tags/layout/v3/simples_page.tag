@@ -12,7 +12,7 @@
 	</c:if>
 </c:set>
 
-<layout:page title="Simples">
+<layout_v3:page title="Simples">
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />
@@ -35,4 +35,4 @@
 		</article>
 	</jsp:body>
 
-</layout:page>
+</layout_v3:page>
