@@ -20,3 +20,16 @@ INSERT INTO ctm.travel_product_benefits (providerId,productId,benefitId,label,de
 UPDATE ctm.travel_product_benefits SET endDate='2016-01-20 23:59:59' WHERE productId='0eb6cdfa-2e4e-4108-804a-a1cf0038b64f' AND benefitId=6;
 INSERT INTO ctm.travel_product_benefits (providerId,productId,benefitId,label,description,benefitValue,benefitValueText,overrideExternal,startDate,endDate)
     VALUES (309,'0eb6cdfa-2e4e-4108-804a-a1cf0038b64f',6,'Luggage and Personal Effects','Luggage and Personal Effects',10000,'$10,000',0,'2016-01-21 00:00:00','2040-12-31 00:00:00');
+
+-- Rollback
+-- DELETE ctm.travel_product_benefits WHERE productId='8210a68c-bfec-4c40-b963-a1cf00388197' AND benefitId=2 AND startDate='2016-01-21 00:00:00';
+-- DELETE ctm.travel_product_benefits WHERE productId='c9b94be1-99a7-4523-b682-a1cf00389c0c' AND benefitId=2 AND startDate='2016-01-21 00:00:00';
+-- DELETE ctm.travel_product_benefits WHERE productId='c9b94be1-99a7-4523-b682-a1cf00389c0c' AND benefitId=6 AND startDate='2016-01-21 00:00:00';
+-- DELETE ctm.travel_product_benefits WHERE productId='0eb6cdfa-2e4e-4108-804a-a1cf0038b64f' AND benefitId=2 AND startDate='2016-01-21 00:00:00';
+-- DELETE ctm.travel_product_benefits WHERE productId='0eb6cdfa-2e4e-4108-804a-a1cf0038b64f' AND benefitId=6 AND startDate='2016-01-21 00:00:00';
+
+-- UPDATE ctm.travel_product_benefits SET endDate='2040-12-31 00:00:00' WHERE productId='8210a68c-bfec-4c40-b963-a1cf00388197' AND benefitId=2;
+-- UPDATE ctm.travel_product_benefits SET endDate='2040-12-31 00:00:00' WHERE productId='c9b94be1-99a7-4523-b682-a1cf00389c0c' AND benefitId=2;
+-- UPDATE ctm.travel_product_benefits SET endDate='2040-12-31 00:00:00' WHERE productId='c9b94be1-99a7-4523-b682-a1cf00389c0c' AND benefitId=6;
+-- UPDATE ctm.travel_product_benefits SET endDate='2040-12-31 00:00:00' WHERE productId='0eb6cdfa-2e4e-4108-804a-a1cf0038b64f' AND benefitId=2;
+-- UPDATE ctm.travel_product_benefits SET endDate='2040-12-31 00:00:00' WHERE productId='0eb6cdfa-2e4e-4108-804a-a1cf0038b64f' AND benefitId=6;
