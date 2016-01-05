@@ -27,6 +27,9 @@
 	<listener>
 		<listener-class>org.springframework.boot.legacy.context.web.SpringBootContextLoaderListener</listener-class>
 	</listener>
+	<listener>
+		<listener-class>com.ctm.commonlogging.context.ContextPathListener</listener-class>
+	</listener>
 
 	<!-- SESSIONS: This over-rides the settings in Tomcat -->
 	<session-config>

@@ -32,7 +32,7 @@
 <%-- Added the check to exclude expired products/providers --%>
 <sql:query var="result">
 	<c:choose>
-		<c:when test="${pageSettings.getVerticalCode() eq 'car'}">
+		<c:when test="${pageSettings.getVerticalCode() eq 'car' or pageSettings.getVerticalCode() eq 'home'}">
 			SELECT GROUP_CONCAT(a.ProviderCode) AS ProviderCode, (
 				CASE WHEN a.ProviderCode = 'AI' THEN 'AI'
 				WHEN a.ProviderCode IN ('WOOL','REAL') THEN 'Hollard'

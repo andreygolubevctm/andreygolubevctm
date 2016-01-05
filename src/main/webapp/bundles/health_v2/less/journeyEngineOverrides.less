@@ -37,6 +37,10 @@
 .btn-next, .btn-cta, .btn-save, .btn-cancel, .btn-download, .btn-edit {
   border-radius: 22px;
 }
+
+.btn-next {
+  margin-top: 5px;
+}
 .slideAction,
 .confirm-step {
   div:first-child {
@@ -44,13 +48,34 @@
   }
 }
 
+.content {
+  background-color: white;
+  border:1px solid @border-colour;
+  padding-top: 25px;
+  @media (@xs) {
+	padding-left: 25px;
+	padding-right: 25px;
+  }
+}
+//Overriding a 40px bottom
+.fieldset {
+  margin-bottom: 5px;
+  h4 {
+	color: @section-text-color;
+  }
+
+
+}
+
 .fieldset,
 .fieldset-column-side{
-  border: 1px solid @border-colour;
-  background-color: white;
+
   &.lhc-group,
   &.rebate-group{
 	border: none;
+	.content{
+	  border: none;
+	}
 	h2{
 	  margin-left: 0px;
 	}
@@ -60,8 +85,10 @@
 	color: @header-color;
 	font-weight: bold;
 	font-size: 38px;
-	margin-left: 15px;
-	margin-top: 13px;
+	margin-bottom: 10px;
+  }
+  h4 {
+	font-family: @font-family-base;
   }
   &.confirmation,
   .confirmation {
@@ -70,7 +97,6 @@
 	}
 	h2 {
 	  font-size:24px;
-	  margin-left: 0px;
 	}
   }
   .well-chatty {
@@ -92,7 +118,10 @@
 	margin-left:20px;
   }
 }
+
 .fieldset-column-side{
+  border: 1px solid @border-colour;
+  background-color: white;
   padding-bottom: 25px;
 }
 
@@ -110,9 +139,11 @@
   background-color: @main-bg-colour;
 }
 &.instructional {
-  .content,
-  &.content{
-	margin-left: 20px;
+  .content {
+	h4,
+	p {
+		margin-left: 20px;
+  	}
   }
 }
 
