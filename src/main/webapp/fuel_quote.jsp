@@ -71,7 +71,7 @@
 						</a>
 						<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 							<div class="dropdown-container">
-								<fuel_new:sign_up />
+								<fuel:sign_up />
 							</div>
 						</div>
 					</li>
@@ -124,7 +124,7 @@
 			</jsp:attribute>
 
 			<jsp:attribute name="vertical_settings">
-				<fuel_new:settings />
+				<fuel:settings />
 			</jsp:attribute>
 						 
 			<jsp:attribute name="body_end">
@@ -133,8 +133,8 @@
 
 			<jsp:body>
 				<%-- Slides --%>
-				<fuel_new_layout:slide_details />
-				<fuel_new_layout:slide_results />
+				<fuel_layout:slide_details />
+				<fuel_layout:slide_results />
 
 				<div class="hiddenFields">
 					<form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />

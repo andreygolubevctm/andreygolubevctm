@@ -87,7 +87,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">
-		<roadside_new:settings/>
+		<roadside:settings/>
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
@@ -96,8 +96,8 @@
     <jsp:body>
 
         <%-- Slides --%>
-        <roadside_new_layout:slide_your_car/>
-        <roadside_new_layout:slide_results/>
+        <roadside_layout:slide_your_car/>
+        <roadside_layout:slide_results/>
 
         <div class="hiddenFields">
             <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>

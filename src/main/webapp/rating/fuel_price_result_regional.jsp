@@ -105,7 +105,7 @@ ${logger.debug('REGIONAL SEARCH')}
 	</sql:query>
 </c:if>
 
-<c:set var="update"><fuel_new:schedule type="regional" /></c:set>
+<c:set var="update"><fuel:schedule type="regional" /></c:set>
 
 <%-- Build the xml data for each row --%>
 <results type="regional">

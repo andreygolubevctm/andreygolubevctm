@@ -36,10 +36,10 @@
 <%@ taglib tagdir="/WEB-INF/tags/simples"				prefix="simples" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel"				prefix="travel" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel/layout"			prefix="travel_layout" %>
-<%@ taglib tagdir="/WEB-INF/tags/fuel_new"				prefix="fuel_new" %>
-<%@ taglib tagdir="/WEB-INF/tags/fuel_new/layout"		prefix="fuel_new_layout" %>
-<%@ taglib tagdir="/WEB-INF/tags/roadside_new"			prefix="roadside_new" %>
-<%@ taglib tagdir="/WEB-INF/tags/roadside_new/layout"	prefix="roadside_new_layout" %>
+<%@ taglib tagdir="/WEB-INF/tags/fuel"				    prefix="fuel" %>
+<%@ taglib tagdir="/WEB-INF/tags/fuel/layout"		    prefix="fuel_layout" %>
+<%@ taglib tagdir="/WEB-INF/tags/roadside"			    prefix="roadside" %>
+<%@ taglib tagdir="/WEB-INF/tags/roadside/layout"	    prefix="roadside_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/life"					prefix="life" %>
 <%@ taglib tagdir="/WEB-INF/tags/ip"					prefix="ip" %>
 <%@ taglib tagdir="/WEB-INF/tags/competition"			prefix="competition" %>
