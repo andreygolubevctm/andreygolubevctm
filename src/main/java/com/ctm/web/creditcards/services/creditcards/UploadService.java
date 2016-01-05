@@ -22,9 +22,10 @@ public class UploadService {
 		String effectiveDate = file.effectiveDate;
 
 		if(file.deleteId.length() > 0) {
-			update.append("UPDATE ctm.product_properties_text SET EffectiveEnd='"+effectiveDate+"' WHERE productid IN ("+file.deleteId+");\r\n");
-			update.append("UPDATE ctm.product_properties SET EffectiveEnd='"+effectiveDate+"' WHERE productid IN ("+file.deleteId+");\r\n");
-			update.append("UPDATE ctm.product_master SET EffectiveEnd='"+effectiveDate+"', Status='X' WHERE productid IN ("+file.deleteId+");\r\n");
+			update.append("DELETE FROM ctm.category_product_mapping WHERE productid IN ("+file.deleteId+");\r\n");
+			update.append("DELETE FROM ctm.product_properties_text WHERE productid IN ("+file.deleteId+");\r\n");
+			update.append("DELETE FROM ctm.product_properties WHERE productid IN ("+file.deleteId+");\r\n");
+			update.append("DELETE FROM ctm.product_master WHERE productid IN ("+file.deleteId+");\r\n");
 		}
 
 		try {
@@ -159,7 +160,7 @@ public class UploadService {
 									dbSource = new SimpleDatabaseConnection();
 
 									stmt = dbSource.getConnection().prepareStatement(
-											"SELECT productId FROM ctm.product_master WHERE ProductCode = ? AND Status != 'X'"
+											"SELECT productId FROM ctm.product_master WHERE ProductCode = ? AND ProductID NOT IN ("+file.deleteId+") AND Status != 'X'"
 									);
 
 									stmt.setString(1, part[PRODUCT_CODE_COLUMN_NUMBER]);
@@ -183,10 +184,9 @@ public class UploadService {
 								} else {
 									update.append("\r\n\r\nUPDATE ctm.product_master SET ShortTitle = '"+part[PRODUCT_SHORT_DESC_COLUMN_NUMBER]+"', LongTitle = '"+part[PRODUCT_SHORT_DESC_COLUMN_NUMBER]+"' WHERE productId = "+productId+";\r\n");
 									update.append("SET @product_id = "+productId+";\r\n");
+									update.append("DELETE FROM ctm.product_properties WHERE productid = @product_id;\r\n");
+									update.append("DELETE FROM ctm.product_properties_text WHERE productid = @product_id;\r\n");
 								}
-
-								update.append("DELETE FROM ctm.product_properties WHERE productid = @product_id;\r\n");
-								update.append("DELETE FROM ctm.product_properties_text WHERE productid = @product_id;\r\n");
 
 								if (productCode != prevProductCode){
 									prevProductCode = productCode;
@@ -313,8 +313,9 @@ public class UploadService {
 
 												switch(idx) {
 												case 42:
-
-													update.append("DELETE FROM ctm.category_product_mapping WHERE productId = @product_id;\r\n");
+													if (productId != -1) {
+														update.append("DELETE FROM ctm.category_product_mapping WHERE productId = @product_id;\r\n");
+													}
 													update.append("INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM category_master WHERE categoryCode IN ('"+part[idx].replaceAll(",", "','")+"');\r\n");
 
 													break;
