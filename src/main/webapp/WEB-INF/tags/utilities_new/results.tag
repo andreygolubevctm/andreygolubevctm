@@ -56,14 +56,40 @@
         {{ var logo = _.template(template); }}
         {{ logo = logo(obj); }}
 
+        {{ var whatToCompare = meerkat.modules.utilities.getVerticalFilter(); }}
+        {{ var hasGas = _.indexOf(["G","EG"],whatToCompare) >= 0; }}
+        {{ var gasOnly = whatToCompare === "G"; }}
+        {{ var hasElectricity = _.indexOf(["E","EG"],whatToCompare) >= 0; }}
+        {{ var electricityOnly = whatToCompare === "E"; }}
+
         {{ var yearlySavingsValue = yearlyElectricitySavingsValue + yearlyGasSavingsValue; }}
-        {{ var yearlyElectricitySavingsLabel = yearlyElectricitySavingsValue < 0 ? "extra cost up to $" + (yearlyElectricitySavingsValue*-1) : "$" + yearlyElectricitySavingsValue.toFixed(2); }}
-        {{ var yearlyGasSavingsLabel = yearlyGasSavingsValue < 0 ? "extra cost up to $" + (yearlyGasSavingsValue*-1) : "$" + yearlyGasSavingsValue.toFixed(2); }}
+        {{ var yearlyElectricitySavingsLabel = ""; }}
+        {{ var yearlyGasSavingsLabel = ""; }}
+
+        {{ if(hasElectricity) { }}
+        {{ yearlyElectricitySavingsLabel = yearlyElectricitySavingsValue < 0 ? "<span>extra cost up to $" + (yearlyElectricitySavingsValue*-1) + "</span>" : "<span>$" + yearlyElectricitySavingsValue.toFixed(2) + "<span>"; }}
+        {{ if(yearlyElectricitySavingsValue == 0) { yearlyElectricitySavingsLabel = '<a class="btn-add-bill" href="javascript:;"><span>Add bill information</span> <span class="icon icon-arrow-right"/></a>'; } }}
+        {{ } }}
+
+        {{ if(hasGas) { }}
+        {{ yearlyGasSavingsLabel = yearlyGasSavingsValue < 0 ? "<span>extra cost up to $" + (yearlyGasSavingsValue*-1) + "</span>" : "<span>$" + yearlyGasSavingsValue.toFixed(2) + "<span>"; }}
+        {{ if(yearlyGasSavingsValue == 0) { yearlyGasSavingsLabel = '<a class="btn-add-bill" href="javascript:;"><span>Add bill information</span> <span class="icon icon-arrow-right"/></a>'; } }}
+        {{ } }}
+
         {{ var yearlySavingsLabel = yearlySavingsValue < 0 ? "extra cost up to $" + (yearlySavingsValue*-1) : "$" + yearlySavingsValue.toFixed(2); }}
 
         {{ var estimatedCostLabel = "$" + estimatedCostValue.toFixed(2); }}
-        {{ var estimatedElectricityCostLabel = "$" + estimatedElectricityCostValue.toFixed(2); }}
-        {{ var estimatedGasCostLabel = "$" + estimatedGasCostValue.toFixed(2); }}
+        {{ var estimatedElectricityCostLabel = ""; }}
+        {{ if(hasElectricity) { }}
+        {{ var estimatedElectricityCostLabelPrefix = electricityOnly ? "" : "Electricity: "; }}
+        {{ var estimatedElectricityCostLabel = estimatedElectricityCostValue >= 0 ? estimatedElectricityCostLabelPrefix + "$" + estimatedElectricityCostValue.toFixed(2) : estimatedElectricityCostLabelPrefix + '<a class="btn-add-bill" href="javascript:;"><span>Add bill information</span> <span class="icon icon-arrow-right"/></a>'; }}
+        {{ } }}
+        {{ var estimatedGasCostLabel = ""; }}
+        {{ if(hasGas) { }}
+        {{ var estimatedGasCostLabelPrefix = gasOnly ? "" : "Gas: "; }}
+        {{ var estimatedGasCostLabel = estimatedGasCostValue >= 0 ? estimatedGasCostLabelPrefix + "$" + estimatedGasCostValue.toFixed(2) : estimatedGasCostLabelPrefix + '<a class="btn-add-bill" href="javascript:;"><span>Add bill information</span> <span class="icon icon-arrow-right"/></a>'; }}
+        {{ } }}
+        {{ var estimatedCostLabelBreak = estimatedElectricityCostLabel !== "" && estimatedGasCostLabel !== "" ? "<br>" : ""; }}
 
         {{ var showYearlySavings = meerkat.modules.utilitiesResults.showYearlySavings(); }}
         {{ var showEstimatedCost = meerkat.modules.utilitiesResults.showEstimatedCost(); }}
@@ -86,14 +112,14 @@
 
                                 <div class="productSubTitle">{{= productTitle }}</div>
                                 {{ if (typeof obj.discountDetails !== 'undefined' && obj.discountDetails.length > 0) { }}
-                                    <div class="promotion small">
-                                        <strong>Discounts:</strong>
-                                        {{ if(obj.discountDetails.length > 190) { }}
-                                            {{= obj.discountDetails.substring(0, 190) }} <span title="Click More Info to see extra details">...</span>
-                                        {{ } else { }}
-                                            {{= obj.discountDetails }}
-                                        {{ } }}
-                                    </div>
+                                <div class="promotion small">
+                                    <strong>Discounts:</strong>
+                                    {{ if(obj.discountDetails.length > 190) { }}
+                                    {{= obj.discountDetails.substring(0, 190) }} <span title="Click More Info to see extra details">...</span>
+                                    {{ } else { }}
+                                    {{= obj.discountDetails }}
+                                    {{ } }}
+                                </div>
                                 {{ } }}
                             </div>
                             <div class="col-sm-3 col-sm-offset-1 cta">
@@ -123,9 +149,9 @@
                                 <div class="promotion small">
                                     <strong>Discounts:</strong>
                                     {{ if(obj.discountDetails.length > 150) { }}
-                                        {{= obj.discountDetails.substring(0, 150) }} <span title="Click More Info to see extra details">...</span>
+                                    {{= obj.discountDetails.substring(0, 150) }} <span title="Click More Info to see extra details">...</span>
                                     {{ } else { }}
-                                        {{= obj.discountDetails }}
+                                    {{= obj.discountDetails }}
                                     {{ } }}
                                 </div>
                                 {{ } }}
@@ -142,7 +168,7 @@
                         </div>
                         {{ } else if(showEstimatedCost === true) { }}
                         <div class="col-sm-3 col-lg-2 estimatedCostContainer">
-                            <div class="dataColumn"><span class="estimatedCost">{{= estimatedElectricityCostLabel }}<br>{{= estimatedGasCostLabel }}</span></div>
+                            <div class="dataColumn"><span class="estimatedCost">{{= estimatedElectricityCostLabel }}{{= estimatedCostLabelBreak }}{{= estimatedGasCostLabel }}</span></div>
                         </div>
                         {{ } else if(showYearlySavings === true) { }}
                         <div class="col-sm-3 col-lg-2 yearlySavingsContainer {{= (yearlySavingsValue <= 0 ? 'noSavings' : '') }}">
@@ -157,7 +183,7 @@
                                     <div><span class="small-black">Electricity:</span> {{= obj.discountElectricity }}%</div>
                                     <div><span class="small-black">Gas:</span> {{= obj.discountGas }}%</div>
                                     {{ if(obj.discountOther > 0) { }}
-                                        <div><span class="small-black">Other:</span> {{= obj.discountOther }}%</div>
+                                    <div><span class="small-black">Other:</span> {{= obj.discountOther }}%</div>
                                     {{ } }}
                                 </div>
                             {{ }  else { }}
@@ -202,7 +228,7 @@
                                             <div>{{= obj.discountElectricity }}%  <span class="totalDiscountsTitle">Electricity discounts</span></div>
                                             <div>{{= obj.discountGas }}% <span class="totalDiscountsTitle">Gas discounts</span></div>
                                             {{ if(obj.discountOther > 0) { }}
-                                                <div>{{= obj.discountOther }}% <span class="otherDiscountsTitle">Other Discounts</span></div>
+                                            <div>{{= obj.discountOther }}% <span class="otherDiscountsTitle">Other Discounts</span></div>
                                             {{ } }}
                                         </div>
                                     {{ }  else { }}
@@ -214,7 +240,9 @@
                                     </div>
                                     {{ if(showEstimatedUsage === true) { }}
                                     <div class="col-sm-3 col-lg-2 estimatedCostContainer">
-                                        <div class="dataColumn">Add you bill information</div>
+                                        <div class="dataColumn"><a class="btn-add-bill" href="javascript:;">
+                                            <span>Add bill information</span> <span class="icon icon-arrow-right"/>
+                                        </a></div>
                                     </div>
                                     {{ } else if(showEstimatedCost === true) { }}
                                     <div class="col-xs-6 estimatedCostContainer">

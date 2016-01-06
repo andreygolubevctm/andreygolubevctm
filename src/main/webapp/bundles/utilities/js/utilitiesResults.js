@@ -26,9 +26,14 @@
 
         try {
 
+            var quoteResultsUrl = "ajax/json/utilities_quote_results.jsp";
+            if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToEnergyQuote) {
+                quoteResultsUrl = "ajax/json/energy_quote_results_ws.jsp";
+            }
+
             // Init the main Results object
             Results.init({
-                url: "ajax/json/utilities_quote_results.jsp",
+                url: quoteResultsUrl,
                 runShowResultsPage: false, // Don't let Results.view do it's normal thing.
                 paths: {
                     results: {
@@ -119,6 +124,8 @@
             return products;
         }
         var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val() || null;
+        var recentElectricityBill = $("#utilities_householdDetails_recentElectricityBill").find("input[type='radio']:checked").val() === 'Y';
+        var recentGasBill = $("#utilities_householdDetails_recentGasBill").find("input[type='radio']:checked").val() === 'Y';
         _.each(products, function massageJson(result, index) {
 
             // Add properties
@@ -145,11 +152,18 @@
             result.estimatedCostValue = typeof result.estimatedCost === 'undefined' || result.estimatedCost === null ? 0 : result.estimatedCost;
             result.estimatedCostValue = Number(result.estimatedCostValue.toFixed(2));
 
-            result.estimatedElectricityCostValue = typeof result.estimatedElectricityCost === 'undefined' || result.estimatedElectricityCost === null ? 0 : result.estimatedElectricityCost;
-            result.estimatedElectricityCostValue = Number(result.estimatedElectricityCostValue.toFixed(2));
-
-            result.estimatedGasCostValue = typeof result.estimatedGasCost === 'undefined' || result.estimatedGasCost === null ? 0 : result.estimatedGasCost;
-            result.estimatedGasCostValue = Number(result.estimatedGasCostValue.toFixed(2));
+            if(recentElectricityBill) {
+                result.estimatedElectricityCostValue = typeof result.estimatedElectricityCost === 'undefined' || result.estimatedElectricityCost === null ? 0 : result.estimatedElectricityCost;
+                result.estimatedElectricityCostValue = Number(result.estimatedElectricityCostValue.toFixed(2));
+            } else {
+                result.estimatedElectricityCostValue = -1;
+            }
+            if(recentGasBill) {
+                result.estimatedGasCostValue = typeof result.estimatedGasCost === 'undefined' || result.estimatedGasCost === null ? 0 : result.estimatedGasCost;
+                result.estimatedGasCostValue = Number(result.estimatedGasCostValue.toFixed(2));
+            } else {
+                result.estimatedGasCostValue = -1;
+            }
 
         });
         return products;
@@ -365,6 +379,7 @@
 
     // Wrapper around results component, load results data
     function get() {
+        Results.updateAggregatorEnvironment();
         Results.get();
     }
 

@@ -142,7 +142,7 @@ public class EmailMasterDao {
 			Connection conn = dbSource.getConnection();
 			if(conn != null) {
 				stmt = conn.prepareStatement(
-				"SELECT em.hashedEmail, ep.value as optedIn " +
+				"SELECT em.emailId, em.hashedEmail, ep.value as optedIn " +
 				"FROM aggregator.email_master em " +
 				"LEFT JOIN aggregator.email_properties ep " +
 				"	ON ep.emailId = em.emailId " +
@@ -162,6 +162,7 @@ public class EmailMasterDao {
 
 				if (resultSet.next()) {
 					emailDetails= new EmailMaster();
+					emailDetails.setEmailId(resultSet.getInt("emailId"));
 					emailDetails.setHashedEmail(resultSet.getString("hashedEmail"));
 					String optedIn = resultSet.getString("optedIn");
 					boolean isOptedIn = optedIn != null && optedIn.equalsIgnoreCase("Y");

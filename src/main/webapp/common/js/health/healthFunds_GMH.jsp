@@ -25,12 +25,9 @@ var healthFunds_GMH = {
         <%--dependant definition--%>
         healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
 
-        <%--schoolgroups and defacto--%>
-        healthDependents.config = { 'school':true, 'defacto':false, 'schoolMin':21, 'schoolMax':24 };
-
-        <%--school labels--%>
-        healthFunds._schoolLabel = $('.health_dependant_details_schoolGroup').first().find('.control-label').text();
-        $('.health_dependant_details_schoolGroup').find('.control-label').text('Name of school/employer/educational institution your child is attending');
+        <%--schoolgroups and defacto
+        TODO: TEST THIS --%>
+        meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:true });
 
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true });
@@ -94,10 +91,6 @@ var healthFunds_GMH = {
 
         <%--dependant definition off--%>
         healthFunds._dependants(false);
-
-
-        <%--school labels off--%>
-        $('#mainform').find('.health_dependant_details_schoolGroup').find('.control-label').text( healthFunds._schoolLabel );
 
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.resetConfig();

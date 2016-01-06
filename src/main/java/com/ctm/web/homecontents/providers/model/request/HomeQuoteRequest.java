@@ -1,9 +1,10 @@
 package com.ctm.web.homecontents.providers.model.request;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer;
-import org.joda.time.LocalDate;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -49,7 +50,7 @@ public class HomeQuoteRequest {
 
     private boolean hadClaims;
 
-    public List<String> providerFilter = emptyList();
+    private List<String> providerFilter = new ArrayList<String>();
 
     public boolean isHomeCover() {
         return homeCover;

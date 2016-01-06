@@ -89,9 +89,14 @@
 
         try {
 
+            var healthQuoteResultsUrl = "ajax/json/health_quote_results.jsp";
+            if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
+                healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp";
+            }
+
             // Init the main Results object
             Results.init({
-                url: "ajax/json/health_quote_results.jsp",
+                url: healthQuoteResultsUrl,
                 runShowResultsPage: false, // Don't let Results.view do it's normal thing.
                 paths: {
                     results: {
@@ -378,10 +383,7 @@
             var freeColumns = (columnsPerPage * numberOfPages) - items;
 
             meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
-                additionalData: {
-                    pageNumber: pageNumber,
-                    numberOfPages: numberOfPages
-                },
+                additionalData: {},
                 onAfterEventMode: 'Pagination'
             });
 
@@ -526,6 +528,7 @@
         meerkat.modules.health.loadRates(function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health').done(function () {
+                Results.updateAggregatorEnvironment();
                 Results.get();
             });
         });
@@ -538,6 +541,7 @@
         meerkat.modules.health.loadRatesBeforeResultsPage(function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health').done(function () {
+                Results.updateAggregatorEnvironment();
                 Results.get();
             });
         });
@@ -630,13 +634,15 @@
             if (premiumChangeEvent === true) {
                 meerkat.messaging.publish(moduleEvents.healthResults.PREMIUM_UPDATED, selectedProduct, showIncPrice);
             } else {
-                meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
-                $(Results.settings.elements.rows).removeClass("active");
+                if(!meerkat.site.skipResultsPopulation) {
+                    meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
+                    $(Results.settings.elements.rows).removeClass("active");
 
-				var $targetProduct = $(Results.settings.elements.rows + "[data-productid='" + selectedProduct.productId + "']");
-                var targetPosition = $targetProduct.data('position') + 1;
-                $targetProduct.addClass("active");
-                Results.pagination.gotoPosition(targetPosition, true, false);
+                    var $targetProduct = $(Results.settings.elements.rows + "[data-productid='" + selectedProduct.productId + "']");
+                    var targetPosition = $targetProduct.data('position') + 1;
+                    $targetProduct.addClass("active");
+                    Results.pagination.gotoPosition(targetPosition, true, false);
+                }
             }
 
                 // update transaction details otherwise we will have to wait until people get to payment page
@@ -689,8 +695,13 @@
                     value: meerkat.modules.healthPaymentStep.getSelectedFrequency()
                 });
 
+                var healthQuoteResultsUrl = "ajax/json/health_quote_results.jsp";
+                if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
+                    healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp";
+                }
+
                 meerkat.modules.comms.post({
-                    url: "ajax/json/health_quote_results.jsp",
+                    url: healthQuoteResultsUrl,
                     data: postData,
                     cache: false,
                     errorLevel: "warning",

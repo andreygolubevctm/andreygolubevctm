@@ -71,7 +71,7 @@ public class ResultsService {
 
     }
 
-    public static void saveResultsProperties(List<ResultProperty> resultProperties) {
+    public static void saveResultsProperties(List<ResultProperty> resultProperties) throws Exception {
         ResultsDao resultsDao = new ResultsDao();
         resultsDao.saveResultsProperties(resultProperties);
     }

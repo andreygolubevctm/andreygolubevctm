@@ -1,13 +1,15 @@
 package com.ctm.web.health.services;
 
-import com.ctm.web.health.model.request.HealthRequest;
+import com.ctm.web.core.model.resultsData.BaseResultObj;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.services.CTMEndpointService;
 import com.ctm.web.core.services.RequestService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.SessionUtils;
+import com.ctm.web.health.model.request.HealthRequest;
 import com.ctm.web.health.utils.HealthRequestParser;
 import com.ctm.web.health.validation.HealthTokenValidationService;
 
@@ -16,6 +18,8 @@ import javax.servlet.jsp.JspException;
 
 /**
  * TODO: move code away from health_quote_results.jsp and turn this into a router
+ * This class should not be used as a singleton class due to the fact that concurrent
+ * thread could alter the validToken value or the TokenValidation token value
  */
 public class HealthQuoteEndpointService extends CTMEndpointService {
 
@@ -44,6 +48,10 @@ public class HealthQuoteEndpointService extends CTMEndpointService {
             this.tokenService = new HealthTokenValidationService(new SettingsService(httpRequest) , sessionDataService, pageSettings.getVertical());
         }
         super.validateToken(httpRequest, tokenService, request);
+    }
+
+    public ResultsWrapper createResultsWrapper(HttpServletRequest httpRequest, Long transactionId, BaseResultObj results) {
+        return tokenService.createResultsWrapper(transactionId, httpRequest, results);
     }
 
 
