@@ -29,7 +29,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'0% p.
 $0 Annual Fee for the first year.',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'','2015-01-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,87.0,'$87',NULL,'2015-01-05','2040-12-31','',0);
-INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM category_master WHERE categoryCode IN ('PLATINUM','BALANCETRANSFER','NOANNUALFEE');
+INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM ctm.category_master WHERE categoryCode IN ('PLATINUM','BALANCETRANSFER','NOANNUALFEE');
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,6000.0,'$6000',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'anz-platinum',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-01-05','2040-12-31','',0);
@@ -73,7 +73,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-ra
 INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'0% p.a. first 18 months on balance transfers, plus 3% Balance Transfer fee.',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'','2015-01-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,30.0,'$30',NULL,'2015-01-05','2040-12-31','',0);
-INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM category_master WHERE categoryCode IN ('LOWANNUALFEE','BALANCETRANSFER');
+INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM ctm.category_master WHERE categoryCode IN ('LOWANNUALFEE','BALANCETRANSFER');
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,1000.0,'$1000',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'anz-first',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-01-05','2040-12-31','',0);
@@ -115,7 +115,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-ra
 INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'0% p.a. first 18 months on balance transfers, plus 3% Balance Transfer fee.',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'','2015-01-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,58.0,'$58',NULL,'2015-01-05','2040-12-31','',0);
-INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM category_master WHERE categoryCode IN ('LOWINTERESTRATE','BALANCETRANSFER');
+INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM ctm.category_master WHERE categoryCode IN ('LOWINTERESTRATE','BALANCETRANSFER');
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,1000.0,'$1000',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'anz-low-rate',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-01-05','2040-12-31','',0);
@@ -157,7 +157,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-ra
 INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'0% p.a. first 18 months on balance transfers, plus 3% Balance Transfer fee.',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'','2015-01-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,99.0,'$99',NULL,'2015-01-05','2040-12-31','',0);
-INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM category_master WHERE categoryCode IN ('LOWINTERESTRATE','PLATINUM','BALANCETRANSFER');
+INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM ctm.category_master WHERE categoryCode IN ('LOWINTERESTRATE','PLATINUM','BALANCETRANSFER');
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,6000.0,'$6000',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'anz-low-rate-platinum',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-01-05','2040-12-31','',0);
@@ -203,7 +203,7 @@ INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-Ea
 -Earn 1.5 Reward Points for every $1 spent on purchases using your ANZ Rewards Visa card.
 -Choose from a wide range of everyday rewards: Shopping vouchers and gift cards, merchandise and gifts, frequent flyer points, travel and accomodation and entertainment.','2015-01-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,89.0,'$89',NULL,'2015-01-05','2040-12-31','',0);
-INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM category_master WHERE categoryCode IN ('REWARDS','NOANNUALFEE');
+INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM ctm.category_master WHERE categoryCode IN ('REWARDS','NOANNUALFEE');
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,1000.0,'$1000',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'anz-rewards',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-01-05','2040-12-31','',0);
@@ -247,7 +247,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'No an
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-Earn 3 Reward Points for every $1 spent on purchases using your ANZ Rewards American Express card 
 -Earn 1.5 Reward Points for every $1 spent on purchases using your ANZ Rewards Visa card.','2015-01-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,149.0,'$149',NULL,'2015-01-05','2040-12-31','',0);
-INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM category_master WHERE categoryCode IN ('PLATINUM','REWARDS','NOANNUALFEE');
+INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM ctm.category_master WHERE categoryCode IN ('PLATINUM','REWARDS','NOANNUALFEE');
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,6000.0,'$6000',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'anz-rewards-platinum',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-01-05','2040-12-31','',0);
@@ -296,7 +296,7 @@ INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'- E
 -ANZ''s highest Reward Point earn rates
 -Choice of Rewards-Including Cashback onto an ANZ credit card or transaction account.','2015-01-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,375.0,'$375',NULL,'2015-01-05','2040-12-31','',0);
-INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM category_master WHERE categoryCode IN ('REWARDS','BLACK','NOANNUALFEE');
+INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM ctm.category_master WHERE categoryCode IN ('REWARDS','BLACK','NOANNUALFEE');
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,15000.0,'$15000',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'anz-rewards-black',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-01-05','2040-12-31','',0);
@@ -338,7 +338,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'No an
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-1 Qantas Point per $1 spent on eligible purchases using ANZ Frequent Flyer American Express cards up to $3,000 per statement period
 -0.5 Qantas Point per $1 spent on eligible purchases using ANZ Frequent Flyer Visa cards up to $3,000 per statement period','2015-01-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,95.0,'$95',NULL,'2015-01-05','2040-12-31','',0);
-INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM category_master WHERE categoryCode IN ('REWARDS','FREQUENTFLYER','NOANNUALFEE');
+INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM ctm.category_master WHERE categoryCode IN ('REWARDS','FREQUENTFLYER','NOANNUALFEE');
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,1000.0,'$1000',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'anz-frequent-flyer',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-01-05','2040-12-31','',0);
@@ -386,7 +386,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'No an
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-1.5 Qantas Point per $1 spent on eligible purchases using ANZ Frequent Flyer American Express cards up to $6,000 per statement period
 -0.5 Qantas Point per $1 spent on eligible purchases using ANZ Frequent Flyer Visa cards up to $6,000 per statement period','2015-01-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,295.0,'$295',NULL,'2015-01-05','2040-12-31','',0);
-INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM category_master WHERE categoryCode IN ('PLATINUM','REWARDS','FREQUENTFLYER','NOANNUALFEE');
+INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM ctm.category_master WHERE categoryCode IN ('PLATINUM','REWARDS','FREQUENTFLYER','NOANNUALFEE');
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,6000.0,'$6000',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'anz-frequent-flyer-platinum',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-01-05','2040-12-31','',0);
@@ -438,7 +438,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'No an
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-Earn 1.5 point per $1 spent on purchases using the ANZ American Express card 
 -Earn 1.5 point per $2 spent on purchases using the ANZ Visa card','2015-01-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,425.0,'$425',NULL,'2015-01-05','2040-12-31','',0);
-INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM category_master WHERE categoryCode IN ('REWARDS','FREQUENTFLYER','BLACK','NOANNUALFEE');
+INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM ctm.category_master WHERE categoryCode IN ('REWARDS','FREQUENTFLYER','BLACK','NOANNUALFEE');
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,15000.0,'$15000',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'anz-frequent-flyer-black',NULL,'2015-01-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-01-05','2040-12-31','',0);
