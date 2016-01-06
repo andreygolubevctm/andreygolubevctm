@@ -70,7 +70,7 @@
 					<field_v1:hidden xpath="${xpath}/emailhistory" />
 				</form_v2:row>
 
-				<group_v2:contact_numbers_hidden xpath="${xpath}/contactNumber" />
+				<group_v3:contact_numbers_hidden xpath="${xpath}/contactNumber" />
 
 				<%-- Optin fields (hidden) for email and phone --%>
 				<field_v1:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
