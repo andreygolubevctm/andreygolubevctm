@@ -12,6 +12,11 @@ import java.util.regex.*;
 
 public class UploadService {
 
+	private static Pattern REMOVE_QUOTED = Pattern.compile("^\"|\"$");
+	private static Pattern MATCH_QUOTE = Pattern.compile("\\p{Pf}|\\p{Pi}");
+	private static Pattern MATCH_DASH = Pattern.compile("\\p{Pd}");
+	private static Pattern MATCH_SPACE = Pattern.compile("\\p{Zs}");
+
 	public static String getRates(UploadRequest file) {
 
 		StringBuilder update = new StringBuilder();
@@ -39,10 +44,14 @@ public class UploadService {
 				}
 
 			} catch (SQLException | NamingException e) {
-
+				throw new RuntimeException("Error fetching Provider ID.", e);
 			}
 			finally {
 				dbSource.closeConnection();
+			}
+
+			if(providerId == 0) {
+				throw new RuntimeException("FATAL ERROR: Provider ID not found.");
 			}
 
 			update.append("DELETE FROM ctm.category_product_mapping WHERE productid IN (SELECT productid FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid="+providerId+");\r\n");
@@ -144,7 +153,7 @@ public class UploadService {
 					update.append("\r\n\r\nINSERT INTO ctm.product_master (ProductCat,ProductCode,ProviderId, ShortTitle, LongTitle,EffectiveStart,EffectiveEnd,Status) VALUES('CREDITCARD','"+part[PRODUCT_CODE_COLUMN_NUMBER]+"',"+providerId+",'"+part[PRODUCT_SHORT_DESC_COLUMN_NUMBER]+"','"+part[PRODUCT_SHORT_DESC_COLUMN_NUMBER]+"','"+effectiveDate+"','2040-12-31','');\r\n");
 					update.append("SET @product_id = LAST_INSERT_ID();\r\n");
 
-					if (productCode != prevProductCode){
+					if (!productCode.equals(prevProductCode)){
 						prevProductCode = productCode;
 					}
 
@@ -298,22 +307,17 @@ public class UploadService {
 
 		}
 		catch(IOException e) {
-
+			throw new RuntimeException("Uploaded file error.", e);
 		}
 		return update.toString();
 
 	}
 
 	private static String replaceUnicodeCharactersInLine(String line) {
-		Pattern removeQuoted = Pattern.compile("^\"|\"$");
-		Pattern matchQuote = Pattern.compile("\\p{Pf}|\\p{Pi}");
-		Pattern matchDash = Pattern.compile("\\p{Pd}");
-		Pattern matchSpace = Pattern.compile("\\p{Zs}");
-
-		line = removeQuoted.matcher(line).replaceAll("");
-		line = matchQuote.matcher(line).replaceAll("'");
-		line = matchDash.matcher(line).replaceAll("-");
-		line = matchSpace.matcher(line).replaceAll(" ");
+		line = REMOVE_QUOTED.matcher(line).replaceAll("");
+		line = MATCH_QUOTE.matcher(line).replaceAll("'");
+		line = MATCH_DASH.matcher(line).replaceAll("-");
+		line = MATCH_SPACE.matcher(line).replaceAll(" ");
 		return line;
 	}
 }
