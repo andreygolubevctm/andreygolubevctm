@@ -39,6 +39,7 @@ public class HomeQuoteRouter extends CommonQuoteRouter {
         // Initialise request
         Brand brand = initRouter(context, vertical);
         updateTransactionIdAndClientIP(context, data);
+        updateApplicationDate(context, data);
 
         homeService.validateRequest(data, vertical.getCode());
 

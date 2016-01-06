@@ -1,5 +1,7 @@
 package com.ctm.web.core.providers.model;
 
+import java.time.LocalDateTime;
+
 public class Request<T> {
 
     public String brandCode;
@@ -7,6 +9,8 @@ public class Request<T> {
     public long transactionId;
 
     public String clientIp;
+
+    public LocalDateTime requestAt;
 
     public T payload;
 
@@ -40,5 +44,13 @@ public class Request<T> {
 
     public void setPayload(T payload) {
         this.payload = payload;
+    }
+
+    public LocalDateTime getRequestAt() {
+        return requestAt;
+    }
+
+    public void setRequestAt(LocalDateTime requestAt) {
+        this.requestAt = requestAt;
     }
 }

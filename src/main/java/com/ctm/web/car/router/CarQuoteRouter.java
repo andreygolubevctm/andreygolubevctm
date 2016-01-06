@@ -44,6 +44,7 @@ public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
         final Vertical.VerticalType vertical = CAR;
         Brand brand = initRouter(context, vertical);
         updateTransactionIdAndClientIP(context, data);
+        updateApplicationDate(context, data);
 
         carService.validateRequest(data, "quote");
 

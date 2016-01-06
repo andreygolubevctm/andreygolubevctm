@@ -30,7 +30,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -215,6 +218,14 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
             // add errors using FatalErrorService
             FatalErrorService.logFatalError(brandId, page, sessionId, false, "Competition error", errorMessage,
                     transactionId.toString(), data, brandCode);
+        }
+    }
+
+    protected void updateApplicationDate(MessageContext context, REQUEST data) {
+        final Date date = ApplicationService.getApplicationDateIfSet(context.getHttpServletRequest());
+        if (date != null) {
+            final LocalDateTime appDate = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+            data.setRequestAt(appDate);
         }
     }
 

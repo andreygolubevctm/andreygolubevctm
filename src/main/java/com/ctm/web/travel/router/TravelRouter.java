@@ -67,6 +67,7 @@ public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
         Brand brand = initRouter(context, vertical);
 
         updateTransactionIdAndClientIP(context, data);
+        updateApplicationDate(context, data);
 
         checkIPAddressCount(brand, vertical, context);
         // Check IP Address Count
