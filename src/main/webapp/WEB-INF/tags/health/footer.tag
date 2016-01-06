@@ -5,4 +5,4 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- HTML --%>
-<content:get key="footerWebsiteText"/>
+<content:get key="footerText"/>
