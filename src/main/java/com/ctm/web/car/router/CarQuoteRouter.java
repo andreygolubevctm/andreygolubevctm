@@ -14,6 +14,7 @@ import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SessionDataServiceBean;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 
@@ -28,6 +29,10 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
 
     private final CarQuoteService carService = new CarQuoteService();
+
+    public CarQuoteRouter() {
+        super(new SessionDataServiceBean());
+    }
 
     @POST
     @Path("/quote/get.json")
