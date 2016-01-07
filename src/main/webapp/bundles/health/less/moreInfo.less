@@ -44,15 +44,18 @@
 		margin: 10px 20px 0 2px;
 		max-height: none;
 		max-width: none;
-		@media (@xs) {
-			.providersNormalSpriteImages(~"health"; ~""; @providerLogoNames; 0.4);
+
+		.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames);
+		@media(@xs-only){
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.4);
 		}
-		@media (@sm) {
-			.providersNormalSpriteImages(~"health"; ~""; @providerLogoNames; 0.9);
+		@media(@sm-only){
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.9);
 		}
-		@media (@md) {
-			.providersNormalSpriteImages(~"health"; ~""; @providerLogoNames; 0.8);
+		@media(@md-only){
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.8);
 		}
+
 	}
 
 }

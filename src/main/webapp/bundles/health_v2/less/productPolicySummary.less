@@ -156,7 +156,7 @@
 		  margin-top: 10px;
 		  margin-left: 3%;
 
-		  .providersNormalSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale);
+		  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale);
 		}
 	  }
 
@@ -247,15 +247,15 @@
 }
 
 .companyLogo{
-  max-height: @standard-logo-height;
-  max-width: 90px;
+	max-height: @standard-logo-height;
+	max-width: 90px;
 
-  margin-left: auto;
-  margin-right: auto;
+	margin-left: auto;
+	margin-right: auto;
 
-  overflow: hidden;
+	overflow: hidden;
 
-  .providersNormalSpriteImagesVerticallyCentered(~"health"; ~""; @providerLogoNames; @standard-logo-height; @logo-price-spacer);
+	.providersHighResSpriteImages(~"health"; ~""; @providerLogoNames);
 }
 
 body[data-step='results'] .product-details-container .companyLogo {
