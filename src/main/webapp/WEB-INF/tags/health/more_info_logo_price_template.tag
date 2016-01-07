@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- LOGO AND PRICES TEMPLATE --%>
-<script id="logo-price-template" type="text/html">
+<script id="more-info-logo-price-template" type="text/html">
 	<%-- Decide whether to render the normal premium or the alt premium (for dual-pricing) --%>
 	{{ var property = premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = altPremium; } }}
 
