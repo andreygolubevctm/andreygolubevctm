@@ -37,6 +37,9 @@
                         $(eventObject.currentTarget).closest('.modal').modal('hide');
                     }
                 },
+                onOpen: function(dialogId) {
+                    fixBootstrapModalPaddingIssue(dialogId);
+                },
                 onClose: function() {
                     onBeforeHideTemplate();
                     meerkat.modules.moreInfo.close();
@@ -188,6 +191,10 @@
         $('.more-info-content .moreInfoRightColumn > .dualPricing').insertAfter($('.more-info-content .moreInfoMainDetails'));
         populateBrochureEmailForModel();
 
+        fixBootstrapModalPaddingIssue(dialogId);
+    }
+
+    function fixBootstrapModalPaddingIssue(dialogId){
         // just fighting Bootstrap here...
         // It seems to think that because the body is overflowing, it needs to add right padding to cater for the scrollbar width
         // so taking that off once the modal is open
