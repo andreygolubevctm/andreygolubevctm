@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
-<!-- This is a temporary overwrite since we are disabling the A/B testing during Dual pricing time -->
+<%-- This is a temporary overwrite since we are disabling the A/B testing during Dual pricing time --%>
 <%-- <c:set var="useOldCtaBtn" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 3)}" scope="request" /> --%>
 <c:set var="useOldCtaBtn" value="true"/>
 

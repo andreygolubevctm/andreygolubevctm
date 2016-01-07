@@ -15,15 +15,14 @@
 <c:set var="val_optout"				value="N" />
 
 <%-- Vars for competition --%>
-<c:set var="competitionSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 99)}" />
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="competitionSecret"><content:get key="competitionSecret"/></c:set>
 <c:set var="competitionEnabled" value="${false}" />
-<c:if test="${competitionEnabledSetting == 'Y' && (competitionSplitTest eq true or competitionSecret == 'kSdRdpu5bdM5UkKQ8gsK')}"> <%--Split test needs to allow previous competition ($1000 promo) to remain active. TODO: Cleanup--%>
-	<c:set var="competitionEnabled" value="${true}" />
+<c:if test="${competitionEnabledSetting == 'Y' && competitionSecret == 'kSdRdpu5bdM5UkKQ8gsK'}">
+ 	<c:set var="competitionEnabled" value="${true}" />
 </c:if>
 
-<!-- Name is mandatory for both online and callcentre, other fields only mandatory for online -->
+<%-- Name is mandatory for both online and callcentre, other fields only mandatory for online --%>
 <c:set var="required" value="${true}" />
 <c:if test="${callCentre}">
 	<c:set var="required" value="${false}" />
