@@ -201,19 +201,14 @@
 			onAfterEnter: function healthV2AfterEnter() {
 				// if coming from brochure site and all prefilled data are valid, let's hide the fields
 				if (meerkat.site.isFromBrochureSite === true) {
-
 					var $healthSitLocation = $('#health_situation_location'),
-						$healthSitHealthCvr = $('#health_situation_healthCvr'),
-						$healthSitHealthSitu = $('#health_situation_healthSitu');
+						$healthSitHealthCvr = $('#health_situation_healthCvr');
 
 					if($healthSitHealthCvr.isValid()) {
-						$healthSitHealthCvr.attr('data-attach', 'true').parents('.fieldrow').hide();
-					}
-					if($healthSitHealthSitu.isValid()) {
-						$healthSitHealthSitu.attr('data-attach', 'true').parents('.fieldrow').hide();
+						$healthSitHealthCvr.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
 					}
 					if($healthSitLocation.isValid(true)) {
-						$healthSitLocation.attr('data-attach', 'true').parents('.fieldrow').hide();
+						$healthSitLocation.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
 					}
 				}
 			}
