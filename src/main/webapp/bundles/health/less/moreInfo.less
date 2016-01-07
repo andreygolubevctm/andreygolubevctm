@@ -246,8 +246,8 @@
 }
 
 .testimonials {
-	padding-top: 40px;
-	padding-bottom: 40px;
+	padding-top: 20px;
+	padding-bottom: 0px;
 	h2 {
 		text-align: center;
 		font-family: @font-family-theme-light;
@@ -428,6 +428,23 @@
 	margin-bottom: 5px;
 }
 
+body[data-step='apply'] .modal-body,
+body[data-step='payment'] .modal-body{
+	.more-info-content{
+		background: white;
+	}
+	.moreInfoTopLeftColumn{
+		.col-xs-12;
+	}
+	.btn-more-info-apply,
+	.moreInfoTopRightColumn,
+	.moreInfoCallToActionBar,
+	.hiddenInMoreDetails
+	{
+		display: none;
+	}
+}
+
 .moreInfoProgress p {
 	margin: 12px 0;
 	font-size: 16px;
@@ -464,27 +481,31 @@ ul.benefitsIcons {
 			width: 20%;
 			text-align: center;
 			vertical-align: top;
+			span{
+				display: block;
+			}
 		}
 
 		&:before {
 			font-family: 'framework_font';
 			font-size: 45px;
 
-			display: table;
-			vertical-align: middle;
+			display: inline-block;
+
 			@media (@sm) {
 				margin: 0 auto 10px auto;
 				border-radius: 50%;
 				padding: 0.25em 0.4em;
 			}
 			@media (@xs-only) {
-				display: inline-block;
+				vertical-align: middle;
 				margin-right: 10px;
 				color: @theme-tertiary;
 			}
 
 		}
 	}
+
 	&.inclusions li:before {
 		@media (@sm) {
 			background-color: @theme-tertiary;
