@@ -5,8 +5,6 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
-<c:set var="callCentreHoursBubble" scope="request"><content:getOpeningHoursBubble /></c:set>
-
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
@@ -16,10 +14,7 @@
 	<form_new:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
-			<c:if test="${not empty callCentreNumber}">
-					<health_content:call_centre_help />
-					${callCentreHoursBubble}
-			</c:if>
+			<health_new_content:sidebar />
 		</jsp:attribute>
 
 		<jsp:body>
