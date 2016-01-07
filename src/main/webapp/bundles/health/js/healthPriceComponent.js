@@ -30,7 +30,7 @@
 
 			if(meerkat.site.vertical !== "health") return false;
 
-			logoPriceTemplate = $("#more-info-logo-price-template").html();
+			logoPriceTemplate = $("#logo-price-template").html();
 
 			$policySummaryContainer = $(".policySummaryContainer");
 			$policySummaryTemplateHolder = $(".policySummaryTemplateHolder");
