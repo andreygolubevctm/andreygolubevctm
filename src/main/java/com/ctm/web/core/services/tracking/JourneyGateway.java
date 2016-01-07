@@ -6,7 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,7 +36,11 @@ public class JourneyGateway {
 	static final String LABEL_SUFFIX_RANGE = "_range";
 	static final String LABEL_SUFFIX_JVAL = "_jVal";
 
+	static final String COOKIE_LABEL_PREFIX = "ctmJourneyGateway";
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(JourneyGateway.class.getName());
+
+	private static CookieManager cookieMgr = null;
 
 	public JourneyGateway(){}
 
@@ -55,12 +61,19 @@ public class JourneyGateway {
 		String journey = null;
 		String nameLabel = LABEL_PREFIX + label;
 		String activeLabel = nameLabel + LABEL_SUFFIX_ACTIVE;
+		URL cookieUrl = null;
 		try {
 			PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
+			String vertical = pageSettings.getVertical().getCode();
 			// Stop now if no split test active
 			if (pageSettings.hasSetting(activeLabel) && pageSettings.getSetting(activeLabel).equals("Y")) {
+				cookieUrl = getCookieUrl(request.getRequestURL().toString());
+				String cookieJ = getCookieValue(new URL(cookieUrl.toString() + "/" + pageSettings.getSetting("contextFolder") + "data.jsp"),vertical);
 				// Stop now if override param exists as that means we've already determined the journey
-				if(!request.getQueryString().toString().contains("&" + OVERRIDE_PARAM + "=")) {
+				if(cookieJ != null) {
+					journey = cookieJ;
+					LOGGER.debug("[JourneyGateway] Using cookie value [" + journey + "] for journey");
+				} else {
 					String countLabel = nameLabel + LABEL_SUFFIX_COUNT;
 					// Generate random number between 1 & 100 to test winning journey
 					int flag = ((int) (Math.random() * 100)) + 1;
@@ -76,32 +89,53 @@ public class JourneyGateway {
 							break;
 						}
 					}
-				} else {
-					LOGGER.debug("Journey has already been processed and defined");
 				}
+			// If there's no split test but a J value has been passed then let's set it to the default
+			} else if(isJParamInRequest(request)) {
+				journey="1";
+				LOGGER.debug("[JourneyGateway] No split test but J value provided so forcing to default journey");
+			}
+
+			// Build the new URL if a journey has been found
+			if(journey != null) {
+				// Build and add J param to URL
+				StringBuffer url = getURLWithoutJParam(request);
+				url.append("j=" + journey);
+				urlOut = url.toString();
+
+				// Store journey value in URL
+				cookieUrl = getCookieUrl(request.getRequestURL().toString());
+				setCookieValue(cookieUrl,vertical,Integer.parseInt(journey));
+				LOGGER.debug("[JourneyGateway] New Journey - " + urlOut);
 			}
 		} catch(Exception e) {
-			LOGGER.debug("JourneyGateway.getJourney() threw an exception", e);
-		}
-
-		// Build the new URL if a journey has been found
-		if(journey != null) {
-			StringBuffer url = request.getRequestURL();
-			url.append("?");
-			Map<String, String> qstr = getQueryMap(request.getQueryString());
-			for (Map.Entry<String, String> entry : qstr.entrySet()) {
-				// Add all query string entries back to the URL except for J
-				if(!entry.getKey().equalsIgnoreCase("j")) {
-					url.append(entry.getKey() + "=" + entry.getValue() + "&");
-				}
-			}
-			// Add J and the override param to prevent doing this again after redirect
-			url.append("j=" + journey + "&" + OVERRIDE_PARAM + "=1");
-			urlOut = url.toString();
-			LOGGER.debug("New Journey - " + urlOut);
+			LOGGER.debug("[JourneyGateway] JourneyGateway.getJourney() threw an exception", e);
 		}
 
 		return urlOut;
+	}
+
+	private static StringBuffer getURLWithoutJParam(HttpServletRequest request) {
+		StringBuffer url = request.getRequestURL();
+		url.append("?");
+		Map<String, String> qstr = getQueryMap(request.getQueryString());
+		for (Map.Entry<String, String> entry : qstr.entrySet()) {
+			// Add all query string entries back to the URL except for J
+			if(!entry.getKey().equalsIgnoreCase("j")) {
+				url.append(entry.getKey() + "=" + entry.getValue() + "&");
+			}
+		}
+		return url;
+	}
+
+	private static Boolean isJParamInRequest(HttpServletRequest request) {
+		Map<String, String> qstr = getQueryMap(request.getQueryString());
+		for (Map.Entry<String, String> entry : qstr.entrySet()) {
+			if(entry.getKey().equalsIgnoreCase("j")) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -118,5 +152,70 @@ public class JourneyGateway {
 			map.put(name, value);
 		}
 		return map;
+	}
+
+	public static URL getCookieUrl(String urlIn) throws Exception {
+		URL url = new URL(urlIn);
+		StringBuilder urlOut = new StringBuilder();
+		urlOut.append(url.getProtocol() + "://" + url.getHost());
+		if(url.getPort() >= 0) {
+			urlOut.append(":" + url.getPort());
+		}
+		return new URL(urlOut.toString());
+	}
+
+	private static String getCookieValue(URL url, String vertical) {
+		String journey = null;
+		try {
+			// get content from URLConnection;
+			// cookies are set by web site
+			url = new URL(url.toString());
+			URLConnection connection = url.openConnection();
+			connection.getContent();
+
+			// get cookies from underlying CookieStore
+			CookieStore cookieJar = getCookieManager().getCookieStore();
+
+			List<HttpCookie> cookies = cookieJar.getCookies();
+			for (HttpCookie cookie : cookies) {
+				if (cookie.getName().equalsIgnoreCase(COOKIE_LABEL_PREFIX + vertical)) {
+					journey = cookie.getValue();
+					LOGGER.debug("[JourneyGateway] Found Cookie [" + cookie.getName() + "] with value [" + cookie.getValue() + "]");
+				}
+			}
+		} catch(Exception e) {
+			LOGGER.error("[JourneyGateway] Exception getting cookie value", e);
+		}
+		return journey;
+	}
+
+	private static void setCookieValue(URL url, String vertical, int journey) {
+		try {
+			// instantiate CookieManager
+			CookieStore cookieJar =  getCookieManager().getCookieStore();
+
+			// create cookie
+			HttpCookie cookie = new HttpCookie(COOKIE_LABEL_PREFIX + vertical, Integer.toString(journey));
+
+			// add cookie to CookieStore for a
+			// particular URL
+			cookieJar.add(url.toURI(), cookie);
+			LOGGER.debug("[JourneyGateway] Set cookie [" + cookie.getName() + "] value [" + cookie.getValue() + "]");
+		} catch(Exception e) {
+			LOGGER.error("[JourneyGateway] Exception setting cookie value", e);
+		}
+	}
+
+	private static CookieManager getCookieManager() {
+		try {
+			if (cookieMgr == null) {
+				cookieMgr = new CookieManager();
+				cookieMgr.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
+				CookieHandler.setDefault(cookieMgr);
+			}
+		} catch(Exception e) {
+			LOGGER.error("[JourneyGateway] Exception getting the cookie manager", e);
+		}
+		return cookieMgr;
 	}
 }
