@@ -1,9 +1,13 @@
 package com.ctm.web.core.utils;
 
 import com.ctm.web.core.content.model.Content;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Random;
+import java.util.function.Supplier;
 
 
 public class MiscUtils {
@@ -49,4 +53,21 @@ public class MiscUtils {
 
         return randomContentList;
     }
+
+    /**
+     * Helper method to prevent NPE's when referencing nested object tree fields.
+     * @param resolver
+     * @param <T>
+     * @return
+     */
+    public static <T> Optional<T> resolve(Supplier<T> resolver) {
+        try {
+            T result = resolver.get();
+            return Optional.ofNullable(result);
+        }
+        catch (NullPointerException e) {
+            return Optional.empty();
+        }
+    }
+
 }

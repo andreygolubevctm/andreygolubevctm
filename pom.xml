@@ -17,6 +17,8 @@
 
     <properties>
         <powermock.version>1.6.2</powermock.version>
+        <guava.version>18.0</guava.version>
+        <jsonassert.version>1.2.3</jsonassert.version>
         <cxf.version>3.0.1</cxf.version>
 
         <spring-boot.version>1.2.7.RELEASE</spring-boot.version>
@@ -35,8 +37,9 @@
         <mysql.connector.version>5.1.29</mysql.connector.version>
 
         <spring-rabbit.version>1.4.6.RELEASE</spring-rabbit.version>
+        <swagger-annotations.version>1.5.4</swagger-annotations.version>
         <common-logging.version>1.5.0-RC1</common-logging.version>
-        <common-interfaces.version>1.6.0-RC1</common-interfaces.version>
+        <common-interfaces.version>1.7.0</common-interfaces.version>
 
         <!-- Compile as this version -->
         <java.version>1.8</java.version>
@@ -44,6 +47,10 @@
 
         <node.version>v4.2.1</node.version>
         <npm.version>2.14.8</npm.version>
+
+        <org.mapstruct.version>1.0.0.CR1</org.mapstruct.version>
+        <energy-model-quote.version>1.0.0-RC1</energy-model-quote.version>
+        <energy-apply-model.version>1.1.0-RC2</energy-apply-model.version>
     </properties>
 
     <dependencyManagement>
@@ -153,6 +160,20 @@
         </dependency>
 
         <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4-rule</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-classloading-xstream</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>xmlunit</groupId>
             <artifactId>xmlunit</artifactId>
             <version>1.6</version>
@@ -163,6 +184,27 @@
             <groupId>org.glassfish.web</groupId>
             <artifactId>javax.el</artifactId>
             <version>${javax.el.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${jsonassert.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -244,6 +286,12 @@
         <!-- Other 3rd Party -->
 
         <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-jdk8</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
             <version>2.11.0</version>
@@ -267,6 +315,12 @@
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
@@ -283,11 +337,6 @@
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
             <version>${jackson.version}</version>
@@ -295,12 +344,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jdk8</artifactId>
             <version>${jackson.version}</version>
         </dependency>
 
@@ -443,6 +486,17 @@
         </dependency>
 
         <dependency>
+            <groupId>com.ctm.energy</groupId>
+            <artifactId>energy-model-quote</artifactId>
+            <version>${energy-model-quote.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ctm.energy</groupId>
+            <artifactId>energy-apply-model</artifactId>
+            <version>${energy-apply-model.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.taglibs</groupId>
             <artifactId>taglibs-standard-impl</artifactId>
             <version>1.2.1</version>
@@ -458,6 +512,13 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.5.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-annotations.version}</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
