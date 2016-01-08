@@ -88,11 +88,6 @@
 		</div>
 	</c:if>
 	<health:logo_price_template />
-	<health:more_info_logo_price_template />
-	<health:product_benefits_template />
-	<health:product_benefits_template_xs />
-	<health:more_info_blue_header_product_details />
-
 
 	<%-- RESULTS TABLE --%>
 	<div class="moreInfoDropdown"></div>
