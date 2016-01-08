@@ -314,11 +314,7 @@
         if (typeof product.hospitalCover === "undefined") {
             // Ensure this is a Hospital product before trying to use the benefits properties
             if (typeof product.hospital !== 'undefined' && typeof product.hospital.benefits !== 'undefined') {
-
                 prepareCoverFeatures("hospital.benefits", "hospitalCover");
-
-                coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", {name:"Public Hospital", className: "CTM-hospital"});
-                coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", {name:"Private Hospital", className: "CTM-hospital"});
             }
         }
 
@@ -406,6 +402,11 @@
             restrictions: [],
             exclusions: []
         };
+
+        if(target == "hospitalCover"){
+            coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", {name:"Public Hospital", className: "CTM-hospital"});
+            coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", {name:"Private Hospital", className: "CTM-privatehospital"});
+        }
 
         var lookupKey;
         var name;
