@@ -73,7 +73,12 @@
 
     <c:set var="fieldXPath" value="${xpath}/address" />
     <h5 class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-xs-12 row-content">Residential Address</h5>
-    <group_new:elastic_address xpath="${fieldXPath}" type="R" suburbAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='Your address does not match the original suburb provided.'" suburbNameAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='The selected suburb does not match the original suburb selected.'" postCodeAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='Your address does not match the original postcode provided.'" postCodeNameAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='The entered postcode does not match the original postcode provided.'" />
+    <group_new:elastic_address xpath="${fieldXPath}"
+                               type="R"
+                               suburbAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='Your address does not match the original suburb provided.' autocomplete='off'"
+                               suburbNameAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='The selected suburb does not match the original suburb selected.' autocomplete='off'"
+                               postCodeAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='Your address does not match the original postcode provided.' autocomplete='off'"
+                               postCodeNameAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='The entered postcode does not match the original postcode provided.' autocomplete='off'" />
 
     <h5 class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-xs-12 row-content">Postal Address</h5>
     <form_new:row>
@@ -81,7 +86,12 @@
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/postal" />
-    <group_new:elastic_address xpath="${fieldXPath}" type="P" />
+    <group_new:elastic_address xpath="${fieldXPath}"
+                               type="P" postCodeAdditionalAttributes="autocomplete='off'"
+                               postCodeNameAdditionalAttributes="autocomplete='off'"
+                               suburbAdditionalAttributes="autocomplete='off'"
+                               suburbNameAdditionalAttributes="autocomplete='off'"
+                               />
 
     <c:set var="fieldXPath" value="${xpath}/movingDate" />
     <form_new:row label="Move in date" fieldXpath="${fieldXPath}" id="enquiry_move_in_date_container" className="clear">

@@ -25,7 +25,10 @@
 <form_new:fieldset legend="Household Details" className="household-details">
     <c:set var="fieldXPath" value="${xpath}/location" />
     <form_new:row label="Postcode / Suburb" fieldXpath="${fieldXPath}" className="clear">
-        <field_new:lookup_suburb_postcode xpath="${fieldXPath}" placeholder="Your postcode / suburb." required="true" extraDataAttributes=" data-rule-validateLocation='true' data-msg-validateLocation='Please select a valid location'" />
+        <field_new:lookup_suburb_postcode xpath="${fieldXPath}"
+                                          placeholder="Your postcode / suburb."
+                                          required="true"
+                                          extraDataAttributes=" data-rule-validateLocation='true' data-msg-validateLocation='Please select a valid location' autocomplete='off'" />
 
         <field:hidden xpath="${xpath}/postcode" defaultValue="N" />
         <field:hidden xpath="${xpath}/suburb" defaultValue="N" />
