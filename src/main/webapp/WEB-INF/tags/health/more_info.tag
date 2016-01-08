@@ -124,7 +124,7 @@
 				{{ if(hospitalCover.inclusions.length > 0) { }}
 				<h5>You will be covered for the following services</h5>
 
-				<ul class="indent benefitsIcons inclusions">
+				<ul class="benefitsIcons inclusions">
 					{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
 					<li class="{{= inclusion.className }}"><span>{{= inclusion.name }}</span></li>
 					{{ }) }}
@@ -133,7 +133,7 @@
 
 				{{ if(hospitalCover.restrictions.length > 0) { }}
 				<h5>You will have restricted cover for the following services</h5>
-				<ul class="indent benefitsIcons restrictions">
+				<ul class="benefitsIcons restrictions">
 					{{ _.each(hospitalCover.restrictions, function(restriction){ }}
 					<li class="{{= restriction.className }}"><span>{{= restriction.name }}</span></li>
 					{{ }) }}
@@ -143,9 +143,9 @@
 
 				{{ if(hospitalCover.exclusions.length > 0) { }}
 				<h5>You will not be covered for the following services</h5>
-				<ul class="indent benefitsIcons exclusions">
+				<ul class="exclusions">
 					{{ _.each(hospitalCover.exclusions, function(exclusion){ }}
-					<li class="{{= exclusion.className }}"><span>{{= exclusion.name }}</span></li>
+					<li>{{= exclusion.name }}</li>
 					{{ }) }}
 
 					<c:if test="${not empty callCentre}">
