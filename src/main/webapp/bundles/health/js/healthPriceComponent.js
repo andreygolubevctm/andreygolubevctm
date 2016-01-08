@@ -90,6 +90,7 @@
 			product.mode = '';
 		}
 		product.showAltPremium = false;
+		product.displayLogo = true;
 
 		var htmlTemplate = _.template(logoPriceTemplate);
 		var htmlString = htmlTemplate(product);
