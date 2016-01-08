@@ -40,6 +40,9 @@
 
     function renderBenefits() {
         var list = fetchAllHospitalCheckedValues();
+        var morishList = fetchAllHospitalMoreCheckedValues();
+        console.log("the morish list is"+morishList);
+        var megaList = list.concat(morishList);
         var coverTypeValue = $("#health_situation_coverType").val();
         var renderIt = false;
         if( !_.isEmpty(coverTypeValue) && (coverTypeValue === 'C' || coverTypeValue === 'H' )) {
@@ -47,15 +50,17 @@
         }
         var template = _.template($("#snapshots-benefits-template").html()),
             data = {};
-        data.benefitList = list;
+        data.benefitList = megaList;
         data.renderIt = renderIt;
         var html = template(data);
-        console.log("the html is:"+html);
         $(".snapshots-benefits-container").html(html);
     }
 
     function renderExtras() {
         var list =  fetchAllExtrasCheckedValues();
+        var morishList = fetchAllExtasMoreCheckedValues();
+        console.log(morishList);
+        var megaList = list.concat(morishList);
         var coverTypeValue = $("#health_situation_coverType").val();
         var renderIt = false;
         if( !_.isEmpty(coverTypeValue) && (coverTypeValue === 'C' || coverTypeValue === 'E' )) {
@@ -63,10 +68,31 @@
         }
         var template = _.template($("#snapshots-extras-template").html()),
             data = {};
-        data.extrasList = list;
+        data.extrasList = megaList;
         data.renderIt = renderIt;
         var html = template(data);
         $(".snapshots-extras-container").html(html);
+
+    }
+
+    function fetchAllHospitalMoreCheckedValues() {
+        var list = [];
+        $(".Hospital_container .noIcons").find(':checked').each(function(item) {
+            var $this = $(this);
+            var label = $this.next('label').text();
+            list.push(label);
+        });
+        return list;
+    }
+
+    function fetchAllExtasMoreCheckedValues() {
+        var list = [];
+        $(".GeneralHealth_container .noIcons").find(':checked').each(function(item) {
+            var $this = $(this);
+            var label = $this.next('label').text();
+            list.push(label);
+        });
+        return list;
 
     }
 
