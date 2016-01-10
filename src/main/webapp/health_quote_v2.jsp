@@ -4,7 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<core_new:journeyGateway verticalLabel="HEALTH" splitTestLabel="optins" />
+<core:journey_gateway verticalLabel="HEALTH" splitTestLabel="optins" />
 
 <health:redirect_rules />
 

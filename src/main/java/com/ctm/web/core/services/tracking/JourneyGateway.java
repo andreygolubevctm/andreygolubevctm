@@ -52,14 +52,14 @@ public class JourneyGateway {
 	 * return the new URL.
 	 *
 	 * @param request
-	 * @param label
+	 * @param splitTestRef
 	 * @return
 	 * @throws Exception
 	 */
-	public static String getJourney(HttpServletRequest request, String label) {
+	public static String getJourney(HttpServletRequest request, String splitTestRef) {
 		String urlOut = null;
 		String journey = null;
-		String nameLabel = LABEL_PREFIX + label;
+		String nameLabel = LABEL_PREFIX + splitTestRef;
 		String activeLabel = nameLabel + LABEL_SUFFIX_ACTIVE;
 		URL cookieUrl = null;
 		try {
@@ -67,28 +67,36 @@ public class JourneyGateway {
 			String vertical = pageSettings.getVertical().getCode();
 			// Stop now if no split test active
 			if (pageSettings.hasSetting(activeLabel) && pageSettings.getSetting(activeLabel).equals("Y")) {
-				cookieUrl = getCookieUrl(request.getRequestURL().toString());
-				String cookieJ = getCookieValue(new URL(cookieUrl.toString() + "/" + pageSettings.getSetting("contextFolder") + "data.jsp"),vertical);
-				// Stop now if override param exists as that means we've already determined the journey
-				if(cookieJ != null) {
-					journey = cookieJ;
-					LOGGER.debug("[JourneyGateway] Using cookie value [" + journey + "] for journey");
-				} else {
-					String countLabel = nameLabel + LABEL_SUFFIX_COUNT;
-					// Generate random number between 1 & 100 to test winning journey
-					int flag = ((int) (Math.random() * 100)) + 1;
-					int count = Integer.parseInt(pageSettings.getSetting(countLabel));
-					journey = "1";
-					// Iterate journey variations and stop when we have a winner
-					for (int i = 1; i <= count; i++) {
-						String percentLabel = nameLabel + "_" + i + LABEL_SUFFIX_RANGE;
-						String valueLabel = nameLabel + "_" + i + LABEL_SUFFIX_JVAL;
-						int testLimit = Integer.parseInt(pageSettings.getSetting(percentLabel));
-						if (flag <= testLimit) {
-							journey = pageSettings.getSetting(valueLabel);
-							break;
+				// Stop now if override param in request (no need to check cookie)
+				if(!isParamInRequest(request, OVERRIDE_PARAM)) {
+					cookieUrl = getCookieUrl(request.getRequestURL().toString());
+					String cookieJ = getCookieValue(new URL(cookieUrl.toString() + "/" + pageSettings.getSetting("contextFolder") + "data.jsp"), splitTestRef, vertical);
+					// Stop now if override param exists as that means we've already determined the journey
+					if (cookieJ != null) {
+						journey = cookieJ;
+						LOGGER.debug("[JourneyGateway] Using cookie value [" + journey + "] for journey");
+					} else {
+						String countLabel = nameLabel + LABEL_SUFFIX_COUNT;
+						// Generate random number between 1 & 100 to test winning journey
+						int flag = ((int) (Math.random() * 100)) + 1;
+						int count = Integer.parseInt(pageSettings.getSetting(countLabel));
+						journey = "1";
+						// Iterate journey variations and stop when we have a winner
+						for (int i = 1; i <= count; i++) {
+							String percentLabel = nameLabel + "_" + i + LABEL_SUFFIX_RANGE;
+							String valueLabel = nameLabel + "_" + i + LABEL_SUFFIX_JVAL;
+							int testLimit = Integer.parseInt(pageSettings.getSetting(percentLabel));
+							if (flag <= testLimit) {
+								journey = pageSettings.getSetting(valueLabel);
+								break;
+							}
 						}
 					}
+				// Override param exists so just store the journey in a cookie
+				} else if(isJParamInRequest(request)) {
+					cookieUrl = getCookieUrl(request.getRequestURL().toString());
+					setCookieValue(cookieUrl,splitTestRef,vertical,Integer.parseInt(getParamFromRequest(request, "j")));
+					LOGGER.debug("[JourneyGateway] New Journey - " + urlOut);
 				}
 			// If there's no split test but a J value has been passed then let's set it to the default
 			} else if(isJParamInRequest(request)) {
@@ -100,12 +108,12 @@ public class JourneyGateway {
 			if(journey != null) {
 				// Build and add J param to URL
 				StringBuffer url = getURLWithoutJParam(request);
-				url.append("j=" + journey);
+				url.append("j=" + journey + "&" + OVERRIDE_PARAM + "=1");
 				urlOut = url.toString();
 
-				// Store journey value in URL
+				// Store journey value in cookie
 				cookieUrl = getCookieUrl(request.getRequestURL().toString());
-				setCookieValue(cookieUrl,vertical,Integer.parseInt(journey));
+				setCookieValue(cookieUrl,splitTestRef,vertical,Integer.parseInt(journey));
 				LOGGER.debug("[JourneyGateway] New Journey - " + urlOut);
 			}
 		} catch(Exception e) {
@@ -128,14 +136,22 @@ public class JourneyGateway {
 		return url;
 	}
 
+	private static Boolean isParamInRequest(HttpServletRequest request, String param) {
+		return getParamFromRequest(request, param) != null;
+	}
+
 	private static Boolean isJParamInRequest(HttpServletRequest request) {
+		return isParamInRequest(request, "j");
+	}
+
+	private static String getParamFromRequest(HttpServletRequest request, String param) {
 		Map<String, String> qstr = getQueryMap(request.getQueryString());
 		for (Map.Entry<String, String> entry : qstr.entrySet()) {
-			if(entry.getKey().equalsIgnoreCase("j")) {
-				return true;
+			if(entry.getKey().equalsIgnoreCase(param)) {
+				return entry.getValue();
 			}
 		}
-		return false;
+		return null;
 	}
 
 	/**
@@ -154,6 +170,12 @@ public class JourneyGateway {
 		return map;
 	}
 
+	/**
+	 * getCookieUrl returns the URL used for storing the cookie
+	 * @param urlIn
+	 * @return
+	 * @throws Exception
+	 */
 	public static URL getCookieUrl(String urlIn) throws Exception {
 		URL url = new URL(urlIn);
 		StringBuilder urlOut = new StringBuilder();
@@ -164,21 +186,23 @@ public class JourneyGateway {
 		return new URL(urlOut.toString());
 	}
 
-	private static String getCookieValue(URL url, String vertical) {
+	/**
+	 * getCookieValue returns the current journey cookie value for a split test
+	 * @param url
+	 * @param vertical
+	 * @return
+	 */
+	private static String getCookieValue(URL url, String splitTestRef, String vertical) {
 		String journey = null;
 		try {
-			// get content from URLConnection;
-			// cookies are set by web site
 			url = new URL(url.toString());
 			URLConnection connection = url.openConnection();
 			connection.getContent();
-
-			// get cookies from underlying CookieStore
 			CookieStore cookieJar = getCookieManager().getCookieStore();
 
 			List<HttpCookie> cookies = cookieJar.getCookies();
 			for (HttpCookie cookie : cookies) {
-				if (cookie.getName().equalsIgnoreCase(COOKIE_LABEL_PREFIX + vertical)) {
+				if (cookie.getName().equalsIgnoreCase(COOKIE_LABEL_PREFIX + splitTestRef + vertical)) {
 					journey = cookie.getValue();
 					LOGGER.debug("[JourneyGateway] Found Cookie [" + cookie.getName() + "] with value [" + cookie.getValue() + "]");
 				}
@@ -189,16 +213,17 @@ public class JourneyGateway {
 		return journey;
 	}
 
-	private static void setCookieValue(URL url, String vertical, int journey) {
+	/**
+	 * setCookieValue sets cookie value to store the journey value
+	 * @param url
+	 * @param splitTestRef
+	 * @param vertical
+	 * @param journey
+	 */
+	private static void setCookieValue(URL url, String splitTestRef, String vertical, int journey) {
 		try {
-			// instantiate CookieManager
 			CookieStore cookieJar =  getCookieManager().getCookieStore();
-
-			// create cookie
-			HttpCookie cookie = new HttpCookie(COOKIE_LABEL_PREFIX + vertical, Integer.toString(journey));
-
-			// add cookie to CookieStore for a
-			// particular URL
+			HttpCookie cookie = new HttpCookie(COOKIE_LABEL_PREFIX + splitTestRef + vertical, Integer.toString(journey));
 			cookieJar.add(url.toURI(), cookie);
 			LOGGER.debug("[JourneyGateway] Set cookie [" + cookie.getName() + "] value [" + cookie.getValue() + "]");
 		} catch(Exception e) {
@@ -206,6 +231,10 @@ public class JourneyGateway {
 		}
 	}
 
+	/**
+	 * getCookieManager return a CookieManager object
+	 * @return
+	 */
 	private static CookieManager getCookieManager() {
 		try {
 			if (cookieMgr == null) {
