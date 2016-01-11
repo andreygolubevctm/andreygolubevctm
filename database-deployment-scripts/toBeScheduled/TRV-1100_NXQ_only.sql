@@ -2,7 +2,7 @@
 -- NXQ Only
 
 SET @provider_id = (SELECT providerId FROM ctm.provider_master WHERE providerCode='PPTI');
-SELECT @provider_id FROM ctm.provider_master
+SELECT @provider_id FROM ctm.provider_master;
 
 -- Basic
 UPDATE ctm.travel_product_benefits SET endDate='2016-01-04 23:59:59' WHERE productId='8210a68c-bfec-4c40-b963-a1cf00388197' AND benefitId=2;
