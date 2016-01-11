@@ -72,12 +72,12 @@ Process:
 		$maskedNumber.val('Loading...');
 		reset();
 
-		var authoriseUrl = "ajax/json/ipp/ipp_payment.jsp?ts=" + (new Date().getTime());
+		var authoriseUrl = '/' + meerkat.site.urls.context + "ajax/json/ipp/ipp_payment.jsp?ts=" + (new Date().getTime());
 		if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
-			authoriseUrl = "rest/health/payment/authorise.json";
+			authoriseUrl = '/' + meerkat.site.urls.context + "rest/health/payment/authorise.json";
 		}
 
-		authoriseJsonData = {
+		var authoriseJsonData = {
 			transactionId:meerkat.modules.transactionId.get(),
 			providerId: $("#health_application_provider").val()
 		};

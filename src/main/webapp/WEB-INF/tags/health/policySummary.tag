@@ -3,7 +3,7 @@
 
 <%@ attribute name="showProductDetails" rtexprvalue="true"	 description="Display the additional product details?" %>
 
-<!-- This is a deactivated split test as it is likely to be run again in the future -->
+<%-- This is a deactivated split test as it is likely to be run again in the future --%>
 <%-- <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" /> --%>
 <%-- <c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" /> --%>
 

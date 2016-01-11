@@ -15,15 +15,14 @@
 <c:set var="val_optout"				value="N" />
 
 <%-- Vars for competition --%>
-<c:set var="competitionSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 99)}" />
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="competitionSecret"><content:get key="competitionSecret"/></c:set>
 <c:set var="competitionEnabled" value="${false}" />
-<c:if test="${competitionEnabledSetting == 'Y' && (competitionSplitTest eq true or competitionSecret == 'kSdRdpu5bdM5UkKQ8gsK')}"> <%--Split test needs to allow previous competition ($1000 promo) to remain active. TODO: Cleanup--%>
-	<c:set var="competitionEnabled" value="${true}" />
+<c:if test="${competitionEnabledSetting == 'Y' && competitionSecret == 'kSdRdpu5bdM5UkKQ8gsK'}">
+ 	<c:set var="competitionEnabled" value="${true}" />
 </c:if>
 
-<!-- Name is mandatory for both online and callcentre, other fields only mandatory for online -->
+<%-- Name is mandatory for both online and callcentre, other fields only mandatory for online --%>
 <c:set var="required" value="${true}" />
 <c:if test="${callCentre}">
 	<c:set var="required" value="${false}" />
@@ -43,7 +42,7 @@
 
 		<jsp:body>
 
-			<form_new:fieldset legend="Contact Details" >
+			<form_new:fieldset legend="Your Details" postLegend="Enter your details below and we'll show you products that match your needs on the next page" >
 
 				<c:set var="firstNamePlaceHolder">
 					<content:get key="firstNamePlaceHolder"/>
@@ -54,23 +53,23 @@
 				</c:set>
 
 				<c:set var="fieldXpath" value="${xpath}/name" />
-				<form_new:row label="First Name" fieldXpath="${fieldXpath}" className="clear required_input">
-					<field:person_name xpath="${fieldXpath}" title="name" required="true" placeholder="${firstNamePlaceHolder}" />
+				<form_new:row label="Your first name" fieldXpath="${fieldXpath}" className="clear required_input">
+					<field:person_name xpath="${fieldXpath}" title="name" required="true" />
+				</form_new:row>
+
+				<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
+				<form_new:row label="Your phone number" fieldXpath="${fieldXpath}" className="clear required_input">
+					<field:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/email" />
-				<form_new:row label="Email Address" fieldXpath="${fieldXpath}" className="clear required_input">
-					<field_new:email xpath="${fieldXpath}" title="your email address" required="${required}" placeHolder="${emailPlaceHolder}" />
+				<form_new:row label="Your email address" fieldXpath="${fieldXpath}" className="clear required_input">
+					<field_new:email xpath="${fieldXpath}" title="your email address" required="${required}"  />
 					<field:hidden xpath="${xpath}/emailsecondary" />
 					<field:hidden xpath="${xpath}/emailhistory" />
 				</form_new:row>
 
-				<%--<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" />--%>
-
-				<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
-				<form_new:row label="Phone Number" fieldXpath="${fieldXpath}" className="clear required_input">
-					<field:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
-				</form_new:row>
+				<group_new:contact_numbers_hidden xpath="${xpath}/contactNumber" />
 
 				<%-- Optin fields (hidden) for email and phone --%>
 				<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />

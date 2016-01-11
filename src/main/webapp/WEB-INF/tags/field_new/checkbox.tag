@@ -19,8 +19,6 @@
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.benefits')}" />
 
-${logger.warn('Theme. {}',log:kv('theme',theme), error)}
-
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="xpathval"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
@@ -37,10 +35,10 @@ ${logger.warn('Theme. {}',log:kv('theme',theme), error)}
 
 <c:choose>
 	<c:when test="${not empty theme}">
-		<c:set var="className" value="checkbox-${theme}" />
+		<c:set var="className" value="${className} checkbox-${theme}" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="className" value="checkbox" />
+		<c:set var="className" value="${className} checkbox" />
 	</c:otherwise>
 </c:choose>
 

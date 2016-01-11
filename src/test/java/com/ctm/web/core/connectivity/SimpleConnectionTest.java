@@ -31,6 +31,10 @@ public class SimpleConnectionTest {
         simpleConnection = new SimpleConnection();
         LoggingVariables.setCorrelationId(correlationId);
         PowerMockito.whenNew(URL.class).withArguments(testUrl).thenReturn(url);
+        URL url2 = PowerMockito.mock(URL.class);
+        Mockito.when(url2.toString()).thenReturn("xxxx");
+        PowerMockito.whenNew(URL.class).withArguments("http://localhost").thenReturn(url2);
+        System.out.println("test here " + new URL("http://localhost").toString());
     }
 
     @Test
