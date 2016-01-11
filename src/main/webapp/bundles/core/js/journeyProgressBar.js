@@ -20,20 +20,8 @@
 	var currentStepNavigationId = null;
 	var isDisabled = false;
 	var isVisible = true;
-
-	/* example object
-	progressBarSteps: [
-		{
-			label:'Your Details',
-			navigationId:'start',
-			matchAdditionalSteps:['details']
-		},
-		{
-			label:'Your Cover',
-			navigationId:'benefits'
-		}
-	]
-	*/
+	var endCollapsed = 0;
+	var nodeWidth = 36;
 
 	function init() {
 		$(document).ready(function() {
@@ -53,24 +41,35 @@
 	}
 
 
-	function configure( progressBarStepsArgument){
+	function configure( progressBarStepsArgument) {
 		progressBarSteps = progressBarStepsArgument;
-
 		// 99% width (if default) divided by number of steps (last li.end element takes 1% width)
-		progressBarElementWidthPercentage = progressBarWidth / progressBarSteps.length;
+		if (endCollapsed !== 0) {
+			fullProgressBarWidth = $target.width();
+			elementWidth = nodeWidth;
+			usableWidth = fullProgressBarWidth - elementWidth;
+			progressBarWidth = usableWidth / fullProgressBarWidth * 100;
+		}
+		progressBarElementWidthPercentage = progressBarWidth / (progressBarSteps.length - endCollapsed);
 	}
 	function changeTargetElement(element) {
 		$target = $(element);
 	}
+	function setNodeWidth(width) {
+		nodeWidth = width;
+	}
+
 	function setWidth(width) {
 		progressBarWidth = width;
 	}
 	function setEndPadding(padding) {
 		includeEndPadding = padding;
 	}
+	function setEndCollapsed(end) {
+		endCollapsed = end === true ? 1 : 0;
+	}
 
 	function render(fireEvent){
-
 		var html = "";
 		var openTag = "";
 		var closeTag = "";
@@ -96,7 +95,7 @@
 
 			// if current step
 			if( isCurrentStep ) {
-				className = ' class="current"';
+				className = 'current';
 				foundCurrent = true;
 			} else {
 				// if later step
@@ -104,8 +103,11 @@
 					tabindex = ' tabindex="-1"';
 				// if complete step
 				}else{
-					className = ' class="complete"';
+					className = 'complete';
 				}
+			}
+			if( index == lastIndex) {
+				className = className + " end";
 			}
 
 			if( isDisabled || isCurrentStep || foundCurrent ){
@@ -115,7 +117,7 @@
 				closeTag = 'a';
 			}
 
-			html += '<li' + className + '><' + openTag + '><span>' + progressBarStep.label + '</span></' + closeTag + '></li>';
+			html += '<li class="' + className + '"><' + openTag + '><span>' + progressBarStep.label + '</span></' + closeTag + '></li>';
 
 			if( index == lastIndex && includeEndPadding ){
 				className = "";
@@ -128,7 +130,7 @@
 
 		$target.html( html );
 
-		$target.find('li').css("width", progressBarElementWidthPercentage + "%");
+		$target.find('li').not('.end').css("width", progressBarElementWidthPercentage + "%");
 		if (includeEndPadding) { $target.find('li:last-child').css("width", "");}
 
 
@@ -197,7 +199,9 @@
 		addAdditionalStep: addAdditionalStep,
 		changeTargetElement: changeTargetElement,
 		setWidth: setWidth,
-		setEndPadding: setEndPadding
+		setEndPadding: setEndPadding,
+		setEndCollapsed: setEndCollapsed,
+		setNodeWidth: setNodeWidth
 	});
 
 })(jQuery);
