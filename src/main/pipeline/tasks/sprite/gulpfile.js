@@ -27,13 +27,14 @@ function SpriteTasks(gulp) {
                     imgPathPrefix = "../../../graphics/logos/" + bundle;
 
                 gulp.task(taskName, function() {
+                    var ts = new Date().getTime();
                     var spriteSmithConfig = {
                         cssName: "logosSprites.less",
                         imgName: "spritesheet.png",
-                        imgPath: imgPathPrefix + "/spritesheet.png",
+                        imgPath: imgPathPrefix + "/spritesheet.png?ts=" + ts,
                         cssSpritesheetName: bundle + "-logo",
                         retinaImgName: "spritesheet@2x.png",
-                        retinaImgPath: imgPathPrefix + "/spritesheet@2x.png",
+                        retinaImgPath: imgPathPrefix + "/spritesheet@2x.png?ts=" + ts,
                         cssRetinaSpritesheetName: bundle + "-logo-2x",
                         retinaSrcFilter: [path.join(srcPath, "*@2x.png")],
                         padding: 2,
