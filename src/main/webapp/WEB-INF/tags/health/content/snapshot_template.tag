@@ -48,7 +48,7 @@
   </div>
   <div class="row snapshot">
     <div class="col-md-5">
-      <span class="snapshot-title">Looking for:</span>
+      <span class="snapshot-title">Looking to:</span>
     </div>
     <div class="col-md-7">
                 <span class="snapshot-items hidden-xs hidden-sm">
