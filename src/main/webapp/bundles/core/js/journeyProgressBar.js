@@ -106,7 +106,7 @@
 					className = 'complete';
 				}
 			}
-			if( index == lastIndex) {
+			if( index == lastIndex && includeEndPadding === false) {
 				className = className + " end";
 			}
 
