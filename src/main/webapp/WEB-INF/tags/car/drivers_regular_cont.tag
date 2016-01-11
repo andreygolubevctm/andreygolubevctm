@@ -7,15 +7,12 @@
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
-<c:set var="bubbleClass">
-	<c:if test="${showRegoLookupContent eq true}">point-left</c:if>
-</c:set>
 
 <%-- HTML --%>
 <form_new:fieldset_columns sideHidden="false">
 
 	<jsp:attribute name="rightColumn">
-		<ui:bubble variant="info" className="${bubbleClass}">
+		<ui:bubble variant="info">
 			<h4>Not sure of your NCD rating?</h4>
 			<p>You can usually find this on your current insurance policy or renewal notice near the price.</p>
 		</ui:bubble>
