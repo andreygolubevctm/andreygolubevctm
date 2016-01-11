@@ -49,7 +49,8 @@
 				runShowResultsPage: false, // Don't let Results.view do it's normal thing.
 				paths: {
 					results: {
-						list: "results.result"
+						list: "results.result",
+						providerCode: "serviceName"
 					},
 					productId: "productId",
 					productName: "name",

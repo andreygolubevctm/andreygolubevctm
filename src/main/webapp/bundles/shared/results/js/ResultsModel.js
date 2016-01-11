@@ -10,6 +10,7 @@ var ResultsModel = {
 	currentProduct: false,
 	selectedProduct: false,
 	filters: [],
+	availablePartners: [],
 
 	resultsLoadedOnce: false,
 
@@ -280,6 +281,15 @@ var ResultsModel = {
 
 				if( Results.model.currentProduct && Results.model.currentProduct.product ){
 					Results.model.returnedProducts.push( Results.model.currentProduct.product );
+				}
+
+				// Store the provider code if the partner returns at least 1 product
+				if (Results.settings.paths.results.providerCode !== false) {
+					_.each(Results.model.returnedProducts, function getProvidercodes(obj){
+						if (obj.available == 'Y' && !_.contains(Results.model.availablePartners, obj[Results.settings.paths.results.providerCode])) {
+							Results.model.availablePartners.push(obj[Results.settings.paths.results.providerCode]);
+						}
+					});
 				}
 
 				// Publish event
