@@ -5,8 +5,11 @@ import com.ctm.web.core.services.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.net.*;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +32,7 @@ import java.util.Map;
  */
 public class JourneyGateway {
 
-	static final String OVERRIDE_PARAM = "jg"; // URL param to flag already processed
+	static final String ISSET_PARAM = "jg"; // URL param to flag already processed
 	static final String LABEL_PREFIX = "splitTest_";
 	static final String LABEL_SUFFIX_ACTIVE = "_active";
 	static final String LABEL_SUFFIX_COUNT = "_count";
@@ -67,8 +70,7 @@ public class JourneyGateway {
 			String vertical = pageSettings.getVertical().getCode();
 			// Stop now if no split test active
 			if (pageSettings.hasSetting(activeLabel) && pageSettings.getSetting(activeLabel).equals("Y")) {
-				// Stop now if override param in request (no need to check cookie)
-				if(!isParamInRequest(request, OVERRIDE_PARAM)) {
+				if(!isParamInRequest(request, ISSET_PARAM)) {
 					cookieUrl = getCookieUrl(request.getRequestURL().toString());
 					String cookieJ = getCookieValue(new URL(cookieUrl.toString() + "/" + pageSettings.getSetting("contextFolder") + "data.jsp"), splitTestRef, vertical);
 					// Stop now if override param exists as that means we've already determined the journey
@@ -108,7 +110,7 @@ public class JourneyGateway {
 			if(journey != null) {
 				// Build and add J param to URL
 				StringBuffer url = getURLWithoutJParam(request);
-				url.append("j=" + journey + "&" + OVERRIDE_PARAM + "=1");
+				url.append("j=" + journey + "&" + ISSET_PARAM + "=1");
 				urlOut = url.toString();
 
 				// Store journey value in cookie
@@ -224,11 +226,48 @@ public class JourneyGateway {
 		try {
 			CookieStore cookieJar =  getCookieManager().getCookieStore();
 			HttpCookie cookie = new HttpCookie(COOKIE_LABEL_PREFIX + splitTestRef + vertical, Integer.toString(journey));
+			cookie.setMaxAge(2592000); // Expire after 30 days
 			cookieJar.add(url.toURI(), cookie);
 			LOGGER.debug("[JourneyGateway] Set cookie [" + cookie.getName() + "] value [" + cookie.getValue() + "]");
 		} catch(Exception e) {
 			LOGGER.error("[JourneyGateway] Exception setting cookie value", e);
 		}
+	}
+
+	/**
+	 * flushCookies expires any existing JourneyGateway cookies
+	 * @param request
+	 * @return
+	 */
+	public static String flushCookies(HttpServletRequest request) {
+		String response = null;
+		StringBuilder responseBuilder = new StringBuilder();
+		responseBuilder.append("<h3>The following journey cookies were removed:</h3>");
+		try {
+			URL url = getCookieUrl(request.getRequestURL().toString());
+			url = new URL(url.toString() + "/ctm/data.jsp");
+			URLConnection connection = url.openConnection();
+			connection.getContent();
+			CookieStore cookieJar = getCookieManager().getCookieStore();
+
+			List<HttpCookie> cookies = cookieJar.getCookies();
+			int flushCount = 0;
+			for (HttpCookie cookie : cookies) {
+				if (cookie.getName().startsWith(COOKIE_LABEL_PREFIX)) {
+					responseBuilder.append("<p><span style='color:red;'>removed:</span> " + cookie.getName() + " [" + cookie.getValue() + "]</p>");
+					cookie.setMaxAge(-3600);
+					cookie.setDiscard(true);
+					flushCount++;
+				}
+			}
+			if(flushCount == 0) {
+				responseBuilder.append("<p>No journey cookies found to be removed</p>");
+			}
+			response = responseBuilder.toString();
+		} catch(Exception e) {
+			responseBuilder.append("<p style='color:red;'>[JourneyGateway] Exception flushing cookies: " + e.getMessage() + "</p>");
+		}
+		return response;
 	}
 
 	/**
