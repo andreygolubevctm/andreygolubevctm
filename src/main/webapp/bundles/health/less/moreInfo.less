@@ -28,6 +28,10 @@
 	}
 }
 
+.moreInfoVisible #resultsPage{
+	margin-bottom: 30px;
+}
+
 // Bridging page
 .moreInfoDropdown {
 
@@ -92,6 +96,7 @@
 	.cover-card {
 		h1 {
 			margin-top: 0;
+			margin-bottom: 20px;
 			&.extrasCoverTitle {
 				@media (@xs-only) {
 					margin-top: 20px;
@@ -104,7 +109,7 @@
 	}
 
 	h2 {
-		font-size: 25px;
+		font-size: 24px;
 		font-family: @font-family-theme-regular;
 		@media (@xs-only) {
 			margin-top: 18px;
@@ -114,7 +119,13 @@
 		margin-top: 20px;
 		margin-bottom: 20px;
 	}
-	p, ol, blockquote, .btn-cta {
+	p, ol, blockquote {
+		font-size: 16px;
+	}
+	p, li{
+		padding-bottom: 5px;
+	}
+	.btn-cta{
 		font-size: 18px;
 	}
 	ol li,
@@ -165,6 +176,9 @@
 
 	.frequencyAmount {
 		font-size: 40px;
+		@media(@lg){
+			font-size: 60px;
+		}
 		font-family: @font-family-theme-bold;
 	}
 	.frequencyTitle {
@@ -174,7 +188,7 @@
 	}
 	.lhcText,
 	.rounding {
-		font-size: 16px;
+		font-size: 14px;
 		color: @gray-light;
 	}
 
@@ -211,8 +225,11 @@
 	h4 {
 		color: white;
 		margin-left: -15px;
-		@media (@md-only) {
-			margin-top: 0;
+		font-family: @font-family-theme-regular;
+		margin-top: 0;
+		line-height: 115%;
+		@media(@lg){
+			line-height: 150%;
 		}
 	}
 	a {
@@ -253,14 +270,15 @@
 		font-size: 30px;
 	}
 	blockquote {
-		line-height: 16px;
+		font-size: 18px;
+		line-height: 20px;
 	}
 	.openQuote,
 	.closeQuote {
 		font-size: 100px;
-		font-family: serif;
+		font-family: @font-family-theme-regular;
 		margin-top: 15px;
-		color: @gray-slight-dark;
+		color: #8A8A8A;
 	}
 	.openQuote {
 		float: left;
@@ -294,7 +312,6 @@
 			border: none;
 			& > th {
 				border: none;
-				font-family: @font-family-theme-regular;
 			}
 		}
 	}
@@ -324,6 +341,7 @@
 		padding-bottom: 15px;
 	}
 	p {
+		font-family: @font-family-theme-light;
 		text-align: right;
 		color: white;
 		font-size: 30px;
@@ -349,6 +367,10 @@
 	border-left: 1px solid #E7E7E7;
 	border-right: 1px solid #E7E7E7;
 	padding-bottom: 10px;
+
+	.modal-body & h2{
+		margin-top: 10px;
+	}
 }
 
 // default
@@ -513,14 +535,19 @@ ul.benefitsIcons {
 			color: @theme-tertiary;
 		}
 	}
-	&.restrictions li:before {
-		@media (@sm) {
-			background-color: #EDEDED;
-			color: #888888;
-			border: 1px solid #888888;
-		}
+	&.restrictions li{
 		@media (@xs-only) {
-			color: #EDEDED;
+			padding-left: 20px;
+		}
+		&:before {
+			@media (@sm) {
+				background-color: #EDEDED;
+				color: #888888;
+				border: 1px solid #888888;
+			}
+			@media (@xs-only) {
+				display: none;
+			}
 		}
 	}
 }

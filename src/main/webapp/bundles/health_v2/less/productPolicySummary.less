@@ -30,12 +30,15 @@
 	}
 
 	.price{
-	  @media (@md) {
-		max-width: 119px;
-	  }
-	  @media (@lg) {
-		max-width: 170px;
-	  }
+		.health[data-step="results"] &{
+			margin-top: 5px;
+		}
+		@media (@md) {
+			max-width: 119px;
+		}
+		@media (@lg) {
+			max-width: 170px;
+		}
 	}
 
 
@@ -88,13 +91,12 @@
 	  overflow: hidden;
 
 	  .price{
-		@media (@xs-only) {
-		  margin-left:65px;
-		}
-		@media (@sm) {
-		  float: right;
-		}
-
+		  @media (@xs-only) {
+			  margin-left:65px;
+		  }
+		  @media (@sm) {
+			  float: right;
+		  }
 	  }
 	  .frequency{
 		.frequencyAmount,
