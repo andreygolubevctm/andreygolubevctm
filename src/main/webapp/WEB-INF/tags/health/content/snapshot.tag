@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 
-<fieldset class="quoteSnapshot sidebar-box hidden-md">
+<fieldset class="quoteSnapshot sidebar-box hidden-sm">
     <h4>Quote Summary</h4>
 
     <div class="col-md-12">
@@ -18,10 +18,10 @@
     {{ if(obj.comingFromWebsite) { }}
         <div class="row snapshot">
             <div class="col-md-5">
-                <span>Cover for:</span>
+                <span class="snapshot-title">Cover for:</span>
             </div>
             <div class="col-md-7">
-                    <span class="hidden-xs hidden-md">
+                    <span class="hidden-xs hidden-sm">
                         <span data-source="#health_situation_healthCvr"></span>
                     </span>
             </div>
@@ -32,7 +32,7 @@
                 <span class="snapshot-title">Living in:</span>
             </div>
             <div class="col-md-7">
-                    <span class="snapshot-items hidden-xs hidden-md">
+                    <span class="snapshot-items hidden-xs hidden-sm">
                         <span data-source="#health_situation_location"></span>
                     </span>
             </div>
@@ -43,7 +43,7 @@
                 <span class="snapshot-title">Cover for:</span>
             </div>
             <div class="col-md-7">
-              <span class="snapshot-items hidden-xs hidden-md">
+              <span class="snapshot-items hidden-xs hidden-sm">
                    <span data-source="#health_situation_healthCvr"></span>
               </span>
             </div>
@@ -53,7 +53,7 @@
                 <span class="snapshot-title">Living in:</span>
             </div>
             <div class="col-md-7">
-              <span class="snapshot-items hidden-xs hidden-md">
+              <span class="snapshot-items hidden-xs hidden-sm">
                   <span data-source="#health_situation_location"></span>
               </span>
             </div>
@@ -63,7 +63,7 @@
                 <span class="snapshot-title">Looking for:</span>
             </div>
             <div class="col-md-7">
-                <span class="snapshot-items hidden-xs hidden-md">
+                <span class="snapshot-items hidden-xs hidden-sm">
                       <span data-source="#health_situation_healthSitu"></span>
                 </span>
             </div>
@@ -86,10 +86,10 @@
     {{ if(obj.renderIt) { }}
         <div class="row snapshot cover-type ">
             <div class="col-md-5">
-                <span class="snapshot-title">Cover type</span>
+                <span class="snapshot-title">Cover type:</span>
             </div>
             <div class="col-md-7">
-                <span class="snapshot-items hidden-xs hidden-md">
+                <span class="snapshot-items hidden-xs hidden-sm">
                      <span data-source="#health_situation_coverType"></span>
                  </span>
             </div>
@@ -105,7 +105,7 @@
                 <span class="snapshot-title">Benefits</span>
             </div>
             <div class="col-md-7">
-                <span class="snapshot-items hidden-xs hidden-md">
+                <span class="snapshot-items hidden-xs hidden-sm">
                     <ul class="snapshot-list">
                         <li>{{=obj.benefitList.join('</li><li>')}} </li>
                     </ul>
@@ -122,7 +122,7 @@
                 <span class="snapshot-title">Extras</span>
             </div>
             <div class="col-md-7">
-                  <span class="snapshot-items hidden-xs hidden-md">
+                  <span class="snapshot-items hidden-xs hidden-sm">
                       <ul class="snapshot-list">
                           <li>{{=obj.extrasList.join('</li><li>')}} </li>
                       </ul>

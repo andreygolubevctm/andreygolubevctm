@@ -26,7 +26,6 @@
 
         // Initial render
         meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.BEFORE_STEP_CHANGED, function renderSnapshotOnJourneyReadySubscription() {
-            console.log("inside subscription block");
             _.defer(function() {
                 renderStep1();
                 renderCovertype();
@@ -41,7 +40,6 @@
     function renderBenefits() {
         var list = fetchAllHospitalCheckedValues();
         var morishList = fetchAllHospitalMoreCheckedValues();
-        console.log("the morish list is"+morishList);
         var megaList = list.concat(morishList);
         var coverTypeValue = $("#health_situation_coverType").val();
         var renderIt = false;
@@ -59,7 +57,6 @@
     function renderExtras() {
         var list =  fetchAllExtrasCheckedValues();
         var morishList = fetchAllExtasMoreCheckedValues();
-        console.log(morishList);
         var megaList = list.concat(morishList);
         var coverTypeValue = $("#health_situation_coverType").val();
         var renderIt = false;
@@ -79,8 +76,11 @@
         var list = [];
         $(".Hospital_container .noIcons").find(':checked').each(function(item) {
             var $this = $(this);
-            var label = $this.next('label').text();
-            list.push(label);
+            var label = $($this.next('label').contents()[0]).text();
+            label = label.trim();
+            if(!_.isEmpty(label)) {
+                list.push(label);
+            }
         });
         return list;
     }
@@ -89,8 +89,11 @@
         var list = [];
         $(".GeneralHealth_container .noIcons").find(':checked').each(function(item) {
             var $this = $(this);
-            var label = $this.next('label').text();
-            list.push(label);
+            var label = $($this.next('label').contents()[0]).text();
+            label = label.trim();
+            if(!_.isEmpty(label)) {
+                list.push(label);
+            }
         });
         return list;
 
@@ -103,7 +106,9 @@
         $(".Hospital_container").find(':checked').each(function(item) {
             var $this = $(this);
             var label = $this.next('label').find('span.iconLabel').text();
-            list.push(label);
+            if(!_.isEmpty(label)) {
+                list.push(label);
+            }
 
         });
         return list;
@@ -114,7 +119,10 @@
         $(".GeneralHealth_container").find(':checked').each(function(item) {
             var $this = $(this);
             var label = $this.next('label').find('span.iconLabel').text();
-            list.push(label);
+            label = label.trim();
+            if(!_.isEmpty(label)) {
+                list.push(label);
+            }
         });
         return list;
     }
