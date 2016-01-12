@@ -29,7 +29,7 @@
 </c:if>
 
 <%-- HTML --%>
-<div id="${name}-selection" class="health-your_details">
+
 
 	<form_new:fieldset_columns sideHidden="true">
 
@@ -44,7 +44,7 @@
 
 		<jsp:body>
 
-			<form_new:fieldset legend="Your Details" postLegend="Enter your details below and we'll show you products that match your needs on the next page" >
+			<form_new:fieldset legend="" postLegend="" >
 
 				<c:set var="firstNamePlaceHolder">
 					<content:get key="firstNamePlaceHolder"/>
@@ -142,7 +142,7 @@
 	<field:hidden xpath="health/altContactFormRendered" constantValue="Y" />
 
 
-</div>
+
 
 
 
