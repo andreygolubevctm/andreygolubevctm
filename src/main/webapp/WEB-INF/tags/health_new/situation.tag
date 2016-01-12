@@ -8,8 +8,6 @@
 <%-- Set A/B test flag j=2 --%>
 <c:set var="showOptIn" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" scope="request" />
 
-<c:set var="callCentreHoursBubble" scope="request"><content:getOpeningHoursBubble /></c:set>
-
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
@@ -19,10 +17,7 @@
 	<form_new:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
-			<c:if test="${not empty callCentreNumber}">
-					<health_content:call_centre_help />
-					${callCentreHoursBubble}
-			</c:if>
+			<health_new_content:sidebar />
 		</jsp:attribute>
 
 		<jsp:body>
