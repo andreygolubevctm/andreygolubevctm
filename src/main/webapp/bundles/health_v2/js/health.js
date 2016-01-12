@@ -5,7 +5,8 @@
 		exception = meerkat.logging.exception,
 		moduleEvents = {
 			health: {
-				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM'
+				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM',
+				SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE'
 			},
 			WEBAPP_LOCK: 'WEBAPP_LOCK',
 			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
@@ -142,6 +143,15 @@
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
 					healthChoices.setCover($(this).val());
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+
+				$healthSitLocation.on('change',function() {
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+
+				$healthSitHealthSitu.on('change',function() {
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
 
 				$healthSitLocation.on('blur',function() {
@@ -237,6 +247,22 @@
 			},
 			onInitialise: function onResultsInit(event){
 				meerkat.modules.healthResults.initPage();
+
+				var $healthSitCoverType = $('#health_situation_coverType');
+				var $hospitalBenefits = $('.Hospital_container  input:checkbox');
+				var $extraBenefits = $('.GeneralHealth_container input:checkbox');
+
+				$healthSitCoverType.on('change',function(event) {
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+
+				$hospitalBenefits.click(function() {
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+				$extraBenefits.click(function() {
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();

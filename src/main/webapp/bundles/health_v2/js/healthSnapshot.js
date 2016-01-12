@@ -27,14 +27,25 @@
         // Initial render
         meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.BEFORE_STEP_CHANGED, function renderSnapshotOnJourneyReadySubscription() {
             _.defer(function() {
-                renderStep1();
-                renderCovertype();
-                renderBenefits();
-                renderExtras();
-                meerkat.modules.contentPopulation.render('.quoteSnapshot');
+                renderSnapshot();
+            });
+        });
+         meerkat.messaging.subscribe(meerkat.modules.events.health.SNAPSHOT_FIELDS_CHANGE, function renderSnapshotOnJourneyReadySubscription() {
+            _.defer(function() {
+                renderSnapshot();
             });
         });
 
+
+
+    }
+
+    function renderSnapshot() {
+        renderStep1();
+        renderCovertype();
+        renderBenefits();
+        renderExtras();
+        meerkat.modules.contentPopulation.render('.quoteSnapshot');
     }
 
     function renderBenefits() {
@@ -149,11 +160,11 @@
 
         var renderAll = false;
         var comingFromWebsite =  false;
-        if(!_.isEmpty(coverFor) && !_.isEmpty(location) && _.isEmpty(lookingFor) ) {
+        if( (!_.isEmpty(coverFor) && !_.isEmpty(location)) && _.isEmpty(lookingFor) ) {
             comingFromWebsite = true;
             $mainHeaderText.text("Quote Summary");
         }
-        if(!_.isEmpty(coverFor) && !_.isEmpty(location) && !_.isEmpty(lookingFor) ) {
+        if(!_.isEmpty(coverFor) || !_.isEmpty(location) || !_.isEmpty(lookingFor) ) {
             renderAll = true;
             $mainHeaderText.text("Quote Summary");
         }

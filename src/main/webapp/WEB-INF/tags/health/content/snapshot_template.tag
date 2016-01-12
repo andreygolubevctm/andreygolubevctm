@@ -90,7 +90,7 @@
   {{ if(obj.benefitList.length > 0 && obj.renderIt) { }}
   <div class="row snapshot ">
     <div class="col-md-5">
-      <span class="snapshot-title">Benefits</span>
+      <span class="snapshot-title">Hospital</span>
     </div>
     <div class="col-md-7">
                 <span class="snapshot-items hidden-xs hidden-sm">
