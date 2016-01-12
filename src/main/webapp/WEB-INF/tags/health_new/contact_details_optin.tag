@@ -38,6 +38,8 @@
 			<c:if test="${competitionEnabled == true}">
 				<content:get key="healthCompetitionRightColumnPromo"/>
 			</c:if>
+
+			<health_new_content:sidebar />
 		</jsp:attribute>
 
 		<jsp:body>

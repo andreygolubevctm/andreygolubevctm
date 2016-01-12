@@ -64,7 +64,8 @@
 	}
 }
 .content,
-.fieldset-card{
+.fieldset-card,
+.fieldset-column-side .sidebar-box{
 	background-color: white;
 	border:1px solid @border-colour;
 	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
@@ -135,9 +136,20 @@
 }
 
 .fieldset-column-side {
-  border: 1px solid @border-colour;
-  background-color: white;
-	padding-bottom: 25px;
+  padding-top: 0;
+
+  .sidebar-box {
+	font-size: 1.2em;
+	padding: 20px;
+	margin-bottom: 1em;
+
+	.callCentreNumber {
+	  color: @theme-secondary;
+	  font-weight: 700;
+	  // Make this slightly bigger than its parent
+	  font-size: 1.2em;
+	}
+  }
 }
 
 /* Policy summary in right hand column */
