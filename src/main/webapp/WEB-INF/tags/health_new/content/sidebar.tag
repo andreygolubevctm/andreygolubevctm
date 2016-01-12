@@ -3,5 +3,5 @@
 
 <%-- <health_content:xxx /> --%>
 <health_content:snapshot/>
-<health_content:call_centre_help />
+<content:get_random_content cssClass="sidebar-box" contentKey="healthTestimonials" />
 <health_content:call_centre_help />
