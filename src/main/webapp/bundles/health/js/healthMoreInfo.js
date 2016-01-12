@@ -37,9 +37,6 @@
                         $(eventObject.currentTarget).closest('.modal').modal('hide');
                     }
                 },
-                onOpen: function(dialogId) {
-                    fixBootstrapModalPaddingIssue(dialogId);
-                },
                 onClose: function() {
                     onBeforeHideTemplate();
                     meerkat.modules.moreInfo.close();
