@@ -146,13 +146,42 @@
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
 
+				// we need to wait till the field gets proparly populated from the address search ajax
 				$healthSitLocation.on('change',function() {
-					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+					setTimeout(function() {
+						meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+					},250);
+
 				});
 
 				$healthSitHealthSitu.on('change',function() {
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
+				/*
+
+				$healthSitSuburb.bind('change',function() {
+					console.log("suburb changes on bind..");
+				});
+
+				$healthSitSuburb.on('blur',function() {
+					console.log("suburb changes..");
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+
+				$healthSitState.on('blur',function() {
+					console.log("state changes..");
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+
+				$healthSitPostCode.on('blur',function() {
+					console.log("postcode changes..");
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+				*/
+
+
+
+
 
 				$healthSitLocation.on('blur',function() {
 					healthChoices.setLocation($(this).val());
