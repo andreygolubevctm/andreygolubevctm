@@ -8,7 +8,7 @@
 
     <layout_v1:slide_content>
         <%-- PROVIDER TESTING --%>
-        <agg_v1:provider_testing xpath="${xpath}" displayFullWidth="true" keyLabel="authToken" filterProperty="providerList" hideSelector="${false}" />
+        <agg_v1:provider_testing xpath="${xpath}" displayFullWidth="true" keyLabel="authToken" filterProperty="providerList" hideSelector="${carServiceSplitTest eq false}" />
 
         <car:vehicle_selection_lookup xpath="${xpath}/vehicle" />
 

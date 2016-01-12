@@ -51,9 +51,9 @@
 
         {{ var calloutsText; }}
         {{ if(typeof obj.info == 'undefined' || typeof obj.info.roadCall == 'undefined' || obj.info.roadCall.text == '') { }}
-        {{ calloutsText = "N/A";
+            {{ calloutsText = "N/A"; }}
         {{ } else { }}
-        {{ calloutsText = obj.info.roadCall.text != "Unlimited" ? "Up to " + obj.info.roadCall.text : "Unlimited" }}
+            {{ calloutsText = (typeof obj.info.roadCall.text === 'string' && obj.info.roadCall.text.indexOf('Unlimited') > -1) ? obj.info.roadCall.text : "Up to " + obj.info.roadCall.text }}
         {{ } }}
         <div class="result-row available result_{{= obj.productId }}" data-productId="{{= obj.productId }}"
              data-available="Y">

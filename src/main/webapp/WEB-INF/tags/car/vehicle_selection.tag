@@ -44,21 +44,10 @@
 		<field_v2:general_select xpath="${xpath}/fuel" title="fuel type" required="true" initialText="&nbsp;" />
 	</form_v2:row>
 
-	<c:choose>
-		<c:when test="${editDetailsRedbookCodeSplitTest eq true}">
-			<form_v2:row label="Please select your car type" hideHelpIconCol="true" id="${name}_redbookCodeRow" className="${name}_redbookCodeRow radio-button-group-row hidden">
-				<div id="${name}_redbookCode" class="radio-button-group"><!-- to be populated --></div>
-				<field_v1:hidden xpath="${xpath}/marketValue"></field_v1:hidden>
-				<field_v1:hidden xpath="${xpath}/variant"></field_v1:hidden>
-			</form_v2:row>
-		</c:when>
-		<c:otherwise>
-			<form_v2:row label="Type" id="${name}_redbookCodeRow" className="${name}_redbookCodeRow hidden">
-				<field_v2:general_select xpath="${xpath}/redbookCode" title="vehicle type" required="true" className="vehicleDes" initialText="&nbsp;" />
-				<field_v1:hidden xpath="${xpath}/marketValue"></field_v1:hidden>
-				<field_v1:hidden xpath="${xpath}/variant"></field_v1:hidden>
-			</form_v2:row>
-		</c:otherwise>
-	</c:choose>
+	<form_v2:row label="Type" id="${name}_redbookCodeRow" className="${name}_redbookCodeRow hidden">
+		<field_v2:general_select xpath="${xpath}/redbookCode" title="vehicle type" required="true" className="vehicleDes" initialText="&nbsp;" />
+		<field_v1:hidden xpath="${xpath}/marketValue"></field_v1:hidden>
+		<field_v1:hidden xpath="${xpath}/variant"></field_v1:hidden>
+	</form_v2:row>
 
 </form_v2:fieldset>

@@ -199,20 +199,10 @@
 		</div>
 	
 		<%-- Slides --%>
-		<c:choose>
-			<c:when test="${showRegoLookupContent eq true}">
-				<car_layout:slide_your_car_lookup />
-				<car_layout:slide_options_lookup />
-				<car_layout:slide_your_details_lookup />
-				<car_layout:slide_your_address_lookup />
-			</c:when>
-			<c:otherwise>
-				<car_layout:slide_your_car />
-				<car_layout:slide_options />
-				<car_layout:slide_your_details />
-				<car_layout:slide_your_address />
-			</c:otherwise>
-		</c:choose>
+		<car_layout:slide_your_car />
+		<car_layout:slide_options />
+		<car_layout:slide_your_details />
+		<car_layout:slide_your_address />
 		<car_layout:slide_results />
 
         <field_v1:hidden xpath="environmentOverride" />

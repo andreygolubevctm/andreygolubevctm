@@ -16,7 +16,7 @@
 
 <c:set var="service" value="${param.service}" />
 <c:set var="authToken" value="${param.authToken}" />
-<c:set var="styleCodeId"><core_v1:get_stylecode_id transactionId="${tranId}" /></c:set>
+<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${tranId}" /></c:set>
 <c:set var="pageSettings" value="${settingsService.getPageSettings(styleCodeId, 'CAR')}" />
 
 <c:set var="useDB" value="true"/>

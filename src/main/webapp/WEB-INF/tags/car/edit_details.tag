@@ -49,14 +49,7 @@
 						<li><span data-source="#quote_vehicle_year"></span> <span data-source="#quote_vehicle_body"></span></li>
 						<li class="push-right"><span data-source="#quote_vehicle_trans"></span> <span data-source="#quote_vehicle_fuel"></span></li>
 						<li>
-							<c:choose>
-								<c:when test="${editDetailsRedbookCodeSplitTest eq true}">
-									<span data-source="#quote_vehicle_redbookCode" data-callback="meerkat.modules.carEditDetails.formatRedbookCode"></span>
-								</c:when>
-								<c:otherwise>
-									<span data-source="#quote_vehicle_redbookCode"></span>
-								</c:otherwise>
-							</c:choose>
+							<span data-source="#quote_vehicle_redbookCode"></span>
 						</li>
 					</ul>
 					<a href="#start" class="btn btn-sm btn-edit stick-btn-left visible-lg needsclick">Edit</a>

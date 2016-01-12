@@ -22,7 +22,7 @@
 				</ui:bubble>
 
 				<health_v1:payment xpath="${pageSettings.getVerticalCode()}/payment" />
-				<health_v1:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
+				<health_v1:declaration xpath="${pageSettings.getVerticalCode()}/declaration" className="${pageSettings.getVerticalCode()}_declaration-group"/>
 				<health_v1:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
 				<health_v1:whats-next />
 				<simples:dialogue id="31" vertical="health" mandatory="true" />
