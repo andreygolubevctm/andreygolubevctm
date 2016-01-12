@@ -38,7 +38,7 @@
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber"/></c:set>
 
-<c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
+<c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours displayTodayOnly="true"/></c:set>
 <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
 
 <c:set var="isHealthV2" value="${true}" scope="request" />
@@ -69,12 +69,16 @@
               <li>
                 <div class="navbar-text visible-xs">
                   <h4>Do you need a hand?</h4>
-                  <h1><a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></a></h1>
+                  <h1>
+                      <a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">
+                          Call <span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                      </a>
+                  </h1><br/>
                     ${openingHoursHeader }
                 </div>
                 <div class="navbar-text hidden-xs" data-livechat="target">
-                  <h4>Call us on</h4>
-                  <h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
+                    <span class="icon-phone"></span>
+                    <h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
                     ${openingHoursHeader }
                 </div>
                 <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
@@ -85,7 +89,16 @@
         </div>
 	</jsp:attribute>
 
+    <jsp:attribute name="progress_bar">
+      <div class="progress-bar-row collapse navbar-collapse">
+        <div class="container">
+          <ul class="journeyProgressBar_v2"></ul>
+        </div>
+      </div>
+    </jsp:attribute>
+
 	<jsp:attribute name="navbar">
+
 
 		<ul class="nav navbar-nav">
           <li class="slide-feature-back">
@@ -164,7 +177,7 @@
     <%-- generate the benefit fields (hidden) for form selection. --%>
     <div class="hiddenFields">
       <c:forEach items="${resultTemplateItems}" var="selectedValue">
-        <health:benefitsHiddenItem item="${selectedValue}" />
+        <health_new:benefitsHiddenItem item="${selectedValue}" />
       </c:forEach>
 
       <field:hidden xpath="health/renderingMode" />
@@ -181,10 +194,11 @@
 
     <%-- Slides --%>
     <health_new_layout:slide_all_about_you />
+    <health_new_layout:slide_benefits />
     <health_new_layout:slide_your_contact />
     <health_layout:slide_results />
-    <health_layout:slide_application_details />
-    <health_layout:slide_payment_details />
+    <health_new_layout:slide_application_details />
+    <health_new_layout:slide_payment_details />
 
     <health_new:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />
 

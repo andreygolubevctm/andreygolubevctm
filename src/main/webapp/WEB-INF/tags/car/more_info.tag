@@ -2,8 +2,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <core:js_template id="promotion-offer-template">
-{{ obj.promotionText = (typeof obj.headline !== 'undefined' && typeof obj.headline.feature !== 'undefined' && obj.headline.feature.length > 0) ? obj.headline.feature : ''; }}
-{{ obj.offerTermsContent = (typeof obj.headline !== 'undefined' && typeof obj.headline.terms !== 'undefined' && obj.headline.terms.length > 0) ? obj.headline.terms : ''; }}
+{{ obj.promotionText = (typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
+{{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms != null && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 
 {{ if (promotionText.length > 0) { }}
 	<h2>Special Online Offer</h2>
@@ -20,13 +20,15 @@
 
 <core:js_template id="pds-disclaimer-template">
 	<h5>Product Disclosure Statement</h5>
-	{{ if (obj.hasOwnProperty('pdsbUrl') === false || obj.pdsbUrl === '') { }}
-		<a href="{{= obj.pdsaUrl }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure Statement</a>
-	{{ } else { }}
-		<a href="{{= obj.pdsaUrl }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure A</a>
-	<a href="{{= obj.pdsbUrl }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure B</a>
-		{{ if(typeof pdscUrl != 'undefined' && pdscUrl != '') { }}
-			<a href="{{= obj.pdscUrl }}" target="_blank" class="showDoc btn btn-sm btn-download btn-download-pds-c">Product Disclosure C</a>
+	{{ if (obj.productDisclosures != null) { }}
+		{{ if (obj.productDisclosures.hasOwnProperty('pdsb') === false) { }}
+			<a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure Statement</a>
+		{{ } else { }}
+			<a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure A</a>
+			<a href="{{= obj.productDisclosures.pdsb.url }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure B</a>
+			{{ if(obj.productDisclosures.hasOwnProperty('pdsc')) { }}
+				<a href="{{= obj.productDisclosures.pdsc.url }}" target="_blank" class="showDoc btn btn-sm btn-download btn-download-pds-c">Product Disclosure C</a>
+			{{ } }}
 		{{ } }}
 	{{ } }}
 	<div class="push-top-15">
@@ -37,12 +39,12 @@
 
 <core:js_template id="call-apply-template">
 	<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
-		{{ if(obj.isOnlineAvailable === true) { }}
+		{{ if(obj.availableOnline === true) { }}
 			<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
 		{{ } }}
 	</div>
-	{{ if(obj.isOfflineAvailable === true) { }}
-		{{ if(obj.isCallbackAvailable === true) { }}
+	{{ if(obj.contact.allowCallDirect === true) { }}
+		{{ if(obj.contact.allowCallMeBack === true) { }}
 			<div class="col-xs-12 col-sm-3 col-md-6 push-top-15">
 				<a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-productId="{{= obj.productId }}" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
 			</div>
@@ -58,14 +60,6 @@
 </core:js_template>
 
 <core:js_template id="more-info-template">
-
-	<%-- Setup variables --%>
-	{{ obj.isOnlineAvailable  = false; }}
-	{{ obj.isOfflineAvailable  = false; }}
-	{{ obj.isCallbackAvailable  = false; }}
-	{{ 	obj.isOnlineAvailable = obj.onlineAvailable == "Y" }}
-	{{ 	obj.isOfflineAvailable = obj.offlineAvailable == "Y" }}
-	{{ 	obj.isCallbackAvailable = obj.callbackAvailable == "Y" }}
 
 	<%-- Set up Reusable Templates --%>
 	{{ var template = $("#promotion-offer-template").html(); }}
@@ -104,7 +98,7 @@
 						{{= logoTemplate }}
 					</div>
 					<div class="col-xs-8 col-sm-7 col-md-9">
-						<h2 class="productName">{{= headline.name }}</h2>
+						<h2 class="productName">{{= productName }}</h2>
 					</div>
 				</div>
 
@@ -126,12 +120,12 @@
 						{{= monthlyPriceTemplate }}
 					</div>
 					<div class="col-xs-3 col-sm-1 hidden-md hidden-lg text-right no-padding">
-						<div class="excessAmount">\${{= excess.total }}</div>
+						<div class="excessAmount">\${{= excess }}</div>
 						<div class="excessTitle">Excess</div>
 					</div>
 					<div class="hidden-xs col-sm-3 col-md-5 col-lg-4 text-right">
-						<div class="quoteNumber">{{= leadNo }}</div>
-						<div class="quoteNumberTitle">{{ if(leadNo != '') { }} Quote Number {{ } }}</div>
+						<div class="quoteNumber">{{= quoteNumber }}</div>
+						<div class="quoteNumberTitle">{{ if(quoteNumber != '') { }} Quote Number {{ } }}</div>
 					</div>
 				</div>
 
@@ -149,48 +143,36 @@
 						<div id="benefits"></div>
 					</div>
 					<div class="col-xs-12 col-sm-6">
-						{{ if(typeof conditions != 'undefined' && typeof conditions.condition != 'undefined' && conditions.condition.length > 0) { }}
+						{{ if(specialConditions != null && typeof specialConditions != 'undefined' && typeof specialConditions.list != 'undefined' && specialConditions.list.length > 0) { }}
 						<div id="car-special-conditions">
 							<h5>Special Conditions</h5>
 							<ul>
-								{{ if(conditions.condition instanceof Array) { }}
+								{{ if(specialConditions.list instanceof Array) { }}
 									{{ var ageBasedConditions = 0; }}
-									{{ for(var i = 0; i < conditions.condition.length; i++) { }}
-										<li>{{= conditions.condition[i] }}</li>
+									{{ for(var i = 0; i < specialConditions.list.length; i++) { }}
+										<li>{{= specialConditions.list[i] }}</li>
 										<%-- If they have special conditions that contain "years old"... --%>
-										{{ if(conditions.condition[i].indexOf('years old') != -1) { }}
-											{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(true, conditions.condition[i]); }}
+										{{ if(specialConditions.list[i].indexOf('years old') != -1) { }}
+											{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(true, specialConditions.list[i]); }}
 											{{ ageBasedConditions++; }}
 										{{ } }}
 									{{ } }}
 									{{ if(ageBasedConditions === 0) { }}
 										{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
 									{{ } }}
-								{{ } else if(conditions.condition != '') { }}
-									<li>{{= conditions.condition }}</li>
-									{{ if(conditions.condition.indexOf('years old') != -1) { }}
-											{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(true, conditions.condition); }}
-										{{ } else { }}
-											{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
-										{{ } }}
 								{{ } }}
 							</ul>
 						</div>
 						{{ }  else { }}
 							{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
 						{{ } }}
-						{{ if(_.indexOf(["REIN","WOOL"], brandCode) === -1) { }}
-							{{ if(typeof excess != 'undefined' && typeof excess.excess != 'undefined' && (excess.excess.hasOwnProperty("description") || excess.excess.length > 0)) { }}
+						{{ if (serviceName != 'REIN' && serviceName != 'WOOL') { }}
+							{{ if(additionalExcesses != null && typeof additionalExcesses != 'undefined' && typeof additionalExcesses.list != 'undefined' && additionalExcesses.list.length > 0) { }}
 							<div id="car-additional-excess-conditions">
 								<h5>Additional Excess</h5>
 								<ul>
-									{{ if(excess.excess.hasOwnProperty("description")) { }}
-										<li>{{= excess.excess.description }} {{= excess.excess.amount }}</li>
-									{{ } else { }}
-										{{ for(var i = 0; i < excess.excess.length; i++) { }}
-										<li>{{= excess.excess[i].description }} {{= excess.excess[i].amount }}</li>
-										{{ } }}
-									{{ } }}
+									{{ for(var i = 0; i < additionalExcesses.list.length; i++) { }}
+									<li>{{= additionalExcesses.list[i].description }} {{= additionalExcesses.list[i].amount }}</li> {{ } }}
 								</ul>
 							</div>
 							{{ } }}
@@ -200,8 +182,8 @@
 						<div class="hidden-md hidden-lg">{{= PdsDisclaimerHtml }}</div>
 						<div class="hidden-md hidden-lg">
 							<h4>&nbsp;</h4>
-							<p>Underwriter: {{= underwriter }}</p>
-							<p>AFS Licence No: {{= afsLicenceNo }}</p>
+							<p>Underwriter: {{= underwriter.name }}</p>
+							<p>AFS Licence No: {{= underwriter.afsLicenceNo }}</p>
 							<car:price_promise className="inverted" />
 						</div>
 					</div>
@@ -216,7 +198,7 @@
 					{{ } else { }}
 						{{= monthlyPriceTemplate }}
 					{{ } }}
-					<div class="excessAmount">\${{= excess.total }}</div>
+					<div class="excessAmount">\${{= excess }}</div>
 					<div class="excessTitle">Excess</div>
 
 				</div>
@@ -233,8 +215,8 @@
 				</div>
 
 				<div class="push-top-15">
-					<p>Underwriter: {{= underwriter }}</p>
-					<p>AFS Licence No: {{= afsLicenceNo }}</p>
+					<p>Underwriter: {{= underwriter.name }}</p>
+					<p>AFS Licence No: {{= underwriter.afsLicenceNo }}</p>
 				</div>
 
 				<car:price_promise />

@@ -298,9 +298,7 @@ shared.state = {
 			//non destructively remove the state classes
 			//you can pass it a single target or a set
 			$target = $(target);
-			//console.log('$target',$target);
 			if ($target.length > 1) {
-				//console.log('$target is longer than 1',$target);
 				$target.filter('*[class^="state-"], *[class*=" state-"]').each(function(){
 					shared.state.clear(this);
 				});

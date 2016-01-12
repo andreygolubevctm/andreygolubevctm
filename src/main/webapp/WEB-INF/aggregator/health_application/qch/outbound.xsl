@@ -669,7 +669,7 @@
 				<xsl:when test="$fundName='UAOD'">Oth</xsl:when>
 				<!--  Australian Unity Health Limited -->
 				<xsl:when test="$fundName='AUSTUN'">AU</xsl:when>
-				<xsl:when test="$fundName='BUPA'">Bup</xsl:when>
+				<xsl:when test="$fundName='BUPA'">BUP</xsl:when>
 				<xsl:when test="$fundName='CBHS'">CBH</xsl:when>
 				<!--  CDH Benefits Fund (Cessnock District Health) -->
 				<xsl:when test="$fundName='CDH'">CDH</xsl:when>

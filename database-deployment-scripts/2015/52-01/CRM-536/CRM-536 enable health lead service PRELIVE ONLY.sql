@@ -1,0 +1,2 @@
+UPDATE ctm.service_properties SET servicePropertyValue = 'true'
+WHERE servicePropertyKey = 'enabled' and serviceMasterId = (select serviceMasterId from ctm.service_master where serviceCode = 'leadService');

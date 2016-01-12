@@ -190,7 +190,7 @@
 
 		//debug('[writeQuote]', 'Running AJAX Request');
 		liteXhrRequest = meerkat.modules.comms.post({
-			url: "quote/write_lite.json",
+			url: "/" + meerkat.site.urls.context + "quote/write_lite.json",
 			data: data,
 			dataType: 'json',
 			timeout: 20000,
@@ -239,7 +239,7 @@
 		}
 
 		meerkat.modules.comms.post({
-			url: "ajax/write/write_quote.jsp",
+			url: "/" + meerkat.site.urls.context + "ajax/write/write_quote.jsp",
 			data: data,
 			dataType: 'json',
 			cache: false,

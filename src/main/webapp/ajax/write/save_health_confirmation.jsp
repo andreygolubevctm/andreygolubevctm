@@ -10,8 +10,8 @@
 SAVING A SUCCESSFUL HEALTH APPLICATION
 ======================================
 Creates a historical snapshot of a confirmed health policy in XML with certain JSON and HTML objects.
-- the about data
-- the policy start date
+- the about, whatsnext data
+- the policy start date & policy Number
 - the product information
 --%>
 <c:set var="tranId" value="${data.current.transactionId}" />
