@@ -36,7 +36,7 @@
 		});
 
 
-		if(meerkat.site.leavePageWarning.enabled && meerkat.site.isCallCentreUser === false && supportsUnload === true && meerkat.site.environment != 'localhost'){
+		if(meerkat.site.leavePageWarning.enabled && meerkat.site.isCallCentreUser === false && supportsUnload === true){
 
 			window.onbeforeunload = function() {
 
