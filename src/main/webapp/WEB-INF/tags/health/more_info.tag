@@ -62,7 +62,7 @@
 
 						<div class="hidden-xs">
 							{{ if (promo.promoText !== ''){ }}
-							<h2>Buy now and save with these promotions</h2>
+							<h2>Buy now and benefit from these promotions</h2>
 							<p>{{= promo.promoText }}</p>
 							{{ } }}
 						</div>
@@ -81,7 +81,7 @@
 				<div class="row visible-xs">
 					<div class="col-xs-12">
 						{{ if (promo.promoText !== ''){ }}
-						<h2>Buy now and save with these promotions</h2>
+						<h2>Buy now and benefit from these promotions</h2>
 						<p>{{= promo.promoText }}</p>
 						{{ } }}
 					</div>
