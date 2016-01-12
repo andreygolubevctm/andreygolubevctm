@@ -25,7 +25,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
-		<div class="navbar-collapse header-collapse-contact collapse">
+		<div class="navbar-collapse header-collapse-contact collapse confirmation">
 			<ul class="nav navbar-nav navbar-right">
 				<c:if test="${not empty callCentreNumberApplication}">
 					<li>
@@ -50,7 +50,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="progress_bar">
-      <div class="progress-bar-row collapse navbar-collapse">
+      <div class="progress-bar-row collapse navbar-collapse confirmation">
 		  <div class="container">
 			  <ul class="journeyProgressBar_v2"></ul>
 		  </div>
@@ -58,7 +58,7 @@
     </jsp:attribute>
 
 	<jsp:attribute name="navbar">
-		<ul class="nav navbar-nav">
+		<ul class="nav navbar-nav confirmation">
 		<li><a href="javascript:window.print();" class="btn-email"><span class="icon icon-blog"></span> <span>Print Page</span></a></li>
 		<c:if test="${empty callCentre}">
 			<li>

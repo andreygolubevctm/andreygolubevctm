@@ -606,14 +606,16 @@
 		meerkat.modules.journeyProgressBar.changeTargetElement(".journeyProgressBar_v2");
 		//Better progressBar just works...
 		meerkat.modules.journeyProgressBar.setWidth(100);
+		meerkat.modules.journeyProgressBar.setNodeWidth(37);
 		meerkat.modules.journeyProgressBar.setEndPadding(false);
+		meerkat.modules.journeyProgressBar.setEndCollapsed(true);
 		meerkat.modules.journeyProgressBar.configure([
 			{
 				label:'About you',
 				navigationId: steps.startStep.navigationId
 			},
 			{
-				label:'Choose your benefits',
+				label:'Your cover',
 				navigationId: steps.benefitsStep.navigationId
 			},
 			{
@@ -621,15 +623,15 @@
 				navigationId: steps.contactStep.navigationId
 			},
 			{
-				label:'Your health insurance quotes',
+				label:'Compare',
 				navigationId: steps.resultsStep.navigationId
 			},
 			{
-				label:'Your Application',
+				label:'Application',
 				navigationId: steps.applyStep.navigationId
 			},
 			{
-				label:'Your Payment',
+				label:'',
 				navigationId: steps.paymentStep.navigationId
 			}
 		]);
