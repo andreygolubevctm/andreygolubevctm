@@ -1,0 +1,7 @@
+INSERT INTO ctm.content_control (styleCodeId, verticalId, contentCode, contentKey, contentStatus, effectiveStart, effectiveEnd, contentValue) VALUES (1, 4, 'Sidebar', 'healthTestimonials', '', '2016-01-06 14:02:25', '2038-01-19 00:00:00', 'common');
+SET @content_control_id = LAST_INSERT_ID();
+
+INSERT INTO ctm.content_supplementary (contentControlId, supplementaryKey, supplementaryValue) VALUES (@content_control_id, '1', '<span class="quote">I no longer pay for benefits I don''t use</span> <span class="h6">Andrea, WA</span>');
+INSERT INTO ctm.content_supplementary (contentControlId, supplementaryKey, supplementaryValue) VALUES (@content_control_id, '2', '<span class="quote">I was able to find the same level of cover but now save $60 a month</span> <span class="h6">Geoff, QLD</span>');
+INSERT INTO ctm.content_supplementary (contentControlId, supplementaryKey, supplementaryValue) VALUES (@content_control_id, '3', '<span class="quote">Health insurance gives us peace of mind</span> <span class="h6">Julie Barrett, NSW</span>');
+INSERT INTO ctm.content_supplementary (contentControlId, supplementaryKey, supplementaryValue) VALUES (@content_control_id, '4', '<span class="quote">The whole process was really simple and really easy</span> <span class="h6">Wendy, WA</span>');
