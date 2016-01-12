@@ -71,7 +71,9 @@ public class JourneyGateway {
 						.orElseGet(() -> getCookieJValue(request, splitTestRef, vertical)
 								.orElseGet(() -> calculateJValue(pageSettings, splitTestRef)));
 
-				response.addCookie(new Cookie(COOKIE_LABEL_PREFIX + splitTestRef + vertical, jValue));
+				final Cookie cookie = new Cookie(COOKIE_LABEL_PREFIX + splitTestRef + vertical, jValue);
+				cookie.setMaxAge(30*24*60*60);
+				response.addCookie(cookie);
 
 				if (!getRequestJValue(request).isPresent()) {
 					StringBuffer url = getURLWithoutJParam(request);
