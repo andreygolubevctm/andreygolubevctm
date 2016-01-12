@@ -89,19 +89,20 @@
 	}
 
 	&[data-step="apply"] {
-		.slide-feature-back,
-		.slide-feature-emailquote.privacyOptinChecked
-		{
-			.slide-feature-is-visible();
+		#navbar-main{
+		  .slide-feature-hidden() !important;
 		}
 	}
 
 	&[data-step="payment"] {
-		.slide-feature-back,
-		.slide-feature-emailquote.privacyOptinChecked
-		{
-			.slide-feature-is-visible();
+		#navbar-main{
+		  .slide-feature-hidden() !important;
 		}
+	}
+	.progress-bar-row {
+	  &.confirmation {
+		.slide-feature-hidden() !important;
+	  }
 	}
 
 	// Simples overrides
