@@ -4,4 +4,4 @@
 <%-- <health_content:xxx /> --%>
 <health_content:snapshot/>
 <health_content:call_centre_help />
-<health_content:call_centre_help />
+<health_content:price_promise />
