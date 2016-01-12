@@ -5,4 +5,3 @@
 <health_content:snapshot/>
 <health_content:call_centre_help />
 <health_content:call_centre_help />
-<health_content:call_centre_help />
