@@ -105,7 +105,7 @@
 				</div>
 
 				<h3 class="text-dark">Need help?</h3>
-				<p>Speak to one of our health insurance specialist on <span class="noWrap text-secondary">${callCentreNumber}</span></p>
+				<p>Speak to one of our health insurance specialists on <span class="noWrap text-secondary">${callCentreNumber}</span></p>
 				<p>Quote your reference number <span class="text-secondary">{{= transactionId }}</span></p>
 			</div>
 
@@ -158,7 +158,7 @@
 
 			</div>
 
-			<div class="visible-sm col-sm-12">
+			<div class="hidden-xs hidden-md hidden-lg col-sm-12">
 				{{= callToActionBarHtml }}
 			</div>
 			{{ } }}
@@ -191,115 +191,115 @@
 		</div>
 
 		<div class="hiddenInMoreDetails">
-
 			{{= callToActionBarHtml }}
-
-			<div class="policyBrochures row">
-				<div class="col-xs-12">
-					<h2 class="policyBrochuresTitle">Policy brochures</h2>
-					<p>See your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
-				</div>
-
-				<div class="col-xs-12 col-md-6">
-
-					<div class="row">
-						{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
-						<div class="col-xs-12">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12">Policy Brochure</a>
-						</div>
-						{{ } else { }}
-
-						{{ if(typeof hospitalCover !== 'undefined') { }}
-						<div class="col-sm-6 col-xs-12">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12">Hospital Policy Brochure</a>
-						</div>
-						{{ } }}
-
-						{{ if(typeof extrasCover !== 'undefined') { }}
-						<div class="col-sm-6 col-xs-12 ">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Extras Policy Brochure</a>
-						</div>
-						{{ } }}
-						{{ } }}
-					</div>
-
-				</div>
-				<div class="col-xs-12 col-md-6 moreInfoEmailBrochures" novalidate="novalidate">
-
-					<div class="row formInput">
-						<div class="col-sm-7 col-xs-12">
-							<field_new:email xpath="emailAddress"  required="true"
-											 className="sendBrochureEmailAddress"
-											 placeHolder="${emailPlaceHolder}" />
-						</div>
-						<div class="col-sm-5 hidden-xs">
-							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
-						</div>
-					</div>
-					<div class="row row-content formInput optInMarketingRow">
-						<div class="col-xs-12">
-							<field_new:checkbox className="optInMarketing checkbox-custom"
-												xpath="health/sendBrochures/optInMarketing" required="false"
-												value="Y" label="true"
-												title="Stay up to date with news and offers direct to your inbox" />
-						</div>
-					</div>
-
-					<div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
-						<div class="col-xs-12">
-							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
-						</div>
-					</div>
-					<div class="row row-content moreInfoEmailBrochuresSuccess hidden">
-						<div class="col-xs-12">
-							<div class="success alert alert-success">
-								Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-
-
-			<div class="fieldset-card row switching-card">
-				<div class="col-md-8">
-					<h1 class="text-dark">Switching is simple</h1>
-					<ol>
-						<li>You can change your fund whenever you like</li>
-						<li>We'll pass your current fund details to your new fund, to transfer
-							any hospital waiting periods that have already been served</li>
-						<li>Most funds will give you immediate cover for the same extras benefits
-							you were able to claim previously . Your old fund will reimburse any
-							premiums paid in advance.</li>
-					</ol>
-				</div>
-
-				{{ if(meerkat.site.tracking.brandCode === 'ctm') { }}
-				<div class="col-md-4 hidden-xs hidden-sm pricePromise">
-					<div class="row">
-						<div class="col-md-5">
-							<div class="pricePromiseLogo"></div>
-						</div>
-						<div class="col-md-7"><h4>You won't pay extra when you buy through comparethemarket</h4></div>
-					</div>
-					<p>Buy health insurance through us and if you find a better price on the same policy with the same health fund within 30 days, we'll give you $50*</p>
-				</div>
-				{{ } }}
-				<div class="col-xs-12 testimonials">
-					<h2>Join the thousands of Australians who already have compared and saved</h2>
-					<blockquote>
-						<span class="openQuote">“</span>{{= testimonial.quote }}<span class="closeQuote">”</span>
-					</blockquote>
-					<p class="testimonialAuthor">{{= testimonial.author }}</p>
-				</div>
-			</div>
-
-			<div class="hidden-xs">
-				{{= callToActionBarHtml }}
-			</div>
-
 		</div>
+
+
+		<div class="policyBrochures row">
+			<div class="col-xs-12">
+				<h2>Policy brochures</h2>
+				<p>See your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
+			</div>
+
+			<div class="col-xs-12 col-md-6">
+
+				<div class="row">
+					{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
+					<div class="col-xs-12">
+						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12">Policy Brochure</a>
+					</div>
+					{{ } else { }}
+
+					{{ if(typeof hospitalCover !== 'undefined') { }}
+					<div class="col-sm-6 col-xs-12">
+						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12">Hospital Policy Brochure</a>
+					</div>
+					{{ } }}
+
+					{{ if(typeof extrasCover !== 'undefined') { }}
+					<div class="col-sm-6 col-xs-12 ">
+						<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Extras Policy Brochure</a>
+					</div>
+					{{ } }}
+					{{ } }}
+				</div>
+
+			</div>
+			<div class="col-xs-12 col-md-6 moreInfoEmailBrochures" novalidate="novalidate">
+
+				<div class="row formInput">
+					<div class="col-sm-7 col-xs-12">
+						<field_new:email xpath="emailAddress"  required="true"
+										 className="sendBrochureEmailAddress"
+										 placeHolder="${emailPlaceHolder}" />
+					</div>
+					<div class="col-sm-5 hidden-xs">
+						<a href="javascript:;" class="btn btn-save disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
+					</div>
+				</div>
+				<div class="row row-content formInput optInMarketingRow">
+					<div class="col-xs-12">
+						<field_new:checkbox className="optInMarketing checkbox-custom"
+											xpath="health/sendBrochures/optInMarketing" required="false"
+											value="Y" label="true"
+											title="Stay up to date with news and offers direct to your inbox" />
+					</div>
+				</div>
+
+				<div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
+					<div class="col-xs-12">
+						<a href="javascript:;" class="btn btn-save disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
+					</div>
+				</div>
+				<div class="row row-content moreInfoEmailBrochuresSuccess hidden">
+					<div class="col-xs-12">
+						<div class="success alert alert-success">
+							Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+		<div class="fieldset-card row switching-card hiddenInMoreDetails">
+			<div class="col-md-8">
+				<h1 class="text-dark">Switching is simple</h1>
+				<ol>
+					<li>You can change your fund whenever you like</li>
+					<li>We'll pass your current fund details to your new fund, to transfer
+						any hospital waiting periods that have already been served</li>
+					<li>Most funds will give you immediate cover for the same extras benefits
+						you were able to claim previously. Your old fund will reimburse any
+						premiums paid in advance.</li>
+				</ol>
+			</div>
+
+			{{ if(meerkat.site.tracking.brandCode === 'ctm') { }}
+			<div class="col-md-4 hidden-xs hidden-sm pricePromise">
+				<div class="row">
+					<div class="col-md-5">
+						<div class="pricePromiseLogo"></div>
+					</div>
+					<div class="col-md-7"><h4>You won't pay extra when you buy through comparethemarket</h4></div>
+				</div>
+				<p>Buy health insurance through us and if you find a better price on the same policy with the same health fund within 30 days, we'll give you $50*</p>
+			</div>
+			{{ } }}
+			<div class="col-xs-12 testimonials">
+				<h2>Join the thousands of Australians who already have compared and saved</h2>
+				<blockquote>
+					<span class="openQuote">“</span>{{= testimonial.quote }}<span class="closeQuote">”</span>
+				</blockquote>
+				<p class="testimonialAuthor">{{= testimonial.author }}</p>
+			</div>
+		</div>
+
+		<div class="hidden-xs hiddenInMoreDetails">
+			{{= callToActionBarHtml }}
+		</div>
+
 	</div>
 
 </script>
