@@ -25,14 +25,14 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'balance-transfer-fee',0,3
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-income',0,35000.0,'$35000',NULL,'2015-01-08','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-annual-fee-period',0,12.0,'12',NULL,'2015-01-08','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-rate',0,0.0,'0%',NULL,'2015-01-08','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'0% p.a. first 18 months on balance transfers, plus 2% Balance Transfer fee',NULL,'2015-01-08','2040-12-31','',0);
+INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'0% p.a. first 18 months on balance transfers, plus 3% Balance Transfer fee',NULL,'2015-01-08','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'','2015-01-08','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,87.0,'$87',NULL,'2015-01-08','2040-12-31','',0);
 INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM ctm.category_master WHERE categoryCode IN ('PLATINUM','BALANCETRANSFER','NOANNUALFEE');
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,6000.0,'$6000',NULL,'2015-01-08','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'anz-platinum',NULL,'2015-01-08','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-01-08','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'0% p.a. first 18 months on balance transfers, plus 2% Balance Transfer fee',NULL,'2015-01-08','2040-12-31','',0);
+INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'0% p.a. first 18 months on balance transfers, plus 3% Balance Transfer fee',NULL,'2015-01-08','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'interest-free-days',0,55.0,'55',NULL,'2015-01-08','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'product-type',0,0,'Low annual fee',NULL,'2015-01-08','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'foreign-exchange-fees',0,1,'Yes',NULL,'2015-01-08','2040-12-31','',0);
