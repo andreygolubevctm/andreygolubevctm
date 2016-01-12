@@ -15,13 +15,6 @@
     var templateAccessories;
 
     function initCar() {
-
-        meerkat.messaging.subscribe(meerkatEvents.splitTest.SPLIT_TEST_READY, function () {
-            meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, _.bind(toggleManualAddressEntry, this));
-            toggleManualAddressEntry();
-        });
-
-
         $(document).ready(function () {
 
             // Only init if car
@@ -56,20 +49,6 @@
             }
         });
 
-    }
-
-    function toggleManualAddressEntry() {
-        var deviceType = $('#deviceType').attr('data-deviceType');
-        if (meerkat.modules.splitTest.isActive(15) && (deviceType == 'TABLET' || meerkat.modules.deviceMediaState.get() == 'xs')) {
-            $('#quote_riskAddress_nonStd_row').hide();
-            if (meerkat.modules.splitTest.isActive(32)) {
-                $('#addressForm').find('.cantFindAddressHelper').hide();
-            } else {
-                $('#addressForm').find('.cantFindAddressHelper').show();
-            }
-        } else {
-            $('#quote_riskAddress_nonStd_row').show();
-        }
     }
 
     function eventDelegates() {
