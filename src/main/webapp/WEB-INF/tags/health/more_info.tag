@@ -211,13 +211,13 @@
 					{{ } else { }}
 
 					{{ if(typeof hospitalCover !== 'undefined') { }}
-					<div class="col-sm-6 col-xs-12">
+					<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12">
 						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12">Hospital Policy Brochure</a>
 					</div>
 					{{ } }}
 
 					{{ if(typeof extrasCover !== 'undefined') { }}
-					<div class="col-sm-6 col-xs-12 ">
+					<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12 ">
 						<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Extras Policy Brochure</a>
 					</div>
 					{{ } }}
