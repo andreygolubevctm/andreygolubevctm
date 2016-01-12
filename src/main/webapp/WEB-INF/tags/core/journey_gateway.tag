@@ -10,7 +10,7 @@
 
 <c:catch>
 	<jsp:useBean id="journeyGatewayService" class="com.ctm.web.core.services.tracking.JourneyGateway" />
-	<c:set var="journey" value="${journeyGatewayService.getJourney(pageContext.getRequest(), splitTestLabel)}" />
+	<c:set var="journey" value="${journeyGatewayService.getJourney(pageContext.getRequest(), splitTestLabel, pageContext.getResponse())}" />
 	<c:if test="${not empty journey}">
 		<c:redirect url="${journey}" />
 	</c:if>
