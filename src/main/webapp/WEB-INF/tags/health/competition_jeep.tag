@@ -7,7 +7,7 @@
 
 <c:if test="${jeepCompetitionEnabledFlag eq true}">
 
-	<div class="row row-content jeepPromotion">
+	<div class="row row-content jeepPromotion sidebar-box">
 		<a href="<content:get key="febJeepPromoTNCs" />" title="Win a JEEP Compass Sport" target="_blank">
 			<div><!-- Win a JEEP Compass Sport --></div>
 			<span>VIEW TERMS AND CONDITIONS</span>

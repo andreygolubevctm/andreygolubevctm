@@ -44,10 +44,11 @@
 //== Grey colours
 //
 //## Gray and brand colors for use across Bootstrap.
+@gray:                   #E6E6E6;
 @gray-base:              #000;
 @gray-darker:            lighten(@gray-base, 13.5%); // #222
 @gray-dark:              lighten(@gray-base, 20%);   // #333
-@gray:                   #E6E6E6;
+@gray-slight-dark:       lighten(@gray-base, 40%);   // #666
 @gray-light:             lighten(@gray-base, 60%); // #999
 @gray-lighter:           lighten(@gray-base, 80%); // #ccc
 
@@ -222,8 +223,8 @@
 @header-link-hover-color: lighten(@header-link-color, 15%);
 //** Header Min Height
 // Note: xs is @navbar-height
-@header-min-height-sm: 146px;
-@header-min-height-md: 174px;
+@header-min-height-sm: 138px;
+@header-min-height-md: 142px;
 
 
 
@@ -582,7 +583,7 @@
 @btn-hollow-hover-bg-color: @btn-hollow-bg-color;
 @btn-hollow-hover-border-color: @btn-hollow-hover-color;
 
-@btn-hollow-active-color: @theme-tertiary;
+@btn-hollow-active-color: @btn-hollow-color;
 @btn-hollow-active-bg-color: @btn-hollow-bg-color;
 @btn-hollow-active-border-color: @btn-hollow-active-color;
 
@@ -1589,7 +1590,7 @@
 @journeyProgressBar-border-color-current:       @theme-active;
 
 //** Hover State
-@journeyProgressBar-color-hover:                darken(@theme-tertiary, 20%);
+@journeyProgressBar-color-hover:                @theme-secondary;
 @journeyProgressBar-separator-color-hover:      darken(@theme-tertiary, 20%);
 @journeyProgressBar-border-color-hover:         darken(@theme-tertiary, 20%);
 

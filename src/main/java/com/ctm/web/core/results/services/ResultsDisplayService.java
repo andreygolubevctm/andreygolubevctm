@@ -114,7 +114,7 @@ public class ResultsDisplayService {
             PreparedStatement stmt;
             conn = ds.getConnection();
             stmt = conn.prepareStatement(
-                    "SELECT name, resultPath " +
+                    "SELECT name, resultPath, className " +
                             "FROM aggregator.features_details " +
                             "WHERE vertical = ? AND type = ? " +
                             "ORDER BY parentId;"
@@ -129,6 +129,7 @@ public class ResultsDisplayService {
                 ResultsSimpleItem item = new ResultsSimpleItem();
                 item.setName(result.getString("name"));
                 item.setResultPath(result.getString("resultPath"));
+                item.setClassName(result.getString("className"));
                 list.add(item);
 
             }
