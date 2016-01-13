@@ -32,7 +32,7 @@
 </c:if>
 
 <%-- HTML --%>
-<div id="${name}-selection" class="health-your_details">
+
 
 	<form_new:fieldset_columns sideHidden="true">
 
@@ -41,11 +41,13 @@
 			<c:if test="${competitionEnabled == true}">
 				<content:get key="healthCompetitionRightColumnPromo"/>
 			</c:if>
+
+			<health_new_content:sidebar />
 		</jsp:attribute>
 
 		<jsp:body>
 
-			<form_new:fieldset legend="Your Details" postLegend="Enter your details below and we'll show you products that match your needs on the next page" >
+			<form_new:fieldset legend="" postLegend="" >
 
 				<c:set var="firstNamePlaceHolder">
 					<content:get key="firstNamePlaceHolder"/>
@@ -146,7 +148,7 @@
 	<field:hidden xpath="health/altContactFormRendered" constantValue="Y" />
 
 
-</div>
+
 
 
 

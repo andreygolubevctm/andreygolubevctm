@@ -30,7 +30,7 @@
 
 			if(meerkat.site.vertical !== "health") return false;
 
-			logoPriceTemplate = $("#more-info-logo-price-template").html();
+			logoPriceTemplate = $("#logo-price-template").html();
 
 			$policySummaryContainer = $(".policySummaryContainer");
 			$policySummaryTemplateHolder = $(".policySummaryTemplateHolder");
@@ -90,6 +90,7 @@
 			product.mode = '';
 		}
 		product.showAltPremium = false;
+		product.displayLogo = true;
 
 		var htmlTemplate = _.template(logoPriceTemplate);
 		var htmlString = htmlTemplate(product);
