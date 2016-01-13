@@ -14,6 +14,7 @@
 	productId: '<c:out value="${data.travel.application.productId}" />',
 	userId: '<c:out value="${authenticatedData.login.user.uid}" />',
 	countrySelectionDefaults: '<c:out value="${data.travel.destination}" />',
+	PHGPostImpressions: <content:PHGPostImpression key="trackingURL" />,
 	navMenu: {
 		type: 'offcanvas',
 		direction: 'right'

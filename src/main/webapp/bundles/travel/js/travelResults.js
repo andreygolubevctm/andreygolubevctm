@@ -307,12 +307,16 @@
 				} else {
 					showNoResults();
 				}
+			} else {
+				//meerkat.modules.salesTracking.addPHGImpressionTracking();
 			}
 		});
 
 		// Handle result row click
 		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
 	}
+
+
 
 	function rankingCallback(product, position) {
 		var data = {};
