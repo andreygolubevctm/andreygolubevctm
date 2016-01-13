@@ -281,7 +281,7 @@
 
 	<%-- FEATURE TEMPLATE --%>
 	<features:resultsItemTemplate />
-	
+
 	<%-- UNAVAILABLE COMBINED ROW --%>
 	<core_v1:js_template id="unavailable-combined-template">
 		{{ var template = $("#provider-logo-template").html(); }}
@@ -323,13 +323,13 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</core_v1:js_template>
+		</div>
+	</core_v1:js_template>
 
-<%-- ERROR ROW --%>
-<core_v1:js_template id="error-template">
-	{{ var productTitle = (typeof obj.headline !== 'undefined' && typeof obj.headline.name !== 'undefined') ? obj.headline.name : 'Unknown product name'; }}
-	{{ var productDescription = (typeof obj.headline !== 'undefined' && typeof obj.headline.des !== 'undefined') ? obj.headline.des : 'Unknown product name'; }}
+	<%-- ERROR ROW --%>
+	<core_v1:js_template id="error-template">
+		{{ var productTitle = (typeof obj.headline !== 'undefined' && typeof obj.headline.name !== 'undefined') ? obj.headline.name : 'Unknown product name'; }}
+		{{ var productDescription = (typeof obj.headline !== 'undefined' && typeof obj.headline.des !== 'undefined') ? obj.headline.des : 'Unknown product name'; }}
 
 		{{ var template = $("#provider-logo-template").html(); }}
 		{{ var logo = _.template(template); }}
@@ -360,27 +360,27 @@
 				</div>
 			</div>
 		</div>
-	</core:js_template>
+	</core_v1:js_template>
 
 	<%-- NO RESULTS --%>
 	<div class="hidden">
 		<agg_new_results:results_none />
 	</div>
+
+
+<%-- FETCH ERROR --%>
+<div class="resultsFetchError displayNone">
+	Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later</a>.
+</div>
+
+<%-- Logo template --%>
+<core_v1:js_template id="provider-logo-template">
+	{{ var img = 'default_w'; }}
+	{{ if (obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
+	<div class="companyLogo logo_{{= img }}"></div>
 </core_v1:js_template>
 
-	<%-- FETCH ERROR --%>
-	<div class="resultsFetchError displayNone">
-		Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later</a>.
-	</div>
-
-	<%-- Logo template --%>
-	<core:js_template id="provider-logo-template">
-		{{ var img = 'default_w'; }}
-		{{ if (obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
-		<div class="companyLogo logo_{{= img }}"></div>
-	</core:js_template>
-
-</agg_new_results:results>
+</agg_v2_results:results>
 
 <%-- Price template --%>
 <core_v1:js_template id="monthly-price-template">
