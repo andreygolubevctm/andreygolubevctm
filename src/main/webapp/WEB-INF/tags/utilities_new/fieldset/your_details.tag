@@ -74,12 +74,13 @@
 
     <c:set var="fieldXPath" value="${xpath}/address" />
     <h5 class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-xs-12 row-content">Residential Address</h5>
+    <%-- autocomplete set to false due to chrome bug https://code.google.com/p/chromium/issues/detail?id=468153 --%>
     <group_new:elastic_address xpath="${fieldXPath}"
                                type="R"
-                               suburbAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='Your address does not match the original suburb provided.' autocomplete='off'"
-                               suburbNameAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='The selected suburb does not match the original suburb selected.' autocomplete='off'"
-                               postCodeAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='Your address does not match the original postcode provided.' autocomplete='off'"
-                               postCodeNameAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='The entered postcode does not match the original postcode provided.' autocomplete='off'" />
+                               suburbAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='Your address does not match the original suburb provided.' autocomplete='false'"
+                               suburbNameAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='The selected suburb does not match the original suburb selected.' autocomplete='false'"
+                               postCodeAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='Your address does not match the original postcode provided.' autocomplete='false'"
+                               postCodeNameAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='The entered postcode does not match the original postcode provided.' autocomplete='false'" />
 
     <h5 class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-xs-12 row-content">Postal Address</h5>
     <form_new:row>
@@ -87,11 +88,13 @@
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/postal" />
+    <%-- autocomplete set to false due to chrome bug https://code.google.com/p/chromium/issues/detail?id=468153 --%>
     <group_new:elastic_address xpath="${fieldXPath}"
-                               type="P" postCodeAdditionalAttributes="autocomplete='off'"
-                               postCodeNameAdditionalAttributes="autocomplete='off'"
-                               suburbAdditionalAttributes="autocomplete='off'"
-                               suburbNameAdditionalAttributes="autocomplete='off'"
+                               type="P"
+                               postCodeAdditionalAttributes="autocomplete='false'"
+                               postCodeNameAdditionalAttributes="autocomplete='false'"
+                               suburbAdditionalAttributes="autocomplete='false'"
+                               suburbNameAdditionalAttributes="autocomplete='false'"
                                />
 
     <c:set var="fieldXPath" value="${xpath}/movingDate" />
