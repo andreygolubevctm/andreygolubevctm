@@ -30,7 +30,7 @@ triggerContactDetailsEvent= function (elementInput, elementHidden, phoneType) {
 		phoneNumberInput = "";
 	}
 	var phoneType = "mobile";
-	if(elementInput.hasClass("landline") || (elementInput.hasClass("anyPhoneType") && isLandLine(phoneNumber))) {
+	if(elementInput.hasClass("landline") || (elementInput.hasClass("flexiphone") && isLandLine(phoneNumber))) {
 		phoneType = "landline";
 	}
 	$(document).trigger("CONTACT_DETAILS", [{
