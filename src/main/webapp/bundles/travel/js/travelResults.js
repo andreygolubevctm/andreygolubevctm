@@ -49,7 +49,8 @@
 				runShowResultsPage: false, // Don't let Results.view do it's normal thing.
 				paths: {
 					results: {
-						list: "results.result"
+						list: "results.result",
+						providerCode: "serviceName"
 					},
 					productId: "productId",
 					productName: "name",
@@ -306,12 +307,16 @@
 				} else {
 					showNoResults();
 				}
+			} else {
+				meerkat.modules.salesTracking.addPHGImpressionTracking();
 			}
 		});
 
 		// Handle result row click
 		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
 	}
+
+
 
 	function rankingCallback(product, position) {
 		var data = {};

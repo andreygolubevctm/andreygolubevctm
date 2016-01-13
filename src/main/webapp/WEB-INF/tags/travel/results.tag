@@ -207,9 +207,12 @@
 		</div>
 	</div>
 </core:js_template>
-
+	<core:js_template id="blah-test">
+	{{ console.log("TEST2", Results.model.availablePartners); }}
+	</core:js_template>
 <%-- UNAVAILABLE COMBINED ROW --%>
 <core:js_template id="unavailable-combined-template">
+
 {{ var template = $("#provider-logo-template").html(); }}
 {{ var logo = _.template(template); }}
 {{ var logos = ''; }}
@@ -242,6 +245,8 @@
 
 	{{ var template = $("#provider-logo-template").html(); }}
 	{{ var logo = _.template(template); }}
+	{{ logo = logo(obj); }}
+
 	{{ logo = logo(obj); }}
 
 	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="E">
@@ -292,5 +297,6 @@
 	{{ if (obj.hasOwnProperty('serviceName') && obj.serviceName.length > 1) img = obj.serviceName; }}
 	<div class="travelCompanyLogo logo_{{= img }}"></div>
 </core:js_template>
+
 
 </agg_new_results:results>
