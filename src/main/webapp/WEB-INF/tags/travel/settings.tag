@@ -21,14 +21,6 @@
 <c:if test="${empty PHGPostImpressions}">
 	<c:set var="PHGPostImpressions" value="''" />
 </c:if>
-
-<c:set var="PHGHandoverIds">
-	<content:PHGHandoverClick key="handoverTrackingURL" />
-</c:set>
-
-<c:if test="${empty PHGHandoverIds}">
-	<c:set var="PHGHandoverIds" value="''" />
-</c:if>
 {
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['travel/journey/stage']}"/>",
@@ -40,7 +32,6 @@
 	countrySelectionDefaults: '<c:out value="${data.travel.destination}" />',
 	PHGPostImpressionsEnabled: <c:out value="${isTrackingEnabled}" />,
 	PHGPostImpressions: <c:out value="${PHGPostImpressions}" escapeXml="false" />,
-	PHGHandoverIds: <c:out value="${PHGHandoverIds}" escapeXml="false" />,
 	navMenu: {
 		type: 'offcanvas',
 		direction: 'right'
