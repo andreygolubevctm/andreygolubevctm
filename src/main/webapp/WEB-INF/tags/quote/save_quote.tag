@@ -987,10 +987,14 @@ SaveQuote = {
 			<form novalidate name="saveQuoteCallMeBackForm" action="none" method="POST" id="saveQuoteCallMeBackForm" style="">
 				<h5>Get a call back</h5>
 				<form_v1:row label="Your name" horizontal="false">
-					<field_v1:input xpath="callmeback/save/name" title="name" required="false"  />
+					<field:input xpath="callmeback/save/name" title="name" required="false"  />
 				</form_v1:row>
 						<form_v1:row label="Your best contact number" horizontal="false">
-							<field_v1:contact_telno xpath="callmeback/save/phone" required="true" title="contact number" />
+							<c:set var="fieldXPath" value="callmeback/save/phone" />
+							<field_v1:flexi_contact_number xpath="${fieldXPath}"
+														maxLength="20"
+														required="${true}"
+														labelName="contact number"/>
 						</form_v1:row>
 						<form_v1:row label="Best time to contact you" horizontal="false">
 							<field_v1:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)"

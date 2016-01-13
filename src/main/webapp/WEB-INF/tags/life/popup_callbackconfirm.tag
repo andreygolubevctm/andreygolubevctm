@@ -19,6 +19,7 @@
 			<h4>Before we can call you we need your consent:</h4>
 
 			<form_v1:row label="Your phone number">
+				<%--This should be cleaned up to use Flexi_contact_number when LIFE is refactored--%>
 				<field_v1:contact_telno
 						xpath="${xpath}/confirmContactNumber"
 						required="true"

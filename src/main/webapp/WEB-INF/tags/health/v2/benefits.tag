@@ -7,16 +7,17 @@
 
 
 <%-- HTML --%>
-<div id="${name}-selection" class="health-benefits">
+
 
 	<form_v2:fieldset_columns sideHidden="true">
 
 	<jsp:attribute name="rightColumn">
+		<health_new_content:sidebar />
 	</jsp:attribute>
 
 	<jsp:body>
 
-		<form_v2:fieldset legend="Choose which benefits are important to you" postLegend="Knowing what's important to you will help us display policies relevant to your needs" >
+		<form_v2:fieldset legend="" postLegend="" >
 
 			<div class="scrollable row">
 
@@ -42,4 +43,3 @@
 
 	</form_v2:fieldset_columns>
 
-</div>

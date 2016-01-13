@@ -232,6 +232,10 @@
 		<field_v1:contact_telno xpath="${xpath}/otherNumber" title="field:contact_telno" required="true" />
 	</form_v2:row>
 
+	<form_v2:row label="flexi_contact_number">
+		<field_v1:flexi_contact_number xpath="${xpath}/flexiNumber" title="field:flexi_contact_number" required="true" maxLength="20"/>
+	</form_v2:row>
+
 	<form_v2:row label="count_select">
 		<field_v2:count_select xpath="${xpath}/day" min="1" max="27" step="1" title="field:count_select" required="true" />
 	</form_v2:row>

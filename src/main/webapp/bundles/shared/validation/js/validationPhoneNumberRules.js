@@ -1,66 +1,56 @@
 (function($) {
 
-    var mobileRegex = new RegExp("^(0[45]{1})");
     var numericOnly = /[^0-9]+/g;
 
-    /**
-     * Validate if the field is a landline.
-     */
-    $.validator.addMethod('isLandLine', function (value) {
-        var strippedValue = value.replace(numericOnly, '');
-        return strippedValue === '' || isLandLine(strippedValue);
-    });
+    var flexiRegex = new RegExp('^[(]*((?:\\+?61|0)[\\s]*[234785\\s]{1}[)]*)((([\\s]{1})([0-9\\s]{9}))|([0-9\\s]{10}))$');
+    var landLineRegex = new RegExp('^[(]*((?:\\+?61|0)[\\s]*[23785\\s]{1}[)]*([\\s]{1})([0-9\\s]{9}))$');
+    var mobileRegex = new RegExp('^[(]*((?:\\+?61|0)[\\s]*[4\\s]{1}[)]*[\\s]*[0-9\\s]{10})$');
 
 
     /**
-     * Determine if a phone number is a landline
+     * Validate the number
      * @param number
-     * @returns {boolean}
+     * @returns boolean
      */
-    function isLandLine(number) {
-        var voipsNumber = number.indexOf("0500") === 0;
-        return !mobileRegex.test(number) || voipsNumber;
-    }
+    function validateNumber (element, type) {
+        var formattedNumber = meerkat.modules.phoneFormat.formatPhoneNumber( element);
 
-    /**
-     * Validate telephone landline OR mobile numbers.
-     */
-    $.validator.addMethod('validateTelNo', function (value) {
-        if (!value.length) return true;
-
-        var strippedValue = value.replace(numericOnly, '');
-        if (!strippedValue.length && value.length > 0) {
-            return false;
+        switch (type) {
+            case 'flexi':
+                return flexiRegex.test(formattedNumber);
+            case 'mobile':
+                return mobileRegex.test(formattedNumber);
+            case 'landline':
+                return landLineRegex.test(formattedNumber);
         }
-
-        var phoneRegex = new RegExp('^(0[234785]{1}[0-9]{8})$');
-        return phoneRegex.test(strippedValue);
+    }
+    /**
+     * Enhanced Validate flexi telephone landline OR mobile numbers.
+     */
+    $.validator.addMethod('validateFlexiTelNo', function (value, element) {
+        if (!value.length) return true;
+        return formattedNumber = validateNumber (element,'flexi');
     });
-
+    /**
+     * Validate telephone landline
+     */
+    $.validator.addMethod('validateLandLineTelNo', function (value, element) {
+        if (!value.length) return true;
+        return formattedNumber = validateNumber (element,'landline');
+    });
     /**
      * Validate mobile phone numbers.
      */
-    $.validator.addMethod('validateMobile', function (value) {
+    $.validator.addMethod('validateMobileTelNo', function (value, element) {
         if (!value.length) return true;
-
-        var valid = true;
-        var strippedValue = value.replace(numericOnly, '');
-        if (!strippedValue.length && value.length > 0) {
-            return false;
-        }
-
-        var voipsNumber = strippedValue.indexOf('0500') === 0;
-        var phoneRegex = new RegExp('^(0[45]{1}[0-9]{8})$');
-        if (!phoneRegex.test(strippedValue) || voipsNumber) {
-            valid = false;
-        }
-        return valid;
+        return formattedNumber = validateNumber (element,'mobile');
     });
 
     /**
      * Must have at least one number.
      */
     $.validator.addMethod("requireOneContactNumber", function(value, element) {
+
         var nameSuffix = element.id.split(/[_]+/);
         nameSuffix.pop();
         nameSuffix = nameSuffix.join("_");

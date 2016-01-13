@@ -61,13 +61,13 @@
 
 <c:choose>
 	<c:when test="${allowLandline && allowMobile}">
-		<c:set var="phoneTypeClassName" value=" anyPhoneType" />
+		<c:set var="phoneTypeClassName" value=" flexiphone " />
 	</c:when>
 	<c:when test="${allowMobile}">
-		<c:set var="phoneTypeClassName" value=" mobile" />
+		<c:set var="phoneTypeClassName" value=" mobile " />
 	</c:when>
 	<c:otherwise>
-		<c:set var="phoneTypeClassName" value=" landline" />
+		<c:set var="phoneTypeClassName" value=" landline " />
 	</c:otherwise>
 </c:choose>
 

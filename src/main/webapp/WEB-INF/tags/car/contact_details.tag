@@ -33,11 +33,16 @@
 		<field_v2:email xpath="${xpath}/email" required="false" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 	</form_v2:row>
 
-	<form_v2:row label="Contact Number" id="contactNoRow">
-		<field_v1:contact_telno xpath="${xpath}/phone" required="false" id="bestNumber"
+	<c:set var="fieldXPath" value="${xpath}/phone" />
+	<form_new:row label="Contact Number" id="contactNoRow">
+		<field:flexi_contact_number xpath="${fieldXPath}"
+			maxLength="20"
+			id="bestNumber"
+			required="${false}"
 			className="bestNumber"
-			labelName="best number" validationAttribute=" data-rule-validateOkToCall='true' " />
-	</form_v2:row>
+			labelName="best number"
+			validationAttribute=" data-rule-validateOkToCall='true' "/>
+	</form_new:row>
 
 
 

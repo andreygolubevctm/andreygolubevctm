@@ -28,13 +28,13 @@
 			<field_v2:email xpath="${xpath}/email" title="your email address" required="false" size="40"/>
 		</form_v2:row>
 
-		<c:set var="brandName">
-			<content:optin key="brandDisplayName" useSpan="true"/>
-		</c:set>
-
+		<c:set var="fieldXPath" value="${xpath}/contactNumber"/>
 		<form_v2:row label="Your contact number" className="clear">
-			<field_v1:contact_telno xpath="${xpath}/contactNumber" title="your contact number" required="false" size="40"/>
-			<p class="optinText">By entering my telephone number I agree that an authorised broker from AFG, ${brandName}'s approved supplier of home loans, may contact me to further assist with my home loan needs.</p>
+			<field_v1:flexi_contact_number xpath="${fieldXPath}"
+										maxLength="20"
+										required="${false}"
+										labelName="your contact number"/>
+			<p class="optinText">By entering my telephone number I agree that an authorised broker from AFG, <content:optin key="brandDisplayName" useSpan="true"/>'s approved supplier of home loans, may contact me to further assist with my home loan needs.</p>
 		</form_v2:row>
 
 		<form_v2:row label="" className="email-optin-row clear closer">

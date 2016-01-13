@@ -88,14 +88,9 @@
 		</div>
 	</c:if>
 	<health_v1:logo_price_template />
-	<health_v1:more_info_logo_price_template />
-	<health_v1:product_benefits_template />
-	<health_v1:product_benefits_template_xs />
-	<health_v1:more_info_blue_header_product_details />
-
 
 	<%-- RESULTS TABLE --%>
-	<div class="moreInfoDropdown container"></div>
+	<div class="moreInfoDropdown"></div>
 
 	<div class="resultsContainer affixOnScroll">
 
@@ -136,9 +131,8 @@
 
 					</div>
 
-					<a class="btn btn-cta btn-block btn-more-info more-info-showapply ${oldCtaClass}" href="javascript:;" data-productId="{{= productId }}">
+					<a class="btn btn-cta btn-block btn-more-info more-info-showapply old-cta" href="javascript:;" data-productId="{{= productId }}">
 						<div class="more-info-text">More Info & Apply<span class="icon icon-arrow-right" /></div>
-						<div class="close-text"><span class="icon icon-arrow-left" />Back to Results</div>
 					</a>
 					{{ if( info.restrictedFund === 'Y' ) { }}
 					<div class="restrictedFund" data-title="This is a Restricted Fund" data-toggle="popover" data-adjust-y="5" data-trigger="mouseenter click" data-my="top center" data-at="bottom center" data-content="#restrictedFundText" data-class="restrictedTooltips">RESTRICTED FUND</div>

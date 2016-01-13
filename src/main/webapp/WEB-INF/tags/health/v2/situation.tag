@@ -5,7 +5,8 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
-<c:set var="callCentreHoursBubble" scope="request"><content:getOpeningHoursBubble /></c:set>
+<%-- Set A/B test flag j=2 --%>
+<c:set var="showOptIn" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" scope="request" />
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
@@ -16,10 +17,7 @@
 	<form_v2:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
-			<c:if test="${not empty callCentreNumber}">
-					<health_v1_content:call_centre_help />
-					${callCentreHoursBubble}
-			</c:if>
+			<health_content_v1:sidebar />
 		</jsp:attribute>
 
 		<jsp:body>
@@ -94,6 +92,29 @@
 					<c:set var="fieldXpath" value="${xpath}/cover" />
 					<form_v2:row label="Do all people to be covered on this policy have a green or blue Medicare card?" fieldXpath="${fieldXpath}" className="health_situation_medicare">
 						<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='Unfortunately we cannot continue with your quote'" />
+					</form_v2:row>
+				</c:if>
+
+				<%-- A/B test j=2 --%>
+				<c:if test="${showOptIn}">
+					<c:set var="termsAndConditions">
+						<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
+						I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
+						<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
+						By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
+						I confirm that I have read the <form:link_privacy_statement />.
+					</c:set>
+
+					<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
+					<form_v2:row className="health-contact-details-optin-group" hideHelpIconCol="true">
+						<field_v2:checkbox
+								xpath="${xpath}/optin"
+								value="Y"
+								className="validate"
+								required="true"
+								label="${true}"
+								title="${termsAndConditions}"
+								errorMsg="Please agree to the Terms &amp; Conditions" />
 					</form_v2:row>
 				</c:if>
 

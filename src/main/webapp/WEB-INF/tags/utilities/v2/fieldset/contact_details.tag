@@ -21,10 +21,11 @@
 
     <c:set var="fieldXPath" value="${xpath}/phone"/>
     <form_v2:row label="Your phone number *" fieldXpath="${fieldXPath}" className="clear">
-        <field_v1:contact_telno xpath="${fieldXPath}"
-                             required="${true}"
-                             className="sessioncamexclude"
-                             labelName="phone number${competitionValidationText}" />
+        <field_v1:flexi_contact_number xpath="${fieldXPath}"
+                maxLength="20"
+                required="${true}"
+                className="sessioncamexclude"
+                labelName="phone number${competitionValidationText}"/>
     </form_v2:row>
 
     <c:set var="fieldXPath" value="${xpath}/email"/>
