@@ -11,7 +11,6 @@ SET @STARTDATE = '2015-09-09';
 SET @ENDDATE = '2038-01-19';
 SET @SERVICE_NAME = 'TWLD';
 SET @PROVIDERID = (SELECT providerId FROM ctm.provider_master WHERE providerCode = @SERVICE_NAME  LIMIT 1);
-WHERE providerCode = 'TWLD';
 
 INSERT INTO `ctm`.`provider_properties` (`ProviderId`, `PropertyId`, `Text`, `EffectiveStart`, `EffectiveEnd`) VALUES ( @PROVIDERID, 'FundCode', @SERVICE_NAME, '2011-03-01', '2040-12-31');
 INSERT INTO service_master (verticalId, serviceCode) VALUES (@VERTICAL_ID, @APPLY_SERVICE);
