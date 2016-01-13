@@ -207,9 +207,7 @@
 		</div>
 	</div>
 </core:js_template>
-	<core:js_template id="blah-test">
-	{{ console.log("TEST2", Results.model.availablePartners); }}
-	</core:js_template>
+
 <%-- UNAVAILABLE COMBINED ROW --%>
 <core:js_template id="unavailable-combined-template">
 
