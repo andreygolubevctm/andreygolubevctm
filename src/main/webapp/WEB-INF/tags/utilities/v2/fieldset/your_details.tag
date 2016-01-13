@@ -41,23 +41,24 @@
 
     <c:set var="fieldXPath" value="${xpath}/mobileNumber" />
     <form_v2:row label="Mobile number" fieldXpath="${fieldXPath}" className="clear">
-        <field_v1:contact_mobile xpath="${fieldXPath}"
-                             required="false"
-                             className="sessioncamexclude"
-                             placeHolder="04XX XXX XXX"
-                             placeHolderUnfocused="04XX XXX XXX"
-                             labelName="mobile phone number." additionalAttributes=" data-rule-validateEnteredPhoneNumber='true' data-msg-validateEnteredPhoneNumber='Please enter your mobile phone number or other number.'" />
+        <field_v1:flexi_contact_number xpath="${fieldXPath}"
+                                    maxLength="20"
+                                    required="false"
+                                    className="contactField sessioncamexclude"
+                                    labelName="mobile number"
+                                    phoneType="Mobile"
+                                    requireOnePlusNumber="true"/>
     </form_v2:row>
 
     <c:set var="fieldXPath" value="${xpath}/otherPhoneNumber" />
     <form_v2:row label="Other phone number" fieldXpath="${fieldXPath}" className="clear">
-        <field_v1:contact_telno xpath="${fieldXPath}"
-                             required="false"
-                             className="sessioncamexclude"
-                             isLandline="true"
-                             placeHolder="(0X) XXXX XXXX"
-                             placeHolderUnfocused="(0X) XXXX XXXX"
-                             labelName="other phone number." />
+        <field_v1:flexi_contact_number xpath="${fieldXPath}"
+                                    maxLength="20"
+                                    required="false"
+                                    className="contactField sessioncamexclude"
+                                    labelName="other number"
+                                    phoneType="LandLine"
+                                    requireOnePlusNumber="true"/>
     </form_v2:row>
 
     <c:set var="fieldXPath" value="${xpath}/email" />
