@@ -1,5 +1,7 @@
 USE aggregator;
 
+DROP VIEW aggregator.vw_simples_message_data CASCADE;
+
 CREATE
 DEFINER = 'events_sp_mgr'@'localhost'
 VIEW aggregator.vw_simples_message_data
@@ -16,7 +18,8 @@ SELECT
   CAST(`m`.`created` AS time) AS `Created_Time`,
   CAST(`m`.`created` AS date) AS `Created_Date`,
   `ms`.`status` AS `Call_Result`,
-  `ms1`.`status` AS `Call_Result_Reason`
+  `ms1`.`status` AS `Call_Result_Reason`,
+  `m`.`state` AS `state`
 FROM (((((`simples`.`message_audit` `ma`
   JOIN `simples`.`user` `u`
     ON ((`ma`.`userId` = `u`.`id`)))
@@ -42,7 +45,8 @@ SELECT
   CAST(`m`.`created` AS time) AS `Created_Time`,
   CAST(`m`.`created` AS date) AS `Created_Date`,
   `ms`.`status` AS `Call_Result`,
-  `ms1`.`status` AS `Call_Result_Reason`
+  `ms1`.`status` AS `Call_Result_Reason`,
+  `m`.`state` AS `state`
 FROM (((((`simples`.`message_audit` `ma`
   JOIN `simples`.`user` `u`
     ON ((`ma`.`userId` = `u`.`id`)))
@@ -68,7 +72,8 @@ SELECT
   CAST(`m`.`created` AS time) AS `Created_Time`,
   CAST(`m`.`created` AS date) AS `Created_Date`,
   `ms`.`status` AS `Call_Result`,
-  `ms1`.`status` AS `Call_Result_Reason`
+  `ms1`.`status` AS `Call_Result_Reason`,
+  `m`.`state` AS `state`
 FROM (((((`simples`.`message_audit` `ma`
   JOIN `simples`.`user` `u`
     ON ((`ma`.`userId` = `u`.`id`)))
@@ -94,7 +99,8 @@ SELECT
   CAST(`m`.`created` AS time) AS `Created_Time`,
   CAST(`m`.`created` AS date) AS `Created_Date`,
   `ms`.`status` AS `Call_Result`,
-  `ms1`.`status` AS `Call_Result_Reason`
+  `ms1`.`status` AS `Call_Result_Reason`,
+  `m`.`state` AS `state`
 FROM (((((`simples`.`message_audit` `ma`
   JOIN `simples`.`user` `u`
     ON ((`ma`.`userId` = `u`.`id`)))

@@ -75,8 +75,7 @@
 
 			meerkat.modules.loadingAnimation.showAfter($element);
 
-			var vehicle = meerkat.modules.carVehicleSelection.isSplitTest() ? $(elements.redbook).find("input:checked") : $(elements.redbook);
-			var data = {redbookCode:(vehicle ? vehicle.val() : null)};
+			var data = {redbookCode:$(elements.redbook).val()};
 
 			ajaxInProgress = true;
 

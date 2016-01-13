@@ -50,23 +50,11 @@
 				<field_new:general_select xpath="${xpath}/fuel" title="fuel type" required="true" initialText="&nbsp;" />
 			</form_new:row>
 
-			<c:choose>
-				<c:when test="${editDetailsRedbookCodeSplitTest eq true}">
-					<form_new:row label="Please select your car type" hideHelpIconCol="true" id="${name}_redbookCodeRow" className="${name}_redbookCodeRow radio-button-group-row hidden">
-						<div id="${name}_redbookCode" class="radio-button-group"><!-- to be populated --></div>
-						<field:hidden xpath="${xpath}/marketValue"></field:hidden>
-						<field:hidden xpath="${xpath}/variant"></field:hidden>
-					</form_new:row>
-				</c:when>
-				<c:otherwise>
-					<form_new:row label="Type" id="${name}_redbookCodeRow" className="${name}_redbookCodeRow hidden">
-						<field_new:general_select xpath="${xpath}/redbookCode" title="vehicle type" required="true" className="vehicleDes" initialText="&nbsp;" />
-						<field:hidden xpath="${xpath}/marketValue"></field:hidden>
-						<field:hidden xpath="${xpath}/variant"></field:hidden>
-					</form_new:row>
-				</c:otherwise>
-			</c:choose>
-
+			<form_new:row label="Type" id="${name}_redbookCodeRow" className="${name}_redbookCodeRow hidden">
+				<field_new:general_select xpath="${xpath}/redbookCode" title="vehicle type" required="true" className="vehicleDes" initialText="&nbsp;" />
+				<field:hidden xpath="${xpath}/marketValue"></field:hidden>
+				<field:hidden xpath="${xpath}/variant"></field:hidden>
+			</form_new:row>
 		</form_new:fieldset>
 	</jsp:body>
 </form_new:fieldset_columns>

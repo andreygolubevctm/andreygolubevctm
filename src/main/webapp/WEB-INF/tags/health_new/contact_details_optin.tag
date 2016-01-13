@@ -14,16 +14,18 @@
 <c:set var="val_optin"				value="Y" />
 <c:set var="val_optout"				value="N" />
 
+<%-- Set A/B test flag j=2 --%>
+<c:set var="hideOptIn" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" scope="request" />
+
 <%-- Vars for competition --%>
-<c:set var="competitionSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 99)}" />
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="competitionSecret"><content:get key="competitionSecret"/></c:set>
 <c:set var="competitionEnabled" value="${false}" />
-<c:if test="${competitionEnabledSetting == 'Y' && (competitionSplitTest eq true or competitionSecret == 'kSdRdpu5bdM5UkKQ8gsK')}"> <%--Split test needs to allow previous competition ($1000 promo) to remain active. TODO: Cleanup--%>
-	<c:set var="competitionEnabled" value="${true}" />
+<c:if test="${competitionEnabledSetting == 'Y' && competitionSecret == 'kSdRdpu5bdM5UkKQ8gsK'}">
+ 	<c:set var="competitionEnabled" value="${true}" />
 </c:if>
 
-<!-- Name is mandatory for both online and callcentre, other fields only mandatory for online -->
+<%-- Name is mandatory for both online and callcentre, other fields only mandatory for online --%>
 <c:set var="required" value="${true}" />
 <c:if test="${callCentre}">
 	<c:set var="required" value="${false}" />
@@ -87,16 +89,18 @@
 					</c:otherwise>
 				</c:choose>
 
-				<c:set var="termsAndConditions">
-					<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
-					I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
-					<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
-					By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
-					I confirm that I have read the <form:link_privacy_statement />.
-				</c:set>
+				<%-- A/B test !j=2 --%>
+				<c:if test="${not hideOptIn}">
+					<c:set var="termsAndConditions">
+						<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
+						I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
+						<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
+						By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
+						I confirm that I have read the <form:link_privacy_statement />.
+					</c:set>
 				
-				<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
-				<form_new:row className="health-contact-details-optin-group" hideHelpIconCol="true">
+					<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
+					<form_new:row className="health-contact-details-optin-group" hideHelpIconCol="true">
 					<field_new:checkbox
 						xpath="${xpath}/optin"
 						value="Y"
@@ -105,7 +109,8 @@
 						label="${true}"
 						title="${termsAndConditions}"
 						errorMsg="Please agree to the Terms &amp; Conditions" />
-				</form_new:row>
+					</form_new:row>
+				</c:if>
 
 				<%-- COMPETITION START --%>
 				<c:if test="${competitionEnabled == true}">
