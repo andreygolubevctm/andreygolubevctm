@@ -4,14 +4,14 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
-
+<%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="Class Name for Fieldset" %>
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health_declaration">
 
-	<form_v2:fieldset legend="Declaration">
+	<form_v2:fieldset legend="Declaration" className="${className}">
 
 		<c:set var="fieldXpath" value="${xpath}/rebateForm" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Australian Government Rebate Form" className="ausgovtrebateform" hideHelpIconCol="true">
