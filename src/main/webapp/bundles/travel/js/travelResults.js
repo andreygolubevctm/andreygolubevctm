@@ -308,7 +308,7 @@
 					showNoResults();
 				}
 			} else {
-				//meerkat.modules.salesTracking.addPHGImpressionTracking();
+				meerkat.modules.salesTracking.addPHGImpressionTracking();
 			}
 		});
 

@@ -3,11 +3,12 @@
 	var meerkat = window.meerkat;
 
 	function addPHGImpressionTracking() {
-console.log("addPHGImpressionTracking");
-		if (meerkat.site.PHGPostImpressions.url && meerkat.site.PHGPostImpressions.partnerValues) {
+		if (meerkat.site.PHGPostImpressionsEnabled === true && typeof typeof meerkat.site.PHGPostImpressions !== 'undefined'  && typeof meerkat.site.PHGPostImpressions.url !== 'undefined' && typeof meerkat.site.PHGPostImpressions.partnerValues !== 'undefined') {
+			var links = "";
 			_.each(Results.model.availablePartners, function addPHGTrackingToPage(brandCode) {
-				console.log("TTEST", meerkat.site.PHGPostImpressions.url+""+meerkat.site.PHGPostImpressions.partnerValues[brandCode]);
+				links += "<script type='text/javascript' src='" + meerkat.site.PHGPostImpressions.url+""+meerkat.site.PHGPostImpressions.partnerValues[brandCode] + "'></script>";
 			});
+			$('body').append(links);
 		}
 	}
 

@@ -5,6 +5,22 @@
 <c:if test="${not empty param.cover || not empty param.situation || not empty param.location}">
 	<c:set var="fromBrochure" scope="request" value="${true}"/>
 </c:if>
+
+<c:set var="isTrackingEnabled">
+	<content:get key="trackingEnabled" />
+</c:set>
+
+<c:if test="${empty isTrackingEnabled}">
+	<c:set var="isTrackingEnabled" value="${false}" />
+</c:if>
+
+<c:set var="PHGPostImpressions">
+	<content:PHGPostImpression key="trackingURL" />
+</c:set>
+
+<c:if test="${empty PHGPostImpressions}">
+	<c:set var="PHGPostImpressions" value="''" />
+</c:if>
 {
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['travel/journey/stage']}"/>",
@@ -14,7 +30,8 @@
 	productId: '<c:out value="${data.travel.application.productId}" />',
 	userId: '<c:out value="${authenticatedData.login.user.uid}" />',
 	countrySelectionDefaults: '<c:out value="${data.travel.destination}" />',
-	PHGPostImpressions: <content:PHGPostImpression key="trackingURL" />,
+	PHGPostImpressionsEnabled: <c:out value="${isTrackingEnabled}" />,
+	PHGPostImpressions: <c:out value="${PHGPostImpressions}" escapeXml="false" />,
 	navMenu: {
 		type: 'offcanvas',
 		direction: 'right'

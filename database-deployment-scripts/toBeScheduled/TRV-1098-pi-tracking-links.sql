@@ -1,3 +1,9 @@
+-- SELECT count(*) AS total FROM `ctm`.`content_control` WHERE `contentCode` = 'trackingEnabled' AND `verticalId` = 2;
+-- TEST BEFORE: 0
+-- TEST AFTER : 1
+
+INSERT INTO `ctm`.`content_control` (`styleCodeId`, `verticalId`, `contentCode`, `contentKey`, `effectiveStart`, `effectiveEnd`, `contentValue`) VALUES ('1', '2', 'PHGTracking', 'trackingEnabled', '2016-01-01 00:00:00', '2040-12-31 23:59:59', 'true');
+
 -- SELECT count(*) AS total FROM `ctm`.`content_control` WHERE `contentCode` = 'PHGTracking' AND `verticalId` = 2;
 -- TEST BEFORE: 0
 -- TEST AFTER : 1
@@ -12,7 +18,7 @@ INSERT INTO `ctm`.`content_supplementary` (`contentControlId`, `supplementaryKey
 (@CCID, '1FOW', 'camref:1100l9pi/creativeref:1101l5672'),
 (@CCID, 'AMEX', 'camref:1101l9yn/creativeref:1100l5691'),
 (@CCID, 'BUDD', 'camref:1101l9yp/creativeref:1011l5894'),
-(@CCID, 'CITI', 'camref:1100l9pr/creativeref:1101l5675'),
+(@CCID, 'ACET', 'camref:1100l9pr/creativeref:1101l5675'),
 (@CCID, 'CLBS', 'camref:1100l9ps/creativeref:1011l5905'),
 (@CCID, 'DUIN', 'camref:1101l9yx/creativeref:1100l5693'),
 (@CCID, 'EASY', 'camref:1101l9yy/creativeref:1100l5692'),
