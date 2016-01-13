@@ -1,6 +1,7 @@
 package com.ctm.web.core.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +9,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ProviderFilterDao {
 
 	private final static String PROVIDER_DETAILS_QUERY_BY_AUTHTOKEN =

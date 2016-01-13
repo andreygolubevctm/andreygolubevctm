@@ -324,8 +324,8 @@ public class UtilitiesApplicationRequestModel extends AbstractJsonModel {
 		Date date = FormDateUtils.parseDateFromForm(request.getParameter("utilities_application_details_dob"));
 		setDateOfBirth(date);
 
-		String mobile = request.getParameter("utilities_application_details_mobileNumberinput");
-		String otherPhone = request.getParameter("utilities_application_details_otherPhoneNumberinput");
+		String mobile = request.getParameter("utilities_application_details_mobileinput");
+		String otherPhone = request.getParameter("utilities_application_details_otherinput");
 
 		if(mobile != null && mobile.equals("") == false){
 			setPrimaryPhone(mobile);

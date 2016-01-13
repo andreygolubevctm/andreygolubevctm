@@ -36,10 +36,10 @@
                     $field: $("#utilities_resultsDisplayed_phoneinput")
                 },
                 {
-                    $field: $("#utilities_application_details_mobileNumberinput"),
-                    $fieldInput: $("#utilities_application_details_mobileNumberinput"),
-                    $otherField: $("#utilities_application_details_otherPhoneNumberinput"),
-                    $otherFieldInput: $("#utilities_application_details_otherPhoneNumberinput")
+                    $field: $("#utilities_application_details_mobileinput"),
+                    $fieldInput: $("#utilities_application_details_mobileinput"),
+                    $otherField: $("#utilities_application_details_otherinput"),
+                    $otherFieldInput: $("#utilities_application_details_otherinput")
                 }
             ]
         };

@@ -3,17 +3,17 @@
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		exception = meerkat.logging.exception,
-	moduleEvents = {
+		moduleEvents = {
 			health: {
 				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM'
 			},
 			WEBAPP_LOCK: 'WEBAPP_LOCK',
 			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
 		},
-	hasSeenResultsScreen = false,
-	rates = null,
-	steps = null,
-	stateSubmitInProgress = false;
+		hasSeenResultsScreen = false,
+		rates = null,
+		steps = null,
+		stateSubmitInProgress = false;
 
 	function initJourneyEngine(){
 

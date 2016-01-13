@@ -100,7 +100,7 @@
 		var telNum = $('#quote_CrClientTelinput');
 		// populate client number if empty
 		if (telNum.length && !telNum.val().length) {
-			telNum.val($('#quote_contact_phone').val());
+			telNum.val($('#quote_contact_phone').val()).blur();
 		}
 		telNum.attr('data-msg-required', "Please enter your contact number");
 

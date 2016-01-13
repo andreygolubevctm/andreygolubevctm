@@ -21,29 +21,27 @@
 
 	<form_new:row label="First Name" id="firstName">
 		<field:person_name xpath="quote/drivers/regular/firstname"
-			required="${mandatoryContactFieldsSplitTest}" title="the policy holder's first name" />
+			required="false" title="the policy holder's first name" />
 	</form_new:row>
 
 	<form_new:row label="Last Name" id="lastName">
 		<field:person_name xpath="quote/drivers/regular/surname"
-			required="${mandatoryContactFieldsSplitTest}" title="the policy holder's last name" />
+			required="false" title="the policy holder's last name" />
 	</form_new:row>
 
 	<form_new:row label="Email Address" id="contactEmailRow">
-		<c:choose>
-			<c:when test="${emailHelperSplitTest eq true}">
-				<field_new:email_assisted xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" additionalAttributes=" data-rule-validateOkToEmail='true' " />
-			</c:when>
-			<c:otherwise>
-				<field_new:email xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
-			</c:otherwise>
-		</c:choose>
+		<field_new:email xpath="${xpath}/email" required="false" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 	</form_new:row>
 
+	<c:set var="fieldXPath" value="${xpath}/phone" />
 	<form_new:row label="Contact Number" id="contactNoRow">
-		<field:contact_telno xpath="${xpath}/phone" required="false" id="bestNumber"
+		<field:flexi_contact_number xpath="${fieldXPath}"
+			maxLength="20"
+			id="bestNumber"
+			required="${false}"
 			className="bestNumber"
-			labelName="best number" validationAttribute=" data-rule-validateOkToCall='true' " />
+			labelName="best number"
+			validationAttribute=" data-rule-validateOkToCall='true' "/>
 	</form_new:row>
 
 

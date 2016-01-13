@@ -3,11 +3,13 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- LOGO AND PRICES TEMPLATE --%>
-<script id="more-info-logo-price-template" type="text/html">
+<script id="logo-price-template" type="text/html">
 	<%-- Decide whether to render the normal premium or the alt premium (for dual-pricing) --%>
 	{{ var property = premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = altPremium; } }}
 
+	{{ if(typeof obj.displayLogo === 'undefined' || obj.displayLogo == true) { }}
 	<div class="companyLogo {{= info.provider }}"></div>
+	{{ } }}
 	<div class="price premium">
 		{{ if( typeof property.annually !== "undefined" ) { }}
 		<div class="frequency annually {{= _selectedFrequency != 'annually' ? 'displayNone' : '' }}" data-text="{{= property.annually.text }}" data-lhcfreetext="{{= property.annually.lhcfreetext }}">

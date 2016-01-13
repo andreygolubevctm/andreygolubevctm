@@ -19,7 +19,6 @@
 	var currentStep = null,
 		webappLock = false,
 		furtherestStep = null;
-
 	/* Constants */
 	var DIRECTION_FORWARD = "DIRECTION_FORWARD",
 		DIRECTION_BACKWARD = "DIRECTION_BACKWARD";
@@ -212,7 +211,6 @@
 					setFurtherestStep();
 
 					validateStep(step, function successCallback(){
-
 
 						if(currentStep.onBeforeLeave !== null) currentStep.onBeforeLeave(eventObject);
 						if(currentStep.onAfterLeave !== null) currentStep.onAfterLeave(eventObject);
