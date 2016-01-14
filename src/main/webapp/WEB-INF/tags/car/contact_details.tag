@@ -34,15 +34,15 @@
 	</form_v2:row>
 
 	<c:set var="fieldXPath" value="${xpath}/phone" />
-	<form_new:row label="Contact Number" id="contactNoRow">
-		<field:flexi_contact_number xpath="${fieldXPath}"
+	<form_v2:row label="Contact Number" id="contactNoRow">
+		<field_v1:flexi_contact_number xpath="${fieldXPath}"
 			maxLength="20"
 			id="bestNumber"
 			required="${false}"
 			className="bestNumber"
 			labelName="best number"
 			validationAttribute=" data-rule-validateOkToCall='true' "/>
-	</form_new:row>
+	</form_v2:row>
 
 
 
