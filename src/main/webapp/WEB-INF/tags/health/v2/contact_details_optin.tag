@@ -42,7 +42,7 @@
 				<content:get key="healthCompetitionRightColumnPromo"/>
 			</c:if>
 
-			<health_new_content:sidebar />
+			<health_v2_content:sidebar />
 		</jsp:attribute>
 
 		<jsp:body>

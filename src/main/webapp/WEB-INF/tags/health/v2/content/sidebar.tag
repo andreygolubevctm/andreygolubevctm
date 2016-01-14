@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- <health_content:xxx /> --%>
-<health_content:snapshot/>
-<health_content:call_centre_help />
+<health_v2_content:snapshot/>
+<health_v1_content:call_centre_help />
 <content:get_random_content cssClass="sidebar-box" contentKey="healthTestimonials" />
-<health_content:price_promise />
+<health_v2_content:price_promise />
