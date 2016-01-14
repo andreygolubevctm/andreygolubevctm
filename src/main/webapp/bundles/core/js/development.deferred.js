@@ -54,17 +54,25 @@
         return false;
     }
 
+    function hasValidatorService(){
+        if(meerkat.site.vertical === 'health'){
+            return true;
+        }
+        return false;
+    }
+
     function initEnvironmentMonitor(){
 
         // Build information bar
         $("#copyright").after('<div class="buildEnvInfo_div">' +
-            '<ul><li class="devEnv"></li>' +
-            '<li>Transaction ID: <span class="devTransactionId"></span></li>' +
-            '<li>Revision #: <span class="devRevisionId"></span></li>' +
-            '<li class="devService"><a href="data.jsp" target="_blank">View data bucket</a></li>' +
-            '<li class="devService aggEngine"></li>' +
-            '<li class="devService applyEngine"></li>' +
-            '</ul></div>');
+        '<ul><li class="devEnv"></li>' +
+        '<li>Transaction ID: <span class="devTransactionId"></span></li>' +
+        '<li>Revision #: <span class="devRevisionId"></span></li>' +
+        '<li class="devService"><a href="data.jsp" target="_blank">View data bucket</a></li>' +
+        '<li class="devService aggEngine"></li>' +
+        '<li class="devService applyEngine"></li>' +
+        '<li class="devService validatorEngine"></li>' +
+        '</ul></div>');
 
         // Populate information bar
         var $transactionIdHolder = $(".devTransactionId");
@@ -180,6 +188,57 @@
 
                     $("#developmentApplicationEnvironment").change(function onDevEnvChange(eventObject){
                         localStorage.setItem("applicationService_"+meerkat.site.vertical, $("#developmentApplicationEnvironment").val());
+                    });
+
+
+                }
+            });
+
+        }
+
+        if (hasValidatorService() == true){
+
+            var $validatorEngineContainer = $('.validatorEngine');
+            $validatorEngineContainer.html('Loading Validator services...');
+
+            var validatorBaseUrl = "http://taws01_ass3:8080"; // for NXI
+
+
+            meerkat.modules.comms.get({
+                url: validatorBaseUrl+"/launcher/wars",
+                cache: false,
+                useDefaultErrorHandling: false,
+                errorLevel: "fatal",
+                onSuccess: function onSubmitSuccess(resultData) {
+
+                    var select = '<label>Validator service: <select id="developmentValidatorEnvironment"><option value="">'+meerkat.site.environment.toUpperCase()+'</option>';
+
+                    for(var i = 0; i<resultData.NXI.length; i++){
+                        var obj = resultData.NXI[i];
+
+                        // Add any travel-quote branch to the list (except for the default if viewing this on NXI)
+
+                        var appPath = "/contact-validator";
+                        if(obj.context.indexOf(appPath) !== -1 && (obj.context === appPath && meerkat.site.environment === 'nxi') === false){
+
+                            var val = validatorBaseUrl+obj.context;
+                            var selected = '';
+                            if(val === localStorage.getItem("contact_validator")){
+                                selected = 'selected="true" ';
+                            }
+
+                            select += '<option value="'+val+'" '+selected+'>NXI'+obj.context.toUpperCase()+'</option>';
+                        }
+                    }
+
+                    select += '</select></label>';
+                    $validatorEngineContainer.html(select);
+
+                    $("#environmentValidatorOverride").val(localStorage.getItem("contact_validator"));
+
+                    $("#developmentValidatorEnvironment").change(function onDevEnvChange(eventObject){
+                        localStorage.setItem("contact_validator", $("#developmentValidatorEnvironment").val());
+                        $("#environmentValidatorOverride").val($("#developmentValidatorEnvironment").val());
                     });
 
 

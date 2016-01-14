@@ -1,3 +1,4 @@
+<%@ tag import="com.ctm.web.core.validator.ContactValidator" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -105,6 +106,13 @@
 		value="${userDetails.questionSet.okToCall}"
 		comment="QUOTE"
 	/>
+
+	<%
+		if (userDetails.getQuestionSet().getOkToCall().equals("Y")) {
+			ContactValidator.validateFromJsp(request, "HEALTH", userDetails.getQuestionSet().getPhoneMobile());
+		}
+	%>
+
 </c:if>
 
 <c:set var="userDetails.application.okToCall">
@@ -130,6 +138,12 @@
 		value="${userDetails.application.okToCall}"
 		comment="APPLICATION"
 	/>
+
+	<%
+		if (userDetails.getApplication().getOkToCall().equals("Y")) {
+			ContactValidator.validateFromJsp(request, "HEALTH", userDetails.getApplication().getPhoneMobile());
+		}
+	%>
 </c:if>
 
 ${logger.debug('Completed write opt ins. {}', log:kv('userDetails',userDetails ))}
