@@ -4,12 +4,30 @@
  * Copyright 2013 Twitter, Inc. and other contributors; Licensed MIT
  */
 
+/* ************************************************************************************************************
+**************************************************************************************************************
+** Custom modifications made by CtM within the isMsie function & added checkBrowserStr function so don't change
+**************************************************************************************************************
+* *****************************************************************************************************************/
+
 (function($) {
     var VERSION = "0.9.3";
     var utils = {
-        isMsie: function() {
-            var match = /(msie) ([\w.]+)/i.exec(navigator.userAgent);
-            return match ? parseInt(match[2], 10) : false;
+        isMsie: function () {
+            var rv = false,
+                ua = navigator.userAgent;
+            if (navigator.appName == 'Microsoft Internet Explorer') {
+                var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                rv = utils.checkBrowserStr(re, ua);
+            }
+            else if (navigator.appName == 'Netscape') {
+                var re = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
+                rv = utils.checkBrowserStr(re, ua);
+            }
+            return rv;
+        },
+        checkBrowserStr: function(regex, ua) {
+            return (regex.exec(ua) != null) ? parseFloat(RegExp.$1) : false;
         },
         isBlankString: function(str) {
             return !str || /^\s*$/.test(str);
