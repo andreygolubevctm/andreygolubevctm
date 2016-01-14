@@ -56,15 +56,7 @@ $(window).load(function () {
 
     $(window).queue(function (next) {
         window.focus();
-/*
-*
- if (typeof meerkat.site.PHGPostImpressionsEnabled !== 'undefined' && meerkat.site.PHGPostImpressionsEnabled === true && typeof meerkat.site.PHGHandoverIds.url !== 'undefined' && typeof meerkat.site.PHGHandoverIds !== 'undefined' && typeof meerkat.site.PHGHandoverIds.partnerValues !== 'undefined' && typeof meerkat.site.PHGHandoverIds.partnerValues.CLBS !== 'undefined') {
- url += "&handoverURL="+encodeURIComponent(meerkat.site.PHGHandoverIds.url+""+meerkat.site.PHGHandoverIds.partnerValues.CLBS+"pubref:/Adref:"+meerkat.modules.transactionId.get()+"/destination:"+product.handoverUrls);
- } else {
- url += "&handoverURL="+encodeURIComponent(product.handoverUrl);
- }
- alert(url);
-* */
+
         var message = '';
         if (msg !== 'undefined' && msg.length > 0) {
             $('.message').text(msg);
@@ -99,11 +91,6 @@ $(window).load(function () {
                             if (vertical == 'travel') {
                                 quoteUrl = loopedDecodeUriComponent(quoteUrl);
                             }
-
-                            if (typeof meerkat.site.PHGPostImpressionsEnabled !== 'undefined' && meerkat.site.PHGPostImpressionsEnabled === true && typeof meerkat.site.PHGHandoverIds.url !== 'undefined' && typeof meerkat.site.PHGHandoverIds !== 'undefined' && typeof meerkat.site.PHGHandoverIds.partnerValues !== 'undefined' && typeof meerkat.site.PHGHandoverIds.partnerValues.CLBS !== 'undefined') {
-                                quoteUrl = meerkat.site.PHGHandoverIds.url+""+meerkat.site.PHGHandoverIds.partnerValues.CLBS+"pubref:/Adref:"+meerkat.modules.transactionId.get()+"/destination:"+quoteUrl;
-                            }
-                            alert(quoteUrl);
                             window.location.replace(quoteUrl);
                         }
                     } else {

@@ -15,15 +15,13 @@
 <c:set var="quoteUrl" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, 'quoteUrl'),'%26','&') }" />
 <c:set var="brandCode" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, 'brandCode'),'%26','&') }" />
 
-<c:set var="isTrackingEnabled">
-	<content:get key="trackingEnabled" />
+<c:set var="trackingCode">
+	<c:out value="${param.PHGcode}" escapeXml="true" />
 </c:set>
 
-<c:if test="${isTrackingEnabled eq true}">
-	<c:set var="providerCode">providerCode</c:set>
-	<c:if test="${param.vertical}"
+<c:if test="${not empty trackingCode and not empty quoteUrl and quoteUrl != 'DUPLICATE'}">
 	<c:set var="quoteUrl">
-		 <content:get key="PHGHandoverTracking" /><content:get key="PHGHandoverTracking" suppKey="" />
+		<c:out value="${param.PHGUrl}" />${trackingCode}/pubref:/Adref:${transactionId}/destination:${quoteUrl}
 	</c:set>
 </c:if>
 
@@ -33,7 +31,6 @@
 	<jsp:attribute name="head">
 		<link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/transferring${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 		<script>
-			alert("brandcode [${brandCode} ] (${pageSettings.getBrandCode()})");
 			<%-- In case we want to turn off looped URI Decoding --%>
 			window.useLoopedTransferringURIDecoding = ${pageSettings.getSetting("useLoopedTransferringURIDecoding")};
 

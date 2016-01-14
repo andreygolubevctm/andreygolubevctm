@@ -63,6 +63,10 @@
 				alert(quoteUrl);*/
 			}
 
+			if (typeof meerkat.site.PHGPostImpressionsEnabled !== 'undefined' && meerkat.site.PHGPostImpressionsEnabled === true && typeof meerkat.site.PHGHandoverIds.url !== 'undefined' && typeof meerkat.site.PHGHandoverIds !== 'undefined' && typeof meerkat.site.PHGHandoverIds.partnerValues !== 'undefined' && typeof meerkat.site.PHGHandoverIds.partnerValues.CLBS !== 'undefined') {
+				url += '&PHGcode=' + meerkat.site.PHGHandoverIds.partnerValues[settings.product.serviceName]+'&PHGUrl='+encodeURIComponent(meerkat.site.PHGHandoverIds.url);
+			}
+
 			// append any extra params
 			if (!$.isEmptyObject(settings.extraParams))
 			{
