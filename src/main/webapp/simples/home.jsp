@@ -27,7 +27,7 @@
 
 
 
-<layout:simples_page>
+<layout_v1:simples_page>
 	<jsp:attribute name="head">
 	</jsp:attribute>
 
@@ -76,4 +76,4 @@
 </div>
 
 	</jsp:body>
-</layout:simples_page>
+</layout_v1:simples_page>

@@ -16,20 +16,20 @@
 
 		<c:set var="pageTitle" value="Brands available for new ${fn:toLowerCase(verticalCode)} quote" />
 
-		<layout:simples_page>
+		<layout_v1:simples_page>
 			<jsp:attribute name="head">
 			</jsp:attribute>
 
 			<jsp:body>
 
-				<layout:slide_columns sideHidden="true">
+				<layout_v1:slide_columns sideHidden="true">
 
 					<jsp:attribute name="rightColumn">
 					</jsp:attribute>
 
 					<jsp:body>
 
-						<form_new:fieldset legend="${pageTitle}">
+						<form_v2:fieldset legend="${pageTitle}">
 							<ul>
 								<c:forEach items="${brands}" var="brand">
 
@@ -41,14 +41,14 @@
 
 								</c:forEach>
 							</ul>
-						</form_new:fieldset>
+						</form_v2:fieldset>
 
 					</jsp:body>
 
-				</layout:slide_columns>
+				</layout_v1:slide_columns>
 
 			</jsp:body>
-		</layout:simples_page>
+		</layout_v1:simples_page>
 
 	</c:when>
 	<c:when test="${brands.size() == 1}">

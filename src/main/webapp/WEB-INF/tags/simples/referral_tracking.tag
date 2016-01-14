@@ -44,13 +44,13 @@
 
 	<%-- add input for call centre when it is inbound call --%>
 	<c:set var="fieldXpath" value="${xpath}/vdnInput" />
-	<form_new:row label="VDN" fieldXpath="${fieldXpath}" className="hidden" helpId="540">
-		<field:input_numeric xpath="${fieldXpath}" minValue="1000" maxValue="9999" title="Inbound VDN" required="true" id="${go:nameFromXpath(fieldXpath)}" maxLength="4" validationMessage="Please enter VDN correctly (4 digits)" className="form-control" />
+	<form_v2:row label="VDN" fieldXpath="${fieldXpath}" className="hidden" helpId="540">
+		<field_v1:input_numeric xpath="${fieldXpath}" minValue="1000" maxValue="9999" title="Inbound VDN" required="true" id="${go:nameFromXpath(fieldXpath)}" maxLength="4" validationMessage="Please enter VDN correctly (4 digits)" className="form-control" />
 		<span class="fieldrow_legend" id="${name}_emailMessage">Enter "1000" if no VDN is displayed</span>
-	</form_new:row>
+	</form_v2:row>
 
-	<field:hidden xpath="${xpath}/callId" defaultValue="${callId}" />
-	<field:hidden xpath="${xpath}/direction" defaultValue="${direction}" />
-	<field:hidden xpath="${xpath}/customerPhoneNo" defaultValue="${customerPhoneNo}" />
-	<field:hidden xpath="${xpath}/VDN" defaultValue="${vdn}" />
+	<field_v1:hidden xpath="${xpath}/callId" defaultValue="${callId}" />
+	<field_v1:hidden xpath="${xpath}/direction" defaultValue="${direction}" />
+	<field_v1:hidden xpath="${xpath}/customerPhoneNo" defaultValue="${customerPhoneNo}" />
+	<field_v1:hidden xpath="${xpath}/VDN" defaultValue="${vdn}" />
 </c:if>

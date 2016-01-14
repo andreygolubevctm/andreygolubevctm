@@ -32,10 +32,10 @@
 		</c:if>
 
 		<%-- Save client data: ***FIX: before using this a 'C' status needs to be identified.
-		<core:transaction touch="A" noResponse="true" />
+		<core_v1:transaction touch="A" noResponse="true" />
 		--%>
 
-		<agg:write_email
+		<agg_v1:write_email
 			brand="CTM"
 			vertical="UTILITIES"
 			source="QUOTE"
@@ -65,9 +65,9 @@
 		<c:set var="confirmationkey" value="${pageContext.session.id}-${tranId}" />
 		<go:setData dataVar="data" xpath="utilities/confirmationkey" value="${confirmationkey}" />
 
-		<agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
-		<agg:write_quote productType="UTILITIES" rootPath="utilities" />
-		<agg:write_touch touch="C" transaction_id="${tranId}" />
+		<agg_v1:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
+		<agg_v1:write_quote productType="UTILITIES" rootPath="utilities" />
+		<agg_v1:write_touch touch="C" transaction_id="${tranId}" />
 
 		<c:out value="${json}" escapeXml="false" />
 

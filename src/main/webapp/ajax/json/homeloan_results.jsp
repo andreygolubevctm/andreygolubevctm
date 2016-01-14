@@ -15,7 +15,7 @@
 </c:if>
 
 <%-- Save data --%>
-<core:transaction touch="R" noResponse="true" />
+<core_v1:transaction touch="R" noResponse="true" />
 
 <%-- Fetch the transaction id --%>
 <c:set var="tranId" value="${data['current/transactionId']}" />

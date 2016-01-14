@@ -35,7 +35,8 @@ var Config = {
         dir: rootDir + "/../webapp/bundles/build"
     },
     brand: {
-        dir: rootDir + "/../webapp/brand"
+        dir: rootDir + "/../webapp/brand",
+        all: ['ctm', 'yhoo', 'cc', 'choo'/*, 'amcl','guar'*/]
     },
     bundles: {
         dir: rootDir + "/../webapp/bundles",

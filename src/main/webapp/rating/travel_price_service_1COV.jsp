@@ -6,7 +6,7 @@
 <x:parse var="travel" xml="${param.QuoteData}" />
 
 <c:set var="transactionId"><x:out select="$travel/request/header/partnerReference" /></c:set>
-<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
+<c:set var="styleCodeId"><core_v1:get_stylecode_id transactionId="${transactionId}" /></c:set>
 <c:set var="verticalId" value="2" />
 
 <c:set var="providerId" >${param.providerId}</c:set>

@@ -4,16 +4,16 @@
 
 <c:set var="xpath" value="quote" />
 
-<layout:slide formId="optionsForm" nextLabel="Next Step">
+<layout_v1:slide formId="optionsForm" nextLabel="Next Step">
 
-	<layout:slide_columns sideHidden="false">
+	<layout_v1:slide_columns sideHidden="false">
 
 		<jsp:attribute name="rightColumn">
 			<car:snapshot />
 		</jsp:attribute>
 
 		<jsp:body>
-			<layout:slide_content>
+			<layout_v1:slide_content>
 
 				<ui:bubble variant="chatty">
 					<h4>Options, Accessories & Modifications</h4>
@@ -30,9 +30,9 @@
 
 				<car:options_dialog_inputs xpath="${xpath}/vehicle/options/inputs/container" />
 
-			</layout:slide_content>
+			</layout_v1:slide_content>
 		</jsp:body>
 
-	</layout:slide_columns>
+	</layout_v1:slide_columns>
 
-</layout:slide>
+</layout_v1:slide>

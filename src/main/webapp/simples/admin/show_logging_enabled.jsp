@@ -9,7 +9,7 @@
 <go:setData dataVar="authenticatedData" xpath="messages" value="*DELETE" />
 
 <%-- Log in / authenticate user --%>
-<c:set var="login"><core:login uid="${param.uid}" /></c:set>
+<c:set var="login"><core_v1:login uid="${param.uid}" /></c:set>
 <c:set var="callCentre" scope="session"><simples:security key="callCentre" /></c:set>
 <c:set var="isRoleSupervisor" scope="session"><simples:security key="supervisor" /></c:set>
 <c:set var="isRoleIT" scope="session"><simples:security key="IT" /></c:set>
@@ -91,7 +91,7 @@
 
 
 	<%-- HTML --%>
-	<layout:simples_page fullWidth="true" >
+	<layout_v1:simples_page fullWidth="true" >
 
 		<jsp:attribute name="head">
 			<style>
@@ -161,5 +161,5 @@
 			
 		</jsp:body>
 
-	</layout:simples_page>
+	</layout_v1:simples_page>
 </c:if>

@@ -3,4 +3,4 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<agg:write_rank rootPath="fuel" rankBy="${param.rankBy}" />
+<agg_v1:write_rank rootPath="fuel" rankBy="${param.rankBy}" />
