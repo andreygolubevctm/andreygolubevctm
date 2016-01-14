@@ -43,6 +43,15 @@
 		<car:snapshot label="Vehicle Quoted" className="hidden-xs"/>
 	</jsp:attribute>
 
+
+	<jsp:attribute name="progress_bar">
+      <div class="progress-bar-row collapse navbar-collapse">
+		  <div class="container">
+			  <ul class="journeyProgressBar_v2"></ul>
+		  </div>
+	  </div>
+    </jsp:attribute>
+
 	<jsp:attribute name="navbar">
 	
 		<ul class="nav navbar-nav" role="menu">
@@ -107,9 +116,6 @@
 			</ul>
 		</div>
 		--%>
-		<div class="collapse navbar-collapse">
-			<ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
-		</div>
 
 	</jsp:attribute>
 
@@ -141,10 +147,7 @@
 			<div class="container compare-basket">
 			</div>
 		</nav>
-	</jsp:attribute>
-						 
-	<jsp:attribute name="navbar_outer">
-					
+
 	</jsp:attribute>
 
 	<jsp:attribute name="results_loading_message">
