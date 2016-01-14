@@ -64,7 +64,7 @@
 
 				<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
 				<form_v2:row label="Your phone number" fieldXpath="${fieldXpath}" className="clear required_input">
-					<field:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
+					<field_v1:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
 				</form_v2:row>
 
 				<c:set var="fieldXpath" value="${xpath}/email" />
