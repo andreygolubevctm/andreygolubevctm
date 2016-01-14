@@ -2,6 +2,10 @@
  * typeahead.js 0.9.3
  * https://github.com/twitter/typeahead
  * Copyright 2013 Twitter, Inc. and other contributors; Licensed MIT
+ *
+ * DO NOT REPLACE THIS FILE! MODIFICATIONS BY CTM!
+ * All autocomplete='off' has been replaced with autocomplete='false'. See: https://code.google.com/p/chromium/issues/detail?id=468153
+ *
  */
 
 (function($) {
@@ -862,7 +866,7 @@
     var TypeaheadView = function() {
         var html = {
             wrapper: '<span class="twitter-typeahead"></span>',
-            hint: '<input class="tt-hint" type="text" autocomplete="off" spellcheck="off" disabled>',
+            hint: '<input class="tt-hint" type="text" autocomplete="false" spellcheck="off" disabled>',
             dropdown: '<span class="tt-dropdown-menu"></span>'
         }, css = {
             wrapper: {
@@ -1066,7 +1070,7 @@
                 style: $input.attr("style")
             });
             $input.addClass("tt-query").attr({
-                autocomplete: "off",
+                autocomplete: "false",
                 spellcheck: false
             }).css(css.query);
             try {
