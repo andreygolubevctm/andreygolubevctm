@@ -59,7 +59,7 @@
 
 <c:choose>
 	<c:when test="${valid == false}">
-		<agg:outputValidationFailureJSON validationErrors="${sessionError}"  origin="home/results_jsp"/>
+		<agg_v1:outputValidationFailureJSON validationErrors="${sessionError}"  origin="home/results_jsp"/>
 	</c:when>
 	<c:when test="${!homeService.isValid()}">
 		${serviceRespone}
@@ -82,7 +82,7 @@
 
 		<%-- Fix the commencement date if prior to the current date --%>
 		<c:set var="sanitisedCommencementDate">
-			<agg:sanitiseCommencementDate commencementDate="${data.home.startDate}" dateFormat="dd/MM/yyyy" />
+			<agg_v1:sanitiseCommencementDate commencementDate="${data.home.startDate}" dateFormat="dd/MM/yyyy" />
 		</c:set>
 		<c:if test="${sanitisedCommencementDate ne data.home.startDate}">
 			<go:setData dataVar="data" xpath="${vertical}/startDate" value="${sanitisedCommencementDate}" />
@@ -91,7 +91,7 @@
 
 		${logger.trace('About to call soap aggregator. {}', log:kv('home', data.home))}
 		<%-- Save client data --%>
-		<core:transaction touch="${touch}" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
+		<core_v1:transaction touch="${touch}" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
 
 		<%-- Fetch and store the transaction id --%>
 		<c:set var="tranId" value="${data['current/transactionId']}" />
@@ -129,7 +129,7 @@
 		</c:set>
 
 		<%-- Write to the stats database --%>
-		<agg:write_stats rootPath="${vertical}" tranId="${tranId}" debugXml="${stats}"/>
+		<agg_v1:write_stats rootPath="${vertical}" tranId="${tranId}" debugXml="${stats}"/>
 
 		<%-- Add the results to the current session data --%>
 		<go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
@@ -146,7 +146,7 @@
 
 				<%--Calculate the end valid date for these quotes --%>
 				<c:set var="validateDate">
-					<agg:email_valid_date dateFormat="dd MMMMM yyyy" />
+					<agg_v1:email_valid_date dateFormat="dd MMMMM yyyy" />
 				</c:set>
 
 				<%-- Construct the best price lead info - only if opted in for call --%>
@@ -254,12 +254,12 @@
 					Write result details to the database for potential later use when sending emails etc...
 					Note: premium data can not be stored in the DB, placed in session instead
 				--%>
-				<agg:write_result_details transactionId="${tranId}" recordXPaths="leadfeedinfo,validateDate/display,validateDate/normal,productId,productDes,des,HHB/excess/amount,HHC/excess/amount,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="price/annual/total" baseXmlNode="soap-response/results/result" />
+				<agg_v1:write_result_details transactionId="${tranId}" recordXPaths="leadfeedinfo,validateDate/display,validateDate/normal,productId,productDes,des,HHB/excess/amount,HHC/excess/amount,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="price/annual/total" baseXmlNode="soap-response/results/result" />
 
 		${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 	</c:when>
 	<c:otherwise>
-		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="home/results_jsp"/>
+		<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="home/results_jsp"/>
 	</c:otherwise>
 		</c:choose>
 	</c:otherwise>

@@ -56,7 +56,7 @@
 		</ui:bubble>
 	</c:when>
 	<c:otherwise>
-		<form_new:fieldset legend="${label}" className="hidden quoteSnapshot ${className}">
+		<form_v2:fieldset legend="${label}" className="hidden quoteSnapshot ${className}">
 			<div class="row snapshot">
 				<div class="col-sm-3">
 					<div class="icon icon-car"></div>
@@ -84,6 +84,6 @@
 					</div>
 				</div>
 			</div>
-		</form_new:fieldset>
+		</form_v2:fieldset>
 	</c:otherwise>
 </c:choose>

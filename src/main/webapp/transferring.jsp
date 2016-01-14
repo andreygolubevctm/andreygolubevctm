@@ -15,7 +15,7 @@
 <c:set var="quoteUrl" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, 'quoteUrl'),'%26','&') }" />
 
 <%-- HTML --%>
-<layout:generic_page title="Transferring you...">
+<layout_v1:generic_page title="Transferring you...">
 
 	<jsp:attribute name="head">
 		<link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/transferring${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
@@ -87,4 +87,4 @@
 		<input type="hidden" id="generic_currentJourney" />
 	</jsp:body>
 
-</layout:generic_page>
+</layout_v1:generic_page>

@@ -12,13 +12,13 @@
 <jsp:useBean id="lifeService" class="com.ctm.web.life.services.LifeService" scope="page" />
 <c:set var="serviceResponse" value="${lifeService.contactLeadViaJSP(pageContext.request, data)}" />
 
-<c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
+<c:set var="proceedinator"><core_v1:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
 <c:choose>
 	<c:when test="${lifeService.isValid() and not empty proceedinator and proceedinator > 0}">
 		${logger.debug('PROCEEDINATOR PASSED. {}' , log:kv('proceedinator', proceedinator))}
 		<c:choose>
 			<c:when test="${param.softLead eq 'true'}">
-				<core:transaction touch="CDC" noResponse="true" />
+				<core_v1:transaction touch="CDC" noResponse="true" />
 				<c:set var="resultXml">
 					<results><success>true</success></results>
 				</c:set>
@@ -52,7 +52,7 @@
 				</c:if>
 
 				<jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="request" />
-				<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data[vertical]}" />
+				<agg_v1:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data[vertical]}" />
 				<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "LF", "lifebroker")}</c:set>
 			</c:otherwise>
 		</c:choose>

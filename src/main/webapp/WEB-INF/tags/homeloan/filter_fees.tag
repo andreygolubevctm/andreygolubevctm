@@ -6,11 +6,11 @@
 
 <%-- HTML --%>
 <div class="homeloan-filter-fees">
-	<field_new:checkbox xpath="${xpath}/noOngoing" value="noOngoing"
+	<field_v2:checkbox xpath="${xpath}/noOngoing" value="noOngoing"
 				title="No Ongoing Fees"
 				required="false"
 				label="true" />
-	<field_new:checkbox xpath="${xpath}/noApplication" value="noApplication"
+	<field_v2:checkbox xpath="${xpath}/noApplication" value="noApplication"
 				title="No Application Fees"
 				required="false"
 				label="true" />

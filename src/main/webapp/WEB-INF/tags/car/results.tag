@@ -3,17 +3,17 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- The following are hidden fields used by filters --%>
-<field:hidden xpath="quote/paymentType" defaultValue="annual" />
-<field:array_select
+<field_v1:hidden xpath="quote/paymentType" defaultValue="annual" />
+<field_v1:array_select
 		items="annual=Annual,monthly=Monthly"
 		xpath="filter/paymentType"
 		title=""
 		required=""
 		className="hidden" />
 
-<field:hidden xpath="quote/excess" />
-<field:hidden xpath="quote/baseExcess" constantValue="${contentService.getContentValue(pageContext.getRequest(), 'defaultExcess')}" />
-<field:additional_excess
+<field_v1:hidden xpath="quote/excess" />
+<field_v1:hidden xpath="quote/baseExcess" constantValue="${contentService.getContentValue(pageContext.getRequest(), 'defaultExcess')}" />
+<field_v1:additional_excess
 		increment="100"
 		minVal="400"
 		xpath="filter/excessOptions"
@@ -46,7 +46,7 @@
 <div class="resultsHeadersBg">
 </div>
 
-<agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
+<agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
 
 	<car:more_info />
 
@@ -75,13 +75,13 @@
 			<div class="results-table"></div>
 		</div>
 
-		<core:clear />
+		<core_v1:clear />
 
 		<div class="featuresFooterPusher"></div>
 	</div>
 
 	<%-- DEFAULT RESULT ROW --%>
-	<core:js_template id="result-template">
+	<core_v1:js_template id="result-template">
 		{{ var productTitle = (typeof obj.productName !== 'undefined') ? obj.productName : 'Unknown product name'; }}
 		{{ var productDescription = (typeof obj.productDescription !== 'undefined') ? obj.productDescription : 'Unknown product name'; }}
 		{{ var promotionText = (typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
@@ -277,13 +277,13 @@
 			</div>
 
 		</div>
-	</core:js_template>
+	</core_v1:js_template>
 
 	<%-- FEATURE TEMPLATE --%>
 	<features:resultsItemTemplate />
 
 	<%-- UNAVAILABLE COMBINED ROW --%>
-	<core:js_template id="unavailable-combined-template">
+	<core_v1:js_template id="unavailable-combined-template">
 		{{ var template = $("#provider-logo-template").html(); }}
 		{{ var logo = _.template(template); }}
 		{{ var logos = ''; }}
@@ -323,12 +323,13 @@
 				</div>
 			</div>
 		</div>
-	</core:js_template>
+		</div>
+	</core_v1:js_template>
 
 	<%-- ERROR ROW --%>
-	<core:js_template id="error-template">
-		{{ var productTitle = (typeof obj.productName !== 'undefined') ? obj.productName : 'Unknown product name'; }}
-		{{ var productDescription = (typeof obj.productDescription !== 'undefined') ? obj.productDescription : 'Unknown product name'; }}
+	<core_v1:js_template id="error-template">
+		{{ var productTitle = (typeof obj.headline !== 'undefined' && typeof obj.headline.name !== 'undefined') ? obj.headline.name : 'Unknown product name'; }}
+		{{ var productDescription = (typeof obj.headline !== 'undefined' && typeof obj.headline.des !== 'undefined') ? obj.headline.des : 'Unknown product name'; }}
 
 		{{ var template = $("#provider-logo-template").html(); }}
 		{{ var logo = _.template(template); }}
@@ -359,29 +360,30 @@
 				</div>
 			</div>
 		</div>
-	</core:js_template>
+	</core_v1:js_template>
 
 	<%-- NO RESULTS --%>
 	<div class="hidden">
 		<agg_new_results:results_none />
 	</div>
 
-	<%-- FETCH ERROR --%>
-	<div class="resultsFetchError displayNone">
-		Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later</a>.
-	</div>
 
-	<%-- Logo template --%>
-	<core:js_template id="provider-logo-template">
-		{{ var img = 'default_w'; }}
-		{{ if (obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
-		<div class="companyLogo logo_{{= img }}"></div>
-	</core:js_template>
+<%-- FETCH ERROR --%>
+<div class="resultsFetchError displayNone">
+	Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later</a>.
+</div>
 
-</agg_new_results:results>
+<%-- Logo template --%>
+<core_v1:js_template id="provider-logo-template">
+	{{ var img = 'default_w'; }}
+	{{ if (obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
+	<div class="companyLogo logo_{{= img }}"></div>
+</core_v1:js_template>
+
+</agg_v2_results:results>
 
 <%-- Price template --%>
-<core:js_template id="monthly-price-template">
+<core_v1:js_template id="monthly-price-template">
 	<div class="frequency monthly clearfix" data-availability="{{= obj.available }}">
 		<div class="frequencyAmount">{{= '$' }}{{= obj.price.monthlyPremium.toFixed(2) }}</div>
 		<div class="frequencyTitle">Monthly Price</div>
@@ -390,21 +392,21 @@
 			<span class="nowrap"><span class="totalPayment">Total: {{= '$' }}{{= obj.price.annualisedMonthlyPremium.toFixed(2) }}</span></span>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- Price template --%>
-<core:js_template id="annual-price-template">
+<core_v1:js_template id="annual-price-template">
 	<div class="frequency annual clearfix" data-availability="{{= obj.available }}">
 		<div class="frequencyAmount">{{= '$' }}{{= obj.price.annualPremium }}</div>
 		<div class="frequencyTitle">Annual Price</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 
 
 <!-- COMPARE TEMPLETING BELOW -->
 <%-- Template for CAR results list. --%>
-<core:js_template id="compare-basket-features-item-template">
+<core_v1:js_template id="compare-basket-features-item-template">
 	{{ var tFrequency = Results.getFrequency(); }}
 	{{ var monthlyHidden = tFrequency == 'monthly' ? '' : 'displayNone'; }}
 	{{ var annualHidden = tFrequency == 'annual' ? '' : 'displayNone'; }}
@@ -429,9 +431,9 @@
 			</span>
 	</li>
 	{{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="compare-basket-price-item-template">
+<core_v1:js_template id="compare-basket-price-item-template">
 	{{ var tFrequency = Results.getFrequency(); }}
 	{{ var tDisplayMode = Results.getDisplayMode(); }}
 	{{ var monthlyHidden = tFrequency == 'monthly' ? '' : 'displayNone'; }}
@@ -454,10 +456,10 @@
 		<span class="icon icon-cross remove-compare" data-productId="{{= products[i].productId }}" title="Remove from shortlist"></span>
 	</li>
 	{{ } }}
-</core:js_template>
+</core_v1:js_template>
 
 <!-- Compare products colums -->
-<core:js_template id="compare-basket-features-template">
+<core_v1:js_template id="compare-basket-features-template">
 	<div class="compare-basket">
 		{{ if(comparedResultsCount === 0) { }}
 		<p>
@@ -501,10 +503,10 @@
 	<div class="expand-collapse-toggle small hidden-xs">
 		<a href="javascript:;" class="expandAllFeatures">Expand All</a> / <a href="javascript:;" class="collapseAllFeatures active">Collapse All</a>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <!-- Compare view from quick price view. -->
-<core:js_template id="compare-basket-price-template">
+<core_v1:js_template id="compare-basket-price-template">
 	{{ if(comparedResultsCount > 0) { }}
 	{{ var template = $("#compare-basket-price-item-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
@@ -520,4 +522,4 @@
 	</ul>
 	{{ } }}
 	{{ } }}
-</core:js_template>
+</core_v1:js_template>

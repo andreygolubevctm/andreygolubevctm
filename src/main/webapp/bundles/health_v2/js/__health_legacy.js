@@ -600,9 +600,3 @@ var healthApplicationDetails = {
 		return true;
 	}
 };
-// END FROM APPLICATION_DETAILS.TAG
-
-// from dependants.tag
-
-
-// end from dependants.tag

@@ -43,6 +43,6 @@
 		${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
 	</c:when>
 	<c:otherwise>
-		<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="life_product_details.jsp"/>
+		<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}" origin="life_product_details.jsp"/>
 	</c:otherwise>
 </c:choose>

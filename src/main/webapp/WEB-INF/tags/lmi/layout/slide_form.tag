@@ -11,9 +11,9 @@
         <c:otherwise>home_contents_quote.jsp</c:otherwise>
     </c:choose>
 </c:set>
-<layout:slide formId="startForm" firstSlide="true">
+<layout_v1:slide formId="startForm" firstSlide="true">
 
-    <layout:slide_columns>
+    <layout_v1:slide_columns>
         <jsp:attribute name="rightColumn">
 			<ui:bubble variant="info" className="hidden-xs">
                 <h4>Compare price</h4>
@@ -38,9 +38,9 @@
             </ui:bubble>
         </jsp:body>
 
-    </layout:slide_columns>
+    </layout_v1:slide_columns>
     <div class="row brand-selector">
-        <layout:slide_content>
+        <layout_v1:slide_content>
             <div class="col-xs-12 col-md-4 brand-compare-price">
                 <h2>Brands we compare on price & features<span class="hidden-lg hidden-md"><br />&nbsp;</span></h2>
 
@@ -56,7 +56,7 @@
                     <lmi:brand_selections comparePrice="${false}"/>
                 </div>
             </div>
-        </layout:slide_content>
+        </layout_v1:slide_content>
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-4 col-sm-push-4">
@@ -64,4 +64,4 @@
             <br>
         </div>
     </div>
-</layout:slide>
+</layout_v1:slide>

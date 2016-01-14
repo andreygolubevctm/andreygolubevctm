@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 
-<core:js_template id="more-info-template">
+<core_v1:js_template id="more-info-template">
 
 	{{ var template = $("#provider-logo-template").html(); }}
 	{{ var companyLogo = _.template(template); }}
@@ -120,5 +120,5 @@
 		<div class="row"><div class="col-md-12 disclaimer"><small>*Comparison rates shown are based on the home loan details you have entered which include loan amount and term of loan or on a secured loan of $150,000 over the term of 25 years for advertisements. WARNING: This comparison rate is true only for the examples given and may not include all fees and charges. Different terms, fees or other loan amounts might result in a different comparison rate.
 </small></div></div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
