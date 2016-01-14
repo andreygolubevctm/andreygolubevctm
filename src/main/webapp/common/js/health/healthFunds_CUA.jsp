@@ -46,11 +46,11 @@ set: function () {
 
 		<c:if test="${data.health.situation.healthCvr == 'S' || data.health.situation.healthCvr == 'SM' || data.health.situation.healthCvr == 'SF'}">
 			<c:set var="htmlPrimary">
-				<form:row label="" className="ifExpectingMessage" id="ifExpectingMessage">
+				<form_v1:row label="" className="ifExpectingMessage" id="ifExpectingMessage">
 					<div>
 						For your baby to be eligible for benefits immediately upon birth, the mother must have contributed to a family or single parent policy for at least two calendar months prior to the infant\'s birth.
 					</div>
-				</form:row>
+				</form_v1:row>
 			</c:set>
 			$('#health_application_primary_genderRow').after('<c:out value="${htmlPrimary}" escapeXml="false" />');
 

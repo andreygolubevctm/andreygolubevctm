@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<core:doctype />
+<core_v1:doctype />
 <go:html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

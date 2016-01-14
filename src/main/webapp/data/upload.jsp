@@ -73,9 +73,9 @@
 	</c:otherwise>
 </c:choose>
 
-<core:doctype />
+<core_v1:doctype />
 <go:html>
-<%-- <core:head quoteType="${quoteType}" title="Upload ${vertical} Features"/> --%>
+<%-- <core_v1:head quoteType="${quoteType}" title="Upload ${vertical} Features"/> --%>
 
 <go:style marker="css-head">
 body {

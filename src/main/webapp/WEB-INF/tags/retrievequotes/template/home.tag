@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<core:js_template id="retrieve-home-template">
+<core_v1:js_template id="retrieve-home-template">
 
     {{ var addressDetails = typeof obj.property != 'undefined' && typeof obj.property.address != 'undefined' ? obj.property.address : {}; }}
     {{ var coverAmountDetails = typeof obj.coverAmounts != 'undefined' ? obj.coverAmounts : {}; }}
@@ -24,4 +24,4 @@
         <strong>Contents Value: </strong> {{= coverAmountDetails.replaceContentsCostentry }}
     </div>
     {{ } }}
-</core:js_template>
+</core_v1:js_template>

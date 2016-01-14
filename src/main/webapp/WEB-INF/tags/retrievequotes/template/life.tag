@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<core:js_template id="retrieve-life-template">
+<core_v1:js_template id="retrieve-life-template">
 
     {{ var quoteContent = typeof obj.content != 'undefined' ? obj.content : {}; }}
 
@@ -33,4 +33,4 @@
         <strong>Premium: </strong> {{= quoteContent.premium }}
     </div>
     {{ } }}
-</core:js_template>
+</core_v1:js_template>

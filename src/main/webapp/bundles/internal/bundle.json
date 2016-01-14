@@ -4,6 +4,7 @@
     ],
     "dependencies": [
         "meerkat",
+        "shared/journeyEngine/v2",
         "core"
     ]
 }
