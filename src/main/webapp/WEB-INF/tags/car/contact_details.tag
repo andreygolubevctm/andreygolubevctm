@@ -17,27 +17,32 @@
 </c:if>
 
 <%-- HTML --%>
-<form_new:fieldset legend="Contact Details" id="${name}FieldSet">
+<form_v2:fieldset legend="Contact Details" id="${name}FieldSet">
 
-	<form_new:row label="First Name" id="firstName">
-		<field:person_name xpath="quote/drivers/regular/firstname"
+	<form_v2:row label="First Name" id="firstName">
+		<field_v1:person_name xpath="quote/drivers/regular/firstname"
 			required="false" title="the policy holder's first name" />
-	</form_new:row>
+	</form_v2:row>
 
-	<form_new:row label="Last Name" id="lastName">
-		<field:person_name xpath="quote/drivers/regular/surname"
+	<form_v2:row label="Last Name" id="lastName">
+		<field_v1:person_name xpath="quote/drivers/regular/surname"
 			required="false" title="the policy holder's last name" />
-	</form_new:row>
+	</form_v2:row>
 
-	<form_new:row label="Email Address" id="contactEmailRow">
-		<field_new:email xpath="${xpath}/email" required="false" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
-	</form_new:row>
+	<form_v2:row label="Email Address" id="contactEmailRow">
+		<field_v2:email xpath="${xpath}/email" required="false" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
+	</form_v2:row>
 
-	<form_new:row label="Contact Number" id="contactNoRow">
-		<field:contact_telno xpath="${xpath}/phone" required="false" id="bestNumber"
+	<c:set var="fieldXPath" value="${xpath}/phone" />
+	<form_v2:row label="Contact Number" id="contactNoRow">
+		<field_v1:flexi_contact_number xpath="${fieldXPath}"
+			maxLength="20"
+			id="bestNumber"
+			required="${false}"
 			className="bestNumber"
-			labelName="best number" validationAttribute=" data-rule-validateOkToCall='true' " />
-	</form_new:row>
+			labelName="best number"
+			validationAttribute=" data-rule-validateOkToCall='true' "/>
+	</form_v2:row>
 
 
 
@@ -46,36 +51,36 @@
 		the next 4 business days to discuss my car insurance needs.
 	</c:set>
 
-	<form_new:row label="OK to email" className="">
-		<field_new:array_radio xpath="quote/contact/marketing"
+	<form_v2:row label="OK to email" className="">
+		<field_v2:array_radio xpath="quote/contact/marketing"
 			required="false"
 			items="Y=Yes,N=No"
 			title="if OK to email" additionalAttributes=" data-rule-validateOkToEmailRadio='true' " />
 		<content:optin key="okToEmail" />
-	</form_new:row>
+	</form_v2:row>
 
-	<form_new:row label="OK to call" className="">
-		<field_new:array_radio xpath="quote/contact/oktocall"
+	<form_v2:row label="OK to call" className="">
+		<field_v2:array_radio xpath="quote/contact/oktocall"
 			required="false"
 			items="Y=Yes,N=No"
 			title="if OK to call" additionalAttributes=" data-rule-validateOkToCallRadio='true' " />
 
 		<p class="optinText">${okToCall}</p>
-	</form_new:row>
+	</form_v2:row>
 
 	<%-- COMPETITION START --%>
 	<c:if test="${competitionEnabled == true}">
-		<form_new:row className="car-competition-optin-group" hideHelpIconCol="true">
+		<form_v2:row className="car-competition-optin-group" hideHelpIconCol="true">
 			<content:get key="competitionPreCheckboxContainer"/>
-		</form_new:row>
-		<form_new:row className="car-competition-optin-group" hideHelpIconCol="true">
+		</form_v2:row>
+		<form_v2:row className="car-competition-optin-group" hideHelpIconCol="true">
 			<c:set var="competitionLabel">
 				<content:get key="competitionCheckboxText"/>
 			</c:set>
-			<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
-			<field:hidden xpath="${xpath}/competition/previous" />
-		</form_new:row>
+			<field_v2:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
+			<field_v1:hidden xpath="${xpath}/competition/previous" />
+		</form_v2:row>
 	</c:if>
 	<%-- COMPETITION END --%>
 
-</form_new:fieldset>
+</form_v2:fieldset>

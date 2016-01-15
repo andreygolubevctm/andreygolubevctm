@@ -47,7 +47,7 @@
 		<c:set var="finalData" value="<data>${metadata}${serverdata}</data>" />
 
 	<%-- Import Manifest to grab buildIdentifier --%>
-		<c:set var="buildIdentifier"><core:buildIdentifier></core:buildIdentifier></c:set>
+		<c:set var="buildIdentifier"><core_v1:buildIdentifier></core_v1:buildIdentifier></c:set>
 
 	<%-- OWASP recommends never storing session ids unencrypted --%>
 		<c:set var="secret_key" value="7T7XVh0U6mJ7JNzcZX1e-2" />

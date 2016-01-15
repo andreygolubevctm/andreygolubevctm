@@ -1,0 +1,35 @@
+.quote {
+  display: block;
+  font-style: italic;
+  line-height: 1.8;
+  margin-bottom: 12px;
+  quotes: "\201C""\201D""\2018""\2019";
+
+  &:before {
+    color: lighten(@gray-dark, 35%);
+    content: open-quote;
+    font-family: 'SourceSansProSemiBold',serif;
+    font-size: 64px;
+    font-weight: bold;
+    line-height: 0;
+    margin-right: 8px;
+    vertical-align: text-bottom;
+    display: inline-block;
+  }
+
+  &:after {
+    color: lighten(@gray-dark, 35%);
+    content: close-quote;
+    font-family: 'SourceSansProSemiBold',serif;
+    font-size: 64px;
+    font-weight: bold;
+    line-height: 0;
+    vertical-align: text-bottom;
+    display: inline;
+  }
+}
+.ie8 .quote {
+  &:after {
+    vertical-align: bottom;
+  }
+}

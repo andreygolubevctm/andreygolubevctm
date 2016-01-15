@@ -3,7 +3,7 @@
 
 <settings:setVertical verticalCode="SIMPLES" />
 
-<layout:simples_page>
+<layout_v1:simples_page>
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -14,4 +14,4 @@
 		<p><a id="next-step" href="/${pageSettings.getContextFolder()}security/simples_logout.jsp" class="btn btn-cta">Log Out</a></p>
 	</jsp:body>
 
-</layout:simples_page>
+</layout_v1:simples_page>

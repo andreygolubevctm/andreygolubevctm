@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="vertical" value="${pageSettings.getVerticalCode()}" />
-<core:js_template id="feature-template">
+<core_v1:js_template id="feature-template">
     {{ var featureIterator = obj.childFeatureDetails || Features.getPageStructure(); }}
 
     {{ for(var i = 0; i < featureIterator.length; i++) { }}
@@ -20,7 +20,7 @@
             <div class="content" data-featureId="{{= ft.id }}">
                 <div class="contentInner">
                     {{ if(ft.helpId != '' && ft.helpId != '0') { }}
-                        <field_new:help_icon helpId="{{= ft.helpId }}" position="left"/>
+                        <field_v2:help_icon helpId="{{= ft.helpId }}" position="left"/>
                     {{ } }}
                     {{= ft.safeName }}
                     {{ if(typeof ft.children !== 'undefined') { }}
@@ -58,4 +58,4 @@
     </div>
     {{ } }}
 
-</core:js_template>
+</core_v1:js_template>

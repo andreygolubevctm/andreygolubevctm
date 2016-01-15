@@ -8,7 +8,7 @@
   display: none;
 }
 .displayBlock {
-  display: block;
+  display: block !important;
 }
 
 /* TRANSITIONS */
@@ -50,20 +50,6 @@
 }
 .opacityTransitionQuick{
 	.transition(~"opacity 500ms ease-in-out");
-}
-
-.highResImg(@file-1x; @file-2x; @width-1x; @height-1x; @only-screen:~"only screen and") {
-	background-image: url("@{file-1x}");
-	@media
-	@only-screen (-webkit-min-device-pixel-ratio: 1.5),
-	@only-screen (min--moz-device-pixel-ratio: 1.5),
-	@only-screen (-o-min-device-pixel-ratio: 3/2),
-	@only-screen (min-device-pixel-ratio: 1.5),
-	@only-screen (min-resolution: 1.5dppx),
-	@only-screen (min-resolution: 144dpi) {
-		background-image: url("@{file-2x}");
-		background-size: @width-1x @height-1x;		
-	}
 }
 
 .providersLogoImagesVerticallyCentered(@providers, @index: 1) when (isstring(extract(@providers, @index))) {
@@ -127,7 +113,7 @@
 		@temp-2x-image : ~"@{vertical}-logo-@{currentMember}-2x-image";
 		@temp-2x-total-width : ~"@{vertical}-logo-@{currentMember}-2x-total-width";
 		@temp-2x-total-height : ~"@{vertical}-logo-@{currentMember}-2x-total-height";
-		background-image: url(@@temp-2x-image);
+		background-image: url(@@temp-2x-image) !important;
 	}
 
 	.providersRetinaLogoImages(@providers, (@index + 1));
@@ -135,15 +121,16 @@
 
 .providersHighResSpriteImages(@vertical; @class-prefix; @providers; @prop-scale:1; @only-screen:~"only screen and") {
 	.providersLogoImages(@providers);
+
 	@media
-	@only-screen (-webkit-min-device-pixel-ratio: 1.5),
-	@only-screen (min--moz-device-pixel-ratio: 1.5),
-	@only-screen (-o-min-device-pixel-ratio: 3/2),
-	@only-screen (min-device-pixel-ratio: 1.5),
-	@only-screen (min-resolution: 1.5dppx),
-	@only-screen (min-resolution: 144dpi) {
-		.providersRetinaLogoImages(@providers);
-	}
+		@only-screen (-webkit-min-device-pixel-ratio: 1.5),
+		@only-screen (min--moz-device-pixel-ratio: 1.5),
+		@only-screen (-o-min-device-pixel-ratio: 3/2),
+		@only-screen (min-device-pixel-ratio: 1.5),
+		@only-screen (min-resolution: 1.5dppx),
+		@only-screen (min-resolution: 144dpi) {
+			.providersRetinaLogoImages(@providers);
+		}
 
 	& when not (@prop-scale = 1) {
 		image-rendering: optimizeSpeed;
@@ -223,6 +210,20 @@
 		image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
 		image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
 		-ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+	}
+}
+
+.highResImg(@file-1x; @file-2x; @width-1x; @height-1x; @only-screen:~"only screen and") {
+	background-image: url("@{file-1x}");
+	@media
+	@only-screen (-webkit-min-device-pixel-ratio: 1.5),
+	@only-screen (min--moz-device-pixel-ratio: 1.5),
+	@only-screen (-o-min-device-pixel-ratio: 3/2),
+	@only-screen (min-device-pixel-ratio: 1.5),
+	@only-screen (min-resolution: 1.5dppx),
+	@only-screen (min-resolution: 144dpi) {
+		background-image: url("@{file-2x}");
+		background-size: @width-1x @height-1x;
 	}
 }
 

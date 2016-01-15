@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<health:redirect_rules />
+<health_v1:redirect_rules />
 
 <session:new verticalCode="HEALTH" authenticated="true" />
 
@@ -14,9 +14,9 @@
 
 <c:set var="isHealthV2" value="${true}" scope="request" />
 
-<core:quote_check quoteType="health" />
+<core_v1:quote_check quoteType="health" />
 
-<layout:journey_engine_page title="Health Confirmation">
+<layout_v1:journey_engine_page title="Health Confirmation">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -25,7 +25,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
-		<div class="navbar-collapse header-collapse-contact collapse">
+		<div class="navbar-collapse header-collapse-contact collapse confirmation">
 			<ul class="nav navbar-nav navbar-right">
 				<c:if test="${not empty callCentreNumberApplication}">
 					<li>
@@ -50,7 +50,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="progress_bar">
-      <div class="progress-bar-row collapse navbar-collapse">
+      <div class="progress-bar-row collapse navbar-collapse confirmation">
 		  <div class="container">
 			  <ul class="journeyProgressBar_v2"></ul>
 		  </div>
@@ -58,7 +58,7 @@
     </jsp:attribute>
 
 	<jsp:attribute name="navbar">
-		<ul class="nav navbar-nav">
+		<ul class="nav navbar-nav confirmation">
 		<li><a href="javascript:window.print();" class="btn-email"><span class="icon icon-blog"></span> <span>Print Page</span></a></li>
 		<c:if test="${empty callCentre}">
 			<li>
@@ -72,11 +72,11 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<health:footer />
+		<health_v1:footer />
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">
-		<health:settings />
+		<health_v1:settings />
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
@@ -88,7 +88,7 @@
 	</jsp:attribute>
 
 	<jsp:body>
-		<health_new_layout:slide_confirmation />
+		<health_v2_layout:slide_confirmation />
 	</jsp:body>
 
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>
