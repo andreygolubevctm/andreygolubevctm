@@ -46,12 +46,14 @@
 		max-height: 100px;
 	  }
 	}
+	.progress-bar-row {
+	  .slide-feature-hidden() !important;
+	}
   }
 
   &[data-step="enquiry"] {
-	.slide-feature-back,
-	.slide-reference-number {
-	  .slide-feature-is-visible();
+	#navbar-main{
+	  .slide-feature-hidden() !important;
 	}
   }
 
