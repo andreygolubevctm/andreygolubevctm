@@ -33,7 +33,7 @@
 
 
 <%-- HTML --%>
-<layout:generic_page title="Secure Landing Page" skipJSCSS="true">
+<layout_v1:generic_page title="Secure Landing Page" skipJSCSS="true">
 
 	<jsp:attribute name="head">
 		<script type="text/javascript">
@@ -118,4 +118,4 @@
 	</div>
 	</jsp:body>
 
-</layout:generic_page>
+</layout_v1:generic_page>

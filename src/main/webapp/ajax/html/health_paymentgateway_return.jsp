@@ -51,7 +51,7 @@ ${logger.debug('Start health_paymentgateway_return. {},{},{}', log:kv('action',p
 	</c:otherwise>
 </c:choose>
 
-<core:doctype />
+<core_v1:doctype />
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

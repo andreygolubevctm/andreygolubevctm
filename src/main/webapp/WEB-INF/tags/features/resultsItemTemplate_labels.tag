@@ -1,6 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<core:js_template id="feature-template-labels">
+<core_v1:js_template id="feature-template-labels">
     {{ var featureIterator = obj.childFeatureDetails || Features.getPageStructure(); }}
     {{ var featureTemplateHtml = $('#feature-template-labels').html(); }}
     {{ var subTemplate = _.template(featureTemplateHtml); }}
@@ -20,7 +20,7 @@
             <div class="content" data-featureId="{{= feature.id }}">
                 <div class="contentInner">
                     {{ if(feature.helpId != '' && feature.helpId != '0') { }}
-                    <field_new:help_icon helpId="{{= feature.helpId }}" position="left"/>
+                    <field_v2:help_icon helpId="{{= feature.helpId }}" position="left"/>
                     {{ } }}
                     {{= feature.safeName }}
                     {{ if(typeof feature.children !== 'undefined') { }}
@@ -32,7 +32,7 @@
         <div class="h content {{= feature.contentClassString }}" data-featureId="{{= feature.id }}">
 
             {{ if(feature.helpId != '' && feature.helpId != '0') { }}
-                <field_new:help_icon helpId="{{= feature.helpId }}" position="left"/>
+                <field_v2:help_icon helpId="{{= feature.helpId }}" position="left"/>
             {{ } }}
             {{= feature.safeName }}
             {{ if (typeof feature.extraText !== 'undefined' && feature.extraText != '') { }}
@@ -54,4 +54,4 @@
         {{ } }}
     </div>
     {{ } }}
-</core:js_template>
+</core_v1:js_template>

@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<core:js_template id="retrieve-utilities-template">
+<core_v1:js_template id="retrieve-utilities-template">
     <h5>Utilities Quote</h5>
 
     {{ if(obj.householdDetails) { }}
@@ -26,4 +26,4 @@
             </div>
         {{ } }}
     {{ } }}
-</core:js_template>
+</core_v1:js_template>

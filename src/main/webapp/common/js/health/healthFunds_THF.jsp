@@ -70,42 +70,42 @@ var healthFunds_THF = {
 		} else {
 			<c:set var="thfEligibilityHtml">
 
-				<form_new:fieldset id="thf_eligibility" legend="How are you eligible to join Teachers Health Fund?" className="primary">
+				<form_v2:fieldset id="thf_eligibility" legend="How are you eligible to join Teachers Health Fund?" className="primary">
 
-					<form_new:row label="Are you a current or former member of a relevant education union?" id="unionMembershipRow"  helpId="523">
-						<field_new:array_select xpath="health/eligibility/unionMembership"
+					<form_v2:row label="Are you a current or former member of a relevant education union?" id="unionMembershipRow"  helpId="523">
+						<field_v2:array_select xpath="health/eligibility/unionMembership"
 								required="true"
 								title="Are you a current or former member of a relevant education union" items="=Please choose...,Y=Yes,N=No" />
-					</form_new:row>
+					</form_v2:row>
 
-					<form_new:row label="Are you related to someone who is eligible to join Teachers Health Fund" id="areYouRelatedRow"  helpId="521">
-						<field_new:array_select xpath="health/eligibility/areYouRelated"
+					<form_v2:row label="Are you related to someone who is eligible to join Teachers Health Fund" id="areYouRelatedRow"  helpId="521">
+						<field_v2:array_select xpath="health/eligibility/areYouRelated"
 								required="false"
 								title="Are you related to someone who is eligible to join Teachers Health Fund" items="=Please choose...,Y=Yes,N=No" />
-					</form_new:row>
+					</form_v2:row>
 
-					<form_new:row label="How are you related to a family member eligible for THF?" id="familyRow">
-						<field_new:import_select xpath="health/eligibility/familyMember"
+					<form_v2:row label="How are you related to a family member eligible for THF?" id="familyRow">
+						<field_v2:import_select xpath="health/eligibility/familyMember"
 							required="true"
 							url="/WEB-INF/option_data/thf/relationToTHFMember.html"
 							title="How are you related to a member eligible for THF?"
 							className="qualificationDropDown"
 							omitPleaseChoose="false" />
-					</form_new:row>
+					</form_v2:row>
 
-					<form_new:row label="Are you currently or have you ever worked for? (Permanent Employee/Contractor/Officer) "	id="employmentRow">
-						<field_new:import_select xpath="health/eligibility/employment"
+					<form_v2:row label="Are you currently or have you ever worked for? (Permanent Employee/Contractor/Officer) "	id="employmentRow">
+						<field_v2:import_select xpath="health/eligibility/employment"
 							required="true"
 							url="/WEB-INF/option_data/thf/employmentType.html"
 							title="What are you currently working as?"
 							className="qualificationDropDown"
 							omitPleaseChoose="false" />
-					</form_new:row>
+					</form_v2:row>
 
 					<div id="thf_ineligible" class="alert alert-danger">
 						<span>Unfortunately, you are not eligible to join Teachers Health Fund. Please <a href="javascript:;" data-slide-control="previous">select a different product</a>.</span>
 					</div>
-				</form_new:fieldset>
+				</form_v2:fieldset>
 
 			</c:set>
 			$('#health_application').prepend('<c:out value="${thfEligibilityHtml}" escapeXml="false" />');

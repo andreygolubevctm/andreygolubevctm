@@ -2,7 +2,7 @@
 <%@ tag description="Car Snapshot"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<%-- <form_new:fieldset legend="Snapshot of Your Quote" className="hidden-sm hidden quoteSnapshot"> --%>
+<%-- <form_v2:fieldset legend="Snapshot of Your Quote" className="hidden-sm hidden quoteSnapshot"> --%>
 	<span class="hidden simplesSnapshot">
 		<span class="">
 			<span>Customer: </span>
@@ -24,4 +24,4 @@
 			</span>
 		</span>
 	</span>
-<%-- </form_new:fieldset> --%>
+<%-- </form_v2:fieldset> --%>

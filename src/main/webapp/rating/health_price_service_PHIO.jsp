@@ -112,7 +112,7 @@ ${logger.trace('Starting results jsp. {}', log:kv('quoteData ', param.QuoteData 
 	<c:otherwise>
 <%-- Build the xml data for each row --%>
 <results>
-			<health:price_service_results rows="${resultsList}" healthXML="${healthXML}" healthPriceService="${healthPriceService}" />
+			<health_v1:price_service_results rows="${resultsList}" healthXML="${healthXML}" healthPriceService="${healthPriceService}" />
 			<pricesHaveChanged>${healthPriceService.getHealthPriceRequest().getPricesHaveChanged()}</pricesHaveChanged>
 			<transactionId>${transactionId}</transactionId>
 	<c:if test="${onResultsPage && showAll}">
