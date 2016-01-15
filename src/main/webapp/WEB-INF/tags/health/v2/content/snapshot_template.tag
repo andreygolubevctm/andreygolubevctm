@@ -2,7 +2,7 @@
 <%@ tag description="Home & Contents Snapshot"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<core:js_template id="snapshots-step1-template">
+<core_v1:js_template id="snapshots-step1-template">
   {{ if(obj.comingFromWebsite) { }}
   <div class="row snapshot">
     <div class="col-md-5">
@@ -66,11 +66,11 @@
   </div>
   {{ } }}
 
-</core:js_template>
+</core_v1:js_template>
 
 
 
-<core:js_template id="snapshots-covertype-template">
+<core_v1:js_template id="snapshots-covertype-template">
   {{ if(obj.renderIt) { }}
   <div class="row snapshot cover-type ">
     <div class="col-md-5">
@@ -83,10 +83,10 @@
     </div>
   </div>
   {{ } }}
-</core:js_template>
+</core_v1:js_template>
 
 
-<core:js_template id="snapshots-benefits-template">
+<core_v1:js_template id="snapshots-benefits-template">
   {{ if(obj.benefitList.length > 0 && obj.renderIt) { }}
   <div class="row snapshot ">
     <div class="col-md-5">
@@ -101,9 +101,9 @@
     </div>
   </div>
   {{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="snapshots-extras-template">
+<core_v1:js_template id="snapshots-extras-template">
   {{ if(obj.extrasList.length > 0 && obj.renderIt) { }}
   <div class="row snapshot ">
     <div class="col-md-5">
@@ -118,4 +118,4 @@
     </div>
   </div>
   {{ } }}
-</core:js_template>
+</core_v1:js_template>
