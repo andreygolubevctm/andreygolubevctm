@@ -1,6 +1,6 @@
 -- SELECT count(*) AS total FROM `ctm`.`content_control` WHERE `contentCode` = 'PHGHandoverTracking' AND `verticalId` = 2;
 -- TEST BEFORE: 0
--- TEST AFTER : 2
+-- TEST AFTER : 1
 
 INSERT INTO `ctm`.`content_control` (`styleCodeId`, `verticalId`, `contentCode`, `contentKey`, `effectiveStart`, `effectiveEnd`, `contentValue`) VALUES ('1', '2', 'PHGHandoverTracking', 'handoverTrackingURL', '2016-01-01 00:00:00', '2040-12-31 23:59:59', 'http://prf.hn/click/camref:');
 SET @CCID := (SELECT LAST_INSERT_ID());
@@ -39,7 +39,7 @@ INSERT INTO `ctm`.`content_supplementary` (`contentControlId`, `supplementaryKey
 
 
 -- ******************* ROLLBACK **************************************
--- SET @CCID = (SELECT contentControlId FROM `ctm`.`content_control` WHERE `contentKey` = 'PHGHandoverTracking' AND `verticalId` = 2);
+-- SET @CCID = (SELECT contentControlId FROM `ctm`.`content_control` WHERE `contentKey` = 'handoverTrackingURL' AND `verticalId` = 2);
 -- SELECT count(*) AS total FROM `ctm`.`content_supplementary` WHERE `contentControlId` = @CCID;
 -- TEST BEFORE: 28
 -- TEST AFTER : 0
@@ -50,4 +50,4 @@ INSERT INTO `ctm`.`content_supplementary` (`contentControlId`, `supplementaryKey
 -- TEST BEFORE: 1
 -- TEST AFTER : 0
 
--- DELETE FROM `ctm`.`content_control` WHERE `contentCode` = 'PHGHandoverTracking' AND `verticalId` = 2 LIMIT 2;
+-- DELETE FROM `ctm`.`content_control` WHERE `contentCode` = 'PHGHandoverTracking' AND `verticalId` = 2 LIMIT 1;
