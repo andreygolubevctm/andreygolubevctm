@@ -53,18 +53,7 @@
 
 			if (handoverType.toLowerCase() === "post")
 			{
-				url += "&handoverType="+product.handoverType+"&handoverData="+encodeURIComponent(product.handoverData)+"&handoverVar="+(product.handoverVar);
-				url += "&handoverURL="+encodeURIComponent(product.handoverUrl);
-				/*if (typeof meerkat.site.PHGPostImpressionsEnabled !== 'undefined' && meerkat.site.PHGPostImpressionsEnabled === true && typeof meerkat.site.PHGHandoverIds.url !== 'undefined' && typeof meerkat.site.PHGHandoverIds !== 'undefined' && typeof meerkat.site.PHGHandoverIds.partnerValues !== 'undefined' && typeof meerkat.site.PHGHandoverIds.partnerValues.CLBS !== 'undefined') {
-					url += "&handoverURL="+meerkat.site.PHGHandoverIds.url+""+meerkat.site.PHGHandoverIds.partnerValues.CLBS+"pubref:/Adref:"+meerkat.modules.transactionId.get()+"/destination:"+product.handoverUrl;
-				} else {
-					url += "&handoverURL="+encodeURIComponent(product.handoverUrl);
-				}
-				alert(quoteUrl);*/
-			}
-
-			if (typeof meerkat.site.PHGPostImpressionsEnabled !== 'undefined' && meerkat.site.PHGPostImpressionsEnabled === true && typeof meerkat.site.PHGHandoverIds.url !== 'undefined' && typeof meerkat.site.PHGHandoverIds !== 'undefined' && typeof meerkat.site.PHGHandoverIds.partnerValues !== 'undefined' && typeof meerkat.site.PHGHandoverIds.partnerValues.CLBS !== 'undefined') {
-				url += '&PHGcode=' + meerkat.site.PHGHandoverIds.partnerValues[settings.product.serviceName]+'&PHGUrl='+encodeURIComponent(meerkat.site.PHGHandoverIds.url);
+				url += "&handoverType="+product.handoverType+"&handoverData="+encodeURIComponent(product.handoverData)+"&handoverURL="+encodeURIComponent(product.handoverUrl)+"&handoverVar="+(product.handoverVar);
 			}
 
 			// append any extra params
