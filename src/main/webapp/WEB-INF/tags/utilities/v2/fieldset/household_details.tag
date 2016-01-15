@@ -25,7 +25,12 @@
 <form_v2:fieldset legend="Household Details" className="household-details">
     <c:set var="fieldXPath" value="${xpath}/location" />
     <form_v2:row label="Postcode / Suburb" fieldXpath="${fieldXPath}" className="clear">
-        <field_v2:lookup_suburb_postcode xpath="${fieldXPath}" placeholder="Your postcode / suburb." required="true" extraDataAttributes=" data-rule-validateLocation='true' data-msg-validateLocation='Please select a valid location'" />
+        <%-- Uses autocomplete='false' instead of 'off' due to Chrome bug https://code.google.com/p/chromium/issues/detail?id=468153 --%>
+        <field_v2:lookup_suburb_postcode
+                xpath="${fieldXPath}"
+                placeholder="Your postcode / suburb."
+                required="true"
+                extraDataAttributes=" data-rule-validateLocation='true' data-msg-validateLocation='Please select a valid location' autocomplete='false'" />
 
         <field_v1:hidden xpath="${xpath}/postcode" defaultValue="N" />
         <field_v1:hidden xpath="${xpath}/suburb" defaultValue="N" />

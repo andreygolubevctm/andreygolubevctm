@@ -2,7 +2,7 @@
 <%@ tag description="Home & Contents Snapshot"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<health_content:snapshot_template></health_content:snapshot_template>
+<health_v2_content:snapshot_template></health_v2_content:snapshot_template>
 <fieldset class="quoteSnapshot sidebar-box hidden-sm">
     <h4>Quote Summary</h4>
 
