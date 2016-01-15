@@ -215,10 +215,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 					</div>
 
-					<nav class="collapse navbar-collapse" role="navigation">
-						<ul class="journeyProgressBar"></ul>
-					</nav>
-
 				</div>
 				<jsp:invoke fragment="progress_bar" />
 				<nav id="navbar-main" class="navbar navbar-affix navbar-default navbar-collapse navbar-collapse-menu collapse navMenu-contents" role="navigation">

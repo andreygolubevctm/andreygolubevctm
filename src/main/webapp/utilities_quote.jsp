@@ -49,7 +49,6 @@
         </div>
 	</jsp:attribute>
 
-
 	<jsp:attribute name="progress_bar">
       <div class="progress-bar-row collapse navbar-collapse">
           <div class="container">
