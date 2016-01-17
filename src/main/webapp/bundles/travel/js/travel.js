@@ -34,8 +34,8 @@
 
 			$policyTypeBtn = $("input[name=travel_policyType]");
 			meerkat.modules.travelYourCover.initTravelCover();
-			// Initialise the journey engine steps
-			setJourneyEngineSteps();
+
+			initProgressBar(true);
 
 			// Initialise the journey engine
 			var startStepId = null;
@@ -92,6 +92,19 @@
 		});
 	}
 
+	/**
+	 * Initialise and configure the progress bar.
+	 *
+	 * @param {bool}
+	 *            render
+	 */
+	function initProgressBar(render) {
+		setJourneyEngineSteps();
+		configureProgressBar();
+		if (render) {
+			meerkat.modules.journeyProgressBar.render(true);
+		}
+	}
 
 	function setJourneyEngineSteps() {
 
@@ -203,6 +216,18 @@
 		return vf;
 	}
 
+	function configureProgressBar() {
+		meerkat.modules.journeyProgressBar.configure([
+			{
+				label: 'Travel Details',
+				navigationId: steps.detailsStep.navigationId
+			},
+			{
+				label: 'Your Quote',
+				navigationId: steps.resultsStep.navigationId
+			}
+		]);
+	}
 
 	// Build an object to be sent by SuperTag tracking.
 	function getTrackingFieldsObject(){

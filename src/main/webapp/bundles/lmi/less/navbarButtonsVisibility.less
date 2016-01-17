@@ -1,8 +1,8 @@
 .carlmi, .homelmi {
 
   // Add your slide feature here to be hidden by default
-  .slide-feature-back
-  {
+  .slide-feature-back,
+  .slide-feature-pagination {
     .slide-feature-hidden();
 
     // Necessary to make use of the journeyEngine slide-feature styles that animate max-width.
@@ -25,6 +25,8 @@
     .slide-feature-pagination {
       display: block;
     }
-
+    .progress-bar-row {
+      .slide-feature-hidden() !important;
+    }
   }
 }
