@@ -4,7 +4,7 @@
 <c:set var="pricePromise" scope="request"><content:get key="healthPricePromise"/></c:set>
 
 <c:if test="${not empty pricePromise}">
-    <div class="sidebar-box">
+    <div class="sidebar-box pricePromiseBox">
         <div class="price-promise">
             <div class="pricePromiseLogoBlue"></div>
             <h4>Price match guarantee</h4>
