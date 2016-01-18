@@ -1,3 +1,6 @@
 {
-    "brandCodes": "all"
+    "brandCodes": "all",
+    "dependencies": [
+        "core"
+    ]
 }

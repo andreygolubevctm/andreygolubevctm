@@ -31,9 +31,6 @@ set: function () {
 		<%--dependant definition--%>
 		healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 24 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
 
-		<%--schoolgroups and defacto--%>
-		healthDependents.config = { 'school': true, 'defacto':false, 'schoolMin': 21, 'schoolMax': 24 };
-
 		<%--credit card & bank account frequency & day frequency--%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly': true, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true });
 		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly': true, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true });
@@ -93,32 +90,10 @@ set: function () {
 			<%--Dependants --%>
 			healthFunds._dependants('Family policies provide cover for the policy holder, their spouse and any dependant children/young adults until their 23rd birthday. Full-time student dependants are covered up until they turn 25. Student dependants must be registered each year from when they turn 23 years of age.');
 			<%--change age of dependants and school --%>
-			healthDependents.maxAge = 25;
+			meerkat.modules.healthDependants.setMaxAge(25);
 			<%--schoolgroups and defacto --%>
-			$.extend(healthDependents.config, { 'school': true, 'schoolMin': 23, 'schoolMax': 25, 'schoolID': true, 'schoolIDMandatory': true, 'schoolDate': true, 'schoolDateMandatory': true });
+	meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMinAge': 23, 'schoolMaxAge': 25, showSchoolIdField: true, 'schoolIdRequired': true, showSchoolCommencementField: true, 'schoolDateRequired': true });
 
-			<%--School list--%>
-			var instituteElement =  '<select>
-				<option value="">Please choose...</option>
-				<c:import url="/WEB-INF/option_data/educationalInstitute.html" />
-			</select>';
-			$('.health_dependant_details_schoolGroup .fieldrow_value').each(function (i) {
-				var name = $(this).find('input').attr('name');
-				var id = $(this).find('input').attr('id');
-				$(this).append(instituteElement);
-				$(this).find('select').attr('name', name).attr('id', id + 'select');
-				$(this).find('select').setRequired(true, 'Please select dependant '+(i+1)+'\'s educational institute');
-				$('#health_application_dependants_dependant' + (i+1) + '_school').hide();
-			});
-			$('.health_dependant_details_schoolIDGroup input').attr('maxlength', '10');
-
-			<%--Change the Name of School label--%>
-			healthFunds.$_tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
-			$('.health_dependant_details_schoolGroup .control-label').html('Educational institute this dependant is attending');
-			$('.health_dependant_details_schoolGroup .help_icon').hide();
-
-			healthDependents.config.schoolID = false;
-			healthDependents.config.schoolDate = false;
 		</c:if>
 
 		<%--calendar for start cover--%>
@@ -173,11 +148,6 @@ set: function () {
 			$('#health_application_primary_gender').unbind('change');
 		</c:if>
 		<c:if test="${data.health.situation.healthCvr == 'F' || data.health.situation.healthCvr == 'SPF' }">
-			$('.health_dependant_details_schoolGroup select').remove();
-			$('.health_dependant_details_schoolIDGroup input').removeAttr('maxlength');
-			$('.health_dependant_details_schoolGroup .control-label').html(healthFunds.$_tmpSchoolLabel);
-			delete healthFunds.$_tmpSchoolLabel;
-			$('.health_dependant_details_schoolGroup .help_icon').show();
 			$('.health_application_dependants_dependant_schoolIDGroup').show();
 			$('.health_dependant_details_schoolDateGroup').show();
 		</c:if>

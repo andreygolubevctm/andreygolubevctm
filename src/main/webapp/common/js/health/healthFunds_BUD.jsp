@@ -31,12 +31,31 @@ var healthFunds_BUD = {
 			} else {
 				messageField = healthFunds_BUD.$policyDateBankMessage;
 			}
-			meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(messageField, $('#health_payment_details_start').val(), [1,15], 7);
+
+			var premiumType = $('#health_payment_details_frequency').val(),
+					startDate = meerkat.modules.utils.returnDate($('#health_payment_details_start').val()).getTime(),
+					<%-- Get today's date without hours --%>
+					todayDate = new Date(new Date(meerkat.modules.utils.getUTCToday()).setHours(0,0,0,0)).getTime();
+
+			var messageText;
+			if(startDate === todayDate && premiumType === 'annually') {
+				messageText = 'Your payment will be debited in the next 24 hours';
+			} else if(startDate > todayDate && premiumType === 'annually') {
+				messageText = 'Your payment will be debited on your policy start date';
+			} else if(startDate === todayDate && premiumType === 'monthly') {
+				messageText = 'Your first payment will be debited in the next 24 hours and thereafter on the same day each month';
+			} else if(startDate > todayDate && premiumType === 'monthly') {
+				messageText = 'Your first payment will be debited on your policy start date and thereafter on the same day each month';
+			} else {
+				messageText = 'Your payment will be deducted on the policy start date';
+			}
+
+			messageField.text(messageText);
 		});
 
 		<%-- change age of dependants and school --%>
-		healthDependents.config.school = false;
-		healthDependents.maxAge = 21;
+		meerkat.modules.healthDependants.updateConfig({school: false});
+		meerkat.modules.healthDependants.setMaxAge(21);
 
 		<%-- credit card & bank account frequency & day frequency --%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });

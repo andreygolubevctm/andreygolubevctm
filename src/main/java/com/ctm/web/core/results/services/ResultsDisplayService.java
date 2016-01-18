@@ -114,7 +114,7 @@ public class ResultsDisplayService {
             PreparedStatement stmt;
             conn = ds.getConnection();
             stmt = conn.prepareStatement(
-                    "SELECT name, resultPath " +
+                    "SELECT name, resultPath, className " +
                             "FROM aggregator.features_details " +
                             "WHERE vertical = ? AND type = ? " +
                             "ORDER BY parentId;"
@@ -129,6 +129,7 @@ public class ResultsDisplayService {
                 ResultsSimpleItem item = new ResultsSimpleItem();
                 item.setName(result.getString("name"));
                 item.setResultPath(result.getString("resultPath"));
+                item.setClassName(result.getString("className"));
                 list.add(item);
 
             }
@@ -154,4 +155,56 @@ public class ResultsDisplayService {
         return string;
     }
 
+    public List<ResultsTemplateItem> getResultsTemplateItems(final String vertical) {
+        Connection conn = null;
+
+        List<ResultsTemplateItem> list = new ArrayList<ResultsTemplateItem>();
+
+        try {
+            PreparedStatement stmt;
+            conn = ds.getConnection();
+            stmt = conn.prepareStatement(
+                    "SELECT * " +
+                            "FROM aggregator.features_details " +
+                            "WHERE vertical = ? AND shortlistKey IS NOT NULL " +
+                            "ORDER BY parentId;"
+            );
+
+            stmt.setString(1, vertical);
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+
+                ResultsTemplateItem item = new ResultsTemplateItem();
+                item.setId(result.getInt("id"));
+                item.setName(result.getString("name"));
+                item.setType(result.getString("type"));
+                item.setStatus(result.getBoolean("status"));
+                item.setSequence(result.getInt("sequence"));
+                item.setParentId(result.getInt("parentId"));
+                item.setResultPath(result.getString("resultPath"));
+                item.setVertical(result.getString("vertical"));
+                item.setClassName(result.getString("className"));
+                item.setExtraText(result.getString("extraText"));
+                item.setMultiRow(result.getBoolean("multiRow"));
+                item.setExpanded(result.getBoolean("expanded"));
+                item.setHelpId(result.getInt("helpId"));
+                item.setShortlistKey(result.getString("shortlistKey"));
+                list.add(item);
+
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error querying feature details", e);
+        } finally {
+            if(conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    LOGGER.error("Error closing connection", e);
+                }
+            }
+        }
+
+        return list;
+    }
 }

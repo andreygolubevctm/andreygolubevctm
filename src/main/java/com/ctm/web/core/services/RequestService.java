@@ -65,6 +65,12 @@ public class RequestService {
         init(request);
     }
 
+    public RequestService(HttpServletRequest request, String vertical) {
+        this.request = request;
+        this.vertical = Vertical.VerticalType.findByCode(vertical);
+        init(request);
+    }
+
     public void setRequest(HttpServletRequest request) {
         transactionId = RequestUtils.getTransactionIdFromRequest(request);
         IPCheckService ipCheckService= new IPCheckService();

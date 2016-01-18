@@ -22,7 +22,7 @@ var healthFunds_WFD = {
         healthFunds._dependants('As a member of Westfund all children aged up to 21 are covered on a family policy. Children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.');
 
         <%--schoolgroups and defacto--%>
-        healthDependents.config = { 'school':true, 'defacto':false, 'schoolMin':18, 'schoolMax':24, 'schoolID':true };
+        meerkat.modules.healthDependants.updateConfig({showSchoolFields:true, 'schoolMinAge':18, 'schoolMaxAge':24, showSchoolIdField:true });
 
         <%--Adding a statement--%>
         var msg = 'Please note that the LHC amount quoted is an estimate and will be confirmed once Westfund has verified your details.';

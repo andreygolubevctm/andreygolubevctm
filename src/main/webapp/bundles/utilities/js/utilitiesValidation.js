@@ -196,14 +196,6 @@
         return isValid;
     });
 
-// although used specifically for utilities, could be beneficial to be used in the validationPhoneNumberRules although I have split the Mobile and phone number validation into 2 seperate files.
-    $.validator.addMethod('validateEnteredPhoneNumber', function(value, element) {
-        var mobileInput = $("#utilities_application_details_mobileNumberinput").val(),
-            otherInput = $("#utilities_application_details_otherPhoneNumberinput").val();
-
-        return !(!mobileInput && !otherInput);
-    });
-
     $.validator.addMethod("amountPeriodRequired", function (value, element) {
 
         var amount = $('#' + $(element).attr('id').replace('_period', '_amount'));

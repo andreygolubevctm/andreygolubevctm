@@ -14,23 +14,27 @@
 <c:set var="val_optin"				value="Y" />
 <c:set var="val_optout"				value="N" />
 
+<%-- Set A/B test flag j=2 --%>
+<c:set var="frontendChangesBlocked"><content:get key="blockFrontendChanges"/></c:set>
+<c:set var="frontendChangesBlocked" value="${not empty frontendChangesBlocked and frontendChangesBlocked eq 'Y'}" />
+<c:set var="hideOptIn" value="${frontendChangesBlocked eq false and (splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 3) or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 1))}" scope="request" />
+
 <%-- Vars for competition --%>
-<c:set var="competitionSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 99)}" />
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="competitionSecret"><content:get key="competitionSecret"/></c:set>
 <c:set var="competitionEnabled" value="${false}" />
-<c:if test="${competitionEnabledSetting == 'Y' && (competitionSplitTest eq true or competitionSecret == 'kSdRdpu5bdM5UkKQ8gsK')}"> <%--Split test needs to allow previous competition ($1000 promo) to remain active. TODO: Cleanup--%>
-	<c:set var="competitionEnabled" value="${true}" />
+<c:if test="${competitionEnabledSetting == 'Y' && competitionSecret == 'kSdRdpu5bdM5UkKQ8gsK'}">
+ 	<c:set var="competitionEnabled" value="${true}" />
 </c:if>
 
-<!-- Name is mandatory for both online and callcentre, other fields only mandatory for online -->
+<%-- Name is mandatory for both online and callcentre, other fields only mandatory for online --%>
 <c:set var="required" value="${true}" />
 <c:if test="${callCentre}">
 	<c:set var="required" value="${false}" />
 </c:if>
 
 <%-- HTML --%>
-<div id="${name}-selection" class="health-your_details">
+
 
 	<form_new:fieldset_columns sideHidden="true">
 
@@ -39,15 +43,13 @@
 			<c:if test="${competitionEnabled == true}">
 				<content:get key="healthCompetitionRightColumnPromo"/>
 			</c:if>
+
+			<health_new_content:sidebar />
 		</jsp:attribute>
 
 		<jsp:body>
 
-			<form_new:fieldset legend="Contact Details" >
-				<ui:bubble variant="chatty">
-					<h4>All About You</h4>
-					<p>By filling in your details below, we'll be able to email you your quotes and/or call you back if needed.</p>
-				</ui:bubble>
+			<form_new:fieldset legend="" postLegend="" >
 
 				<c:set var="firstNamePlaceHolder">
 					<content:get key="firstNamePlaceHolder"/>
@@ -58,23 +60,23 @@
 				</c:set>
 
 				<c:set var="fieldXpath" value="${xpath}/name" />
-				<form_new:row label="First Name" fieldXpath="${fieldXpath}" className="clear">
-					<field:person_name xpath="${fieldXpath}" title="name" required="true" placeholder="${firstNamePlaceHolder}" />
+				<form_new:row label="Your first name" fieldXpath="${fieldXpath}" className="clear required_input">
+					<field:person_name xpath="${fieldXpath}" title="name" required="true" />
+				</form_new:row>
+
+				<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
+				<form_new:row label="Your phone number" fieldXpath="${fieldXpath}" className="clear required_input">
+					<field:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/email" />
-				<form_new:row label="Email Address" fieldXpath="${fieldXpath}" className="clear">
-					<field_new:email xpath="${fieldXpath}" title="your email address" required="${required}" placeHolder="${emailPlaceHolder}" />
+				<form_new:row label="Your email address" fieldXpath="${fieldXpath}" className="clear required_input">
+					<field_new:email xpath="${fieldXpath}" title="your email address" required="${required}"  />
 					<field:hidden xpath="${xpath}/emailsecondary" />
 					<field:hidden xpath="${xpath}/emailhistory" />
 				</form_new:row>
 
-				<%--<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" />--%>
-
-				<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
-				<form_new:row label="Phone Number" fieldXpath="${fieldXpath}" className="clear">
-					<field:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
-				</form_new:row>
+				<group_new:contact_numbers_hidden xpath="${xpath}/contactNumber" />
 
 				<%-- Optin fields (hidden) for email and phone --%>
 				<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
@@ -91,16 +93,18 @@
 					</c:otherwise>
 				</c:choose>
 
-				<c:set var="termsAndConditions">
-					<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
-					I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
-					<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
-					By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
-					I confirm that I have read the <form:link_privacy_statement />.
-				</c:set>
+				<%-- A/B test !j=2 --%>
+				<c:if test="${not hideOptIn}">
+					<c:set var="termsAndConditions">
+						<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
+						I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
+						<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
+						By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
+						I confirm that I have read the <form:link_privacy_statement />.
+					</c:set>
 				
-				<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
-				<form_new:row className="health-contact-details-optin-group" hideHelpIconCol="true">
+					<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
+					<form_new:row className="health-contact-details-optin-group" hideHelpIconCol="true">
 					<field_new:checkbox
 						xpath="${xpath}/optin"
 						value="Y"
@@ -109,29 +113,30 @@
 						label="${true}"
 						title="${termsAndConditions}"
 						errorMsg="Please agree to the Terms &amp; Conditions" />
-				</form_new:row>
-
-				<%-- COMPETITION START --%>
-
-				<c:set var="competitionPreCheckboxContainer"><content:get key="competitionPreCheckboxContainer"/></c:set>
-
-				<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
-				<c:if test="${!fn:contains(competitionPreCheckboxContainer, 'health1000promoImage')}">
-					<c:set var="offset_class" value=" no-offset"/>
-				</c:if>
-				<c:if test="${not empty competitionPreCheckboxContainer}">
-					<form_new:row className="competition-optin-group ${offset_class}" hideHelpIconCol="true">
-						<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
 					</form_new:row>
 				</c:if>
-				<form_new:row className="competition-optin-group" hideHelpIconCol="true">
-					<c:set var="competitionLabel">
-						<content:get key="competitionCheckboxText"/>
-					</c:set>
-					<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
-					<field:hidden xpath="${xpath}/competition/previous" />
-				</form_new:row>
 
+				<%-- COMPETITION START --%>
+				<c:if test="${competitionEnabled == true}">
+					<c:set var="competitionPreCheckboxContainer"><content:get key="competitionPreCheckboxContainer"/></c:set>
+
+					<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
+					<c:if test="${!fn:contains(competitionPreCheckboxContainer, 'health1000promoImage')}">
+						<c:set var="offset_class" value=" no-offset"/>
+					</c:if>
+					<c:if test="${not empty competitionPreCheckboxContainer}">
+						<form_new:row className="competition-optin-group ${offset_class}" hideHelpIconCol="true">
+							<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
+						</form_new:row>
+					</c:if>
+					<form_new:row className="competition-optin-group" hideHelpIconCol="true">
+						<c:set var="competitionLabel">
+							<content:get key="competitionCheckboxText"/>
+						</c:set>
+						<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
+						<field:hidden xpath="${xpath}/competition/previous" />
+					</form_new:row>
+				</c:if>
 				<%-- COMPETITION END --%>
 
 				<simples:referral_tracking vertical="health" />
@@ -145,7 +150,7 @@
 	<field:hidden xpath="health/altContactFormRendered" constantValue="Y" />
 
 
-</div>
+
 
 
 

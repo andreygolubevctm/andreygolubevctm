@@ -1,8 +1,18 @@
+<%@ tag import="java.util.GregorianCalendar" %>
 <%@ tag description="Utilities Your Details Form (Enquire)"%>
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="Fieldset XPath" %>
+
+<fmt:setLocale value="en_AU" scope="session" />
+
+<jsp:useBean id="nowPlusDay" class="java.util.GregorianCalendar" />
+<% nowPlusDay.add(GregorianCalendar.DAY_OF_YEAR, 1); %>
+<fmt:formatDate var="nowPlusDay_Date" pattern="yyyy-MM-dd" value="${nowPlusDay.time}" />
+
+<% nowPlusDay.add(GregorianCalendar.YEAR, 5); %>
+<fmt:formatDate var="nowPlusYears_Date" pattern="yyyy-MM-dd" value="${nowPlusDay.time}" />
 
 <form_new:fieldset legend="Your Details">
     <c:set var="fieldXPath" value="${xpath}/title" />
@@ -29,25 +39,26 @@
                               title="date of birth" />
     </form_new:row>
 
-    <c:set var="fieldXPath" value="${xpath}/mobileNumber" />
+    <c:set var="fieldXPath" value="${xpath}/mobile" />
     <form_new:row label="Mobile number" fieldXpath="${fieldXPath}" className="clear">
-        <field:contact_mobile xpath="${fieldXPath}"
-                             required="false"
-                             className="sessioncamexclude"
-                             placeHolder="04XX XXX XXX"
-                             placeHolderUnfocused="04XX XXX XXX"
-                             labelName="mobile phone number." additionalAttributes=" data-rule-validateEnteredPhoneNumber='true' data-msg-validateEnteredPhoneNumber='Please enter your mobile phone number or other number.'" />
+        <field:flexi_contact_number xpath="${fieldXPath}"
+                                    maxLength="20"
+                                    required="false"
+                                    className="contactField sessioncamexclude"
+                                    labelName="mobile number"
+                                    phoneType="Mobile"
+                                    requireOnePlusNumber="true"/>
     </form_new:row>
 
-    <c:set var="fieldXPath" value="${xpath}/otherPhoneNumber" />
+    <c:set var="fieldXPath" value="${xpath}/other" />
     <form_new:row label="Other phone number" fieldXpath="${fieldXPath}" className="clear">
-        <field:contact_telno xpath="${fieldXPath}"
-                             required="false"
-                             className="sessioncamexclude"
-                             isLandline="true"
-                             placeHolder="(0X) XXXX XXXX"
-                             placeHolderUnfocused="(0X) XXXX XXXX"
-                             labelName="other phone number." />
+        <field:flexi_contact_number xpath="${fieldXPath}"
+                                    maxLength="20"
+                                    required="false"
+                                    className="contactField sessioncamexclude"
+                                    labelName="other number"
+                                    phoneType="LandLine"
+                                    requireOnePlusNumber="true"/>
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/email" />
@@ -77,6 +88,8 @@
     <form_new:row label="Move in date" fieldXpath="${fieldXPath}" id="enquiry_move_in_date_container" className="clear">
         <field_new:basic_date xpath="${fieldXPath}"
                               required="true"
+                              maxDate="${nowPlusYears_Date}"
+                              minDate="${nowPlusDay_Date}"
                               title="moving in date" />
     </form_new:row>
 </form_new:fieldset>

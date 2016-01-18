@@ -36,6 +36,7 @@
 		</form:row>
 
 		<form:row label="Phone number">
+			<%--This should be cleaned up to use Flexi_contact_number when LIFE is refactored--%>
 			<field:contact_telno xpath="${xpath}/contactNumber" required="false" title="phone number"  />
 		</form:row>
 
@@ -58,18 +59,25 @@
 			</form:row>
 		
 			<form:row label="" className="clear">
-				<c:set var="competitionCheckboxText"><content:get key="competitionCheckboxText" /></c:set>
+				<c:set var="competitionCheckboxText">
+					<content:get key="competitionCheckboxText" />
+				</c:set>
 				<field:hidden xpath="${xpath}/competition/optin" constantValue="N" />
-				<field:checkbox xpath="${xpath}/competition/optin" value="Y" title="${competitionCheckboxText}" required="false" label="true"/>
+				<field:checkbox
+						xpath="${xpath}/competition/optin"
+						value="Y"
+						title="${competitionCheckboxText}"
+						required="false"
+						label="true"/>
 				<field:hidden xpath="${xpath}/competition/previous" />
 			</form:row>
 		</c:if>
 		<%-- COMPETITION END--%>
-		
+
 		<form:row label="" className="clear">
 			<field:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from ${brandedName}" required="false" label="true"/>
 		</form:row>
-		
+
 		<form:row label="" className="clear closer">
 			<c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${vertical}_privacyoptinInfoDialog.open()'>privacy statement</a>" />
 			<c:choose>
@@ -84,15 +92,15 @@
 					</c:set>
 				</c:when>
 			</c:choose>
-			
+
 			<field:checkbox
-				xpath="${vertical}_privacyoptin"
-				value="Y"
-				title="${label_text}"
-				errorMsg="Please confirm you have read the privacy statement"
-				required="true"
-				label="true"
-			/>
+					xpath="${vertical}_privacyoptin"
+					value="Y"
+					title="${label_text}"
+					errorMsg="Please confirm you have read the privacy statement"
+					required="true"
+					label="true"
+					/>
 		</form:row>
 
 		<field:hidden xpath="${xpath}/call" />

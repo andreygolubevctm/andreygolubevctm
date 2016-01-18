@@ -5,8 +5,8 @@ import com.ctm.web.core.utils.common.utils.DateUtils;
 import java.sql.*;
 
 public abstract class DatabaseMapping {
-	private int count;
-	private PreparedStatement stmt;
+	protected int count;
+	protected PreparedStatement stmt;
 
 	public void handleParams(PreparedStatement stmt) throws SQLException {
 		count = 0;
@@ -33,7 +33,6 @@ public abstract class DatabaseMapping {
 			stmt.setLong(++count, (Long) value);
 		}
 	}
-
 
 	private void setDate(PreparedStatement stmt, java.util.Date value) throws SQLException {
 		stmt.setDate(++count, new Date(value.getTime()));
