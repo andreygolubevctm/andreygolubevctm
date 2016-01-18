@@ -19,7 +19,7 @@
 
 <c:set var="fieldXPath" value="${xpath}/mobile" />
 <form_new:row label="Mobile Number" fieldXpath="${fieldXpath}input">
-	<field:flexi_contact_number xpath="${fieldXPath}"
+	<field_v1:flexi_contact_number xpath="${fieldXPath}"
 								maxLength="20"
 								required="false"
 								className="sessioncamexclude"
@@ -31,7 +31,7 @@
 
 <c:set var="fieldXPath" value="${xpath}/other" />
 <form_new:row label="Other Number" fieldXpath="${fieldXpath}input">
-	<field:flexi_contact_number xpath="${fieldXPath}"
+	<field_v1:flexi_contact_number xpath="${fieldXPath}"
 								maxLength="20"
 								required="false"
 								className="sessioncamexclude"
