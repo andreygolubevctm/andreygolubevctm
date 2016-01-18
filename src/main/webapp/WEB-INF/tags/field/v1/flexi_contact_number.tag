@@ -19,7 +19,6 @@
 <%@ attribute name="additionalAttributes"	required="false" rtexprvalue="true"	 description="Used for passing in additional attributes" %>
 <%@ attribute name="requireOnePlusNumber"	required="false" rtexprvalue="true"	 description="true|false if two fields, require at least one" %>
 
-<c:set var="required" value="${true}" />
 <c:if test="${callCentre}">
 	<c:set var="required" value="${false}" />
 </c:if>
