@@ -4,6 +4,7 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.ServiceException;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.SettingsService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +43,7 @@ public class JourneyGateway {
 	static final String COOKIE_LABEL_PREFIX = "ctmJourneyGateway";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(JourneyGateway.class.getName());
+	public static final String DEFAULT_JOURNEY = "1";
 
 	public JourneyGateway(){}
 
@@ -58,28 +60,29 @@ public class JourneyGateway {
 	 * @throws Exception
 	 */
 	public static String getJourney(HttpServletRequest request, String splitTestRef, HttpServletResponse response) {
+
 		String activeLabel = LABEL_PREFIX + splitTestRef + LABEL_SUFFIX_ACTIVE;
 		try {
-
-
 			PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 			String vertical = pageSettings.getVertical().getCode();
 			// Stop now if no split test active
+			final String jValue;
 			if (pageSettings.hasSetting(activeLabel) && pageSettings.getSetting(activeLabel).equals("Y")) {
-
-				String jValue = getRequestJValue(request)
+				jValue = getRequestJValue(request)
 						.orElseGet(() -> getCookieJValue(request, splitTestRef, vertical)
 								.orElseGet(() -> calculateJValue(pageSettings, splitTestRef)));
+			} else {
+				jValue = getRequestJValue(request).orElse(DEFAULT_JOURNEY);
+			}
 
-				final Cookie cookie = new Cookie(COOKIE_LABEL_PREFIX + splitTestRef + vertical, jValue);
-				cookie.setMaxAge(30*24*60*60);
-				response.addCookie(cookie);
+			final Cookie cookie = new Cookie(COOKIE_LABEL_PREFIX + splitTestRef + vertical, jValue);
+			cookie.setMaxAge(30*24*60*60);
+			response.addCookie(cookie);
 
-				if (!getRequestJValue(request).isPresent()) {
-					StringBuffer url = getURLWithoutJParam(request);
-					url.append("j=").append(jValue);
-					return url.toString();
-				}
+			if (!hasRequestJParameterNotEmpty(request)) {
+				StringBuffer url = getURLWithoutJParam(request);
+				url.append("j=").append(jValue);
+				return url.toString();
 			}
 
 		} catch (Exception e) {
@@ -123,7 +126,19 @@ public class JourneyGateway {
 	}
 
 	private static Optional<String> getRequestJValue(HttpServletRequest request) {
-		return Optional.ofNullable(request.getParameter(J_PARAMETER));
+		if (hasRequestJParameter(request)) {
+			return Optional.of(StringUtils.defaultIfBlank(request.getParameter(J_PARAMETER), DEFAULT_JOURNEY));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	private static boolean hasRequestJParameter(HttpServletRequest request) {
+		return request.getParameterMap().containsKey(J_PARAMETER);
+	}
+
+	private static boolean hasRequestJParameterNotEmpty(HttpServletRequest request) {
+		return StringUtils.isNotBlank(request.getParameter(J_PARAMETER));
 	}
 
 	private static StringBuffer getURLWithoutJParam(HttpServletRequest request) {
@@ -149,8 +164,9 @@ public class JourneyGateway {
 		if(query != null && !query.isEmpty()) {
 			String[] params = query.split("&");
 			for (String param : params) {
-				String name = param.split("=")[0];
-				String value = param.split("=")[1];
+				final String[] nameValue = param.split("=");
+				String name = nameValue[0];
+				String value = nameValue.length > 1 ? nameValue[1] : "";
 				map.put(name, value);
 			}
 		}

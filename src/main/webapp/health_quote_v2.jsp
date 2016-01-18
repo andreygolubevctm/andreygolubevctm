@@ -4,14 +4,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<core_v1:journey_gateway verticalLabel="HEALTH" splitTestLabel="optins" />
-
-<health_v1:redirect_rules />
+<jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils"/>
 
 <session:new verticalCode="HEALTH" authenticated="true" />
 
 <%-- START JOURNEY OVERRIDE - Part 1 of 2) --%>
 <c:set var="journeyOverride" value="${pageSettings.getSetting('journeyOverride') eq 'Y'}" />
+
+<c:if test="${!sessionUtils.isCallCentre(pageContext.session)}">
+    <core:journey_gateway verticalLabel="HEALTH" splitTestLabel="optins" />
+</c:if>
+
+<health:redirect_rules />
+
 <c:choose>
     <c:when test="${callCentre && journeyOverride eq true}">
         <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />

@@ -19,6 +19,10 @@
 <%@ attribute name="additionalAttributes"	required="false" rtexprvalue="true"	 description="Used for passing in additional attributes" %>
 <%@ attribute name="requireOnePlusNumber"	required="false" rtexprvalue="true"	 description="true|false if two fields, require at least one" %>
 
+<c:set var="required" value="${true}" />
+<c:if test="${callCentre}">
+	<c:set var="required" value="${false}" />
+</c:if>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -38,7 +42,7 @@
 	<c:set var="phoneType">Flexi</c:set>
 </c:if>
 
-<c:if test="${requireOnePlusNumber}">
+<c:if test="${required && requireOnePlusNumber}">
 	<c:set var="additionalAttributes" value=" data-rule-requireOneContactNumber='true' data-msg-requireOneContactNumber='Please include at least one phone number' " />
 </c:if>
 
