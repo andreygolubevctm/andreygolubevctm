@@ -14,6 +14,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
@@ -90,9 +92,40 @@ public class JourneyGatewayTest {
                 .thenReturn("Y");
 
         when(request.getParameter(JourneyGateway.J_PARAMETER)).thenReturn("40");
+        Map<String, String[]> parameters = new HashMap<>();
+        parameters.put(JourneyGateway.J_PARAMETER, new String[]{"40"});
+        when(request.getParameterMap()).thenReturn(parameters);
 
         final String url = JourneyGateway.getJourney(request, splitTestRef, response);
         assertNull(url);
+
+        verify(response, times(1)).addCookie(any());
+    }
+
+    @Test
+    public void getJourneyHasEmptyRequestJValue() throws Exception {
+        PowerMockito.when(SettingsService.getPageSettingsForPage(request)).thenReturn(pageSettings);
+
+        String splitTestRef = "optins";
+
+        final Vertical vertical = mock(Vertical.class);
+        when(vertical.getCode()).thenReturn("health");
+        when(pageSettings.getVertical()).thenReturn(vertical);
+
+        when(pageSettings.hasSetting(JourneyGateway.LABEL_PREFIX + splitTestRef + JourneyGateway.LABEL_SUFFIX_ACTIVE))
+                .thenReturn(true);
+        when(pageSettings.getSetting(JourneyGateway.LABEL_PREFIX + splitTestRef + JourneyGateway.LABEL_SUFFIX_ACTIVE))
+                .thenReturn("Y");
+
+        when(request.getParameter(JourneyGateway.J_PARAMETER)).thenReturn("");
+        Map<String, String[]> parameters = new HashMap<>();
+        parameters.put(JourneyGateway.J_PARAMETER, new String[]{""});
+        when(request.getParameterMap()).thenReturn(parameters);
+        when(request.getRequestURL()).thenReturn(new StringBuffer("http://localhost:8080"));
+        when(request.getQueryString()).thenReturn("param1=1&param2=2");
+
+        final String url = JourneyGateway.getJourney(request, splitTestRef, response);
+        assertEquals("http://localhost:8080?param1=1&param2=2&j=1", url);
 
         verify(response, times(1)).addCookie(any());
     }
@@ -164,5 +197,123 @@ public class JourneyGatewayTest {
         verify(response, times(1)).addCookie(any());
     }
 
+    @Test
+    public void getJourneyNotSplitTest() throws Exception {
+        PowerMockito.when(SettingsService.getPageSettingsForPage(request)).thenReturn(pageSettings);
+
+        String splitTestRef = "optins";
+
+        String verticalCode = "health";
+
+        final Vertical vertical = mock(Vertical.class);
+        when(vertical.getCode()).thenReturn(verticalCode);
+        when(pageSettings.getVertical()).thenReturn(vertical);
+
+        when(pageSettings.hasSetting(JourneyGateway.LABEL_PREFIX + splitTestRef + JourneyGateway.LABEL_SUFFIX_ACTIVE))
+                .thenReturn(false);
+        when(pageSettings.getSetting(JourneyGateway.LABEL_PREFIX + splitTestRef + JourneyGateway.LABEL_SUFFIX_ACTIVE))
+                .thenReturn("N");
+
+        when(request.getRequestURL()).thenReturn(new StringBuffer("http://localhost:8080"));
+        when(request.getQueryString()).thenReturn("param1=1&param2=2");
+
+        final String url = JourneyGateway.getJourney(request, splitTestRef, response);
+        assertEquals("http://localhost:8080?param1=1&param2=2&j=1", url);
+
+        verify(response, times(1)).addCookie(any());
+    }
+
+    @Test
+    public void getJourneyNotSplitTestWithRequestJValue() throws Exception {
+        PowerMockito.when(SettingsService.getPageSettingsForPage(request)).thenReturn(pageSettings);
+
+        String splitTestRef = "optins";
+
+        String verticalCode = "health";
+
+        final Vertical vertical = mock(Vertical.class);
+        when(vertical.getCode()).thenReturn(verticalCode);
+        when(pageSettings.getVertical()).thenReturn(vertical);
+
+        when(pageSettings.hasSetting(JourneyGateway.LABEL_PREFIX + splitTestRef + JourneyGateway.LABEL_SUFFIX_ACTIVE))
+                .thenReturn(false);
+        when(pageSettings.getSetting(JourneyGateway.LABEL_PREFIX + splitTestRef + JourneyGateway.LABEL_SUFFIX_ACTIVE))
+                .thenReturn("N");
+
+        when(request.getRequestURL()).thenReturn(new StringBuffer("http://localhost:8080"));
+        when(request.getQueryString()).thenReturn("param1=1&param2=2&j=");
+
+        when(request.getParameter(JourneyGateway.J_PARAMETER)).thenReturn("");
+        Map<String, String[]> parameters = new HashMap<>();
+        parameters.put(JourneyGateway.J_PARAMETER, new String[]{""});
+        when(request.getParameterMap()).thenReturn(parameters);
+
+        final String url = JourneyGateway.getJourney(request, splitTestRef, response);
+        assertEquals("http://localhost:8080?param1=1&param2=2&j=1", url);
+
+        verify(response, times(1)).addCookie(any());
+    }
+
+    @Test
+    public void getJourneyNotSplitTestWithRequestJValue40() throws Exception {
+        PowerMockito.when(SettingsService.getPageSettingsForPage(request)).thenReturn(pageSettings);
+
+        String splitTestRef = "optins";
+
+        String verticalCode = "health";
+
+        final Vertical vertical = mock(Vertical.class);
+        when(vertical.getCode()).thenReturn(verticalCode);
+        when(pageSettings.getVertical()).thenReturn(vertical);
+
+        when(pageSettings.hasSetting(JourneyGateway.LABEL_PREFIX + splitTestRef + JourneyGateway.LABEL_SUFFIX_ACTIVE))
+                .thenReturn(false);
+        when(pageSettings.getSetting(JourneyGateway.LABEL_PREFIX + splitTestRef + JourneyGateway.LABEL_SUFFIX_ACTIVE))
+                .thenReturn("N");
+
+        when(request.getRequestURL()).thenReturn(new StringBuffer("http://localhost:8080"));
+        when(request.getQueryString()).thenReturn("param1=1&param2=2&j=40");
+
+        when(request.getParameter(JourneyGateway.J_PARAMETER)).thenReturn("40");
+        Map<String, String[]> parameters = new HashMap<>();
+        parameters.put(JourneyGateway.J_PARAMETER, new String[]{"40"});
+        when(request.getParameterMap()).thenReturn(parameters);
+
+        final String url = JourneyGateway.getJourney(request, splitTestRef, response);
+        assertNull(url);
+
+        verify(response, times(1)).addCookie(any());
+    }
+
+    @Test
+    public void getJourneyNotSplitTestWithRequestJValueNoRedirect() throws Exception {
+        PowerMockito.when(SettingsService.getPageSettingsForPage(request)).thenReturn(pageSettings);
+
+        String splitTestRef = "optins";
+
+        String verticalCode = "health";
+
+        final Vertical vertical = mock(Vertical.class);
+        when(vertical.getCode()).thenReturn(verticalCode);
+        when(pageSettings.getVertical()).thenReturn(vertical);
+
+        when(pageSettings.hasSetting(JourneyGateway.LABEL_PREFIX + splitTestRef + JourneyGateway.LABEL_SUFFIX_ACTIVE))
+                .thenReturn(false);
+        when(pageSettings.getSetting(JourneyGateway.LABEL_PREFIX + splitTestRef + JourneyGateway.LABEL_SUFFIX_ACTIVE))
+                .thenReturn("N");
+
+        when(request.getRequestURL()).thenReturn(new StringBuffer("http://localhost:8080"));
+        when(request.getQueryString()).thenReturn("param1=1&param2=2&j=1");
+
+        when(request.getParameter(JourneyGateway.J_PARAMETER)).thenReturn("1");
+        Map<String, String[]> parameters = new HashMap<>();
+        parameters.put(JourneyGateway.J_PARAMETER, new String[]{"1"});
+        when(request.getParameterMap()).thenReturn(parameters);
+
+        final String url = JourneyGateway.getJourney(request, splitTestRef, response);
+        assertNull(url);
+
+        verify(response, times(1)).addCookie(any());
+    }
 
 }
