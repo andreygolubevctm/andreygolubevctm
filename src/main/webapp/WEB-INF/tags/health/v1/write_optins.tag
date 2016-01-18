@@ -107,7 +107,7 @@
 	/>
 
 	<%
-		if (userDetails.getQuestionSet().getOkToCall().equals("Y")) {
+		if ("Y".equals(userDetails.getQuestionSet().getOkToCall())) {
 			com.ctm.web.core.validator.ContactValidator.validateFromJsp(request, "HEALTH", userDetails.getQuestionSet().getPhoneMobile());
 		}
 	%>
@@ -139,7 +139,7 @@
 	/>
 
 	<%
-		if (userDetails.getApplication().getOkToCall().equals("Y")) {
+		if ("Y".equals(userDetails.getApplication().getOkToCall())) {
 			com.ctm.web.core.validator.ContactValidator.validateFromJsp(request, "HEALTH", userDetails.getApplication().getPhoneMobile());
 		}
 	%>
