@@ -82,7 +82,7 @@
 	}
 
 	function cleanNumber (number){
-		return number.replace('+61', '0').replace('61', '0').replace(/ /g,'').replace('(', '').replace(')', '');
+		return number.replace('+61', '0').replace(/^61/, '0').replace(/ /g,'').replace('(', '').replace(')', '');
 	}
 
 	function applyEventListeners() {
