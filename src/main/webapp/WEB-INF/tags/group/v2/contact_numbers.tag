@@ -18,7 +18,7 @@
 </c:if>
 
 <c:set var="fieldXPath" value="${xpath}/mobile" />
-<form_new:row label="Mobile Number" fieldXpath="${fieldXpath}input">
+<form_v2:row label="Mobile Number" id="${fieldXpath}input">
 	<field_v1:flexi_contact_number xpath="${fieldXPath}"
 								maxLength="20"
 								required="false"
@@ -27,10 +27,10 @@
 								phoneType="Mobile"
 								additionalAttributes="${additionalAttributes}"
 								requireOnePlusNumber="true"/>
-</form_new:row>
+</form_v2:row>
 
 <c:set var="fieldXPath" value="${xpath}/other" />
-<form_new:row label="Other Number" fieldXpath="${fieldXpath}input">
+<form_v2:row label="Other Number" id="${fieldXpath}input">
 	<field_v1:flexi_contact_number xpath="${fieldXPath}"
 								maxLength="20"
 								required="false"
@@ -39,4 +39,4 @@
 								phoneType="LandLine"
 								additionalAttributes="${additionalAttributes}"
 								requireOnePlusNumber="true"/>
-</form_new:row>
+</form_v2:row>
