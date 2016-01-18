@@ -160,7 +160,7 @@
 							<c:set var="tranId" value="${results.rows[0].transactionID}" />
 							<%-- Duplicate the transaction details --%>
 							<sql:update>
-								INSERT INTO aggregator.transaction_details
+								INSERT INTO aggregator.transaction_details (transactionId, sequenceNo, xpath, textValue, numericValue, dateValue)
 								SELECT ${tranId} as transactionId, sequenceNo, xpath, textValue, numericValue, dateValue
 								FROM aggregator.transaction_details
 								WHERE transactionId = ?
