@@ -54,7 +54,7 @@
 				<c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/callmeback/phone" />
 				<field_v2:label value="Your best contact number" xpath="${fieldXpath}input" className="${labelsClassName}" />
 				<div class="row-content ${fieldsContainerClassName}">
-					<field_v1:flexi_contact_number xpath="${fieldXPath}"
+					<field:flexi_contact_number xpath="${fieldXPath}"
 												maxLength="20"
 												required="${true}"
 												className="callmeback_phone"
