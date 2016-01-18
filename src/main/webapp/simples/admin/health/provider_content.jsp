@@ -3,15 +3,18 @@
 <settings:setVertical verticalCode="SIMPLES" />
 <%@ include file="/WEB-INF/security/core.jsp" %>
 
-<jsp:useBean id="providerDao" class="com.ctm.dao.ProviderDao" scope="page" />
-<jsp:useBean id="providerContentDao" class="com.ctm.dao.simples.ProviderContentDao" scope="page" />
+<jsp:useBean id="providerDao" class="com.ctm.web.core.dao.ProviderDao" scope="page" />
+<jsp:useBean id="providerContentDao" class="com.ctm.web.health.dao.ProviderContentDao" scope="page" />
 
 <c:set var="providers" value="${providerDao.getProviders('HEALTH', 0, true)}" />
 <c:set var="providerContentTypes" value="${providerContentDao.fetchProviderContentTypes()}" />
 
-<layout:simples_page fullWidth="true">
+<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
+<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
+
+<layout_v1:simples_page fullWidth="true">
 	<jsp:attribute name="head">
-		<script src="${assetUrl}../../../framework/lib/js/trumbowyg.min.js?${revision}"></script>
+		<script src="${assetUrl}js/bundles/plugins/trumbowyg.min.js?${revision}"></script>
 	</jsp:attribute>
   <jsp:body>
     <div class="sortable-header data-sorter container-fluid" data-refreshcallback="meerkat.modules.adminProviderContent.refresh">
@@ -84,7 +87,7 @@
       </ul>
     </div>
   </jsp:body>
-</layout:simples_page>
+</layout_v1:simples_page>
 
 <script type="text/javascript">
   var providers = [

@@ -3,7 +3,7 @@
 
 <session:get settings="true" verticalCode="${fn:toUpperCase(param.quoteType)}"/>
 <security:populateDataFromParams rootPath="${pageSettings.getVerticalCode()}" />
-<core:transaction touch="A" noResponse="true" writeQuoteOverride="Y" productId="${data[pageSettings.getVerticalCode()].handover.productCode}" />
+<core_v1:transaction touch="A" noResponse="true" writeQuoteOverride="Y" productId="${data[pageSettings.getVerticalCode()].handover.productCode}" />
 
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled" /></c:set>
 <c:set var="optedInForComp" value="${data['creditcard/competition/optIn'] eq 'Y' }" />
@@ -12,7 +12,7 @@
 
 <c:if test="${competitionEnabledSetting eq 'Y' and optedInForComp eq true}">
 
-	<jsp:useBean id="creditCardService" class="com.ctm.services.creditcards.CreditCardService" scope="page" />
+	<jsp:useBean id="creditCardService" class="com.ctm.web.creditcards.services.creditcards.CreditCardService" scope="page" />
 	<c:set var="serviceResponse" value="${creditCardService.validate(pageContext.request, data)}" />
 
 	<c:if test="${creditCardService.isValid()}">

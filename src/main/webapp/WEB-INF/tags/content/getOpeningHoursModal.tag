@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:core />
-<jsp:useBean id="openingHoursService" class="com.ctm.services.simples.OpeningHoursService" scope="page" />
+<jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 
 <div class="all-opening-hours">
@@ -15,7 +15,7 @@
 						items="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
 
 						<div class="row day_row">
-							<div class="day-description col-md-6 col-xs-6""> ${hoursOfDay.description}</div>
+							<div class="day-description col-md-6 col-xs-6"> ${hoursOfDay.description}</div>
 							<div class="col-md-6 col-xs-6">
 								<c:choose>
 									<c:when test="${empty hoursOfDay.startTime}">
@@ -65,7 +65,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<health_content:call_centre_help/>
+					<health_v1_content:call_centre_help/>
 				</div>
 			</div>
 		</div>

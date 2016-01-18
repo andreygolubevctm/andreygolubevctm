@@ -17,7 +17,7 @@
 		</div>
 --%>
 <div class="dropdown-container" id="filters-container"></div>
-<core:js_template id="filters-template">
+<core_v1:js_template id="filters-template">
 	<form class="filters-component">
 		<div class="scrollable filters clearfix">
 			<div class="heading col-sm-12">
@@ -31,14 +31,14 @@
 						<div><label>Loan Amount</label></div>
 					</div>
 					<div id="filter-loan-amount" data-filter-type="text" data-filter-serverside="true" class="col-sm-3">
-						<field_new:currency xpath="${xpath}/filter/loanDetails/loanAmount" title="Loan Amount" decimal="${false}" required="false"  pattern="[0-9]*" />
+						<field_v2:currency xpath="${xpath}/filter/loanDetails/loanAmount" title="Loan Amount" decimal="${false}" required="false"  pattern="[0-9]*" />
 					</div>
 
 					<div class="filter-label col-sm-2">
 						<div><label>Loan Term</label></div>
 					</div>
 					<div id="filter-loan-term" data-filter-type="select" data-filter-serverside="true" class="col-sm-4">
-						<field_new:array_select xpath="${xpath}/filter/results/loanTerm" title="Loan Term" items="30=30 years,25=25 years,20=20 years,15=15 years,10=10 years,5=5 years" required="false" />
+						<field_v2:array_select xpath="${xpath}/filter/results/loanTerm" title="Loan Term" items="30=30 years,25=25 years,20=20 years,15=15 years,10=10 years,5=5 years" required="false" />
 					</div>
 				</div>
 			</div>
@@ -51,7 +51,7 @@
 						<div><label>Interest Rate Type</label></div>
 					</div>
 					<div id="filter-interest-rate-type" data-filter-type="radio" data-filter-serverside="true" class="col-sm-9">
-					<field_new:array_radio xpath="${xpath}/filter/loanDetails/interestRate" required="true" items="P=Principal & Interest,I=Interest Only" title="${title} the interest payment type" />
+					<field_v2:array_radio xpath="${xpath}/filter/loanDetails/interestRate" required="true" items="P=Principal & Interest,I=Interest Only" title="${title} the interest payment type" />
 					</div>
 				</div>
 			</div>
@@ -63,7 +63,7 @@
 						<div><label>Repayment Options*</label></div>
 					</div>
 					<div id="filter-repaymentFrequency" data-filter-type="radio" data-filter-serverside="true" class="col-sm-9">
-						<field_new:array_radio xpath="${xpath}/filter/results/repaymentFrequency" title="Repayments" items="weekly=Weekly,fortnightly=Fortnightly,monthly=Monthly" required="false" />
+						<field_v2:array_radio xpath="${xpath}/filter/results/repaymentFrequency" title="Repayments" items="weekly=Weekly,fortnightly=Fortnightly,monthly=Monthly" required="false" />
 					</div>
 				</div>
 			</div>
@@ -120,4 +120,4 @@
 		</div>
 
 	</form>
-</core:js_template>
+</core_v1:js_template>

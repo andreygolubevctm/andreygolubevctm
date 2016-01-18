@@ -2,6 +2,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.dreammail.send')}" />
+
 <c:choose>
 	<c:when test="${not empty param.transactionId}">
 		<session:get settings="true" />
@@ -9,9 +11,19 @@
 	<c:otherwise>
 		<%-- Any email with out a transaction id would most likely be things like forgot password --%>
 		<settings:setVertical verticalCode="GENERIC" />
-		<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+		<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 	</c:otherwise>
 </c:choose>
+
+<c:choose>
+	<c:when test="${not empty param.createUnsubscribeEmailToken}">
+		<c:set var="createUnsubscribeEmailToken" value="${param.createUnsubscribeEmailToken}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="createUnsubscribeEmailToken" value="${true}" />
+	</c:otherwise>
+</c:choose>
+
 
 <c:set var="gomezhashedEmail"><security:hashed_email email="gomez.testing@aihco.com.au" brand="${pageSettings.getBrandCode()}" /></c:set>
 <c:set var="paramSend">${param.send}</c:set>
@@ -68,13 +80,13 @@
 		<%-- Import the XSL template --%>			
 		<c:import var="myXSL" url="${template}" />
 		
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<%-- Build the xml for each row and process it. --%>
 		<%-- If we don't have xml, because we're not doing a transaction lookup with awesome data, we just pass some donkey xml, because we know the xsl doesn't check anything inside it PLEASE ENSURE YOU HAVE SOMETHING IN YOUR XML AS A BLANK VARIABLE WILL CAUSE THE EMAIL NOT TO SEND --%>
 		<c:choose>
 			<c:when test="${not empty param.transactionId}">
 				<c:set var="rowXML">
-					<core:xmlTranIdFromSQL tranId="${param.transactionId}"></core:xmlTranIdFromSQL>
+					<core_v1:xmlTranIdFromSQL tranId="${param.transactionId}"></core_v1:xmlTranIdFromSQL>
 				</c:set>
 			</c:when>
 			<c:otherwise>
@@ -88,24 +100,47 @@
 			<c:import var="sqlStatement" url="/dreammail/${param.tmpl}.sql" />
 			<c:choose>
 				<c:when test="${param.tmpl eq 'travel_edm'}">
-					<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" calcSequence="${data.travel.calcSequence}" rankPosition="${data.travel.bestPricePosition}"></core:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><core_v1:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" calcSequence="${data.travel.calcSequence}" rankPosition="${data.travel.bestPricePosition}"></core_v1:xmlForOtherQuery></c:set>
+					<c:set var="emailTokenType" value="edm" />
+					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:when test="${param.tmpl eq 'health_bestprice'}">
-					<c:set var="rowXML"><health:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" ></health:xmlForOtherQuery></c:set>
-					<c:set var="rowXML"><health:xmlForCallCentreHoursQuery /></c:set>
+					<c:set var="rowXML"><health_v1:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" ></health_v1:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><health_v1:xmlForCallCentreHoursQuery /></c:set>
+					<c:set var="emailTokenType" value="bestprice" />
+					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:when test="${param.tmpl eq 'home_bestprice'}">
-					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="home"></agg:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><agg_v1:xmlForOtherQuery tranId="${param.transactionId}" vertical="home" emailAction="load" emailTokenType="bestprice" hashedEmail="${param.hashedEmail}" emailTokenEnabled="${pageSettings.getSetting('emailTokenEnabled')}"></agg_v1:xmlForOtherQuery></c:set>
+					<c:set var="emailTokenType" value="bestprice" />
+					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:when test="${param.tmpl eq 'car_bestprice'}">
-					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="car"></agg:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><agg_v1:xmlForOtherQuery tranId="${param.transactionId}" vertical="car" emailAction="load" emailTokenType="bestprice" hashedEmail="${param.hashedEmail}" emailTokenEnabled="${pageSettings.getSetting('emailTokenEnabled')}"></agg_v1:xmlForOtherQuery></c:set>
+					<c:set var="emailTokenType" value="bestprice" />
+					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:otherwise>
-					<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}"></core:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><core_v1:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}"></core_v1:xmlForOtherQuery></c:set>
+					<c:set var="emailTokenType" value="bestprice" />
+					<c:set var="emailTokenTypeAction" value="load" />
 				</c:otherwise>
 			</c:choose>
 		</c:if>
 		<go:setData dataVar="data" value="*DELETE" xpath="tempSQL" />
+
+		<c:if test="${createUnsubscribeEmailToken && pageSettings.getSetting('emailTokenEnabled')}">
+			<c:choose>
+				<c:when test="${empty param.unsubscribeToken}">
+					<jsp:useBean id="tokenServiceFactory" class="com.ctm.web.core.email.services.token.EmailTokenServiceFactory"/>
+					<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
+					<c:set var="unsubscribeToken" value="${tokenService.generateToken(param.transactionId, param.hashedEmail, pageSettings.getBrandId(), emailTokenType, 'unsubscribe', null, null, pageSettings.getVerticalCode(), null, true)}" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="unsubscribeToken" value="${param.unsubscribeToken}"/>
+				</c:otherwise>
+			</c:choose>
+		</c:if>
 
 		<c:choose>
 
@@ -113,7 +148,7 @@
 
 				<c:if test="${paramSend != 'Y'}">
 					<%-- NB: There was a huge amount of stuff surrounding this jsp by way of core:head and go:html go:body - that is dying in the console regarding the applicationSettings. So i've ditched them in favor of just manually wrapping in a html skeleton, since it's a dev only page with no styling. --%>
-					<core:doctype />
+					<core_v1:doctype />
 					<html class="no-js" lang="en">
 						<head>
 							<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -169,8 +204,11 @@
 							<x:param name="ImageUrlPrefix">${pageSettings.getSetting('imageUrlPrefix')}</x:param>
 							<x:param name="ImageUrlSuffix">${pageSettings.getSetting('imageUrlSuffix')}</x:param>
 						</c:if>
-					</x:transform>
-				</c:set>
+						<x:param name="unsubscribeToken">${unsubscribeToken}</x:param>
+						<x:param name="continueOnlineToken">${param.continueOnlineToken}</x:param>
+						<x:param name="emailTokenEnabled">${pageSettings.getSetting('emailTokenEnabled')}</x:param>
+				</x:transform>
+			</c:set>
 
 				<%-- If we're outputting to the page only, just output the result. --%>
 				<c:choose>
@@ -209,13 +247,13 @@
 								<c:param name="description" value="Email response failure" />
 								<c:param name="data" value="PARAMS: ${param} RESPONSE:${emailResponseXML}" />
 							</c:import>
-							<go:log>Email response failure occured. Did not send</go:log>
+							${logger.warn('Email response failure occured. Did not send')}
 						</c:if>
 					</c:otherwise>
 				</c:choose>
 			</c:when>
 			<c:otherwise>
-				<go:log>No content for email - not sending.</go:log>
+				${logger.warn('No content for email - not sending.')}
 			</c:otherwise>
 		</c:choose>
 	</c:otherwise>

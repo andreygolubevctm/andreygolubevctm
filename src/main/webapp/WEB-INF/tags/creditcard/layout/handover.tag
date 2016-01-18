@@ -4,7 +4,7 @@
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" scope="request" />
 
-<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+<jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled" /></c:set>
 <div class="row handover-container journeyEngineSlide active">
 	<c:choose>
@@ -13,7 +13,7 @@
 		</c:when>
 		<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}">
 			<%-- Also do A touch --%>
-			<core:transaction touch="A" noResponse="true" writeQuoteOverride="Y" productId="${productID}"/>
+			<core_v1:transaction touch="A" noResponse="true" writeQuoteOverride="Y" productId="${productID}"/>
 			<div id="loading">
 				<img src="brand/ctm/graphics/spinner-burp.gif" alt="Loading" />
 				<h4>Securely transferring you to <c:out value="${productBrand}" />...</h4>

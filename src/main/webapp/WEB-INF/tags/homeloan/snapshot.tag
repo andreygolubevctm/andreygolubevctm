@@ -2,7 +2,7 @@
 <%@ tag description="Homeloan Snapshot"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<core:js_template id="snapshot-template">
+<core_v1:js_template id="snapshot-template">
 	{{ var template = $("#provider-logo-template").html(); }}
 	{{ var companyLogo = _.template(template); }}
 	{{ companyLogo = companyLogo(obj); }}
@@ -20,7 +20,7 @@
 	{{ var interestComparisonTemplate = htmlTemplate(obj); }}
 
 	<div>
-	<form_new:fieldset legend="Your Home Loan Product">
+	<form_v2:fieldset legend="Your Home Loan Product">
 		<%-- Header --%>
 		<div class="row snapshot-product-header">
 			<div class="col-sm-5 col-md-4 col=lg-3 logoContainer">{{= companyLogo}}</div>
@@ -109,16 +109,16 @@
 				{{ } }}
 			</div>
 		</div>
-		</form_new:fieldset>
+		</form_v2:fieldset>
 	</div>
 	<div class="comparison-rate-disclaimer">
 		<h6 class="small">Comparison rate disclaimer</h6>
 		<p class="small">*Comparison rates shown are based on the home loan details you have entered which include loan amount and term of loan or on a secured loan of $150,000 over the term of 25 years for advertisements. WARNING: This comparison rate is true only for the examples given and may not include all fees and charges. Different terms, fees or other loan amounts might result in a different comparison rate.</p>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 
-<form_new:fieldset legend="Snapshot of Your Details" className="quoteSnapshot">
+<form_v2:fieldset legend="Snapshot of Your Details" className="quoteSnapshot">
 	<div class="row snapshot">
 		<div class="col-sm-12 snapshot-title">
 			<!-- SessionCam:Hide -->
@@ -133,5 +133,5 @@
 			<p class="snapshotGoal"></p>
 		</div>
 	</div>
-</form_new:fieldset>
+</form_v2:fieldset>
 <div class="product-snapshot"></div>

@@ -2,7 +2,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<core_new:no_cache_header/>
+<c:set var="logger" value="${log:getLogger('jsp.ajax.write.register_fatal_error')}" />
+
+<core_v2:no_cache_header/>
 
 <c:set var="page"><c:out value="${param.page}" escapeXml="true" /></c:set>
 <c:set var="message"><c:out value="${param.message}" escapeXml="true" /></c:set>
@@ -16,7 +18,7 @@
 	</c:when>
 	<c:otherwise>
 		<settings:setVertical verticalCode="GENERIC" />
-		<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+		<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 	</c:otherwise>
 </c:choose>
 
@@ -35,10 +37,10 @@
 <%-- Test for DB issue and handle - otherwise move on --%>
 <c:choose>
 	<c:when test="${not empty error}">
-		<go:log level="ERROR">[ERROR] Fatal Error Log: ${error}</go:log>
+		${logger.error('Fatal Error Log failed. {},{}' ,log:kv('page', page),log:kv('message', message), error)}
 	</c:when>
 	<c:otherwise>
 		<%-- Important keep this as debug as there may be credit card details in the params--%>
-		<go:log level="DEBUG">Fatal Error Log: ${param}</go:log>
+		${logger.debug('Fatal Error Log complete. {}' , log:kv('param',param))}
 	</c:otherwise>
 </c:choose>

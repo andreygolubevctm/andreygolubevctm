@@ -1,0 +1,73 @@
+
+.filters-component {
+	// Give height to the rows
+	.filter{
+		margin-bottom: 20px;
+	}
+
+	.heading {
+		min-height: inherit;
+		margin-top: 0;
+		margin-bottom: 10px;
+	}
+
+
+	.filter-label{
+		font-family: @font-family-theme-bold;
+		min-height: 36px;
+		display: table;
+		> div{
+			vertical-align: middle;
+			display: table-row;
+			label{
+				vertical-align: middle;
+				display: table-cell;
+				line-height: normal;
+			}
+		}
+		& + [data-type-filter="slider"] > div label{
+			vertical-align: bottom;
+			margin-bottom: 5px;
+		}
+	}
+
+
+	.filter-label label,
+	.btn-group .btn {
+		font-size: 10px;
+		text-transform: uppercase;
+		color: @text-color;
+		height: 41px;
+	}
+
+	.filter-label {
+		@media (@sm) {
+			text-align: right;
+			label {
+				line-height: 32px; // to simulate vertical alignment
+			}
+		}
+
+		padding-right: 0;
+	}
+
+	.btn {
+		padding: 10px 10px;
+	}
+	.btn-save {
+		&:extend(.btn-clear all);
+	}
+
+	.alert {
+		@media(@sm){
+			margin: 0 45px 0 186px;
+		}
+		@media(@md){
+			margin: 0 25px 0 115px;
+		}
+		@media(@lg){
+			margin: 0 0 0 141px;
+		}
+	}
+
+}

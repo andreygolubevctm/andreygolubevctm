@@ -3,17 +3,17 @@
 	<xs:include schemaLocation="../shared/components.xsd"/>
 	<xs:complexType name="healthCover">
 			<xs:all>
-				<xs:element type="xs:string" name="rebate" maxOccurs="1" minOccurs="1" />
-					<xs:element name="primary">
+				<xs:element type="xs:string" name="rebate" maxOccurs="1" minOccurs="0" />
+				<xs:element name="primary">
 					<xs:complexType>
-					<xs:all>
-						<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1" />
-						<xs:element name="cover" maxOccurs="1" type="YN" minOccurs="1" />
-						<xs:element name="healthCoverLoading" type="YN" maxOccurs="1" minOccurs="0" />
-						<xs:element name="dobInputD" maxOccurs="1" minOccurs="0" />
-						<xs:element name="dobInputY" maxOccurs="1" minOccurs="0" />
-						<xs:element name="dobInputM" maxOccurs="1" minOccurs="0" />
-					</xs:all>
+						<xs:all>
+							<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1" />
+							<xs:element name="cover" maxOccurs="1" type="YN" minOccurs="1" />
+							<xs:element name="healthCoverLoading" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="dobInputD" maxOccurs="1" minOccurs="0" />
+							<xs:element name="dobInputY" maxOccurs="1" minOccurs="0" />
+							<xs:element name="dobInputM" maxOccurs="1" minOccurs="0" />
+						</xs:all>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="partner" maxOccurs="1" minOccurs="0" >

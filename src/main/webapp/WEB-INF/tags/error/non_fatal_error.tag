@@ -2,6 +2,8 @@
 <%@ tag description="Record non fatal error in database."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('tag.error.non_fatal_error')}" />
+
 <%-- ATTRIBUTES --%>
 <%@ attribute name="transactionId" required="false" rtexprvalue="true"  %>
 
@@ -11,7 +13,7 @@
 	</c:when>
 	<c:otherwise>
 		<settings:setVertical verticalCode="GENERIC" />
-		<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+		<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 	</c:otherwise>
 </c:choose>
 
@@ -26,15 +28,9 @@
 	<c:set var="property" value="CTM" />
 </c:if>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
-<go:log level="WARN" source="error:non_fatal_error">
-	property: ${property}
-	origin: ${origin}
-	errorMessage: ${errorMessage}
-	errorCode: ${errorCode}
-	transactionId: ${data.current.transactionId}
-</go:log>
+${logger.warn('About to log to error_log {},{},{},{}', log:kv('property', property), log:kv('origin',origin), log:kv('errorMessage',errorMessage), log:kv('errorCode',errorCode))}
 <c:set var="currentTransactionId" value="${data.current.transactionId}" />
 <c:if test="${empty currentTransactionId}">
 	<c:set var="currentTransactionId" value="0" />

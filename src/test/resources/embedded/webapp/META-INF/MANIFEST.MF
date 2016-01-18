@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Implementation-Title: com.ctm.web.ctm
+Bamboo-Built-By: dkocovski
+Implementation-Version: X.X.X-SNAPSHOT
+Archiver-Version: Plexus Archiver
+Built-By: bamboo
+Bamboo-BuildPlanName: Web CTM - CTM Web Application - xxx
+Bamboo-BuildNumber: x
+Bamboo-BuildResults: http://bambooctm.budgetdirect.com.au:8085/browse/
+ xxx
+Scm-Url: ssh://git@gitstash.budgetdirect.com.au:7999/cw/web_ctm.git
+Spring-Boot-Version: 1.2.7.RELEASE
+Scm-Branch: xxx
+Implementation-Vendor: CtM
+Main-Class: org.springframework.boot.loader.WarLauncher
+Scm-Revision: 1xxx
+Bamboo-BuildTimestamp: 2015-10-30T11:27:18.517+10:00
+Start-Class: com.ctm.Application
+Bamboo-BuildKey: xxx
+Created-By: Apache Maven 3.3.3
+Build-Jdk: 1.8.0_25
+

@@ -1,0 +1,17 @@
+@brands-list: ~"ADLB", ~"AFG", ~"AMP", ~"ANZ", ~"AUSWIDE", ~"BANKAUST", ~"BOC", ~"BOM", ~"BANKSA", ~"BANKWEST", ~"BLUESTONE", ~"BOQ", ~"CBA", ~"CITI", ~"HERITAGE", ~"HOMESTART", ~"ING", ~"KEY", ~"LATROBE", ~"LIBERTY", ~"MACQ", ~"ME", ~"MKM", ~"NAB", ~"NABBROKER", ~"PN", ~"PEPPER", ~"QPCU", ~"GEORGE", ~"SUNCORP", ~"ROCK", ~"WESTPAC", ~"WIDE";
+
+.brands-content {
+	overflow: hidden;
+}
+
+.companyLogo {
+  .providersHighResSpriteImages(~"homeloan"; ~"logo_"; @brands-list;);
+}
+
+@media (@sm-only) {
+  .featuresMode {
+	.companyLogo {
+	  .providersHighResSpriteImages(~"homeloan"; ~"logo_"; @brands-list; @logo-xs-scale; ~"");
+	}
+  }
+}

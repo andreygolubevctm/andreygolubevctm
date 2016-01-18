@@ -3,9 +3,9 @@
 <settings:setVertical verticalCode="SIMPLES" />
 <%@ include file="/WEB-INF/security/core.jsp" %>
  
- <jsp:useBean id="providerDao" class="com.ctm.dao.ProviderDao" scope="page" />
+ <jsp:useBean id="providerDao" class="com.ctm.web.core.dao.ProviderDao" scope="page" />
  
-<layout:simples_page fullWidth="true">
+<layout_v1:simples_page fullWidth="true">
 	<jsp:attribute name="head"></jsp:attribute>
 	<jsp:body>
 		<div class="sortable-header data-sorter container-fluid" data-refreshcallback="meerkat.modules.adminFundCappingLimits.refresh">
@@ -89,7 +89,7 @@
 			</div>
 		</div>
 	</jsp:body>
-</layout:simples_page>
+</layout_v1:simples_page>
 
 <script>
 	var providers = [

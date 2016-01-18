@@ -32,8 +32,18 @@ INSERT INTO `temp_simples_fetches` (transactionId, sourceId, phoneNumber1, phone
 SELECT
 	H.rootId,
 	_sourceId AS sourceId,
-	detailsPhoneMobile.textValue AS phoneNumber1,
-	detailsPhoneOther.textValue AS phoneNumber2,
+	CASE
+		WHEN
+			detailsPhoneFlexi.textValue IS NOT NULL
+			THEN detailsPhoneFlexi.textValue
+		ELSE detailsPhoneMobile.textValue
+	END AS phoneNumber1,
+	CASE
+	WHEN
+		detailsPhoneFlexi.textValue IS NOT NULL
+			THEN NULL
+		ELSE detailsPhoneOther.textValue
+	END AS phoneNumber2,
 	detailsName.textValue AS contactName,
 	detailsState.textValue AS state
 
@@ -94,6 +104,9 @@ FROM
 	LEFT JOIN aggregator.transaction_details detailsPhoneOther
 		ON H.transactionId = detailsPhoneOther.transactionid
 		AND detailsPhoneOther.xpath = 'health/contactDetails/contactNumber/other'
+	LEFT JOIN aggregator.transaction_details detailsPhoneFlexi
+		ON H.transactionId = detailsPhoneFlexi.transactionid
+		AND detailsPhoneFlexi.xpath = 'health/contactDetails/flexiContactNumber'
 
 	-- Contact name
 	LEFT JOIN aggregator.transaction_details AS detailsName

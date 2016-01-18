@@ -1,0 +1,156 @@
+
+// Loaded before framework core and theme.
+
+//Using CTM as a base for colours and paddings.
+@import (reference) '../ctm/variables.less';
+
+// ## Settings to see some brand differentiation
+
+//
+// Variables
+// --------------------------------------------------
+
+
+// Theme colors
+// -------------------------
+@theme-accent:                   #00aee4; //lighter blue
+
+@theme-light:                    #dfdfdf; //grey 1
+
+@theme-medium-lighter:           #b3b3b3; //grey 2
+@theme-medium:                   #919191; //grey 3
+@theme-medium-darker:            #777;    //grey 4
+
+@theme-dark:                     #666;    //grey 5
+@theme-darker:                   #333;    //grey 6
+
+@theme-primary:                  #ffd700; //Yellow
+@theme-secondary:                #f5821f; //Orange
+@theme-tertiary:                 #00629a; //Blue
+
+@theme-default:                  @theme-dark; //Orange
+
+@theme-active:                   @theme-accent;
+
+
+//== Powered By Logos
+//
+//## This is a boolean flag which compiles in the CSS for poweredby logos or not. Else adds display none.
+@poweredby-header-enabled: true;
+@poweredby-footer-enabled: false;
+
+@positiveMessagingEnabled: false;
+
+// Brand colors
+// -------------------------
+// overrriden from Bootstrap variables
+//@brand-primary:                  @theme-primary;
+//@brand-success:                  @theme-accent;
+//@brand-info:                     @theme-light;
+//@brand-warning:                  #a90000;
+//@brand-danger:                   #a90000;
+
+//** Background color for `<body>`.
+//@body-bg:               #fff;
+//** Global text color on `<body>`.
+//@text-color:            @theme-dark;
+
+//** Global textual link color.
+@link-color:            @theme-secondary; //@brand-primary;
+@icon-help-colour:      @theme-secondary;
+// Headings
+@headings-color:                 @theme-accent;
+@fieldset-heading-colour:		 @theme-accent;
+
+//
+@form-input-common-selected-border-colour: @theme-secondary;
+
+//---------------------------------------------
+// Price component links
+//---------------------------------------------
+//@price-color: @theme-secondary;
+
+//Buttons
+
+//Just for the picked state on the amcal health results CTA more info & apply buttons.
+@btn-default-color:              #fff;
+@btn-default-bg:                 @theme-tertiary;
+@btn-default-border:             @btn-default-bg;
+
+// Dropdowns
+@dropdown-interactive-bg:        @theme-light;
+
+//** Toolbar dropdown modifiers
+@btn-back-bg-color: @theme-tertiary;
+@btn-back-active-bg-color: @theme-secondary;
+
+@btn-email-bg-color: @theme-dark;
+@btn-email-active-bg-color: @theme-tertiary;
+
+@btn-dropdown-bg-color: @theme-dark;
+@btn-dropdown-active-bg-color: @theme-tertiary;
+
+@btn-pagination-bg-color: @navbar-default-bg;
+
+@btn-save-color: contrast(@btn-save-bg-color, @theme-dark);
+
+@btn-cta-color: contrast(@btn-cta-bg-color, @theme-dark);
+@btn-cta-hover-bg-color: @theme-secondary;
+@btn-cta-active-bg-color: @theme-tertiary;
+
+@btn-next-color: contrast(@btn-next-bg-color, @theme-dark);
+@btn-next-bg-color: @theme-primary;
+@btn-next-active-bg-color: @theme-secondary;
+
+//Journey progress bar
+//** Default is the disabled state
+@journeyProgressBar-color:                      @theme-dark;
+@journeyProgressBar-separator-color:            @theme-accent;
+@journeyProgressBar-border-color:               @theme-accent;
+
+@journeyProgressBar-color-complete:             @theme-dark;
+@journeyProgressBar-separator-color-complete:   @theme-tertiary;
+@journeyProgressBar-border-color-complete:      @theme-tertiary;
+
+@journeyProgressBar-color-current:              @theme-dark;
+@journeyProgressBar-separator-color-current:    @theme-secondary;
+@journeyProgressBar-border-color-current:       @theme-secondary;
+
+//Hover active
+@journeyProgressBar-color-hover:                @theme-secondary;
+@journeyProgressBar-separator-color-hover:      @theme-secondary;
+@journeyProgressBar-border-color-hover:         @theme-secondary;
+
+// Navbars
+@navbar-default-color:           #fff; //@theme-light;
+@navbar-default-bg:              @theme-accent;
+@navbar-default-border:          #fff; //@theme-light;
+
+//Wells
+@well-bg:                     @gray;//@theme-light;
+@well-border:                 darken(@well-bg, 7%);
+
+@well-bg-help:                @theme-light;//@theme-light;
+@well-text-help:              @text-color;//@theme-light;
+@well-header-help:            @well-text-help;//@theme-light;
+
+@well-bg-info:                @theme-accent;
+
+@well-bg-chatty:              @theme-light;
+@well-text-chatty:            @theme-dark;
+
+//Results page variables
+@compare-color: #F2F2F2;
+@compare-odd-color: #ECECEC;
+@compare-section-bg-color: #F7F7F7;
+@compare-text-color: @theme-dark;
+
+@checkbox-health-compare-tick-checked: @theme-secondary;
+
+@results-features-promos-color: @theme-secondary;
+
+@more-info-health-product-color: @theme-accent;
+@more-info-about-color: @theme-tertiary;
+@more-info-nextsteps-color: @theme-tertiary;
+
+@more-info-product-color: @theme-tertiary;

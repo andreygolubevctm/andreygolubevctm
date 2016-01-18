@@ -1,0 +1,16 @@
+/* A method for detecting media queries in JS via a z-index check. */
+
+html{
+	font-family: 'xs';
+	@media all and (min-width: @screen-sm) {
+		font-family: 'sm';
+	}
+	/* tablet */
+	@media all and (min-width: @screen-md) {
+	   font-family: 'md';
+	}
+	/* mobile phone */
+	@media all and (min-width: @screen-lg-min) {
+		font-family: 'lg';
+	}
+}

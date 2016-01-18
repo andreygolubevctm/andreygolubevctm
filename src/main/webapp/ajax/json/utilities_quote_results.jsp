@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.utilities_quote_results')}" />
 
 <%-- VARIABLES --%>
 <c:set var="vertical" value="${pageSettings.getVerticalCode()}" />
@@ -15,14 +16,14 @@
 </c:if>
 
 <%-- Save data --%>
-<core:transaction touch="R" noResponse="true" />
+<core_v1:transaction touch="R" noResponse="true" />
 
 <%-- Fetch the transaction id --%>
 <c:set var="tranId" value="${data['current/transactionId']}" />
 <c:if test="${empty tranId}"><c:set var="tranId" value="0" /></c:if>
 
 <%-- Execute the results service --%>
-<jsp:useBean id="quoteService" class="com.ctm.services.utilities.UtilitiesResultsService" scope="page" />
+<jsp:useBean id="quoteService" class="com.ctm.web.utilities.services.UtilitiesResultsService" scope="page" />
 <c:set var="results" value="${quoteService.getFromJsp(pageContext.getRequest(), data)}" />
 
 <%-- COMPETITION APPLICATION START --%>
@@ -30,8 +31,7 @@
 <c:set var="optedInForCompKey">${vertical}/resultsDisplayed/competition/optin</c:set>
 <c:set var="optedInForComp" value="${data[optedInForCompKey] == 'Y' }" />
 
-<go:log>COMP: ${competitionEnabledSetting}</go:log>
-<go:log>COMPKEY: ${optedInForComp}</go:log>
+${logger.debug('Got settings for competition. {},{}',log:kv('competitionEnabledSetting', competitionEnabledSetting), log:kv('optedInForComp', optedInForComp))}
 
 <c:if test="${competitionEnabledSetting eq 'Y' and not callCentre and optedInForComp}">
 	<c:set var="competitionId"><content:get key="competitionId"/></c:set>

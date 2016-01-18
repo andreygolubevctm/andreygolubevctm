@@ -4,24 +4,24 @@
 
 
 <%-- Get data to build sections/categories/features --%>
-<jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
-<c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString(pageSettings.getVerticalCode(), 'category')}" scope="request"  />
+<jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
+<c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString(pageSettings.getVerticalCode(), 'category')}" scope="request"  />
 <script>
     var resultLabels = ${jsonString};
 </script>
 
 <c:set var="brandCode" value="${pageSettings.getBrandCode()}" />
 
-<jsp:useBean id="environmentService" class="com.ctm.services.EnvironmentService" scope="request" />
+<jsp:useBean id="environmentService" class="com.ctm.web.core.services.EnvironmentService" scope="request" />
 
-<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
+<jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
 <c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
 <div id="deviceType" data-deviceType="${deviceType}"></div>
 
 <div class="resultsHeadersBg">
 </div>
 
-<agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
+<agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
 
     <%-- RESULTS TABLE --%>
     <div class="bridgingContainer"></div>
@@ -41,7 +41,7 @@
         <div class="resultsOverflow">
             <div class="results-table">
             </div>
-            <core_new:show_more_quotes_button />
+            <core_v2:show_more_quotes_button />
         </div>
         <div class="comparisonFeaturesDisclosure">
             <div class="col-sm-5 disclaimer">
@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <core:clear />
+        <core_v1:clear />
 
         <div class="featuresFooterPusher"></div>
 
@@ -69,7 +69,7 @@
 
 
     <%-- DEFAULT RESULT ROW --%>
-    <core:js_template id="result-template">
+    <core_v1:js_template id="result-template">
         {{ var productTitle = (typeof obj.brandCode !== 'undefined') ? obj.brandCode : 'Unknown product name'; }}
         {{ var productTitleCut = productTitle.length > 22 ? productTitle.substring(0,22) + '...' : productTitle; }}
         {{ var productDescription = (typeof obj.policyName !== 'undefined') ? obj.policyName : 'Unknown product name'; }}
@@ -115,13 +115,13 @@
             </div>
 
         </div>
-    </core:js_template>
+    </core_v1:js_template>
 
     <%-- FEATURE TEMPLATE --%>
     <features:resultsItemTemplate />
 
     <%-- ERROR ROW --%>
-    <core:js_template id="error-template">
+    <core_v1:js_template id="error-template">
         {{ var productTitle = typeof obj.brandCode !== 'undefined' ? obj.brandCode : 'Unknown product name'; }}
         {{ var productDescription = typeof obj.policyName !== 'undefined' ? obj.policyName : 'Unknown product name'; }}
 
@@ -142,11 +142,11 @@
                 </div>
             </div>
         </div>
-    </core:js_template>
+    </core_v1:js_template>
 
     <%-- NO RESULTS --%>
     <div class="hidden">
-        <agg_new_results:results_none />
+        <agg_v2_results:results_none />
     </div>
 
     <%-- FETCH ERROR --%>
@@ -155,7 +155,7 @@
     </div>
 
     <%-- Logo template --%>
-    <core:js_template id="provider-logo-template">
+    <core_v1:js_template id="provider-logo-template">
         {{ var img = 'default_w'; }}
         {{ if (obj.hasOwnProperty('ctmProductId') && obj.ctmProductId.length > 1) img = obj.ctmProductId.substring(0, obj.ctmProductId.indexOf('-')); }}
         {{ if(img != 'default_w') { }}
@@ -164,15 +164,15 @@
 
             <div class="companyLogo icon icon-{{= obj.verticalLogo }}"></div>
         {{ } }}
-    </core:js_template>
+    </core_v1:js_template>
 
-</agg_new_results:results>
+</agg_v2_results:results>
 
 
 
 <!-- COMPARE TEMPLETING BELOW -->
 <%-- Template for results list. --%>
-<core:js_template id="compare-basket-features-item-template">
+<core_v1:js_template id="compare-basket-features-item-template">
 
     {{ for(var i = 0; i < products.length; i++) { }}
     <li>
@@ -186,9 +186,9 @@
 			</span>
     </li>
     {{ } }}
-</core:js_template>
+</core_v1:js_template>
 <!-- Compare products colums -->
-<core:js_template id="compare-basket-features-template">
+<core_v1:js_template id="compare-basket-features-template">
     <div class="compare-basket">
         {{ if(comparedResultsCount === 0) { }}
         <p>
@@ -232,10 +232,10 @@
     <div class="expand-collapse-toggle small hidden-xs">
         <a href="javascript:;" class="expandAllFeatures">Expand All</a> / <a href="javascript:;" class="collapseAllFeatures active">Collapse All</a>
     </div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- UNAVAILABLE COMBINED ROW --%>
-<core:js_template id="unavailable-combined-template">
+<core_v1:js_template id="unavailable-combined-template">
     <div class="result-row result_unavailable_combined notfiltered" data-available="N" style="display:block"
          data-position="0" data-sort="0">
         <div class="result">
@@ -251,4 +251,4 @@
             </div>
         </div>
     </div>
-</core:js_template>
+</core_v1:js_template>

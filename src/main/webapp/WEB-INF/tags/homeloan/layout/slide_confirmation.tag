@@ -12,7 +12,7 @@
 		<c:set var="confirmationData">{"message":"No confirmation token was provided"}</c:set>
 	</c:when>
 	<c:otherwise>
-		<jsp:useBean id="confirmationService" class="com.ctm.services.confirmation.ConfirmationService" scope="page" />
+		<jsp:useBean id="confirmationService" class="com.ctm.web.core.confirmation.services.ConfirmationService" scope="page" />
 		<c:set var="result" value="${confirmationService.getConfirmationByKeyAndBrandId(token, styleCodeId)}" />
 
 		<c:choose>
@@ -30,38 +30,38 @@
 
 
 <%-- HTML --%>
-<layout:slide formId="confirmationForm" className="displayBlock">
+<layout_v1:slide formId="confirmationForm" className="displayBlock">
 
-	<layout:slide_content>
-		<layout:slide_columns>
+	<layout_v1:slide_content>
+		<layout_v1:slide_columns>
 
 			<jsp:attribute name="rightColumn">
 			</jsp:attribute>
 
 			<jsp:body>
-				<layout:slide_content>
+				<layout_v1:slide_content>
 
 					<div id="confirmation" class="more-info-content"></div>
 
 					<confirmation:other_products />
 
-				</layout:slide_content>
+				</layout_v1:slide_content>
 			</jsp:body>
 
-		</layout:slide_columns>
-	</layout:slide_content>
+		</layout_v1:slide_columns>
+	</layout_v1:slide_content>
 
-</layout:slide>
+</layout_v1:slide>
 
 
 
 <%-- TEMPLATES --%>
-<core:js_template id="confirmation-template">
+<core_v1:js_template id="confirmation-template">
 	<ui:bubble variant="chatty">
 		<p>Thanks <!-- SessionCam:Hide -->{{= obj.firstName }}<!-- /SessionCam:Hide --> for your Home Loans enquiry. We&#39;ll pass your details onto a broker who will be in touch with you within the next business day.</p>
 		<p>Your reference number for your enquiry is <strong>{{= obj.flexOpportunityId }}</strong>. It&#39;s a good idea to keep this handy for future communications with your broker.</p>
 	</ui:bubble>
-</core:js_template>
+</core_v1:js_template>
 
 
 

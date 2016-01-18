@@ -2,6 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.competition_entry')}" />
+
 <session:get settings="true" />
 
 <security:populateDataFromParams rootPath="competition" />
@@ -18,12 +20,12 @@
 
 
 <%-- Variables --%>
-<c:set var="database" value="ctm" />
 <c:set var="competition_id" value="${2}" /><%-- 1=Robe, 2=1000grubs, 3=1000dollars --%>
 <c:set var="brand" value="CTM" />
 <c:set var="vertical" value="COMPETITION" />
 <c:set var="source" value="OctPromo1000grubs" />
 <c:set var="errorPool" value="" />
+<c:set var="competition_email" value="${data['competition/email']}" />
 
 <%-- Param if coming from the health journey  --%>
 <c:choose>
@@ -119,7 +121,7 @@
 </c:if>
 
 <%-- STEP 1: Validate the input received before proceeding --%>
-<c:if test="${empty data['competition/email']}">
+<c:if test="${empty competition_email}">
 	<c:set var="errorPool" value="{error:'Your email address is required.'}" />
 </c:if>
 <c:if test="${empty data['competition/firstname']}">
@@ -136,23 +138,23 @@
 <%-- STEP 2: Write email data to aggregator.email_master and get the EmailID --%>
 <c:if test="${empty errorPool}">
 	<c:catch var="error">
-		<agg:write_email
+		<agg_v1:write_email
 			source="${source}"
 			brand="${brand}"
 			vertical="${vertical}"
-			emailAddress="${data['competition/email']}"
+			emailAddress="${competition_email}"
 			firstName="${data['competition/firstname']}"
 			lastName="${data['competition/lastname']}"
 			items="marketing=Y,okToCall=Y" />
 
-		<sql:setDataSource dataSource="jdbc/${database}"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<sql:query var="emailMaster">
 			SELECT emailId
 				FROM aggregator.email_master
 				WHERE emailAddress = ?
 				AND styleCodeId = ?
 				LIMIT 1;
-			<sql:param value="${data['competition/email']}" />
+			<sql:param value="${competition_email}" />
 			<sql:param value="${styleCodeId}" />
 		</sql:query>
 	</c:catch>
@@ -173,7 +175,7 @@
 					<c:set var="items">firstname=${data['competition/firstname']}::lastname=${data['competition/lastname']}::phone=${data['competition/phone']}</c:set>
 
 					<c:set var="entry_result">
-						<agg:write_competition
+						<agg_v1:write_competition
 							competition_id="${competition_id}"
 							email_id="${email_id}"
 							items="${items}"
@@ -190,11 +192,11 @@
 
 		</c:when>
 		<c:when test="${empty error and (empty emailMaster or emailMaster.rowCount == 0)}">
-			<go:log level="ERROR">Failed to locate emailId for ${data['competition/email']}</go:log>
+			${logger.error('Failed to locate emailId. {}', log:kv('email', competition_email))}
 			<c:set var="errorPool" value="{error:'Failed to locate registered user.'}" />
 		</c:when>
 		<c:otherwise>
-			<go:log level="ERROR" error="${error}">Database Error2: ${error}</go:log>
+			${logger.error('Database error querying aggregator.email_master. {},{}', log:kv('transactionId', transactionId), log:kv('email', competition_email) , error)}
 			<c:set var="errorPool" value="{error:'${error}'}" />
 		</c:otherwise>
 	</c:choose>
@@ -203,7 +205,7 @@
 <%-- JSON RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		<go:log source="competition_entry_jsp">ENTRY ERRORS: ${errorPool}</go:log>
+		${logger.info('Returning errors to the browser', log:kv('errorPool', errorPool))}
 		{[${errorPool}]}
 
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
@@ -211,7 +213,7 @@
 			<c:param name="page" value="${pageContext.request.servletPath}" />
 			<c:param name="message" value="Competition error" />
 			<c:param name="description" value="${errorPool}" />
-			<c:param name="data" value="competition_id:${competition_id} email:${data['competition/email']} firstname:${data['competition/firstname']} lastname:${data['competition/lastname']} phone:${data['competition/phone']}" />
+			<c:param name="data" value="competition_id:${competition_id} email:${competition_email} firstname:${data['competition/firstname']} lastname:${data['competition/lastname']} phone:${data['competition/phone']}" />
 		</c:import>
 	</c:when>
 	<c:otherwise>

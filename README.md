@@ -1,6 +1,5 @@
 # Compare The Market Technology Platform
 
-
 The CTM platform began life from the original Auto & General technology stack, used in budget direct web quote and sale, but has since diverged and evolved into it's own entity.
 
 As the pace of development and evolution for the CTM IT platform is extremely high, and demands increased flexibility and performance for frontend design and code.

@@ -9,7 +9,7 @@
 <go:setData dataVar="authenticatedData" xpath="messages" value="*DELETE" />
 
 <%-- Log in / authenticate user --%>
-<c:set var="login"><core:login uid="${param.uid}" /></c:set>
+<c:set var="login"><core_v1:login uid="${param.uid}" /></c:set>
 <c:set var="callCentre" scope="session"><simples:security key="callCentre" /></c:set>
 <c:set var="isRoleSupervisor" scope="session"><simples:security key="supervisor" /></c:set>
 <c:set var="isRoleIT" scope="session"><simples:security key="IT" /></c:set>
@@ -35,15 +35,12 @@
 	</c:when>
 	<c:otherwise>
 
-		<layout:simples_page fullWidth="true">
+		<layout_v1:simples_page fullWidth="true">
 
 			<jsp:attribute name="head">
-				<script src="${assetUrl}framework/lib/js/Inspector-JSON-0.1.0/inspector-json.js"></script>
-				<link rel="stylesheet" href="${assetUrl}framework/lib/js/Inspector-JSON-0.1.0/inspector-json.css">
 			</jsp:attribute>
 
 			<jsp:body>
-						<core:loadsafe />
 						<simples:menu_bar bridgeToLive="N" />
 
 						<iframe id="simplesiframe" name="simplesiframe" width="100%" height="200" src="${assetUrl}simples/home.jsp"></iframe>
@@ -60,7 +57,7 @@
 						<simples:template_blacklist_delete />
 			</jsp:body>
 
-		</layout:simples_page>
+		</layout_v1:simples_page>
 
 	</c:otherwise>
 </c:choose>

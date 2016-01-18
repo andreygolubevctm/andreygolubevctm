@@ -11,9 +11,10 @@
 <c:set var="tier2FamilyRebateText" >$210,001-$280,000</c:set>
 <c:set var="tier3FamilyRebateText" >Over $280,001</c:set>
 
-
-<%-- Include this tag to add required rebate multiplier variables to the request --%>
-<health:changeover_rebates />
+<jsp:useBean id="changeOverRebatesService" class="com.ctm.web.simples.services.ChangeOverRebatesService" />
+<c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(null)}"/>
+<c:set var="rebate_multiplier_current" value="${changeOverRebates.getCurrentMultiplier()}"/>
+<c:set var="rebate_multiplier_future" value="${changeOverRebates.getFutureMultiplier()}"/>
 
 <%-- Format the range of rebates for use in various places - either a whole percent or the adjusted percent to 3 decimal places --%>
 <c:set var="rebate_value_40" scope="request">

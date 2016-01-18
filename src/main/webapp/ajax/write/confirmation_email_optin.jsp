@@ -43,7 +43,7 @@
 				<c:otherwise>N</c:otherwise>
 			</c:choose>
 		</c:set>
-		<agg:write_email
+		<agg_v1:write_email
 			brand="${brand}"
 			vertical="${vertical}"
 			source="${source}"
@@ -60,7 +60,7 @@
 		<go:setData dataVar="data" xpath="${vertical}/confirmation/confirmationOptIn/emailAddress" value="${email}" />
 		<c:set var="xmlData">${data[vertical].confirmation}</c:set>
 		<go:setData dataVar="data" xpath="${vertical}/confirmation/confirmationOptIn" value="*DELETE" />
-		<sql:setDataSource dataSource="jdbc/ctm" />
+		<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 		<c:catch var="error">
 			<sql:update>
 				UPDATE ctm.confirmations SET XMLdata = ?

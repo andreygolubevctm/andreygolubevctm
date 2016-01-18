@@ -9,7 +9,7 @@
     <c:set var="pageTitle" value="500"/>
 </c:catch>
 <c:catch var="error">
-    <go:log source="jsp:err.error500" level="ERROR" error="${pageContext.exception}">Error Page Hit, requestUri=${requestUri} brandCode=${brandCode}</go:log>
+    ${logger.error('Error Page Hit. {},{}' ,  log:kv('requestUri', requestUri) , log:kv('brandCode',brandCode ), pageContext.exception)}
 </c:catch>
 
 <c:choose>
@@ -28,11 +28,11 @@
     <c:otherwise>
         <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
         <c:catch var="error">
-            <layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
+            <layout_v1:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
 
                 <jsp:attribute name="head">
-                    <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}" />
-                    <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/components/unsubscribe.${pageSettings.getBrandCode()}.css?${revision}" media="all">
+                    <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/"/>
+                    <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/error.css?${revision}" media="all">
                 </jsp:attribute>
 
                 <jsp:attribute name="head_meta"></jsp:attribute>
@@ -43,7 +43,7 @@
                 <jsp:attribute name="form_bottom"></jsp:attribute>
 
                 <jsp:attribute name="footer">
-                    <core:whitelabeled_footer/>
+                    <core_v1:whitelabeled_footer/>
                 </jsp:attribute>
 
 				<jsp:attribute name="vertical_settings">{session: {firstPokeEnabled: false}}</jsp:attribute>
@@ -54,7 +54,7 @@
                 <jsp:body>
 
                     <div role="form" class="journeyEngineSlide active unsubscribeForm">
-                        <layout:slide_center xsWidth="12" mdWidth="10">
+                        <layout_v1:slide_center xsWidth="12" mdWidth="10">
                             <h1 class="error_title">Whoops, sorry... 500 Internal server error </h1>
 
                             <div class="error_message">
@@ -73,13 +73,13 @@
                             </div>
 
                             <confirmation:other_products/>
-                        </layout:slide_center>
+                        </layout_v1:slide_center>
                     </div>
 
 
                 </jsp:body>
 
-            </layout:generic_page>
+            </layout_v1:generic_page>
         </c:catch>
     </c:otherwise>
 </c:choose>

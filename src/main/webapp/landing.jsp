@@ -4,6 +4,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger('jsp.landing')}" />
+
 <c:set var="redirectURL" value="" />
 <c:set var="verticalName" value="" />
 <c:choose>
@@ -21,6 +23,7 @@
 		</c:catch>
 		<c:if test="${not empty error}">
 			<settings:setVertical verticalCode="GENERIC" />
+			${logger.warn('Error setting vertical. {}', log:kv('vert',param.vert ), error)}
 		</c:if>
 	</c:when>
 	<c:otherwise>
@@ -30,7 +33,7 @@
 
 
 <%-- HTML --%>
-<layout:generic_page title="Secure Landing Page" skipJSCSS="true">
+<layout_v1:generic_page title="Secure Landing Page" skipJSCSS="true">
 
 	<jsp:attribute name="head">
 		<script type="text/javascript">
@@ -115,4 +118,4 @@
 	</div>
 	</jsp:body>
 
-</layout:generic_page>
+</layout_v1:generic_page>

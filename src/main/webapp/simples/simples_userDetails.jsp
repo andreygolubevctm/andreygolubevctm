@@ -4,7 +4,7 @@
 
 <settings:setVertical verticalCode="SIMPLES" />
 
-<c:set var="login"><core:login uid="" /></c:set>
+<c:set var="login"><core_v1:login uid="" /></c:set>
 
 
 <c:choose>

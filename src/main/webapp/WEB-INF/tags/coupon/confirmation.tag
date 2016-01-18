@@ -4,6 +4,6 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="transactionId" 	required="true"	 rtexprvalue="true"	 description="transactionId to get confirmation html" %>
 
-<jsp:useBean id="couponService" class="com.ctm.services.coupon.CouponService" />
+<jsp:useBean id="couponService" class="com.ctm.web.core.coupon.services.CouponService" />
 
 <c:out value="${couponService.getCouponForConfirmation(transactionId)}" escapeXml="false" />

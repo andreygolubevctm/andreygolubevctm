@@ -6,11 +6,12 @@
 	<contactDetails>
 		<name>Guybrush</name>
 		<contactNumber>
-			<mobileinput>(0404) 000 000</mobileinput>
-			<mobile>0404000000</mobile>
+			<mobileinput>0404 040 000</mobileinput>
+			<mobile>0404040000</mobile>
 			<otherinput>(07) 3333 4444</otherinput>
 			<other>0733334444</other>
 		</contactNumber>
+		<flexiContactNumber>0404 123 123</flexiContactNumber>
 		<email>preload.testing@comparethemarket.com.au</email>
 		<optInEmail>Y</optInEmail>
 		<call>Y</call>
@@ -25,6 +26,7 @@
 		<healthSitu>LC</healthSitu>
 		<cover>Y</cover>
 		<singleProvider></singleProvider>
+		<coverType>C</coverType>
 	</situation>
 	<benefits>
 		<benefitsExtras>
@@ -36,7 +38,7 @@
 		<healthSitu>FK</healthSitu>
 	</benefits>
 	<healthCover>
-		<income>1150000</income>
+		<income>0</income>
 		<dependants>12</dependants>
 		<rebate>N</rebate>
 		<primary>
@@ -85,6 +87,7 @@
 				<cardExpiryMonth>10</cardExpiryMonth>
 				<cardExpiryYear>18</cardExpiryYear>
 			</expiry>
+			<cardPosition>1</cardPosition>
 		</medicare>
 	</payment>
 	<previousfund>
@@ -150,10 +153,7 @@
 			<fullAddress>10 Golding St.,Toowong QLD 4066</fullAddress>
 			<fullAddressLineOne>10 Golding St</fullAddressLineOne>
 		</address>
-		<mobileinput>(0412) 345 678</mobileinput>
-		<mobile>0412345678</mobile>
-		<otherinput>(07) 3234 5678</otherinput>
-		<other>0732345678</other>
+
 		<email>preload.testing@comparethemarket.com.au</email>
 		<optInEmail></optInEmail>
 		<dependants>
@@ -202,7 +202,7 @@
 				<firstName>Dependeress</firstName>
 				<middleName>Middlee</middleName>
 				<lastname>Five</lastname>
-				<dob>05/05/1989</dob>
+				<dob>05/05/1995</dob>
 				<school>UNSW</school>
 				<gender>F</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
@@ -278,6 +278,8 @@
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant12>
 		</dependants>
+		<mobileinput>(0404) 000 000</mobileinput>
+		<mobile>0404000000</mobile>
 	</application>
 	<declaration>Y</declaration>
 	<simples>
@@ -288,4 +290,5 @@
 		<dialogue-checkbox-28>Y</dialogue-checkbox-28>
 		<contactType>outbound</contactType>
 	</simples>
+	<contactAuthority>Y</contactAuthority>
 </health>

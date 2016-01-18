@@ -3,9 +3,9 @@
 
 <jsp:useBean id="now" class="java.util.Date"/>
 
-<sql:setDataSource dataSource="jdbc/ctm" />
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 
-<core_new:no_cache_header />
+<core_v2:no_cache_header />
 
 <c:set var="token"><c:out value="${param.token}" escapeXml="true" /></c:set>
 
@@ -202,7 +202,7 @@
 			<go:setData dataVar="data" xpath="${xpath}/callmeback/timeOfDay" value="${contactTime}" />
 		</c:if>
 		
-		<core:transaction touch="N" />
+		<core_v1:transaction touch="N" />
 		
 		<c:if test="${telephoneOptIn eq 'Y' and not empty contactTime}">
 			<c:import url="/ajax/write/request_callback.jsp">
@@ -212,7 +212,7 @@
 			</c:import>
 		</c:if>
 		
-		<agg:write_quote rootPath="${fn:toLowerCase(productType)}" productType="${productType}" />
+		<agg_v1:write_quote rootPath="${fn:toLowerCase(productType)}" productType="${productType}" />
 		
 		<c:if test="${empty output}">
 			<c:set var="output">{ success: true }</c:set>

@@ -1,0 +1,24 @@
+.travel {
+
+	strong {
+		font-weight: normal;
+		font-family: @font-family-theme-bold;
+	}
+	// This should be solved by making the column for fields wider
+	@media(@sm) {
+		label.btn {
+			white-space: normal;
+		}
+	}
+	.push-top {
+		padding-top: 10px;
+	}
+
+  // for cover level tabs background
+  @media(@sm) {
+	&[data-step="results"] .navbar-default {
+	  background-color: #fff;
+	}
+  }
+
+}

@@ -9,7 +9,7 @@
 <%@ attribute name="vertical" required="false" rtexprvalue="true" description="vertical" %>
 <%@ attribute name="justChecking" required="false" rtexprvalue="true" description="If just checking if a user exists (not a login attempt)"%>
 
-<jsp:useBean id="userData" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="userData" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 <c:set var="loginExists" value="false" />
 <c:set var="validCredentials" value="false" />
@@ -21,12 +21,12 @@
 	<c:when test="${empty emailAddress}">
 	</c:when>
 	<c:when test="${not empty hashedEmail}">
-		<jsp:useBean id="authenticationService" class="com.ctm.services.AuthenticationService" scope="request" />
+		<jsp:useBean id="authenticationService" class="com.ctm.web.core.services.AuthenticationService" scope="request" />
 		<c:set var="emailDetails" value="${authenticationService.onlineUserAuthenticate(hashedEmail, emailAddress, styleCodeId)}" />
 		<c:set var="validCredentials" value="${emailDetails.isValid()}" />
 		<c:choose>
 			<c:when test="${validCredentials}">
-				<sql:query var="emailResults" dataSource="jdbc/ctm">
+				<sql:query var="emailResults" dataSource="${datasource:getDataSource()}">
 					SELECT em.emailPword as emailPword,
 					ep.value
 					FROM aggregator.email_master em
@@ -64,7 +64,7 @@
 	</c:when>
 	<c:otherwise>
 
-		<sql:query var="emailResults" dataSource="jdbc/ctm">
+		<sql:query var="emailResults" dataSource="${datasource:getDataSource()}">
 			SELECT em.emailPword as emailPword,
 				em.hashedEmail, ep.value
 				FROM aggregator.email_master em

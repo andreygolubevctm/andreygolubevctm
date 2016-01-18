@@ -53,7 +53,7 @@
 				{{ if (resultData.phone !== '') { }}
 					<tr>
 						<th>Phone</th>
-						<td>{{= resultData.phone }}</td>
+						<td>{{ if(['2', '3', '4', '7', '8'].indexOf(String(resultData.phone).charAt(0)) >= 0){ }}0{{ } }}{{= resultData.phone }}</td>
 					</tr>
 				{{ } }}
 				{{ if (resultData.address !== '') { }}

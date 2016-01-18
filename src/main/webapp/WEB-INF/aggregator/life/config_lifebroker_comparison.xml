@@ -6,7 +6,6 @@
 	<merge-root>soap-response</merge-root>
 	<merge-xsl>merge-lifebroker_comparison.xsl</merge-xsl>
 	<config-dir>aggregator/life</config-dir>
-	<error-dir>aggregator/life/app-logs-errors</error-dir>
 	<debug-dir>life/app-logs-debug</debug-dir>
 
 	<service name="COMPAREBENEFITS" type="SOAP">

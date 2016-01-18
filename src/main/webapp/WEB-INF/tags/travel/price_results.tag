@@ -14,7 +14,7 @@
 <c:set var="verticalId" value="2" />
 <c:set var="productIdArray" value="" />
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%--
 	The data will arrive in a single parameter called QuoteData

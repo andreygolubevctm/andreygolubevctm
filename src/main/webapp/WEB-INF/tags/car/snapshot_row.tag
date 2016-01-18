@@ -2,14 +2,14 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<form_new:fieldset_columns sideHidden="false">
+<form_v2:fieldset_columns sideHidden="false">
 
     <jsp:attribute name="rightColumn"></jsp:attribute>
 
     <jsp:body>
-        <layout:slide_content>
+        <layout_v1:slide_content>
             <car:snapshot asBubble="true" className="quoteSnapshotV2"/>
-        </layout:slide_content>
+        </layout_v1:slide_content>
     </jsp:body>
 
-</form_new:fieldset_columns>
+</form_v2:fieldset_columns>

@@ -3,6 +3,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.write_reminder')}" />
+
 
 <c:choose>
 	<c:when test="${not empty param.transactionId}">
@@ -10,9 +12,10 @@
 	</c:when>
 	<c:otherwise>
 		<settings:setVertical verticalCode="GENERIC" />
-		<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+		<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 	</c:otherwise>
 </c:choose>
+
 
 
 
@@ -37,7 +40,7 @@
 
 <security:populateDataFromParams rootPath="save" />
 
-<c:set var="outcome"><core:get_transaction_id quoteType="${quoteType}" id_handler="preserve_tranId" emailAddress="${data['save/email']}" /></c:set>
+<c:set var="outcome"><core_v1:get_transaction_id quoteType="${quoteType}" id_handler="preserve_tranId" emailAddress="${data['save/email']}" /></c:set>
 
 <c:if test="${not empty data['current/verticalCode']}">
 	<c:set var="originalVertical" value="${data['current/verticalCode']}" />
@@ -47,7 +50,7 @@
 
 <security:populateDataFromParams rootPath="reminder" />
 <c:set var="ct_outcome">
-	<core:transaction touch="H" noResponse="false" writeQuoteOverride="Y" emailAddress="${data['reminder/email']}" />
+	<core_v1:transaction touch="H" noResponse="false" writeQuoteOverride="Y" emailAddress="${data['reminder/email']}" />
 </c:set>
 
 <c:set var="reminderTransactionId" value="${data.current.transactionId}" />
@@ -73,7 +76,7 @@
 <%-- JSON/JSONP RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		<go:log level="ERROR" source="write_reminder_jsp">SAVE ERRORS: ${errorPool}</go:log>
+		${logger.info('Returning errors to the browser', log:kv('errorPool', errorPool))}
 		<c:choose>
 			<c:when test="${fn:contains(callback,'jsonp')}">
 				${callback}({error:${errorPool}});

@@ -6,10 +6,10 @@
 <%@ attribute name="label" 	required="true"	 rtexprvalue="true"	 description="Label for elements - life or ip" %>
 
 <%-- HTML --%>
-<field:hidden xpath="${label}/client/reference" defaultValue="" />
-<field:hidden xpath="${label}/api/reference" defaultValue="" />
-<field:hidden xpath="${label}/primary/productid" defaultValue="" />
-<field:hidden xpath="${label}/partner/productid" defaultValue="" />
+<field_v1:hidden xpath="${label}/client/reference" defaultValue="" />
+<field_v1:hidden xpath="${label}/api/reference" defaultValue="" />
+<field_v1:hidden xpath="${label}/primary/productid" defaultValue="" />
+<field_v1:hidden xpath="${label}/partner/productid" defaultValue="" />
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
 

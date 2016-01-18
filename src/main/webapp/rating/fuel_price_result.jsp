@@ -30,7 +30,7 @@
 	<c:set var="fuels"><c:out value="${fuels}" />,9</c:set>
 </c:if>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- MAKE the postcode, suburb and state variables by splitting the location string (Suburb PCODE STATE) --%>
 <c:forTokens items="${location}" delims=" " var="locationToken">
@@ -103,7 +103,7 @@ MAIN METRO SEARCH
 =================
 --%>
 
-<c:set var="update"><fuel_new:schedule type="metro" /></c:set>
+<c:set var="update"><fuel:schedule type="metro" /></c:set>
 
 
 <%-- Get the time difference --%>	
@@ -146,9 +146,9 @@ MAIN METRO SEARCH
 	<c:if test="${timeDiff > 86400}"> <%-- FIX: 86400 --%>
 		<error>delay</error> <%-- Test if the results are too old (technical issue) --%>
 	</c:if>
-	<time><field:time_ago time="${timeDiff}" timestamp="true" /></time>
+	<time><field_v1:time_ago time="${timeDiff}" timestamp="true" /></time>
 	<c:if test="${update < 7200}">
-	<update><field:time_ago time="${update}" timestamp="true" rounding="10" /></update>
+	<update><field_v1:time_ago time="${update}" timestamp="true" rounding="10" /></update>
 	</c:if>
 	<c:forEach var="row" items="${result.rows}">
 		<result>

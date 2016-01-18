@@ -6,7 +6,7 @@
 
 <session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}"/>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 
 <%-- Set Security --%>
@@ -27,7 +27,7 @@
 
 
 <%-- Save data --%>
-<core:transaction touch="R" noResponse="true" writeQuoteOverride="Y"/>
+<core_v1:transaction touch="R" noResponse="true" writeQuoteOverride="Y"/>
 <%-- Fetch and store the transaction id --%>
 <c:set var="tranId" value="${data['current/transactionId']}"/>
 
@@ -143,7 +143,7 @@
     </results>
 </c:set>
 
-<agg:write_stats rootPath="${vertical}" tranId="${tranId}" debugXml="${resultXml}"/>
+<agg_v1:write_stats rootPath="${vertical}" tranId="${tranId}" debugXml="${resultXml}"/>
 <%-- Add the results to the current session data --%>
 <go:setData dataVar="data" xpath="soap-response" value="*DELETE"/>
 <go:setData dataVar="data" xpath="soap-response" xml="${resultXml}"/>

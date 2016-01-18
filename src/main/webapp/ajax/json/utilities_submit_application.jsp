@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.utilities_submit_application')}" />
+
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
 
 <%-- Load the params into data --%>
@@ -13,7 +15,7 @@
 	<go:setData dataVar="data" xpath="utilities/application/details/address/streetNum" value="0" />
 </c:if>
 
-<jsp:useBean id="utilitiesApplicationService" class="com.ctm.services.utilities.UtilitiesApplicationService" scope="request" />
+<jsp:useBean id="utilitiesApplicationService" class="com.ctm.web.utilities.services.UtilitiesApplicationService" scope="request" />
 <c:set var="serviceResponse" value="${utilitiesApplicationService.validate(pageContext.request, data)}" />
 
 <c:choose>
@@ -30,10 +32,10 @@
 		</c:if>
 
 		<%-- Save client data: ***FIX: before using this a 'C' status needs to be identified.
-		<core:transaction touch="A" noResponse="true" />
+		<core_v1:transaction touch="A" noResponse="true" />
 		--%>
 
-		<agg:write_email
+		<agg_v1:write_email
 			brand="CTM"
 			vertical="UTILITIES"
 			source="QUOTE"
@@ -43,8 +45,8 @@
 			lastName="${data['utilities/application/details/lastName']}"
 			items="marketing=${data['utilities/application/thingsToKnow/receiveInfo']}" />
 
-		<go:log level="INFO" source="utilities_submit_application">Utilities Tran Id = ${data['current/transactionId']}</go:log>
 		<c:set var="tranId" value="${data['current/transactionId']}" />
+		${logger.info('Utilities retrieved Tran Id from data object.')}
 
 		<c:set var="results" value="${utilitiesApplicationService.submitFromJsp(pageContext.getRequest(), data)}" scope="request"  />
 
@@ -63,9 +65,9 @@
 		<c:set var="confirmationkey" value="${pageContext.session.id}-${tranId}" />
 		<go:setData dataVar="data" xpath="utilities/confirmationkey" value="${confirmationkey}" />
 
-		<agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
-		<agg:write_quote productType="UTILITIES" rootPath="utilities" />
-		<agg:write_touch touch="C" transaction_id="${tranId}" />
+		<agg_v1:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
+		<agg_v1:write_quote productType="UTILITIES" rootPath="utilities" />
+		<agg_v1:write_touch touch="C" transaction_id="${tranId}" />
 
 		<c:out value="${json}" escapeXml="false" />
 

@@ -1,0 +1,64 @@
+
+// Load core variables, mixins, and
+// framework core before the theme.
+// See: framework.build.ctm.less
+
+/**
+	* [NOTE]
+	* This file was copied from the default bootstrap
+	* theme to serve as a starting point.
+	*/
+
+
+//Using CTM as a base for the customisations of bootstrap. In future this could inherit a 'core' version for even better rendering stack.
+
+@import '../ctm/theme.less';
+
+//
+// LOGO MAGIC
+// --------------------------------------------------
+#logo {
+
+	background-repeat: no-repeat;
+	padding: 0;
+	float: none;
+	display: block;
+	width: 100px;
+	height: 30px;
+	margin: 6px auto 0 8px;
+
+	background-size: 100px 30px;
+	.highResImg('../graphics/logo.png'; '../graphics/logo-@2x.png'; 100px; 30px);
+
+	@media(min-width: @screen-sm) {
+		width: 156px;
+		height: 46px;
+		background-size: 156px 46px;
+		margin: 8px auto 10px 0;
+	}
+}
+
+//Powered by CTM logo size.
+.journeyEngineLoader {
+	.loading-logo {
+		width: 174px;
+		height: 141px;
+	}
+	.loadingDisclaimerText {
+		font-family: @font-family-theme-light;
+		font-size: @font-size-base;
+	}
+}
+
+// Removes the top border of the dropdowns on the resuts page. Edit Details, Save Quote, Payment Frequency and Excess dropdowns.
+.navbar-nav > li > .dropdown-menu {
+	border-top: 0px;
+}
+
+// Header height doesn't change so needs specific styling
+.header-wrap {
+	.quoteSnapshot {
+		top:0.85em !important;
+		@media(@md) {top: 0.85em !important;}
+	}
+}

@@ -6,12 +6,12 @@
 <x:parse var="travel" xml="${param.QuoteData}" />
 
 <c:set var="transactionId"><x:out select="$travel/request/header/partnerReference" /></c:set>
-<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
+<c:set var="styleCodeId"><core_v1:get_stylecode_id transactionId="${transactionId}" /></c:set>
 <c:set var="verticalId" value="2" />
 
 <c:set var="providerId" >${param.providerId}</c:set>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- 
 	The data will arrive in a single parameter called QuoteData 
@@ -36,7 +36,7 @@
 	<c:choose>
 	<c:when test="${multiTrip == 'Y'}">365</c:when>
 	<c:otherwise>
-			<jsp:useBean id="utilCalc" class="com.ctm.utils.travel.DurationCalculation" scope="request" />
+			<jsp:useBean id="utilCalc" class="com.ctm.web.travel.utils.DurationCalculation" scope="request" />
 			${utilCalc.calculateDayDuration(reqStartDate, reqEndDate)}
 	</c:otherwise>
 	</c:choose>

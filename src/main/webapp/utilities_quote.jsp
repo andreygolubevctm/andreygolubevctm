@@ -6,8 +6,8 @@
 
 <session:new verticalCode="UTILITIES" authenticated="true"/>
 
-<core_new:quote_check quoteType="utilities"/>
-<core_new:load_preload/>
+<core_v2:quote_check quoteType="utilities"/>
+<core_v2:load_preload/>
 
 <%-- Call centre numbers --%>
 <c:set var="callCentreNumber" scope="request"><content:get key="genericCallCentreNumber"/></c:set>
@@ -15,7 +15,7 @@
 
 
 <%-- HTML --%>
-<layout:journey_engine_page title="Utilities Quote">
+<layout_v1:journey_engine_page title="Utilities Quote">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -105,6 +105,16 @@
                                     <span class="icon"></span> <span>Savings <br class="hidden-sm hidden-md" />up to</span>
                                 </a>
                             </li>
+                            <li class="hidden col-sm-3 col-lg-2 colEstimatedCost">
+                                <a href="javascript:;" data-sort-type="estimatedCostValue" data-sort-dir="asc">
+                                    <span class="icon"></span> <span>Estimated Cost</span>
+                                </a>
+                            </li>
+                            <li class="hidden col-sm-3 col-lg-2 colEstimatedUsage">
+                                <a href="javascript:;">
+                                    <span class="icon"></span> <span>Estimated Usage</span>
+                                </a>
+                            </li>
                             <li class="col-sm-4 col-lg-2 active colTotalDiscounts">
                                 <a href="javascript:;" data-sort-type="totalDiscountValue" data-sort-dir="desc">
                                     <span class="icon"></span> <span>Total Available <br class="hidden-sm hidden-md" />Discounts</span>
@@ -125,11 +135,11 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<core:whitelabeled_footer/>
+		<core_v1:whitelabeled_footer/>
 	</jsp:attribute>
 						
 	<jsp:attribute name="vertical_settings">
-		<utilities_new:settings/>
+		<utilities_v2:settings/>
 	</jsp:attribute>
 							
 	<jsp:attribute name="body_end">
@@ -138,17 +148,18 @@
     <jsp:body>
 							
         <%-- Slides --%>
-        <utilities_new_layout:slide_your_details/>
-        <utilities_new_layout:slide_results/>
-        <utilities_new_layout:slide_enquiry/>
+        <utilities_v2_layout:slide_your_details/>
+        <utilities_v2_layout:slide_contact_details/>
+        <utilities_v2_layout:slide_results/>
+        <utilities_v2_layout:slide_enquiry/>
 							
         <div class="hiddenFields">
-            <form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
-            <core:referral_tracking vertical="${pageSettings.getVerticalCode()}"/>
+            <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
+            <core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}"/>
 					</div>
         <input type="hidden" name="transcheck" id="transcheck" value="1"/>
         <input type="hidden" name="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" id="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" value="" />
-					
+        <field:hidden xpath="environmentOverride" />
     </jsp:body>
 					
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

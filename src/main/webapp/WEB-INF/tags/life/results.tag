@@ -652,7 +652,7 @@ Results = {
 
 								var completeLogoMove = function() {
 									var size = "83x53";//"44x25";
-									elements.finish.css({backgroundImage:"url(common/images/logos/life/" + size + "/" + product.thumb + ")"});
+									elements.finish.css({backgroundImage:"url(assets/graphics/logos/life/" + size + "/" + product.thumb + ")"});
 									$("#results-mast-wrapper ." + type).find('.client').first().removeClass("adding");
 									$("#results-rows-" + type).find(".results-row.selected").removeClass('selected');
 									$('#result_' + type + '_' + product_id).addClass('selected');
@@ -2343,7 +2343,7 @@ var highlightMeTextObj = new HighlightMeText();
 <div id="resultsPage" class="clearFix">
 
 	<!-- add the more btn (itemId Id of container want to scroll too + scrollTo position of that item eg: top or bottom) -->
-	<agg:moreBtn itemId="footer" scrollTo="top"/>	
+	<agg_v1:moreBtn itemId="footer" scrollTo="top"/>
 	
 		<div id="summary-header">
 			<div>
@@ -2526,7 +2526,7 @@ var highlightMeTextObj = new HighlightMeText();
 	</div>
 
 	<%-- TEMPALTE FOR CLIENT HEADING --%>
-	<core:js_template id="client-template">
+	<core_v1:js_template id="client-template">
 		<span class="client [#= classname #]">
 			<span class='col icon [#= gender #]'><!-- empty --></span>
 			<span class='col age-smoker [#= smoker #]'>
@@ -2540,10 +2540,10 @@ var highlightMeTextObj = new HighlightMeText();
 			<span class='col select'><!-- empty --></span>
 			<span class='col selected'><div class="logo"><a href="javascript:void(0);" class="drop-selected-product">drop selected product</a></div></span>
 		</span>
-	</core:js_template>
+	</core_v1:js_template>
 		
 	<%-- TEMPLATE FOR RESULT ROW --%>
-		<core:js_template id="result-template">
+		<core_v1:js_template id="result-template">
 		<div class="results-row" id="result_[#= client_type #]_[#= product_id #]" data-clienttype="[#= client_type #]" data-productid="[#= product_id #]" data-source="[#= company #]">
 			<div id="more-info-[#= client_type #]_[#= product_id #]" class="more-info-slider">
 				<table><tbody><tr>
@@ -2584,7 +2584,7 @@ var highlightMeTextObj = new HighlightMeText();
 				<a href="javascript:void(0)" class="close-button"></a>
 				<div class="col mid">
 					<div class="product company">
-						<div class="logo" title="[#= company #]" style="background-image:url('common/images/logos/life/83x53/[#= thumb #]');"><!-- logo --></div>
+						<div class="logo" title="[#= company #]" style="background-image:url('assets/graphics/logos/life/83x53/[#= thumb #]');"><!-- logo --></div>
 						<div class="seltocompare">
 							<div class="col mid">
 								<a id="toggle-compare-[#= client_type #]-[#= product_id #]" href="javascript:void(0);" data-toggleInCompareList="true" data-client_type="[#= client_type #]" data-id="[#= product_id #]" class="selector"><!-- empty --></a>
@@ -2613,6 +2613,6 @@ var highlightMeTextObj = new HighlightMeText();
 			</div>			
 		</div>
 		</div>
-	</core:js_template>
+	</core_v1:js_template>
 	
 </div>

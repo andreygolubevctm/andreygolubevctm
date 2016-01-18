@@ -3,6 +3,7 @@
 
 <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
 <c:catch var="error">
+    <c:set var="logger" value="${log:getLogger('jsp.err.error404')}" />
     <settings:setVertical verticalCode="GENERIC"/>
     <c:set var="brandCode" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}"/>
     <c:set var="pageTitle" value="404"/>
@@ -19,14 +20,13 @@
     <c:otherwise>
         <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
         <c:catch var="error">
+            ${logger.info('Page not found. {},{}', log:kv('request_uri', requestScope["javax.servlet.forward.request_uri"]), log:kv('servletPath',pageContext.request.servletPath ))}
 
-            <go:log source="404" level="INFO">Request URI: ${requestScope["javax.servlet.forward.request_uri"]}, servletPath: ${pageContext.request.servletPath}</go:log>
-
-            <layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
+            <layout_v1:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
 
                 <jsp:attribute name="head">
-					<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}"/>
-                    <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/components/unsubscribe.${pageSettings.getBrandCode()}.css?${revision}" media="all">
+					<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/"/>
+                    <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/error.css?${revision}" media="all">
                 </jsp:attribute>
 
                 <jsp:attribute name="head_meta"></jsp:attribute>
@@ -37,7 +37,7 @@
                 <jsp:attribute name="form_bottom"></jsp:attribute>
 
                 <jsp:attribute name="footer">
-                    <core:whitelabeled_footer/>
+                    <core_v1:whitelabeled_footer/>
                 </jsp:attribute>
 
 				<jsp:attribute name="vertical_settings">
@@ -50,7 +50,7 @@
                 <jsp:body>
 
                     <div role="form" class="journeyEngineSlide active unsubscribeForm">
-                        <layout:slide_center xsWidth="12" mdWidth="10">
+                        <layout_v1:slide_center xsWidth="12" mdWidth="10">
                             <h1 class="error_title">Whoops, sorry... </h1>
 
                             <div class="error_message">
@@ -70,13 +70,13 @@
                             </div>
 
                             <confirmation:other_products/>
-                        </layout:slide_center>
+                        </layout_v1:slide_center>
                     </div>
 
 
                 </jsp:body>
 
-            </layout:generic_page>
+            </layout_v1:generic_page>
         </c:catch>
     </c:otherwise>
 </c:choose>

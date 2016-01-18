@@ -1,0 +1,11 @@
+{
+    "brandCodes": "all",
+    "dependencies": [
+        "shared/journeyEngine/v2",
+        "shared/results",
+        "shared/inspectorJson",
+        "shared/sliders",
+        "core",
+        "shared/datepicker"
+    ]
+}

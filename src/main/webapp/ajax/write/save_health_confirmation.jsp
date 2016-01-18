@@ -1,15 +1,17 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.write.save_health_confirmation')}" />
+
 <session:get />
-<jsp:useBean id="providerContentService" class="com.ctm.services.simples.ProviderContentService" scope="page" />
+<jsp:useBean id="providerContentService" class="com.ctm.web.health.services.ProviderContentService" scope="page" />
 
 <%--
 SAVING A SUCCESSFUL HEALTH APPLICATION
 ======================================
 Creates a historical snapshot of a confirmed health policy in XML with certain JSON and HTML objects.
-- the about data
-- the policy start date
+- the about, whatsnext data
+- the policy start date & policy Number
 - the product information
 --%>
 <c:set var="tranId" value="${data.current.transactionId}" />
@@ -29,7 +31,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 	</data>
 </c:set>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <c:catch var="detailsError">
 	<sql:update>
  		INSERT INTO aggregator.transaction_details 
@@ -67,7 +69,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 
 	<%-- ENTER FEB 2015 JEEP COMPETITION - HLT-1737 --%>
 	<c:if test="${empty jeepCompetitionEnabledFlag}">
-		<jsp:useBean id="competitionService" class="com.ctm.services.competition.CompetitionService" />
+		<jsp:useBean id="competitionService" class="com.ctm.web.core.competition.services.CompetitionService" />
 		<c:set var="jeepCompetitionEnabledFlag" scope="session" value="${competitionService.isActive(pageContext.getRequest(), 15)}" />
 	</c:if>
 	<c:if test="${jeepCompetitionEnabledFlag eq true}">
@@ -96,12 +98,23 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 			<status>OK</status>
 			<confirmationID>${pageContext.session.id}-${tranId}</confirmationID>
 		</c:set>
+
+		<jsp:useBean id="tokenServiceFactory" class="com.ctm.web.core.email.services.token.EmailTokenServiceFactory"/>
+		<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
+		<c:set var="hashedEmail"><security:hashed_email email="${data['health/application/email']}" brand="${pageSettings.getBrandCode()}" /></c:set>
+
+		<c:if test="${pageSettings.getSetting('emailTokenEnabled')}">
+			<c:set var="unsubscribeTokenVar" value="${tokenService.generateToken(tranId, hashedEmail, pageSettings.getBrandId(), 'app', 'unsubscribe', null, null, pageSettings.getVerticalCode(), null, true)}" />
+		</c:if>
+
 		<c:set var="emailResponse">
 			<c:import url="/ajax/json/send.jsp">
 				<c:param name="vertical" value="HEALTH" />
 				<c:param name="mode" value="app" />
 				<c:param name="emailAddress" value="${data['health/application/email']}" />
 				<c:param name="bccEmail" value="${param.bccEmail}" />
+				<c:param name="unsubscribeToken" value="${unsubscribeTokenVar}"/>
+				<c:param name="createUnsubscribeEmailToken" value="${true}"/>
 			</c:import>
 		</c:set>
 		
@@ -125,7 +138,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 					</x:choose>
 				</c:set>
 				
-				<sql:setDataSource dataSource="jdbc/ctm"/>
+				<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 				<sql:update>
 			 		INSERT INTO aggregator.transaction_details 
 			 		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
@@ -139,10 +152,10 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		</c:catch>
 		<c:choose>
 			<c:when test="${empty storeEmailResponse}">
-				<go:log source="save_health_confirmation_jsp">Updated transaction details with record of email provider's confirmation code: ${confirmationCode}</go:log>
+				${logger.info('Updated transaction details with record of email provider\'s confirmation code. {}', log:kv('confirmationCode',confirmationCode ))}
 			</c:when>
 			<c:otherwise>
-				<go:log>Failed to Update transaction details with record of confirmation code: ${storeEmailResponse}</go:log>
+				${logger.info('Failed to Update transaction details with record of confirmation code. {}', log:kv('storeEmailResponse',storeEmailResponse ))}
 			</c:otherwise>
 		</c:choose>
 	</c:otherwise>

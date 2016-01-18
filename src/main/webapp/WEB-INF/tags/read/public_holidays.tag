@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%@ attribute name="country"	required="true" rtexprvalue="true"	 description="The country for which to retrieve the public holidays" %>
 <%@ attribute name="region"	 	required="false" rtexprvalue="true"	 description="The region for which to retrieve the public holidays" %>

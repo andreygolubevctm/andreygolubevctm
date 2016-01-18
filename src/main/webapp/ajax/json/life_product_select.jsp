@@ -28,7 +28,8 @@
 </c:set>
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
-<c:import var="config" url="/WEB-INF/aggregator/life/config_product_select.xml" />
+<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_product_select.xml')}" />
 <go:soapAggregator config = "${config}"
 					transactionId = "${tranId}"
 					xml = "${requestXML}"
@@ -48,13 +49,9 @@
 		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
-		
-		<go:log level="DEBUG" source="life_product_select">${resultXml}</go:log>
-		<go:log level="DEBUG" source="life_product_select">${debugXml}</go:log>
-		
 		${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
 	</c:when>
 	<c:otherwise>
-		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_product_select.jsp"/>
+		<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_product_select.jsp"/>
 	</c:otherwise>
 </c:choose>

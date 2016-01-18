@@ -1,0 +1,154 @@
+
+// Loaded before framework core and theme.
+
+//Using CTM as a base for colours and paddings.
+@import (reference) '../ctm/variables.less';
+
+// ## Settings to see some brand differentiation
+
+//
+// Variables
+// --------------------------------------------------
+
+
+// Theme colors
+// -------------------------
+@theme-light:                    #F2F2F2;
+@theme-medium:                   #7f807a;
+@theme-dark:                     #333;
+
+@theme-default:                  @theme-dark;
+
+@theme-primary:                  #ab1d21; //#AA1D21; // Dark Red
+@theme-secondary:                @theme-dark;
+@theme-tertiary:                 @theme-dark;
+
+@theme-active:                   @theme-primary;
+
+@positiveMessagingEnabled: false;
+
+// Brand colors
+// -------------------------
+// overrriden from Bootstrap variables
+@brand-primary:                  @theme-primary;
+@brand-success:                  @theme-tertiary;
+@brand-info:                     @theme-light;
+@brand-warning:                  #a90000;
+@brand-danger:                   #a90000;
+
+//** Global text color on `<body>`.
+@text-color:            @theme-dark;//@theme-medium;
+
+//** Global textual link color.
+@link-color:            @theme-primary; //@brand-primary;
+//** Link hover color set via `darken()` function.
+@link-hover-color:      lighten(@link-color, 15%);
+
+// Headings
+@headings-color:                 @theme-primary;
+
+//Form fields
+@input-border:                   lighten(#7F807A, 20%);
+
+@fieldset-heading-colour:		 @theme-primary;
+@fieldset-heading-line-colour:   @input-border;
+
+//** Help icon colour next to fields.
+@icon-help-colour:				 @theme-dark;
+
+// Dropdowns
+@dropdown-interactive-bg:        @theme-light;
+//@dropdown-link-color:			 #fff;
+
+// Results filter bar
+@navbar-inverse-link-hover-bg: #fff;
+@navbar-inverse-link-hover-color: @theme-secondary;
+@navbar-inverse-link-disabled-color: @theme-medium;
+@navbar-inverse-dropdown-open-active-bg: @theme-secondary;
+
+// Filter
+@form-input-common-slidehandle-bg-colour: @theme-primary;
+
+//== Journey CTM BUTTONS:
+//
+//## For each of Bootstrap's buttons, define text, background and border color.
+//** Default Contrast threshold of 43% before defaulting between black or white text.
+
+//** Toolbar dropdown modifiers
+@btn-back-bg-color: @theme-primary;
+@btn-back-active-bg-color: darken(@theme-secondary, 12%);
+
+@btn-pagination-bg-color: @theme-primary;
+@btn-pagination-active-bg-color: darken(@theme-secondary, 12%);
+
+// Results (health)
+@btn-shortlist-bg-color: @theme-primary;
+@btn-shortlist-active-bg-color: @theme-secondary;
+
+//== Powered By Logos
+//
+//## This is a boolean flag which compiles in the CSS for poweredby logos or not. Else adds display none.
+@poweredby-header-enabled: false;
+@poweredby-footer-enabled: true;
+
+//---------------------------------------------
+// Price component links
+//---------------------------------------------
+@price-color: @theme-primary;
+@price-component-background: @dropdown-interactive-bg;
+@price-component-header-text: @fieldset-heading-colour;
+@price-component-text: @theme-dark;
+
+//Journey progress bar
+//Default disabled
+@journeyProgressBar-color:                      #8F9089; //#B4B5AC;
+@journeyProgressBar-separator-color:            #D5D6CB;
+@journeyProgressBar-border-color:               #D5D6CB;
+
+//Hover active
+@journeyProgressBar-color-hover:                darken(@theme-primary, 20%);
+@journeyProgressBar-separator-color-hover:      darken(@theme-primary, 20%);
+@journeyProgressBar-border-color-hover:         darken(@theme-primary, 20%);
+
+// Navbars
+@navbar-default-color:           @theme-light;
+@navbar-default-bg:              @theme-primary;
+@navbar-default-border:          @theme-light;
+
+@navbar-default-link-active-color:         @theme-dark;
+@navbar-default-link-active-bg:            @theme-light;
+
+// Wells
+//** Help messaging
+//@well-bg-help:                	 @gray;
+@well-text-help:                 @text-color;
+@well-header-help:               @text-color;
+
+//== Form states and alerts
+//
+//## Define colors for form feedback states and, by default, alerts.
+
+@state-success-text:             #59ab1d;//@brand-success;
+@state-success-border:           @state-success-text;//@brand-success;
+@state-success-bg:               lighten(@state-success-border, 53%); //#dff0d8;
+
+@state-info-bg:                  #d9edf7;
+@state-info-text:                darken(@state-info-bg, 40%);//@brand-info;
+@state-info-border:              darken(@state-info-bg, 40%);//@brand-info;
+
+@state-warning-bg:               #fcf8e3;
+@state-warning-text:             darken(@state-warning-bg, 55%);//@brand-warning;
+@state-warning-border:           darken(@state-warning-bg, 40%);//@brand-warning;
+
+@state-danger-text:              #ff5f5f;
+@state-danger-bg:                #ffefef;
+@state-danger-border:            #ff5f5f;
+
+//Results page variables
+@compare-color: #F2F2F2;
+@compare-odd-color: #F4F4F4;
+@compare-section-bg-color: #F7F7F7;
+@compare-text-color: @theme-dark;
+
+// allow for iframe up top
+@page-offset-xs : 50px;

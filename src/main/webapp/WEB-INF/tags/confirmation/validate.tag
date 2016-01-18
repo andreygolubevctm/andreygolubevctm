@@ -8,10 +8,10 @@
 
 <%-- Only proceed if we have a confirmation reference --%>
 <c:if test="${not empty confirmationId}">
-	<jsp:useBean id="applicationService" class="com.ctm.services.ApplicationService" scope="application" />
+	<jsp:useBean id="applicationService" class="com.ctm.web.core.services.ApplicationService" scope="application" />
 	<c:set var="styleCodeId" value="${applicationService.getBrandFromRequest(pageContext.getRequest()).getId()}" />
 	<%-- Attempt to find in confirmations table --%>
-	<sql:setDataSource dataSource="jdbc/ctm" />
+	<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 	<c:catch var="error">
 		<sql:query var="confirmationQuery">
 				SELECT c.TransID As transaction_id, KeyID as key_id, XMLdata AS xml_data, LOWER(h.ProductType) AS vertical

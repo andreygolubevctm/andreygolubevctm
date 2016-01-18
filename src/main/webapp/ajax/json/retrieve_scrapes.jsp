@@ -3,7 +3,7 @@
 
 <c:set var="group">${fn:trim(param.group)}</c:set>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <sql:query var="result">
 	SELECT styleCodeId,`id`, `group`, `url`, `path`, `html`

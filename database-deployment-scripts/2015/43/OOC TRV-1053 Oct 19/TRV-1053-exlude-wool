@@ -1,0 +1,17 @@
+SET @PVIDER = (select providerId from ctm.provider_master where providerCode = 'WOOL');
+SET @VERTICAL = (select verticalId  from ctm.vertical_master where verticalCode = 'TRAVEL');
+
+insert into ctm.stylecode_provider_exclusions (styleCodeId,verticalId,providerId,excludeDateFrom,excludeDateTo) values (1,@VERTICAL,@PVIDER,'2015-10-19','2016-03-19');
+
+-- TEST
+-- Expect 1
+select count(*) from ctm.stylecode_provider_exclusions where providerId = @PVIDER and verticalId = @VERTICAL and styleCodeId = 1;
+
+
+-- rollback
+
+-- delete from ctm.stylecode_provider_exclusions where providerId = @PVIDER and verticalId = @VERTICAL limit 1;
+
+-- TEST
+-- Expect 0
+-- select count(*) from ctm.stylecode_provider_exclusions where providerId = @PVIDER and verticalId = @VERTICAL and styleCodeId = 1;

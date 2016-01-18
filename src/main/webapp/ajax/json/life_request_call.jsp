@@ -1,6 +1,9 @@
+<%@ page import="com.ctm.web.core.email.model.EmailMode" %>
 <%@ page language="java" contentType="text/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
+
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.life_request_call')}" />
 
 <c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
 
@@ -10,18 +13,18 @@
 <go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 <security:populateDataFromParams rootPath="${vertical}" />
 
-<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="page" />
+<jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
 
-<jsp:useBean id="lifeService" class="com.ctm.services.life.LifeService" scope="page" />
+<jsp:useBean id="lifeService" class="com.ctm.web.life.services.LifeService" scope="page" />
 <c:set var="serviceResponse" value="${lifeService.contactLeadViaJSP(pageContext.request, data)}" />
 <c:choose>
 	<c:when test="${lifeService.isValid()}">
 
 		<%-- First check owner of the quote --%>
-		<c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
+		<c:set var="proceedinator"><core_v1:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
 		<c:choose>
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
-				<go:log  level="INFO" >PROCEEDINATOR PASSED</go:log>
+				${logger.debug('PROCEEDINATOR PASSED. {}' , log:kv('proceedinator',proceedinator ))}
 
 				<c:set var="tranId" value="${data.current.transactionId}" />
 
@@ -38,7 +41,7 @@
 								<c:set var="paramPartnerBrand"><c:out value="${param.partnerBrand}" /></c:set>
 								<go:setData dataVar="data" xpath="lead/brand" value="${paramPartnerBrand}" />
 
-								<jsp:useBean id="AGISLeadFromRequest" class="com.ctm.services.life.AGISLeadFromRequest" scope="page" />
+								<jsp:useBean id="AGISLeadFromRequest" class="com.ctm.web.life.leadfeed.services.AGISLeadFromRequest" scope="page" />
 								<c:set var="leadResultStatus" value="${AGISLeadFromRequest.newLeadFeed(pageContext.request, pageSettings, data.current.transactionId)}" />
 
 								<c:if test="${leadResultStatus eq 'OK'}">
@@ -46,7 +49,7 @@
 									<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 
 									<%-- Check if email already sent and who it was sent to --%>
-									<sql:setDataSource dataSource="jdbc/ctm" />
+									<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 
 									<c:catch var="error">
 										<sql:query var="companies">
@@ -67,10 +70,10 @@
 
 										<c:if test="${companyName ne 'ozicare'}">
 											<%-- SEND AGIS EMAIL --%>
-											<jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
+											<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
 
 											<%-- enums are not will handled in jsp --%>
-											<% request.setAttribute("BEST_PRICE", com.ctm.model.email.EmailMode.BEST_PRICE); %>
+											<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 											<c:catch var="error">
 												${emailService.send(pageContext.request, BEST_PRICE, data.life.contactDetails.email, tranId)}
 												<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/emailSentBy" value="ozicare" />
@@ -83,7 +86,8 @@
 							</c:when>
 							<c:otherwise>
 								<%-- Load the config and send quotes to the aggregator gadget --%>
-								<c:import var="config" url="/WEB-INF/aggregator/life/config_contact_lead.xml" />
+								<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+								<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_contact_lead.xml')}" />
 
 								<go:setData dataVar="data" xpath="${vertical}/quoteAction" value="call" />
 
@@ -101,23 +105,20 @@
 
 								<%-- Record lead feed touch event --%>
 								<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "CB", "lifebroker")}</c:set>
-
-								<go:log level="DEBUG" source="life_request_call">${resultXml}</go:log>
-								<go:log level="DEBUG" source="life_request_call">${debugXml}</go:log>
 							</c:otherwise>
 						</c:choose>
 
 						<go:setData dataVar="data" xpath="current/transactionId" value="${data.current.transactionId}" />
-						<c:set var="writeQuoteResponse"><agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data[vertical]}" /></c:set>
+						<c:set var="writeQuoteResponse"><agg_v1:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data[vertical]}" /></c:set>
 					</c:when>
 					<c:otherwise>
-						<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
+						<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
 					</c:otherwise>
 				</c:choose>
 			</c:when>
 			<c:otherwise>
 				<c:set var="resultXml">
-					<error><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
+					<error><core_v1:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
 				</c:set>
 				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 			</c:otherwise>

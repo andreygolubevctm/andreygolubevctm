@@ -3,6 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.utilities_submit_lead')}" />
 
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="utilities" />
@@ -15,10 +16,10 @@
 </c:if>
 
 <%-- Save client data: ***FIX: before using this a 'C' status needs to be identified.
-<core:transaction touch="A" noResponse="true" />
+<core_v1:transaction touch="A" noResponse="true" />
 --%>
 
-<agg:write_email
+<agg_v1:write_email
 	brand="CTM"
 	vertical="UTILITIES"
 	source="QUOTE"
@@ -27,15 +28,14 @@
 	lastName="${data['utilities/leadFeed/lastName']}"
 	items="marketing=Y,okToCall=Y" />
 
-<go:log level="INFO" source="utilities_submit_application">Utilities Tran Id = ${data['current/transactionId']}</go:log>
+${logger.debug('Utilities Tran Id. {}',log:kv('current/transactionId',data['current/transactionId'] ))}
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
-<jsp:useBean id="leadfeedService" class="com.ctm.services.utilities.UtilitiesLeadfeedService" scope="page" />
+<jsp:useBean id="leadfeedService" class="com.ctm.web.utilities.services.UtilitiesLeadfeedService" scope="page" />
 
 <c:set var="model" value="${leadfeedService.mapParametersToModel(pageContext.getRequest())}" />
 <c:set var="submitResult" value="${leadfeedService.submit(pageContext.getRequest(), model)}" />
-<c:if test="${not empty submitResult}"><go:log level="DEBUG" source="utilities_submit">${submitResult.toString()}</go:log></c:if>
-
+${logger.debug('Submitted lead feed. {}',log:kv('submitResult', submitResult))}
 
 <c:choose>
 	<c:when test="${isValid || continueOnValidationError}">
@@ -45,28 +45,23 @@
 									errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
 			</c:forEach>
 		</c:if>
-
-		<%-- //FIX: turn this back on when you are ready!!!!
-		<%-- Write to the stats database
-		<agg:write_stats tranId="${tranId}" debugXml="${debugXml}" />
-		--%>
 		<c:set var="xmlData" value="<data>${go:JSONtoXML(submitResult)}</data>" />
 		<x:parse var="parsedXml" doc="${xmlData}" />
-<go:log>${xmlData}</go:log>
+		${logger.debug('Parsed result to xml. {}',log:kv('xmlData',xmlData ))}
 		<c:set var="uniqueId"><x:out select="$parsedXml/data/unique_id" /></c:set>
 		<go:setData dataVar="data" xpath="utilities/leadFeed/confirmationId" value="${uniqueId}" />
 
-		<core:transaction touch="P" noResponse="true" />
+		<core_v1:transaction touch="P" noResponse="true" />
 
 		<c:set var="confirmationkey" value="${pageContext.session.id}-${tranId}" />
 		<go:setData dataVar="data" xpath="utilities/confirmationkey" value="${confirmationkey}" />
 
-		<agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
-		<agg:write_touch touch="C" transaction_id="${tranId}" />
+		<agg_v1:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
+		<agg_v1:write_touch touch="C" transaction_id="${tranId}" />
 
 		${submitResults}
 	</c:when>
 	<c:otherwise>
-		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="utilities_submit_application.jsp"/>
+		<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="utilities_submit_application.jsp"/>
 	</c:otherwise>
 </c:choose>

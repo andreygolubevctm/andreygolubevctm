@@ -3,7 +3,9 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<core_new:no_cache_header/>
+<c:set var="logger" value="${log:getLogger('jsp.ajax.write.write_quote')}" />
+
+<core_v2:no_cache_header/>
 
 <session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(param.quoteType)}" />
 
@@ -16,7 +18,7 @@
 <c:set var="vertical" value="${fn:toLowerCase(quoteType)}" />
 
 <%-- First check owner of the quote --%>
-<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" /></c:set>
+<c:set var="proceedinator"><core_v1:access_check quoteType="${quoteType}" /></c:set>
 
 <%-- Check if the save was triggered by session pop --%>
 <c:if test="${not empty param.triggeredsave && param.triggeredsave == 'sessionpop'}">
@@ -25,9 +27,9 @@
 
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log source="write_quote_jsp">WRITE QUOTE PROCEEDINATOR PASSED</go:log>
+		${logger.debug('WRITE QUOTE PROCEEDINATOR PASSED')}
 
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 		<c:set var="sessionid" value="${pageContext.session.id}" />
 		<c:set var="stylecode" value="${pageSettings.getBrandCode()}" />
@@ -35,9 +37,9 @@
 		<c:set var="prodtyp" value="${quoteType} ${quoteType}" />
 
 		<%-- Ensure the current transactionID is set --%>
-		<go:log source="write_quote_jsp">write quote getTransactionId ${data.current.verticalCode}</go:log>
+		${logger.debug('write quote getTransactionId. {}', log:kv('verticalCode',data.current.verticalCode ))}
 		<c:set var="sandpit">
-			<core:get_transaction_id id_handler="preserve_tranId" quoteType="${quoteType}" />
+			<core_v1:get_transaction_id id_handler="preserve_tranId" quoteType="${quoteType}" />
 		</c:set>
 		<c:set var="transID" value="${data.current.transactionId}" />
 
@@ -48,10 +50,9 @@
 		</c:if>
 
 		<c:if test="${not empty emailAddress}">
-			<go:log source="write_quote_jsp">Email: ${emailAddress}</go:log>
 			<%-- Add/Update the user record in email_master --%>
 			<c:catch var="error">
-				<agg:write_email
+				<agg_v1:write_email
 					brand="${brand}"
 					vertical="${vertical}"
 					source="${source}"
@@ -61,7 +62,7 @@
 					lastName="${lastName}"
 					items="${optinMarketing}${optinPhone}" />
 			</c:catch>
-			<go:log source="write_quote_jsp">ERROR: ${error}</go:log>
+			${logger.error('Error calling write_email. {},{},{},{}', log:kv('brand',brand ), log:kv('vertical',vertical ), log:kv('source',source ), log:kv('emailAddress',emailAddress ), error)}
 
 			<%--Update the transaction header record with the user current email address --%>
 
@@ -80,8 +81,8 @@
 			<c:if test="${not empty errorPool}">
 				<c:set var="errorPool">${errorPool},</c:set>
 			</c:if>
-			<go:log error="${error}" level="ERROR" source="write_quote_jsp">Failed to update transaction_header: ${error.rootCause}</go:log>
-			<c:set var="errorPool">${errorPool}{"error":"A fatal database error occurred - we hope to resolve this soon."}</c:set>
+			${logger.error('Failed to update transaction_header. {}', log:kv('emailAddress',emailAddress ), error)}
+				<c:set var="errorPool">${errorPool}{"error":"A fatal database error occurred - we hope to resolve this soon."}</c:set>
 		</c:if>
 
 		<%-- Write transaction details table --%>
@@ -95,7 +96,7 @@
 				</c:otherwise>
 			</c:choose>
 
-			<c:set var="write_quote"><agg:write_quote productType="${fn:toUpperCase(quoteType)}" rootPath="${vertical}" /></c:set>
+			<c:set var="write_quote"><agg_v1:write_quote productType="${fn:toUpperCase(quoteType)}" rootPath="${vertical}" /></c:set>
 
 			<c:if test="${not empty write_quote}">
 				<c:if test="${not empty errorPool}">
@@ -106,7 +107,7 @@
 			<%-- LETO
 			TODO Looks like vertical and quoteType are the same variable
 			TODO New touch 'W', or all this stuff should be handled differently.
-			<c:set var="outcome"><core:transaction vertical="${vertical}" touch="W" /></c:set>
+			<c:set var="outcome"><core_v1:transaction vertical="${vertical}" touch="W" /></c:set>
 			--%>
 		</c:if>
 	</c:when>
@@ -118,9 +119,11 @@
 <%-- JSON RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		<go:log level="ERROR" source="write_quote_jsp">SAVE ERRORS: ${errorPool}</go:log>
+		${logger.info('Returning errors to the browser', log:kv('errorPool', errorPool))}
 		{"result":"FAIL", "errors":[${errorPool}]}
 	</c:when>
 	<c:otherwise>
-		{"result":"OK","transactionId":"${transID}"}</c:otherwise>
+		<c:set var="transactionIdResponse">{"result":"OK","transactionId":"${transID}"}</c:set>
+		${sessionDataService.updateTokenWithNewTransactionIdResponse(pageContext.request, transactionIdResponse, transID)}
+	</c:otherwise>
 </c:choose>

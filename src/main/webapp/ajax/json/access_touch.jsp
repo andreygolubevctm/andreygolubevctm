@@ -1,18 +1,18 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<core_new:no_cache_header/>
+<core_v2:no_cache_header/>
 
 <session:get settings="true" authenticated="true" throwCheckAuthenticatedError="true" verticalCode="${fn:toUpperCase(param.quoteType)}"/>
 
-<c:set var="proceedinator"><core:access_check quoteType="${param.quoteType}" /></c:set>
+<c:set var="proceedinator"><core_v1:access_check quoteType="${param.quoteType}" /></c:set>
 <c:if test="${empty proceedinator}">
 	<c:set var="proceedinator">${0}</c:set>
 </c:if>
 
 <%--
 	These are the touch types that are allowed via ajax.
-	All other touches need to be done using <core:transaction touch="?" />
+	All other touches need to be done using <core_v1:transaction touch="?" />
 --%>
 <c:set var="valid_touches" value="A.E.F.H.S.X.CB.R." />
 <c:set var="validate_touch" value="${param.touchtype}." />
@@ -25,7 +25,7 @@
 	<success>${proceedinator}</success>
 	<c:choose>
 		<c:when test="${proceedinator eq 0}">
-			<message><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></message>
+			<message><core_v1:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></message>
 		</c:when>
 		<c:when test="${proceedinator eq 99}">
 			<message>Invalid touch type.</message>
@@ -52,7 +52,7 @@
 					<security:populateDataFromParams rootPath="${verticalCode}" delete="false" />
 				</c:when>
 			</c:choose>
-			<core:transaction touch="${param.touchtype}" comment="${param.comment}" noResponse="true" productId="${param.productId}" />
+			<core_v1:transaction touch="${param.touchtype}" comment="${param.comment}" noResponse="true" productId="${param.productId}" />
 		</c:otherwise>
 	</c:choose>
 	<transactionId>${data.current.transactionId}</transactionId>
@@ -61,4 +61,5 @@
 </c:set>
 
 <%-- Return the results as json --%>
-${go:XMLtoJSON(result)}
+<c:set var="accessTouchResponse" >${go:XMLtoJSON(result)}</c:set>
+${sessionDataService.updateTokenWithNewTransactionIdResponse(pageContext.request, accessTouchResponse, data.current.transactionId)}
