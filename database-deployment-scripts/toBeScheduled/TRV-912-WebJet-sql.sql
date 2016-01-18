@@ -1,5 +1,5 @@
 SET @WEBJET = (select providerId from ctm.provider_master where providerCode = 'WEBJ');
-SET @TRAVELBER = (select serviceMasterId from ctm.service_master where serviceCode like 'quoteServiceBER');
+SET @TRAVELBER = (select serviceMasterId from ctm.service_master where serviceCode like 'quoteServiceBER' and verticalId = '2');
 SET @NEW_CLIENT_CODE_OUTPARAM = 'clientCode=WJPAU';
 SET @OLD_CLIENT_CODE_OUTPARAM = 'clientCode=WEBJETAU';
 SET @NEW_CLIENT_CODE='WJPAU';
@@ -8,12 +8,6 @@ SET @VIRG = (select providerId from ctm.provider_master where providercode = 'VI
 SET @INBOUNDPARAM = 'defaultProductId=NODEFAULT,service=WEBJ,quoteUrl=https://uat-elevate.agaassistance.com.au/webjet/,trackCode=52';
 SET @OLD_INBOUND_PARAMS = 'defaultProductId=NODEFAULT,service=WEBJ,quoteUrl=https://uat-webjetau.agaassistance.com.au,trackCode=52';
 
-
-update ctm.service_properties set servicePropertyValue = @INBOUNDPARAM where providerId = @WEBJET and
- serviceMasterId = @TRAVELBER and servicePropertyValue = @OLD_INBOUND_PARAMS LIMIT 1;
- -- test expect 1
- select count(*) from ctm.service_properties where providerId = @WEBJET and serviceMasterId = @TRAVELBER and
- servicePropertyValue = @INBOUNDPARAM;
 
 
 update ctm.service_properties set servicePropertyValue = @NEW_CLIENT_CODE_OUTPARAM where providerId = @WEBJET and
@@ -30,9 +24,6 @@ update ctm.service_properties set servicePropertyValue = @NEW_CLIENT_CODE where 
 select count(*) from ctm.service_properties where providerId = @WEBJET and serviceMasterId = @TRAVELBER and
  servicePropertyValue = @NEW_CLIENT_CODE;
 
-update ctm.country_provider_mapping set countryValue = isoCode where providerId = @WEBJET LIMIT 253;
--- test expect 253
-select count(countryValue) from ctm.country_provider_mapping where providerId = @WEBJET;
 
 -- perform region transformation
 
@@ -68,14 +59,14 @@ INSERT INTO ctm.product_master (ProductCat, ProductCode, ProviderId, ShortTitle,
  VALUES ('TRAVEL', 'WEBJ-TRAVEL-54159', @WEBJET, 'Multi-Trip (45 Days)', 'Multi-Trip (45 Days)', '2015-08-05', '2040-12-31') LIMIT 1;
 
 -- test expect 6
-select count(*) from ctm.product_master where productCode in ('WEBJ-TRAVEL-54159','WEBJ-TRAVEL-54156','WEBJ-TRAVEL-54157','WEBJ-TRAVEL-54158');
+select count(*) from ctm.product_master where productCode in ('WEBJ-TRAVEL-54159','WEBJ-TRAVEL-54156','WEBJ-TRAVEL-54157','WEBJ-TRAVEL-54158') and providerId = @WEBJET;
 
  -- insert into travel_product
  INSERT INTO ctm.travel_product
 (providerId, productCode, description, baseProduct, pdsUrl, effectiveStart, effectiveEnd)
 VALUES (@WEBJET, 'WEBJ-TRAVEL-',
-        'As Australia and New Zealand\'s leading online travel agency, Webjet leads the way in online travel tools and technology. Offering unparalleled choice in online travel bookings, Webjet offers a broad range of Travel Insurance products, with the opportunity to tailor your excess and control your premium to suit your needs. Backed by Allianz Global Assistance, we\'ve got you covered. Get a quote today and pack some peace of mind.', '1', 'https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf', '2015-08-04', '2040-12-31') LIMIT 1;
-        
+ 'As Australia and New Zealand\'s leading online travel agency, Webjet leads the way in online travel tools and technology. Offering unparalleled choice in online travel bookings, Webjet offers a broad range of Travel Insurance products, with the opportunity to tailor your excess and control your premium to suit your needs. Backed by Allianz Global Assistance, we\'ve got you covered. Get a quote today and pack some peace of mind.', '1', 'https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf', '2015-08-04', '2040-12-31') LIMIT 1;
+
 -- test expect 1
 select count(*) from ctm.travel_product where productCode = 'WEBJ-TRAVEL-';
 
@@ -369,7 +360,6 @@ INSERT INTO ctm.country_provider_mapping ('providerId','productGroup','isoCode',
 INSERT INTO ctm.country_provider_mapping ('providerId','productGroup','isoCode','regionValue','countryValue','handoverValue','priority','effectiveStart','effectiveEnd','status') VALUES (@WEBJET,0,'ZMB','WORLD','',NULL,1,'2015-01-01','2040-12-12','');
 INSERT INTO ctm.country_provider_mapping ('providerId','productGroup','isoCode','regionValue','countryValue','handoverValue','priority','effectiveStart','effectiveEnd','status') VALUES (@WEBJET,0,'ZWE','WORLD','',NULL,1,'2015-01-01','2040-12-12','');
 */
-
 
 
 
