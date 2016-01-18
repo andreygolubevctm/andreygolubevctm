@@ -161,16 +161,18 @@
 							<%-- Duplicate the transaction details --%>
 							<sql:update>
 								INSERT INTO aggregator.transaction_details (transactionId, sequenceNo, xpath, textValue, numericValue, dateValue)
-								SELECT ${tranId} as transactionId, sequenceNo, xpath, textValue, numericValue, dateValue
+								SELECT ? as transactionId, sequenceNo, xpath, textValue, numericValue, dateValue
 								FROM aggregator.transaction_details
 								WHERE transactionId = ?
 								UNION ALL
-								SELECT ${tranId} as transactionId, (@sequence := @sequence + 1) AS sequenceNo, tf.fieldCode AS xpath, td2c.textValue, 0.00, CURDATE()
+								SELECT ? as transactionId, (@sequence := @sequence + 1) AS sequenceNo, tf.fieldCode AS xpath, td2c.textValue, 0.00, CURDATE()
 								FROM aggregator.transaction_details2_cold td2c
 								JOIN aggregator.transaction_fields tf USING(fieldId)
 								JOIN (SELECT @sequence := 0) AS sequencer
 								WHERE transactionId = ?;
+								<sql:param value="${tranId}" />
 								<sql:param value="${requestedTransaction}" />
+								<sql:param value="${tranId}" />
 								<sql:param value="${requestedTransaction}" />
 							</sql:update>
 
