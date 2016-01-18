@@ -15,13 +15,6 @@
     var templateAccessories;
 
     function initCar() {
-
-        meerkat.messaging.subscribe(meerkatEvents.splitTest.SPLIT_TEST_READY, function () {
-            meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, _.bind(toggleManualAddressEntry, this));
-            toggleManualAddressEntry();
-        });
-
-
         $(document).ready(function () {
 
             // Only init if car
@@ -56,20 +49,6 @@
             }
         });
 
-    }
-
-    function toggleManualAddressEntry() {
-        var deviceType = $('#deviceType').attr('data-deviceType');
-        if (meerkat.modules.splitTest.isActive(15) && (deviceType == 'TABLET' || meerkat.modules.deviceMediaState.get() == 'xs')) {
-            $('#quote_riskAddress_nonStd_row').hide();
-            if (meerkat.modules.splitTest.isActive(32)) {
-                $('#addressForm').find('.cantFindAddressHelper').hide();
-            } else {
-                $('#addressForm').find('.cantFindAddressHelper').show();
-            }
-        } else {
-            $('#quote_riskAddress_nonStd_row').show();
-        }
     }
 
     function eventDelegates() {
@@ -211,6 +190,7 @@
             onInitialise: function () {
                 meerkat.modules.carCommencementDate.initCarCommencementDate();
                 meerkat.modules.carYoungDrivers.initCarYoungDrivers();
+                meerkat.modules.carUsingYourCar.initUsingYourCar();
             }
         };
 
@@ -369,6 +349,28 @@
             var stateCode = $('#quote_riskAddress_state').val();
             var vehYear = $('#quote_vehicle_year').val();
             var vehMake = $('#quote_vehicle_make option:selected').text();
+            var $vehicleUsage = $('#quote_vehicle_use');
+            var $vehicleFieldSet = $('#quote_vehicleFieldSet');
+
+            var vehUsage = $vehicleUsage.text();
+
+            if ($vehicleUsage[0].selectedIndex > 1) {
+                if ($vehicleFieldSet.find('.goodsPayment input:checked').val() == 'Y') {
+                    vehUsage = $vehicleFieldSet.find('.goodsPayment').text();
+                } else if ($vehicleFieldSet.find('.passengerPayment input:checked').val() == 'Y') {
+                    vehUsage = $vehicleFieldSet.find('.passengerPayment').text();
+                }
+            }
+
+            // strip anything after the ?
+            if (vehUsage.indexOf("?") > 0) {
+                vehUsage = vehUsage.substr(0, vehUsage.indexOf("?"));
+            }
+
+            // finally check if it's over 100 characters. If so chop it back to 98
+            if (vehUsage.length > 100) {
+                vehUsage = vehUsage.substr(0, 98);
+            }
 
             var email = $('#quote_contact_email').val();
 
@@ -410,6 +412,7 @@
                 quoteReferenceNumber: transactionId,
                 yearOfManufacture: null,
                 makeOfCar: null,
+                vehicleUsage: null,
                 gender: null,
                 yearOfBirth: null,
                 postCode: null,
@@ -433,7 +436,8 @@
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('details')) {
                 _.extend(response, {
                     yearOfBirth: yob,
-                    gender: gender
+                    gender: gender,
+                    vehicleUsage: vehUsage
                 });
             }
 

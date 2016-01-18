@@ -7,100 +7,125 @@
 	IF IT IS THEN WE WILL NEED TO RUN BOTH OR MIGRATE ALL VERTICALS OVER
  ******************************************** */
 .progress-bar-row {
-	border: 1px solid @border-colour;
+	border-top: 1px solid @border-colour;
   	background-color: @main-bg-colour;
+  	margin-top: 30px;
+  	min-height: 26px;
+  //
+  // journeyProgressBar
+  // --------------------------------------------------
 
   .journeyProgressBar_v2 {
 	//margin-bottom: @journeyProgressBar-margin-bottom;
 	list-style: none;
-	padding: 0 0 0 0;
-	margin-bottom: -5px;
+	padding: 0 0 10px 0;
+	margin-bottom: 0;
+	margin-top: -21px;
+
 	ul {
 	  counter-reset: section;
 	}
 
 	li {
+	  white-space: nowrap;
 	  counter-increment: section;
-	  line-height: @journeyProgressBar-lineheight;
+	  line-height: 20px;/* @journeyProgressBar-lineheight;*/
 	  display: inline-block;
-	  font-size: @journeyProgressBar-size;
-	  font-weight: @journeyProgressBar-weight;
+	  font-size: 13px;/*@journeyProgressBar-size;*/
+	  font-weight: bold; /*@journeyProgressBar-weight;*/
 	  position: relative;
-	  height: 46px;
-	  background-color: white;
-	  border-left: 1px solid @border-colour;
-	  &:last-child {
-		border-right: 1px solid @border-colour;
+	  height: 28px;
+	  &.end{
+		width: 1%;
+		div { width: 0 }
+	  }
+	  span {
+		margin-left: 13px;
 	  }
 	}
 
 	a, div {
-	  color: @gray-dark;
+	  color: @journeyProgressBar-border-color; /*@journeyProgressBar-color;*/
 	  text-decoration: none;
-	  border-bottom: none;
+	  border-bottom: @journeyProgressBar-border-size @journeyProgressBar-border-style @journeyProgressBar-border-color;
+	  /*border-bottom: @journeyProgressBar-border-size @journeyProgressBar-border-style; /*grey;/*@journeyProgressBar-border-color;*/
 	  display: inline-block;
-	  text-indent: 0px;
+	  text-indent: -9px;
 	  position: absolute;
-	  padding-right: @journeyProgressBar-horizontal-push;
-	  width: 100%;
-	  height: 46px;
-	  span {
-		padding-left: 8px;
-	  }
+	  left: 8px;
+	  right: -2px; /*@journeyProgressBar-horizontal-push;*/
+	  height: 21px;
 	  &:before {
-		padding-left: 8px;
-		content: "Step " counters(section, ".") "\A";
-		white-space: pre;
-		color: @gray-dark;
-		font-size: @journeyProgressBar-separator-size+6px;
-		line-height: 25px;
-		top: 0px;
+		content: counters(section, ".") "\A";
+		border-radius: 36px;
+		border: 3px solid;
+		font-size: 20px;
+		display: block;
+		float: left;
+		visibility: visible;
+		left: 0;
+		margin: 0;
+		margin-left: -6px;
+		/* margin-top: -6px; */
+		padding: 10px;
+		padding-top: 6px;
+		padding-left: 20px;
+		padding-bottom: 7px;
+		line-height: 1;
+		text-align: center;
+		color: @journeyProgressBar-border-color; /************/
+		background-color: #FFF;
+		box-sizing: border-box;
 	  }
 	}
-	a {
-	  &:focus {
+	a{
+	  &:focus{
 		outline: none;
 	  }
 	}
-	&:not(.complete) { /* Top level UL .complete shows on confirmation page which doesnt need hover */
-	  .complete {
-		&:hover {
-		  background-color: @journeyProgressBar-color-current;
-		  border-color: darken(@journeyProgressBar-color-current, 10%);
-		  color: white;
-		  &:before {
-			color: white;
-		  }
-		}
-		a, div {
-		  &:hover {
-			color: white;
-			&:before {
-			  color: white;
-			}
-		  }
+	.complete,
+	.current{
+	  a, div {
+		border-bottom: @journeyProgressBar-border-size @journeyProgressBar-border-style;
+		&:before {
+		  content: "\e600";
+		  font-family: 'framework_font';
+		  padding: 7px;
+		  padding-left: 14px;
 		}
 	  }
 	}
 	.complete {
-	  background-color: @main-bg-colour;
+	  a, div {
+		color: @journeyProgressBar-color-complete;
+		border-color: @journeyProgressBar-border-color-complete;
+		&:before {
+		  color: @journeyProgressBar-separator-color-complete;
+		  border-color: @journeyProgressBar-border-color-complete;
+		}
+	  }
+	  &.end{
+		a, div {
+		  &:before{
+			color: @journeyProgressBar-separator-color-current;
+
+		  }
+		}
+	  }
 	}
 	.current {
-	  color: white;
-	  background-color: @journeyProgressBar-color-current;
-	  border-color: @journeyProgressBar-border-color-current;
-	  a, div {
-		color: white;
-		&:before {
-		  color: white;
+	  div {
+		color: @journeyProgressBar-color-current;
+		border-color: @journeyProgressBar-border-color-current;
+		&:before{
+		  color: @journeyProgressBar-separator-color-current;
+		  border-color: @journeyProgressBar-border-color-current;
 		}
 	  }
 	}
 	a {
 	  &:hover {
-		color: @journeyProgressBar-color-hover;
-		border-color: @journeyProgressBar-border-color-hover;
-		&:before {
+		span{
 		  color: @journeyProgressBar-color-hover;
 		}
 	  }

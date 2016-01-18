@@ -29,17 +29,15 @@
 	}
 
 	function renderSnapshot() {
-		var firstSnapshotSlide = 1;
-		if(!meerkat.modules.splitTest.isActive(13)) {
-			firstSnapshotSlide = 0;
-			var carMake = $('#quote_vehicle_make');
-			var $snapshotBox = $(".quoteSnapshot");
-			if (carMake.val() !== '') {
-				$snapshotBox.removeClass('hidden');
-			} else {
-				$snapshotBox.addClass('hidden');
-			}
+		var firstSnapshotSlide = 0;
+		var carMake = $('#quote_vehicle_make');
+		var $snapshotBox = $(".quoteSnapshot");
+		if (carMake.val() !== '') {
+			$snapshotBox.removeClass('hidden');
+		} else {
+			$snapshotBox.addClass('hidden');
 		}
+
 		var limit = meerkat.modules.journeyEngine.getStepsTotalNum();
 		for(var i = firstSnapshotSlide; i < limit; i++) {
 			var selector = '';

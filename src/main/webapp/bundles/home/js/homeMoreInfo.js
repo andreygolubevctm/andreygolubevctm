@@ -179,7 +179,7 @@
 		// populate client number if empty
 		var $telNum = $("#home_CrClientTelinput");
 		if ($telNum.length && !$telNum.val().length) {
-			$telNum.val($('#home_policyHolder_phone').val());
+			$telNum.val($('#home_policyHolder_phone').val()).blur();
 		}
 		$telNum.attr('data-msg-required', "Please enter your contact number");
 	}

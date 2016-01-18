@@ -151,9 +151,7 @@
 		<div class="row loadingQuoteText hidden">
 			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3">
 				<div class="quoteContainer">
-					<span class="icon icon-quote-start"></span>
 					<div class="quote">${quoteText}</div>
-					<span class="icon icon-quote-end"></span>
 					<div class="quoteAuthor">${quoteAuthor}</div>
 				</div>
 			</div>
@@ -199,20 +197,10 @@
 		</div>
 	
 		<%-- Slides --%>
-		<c:choose>
-			<c:when test="${showRegoLookupContent eq true}">
-				<car_layout:slide_your_car_lookup />
-				<car_layout:slide_options_lookup />
-				<car_layout:slide_your_details_lookup />
-				<car_layout:slide_your_address_lookup />
-			</c:when>
-			<c:otherwise>
-				<car_layout:slide_your_car />
-				<car_layout:slide_options />
-				<car_layout:slide_your_details />
-				<car_layout:slide_your_address />
-			</c:otherwise>
-		</c:choose>
+		<car_layout:slide_your_car />
+		<car_layout:slide_options />
+		<car_layout:slide_your_details />
+		<car_layout:slide_your_address />
 		<car_layout:slide_results />
 
         <field:hidden xpath="environmentOverride" />

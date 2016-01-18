@@ -83,7 +83,7 @@
             // open bridging page
             $(Results.settings.elements.page).on("click", ".btn-more-info", openBridgingPage);
             // close bridging page
-            $(Results.settings.elements.page).on("click", ".btn-close-more-info", closeBridgingPage);
+            $(Results.settings.elements.page + ", .navMenu-row header").on("click", ".btn-close-more-info", closeBridgingPage);
         }
 
         // Close any more info panels when fetching new results
@@ -206,7 +206,7 @@
                 });
 				totalDuration = animDuration;
             } else {
-                meerkat.modules.utils.scrollPageTo('.resultsHeadersBg', scrollToTopDuration, -$("#navbar-main").height(), function () {
+                meerkat.modules.utils.scrollPageTo('.resultsSlide', scrollToTopDuration, -$("#navbar-main").height(), function () {
                     moreInfoContainer.find(".more-info-content")[settings.showAction](animDuration, showTemplateCallback);
                     isBridgingPageOpen = true;
                     if (typeof settings.onAfterShowTemplate == 'function') {

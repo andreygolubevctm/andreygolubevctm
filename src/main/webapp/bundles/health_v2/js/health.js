@@ -5,7 +5,8 @@
 		exception = meerkat.logging.exception,
 		moduleEvents = {
 			health: {
-				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM'
+				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM',
+				SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE'
 			},
 			WEBAPP_LOCK: 'WEBAPP_LOCK',
 			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
@@ -142,7 +143,45 @@
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
 					healthChoices.setCover($(this).val());
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
+
+				// we need to wait till the field gets proparly populated from the address search ajax
+				$healthSitLocation.on('change',function() {
+					setTimeout(function() {
+						meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+					},250);
+
+				});
+
+				$healthSitHealthSitu.on('change',function() {
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+				/*
+
+				$healthSitSuburb.bind('change',function() {
+					console.log("suburb changes on bind..");
+				});
+
+				$healthSitSuburb.on('blur',function() {
+					console.log("suburb changes..");
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+
+				$healthSitState.on('blur',function() {
+					console.log("state changes..");
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+
+				$healthSitPostCode.on('blur',function() {
+					console.log("postcode changes..");
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+				*/
+
+
+
+
 
 				$healthSitLocation.on('blur',function() {
 					healthChoices.setLocation($(this).val());
@@ -232,6 +271,22 @@
 			},
 			onInitialise: function onResultsInit(event){
 				meerkat.modules.healthResults.initPage();
+
+				var $healthSitCoverType = $('#health_situation_coverType');
+				var $hospitalBenefits = $('.Hospital_container  input:checkbox');
+				var $extraBenefits = $('.GeneralHealth_container input:checkbox');
+
+				$healthSitCoverType.on('change',function(event) {
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+
+				$hospitalBenefits.click(function() {
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+				$extraBenefits.click(function() {
+					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+				});
+
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
@@ -606,14 +661,16 @@
 		meerkat.modules.journeyProgressBar.changeTargetElement(".journeyProgressBar_v2");
 		//Better progressBar just works...
 		meerkat.modules.journeyProgressBar.setWidth(100);
+		meerkat.modules.journeyProgressBar.setNodeWidth(37);
 		meerkat.modules.journeyProgressBar.setEndPadding(false);
+		meerkat.modules.journeyProgressBar.setEndCollapsed(true);
 		meerkat.modules.journeyProgressBar.configure([
 			{
 				label:'About you',
 				navigationId: steps.startStep.navigationId
 			},
 			{
-				label:'Choose your benefits',
+				label:'Your cover',
 				navigationId: steps.benefitsStep.navigationId
 			},
 			{
@@ -621,15 +678,15 @@
 				navigationId: steps.contactStep.navigationId
 			},
 			{
-				label:'Your health insurance quotes',
+				label:'Compare',
 				navigationId: steps.resultsStep.navigationId
 			},
 			{
-				label:'Your Application',
+				label:'Application',
 				navigationId: steps.applyStep.navigationId
 			},
 			{
-				label:'Your Payment',
+				label:'',
 				navigationId: steps.paymentStep.navigationId
 			}
 		]);
@@ -715,7 +772,7 @@
 					$field: $("#health_contactDetails_flexiContactNumber"),
 					$fieldInput: $("#health_contactDetails_flexiContactNumberinput")
 				},
-				// otherPhone from application step
+				// otherPhone and mobile from quote step
 				{
 					$field: $("#health_contactDetails_contactNumber_mobile"),
 					$otherField: $("#health_contactDetails_contactNumber_other")
