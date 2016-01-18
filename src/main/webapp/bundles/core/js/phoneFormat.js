@@ -74,11 +74,15 @@
 		$(element).val(number);
 
 		//We want the hidden field to not be formatted
-		var numberClean = number.replace('+61', '0').replace('61', '0').replace(/ /g,'').replace('(', '').replace(')', '');
+		var numberClean =  cleanNumber (number);
 		var hiddenField = $(element).attr('id').replace('input', '');
 		$('#'+hiddenField).val(numberClean);
 
 		return number;
+	}
+
+	function cleanNumber (number){
+		return number.replace('+61', '0').replace('61', '0').replace(/ /g,'').replace('(', '').replace(')', '');
 	}
 
 	function applyEventListeners() {
@@ -98,6 +102,7 @@
 	meerkat.modules.register('phoneFormat', {
 		init: init,
 		formatPhoneNumber : formatPhoneNumber,
-		events: moduleEvents
+		events: moduleEvents,
+		cleanNumber: cleanNumber
 	});
 })(jQuery);
