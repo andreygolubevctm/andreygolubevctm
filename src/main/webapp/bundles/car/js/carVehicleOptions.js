@@ -42,7 +42,9 @@
 				addeditems :	"#quote_vehicle_accessoriesDialog .quote-optional-accessories-listed .added-items ul",
 				saveditems:		"#quote_vehicle_accessoriesSelections .added-items ul"
 			},
-			redbook:			"#quote_vehicle_redbookCode"
+			redbook:			"#quote_vehicle_redbookCode",
+			colour:				"#quote_vehicle_colour"
+
 	};
 
 	elements.accessories.wrapper = "#quote_vehicle_accessoriesDialog .quote-optional-accessories-listed";
