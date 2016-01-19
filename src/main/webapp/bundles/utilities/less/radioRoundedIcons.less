@@ -1,0 +1,83 @@
+// Mixins for icon sizes.
+.radioIconSize(@icon-font-size, @label-font-size, @margin-offset){
+
+  label {
+	  float: left;
+
+	  .iconLabel {
+		  color: #000;
+	  }
+
+	  i {
+		  width: @icon-font-size * 1.3 + 2; // padding * 2 + font-size + border * 2
+		  font-size: @label-font-size;
+		  &:before{
+			  font-size: @icon-font-size;
+			  display: inline-block;
+		  }
+	  }
+
+	  // minimum 2 lines of label text for float to work properly
+	  min-height: (@icon-font-size * 1.3 + 2) + ceil(@label-font-size * 2.2) + 15; // Icon height + label-font-size's line-height * 2 + margin-bottom
+	  margin: @icon-font-size * 0.15 + @margin-offset;
+  }
+}
+
+/* Rounded Icons*/
+div.roundedCheckboxIcons {
+	float:left;
+  	> label {
+		padding:0;
+		border: none;
+
+	  	&.btn {
+		  background:transparent;
+		  outline:0 !important;
+		}
+
+	  	input{
+			&:checked,
+			&.checked {
+				& + i:before {
+				  background-color: @icon-bg-checked-color;
+				  border-color: @icon-border-checked-color;
+				  color: #fff;
+				}
+			}
+		}
+
+	  	i {
+			display:inline-block;
+			padding: 0;
+			margin: 0;
+			text-align: center;
+			.iconLabel {
+				display:block;
+				height:2.4em;
+				margin-top:0.25em;
+			}
+
+			&:before{
+				display:table;
+				float: none;
+				margin:0;
+				margin-bottom: 10px;
+				padding:0.15em;
+				border-radius: 50%;
+				background-color: @icon-bg-color;
+				border-color: @icon-border-color;
+				color: @theme-tertiary;
+			}
+		}
+	}
+
+	@media (@xs) {
+	  .radioIconSize(60px, @font-size-base, 0);
+	}
+	@media (@sm-only) {
+	  .radioIconSize(50px, @font-size-small, 1);
+	}
+	@media (@md-only) {
+	  .radioIconSize(50px, @font-size-small, -1);
+	}
+}
