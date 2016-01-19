@@ -11,8 +11,9 @@
 	var log = meerkat.logging.info,
 		phoneAllowedCharacters = /[^0-9\(\)+]/g;
 
-	moduleEvents = {
-	};
+	var lastInputtedKey;
+
+	moduleEvents = {};
 
 	/**
 	 * Checks the string starts with something
@@ -34,15 +35,63 @@
 		element.onkeyup = function(evt) {
 			/*
 			 8 is the keyCode for the backspace key,
+			 16 is shift,
+			 35 is end,
+			 36 is home,
 			 37 is the keyCode for the left arrow,
 			 39 is the keyCode for the right arrow,
 			 46 is the keyCode for the Del,
 			 17 is the ctrl key (don't format when nothing is entered, specifically after ctrl+a is pressed),
 			 evt.ctrlKey + 65 = Ctrl+a = Select all
 			 Which we don't want to format on */
-			var disallowedKeys = [8,17, 37, 39, 46];
-			if (disallowedKeys.indexOf(evt.keyCode) === -1 && (evt.ctrlKey === true && evt.keyCode == 65) === false) {
+			var disallowedKeys = [8, 16, 17, 35, 36, 37, 39, 46];
+			if (disallowedKeys.indexOf(evt.keyCode) === -1 && !(evt.ctrlKey && evt.keyCode == 65)) {
+				if(!$('html').hasClass('lt-ie10')) {
+					var index = this.selectionStart;
+					var key = String.fromCharCode(evt.keyCode);
+
+					// Just gonna get that caret position... Mmm, mmm, mmm...
+					lastInputtedKey = {
+						index: index,
+						key: key,
+						// Find out how many times this character has appeared leading up to this fateful moment
+						numberOfRepeats: $(element).val().substring(0, index).split(key).length - 1
+					};
+				}
+
 				formatPhoneNumber (element);
+
+				if(!$('html').hasClass('lt-ie10')) {
+					var elementVal = $(element).val();
+					var caretPosition = 0;
+
+					// If a phone numbery type character
+					if(lastInputtedKey.key.match(/[\s()+0-9]/)) {
+						var repeatCount = 0;
+						var substring = '';
+						// Get the substring up to the last occurrence of that key
+						for (var i = 0; i < elementVal.length; i++) {
+							var char = elementVal[i];
+
+							if (char === lastInputtedKey.key) {
+								repeatCount++;
+
+								if (repeatCount === lastInputtedKey.numberOfRepeats) {
+									substring = elementVal.substring(0, i + 1);
+									break;
+								}
+							}
+						}
+
+						caretPosition = substring.length;
+					} else {
+						// Otherwise just set it to wherever they were
+						caretPosition = (lastInputtedKey.index < elementVal.length) ? elementVal.length : lastInputtedKey.index;
+					}
+
+					element.focus();
+					element.setSelectionRange(caretPosition, caretPosition);
+				}
 			}
 		};
 	}
