@@ -42,7 +42,7 @@
         <field_v2:array_radio xpath="${fieldXPath}"
                                required="true"
                                className="what-to-compare roundedCheckboxIcons"
-                               items="E=<i class='energy-electricity'></i>Electricity,G=<i class='energy-gas'></i>Gas,EG=<i class='energy-combined'></i>Electricity and Gas"
+                               items="E=<i class='energy-electricity'><span class='iconLabel'>Electricity</span></i>,G=<i class='energy-gas'><span class='iconLabel'>Gas</span></i>,EG=<i class='energy-combined'><span class='iconLabel'>Electricity and Gas</span></i>"
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="which energies to compare." />
     </form_v3:row>
