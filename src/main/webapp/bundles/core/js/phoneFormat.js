@@ -48,30 +48,36 @@
 			 Which we don't want to format on */
 			var disallowedKeys = [8, 16, 17, 35, 36, 37, 39, 46];
 			if (disallowedKeys.indexOf(evt.keyCode) === -1 && !(evt.ctrlKey && evt.keyCode == 65)) {
+				var elementVal = $(element).val();
+				var useCaretPosition = false;
+
 				if(!$('html').hasClass('lt-ie10')) {
 					var index = this.selectionStart;
 
-					var keyCode = null;
-					if(window.event) {
-						keyCode = window.event.keyCode;
-					} else if (evt) {
-						keyCode = e.which;
+					useCaretPosition = (index !== elementVal.length);
+					if(useCaretPosition) {
+						var keyCode = null;
+						if (window.event) {
+							keyCode = window.event.keyCode;
+						} else if (evt) {
+							keyCode = e.which;
+						}
+
+						var key = String.fromCharCode((96 <= keyCode && keyCode <= 105) ? keyCode - 48 : keyCode);
+
+						// Just gonna get that caret position... Mmm, mmm, mmm...
+						lastInputtedKey = {
+							index: index,
+							key: key,
+							// Find out how many times this character has appeared leading up to this fateful moment
+							numberOfRepeats: elementVal.substring(0, index).split(key).length - 1
+						};
 					}
-
-					var key = String.fromCharCode((96 <= keyCode && keyCode <= 105) ? keyCode - 48 : keyCode);
-
-					// Just gonna get that caret position... Mmm, mmm, mmm...
-					lastInputtedKey = {
-						index: index,
-						key: key,
-						// Find out how many times this character has appeared leading up to this fateful moment
-						numberOfRepeats: $(element).val().substring(0, index).split(key).length - 1
-					};
 				}
 
-				var elementVal = formatPhoneNumber (element);
+				elementVal = formatPhoneNumber (element);
 
-				if(!$('html').hasClass('lt-ie10')) {
+				if(!$('html').hasClass('lt-ie10') && useCaretPosition) {
 					var caretPosition = elementVal.length;
 
 					// If a phone numbery type character
@@ -93,7 +99,9 @@
 						}
 					} else {
 						// Otherwise just set it to wherever they were
-						caretPosition = (lastInputtedKey.index >= elementVal.length) ? elementVal.length : lastInputtedKey.index;
+						if(lastInputtedKey.index < elementVal.length) {
+							lastInputtedKey.index;
+						}
 					}
 
 					element.focus();
