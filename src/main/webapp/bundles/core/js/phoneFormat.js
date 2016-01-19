@@ -11,8 +11,6 @@
 	var log = meerkat.logging.info,
 		phoneAllowedCharacters = /[^0-9\(\)+]/g;
 
-	var lastInputtedKey;
-
 	moduleEvents = {};
 
 	/**
@@ -29,10 +27,14 @@
 	 * @param number
 	 * @returns boolean
 	 */
-
 	function startFormatNumber (element){
-		/* Lets format the field each time a key is entered, but don't valide on it until it blurs */
-		element.onkeyup = function(evt) {
+		/* Lets format the field each time a key is entered, but don't validate on it until it blurs */
+		$(element).on('keyup', function(evt) {
+			evt.preventDefault();
+			evt.stopPropagation();
+
+			var lastInputtedKey;
+
 			/*
 			 8 is the keyCode for the backspace key,
 			 16 is shift,
@@ -46,54 +48,67 @@
 			 Which we don't want to format on */
 			var disallowedKeys = [8, 16, 17, 35, 36, 37, 39, 46];
 			if (disallowedKeys.indexOf(evt.keyCode) === -1 && !(evt.ctrlKey && evt.keyCode == 65)) {
+				var elementVal = $(element).val();
+				var useCaretPosition = false;
+
 				if(!$('html').hasClass('lt-ie10')) {
 					var index = this.selectionStart;
-					var key = String.fromCharCode(evt.keyCode);
 
-					// Just gonna get that caret position... Mmm, mmm, mmm...
-					lastInputtedKey = {
-						index: index,
-						key: key,
-						// Find out how many times this character has appeared leading up to this fateful moment
-						numberOfRepeats: $(element).val().substring(0, index).split(key).length - 1
-					};
+					useCaretPosition = (index !== elementVal.length);
+					if(useCaretPosition) {
+						var keyCode = null;
+						if (window.event) {
+							keyCode = window.event.keyCode;
+						} else if (evt) {
+							keyCode = e.which;
+						}
+
+						var key = String.fromCharCode((96 <= keyCode && keyCode <= 105) ? keyCode - 48 : keyCode);
+
+						// Just gonna get that caret position... Mmm, mmm, mmm...
+						lastInputtedKey = {
+							index: index,
+							key: key,
+							// Find out how many times this character has appeared leading up to this fateful moment
+							numberOfRepeats: elementVal.substring(0, index).split(key).length - 1
+						};
+					}
 				}
 
-				formatPhoneNumber (element);
+				elementVal = formatPhoneNumber (element);
 
-				if(!$('html').hasClass('lt-ie10')) {
-					var elementVal = $(element).val();
-					var caretPosition = 0;
+				if(!$('html').hasClass('lt-ie10') && useCaretPosition) {
+					var caretPosition = elementVal.length;
 
 					// If a phone numbery type character
 					if(lastInputtedKey.key.match(/[\s()+0-9]/)) {
 						var repeatCount = 0;
-						var substring = '';
+
 						// Get the substring up to the last occurrence of that key
 						for (var i = 0; i < elementVal.length; i++) {
-							var char = elementVal[i];
+							var char = elementVal.charAt(i);
 
 							if (char === lastInputtedKey.key) {
 								repeatCount++;
 
 								if (repeatCount === lastInputtedKey.numberOfRepeats) {
-									substring = elementVal.substring(0, i + 1);
+									caretPosition = i + 1;
 									break;
 								}
 							}
 						}
-
-						caretPosition = substring.length;
 					} else {
 						// Otherwise just set it to wherever they were
-						caretPosition = (lastInputtedKey.index < elementVal.length) ? elementVal.length : lastInputtedKey.index;
+						if(lastInputtedKey.index < elementVal.length) {
+							lastInputtedKey.index;
+						}
 					}
 
 					element.focus();
 					element.setSelectionRange(caretPosition, caretPosition);
 				}
 			}
-		};
+		});
 	}
 	/**
 	 * Format the phone number so it is in the format 04xx xxx xxx or (0x) xxxx xxxx
