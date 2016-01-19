@@ -69,10 +69,9 @@
 					};
 				}
 
-				formatPhoneNumber (element);
+				var elementVal = formatPhoneNumber (element);
 
 				if(!$('html').hasClass('lt-ie10')) {
-					var elementVal = $(element).val();
 					var caretPosition = elementVal.length;
 
 					// If a phone numbery type character
@@ -87,7 +86,8 @@
 								repeatCount++;
 
 								if (repeatCount === lastInputtedKey.numberOfRepeats) {
-									caretPosition = i + 1; break;
+									caretPosition = i + 1;
+									break;
 								}
 							}
 						}
