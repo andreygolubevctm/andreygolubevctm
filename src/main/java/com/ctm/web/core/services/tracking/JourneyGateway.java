@@ -80,7 +80,7 @@ public class JourneyGateway {
 			response.addCookie(cookie);
 
 			if (!hasRequestJParameterNotEmpty(request)) {
-				StringBuffer url = getURLWithoutJParam(request);
+				StringBuilder url = getURLWithoutJParam(request, pageSettings);
 				url.append("j=").append(jValue);
 				return url.toString();
 			}
@@ -141,8 +141,8 @@ public class JourneyGateway {
 		return StringUtils.isNotBlank(request.getParameter(J_PARAMETER));
 	}
 
-	private static StringBuffer getURLWithoutJParam(HttpServletRequest request) {
-		StringBuffer url = request.getRequestURL();
+	private static StringBuilder getURLWithoutJParam(HttpServletRequest request, PageSettings pageSettings) throws ConfigSettingException {
+		StringBuilder url = new StringBuilder(pageSettings.getBaseUrl()+"health_quote_v2.jsp");
 		url.append("?");
 		Map<String, String> qstr = getQueryMap(request.getQueryString());
 		for (Map.Entry<String, String> entry : qstr.entrySet()) {

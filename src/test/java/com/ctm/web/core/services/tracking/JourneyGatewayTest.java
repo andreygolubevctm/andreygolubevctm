@@ -36,8 +36,9 @@ public class JourneyGatewayTest {
     private HttpServletResponse response;
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         PowerMockito.mockStatic(SettingsService.class);
+        when(pageSettings.getBaseUrl()).thenReturn("http://localhost:8080/ctm/");
     }
 
     @Test
@@ -125,7 +126,7 @@ public class JourneyGatewayTest {
         when(request.getQueryString()).thenReturn("param1=1&param2=2");
 
         final String url = JourneyGateway.getJourney(request, splitTestRef, response);
-        assertEquals("http://localhost:8080?param1=1&param2=2&j=1", url);
+        assertEquals("http://localhost:8080/ctm/health_quote_v2.jsp?param1=1&param2=2&j=1", url);
 
         verify(response, times(1)).addCookie(any());
     }
@@ -153,7 +154,7 @@ public class JourneyGatewayTest {
         when(request.getQueryString()).thenReturn("param1=1&param2=2");
 
         final String url = JourneyGateway.getJourney(request, splitTestRef, response);
-        assertEquals("http://localhost:8080?param1=1&param2=2&j=30", url);
+        assertEquals("http://localhost:8080/ctm/health_quote_v2.jsp?param1=1&param2=2&j=30", url);
 
         verify(response, times(1)).addCookie(any());
     }
@@ -192,7 +193,7 @@ public class JourneyGatewayTest {
 
 
         final String url = JourneyGateway.getJourney(request, splitTestRef, response);
-        assertEquals("http://localhost:8080?param1=1&param2=2&j=70", url);
+        assertEquals("http://localhost:8080/ctm/health_quote_v2.jsp?param1=1&param2=2&j=70", url);
 
         verify(response, times(1)).addCookie(any());
     }
@@ -218,7 +219,7 @@ public class JourneyGatewayTest {
         when(request.getQueryString()).thenReturn("param1=1&param2=2");
 
         final String url = JourneyGateway.getJourney(request, splitTestRef, response);
-        assertEquals("http://localhost:8080?param1=1&param2=2&j=1", url);
+        assertEquals("http://localhost:8080/ctm/health_quote_v2.jsp?param1=1&param2=2&j=1", url);
 
         verify(response, times(1)).addCookie(any());
     }
@@ -249,7 +250,7 @@ public class JourneyGatewayTest {
         when(request.getParameterMap()).thenReturn(parameters);
 
         final String url = JourneyGateway.getJourney(request, splitTestRef, response);
-        assertEquals("http://localhost:8080?param1=1&param2=2&j=1", url);
+        assertEquals("http://localhost:8080/ctm/health_quote_v2.jsp?param1=1&param2=2&j=1", url);
 
         verify(response, times(1)).addCookie(any());
     }
