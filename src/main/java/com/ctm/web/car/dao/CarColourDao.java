@@ -16,7 +16,7 @@ public class CarColourDao {
 	}
 
 	/**
-	 * Get all car makes. They will be grouped into isTopMake=true and isTopMake=false.
+	 * Get all car colours.
 	 */
 	public ArrayList<CarColour> getAll() throws DaoException {
 
