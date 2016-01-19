@@ -13,9 +13,11 @@
 <c:set var="callCentreNumber" scope="request"><content:get key="genericCallCentreNumber"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="genericCallCentreHelpNumber"/></c:set>
 
+<%-- Set global variable to flags for active split tests --%>
+<utilities_v3:splittest_helper />
 
 <%-- HTML --%>
-<layout_v1:journey_engine_page title="Utilities Quote">
+<layout_v3:journey_engine_page title="Utilities Quote">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -49,7 +51,7 @@
         </div>
 	</jsp:attribute>
 
-	<jsp:attribute name="navbar">
+	<jsp:attribute name="progress_bar">
 
 		<ul class="nav navbar-nav" role="menu">
             <li class="visible-xs">
@@ -146,13 +148,24 @@
 	</jsp:attribute>
 								
     <jsp:body>
-							
-        <%-- Slides --%>
-        <utilities_v2_layout:slide_your_details/>
-        <utilities_v2_layout:slide_contact_details/>
-        <utilities_v2_layout:slide_results/>
-        <utilities_v2_layout:slide_enquiry/>
-							
+
+        <c:choose>
+            <c:when test="${utilitiesNewDesign eq true}">
+                <%-- Slides --%>
+                <utilities_v3_layout:slide_your_details/>
+                <utilities_v3_layout:slide_contact_details/>
+                <utilities_v3_layout:slide_results/>
+                <utilities_v3_layout:slide_enquiry/>
+            </c:when>
+            <c:otherwise>
+                <%-- Slides --%>
+                <utilities_v2_layout:slide_your_details/>
+                <utilities_v2_layout:slide_contact_details/>
+                <utilities_v2_layout:slide_results/>
+                <utilities_v2_layout:slide_enquiry/>
+            </c:otherwise>
+        </c:choose>
+
         <div class="hiddenFields">
             <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
             <core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}"/>
@@ -162,4 +175,4 @@
         <field:hidden xpath="environmentOverride" />
     </jsp:body>
 					
-</layout_v1:journey_engine_page>
+</layout_v3:journey_engine_page>

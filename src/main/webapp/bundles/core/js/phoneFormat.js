@@ -41,7 +41,7 @@
 			 evt.ctrlKey + 65 = Ctrl+a = Select all
 			 Which we don't want to format on */
 			var disallowedKeys = [8,17, 37, 39, 46];
-			if (disallowedKeys.indexOf(evt.keyCode) === -1 && (evt.ctrlKey == true && evt.keyCode == 65) == false) {
+			if (disallowedKeys.indexOf(evt.keyCode) === -1 && (evt.ctrlKey === true && evt.keyCode == 65) === false) {
 				formatPhoneNumber (element);
 			}
 		};
