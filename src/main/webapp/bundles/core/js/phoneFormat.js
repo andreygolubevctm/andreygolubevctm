@@ -86,7 +86,7 @@
 						caretPosition = substring.length;
 					} else {
 						// Otherwise just set it to wherever they were
-						caretPosition = lastInputtedKey.index - 1;
+						caretPosition = lastInputtedKey.index;
 					}
 
 					element.focus();
