@@ -15,7 +15,8 @@ import javax.servlet.ServletException;
 
 @SpringBootApplication
 @ComponentScan({"com.ctm.web.core.connectivity", "com.ctm.web.energy",
-        "com.ctm.commonlogging", "com.ctm.web.core"})
+        "com.ctm.commonlogging", "com.ctm.web.core",
+        "com.ctm.web.car"})
 @EnableAutoConfiguration
 @Configuration
 public class Application extends SpringBootServletInitializer {

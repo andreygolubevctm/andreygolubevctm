@@ -46,7 +46,7 @@ public class RequestAdapterTest {
         verify(vehicle, times(1)).getRegistrationYear();
         verify(vehicle, times(1)).getSecurityOption();
         verify(vehicle, times(1)).getUse();
-        verify(carQuote, times(1)).getConvertedAccs();
+        verify(carQuote, times(1)).getAccs();
 
     }
 
