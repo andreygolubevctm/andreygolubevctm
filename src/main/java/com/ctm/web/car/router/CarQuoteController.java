@@ -27,13 +27,13 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 
 @RestController
 @RequestMapping("/rest/car")
-public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
+public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
 
     @Autowired
     private CarQuoteService carService;
 
     @Autowired
-    public CarQuoteRouter(SessionDataServiceBean sessionDataServiceBean) {
+    public CarQuoteController(SessionDataServiceBean sessionDataServiceBean) {
         super(sessionDataServiceBean);
     }
 
