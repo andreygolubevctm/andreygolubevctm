@@ -42,7 +42,8 @@
 </c:choose>
 
 <%-- Remove cr and lf from inline html --%>
-<c:set var="stateHtml" value="${go:replaceAll(stateHtml, '\r|\n', '')}" />
+<c:set var="crOrLf" value='\r|\n' />
+<c:set var="stateHtml" value="${go:replaceAll(stateHtml, crOrLf, '')}" />
 
 <%-- HTML --%>
 <field_v1:hidden xpath="${parentXpath}/state" required="false" />
