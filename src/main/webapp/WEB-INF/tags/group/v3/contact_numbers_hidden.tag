@@ -11,5 +11,5 @@
     <go:setData dataVar="data" xpath="${xpath}/other" value="${data['health/application/other']}" />
 </c:if>
 
-<field:hidden xpath="${xpath}/mobile" />
-<field:hidden xpath="${xpath}/other" />
+<field_v1:hidden xpath="${xpath}/mobile" />
+<field_v1:hidden xpath="${xpath}/other" />

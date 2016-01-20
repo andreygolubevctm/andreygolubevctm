@@ -320,7 +320,7 @@
 		<field_v2:account_number xpath="${xpath}/new/accountNumber" title="account number" minLength="5" maxLength="9" required="true" />
 	</form_v2:row>
 
-	<form_v2:row label="group_new:elastic_address">
+	<form_v2:row label="group_v2:elastic_address">
 		<group_v2:elastic_address xpath="new/group/address" type="RES" />
 	</form_v2:row>
 
@@ -353,7 +353,7 @@
 
 
 	<form_v2:row label="creditcard_number" legend="This is a legend">
-		<field_v2:creditcard_number xpath="${xpath}/new/cardNumber" title="field_new:creditcard_number" required="true" />
+		<field_v2:creditcard_number xpath="${xpath}/new/cardNumber" title="field_v2:creditcard_number" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="creditcard_ccv">
