@@ -171,3 +171,29 @@
 	}
 }
 
+/* SHOW/HIDE RIGHT PANELS */
+body[data-step="start"], body[data-step="contact"] {
+	.sidebar-box {
+		&.quoteSnapshot {display:block;}
+		&.callCentreHelp {display:none;}
+		&.testimonials {display:none;}
+		&.pricePromiseBox {display:none;}
+	}
+}
+body[data-step="benefits"] {
+	.sidebar-box {
+		&.quoteSnapshot {display: block;}
+		&.callCentreHelp {display: block;}
+		&.testimonials {display: block;}
+		&.pricePromiseBox {display: block;}
+	}
+}
+body[data-step="apply"], body[data-step="payment"] {
+	.sidebar-box {
+		&.quoteSnapshot {display:none;}
+		&.callCentreHelp {display:block;}
+		&.testimonials {display:block;}
+		&.pricePromiseBox {display:block;}
+	}
+}
+
