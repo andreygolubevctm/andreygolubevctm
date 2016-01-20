@@ -40,8 +40,10 @@
 		</c:set>
 	</c:otherwise>
 </c:choose>
-<c:set var="newLine" value="\r\n" />
-<c:set var="stateHtml" value="${go:replaceAll(stateHtml, newLine, '')}" />
+
+<%-- Remove cr and lf from inline html --%>
+<c:set var="crOrLf" value='\r|\n' />
+<c:set var="stateHtml" value="${go:replaceAll(stateHtml, crOrLf, '')}" />
 
 <%-- HTML --%>
 <field_v1:hidden xpath="${parentXpath}/state" required="false" />
