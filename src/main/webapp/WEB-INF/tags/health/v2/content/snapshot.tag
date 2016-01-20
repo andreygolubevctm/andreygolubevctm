@@ -6,7 +6,7 @@
 <fieldset class="quoteSnapshot sidebar-box hidden-sm">
     <h4>Quote Summary</h4>
 
-    <div class="col-md-12">
+    <div class="">
         <div class="snapshots-step1-container"></div>
         <div class="snapshots-covertype-container"></div>
         <div class="snapshots-benefits-container"></div>
