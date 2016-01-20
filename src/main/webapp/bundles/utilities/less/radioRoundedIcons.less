@@ -82,3 +82,20 @@ div.roundedCheckboxIcons {
 	  .radioIconSize(50px, @font-size-small, -1);
 	}
 }
+
+
+.lt-ie9,
+.lt-ie10 {
+  div.roundedCheckboxIcons .hasIcons {
+		width: auto;
+			.checkbox {
+				label.checked:before {
+					background-color: @icon-bg-checked-color !important;
+					border-color: @icon-border-checked-color !important;
+					color: #fff;
+				}
+			}
+
+		.benefitsIconSize(60px, @font-size-base, 0);
+	}
+}
