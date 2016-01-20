@@ -106,11 +106,9 @@
 		comment="QUOTE"
 	/>
 
-	<%
-		if ("Y".equals(userDetails.getQuestionSet().getOkToCall())) {
-			com.ctm.web.core.validator.ContactValidator.validateFromJsp(request, "HEALTH", userDetails.getQuestionSet().getPhoneMobile());
-		}
-	%>
+	<c:if test="${userDetails.questionSet.okToCall eq 'Y'}">
+		${cv:validateContact(pageContext.request, "HEALTH", userDetails.questionSet.phoneMobile)}
+	</c:if>
 
 </c:if>
 
@@ -138,11 +136,10 @@
 		comment="APPLICATION"
 	/>
 
-	<%
-		if ("Y".equals(userDetails.getApplication().getOkToCall())) {
-			com.ctm.web.core.validator.ContactValidator.validateFromJsp(request, "HEALTH", userDetails.getApplication().getPhoneMobile());
-		}
-	%>
+	<c:if test="${userDetails.application.okToCall eq 'Y'}">
+		${cv:validateContact(pageContext.request, "HEALTH", userDetails.application.phoneMobile)}
+	</c:if>
+
 </c:if>
 
 ${logger.debug('Completed write opt ins. {}', log:kv('userDetails',userDetails ))}

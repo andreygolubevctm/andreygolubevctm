@@ -7,6 +7,8 @@ import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.ContactValidatorService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class ContactValidator extends CommonQuoteRouter implements InitializingBean {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContactValidator.class);
 
     private static ContactValidator INSTANCE;
 
@@ -37,12 +41,16 @@ public class ContactValidator extends CommonQuoteRouter implements InitializingB
         contactValidatorService.validateContact(brand, vertical, validatorRequest);
     }
 
-    public static void validateFromJsp(HttpServletRequest request, String verticalCode, String contact) {
-        if (StringUtils.isNotBlank(contact)) {
-            ContactValidatorRequest validatorRequest = new ContactValidatorRequest();
-            validatorRequest.setEnvironmentOverride(request.getParameter("environmentValidatorOverride"));
-            validatorRequest.setContact(contact);
-            INSTANCE.validate(request, verticalCode, validatorRequest);
+    public static void validateContact(HttpServletRequest request, String verticalCode, String contact) {
+        try {
+            if (StringUtils.isNotBlank(contact)) {
+                ContactValidatorRequest validatorRequest = new ContactValidatorRequest();
+                validatorRequest.setEnvironmentOverride(request.getParameter("environmentValidatorOverride"));
+                validatorRequest.setContact(contact);
+                INSTANCE.validate(request, verticalCode, validatorRequest);
+            }
+        } catch (Exception e) {
+            LOGGER.warn("An error occurred while validating {} for {}", contact, verticalCode, e);
         }
     }
 }
