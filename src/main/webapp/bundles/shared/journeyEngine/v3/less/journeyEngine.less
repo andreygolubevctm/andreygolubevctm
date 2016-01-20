@@ -139,124 +139,127 @@ DISABLED due to breaking iPad iOS6 rendering
 /**
  NEW STYLING OVERRIDES
 */
-.journeyEngineSlide.resultsSlide{
-  padding-top: 0;
-  @media (@xs-only) {
-	padding-top: @page-offset-xs;
-  }
-}
-
-&[data-step=benefits],
-&[data-step=results]{
-  #pageContent{
-	background-color: @page-content-bg;
-	.transition(~"background-color 250ms ease-in-out");
-  }
-  #pageContentTop{
-	opacity: 1;
-	.transition(~"opacity 250ms ease-in-out");
-  }
-}
-
-
-.fieldset-card{
-  background-color: white;
-  border:1px solid @border-colour;
-  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
-}
-
-.fieldset-column-side {
-
-  @media (min-width: @screen-sm-min) {
-	padding-top: 32px; //47px
-  }
-}
-
-.btn-modal {
-  &:extend(.btn-email all);
-}
-
-.btn-next, .btn-cta, .btn-save, .btn-cancel, .btn-download, .btn-edit {
-  border-radius: 22px;
-}
-
-.btn-next {
-  margin-top: 5px;
-}
-
-.slideAction {
-  div:first-child {
-	float: right;
-  }
-}
-
-/*
-	Content changes
-*/
-
-
-#pageContent {
-  position: relative;
-  .transition(~"background-color 1000ms ease-in-out");
-  background-color: @main-bg-colour;
-}
-
-.navMenu-row {
-  background-color: @main-bg-colour;
-}
-
-
-.content {
-  background-color: white;
-  border: 1px solid #E7E7E7;
-  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
-  padding-top: 25px;
-  @media (min-width: 0) {
-	padding-left: 25px;
-	padding-right: 25px;
-  }
-}
-
-.fieldset h2 {
-  border-bottom: none;
-  color: #162F8A;
-  font-weight: bold;
-  font-size: 38px;
-  margin-bottom: 10px;
-}
-
-fieldset h2 {
-  padding-bottom: 3px;
-  margin-top: 0;
-}
-
-
-.content,
-.fieldset-card,
-.fieldset-column-side .sidebar-box{
-  background-color: white;
-  border:1px solid @border-colour;
-  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
-}
-
-.fieldset-column-side {
-  padding-top: 0;
-
-  .sidebar-box, .sidebar-box-transparent {
-	font-size: 1.2em;
-	padding: 20px;
-	margin-bottom: 1em;
-
-	.callCentreNumber {
-	  color: @theme-secondary;
-	  font-weight: 700;
-	  // Make this slightly bigger than its parent
-	  font-size: 1.2em;
+body.utilities_design_55,
+body.health {
+  .journeyEngineSlide.resultsSlide{
+	padding-top: 0;
+	@media (@xs-only) {
+	  padding-top: @page-offset-xs;
 	}
   }
-}
 
-.contact-details-optin-group .col-sm-offset-3 {
-  margin-left: 2%;
-  width: 93%;
+  &[data-step=benefits],
+  &[data-step=results]{
+	#pageContent{
+	  background-color: @page-content-bg;
+	  .transition(~"background-color 250ms ease-in-out");
+	}
+	#pageContentTop{
+	  opacity: 1;
+	  .transition(~"opacity 250ms ease-in-out");
+	}
+  }
+
+
+  .fieldset-card{
+	background-color: white;
+	border:1px solid @border-colour;
+	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
+  }
+
+  .fieldset-column-side {
+
+	@media (min-width: @screen-sm-min) {
+	  padding-top: 32px; //47px
+	}
+  }
+
+  .btn-modal {
+	&:extend(.btn-email all);
+  }
+
+  .btn-next, .btn-cta, .btn-save, .btn-cancel, .btn-download, .btn-edit {
+	border-radius: 22px;
+  }
+
+  .btn-next {
+	margin-top: 5px;
+  }
+
+  .slideAction {
+	div:first-child {
+	  float: right;
+	}
+  }
+
+  /*
+	  Content changes
+  */
+
+
+  #pageContent {
+	position: relative;
+	.transition(~"background-color 1000ms ease-in-out");
+	background-color: @main-bg-colour;
+  }
+
+  .navMenu-row {
+	background-color: @main-bg-colour;
+  }
+
+
+  .content {
+	background-color: white;
+	border: 1px solid #E7E7E7;
+	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
+	padding-top: 25px;
+	@media (min-width: 0) {
+	  padding-left: 25px;
+	  padding-right: 25px;
+	}
+  }
+
+  .fieldset h2 {
+	border-bottom: none;
+	color: #162F8A;
+	font-weight: bold;
+	font-size: 38px;
+	margin-bottom: 10px;
+  }
+
+  fieldset h2 {
+	padding-bottom: 3px;
+	margin-top: 0;
+  }
+
+
+  .content,
+  .fieldset-card,
+  .fieldset-column-side .sidebar-box{
+	background-color: white;
+	border:1px solid @border-colour;
+	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
+  }
+
+  .fieldset-column-side {
+	padding-top: 0;
+
+	.sidebar-box, .sidebar-box-transparent {
+	  font-size: 1.2em;
+	  padding: 20px;
+	  margin-bottom: 1em;
+
+	  .callCentreNumber {
+		color: @theme-secondary;
+		font-weight: 700;
+		// Make this slightly bigger than its parent
+		font-size: 1.2em;
+	  }
+	}
+  }
+
+  .contact-details-optin-group .col-sm-offset-3 {
+	margin-left: 2%;
+	width: 93%;
+  }
 }

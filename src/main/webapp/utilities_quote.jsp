@@ -16,8 +16,12 @@
 <%-- Set global variable to flags for active split tests --%>
 <utilities_v3:splittest_helper />
 
+<c:set var="body_class_name">
+    <c:if test="${not empty utilitiesNewDesign and utilitiesNewDesign eq true}">utilities_design_55</c:if>
+</c:set>
+
 <%-- HTML --%>
-<layout_v3:journey_engine_page title="Utilities Quote">
+<layout_v3:journey_engine_page title="Utilities Quote" body_class_name="${body_class_name}">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>

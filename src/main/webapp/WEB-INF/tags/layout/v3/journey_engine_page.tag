@@ -5,7 +5,7 @@
 
 <%@ attribute name="title"			required="false"  rtexprvalue="true"	 description="Page title" %>
 <%@ attribute name="navbar_show_back_button"			required="false"  rtexprvalue="true"	 description="Flag to show or hide the back button within the navbar" %>
-
+<%@ attribute required="false" name="body_class_name" description="Allow extra styles to be added to the rendered body tag" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -40,7 +40,7 @@
 </c:if>
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
-<layout_v3:page title="${title}">
+<layout_v3:page title="${title}" body_class_name="${body_class_name}">
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />
