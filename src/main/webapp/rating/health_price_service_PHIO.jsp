@@ -39,9 +39,9 @@
 <c:set var="savedTransactionId"><x:out select="$healthXML/request/header/retrieve/transactionId" /></c:set>
 <c:set var="productTitleSearch"><x:out select="$healthXML/request/header/productTitleSearch" escapeXml="false" /></c:set>
 <c:set var="productTitle"><x:out select="$healthXML/request/header/productTitle" escapeXml="false" /></c:set>
-<c:set var="situationFilter"><x:out select="$healthXML/request/details/situation" /></c:set>
+<c:set var="situationFilter"><x:out select="$healthXML/request/details/situationFilter" /></c:set>
 <c:choose>
-	<c:when test="${isSimples eq false and situationFilter ne 'ATP'}">
+	<c:when test="${situationFilter eq 'Y'}">
 		<c:set var="situationFilter" value="Y" />
 	</c:when>
 	<c:otherwise>
