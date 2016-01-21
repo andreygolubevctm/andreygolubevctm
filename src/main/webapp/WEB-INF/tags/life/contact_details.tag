@@ -62,7 +62,6 @@
 				<c:set var="competitionCheckboxText">
 					<content:get key="competitionCheckboxText" />
 				</c:set>
-				<field_v1:hidden xpath="${xpath}/competition/optin" constantValue="N" />
 				<field_v1:checkbox
 						xpath="${xpath}/competition/optin"
 						value="Y"
