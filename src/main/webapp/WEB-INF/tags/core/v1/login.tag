@@ -57,9 +57,12 @@
 
 				<%-- Get the operator's phone extension --%>
 				<%-- This is retrieved via the Verint recording/auditing service --%>
-				<c:catch var="extensionError">
-					<c:set var="extension" value="${phoneService.getExtensionByAgentId(pageSettings, sessionScope.userDetails['postalCode'])}" />
-				</c:catch>
+				<%-- Only try to get the extention when Inin is not enabled --%>
+				<c:if test="${!pageSettings.getSetting('inInEnabled')}">
+					<c:catch var="extensionError">
+						<c:set var="extension" value="${phoneService.getExtensionByAgentId(pageSettings, sessionScope.userDetails['postalCode'])}" />
+					</c:catch>
+				</c:if>
 
 				<c:set var="userXML">
 					<user>
