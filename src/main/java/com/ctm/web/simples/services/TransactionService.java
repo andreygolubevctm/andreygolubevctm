@@ -5,17 +5,25 @@ import com.ctm.web.core.dao.TouchDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.core.model.TransactionProperties;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.transaction.model.Transaction;
 import com.ctm.web.health.dao.HealthTransactionDao;
 import com.ctm.web.health.model.HealthTransaction;
 import com.ctm.web.simples.dao.MessageAuditDao;
 import com.ctm.web.simples.dao.MessageDao;
+import com.ctm.web.simples.dao.MessageDetailDao;
+import com.ctm.web.simples.dao.MessageDuplicatesDao;
 import com.ctm.web.simples.model.ConfirmationOperator;
 import com.ctm.web.simples.model.Message;
+import com.ctm.web.simples.model.MessageDetail;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
@@ -105,4 +113,32 @@ public class TransactionService {
 		return transactionDao.getConfirmationFromTransactionChain(rootIds);
 	}
 
+	public static MessageDetail getTransaction(final long transactionId) throws DaoException {
+		final TransactionDao transactionDao = new TransactionDao();
+		final long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
+
+		MessageDetail messageDetail = new MessageDetail();
+		Transaction transaction = new Transaction();
+		transaction.setTransactionId(rootId);
+		transactionDao.getCoreInformation(transaction);
+
+		CommentDao comments = new CommentDao();
+		messageDetail.setComments(comments.getCommentsForTransactionId(transactionId));
+
+		TouchDao touches = new TouchDao();
+		messageDetail.setTouches(touches.getTouchesForRootIds(Arrays.asList(transactionId)));
+
+		messageDetail.setTransaction(transaction);
+
+		Message message = new Message();
+		message.setTransactionId(transactionId);
+		message.setMessageId(-1);
+		messageDetail.setMessage(message);
+
+		if (Vertical.VerticalType.HEALTH.getCode().equalsIgnoreCase(transaction.getVerticalCode())) {
+			MessageDetailDao messageDetailDao = new MessageDetailDao();
+			messageDetail.setVerticalProperties(messageDetailDao.getHealthProperties(transaction.getNewestTransactionId()));
+		}
+		return messageDetail;
+	}
 }

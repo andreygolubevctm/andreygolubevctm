@@ -16,7 +16,8 @@
 	var templateMessageDetail = false,
 		currentMessage = false,
 		$messageDetailsContainer,
-		baseUrl = '';
+		baseUrl = '',
+		searchTransactionId = '';
 
 
 
@@ -89,6 +90,15 @@
 				$messageDetailsContainer.on('click', 'button[data-phone]', makeCall);
 			}
 		});
+
+		$('#simples-transaction-search-navbar').on('submit', function navbarSearchSubmit(event) {
+			event.preventDefault();
+
+			// Collect the search keywords
+			searchTransactionId = $(this).find(':input[name=keywords]').val();
+
+			performTransactionSearch();
+		});
 	}
 
 	function makeCall(event) {
@@ -149,6 +159,41 @@
 				meerkat.modules.loadingAnimation.hide($button);
 			}
 		});
+	}
+
+	function performTransactionSearch() {
+		if (searchTransactionId === false || searchTransactionId === '') return;
+
+		// Update search box on navbar
+		$('#simples-transaction-search-navbar').find(':input[name=keywords]').val(searchTransactionId);
+
+		meerkat.modules.comms.get({
+			url: 'transaction/get.json',
+			cache: false,
+			errorLevel: 'silent',
+			useDefaultErrorHandling: false,
+			data: {
+				transactionId: searchTransactionId
+			}
+		})
+			.done(function onSuccess(json) {
+				if (!json.hasOwnProperty('message')) {
+					$messageDetailsContainer.html( templateMessageDetail(json) );
+				}
+				else {
+					// Store the data and publish
+					setCurrentMessage(json);
+				}
+			})
+			.fail(function onError(obj, txt, errorThrown) {
+				var json = {"errors":[{"message": txt + ': ' + errorThrown}]};
+				$messageDetailsContainer.html( templateMessageDetail(json) );
+			})
+			.always(function onComplete() {
+				if (typeof callbackComplete === 'function') {
+					callbackComplete();
+				}
+			});
 	}
 
 	function isMobile(value) {

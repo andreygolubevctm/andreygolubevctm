@@ -71,7 +71,8 @@ import static javax.servlet.http.HttpServletResponse.*;
 		"/simples/admin/cappingLimits/delete.json",
 		"/simples/admin/cappingLimits.json",
 		//get
-		"/simples/admin/cappingLimits/getAllRecords.json"
+		"/simples/admin/cappingLimits/getAllRecords.json",
+		"/simples/transaction/get.json"
 })
 public class SimplesRouter extends HttpServlet {
 	private static final long serialVersionUID = 13L;
@@ -178,14 +179,14 @@ public class SimplesRouter extends HttpServlet {
 			objectMapper.writeValue(writer, new OpeningHoursAdminService().getAllHours(request));
 		} else if (uri.endsWith("/simples/admin/offers/getAllRecords.json")) {
 			objectMapper.writeValue(writer, new SpecialOffersService().getAllOffers());
-		} else if(uri.contains("/simples/admin/")){
+		} else if(uri.contains("/simples/admin/")) {
 			AdminRouter adminRouter = new AdminRouter(request, response);
 			adminRouter.doGet(uri.split("/simples/admin/")[1]);
+		} else if(uri.contains("/simples/transaction/get.json")) {
+			getTransaction(writer, request, response, authenticatedData);
         } else {
             response.sendError(SC_NOT_FOUND);
         }
-
-
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -337,6 +338,18 @@ public class SimplesRouter extends HttpServlet {
 			objectMapper.writeValue(writer, errors(e));
 		}
 	}
+
+	private void getTransaction(final PrintWriter writer, final HttpServletRequest request, final HttpServletResponse response, final AuthenticatedData authenticatedData) throws IOException {
+		int simplesUid = authenticatedData.getSimplesUid();
+		try {
+			objectMapper.writeValue(writer, TransactionService.getTransaction(RequestUtils.getTransactionIdFromRequest(request)));
+		} catch (final DaoException e) {
+			LOGGER.error("Could not get next simples message {}", kv("simplesUid", simplesUid), e);
+			response.setStatus(SC_INTERNAL_SERVER_ERROR);
+			objectMapper.writeValue(writer, errors(e));
+		}
+	}
+
 
 	private void userStatsForToday(final PrintWriter writer, int userId) throws IOException {
 		final SimplesUserService simplesUserService = new SimplesUserService();
