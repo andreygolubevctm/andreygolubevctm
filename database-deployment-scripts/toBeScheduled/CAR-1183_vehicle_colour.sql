@@ -31,6 +31,9 @@ INSERT INTO aggregator.vehicle_colour (vehicleColourId, colourCode, colourDescri
 	(21, 'white', 'White'),
 	(22, 'yellow', 'Yellow');
 
+SET @field_id = (SELECT MAX(fieldId) + 1 FROM aggregator.transaction_fields);
+INSERT INTO aggregator.transaction_fields (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES (@field_id, 0, 12, 'quote/vehicle/colour', 3, 1, 0, 0, 0, 0, '2014-12-31 00:00:00');
+
 
 -- Rollback
 -- DROP TABLE aggregator.vehicle_colour;
