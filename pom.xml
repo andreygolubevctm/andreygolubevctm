@@ -51,6 +51,7 @@
         <org.mapstruct.version>1.0.0.CR1</org.mapstruct.version>
         <energy-model-quote.version>1.0.0-RC1</energy-model-quote.version>
         <energy-apply-model.version>1.1.0-RC2</energy-apply-model.version>
+        <life-quote-model.version>1.0.0-SNAPSHOT</life-quote-model.version>
     </properties>
 
     <dependencyManagement>
@@ -494,6 +495,13 @@
             <groupId>com.ctm.energy</groupId>
             <artifactId>energy-apply-model</artifactId>
             <version>${energy-apply-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ctm.life</groupId>
+            <artifactId>life-quote-model</artifactId>
+            <version>${life-quote-model.version}</version>
+            <classifier>BER-97-more</classifier>
         </dependency>
 
         <dependency>

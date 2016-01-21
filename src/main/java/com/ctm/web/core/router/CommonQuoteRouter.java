@@ -123,8 +123,11 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     }
 
     protected void addCompetitionEntry(MessageContext context, Long transactionId, CompetitionEntry entry) throws ConfigSettingException, DaoException, EmailDetailsException {
+        addCompetitionEntry(context.getHttpServletRequest(), transactionId, entry);
+    }
 
-        HttpServletRequest request = context.getHttpServletRequest();
+    protected void addCompetitionEntry(HttpServletRequest request, Long transactionId, CompetitionEntry entry) throws ConfigSettingException, DaoException, EmailDetailsException {
+
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
         String brandCode = pageSettings.getBrandCode();
         Integer brandId = pageSettings.getBrandId();
@@ -156,7 +159,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
             String operator = "ONLINE";
             AuthenticatedData authenticatedSessionData = sessionDataServiceBean.getAuthenticatedSessionData(request);
-            if (authenticatedSessionData != null) {
+            if (authenticatedSessionData != null && authenticatedSessionData.getUid() != null) {
                 operator = authenticatedSessionData.getUid();
             }
 
