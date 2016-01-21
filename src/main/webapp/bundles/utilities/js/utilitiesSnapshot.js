@@ -115,6 +115,10 @@
         $yourDetailsSnapshotTextfieldElements.on('blur', function initYourDetailsSnapshotTextfieldEventListener() {
             _.defer(renderSnapshot);
         });
+
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.READY, function renderSnapshotOnJourneyReadySubscription() {
+            _.defer(renderSnapshot);
+        });
     }
 
     function renderSnapshot() {
