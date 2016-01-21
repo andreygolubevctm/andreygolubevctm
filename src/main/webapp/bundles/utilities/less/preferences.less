@@ -20,20 +20,30 @@
   }
 }
 
+
+fieldset.preferences {
+    .hasIcons {
+
+        .title {
+            font-weight: bold;
+            @media (@sm) {
+                margin-bottom: 7px;
+            }
+            display: inline-block;
+        }
+
+        label {
+            font-weight: normal;
+            @media (@xs) {
+                padding-top: 0px;
+                margin-top: -5px;
+            }
+        }
+    }
+}
 @media (@sm) {
   fieldset.preferences {
-
       .hasIcons {
-
-          .title {
-              font-weight: bold;
-              margin-bottom: 7px;
-              display: inline-block;
-          }
-
-          label {
-              font-weight: normal;
-          }
 
           div.row {
               width:50%;
