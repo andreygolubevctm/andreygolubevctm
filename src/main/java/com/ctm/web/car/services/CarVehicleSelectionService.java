@@ -279,7 +279,7 @@ public class CarVehicleSelectionService {
 	}
 
 	/**
-	 * Get all car makes.
+	 * Get all car colours.
 	 */
 	public static ArrayList<CarColour> getAllColours() {
 		ArrayList<CarColour> carColours = new ArrayList<CarColour>();
