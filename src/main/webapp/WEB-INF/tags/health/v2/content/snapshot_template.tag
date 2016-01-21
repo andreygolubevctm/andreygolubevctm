@@ -57,13 +57,9 @@
     </div>
   </div>
   {{ } else  { }}
-  <div class="row">
-    <div>
-      <p>We compare policies from seven of the top ten funds in Australia (as well as some smaller ones),
-        saving you time and effort when searching for the right policy.
-      </p>
-    </div>
-  </div>
+  <p>We compare policies from seven of the top ten funds in Australia (as well as some smaller ones),
+    saving you time and effort when searching for the right policy.
+  </p>
   {{ } }}
 
 </core_v1:js_template>
