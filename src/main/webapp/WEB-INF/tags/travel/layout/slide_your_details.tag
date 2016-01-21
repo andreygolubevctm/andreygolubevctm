@@ -103,7 +103,7 @@
 					</form_v2:row>
 					<field_v1:hidden xpath="travel/travellers/travellersDOB" />
 					<form_v2:row label="How many children?"  className="smallWidth children_row" helpId="217">
-						<field_v2:array_select items="0=Select the number of Children,1=1,2=2,3=3,4=4,5=5,6=6,7=7,8=8,9=9,10=10" xpath="travel/childrenSelect" title="how many children" required="true" className="thinner_input" />
+						<field_v2:array_select items="0=Select the number of children,1=1,2=2,3=3,4=4,5=5,6=6,7=7,8=8,9=9,10=10" xpath="travel/childrenSelect" title="how many children" required="true" className="thinner_input" />
 					</form_v2:row>
 
 					<field_v1:hidden xpath="travel/adults" />

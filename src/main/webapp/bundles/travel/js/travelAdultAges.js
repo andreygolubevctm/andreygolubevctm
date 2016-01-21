@@ -37,7 +37,7 @@
 				$children_row[hideMethod]();
 				$travel_adults.val(2);
 				$('#travel_travellers_traveller2DOB').addClass('validate');
-				$('#travel_travellers_traveller2DOB').attr('required');
+				$('#travel_travellers_traveller2DOB').attr('required','required');
 			} else if (selected === "F") {
 				$adult_dob_2[showMethod]();
 				$children_row[showMethod]();
