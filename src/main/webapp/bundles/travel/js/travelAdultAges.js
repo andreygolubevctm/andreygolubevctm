@@ -36,25 +36,36 @@
 				$adult_dob_2[showMethod]();
 				$children_row[hideMethod]();
 				$travel_adults.val(2);
+				$('#travel_travellers_traveller2DOB').addClass('validate');
+				$('#travel_travellers_traveller2DOB').attr('required');
 			} else if (selected === "F") {
 				$adult_dob_2[showMethod]();
 				$children_row[showMethod]();
 				$travel_adults.val(2);
+				$('#travel_travellers_traveller2DOB').removeClass('validate');
+				$('#travel_travellers_traveller2DOB').removeAttr('required');
 			}
 		});
 	}
 
 	function updateHiddenField() {
-		var numAdults = parseInt($('#travel_adults').val()),
+		var totalAdults = parseInt($('#travel_adults').val()),
+			numAdults = 0,
 			numChildren = parseInt($('#travel_childrenSelect').val()),
 			adultDOBs = [numAdults];
 
-		for (var i = 0; i < numAdults; i++) {
-			adultDOBs[i] = $('#travel_travellers_traveller'+(i+1)+'DOB').val();
+		for (var i = 0; i < totalAdults; i++) {
+			var dob = $('#travel_travellers_traveller'+(i+1)+'DOB').val();
+			// Family can have 1 or 2 adults
+			if(dob !== '') {
+				adultDOBs[i] = $('#travel_travellers_traveller'+(i+1)+'DOB').val();
+				numAdults += 1;
+			}
 		}
 
 		$('#travel_travellers_travellersDOB').val(adultDOBs.join(','));
 
+		$('#travel_adults').val(numAdults);
 		$('#travel_children').val(numChildren);
 	}
 

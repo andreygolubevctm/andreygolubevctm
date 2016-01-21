@@ -99,7 +99,7 @@
 						<field_v2:person_dob xpath="travel/travellers/traveller1DOB" title="your" required="true" ageMin="16" ageMax="99" />
 					</form_v2:row>
 					<form_v2:row label="Second traveller's date of birth" className="second_traveller_age_row">
-						<field_v2:person_dob xpath="travel/travellers/traveller2DOB" title="the second traveller's" required="false" ageMin="16" ageMax="99" />
+						<field_v2:person_dob xpath="travel/travellers/traveller2DOB" title="the second traveller's" required="true" ageMin="16" ageMax="99" />
 					</form_v2:row>
 					<field_v1:hidden xpath="travel/travellers/travellersDOB" />
 					<form_v2:row label="How many children?"  className="smallWidth children_row" helpId="217">
