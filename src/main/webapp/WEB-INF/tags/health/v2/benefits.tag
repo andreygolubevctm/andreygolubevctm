@@ -35,6 +35,14 @@
 					</div>
 				</div>
 
+				<div class="col-sm-12">
+					<h4>Accident-only Cover</h4>
+					<c:set var="fieldXpath" value="${xpath}/accidentOnlyCover" />
+					<form_v2:row >
+						<field_v2:checkbox xpath="${fieldXpath}" required="false" title="Accident-only Cover" value="Y" label="true" />
+					</form_v2:row>
+				</div>
+
 			</div>
 
 		</form_v2:fieldset>

@@ -203,6 +203,14 @@
 						<xsl:otherwise>Combined</xsl:otherwise>
 					</xsl:choose>
 				</productType>
+
+				<situationFilter>
+					<xsl:choose>
+						<xsl:when test="situation/accidentOnlyCover = 'Y'">Y</xsl:when>
+						<xsl:otherwise>N</xsl:otherwise>
+					</xsl:choose>
+				</situationFilter>
+
 				<accountType><xsl:value-of select="payment/details/type" /></accountType>
 			</details>
 			
