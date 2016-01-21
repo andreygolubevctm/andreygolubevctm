@@ -7,7 +7,7 @@
 <%@ attribute name="className" required="false" rtexprvalue="true" description="Additional classes to be added to the partent element"%>
 <%@ attribute name="asBubble" required="false" rtexprvalue="true" description="Render style for content"%>
 
-<form_v2:fieldset legend="${label}" className="hidden snapshot yourDetailsSnapshot ${className}">
+<form_v2:fieldset legend="${label}" className="hidden snapshot yourDetailsSnapshot hidden-xs ${className}">
 	<div class="row snapshot">
 		<div class="col-sm-12">
 			<h4>Your Details</h4>
