@@ -423,26 +423,9 @@
 		});
 	}
 
-	/**
-	 * This function has been refactored into calling a core resultsTracking module.
-	 * It has remained here so verticals can run their own unique calls.
-	 */
-	function publishExtraSuperTagEvents(additionalData) {
-		additionalData = typeof additionalData === 'undefined' ? {} : additionalData;
-		meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
-			additionalData: $.extend({
-				sortBy: Results.getSortBy() +'-'+ Results.getSortDir()
-			}, additionalData),
-			onAfterEventMode: 'Refresh'
-		});
-	}
-
 	function init(){
 		$(document).ready(function() {
 			$component = $("#resultsPage");
-			if(!meerkat.modules.splitTest.isActive([2,3,4,83])) {
-				meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
-			}
 		});
 	}
 
@@ -451,8 +434,7 @@
 		initPage: initPage,
 		get: get,
 		showNoResults: showNoResults,
-		rankingCallback: rankingCallback,
-		publishExtraSuperTagEvents: publishExtraSuperTagEvents
+		rankingCallback: rankingCallback
 	});
 
 })(jQuery);
