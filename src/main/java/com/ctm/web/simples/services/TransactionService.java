@@ -7,7 +7,9 @@ import com.ctm.web.core.model.Error;
 import com.ctm.web.core.model.TransactionProperties;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.transaction.model.Transaction;
+import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.web.health.dao.HealthTransactionDao;
 import com.ctm.web.health.model.HealthTransaction;
 import com.ctm.web.simples.dao.MessageAuditDao;
@@ -21,10 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -115,12 +114,24 @@ public class TransactionService {
 
 	public static MessageDetail getTransaction(final long transactionId) throws DaoException {
 		final TransactionDao transactionDao = new TransactionDao();
+		final TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
 		final long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
 
-		MessageDetailService service = new MessageDetailService();
-		Message message = new Message();
+		final MessageDetailService service = new MessageDetailService();
+		final Message message = new Message();
 		message.setTransactionId(rootId);
 		message.setMessageId(-1);
+
+		final TransactionDetail state = transactionDetailsDao.getTransactionDetailByXpath(transactionId, "health/situation/state");
+		message.setState(Optional.ofNullable(state).map(TransactionDetail::getTextValue).orElse(""));
+
+		final Optional<TransactionDetail> primaryFirstName = Optional.ofNullable(transactionDetailsDao.getTransactionDetailByXpath(transactionId, "health/application/primary/firstname"));
+		if(primaryFirstName.isPresent()) {
+			message.setContactName(primaryFirstName.map(TransactionDetail::getTextValue).orElse(""));
+		} else {
+			final TransactionDetail contactName = transactionDetailsDao.getTransactionDetailByXpath(transactionId, "health/contactDetails/name");
+			message.setContactName(Optional.ofNullable(contactName).map(TransactionDetail::getTextValue).orElse(""));
+		}
 
 		return  service.getMessageDetail(message);
 	}
