@@ -10,7 +10,14 @@
         };
 
     var $snapshotSituation,
-        $productSnapshot;
+        $productSnapshot,
+        $energyComparison,
+        $suburb,
+        $elecBillingDays,
+        $elecHowCharged,
+        $elecPeakUsage,
+        $gasUsage,
+        $snapshotBox;
 
     function initUtilitiesSnapshot() {
         $snapshotSituation = $('.snapshotSituation');
@@ -89,9 +96,73 @@
         }
 
     }
+
+    function initYourDetailsSnapshot() {
+        $energyComparison = $("input[name='utilities_householdDetails_whatToCompare']"),
+        $suburb = $('#utilities_householdDetails_location'),
+        $elecBillingDays = $('#utilities_estimateDetails_spend_electricity_days'),
+        $elecHowCharged = $("input[name='utilities_estimateDetails_electricity_meter']"),
+        $elecPeakUsage = $('#utilities_estimateDetails_usage_electricity_peak_amount'),
+        $gasUsage = $("input[name='utilities_estimateDetails_gas_usage']"),
+        $yourDetailsSnapshotRadioElements = $energyComparison.add($elecHowCharged).add($gasUsage),
+        $yourDetailsSnapshotTextfieldElements = $suburb.add($elecBillingDays).add($('#utilities_estimateDetails_usage_electricity_peak_amount')),
+        $snapshotBox = $('.yourDetailsSnapshot');
+
+        $yourDetailsSnapshotRadioElements.on('click', function initYourDetailsSnapshotRadioElementsEventListener() {
+            _.defer(renderSnapshot);
+        });
+
+        $yourDetailsSnapshotTextfieldElements.on('blur', function initYourDetailsSnapshotTextfieldEventListener() {
+            _.defer(renderSnapshot);
+        });
+    }
+
+    function renderSnapshot() {
+
+        if ($energyComparison.is(':checked')) {
+            $snapshotBox.removeClass('hidden');
+        } else {
+            $snapshotBox.addClass('hidden');
+        }
+        meerkat.modules.contentPopulation.render($snapshotBox);
+    }
+
+    function getComparisonType() {
+        return $energyComparison.filter(':checked').next().find('.iconLabel').text();
+    }
+
+    function getElectricityUsage() {
+        var howChargeContent = $elecHowCharged.filter(':checked').parent().text().trim();
+
+        if ($elecPeakUsage.val() !== '' && $elecBillingDays.val() !== '' && howChargeContent !== '') {
+            $snapshotBox.find('.electricityUsageContainer').removeClass('hidden').show();
+            return $elecPeakUsage.val()+"" + $elecPeakUsage.siblings('.input-group-addon').text() + " over " + $elecBillingDays.val() + " " + $elecBillingDays.siblings('.input-group-addon').text() + ", " + howChargeContent;
+        }
+
+        if (!$snapshotBox.find('.electricityUsageContainer').hasClass('hidden')) {
+            $snapshotBox.find('.electricityUsageContainer').addClass('hidden');
+        }
+        return '';
+    }
+
+    function getGasUsage() {
+        var $selectedOptions = $gasUsage.filter(':checked').siblings('span:first');
+
+        if ($selectedOptions.next().text() !== '' && $selectedOptions.text() !== '') {
+            $snapshotBox.find('.gasUsageContainer').removeClass('hidden').show();
+            return $selectedOptions.next().text() + ' for ' + $selectedOptions.text();
+        }
+
+        return '';
+    }
+
     meerkat.modules.register('utilitiesSnapshot', {
         initUtilitiesSnapshot: initUtilitiesSnapshot,
         events: events,
+        getComparisonType: getComparisonType,
+        getElectricityUsage: getElectricityUsage,
+        getGasUsage: getGasUsage,
+        initYourDetailsSnapshot: initYourDetailsSnapshot,
         onEnterEnquire: onEnterEnquire,
         onEnterResults: onEnterResults
     });
