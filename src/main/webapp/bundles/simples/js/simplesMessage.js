@@ -16,8 +16,7 @@
 	var templateMessageDetail = false,
 		currentMessage = false,
 		$messageDetailsContainer,
-		baseUrl = '',
-		searchTransactionId = '';
+		baseUrl = '';
 
 
 
@@ -25,6 +24,7 @@
 		$(document).ready(function() {
 
 			baseUrl = meerkat.modules.simples.getBaseUrl();
+			$messageDetailsContainer = $('.simples-message-details-container');
 
 			//
 			// Set up templates
@@ -66,12 +66,17 @@
 						$button.prop('disabled', false).removeClass('disabled');
 					});
 				});
+
+				// Check if Simples is being launched from the dialler
+				var urlVars = getUrlVars();
+				if (urlVars.hasOwnProperty('launchTranId')) {
+					performTransactionSearch(urlVars['launchTranId']);
+				}
 			}
 
 			//
 			// Message details
 			//
-			$messageDetailsContainer = $('.simples-message-details-container');
 			var messageId = 0;
 			if ($messageDetailsContainer.length > 0) {
 				// Render
@@ -89,16 +94,26 @@
 				// Call buttons
 				$messageDetailsContainer.on('click', 'button[data-phone]', makeCall);
 			}
+
+			$('#simples-transaction-search-navbar').on('submit', function navbarSearchSubmit(event) {
+				event.preventDefault();
+				performTransactionSearch($(this).find(':input[name=keywords]').val());
+			});
 		});
+	}
 
-		$('#simples-transaction-search-navbar').on('submit', function navbarSearchSubmit(event) {
-			event.preventDefault();
-
-			// Collect the search keywords
-			searchTransactionId = $(this).find(':input[name=keywords]').val();
-
-			performTransactionSearch();
-		});
+	// Read a page's GET URL variables and return them as an associative array.
+	function getUrlVars()
+	{
+		var vars = [], hash;
+		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+		for(var i = 0; i < hashes.length; i++)
+		{
+			hash = hashes[i].split('=');
+			vars.push(hash[0]);
+			vars[hash[0]] = hash[1];
+		}
+		return vars;
 	}
 
 	function makeCall(event) {
@@ -161,14 +176,13 @@
 		});
 	}
 
-	function performTransactionSearch() {
+	function performTransactionSearch(searchTransactionId) {
 		if (searchTransactionId === false || searchTransactionId === '') return;
 
-		// Update search box on navbar
-		$('#simples-transaction-search-navbar').find(':input[name=keywords]').val(searchTransactionId);
+		$messageDetailsContainer.html( meerkat.modules.loadingAnimation.getTemplate() );
 
 		meerkat.modules.comms.get({
-			url: 'transaction/get.json',
+			url: baseUrl + 'simples/transaction/get.json',
 			cache: false,
 			errorLevel: 'silent',
 			useDefaultErrorHandling: false,
@@ -176,24 +190,19 @@
 				transactionId: searchTransactionId
 			}
 		})
-			.done(function onSuccess(json) {
-				if (!json.hasOwnProperty('message')) {
-					$messageDetailsContainer.html( templateMessageDetail(json) );
-				}
-				else {
-					// Store the data and publish
-					setCurrentMessage(json);
-				}
-			})
-			.fail(function onError(obj, txt, errorThrown) {
-				var json = {"errors":[{"message": txt + ': ' + errorThrown}]};
+		.done(function onSuccess(json) {
+			if (!json.hasOwnProperty('message')) {
 				$messageDetailsContainer.html( templateMessageDetail(json) );
-			})
-			.always(function onComplete() {
-				if (typeof callbackComplete === 'function') {
-					callbackComplete();
-				}
-			});
+			}
+			else {
+				// Store the data and publish
+				setCurrentMessage(json);
+			}
+		})
+		.fail(function onError(obj, txt, errorThrown) {
+			var json = {"errors":[{"message": txt + ': ' + errorThrown}]};
+			$messageDetailsContainer.html( templateMessageDetail(json) );
+		});
 	}
 
 	function isMobile(value) {
