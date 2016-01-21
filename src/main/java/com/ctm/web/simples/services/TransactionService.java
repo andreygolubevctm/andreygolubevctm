@@ -117,28 +117,11 @@ public class TransactionService {
 		final TransactionDao transactionDao = new TransactionDao();
 		final long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
 
-		MessageDetail messageDetail = new MessageDetail();
-		Transaction transaction = new Transaction();
-		transaction.setTransactionId(rootId);
-		transactionDao.getCoreInformation(transaction);
-
-		CommentDao comments = new CommentDao();
-		messageDetail.setComments(comments.getCommentsForTransactionId(transactionId));
-
-		TouchDao touches = new TouchDao();
-		messageDetail.setTouches(touches.getTouchesForRootIds(Arrays.asList(transactionId)));
-
-		messageDetail.setTransaction(transaction);
-
+		MessageDetailService service = new MessageDetailService();
 		Message message = new Message();
-		message.setTransactionId(transactionId);
+		message.setTransactionId(rootId);
 		message.setMessageId(-1);
-		messageDetail.setMessage(message);
 
-		if (Vertical.VerticalType.HEALTH.getCode().equalsIgnoreCase(transaction.getVerticalCode())) {
-			MessageDetailDao messageDetailDao = new MessageDetailDao();
-			messageDetail.setVerticalProperties(messageDetailDao.getHealthProperties(transaction.getNewestTransactionId()));
-		}
-		return messageDetail;
+		return  service.getMessageDetail(message);
 	}
 }
