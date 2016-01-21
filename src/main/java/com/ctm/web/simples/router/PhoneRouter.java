@@ -3,7 +3,7 @@ package com.ctm.web.simples.router;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.SettingsService;
-import com.ctm.web.simples.services.VerintService;
+import com.ctm.web.simples.phone.verint.VerintPauseResumeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.json.JSONObject;
@@ -36,7 +36,7 @@ public class PhoneRouter extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String uri = request.getRequestURI();
-        VerintService verintService = new VerintService();
+        VerintPauseResumeService verintPauseResumeService = new VerintPauseResumeService();
         PrintWriter writer = response.getWriter();
      //Set content type based on extention
         if (uri.endsWith(".json")) {
@@ -49,7 +49,7 @@ public class PhoneRouter extends HttpServlet {
         // Route the requests ///////////////////////////////////////////////////////////////////////////////
         try {
             if (uri.endsWith("ajax/xml/pauseResumeCall.json")) {
-                writer.write(verintService.pauseResumeRecording(request, response, SettingsService.setVerticalAndGetSettingsForPage(request, "HEALTH")));
+                writer.write(verintPauseResumeService.pauseResumeRecording(request, response, SettingsService.setVerticalAndGetSettingsForPage(request, "HEALTH")));
             } else {
                 response.sendError(SC_NOT_FOUND);
             }
