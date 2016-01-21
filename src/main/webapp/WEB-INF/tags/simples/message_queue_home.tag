@@ -7,26 +7,12 @@
 <simples:template_messagedetail />
 <simples:template_touches />
 
-<c:choose>
-	<c:when test="${pageSettings.getSetting('inInEnabled')}">
-		<div class="simples-home-buttons hidden">
-			<a href="/${pageSettings.getContextFolder()}simples/startQuote.jsp?verticalCode=HEALTH" class="btn btn-form btn-lg message-inbound">Start New Quote <span class="icon icon-arrow-right"></span></a>
-		</div>
-
-		<form id="simples-transaction-search-navbar" class="navbar-form navbar-right" role="search">
-			<div class="form-group">
-				<input type="text" name="keywords" class="form-control input-sm numeric" placeholder="">
-			</div>
-			<button type="submit" class="btn btn-default btn-sm">Search</button>
-		</form>
-	</c:when>
-	<c:otherwise>
-		<div class="simples-home-buttons hidden">
-			<field_v1:button xpath="loadquote" title="Get Next Message" className="btn btn-tertiary btn-lg message-getnext" />
-			<a href="/${pageSettings.getContextFolder()}simples/startQuote.jsp?verticalCode=HEALTH" class="btn btn-form btn-lg message-inbound">Start New Quote <span class="icon icon-arrow-right"></span></a>
-		</div>
-	</c:otherwise>
-</c:choose>
+<div class="simples-home-buttons hidden">
+	<c:if test="${!pageSettings.getSetting('inInEnabled')}">
+		<field_v1:button xpath="loadquote" title="Get Next Message" className="btn btn-tertiary btn-lg message-getnext" />
+	</c:if>
+	<a href="/${pageSettings.getContextFolder()}simples/startQuote.jsp?verticalCode=HEALTH" class="btn btn-form btn-lg message-inbound">Start New Quote <span class="icon icon-arrow-right"></span></a>
+</div>
 
 <div class="simples-message-details-container">
 </div>
