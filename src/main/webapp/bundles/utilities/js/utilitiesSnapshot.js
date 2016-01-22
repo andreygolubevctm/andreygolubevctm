@@ -130,12 +130,14 @@
         data = {},
         $selectedEnergyType = $energyComparison.filter(':checked');
 
-        data.whatToCompare = $selectedEnergyType.next().find('.iconLabel').text();
+        data.whatToCompare = typeof $selectedEnergyType.val() != 'undefined' ? $selectedEnergyType.next().find('.iconLabel').text() : '';
+        data.showWhatToCompare = typeof $selectedEnergyType.val() != 'undefined';
         data.livingIn = $suburb.val();
+        data.showLivingIn = $suburb.val().trim().length > 0;
         data.electricityUsage = getElectricityUsage();
-        data.showElectricityUsage = ($selectedEnergyType.val() === 'E' || $selectedEnergyType.val() === 'EG');
+        data.showElectricityUsage = (($selectedEnergyType.val() === 'E' || $selectedEnergyType.val() === 'EG') && data.electricityUsage.trim().length > 0);
         data.gasUsage = getGasUsage();
-        data.showGasUsage = ($selectedEnergyType.val() === 'G' || $selectedEnergyType.val() === 'EG');
+        data.showGasUsage = (($selectedEnergyType.val() === 'G' || $selectedEnergyType.val() === 'EG') && data.gasUsage.trim().length > 0);
 
         var html = template(data);
 
@@ -144,28 +146,27 @@
 
     function getElectricityUsage() {
 
+        // various fields input
         if ($elecBill.filter(':checked').val() === 'Y') {
             var howChargeContent = $elecHowCharged.filter(':checked').parent().text().trim();
-console.log("FFFF", $elecPeakUsage.val());
             if ($elecPeakUsage.val() !== '' && $elecBillingDays.val() !== '' && howChargeContent !== '') {
                 return $elecPeakUsage.val() + "" + $elecPeakUsage.siblings('.input-group-addon').text() + " over " + $elecBillingDays.val() + " " + $elecBillingDays.siblings('.input-group-addon').text() + ", " + howChargeContent;
             }
         } else {
-            return $elecUsage.filter(':checked').siblings('span').find('.optionText').map(function(){
-                return $(this).text();
-            }).get().join('. ')+".";
+            // or the radio button group
+            return $elecUsage.filter(':checked').siblings('h3').text();
         }
         return '';
     }
 
     function getGasUsage() {
-        var $selectedOptions = $gasUsage.filter(':checked').siblings('span:first');
+        var $selectedOptions = $gasUsage.filter(':checked');
 
-        if ($selectedOptions.next().text() !== '' && $selectedOptions.text() !== '') {
-            return $selectedOptions.next().text() + ' for ' + $selectedOptions.text();
+        if (typeof $selectedOptions.val() == 'undefined') {
+            return '';
         }
 
-        return '';
+        return $selectedOptions.filter(':checked').siblings('h3').text();
     }
 
     meerkat.modules.register('utilitiesSnapshot', {
