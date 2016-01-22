@@ -3,8 +3,11 @@
 <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
 
 <div class="hidden-xs">
-    <form_v2:fieldset legend="Quote Summary" className="quoteSnapshot ">
+    <div class="sidebar-box">
         <div class="row snapshot">
+            <div class="col-sm-12">
+                <h4>Quote Summary</h4>
+            </div>
             <div class="col-sm-3">
                 <div class="icon icon-energy"></div>
             </div>
@@ -22,7 +25,8 @@
                 </div>
             </div>
         </div>
-    </form_v2:fieldset>
+    </div>
+
     <div class="product-snapshot">
     </div>
     <div class="comparison-rate-disclaimer">
@@ -33,18 +37,20 @@
     </div>
 </div>
 <core_v1:js_template id="enquire-snapshot-template">
-
+    <div class="sidebar-box">
     {{ var template = $("#provider-logo-template").html(); }}
     {{ var htmlTemplate = _.template(template); }}
     {{ var logoTemplate = htmlTemplate(obj); }}
 
     {{ var providerData = meerkat.modules.moreInfo.getDataResult(); }}
-    <form_v2:fieldset legend="Your Energy Plan">
+        <div class="row">
+            <div class="col-sm-12"><h4>Your Energy Plan</h4></div>
+        </div>
         <%-- Header --%>
         <div class="row snapshot-product-header">
             <div class="col-sm-5 col-md-4 col=lg-3 logoContainer">{{= logoTemplate }}</div>
             <div class="col-xs-7 col-md-8 col=lg-9">
-                <h4>{{= obj.retailerName}}</h4>
+                <h6>{{= obj.retailerName}}</h6>
                 {{= obj.planName}}
             </div>
         </div>
@@ -71,5 +77,5 @@
                 <div>{{= providerData.paymentDetails }}</div>
             </div>
         </div>
-    </form_v2:fieldset>
+    </div>
 </core_v1:js_template>
