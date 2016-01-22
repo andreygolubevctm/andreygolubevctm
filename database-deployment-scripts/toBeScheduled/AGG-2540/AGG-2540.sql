@@ -1,5 +1,4 @@
 CREATE SCHEMA `contact_validator`;
-USE `contact_validator`;
 
 CREATE TABLE `contact_validator`.`mobile_result_details` (
   `mobileResultDetailsId` int(11) NOT NULL AUTO_INCREMENT,
@@ -20,6 +19,9 @@ CREATE TABLE `contact_validator`.`mobile_result_details` (
 	PARTITION p_invalid VALUES IN (0),
 	PARTITION p_valid VALUES IN (1, 2, 3, 4, 5));
 
+-- Should return 0
+SELECT * FROM `contact_validator`.`mobile_result_details`;
+
 CREATE TABLE `contact_validator`.`mobile_number_exclusion` (
   `mobileNumberExclusionId` int(11) NOT NULL AUTO_INCREMENT,
   `mobileNumber` char(10) NOT NULL,
@@ -27,6 +29,9 @@ CREATE TABLE `contact_validator`.`mobile_number_exclusion` (
   `startDateTime` datetime NOT NULL,
   PRIMARY KEY (`mobileNumberExclusionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Should return 0
+SELECT * FROM `contact_validator`.`mobile_number_exclusion`;
 
 CREATE TABLE `contact_validator`.`service_provider_exclusions` (
   `serviceProviderExclusionId` int(11) NOT NULL AUTO_INCREMENT,
@@ -36,13 +41,24 @@ CREATE TABLE `contact_validator`.`service_provider_exclusions` (
   PRIMARY KEY (`serviceProviderExclusionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- Should return 0
+SELECT * FROM `contact_validator`.`service_provider_exclusions`;
+
 INSERT INTO `contact_validator`.`mobile_number_exclusion` (`mobileNumber`, `exclusionStatus`, `startDateTime`) VALUES
  ('0411111111', 'TEST', '2015-12-15 00:00:00'),
  ('0400654321', 'TEST', '2015-12-15 00:00:00'),
- ('0412345678', 'TEST', '2015-12-15 00:00:00');
+ ('0412345678', 'TEST', '2015-12-15 00:00:00'),
+ ('0404123123', 'TEST', '2015-12-15 00:00:00'),
+ ('0404000000', 'TEST', '2015-12-15 00:00:00'),
+ ('0404040000', 'TEST', '2015-12-15 00:00:00');
 
--- rollback scripts
--- DROP TABLE `contact_validator`.`mobile_number_exclusion`;
+-- Should return 6
+SELECT * FROM `contact_validator`.`mobile_number_exclusion`;
+
+-- ROLLBACK
 -- DROP TABLE `contact_validator`.`service_provider_exclusions`;
+-- DROP TABLE `contact_validator`.`mobile_number_exclusion`;
 -- DROP TABLE `contact_validator`.`mobile_result_details`;
 -- DROP SCHEMA `contact_validator`;
+
+
