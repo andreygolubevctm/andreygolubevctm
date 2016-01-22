@@ -14,13 +14,13 @@
 <form_v2:fieldset legend="Your Contact Details" className="contact-details">
     <p>Let us help you find the best energy plan for you. Supply your details below</p>
     <c:set var="fieldXPath" value="${xpath}/firstName" />
-    <form_v3:row label="First name *" fieldXpath="${fieldXPath}" className="clear">
+    <form_v3:row label="First name" fieldXpath="${fieldXPath}" className="clear">
         <%--<field_v2:input xpath="${fieldXPath}" required="false"/>--%>
         <field_v1:person_name xpath="${fieldXPath}" required="${true}" title="your first name${competitionValidationText}" />
     </form_v3:row>
 
     <c:set var="fieldXPath" value="${xpath}/phone"/>
-    <form_v3:row label="Your phone number *" fieldXpath="${fieldXPath}" className="clear">
+    <form_v3:row label="Your phone number" fieldXpath="${fieldXPath}" className="clear">
         <field_v1:flexi_contact_number xpath="${fieldXPath}"
                 maxLength="20"
                 required="${true}"
@@ -29,7 +29,7 @@
     </form_v3:row>
 
     <c:set var="fieldXPath" value="${xpath}/email"/>
-    <form_v3:row label="Your email address *" fieldXpath="${fieldXPath}" className="clear">
+    <form_v3:row label="Your email address" fieldXpath="${fieldXPath}" className="clear">
         <field_v2:email xpath="${fieldXPath}" required="${true}" title="your email address${competitionValidationText}" />
     </form_v3:row>
 
