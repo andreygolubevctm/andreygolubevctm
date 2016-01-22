@@ -48,8 +48,8 @@
         </div>
         <%-- Header --%>
         <div class="row snapshot-product-header">
-            <div class="col-sm-5 col-md-4 col=lg-3 logoContainer">{{= logoTemplate }}</div>
-            <div class="col-xs-7 col-md-8 col=lg-9">
+            <div class=" logoContainer">{{= logoTemplate }}</div>
+            <div class="">
                 <h6>{{= obj.retailerName}}</h6>
                 {{= obj.planName}}
             </div>
