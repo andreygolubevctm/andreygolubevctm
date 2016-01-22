@@ -8,6 +8,8 @@ import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.simples.config.InInConfig;
+import com.ctm.web.simples.phone.inin.InInIcwsService;
 import com.ctm.web.simples.phone.verint.VerintPauseResumeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,9 @@ import java.util.Collections;
 public class PhoneController extends CommonQuoteRouter {
     private static final Logger LOGGER = LoggerFactory.getLogger(PhoneController.class);
 
+    @Autowired private InInIcwsService inInIcwsService;
+    @Autowired private InInConfig inInConfig;
+
     @Autowired
     public PhoneController(SessionDataServiceBean sessionDataServiceBean) {
         super(sessionDataServiceBean);
@@ -37,19 +42,12 @@ public class PhoneController extends CommonQuoteRouter {
         consumes = MediaType.ALL_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public String pauseResumeCall(String action, HttpServletRequest request) throws ConfigSettingException, DaoException, ServletException {
+    public void pauseResumeCall(String action, HttpServletRequest request) throws ConfigSettingException, DaoException, ServletException {
         final VerintPauseResumeService verintPauseResumeService = new VerintPauseResumeService();
         final PageSettings settingsService = SettingsService.setVerticalAndGetSettingsForPage(request, "HEALTH");
-        return verintPauseResumeService.pauseResumeRecording(request, settingsService);
-    }
+//        return verintPauseResumeService.pauseResumeRecording(request, settingsService);
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorInfo handleException(final com.ctm.web.core.exceptions.ServiceRequestException e) {
-        ErrorInfo errorInfo = new ErrorInfo();
-        errorInfo.setTransactionId(e.getTransactionId());
-        errorInfo.setErrors(e.getErrors());
-        return errorInfo;
+        inInIcwsService.pause();
     }
 
     @ExceptionHandler
