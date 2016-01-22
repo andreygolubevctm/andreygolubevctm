@@ -16,8 +16,13 @@
 <%-- Set global variable to flags for active split tests --%>
 <utilities_v3:splittest_helper />
 
+<%-- Not sure why the below doesn't work within the splittest_helper --%>
+<c:set var="splitTestEnabled">
+    <content:get key="utilitiesRedesign" />
+</c:set>
+
 <c:set var="body_class_name">
-    <c:if test="${not empty utilitiesNewDesign and utilitiesNewDesign eq true}">utilities_design_55</c:if>
+    <c:if test="${not empty splitTestEnabled and splitTestEnabled eq 'Y'}">utilities_design_55</c:if>
 </c:set>
 
 <%-- HTML --%>
@@ -154,7 +159,7 @@
     <jsp:body>
 
         <c:choose>
-            <c:when test="${utilitiesNewDesign eq true}">
+            <c:when test="${splitTestEnabled eq 'Y'}">
                 <%-- Slides --%>
                 <utilities_v3_layout:slide_your_details/>
                 <utilities_v3_layout:slide_contact_details/>
