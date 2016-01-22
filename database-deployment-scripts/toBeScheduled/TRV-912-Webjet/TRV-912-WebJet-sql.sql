@@ -122,26 +122,29 @@ INSERT INTO ctm.travel_product
 -- single
 INSERT INTO ctm.travel_product
  (providerId, productCode, title, baseProduct, maxTripDuration,providerProductCode, effectiveStart, effectiveEnd,pdsUrl)
- VALUES (@WEBJET, 'WEBJ-TRAVEL-54158','Basic','0','','54158','2015-08-04', '2040-12-31','https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf');
+ VALUES (@WEBJET, 'WEBJ-TRAVEL-54158','Basic','0','','54158','2015-08-04', '2040-12-31','https://insurance.webjet.com.au/webjet/File/Download?docType=PDS');
 INSERT INTO ctm.travel_product
  (providerId, productCode, title, baseProduct, maxTripDuration,providerProductCode, effectiveStart, effectiveEnd,pdsUrl)
- VALUES (@WEBJET, 'WEBJ-TRAVEL-54157','Essentials','0','','54157','2015-08-04', '2040-12-31','https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf');
+ VALUES (@WEBJET, 'WEBJ-TRAVEL-54157','Essentials','0','','54157','2015-08-04', '2040-12-31','https://insurance.webjet.com.au/webjet/File/Download?docType=PDS');
 INSERT INTO ctm.travel_product
  (providerId, productCode, title, baseProduct, maxTripDuration,providerProductCode, effectiveStart, effectiveEnd,pdsUrl)
- VALUES (@WEBJET, 'WEBJ-TRAVEL-54156','Comprehensive','0','','54156','2015-08-04', '2040-12-31','https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf');
+ VALUES (@WEBJET, 'WEBJ-TRAVEL-54156','Comprehensive','0','','54156','2015-08-04', '2040-12-31','https://insurance.webjet.com.au/webjet/File/Download?docType=PDS');
 
  INSERT INTO ctm.travel_product
  (providerId, productCode, title, baseProduct, maxTripDuration,providerProductCode, effectiveStart, effectiveEnd,pdsUrl)
- VALUES (@WEBJET, 'WEBJ-TRAVEL-54693','Domestic','0','','54693','2015-08-04', '2040-12-31','https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf');
+ VALUES (@WEBJET, 'WEBJ-TRAVEL-54693','Domestic','0','','54693','2015-08-04', '2040-12-31','https://insurance.webjet.com.au/webjet/File/Download?docType=PDS');
 
 -- TEST expect 7
 select count(*) from ctm.travel_product where providerProductCode in ('54693','54156','54157','54158','5415915','5415930','5415945');
 
+-- UPDATE PDS's
+-- Test - Expect 10 (excludes new products)
+SELECT * FROM ctm.travel_product where pdsUrl = 'https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf';
 
 
+UPDATE ctm.travel_product SET pdsUrl = 'https://insurance.webjet.com.au/webjet/File/Download?docType=PDS' where pdsUrl = 'https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf';
 
-
-
-
+-- TEST - Expect 18 including the new products
+SELECT * FROM ctm.travel_product where pdsUrl = 'https://insurance.webjet.com.au/webjet/File/Download?docType=PDS';
 
 

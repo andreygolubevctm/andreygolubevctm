@@ -5,8 +5,9 @@ SET @OLD_CLIENT_CODE_OUTPARAM = 'clientCode=WEBJETAU';
 SET @NEW_CLIENT_CODE='WJPAU';
 SET @OLD_CLIENT_CODE='WEBJETAU';
 SET @VIRG = (select providerId from ctm.provider_master where providercode = 'VIRG');
-SET @INBOUNDPARAM = 'defaultProductId=NODEFAULT,service=WEBJ,quoteUrl=https://uat-elevate.agaassistance.com.au/webjet/,trackCode=52';
-SET @OLD_INBOUND_PARAMS = 'defaultProductId=NODEFAULT,service=WEBJ,quoteUrl=https://uat-webjetau.agaassistance.com.au,trackCode=52';
+SET @INBOUNDPARAMUAT = 'defaultProductId=NODEFAULT,service=WEBJ,quoteUrl=https://uat-webjetau.agaassistance.com.au,trackCode=52';
+SET @INBOUNDPARAMPRO = 'defaultProductId=NODEFAULT,service=WEBJ,quoteUrl=https://www.webjet.com.au/insurance,trackCode=52';
+
 
 
 
@@ -18,6 +19,20 @@ select count(*) from ctm.service_properties where providerId = @WEBJET and servi
  -- test expect 1
 select count(*) from ctm.service_properties where providerId = @WEBJET and serviceMasterId = @TRAVELBER and
  servicePropertyValue = @OLD_CLIENT_CODE_OUTPARAM;
+
+ -- UPDATE INBOUND PARAMS
+ update ctm.service_properties set servicePropertyValue = @INBOUNDPARAMUAT where providerId = @WEBJET and
+ serviceMasterId = @TRAVELBER and servicePropertyKey = 'inboundParams' and environmentCode = 0;
+
+  update ctm.service_properties set servicePropertyValue = @INBOUNDPARAMPRO where providerId = @WEBJET and
+ serviceMasterId = @TRAVELBER and servicePropertyKey = 'inboundParams' and environmentCode = 'PRO';
+
+-- test expect 1
+select count(*) from ctm.service_properties where providerId = @WEBJET and serviceMasterId = @TRAVELBER and
+ servicePropertyValue = @INBOUNDPARAMUAT;
+-- test expect 1
+select count(*) from ctm.service_properties where providerId = @WEBJET and serviceMasterId = @TRAVELBER and
+ servicePropertyValue = @INBOUNDPARAMPRO;
 
 
 update ctm.service_properties set servicePropertyValue = @OLD_CLIENT_CODE where providerId = @WEBJET and
@@ -316,6 +331,15 @@ delete from ctm.travel_product where providerId = @WEBJET and providerProductCod
 -- TEST expect 0
 select count(*) from ctm.travel_product where providerProductCode in ('54693','54156','54157','54158','5415915','5415930','5415945');
 
+-- UPDATE PDS's
+-- Test - Expect 10 (excludes new products)
+SELECT * FROM ctm.travel_product where pdsUrl = 'https://insurance.webjet.com.au/webjet/File/Download?docType=PDS';
+
+
+UPDATE ctm.travel_product SET pdsUrl = 'https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf' where pdsUrl = 'https://insurance.webjet.com.au/webjet/File/Download?docType=PDS';
+
+-- TEST - Expect 10 excluding the new products which should be removed already
+SELECT * FROM ctm.travel_product where pdsUrl = 'https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf';
 
 
 
