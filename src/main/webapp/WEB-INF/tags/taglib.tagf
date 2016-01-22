@@ -23,6 +23,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/creditcard/layout"		prefix="creditcard_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/group/v1"				prefix="group_v1" %>
 <%@ taglib tagdir="/WEB-INF/tags/group/v2"				prefix="group_v2" %>
+<%@ taglib tagdir="/WEB-INF/tags/group/v3"				prefix="group_v3" %>
 <%@ taglib tagdir="/WEB-INF/tags/slider"				prefix="slider" %>
 <%@ taglib tagdir="/WEB-INF/tags/quote"					prefix="quote" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg/v1"				prefix="agg_v1" %>

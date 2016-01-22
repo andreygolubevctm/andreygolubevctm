@@ -75,7 +75,7 @@
     <c:set var="fieldXPath" value="${xpath}/address" />
     <h5 class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-xs-12 row-content">Residential Address</h5>
     <%-- Uses autocomplete='false' instead of 'off' due to Chrome bug https://code.google.com/p/chromium/issues/detail?id=468153 --%>
-    <group_v2:elastic_address
+    <group_v3:elastic_address
             xpath="${fieldXPath}"
             type="R"
             suburbAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='Your address does not match the original suburb provided.' autocomplete='false'"
@@ -91,7 +91,7 @@
 
     <c:set var="fieldXPath" value="${xpath}/postal" />
     <%-- Uses autocomplete='false' instead of 'off' due to Chrome bug https://code.google.com/p/chromium/issues/detail?id=468153 --%>
-    <group_v2:elastic_address
+    <group_v3:elastic_address
             xpath="${fieldXPath}"
             type="P"
             suburbNameAdditionalAttributes=" autocomplete='false'"
