@@ -27,6 +27,10 @@
 	</c:otherwise>
 </c:choose>
 
+<c:set var="homeQuerystring">
+	<c:if test="${param.launchTranId != ''}">?launchTranId=${go:urlEncode(param.launchTranId)}</c:if>
+</c:set>
+
 
 
 <c:choose>
@@ -43,7 +47,7 @@
 			<jsp:body>
 						<simples:menu_bar bridgeToLive="N" />
 
-						<iframe id="simplesiframe" name="simplesiframe" width="100%" height="200" src="${assetUrl}simples/home.jsp"></iframe>
+						<iframe id="simplesiframe" name="simplesiframe" width="100%" height="200" src="${assetUrl}simples/home.jsp${homeQuerystring}"></iframe>
 
 						<simples:template_comments />
 						<simples:template_messageaudit />

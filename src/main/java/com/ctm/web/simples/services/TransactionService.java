@@ -5,18 +5,26 @@ import com.ctm.web.core.dao.TouchDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.core.model.TransactionProperties;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
+import com.ctm.web.core.transaction.model.Transaction;
+import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.web.health.dao.HealthTransactionDao;
 import com.ctm.web.health.model.HealthTransaction;
 import com.ctm.web.simples.dao.MessageAuditDao;
 import com.ctm.web.simples.dao.MessageDao;
+import com.ctm.web.simples.dao.MessageDetailDao;
+import com.ctm.web.simples.dao.MessageDuplicatesDao;
 import com.ctm.web.simples.model.ConfirmationOperator;
 import com.ctm.web.simples.model.Message;
+import com.ctm.web.simples.model.MessageDetail;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -105,4 +113,31 @@ public class TransactionService {
 		return transactionDao.getConfirmationFromTransactionChain(rootIds);
 	}
 
+	public static MessageDetail getTransaction(final long transactionId) throws DaoException {
+		final TransactionDao transactionDao = new TransactionDao();
+		final TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
+		final long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
+
+		final MessageDetailService service = new MessageDetailService();
+		final Message message = new Message();
+		message.setTransactionId(rootId);
+		message.setMessageId(-1);
+
+		Map<String, String> transactionDetails = transactionDetailsDao.getTransactionDetails(transactionId)
+				.stream()
+				.collect(Collectors.toMap(TransactionDetail::getXPath, TransactionDetail::getTextValue));
+
+		final Optional<String> state = Optional.ofNullable(transactionDetails.get("health/situation/state"));
+		message.setState(state.orElse(""));
+
+		final Optional<String> primaryFirstName = Optional.ofNullable(transactionDetails.get("health/application/primary/firstname"));
+		if(primaryFirstName.isPresent()) {
+			message.setContactName(primaryFirstName.orElse(""));
+		} else {
+			Optional<String> contactName = Optional.ofNullable(transactionDetails.get("health/contactDetails/name"));
+			message.setContactName(contactName.orElse(""));
+		}
+
+		return  service.getMessageDetail(message);
+	}
 }

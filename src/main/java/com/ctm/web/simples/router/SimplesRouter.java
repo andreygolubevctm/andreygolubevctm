@@ -6,22 +6,22 @@ import com.ctm.web.core.model.Error;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
-import com.ctm.web.core.services.*;
+import com.ctm.web.core.services.AccessCheckService;
+import com.ctm.web.core.services.FatalErrorService;
+import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.validation.SchemaValidationError;
-import com.ctm.web.simples.services.TransactionService;
-import com.ctm.web.simples.admin.router.AdminRouter;
 import com.ctm.web.simples.admin.openinghours.services.OpeningHoursAdminService;
+import com.ctm.web.simples.admin.router.AdminRouter;
 import com.ctm.web.simples.admin.services.SpecialOffersService;
 import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.simples.model.Message;
-import com.ctm.web.simples.services.PhoneService;
-import com.ctm.web.simples.services.SimplesMessageService;
-import com.ctm.web.simples.services.SimplesTickleService;
-import com.ctm.web.simples.services.SimplesUserService;
+import com.ctm.web.simples.services.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.simples.services.PhoneService.makeCall;
@@ -71,7 +72,8 @@ import static javax.servlet.http.HttpServletResponse.*;
 		"/simples/admin/cappingLimits/delete.json",
 		"/simples/admin/cappingLimits.json",
 		//get
-		"/simples/admin/cappingLimits/getAllRecords.json"
+		"/simples/admin/cappingLimits/getAllRecords.json",
+		"/simples/transaction/get.json"
 })
 public class SimplesRouter extends HttpServlet {
 	private static final long serialVersionUID = 13L;
@@ -178,14 +180,14 @@ public class SimplesRouter extends HttpServlet {
 			objectMapper.writeValue(writer, new OpeningHoursAdminService().getAllHours(request));
 		} else if (uri.endsWith("/simples/admin/offers/getAllRecords.json")) {
 			objectMapper.writeValue(writer, new SpecialOffersService().getAllOffers());
-		} else if(uri.contains("/simples/admin/")){
+		} else if(uri.contains("/simples/admin/")) {
 			AdminRouter adminRouter = new AdminRouter(request, response);
 			adminRouter.doGet(uri.split("/simples/admin/")[1]);
+		} else if(uri.contains("/simples/transaction/get.json")) {
+			getTransaction(writer, request, response, authenticatedData);
         } else {
             response.sendError(SC_NOT_FOUND);
         }
-
-
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -337,6 +339,21 @@ public class SimplesRouter extends HttpServlet {
 			objectMapper.writeValue(writer, errors(e));
 		}
 	}
+
+	private void getTransaction(final PrintWriter writer, final HttpServletRequest request, final HttpServletResponse response, final AuthenticatedData authenticatedData) throws IOException {
+		int simplesUid = authenticatedData.getSimplesUid();
+		try {
+			Optional<String> transactionId = Optional.ofNullable(request.getParameter("transactionId"));
+			if(transactionId.map(StringUtils::isNotBlank).orElse(false) && transactionId.map(StringUtils::isNumeric).orElse(false)) {
+				objectMapper.writeValue(writer, TransactionService.getTransaction(Long.parseLong(transactionId.get().trim())));
+			}
+		} catch (final DaoException e) {
+			LOGGER.error("Could not get next simples message {}", kv("simplesUid", simplesUid), e);
+			response.setStatus(SC_INTERNAL_SERVER_ERROR);
+			objectMapper.writeValue(writer, errors(e));
+		}
+	}
+
 
 	private void userStatsForToday(final PrintWriter writer, int userId) throws IOException {
 		final SimplesUserService simplesUserService = new SimplesUserService();

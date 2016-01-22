@@ -24,6 +24,9 @@
 	<c:set var="hasMessageQueue" value="${true}" />
 </c:if>
 
+<c:if test="${pageSettings.getSetting('inInEnabled')}">
+	<c:set var="isInInEnabled" value="${true}" />
+</c:if>
 
 
 
@@ -41,27 +44,28 @@
 		</c:if>
 
 		<div class="simples-notice-board">
-			<h2>Welcome to Simples</h2>
+			<c:if test="${!isInInEnabled}">
+				<h2>Welcome to Simples</h2>
+				<%-- Alert user if they're missing core data --%>
+				<c:if test="${empty authenticatedData.login.user.agentId or authenticatedData.login.user.agentId eq ''}">
+					<div class="alert alert-danger">
+						<p>Your Agent ID was not supplied during Log In.</p>
+						<p>An Agent ID is required to sell products. Please <strong>do not begin</strong> consulting without it.</p>
+						<p>Contact your supervisor for further I.T. assistance.</p>
+					</div>
+				</c:if>
 
-			<%-- Alert user if they're missing core data --%>
-			<c:if test="${empty authenticatedData.login.user.agentId or authenticatedData.login.user.agentId eq ''}">
-				<div class="alert alert-danger">
-					<p>Your Agent ID was not supplied during Log In.</p>
-					<p>An Agent ID is required to sell products. Please <strong>do not begin</strong> consulting without it.</p>
-					<p>Contact your supervisor for further I.T. assistance.</p>
-				</div>
-			</c:if>
+				<%-- Alert user if they're missing extension info --%>
+				<c:if test="${empty authenticatedData.login.user.extension or authenticatedData.login.user.extension eq ''}">
+					<div class="alert alert-danger">
+						<p>Your phone extension is unknown.</p>
+						<p>If you are consulting please log into your phone, then log into Simples again.</p>
+					</div>
+				</c:if>
 
-			<%-- Alert user if they're missing extension info --%>
-			<c:if test="${empty authenticatedData.login.user.extension or authenticatedData.login.user.extension eq ''}">
-				<div class="alert alert-danger">
-					<p>Your phone extension is unknown.</p>
-					<p>If you are consulting please log into your phone, then log into Simples again.</p>
-				</div>
-			</c:if>
-
-			<c:if test="${hasMessageQueue}">
-				<simples:user_stats />
+				<c:if test="${hasMessageQueue}">
+					<simples:user_stats />
+				</c:if>
 			</c:if>
 		</div><%-- /simples-notice-board --%>
 
