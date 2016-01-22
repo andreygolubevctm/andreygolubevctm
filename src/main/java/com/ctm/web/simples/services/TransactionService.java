@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -122,15 +123,19 @@ public class TransactionService {
 		message.setTransactionId(rootId);
 		message.setMessageId(-1);
 
-		final TransactionDetail state = transactionDetailsDao.getTransactionDetailByXpath(transactionId, "health/situation/state");
-		message.setState(Optional.ofNullable(state).map(TransactionDetail::getTextValue).orElse(""));
+		Map<String, String> transactionDetails = transactionDetailsDao.getTransactionDetails(transactionId)
+				.stream()
+				.collect(Collectors.toMap(TransactionDetail::getXPath, TransactionDetail::getTextValue));
 
-		final Optional<TransactionDetail> primaryFirstName = Optional.ofNullable(transactionDetailsDao.getTransactionDetailByXpath(transactionId, "health/application/primary/firstname"));
+		final Optional<String> state = Optional.ofNullable(transactionDetails.get("health/situation/state"));
+		message.setState(state.orElse(""));
+
+		final Optional<String> primaryFirstName = Optional.ofNullable(transactionDetails.get("health/application/primary/firstname"));
 		if(primaryFirstName.isPresent()) {
-			message.setContactName(primaryFirstName.map(TransactionDetail::getTextValue).orElse(""));
+			message.setContactName(primaryFirstName.orElse(""));
 		} else {
-			final TransactionDetail contactName = transactionDetailsDao.getTransactionDetailByXpath(transactionId, "health/contactDetails/name");
-			message.setContactName(Optional.ofNullable(contactName).map(TransactionDetail::getTextValue).orElse(""));
+			Optional<String> contactName = Optional.ofNullable(transactionDetails.get("health/contactDetails/name"));
+			message.setContactName(contactName.orElse(""));
 		}
 
 		return  service.getMessageDetail(message);
