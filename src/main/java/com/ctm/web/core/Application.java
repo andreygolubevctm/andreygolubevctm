@@ -14,7 +14,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 @SpringBootApplication
-@ComponentScan({"com.ctm.web.core.connectivity", "com.ctm.web.energy",
+@ComponentScan({"com.ctm.web.core.connectivity", "com.ctm.web.energy", "com.ctm.web.simples",
         "com.ctm.commonlogging", "com.ctm.web.core"})
 @EnableAutoConfiguration
 @Configuration

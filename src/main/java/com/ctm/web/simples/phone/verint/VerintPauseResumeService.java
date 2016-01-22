@@ -61,7 +61,7 @@ public class VerintPauseResumeService {
      * @return
      * @throws ServiceException
      */
-    public String pauseResumeRecording(HttpServletRequest request,HttpServletResponse response,PageSettings settings) throws  ServletException {
+    public String pauseResumeRecording(HttpServletRequest request, PageSettings settings) throws  ServletException {
         XmlNode xmlNode;
         String result;
         try {
