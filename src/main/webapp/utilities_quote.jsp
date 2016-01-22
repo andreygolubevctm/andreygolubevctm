@@ -60,7 +60,7 @@
         </div>
 	</jsp:attribute>
 
-	<jsp:attribute name="progress_bar">
+	<jsp:attribute name="navbar">
 
 		<ul class="nav navbar-nav" role="menu">
             <li class="visible-xs">
@@ -182,7 +182,7 @@
 					</div>
         <input type="hidden" name="transcheck" id="transcheck" value="1"/>
         <input type="hidden" name="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" id="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" value="" />
-        <field:hidden xpath="environmentOverride" />
+        <field_v1:hidden xpath="environmentOverride" />
     </jsp:body>
 					
 </layout_v3:journey_engine_page>
