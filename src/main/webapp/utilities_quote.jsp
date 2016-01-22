@@ -160,6 +160,7 @@
                 <utilities_v3_layout:slide_contact_details/>
                 <utilities_v3_layout:slide_results/>
                 <utilities_v3_layout:slide_enquiry/>
+                <utilities_v3_content:yourDetailsSnapshot />
             </c:when>
             <c:otherwise>
                 <%-- Slides --%>
