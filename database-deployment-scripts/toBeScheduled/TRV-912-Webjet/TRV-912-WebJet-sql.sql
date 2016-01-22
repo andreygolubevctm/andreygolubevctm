@@ -5,7 +5,8 @@ SET @OLD_CLIENT_CODE_OUTPARAM = 'clientCode=WEBJETAU';
 SET @NEW_CLIENT_CODE='WJPAU';
 SET @OLD_CLIENT_CODE='WEBJETAU';
 SET @VIRG = (select providerId from ctm.provider_master where providercode = 'VIRG');
-SET @INBOUNDPARAM = 'defaultProductId=NODEFAULT,service=WEBJ,quoteUrl=https://uat-elevate.agaassistance.com.au/webjet/,trackCode=52';
+SET @INBOUNDPARAMUAT = 'defaultProductId=NODEFAULT,service=WEBJ,quoteUrl=https://uat-elevate.agaassistance.com.au/webjet/,trackCode=52';
+SET @INBOUNDPARAMPRO = 'defaultProductId=NODEFAULT,service=WEBJ,quoteUrl=https://insurance.webjet.com.au/webjet/,trackCode=52';
 SET @OLD_INBOUND_PARAMS = 'defaultProductId=NODEFAULT,service=WEBJ,quoteUrl=https://uat-webjetau.agaassistance.com.au,trackCode=52';
 
 
@@ -17,13 +18,30 @@ select count(*) from ctm.service_properties where servicePropertyValue = 'https:
 and serviceMasterId = @TRAVELBER and environmentCode = '0' and servicePropertyKey = 'url';
 
 
-
+-- UPDATE OUTBOUND PARAMS
 update ctm.service_properties set servicePropertyValue = @NEW_CLIENT_CODE_OUTPARAM where providerId = @WEBJET and
  serviceMasterId = @TRAVELBER and servicePropertyValue = @OLD_CLIENT_CODE_OUTPARAM LIMIT 1;
 
 -- test expect 1
 select count(*) from ctm.service_properties where providerId = @WEBJET and serviceMasterId = @TRAVELBER and
  servicePropertyValue = @NEW_CLIENT_CODE_OUTPARAM;
+
+
+-- UPDATE INBOUND PARAMS
+ update ctm.service_properties set servicePropertyValue = @INBOUNDPARAMUAT where providerId = @WEBJET and
+ serviceMasterId = @TRAVELBER and servicePropertyKey = 'inboundParams' and environmentCode = 0;
+
+  update ctm.service_properties set servicePropertyValue = @INBOUNDPARAMPRO where providerId = @WEBJET and
+ serviceMasterId = @TRAVELBER and servicePropertyKey = 'inboundParams' and environmentCode = 'PRO';
+
+-- test expect 1
+select count(*) from ctm.service_properties where providerId = @WEBJET and serviceMasterId = @TRAVELBER and
+ servicePropertyValue = @INBOUNDPARAMUAT;
+-- test expect 1
+select count(*) from ctm.service_properties where providerId = @WEBJET and serviceMasterId = @TRAVELBER and
+ servicePropertyValue = @INBOUNDPARAMPRO;
+
+
 
 update ctm.service_properties set servicePropertyValue = @NEW_CLIENT_CODE where providerId = @WEBJET and
  serviceMasterId = @TRAVELBER and servicePropertyValue = @OLD_CLIENT_CODE LIMIT 1;
