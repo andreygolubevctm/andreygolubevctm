@@ -5,7 +5,7 @@
 
 <layout_v3:slide formId="enquiryForm">
     <layout_v3:slide_columns>
-        <jsp:attribute name="rightColumn"><utilities_v2:enquire_snapshot /></jsp:attribute>
+        <jsp:attribute name="rightColumn"><utilities_v3:enquire_snapshot /></jsp:attribute>
         <jsp:body>
             <layout_v3:slide_content>
                 <utilities_v3_fieldset:your_details xpath="${xpath}/details" />

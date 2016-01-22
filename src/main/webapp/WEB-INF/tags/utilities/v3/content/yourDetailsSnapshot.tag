@@ -3,8 +3,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <core_v1:js_template id="your-details-snapshot-template">
-<div class="snapshot yourDetailsSnapshot hidden-xs">
-	<div class="row snapshot">
+<div class="sidebar-box yourDetailsSnapshot hidden-xs">
+	<div class="row">
 		<div class="col-sm-12">
 			<h4>Your Details</h4>
 		</div>

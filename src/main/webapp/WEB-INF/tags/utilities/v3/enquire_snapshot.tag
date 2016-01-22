@@ -3,7 +3,7 @@
 <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
 
 <div class="hidden-xs">
-    <form_v2:fieldset legend="Snapshot of Your Details" className="quoteSnapshot ">
+    <form_v2:fieldset legend="Quote Summary" className="quoteSnapshot ">
         <div class="row snapshot">
             <div class="col-sm-3">
                 <div class="icon icon-energy"></div>
