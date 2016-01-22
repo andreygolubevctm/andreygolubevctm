@@ -7,7 +7,7 @@
 	<div class="sidebar-box yourDetailsSnapshot hidden-xs">
 		<div class="row">
 			<div class="col-sm-12">
-				<h4>Your Details</h4>
+				<h4>Your Summary</h4>
 			</div>
 			<div class="col-sm-12">
 				{{ if (obj.showWhatToCompare == true) { }}
@@ -17,7 +17,7 @@
 				{{ } }}
 				{{ if (obj.showLivingIn == true) { }}
 				<div class="row">
-					<div class="col-sm-12 title">Living in: <span>{{= obj.livingIn }}</span></div>
+					<div class="col-sm-12 title">Property: <span>{{= obj.livingIn }}</span></div>
 				</div>
 				{{ } }}
 				{{ if (obj.showElectricityUsage == true) { }}
@@ -28,7 +28,7 @@
 				{{ } }}
 				{{ if (obj.showGasUsage == true) { }}
 				<div class="row gasUsageContainer">
-					<div class="col-sm-12 title">Natural Gas Usage:</div>
+					<div class="col-sm-12 title">Gas Usage:</div>
 					<div class="col-sm-12">{{= obj.gasUsage }}</div>
 				</div>
 				{{ } }}
