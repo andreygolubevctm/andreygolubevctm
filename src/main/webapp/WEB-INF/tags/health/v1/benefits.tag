@@ -22,6 +22,15 @@
 						<health_v1:benefitsItem item="${selectedValue}" />
 					</c:forEach>
 				</div>
+
+				<%-- Don't need to split test this due to v1 being callcentre only --%>
+				<div class="row accident-only-container">
+					<div class="col-sm-12">
+						<h4>Accident-only Cover</h4>
+						<c:set var="fieldXpath" value="health/situation/accidentOnlyCover" />
+						<field_v2:checkbox xpath="${fieldXpath}" required="false" title="Accident-only Cover" value="Y" label="true" />
+					</div>
+				</div>
 			</div>
 
 			<div class="ambulance col-sm-12">
