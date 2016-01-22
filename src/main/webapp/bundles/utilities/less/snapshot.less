@@ -55,20 +55,38 @@
 body.utilities_design_55 {
   .product-snapshot {
     .snapshot-product-header {
-      display:table;
+      @media (@lg-only) {
+        display: table;
+      }
     }
 
     .logoContainer {
       padding-right:10px;
-      padding-left:15px;
+
+      @media (@sm) {
+        .companyLogo {
+          float: none;
+        }
+      }
     }
     .logoContainer + div {
       padding-right:15px;
+      @media (@sm) {
+        padding-left: 15px;
+      }
     }
 
     .logoContainer, .logoContainer + div {
-      display: table-cell;
-      vertical-align: top;
+      @media (@lg-only) {
+        display: table-cell;
+        vertical-align: top;
+      }
+    }
+  }
+
+  @media (@sm-only) {
+    .snapshot .icon-energy {
+      font-size: 2.5em;
     }
   }
 }
