@@ -105,6 +105,11 @@
 		value="${userDetails.questionSet.okToCall}"
 		comment="QUOTE"
 	/>
+
+	<c:if test="${userDetails.questionSet.okToCall eq 'Y'}">
+		${cv:validateContact(pageContext.request, "HEALTH", userDetails.questionSet.phoneMobile)}
+	</c:if>
+
 </c:if>
 
 <c:set var="userDetails.application.okToCall">
@@ -130,6 +135,11 @@
 		value="${userDetails.application.okToCall}"
 		comment="APPLICATION"
 	/>
+
+	<c:if test="${userDetails.application.okToCall eq 'Y'}">
+		${cv:validateContact(pageContext.request, "HEALTH", userDetails.application.phoneMobile)}
+	</c:if>
+
 </c:if>
 
 ${logger.debug('Completed write opt ins. {}', log:kv('userDetails',userDetails ))}
