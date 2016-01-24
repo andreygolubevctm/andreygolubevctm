@@ -300,6 +300,8 @@
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').hide();
 				}
 
+				$('#health_situation_accidentOnlyCover').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
+
 				// Defer the open for next js cycle so that the navbar button is visible and we can read the dropdown's height
 				if(event.isStartMode === false){
 					_.defer(function() {

@@ -304,6 +304,8 @@
 
 				meerkat.modules.healthBenefitsStep.alignTitle();
 				meerkat.modules.healthBenefitsStep.alignSidebarHeight();
+
+				$('#health_situation_accidentOnlyCover').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
