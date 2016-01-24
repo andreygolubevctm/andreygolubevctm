@@ -238,7 +238,7 @@
 				</div>
 				<div class="row row-content formInput optInMarketingRow">
 					<div class="col-xs-12">
-						<field_new:checkbox className="optInMarketing checkbox-custom"
+						<field_v2:checkbox className="optInMarketing checkbox-custom"
 											xpath="health/sendBrochures/optInMarketing" required="false"
 											value="Y" label="true"
 											title="Stay up to date with news and offers direct to your inbox" />

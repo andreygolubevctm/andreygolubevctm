@@ -6,11 +6,11 @@
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="token"><c:out value="${param.token}" escapeXml="true" /></c:set>
-<c:set var="PendingTranID" value="${fn:substringAfter(token, '-')}" />
+<c:set var="PendingTranID" value="${fn:split(token, '-')[fn:length(fn:split(token, '-'))-1]}" />
 
 <sql:setDataSource dataSource="${datasource:getDataSource()}" />
 
-	${logger.info('Beginning load. {},{},{}' , log:kv('token',token ), log:kv('PendingTranID',PendingTranID ), log:kv('CallCentre',CallCentre ))}
+	${logger.info('Beginning load. {},{},{}' , log:kv('token',token ), log:kv('PendingTranID',PendingTranID ), log:kv('callCentre',callCentre ))}
 
 	<c:choose>
 		<c:when test="${empty PendingTranID}">

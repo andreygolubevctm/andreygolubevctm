@@ -7,12 +7,12 @@
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils"/>
 
 <c:if test="${!sessionUtils.isCallCentre(pageContext.session)}">
-    <core:journey_gateway verticalLabel="HEALTH" splitTestLabel="optins" />
+    <core_v1:journey_gateway verticalLabel="HEALTH" splitTestLabel="optins" />
 </c:if>
 
 <session:new verticalCode="HEALTH" authenticated="true" />
 
-<health:redirect_rules />
+<health_v1:redirect_rules />
 
 <%-- START JOURNEY OVERRIDE - Part 1 of 2) --%>
 <c:set var="journeyOverride" value="${pageSettings.getSetting('journeyOverride') eq 'Y'}" />
@@ -213,6 +213,7 @@
                 <health_v2:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />
 
                 <field_v1:hidden xpath="environmentOverride" />
+                <field_v1:hidden xpath="environmentValidatorOverride" />
                 <input type="hidden" name="transcheck" id="transcheck" value="1" />
             </jsp:body>
         </layout_v1:journey_engine_page>

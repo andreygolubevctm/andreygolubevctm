@@ -4,6 +4,7 @@
 <%@ taglib uri="/WEB-INF/tlds/url.tld" prefix="url" %>
 <%@ taglib uri="/WEB-INF/tlds/miscUtils.tld" prefix="miscUtils" %>
 <%@ taglib uri="/WEB-INF/tlds/datasource.tld" prefix="datasource" %>
+<%@ taglib uri="/WEB-INF/tlds/contactValidator.tld" prefix="cv" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" 		prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/xml" 		prefix="x" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"		prefix="fmt"%>
@@ -23,6 +24,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/creditcard/layout"		prefix="creditcard_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/group/v1"				prefix="group_v1" %>
 <%@ taglib tagdir="/WEB-INF/tags/group/v2"				prefix="group_v2" %>
+<%@ taglib tagdir="/WEB-INF/tags/group/v3"				prefix="group_v3" %>
 <%@ taglib tagdir="/WEB-INF/tags/slider"				prefix="slider" %>
 <%@ taglib tagdir="/WEB-INF/tags/quote"					prefix="quote" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg/v1"				prefix="agg_v1" %>
