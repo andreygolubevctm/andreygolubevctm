@@ -36,7 +36,7 @@
 	<c:set var="verticalCode" value="quote" />
 </c:if>
 <c:if test="${empty navbar_show_back_button}">
-	<c:set var="navbar_show_back_button">true</c:set>
+	<c:set var="navbar_show_back_button">${true}</c:set>
 </c:if>
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
@@ -58,7 +58,7 @@
 
 	<jsp:attribute name="navbar">
 		<ul class="nav navbar-nav">
-			<c:if test="${not empty navbar_show_back_button}">
+			<c:if test="${navbar_show_back_button eq true}">
 			<li class="slide-feature-back">
 				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 			</li>

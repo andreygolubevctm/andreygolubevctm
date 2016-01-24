@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
 
-<div class="hidden-xs">
+<div class="hidden-xs quote-summary">
     <div class="sidebar-box">
         <div class="row snapshot">
             <div class="col-sm-12">

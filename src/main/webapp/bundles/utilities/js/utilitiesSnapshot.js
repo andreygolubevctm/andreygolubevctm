@@ -133,11 +133,11 @@
         data.whatToCompare = typeof $selectedEnergyType.val() != 'undefined' ? $selectedEnergyType.next().find('.iconLabel').text() : '';
         data.showWhatToCompare = typeof $selectedEnergyType.val() != 'undefined';
         data.livingIn = $suburb.val();
-        data.showLivingIn = $suburb.val().trim().length > 0;
+        data.showLivingIn = $.trim($suburb.val()) !== '';
         data.electricityUsage = getElectricityUsage();
-        data.showElectricityUsage = (($selectedEnergyType.val() === 'E' || $selectedEnergyType.val() === 'EG') && data.electricityUsage.trim().length > 0);
+        data.showElectricityUsage = (($selectedEnergyType.val() === 'E' || $selectedEnergyType.val() === 'EG') && $.trim(data.electricityUsage) !== '');
         data.gasUsage = getGasUsage();
-        data.showGasUsage = (($selectedEnergyType.val() === 'G' || $selectedEnergyType.val() === 'EG') && data.gasUsage.trim().length > 0);
+        data.showGasUsage = (($selectedEnergyType.val() === 'G' || $selectedEnergyType.val() === 'EG') && $.trim(data.gasUsage) !== '');
 
         var html = template(data);
 
@@ -148,7 +148,7 @@
 
         // various fields input
         if ($elecBill.filter(':checked').val() === 'Y') {
-            var howChargeContent = $elecHowCharged.filter(':checked').parent().text().trim();
+            var howChargeContent = $.trim($elecHowCharged.filter(':checked').parent().text());
             if ($elecPeakUsage.val() !== '' && $elecBillingDays.val() !== '' && howChargeContent !== '') {
                 return $elecPeakUsage.val() + "" + $elecPeakUsage.siblings('.input-group-addon').text() + " over " + $elecBillingDays.val() + " " + $elecBillingDays.siblings('.input-group-addon').text() + ", " + howChargeContent;
             }

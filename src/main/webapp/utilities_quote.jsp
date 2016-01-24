@@ -60,13 +60,7 @@
         </div>
 	</jsp:attribute>
 
-	<jsp:attribute name="navbar">
-
-		<ul class="nav navbar-nav" role="menu">
-            <li class="visible-xs">
-                <span class="navbar-text-block navMenu-header">Menu</span>
-            </li>
-					
+	<jsp:attribute name="navbar_additional_options">
             <li class="slide-feature-phone hidden-sm hidden-md hidden-lg">
                 <a class="needsclick" href="tel:${callCentreNumber}"><span class="icon icon-phone"></span> <span
                         class="noWrap">${callCentreNumber}</span></a>
@@ -74,20 +68,9 @@
             <li class="navbar-text slide-reference-number hidden-sm hidden-md hidden-lg">
                 <div class="thoughtWorldRefNoContainer"></div>
             </li>
-            <li class="slide-feature-back">
-                <a href="javascript:;" data-slide-control="previous" class="btn-back"><span
-                        class="icon icon-arrow-left"></span> <span>Back</span></a>
-            </li>
             <li class="navbar-text slide-reference-number hidden-xs">
                 <div class="thoughtWorldRefNoContainer"></div>
             </li>
-        </ul>
-					
-    <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav navbar-right results-summary-container">
-            <li id="results-summary-container"></li>
-        </ul>
-    </div>
 	</jsp:attribute>
 
 		<jsp:attribute name="navbar_outer">

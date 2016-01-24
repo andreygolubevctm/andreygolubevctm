@@ -4,7 +4,7 @@
 
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="Fieldset XPath" %>
 
-<form_v2:fieldset legend="Terms and Conditions">
+<form_v2:fieldset legend="Terms and Conditions" className="tcs">
 
     <c:set var="termsText">
         <p>To process the offer and apply the discounts to your account you should read and should ensure you understand and agree to the following information:</p>
