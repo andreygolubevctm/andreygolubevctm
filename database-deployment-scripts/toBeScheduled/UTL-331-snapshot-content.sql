@@ -22,7 +22,7 @@ INSERT INTO `ctm`.`content_supplementary` (`contentControlId`, `supplementaryKey
 -- SELECT count(*) AS total FROM `ctm`.`content_supplementary` WHERE contentControlId = @CCID;
 -- RESULT BEFORE: 4
 -- RESULT AFTER: 0
--- DELETE FROM `ctm`.`content_supplementary` WHERE `contentControlId` = @CCID LIMIT 6;
+-- DELETE FROM `ctm`.`content_supplementary` WHERE `contentControlId` = @CCID LIMIT 4;
 
 -- SELECT count(*) AS total FROM `ctm`.`content_supplementary` WHERE contentControlId = @CCID;
 -- RESULT BEFORE: 1
