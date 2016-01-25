@@ -8,7 +8,8 @@
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:variable name="luFeatureNames" select="document('life_keywords.xml')//featureNames" />
+	<xsl:variable name="keywords" select="document('life_keywords.xml')" />
+	<xsl:variable name="luFeatureNames" select="$keywords//featureNames" />
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/error">
