@@ -40,7 +40,7 @@
         <swagger-annotations.version>1.5.4</swagger-annotations.version>
         <common-logging.version>1.5.0-RC1</common-logging.version>
         <common-interfaces.version>1.7.0</common-interfaces.version>
-        <contact-validator-model.version>1.0.0-SNAPSHOT</contact-validator-model.version>
+        <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
 
         <!-- Compile as this version -->
         <java.version>1.8</java.version>
