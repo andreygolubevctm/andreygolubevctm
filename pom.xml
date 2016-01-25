@@ -508,7 +508,7 @@
             <groupId>com.ctm.life</groupId>
             <artifactId>life-quote-model</artifactId>
             <version>${life-quote-model.version}</version>
-            <classifier>BER-97-more</classifier>
+            <!--<classifier>BER-97-more</classifier>-->
         </dependency>
 
         <dependency>

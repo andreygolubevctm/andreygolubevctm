@@ -23,7 +23,7 @@ import java.io.IOException;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.ENERGY;
 
 @Component
-public class EnergyResultsService extends CommonRequestService<EnergyQuoteRequest,EnergyQuoteResponse> {
+public class EnergyResultsService extends CommonRequestService {
 
     @Autowired
     public EnergyResultsService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {

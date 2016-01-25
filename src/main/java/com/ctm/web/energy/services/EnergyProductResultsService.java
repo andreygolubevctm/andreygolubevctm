@@ -28,7 +28,7 @@ import java.io.IOException;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.ENERGY;
 
 @Component
-public class EnergyProductResultsService extends CommonRequestService<EnergyProductRequest, EnergyProductResponse> {
+public class EnergyProductResultsService extends CommonRequestService {
 
     @Autowired
     private EnergyProductServiceRequestAdapter energyProductServiceRequestAdapter;

@@ -205,7 +205,7 @@ var LifeQuote = {
 	isValidResultsResponse : function( json )
 	{
 		return typeof json.results == 'object' && ((typeof json.results.client == 'object' || json.results.client == "") &&
-			((Results._partnerQuote && (json.resulst.partner == null || typeof json.results.partner == 'object' || json.results.partner == "")) || (!Results._partnerQuote && (json.results.partner == null || json.results.partner == "")))) &&
+			((Results._partnerQuote && (json.results.partner == null || typeof json.results.partner == 'object' || json.results.partner == "")) || (!Results._partnerQuote && (json.results.partner == null || json.results.partner == "")))) &&
 			typeof json.results.api == 'object';
 	},
 
@@ -234,7 +234,7 @@ var LifeQuote = {
 		}
 
 		// Then test the response contains ANY partner products, if necessary
-		if( Results._partnerQuote && typeof json.results.partner == "object" && json.results.partner.hasOwnProperty("premium") && typeof json.results.partner.premium == "object" && json.results.partner.premium instanceof Array && json.results.partner.premium.length ) {
+		if( Results._partnerQuote && json.results.partner != null && typeof json.results.partner == "object" && json.results.partner.hasOwnProperty("premium") && typeof json.results.partner.premium == "object" && json.results.partner.premium instanceof Array && json.results.partner.premium.length ) {
 			if (atLeastOneProductExists(json.results.partner.premium)) {
 				is_valid.partner = true;
 			}

@@ -19,7 +19,7 @@ import java.io.IOException;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 
-public class HealthApplyService extends CommonQuoteService<HealthQuote, HealthApplicationRequest, HealthApplyResponse> {
+public class HealthApplyService extends CommonQuoteService<HealthQuote> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplyService.class);
 

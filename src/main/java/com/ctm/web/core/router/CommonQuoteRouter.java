@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class CommonQuoteRouter<REQUEST extends Request> {
+public abstract class CommonQuoteRouter<REQUEST extends Request> extends CommonRouter {
 
     private SessionDataServiceBean sessionDataServiceBean;
 
@@ -46,19 +46,6 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
     protected Brand initRouter(MessageContext context, Vertical.VerticalType vertical){
         return initRouter(context.getHttpServletRequest(), vertical);
-    }
-
-    protected Brand initRouter(HttpServletRequest httpServletRequest, Vertical.VerticalType vertical){
-        // - Start common -- taken from Carlos' car branch
-        ApplicationService.setVerticalCodeOnRequest(httpServletRequest, vertical.getCode());
-
-        try {
-            return ApplicationService.getBrandFromRequest(httpServletRequest);
-
-        } catch (DaoException e) {
-            throw new RouterException(e);
-        }
-
     }
 
     protected Data getDataBucket(MessageContext context, Long transactionId) {

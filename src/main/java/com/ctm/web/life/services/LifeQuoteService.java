@@ -21,7 +21,7 @@ import java.io.IOException;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.LIFE;
 
 @Component
-public class LifeQuoteService extends CommonRequestService<LifeQuoteRequest, LifeQuoteResponse> {
+public class LifeQuoteService extends CommonRequestService {
 
     @Autowired
     private LifeQuoteServiceRequestAdapter requestAdapter;

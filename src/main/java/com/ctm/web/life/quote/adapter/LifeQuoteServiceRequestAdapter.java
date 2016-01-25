@@ -34,14 +34,30 @@ public class LifeQuoteServiceRequestAdapter implements WebRequestAdapter<LifeQuo
         final Applicants.Builder builder = Applicants.newBuilder()
                 .primary(createApplicant(quote.getPrimary(), quote.getPrimary().getInsurance()));
         Optional.ofNullable(quote.getPartner())
-                .ifPresent(p -> createApplicant(p,
-                        Optional.ofNullable(p.getInsurance())
-                                .orElse(quote.getPrimary().getInsurance())));
+                .ifPresent(p -> builder.partner(createPartner(p, quote.getPrimary())));
+        return builder.build();
+    }
+
+    private com.ctm.life.quote.model.request.Partner createPartner(Applicant partner, Applicant primary) {
+        final Partner.Builder builder = setApplicantBuilder(Partner.newPartnerBuilder(), partner);
+        final Insurance primaryInsurance = primary.getInsurance();
+        if ("Y".equals(primaryInsurance.getSamecover())) {
+            builder.sameCoverDetailsAsPrimary(true);
+        } else {
+            builder.sameCoverDetailsAsPrimary(false)
+                    .coverDetails(createCoverDetails(partner.getInsurance()));
+        }
         return builder.build();
     }
 
     private com.ctm.life.quote.model.request.Applicant createApplicant(Applicant applicant, Insurance insurance) {
-        return com.ctm.life.quote.model.request.Applicant.newBuilder()
+        return setApplicantBuilder(com.ctm.life.quote.model.request.Applicant.newBuilder(), applicant)
+                .coverDetails(createCoverDetails(insurance))
+                .build();
+    }
+
+    private <T extends ApplicantBuilder> T setApplicantBuilder(T applicantBuilder, Applicant applicant) {
+        applicantBuilder
                 .firstName(applicant.getFirstName())
                 .lastName(applicant.getLastname())
                 .dateOfBirth(applicant.getDob())
@@ -50,9 +66,8 @@ public class LifeQuoteServiceRequestAdapter implements WebRequestAdapter<LifeQuo
                 .smokerStatus(getSmokingStatus(applicant.getSmoker()))
                 .occupation(applicant.getOccupation())
                 .occupationTitle(applicant.getOccupationTitle())
-                .occupationGroup(applicant.getHannover())
-                .coverDetails(createCoverDetails(insurance))
-                .build();
+                .occupationGroup(applicant.getHannover());
+        return applicantBuilder;
     }
 
     private com.ctm.life.quote.model.request.Gender getGender(Gender gender) {

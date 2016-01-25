@@ -43,7 +43,7 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
-public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteRequest, HomeResponse> {
+public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
     public static final List<String> HOLLARD_PROVIDERS = asList("REIN", "WOOL");
 
     private static final SessionDataService SESSION_DATA_SERVICE = new SessionDataService();

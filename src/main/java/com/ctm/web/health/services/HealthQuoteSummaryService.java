@@ -19,7 +19,7 @@ import java.io.IOException;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 
-public class HealthQuoteSummaryService extends CommonQuoteService<HealthQuote, HealthQuoteRequest, HealthSummaryResponse> {
+public class HealthQuoteSummaryService extends CommonQuoteService<HealthQuote> {
 
     public HealthQuoteSummaryService() {
         super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());

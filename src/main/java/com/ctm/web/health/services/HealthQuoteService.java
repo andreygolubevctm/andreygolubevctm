@@ -22,7 +22,7 @@ import java.util.List;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 
-public class HealthQuoteService extends CommonQuoteService<HealthQuote, HealthQuoteRequest, HealthResponse> {
+public class HealthQuoteService extends CommonQuoteService<HealthQuote> {
 
     public HealthQuoteService() {
         super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
