@@ -109,12 +109,6 @@
 				meerkat.modules.travelCountrySelector.initTravelCountrySelector();
 				meerkat.modules.travelContactDetails.initContactDetails();
 
-				if (meerkat.modules.splitTest.isActive([5,6])) {
-					$('#travel_location').on('blur',function() {
-						meerkat.modules.travelContactDetails.setLocation($(this).val());
-					});
-				}
-
 				// if preloaded or load from EDM
 				if ($policyTypeBtn.is(':checked')) {
 					meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
