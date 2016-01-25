@@ -300,8 +300,6 @@
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').hide();
 				}
 
-				$('#health_situation_accidentOnlyCover').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
-
 				// Defer the open for next js cycle so that the navbar button is visible and we can read the dropdown's height
 				if(event.isStartMode === false){
 					_.defer(function() {
@@ -311,7 +309,8 @@
 
 				// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter segment
 				_.delay(function() {
-				meerkat.modules.healthSegment.filterSegments();
+					meerkat.modules.healthSegment.filterSegments();
+					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
 				}, 1000);
 
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
