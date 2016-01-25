@@ -82,7 +82,6 @@ public class CarQuoteTest {
         verify(regular, times(1)).getSurname();
         verify(contact, times(1)).getPhone();
         verify(vehicle, times(1)).getRedbookCode();
-        verify(vehicle, times(1)).getColour();
         verify(riskAddress, times(1)).getState();
     }
 
