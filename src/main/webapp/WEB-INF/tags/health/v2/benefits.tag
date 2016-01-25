@@ -33,18 +33,20 @@
 							<health_v2:benefitsItem item="${selectedValue}" />
 						</c:forEach>
 
-						<div class="col-sm-12 short-list-item section expandable collapsed accidentCover">
-							<div class="children">
-								<h3 class="subTitle">Accident-only Cover</h3>
-								<div class="noIcons">
-									<div class="categoriesCell short-list-item category expandable collapsed">
-										<c:set var="fieldXpath" value="${xpath}/accidentOnlyCover" />
-										<field_v2:checkbox xpath="${fieldXpath}" required="false" title="Accident-only Cover" value="Y" label="true" />
-										<br>
+						<c:if test="${not empty callCentre or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 12)}">
+							<div class="col-sm-12 short-list-item section expandable collapsed accidentCover">
+								<div class="children">
+									<h3 class="subTitle">Accident-only Cover</h3>
+									<div class="noIcons">
+										<div class="categoriesCell short-list-item category expandable collapsed">
+											<c:set var="fieldXpath" value="${xpath}/accidentOnlyCover" />
+											<field_v2:checkbox xpath="${fieldXpath}" required="false" title="Accident-only Cover" value="Y" label="true" />
+											<br>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
+						</c:if>
 					</div>
 				</div>
 
