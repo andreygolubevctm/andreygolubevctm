@@ -15,13 +15,13 @@
 </c:if>
 
 <c:set var="PHGPostImpressions">
-	<content:PHGPostImpression key="trackingURL" />
+	<c:choose>
+		<c:when test="${isTrackingEnabled eq true}">
+			<content:PHGPostImpression key="trackingURL" />
+		</c:when>
+		<c:otherwise>''</c:otherwise>
+	</c:choose>
 </c:set>
-
-<c:if test="${empty PHGPostImpressions}">
-	<c:set var="PHGPostImpressions" value="''" />
-</c:if>
-
 {
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['travel/journey/stage']}"/>",
