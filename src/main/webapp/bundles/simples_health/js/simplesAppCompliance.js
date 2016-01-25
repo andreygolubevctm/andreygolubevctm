@@ -14,7 +14,7 @@
             success = false;
 
         meerkat.modules.comms.get({
-            url: "ajax/xml/pauseResumeCall.json?action=" + action,
+            url: "rest/simples/pauseResumeCall.json?action=" + action,
             dataType: "text",
             async: false,
             cache: false,

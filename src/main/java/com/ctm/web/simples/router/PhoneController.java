@@ -8,9 +8,9 @@ import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
-import com.ctm.web.simples.config.InInConfig;
 import com.ctm.web.simples.phone.inin.InInIcwsService;
 import com.ctm.web.simples.phone.verint.VerintPauseResumeService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +28,12 @@ import java.util.Collections;
 public class PhoneController extends CommonQuoteRouter {
     private static final Logger LOGGER = LoggerFactory.getLogger(PhoneController.class);
 
-    @Autowired private InInIcwsService inInIcwsService;
-    @Autowired private InInConfig inInConfig;
+    private InInIcwsService inInIcwsService;
 
     @Autowired
-    public PhoneController(SessionDataServiceBean sessionDataServiceBean) {
+    public PhoneController(SessionDataServiceBean sessionDataServiceBean, InInIcwsService inInIcwsService) {
         super(sessionDataServiceBean);
+        this.inInIcwsService = inInIcwsService;
     }
 
     @RequestMapping(
@@ -44,10 +44,15 @@ public class PhoneController extends CommonQuoteRouter {
     )
     public void pauseResumeCall(String action, HttpServletRequest request) throws ConfigSettingException, DaoException, ServletException {
         final VerintPauseResumeService verintPauseResumeService = new VerintPauseResumeService();
-        final PageSettings settingsService = SettingsService.setVerticalAndGetSettingsForPage(request, "HEALTH");
-//        return verintPauseResumeService.pauseResumeRecording(request, settingsService);
+        final PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, "HEALTH");
 
-        inInIcwsService.pause();
+        final boolean inInEnabled = StringUtils.equalsIgnoreCase("true", pageSettings.getSetting("inInEnabled"));
+
+        if (inInEnabled) {
+            inInIcwsService.pause();
+        } else {
+            verintPauseResumeService.pauseResumeRecording(request, pageSettings);
+        }
     }
 
     @ExceptionHandler

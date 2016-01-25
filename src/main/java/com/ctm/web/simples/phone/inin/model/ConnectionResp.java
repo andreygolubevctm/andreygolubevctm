@@ -1,11 +1,12 @@
 package com.ctm.web.simples.phone.inin.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public class ConnectionResp {
     private String csrfToken;
     private String sessionId;
-    private String alternateHostList;
+    private List<String> alternateHostList;
     private String userID;
     private String userDisplayName;
     private String icServer;
@@ -21,7 +22,7 @@ public class ConnectionResp {
         return sessionId;
     }
 
-    public String getAlternateHostList() {
+    public List<String> getAlternateHostList() {
         return alternateHostList;
     }
 
@@ -60,7 +61,7 @@ public class ConnectionResp {
         return "ConnectionResp{" +
                 "csrfToken='" + csrfToken + '\'' +
                 ", sessionId='" + sessionId + '\'' +
-                ", alternateHostList='" + alternateHostList + '\'' +
+                ", alternateHostList=" + alternateHostList +
                 ", userID='" + userID + '\'' +
                 ", userDisplayName='" + userDisplayName + '\'' +
                 ", icServer='" + icServer + '\'' +
