@@ -151,9 +151,7 @@
 		<div class="row loadingQuoteText hidden">
 			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3">
 				<div class="quoteContainer">
-					<span class="icon icon-quote-start"></span>
 					<div class="quote">${quoteText}</div>
-					<span class="icon icon-quote-end"></span>
 					<div class="quoteAuthor">${quoteAuthor}</div>
 				</div>
 			</div>

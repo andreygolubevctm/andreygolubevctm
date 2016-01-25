@@ -15,7 +15,9 @@
 <c:set var="val_optout"				value="N" />
 
 <%-- Set A/B test flag j=2 --%>
-<c:set var="hideOptIn" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" scope="request" />
+<c:set var="frontendChangesBlocked"><content:get key="blockFrontendChanges"/></c:set>
+<c:set var="frontendChangesBlocked" value="${not empty frontendChangesBlocked and frontendChangesBlocked eq 'Y'}" />
+<c:set var="hideOptIn" value="${frontendChangesBlocked eq false and splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 3)}" scope="request" />
 
 <%-- Vars for competition --%>
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>

@@ -772,7 +772,7 @@
 					$field: $("#health_contactDetails_flexiContactNumber"),
 					$fieldInput: $("#health_contactDetails_flexiContactNumberinput")
 				},
-				// otherPhone from application step
+				// otherPhone and mobile from quote step
 				{
 					$field: $("#health_contactDetails_contactNumber_mobile"),
 					$otherField: $("#health_contactDetails_contactNumber_other")

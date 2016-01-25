@@ -6,7 +6,9 @@
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
 <%-- Set A/B test flag j=2 --%>
-<c:set var="showOptIn" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" scope="request" />
+<c:set var="frontendChangesBlocked"><content:get key="blockFrontendChanges"/></c:set>
+<c:set var="frontendChangesBlocked" value="${not empty frontendChangesBlocked and frontendChangesBlocked eq 'Y'}" />
+<c:set var="showOptIn" value="${frontendChangesBlocked eq false and splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 3)}" scope="request" />
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
@@ -108,7 +110,7 @@
 					<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 					<form_v2:row className="health-contact-details-optin-group" hideHelpIconCol="true">
 						<field_v2:checkbox
-								xpath="${xpath}/optin"
+								xpath="${pageSettings.getVerticalCode()}/contactDetails/optin"
 								value="Y"
 								className="validate"
 								required="true"

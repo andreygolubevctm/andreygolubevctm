@@ -188,7 +188,7 @@
 		$.extend(defaultData, {
 			clientNumber: quoteNumber,
 			clientName: $('#quote_CrClientName').val() || '',
-			phoneNumber: $('#quote_CrClientTelinput').val() || '',
+			phoneNumber: $('#quote_CrClientTel').val() || '',
 			partnerReference: meerkat.modules.transactionId.get()
 		});
 
