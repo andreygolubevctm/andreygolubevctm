@@ -1,3 +1,7 @@
+SET @EffectiveStart = '2015-04-01';
+SET @EffectiveEnd = '2016-03-31';
+SET @providerID = 1;
+
 /* Test the products count matches expected */
 SELECT 'Export', count(epm.productId) AS 'Total'
 FROM `ctm`.`export_product_master` epm
