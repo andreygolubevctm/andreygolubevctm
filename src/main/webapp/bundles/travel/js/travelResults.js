@@ -49,7 +49,8 @@
 				runShowResultsPage: false, // Don't let Results.view do it's normal thing.
 				paths: {
 					results: {
-						list: "results.result"
+						list: "results.result",
+						providerCode: "serviceName"
 					},
 					productId: "productId",
 					productName: "name",
@@ -306,12 +307,16 @@
 				} else {
 					showNoResults();
 				}
+			} else {
+				meerkat.modules.salesTracking.addPHGImpressionTracking();
 			}
 		});
 
 		// Handle result row click
 		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
 	}
+
+
 
 	function rankingCallback(product, position) {
 		var data = {};
@@ -427,22 +432,19 @@
 	 * This function has been refactored into calling a core resultsTracking module.
 	 * It has remained here so verticals can run their own unique calls.
 	 */
-	function publishExtraSuperTagEvents(additionalData) {
+	function publishExtraTrackingEvents(additionalData) {
 		additionalData = typeof additionalData === 'undefined' ? {} : additionalData;
 		meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
 			additionalData: $.extend({
 				sortBy: Results.getSortBy() +'-'+ Results.getSortDir()
 			}, additionalData),
-			onAfterEventMode: 'Refresh'
+			onAfterEventMode: meerkat.modules.resultsTracking.getResultsEventMode()
 		});
 	}
 
 	function init(){
 		$(document).ready(function() {
 			$component = $("#resultsPage");
-			if(!meerkat.modules.splitTest.isActive([2,3,4,83])) {
-				meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
-			}
 		});
 	}
 
@@ -452,7 +454,7 @@
 		get: get,
 		showNoResults: showNoResults,
 		rankingCallback: rankingCallback,
-		publishExtraSuperTagEvents: publishExtraSuperTagEvents
+		publishExtraTrackingEvents: publishExtraTrackingEvents
 	});
 
 })(jQuery);
