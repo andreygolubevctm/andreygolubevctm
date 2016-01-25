@@ -19,7 +19,7 @@
 	<form_v2:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
-			<health_content_v1:sidebar />
+			<health_v2_content:sidebar />
 		</jsp:attribute>
 
 		<jsp:body>
