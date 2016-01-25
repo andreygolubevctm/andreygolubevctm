@@ -34,12 +34,14 @@
 						</c:forEach>
 
 						<div class="col-sm-12 short-list-item section expandable collapsed accidentCover">
-							<h3 class="subTitle">Accident-only Cover</h3>
-							<div class="noIcons">
-								<div class="short-list-item category expandable collapsed">
-									<c:set var="fieldXpath" value="${xpath}/accidentOnlyCover" />
-									<field_v2:checkbox xpath="${fieldXpath}" required="false" title="Accident-only Cover" value="Y" label="true" />
-									<br>
+							<div class="children">
+								<h3 class="subTitle">Accident-only Cover</h3>
+								<div class="noIcons">
+									<div class="categoriesCell short-list-item category expandable collapsed">
+										<c:set var="fieldXpath" value="${xpath}/accidentOnlyCover" />
+										<field_v2:checkbox xpath="${fieldXpath}" required="false" title="Accident-only Cover" value="Y" label="true" />
+										<br>
+									</div>
 								</div>
 							</div>
 						</div>

@@ -28,7 +28,7 @@
 					<div class="col-sm-12">
 						<h4>Accident-only Cover</h4>
 						<c:set var="fieldXpath" value="health/situation/accidentOnlyCover" />
-						<field_v2:checkbox xpath="${fieldXpath}" required="false" title="Accident-only Cover" value="Y" label="true" />
+						<field_v2:checkbox xpath="${fieldXpath}" id="accidentCover" required="false" title="Accident-only Cover" value="Y" label="true" />
 					</div>
 				</div>
 			</div>
