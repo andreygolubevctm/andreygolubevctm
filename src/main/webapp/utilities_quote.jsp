@@ -60,14 +60,6 @@
         </div>
 	</jsp:attribute>
 
-	<jsp:attribute name="progress_bar">
-      <div class="progress-bar-row collapse navbar-collapse">
-          <div class="container">
-              <ul class="journeyProgressBar_v2"></ul>
-          </div>
-      </div>
-    </jsp:attribute>
-
 	<jsp:attribute name="navbar_additional_options">
             <li class="slide-feature-phone hidden-sm hidden-md hidden-lg">
                 <a class="needsclick" href="tel:${callCentreNumber}"><span class="icon icon-phone"></span> <span

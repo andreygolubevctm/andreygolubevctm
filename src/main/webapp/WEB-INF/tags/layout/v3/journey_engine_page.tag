@@ -94,7 +94,7 @@
 	<jsp:attribute name="progress_bar">
 		<div class="progress-bar-row collapse navbar-collapse">
 			<div class="container">
-				<ul class="journeyProgressBar"></ul>
+				<ul class="journeyProgressBar_v2"></ul>
 			</div>
 		</div>
 	</jsp:attribute>
