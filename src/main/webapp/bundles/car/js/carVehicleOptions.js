@@ -43,6 +43,7 @@
 				saveditems:		"#quote_vehicle_accessoriesSelections .added-items ul"
 			},
 			redbook:			"#quote_vehicle_redbookCode"
+
 	};
 
 	elements.accessories.wrapper = "#quote_vehicle_accessoriesDialog .quote-optional-accessories-listed";
