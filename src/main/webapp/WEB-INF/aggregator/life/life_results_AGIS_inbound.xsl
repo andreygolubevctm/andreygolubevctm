@@ -5,7 +5,7 @@
 	exclude-result-prefixes="soapenv">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:include href="/WEB-INF/aggregator/includes/utils.xsl"/>
+	<xsl:include href="../includes/utils.xsl"/>
 
 	<xsl:variable name="luFeatureNames" select="document('life_keywords.xml')//featureNames" />
 
