@@ -4,6 +4,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:if test="${!sessionUtils.isCallCentre(pageContext.session)}">
+	<c:set var="splitTestLabel"><content:get key="splitTest_current" /></c:set>
+	<core_v1:journey_gateway verticalLabel="HEALTH" splitTestLabel="${splitTestCurrent}" />
+</c:if>
+
 <health_v1:redirect_rules />
 
 <session:new verticalCode="HEALTH" authenticated="true" />
