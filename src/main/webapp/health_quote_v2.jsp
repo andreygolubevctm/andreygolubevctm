@@ -8,7 +8,7 @@
 
 <c:if test="${!sessionUtils.isCallCentre(pageContext.session)}">
     <c:set var="splitTestLabel"><content:get key="splitTest_current" /></c:set>
-    <core_v1:journey_gateway verticalLabel="HEALTH" splitTestLabel="${splitTestCurrent}" />
+    <core_v1:journey_gateway verticalLabel="HEALTH" splitTestLabel="${splitTestLabel}" />
 </c:if>
 
 <session:new verticalCode="HEALTH" authenticated="true" />
