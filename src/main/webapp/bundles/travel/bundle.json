@@ -13,6 +13,7 @@
     "shared/checkboxIE8",
     "shared/leavePageWarning",
     "shared/showMoreQuotesPrompt",
-    "shared/resultsRankings"
+    "shared/resultsRankings",
+    "shared/phgSalesTracking"
   ]
 }
