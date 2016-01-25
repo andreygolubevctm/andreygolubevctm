@@ -8,7 +8,6 @@
 <%@ attribute name="displayFullWidth" 	required="false"	rtexprvalue="true"	 	description="Determine's whether or not to have these columns display full width" %>
 
 <div class="row">
-
 <c:if test="${empty sideAbove}">
 	<div <c:if test="${ empty displayFullWidth or displayFullWidth eq false}">class="col-sm-8"</c:if>>
 		<jsp:doBody />

@@ -1,0 +1,77 @@
+// ie8 fix
+html.ie8 body.utilities_design_55 {
+  .form-horizontal .gas-usage > .control-label {
+    padding-left: 70px;
+  }
+}
+
+
+body.utilities_design_55 {
+  #utilities_estimateDetails_gas_usage.btn-group-justified,
+  #utilities_estimateDetails_electricity_usage.btn-group-justified {
+    > label.btn {
+      width: 30%;
+      padding-top: 10px;
+      outline: 0px;
+
+      > h3 {
+        margin-top: 0px;
+        text-align: left;
+        padding-bottom: 0px;
+        margin-bottom: 0px;
+      }
+
+      @media (@xs-only) {
+        width: 100%;
+
+        > span {
+          width: 100%;
+          clear: both;
+          margin: 0px;
+          text-align: left;
+          display: table;
+          i {
+            display: table-cell;
+            text-align: left;
+            margin-left: -20px;
+            width:80px;
+          }
+
+          .optionText {
+            display:table-cell;
+            vertical-align: middle;
+            text-align: left;
+            width: 100%;
+            padding-left: 10px;
+          }
+        }
+      }
+
+      border-width: 1px;
+      border-radius: 10px;
+    }
+
+    @media (@sm) {
+      border-spacing: 20px;
+    }
+  }
+
+
+  .electricity-usage label i,
+  .gas-usage  label i {
+    @media(@md) {
+      font-size: 80px;
+    }
+
+    @media(@xs) {
+      font-size: 55px;
+    }
+  }
+
+  @media (@sm-only) {
+    #utilities_estimateDetails_electricity_meter label.btn {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+}
