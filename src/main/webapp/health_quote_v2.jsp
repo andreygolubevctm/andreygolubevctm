@@ -7,8 +7,7 @@
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils"/>
 
 <c:if test="${!sessionUtils.isCallCentre(pageContext.session)}">
-    <c:set var="splitTestLabel"><content:get key="splitTest_current" /></c:set>
-    <core_v1:journey_gateway verticalLabel="HEALTH" splitTestLabel="${splitTestLabel}" />
+    <core_v1:journey_gateway verticalLabel="HEALTH" splitTestLabel="acciCover" />
 </c:if>
 
 <session:new verticalCode="HEALTH" authenticated="true" />

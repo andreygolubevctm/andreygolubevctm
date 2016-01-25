@@ -4,9 +4,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils"/>
+
 <c:if test="${!sessionUtils.isCallCentre(pageContext.session)}">
-	<c:set var="splitTestLabel"><content:get key="splitTest_current" /></c:set>
-	<core_v1:journey_gateway verticalLabel="HEALTH" splitTestLabel="${splitTestLabel}" />
+	<core_v1:journey_gateway verticalLabel="HEALTH" splitTestLabel="acciCover" />
 </c:if>
 
 <health_v1:redirect_rules />

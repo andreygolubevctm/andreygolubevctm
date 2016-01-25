@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="verticalLabel" required="true" rtexprvalue="false" description="The label used to identify the vertical settings eg HEALTH" %>
-<%@ attribute name="splitTestLabel" required="true" rtexprvalue="true" description="The label used to define split test values in vertical configuration" %>
+<%@ attribute name="splitTestLabel" required="true" rtexprvalue="false" description="The label used to define split test values in vertical configuration" %>
 
 <%-- The vertical needs to be set so that it's value exists in the pageContext --%>
 <settings:setVertical verticalCode="${verticalLabel}" />
