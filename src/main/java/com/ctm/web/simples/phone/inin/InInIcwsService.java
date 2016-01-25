@@ -4,10 +4,7 @@ import com.ctm.httpclient.Client;
 import com.ctm.httpclient.RestSettings;
 import com.ctm.interfaces.common.util.SerializationMappers;
 import com.ctm.web.simples.config.InInConfig;
-import com.ctm.web.simples.phone.inin.model.ConnectionReq;
-import com.ctm.web.simples.phone.inin.model.ConnectionResp;
-import com.ctm.web.simples.phone.inin.model.SecurePause;
-import com.ctm.web.simples.phone.inin.model.SecurePauseType;
+import com.ctm.web.simples.phone.inin.model.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.slf4j.Logger;
@@ -22,8 +19,6 @@ import rx.Observable;
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 @Service
 public class InInIcwsService {
@@ -69,23 +64,19 @@ public class InInIcwsService {
 		return connectionClient.postWithResponseEntity(settings);
 	}
 
-	private void securePause(final SecurePauseType securePauseType, final String interactionId) {
-		connection()
+	private Observable<PauseResumeResponse> securePause(final SecurePauseType securePauseType, final String interactionId) {
+		return connection()
 				.flatMap(connectionResp -> securePauseRequest(securePauseType, interactionId, connectionResp))
-				.subscribe(s -> {
-							LOGGER.info("secure pause returned {}", kv("securePauseResponse", s));
-						},
-						throwable -> {
-							if (throwable instanceof HttpClientErrorException) {
-								LOGGER.debug(((HttpClientErrorException) throwable).getResponseBodyAsString());
-							}
-
-							throw new RuntimeException("Broken", throwable);
-						}
-				);
+				.flatMap(pauseResp -> Observable.just(PauseResumeResponse.success()))
+				.onErrorReturn(throwable -> {
+					if (throwable instanceof HttpClientErrorException) {
+						LOGGER.error("securePause failed. {}", ((HttpClientErrorException) throwable).getResponseBodyAsString());
+					}
+					return PauseResumeResponse.fail();
+				});
 	}
 
-	private Observable<? extends String> securePauseRequest(SecurePauseType securePauseType, String interactionId, ResponseEntity<ConnectionResp> connectionResp) {
+	private Observable<String> securePauseRequest(SecurePauseType securePauseType, String interactionId, ResponseEntity<ConnectionResp> connectionResp) {
 		final HttpHeaders headers = connectionResp.getHeaders();
 		final String cookie = headers.get("Set-Cookie").get(0);
 		final String csrf = headers.get(CSRF_TOKEN).get(0);
@@ -109,11 +100,11 @@ public class InInIcwsService {
 		return StrSubstitutor.replace(securePauseUrl, values);
 	}
 
-	public void pause() {
-		securePause(SecurePauseType.PAUSE_WITH_INFINITE_TIMEOUT, "");
+	public Observable<PauseResumeResponse> pause() {
+		return securePause(SecurePauseType.PAUSE_WITH_INFINITE_TIMEOUT, "test");
 	}
 
-	public void resume() {
-		securePause(SecurePauseType.RESUME_RECORDING, "");
+	public Observable<PauseResumeResponse> resume() {
+		return securePause(SecurePauseType.RESUME_RECORDING, "test");
 	}
 }

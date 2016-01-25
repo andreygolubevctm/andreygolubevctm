@@ -9,6 +9,7 @@ import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.simples.phone.inin.InInIcwsService;
+import com.ctm.web.simples.phone.inin.model.PauseResumeResponse;
 import com.ctm.web.simples.phone.verint.VerintPauseResumeService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,11 +23,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 
+import static com.ctm.web.simples.router.PhoneController.pauseResumeActions.PauseRecord;
+import static com.ctm.web.simples.router.PhoneController.pauseResumeActions.ResumeRecord;
+
 
 @RestController
 @RequestMapping("/rest/simples")
 public class PhoneController extends CommonQuoteRouter {
     private static final Logger LOGGER = LoggerFactory.getLogger(PhoneController.class);
+
+    enum pauseResumeActions {
+        PauseRecord,
+        ResumeRecord
+    }
 
     private InInIcwsService inInIcwsService;
 
@@ -42,17 +51,25 @@ public class PhoneController extends CommonQuoteRouter {
         consumes = MediaType.ALL_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public void pauseResumeCall(String action, HttpServletRequest request) throws ConfigSettingException, DaoException, ServletException {
+    public PauseResumeResponse pauseResumeCall(@RequestParam pauseResumeActions action, HttpServletRequest request) throws ConfigSettingException, DaoException, ServletException {
         final VerintPauseResumeService verintPauseResumeService = new VerintPauseResumeService();
         final PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, "HEALTH");
 
         final boolean inInEnabled = StringUtils.equalsIgnoreCase("true", pageSettings.getSetting("inInEnabled"));
 
         if (inInEnabled) {
-            inInIcwsService.pause();
+            if (action == PauseRecord) {
+                return inInIcwsService.pause().toBlocking().first();
+            } else if (action == ResumeRecord) {
+                return inInIcwsService.resume().toBlocking().first();
+            }
         } else {
+            // Verint service throws exceptions which will be caught by our handleException() below.
             verintPauseResumeService.pauseResumeRecording(request, pageSettings);
+            return PauseResumeResponse.success();
         }
+
+        return PauseResumeResponse.fail();
     }
 
     @ExceptionHandler
