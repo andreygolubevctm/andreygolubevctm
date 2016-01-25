@@ -32,15 +32,18 @@
 						<c:forEach items="${resultTemplateItems}" var="selectedValue">
 							<health_v2:benefitsItem item="${selectedValue}" />
 						</c:forEach>
-					</div>
-				</div>
 
-				<%--  --%>
-				<div class="col-sm-12">
-					<h4>Accident-only Cover</h4>
-					<c:set var="fieldXpath" value="${xpath}/accidentOnlyCover" />
-					<field_v2:checkbox xpath="${fieldXpath}" required="false" title="Accident-only Cover" value="Y" label="true" />
-					<br>
+						<div class="col-sm-12 short-list-item section expandable collapsed accidentCover">
+							<h3 class="subTitle">Accident-only Cover</h3>
+							<div class="noIcons">
+								<div class="short-list-item category expandable collapsed">
+									<c:set var="fieldXpath" value="${xpath}/accidentOnlyCover" />
+									<field_v2:checkbox xpath="${fieldXpath}" required="false" title="Accident-only Cover" value="Y" label="true" />
+									<br>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 
 			</div>
