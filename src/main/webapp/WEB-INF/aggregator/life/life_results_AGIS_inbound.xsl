@@ -5,9 +5,10 @@
 	exclude-result-prefixes="soapenv">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:include href="../includes/utils.xsl"/>
+	<xsl:import href="../includes/utils.xsl" />
 
-	<xsl:variable name="luFeatureNames" select="document('life_keywords.xml')//featureNames" />
+	<xsl:variable name="keywords" select="document('life_keywords.xml')" />
+	<xsl:variable name="luFeatureNames" select="$keywords//featureNames" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="company" />

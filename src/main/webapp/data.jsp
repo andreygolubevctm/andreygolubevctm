@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.*" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.Date" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="logger" value="${log:getLogger('jsp.data')}"/>
@@ -208,28 +207,6 @@
         </c:forEach>
     </c:if>
     <%-- /SESSION DATA --%>
-
-    <%-- ENV DATA --%>
-    <%
-        Set<Map.Entry<Object,Object>> p = System.getProperties().entrySet();
-        Set systemProperties = new TreeSet();
-        systemProperties.addAll(p);
-        pageContext.setAttribute("systemProperties", systemProperties, PageContext.PAGE_SCOPE);
-    %>
-    <h1>Environment information</h1>
-    <table>
-        <tr>
-            <th>Field</th>
-            <th>Value</th>
-        </tr>
-        <c:forEach var="entry" items="${systemProperties}">
-            <tr>
-                <td>${entry.key}</td>
-                <td>${entry.value}</td>
-            </tr>
-        </c:forEach>
-    </table>
-    <%-- /ENV DATA --%>
 
 </c:if>
 
