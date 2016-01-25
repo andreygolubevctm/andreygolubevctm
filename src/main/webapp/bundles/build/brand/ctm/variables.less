@@ -1573,11 +1573,15 @@
 //== journeyProgressBar
 //
 //##
+@main-bg-colour: #F3F3F5;
+@border-colour: #E7E7E7;
+@header-color: #162F8A;
+@required-color: #A90000;
 
 //** Default & Disabled State
-@journeyProgressBar-color:                      @theme-dark;
+@journeyProgressBar-color:                      @theme-default;
 @journeyProgressBar-separator-color:            @theme-light;
-@journeyProgressBar-border-color:               @theme-light;
+@journeyProgressBar-border-color:               @theme-default;
 
 //** Complete State
 @journeyProgressBar-color-complete:             @theme-tertiary;
@@ -1595,11 +1599,12 @@
 @journeyProgressBar-border-color-hover:         darken(@theme-tertiary, 20%);
 
 //** Basic Properties
-@journeyProgressBar-size:                       12px;
-@journeyProgressBar-lineheight:                 15px;
-@journeyProgressBar-weight:                     500;
-@journeyProgressBar-horizontal-push:            3px;
+@journeyProgressBar-size:                       13px;
+@journeyProgressBar-lineheight:                 20px;
+@journeyProgressBar-weight:                     bold;
+@journeyProgressBar-horizontal-push:            -2px;
 @journeyProgressBar-margin-bottom:              0;
+@journeyProgressBar-margin-top:                 -21px;
 @journeyProgressBar-border-size:                3px;
 @journeyProgressBar-border-style:               solid;
 
@@ -1940,7 +1945,7 @@
 @call-modal-border-top-color:  @theme-default;
 
 // Logo Vars
-@logo-xs-scale: 0.75;
+@logo-xs-scale: 0.7;
 
 // New field border colors
 @field-border-color: #7B8386;
