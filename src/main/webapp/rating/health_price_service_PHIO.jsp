@@ -39,7 +39,15 @@
 <c:set var="savedTransactionId"><x:out select="$healthXML/request/header/retrieve/transactionId" /></c:set>
 <c:set var="productTitleSearch"><x:out select="$healthXML/request/header/productTitleSearch" escapeXml="false" /></c:set>
 <c:set var="productTitle"><x:out select="$healthXML/request/header/productTitle" escapeXml="false" /></c:set>
-
+<c:set var="situationFilter"><x:out select="$healthXML/request/details/situationFilter" /></c:set>
+<c:choose>
+	<c:when test="${situationFilter eq 'Y'}">
+		<c:set var="situationFilter" value="Y" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="situationFilter" value="N" />
+	</c:otherwise>
+</c:choose>
 <%-- Unencode apostrophes --%>
 <c:set var="apos">'</c:set>
 <c:set var="productTitle" value="${fn:replace(productTitle, '&#039;', apos)}" />
@@ -76,6 +84,7 @@ ${healthPriceRequest.setSavedTransactionId(savedTransactionId)}
 ${healthPriceRequest.setOnResultsPage(onResultsPage)}
 ${healthPriceRequest.setPreferences(preferences)}
 ${healthPriceRequest.setBrandFilter(brandFilter)}
+${healthPriceRequest.setSituationFilter(situationFilter)}
 
 ${healthPriceService.setHealthPriceRequest(healthPriceRequest)}
 
@@ -112,7 +121,7 @@ ${logger.trace('Starting results jsp. {}', log:kv('quoteData ', param.QuoteData 
 	<c:otherwise>
 <%-- Build the xml data for each row --%>
 <results>
-			<health:price_service_results rows="${resultsList}" healthXML="${healthXML}" healthPriceService="${healthPriceService}" />
+			<health_v1:price_service_results rows="${resultsList}" healthXML="${healthXML}" healthPriceService="${healthPriceService}" />
 			<pricesHaveChanged>${healthPriceService.getHealthPriceRequest().getPricesHaveChanged()}</pricesHaveChanged>
 			<transactionId>${transactionId}</transactionId>
 	<c:if test="${onResultsPage && showAll}">

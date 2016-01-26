@@ -24,7 +24,7 @@
 		<c:set var="continueOnValidationError" value="${false}" />
 
 		<%-- First check owner of the quote --%>
-		<c:set var="proceedinator"><core:access_check quoteType="${vertical}" /></c:set>
+		<c:set var="proceedinator"><core_v1:access_check quoteType="${vertical}" /></c:set>
 		<c:choose>
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
 				${logger.debug('PROCEEDINATOR PASSED')}
@@ -34,7 +34,7 @@
 				<c:set var="tranId" value="${data.current.transactionId}" />
 				<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${tranId}" />
 				<%-- Save client data --%>
-				<core:transaction touch="R" noResponse="true" />
+				<core_v1:transaction touch="R" noResponse="true" />
 				<%-- add external testing ip address checking and loading correct config and send quotes --%>
 				<c:set var="tranId" value="${data.current.transactionId}" />
 				<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${tranId}" />
@@ -90,7 +90,7 @@
 								<%-- Write to the stats database --%>
 								<c:set var="ignore">
 									<life:get_soap_response_stats debugXml="${debugXml}" />
-									<agg:write_stats rootPath="${vertical}" tranId="${tranId}" />
+									<agg_v1:write_stats rootPath="${vertical}" tranId="${tranId}" />
 								</c:set>
 
 								<%-- Add the results to the current session data --%>
@@ -108,7 +108,7 @@
 						</x:choose>
 					</c:when>
 					<c:otherwise>
-						<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
+						<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
 					</c:otherwise>
 				</c:choose>
 
@@ -137,7 +137,7 @@
 	</c:when>
 	<c:otherwise>
 				<c:set var="resultXml">
-					<error><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
+					<error><core_v1:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
 				</c:set>
 				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 				${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}

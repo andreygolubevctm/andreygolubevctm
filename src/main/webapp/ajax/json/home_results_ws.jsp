@@ -25,7 +25,7 @@
 </c:if>
 
 <%-- Save client data --%>
-<core:transaction touch="${touch}" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
+<core_v1:transaction touch="${touch}" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
 
 <c:set var="tranId" value="${data['current/transactionId']}" />
 

@@ -10,6 +10,8 @@ public class Vehicle {
 
     private String body;
 
+    private String colour;
+
     private String damage;
 
     private String factoryOptions;
@@ -84,6 +86,14 @@ public class Vehicle {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getColour() {
+        return colour;
+    }
+
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     public String getDamage() {

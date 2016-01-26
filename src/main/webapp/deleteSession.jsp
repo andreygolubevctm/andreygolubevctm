@@ -10,7 +10,7 @@
 <% session.invalidate(); %>
 
 
-<core:doctype />
+<core_v1:doctype />
 <html>
 	<head>
 		<title>Deleting your session data</title>

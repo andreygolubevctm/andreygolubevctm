@@ -11,7 +11,7 @@
     <c:choose>
         <c:when test="${unsubscribe.getEmailDetails().isValid()}">
             ${unsubscribeService.unsubscribe(pageSettings, unsubscribe)}
-            <agg:write_stamp
+            <agg_v1:write_stamp
                     action="toggle_marketing"
                     vertical="${fn:toLowerCase(unsubscribe.getVertical())}"
                     value="N"

@@ -28,7 +28,7 @@
 			<c:otherwise>N</c:otherwise>
 		</c:choose>
 	</c:set>
-	<agg:write_email
+	<agg_v1:write_email
 		brand="${brand}"
 		vertical="${vertical}"
 		source="${source}"
@@ -40,7 +40,7 @@
 </c:if>
 
 <%-- RECORD PENDING/PROCESSING TOUCH --%>
-<core:transaction touch="P" noResponse="true" />
+<core_v1:transaction touch="P" noResponse="true" />
 
 <%-- Get the transaction ID (after recovery etc) --%>
 <c:set var="tranId" value="${data['current/transactionId']}" />
@@ -162,10 +162,10 @@ ${logger.debug('Submit opportunity called. {}', log:kv('submitResult',submitResu
 								${logger.debug('WRITE CONFIRM. {}',log:kv('xmlData',xmlData ))}
 
 								<%-- Write confirmation and C touch --%>
-								<agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
-								<agg:write_touch transaction_id="${tranId}" touch="C" />
+								<agg_v1:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
+								<agg_v1:write_touch transaction_id="${tranId}" touch="C" />
 								<c:if test="${tranId ne rootId}">
-									<agg:write_touch transaction_id="${rootId}" touch="C" />
+									<agg_v1:write_touch transaction_id="${rootId}" touch="C" />
 								</c:if>
 								${logger.info('Confirmation has been written. {}',log:kv('opportunityId',flexOpportunityId ))}
 								<%-- crappy hack to inject properties --%>

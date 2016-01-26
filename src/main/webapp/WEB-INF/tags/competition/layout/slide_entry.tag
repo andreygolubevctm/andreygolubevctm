@@ -7,8 +7,8 @@
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" />
 
-<layout:slide formId="mainForm" firstSlide="true" nextLabel="Enter Competition" offsetRight="True">
-	<layout:slide_content>
+<layout_v1:slide formId="mainForm" firstSlide="true" nextLabel="Enter Competition" offsetRight="True">
+	<layout_v1:slide_content>
 		<competition:contact_details xpath="${xpath}" cid="${cid}" reference="${reference}" />
-	</layout:slide_content>
-</layout:slide>
+	</layout_v1:slide_content>
+</layout_v1:slide>

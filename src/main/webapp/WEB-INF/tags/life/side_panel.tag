@@ -29,11 +29,11 @@
   }
 </go:style>
 
-<agg:panel>
+<agg_v1:panel>
   <div id="sidePanel">
     <h1>Need help?</h1>
     <h2>Use our cover calculator</h2>
     <life:popup_calculator />
     <p>The calculated amount of insurance cover is an estimate that is indicative of the level of cover likely to be appropriate for persons with similar details to those which you have supplied. It may not be appropriate to you after having regard to other factors such as your objectives or particular needs.</p>
   </div>
-</agg:panel>
+</agg_v1:panel>

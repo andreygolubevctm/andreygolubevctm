@@ -11,11 +11,26 @@
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
 <jsp:useBean id="resultsService" class="com.ctm.web.core.services.ResultsService" scope="request" />
-
+<c:set var="providerCode" value="brandCode" /> <%-- prefer to use providerCode which makes more sense than brandCode --%>
+<c:if test="${param.vertical eq 'travel'}"><c:set var="providerCode" value="providerCode" /></c:if>
 <c:set var="quoteUrl" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, 'quoteUrl'),'%26','&') }" />
+<c:set var="providerCode" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, providerCode),'%26','&') }" />
+
+<c:set var="verticalBrandCode" value="${pageSettings.getBrandCode()}" />
+<c:set var="trackingEnabled" value="${contentService.getContentValue(pageContext.getRequest(), 'trackingEnabled', verticalBrandCode, param.vertical)}" />
+
+<c:if test="${trackingEnabled eq true and not empty quoteUrl and quoteUrl != 'DUPLICATE'}">
+	<c:set var="trackingURL" value="${contentService.getContentValue(pageContext.getRequest(), 'handoverTrackingURL', verticalBrandCode, param.vertical)}" />
+	<c:set var="trackingCode" value="${contentService.getContentWithSupplementary(pageContext.getRequest(), 'handoverTrackingURL', verticalBrandCode, param.vertical).getSupplementaryValueByKey(providerCode)}" />
+
+	<c:set var="quoteUrl">
+			<c:out value="${trackingURL}" />${trackingCode}/pubref:/Adref:${transactionId}/destination:${quoteUrl}
+	</c:set>
+</c:if>
+
 
 <%-- HTML --%>
-<layout:generic_page title="Transferring you...">
+<layout_v1:generic_page title="Transferring you...">
 
 	<jsp:attribute name="head">
 		<link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/transferring${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
@@ -87,4 +102,4 @@
 		<input type="hidden" id="generic_currentJourney" />
 	</jsp:body>
 
-</layout:generic_page>
+</layout_v1:generic_page>

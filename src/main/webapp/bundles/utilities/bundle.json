@@ -1,6 +1,7 @@
 {
   "brandCodes": ["ctm"],
   "dependencies": [
+    "shared/journeyEngine/v3",
     "shared/validation",
     "shared/results",
     "core",

@@ -22,10 +22,10 @@ ${logger.info('core:recover START. {},{}', log:kv('quoteType',quoteType ), log:k
 
 <%-- Recreate the settings and Transaction Id --%>
 <c:set var="id_return">
-	<core:get_transaction_id quoteType="${quoteType}" id_handler="new_tranId" />
+	<core_v1:get_transaction_id quoteType="${quoteType}" id_handler="new_tranId" />
 </c:set>
 
-<core:transaction touch="H" comment="Recover" noResponse="true" writeQuoteOverride="N" />
+<core_v1:transaction touch="H" comment="Recover" noResponse="true" writeQuoteOverride="N" />
 
 <c:set var="message">error:recovery quoteType=${quoteType} transactionId=${data['current/transactionId']} ipAddress=${pageContext.request.remoteAddr}</c:set>
 <c:set var="code">500: serverIP=${serverIp} sessionId=<%=session.getId()%></c:set>

@@ -44,9 +44,9 @@
     <div class="container journeyEngineSlide active">
         <div class="row">
             <form id="mainForm" action="#" class="col-12">
-                <health:credit_card_details xpath="health/payment" />
-                <health:gateway_westpac xpath="${gatewayXPath}" />
-                <health:gateway_nab xpath="${gatewayXPath}" />
+                <health_v2:credit_card_details xpath="health/payment" />
+                <health_v1:gateway_westpac xpath="${gatewayXPath}" />
+                <health_v1:gateway_nab xpath="${gatewayXPath}" />
 
                 <button type="button" class="btn btn-success submit-payment-information">Complete</button>
             </form>

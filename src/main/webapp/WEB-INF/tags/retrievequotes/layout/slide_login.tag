@@ -2,18 +2,18 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<layout:slide formId="loginForm">
-    <layout:slide_columns>
+<layout_v1:slide formId="loginForm">
+    <layout_v1:slide_columns>
         <jsp:attribute name="rightColumn">
 
         </jsp:attribute>
         <jsp:body>
-            <layout:slide_center xsWidth="12" mdWidth="10" className="roundedContainer">
+            <layout_v1:slide_center xsWidth="12" mdWidth="10" className="roundedContainer">
                 <c:if test="${isLoggedIn eq 'false'}">
                     <retrievequotes:login_form />
                     <retrievequotes:failed_login />
                 </c:if>
-            </layout:slide_center>
+            </layout_v1:slide_center>
         </jsp:body>
-    </layout:slide_columns>
-</layout:slide>
+    </layout_v1:slide_columns>
+</layout_v1:slide>

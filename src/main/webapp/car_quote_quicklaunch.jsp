@@ -13,7 +13,7 @@
 <c:set var="json" value="${service.getVehicleSelection('', '', '', '', '', '') }" />
 
 <%-- HTML --%>
-<layout:generic_page title="Car Quote Quicklaunch">
+<layout_v1:generic_page title="Car Quote Quicklaunch">
 
 	<jsp:attribute name="head">
 		<script type="text/javascript" src="common/js/car/vehicle_selection.js?${revision}"></script>
@@ -121,4 +121,4 @@
 		<car_layout:slide_quicklaunch />
 	</jsp:body>
 
-</layout:generic_page>
+</layout_v1:generic_page>

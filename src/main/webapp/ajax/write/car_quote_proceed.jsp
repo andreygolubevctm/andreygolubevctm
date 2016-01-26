@@ -26,9 +26,9 @@
 
 <%-- Update the Transaction and stamp it --%>
 
-<agg:write_quote productType="quote" rootPath="quote" />
+<agg_v1:write_quote productType="quote" rootPath="quote" />
 
-<agg:write_stamp
+<agg_v1:write_stamp
 		action="toggle_quoteProcceding"
 		vertical="CAR"
 		target="Proceeded"

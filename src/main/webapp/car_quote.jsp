@@ -6,13 +6,13 @@
 
 <session:new verticalCode="CAR" authenticated="true" />
 
-<core_new:quote_check quoteType="car" />
-<core_new:load_preload />
+<core_v2:quote_check quoteType="car" />
+<core_v2:load_preload />
 
 <c:set var="trackLmiConversion" value="${data.carlmi.trackConversion}" />
 <c:if test="${trackLmiConversion == true && param['int'] != null}">
 	<go:setData dataVar="data" value="false" xpath="carlmi/trackConversion" />
-	<core:transaction touch="H" comment="getQuote" noResponse="true" writeQuoteOverride="N" />
+	<core_v1:transaction touch="H" comment="getQuote" noResponse="true" writeQuoteOverride="N" />
 </c:if>
 
 <%-- Initialise Save Quote --%>
@@ -31,7 +31,7 @@
 <car:splittest_helper />
 
 <%-- HTML --%>
-<layout:journey_engine_page title="Car Quote">
+<layout_v1:journey_engine_page title="Car Quote">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -42,6 +42,15 @@
 	<jsp:attribute name="header">
 		<car:snapshot label="Vehicle Quoted" className="hidden-xs"/>
 	</jsp:attribute>
+
+
+	<jsp:attribute name="progress_bar">
+      <div class="progress-bar-row collapse navbar-collapse">
+		  <div class="container">
+			  <ul class="journeyProgressBar_v2"></ul>
+		  </div>
+	  </div>
+    </jsp:attribute>
 
 	<jsp:attribute name="navbar">
 	
@@ -83,7 +92,7 @@
 						</c:choose></span> <b class="caret"></b></a>
 				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<div class="dropdown-container">
-						<agg_new:save_quote includeCallMeback="false" />
+						<agg_v2:save_quote includeCallMeback="false" />
 					</div>
 				</div>
 			</li>
@@ -96,7 +105,7 @@
 			<%-- @todo = showReferenceNo needs to be an attribute, this tag should potentially be rewritten or moved in a different place + that script is loaded via a marker in the tag. Probably should be moved to journey_engine_page --%>
 			<%-- Reference number is not visible on CAR yet, until the inbound call centre. --%>
 			<li class="navbar-text hidden">
-				<form_new:reference_number />
+				<form_v2:reference_number />
 			</li>
 		</ul>
 		<%-- Out of scope originally.
@@ -107,9 +116,6 @@
 			</ul>
 		</div>
 		--%>
-		<div class="collapse navbar-collapse">
-			<ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
-		</div>
 
 	</jsp:attribute>
 
@@ -141,10 +147,7 @@
 			<div class="container compare-basket">
 			</div>
 		</nav>
-	</jsp:attribute>
-						 
-	<jsp:attribute name="navbar_outer">
-					
+
 	</jsp:attribute>
 
 	<jsp:attribute name="results_loading_message">
@@ -168,7 +171,7 @@
 	</jsp:attribute>
 			
 	<jsp:attribute name="footer">
-		<core:whitelabeled_footer />
+		<core_v1:whitelabeled_footer />
 	</jsp:attribute>
 			
 	<jsp:attribute name="vertical_settings">
@@ -182,8 +185,8 @@
 		
 		<div class="hiddenFields">
 			<%-- These should use pageSettings.getVerticalCode() but for now don't want to change xpaths --%>
-			<form:operator_id xpath="quote/operatorid" />
-			<core:referral_tracking vertical="quote" />
+			<form_v1:operator_id xpath="quote/operatorid" />
+			<core_v1:referral_tracking vertical="quote" />
 			<c:choose>
 				<c:when test="${param['jrny'] == 1 or param['jrny'] == 2}">
 					<c:set var="jrny" value = "${param['jrny']}"/>
@@ -192,8 +195,8 @@
 					<c:set var="jrny" value = "1"/>
 				</c:otherwise>
 			</c:choose>
-			<field:hidden xpath="quote/renderingMode" />
-			<field:hidden xpath="quote/journey/type" defaultValue="${jrny}" />
+			<field_v1:hidden xpath="quote/renderingMode" />
+			<field_v1:hidden xpath="quote/journey/type" defaultValue="${jrny}" />
 		</div>
 	
 		<%-- Slides --%>
@@ -203,9 +206,9 @@
 		<car_layout:slide_your_address />
 		<car_layout:slide_results />
 
-        <field:hidden xpath="environmentOverride" />
+        <field_v1:hidden xpath="environmentOverride" />
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 
 	</jsp:body>
 
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

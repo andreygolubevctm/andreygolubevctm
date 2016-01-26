@@ -48,7 +48,7 @@
 			<c:when test="${not empty mandatory && mandatory == true}">
 				<div class="wrapper">
 
-					<field_new:checkbox
+					<field_v2:checkbox
 						xpath="${vertical}/simples/dialogue-checkbox-${id}"
 						value="Y"
 						required="true"

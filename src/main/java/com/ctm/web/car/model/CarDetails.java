@@ -17,6 +17,7 @@ public class CarDetails {
     private CarTransmission carTransmission;
     private CarFuel carFuel;
     private CarType carType;
+    private CarColour carColour;
 
     public Map<String, Object> get() {
         Map<String, Object> details = new LinkedHashMap<>();
@@ -27,6 +28,7 @@ public class CarDetails {
         details.put(CarTransmission.JSON_SINGLE_NAME, carTransmission);
         details.put(CarFuel.JSON_SINGLE_NAME, carFuel);
         details.put(CarType.JSON_SINGLE_NAME, carType);
+        details.put(CarColour.JSON_SINGLE_NAME, carColour);
         return details;
     }
 
@@ -44,6 +46,7 @@ public class CarDetails {
         details.put(CarType.JSON_COLLECTION_NAME, carType.getCode());
         details.put(CarType.JSON_MARKETVALUE_NAME, Integer.toString(carType.getMarketValue()));
         details.put(CarType.JSON_VARIANT_NAME, carType.getLabel());
+        details.put(CarColour.JSON_COLLECTION_NAME, carColour.getCode());
         return details;
     }
 
@@ -94,5 +97,12 @@ public class CarDetails {
     }
     public void setType(CarType carType) {
         this.carType = carType;
+    }
+
+    public CarColour getColour() {
+        return carColour;
+    }
+    public void setColour(CarColour carColour) {
+        this.carColour = carColour;
     }
 }

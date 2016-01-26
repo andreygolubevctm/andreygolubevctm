@@ -36,7 +36,7 @@
 
 <c:choose>
 	<c:when test="${isAuthenticated}">
-		<c:set var="login"><core:login uid="" /></c:set>
+		<c:set var="login"><core_v1:login uid="" /></c:set>
 		<c:choose>
 			<c:when test="${empty param.transactionId}">
 				<c:redirect url="${pageSettings.getBaseUrl()}${pageSettings.getSetting('quoteUrl')}${brandCodeUrl}${vdnUrl}"/>

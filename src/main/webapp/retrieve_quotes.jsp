@@ -64,7 +64,7 @@
             <c:set var="isLoggedIn" value="true" scope="request" />
         </c:if>
 
-        <layout:journey_engine_page title="Retrieve Your Quotes">
+        <layout_v1:journey_engine_page title="Retrieve Your Quotes">
 
         <jsp:attribute name="head">
             <link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/retrievequotes${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
@@ -107,7 +107,7 @@
         </jsp:attribute>
 
         <jsp:attribute name="footer">
-            <core:whitelabeled_footer />
+            <core_v1:whitelabeled_footer />
         </jsp:attribute>
 
         <jsp:attribute name="vertical_settings">
@@ -126,20 +126,20 @@
                 <retrievequotes_layout:slide_quotes />
 
                 <div class="hiddenFields">
-                    <form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
-                    <core:referral_tracking vertical="retrieve_quotes"/>
+                    <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
+                    <core_v1:referral_tracking vertical="retrieve_quotes"/>
                 </div>
 
                 <input type="hidden" name="transcheck" id="transcheck" value="1"/>
 
-                <core:js_template id="new-quote-template">
+                <core_v1:js_template id="new-quote-template">
                     <h2>Start a New Quote</h2>
                     <br>
                     <confirmation:other_products />
-                </core:js_template>
+                </core_v1:js_template>
             </jsp:body>
 
-        </layout:journey_engine_page>
+        </layout_v1:journey_engine_page>
 
     </c:otherwise>
 </c:choose>

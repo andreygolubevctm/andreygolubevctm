@@ -38,6 +38,7 @@ public class RequestAdapterTest {
         verify(vehicle, times(1)).getTrans();
         verify(vehicle, times(1)).getFuel();
         verify(vehicle, times(1)).getRedbookCode();
+        verify(vehicle, times(1)).getColour();
         verify(vehicle, times(1)).getAnnualKilometres();
         verify(vehicle, times(1)).getDamage();
         verify(vehicle, times(1)).getFinance();

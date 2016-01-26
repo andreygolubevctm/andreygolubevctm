@@ -30,30 +30,30 @@
 
 <%-- HTML --%>
 <div id="${name}" class="${name}_details">
-	<form:fieldset legend="${label}">
+	<form_v1:fieldset legend="${label}">
 		<life:name xpath="${xpath}" error_phrase="${error_phrase}" />
 
 		<div class="clear"><!-- empty --></div>
 
-		<form:row label="Gender">
-			<field:array_radio  id="${name}_gender" xpath="${xpath}/gender" required="true" title="${error_phrase}gender" items="F=Female,M=Male" />
-		</form:row>
+		<form_v1:row label="Gender">
+			<field_v1:array_radio  id="${name}_gender" xpath="${xpath}/gender" required="true" title="${error_phrase}gender" items="F=Female,M=Male" />
+		</form_v1:row>
 
-		<form:row label="Date of birth">
-			<field:person_dob xpath="${xpath}/dob" required="true" title="${error_phrase}" />
-		</form:row>
+		<form_v1:row label="Date of birth">
+			<field_v1:person_dob xpath="${xpath}/dob" required="true" title="${error_phrase}" />
+		</form_v1:row>
 
-		<field:hidden xpath="${xpath}/age" required="false" />
+		<field_v1:hidden xpath="${xpath}/age" required="false" />
 
-		<form:row label="Smoker status">
-			<field:array_radio  id="${name}_smoker" xpath="${xpath}/smoker" required="true" title="${error_phrase}smoker status" items="N=Non-Smoker,Y=Smoker" />
-		</form:row>
+		<form_v1:row label="Smoker status">
+			<field_v1:array_radio  id="${name}_smoker" xpath="${xpath}/smoker" required="true" title="${error_phrase}smoker status" items="N=Non-Smoker,Y=Smoker" />
+		</form_v1:row>
 
-		<form:row label="Occupation" helpId="525">
-			<field:general_select type="occupation" comboBox="true" xpath="${xpath}/occupation" hannoverXpath="${xpath}/hannover" required="true" title="${error_phrase}occupation"/>
-		</form:row>
+		<form_v1:row label="Occupation" helpId="525">
+			<field_v1:general_select type="occupation" comboBox="true" xpath="${xpath}/occupation" hannoverXpath="${xpath}/hannover" required="true" title="${error_phrase}occupation"/>
+		</form_v1:row>
 
-	</form:fieldset>
+	</form_v1:fieldset>
 </div>
 
 <%-- JAVASCRIPT --%>
