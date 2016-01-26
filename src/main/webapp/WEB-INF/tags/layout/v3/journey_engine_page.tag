@@ -5,7 +5,7 @@
 
 <%@ attribute name="title"			required="false"  rtexprvalue="true"	 description="Page title" %>
 <%@ attribute name="navbar_show_back_button"			required="false"  rtexprvalue="true"	 description="Flag to show or hide the back button within the navbar" %>
-
+<%@ attribute required="false" name="body_class_name" description="Allow extra styles to be added to the rendered body tag" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -36,11 +36,11 @@
 	<c:set var="verticalCode" value="quote" />
 </c:if>
 <c:if test="${empty navbar_show_back_button}">
-	<c:set var="navbar_show_back_button">true</c:set>
+	<c:set var="navbar_show_back_button">${true}</c:set>
 </c:if>
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
-<layout_v3:page title="${title}">
+<layout_v3:page title="${title}" body_class_name="${body_class_name}">
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />
@@ -58,7 +58,7 @@
 
 	<jsp:attribute name="navbar">
 		<ul class="nav navbar-nav">
-			<c:if test="${not empty navbar_show_back_button}">
+			<c:if test="${navbar_show_back_button eq true}">
 			<li class="slide-feature-back">
 				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 			</li>
@@ -94,7 +94,7 @@
 	<jsp:attribute name="progress_bar">
 		<div class="progress-bar-row collapse navbar-collapse">
 			<div class="container">
-				<ul class="journeyProgressBar"></ul>
+				<ul class="journeyProgressBar_v2"></ul>
 			</div>
 		</div>
 	</jsp:attribute>

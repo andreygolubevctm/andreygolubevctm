@@ -48,6 +48,14 @@
 				</div>
 			</jsp:attribute>
 
+			<jsp:attribute name="progress_bar">
+			  <div class="progress-bar-row collapse navbar-collapse">
+				  <div class="container">
+					  <ul class="journeyProgressBar_v2"></ul>
+				  </div>
+			  </div>
+			</jsp:attribute>
+
 			<jsp:attribute name="navbar">
 				<ul class="nav navbar-nav" role="menu">
 					<li class="visible-xs">

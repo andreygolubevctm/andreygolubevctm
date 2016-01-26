@@ -20,6 +20,8 @@ public class Vehicle {
 
     private String redbookCode;
 
+    private String colour;
+
     private List<NonStandardAccessory> nonStandardAccessories = emptyList();
 
     private Integer annualKilometres;
@@ -98,6 +100,14 @@ public class Vehicle {
 
     public void setRedbookCode(String redbookCode) {
         this.redbookCode = redbookCode;
+    }
+
+    public String getColour() {
+        return colour;
+    }
+
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     public List<NonStandardAccessory> getNonStandardAccessories() {

@@ -13,9 +13,20 @@
 <c:set var="callCentreNumber" scope="request"><content:get key="genericCallCentreNumber"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="genericCallCentreHelpNumber"/></c:set>
 
+<%-- Set global variable to flags for active split tests --%>
+<utilities_v3:splittest_helper />
+
+<%-- Not sure why the below doesn't work within the splittest_helper --%>
+<c:set var="splitTestEnabled">
+    <content:get key="utilitiesRedesign" />
+</c:set>
+
+<c:set var="body_class_name">
+    <c:if test="${not empty splitTestEnabled and splitTestEnabled eq 'Y'}">utilities_design_55</c:if>
+</c:set>
 
 <%-- HTML --%>
-<layout_v1:journey_engine_page title="Utilities Quote">
+<layout_v3:journey_engine_page title="Utilities Quote" body_class_name="${body_class_name}">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -49,13 +60,7 @@
         </div>
 	</jsp:attribute>
 
-	<jsp:attribute name="navbar">
-
-		<ul class="nav navbar-nav" role="menu">
-            <li class="visible-xs">
-                <span class="navbar-text-block navMenu-header">Menu</span>
-            </li>
-					
+	<jsp:attribute name="navbar_additional_options">
             <li class="slide-feature-phone hidden-sm hidden-md hidden-lg">
                 <a class="needsclick" href="tel:${callCentreNumber}"><span class="icon icon-phone"></span> <span
                         class="noWrap">${callCentreNumber}</span></a>
@@ -63,20 +68,9 @@
             <li class="navbar-text slide-reference-number hidden-sm hidden-md hidden-lg">
                 <div class="thoughtWorldRefNoContainer"></div>
             </li>
-            <li class="slide-feature-back">
-                <a href="javascript:;" data-slide-control="previous" class="btn-back"><span
-                        class="icon icon-arrow-left"></span> <span>Back</span></a>
-            </li>
             <li class="navbar-text slide-reference-number hidden-xs">
                 <div class="thoughtWorldRefNoContainer"></div>
             </li>
-        </ul>
-					
-    <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav navbar-right results-summary-container">
-            <li id="results-summary-container"></li>
-        </ul>
-    </div>
 	</jsp:attribute>
 
 		<jsp:attribute name="navbar_outer">
@@ -146,13 +140,25 @@
 	</jsp:attribute>
 								
     <jsp:body>
-							
-        <%-- Slides --%>
-        <utilities_v2_layout:slide_your_details/>
-        <utilities_v2_layout:slide_contact_details/>
-        <utilities_v2_layout:slide_results/>
-        <utilities_v2_layout:slide_enquiry/>
-							
+
+        <c:choose>
+            <c:when test="${splitTestEnabled eq 'Y'}">
+                <%-- Slides --%>
+                <utilities_v3_layout:slide_your_details/>
+                <utilities_v3_layout:slide_contact_details/>
+                <utilities_v3_layout:slide_results/>
+                <utilities_v3_layout:slide_enquiry/>
+                <utilities_v3_content:yourDetailsSnapshot />
+            </c:when>
+            <c:otherwise>
+                <%-- Slides --%>
+                <utilities_v2_layout:slide_your_details/>
+                <utilities_v2_layout:slide_contact_details/>
+                <utilities_v2_layout:slide_results/>
+                <utilities_v2_layout:slide_enquiry/>
+            </c:otherwise>
+        </c:choose>
+
         <div class="hiddenFields">
             <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
             <core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}"/>
@@ -162,4 +168,4 @@
         <field_v1:hidden xpath="environmentOverride" />
     </jsp:body>
 					
-</layout_v1:journey_engine_page>
+</layout_v3:journey_engine_page>
