@@ -5,12 +5,12 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils"/>
+<session:new verticalCode="HEALTH" authenticated="true" />
 
 <c:if test="${!sessionUtils.isCallCentre(pageContext.session)}">
-    <core_v1:journey_gateway verticalLabel="HEALTH" splitTestLabel="optins" />
+    <c:set var="splitTestLabel"><content:get key="splitTest_current"/></c:set>
+    <core_v1:journey_gateway verticalLabel="HEALTH" splitTestLabel="${splitTestLabel}" />
 </c:if>
-
-<session:new verticalCode="HEALTH" authenticated="true" />
 
 <health_v1:redirect_rules />
 
