@@ -15,7 +15,7 @@
 		if(meerkat.site.pageAction === "confirmation"){
 			meerkat.modules.journeyEngine.configure(null);
 		} else {
-			initProgressBar(false);
+			initProgressBar(true);
 
 			meerkat.modules.journeyEngine.configure({
 				startStepId: null,

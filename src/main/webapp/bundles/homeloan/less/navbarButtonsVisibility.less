@@ -21,6 +21,11 @@
 	}
 
 	// Add your slide feature to the particular step that it needs to be visible
+	&[data-step="situation"] {
+		#navbar-main{
+			.slide-feature-hidden() !important;
+		}
+	}
 	&[data-step="results"] {
 		.blank-enquire,
 		.slide-feature-back,
@@ -34,6 +39,9 @@
 		.slide-feature-pagination {
 			display: block;
 		}
+		.progress-bar-row {
+			.slide-feature-hidden() !important;
+		}
 	}
 
 	&[data-step="enquiry"] {
@@ -41,7 +49,9 @@
 		{
 			.slide-feature-is-visible();
 		}
+		#navbar-main{
+			.slide-feature-hidden() !important;
+		}
 	}
-
 
 }

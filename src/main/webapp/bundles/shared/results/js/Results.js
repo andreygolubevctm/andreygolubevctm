@@ -35,6 +35,7 @@ var Results = {
 					rootElement: "results",
 					list: "results.result",
 					general: "results.info",
+					providerCode: false, // path of the provider code for each vertical as it's different for each vertical. Example usage for PHG tracking code
 					errors: "error"
 				},
 				price: { // result object path to the price property
