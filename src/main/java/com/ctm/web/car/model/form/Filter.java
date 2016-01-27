@@ -5,13 +5,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Filter implements ProviderFilter {
 
     private String providerList;
-
-    private ArrayList<String> providers;
-
+    private List<String> providers;
     private String authToken;
 
     public String getProviderList() {
@@ -20,18 +19,18 @@ public class Filter implements ProviderFilter {
 
     public void setProviderList(String providerList) {
         if(StringUtils.isNotBlank(providerList)) {
-            this.providerList = providerList;
             this.providers = new ArrayList<String>(Arrays.asList(StringUtils.split(providerList, ",")));
         }
         this.providerList = providerList;
     }
 
     @Override
-    public ArrayList<String> getProviders() {
+    public List<String> getProviders() {
         return providers;
     }
 
-    public void setProviders(ArrayList<String> providers) {
+    @Override
+    public void setProviders(List<String> providers) {
         this.providers = providers;
     }
 

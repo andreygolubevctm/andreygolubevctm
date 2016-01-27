@@ -1,331 +1,556 @@
 //More Info Panels
 
-.more-info-promotion	{ color: @more-info-promotion-color;	}
-.more-info-about 		{ color: @more-info-about-color;		}
-.more-info-nextsteps	{ color: @more-info-nextsteps-color;	}
+.more-info-promotion {
+	color: @more-info-promotion-color;
+}
 
+.more-info-about {
+	color: @more-info-about-color;
+}
+
+.more-info-nextsteps {
+	color: @more-info-nextsteps-color;
+}
 
 /* product headers buttons */
-.btn-more-info{
-  position: relative;
-  span{
-	@media (@xs-only) {
-	  display: none;
+.btn-more-info {
+	position: relative;
+	span {
+		@media (@xs-only) {
+			display: none;
+		}
 	}
-  }
+	@media (@md-only) {
+		padding-left: 0;
+		padding-right: 0;
+		font-size: 13px;
+		line-height: 14px;
+	}
 }
 
-.btn-close-more-info,
-.btn-more-info{
-  @media (@md-only) {
-	padding-left:0;
-	padding-right:0;
-	font-size: 13px;
-	line-height: 14px;
-  }
-}
-
-.btn-more-info .close-text,
-.btn-close-more-info .more-info-text{
-  display: none;
+.moreInfoVisible #resultsPage{
+	margin-bottom: 30px;
 }
 
 // Bridging page
-.moreInfoDropdown{
-  position: absolute;
-  top: 170px;
-  z-index: 20;
-  margin-left:-15px;
-  margin-right: -15px;
-  padding-bottom: 170px;
-  font-size: 12px;
-  display: none;
+.moreInfoDropdown {
 
-  .email-brochure-component {
-	height:40px;
-  }
-
-  @media(@xs-only){
-	background-color: @theme-light;
-  }
-  @media(@sm-only){
-	h2 {
-	  font-size: 20px;
+	@media (@xs-only) {
+		background-color: @theme-light;
 	}
-  }
+	@media (@sm-only) {
+		h2 {
+			font-size: 20px;
+		}
+	}
 
-  .paragraphedContent{
-	font-size: 1.15em;
-	line-height: 1.37em;
+	.companyLogo {
+		margin: 10px 20px 0 2px;
+		max-height: none;
+		max-width: none;
 
-  }
+		.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames);
+		@media(@xs-only){
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.4);
+		}
+		@media(@sm-only){
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.9);
+		}
+		@media(@md-only){
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.8);
+		}
+
+	}
 
 }
-
-#resultsPage .moreInfoDropdown{
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-#resultsPage .more-info-content{
-  border-top:2px solid #F7F7F7;
-}
-#confirmation.more-info-content {
-  background-color: #fff;
-  .moreInfoMainDetails {
-	border-bottom: 0;
-  }
-}
-
 
 .more-info-content {
-  padding-bottom:10px;
-  h2,
-  .btn-download {
-	font-family: @font-family-theme-bold;
-  }
-  @media (max-width: @screen-xs-max) {
 
-	.moreInfoRightColumn{
+	background-color: @main-bg-colour;
 
-	  h2{
-		font-size: 17px;
-	  }
-
-	  h5{
-		font-size:15px;
-	  }
-
-	  .btn{
-		font-size: 12px;
-	  }
-	}
-
-	background-color: @theme-light;
-  }
-  background-color: #fff;
-  position: relative;
-
-  .clearfix();
-
-  li {
-	padding-bottom: 5px;
-  }
-
-
-  .moreInfoMainDetails {
-
-	@media(@xs-only) {
-	  background-color: white;
-	  border-bottom: 1px solid @theme-default;
-	  margin: 0 (-@grid-gutter-width / 2) (@grid-gutter-width / 2) (-@grid-gutter-width / 2);
-	  padding: 10px (@grid-gutter-width / 2) (@grid-gutter-width / 2) (@grid-gutter-width / 2);
-
-	  .productName {
-		font-family: @font-family-theme-light;
-	  }
-
-	  .phone {
-		color: white;
-		&:hover {
-		  background-color: @theme-secondary;
+	.fieldset-card {
+		padding-top: 20px;
+		padding-bottom: 20px;
+		&.price-card {
+			margin-bottom: 20px;
 		}
-	  }
-
+		&.switching-card {
+			@media (@sm) {
+				padding-top: 0;
+			}
+		}
 	}
 
-  }//.moreInfoMainDetails
+	h1 {
+		font-size: 36px;
+		font-family: @font-family-theme-light;
 
-  .transactionID{
-	.h2;
-  }
-  .productName{
-	color: @more-info-health-product-color;
-  }
-  ul{
-	.list-unstyled;
-  }
-  ul.indent{
-	padding-left: 15px;
-  }
-  ul.exclusions{
-	.content-columns(2, @grid-gutter-width);
-	li{
-	  padding-left: 20px;
-	  position: relative;
+		&.productName {
+			font-size: 30px;
+			@media (@sm) {
+				font-size: 42px;
+			}
+			font-family: @font-family-theme-bold;
+		}
 	}
-	.icon-cross{
-	  position: absolute;
-	  color: @cross-color;
-	  margin-left: -20px;
-	  font-size: 12px;
-	}
-  }
-
-  .productSummaryDetails{
-	margin-bottom: 0;
-  }
-  .brochureLinks{
-	max-width: 230px;
-  }
-  .moreInfoBubble{
-	background-color: @more-info-bubble-bg-color;
-	color: @more-info-bubble-text-color;
-	padding: 20px;
-
-	h5.moreInfoCallUs{
-	  color:#fff;
-	  margin: 0;
+	.cover-card {
+		h1 {
+			margin-top: 0;
+			margin-bottom: 20px;
+			&.extrasCoverTitle {
+				@media (@xs-only) {
+					margin-top: 20px;
+				}
+				@media (@sm-only) {
+					margin-top: 20px;
+				}
+			}
+		}
 	}
 
-	.moreInfoReferenceNoText{
-	  font-family: @font-family-theme-light;
-	  font-size: 13px;
-	}
-
-	.btn-more-info-apply:active {
-	  background-color: darken(@theme-primary, 20%)
-	}
-
-	.moreInfoOr{
-	  margin-top: 10px;
-	  .h5;
-	  padding-left: 0;
-	  color:#fff;
-	}
-  }
-  .moreInfoCallUsContainer {
-	padding-bottom: 30px;
-  }
-  h5.moreInfoCallUs{
-	@media (@sm){
-	  color:@theme-tertiary;
-	}
-	@media(@xs-only){
-	  color:#fff;
-	}
-	margin: 0;
-  }
-
-  .moreInfoReferenceNoText{
-	font-family: @font-family-theme-bold;
-	font-size: 14px;
-  }
-
-  .moreInfoReferenceNo{
-	//font-family: @font-family-theme-bold;
-  }
-
-  .moreInfoRightColumn,
-  .row.moreInfoExcesses,
-  .row.moreInfoExclusions,
-  .moreInfoEmailBrochures {
-	margin-top: 20px;
-	.btn-save {
-	  &:extend(.btn-clear all);
-	}
-  }
-
-  .moreInfoEmailBrochures {
-	.optInMarketingRow {
-	  margin-top: 10px;
-	}
-	.checkbox input+label {
-	  font-size: 12px;
-	  color: @gray-light;
-	}
-	display : none;
-	min-height: 80px;
-	@media(@xs-only){
-	  font-size: inherit;
-	  min-height: 150px;
-	  .optInMarketingRow {
-		margin-top: 0px;
-	  }
-	  .sendBrochureEmailAddress {
-		margin-bottom: 0px;
-	  }
-	  .emailBrochureButtonRow {
-		margin-top: 10px;
-	  }
-	}
-	@media(@sm-only){
-	  min-height: 100px;
-	}
-  }
-
-  .moreInfoEmailBrochuresSuccess {
-	display : none;
-  }
-
-  .btn-hospital, .sendBrochureEmailAddress {
-	@media(@xs-only){
-	  margin-bottom: 10px;
-	}
-  }
-
-  .row.moreInfoExcesses p {
-	margin-bottom: 5px;
-  }
-
-
-  .pricepromise {
-	margin-top: 30px;
-	margin-left:0;
-	margin-right:0;
 	h2 {
-	  margin: 0;
+		font-size: 24px;
+		font-family: @font-family-theme-regular;
+		@media (@xs-only) {
+			margin-top: 18px;
+		}
 	}
-	strong {
-	  .text-tertiary;
-	  font-weight: normal;
-	  font-family: @font-family-theme-bold;
+	h5 {
+		margin-top: 20px;
+		margin-bottom: 20px;
 	}
-	a {
-	  color: @text-color;
-	  text-decoration: underline;
-	}
-	.pricePromiseLogo{
-	  .highResImg('../graphics/health/Price-Promise-Blue.png'; '../graphics/health/Price-Promise-Blue@2x.png'; 135px 97px; ~"");
-	  width: 90px;
-	  height: 65px;
-	  background-size: contain;
-	}
-	@media(@sm) {
-	  h2 {
+	p, ol, blockquote {
 		font-size: 16px;
-	  }
-	  .pricePromiseLogo {
-		width: 105px;
-		height: 76px;
-		background-size: contain !important;
-	  }
 	}
-	@media(@md) {
-	  .pricePromiseLogo {
-		width: 135px;
-		height: 97px;
-	  }
+	p, li{
+		padding-bottom: 5px;
 	}
-  }
+	.btn-cta{
+		font-size: 18px;
+	}
+	ol li,
+	blockquote {
+		color: @gray-slight-dark;
+	}
+	ol {
+		padding-left: 0;
+		list-style-type: none;
+		li {
+			counter-increment: step-counter;
+			margin-left: 32px;
+			&::before {
+				content: counter(step-counter) ".";
+				font-size: 30px;
+				color: @theme-tertiary;
+				padding-right: 10px;
+				margin-left: -32px;
+			}
+		}
+	}
 
-  @media(@sm-only) {
-	.btn-download {
-	  font-size: 12px;
+	ul {
+		.list-unstyled;
 	}
-  }
-}//.more-info-content
+	ul.exclusions {
+		.content-columns(2, @grid-gutter-width);
+		li {
+			padding-left: 20px;
+			position: relative;
+		}
+		.icon-cross {
+			position: absolute;
+			color: @cross-color;
+			margin-left: -20px;
+			font-size: 12px;
+		}
+	}
 
-#confirmation {
-  .btn-download{
-	font-family: @font-family-theme-bold;
-	@media(@sm-only){
-	  font-size: inherit;
+	blockquote {
+		margin: 0 30px;
+		@media (@md) {
+			margin: 0 20%;
+		}
+		border-left: none;
+		text-align: left;
 	}
-  }
+
+	.frequencyAmount {
+		font-size: 40px;
+		@media(@lg){
+			font-size: 60px;
+		}
+		font-family: @font-family-theme-bold;
+	}
+	.frequencyTitle {
+		font-size: 18px;
+		font-family: @font-family-theme-regular;
+		vertical-align: super;
+	}
+	.lhcText,
+	.rounding {
+		font-size: 14px;
+		color: @gray-light;
+	}
+
+	.priceRow {
+		margin-top: 15px;
+		.btn-more-info-apply {
+			margin: 25px 0;
+			@media (@xs-only) {
+				width: 100%;
+			}
+		}
+	}
+
+	.btn-more-info-apply {
+		box-shadow: 1px 2px 0px 0px rgba(0, 0, 0, 0.3);
+	}
+
+	.btn {
+		padding-left: 10%;
+		padding-right: 10%;
+		border-radius: 22px;
+	}
+
 }
 
+//.more-info-content
+
+.pricePromise {
+	background: @theme-tertiary;
+	color: white;
+	padding-top: 35px;
+	padding-bottom: 35px;
+
+	h4 {
+		color: white;
+		margin-left: -15px;
+		font-family: @font-family-theme-regular;
+		margin-top: 0;
+		line-height: 115%;
+		@media(@lg){
+			line-height: 150%;
+		}
+	}
+	a {
+		text-decoration: underline;
+	}
+	p {
+		font-size: 14px;
+		margin-top: 15px;
+	}
+	.pricePromiseLogo {
+		.highResImg('../graphics/health/Price-Promise-White.png'; '../graphics/health/Price-Promise-White@2x.png'; 123px 86px; ~"");
+		width: 123px;
+		height: 86px;
+		margin: 0 auto;
+		@media (@md) {
+			margin-top: 10px;
+			width: 105px;
+			height: 73px;
+			background-size: contain;
+			image-rendering: optimizeSpeed;
+			image-rendering: -moz-crisp-edges;
+			image-rendering: -o-crisp-edges;
+			image-rendering: -webkit-optimize-contrast;
+			image-rendering: optimize-contrast;
+			-ms-interpolation-mode: nearest-neighbor;
+		}
+	}
+
+}
+
+.testimonials {
+	padding-top: 20px;
+	padding-bottom: 0px;
+	h2 {
+		text-align: center;
+		font-family: @font-family-theme-light;
+		padding-bottom: 20px;
+		font-size: 30px;
+	}
+	blockquote {
+		font-size: 18px;
+		line-height: 20px;
+	}
+	.openQuote,
+	.closeQuote {
+		font-size: 100px;
+		font-family: @font-family-theme-regular, serif;
+		margin-top: 15px;
+		color: #8A8A8A;
+	}
+	.openQuote {
+		float: left;
+		margin-left: -50px;
+	}
+	.closeQuote {
+		float: right;
+		margin-right: -45px;
+	}
+	.testimonialAuthor {
+		margin-right: 30px;
+		@media (@md) {
+			margin-right: 20%;
+		}
+		.text-tertiary;
+		text-align: right;
+		font-size: 24px;
+		margin-top: -10px;
+	}
+}
+
+.extrasTable {
+	text-align: center;
+	th {
+		text-align: center;
+	}
+
+	&.table-bordered {
+		border: none;
+		& > thead > tr {
+			border: none;
+			& > th {
+				border: none;
+			}
+		}
+	}
+	tbody {
+		th {
+			font-weight: normal;
+			font-size: 18px;
+		}
+		td:nth-child(2) {
+			font-size: 16px;
+			font-family: @font-family-theme-bold;
+		}
+		th {
+			text-align: right;
+		}
+	}
+}
+
+.noTopMargin {
+	margin-top: 0px;
+}
+
+.moreInfoCallToActionBar {
+	background: @theme-tertiary;
+	@media (@xs-only) {
+		padding-top: 15px;
+		padding-bottom: 15px;
+	}
+	p {
+		font-family: @font-family-theme-light;
+		text-align: right;
+		color: white;
+		font-size: 30px;
+		@media (@xs-only) {
+			text-align: center;
+		}
+	}
+	& > div {
+		@media (@sm) {
+			margin: 25px 0px;
+		}
+	}
+	.btn {
+		box-shadow: 1px 3px 1px 0px rgba(0, 0, 0, 0.3);
+		@media (@xs-only) {
+			display: block;
+		}
+	}
+}
+
+.policyBrochures {
+	background: #F2F2F2;
+	border-left: 1px solid #E7E7E7;
+	border-right: 1px solid #E7E7E7;
+	padding-bottom: 10px;
+
+	.modal-body & h2{
+		margin-top: 10px;
+	}
+}
+
+// default
+@btn-hospital-brochure-bg-color: #8AB5D8;
+@btn-hospital-brochure-color: @theme-tertiary;
+// active
+@btn-hospital-brochure-active-bg-color: @btn-hospital-brochure-bg-color;
+@btn-hospital-brochure-active-color: @theme-tertiary;
+// hover
+@btn-hospital-brochure-hover-bg-color: darken(@btn-hospital-brochure-bg-color, 10%);
+@btn-hospital-brochure-hover-color: @theme-tertiary;
+// borders
+@btn-hospital-brochure-border-color: @btn-hospital-brochure-bg-color;
+@btn-hospital-brochure-active-border-color: @btn-hospital-brochure-active-bg-color;
+@btn-hospital-brochure-hover-border-color: @btn-hospital-brochure-hover-bg-color;
+.download-policy-brochure,
+.download-hospital-brochure {
+	.btn-styles(
+	@btn-hospital-brochure-bg-color, @btn-hospital-brochure-color,
+	@btn-hospital-brochure-active-bg-color, @btn-hospital-brochure-active-color,
+	@btn-hospital-brochure-hover-bg-color, @btn-hospital-brochure-hover-color,
+	@btn-hospital-brochure-border-color, @btn-hospital-brochure-active-border-color, @btn-hospital-brochure-hover-border-color
+	);
+}
+
+// default
+@btn-extras-brochure-bg-color: #92DCB7;
+@btn-extras-brochure-color: @theme-secondary;
+// active
+@btn-extras-brochure-active-bg-color: @btn-extras-brochure-bg-color;
+@btn-extras-brochure-active-color: @theme-secondary;
+// hover
+@btn-extras-brochure-hover-bg-color: darken(@btn-extras-brochure-bg-color, 10%);
+@btn-extras-brochure-hover-color: @theme-secondary;
+// borders
+@btn-extras-brochure-border-color: @btn-extras-brochure-bg-color;
+@btn-extras-brochure-active-border-color: @btn-extras-brochure-active-bg-color;
+@btn-extras-brochure-hover-border-color: @btn-extras-brochure-hover-bg-color;
+.download-extras-brochure {
+	.btn-styles(
+	@btn-extras-brochure-bg-color, @btn-extras-brochure-color,
+	@btn-extras-brochure-active-bg-color, @btn-extras-brochure-active-color,
+	@btn-extras-brochure-hover-bg-color, @btn-extras-brochure-hover-color,
+	@btn-extras-brochure-border-color, @btn-extras-brochure-active-border-color, @btn-extras-brochure-hover-border-color
+	);
+}
+
+// default
+@btn-email-brochure-bg-color: @theme-tertiary;
+@btn-email-brochure-color: white;
+// active
+@btn-email-brochure-active-bg-color: @theme-tertiary;
+@btn-email-brochure-active-color: white;
+// hover
+@btn-email-brochure-hover-bg-color: lighten(@btn-email-brochure-bg-color, 5%);
+@btn-email-brochure-hover-color: white;
+// borders
+@btn-email-brochure-border-color: @btn-email-brochure-bg-color;
+@btn-email-brochure-active-border-color: @btn-email-brochure-active-bg-color;
+@btn-email-brochure-hover-border-color: @btn-email-brochure-hover-bg-color;
+.btn-email-brochure {
+	.btn-styles(
+	@btn-email-brochure-bg-color, @btn-email-brochure-color,
+	@btn-email-brochure-active-bg-color, @btn-email-brochure-active-color,
+	@btn-email-brochure-hover-bg-color, @btn-email-brochure-hover-color,
+	@btn-email-brochure-border-color, @btn-email-brochure-active-border-color, @btn-email-brochure-hover-border-color
+	);
+}
+
+.download-policy-brochure,
+.download-hospital-brochure,
+.download-extras-brochure,
+.moreInfoEmailBrochures {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+body[data-step='apply'] .modal-body,
+body[data-step='payment'] .modal-body{
+	.more-info-content{
+		background: white;
+	}
+	.moreInfoTopLeftColumn{
+		.col-xs-12;
+	}
+	.btn-more-info-apply,
+	.moreInfoTopRightColumn,
+	.moreInfoCallToActionBar,
+	.hiddenInMoreDetails
+	{
+		display: none;
+	}
+}
+
+.moreInfoProgress p {
+	margin: 12px 0;
+	font-size: 16px;
+}
+
+.moreInfoProgressBarLeft {
+	border: 1px solid #b2b3b4;
+	border-bottom: none;
+	background: #e0e0e0;
+	width: 30px;
+	height: 35px;
+}
+
+.moreInfoProgressDone {
+	border: 1px solid #1b713a;
+	color: white;
+	text-align: center;
+	background: @theme-secondary;
+	width: 30px;
+	height: 105px;
+}
+
+ul.benefitsIcons {
+	.clearfix;
+	margin-bottom: 0;
+}
+
+.benefitsIcons {
+	li {
+
+		margin-bottom: 10px;
+		@media (@sm) {
+			display: inline-block;
+			width: 20%;
+			text-align: center;
+			vertical-align: top;
+			span{
+				display: block;
+			}
+		}
+
+		&:before {
+			font-family: 'ctm-health';
+			font-size: 45px;
+
+			display: inline-block;
+
+			@media (@sm) {
+				margin: 0 auto 10px auto;
+				border-radius: 50%;
+				padding: 0.25em 0.4em;
+			}
+			@media (@xs-only) {
+				vertical-align: middle;
+				margin-right: 10px;
+				color: @theme-tertiary;
+			}
+
+		}
+	}
+
+	&.inclusions li:before {
+		@media (@sm) {
+			background-color: @theme-tertiary;
+			color: white;
+		}
+		@media (@xs-only) {
+			color: @theme-tertiary;
+		}
+	}
+	&.restrictions li{
+		@media (@xs-only) {
+			padding-left: 20px;
+		}
+		&:before {
+			@media (@sm) {
+				background-color: #EDEDED;
+				color: #888888;
+				border: 1px solid #888888;
+			}
+			@media (@xs-only) {
+				display: none;
+			}
+		}
+	}
+}
 
 // Old CTA buttons variables for A/B testing
 @old-btn-cta-bg-color: @theme-primary;
@@ -341,235 +566,11 @@
 @old-btn-cta-active-border-color: @old-btn-cta-active-bg-color;
 
 // A/B testing for old organge color buttons
-.old-cta{
-  &.btn-cta {
-	.btn-styles(@old-btn-cta-bg-color, @old-btn-cta-color,
-	@old-btn-cta-active-bg-color, @old-btn-cta-active-color,
-	@old-btn-cta-hover-bg-color, @old-btn-cta-hover-color,
-	@old-btn-cta-border-color, @old-btn-cta-active-border-color, @old-btn-cta-hover-border-color, true);
-  }
-}
-
-
-@media(@xs-only) {
-  .productInfo {
-	padding:0px;
-  }
-
-  .moreInfoCallRefNo {
-	text-align:center;
-	margin-top:10px;
-	.moreInfoCallUs {
-	  padding-left:0px;
+.old-cta {
+	&.btn-cta {
+		.btn-styles(@old-btn-cta-bg-color, @old-btn-cta-color,
+		@old-btn-cta-active-bg-color, @old-btn-cta-active-color,
+		@old-btn-cta-hover-bg-color, @old-btn-cta-hover-color,
+		@old-btn-cta-border-color, @old-btn-cta-active-border-color, @old-btn-cta-hover-border-color, true);
 	}
-  }
-
-  .xsOnly {
-	margin-bottom: 20px;
-	>div {
-	  margin-bottom:10px;
-	}
-  }
-
-  .paragraphedContent {
-	margin-top:27px;
-  }
-
-  .brochureButtons.visible-xs {
-	margin-left: -20px;
-	margin-bottom: 20px;
-  }
-
-  h2 {
-	font-size: 18px;
-  }
-
-  h5 {
-	font-weight:normal;
-	font-size:14px;
-  }
-
-  .text-hospital {
-	color: #000;
-  }
-
-  .more-info-nextsteps {
-	color: #000;
-	margin-top: 20px !important;
-  }
-
-  .about-the-fund {
-	margin-bottom: 30px;
-  }
-
-  .moreInfoExcesses {
-	margin-bottom: 20px;
-  }
-
-  .about-the-fund {
-	font-weight:bold;
-	font-size:15px;
-  }
-}
-
-.more-info-blue-header {
-  background-color: @more-info-header-bg-color;
-  @media(@xs-only) {
-	min-height: 300px;
-	margin-bottom: 20px;
-  }
-
-  @media(@sm-only) {
-	min-height: 330px;
-  }
-
-  @media(@md-only) {
-	min-height: 280px;
-
-	.moreInfoCallRefNo {
-	  text-align:center;
-	}
-  }
-
-  @media(@lg-only) {
-	min-height: 200px;
-  }
-
-  .moreInfoLogo {
-	padding-top: 20px;
-	padding-right: 20px;
-	@media(@sm-only) {
-	  padding-right: 40px;
-	}
-
-	.companyLogo {
-	  margin: 0px;
-	  max-height: none;
-	  max-width: none;
-	}
-  }
-
-  .xs-productName-container {
-	padding-top:20px;
-	height:100px;
-  }
-
-  color: @more-info-header-text-color;
-
-  .btn {
-	border-radius: 20px;
-  }
-
-  .callCentreNumber {
-	font-size: 38px;
-	@media(@md-only) {
-	  font-size: 30px;
-	}
-  }
-
-  .moreInfoReferenceNoText {
-	@media(@xs-only) {
-	  font-size: 15px;
-	}
-	@media(@sm) {
-	  font-size: 14px;
-	}
-  }
-
-  .productName, .moreInfoCallUs {
-	color:@more-info-header-text-color;
-  }
-
-  .more-info-apply-container {
-	@media(@xs-only) {
-	  margin-top: 20px;
-	}
-	@media(@sm) {
-	  margin-top: 10px;
-	}
-  }
-
-  .moreInfoCallUs {
-	font-size: 22px;
-	font-weight:normal;
-	@media(@sm-only), (@lg-only){
-	  padding-left: 18px;
-	}
-  }
-
-  @media(@xs-only) {
-	.productName {
-	  font-size: 18px;
-	  margin-top: 0px;
-	  margin-bottom: 0px;
-	}
-
-	.product-details-container {
-	  text-align:center;
-	}
-
-	.productNameContainer
-	{
-	  height:80px;
-	  display: flex;
-	  flex-direction: column;
-	  justify-content: center;
-	}
-
-	.companyLogo {
-	  margin: 0px;
-	  max-height: none;
-	  max-width: none;
-	}
-  }
-
-  @media(@sm) {
-	.productName {
-	  font-size: 29px;
-	  margin-top: 25px;
-	  margin-bottom: 20px;
-	  padding-left: 30px;
-	}
-
-	.product-details-container {
-	  padding-left: 30px;
-	}
-  }
-
-  @media(@sm-only) {
-
-	.product-details-container {
-	  padding-left:0px;
-	}
-
-	.productName {
-	  height: 160px;
-	  display: flex;
-	  flex-direction: column;
-	  justify-content: center;
-	}
-
-	.product-details-container .col-sm-5 {
-	  padding-left: 30px;
-	}
-
-	.moreInfoCallUs {
-	  font-size: 18px;
-	}
-
-	.callCentreNumber {
-	  font-size: 33px;
-	}
-  }
-
-  .frequencyAmount{
-	font-size:45px;
-  }
-  .frequencyTitle {
-	font-size:12px;
-  }
-
-  .lhcText, .rounding {
-	font-size:14px;
-  }
 }

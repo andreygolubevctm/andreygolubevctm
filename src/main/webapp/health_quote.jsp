@@ -113,13 +113,17 @@
 		</li>
 
 		<%-- @todo = showReferenceNo needs to be an attribute, this tag should potentially be rewritten or moved in a different place + that script is loaded via a marker in the tag. Probably should be moved to journey_engine_page --%>
-			<li class="navbar-text-block">
+			<li class="navbar-text-block slide-feature-reference">
 				<form_new:reference_number />
 		</li>
 		</ul>
 
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
+		</div>
+
+		<div class="slide-feature-close-more-info">
+			<a href="javascript:;" class="btn btn-close-more-info btn-hollow">Back to results</a>
 		</div>
 
 	</jsp:attribute>

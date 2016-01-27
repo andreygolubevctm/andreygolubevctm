@@ -6,6 +6,6 @@
 <%-- HTML --%>
 <form_new:fieldset legend="">
 	<form_new:row label='What\'s Next?'>
-		<p style="padding-top:11px">Find out more about your <a href="javascript:;" class="more-info">next steps here</a>.</p>
+		<p style="padding-top:11px">Find out more about your <a href="javascript:;" class="next-steps">next steps here</a>.</p>
 	</form_new:row>
 </form_new:fieldset>

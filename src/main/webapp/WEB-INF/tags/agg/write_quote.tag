@@ -442,6 +442,24 @@
 		</sql:update>
 	</c:catch>
 </c:if>
+
+<c:if test="${hasPrivacyOptin eq true and rootPath eq 'health'}">
+	<jsp:useBean id="leadService" class="com.ctm.web.health.services.HealthLeadService" scope="request" />
+
+	<c:choose>
+		<%-- If transaction is Failed/Pending (F), only call centre can edit the transaction --%>
+		<c:when test="${confirmationQuery.rows[0]['editable'] == 'F'}">
+			${leadService.sendLead(4, data, pageContext.getRequest(), 'PENDING')}
+		</c:when>
+		<c:when test="${confirmationQuery.rows[0]['editable'] == 'C'}">
+			${leadService.sendLead(4, data, pageContext.getRequest(), 'SOLD')}
+		</c:when>
+		<c:otherwise>
+			${leadService.sendLead(4, data, pageContext.getRequest(), 'OPEN')}
+		</c:otherwise>
+	</c:choose>
+</c:if>
+
 <%-- Test for DB issue and handle - otherwise move on --%>
 <c:if test="${not empty error}">
 	<c:if test="${not empty errorPool}">
@@ -640,6 +658,16 @@
 							AND sequenceNo > ${counter}
 							AND sequenceNo < 300;
 	</sql:update>
+					<%--
+					See JIRA CTMIT-721 for the below logic
+					--%>
+					<c:if test="${rootPath eq 'health'}">
+						<sql:update>
+							DELETE FROM aggregator.transaction_details
+							WHERE transactionId = ${transactionId}
+							AND sequenceNo > 299;
+						</sql:update>
+					</c:if>
 				</c:if>
 					</c:when>
 					<c:otherwise>

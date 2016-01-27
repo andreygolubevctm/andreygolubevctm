@@ -19,7 +19,7 @@
     <form_new:row label="Who is your current provider?" className="clear">
         <c:set var="fieldXPath" value="utilities/estimateDetails/usage/electricity/currentSupplier" />
         <field_new:array_select xpath="${fieldXPath}" required="true"
-                                title="your current electricity supplier." items=""
+                                title="your current electricity supplier." items="=Select postcode or suburb first"
                                 extraDataAttributes="data-default='${data[fieldXPath]}'" />
     </form_new:row>
 

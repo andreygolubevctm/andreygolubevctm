@@ -182,7 +182,7 @@
 		  margin-top: 10px;
 		  margin-left: 3%;
 
-		  .providersNormalSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale);
+		  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale);
 		}
 	  }
 
@@ -258,13 +258,6 @@
   }
 }
 
-.ie8 {
-  .featuresMode,
-  .policySummaryContainer {
-
-  }
-}
-
 /* Policy summary in right hand column */
 .policySummaryContainer{
   @media (@xs-only) {
@@ -298,5 +291,34 @@
 
   overflow: hidden;
 
-  .providersNormalSpriteImagesVerticallyCentered(~"health"; ~""; @providerLogoNames; @standard-logo-height; @logo-price-spacer);
+  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames);
+}
+
+body[data-step='results'] .product-details-container .companyLogo {
+  display: none;
+}
+
+.modal-body {
+  .btn-more-info-apply,
+  .moreInfoCallRefNo,
+  .product-details-container .companyLogo {
+	display: none;
+  }
+
+  @media (@xs-only) {
+	.productNameContainer {
+	  height: auto !important;
+	}
+
+	.more-info-blue-header .xs-productName-container {
+	  height: 80px;
+	}
+
+	body[data-step='results'] & {
+	  .btn-more-info-apply,
+	  .moreInfoCallRefNo {
+		display: block;
+	  }
+	}
+  }
 }

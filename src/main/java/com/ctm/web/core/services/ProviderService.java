@@ -58,4 +58,16 @@ public class ProviderService {
 
 		return exists;
 	}
+
+	public static List<String> getProvidersByAuthToken(String authToken) {
+		List<String> providerCodes = null;
+		ProviderFilterDao providerFilterDAO = new ProviderFilterDao();
+		try {
+			providerCodes = providerFilterDAO.getProviderDetailsByAuthToken(authToken);
+		} catch(Exception e) {
+			LOGGER.debug("Failed to load providers with authToken '" + authToken + "'", e);
+		}
+
+		return providerCodes;
+	}
 }

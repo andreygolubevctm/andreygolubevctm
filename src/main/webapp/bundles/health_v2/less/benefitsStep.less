@@ -20,6 +20,12 @@
 
 #benefitsForm{
 
+    @media(@xs-only) {
+        .Orthotics_container {
+            padding-top: 2px;
+        }
+    }
+
     .help-icon {
         margin-top:2px;
     }
@@ -111,6 +117,7 @@
                     label {
                         .iconLabel {
                             margin-top:0.34em;
+                            padding-top: 16px;
                         }
                     }
                 }
@@ -120,12 +127,30 @@
                 &:hover {
                     &:before{
                         background-color: @health-benefits-icon-bg-checked-color;
-                        border-color: @health-benefits-icon-border-checked-color;
                         color: #fff;
                     }
 
                 }
             }
+
+            .CTM-plus {
+                .checkbox {
+                    label {
+                        &:before {
+                            background-color: white;
+                            border-color: @health-benefits-icon-more-border-color;
+                        }
+                        &:hover {
+                            &:before {
+                                background-color: @extras-color-light;
+                                border-color: @health-benefits-icon-more-border-color;
+                            }
+
+                        }
+                    }
+                }
+            }
+
         }
 
         .subTitle{
@@ -188,10 +213,10 @@
 
                         &:before{
                             color: @sidebar-gray-icon-color;
-                            font-family: 'framework_font';
+                            float: left;
+                            font-family: 'ctm-health';
                             font-size: 50px;
                             display: block;
-                            float: left;
                             margin-top: -24px;
                             margin-right: 10px;
                         }
@@ -209,51 +234,6 @@
             }
         }
 
-        .CTM-hospital label, .benefits-side-bar .CTM-hospital{
-            &:before { content: "\e921"; }
-        }
-        .CTM-acupuncture label, .benefits-side-bar .CTM-acupuncture{
-            &:before { content: "\e91b"; }
-        }
-        .CTM-birth label, .benefits-side-bar .CTM-birth{
-            &:before { content: "\e91c"; }
-        }
-        .CTM-chiropractor label, .benefits-side-bar .CTM-chiropractor{
-            &:before { content: "\e91d"; }
-        }
-        .CTM-dental label, .benefits-side-bar .CTM-dental{
-            &:before { content: "\e91e"; }
-        }
-        .CTM-generaldental label, .benefits-side-bar .CTM-generaldental{
-            &:before { content: "\e91f"; }
-        }
-        .CTM-heartsurgery label, .benefits-side-bar .CTM-heartsurgery{
-            &:before { content: "\e920"; }
-        }
-        .CTM-joint label, .benefits-side-bar .CTM-joint{
-            &:before { content: "\e922"; }
-        }
-        .CTM-massage label, .benefits-side-bar .CTM-massage{
-            &:before { content: "\e923"; }
-        }
-        .CTM-naturopathy label, .benefits-side-bar .CTM-naturopathy{
-            &:before { content: "\e924"; }
-        }
-        .CTM-optical label, .benefits-side-bar .CTM-optical{
-            &:before { content: "\e925"; }
-        }
-        .CTM-physiotherapy label, .benefits-side-bar .CTM-physiotherapy{
-            &:before { content: "\e926"; }
-        }
-        .CTM-podiatry label, .benefits-side-bar .CTM-podiatry{
-            &:before { content: "\e927"; }
-        }
-        .CTM-psychology label, .benefits-side-bar .CTM-psychology{
-            &:before { content: "\e928"; }
-        }
-        .CTM-plus label, .benefits-side-bar .CTM-plus{
-            &:before { content: "\e929"; }
-        }
     }
 }
 

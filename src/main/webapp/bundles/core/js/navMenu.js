@@ -154,7 +154,7 @@
 		/* NAVMENU_READY event message being published for others to listen to: */
 		meerkat.messaging.publish(moduleEvents.READY, this);
 
-		log("[navMenu] Initialised Compweted");
+		log("[navMenu] Initialised Completed");
 
 	}
 

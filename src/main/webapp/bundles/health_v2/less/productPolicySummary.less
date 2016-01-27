@@ -3,7 +3,7 @@
   .productSummary{
 	&.horizontal {
 	  .companyLogo{
-		width: 90px;
+		max-width: 90px;
 		line-height: 18px;
 		@media (@sm) {
 		  float: right;
@@ -30,13 +30,15 @@
 	}
 
 	.price{
-	  margin-top: 5px;
-	  @media (@md) {
-		max-width: 119px;
-	  }
-	  @media (@lg) {
-		max-width: 170px;
-	  }
+		.health[data-step="results"] &{
+			margin-top: 5px;
+		}
+		@media (@md) {
+			max-width: 119px;
+		}
+		@media (@lg) {
+			max-width: 170px;
+		}
 	}
 
 
@@ -89,13 +91,12 @@
 	  overflow: hidden;
 
 	  .price{
-		@media (@xs-only) {
-		  margin-left:65px;
-		}
-		@media (@sm) {
-		  float: right;
-		}
-
+		  @media (@xs-only) {
+			  margin-left:65px;
+		  }
+		  @media (@sm) {
+			  float: right;
+		  }
 	  }
 	  .frequency{
 		.frequencyAmount,
@@ -137,7 +138,7 @@
 	  float: none;
 
 	  .ie8 &{
-		width: 90px;
+		max-width: 90px;
 		height: 45px;
 		margin-left: 30px !important; //This is ugly... but so is IE8! There is a -10px margin-left in core logos which this needs to combat
 	  }
@@ -156,7 +157,7 @@
 		  margin-top: 10px;
 		  margin-left: 3%;
 
-		  .providersNormalSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale);
+		  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale);
 		}
 	  }
 
@@ -246,36 +247,32 @@
   }
 }
 
-.moreInfoMainDetails{
-  .productSummary{
-	margin-bottom: 10px;
-	@media(@sm){
-	  margin-bottom: 20px;
-	}
-  }
-}
-
 .companyLogo{
-  max-height: @standard-logo-height;
-  max-width: 90px;
+	max-height: @standard-logo-height;
+	max-width: 90px;
 
-  margin-left: auto;
-  margin-right: auto;
+	margin-left: auto;
+	margin-right: auto;
 
-  overflow: hidden;
+	overflow: hidden;
 
-  .providersNormalSpriteImagesVerticallyCentered(~"health"; ~""; @providerLogoNames; @standard-logo-height; @logo-price-spacer);
+	.providersHighResSpriteImages(~"health"; ~""; @providerLogoNames);
 }
 
-@media(@xs-only) {
-  .xs-productName-container{
-	.companyLogo{
-	  position:absolute; /* Stops price colliding and being forced below */
-	  margin-top: 10px;
-	  margin-left: 3%;
+body[data-step='results'] .product-details-container .companyLogo {
+  display: none;
+}
 
-	  .providersNormalSpriteImages(~"health"; ~""; ~"AHM",~"AUF",~"BUD",~"BUP",~"CBH",~"CTM",~"CUA",~"FRA",~"GMF",~"GMH",~"HCF",~"HIF",~"NIB",~"QCH",~"THF",~"AHM-mi", ~"AUF-mi", ~"BUD-mi", ~"BUP-mi", ~"CBH-mi", ~"CUA-mi", ~"FRA-mi", ~"GMH-mi", ~"HCF-mi", ~"NIB-mi", ~"QCH-mi"; @logo-compressed-scale);
+.modal-body {
 
+  @media (@xs-only) {
+	.productNameContainer {
+	  height: auto !important;
 	}
+
+	.more-info-blue-header .xs-productName-container {
+	  height: 80px;
+	}
+
   }
 }

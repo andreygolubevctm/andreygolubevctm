@@ -120,7 +120,7 @@
 						<h5>You are covered for:</h5>
 						<ul class="indent">
 							{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
-							<li>{{= inclusion }}</li>
+							<li>{{= inclusion.name }}</li>
 							{{ }) }}
 						</ul>
 						{{ } }}
@@ -129,7 +129,7 @@
 						<h5>You have restricted cover for:</h5>
 						<ul class="indent">
 							{{ _.each(hospitalCover.restrictions, function(restriction){ }}
-							<li>{{= restriction }}</li>
+							<li>{{= restriction.name }}</li>
 							{{ }) }}
 						</ul>
 						<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
@@ -154,7 +154,7 @@
 						<h5>You are covered for:</h5>
 						<ul class="indent">
 							{{ _.each(extrasCover.inclusions, function(inclusion){ }}
-							<li>{{= inclusion }}</li>
+							<li>{{= inclusion.name }}</li>
 							{{ }) }}
 						</ul>
 						<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
@@ -173,7 +173,7 @@
 						<h5 class="text-hospital">Your Hospital Exclusions:</h5>
 						<ul class="exclusions">
 							{{ _.each(hospitalCover.exclusions, function(exclusion){ }}
-							<li><span class="icon-cross" />{{= exclusion }}</li>
+							<li><span class="icon-cross" />{{= exclusion.name }}</li>
 							{{ }) }}
 						</ul>
 					</div>

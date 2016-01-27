@@ -179,7 +179,7 @@
 		// populate client number if empty
 		var $telNum = $("#home_CrClientTelinput");
 		if ($telNum.length && !$telNum.val().length) {
-			$telNum.val($('#home_policyHolder_phone').val());
+			$telNum.val($('#home_policyHolder_phone').val()).blur();
 		}
 		$telNum.attr('data-msg-required', "Please enter your contact number");
 	}
@@ -246,7 +246,7 @@
 		var CrClientName = $CrClientName.length ? $CrClientName.val() : "";
 		var firstName = $("#home_policyHolder_firstName").val();
 		var lastName = $("#home_policyHolder_lastName").val();
-		var $CrClientTel = $("#home_CrClientTelinput");
+		var $CrClientTel = $("#home_CrClientTel");
 		var CrClientTel = $CrClientTel.length ? $CrClientTel.val() : "";
 		var policyHolderPhone = $("#home_policyHolder_phone").val();
 
