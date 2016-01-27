@@ -39,7 +39,7 @@
                               title="date of birth" />
     </form_v3:row>
 
-    <c:set var="fieldXPath" value="${xpath}/mobileNumber" />
+    <c:set var="fieldXPath" value="${xpath}/mobile" />
     <form_v3:row label="Mobile number" fieldXpath="${fieldXPath}" className="clear">
         <field_v1:flexi_contact_number xpath="${fieldXPath}"
                                     maxLength="20"
@@ -50,7 +50,7 @@
                                     requireOnePlusNumber="true"/>
     </form_v3:row>
 
-    <c:set var="fieldXPath" value="${xpath}/otherPhoneNumber" />
+    <c:set var="fieldXPath" value="${xpath}/other" />
     <form_v3:row label="Other phone number" fieldXpath="${fieldXPath}" className="clear">
         <field_v1:flexi_contact_number xpath="${fieldXPath}"
                                     maxLength="20"
