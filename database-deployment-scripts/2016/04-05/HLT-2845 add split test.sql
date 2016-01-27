@@ -1,7 +1,7 @@
--- TEST (0 before, 8 after)
+-- TEST (0 before, 6 after)
 SELECT *
 FROM ctm.configuration
-WHERE configCode LIKE 'splitTest_accidentalCover%';
+WHERE configCode LIKE 'splitTest_acciCover%';
 
 -- TEST (0 before, 1 after)
 SELECT *
