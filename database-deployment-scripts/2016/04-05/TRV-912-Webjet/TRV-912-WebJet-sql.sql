@@ -29,7 +29,7 @@ select count(*) from ctm.service_properties where providerId = @WEBJET and servi
 
 -- UPDATE INBOUND PARAMS
  update ctm.service_properties set servicePropertyValue = @INBOUNDPARAMUAT where providerId = @WEBJET and
- serviceMasterId = @TRAVELBER and servicePropertyKey = 'inboundParams' and environmentCode = 0;
+ serviceMasterId = @TRAVELBER and servicePropertyKey = 'inboundParams' and environmentCode = '0';
 
   update ctm.service_properties set servicePropertyValue = @INBOUNDPARAMPRO where providerId = @WEBJET and
  serviceMasterId = @TRAVELBER and servicePropertyKey = 'inboundParams' and environmentCode = 'PRO';
