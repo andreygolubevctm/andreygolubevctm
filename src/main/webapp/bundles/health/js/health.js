@@ -304,15 +304,15 @@
 				if(event.isStartMode === false){
 					_.defer(function() {
 						meerkat.modules.healthBenefits.open('journey-mode');
+
+						if(event.isForward)
+							$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
 					});
 				}
 
 				// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter segment
 				_.delay(function() {
 					meerkat.modules.healthSegment.filterSegments();
-					if(event.isForward)
-						$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
-
 				}, 1000);
 
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
