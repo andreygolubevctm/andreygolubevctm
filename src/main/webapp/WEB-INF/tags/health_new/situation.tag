@@ -105,7 +105,7 @@
 					<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 					<form_new:row className="health-contact-details-optin-group" hideHelpIconCol="true">
 						<field_new:checkbox
-								xpath="${xpath}/optin"
+								xpath="${pageSettings.getVerticalCode()}/contactDetails/optin"
 								value="Y"
 								className="validate"
 								required="true"
