@@ -49,7 +49,8 @@
 
     function render() {
         var data = getData();
-        var noData = !hasData(data);
+        var noData = !hasData(data),
+            $box, i;
         // Toggle the panel title
         $('.quoteSnapshot > h4').first().text(noData ? "Who we compare" : "Quote Summary");
         // Toggle the default summary text
@@ -63,18 +64,18 @@
         showHide(data,'.quoteSnapshot .cover-type','coverType', noData);
         // Populate hospital/extras
         if(!noData && !_.isEmpty(data.hospital)) {
-            var $box = $('.quoteSnapshot .hospital .snapshot-list');
+            $box = $('.quoteSnapshot .hospital .snapshot-list');
             $box.empty();
-            for(var i = 0; i < data.hospital.length; i++) {
+            for(i = 0; i < data.hospital.length; i++) {
                 $box.append(
                     $("<li/>").append(data.hospital[i])
                 );
             }
         }
         if(!noData && !_.isEmpty(data.extras)) {
-            var $box = $('.quoteSnapshot .extras .snapshot-list');
+            $box = $('.quoteSnapshot .extras .snapshot-list');
             $box.empty();
-            for(var i = 0; i < data.extras.length; i++) {
+            for(i = 0; i < data.extras.length; i++) {
                 $box.append(
                     $("<li/>").append(data.extras[i])
                 );
