@@ -21,6 +21,7 @@ import com.ctm.web.simples.phone.verint.CtiPhoneService;
 import com.ctm.web.simples.services.SimplesMessageService;
 import com.ctm.web.simples.services.SimplesTickleService;
 import com.ctm.web.simples.services.SimplesUserService;
+import com.ctm.web.simples.services.TransactionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
