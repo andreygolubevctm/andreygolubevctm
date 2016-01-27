@@ -17,7 +17,10 @@ import com.ctm.web.simples.admin.router.AdminRouter;
 import com.ctm.web.simples.admin.services.SpecialOffersService;
 import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.simples.model.Message;
-import com.ctm.web.simples.services.*;
+import com.ctm.web.simples.phone.verint.CtiPhoneService;
+import com.ctm.web.simples.services.SimplesMessageService;
+import com.ctm.web.simples.services.SimplesTickleService;
+import com.ctm.web.simples.services.SimplesUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -37,7 +40,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
-import static com.ctm.web.simples.services.PhoneService.makeCall;
+import static com.ctm.web.simples.phone.verint.CtiPhoneService.makeCall;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.singletonList;
 import static javax.servlet.http.HttpServletResponse.*;
@@ -165,7 +168,7 @@ public class SimplesRouter extends HttpServlet {
 
 				if (xpath != null && !xpath.isEmpty() && ext != null) {
 					try {
-						objectMapper.writeValue(writer, PhoneService.saveCallInfoForTransaction(settings(), ext, transactionId, xpath));
+						objectMapper.writeValue(writer, CtiPhoneService.saveCallInfoForTransaction(settings(), ext, transactionId, xpath));
 					}
 					catch (final ConfigSettingException e) {
 						LOGGER.error("Could not get callInfo {}, {}", kv("ext", ext), kv("xpath", xpath), e);
