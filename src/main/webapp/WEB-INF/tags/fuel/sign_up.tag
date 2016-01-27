@@ -60,7 +60,7 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<h4>Success!</h4>
-			<p>You are now signed up for news and offers from <a href="http://www.comparethemarket.com.au/">www.comparethemarket.com.au</a>.</p>
+			<p>You are now signed up for news and offers from <a href="https://www.comparethemarket.com.au/">www.comparethemarket.com.au</a>.</p>
 		</div>
 	</div>
 </core_v1:js_template>
