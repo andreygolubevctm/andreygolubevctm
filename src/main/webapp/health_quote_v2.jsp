@@ -6,10 +6,6 @@
 
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils"/>
 
-<c:if test="${!sessionUtils.isCallCentre(pageContext.session)}">
-    <core:journey_gateway verticalLabel="HEALTH" splitTestLabel="optins" />
-</c:if>
-
 <session:new verticalCode="HEALTH" authenticated="true" />
 
 <health:redirect_rules />
@@ -26,7 +22,10 @@
         <c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
     </c:when>
     <c:otherwise>
-        <%-- END JOURNEY OVERRIDE - Part 1 of 2) --%>
+<%-- END JOURNEY OVERRIDE - Part 1 of 2) --%>
+
+        <%-- Set global variable to flags for active split tests --%>
+        <health_new:splittest_helper />
 
         <core_new:quote_check quoteType="health" />
         <core_new:load_preload />
