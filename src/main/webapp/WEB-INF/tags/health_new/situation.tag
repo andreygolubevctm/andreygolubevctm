@@ -5,11 +5,6 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
-<%-- Set A/B test flag j=2 --%>
-<c:set var="frontendChangesBlocked"><content:get key="blockFrontendChanges"/></c:set>
-<c:set var="frontendChangesBlocked" value="${not empty frontendChangesBlocked and frontendChangesBlocked eq 'Y'}" />
-<c:set var="showOptIn" value="${frontendChangesBlocked eq false and splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 3)}" scope="request" />
-
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
@@ -97,8 +92,8 @@
 					</form_new:row>
 				</c:if>
 
-				<%-- A/B test j=2 --%>
-				<c:if test="${showOptIn}">
+				<%-- Override set in splittest_helper tag --%>
+				<c:if test="${showOptInOnSlide3 eq false}">
 					<c:set var="termsAndConditions">
 						<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
 						I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
@@ -110,7 +105,7 @@
 					<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 					<form_new:row className="health-contact-details-optin-group" hideHelpIconCol="true">
 						<field_new:checkbox
-								xpath="${xpath}/optin"
+								xpath="${pageSettings.getVerticalCode()}/contactDetails/optin"
 								value="Y"
 								className="validate"
 								required="true"
