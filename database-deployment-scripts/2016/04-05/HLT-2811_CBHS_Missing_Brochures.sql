@@ -14,25 +14,25 @@ AND cc.verticalId = 4
 AND cc.contentCode = 'Promo'
 AND cc.contentKey = 'promo' AND effectiveEnd > @StartDate AND cc.contentControlId > 0;
 /* Insert new brochures */
-SET @HospitalPDFBasicHospital = '';
-SET @HospitalPDFBasicHospitalExcess500 = '';
-SET @HospitalPDFCBHSPrestige = '';
-SET @HospitalPDFComprehensiveHospital = '';
-SET @HospitalPDFComprehensiveHospital100 = '';
-SET @HospitalPDFComprehensiveHospital70 = '';
-SET @HospitalPDFFlexiSaver = '';
-SET @HospitalPDFKickstart = '';
-SET @HospitalPDFLimitedHospital = '';
-SET @HospitalPDFLimitedHospital100 = '';
-SET @HospitalPDFLimitedHospital70 = '';
-SET @HospitalPDFStepUp = '';
-SET @ExtraPDFCBHSPrestige = '';
-SET @ExtraPDFEssentialExtras = '';
-SET @ExtraPDFFlexiSaver = '';
-SET @ExtraPDFIntermediateExtras = '';
-SET @ExtraPDFKickstart = '';
-SET @ExtraPDFStepUp = '';
-SET @ExtraPDFTopExtras = '';
+SET @HospitalPDFBasicHospital = '/CBH/basic_hospital.pdf';
+SET @HospitalPDFBasicHospitalExcess500 = '/CBH/basic_hospital.pdf';
+SET @HospitalPDFCBHSPrestige = '/CBH/cbhs_prestige_2016.pdf';
+SET @HospitalPDFComprehensiveHospital = '/CBH/comprehensive_hospital.pdf';
+SET @HospitalPDFComprehensiveHospital100 = '/CBH/comprehensive_hospital.pdf';
+SET @HospitalPDFComprehensiveHospital70 = '/CBH/comprehensive_hospital.pdf';
+SET @HospitalPDFFlexiSaver = '/CBH/flexisaver_2016.pdf';
+SET @HospitalPDFKickstart = '/CBH/kickstart_2016.pdf';
+SET @HospitalPDFLimitedHospital = '/CBH/limited_hospital.pdf';
+SET @HospitalPDFLimitedHospital100 = '/CBH/limited_hospital.pdf';
+SET @HospitalPDFLimitedHospital70 = '/CBH/limited_hospital.pdf';
+SET @HospitalPDFStepUp = '/CBH/stepup_2016.pdf';
+SET @ExtraPDFCBHSPrestige = '/CBH/cbhs_prestige_2016.pdf';
+SET @ExtraPDFEssentialExtras = '/CBH/essential_extras_2016.pdf';
+SET @ExtraPDFFlexiSaver = '/CBH/flexisaver_2016.pdf';
+SET @ExtraPDFIntermediateExtras = '/CBH/intermediate_extras_2016.pdf';
+SET @ExtraPDFKickstart = '/CBH/kickstart_2016.pdf';
+SET @ExtraPDFStepUp = '/CBH/stepup_2016.pdf';
+SET @ExtraPDFTopExtras = '/CBH/top_extras_2016.pdf';
 
 /* Insert new brochure extrasCoverName: Essential Extras */;
 INSERT INTO `content_control` (`styleCodeId`,`verticalId`,`contentCode`,`contentKey`,`contentStatus`,`effectiveStart`,`effectiveEnd`,`contentValue`) VALUES (0,4,'Promo','promo','',@StartDate,@EndDate,'product');
@@ -49,7 +49,7 @@ INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supp
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'extrasPDF',@ExtraPDFIntermediateExtras);
 
 /* Insert new brochure hospitalCoverName: Basic Hospital */;
-SET @newid = (SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`);
+SET @newid = SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`;
 INSERT INTO `content_control_provider` (`contentControlId`,`providerId`) VALUES (@newid,@providerId);
 INSERT INTO `content_control` (`contentControlId`,`styleCodeId`,`verticalId`,`contentCode`,`contentKey`,`contentStatus`,`effectiveStart`,`effectiveEnd`,`contentValue`) VALUES (@newid ,0,4,'Promo','promo','',@StartDate,@EndDate,'product');
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'@hospital','Basic Hospital');
@@ -92,7 +92,7 @@ VALUES (@newid ,'hospitalPDF',@HospitalPDFBasicHospital);
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'extrasPDF',@ExtraPDFTopExtras);
 
 /* Insert new brochure hospitalCoverName: Basic Hospital Excess 500 */;
-SET @newid = (SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`);
+SET @newid = SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`;
 INSERT INTO `content_control_provider` (`contentControlId`,`providerId`) VALUES (@newid,@providerId);
 INSERT INTO `content_control` (`contentControlId`,`styleCodeId`,`verticalId`,`contentCode`,`contentKey`,`contentStatus`,`effectiveStart`,`effectiveEnd`,`contentValue`) VALUES (@newid ,0,4,'Promo','promo','',@StartDate,@EndDate,'product');
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'@hospital','Basic Hospital Excess 500');
@@ -147,7 +147,7 @@ VALUES (@newid ,'hospitalPDF',@HospitalPDFCBHSPrestige);
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'extrasPDF',@ExtraPDFCBHSPrestige);
 
 /* Insert new brochure hospitalCoverName: Comprehensive Hospital */;
-SET @newid = (SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`);
+SET @newid = SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`;
 INSERT INTO `content_control_provider` (`contentControlId`,`providerId`) VALUES (@newid,@providerId);
 INSERT INTO `content_control` (`contentControlId`,`styleCodeId`,`verticalId`,`contentCode`,`contentKey`,`contentStatus`,`effectiveStart`,`effectiveEnd`,`contentValue`) VALUES (@newid ,0,4,'Promo','promo','',@StartDate,@EndDate,'product');
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'@hospital','Comprehensive Hospital');
@@ -190,7 +190,7 @@ VALUES (@newid ,'hospitalPDF',@HospitalPDFComprehensiveHospital);
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'extrasPDF',@ExtraPDFTopExtras);
 
 /* Insert new brochure hospitalCoverName: Comprehensive Hospital 100 */;
-SET @newid = (SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`);
+SET @newid = SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`;
 INSERT INTO `content_control_provider` (`contentControlId`,`providerId`) VALUES (@newid,@providerId);
 INSERT INTO `content_control` (`contentControlId`,`styleCodeId`,`verticalId`,`contentCode`,`contentKey`,`contentStatus`,`effectiveStart`,`effectiveEnd`,`contentValue`) VALUES (@newid ,0,4,'Promo','promo','',@StartDate,@EndDate,'product');
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'@hospital','Comprehensive Hospital 100');
@@ -233,7 +233,7 @@ VALUES (@newid ,'hospitalPDF',@HospitalPDFComprehensiveHospital100);
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'extrasPDF',@ExtraPDFTopExtras);
 
 /* Insert new brochure hospitalCoverName: Comprehensive Hospital 70 */;
-SET @newid = (SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`);
+SET @newid = SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`;
 INSERT INTO `content_control_provider` (`contentControlId`,`providerId`) VALUES (@newid,@providerId);
 INSERT INTO `content_control` (`contentControlId`,`styleCodeId`,`verticalId`,`contentCode`,`contentKey`,`contentStatus`,`effectiveStart`,`effectiveEnd`,`contentValue`) VALUES (@newid ,0,4,'Promo','promo','',@StartDate,@EndDate,'product');
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'@hospital','Comprehensive Hospital 70');
@@ -300,7 +300,7 @@ VALUES (@newid ,'hospitalPDF',@HospitalPDFKickstart);
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'extrasPDF',@ExtraPDFKickstart);
 
 /* Insert new brochure hospitalCoverName: Limited Hospital */;
-SET @newid = (SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`);
+SET @newid = SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`;
 INSERT INTO `content_control_provider` (`contentControlId`,`providerId`) VALUES (@newid,@providerId);
 INSERT INTO `content_control` (`contentControlId`,`styleCodeId`,`verticalId`,`contentCode`,`contentKey`,`contentStatus`,`effectiveStart`,`effectiveEnd`,`contentValue`) VALUES (@newid ,0,4,'Promo','promo','',@StartDate,@EndDate,'product');
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'@hospital','Limited Hospital');
@@ -343,7 +343,7 @@ VALUES (@newid ,'hospitalPDF',@HospitalPDFLimitedHospital);
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'extrasPDF',@ExtraPDFTopExtras);
 
 /* Insert new brochure hospitalCoverName: Limited Hospital 100 */;
-SET @newid = (SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`);
+SET @newid = SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`;
 INSERT INTO `content_control_provider` (`contentControlId`,`providerId`) VALUES (@newid,@providerId);
 INSERT INTO `content_control` (`contentControlId`,`styleCodeId`,`verticalId`,`contentCode`,`contentKey`,`contentStatus`,`effectiveStart`,`effectiveEnd`,`contentValue`) VALUES (@newid ,0,4,'Promo','promo','',@StartDate,@EndDate,'product');
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'@hospital','Limited Hospital 100');
@@ -386,7 +386,7 @@ VALUES (@newid ,'hospitalPDF',@HospitalPDFLimitedHospital100);
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'extrasPDF',@ExtraPDFTopExtras);
 
 /* Insert new brochure hospitalCoverName: Limited Hospital 70 */;
-SET @newid = (SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`);
+SET @newid = SELECT Max(contentControlId) + 1 FROM `ctm`.`content_control_provider`;
 INSERT INTO `content_control_provider` (`contentControlId`,`providerId`) VALUES (@newid,@providerId);
 INSERT INTO `content_control` (`contentControlId`,`styleCodeId`,`verticalId`,`contentCode`,`contentKey`,`contentStatus`,`effectiveStart`,`effectiveEnd`,`contentValue`) VALUES (@newid ,0,4,'Promo','promo','',@StartDate,@EndDate,'product');
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'@hospital','Limited Hospital 70');
