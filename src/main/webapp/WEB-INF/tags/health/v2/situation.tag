@@ -99,7 +99,7 @@
 						I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
 						<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
 						By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
-						I confirm that I have read the <form:link_privacy_statement />.
+						I confirm that I have read the <form_v1:link_privacy_statement />.
 					</c:set>
 
 					<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
