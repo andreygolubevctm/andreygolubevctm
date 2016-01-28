@@ -125,7 +125,7 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
             // Write to the join table
             joinService.writeJoin(data.getTransactionId(), productId);
 
-            TransactionService.writeAllowableErrors(data.getTransactionId(), getErrors(response.getErrorList(), true));
+            TransactionService.writeAllowableErrors(data.getTransactionId(), StringUtils.left(getErrors(response.getErrorList(), true), 1000));
 
             // write to transaction_details the policy_no
             writePolicyNoToTransactionDetails(data, response);
@@ -287,7 +287,7 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
         // Add trigger
         transactionAccessService.addTransactionDetailsWithDuplicateKeyUpdate(data.getTransactionId(), -5, "pending", ZonedDateTime.now().format(LONG_FORMAT));
         // Add fatalerrorreason
-        transactionAccessService.addTransactionDetailsWithDuplicateKeyUpdate(data.getTransactionId(), -6, "fatalerrorreason", "Pending: Application failed: " + errorMessage);
+        transactionAccessService.addTransactionDetailsWithDuplicateKeyUpdate(data.getTransactionId(), -6, "fatalerrorreason", StringUtils.left("Pending: Application failed: " + errorMessage, 1000));
         // Add pendingId
         transactionAccessService.addTransactionDetailsWithDuplicateKeyUpdate(data.getTransactionId(), -7, "pendingID", confirmationId);
 
