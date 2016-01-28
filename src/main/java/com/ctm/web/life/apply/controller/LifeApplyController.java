@@ -1,5 +1,6 @@
-package com.ctm.web.energy.apply.controller;
+package com.ctm.web.life.apply.controller;
 
+import com.ctm.web.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.exceptions.ServiceRequestException;
@@ -9,10 +10,9 @@ import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.resultsData.model.Info;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.SessionDataServiceBean;
-import com.ctm.web.apply.exceptions.FailedToRegisterException;
-import com.ctm.web.energy.apply.model.request.EnergyApplyPostRequestPayload;
-import com.ctm.web.energy.apply.response.EnergyApplyWebResponseModel;
-import com.ctm.web.energy.apply.services.EnergyApplyService;
+import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
+import com.ctm.web.life.apply.response.LifeApplyWebResponseModel;
+import com.ctm.web.life.apply.services.LifeApplyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -32,14 +32,14 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 @Api(basePath = "/rest/energy", value = "Energy Apply")
 @RestController
 @RequestMapping("/rest/energy")
-public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequestPayload> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EnergyApplyController.class);
+public class LifeApplyController extends CommonQuoteRouter<LifeApplyPostRequestPayload> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LifeApplyController.class);
 
     @Autowired
-    EnergyApplyService energyService;
+    LifeApplyService lifeService;
 
     @Autowired
-    public EnergyApplyController(SessionDataServiceBean sessionDataServiceBean) {
+    public LifeApplyController(SessionDataServiceBean sessionDataServiceBean) {
         super(sessionDataServiceBean);
     }
 
@@ -48,8 +48,8 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
             method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public EnergyApplyWebResponseModel getQuote(@ModelAttribute EnergyApplyPostRequestPayload applyPostReqestPayload,
-                                                BindingResult result, HttpServletRequest request) throws IOException, ServiceConfigurationException, DaoException {
+    public LifeApplyWebResponseModel apply(@ModelAttribute LifeApplyPostRequestPayload applyPostRequestPayload,
+                                           BindingResult result, HttpServletRequest request) throws IOException, ServiceConfigurationException, DaoException {
         LOGGER.debug("Request parameters={}", kv("paramters", request.getParameterMap()));
 
         if (result.hasErrors()) {
@@ -59,11 +59,11 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
         }
 
         Brand brand = initRouter(request, Vertical.VerticalType.ENERGY);
-        updateTransactionIdAndClientIP(request, applyPostReqestPayload);
-        EnergyApplyWebResponseModel outcome = energyService.apply(applyPostReqestPayload, brand, request);
+        updateTransactionIdAndClientIP(request, applyPostRequestPayload);
+        LifeApplyWebResponseModel outcome = lifeService.apply(applyPostRequestPayload, brand, request);
         if (outcome != null) {
             Info info = new Info();
-            info.setTransactionId(applyPostReqestPayload.getTransactionId());
+            info.setTransactionId(applyPostRequestPayload.getTransactionId());
         }
         return outcome;
     }

@@ -1,4 +1,4 @@
-package com.ctm.web.energy.apply.exceptions;
+package com.ctm.web.apply.exceptions;
 
 import com.ctm.apply.model.response.ApplyResponse;
 
