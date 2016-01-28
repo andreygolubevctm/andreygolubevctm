@@ -3,7 +3,7 @@
 -- TEST AFTER : 2
 
 INSERT INTO `ctm`.`content_control` (`styleCodeId`, `verticalId`, `contentCode`, `contentKey`, `effectiveStart`, `effectiveEnd`, `contentValue`) VALUES ('1', '2', 'PHGTracking', 'trackingEnabled', '2016-01-01 00:00:00', '2040-12-31 23:59:59', 'true');
-INSERT INTO `ctm`.`content_control` (`styleCodeId`, `verticalId`, `contentCode`, `contentKey`, `effectiveStart`, `effectiveEnd`, `contentValue`) VALUES ('1', '2', 'PHGTracking', 'trackingURL', '2016-01-01 00:00:00', '2040-12-31 23:59:59', 'http://creative.prf.hn/creative/');
+INSERT INTO `ctm`.`content_control` (`styleCodeId`, `verticalId`, `contentCode`, `contentKey`, `effectiveStart`, `effectiveEnd`, `contentValue`) VALUES ('1', '2', 'PHGTracking', 'trackingURL', '2016-01-01 00:00:00', '2040-12-31 23:59:59', 'https://creative.prf.hn/creative/');
 SET @CCID := (SELECT LAST_INSERT_ID());
 
 -- SELECT count(*) AS total FROM `ctm`.`content_supplementary` WHERE `contentControlId` = @CCID;
