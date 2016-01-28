@@ -14,11 +14,6 @@
 <c:set var="val_optin"				value="Y" />
 <c:set var="val_optout"				value="N" />
 
-<%-- Set A/B test flag j=2 --%>
-<c:set var="frontendChangesBlocked"><content:get key="blockFrontendChanges"/></c:set>
-<c:set var="frontendChangesBlocked" value="${not empty frontendChangesBlocked and frontendChangesBlocked eq 'Y'}" />
-<c:set var="hideOptIn" value="${frontendChangesBlocked eq false and splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 3)}" scope="request" />
-
 <%-- Vars for competition --%>
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="competitionSecret"><content:get key="competitionSecret"/></c:set>
@@ -93,8 +88,8 @@
 					</c:otherwise>
 				</c:choose>
 
-				<%-- A/B test !j=2 --%>
-				<c:if test="${not hideOptIn}">
+				<%-- Override set in splittest_helper tag --%>
+				<c:if test="${showOptInOnSlide3 eq true}">
 					<c:set var="termsAndConditions">
 						<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
 						I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
