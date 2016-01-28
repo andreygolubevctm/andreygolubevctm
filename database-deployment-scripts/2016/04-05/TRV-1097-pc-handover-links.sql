@@ -8,7 +8,7 @@ SET @CCID := (SELECT LAST_INSERT_ID());
 -- SELECT count(*) AS total FROM `ctm`.`content_supplementary` WHERE `contentControlId` = @CCID;
 -- TEST BEFORE: 0
 -- TEST AFTER : 28
-INSERT INTO `ctm`.`content_supplementary` (`contentControlId`, `supplementaryKey`, `supplementaryValue`) VALUES (@CCID, '1COVPostImp', '1100l9ph'),
+INSERT INTO `ctm`.`content_supplementary` (`contentControlId`, `supplementaryKey`, `supplementaryValue`) VALUES (@CCID, '1COV', '1100l9ph'),
 (@CCID, '1FOW', '1011l9rM'),
 (@CCID, 'AMEX', '1101l9yo'),
 (@CCID, 'BUDD', '1100l9pj'),
