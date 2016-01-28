@@ -4,8 +4,8 @@
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" />
 
-<layout:slide formId="enquiryForm">
-	<layout:slide_columns sideHidden="true">
+<layout_v1:slide formId="enquiryForm">
+	<layout_v1:slide_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
 			<ui:bubble variant="info">
@@ -17,9 +17,9 @@
 
 		<jsp:body>
 
-			<layout:slide_content>
-					<field:hidden xpath="${xpath}/product/id" defaultValue="" />
-					<field:hidden xpath="${xpath}/product/lender" defaultValue="" />
+			<layout_v1:slide_content>
+					<field_v1:hidden xpath="${xpath}/product/id" defaultValue="" />
+					<field_v1:hidden xpath="${xpath}/product/lender" defaultValue="" />
 
 					<ui:bubble variant="chatty">
 						<h4>Ready to chat?</h4>
@@ -29,14 +29,14 @@
 					<homeloan:enquiry_contact xpath="${xpath}/enquiry/contact" />
 					<homeloan:new_loan xpath="${xpath}/enquiry/newLoan" />
 
-					<form_new:row id="confirm-step" hideHelpIconCol="true">
+					<form_v2:row id="confirm-step" hideHelpIconCol="true">
 						<a href="javascript:void(0);" class="btn btn-cta col-xs-12 col-sm-8 col-md-5 journeyNavButton" id="submit_btn">Submit Enquiry <span class="icon icon-arrow-right"></span></a>
-					</form_new:row>
+					</form_v2:row>
 
-			</layout:slide_content>
+			</layout_v1:slide_content>
 
 		</jsp:body>
 
-	</layout:slide_columns>
+	</layout_v1:slide_columns>
 
-</layout:slide>
+</layout_v1:slide>

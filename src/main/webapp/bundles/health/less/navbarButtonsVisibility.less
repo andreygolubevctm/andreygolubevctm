@@ -5,7 +5,8 @@
 	.slide-feature-emailquote,
 	.slide-feature-emailresults,
 	.slide-feature-filters,
-	.slide-feature-benefits
+	.slide-feature-benefits,
+	.slide-feature-close-more-info
 	{
 		.slide-feature-hidden();
 
@@ -51,6 +52,7 @@
 	}
 
 	&[data-step="results"] {
+
 		.slide-feature-back,
 		.slide-feature-emailquote.privacyOptinChecked,
 		.slide-feature-filters,
@@ -61,6 +63,28 @@
 
 		.slide-feature-pagination {
 			display: block;
+		}
+
+		&.moreInfoVisible {
+
+			#navbar-main{
+				background: @theme-tertiary;
+				border: none;
+			}
+
+			// hiding the whole navbar when More Info is open
+			.slide-feature-back,
+			.slide-feature-emailquote.privacyOptinChecked,
+			.slide-feature-filters,
+			.slide-feature-benefits,
+			.slide-feature-pagination,
+			.slide-feature-reference{
+				.slide-feature-hidden();
+			}
+
+			.slide-feature-close-more-info{
+				.slide-feature-is-visible();
+			}
 		}
 	}
 

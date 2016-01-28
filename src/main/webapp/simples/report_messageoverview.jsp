@@ -6,7 +6,7 @@
 
 <%@ include file="/WEB-INF/security/core.jsp" %>
 
-<layout:simples_page>
+<layout_v1:simples_page>
 	<jsp:attribute name="head">
 	</jsp:attribute>
 
@@ -61,4 +61,4 @@
 		</c:choose>
 
 	</jsp:body>
-</layout:simples_page>
+</layout_v1:simples_page>

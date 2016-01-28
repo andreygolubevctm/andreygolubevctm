@@ -8,7 +8,7 @@
 
 <security:populateDataFromParams rootPath="competition" />
 
-<core:transaction touch="P" noResponse="true" />
+<core_v1:transaction touch="P" noResponse="true" />
 
 <c:set var="transactionId"	value="${data.current.transactionId}" />
 <c:set var="styleCodeId">2</c:set>
@@ -26,7 +26,7 @@
 
 <%-- STEP 1: Write email data to aggregator.email_master and get the EmailID --%>
 	<c:catch var="error">
-		<agg:write_email
+		<agg_v1:write_email
 			source="${source}"
 			brand="${brand}"
 			vertical="${vertical}"
@@ -67,7 +67,7 @@
 					<c:set var="items">firstname=${data['competition/firstName']}::lastname=${data['competition/lastName']}::postcode=${data['competition/postcode']}::dateofbirth=${data['competition/dob']}::promocode=${data['competition/promocode']}</c:set>
 
 					<c:set var="entry_result">
-						<agg:write_competition
+						<agg_v1:write_competition
 							competition_id="${competition_id}"
 							email_id="${email_id}"
 							items="${items}"

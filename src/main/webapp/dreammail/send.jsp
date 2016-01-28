@@ -86,7 +86,7 @@
 		<c:choose>
 			<c:when test="${not empty param.transactionId}">
 				<c:set var="rowXML">
-					<core:xmlTranIdFromSQL tranId="${param.transactionId}"></core:xmlTranIdFromSQL>
+					<core_v1:xmlTranIdFromSQL tranId="${param.transactionId}"></core_v1:xmlTranIdFromSQL>
 				</c:set>
 			</c:when>
 			<c:otherwise>
@@ -100,28 +100,28 @@
 			<c:import var="sqlStatement" url="/dreammail/${param.tmpl}.sql" />
 			<c:choose>
 				<c:when test="${param.tmpl eq 'travel_edm'}">
-					<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" calcSequence="${data.travel.calcSequence}" rankPosition="${data.travel.bestPricePosition}"></core:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><core_v1:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" calcSequence="${data.travel.calcSequence}" rankPosition="${data.travel.bestPricePosition}"></core_v1:xmlForOtherQuery></c:set>
 					<c:set var="emailTokenType" value="edm" />
 					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:when test="${param.tmpl eq 'health_bestprice'}">
-					<c:set var="rowXML"><health:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" ></health:xmlForOtherQuery></c:set>
-					<c:set var="rowXML"><health:xmlForCallCentreHoursQuery /></c:set>
+					<c:set var="rowXML"><health_v1:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" ></health_v1:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><health_v1:xmlForCallCentreHoursQuery /></c:set>
 					<c:set var="emailTokenType" value="bestprice" />
 					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:when test="${param.tmpl eq 'home_bestprice'}">
-					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="home" emailAction="load" emailTokenType="bestprice" hashedEmail="${param.hashedEmail}" emailTokenEnabled="${pageSettings.getSetting('emailTokenEnabled')}"></agg:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><agg_v1:xmlForOtherQuery tranId="${param.transactionId}" vertical="home" emailAction="load" emailTokenType="bestprice" hashedEmail="${param.hashedEmail}" emailTokenEnabled="${pageSettings.getSetting('emailTokenEnabled')}"></agg_v1:xmlForOtherQuery></c:set>
 					<c:set var="emailTokenType" value="bestprice" />
 					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:when test="${param.tmpl eq 'car_bestprice'}">
-					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="car" emailAction="load" emailTokenType="bestprice" hashedEmail="${param.hashedEmail}" emailTokenEnabled="${pageSettings.getSetting('emailTokenEnabled')}"></agg:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><agg_v1:xmlForOtherQuery tranId="${param.transactionId}" vertical="car" emailAction="load" emailTokenType="bestprice" hashedEmail="${param.hashedEmail}" emailTokenEnabled="${pageSettings.getSetting('emailTokenEnabled')}"></agg_v1:xmlForOtherQuery></c:set>
 					<c:set var="emailTokenType" value="bestprice" />
 					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:otherwise>
-					<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}"></core:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><core_v1:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}"></core_v1:xmlForOtherQuery></c:set>
 					<c:set var="emailTokenType" value="bestprice" />
 					<c:set var="emailTokenTypeAction" value="load" />
 				</c:otherwise>
@@ -148,7 +148,7 @@
 
 				<c:if test="${paramSend != 'Y'}">
 					<%-- NB: There was a huge amount of stuff surrounding this jsp by way of core:head and go:html go:body - that is dying in the console regarding the applicationSettings. So i've ditched them in favor of just manually wrapping in a html skeleton, since it's a dev only page with no styling. --%>
-					<core:doctype />
+					<core_v1:doctype />
 					<html class="no-js" lang="en">
 						<head>
 							<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

@@ -17,6 +17,7 @@
 							<xs:element name="trans" type="nonEmptyString" maxOccurs="1" minOccurs="1" />
 							<xs:element name="fuel" type="nonEmptyString" maxOccurs="1" minOccurs="1" />
 							<xs:element name="redbookCode" type="nonEmptyString" maxOccurs="1" minOccurs="1" />
+							<xs:element name="colour" type="nonEmptyString" maxOccurs="1" minOccurs="1" />
 							<xs:element name="factoryOptions" type="YN" maxOccurs="1" minOccurs="0" />
 							<xs:element name="accessories" type="YN" maxOccurs="1" minOccurs="0" />
 							<xs:element name="modifications" type="YN" maxOccurs="1" minOccurs="1" />

@@ -17,8 +17,8 @@
 	</c:if>
 </c:if>
 
-<core_new:quote_check quoteType="home" />
-<core_new:load_preload />
+<core_v2:quote_check quoteType="home" />
+<core_v2:load_preload />
 
 <%-- Call centre numbers --%>
 <c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
@@ -26,7 +26,7 @@
 <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 
 <%-- HTML --%>
-<layout:journey_engine_page title="Home & Contents Quote">
+<layout_v1:journey_engine_page title="Home & Contents Quote">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -36,6 +36,15 @@
 
 	<jsp:attribute name="header">
 	</jsp:attribute>
+
+
+	<jsp:attribute name="progress_bar">
+      <div class="progress-bar-row collapse navbar-collapse">
+		  <div class="container">
+			  <ul class="journeyProgressBar_v2"></ul>
+		  </div>
+	  </div>
+    </jsp:attribute>
 
 	<jsp:attribute name="navbar">
 
@@ -65,10 +74,10 @@
 					<div class="dropdown-container">
 						<c:choose>
 							<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 34) or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 35)}">
-								<home_new:edit_details_v2 />
+								<home:edit_details_v2 />
 							</c:when>
 							<c:otherwise>
-								<home_new:edit_details />
+								<home:edit_details />
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -83,7 +92,7 @@
 						</c:choose></span> <b class="caret"></b></a>
 				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<div class="dropdown-container">
-						<agg_new:save_quote includeCallMeback="false" />
+						<agg_v2:save_quote includeCallMeback="false" />
 					</div>
 				</div>
 			</li>
@@ -97,7 +106,7 @@
 
 			<%-- Displays the Reference Number at the end of the menu. --%>
 			<li class="navbar-text hidden">
-				<form_new:reference_number />
+				<form_v2:reference_number />
 			</li>
 		</ul>
 		<div class="collapse navbar-collapse">
@@ -159,11 +168,11 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<core:whitelabeled_footer />
+		<core_v1:whitelabeled_footer />
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">
-		<home_new:settings />
+		<home:settings />
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
@@ -172,9 +181,9 @@
 	<jsp:body>
 
 		<div class="hiddenFields">
-			<field:hidden xpath="home/renderingMode" />
-			<form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
-			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
+			<field_v1:hidden xpath="home/renderingMode" />
+			<form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
+			<core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>
 
 		<%-- Split Test Flags --%>
@@ -182,26 +191,26 @@
 		<c:set var="splitTestB" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 35)}" />
 
 		<%-- Slides --%>
-		<home_new_layout:slide_cover_type />
-		<home_new_layout:slide_occupancy />
-		<home_new_layout:slide_your_property />
+		<home_layout:slide_cover_type />
+		<home_layout:slide_occupancy />
+		<home_layout:slide_your_property />
 		<c:choose>
 			<%-- When splittest is ON --%>
 			<c:when test="${splitTestA eq true or splitTestB eq true}">
-				<home_new_layout:slide_history />
-				<home_new_layout:slide_policy_holders />
+				<home_layout:slide_history />
+				<home_layout:slide_policy_holders />
 			</c:when>
 			<%-- When splittest is OFF --%>
 			<c:otherwise>
-				<home_new_layout:slide_policy_holders />
-				<home_new_layout:slide_history />
+				<home_layout:slide_policy_holders />
+				<home_layout:slide_history />
 			</c:otherwise>
 		</c:choose>
-		<home_new_layout:slide_results />
+		<home_layout:slide_results />
 
-		<field:hidden xpath="environmentOverride" />
+		<field_v1:hidden xpath="environmentOverride" />
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 
 	</jsp:body>
 
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

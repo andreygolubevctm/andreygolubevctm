@@ -16,10 +16,10 @@
 </c:if>
 
 <%-- Save client data: ***FIX: before using this a 'C' status needs to be identified.
-<core:transaction touch="A" noResponse="true" />
+<core_v1:transaction touch="A" noResponse="true" />
 --%>
 
-<agg:write_email
+<agg_v1:write_email
 	brand="CTM"
 	vertical="UTILITIES"
 	source="QUOTE"
@@ -51,17 +51,17 @@ ${logger.debug('Submitted lead feed. {}',log:kv('submitResult', submitResult))}
 		<c:set var="uniqueId"><x:out select="$parsedXml/data/unique_id" /></c:set>
 		<go:setData dataVar="data" xpath="utilities/leadFeed/confirmationId" value="${uniqueId}" />
 
-		<core:transaction touch="P" noResponse="true" />
+		<core_v1:transaction touch="P" noResponse="true" />
 
 		<c:set var="confirmationkey" value="${pageContext.session.id}-${tranId}" />
 		<go:setData dataVar="data" xpath="utilities/confirmationkey" value="${confirmationkey}" />
 
-		<agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
-		<agg:write_touch touch="C" transaction_id="${tranId}" />
+		<agg_v1:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
+		<agg_v1:write_touch touch="C" transaction_id="${tranId}" />
 
 		${submitResults}
 	</c:when>
 	<c:otherwise>
-		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="utilities_submit_application.jsp"/>
+		<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="utilities_submit_application.jsp"/>
 	</c:otherwise>
 </c:choose>

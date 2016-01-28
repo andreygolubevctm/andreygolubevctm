@@ -84,6 +84,16 @@
             meerkat.modules.moreInfo.open.apply(this, [event]);
         });
 
+        $(document.body).on("click", ".next-steps", function nextStepsClick(event) {
+            var product = Results.getSelectedProduct();
+            if(!product) {
+                return;
+            }
+
+            var modalId = meerkat.modules.dialogs.show({
+                htmlContent: product.whatHappensNext
+            });
+        });
 
     }
 

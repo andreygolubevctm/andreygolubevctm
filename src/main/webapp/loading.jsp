@@ -7,7 +7,7 @@
 
 <%-- This page is ONLY to be loaded into a frame using the core loadsafe function --%>
 
-<core:doctype />
+<core_v1:doctype />
 <html lang="en">
 <head>
 	<meta charset="utf-8">

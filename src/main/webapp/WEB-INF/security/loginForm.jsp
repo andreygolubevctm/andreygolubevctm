@@ -27,7 +27,7 @@ window.onload = function() {
 };
 </script>
 
-<layout:simples_page>
+<layout_v1:simples_page>
 	<jsp:attribute name="head">
 	</jsp:attribute>
 
@@ -35,36 +35,36 @@ window.onload = function() {
 
 		<form action="${baseUrl}j_security_check" method="POST">
 
-			<layout:slide_columns sideHidden="true">
+			<layout_v1:slide_columns sideHidden="true">
 
 				<jsp:attribute name="rightColumn">
 				</jsp:attribute>
 
 				<jsp:body>
 
-					<form_new:fieldset legend="${pageTitle}">
+					<form_v2:fieldset legend="${pageTitle}">
 						<c:if test="${not empty welcomeText}">
 							<ui:bubble variant="chatty">
 								${welcomeText}
 							</ui:bubble>
 						</c:if>
 
-						<form_new:row fieldXpath="j_username" label="Username">
+						<form_v2:row fieldXpath="j_username" label="Username">
 							<input type="text" id="j_username" name="j_username" maxlength="100" value="<c:out value="${userName}" />" class="form-control">
-						</form_new:row>
-						<form_new:row fieldXpath="j_password" label="Password">
+						</form_v2:row>
+						<form_v2:row fieldXpath="j_password" label="Password">
 							<input type="password" id="j_password" name="j_password" maxlength="100" value="" class="form-control">
-						</form_new:row>
+						</form_v2:row>
 
-						<form_new:row>
+						<form_v2:row>
 							<button id="next-step" type="submit" class="btn btn-cta">Log in</button>
-						</form_new:row>
-					</form_new:fieldset>
+						</form_v2:row>
+					</form_v2:fieldset>
 
 				</jsp:body>
 
-			</layout:slide_columns>
+			</layout_v1:slide_columns>
 		</form>
 
 	</jsp:body>
-</layout:simples_page>
+</layout_v1:simples_page>

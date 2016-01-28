@@ -68,11 +68,14 @@ function Bundles(config) {
     fs.readdirSync(gulpConfig.bundles.dir)
         .forEach(function(folder){
             bundleLoader(null, folder);
-        });
 
-    fs.readdirSync(path.join(gulpConfig.bundles.dir, "plugins"))
-        .forEach(function(folder){
-            bundleLoader("plugins", folder);
+            fs.readdirSync(path.join(gulpConfig.bundles.dir, folder))
+                .forEach(function (subFolder) {
+                    var stats = fs.lstatSync(path.join(gulpConfig.bundles.dir, folder, subFolder));
+
+                    if(stats.isDirectory())
+                        bundleLoader(folder, subFolder);
+                });
         });
 }
 
@@ -99,11 +102,19 @@ Bundles.prototype.getBundleBrandCodes = function(bundleName) {
 
     if(this.collection[bundleName].brandCodes) {
         if(this.collection[bundleName].brandCodes == "all")
-            return this.getBrandCodes();
+            return gulpConfig.brand.all;
         else
             return bundle.brandCodes;
     } else {
-        return this.collection[bundle.extends].brandCodes;
+        var extendedBundle = bundle.extends;
+
+        if(bundle.extends)
+            extendedBundle = extendedBundle.replace('/', '\\');
+
+        if(this.collection[extendedBundle])
+            return this.collection[extendedBundle].brandCodes;
+        else
+            return [];
     }
 };
 

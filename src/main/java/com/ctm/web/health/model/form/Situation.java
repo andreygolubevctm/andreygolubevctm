@@ -16,6 +16,8 @@ public class Situation {
 
     private String singleProvider;
 
+    private String accidentOnlyCover;
+
     public String getHealthCvr() {
         return healthCvr;
     }
@@ -70,5 +72,13 @@ public class Situation {
 
     public void setSingleProvider(String singleProvider) {
         this.singleProvider = singleProvider;
+    }
+
+    public String getAccidentOnlyCover() {
+        return accidentOnlyCover;
+    }
+
+    public void setAccidentOnlyCover(String accidentOnlyCover) {
+        this.accidentOnlyCover = accidentOnlyCover;
     }
 }

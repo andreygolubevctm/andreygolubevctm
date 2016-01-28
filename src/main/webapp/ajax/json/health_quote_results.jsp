@@ -3,7 +3,7 @@
 
 <c:set var="verticalCode" value="HEALTH" />
 
-<core_new:no_cache_header/>
+<core_v2:no_cache_header/>
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true" />
 <jsp:useBean id="healthQuoteResults" class="com.ctm.web.health.services.HealthQuoteEndpointService" />
@@ -34,10 +34,10 @@ ${healthQuoteResults.init(pageContext.request, pageSettings)}
 			<%-- Save client data --%>
 			<c:choose>
 				<c:when test="${param.health_showAll == 'N'}">
-					<core:transaction touch="Q" noResponse="true" />
+					<core_v1:transaction touch="Q" noResponse="true" />
 				</c:when>
 				<c:otherwise>
-					<core:transaction touch="R" noResponse="true" />
+					<core_v1:transaction touch="R" noResponse="true" />
 				</c:otherwise>
 			</c:choose>
 
@@ -72,7 +72,7 @@ ${healthQuoteResults.init(pageContext.request, pageSettings)}
 					</c:forEach>
 				</c:if>
 
-				<agg:write_stats rootPath="health" tranId="${data.text['current/transactionId']}" debugXml="${debugXml}" />
+				<agg_v1:write_stats rootPath="health" tranId="${data.text['current/transactionId']}" debugXml="${debugXml}" />
 
 				<%-- Add the results to the current session data --%>
 
@@ -148,7 +148,7 @@ ${healthQuoteResults.init(pageContext.request, pageSettings)}
 			${healthQuoteResults.createResponse(data.text['current/transactionId'], baseJsonResponse)}
 		</c:when>
 		<c:otherwise>
-			<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="health_quote_results.jsp"/>
+			<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="health_quote_results.jsp"/>
 		</c:otherwise>
 	</c:choose>
 	</c:when>

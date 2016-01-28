@@ -48,7 +48,7 @@
 	<go:setData dataVar="data" xpath="${dateXpath}" value="${date}" />
 	<go:setData dataVar="data" xpath="${timeXpath}" value="${time}" />
 
-	<core:transaction touch="S" noResponse="true"  />
+	<core_v1:transaction touch="S" noResponse="true"  />
 </c:if>
 
 <c:if test="${param.source != 'leadGen'}">

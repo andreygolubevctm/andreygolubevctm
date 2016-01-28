@@ -13,7 +13,37 @@
 	.push-top {
 		padding-top: 10px;
 	}
+.has-icons {
+  .btn-group-justified label {
+	border: 0;
+	background: transparent;
+  }
+  .btn-group-justified label > i {
+	color: @headings-color;
+	vertical-align: top;
+	text-align: center;
+	margin: 0 auto 10px;
+	background-color: @gray-lighter;
+	font-size: @icon-large;
+	line-height: @icon-large-line-height;
+	width: @icon-large-line-height;
+	height: @icon-large-line-height;
+	border-radius: @icon-large-line-height;
+	display: block;
+  }
+  .btn-group-justified label.active > i {
+	color: #ffffff;
+	background-color: @theme-secondary;
+  }
 
+  [data-toggle="radio"] > .btn-form-inverse.active,
+  [data-toggle="radio"] > .btn-form-inverse:active {
+	color: #333333;
+  }
+  .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn.focus:active, .btn.active.focus {
+	outline: medium none;
+  }
+}
   // for cover level tabs background
   @media(@sm) {
 	&[data-step="results"] .navbar-default {
