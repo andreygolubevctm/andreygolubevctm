@@ -1,2 +1,0 @@
-INSERT INTO ctm.content_control (styleCodeId, verticalId, contentCode, contentKey, contentStatus, effectiveStart, effectiveEnd, contentValue) VALUES
-     (1, 4, 'Sidebar', 'healthPricePromise', '', '2016-01-06 14:02:25', '2038-01-19 00:00:00', '<p>Health insurance prices are regulated, meaning you will be charged the same premium if you buy through us or through the health fund directly. <a href="http://www.comparethemarket.com.au/health-insurance/price-promise/" class="read-more" target="_blank">Read more</a></p>');
