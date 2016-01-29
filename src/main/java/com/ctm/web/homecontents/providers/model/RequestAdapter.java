@@ -13,6 +13,8 @@ import com.ctm.web.homecontents.providers.model.request.WhenMovedIn;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDate;
 
@@ -295,11 +297,12 @@ public class RequestAdapter {
         }
     }
 
-    public static MoreInfoRequest adapt(Brand brand, String productId, String coverType) {
+    public static MoreInfoRequest adapt(Brand brand, String productId, String coverType, Optional<LocalDateTime> requestAt) {
         MoreInfoRequest request = new MoreInfoRequest();
         request.setBrandCode(brand.getCode());
         request.setProductId(productId);
         request.setCoverType(coverType);
+        requestAt.ifPresent(v -> request.setRequestAt(v));
         return request;
     }
 

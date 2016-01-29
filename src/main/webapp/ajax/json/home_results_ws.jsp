@@ -29,4 +29,4 @@
 
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
-<jsp:forward page="/rest/home/quote/get.json"/>
+<jsp:forward page="/spring/rest/home/quote/get.json"/>
