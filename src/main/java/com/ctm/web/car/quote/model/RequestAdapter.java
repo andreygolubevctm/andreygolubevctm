@@ -5,10 +5,12 @@ import com.ctm.web.car.quote.model.request.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDate;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 public class RequestAdapter {
 
@@ -78,30 +80,36 @@ public class RequestAdapter {
     }
 
     private static List<String> createFactoryOptions(CarQuote carQuote) {
-        List<String> options = new ArrayList<>();
-        if (carQuote.getOpts() != null) {
-            for (String s : carQuote.getOpts().values()) {
-                options.add(s);
-            }
-        }
-        return options;
+        return Optional.ofNullable(carQuote)
+                .map(CarQuote::getOpts)
+                .map(Opts::getOpt)
+                .orElse(emptyList())
+                .stream()
+                .filter(opt -> opt != null)
+                .collect(toList());
     }
 
     private static List<NonStandardAccessory> createNonStandardAccessories(CarQuote carQuote) {
-        List<NonStandardAccessory> accessories = new ArrayList<>();
-        for (Acc acc : carQuote.getConvertedAccs().values()) {
-            NonStandardAccessory accessory = new NonStandardAccessory();
-            final boolean includedInPurchasePrice = convertToBoolean(acc.getInc());
-            accessory.setIncludedInPurchasePrice(includedInPurchasePrice);
-            if (!includedInPurchasePrice) {
-                accessory.setPrice(new BigDecimal(acc.getPrc()));
-            }
-            accessory.setCode(acc.getSel());
-            accessories.add(accessory);
-        }
-        return accessories;
+        return Optional.ofNullable(carQuote)
+                .map(CarQuote::getAccs)
+                .map(Accs::getAcc)
+                .orElse(emptyList())
+                .stream()
+                .filter(acc -> StringUtils.isNotBlank(acc.getSel()))
+                .map(RequestAdapter::createAccessory)
+                .collect(toList());
     }
 
+    private static NonStandardAccessory createAccessory(Acc acc) {
+        NonStandardAccessory accessory = new NonStandardAccessory();
+        final boolean includedInPurchasePrice = convertToBoolean(acc.getInc());
+        accessory.setIncludedInPurchasePrice(includedInPurchasePrice);
+        if (!includedInPurchasePrice) {
+            accessory.setPrice(new BigDecimal(acc.getPrc()));
+        }
+        accessory.setCode(acc.getSel());
+        return accessory;
+    }
 
     private static com.ctm.web.car.quote.model.request.RiskAddress createRiskAddress(CarQuote carQuote) {
         com.ctm.web.car.quote.model.request.RiskAddress riskAddress = new com.ctm.web.car.quote.model.request.RiskAddress();

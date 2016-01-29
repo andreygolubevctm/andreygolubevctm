@@ -3,63 +3,9 @@ package com.ctm.web.car.form;
 import com.ctm.web.car.model.form.*;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class CarQuoteTest {
-
-    @Test
-    public void testGetConvertedAccs() throws Exception {
-        CarQuote quote = new CarQuote();
-
-        Map<String, String> accs = new HashMap<>();
-
-        accs.put("acc27.sel","C*");
-        accs.put("acc27.inc","N");
-        accs.put("acc27.prc","125");
-        accs.put("acc13.sel","CH");
-        accs.put("acc13.inc","N");
-        accs.put("acc13.prc","125");
-        accs.put("acc2.sel","CB");
-        accs.put("acc2.inc","N");
-        accs.put("acc2.prc", "500");
-        accs.put("acc3.sel", "CA");
-        accs.put("acc3.inc", "Y");
-
-        quote.setAccs(accs);
-
-        final Map<String, Acc> convertedAccs = quote.getConvertedAccs();
-
-        assertEquals(4, convertedAccs.size());
-
-        Acc acc27 = convertedAccs.get("acc27");
-        assertNotNull(acc27);
-        assertEquals("C*", acc27.getSel());
-        assertEquals("N", acc27.getInc());
-        assertEquals("125", acc27.getPrc());
-
-        Acc acc13 = convertedAccs.get("acc13");
-        assertNotNull(acc13);
-        assertEquals("CH", acc13.getSel());
-        assertEquals("N", acc13.getInc());
-        assertEquals("125", acc13.getPrc());
-
-        Acc acc2 = convertedAccs.get("acc2");
-        assertNotNull(acc2);
-        assertEquals("CB", acc2.getSel());
-        assertEquals("N", acc2.getInc());
-        assertEquals("500", acc2.getPrc());
-
-        Acc acc3 = convertedAccs.get("acc3");
-        assertNotNull(acc3);
-        assertEquals("CA", acc3.getSel());
-        assertEquals("Y", acc3.getInc());
-        assertNull(acc3.getPrc());
-
-    }
 
     @Test
     public void testCreateLeadFeedInfo() throws Exception {
