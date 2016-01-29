@@ -21,7 +21,10 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
@@ -39,7 +42,7 @@ public class InInIcwsService {
 	@Autowired InInConfig inInConfig;
 	@Autowired private Client<ConnectionReq, ConnectionResp> connectionClient;
 	@Autowired private Client<QueueSubscriptionReq, String> queueSubscriptionClient;
-	@Autowired private Client<String, MessagesResp> messageClient;
+	@Autowired private Client<String, List<Message>> messageClient;
 	@Autowired private Client<SecurePause, String> securePauseClient;
 
 	private String connectionUrl;
@@ -70,21 +73,24 @@ public class InInIcwsService {
 								// Put a subscription on agent activity
 								queueSubscription(username, connectionResp)
 										// Get messages of agent activity (should give us the current phone call status)
-										.flatMap(s -> getMessages(connectionResp))
-										.map(this::messagesFilter)
+										.flatMap(s -> getInteractionId(connectionResp))
 										// Pause or resume the call
 										.flatMap(interactionId -> securePauseRequest(securePauseType, interactionId, connectionResp))
 										.flatMap(pauseResp -> Observable.just(PauseResumeResponse.success()))
 										.onErrorReturn(throwable -> {
 											if (throwable instanceof HttpClientErrorException) {
-												LOGGER.error("securePause failed. {}", ((HttpClientErrorException) throwable).getResponseBodyAsString());
+												LOGGER.error("securePause failed. {}, {}, {}", kv("username",username), kv("securePauseType",securePauseType), ((HttpClientErrorException) throwable).getResponseBodyAsString());
+											} else {
+												LOGGER.error("securePause failed. {}, {}", kv("username",username), kv("securePauseType",securePauseType), throwable);
 											}
 											return PauseResumeResponse.fail();
 										})
 				)
 				.onErrorReturn(throwable -> {
 					if (throwable instanceof HttpClientErrorException) {
-						LOGGER.error("securePause failed. {}", ((HttpClientErrorException) throwable).getResponseBodyAsString());
+						LOGGER.error("securePause failed. {}, {}, {}", kv("username",username), kv("securePauseType",securePauseType), ((HttpClientErrorException) throwable).getResponseBodyAsString());
+					} else {
+						LOGGER.error("securePause failed. {}, {}", kv("username",username), kv("securePauseType",securePauseType), throwable);
 					}
 					return PauseResumeResponse.fail();
 				});
@@ -134,7 +140,7 @@ public class InInIcwsService {
 
 		if (LOGGER.isDebugEnabled()) {
 			try {
-				LOGGER.debug(jacksonMappers.getJsonMapper().writeValueAsString(subscriptionReq));
+				LOGGER.debug("PUT queue subscription: " + jacksonMappers.getJsonMapper().writeValueAsString(subscriptionReq));
 			} catch (JsonProcessingException e) {
 				LOGGER.error("Cannot serialize: {}\nbecause {}", subscriptionReq, e);
 			}
@@ -143,23 +149,46 @@ public class InInIcwsService {
 		return queueSubscriptionClient.put(settings);
 	}
 
-	private Observable<MessagesResp> getMessages(final ResponseEntity<ConnectionResp> connectionResp) {
+	private Observable<Message> getMessages(final ResponseEntity<ConnectionResp> connectionResp) {
 		final String sessionId = connectionResp.getHeaders().get(SESSION_ID).get(0);
 		final String url = createMessagesUrl(sessionId);
 
 		RestSettings<String> settings = authenticatedRestSettings(RestSettings.<String>builder(), connectionResp)
 				.request("")
-				.response(new ParameterizedTypeReference<List<MessagesResp>>() {})
+				.response(new ParameterizedTypeReference<List<Message>>() {})
 				.url(url)
 				.build();
-		return messageClient.put(settings);
+		return messageClient.get(settings).flatMap(Observable::<Message>from);
 	}
 
-//	protected Observable<List<MessagesResp>> getMessages(final ResponseEntity<ConnectionResp> connectionResp, final Client<String, MessagesResp> client){
-//	}
+	private Observable<String> getInteractionId(final ResponseEntity<ConnectionResp> connectionResp) {
+		final Observable<Message> messages = getMessages(connectionResp);
+		Observable<Optional<String>> interactionId = messages
+				.map(message -> {
+					LOGGER.debug("Message: " + message.toString());
+					return message;
+				})
+				// Look at messages that have added or changed interactions
+				.filter(message -> (message.getInteractionsAdded() != null && message.getInteractionsAdded().size() > 0)
+						|| (message.getInteractionsChanged() != null && message.getInteractionsChanged().size() > 0))
+				// Look at messages that have a valid call state
+				.filter(message -> message.getInteractionsAdded().stream().filter(i -> i.getAttributes().callState != null).count() > 0
+						|| message.getInteractionsChanged().stream().filter(i -> i.getAttributes().callState != null).count() > 0)
+				// Stream the two interaction arrays and get the first ID
+				.map(message -> Stream.concat(message.getInteractionsAdded().stream(), message.getInteractionsChanged().stream())
+						.findFirst()
+						.map(Interaction::getInteractionId));
 
-	private String messagesFilter(final MessagesResp messageResp) {
-		return "intId";
+		return interactionId
+				.defaultIfEmpty(Optional.empty())
+				.flatMap(s -> {
+					LOGGER.debug("getInteractionId: {}", s);
+					if (s.isPresent()) {
+						return Observable.just(s.get());
+					} else {
+						return Observable.error(new Exception("Could not find valid interactionId"));
+					}
+				});
 	}
 
 	/**

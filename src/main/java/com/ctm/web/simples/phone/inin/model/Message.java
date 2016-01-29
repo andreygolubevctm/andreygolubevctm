@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class MessagesResp {
+public class Message {
 
 	@JsonProperty("__type")
 	private String type;
@@ -14,10 +14,10 @@ public class MessagesResp {
 	private boolean isDelta;
 	private String subscriptionId;
 
-	private MessagesResp() {
+	private Message() {
 	}
 
-	public MessagesResp(String type, List<Interaction> interactionsAdded, List<Interaction> interactionsChanged, List<String> interactionsRemoved, boolean isDelta, String subscriptionId) {
+	public Message(String type, List<Interaction> interactionsAdded, List<Interaction> interactionsChanged, List<String> interactionsRemoved, boolean isDelta, String subscriptionId) {
 		this.type = type;
 		this.interactionsAdded = interactionsAdded;
 		this.interactionsChanged = interactionsChanged;
