@@ -1,4 +1,4 @@
--- SET @pid = SELECT providerid FROM ctm.provider_master WHERE providercode = 'SKII';
+SET @pid = (SELECT providerid FROM ctm.provider_master WHERE providercode = 'SKII');
 
 -- SELECT count(*) FROM `ctm`.`travel_product` where providerId = @pid AND baseProduct = 1;
 -- RESULT BEFORE: 0
