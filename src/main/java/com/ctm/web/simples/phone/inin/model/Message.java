@@ -2,6 +2,7 @@ package com.ctm.web.simples.phone.inin.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Message {
@@ -30,18 +31,30 @@ public class Message {
 		return type;
 	}
 	public List<Interaction> getInteractionsAdded() {
-		return interactionsAdded;
+		return interactionsAdded != null ? interactionsAdded : Collections.emptyList();
 	}
 	public List<Interaction> getInteractionsChanged() {
-		return interactionsChanged;
+		return interactionsChanged != null ? interactionsChanged : Collections.emptyList();
 	}
 	public List<String> getInteractionsRemoved() {
-		return interactionsRemoved;
+		return interactionsRemoved != null ? interactionsRemoved : Collections.emptyList();
 	}
 	public boolean isDelta() {
 		return isDelta;
 	}
 	public String getSubscriptionId() {
 		return subscriptionId;
+	}
+
+	@Override
+	public String toString() {
+		return "Message{" +
+				"type='" + type + '\'' +
+				", interactionsAdded=" + interactionsAdded +
+				", interactionsChanged=" + interactionsChanged +
+				", interactionsRemoved=" + interactionsRemoved +
+				", isDelta=" + isDelta +
+				", subscriptionId='" + subscriptionId + '\'' +
+				'}';
 	}
 }

@@ -22,4 +22,12 @@ public class QueueSubscriptionReq {
 	public List<String> getAttributeNames() {
 		return attributeNames;
 	}
+
+	@Override
+	public String toString() {
+		return "QueueSubscriptionReq{" +
+				"queueIds=" + queueIds +
+				", attributeNames=" + attributeNames +
+				'}';
+	}
 }

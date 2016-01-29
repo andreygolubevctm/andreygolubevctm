@@ -6,6 +6,7 @@ import com.ctm.interfaces.common.util.SerializationMappers;
 import com.ctm.web.simples.config.InInConfig;
 import com.ctm.web.simples.phone.inin.model.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Service
 public class InInIcwsService {
@@ -53,8 +56,8 @@ public class InInIcwsService {
 	@PostConstruct
 	public void initConfig() {
 		this.connectionUrl = inInConfig.getCicUrl() + "/connection";
-		this.queueSubscriptionUrl = inInConfig.getCicUrl() + "/${sessionId}/messaging/subscriptions/queues/${subscriptionName}";
-		this.messagesUrl = inInConfig.getCicUrl() + "/${sessionId}/messaging/messages";
+		this.queueSubscriptionUrl = inInConfig.getCicUrl()+ "/${sessionId}/messaging/subscriptions/queues/${subscriptionName}";
+		this.messagesUrl = inInConfig.getCicUrl() /*"http://127.0.0.1:8888/icws"*/ + "/${sessionId}/messaging/messages";
 		this.securePauseUrl = inInConfig.getCicUrl() + "/${sessionId}/interactions/${interactionId}/secure-pause";
 	}
 
@@ -72,6 +75,7 @@ public class InInIcwsService {
 				.flatMap(connectionResp ->
 								// Put a subscription on agent activity
 								queueSubscription(username, connectionResp)
+										.delay(1, TimeUnit.SECONDS)
 										// Get messages of agent activity (should give us the current phone call status)
 										.flatMap(s -> getInteractionId(connectionResp))
 										// Pause or resume the call
@@ -105,7 +109,7 @@ public class InInIcwsService {
 				inInConfig.getCicUserId(), inInConfig.getCicPassword());
 		RestSettings<ConnectionReq> settings = RestSettings.<ConnectionReq>builder()
 				.header("Accept-Language", "en")
-				.header("Content-Type", "application/json;charset=UTF-8")
+				.header("Content-Type", APPLICATION_JSON_VALUE)
 				.request(connectionReq)
 				.response(ConnectionResp.class)
 				.url(connectionUrl)
@@ -153,8 +157,10 @@ public class InInIcwsService {
 		final String sessionId = connectionResp.getHeaders().get(SESSION_ID).get(0);
 		final String url = createMessagesUrl(sessionId);
 
+		LOGGER.debug("Get messages: " + url);
+
 		RestSettings<String> settings = authenticatedRestSettings(RestSettings.<String>builder(), connectionResp)
-				.request("")
+				.request(null)
 				.response(new ParameterizedTypeReference<List<Message>>() {})
 				.url(url)
 				.build();
@@ -176,8 +182,8 @@ public class InInIcwsService {
 						|| message.getInteractionsChanged().stream().filter(i -> i.getAttributes().callState != null).count() > 0)
 				// Stream the two interaction arrays and get the first ID
 				.map(message -> Stream.concat(message.getInteractionsAdded().stream(), message.getInteractionsChanged().stream())
-						.findFirst()
-						.map(Interaction::getInteractionId));
+							.findFirst()
+							.map(Interaction::getInteractionId));
 
 		return interactionId
 				.defaultIfEmpty(Optional.empty())
@@ -232,10 +238,10 @@ public class InInIcwsService {
 	 */
 	private <T> RestSettings.Builder<T> authenticatedRestSettings(RestSettings.Builder<T> builder, final ResponseEntity<ConnectionResp> connectionResp) {
 		final HttpHeaders headers = connectionResp.getHeaders();
-		final String cookie = headers.get("Set-Cookie").get(0);
+		final String cookie = StringUtils.substringBefore(headers.get("Set-Cookie").get(0), ";");
 		final String csrf = headers.get(CSRF_TOKEN).get(0);
 		return builder
-				.header("Content-Type", "application/json;charset=UTF-8")
+				.header("Content-Type", APPLICATION_JSON_VALUE)
 				.header("Cookie", cookie)
 				.header(CSRF_TOKEN, csrf);
 	}

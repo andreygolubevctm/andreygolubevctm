@@ -10,4 +10,6 @@ public class InteractionAttributes {
 	@JsonProperty("Eic_State")
 	public String callState;
 
+	public InteractionAttributes() {
+	}
 }
