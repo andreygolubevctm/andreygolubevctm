@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
+import static com.ctm.web.core.transaction.utils.TransactionDetailsUtil.checkLengthTextValue;
 
 public class HealthTransactionDao {
 
@@ -154,7 +155,7 @@ public class HealthTransactionDao {
 			stmt.setLong(1, transactionId == null ? 0 : transactionId);
 			stmt.setInt(2, HealthTransactionSequenceNo.ALLOWABLE_ERRORS);
 			stmt.setString (3, "health/allowedErrors");
-			stmt.setString(4, errors);
+			stmt.setString(4, checkLengthTextValue(errors));
 
 			stmt.executeUpdate();
 		} catch (NamingException | SQLException e) {

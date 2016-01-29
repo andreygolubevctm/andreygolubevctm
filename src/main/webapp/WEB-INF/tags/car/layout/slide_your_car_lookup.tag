@@ -4,14 +4,14 @@
 
 <c:set var="xpath" value="quote" />
 
-<layout:slide formId="startForm" firstSlide="true" nextLabel="Next Step">
+<layout_v1:slide formId="startForm" firstSlide="true" nextLabel="Next Step">
 
-    <layout:slide_content>
+    <layout_v1:slide_content>
         <%-- PROVIDER TESTING --%>
-        <agg:provider_testing xpath="${xpath}" displayFullWidth="true" keyLabel="authToken" filterProperty="providerList" hideSelector="${false}" />
+        <agg_v1:provider_testing xpath="${xpath}" displayFullWidth="true" keyLabel="authToken" filterProperty="providerList" hideSelector="${carServiceSplitTest eq false}" />
 
         <car:vehicle_selection_lookup xpath="${xpath}/vehicle" />
 
-    </layout:slide_content>
+    </layout_v1:slide_content>
 
-</layout:slide>
+</layout_v1:slide>

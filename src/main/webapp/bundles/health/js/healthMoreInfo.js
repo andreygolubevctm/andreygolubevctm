@@ -9,7 +9,14 @@
         moduleEvents = events.healthMoreInfo;
 
     var $bridgingContainer = $('.moreInfoDropdown'),
-        topPosition;
+        scrollPosition, //The position of the page on the modal display,
+        topPosition,
+        testimonials = [
+            {quote:"Compare the Market helped me choose a policy with features relevant to me. I no longer pay for benefits I don't use", author:"Andrea, WA"},
+            {quote:"With Compare the Market I was able to find the same level of cover but now save $60 a month off my premium", author:"Geoff, QLD"},
+            {quote:"Health insurance is important to us as it gives us the peace of mind that if something went wrong we'd be covered", author:"Julie Barrett, NSW"},
+            {quote:"The whole process was really simple and really easy. I’d definitely use comparethemarket.com.au again", author:"Wendy, WA"}
+        ];
 
 
     function initMoreInfo() {
@@ -17,12 +24,14 @@
         var options = {
             container: $bridgingContainer,
             updateTopPositionVariable: updateTopPositionVariable,
+            hideAction: 'fadeOut',
+            showAction: 'fadeIn',
             showActionWhenOpen: 'fadeIn',
             modalOptions: {
-                className: 'modal-breakpoint-wide modal-tight bridgingContainer',
+                className: 'modal-breakpoint-wide modal-tight moreInfoDropdown',
                 openOnHashChange: false,
                 leftBtn: {
-                    label: 'All Products',
+                    label: 'Back to results',
                     icon: '<span class="icon icon-arrow-left"></span>',
                     callback: function (eventObject) {
                         $(eventObject.currentTarget).closest('.modal').modal('hide');
@@ -31,12 +40,6 @@
                 onClose: function() {
                     onBeforeHideTemplate();
                     meerkat.modules.moreInfo.close();
-                },
-                onOpen: function(dialogId){
-                    // just fighting Bootstrap here...
-                    // It seems to think that because the body is overflowing, it needs to add right padding to cater for the scrollbar width
-                    // so taking that off once the modal is open
-                    $("#"+dialogId).css('padding-right', '0px');
                 }
             },
             runDisplayMethod: runDisplayMethod,
@@ -81,6 +84,16 @@
             meerkat.modules.moreInfo.open.apply(this, [event]);
         });
 
+        $(document.body).on("click", ".next-steps", function nextStepsClick(event) {
+            var product = Results.getSelectedProduct();
+            if(!product) {
+                return;
+            }
+
+            var modalId = meerkat.modules.dialogs.show({
+                htmlContent: product.whatHappensNext
+            });
+        });
 
     }
 
@@ -117,6 +130,12 @@
 
     function eventSubscriptions() {
 
+        meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function bridgingPageHashChange(event) {
+            if (meerkat.modules.deviceMediaState.get() != 'xs' && event.hash.indexOf('/moreinfo') == -1) {
+                meerkat.modules.moreInfo.hideTemplate($bridgingContainer);
+            }
+        });
+
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function bridgingPageEnterXsState() {
             if (meerkat.modules.moreInfo.isBridgingPageOpen()) {
                 meerkat.modules.moreInfo.close();
@@ -129,13 +148,6 @@
             }
         });
 
-        meerkat.messaging.subscribe(meerkatEvents.moreInfo.bridgingPage.SHOW, function (state) {
-            $(Results.settings.elements.page).css("overflow", "hidden").height($bridgingContainer.outerHeight());
-        });
-        meerkat.messaging.subscribe(meerkatEvents.moreInfo.bridgingPage.HIDE, function (state) {
-            $(Results.settings.elements.page).css("overflow", "visible").height("");
-        });
-
     }
 
     /**
@@ -144,7 +156,6 @@
     function runDisplayMethod(productId) {
         var currStep = meerkat.modules.journeyEngine.getCurrentStep().navigationId;
         if (meerkat.modules.deviceMediaState.get() != 'xs' &&  currStep != 'apply' && currStep != 'payment') {
-            meerkat.modules.resultsHeaderBar.disableAffixMode();
             meerkat.modules.moreInfo.showTemplate($bridgingContainer);
         } else {
             meerkat.modules.moreInfo.showModal();
@@ -177,7 +188,6 @@
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
-
         $('#'+dialogId).find('.modal-body').children().wrap("<form class='healthMoreInfoModel'></form>");
 
         if (meerkat.site.emailBrochures.enabled) {
@@ -187,6 +197,15 @@
         // Move dual-pricing panel
         $('.more-info-content .moreInfoRightColumn > .dualPricing').insertAfter($('.more-info-content .moreInfoMainDetails'));
         populateBrochureEmailForModel();
+
+        fixBootstrapModalPaddingIssue(dialogId);
+    }
+
+    function fixBootstrapModalPaddingIssue(dialogId){
+        // just fighting Bootstrap here...
+        // It seems to think that because the body is overflowing, it needs to add right padding to cater for the scrollbar width
+        // so taking that off once the modal is open
+        $("#"+dialogId).css('padding-right', '0px');
     }
 
     function onAfterShowModal() {
@@ -215,8 +234,6 @@
     function onBeforeHideTemplate() {
         // unfade all headers
         $(Results.settings.elements.page).find(".result").removeClass("faded");
-        // reset button to default one
-        $('.btn-close-more-info').removeClass("btn-close-more-info").addClass("btn-more-info");
     }
 
     function initialiseBrochureEmailForm(product, parent, form) {
@@ -243,7 +260,7 @@
             emailResultsSuccessCallback: function onSendBrochuresCallback(result, settings) {
                 if (result.success) {
                     parent.find('.formInput').hide();
-                    parent.find('.moreInfoEmailBrochuresSuccess').show();
+                    parent.find('.moreInfoEmailBrochuresSuccess').removeClass("hidden");
                     meerkat.modules.emailBrochures.tearDown(settings);
                     meerkat.modules.healthResults.setSelectedProduct(product);
                 } else {
@@ -260,14 +277,20 @@
         });
     }
 
+    /**
+     * Set the current scroll position so that it can be used when modals are closed
+     */
+    function setScrollPosition() {
+        scrollPosition = $(window).scrollTop();
+    }
+
+    /**
+     * Sets the view state for when your bridging page or modal is open.
+     * Called from meerkat.modules.moreInfo.openBridgingPage
+     */
     function onBeforeShowBridgingPage($this) {
-        $(Results.settings.elements.page).find(".result").addClass("faded");
-        // reset all the close buttons (there should only be one) to default button
-        $(".btn-close-more-info").removeClass("btn-close-more-info").addClass("btn-more-info");
-        // unfade the header from the clicked button
-        $this.parents(".result").removeClass("faded");
-        // replace clicked button with close button
-        $this.removeClass("btn-more-info").addClass("btn-close-more-info");
+
+        setScrollPosition();
 
         var data = {
             actionStep: 'Health More Info'
@@ -276,10 +299,16 @@
             method: 'trackQuoteForms',
             object: data
         });
+
+        // hide the results before showing the more info page (except for xs as we use a modal)
+        if (meerkat.modules.deviceMediaState.get() != 'xs') {
+            $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage').addClass("hidden");
+        }
     }
 
     function onAfterHideTemplate() {
-        meerkat.modules.resultsHeaderBar.enableAffixMode();
+        $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage').removeClass("hidden");
+        $(window).scrollTop(scrollPosition);
     }
 
     //
@@ -292,11 +321,7 @@
         if (typeof product.hospitalCover === "undefined") {
             // Ensure this is a Hospital product before trying to use the benefits properties
             if (typeof product.hospital !== 'undefined' && typeof product.hospital.benefits !== 'undefined') {
-
                 prepareCoverFeatures("hospital.benefits", "hospitalCover");
-
-                coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", "Public Hospital");
-                coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", "Private Hospital");
             }
         }
 
@@ -305,7 +330,20 @@
             if (typeof product.extras !== 'undefined' && typeof product.extras === 'object') {
                 prepareCoverFeatures("extras", "extrasCover");
             }
+
         }
+
+        prepareTestimonial();
+    }
+
+    /**
+     * Gets one of the testimonials from a set list
+     * @return void
+     */
+    function prepareTestimonial(){
+        // Updates by reference
+        var product = meerkat.modules.moreInfo.getProduct();
+        product.testimonial = testimonials[_.random(0,testimonials.length-1)];
     }
 
     /**
@@ -372,6 +410,11 @@
             exclusions: []
         };
 
+        if(target == "hospitalCover"){
+            coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", {name:"Public Hospital", className: "CTM-hospital"});
+            coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", {name:"Private Hospital", className: "CTM-privatehospital"});
+        }
+
         var lookupKey;
         var name;
         _.each(Object.byString(product, searchPath), function eachBenefit(benefit, key) {
@@ -380,26 +423,25 @@
             var foundObject = _.findWhere(resultLabels, {"p": lookupKey});
 
             if (typeof foundObject !== "undefined") {
-                name = foundObject.n;
-                coverSwitch(benefit.covered, target, name);
+                coverSwitch(benefit.covered, target, $.extend(benefit, {name: foundObject.n, className: foundObject.c} ));
             }
 
         });
 
     }
 
-    function coverSwitch(cover, target, name) {
+    function coverSwitch(cover, target, benefit) {
         // Updates by reference
         var product = meerkat.modules.moreInfo.getProduct();
         switch (cover) {
             case 'Y':
-                product[target].inclusions.push(name);
+                product[target].inclusions.push(benefit);
                 break;
             case 'R':
-                product[target].restrictions.push(name);
+                product[target].restrictions.push(benefit);
                 break;
             case 'N':
-                product[target].exclusions.push(name);
+                product[target].exclusions.push(benefit);
                 break;
         }
     }

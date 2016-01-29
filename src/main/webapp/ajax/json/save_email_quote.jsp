@@ -27,7 +27,7 @@
 	</c:choose>
 </c:set>
 <%-- First check owner of the quote --%>
-<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" /></c:set>
+<c:set var="proceedinator"><core_v1:access_check quoteType="${quoteType}" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
 		${logger.debug('PROCEEDINATOR PASSED')}
@@ -141,7 +141,7 @@
 			<%-- Add/Update the user record in email_master --%>
 			<c:catch var="error">
 				<c:if test="${!userData.loginExists && !isOperator}">
-					<agg:write_email
+					<agg_v1:write_email
 						brand="${brand}"
 						vertical="${vertical}"
 						source="${source}"
@@ -168,7 +168,7 @@
 				</c:when>
 				<c:otherwise>
 					<c:set var="ct_outcome">
-						<core:transaction touch="S" noResponse="false" writeQuoteOverride="${writeQuoteOverride}" emailAddress="${emailAddress}" comment="${source}" />
+						<core_v1:transaction touch="S" noResponse="false" writeQuoteOverride="${writeQuoteOverride}" emailAddress="${emailAddress}" comment="${source}" />
 					</c:set>
 
 					${logger.info('Touch quote with S. {}',log:kv('outcome',ct_outcome ))}
@@ -229,7 +229,7 @@
 	</c:when>
 	<c:otherwise>
 		<c:if test="${isOperator && param.save_unlock == 'Y'}">
-			<core:transaction touch="X" noResponse="true" />
+			<core_v1:transaction touch="X" noResponse="true" />
 		</c:if>
 
 		<c:choose>

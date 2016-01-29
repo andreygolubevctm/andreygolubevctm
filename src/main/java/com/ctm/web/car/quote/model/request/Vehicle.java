@@ -20,6 +20,8 @@ public class Vehicle {
 
     private String redbookCode;
 
+    private String colour;
+
     private List<NonStandardAccessory> nonStandardAccessories = emptyList();
 
     private Integer annualKilometres;
@@ -39,6 +41,10 @@ public class Vehicle {
     private String securityOption;
 
     private String use;
+
+    private String passengerPayment;
+
+    private String goodsPayment;
 
     public String getMake() {
         return make;
@@ -94,6 +100,14 @@ public class Vehicle {
 
     public void setRedbookCode(String redbookCode) {
         this.redbookCode = redbookCode;
+    }
+
+    public String getColour() {
+        return colour;
+    }
+
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     public List<NonStandardAccessory> getNonStandardAccessories() {
@@ -174,5 +188,21 @@ public class Vehicle {
 
     public void setUse(String use) {
         this.use = use;
+    }
+
+    public void setPassengerPayment(String passengerPayment) {
+        this.passengerPayment = passengerPayment;
+    }
+
+    public String getPassengerPayment() {
+        return passengerPayment;
+    }
+
+    public void setGoodsPayment(String goodsPayment) {
+        this.goodsPayment = goodsPayment;
+    }
+
+    public String getGoodsPayment() {
+        return goodsPayment;
     }
 }

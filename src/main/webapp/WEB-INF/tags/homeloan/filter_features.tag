@@ -6,23 +6,23 @@
 
 <%-- HTML --%>
 <div class="homeloan-filter-features">
-	<field_new:checkbox xpath="${xpath}/redraw" value="redraw"
+	<field_v2:checkbox xpath="${xpath}/redraw" value="redraw"
 				title="Redraw"
 				required="false"
 				label="true" />
-	<field_new:checkbox xpath="${xpath}/offset" value="offset"
+	<field_v2:checkbox xpath="${xpath}/offset" value="offset"
 				title="Offset"
 				required="false"
 				label="true" />
-	<field_new:checkbox xpath="${xpath}/bpay" value="bpay"
+	<field_v2:checkbox xpath="${xpath}/bpay" value="bpay"
 				title="BPay"
 				required="false"
 				label="true" />
-	<field_new:checkbox xpath="${xpath}/onlineBanking" value="onlineBanking"
+	<field_v2:checkbox xpath="${xpath}/onlineBanking" value="onlineBanking"
 				title="Online Banking"
 				required="false"
 				label="true" />
-	<field_new:checkbox xpath="${xpath}/extraRepayments" value="extraRepayments"
+	<field_v2:checkbox xpath="${xpath}/extraRepayments" value="extraRepayments"
 				title="Extra Repayments"
 				required="false"
 				label="true" />

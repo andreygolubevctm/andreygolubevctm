@@ -6,19 +6,19 @@
 
 <%-- HTML --%>
 <div class="homeloan-filter-loan-type">
-	<field_new:checkbox xpath="${xpath}/productFixed" value="Fixed"
+	<field_v2:checkbox xpath="${xpath}/productFixed" value="Fixed"
 				title="Fixed"
 				required="false"
 				label="true" />
-	<field_new:checkbox xpath="${xpath}/productVariable" value="Variable"
+	<field_v2:checkbox xpath="${xpath}/productVariable" value="Variable"
 				title="Variable"
 				required="false"
 				label="true" />
-	<field_new:checkbox xpath="${xpath}/productLineOfCredit" value="LineOfCredit"
+	<field_v2:checkbox xpath="${xpath}/productLineOfCredit" value="LineOfCredit"
 				title="Line of Credit"
 				required="false"
 				label="true" />
-	<field_new:checkbox xpath="${xpath}/productLowIntroductoryRate" value="LowIntroductoryRate"
+	<field_v2:checkbox xpath="${xpath}/productLowIntroductoryRate" value="LowIntroductoryRate"
 				title="Low Introductory Rate"
 				required="false"
 				label="true" />

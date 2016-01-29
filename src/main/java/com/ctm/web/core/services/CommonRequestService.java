@@ -101,7 +101,7 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
         return sendRequestToService(brand, vertical, serviceName, endpoint, data, responseClass, getApplyRequest(brand, data, payload, productId));
     }
 
-    private RESPONSE sendRequestToService(Brand brand, Vertical.VerticalType vertical, String serviceName, Endpoint endpoint, Request data, Class<RESPONSE> responseClass, Object requestObj) throws ServiceConfigurationException, DaoException, IOException {
+    protected RESPONSE sendRequestToService(Brand brand, Vertical.VerticalType vertical, String serviceName, Endpoint endpoint, Request data, Class<RESPONSE> responseClass, Object requestObj) throws ServiceConfigurationException, DaoException, IOException {
         QuoteServiceProperties serviceProperties = getQuoteServiceProperties(serviceName, brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
         String jsonRequest = objectMapper.writeValueAsString(requestObj);

@@ -4,7 +4,7 @@
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.write.register_fatal_error')}" />
 
-<core_new:no_cache_header/>
+<core_v2:no_cache_header/>
 
 <c:set var="page"><c:out value="${param.page}" escapeXml="true" /></c:set>
 <c:set var="message"><c:out value="${param.message}" escapeXml="true" /></c:set>

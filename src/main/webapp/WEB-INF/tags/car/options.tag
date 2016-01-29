@@ -9,7 +9,7 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
-<form_new:fieldset_columns sideHidden="false">
+<form_v2:fieldset_columns sideHidden="false">
 
 	<jsp:attribute name="rightColumn">
 		<ui:bubble variant="info" className="point-left">
@@ -25,4 +25,4 @@
         <car:options_usage xpath="${xpath}/vehicle" />
         <car:options_dialog_inputs xpath="${xpath}/vehicle/options/inputs/container" />
     </jsp:body>
-</form_new:fieldset_columns>
+</form_v2:fieldset_columns>

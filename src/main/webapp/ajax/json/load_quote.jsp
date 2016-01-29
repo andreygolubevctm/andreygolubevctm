@@ -60,7 +60,7 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 	</c:when>
 	<c:otherwise>
 		<%-- First check owner of the quote --%>
-		<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
+		<c:set var="proceedinator"><core_v1:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
 		<c:choose>
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
 				${logger.debug('PROCEEDINATOR PASSED. {}', log:kv('proceedinator', proceedinator))}
@@ -94,12 +94,12 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 						${logger.debug('Creating new transaction id')}
 						<go:setData dataVar="data" xpath="current/transactionId" value="*DELETE" />
 						<c:set var="getTransactionID">
-							<core:get_transaction_id  quoteType="${param.vertical}" />
+							<core_v1:get_transaction_id  quoteType="${param.vertical}" />
 						</c:set>
 					</c:when>
 					<c:otherwise>
 						<c:set var="getTransactionID">
-							<core:get_transaction_id
+							<core_v1:get_transaction_id
 										quoteType="${param.vertical}"
 										transactionId="${requestedTransaction}"
 										id_handler="${id_handler}" />
@@ -238,19 +238,19 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES (HEALTH)--%>
 						<c:when test="${param.action=='amend' && param.vertical=='health' && data.health.privacyoptin!='Y'}">
-							<core:transaction touch="L" noResponse="true" />
+							<core_v1:transaction touch="L" noResponse="true" />
 							<destUrl>${pageName}?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
-							<core:transaction touch="L" noResponse="true" />
+							<core_v1:transaction touch="L" noResponse="true" />
 							<destUrl>${pageName}?action=${param.action}&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
 						<c:when test="${param.action=='latest' && data[xpath].privacyoptin!='Y'}">
-							<core:transaction touch="L" noResponse="true" />
+							<core_v1:transaction touch="L" noResponse="true" />
 							<%-- Was a new commencement date passed? --%>
 							<c:if test="${not empty param.newDate and param.newDate != ''}">
 								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
@@ -260,7 +260,7 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 
 						<%-- GET LATEST --%>
 						<c:when test="${param.action=='latest'}">
-							<core:transaction touch="L" noResponse="true" />
+							<core_v1:transaction touch="L" noResponse="true" />
 							<%-- Was a new commencement date passed? --%>
 							<c:if test="${not empty param.newDate and param.newDate != ''}">
 								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />

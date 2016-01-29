@@ -10,6 +10,8 @@ public class Vehicle {
 
     private String body;
 
+    private String colour;
+
     private String damage;
 
     private String factoryOptions;
@@ -46,6 +48,10 @@ public class Vehicle {
 
     private String use;
 
+    private String passengerPayment;
+
+    private String goodsPayment;
+
     private String variant;
 
     private String year;
@@ -80,6 +86,14 @@ public class Vehicle {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getColour() {
+        return colour;
+    }
+
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     public String getDamage() {
@@ -225,6 +239,23 @@ public class Vehicle {
     public void setUse(String use) {
         this.use = use;
     }
+
+    public void setPassengerPayment(String passengerPayment) {
+        this.passengerPayment = passengerPayment;
+    }
+
+    public String getPassengerPayment() {
+        return passengerPayment;
+    }
+
+    public void setGoodsPayment(String goodsPayment) {
+        this.goodsPayment = goodsPayment;
+    }
+
+    public String getGoodsPayment() {
+        return goodsPayment;
+    }
+
 
     public String getVariant() {
         return variant;

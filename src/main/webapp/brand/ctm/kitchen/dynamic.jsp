@@ -11,11 +11,11 @@
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/"/>
 
 <%-- LOAD SETTINGS --%>
-<core_new:load_preload/>
+<core_v2:load_preload/>
 
 
 <%-- HTML --%>
-<layout:generic_page title="Kitchen sink: Current &amp; new">
+<layout_v1:generic_page title="Kitchen sink: Current &amp; new">
 
 	<jsp:attribute name="head">
 		<link href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/kitchensink.css" rel="stylesheet">
@@ -67,4 +67,4 @@
         <%@include file="../../../framework/kitchen/dynamic.jsp" %>
     </jsp:body>
 
-</layout:generic_page>
+</layout_v1:generic_page>

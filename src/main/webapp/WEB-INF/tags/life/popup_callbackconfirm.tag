@@ -13,18 +13,19 @@
 
 <%-- HTML --%>
 <div id="callbackconfirm-dialog" class="callbackconfirm-dialog" title="Callback Confirmation">
-	<form:form action="ip_quote_results.jsp" method="POST" id="callBackConfirmationForm" name="callBackConfirmationForm">
+	<form_v1:form action="ip_quote_results.jsp" method="POST" id="callBackConfirmationForm" name="callBackConfirmationForm">
 		<div class="dialog_header"><!-- empty --></div>
 		<div class="wrapper">
 			<h4>Before we can call you we need your consent:</h4>
 
-			<form:row label="Your phone number">
-				<field:contact_telno
+			<form_v1:row label="Your phone number">
+				<%--This should be cleaned up to use Flexi_contact_number when LIFE is refactored--%>
+				<field_v1:contact_telno
 						xpath="${xpath}/confirmContactNumber"
 						required="true"
 						title="your phone number"
 						className="inlineValidation" />
-			</form:row>
+			</form_v1:row>
 
 			<c:if test="${empty callCentre}">
 				<div class="${xpath}_contactDetails_callHelp">Phone number must be either a mobile phone<br/>or a landline number (including area code)</div>
@@ -32,7 +33,7 @@
 				<div class="${xpath}_contactDetails_callConfirm">I understand comparethemarket.com.au compares life insurance policies from a range of <a href="http://www.comparethemarket.com.au/${life_link}/#tab_nav_1610_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker or Auto &amp; General Services, Compare the Market&#39;s trusted life partners may contact me to further assist with my life insurance needs</div>
 			</c:if>
 
-			<field:hidden xpath="${xpath}/confirmCall" />
+			<field_v1:hidden xpath="${xpath}/confirmCall" />
 
 			<div class="button-wrapper">
 				<a href="javascript:void(0);" class="button proceed"><span>Proceed</span></a>
@@ -40,7 +41,7 @@
 			</div>
 		</div>
 		<div class="dialog_footer"><!-- empty --></div>
-	</form:form>
+	</form_v1:form>
 </div>
 
 

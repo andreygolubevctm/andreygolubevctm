@@ -9,11 +9,11 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <%-- Dialog wrapper --%>
-<core:js_template id="quote-nonstandard-accessories-template">
+<core_v1:js_template id="quote-nonstandard-accessories-template">
 <div id="${name}Dialog">
 	<div class="tab-content">
 		<div class="tab-pane quote-optional-accessories-listed">
-			<form_new:fieldset legend="">
+			<form_v2:fieldset legend="">
 				<p class="no-items-found">No non-standard accessories have been found for your selected vehicle.</p>
 				<div class="items-found">
 					<div class="row">
@@ -39,9 +39,9 @@
 						<div class="row accessoryRow">
 							<div class="col-xs-5">
 								{{ if (vehicleNonStandardAccessory.checked) { }}
-									<field_new:checkbox xpath="quote/nonstandard/acc" id="{{= index }}_checkbox" className="nonStandardAccessoryCheckbox" value="{{= vehicleNonStandardAccessory.code }}" required="false" label="{{= vehicleNonStandardAccessory.label }}" title="{{= vehicleNonStandardAccessory.label }}" customAttribute="itemIndex='{{= index }}' checked='checked'" />
+									<field_v2:checkbox xpath="quote/nonstandard/acc" id="{{= index }}_checkbox" className="nonStandardAccessoryCheckbox" value="{{= vehicleNonStandardAccessory.code }}" required="false" label="{{= vehicleNonStandardAccessory.label }}" title="{{= vehicleNonStandardAccessory.label }}" customAttribute="itemIndex='{{= index }}' checked='checked'" />
 								{{ } else { }}
-									<field_new:checkbox xpath="quote/nonstandard/acc" id="{{= index }}_checkbox" className="nonStandardAccessoryCheckbox" value="{{= vehicleNonStandardAccessory.code }}" required="false" label="{{= vehicleNonStandardAccessory.label }}" title="{{= vehicleNonStandardAccessory.label }}" customAttribute="itemIndex='{{= index }}'" />
+									<field_v2:checkbox xpath="quote/nonstandard/acc" id="{{= index }}_checkbox" className="nonStandardAccessoryCheckbox" value="{{= vehicleNonStandardAccessory.code }}" required="false" label="{{= vehicleNonStandardAccessory.label }}" title="{{= vehicleNonStandardAccessory.label }}" customAttribute="itemIndex='{{= index }}'" />
 								{{ } }}
 							</div>
 							<div class="col-xs-7">
@@ -56,16 +56,16 @@
 						</div>
 					{{ }); }}
 				</div>
-			</form_new:fieldset>
+			</form_v2:fieldset>
 		</div>
 		<div class="tab-pane quote-standard-accessories">
-			<form_new:fieldset legend="These are fitted standard to your vehicle and do not need to be declared">
+			<form_v2:fieldset legend="These are fitted standard to your vehicle and do not need to be declared">
 				<p class="no-items-found">No included standard accessories have been found for your selected vehicle.</p>
 				<div class="row items-found">
 					<ul>{{= standardAccessories }}</ul>
 				</div>
-			</form_new:fieldset>
+			</form_v2:fieldset>
 		</div>
 	</div>
 </div>
-</core:js_template>
+</core_v1:js_template>

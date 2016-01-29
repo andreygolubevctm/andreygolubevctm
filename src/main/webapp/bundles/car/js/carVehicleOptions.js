@@ -43,6 +43,7 @@
 				saveditems:		"#quote_vehicle_accessoriesSelections .added-items ul"
 			},
 			redbook:			"#quote_vehicle_redbookCode"
+
 	};
 
 	elements.accessories.wrapper = "#quote_vehicle_accessoriesDialog .quote-optional-accessories-listed";
@@ -75,8 +76,7 @@
 
 			meerkat.modules.loadingAnimation.showAfter($element);
 
-			var vehicle = meerkat.modules.carVehicleSelection.isSplitTest() ? $(elements.redbook).find("input:checked") : $(elements.redbook);
-			var data = {redbookCode:(vehicle ? vehicle.val() : null)};
+			var data = {redbookCode:$(elements.redbook).val()};
 
 			ajaxInProgress = true;
 

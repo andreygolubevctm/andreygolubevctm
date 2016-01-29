@@ -3,7 +3,7 @@
 
 <session:get />
 
-<c:set var="proceedinator"><core:access_check quoteType="${param.quoteType}" /></c:set>
+<c:set var="proceedinator"><core_v1:access_check quoteType="${param.quoteType}" /></c:set>
 <c:if test="${empty proceedinator}">
 	<c:set var="proceedinator">${0}</c:set>
 </c:if>
@@ -12,7 +12,7 @@
 <result>
 	<success>${proceedinator}</success>
 	<c:if test="${proceedinator eq 0}">
-	<message><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></message>
+	<message><core_v1:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></message>
 	</c:if>
 </result>
 </c:set>

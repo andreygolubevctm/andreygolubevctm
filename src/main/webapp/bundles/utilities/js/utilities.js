@@ -120,6 +120,7 @@
             },
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
+                meerkat.modules.utilitiesSnapshot.initYourDetailsSnapshot();
             },
             validation: {
                 validate: true,

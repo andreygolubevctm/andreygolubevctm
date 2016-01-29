@@ -138,7 +138,7 @@
 <%-- STEP 2: Write email data to aggregator.email_master and get the EmailID --%>
 <c:if test="${empty errorPool}">
 	<c:catch var="error">
-		<agg:write_email
+		<agg_v1:write_email
 			source="${source}"
 			brand="${brand}"
 			vertical="${vertical}"
@@ -175,7 +175,7 @@
 					<c:set var="items">firstname=${data['competition/firstname']}::lastname=${data['competition/lastname']}::phone=${data['competition/phone']}</c:set>
 
 					<c:set var="entry_result">
-						<agg:write_competition
+						<agg_v1:write_competition
 							competition_id="${competition_id}"
 							email_id="${email_id}"
 							items="${items}"
