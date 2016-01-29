@@ -50,7 +50,7 @@ import static javax.servlet.http.HttpServletResponse.*;
         "/simples/comments/list.json",
         "/simples/messages/get.json",
         "/simples/messages/next.json",
-        "/simples/messages/postponed.json",
+        "/simples/messages/postponed.json",//anything in the future scheduled for the current user
         "/simples/tickle.json",
 		"/simples/transactions/lock.json",
 		"/simples/transactions/details.json",
