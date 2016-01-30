@@ -57,47 +57,42 @@ public class InInIcwsService {
 	public void initConfig() {
 		this.connectionUrl = inInConfig.getCicUrl() + "/connection";
 		this.queueSubscriptionUrl = inInConfig.getCicUrl()+ "/${sessionId}/messaging/subscriptions/queues/${subscriptionName}";
-		this.messagesUrl = inInConfig.getCicUrl() /*"http://127.0.0.1:8888/icws"*/ + "/${sessionId}/messaging/messages";
+		this.messagesUrl = inInConfig.getCicUrl() + "/${sessionId}/messaging/messages";
 		this.securePauseUrl = inInConfig.getCicUrl() + "/${sessionId}/interactions/${interactionId}/secure-pause";
 	}
 
-	public Observable<PauseResumeResponse> pause() {
-		return securePause(SecurePauseType.PAUSE_WITH_INFINITE_TIMEOUT, "lkauler", "foo");
+	public Observable<PauseResumeResponse> pause(final String agentUsername, final Optional<String> interactionId) {
+		return securePause(SecurePauseType.PAUSE_WITH_INFINITE_TIMEOUT, agentUsername, interactionId);
 	}
 
-	public Observable<PauseResumeResponse> resume() {
-		return securePause(SecurePauseType.RESUME_RECORDING, "lkauler", "foo");
+	public Observable<PauseResumeResponse> resume(final String agentUsername, final Optional<String> interactionId) {
+		return securePause(SecurePauseType.RESUME_RECORDING, agentUsername, interactionId);
 	}
 
-	private Observable<PauseResumeResponse> securePause(final SecurePauseType securePauseType, final String username, final String __interactionId) {
+	private Observable<PauseResumeResponse> securePause(final SecurePauseType securePauseType, final String agentUsername, final Optional<String> interactionId) {
 		// Get session connection
 		return connection()
 				.flatMap(connectionResp ->
 								// Put a subscription on agent activity
-								queueSubscription(username, connectionResp)
+								queueSubscription(agentUsername, connectionResp)
 										.delay(1, TimeUnit.SECONDS)
 										// Get messages of agent activity (should give us the current phone call status)
 										.flatMap(s -> getInteractionId(connectionResp))
 										// Pause or resume the call
-										.flatMap(interactionId -> securePauseRequest(securePauseType, interactionId, connectionResp))
+										.flatMap(iId -> securePauseRequest(securePauseType, iId, connectionResp))
 										.flatMap(pauseResp -> Observable.just(PauseResumeResponse.success()))
-										.onErrorReturn(throwable -> {
-											if (throwable instanceof HttpClientErrorException) {
-												LOGGER.error("securePause failed. {}, {}, {}", kv("username",username), kv("securePauseType",securePauseType), ((HttpClientErrorException) throwable).getResponseBodyAsString());
-											} else {
-												LOGGER.error("securePause failed. {}, {}", kv("username",username), kv("securePauseType",securePauseType), throwable);
-											}
-											return PauseResumeResponse.fail();
-										})
+										.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable))
 				)
-				.onErrorReturn(throwable -> {
-					if (throwable instanceof HttpClientErrorException) {
-						LOGGER.error("securePause failed. {}, {}, {}", kv("username",username), kv("securePauseType",securePauseType), ((HttpClientErrorException) throwable).getResponseBodyAsString());
-					} else {
-						LOGGER.error("securePause failed. {}, {}", kv("username",username), kv("securePauseType",securePauseType), throwable);
-					}
-					return PauseResumeResponse.fail();
-				});
+				.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable));
+	}
+
+	private PauseResumeResponse handleSecurePauseError(final SecurePauseType securePauseType, final String agentUsername, final Throwable throwable) {
+		if (throwable instanceof HttpClientErrorException) {
+			LOGGER.error("securePause failed. {}, {}, {}", kv("agentUsername",agentUsername), kv("securePauseType",securePauseType), ((HttpClientErrorException) throwable).getResponseBodyAsString());
+		} else {
+			LOGGER.error("securePause failed. {}, {}", kv("agentUsername",agentUsername), kv("securePauseType",securePauseType), throwable);
+		}
+		return PauseResumeResponse.fail();
 	}
 
 	/**
@@ -170,16 +165,15 @@ public class InInIcwsService {
 	private Observable<String> getInteractionId(final ResponseEntity<ConnectionResp> connectionResp) {
 		final Observable<Message> messages = getMessages(connectionResp);
 		Observable<Optional<String>> interactionId = messages
-				.map(message -> {
-					LOGGER.debug("Message: " + message.toString());
-					return message;
-				})
 				// Look at messages that have added or changed interactions
-				.filter(message -> (message.getInteractionsAdded() != null && message.getInteractionsAdded().size() > 0)
-						|| (message.getInteractionsChanged() != null && message.getInteractionsChanged().size() > 0))
+				.filter(message -> message.getInteractionsAdded().size() > 0 || message.getInteractionsChanged().size() > 0)
 				// Look at messages that have a valid call state
 				.filter(message -> message.getInteractionsAdded().stream().filter(i -> i.getAttributes().callState != null).count() > 0
 						|| message.getInteractionsChanged().stream().filter(i -> i.getAttributes().callState != null).count() > 0)
+				.map(message -> {
+					LOGGER.debug("Checking message: " + message.toString());
+					return message;
+				})
 				// Stream the two interaction arrays and get the first ID
 				.map(message -> Stream.concat(message.getInteractionsAdded().stream(), message.getInteractionsChanged().stream())
 							.findFirst()
