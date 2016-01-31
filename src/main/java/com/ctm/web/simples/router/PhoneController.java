@@ -59,33 +59,38 @@ public class PhoneController extends CommonQuoteRouter {
         final PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, "HEALTH");
 
         final boolean inInEnabled = StringUtils.equalsIgnoreCase("true", pageSettings.getSetting("inInEnabled"));
+        PauseResumeResponse pauseResumeResponse = PauseResumeResponse.fail("Failed");
 
-        String authName = null;
-        if (request.getSession() != null) {
-            AuthenticatedData authenticatedData = getSessionDataServiceBean().getAuthenticatedSessionData(request);
-            if (authenticatedData != null) {
-                authName = authenticatedData.getUid();
-            }
-        }
-
-        if (StringUtils.isEmpty(authName)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return PauseResumeResponse.fail();
-        }
-
+        // Logic if we're using the InIn dialler
         if (inInEnabled) {
-            if (action == PauseRecord) {
-                return inInIcwsService.pause(authName, Optional.empty()).toBlocking().first();
-            } else if (action == ResumeRecord) {
-                return inInIcwsService.resume(authName, Optional.empty()).toBlocking().first();
+            String authName = null;
+            if (request.getSession() != null) {
+                AuthenticatedData authenticatedData = getSessionDataServiceBean().getAuthenticatedSessionData(request);
+                if (authenticatedData != null) {
+                    authName = authenticatedData.getUid();
+                }
             }
+            if (StringUtils.isEmpty(authName)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return PauseResumeResponse.fail("Unauthorised to access this feature");
+            } else {
+                if (action == PauseRecord) {
+                    pauseResumeResponse = inInIcwsService.pause(authName, Optional.empty()).toBlocking().first();
+                } else if (action == ResumeRecord) {
+                    pauseResumeResponse = inInIcwsService.resume(authName, Optional.empty()).toBlocking().first();
+                }
+            }
+        // Normal Verint telephony system
         } else {
-            // Verint service throws exceptions which will be caught by our handleException() below.
+            // Verint service throws exceptions which will be caught by our handleException()
             verintPauseResumeService.pauseResumeRecording(request, pageSettings);
-            return PauseResumeResponse.success();
+            pauseResumeResponse = PauseResumeResponse.success();
         }
 
-        return PauseResumeResponse.fail();
+        if (!pauseResumeResponse.isSuccess()) {
+            response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+        }
+        return pauseResumeResponse;
     }
 
     @ExceptionHandler

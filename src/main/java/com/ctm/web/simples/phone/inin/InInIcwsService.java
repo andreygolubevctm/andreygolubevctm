@@ -92,7 +92,7 @@ public class InInIcwsService {
 		} else {
 			LOGGER.error("securePause failed. {}, {}", kv("agentUsername",agentUsername), kv("securePauseType",securePauseType), throwable);
 		}
-		return PauseResumeResponse.fail();
+		return PauseResumeResponse.fail(throwable.getMessage());
 	}
 
 	/**
