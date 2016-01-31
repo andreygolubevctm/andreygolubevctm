@@ -6,14 +6,14 @@
 
 <session:new verticalCode="HOMELOAN" authenticated="true" />
 
-<core_new:quote_check quoteType="homeloan" />
-<core_new:load_preload />
+<core_v2:quote_check quoteType="homeloan" />
+<core_v2:load_preload />
 
 <%-- Initialise Save Quote --%>
 <c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 
 <%-- HTML --%>
-<layout:journey_engine_page title="Home Loan Quote">
+<layout_v1:journey_engine_page title="Home Loan Quote">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -33,6 +33,15 @@
 			</div>
 		</div>
 	</jsp:attribute>
+
+
+	<jsp:attribute name="progress_bar">
+      <div class="progress-bar-row collapse navbar-collapse">
+		  <div class="container">
+			  <ul class="journeyProgressBar_v2"></ul>
+		  </div>
+	  </div>
+    </jsp:attribute>
 
 	<jsp:attribute name="navbar">
 
@@ -61,7 +70,7 @@
 						</c:choose></span> <b class="caret"></b></a>
 				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<div class="dropdown-container">
-						<agg_new:save_quote includeCallMeback="false" />
+						<agg_v2:save_quote includeCallMeback="false" />
 					</div>
 				</div>
 			</li>
@@ -80,7 +89,7 @@
 
 			<%-- Displays the Reference Number at the end of the menu. --%>
 			<li class="navbar-text hidden">
-				<form_new:reference_number />
+				<form_v2:reference_number />
 			</li>
 		</ul>
 		<div class="collapse navbar-collapse">
@@ -121,9 +130,9 @@
 	<jsp:body>
 
 		<div class="hiddenFields">
-			<field:hidden xpath="homeloan/renderingMode" />
-			<form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
-			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
+			<field_v1:hidden xpath="homeloan/renderingMode" />
+			<form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
+			<core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>
 
 		<%-- Slides --%>
@@ -137,4 +146,4 @@
 
 	</jsp:body>
 
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

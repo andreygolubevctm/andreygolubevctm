@@ -1,5 +1,6 @@
 package com.ctm.web.core.services;
 
+import com.ctm.apply.model.request.ApplyRequest;
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
@@ -47,7 +48,7 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
     }
 
     protected void setFilter(ProviderFilter providerFilter) throws Exception {
-        if(!providerFilter.getProviderKey().isEmpty()) {
+        if(providerFilter.getProviderKey() != null && !providerFilter.getProviderKey().isEmpty()) {
             // Check if Provider Key provided and use as filter if available
             // It is acceptable to throw exceptions here as provider key is checked
             // when page loaded so technically should not reach here otherwise.
@@ -58,41 +59,59 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
                 providerFilter.setSingleProvider(providerCode);
             }
             // Provider Key is mandatory in NXS
-        } else if (!providerFilter.getAuthToken().isEmpty()) {
-            // Check if AuthToken provided and use as filter if available
-            // It is acceptable to throw exceptions here as provider key is checked
-            // when page loaded so technically should not reach here otherwise.
-            List<String> providerCode = providerFilterDAO.getProviderDetailsByAuthToken(providerFilter.getAuthToken());
-            if (providerCode.isEmpty()) {
-                throw new RouterException("Invalid Auth Token");
-            } else {
-                providerFilter.setProviders(providerCode);
+        } else if(providerFilter.getProviders() != null && !providerFilter.getProviders().isEmpty()) {
+            // Check if Providers in list exist and throw exception if not.
+            // No need to write anything to filter as already exists
+            for (String code : providerFilter.getProviders()) {
+                String providerCode = providerFilterDAO.getProviderDetails(providerFilter.getProviderKey());
+                if (StringUtils.isBlank(providerCode)) {
+                    throw new RouterException("Invalid providerKey in providers list");
+                }
             }
-            // Provider Key is mandatory in NXS
+        } else if(providerFilter.getAuthToken() != null && !providerFilter.getAuthToken().isEmpty()) {
+            // Check if authToken exists and get let of related provider codes.
+            // Then set that list in the providerFilter
+            List<String> providers = ProviderService.getProvidersByAuthToken(providerFilter.getAuthToken());
+            if(providers == null || providers.isEmpty()) {
+                throw new RouterException("Invalid AuthToken");
+            } else {
+                providerFilter.setProviders(providers);
+            }
+        // Provider Key is mandatory in NXS
         } else if(EnvironmentService.getEnvironmentAsString().equalsIgnoreCase("nxs")) {
             throw new RouterException("Provider Key required in '" + EnvironmentService.getEnvironmentAsString() + "' environment");
         }
     }
 
-    protected RESPONSE sendRequest(Brand brand, Vertical.VerticalType vertical, String serviceName, Endpoint endpoint, Request data, PAYLOAD payload, Class<RESPONSE> responseClass) throws IOException, DaoException, ServiceConfigurationException {
-        com.ctm.web.core.providers.model.Request<PAYLOAD> request = new com.ctm.web.core.providers.model.Request<>();
-        request.setBrandCode(brand.getCode());
-        request.setClientIp(data.getClientIpAddress());
-        request.setTransactionId(data.getTransactionId());
+    protected RESPONSE sendRequest(Brand brand,
+                                        Vertical.VerticalType vertical,
+                                        String serviceName,
+                                        Endpoint endpoint, Request data,
+                                        PAYLOAD payload,
+                                        Class<RESPONSE> responseClass) throws IOException, DaoException, ServiceConfigurationException {
+        return sendRequestToService(brand, vertical, serviceName, endpoint, data, responseClass,  getQuoteRequest(brand, data, payload));
+    }
 
-        request.setPayload(payload);
+    protected RESPONSE sendApplyRequest(Brand brand,
+                                        Vertical.VerticalType vertical,
+                                        String serviceName,
+                                        Endpoint endpoint, Request data,
+                                        PAYLOAD payload,
+                                        Class<RESPONSE> responseClass, String productId) throws IOException, DaoException, ServiceConfigurationException {
+        return sendRequestToService(brand, vertical, serviceName, endpoint, data, responseClass, getApplyRequest(brand, data, payload, productId));
+    }
 
+    protected RESPONSE sendRequestToService(Brand brand, Vertical.VerticalType vertical, String serviceName, Endpoint endpoint, Request data, Class<RESPONSE> responseClass, Object requestObj) throws ServiceConfigurationException, DaoException, IOException {
         QuoteServiceProperties serviceProperties = getQuoteServiceProperties(serviceName, brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
-        String jsonRequest = objectMapper.writeValueAsString(request);
+        String jsonRequest = objectMapper.writeValueAsString(requestObj);
 
         // Log Request
         LOGGER.info("Sending request {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
         LOGGER.debug("Outbound message {}", kv("request", jsonRequest));
 
-        SimpleConnection connection = getSimpleConnection(serviceProperties, jsonRequest);
-
-        String response = connection.get(serviceProperties.getServiceUrl() + "/" +endpoint.getValue());
+        String response = setupSimpleConnection(serviceProperties, jsonRequest)
+                .get(serviceProperties.getServiceUrl() + "/" + endpoint.getValue());
         if (response == null) {
             throw new RouterException("Connection failed");
         }
@@ -104,7 +123,26 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
         return objectMapper.readValue(response, objectMapper.constructType(responseClass));
     }
 
-    protected SimpleConnection getSimpleConnection(QuoteServiceProperties serviceProperties, String jsonRequest) {
+    private ApplyRequest getApplyRequest(Brand brand, Request data, PAYLOAD payload, String productId) {
+        ApplyRequest.Builder<PAYLOAD> applyRequestBuilder= new ApplyRequest.Builder<>();
+        applyRequestBuilder.productId(productId);
+        applyRequestBuilder.brandCode(brand.getCode());
+        applyRequestBuilder.clientIp(data.getClientIpAddress());
+        applyRequestBuilder.transactionId(data.getTransactionId());
+        applyRequestBuilder.payload(payload);
+        return applyRequestBuilder.build();
+    }
+
+    private com.ctm.web.core.providers.model.Request getQuoteRequest(Brand brand, Request data, PAYLOAD payload) {
+        com.ctm.web.core.providers.model.Request<PAYLOAD> request = new com.ctm.web.core.providers.model.Request<>();
+        request.setBrandCode(brand.getCode());
+        request.setClientIp(data.getClientIpAddress());
+        request.setTransactionId(data.getTransactionId());
+        request.setPayload(payload);
+        return request;
+    }
+
+    protected SimpleConnection setupSimpleConnection(QuoteServiceProperties serviceProperties, String jsonRequest) {
         SimpleConnection connection = new SimpleConnection();
         connection.setRequestMethod("POST");
         connection.setConnectTimeout(serviceProperties.getTimeout());

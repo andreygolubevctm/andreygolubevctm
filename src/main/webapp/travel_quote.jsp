@@ -2,12 +2,13 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:new verticalCode="TRAVEL" authenticated="true" />
+<jsp:useBean id="serviceConfigurationService" class="com.ctm.web.core.services.ServiceConfigurationService" scope="session"/>
 
-<core_new:quote_check quoteType="travel" />
-<core_new:load_preload />
+<core_v2:quote_check quoteType="travel" />
+<core_v2:load_preload />
 
 <%-- HTML --%>
-<layout:journey_engine_page title="Travel Quote">
+<layout_v1:journey_engine_page title="Travel Quote">
 
 	<jsp:attribute name="head"></jsp:attribute>
 	<jsp:attribute name="head_meta"></jsp:attribute>
@@ -31,6 +32,14 @@
 			</ul>
 		</div>
 	</jsp:attribute>
+
+	<jsp:attribute name="progress_bar">
+      <div class="progress-bar-row collapse navbar-collapse">
+		  <div class="container">
+			  <ul class="journeyProgressBar_v2"></ul>
+		  </div>
+	  </div>
+    </jsp:attribute>
 
 	<jsp:attribute name="navbar">
 		<ul class="nav navbar-nav" role="menu">
@@ -109,13 +118,14 @@
 		<travel_layout:slide_results />
 
 		<%-- Hidden Fields --%>
-		<field:hidden xpath="transcheck" constantValue="1" />
-		<field:hidden xpath="travel/renderingMode" />
-        <field:hidden xpath="environmentOverride" />
+		<field_v1:hidden xpath="transcheck" constantValue="1" />
+		<field_v1:hidden xpath="travel/renderingMode" />
+        <field_v1:hidden xpath="environmentOverride" />
 		<%-- generate the benefit fields (hidden) for form selection. --%>
 		<div class="hiddenFields">
-			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
+			<core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
+		    <core_v2:excluded_providers_list/>
 		</div>
 	</jsp:body>
 	
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

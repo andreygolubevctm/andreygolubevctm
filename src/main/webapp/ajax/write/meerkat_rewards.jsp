@@ -38,7 +38,7 @@
 <%-- STEP 2: Write email data to aggregator.email_master and get the EmailID --%>
 <c:if test="${empty errorPool}">
 	<c:catch var="error">
-		<agg:write_email
+		<agg_v1:write_email
 			source="${source}"
 			emailAddress="${param.email}"
 			firstName="${data['firstname']}"
@@ -73,7 +73,7 @@
 				</c:when>
 				<c:otherwise>
 					<c:set var="entry_result">
-						<agg:write_competition
+						<agg_v1:write_competition
 							competition_id="${competition_id}"
 							email_id="${email_id}"
 							items="firstname=${param.firstname}||lastname=${param.lastname}||address=${param.address}||robesize=${param.robesize}"

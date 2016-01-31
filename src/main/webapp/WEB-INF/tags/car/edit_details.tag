@@ -12,7 +12,7 @@
 	<c:when test="${not empty param.action and (param.action eq 'expired' or param.action eq 'promotion')}">
 		<%-- Additional template copy --%>
 		<c:set var="expiredPanel">
-			<form_new:expired_quote_summary xpath="quote/options/commencementDate" action="${param.action}" />
+			<form_v2:expired_quote_summary xpath="quote/options/commencementDate" action="${param.action}" />
 		</c:set>
 	</c:when>
 	<c:otherwise>
@@ -22,7 +22,7 @@
 	</c:otherwise>
 </c:choose>
 
-<core:js_template id="edit-details-template">
+<core_v1:js_template id="edit-details-template">
 	${introPanel}
 	<div class="clearfix"></div>
 	${expiredPanel}
@@ -49,14 +49,7 @@
 						<li><span data-source="#quote_vehicle_year"></span> <span data-source="#quote_vehicle_body"></span></li>
 						<li class="push-right"><span data-source="#quote_vehicle_trans"></span> <span data-source="#quote_vehicle_fuel"></span></li>
 						<li>
-							<c:choose>
-								<c:when test="${editDetailsRedbookCodeSplitTest eq true}">
-									<span data-source="#quote_vehicle_redbookCode" data-callback="meerkat.modules.carEditDetails.formatRedbookCode"></span>
-								</c:when>
-								<c:otherwise>
-									<span data-source="#quote_vehicle_redbookCode"></span>
-								</c:otherwise>
-							</c:choose>
+							<span data-source="#quote_vehicle_redbookCode"></span>
 						</li>
 					</ul>
 					<a href="#start" class="btn btn-sm btn-edit stick-btn-left visible-lg needsclick">Edit</a>
@@ -199,4 +192,4 @@
 		<div class="clearfix"></div>
 	</div>
 
-</core:js_template>
+</core_v1:js_template>

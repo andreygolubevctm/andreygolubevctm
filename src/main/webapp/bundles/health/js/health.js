@@ -3,17 +3,17 @@
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		exception = meerkat.logging.exception,
-	moduleEvents = {
+		moduleEvents = {
 			health: {
 				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM'
 			},
 			WEBAPP_LOCK: 'WEBAPP_LOCK',
 			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
 		},
-	hasSeenResultsScreen = false,
-	rates = null,
-	steps = null,
-	stateSubmitInProgress = false;
+		hasSeenResultsScreen = false,
+		rates = null,
+		steps = null,
+		stateSubmitInProgress = false;
 
 	function initJourneyEngine(){
 
@@ -304,12 +304,15 @@
 				if(event.isStartMode === false){
 					_.defer(function() {
 						meerkat.modules.healthBenefits.open('journey-mode');
+
+						if(event.isForward)
+							$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
 					});
 				}
 
 				// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter segment
 				_.delay(function() {
-				meerkat.modules.healthSegment.filterSegments();
+					meerkat.modules.healthSegment.filterSegments();
 				}, 1000);
 
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
@@ -1319,6 +1322,7 @@
 			$("#health_contactDetails_optin").on("click", function(){
 				var optinVal = $(this).is(":checked") ? "Y" : "N";
 				$('#health_privacyoptin').val(optinVal);
+				$("#health_contactDetails_optInEmail").val(optinVal);
 				$("#health_contactDetails_call").val(optinVal);
 			});
 

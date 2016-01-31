@@ -3,7 +3,7 @@
 
 <jsp:useBean id="serviceConfigurationService" class="com.ctm.web.core.services.ServiceConfigurationService" scope="session"/>
 
-<core:doctype/>
+<core_v1:doctype/>
 <html>
 <head>
     <link rel='stylesheet' type='text/css' href='common/data.css'/>

@@ -348,31 +348,36 @@
 			var $fieldElement = getInputField( laterFieldDetails );
 
 			// if (later field is empty or its value=the previous value of updated field) and (no other related field or other field is empty)
-			if( ($fieldElement.val() === "" || updatedElementPreviousValue === $fieldElement.val()) && (typeof laterFieldDetails.$otherField === "undefined" || laterFieldDetails.$otherField.val() === "" ) ){
+			if( ($fieldElement.val() === "" || updatedElementPreviousValue === $fieldElement.val()) ) {
 
-				// name field gets split into first and last name
-				if( fieldDetails.type == "name" && typeof laterFieldDetails.$otherField !== "undefined" ){
-					var splitName = updatedElementValue.split(" ");
-					$fieldElement.val(splitName[0]);
-					laterFieldDetails.$otherField.val( splitName.slice(1).join(" ") );
-				} else if(fieldDetails.type === "alternatePhone"  && typeof laterFieldDetails.$otherField !== "undefined") {
-					var testableNumber = updatedElementValue.replace(/\D/g, "");
-					if(testableNumber.match(/^(04|614|6104)/g)) {
-						$fieldElement.val(updatedElementValue);
-					} else {
-						laterFieldDetails.$otherField.val(updatedElementValue);
-					}
-				} else if(fieldDetails.type === "flexiPhone" && typeof laterFieldDetails.$otherField !== "undefined") {
+				if(fieldDetails.type === "flexiPhone" && typeof laterFieldDetails.$otherField !== "undefined") {
 					var flexiNumber = updatedElementValue.replace(/\D/g, "");
-					if (flexiNumber.match(/^(04|614|6104)/g)) {
-						$fieldElement.val(updatedElementValue);
-						laterFieldDetails.$otherFieldInput.val("").blur();
-					} else {
-						laterFieldDetails.$otherField.add(laterFieldDetails.$otherFieldInput).val(updatedElementValue).blur();
+					if (flexiNumber.match(/^04/g)) { // Mobile
+						$fieldElement.val(meerkat.modules.phoneFormat.cleanNumber(updatedElementValue));
+						laterFieldDetails.$otherField.val("");
+					} else {// Other
+						laterFieldDetails.$otherField.val(meerkat.modules.phoneFormat.cleanNumber(updatedElementValue));
 						$fieldElement.val("");
 					}
-				} else  {
-					$fieldElement.val( updatedElementValue ).attr("data-previous-value", updatedElementValue);
+				}
+
+				if (typeof laterFieldDetails.$otherField === "undefined" || laterFieldDetails.$otherField.val() === "") {
+
+					// name field gets split into first and last name
+					if( fieldDetails.type == "name" && typeof laterFieldDetails.$otherField !== "undefined" ){
+						var splitName = updatedElementValue.split(" ");
+						$fieldElement.val(splitName[0]);
+						laterFieldDetails.$otherField.val( splitName.slice(1).join(" ") );
+					} else if(fieldDetails.type === "alternatePhone"  && typeof laterFieldDetails.$otherField !== "undefined") {
+						var testableNumber = updatedElementValue.replace(/\D/g, "");
+						if(testableNumber.match(/^(04|614|6104)/g)) {
+							$fieldElement.val(updatedElementValue);
+						} else {
+							laterFieldDetails.$otherField.val(updatedElementValue);
+						}
+					} else {
+						$fieldElement.val( updatedElementValue ).attr("data-previous-value", updatedElementValue);
+					}
 				}
 
 				if(meerkat.modules.performanceProfiling.isIE8() || meerkat.modules.performanceProfiling.isIE9()){

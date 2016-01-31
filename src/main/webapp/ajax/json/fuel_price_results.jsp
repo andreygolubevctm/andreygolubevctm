@@ -45,7 +45,7 @@ ${quoteResults.init(pageContext.request, pageSettings)}
 
         <c:if test="${fetch_count > 0}">
             <c:set var="ignoreme">
-                <core:get_transaction_id
+                <core_v1:get_transaction_id
                         quoteType="fuel"
                         id_handler="increment_tranId"/>
             </c:set>
@@ -56,7 +56,7 @@ ${quoteResults.init(pageContext.request, pageSettings)}
         <go:setData dataVar="data" xpath="fuel/clientUserAgent" value='<%=request.getHeader("user-agent")%>' />
 
         <%-- Save Client Data --%>
-        <core:transaction touch="R" noResponse="true" />
+        <core_v1:transaction touch="R" noResponse="true" />
 
         <c:set var="tranId" value="${data['current/transactionId']}" />
 
@@ -86,7 +86,7 @@ ${quoteResults.init(pageContext.request, pageSettings)}
                     </c:forEach>
                 </c:if>
                 <%-- Write to the stats database  --%>
-                <agg:write_stats rootPath="fuel" tranId="${tranId}" debugXml="${debugXml}"/>
+                <agg_v1:write_stats rootPath="fuel" tranId="${tranId}" debugXml="${debugXml}"/>
 
                 <%-- Add the results to the current session data --%>
                 <go:setData dataVar="data" xpath="soap-response" value="*DELETE"/>
@@ -94,7 +94,7 @@ ${quoteResults.init(pageContext.request, pageSettings)}
                 ${quoteResults.createResponse(data.text['current/transactionId'], resultJson)}
             </c:when>
             <c:otherwise>
-                <agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="fuel_price_results.jsp"/>
+                <agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}" origin="fuel_price_results.jsp"/>
             </c:otherwise>
         </c:choose>
     </c:when>

@@ -53,7 +53,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 </c:set>
 
 <%-- First check owner of the quote --%>
-<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
+<c:set var="proceedinator"><core_v1:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
 		${logger.info('PROCEEDINATOR PASSED. {},{}',log:kv('quoteType', quoteType),log:kv('transactionId',id_for_access_check))}
@@ -68,7 +68,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 				</c:if>
 
 				<c:set var="sandpit">
-					<core:get_transaction_id quoteType="${quoteType}" id_handler="${id_handler}" transactionId="${requestedTransaction}"/>
+					<core_v1:get_transaction_id quoteType="${quoteType}" id_handler="${id_handler}" transactionId="${requestedTransaction}"/>
 				</c:set>
 
 		<go:setData dataVar="data" xpath="previous/transactionId" value="${requestedTransaction}" />
@@ -113,7 +113,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 							<%-- GET HEALTH RESULTS --%>
 							<c:when test="${param.action=='load' and quoteType eq 'health'}">
 								<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
-								<core:transaction touch="L" noResponse="true" />
+								<core_v1:transaction touch="L" noResponse="true" />
 								<c:choose>
 									<c:when test="${not empty param.productId and param.productId != '' and not empty param.productTitle and param.productTitle != ''}">
 										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}#results</destUrl>
@@ -140,7 +140,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 									<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
 								</c:if>
 
-								<core:transaction touch="L" noResponse="true" />
+								<core_v1:transaction touch="L" noResponse="true" />
 								<destUrl>travel_quote.jsp?type=A&amp;action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
 								<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
 						</c:when>
@@ -159,7 +159,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								<c:if test="${not empty fieldXPath}">
 									<go:setData dataVar="data" xpath="${fieldXPath}" value="${param.expired}" />
 								</c:if>
-								<core:transaction touch="L" noResponse="true" />
+								<core_v1:transaction touch="L" noResponse="true" />
 								<c:set var="quotePagePrefix">
 									<c:choose>
 										<c:when test="${xpathQuoteType eq 'home'}">home_contents</c:when>
@@ -181,7 +181,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 									<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
 								</c:if>
 
-								<core:transaction touch="L" noResponse="true" />
+								<core_v1:transaction touch="L" noResponse="true" />
 								<destUrl>${quoteType}_quote.jsp?action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
 								<%-- Have only made this happen for travel --%>
 								<c:if test="${quoteType eq 'travel'}">

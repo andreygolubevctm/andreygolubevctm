@@ -3,11 +3,11 @@
 
 <session:new verticalCode="UTILITIES" authenticated="true" />
 
-<core_new:quote_check quoteType="utilities" />
+<core_v2:quote_check quoteType="utilities" />
 <c:set var="callCentreNumber" scope="request"><content:get key="genericCallCentreNumber"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="genericCallCentreHelpNumber"/></c:set>
 
-<layout:journey_engine_page title="Energy Confirmation">
+<layout_v1:journey_engine_page title="Energy Confirmation">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -50,11 +50,11 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<core:whitelabeled_footer/>
+		<core_v1:whitelabeled_footer/>
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">
-		<utilities_new:settings/>
+		<utilities_v2:settings/>
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
@@ -65,7 +65,7 @@
 	</jsp:attribute>
 
   <jsp:body>
-    <utilities_new_layout:slide_confirmation />
+    <utilities_v2_layout:slide_confirmation />
   </jsp:body>
 
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

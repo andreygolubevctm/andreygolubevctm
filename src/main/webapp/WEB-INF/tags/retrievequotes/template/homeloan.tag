@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<core:js_template id="retrieve-homeloan-template">
+<core_v1:js_template id="retrieve-homeloan-template">
 
     <h5>Home Loan Quote</h5>
 
@@ -35,4 +35,4 @@
         <strong>Loan Amount: </strong> {{= obj.loanDetails.loanAmountentry }}
     </div>
     {{ } }}
-</core:js_template>
+</core_v1:js_template>

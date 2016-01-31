@@ -92,6 +92,7 @@
 			product.mode = '';
 		}
 		product.showAltPremium = false;
+		product.displayLogo = true;
 
 		var htmlTemplate = _.template(logoPriceTemplate);
 		var htmlString = htmlTemplate(product);
@@ -117,7 +118,7 @@
 	}
 
 	function updateProductSummaryDetails(product, startDateString, displayMoreInfoLink){
-		$policySummaryDetailsComponents.find(".name").text(product.info.providerName+" "+product.info.name);
+		$policySummaryDetailsComponents.find(".name").text((product.info.providerName ? product.info.providerName : product.info.fundName) + " " + product.info.name);
 		$policySummaryDetailsComponents.find(".startDate").text(startDateString);
 		if (typeof product.hospital.inclusions !== 'undefined') {
 			$policySummaryDetailsComponents.find(".excess").html(product.hospital.inclusions.excess);

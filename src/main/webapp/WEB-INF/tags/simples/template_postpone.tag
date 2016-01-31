@@ -21,7 +21,7 @@
 	{{ } else { }}
 		<div class="col-sm-5">
 	{{ } }}
-			<field_new:calendar mode="inline" xpath="postponedate" required="true" title="postpone date" minDate="" maxDate="" validateMinMax="false" />
+			<field_v2:calendar mode="inline" xpath="postponedate" required="true" title="postpone date" minDate="" maxDate="" validateMinMax="false" />
 		</div>
 	{{ if(obj.parentStatusId == 31 || obj.parentStatusId == 32){ }}
 		<div class="col-sm-5">
@@ -34,13 +34,13 @@
 
 					<div class="row">
 						<div class="col-xs-4">
-							<field_new:array_select items="01=01|02=02|03=03|04=04|05=05|06=06|07=07|08=08|09=09|10=10|11=11|12=12" required="true" title="Hour" xpath="postponehour" className="" delims="|" />
+							<field_v2:array_select items="01=01|02=02|03=03|04=04|05=05|06=06|07=07|08=08|09=09|10=10|11=11|12=12" required="true" title="Hour" xpath="postponehour" className="" delims="|" />
 						</div>
 						<div class="col-xs-4">
-							<field_new:array_select items="00=00|05=05|10=10|15=15|20=20|25=25|30=30|35=35|40=40|45=45|50=50|55=55" required="true" title="Minute" xpath="postponeminute" className="" delims="|" />
+							<field_v2:array_select items="00=00|05=05|10=10|15=15|20=20|25=25|30=30|35=35|40=40|45=45|50=50|55=55" required="true" title="Minute" xpath="postponeminute" className="" delims="|" />
 						</div>
 						<div class="col-xs-4">
-							<field_new:array_radio items="AM=AM,PM=PM" required="true" title="AM/PM" xpath="postponeampm" className="postponeampmgroup" />
+							<field_v2:array_radio items="AM=AM,PM=PM" required="true" title="AM/PM" xpath="postponeampm" className="postponeampmgroup" />
 						</div>
 					</div>
 					<div class="timeWarning">Enter time above in Qld local time and allow for customer's local time difference (e.g. daylight saving time)</div>

@@ -36,14 +36,24 @@ import java.util.stream.Collectors;
 
 public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
+    private SessionDataServiceBean sessionDataServiceBean;
+
+    public CommonQuoteRouter(SessionDataServiceBean sessionDataServiceBean) {
+        this.sessionDataServiceBean = sessionDataServiceBean;
+    }
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteRouter.class);
 
     protected Brand initRouter(MessageContext context, Vertical.VerticalType vertical){
+        return initRouter(context.getHttpServletRequest(), vertical);
+    }
+
+    protected Brand initRouter(HttpServletRequest httpServletRequest, Vertical.VerticalType vertical){
         // - Start common -- taken from Carlos' car branch
-        ApplicationService.setVerticalCodeOnRequest(context.getHttpServletRequest(), vertical.getCode());
+        ApplicationService.setVerticalCodeOnRequest(httpServletRequest, vertical.getCode());
 
         try {
-            return ApplicationService.getBrandFromRequest(context.getHttpServletRequest());
+            return ApplicationService.getBrandFromRequest(httpServletRequest);
 
         } catch (DaoException e) {
             throw new RouterException(e);
@@ -52,23 +62,30 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     }
 
     protected Data getDataBucket(MessageContext context, Long transactionId) {
-        SessionDataService service = new SessionDataService();
+        return getDataBucket(context.getHttpServletRequest(),  transactionId);
+    }
+
+    protected Data getDataBucket(HttpServletRequest request, Long transactionId) {
         try {
-            return service.getDataForTransactionId(context.getHttpServletRequest(), transactionId.toString(), true);
+            return sessionDataServiceBean.getDataForTransactionId(request, transactionId.toString(), true);
         } catch (DaoException | SessionException e) {
             throw new RouterException(e);
         }
     }
 
     protected String updateTransactionIdAndClientIP(MessageContext context, REQUEST data){
+        return updateTransactionIdAndClientIP(context.getHttpServletRequest(),  data);
+    }
+
+    protected String updateTransactionIdAndClientIP(HttpServletRequest request, REQUEST data){
         final String clientIpAddress;
-        Data dataBucket = getDataBucket(context, data.getTransactionId());
+        Data dataBucket = getDataBucket(request, data.getTransactionId());
 
         if(dataBucket != null && dataBucket.getString("current/transactionId") != null){
             data.setTransactionId(Long.parseLong(dataBucket.getString("current/transactionId")));
         }
         if (StringUtils.isBlank((String) dataBucket.get("quote/clientIpAddress"))) {
-            clientIpAddress = context.getHttpServletRequest().getRemoteAddr();
+            clientIpAddress = request.getRemoteAddr();
         } else {
             clientIpAddress = (String) dataBucket.get("quote/clientIpAddress");
         }
@@ -78,12 +95,16 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     }
 
     protected Info generateInfoKey(final REQUEST data, final MessageContext context) {
+        return generateInfoKey(data, context.getHttpServletRequest());
+    }
+
+    protected Info generateInfoKey(final REQUEST data, final HttpServletRequest request) {
         // Generate the Tracking Key for Omniture tracking
         Info info = new Info();
         info.setTransactionId(data.getTransactionId());
         try {
             String trackingKey = TrackingKeyService.generate(
-                    context.getHttpServletRequest(), data.getTransactionId());
+                    request, data.getTransactionId());
             info.setTrackingKey(trackingKey);
         } catch (Exception e) {
             throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
@@ -105,8 +126,6 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     }
 
     protected void addCompetitionEntry(MessageContext context, Long transactionId, CompetitionEntry entry) throws ConfigSettingException, DaoException, EmailDetailsException {
-
-        SessionDataService service = new SessionDataService();
 
         HttpServletRequest request = context.getHttpServletRequest();
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
@@ -139,7 +158,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
                     null, stampingDao, verticalCode);
 
             String operator = "ONLINE";
-            AuthenticatedData authenticatedSessionData = service.getAuthenticatedSessionData(request);
+            AuthenticatedData authenticatedSessionData = sessionDataServiceBean.getAuthenticatedSessionData(request);
             if (authenticatedSessionData != null) {
                 operator = authenticatedSessionData.getUid();
             }

@@ -3,9 +3,9 @@
 
 <session:new verticalCode="COMPETITION" authenticated="true" />
 
-<core_new:quote_check quoteType="competition" />
+<core_v2:quote_check quoteType="competition" />
 
-<layout:journey_engine_page title="Competition">
+<layout_v1:journey_engine_page title="Competition">
 	<jsp:attribute name="head">
 	</jsp:attribute>
 
@@ -39,4 +39,4 @@
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 	</jsp:body>
 
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

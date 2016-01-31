@@ -6,7 +6,10 @@ public enum Endpoint {
     APPLY("apply"),
     SUMMARY("summary"),
     PAYMENT_AUTHORISE("payment/authorise"),
-    PAYMENT_REGISTER("payment/register");
+    PAYMENT_REGISTER("payment/register"),
+    PROVIDER("provider"),
+    PRODUCT_INFO("product"),
+    VALIDATE("validate");
 
     private final String value;
 

@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 
-<core:js_template id="brands-template">
+<core_v1:js_template id="brands-template">
 
 	<%-- To add another brand, just add another item to the list and
 		remember to add a new class in framework\modules\less\homeloan\logos.less --%>
@@ -22,4 +22,4 @@
 	</c:forEach>
 	</div>
 
-</core:js_template>
+</core_v1:js_template>

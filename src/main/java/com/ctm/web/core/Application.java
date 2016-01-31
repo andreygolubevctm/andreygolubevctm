@@ -3,16 +3,24 @@ package com.ctm.web.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 @SpringBootApplication
-@ComponentScan({"com.ctm.web.core.connectivity", "com.ctm.commonlogging"})
+@ComponentScan({"com.ctm.web.core.connectivity", "com.ctm.web.energy",
+        "com.ctm.commonlogging", "com.ctm.web.core",
+        "com.ctm.web.car"})
+@EnableAutoConfiguration
+@Configuration
+@EnableAsync
 public class Application extends SpringBootServletInitializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);

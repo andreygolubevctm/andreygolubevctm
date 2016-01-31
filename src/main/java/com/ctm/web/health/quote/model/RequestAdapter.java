@@ -44,10 +44,12 @@ public class RequestAdapter {
             // Set the excluded providers, but this will be overridden by
             // @see #addSingleProviderFilterFromSituation or by @see #addSingleProviderFilterFromApplication
             addExcludeProvidersFilter(filters, filter);
+
         }
 
         Situation situation = quote.getSituation();
         addMembership(quoteRequest, situation);
+        addSituationFilter(filters, situation);
 
         Map<String, String> benefitsExtras = quote.getBenefits().getBenefitsExtras();
         addProductType(quoteRequest, benefitsExtras);
@@ -282,6 +284,12 @@ public class RequestAdapter {
             }
         }
         return situation;
+    }
+
+    protected static void addSituationFilter(Filters filters, Situation situation) {
+        if(situation != null) {
+            filters.setSituationFilter(!toBoolean(situation.getAccidentOnlyCover()));
+        }
     }
 
     protected static void addExcludeProvidersFilter(Filters filters, Filter filter) {

@@ -42,6 +42,7 @@ public class HealthPriceRequest {
 	private String excessSel;
 	private String brandFilter = "";
 	private List<Integer> providersThatHaveExceededLimit;
+	private String situationFilter;
 
 	public void setPrivateHospital(boolean privateHospital) {
 		this.privateHospital = privateHospital;
@@ -332,6 +333,10 @@ public class HealthPriceRequest {
 		this.productTitleSearch = productTitleSearch;
 	}
 
+	public void setSituationFilter(String situationFilter) {this.situationFilter = situationFilter;}
+
+	public String getSituationFilter(){return situationFilter;}
+
 	@Override
 	public String toString() {
 		return "HealthPriceRequest{" +
@@ -369,6 +374,7 @@ public class HealthPriceRequest {
 				", excessSel='" + excessSel + '\'' +
 				", brandFilter='" + brandFilter + '\'' +
 				", providersThatHaveExceededLimit=" + providersThatHaveExceededLimit +
+				", situationFilter='" + situationFilter + "'" +
 				'}';
 	}
 }

@@ -120,6 +120,7 @@
             },
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
+                meerkat.modules.utilitiesSnapshot.initYourDetailsSnapshot();
             },
             validation: {
                 validate: true,
@@ -214,6 +215,7 @@
             },
             onAfterEnter: function() {
                 $("#utilities_application_details_email").trigger("change");
+                meerkat.modules.utilitiesDatesSelection.populateCalendarViewFromFields();
             }
         };
 

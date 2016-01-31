@@ -4,6 +4,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- HTML --%>
-<agg:footer_outer>
+<agg_v1:footer_outer>
 	<content:get key="footerTextStart"/><content:get key="footerParticipatingSuppliers"/><content:get key="footerTextEnd"/>
-</agg:footer_outer>
+</agg_v1:footer_outer>

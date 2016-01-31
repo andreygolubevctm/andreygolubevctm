@@ -1,17 +1,19 @@
 package com.ctm.web.car.quote.model.request;
 
+import com.ctm.web.core.model.ProviderFilter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by msmerdon on 25/08/2015.
  */
-public class Filter {
+public class Filter implements ProviderFilter {
 
     private String providerList = null;
-    private ArrayList<String> providers = null;
+    private List<String> providers = null;
     private String authToken = null;
 
     public Filter(){}
@@ -27,12 +29,18 @@ public class Filter {
         }
     }
 
-    public ArrayList<String> getProviders() {
+    @Override
+    public List<String> getProviders() {
         return providers;
     }
 
-    public void setProviders(ArrayList<String> providers) {
+    @Override
+    public void setProviders(List<String> providers) {
         this.providers = providers;
+        if(providers != null && !providers.isEmpty()) {
+            String providerList = StringUtils.join(providers,",");
+            setProviderList(providerList);
+        }
     }
 
     public String getAuthToken() {
