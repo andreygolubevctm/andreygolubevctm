@@ -371,7 +371,7 @@
 					} else if(fieldDetails.type === "alternatePhone"  && typeof laterFieldDetails.$otherField !== "undefined") {
 						var testableNumber = updatedElementValue.replace(/\D/g, "");
 						if(testableNumber.match(/^(04|614|6104)/g)) {
-							$fieldElement.val(updatedElementValue);
+							$fieldElement.val(testableNumber);
 						} else {
 							laterFieldDetails.$otherField.val(updatedElementValue);
 						}
