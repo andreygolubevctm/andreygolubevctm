@@ -252,8 +252,13 @@
 		data = data || {};
 		data.messageId = currentMessage.message.messageId;
 
+		var url = baseUrl + 'simples/ajax/message_set_' + type + '.jsp';
+		if (type === 'postpone') {
+			url = baseUrl + 'spring/rest/simples/messages/setPostpone.json'
+		}
+
 		meerkat.modules.comms.post({
-			url: baseUrl + 'simples/ajax/message_set_' + type + '.jsp',
+			url: url,
 			dataType: 'json',
 			cache: false,
 			errorLevel: 'silent',
