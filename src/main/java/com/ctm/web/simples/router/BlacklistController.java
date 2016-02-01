@@ -10,6 +10,8 @@ import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.simples.config.InInConfig;
 import com.ctm.web.simples.model.BlacklistOutcome;
+import com.ctm.web.simples.phone.inin.model.Data;
+import com.ctm.web.simples.phone.inin.model.Insert;
 import com.ctm.web.simples.services.SimplesBlacklistService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,12 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
-import static org.apache.commons.lang3.text.StrSubstitutor.replace;
+import static java.util.Collections.singletonList;
 
 @RestController
 @RequestMapping("/rest/simples/blacklist")
@@ -45,10 +47,9 @@ public class BlacklistController {
     private String blacklistCampaignName;
 
     @Autowired InInConfig inInConfig;
-    @Autowired private Client<String, String> blacklistClient;
+    @Autowired private Client<List<Insert>, String> blacklistClient;
     @Autowired private SessionDataServiceBean sessionDataServiceBean;
 
-    private static final String BLACKLIST_JSON = "[{\"CampaignName\":\"${blacklistCampaignName}\",\"Datas\":[{\"Key\":\"Phone\",\"Value\":\"${phone}\"}]}]";
     private String insertRecordsUrl;
 
     @PostConstruct
@@ -77,13 +78,13 @@ public class BlacklistController {
         LOGGER.info("Simples blacklist outcome: {}", kv("simplesBlacklistOutcome", outcome));
 
         if(outcome.map(s -> s.equals("success")).orElse(false) && StringUtils.equalsIgnoreCase("phone", channel)) {
-            Map<String, String> params = new HashMap<>();
-            params.put("blacklistCampaignName", blacklistCampaignName);
-            params.put("phone", value);
+            Insert insert = new Insert(blacklistCampaignName, new ArrayList<>());
 
-            RestSettings<String> settings = RestSettings.<String>builder()
+            addPhone(insert, value);
+
+            RestSettings<List<Insert>> settings = RestSettings.<List<Insert>>builder()
                     .header("Content-Type", "application/json;charset=UTF-8")
-                    .request(replace(BLACKLIST_JSON, params))
+                    .request(singletonList(insert))
                     .response(String.class)
                     .url(insertRecordsUrl)
                     .build();
@@ -91,5 +92,9 @@ public class BlacklistController {
             LOGGER.info(blacklistClient.post(settings).toBlocking().first());
         }
         return new BlacklistOutcome(outcome.orElse(""));
+    }
+
+    private void addPhone(final Insert insert, final String phone) {
+        insert.getDatas().add(new Data("Phone", phone));
     }
 }
