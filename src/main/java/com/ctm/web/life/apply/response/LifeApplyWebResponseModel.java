@@ -5,6 +5,7 @@ public class LifeApplyWebResponseModel {
     private String uniquePurchaseId;
     private Long transactionId;
     private String confirmationkey;
+    private boolean success;
 
     private LifeApplyWebResponseModel(){
 
