@@ -115,15 +115,20 @@ public class TransactionService {
 
 	public static MessageDetail getTransaction(final long transactionId) throws DaoException {
 		final TransactionDao transactionDao = new TransactionDao();
+		final Transaction transaction = new Transaction();
 		final TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
 		final long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
 
 		final MessageDetailService service = new MessageDetailService();
 		final Message message = new Message();
+
+		transaction.setTransactionId(transactionId);
+		transactionDao.getCoreInformation(transaction);
+
 		message.setTransactionId(rootId);
 		message.setMessageId(-1);
 
-		Map<String, String> transactionDetails = transactionDetailsDao.getTransactionDetails(transactionId)
+		Map<String, String> transactionDetails = transactionDetailsDao.getTransactionDetails(transaction.getNewestTransactionId())
 				.stream()
 				.collect(Collectors.toMap(TransactionDetail::getXPath, TransactionDetail::getTextValue));
 
@@ -139,5 +144,42 @@ public class TransactionService {
 		}
 
 		return  service.getMessageDetail(message);
+	}
+
+	public static Message getMessageWithLatestTransaction(final long transactionId, final Date whenToAction) throws DaoException {
+		final TransactionDao transactionDao = new TransactionDao();
+		final Transaction transaction = new Transaction();
+		final TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
+		final long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
+		final Message message = new Message();
+
+
+		transaction.setTransactionId(transactionId);
+		transactionDao.getCoreInformation(transaction);
+
+		message.setTransactionId(rootId);
+		message.setMessageId(-1);
+		message.setWhenToAction(whenToAction);
+
+		Map<String, String> transactionDetails = transactionDetailsDao.getTransactionDetails(transaction.getNewestTransactionId())
+				.stream()
+				.collect(Collectors.toMap(TransactionDetail::getXPath, TransactionDetail::getTextValue));
+
+
+		final Optional<String> phoneNumber1 = Optional.ofNullable(transactionDetails.get("health/application/mobile"));
+		if(phoneNumber1.isPresent()) {
+			message.setPhoneNumber1(phoneNumber1.orElse(""));
+		} else {
+			message.setPhoneNumber1(Optional.ofNullable(transactionDetails.get("health/contactDetails/contactNumber/mobile")).orElse(""));
+		}
+
+		final Optional<String> phoneNumber2 = Optional.ofNullable(transactionDetails.get("health/application/other"));
+		if(phoneNumber2.isPresent()) {
+			message.setPhoneNumber2(phoneNumber2.orElse(""));
+		} else {
+			message.setPhoneNumber2(Optional.ofNullable(transactionDetails.get("health/contactDetails/contactNumber/other")).orElse(""));
+		}
+
+		return  message;
 	}
 }

@@ -15,4 +15,16 @@
 <c:set var="comment" value="${param.comment}" />
 <c:set var="assignToUser" value="${param.assignToUser}" />
 
-<c:out value="${ simplesService.postponeMessage(simplesUid, messageId, statusId, reasonStatusId, postponeDate, postponeTime, postponeAMPM, comment, assignToUser) }" escapeXml="false" />
+<%-- Variables for InIn --%>
+<c:set var="rootId" value="${param.rootId}" />
+<c:set var="contactName" value="${param.contactName}" />
+
+<c:choose>
+    <c:when test="${pageSettings.getSetting('inInEnabled')}">
+        <c:out value="${ simplesService.schedulePersonalMessage(simplesUid, rootId, statusId, postponeDate, postponeTime, postponeAMPM, contactName, comment, authenticatedData) }" escapeXml="false" />
+    </c:when>
+    <c:otherwise>
+        <c:out value="${ simplesService.postponeMessage(simplesUid, messageId, statusId, reasonStatusId, postponeDate, postponeTime, postponeAMPM, comment, assignToUser) }" escapeXml="false" />
+    </c:otherwise>
+</c:choose>
+
