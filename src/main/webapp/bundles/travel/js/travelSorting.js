@@ -65,7 +65,7 @@
 				$elem.parent('li').addClass('active');
 
 				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
-				meerkat.modules.travelResults.publishExtraSuperTagEvents({products: [], recordRanking: 'N'});
+				meerkat.modules.travelResults.publishExtraTrackingEvents({products: [], recordRanking: 'N'});
 			} else {
 				error('[travelSorting]','The sortBy or sortDir could not be set',setSortByReturn,setSortDirReturn);
 			}

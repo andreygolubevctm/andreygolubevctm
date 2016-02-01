@@ -64,7 +64,7 @@
         } else {
 
             // Initialise the journey engine steps and bar
-            initProgressBar(false);
+            initProgressBar(true);
 
             // Initialise the journey engine
             var startStepId = null;
@@ -113,7 +113,6 @@
                     }
                 });
             });
-
         }
     }
 

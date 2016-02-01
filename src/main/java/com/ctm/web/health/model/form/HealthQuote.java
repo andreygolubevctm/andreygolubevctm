@@ -261,4 +261,5 @@ public class HealthQuote {
     public void setContactAuthority(String contactAuthority) {
         this.contactAuthority = contactAuthority;
     }
+
 }

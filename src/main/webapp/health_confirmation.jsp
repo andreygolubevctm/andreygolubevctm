@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<health:redirect_rules />
+<health_v1:redirect_rules />
 
 <session:new verticalCode="HEALTH" authenticated="true" />
 
@@ -12,9 +12,9 @@
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
 <c:set var="callCentreAllHoursContent" scope="request"><content:getOpeningHoursModal /></c:set>
 
-<core:quote_check quoteType="health" />
+<core_v1:quote_check quoteType="health" />
 
-<layout:journey_engine_page title="Health Confirmation">
+<layout_v1:journey_engine_page title="Health Confirmation">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -62,11 +62,11 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<health:footer />
+		<health_v1:footer />
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">
-		<health:settings />
+		<health_v1:settings />
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
@@ -78,7 +78,7 @@
 	</jsp:attribute>
 
 	<jsp:body>
-		<health_layout:slide_confirmation />
+		<health_v1_layout:slide_confirmation />
 	</jsp:body>
 
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

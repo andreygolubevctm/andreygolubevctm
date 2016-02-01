@@ -9,7 +9,7 @@
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
-<layout:simples_page fullWidth="true">
+<layout_v1:simples_page fullWidth="true">
 	<jsp:attribute name="head">
 		<script src="${assetUrl}js/bundles/plugins/trumbowyg.min.js?${revision}"></script>
 	</jsp:attribute>
@@ -99,7 +99,7 @@
 			</div>
 		</div>
 	</jsp:body>
-</layout:simples_page>
+</layout_v1:simples_page>
 
 <script>
 	var providers = [

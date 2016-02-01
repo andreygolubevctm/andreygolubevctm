@@ -30,7 +30,7 @@ Lifetime Health Cover and Rebate Discount Calculator
 	<fmt:formatNumber var="primaryDobYear" value="${fn:substring(fn:trim(param.primary_dob), 6, 12)+0}" pattern="####" minIntegerDigits="4" />
 	<fmt:formatNumber var="primaryDobMonth" value="${fn:substring(fn:trim(param.primary_dob), 3, 5)+0}" pattern="##" minIntegerDigits="2" />
 	<fmt:formatNumber var="primaryDobDay" value="${fn:substring(fn:trim(param.primary_dob), 0, 2)+0}" pattern="##" minIntegerDigits="2" />
-	<c:set var="primaryAge"><field:age dob="${fn:trim(param.primary_dob)}" /></c:set>
+	<c:set var="primaryAge"><field_v1:age dob="${fn:trim(param.primary_dob)}" /></c:set>
 
 <%--
 ----------
@@ -56,7 +56,7 @@ COVER TYPE
 			<fmt:formatNumber var="partnerDobYear" value="${fn:substring(fn:trim(param.partner_dob), 6, 12)+0}" pattern="####" minIntegerDigits="4" />
 			<fmt:formatNumber var="partnerDobMonth" value="${fn:substring(fn:trim(param.partner_dob), 3, 5)+0}" pattern="##" minIntegerDigits="2" />
 			<fmt:formatNumber var="partnerDobDay" value="${fn:substring(fn:trim(param.partner_dob), 0, 2)+0}" pattern="##" minIntegerDigits="2" />
-			<c:set var="partnerAge"><field:age dob="${fn:trim(param.partner_dob)}" /></c:set>
+			<c:set var="partnerAge"><field_v1:age dob="${fn:trim(param.partner_dob)}" /></c:set>
 		</c:if>
 	</c:when>
 </c:choose>
@@ -160,7 +160,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 
 				<%-- Age Adjustment, only need to pay the LHC on the next July after your Birthday --%>
 				<c:set var="primaryAdjustment" value="0" />
-				<c:set var="primaryBirthdayAchieved"><field:birthday dob="${fn:trim(param.primary_dob)}" /></c:set>
+				<c:set var="primaryBirthdayAchieved"><field_v1:birthday dob="${fn:trim(param.primary_dob)}" /></c:set>
 
 				<c:choose>
 					<c:when test="${primaryAge == 31 && primaryDobMonth  == 7 && primaryDobDay == 1}">
@@ -216,7 +216,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 
 						<%-- Age Adjustment, only need to pay the LHC on the next July after your Birthday --%>
 						<c:set var="partnerAdjustment" value="0" />
-						<c:set var="partnerBirthdayAchieved"><field:birthday dob="${fn:trim(param.partner_dob)}" /></c:set>
+						<c:set var="partnerBirthdayAchieved"><field_v1:birthday dob="${fn:trim(param.partner_dob)}" /></c:set>
 
 						<c:choose>
 							<c:when test="${partnerAge == 31 && partnerDobMonth  == 7 && partnerDobDay == 1}">

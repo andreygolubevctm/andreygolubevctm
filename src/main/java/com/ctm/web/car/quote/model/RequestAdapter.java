@@ -61,6 +61,7 @@ public class RequestAdapter {
         vehicle.setTransmission(quoteVehicle.getTrans());
         vehicle.setFuelType(quoteVehicle.getFuel());
         vehicle.setRedbookCode(quoteVehicle.getRedbookCode());
+        vehicle.setColour(quoteVehicle.getColour());
         vehicle.setAnnualKilometres(Integer.parseInt(quoteVehicle.getAnnualKilometres()));
         vehicle.setHasDamage(convertToBoolean(quoteVehicle.getDamage()));
         vehicle.setFinanceType(quoteVehicle.getFinance());

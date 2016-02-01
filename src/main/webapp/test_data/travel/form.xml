@@ -12,7 +12,9 @@
 	<firstName>Test</firstName>
 	<email>preload.testing@comparethemarket.com.au</email>
 	<destinations>Please choose your Destination(s)...</destinations>
-	<destination>AUS,IDN</destination>
+	<destination>NZL</destination>
+	<party>S</party>
+	<adults>1</adults>
 	<children>0</children>
 	<marketing>Y</marketing>
 	<privacyoptin>Y</privacyoptin>

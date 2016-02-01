@@ -3,4 +3,4 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<agg:write_rank rootPath="travel" rankBy="${param.rankBy}" rankParamName="rank_productId" />
+<agg_v1:write_rank rootPath="travel" rankBy="${param.rankBy}" rankParamName="rank_productId" />

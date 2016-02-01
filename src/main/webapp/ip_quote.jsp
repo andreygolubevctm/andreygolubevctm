@@ -17,9 +17,9 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="GTMEnabled" value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />
 
-<core:doctype />
+<core_v1:doctype />
 <go:html>
-	<core:head quoteType="${xpath}" title="Income Protection Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
+	<core_v1:head quoteType="${xpath}" title="Income Protection Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
 	
 	<body class="ip stage-0">
 
@@ -34,23 +34,23 @@
 	</c:if>
 
 		<%-- SuperTag Top Code --%>
-		<agg:supertag_top type="IP"/>		
+		<agg_v1:supertag_top type="IP"/>
 
 		<%-- History handler --%>
 		<life:history />
 
 		<%-- Transferring popup holder --%>
-		<core:transferring />
+		<core_v1:transferring />
 
-		<form:form action="ip_quote_results.jsp" method="POST" id="mainform" name="frmMain">
+		<form_v1:form action="ip_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 
 			<%-- Fields to store Lifebroker specific data --%>
 			<life:lifebroker_ref label="ip" />
 					
-			<form:operator_id xpath="${xpath}/operatorid" />
-			<core:referral_tracking vertical="${xpath}" />
+			<form_v1:operator_id xpath="${xpath}/operatorid" />
+			<core_v1:referral_tracking vertical="${xpath}" />
 			
-			<form:header quoteType="${xpath}" hasReferenceNo="true" />
+			<form_v1:header quoteType="${xpath}" hasReferenceNo="true" />
 			<life:progress_bar />
 
 			<div id="wrapper">
@@ -86,7 +86,7 @@
 																					
 						</slider:slideContainer>
 						
-						<form:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="108" minTop="70" />
+						<form_v1:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="108" minTop="70" />
 						
 						<!-- Bottom "step" buttons -->
 						<div class="button-wrapper">
@@ -96,7 +96,7 @@
 						 
 					<!-- End main QE content -->
 					</div>
-					<form:help />
+					<form_v1:help />
 					
 						</div>
 
@@ -109,14 +109,14 @@
 			</div>
 
 
-		</form:form>
+		</form_v1:form>
 		
 		<life:footer />
 		
-		<core:closing_body>
-			<agg:includes supertag="true" />
+		<core_v1:closing_body>
+			<agg_v1:includes supertag="true" />
 		<ip:includes />
-		</core:closing_body>
+		</core_v1:closing_body>
 		
 	</body>
 	

@@ -130,7 +130,7 @@
 	</sql:query>
 
 	<%-- HTML --%>
-	<layout:generic_page title="Daily and monthly sales limits">
+	<layout_v1:generic_page title="Daily and monthly sales limits">
 
 		<jsp:attribute name="head">
 			<style>
@@ -321,5 +321,5 @@
 			</table>
 		</jsp:body>
 
-	</layout:generic_page>
+	</layout_v1:generic_page>
 </c:if>
