@@ -42,6 +42,8 @@ public class HealthLeadService extends LeadService {
         String dobXPath = "health/application/primary/dob";
         if(!StringUtils.isEmpty(data.getString(dobXPath))) {
             leadData.getPerson().setDob(LocalDate.parse(data.getString(dobXPath), DATE_TIME_FORMATTER));
+        } else {
+            leadData.getPerson().setDob(LocalDate.parse(data.getString("health/healthCover/primary/dob"), DATE_TIME_FORMATTER));
         }
 
         // Contact Details
@@ -56,7 +58,7 @@ public class HealthLeadService extends LeadService {
             leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
         } else {
             String mobile = StringUtils.replaceEach(data.getString("health/contactDetails/flexiContactNumber"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
-            if(mobile.startsWith("04")) {
+            if(mobile != null && mobile.startsWith("04")) {
                 leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
             }
         }
@@ -66,25 +68,25 @@ public class HealthLeadService extends LeadService {
             leadData.getPerson().setPhone(StringUtils.left(phone, 10));
         } else {
             String phone = StringUtils.replaceEach(data.getString("health/contactDetails/flexiContactNumber"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
-            if(!phone.startsWith("04")) {
+            if(phone != null && !phone.startsWith("04")) {
                 leadData.getPerson().setPhone(StringUtils.left(phone, 10));
             }
         }
 
         // Location
-        if(!StringUtils.isEmpty("health/application/address/state")) {
+        if(!StringUtils.isEmpty(data.getString("health/application/address/state"))) {
             leadData.getPerson().getAddress().setState(data.getString("health/application/address/state"));
         } else {
             leadData.getPerson().getAddress().setState(data.getString("health/situation/state"));
         }
 
-        if(!StringUtils.isEmpty("health/application/address/suburb")) {
+        if(!StringUtils.isEmpty(data.getString("health/application/address/suburb"))) {
             leadData.getPerson().getAddress().setSuburb(data.getString("health/application/address/suburb"));
         } else {
             leadData.getPerson().getAddress().setSuburb(data.getString("health/situation/suburb"));
         }
 
-        if(!StringUtils.isEmpty("health/application/address/postCode")) {
+        if(!StringUtils.isEmpty(data.getString("health/application/address/postCode"))) {
             leadData.getPerson().getAddress().setPostcode(data.getString("health/application/address/postCode"));
         } else {
             leadData.getPerson().getAddress().setPostcode(data.getString("health/situation/postcode"));
