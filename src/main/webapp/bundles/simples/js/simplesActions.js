@@ -368,7 +368,9 @@
 							statusId: parentStatusId,
 							reasonStatusId: $modal.find('select[name="reason"]').val(),
 							comment: $modal.find('textarea').val(),
-							assignToUser: assignToUser
+							assignToUser: assignToUser,
+							rootId: currentMessage.message.transactionId,
+							contactName: currentMessage.message.contactName
 						};
 
 						// Validation checks

@@ -309,9 +309,10 @@ public class SimplesRouter extends HttpServlet {
 		try {
 			final int simplesUid = authenticatedData.getSimplesUid();
 			final SimplesMessageService simplesMessageService = new SimplesMessageService();
-			final List<Message> messages = simplesMessageService.postponedMessages(simplesUid);
+			final boolean inInEnabled = StringUtils.equalsIgnoreCase("true", settings().getSetting("inInEnabled"));
+			final List<Message> messages = inInEnabled ? simplesMessageService.scheduledCallbacks(simplesUid) : simplesMessageService.postponedMessages(simplesUid);
 			objectMapper.writeValue(writer, jsonObjectNode("messages", messages));
-        } catch (final DaoException e) {
+        } catch (final DaoException | ConfigSettingException e) {
 			objectMapper.writeValue(writer, errors(e));
 		}
 	}

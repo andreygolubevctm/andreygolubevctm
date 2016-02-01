@@ -47,6 +47,7 @@
 				</div>
 			</div>
 
+			<c:if test="${!pageSettings.getSetting('inInEnabled')}">
 			<div class="row">
 				<div class="col-sm-12">
 					<h5>Select a postpone reason</h5>
@@ -58,6 +59,7 @@
 					</select>
 				</div>
 			</div>
+			</c:if>
 
 			<div class="row">
 				<div class="col-sm-12">

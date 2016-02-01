@@ -2,15 +2,15 @@ package com.ctm.web.simples.services;
 
 import com.ctm.web.core.model.Role;
 import com.ctm.web.core.model.Rule;
-import com.ctm.web.simples.dao.BlacklistDao;
-import com.ctm.web.simples.dao.UserDao;
+import com.ctm.web.core.model.session.AuthenticatedData;
+import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.simples.dao.*;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.core.transaction.model.Transaction;
-import com.ctm.web.simples.dao.MessageDao;
-import com.ctm.web.simples.dao.MessageDuplicatesDao;
 import com.ctm.web.simples.model.*;
+import com.ctm.web.simples.phone.inin.InInScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +31,11 @@ public class SimplesMessageService {
 	public List<Message> postponedMessages(final int userId) throws DaoException {
 		final MessageDao messageDao = new MessageDao();
 		return messageDao.postponedMessages(userId);
+	}
+
+	public List<Message> scheduledCallbacks(final int userId) throws DaoException {
+		final PersonalMessageDao personalMessageDao = new PersonalMessageDao();
+		return personalMessageDao.getPersonalMessages(userId);
 	}
 
 	public MessageDetail getMessage(final HttpServletRequest request, final int messageId) throws DaoException {
@@ -157,6 +162,36 @@ public class SimplesMessageService {
 		catch (DaoException | ParseException e) {
 			LOGGER.error("Could not postpone message {},{},{},{},{},{},{}", kv("messageId", messageId), kv("statusId", statusId), kv("reasonStatusId", reasonStatusId),
 				kv("postponeDate", postponeDate), kv("postponeAMPM", postponeAMPM), kv("comment", comment), kv("assignToUser", assignToUser), e);
+
+			Error error = new Error(e.getMessage());
+			details.addError(error);
+		}
+
+		return details.toJson();
+	}
+
+
+	public String schedulePersonalMessage(int actionIsPerformedByUserId, long rootId, int statusId, String postponeDate, String postponeTime, String postponeAMPM, String contactName, String comment, AuthenticatedData authenticatedData) {
+		PersonalMessageDao personalMessageDao = new PersonalMessageDao();
+		Transaction details = new Transaction();
+		InInScheduleService inInScheduleService = new InInScheduleService();
+
+		try {
+			Date postponeTo = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(postponeDate + " " + postponeTime + " " + postponeAMPM);
+
+			inInScheduleService.scheduleCall(TransactionService.getMessageWithLatestTransaction(rootId, postponeTo), authenticatedData);
+
+			switch (statusId) {
+				case MessageStatus.STATUS_COMPLETED_AS_PM:
+					personalMessageDao.insertPersonalMessage(actionIsPerformedByUserId, rootId, postponeTo, contactName, comment);
+					break;
+				case MessageStatus.STATUS_CHANGED_TIME_FOR_PM:
+					personalMessageDao.postponePersonalMessage(actionIsPerformedByUserId, rootId, postponeTo, comment);
+			}
+
+		}
+		catch (DaoException | ParseException e) {
+			LOGGER.error("Could not schedule InIn callback {},{},{},{},{},{},{}", kv("userId", actionIsPerformedByUserId), kv("statusId", statusId), kv("postponeDate", postponeDate), kv("postponeTime", postponeTime), kv("postponeAMPM", postponeAMPM), kv("comment", comment), kv("rootId", rootId), e);
 
 			Error error = new Error(e.getMessage());
 			details.addError(error);
