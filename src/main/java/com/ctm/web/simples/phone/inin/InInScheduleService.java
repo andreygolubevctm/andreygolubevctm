@@ -10,6 +10,8 @@ import rx.Observable;
 
 import java.util.List;
 
+import static rx.Observable.just;
+
 @Service
 public class InInScheduleService implements ScheduleService{
 
@@ -22,25 +24,21 @@ public class InInScheduleService implements ScheduleService{
 
     @Override
     public boolean scheduleCall(final Message message, final AuthenticatedData user) {
-        //Check for existence of user/lead
-        Observable<Identity> identity = inInApi.searchScheduledCall(message);
+        final Observable<Boolean> searchLead = inInApi.searchLead(message).toList()
+            .flatMap(identities -> insert(message, identities));
+        final Observable<Boolean> scheduleCall = searchLead.flatMap(ignore -> inInApi.updateScheduledCall(message, user));
+        return scheduleCall.toBlocking().first();
+    }
 
-        //Create user/lead if does not exist
-
-        //Schedule call time. Note that this may update an existing scheduled call
-        return false;
+    private Observable<Boolean> insert(final Message message, final List<Identity> identities) {
+        return identities.isEmpty() ? inInApi.insertLead(message) : just(Boolean.TRUE);
     }
 
     @Override
     public boolean deleteScheduledCall(final Message message, final AuthenticatedData user) {
-        inInApi.searchScheduledCall(message);
-
-//        inInApi.deleteScheduledCall(identity);
-        return false;
-    }
-
-    protected void insert(){
-
+        final Observable<Identity> searchLead = inInApi.searchLead(message);
+        final Observable<Boolean> deleteScheduledCall = searchLead.flatMap(ignore -> inInApi.deleteScheduledCall(message));
+        return deleteScheduledCall.toBlocking().first();
     }
 
 }

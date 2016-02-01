@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import rx.Observable;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -69,74 +70,69 @@ public class InInApi {
     private final Pattern LETTERS_ONLY = Pattern.compile("[a-zA-Z]+");
     private final Pattern NUMBERS_ONLY = Pattern.compile("[0-9]+");
 
-    @Autowired
-    private InInConfig inInConfig;
-    @Autowired
-    private Client<List<SearchWithFilter>, SearchWithFilterResults> searchClient;
-    @Autowired
-    private Client<List<InsertScheduleCall>, String> insertClient;
-    @Autowired
-    private Client<List<UpdateScheduleCall>, String> updateClient;
-    @Autowired
-    private Client<List<DeleteScheduleCall>, String> deleteClient;
+    @Autowired private InInConfig inInConfig;
+    @Autowired private Client<List<SearchWithFilter>, SearchWithFilterResults> searchClient;
+    @Autowired private Client<List<Insert>, String> insertContactClient;
+    @Autowired private Client<List<InsertScheduleCall>, String> insertScheduleCallClient;
+    @Autowired private Client<List<UpdateScheduleCall>, String> updateScheduleCallClient;
+    @Autowired private Client<List<DeleteScheduleCall>, String> deleteScheduleCallClient;
 
-    public Observable<Identity> searchScheduledCall(final Message message) {
+    public Observable<Identity> searchLead(final Message message) {
         return searchFilter(message).flatMap(this::searchRequest);
     }
 
+    public Observable<Boolean> insertLead(final Message message) {
+        final List<Data> datas = createLeadDatas(message);
+        addData(datas, DATE_IMPORTED, LocalDateTime.now());
+        final Insert insert = new Insert(inInConfig.getCampaignName(), datas);
+        return insertContactClient.post(singletonList(insert), String.class, inInConfig.getWsUrl() + "/InsertRecords").flatMap(r -> {
+            if (!r.equals("1 records success to insert.")) {
+                return Observable.error(new IllegalStateException("Inserting dialler record failed"));
+            } else {
+                return just(Boolean.TRUE);
+            }
+        });
+    }
+
+
     public Observable<Boolean> insertScheduledCall(final Message message, final AuthenticatedData authenticatedData) {
-        final List<Data> datas = createDatas(message);
+        final List<Data> datas = createLeadDatas(message);
         final InsertScheduleCall insert = new InsertScheduleCall(inInConfig.getCampaignName(), datas, message.getPhoneNumber1(), authenticatedData.getAgentId(), message.getWhenToAction().toString());
-        return insertClient.post(singletonList(insert), String.class, inInConfig.getWsUrl() + "/InsertScheduleRecord")
-                .flatMap(r -> {
-                                    if (!r.equals("1 records success to insert.")) {
-                                        return Observable.error(new IllegalStateException("Inserting dialler callback failed"));
-                                    } else {
-                                        return just(Boolean.TRUE);
-                                    }
-                                });
+        return insertScheduleCallClient.post(singletonList(insert), String.class, inInConfig.getWsUrl() + "/InsertScheduleRecord")
+            .flatMap(r -> {
+                if (!r.equals("1 records success to insert.")) {
+                    return Observable.error(new IllegalStateException("Inserting dialler callback failed"));
+                } else {
+                    return just(Boolean.TRUE);
+                }
+            });
     }
 
-    public Observable<Boolean> updateScheduledCall(final Identity identity, final Message message, final AuthenticatedData authenticatedData) {
-
-        final UpdateScheduleCall update = new UpdateScheduleCall(inInConfig.getCampaignName(), new Data(I3_IDENTITY, identity.get()), "", authenticatedData.getAgentId(), message.getWhenToAction().toString());
-        return updateClient.post(singletonList(update), String.class, inInConfig.getWsUrl() + "/InsertOrUpdateScheduleCallBacks")
-                .flatMap(r -> {
-                                if (!r.equals("1 records success to update.")) {
-                                    return Observable.error(new IllegalStateException("Updating dialler callback failed"));
-                                } else {
-                                    return just(Boolean.TRUE);
-                                }
-                            });
+    public Observable<Boolean> updateScheduledCall(final Message message, final AuthenticatedData authenticatedData) {
+        final Data data = new Data(ROOT_ID, Long.toString(message.getTransactionId()));
+        final UpdateScheduleCall update = new UpdateScheduleCall(inInConfig.getCampaignName(), data, "", authenticatedData.getAgentId(), message.getWhenToAction().toString());
+        return updateScheduleCallClient.post(singletonList(update), String.class, inInConfig.getWsUrl() + "/InsertOrUpdateScheduleCallBacks")
+            .flatMap(r -> {
+                if (!r.equals("1 records success to update.")) {
+                    return Observable.error(new IllegalStateException("Updating dialler callback failed"));
+                } else {
+                    return just(Boolean.TRUE);
+                }
+            });
     }
 
-    public Observable<Boolean> deleteScheduledCall(final Identity identity) {
-
-        final DeleteScheduleCall delete = new DeleteScheduleCall(inInConfig.getCampaignName(), new Data(I3_IDENTITY, identity.get()));
-        return deleteClient.post(singletonList(delete), String.class, inInConfig.getWsUrl() + "/DeleteScheduleCallBacks")
-                .flatMap(r -> {
-                    if (!r.equals("1 records success to update.")) {
-                        return Observable.error(new IllegalStateException("Updating dialler callback failed"));
-                    } else {
-                        return just(Boolean.TRUE);
-                    }
-                });
-
+    public Observable<Boolean> deleteScheduledCall(final Message message) {
+        final Data data = new Data(ROOT_ID, Long.toString(message.getTransactionId()));
+        final DeleteScheduleCall delete = new DeleteScheduleCall(inInConfig.getCampaignName(), data);
+        return deleteScheduleCallClient.post(singletonList(delete), String.class, inInConfig.getWsUrl() + "/DeleteScheduleCallBacks")
+            .flatMap(r -> {
+                if (!r.equals("1 records success to update.")) {
+                    return Observable.error(new IllegalStateException("Updating dialler callback failed"));
+                } else {
+                    return just(Boolean.TRUE);
+                }
+            });
     }
-
-//    public Observable<String> exclude(final List<Identity> identities) {
-//        if (identities.isEmpty()) {
-//            return Observable.empty();
-//        } else {
-//            final Observable<Identity> from = Observable.from(identities);
-//            final Observable<Update> updates = from.map(i -> {
-//                final List<Data> datas = new ArrayList<>();
-//                addData(datas, STATUS, Status.E);
-//                return new Update(inInConfig.getCampaignName(), new Data(I3_IDENTITY, i.get()), datas);
-//            });
-//            return updates.toList().flatMap(u -> updateClient.put(u, String.class, inInConfig.getWsUrl() + "/UpdateRecords"));
-//        }
-//    }
 
     private Observable<? extends Identity> searchRequest(final String f) {
         final List<SearchWithFilter> searches = Collections.singletonList(new SearchWithFilter(inInConfig.getCampaignName(), f));
@@ -159,10 +155,6 @@ public class InInApi {
             }
         });
     }
-
-//    private String valididateString(final String s) throws IllegalArgumentException {
-//        return validate(s, LETTERS_ONLY, "letters only");
-//    }
 
     private String validateNumber(final String s) throws IllegalArgumentException {
         return validate(s, NUMBERS_ONLY, "numbers");
@@ -213,41 +205,23 @@ public class InInApi {
             : Observable.error(new IllegalStateException("No I3 Identity key found"));
     }
 
-    private List<Data> createDatas(final Message leadRequest) {
+    private List<Data> createLeadDatas(final Message message) {
         final List<Data> datas = new ArrayList<>();
-//        final Person person = leadRequest.getPerson();
-//        final Address address = person.getAddress();
-//
-//        addData(datas, STATUS, Status.J); // records are always inserted with a J status
-//        addData(datas, ZONE, address.getState());
-//        addData(datas, SALESFORCE_ID, leadRequest.getSalesforceId().map(SalesforceId::get).orElse(""));
-//        addData(datas, PENDING_STATUS, leadRequest.getStatus() == LeadStatus.PENDING);
-//        addData(datas, VERTICAL_CODE, leadRequest.getVerticalType());
-//        addData(datas, BRAND_CODE, leadRequest.getBrandCode());
-//        addData(datas, CAMPAIGN_ID, inInConfig.getCampaignId());
-//        addData(datas, T1, inInConfig.getDefaultT1());
-//        addData(datas, T2, inInConfig.getDefaultT2());
-//        addData(datas, ROOT_ID, leadRequest.getRootId().get());
-//        addData(datas, TRANSACTION_ID, leadRequest.getTransactionId().get());
-//        addData(datas, FIRST_NAME, person.getFirstName());
-//        addData(datas, LAST_NAME, person.getLastName());
-//        addData(datas, MOBILE, person.getMobile());
-//        addData(datas, PHONE, person.getPhone());
-//        addData(datas, EMAIL, person.getEmail());
-//        addData(datas, DOB, person.getDob());
-//        addData(datas, STATE, address.getState());
-//        addData(datas, SUBURB, address.getSuburb());
-//        addData(datas, POSTCODE, address.getPostcode());
-
+        addData(datas, STATUS, Status.J); // records are always inserted with a J status
+        addData(datas, ZONE, message.getState());
+        addData(datas, ROOT_ID, message.getTransactionId());
+        addData(datas, STATE, message.getState());
+        addData(datas, PHONE, createPhone(message.getPhoneNumber1(), message.getPhoneNumber2()));
+        addData(datas, MOBILE, createMobile(message.getPhoneNumber1(), message.getPhoneNumber2()));
         return datas;
     }
 
-//    private void addData(final List<Data> datas, final String field, final Optional<?> value) {
-//        value.ifPresent(v -> addData(datas, field, v));
-//    }
-
     private void addData(final List<Data> datas, final String field, final Object value) {
         datas.add(createData(field, value));
+    }
+
+    private void addData(final List<Data> datas, final String field, final Optional<?> value) {
+        value.ifPresent(v -> addData(datas, field, v));
     }
 
     @SuppressWarnings("unchecked")
