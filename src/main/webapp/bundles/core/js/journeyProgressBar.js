@@ -25,7 +25,7 @@
 
 	function init() {
 		$(document).ready(function() {
-			$target = $(".journeyProgressBar");
+			$target = $(".journeyProgressBar_v2");
 		});
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function jeStepInit( step ){
 			currentStepNavigationId = step.navigationId;

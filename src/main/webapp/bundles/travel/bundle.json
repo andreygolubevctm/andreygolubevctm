@@ -1,6 +1,7 @@
 {
   "brandCodes": ["ctm"],
   "dependencies": [
+    "shared/journeyEngine/v2",
     "shared/results",
     "shared/optIn",
     "shared/validation",
@@ -12,6 +13,7 @@
     "shared/checkboxIE8",
     "shared/leavePageWarning",
     "shared/showMoreQuotesPrompt",
-    "shared/resultsRankings"
+    "shared/resultsRankings",
+    "shared/phgSalesTracking"
   ]
 }

@@ -141,6 +141,39 @@
 // Vertical button groups
 // ----------------------
 
+.btn-group-horizontal {
+  > .btn,
+  > .btn-group,
+  > .btn-group > .btn {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  // Clear floats so dropdown menus can be properly placed
+  > .btn-group {
+    &:extend(.clearfix all);
+    > .btn {
+      float: none;
+    }
+  }
+
+}
+
+.btn-group-horizontal > .btn-group:not(:first-child):not(:last-child) > .btn {
+  border-radius: 10;
+}
+.btn-group-horizontal > .btn-group:first-child:not(:last-child) {
+  > .btn:last-child,
+  > .dropdown-toggle {
+    .border-bottom-radius(10);
+  }
+}
+.btn-group-horizontal > .btn-group:last-child:not(:first-child) > .btn:first-child {
+  .border-top-radius(10);
+}
+
+
 .btn-group-vertical {
   > .btn,
   > .btn-group,

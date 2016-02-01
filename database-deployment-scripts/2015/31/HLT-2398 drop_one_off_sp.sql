@@ -1,1 +1,0 @@
-DROP PROCEDURE `simples`.`sp_one_off_failjoin_cleanup`;

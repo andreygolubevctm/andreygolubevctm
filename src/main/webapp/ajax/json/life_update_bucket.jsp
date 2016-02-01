@@ -10,7 +10,7 @@
 <session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}" />
 
 <%-- First check owner of the quote --%>
-<c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
+<c:set var="proceedinator"><core_v1:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
 		${logger.debug('PROCEEDINATOR PASSED. {}' , log:kv('proceedinator',proceedinator ))}
@@ -27,7 +27,7 @@
 
 		<%-- Save client data --%>
 		<c:if test="${empty param.updateBucket or param.updateBucket eq 'true'}">
-			<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${fn:toLowerCase(vertical)}"/>
+			<agg_v1:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${fn:toLowerCase(vertical)}"/>
 		</c:if>
 
 		<%-- Add calcSequence and transactionId back in --%>

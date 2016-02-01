@@ -1,2 +1,0 @@
-INSERT INTO `ctm`.`configuration` (`configCode`, `environmentCode`, `styleCodeId`, `verticalId`, `configValue`) VALUES ('displayOption', '0', '4', '0', 'N');
-INSERT INTO `ctm`.`configuration` (`configCode`, `environmentCode`, `styleCodeId`, `verticalId`, `configValue`) VALUES ('displayOption', '0', '4', '4', 'Y');

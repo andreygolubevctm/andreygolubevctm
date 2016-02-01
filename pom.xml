@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.11.13</version>
+    <version>1.14.3-RC28</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -40,6 +40,7 @@
         <swagger-annotations.version>1.5.4</swagger-annotations.version>
         <common-logging.version>1.5.0-RC1</common-logging.version>
         <common-interfaces.version>1.7.0</common-interfaces.version>
+        <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
 
         <!-- Compile as this version -->
         <java.version>1.8</java.version>
@@ -281,6 +282,12 @@
             <groupId>com.ctm.common</groupId>
             <artifactId>common-interfaces</artifactId>
             <version>${common-interfaces.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ctm.validator</groupId>
+            <artifactId>contact-validator-model</artifactId>
+            <version>${contact-validator-model.version}</version>
         </dependency>
 
         <!-- Other 3rd Party -->

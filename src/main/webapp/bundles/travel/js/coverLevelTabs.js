@@ -157,8 +157,11 @@
 				// run the trackQuoteResultsList event again, with new products/rankingFilter
 				meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
 					additionalData: additionalData,
-					onAfterEventMode: 'Refresh'
+					onAfterEventMode: meerkat.modules.resultsTracking.getResultsEventMode()
 				});
+				if(meerkat.modules.resultsTracking.getResultsEventMode().toLowerCase() == "load") {
+					meerkat.modules.resultsTracking.setResultsEventMode("Refresh");
+				}
 
 				// Never write quote_ranking more than once for each Load event.
 				// Never write if the hasRunTrackingCall is empty, as it means its the first time.

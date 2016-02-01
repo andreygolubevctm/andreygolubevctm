@@ -478,7 +478,7 @@
 						</Account>
 					</Contributions>
 					<Membership>
-						<IsProspective>true</IsProspective>
+						<IsProspective>false</IsProspective>
 						<Group>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
 							<GroupID>

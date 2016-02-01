@@ -5,4 +5,4 @@
 	Called whenever the user changes the "importance" of any of the toggles.
 --%>
 
-<agg:write_rank rootPath="${param.rootPath}" rankBy="${param.rankBy}" />
+<agg_v1:write_rank rootPath="${param.rootPath}" rankBy="${param.rankBy}" />

@@ -9,6 +9,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import javax.servlet.ServletException;
         "com.ctm.commonlogging", "com.ctm.web.core"})
 @EnableAutoConfiguration
 @Configuration
+@EnableAsync
 public class Application extends SpringBootServletInitializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);

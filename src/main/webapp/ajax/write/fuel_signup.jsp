@@ -49,7 +49,7 @@ Requires two calls, one to add to the email master and one to sign-up for the fu
 
 <c:if test="${empty errorPool}">
 	
-	<agg:write_email
+	<agg_v1:write_email
 		items="marketing=${marketing},fuel=${marketing}"
 		vertical="${vertical}"
 		lastName="${lastName}"

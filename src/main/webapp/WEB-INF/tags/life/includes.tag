@@ -14,12 +14,12 @@
 <quote:save_quote quoteType="${vertical}" mainJS="LifeQuote" />
 
 <%-- Dialog for errors during product comparisons --%>
-<core:popup id="compare-error" title="Comare ERROR">
+<core_v1:popup id="compare-error" title="Comare ERROR">
 	<p id="compare-error-text">XXXXXXX</p>
 	<div class="popup-buttons">
 		<a href="javascript:void(0);" class="bigbtn close-error"><span>Ok</span></a>
 	</div>
-</core:popup>
+</core_v1:popup>
 
 <%-- Dialog for confirming telephone number before submission --%>
 <life:popup_callbackconfirm />
