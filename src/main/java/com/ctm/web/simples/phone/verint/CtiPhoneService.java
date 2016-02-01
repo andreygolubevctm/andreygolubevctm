@@ -1,4 +1,4 @@
-package com.ctm.web.simples.services;
+package com.ctm.web.simples.phone.verint;
 
 import com.ctm.web.core.connectivity.JsonConnection;
 import com.ctm.web.core.connectivity.SimpleConnection;
@@ -26,8 +26,8 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.simples.model.CallInfo.STATE_INACTIVE;
 import static java.lang.String.format;
 
-public class PhoneService {
-	private static final Logger LOGGER = LoggerFactory.getLogger(PhoneService.class);
+public class CtiPhoneService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(CtiPhoneService.class);
 	public static final String CTI_MAKE_CALL = "/dataservices/makeCall?accessToken=&extension=%s&numberToCall=%s";
 
 	/**
@@ -235,7 +235,7 @@ public class PhoneService {
 			// Look for extension on session object, if not found, get it from special service, then save it to session for next time.
 			String extension = authData.getExtension();
 			if(extension == null){
-				extension = PhoneService.getExtensionByAgentId(settings, agentId);
+				extension = CtiPhoneService.getExtensionByAgentId(settings, agentId);
 				if(extension != null){
 					authData.setExtension(extension);
 				} else {
@@ -244,7 +244,7 @@ public class PhoneService {
 			}
 
 			if(extension != null){
-				String vdn = PhoneService.getVdnByExtension(settings, extension);
+				String vdn = CtiPhoneService.getVdnByExtension(settings, extension);
 				if(vdn != null){
 					return getInboundPhoneDetailsByVdn(vdn);
 				}
