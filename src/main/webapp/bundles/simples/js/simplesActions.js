@@ -472,6 +472,10 @@
 	}
 
 	function isCompletedAsPM() {
+		if (meerkat.site.inInEnabled === true && currentMessage.message.isPM === true) {
+			return true;
+		}
+
 		if (currentMessage.hasOwnProperty("messageaudits")) {
 			for (var i = 0; i < currentMessage.messageaudits.length; i++) {
 				var auditObj = currentMessage.messageaudits[i];

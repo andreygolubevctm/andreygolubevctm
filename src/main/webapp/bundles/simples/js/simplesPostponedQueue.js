@@ -109,11 +109,29 @@
 			return;
 		}
 
-		var messageId = $element.attr('data-messageId');
+		var messageId = $element.attr('data-messageId'),
+			rootId = $element.attr('data-rootId');
+
 
 		viewMessageInProgress = true;
 		meerkat.modules.loadingAnimation.showInside($element);
 		$element.addClass('disabled');
+
+		if (meerkat.site.inInEnabled === true) {
+			meerkat.modules.simplesMessage.performLauncherSearch(rootId).then(
+				function resetAndUpdate() {
+					viewMessageInProgress = false;
+					meerkat.modules.loadingAnimation.hide($element);
+					$element.removeClass('disabled');
+
+					// Update currentMessage to flag it is a PM
+					var currentMessage = meerkat.modules.simplesMessage.getCurrentMessage();
+					currentMessage.message.isPM = true;
+					meerkat.modules.simplesMessage.setCurrentMessage(currentMessage);
+				}
+			);
+			return;
+		}
 
 		meerkat.modules.comms.get({
 			url: baseUrl + 'simples/messages/get.json?messageId=' + encodeURI(messageId),

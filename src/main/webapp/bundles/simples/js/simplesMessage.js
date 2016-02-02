@@ -179,7 +179,7 @@
 
 		$messageDetailsContainer.html( meerkat.modules.loadingAnimation.getTemplate() );
 
-		meerkat.modules.comms.get({
+		return meerkat.modules.comms.get({
 			url: baseUrl + 'simples/transaction/get.json',
 			cache: false,
 			errorLevel: 'silent',
@@ -254,7 +254,7 @@
 
 		var url = baseUrl + 'simples/ajax/message_set_' + type + '.jsp';
 		if (type === 'postpone') {
-			url = baseUrl + 'spring/rest/simples/messages/setPostpone.json'
+			url = baseUrl + 'spring/rest/simples/messages/setPostpone.json';
 		}
 
 		meerkat.modules.comms.post({
@@ -327,7 +327,8 @@
 		getCurrentMessage: getCurrentMessage,
 		setCurrentMessage: setCurrentMessage,
 		performFinish: performFinish,
-		renderMessageDetails: renderMessageDetails
+		renderMessageDetails: renderMessageDetails,
+		performLauncherSearch: performLauncherSearch
 	});
 
 })(jQuery);

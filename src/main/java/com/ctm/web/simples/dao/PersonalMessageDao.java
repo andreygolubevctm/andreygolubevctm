@@ -132,7 +132,7 @@ public class PersonalMessageDao {
 
             @Override
             public String getStatement() {
-                return "UPDATE simples.personal_messages SET postponeTo = ? WHERE rootId = ?";
+                return "UPDATE simples.personal_messages SET whenToAction = ? WHERE rootId = ?";
             }
         });
     }
