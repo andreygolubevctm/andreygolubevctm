@@ -27,6 +27,7 @@ public class ReferralTracking {
 	public String getAndSetUtmCampaign(HttpServletRequest request, Data data, String prefix) {
 		return getAndSetFromParam(request, data, "utm_campaign", prefix + "/cid");
 	}
+
 	public String getRefererUrl(HttpServletRequest request) {
 		String url = request.getHeader("Referer");
 
@@ -34,7 +35,7 @@ public class ReferralTracking {
 			try {
 				return URLEncoder.encode(url, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
-				LOGGER.warn("URL is not in utf-8. {}", kv("url", url), e);
+				LOGGER.warn("URL is not in utf-8.", e);
 			}
 		}
 		return "";
