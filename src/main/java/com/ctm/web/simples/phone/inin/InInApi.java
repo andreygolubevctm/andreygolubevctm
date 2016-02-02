@@ -73,7 +73,7 @@ public class InInApi {
     @Autowired private Client<List<UpdateScheduleCall>, String> updateScheduleCallClient;
     @Autowired private Client<List<DeleteScheduleCall>, String> deleteScheduleCallClient;
 
-    public Observable<Identity> searchLead(final Message message) {
+    public Observable<I3Identity> searchLead(final Message message) {
         return searchFilter(message).flatMap(this::searchRequest);
     }
 
@@ -105,8 +105,11 @@ public class InInApi {
     }
 
     public Observable<Boolean> updateScheduledCall(final Message message, final AuthenticatedData authenticatedData) {
-        final Data data = new Data(ROOT_ID, Long.toString(message.getTransactionId()));
-        final UpdateScheduleCall update = new UpdateScheduleCall(inInConfig.getCampaignName(), data, "", authenticatedData.getUid(), message.getWhenToAction().toString());
+        final Data identity = new Data(ROOT_ID, Long.toString(message.getTransactionId()));
+        final String phoneNumber = determinePhoneNumber(message);
+        final String agentId = authenticatedData.getUid();
+        final String scheduleTime = message.getWhenToAction().toString();
+        final UpdateScheduleCall update = new UpdateScheduleCall(inInConfig.getCampaignName(), identity, phoneNumber, agentId, scheduleTime);
         return updateScheduleCallClient.post(singletonList(update), String.class, inInConfig.getWsUrl() + "/InsertOrUpdateScheduleCallBacks")
             .flatMap(r -> {
                 if (!r.equals("1 records success to update.")) {
@@ -117,9 +120,8 @@ public class InInApi {
             });
     }
 
-    public Observable<Boolean> deleteScheduledCall(final Message message) {
-        final Data data = new Data(ROOT_ID, Long.toString(message.getTransactionId()));
-        final DeleteScheduleCall delete = new DeleteScheduleCall(inInConfig.getCampaignName(), data);
+    public Observable<Boolean> deleteScheduledCall(final I3Identity i3Identity) {
+        final DeleteScheduleCall delete = new DeleteScheduleCall(inInConfig.getCampaignName(), singletonList(i3Identity.get()));
         return deleteScheduleCallClient.post(singletonList(delete), String.class, inInConfig.getWsUrl() + "/DeleteScheduleCallBacks")
             .flatMap(r -> {
                 if (!r.equals("1 records success to update.")) {
@@ -130,8 +132,8 @@ public class InInApi {
             });
     }
 
-    private Observable<? extends Identity> searchRequest(final String f) {
-        final List<SearchWithFilter> searches = Collections.singletonList(new SearchWithFilter(inInConfig.getCampaignName(), f));
+    private Observable<? extends I3Identity> searchRequest(final String f) {
+        final List<SearchWithFilter> searches = singletonList(new SearchWithFilter(inInConfig.getCampaignName(), f));
         final String searchUrl = inInConfig.getWsUrl() + "/SearchRecordsWithFilter";
         final Observable<SearchWithFilterResults> results = searchClient.post(searches, SearchWithFilterResults.class, searchUrl);
         return results.flatMap(this::identity);
@@ -165,7 +167,6 @@ public class InInApi {
     }
 
     private StringBuilder mobileOrPhoneClause(final Message message) {
-
         final StringBuilder clauses = new StringBuilder();
         createMobile(message.getPhoneNumber1(), message.getPhoneNumber2())
                 .ifPresent(mobile -> clauses.append(replace(MOBILE_CLAUSE, singletonMap("mobile", validateNumber(mobile)))));
@@ -174,30 +175,33 @@ public class InInApi {
         return clauses;
     }
 
-    protected Optional<String> createMobile(final String phoneNumber1, final String phoneNumber2) {
-        if (phoneNumber1 != null && (phoneNumber1.startsWith("04") || phoneNumber1.startsWith("05"))) {
-           return Optional.of(phoneNumber1);
-        } else {
-            return Optional.ofNullable(phoneNumber2);
-        }
-    }
-    protected Optional<String> createPhone(final String phoneNumber1, final String phoneNumber2) {
-        if (phoneNumber1 != null && !(phoneNumber1.startsWith("04") || phoneNumber1.startsWith("05"))) {
-            return Optional.of(phoneNumber1);
-        } else {
-            return Optional.ofNullable(phoneNumber2);
-        }
+    private String determinePhoneNumber(final Message message) {
+        final Optional<String> mobile = createMobile(message.getPhoneNumber1(), message.getPhoneNumber2());
+        final Optional<String> phone = createPhone(message.getPhoneNumber1(), message.getPhoneNumber2());
+        return mobile.orElseGet(() -> phone.orElse(""));
     }
 
-    private Observable<Identity> identity(final SearchWithFilterResults searchResults) {
+    protected Optional<String> createMobile(final String phoneNumber1, final String phoneNumber2) {
+        return isMobile(phoneNumber1) ? Optional.of(phoneNumber1) : isMobile(phoneNumber2) ? Optional.of(phoneNumber2) : Optional.empty();
+    }
+
+    protected Optional<String> createPhone(final String phoneNumber1, final String phoneNumber2) {
+        return !isMobile(phoneNumber1) ? Optional.of(phoneNumber1) : !isMobile(phoneNumber2) ? Optional.of(phoneNumber2) : Optional.empty();
+    }
+
+    private boolean isMobile(final String phoneNumber1) {
+        return phoneNumber1 != null && (phoneNumber1.startsWith("04") || phoneNumber1.startsWith("05"));
+    }
+
+    private Observable<I3Identity> identity(final SearchWithFilterResults searchResults) {
         final Observable<SearchResult> allSearchResults = Observable.from(searchResults.getResults()).flatMap(Observable::from);
         return allSearchResults.flatMap(this::getIdentity);
     }
 
-    private Observable<Identity> getIdentity(final SearchResult searchResult) {
+    private Observable<I3Identity> getIdentity(final SearchResult searchResult) {
         final String i3_identity = searchResult.get().get(I3_IDENTITY);
         return i3_identity != null ?
-            just(Identity.instanceOf(i3_identity))
+            just(I3Identity.instanceOf(i3_identity))
             : Observable.error(new IllegalStateException("No I3 Identity key found"));
     }
 
