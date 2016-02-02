@@ -3,6 +3,7 @@ package com.ctm.web.simples.phone.inin;
 
 import com.ctm.httpclient.Client;
 import com.ctm.interfaces.common.types.ValueType;
+import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.simples.config.InInConfig;
 import com.ctm.web.simples.model.Message;
@@ -12,12 +13,7 @@ import org.springframework.stereotype.Component;
 import rx.Observable;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static java.util.Collections.singletonList;
@@ -63,7 +59,7 @@ public class InInApi {
     public static final String DATE_IMPORTED = "DateImported";
 
     // search filters
-    public static final String FILTER = "(brandCode='${brandCode}' AND verticalCode='${verticalCode}' AND status NOT IN ('I', 'E')" +
+    public static final String FILTER = "(verticalCode='${verticalCode}' AND status NOT IN ('I', 'E')" +
             " AND DateImported > Getdate()-${days}) AND (rootId='${rootId}'${mobileOrPhoneClause}) ORDER BY DateImported DESC";
     public static final String MOBILE_CLAUSE = " OR Mobile='${mobile}'";
     public static final String PHONE_CLAUSE = " OR Home='${home}'";
@@ -110,7 +106,7 @@ public class InInApi {
 
     public Observable<Boolean> updateScheduledCall(final Message message, final AuthenticatedData authenticatedData) {
         final Data data = new Data(ROOT_ID, Long.toString(message.getTransactionId()));
-        final UpdateScheduleCall update = new UpdateScheduleCall(inInConfig.getCampaignName(), data, "", authenticatedData.getAgentId(), message.getWhenToAction().toString());
+        final UpdateScheduleCall update = new UpdateScheduleCall(inInConfig.getCampaignName(), data, "", authenticatedData.getUid(), message.getWhenToAction().toString());
         return updateScheduleCallClient.post(singletonList(update), String.class, inInConfig.getWsUrl() + "/InsertOrUpdateScheduleCallBacks")
             .flatMap(r -> {
                 if (!r.equals("1 records success to update.")) {
@@ -145,6 +141,7 @@ public class InInApi {
         return Observable.create(s -> {
             try {
                 final Map<String, Object> values = new HashMap<>();
+                values.put("verticalCode", VerticalType.HEALTH.name());
                 values.put("rootId", message.getTransactionId());
                 values.put("days", inInConfig.getExpiry());
                 values.put("mobileOrPhoneClause", mobileOrPhoneClause(message).toString());
@@ -192,7 +189,6 @@ public class InInApi {
         }
     }
 
-
     private Observable<Identity> identity(final SearchWithFilterResults searchResults) {
         final Observable<SearchResult> allSearchResults = Observable.from(searchResults.getResults()).flatMap(Observable::from);
         return allSearchResults.flatMap(this::getIdentity);
@@ -213,6 +209,7 @@ public class InInApi {
         addData(datas, STATE, message.getState());
         addData(datas, PHONE, createPhone(message.getPhoneNumber1(), message.getPhoneNumber2()));
         addData(datas, MOBILE, createMobile(message.getPhoneNumber1(), message.getPhoneNumber2()));
+        addData(datas, VERTICAL_CODE, VerticalType.HEALTH.name());
         return datas;
     }
 
