@@ -300,7 +300,11 @@
 				{{ if (brandsKnockedOut == obj.length && $featuresMode.length == 0) { }}
 				<c:choose>
 					<c:when test="${brandCode eq 'ctm' && not(environmentCode eq 'NXS')}">
-						<car:noResults />
+
+							<c:set var="heading"><content:get key="noCarQuoteTitle"/></c:set>
+							<c:set var="blur"><content:get key="noCarQuote"/></c:set>
+							<confirmation:other_products heading="${heading}" copy="${blur}" id="no-results-content"/>
+
 					</c:when>
 					<c:otherwise>
 						<div class="resultInsert priceMode clearfix">
