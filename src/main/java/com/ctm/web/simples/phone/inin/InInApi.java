@@ -8,9 +8,11 @@ import com.ctm.web.simples.config.InInConfig;
 import com.ctm.web.simples.model.Message;
 import com.ctm.web.simples.phone.inin.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import rx.Observable;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -68,9 +70,9 @@ public class InInApi {
     @Autowired private InInConfig inInConfig;
     @Autowired private Client<List<SearchWithFilter>, SearchWithFilterResults> searchClient;
     @Autowired private Client<List<Insert>, String> insertContactClient;
-    @Autowired private Client<List<InsertScheduleCall>, String> insertScheduleCallClient;
-    @Autowired private Client<List<UpdateScheduleCall>, String> updateScheduleCallClient;
-    @Autowired private Client<List<DeleteScheduleCall>, String> deleteScheduleCallClient;
+    @Autowired private Client<List<InsertScheduleCall>, List<String>> insertScheduleCallClient;
+    @Autowired private Client<List<UpdateScheduleCall>, List<String>> updateScheduleCallClient;
+    @Autowired private Client<List<DeleteScheduleCall>, List<String>> deleteScheduleCallClient;
 
     public Observable<I3Identity> searchLead(final Message message) {
         return searchFilter(message).flatMap(this::searchRequest);
@@ -92,9 +94,9 @@ public class InInApi {
     public Observable<Boolean> insertScheduledCall(final Message message, final String agentUsername) {
         final List<Data> datas = createLeadDatas(message);
         final InsertScheduleCall insert = new InsertScheduleCall(inInConfig.getCampaignName(), datas, message.getPhoneNumber1(), agentUsername, message.getWhenToAction().toString());
-        return insertScheduleCallClient.post(singletonList(insert), String.class, inInConfig.getWsUrl() + "/InsertScheduleRecord")
+        return insertScheduleCallClient.post(singletonList(insert), new ParameterizedTypeReference<List<String>>() {}, inInConfig.getWsUrl() + "/InsertScheduleRecord")
             .flatMap(r -> {
-                if (!r.equals("1 records success to insert.")) {
+                if (r.size() != 1) {
                     return Observable.error(new IllegalStateException("Inserting dialler callback failed"));
                 } else {
                     return just(Boolean.TRUE);
@@ -105,11 +107,11 @@ public class InInApi {
     public Observable<Boolean> updateScheduledCall(final Message message, final String agentUsername) {
         final Data identity = new Data(ROOT_ID, Long.toString(message.getTransactionId()));
         final String phoneNumber = determinePhoneNumber(message);
-        final String scheduleTime = message.getWhenToAction().toString();
+        final String scheduleTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(message.getWhenToAction());
         final UpdateScheduleCall update = new UpdateScheduleCall(inInConfig.getCampaignName(), identity, phoneNumber, agentUsername, scheduleTime);
-        return updateScheduleCallClient.post(singletonList(update), String.class, inInConfig.getWsUrl() + "/InsertOrUpdateScheduleCallBacks")
+        return updateScheduleCallClient.post(singletonList(update), new ParameterizedTypeReference<List<String>>() {}, inInConfig.getWsUrl() + "/InsertOrUpdateScheduleCallBacks")
             .flatMap(r -> {
-                if (!r.equals("1 records success to update.")) {
+                if (r.size() != 1) {
                     return Observable.error(new IllegalStateException("Updating dialler callback failed"));
                 } else {
                     return just(Boolean.TRUE);
@@ -119,10 +121,10 @@ public class InInApi {
 
     public Observable<Boolean> deleteScheduledCall(final I3Identity i3Identity) {
         final DeleteScheduleCall delete = new DeleteScheduleCall(inInConfig.getCampaignName(), singletonList(i3Identity.get()));
-        return deleteScheduleCallClient.post(singletonList(delete), String.class, inInConfig.getWsUrl() + "/DeleteScheduleCallBacks")
+        return deleteScheduleCallClient.post(singletonList(delete),  new ParameterizedTypeReference<List<String>>() {}, inInConfig.getWsUrl() + "/DeleteScheduleCallBacks")
             .flatMap(r -> {
-                if (!r.equals("1 records success to update.")) {
-                    return Observable.error(new IllegalStateException("Updating dialler callback failed"));
+                if (r.size() != 1) {
+                    return Observable.error(new IllegalStateException("Deleting dialler callback failed"));
                 } else {
                     return just(Boolean.TRUE);
                 }
