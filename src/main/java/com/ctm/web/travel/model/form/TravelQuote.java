@@ -3,7 +3,6 @@ package com.ctm.web.travel.model.form;
 
 import com.ctm.web.core.validation.Destinations;
 import com.ctm.web.core.validation.Name;
-import com.ctm.web.travel.quote.model.request.Filter;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;

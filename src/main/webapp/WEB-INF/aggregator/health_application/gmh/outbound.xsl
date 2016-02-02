@@ -74,8 +74,6 @@
 
 	<!-- MAIN TEMPLATE -->
 	<xsl:template match="/health">
-		<xsl:variable name="debitOnDate"><xsl:value-of select="payment/policyDate" /></xsl:variable>
-
 		<!-- FUND PRODUCT SPECIFIC VALUES -->
 		<soapenv:Envelope xmlns:tem="http://tempuri.org/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
 		<soapenv:Header>
@@ -195,7 +193,7 @@
 								<Property>
 									<Name>CTBDA</Name>
 									<Value>
-										<xsl:value-of select="$debitOnDate" />
+										<xsl:value-of select="$startDate" />
 									</Value>
 								</Property>
 								<Property>
@@ -480,7 +478,7 @@
 						</Account>
 					</Contributions>
 					<Membership>
-						<IsProspective>true</IsProspective>
+						<IsProspective>false</IsProspective>
 						<Group>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
 							<GroupID>

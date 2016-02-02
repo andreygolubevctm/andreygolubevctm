@@ -1,6 +1,7 @@
 {
   "brandCodes": ["ctm", "choo"],
   "dependencies": [
+    "shared/journeyEngine/v2",
     "plugins/scrollTo",
     "shared/results",
     "shared/features",

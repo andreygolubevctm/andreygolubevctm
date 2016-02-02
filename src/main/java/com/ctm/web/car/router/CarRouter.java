@@ -83,6 +83,15 @@ public class CarRouter {
 	}
 
 	@GET
+	@Path("/colours/list.json")
+	@Produces("application/json")
+	public Map<String, List<CarColour>> getColours() {
+		Map<String, List<CarColour>> result = new HashMap<>();
+		result.put(CarColour.JSON_COLLECTION_NAME, CarVehicleSelectionService.getAllColours());
+		return result;
+	}
+
+	@GET
 	@Path("/vehicleNonStandards/list.json")
 	@Produces("application/json")
 	public Map<String, List<VehicleNonStandard>> getVehicleNonStandards() {

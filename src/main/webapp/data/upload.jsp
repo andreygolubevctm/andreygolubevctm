@@ -17,7 +17,7 @@
 <%-- -------------------- --%>
 <%-- TODO: This would be CARLMI/HOMELMI in new version --%>
 <c:set var="vertical" value="Carlmi" /> <%-- 'Carlmi', 'Homelmi' --%>
-<c:set var="date" value="2015-10-05" /> <%-- Date in the file name --%>
+<c:set var="date" value="2015-11-16" /> <%-- Date in the file name --%>
 <c:set var="debug" value="false"/> <%-- This will stop all Mysql transactions when true --%>
 <c:set var="restart" value="false"/> <%-- Doesn't do much anymore. Used to TRUNCATE TABLE, but was removed... --%>
 <c:set var="step_1" value="true"/>
@@ -73,9 +73,9 @@
 	</c:otherwise>
 </c:choose>
 
-<core:doctype />
+<core_v1:doctype />
 <go:html>
-<%-- <core:head quoteType="${quoteType}" title="Upload ${vertical} Features"/> --%>
+<%-- <core_v1:head quoteType="${quoteType}" title="Upload ${vertical} Features"/> --%>
 
 <go:style marker="css-head">
 body {

@@ -85,8 +85,9 @@
 							</c:if>
 						</c:forEach>
 					</c:if>
-				
-					<go:setData dataVar="data" xpath="${fn:toLowerCase(result.ProductType)}" value="*DELETE" />
+
+					<%-- CLEAN HOUSE --%>
+					<go:setData dataVar="data" xpath="*" value="*DELETE" />
 				
 					<c:forEach var="transactionDatum" items="${transactionData.rows}">
 						<go:setData dataVar="data" xpath="${transactionDatum.xpath}" value="${transactionDatum.textValue}" />
@@ -145,7 +146,7 @@
 
 					<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/emailSentBy" value="${leadSentTo}" />
 					<go:setData dataVar="data" xpath="current/transactionId" value="${result.transaction_id}" />
-					<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" />
+					<agg_v1:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" />
 				</c:when>
 			</c:choose>
 		</c:forEach>

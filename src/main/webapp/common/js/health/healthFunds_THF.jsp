@@ -35,9 +35,6 @@ var healthFunds_THF = {
 		healthFunds_THF.state = $('#health_situation_state').val();
 		healthFunds_THF.healthCvr = $('#health_situation_healthCvr').val();
 
-		<%--schoolgroups and defacto--%>
-		healthDependents.config = { 'school': true, 'defacto':false, 'schoolMin': 21, 'schoolMax': 24 };
-
 		<%-- Previous fund --%>
 		$('#health_previousfund_primary_authority').setRequired(true,'Teachers Health Fund require authorisation to contact your previous fund');
 		$('#health_previousfund_partner_authority').setRequired(true, 'Teachers Health Fund require authorisation to contact your partner\'s previous fund');
@@ -73,42 +70,42 @@ var healthFunds_THF = {
 		} else {
 			<c:set var="thfEligibilityHtml">
 
-				<form_new:fieldset id="thf_eligibility" legend="How are you eligible to join Teachers Health Fund?" className="primary">
+				<form_v2:fieldset id="thf_eligibility" legend="How are you eligible to join Teachers Health Fund?" className="primary">
 
-					<form_new:row label="Are you a current or former member of a relevant education union?" id="unionMembershipRow"  helpId="523">
-						<field_new:array_select xpath="health/eligibility/unionMembership"
+					<form_v2:row label="Are you a current or former member of a relevant education union?" id="unionMembershipRow"  helpId="523">
+						<field_v2:array_select xpath="health/eligibility/unionMembership"
 								required="true"
 								title="Are you a current or former member of a relevant education union" items="=Please choose...,Y=Yes,N=No" />
-					</form_new:row>
+					</form_v2:row>
 
-					<form_new:row label="Are you related to someone who is eligible to join Teachers Health Fund" id="areYouRelatedRow"  helpId="521">
-						<field_new:array_select xpath="health/eligibility/areYouRelated"
+					<form_v2:row label="Are you related to someone who is eligible to join Teachers Health Fund" id="areYouRelatedRow"  helpId="521">
+						<field_v2:array_select xpath="health/eligibility/areYouRelated"
 								required="false"
 								title="Are you related to someone who is eligible to join Teachers Health Fund" items="=Please choose...,Y=Yes,N=No" />
-					</form_new:row>
+					</form_v2:row>
 
-					<form_new:row label="How are you related to a family member eligible for THF?" id="familyRow">
-						<field_new:import_select xpath="health/eligibility/familyMember"
+					<form_v2:row label="How are you related to a family member eligible for THF?" id="familyRow">
+						<field_v2:import_select xpath="health/eligibility/familyMember"
 							required="true"
 							url="/WEB-INF/option_data/thf/relationToTHFMember.html"
 							title="How are you related to a member eligible for THF?"
 							className="qualificationDropDown"
 							omitPleaseChoose="false" />
-					</form_new:row>
+					</form_v2:row>
 
-					<form_new:row label="Are you currently or have you ever worked for? (Permanent Employee/Contractor/Officer) "	id="employmentRow">
-						<field_new:import_select xpath="health/eligibility/employment"
+					<form_v2:row label="Are you currently or have you ever worked for? (Permanent Employee/Contractor/Officer) "	id="employmentRow">
+						<field_v2:import_select xpath="health/eligibility/employment"
 							required="true"
 							url="/WEB-INF/option_data/thf/employmentType.html"
 							title="What are you currently working as?"
 							className="qualificationDropDown"
 							omitPleaseChoose="false" />
-					</form_new:row>
+					</form_v2:row>
 
 					<div id="thf_ineligible" class="alert alert-danger">
 						<span>Unfortunately, you are not eligible to join Teachers Health Fund. Please <a href="javascript:;" data-slide-control="previous">select a different product</a>.</span>
 					</div>
-				</form_new:fieldset>
+				</form_v2:fieldset>
 
 			</c:set>
 			$('#health_application').prepend('<c:out value="${thfEligibilityHtml}" escapeXml="false" />');
@@ -144,32 +141,9 @@ var healthFunds_THF = {
 			<%--dependant definition--%>
 			healthFunds._dependants('<c:out value="${dependentText}" escapeXml="true"/>');
 			<%--change age of dependants and school --%>
-			healthDependents.maxAge = 25;
+			meerkat.modules.healthDependants.setMaxAge(25);
 			<%--schoolgroups and defacto --%>
-			$.extend(healthDependents.config, { 'school': true, 'schoolMin': 23, 'schoolMax': 24, 'schoolID': false, 'schoolIDMandatory': false, 'schoolDate': false, 'schoolDateMandatory': false });
-
-			<%--School list--%>
-			var instituteElement =  '<select>
-				<option value="">Please choose...</option>
-				<c:import url="/WEB-INF/option_data/educationalInstitute.html" />
-			</select>';
-			$('.health_dependant_details_schoolGroup .fieldrow_value').each(function (i) {
-				var name = $(this).find('input').attr('name');
-				var id = $(this).find('input').attr('id');
-				$(this).append(instituteElement);
-				$(this).find('select').attr('name', name).attr('id', id + 'select');
-				$(this).find('select').setRequired(true, 'Please select dependant '+(i+1)+'\'s educational institute');
-				$('#health_application_dependants_dependant' + (i+1) + '_school').hide();
-			});
-			$('.health_dependant_details_schoolIDGroup input').attr('maxlength', '10');
-
-			<%--Change the Name of School label--%>
-			healthFunds.$_tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
-			$('.health_dependant_details_schoolGroup .control-label').html('Educational institute this dependant is attending');
-			$('.health_dependant_details_schoolGroup .help_icon').hide();
-
-			healthDependents.config.schoolID = false;
-			healthDependents.config.schoolDate = false;
+			meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, 'schoolMinAge': 23, 'schoolMaxAge': 24, showSchoolIdField: false, 'schoolIdRequired': false, showSchoolCommencementField: false, 'schoolDateRequired': false });
 		}
 
 		<%--calendar for start cover--%>
@@ -262,18 +236,13 @@ var healthFunds_THF = {
 		healthFunds._reset();
 
 		<%-- turn back on credit card option --%>
-		$('#health_payment_details_type_cc').prop('disabled', false);
-		$('#health_payment_details_type_cc').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
+		$('#health_payment_details_type_cc').prop('disabled', false).parent('label').removeClass('disabled').removeClass('disabled-by-fund');
 
 		$('#thf_eligibility').hide();
 		$('.thf-payment-legend').remove();
 
 		if(healthFunds_THF.healthCvr == 'F' || healthFunds_THF.healthCvr == 'SPF') {
-			$('.health_dependant_details_schoolGroup select').remove();
-			$('.health_dependant_details_schoolIDGroup input').removeAttr('maxlength');
-			$('.health_dependant_details_schoolGroup .control-label').html(healthFunds.$_tmpSchoolLabel);
-			delete healthFunds.$_tmpSchoolLabel;
-			$('.health_dependant_details_schoolGroup .help_icon').show();
+			<%-- TODO: Are these necessary? --%>
 			$('.health_application_dependants_dependant_schoolIDGroup').show();
 			$('.health_dependant_details_schoolDateGroup').show();
 		}

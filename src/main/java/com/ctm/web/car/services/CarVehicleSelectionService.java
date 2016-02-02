@@ -68,8 +68,10 @@ public class CarVehicleSelectionService {
 		ArrayList<CarTransmission> carTrans = new ArrayList<CarTransmission>();
 		ArrayList<CarFuel> carFuels = new ArrayList<CarFuel>();
 		ArrayList<CarType> carTypes = new ArrayList<CarType>();
+		ArrayList<CarColour> carColours = new ArrayList<CarColour>();
 
 		carMakes = getAllMakes();
+		carColours = getAllColours();
 
 		// Go through the chain of arguments and stop if any is empty.
 		if (makeCode.length() > 0) {
@@ -103,6 +105,7 @@ public class CarVehicleSelectionService {
 		result.put(CarTransmission.JSON_COLLECTION_NAME, carTrans);
 		result.put(CarFuel.JSON_COLLECTION_NAME, carFuels);
 		result.put(CarType.JSON_COLLECTION_NAME, carTypes);
+		result.put(CarColour.JSON_COLLECTION_NAME, carColours);
 
 		return result;
 	}
@@ -273,6 +276,27 @@ public class CarVehicleSelectionService {
 		}
 
 		return carTypes;
+	}
+
+	/**
+	 * Get all car colours.
+	 */
+	public static ArrayList<CarColour> getAllColours() {
+		ArrayList<CarColour> carColours = new ArrayList<CarColour>();
+		CarColourDao carColourDao = new CarColourDao();
+
+		try {
+
+			carColours = carColourDao.getAll();
+
+		}
+		catch (DaoException e) {
+			String message = "Could not get colours";
+			LOGGER.error(message, e);
+			throw new ServiceException(message, e);
+		}
+
+		return carColours;
 	}
 
 	public static JSONObject getVehicleNonStandardsJson() {

@@ -1,80 +1,38 @@
 package com.ctm.web.core.services;
 
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.exceptions.ServiceConfigurationException;
-import com.ctm.web.core.exceptions.ServiceException;
-import com.ctm.web.core.model.QuoteServiceProperties;
-import com.ctm.web.core.model.formData.Request;
-import com.ctm.web.core.model.settings.*;
+import com.ctm.web.core.dao.ProviderFilterDao;
+import com.ctm.web.core.exceptions.RouterException;
+import com.ctm.web.core.model.formData.RequestWithQuote;
 import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.validation.SchemaValidationError;
-import org.apache.commons.lang3.StringUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Optional;
+public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> extends CommonRequestService<PAYLOAD, RESPONSE> {
 
-import static com.ctm.web.core.model.settings.ConfigSetting.ALL_BRANDS;
-import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.ALL_PROVIDERS;
-import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope.SERVICE;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteService.class);
 
-public abstract class CommonQuoteService<T> {
-
-    public static final String SERVICE_URL = "serviceUrl";
-    public static final String TIMEOUT_MILLIS = "timeoutMillis";
-    public static final String DEBUG_PATH = "debugPath";
-    private ServiceConfiguration serviceConfig;
-
-    private boolean valid = false;
-
-    public CommonQuoteService(ServiceConfiguration serviceConfig) {
-        this.serviceConfig = serviceConfig;
+    public CommonQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
+        super(providerFilterDAO, objectMapper);
     }
 
-    public CommonQuoteService() {
-    }
-
-    public List<SchemaValidationError> validateRequest(Request<T> data, String vertical) {
-        List<SchemaValidationError> errors = FormValidation.validate(data.getQuote(), vertical);
-        valid = errors.isEmpty();
-        return errors;
-    }
-
-    public QuoteServiceProperties getQuoteServiceProperties(String service, Brand brand, String verticalCode, Request<T> request) {
-        return getQuoteServiceProperties(service, brand, verticalCode, Optional.ofNullable(request.getEnvironmentOverride()));
-    }
-
-    public QuoteServiceProperties getQuoteServiceProperties(String service, Brand brand, String verticalCode, Optional<String> environmentOverride) {
-        // Get URL of home-quote service
-        final QuoteServiceProperties properties = new QuoteServiceProperties();
-        try {
-            if(serviceConfig == null) {
-                this.serviceConfig = ServiceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode).getId(), brand.getId());
-            }
-                properties.setServiceUrl(serviceConfig.getPropertyValueByKey(SERVICE_URL, ALL_BRANDS, ALL_PROVIDERS, SERVICE));
-            properties.setDebugPath(serviceConfig.getPropertyValueByKey(DEBUG_PATH, ALL_BRANDS, ALL_PROVIDERS, SERVICE));
-            String timeoutValue = serviceConfig.getPropertyValueByKey(TIMEOUT_MILLIS, ALL_BRANDS, ALL_PROVIDERS, SERVICE);
-            if (timeoutValue != null) {
-                properties.setTimeout(Integer.parseInt(timeoutValue));
-            }
-        }catch (DaoException | ServiceConfigurationException e ){
-            throw new ServiceException("QuoteServiceProperties config error", e);
+    public void validateRequest(RequestWithQuote<QUOTE> data, String verticalCode) {
+        // Validate request
+        if (data == null) {
+            LOGGER.error("Invalid request: data null");
+            throw new RouterException("Data quote is missing");
         }
-
-        environmentOverride.ifPresent(data -> {
-            if(EnvironmentService.getEnvironment() == EnvironmentService.Environment.LOCALHOST ||
-                    EnvironmentService.getEnvironment() == EnvironmentService.Environment.NXI){
-                if(StringUtils.isNotBlank(data)) {
-                    properties.setServiceUrl(data);
-                }
-            }
-        });
-
-        return properties;
-
-    }
-
-    public boolean isValid() {
-        return valid;
+        if(data.getQuote() == null){
+            LOGGER.error("Invalid request: data.quote null");
+            throw new RouterException("Data quote is missing");
+        }
+        List<SchemaValidationError> errors = FormValidation.validate(data.getQuote(), verticalCode);
+        if(errors.size() > 0){
+            LOGGER.error("Invalid request: {}",errors);
+            throw new RouterException("Invalid request"); // TODO pass validation errors to client
+        }
     }
 
 }

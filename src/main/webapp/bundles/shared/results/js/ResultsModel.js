@@ -10,6 +10,7 @@ var ResultsModel = {
 	currentProduct: false,
 	selectedProduct: false,
 	filters: [],
+	availablePartners: [],
 
 	resultsLoadedOnce: false,
 
@@ -282,6 +283,15 @@ var ResultsModel = {
 					Results.model.returnedProducts.push( Results.model.currentProduct.product );
 				}
 
+				// Store the provider code if the partner returns at least 1 product
+				if (Results.settings.paths.results.providerCode !== false) {
+					_.each(Results.model.returnedProducts, function getProvidercodes(obj){
+						if (obj.available == 'Y' && !_.contains(Results.model.availablePartners, obj[Results.settings.paths.results.providerCode])) {
+							Results.model.availablePartners.push(obj[Results.settings.paths.results.providerCode]);
+						}
+					});
+				}
+
 				// Publish event
 				meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
 
@@ -352,27 +362,7 @@ var ResultsModel = {
 							tempProductOrder.push(currentProduct);
 						} else {
 							if (priceMatch) {
-								// Fisher-Yates (aka Knuth) Shuffle. Everyday shufflin' ...
-								var currentIndex = tempProductOrder.length, temporaryValue, randomIndex ;
-
-								// While there remain elements to shuffle...
-								while (0 !== currentIndex) {
-
-									// Pick a remaining element...
-									randomIndex = Math.floor(Math.random() * currentIndex);
-									currentIndex -= 1;
-
-									// And swap it with the current element.
-									temporaryValue = tempProductOrder[currentIndex];
-									tempProductOrder[currentIndex] = tempProductOrder[randomIndex];
-									tempProductOrder[randomIndex] = temporaryValue;
-								}
-
-								// put the sorted products into the newProductOrder array
-								for (var i = startIndex; i <= endIndex; i++) {
-									newProductOrder[i] = tempProductOrder.shift();
-								}
-
+								newProductOrder  = Results.model.shuffleResults(tempProductOrder,newProductOrder,startIndex,endIndex);
 								// reset the vars
 								startIndex = 0;
 								endIndex = 0;
@@ -383,8 +373,12 @@ var ResultsModel = {
 							// and add the current product as per normal
 							newProductOrder[index] = result;
 						}
-					});
 
+					});
+					// If the last two products contain the same price we need to force it to shuffle results
+					if(priceMatch) {
+						newProductOrder  = Results.model.shuffleResults(tempProductOrder,newProductOrder,startIndex,endIndex);
+					}
 					Results.model.returnedProducts = newProductOrder; // set the new order (if there was a re-order)
 					Results.model.sortedProducts = []; // reset the sortedProducts array
 				}
@@ -402,6 +396,34 @@ var ResultsModel = {
 			Results.onError('Sorry, an error occurred updating results', 'Results.js', 'Results.model.update(); '+e.message, e);
 		}
 		Results.model.resultsLoadedOnce = true;
+
+	},
+
+	shuffleResults: function(tempProductOrder,newProductOrder,startIndex,endIndex) {
+
+		// Fisher-Yates (aka Knuth) Shuffle. Everyday shufflin' ...
+		var currentIndex = tempProductOrder.length, temporaryValue, randomIndex ;
+
+		// While there remain elements to shuffle...
+		while (0 !== currentIndex) {
+
+			// Pick a remaining element...
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex -= 1;
+
+			// And swap it with the current element.
+			temporaryValue = tempProductOrder[currentIndex];
+			tempProductOrder[currentIndex] = tempProductOrder[randomIndex];
+			tempProductOrder[randomIndex] = temporaryValue;
+		}
+
+		// put the sorted products into the newProductOrder array
+		for (var i = startIndex; i <= endIndex; i++) {
+			newProductOrder[i] = tempProductOrder.shift();
+		}
+		return newProductOrder;
+
+
 
 	},
 

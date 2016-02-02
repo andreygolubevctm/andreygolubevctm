@@ -64,13 +64,13 @@ public class EmailServiceFactory {
 	private static EmailServiceHandler getHealthEmailService(
 			PageSettings pageSettings, EmailMode mode, Data data, VerticalType vertical) throws SendEmailException {
 		ContentDao contentDao = new ContentDao(pageSettings.getBrandId(), pageSettings.getVertical().getId());
-		EmailDetailsService emailDetailsService = createEmailDetailsService(pageSettings, data, vertical ,  new HealthEmailDetailMappings());
+		EmailDetailsService emailDetailsService = createEmailDetailsService(pageSettings, data, vertical, new HealthEmailDetailMappings());
 		EmailUrlService urlService = createEmailUrlService(pageSettings, vertical);
 		EmailUrlServiceOld urlServiceOld = createEmailUrlServiceOld(pageSettings, vertical);
 		SessionDataService sessionDataService = new SessionDataService();
 		TouchDao dao = new TouchDao();
 		AccessTouchService accessTouchService = new AccessTouchService(dao , sessionDataService);
-		return new HealthEmailService(pageSettings, mode , emailDetailsService, contentDao, urlService , accessTouchService, urlServiceOld);
+		return new HealthEmailService(pageSettings, mode , emailDetailsService, contentDao, urlService , accessTouchService, urlServiceOld, sessionDataService);
 	}
 
 	private static EmailServiceHandler getTravelEmailService(

@@ -10,7 +10,7 @@
 <c:forEach items="${model}" var="brand">
     <c:if test="${brand.isInCtm() eq comparePrice}">
         <div class="selectionContainer">
-            <field_new:checkbox id="product${brand.getBrandId()}_check" label="true"
+            <field_v2:checkbox id="product${brand.getBrandId()}_check" label="true"
                                 xpath="${pageSettings.getVerticalCode()}/brand" value="${brand.getBrandId()}" required="false"
                                 title="${brand.getBrandName()}" customAttribute="data-name='${go:htmlEscape(brand.getBrandName())}'"/>
         </div>

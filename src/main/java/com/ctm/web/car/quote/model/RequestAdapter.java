@@ -3,23 +3,23 @@ package com.ctm.web.car.quote.model;
 import com.ctm.web.car.model.form.*;
 import com.ctm.web.car.quote.model.request.*;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDate;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 public class RequestAdapter {
 
-    private static final DateTimeFormatter AUS_FORMAT = DateTimeFormat.forPattern("dd/MM/yyyy");
-
-    public final static CarQuoteRequest adapt(CarRequest carRequest) {
+    public static CarQuoteRequest adapt(CarRequest carRequest) {
 
         CarQuoteRequest quoteRequest = new CarQuoteRequest();
         final CarQuote carQuote = carRequest.getQuote();
         final Options options = carQuote.getOptions();
-        quoteRequest.setCommencementDate(AUS_FORMAT.parseLocalDate(options.getCommencementDate()));
+        quoteRequest.setCommencementDate(parseAUSLocalDate(options.getCommencementDate()));
 
         if (StringUtils.isNotBlank(carQuote.getExcess())) {
             quoteRequest.setExcess(Integer.parseInt(carQuote.getExcess()));
@@ -33,14 +33,25 @@ public class RequestAdapter {
         quoteRequest.setRiskAddress(createRiskAddress(carQuote));
         quoteRequest.setVehicle(createVehicle(carQuote));
 
-        if(carQuote.getFilter().getProviders() != null && carQuote.getFilter().getProviders().isEmpty() == false){
+
+        if (quoteRequest.getVehicle().getPassengerPayment() != null && quoteRequest.getVehicle().getPassengerPayment().equals("Y")) {
+            quoteRequest.getVehicle().setUse("13"); // CAR-1170
+        } else {
+            // CAR-1170. For vehicle use, two new radio button introduced. Override created here so that the data team still get Y/N values for their report
+            if (quoteRequest.getVehicle().getGoodsPayment() != null && quoteRequest.getVehicle().getGoodsPayment().equals("Y")) {
+                quoteRequest.getVehicle().setUse("15"); // CAR-1170
+            }
+        }
+
+
+        if(carQuote.getFilter().getProviders() != null && !carQuote.getFilter().getProviders().isEmpty()){
             quoteRequest.setProviderFilter(carQuote.getFilter().getProviders());
         }
 
         return quoteRequest;
     }
 
-    private static final com.ctm.web.car.quote.model.request.Vehicle createVehicle(CarQuote carQuote) {
+    protected static com.ctm.web.car.quote.model.request.Vehicle createVehicle(CarQuote carQuote) {
 
         com.ctm.web.car.model.form.Vehicle quoteVehicle = carQuote.getVehicle();
 
@@ -52,7 +63,8 @@ public class RequestAdapter {
         vehicle.setTransmission(quoteVehicle.getTrans());
         vehicle.setFuelType(quoteVehicle.getFuel());
         vehicle.setRedbookCode(quoteVehicle.getRedbookCode());
-        vehicle.setAnnualKilometres(quoteVehicle.getAnnualKilometres());
+        vehicle.setColour(quoteVehicle.getColour());
+        vehicle.setAnnualKilometres(Integer.parseInt(quoteVehicle.getAnnualKilometres()));
         vehicle.setHasDamage(convertToBoolean(quoteVehicle.getDamage()));
         vehicle.setFinanceType(quoteVehicle.getFinance());
         vehicle.setMarketValue(quoteVehicle.getMarketValue());
@@ -60,36 +72,44 @@ public class RequestAdapter {
         vehicle.setRegistrationYear(quoteVehicle.getRegistrationYear());
         vehicle.setSecurityOption(quoteVehicle.getSecurityOption());
         vehicle.setUse(quoteVehicle.getUse());
+        vehicle.setPassengerPayment(quoteVehicle.getPassengerPayment());
+        vehicle.setGoodsPayment(quoteVehicle.getGoodsPayment());
         vehicle.setNonStandardAccessories(createNonStandardAccessories(carQuote));
         vehicle.setFactoryOptions(createFactoryOptions(carQuote));
         return vehicle;
     }
 
     private static List<String> createFactoryOptions(CarQuote carQuote) {
-        List<String> options = new ArrayList<>();
-        if (carQuote.getOpts() != null) {
-            for (String s : carQuote.getOpts().values()) {
-                options.add(s);
-            }
-        }
-        return options;
+        return Optional.ofNullable(carQuote)
+                .map(CarQuote::getOpts)
+                .map(Opts::getOpt)
+                .orElse(emptyList())
+                .stream()
+                .filter(opt -> opt != null)
+                .collect(toList());
     }
 
     private static List<NonStandardAccessory> createNonStandardAccessories(CarQuote carQuote) {
-        List<NonStandardAccessory> accessories = new ArrayList<>();
-        for (Acc acc : carQuote.getConvertedAccs().values()) {
-            NonStandardAccessory accessory = new NonStandardAccessory();
-            final boolean includedInPurchasePrice = convertToBoolean(acc.getInc());
-            accessory.setIncludedInPurchasePrice(includedInPurchasePrice);
-            if (!includedInPurchasePrice) {
-                accessory.setPrice(new BigDecimal(acc.getPrc()));
-            }
-            accessory.setCode(acc.getSel());
-            accessories.add(accessory);
-        }
-        return accessories;
+        return Optional.ofNullable(carQuote)
+                .map(CarQuote::getAccs)
+                .map(Accs::getAcc)
+                .orElse(emptyList())
+                .stream()
+                .filter(acc -> StringUtils.isNotBlank(acc.getSel()))
+                .map(RequestAdapter::createAccessory)
+                .collect(toList());
     }
 
+    private static NonStandardAccessory createAccessory(Acc acc) {
+        NonStandardAccessory accessory = new NonStandardAccessory();
+        final boolean includedInPurchasePrice = convertToBoolean(acc.getInc());
+        accessory.setIncludedInPurchasePrice(includedInPurchasePrice);
+        if (!includedInPurchasePrice) {
+            accessory.setPrice(new BigDecimal(acc.getPrc()));
+        }
+        accessory.setCode(acc.getSel());
+        return accessory;
+    }
 
     private static com.ctm.web.car.quote.model.request.RiskAddress createRiskAddress(CarQuote carQuote) {
         com.ctm.web.car.quote.model.request.RiskAddress riskAddress = new com.ctm.web.car.quote.model.request.RiskAddress();
@@ -145,7 +165,7 @@ public class RequestAdapter {
     private static YoungestDriver createYoungestDriver(Young young) {
         if (young == null || !convertToBoolean(young.getExists())) return null;
         YoungestDriver youngestDriver = new YoungestDriver();
-        youngestDriver.setDateOfBirth(AUS_FORMAT.parseLocalDate(young.getDob()));
+        youngestDriver.setDateOfBirth(parseAUSLocalDate(young.getDob()));
         youngestDriver.setLicenceAge(Integer.parseInt(young.getLicenceAge()));
         youngestDriver.setGender(GenderType.fromValue(young.getGender()));
         return youngestDriver;
@@ -155,7 +175,7 @@ public class RequestAdapter {
         RegularDriver regularDriver = new RegularDriver();
         regularDriver.setFirstName(regular.getFirstname());
         regularDriver.setSurname(regular.getSurname());
-        regularDriver.setDateOfBirth(AUS_FORMAT.parseLocalDate(regular.getDob()));
+        regularDriver.setDateOfBirth(parseAUSLocalDate(regular.getDob()));
         regularDriver.setHasClaims(regular.getClaims());
         regularDriver.setGender(GenderType.fromValue(regular.getGender()));
         regularDriver.setEmploymentStatus(regular.getEmploymentStatus());

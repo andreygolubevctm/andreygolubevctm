@@ -27,7 +27,7 @@ setupBoilerplate = function(base) {
     document.write('<script src="' + base + '/bundles/shared/validation/js/validationPhoneNumberRules.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/contactDetails.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/sendEmail/js/sendEmail.js">\x3C/script>');
-    document.write('<script src="' + base + '/bundles/core/js/journeyEngine.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/shared/journeyEngine/v2/js/journeyEngine.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/form.js">\x3C/script>');
 
     $.support.transition = false;

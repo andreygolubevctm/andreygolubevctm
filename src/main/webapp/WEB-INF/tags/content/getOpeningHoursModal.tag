@@ -65,7 +65,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<health_content:call_centre_help/>
+					<health_v1_content:call_centre_help/>
 				</div>
 			</div>
 		</div>

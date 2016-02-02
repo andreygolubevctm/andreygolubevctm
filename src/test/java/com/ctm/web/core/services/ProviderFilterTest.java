@@ -127,7 +127,7 @@ public class ProviderFilterTest {
 	}
 
 	@Test
-	public void testShouldShouldFilterProviderFromProviderKey() throws JSONException, SessionException, DaoException, ConfigSettingException, IOException, SAXException {
+	public void testShouldShouldFilterProviderFromProviderKey() throws Exception {
 		data.put("travel/filter/providerKey", "virg_eZ45QZm7Y2");
 		data.put("travel/transactionId", transactionIdString);
 
@@ -160,7 +160,7 @@ public class ProviderFilterTest {
 	}
 
     @Test
-    public void testShouldRetrieveProviderCode() throws DaoException {
+    public void testShouldRetrieveProviderCode() throws Exception {
         when(providerFilterDAO.getProviderDetails("virg_eZ45QZm7Y2")).thenReturn("VIRG");
         ProviderFilter pf = new ProviderFilter(pageSettings, sessionDataService, providerFilterDAO);
 		String vertical = "travel";

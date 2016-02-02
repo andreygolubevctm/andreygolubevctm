@@ -39,9 +39,14 @@
 <c:set var="savedTransactionId"><x:out select="$healthXML/request/header/retrieve/transactionId" /></c:set>
 <c:set var="productTitleSearch"><x:out select="$healthXML/request/header/productTitleSearch" escapeXml="false" /></c:set>
 <c:set var="productTitle"><x:out select="$healthXML/request/header/productTitle" escapeXml="false" /></c:set>
-<c:set var="situationFilter"><x:out select="$healthXML/request/details/situation" /></c:set>
+<c:set var="situationFilter"><x:out select="$healthXML/request/details/situationFilter" /></c:set>
+
+<c:set var="currentJourney"><x:out select="$healthXML/request/header/currentJourney" /></c:set>
 <c:choose>
-	<c:when test="${isSimples eq false and situationFilter ne 'ATP'}">
+	<c:when test="${!isSimples && currentJourney ne 12}">
+		<c:set var="situationFilter" value="none" />
+	</c:when>
+	<c:when test="${situationFilter eq 'Y'}">
 		<c:set var="situationFilter" value="Y" />
 	</c:when>
 	<c:otherwise>
@@ -121,7 +126,7 @@ ${logger.trace('Starting results jsp. {}', log:kv('quoteData ', param.QuoteData 
 	<c:otherwise>
 <%-- Build the xml data for each row --%>
 <results>
-			<health:price_service_results rows="${resultsList}" healthXML="${healthXML}" healthPriceService="${healthPriceService}" />
+			<health_v1:price_service_results rows="${resultsList}" healthXML="${healthXML}" healthPriceService="${healthPriceService}" />
 			<pricesHaveChanged>${healthPriceService.getHealthPriceRequest().getPricesHaveChanged()}</pricesHaveChanged>
 			<transactionId>${transactionId}</transactionId>
 	<c:if test="${onResultsPage && showAll}">

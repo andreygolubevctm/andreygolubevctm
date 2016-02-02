@@ -214,7 +214,24 @@ var Driftwood = new function() {
 
 			if (config.mode !== 'production' && navigator.appName != 'Microsoft Internet Explorer') {
 				if (typeof fn !== 'undefined' && typeof fn.apply === 'function') {
-					fn.apply(console,  Array.prototype.slice.call(args));
+					var applyArgs = Array.prototype.slice.call(args);
+
+					// Adds a callstack to our logs so we can see how messages were called
+					if(!!meerkat.site.callStack) {
+						var next = arguments.callee.caller.caller,
+							stack = [];
+						while(next) {
+							if(stack.indexOf(next) < 0) {
+								stack.push(next);
+								next = next.caller;
+							} else {
+								break;
+							}
+						}
+						applyArgs.push({callStack: stack});
+					}
+
+					fn.apply(console, applyArgs);
 				}
 			}
 		}
@@ -536,7 +553,7 @@ meerkat.logging.init = function () {
 	//
 	// One day we will remove the old code in favour of this...
 	if(meerkat.site.useNewLogging) {
-		initializeNewLogging();
+		//initializeNewLogging();
 	}
 
 	var theAppName = '';

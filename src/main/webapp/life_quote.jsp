@@ -17,9 +17,9 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="GTMEnabled" value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />
 
-<core:doctype />
+<core_v1:doctype />
 <go:html>
-	<core:head quoteType="${xpath}" title="Life Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
+	<core_v1:head quoteType="${xpath}" title="Life Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
 	
 	<body class="life stage-0">
 
@@ -29,28 +29,28 @@
 					new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 					j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 					'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-			})(window,document,'script','dataLayer','${pageSettings.getSetting('GTMPropertyId')}');</script>
+			})(window,document,'script','CtMDataLayer','${pageSettings.getSetting('GTMPropertyId')}');</script>
 		</c:if>
 	</c:if>
 
 		<%-- SuperTag Top Code --%>
-		<agg:supertag_top type="Life"/>		
+		<agg_v1:supertag_top type="Life"/>
 
 		<%-- History handler --%>
 		<life:history />
 
 		<%-- Transferring popup holder --%>
-		<core:transferring />
+		<core_v1:transferring />
 
-		<form:form action="health_quote_results.jsp" method="POST" id="mainform" name="frmMain">
+		<form_v1:form action="health_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 
 			<%-- Fields to store Lifebroker specific data --%>
 			<life:lifebroker_ref label="life" />
 					
-			<form:operator_id xpath="${xpath}/operatorid" />
-			<core:referral_tracking vertical="${xpath}" />
+			<form_v1:operator_id xpath="${xpath}/operatorid" />
+			<core_v1:referral_tracking vertical="${xpath}" />
 			
-			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="true"/>
+			<form_v1:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="true"/>
 			<life:progress_bar />
 
 			<div id="wrapper">
@@ -91,7 +91,7 @@
 																					
 						</slider:slideContainer>
 						
-						<form:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="108" />
+						<form_v1:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="108" />
 						
 						<!-- Bottom "step" buttons -->
 						<div class="button-wrapper">
@@ -101,7 +101,7 @@
 						 
 					<!-- End main QE content -->
 					</div>
-					<form:help />
+					<form_v1:help />
 					
 				<life:side_panel />
 			</div>
@@ -113,14 +113,14 @@
 				<life:confirmation />		
 			</div>
 						
-		</form:form>
+		</form_v1:form>
 		
 		<life:footer />
 		
-		<core:closing_body>
-			<agg:includes supertag="true" />
+		<core_v1:closing_body>
+			<agg_v1:includes supertag="true" />
 		<life:includes />
-		</core:closing_body>
+		</core_v1:closing_body>
 		
 	</body>
 	

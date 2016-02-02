@@ -196,65 +196,65 @@
 
 							<FamilyType><xsl:value-of select="$situation" /></FamilyType>
 
-						<xsl:variable name="dependants" select="application/dependants" />
-						<Dependants>
-							<xsl:if test="string-length(application/partner/firstname) &gt; 0">
-								<Dependant>
-									<DateOfBirth>
-										<xsl:call-template name="format_date">
-											<xsl:with-param name="eurDate" select="application/partner/dob" />
-										</xsl:call-template>
-										<xsl:text>T00:00:00</xsl:text>
-									</DateOfBirth>
-									<FirstName><xsl:value-of select="application/partner/firstname" /></FirstName>
-									<Gender><xsl:choose><xsl:when test="application/partner/gender = 'M'">Male</xsl:when><xsl:otherwise>Female</xsl:otherwise></xsl:choose></Gender>
-									<LastName><xsl:value-of select="application/partner/surname" /></LastName>
-									<Salutation>
-										<xsl:call-template name="get_title">
-											<xsl:with-param name="title" select="application/partner/title" />
-										</xsl:call-template>
-									</Salutation>
-									<Relationship>Spouse</Relationship>
-								</Dependant>
-							</xsl:if>
+							<xsl:variable name="dependants" select="application/dependants" />
+							<Dependants>
+								<xsl:if test="string-length(application/partner/firstname) &gt; 0">
+									<Dependant>
+										<DateOfBirth>
+											<xsl:call-template name="format_date">
+												<xsl:with-param name="eurDate" select="application/partner/dob" />
+											</xsl:call-template>
+											<xsl:text>T00:00:00</xsl:text>
+										</DateOfBirth>
+										<FirstName><xsl:value-of select="application/partner/firstname" /></FirstName>
+										<Gender><xsl:choose><xsl:when test="application/partner/gender = 'M'">Male</xsl:when><xsl:otherwise>Female</xsl:otherwise></xsl:choose></Gender>
+										<LastName><xsl:value-of select="application/partner/surname" /></LastName>
+										<Salutation>
+											<xsl:call-template name="get_title">
+												<xsl:with-param name="title" select="application/partner/title" />
+											</xsl:call-template>
+										</Salutation>
+										<Relationship>Spouse</Relationship>
+									</Dependant>
+								</xsl:if>
 
-							<!-- Dependants available under Family or Single Parent Family -->
-							<xsl:if test="/health/situation/healthCvr = 'F' or /health/situation/healthCvr = 'SPF'">
-								<xsl:for-each select="$dependants/*">
-									<xsl:variable name="srcElementId"><xsl:value-of select="position()" /></xsl:variable>
-									<xsl:variable name="srcElementName">dependant<xsl:value-of select="position()" /></xsl:variable>
-									<xsl:variable name="srcElement" select="$dependants/*[name()=$srcElementName]" />
+								<!-- Dependants available under Family or Single Parent Family -->
+								<xsl:if test="/health/situation/healthCvr = 'F' or /health/situation/healthCvr = 'SPF'">
+									<xsl:for-each select="$dependants/*">
+										<xsl:variable name="srcElementId"><xsl:value-of select="position()" /></xsl:variable>
+										<xsl:variable name="srcElementName">dependant<xsl:value-of select="position()" /></xsl:variable>
+										<xsl:variable name="srcElement" select="$dependants/*[name()=$srcElementName]" />
 
-									<xsl:if test="string-length($srcElement/firstName) &gt; 0">
-										<Dependant>
-											<DateOfBirth>
-												<xsl:call-template name="format_date">
-													<xsl:with-param name="eurDate" select="$srcElement/dob" />
-												</xsl:call-template>
-												<xsl:text>T00:00:00</xsl:text>
-											</DateOfBirth>
-											<FirstName><xsl:value-of select="$srcElement/firstName" /></FirstName>
-											<Gender><xsl:choose>
-												<xsl:when test="$srcElement/title = 'MR'">Male</xsl:when>
-													<xsl:otherwise>Female</xsl:otherwise>
-												</xsl:choose>
-											</Gender>
-											<LastName><xsl:value-of select="$srcElement/lastname" /></LastName>
-											<Salutation>
-												<xsl:call-template name="get_title">
-													<xsl:with-param name="title" select="$srcElement/title" />
-												</xsl:call-template>
-											</Salutation>
-											<Relationship><xsl:choose>
-												<xsl:when test="string-length($srcElement/school) = 0">Child</xsl:when>
-													<xsl:otherwise>Student</xsl:otherwise>
-												</xsl:choose>
-											</Relationship>
-										</Dependant>
-									</xsl:if>
-								</xsl:for-each>
-							</xsl:if>
-						</Dependants>
+										<xsl:if test="string-length($srcElement/firstName) &gt; 0">
+											<Dependant>
+												<DateOfBirth>
+													<xsl:call-template name="format_date">
+														<xsl:with-param name="eurDate" select="$srcElement/dob" />
+													</xsl:call-template>
+													<xsl:text>T00:00:00</xsl:text>
+												</DateOfBirth>
+												<FirstName><xsl:value-of select="$srcElement/firstName" /></FirstName>
+												<Gender><xsl:choose>
+													<xsl:when test="$srcElement/title = 'MR'">Male</xsl:when>
+														<xsl:otherwise>Female</xsl:otherwise>
+													</xsl:choose>
+												</Gender>
+												<LastName><xsl:value-of select="$srcElement/lastname" /></LastName>
+												<Salutation>
+													<xsl:call-template name="get_title">
+														<xsl:with-param name="title" select="$srcElement/title" />
+													</xsl:call-template>
+												</Salutation>
+												<Relationship><xsl:choose>
+													<xsl:when test="string-length($srcElement/school) = 0">Child</xsl:when>
+														<xsl:otherwise>Student</xsl:otherwise>
+													</xsl:choose>
+												</Relationship>
+											</Dependant>
+										</xsl:if>
+									</xsl:for-each>
+								</xsl:if>
+							</Dependants>
 
 							<Contact>
 								<GenericResidentialAddress>
@@ -356,92 +356,92 @@
 
 							<PaymentOptionFlag>OngoingDirectDebit</PaymentOptionFlag>
 							<OngoingPayment>
-							<Method><xsl:value-of select="$payment_method"/></Method>
-							<PaymentFrequency><xsl:value-of select="$frequency"/></PaymentFrequency>
-							<FirstDeductionDate>
+								<Method><xsl:value-of select="$payment_method"/></Method>
+								<PaymentFrequency><xsl:value-of select="$frequency"/></PaymentFrequency>
+								<FirstDeductionDate>
+									<xsl:choose>
+										<xsl:when test="payment/details/type='cc'">
+											<xsl:value-of select="payment/credit/policyDay" />
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="payment/bank/policyDay" />
+										</xsl:otherwise>
+									</xsl:choose>
+									<xsl:text>T00:00:00</xsl:text>
+								</FirstDeductionDate>
+								<Amount><xsl:value-of select="format-number(application/paymentFreq,'######0.00')" /></Amount>
+
 								<xsl:choose>
-									<xsl:when test="payment/details/type='cc'">
-										<xsl:value-of select="payment/credit/policyDay" />
+									<xsl:when test="payment/details/type='ba'">
+									<BankAccountDetails>
+										<BankName><xsl:value-of select="payment/bank/name" /></BankName>
+										<BsbNumber><xsl:value-of select="format-number(translate(payment/bank/bsb,' -',''),'000000')" /></BsbNumber>
+										<AccountNumber><xsl:value-of select="translate(payment/bank/number,' ','')" /></AccountNumber>
+										<HolderName><xsl:value-of select="payment/bank/account" /></HolderName>
+									</BankAccountDetails>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:value-of select="payment/bank/policyDay" />
+									<CreditCardDetails>
+										<HolderName><xsl:value-of select="payment/credit/name" /></HolderName>
+										<Number><xsl:value-of select="translate(payment/credit/number,' ','')" /></Number>
+										<ExpiryMonth><xsl:value-of select="payment/credit/expiry/cardExpiryMonth" /></ExpiryMonth>
+										<ExpiryYear><xsl:value-of select="payment/credit/expiry/cardExpiryYear" /></ExpiryYear>
+										<CCVNumber><xsl:value-of select="payment/credit/ccv" /></CCVNumber>
+										<CreditCardType>
+											<xsl:call-template name="card_type">
+												<xsl:with-param name="cardtype" select="payment/credit/type" />
+											</xsl:call-template>
+										</CreditCardType>
+									</CreditCardDetails>
 									</xsl:otherwise>
 								</xsl:choose>
-								<xsl:text>T00:00:00</xsl:text>
-							</FirstDeductionDate>
-							<Amount><xsl:value-of select="format-number(application/paymentFreq,'######0.00')" /></Amount>
-
-						<xsl:choose>
-							<xsl:when test="payment/details/type='ba'">
-							<BankAccountDetails>
-								<BankName><xsl:value-of select="payment/bank/name" /></BankName>
-								<BsbNumber><xsl:value-of select="format-number(translate(payment/bank/bsb,' -',''),'000000')" /></BsbNumber>
-								<AccountNumber><xsl:value-of select="translate(payment/bank/number,' ','')" /></AccountNumber>
-								<HolderName><xsl:value-of select="payment/bank/account" /></HolderName>
-							</BankAccountDetails>
-							</xsl:when>
-							<xsl:otherwise>
-							<CreditCardDetails>
-								<HolderName><xsl:value-of select="payment/credit/name" /></HolderName>
-								<Number><xsl:value-of select="translate(payment/credit/number,' ','')" /></Number>
-								<ExpiryMonth><xsl:value-of select="payment/credit/expiry/cardExpiryMonth" /></ExpiryMonth>
-								<ExpiryYear><xsl:value-of select="payment/credit/expiry/cardExpiryYear" /></ExpiryYear>
-								<CCVNumber><xsl:value-of select="payment/credit/ccv" /></CCVNumber>
-								<CreditCardType>
-									<xsl:call-template name="card_type">
-										<xsl:with-param name="cardtype" select="payment/credit/type" />
-									</xsl:call-template>
-								</CreditCardType>
-							</CreditCardDetails>
-							</xsl:otherwise>
-						</xsl:choose>
 							</OngoingPayment>
 							
-						<xsl:variable name="hospitalCode">
-						<xsl:choose>
-							<xsl:when test="contains(fundData/fundCode, ' &amp; ')">
-								<xsl:value-of select="substring-before(fundData/fundCode, ' &amp; ')"/>
-							</xsl:when>
-							<xsl:when test="string-length(fundData/extrasCoverName) = 0 and string-length(fundData/hospitalCoverName) &gt; 0">
-								<xsl:value-of select="normalize-space(fundData/fundCode)"/>
-							</xsl:when>
-						</xsl:choose>
-						</xsl:variable>
+							<xsl:variable name="hospitalCode">
+								<xsl:choose>
+									<xsl:when test="contains(fundData/fundCode, ' &amp; ')">
+										<xsl:value-of select="substring-before(fundData/fundCode, ' &amp; ')"/>
+									</xsl:when>
+									<xsl:when test="string-length(fundData/extrasCoverName) = 0 and string-length(fundData/hospitalCoverName) &gt; 0">
+										<xsl:value-of select="normalize-space(fundData/fundCode)"/>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:variable>
 
-						<xsl:variable name="extrasCode">
-						<xsl:choose>
-							<xsl:when test="contains(fundData/fundCode, ' &amp; ')">
-								<xsl:value-of select="substring-after(fundData/fundCode, ' &amp; ')"/>
-							</xsl:when>
-							<xsl:when test="string-length(fundData/extrasCoverName) &gt; 0 and string-length(fundData/hospitalCoverName) = 0">
-								<xsl:value-of select="normalize-space(fundData/fundCode)"/>
-							</xsl:when>
-						</xsl:choose>
-						</xsl:variable>
+							<xsl:variable name="extrasCode">
+								<xsl:choose>
+									<xsl:when test="contains(fundData/fundCode, ' &amp; ')">
+										<xsl:value-of select="substring-after(fundData/fundCode, ' &amp; ')"/>
+									</xsl:when>
+									<xsl:when test="string-length(fundData/extrasCoverName) &gt; 0 and string-length(fundData/hospitalCoverName) = 0">
+										<xsl:value-of select="normalize-space(fundData/fundCode)"/>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:variable>
 
-						<xsl:variable name="combinationCode">
-						<xsl:choose>
-							<xsl:when test="contains(fundData/fundCode, ' &amp; ')">
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:if test="string-length(fundData/hospitalCoverName) &gt; 0 and string-length(fundData/extrasCoverName) &gt; 0">
-									<xsl:value-of select="fundData/fundCode"/>
-								</xsl:if>
-							</xsl:otherwise>
-						</xsl:choose>
-						</xsl:variable>
+							<xsl:variable name="combinationCode">
+								<xsl:choose>
+									<xsl:when test="contains(fundData/fundCode, ' &amp; ')">
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:if test="string-length(fundData/hospitalCoverName) &gt; 0 and string-length(fundData/extrasCoverName) &gt; 0">
+											<xsl:value-of select="fundData/fundCode"/>
+										</xsl:if>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
 
-						<xsl:if test="$hospitalCode !=''">
-							<HospitalProductCode><xsl:value-of select="$hospitalCode"/></HospitalProductCode>
-						</xsl:if>
+							<xsl:if test="$hospitalCode !=''">
+								<HospitalProductCode><xsl:value-of select="$hospitalCode"/></HospitalProductCode>
+							</xsl:if>
 
-						<xsl:if test="$extrasCode !=''">
-							<ExtrasProductCode><xsl:value-of select="$extrasCode"/></ExtrasProductCode>
-						</xsl:if>
+							<xsl:if test="$extrasCode !=''">
+								<ExtrasProductCode><xsl:value-of select="$extrasCode"/></ExtrasProductCode>
+							</xsl:if>
 
-						<xsl:if test="$combinationCode !=''">
-							<CombinationProductCode><xsl:value-of select="$combinationCode"/></CombinationProductCode>
-						</xsl:if>
+							<xsl:if test="$combinationCode !=''">
+								<CombinationProductCode><xsl:value-of select="$combinationCode"/></CombinationProductCode>
+							</xsl:if>
 
 							<IsTransferedFromOtherFund><xsl:choose><xsl:when test="previousfund/primary/fundName != 'NONE'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></IsTransferedFromOtherFund>
 							<IsClaimingGovernmentRebate><xsl:choose><xsl:when test="healthCover/rebate = 'Y'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></IsClaimingGovernmentRebate>

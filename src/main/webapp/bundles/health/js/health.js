@@ -3,17 +3,17 @@
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		exception = meerkat.logging.exception,
-	moduleEvents = {
+		moduleEvents = {
 			health: {
 				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM'
 			},
 			WEBAPP_LOCK: 'WEBAPP_LOCK',
 			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
 		},
-	hasSeenResultsScreen = false,
-	rates = null,
-	steps = null,
-	stateSubmitInProgress = false;
+		hasSeenResultsScreen = false,
+		rates = null,
+		steps = null,
+		stateSubmitInProgress = false;
 
 	function initJourneyEngine(){
 
@@ -107,6 +107,7 @@
 				object:meerkat.modules.health.getTrackingFieldsObject
 			},
 			onInitialise: function onStartInit(event){
+				console.log("onInitialise event: ",event);
 
 
 				meerkat.modules.jqueryValidate.initJourneyValidator();
@@ -142,7 +143,7 @@
 						$('.health-situation-healthSitu').change();
 					}
 				}
-				
+
 
 				// This on Start step instead of Details because Simples interacts with it
 				var emailQuoteBtn = $(".slide-feature-emailquote");
@@ -303,12 +304,15 @@
 				if(event.isStartMode === false){
 					_.defer(function() {
 						meerkat.modules.healthBenefits.open('journey-mode');
+
+						if(event.isForward)
+							$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
 					});
 				}
 
 				// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter segment
 				_.delay(function() {
-				meerkat.modules.healthSegment.filterSegments();
+					meerkat.modules.healthSegment.filterSegments();
 				}, 1000);
 
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
@@ -378,7 +382,7 @@
 					if (meerkat.modules.healthResults.getSelectedProduct() === null) {
 						callback(false);
 					}
-					
+
 					callback(true);
 				}
 			},
@@ -437,7 +441,9 @@
 				method:'trackQuoteForms',
 				object:meerkat.modules.health.getTrackingFieldsObject
 			},
-			onInitialise: function onInitApplyStep(event){
+			onInitialise: function onInitApplyStep(event) {
+
+				meerkat.modules.healthDependants.initHealthDependants();
 
 				healthApplicationDetails.init();
 
@@ -472,31 +478,6 @@
 				// Check state selection
 				$('#health_application_address_postCode, #health_application_address_streetSearch, #health_application_address_suburb').on('change', function(){
 					healthApplicationDetails.testStatesParity();
-				});
-
-				// Sync income tier value (which can be changed if you change the number of dependants you have).
-				$('#health_application_dependants_income').on('change', function(){
-					$('#mainform').find('.health_cover_details_income').val( $(this).val() );
-				});
-
-				// Perform checks and show/hide questions when the dependant's DOB changes
-				$('.health_dependant_details .dateinput_container input.serialise').on('change', function(event){
-					healthDependents.checkDependent( $(this).closest('.health_dependant_details').attr('data-id') );
-					$(this).valid();
-				});
-
-				// Perform checks and show/hide questions when the fulltime radio button changes
-				$('.health_dependant_details_fulltimeGroup input').on('change', function(event){
-					healthDependents.checkDependent( $(this).closest('.health_dependant_details').attr('data-id') );
-					$(this).parents('.health_dependant_details').find('.dateinput_container input.serialise').valid();
-				});
-
-				// Add/Remove dependants
-				$('#health_application_dependants-selection').find(".remove-last-dependent").on("click", function(){
-					healthDependents.dropDependent();
-				});
-				$('#health_application_dependants-selection').find(".add-new-dependent").on("click", function(){
-					healthDependents.addDependent();
 				});
 
 				// initialise start date datepicker from payment step as it will be used by selected fund
@@ -534,7 +515,7 @@
 					$('#health_declaration input:checked').prop('checked', false).change();
 
 					// Update the state of the dependants object.
-					healthDependents.setDependants();
+					meerkat.modules.healthDependants.updateDependantConfiguration();
 
 					// Check okToCall optin - show if no phone numbers in questionset and NOT Simples
 					if($('#health_contactDetails_contactNumber_mobile').val() === '' &&	$('#health_contactDetails_contactNumber_other').val() === '' &&	meerkat.site.isCallCentreUser === false) {
@@ -550,10 +531,6 @@
 					$("#health_payment_details_start_calendar").datepicker('setStartDate', min).datepicker('setEndDate', max);
 
 				}
-			},
-			onAfterEnter: function afterEnterApplyStep(event){
-				// Need to call this after the form is visible because of the show/hiding of buttons based on visibility.
-				healthDependents.updateDependentOptionsDOM();
 			}
 		};
 
@@ -1080,22 +1057,31 @@
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication' });
 
 		try {
-		var postData = meerkat.modules.journeyEngine.getFormData();
+
+			Results.updateApplicationEnvironment();
+
+        var postData = meerkat.modules.journeyEngine.getFormData();
 
 		// Disable fields must happen after the post data has been collected.
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
 
-		meerkat.modules.comms.post({
-			url: "ajax/json/health_application.jsp",
-			data: postData,
-			cache: false,
-			useDefaultErrorHandling:false,
-			errorLevel: "silent",
-			timeout: 250000, //10secs more than SOAP timeout
-			onSuccess: function onSubmitSuccess(resultData) {
+
+			var healthApplicationUrl = "ajax/json/health_application.jsp";
+			if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
+				healthApplicationUrl = "ajax/json/health_application_ws.jsp";
+			}
+
+			meerkat.modules.comms.post({
+				url: healthApplicationUrl,
+				data: postData,
+				cache: false,
+				useDefaultErrorHandling:false,
+				errorLevel: "silent",
+				timeout: 250000, //10secs more than SOAP timeout
+				onSuccess: function onSubmitSuccess(resultData) {
 
 					meerkat.modules.leavePageWarning.disable();
-					
+
 					var redirectURL = "health_confirmation.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+"&token=";
 					var extraParameters = "";
 
@@ -1344,8 +1330,6 @@
 				$('#health_application_productId').val( meerkat.site.loadProductId );
 				$('#health_application_productTitle').val( meerkat.site.loadProductTitle );
 			}
-
-			healthDependents.init();
 
 			if(meerkat.site.isCallCentreUser === true){
 				meerkat.modules.simplesSnapshot.initSimplesSnapshot();

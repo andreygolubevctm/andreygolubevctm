@@ -1,3 +1,7 @@
 {
-    "brandCodes": "all"
+    "brandCodes": "all",
+    "dependencies": [
+        "shared/journeyEngine/v2",
+        "core"
+    ]
 }

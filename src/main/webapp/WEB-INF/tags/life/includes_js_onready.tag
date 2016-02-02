@@ -97,4 +97,4 @@
 	})
 </go:script>
 
-<form:radio_button_group_validate />
+<form_v1:radio_button_group_validate />

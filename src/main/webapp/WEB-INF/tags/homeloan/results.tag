@@ -4,22 +4,22 @@
 
 <%-- Hidden fields --%>
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" />
-<field:hidden xpath="${xpath}/results/pageNumber" defaultValue="1" />
-<field:hidden xpath="${xpath}/results/loanTerm" defaultValue="30" />
+<field_v1:hidden xpath="${xpath}/results/pageNumber" defaultValue="1" />
+<field_v1:hidden xpath="${xpath}/results/loanTerm" defaultValue="30" />
 
 <%-- Filters hidden inputs --%>
-<field:hidden xpath="${xpath}/results/frequency/weekly" defaultValue="" />
-<field:hidden xpath="${xpath}/results/frequency/fortnightly" defaultValue="" />
-<field:hidden xpath="${xpath}/results/frequency/monthly" defaultValue="Y" />
-<field:hidden xpath="${xpath}/fees/noApplication" defaultValue="" />
-<field:hidden xpath="${xpath}/fees/noOngoing" defaultValue="" />
-<field:hidden xpath="${xpath}/loanDetails/productLineOfCredit" defaultValue="" />
-<field:hidden xpath="${xpath}/loanDetails/productLowIntroductoryRate" defaultValue="" />
-<field:hidden xpath="${xpath}/features/redraw" defaultValue="" />
-<field:hidden xpath="${xpath}/features/offset" defaultValue="" />
-<field:hidden xpath="${xpath}/features/bpay" defaultValue="" />
-<field:hidden xpath="${xpath}/features/onlineBanking" defaultValue="" />
-<field:hidden xpath="${xpath}/features/extraRepayments" defaultValue="" />
+<field_v1:hidden xpath="${xpath}/results/frequency/weekly" defaultValue="" />
+<field_v1:hidden xpath="${xpath}/results/frequency/fortnightly" defaultValue="" />
+<field_v1:hidden xpath="${xpath}/results/frequency/monthly" defaultValue="Y" />
+<field_v1:hidden xpath="${xpath}/fees/noApplication" defaultValue="" />
+<field_v1:hidden xpath="${xpath}/fees/noOngoing" defaultValue="" />
+<field_v1:hidden xpath="${xpath}/loanDetails/productLineOfCredit" defaultValue="" />
+<field_v1:hidden xpath="${xpath}/loanDetails/productLowIntroductoryRate" defaultValue="" />
+<field_v1:hidden xpath="${xpath}/features/redraw" defaultValue="" />
+<field_v1:hidden xpath="${xpath}/features/offset" defaultValue="" />
+<field_v1:hidden xpath="${xpath}/features/bpay" defaultValue="" />
+<field_v1:hidden xpath="${xpath}/features/onlineBanking" defaultValue="" />
+<field_v1:hidden xpath="${xpath}/features/extraRepayments" defaultValue="" />
 
 <%-- Get data to build sections/categories/features --%>
 <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
@@ -37,7 +37,7 @@
 </div>
 
 
-<agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
+<agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
 
 	<homeloan:more_info />
 
@@ -68,7 +68,7 @@
 			<div class="results-table"></div>
 		</div>
 
-		<core:clear />
+		<core_v1:clear />
 
 		<%-- Prompt --%>
 		<div class="morePromptContainer priceMode results-load-more" data-provide="results-load-more">
@@ -88,7 +88,7 @@
 
 
 <%-- DEFAULT RESULT ROW --%>
-<core:js_template id="result-template">
+<core_v1:js_template id="result-template">
 	{{ var productTitle = (typeof obj.lenderProductName !== 'undefined') ? obj.lenderProductName : 'Unknown product name'; }}
 	{{ var lender = (typeof obj.lender !== 'undefined') ? obj.lender : 'Unknown lender'; }}
 
@@ -172,13 +172,13 @@
 		</div>
 
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- FEATURE TEMPLATE --%>
 <features:resultsItemTemplate />
 
 <%-- UNAVAILABLE ROW --%>
-<core:js_template id="unavailable-template">
+<core_v1:js_template id="unavailable-template">
 	{{ var productTitle = (typeof obj.lenderProductName !== 'undefined') ? obj.lenderProductName : 'Unknown product name'; }}
 	{{ var productDescription = (typeof obj.headline !== 'undefined' && typeof obj.headline.des !== 'undefined') ? obj.headline.des : ''; }}
 
@@ -211,10 +211,10 @@
 			</div>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- UNAVAILABLE COMBINED ROW --%>
-<core:js_template id="unavailable-combined-template">
+<core_v1:js_template id="unavailable-combined-template">
 {{ var template = $("#brands-template").html(); }}
 {{ var logo = _.template(template); }}
 {{ var logos = logo(); }}
@@ -233,10 +233,10 @@
 			</div>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- ERROR ROW --%>
-<core:js_template id="error-template">
+<core_v1:js_template id="error-template">
 	{{ var productTitle = (typeof obj.lenderProductName !== 'undefined') ? obj.lenderProductName : 'Unknown product name'; }}
 	{{ var productDescription = (typeof obj.headline !== 'undefined' && typeof obj.headline.description !== 'undefined') ? obj.headline.description : ''; }}
 
@@ -269,7 +269,7 @@
 			</div>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- NO RESULTS --%>
 <div class="hidden">
@@ -284,7 +284,7 @@
 </div>
 
 <%-- Logo template --%>
-<core:js_template id="provider-logo-template">
+<core_v1:js_template id="provider-logo-template">
 	{{ var img = ''; }}
 	{{ if (obj.lender === 'Adelaide Bank') img = 'ADLB'; }}
  	{{ if (obj.lender.indexOf('AFG Home Loans') === 0) img = 'AFG'; }}
@@ -323,12 +323,12 @@
 	{{ if (obj.lender === 'Wide Bay Australia') img = 'WIDE'; }}
 
 	<div class="companyLogo logo_{{= img }} noshrink"></div>
-</core:js_template>
+</core_v1:js_template>
 
-</agg_new_results:results>
+</agg_v2_results:results>
 
 <%-- Price templates --%>
-<core:js_template id="monthly-price-template">
+<core_v1:js_template id="monthly-price-template">
 {{ var tFrequency = Results.getFrequency(); }}
 	<div class="frequency monthly{{= tFrequency !== 'monthly' ? ' displayNone' : '' }}">
 		<div class="frequencyAmount">{{= (obj.hasOwnProperty('formatted')) ? obj.formatted.repayments.monthly : '$'+obj.monthlyRepayments }}</div>
@@ -342,27 +342,27 @@
 		<div class="frequencyAmount">{{= (obj.hasOwnProperty('formatted')) ? obj.formatted.repayments.weekly : '$'+obj.weeklyRepayments }}</div>
 		<div class="frequencyTitle">Weekly Repayments</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- Interest template --%>
-<core:js_template id="interest-template">
+<core_v1:js_template id="interest-template">
 	<div class="excess interestRate">
 		<div class="excessAmount">{{= obj.formatted.intrRate }}</div>
 		<div class="excessTitle">Interest Rate</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- Interest template --%>
-<core:js_template id="interest-comparison-template">
+<core_v1:js_template id="interest-comparison-template">
 	<div class="excess comparisonRate">
 		<div class="excessAmount">{{= obj.formatted.comparRate }}</div>
 		<div class="excessTitle">Comparison Rate*</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 
 <%-- Template for Home Loans Compare results list. --%>
-<core:js_template id="compare-basket-features-item-template">
+<core_v1:js_template id="compare-basket-features-item-template">
 {{ var tFrequency = Results.getFrequency(); }}
 {{ for(var i = 0; i < products.length; i++) { }}
 	{{ var lender = (typeof products[i].lender !== 'undefined') ? products[i].lender : 'Unknown lender'; }}
@@ -387,9 +387,9 @@
 		</span>
 	</li>
 {{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="compare-basket-price-item-template">
+<core_v1:js_template id="compare-basket-price-item-template">
 {{ var tFrequency = Results.getFrequency(); }}
 {{ var tDisplayMode = Results.getDisplayMode(); }}
 {{ var template = $("#provider-logo-template").html(); }}
@@ -428,9 +428,9 @@
 		</li>
 	{{ } }}
 {{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="compare-basket-features-template">
+<core_v1:js_template id="compare-basket-features-template">
 <div class="compare-basket">
 <h2>Compare Products</h2>
 {{ if(comparedResultsCount === 0) { }}
@@ -469,9 +469,9 @@
 	{{ } }}
 {{ } }}
 </div>
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="compare-basket-price-template">
+<core_v1:js_template id="compare-basket-price-template">
 	{{ if(comparedResultsCount > 0) { }}
 		{{ var template = $("#compare-basket-price-item-template").html(); }}
 		{{ var htmlTemplate = _.template(template); }}
@@ -487,4 +487,4 @@
 			</ul>
 		{{ } }}
 	{{ } }}
-</core:js_template>
+</core_v1:js_template>

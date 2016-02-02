@@ -40,7 +40,7 @@
 
 <security:populateDataFromParams rootPath="save" />
 
-<c:set var="outcome"><core:get_transaction_id quoteType="${quoteType}" id_handler="preserve_tranId" emailAddress="${data['save/email']}" /></c:set>
+<c:set var="outcome"><core_v1:get_transaction_id quoteType="${quoteType}" id_handler="preserve_tranId" emailAddress="${data['save/email']}" /></c:set>
 
 <c:if test="${not empty data['current/verticalCode']}">
 	<c:set var="originalVertical" value="${data['current/verticalCode']}" />
@@ -50,7 +50,7 @@
 
 <security:populateDataFromParams rootPath="reminder" />
 <c:set var="ct_outcome">
-	<core:transaction touch="H" noResponse="false" writeQuoteOverride="Y" emailAddress="${data['reminder/email']}" />
+	<core_v1:transaction touch="H" noResponse="false" writeQuoteOverride="Y" emailAddress="${data['reminder/email']}" />
 </c:set>
 
 <c:set var="reminderTransactionId" value="${data.current.transactionId}" />

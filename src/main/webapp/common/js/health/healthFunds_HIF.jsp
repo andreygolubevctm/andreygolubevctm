@@ -32,13 +32,13 @@
               <c:set var="html">
             <div id="hif_questionset">
               <c:set var="fieldXpath" value="health/application/hif/emigrate" />
-              <form_new:row fieldXpath="${fieldXpath}" label="Did you or any persons included on this application emigrate to Australia after 1 July 2000?">
-              <field_new:array_radio xpath="${fieldXpath}" required="true" title="" items="Y=Yes,N=No" />
+              <form_v2:row fieldXpath="${fieldXpath}" label="Did you or any persons included on this application emigrate to Australia after 1 July 2000?">
+              <field_v2:array_radio xpath="${fieldXpath}" required="true" title="" items="Y=Yes,N=No" />
               <p class="HIF" style="display:none;">
               As you ticked "Yes", HIF will require a copy of your Medicare Eligibility letter which states the date at which you became eligible to receive Medicare benefits. This letter will assist HIF in determining if a Lifetime Health Cover age loading will need to be added to the amount quoted in this application.
               </p>
               </div>
-              </form_new:row>
+              </form_v2:row>
               </div>
               </c:set>
               $('#health_payment_medicare-selection .content').append('<c:out value="${html}" escapeXml="false" />');
@@ -61,12 +61,12 @@
             <%-- Run these if not loading a quote --%>
             if (!$('body').hasClass('injectingFund')) {
 
-              <%-- Dependant definition --%>
-              healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
-              $.extend(healthDependents.config, { 'fulltime':true, 'school':true, 'schoolMin':21, 'schoolMax':24, 'schoolID':false });
-              healthFunds_HIF.tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
-              $('.health_dependant_details_schoolGroup .control-label').html('Educational Institutional');
-              $('.health_dependant_details_schoolGroup .help-icon').hide();
+			<%-- Dependant definition --%>
+			healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
+			meerkat.modules.healthDependants.updateConfig({ showFullTimeField:true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:false });
+			healthFunds_HIF.tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
+			$('.health_dependant_details_schoolGroup .control-label').html('Educational Institutional');
+			$('.health_dependant_details_schoolGroup .help-icon').hide();
 
               <%-- Increase minimum age requirement for applicants from 16 to 18 --%>
               <%-- Primary --%>

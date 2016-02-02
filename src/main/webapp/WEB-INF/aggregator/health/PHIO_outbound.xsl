@@ -56,6 +56,7 @@
 				<clientIpAddress><xsl:value-of select="clientIpAddress" /></clientIpAddress>
 				<applicationDate><xsl:value-of select="applicationDate" /></applicationDate>
 				<productTitleSearch><xsl:value-of select="productTitleSearch" /></productTitleSearch>
+				<currentJourney><xsl:value-of select="currentJourney" /></currentJourney>
 				<providerId>
 					<xsl:choose>
 						<xsl:when test="showAll = 'N' and string-length(application/provider) &gt; 0">
@@ -203,6 +204,14 @@
 						<xsl:otherwise>Combined</xsl:otherwise>
 					</xsl:choose>
 				</productType>
+
+				<situationFilter>
+					<xsl:choose>
+						<xsl:when test="situation/accidentOnlyCover = 'Y'">Y</xsl:when>
+						<xsl:otherwise>N</xsl:otherwise>
+					</xsl:choose>
+				</situationFilter>
+
 				<accountType><xsl:value-of select="payment/details/type" /></accountType>
 			</details>
 			

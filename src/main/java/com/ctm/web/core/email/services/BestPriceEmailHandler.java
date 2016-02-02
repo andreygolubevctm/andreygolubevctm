@@ -4,7 +4,6 @@ import com.ctm.web.core.email.exceptions.SendEmailException;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 public interface BestPriceEmailHandler {
 
 	public static String MAILING_NAME_KEY  = "sendBestPriceMailingName";
@@ -15,6 +14,6 @@ public interface BestPriceEmailHandler {
 	
 	public static String SPLIT_TESTING_ENABLED = "sendBestPriceSplitTestingEnabled";
 
-	public void sendBestPriceEmail(HttpServletRequest request, String emailAddress,
+	public String sendBestPriceEmail(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException;
 }
