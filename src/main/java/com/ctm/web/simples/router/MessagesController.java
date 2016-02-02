@@ -8,6 +8,7 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.simples.model.Message;
 import com.ctm.web.simples.model.MessageDetail;
 import com.ctm.web.simples.model.Postpone;
 import com.ctm.web.simples.phone.inin.InInScheduleService;
@@ -24,6 +25,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/rest/simples/messages")
@@ -52,14 +57,21 @@ public class MessagesController extends CommonQuoteRouter {
         final PageSettings pageSettings = SettingsService.getPageSettingsByCode("CTM", Vertical.VerticalType.SIMPLES.getCode());
         final boolean inInEnabled = StringUtils.equalsIgnoreCase("true", pageSettings.getSetting("inInEnabled"));
 
-        final String postponeMessage = inInEnabled ? simplesMessageService.schedulePersonalMessage(simplesUid, postpone.getRootId(), postpone.getStatusId(), postpone.getPostponeDate(), postpone.getPostponeTime(), postpone.getPostponeAMPM(), postpone.getContactName(), postpone.getComment()) : simplesMessageService.postponeMessage(simplesUid, postpone.getMessageId(), postpone.getStatusId(), postpone.getReasonStatusId(), postpone.getPostponeDate(), postpone.getPostponeTime(), postpone.getPostponeAMPM(), postpone.getComment(), postpone.getAssignToUser());
+        final LocalDateTime postponeTo = getLocalDateTimeFromPostpone(postpone.getPostponeDate(), postpone.getPostponeTime(), postpone.getPostponeAMPM());
+        final String postponeMessage = inInEnabled ? simplesMessageService.schedulePersonalMessage(simplesUid, postpone.getRootId(), postpone.getStatusId(), postponeTo, postpone.getContactName(), postpone.getComment()) : simplesMessageService.postponeMessage(simplesUid, postpone.getMessageId(), postpone.getStatusId(), postpone.getReasonStatusId(), postpone.getPostponeDate(), postpone.getPostponeTime(), postpone.getPostponeAMPM(), postpone.getComment(), postpone.getAssignToUser());
 
         if (inInEnabled) {
             final MessageDetail messageDetail = TransactionService.getTransaction(postpone.getRootId());
-            inInScheduleService.scheduleCall(messageDetail.getMessage(), authenticatedData);
+            Message message = messageDetail.getMessage();
+            message.setWhenToAction(Date.from(postponeTo.toInstant(ZoneOffset.ofHours(10))));
+            inInScheduleService.scheduleCall(message, authenticatedData.getUid());
         }
 
         return postponeMessage;
+    }
+
+    public LocalDateTime getLocalDateTimeFromPostpone(String postponeDate, String postponeTime, String postponeAMPM) {
+        return LocalDateTime.parse(postponeDate + " " + postponeTime + " " + postponeAMPM, DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a"));
     }
 
 }

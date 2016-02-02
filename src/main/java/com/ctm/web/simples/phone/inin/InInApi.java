@@ -4,7 +4,6 @@ package com.ctm.web.simples.phone.inin;
 import com.ctm.httpclient.Client;
 import com.ctm.interfaces.common.types.ValueType;
 import com.ctm.interfaces.common.types.VerticalType;
-import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.simples.config.InInConfig;
 import com.ctm.web.simples.model.Message;
 import com.ctm.web.simples.phone.inin.model.*;
@@ -90,10 +89,9 @@ public class InInApi {
         });
     }
 
-
-    public Observable<Boolean> insertScheduledCall(final Message message, final AuthenticatedData authenticatedData) {
+    public Observable<Boolean> insertScheduledCall(final Message message, final String agentUsername) {
         final List<Data> datas = createLeadDatas(message);
-        final InsertScheduleCall insert = new InsertScheduleCall(inInConfig.getCampaignName(), datas, message.getPhoneNumber1(), authenticatedData.getAgentId(), message.getWhenToAction().toString());
+        final InsertScheduleCall insert = new InsertScheduleCall(inInConfig.getCampaignName(), datas, message.getPhoneNumber1(), agentUsername, message.getWhenToAction().toString());
         return insertScheduleCallClient.post(singletonList(insert), String.class, inInConfig.getWsUrl() + "/InsertScheduleRecord")
             .flatMap(r -> {
                 if (!r.equals("1 records success to insert.")) {
@@ -104,12 +102,11 @@ public class InInApi {
             });
     }
 
-    public Observable<Boolean> updateScheduledCall(final Message message, final AuthenticatedData authenticatedData) {
+    public Observable<Boolean> updateScheduledCall(final Message message, final String agentUsername) {
         final Data identity = new Data(ROOT_ID, Long.toString(message.getTransactionId()));
         final String phoneNumber = determinePhoneNumber(message);
-        final String agentId = authenticatedData.getUid();
         final String scheduleTime = message.getWhenToAction().toString();
-        final UpdateScheduleCall update = new UpdateScheduleCall(inInConfig.getCampaignName(), identity, phoneNumber, agentId, scheduleTime);
+        final UpdateScheduleCall update = new UpdateScheduleCall(inInConfig.getCampaignName(), identity, phoneNumber, agentUsername, scheduleTime);
         return updateScheduleCallClient.post(singletonList(update), String.class, inInConfig.getWsUrl() + "/InsertOrUpdateScheduleCallBacks")
             .flatMap(r -> {
                 if (!r.equals("1 records success to update.")) {

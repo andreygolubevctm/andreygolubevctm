@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -169,14 +168,14 @@ public class SimplesMessageService {
 		return details.toJson();
 	}
 
-
-	public String schedulePersonalMessage(int actionIsPerformedByUserId, long rootId, int statusId, String postponeDate, String postponeTime, String postponeAMPM, String contactName, String comment) {
+	/**
+	 *
+	 */
+	public String schedulePersonalMessage(int actionIsPerformedByUserId, long rootId, int statusId, LocalDateTime postponeTo, String contactName, String comment) {
 		PersonalMessageDao personalMessageDao = new PersonalMessageDao();
 		Transaction details = new Transaction();
 
 		try {
-			LocalDateTime postponeTo = LocalDateTime.parse(postponeDate + " " + postponeTime + " " + postponeAMPM, DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a"));
-
 			switch (statusId) {
 				case MessageStatus.STATUS_COMPLETED_AS_PM:
 					personalMessageDao.insertPersonalMessage(actionIsPerformedByUserId, rootId, postponeTo, contactName, comment);
@@ -184,11 +183,14 @@ public class SimplesMessageService {
 				case MessageStatus.STATUS_CHANGED_TIME_FOR_PM:
 					personalMessageDao.postponePersonalMessage(actionIsPerformedByUserId, rootId, postponeTo, comment);
 			}
-
 		}
 		catch (DaoException e) {
-			LOGGER.error("Could not schedule InIn callback {},{},{},{},{},{},{}", kv("userId", actionIsPerformedByUserId), kv("statusId", statusId), kv("postponeDate", postponeDate), kv("postponeTime", postponeTime), kv("postponeAMPM", postponeAMPM), kv("comment", comment), kv("rootId", rootId), e);
-
+			LOGGER.error("Could not schedule InIn callback. {}, {}, {}, {}, {}",
+					kv("userId", actionIsPerformedByUserId),
+					kv("statusId", statusId),
+					kv("postponeTo", postponeTo),
+					kv("comment", comment),
+					kv("rootId", rootId), e);
 			Error error = new Error(e.getMessage());
 			details.addError(error);
 		}
