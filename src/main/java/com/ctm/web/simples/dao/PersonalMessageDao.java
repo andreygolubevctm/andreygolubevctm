@@ -44,29 +44,29 @@ public class PersonalMessageDao {
         return sqlDao.getList(databaseMapping, sql);
     }
 
-//    public Message getPersonalMessageByRootId(Long rootId) throws  DaoException {
-//        final SqlDao<Message> sqlDao = new SqlDao<Message>();
-//
-//        String sql =
-//                "SELECT rootId, userId, whenToAction, contactName" +
-//                "FROM simples.personal_messages " +
-//                "WHERE rootId = ?; ";
-//
-//        DatabaseQueryMapping<Message> databaseMapping = new DatabaseQueryMapping<Message>() {
-//
-//            @Override
-//            public void mapParams() throws SQLException {
-//                set(rootId);
-//            }
-//
-//            @Override
-//            public Message handleResult(ResultSet rs) throws SQLException {
-//                return mapToObject(rs);
-//            }
-//        };
-//
-//        return sqlDao.get(databaseMapping, sql);
-//    }
+    public Message getPersonalMessageByRootId(Long rootId) throws  DaoException {
+        final SqlDao<Message> sqlDao = new SqlDao<Message>();
+
+        String sql =
+                "SELECT rootId, userId, whenToAction, contactName " +
+                "FROM simples.personal_messages " +
+                "WHERE rootId = ?; ";
+
+        DatabaseQueryMapping<Message> databaseMapping = new DatabaseQueryMapping<Message>() {
+
+            @Override
+            public void mapParams() throws SQLException {
+                set(rootId);
+            }
+
+            @Override
+            public Message handleResult(ResultSet rs) throws SQLException {
+                return mapToObject(rs);
+            }
+        };
+
+        return sqlDao.get(databaseMapping, sql);
+    }
 
     public Long insertPersonalMessage(int userId, long rootId, LocalDateTime postponeTo, String contactName, String comment) throws DaoException {
 

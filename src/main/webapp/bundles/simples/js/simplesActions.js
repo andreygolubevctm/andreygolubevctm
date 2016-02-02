@@ -53,7 +53,11 @@
 
 					$actionsDropdown.on('click', '.action-remove-pm', function() {
 						if ($(this).parent('li').hasClass('disabled')) return false;
-						actionFinish('remove_pm');
+						if (meerkat.site.inInEnabled === true) {
+							actionRemovePM();
+						}else {
+							actionFinish('remove_pm');
+						}
 					});
 
 					$actionsDropdown.on('click', '.action-complete-pm', function() {
@@ -194,6 +198,65 @@
 		else {
 			$actionsDropdown.addClass('hidden');
 		}
+	}
+
+	function actionRemovePM() {
+		modalId = meerkat.modules.dialogs.show({
+			title: ' ',
+			htmlContent: '<p>Are you sure to delete this scheduled call back from your personal messages?</p>',
+			buttons: [
+				{
+				label: 'No',
+				className: 'btn-cancel',
+				closeWindow: true
+				},
+				{
+					label: 'Yes',
+					className: 'btn-cta message-savebutton',
+					closeWindow: false
+				}
+			],
+			onOpen: function(id) {
+				modalId = id;
+				var $modal = $('#'+modalId);
+				var $button = $modal.find('.message-savebutton');
+
+				$button.on('click', function loadClick() {
+					$button.prop('disabled', true);
+					meerkat.modules.loadingAnimation.showInside($button, true);
+
+					var data = {
+						rootId: currentMessage.message.transactionId
+					};
+
+					meerkat.modules.comms.post({
+						url: meerkat.modules.simples.getBaseUrl() + 'spring/rest/simples/messages/removePersonalMessage.json',
+						dataType: 'json',
+						cache: false,
+						errorLevel: 'silent',
+						data: data,
+						onSuccess: function onSuccess(json) {
+							if (json.hasOwnProperty('errors') && json.errors.length > 0) {
+								alert('Could not remove the personal message...\n' + json.errors[0].message);
+								return;
+							}
+
+							// Clear message
+							meerkat.modules.simplesMessage.setCurrentMessage(false);
+
+							// Click the nav bar home button
+							if ($homeButton.length > 0) $homeButton[0].click();
+
+							// Clean up
+							meerkat.modules.dialogs.close(modalId);
+						},
+						onError: function onError(obj, txt, errorThrown) {
+							alert('Could not remove the personal message...\n' + txt + ': ' + errorThrown);
+						}
+					});
+				});
+			}
+		});
 	}
 
 	/**

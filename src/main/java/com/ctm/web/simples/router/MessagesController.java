@@ -78,6 +78,21 @@ public class MessagesController extends CommonQuoteRouter {
         return inInScheduleService.scheduleCall(message, authenticatedData.getUid());
     }
 
+    @RequestMapping(
+            value = "/removePersonalMessage.json",
+            method = RequestMethod.POST,
+            consumes = MediaType.ALL_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public String removePersonalMessage(@ModelAttribute Postpone postpone, HttpServletRequest request) throws ConfigSettingException, DaoException {
+        AuthenticatedData authenticatedData = getSessionDataServiceBean().getAuthenticatedSessionData(request);
+        final int simplesUid = authenticatedData.getSimplesUid();
+        final MessageDetail messageDetail = TransactionService.getTransaction(postpone.getRootId());
+        Message message = messageDetail.getMessage();
+        return inInScheduleService.deleteScheduledCall(message, authenticatedData.getUid())
+                .map(ignore -> simplesMessageService.removePersonalMessage(simplesUid, postpone.getRootId())).toBlocking().first();
+    }
+
     public LocalDateTime getLocalDateTimeFromPostpone(String postponeDate, String postponeTime, String postponeAMPM) {
         return LocalDateTime.parse(postponeDate + " " + postponeTime + " " + postponeAMPM, DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a"));
     }

@@ -181,7 +181,13 @@ public class SimplesMessageService {
 					personalMessageDao.insertPersonalMessage(actionIsPerformedByUserId, rootId, postponeTo, contactName, comment);
 					break;
 				case MessageStatus.STATUS_CHANGED_TIME_FOR_PM:
-					personalMessageDao.postponePersonalMessage(actionIsPerformedByUserId, rootId, postponeTo, comment);
+					Message message = personalMessageDao.getPersonalMessageByRootId(rootId);
+					if (message.getUserId() == actionIsPerformedByUserId) {
+						personalMessageDao.postponePersonalMessage(actionIsPerformedByUserId, rootId, postponeTo, comment);
+					} else {
+						Error error = new Error("Action Denied - This personal message belongs to another consultant, or you have deleted it already.");
+						details.addError(error);
+					}
 			}
 		}
 		catch (DaoException e) {
@@ -197,6 +203,7 @@ public class SimplesMessageService {
 
 		return details.toJson();
 	}
+
 
 	/**
 	 *
@@ -230,6 +237,34 @@ public class SimplesMessageService {
 		catch (DaoException e) {
 			LOGGER.error("Could not set message {},{},{},{}", kv("actionIsPerformedByUserId", actionIsPerformedByUserId), kv("messageId", messageId), kv("statusId", statusId), kv("reasonStatusId", reasonStatusId), e);
 
+			Error error = new Error(e.getMessage());
+			details.addError(error);
+		}
+
+		return details.toJson();
+	}
+
+	/**
+	 *
+	 */
+	public String removePersonalMessage(int actionIsPerformedByUserId, long rootId) {
+		PersonalMessageDao personalMessageDao = new PersonalMessageDao();
+		Transaction details = new Transaction();
+
+		try {
+			Message message = personalMessageDao.getPersonalMessageByRootId(rootId);
+
+			if (message.getUserId() == actionIsPerformedByUserId) {
+				personalMessageDao.deletePersonalMessage(rootId);
+			} else {
+				Error error = new Error("Action Denied - This personal message belongs to another consultant, or you have deleted it already.");
+				details.addError(error);
+			}
+		}
+		catch (DaoException e) {
+			LOGGER.error("Could not remove InIn scheduled callback. {}, {}",
+					kv("userId", actionIsPerformedByUserId),
+					kv("rootId", rootId), e);
 			Error error = new Error(e.getMessage());
 			details.addError(error);
 		}
