@@ -37,7 +37,7 @@ import static java.util.Collections.singletonList;
 @RestController
 @RequestMapping("/rest/simples/blacklist")
 public class BlacklistController {
-    public static final String ADD = "/add";
+    public static final String ADD = "/add.json";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BlacklistController.class);
 
