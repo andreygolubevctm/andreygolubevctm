@@ -6,6 +6,10 @@
 
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}" />
 
+<c:if test="${pageSettings.getSetting('inInEnabled')}">
+	<c:set var="isInInEnabled" value="${true}" />
+</c:if>
+
 <%--
 
 	See framework/modules/js/simples/* for corresponding code.
@@ -66,7 +70,7 @@
 					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">Blacklist <b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li data-provide="simples-blacklist-action"><a href="javascript:void(0);" data-action="add">Add</a></li>
-						<c:if test="${isRoleSupervisor}">
+						<c:if test="${isRoleSupervisor && not isInInEnabled}">
 							<li data-provide="simples-blacklist-action"><a href="javascript:void(0);" data-action="delete">Remove</a></li>
 						</c:if>
 					</ul>
