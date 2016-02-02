@@ -1,6 +1,5 @@
 package com.ctm.web.simples.phone.inin;
 
-import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.simples.model.Message;
 import com.ctm.web.simples.phone.inin.model.Identity;
 import com.ctm.web.simples.services.ScheduleService;
@@ -18,15 +17,15 @@ public class InInScheduleService implements ScheduleService{
     @Autowired private InInApi inInApi;
 
     @Override
-    public List<Message> scheduledCallList(final AuthenticatedData user) {
+    public List<Message> scheduledCallList(final String agentUsername) {
         return null;
     }
 
     @Override
-    public boolean scheduleCall(final Message message, final AuthenticatedData user) {
+    public boolean scheduleCall(final Message message, final String agentUsername) {
         final Observable<Boolean> searchLead = inInApi.searchLead(message).toList()
             .flatMap(identities -> insert(message, identities));
-        final Observable<Boolean> scheduleCall = searchLead.flatMap(ignore -> inInApi.updateScheduledCall(message, user));
+        final Observable<Boolean> scheduleCall = searchLead.flatMap(ignore -> inInApi.updateScheduledCall(message, agentUsername));
         return scheduleCall.toBlocking().first();
     }
 
@@ -35,7 +34,7 @@ public class InInScheduleService implements ScheduleService{
     }
 
     @Override
-    public boolean deleteScheduledCall(final Message message, final AuthenticatedData user) {
+    public boolean deleteScheduledCall(final Message message, final String agentUsername) {
         final Observable<Identity> searchLead = inInApi.searchLead(message);
         final Observable<Boolean> deleteScheduledCall = searchLead.flatMap(ignore -> inInApi.deleteScheduledCall(message));
         return deleteScheduledCall.toBlocking().first();

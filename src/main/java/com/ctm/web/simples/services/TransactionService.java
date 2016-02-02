@@ -137,12 +137,19 @@ public class TransactionService {
 		message.setState(state.orElse(""));
 
 		final Optional<String> primaryFirstName = Optional.ofNullable(transactionDetails.get("health/application/primary/firstname"));
-		if(primaryFirstName.isPresent()) {
-			message.setContactName(primaryFirstName.orElse(""));
+		final Optional<String> primaryLastName = Optional.ofNullable(transactionDetails.get("health/application/primary/surname"));
+		if(primaryFirstName.isPresent() || primaryLastName.isPresent()) {
+			message.setContactName(primaryFirstName.orElse("BLANK ") + primaryLastName.orElse("BLANK"));
 		} else {
 			Optional<String> contactName = Optional.ofNullable(transactionDetails.get("health/contactDetails/name"));
-			message.setContactName(contactName.orElse(""));
+			message.setContactName(contactName.orElse("BLANK"));
 		}
+
+		final Optional<String> applicationMobile = Optional.ofNullable(transactionDetails.get("health/application/mobile"));
+		final Optional<String> phoneMobile = Optional.ofNullable(transactionDetails.get("health/contactDetails/contactNumber/mobile"));
+		final Optional<String> phoneOther = Optional.ofNullable(transactionDetails.get("health/contactDetails/contactNumber/other"));
+		message.setPhoneNumber1(applicationMobile.isPresent() ? applicationMobile.get() : phoneMobile.orElse(""));
+		message.setPhoneNumber2(phoneOther.orElse(""));
 
 		return  service.getMessageDetail(message);
 	}
