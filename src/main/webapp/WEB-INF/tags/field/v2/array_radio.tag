@@ -37,6 +37,10 @@
 	<c:when test="${style == 'inline'}">
 		<c:set var="classVar" value="radio-inline" />
 	</c:when>
+	<c:when test="${style == 'horizontal'}">
+		<c:set var="classVar" value="btn btn-form-inverse" />
+		<c:set var="className" value='btn-group btn-group-horizontal" data-toggle="radio' />
+	</c:when>
 	<c:otherwise>
 		<c:set var="classVar" value="btn btn-form-inverse" />
 		<c:set var="className" value='btn-group btn-group-justified ${className}" data-toggle="radio' />

@@ -65,6 +65,7 @@
 		transmissions:		'${data.quote.vehicle.trans}',
 		fuels:				'${data.quote.vehicle.fuel}',
 		types:				'${data.quote.vehicle.redbookCode}',
+		colours:			'${data.quote.vehicle.colour}',
 		marketValue:		'${data.quote.vehicle.marketValue}',
 		variant:			'${data.quote.vehicle.variant}',
 		securityOption:		'${data.quote.vehicle.securityOption}',

@@ -81,14 +81,17 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> extends CommonR
         return clientIpAddress;
     }
 
-
     protected Info generateInfoKey(final REQUEST data, final MessageContext context) {
+        return generateInfoKey(data, context.getHttpServletRequest());
+    }
+
+    protected Info generateInfoKey(final REQUEST data, final HttpServletRequest request) {
         // Generate the Tracking Key for Omniture tracking
         Info info = new Info();
         info.setTransactionId(data.getTransactionId());
         try {
             String trackingKey = TrackingKeyService.generate(
-                    context.getHttpServletRequest(), data.getTransactionId());
+                    request, data.getTransactionId());
             info.setTrackingKey(trackingKey);
         } catch (Exception e) {
             throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);

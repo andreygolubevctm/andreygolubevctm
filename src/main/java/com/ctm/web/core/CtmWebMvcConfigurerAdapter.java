@@ -14,6 +14,7 @@ public class CtmWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new SpringFormParamMapInInterceptor()).addPathPatterns("/rest/energy/**");
         registry.addInterceptor(new SpringFormParamMapInInterceptor()).addPathPatterns("/rest/life/**");
+        registry.addInterceptor(new SpringFormParamMapInInterceptor()).addPathPatterns("/rest/car/**");
     }
 
 }

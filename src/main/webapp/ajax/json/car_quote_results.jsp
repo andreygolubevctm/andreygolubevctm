@@ -24,4 +24,4 @@
 <%-- Fetch and store the transaction id --%>
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
-<jsp:forward page="/rest/car/quote/get.json"/>
+<jsp:forward page="/spring/rest/car/quote/get.json"/>

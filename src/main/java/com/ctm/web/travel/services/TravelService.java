@@ -57,6 +57,7 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
                 ResultPropertiesBuilder builder = new ResultPropertiesBuilder(
                         data.getTransactionId(), result.getProductId());
                 builder.addResult("quoteUrl", result.getQuoteUrl());
+                builder.addResult("providerCode", result.getServiceName());
                 resultProperties.addAll(builder.getResultProperties());
 
             }

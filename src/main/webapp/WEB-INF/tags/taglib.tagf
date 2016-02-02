@@ -59,6 +59,10 @@
 <%@ taglib tagdir="/WEB-INF/tags/utilities/v2"			prefix="utilities_v2" %>
 <%@ taglib tagdir="/WEB-INF/tags/utilities/v2/layout"	prefix="utilities_v2_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/utilities/v2/fieldset" prefix="utilities_v2_fieldset" %>
+<%@ taglib tagdir="/WEB-INF/tags/utilities/v3"			prefix="utilities_v3" %>
+<%@ taglib tagdir="/WEB-INF/tags/utilities/v3/layout"	prefix="utilities_v3_layout" %>
+<%@ taglib tagdir="/WEB-INF/tags/utilities/v3/fieldset" prefix="utilities_v3_fieldset" %>
+<%@ taglib tagdir="/WEB-INF/tags/utilities/v3/content" prefix="utilities_v3_content" %>
 <%@ taglib tagdir="/WEB-INF/tags/social"				prefix="social" %>
 <%@ taglib tagdir="/WEB-INF/tags/read"					prefix="read" %>
 <%@ taglib tagdir="/WEB-INF/tags/meerkatrewards"		prefix="meerkatrewards" %>

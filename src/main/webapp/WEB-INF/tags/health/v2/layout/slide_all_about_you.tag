@@ -2,12 +2,14 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<layout_v3:slide_new formId="startForm" firstSlide="true" nextLabel="Next Step">
+<layout_v3:slide formId="startForm" firstSlide="true" nextLabel="Next Step">
 
 	<layout_v3:slide_content >
 
 		<%-- PROVIDER TESTING --%>
 		<health_v1:provider_testing xpath="${pageSettings.getVerticalCode()}" />
+
+		<form_v2:fieldset legend="About you" postLegend="Tell us about yourself, so we can find the right cover for you" />
 
 		<%-- COVER TYPE / SITUATION --%>
 		<div id="${pageSettings.getVerticalCode()}_situation">
@@ -16,4 +18,4 @@
 
 	</layout_v3:slide_content>
 
-</layout_v3:slide_new>
+</layout_v3:slide>

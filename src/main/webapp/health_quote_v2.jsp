@@ -5,10 +5,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils"/>
-
-<c:if test="${!sessionUtils.isCallCentre(pageContext.session)}">
-    <core_v1:journey_gateway verticalLabel="HEALTH" splitTestLabel="optins" />
-</c:if>
+<session:new verticalCode="HEALTH" authenticated="true" />
 
 <session:new verticalCode="HEALTH" authenticated="true" />
 
@@ -26,7 +23,10 @@
         <c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
     </c:when>
     <c:otherwise>
-        <%-- END JOURNEY OVERRIDE - Part 1 of 2) --%>
+<%-- END JOURNEY OVERRIDE - Part 1 of 2) --%>
+
+        <%-- Set global variable to flags for active split tests --%>
+        <health_v2:splittest_helper />
 
         <core_v2:quote_check quoteType="health" />
         <core_v2:load_preload />
@@ -189,6 +189,10 @@
                     <c:forEach items="${resultTemplateItems}" var="selectedValue">
                         <health_v2:benefitsHiddenItem item="${selectedValue}" />
                     </c:forEach>
+                    <c:if test="${data['health/situation/accidentOnlyCover'] != '' && not empty data['health/situation/accidentOnlyCover']}">
+                        <c:set var="fieldValue"><c:out value="${data['health/situation/accidentOnlyCover']}" escapeXml="true"/></c:set>
+                    </c:if>
+                    <input type="hidden" name="health_situation_accidentOnlyCover" class="benefit-item" value="${fieldValue}" />
 
                     <field_v1:hidden xpath="health/renderingMode" />
                     <field_v1:hidden xpath="health/rebate" />

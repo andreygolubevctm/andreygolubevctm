@@ -18,15 +18,17 @@ import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.services.CommonQuoteService;
 import com.ctm.web.core.services.Endpoint;
 import com.ctm.web.core.services.ResultsService;
-import com.ctm.web.core.services.SessionDataService;
-import com.ctm.web.core.utils.ObjectMapperUtil;
+import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.validation.CommencementDateValidation;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.joda.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
@@ -34,12 +36,15 @@ import java.util.List;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 import static java.util.stream.Collectors.toList;
 
+@Component
 public class CarQuoteService extends CommonQuoteService<CarQuote> {
 
-    private static final SessionDataService SESSION_DATA_SERVICE = new SessionDataService();
+    private SessionDataServiceBean sessionDataServiceBean;
 
-    public CarQuoteService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+    @Autowired
+    public CarQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, SessionDataServiceBean sessionDataServiceBean) {
+        super(providerFilterDAO, objectMapper);
+        this.sessionDataServiceBean = sessionDataServiceBean;
     }
 
     public List<CarResult> getQuotes(Brand brand, CarRequest data) throws Exception {
@@ -110,9 +115,9 @@ public class CarQuoteService extends CommonQuoteService<CarQuote> {
                 .collect(toList());
     }
 
-    public void writeTempResultDetails(MessageContext context, CarRequest data, List<CarResult> quotes) throws SessionException, DaoException {
+    public void writeTempResultDetails(HttpServletRequest request, CarRequest data, List<CarResult> quotes) throws SessionException, DaoException {
 
-        Data dataBucket = SESSION_DATA_SERVICE.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
+        Data dataBucket = sessionDataServiceBean.getDataForTransactionId(request, data.getTransactionId().toString(), true);
 
         final String transactionId = dataBucket.getString("current/transactionId");
         if(transactionId != null){
