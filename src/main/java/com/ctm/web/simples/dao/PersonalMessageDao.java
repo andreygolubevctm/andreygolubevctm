@@ -21,7 +21,7 @@ public class PersonalMessageDao {
         final SqlDao<Message> sqlDao = new SqlDao<Message>();
 
         String sql =
-                "SELECT rootId, userId, whenToAction, contactName" +
+                "SELECT rootId, userId, whenToAction, contactName " +
                 "FROM simples.personal_messages " +
                 "WHERE userId = ? " +
                 "AND whenToAction >= NOW() " +
