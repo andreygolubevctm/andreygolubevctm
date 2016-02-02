@@ -4,6 +4,7 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
@@ -11,7 +12,6 @@ import com.ctm.web.simples.dao.MessageDao;
 import com.ctm.web.simples.model.Message;
 import com.ctm.web.simples.model.Postpone;
 import com.ctm.web.simples.phone.inin.InInScheduleService;
-import com.ctm.web.simples.services.MessageDetailService;
 import com.ctm.web.simples.services.SimplesMessageService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -48,11 +48,12 @@ public class MessagesController extends CommonQuoteRouter {
     public String setPostPone(@ModelAttribute Postpone postpone, HttpServletRequest request) throws ConfigSettingException, DaoException {
         AuthenticatedData authenticatedData = getSessionDataServiceBean().getAuthenticatedSessionData(request);
         final int simplesUid = authenticatedData.getSimplesUid();
-        final String postponeMessage = simplesMessageService.postponeMessage(simplesUid, postpone.getMessageId(), postpone.getStatusId(), postpone.getReasonStatusId(),
-                postpone.getPostponeDate(), postpone.getPostponeTime(), postpone.getPostponeAMPM(), postpone.getComment(), postpone.getAssignToUser());
 
-        final PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, "HEALTH");
+        final PageSettings pageSettings = SettingsService.getPageSettingsByCode("CTM", Vertical.VerticalType.SIMPLES.getCode());
         final boolean inInEnabled = StringUtils.equalsIgnoreCase("true", pageSettings.getSetting("inInEnabled"));
+
+        final String postponeMessage = inInEnabled ? simplesMessageService.schedulePersonalMessage(simplesUid, postpone.getRootId(), postpone.getStatusId(), postpone.getPostponeDate(), postpone.getPostponeTime(), postpone.getPostponeAMPM(), postpone.getContactName(), postpone.getComment()) : simplesMessageService.postponeMessage(simplesUid, postpone.getMessageId(), postpone.getStatusId(), postpone.getReasonStatusId(), postpone.getPostponeDate(), postpone.getPostponeTime(), postpone.getPostponeAMPM(), postpone.getComment(), postpone.getAssignToUser());
+
         if (inInEnabled) {
             final MessageDao messageDao = new MessageDao();
             final Message message = messageDao.getMessage(postpone.getMessageId());

@@ -9,6 +9,8 @@ public class Postpone {
     private String postponeAMPM;
     private String comment;
     private boolean assignToUser;
+    private long rootId;
+    private String contactName;
 
     public int getMessageId() {
         return messageId;
@@ -76,5 +78,21 @@ public class Postpone {
 
     public void setAssignToUser(final boolean assignToUser) {
         this.assignToUser = assignToUser;
+    }
+
+    public long getRootId() {
+        return rootId;
+    }
+
+    public void setRootId(long rootId) {
+        this.rootId = rootId;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 }

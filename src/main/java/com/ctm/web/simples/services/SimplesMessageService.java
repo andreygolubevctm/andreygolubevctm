@@ -171,15 +171,12 @@ public class SimplesMessageService {
 	}
 
 
-	public String schedulePersonalMessage(int actionIsPerformedByUserId, long rootId, int statusId, String postponeDate, String postponeTime, String postponeAMPM, String contactName, String comment, AuthenticatedData authenticatedData) {
+	public String schedulePersonalMessage(int actionIsPerformedByUserId, long rootId, int statusId, String postponeDate, String postponeTime, String postponeAMPM, String contactName, String comment) {
 		PersonalMessageDao personalMessageDao = new PersonalMessageDao();
 		Transaction details = new Transaction();
-		InInScheduleService inInScheduleService = new InInScheduleService();
 
 		try {
 			Date postponeTo = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(postponeDate + " " + postponeTime + " " + postponeAMPM);
-
-			inInScheduleService.scheduleCall(TransactionService.getMessageWithLatestTransaction(rootId, postponeTo), authenticatedData);
 
 			switch (statusId) {
 				case MessageStatus.STATUS_COMPLETED_AS_PM:
