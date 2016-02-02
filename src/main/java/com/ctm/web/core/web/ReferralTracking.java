@@ -30,11 +30,12 @@ public class ReferralTracking {
 	public String getRefererUrl(HttpServletRequest request) {
 		String url = request.getHeader("Referer");
 
-		try {
-			return URLEncoder.encode(url, "UTF-8");
-		}
-		catch(UnsupportedEncodingException e) {
-			LOGGER.warn("URL is not in utf-8. {}", kv("url", url),e);
+		if(url != null) {
+			try {
+				return URLEncoder.encode(url, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				LOGGER.warn("URL is not in utf-8. {}", kv("url", url), e);
+			}
 		}
 		return "";
 	}
