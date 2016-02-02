@@ -8,11 +8,11 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
-import com.ctm.web.simples.dao.MessageDao;
-import com.ctm.web.simples.model.Message;
+import com.ctm.web.simples.model.MessageDetail;
 import com.ctm.web.simples.model.Postpone;
 import com.ctm.web.simples.phone.inin.InInScheduleService;
 import com.ctm.web.simples.services.SimplesMessageService;
+import com.ctm.web.simples.services.TransactionService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,9 +55,8 @@ public class MessagesController extends CommonQuoteRouter {
         final String postponeMessage = inInEnabled ? simplesMessageService.schedulePersonalMessage(simplesUid, postpone.getRootId(), postpone.getStatusId(), postpone.getPostponeDate(), postpone.getPostponeTime(), postpone.getPostponeAMPM(), postpone.getContactName(), postpone.getComment()) : simplesMessageService.postponeMessage(simplesUid, postpone.getMessageId(), postpone.getStatusId(), postpone.getReasonStatusId(), postpone.getPostponeDate(), postpone.getPostponeTime(), postpone.getPostponeAMPM(), postpone.getComment(), postpone.getAssignToUser());
 
         if (inInEnabled) {
-            final MessageDao messageDao = new MessageDao();
-            final Message message = messageDao.getMessage(postpone.getMessageId());
-            inInScheduleService.scheduleCall(message, authenticatedData);
+            final MessageDetail messageDetail = TransactionService.getTransaction(postpone.getRootId());
+            inInScheduleService.scheduleCall(messageDetail.getMessage(), authenticatedData);
         }
 
         return postponeMessage;
