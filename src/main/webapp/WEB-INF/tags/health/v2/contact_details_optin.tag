@@ -44,7 +44,7 @@
 
 		<jsp:body>
 
-			<form_v2:fieldset legend="" postLegend="" >
+			<form_v2:fieldset legend="Your details" postLegend="Enter your details below and we'll show you products that match your needs on the next page" >
 
 				<c:set var="firstNamePlaceHolder">
 					<content:get key="firstNamePlaceHolder"/>
@@ -55,21 +55,21 @@
 				</c:set>
 
 				<c:set var="fieldXpath" value="${xpath}/name" />
-				<form_v2:row label="Your first name" fieldXpath="${fieldXpath}" className="clear required_input">
+				<form_v3:row label="Your first name" fieldXpath="${fieldXpath}" className="clear required_input">
 					<field_v1:person_name xpath="${fieldXpath}" title="name" required="true" />
-				</form_v2:row>
+				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
-				<form_v2:row label="Your phone number" fieldXpath="${fieldXpath}" className="clear required_input">
+				<form_v3:row label="Your phone number" fieldXpath="${fieldXpath}" className="clear required_input">
 					<field_v1:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
-				</form_v2:row>
+				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/email" />
-				<form_v2:row label="Your email address" fieldXpath="${fieldXpath}" className="clear required_input">
+				<form_v3:row label="Your email address" fieldXpath="${fieldXpath}" className="clear required_input">
 					<field_v2:email xpath="${fieldXpath}" title="your email address" required="${required}"  />
 					<field_v1:hidden xpath="${xpath}/emailsecondary" />
 					<field_v1:hidden xpath="${xpath}/emailhistory" />
-				</form_v2:row>
+				</form_v3:row>
 
 				<group_v3:contact_numbers_hidden xpath="${xpath}/contactNumber" />
 

@@ -118,7 +118,7 @@
                 $benefitsForm.find('.extrasCover').fadeOut('fast');
                 $benefitsForm.find('.sidebarExtras').fadeIn('fast');
                 $benefitsForm.find('.hospitalCover').removeClass('custom-col-sm').addClass('custom-col-lg').fadeIn('fast', function(){
-                    movePageTitleToColumn();
+                   //  movePageTitleToColumn();
                 });
                 break;
             case 'E':
@@ -126,14 +126,14 @@
                 $benefitsForm.find('.hospitalCover').removeClass('custom-col-lg').addClass('custom-col-sm').fadeOut('fast');
                 $benefitsForm.find('.sidebarHospital').fadeIn('fast');
                 $benefitsForm.find('.extrasCover').fadeIn('fast', function(){
-                    movePageTitleToColumn();
+                    // movePageTitleToColumn();
                 });
                 break;
             default:
                 $benefitsForm.find('.hospitalCover').removeClass('custom-col-lg').addClass('custom-col-sm');
                 $benefitsForm.find('.benefits-side-bar').fadeOut('fast');
                 $benefitsForm.find('.hasShortlistableChildren').fadeIn('fast', function(){
-                    $benefitsForm.find('fieldset > div').first().prepend($benefitsForm.find('.section h2'));
+//                    $benefitsForm.find('fieldset > div').first().prepend($benefitsForm.find('.section h2'));
                 });
                 alignTitle();
         }

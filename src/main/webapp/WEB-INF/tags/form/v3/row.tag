@@ -62,7 +62,7 @@
 			<c:set var="labelClassName" value="col-xs-${toggleHelpColMobile} col-sm-12" />
 		</c:when>
 		<c:otherwise>
-			<c:set var="labelClassName" value="col-sm-3 col-xs-${toggleHelpColMobile}" />
+			<c:set var="labelClassName" value="col-sm-5 col-xs-${toggleHelpColMobile}" />
 		</c:otherwise>
 	</c:choose>
 
@@ -94,7 +94,7 @@
 	</div>
 
 	<c:if test="${empty hideHelpIconCol}">
-		<div class="col-sm-2 ${helpIconCol}">
+		<div class="col-sm-1 ${helpIconCol}">
 			<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}"/>
 		</div>
 	</c:if>
