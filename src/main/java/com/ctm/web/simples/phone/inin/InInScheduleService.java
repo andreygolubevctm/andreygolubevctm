@@ -11,13 +11,12 @@ import java.util.List;
 
 @Service
 public class InInScheduleService implements ScheduleService{
-
     @Autowired private InInApi inInApi;
 
     @Override
-    public boolean scheduleCall(final Message message, final String agentUsername) {
+    public Observable<Boolean> scheduleCall(final Message message, final String agentUsername) {
         return inInApi.searchLead(message).toList()
-                .flatMap(identities -> insertOrUpdateScheduledCall(message, agentUsername, identities)).toBlocking().first();
+                .flatMap(identities -> insertOrUpdateScheduledCall(message, agentUsername, identities));
     }
 
     private Observable<Boolean> insertOrUpdateScheduledCall(final Message message, final String agentUsername, final List<I3Identity> identities) {
@@ -29,10 +28,9 @@ public class InInScheduleService implements ScheduleService{
     }
 
     @Override
-    public boolean deleteScheduledCall(final Message message, final String agentUsername) {
+    public Observable<Boolean> deleteScheduledCall(final Message message, final String agentUsername) {
         final Observable<I3Identity> searchLead = inInApi.searchLead(message);
-        final Observable<Boolean> deleteScheduledCall = searchLead.flatMap(inInApi::deleteScheduledCall);
-        return deleteScheduledCall.toBlocking().first();
+        return searchLead.flatMap(inInApi::deleteScheduledCall);
     }
 
 }

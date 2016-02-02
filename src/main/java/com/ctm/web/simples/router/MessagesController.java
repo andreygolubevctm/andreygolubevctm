@@ -1,10 +1,12 @@
 package com.ctm.web.simples.router;
 
+import com.ctm.commonlogging.context.LoggingVariables;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
@@ -18,16 +20,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import rx.Observable;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.Date;
 
 @RestController
@@ -58,20 +60,36 @@ public class MessagesController extends CommonQuoteRouter {
         final boolean inInEnabled = StringUtils.equalsIgnoreCase("true", pageSettings.getSetting("inInEnabled"));
 
         final LocalDateTime postponeTo = getLocalDateTimeFromPostpone(postpone.getPostponeDate(), postpone.getPostponeTime(), postpone.getPostponeAMPM());
-        final String postponeMessage = inInEnabled ? simplesMessageService.schedulePersonalMessage(simplesUid, postpone.getRootId(), postpone.getStatusId(), postponeTo, postpone.getContactName(), postpone.getComment()) : simplesMessageService.postponeMessage(simplesUid, postpone.getMessageId(), postpone.getStatusId(), postpone.getReasonStatusId(), postpone.getPostponeDate(), postpone.getPostponeTime(), postpone.getPostponeAMPM(), postpone.getComment(), postpone.getAssignToUser());
 
         if (inInEnabled) {
-            final MessageDetail messageDetail = TransactionService.getTransaction(postpone.getRootId());
-            Message message = messageDetail.getMessage();
-            message.setWhenToAction(Date.from(postponeTo.toInstant(ZoneOffset.ofHours(10))));
-            inInScheduleService.scheduleCall(message, authenticatedData.getUid());
+            return scheduleCall(postpone, authenticatedData, postponeTo)
+                .map(ignore -> simplesMessageService.schedulePersonalMessage(simplesUid, postpone.getRootId(), postpone.getStatusId(), postponeTo,
+                        postpone.getContactName(), postpone.getComment())).toBlocking().first();
+        } else {
+            return simplesMessageService.postponeMessage(simplesUid, postpone.getMessageId(), postpone.getStatusId(), postpone.getReasonStatusId(),
+                postpone.getPostponeDate(), postpone.getPostponeTime(), postpone.getPostponeAMPM(), postpone.getComment(), postpone.getAssignToUser());
         }
+    }
 
-        return postponeMessage;
+    private Observable<Boolean> scheduleCall(final @ModelAttribute Postpone postpone, final AuthenticatedData authenticatedData, final LocalDateTime postponeTo) throws DaoException {
+        final MessageDetail messageDetail = TransactionService.getTransaction(postpone.getRootId());
+        Message message = messageDetail.getMessage();
+        message.setWhenToAction(Date.from(postponeTo.toInstant(ZoneOffset.ofHours(10))));
+        return inInScheduleService.scheduleCall(message, authenticatedData.getUid());
     }
 
     public LocalDateTime getLocalDateTimeFromPostpone(String postponeDate, String postponeTime, String postponeAMPM) {
         return LocalDateTime.parse(postponeDate + " " + postponeTime + " " + postponeAMPM, DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a"));
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorInfo handleException(final Exception e) {
+        LOGGER.error("Failed to handle request", e);
+        ErrorInfo errorInfo = new ErrorInfo();
+        LoggingVariables.getTransactionId().ifPresent(t -> errorInfo.setTransactionId(t.get()));
+        errorInfo.setErrors(Collections.singletonMap("message", e.getMessage()));
+        return errorInfo;
     }
 
 }

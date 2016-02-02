@@ -99,7 +99,7 @@ public class PhoneController extends CommonQuoteRouter {
         LOGGER.error("Failed to handle request", e);
         ErrorInfo errorInfo = new ErrorInfo();
         LoggingVariables.getTransactionId().ifPresent(t -> errorInfo.setTransactionId(t.get()));
-        errorInfo.setErrors(Collections.singletonMap("error", e.getMessage()));
+        errorInfo.setErrors(Collections.singletonMap("message", e.getMessage()));
         return errorInfo;
     }
 }
