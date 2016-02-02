@@ -18,6 +18,10 @@ public abstract class CommonQuoteService<QUOTE> extends CommonRequestService {
         super(providerFilterDAO, objectMapper);
     }
 
+    public CommonQuoteService(final ProviderFilterDao providerFilterDAO, final RestClient restClient) {
+        super(providerFilterDAO, restClient);
+    }
+
     public void validateRequest(RequestWithQuote<QUOTE> data, String verticalCode) {
         // Validate request
         if (data == null) {
