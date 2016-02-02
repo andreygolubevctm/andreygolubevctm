@@ -20,6 +20,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
+import static com.ctm.web.core.transaction.utils.TransactionDetailsUtil.checkLengthTextValue;
 
 /**
  * Data Access Object to interface with the transaction_details table.
@@ -325,7 +326,7 @@ public class TransactionDetailsDao {
 				set(transactionId);
 				set(nextSequenceNo);
 				set(transactionDetail.getXPath());
-				set(transactionDetail.getTextValue());
+				set(checkLengthTextValue(transactionDetail.getTextValue()));
 			}
 
 			@Override

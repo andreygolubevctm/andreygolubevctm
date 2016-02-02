@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -22,6 +24,7 @@ public class SpringFormParamMapInInterceptor extends HandlerInterceptorAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringFormParamMapInInterceptor.class);
 
+    private static final Pattern PARAMS_WITH_NUMBER_SUFFIX = Pattern.compile("^([a-z]+)([0-9]+)$");
 
     @Override
     public boolean preHandle(HttpServletRequest request,
@@ -33,7 +36,16 @@ public class SpringFormParamMapInInterceptor extends HandlerInterceptorAdapter {
 
         for (String key : newSet) {
             if(key.contains("_")) {
-                String newKey = StringUtils.replace(key, "_", ".");
+
+                StringBuilder sb = new StringBuilder();
+                String dot = "";
+                for (String s : StringUtils.split(key, "_")) {
+                    sb.append(dot).append(addBracketsOfNumberedSuffix(s));
+                    dot = ".";
+                }
+
+                String newKey = sb.toString();
+
                 String[] value = params.get(key);
                 params.remove(key);
                 params.put(newKey, value);
@@ -41,5 +53,18 @@ public class SpringFormParamMapInInterceptor extends HandlerInterceptorAdapter {
             }
         }
         return true;
+    }
+
+    /**
+     * Replaces any value that ends with numbers with brackets on the numbers
+     * @param value
+     * @return
+     */
+    protected String addBracketsOfNumberedSuffix(String value) {
+        final Matcher matcher = PARAMS_WITH_NUMBER_SUFFIX.matcher(value);
+        if (matcher.matches()) {
+            return matcher.group(1) + "[" + matcher.group(2) + "]";
+        }
+        return value;
     }
 }

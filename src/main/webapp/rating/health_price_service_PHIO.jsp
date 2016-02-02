@@ -40,7 +40,12 @@
 <c:set var="productTitleSearch"><x:out select="$healthXML/request/header/productTitleSearch" escapeXml="false" /></c:set>
 <c:set var="productTitle"><x:out select="$healthXML/request/header/productTitle" escapeXml="false" /></c:set>
 <c:set var="situationFilter"><x:out select="$healthXML/request/details/situationFilter" /></c:set>
+
+<c:set var="currentJourney"><x:out select="$healthXML/request/header/currentJourney" /></c:set>
 <c:choose>
+	<c:when test="${!isSimples && currentJourney ne 12}">
+		<c:set var="situationFilter" value="none" />
+	</c:when>
 	<c:when test="${situationFilter eq 'Y'}">
 		<c:set var="situationFilter" value="Y" />
 	</c:when>
