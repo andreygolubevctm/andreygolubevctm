@@ -1,6 +1,8 @@
 package com.ctm.web.energy.form.model;
 
 
+import com.ctm.core.energy.form.model.YesNo;
+
 public class HouseHoldDetailsWebRequest {
 
     public HouseHoldDetailsWebRequest(){

@@ -2,7 +2,7 @@ package com.ctm.web.health.apply.model.request.application.dependant;
 
 import com.ctm.web.health.apply.helper.TypeSerializer;
 import com.ctm.web.health.apply.model.request.application.common.FirstName;
-import com.ctm.web.health.apply.model.request.application.common.Gender;
+import com.ctm.web.core.model.request.Gender;
 import com.ctm.web.health.apply.model.request.application.common.LastName;
 import com.ctm.web.health.apply.model.request.application.common.Title;
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -7,6 +7,7 @@ import com.ctm.energyapply.model.request.application.address.State;
 import com.ctm.energyapply.model.request.application.applicant.ApplicantDetails;
 import com.ctm.energyapply.model.request.application.contact.ContactDetails;
 import com.ctm.energyapply.model.request.relocation.RelocationDetails;
+import com.ctm.life.apply.model.request.ozicare.OzicareApplyRequest;
 import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.utils.MiscUtils;
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
@@ -15,6 +16,7 @@ import com.ctm.web.energy.form.model.HouseHoldDetailsWebRequest;
 import com.ctm.web.energy.form.model.WhatToCompare;
 import com.ctm.web.energy.quote.adapter.WebRequestAdapter;
 import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
+import com.ctm.web.life.apply.model.request.LifeQuoteRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,33 +24,37 @@ import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-public class LifeApplyServiceRequestAdapter implements WebRequestAdapter<LifeApplyPostRequestPayload, LifeApplicationDetails> {
+public class OzicareApplyServiceRequestAdapter implements WebRequestAdapter<LifeApplyPostRequestPayload, OzicareApplyRequest> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LifeApplyServiceRequestAdapter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OzicareApplyServiceRequestAdapter.class);
+    private final LifeQuoteRequest lifeQuoteRequest;
 
-    @Override
-    public EnergyApplicationDetails adapt(EnergyApplyPostRequestPayload energyApplyPostRequestPayload) {
-        LOGGER.debug("energyApplyPostRequestPayload = {}", kv("payload", energyApplyPostRequestPayload));
-
-        // Map EnergyApplicationDetails
-        EnergyApplicationDetails.Builder energyApplicationDetailsBuilder = EnergyApplicationDetails.newBuilder();
-
-        // - Partner
-        Optional<Partner> partner = MiscUtils.resolve(() -> energyApplyPostRequestPayload.getUtilities().getPartner());
-        if (partner.isPresent()) {
-            energyApplicationDetailsBuilder = energyApplicationDetailsBuilder.partnerUniqueCustomerId(partner.get().getUniqueCustomerId());
-        }
-
-        energyApplicationDetailsBuilder = adaptDetails(energyApplyPostRequestPayload, energyApplicationDetailsBuilder);
-
-        EnergyApplicationDetails energyApplicationDetails = energyApplicationDetailsBuilder.build();
-        LOGGER.debug("energyApplicationDetails={}", kv("details", energyApplicationDetails));
-
-        return energyApplicationDetails;
+    public OzicareApplyServiceRequestAdapter(LifeQuoteRequest lifeQuoteRequest) {
+        this.lifeQuoteRequest = lifeQuoteRequest;
     }
 
-    public String getProductId(EnergyApplyPostRequestPayload model) {
-        return getThingsToKnow(model).getHidden().getProductId();
+    @Override
+    public OzicareApplyRequest adapt(LifeApplyPostRequestPayload requestPayload) {
+        LOGGER.debug("requestPayload = {}", kv("payload", requestPayload));
+
+        // Map EnergyApplicationDetails
+        OzicareApplyRequest.Builder ozicareApplyRequestBuilder = OzicareApplyRequest.newBuilder();
+
+        ozicareApplyRequestBuilder.state(lifeQuoteRequest.getPrimary().getState());
+        ozicareApplyRequestBuilder.phoneNumber();
+        ozicareApplyRequestBuilder.firstName(lifeQuoteRequest.getPrimary().getFirstName());
+        ozicareApplyRequestBuilder.lastName(lifeQuoteRequest.getPrimary().getLastname());
+        ozicareApplyRequestBuilder.productId(requestPayload.get);
+
+
+        OzicareApplyRequest ozicareApplyRequest = ozicareApplyRequestBuilder.build();
+        LOGGER.debug("energyApplicationDetails={}", kv("details", ozicareApplyRequest));
+
+        return ozicareApplyRequest;
+    }
+
+    public String getProductId(LifeApplyPostRequestPayload requestPayload) {
+        return requestPayload.getClient_product_id();
     }
 
     public String getRetailerName(EnergyApplyPostRequestPayload model) {
@@ -75,28 +81,6 @@ public class LifeApplyServiceRequestAdapter implements WebRequestAdapter<LifeApp
         return getFirstName(getDetails(model));
     }
 
-    private EnergyApplicationDetails.Builder adaptDetails(EnergyApplyPostRequestPayload energyApplyPostRequestPayload, EnergyApplicationDetails.Builder energyApplicationDetailsBuilder) {
-        Optional<Details> details = getDetails(energyApplyPostRequestPayload);
-
-
-        if (details.isPresent()) {
-            // - ApplicantDetails
-            energyApplicationDetailsBuilder = adaptApplicantDetails(energyApplicationDetailsBuilder, details);
-
-            // - ContactDetails
-            energyApplicationDetailsBuilder = adaptContactDetails(energyApplicationDetailsBuilder, details);
-
-            // -- Supply address
-            AddressDetails.Builder supplyAddressBuilder = adaptSupplyAddress(energyApplyPostRequestPayload);
-
-            // -- Postal address
-            Optional<AddressDetails> postalAddressBuilder = adaptPostal(energyApplyPostRequestPayload, YesNo.Y.equals(details.get().getPostalMatch()));
-
-            // - Household
-            energyApplicationDetailsBuilder = adaptHouseHold(energyApplyPostRequestPayload, energyApplicationDetailsBuilder, details, supplyAddressBuilder, postalAddressBuilder);
-        }
-        return energyApplicationDetailsBuilder;
-    }
 
     private Optional<Details> getDetails(EnergyApplyPostRequestPayload energyApplyPostRequestPayload) {
         return MiscUtils.resolve(() ->

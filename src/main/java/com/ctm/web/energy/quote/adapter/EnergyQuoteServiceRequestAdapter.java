@@ -1,5 +1,6 @@
 package com.ctm.web.energy.quote.adapter;
 
+import com.ctm.core.energy.form.model.YesNo;
 import com.ctm.energy.quote.request.model.*;
 import com.ctm.energy.quote.request.model.Electricity;
 import com.ctm.energy.quote.request.model.Gas;

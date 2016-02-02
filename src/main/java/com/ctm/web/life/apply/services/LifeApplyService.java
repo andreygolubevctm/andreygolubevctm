@@ -1,5 +1,6 @@
 package com.ctm.web.life.apply.services;
 
+import com.ctm.apply.model.request.ApplyRequest;
 import com.ctm.apply.model.response.ApplyResponse;
 import com.ctm.apply.model.response.SingleApplyResponse;
 import com.ctm.energyapply.model.request.EnergyApplicationDetails;
@@ -8,14 +9,20 @@ import com.ctm.web.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.CommonRequestService;
 import com.ctm.web.core.services.Endpoint;
+import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.core.web.go.Data;
 import com.ctm.web.energy.apply.services.EnergyApplyConfirmationService;
-import com.ctm.web.life.apply.adapter.LifeApplyServiceRequestAdapter;
 import com.ctm.web.life.apply.adapter.LifeApplyServiceResponseAdapter;
+import com.ctm.web.life.apply.adapter.LifeBrokerApplyServiceRequestAdapter;
+import com.ctm.web.life.apply.adapter.OzicareApplyServiceRequestAdapter;
 import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
+import com.ctm.web.life.apply.model.request.LifeQuoteRequest;
 import com.ctm.web.life.apply.response.LifeApplyWebResponseModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,22 +38,33 @@ public class LifeApplyService extends CommonRequestService<EnergyApplicationDeta
     private EnergyApplyConfirmationService energyApplyConfirmation;
 
     @Autowired
+    SessionDataServiceBean sessionDataService;
+
+    @Autowired
     public LifeApplyService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
         super(providerFilterDAO, objectMapper);
     }
 
 
-    public LifeApplyWebResponseModel apply(LifeApplyPostRequestPayload model, Brand brand, HttpServletRequest request) throws IOException, DaoException, ServiceConfigurationException {
+    public LifeApplyWebResponseModel apply(LifeApplyPostRequestPayload model, Brand brand, HttpServletRequest request) throws
+            IOException,
+            DaoException,
+            ServiceConfigurationException,
+            SessionException {
         LifeApplyServiceResponseAdapter responseAdapter= new LifeApplyServiceResponseAdapter();
-        LifeApplyServiceRequestAdapter requestAdapter = new LifeApplyServiceRequestAdapter();
-        final LifeApplicationDetails energyApplicationDetails = requestAdapter.adapt(model);
+        LifeQuoteRequest lifeQuoteRequest = new LifeQuoteRequest(getData( request, model.getTransactionId()));
+        LifeBrokerApplyServiceRequestAdapter lifeBrokeRequestAdapter= new LifeBrokerApplyServiceRequestAdapter(lifeQuoteRequest);
+        OzicareApplyServiceRequestAdapter requestAdapter = new OzicareApplyServiceRequestAdapter(lifeQuoteRequest);
+        final ApplyRequest energyApplicationDetails;
 
         String endpoint;
         if("ozicare".equals(model.getCompany())){
             endpoint = "ozicare/" + Endpoint.APPLY;
+            energyApplicationDetails = requestAdapter.adapt(model);
         } else {
             endpoint = "lifebroker/" + Endpoint.APPLY;
             className = SingleApplyResponse.class;
+            energyApplicationDetails = lifeBrokeRequestAdapter.adapt(model);
         }
         ApplyResponse applyResponse = sendApplyRequest(brand, Vertical.VerticalType.LIFE, "applyServiceBER", endpoint, model, energyApplicationDetails,
                 SingleApplyResponse.class, requestAdapter.getProductId(model));
@@ -59,5 +77,16 @@ public class LifeApplyService extends CommonRequestService<EnergyApplicationDeta
             throw new FailedToRegisterException(applyResponse, model.getTransactionId());
         }
 	}
+
+    /**
+     * Retrieve the current sessions data bucket
+     */
+    private Data getData(HttpServletRequest request, long transactionId) throws SessionException {
+        SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
+        if (sessionData == null) {
+            throw new SessionException("session has expired");
+        }
+        return sessionData.getSessionDataForTransactionId(transactionId);
+    }
 
 }

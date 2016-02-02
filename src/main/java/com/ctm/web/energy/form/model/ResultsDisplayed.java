@@ -1,6 +1,7 @@
 package com.ctm.web.energy.form.model;
 
 
+import com.ctm.core.energy.form.model.YesNo;
 import com.ctm.web.core.validation.Name;
 
 public class ResultsDisplayed {
