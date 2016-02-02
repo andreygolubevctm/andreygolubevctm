@@ -36,7 +36,7 @@ public class InInScheduleService implements ScheduleService{
     @Override
     public boolean deleteScheduledCall(final Message message, final String agentUsername) {
         final Observable<I3Identity> searchLead = inInApi.searchLead(message);
-        final Observable<Boolean> deleteScheduledCall = searchLead.flatMap(i3Identity -> inInApi.deleteScheduledCall(i3Identity));
+        final Observable<Boolean> deleteScheduledCall = searchLead.flatMap(inInApi::deleteScheduledCall);
         return deleteScheduledCall.toBlocking().first();
     }
 
