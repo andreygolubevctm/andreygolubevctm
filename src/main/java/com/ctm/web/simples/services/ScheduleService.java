@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface ScheduleService {
 
-    List<Message> scheduledCallList(final String agentUsername);
-
     boolean scheduleCall(final Message message, final String agentUsername);
 
     boolean deleteScheduledCall(final Message message, final String agentUsername);

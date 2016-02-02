@@ -15,11 +15,6 @@ public class InInScheduleService implements ScheduleService{
     @Autowired private InInApi inInApi;
 
     @Override
-    public List<Message> scheduledCallList(final String agentUsername) {
-        return null;
-    }
-
-    @Override
     public boolean scheduleCall(final Message message, final String agentUsername) {
         return inInApi.searchLead(message).toList()
                 .flatMap(identities -> insertOrUpdateScheduledCall(message, agentUsername, identities)).toBlocking().first();
