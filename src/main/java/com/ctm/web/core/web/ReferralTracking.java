@@ -33,8 +33,8 @@ public class ReferralTracking {
 		if(url != null) {
 			try {
 				return URLEncoder.encode(url, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				LOGGER.warn("URL is not in utf-8. {}", kv("url", url), e);
+			} catch (UnsupportedEncodingException | NullPointerException e) {
+				LOGGER.warn("URL is not in utf-8.", e);
 			}
 		}
 		return "";
