@@ -1,22 +1,21 @@
 package com.ctm.web.simples.services;
 
-import com.ctm.web.core.model.Role;
-import com.ctm.web.core.model.Rule;
-import com.ctm.web.core.model.session.AuthenticatedData;
-import com.ctm.web.core.services.SessionDataService;
-import com.ctm.web.simples.dao.*;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
+import com.ctm.web.core.model.Role;
+import com.ctm.web.core.model.Rule;
 import com.ctm.web.core.transaction.model.Transaction;
+import com.ctm.web.simples.dao.*;
 import com.ctm.web.simples.model.*;
-import com.ctm.web.simples.phone.inin.InInScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -176,7 +175,7 @@ public class SimplesMessageService {
 		Transaction details = new Transaction();
 
 		try {
-			Date postponeTo = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(postponeDate + " " + postponeTime + " " + postponeAMPM);
+			LocalDateTime postponeTo = LocalDateTime.parse(postponeDate + " " + postponeTime + " " + postponeAMPM, DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a"));
 
 			switch (statusId) {
 				case MessageStatus.STATUS_COMPLETED_AS_PM:
@@ -187,7 +186,7 @@ public class SimplesMessageService {
 			}
 
 		}
-		catch (DaoException | ParseException e) {
+		catch (DaoException e) {
 			LOGGER.error("Could not schedule InIn callback {},{},{},{},{},{},{}", kv("userId", actionIsPerformedByUserId), kv("statusId", statusId), kv("postponeDate", postponeDate), kv("postponeTime", postponeTime), kv("postponeAMPM", postponeAMPM), kv("comment", comment), kv("rootId", rootId), e);
 
 			Error error = new Error(e.getMessage());

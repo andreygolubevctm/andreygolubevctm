@@ -11,7 +11,8 @@ import com.ctm.web.simples.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -67,7 +68,7 @@ public class PersonalMessageDao {
 //        return sqlDao.get(databaseMapping, sql);
 //    }
 
-    public Long insertPersonalMessage(int userId, long rootId, Date postponeTo, String contactName, String comment ) throws DaoException {
+    public Long insertPersonalMessage(int userId, long rootId, LocalDateTime postponeTo, String contactName, String comment) throws DaoException {
 
         UserDao userDao = new UserDao();
         SqlDao sqlDao = new SqlDao();
@@ -86,29 +87,24 @@ public class PersonalMessageDao {
             commentDao.addComment(commentObj);
         }
 
-
         return sqlDao.insert(new DatabaseUpdateMapping() {
             @Override
             protected void mapParams() throws SQLException {
                 set(rootId);
                 set(userId);
-                set(new java.sql.Timestamp(postponeTo.getTime()));
-                set(contactName);
-                set(userId);
-                set(new java.sql.Timestamp(postponeTo.getTime()));
+                set(Timestamp.valueOf(postponeTo));
                 set(contactName);
             }
-
             @Override
             public String getStatement() {
                 return "INSERT INTO simples.personal_messages (rootId, userId, whenToAction, contactName) VALUES (?,?,?,?) " +
                         "ON DUPLICATE KEY " +
-                        "UPDATE userId = ?, whenToAction = ?, contactName = ?, isDeleted = 0";
+                        "UPDATE userId = VALUES(userId), whenToAction = VALUES(whenToAction), contactName = VALUES(contactName), isDeleted = 0";
             }
         });
     }
 
-    public int postponePersonalMessage(int userId, long rootId, Date postponeTo, String comment) throws DaoException {
+    public int postponePersonalMessage(int userId, long rootId, LocalDateTime postponeTo, String comment) throws DaoException {
 
         UserDao userDao = new UserDao();
         SqlDao sqlDao = new SqlDao();
@@ -130,14 +126,13 @@ public class PersonalMessageDao {
         return sqlDao.update(new DatabaseUpdateMapping() {
             @Override
             protected void mapParams() throws SQLException {
-                set(new java.sql.Timestamp(postponeTo.getTime()));
+                set(Timestamp.valueOf(postponeTo));
                 set(rootId);
             }
 
             @Override
             public String getStatement() {
-                return "UPDATE simples.personal_messages SET postponeTo = ? " +
-                        "WHERE rootId = ?";
+                return "UPDATE simples.personal_messages SET postponeTo = ? WHERE rootId = ?";
             }
         });
     }
@@ -153,8 +148,7 @@ public class PersonalMessageDao {
 
             @Override
             public String getStatement() {
-                return "UPDATE simples.personal_messages SET isDeleted = 1 " +
-                        "WHERE rootId = ?";
+                return "UPDATE simples.personal_messages SET isDeleted = 1 WHERE rootId = ?";
             }
         });
     }
