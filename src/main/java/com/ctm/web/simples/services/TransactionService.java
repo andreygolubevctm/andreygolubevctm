@@ -20,7 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -145,35 +144,6 @@ public class TransactionService {
 			message.setContactName(contactName.orElse("BLANK"));
 		}
 
-		final Optional<String> applicationMobile = Optional.ofNullable(transactionDetails.get("health/application/mobile"));
-		final Optional<String> phoneMobile = Optional.ofNullable(transactionDetails.get("health/contactDetails/contactNumber/mobile"));
-		final Optional<String> phoneOther = Optional.ofNullable(transactionDetails.get("health/contactDetails/contactNumber/other"));
-		message.setPhoneNumber1(applicationMobile.isPresent() ? applicationMobile.get() : phoneMobile.orElse(""));
-		message.setPhoneNumber2(phoneOther.orElse(""));
-
-		return  service.getMessageDetail(message);
-	}
-
-	public static Message getMessageWithLatestTransaction(final long transactionId, final Date whenToAction) throws DaoException {
-		final TransactionDao transactionDao = new TransactionDao();
-		final Transaction transaction = new Transaction();
-		final TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
-		final long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
-		final Message message = new Message();
-
-
-		transaction.setTransactionId(transactionId);
-		transactionDao.getCoreInformation(transaction);
-
-		message.setTransactionId(rootId);
-		message.setMessageId(-1);
-		message.setWhenToAction(whenToAction);
-
-		Map<String, String> transactionDetails = transactionDetailsDao.getTransactionDetails(transaction.getNewestTransactionId())
-				.stream()
-				.collect(Collectors.toMap(TransactionDetail::getXPath, TransactionDetail::getTextValue));
-
-
 		final Optional<String> phoneNumber1 = Optional.ofNullable(transactionDetails.get("health/application/mobile"));
 		if(phoneNumber1.isPresent()) {
 			message.setPhoneNumber1(phoneNumber1.orElse(""));
@@ -188,6 +158,7 @@ public class TransactionService {
 			message.setPhoneNumber2(Optional.ofNullable(transactionDetails.get("health/contactDetails/contactNumber/other")).orElse(""));
 		}
 
-		return  message;
+		return  service.getMessageDetail(message);
 	}
+
 }

@@ -10,7 +10,7 @@
 <div class="simples-home-buttons hidden">
 <c:choose>
 	<c:when test="${pageSettings.getSetting('inInEnabled')}">
-		<p>InInInteractionId: <c:out value="${sessionScope.ininInteractionId}" /></p>
+		<%-- <p>InInInteractionId: <c:out value="${sessionScope.ininInteractionId}" /></p> --%>
 
 		<form id="simples-transaction-search-navbar" class="navbar-form text-center" role="search">
 			<div class="form-group">
