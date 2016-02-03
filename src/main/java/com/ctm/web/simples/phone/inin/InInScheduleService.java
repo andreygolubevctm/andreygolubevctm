@@ -23,7 +23,7 @@ public class InInScheduleService implements ScheduleService{
         if (identities.isEmpty()) {
             return inInApi.insertScheduledCall(message, agentUsername);
         } else {
-            return inInApi.updateScheduledCall(message, agentUsername);
+            return inInApi.updateScheduledCall(message, agentUsername, identities.get(0));
         }
     }
 

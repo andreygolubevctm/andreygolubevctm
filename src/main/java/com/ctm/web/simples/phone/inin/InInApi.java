@@ -104,8 +104,8 @@ public class InInApi {
             });
     }
 
-    public Observable<Boolean> updateScheduledCall(final Message message, final String agentUsername) {
-        final Data identity = new Data(ROOT_ID, Long.toString(message.getTransactionId()));
+    public Observable<Boolean> updateScheduledCall(final Message message, final String agentUsername, final I3Identity i3Identity) {
+        final Data identity = new Data(I3_IDENTITY, i3Identity.get());
         final String phoneNumber = determinePhoneNumber(message);
         final String scheduleTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(message.getWhenToAction());
         final UpdateScheduleCall update = new UpdateScheduleCall(inInConfig.getCampaignName(), identity, phoneNumber, agentUsername, scheduleTime);
