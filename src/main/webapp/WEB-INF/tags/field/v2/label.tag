@@ -13,5 +13,5 @@
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="className"><c:out value="${className} ${widthClass} control-label" /></c:set>
 <c:if test="${not empty name}"><c:set var="forAttr" value='for="${name}"' /></c:if>
-jjjjjjjjjjjjjjjjjjjjjjj <c:out value="${className}" />
-<label <c:if test="${addForAttr eq 'true'}">${forAttr}</c:if> class="${className} xxxx">${value}</label>
+
+<label <c:if test="${addForAttr eq 'true'}">${forAttr}</c:if> class="${className}">${value}</label>
