@@ -44,7 +44,11 @@
 
 				// Highlight correct one
 				if (obj !== false) {
-					$messages.filter('[data-messageId="' + obj.message.messageId + '"]').addClass('active');
+					if (meerkat.site.inInEnabled === true) {
+						$messages.filter('[data-rootId="' + obj.message.transactionId + '"]').addClass('active');
+					} else {
+						$messages.filter('[data-messageId="' + obj.message.messageId + '"]').addClass('active');
+					}
 				}
 			});
 

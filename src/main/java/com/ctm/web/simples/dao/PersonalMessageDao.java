@@ -26,7 +26,7 @@ public class PersonalMessageDao {
                 "FROM simples.personal_messages " +
                 "WHERE userId = ? " +
                 "AND whenToAction >= NOW() " +
-                "AND isDeleted = 0;";
+                "AND isDeleted = 0 ORDER BY whenToAction ASC";
 
         DatabaseQueryMapping<Message> databaseMapping = new DatabaseQueryMapping<Message>() {
 
