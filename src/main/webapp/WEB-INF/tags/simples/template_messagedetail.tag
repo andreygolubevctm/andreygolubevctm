@@ -45,11 +45,13 @@
 				<tr>
 					<th>Numbers to call</th>
 					<td>
+                        <c:if test="${!pageSettings.getSetting('inInEnabled')}">
 						{{ if (obj.message.phoneNumber1 && obj.message.phoneNumber1 != '') { }}
 						<button data-phone="{{= obj.message.phoneNumber1 }}" class="btn btn-form"><span class="icon icon-phone"></span> {{= obj.message.phoneNumber1 }}</button>
 						{{ } if (obj.message.phoneNumber2 && obj.message.phoneNumber2 != '') { }}
 						<button data-phone="{{= obj.message.phoneNumber2 }}" class="btn btn-form"><span class="icon icon-phone"></span> {{= obj.message.phoneNumber2 }}</button>
 						{{ } }}
+                        </c:if>
 						<button class="btn btn-tertiary messagedetail-loadbutton">Amend quote <span class="icon icon-arrow-right"></span></button>
 					</td>
 				</tr>
