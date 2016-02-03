@@ -3,8 +3,11 @@ package com.ctm.web.car.services;
 import com.ctm.web.car.model.form.CarQuote;
 import com.ctm.web.car.model.form.CarRequest;
 import com.ctm.web.car.model.results.CarResult;
+import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
+import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.core.utils.ObjectMapperUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -18,7 +21,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class CarQuoteServiceTest {
 
-    private CarQuoteService service = new CarQuoteService();
+    private CarQuoteService service = new CarQuoteService(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new SessionDataServiceBean());
 
     @Mock
     private CarRequest carRequest;

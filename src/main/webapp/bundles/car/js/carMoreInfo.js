@@ -457,7 +457,7 @@
 	 */
 	function retrieveExternalCopy(product) {
 		return meerkat.modules.comms.get({
-			url: "rest/car/more_info/get.json",
+			url: "spring/rest/car/more_info/get.json",
 			cache: true,
 			data: {
 				code: product.productId

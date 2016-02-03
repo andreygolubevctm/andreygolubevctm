@@ -4,13 +4,10 @@ import com.ctm.web.car.quote.model.request.Filter;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.Valid;
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class CarQuote {
 
-    private Map<String, String> accs;
+    private Accs accs;
 
     private String excess;
 
@@ -27,7 +24,7 @@ public class CarQuote {
 
     private Options options;
 
-    private Map<String, String> opts;
+    private Opts opts;
 
     private String paymentType;
 
@@ -41,19 +38,17 @@ public class CarQuote {
 
     private String renderingMode;
 
-    private Map<String, Acc> convertedAccs;
-
     private Filter filter;
 
     public CarQuote() {
         filter = new Filter();
     }
 
-    public Map<String, String> getAccs() {
+    public Accs getAccs() {
         return accs;
     }
 
-    public void setAccs(Map<String, String> accs) {
+    public void setAccs(Accs accs) {
         this.accs = accs;
     }
 
@@ -113,11 +108,11 @@ public class CarQuote {
         this.options = options;
     }
 
-    public Map<String, String> getOpts() {
+    public Opts getOpts() {
         return opts;
     }
 
-    public void setOpts(Map<String, String> opts) {
+    public void setOpts(Opts opts) {
         this.opts = opts;
     }
 
@@ -167,36 +162,6 @@ public class CarQuote {
 
     public void setRenderingMode(String renderingMode) {
         this.renderingMode = renderingMode;
-    }
-
-    public Map<String, Acc> getConvertedAccs() {
-        if (convertedAccs == null) {
-
-            Map<String, Acc> result = new TreeMap<>();
-
-            if (getAccs() != null) {
-                for (String key : getAccs().keySet()) {
-                    String[] params = StringUtils.split(key, ".");
-                    String accName = params[0];
-                    Acc acc = result.get(accName);
-                    if (acc == null) {
-                        acc = new Acc();
-                        result.put(accName, acc);
-                    }
-                    String field = params[1];
-                    try {
-                        Method method = Acc.class.getDeclaredMethod("set" + StringUtils.capitalize(field), String.class);
-                        method.invoke(acc, getAccs().get(key));
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-
-            convertedAccs = result;
-
-        }
-        return convertedAccs;
     }
 
     public String createLeadFeedInfo() {

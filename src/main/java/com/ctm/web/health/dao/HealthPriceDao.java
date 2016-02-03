@@ -492,7 +492,7 @@ public class HealthPriceDao {
             sqlBuilder.append(" AND lower(product.LongTitle) like  lower(?) ");
         }
 		/* When filtering is turned on we want to include accident only products to be returned in the results set */
-        if (!healthPriceRequest.getSituationFilter().equals("Y")) {
+        if (healthPriceRequest.getSituationFilter().equals("N")) {
             sqlBuilder.append("AND (search.situationFilter IS NULL OR situationFilter IN ('','N'))");
         }
         sqlBuilder

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -26,8 +27,18 @@ public class ReferralTracking {
 	public String getAndSetUtmCampaign(HttpServletRequest request, Data data, String prefix) {
 		return getAndSetFromParam(request, data, "utm_campaign", prefix + "/cid");
 	}
+
 	public String getRefererUrl(HttpServletRequest request) {
-		return request.getHeader("Referer");
+		String url = request.getHeader("Referer");
+
+		if(url != null) {
+			try {
+				return URLEncoder.encode(url, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				LOGGER.warn("URL is not in utf-8.", e);
+			}
+		}
+		return "";
 	}
 
 	private String getAndSetFromParam(HttpServletRequest request, Data data, String key, String xpath) {
