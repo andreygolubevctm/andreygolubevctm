@@ -302,8 +302,8 @@
 					<c:when test="${brandCode eq 'ctm' && not(environmentCode eq 'NXS')}">
 
 							<c:set var="heading"><content:get key="noCarQuoteTitle"/></c:set>
-							<c:set var="blur"><content:get key="noCarQuote"/></c:set>
-							<confirmation:other_products heading="${heading}" copy="${blur}" id="no-results-content"/>
+							<c:set var="blurb"><content:get key="noCarQuote"/></c:set>
+							<confirmation:other_products heading="${heading}" copy="${blurb}" id="no-results-content"/>
 
 					</c:when>
 					<c:otherwise>
@@ -369,8 +369,8 @@
 <%-- NO RESULTS --%>
 <div class="hidden">
 	<c:set var="heading"><content:get key="noCarQuoteTitle"/></c:set>
-	<c:set var="blur"><content:get key="noCarQuote"/></c:set>
-	<confirmation:other_products heading="${heading}" copy="${blur}" id="no-results-content"/>
+	<c:set var="blurb"><content:get key="noCarQuote"/></c:set>
+	<confirmation:other_products heading="${heading}" copy="${blurb}" id="no-results-content"/>
 </div>
 
 <%-- FETCH ERROR --%>

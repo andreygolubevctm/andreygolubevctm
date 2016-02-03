@@ -274,8 +274,8 @@
 <%-- NO RESULTS --%>
 <div class="hidden">
 	<c:set var="heading"><content:get key="noQuoteTitle"/></c:set>
-	<c:set var="blur"><content:get key="noQuoteText"/></c:set>
-	<confirmation:other_products heading="${heading}" copy="${blur}" id="no-results-content"/>
+	<c:set var="blurb"><content:get key="noQuoteText"/></c:set>
+	<confirmation:other_products heading="${heading}" copy="${blurb}" id="no-results-content"/>
 </div>
 
 <%-- FETCH ERROR --%>
