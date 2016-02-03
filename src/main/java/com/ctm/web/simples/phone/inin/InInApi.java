@@ -7,6 +7,7 @@ import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.simples.config.InInConfig;
 import com.ctm.web.simples.model.Message;
 import com.ctm.web.simples.phone.inin.model.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
@@ -185,11 +186,15 @@ public class InInApi {
     }
 
     protected Optional<String> createPhone(final String phoneNumber1, final String phoneNumber2) {
-        return !isMobile(phoneNumber1) ? Optional.of(phoneNumber1) : !isMobile(phoneNumber2) ? Optional.of(phoneNumber2) : Optional.empty();
+        return isPhone(phoneNumber1) ? Optional.of(phoneNumber1) : isPhone(phoneNumber2) ? Optional.of(phoneNumber2) : Optional.empty();
     }
 
-    private boolean isMobile(final String phoneNumber1) {
-        return phoneNumber1 != null && (phoneNumber1.startsWith("04") || phoneNumber1.startsWith("05"));
+    private boolean isMobile(final String phoneNumber) {
+        return phoneNumber != null && (phoneNumber.startsWith("04") || phoneNumber.startsWith("05"));
+    }
+
+    private boolean isPhone(final String phoneNumber) {
+        return StringUtils.isNotBlank(phoneNumber) && !isMobile(phoneNumber);
     }
 
     private Observable<I3Identity> identity(final SearchWithFilterResults searchResults) {
