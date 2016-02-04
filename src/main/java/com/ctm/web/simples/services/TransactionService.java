@@ -138,7 +138,7 @@ public class TransactionService {
 		final Optional<String> primaryFirstName = Optional.ofNullable(transactionDetails.get("health/application/primary/firstname"));
 		final Optional<String> primaryLastName = Optional.ofNullable(transactionDetails.get("health/application/primary/surname"));
 		if(primaryFirstName.isPresent() || primaryLastName.isPresent()) {
-			message.setContactName(primaryFirstName.orElse("BLANK ") + primaryLastName.orElse("BLANK"));
+			message.setContactName(StringUtils.trim(primaryFirstName.orElse("BLANK") + " " + primaryLastName.orElse("BLANK")));
 		} else {
 			Optional<String> contactName = Optional.ofNullable(transactionDetails.get("health/contactDetails/name"));
 			message.setContactName(contactName.orElse("BLANK"));

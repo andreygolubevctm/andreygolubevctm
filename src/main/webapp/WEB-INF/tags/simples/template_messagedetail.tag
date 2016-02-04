@@ -52,7 +52,15 @@
 						<button data-phone="{{= obj.message.phoneNumber2 }}" class="btn btn-form"><span class="icon icon-phone"></span> {{= obj.message.phoneNumber2 }}</button>
 						{{ } }}
                         </c:if>
+						{{ var isConfirmed = false }}
+						{{ _.each(obj.touches, function(touch, key) { }}
+							{{ if (touch.type && touch.type.code === 'C') { isConfirmed = true; return; } }}
+						{{ }) }}
+						{{ if (isConfirmed) { }}
+							<span class="label label-success">SOLD</span>
+						{{ } else { }}
 						<button class="btn btn-tertiary messagedetail-loadbutton">Amend quote <span class="icon icon-arrow-right"></span></button>
+						{{ } }}
 					</td>
 				</tr>
 				{{ if (obj.hasOwnProperty('verticalProperties')) { }}
