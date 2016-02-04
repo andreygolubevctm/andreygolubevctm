@@ -39,21 +39,24 @@ html.ie8 body.utilities_design_55 {
 div.roundedCheckboxIcons {
 	float:left;
 	padding: 0px;
-  	> .btn {
+  	> label.btn {
 		padding:0;
 		border: none;
+		background:transparent;
+		outline:0 !important;
 
-		  background:transparent;
-		  outline:0 !important;
-
+		&:active,
+		&.active {
+			& + i:before {
+				background-color: @icon-bg-checked-color;
+				border-color: @icon-border-checked-color;
+				color: #fff;
+			}
+		}
 
 	  	input{
 			&:checked,
-			&.checked,
-			&:active,
-			&.active,
-			&:visited,
-			&.visited{
+			&.checked {
 				& + i:before {
 				  background-color: @icon-bg-checked-color;
 				  border-color: @icon-border-checked-color;
