@@ -38,6 +38,7 @@ html.ie8 body.utilities_design_55 {
 /* Rounded Icons*/
 div.roundedCheckboxIcons {
 	float:left;
+	padding: 0px;
   	> label.btn {
 		padding:0;
 		border: none;
@@ -81,9 +82,13 @@ div.roundedCheckboxIcons {
 		}
 	}
 
-	@media (@xs) {
+	@media (@lg) {
 	  .radioIconSize(60px, @font-size-base, 0);
 	}
+	@media (@xs) {
+		.radioIconSize(55px, @font-size-base, 0);
+	}
+
 	@media (@sm-only) {
 	  .radioIconSize(50px, @font-size-small, 1);
 	}
