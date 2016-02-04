@@ -54,23 +54,23 @@ div.roundedCheckboxIcons {
 
 		&:active,
 		&.active {
-		& + i:before {
-			background-color: @icon-bg-checked-color;
-			border-color: @icon-border-checked-color;
-			color: #fff;
-		}
-	}
-
-	input{
-		&:checked,
-		&.checked {
 			& + i:before {
 				background-color: @icon-bg-checked-color;
 				border-color: @icon-border-checked-color;
 				color: #fff;
 			}
 		}
-	}
+
+		input{
+			&:checked,
+			&.checked {
+				& + i:before {
+					background-color: @icon-bg-checked-color;
+					border-color: @icon-border-checked-color;
+					color: #fff;
+				}
+			}
+		}
 
 	  	i {
 			display:inline-block;
