@@ -4,10 +4,13 @@ package com.ctm.web.simples.phone.inin;
 import com.ctm.httpclient.Client;
 import com.ctm.interfaces.common.types.ValueType;
 import com.ctm.interfaces.common.types.VerticalType;
+import com.ctm.interfaces.common.util.SerializationMappers;
 import com.ctm.web.simples.config.InInConfig;
 import com.ctm.web.simples.model.Message;
 import com.ctm.web.simples.phone.inin.model.*;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
@@ -75,6 +78,9 @@ public class InInApi {
     @Autowired private Client<List<UpdateScheduleCall>, List<String>> updateScheduleCallClient;
     @Autowired private Client<List<DeleteScheduleCall>, List<String>> deleteScheduleCallClient;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(InInApi.class);
+    @Autowired private SerializationMappers jacksonMappers;
+
     public Observable<I3Identity> searchLead(final Message message) {
         return searchFilter(message).flatMap(this::searchRequest);
     }
@@ -94,7 +100,9 @@ public class InInApi {
 
     public Observable<Boolean> insertScheduledCall(final Message message, final String agentUsername) {
         final List<Data> datas = createLeadDatas(message);
-        final InsertScheduleCall insert = new InsertScheduleCall(inInConfig.getCampaignName(), datas, message.getPhoneNumber1(), agentUsername, message.getWhenToAction().toString());
+        final String phoneNumber = determinePhoneNumber(message);
+        final String scheduleTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(message.getWhenToAction());
+        final InsertScheduleCall insert = new InsertScheduleCall(inInConfig.getCampaignName(), datas, phoneNumber, agentUsername, scheduleTime);
         return insertScheduleCallClient.post(singletonList(insert), new ParameterizedTypeReference<List<String>>() {}, inInConfig.getWsUrl() + "/InsertScheduleRecord")
             .flatMap(r -> {
                 if (r.size() != 1) {
