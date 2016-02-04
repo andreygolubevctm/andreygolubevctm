@@ -72,7 +72,7 @@
 	</div>
 	<div class="col-sm-3 col-sm-push-1">
 
-		<c:if test="${hasMessageQueue || isInInEnabled}">
+		<c:if test="${hasMessageQueue && !isInInEnabled}">
 			<simples:postponed_queue />
 		</c:if>
 

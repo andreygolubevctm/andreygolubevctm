@@ -43,7 +43,7 @@
 					<td>{{= obj.message.state }}</td>
 				</tr>
 				<tr>
-					<th>Numbers to call</th>
+					<th><c:if test="${!pageSettings.getSetting('inInEnabled')}">Numbers to call</c:if></th>
 					<td>
                         <c:if test="${!pageSettings.getSetting('inInEnabled')}">
 						{{ if (obj.message.phoneNumber1 && obj.message.phoneNumber1 != '') { }}
