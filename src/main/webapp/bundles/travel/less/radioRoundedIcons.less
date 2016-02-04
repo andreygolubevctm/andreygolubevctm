@@ -45,27 +45,32 @@ html.ie8 body {
 /* Rounded Icons*/
 div.roundedCheckboxIcons {
 	float:left;
-  	> label.btn {
+	padding: 0px;
+	> label.btn {
 		padding:0;
 		border: none;
+		background:transparent;
+		outline:0 !important;
 
-	  	&.btn {
-		  background:transparent;
-		  outline:0 !important;
+		&:active,
+		&.active {
+		& + i:before {
+			background-color: @icon-bg-checked-color;
+			border-color: @icon-border-checked-color;
+			color: #fff;
 		}
+	}
 
-	  	input{
-			&:checked,
-			&.checked,
-			  &:active,
-			  &.active {
-				& + i:before {
-				  background-color: @icon-bg-checked-color;
-				  border-color: @icon-border-checked-color;
-				  color: #fff;
-				}
+	input{
+		&:checked,
+		&.checked {
+			& + i:before {
+				background-color: @icon-bg-checked-color;
+				border-color: @icon-border-checked-color;
+				color: #fff;
 			}
 		}
+	}
 
 	  	i {
 			display:inline-block;
@@ -93,7 +98,7 @@ div.roundedCheckboxIcons {
 	}
 
 	@media (@xs) {
-	  .radioIconSize(60px, @font-size-base, 0);
+	  .radioIconSize(50px, @font-size-base, 0);
 	}
 	@media (@sm-only) {
 	  .radioIconSize(40px, @font-size-small, 1);
