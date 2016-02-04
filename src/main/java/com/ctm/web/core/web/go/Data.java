@@ -1,5 +1,6 @@
 package com.ctm.web.core.web.go;
 
+import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.core.web.go.xml.XmlParser;
 import org.slf4j.Logger;
@@ -8,6 +9,9 @@ import org.springframework.util.NumberUtils;
 import org.xml.sax.SAXException;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -319,6 +323,79 @@ public class Data extends XmlNode implements Comparable<Data> {
 			LOGGER.info("Failed to convert value to number. {}", kv("xpath", xpath), e);
 		}
 		return value;
+	}
+
+	public <T extends Object> T createObjectFromData( T  object, String xpath){
+		Class<? extends Object> c = object.getClass();
+        Object node = get(xpath);
+        if(node != null && node instanceof XmlNode) {
+            ArrayList<XmlNode> childNodes = ((XmlNode) node).getChildren();
+            mapClass(object, c, childNodes);
+        }
+		return object;
+	}
+
+    private <T extends Object> void mapClass(T object, Class<? extends Object> c, ArrayList<XmlNode> childNodes) {
+        for (Field field : c.getDeclaredFields()) {
+            String value = getValueFromDataBucket(field.getName(), childNodes);
+            if (value != null) {
+                callSetField(object, field, value);
+            }
+        }
+        if( c.getSuperclass() != null) {
+            mapClass(object, c.getSuperclass(), childNodes);
+        }
+    }
+
+    private <T extends Object> void callSetField(Object object, Field field, String value) {
+		try {
+			boolean isAccessible = field.isAccessible();
+			field.setAccessible(true);
+            Object convertedValue = convertValue(field.getType(), value);
+            if(convertedValue != null) {
+                field.set(object, convertValue(field.getType(), value));
+            }
+			field.setAccessible(isAccessible);
+		} catch (IllegalAccessException | ParseException e)  {
+			e.printStackTrace();
+		}
+	}
+
+	private Object convertValue(Class<?> type, String param) throws ParseException {
+		Object value = null;
+		try {
+			if( type == Integer.class){
+				value =  !param.isEmpty() ? new Integer(param) : null;
+			} else if( type == int.class ){
+				value =  param != null && !param.isEmpty() ? Integer.parseInt(param) : 0;
+			}else if( type == float.class  || type == Float.class){
+				value =  Float.parseFloat(param);
+			}else if( type == long.class  || type == Long.class){
+				value =  Long.parseLong(param);
+			}else if( type == BigDecimal.class){
+				value =  new BigDecimal(param);
+			} else if( type == String.class){
+				value =  param;
+			} else if( type == YesNo.class){
+                value =  YesNo.valueOf(param);
+            }
+
+		} catch(NumberFormatException ne){
+			if(type!=null){
+				throw new NumberFormatException("the type of " + type.getName()+"."+value +" is '"+ type.getName() + "' which is not suitable for value '"+value+"'");
+			}
+		}
+		return value;
+	}
+
+
+	private String getValueFromDataBucket(String paramName, ArrayList<XmlNode> childNodes) {
+		for(XmlNode node : childNodes){
+			if(node.getNodeName().equals(paramName)){
+				return node.getText();
+			}
+		}
+		return null;
 	}
 
 }

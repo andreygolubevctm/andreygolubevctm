@@ -1,7 +1,7 @@
 package com.ctm.web.life.apply.model.request;
 
 import com.ctm.web.core.model.formData.Request;
-import com.ctm.core.energy.form.model.YesNo;
+import com.ctm.web.core.model.formData.YesNo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.validation.constraints.NotNull;

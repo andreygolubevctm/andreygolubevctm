@@ -160,7 +160,7 @@ public class XmlNode implements Map<Object, Object> {
 		this.setText(text);
 	}
 
-	protected synchronized ArrayList<XmlNode> getChildren() {
+	public synchronized ArrayList<XmlNode> getChildren() {
 		return children;
 	}
 

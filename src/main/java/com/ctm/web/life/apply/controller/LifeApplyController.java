@@ -7,7 +7,6 @@ import com.ctm.web.core.exceptions.ServiceRequestException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ErrorInfo;
-import com.ctm.web.core.resultsData.model.Info;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
@@ -60,12 +59,13 @@ public class LifeApplyController extends CommonQuoteRouter<LifeApplyPostRequestP
 
         Brand brand = initRouter(request, Vertical.VerticalType.ENERGY);
         updateTransactionIdAndClientIP(request, applyPostRequestPayload);
-        LifeApplyWebResponseModel outcome = lifeService.apply(applyPostRequestPayload, brand, request);
-        if (outcome != null) {
+/*        LifeApplyWebResponseModel outcome = lifeService.apply(applyPostRequestPayload, brand, request);*/
+/*        if (outcome != null) {
             Info info = new Info();
             info.setTransactionId(applyPostRequestPayload.getTransactionId());
         }
-        return outcome;
+        return outcome;*/
+        return null;
     }
 
 

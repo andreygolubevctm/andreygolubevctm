@@ -16,7 +16,7 @@ import com.ctm.web.energy.form.model.HouseHoldDetailsWebRequest;
 import com.ctm.web.energy.form.model.WhatToCompare;
 import com.ctm.web.energy.quote.adapter.WebRequestAdapter;
 import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
-import com.ctm.web.life.apply.model.request.LifeQuoteRequest;
+import com.ctm.web.life.model.request.LifeRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,9 +27,9 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 public class OzicareApplyServiceRequestAdapter implements WebRequestAdapter<LifeApplyPostRequestPayload, OzicareApplyRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OzicareApplyServiceRequestAdapter.class);
-    private final LifeQuoteRequest lifeQuoteRequest;
+    private final LifeRequest lifeQuoteRequest;
 
-    public OzicareApplyServiceRequestAdapter(LifeQuoteRequest lifeQuoteRequest) {
+    public OzicareApplyServiceRequestAdapter(LifeRequest lifeQuoteRequest) {
         this.lifeQuoteRequest = lifeQuoteRequest;
     }
 
@@ -41,10 +41,10 @@ public class OzicareApplyServiceRequestAdapter implements WebRequestAdapter<Life
         OzicareApplyRequest.Builder ozicareApplyRequestBuilder = OzicareApplyRequest.newBuilder();
 
         ozicareApplyRequestBuilder.state(lifeQuoteRequest.getPrimary().getState());
-        ozicareApplyRequestBuilder.phoneNumber();
+    //    ozicareApplyRequestBuilder.phoneNumber();
         ozicareApplyRequestBuilder.firstName(lifeQuoteRequest.getPrimary().getFirstName());
         ozicareApplyRequestBuilder.lastName(lifeQuoteRequest.getPrimary().getLastname());
-        ozicareApplyRequestBuilder.productId(requestPayload.get);
+     //   ozicareApplyRequestBuilder.productId(requestPayload.get);
 
 
         OzicareApplyRequest ozicareApplyRequest = ozicareApplyRequestBuilder.build();
