@@ -7,71 +7,38 @@ html.ie8 body.utilities_design_55 {
 
 
 body.utilities_design_55 {
-  #utilities_estimateDetails_gas_usage.btn-group-justified,
-  #utilities_estimateDetails_electricity_usage.btn-group-justified {
-    > label.btn {
-      width: 30%;
-      padding-top: 10px;
-      outline: 0px;
-
-      > h3 {
-        margin-top: 0px;
-        text-align: left;
-        padding-bottom: 0px;
-        margin-bottom: 0px;
-      }
-
-      @media (@xs-only) {
-        width: 100%;
-
-        > span {
-          width: 100%;
-          clear: both;
-          margin: 0px;
-          text-align: left;
-          display: table;
-          i {
-            display: table-cell;
-            text-align: left;
-            margin-left: -20px;
-            width:80px;
-          }
-
-          .optionText {
-            display:table-cell;
-            vertical-align: middle;
-            text-align: left;
-            width: 100%;
-            padding-left: 10px;
-          }
-        }
-      }
-
-      border-width: 1px;
-      border-radius: 10px;
-    }
-
-    @media (@sm) {
+  @media(@lg-only) {
+    .gas-usage .btn-group-justified.visible-lg,
+    .electricity-usage .btn-group-justified.visible-lg {
       border-spacing: 20px;
+
+      > label.btn {
+        width: 30%;
+        padding-top: 10px;
+        outline: 0px;
+
+        > h3 {
+          margin-top: 0px;
+          text-align: left;
+          padding-bottom: 0px;
+          margin-bottom: 0px;
+        }
+
+        border-width: 1px;
+        border-radius: 10px;
+      }
     }
-  }
 
-
-  .electricity-usage label i,
-  .gas-usage  label i {
-    @media(@md) {
+    .electricity-usage label i,
+    .gas-usage  label i {
       font-size: 80px;
     }
-
-    @media(@xs) {
-      font-size: 55px;
-    }
   }
+}
 
-  @media (@sm-only) {
-    #utilities_estimateDetails_electricity_meter label.btn {
-      padding-left: 5px;
-      padding-right: 5px;
-    }
+@media (@sm-only) {
+  #utilities_estimateDetails_electricity_meter label.btn {
+    padding-left: 5px;
+    padding-right: 5px;
   }
 }
