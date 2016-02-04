@@ -48,7 +48,11 @@ div.roundedCheckboxIcons {
 
 	  	input{
 			&:checked,
-			&.checked {
+			&.checked,
+			&:active,
+			&.active,
+			&:visited,
+			&.visited{
 				& + i:before {
 				  background-color: @icon-bg-checked-color;
 				  border-color: @icon-border-checked-color;
