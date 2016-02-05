@@ -1,6 +1,5 @@
 package com.ctm.web.core.web.go;
 
-import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.core.web.go.xml.XmlParser;
 import org.slf4j.Logger;
@@ -10,6 +9,7 @@ import org.xml.sax.SAXException;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -335,7 +335,7 @@ public class Data extends XmlNode implements Comparable<Data> {
 		return object;
 	}
 
-    private <T extends Object> void mapClass(T object, Class<? extends Object> c, ArrayList<XmlNode> childNodes) {
+	private <T extends Object> void mapClass(T object, Class<? extends Object> c, ArrayList<XmlNode> childNodes) {
         for (Field field : c.getDeclaredFields()) {
             String value = getValueFromDataBucket(field.getName(), childNodes);
             if (value != null) {
@@ -353,7 +353,7 @@ public class Data extends XmlNode implements Comparable<Data> {
 			field.setAccessible(true);
             Object convertedValue = convertValue(field.getType(), value);
             if(convertedValue != null) {
-                field.set(object, convertValue(field.getType(), value));
+                field.set(object, convertedValue);
             }
 			field.setAccessible(isAccessible);
 		} catch (IllegalAccessException | ParseException e)  {
@@ -363,6 +363,12 @@ public class Data extends XmlNode implements Comparable<Data> {
 
 	private Object convertValue(Class<?> type, String param) throws ParseException {
 		Object value = null;
+        Method valueOf = null;
+        try {
+             valueOf = type.getMethod("valueOf", String.class);
+        } catch ( ReflectiveOperationException e) {
+            // all good;
+        }
 		try {
 			if( type == Integer.class){
 				value =  !param.isEmpty() ? new Integer(param) : null;
@@ -376,9 +382,13 @@ public class Data extends XmlNode implements Comparable<Data> {
 				value =  new BigDecimal(param);
 			} else if( type == String.class){
 				value =  param;
-			} else if( type == YesNo.class){
-                value =  YesNo.valueOf(param);
-            }
+            } else if(valueOf != null){
+				try {
+					value = valueOf.invoke(null, param);
+				} catch ( ReflectiveOperationException e) {
+					// ignore
+				}
+			}
 
 		} catch(NumberFormatException ne){
 			if(type!=null){

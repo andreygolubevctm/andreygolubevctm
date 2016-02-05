@@ -1,5 +1,6 @@
 package com.ctm.web.life.utils;
 
+import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.life.model.request.LifeRequest;
 import org.junit.Test;
@@ -60,6 +61,8 @@ public class LifeRequestParserTest {
 
         LifeRequest request = LifeRequestParser.parseRequest(data, "life");
         assertEquals("M" , request.getPrimary().getInsurance().getFrequency());
+        assertEquals("Josephine" , request.getPartner().getFirstName() );
+        assertEquals(YesNo.Y , request.getPrimary().getInsurance().getSamecover());
         assertEquals("0400123123" , request.getContactDetails().getContactNumber());
     }
 
