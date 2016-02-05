@@ -13,16 +13,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import rx.Observable;
 
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -40,26 +38,25 @@ public class InInIcwsService {
 	public static final String CSRF_TOKEN = "ININ-ICWS-CSRF-Token";
 
 	public static final List<String> SUBSCRIPTION_ATTRIBUTES = asList("Eic_CallIdKey", "Eic_State");
+	public static final String CIC_URL = "cicUrl";
 
-	@Autowired private SerializationMappers jacksonMappers;
-	@Autowired InInConfig inInConfig;
-	@Autowired private Client<ConnectionReq, ConnectionResp> connectionClient;
-	@Autowired private Client<QueueSubscriptionReq, String> queueSubscriptionClient;
-	@Autowired private Client<String, List<Message>> messageClient;
-	@Autowired private Client<SecurePause, String> securePauseClient;
+	@Autowired
+	private SerializationMappers jacksonMappers;
+	@Autowired
+	InInConfig inInConfig;
+	@Autowired
+	private Client<ConnectionReq, ConnectionResp> connectionClient;
+	@Autowired
+	private Client<QueueSubscriptionReq, String> queueSubscriptionClient;
+	@Autowired
+	private Client<String, List<Message>> messageClient;
+	@Autowired
+	private Client<SecurePause, String> securePauseClient;
 
-	private String connectionUrl;
-	private String queueSubscriptionUrl;
-	private String messagesUrl;
-	private String securePauseUrl;
-
-	@PostConstruct
-	public void initConfig() {
-		this.connectionUrl = inInConfig.getCicUrl() + "/connection";
-		this.queueSubscriptionUrl = inInConfig.getCicUrl()+ "/${sessionId}/messaging/subscriptions/queues/${subscriptionName}";
-		this.messagesUrl = inInConfig.getCicUrl() + "/${sessionId}/messaging/messages";
-		this.securePauseUrl = inInConfig.getCicUrl() + "/${sessionId}/interactions/${interactionId}/secure-pause";
-	}
+	private final String connectionUrl = "${cicUrl}/connection";
+	private final String queueSubscriptionUrl = "${cicUrl}/${sessionId}/messaging/subscriptions/queues/${subscriptionName}";
+	private final String messagesUrl = "${cicUrl}/${sessionId}/messaging/messages";
+	private final String securePauseUrl = "${cicUrl}/${sessionId}/interactions/${interactionId}/secure-pause";
 
 	public Observable<PauseResumeResponse> pause(final String agentUsername, final Optional<String> interactionId) {
 		return securePause(SecurePauseType.PAUSE_WITH_INFINITE_TIMEOUT, agentUsername, interactionId);
@@ -70,20 +67,33 @@ public class InInIcwsService {
 	}
 
 	private Observable<PauseResumeResponse> securePause(final SecurePauseType securePauseType, final String agentUsername, final Optional<String> interactionId) {
+		return securePause(inInConfig.getCicPrimaryUrl(), securePauseType, agentUsername)
+				.onErrorResumeNext(t -> fallback(t, inInConfig.getCicFalloverUrl(), securePauseType, agentUsername))
+				.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable));
+	}
+
+	private Observable<PauseResumeResponse> fallback(Throwable throwable, final String cicUrl, final SecurePauseType securePauseType, final String agentUsername) {
+		return isServiceUnavailableError(throwable) ? securePause(inInConfig.getCicFalloverUrl(), securePauseType, agentUsername) : Observable.error(throwable);
+	}
+
+	private boolean isServiceUnavailableError(final Throwable throwable) {
+		return throwable instanceof HttpServerErrorException && ((HttpServerErrorException) throwable).getStatusCode() == HttpStatus.SERVICE_UNAVAILABLE;
+	}
+
+	private Observable<PauseResumeResponse> securePause(final String cicUrl, final SecurePauseType securePauseType, final String agentUsername) {
 		// Get session connection
-		return connection()
+		return connection(cicUrl)
 				.flatMap(connectionResp ->
 								// Put a subscription on agent activity
-								queueSubscription(agentUsername, connectionResp)
+								queueSubscription(cicUrl, agentUsername, connectionResp)
 										.delay(1, TimeUnit.SECONDS)
-										// Get messages of agent activity (should give us the current phone call status)
-										.flatMap(s -> getInteractionId(connectionResp))
-										// Pause or resume the call
-										.flatMap(iId -> securePauseRequest(securePauseType, iId, connectionResp))
+												// Get messages of agent activity (should give us the current phone call status)
+										.flatMap(s -> getInteractionId(cicUrl, connectionResp))
+												// Pause or resume the call
+										.flatMap(iId -> securePauseRequest(cicUrl, securePauseType, iId, connectionResp))
 										.flatMap(pauseResp -> Observable.just(PauseResumeResponse.success()))
 										.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable))
-				)
-				.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable));
+				);
 	}
 
 	private PauseResumeResponse handleSecurePauseError(final SecurePauseType securePauseType, final String agentUsername, final Throwable throwable) {
@@ -99,15 +109,16 @@ public class InInIcwsService {
 	 * Make a connection to InIn ICWS to start a session. Use the response of this to continue the session in subsequent calls.
 	 * @return ResponseEntity
 	 */
-	private Observable<ResponseEntity<ConnectionResp>> connection() {
+	private Observable<ResponseEntity<ConnectionResp>> connection(final String cicUrl) {
 		final ConnectionReq connectionReq = new ConnectionReq(ININ_CONNECTION_TYPE, inInConfig.getCicApplicationName(),
 				inInConfig.getCicUserId(), inInConfig.getCicPassword());
+		final String url =  StrSubstitutor.replace(connectionUrl, Collections.singletonMap(CIC_URL, cicUrl));
 		RestSettings<ConnectionReq> settings = RestSettings.<ConnectionReq>builder()
 				.header("Accept-Language", "en")
 				.header("Content-Type", APPLICATION_JSON_VALUE)
 				.request(connectionReq)
 				.response(ConnectionResp.class)
-				.url(connectionUrl)
+				.url(url)
 				.build();
 
 		if (LOGGER.isDebugEnabled()) {
@@ -127,9 +138,9 @@ public class InInIcwsService {
 	 * @param connectionResp ResponseEntity from the session connection
 	 * @return "OK" if successful
 	 */
-	private Observable<String> queueSubscription(final String username, final ResponseEntity<ConnectionResp> connectionResp) {
+	private Observable<String> queueSubscription(final String cicUrl, final String username, final ResponseEntity<ConnectionResp> connectionResp) {
 		final QueueSubscriptionReq subscriptionReq = new QueueSubscriptionReq(singletonList(new QueueId(QueueType.USER, username)), SUBSCRIPTION_ATTRIBUTES);
-		final String url = createQueueSubscriptionUrl(connectionResp.getHeaders().get(SESSION_ID).get(0), "PhoneStatusSubscription");
+		final String url = createQueueSubscriptionUrl(cicUrl, connectionResp.getHeaders().get(SESSION_ID).get(0), "PhoneStatusSubscription");
 
 		RestSettings<QueueSubscriptionReq> settings = authenticatedRestSettings(RestSettings.<QueueSubscriptionReq>builder(), connectionResp)
 				.request(subscriptionReq)
@@ -148,9 +159,9 @@ public class InInIcwsService {
 		return queueSubscriptionClient.put(settings);
 	}
 
-	private Observable<Message> getMessages(final ResponseEntity<ConnectionResp> connectionResp) {
+	private Observable<Message> getMessages(final String cicUrl, final ResponseEntity<ConnectionResp> connectionResp) {
 		final String sessionId = connectionResp.getHeaders().get(SESSION_ID).get(0);
-		final String url = createMessagesUrl(sessionId);
+		final String url = createMessagesUrl(cicUrl, sessionId);
 
 		LOGGER.debug("Get messages: " + url);
 
@@ -162,8 +173,8 @@ public class InInIcwsService {
 		return messageClient.get(settings).flatMap(Observable::<Message>from);
 	}
 
-	private Observable<String> getInteractionId(final ResponseEntity<ConnectionResp> connectionResp) {
-		final Observable<Message> messages = getMessages(connectionResp);
+	private Observable<String> getInteractionId(final String cicUrl, final ResponseEntity<ConnectionResp> connectionResp) {
+		final Observable<Message> messages = getMessages(cicUrl, connectionResp);
 		Observable<Optional<String>> interactionId = messages
 				// Look at messages that have added or changed interactions
 				.filter(message -> message.getInteractionsAdded().size() > 0 || message.getInteractionsChanged().size() > 0)
@@ -194,9 +205,9 @@ public class InInIcwsService {
 	/**
 	 * Trigger the secure pause/resume.
 	 */
-	private Observable<String> securePauseRequest(final SecurePauseType securePauseType, final String interactionId, final ResponseEntity<ConnectionResp> connectionResp) {
+	private Observable<String> securePauseRequest(final String cicUrl, final SecurePauseType securePauseType, final String interactionId, final ResponseEntity<ConnectionResp> connectionResp) {
 		final HttpHeaders headers = connectionResp.getHeaders();
-		final String url = createSecurePauseUrl(interactionId, headers);
+		final String url = createSecurePauseUrl(cicUrl, interactionId, headers);
 		final SecurePause securePause = new SecurePause(securePauseType, 0);
 		RestSettings<SecurePause> settings = authenticatedRestSettings(RestSettings.<SecurePause>builder(), connectionResp)
 				.request(securePause)
@@ -206,21 +217,24 @@ public class InInIcwsService {
 		return securePauseClient.post(settings);
 	}
 
-	private String createQueueSubscriptionUrl(final String sessionId, final String subscriptionName) {
+	private String createQueueSubscriptionUrl(final String cicUrl, final String sessionId, final String subscriptionName) {
 		final Map<String, String> values = new HashMap<>();
+		values.put(CIC_URL, cicUrl);
 		values.put("sessionId", sessionId);
 		values.put("subscriptionName", subscriptionName);
 		return StrSubstitutor.replace(queueSubscriptionUrl, values);
 	}
 
-	private String createMessagesUrl(final String sessionId) {
+	private String createMessagesUrl(final String cicUrl, final String sessionId) {
 		final Map<String, String> values = new HashMap<>();
+		values.put(CIC_URL, cicUrl);
 		values.put("sessionId", sessionId);
 		return StrSubstitutor.replace(messagesUrl, values);
 	}
 
-	private String createSecurePauseUrl(final String interactionId, final HttpHeaders headers) {
+	private String createSecurePauseUrl(final String cicUrl, final String interactionId, final HttpHeaders headers) {
 		final Map<String, String> values = new HashMap<>();
+		values.put(CIC_URL, cicUrl);
 		values.put("sessionId", headers.get(SESSION_ID).get(0));
 		values.put("interactionId", interactionId);
 		return StrSubstitutor.replace(securePauseUrl, values);
