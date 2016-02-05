@@ -5,7 +5,9 @@ import com.ctm.httpclient.RestSettings;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.session.AuthenticatedData;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.simples.config.InInConfig;
 import com.ctm.web.simples.model.BlacklistOutcome;
 import com.ctm.web.simples.phone.inin.model.Data;
@@ -66,6 +68,8 @@ public class BlacklistController {
         final String operator = authenticatedData.getUid();
 
         LOGGER.info("Adding to blacklist: {}, {}, {}, {}", kv("channel", channel), kv("value", value), kv("operator", operator), kv("comment", comment));
+
+        final PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, "HEALTH");
 
         final Optional<String> outcome = Optional.ofNullable(simplesBlacklistService.addToBlacklist(request, channel, value, operator, comment));
         LOGGER.info("Simples blacklist outcome: {}", kv("simplesBlacklistOutcome", outcome));
