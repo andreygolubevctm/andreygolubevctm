@@ -43,33 +43,33 @@
     }
 
     function setFormAndValidation() {
-        if (modalId) {
-            $modal = $('#' + modalId);
-            $healthCoverDetailsContainer = $modal.find('#health_healthCover-selection');
+      //  if (modalId) {
+          //  $modal = $('#' + modalId);
+            /*$healthCoverDetailsContainer = $modal.find('#health_healthCover-selection'); //?
 
-            $healthCoverlhcGroup = $healthCoverDetailsContainer.find('.lhc-group');
-            $healthCoverlhcQuestion = $healthCoverlhcGroup.find('.lhc-question');
+            $healthCoverlhcGroup = $healthCoverDetailsContainer.find('.lhc-group'); // ?
+            $healthCoverlhcQuestion = $healthCoverlhcGroup.find('.lhc-question'); // ?
+*/
+            $primaryContinuousCover = $('#health-continuous-cover-primary');
 
-            $primaryContinuousCover = $healthCoverDetailsContainer.find('#health-continuous-cover-primary');
+            $partnerDob = $('#health_healthCover_partner_dob');
+            $partnerCurrentCover = $('#health_healthCover_partnerCover');
+            $partnerContinuousCover = $('#health-continuous-cover-partner');
 
-            $partnerDob = $healthCoverDetailsContainer.find('#health_healthCover_partner_dob');
-            $partnerCurrentCover = $healthCoverDetailsContainer.find('#health_healthCover_partnerCover');
-            $partnerContinuousCover = $healthCoverDetailsContainer.find('#health-continuous-cover-partner');
+            $healthCoverDependants = $('.health_cover_details_dependants');
+            //$healthCoverIncomeBasedOn = $healthCoverDetailsContainer.find('#health_healthCover_incomeBase'); // ?
 
-            $healthCoverDependants = $healthCoverDetailsContainer.find('.health_cover_details_dependants');
-            $healthCoverIncomeBasedOn = $healthCoverDetailsContainer.find('#health_healthCover_incomeBase');
+            $healthCoverTier = $('#health_healthCover_tier');
+            $healthCoverIncome = $('#health_healthCover_income');
+            $healthCoverIncomeMessage = $('#health_healthCover_incomeMessage');
+            $healthCoverIncomeLabel = $('#health_healthCover_incomelabel');
 
-            $healthCoverTier = $healthCoverDetailsContainer.find('#health_healthCover_tier');
-            $healthCoverIncome = $healthCoverTier.find('#health_healthCover_income');
-            $healthCoverIncomeMessage = $healthCoverTier.find('#health_healthCover_incomeMessage');
-            $healthCoverIncomeLabel = $healthCoverTier.find('#health_healthCover_incomelabel');
+            $healthCoverRebate = $('.health_cover_details_rebate');
 
-            $healthCoverRebate = $healthCoverDetailsContainer.find('.health_cover_details_rebate');
+        //    meerkat.modules.formDateInput.init();
+         //   meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($healthCoverDetailsContainer);
 
-            meerkat.modules.formDateInput.init();
-            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($healthCoverDetailsContainer);
-            meerkat.modules.healthTiers.initHealthTiers();
-        }
+        //}
     }
 
     function populateHiddenFields() {
@@ -263,9 +263,7 @@
 
     function eventSubscriptions() {
 
-        $healthCoverDependants.find('#health_healthCover_dependants').on('change', function(){
-            meerkat.modules.healthTiers.setTiers();
-        });
+
 
         $healthCoverRebate.on('change', function(){
             var $medicare = $('.health-medicare_details');
@@ -482,43 +480,8 @@
         return ratesChanged;
     }
 
-    function showModal(modeParam) {
-        mode = modeParam;
-
-        // reset ratesChanged for Journey mode
-        if (mode === MODE_JOURNEY) ratesChanged = false;
-
-        var htmlTemplate = _.template($('#health-cover-details-template').html());
-
-        meerkat.modules.dialogs.show({
-            htmlContent: htmlTemplate(),
-            buttons: [{
-                label: 'Cancel',
-                className: 'btn-cancel',
-                closeWindow: false
-            },
-            {
-                label: 'Continue',
-                className: 'btn-cta btn-healthCoverDetails-save',
-                closeWindow: false
-            }],
-            onOpen: function(id) {
-                modalId = id;
-                setup();
-                var data = {
-                    actionStep: 'Health LHC modal'
-                };
-                meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                    method:	'trackQuoteForms',
-                    object:	data
-                });
-            }
-        });
-    }
-
     meerkat.modules.register("healthCoverDetails", {
         init: initHealthCoverDetails,
-        showModal: showModal,
         isRebateApplied: isRebateApplied,
         hasRatesChanged: hasRatesChanged,
         displayHealthFunds: displayHealthFunds
