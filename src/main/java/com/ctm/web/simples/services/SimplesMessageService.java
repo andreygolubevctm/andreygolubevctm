@@ -1,15 +1,12 @@
 package com.ctm.web.simples.services;
 
-import com.ctm.web.core.model.Role;
-import com.ctm.web.core.model.Rule;
-import com.ctm.web.simples.dao.BlacklistDao;
-import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
+import com.ctm.web.core.model.Role;
+import com.ctm.web.core.model.Rule;
 import com.ctm.web.core.transaction.model.Transaction;
-import com.ctm.web.simples.dao.MessageDao;
-import com.ctm.web.simples.dao.MessageDuplicatesDao;
+import com.ctm.web.simples.dao.*;
 import com.ctm.web.simples.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -31,6 +29,11 @@ public class SimplesMessageService {
 	public List<Message> postponedMessages(final int userId) throws DaoException {
 		final MessageDao messageDao = new MessageDao();
 		return messageDao.postponedMessages(userId);
+	}
+
+	public List<Message> scheduledCallbacks(final int userId) throws DaoException {
+		final PersonalMessageDao personalMessageDao = new PersonalMessageDao();
+		return personalMessageDao.getPersonalMessages(userId);
 	}
 
 	public MessageDetail getMessage(final HttpServletRequest request, final int messageId) throws DaoException {
@@ -168,6 +171,43 @@ public class SimplesMessageService {
 	/**
 	 *
 	 */
+	public String schedulePersonalMessage(int actionIsPerformedByUserId, long rootId, int statusId, LocalDateTime postponeTo, String contactName, String comment) {
+		PersonalMessageDao personalMessageDao = new PersonalMessageDao();
+		Transaction details = new Transaction();
+
+		try {
+			switch (statusId) {
+				case MessageStatus.STATUS_COMPLETED_AS_PM:
+					personalMessageDao.insertPersonalMessage(actionIsPerformedByUserId, rootId, postponeTo, contactName, comment);
+					break;
+				case MessageStatus.STATUS_CHANGED_TIME_FOR_PM:
+					Message message = personalMessageDao.getPersonalMessageByRootId(rootId);
+					if (message.getUserId() == actionIsPerformedByUserId) {
+						personalMessageDao.postponePersonalMessage(actionIsPerformedByUserId, rootId, postponeTo, comment);
+					} else {
+						Error error = new Error("Action Denied - This personal message belongs to another consultant, or you have deleted it already.");
+						details.addError(error);
+					}
+			}
+		}
+		catch (DaoException e) {
+			LOGGER.error("Could not schedule InIn callback. {}, {}, {}, {}, {}",
+					kv("userId", actionIsPerformedByUserId),
+					kv("statusId", statusId),
+					kv("postponeTo", postponeTo),
+					kv("comment", comment),
+					kv("rootId", rootId), e);
+			Error error = new Error(e.getMessage());
+			details.addError(error);
+		}
+
+		return details.toJson();
+	}
+
+
+	/**
+	 *
+	 */
 	public String setMessageToComplete(HttpServletRequest request, int actionIsPerformedByUserId, int messageId, int statusId, int reasonStatusId) throws ConfigSettingException{
 		MessageDao messageDao = new MessageDao();
 		Transaction details = new Transaction();
@@ -197,6 +237,34 @@ public class SimplesMessageService {
 		catch (DaoException e) {
 			LOGGER.error("Could not set message {},{},{},{}", kv("actionIsPerformedByUserId", actionIsPerformedByUserId), kv("messageId", messageId), kv("statusId", statusId), kv("reasonStatusId", reasonStatusId), e);
 
+			Error error = new Error(e.getMessage());
+			details.addError(error);
+		}
+
+		return details.toJson();
+	}
+
+	/**
+	 *
+	 */
+	public String removePersonalMessage(int actionIsPerformedByUserId, long rootId) {
+		PersonalMessageDao personalMessageDao = new PersonalMessageDao();
+		Transaction details = new Transaction();
+
+		try {
+			Message message = personalMessageDao.getPersonalMessageByRootId(rootId);
+
+			if (message.getUserId() == actionIsPerformedByUserId) {
+				personalMessageDao.deletePersonalMessage(rootId);
+			} else {
+				Error error = new Error("Action Denied - This personal message belongs to another consultant, or you have deleted it already.");
+				details.addError(error);
+			}
+		}
+		catch (DaoException e) {
+			LOGGER.error("Could not remove InIn scheduled callback. {}, {}",
+					kv("userId", actionIsPerformedByUserId),
+					kv("rootId", rootId), e);
 			Error error = new Error(e.getMessage());
 			details.addError(error);
 		}

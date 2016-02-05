@@ -12,6 +12,7 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.*;
 import com.ctm.web.simples.model.InboundPhoneNumber;
+import com.ctm.web.simples.phone.verint.CtiPhoneService;
 
 public class CallCentreService {
 
@@ -27,7 +28,7 @@ public class CallCentreService {
 		AuthenticatedData authData = sessionData.getAuthenticatedSessionData();
 		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 
-		InboundPhoneNumber inboundPhoneDetails = PhoneService.getCurrentInboundCallDetailsForAgent(pageSettings, authData);
+		InboundPhoneNumber inboundPhoneDetails = CtiPhoneService.getCurrentInboundCallDetailsForAgent(pageSettings, authData);
 
 		return inboundPhoneDetails;
 	}

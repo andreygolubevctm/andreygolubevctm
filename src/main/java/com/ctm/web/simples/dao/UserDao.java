@@ -7,7 +7,7 @@ import com.ctm.web.simples.model.CallInfo;
 import com.ctm.web.core.model.Role;
 import com.ctm.web.core.model.Rule;
 import com.ctm.web.simples.model.User;
-import com.ctm.web.simples.services.PhoneService;
+import com.ctm.web.simples.phone.verint.CtiPhoneService;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -110,7 +110,7 @@ public class UserDao {
 							// If they have an extension, check their phone status
 							if (user.getExtension().length() > 0) {
 
-								CallInfo callInfo = PhoneService.getCallInfoByExtension(settings, user.getExtension());
+								CallInfo callInfo = CtiPhoneService.getCallInfoByExtension(settings, user.getExtension());
 
 								if (callInfo != null && callInfo.getState() == CallInfo.STATE_INACTIVE) {
 									user.setAvailable(true);
