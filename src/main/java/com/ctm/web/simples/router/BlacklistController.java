@@ -103,7 +103,7 @@ public class BlacklistController {
                 .url(url)
                 .build();
 
-        return blacklistClient.post(settings);
+        return blacklistClient.post(settings).retry(1);
     }
 
     private void addPhone(final Insert insert, final String phone) {
