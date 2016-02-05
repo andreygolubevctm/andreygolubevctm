@@ -18,6 +18,9 @@ public class LifeRequest {
 		contactDetails = builder.contactDetails;
 	}
 
+	private LifeRequest() {
+	}
+
 	public LifePerson getPartner() {
 		return partner;
 	}

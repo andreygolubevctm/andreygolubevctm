@@ -1,8 +1,8 @@
 package com.ctm.web.life.services;
 
+import com.ctm.web.core.web.DataParser;
 import com.ctm.web.life.model.request.LifeRequest;
 import com.ctm.web.core.services.RequestService;
-import com.ctm.web.life.utils.LifeRequestParser;
 import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.core.web.go.Data;
@@ -28,7 +28,7 @@ public class LifeService {
 		vertical = request.getParameter("vertical");
 		RequestService fromFormService = new RequestService(request, vertical, data);
 
-		LifeRequest lifeRequest = LifeRequestParser.parseRequest(data, vertical);
+		LifeRequest lifeRequest = DataParser.createObjectFromData(data,LifeRequest.class, vertical);
 		List<SchemaValidationError> errors = contactLead(lifeRequest, vertical);
 		if(!valid) {
 			return outputErrors(fromFormService, errors);

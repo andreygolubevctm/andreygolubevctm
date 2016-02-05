@@ -9,6 +9,10 @@ public class Primary extends LifePerson {
     private String postCode;
     private PrimaryInsurance insurance;
 
+    private Primary() {
+        super();
+    }
+
     private Primary(Primary.Builder builder) {
         super(builder);
         state = builder.state;

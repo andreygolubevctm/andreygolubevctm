@@ -32,6 +32,10 @@ public class LifePerson extends PersonAlt {
 		insurance  = builder.insurance;
 	}
 
+	protected LifePerson() {
+
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}

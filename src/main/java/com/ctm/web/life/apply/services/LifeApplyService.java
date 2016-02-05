@@ -11,6 +11,7 @@ import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.services.CommonRequestService;
 import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.core.web.DataParser;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.energy.apply.services.EnergyApplyConfirmationService;
 import com.ctm.web.life.apply.adapter.LifeApplyServiceResponseAdapter;
@@ -19,7 +20,6 @@ import com.ctm.web.life.apply.adapter.OzicareApplyServiceRequestAdapter;
 import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
 import com.ctm.web.life.apply.response.LifeApplyWebResponseModel;
 import com.ctm.web.life.model.request.LifeRequest;
-import com.ctm.web.life.utils.LifeRequestParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,7 +48,7 @@ public class LifeApplyService extends CommonRequestService<EnergyApplicationDeta
             ServiceConfigurationException,
             SessionException {
         LifeApplyServiceResponseAdapter responseAdapter= new LifeApplyServiceResponseAdapter();
-        LifeRequest lifeQuoteRequest = LifeRequestParser.parseRequest(getData( request, model.getTransactionId()), model.getVertical());
+        LifeRequest lifeQuoteRequest = DataParser.createObjectFromData(getData( request, model.getTransactionId()), LifeRequest.class, model.getVertical());
 
         LifeBrokerApplyServiceRequestAdapter lifeBrokeRequestAdapter= new LifeBrokerApplyServiceRequestAdapter(lifeQuoteRequest);
         OzicareApplyServiceRequestAdapter requestAdapter = new OzicareApplyServiceRequestAdapter(lifeQuoteRequest);

@@ -8,11 +8,7 @@ import org.springframework.util.NumberUtils;
 import org.xml.sax.SAXException;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.text.ParseException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -27,6 +23,8 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
  */
 
 public class Data extends XmlNode implements Comparable<Data> {
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Data.class.getName());
 
@@ -324,110 +322,6 @@ public class Data extends XmlNode implements Comparable<Data> {
 			LOGGER.info("Failed to convert value to number. {}", kv("xpath", xpath), e);
 		}
 		return value;
-	}
-
-	public <T extends Object> T createObjectFromData( T  object, String xpath){
-		Class<? extends Object> c = object.getClass();
-        Object node = get(xpath);
-        if(node != null && node instanceof XmlNode) {
-            ArrayList<XmlNode> childNodes = ((XmlNode) node).getChildren();
-            mapClass(object, c, childNodes, xpath);
-        }
-		return object;
-	}
-
-	private <T extends Object> void mapClass(T object, Class<? extends Object> c, ArrayList<XmlNode> childNodes, String xpath) {
-        for (Field field : c.getDeclaredFields()) {
-            String fieldName = field.getName();
-            XmlNode value = getValueFromDataBucket(fieldName, childNodes);
-            if(value != null && value.getChildren() != null && !value.getChildren().isEmpty()){
-                Constructor<?>[] constructors = field.getType().getDeclaredConstructors();
-                for(Constructor con : constructors){
-                    if(con.getParameterCount() == 0) {
-                        try {
-                            boolean isAccessible = con.isAccessible();
-                            con.setAccessible(true);
-                            Object fieldObject = con.newInstance(null);
-                            createObjectFromData(fieldObject, xpath + "/" + fieldName);
-                            setField(object, field, fieldObject);
-                            con.setAccessible(isAccessible);
-                        } catch (ReflectiveOperationException e) {
-                            LOGGER.warn("Failed to map {}", kv("xpath", xpath),  e);
-                        }
-                    }
-                }
-            }else if (value !=null && value.getText() != null) {
-                callSetField(object, field, value.getText());
-            }
-        }
-        if( c.getSuperclass() != null) {
-            mapClass(object, c.getSuperclass(), childNodes, xpath);
-        }
-    }
-
-    private <T extends Object> void setField(T object, Field field, Object fieldObject) throws IllegalAccessException {
-        boolean fieldIsAccessible = field.isAccessible();
-        field.setAccessible(true);
-        field.set(object, fieldObject);
-        field.setAccessible(fieldIsAccessible);
-    }
-
-    private <T extends Object> void callSetField(Object object, Field field, String value) {
-		try {
-            Object convertedValue = convertValue(field.getType(), value);
-            if(convertedValue != null) {
-                setField(object, field, convertedValue);
-            }
-		} catch (IllegalAccessException | ParseException e)  {
-            LOGGER.warn("Failed to map {}", kv("field", field),  e);
-		}
-	}
-
-	private Object convertValue(Class<?> type, String param) throws ParseException {
-		Object value = null;
-        Method valueOf = null;
-        try {
-             valueOf = type.getMethod("valueOf", String.class);
-        } catch ( ReflectiveOperationException e) {
-            // all good;
-        }
-		try {
-			if( type == Integer.class){
-				value =  !param.isEmpty() ? new Integer(param) : null;
-			} else if( type == int.class ){
-				value =  param != null && !param.isEmpty() ? Integer.parseInt(param) : 0;
-			}else if( type == float.class  || type == Float.class){
-				value =  Float.parseFloat(param);
-			}else if( type == long.class  || type == Long.class){
-				value =  Long.parseLong(param);
-			}else if( type == BigDecimal.class){
-				value =  new BigDecimal(param);
-			} else if( type == String.class){
-				value =  param;
-            } else if(valueOf != null){
-				try {
-					value = valueOf.invoke(null, param);
-				} catch ( ReflectiveOperationException e) {
-					// ignore
-				}
-			}
-
-		} catch(NumberFormatException ne){
-			if(type!=null){
-				throw new NumberFormatException("the type of " + type.getName()+"."+value +" is '"+ type.getName() + "' which is not suitable for value '"+value+"'");
-			}
-		}
-		return value;
-	}
-
-
-	private XmlNode getValueFromDataBucket(String paramName, ArrayList<XmlNode> childNodes) {
-		for(XmlNode node : childNodes){
-			if(node.getNodeName().equals(paramName)){
-				return node;
-			}
-		}
-		return null;
 	}
 
 }
