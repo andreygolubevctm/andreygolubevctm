@@ -20,21 +20,18 @@
 
 
 	function applyEventListeners(){
+		$marketing.on('change', function () {
 
-		if (!meerkat.modules.splitTest.isActive(7)) {
-			$marketing.on('change', function () {
-
-				if ($(this).is(':checked')) {
-					$email.attr('required', 'required').valid();
-					showHidePostcodeField();
-				} else {
-					$email.removeAttr('required').valid();
-				}
-			});
-		}
-		$email.on('blur', function() {
+			if ($(this).is(':checked')) {
+				$email.attr('required', 'required').valid();
 				showHidePostcodeField();
-			});
+			} else {
+				$email.removeAttr('required').valid();
+			}
+		});
+		$email.on('blur', function() {
+			showHidePostcodeField();
+		});
 	}
 
 	function showHidePostcodeField()
@@ -84,12 +81,10 @@
 			initialised = true;
 			//Elements need to be in the page
 			$email = $('#travel_email');
+			$email.removeAttr('required');
 			$marketing = $('#travel_marketing');
 			$postcodeDetails = $('.postcodeDetails');
 			$productDetailsField = $postcodeDetails.find('#travel_location');
-			if (!meerkat.modules.splitTest.isActive(7)) {
-				$email.removeAttr('required');
-			}
 			applyEventListeners();
 		}
 	}

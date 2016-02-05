@@ -14,9 +14,6 @@
 <c:set var="val_optin"				value="Y" />
 <c:set var="val_optout"				value="N" />
 
-<%-- Set A/B test flag j=2 --%>
-<c:set var="hideOptIn" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" scope="request" />
-
 <%-- Vars for competition --%>
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="competitionSecret"><content:get key="competitionSecret"/></c:set>
@@ -91,14 +88,14 @@
 					</c:otherwise>
 				</c:choose>
 
-				<%-- A/B test !j=2 --%>
-				<c:if test="${not hideOptIn}">
+				<%-- Override set in splittest_helper tag --%>
+				<c:if test="${showOptInOnSlide3 eq true}">
 					<c:set var="termsAndConditions">
 						<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
 						I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
 						<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
 						By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
-						I confirm that I have read the <form:link_privacy_statement />.
+						I confirm that I have read the <form_v1:link_privacy_statement />.
 					</c:set>
 				
 					<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>

@@ -113,13 +113,17 @@
 		</li>
 
 		<%-- @todo = showReferenceNo needs to be an attribute, this tag should potentially be rewritten or moved in a different place + that script is loaded via a marker in the tag. Probably should be moved to journey_engine_page --%>
-			<li class="navbar-text-block">
+			<li class="navbar-text-block slide-feature-reference">
 				<form_v2:reference_number />
 		</li>
 		</ul>
 
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
+		</div>
+
+		<div class="slide-feature-close-more-info">
+			<a href="javascript:;" class="btn btn-close-more-info btn-hollow">Back to results</a>
 		</div>
 
 	</jsp:attribute>
@@ -167,6 +171,10 @@
 			<c:forEach items="${resultTemplateItems}" var="selectedValue">
 				<health_v1:benefitsHiddenItem item="${selectedValue}" />
 			</c:forEach>
+			<c:if test="${data['health/situation/accidentOnlyCover'] != '' && not empty data['health/situation/accidentOnlyCover']}">
+				<c:set var="fieldValue"><c:out value="${data['health/situation/accidentOnlyCover']}" escapeXml="true"/></c:set>
+			</c:if>
+			<input type="hidden" name="health_situation_accidentOnlyCover" class="benefit-item" value="${fieldValue}" />
 					
 			<field_v1:hidden xpath="health/renderingMode" />
 			<field_v1:hidden xpath="health/rebate" />

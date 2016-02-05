@@ -34,6 +34,8 @@
 			fuelsRow:			"#quote_vehicle_fuelRow",
 			types:				"#quote_vehicle_redbookCode",
 			typesRow:			"#quote_vehicle_redbookCodeRow",
+			colours:			"#quote_vehicle_colour",
+			coloursRow:			"#quote_vehicle_colourRow",
 			marketValue:		"#quote_vehicle_marketValue",
 			variant:			"#quote_vehicle_variant"
 	};
@@ -52,7 +54,7 @@
 	var tryCount =		1;
 
 	var defaults = {};
-	var selectorOrder = ['makes','models','years','bodies','transmissions','fuels','types'];
+	var selectorOrder = ['makes','models','years','bodies','transmissions','fuels','types', 'colours'];
 	var selectorData = {};
 
 	var activeSelector = false;
@@ -609,7 +611,7 @@
 
 		$(document).ready(function() {
 
-			// Only init if health... obviously...
+			// Only init if car... obviously...
 			if (meerkat.site.vertical !== "car")
 				return false;
 

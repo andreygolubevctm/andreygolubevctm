@@ -304,6 +304,9 @@
 
 				meerkat.modules.healthBenefitsStep.alignTitle();
 				meerkat.modules.healthBenefitsStep.alignSidebarHeight();
+
+				if(event.isForward)
+					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
@@ -772,7 +775,7 @@
 					$field: $("#health_contactDetails_flexiContactNumber"),
 					$fieldInput: $("#health_contactDetails_flexiContactNumberinput")
 				},
-				// otherPhone from application step
+				// otherPhone and mobile from quote step
 				{
 					$field: $("#health_contactDetails_contactNumber_mobile"),
 					$otherField: $("#health_contactDetails_contactNumber_other")

@@ -22,19 +22,16 @@
 
 	// Add your slide feature to the particular step that it needs to be visible
 	&[data-step="start"] {
-		.slide-feature-emailquote.privacyOptinChecked
-		{
-			.slide-feature-is-visible();
-		}
+		#navbar-main{
+			.slide-feature-hidden() !important;
+	 	}
 	}
 
 	&[data-step="options"],
 	&[data-step="details"],
 	&[data-step="address"] {
-		.slide-feature-back,
-		.slide-feature-emailquote.privacyOptinChecked
-		{
-			.slide-feature-is-visible();
+		#navbar-main{
+			.slide-feature-hidden() !important;
 		}
 	}
 
@@ -49,8 +46,10 @@
 		.slide-feature-pagination {
 			display: block;
 		}
+		.progress-bar-row {
+			.slide-feature-hidden() !important;
+		}
 	}
-
 }
 .car.moreInfoVisible {
 

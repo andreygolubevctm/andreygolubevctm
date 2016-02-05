@@ -27,6 +27,12 @@
 
 
 	// Add your slide feature to the particular step that it needs to be visible
+	&[data-step="start"] {
+		#navbar-main{
+			.slide-feature-hidden() !important;
+		}
+	}
+
 	&[data-step="results"] {
 		//put the sorting/filtering bar here to be shown once it exists.
 		.slide-feature-back,
@@ -37,6 +43,9 @@
 
 		.sortbar-container {
 			display: block;
+		}
+		.progress-bar-row {
+			.slide-feature-hidden() !important;
 		}
 
 		@media screen and (@sm) {

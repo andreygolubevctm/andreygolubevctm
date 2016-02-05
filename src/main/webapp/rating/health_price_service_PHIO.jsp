@@ -39,7 +39,20 @@
 <c:set var="savedTransactionId"><x:out select="$healthXML/request/header/retrieve/transactionId" /></c:set>
 <c:set var="productTitleSearch"><x:out select="$healthXML/request/header/productTitleSearch" escapeXml="false" /></c:set>
 <c:set var="productTitle"><x:out select="$healthXML/request/header/productTitle" escapeXml="false" /></c:set>
+<c:set var="situationFilter"><x:out select="$healthXML/request/details/situationFilter" /></c:set>
 
+<c:set var="currentJourney"><x:out select="$healthXML/request/header/currentJourney" /></c:set>
+<c:choose>
+	<c:when test="${!isSimples && currentJourney ne 12}">
+		<c:set var="situationFilter" value="none" />
+	</c:when>
+	<c:when test="${situationFilter eq 'Y'}">
+		<c:set var="situationFilter" value="Y" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="situationFilter" value="N" />
+	</c:otherwise>
+</c:choose>
 <%-- Unencode apostrophes --%>
 <c:set var="apos">'</c:set>
 <c:set var="productTitle" value="${fn:replace(productTitle, '&#039;', apos)}" />
@@ -76,6 +89,7 @@ ${healthPriceRequest.setSavedTransactionId(savedTransactionId)}
 ${healthPriceRequest.setOnResultsPage(onResultsPage)}
 ${healthPriceRequest.setPreferences(preferences)}
 ${healthPriceRequest.setBrandFilter(brandFilter)}
+${healthPriceRequest.setSituationFilter(situationFilter)}
 
 ${healthPriceService.setHealthPriceRequest(healthPriceRequest)}
 

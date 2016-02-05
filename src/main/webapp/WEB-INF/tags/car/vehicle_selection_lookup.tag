@@ -55,6 +55,10 @@
 				<field_v1:hidden xpath="${xpath}/marketValue"></field_v1:hidden>
 				<field_v1:hidden xpath="${xpath}/variant"></field_v1:hidden>
 			</form_v2:row>
+
+			<form_v2:row label="What is the color of the car?" id="${name}_colourRow" className="hidden">
+				<field_v2:general_select xpath="${xpath}/colour" title="colour" required="true" initialText="&nbsp;" />
+			</form_v2:row>
 		</form_v2:fieldset>
 	</jsp:body>
 </form_v2:fieldset_columns>

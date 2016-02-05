@@ -36,9 +36,9 @@
 
 				<div class="row">
 					<div class="col-xs-12">
-						{{ if(promo.promoText) { }}
+						{{ if((obj.promo && promo.promoText) || (obj.promotion && promotion.specialOffer.summary)) { }}
 						<h2 class="text-hospital">Promotions &amp; Offers</h2>
-						{{= promo.promoText }}
+						{{= obj.promo ? promo.promoText : promotion.specialOffer.summary }}
 						{{ } }}
 
 						{{ if(!about) { className="displayNone"; }  else { className="displayBlock"; } }}
@@ -70,7 +70,7 @@
 					<p>Thanks for comparing with <content:get key="brandDisplayName"/>. If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></strong>.
 						{{ } else if( whatsNext ) { }}
 					<h2>Success!</h2>
-					<p>Your health insurance application is complete and has been submitted to {{= info.providerName }} for processing. Thanks for comparing with <content:get key="brandDisplayName"/>.</p>
+					<p>Your health insurance application is complete and has been submitted to {{= info.providerName ? info.providerName : info.fundName }} for processing. Thanks for comparing with <content:get key="brandDisplayName"/>.</p>
 					<p>If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></strong>.
 					{{ } }}
 				</ui:bubble>
@@ -85,7 +85,7 @@
 						{{ obj.htmlString = htmlTemplate(obj); }}
 						{{= htmlString }}
 
-						<h1 class="productName">{{= info.productTitle }}</h1>
+						<h1 class="productName">{{= info.title ? info.title : info.productTitle }}</h1>
 					</div>
 
 				</div>
@@ -98,7 +98,7 @@
 					We will be in contact with you should we require further information to complete your application. Once your application has been completed you will receive a confirmation email. If you have any questions about your purchased policy call us on: <span class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></span>
 				</p>
 				{{ } else if( whatsNext ) { }}
-				<h2 class="text-hospital">Your application has been submitted to {{= info.providerName }} for processing. This is what happens next...</h2>
+				<h2 class="text-hospital">Your application has been submitted to {{= info.providerName ? info.providerName : info.fundName }} for processing. This is what happens next...</h2>
 				{{= whatsNext }}
 				{{ } }}
 
@@ -110,10 +110,10 @@
 
 						{{ if(hospitalCover.inclusions.length > 0) { }}
 						<h2 class="text-hospital">Hospital Benefits</h2>
-						{{ if(promo.hospitalPDF) { }}
+							{{ if((obj.promo && promo.hospitalPDF) || (obj.promotion && promotion.hospitalPDF)) { }}
 						<div class="brochureLinks">
 							<p>
-								<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download">Download Hospital Brochure</a>
+								<a href="${pageSettings.getBaseUrl()}{{= obj.promo ? promo.hospitalPDF : promotion.hospitalPDF }}" target="_blank" class="btn btn-download">Download Hospital Brochure</a>
 							</p>
 						</div>
 						{{ } }}
@@ -144,10 +144,10 @@
 					<div class="col-xs-6">
 						{{ if(extrasCover.inclusions.length > 0) { }}
 						<h2 class="text-extras">Extras Benefits</h2>
-						{{ if(promo.extrasPDF) { }}
+							{{ if((obj.promo && promo.extrasPDF) || (obj.promotion && promotion.extrasPDF)) { }}
 						<div class="brochureLinks">
 							<p>
-								<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-download">Download Extras Brochure</a>
+								<a href="${pageSettings.getBaseUrl()}{{= obj.promo ? promo.extrasPDF : promotion.extrasPDF }}" target="_blank" class="btn btn-download">Download Extras Brochure</a>
 							</p>
 						</div>
 						{{ } }}

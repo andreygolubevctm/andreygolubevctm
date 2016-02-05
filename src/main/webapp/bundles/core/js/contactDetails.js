@@ -352,12 +352,12 @@
 
 				if(fieldDetails.type === "flexiPhone" && typeof laterFieldDetails.$otherField !== "undefined") {
 					var flexiNumber = updatedElementValue.replace(/\D/g, "");
-					if (flexiNumber.match(/^(04|614|6104)/g)) {
-						$fieldElement.val(updatedElementValue).change();
-						laterFieldDetails.$otherField.val("").change();
-					} else {
-						laterFieldDetails.$otherField.val(updatedElementValue).change();
-						$fieldElement.val("").change();
+					if (flexiNumber.match(/^04/g)) { // Mobile
+						$fieldElement.val(meerkat.modules.phoneFormat.cleanNumber(updatedElementValue));
+						laterFieldDetails.$otherField.val("");
+					} else {// Other
+						laterFieldDetails.$otherField.val(meerkat.modules.phoneFormat.cleanNumber(updatedElementValue));
+						$fieldElement.val("");
 					}
 				}
 
@@ -371,7 +371,7 @@
 					} else if(fieldDetails.type === "alternatePhone"  && typeof laterFieldDetails.$otherField !== "undefined") {
 						var testableNumber = updatedElementValue.replace(/\D/g, "");
 						if(testableNumber.match(/^(04|614|6104)/g)) {
-							$fieldElement.val(updatedElementValue);
+							$fieldElement.val(testableNumber);
 						} else {
 							laterFieldDetails.$otherField.val(updatedElementValue);
 						}
