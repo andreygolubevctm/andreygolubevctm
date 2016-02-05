@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static java.util.Collections.singletonList;
@@ -41,9 +42,12 @@ import static java.util.Collections.singletonList;
 @RestController
 @RequestMapping("/rest/simples/blacklist")
 public class BlacklistController {
-    public static final String ADD = "/add.json";
     private static final String INSERT_RECORDS_URL = "${wsUrl}/InsertRecords";
     private static final Logger LOGGER = LoggerFactory.getLogger(BlacklistController.class);
+
+    public static final String ADD = "/add.json";
+    public static final int DELAY = 500;
+    public static final int ATTEMPTS = 2;
 
     private SimplesBlacklistService simplesBlacklistService = new SimplesBlacklistService();
 
@@ -103,7 +107,11 @@ public class BlacklistController {
                 .url(url)
                 .build();
 
-        return blacklistClient.post(settings).retry(1);
+        return blacklistClient.post(settings).retryWhen(this::retryWithDelay);
+    }
+
+    private Observable<? extends Throwable> retryWithDelay(final Observable<? extends Throwable> attempt) {
+        return attempt.zipWith(Observable.range(1, ATTEMPTS), (a, n) -> a).delay(DELAY, TimeUnit.MILLISECONDS);
     }
 
     private void addPhone(final Insert insert, final String phone) {
