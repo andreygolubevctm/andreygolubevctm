@@ -84,11 +84,6 @@
 		</form_v2:fieldset>
 		<simples:dialogue id="26" vertical="health" mandatory="true" />
 		<form_v2:fieldset legend="Rebate">
-			<c:set var="fieldXpath" value="${xpath}/rebate" />
-			<form_v3:row label="Do you want to reduce your premium by applying your rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
-				<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate"/>
-			</form_v3:row>
-
 			<c:set var="fieldXpath" value="${xpath}/dependants" />
 			<form_v3:row label="How many dependent children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants">
 				<field_v2:count_select xpath="${fieldXpath}" max="12" min="1" title="number of dependants" required="true"  className="${name}_health_cover_dependants dependants"/>
@@ -107,6 +102,11 @@
 				<span class="fieldrow_legend" id="${name}_incomeMessage"></span>
 				<c:set var="income_label_xpath" value="${xpath}/incomelabel" />
 				<input type="hidden" name="${go:nameFromXpath(xpath)}_incomelabel" id="${go:nameFromXpath(xpath)}_incomelabel" value="${data[income_label_xpath]}" />
+			</form_v3:row>
+
+			<c:set var="fieldXpath" value="${xpath}/rebate" />
+			<form_v3:row label="Would you like to receive the rebate as?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
+				<field_v2:array_radio items="Y=Discount on premium,N=Part of tax refund" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate"/>
 			</form_v3:row>
 
 			<%-- Override set in splittest_helper tag --%>

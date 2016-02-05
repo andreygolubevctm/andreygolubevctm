@@ -68,30 +68,6 @@
 					<field_v2:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="reason you are looking to quote" />
 				</form_v2:row>
 
-				<%-- Moved from details page. To keep the same xpath we have to manually setup them again --%>
-				<c:set var="xpath_hlthcvr" value="${pageSettings.getVerticalCode()}/healthCover" />
-				<c:set var="name_hlthcvr" value="${go:nameFromXpath(xpath_hlthcvr)}" />
-				<c:set var="name" value="${go:nameFromXpath(xpath)}" />
-
-
-				<c:set var="fieldXpath" value="${xpath_hlthcvr}/primary/dob" />
-				<form_v2:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
-					<field_v2:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
-				</form_v2:row>
-
-				<c:set var="fieldXpath" value="${xpath_hlthcvr}/primary/cover" />
-				<form_v2:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name_hlthcvr}_primaryCover">
-					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="if you currently hold private health insurance" required="true" id="${name_hlthcvr}_health_cover"/>
-				</form_v2:row>
-
-				<%-- Medicare card question --%>
-				<c:if test="${callCentre}">
-					<c:set var="fieldXpath" value="${xpath}/cover" />
-					<form_v2:row label="Do all people to be covered on this policy have a green or blue Medicare card?" fieldXpath="${fieldXpath}" className="health_situation_medicare">
-						<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='Unfortunately we cannot continue with your quote'" />
-					</form_v2:row>
-				</c:if>
-
 				</form_v2:fieldset>
 
 				<simples:dialogue id="22" vertical="health" />
