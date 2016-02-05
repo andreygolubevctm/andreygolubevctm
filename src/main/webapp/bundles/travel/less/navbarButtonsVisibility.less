@@ -25,11 +25,13 @@
 		}
 	}
 
-
-	// Add your slide feature to the particular step that it needs to be visible
-	&[data-step="start"] {
-		#navbar-main{
-			.slide-feature-hidden() !important;
+	@media (@sm) {
+		// Add your slide feature to the particular step that it needs to be visible
+		&[data-step="start"] {
+			#navbar-main,
+			.nav .slide-feature-back {
+				.slide-feature-hidden() !important;
+			}
 		}
 	}
 
