@@ -16,13 +16,10 @@ import java.util.ArrayList;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-// TODO: Auto-generated Javadoc
 
 /**
- * The Class Data.
+ * class to map legacy Data object to a class using reflection
  *
- * @author aransom
- * @version 1.0
  */
 
 public class DataParser  {
@@ -120,35 +117,28 @@ public class DataParser  {
 		try {
 			valueOf = type.getMethod("valueOf", String.class);
 		} catch ( ReflectiveOperationException e) {
-			// all good;
+			// all good just means there is no valueOf method;
 		}
 		try {
-			if( type == Integer.class){
-				value =  !param.isEmpty() ? new Integer(param) : null;
-			} else if( type == int.class ){
+			if( type == int.class ){
 				value =  param != null && !param.isEmpty() ? Integer.parseInt(param) : 0;
-			}else if( type == float.class  || type == Float.class){
+			}else if( type == float.class ){
 				value =  Float.parseFloat(param);
-			}else if( type == long.class  || type == Long.class){
+			}else if( type == long.class  ){
 				value =  Long.parseLong(param);
-			}else if( type == BigDecimal.class){
+			}else if( type.equals(BigDecimal.class)){
 				value =  new BigDecimal(param);
 			} else if( type == String.class){
 				value =  param;
-			} else if(valueOf != null){
-				try {
-					value = valueOf.invoke(null, param);
-				} catch ( ReflectiveOperationException e) {
-					// ignore
-				}
+			} else if(valueOf != null && valueOf.getReturnType().equals(type)
+					&& ((valueOf.getModifiers() & java.lang.reflect.Modifier.STATIC) != 0)){
+				value = valueOf.invoke(null, param);
 			} else if( type == LocalDate.class) {
 				value = LocalDate.parse(param, DATE_TIME_FORMATTER);
 			}
 
-		} catch(Exception ne){
-			if(type!=null){
-				throw new NumberFormatException("the type of " + type.getName()+"."+value +" is '"+ type.getName() + "' which is not suitable for value '"+value+"'");
-			}
+		} catch(Exception e){
+			LOGGER.warn("Failed to map object . {}" , e);
 		}
 		return value;
 	}
