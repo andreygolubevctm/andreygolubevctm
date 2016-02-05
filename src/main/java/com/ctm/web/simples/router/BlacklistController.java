@@ -72,7 +72,7 @@ public class BlacklistController {
 
         if(outcome.map(s -> s.equals("success")).orElse(false) && StringUtils.equalsIgnoreCase("phone", channel)) {
             insertIntoBlacklistCampaign(inInConfig.getWsPrimaryUrl(), value)
-                .onErrorResumeNext(throwable -> failover(throwable, inInConfig.getCicFalloverUrl(), value))
+                .onErrorResumeNext(throwable -> failover(throwable, inInConfig.getCicFailoverUrl(), value))
                 .toBlocking().first();
         }
         return new BlacklistOutcome(outcome.orElse(""));

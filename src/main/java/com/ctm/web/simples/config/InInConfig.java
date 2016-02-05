@@ -10,9 +10,9 @@ import java.util.Objects;
 @ConfigurationProperties(prefix="ctm.web.simples.inin")
 public class InInConfig {
     @NotNull private String wsPrimaryUrl;
-    @NotNull private String wsFalloverUrl;
+    @NotNull private String wsFailoverUrl;
     @NotNull private String cicPrimaryUrl;
-    @NotNull private String cicFalloverUrl;
+    @NotNull private String cicFailoverUrl;
     @NotNull private String cicApplicationName;
     @NotNull private String cicUserId;
     @NotNull private String cicPassword;
@@ -30,12 +30,12 @@ public class InInConfig {
         return this;
     }
 
-    public String getWsFalloverUrl() {
-        return wsFalloverUrl;
+    public String getWsFailoverUrl() {
+        return wsFailoverUrl;
     }
 
-    public InInConfig setWsFalloverUrl(final String wsFalloverUrl) {
-        this.wsFalloverUrl = wsFalloverUrl;
+    public InInConfig setWsFailoverUrl(final String wsFailoverUrl) {
+        this.wsFailoverUrl = wsFailoverUrl;
         return this;
     }
 
@@ -48,12 +48,12 @@ public class InInConfig {
         return this;
     }
 
-    public String getCicFalloverUrl() {
-        return cicFalloverUrl;
+    public String getCicFailoverUrl() {
+        return cicFailoverUrl;
     }
 
-    public InInConfig setCicFalloverUrl(final String cicFalloverUrl) {
-        this.cicFalloverUrl = cicFalloverUrl;
+    public InInConfig setCicFailoverUrl(final String cicFailoverUrl) {
+        this.cicFailoverUrl = cicFailoverUrl;
         return this;
     }
 
@@ -126,9 +126,9 @@ public class InInConfig {
         if (o == null || getClass() != o.getClass()) return false;
         final InInConfig that = (InInConfig) o;
         return Objects.equals(wsPrimaryUrl, that.wsPrimaryUrl) &&
-                Objects.equals(wsFalloverUrl, that.wsFalloverUrl) &&
+                Objects.equals(wsFailoverUrl, that.wsFailoverUrl) &&
                 Objects.equals(cicPrimaryUrl, that.cicPrimaryUrl) &&
-                Objects.equals(cicFalloverUrl, that.cicFalloverUrl) &&
+                Objects.equals(cicFailoverUrl, that.cicFailoverUrl) &&
                 Objects.equals(cicApplicationName, that.cicApplicationName) &&
                 Objects.equals(cicUserId, that.cicUserId) &&
                 Objects.equals(cicPassword, that.cicPassword) &&
@@ -140,16 +140,16 @@ public class InInConfig {
 
     @Override
     public int hashCode() {
-        return Objects.hash(wsPrimaryUrl, wsFalloverUrl, cicPrimaryUrl, cicFalloverUrl, cicApplicationName, cicUserId, cicPassword, campaignName, expiry, defaultT1, defaultT2);
+        return Objects.hash(wsPrimaryUrl, wsFailoverUrl, cicPrimaryUrl, cicFailoverUrl, cicApplicationName, cicUserId, cicPassword, campaignName, expiry, defaultT1, defaultT2);
     }
 
     @Override
     public String toString() {
         return "InInConfig{" +
                 "wsPrimaryUrl='" + wsPrimaryUrl + '\'' +
-                ", wsFalloverUrl='" + wsFalloverUrl + '\'' +
+                ", wsFailoverUrl='" + wsFailoverUrl + '\'' +
                 ", cicPrimaryUrl='" + cicPrimaryUrl + '\'' +
-                ", cicFalloverUrl='" + cicFalloverUrl + '\'' +
+                ", cicFailoverUrl='" + cicFailoverUrl + '\'' +
                 ", cicApplicationName='" + cicApplicationName + '\'' +
                 ", cicUserId='" + cicUserId + '\'' +
                 ", cicPassword='" + cicPassword + '\'' +
