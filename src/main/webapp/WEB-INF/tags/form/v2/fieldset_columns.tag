@@ -6,6 +6,7 @@
 <%@ attribute name="sideHidden" 		required="false" 	rtexprvalue="false" 	description="Hide the side column when collapsing to XS" %>
 <%@ attribute name="sideAbove" 			required="false" 	rtexprvalue="false" 	description="Enable to render the fieldset-column-side above the main area in XS instead of below by default, and use pull classes to make it look normal in all larger breakpoints" %>
 <%@ attribute name="displayFullWidth" 	required="false"	rtexprvalue="true"	 	description="Determine's whether or not to have these columns display full width" %>
+<%@ attribute name="force4ColSide"		required="false"	rtexprvalue="true"	 	description="Fix for width of right panel in new layout" %>
 
 <div class="row">
 <c:if test="${empty sideAbove}">
@@ -13,15 +14,20 @@
 		<jsp:doBody />
 	</div>
 </c:if>
-<c:if test="${ empty displayFullWidth or displayFullWidth eq false}">
+<c:if test="${empty force4ColSide and (empty displayFullWidth or displayFullWidth eq false)}">
 	<%--The below isnt formatted nicely for readability (on separate lines) because we want the --%>
 	<%--fragment to be empty (no whitespace) if its actually empty so we can hide it--%>
 	<div class="fieldset-column-side col-sm-3<c:if test="${not empty sideAbove}"> col-sm-push-9</c:if><c:if test="${not empty sideHidden}"> hidden-xs</c:if>"><jsp:invoke fragment="rightColumn" /></div>
 </c:if>
-<c:if test="${not empty sideAbove and empty displayFullWidth or displayFullWidth eq false}">
+<c:if test="${not empty sideAbove and (empty displayFullWidth or displayFullWidth eq false)}">
 	<div class="col-sm-8 col-sm-pull-4">
 		<jsp:doBody />
 	</div>
+</c:if>
+<c:if test="${not empty force4ColSide}">
+	<%--The below isnt formatted nicely for readability (on separate lines) because we want the --%>
+	<%--fragment to be empty (no whitespace) if its actually empty so we can hide it--%>
+	<div class="fieldset-column-side col-sm-4 hidden-xs"><jsp:invoke fragment="rightColumn" /></div>
 </c:if>
 
 </div>
