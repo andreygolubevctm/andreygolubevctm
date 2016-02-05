@@ -9,7 +9,8 @@ import java.util.Objects;
 @Component
 @ConfigurationProperties(prefix="ctm.web.simples.inin")
 public class InInConfig {
-    @NotNull private String wsUrl;
+    @NotNull private String wsPrimaryUrl;
+    @NotNull private String wsFalloverUrl;
     @NotNull private String cicPrimaryUrl;
     @NotNull private String cicFalloverUrl;
     @NotNull private String cicApplicationName;
@@ -20,12 +21,21 @@ public class InInConfig {
     @NotNull private String defaultT1;
     @NotNull private String defaultT2;
 
-    public String getWsUrl() {
-        return wsUrl;
+    public String getWsPrimaryUrl() {
+        return wsPrimaryUrl;
     }
 
-    public InInConfig setWsUrl(final String wsUrl) {
-        this.wsUrl = wsUrl;
+    public InInConfig setWsPrimaryUrl(final String wsPrimaryUrl) {
+        this.wsPrimaryUrl = wsPrimaryUrl;
+        return this;
+    }
+
+    public String getWsFalloverUrl() {
+        return wsFalloverUrl;
+    }
+
+    public InInConfig setWsFalloverUrl(final String wsFalloverUrl) {
+        this.wsFalloverUrl = wsFalloverUrl;
         return this;
     }
 
@@ -115,7 +125,8 @@ public class InInConfig {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final InInConfig that = (InInConfig) o;
-        return Objects.equals(wsUrl, that.wsUrl) &&
+        return Objects.equals(wsPrimaryUrl, that.wsPrimaryUrl) &&
+                Objects.equals(wsFalloverUrl, that.wsFalloverUrl) &&
                 Objects.equals(cicPrimaryUrl, that.cicPrimaryUrl) &&
                 Objects.equals(cicFalloverUrl, that.cicFalloverUrl) &&
                 Objects.equals(cicApplicationName, that.cicApplicationName) &&
@@ -129,13 +140,14 @@ public class InInConfig {
 
     @Override
     public int hashCode() {
-        return Objects.hash(wsUrl, cicPrimaryUrl, cicFalloverUrl, cicApplicationName, cicUserId, cicPassword, campaignName, expiry, defaultT1, defaultT2);
+        return Objects.hash(wsPrimaryUrl, wsFalloverUrl, cicPrimaryUrl, cicFalloverUrl, cicApplicationName, cicUserId, cicPassword, campaignName, expiry, defaultT1, defaultT2);
     }
 
     @Override
     public String toString() {
         return "InInConfig{" +
-                "wsUrl='" + wsUrl + '\'' +
+                "wsPrimaryUrl='" + wsPrimaryUrl + '\'' +
+                ", wsFalloverUrl='" + wsFalloverUrl + '\'' +
                 ", cicPrimaryUrl='" + cicPrimaryUrl + '\'' +
                 ", cicFalloverUrl='" + cicFalloverUrl + '\'' +
                 ", cicApplicationName='" + cicApplicationName + '\'' +
