@@ -30,14 +30,18 @@ import rx.Observable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static java.util.Collections.singletonList;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @RestController
 @RequestMapping("/rest/simples/blacklist")
@@ -80,18 +84,29 @@ public class BlacklistController {
 
         if(outcome.map(s -> s.equals("success")).orElse(false) && StringUtils.equalsIgnoreCase("phone", channel)) {
             insertIntoBlacklistCampaign(inInConfig.getWsPrimaryUrl(), value)
-                .onErrorResumeNext(throwable -> failover(throwable, inInConfig.getCicFailoverUrl(), value))
+                .onErrorResumeNext(throwable -> failover(throwable, inInConfig.getWsFailoverUrl(), value))
                 .toBlocking().first();
         }
         return new BlacklistOutcome(outcome.orElse(""));
     }
 
     private Observable<String> failover(Throwable throwable, final String wsUrl, final String value) {
-        return isNotFound(throwable) ? insertIntoBlacklistCampaign(wsUrl, value) : Observable.error(throwable);
+        if (shouldFailover(throwable)) {
+            LOGGER.info("inserting into blacklist failed switching to failover");
+            insertIntoBlacklistCampaign(wsUrl, value);
+        }
+        return Observable.error(throwable);
     }
 
-    private boolean isNotFound(final Throwable throwable) {
-        return throwable instanceof HttpServerErrorException && ((HttpServerErrorException) throwable).getStatusCode() == HttpStatus.NOT_FOUND;
+    private boolean shouldFailover(Throwable throwable) {
+        return isServerExceptionOfStatus(throwable, SERVICE_UNAVAILABLE)
+                || isServerExceptionOfStatus(throwable, NOT_FOUND)
+                || throwable instanceof TimeoutException
+                || throwable instanceof UnknownHostException;
+    }
+
+    private boolean isServerExceptionOfStatus(final Throwable throwable, final HttpStatus httpStatus) {
+        return throwable instanceof HttpServerErrorException && ((HttpServerErrorException) throwable).getStatusCode() == httpStatus;
     }
 
     private Observable<String> insertIntoBlacklistCampaign(final String wsUrl, final String value) {
@@ -110,8 +125,13 @@ public class BlacklistController {
         return blacklistClient.post(settings).retryWhen(this::retryWithDelay);
     }
 
-    private Observable<? extends Throwable> retryWithDelay(final Observable<? extends Throwable> attempt) {
-        return attempt.zipWith(Observable.range(1, ATTEMPTS), (a, n) -> a).delay(DELAY, TimeUnit.MILLISECONDS);
+    private Observable<?> retryWithDelay(final Observable<? extends Throwable> attempt) {
+        return attempt
+                .zipWith(Observable.range(1, ATTEMPTS), (n, i) -> i)
+                .flatMap(n -> {
+                    LOGGER.info("Retrying request {}", kv("attempt", n));
+                    return Observable.timer(DELAY, TimeUnit.MILLISECONDS);
+                });
     }
 
     private void addPhone(final Insert insert, final String phone) {

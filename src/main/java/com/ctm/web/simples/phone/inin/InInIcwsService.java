@@ -20,13 +20,17 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import rx.Observable;
 
+import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Service
@@ -43,6 +47,8 @@ public class InInIcwsService {
 	private static final String QUEUE_SUBSCRIPTION_URL = "${cicUrl}/${sessionId}/messaging/subscriptions/queues/${subscriptionName}";
 	private static final String MESSAGES_URL = "${cicUrl}/${sessionId}/messaging/messages";
 	private static final String SECURE_PAUSE_URL = "${cicUrl}/${sessionId}/interactions/${interactionId}/secure-pause";
+	public static final int DELAY = 500;
+	public static final int ATTEMPTS = 2;
 
 	@Autowired private SerializationMappers jacksonMappers;
 	@Autowired InInConfig inInConfig;
@@ -61,16 +67,37 @@ public class InInIcwsService {
 
 	private Observable<PauseResumeResponse> securePause(final SecurePauseType securePauseType, final String agentUsername, final Optional<String> interactionId) {
 		return securePause(inInConfig.getCicPrimaryUrl(), securePauseType, agentUsername)
-				.onErrorResumeNext(t -> fallover(t, inInConfig.getCicFailoverUrl(), securePauseType, agentUsername))
+				.onErrorResumeNext(t -> failover(t, inInConfig.getCicFailoverUrl(), securePauseType, agentUsername))
 				.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable));
 	}
 
-	private Observable<PauseResumeResponse> fallover(Throwable throwable, final String cicUrl, final SecurePauseType securePauseType, final String agentUsername) {
-		return isServiceUnavailableError(throwable) ? securePause(inInConfig.getCicFailoverUrl(), securePauseType, agentUsername) : Observable.error(throwable);
+	private Observable<PauseResumeResponse> failover(Throwable throwable, final String cicUrl, final SecurePauseType securePauseType, final String agentUsername) {
+		if (shouldFailover(throwable)) {
+			LOGGER.info("securepause failed switching to failover");
+			return securePause(cicUrl, securePauseType, agentUsername);
+		}
+		return Observable.error(throwable);
 	}
 
-	private boolean isServiceUnavailableError(final Throwable throwable) {
-		return throwable instanceof HttpServerErrorException && ((HttpServerErrorException) throwable).getStatusCode() == HttpStatus.SERVICE_UNAVAILABLE;
+	private boolean shouldFailover(Throwable throwable) {
+		return isServerExceptionOfStatus(throwable, SERVICE_UNAVAILABLE)
+			|| isServerExceptionOfStatus(throwable, NOT_FOUND)
+			|| throwable instanceof TimeoutException
+			|| throwable instanceof UnknownHostException;
+	}
+
+	private boolean isServerExceptionOfStatus(final Throwable throwable, final HttpStatus httpStatus) {
+		return throwable instanceof HttpServerErrorException && ((HttpServerErrorException) throwable).getStatusCode() == httpStatus;
+	}
+
+	// TODO duplicated in ctm-leads, blacklist controller
+	private Observable<?> retryWithDelay(final Observable<? extends Throwable> attempt) {
+		return attempt
+				.zipWith(Observable.range(1, ATTEMPTS), (n, i) -> i)
+				.flatMap(n -> {
+					LOGGER.info("Retrying request {}", kv("attempt", n));
+					return Observable.timer(DELAY, TimeUnit.MILLISECONDS);
+				});
 	}
 
 	private Observable<PauseResumeResponse> securePause(final String cicUrl, final SecurePauseType securePauseType, final String agentUsername) {
@@ -88,6 +115,8 @@ public class InInIcwsService {
 										.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable))
 				);
 	}
+
+
 
 	private PauseResumeResponse handleSecurePauseError(final SecurePauseType securePauseType, final String agentUsername, final Throwable throwable) {
 		if (throwable instanceof HttpClientErrorException) {
@@ -122,7 +151,7 @@ public class InInIcwsService {
 			}
 		}
 
-		return connectionClient.postWithResponseEntity(settings);
+		return connectionClient.postWithResponseEntity(settings).retryWhen(this::retryWithDelay);
 	}
 
 	/**
@@ -149,7 +178,7 @@ public class InInIcwsService {
 			}
 		}
 
-		return queueSubscriptionClient.put(settings);
+		return queueSubscriptionClient.put(settings).retryWhen(this::retryWithDelay);
 	}
 
 	private Observable<Message> getMessages(final String cicUrl, final ResponseEntity<ConnectionResp> connectionResp) {
@@ -163,7 +192,7 @@ public class InInIcwsService {
 				.response(new ParameterizedTypeReference<List<Message>>() {})
 				.url(url)
 				.build();
-		return messageClient.get(settings).flatMap(Observable::<Message>from);
+		return messageClient.get(settings).flatMap(Observable::<Message>from).retryWhen(this::retryWithDelay);
 	}
 
 	private Observable<String> getInteractionId(final String cicUrl, final ResponseEntity<ConnectionResp> connectionResp) {
@@ -207,7 +236,7 @@ public class InInIcwsService {
 				.response(String.class)
 				.url(url)
 				.build();
-		return securePauseClient.post(settings);
+		return securePauseClient.post(settings).retryWhen(this::retryWithDelay);
 	}
 
 	private String createQueueSubscriptionUrl(final String cicUrl, final String sessionId, final String subscriptionName) {
