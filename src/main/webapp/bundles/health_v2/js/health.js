@@ -126,8 +126,8 @@
 			},
 			onInitialise: function onStartInit(event){
 
-
 				meerkat.modules.jqueryValidate.initJourneyValidator();
+				meerkat.modules.healthLHCRebate.initHealthLHCRebate();
 
 				if(meerkat.site.choices) {
 					healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
@@ -525,9 +525,6 @@
 				}
 			},
 			onAfterEnter: function afterEnterApplyStep(event){
-				if(event.isForward === true) {
-					meerkat.modules.healthCoverDetails.showModal('journey-mode');
-				}
 
 				// show edit button in policy summary side bar
 				$(".policySummaryContainer").find('.footer').removeClass('hidden');
