@@ -198,7 +198,7 @@
 						rank_productId: "productId",
 						rank_premium: "price.annualPremium"
 					},
-					filterUnavailableProducts: false
+					filterUnavailableProducts: true
 				},
 				incrementTransactionId: false
 			});
