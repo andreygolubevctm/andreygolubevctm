@@ -2,20 +2,21 @@ package com.ctm.web.simples.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.settings.PageSettings;
-import com.ctm.web.simples.model.CallInfo;
 import com.ctm.web.core.model.Role;
 import com.ctm.web.core.model.Rule;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.simples.model.CallInfo;
 import com.ctm.web.simples.model.User;
 import com.ctm.web.simples.phone.verint.CtiPhoneService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

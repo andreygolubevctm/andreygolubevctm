@@ -2,22 +2,22 @@ package com.ctm.web.simples.phone.verint;
 
 import com.ctm.web.core.connectivity.JsonConnection;
 import com.ctm.web.core.connectivity.SimpleConnection;
-import com.ctm.web.core.services.QuoteService;
-import com.ctm.web.simples.dao.InboundPhoneNumberDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.EnvironmentException;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
-import com.ctm.web.simples.model.CallInfo;
-import com.ctm.web.simples.model.InboundPhoneNumber;
+import com.ctm.web.core.services.QuoteService;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.core.web.go.xml.XmlParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.ctm.web.simples.dao.InboundPhoneNumberDao;
+import com.ctm.web.simples.model.CallInfo;
+import com.ctm.web.simples.model.InboundPhoneNumber;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import java.util.IllegalFormatException;
