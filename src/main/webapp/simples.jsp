@@ -27,6 +27,14 @@
 	</c:otherwise>
 </c:choose>
 
+<%-- Check for 'launcher' params (querystring params passed to us from InIn dialler software) --%>
+<c:if test="${param.launchTranId != ''}">
+	<c:set var="launcherQuerystring">
+		<c:out value="?launchTranId=${go:urlEncode(param.launchTranId)}" />
+	</c:set>
+	<c:set var="ininInteractionId" value="${param.launchInteractionId}" scope="session" />
+</c:if>
+
 
 
 <c:choose>
@@ -43,7 +51,7 @@
 			<jsp:body>
 						<simples:menu_bar bridgeToLive="N" />
 
-						<iframe id="simplesiframe" name="simplesiframe" width="100%" height="200" src="${assetUrl}simples/home.jsp"></iframe>
+						<iframe id="simplesiframe" name="simplesiframe" width="100%" height="200" src="${assetUrl}simples/home.jsp${launcherQuerystring}"></iframe>
 
 						<simples:template_comments />
 						<simples:template_messageaudit />
