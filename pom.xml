@@ -610,6 +610,220 @@
                 </plugins>
             </build>
         </profile>
+
+        <profile>
+            <id>embedded-tomcat7-run</id>
+            <properties>
+                <cargo.maven.containerUrl>http://nexusctm.budgetdirect.com.au/content/repositories/central/org/apache/tomcat/tomcat/${tomcat.version}/tomcat-${tomcat.version}.zip</cargo.maven.containerUrl>
+                <javaagent.args></javaagent.args>
+                <!--<cargo.maven.containerId>tomcat7x</cargo.maven.containerId> defined in developer-properties profile -->
+                <!--<javaagent.args>-javaagent:${project.build.directory}/embedded_jars/springloaded.jar -noverify</javaagent.args>-->
+            </properties>
+            <build>
+                <plugins>
+                    <!-- Pull down jars for tomcat7 embedded run -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-deps</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>mysql</groupId>
+                                            <artifactId>mysql-connector-java</artifactId>
+                                            <version>${mysql.connector.version}</version>
+                                            <type>jar</type>
+                                            <overWrite>true</overWrite>
+                                            <destFileName>mysql-connector-java.jar</destFileName>
+                                        </artifactItem>
+                                        <!--artifactItem>
+                                            <groupId>org.springframework</groupId>
+                                            <artifactId>springloaded</artifactId>
+                                            <version>1.2.5.RELEASE</version>
+                                            <type>jar</type>
+                                            <overWrite>true</overWrite>
+                                            <destFileName>springloaded.jar</destFileName>
+                                        </artifactItem-->
+                                    </artifactItems>
+                                    <outputDirectory>${project.build.directory}/embedded_jars</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Override packaging, skip it. Just build exploded war -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-war</id>
+                                <goals>
+                                    <goal>war</goal>
+                                </goals>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>inplace-war</id>
+                                <goals>
+                                    <goal>exploded</goal>
+                                </goals>
+                                <phase>prepare-package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Skip springboot modifications -->
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <version>${spring-boot.version}</version>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+
+                            <!-- Override the default ctm context.xml -->
+                            <execution>
+                                <id>copy-tomcat-resources</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/${project.build.finalName}/META-INF</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/src/test/resources/embedded/tomcat7</directory>
+                                            <includes>
+                                                <include>context.xml</include>
+                                            </includes>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+
+                            <!--Create tomcat reload touch file -->
+                            <execution>
+                                <id>copy-touch-restart</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.basedir}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/src/test/resources/embedded</directory>
+                                            <includes>
+                                                <include>touch_restart.txt</include>
+                                            </includes>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Run exploded war under cargo -->
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <configuration>
+                            <container>
+                                <containerId>${cargo.maven.containerId}</containerId>
+                                <zipUrlInstaller>
+                                    <url>${cargo.maven.containerUrl}</url>
+                                </zipUrlInstaller>
+                                <systemProperties>
+                                    <spring.profiles.active>LOCALHOST</spring.profiles.active>
+
+                                    <nxi.db.username>${nxi.db.username}</nxi.db.username>
+                                    <nxi.db.password>${nxi.db.password}</nxi.db.password>
+
+                                    <https.proxyHost>192.168.1.111</https.proxyHost>
+                                    <https.proxyPort>8080</https.proxyPort>
+                                    <https.proxyUser>ittest</https.proxyUser>
+                                    <https.proxyPassword>1tt3st</https.proxyPassword>
+
+                                    <http.proxyHost>192.168.1.111</http.proxyHost>
+                                    <http.proxyPort>8080</http.proxyPort>
+                                    <http.proxyUser>ittest</http.proxyUser>
+                                    <http.proxyPassword>1tt3st</http.proxyPassword>
+                                    <http.nonProxyHosts>*.ecommerce.disconline.com.au|*.captaincompare.com.au|*.intranet|localhost|127.0.0.1</http.nonProxyHosts>
+                                </systemProperties>
+                            </container>
+
+                            <configuration>
+                                <type>existing</type>
+                                <home>${project.build.directory}/cargo/installs/tomcat-${tomcat.version}/apache-tomcat-${tomcat.version}</home>
+                                <properties>
+                                    <catalina.servlet.uriencoding>UTF-8</catalina.servlet.uriencoding> <!-- -->
+                                    <cargo.jvmargs>${javaagent.args} -Xmx2048M -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005</cargo.jvmargs>
+                                </properties>
+
+                                <!-- Inject text files here -->
+                                <configfiles>
+                                    <configfile>
+                                        <file>${project.basedir}/src/test/resources/embedded/tomcat7/conf/logging.properties</file>
+                                        <todir>conf/</todir>
+                                        <tofile>logging.properties</tofile>
+                                    </configfile>
+                                    <configfile>
+                                        <file>${project.basedir}/src/test/resources/embedded/tomcat7/conf/tomcat-users.xml</file>
+                                        <todir>conf/</todir>
+                                        <tofile>tomcat-users.xml</tofile>
+                                    </configfile>
+                                    <configfile>
+                                        <file>${project.basedir}/src/test/resources/embedded/tomcat7/conf/web.xml</file>
+                                        <todir>conf/</todir>
+                                        <tofile>web.xml</tofile>
+                                    </configfile>
+                                    <configfile>
+                                        <file>${project.basedir}/src/test/resources/embedded/tomcat7/conf/logging.properties</file>
+                                        <todir>conf/</todir>
+                                        <tofile>logging.properties</tofile>
+                                    </configfile>
+                                </configfiles>
+
+                                <!-- Inject binaries files here -->
+                                <files>
+                                    <configfile>
+                                        <file>${project.build.directory}/embedded_jars/mysql-connector-java.jar</file>
+                                        <todir>lib/</todir>
+                                        <tofile>mysql-connector-java.jar</tofile>
+                                    </configfile>
+                                </files>
+
+                            </configuration>
+
+                            <deployables>
+                                <deployable>
+                                    <type>war</type>
+                                    <properties>
+                                        <context>${project.artifactId}</context>
+                                    </properties>
+                                    <location>${project.basedir}/target/${project.artifactId}-${project.version}</location>
+                                </deployable>
+                            </deployables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <build>
@@ -814,173 +1028,11 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- Pull down springloaded for tomcat7 plugin running -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-springloaded</id>
-                        <phase>none</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.springframework</groupId>
-                                    <artifactId>springloaded</artifactId>
-                                    <version>1.2.4.RELEASE</version>
-                                    <type>jar</type>
-                                    <overWrite>true</overWrite>
-                                    <destFileName>springloaded.jar</destFileName>
-                                </artifactItem>
-                            </artifactItems>
-                            <outputDirectory>${project.build.directory}/springloaded</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <executions>
-                    <execution>
-                        <id>tomcat7-run</id>
-                        <phase>none</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <additionalConfigFilesDir>${project.basedir}/src/test/resources/embedded/tomcat7/conf</additionalConfigFilesDir>
-                    <backgroundProcessorDelay>2</backgroundProcessorDelay>
-                    <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
-                    <contextFile>${project.basedir}/src/test/resources/embedded/tomcat7/context.xml</contextFile>
-                    <port>8080</port>
-                    <systemProperties>
-                        <nxi.db.username>${nxi.db.username}</nxi.db.username>
-                        <nxi.db.password>${nxi.db.password}</nxi.db.password>
-                        <spring.profiles.active>LOCALHOST</spring.profiles.active>
-
-                        <https.proxyHost>192.168.1.111</https.proxyHost>
-                        <https.proxyPort>8080</https.proxyPort>
-                        <https.proxyUser>ittest</https.proxyUser>
-                        <https.proxyPassword>1tt3st</https.proxyPassword>
-
-                        <http.proxyHost>192.168.1.111</http.proxyHost>
-                        <http.proxyPort>8080</http.proxyPort>
-                        <http.proxyUser>ittest</http.proxyUser>
-                        <http.proxyPassword>1tt3st</http.proxyPassword>
-                        <http.nonProxyHosts>*.ecommerce.disconline.com.au|*.captaincompare.com.au|*.intranet|localhost|127.0.0.1</http.nonProxyHosts>
-                    </systemProperties>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.tomcat.embed</groupId>
-                        <artifactId>tomcat-embed-core</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-util</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-coyote</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-api</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-jdbc</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-dbcp</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-servlet-api</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-jsp-api</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-jasper</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-jasper-el</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-el-api</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-catalina</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-tribes</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-catalina-ha</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-annotations-api</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat-juli</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat.embed</groupId>
-                        <artifactId>tomcat-embed-logging-juli</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.tomcat.embed</groupId>
-                        <artifactId>tomcat-embed-logging-log4j</artifactId>
-                        <version>${tomcat.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>${mysql.connector.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <executions>
+                    <!-- Start gulp js processor in foreground -->
                     <execution>
                         <id>start-gulp</id>
                         <goals>
@@ -995,6 +1047,8 @@
                             <workingDirectory>${project.basedir}/scripts</workingDirectory>
                         </configuration>
                     </execution>
+
+                    <!-- Start tomcat7 server in foreground -->
                     <execution>
                         <id>start-tomcat7</id>
                         <goals>
@@ -1003,6 +1057,19 @@
                         <phase>none</phase>
                         <configuration>
                             <executable>${project.basedir}/scripts/start_tomcat7.bat</executable>
+                            <workingDirectory>${project.basedir}/scripts</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <!-- Build project from scratch and start tomcat7 server in foreground -->
+                    <execution>
+                        <id>build-tomcat7</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>none</phase>
+                        <configuration>
+                            <executable>${project.basedir}/scripts/build_tomcat7.bat</executable>
                             <workingDirectory>${project.basedir}/scripts</workingDirectory>
                         </configuration>
                     </execution>
