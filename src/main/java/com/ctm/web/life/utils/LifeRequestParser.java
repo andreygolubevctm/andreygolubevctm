@@ -25,8 +25,6 @@ public class LifeRequestParser {
 	private static LifePerson parsePartner(Data data,
 										   String prefix) {
 		LifePerson.Builder lifePersonB = new LifePerson.Builder();
-		Insurance.Builder insuranceB = new Insurance.Builder();
-		lifePersonB.insurance(data.createObjectFromData(insuranceB.build() , prefix + "/insurance"));
 		LifePerson partner = lifePersonB.build();
 		data.createObjectFromData(partner, prefix);
 		return partner;
@@ -34,8 +32,6 @@ public class LifeRequestParser {
 
 	private static Primary parsePrimary(Data data, String prefix) {
 		Primary.Builder primaryBuilder = new Primary.Builder();
-		primaryBuilder.insurance(data.createObjectFromData(new PrimaryInsurance(), prefix + "/insurance"));
-		Primary pp = primaryBuilder.build();
 		Primary primary = primaryBuilder.build();
 		data.createObjectFromData(primary, prefix);
 		return primary;

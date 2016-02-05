@@ -8,6 +8,7 @@ import org.springframework.util.NumberUtils;
 import org.xml.sax.SAXException;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -330,34 +331,55 @@ public class Data extends XmlNode implements Comparable<Data> {
         Object node = get(xpath);
         if(node != null && node instanceof XmlNode) {
             ArrayList<XmlNode> childNodes = ((XmlNode) node).getChildren();
-            mapClass(object, c, childNodes);
+            mapClass(object, c, childNodes, xpath);
         }
 		return object;
 	}
 
-	private <T extends Object> void mapClass(T object, Class<? extends Object> c, ArrayList<XmlNode> childNodes) {
+	private <T extends Object> void mapClass(T object, Class<? extends Object> c, ArrayList<XmlNode> childNodes, String xpath) {
         for (Field field : c.getDeclaredFields()) {
-            String value = getValueFromDataBucket(field.getName(), childNodes);
-            if (value != null) {
-                callSetField(object, field, value);
+            String fieldName = field.getName();
+            XmlNode value = getValueFromDataBucket(fieldName, childNodes);
+            if(value != null && value.getChildren() != null && !value.getChildren().isEmpty()){
+                Constructor<?>[] constructors = field.getType().getDeclaredConstructors();
+                for(Constructor con : constructors){
+                    if(con.getParameterCount() == 0) {
+                        try {
+                            boolean isAccessible = con.isAccessible();
+                            con.setAccessible(true);
+                            Object fieldObject = con.newInstance(null);
+                            createObjectFromData(fieldObject, xpath + "/" + fieldName);
+                            setField(object, field, fieldObject);
+                            con.setAccessible(isAccessible);
+                        } catch (ReflectiveOperationException e) {
+                            LOGGER.warn("Failed to map {}", kv("xpath", xpath),  e);
+                        }
+                    }
+                }
+            }else if (value !=null && value.getText() != null) {
+                callSetField(object, field, value.getText());
             }
         }
         if( c.getSuperclass() != null) {
-            mapClass(object, c.getSuperclass(), childNodes);
+            mapClass(object, c.getSuperclass(), childNodes, xpath);
         }
+    }
+
+    private <T extends Object> void setField(T object, Field field, Object fieldObject) throws IllegalAccessException {
+        boolean fieldIsAccessible = field.isAccessible();
+        field.setAccessible(true);
+        field.set(object, fieldObject);
+        field.setAccessible(fieldIsAccessible);
     }
 
     private <T extends Object> void callSetField(Object object, Field field, String value) {
 		try {
-			boolean isAccessible = field.isAccessible();
-			field.setAccessible(true);
             Object convertedValue = convertValue(field.getType(), value);
             if(convertedValue != null) {
-                field.set(object, convertedValue);
+                setField(object, field, convertedValue);
             }
-			field.setAccessible(isAccessible);
 		} catch (IllegalAccessException | ParseException e)  {
-			e.printStackTrace();
+            LOGGER.warn("Failed to map {}", kv("field", field),  e);
 		}
 	}
 
@@ -399,10 +421,10 @@ public class Data extends XmlNode implements Comparable<Data> {
 	}
 
 
-	private String getValueFromDataBucket(String paramName, ArrayList<XmlNode> childNodes) {
+	private XmlNode getValueFromDataBucket(String paramName, ArrayList<XmlNode> childNodes) {
 		for(XmlNode node : childNodes){
 			if(node.getNodeName().equals(paramName)){
-				return node.getText();
+				return node;
 			}
 		}
 		return null;
