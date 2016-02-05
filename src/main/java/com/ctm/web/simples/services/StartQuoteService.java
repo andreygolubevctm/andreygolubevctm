@@ -35,7 +35,10 @@ public class StartQuoteService {
         InboundPhoneNumber phoneDetails = null;
         PageSettings pageSettings =  SettingsService.setVerticalAndGetSettingsForPage(request, StringUtils.isEmpty(verticalCode) ? "SIMPLES" : verticalCode.toUpperCase());
         try {
-            phoneDetails = CallCentreService.getInboundPhoneDetails(request);
+            // only get phone details when InIn is not enabled
+            if (!Boolean.valueOf(pageSettings.getSetting("inInEnabled"))) {
+                phoneDetails = CallCentreService.getInboundPhoneDetails(request);
+            }
         } catch (ConfigSettingException | RuntimeException e) {
             LOGGER.error("Error getting inbound phone details", e);
             response.sendRedirect(pageSettings.getBaseUrl()+"simples/selectBrand.jsp?verticalCode=" + verticalCode);

@@ -1,4 +1,4 @@
-package com.ctm.web.simples.services;
+package com.ctm.web.simples.phone.verint;
 
 import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.exceptions.ConfigSettingException;
@@ -17,9 +17,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class VerintService {
+public class VerintPauseResumeService {
 
-    private static final Logger logger = LoggerFactory.getLogger(VerintService.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(VerintPauseResumeService.class.getName());
 
     /**
      * Get Response from Verint' RIS (Recorder Integration Service) from either its Master or Slave (failover) server
@@ -61,7 +61,7 @@ public class VerintService {
      * @return
      * @throws ServiceException
      */
-    public String pauseResumeRecording(HttpServletRequest request,HttpServletResponse response,PageSettings settings) throws  ServletException {
+    public String pauseResumeRecording(HttpServletRequest request, PageSettings settings) throws  ServletException {
         XmlNode xmlNode;
         String result;
         try {

@@ -374,7 +374,6 @@ public class TransactionDetailsDao {
 					transactionDetail.setXPath(results.getString("xpath"));
 					transactionDetail.setTextValue(results.getString("textValue"));
 					transactionDetails.add(transactionDetail);
-					transactionDetails.add(transactionDetail);
 				}
 		} catch (SQLException | NamingException e) {
 			throw new DaoException(e);

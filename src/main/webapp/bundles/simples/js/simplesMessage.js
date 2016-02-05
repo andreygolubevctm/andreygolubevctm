@@ -24,6 +24,7 @@
 		$(document).ready(function() {
 
 			baseUrl = meerkat.modules.simples.getBaseUrl();
+			$messageDetailsContainer = $('.simples-message-details-container');
 
 			//
 			// Set up templates
@@ -65,12 +66,17 @@
 						$button.prop('disabled', false).removeClass('disabled');
 					});
 				});
+
+				// Check if Simples is being launched from the InIn dialler
+				var urlVars = getUrlVars();
+				if (urlVars.hasOwnProperty('launchTranId')) {
+					performLauncherSearch(urlVars['launchTranId']);
+				}
 			}
 
 			//
 			// Message details
 			//
-			$messageDetailsContainer = $('.simples-message-details-container');
 			var messageId = 0;
 			if ($messageDetailsContainer.length > 0) {
 				// Render
@@ -88,7 +94,24 @@
 				// Call buttons
 				$messageDetailsContainer.on('click', 'button[data-phone]', makeCall);
 			}
+
+			$('#simples-transaction-search-navbar').on('submit', function navbarSearchSubmit(event) {
+				event.preventDefault();
+				performLauncherSearch($(this).find(':input[name=keywords]').val());
+			});
 		});
+	}
+
+	// Read a page's GET URL variables and return them as an associative array.
+	function getUrlVars() {
+		var vars = [], hash;
+		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+		for(var i = 0; i < hashes.length; i++)
+		{
+			hash = hashes[i].split('=');
+			vars[hash[0]] = hash[1];
+		}
+		return vars;
 	}
 
 	function makeCall(event) {
@@ -151,6 +174,35 @@
 		});
 	}
 
+	function performLauncherSearch(searchTransactionId) {
+		if (searchTransactionId === false || searchTransactionId === '') return;
+
+		$messageDetailsContainer.html( meerkat.modules.loadingAnimation.getTemplate() );
+
+		return meerkat.modules.comms.get({
+			url: baseUrl + 'simples/transaction/get.json',
+			cache: false,
+			errorLevel: 'silent',
+			useDefaultErrorHandling: false,
+			data: {
+				transactionId: searchTransactionId
+			}
+		})
+		.done(function onSuccess(json) {
+			if (!json.hasOwnProperty('message')) {
+				$messageDetailsContainer.html( templateMessageDetail(json) );
+			}
+			else {
+				// Store the data and publish
+				setCurrentMessage(json);
+			}
+		})
+		.fail(function onError(obj, txt, errorThrown) {
+			var json = {"errors":[{"message": txt + ': ' + errorThrown}]};
+			$messageDetailsContainer.html( templateMessageDetail(json) );
+		});
+	}
+
 	function isMobile(value) {
 		var phoneRegex = new RegExp('^(0[45]{1}[0-9]{8})$');
 		return phoneRegex.test(value);
@@ -200,8 +252,13 @@
 		data = data || {};
 		data.messageId = currentMessage.message.messageId;
 
+		var url = baseUrl + 'simples/ajax/message_set_' + type + '.jsp';
+		if (type === 'postpone') {
+			url = baseUrl + 'spring/rest/simples/messages/setPostpone.json';
+		}
+
 		meerkat.modules.comms.post({
-			url: baseUrl + 'simples/ajax/message_set_' + type + '.jsp',
+			url: url,
 			dataType: 'json',
 			cache: false,
 			errorLevel: 'silent',
@@ -270,7 +327,8 @@
 		getCurrentMessage: getCurrentMessage,
 		setCurrentMessage: setCurrentMessage,
 		performFinish: performFinish,
-		renderMessageDetails: renderMessageDetails
+		renderMessageDetails: renderMessageDetails,
+		performLauncherSearch: performLauncherSearch
 	});
 
 })(jQuery);
