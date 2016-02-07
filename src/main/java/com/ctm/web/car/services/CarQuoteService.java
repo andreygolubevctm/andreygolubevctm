@@ -37,7 +37,7 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteRequest, CarResponse> {
+public class CarQuoteService extends CommonQuoteService<CarQuote> {
 
     private SessionDataServiceBean sessionDataServiceBean;
 

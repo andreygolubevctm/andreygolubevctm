@@ -11,9 +11,6 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.validation.Name;
-import com.ctm.web.simples.services.PhoneService;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +46,7 @@ public class CommonQuoteServiceTest {
     private SimpleConnection simpleConnection;
 
     @Mock
-    private ObjectMapper objectMapper;
+    private RestClient restClient;
 
     @Mock
     private ServiceConfiguration serviceConfiguration;
@@ -59,8 +56,10 @@ public class CommonQuoteServiceTest {
         initMocks(this);
         PowerMockito.mockStatic(ProviderService.class);
 
+
+
         EnvironmentService.setEnvironment("localhost");
-        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, objectMapper) {});
+        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, restClient) {});
     }
 
     @Test(expected = RouterException.class)
@@ -177,18 +176,19 @@ public class CommonQuoteServiceTest {
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
         when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
         when(simpleConnection.get(requestUrl)).thenReturn("response message");
-        when(objectMapper.readValue(anyString(), any(JavaType.class))).thenReturn(responseObject);
+//        when(objectMapper.readValue(anyString(), any(JavaType.class))).thenReturn(responseObject);
+        when(restClient.sendPOSTRequest(eq(quoteServiceProperties), eq(verticalType), eq(Endpoint.QUOTE), eq(Object.class), any())).thenReturn(responseObject);
 
-        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
+//        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
         doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
 
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);
 
         assertEquals(responseObject, response);
 
-        verify(quoteServiceProperties, times(1)).getServiceUrl();
-        verify(simpleConnection, times(1)).get("http://anyURL/quote");
-        verify(objectMapper, times(1)).readValue(eq("response message"), any(JavaType.class));
+//        verify(quoteServiceProperties, times(1)).getServiceUrl();
+//        verify(simpleConnection, times(1)).get("http://anyURL/quote");
+//        verify(objectMapper, times(1)).readValue(eq("response message"), any(JavaType.class));
 
     }
 
@@ -201,8 +201,9 @@ public class CommonQuoteServiceTest {
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
         when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
         when(simpleConnection.get(anyString())).thenReturn(null);
+        when(restClient.sendPOSTRequest(eq(quoteServiceProperties), eq(verticalType), eq(Endpoint.QUOTE), eq(Object.class), any())).thenThrow(RouterException.class);
 
-        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
+//        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
         doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
 
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);

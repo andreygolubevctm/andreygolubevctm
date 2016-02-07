@@ -44,6 +44,8 @@
 
 		<form_v1:form action="health_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 
+			<core_v2:journey_tracking />
+
 			<%-- Fields to store Lifebroker specific data --%>
 			<life:lifebroker_ref label="life" />
 					

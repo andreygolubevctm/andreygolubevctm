@@ -21,7 +21,7 @@ import com.ctm.web.travel.quote.model.response.TravelResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TravelService extends CommonQuoteService<TravelQuote, TravelQuoteRequest, TravelResponse> {
+public class TravelService extends CommonQuoteService<TravelQuote> {
 
     public TravelService() {
         super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());

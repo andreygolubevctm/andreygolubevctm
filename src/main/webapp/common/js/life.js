@@ -16,6 +16,8 @@ var LifeQuote = {
 
 	cache_age_limit : (60 * 1000 * 10), // 10 minutes
 
+	_currentJourneyList : [],
+
 	cache_type : {
 		details : 'product_details',
 		results : 'results'
@@ -24,6 +26,19 @@ var LifeQuote = {
 	cache_data : {
 		product_details : {},
 		results : {}
+	},
+
+	splitTestActive: function(jrny) {
+		if(_.isArray(jrny)) {
+			for(var i=0; i<jrny.length; i++) {
+				if(_.indexOf(this._currentJourneyList, String(jrny[i])) >= 0) {
+					return true;
+				}
+			}
+			return false;
+		} else {
+			return _.indexOf(this._currentJourneyList, String(jrny)) >= 0;
+		}
 	},
 
 	_init : function()
@@ -37,6 +52,13 @@ var LifeQuote = {
 					referenceNo.generateNewTransactionID(3);
 				}
 			}
+		});
+
+		$(document).ready(function(){
+			var name = LifeQuote._vertical + "_currentJourney";
+			var currentJourney = $('#' + name);
+			var current_journey = currentJourney.val();
+			LifeQuote._currentJourneyList = _.isEmpty(current_journey) ? ["11"] : current_journey.split('-');
 		});
 	},
 
@@ -62,9 +84,14 @@ var LifeQuote = {
 		if(this._contactLeadSent)
 			data = data + "&" + LifeQuote._vertical + "_contactLeadSent=Y";
 
+		var quoteResultsUrl = "ajax/json/life_quote_results.jsp";
+		if (LifeQuote.splitTestActive(40)) {
+			quoteResultsUrl = "ajax/json/life_quote_results_ws.jsp";
+		}
+
 		LifeQuote.ajaxPending = true;
 		$.ajax({
-			url: "ajax/json/life_quote_results.jsp",
+			url: quoteResultsUrl,
 			data: data,
 			type: "POST",
 			async: true,
@@ -177,7 +204,9 @@ var LifeQuote = {
 
 	isValidResultsResponse : function( json )
 	{
-		return typeof json.results == 'object' && ((typeof json.results.client == 'object' || json.results.client == "") && ((Results._partnerQuote && (typeof json.results.partner == 'object' || json.results.partner == "")) || (!Results._partnerQuote && json.results.partner == ""))) && typeof json.results.api == 'object';
+		return typeof json.results == 'object' && ((typeof json.results.client == 'object' || json.results.client == "") &&
+			((Results._partnerQuote && (json.results.partner == null || typeof json.results.partner == 'object' || json.results.partner == "")) || (!Results._partnerQuote && (json.results.partner == null || json.results.partner == "")))) &&
+			typeof json.results.api == 'object';
 	},
 
 	responseContainsProducts : function( json )
@@ -205,7 +234,7 @@ var LifeQuote = {
 		}
 
 		// Then test the response contains ANY partner products, if necessary
-		if( Results._partnerQuote && typeof json.results.partner == "object" && json.results.partner.hasOwnProperty("premium") && typeof json.results.partner.premium == "object" && json.results.partner.premium instanceof Array && json.results.partner.premium.length ) {
+		if( Results._partnerQuote && json.results.partner != null && typeof json.results.partner == "object" && json.results.partner.hasOwnProperty("premium") && typeof json.results.partner.premium == "object" && json.results.partner.premium instanceof Array && json.results.partner.premium.length ) {
 			if (atLeastOneProductExists(json.results.partner.premium)) {
 				is_valid.partner = true;
 			}
@@ -936,9 +965,14 @@ var LifeQuote = {
 		// this function was added to the callback
 		data = data.replace(LifeQuote._vertical + '_contactDetails_call=N', LifeQuote._vertical + '_contactDetails_call=Y');
 
+		var quoteResultsUrl = "ajax/json/life_quote_results.jsp";
+		if (LifeQuote.splitTestActive(40)) {
+			quoteResultsUrl = "ajax/json/life_quote_results_ws.jsp";
+		}
+
 		LifeQuote.ajaxPending = true;
 		$.ajax({
-			url: "ajax/json/life_quote_results.jsp",
+			url: quoteResultsUrl,
 			data: data,
 			type: "POST",
 			async: true,

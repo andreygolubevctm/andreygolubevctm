@@ -15,10 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 @Component
-public class ContactValidatorService extends CommonRequestService<ValidateContactRequest, ValidateContactResponse> {
+public class ContactValidatorService extends CommonRequestService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactValidatorService.class);
 
@@ -32,13 +34,18 @@ public class ContactValidatorService extends CommonRequestService<ValidateContac
     }
 
     @Async
-    public void validateContact(Brand brand, Vertical.VerticalType verticalType, ContactValidatorRequest contactValidatorRequest) {
+    public void validateContact(Brand brand, Vertical.VerticalType verticalType, Contact contact, Optional<String> environmentOverride) {
         try {
-            final ValidateContactResponse response = sendRequestToService(brand, verticalType, "contactValidatorService", Endpoint.VALIDATE,
-                    contactValidatorRequest, ValidateContactResponse.class, new ValidateContactRequest(Contact.instanceOf(contactValidatorRequest.getContact())));
+
+            final ValidateContactResponse response = getRestClient().sendPOSTRequest(
+                    getQuoteServiceProperties("contactValidatorService", brand, verticalType.getCode(), environmentOverride),
+                    verticalType,
+                    Endpoint.VALIDATE,
+                    ValidateContactResponse.class,
+                    new ValidateContactRequest(contact));
             LOGGER.debug("ValidateContact executed {} {}", kv("response", response));
         } catch (Exception e) {
-            LOGGER.warn("Exception occurred while validating {}:", kv("contactValidatorRequest", contactValidatorRequest), e);
+            LOGGER.warn("Exception occurred while validating {}:", kv("contact", contact), e);
         }
     }
 

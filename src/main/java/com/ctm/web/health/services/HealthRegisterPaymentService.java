@@ -18,7 +18,7 @@ import java.io.IOException;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 
-public class HealthRegisterPaymentService extends CommonRequestService<RegisterPaymentRequest, RegisterPaymentResponse> {
+public class HealthRegisterPaymentService extends CommonRequestService {
 
     public HealthRegisterPaymentService() {
         super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
