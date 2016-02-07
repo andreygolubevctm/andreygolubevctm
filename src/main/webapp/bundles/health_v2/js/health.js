@@ -127,7 +127,6 @@
 			onInitialise: function onStartInit(event){
 
 				meerkat.modules.jqueryValidate.initJourneyValidator();
-				meerkat.modules.healthLHCRebate.initHealthLHCRebate();
 
 				if(meerkat.site.choices) {
 					healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
@@ -398,12 +397,12 @@
 			},
 			onAfterEnter: function(event){
 
-				if(event.isBackward === true){
+				/*if(event.isBackward === true){
 					meerkat.modules.healthResults.onReturnToPage();
 					if(meerkat.modules.healthCoverDetails.hasRatesChanged()) {
 						meerkat.modules.healthResults.get();
 					}
-				}
+				}*/
 
 				if(event.isForward === true){
 					meerkat.modules.healthResults.getBeforeResultsPage();
@@ -832,16 +831,25 @@
 
 	function loadRatesBeforeResultsPage(callback) {
 
-		var $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
+		//var $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
+		var $healthCoverDetails = $('#startForm');
 
 		var postData = {
-			income: $healthDetailsHiddenFields.find('input[name="health_healthCover_income"]').val() || '0',
+			dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
+			income:$healthCoverDetails.find(':input[name="health_healthCover_income"]').val() || 0,
+			rebate_choice: $healthCoverDetails.find('input[name="health_healthCover_rebate"]:checked').val() || 'Y',
+			primary_dob: $healthCoverDetails.find('#health_healthCover_primary_dob').val(),
+			primary_loading:$healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
+			primary_current: $healthCoverDetails.find('input[name="health_healthCover_primary_cover"]:checked').val(),
+			primary_loading_manual: $healthCoverDetails.find('.primary-lhc').val(),
+			cover: $healthCoverDetails.find(':input[name="health_situation_healthCvr"]').val()
+			/*income: $healthDetailsHiddenFields.find('input[name="health_healthCover_income"]').val() || '0',
 			rebate_choice: $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val() || 'Y',
 			primary_current: $(':input[name="health_healthCover_primary_cover"]:checked').val(),
 			primary_loading: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_healthCoverLoading"]').val(),
 			primary_loading_manual:$('#health_healthCover_primary_lhc').val(),
 			primary_dob:$('#health_healthCover_primary_dob').val(),
-			cover:$('#health_situation_healthCvr').val()
+			cover:$('#health_situation_healthCvr').val()*/
 		};
 
 		// If the customer answers Yes for current health insurance, assume 0% LHC
@@ -851,10 +859,10 @@
 
 		// If has a partner, use the same data as the primary to calculate the LHC
 		if (hasPartner()) {
-			postData.partner_dob = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_dob"]').val() || postData.primary_dob;
-			postData.partner_current = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_cover"]').val() || postData.primary_current;
-			postData.partner_loading = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_healthCoverLoading"]').val() || postData.primary_loading;
-			postData.partner_loading_manual = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_lhc"]').val();
+			postData.partner_dob = $healthCoverDetails.find('input[name="health_healthCover_partner_dob"]').val() || postData.primary_dob;
+			postData.partner_current = $healthCoverDetails.find('input[name="health_healthCover_partner_cover"]').val() || postData.primary_current;
+			postData.partner_loading = $healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]').val() || postData.primary_loading;
+			postData.partner_loading_manual = $healthCoverDetails.find('input[name="health_healthCover_partner_lhc"]').val();
 		}
 
 		if(!fetchRates(postData, true, callback)) {
@@ -865,9 +873,23 @@
 	// Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
 	function loadRates(callback){
 
-		var $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
+		//var $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
+		var $healthCoverDetails = $('#startForm');
 
 		var postData = {
+			dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
+			income:$healthCoverDetails.find(':input[name="health_healthCover_income"]').val() || 0,
+			rebate_choice: $healthCoverDetails.find('input[name="health_healthCover_rebate"]:checked').val() || 'Y',
+			primary_dob: $healthCoverDetails.find('#health_healthCover_primary_dob').val(),
+			primary_loading:$healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
+			primary_current: $healthCoverDetails.find('input[name="health_healthCover_primary_cover"]:checked').val(),
+			primary_loading_manual: $healthCoverDetails.find('.primary-lhc').val(),
+			partner_dob: $healthCoverDetails.find('#health_healthCover_partner_dob').val(),
+			partner_loading:$healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),
+			partner_current:$healthCoverDetails.find('input[name="health_healthCover_partner_cover"]:checked').val(),
+			partner_loading_manual: $healthCoverDetails.find('.partner-lhc').val(),
+			cover: $healthCoverDetails.find(':input[name="health_situation_healthCvr"]').val()
+			/*
 			dependants: $('#health_healthCover_dependants').val(),
 			income: $healthDetailsHiddenFields.find('input[name="health_healthCover_income"]').val() || '0', // must default, otherwise fetchRates fails.
 			rebate_choice: $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val() || 'Y',  // must default, otherwise fetchRates fails.
@@ -877,7 +899,7 @@
 			partner_loading: $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_healthCoverLoading"]').val(),
 			partner_current: $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_cover"]').val(),
 			partner_loading_manual: $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_lhc"]').val(),
-			cover:$('#health_situation_healthCvr').val()
+			cover:$('#health_situation_healthCvr').val()*/
 		};
 
 		if( $('#health_application_provider, #health_application_productId').val() === '' ) {
