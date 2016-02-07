@@ -2,53 +2,54 @@ package com.ctm.web.life.apply.response;
 
 public class LifeApplyWebResponseModel {
 
-    private String uniquePurchaseId;
-    private Long transactionId;
-    private String confirmationkey;
+    private Selection selection;
     private boolean success;
+    private Long transactionId;
+
 
     private LifeApplyWebResponseModel(){
 
     }
 
-    private LifeApplyWebResponseModel(EnergyApplyWebResponseModelBuilder builder) {
-        uniquePurchaseId = builder.uniquePurchaseId;
-        transactionId =builder.transactionId;
-        confirmationkey = builder.confirmationkey;
+    private LifeApplyWebResponseModel(Builder builder) {
+        selection = builder.selection;
+        success = builder.success;
+        transactionId = builder.transactionId;
     }
 
-    public String getUniquePurchaseId() {
-        return uniquePurchaseId;
+    public Selection getSelection() {
+        return selection;
+    }
+
+    public boolean isSuccess() {
+        return success;
     }
 
     public Long getTransactionId() {
         return transactionId;
     }
 
-    public String getConfirmationkey() {
-        return confirmationkey;
-    }
 
-    public static final class EnergyApplyWebResponseModelBuilder {
-        private String uniquePurchaseId;
+    public static final class Builder {
+        private Selection selection;
+        private boolean success;
         private Long transactionId;
-        private String confirmationkey;
 
-        public EnergyApplyWebResponseModelBuilder() {
+        public Builder() {
         }
 
-        public EnergyApplyWebResponseModelBuilder uniquePurchaseId(String val) {
-            uniquePurchaseId = val;
+        public Builder selection(Selection val) {
+            selection = val;
             return this;
         }
 
-        public EnergyApplyWebResponseModelBuilder transactionId(Long val) {
+        public Builder success(boolean val) {
+            success = val;
+            return this;
+        }
+
+        public Builder transactionId(Long val) {
             transactionId = val;
-            return this;
-        }
-
-        public EnergyApplyWebResponseModelBuilder confirmationkey(String val) {
-            confirmationkey = val;
             return this;
         }
 

@@ -54,6 +54,8 @@
         <energy-apply-model.version>1.1.0-RC2</energy-apply-model.version>
 
         <life-apply-model.version>1.0.0-SNAPSHOT</life-apply-model.version>
+
+        <common-test.version>1.1.0-RC1</common-test.version>
     </properties>
 
     <dependencyManagement>
@@ -109,6 +111,13 @@
         </dependency>
 
         <!-- Test libraries -->
+
+        <dependency>
+            <groupId>com.ctm.common</groupId>
+            <artifactId>common-test</artifactId>
+            <version>${common-test.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>

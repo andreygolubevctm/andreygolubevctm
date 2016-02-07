@@ -10,6 +10,10 @@ public enum YesNo {
     }
 
     public static Boolean getYesNoBoolean(YesNo value) {
-        return YesNo.Y.equals(value);
+        return value.getYesNoBoolean();
+    }
+
+    public boolean getYesNoBoolean() {
+        return YesNo.Y.equals(this);
     }
 }

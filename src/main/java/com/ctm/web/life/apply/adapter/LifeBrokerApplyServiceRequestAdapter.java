@@ -5,6 +5,7 @@ import com.ctm.life.model.request.Gender;
 import com.ctm.web.energy.quote.adapter.WebRequestAdapter;
 import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
 import com.ctm.web.life.model.request.LifeRequest;
+import com.ctm.web.life.model.request.Primary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,10 +24,15 @@ public class LifeBrokerApplyServiceRequestAdapter implements WebRequestAdapter<L
     public LifeBrokerApplyRequest adapt(LifeApplyPostRequestPayload energyApplyPostRequestPayload) {
         LOGGER.debug("energyApplyPostRequestPayload = {}", kv("payload", energyApplyPostRequestPayload));
 
+        Primary primary = lifeQuoteRequest.getPrimary();
         // Map LifeBrokerApplyRequest
         LifeBrokerApplyRequest.Builder lifeBrokerApplyRequestBuilder = new LifeBrokerApplyRequest.Builder();
-        lifeBrokerApplyRequestBuilder.applicants(LifeBrokerServiceRequestAdapter.getApplicants(lifeQuoteRequest));
-        lifeBrokerApplyRequestBuilder.contactDetails(LifeBrokerServiceRequestAdapter.getContactDetails(lifeQuoteRequest));
+        lifeBrokerApplyRequestBuilder
+                .applicants(LifeBrokerServiceRequestAdapter
+                        .getApplicants(primary, lifeQuoteRequest.getPartner()));
+        lifeBrokerApplyRequestBuilder
+                .contactDetails(LifeBrokerServiceRequestAdapter
+                        .getContactDetails(lifeQuoteRequest.getContactDetails(), primary));
         lifeBrokerApplyRequestBuilder.partnerProductId(energyApplyPostRequestPayload.getPartner_product_id());
 
         return lifeBrokerApplyRequestBuilder.build();

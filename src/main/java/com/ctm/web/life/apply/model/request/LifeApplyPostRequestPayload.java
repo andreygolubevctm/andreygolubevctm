@@ -24,6 +24,21 @@ public class LifeApplyPostRequestPayload implements Request {
     private String partnerBrand;
     private String lead_number;
 
+    private LifeApplyPostRequestPayload(Builder builder) {
+        setTransactionId(builder.transactionId);
+        setClientIpAddress(builder.clientIpAddress);
+        setEnvironmentOverride(builder.environmentOverride);
+        request_type = builder.request_type;
+        client_product_id = builder.client_product_id;
+        partner_product_id = builder.partner_product_id;
+        api_ref = builder.api_ref;
+        vertical = builder.vertical;
+        partner_quote = builder.partner_quote;
+        company = builder.company;
+        partnerBrand = builder.partnerBrand;
+        lead_number = builder.lead_number;
+    }
+
     public String getCompany() {
         return company;
     }
@@ -84,5 +99,88 @@ public class LifeApplyPostRequestPayload implements Request {
 
     public String getPartnerBrand() {
         return partnerBrand;
+    }
+
+
+    public static final class Builder {
+        private Long transactionId;
+        private String clientIpAddress;
+        private String environmentOverride;
+        private String request_type;
+        private String client_product_id;
+        private String partner_product_id;
+        private String api_ref;
+        private String vertical;
+        private YesNo partner_quote;
+        private String company;
+        private String partnerBrand;
+        private String lead_number;
+
+        public Builder() {
+        }
+
+        public Builder transactionId(Long val) {
+            transactionId = val;
+            return this;
+        }
+
+        public Builder clientIpAddress(String val) {
+            clientIpAddress = val;
+            return this;
+        }
+
+        public Builder environmentOverride(String val) {
+            environmentOverride = val;
+            return this;
+        }
+
+        public Builder request_type(String val) {
+            request_type = val;
+            return this;
+        }
+
+        public Builder client_product_id(String val) {
+            client_product_id = val;
+            return this;
+        }
+
+        public Builder partner_product_id(String val) {
+            partner_product_id = val;
+            return this;
+        }
+
+        public Builder api_ref(String val) {
+            api_ref = val;
+            return this;
+        }
+
+        public Builder vertical(String val) {
+            vertical = val;
+            return this;
+        }
+
+        public Builder partner_quote(YesNo val) {
+            partner_quote = val;
+            return this;
+        }
+
+        public Builder company(String val) {
+            company = val;
+            return this;
+        }
+
+        public Builder partnerBrand(String val) {
+            partnerBrand = val;
+            return this;
+        }
+
+        public Builder lead_number(String val) {
+            lead_number = val;
+            return this;
+        }
+
+        public LifeApplyPostRequestPayload build() {
+            return new LifeApplyPostRequestPayload(this);
+        }
     }
 }

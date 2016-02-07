@@ -1,5 +1,6 @@
 package com.ctm.web.life.model.request;
 
+import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.model.request.Gender;
 import com.ctm.web.core.model.request.PersonAlt;
 import com.ctm.web.core.validation.FortyCharHash;
@@ -15,8 +16,8 @@ public class LifePerson extends PersonAlt {
 	private Gender gender;
 	private LocalDate dob;
 	private Integer age;
-	private String smoker;
-	private String hannover;
+	private YesNo smoker;
+	private Integer hannover;
 	private String occupationTitle;
 
 	protected LifePerson(Builder builder) {
@@ -56,7 +57,7 @@ public class LifePerson extends PersonAlt {
 		return age;
 	}
 
-	public String getSmoker() {
+	public YesNo getSmoker() {
 		return smoker;
 	}
 
@@ -64,7 +65,7 @@ public class LifePerson extends PersonAlt {
 		return occupation;
 	}
 
-	public String getHannover() {
+	public Integer getHannover() {
 		return hannover;
 	}
 
@@ -82,9 +83,9 @@ public class LifePerson extends PersonAlt {
 		private Gender gender;
 		private LocalDate dob;
 		private Integer age;
-		private String smoker;
+		private YesNo smoker;
 		private String occupation;
-		private String hannover;
+		private Integer hannover;
 		private String occupationTitle;
 		private Insurance insurance;
 
@@ -116,7 +117,7 @@ public class LifePerson extends PersonAlt {
 			return this;
 		}
 
-		public Builder smoker(String val) {
+		public Builder smoker(YesNo val) {
 			smoker = val;
 			return this;
 		}
@@ -126,7 +127,7 @@ public class LifePerson extends PersonAlt {
 			return (T)  this;
 		}
 
-		public Builder hannover(String val) {
+		public Builder hannover(Integer val) {
 			hannover = val;
 			return this;
 		}

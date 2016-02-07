@@ -1,8 +1,8 @@
 package com.ctm.web.life.apply.services;
 
 import com.ctm.apply.model.request.ApplyRequest;
-import com.ctm.apply.model.response.SingleApplyResponse;
 import com.ctm.energyapply.model.request.EnergyApplicationDetails;
+import com.ctm.life.apply.model.response.LifeApplyResponse;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
@@ -13,7 +13,6 @@ import com.ctm.web.core.services.CommonRequestService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.web.DataParser;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.energy.apply.services.EnergyApplyConfirmationService;
 import com.ctm.web.life.apply.adapter.LifeApplyServiceResponseAdapter;
 import com.ctm.web.life.apply.adapter.LifeBrokerApplyServiceRequestAdapter;
 import com.ctm.web.life.apply.adapter.OzicareApplyServiceRequestAdapter;
@@ -28,10 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Component
-public class LifeApplyService extends CommonRequestService<EnergyApplicationDetails,SingleApplyResponse> {
-
-    @Autowired
-    private EnergyApplyConfirmationService energyApplyConfirmation;
+public class LifeApplyService extends CommonRequestService<EnergyApplicationDetails,LifeApplyResponse> {
 
     @Autowired
     SessionDataServiceBean sessionDataService;
@@ -73,7 +69,10 @@ public class LifeApplyService extends CommonRequestService<EnergyApplicationDeta
         } else {
             throw new FailedToRegisterException(applyResponse, model.getTransactionId());
         }*/
-        return null;
+        LifeApplyResponse applyResponse = null;
+        LifeApplyWebResponseModel.Builder responseBuilder = responseAdapter.adapt(applyResponse);
+        responseBuilder.transactionId(model.getTransactionId());
+        return responseBuilder.build();
 	}
 
     /**
