@@ -16,8 +16,8 @@ public class HealthMetadata extends LeadMetadata {
     private Boolean shouldApplyRebate;
     private List<String> selectedBenefits;
     private String partnerDob;
-    private Integer dependants;
-    private Integer rebateTier;
+    private String dependants;
+    private String rebateTier;
     private String gender;
     private String partnerGender;
 
@@ -28,8 +28,8 @@ public class HealthMetadata extends LeadMetadata {
                           final Boolean shouldApplyRebate,
                           final List<String> selectedBenefits,
                           final String partnerDob,
-                          final Integer dependants,
-                          final Integer rebateTier,
+                          final String dependants,
+                          final String rebateTier,
                           final String gender,
                           final String partnerGender) {
         this.situation = situation;

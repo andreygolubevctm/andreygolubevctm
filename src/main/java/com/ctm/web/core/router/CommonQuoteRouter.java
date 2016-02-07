@@ -48,6 +48,10 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> extends CommonR
         return initRouter(context.getHttpServletRequest(), vertical);
     }
 
+    protected SessionDataServiceBean getSessionDataServiceBean() {
+        return sessionDataServiceBean;
+    }
+
     protected Data getDataBucket(MessageContext context, Long transactionId) {
         return getDataBucket(context.getHttpServletRequest(),  transactionId);
     }

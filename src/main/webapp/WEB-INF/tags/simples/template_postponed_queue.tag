@@ -28,7 +28,7 @@
 			{{ } else { }}
 			{{     whenToAction = message.whenToAction; }}
 			{{ } }}
-			<a class="displayBlock well simples-postponed-message{{= inThePast }}{{= upcoming }}" data-messageId="{{= message.messageId }}" title="View this message">
+			<a class="displayBlock well simples-postponed-message{{= inThePast }}{{= upcoming }}" data-messageId="{{= message.messageId }}" data-rootId="{{= message.transactionId }}" title="View this message">
 				<ul>
 					<li><strong>Tran ID:</strong> {{= message.transactionId }}</li>
 					<li><strong>Name:</strong> {{= message.contactName }}</li>

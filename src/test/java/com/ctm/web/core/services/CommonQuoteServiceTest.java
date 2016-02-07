@@ -176,19 +176,14 @@ public class CommonQuoteServiceTest {
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
         when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
         when(simpleConnection.get(requestUrl)).thenReturn("response message");
-//        when(objectMapper.readValue(anyString(), any(JavaType.class))).thenReturn(responseObject);
         when(restClient.sendPOSTRequest(eq(quoteServiceProperties), eq(verticalType), eq(Endpoint.QUOTE), eq(Object.class), any())).thenReturn(responseObject);
 
-//        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
         doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
 
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);
 
         assertEquals(responseObject, response);
 
-//        verify(quoteServiceProperties, times(1)).getServiceUrl();
-//        verify(simpleConnection, times(1)).get("http://anyURL/quote");
-//        verify(objectMapper, times(1)).readValue(eq("response message"), any(JavaType.class));
 
     }
 
@@ -203,7 +198,6 @@ public class CommonQuoteServiceTest {
         when(simpleConnection.get(anyString())).thenReturn(null);
         when(restClient.sendPOSTRequest(eq(quoteServiceProperties), eq(verticalType), eq(Endpoint.QUOTE), eq(Object.class), any())).thenThrow(RouterException.class);
 
-//        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
         doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
 
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);

@@ -93,7 +93,7 @@
 							</Variable>
 							<Variable>
 								<Name>EventVar:CalculatorURL</Name>
-								<Value><![CDATA[http://www.comparethemarket.com.au/life-insurance-calculator/?sssdmh=dm14.238456 ]]></Value>
+								<Value><![CDATA[https://www.comparethemarket.com.au/life-insurance-calculator/?sssdmh=dm14.238456 ]]></Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:InsuranceType</Name>

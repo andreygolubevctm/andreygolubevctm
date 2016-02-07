@@ -38,24 +38,20 @@ html.ie8 body.utilities_design_55 {
 /* Rounded Icons*/
 div.roundedCheckboxIcons {
 	float:left;
-  	> label.btn {
+	padding: 0px;
+	> label.btn {
 		padding:0;
 		border: none;
+		background:transparent;
+		outline:0 !important;
 
-	  	&.btn {
-		  background:transparent;
-		  outline:0 !important;
-		}
-
-	  	input{
-			&:checked,
-			&.checked {
-				& + i:before {
-				  background-color: @icon-bg-checked-color;
-				  border-color: @icon-border-checked-color;
-				  color: #fff;
-				}
-			}
+		&:active,
+		&.active {
+	  		i:before {
+				background-color: @icon-bg-checked-color;
+				border-color: @icon-border-checked-color;
+				color: #fff;
+	  		}
 		}
 
 	  	i {
