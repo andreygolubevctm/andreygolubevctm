@@ -89,7 +89,7 @@ public class InInApi {
         final List<Data> datas = createLeadDatas(message);
         addData(datas, DATE_IMPORTED, LocalDateTime.now());
         final Insert insert = new Insert(inInConfig.getCampaignName(), datas);
-        return insertContactClient.post(singletonList(insert), String.class, inInConfig.getWsUrl() + "/InsertRecords").flatMap(r -> {
+        return insertContactClient.post(singletonList(insert), String.class, inInConfig.getWsPrimaryUrl() + "/InsertRecords").flatMap(r -> {
             if (!r.equals("1 records success to insert.")) {
                 return Observable.error(new IllegalStateException("Inserting dialler record failed"));
             } else {
@@ -103,7 +103,7 @@ public class InInApi {
         final String phoneNumber = determinePhoneNumber(message);
         final String scheduleTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(message.getWhenToAction());
         final InsertScheduleCall insert = new InsertScheduleCall(inInConfig.getCampaignName(), datas, phoneNumber, agentUsername, scheduleTime);
-        return insertScheduleCallClient.post(singletonList(insert), new ParameterizedTypeReference<List<String>>() {}, inInConfig.getWsUrl() + "/InsertScheduleRecord")
+        return insertScheduleCallClient.post(singletonList(insert), new ParameterizedTypeReference<List<String>>() {}, inInConfig.getWsPrimaryUrl() + "/InsertScheduleRecord")
             .flatMap(r -> {
                 if (r.size() != 1) {
                     return Observable.error(new IllegalStateException("Inserting dialler callback failed"));
@@ -118,7 +118,7 @@ public class InInApi {
         final String phoneNumber = determinePhoneNumber(message);
         final String scheduleTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(message.getWhenToAction());
         final UpdateScheduleCall update = new UpdateScheduleCall(inInConfig.getCampaignName(), identity, phoneNumber, agentUsername, scheduleTime);
-        return updateScheduleCallClient.post(singletonList(update), new ParameterizedTypeReference<List<String>>() {}, inInConfig.getWsUrl() + "/InsertOrUpdateScheduleCallBacks")
+        return updateScheduleCallClient.post(singletonList(update), new ParameterizedTypeReference<List<String>>() {}, inInConfig.getWsPrimaryUrl() + "/InsertOrUpdateScheduleCallBacks")
             .flatMap(r -> {
                 if (r.size() != 1) {
                     return Observable.error(new IllegalStateException("Updating dialler callback failed"));
@@ -130,7 +130,7 @@ public class InInApi {
 
     public Observable<Boolean> deleteScheduledCall(final I3Identity i3Identity) {
         final DeleteScheduleCall delete = new DeleteScheduleCall(inInConfig.getCampaignName(), singletonList(i3Identity.get()));
-        return deleteScheduleCallClient.post(singletonList(delete),  new ParameterizedTypeReference<List<String>>() {}, inInConfig.getWsUrl() + "/DeleteScheduleCallBacks")
+        return deleteScheduleCallClient.post(singletonList(delete),  new ParameterizedTypeReference<List<String>>() {}, inInConfig.getWsPrimaryUrl() + "/DeleteScheduleCallBacks")
             .flatMap(r -> {
                 if (r.size() != 1) {
                     return Observable.error(new IllegalStateException("Deleting dialler callback failed"));
@@ -142,7 +142,7 @@ public class InInApi {
 
     private Observable<? extends I3Identity> searchRequest(final String f) {
         final List<SearchWithFilter> searches = singletonList(new SearchWithFilter(inInConfig.getCampaignName(), f));
-        final String searchUrl = inInConfig.getWsUrl() + "/SearchRecordsWithFilter";
+        final String searchUrl = inInConfig.getWsPrimaryUrl() + "/SearchRecordsWithFilter";
         final Observable<SearchWithFilterResults> results = searchClient.post(searches, SearchWithFilterResults.class, searchUrl);
         return results.flatMap(this::identity);
     }

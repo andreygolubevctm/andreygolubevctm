@@ -8,7 +8,7 @@
 
 	<layout_v1:slide_content>
 
-		<form_v2:fieldset_columns sideHidden="false">
+		<form_v2:fieldset_columns sideHidden="false" force4ColSide="true">
 
 			<jsp:attribute name="rightColumn">
 				<car:snapshot />
