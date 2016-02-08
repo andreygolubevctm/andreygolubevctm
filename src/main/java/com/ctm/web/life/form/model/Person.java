@@ -1,5 +1,6 @@
 package com.ctm.web.life.form.model;
 
+import com.ctm.web.core.model.formData.YesNo;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ public class Person {
 
     private Integer hannover;
 
-    private Smoker smoker;
+    private YesNo smoker;
 
     public String getFirstName() {
         return firstName;
@@ -69,11 +70,11 @@ public class Person {
         this.hannover = hannover;
     }
 
-    public Smoker getSmoker() {
+    public YesNo getSmoker() {
         return smoker;
     }
 
-    public void setSmoker(Smoker smoker) {
+    public void setSmoker(YesNo smoker) {
         this.smoker = smoker;
     }
 }

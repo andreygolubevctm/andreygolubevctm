@@ -1,12 +1,13 @@
 package com.ctm.web.life.form.model;
 
+import com.ctm.life.model.request.State;
 import com.ctm.web.core.validation.FortyCharHash;
 
 public class Applicant extends Person {
 
     private String postCode;
 
-    private String state;
+    private State state;
 
     @FortyCharHash
     private String occupation;
@@ -23,11 +24,11 @@ public class Applicant extends Person {
         this.postCode = postCode;
     }
 
-    public String getState() {
+    public State getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(State state) {
         this.state = state;
     }
 

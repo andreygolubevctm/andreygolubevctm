@@ -1,7 +1,6 @@
 package com.ctm.web.life.apply.services;
 
 import com.ctm.apply.model.request.ApplyRequest;
-import com.ctm.energyapply.model.request.EnergyApplicationDetails;
 import com.ctm.life.apply.model.response.LifeApplyResponse;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
@@ -18,7 +17,7 @@ import com.ctm.web.life.apply.adapter.LifeBrokerApplyServiceRequestAdapter;
 import com.ctm.web.life.apply.adapter.OzicareApplyServiceRequestAdapter;
 import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
 import com.ctm.web.life.apply.response.LifeApplyWebResponseModel;
-import com.ctm.web.life.model.request.LifeRequest;
+import com.ctm.web.life.form.model.LifeQuote;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Component
-public class LifeApplyService extends CommonRequestService<EnergyApplicationDetails,LifeApplyResponse> {
+public class LifeApplyService extends CommonRequestService {
 
     @Autowired
     SessionDataServiceBean sessionDataService;
@@ -44,7 +43,7 @@ public class LifeApplyService extends CommonRequestService<EnergyApplicationDeta
             ServiceConfigurationException,
             SessionException {
         LifeApplyServiceResponseAdapter responseAdapter= new LifeApplyServiceResponseAdapter();
-        LifeRequest lifeQuoteRequest = DataParser.createObjectFromData(getData( request, model.getTransactionId()), LifeRequest.class, model.getVertical());
+        LifeQuote lifeQuoteRequest = DataParser.createObjectFromData(getData( request, model.getTransactionId()), LifeQuote.class, model.getVertical());
 
         LifeBrokerApplyServiceRequestAdapter lifeBrokeRequestAdapter= new LifeBrokerApplyServiceRequestAdapter(lifeQuoteRequest);
         OzicareApplyServiceRequestAdapter requestAdapter = new OzicareApplyServiceRequestAdapter(lifeQuoteRequest);

@@ -2,19 +2,20 @@ package com.ctm.web.life.apply.adapter;
 
 import com.ctm.web.core.web.DataParser;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.life.model.request.LifeRequest;
+import com.ctm.web.life.adapter.LifeServiceRequestAdapter;
+import com.ctm.web.life.form.model.LifeQuote;
 import org.junit.Before;
 import org.junit.Test;
 
 
-public class LifeBrokerServiceRequestAdapterTest {
+public class LifeServiceRequestAdapterTest {
 
     private static final String EMAIL = "preload.testing@comparethemarket.com.au";
     private static final String PRIMARY_FIRSTNAME = "Joe";
     private static final String PARTNER_SURNAME = "Bloggs";
 
 
-    private LifeRequest lifeQuoteRequest;
+    private LifeQuote lifeQuoteRequest;
 
     @Before
 
@@ -49,20 +50,19 @@ public class LifeBrokerServiceRequestAdapterTest {
         data.put("life/splitTestingJourney" , "0");
         data.put("life/refine/insurance/type" , "primary");
 
-        lifeQuoteRequest = DataParser.createObjectFromData(data,LifeRequest.class, "life");
+        lifeQuoteRequest = DataParser.createObjectFromData(data,LifeQuote.class, "life");
     }
 
     @Test
     public void adaptTest() throws Exception {
 
-        LifeBrokerServiceRequestAdapter.getApplicants(lifeQuoteRequest.getPrimary(),
+        LifeServiceRequestAdapter.getApplicants(lifeQuoteRequest.getPrimary(),
                 lifeQuoteRequest.getPartner());
     }
 
     @Test
     public void adaptNoPartnerTest() throws Exception {
-        LifeRequest.Builder b = new LifeRequest.Builder();
-        LifeBrokerServiceRequestAdapter.getContactDetails(
+        LifeServiceRequestAdapter.createContactDetails(
                 lifeQuoteRequest.getContactDetails(),
                 lifeQuoteRequest.getPrimary());
     }

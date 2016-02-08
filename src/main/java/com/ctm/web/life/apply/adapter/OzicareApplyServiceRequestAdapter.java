@@ -3,7 +3,7 @@ package com.ctm.web.life.apply.adapter;
 import com.ctm.life.apply.model.request.ozicare.OzicareApplyRequest;
 import com.ctm.web.energy.quote.adapter.WebRequestAdapter;
 import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
-import com.ctm.web.life.model.request.LifeRequest;
+import com.ctm.web.life.form.model.LifeQuote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,9 +12,9 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 public class OzicareApplyServiceRequestAdapter implements WebRequestAdapter<LifeApplyPostRequestPayload, OzicareApplyRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OzicareApplyServiceRequestAdapter.class);
-    private final LifeRequest lifeQuoteRequest;
+    private final LifeQuote lifeQuoteRequest;
 
-    public OzicareApplyServiceRequestAdapter(LifeRequest lifeQuoteRequest) {
+    public OzicareApplyServiceRequestAdapter(LifeQuote lifeQuoteRequest) {
         this.lifeQuoteRequest = lifeQuoteRequest;
     }
 

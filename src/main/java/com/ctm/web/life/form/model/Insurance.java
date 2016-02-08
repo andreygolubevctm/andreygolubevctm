@@ -1,14 +1,16 @@
 package com.ctm.web.life.form.model;
 
+import com.ctm.web.core.model.formData.YesNo;
+
 import java.math.BigDecimal;
 
 public class Insurance {
 
     private String frequency;
 
-    private String partner;
+    private YesNo partner;
 
-    private String samecover;
+    private YesNo samecover;
 
     private BigDecimal term;
 
@@ -28,19 +30,19 @@ public class Insurance {
         this.frequency = frequency;
     }
 
-    public String getPartner() {
+    public YesNo getPartner() {
         return partner;
     }
 
-    public void setPartner(String partner) {
+    public void setPartner(YesNo partner) {
         this.partner = partner;
     }
 
-    public String getSamecover() {
+    public YesNo getSamecover() {
         return samecover;
     }
 
-    public void setSamecover(String samecover) {
+    public void setSamecover(YesNo samecover) {
         this.samecover = samecover;
     }
 

@@ -1,6 +1,5 @@
 package com.ctm.web.life.services;
 
-import com.ctm.life.quote.model.request.LifeQuoteRequest;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
