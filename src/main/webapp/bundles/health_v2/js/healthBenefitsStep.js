@@ -286,7 +286,6 @@
     function getHealthSituCvr() {
         var cover = $('#health_situation_healthCvr').val(),
             primary_dob = $('#health_healthCover_primary_dob').val(),
-            partner_dob = $('.healthDetailsHiddenFields').find('input[name="health_healthCover_partner_dob"]').val() || primary_dob,
             primary_age = 0, partner_age = 0, ageAverage = 0,
             healthSituCvr = '';
 

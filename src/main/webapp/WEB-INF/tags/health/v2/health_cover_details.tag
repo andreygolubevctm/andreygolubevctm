@@ -16,20 +16,6 @@
 <%-- Calculate the year for continuous cover - changes on 1st July each year --%>
 <c:set var="continuousCoverYear" value="${financialYearUtils.getContinuousCoverYear()}" />
 
-<%-- Hidden fields --%>
-<div class="healthDetailsHiddenFields">
-	<field_v1:hidden xpath="${xpath}/primary/healthCoverLoading" noId="true" />
-	<field_v1:hidden xpath="${xpath}/primary/lhc" noId="true" />
-	<field_v1:hidden xpath="${xpath}/partner/dob" noId="true" />
-	<field_v1:hidden xpath="${xpath}/partner/cover" noId="true" />
-	<field_v1:hidden xpath="${xpath}/partner/healthCoverLoading" noId="true" />
-	<field_v1:hidden xpath="${xpath}/partner/lhc" noId="true" />
-	<field_v1:hidden xpath="${xpath}/dependants" noId="true" />
-	<field_v1:hidden xpath="${xpath}/incomeBasedOn" noId="true" />
-	<field_v1:hidden xpath="${xpath}/income" noId="true" />
-	<field_v1:hidden xpath="${xpath}/rebate" noId="true" />
-	<field_v1:hidden xpath="${xpath}/incomelabel" noId="true" />
-</div>
 <form_v2:fieldset_columns sideHidden="true">
 	<jsp:attribute name="rightColumn">
 

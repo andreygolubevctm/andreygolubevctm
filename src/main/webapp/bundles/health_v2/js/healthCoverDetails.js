@@ -122,7 +122,7 @@
     }
 
     function isRebateApplied() {
-        return meerkat.modules.dialogs.isDialogOpen(modalId) === true ? $healthCoverRebate.find(':checked').val() === 'Y' : $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val() === 'Y';
+        return meerkat.modules.dialogs.isDialogOpen(modalId) === true ? $healthCoverRebate.find(':checked').val() === 'Y' : $('#partner-health-cover').find('input[name="health_healthCover_rebate"]').val() === 'Y';
     }
 
     function setIncomeBase(initMode) {

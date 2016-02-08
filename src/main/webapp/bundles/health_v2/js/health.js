@@ -721,8 +721,8 @@
 			],
 			dob_secondary:[
 				{
-					$field: $('.healthDetailsHiddenFields').find("input[name='health_healthCover_partner_dob']"), // this is a hidden field
-					$fieldInput: $('.healthDetailsHiddenFields').find("input[name='health_healthCover_partner_dob']") // pointing at the same field as a trick to force change event on itself when forward populated
+					$field: $('#partner-health-cover').find("input[name='health_healthCover_partner_dob']"), // this is a hidden field
+					$fieldInput: $('#partner-health-cover').find("input[name='health_healthCover_partner_dob']") // pointing at the same field as a trick to force change event on itself when forward populated
 				},
 				{
 					$field: $("#health_application_partner_dob"), // this is a hidden field
@@ -851,7 +851,7 @@
 			primary_dob:$('#health_healthCover_primary_dob').val(),
 			cover:$('#health_situation_healthCvr').val()*/
 		};
-
+console.log("POSTDATA", postData);
 		// If the customer answers Yes for current health insurance, assume 0% LHC
 		if (postData.primary_current === 'Y' && postData.primary_loading !=='N') {
 			postData.primary_loading = 'Y';
@@ -906,7 +906,6 @@
 
 			// before application stage
 			postData.primary_dob = $('#health_healthCover_primary_dob').val();
-			postData.partner_dob = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_dob"]').val() || postData.primary_dob;  // must default, otherwise fetchRates fails.
 
 		} else {
 
