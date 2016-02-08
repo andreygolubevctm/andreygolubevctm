@@ -14,9 +14,7 @@
 		$healthSituationHealthCvr,
 		$healthCoverIncome,
 		$healthCoverIncomeLabel,
-		$partnerHealthCoverHealthCoverLoading,
-		$primaryContinuousCoverN,
-		$partnerContinuousCoverN;
+		$partnerHealthCoverHealthCoverLoading;
 
 	function init(){
 		$(document).ready(function () {
@@ -35,12 +33,10 @@
 		$healthCoverIncomeMessage = $('#health_healthCover_incomeMessage'),
 		$primaryCurrentCover = $aboutYouContainer.find('#health_situation_health_cover'),
 		$primaryContinuousCoverContainer = $aboutYouContainer.find('#health-continuous-cover-primary'),
-		$primaryContinuousCoverN = $aboutYouContainer.find('#health_healthCover_primary_healthCoverLoading_N'),
 		$partnerContainer = $aboutYouContainer.find('#partner-health-cover'),
 		$partnerCurrentCover = $aboutYouContainer.find('#health_situation_partner_health_cover'),
 		$partnerContinuousCoverContainer = $aboutYouContainer.find('#health-continuous-cover-partner'),
 		$partnerHealthCoverHealthCoverLoading = $aboutYouContainer.find('input[name=health_healthCover_partner_healthCoverLoading]'),
-		$partnerContinuousCoverN = $aboutYouContainer.find('#health_healthCover_partner_healthCoverLoading_N'),
 		$partnerDOB = $aboutYouContainer.find('#health_healthCover_partner_dob'),
 		$healthCoverDependants = $aboutYouContainer.find('#health_healthCover_dependants'),
 		$healthCoverRebate = $aboutYouContainer.find('.health_cover_details_rebate'),
