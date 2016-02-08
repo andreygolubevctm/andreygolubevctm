@@ -2,8 +2,8 @@ package com.ctm.web.core.web;
 
 import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.life.model.request.Insurance;
-import com.ctm.web.life.model.request.LifeRequest;
+import com.ctm.web.life.form.model.Insurance;
+import com.ctm.web.life.form.model.LifeQuote;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -114,7 +114,7 @@ public class DataParserTest {
         data.put("life/splitTestingJourney" , "0");
         data.put("life/refine/insurance/type" , "primary");
 
-        LifeRequest request = DataParser.createObjectFromData(data,LifeRequest.class, "life");
+        LifeQuote request = DataParser.createObjectFromData(data,LifeQuote.class, "life");
         assertEquals("M" , request.getPrimary().getInsurance().getFrequency());
         assertEquals("Josephine" , request.getPartner().getFirstName() );
         assertEquals(YesNo.Y , request.getPrimary().getInsurance().getSamecover());

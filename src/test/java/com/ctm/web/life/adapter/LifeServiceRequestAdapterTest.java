@@ -1,8 +1,7 @@
-package com.ctm.web.life.apply.adapter;
+package com.ctm.web.life.adapter;
 
 import com.ctm.web.core.web.DataParser;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.life.adapter.LifeServiceRequestAdapter;
 import com.ctm.web.life.form.model.LifeQuote;
 import org.junit.Before;
 import org.junit.Test;

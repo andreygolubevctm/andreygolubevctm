@@ -5,7 +5,7 @@ import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.web.DataParser;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
-import com.ctm.web.life.model.request.LifeRequest;
+import com.ctm.web.life.form.model.LifeQuote;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -75,7 +75,7 @@ public class OzicareApplyServiceRequestAdapterTest {
         data.put("life/splitTestingJourney" , "0");
         data.put("life/refine/insurance/type" , "primary");
 
-        LifeRequest lifeRequest = DataParser.createObjectFromData(data,LifeRequest.class, "life");
+        LifeQuote lifeRequest = DataParser.createObjectFromData(data,LifeQuote.class, "life");
 
         request = new LifeApplyPostRequestPayload.Builder()
                 .request_type(REQUEST_TYPE)
@@ -130,7 +130,7 @@ public class OzicareApplyServiceRequestAdapterTest {
         data.put("life/splitTestingJourney" , "0");
         data.put("life/refine/insurance/type" , "primary");
 
-        LifeRequest lifeRequest = DataParser.createObjectFromData(data,LifeRequest.class, "life");
+        LifeQuote lifeRequest = DataParser.createObjectFromData(data,LifeQuote.class, "life");
         OzicareApplyServiceRequestAdapter requestAdapter = new OzicareApplyServiceRequestAdapter(lifeRequest);
         request = new LifeApplyPostRequestPayload.Builder()
                 .request_type("REQUEST-CALL")
@@ -197,7 +197,7 @@ public class OzicareApplyServiceRequestAdapterTest {
         data.put("life/splitTestingJourney" , "0");
         data.put("life/refine/insurance/type" , "primary");
 
-        LifeRequest lifeRequest = DataParser.createObjectFromData(data,LifeRequest.class, "life");
+        LifeQuote lifeRequest = DataParser.createObjectFromData(data,LifeQuote.class, "life");
         OzicareApplyServiceRequestAdapter requestAdapter = new OzicareApplyServiceRequestAdapter(lifeRequest);
         request = new LifeApplyPostRequestPayload.Builder()
                 .request_type("REQUEST-CALL")
