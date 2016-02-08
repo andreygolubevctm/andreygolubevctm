@@ -106,6 +106,12 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 					<go:setData dataVar="data" xpath="${xpathQuoteType}/tracking/cid" value="${param.campaignId}" />
 				</c:if>
 
+				<c:set var="jParam">
+					<c:if test="${not empty data[quoteType]['currentJourney']}">
+						&amp;j=${data[quoteType]['currentJourney']}
+					</c:if>
+				</c:set>
+
 				<c:set var="result">
 					<result>
 						<c:choose>
@@ -116,22 +122,22 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								<core_v1:transaction touch="L" noResponse="true" />
 								<c:choose>
 									<c:when test="${not empty param.productId and param.productId != '' and not empty param.productTitle and param.productTitle != ''}">
-										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}#results</destUrl>
+										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}${jParam}#results</destUrl>
 									</c:when>
 									<c:otherwise>
-										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}#results</destUrl>
+										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}${jParam}#results</destUrl>
 									</c:otherwise>
 								</c:choose>
 								</c:when>
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
-								<destUrl>${quoteType}_quote.jsp?action=${param.action}&amp;transactionId=${data.current.transactionId}</destUrl>
+								<destUrl>${quoteType}_quote.jsp?action=${param.action}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
 						<c:when test="${param.type != 'promotion' && param.type != 'bestprice' && (param.action=='latest' || param.action=='load') && data[xpathQuoteType].privacyoptin!='Y'}">
-							<destUrl>${quoteType}_quote.jsp?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
+							<destUrl>${quoteType}_quote.jsp?action=start-again&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 						</c:when>
 
 							<%-- GET TRAVEL MULTI-TRIP --%>
@@ -141,7 +147,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								</c:if>
 
 								<core_v1:transaction touch="L" noResponse="true" />
-								<destUrl>travel_quote.jsp?type=A&amp;action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
+								<destUrl>travel_quote.jsp?type=A&amp;action=latest&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 								<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
 						</c:when>
 
@@ -172,7 +178,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 										<c:otherwise>expired</c:otherwise>
 								</c:choose>
 								</c:set>
-								<destUrl>${quotePagePrefix}_quote.jsp?action=${action}&amp;transactionId=${data.current.transactionId}</destUrl>
+								<destUrl>${quotePagePrefix}_quote.jsp?action=${action}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 							</c:when>
 
 							<%-- GET LATEST --%>
@@ -182,7 +188,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								</c:if>
 
 								<core_v1:transaction touch="L" noResponse="true" />
-								<destUrl>${quoteType}_quote.jsp?action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
+								<destUrl>${quoteType}_quote.jsp?action=latest&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 								<%-- Have only made this happen for travel --%>
 								<c:if test="${quoteType eq 'travel'}">
 									<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
