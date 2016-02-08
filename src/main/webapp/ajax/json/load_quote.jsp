@@ -213,9 +213,18 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 					</c:if>
 						</c:catch>
 
+
+				<c:set var="vQuotetype">
+					<c:choose>
+						<c:when test="${quoteType eq 'car'}">
+							quote
+						</c:when>
+						<c:otherwise>${quoteType}</c:otherwise>
+					</c:choose>
+				</c:set>
 				<c:set var="jParam">
-					<c:if test="${not empty data[quoteType]['currentJourney']}">
-						&amp;j=${data[quoteType]['currentJourney']}
+					<c:if test="${not empty data[vQuotetype]['currentJourney']}">
+						&amp;j=${data[vQuotetype]['currentJourney']}
 					</c:if>
 				</c:set>
 
