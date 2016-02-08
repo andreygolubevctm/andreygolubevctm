@@ -68,7 +68,8 @@
 				paths: {
 					price: price,
 					availability: {
-						product: productAvailable
+						product: productAvailable,
+						price: price
 					},
 					productId: "productId",
 					productBrandCode: "brandCode",
@@ -195,9 +196,9 @@
 				rankings: {
 					paths: {
 						rank_productId: "productId",
-						rank_premium: price.annual
+						rank_premium: "price.annualPremium"
 					},
-					filterUnavailableProducts: false
+					filterUnavailableProducts: true
 				},
 				incrementTransactionId: false
 			});
