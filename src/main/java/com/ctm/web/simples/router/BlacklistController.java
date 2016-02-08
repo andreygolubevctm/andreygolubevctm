@@ -6,6 +6,7 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.simples.config.InInConfig;
@@ -50,6 +51,7 @@ public class BlacklistController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BlacklistController.class);
 
     public static final String ADD = "/add.json";
+    public static final String UNSUBSCRIBE = "/unsubscribe.json";
     public static final int DELAY = 500;
     public static final int ATTEMPTS = 2;
 
@@ -77,8 +79,6 @@ public class BlacklistController {
 
         LOGGER.info("Adding to blacklist: {}, {}, {}, {}", kv("channel", channel), kv("value", value), kv("operator", operator), kv("comment", comment));
 
-        final PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, "HEALTH");
-
         final Optional<String> outcome = Optional.ofNullable(simplesBlacklistService.addToBlacklist(request, channel, value, operator, comment));
         LOGGER.info("Simples blacklist outcome: {}", kv("simplesBlacklistOutcome", outcome));
 
@@ -87,6 +87,28 @@ public class BlacklistController {
                 .onErrorResumeNext(throwable -> failover(throwable, inInConfig.getWsFailoverUrl(), value))
                 .toBlocking().first();
         }
+        return new BlacklistOutcome(outcome.orElse(""));
+    }
+
+    @RequestMapping(
+            value = UNSUBSCRIBE,
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public BlacklistOutcome unsubscribeEmail(@Valid @RequestParam final String email,
+                                             @Valid @RequestParam final String comment,
+                                             final HttpServletRequest request) throws ConfigSettingException, DaoException {
+        final AuthenticatedData authenticatedData = sessionDataServiceBean.getAuthenticatedSessionData(request);
+        final String operator = authenticatedData.getUid();
+
+        LOGGER.info("Unsubscribe email: {}, {}, {}", kv("email", email), kv("operator", operator), kv("comment", comment));
+
+        final PageSettings pageSettings = SettingsService.getPageSettingsByCode("CTM", Vertical.VerticalType.SIMPLES.getCode());
+
+        final Optional<String> outcome = Optional.ofNullable(simplesBlacklistService.unsubscribeFromSimples(request, pageSettings, email, operator, comment));
+        LOGGER.info("Simples blacklist outcome: {}", kv("simplesBlacklistOutcome", outcome));
+
         return new BlacklistOutcome(outcome.orElse(""));
     }
 

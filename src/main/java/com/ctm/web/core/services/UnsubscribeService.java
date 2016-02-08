@@ -87,8 +87,8 @@ public class UnsubscribeService {
 	 * @throws DaoException
 	 */
 	public void unsubscribe(PageSettings pageSettings, Unsubscribe unsubscribe) throws DaoException {
-		int brandId = pageSettings.getBrandId();
 		if(emailDao == null){
+            int brandId = pageSettings.getBrandId();
 			emailDao = new EmailMasterDao(brandId, pageSettings.getBrandCode() , unsubscribe.getVertical());
 		}
 		if(unsubscribe.getVertical() != null && !unsubscribe.getVertical().isEmpty()){
