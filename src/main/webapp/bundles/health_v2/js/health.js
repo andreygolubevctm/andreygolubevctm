@@ -831,7 +831,6 @@
 
 	function loadRatesBeforeResultsPage(callback) {
 
-		//var $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
 		var $healthCoverDetails = $('#startForm');
 
 		var postData = {
@@ -843,15 +842,8 @@
 			primary_current: $healthCoverDetails.find('input[name="health_healthCover_primary_cover"]:checked').val(),
 			primary_loading_manual: $healthCoverDetails.find('.primary-lhc').val(),
 			cover: $healthCoverDetails.find(':input[name="health_situation_healthCvr"]').val()
-			/*income: $healthDetailsHiddenFields.find('input[name="health_healthCover_income"]').val() || '0',
-			rebate_choice: $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val() || 'Y',
-			primary_current: $(':input[name="health_healthCover_primary_cover"]:checked').val(),
-			primary_loading: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_healthCoverLoading"]').val(),
-			primary_loading_manual:$('#health_healthCover_primary_lhc').val(),
-			primary_dob:$('#health_healthCover_primary_dob').val(),
-			cover:$('#health_situation_healthCvr').val()*/
 		};
-console.log("POSTDATA", postData);
+
 		// If the customer answers Yes for current health insurance, assume 0% LHC
 		if (postData.primary_current === 'Y' && postData.primary_loading !=='N') {
 			postData.primary_loading = 'Y';
@@ -873,7 +865,6 @@ console.log("POSTDATA", postData);
 	// Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
 	function loadRates(callback){
 
-		//var $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
 		var $healthCoverDetails = $('#startForm');
 
 		var postData = {
