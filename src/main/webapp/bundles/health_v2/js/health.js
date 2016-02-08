@@ -889,17 +889,6 @@ console.log("POSTDATA", postData);
 			partner_current:$healthCoverDetails.find('input[name="health_healthCover_partner_cover"]:checked').val(),
 			partner_loading_manual: $healthCoverDetails.find('.partner-lhc').val(),
 			cover: $healthCoverDetails.find(':input[name="health_situation_healthCvr"]').val()
-			/*
-			dependants: $('#health_healthCover_dependants').val(),
-			income: $healthDetailsHiddenFields.find('input[name="health_healthCover_income"]').val() || '0', // must default, otherwise fetchRates fails.
-			rebate_choice: $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val() || 'Y',  // must default, otherwise fetchRates fails.
-			primary_loading: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_healthCoverLoading"]').val(),
-			primary_current: $(':input[name="health_healthCover_primary_cover"]:checked').val(),
-			primary_loading_manual: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_lhc"]').val(),
-			partner_loading: $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_healthCoverLoading"]').val(),
-			partner_current: $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_cover"]').val(),
-			partner_loading_manual: $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_lhc"]').val(),
-			cover:$('#health_situation_healthCvr').val()*/
 		};
 
 		if( $('#health_application_provider, #health_application_productId').val() === '' ) {
