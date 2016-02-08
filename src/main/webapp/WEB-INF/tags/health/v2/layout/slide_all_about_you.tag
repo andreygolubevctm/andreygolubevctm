@@ -14,7 +14,6 @@
 		<%-- COVER TYPE / SITUATION --%>
 		<div id="${pageSettings.getVerticalCode()}_situation">
 			<health_v2:situation xpath="${pageSettings.getVerticalCode()}/situation" />
-			<health_v2:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />
 		</div>
 
 	</layout_v3:slide_content>
