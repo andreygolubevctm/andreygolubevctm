@@ -106,9 +106,17 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 					<go:setData dataVar="data" xpath="${xpathQuoteType}/tracking/cid" value="${param.campaignId}" />
 				</c:if>
 
+				<c:set var="vQuotetype">
+					<c:choose>
+						<c:when test="${quoteType eq 'car'}">
+							quote
+						</c:when>
+						<c:otherwise>${quoteType}</c:otherwise>
+					</c:choose>
+				</c:set>
 				<c:set var="jParam">
-					<c:if test="${not empty data[quoteType]['currentJourney']}">
-						&amp;j=${data[quoteType]['currentJourney']}
+					<c:if test="${not empty data[vQuotetype]['currentJourney']}">
+						&amp;j=${data[vQuotetype]['currentJourney']}
 					</c:if>
 				</c:set>
 
