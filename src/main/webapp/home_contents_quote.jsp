@@ -24,7 +24,7 @@
 <c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 
 <%-- Set global variable to flags for active split tests --%>
-<car:splittest_helper />
+<home:splittest_helper />
 
 <%-- HTML --%>
 <layout_v1:journey_engine_page title="Home & Contents Quote">

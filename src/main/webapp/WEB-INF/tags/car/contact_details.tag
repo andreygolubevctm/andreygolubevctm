@@ -55,7 +55,8 @@
 		<field_v2:array_radio xpath="quote/contact/marketing"
 			required="false"
 			items="Y=Yes,N=No"
-			title="if OK to email" additionalAttributes=" data-rule-validateOkToEmailRadio='true' " />
+			title="if OK to email"
+		    additionalAttributes=" data-rule-validateOkToEmailRadio='true' " />
 		<content:optin key="okToEmail" />
 	</form_v2:row>
 
