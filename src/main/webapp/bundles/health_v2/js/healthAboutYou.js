@@ -71,8 +71,7 @@
 			if ($(this).filter(':checked').val() === 'Y') {
 				$primaryContinuousCoverContainer.slideDown();
 			} else {
-				$primaryContinuousCoverN.prop('checked', true);
-				$primaryContinuousCoverContainer.slideUp();
+				$primaryContinuousCoverContainer.find('label:nth-child(2)').trigger('click').end().slideUp();
 			}
 		});
 
@@ -80,8 +79,7 @@
 			if ($(this).filter(':checked').val() === 'Y') {
 				$partnerHealthCoverHealthCoverLoading.slideDown();
 			} else {
-				$partnerContinuousCoverN.prop('checked', true);
-				$partnerHealthCoverHealthCoverLoading.slideUp();
+				$partnerHealthCoverHealthCoverLoading.find('label:nth-child(2)').trigger('click').end().slideUp();
 			}
 		});
 
