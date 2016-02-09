@@ -272,7 +272,6 @@
         if(healthSituCvr === '' || healthSitu === 'ATP'){// if only step 1 healthSitu has value or ATP is selected, reset the benefits and call ajax once
             getBenefitsForSituation(healthSitu, true);
         }else{
-            console.log(healthSitu, healthSituCvr);
             getBenefitsForSituation(healthSitu, true, function(){// otherwise call ajax twice to get conbined benefits.
                 getBenefitsForSituation(healthSituCvr, false);
             });
