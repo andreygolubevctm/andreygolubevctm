@@ -11,10 +11,7 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.web.core.services.CommonQuoteService;
-import com.ctm.web.core.services.Endpoint;
-import com.ctm.web.core.services.ResultsService;
-import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.*;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.core.validation.CommencementDateValidation;
 import com.ctm.web.core.web.go.Data;
@@ -30,10 +27,13 @@ import com.ctm.web.homecontents.providers.model.response.HomeResponse;
 import com.ctm.web.homecontents.providers.model.response.MoreInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.joda.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -43,13 +43,16 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
+@Component
 public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteRequest, HomeResponse> {
     public static final List<String> HOLLARD_PROVIDERS = asList("REIN", "WOOL");
 
-    private static final SessionDataService SESSION_DATA_SERVICE = new SessionDataService();
+    private SessionDataServiceBean sessionDataServiceBean;
 
-    public HomeQuoteService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+    @Autowired
+    public HomeQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, SessionDataServiceBean sessionDataServiceBean) {
+        super(providerFilterDAO, objectMapper);
+        this.sessionDataServiceBean = sessionDataServiceBean;
     }
 
     public List<HomeResult> getQuotes(Brand brand, HomeRequest data) throws Exception {
@@ -120,16 +123,16 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteReq
                 .collect(toList());
     }
 
-    public HomeMoreInfo getMoreInfo(Brand brand, String productId, String type, Optional<String> environmentOverride) throws Exception {
+    public HomeMoreInfo getMoreInfo(Brand brand, String productId, String type, Optional<LocalDateTime> requestAt, Optional<String> environmentOverride) throws Exception {
 
         QuoteServiceProperties serviceProperties = getQuoteServiceProperties("homeQuoteServiceBER", brand, HOME.getCode(), environmentOverride);
 
         ObjectMapper objectMapper = ObjectMapperUtil.getObjectMapper();
 
-        String jsonRequest = objectMapper.writeValueAsString(RequestAdapter.adapt(brand, productId, type));
+        String jsonRequest = objectMapper.writeValueAsString(RequestAdapter.adapt(brand, productId, type, requestAt));
 
         SimpleConnection connection = new SimpleConnection();
-        connection.setRequestMethod("GET");
+        connection.setRequestMethod("POST");
         connection.setConnectTimeout(serviceProperties.getTimeout());
         connection.setReadTimeout(serviceProperties.getTimeout());
         connection.setContentType("application/json");
@@ -142,9 +145,9 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteReq
         return ResponseAdapter.adapt(moreInfoResponse);
     }
 
-    public void writeTempResultDetails(MessageContext context, HomeRequest data, List<HomeResult> quotes) throws SessionException, DaoException {
+    public void writeTempResultDetails(HttpServletRequest request, HomeRequest data, List<HomeResult> quotes) throws SessionException, DaoException {
 
-        Data dataBucket = SESSION_DATA_SERVICE.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
+        Data dataBucket = sessionDataServiceBean.getDataForTransactionId(request, data.getTransactionId().toString(), true);
 
         final String transactionId = dataBucket.getString("current/transactionId");
         if(transactionId != null){
