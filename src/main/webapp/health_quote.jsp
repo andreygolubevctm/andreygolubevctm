@@ -11,7 +11,7 @@
 <%-- START JOURNEY OVERRIDE - Part 1 of 2) --%>
 <c:set var="journeyOverride" value="${pageSettings.getSetting('journeyOverride') eq 'Y'}" />
 <c:choose>
-	<c:when test="${not callCentre && journeyOverride eq false}">
+	<c:when test="${not callCentre && journeyOverride eq true}">
 		<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v2.jsp?" />
 		<c:forEach items="${param}" var="currentParam">
 			<c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
