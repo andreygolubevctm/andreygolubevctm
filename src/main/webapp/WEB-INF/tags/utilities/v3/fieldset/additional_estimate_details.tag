@@ -28,7 +28,7 @@
         <field_v2:array_radio xpath="${fieldXPath}"
                                required="true"
                                className="col-md-12 roundedCheckboxIcons"
-                               items="Low=<i class='energy-people-sm'><span class='iconLabel'>Low 1-2 Occupants</span></i>,Medium=<i class='energy-people-md'><span class='iconLabel'>Medium 3-4 Occupants</span></i>,High=<i class='energy-people-hi'><span class='iconLabel'>High 5+ Occupants</span></i>"
+                               items="Low=Low 1-2 Occupants,Medium=Medium 3-4 Occupants,High=High 5+ Occupants"
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="what household size best describes your electricity usage." />
     </form_v3:row>
@@ -133,7 +133,7 @@
         <field_v2:array_radio xpath="${fieldXPath}"
                                required="true"
                                className="col-md-12 roundedCheckboxIcons"
-                               items="Low=<i class='energy-people-sm'><span class='iconLabel'>Low 1-2 Occupants</span></i>,Medium=<i class='energy-people-md'><span class='iconLabel'>Medium 3-4 Occupants</span></i>,High=<i class='energy-people-hi'><span class='iconLabel'>High 5+ Occupants</span></i>"
+                               items="Low=Low 1-2 Occupants,Medium=Medium 3-4 Occupants,High=High 5+ Occupants"
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="what household size best describes your gas usage." />
     </form_v3:row>
