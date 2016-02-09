@@ -32,7 +32,7 @@ public class LifeQuoteService extends CommonRequestService {
 
     @Autowired
     public LifeQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, ServiceConfigurationService serviceConfigurationService) {
-        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironment());
+        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
     }
 
     public LifeResultsWebResponse getQuotes(LifeQuoteWebRequest request, Brand brand) throws DaoException, IOException, ServiceConfigurationException {

@@ -25,11 +25,11 @@ public class ContactValidatorService extends CommonRequestService {
 
     @Autowired
     public ContactValidatorService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, ServiceConfigurationService serviceConfigurationService) {
-        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironment());
+        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
     }
 
     public ContactValidatorService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new ServiceConfigurationService(), EnvironmentService.getEnvironment());
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new ServiceConfigurationService(), EnvironmentService.getEnvironmentFromSpring());
     }
 
     @Async

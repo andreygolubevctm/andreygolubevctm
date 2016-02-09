@@ -21,6 +21,7 @@ import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
 import com.ctm.web.life.apply.response.LifeApplyWebResponseModel;
 import com.ctm.web.life.form.model.LifeQuote;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,7 @@ public class LifeApplyService extends CommonRequestService {
     @Autowired
     public LifeApplyService(ProviderFilterDao providerFilterDAO, RestClient restClient,
                             SessionDataServiceBean sessionDataService,
-                            ServiceConfigurationService serviceConfigurationService,EnvironmentService.Environment  environment) {
+                            ServiceConfigurationService serviceConfigurationService, @Qualifier("environmentBean") EnvironmentService.Environment  environment) {
         super(providerFilterDAO, restClient, serviceConfigurationService, environment);
         this.sessionDataService = sessionDataService;
     }

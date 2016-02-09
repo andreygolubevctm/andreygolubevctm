@@ -28,7 +28,7 @@ public class LifeOccupationService extends CommonRequestService {
 
     @Autowired
     public LifeOccupationService(ProviderFilterDao providerFilterDAO, RestClient restClient, ServiceConfigurationService serviceConfigurationService) {
-        super(providerFilterDAO, restClient,serviceConfigurationService, EnvironmentService.getEnvironment());
+        super(providerFilterDAO, restClient,serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
     }
 
     public List<Occupation> getOccupations(Brand brand) throws DaoException, IOException, ServiceConfigurationException {

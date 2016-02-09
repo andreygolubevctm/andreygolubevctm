@@ -23,7 +23,7 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 public class HealthRegisterPaymentService extends CommonRequestService {
 
     public HealthRegisterPaymentService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new ServiceConfigurationService(), EnvironmentService.getEnvironment());
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new ServiceConfigurationService(), EnvironmentService.getEnvironmentFromSpring());
     }
 
     public HealthRegisterPaymentResult register(Brand brand, HealthRegisterPaymentRequest data) throws DaoException, IOException, ServiceConfigurationException {

@@ -35,7 +35,7 @@ public class EnergyApplyService extends CommonRequestService {
     public EnergyApplyService(ProviderFilterDao providerFilterDAO,
                               ObjectMapper objectMapper,
                               ServiceConfigurationService serviceConfigurationService) {
-        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironment());
+        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
     }
 
 

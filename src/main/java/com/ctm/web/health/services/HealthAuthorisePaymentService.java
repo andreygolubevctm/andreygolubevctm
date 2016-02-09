@@ -24,7 +24,7 @@ public class HealthAuthorisePaymentService extends CommonRequestService {
 
     public HealthAuthorisePaymentService() {
         super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(),
-                new ServiceConfigurationService(), EnvironmentService.getEnvironment());
+                new ServiceConfigurationService(), EnvironmentService.getEnvironmentFromSpring());
     }
 
     public HealthPaymentAuthoriseResult authorise(Brand brand, HealthAuthorisePaymentRequest data) throws DaoException, IOException, ServiceConfigurationException {

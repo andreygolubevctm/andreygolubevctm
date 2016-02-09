@@ -34,7 +34,7 @@ public class EnergyProviderResultsService extends CommonRequestService {
 
     @Autowired
     public EnergyProviderResultsService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, ServiceConfigurationService serviceConfigurationService) {
-        super(providerFilterDAO, objectMapper,serviceConfigurationService, EnvironmentService.getEnvironment());
+        super(providerFilterDAO, objectMapper,serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
     }
 
     public EnergyProvidersWebResponse getResults(EnergyProviderWebRequest model, Brand brand) throws IOException, DaoException, ServiceConfigurationException {
