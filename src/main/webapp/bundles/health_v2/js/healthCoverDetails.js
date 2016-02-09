@@ -1,8 +1,7 @@
 ;(function($, undefined) {
 
-    var meerkat = window.meerkat;
-
-    var modalId = false,
+    var meerkat = window.meerkat,
+        modalId = false,
         $healthCoverRebate;
 
     function initHealthCoverDetails() {
@@ -17,9 +16,9 @@
 
     //Previous funds, settings
     function displayHealthFunds() {
-        var $_previousFund = $('#mainform').find('.health-previous_fund');
-        var $_primaryFund = $('#clientFund').find('select');
-        var $_partnerFund = $('#partnerFund').find('select');
+        var $_previousFund = $('#mainform').find('.health-previous_fund'),
+            $_primaryFund = $('#clientFund').find('select'),
+            $_partnerFund = $('#partnerFund').find('select');
 
         if ($_primaryFund.val() !== 'NONE' && $_primaryFund.val() !== '') {
             $_previousFund.find('#clientMemberID').slideDown();

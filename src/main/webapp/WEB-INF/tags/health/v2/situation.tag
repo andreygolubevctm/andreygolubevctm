@@ -68,16 +68,16 @@
 					<field_v2:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="reason you are looking to quote" />
 				</form_v2:row>
 
-				</form_v2:fieldset>
+			</form_v2:fieldset>
 
-				<simples:dialogue id="22" vertical="health" />
+			<simples:dialogue id="22" vertical="health" />
 
-				<%-- Health benefits has simples messages --%>
-				<simples:dialogue id="23" vertical="health" className="green" >
-					<div style="margin-top:20px;">
-						<a href="javascript:;"  data-benefits-control="Y" class="btn btn-form">Open Benefits</a>
-					</div>
-				</simples:dialogue>
+			<%-- Health benefits has simples messages --%>
+			<simples:dialogue id="23" vertical="health" className="green" >
+				<div style="margin-top:20px;">
+					<a href="javascript:;"  data-benefits-control="Y" class="btn btn-form">Open Benefits</a>
+				</div>
+			</simples:dialogue>
 
 			<%-- Did it this way to prevent the snapshot from pushing the fields below up/down depending on the option selected with the health_situation_healthCvr field --%>
 			<c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
