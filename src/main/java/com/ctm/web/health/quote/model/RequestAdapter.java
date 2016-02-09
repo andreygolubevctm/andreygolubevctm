@@ -287,7 +287,7 @@ public class RequestAdapter {
     }
 
     protected static void addSituationFilter(Filters filters, Situation situation) {
-        if(situation != null) {
+        if(situation != null && situation.getAccidentOnlyCover() != null) {
             filters.setSituationFilter(!toBoolean(situation.getAccidentOnlyCover()));
         }
     }

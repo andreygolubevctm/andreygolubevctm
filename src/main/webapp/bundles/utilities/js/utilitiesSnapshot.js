@@ -164,7 +164,11 @@
             }
         } else {
             // or the radio button group
-            return $elecUsage.filter(':checked').siblings('h3').text();
+            if (meerkat.modules.deviceMediaState.get() === 'lg') {
+                return $elecUsage.filter(':checked').siblings('h3').text();
+            } else {
+                return $elecUsage.filter(':checked').val();
+            }
         }
         return '';
     }
@@ -177,7 +181,11 @@
                 return '';
             }
 
-            return $selectedOptions.filter(':checked').siblings('h3').text();
+            if (meerkat.modules.deviceMediaState.get() === 'lg') {
+                return $selectedOptions.filter(':checked').siblings('h3').text();
+            } else {
+                return $selectedOptions.filter(':checked').val();
+            }
         } else {
             if ($gasBill.filter(':checked').val() === 'Y') {
                 if ($gasStandardUsage.val() !== '' && $gasBillingDays.val() !== '') {

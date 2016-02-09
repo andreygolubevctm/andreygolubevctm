@@ -196,7 +196,7 @@
 						rank_productId: "productId",
 						rank_premium: rank_premium
 					},
-					filterUnavailableProducts : false
+					filterUnavailableProducts : true
 				},
 				incrementTransactionId : false
 			});
