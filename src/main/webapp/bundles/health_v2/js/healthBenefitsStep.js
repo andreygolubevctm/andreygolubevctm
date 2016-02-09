@@ -272,6 +272,7 @@
         if(healthSituCvr === '' || healthSitu === 'ATP'){// if only step 1 healthSitu has value or ATP is selected, reset the benefits and call ajax once
             getBenefitsForSituation(healthSitu, true);
         }else{
+            console.log(healthSitu, healthSituCvr);
             getBenefitsForSituation(healthSitu, true, function(){// otherwise call ajax twice to get conbined benefits.
                 getBenefitsForSituation(healthSituCvr, false);
             });
@@ -286,6 +287,7 @@
     function getHealthSituCvr() {
         var cover = $('#health_situation_healthCvr').val(),
             primary_dob = $('#health_healthCover_primary_dob').val(),
+            partner_dob = $('.healthDetailsHiddenFields').find('input[name="health_healthCover_partner_dob"]').val() || primary_dob,
             primary_age = 0, partner_age = 0, ageAverage = 0,
             healthSituCvr = '';
 
