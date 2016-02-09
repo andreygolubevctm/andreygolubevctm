@@ -97,9 +97,7 @@
     function showMoreBenefits() {
         $benefitsForm.find('.CTM-plus').fadeOut('fast');
         $benefitsForm.find('.subTitle').slideDown('fast');
-        $benefitsForm.find('.noIcons').slideDown('fast', function(){
-            alignSidebarHeight();
-        });
+        $benefitsForm.find('.noIcons').slideDown('fast');
     }
 
     function checkAndHideMoreBenefits() {
@@ -156,31 +154,6 @@
         }
 
         $coverType.change();
-    }
-
-    function alignSidebarHeight() {
-        // no need to align if no sidebar is showing
-        if ($coverType.val() === 'C' || $coverType.val() === '') return;
-
-        var $hospitalMainCol = $benefitsForm.find('.hospitalCover'),
-            $extrasMainCol = $benefitsForm.find('.extrasCover'),
-            $hospitalSidebar = $benefitsForm.find('.sidebarHospital .sidebar-wrapper'),
-            $extrasSidebar = $benefitsForm.find('.sidebarExtras .sidebar-wrapper');
-
-        var hospitalMainColHeight = $hospitalMainCol.height() + 15, // plus bottom padding;
-            extrasMainColHeight = $extrasMainCol.height() + 15; // plus bottom padding;
-
-        // reset
-        $hospitalSidebar.height('auto');
-        $extrasSidebar.height('auto');
-
-        if (hospitalMainColHeight > $extrasSidebar.height()) {
-            $extrasSidebar.height(hospitalMainColHeight);
-        }
-
-        if (extrasMainColHeight > $hospitalSidebar.height()) {
-            $hospitalSidebar.height(extrasMainColHeight);
-        }
     }
 
     function updateHiddenFields(coverType) {
@@ -356,7 +329,6 @@
         checkAndHideMoreBenefits: checkAndHideMoreBenefits,
         changeLayoutByCoverType: changeLayoutByCoverType,
         updateCoverTypeByBenefitsSelected: updateCoverTypeByBenefitsSelected,
-        alignSidebarHeight: alignSidebarHeight,
         updateHiddenFields: updateHiddenFields,
         resetBenefitsSelection: resetBenefitsSelection,
         resetBenefitsForProductTitleSearch: resetBenefitsForProductTitleSearch,

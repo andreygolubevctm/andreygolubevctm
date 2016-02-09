@@ -27,7 +27,7 @@
 						<field_v2:general_select xpath="${fieldXpath}" type="healthCvrType" className="health-situation-healthCvrType" required="true" title="your cover type" />
 					</form_v3:row>
 					
-					<div class="row">
+					<div class="row benefit-row">
 						<%-- Note: ${resultTemplateItems} is a request scoped variable on health_quote.jsp page - as it is used in multiple places --%>
 						<c:forEach items="${resultTemplateItems}" var="selectedValue">
 							<health_v2:benefitsItem item="${selectedValue}" />

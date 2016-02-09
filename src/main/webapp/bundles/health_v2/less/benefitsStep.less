@@ -189,17 +189,34 @@
             }
         }
 
+        .benefit-row {
+            position: relative;
+            padding-bottom: 10px;
+            min-height: 510px;
+        }
         .benefits-side-bar {
-            @media (@sm) {
-                padding-right: 30px;
+            padding-right: 5px;
+            bottom: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            @media (@sm-only) {
+                //padding-right: 30px;
                 padding-left: 0;
+
+            }
+            @media (@xs-only){
+                position: relative;
             }
 
             .sidebar-wrapper {
+                height: 100%;
                 float:left;
                 padding:0 15px;
                 background-color: @sidebar-gray-bg-color;
                 border-left: 1px solid @sidebar-gray-bg-border-color;
+                border-top: 1px solid @sidebar-gray-bg-border-color;
+
 
                 .top-5-benefits {
                     list-style: none;
@@ -231,7 +248,14 @@
                 }
 
                 @media (@sm) {
-                    padding-top: 67px;
+                    padding-top: 10px;
+                }
+                @media (@sm-only) {
+                    padding: 8px;
+                }
+                @media (@xs-only){
+                    border-right: 1px solid @sidebar-gray-bg-border-color;
+                    border-bottom: 1px solid @sidebar-gray-bg-border-color;
                 }
             }
         }

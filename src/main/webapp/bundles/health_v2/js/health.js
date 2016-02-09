@@ -303,7 +303,6 @@
 				}
 
 				meerkat.modules.healthBenefitsStep.alignTitle();
-				meerkat.modules.healthBenefitsStep.alignSidebarHeight();
 
 				if(event.isForward)
 					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
