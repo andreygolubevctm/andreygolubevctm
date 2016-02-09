@@ -20,6 +20,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import rx.Observable;
 
+import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -83,7 +84,8 @@ public class InInIcwsService {
 		return isHttpStatusException(throwable, SERVICE_UNAVAILABLE)
 			|| isHttpStatusException(throwable, NOT_FOUND)
 			|| throwable instanceof TimeoutException
-			|| throwable instanceof UnknownHostException;
+			|| throwable instanceof UnknownHostException
+			|| throwable instanceof ConnectException;
 	}
 
 	public static boolean isHttpStatusException(final Throwable throwable, final HttpStatus httpStatus) {
