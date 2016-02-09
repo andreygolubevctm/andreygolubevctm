@@ -89,12 +89,6 @@
 	function onPrivacyOptinChanged(){
 		var optin = getValue(elements.privacy);
 		$(elements.fsg).val(optin);
-		$(elements.terms).val(optin);
-	}
-
-	function onPrivacyOptinChanged(){
-		var optin = getValue(elements.privacy);
-		$(elements.fsg).val(optin);
 	}
 
 	function onTermsOptinChanged(){
