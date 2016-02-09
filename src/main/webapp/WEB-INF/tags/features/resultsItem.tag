@@ -1,6 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<%@ attribute name="item" required="true" type="com.ctm.model.results.ResultsTemplateItem" %>
+<%@ attribute name="item" required="true" type="com.ctm.web.core.results.model.ResultsTemplateItem" %>
 <%@ attribute name="labelMode" required="true" rtexprvalue="true" %>
 <%@ attribute name="index" required="true" rtexprvalue="true" %>
 <%@ attribute name="parentShortlistKey" required="false" rtexprvalue="true" %>
@@ -13,13 +13,13 @@
 	<div class="labelInColumn ${item.getClassStringForInlineLabel()}<c:if test="${empty item.getName()}"> noLabel</c:if>">
 		<div class="content" data-featureId="${item.getId()}">
 			<div class="contentInner">
-				<field_new:help_icon helpId="${item.getHelpId()}" position="${helpPopoverPosition}" />
+				<field_v2:help_icon helpId="${item.getHelpId()}" position="${helpPopoverPosition}" />
 				<c:out value="${item.getSafeName()}" escapeXml="false" /><c:if test="${item.getChildren().size() > 0 }"><span class="icon expander"></span></c:if>
 			</div></div></div>
 	<div class="${labelMode? 'h': 'c'} content ${item.getContentClassString()}" data-featureId="${item.getId()}" >
 		<c:choose>
 			<c:when test="${labelMode}">
-				<field_new:help_icon helpId="${item.getHelpId()}" position="${helpPopoverPosition}" tooltipClassName="resultsHelpTooltips"/>
+				<field_v2:help_icon helpId="${item.getHelpId()}" position="${helpPopoverPosition}" tooltipClassName="resultsHelpTooltips"/>
 				<c:out value="${item.getSafeName()}" escapeXml="false" />
 				<c:if test="${item.getExtraText() != null && item.getExtraText() != ''}"><span class="extraText">${item.getExtraText()}</span></c:if>
 				<c:if test="${item.getChildren().size() > 0 }"><span class="icon expander"></span></c:if>

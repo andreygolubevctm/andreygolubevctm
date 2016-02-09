@@ -9,7 +9,7 @@
 <go:setData dataVar="authenticatedData" xpath="messages" value="*DELETE" />
 
 <%-- Log in / authenticate user --%>
-<c:set var="login"><core:login uid="${param.uid}" /></c:set>
+<c:set var="login"><core_v1:login uid="${param.uid}" /></c:set>
 <c:set var="callCentre" scope="session"><simples:security key="callCentre" /></c:set>
 <c:set var="isRoleSupervisor" scope="session"><simples:security key="supervisor" /></c:set>
 <c:set var="isRoleIT" scope="session"><simples:security key="IT" /></c:set>
@@ -33,7 +33,7 @@
 			environment == 'NXI'  ||
 			environment == 'NXS' ||
 			environment == 'NXQ'}">
-	<sql:setDataSource dataSource="jdbc/ctm"/>
+	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 	<sql:query  var="ServicePropertiesLocal">
 		SELECT sm.serviceCode , vm.verticalName,  environmentCode , servicePropertyValue , 
@@ -91,10 +91,9 @@
 
 
 	<%-- HTML --%>
-	<layout:simples_page fullWidth="true" >
+	<layout_v1:simples_page fullWidth="true" >
 
 		<jsp:attribute name="head">
-			<link rel="stylesheet" href="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.css">
 			<style>
 				td, th {
 					padding:0.5em;
@@ -162,5 +161,5 @@
 			
 		</jsp:body>
 
-	</layout:simples_page>
+	</layout_v1:simples_page>
 </c:if>

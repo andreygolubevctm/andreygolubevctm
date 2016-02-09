@@ -16,59 +16,21 @@
 
 
 <%-- HTML --%>
-<form_new:fieldset_columns sideAbove="true">
-	<jsp:attribute name="rightColumn">
-			<ui:bubble variant="info" className="yourLoanDetails-bubble">
-				<h4>Your Loan Details</h4>
-				<p>If you're unsure about the purchase price or the amount you would like to borrow, please enter an estimate. You'll then be able to chat to your broker who will help you confirm these details.</p>
-			</ui:bubble>
-	</jsp:attribute>
-	<jsp:body>
+<form_v2:fieldset legend="Your New Home Loan" >
+	<div id="${name}_purchasePriceToggleArea" class="${name}_purchasePriceToggleArea show_${displayPurchasePrice}">
+		<form_v2:row label="What is the purchase price of the new property?">
+			<field_v2:currency xpath="${xpath}/purchasePrice" title="Purchase price" decimal="${false}" required="true" maxValue="1000000000" pattern="[0-9]*" />
+		</form_v2:row>
+	</div>
+	<form_v2:row label="How much would you like to borrow?">
+		<field_v2:currency xpath="${xpath}/loanAmount" title="Amount to borrow" decimal="${false}" required="true" maxValue="1000000000" pattern="[0-9]*" />
+	</form_v2:row>
+	<form_v2:row label="Product type" className="product-type-container" helpId="532">
+		<field_v2:checkbox xpath="${xpath}/productVariable" value="Y" title="Variable" required="false" label="true"  />
+		<field_v2:checkbox xpath="${xpath}/productFixed" value="Y" title="Fixed" required="false" label="true"/>
+	</form_v2:row>
+	<form_v2:row label="Interest Rate Type" helpId="534">
+		<field_v2:array_radio id="${name}_interestRate" xpath="${xpath}/interestRate" required="true" items="P=Principal & Interest,I=Interest Only" title="${title} the interest rate type" />
+	</form_v2:row>
 
-		<form_new:fieldset legend="Your New Home Loan" >
-			<div id="${name}_purchasePriceToggleArea" class="${name}_purchasePriceToggleArea show_${displayPurchasePrice}">
-			<form_new:row label="What is the purchase price of the new property?">
-				<field_new:currency xpath="${xpath}/purchasePrice" title="Purchase price" decimal="${false}" required="true" maxValue="1000000000" pattern="[0-9]*" />
-			</form_new:row>
-			</div>
-			<form_new:row label="How much would you like to borrow?">
-				<field_new:currency xpath="${xpath}/loanAmount" title="Amount to borrow" decimal="${false}" required="true" maxValue="1000000000" pattern="[0-9]*" />
-			</form_new:row>
-			<form_new:row label="Product type" className="product-type-container" helpId="532">
-				<field_new:checkbox xpath="${xpath}/productVariable" value="Y" title="Variable" required="false" label="true"  />
-				<field_new:checkbox xpath="${xpath}/productFixed" value="Y" title="Fixed" required="false" label="true"/>
-			</form_new:row>
-			<form_new:row label="Interest Rate Type" helpId="534">
-				<field_new:array_radio id="${name}_interestRate" xpath="${xpath}/interestRate" required="true" items="P=Principal & Interest,I=Interest Only" title="${title} the interest rate type" />
-			</form_new:row>
-
-		</form_new:fieldset>
-
-	</jsp:body>
-</form_new:fieldset_columns>
-
-
-
-<go:script marker="js-head">
-$.validator.addMethod('validateLoanAmount', function(value, element) {
-	<%-- Need to use the entry fields because validation fires before the currency plugin pushes the unformatted values into the hidden fields --%>
-	var $loanAmount = $('#${name}_loanAmountentry'),
-	$purchasePrice = $('#${name}_purchasePriceentry'),
-	$propertyWorth = $('#homeloan_details_assetAmountentry'),
-	$amountOwing = $('#homeloan_details_amountOwingentry');
-
-	<%-- If the elements have the currency plugin applied --%>
-	var loanAmount = typeof $loanAmount.asNumber === 'function' ? $loanAmount.asNumber() : 0,
-	purchasePrice = typeof $purchasePrice.asNumber === 'function' ? $purchasePrice.asNumber() : 0,
-	propertyWorth = typeof $propertyWorth.asNumber === 'function' ? $propertyWorth.asNumber() : 0,
-	amountOwing = typeof $amountOwing.asNumber === 'function' ? $amountOwing.asNumber() : 0;
-
-	if(!isNaN(loanAmount) && !isNaN(purchasePrice) && !isNaN(propertyWorth) && !isNaN(amountOwing)) {
-		var lvr = ((loanAmount+amountOwing) / (purchasePrice+propertyWorth)) * 100;
-		return lvr > 0 && lvr < 100;
-	}
-
-	return true;
-});
-</go:script>
-<go:validate selector="${name}_loanAmountentry" rule="validateLoanAmount" parm="true" message="The amount you wish to borrow exceeds the value of the property. Please review the amounts before continuing." />
+</form_v2:fieldset>

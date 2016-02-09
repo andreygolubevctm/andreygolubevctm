@@ -12,9 +12,9 @@
 
 <c:set var="fetch_count"><c:out value="${param.fetchcount}" escapeXml="true" /></c:set>
 
-<jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="soapdata" class="com.ctm.web.core.web.go.Data" scope="request" />
 
-<jsp:useBean id="roadsideService" class="com.ctm.services.roadside.RoadsideService" scope="page" />
+<jsp:useBean id="roadsideService" class="com.ctm.web.roadside.services.RoadsideService" scope="page" />
 <c:set var="serviceRespone" value="${roadsideService.validate(pageContext.request, data)}" />
 <c:choose>
 <%-- RECOVER: if things have gone pear shaped --%>
@@ -24,7 +24,7 @@
 	<%-- Increment tranId if fetching results again (not the first) --%>
 	<c:when test="${fetch_count > 0}">
 		<c:set var="ignoreme">
-			<core:get_transaction_id
+			<core_v1:get_transaction_id
 				quoteType="roadside"
 				id_handler="increment_tranId" />
 			</c:set>
@@ -34,13 +34,14 @@
 </c:choose>
 
 <%-- Save Client Data --%>
-<core:transaction touch="R" noResponse="true" />
+<core_v1:transaction touch="R" noResponse="true" />
 
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
 <c:if test="${not empty tranId && roadsideService.isValid()}">
 			<%-- Load the config and send quotes to the aggregator gadget --%>
-	<c:import var="config" url="/WEB-INF/aggregator/roadside/config.xml" />
+	<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+	<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/roadside/config.xml')}" />
 			<go:soapAggregator config = "${config}"
 					transactionId = "${tranId}"
 					xml = "${go:getEscapedXml(data['roadside'])}"
@@ -51,7 +52,8 @@
 					isValidVar="isValid"
 					configDbKey="quoteService"
 					styleCodeId="${pageSettings.getBrandId()}"
-					verticalCode="ROADSIDE" />
+					verticalCode="ROADSIDE"
+					sendCorrelationId="true" />
 </c:if>
 
 <c:choose>
@@ -63,7 +65,7 @@
 			</c:forEach>
 		</c:if>
 		<%-- Write to the stats database --%>
-		<agg:write_stats tranId="${tranId}" debugXml="${debugXml}" rootPath="roadside" />
+		<agg_v1:write_stats tranId="${tranId}" debugXml="${debugXml}" rootPath="roadside" />
 
 		<%-- Build a response object and send it through! --%>
 		<go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
@@ -72,7 +74,7 @@
 		<go:setData dataVar="soapdata" xpath="soap-response/results/info/trackingKey" value="${data.roadside.trackingKey}" />
 		<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${data.current.transactionId}" />
 
-		<agg:write_result_details transactionId="${tranId}" recordXPaths="quoteUrl" baseXmlNode="soap-response/results/price"/>
+		<agg_v1:write_result_details transactionId="${tranId}" recordXPaths="quoteUrl" baseXmlNode="soap-response/results/price"/>
 
 		${go:XMLtoJSON(go:getEscapedXml(soapdata["soap-response/results"]))}
 	</c:when>
@@ -85,6 +87,6 @@
 		${serviceRespone}
 	</c:when>
 	<c:otherwise>
-		<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="sar_quote_results.jsp" />
+		<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}" origin="sar_quote_results.jsp" />
 	</c:otherwise>
 </c:choose>

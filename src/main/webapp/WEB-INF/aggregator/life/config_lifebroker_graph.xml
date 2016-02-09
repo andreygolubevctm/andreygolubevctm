@@ -6,7 +6,6 @@
 	<merge-root>soap-response</merge-root>
 	<merge-xsl>merge-lifebroker_graph.xsl</merge-xsl>
 	<config-dir>/WEB-INF/aggregator/life</config-dir>
-	<error-dir>c:/Users/msmerdon/workspace/web_ctm/src/main/webapp/WEB-INF/aggregator/life/errors</error-dir>
 	<debug-dir>life/debug</debug-dir>
 
 	<service name="GRAPH" type="SOAP">

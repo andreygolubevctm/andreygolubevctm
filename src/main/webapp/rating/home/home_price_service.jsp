@@ -5,9 +5,9 @@
 <fmt:setLocale value="en_US" />
 
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 
 <%-- Import request data from quote page --%>
@@ -20,7 +20,7 @@
 
 <c:set var="service" value="${param.service}" />
 <c:set var="authToken" value="${param.authToken}" />
-<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${tranId}" /></c:set>
+<c:set var="styleCodeId"><core_v1:get_stylecode_id transactionId="${tranId}" /></c:set>
 <c:set var="pageSettings" value="${settingsService.getPageSettings(styleCodeId, 'HOME')}" />
 
 <c:choose>

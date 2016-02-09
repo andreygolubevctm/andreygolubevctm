@@ -4,11 +4,11 @@
 
 <c:set var="xpath" value="quote" />
 
-<layout:slide formId="detailsForm" nextLabel="Next Step">
+<layout_v1:slide formId="detailsForm" nextLabel="Next Step">
 
-	<layout:slide_content>
+	<layout_v1:slide_content>
 
-		<form_new:fieldset_columns sideHidden="false">
+		<form_v2:fieldset_columns sideHidden="false" force4ColSide="true">
 
 			<jsp:attribute name="rightColumn">
 				<car:snapshot />
@@ -22,7 +22,7 @@
 				</ui:bubble>
 
 			</jsp:body>
-		</form_new:fieldset_columns>
+		</form_v2:fieldset_columns>
 
 		<car:drivers_regular xpath="${xpath}/drivers/regular" />
 
@@ -30,6 +30,6 @@
 
 		<car:drivers_young xpath="${xpath}/drivers/young" />
 
-	</layout:slide_content>
+	</layout_v1:slide_content>
 
-</layout:slide>
+</layout_v1:slide>

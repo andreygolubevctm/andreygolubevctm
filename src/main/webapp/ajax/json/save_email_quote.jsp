@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.save_email_quote')}" />
 
 <session:get settings="true" authenticated="true" />
 
@@ -26,10 +27,10 @@
 	</c:choose>
 </c:set>
 <%-- First check owner of the quote --%>
-<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" /></c:set>
+<c:set var="proceedinator"><core_v1:access_check quoteType="${quoteType}" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log source="save_email_quote_mysql_jsp">PROCEEDINATOR PASSED</go:log>
+		${logger.debug('PROCEEDINATOR PASSED')}
 
 		<c:set var="sessionid" value="${pageContext.session.id}" />
 		<c:set var="ipaddress" value="${pageContext.request.remoteAddr}" />
@@ -140,7 +141,7 @@
 			<%-- Add/Update the user record in email_master --%>
 			<c:catch var="error">
 				<c:if test="${!userData.loginExists && !isOperator}">
-					<agg:write_email
+					<agg_v1:write_email
 						brand="${brand}"
 						vertical="${vertical}"
 						source="${source}"
@@ -162,15 +163,15 @@
 					<c:if test="${not empty errorPool}">
 						<c:set var="errorPool">${errorPool},</c:set>
 					</c:if>
-					<go:log level="ERROR" error="${error}" source="save_email_quote_mysql_jsp" >Failed to add/update email_master: ${error.rootCause}</go:log>
+					${logger.error('Failed to add/update email_master {},{},{},{}',log:kv('emailAddress',emailAddress ) , log:kv('brand',brand ), log:kv('vertical',vertical ), log:kv('source',source ) , error)}
 					<c:set var="errorPool">${errorPool}"A fatal database error occurred - we hope to resolve this soon."</c:set>
 				</c:when>
 				<c:otherwise>
 					<c:set var="ct_outcome">
-						<core:transaction touch="S" noResponse="false" writeQuoteOverride="${writeQuoteOverride}" emailAddress="${emailAddress}" comment="${source}" />
+						<core_v1:transaction touch="S" noResponse="false" writeQuoteOverride="${writeQuoteOverride}" emailAddress="${emailAddress}" comment="${source}" />
 					</c:set>
 
-					<go:log source="save_email_quote_mysql_jsp">ct_outcome: ${ct_outcome}</go:log>
+					${logger.info('Touch quote with S. {}',log:kv('outcome',ct_outcome ))}
 					<c:if test="${fn:contains(ct_outcome,'FAILED:')}">
 						<c:if test="${not empty errorPool}">
 							<c:set var="errorPool">${errorPool},</c:set>
@@ -183,12 +184,24 @@
 					<%-- Send off the Email response via json/ajax/send.jsp --%>
 					<c:if test="${sendConfirmation == 'yes'}">
 						<c:catch var="silentError">
+							<jsp:useBean id="tokenServiceFactory" class="com.ctm.web.core.email.services.token.EmailTokenServiceFactory"/>
+							<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstance(pageSettings)}" />
+							<c:set var="hashedEmail"><security:hashed_email email="${emailAddress}" brand="${brand}" /></c:set>
+
+							<c:if test="${pageSettings.getSetting('emailTokenEnabled')}">
+								<c:set var="unsubscribeTokenVar" value="${tokenService.generateToken(data.current.transactionId, hashedEmail, pageSettings.getBrandId(), 'quote', 'unsubscribe', null, null, pageSettings.getVerticalCode(), null, true)}" />
+								<c:set var="continueOnlineTokenVar" value="${tokenService.generateToken(data.current.transactionId, hashedEmail, pageSettings.getBrandId(), 'quote', 'load', null, null, pageSettings.getVerticalCode(), null, true)}" />
+							</c:if>
+
 							<c:set var="emailResponse">
 								<c:import url="send.jsp">
 									<c:param name="vertical" value="${vertical}" />
 									<c:param name="mode" value="quote" />
 									<c:param name="emailAddress" value="${emailAddress}" />
 									<c:param name="transactionId" value="${data.current.transactionId}" /> <%-- CHECK / TODO: Would never get passed as send.jsp never looks for this as a param? --%>
+									<c:param name="unsubscribeToken" value="${unsubscribeTokenVar}"/>
+									<c:param name="continueOnlineToken" value="${continueOnlineTokenVar}"/>
+									<c:param name="createUnsubscribeEmailToken" value="${true}"/>
 								</c:import>
 							</c:set>
 						</c:catch>
@@ -204,7 +217,7 @@
 <%-- JSON/JSONP RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		<go:log level="ERROR" source="save_email_quote_mysql_jsp">SAVE ERRORS: ${errorPool}</go:log>
+		${logger.info('Returning save errors to the browser', log:kv('errorPool', errorPool))}
 		<c:choose>
 			<c:when test="${fn:contains(callback,'jsonp')}">
 				${callback}({error:${errorPool}});
@@ -216,7 +229,7 @@
 	</c:when>
 	<c:otherwise>
 		<c:if test="${isOperator && param.save_unlock == 'Y'}">
-			<core:transaction touch="X" noResponse="true" />
+			<core_v1:transaction touch="X" noResponse="true" />
 		</c:if>
 
 		<c:choose>

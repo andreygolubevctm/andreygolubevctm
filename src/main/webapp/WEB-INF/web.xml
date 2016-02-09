@@ -19,6 +19,18 @@
 		<param-value>CTM</param-value>
 	</context-param>
 
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>com.ctm.web.core.Application</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.boot.legacy.context.web.SpringBootContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>com.ctm.commonlogging.context.ContextPathListener</listener-class>
+	</listener>
+
 	<!-- SESSIONS: This over-rides the settings in Tomcat -->
 	<session-config>
 		<session-timeout>60</session-timeout><!-- Previous default in Tomcat is 30 -->
@@ -30,26 +42,59 @@
 		<servlet-class>org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet</servlet-class>
 		<init-param>
 			<param-name>jaxrs.serviceClasses</param-name>
-			<param-value>com.ctm.router.CarRouter,com.ctm.router.car.RegoLookupRouter,com.ctm.router.travel.TravelRouter</param-value>
+			<param-value>com.ctm.web.car.router.CarRouter,
+				com.ctm.web.car.router.RegoLookupRouter,
+				com.ctm.web.travel.router.TravelRouter,
+				com.ctm.web.homecontents.router.HomeQuoteRouter,
+				com.ctm.web.health.router.HealthQuoteRouter,
+				com.ctm.web.health.router.HealthApplicationRouter,
+				com.ctm.web.health.router.HealthAuthorisePaymentRouter,
+				com.ctm.web.health.router.HealthRegisterPaymentRouter
+
+            </param-value>
 		</init-param>
 		<init-param>
 			<param-name>jaxrs.providers</param-name>
 			<param-value>
-				com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider,
-				com.ctm.router.exceptionhandlers.ServiceExceptionHandler
+				com.ctm.web.core.router.RouterJacksonJsonProvider,
+				com.ctm.web.core.router.exceptionhandlers.ServiceExceptionHandler
 			</param-value>
 		</init-param>
-        <init-param>
-            <param-name>jaxrs.inInterceptors</param-name>
-            <param-value>
-                com.ctm.soap.FormParamMapInInterceptor
-            </param-value>
-        </init-param>
+		<init-param>
+			<param-name>jaxrs.inInterceptors</param-name>
+			<param-value>
+				com.ctm.web.core.soap.FormParamMapInInterceptor,
+				org.apache.cxf.transport.common.gzip.GZIPInInterceptor
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>jaxrs.outInterceptors</param-name>
+			<param-value>
+				org.apache.cxf.transport.common.gzip.GZIPOutInterceptor
+			</param-value>
+		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>CXFServlet</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/dispatcher-config.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/spring/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- Required environment variables with sample (dev) values listed below:
@@ -133,6 +178,31 @@
 	</filter-mapping>
 	-->
 
+	<filter>
+		<filter-name>mdcFilter</filter-name>
+		<filter-class>com.ctm.web.core.logging.listeners.MDCFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>mdcFilter</filter-name>
+		<url-pattern>/ajax/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>mdcFilter</filter-name>
+		<url-pattern>/viewConfirmation</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>mdcFilter</filter-name>
+		<url-pattern>/handover/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>mdcFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>mdcFilter</filter-name>
+		<url-pattern>*.json</url-pattern>
+	</filter-mapping>
+
 	<!-- Datasource References -->
 	<resource-ref>
 		<description>DB Connection</description>
@@ -186,11 +256,6 @@
 		<description>Health Call Centre Managers</description>
 		<role-name>BD-HCC-MGR</role-name>
 	</security-role>
-
-	<context-param>
-		<param-name>environmentConfigLocation</param-name>
-		<param-value>environment.properties</param-value>
-	</context-param>
 
 	<!-- Ensure the locale has been set and is available everywhere -->
 	<context-param>

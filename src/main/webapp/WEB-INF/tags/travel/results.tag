@@ -5,7 +5,7 @@
 <div class="resultsHeadersBg">
 </div>
 
-<agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
+<agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
 	<travel:more_info />
 
 <%-- RESULTS TABLE --%>
@@ -34,18 +34,18 @@
 
 		<div class="resultsOverflow">
 			<div class="results-table">
-				<core_new:show_more_quotes_button />
+				<core_v2:show_more_quotes_button />
 			</div>
 		</div>
 
-		<core:clear />
+		<core_v1:clear />
 
 		<div class="featuresFooterPusher"></div>
 	</div>
 
 
 <%-- DEFAULT RESULT ROW --%>
-<core:js_template id="result-template">
+<core_v1:js_template id="result-template">
 	{{ var productTitle = (typeof obj.des !== 'undefined') ? obj.des : 'Unknown product name'; }}
 
 	{{ var template = $("#provider-logo-template").html(); }}
@@ -120,7 +120,7 @@
 									<span class="priceTitle">Price</span>
 								</div>
 								<div class="col-xs-6 excessContainer">
-									<span class="excessAmount">{{= obj.info.excess.text }}</span>
+									<span class="excessAmount">{{= obj.info.excess }}</span>
 									<span class="excessTitle">Excess</span>
 								</div>
 							</div>
@@ -150,13 +150,13 @@
 				</div>
 				<div class="row mainBenefitsPricing">
 					<div class="col-xs-4 medicalAmount">
-						{{= obj.info.medical.text }}
+						{{= obj.info.medical }}
 					</div>
 					<div class="col-xs-4 cdxfeeAmount">
-						{{= obj.info.cxdfee.text }}
+						{{= obj.info.cxdfee }}
 					</div>
 					<div class="col-xs-4 luggageAmount">
-						{{= obj.info.luggage.text }}
+						{{= obj.info.luggage }}
 					</div>
 				</div>
 			</div><%-- /mainBenefitsContainer --%>
@@ -169,15 +169,13 @@
 		</div>
 
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- FEATURE TEMPLATE --%>
-	<div id="feature-template" style="display:none;" class="featuresTemplateComponent">
-
-	</div>
+	<core_v1:js_template id="feature-template"></core_v1:js_template>
 
 <%-- UNAVAILABLE ROW --%>
-<core:js_template id="unavailable-template">
+<core_v1:js_template id="unavailable-template">
 	{{ var productTitle = (typeof obj.headline !== 'undefined' && typeof obj.headline.name !== 'undefined') ? obj.headline.name : 'Unknown product name'; }}
 	{{ var productDescription = (typeof obj.headline !== 'undefined' && typeof obj.headline.des !== 'undefined') ? obj.headline.des : 'Unknown product name'; }}
 
@@ -208,10 +206,10 @@
 			</div>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- UNAVAILABLE COMBINED ROW --%>
-<core:js_template id="unavailable-combined-template">
+<core_v1:js_template id="unavailable-combined-template">
 {{ var template = $("#provider-logo-template").html(); }}
 {{ var logo = _.template(template); }}
 {{ var logos = ''; }}
@@ -235,10 +233,10 @@
 			</div>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 
 <%-- ERROR ROW --%>
-<core:js_template id="error-template">
+<core_v1:js_template id="error-template">
 	{{ var productTitle = (typeof obj.headline !== 'undefined' && typeof obj.headline.name !== 'undefined') ? obj.headline.name : 'Unknown product name'; }}
 	{{ var productDescription = (typeof obj.headline !== 'undefined' && typeof obj.headline.des !== 'undefined') ? obj.headline.des : 'Unknown product name'; }}
 
@@ -257,7 +255,7 @@
 			<div class="resultInsert priceMode">
 				<div class="row">
 					<div class="col-xs-2 col-sm-8 col-md-6">
-						<div class="companyLogo"><img src="common/images/logos/results/{{= obj.productId }}_w.png" /></div>
+						<div class="companyLogo"><img src="assets/graphics/logos/results/{{= obj.productId }}_w.png" /></div>
 
 						<h2 class="hidden-xs">{{= productTitle }}</h2>
 
@@ -270,7 +268,7 @@
 			</div>
 		</div>
 	</div>
-</core:js_template>
+</core_v1:js_template>
 <%-- BLOCKED QUOTES --%>
 <div class="hidden">
 	<c:set var="heading"><content:get key="blockedIPHeading" /></c:set>
@@ -280,7 +278,7 @@
 
 <%-- NO RESULTS --%>
 <div class="hidden">
-	<agg_new_results:results_none />
+	<agg_v2_results:results_none />
 </div>
 
 <%-- FETCH ERROR --%>
@@ -289,10 +287,10 @@
 </div>
 
 <%-- Logo template --%>
-<core:js_template id="provider-logo-template">
+<core_v1:js_template id="provider-logo-template">
 	{{ var img = 'default_w'; }}
-	{{ if (obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
+	{{ if (obj.hasOwnProperty('serviceName') && obj.serviceName.length > 1) img = obj.serviceName; }}
 	<div class="travelCompanyLogo logo_{{= img }}"></div>
-</core:js_template>
+</core_v1:js_template>
 
-</agg_new_results:results>
+</agg_v2_results:results>

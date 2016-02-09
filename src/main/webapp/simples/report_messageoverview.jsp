@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="messageOverviewDao" class="com.ctm.dao.simples.MessageOverviewDao" scope="page" />
+<jsp:useBean id="messageOverviewDao" class="com.ctm.web.simples.dao.MessageOverviewDao" scope="page" />
 
 <settings:setVertical verticalCode="SIMPLES" />
 
 <%@ include file="/WEB-INF/security/core.jsp" %>
 
-<layout:simples_page>
+<layout_v1:simples_page>
 	<jsp:attribute name="head">
 	</jsp:attribute>
 
@@ -61,4 +61,4 @@
 		</c:choose>
 
 	</jsp:body>
-</layout:simples_page>
+</layout_v1:simples_page>

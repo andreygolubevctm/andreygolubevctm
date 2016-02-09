@@ -15,50 +15,42 @@
 	<p>Answering these questions will help us supply you with car insurance quotes from our participating suppliers.</p>
 </ui:bubble>
 
-<form_new:fieldset legend="Your Car" id="${name}_selection">
+<form_v2:fieldset legend="Your Car" id="${name}_selection">
 
-	<form_new:row label="Make" id="${name}_makeRow" className="initial" helpId="3">
-		<field_new:general_select xpath="${xpath}/make" title="vehicle manufacturer" required="true" initialText="&nbsp;" />
-		<field:hidden xpath="${xpath}/makeDes"></field:hidden>
-	</form_new:row>
+	<form_v2:row label="Make" id="${name}_makeRow" className="initial" helpId="3">
+		<field_v2:general_select xpath="${xpath}/make" title="vehicle manufacturer" required="true" initialText="&nbsp;" />
+		<field_v1:hidden xpath="${xpath}/makeDes"></field_v1:hidden>
+	</form_v2:row>
 
-	<form_new:row label="Model" id="${name}_modelRow">
-		<field_new:general_select xpath="${xpath}/model" title="vehicle model" required="true" initialText="&nbsp;" />
-		<field:hidden xpath="${xpath}/modelDes"></field:hidden>
-	</form_new:row>
+	<form_v2:row label="Model" id="${name}_modelRow">
+		<field_v2:general_select xpath="${xpath}/model" title="vehicle model" required="true" initialText="&nbsp;" />
+		<field_v1:hidden xpath="${xpath}/modelDes"></field_v1:hidden>
+	</form_v2:row>
 
-	<form_new:row label="Year" id="${name}_yearRow">
-		<field_new:general_select xpath="${xpath}/year" title="vehicle year" required="true" initialText="&nbsp;" />
-		<field:hidden xpath="${xpath}/registrationYear"></field:hidden>
-		</form_new:row>
+	<form_v2:row label="Year" id="${name}_yearRow">
+		<field_v2:general_select xpath="${xpath}/year" title="vehicle year" required="true" initialText="&nbsp;" />
+		<field_v1:hidden xpath="${xpath}/registrationYear"></field_v1:hidden>
+		</form_v2:row>
 
-	<form_new:row label="Body" id="${name}_bodyRow" className="hidden">
-		<field_new:general_select xpath="${xpath}/body" title="vehicle body" required="true" initialText="&nbsp;" />
-	</form_new:row>
+	<form_v2:row label="Body" id="${name}_bodyRow" className="hidden">
+		<field_v2:general_select xpath="${xpath}/body" title="vehicle body" required="true" initialText="&nbsp;" />
+	</form_v2:row>
 
-	<form_new:row label="Transmission" id="${name}_transRow" className="hidden">
-		<field_new:general_select xpath="${xpath}/trans" title="vehicle transmission" required="true" initialText="&nbsp;" />
-	</form_new:row>
+	<form_v2:row label="Transmission" id="${name}_transRow" className="hidden">
+		<field_v2:general_select xpath="${xpath}/trans" title="vehicle transmission" required="true" initialText="&nbsp;" />
+	</form_v2:row>
 
-	<form_new:row label="Fuel" id="${name}_fuelRow" className="hidden">
-		<field_new:general_select xpath="${xpath}/fuel" title="fuel type" required="true" initialText="&nbsp;" />
-	</form_new:row>
+	<form_v2:row label="Fuel" id="${name}_fuelRow" className="hidden">
+		<field_v2:general_select xpath="${xpath}/fuel" title="fuel type" required="true" initialText="&nbsp;" />
+	</form_v2:row>
 
-	<c:choose>
-		<c:when test="${editDetailsRedbookCodeSplitTest eq true}">
-			<form_new:row label="Please select your car type" hideHelpIconCol="true" id="${name}_redbookCodeRow" className="${name}_redbookCodeRow radio-button-group-row hidden">
-				<div id="${name}_redbookCode" class="radio-button-group"><!-- to be populated --></div>
-				<field:hidden xpath="${xpath}/marketValue"></field:hidden>
-				<field:hidden xpath="${xpath}/variant"></field:hidden>
-			</form_new:row>
-		</c:when>
-		<c:otherwise>
-			<form_new:row label="Type" id="${name}_redbookCodeRow" className="${name}_redbookCodeRow hidden">
-				<field_new:general_select xpath="${xpath}/redbookCode" title="vehicle type" required="true" className="vehicleDes" initialText="&nbsp;" />
-				<field:hidden xpath="${xpath}/marketValue"></field:hidden>
-				<field:hidden xpath="${xpath}/variant"></field:hidden>
-			</form_new:row>
-		</c:otherwise>
-	</c:choose>
+	<form_v2:row label="Type" id="${name}_redbookCodeRow" className="${name}_redbookCodeRow hidden">
+		<field_v2:general_select xpath="${xpath}/redbookCode" title="vehicle type" required="true" className="vehicleDes" initialText="&nbsp;" />
+		<field_v1:hidden xpath="${xpath}/marketValue"></field_v1:hidden>
+		<field_v1:hidden xpath="${xpath}/variant"></field_v1:hidden>
+	</form_v2:row>
 
-</form_new:fieldset>
+	<form_v2:row label="What is the color of the car?" id="${name}_colourRow" className="hidden">
+		<field_v2:general_select xpath="${xpath}/colour" title="colour" required="true" initialText="&nbsp;" />
+	</form_v2:row>
+</form_v2:fieldset>

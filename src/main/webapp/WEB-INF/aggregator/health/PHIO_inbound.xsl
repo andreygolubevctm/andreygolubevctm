@@ -10,8 +10,6 @@
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:variable name="info_structure" select="document('imports/info_structure.xml')" />
-	<xsl:variable name="ensure_hospital" select="document('')/ensure:hospital" />
-	<xsl:variable name="ensure_extras" select="document('')/ensure:extras" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
@@ -119,10 +117,6 @@
 							</benefits>
 						</xsl:if>
 
-						<!-- If any benefits are missing, create empty placeholder elements -->
-						<xsl:call-template name="ensureHospitalBenefits">
-							<xsl:with-param name="benefits" select="phio/hospital/benefits"/>
-						</xsl:call-template>
 					</hospital>
 					<extras>
 						<!-- Iterate the extras e.g. DentalMajor -->
@@ -166,10 +160,6 @@
 							</xsl:choose>
 						</xsl:for-each>
 
-						<!-- If any extras are missing, create empty placeholder elements -->
-						<xsl:call-template name="ensureExtras">
-							<xsl:with-param name="extras" select="phio/extras"/>
-						</xsl:call-template>
 					</extras>
 					<ambulance>
 						<xsl:copy-of select="phio/ambulanceInfo/*" />
@@ -213,27 +203,6 @@
 		</xsl:element>
 	</xsl:template>
 
-	<xsl:template name="ensureHospitalBenefits">
-		<xsl:param name="benefits" />
-
-		<xsl:for-each select="$ensure_hospital/*">
-			<xsl:choose>
-			<xsl:when test="$benefits[name()=@tag]">
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:element name="{@tag}">
-					<covered>N</covered>
-					<WaitingPeriod>-</WaitingPeriod>
-					<benefitLimitationPeriod>-</benefitLimitationPeriod>
-				</xsl:element>
-			</xsl:otherwise>
-			</xsl:choose>
-		</xsl:for-each>
-
-
-
-
-	</xsl:template>
 	<ensure:hospital>
 		<ensure:item tag="DentalGeneral"/>
 		<ensure:item tag="DentalMajor"/>
@@ -251,31 +220,6 @@
 		<ensure:item tag="HearingAids"/>
 	</ensure:hospital>
 
-	<xsl:template name="ensureExtras">
-		<xsl:param name="extras" />
-
-		<xsl:for-each select="$ensure_extras/*">
-			<xsl:choose>
-			<xsl:when test="$extras[name()=@tag]">
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:element name="{@tag}">
-					<covered>N</covered>
-					<hasSpecialFeatures>-</hasSpecialFeatures>
-					<waitingPeriod>-</waitingPeriod>
-					<benefits>-</benefits>
-					<benefitLimits>
-						<perPerson>-</perPerson>
-						<perPolicy>-</perPolicy>
-						<combinedLimit />
-						<serviceLimit>-</serviceLimit>
-						<loyaltyBonus>-</loyaltyBonus>
-					</benefitLimits>
-				</xsl:element>
-			</xsl:otherwise>
-			</xsl:choose>
-		</xsl:for-each>
-	</xsl:template>
 	<ensure:extras>
 		<ensure:item tag="AssistedReproductive"/>
 		<ensure:item tag="Cardiac"/>

@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="serviceConfigurationService" class="com.ctm.services.ServiceConfigurationService" scope="session"/>
+<jsp:useBean id="serviceConfigurationService" class="com.ctm.web.core.services.ServiceConfigurationService" scope="session"/>
 
-<core:doctype/>
+<core_v1:doctype/>
 <html>
 <head>
     <link rel='stylesheet' type='text/css' href='common/data.css'/>
@@ -11,7 +11,7 @@
 <body class="dataConfig">
 
 <%-- SECURITY FEATURE --%>
-<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:')}">
+<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:') or fn:startsWith(pageContext.request.remoteAddr,'127.0.0.1')}">
     <c:import var="prettyXml" url="/WEB-INF/xslt/pretty_xml.xsl"/>
 
     <session:core/>
@@ -125,14 +125,6 @@
             </c:if>
         </c:forEach>
     </c:forEach>
-
-
-    <c:catch var="error">
-    </c:catch>
-    <c:if test="${not empty error}">
-        <p>Could not list brand information due to server exception.</p>
-    </c:if>
-
 </c:if>
 
 </body>

@@ -2,7 +2,7 @@
 <%@ tag description="Brands Sidebar"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<form_new:fieldset legend="Our Lenders">
+<form_v2:fieldset legend="Our Lenders">
 <div class="row">
 	<div class="col-xs-12">
 		<p>Compare Home Loans from 30 lenders including...</p>
@@ -17,9 +17,9 @@
 	</c:forEach>
 
 	<div class="col-xs-12">
-	<a href="javascript:;" class="btn-view-brands pull-right" >View all <strong>30 lenders</strong> here</a>
+	<a href="javascript:;" class="btn-view-brands pull-right" >View all <strong>32 lenders</strong> here</a>
 	</div>
 </div>
-</form_new:fieldset>
+</form_v2:fieldset>
 
 <homeloan:brands />

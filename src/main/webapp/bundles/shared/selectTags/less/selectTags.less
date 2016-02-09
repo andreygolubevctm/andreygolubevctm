@@ -1,0 +1,48 @@
+.form-group.select-tags-row {
+	margin-bottom: 0;
+}
+
+ul.selected-tags {
+	padding-left: 0;
+	list-style: none;
+	
+	li {
+		background: #fff;
+		border: 1px solid #999;
+		border-radius: @border-radius-base;
+		float: left;
+		padding-left: 10px;
+		color: @theme-tertiary;
+		margin: 8px 8px 0 0;
+		font-size: 14px;
+		
+		&.hover {
+			color: #a90000;
+			border-color: #a90000;
+		}
+		
+		span {
+			padding-top: 3px;
+			display: inline-block;
+			float: left;
+		}
+		
+		button {
+			margin-left: 10px;
+			border-radius: 0 @border-radius-small @border-radius-small 0;
+			color: #fff;
+			background: #999;
+			padding: 4px 10px;
+			
+			&:hover {
+				background: #ffefef;
+				color: #a90000;
+			}
+			
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+	
+}

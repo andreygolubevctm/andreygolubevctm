@@ -1,0 +1,19 @@
+@provider-list: ~"BUDD", ~"AI", ~"EXPO", ~"VIRG", ~"REIN", ~"1FOW", ~"EXDD", ~"WOOL", ~"IECO", ~"OZIC", ~"CBCK", ~"RETI";
+
+.companyLogo {
+	.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list);
+}
+
+:not(.ie8) & {
+	.featuresMode {
+		.companyLogo {
+			.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-xs-scale);
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.companyLogo {
+	  .providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-xs-scale; ~"");
+	}
+}

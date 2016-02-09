@@ -30,7 +30,7 @@ Lifetime Health Cover and Rebate Discount Calculator
 	<fmt:formatNumber var="primaryDobYear" value="${fn:substring(fn:trim(param.primary_dob), 6, 12)+0}" pattern="####" minIntegerDigits="4" />
 	<fmt:formatNumber var="primaryDobMonth" value="${fn:substring(fn:trim(param.primary_dob), 3, 5)+0}" pattern="##" minIntegerDigits="2" />
 	<fmt:formatNumber var="primaryDobDay" value="${fn:substring(fn:trim(param.primary_dob), 0, 2)+0}" pattern="##" minIntegerDigits="2" />
-	<c:set var="primaryAge"><field:age dob="${fn:trim(param.primary_dob)}" /></c:set>
+	<c:set var="primaryAge"><field_v1:age dob="${fn:trim(param.primary_dob)}" /></c:set>
 
 <%--
 ----------
@@ -56,7 +56,7 @@ COVER TYPE
 			<fmt:formatNumber var="partnerDobYear" value="${fn:substring(fn:trim(param.partner_dob), 6, 12)+0}" pattern="####" minIntegerDigits="4" />
 			<fmt:formatNumber var="partnerDobMonth" value="${fn:substring(fn:trim(param.partner_dob), 3, 5)+0}" pattern="##" minIntegerDigits="2" />
 			<fmt:formatNumber var="partnerDobDay" value="${fn:substring(fn:trim(param.partner_dob), 0, 2)+0}" pattern="##" minIntegerDigits="2" />
-			<c:set var="partnerAge"><field:age dob="${fn:trim(param.partner_dob)}" /></c:set>
+			<c:set var="partnerAge"><field_v1:age dob="${fn:trim(param.partner_dob)}" /></c:set>
 		</c:if>
 	</c:when>
 </c:choose>
@@ -101,10 +101,10 @@ AGE ADJUSTMENT - if rebate not 0 (Take the OLDEST person and use their age)
 
 <c:choose>
 	<c:when test="${partnerAge+0 >= primaryAge+0}">
-		<fmt:formatNumber var="age" value="${partnerAge}" maxFractionDigits="0" />
+		<fmt:parseNumber var="age" value="${partnerAge}"/>
 	</c:when>
 	<c:otherwise>
-		<fmt:formatNumber var="age" value="${primaryAge}" maxFractionDigits="0" />
+		<fmt:parseNumber var="age" value="${primaryAge}"/>
 	</c:otherwise>
 </c:choose>
 
@@ -129,8 +129,10 @@ GOV Rebate Factor - Calculate new rebate based on rebate multiplier variables
 -------------
 --%>
 
-<%-- Include this tag to add required rebate multiplier variables to the request --%>
-<health:changeover_rebates />
+<jsp:useBean id="changeOverRebatesService" class="com.ctm.web.simples.services.ChangeOverRebatesService" />
+<c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(null)}"/>
+<c:set var="rebate_multiplier_current" value="${changeOverRebates.getCurrentMultiplier()}"/>
+<c:set var="rebate_multiplier_future" value="${changeOverRebates.getFutureMultiplier()}"/>
 
 <c:set var="rebateChangeover">
 	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebate * rebate_multiplier_future}" />
@@ -158,7 +160,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 
 				<%-- Age Adjustment, only need to pay the LHC on the next July after your Birthday --%>
 				<c:set var="primaryAdjustment" value="0" />
-				<c:set var="primaryBirthdayAchieved"><field:birthday dob="${fn:trim(param.primary_dob)}" /></c:set>
+				<c:set var="primaryBirthdayAchieved"><field_v1:birthday dob="${fn:trim(param.primary_dob)}" /></c:set>
 
 				<c:choose>
 					<c:when test="${primaryAge == 31 && primaryDobMonth  == 7 && primaryDobDay == 1}">
@@ -214,7 +216,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 
 						<%-- Age Adjustment, only need to pay the LHC on the next July after your Birthday --%>
 						<c:set var="partnerAdjustment" value="0" />
-						<c:set var="partnerBirthdayAchieved"><field:birthday dob="${fn:trim(param.partner_dob)}" /></c:set>
+						<c:set var="partnerBirthdayAchieved"><field_v1:birthday dob="${fn:trim(param.partner_dob)}" /></c:set>
 
 						<c:choose>
 							<c:when test="${partnerAge == 31 && partnerDobMonth  == 7 && partnerDobDay == 1}">
@@ -262,27 +264,6 @@ Certified Age of Entry: Defaults to 30.
 --%>
 <c:set var="primaryCAE"><fmt:formatNumber value="${30 + (primary_loading_cae / 2)}" maxFractionDigits="0" /></c:set>
 <c:set var="partnerCAE"><fmt:formatNumber value="${30 + (partner_loading_cae / 2)}" maxFractionDigits="0" /></c:set>
-
-
-<%--
-********
-RESPONSE
---------
-<go:log  level="TRACE">
-	rebate = ${rebate}
-	rebateChangeover = ${rebateChangeover}
-	cover = ${cover}
-	income = ${income}
-	primaryAge = ${primaryAge}
-	partnerAge = ${partnerAge}
-	loading = ${loading}
-	"partnerLoading":"${partner_loading_rate}"
-	"primaryLoading":"${primary_loading_rate}"
-	"ageBonus":"${rebateBonus}"
-	"health_primaryCAE":"${primaryCAE}"
-	"health_partnerCAE":"${partnerCAE}"
-</go:log>
---%>
 
 <c:choose>
 	<c:when test="${not empty cover && empty income && not empty primaryAge}">

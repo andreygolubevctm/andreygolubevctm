@@ -1,0 +1,40 @@
+.roadside {
+
+  // Add your slide feature here to be hidden by default
+  .slide-feature-back {
+    .slide-feature-hidden();
+  }
+
+  .sortbar-container {
+    display: none;
+  }
+
+  @media(@sm) {
+    // Add your slide feature to the particular step that it needs to be visible
+    &[data-step="start"] {
+      #navbar-main {
+        .slide-feature-hidden() !important;
+      }
+    }
+  }
+  &[data-step="results"] {
+    //put the sorting/filtering bar here to be shown once it exists.
+    .slide-feature-back {
+      .slide-feature-is-visible();
+    }
+
+    .sortbar-container {
+      display: block;
+    }
+
+    .progress-bar-row {
+      .slide-feature-hidden() !important;
+    }
+    @media screen and (@sm) {
+      #navbar-main {
+        max-height: 100px;
+      }
+    }
+  }
+
+}

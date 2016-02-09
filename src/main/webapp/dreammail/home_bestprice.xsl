@@ -35,6 +35,8 @@
 
 	<xsl:param name="ImageUrlPrefix"></xsl:param>
 	<xsl:param name="ImageUrlSuffix"></xsl:param>
+	<xsl:param name="unsubscribeToken"></xsl:param>
+	<xsl:param name="emailTokenEnabled"></xsl:param>
 
 	<xsl:template match="/">
 			<xsl:apply-templates select="/tempSQL"/>
@@ -105,7 +107,14 @@
 		</xsl:variable>
 
 		<xsl:variable name="unsubscribeURL">
-			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?unsubscribe_email=',$hashedEmail,'&amp;vertical=home&amp;email=',$EmailAddress,']]&gt;')" />
+			<xsl:choose>
+				<xsl:when test="$emailTokenEnabled = 'true'">
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?vertical=home&amp;token=',$unsubscribeToken,']]&gt;')" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?unsubscribe_email=',$hashedEmail,'&amp;vertical=home&amp;email=',$EmailAddress,']]&gt;')" />
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="callcentreHours">
 			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',results/product0/openingHours,']]&gt;')" />
@@ -324,7 +333,16 @@
 
 		<Attributes>
 			<Name>ApplyURL<xsl:value-of select="$index" /></Name>
-			<Value><xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?vertical=home&amp;type=bestprice','&amp;pid=',$productId,'&amp;id=',$tranId,'&amp;email=',$sendToEmail,'&amp;hash=',$hashedEmail,']]&gt;')" /></Value>
+			<Value>
+				<xsl:choose>
+					<xsl:when test="$emailTokenEnabled = 'true'">
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?token=',$currentProduct/loadQuoteToken,']]&gt;')" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?vertical=home&amp;type=bestprice','&amp;pid=',$productId,'&amp;id=',$tranId,'&amp;email=',$sendToEmail,'&amp;hash=',$hashedEmail,']]&gt;')" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</Value>
 		</Attributes>
 
 		<Attributes>

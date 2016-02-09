@@ -24,7 +24,7 @@
 	<a href="javascript:void(0);" id="start-new-quote" class="smlbtn" title="Start New Quote"><span>Start New Quote</span></a>
 </div>
 
-<form:active_progress_bar />
+<form_v1:active_progress_bar />
 
 <go:script marker="onready">
 	<%-- The progress bar is hidden after the first slide so only need to provide action for entering the results page --%>

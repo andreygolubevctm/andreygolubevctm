@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<core:doctype />
+<core_v1:doctype />
 <html>
 	<head>
 		<link rel='stylesheet' type='text/css' href='common/data.css' />
@@ -9,7 +9,7 @@
 	<body class="dataSettings">
 	
 		<%-- SECURITY FEATURE --%>
-		<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:')}">
+		<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:')or fn:startsWith(pageContext.request.remoteAddr,'127.0.0.1')}">
 			<c:import var="prettyXml" url="/WEB-INF/xslt/pretty_xml.xsl"/>
 	
 			<session:core />
@@ -76,6 +76,7 @@
 			</c:forEach>
 		</c:catch>
 		<c:if test="${not empty error}">
+			${logger.warn('Could not list brand information due to server exception. {}', log:kv('serverIp',serverIp), error)}
 			<p>Could not list brand information due to server exception.</p>
 		</c:if>
 				

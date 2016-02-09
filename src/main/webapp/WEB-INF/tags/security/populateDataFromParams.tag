@@ -1,3 +1,4 @@
+<%@ tag import="com.ctm.web.core.web.go.Data" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 
@@ -12,7 +13,7 @@
 <c:if test="${not empty rootPath}">
 	<c:import url="/WEB-INF/xslt/validation/sanitiseInput.xsl" var="xsltFile"/>
 
-	<% request.setAttribute("paramData", new com.disc_au.web.go.Data()); %>
+	<% request.setAttribute("paramData", new Data()); %>
 
 	<c:choose>
 		<c:when test="${createRootPath}">

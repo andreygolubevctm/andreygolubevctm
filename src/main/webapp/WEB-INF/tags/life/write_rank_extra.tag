@@ -7,7 +7,7 @@
 <%@ attribute name="rankSequence"	required="true"	 rtexprvalue="true"	 description="Rank Sequence from WriteRank" %>
 <%@ attribute name="rankPosition"	required="true"	 rtexprvalue="true"	 description="Rank Position from WriteRank" %>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:set var="oriPrefix" value="rank_" />
 <c:set var="suffixes" value="company,leadNumber,productName,premium,callCentreHours,partnerBrand" />

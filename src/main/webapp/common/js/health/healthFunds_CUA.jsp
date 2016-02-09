@@ -23,17 +23,13 @@ var healthFunds_CUA = {
 set: function () {
 	"use strict";
 		<%-- Previous fund authority --%>
-		$('#health_previousfund_primary_authority').rules('add', {required: true, messages: {required: 'CUA requires authorisation to contact your previous fund'}});
-		$('#health_previousfund_partner_authority').rules('add', {required: true, messages: {required: 'CUA requires authorisation to contact your partner\'s previous fund'}});
-		$('#health_previousfund_primary_memberID').attr('maxlength', '10');
-		$('#health_previousfund_partner_memberID').attr('maxlength', '10');
+		$('#health_previousfund_primary_authority').setRequired(true, 'CUA requires authorisation to contact your previous fund');
+		$('#health_previousfund_partner_authority').setRequired(true, 'CUA requires authorisation to contact your partner\'s previous fund');
+		$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
 		healthFunds._previousfund_authority(true);
 
 		<%--dependant definition--%>
 		healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 24 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
-
-		<%--schoolgroups and defacto--%>
-		healthDependents.config = { 'school': true, 'defacto':false, 'schoolMin': 21, 'schoolMax': 24 };
 
 		<%--credit card & bank account frequency & day frequency--%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly': true, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true });
@@ -45,16 +41,16 @@ set: function () {
 		meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
 		<%--credit card options --%>
-		creditCardDetails.config = { 'visa': true, 'mc': true, 'amex':false, 'diners':false };
-		creditCardDetails.render();
+		meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa': true, 'mc': true, 'amex':false, 'diners':false });
+		meerkat.modules.healthCreditCard.render();
 
 		<c:if test="${data.health.situation.healthCvr == 'S' || data.health.situation.healthCvr == 'SM' || data.health.situation.healthCvr == 'SF'}">
 			<c:set var="htmlPrimary">
-				<form:row label="" className="ifExpectingMessage" id="ifExpectingMessage">
+				<form_v1:row label="" className="ifExpectingMessage" id="ifExpectingMessage">
 					<div>
 						For your baby to be eligible for benefits immediately upon birth, the mother must have contributed to a family or single parent policy for at least two calendar months prior to the infant\'s birth.
 					</div>
-				</form:row>
+				</form_v1:row>
 			</c:set>
 			$('#health_application_primary_genderRow').after('<c:out value="${htmlPrimary}" escapeXml="false" />');
 
@@ -94,37 +90,10 @@ set: function () {
 			<%--Dependants --%>
 			healthFunds._dependants('Family policies provide cover for the policy holder, their spouse and any dependant children/young adults until their 23rd birthday. Full-time student dependants are covered up until they turn 25. Student dependants must be registered each year from when they turn 23 years of age.');
 			<%--change age of dependants and school --%>
-			healthDependents.maxAge = 25;
+			meerkat.modules.healthDependants.setMaxAge(25);
 			<%--schoolgroups and defacto --%>
-			$.extend(healthDependents.config, { 'school': true, 'schoolMin': 23, 'schoolMax': 25, 'schoolID': true, 'schoolIDMandatory': true, 'schoolDate': true, 'schoolDateMandatory': true });
+	meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMinAge': 23, 'schoolMaxAge': 25, showSchoolIdField: true, 'schoolIdRequired': true, showSchoolCommencementField: true, 'schoolDateRequired': true });
 
-			<%--School list--%>
-			var instituteElement =  '<select>
-				<option value="">Please choose...</option>
-				<c:import url="/WEB-INF/option_data/educationalInstitute.html" />
-			</select>';
-			$('.health_dependant_details_schoolGroup .fieldrow_value').each(function (i) {
-				var name = $(this).find('input').attr('name');
-				var id = $(this).find('input').attr('id');
-				$(this).append(instituteElement);
-				$(this).find('select').attr('name', name).attr('id', id + 'select');
-				$(this).find('select').rules('add', {
-						required: true,
-						messages: {
-							required: 'Please select dependant '+(i+1)+'\'s educational institute'
-							}
-						});
-				$('#health_application_dependants_dependant' + (i+1) + '_school').hide();
-			});
-			$('.health_dependant_details_schoolIDGroup input').attr('maxlength', '10');
-
-			<%--Change the Name of School label--%>
-			healthFunds.$_tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
-			$('.health_dependant_details_schoolGroup .control-label').html('Educational institute this dependant is attending');
-			$('.health_dependant_details_schoolGroup .help_icon').hide();
-
-			healthDependents.config.schoolID = false;
-			healthDependents.config.schoolDate = false;
 		</c:if>
 
 		<%--calendar for start cover--%>
@@ -132,8 +101,8 @@ set: function () {
 		dob_health_application_primary_dob.ageMax = 99;
 		dob_health_application_partner_dob.ageMax = 99;
 
-		$("#applicationForm_1").validate().settings.messages.health_application_primary_dob.max_DateOfBirth = "primary applicant's age cannot be over 99";
-		$("#applicationForm_1").validate().settings.messages.health_application_partner_dob.max_DateOfBirth = "applicant's partner's age cannot be over 99";
+		$('#health_application_primary_dob').addRule('oldestDOB', dob_health_application_primary_dob.ageMax, "primary applicant's age cannot be over 99");
+		$('#health_application_partner_dob').addRule('oldestDOB', dob_health_application_partner_dob.ageMax, "applicant's partner's age cannot be over 99");
 
 		healthFunds._medicareCoveredText = $('#medicareCoveredRow .control-label').text();
 		$('#medicareCoveredRow .control-label').text('Are all people to be included on this policy covered by a green Medicare card?');
@@ -166,32 +135,26 @@ set: function () {
 		healthFunds._reset();
 
 		healthFunds._previousfund_authority(false);
-		$('#health_previousfund_primary_authority').rules('remove', 'required');
-		$('#health_previousfund_partner_authority').rules('remove', 'required');
+		$('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(false);
 
 		dob_health_application_primary_dob.ageMax = 120;
 		dob_health_application_partner_dob.ageMax = 120;
 
-		$("#applicationForm_1").validate().settings.messages.health_application_primary_dob.max_DateOfBirth = "primary applicant's age cannot be over 120";
-		$("#applicationForm_1").validate().settings.messages.health_application_partner_dob.max_DateOfBirth = "applicant's partner's age cannot be over 120";
+		$('#health_application_primary_dob').addRule('oldestDOB', dob_health_application_primary_dob.ageMax, "primary applicant's age cannot be over 120");
+		$('#health_application_partner_dob').addRule('oldestDOB', dob_health_application_partner_dob.ageMax, "applicant's partner's age cannot be over 120");
 
 		<c:if test="${data.health.situation.healthCvr == 'S' || data.health.situation.healthCvr == 'SM' || data.health.situation.healthCvr == 'SF'}">
 			$('#health_application_primary_genderRow .ifExpectingMessage').remove();
 			$('#health_application_primary_gender').unbind('change');
 		</c:if>
 		<c:if test="${data.health.situation.healthCvr == 'F' || data.health.situation.healthCvr == 'SPF' }">
-			$('.health_dependant_details_schoolGroup select').remove();
-			$('.health_dependant_details_schoolIDGroup input').removeAttr('maxlength');
-			$('.health_dependant_details_schoolGroup .control-label').html(healthFunds.$_tmpSchoolLabel);
-			delete healthFunds.$_tmpSchoolLabel;
-			$('.health_dependant_details_schoolGroup .help_icon').show();
 			$('.health_application_dependants_dependant_schoolIDGroup').show();
 			$('.health_dependant_details_schoolDateGroup').show();
 		</c:if>
 
 		<%--credit card options--%>
-		creditCardDetails.resetConfig();
-		creditCardDetails.render();
+		meerkat.modules.healthCreditCard.resetConfig();
+		meerkat.modules.healthCreditCard.render();
 		$('#medicareCoveredRow .control-label').text(healthFunds._medicareCoveredText);
 		$('#medicareCoveredRow .help_icon').attr("id",healthFunds._medicareCoveredHelpId);
 		meerkat.modules.paymentGateway.reset();

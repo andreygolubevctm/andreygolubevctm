@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.utilities_register_sale')}" />
+
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
 
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
@@ -11,20 +13,19 @@
 </c:if>
 
 <%-- First check owner of the quote --%>
-<c:set var="proceedinator"><core:access_check quoteType="utilities" /></c:set>
+<c:set var="proceedinator"><core_v1:access_check quoteType="utilities" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log level="DEBUG" source="utilities_register_sale">PROCEEDINATOR PASSED</go:log>
-
+		${logger.debug('PROCEEDINATOR PASSED')}
 		<%-- Load the params into data --%>
 
 		<security:populateDataFromParams rootPath="utilities" />
 
 
 		<%-- Some form fields get updated after the response from Switchwise so save quote (because can't write once confirmed). --%>
-		<c:set var="write_quote"><agg:write_quote productType="UTILITIES" rootPath="utilities" /></c:set>
+		<c:set var="write_quote"><agg_v1:write_quote productType="UTILITIES" rootPath="utilities" /></c:set>
 		<%-- Confirmation --%>
-		<core:transaction touch="C" noResponse="true" />
+		<core_v1:transaction touch="C" noResponse="true" />
 
 		<c:set var="receiveInfo">
 			<c:choose>
@@ -32,7 +33,7 @@
 				<c:otherwise>${data['utilities/application/thingsToKnow/receiveInfo']}</c:otherwise>
 			</c:choose>
 		</c:set>
-		<agg:write_email
+		<agg_v1:write_email
 			brand="CTM"
 			vertical="UTILITIES"
 			source="QUOTE"
@@ -42,7 +43,7 @@
 			items="marketing=${receiveInfo}" />
 
 		<%-- Inject the order date into the transaction details --%>
-		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 		<c:set var="tranID" value="${data.current.transactionId}" />
 
 		<sql:transaction>

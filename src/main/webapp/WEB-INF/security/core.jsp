@@ -5,7 +5,7 @@
 
 <c:choose>
 	<c:when test="${ not empty(pageContext.request.remoteUser) and not empty(sessionScope) and empty(sessionScope.isLoggedIn) }">
-		<%@ page import="com.disc_au.web.LDAPDetails, java.util.Hashtable" %>
+		<%@ page import="com.ctm.web.core.web.LDAPDetails, java.util.Hashtable" %>
 <%
 		LDAPDetails userObj = new LDAPDetails(request.getRemoteUser());
 		Hashtable<String, String> userDetails = userObj.getDetails();

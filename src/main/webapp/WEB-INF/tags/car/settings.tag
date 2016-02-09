@@ -30,7 +30,7 @@
 </c:if>
 
 <%-- Retrieve the vehicle MAKE data --%>
-<jsp:useBean id="service" class="com.ctm.services.car.CarVehicleSelectionService" scope="request" />
+<jsp:useBean id="service" class="com.ctm.web.car.services.CarVehicleSelectionService" scope="request" />
 <c:set var="json" value="${service.getVehicleSelection(data.quote.vehicle.make, data.quote.vehicle.model, data.quote.vehicle.year, data.quote.vehicle.body, data.quote.vehicle.trans, data.quote.vehicle.fuel) }" />
 
 <%-- Retrieve non-standard accessories list --%>
@@ -65,10 +65,15 @@
 		transmissions:		'${data.quote.vehicle.trans}',
 		fuels:				'${data.quote.vehicle.fuel}',
 		types:				'${data.quote.vehicle.redbookCode}',
+		colours:			'${data.quote.vehicle.colour}',
 		marketValue:		'${data.quote.vehicle.marketValue}',
 		variant:			'${data.quote.vehicle.variant}',
 		securityOption:		'${data.quote.vehicle.securityOption}',
 		data:				${json}
+	},
+	userOptionPreselections: {
+		factory : ${go:XMLtoJSON(go:getEscapedXml(data.quote.opts))},
+		accessories : ${go:XMLtoJSON(go:getEscapedXml(data.quote.accs))}
 	},
 	nonStandardAccessoriesList : ${nonStandardAccessories},
 	resultOptions: {

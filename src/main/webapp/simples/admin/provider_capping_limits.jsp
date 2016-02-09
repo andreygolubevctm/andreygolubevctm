@@ -2,9 +2,9 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <settings:setVertical verticalCode="SIMPLES" />
 <%@ include file="/WEB-INF/security/core.jsp" %>
-<jsp:useBean id="verticalsDao" class="com.ctm.dao.VerticalsDao" scope="page" />
+<jsp:useBean id="verticalsDao" class="com.ctm.web.core.dao.VerticalsDao" scope="page" />
 
-<layout:simples_page>
+<layout_v1:simples_page>
 	<jsp:attribute name="head">
 	</jsp:attribute>
 
@@ -45,7 +45,7 @@
             </div>
         </div>
     </jsp:body>
-</layout:simples_page>
+</layout_v1:simples_page>
 
 <c:set var="allVerticals" value="${verticalsDao.getVerticals()}" />
 

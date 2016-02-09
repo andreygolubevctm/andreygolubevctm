@@ -4,14 +4,17 @@
 		<fromDate>20/02/2015</fromDate>
 		<toDate>18/03/2015</toDate>
 	</dates>
-	<adults>1</adults>
-	<oldest>23</oldest>
+	<travellers>
+		<traveller1DOB>01/01/1955</traveller1DOB>
+	</travellers>
 	<surname>User</surname>
 	<policyType>S</policyType>
 	<firstName>Test</firstName>
 	<email>preload.testing@comparethemarket.com.au</email>
 	<destinations>Please choose your Destination(s)...</destinations>
-	<destination>AUS,IDN</destination>
+	<destination>NZL</destination>
+	<party>S</party>
+	<adults>1</adults>
 	<children>0</children>
 	<marketing>Y</marketing>
 	<privacyoptin>Y</privacyoptin>

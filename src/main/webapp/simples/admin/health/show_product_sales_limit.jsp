@@ -22,7 +22,7 @@
 			environment == 'NXI'  ||
 			environment == 'NXS' ||
 			environment == 'NXQ'}">
-	<sql:setDataSource dataSource="jdbc/ctm"/>
+	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 	<sql:query  var="DailylimitsSet">
 		SELECT pm.name , pp.PropertyId , pp.Text,
@@ -130,10 +130,9 @@
 	</sql:query>
 
 	<%-- HTML --%>
-	<layout:generic_page title="Daily and monthly sales limits">
+	<layout_v1:generic_page title="Daily and monthly sales limits">
 
 		<jsp:attribute name="head">
-			<link rel="stylesheet" href="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-5.0.0.css">
 			<style>
 				td, th {
 					padding:0.5em;
@@ -322,5 +321,5 @@
 			</table>
 		</jsp:body>
 
-	</layout:generic_page>
+	</layout_v1:generic_page>
 </c:if>

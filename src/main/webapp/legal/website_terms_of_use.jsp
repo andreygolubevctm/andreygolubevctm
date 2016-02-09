@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<core:doctype />
+<core_v1:doctype />
 <go:html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -154,7 +154,7 @@
 		<p><b>Auto &amp; General</b> means Auto &amp; General Insurance Company Ltd ACN 111 586 353 AFSL 285 571.</p>
 		<p><b>AGS</b> means Auto &amp; General Services Pty Ltd ACN 003 617 909 AFSL 241411.</p>
 		<p><b>AGS Address</b> means PO Box 342, Toowong QLD 4066.</p>
-		<p><b>Compare the Market Website</b> means the webpages located at <a href="http://www.comparethemarket.com.au" target="_new">www.comparethemarket.com.au</a> this but does not include the Comparison Websites.</p>
+		<p><b>Compare the Market Website</b> means the webpages located at <a href="https://www.comparethemarket.com.au" target="_new">www.comparethemarket.com.au</a> this but does not include the Comparison Websites.</p>
 		<p><b>Comparison Websites</b> means the websites linked to the Compare the Market Website which contain the "Compare the Market" brand but which are operated by third parties and contain comparison and ranking services for the information of consumers in relation to various goods and services (other than motor vehicle insurance which is compared on the Compare the Market Website).</p>
 		<p><b>Content</b> means the content, text, data, information, images, pages, materials, tools and resultscontained on the Compare the Market Website.</p>
 		<p><b>FSG</b> means the Financial Services Guide.</p>

@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.life_quote_result')}" />
+
 <session:get settings="true" authenticated="true" verticalCode="${fn:trim(fn:toUpperCase(param.vertical))}" />
 
 <%-- Load the params into data --%>
@@ -13,7 +15,7 @@
 	<error:recover origin="ajax/json/life_quote_results.jsp" quoteType="${vertical}" />
 </c:if>
 
-<jsp:useBean id="lifeService" class="com.ctm.services.life.LifeService" scope="page" />
+<jsp:useBean id="lifeService" class="com.ctm.web.life.services.LifeService" scope="page" />
 <c:set var="serviceRespone" value="${lifeService.contactLeadViaJSP(pageContext.request, data)}" />
 
 <c:choose>
@@ -22,17 +24,17 @@
 		<c:set var="continueOnValidationError" value="${false}" />
 
 		<%-- First check owner of the quote --%>
-		<c:set var="proceedinator"><core:access_check quoteType="${vertical}" /></c:set>
+		<c:set var="proceedinator"><core_v1:access_check quoteType="${vertical}" /></c:set>
 		<c:choose>
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
-				<go:log source="life_quote_results_jsp" level="INFO" >PROCEEDINATOR PASSED</go:log>
+				${logger.debug('PROCEEDINATOR PASSED')}
 
 				<%-- add external testing ip address checking and loading correct config and send quotes --%>
 
 				<c:set var="tranId" value="${data.current.transactionId}" />
 				<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${tranId}" />
 				<%-- Save client data --%>
-				<core:transaction touch="R" noResponse="true" />
+				<core_v1:transaction touch="R" noResponse="true" />
 				<%-- add external testing ip address checking and loading correct config and send quotes --%>
 				<c:set var="tranId" value="${data.current.transactionId}" />
 				<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${tranId}" />
@@ -42,7 +44,10 @@
 				</c:if>
 				
 				<%-- Load the config and send quotes to the aggregator gadget --%>
-				<c:import var="config" url="/WEB-INF/aggregator/life/config_results_${vertical}.xml" />
+				<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+				<c:set var="configUrl">/WEB-INF/aggregator/life/config_results_${vertical}.xml</c:set>
+
+				<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, configUrl)}" />
 
 				<c:set var="dataXml" value="${go:getEscapedXml(data[vertical])}" />
 				<go:soapAggregator	config = "${config}"
@@ -85,16 +90,13 @@
 								<%-- Write to the stats database --%>
 								<c:set var="ignore">
 									<life:get_soap_response_stats debugXml="${debugXml}" />
-									<agg:write_stats rootPath="${vertical}" tranId="${tranId}" />
+									<agg_v1:write_stats rootPath="${vertical}" tranId="${tranId}" />
 								</c:set>
 
 								<%-- Add the results to the current session data --%>
 								<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 								<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 								<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
-
-								<go:log source="life_quote_results_jsp" level="TRACE">${resultXml}</go:log>
-								<go:log source="life_quote_results_jsp" level="TRACE">${debugXml}</go:log>
 								${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
 							</x:when>
 							<x:otherwise>
@@ -106,7 +108,7 @@
 						</x:choose>
 					</c:when>
 					<c:otherwise>
-						<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
+						<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
 					</c:otherwise>
 				</c:choose>
 
@@ -128,13 +130,14 @@
 						<c:param name="competition_firstname" value="${fn:trim(data[competition_firstnameKey])}" />
 						<c:param name="competition_lastname" value="${fn:trim(data[competition_lastnameKey])}" />
 						<c:param name="competition_phone" value="${data[competition_phoneKey]}" />
+						<c:param name="transactionId" value="${tranId}" />
 					</c:import>
 				</c:if>
 				<%-- COMPETITION APPLICATION END --%>
 	</c:when>
 	<c:otherwise>
 				<c:set var="resultXml">
-					<error><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
+					<error><core_v1:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
 				</c:set>
 				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 				${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}

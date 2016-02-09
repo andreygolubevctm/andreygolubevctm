@@ -3,9 +3,9 @@
 <settings:setVertical verticalCode="SIMPLES" />
 <%@ include file="/WEB-INF/security/core.jsp" %>
  
- <jsp:useBean id="providerDao" class="com.ctm.dao.ProviderDao" scope="page" />
+ <jsp:useBean id="providerDao" class="com.ctm.web.core.dao.ProviderDao" scope="page" />
  
-<layout:simples_page fullWidth="true">
+<layout_v1:simples_page fullWidth="true">
 	<jsp:attribute name="head"></jsp:attribute>
 	<jsp:body>
 		<div class="sortable-header data-sorter container-fluid" data-refreshcallback="meerkat.modules.adminFundCappingLimits.refresh">
@@ -81,15 +81,15 @@
 			<div class="row">
 				<div class="col-sm-12 header">
 					<h1>History <small></small></h1>
-					<button type="button" class="btn btn-tertiary btn-sm crud-results-toggle"><span></span></button>
+					<button type="button" class="btn btn-tertiary btn-sm crud-results-toggle table-hidden"><span></span></button>
 				</div>
 				<div class="col-sm-12">
-					<div id="past-cappings-container" class="sortable-results-table"></div>
+					<div id="past-cappings-container" class="sortable-results-table hidden"></div>
 				</div>
 			</div>
 		</div>
 	</jsp:body>
-</layout:simples_page>
+</layout_v1:simples_page>
 
 <script>
 	var providers = [

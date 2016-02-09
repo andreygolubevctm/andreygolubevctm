@@ -4,7 +4,7 @@
 
 <%-- HTML --%>
 <div class="prevent_tabbing"><input type="text" value="" name="skip" onfocus="QuoteEngine.validate(); $(this).parents('.qe-screen').find(':input:visible:first').focus()" /></div>
-<core:clear />
+<core_v1:clear />
 
 <%-- CSS --%>
 <go:style marker="css-head">

@@ -2,12 +2,12 @@
 <%@ tag description="Brands Sidebar"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <c:set var="heading"><content:get key="sidebarHeading"/></c:set>
-<form_new:fieldset legend="${heading}" className="hidden-xs">
+<form_v2:fieldset legend="${heading}" className="hidden-xs">
 <div class="row logogrid">
 	<div class="col-xs-12">
 		<p><content:get key="briefInsurerCopy"/></p>
 	</div>
-	<jsp:useBean id="logoGridService" class="com.ctm.services.LogoGridService" scope="page" />
+	<jsp:useBean id="logoGridService" class="com.ctm.web.core.services.LogoGridService" scope="page" />
 	${logoGridService.init(pageContext.request)}
 
 	<c:forEach items="${logoGridService.getMaxProviderCodes()}" var="brand">
@@ -22,6 +22,6 @@
 		<a href="javascript:;" class="btn-view-brands pull-right" ><content:get key="briefInsurerCopyLink"/></a>
 	</div>
 </div>
-</form_new:fieldset>
+</form_v2:fieldset>
 
 <travel:brands providerCodes="${logoGridService.getAllProviderCodes()}" />

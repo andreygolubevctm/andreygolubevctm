@@ -1,4 +1,4 @@
-<%@page import="com.ctm.utils.NGram"%>
+<%@page import="com.ctm.web.core.utils.NGram"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" import="java.io.*,java.util.*,java.text.*,java.math.*"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Text Spam Test</title>
-<link rel="stylesheet" href="/ctm/brand/ctm/css/ctm.css" media="all">
+<link rel="stylesheet" href="/ctm/assets/brand/ctm/css/internal.css" media="all">
 <script type="text/javascript" src="/ctm/common/js/jquery-1.10.1.min.js?rev="></script>
 </head>
 <body>

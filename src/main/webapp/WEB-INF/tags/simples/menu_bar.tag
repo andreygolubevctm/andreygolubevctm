@@ -6,6 +6,10 @@
 
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}" />
 
+<c:if test="${pageSettings.getSetting('inInEnabled')}">
+	<c:set var="isInInEnabled" value="${true}" />
+</c:if>
+
 <%--
 
 	See framework/modules/js/simples/* for corresponding code.
@@ -47,7 +51,7 @@
 							<li><a target="simplesiframe" href="simples/edit_callcenter_hours.jsp">Opening Hours</a></li>
 							<li><a target="simplesiframe" href="simples/edit_special_offers.jsp">Special Offers</a></li>
 							<li><a target="simplesiframe" href="simples/admin/health/fund_capping_limits.jsp">Fund Capping Limits</a></li>
-							<li><a target="simplesiframe" href="simples/admin/health/fund_warning_message.jsp">Fund Warning Message</a></li>
+							<li><a target="simplesiframe" href="simples/admin/health/provider_content.jsp?contentType=ABT">Provider Content</a></li>
 							<%-- DISABLED UNTIL CAN BE WORKED ON
 							<li><a target="simplesiframe" href="simples/report_managerOpEnq.jsp">Manager - Operator enquires</a></li>
 							--%>
@@ -66,7 +70,7 @@
 					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">Blacklist <b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li data-provide="simples-blacklist-action"><a href="javascript:void(0);" data-action="add">Add</a></li>
-						<c:if test="${isRoleSupervisor}">
+						<c:if test="${isRoleSupervisor && not isInInEnabled}">
 							<li data-provide="simples-blacklist-action"><a href="javascript:void(0);" data-action="delete">Remove</a></li>
 						</c:if>
 					</ul>
@@ -77,12 +81,14 @@
 					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">Actions <b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li class="dropdown-header hidden">Message ID: <span class="simples-show-messageid"></span></li>
-						<li><a class="action-complete" href="javascript:void(0);">Complete</a></li>
-						<li><a class="action-remove-pm" href="javascript:void(0);">Remove from PM</a></li>
-						<li><a class="action-complete-pm" href="javascript:void(0);">Complete as PM</a></li>
-						<li><a class="action-change-time" href="javascript:void(0);">Change Time</a></li>
-						<li><a class="action-postpone" href="javascript:void(0);">Postpone</a></li>
-						<li><a class="action-unsuccessful" href="javascript:void(0);">Unsuccessful</a></li>
+						<c:if test="${!pageSettings.getSetting('inInEnabled')}">
+							<li><a class="action-complete" href="javascript:void(0);">Complete</a></li>
+							<li><a class="action-postpone" href="javascript:void(0);">Postpone</a></li>
+							<li><a class="action-unsuccessful" href="javascript:void(0);">Unsuccessful</a></li>
+							<li><a class="action-complete-pm" href="javascript:void(0);">Complete as PM</a></li>
+							<li><a class="action-remove-pm" href="javascript:void(0);">Remove from PM</a></li>
+							<li><a class="action-change-time" href="javascript:void(0);">Change Time</a></li>
+						</c:if>
 
 						<li class="divider"></li>
 

@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<c:set var="logger" value="${log:getLogger('jsp.cron.life.dropout_lead')}" />
 
-<sql:setDataSource dataSource="jdbc/ctm" />
-<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="request" />
+<jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
+
+<sql:setDataSource dataSource="${datasource:getDataSource()}" />
+<jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="request" />
 
 <%-- This query only runs on Life for now as IP sends the lead directly. --%>
 <c:set var="vertical" value="life" />
@@ -57,7 +59,7 @@
 			<c:choose>
 				<c:when test="${not empty getTransactionDataError}">
 					<c:set var="errorPool">The CTM life_lead_feed cron job could not get a transaction's details - ${getTransactionDataError.rootCause}</c:set>
-					<go:log>${errorPool}</go:log>
+					${logger.error('The CTM life_lead_feed cron job could not get a transaction\'s details. {}', log:kv('transaction_id',result.transaction_id ), getTransactionDataError)}
 				</c:when>
 				<%-- if there are some results --%>
 				<c:when test="${not empty transactionData and transactionData.rowCount > 0}">
@@ -72,7 +74,8 @@
 					</c:forEach>
 
 					<%-- Load the config for the contact lead sender --%>
-					<c:import var="config" url="/WEB-INF/aggregator/life/config_contact_lead.xml" />
+					<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
+					<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_contact_lead.xml')}" />
 
 					<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", "lifebroker")}</c:set>
 

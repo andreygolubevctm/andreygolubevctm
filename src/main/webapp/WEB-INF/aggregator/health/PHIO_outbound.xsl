@@ -18,13 +18,13 @@
 		<xsl:when test="$name = 'CUA'">12</xsl:when>
 		<xsl:when test="$name = 'CTM'">14</xsl:when>
 		<xsl:when test="$name = 'FRA'">8</xsl:when>
-		<xsl:when test="$name = 'GMF'">6</xsl:when>
 		<xsl:when test="$name = 'GMH'">5</xsl:when>
 		<xsl:when test="$name = 'HCF'">2</xsl:when>
 		<xsl:when test="$name = 'HIF'">11</xsl:when>
 		<xsl:when test="$name = 'NIB'">3</xsl:when>
 		<xsl:when test="$name = 'WFD'">7</xsl:when>
 		<xsl:when test="$name = 'BUD'">54</xsl:when>
+		<xsl:when test="$name = 'QCH'">16</xsl:when>
 		<xsl:otherwise>0</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>
@@ -56,6 +56,7 @@
 				<clientIpAddress><xsl:value-of select="clientIpAddress" /></clientIpAddress>
 				<applicationDate><xsl:value-of select="applicationDate" /></applicationDate>
 				<productTitleSearch><xsl:value-of select="productTitleSearch" /></productTitleSearch>
+				<currentJourney><xsl:value-of select="currentJourney" /></currentJourney>
 				<providerId>
 					<xsl:choose>
 						<xsl:when test="showAll = 'N' and string-length(application/provider) &gt; 0">
@@ -72,7 +73,6 @@
 								<xsl:when test="situation/providerKey = 'hcf_7895123'">2</xsl:when>
 								<xsl:when test="situation/providerKey = 'nib_784512'">3</xsl:when>
 								<xsl:when test="situation/providerKey = 'gmhba_74851253'">5</xsl:when>
-								<xsl:when test="situation/providerKey = 'gmf_46251379'">6</xsl:when>
 								<xsl:when test="situation/providerKey = 'frank_7152463'">8</xsl:when>
 								<xsl:when test="situation/providerKey = 'ahm_685347'">9</xsl:when>
 								<xsl:when test="situation/providerKey = 'cbhs_597125'">10</xsl:when>
@@ -81,6 +81,7 @@
 								<xsl:when test="situation/providerKey = 'ctm_123456789'">14</xsl:when>
 								<xsl:when test="situation/providerKey = 'bup_744568719'">15</xsl:when>
 								<xsl:when test="situation/providerKey = 'bud_296587056'">54</xsl:when>
+								<xsl:when test="situation/providerKey = 'qchf_63422354'">16</xsl:when>
 								<xsl:otherwise>-1</xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
@@ -203,6 +204,14 @@
 						<xsl:otherwise>Combined</xsl:otherwise>
 					</xsl:choose>
 				</productType>
+
+				<situationFilter>
+					<xsl:choose>
+						<xsl:when test="situation/accidentOnlyCover = 'Y'">Y</xsl:when>
+						<xsl:otherwise>N</xsl:otherwise>
+					</xsl:choose>
+				</situationFilter>
+
 				<accountType><xsl:value-of select="payment/details/type" /></accountType>
 			</details>
 			

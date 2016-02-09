@@ -11,7 +11,7 @@
 <retrievequotes_template:homeloan/>
 <retrievequotes_template:utilities/>
 
-<core:js_template id="retrieve-quotes-container-template">
+<core_v1:js_template id="retrieve-quotes-container-template">
     {{ if(typeof obj.previousQuotes !== "undefined") { }}
         {{ var actionButtonTemplate = $("#action-button-template").html(); }}
         {{ obj.actionButtonTmpl = _.template(actionButtonTemplate); }}
@@ -55,9 +55,9 @@
             {{ } }}
         {{ } }}
     {{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="action-button-template">
+<core_v1:js_template id="action-button-template">
     {{ var verticalData = obj[obj.verticalCode]; }}
     {{ if(verticalData.pendingID && verticalData.pendingID.length) { }}
         <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" data-pendingid="{{= verticalData.pendingID }}" class="btn btn-block btn-tertiary btn-pending"><span>In Processing</span></a>
@@ -79,14 +79,14 @@
             <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-tertiary btn-start-again-fresh"><span>Start Again</span></a>
         {{ } }}
     {{ } }}
-</core:js_template>
+</core_v1:js_template>
 
-<core:js_template id="new-commencement-date-template">
+<core_v1:js_template id="new-commencement-date-template">
     <p>The quote you selected has a commencement date in the past.</p>
     <p>Please enter a new commencement date and click the button below to view the latest prices for this quote.</p>
-    <form_new:row label="Commencement Date" className="form-horizontal">
-        <field_new:commencement_date xpath="newCommencementDate" mode="component" includeMobile="false" />
-    </form_new:row>
-</core:js_template>
+    <form_v2:row label="Commencement Date" className="form-horizontal">
+        <field_v2:commencement_date xpath="newCommencementDate" mode="component" includeMobile="false" />
+    </form_v2:row>
+</core_v1:js_template>
 
 <div id="quote-result-list"></div>

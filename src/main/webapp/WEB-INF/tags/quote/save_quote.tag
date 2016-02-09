@@ -938,31 +938,31 @@ SaveQuote = {
 				</c:otherwise>
 			</c:choose>
 			
-			<form:row label="Your email address" horizontal="false" className="credentials inline-state">
-				<field:contact_email
+			<form_v1:row label="Your email address" horizontal="false" className="credentials inline-state">
+				<field_v1:contact_email
 							xpath="save/email"
 							required="false"
 							title="your email address"
 							onKeyUp="SaveQuote.emailKeyChange(event);"
 							/>
-			</form:row>
+			</form_v1:row>
 			
 			<c:if test="${!isOperator}">
 				<div class="password-row" >
-					<form:row label="Set password" horizontal="false" className="credentials ">
-						<field:password xpath="save/password" required="false"
-						title="your password" minlength="6" />
-			</form:row>
+					<form_v1:row label="Set password" horizontal="false" className="credentials ">
+						<field_v1:password xpath="save/password" required="false"
+						title="your password" minLength="6" />
+			</form_v1:row>
 			
-					<form:row label="Confirm password" horizontal="false" className="credentials required" id="save_confirm_row">
-						<field:password xpath="save/confirm" required="false" title="your password for confirmation"
+					<form_v1:row label="Confirm password" horizontal="false" className="credentials required" id="save_confirm_row">
+						<field_v1:password xpath="save/confirm" required="false" title="your password for confirmation"
 						onKeyUp="SaveQuote.confirmKeyChange(event);"/>
-			</form:row>	
+			</form_v1:row>	
 				</div>
 			</c:if>
 						
 			<div class="save_marketing_row">
-				<field:customisable-checkbox
+				<field_v1:customisable-checkbox
 					theme="lightGrey" xpath="save/marketing"
 					value="Y" required="false"
 					className="marketing"
@@ -986,17 +986,21 @@ SaveQuote = {
 		<c:if test="${!isOperator && includeCallMeback}">
 			<form novalidate name="saveQuoteCallMeBackForm" action="none" method="POST" id="saveQuoteCallMeBackForm" style="">
 				<h5>Get a call back</h5>
-				<form:row label="Your name" horizontal="false">
+				<form_v1:row label="Your name" horizontal="false">
 					<field:input xpath="callmeback/save/name" title="name" required="false"  />
-				</form:row>
-						<form:row label="Your best contact number" horizontal="false">
-							<field:contact_telno xpath="callmeback/save/phone" required="true" title="contact number" />
-						</form:row>
-						<form:row label="Best time to contact you" horizontal="false">
-							<field:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)"
+				</form_v1:row>
+						<form_v1:row label="Your best contact number" horizontal="false">
+							<c:set var="fieldXPath" value="callmeback/save/phone" />
+							<field_v1:flexi_contact_number xpath="${fieldXPath}"
+														maxLength="20"
+														required="${true}"
+														labelName="contact number"/>
+						</form_v1:row>
+						<form_v1:row label="Best time to contact you" horizontal="false">
+							<field_v1:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)"
 								xpath="callmeback/save/time" title="Best time to call"
 								required="false" />
-						</form:row>
+						</form_v1:row>
 						<p class="sub">Our Australian based call centre hours are<br/>Mon - Thu: 8:30am-8pm &amp; Fri: 8:30am-6:00pm (AEST)</p>
 						<div id="call_back_quote_errors" class="lightBoxValidationErrors" >
 				<div class="error-panel-top small"><h3>Oops...</h3></div>

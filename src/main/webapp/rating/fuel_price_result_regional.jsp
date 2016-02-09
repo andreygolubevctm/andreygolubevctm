@@ -3,6 +3,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.rating.fuel_price_result_regional')}" />
+
 <%--
 	The data will arrive in a single parameter called QuoteData
 	Containing the xml for the request in the structure:
@@ -14,11 +16,10 @@
 --%>
 
 <%-- SQL time --%>
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 
-
-<go:log>REGIONAL SEARCH</go:log>
+${logger.debug('REGIONAL SEARCH')}
 
 
 <c:choose>
@@ -104,7 +105,7 @@
 	</sql:query>
 </c:if>
 
-<c:set var="update"><fuel_new:schedule type="regional" /></c:set>
+<c:set var="update"><fuel:schedule type="regional" /></c:set>
 
 <%-- Build the xml data for each row --%>
 <results type="regional">
@@ -113,9 +114,9 @@
 	<c:if test="${timeDiff > 87300}"> <%-- FIX: 87300 --%>
 		<error>delay</error> <%-- Test if the results are too old (technical issue) --%>
 	</c:if>
-	<time><field:time_ago time="${timeDiff}" timestamp="true" /></time>
+	<time><field_v1:time_ago time="${timeDiff}" timestamp="true" /></time>
 	<c:if test="${update < 7200}">
-		<update><field:time_ago time="${update}" timestamp="true" rounding="10" /></update>
+		<update><field_v1:time_ago time="${update}" timestamp="true" rounding="10" /></update>
 	</c:if>
 	<c:if test="${not empty result}" >
 		<c:forEach var="row" items="${result.rows}">

@@ -2,8 +2,8 @@
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.SQLException"%>
-<%@page import="com.ctm.connectivity.SimpleDatabaseConnection"%>
-<%@page import="com.ctm.exceptions.DaoException"%>
+<%@page import="com.ctm.web.core.connectivity.SimpleDatabaseConnection"%>
+<%@page import="com.ctm.web.core.exceptions.DaoException"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="java.io.*,java.util.*,java.text.*,java.math.*"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -13,7 +13,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Upload Credit Card Rates</title>
-<link rel="stylesheet" href="/ctm/brand/ctm/css/ctm.css" media="all">
+<link rel="stylesheet" href="/ctm/assets/brand/ctm/css/internal.css" media="all">
 <script type="text/javascript" src="../../common/js/jquery-1.10.1.min.js?rev="></script>
 </head>
 <body>

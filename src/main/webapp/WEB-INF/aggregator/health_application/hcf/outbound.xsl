@@ -134,6 +134,7 @@
 				<xsl:when test="starts-with(fundData/extrasCoverName, 'Bronze')">Bronze</xsl:when>
 				<xsl:when test="starts-with(fundData/extrasCoverName, 'Gold')">Gold</xsl:when>
 				<xsl:when test="starts-with(fundData/extrasCoverName, 'Platinum')">Platinum</xsl:when>
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'Silver Plus')">SilverPlus</xsl:when>
 				<xsl:when test="starts-with(fundData/extrasCoverName, 'Silver')">Silver</xsl:when>
 				<xsl:when test="starts-with(fundData/extrasCoverName, 'Young Starter')">YoungStarter</xsl:when>
 				<xsl:when test="fundData/extrasCoverName = ''">none</xsl:when>

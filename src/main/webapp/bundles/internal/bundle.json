@@ -1,0 +1,10 @@
+{
+    "brandCodes": [
+        "ctm"
+    ],
+    "dependencies": [
+        "meerkat",
+        "shared/journeyEngine/v2",
+        "core"
+    ]
+}

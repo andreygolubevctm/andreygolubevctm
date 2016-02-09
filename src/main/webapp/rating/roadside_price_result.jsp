@@ -3,11 +3,13 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.rating.roadside_price_result')}" />
+
 <x:parse var="roadside" xml="${param.QuoteData}" />
-<go:log level="DEBUG" source="roadside_price_result_jsp">QuoteData: ${param.QuoteData}</go:log>
+${logger.trace('Starting results jsp. {}', log:kv('quoteData ', param.QuoteData ))}
 
 <c:set var="transactionId"><x:out select="$roadside/request/header/partnerReference" /></c:set>
-<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
+<c:set var="styleCodeId"><core_v1:get_stylecode_id transactionId="${transactionId}" /></c:set>
 
 <%-- 
 	The data will arrive in a single parameter called QuoteData 
@@ -24,7 +26,7 @@
 
 <c:set var="providerId" >${param.providerId}</c:set>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <%-- Get products that match the passed criteria --%>
 <%-- StyleCode is referenced once in the parent roadside_rates to knockout disabled products --%>
@@ -63,4 +65,4 @@
 </sql:query>
     
 <%-- Build the xml data for each row --%>
-<roadside_new:convert_to_results rows="${result.rows}"/>
+<roadside:convert_to_results rows="${result.rows}"/>

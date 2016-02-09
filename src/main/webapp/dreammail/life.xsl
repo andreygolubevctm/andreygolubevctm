@@ -23,6 +23,7 @@
 	<xsl:param name="InsuranceType">
 		Life Insurance
 	</xsl:param>
+	<xsl:param name="unsubscribeToken"></xsl:param>
 
 	<xsl:template match="/">
 			<xsl:apply-templates select="/tempSQL/life"/>
@@ -92,7 +93,7 @@
 							</Variable>
 							<Variable>
 								<Name>EventVar:CalculatorURL</Name>
-								<Value><![CDATA[http://www.comparethemarket.com.au/life-insurance-calculator/?sssdmh=dm14.238456]]></Value>
+								<Value><![CDATA[https://www.comparethemarket.com.au/life-insurance-calculator/?sssdmh=dm14.238456]]></Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:InsuranceType</Name>
@@ -193,8 +194,12 @@
 								<Name>EventVar:UnsubscribeURL</Name>
 								<Value>
 									<xsl:choose>
-										<xsl:when test="$env = '_PRO'"><![CDATA[https://secure.comparethemarket.com.au/ctm/unsubscribe.jsp?DISC=true&unsubscribe_email=]]><xsl:value-of select="$EmailAddress" /></xsl:when>
-										<xsl:otherwise><![CDATA[https://nxq.secure.comparethemarket.com.au/ctm/unsubscribe.jsp?DISC=true&unsubscribe_email=]]><xsl:value-of select="$EmailAddress" /></xsl:otherwise>
+										<xsl:when test="$env = '_PRO'">
+											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[https://secure.comparethemarket.com.au/ctm/unsubscribe.jsp?DISC=true&amp;token=',$unsubscribeToken,']]&gt;')" />
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[https://nxq.secure.comparethemarket.com.au/ctm/unsubscribe.jsp?DISC=true&amp;token=',$unsubscribeToken,']]&gt;')" />
+										</xsl:otherwise>
 									</xsl:choose>
 								</Value>
 							</Variable>

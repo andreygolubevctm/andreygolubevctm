@@ -6,12 +6,12 @@
 
 <session:new verticalCode="ROADSIDE" authenticated="true"/>
 
-<core_new:quote_check quoteType="roadside"/>
-<core_new:load_preload/>
+<core_v2:quote_check quoteType="roadside"/>
+<core_v2:load_preload/>
 
 
 <%-- HTML --%>
-<layout:journey_engine_page title="Roadside Assistance Quote">
+<layout_v1:journey_engine_page title="Roadside Assistance Quote">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -21,6 +21,14 @@
 
 	<jsp:attribute name="header">
 	</jsp:attribute>
+
+	<jsp:attribute name="progress_bar">
+      <div class="progress-bar-row collapse navbar-collapse">
+          <div class="container">
+              <ul class="journeyProgressBar_v2"></ul>
+          </div>
+      </div>
+    </jsp:attribute>
 
 	<jsp:attribute name="navbar">
 
@@ -83,11 +91,11 @@
     <jsp:attribute name="form_bottom"></jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<core:whitelabeled_footer/>
+		<core_v1:whitelabeled_footer/>
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">
-		<roadside_new:settings/>
+		<roadside:settings/>
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
@@ -96,15 +104,15 @@
     <jsp:body>
 
         <%-- Slides --%>
-        <roadside_new_layout:slide_your_car/>
-        <roadside_new_layout:slide_results/>
+        <roadside_layout:slide_your_car/>
+        <roadside_layout:slide_results/>
 
         <div class="hiddenFields">
-            <form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
-            <core:referral_tracking vertical="${pageSettings.getVerticalCode()}"/>
+            <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
+            <core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}"/>
         </div>
         <input type="hidden" name="transcheck" id="transcheck" value="1"/>
 
     </jsp:body>
 
-</layout:journey_engine_page>
+</layout_v1:journey_engine_page>

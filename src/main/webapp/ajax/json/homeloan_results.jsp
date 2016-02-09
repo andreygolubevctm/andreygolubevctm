@@ -15,7 +15,7 @@
 </c:if>
 
 <%-- Save data --%>
-<core:transaction touch="R" noResponse="true" />
+<core_v1:transaction touch="R" noResponse="true" />
 
 <%-- Fetch the transaction id --%>
 <c:set var="tranId" value="${data['current/transactionId']}" />
@@ -24,7 +24,7 @@
 
 
 <%-- Execute the results service --%>
-<jsp:useBean id="quoteService" class="com.ctm.services.homeloan.HomeLoanResultsService" scope="page" />
+<jsp:useBean id="quoteService" class="com.ctm.web.homeloan.services.HomeLoanResultsService" scope="page" />
 <c:set var="results" value="${quoteService.getResults(pageContext.getRequest())}" />
 
 

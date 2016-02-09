@@ -3,13 +3,13 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 
-<core:js_template id="brands-template">
+<core_v1:js_template id="brands-template">
 
 	<%-- To add another brand, just add another item to the list and
 		remember to add a new class in framework\modules\less\homeloan\logos.less --%>
 
 	<c:set var="brands"
-		value="${fn:split('ADLB,AFG,AMP,ANZ,BOC,BOM,BANKSA,BANKWEST,BLUESTONE,BOQ,CBA,CITI,HERITAGE,HOMESTART,ING,KEY,LATROBE,LIBERTY,MACQ,ME,MKM,NAB,NABBROKER,PN,PEPPER,GEORGE,SUNCORP,ROCK,WESTPAC,AUSWIDE',',')}" />
+		value="${fn:split('ADLB,AFG,AMP,ANZ,BANKAUST,BOC,BOM,BANKSA,BANKWEST,BLUESTONE,BOQ,CBA,CITI,HERITAGE,HOMESTART,ING,KEY,LATROBE,LIBERTY,MACQ,ME,MKM,NAB,NABBROKER,PN,PEPPER,QPCU,GEORGE,SUNCORP,ROCK,WESTPAC,AUSWIDE',',')}" />
 
 	<div class="brands-content">
 	{{ if(typeof obj !== 'undefined' && typeof obj.pretext !== 'undefined') { }}
@@ -22,4 +22,4 @@
 	</c:forEach>
 	</div>
 
-</core:js_template>
+</core_v1:js_template>
