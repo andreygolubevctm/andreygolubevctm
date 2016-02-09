@@ -14,12 +14,12 @@ public abstract class CommonQuoteService<QUOTE> extends CommonRequestService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteService.class);
 
-    public CommonQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
-        super(providerFilterDAO, objectMapper);
+    public CommonQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, ServiceConfigurationService serviceConfigurationService) {
+        super(providerFilterDAO, objectMapper,serviceConfigurationService, EnvironmentService.getEnvironment());
     }
 
-    public CommonQuoteService(final ProviderFilterDao providerFilterDAO, final RestClient restClient) {
-        super(providerFilterDAO, restClient);
+    public CommonQuoteService(final ProviderFilterDao providerFilterDAO, final RestClient restClient, ServiceConfigurationService serviceConfigurationService) {
+        super(providerFilterDAO, restClient,serviceConfigurationService, EnvironmentService.getEnvironment());
     }
 
     public void validateRequest(RequestWithQuote<QUOTE> data, String verticalCode) {

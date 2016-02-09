@@ -4,7 +4,6 @@ import com.ctm.validator.contacts.model.request.Contact;
 import com.ctm.validator.contacts.model.request.ValidateContactRequest;
 import com.ctm.validator.contacts.model.response.ValidateContactResponse;
 import com.ctm.web.core.dao.ProviderFilterDao;
-import com.ctm.web.core.model.request.ContactValidatorRequest;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.utils.ObjectMapperUtil;
@@ -25,12 +24,12 @@ public class ContactValidatorService extends CommonRequestService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactValidatorService.class);
 
     @Autowired
-    public ContactValidatorService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
-        super(providerFilterDAO, objectMapper);
+    public ContactValidatorService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, ServiceConfigurationService serviceConfigurationService) {
+        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironment());
     }
 
     public ContactValidatorService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new ServiceConfigurationService(), EnvironmentService.getEnvironment());
     }
 
     @Async

@@ -1,6 +1,8 @@
 package com.ctm.web.life.apply.services;
 
 import com.ctm.apply.model.request.ApplyRequest;
+import com.ctm.life.apply.model.request.lifebroker.LifeBrokerApplyRequest;
+import com.ctm.life.apply.model.request.ozicare.OzicareApplyRequest;
 import com.ctm.life.apply.model.response.LifeApplyResponse;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
@@ -8,8 +10,8 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Brand;
-import com.ctm.web.core.services.CommonRequestService;
-import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.services.*;
 import com.ctm.web.core.web.DataParser;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.life.apply.adapter.LifeApplyServiceResponseAdapter;
@@ -18,7 +20,6 @@ import com.ctm.web.life.apply.adapter.OzicareApplyServiceRequestAdapter;
 import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
 import com.ctm.web.life.apply.response.LifeApplyWebResponseModel;
 import com.ctm.web.life.form.model.LifeQuote;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,12 +29,14 @@ import java.io.IOException;
 @Component
 public class LifeApplyService extends CommonRequestService {
 
-    @Autowired
-    SessionDataServiceBean sessionDataService;
+    private final SessionDataServiceBean sessionDataService;
 
     @Autowired
-    public LifeApplyService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
-        super(providerFilterDAO, objectMapper);
+    public LifeApplyService(ProviderFilterDao providerFilterDAO, RestClient restClient,
+                            SessionDataServiceBean sessionDataService,
+                            ServiceConfigurationService serviceConfigurationService,EnvironmentService.Environment  environment) {
+        super(providerFilterDAO, restClient, serviceConfigurationService, environment);
+        this.sessionDataService = sessionDataService;
     }
 
 
@@ -47,28 +50,24 @@ public class LifeApplyService extends CommonRequestService {
 
         LifeBrokerApplyServiceRequestAdapter lifeBrokeRequestAdapter= new LifeBrokerApplyServiceRequestAdapter(lifeQuoteRequest);
         OzicareApplyServiceRequestAdapter requestAdapter = new OzicareApplyServiceRequestAdapter(lifeQuoteRequest);
-        final ApplyRequest energyApplicationDetails;
+        final ApplyRequest.Builder<?>  applyRequestB;
 
-/*    String endpoint;
+    String endpoint;
         if("ozicare".equals(model.getCompany())){
             endpoint = "ozicare/" + Endpoint.APPLY;
-            energyApplicationDetails = requestAdapter.adapt(model);
+            OzicareApplyRequest ozicareRequest = requestAdapter.adapt(model);
+            ApplyRequest.Builder<OzicareApplyRequest> requestBuilder= new ApplyRequest.Builder<>();
+            requestBuilder.payload(ozicareRequest);
+            applyRequestB = requestBuilder;
         } else {
             endpoint = "lifebroker/" + Endpoint.APPLY;
-            className = SingleApplyResponse.class;
-            energyApplicationDetails = lifeBrokeRequestAdapter.adapt(model);
+            LifeBrokerApplyRequest lifeBrokerApplyRequest = lifeBrokeRequestAdapter.adapt(model);
+            ApplyRequest.Builder<LifeBrokerApplyRequest> requestBuilder= new ApplyRequest.Builder<>();
+            requestBuilder.payload(lifeBrokerApplyRequest);
+            applyRequestB = requestBuilder;
         }
-        ApplyResponse applyResponse = sendApplyRequest(brand, Vertical.VerticalType.LIFE, "applyServiceBER", endpoint, model, energyApplicationDetails,
-                SingleApplyResponse.class, requestAdapter.getProductId(model));
-        if(Status.REGISTERED.equals(applyResponse.getResponseStatus())) {
-            String confirmationKey = energyApplyConfirmation.createAndSaveConfirmation(request.getSession().getId(), model, applyResponse, requestAdapter);
-            return responseAdapter.adapt(applyResponse)
-                    .transactionId(model.getTransactionId())
-                    .confirmationkey(confirmationKey).build();
-        } else {
-            throw new FailedToRegisterException(applyResponse, model.getTransactionId());
-        }*/
-        LifeApplyResponse applyResponse = null;
+        LifeApplyResponse applyResponse = sendApplyRequest(brand, Vertical.VerticalType.LIFE, "applyServiceBER", endpoint, model, applyRequestB.build(),
+                LifeApplyResponse.class, requestAdapter.getProductId(model));
         LifeApplyWebResponseModel.Builder responseBuilder = responseAdapter.adapt(applyResponse);
         responseBuilder.transactionId(model.getTransactionId());
         return responseBuilder.build();

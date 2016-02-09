@@ -34,7 +34,14 @@ public class RestClient {
         this.objectMapper = objectMapper;
     }
 
-    public <RESPONSE> RESPONSE sendPOSTRequest(QuoteServiceProperties serviceProperties, Vertical.VerticalType vertical, Endpoint endpoint, Class<RESPONSE> responseClass, Object requestObj)
+    public <RESPONSE> RESPONSE sendPOSTRequest(QuoteServiceProperties serviceProperties, Vertical.VerticalType vertical, Endpoint endpoint,
+                                               Class<RESPONSE> responseClass, Object requestObj)
+            throws ServiceConfigurationException, DaoException, IOException {
+        return sendPOSTRequest( serviceProperties,  vertical,  endpoint.getValue(),
+                responseClass,  requestObj);
+    }
+
+    public <RESPONSE> RESPONSE sendPOSTRequest(QuoteServiceProperties serviceProperties, Vertical.VerticalType vertical, String endpoint, Class<RESPONSE> responseClass, Object requestObj)
             throws ServiceConfigurationException, DaoException, IOException {
 
         String jsonRequest = objectMapper.writeValueAsString(requestObj);
@@ -44,7 +51,7 @@ public class RestClient {
         LOGGER.debug("Outbound message {}", kv("request", jsonRequest));
 
         String response = setupSimplePOSTConnection(serviceProperties, jsonRequest)
-                .get(serviceProperties.getServiceUrl() + "/" + endpoint.getValue());
+                .get(serviceProperties.getServiceUrl() + "/" + endpoint);
         if (response == null) {
             throw new RouterException("Connection failed");
         }

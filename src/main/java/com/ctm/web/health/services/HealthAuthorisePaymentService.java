@@ -7,6 +7,8 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.services.CommonRequestService;
 import com.ctm.web.core.services.Endpoint;
+import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.health.model.form.HealthAuthorisePaymentRequest;
 import com.ctm.web.health.model.results.HealthPaymentAuthoriseResult;
@@ -21,7 +23,8 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 public class HealthAuthorisePaymentService extends CommonRequestService {
 
     public HealthAuthorisePaymentService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(),
+                new ServiceConfigurationService(), EnvironmentService.getEnvironment());
     }
 
     public HealthPaymentAuthoriseResult authorise(Brand brand, HealthAuthorisePaymentRequest data) throws DaoException, IOException, ServiceConfigurationException {

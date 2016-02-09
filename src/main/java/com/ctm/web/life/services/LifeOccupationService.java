@@ -6,9 +6,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.web.core.services.CommonRequestService;
-import com.ctm.web.core.services.Endpoint;
-import com.ctm.web.core.services.RestClient;
+import com.ctm.web.core.services.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +27,8 @@ public class LifeOccupationService extends CommonRequestService {
     private String environmentOverride;
 
     @Autowired
-    public LifeOccupationService(ProviderFilterDao providerFilterDAO, RestClient restClient) {
-        super(providerFilterDAO, restClient);
+    public LifeOccupationService(ProviderFilterDao providerFilterDAO, RestClient restClient, ServiceConfigurationService serviceConfigurationService) {
+        super(providerFilterDAO, restClient,serviceConfigurationService, EnvironmentService.getEnvironment());
     }
 
     public List<Occupation> getOccupations(Brand brand) throws DaoException, IOException, ServiceConfigurationException {

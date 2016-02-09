@@ -9,6 +9,7 @@ import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.services.CommonQuoteService;
 import com.ctm.web.core.services.Endpoint;
 import com.ctm.web.core.services.ResultsService;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.form.TravelRequest;
@@ -24,7 +25,7 @@ import java.util.List;
 public class TravelService extends CommonQuoteService<TravelQuote> {
 
     public TravelService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new ServiceConfigurationService());
     }
 
     /**

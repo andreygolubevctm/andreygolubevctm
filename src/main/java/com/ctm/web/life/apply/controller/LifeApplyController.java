@@ -4,6 +4,7 @@ import com.ctm.web.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.exceptions.ServiceRequestException;
+import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ErrorInfo;
@@ -28,9 +29,9 @@ import java.io.IOException;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-@Api(basePath = "/rest/energy", value = "Energy Apply")
+@Api(basePath = "/rest/life", value = "Life Apply")
 @RestController
-@RequestMapping("/rest/energy")
+@RequestMapping("/rest/life")
 public class LifeApplyController extends CommonQuoteRouter<LifeApplyPostRequestPayload> {
     private static final Logger LOGGER = LoggerFactory.getLogger(LifeApplyController.class);
 
@@ -42,13 +43,15 @@ public class LifeApplyController extends CommonQuoteRouter<LifeApplyPostRequestP
         super(sessionDataServiceBean);
     }
 
-    @ApiOperation(value = "apply/apply.json", notes = "Submit an energy application", produces = "application/json")
+    @ApiOperation(value = "apply/apply.json", notes = "Submit an life application", produces = "application/json")
     @RequestMapping(value = "/apply/apply.json",
             method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public LifeApplyWebResponseModel apply(@ModelAttribute LifeApplyPostRequestPayload applyPostRequestPayload,
-                                           BindingResult result, HttpServletRequest request) throws IOException, ServiceConfigurationException, DaoException {
+                                           BindingResult result, HttpServletRequest request) throws IOException,
+            ServiceConfigurationException,
+            DaoException, SessionException {
         LOGGER.debug("Request parameters={}", kv("paramters", request.getParameterMap()));
 
         if (result.hasErrors()) {
@@ -57,9 +60,9 @@ public class LifeApplyController extends CommonQuoteRouter<LifeApplyPostRequestP
             }
         }
 
-        Brand brand = initRouter(request, Vertical.VerticalType.ENERGY);
+        Brand brand = initRouter(request, Vertical.VerticalType.LIFE);
         updateTransactionIdAndClientIP(request, applyPostRequestPayload);
-/*        LifeApplyWebResponseModel outcome = lifeService.apply(applyPostRequestPayload, brand, request);*/
+       LifeApplyWebResponseModel outcome = lifeService.apply(applyPostRequestPayload, brand, request);
 /*        if (outcome != null) {
             Info info = new Info();
             info.setTransactionId(applyPostRequestPayload.getTransactionId());

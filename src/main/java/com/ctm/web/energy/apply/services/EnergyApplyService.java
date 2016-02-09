@@ -11,6 +11,8 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.CommonRequestService;
 import com.ctm.web.core.services.Endpoint;
+import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceRequestAdapter;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceResponseAdapter;
 import com.ctm.web.apply.exceptions.FailedToRegisterException;
@@ -30,8 +32,10 @@ public class EnergyApplyService extends CommonRequestService {
     private EnergyApplyConfirmationService energyApplyConfirmation;
 
     @Autowired
-    public EnergyApplyService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
-        super(providerFilterDAO, objectMapper);
+    public EnergyApplyService(ProviderFilterDao providerFilterDAO,
+                              ObjectMapper objectMapper,
+                              ServiceConfigurationService serviceConfigurationService) {
+        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironment());
     }
 
 

@@ -11,10 +11,7 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.web.core.services.CommonQuoteService;
-import com.ctm.web.core.services.Endpoint;
-import com.ctm.web.core.services.ResultsService;
-import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.*;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.core.validation.CommencementDateValidation;
 import com.ctm.web.core.web.go.Data;
@@ -49,7 +46,7 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
     private static final SessionDataService SESSION_DATA_SERVICE = new SessionDataService();
 
     public HomeQuoteService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new ServiceConfigurationService());
     }
 
     public List<HomeResult> getQuotes(Brand brand, HomeRequest data) throws Exception {

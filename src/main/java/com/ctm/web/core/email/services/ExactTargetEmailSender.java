@@ -61,7 +61,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 
     private void setWebserviceConfiguration(int verticalId, int brandId, int providerId) throws SendEmailException {
         try {
-            ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("exactTargetService", verticalId, brandId);
+            ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfigurationDeprecated("exactTargetService", verticalId, brandId);
             if (serviceConfig == null)
                 throw new SendEmailException("Unable to find service 'exactTarget'");
 

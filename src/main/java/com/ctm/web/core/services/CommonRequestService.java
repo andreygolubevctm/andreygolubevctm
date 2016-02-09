@@ -39,15 +39,27 @@ public abstract class CommonRequestService {
 
     private final ProviderFilterDao providerFilterDAO;
     private final RestClient restClient;
+    private final ServiceConfigurationService serviceConfigurationService;
+    //TODO once everything in moved to Spring MVC autowire this value
+    private EnvironmentService.Environment environment;
 
-    public CommonRequestService(final ProviderFilterDao providerFilterDAO, final ObjectMapper objectMapper) {
+    public CommonRequestService(final ProviderFilterDao providerFilterDAO,
+                                final ObjectMapper objectMapper, ServiceConfigurationService serviceConfigurationService, 
+                                EnvironmentService.Environment environment) {
         this.providerFilterDAO = providerFilterDAO;
         this.restClient = new RestClient(objectMapper);
+        this.serviceConfigurationService = serviceConfigurationService;
+        this.environment = environment;
     }
 
-    public CommonRequestService(final ProviderFilterDao providerFilterDAO, final RestClient restClient) {
+    public CommonRequestService(final ProviderFilterDao providerFilterDAO,
+                                final RestClient restClient, 
+                                ServiceConfigurationService serviceConfigurationService, 
+                                EnvironmentService.Environment environment) {
         this.providerFilterDAO = providerFilterDAO;
         this.restClient = restClient;
+        this.serviceConfigurationService = serviceConfigurationService;
+        this.environment = environment;
     }
 
     protected void setFilter(ProviderFilter providerFilter) throws Exception {
@@ -81,8 +93,8 @@ public abstract class CommonRequestService {
                 providerFilter.setProviders(providers);
             }
         // Provider Key is mandatory in NXS
-        } else if(EnvironmentService.getEnvironmentAsString().equalsIgnoreCase("nxs")) {
-            throw new RouterException("Provider Key required in '" + EnvironmentService.getEnvironmentAsString() + "' environment");
+        } else if(environment.equals(EnvironmentService.Environment.NXS)) {
+            throw new RouterException("Provider Key required in '" + environment.toString() + "' environment");
         }
     }
 
@@ -104,6 +116,17 @@ public abstract class CommonRequestService {
                                         Class<RESPONSE> responseClass, String productId) throws IOException, DaoException, ServiceConfigurationException {
         return restClient.sendPOSTRequest(getQuoteServiceProperties(serviceName,
                 brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride())), vertical, endpoint, responseClass, getApplyRequest(brand, data, payload, productId));
+    }
+
+    protected <PAYLOAD, RESPONSE> RESPONSE sendApplyRequest(Brand brand,
+                                                            Vertical.VerticalType vertical,
+                                                            String serviceName,
+                                                            String endpoint, Request data,
+                                                            PAYLOAD payload,
+                                                            Class<RESPONSE> responseClass, String productId) throws IOException, DaoException, ServiceConfigurationException {
+        return restClient.sendPOSTRequest(getQuoteServiceProperties(serviceName,
+                brand, vertical.getCode(),
+                Optional.ofNullable(data.getEnvironmentOverride())), vertical, endpoint, responseClass, getApplyRequest(brand, data, payload, productId));
     }
 
     protected RestClient getRestClient() {
@@ -141,8 +164,8 @@ public abstract class CommonRequestService {
         }
 
         environmentOverride.ifPresent(data -> {
-            if (EnvironmentService.getEnvironment() == EnvironmentService.Environment.LOCALHOST ||
-                    EnvironmentService.getEnvironment() == EnvironmentService.Environment.NXI) {
+            if (environment == EnvironmentService.Environment.LOCALHOST ||
+                    environment == EnvironmentService.Environment.NXI) {
                 if (StringUtils.isNotBlank(data)) {
                     properties.setServiceUrl(data);
                 }
@@ -154,7 +177,7 @@ public abstract class CommonRequestService {
     }
 
     protected ServiceConfiguration getServiceConfiguration(String service, Brand brand, String verticalCode) throws DaoException, ServiceConfigurationException {
-        return ServiceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode).getId(), brand.getId());
+        return serviceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode));
     }
 
 }

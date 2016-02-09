@@ -9,12 +9,14 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ConfigSetting;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+@Component
 public class ServiceConfigurationService {
 
 	private static ArrayList<ServiceConfiguration> services = new ArrayList<ServiceConfiguration>();
@@ -92,7 +94,7 @@ public class ServiceConfigurationService {
 		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
 		Vertical vertical = brand.getVerticalByCode(verticalCode);
 
-		return getServiceConfiguration(code, vertical.getId(), brand.getId());
+		return getServiceConfigurationDeprecated(code, vertical.getId(), brand.getId());
 	}
 
 	/**
@@ -104,7 +106,8 @@ public class ServiceConfigurationService {
 	 * @throws DaoException
 	 * @throws ServiceConfigurationException
 	 */
-	public static ServiceConfiguration getServiceConfiguration(String code, int verticalId, int brandId) throws DaoException, ServiceConfigurationException {
+	@Deprecated
+	public static ServiceConfiguration getServiceConfigurationDeprecated(String code, int verticalId, int brandId) throws DaoException, ServiceConfigurationException {
 
 		getServiceConfigurations();
 
@@ -116,6 +119,34 @@ public class ServiceConfigurationService {
 			}
 		}
 		
+		if(serviceConfiguration != null)
+			return serviceConfiguration;
+
+		throw new ServiceConfigurationException("Unable to find matching service with code "+code);
+
+	}
+
+	/**
+	 * Get the service configuration for a specific code, vertical and brand - only call this directly if you are not able to rely on F5 rewriting rules.
+	 * @param code 'serviceCode' key in ctm.service_master
+	 * @param verticalId
+	 * @param brandId
+	 * @return
+	 * @throws DaoException
+	 * @throws ServiceConfigurationException
+	 */
+	public  ServiceConfiguration getServiceConfiguration(String code, Vertical vertical) throws DaoException, ServiceConfigurationException {
+
+		getServiceConfigurations();
+
+		ServiceConfiguration serviceConfiguration = null;
+
+		for(ServiceConfiguration service : services){
+			if(service.getCode().equals(code) && ((service.getVerticalId() == ConfigSetting.ALL_VERTICALS && serviceConfiguration == null) || service.getVerticalId() == vertical.getId())){
+				serviceConfiguration = service;
+			}
+		}
+
 		if(serviceConfiguration != null)
 			return serviceConfiguration;
 

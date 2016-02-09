@@ -59,7 +59,7 @@ public class CommonQuoteServiceTest {
 
 
         EnvironmentService.setEnvironment("localhost");
-        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, restClient) {});
+        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, restClient, null) {});
     }
 
     @Test(expected = RouterException.class)

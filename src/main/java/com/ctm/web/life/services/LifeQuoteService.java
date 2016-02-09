@@ -6,6 +6,8 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.services.CommonRequestService;
 import com.ctm.web.core.services.Endpoint;
+import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.life.form.model.LifeQuoteWebRequest;
 import com.ctm.web.life.form.response.model.LifeResultsWebResponse;
 import com.ctm.web.life.model.LifeQuoteResponse;
@@ -29,8 +31,8 @@ public class LifeQuoteService extends CommonRequestService {
     private LifeQuoteServiceResponseAdapter responseAdapter;
 
     @Autowired
-    public LifeQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
-        super(providerFilterDAO, objectMapper);
+    public LifeQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, ServiceConfigurationService serviceConfigurationService) {
+        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironment());
     }
 
     public LifeResultsWebResponse getQuotes(LifeQuoteWebRequest request, Brand brand) throws DaoException, IOException, ServiceConfigurationException {

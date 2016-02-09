@@ -26,7 +26,7 @@ public class ElasticClientProvider {
 		ServiceConfiguration serviceConfig = null;
 
 		try {
-			serviceConfig = ServiceConfigurationService.getServiceConfiguration("elasticSearchService", 0, 0);
+			serviceConfig = ServiceConfigurationService.getServiceConfigurationDeprecated("elasticSearchService", 0, 0);
 		} catch (DaoException | ServiceConfigurationException e) {
 			throw new ElasticSearchConfigurationException("Could not load the required configuration for the ElasticSearch Service", e);
 		}

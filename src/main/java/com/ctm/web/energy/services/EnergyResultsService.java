@@ -9,6 +9,8 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.providers.model.Response;
 import com.ctm.web.core.services.CommonRequestService;
 import com.ctm.web.core.services.Endpoint;
+import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.energy.form.model.EnergyResultsWebRequest;
 import com.ctm.web.energy.form.response.model.EnergyResultsWebResponse;
 import com.ctm.web.energy.model.EnergyQuoteResponse;
@@ -26,8 +28,8 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.ENERGY;
 public class EnergyResultsService extends CommonRequestService {
 
     @Autowired
-    public EnergyResultsService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
-        super(providerFilterDAO, objectMapper);
+    public EnergyResultsService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, ServiceConfigurationService serviceConfigurationService) {
+        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironment());
     }
 
 

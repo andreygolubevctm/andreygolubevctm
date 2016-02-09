@@ -15,10 +15,7 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.web.core.services.CommonQuoteService;
-import com.ctm.web.core.services.Endpoint;
-import com.ctm.web.core.services.ResultsService;
-import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.core.services.*;
 import com.ctm.web.core.validation.CommencementDateValidation;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
@@ -42,8 +39,9 @@ public class CarQuoteService extends CommonQuoteService<CarQuote> {
     private SessionDataServiceBean sessionDataServiceBean;
 
     @Autowired
-    public CarQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, SessionDataServiceBean sessionDataServiceBean) {
-        super(providerFilterDAO, objectMapper);
+    public CarQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper,
+                           SessionDataServiceBean sessionDataServiceBean, ServiceConfigurationService serviceConfigurationService) {
+        super(providerFilterDAO, objectMapper, serviceConfigurationService);
         this.sessionDataServiceBean = sessionDataServiceBean;
     }
 

@@ -64,7 +64,7 @@ public abstract class LeadService {
     public void sendLead(final int verticalId, final Data data, final HttpServletRequest request, final String transactionStatus) {
         if(!SessionUtils.isCallCentre(request.getSession())) {
             try {
-                ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", verticalId, 0);
+                ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfigurationDeprecated("leadService", verticalId, 0);
 
                 Boolean enabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
                 String url = serviceConfig.getPropertyValueByKey("url", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);

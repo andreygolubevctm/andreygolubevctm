@@ -6,6 +6,7 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.services.CommonQuoteService;
 import com.ctm.web.core.services.Endpoint;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.health.apply.model.RequestAdapter;
 import com.ctm.web.health.apply.model.request.HealthApplicationRequest;
@@ -24,7 +25,7 @@ public class HealthApplyService extends CommonQuoteService<HealthQuote> {
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplyService.class);
 
     public HealthApplyService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new ServiceConfigurationService());
     }
 
     public HealthApplyResponse apply(Brand brand, HealthRequest data) throws DaoException, IOException, ServiceConfigurationException {
