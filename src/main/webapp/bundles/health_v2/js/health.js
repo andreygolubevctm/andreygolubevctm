@@ -397,13 +397,6 @@
 			},
 			onAfterEnter: function(event){
 
-				/*if(event.isBackward === true){
-					meerkat.modules.healthResults.onReturnToPage();
-					if(meerkat.modules.healthCoverDetails.hasRatesChanged()) {
-						meerkat.modules.healthResults.get();
-					}
-				}*/
-
 				if(event.isForward === true){
 					meerkat.modules.healthResults.getBeforeResultsPage();
 				}

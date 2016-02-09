@@ -49,7 +49,9 @@
 			$partnerContainer.hide();
 		}
 
+		$healthCoverDetailsDependants.hide();
 		$primaryContinuousCoverContainer.hide();
+		$partnerContinuousCoverContainer.hide();
 		$partnerHealthCoverHealthCoverLoading.hide();
 	}
 
@@ -72,10 +74,10 @@
 		});
 
 		$partnerCurrentCover.find('input').on('click', function togglePartnersContinuousCover() {
-			if ($(this).filter(':checked').val() === 'Y') {
-				$partnerHealthCoverHealthCoverLoading.slideDown();
+			if ($(this).filter(':checked').val() === 'Y') { //test
+				$partnerContinuousCoverContainer.slideDown();
 			} else {
-				$partnerHealthCoverHealthCoverLoading.find('label:nth-child(2)').trigger('click').end().slideUp();
+				$partnerContinuousCoverContainer.find('label:nth-child(2)').trigger('click').end().slideUp();
 			}
 		});
 
@@ -122,16 +124,6 @@
 		resetRadio($partnerCurrentCover);
 		$partnerContinuousCoverContainer.find(':checked').prop('checked', false);
 		resetRadio($partnerContinuousCoverContainer);
-	}
-
-	function resetRebateForm() {
-		$healthCoverDependants.find('option:selected').prop("selected", false).end().find('option').first().prop("selected", true);
-		$healthCoverIncome.find('option:selected').prop("selected", false).end().find('option').first().prop("selected", true);
-		$healthCoverIncomeLabel.val('');
-		$healthCoverRebate.find(':checked').prop('checked', false);
-		resetRadio($healthCoverRebate);
-		$healthCoverRebate.hide();
-		$healthCoverlhcGroup.show();
 	}
 
 	function toggleRebateDialogue() {
