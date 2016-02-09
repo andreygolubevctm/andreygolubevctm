@@ -213,6 +213,21 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 					</c:if>
 						</c:catch>
 
+
+				<c:set var="vQuotetype">
+					<c:choose>
+						<c:when test="${quoteType eq 'car'}">
+							quote
+						</c:when>
+						<c:otherwise>${quoteType}</c:otherwise>
+					</c:choose>
+				</c:set>
+				<c:set var="jParam">
+					<c:if test="${not empty data[vQuotetype]['currentJourney']}">
+						&amp;j=${data[vQuotetype]['currentJourney']}
+					</c:if>
+				</c:set>
+
 				<c:set var="result">
 					<result>
 
@@ -233,19 +248,19 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 
 						<%-- START AGAIN FRESH (NO PRELOAD) - USED TO GET THE PROPER QUOTE ENDPOINT --%>
 						<c:when test="${param.action=='start-again-fresh'}">
-							<destUrl>${pageName}?</destUrl>
+							<destUrl>${pageName}?${jParam}</destUrl>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES (HEALTH)--%>
 						<c:when test="${param.action=='amend' && param.vertical=='health' && data.health.privacyoptin!='Y'}">
 							<core_v1:transaction touch="L" noResponse="true" />
-							<destUrl>${pageName}?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
+							<destUrl>${pageName}?action=start-again&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 						</c:when>
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
 							<core_v1:transaction touch="L" noResponse="true" />
-							<destUrl>${pageName}?action=${param.action}&amp;transactionId=${data.current.transactionId}</destUrl>
+							<destUrl>${pageName}?action=${param.action}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
@@ -255,7 +270,7 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 							<c:if test="${not empty param.newDate and param.newDate != ''}">
 								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
 							</c:if>
-							<destUrl>${pageName}?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
+							<destUrl>${pageName}?action=start-again&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 						</c:when>
 
 						<%-- GET LATEST --%>
@@ -266,7 +281,7 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
 								<go:setData dataVar="data" xpath="home/startDate" value="${param.newDate}" />
 							</c:if>
-							<destUrl>${pageName}?action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
+							<destUrl>${pageName}?action=latest&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 						</c:when>
 
 						<%-- ERROR --%>
