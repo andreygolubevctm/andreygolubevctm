@@ -3,9 +3,9 @@ package com.ctm.web.simples.services;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
-import com.ctm.web.simples.model.InboundPhoneNumber;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.simples.model.InboundPhoneNumber;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,10 @@ public class StartQuoteService {
         InboundPhoneNumber phoneDetails = null;
         PageSettings pageSettings =  SettingsService.setVerticalAndGetSettingsForPage(request, StringUtils.isEmpty(verticalCode) ? "SIMPLES" : verticalCode.toUpperCase());
         try {
-            phoneDetails = CallCentreService.getInboundPhoneDetails(request);
+            // only get phone details when InIn is not enabled
+            if (!Boolean.valueOf(pageSettings.getSetting("inInEnabled"))) {
+                phoneDetails = CallCentreService.getInboundPhoneDetails(request);
+            }
         } catch (ConfigSettingException | RuntimeException e) {
             LOGGER.error("Error getting inbound phone details", e);
             response.sendRedirect(pageSettings.getBaseUrl()+"simples/selectBrand.jsp?verticalCode=" + verticalCode);

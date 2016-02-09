@@ -6,17 +6,24 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.core.model.TransactionProperties;
 import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
+import com.ctm.web.core.transaction.model.Transaction;
+import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.web.health.dao.HealthTransactionDao;
 import com.ctm.web.health.model.HealthTransaction;
 import com.ctm.web.simples.dao.MessageAuditDao;
 import com.ctm.web.simples.dao.MessageDao;
 import com.ctm.web.simples.model.ConfirmationOperator;
 import com.ctm.web.simples.model.Message;
+import com.ctm.web.simples.model.MessageDetail;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -103,6 +110,55 @@ public class TransactionService {
 	public ConfirmationOperator findConfirmationByRootId(List<Long> rootIds) throws DaoException {
 		TransactionDao transactionDao = new TransactionDao();
 		return transactionDao.getConfirmationFromTransactionChain(rootIds);
+	}
+
+	public static MessageDetail getTransaction(final long transactionId) throws DaoException {
+		final TransactionDao transactionDao = new TransactionDao();
+		final Transaction transaction = new Transaction();
+		final TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
+		final long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
+
+		final MessageDetailService service = new MessageDetailService();
+		final Message message = new Message();
+
+		transaction.setTransactionId(transactionId);
+		transactionDao.getCoreInformation(transaction);
+
+		message.setTransactionId(rootId);
+		message.setMessageId(-1);
+		message.setCanPostpone(true); // So that we can hook into the InIn services
+
+		Map<String, String> transactionDetails = transactionDetailsDao.getTransactionDetails(transaction.getNewestTransactionId())
+				.stream()
+				.collect(Collectors.toMap(TransactionDetail::getXPath, TransactionDetail::getTextValue));
+
+		final Optional<String> state = Optional.ofNullable(transactionDetails.get("health/situation/state"));
+		message.setState(state.orElse(""));
+
+		final Optional<String> primaryFirstName = Optional.ofNullable(transactionDetails.get("health/application/primary/firstname"));
+		final Optional<String> primaryLastName = Optional.ofNullable(transactionDetails.get("health/application/primary/surname"));
+		if(primaryFirstName.isPresent() || primaryLastName.isPresent()) {
+			message.setContactName(StringUtils.trim(primaryFirstName.orElse("BLANK") + " " + primaryLastName.orElse("BLANK")));
+		} else {
+			Optional<String> contactName = Optional.ofNullable(transactionDetails.get("health/contactDetails/name"));
+			message.setContactName(contactName.orElse("BLANK"));
+		}
+
+		final Optional<String> phoneNumber1 = Optional.ofNullable(transactionDetails.get("health/application/mobile"));
+		if(phoneNumber1.isPresent()) {
+			message.setPhoneNumber1(phoneNumber1.orElse(""));
+		} else {
+			message.setPhoneNumber1(Optional.ofNullable(transactionDetails.get("health/contactDetails/contactNumber/mobile")).orElse(""));
+		}
+
+		final Optional<String> phoneNumber2 = Optional.ofNullable(transactionDetails.get("health/application/other"));
+		if(phoneNumber2.isPresent()) {
+			message.setPhoneNumber2(phoneNumber2.orElse(""));
+		} else {
+			message.setPhoneNumber2(Optional.ofNullable(transactionDetails.get("health/contactDetails/contactNumber/other")).orElse(""));
+		}
+
+		return  service.getMessageDetail(message);
 	}
 
 }

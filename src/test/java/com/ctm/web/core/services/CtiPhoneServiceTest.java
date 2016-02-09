@@ -2,7 +2,7 @@ package com.ctm.web.core.services;
 
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.model.settings.PageSettings;
-import com.ctm.web.simples.services.PhoneService;
+import com.ctm.web.simples.phone.verint.CtiPhoneService;
 import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,8 +14,8 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(PhoneService.class)
-public class PhoneServiceTest {
+@PrepareForTest(CtiPhoneService.class)
+public class CtiPhoneServiceTest {
     public static final String OK_RESPONSE = "<service><response><accessToken/><status>OK</status></response></service>";
     public static final String BOGUS_RESPONSE = "{ \"imjson\": \"notxml\" }";
 
@@ -28,13 +28,13 @@ public class PhoneServiceTest {
     private void verifyCallUrl(final String baseUrl, final String expected, final String extension, final String phone) throws ConfigSettingException {
         final PageSettings pageSettings = mock(PageSettings.class);
         when(pageSettings.getSetting("ctiMakeCallUrl")).thenReturn(baseUrl);
-        assertEquals(expected, PhoneService.callUrl(pageSettings, extension, phone));
+        assertEquals(expected, CtiPhoneService.callUrl(pageSettings, extension, phone));
     }
 
     @Test
     public void callReturnStatus() throws JSONException {
-        assertEquals(true, PhoneService.callReturnStatus(OK_RESPONSE));
-        assertEquals(false, PhoneService.callReturnStatus(BOGUS_RESPONSE));
+        assertEquals(true, CtiPhoneService.callReturnStatus(OK_RESPONSE));
+        assertEquals(false, CtiPhoneService.callReturnStatus(BOGUS_RESPONSE));
     }
 
 }
