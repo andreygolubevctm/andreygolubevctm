@@ -23,7 +23,7 @@ select count(*) from ctm.travel_product where providerId = @TUNDER and providerP
 UPDATE ctm.travel_product SET providerProductCode = '6' where providerId = @SKI and providerProductCode = '23'
   and productCode = 'SKII-TRAVEL-225' limit 1;
 
-delete from ctm.travel_product where providerId = @SKI and providerProductCode in ('22','24)' limit 2;
+delete from ctm.travel_product where providerId = @SKI and providerProductCode in ('22','24') limit 2;
 
 -- test ski expect 1
 select count(*) from ctm.travel_product where providerId = @SKI and providerProductCode in ('23','22','24','6');
