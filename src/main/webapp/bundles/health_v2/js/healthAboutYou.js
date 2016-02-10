@@ -43,7 +43,8 @@
 		$rebateDialogue = $aboutYouContainer.find('.simples-dialogue-37'),
 		$healthSituationHealthCvr = $aboutYouContainer.find('#health_situation_healthCvr'),
 		$healthCoverIncome = $aboutYouContainer.find('#health_healthCover_income'),
-		$healthCoverIncomeLabel = $aboutYouContainer.find('#health_healthCover_incomelabel');
+		$healthCoverIncomeLabel = $aboutYouContainer.find('#health_healthCover_incomelabel'),
+		$tierDropdowns = $aboutYouContainer.find('#health_situation_healthCvr, #health_healthCover_dependants');
 
 		if (!healthChoices.hasSpouse()) {
 			$partnerContainer.hide();
@@ -64,6 +65,10 @@
 				toggleRebateDialogue();
 			});
 		}
+
+		$tierDropdowns.on('change', function(){
+			meerkat.modules.healthTiers.setTiers();
+		});
 
 		$primaryCurrentCover.find('input').on('click', function toggleYourContinuousCover() {
 			if ($(this).filter(':checked').val() === 'Y') {
