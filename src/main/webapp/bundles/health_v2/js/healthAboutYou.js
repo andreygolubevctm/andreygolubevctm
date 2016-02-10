@@ -97,8 +97,6 @@
 
 			if ($(this)[0].selectedIndex > 1) {
 				$healthCoverIncomeMessage.show();
-				meerkat.modules.healthDependants.initHealthDependants(true);
-				meerkat.modules.healthDependants.updateDependantConfiguration();
 			} else {
 				$healthCoverIncomeMessage.hide();
 			}

@@ -11,7 +11,7 @@
     }
 
     function isRebateApplied() {
-        return meerkat.modules.dialogs.isDialogOpen(modalId) === true ? $healthCoverRebate.find(':checked').val() === 'Y' : $('#partner-health-cover').find('input[name="health_healthCover_rebate"]').val() === 'Y';
+        return $('#health_situation-selection').find('input[name="health_healthCover_rebate"]').val() === 'Y';
     }
 
     //Previous funds, settings
