@@ -2,31 +2,9 @@ package com.ctm.web.car.model.form;
 
 import com.ctm.web.core.model.formData.RequestWithQuote;
 
-public class CarRequest implements RequestWithQuote<CarQuote> {
-
-    private String clientIpAddress;
+public class CarRequest extends RequestWithQuote<CarQuote> {
 
     private CarQuote quote;
-
-    private Long transactionId;
-
-    public String getEnvironmentOverride() {
-        return environmentOverride;
-    }
-
-    public void setEnvironmentOverride(String environmentOverride) {
-        this.environmentOverride = environmentOverride;
-    }
-
-    private String environmentOverride;
-
-    public String getClientIpAddress() {
-        return clientIpAddress;
-    }
-
-    public void setClientIpAddress(String clientIpAddress) {
-        this.clientIpAddress = clientIpAddress;
-    }
 
     @Override
     public CarQuote getQuote() {
@@ -37,12 +15,14 @@ public class CarRequest implements RequestWithQuote<CarQuote> {
         this.quote = quote;
     }
 
-    @Override
-    public Long getTransactionId() {
-        return transactionId;
+    public String toString() {
+        return "CarRequest{" +
+                "transactionId=" + getTransactionId() +
+                ", clientIpAddress='" + getClientIpAddress() + '\'' +
+                ", car=" + getQuote() +
+                ", environmentOverride='" + getEnvironmentOverride() + '\'' +
+                ", requestAt='" +getRequestAt() + '\'' +
+                '}';
     }
 
-    public void setTransactionId(Long transactionId) {
-        this.transactionId = transactionId;
-    }
 }

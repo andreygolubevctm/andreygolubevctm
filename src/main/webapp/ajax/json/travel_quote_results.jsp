@@ -27,4 +27,4 @@
 <core_v1:transaction touch="R" noResponse="true"  />
 
 
-<jsp:forward page="/rest/travel/quote/get.json"/>
+<jsp:forward page="/spring/rest/travel/quote/get.json"/>

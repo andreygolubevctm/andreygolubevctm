@@ -189,7 +189,7 @@
 							obj.coverLevel = level;
 							meerkat.modules.coverLevelTabs.incrementCount(level);
 						} else  {
-							if (result.des.indexOf('Australia') == -1) {
+							if (result.des.indexOf('Australia') == -1 && result.des.indexOf('Domestic') == -1) {
 								obj.coverLevel = 'I';
 								meerkat.modules.coverLevelTabs.incrementCount("I");
 							} else {

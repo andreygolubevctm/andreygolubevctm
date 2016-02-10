@@ -461,7 +461,7 @@
 		setScrapeType ();
 
 		return meerkat.modules.comms.get({
-			url: "rest/home/more_info/get.json",
+			url: "spring/rest/home/more_info/get.json",
 			cache: true,
 			data: {
 				code: product.productId,
