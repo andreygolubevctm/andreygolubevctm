@@ -48,7 +48,6 @@ import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 @RestController
 @RequestMapping("/rest/simples/blacklist")
 public class BlacklistController {
-    private static final String INSERT_RECORDS_URL = "${wsUrl}/InsertRecords";
     private static final Logger LOGGER = LoggerFactory.getLogger(BlacklistController.class);
 
     public static final String ADD = "/add.json";
@@ -88,9 +87,7 @@ public class BlacklistController {
         LOGGER.info("Simples blacklist outcome: {}", kv("simplesBlacklistOutcome", outcome));
 
         if(inInEnabled && outcome.map(s -> s.equals("success")).orElse(false) && StringUtils.equalsIgnoreCase("phone", channel)) {
-            insertIntoBlacklistCampaign(inInConfig.getWsPrimaryUrl(), value)
-                .onErrorResumeNext(throwable -> failover(throwable, inInConfig.getWsFailoverUrl(), value))
-                .toBlocking().first();
+            insertIntoBlacklistCampaign(inInConfig.getWsPrimaryUrl(), inInConfig.getWsFailoverUrl(), value).toBlocking().first();
         }
         return new BlacklistOutcome(outcome.orElse(""));
     }
@@ -140,48 +137,16 @@ public class BlacklistController {
         return new BlacklistOutcome(outcome.orElse(""));
     }
 
-    private Observable<String> failover(Throwable throwable, final String wsUrl, final String value) {
-        if (shouldFailover(throwable)) {
-            LOGGER.info("inserting into blacklist failed switching to failover");
-            insertIntoBlacklistCampaign(wsUrl, value);
-        }
-        return Observable.error(throwable);
-    }
-
-    private boolean shouldFailover(Throwable throwable) {
-        return isServerExceptionOfStatus(throwable, SERVICE_UNAVAILABLE)
-                || isServerExceptionOfStatus(throwable, NOT_FOUND)
-                || throwable instanceof TimeoutException
-                || throwable instanceof UnknownHostException;
-    }
-
-    private boolean isServerExceptionOfStatus(final Throwable throwable, final HttpStatus httpStatus) {
-        return throwable instanceof HttpServerErrorException && ((HttpServerErrorException) throwable).getStatusCode() == httpStatus;
-    }
-
-    private Observable<String> insertIntoBlacklistCampaign(final String wsUrl, final String value) {
+    private Observable<String> insertIntoBlacklistCampaign(final String wsUrl, final String failoverWsUrl, final String value) {
         Insert insert = new Insert(blacklistCampaignName, new ArrayList<>());
 
         addPhone(insert, value);
 
-        final String url = StrSubstitutor.replace(INSERT_RECORDS_URL, Collections.singletonMap("wsUrl", wsUrl));
         RestSettings<List<Insert>> settings = RestSettings.<List<Insert>>builder()
-                .header("Content-Type", "application/json;charset=UTF-8")
-                .request(singletonList(insert))
-                .response(String.class)
-                .url(url)
+                .jsonRequest(singletonList(insert), String.class, wsUrl + "/InsertRecords")
+                .retryAttempts(ATTEMPTS).retryDelay(DELAY).failoverUrl(failoverWsUrl + "/InsertRecords")
                 .build();
-
-        return blacklistClient.post(settings).retryWhen(this::retryWithDelay);
-    }
-
-    private Observable<?> retryWithDelay(final Observable<? extends Throwable> attempt) {
-        return attempt
-                .zipWith(Observable.range(1, ATTEMPTS), (n, i) -> i)
-                .flatMap(n -> {
-                    LOGGER.info("Retrying request {}", kv("attempt", n));
-                    return Observable.timer(DELAY, TimeUnit.MILLISECONDS);
-                });
+        return blacklistClient.post(settings);
     }
 
     private void addPhone(final Insert insert, final String phone) {

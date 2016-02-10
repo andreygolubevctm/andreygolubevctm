@@ -1,8 +1,10 @@
 package com.ctm.web.travel.services;
 
 
+import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.web.travel.model.form.Travellers;
@@ -28,7 +30,7 @@ public class TravelServiceTest {
 	@Before
 	public void setup() throws Exception {
 		EnvironmentService.setEnvironment("localhost");
-		travelService = new TravelService();
+		travelService = new TravelService(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
 		travelRequest = new TravelRequest();
 		travelQuote = new TravelQuote();
 

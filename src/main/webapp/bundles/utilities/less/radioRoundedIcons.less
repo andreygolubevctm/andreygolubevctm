@@ -47,11 +47,22 @@ div.roundedCheckboxIcons {
 
 		&:active,
 		&.active {
-	  		i:before {
+			i:before {
 				background-color: @icon-bg-checked-color;
 				border-color: @icon-border-checked-color;
 				color: #fff;
-	  		}
+			}
+		}
+
+	  	input{
+			&:checked,
+			&.checked {
+				& + i:before {
+				  background-color: @icon-bg-checked-color;
+				  border-color: @icon-border-checked-color;
+				  color: #fff;
+				}
+			}
 		}
 
 	  	i {
@@ -79,9 +90,13 @@ div.roundedCheckboxIcons {
 		}
 	}
 
-	@media (@xs) {
+	@media (@lg) {
 	  .radioIconSize(60px, @font-size-base, 0);
 	}
+	@media (@xs) {
+		.radioIconSize(55px, @font-size-base, 0);
+	}
+
 	@media (@sm-only) {
 	  .radioIconSize(50px, @font-size-small, 1);
 	}
