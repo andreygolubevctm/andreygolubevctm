@@ -73,20 +73,11 @@
 		});
 
 		$primaryCurrentCover.find('input').on('click', function toggleYourContinuousCover() {
-			if ($(this).filter(':checked').val() === 'Y' && isLessThan31Or31AndBeforeJuly1($primaryDOB.val())) {
-				$primaryContinuousCoverContainer.slideDown();
-			} else {
-				$primaryContinuousCoverContainer.find('label:nth-child(2)').trigger('click').end().slideUp();
-			}
+			togglePrimaryContinuousCover();
 		});
 
 		$partnerCurrentCover.find('input').on('click', function togglePartnersContinuousCover() {
-
-			if ($(this).filter(':checked').val() === 'Y' && isLessThan31Or31AndBeforeJuly1($partnerDOB.val())) {
-				$partnerContinuousCoverContainer.slideDown();
-			} else {
-				$partnerContinuousCoverContainer.find('label:nth-child(2)').trigger('click').end().slideUp();
-			}
+			togglePartnerContinuousCover();
 		});
 
 		$healthCoverDependants.on('change', function setRebateTiers(){
@@ -111,7 +102,23 @@
 		});
 	}
 
-	function setupForm() {
+	function togglePrimaryContinuousCover(isInitMode) {
+		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && isLessThan31Or31AndBeforeJuly1($primaryDOB.val())) {
+			$primaryContinuousCoverContainer.slideDown();
+		} else {
+			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('label:nth-child(2)').trigger('click').end().slideUp();
+		}
+	}
+
+	function togglePartnerContinuousCover(isInitMode) {
+		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && isLessThan31Or31AndBeforeJuly1($partnerDOB.val())) {
+			$partnerContinuousCoverContainer.slideDown();
+		} else {
+			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('label:nth-child(2)').trigger('click').end().slideUp();
+		}
+	}
+
+	function setupForm(isInitMode) {
 		switch($healthSituationHealthCvr.val())
 		 {
 		 case 'F':
@@ -135,6 +142,9 @@
 				 $healthCoverIncomeMessage.hide();
 			 break;
 		 }
+
+		togglePrimaryContinuousCover(isInitMode);
+		togglePartnerContinuousCover(isInitMode);
 	}
 
 	function setRebate(){
