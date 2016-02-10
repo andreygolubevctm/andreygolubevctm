@@ -14,7 +14,8 @@
 		$healthSituationHealthCvr,
 		$healthCoverIncome,
 		$healthCoverIncomeLabel,
-		$partnerHealthCoverHealthCoverLoading;
+		$partnerHealthCoverHealthCoverLoading,
+		$tierDropdowns;
 
 	function init(){
 		$(document).ready(function () {
