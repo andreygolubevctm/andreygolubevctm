@@ -11,29 +11,19 @@
 	var moduleEvents = {};
 
 	var elements = {
-			fsg:			"#quote_fsg",
-			marketing:		"#quote_contactFieldSet input[name='quote_contact_marketing']",
-			oktocall:		"#quote_contactFieldSet input[name='quote_contact_oktocall']",
-			privacy:		"#quote_privacyoptin",
-			terms:			"#quote_terms",
-			phone:			"#quote_contact_phoneinput",
-			phoneRow:		"#contactNoRow",
-			emailRow:		"#contactEmailRow",
-			email:			"#quote_contact_email"
+		fsg:			"#home_fsg",
+		marketing:		"#home_policyHolder_FieldSet input[name='home_policyHolder_marketing']",
+		oktocall:		"#home_policyHolder_FieldSet input[name='home_policyHolder_oktocall']",
+		privacy:		"#home_privacyoptin",
+		terms:			"#home_terms",
+		phone:			"#home_policyHolder_phoneinput",
+		email:			"#home_policyHolder_email",
+		termsAccepted:	"#home_termsAccepted"
 	};
 
 	if(meerkat.modules.splitTest.isActive(3)) {
-		elements.marketing = "#quote_contact_marketing";
-		elements.oktocall = "#quote_contact_oktocall";
-	}
-
-	function toggleValidation() {
-		var isMobile = meerkat.modules.performanceProfiling.isMobile();
-		var isMDorLG = _.indexOf(['lg','md'], meerkat.modules.deviceMediaState.get()) !== -1;
-		if(!isMobile && isMDorLG) {
-			$(elements.marketing).removeRule('validateOkToEmailRadio').setRequired(true);
-			$(elements.oktocall).removeRule('validateOkToCallRadio').setRequired(true);
-		}
+		elements.marketing = "#home_policyHolder_marketing";
+		elements.oktocall = "#home_policyHolder_oktocall";
 	}
 
 	function validateOptins() {
@@ -55,11 +45,12 @@
 		$(elements.phone).on('change', onPhoneChanged);
 		$(elements.email).on('change', onEmailChanged);
 		if(meerkat.modules.splitTest.isActive(3)) {
-			$(elements.privacy).on('change', onSingleOptinChanged);
+			$(elements.termsAccepted).on('change', onSingleOptinChanged);
 		} else {
 			$(elements.oktocall).on('change', onOkToCallChanged);
 			$(elements.marketing).on('change', onOkToEmailChanged);
-			$(elements.privacy).on('change', onTermsOptinChanged);
+			$(elements.privacy).on('change', onPrivacyOptinChanged);
+			$(elements.termsAccepted).on('change', onTermsOptinChanged);
 		}
 	}
 
@@ -73,8 +64,8 @@
 
 	function onOkToCallChanged(){
 		if (getValue(elements.oktocall) !== 'Y') {
-			$row = $(elements.phoneRow);
-			$row.find(".has-error").removeClass('has-error');
+			var $row = $(elements.phone).closest('.row-content');
+			$row.removeClass('has-error').find(".has-error").removeClass('has-error');
 			$row.find(".error-field").empty().hide();
 		}
 	}
@@ -89,24 +80,30 @@
 
 	function onOkToEmailChanged(){
 		if (getValue(elements.marketing) !== 'Y') {
-			$row = $(elements.emailRow);
-			$row.find(".has-error").removeClass('has-error');
+			var $row = $(elements.email).closest('.row-content');
+			$row.removeClass('has-error').find(".has-error").removeClass('has-error');
 			$row.find(".error-field").empty().hide();
 		}
 	}
 
-	function onTermsOptinChanged(){
+	function onPrivacyOptinChanged(){
 		var optin = getValue(elements.privacy);
+		$(elements.fsg).val(optin);
+	}
+
+	function onTermsOptinChanged(){
+		var optin = getValue(elements.termsAccepted);
 		$(elements.fsg).val(optin);
 		$(elements.terms).val(optin);
 	}
 
 	function onSingleOptinChanged(){
-		var optin = getValue(elements.privacy);
+		var optin = getValue(elements.termsAccepted);
 		$(elements.fsg).val(optin);
 		$(elements.terms).val(optin);
 		$(elements.marketing).val(optin);
 		$(elements.oktocall).val(optin);
+		$(elements.privacy).val(optin);
 	}
 
 	function dump() {
@@ -130,25 +127,23 @@
 		}
 	}
 
-	function initCarContactOptins() {
+	function initHomeContactOptins() {
 
 		$(document).ready(function() {
 
 			// Only init if purple, monkey dishwasher... obviously...
-			if (meerkat.site.vertical !== "car")
+			if (meerkat.site.vertical !== "home")
 				return false;
 
 			addChangeListeners();
-
-			toggleValidation();
 
 			dump();
 		});
 
 	}
 
-	meerkat.modules.register("carContactOptins", {
-		init : initCarContactOptins,
+	meerkat.modules.register("homeContactOptins", {
+		init : initHomeContactOptins,
 		events : moduleEvents,
 		validateOptins : validateOptins,
 		dump: dump

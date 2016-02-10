@@ -23,12 +23,6 @@
 			url="/WEB-INF/option_data/home_contents_cover_type.html" />
 	</form_v2:row>
 
-	<%-- Commencement date --%>
-	<jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
-	<c:if test="${not splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}">
-		<home:commencementDate xpath="${xpath}/startDate" />
-	</c:if>
-
 	<%-- Address --%>
 	<group_v2:elastic_address xpath="${xpath}/property/address" type="R" />
 
