@@ -12,7 +12,7 @@ import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
-import com.ctm.web.life.apply.response.LifeApplyWebResponseModel;
+import com.ctm.web.life.apply.response.LifeApplyWebResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -132,9 +132,9 @@ public class LifeApplyServiceTest {
         LifeApplyWebRequest webRequest = new LifeApplyWebRequest();
         webRequest.setTransactionId(TRANSACTION_ID);
         webRequest.setVertical("life");
-        LifeApplyWebResponseModel result = service.apply( webRequest,  brand,  request);
+        LifeApplyWebResponse result = service.apply( webRequest,  brand,  request);
         verify(restClient).sendPOSTRequest(anyObject(), anyObject(), anyString(), anyObject(), anyObject());
-        assertEquals(TRANSACTION_ID , result.getTransactionId());
+        assertEquals(TRANSACTION_ID , result.getResults().getTransactionId());
 
     }
 }

@@ -11,7 +11,7 @@ import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
-import com.ctm.web.life.apply.response.LifeApplyWebResponseModel;
+import com.ctm.web.life.apply.response.LifeApplyWebResponse;
 import com.ctm.web.life.apply.services.LifeApplyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,8 +49,8 @@ public class LifeApplyController extends CommonQuoteRouter<LifeApplyWebRequest> 
             method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public LifeApplyWebResponseModel apply(@Valid LifeApplyWebRequest webRequest,
-                                           BindingResult result, HttpServletRequest servletRequest) throws IOException,
+    public LifeApplyWebResponse apply(@Valid LifeApplyWebRequest webRequest,
+                                      BindingResult result, HttpServletRequest servletRequest) throws IOException,
             ServiceConfigurationException,
             DaoException, SessionException {
         LOGGER.debug("Request parameters={}", kv("paramters", servletRequest.getParameterMap()));

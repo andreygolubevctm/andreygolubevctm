@@ -2,17 +2,17 @@ package com.ctm.web.life.apply.adapter;
 
 import com.ctm.life.apply.model.response.LifeApplyResponse;
 import com.ctm.web.energy.quote.adapter.WebResponseAdapter;
-import com.ctm.web.life.apply.response.LifeApplyWebResponseModel;
+import com.ctm.web.life.apply.response.LifeApplyWebResponseResults;
 import com.ctm.web.life.apply.response.SelectDetails;
 import com.ctm.web.life.apply.response.Selection;
 
 import java.util.Map;
 
-public class LifeApplyServiceResponseAdapter implements WebResponseAdapter<LifeApplyWebResponseModel.Builder, LifeApplyResponse> {
+public class LifeApplyServiceResponseAdapter implements WebResponseAdapter<LifeApplyWebResponseResults.Builder, LifeApplyResponse> {
 
     @Override
-    public LifeApplyWebResponseModel.Builder adapt(LifeApplyResponse applyResponse) {
-        LifeApplyWebResponseModel.Builder builder= new LifeApplyWebResponseModel.Builder();
+    public LifeApplyWebResponseResults.Builder adapt(LifeApplyResponse applyResponse) {
+        LifeApplyWebResponseResults.Builder builder= new LifeApplyWebResponseResults.Builder();
         Map<String, String> additionalInformation = applyResponse.getAdditionalInformation();
         if(!additionalInformation.isEmpty()) {
             SelectDetails client = new SelectDetails.Builder()

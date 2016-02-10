@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(ProviderService.class)
+@PrepareForTest({ProviderService.class, EnvironmentService.class})
 public class CommonQuoteServiceTest {
 
     private CommonQuoteService commonQuoteService;
@@ -55,10 +55,8 @@ public class CommonQuoteServiceTest {
     public void setup() throws Exception {
         initMocks(this);
         PowerMockito.mockStatic(ProviderService.class);
-
-
-
-        EnvironmentService.setEnvironment("localhost");
+        PowerMockito.mockStatic(EnvironmentService.class);
+        PowerMockito.when(EnvironmentService.getEnvironmentFromSpring()).thenReturn(EnvironmentService.Environment.LOCALHOST);
         commonQuoteService = spy(new CommonQuoteService(providerFilterDao, restClient, null) {});
     }
 
@@ -159,10 +157,12 @@ public class CommonQuoteServiceTest {
 
     @Test(expected = RouterException.class)
     public void testSetFilterNXS() throws Exception {
+        PowerMockito.when(EnvironmentService.getEnvironmentFromSpring()).thenReturn(EnvironmentService.Environment.NXS);
+
+        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, restClient, null) {});
         ProviderFilter providerFilter = mock(ProviderFilter.class);
         when(providerFilter.getProviderKey()).thenReturn("");
         when(providerFilter.getAuthToken()).thenReturn("");
-        EnvironmentService.setEnvironment("nxs");
         commonQuoteService.setFilter(providerFilter);
     }
 
@@ -258,11 +258,12 @@ public class CommonQuoteServiceTest {
 
     @Test
     public void testQuoteServicePropertiesWithNoEnvironmentOverride() throws Exception {
+        PowerMockito.when(EnvironmentService.getEnvironmentFromSpring()).thenReturn(EnvironmentService.Environment.NXS);
+        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, restClient, null) {});
         Brand brand = mock(Brand.class);
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
         doReturn(serviceConfiguration).when(commonQuoteService).getServiceConfiguration("anyService", brand, verticalType.getCode());
 
-        EnvironmentService.setEnvironment("nxs");
 
         when(serviceConfiguration.getPropertyValueByKey(SERVICE_URL, ALL_BRANDS, ALL_PROVIDERS, SERVICE)).thenReturn("http://currentUrl");
         when(serviceConfiguration.getPropertyValueByKey(DEBUG_PATH, ALL_BRANDS, ALL_PROVIDERS, SERVICE)).thenReturn("debugPath");

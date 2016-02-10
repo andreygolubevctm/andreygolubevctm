@@ -18,7 +18,8 @@ import com.ctm.web.life.apply.adapter.LifeApplyServiceResponseAdapter;
 import com.ctm.web.life.apply.adapter.LifeBrokerApplyServiceRequestAdapter;
 import com.ctm.web.life.apply.adapter.OzicareApplyServiceRequestAdapter;
 import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
-import com.ctm.web.life.apply.response.LifeApplyWebResponseModel;
+import com.ctm.web.life.apply.response.LifeApplyWebResponse;
+import com.ctm.web.life.apply.response.LifeApplyWebResponseResults;
 import com.ctm.web.life.form.model.LifeQuote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +51,7 @@ public class LifeApplyService extends CommonRequestService {
     }
 
 
-    public LifeApplyWebResponseModel apply(LifeApplyWebRequest model, Brand brand, HttpServletRequest request) throws
+    public LifeApplyWebResponse apply(LifeApplyWebRequest model, Brand brand, HttpServletRequest request) throws
             IOException,
             DaoException,
             ServiceConfigurationException,
@@ -72,7 +73,7 @@ public class LifeApplyService extends CommonRequestService {
         }
         LifeApplyResponse applyResponse = sendApplyRequest(brand, Vertical.VerticalType.LIFE, "applyServiceBER", endpoint, model, applyRequest,
                 LifeApplyResponse.class, requestAdapter.getProductId(model));
-        LifeApplyWebResponseModel.Builder responseBuilder = responseAdapter.adapt(applyResponse);
+        LifeApplyWebResponseResults.Builder responseBuilder = responseAdapter.adapt(applyResponse);
         responseBuilder.transactionId(model.getTransactionId());
         if("ozicare".equals(model.getCompany()) && com.ctm.interfaces.common.types.Status.REGISTERED.equals(applyResponse.getResponseStatus())){
             try {
@@ -81,7 +82,7 @@ public class LifeApplyService extends CommonRequestService {
                 LOGGER.error("Failed to send ozicare emails {}" ,kv("emailAddress",requestAdapter.getEmailAddress(lifeQuoteRequest)), e);
             }
         }
-        return responseBuilder.build();
+        return new LifeApplyWebResponse.Builder().results(responseBuilder.build()).build();
 	}
 
     /**

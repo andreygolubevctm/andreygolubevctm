@@ -2,7 +2,7 @@ package com.ctm.web.life.apply.adapter;
 
 import com.ctm.interfaces.common.types.Status;
 import com.ctm.life.apply.model.response.LifeApplyResponse;
-import com.ctm.web.life.apply.response.LifeApplyWebResponseModel;
+import com.ctm.web.life.apply.response.LifeApplyWebResponseResults;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +27,7 @@ public class LifeApplyServiceResponseAdapterTest {
                 .additionalInformation(LifeApplyResponse.PRIMARY_LIFEBROKER_INFO_URL, "test")
                 .additionalInformation(LifeApplyResponse.PRIMARY_LIFEBROKER_PDS , "test")
                 .build();
-        LifeApplyWebResponseModel.Builder result = adapter.adapt(applyResponse);
+        LifeApplyWebResponseResults.Builder result = adapter.adapt(applyResponse);
         assertTrue(result.build().isSuccess());
         assertNotNull(result.build().getSelection());
     }
@@ -41,7 +41,7 @@ public class LifeApplyServiceResponseAdapterTest {
                 .additionalInformation(LifeApplyResponse.PARTNER_LIFEBROKER_INFO_URL , "test-partner")
                 .additionalInformation(LifeApplyResponse.PARTNER_LIFEBROKER_PDS , "test-partner")
                 .build();
-        LifeApplyWebResponseModel.Builder result = adapter.adapt(applyResponse);
+        LifeApplyWebResponseResults.Builder result = adapter.adapt(applyResponse);
         assertTrue(result.build().isSuccess());
         assertNotNull(result.build().getSelection());
     }
@@ -51,7 +51,7 @@ public class LifeApplyServiceResponseAdapterTest {
         LifeApplyResponse applyResponse = new LifeApplyResponse.Builder<>()
                 .responseStatus(Status.REGISTERED)
                 .build();
-        LifeApplyWebResponseModel.Builder result = adapter.adapt(applyResponse);
+        LifeApplyWebResponseResults.Builder result = adapter.adapt(applyResponse);
         assertTrue(result.build().isSuccess());
         assertNull(result.build().getSelection());
     }

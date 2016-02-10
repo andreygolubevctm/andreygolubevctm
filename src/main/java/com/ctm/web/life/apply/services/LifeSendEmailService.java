@@ -33,7 +33,7 @@ public class LifeSendEmailService {
         Optional<TransactionDetail> sentBy = transactionDetailsDao.getTransactionDetailWhereXpathLike(transactionId, "%/emailSentBy");
         final boolean[] sendEmail = {true};
         sentBy.ifPresent(td -> {
-            sendEmail[0] = !td.getTextValue().equals("ozicare");
+            sendEmail[0] = "ozicare".equals(!td.getTextValue().equals("ozicare"));
         });
         if( sendEmail[0]) {
             emailService.send( request, EmailMode.BEST_PRICE,emailAddress, transactionId);

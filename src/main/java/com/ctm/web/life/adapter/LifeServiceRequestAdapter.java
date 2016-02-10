@@ -1,9 +1,7 @@
 package com.ctm.web.life.adapter;
 
 import com.ctm.life.model.request.Applicants;
-import com.ctm.life.model.request.Gender;
 import com.ctm.life.model.request.Partner;
-import com.ctm.life.model.request.SmokerStatus;
 import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
 import com.ctm.web.life.form.model.Applicant;
@@ -48,14 +46,6 @@ public class LifeServiceRequestAdapter {
             default:
                 throw new IllegalArgumentException("Not supported Gender " + gender);
         }
-    }
-
-    private static SmokerStatus adaptSmokerStatus(com.ctm.web.life.form.model.Applicant person) {
-        return YesNo.getYesNoBoolean(person.getSmoker()) ? SmokerStatus.SMOKER : SmokerStatus.NON_SMOKER;
-    }
-
-    private static Gender adaptGender(com.ctm.web.life.form.model.Applicant lifePerson) {
-        return com.ctm.web.core.model.request.Gender.M.equals(lifePerson.getGender()) ? Gender.MALE : Gender.FEMALE;
     }
 
     public String getProductId(LifeApplyWebRequest model) {
