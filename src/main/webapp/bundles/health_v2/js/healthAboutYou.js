@@ -59,10 +59,6 @@
 		$primaryContinuousCoverContainer.hide();
 		$partnerContinuousCoverContainer.hide();
 		$partnerHealthCoverHealthCoverLoading.hide();
-
-		meerkat.modules.healthDependants.initHealthDependants(true);
-
-		setRebate();
 	}
 
 	function eventSubscriptions() {
@@ -101,6 +97,8 @@
 
 			if ($(this)[0].selectedIndex > 1) {
 				$healthCoverIncomeMessage.show();
+				meerkat.modules.healthDependants.initHealthDependants(true);
+				meerkat.modules.healthDependants.updateDependantConfiguration();
 			} else {
 				$healthCoverIncomeMessage.hide();
 			}
@@ -152,27 +150,6 @@
 			}
 		});
 	}
-
-	function loadRates(forceRebate, callback) {
-
-		var postData =  {
-			dependants: $healthCoverDetailsContainer.find(':input[name="health_healthCover_dependants"]').val(),
-			income: $healthCoverDetailsContainer.find(':input[name="health_healthCover_income"]').val(),
-			rebate_choice: forceRebate === true ? 'Y' : $healthCoverRebate.find(':checked').val(),
-			primary_dob: $primaryDob.val(),
-			primary_loading:$healthCoverDetailsContainer.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
-			primary_current: $primaryCurrentCover.find(':checked').val(),
-			primary_loading_manual: $healthCoverDetailsContainer.find('.primary-lhc').val(),
-			partner_dob: $partnerDob.val(),
-			partner_loading: $healthCoverDetailsContainer.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),
-			partner_current: $healthCoverDetailsContainer.find('input[name="health_healthCover_partner_cover"]:checked').val(),
-			partner_loading_manual: $healthCoverDetailsContainer.find('.partner-lhc').val(),
-			cover: healthChoices._cover
-		};
-
-		meerkat.modules.health.fetchRates(postData, false, callback);
-	}
-
 
 	function resetPartnerDetails() {
 		$partnerDOB.val('').change();
