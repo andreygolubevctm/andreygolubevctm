@@ -105,7 +105,7 @@
 
 			<c:set var="fieldXpath" value="${xpath}/rebate" />
 			<form_v3:row label="Would you like to receive the rebate as?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
-				<field_v2:array_radio items="Y=Discount on premium,N=Part of tax refund" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate"/>
+				<field_v2:array_radio items="Y=Discount on premium,N=Part of tax refund" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate" classLabel="btn-no-padding"/>
 			</form_v3:row>
 
 		</form_v2:fieldset>

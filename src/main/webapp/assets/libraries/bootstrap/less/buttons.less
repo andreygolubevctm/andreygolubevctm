@@ -17,7 +17,7 @@
   background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
   border: 1px solid transparent;
   white-space: nowrap;
-  .button-size(@padding-base-vertical; @padding-base-horizontal; @font-size-base; @line-height-base; @btn-border-radius-base);
+  .button-size(@btn-padding-base-vertical; @btn-padding-base-horizontal; @font-size-base; @line-height-base; @btn-border-radius-base);
   .user-select(none);
 
   &,
@@ -85,6 +85,13 @@
 .btn-danger {
   .button-variant(@btn-danger-color; @btn-danger-bg; @btn-danger-border);
 }
+.btn-more-info {
+  .button-size(@padding-base-vertical; @padding-base-horizontal; @font-size-base; @line-height-base; @btn-border-radius-base);
+  width: 100%;
+}
+.btn-no-padding {
+  .button-size(@padding-base-vertical; @padding-base-horizontal; @font-size-base; @line-height-base; @btn-border-radius-base);
+}
 
 
 // Link buttons
@@ -147,8 +154,10 @@
 // --------------------------------------------------
 
 .btn-block {
-  display: block;
-  width: 100%;
+  @media(@xs-only) {
+    display: block;
+    width: 100%;
+  }
 }
 
 // Vertically space out multiple block buttons
@@ -161,6 +170,8 @@ input[type="submit"],
 input[type="reset"],
 input[type="button"] {
   &.btn-block {
-    width: 100%;
+    @media(@xs-only) {
+      width: 100%;
+    }
   }
 }
