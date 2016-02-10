@@ -153,6 +153,7 @@
 				<c:set var="fieldXpath" value="${xpath}/rebate" />
 				<form_v3:row label="Would you like to receive the rebate as?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
 					<field_v2:array_radio items="Y=Discount on premium,N=Part of tax refund" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate"/>
+					<div class="fieldrow_legend" id="health_healthCover_tier_row_legend"></div>
 				</form_v3:row>
 
 				<%-- Override set in splittest_helper tag --%>

@@ -15,7 +15,9 @@
 		$healthCoverIncome,
 		$healthCoverIncomeLabel,
 		$partnerHealthCoverHealthCoverLoading,
-		$tierDropdowns;
+		$tierDropdowns,
+		$primaryDOB,
+		$rebateLegend;
 
 	function init(){
 		$(document).ready(function () {
@@ -45,7 +47,9 @@
 		$healthSituationHealthCvr = $aboutYouContainer.find('#health_situation_healthCvr'),
 		$healthCoverIncome = $aboutYouContainer.find('#health_healthCover_income'),
 		$healthCoverIncomeLabel = $aboutYouContainer.find('#health_healthCover_incomelabel'),
-		$tierDropdowns = $aboutYouContainer.find('#health_situation_healthCvr, #health_healthCover_dependants');
+		$tierDropdowns = $aboutYouContainer.find('#health_situation_healthCvr, #health_healthCover_dependants'),
+		$primaryDOB = $aboutYouContainer.find('#health_healthCover_primary_dob'),
+		$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend');
 
 		if (!healthChoices.hasSpouse()) {
 			$partnerContainer.hide();
@@ -55,6 +59,10 @@
 		$primaryContinuousCoverContainer.hide();
 		$partnerContinuousCoverContainer.hide();
 		$partnerHealthCoverHealthCoverLoading.hide();
+
+		meerkat.modules.healthDependants.initHealthDependants(true);
+
+		setRebate();
 	}
 
 	function eventSubscriptions() {
@@ -72,7 +80,7 @@
 		});
 
 		$primaryCurrentCover.find('input').on('click', function toggleYourContinuousCover() {
-			if ($(this).filter(':checked').val() === 'Y') {
+			if ($(this).filter(':checked').val() === 'Y' && isLessThan31Or31AndBeforeJuly1($primaryDOB.val())) {
 				$primaryContinuousCoverContainer.slideDown();
 			} else {
 				$primaryContinuousCoverContainer.find('label:nth-child(2)').trigger('click').end().slideUp();
@@ -80,7 +88,8 @@
 		});
 
 		$partnerCurrentCover.find('input').on('click', function togglePartnersContinuousCover() {
-			if ($(this).filter(':checked').val() === 'Y') { //test
+
+			if ($(this).filter(':checked').val() === 'Y' && isLessThan31Or31AndBeforeJuly1($partnerDOB.val())) {
 				$partnerContinuousCoverContainer.slideDown();
 			} else {
 				$partnerContinuousCoverContainer.find('label:nth-child(2)').trigger('click').end().slideUp();
@@ -122,7 +131,48 @@
 					break;
 			}
 		});
+
+		$aboutYouContainer.find(':input').on('change', function(event) {
+			// update rebate
+			if ($(this).valid()) {
+				setRebate();
+			}
+		});
 	}
+
+	function setRebate(){
+		meerkat.modules.health.loadRatesBeforeResultsPage(function (rates) {
+			if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
+				$rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
+				$healthCoverRebate.slideDown();
+			} else {
+				$rebateLegend.html('');
+				$healthCoverRebate.find('input[value="N"]').prop('checked', true);
+				$healthCoverRebate.slideUp();
+			}
+		});
+	}
+
+	function loadRates(forceRebate, callback) {
+
+		var postData =  {
+			dependants: $healthCoverDetailsContainer.find(':input[name="health_healthCover_dependants"]').val(),
+			income: $healthCoverDetailsContainer.find(':input[name="health_healthCover_income"]').val(),
+			rebate_choice: forceRebate === true ? 'Y' : $healthCoverRebate.find(':checked').val(),
+			primary_dob: $primaryDob.val(),
+			primary_loading:$healthCoverDetailsContainer.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
+			primary_current: $primaryCurrentCover.find(':checked').val(),
+			primary_loading_manual: $healthCoverDetailsContainer.find('.primary-lhc').val(),
+			partner_dob: $partnerDob.val(),
+			partner_loading: $healthCoverDetailsContainer.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),
+			partner_current: $healthCoverDetailsContainer.find('input[name="health_healthCover_partner_cover"]:checked').val(),
+			partner_loading_manual: $healthCoverDetailsContainer.find('.partner-lhc').val(),
+			cover: healthChoices._cover
+		};
+
+		meerkat.modules.health.fetchRates(postData, false, callback);
+	}
+
 
 	function resetPartnerDetails() {
 		$partnerDOB.val('').change();
