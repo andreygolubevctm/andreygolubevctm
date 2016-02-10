@@ -100,6 +100,18 @@
 				setRebate();
 			}
 		});
+
+		$primaryDOB.on('change', function togglePrimaryContinuousCover() {
+			if ($(this).valid()) {
+				togglePrimaryContinuousCover();
+			}
+		});
+
+		$partnerDOB.on('change', function togglePartnerContinuousCover() {
+			if ($(this).valid()) {
+				togglePrimaryContinuousCover();
+			}
+		});
 	}
 
 	function togglePrimaryContinuousCover(isInitMode) {
