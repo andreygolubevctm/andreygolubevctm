@@ -2,16 +2,17 @@
  *
  * Handling of the Your cover selection
  *
-*/
+ */
 ;(function($, undefined) {
 
 	var meerkat = window.meerkat,
-	meerkatEvents = meerkat.modules.events,
-	log = meerkat.logging.info;
+		meerkatEvents = meerkat.modules.events,
+		log = meerkat.logging.info;
 
 
 	var $destinationfs,
 		$datestravellersfs,
+		$travel_policyType,
 		$travel_policyType_S,
 		$travel_policyType_A,
 		$travel_dates_fromDate_row,
@@ -31,6 +32,7 @@
 			// setup object references
 			$destinationfs = $('#destinationsfs');
 			$datestravellersfs = $('#datestravellersfs');
+			$travel_policyType = $('.policy-type');
 			$travel_policyType_S = $('#travel_policyType_S');
 			$travel_policyType_A = $('#travel_policyType_A');
 			$travel_dates_fromDate_row = $('#travel_dates_fromDate_row');
@@ -48,7 +50,10 @@
 			// hide the blue bubble amt and single trip content
 			$detailsForm.find('.well-chatty > .amt, .well-chatty > .single').hide();
 
-			// subsribe to the COVER_TYPE_CHANGE event
+			$travel_policyType.find('label:nth-child(1)').addClass('travel-single-trip');
+			$travel_policyType.find('label:nth-child(2)').addClass('travel-multi-trip');
+
+			// subscribe to the COVER_TYPE_CHANGE event
 			meerkat.messaging.subscribe(meerkatEvents.traveldetails.COVER_TYPE_CHANGE, toggleDetailsFields);
 
 			applyEventListeners();
