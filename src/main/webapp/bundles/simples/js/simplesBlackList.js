@@ -80,14 +80,22 @@
 			};
 
 			meerkat.modules.comms.post({
-				url: 'simples/ajax/blacklist_action.jsp',
+				url: (meerkat.site.inInEnabled ? 'spring/rest/simples/blacklist/add.json' : 'simples/ajax/blacklist_action.jsp'),
 				dataType: 'json',
 				cache: false,
 				errorLevel: 'silent',
-				timeout: 5000,
+				timeout: 10000,
 				data: formData,
 				onSuccess: function onSuccess(json) {
-					updateModal(json);
+					if(meerkat.site.inInEnabled === true) {
+						if(json.outcome === 'success') {
+							updateModal({'successMessage': 'Success : ' + formData.value + ' ' + formData.channel + ' added to Blacklist'});
+						} else {
+							updateModal({'errorMessage': 'Failed : ' + json.outcome});
+						}
+					} else {
+						updateModal(json);
+					}
 				},
 				onError: function onError(obj, txt, errorThrown) {
 					updateModal({errorMessage: txt + ': ' + errorThrown});
