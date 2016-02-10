@@ -17,9 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import rx.Observable;
 
+import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -80,24 +81,15 @@ public class InInIcwsService {
 	}
 
 	private boolean shouldFailover(Throwable throwable) {
-		return isServerExceptionOfStatus(throwable, SERVICE_UNAVAILABLE)
-			|| isServerExceptionOfStatus(throwable, NOT_FOUND)
+		return isHttpStatusException(throwable, SERVICE_UNAVAILABLE)
+			|| isHttpStatusException(throwable, NOT_FOUND)
 			|| throwable instanceof TimeoutException
-			|| throwable instanceof UnknownHostException;
+			|| throwable instanceof UnknownHostException
+			|| throwable instanceof ConnectException;
 	}
 
-	private boolean isServerExceptionOfStatus(final Throwable throwable, final HttpStatus httpStatus) {
-		return throwable instanceof HttpServerErrorException && ((HttpServerErrorException) throwable).getStatusCode() == httpStatus;
-	}
-
-	// TODO duplicated in ctm-leads, blacklist controller
-	private Observable<?> retryWithDelay(final Observable<? extends Throwable> attempt) {
-		return attempt
-				.zipWith(Observable.range(1, ATTEMPTS), (n, i) -> i)
-				.flatMap(n -> {
-					LOGGER.info("Retrying request {}", kv("attempt", n));
-					return Observable.timer(DELAY, TimeUnit.MILLISECONDS);
-				});
+	public static boolean isHttpStatusException(final Throwable throwable, final HttpStatus httpStatus) {
+		return throwable instanceof HttpStatusCodeException && ((HttpStatusCodeException) throwable).getStatusCode() == httpStatus;
 	}
 
 	private Observable<PauseResumeResponse> securePause(final String cicUrl, final SecurePauseType securePauseType, final String agentUsername) {
@@ -140,6 +132,7 @@ public class InInIcwsService {
 				.header("Content-Type", APPLICATION_JSON_VALUE)
 				.request(connectionReq)
 				.response(ConnectionResp.class)
+				.retryAttempts(ATTEMPTS).retryDelay(DELAY)
 				.url(url)
 				.build();
 
@@ -151,7 +144,7 @@ public class InInIcwsService {
 			}
 		}
 
-		return connectionClient.postWithResponseEntity(settings).retryWhen(this::retryWithDelay);
+		return connectionClient.postWithResponseEntity(settings);
 	}
 
 	/**
@@ -168,6 +161,7 @@ public class InInIcwsService {
 				.request(subscriptionReq)
 				.response(String.class)
 				.url(url)
+				.retryAttempts(ATTEMPTS).retryDelay(DELAY)
 				.build();
 
 		if (LOGGER.isDebugEnabled()) {
@@ -178,7 +172,7 @@ public class InInIcwsService {
 			}
 		}
 
-		return queueSubscriptionClient.put(settings).retryWhen(this::retryWithDelay);
+		return queueSubscriptionClient.put(settings);
 	}
 
 	private Observable<Message> getMessages(final String cicUrl, final ResponseEntity<ConnectionResp> connectionResp) {
@@ -191,8 +185,9 @@ public class InInIcwsService {
 				.request(null)
 				.response(new ParameterizedTypeReference<List<Message>>() {})
 				.url(url)
+				.retryAttempts(ATTEMPTS).retryDelay(DELAY)
 				.build();
-		return messageClient.get(settings).flatMap(Observable::<Message>from).retryWhen(this::retryWithDelay);
+		return messageClient.get(settings).flatMap(Observable::<Message>from);
 	}
 
 	private Observable<String> getInteractionId(final String cicUrl, final ResponseEntity<ConnectionResp> connectionResp) {
@@ -235,8 +230,9 @@ public class InInIcwsService {
 				.request(securePause)
 				.response(String.class)
 				.url(url)
+				.retryAttempts(ATTEMPTS).retryDelay(DELAY)
 				.build();
-		return securePauseClient.post(settings).retryWhen(this::retryWithDelay);
+		return securePauseClient.post(settings);
 	}
 
 	private String createQueueSubscriptionUrl(final String cicUrl, final String sessionId, final String subscriptionName) {
