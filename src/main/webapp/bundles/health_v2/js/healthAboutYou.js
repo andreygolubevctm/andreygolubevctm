@@ -55,10 +55,7 @@
 			$partnerContainer.hide();
 		}
 
-		$healthCoverDetailsDependants.hide();
-		$primaryContinuousCoverContainer.hide();
-		$partnerContinuousCoverContainer.hide();
-		$partnerHealthCoverHealthCoverLoading.hide();
+		setupForm();
 	}
 
 	function eventSubscriptions() {
@@ -103,29 +100,7 @@
 		});
 
 		$healthSituationHealthCvr.on('change', function toggleAboutYouFields() {
-			switch($(this).val())
-			{
-				case 'F':
-						$partnerContainer.slideDown();
-						$healthCoverIncomeMessage.show();
-						$healthCoverDetailsDependants.slideDown();
-						$partnerContainer.slideDown();
-					break;
-				case 'SPF':
-						$partnerContainer.slideUp();
-						$healthCoverDetailsDependants.slideDown();
-					break;
-				case 'C':
-						$healthCoverDetailsDependants.slideUp();
-						$partnerContainer.slideDown();
-					break;
-				default:
-						$partnerContainer.slideUp();
-						$healthCoverDetailsDependants.slideUp();
-						resetPartnerDetails();
-						$healthCoverIncomeMessage.hide();
-					break;
-			}
+			setupForm();
 		});
 
 		$aboutYouContainer.find(':input').on('change', function(event) {
@@ -134,6 +109,32 @@
 				setRebate();
 			}
 		});
+	}
+
+	function setupForm() {
+		switch($healthSituationHealthCvr.val())
+		 {
+		 case 'F':
+				 $partnerContainer.slideDown();
+				 $healthCoverIncomeMessage.show();
+				 $healthCoverDetailsDependants.slideDown();
+				 $partnerContainer.slideDown();
+			 break;
+		 case 'SPF':
+				 $partnerContainer.slideUp();
+				 $healthCoverDetailsDependants.slideDown();
+			 break;
+		 case 'C':
+				 $healthCoverDetailsDependants.slideUp();
+				 $partnerContainer.slideDown();
+			 break;
+		 default:
+				 $partnerContainer.slideUp();
+				 $healthCoverDetailsDependants.slideUp();
+				 resetPartnerDetails();
+				 $healthCoverIncomeMessage.hide();
+			 break;
+		 }
 	}
 
 	function setRebate(){
