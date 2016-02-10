@@ -12,7 +12,8 @@
         phone_comp_label,
         $utilities_resultsDisplayed_firstName,
         $utilities_resultsDisplayed_email,
-        $utilities_resultsDisplayed_phoneinput;
+        $utilities_resultsDisplayed_phoneinput,
+        $utilities_energy_comparison;
 
 
 
@@ -24,11 +25,16 @@
         $utilities_resultsDisplayed_firstName = $('#utilities_resultsDisplayed_firstName');
         $utilities_resultsDisplayed_email = $('#utilities_resultsDisplayed_email');
         $utilities_resultsDisplayed_phoneinput = $('#utilities_resultsDisplayed_phoneinput');
+        $utilities_energy_comparison = $('#utilities_householdDetails_whatToCompare');
 
         // save a copy of the competition text
         firstname_comp_label = $utilities_resultsDisplayed_firstName.attr('data-msg-required');
         email_comp_label = $utilities_resultsDisplayed_email.attr('data-msg-required');
         phone_comp_label = $utilities_resultsDisplayed_phoneinput.attr('data-msg-required');
+
+        $utilities_energy_comparison.find('label:nth-child(1)').addClass('energy-electricity');
+        $utilities_energy_comparison.find('label:nth-child(2)').addClass('energy-gas');
+        $utilities_energy_comparison.find('label:nth-child(3)').addClass('energy-combined');
 
         if(meerkat.site.providerResults !== null &&  (
                 ( typeof meerkat.site.providerResults.gasProviders !== "undefined"
