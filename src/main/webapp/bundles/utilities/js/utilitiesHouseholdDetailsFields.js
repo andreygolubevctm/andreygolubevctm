@@ -12,7 +12,10 @@
         phone_comp_label,
         $utilities_resultsDisplayed_firstName,
         $utilities_resultsDisplayed_email,
-        $utilities_resultsDisplayed_phoneinput;
+        $utilities_resultsDisplayed_phoneinput,
+        $utilities_energy_comparison,
+        $utilities_electricity_icons,
+        $utilities_gas_icons;
 
 
 
@@ -24,11 +27,26 @@
         $utilities_resultsDisplayed_firstName = $('#utilities_resultsDisplayed_firstName');
         $utilities_resultsDisplayed_email = $('#utilities_resultsDisplayed_email');
         $utilities_resultsDisplayed_phoneinput = $('#utilities_resultsDisplayed_phoneinput');
+        $utilities_energy_comparison = $('#utilities_householdDetails_whatToCompare');
+        $utilities_electricity_icons = $('.electricity-usage.hidden-lg .roundedCheckboxIcons');
+        $utilities_gas_icons = $('.gas-usage.hidden-lg .roundedCheckboxIcons');
 
         // save a copy of the competition text
         firstname_comp_label = $utilities_resultsDisplayed_firstName.attr('data-msg-required');
         email_comp_label = $utilities_resultsDisplayed_email.attr('data-msg-required');
         phone_comp_label = $utilities_resultsDisplayed_phoneinput.attr('data-msg-required');
+
+        $utilities_energy_comparison.find('label:nth-child(1)').addClass('energy-electricity');
+        $utilities_energy_comparison.find('label:nth-child(2)').addClass('energy-gas');
+        $utilities_energy_comparison.find('label:nth-child(3)').addClass('energy-combined');
+
+        $utilities_electricity_icons.find('label:nth-child(1)').addClass('energy-people-sm');
+        $utilities_electricity_icons.find('label:nth-child(2)').addClass('energy-people-md');
+        $utilities_electricity_icons.find('label:nth-child(3)').addClass('energy-people-hi');
+
+        $utilities_gas_icons.find('label:nth-child(1)').addClass('energy-people-sm');
+        $utilities_gas_icons.find('label:nth-child(2)').addClass('energy-people-md');
+        $utilities_gas_icons.find('label:nth-child(3)').addClass('energy-people-hi');
 
         if(meerkat.site.providerResults !== null &&  (
                 ( typeof meerkat.site.providerResults.gasProviders !== "undefined"
