@@ -29,7 +29,7 @@
 	 */
 	function startFormatNumber (element){
 		/* Lets format the field each time a key is entered, but don't validate on it until it blurs */
-		$(element).on('keyup', function(evt) {
+		$(element).on('blur keyup', function(evt) {
 			evt.preventDefault();
 			evt.stopPropagation();
 
