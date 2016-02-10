@@ -7,6 +7,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.simples.config.InInConfig;
@@ -51,6 +52,7 @@ public class BlacklistController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BlacklistController.class);
 
     public static final String ADD = "/add.json";
+    public static final String DELETE = "/delete.json";
     public static final String UNSUBSCRIBE = "/unsubscribe.json";
     public static final int DELAY = 500;
     public static final int ATTEMPTS = 2;
@@ -79,14 +81,40 @@ public class BlacklistController {
 
         LOGGER.info("Adding to blacklist: {}, {}, {}, {}", kv("channel", channel), kv("value", value), kv("operator", operator), kv("comment", comment));
 
+        final PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, "SIMPLES");
+        final boolean inInEnabled = StringUtils.equalsIgnoreCase("true", pageSettings.getSetting("inInEnabled"));
+
         final Optional<String> outcome = Optional.ofNullable(simplesBlacklistService.addToBlacklist(request, channel, value, operator, comment));
         LOGGER.info("Simples blacklist outcome: {}", kv("simplesBlacklistOutcome", outcome));
 
-        if(outcome.map(s -> s.equals("success")).orElse(false) && StringUtils.equalsIgnoreCase("phone", channel)) {
+        if(inInEnabled && outcome.map(s -> s.equals("success")).orElse(false) && StringUtils.equalsIgnoreCase("phone", channel)) {
             insertIntoBlacklistCampaign(inInConfig.getWsPrimaryUrl(), value)
                 .onErrorResumeNext(throwable -> failover(throwable, inInConfig.getWsFailoverUrl(), value))
                 .toBlocking().first();
         }
+        return new BlacklistOutcome(outcome.orElse(""));
+    }
+
+    @RequestMapping(
+            value = DELETE,
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public BlacklistOutcome deleteFromBlacklist(@Valid @RequestParam final String channel,
+                                                @Valid @RequestParam final String value,
+                                                @Valid @RequestParam final String comment,
+                                                final HttpServletRequest request) throws ConfigSettingException, DaoException {
+        final AuthenticatedData authenticatedData = sessionDataServiceBean.getAuthenticatedSessionData(request);
+        final String operator = authenticatedData.getUid();
+
+        LOGGER.info("Deleting from blacklist: {}, {}, {}, {}", kv("channel", channel), kv("value", value), kv("operator", operator), kv("comment", comment));
+
+        ApplicationService.setVerticalCodeOnRequest(request, "SIMPLES");
+
+        final Optional<String> outcome = Optional.ofNullable(simplesBlacklistService.deleteFromBlacklist(request, channel, value, operator, comment));
+        LOGGER.info("Simples blacklist outcome: {}", kv("simplesBlacklistOutcome", outcome));
+
         return new BlacklistOutcome(outcome.orElse(""));
     }
 
@@ -104,7 +132,7 @@ public class BlacklistController {
 
         LOGGER.info("Unsubscribe email: {}, {}, {}", kv("email", email), kv("operator", operator), kv("comment", comment));
 
-        final PageSettings pageSettings = SettingsService.getPageSettingsByCode("CTM", Vertical.VerticalType.SIMPLES.getCode());
+        final PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, "SIMPLES");
 
         final Optional<String> outcome = Optional.ofNullable(simplesBlacklistService.unsubscribeFromSimples(request, pageSettings, email, operator, comment));
         LOGGER.info("Simples blacklist outcome: {}", kv("simplesBlacklistOutcome", outcome));

@@ -239,11 +239,11 @@ public class EmailMasterDao {
 					"SELECT count(emailId) as propertiesCount " +
 					"FROM aggregator.email_properties ep " +
 					"WHERE ep.emailId = ? " +
-					"AND brand=? ;"
+					"AND brand = ? ;"
 			);
 
 			stmt.setInt(1 , emailDetails.getEmailId());
-			stmt.setInt(2 , brandId);
+			stmt.setString(2 , brandCode);
 
 			ResultSet resultSet = stmt.executeQuery();
 
@@ -266,7 +266,7 @@ public class EmailMasterDao {
 				stmt.setString(4 , brandCode);
 				stmt.executeUpdate();
 				stmt.close();
-			} else {
+			} else if(vertical != null && !vertical.isEmpty()){
 				writeToEmailProperties(emailDetails, conn);
 			}
 		} catch (NamingException | SQLException e) {
