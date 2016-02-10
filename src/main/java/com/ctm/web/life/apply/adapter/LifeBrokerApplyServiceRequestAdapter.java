@@ -4,7 +4,7 @@ import com.ctm.life.apply.model.request.lifebroker.LifeBrokerApplyRequest;
 import com.ctm.life.model.request.Gender;
 import com.ctm.web.energy.quote.adapter.WebRequestAdapter;
 import com.ctm.web.life.adapter.LifeServiceRequestAdapter;
-import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
+import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
 import com.ctm.web.life.form.model.Applicant;
 import com.ctm.web.life.form.model.LifeQuote;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-public class LifeBrokerApplyServiceRequestAdapter implements WebRequestAdapter<LifeApplyPostRequestPayload, LifeBrokerApplyRequest> {
+public class LifeBrokerApplyServiceRequestAdapter implements WebRequestAdapter<LifeApplyWebRequest, LifeBrokerApplyRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LifeBrokerApplyServiceRequestAdapter.class);
     private final LifeQuote lifeQuoteRequest;
@@ -22,7 +22,7 @@ public class LifeBrokerApplyServiceRequestAdapter implements WebRequestAdapter<L
     }
 
     @Override
-    public LifeBrokerApplyRequest adapt(LifeApplyPostRequestPayload energyApplyPostRequestPayload) {
+    public LifeBrokerApplyRequest adapt(LifeApplyWebRequest energyApplyPostRequestPayload) {
         LOGGER.debug("energyApplyPostRequestPayload = {}", kv("payload", energyApplyPostRequestPayload));
 
         Applicant primary = lifeQuoteRequest.getPrimary();
@@ -43,7 +43,7 @@ public class LifeBrokerApplyServiceRequestAdapter implements WebRequestAdapter<L
         return lifeQuoteRequest.getPartner().getGender().equals(Gender.MALE) ? Gender.MALE : Gender.FEMALE;
     }
 
-    public String getProductId(LifeApplyPostRequestPayload model) {
+    public String getProductId(LifeApplyWebRequest model) {
         return model.getClient_product_id();
     }
 

@@ -881,8 +881,13 @@ var LifeQuote = {
 				data.partnerBrand = "OZIC";
 			}
 
+			var spplyUrl = "ajax/json/life_submit_application.jsp";
+			if (LifeQuote.splitTestActive(40)) {
+				spplyUrl = "ajax/json/life_submit_application_ws.jsp";
+			}
+
 			$.ajax({
-				url: "ajax/json/life_submit_application.jsp",
+				url: spplyUrl,
 				data: data,
 				type: "POST",
 				async: true,

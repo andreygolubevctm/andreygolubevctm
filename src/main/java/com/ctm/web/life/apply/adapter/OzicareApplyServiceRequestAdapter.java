@@ -2,14 +2,14 @@ package com.ctm.web.life.apply.adapter;
 
 import com.ctm.life.apply.model.request.ozicare.OzicareApplyRequest;
 import com.ctm.web.energy.quote.adapter.WebRequestAdapter;
-import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
+import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
 import com.ctm.web.life.form.model.LifeQuote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-public class OzicareApplyServiceRequestAdapter implements WebRequestAdapter<LifeApplyPostRequestPayload, OzicareApplyRequest> {
+public class OzicareApplyServiceRequestAdapter implements WebRequestAdapter<LifeApplyWebRequest, OzicareApplyRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OzicareApplyServiceRequestAdapter.class);
     private final LifeQuote lifeQuoteRequest;
@@ -19,7 +19,7 @@ public class OzicareApplyServiceRequestAdapter implements WebRequestAdapter<Life
     }
 
     @Override
-    public OzicareApplyRequest adapt(LifeApplyPostRequestPayload requestPayload) {
+    public OzicareApplyRequest adapt(LifeApplyWebRequest requestPayload) {
         LOGGER.debug("requestPayload = {}", kv("payload", requestPayload));
 
         // Map EnergyApplicationDetails
@@ -38,8 +38,11 @@ public class OzicareApplyServiceRequestAdapter implements WebRequestAdapter<Life
         return ozicareApplyRequest;
     }
 
-    public String getProductId(LifeApplyPostRequestPayload requestPayload) {
+    public String getProductId(LifeApplyWebRequest requestPayload) {
         return requestPayload.getClient_product_id();
     }
 
+    public String getEmailAddress(LifeQuote lifeQuoteRequest) {
+        return lifeQuoteRequest.getContactDetails().getEmail();
+    }
 }

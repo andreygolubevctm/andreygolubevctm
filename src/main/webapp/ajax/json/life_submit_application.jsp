@@ -40,39 +40,8 @@
 					<c:when test="${leadResultStatus eq 'OK'}">
 						<go:setData dataVar="data" xpath="soap-response/results/success" value="true" />
 						<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
-						
-						<%-- Check if email already sent and who it was sent to --%>
-						<sql:setDataSource dataSource="${datasource:getDataSource()}" />
-						
-						<c:catch var="error">
-							<sql:query var="companies">
-								SELECT textValue
-								FROM aggregator.transaction_details
-								WHERE transactionid = ?
-								AND xpath LIKE "%/emailSentBy"
-								LIMIT 1;
-								<sql:param value="${tranId}" />
-							</sql:query>
-						</c:catch>
-
-						<c:if test="${empty error}">
-							<c:set var="companyName" value="" />
-							<c:forEach var="company" items="${companies.rows}">
-								<c:set var="companyName" value="${company.textValue}" />
-							</c:forEach>
-
-							<c:if test="${companyName ne 'ozicare'}">
-								<%-- SEND AGIS EMAIL --%>
-								<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
-								
-								<%-- enums are not will handled in jsp --%>
-								<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
-								<c:catch var="error">
-									${emailService.send(pageContext.request, BEST_PRICE, data.life.contactDetails.email, tranId)}
-									<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/emailSentBy" value="ozicare" />
-								</c:catch>
-							</c:if>
-						</c:if>
+						<jsp:useBean id="lifeSendEmailService" class="com.ctm.web.life.apply.services.LifeSendEmailService" scope="application" />
+						${lifeSendEmailService.sendEmail(tranId, data.life.contactDetails.email, pageContext.request)}
 					</c:when>
 					<c:otherwise>
 						<go:setData dataVar="data" xpath="soap-response/results/success" value="false" />

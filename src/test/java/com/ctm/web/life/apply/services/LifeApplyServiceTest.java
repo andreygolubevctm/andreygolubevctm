@@ -11,7 +11,7 @@ import com.ctm.web.core.services.RestClient;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
+import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
 import com.ctm.web.life.apply.response.LifeApplyWebResponseModel;
 import org.junit.Before;
 import org.junit.Test;
@@ -129,18 +129,10 @@ public class LifeApplyServiceTest {
 
     @Test
     public void shouldCallServiceAndReturnTransactionId() throws Exception {
-        LifeApplyPostRequestPayload.Builder modelBuilder = new LifeApplyPostRequestPayload.Builder();
-        modelBuilder.lead_number("");
-        modelBuilder.client_product_id("");
-        modelBuilder.api_ref("");
-        modelBuilder.clientIpAddress("");
-        modelBuilder.environmentOverride("");
-        modelBuilder.partner_product_id("");
-        modelBuilder.partnerBrand("");
-        modelBuilder.request_type("");
-        modelBuilder.transactionId(TRANSACTION_ID);
-        modelBuilder.vertical("life");
-        LifeApplyWebResponseModel result = service.apply( modelBuilder.build(),  brand,  request);
+        LifeApplyWebRequest webRequest = new LifeApplyWebRequest();
+        webRequest.setTransactionId(TRANSACTION_ID);
+        webRequest.setVertical("life");
+        LifeApplyWebResponseModel result = service.apply( webRequest,  brand,  request);
         verify(restClient).sendPOSTRequest(anyObject(), anyObject(), anyString(), anyObject(), anyObject());
         assertEquals(TRANSACTION_ID , result.getTransactionId());
 

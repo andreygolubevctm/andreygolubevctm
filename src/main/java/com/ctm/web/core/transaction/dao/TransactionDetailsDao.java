@@ -6,8 +6,13 @@ import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.transaction.model.TransactionDetail;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,34 +20,52 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.transaction.utils.TransactionDetailsUtil.checkLengthTextValue;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Data Access Object to interface with the transaction_details table.
  * @author bthompson
  */
+@Repository
 public class TransactionDetailsDao {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionDetailsDao.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionDetailsDao.class);
+
+    private final NamedParameterJdbcTemplate jdbcTemplate;
+
 	private final SqlDao sqlDao;
 
-	/**
+    /**
 	 * Constructor
 	 */
+	@Deprecated
 	public TransactionDetailsDao() {
 		sqlDao = new SqlDao();
+		jdbcTemplate = new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm());
 	}
-	/**
-	 * Handles all the parameters. Determines whether to insert a new transaction detail or update the existing one.
-	 * @param request HttpServletRequest
-	 * @param transactionId Long
-	 * @return
-	 */
+
+	public static final String DESCRIPTION = "infoDes";
+
+
+	@Autowired
+	@SuppressWarnings("SpringJavaAutowiringInspection")
+	public TransactionDetailsDao(final NamedParameterJdbcTemplate jdbcTemplate, SqlDao sqlDao) {
+        this.sqlDao = sqlDao;
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
+    /**
+     * Handles all the parameters. Determines whether to insert a new transaction detail or update the existing one.
+     * @param request HttpServletRequest
+     * @param transactionId Long
+     * @return
+     */
 	public Boolean insertOrUpdate(HttpServletRequest request, long transactionId) {
 
 		/**
@@ -247,6 +270,33 @@ public class TransactionDetailsDao {
 			dbSource.closeConnection();
 		}
 
+		return transactionDetail;
+	}
+
+	/**
+	 * Retrieve a transaction detail based on the xpath and transaction id.
+	 * @param transactionId
+	 * @param xpath
+	 * @return
+	 * @throws DaoException
+	 */
+	public Optional<TransactionDetail> getTransactionDetailWhereXpathLike(long transactionId, String xpath) {
+
+
+		final MapSqlParameterSource map = new MapSqlParameterSource()
+				.addValue("transactionId", transactionId).addValue("xpath", xpath);
+		final String sql = "SELECT xpath, textValue"
+				+ " FROM aggregator.transaction_details"
+				+ " WHERE transactionId = (:transactionId)"
+				+ "     AND xpath like (:xpath)";
+		TransactionDetail result = jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> createTransactionDetail(rs));
+		return Optional.ofNullable(result);
+	}
+
+	private TransactionDetail createTransactionDetail(ResultSet rs) throws SQLException {
+		TransactionDetail transactionDetail = new TransactionDetail();
+		transactionDetail.setXPath(rs.getString("xpath"));
+		transactionDetail.setTextValue(rs.getString("textValue"));
 		return transactionDetail;
 	}
 

@@ -4,6 +4,7 @@ import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.naming.NamingException;
 import java.sql.*;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class SqlDao<T> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SqlDao.class);

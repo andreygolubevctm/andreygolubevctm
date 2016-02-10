@@ -64,7 +64,7 @@ public class RestClient {
     }
 
     public <RESPONSE> RESPONSE sendGETRequest(QuoteServiceProperties serviceProperties, Vertical.VerticalType vertical, Endpoint endpoint, Class<RESPONSE> responseClass, Map<String, String> params)
-            throws ServiceConfigurationException, DaoException, IOException, UnsupportedEncodingException {
+            throws ServiceConfigurationException, DaoException, IOException {
 
         // Log Request
         LOGGER.info("Sending request {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
@@ -83,7 +83,7 @@ public class RestClient {
     }
 
     public <RESPONSE> RESPONSE sendGETRequest(QuoteServiceProperties serviceProperties, Vertical.VerticalType vertical, Endpoint endpoint, TypeReference<RESPONSE> typeReference, Map<String, String> params)
-            throws ServiceConfigurationException, DaoException, IOException, UnsupportedEncodingException {
+            throws ServiceConfigurationException, DaoException, IOException {
 
         // Log Request
         LOGGER.info("Sending request {} {}", kv("vertical", vertical), kv("endpoint", endpoint));

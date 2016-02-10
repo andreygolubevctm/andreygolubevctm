@@ -4,7 +4,7 @@ import com.ctm.life.apply.model.request.lifebroker.LifeBrokerApplyRequest;
 import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.web.DataParser;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
+import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
 import com.ctm.web.life.form.model.LifeQuote;
 import org.junit.Test;
 
@@ -17,7 +17,6 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
     private static final String EMAIL = "preload.testing@comparethemarket.com.au";
     private static final String PRIMARY_FIRSTNAME = "Joe";
     private static final String PARTNER_SURNAME = "Bloggs";
-    private LifeApplyPostRequestPayload request;
 
     @Test
     public void adaptTest() throws Exception {
@@ -70,17 +69,14 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
 
         LifeQuote lifeRequest = DataParser.createObjectFromData(data,LifeQuote.class, "life");
 
-        request = new LifeApplyPostRequestPayload.Builder()
-                .request_type("REQUEST-CALL")
-                .api_ref("c4aa7ccb59f5a461039f10")
-                .client_product_id("ff01712616fe6b7b97cd03ded3d2b492ba54a0f6")
-                .company("AIA Australia")
-                .partner_product_id(PARTNER_PRODUCT_ID)
-                .partner_quote(YesNo.Y)
-                .partnerBrand("AIA Australia")
-                .transactionId(2725461L)
-                .vertical("life")
-                .build();
+        LifeApplyWebRequest request = getLifeApplyWebRequest();
+        request.setRequest_type("REQUEST-CALL");
+        request.setApi_ref("c4aa7ccb59f5a461039f10");
+        request.setClient_product_id("ff01712616fe6b7b97cd03ded3d2b492ba54a0f6");
+        request.setCompany("AIA Australia");
+        request.setPartner_product_id(PARTNER_PRODUCT_ID);
+        request.setPartner_quote(YesNo.Y);
+        request .setPartnerBrand("AIA Australia");
 
         LifeBrokerApplyServiceRequestAdapter requestAdapter = new LifeBrokerApplyServiceRequestAdapter(lifeRequest);
         final LifeBrokerApplyRequest result = requestAdapter.adapt(request);
@@ -89,6 +85,13 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
         assertEquals(PRIMARY_FIRSTNAME , result.getApplicants().getPrimary().getFirstName());
         assertEquals(PARTNER_SURNAME , result.getApplicants().getPartner().get().getLastName());
         assertEquals(PARTNER_PRODUCT_ID,result.getPartnerProductId().get());
+    }
+
+    private LifeApplyWebRequest getLifeApplyWebRequest() {
+        LifeApplyWebRequest request = new LifeApplyWebRequest();
+        request.setTransactionId(2725461L);
+        request .setVertical("life");
+        return request;
     }
 
     @Test
@@ -125,16 +128,13 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
 
         LifeQuote lifeRequest = DataParser.createObjectFromData(data,LifeQuote.class, "life");
         LifeBrokerApplyServiceRequestAdapter requestAdapter = new LifeBrokerApplyServiceRequestAdapter(lifeRequest);
-        request = new LifeApplyPostRequestPayload.Builder()
-                .request_type("REQUEST-CALL")
-                .api_ref("c4aa7ccb59f5a461039f10")
-                .client_product_id("ff01712616fe6b7b97cd03ded3d2b492ba54a0f6")
-                .company("OnePath")
-                .partner_quote(YesNo.N)
-                .partnerBrand("OnePath")
-                .transactionId(2725461L)
-                .vertical("life")
-                .build();
+        LifeApplyWebRequest request = getLifeApplyWebRequest();;
+        request.setRequest_type("REQUEST-CALL");
+        request.setApi_ref("c4aa7ccb59f5a461039f10");
+        request.setClient_product_id("ff01712616fe6b7b97cd03ded3d2b492ba54a0f6");
+        request.setCompany("OnePath");
+        request.setPartner_quote(YesNo.N);
+        request.setPartnerBrand("OnePath");
 
         final LifeBrokerApplyRequest result = requestAdapter.adapt(request);
         assertFalse(result.getPartnerProductId().isPresent());
@@ -193,17 +193,14 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
 
         LifeQuote lifeRequest = DataParser.createObjectFromData(data,LifeQuote.class, "life");
         LifeBrokerApplyServiceRequestAdapter requestAdapter = new LifeBrokerApplyServiceRequestAdapter(lifeRequest);
-        request = new LifeApplyPostRequestPayload.Builder()
-                .request_type("REQUEST-CALL")
-                .api_ref("c4aa7ccb59f5a461039f10")
-                .client_product_id("ff01712616fe6b7b97cd03ded3d2b492ba54a0f6")
-                .company("AIA Australia")
-                .partner_product_id(PARTNER_PRODUCT_ID)
-                .partner_quote(YesNo.Y)
-                .partnerBrand("AIA Australia")
-                .transactionId(2725461L)
-                .vertical("life")
-                .build();
+        LifeApplyWebRequest request = getLifeApplyWebRequest();
+        request.setRequest_type("REQUEST-CALL");
+        request.setApi_ref("c4aa7ccb59f5a461039f10");
+        request.setClient_product_id("ff01712616fe6b7b97cd03ded3d2b492ba54a0f6");
+        request.setCompany("AIA Australia");
+        request.setPartner_product_id(PARTNER_PRODUCT_ID);
+        request.setPartner_quote(YesNo.Y);
+        request.setPartnerBrand("AIA Australia");;
 
         final LifeBrokerApplyRequest result = requestAdapter.adapt(request);
         assertEquals(PARTNER_PRODUCT_ID,result.getPartnerProductId().get());

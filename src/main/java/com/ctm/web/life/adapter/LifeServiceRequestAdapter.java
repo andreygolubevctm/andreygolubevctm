@@ -5,7 +5,7 @@ import com.ctm.life.model.request.Gender;
 import com.ctm.life.model.request.Partner;
 import com.ctm.life.model.request.SmokerStatus;
 import com.ctm.web.core.model.formData.YesNo;
-import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
+import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
 import com.ctm.web.life.form.model.Applicant;
 import com.ctm.web.life.form.model.ContactDetails;
 import com.ctm.web.life.form.model.Insurance;
@@ -58,7 +58,7 @@ public class LifeServiceRequestAdapter {
         return com.ctm.web.core.model.request.Gender.M.equals(lifePerson.getGender()) ? Gender.MALE : Gender.FEMALE;
     }
 
-    public String getProductId(LifeApplyPostRequestPayload model) {
+    public String getProductId(LifeApplyWebRequest model) {
         return model.getClient_product_id();
     }
 

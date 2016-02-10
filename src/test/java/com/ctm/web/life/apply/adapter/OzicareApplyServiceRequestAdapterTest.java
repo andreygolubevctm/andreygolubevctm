@@ -4,7 +4,7 @@ import com.ctm.life.apply.model.request.ozicare.OzicareApplyRequest;
 import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.web.DataParser;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.life.apply.model.request.LifeApplyPostRequestPayload;
+import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
 import com.ctm.web.life.form.model.LifeQuote;
 import org.junit.Test;
 
@@ -24,7 +24,6 @@ public class OzicareApplyServiceRequestAdapterTest {
     public static final String LEAD_NUMBER = "Z6B000345";
     public static final String COMPANY = "ozicare";
     public static final String PARTNER_BRAND = "OZIC";
-    private LifeApplyPostRequestPayload request;
 
     @Test
     public void adaptTest() throws Exception {
@@ -77,25 +76,29 @@ public class OzicareApplyServiceRequestAdapterTest {
 
         LifeQuote lifeRequest = DataParser.createObjectFromData(data,LifeQuote.class, "life");
 
-        request = new LifeApplyPostRequestPayload.Builder()
-                .request_type(REQUEST_TYPE)
-                .api_ref(API_REF)
-                .client_product_id(PRODUCT_ID)
-                .company(COMPANY)
-                .client_product_id(PARTNER_PRODUCT_ID)
-                .partner_product_id(PARTNER_PRODUCT_ID)
-                .partner_quote(YesNo.Y)
-                .partnerBrand(PARTNER_BRAND)
-                .transactionId(TRANSACTION_ID)
-                .lead_number(LEAD_NUMBER)
-                .vertical(VERTICAL)
-                .build();
+        LifeApplyWebRequest request = getLifeApplyWebRequest();
+        request .setLead_number(LEAD_NUMBER);
+        request.setRequest_type(REQUEST_TYPE);
+        request.setApi_ref(API_REF);
+        request.setClient_product_id(PRODUCT_ID);
+        request.setCompany(COMPANY);
+        request.setClient_product_id(PARTNER_PRODUCT_ID);
+        request.setPartner_product_id(PARTNER_PRODUCT_ID);
+        request   .setPartner_quote(YesNo.Y);
+        request    .setPartnerBrand(PARTNER_BRAND);
 
         OzicareApplyServiceRequestAdapter requestAdapter = new OzicareApplyServiceRequestAdapter(lifeRequest);
         final OzicareApplyRequest result = requestAdapter.adapt(request);
 
         assertEquals(PRIMARY_FIRSTNAME , result.getFirstName());
         assertEquals(PRODUCT_ID,result.getProductId());
+    }
+
+    private LifeApplyWebRequest getLifeApplyWebRequest() {
+        LifeApplyWebRequest request = new LifeApplyWebRequest();
+        request .setVertical(VERTICAL);
+        request  .setTransactionId(TRANSACTION_ID);
+        return request;
     }
 
     @Test
@@ -132,16 +135,13 @@ public class OzicareApplyServiceRequestAdapterTest {
 
         LifeQuote lifeRequest = DataParser.createObjectFromData(data,LifeQuote.class, "life");
         OzicareApplyServiceRequestAdapter requestAdapter = new OzicareApplyServiceRequestAdapter(lifeRequest);
-        request = new LifeApplyPostRequestPayload.Builder()
-                .request_type("REQUEST-CALL")
-                .api_ref("c4aa7ccb59f5a461039f10")
-                .client_product_id(PRODUCT_ID)
-                .company("OnePath")
-                .partner_quote(YesNo.N)
-                .partnerBrand("OnePath")
-                .transactionId(2725461L)
-                .vertical("life")
-                .build();
+        LifeApplyWebRequest request = getLifeApplyWebRequest();
+        request.setRequest_type("REQUEST-CALL");
+        request .setApi_ref("c4aa7ccb59f5a461039f10");
+        request .setClient_product_id(PRODUCT_ID);
+        request .setCompany("OnePath");
+        request.setPartner_quote(YesNo.N);
+        request .setPartnerBrand("OnePath");
 
         final OzicareApplyRequest result = requestAdapter.adapt(request);
         assertEquals(PRODUCT_ID,result.getProductId());
@@ -199,17 +199,15 @@ public class OzicareApplyServiceRequestAdapterTest {
 
         LifeQuote lifeRequest = DataParser.createObjectFromData(data,LifeQuote.class, "life");
         OzicareApplyServiceRequestAdapter requestAdapter = new OzicareApplyServiceRequestAdapter(lifeRequest);
-        request = new LifeApplyPostRequestPayload.Builder()
-                .request_type("REQUEST-CALL")
-                .api_ref("c4aa7ccb59f5a461039f10")
-                .client_product_id(PRODUCT_ID)
-                .company("AIA Australia")
-                .partner_product_id(PARTNER_PRODUCT_ID)
-                .partner_quote(YesNo.Y)
-                .partnerBrand("AIA Australia")
-                .transactionId(2725461L)
-                .vertical("life")
-                .build();
+        LifeApplyWebRequest request = getLifeApplyWebRequest();
+        request.setRequest_type("REQUEST-CALL");
+        request.setApi_ref("c4aa7ccb59f5a461039f10");
+        request.setClient_product_id(PRODUCT_ID);
+        request.setCompany("AIA Australia");
+        request.setPartner_product_id(PARTNER_PRODUCT_ID);
+        request.setPartner_quote(YesNo.Y);
+        request.setPartnerBrand("AIA Australia");
+        request.setTransactionId(2725461L);
 
         final OzicareApplyRequest result = requestAdapter.adapt(request);
         assertEquals(PRODUCT_ID,result.getProductId());
