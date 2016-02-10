@@ -22,6 +22,11 @@
 			email:			"#quote_contact_email"
 	};
 
+	if(meerkat.modules.splitTest.isActive(3)) {
+		elements.marketing = "#quote_contact_marketing";
+		elements.oktocall = "#quote_contact_oktocall";
+	}
+
 	function toggleValidation() {
 		var isMobile = meerkat.modules.performanceProfiling.isMobile();
 		var isMDorLG = _.indexOf(['lg','md'], meerkat.modules.deviceMediaState.get()) !== -1;
@@ -32,22 +37,30 @@
 	}
 
 	function validateOptins() {
-		var $mkt = $(elements.marketing);
-		var $otc = $(elements.oktocall);
-		if(!$mkt.is(':checked')) {
-			$mkt.filter("input[value=N]").prop("checked",true).change();
-		}
-		if(!$otc.is(':checked')) {
-			$otc.filter("input[value=N]").prop("checked",true).change();
+		if(meerkat.modules.splitTest.isActive(3)) {
+			// ignore - nothing to do
+		} else {
+			var $mkt = $(elements.marketing);
+			var $otc = $(elements.oktocall);
+			if(!$mkt.is(':checked')) {
+				$mkt.filter("input[value=N]").prop("checked",true).change();
+			}
+			if(!$otc.is(':checked')) {
+				$otc.filter("input[value=N]").prop("checked",true).change();
+			}
 		}
 	}
 
 	function addChangeListeners() {
-		$(elements.oktocall).on('change', onOkToCallChanged);
-		$(elements.marketing).on('change', onOkToEmailChanged);
-		$(elements.privacy).on('change', onTermsOptinChanged);
 		$(elements.phone).on('change', onPhoneChanged);
 		$(elements.email).on('change', onEmailChanged);
+		if(meerkat.modules.splitTest.isActive(3)) {
+			$(elements.privacy).on('change', onSingleOptinChanged);
+		} else {
+			$(elements.oktocall).on('change', onOkToCallChanged);
+			$(elements.marketing).on('change', onOkToEmailChanged);
+			$(elements.privacy).on('change', onTermsOptinChanged);
+		}
 	}
 
 	function onPhoneChanged(){
@@ -88,24 +101,33 @@
 		$(elements.terms).val(optin);
 	}
 
+	function onSingleOptinChanged(){
+		var optin = getValue(elements.privacy);
+		$(elements.fsg).val(optin);
+		$(elements.terms).val(optin);
+		$(elements.marketing).val(optin);
+		$(elements.oktocall).val(optin);
+	}
+
 	function dump() {
 		meerkat.logging.debug("optin data", {
-			oktocall:		getValue(elements.oktocall),
 			privacy:		getValue(elements.privacy),
+			oktocall:		getValue(elements.oktocall),
 			marketing:		getValue(elements.marketing),
-			fsg:			$(elements.fsg).val(),
-			terms:			$(elements.terms).val()
+			fsg:			getValue(elements.fsg),
+			terms:			getValue(elements.terms)
 		});
 	}
 
 	function getValue(elementId) {
 		var $element = $(elementId);
-
 		if ($element.first().attr('type') === 'radio' ) {
 			return ($element.filter(':checked').val() === 'Y') ? 'Y' : 'N';
+		} else if($element.first().attr('type') === 'hidden'){
+			return $element.val();
+		} else {
+			return $element.is(":checked") ? "Y" : "N";
 		}
-
-		return $element.is(":checked") ? "Y" : "N";
 	}
 
 	function initCarContactOptins() {
