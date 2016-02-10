@@ -6,7 +6,6 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
-import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
@@ -16,34 +15,25 @@ import com.ctm.web.simples.phone.inin.model.Data;
 import com.ctm.web.simples.phone.inin.model.Insert;
 import com.ctm.web.simples.services.SimplesBlacklistService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpServerErrorException;
 import rx.Observable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static java.util.Collections.singletonList;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @RestController
 @RequestMapping("/rest/simples/blacklist")
