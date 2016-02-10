@@ -32,7 +32,7 @@
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="what household size best describes your electricity usage." />
     </form_v3:row>
-    <form_v3:row label="Select the level that best describes your typical electricity usage" fieldXpath="${fieldXPath}" className="clear electricity-usage visible-lg">
+    <form_v3:row label="Select the level that best describes your typical electricity usage" fieldXpath="${fieldXPath}" className="clear electricity-usage hidden-xs hidden-sm hidden-md">
         <field_v2:array_radio xpath="${fieldXPath}"
                               required="true"
                               className="col-md-12"
@@ -137,7 +137,7 @@
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="what household size best describes your gas usage." />
     </form_v3:row>
-    <form_v3:row label="Select the level that best describes your typical gas usage" fieldXpath="${fieldXPath}" className="clear gas-usage visible-lg">
+    <form_v3:row label="Select the level that best describes your typical gas usage" fieldXpath="${fieldXPath}" className="clear gas-usage hidden-xs hidden-sm hidden-md">
         <field_v2:array_radio xpath="${fieldXPath}"
                               required="true"
                               className="col-md-12"
