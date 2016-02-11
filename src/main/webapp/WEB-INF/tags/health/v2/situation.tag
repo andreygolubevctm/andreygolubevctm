@@ -81,6 +81,7 @@
 
 			<%-- Did it this way to prevent the snapshot from pushing the fields below up/down depending on the option selected with the health_situation_healthCvr field --%>
 			<c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
+			<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 			<form_v2:fieldset legend="Your Details" className="primary">
 				<c:set var="fieldXpath" value="${xpath}/primary/dob" />
 				<form_v2:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
@@ -147,13 +148,13 @@
 					<field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_cover_details_income"/>
 					<span class="fieldrow_legend" id="${name}_incomeMessage"></span>
 					<c:set var="income_label_xpath" value="${xpath}/incomelabel" />
+					<div class="fieldrow_legend" id="health_healthCover_tier_row_legend"></div>
 					<input type="hidden" name="${go:nameFromXpath(xpath)}_incomelabel" id="${go:nameFromXpath(xpath)}_incomelabel" value="${data[income_label_xpath]}" />
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/rebate" />
 				<form_v3:row label="Would you like to receive the rebate as?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
 					<field_v2:array_radio items="Y=Discount on premium,N=Part of tax refund" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate"/>
-					<div class="fieldrow_legend" id="health_healthCover_tier_row_legend"></div>
 				</form_v3:row>
 
 				<%-- Override set in splittest_helper tag --%>

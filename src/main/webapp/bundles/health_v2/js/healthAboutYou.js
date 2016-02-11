@@ -17,7 +17,9 @@
 		$partnerHealthCoverHealthCoverLoading,
 		$tierDropdowns,
 		$primaryDOB,
-		$rebateLegend;
+		$rebateLegend,
+		$healthCoverDetailsDependants,
+		$healthCoverIncomeMessage;
 
 	function init(){
 		$(document).ready(function () {
@@ -34,10 +36,10 @@
 		$aboutYouContainer = $('#startForm'),
 		$healthCoverDetailsDependants = $('.health_cover_details_dependants'),
 		$healthCoverIncomeMessage = $('#health_healthCover_incomeMessage'),
-		$primaryCurrentCover = $aboutYouContainer.find('#health_situation_health_cover'),
+		$primaryCurrentCover = $aboutYouContainer.find('#health_healthCover_health_cover'),
 		$primaryContinuousCoverContainer = $aboutYouContainer.find('#health-continuous-cover-primary'),
 		$partnerContainer = $aboutYouContainer.find('#partner-health-cover'),
-		$partnerCurrentCover = $aboutYouContainer.find('#health_situation_partner_health_cover'),
+		$partnerCurrentCover = $aboutYouContainer.find('#health_healthCover_partner_health_cover'),
 		$partnerContinuousCoverContainer = $aboutYouContainer.find('#health-continuous-cover-partner'),
 		$partnerHealthCoverHealthCoverLoading = $aboutYouContainer.find('input[name=health_healthCover_partner_healthCoverLoading]'),
 		$partnerDOB = $aboutYouContainer.find('#health_healthCover_partner_dob'),
@@ -47,7 +49,7 @@
 		$healthSituationHealthCvr = $aboutYouContainer.find('#health_situation_healthCvr'),
 		$healthCoverIncome = $aboutYouContainer.find('#health_healthCover_income'),
 		$healthCoverIncomeLabel = $aboutYouContainer.find('#health_healthCover_incomelabel'),
-		$tierDropdowns = $aboutYouContainer.find('#health_situation_healthCvr, #health_healthCover_dependants'),
+		$tierDropdowns = $aboutYouContainer.find('#health_healthCover_healthCvr, #health_healthCover_dependants'),
 		$primaryDOB = $aboutYouContainer.find('#health_healthCover_primary_dob'),
 		$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend');
 
