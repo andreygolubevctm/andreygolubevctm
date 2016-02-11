@@ -19,7 +19,8 @@
 		$primaryDOB,
 		$rebateLegend,
 		$healthCoverDetailsDependants,
-		$healthCoverIncomeMessage;
+		$healthCoverIncomeMessage,
+		$partnersDetails;
 
 	function init(){
 		$(document).ready(function () {
@@ -51,7 +52,8 @@
 		$healthCoverIncomeLabel = $aboutYouContainer.find('#health_healthCover_incomelabel'),
 		$tierDropdowns = $aboutYouContainer.find('#health_healthCover_healthCvr, #health_healthCover_dependants'),
 		$primaryDOB = $aboutYouContainer.find('#health_healthCover_primary_dob'),
-		$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend');
+		$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend'),
+		$partnersDetails = $('#health_application').find('.health-person-details-partner, #partnerFund');
 
 		if (!healthChoices.hasSpouse()) {
 			$partnerContainer.hide();
@@ -128,20 +130,24 @@
 				 $healthCoverIncomeMessage.show();
 				 $healthCoverDetailsDependants.slideDown();
 				 $partnerContainer.slideDown();
+			 	 $partnersDetails.show();
 			 break;
 		 case 'SPF':
 				 $partnerContainer.slideUp();
 				 $healthCoverDetailsDependants.slideDown();
+			 	 $partnersDetails.hide();
 			 break;
 		 case 'C':
 				 $healthCoverDetailsDependants.slideUp();
 				 $partnerContainer.slideDown();
+			 	 $partnersDetails.show();
 			 break;
 		 default:
 				 $partnerContainer.slideUp();
 				 $healthCoverDetailsDependants.slideUp();
 				 resetPartnerDetails();
 				 $healthCoverIncomeMessage.hide();
+			 	 $partnersDetails.hide();
 			 break;
 		 }
 
