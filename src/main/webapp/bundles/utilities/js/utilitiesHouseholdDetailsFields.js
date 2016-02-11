@@ -151,8 +151,10 @@
     }
 
     function _buildProviderList($input, json) {
+        $input.removeClass('init');
+
         if(!json.length) {
-            $input.removeClass('init').addClass('init');
+            $input.addClass('init');
             return;
         }
 
@@ -164,7 +166,6 @@
         }
 
         $input.html(providerList);
-        $input.removeClass('init');
     }
 
     function _setProviders(data) {
