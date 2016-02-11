@@ -59,7 +59,7 @@
 			$partnerContainer.hide();
 		}
 
-		setupForm();
+		setupForm(true);
 	}
 
 	function eventSubscriptions() {
@@ -143,8 +143,8 @@
 			 	 $partnersDetails.show();
 			 break;
 		 default:
-				 $partnerContainer.slideUp();
-				 $healthCoverDetailsDependants.slideUp();
+				 isInitMode === true ? $partnerContainer.hide() : $partnerContainer.slideUp();
+			 	 isInitMode === true ? $healthCoverDetailsDependants.hide() : $healthCoverDetailsDependants.slideUp();
 				 resetPartnerDetails();
 				 $healthCoverIncomeMessage.hide();
 			 	 $partnersDetails.hide();
