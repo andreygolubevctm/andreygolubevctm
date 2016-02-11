@@ -7,6 +7,7 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.services.CommonQuoteService;
 import com.ctm.web.core.services.Endpoint;
+import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.health.model.form.HealthQuote;
@@ -26,7 +27,7 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 public class HealthQuoteService extends CommonQuoteService<HealthQuote> {
 
     public HealthQuoteService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new ServiceConfigurationService());
+        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new ServiceConfigurationService(), EnvironmentService.getEnvironmentFromSpring());
     }
 
     public Pair<Boolean, List<HealthQuoteResult>> getQuotes(Brand brand, HealthRequest data, Content alternatePricingContent) throws DaoException, IOException, ServiceConfigurationException {

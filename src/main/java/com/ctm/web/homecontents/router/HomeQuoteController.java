@@ -5,12 +5,12 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.homecontents.model.form.HomeRequest;
 import com.ctm.web.homecontents.model.results.HomeMoreInfo;
 import com.ctm.web.homecontents.model.results.HomeResult;
 import com.ctm.web.homecontents.services.HomeQuoteService;
-import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +33,8 @@ public class HomeQuoteController extends CommonQuoteRouter {
     private HomeQuoteService homeService;
 
     @Autowired
-    public HomeQuoteController(SessionDataServiceBean sessionDataServiceBean) {
-        super(sessionDataServiceBean);
+    public HomeQuoteController(SessionDataServiceBean sessionDataServiceBean, ApplicationService applicationService) {
+        super(sessionDataServiceBean, applicationService);
     }
 
     @RequestMapping(value = "/quote/get.json",

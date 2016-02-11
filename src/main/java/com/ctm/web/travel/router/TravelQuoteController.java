@@ -5,11 +5,11 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.web.travel.model.results.TravelResult;
 import com.ctm.web.travel.services.TravelService;
-import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import java.util.List;
 
 @RestController
@@ -30,8 +28,8 @@ public class TravelQuoteController extends CommonQuoteRouter<TravelRequest> {
     private TravelService travelService;
 
     @Autowired
-    public TravelQuoteController(SessionDataServiceBean sessionDataServiceBean) {
-        super(sessionDataServiceBean);
+    public TravelQuoteController(SessionDataServiceBean sessionDataServiceBean, ApplicationService applicationService) {
+        super(sessionDataServiceBean, applicationService);
     }
 
     @RequestMapping(value = "/quote/get.json",

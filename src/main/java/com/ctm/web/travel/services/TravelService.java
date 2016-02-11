@@ -6,10 +6,7 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.web.core.services.CommonQuoteService;
-import com.ctm.web.core.services.Endpoint;
-import com.ctm.web.core.services.ResultsService;
-import com.ctm.web.core.utils.ObjectMapperUtil;
+import com.ctm.web.core.services.*;
 import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.web.travel.model.results.TravelResult;
@@ -25,11 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class TravelService extends CommonQuoteService<TravelQuote, TravelQuoteRequest, TravelResponse> {
+public class TravelService extends CommonQuoteService<TravelQuote> {
 
     @Autowired
-    public TravelService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
-        super(providerFilterDAO, objectMapper);
+    public TravelService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, ServiceConfigurationService serviceConfigurationService) {
+        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
     }
 
     /**

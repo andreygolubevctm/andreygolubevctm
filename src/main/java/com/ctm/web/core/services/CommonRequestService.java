@@ -181,4 +181,5 @@ public abstract class CommonRequestService {
         return serviceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode));
     }
 
+
 }

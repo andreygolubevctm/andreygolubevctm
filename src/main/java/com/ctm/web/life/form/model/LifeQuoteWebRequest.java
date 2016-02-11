@@ -1,11 +1,10 @@
 package com.ctm.web.life.form.model;
 
-import com.ctm.web.core.model.formData.RequestImpl;
 import com.ctm.web.core.model.formData.RequestWithQuote;
 
 import javax.validation.Valid;
 
-public class LifeQuoteWebRequest extends RequestImpl implements RequestWithQuote<LifeQuote> {
+public class LifeQuoteWebRequest extends RequestWithQuote<LifeQuote> {
 
     @Valid
     private LifeQuote life;

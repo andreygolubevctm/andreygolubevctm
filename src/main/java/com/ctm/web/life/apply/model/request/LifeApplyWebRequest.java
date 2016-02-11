@@ -5,6 +5,7 @@ import com.ctm.web.core.model.formData.YesNo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LifeApplyWebRequest implements Request {
@@ -25,6 +26,8 @@ public class LifeApplyWebRequest implements Request {
     private String company;
     private String partnerBrand;
     private String lead_number;
+    private LocalDateTime requestAt;
+
     public LifeApplyWebRequest() {}
 
     public void setRequest_type(String request_type) {
@@ -94,6 +97,16 @@ public class LifeApplyWebRequest implements Request {
     @Override
     public String getEnvironmentOverride() {
         return environmentOverride;
+    }
+
+    @Override
+    public void setRequestAt(LocalDateTime requestAt) {
+        this.requestAt = requestAt;
+    }
+
+    @Override
+    public LocalDateTime getRequestAt() {
+        return requestAt;
     }
 
     @Override

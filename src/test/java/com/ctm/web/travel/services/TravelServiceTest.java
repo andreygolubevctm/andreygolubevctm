@@ -4,12 +4,14 @@ package com.ctm.web.travel.services;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.web.travel.model.form.Travellers;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -18,6 +20,7 @@ import java.util.function.Supplier;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class TravelServiceTest {
 
@@ -27,10 +30,14 @@ public class TravelServiceTest {
 	private TravelQuote travelQuote;
 	private Travellers travellers;
 
+	@Mock
+	ServiceConfigurationService serviceConfigurationService;
+
 	@Before
 	public void setup() throws Exception {
+		initMocks(this);
 		EnvironmentService.setEnvironment("localhost");
-		travelService = new TravelService(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+		travelService = new TravelService(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), serviceConfigurationService);
 		travelRequest = new TravelRequest();
 		travelQuote = new TravelQuote();
 

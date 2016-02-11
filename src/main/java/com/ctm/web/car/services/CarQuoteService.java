@@ -41,7 +41,7 @@ public class CarQuoteService extends CommonQuoteService<CarQuote> {
     @Autowired
     public CarQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper,
                            SessionDataServiceBean sessionDataServiceBean, ServiceConfigurationService serviceConfigurationService) {
-        super(providerFilterDAO, objectMapper, serviceConfigurationService);
+        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
         this.sessionDataServiceBean = sessionDataServiceBean;
     }
 

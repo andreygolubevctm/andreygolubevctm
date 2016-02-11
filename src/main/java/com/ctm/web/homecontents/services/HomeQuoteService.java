@@ -44,14 +44,16 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @Component
-public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteRequest, HomeResponse> {
+public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
     public static final List<String> HOLLARD_PROVIDERS = asList("REIN", "WOOL");
 
     private SessionDataServiceBean sessionDataServiceBean;
 
     @Autowired
-    public HomeQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, SessionDataServiceBean sessionDataServiceBean) {
-        super(providerFilterDAO, objectMapper);
+    public HomeQuoteService(ProviderFilterDao providerFilterDAO,
+                            ObjectMapper objectMapper, SessionDataServiceBean sessionDataServiceBean,
+                            ServiceConfigurationService serviceConfigurationService) {
+        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
         this.sessionDataServiceBean = sessionDataServiceBean;
     }
 
