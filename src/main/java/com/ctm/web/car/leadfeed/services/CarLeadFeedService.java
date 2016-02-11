@@ -9,7 +9,9 @@ import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.services.IProviderLeadFeedService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
+import com.ctm.web.core.leadfeed.services.LeadFeedTouchService;
 import com.ctm.web.core.model.Touch.TouchType;
+import com.ctm.web.core.services.AccessTouchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,12 +23,12 @@ public class CarLeadFeedService extends LeadFeedService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CarLeadFeedService.class);
 
 	public CarLeadFeedService(BestPriceLeadsDao bestPriceDao) {
-		super(bestPriceDao, new ContentService());
+		super(bestPriceDao, new ContentService(), new LeadFeedTouchService(new AccessTouchService()));
 	}
 
 	protected LeadResponseStatus process(LeadType leadType, LeadFeedData leadData, TouchType touchType) {
 
-		LeadResponseStatus responseStatus = LeadResponseStatus.SUCCESS;
+		LeadResponseStatus responseStatus;
 
 		IProviderLeadFeedService providerLeadFeedService = null;
 
@@ -56,13 +58,7 @@ public class CarLeadFeedService extends LeadFeedService {
 					break;
 			}
 
-			if(providerLeadFeedService != null) {
-				responseStatus = providerLeadFeedService.process(leadType, leadData);
-				if (responseStatus == LeadResponseStatus.SUCCESS) {
-					leadFeedTouchService.recordTouch(touchType, leadData);
-				}
-				LOGGER.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));
-			}
+			responseStatus = getLeadResponseStatus(leadType, leadData, touchType, providerLeadFeedService);
 
 		} catch(LeadFeedException e) {
 			LOGGER.error("[Lead feed] Error adding lead feed message {}, {}, {}", kv("leadType", leadType), kv("leadData", leadData),
@@ -72,4 +68,5 @@ public class CarLeadFeedService extends LeadFeedService {
 
 		return responseStatus;
 	}
+
 }

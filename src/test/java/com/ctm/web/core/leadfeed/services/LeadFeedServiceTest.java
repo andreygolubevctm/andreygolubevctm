@@ -1,10 +1,9 @@
-package com.ctm.web.core.web.core.leadfeed.services;
+package com.ctm.web.core.leadfeed.services;
 
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
-import com.ctm.web.core.leadfeed.services.LeadFeedService;
 import com.ctm.web.core.model.Touch;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +30,10 @@ public class LeadFeedServiceTest {
     ContentService contentService;
     @Mock
     Content ignore;
+    @Mock
+    private IProviderLeadFeedService providerLeadFeedService;
+    @Mock
+    private LeadFeedTouchService leadFeedTouchService;
 
     private Date date = new Date();
     private int brandId = 1;
@@ -39,7 +42,7 @@ public class LeadFeedServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        leadFeedService = new LeadFeedService(bestPriceDao,contentService) {
+        leadFeedService = new LeadFeedService(bestPriceDao,contentService, leadFeedTouchService) {
             @Override
             protected LeadResponseStatus process(LeadType leadType, LeadFeedData leadData, Touch.TouchType touchType) {
                 return LeadResponseStatus.SUCCESS;
@@ -60,6 +63,26 @@ public class LeadFeedServiceTest {
         leadData.setEventDate(date);
 
         LeadFeedService.LeadResponseStatus outcome = leadFeedService.callMeBack(leadData);
+        assertEquals(LeadFeedService.LeadResponseStatus.SUCCESS, outcome);
+    }
+
+
+    @Test
+    public void testGetLeadResponseStatus() throws Exception {
+        LeadFeedData leadData = new LeadFeedData();
+        leadData.setPhoneNumber("041111111111111");
+        leadData.setTransactionId(1000L);
+        leadData.setBrandCode("test");
+        leadData.setBrandId(brandId);
+        leadData.setVerticalId(verticalId);
+        leadData.setEventDate(date);
+
+        LeadFeedService.LeadType leadType = LeadFeedService.LeadType.BEST_PRICE;
+
+        when(providerLeadFeedService.process(leadType, leadData)).thenReturn(LeadFeedService.LeadResponseStatus.SUCCESS);
+
+        LeadFeedService.LeadResponseStatus outcome = leadFeedService.getLeadResponseStatus( leadType,  leadData,
+                Touch.TouchType.APPLY,  providerLeadFeedService);
         assertEquals(LeadFeedService.LeadResponseStatus.SUCCESS, outcome);
     }
 }

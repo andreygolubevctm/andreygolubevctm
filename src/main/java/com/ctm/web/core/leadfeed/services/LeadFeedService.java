@@ -27,9 +27,10 @@ public abstract class LeadFeedService {
 	protected Content ignoreBecauseOfField = null;
 	protected String ignorePhoneRule = null;
 
-	public LeadFeedService(BestPriceLeadsDao bestPriceDao, ContentService contentService) {
+	public LeadFeedService(BestPriceLeadsDao bestPriceDao, ContentService contentService,  LeadFeedTouchService leadFeedTouchService) {
 		this.bestPriceDao = bestPriceDao;
 		this.contentService = contentService;
+        this.leadFeedTouchService = leadFeedTouchService;
 	}
 
 	public static enum LeadType{
@@ -163,5 +164,17 @@ public abstract class LeadFeedService {
 		} catch(DaoException e) {
 			throw new LeadFeedException(e.getMessage(), e);
 		}
+	}
+
+	protected LeadResponseStatus getLeadResponseStatus(LeadType leadType, LeadFeedData leadData, TouchType touchType, IProviderLeadFeedService providerLeadFeedService) throws LeadFeedException {
+        LeadResponseStatus responseStatus =  LeadResponseStatus.SUCCESS;;
+        if(providerLeadFeedService != null) {
+            responseStatus = providerLeadFeedService.process(leadType, leadData);
+			if (responseStatus == LeadResponseStatus.SUCCESS) {
+				leadFeedTouchService.recordTouch(touchType, leadData);
+			}
+			LOGGER.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));
+		}
+		return responseStatus;
 	}
 }

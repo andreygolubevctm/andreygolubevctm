@@ -1,6 +1,5 @@
 package com.ctm.web.life.apply.controller;
 
-import com.ctm.interfaces.common.types.PartnerError;
 import com.ctm.web.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
@@ -29,9 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
