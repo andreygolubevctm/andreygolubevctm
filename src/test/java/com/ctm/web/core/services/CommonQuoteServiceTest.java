@@ -1,6 +1,5 @@
 package com.ctm.web.core.services;
 
-import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.model.ProviderFilter;
@@ -163,54 +162,23 @@ public class CommonQuoteServiceTest {
         commonQuoteService.setFilter(providerFilter);
     }
 
-    @Test
-    public void testSendRequest() throws Exception {
-        String requestUrl = "http://anyURL/quote";
-        Brand brand = mock(Brand.class);
-        Request request = mock(Request.class);
-        Object payload = mock(Object.class);
-        Object responseObject = mock(Object.class);
-        Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
-        when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
-        when(simpleConnection.get(requestUrl)).thenReturn("response message");
-        when(restClient.sendPOSTRequest(
-                anyObject(),
-                anyObject(),
-                (Endpoint) anyObject(),
-                eq(Object.class), anyObject())).thenReturn(responseObject);
 
-        when(serviceConfigurationService.getServiceConfiguration(anyString(), anyObject())).thenReturn(serviceConfiguration);
-
-        final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);
-
-        assertEquals(responseObject, response);
-
-        verify(restClient, times(1)).sendPOSTRequest(
-                anyObject(),
-                eq(Vertical.VerticalType.TRAVEL),
-                (Endpoint) anyObject(),
-                eq(Object.class), anyObject());
-
-    }
-
-    @Test(expected = RouterException.class)
     public void testSendRequestEmptyResponse() throws Exception {
         Brand brand = mock(Brand.class);
         Request request = mock(Request.class);
         Object payload = mock(Object.class);
-        Object responseObject = mock(Object.class);
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
         when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
         when(restClient.sendPOSTRequest(
                 anyObject(),
-                anyObject(),
+                eq(verticalType),
                 (Endpoint) anyObject(),
                 eq(Object.class), anyObject())).thenReturn(null);
 
         when(serviceConfigurationService.getServiceConfiguration(anyString(), anyObject())).thenReturn(serviceConfiguration);
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);
 
-        assertEquals(responseObject, response);
+        assertEquals(null, response);
     }
 
     @Test

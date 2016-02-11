@@ -103,9 +103,13 @@ public abstract class CommonRequestService {
                                         String serviceName,
                                         Endpoint endpoint, Request data,
                                         PAYLOAD payload,
-                                        Class<RESPONSE> responseClass) throws IOException, DaoException, ServiceConfigurationException {
-        return restClient.sendPOSTRequest(getQuoteServiceProperties(serviceName,
-                brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride())), vertical, endpoint, responseClass, getQuoteRequest(brand, data, payload));
+                                        Class<RESPONSE> responseClass) throws RouterException {
+        try {
+            return restClient.sendPOSTRequest(getQuoteServiceProperties(serviceName,
+                    brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride())), vertical, endpoint, responseClass, getQuoteRequest(brand, data, payload));
+        } catch (ServiceConfigurationException | DaoException | IOException e) {
+            throw new RouterException(e);
+        }
     }
 
     protected <PAYLOAD, RESPONSE> RESPONSE sendApplyRequest(Brand brand,
@@ -113,9 +117,13 @@ public abstract class CommonRequestService {
                                         String serviceName,
                                         Endpoint endpoint, Request data,
                                         PAYLOAD payload,
-                                        Class<RESPONSE> responseClass, String productId) throws IOException, DaoException, ServiceConfigurationException {
-        return restClient.sendPOSTRequest(getQuoteServiceProperties(serviceName,
-                brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride())), vertical, endpoint, responseClass, getApplyRequest(brand, data, payload, productId));
+                                        Class<RESPONSE> responseClass, String productId) throws RouterException {
+        try {
+            return restClient.sendPOSTRequest(getQuoteServiceProperties(serviceName,
+                    brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride())), vertical, endpoint, responseClass, getApplyRequest(brand, data, payload, productId));
+        } catch (ServiceConfigurationException | DaoException | IOException e) {
+            throw new RouterException(e);
+        }
     }
 
     protected <PAYLOAD, RESPONSE> RESPONSE sendApplyRequest(Brand brand,

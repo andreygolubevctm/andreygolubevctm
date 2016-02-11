@@ -40,6 +40,9 @@ public class EnergyApplyControllerTest {
     @Mock
     SessionDataServiceBean sessionDataServiceBean;
 
+    @Mock
+    ApplicationService applicationService;
+
     @InjectMocks
     EnergyApplyController controllerUnderTest;
     private MockMvc mvc;
