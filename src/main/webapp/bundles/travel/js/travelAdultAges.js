@@ -14,9 +14,13 @@
 	function initAdultAges() {
 		$(document).ready(function travelSortingInitDomready() {
 			$travel_party = $('.travel_party'),
-			$travel_adults = $('#travel_adults'),
-			$adult_dob_2_row = $('.second_traveller_age_row'),
-			$adult_dob_2 = $('#travel_travellers_traveller2DOB');
+				$travel_adults = $('#travel_adults'),
+				$adult_dob_2_row = $('.second_traveller_age_row'),
+				$adult_dob_2 = $('#travel_travellers_traveller2DOB');
+
+			$travel_party.find('label:nth-child(1)').addClass('icon-single');
+			$travel_party.find('label:nth-child(2)').addClass('icon-couple');
+			$travel_party.find('label:nth-child(3)').addClass('icon-family');
 
 			$adult_dob_2_row.hide();
 			$children_row = $('.children_row');
