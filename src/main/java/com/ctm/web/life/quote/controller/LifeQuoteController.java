@@ -8,6 +8,7 @@ import com.ctm.web.core.model.CompetitionEntry;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.life.form.model.*;
 import com.ctm.web.life.form.response.model.LifeResultsWebResponse;
@@ -39,8 +40,8 @@ public class LifeQuoteController extends CommonQuoteRouter<LifeQuoteWebRequest> 
     private LifeQuoteService lifeQuoteService;
 
     @Autowired
-    public LifeQuoteController(SessionDataServiceBean sessionDataServiceBean) {
-        super(sessionDataServiceBean);
+    public LifeQuoteController(SessionDataServiceBean sessionDataServiceBean, ApplicationService applicationService) {
+        super(sessionDataServiceBean, applicationService);
     }
 
     @ApiOperation(value = "quote/get.json", notes = "Request a life quote", produces = "application/json")

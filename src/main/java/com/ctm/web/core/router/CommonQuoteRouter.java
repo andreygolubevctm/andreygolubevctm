@@ -38,14 +38,15 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> extends CommonR
 
     private SessionDataServiceBean sessionDataServiceBean;
 
-    public CommonQuoteRouter(SessionDataServiceBean sessionDataServiceBean) {
+    public CommonQuoteRouter(SessionDataServiceBean sessionDataServiceBean, ApplicationService applicationService) {
+        super(applicationService);
         this.sessionDataServiceBean = sessionDataServiceBean;
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteRouter.class);
 
     protected Brand initRouter(MessageContext context, Vertical.VerticalType vertical){
-        return initRouter(context.getHttpServletRequest(), vertical);
+        return super.initRouter(context.getHttpServletRequest(), vertical);
     }
 
     protected Data getDataBucket(MessageContext context, Long transactionId) {

@@ -1,11 +1,14 @@
 package com.ctm.web.life.apply.services;
 
+import com.ctm.apply.model.response.ApplyResponse;
 import com.ctm.data.common.TestMariaDbBean;
 import com.ctm.life.apply.model.response.LifeApplyResponse;
+import com.ctm.web.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.Application;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.RestClient;
 import com.ctm.web.core.services.ServiceConfigurationService;
@@ -16,7 +19,6 @@ import com.ctm.web.life.apply.response.LifeApplyWebResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -62,13 +64,20 @@ public class LifeApplyServiceTest {
     @Mock
     private LifeApplyResponse response;
 
-    private EnvironmentService.Environment environment = EnvironmentService.Environment.LOCALHOST;
-    @InjectMocks
     private LifeApplyService service;
+    @Mock
+    private LifeApplyCompleteService lifeApplyCompleteService;
+    @Mock
+    private ApplyResponse applyResponse;
 
 
     @Before
     public void setUp() throws Exception {
+        service = new LifeApplyService( providerFilterDAO,  restClient,
+                 sessionDataService,
+                 serviceConfigurationService,
+                EnvironmentService.Environment.LOCALHOST,
+                 lifeApplyCompleteService);
          when(sessionDataService.getSessionDataFromSession(request)).thenReturn(sessionData);
          Data data = getData();
          when(sessionData.getSessionDataForTransactionId(TRANSACTION_ID)).thenReturn(data);
@@ -135,6 +144,14 @@ public class LifeApplyServiceTest {
         LifeApplyWebResponse result = service.apply( webRequest,  brand,  request);
         verify(restClient).sendPOSTRequest(anyObject(), anyObject(), anyString(), anyObject(), anyObject());
         assertEquals(TRANSACTION_ID , result.getResults().getTransactionId());
+
+    }
+
+    @Test
+    public void shouldMapException() throws Exception {
+        FailedToRegisterException e = new FailedToRegisterException( applyResponse,  TRANSACTION_ID);
+        ErrorInfo result = service.mapException( e);
+        assertEquals(TRANSACTION_ID , result.getTransactionId());
 
     }
 }

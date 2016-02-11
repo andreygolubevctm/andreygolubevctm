@@ -33,8 +33,8 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
     private CarQuoteService carService;
 
     @Autowired
-    public CarQuoteController(SessionDataServiceBean sessionDataServiceBean) {
-        super(sessionDataServiceBean);
+    public CarQuoteController(SessionDataServiceBean sessionDataServiceBean, ApplicationService applicationService) {
+        super(sessionDataServiceBean, applicationService);
     }
 
     @RequestMapping(value = "/quote/get.json",

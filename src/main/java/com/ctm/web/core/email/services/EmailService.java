@@ -19,11 +19,13 @@ import com.ctm.web.factory.EmailServiceFactory;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class EmailService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);

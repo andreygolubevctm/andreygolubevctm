@@ -39,7 +39,7 @@ public class HandoverConfirmationServiceTest {
         when(dao.hasExistingConfirmationWithPolicy(confirm)).thenReturn(false);
 
         service.confirm(confirm);
-        verify(touchService, times(1)).recordTouch(anyInt(), anyString());
+        verify(touchService, times(1)).recordTouchDeprecated(anyInt(), anyString());
         verify(dao, times(1)).recordConfirmation(Mockito.<HandoverConfirmation>anyObject());
     }
 
@@ -49,7 +49,7 @@ public class HandoverConfirmationServiceTest {
         when(dao.hasExistingConfirmationWithPolicy(confirm)).thenReturn(true);
 
         service.confirm(confirm);
-        verify(touchService, times(1)).recordTouch(anyInt(), anyString());
+        verify(touchService, times(1)).recordTouchDeprecated(anyInt(), anyString());
         verify(dao, never()).recordConfirmation(Mockito.<HandoverConfirmation>anyObject());
     }
 
@@ -59,7 +59,7 @@ public class HandoverConfirmationServiceTest {
         when(dao.hasExistingConfirmationWithPolicy(confirm)).thenReturn(false);
 
         service.confirm(confirm);
-        verify(touchService, never()).recordTouch(anyInt(), anyString());
+        verify(touchService, never()).recordTouchDeprecated(anyInt(), anyString());
         verify(dao, times(1)).recordConfirmation(Mockito.<HandoverConfirmation>anyObject());
     }
 
@@ -69,7 +69,7 @@ public class HandoverConfirmationServiceTest {
         when(dao.hasExistingConfirmationWithPolicy(confirm)).thenReturn(true);
 
         service.confirm(confirm);
-        verify(touchService, never()).recordTouch(anyInt(), anyString());
+        verify(touchService, never()).recordTouchDeprecated(anyInt(), anyString());
         verify(dao, never()).recordConfirmation(Mockito.<HandoverConfirmation>anyObject());
     }
 

@@ -94,7 +94,7 @@ public class ServiceConfigurationService {
 		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
 		Vertical vertical = brand.getVerticalByCode(verticalCode);
 
-		return getServiceConfigurationDeprecated(code, vertical.getId(), brand.getId());
+		return getServiceConfigurationDeprecated(code, vertical.getId());
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class ServiceConfigurationService {
 	 * @throws ServiceConfigurationException
 	 */
 	@Deprecated
-	public static ServiceConfiguration getServiceConfigurationDeprecated(String code, int verticalId, int brandId) throws DaoException, ServiceConfigurationException {
+	public static ServiceConfiguration getServiceConfigurationDeprecated(String code, int verticalId) throws DaoException, ServiceConfigurationException {
 
 		getServiceConfigurations();
 

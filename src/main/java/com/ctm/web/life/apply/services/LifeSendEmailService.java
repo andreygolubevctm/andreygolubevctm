@@ -5,6 +5,7 @@ import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.EmailService;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.transaction.model.TransactionDetail;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ public class LifeSendEmailService {
 
     }
 
+    @Autowired
     public LifeSendEmailService(TransactionDetailsDao transactionDetailsDao, EmailService emailService){
         this.transactionDetailsDao = transactionDetailsDao;
         this.emailService = emailService;

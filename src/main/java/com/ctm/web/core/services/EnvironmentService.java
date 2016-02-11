@@ -3,8 +3,6 @@ package com.ctm.web.core.services;
 import com.ctm.web.core.exceptions.EnvironmentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +11,6 @@ import java.util.jar.Manifest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-@Configuration
 public class EnvironmentService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EnvironmentService.class);
 
@@ -105,12 +102,6 @@ public class EnvironmentService {
 		LOGGER.info("Environment set {}", kv("envCode", currentEnvironment));
 		return environment;
 	}
-
-	@Bean
-	public static Environment environmentBean() throws EnvironmentException {
-		return getEnvironmentFromSpring();
-	}
-
 
 	public static String getEnvironmentAsString() throws EnvironmentException{
 		if(currentEnvironment == null) throw new EnvironmentException("Environment variable not set, check the environment.properties file.");

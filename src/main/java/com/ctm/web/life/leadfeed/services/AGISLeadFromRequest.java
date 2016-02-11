@@ -17,6 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+/**
+ * Use LifeApplyService instead
+ **/
+@Deprecated // TODO: Delete once life apply and life lead feed service has gone live
 public class AGISLeadFromRequest {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AGISLeadFromRequest.class);

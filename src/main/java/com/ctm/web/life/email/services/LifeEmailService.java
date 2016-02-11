@@ -1,48 +1,53 @@
 package com.ctm.web.life.email.services;
 
-import com.ctm.web.core.model.EmailMaster;
-import com.ctm.web.core.model.RankingDetail;
-import com.ctm.web.core.dao.RankingDetailsDao;
-import com.ctm.web.core.transaction.dao.TransactionDao;
-import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
-import com.ctm.web.core.email.services.*;
-import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.email.services.BestPriceEmailHandler;
+import com.ctm.web.core.email.services.EmailDetailsService;
+import com.ctm.web.core.email.services.EmailServiceHandler;
+import com.ctm.web.core.email.services.ExactTargetEmailSender;
 import com.ctm.web.core.exceptions.EnvironmentException;
 import com.ctm.web.core.exceptions.VerticalException;
-import com.ctm.web.core.transaction.model.TransactionDetail;
+import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ConfigSetting;
 import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.ServiceConfigurationService;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.life.dao.OccupationsDao;
 import com.ctm.web.life.email.model.LifeBestPriceEmailModel;
 import com.ctm.web.life.email.model.LifeBestPriceExactTargetFormatter;
-import com.ctm.web.life.model.Occupation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class LifeEmailService extends EmailServiceHandler implements BestPriceEmailHandler {
 	
 	private static final String VERTICAL = VerticalType.LIFE.getCode();
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(LifeEmailService.class);
-	
-	EmailDetailsService emailDetailsService;
-	protected TransactionDao transactionDao = new TransactionDao();
+
+	private final EmailDetailsService emailDetailsService;
+    private final ApplicationService applicationService;
+    private final LifeEmailDataService lifeEmailDataService;
+    protected TransactionDao transactionDao;
 	private String optInMailingName;
-	public LifeEmailService(PageSettings pageSettings, EmailMode emailMode, EmailDetailsService emailDetailsService, EmailUrlService urlService) {
+    private ServiceConfigurationService serviceConfigurationService;
+
+	public LifeEmailService(PageSettings pageSettings,
+                            EmailMode emailMode,
+                            EmailDetailsService emailDetailsService,
+                            TransactionDao transactionDao,
+                            LifeEmailDataService lifeEmailDataService,
+                            ServiceConfigurationService serviceConfigurationService,
+                            ApplicationService applicationService) {
 		super(pageSettings, emailMode);
 		this.emailDetailsService = emailDetailsService;
+        this.transactionDao = transactionDao;
+        this.serviceConfigurationService = serviceConfigurationService;
+        this.applicationService = applicationService;
+        this.lifeEmailDataService = lifeEmailDataService;
 	}
 
 	@Override
@@ -50,7 +55,10 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(BestPriceEmailHandler.MAILING_NAME_KEY);
 		optInMailingName = getPageSetting(BestPriceEmailHandler.OPT_IN_MAILING_NAME);
-		ExactTargetEmailSender<LifeBestPriceEmailModel> emailSender = new ExactTargetEmailSender<>(pageSettings, transactionId, 6, ConfigSetting.ALL_BRANDS, 63);
+		Brand brand = applicationService.getBrand( request, VerticalType.LIFE);
+        Vertical vertical = brand.getVerticalByCode(VERTICAL);
+		ExactTargetEmailSender<LifeBestPriceEmailModel> emailSender = new ExactTargetEmailSender<>(pageSettings, transactionId,
+                vertical, ConfigSetting.ALL_BRANDS, 63, serviceConfigurationService);
 		EmailMaster emailDetails = new EmailMaster();
 		emailDetails.setEmailAddress(emailAddress);
 		emailDetails.setSource("QUOTE");
@@ -70,7 +78,7 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 	
 	private LifeBestPriceEmailModel buildBestPriceEmailModel(EmailMaster emailDetails, long transactionId) throws SendEmailException {
 		boolean optedIn = emailDetails.getOptedInMarketing(VERTICAL);
-		Data data = getDataObject(transactionId);
+		Data data = lifeEmailDataService.getDataObject(transactionId);
 		LifeBestPriceEmailModel emailModel = new LifeBestPriceEmailModel();
 		buildEmailModel(emailDetails, emailModel);
 
@@ -98,52 +106,6 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 		}
 
 		return emailModel;
-	}
-	
-	/**
-	 * Because Life sends out the best price email as part of a CRON job (instead of on a user's activity)
-	 * we need to manually grab the data for the requested transaction as there is no active session
-	 * @param transactionId
-	 * @return
-	 */
-	private Data getDataObject(long transactionId) {
-		Data data = new Data();
-		
-		TransactionDetailsDao tdDao = new TransactionDetailsDao();
-		List<TransactionDetail> transactionDetails = null;
-		try {
-			transactionDetails = tdDao.getTransactionDetails(transactionId);
-		} catch (DaoException e1) {
-			LOGGER.error("Could not populate life email data object with transaction details {}", kv("transactionId", transactionId), e1);
-		}
-		
-		for(TransactionDetail detail : transactionDetails) {
-			data.put(detail.getXPath(), detail.getTextValue());
-		}
-		
-		RankingDetailsDao rdDao = new RankingDetailsDao();
-		List<RankingDetail> rankingDetails = null;
-		
-		try {
-			rankingDetails = rdDao.getDetailsByPropertyValue(transactionId, "company", "ozicare");
-		} catch (DaoException e1) {
-			LOGGER.error("Could not populate life email data object with ranking details {}", kv("transactionId", transactionId), e1);
-		}
-		
-		RankingDetail rankingDetail = rankingDetails.get(0);
-		Map<String,String> rankingDetailProperties = rankingDetail.getProperties();		
-		
-		for (Entry<String, String> property : rankingDetailProperties.entrySet()) {
-			String key = property.getKey();
-			Object value = property.getValue();
-			data.put("life/rankingDetails/" + key, value);
-		}
-		
-		OccupationsDao oDao = new OccupationsDao();
-		Occupation occupation = oDao.getOccupation((String) data.get("life/primary/occupation"));
-		data.put("life/primary/occupationName", occupation.getTitle());
-		
-		return data;
 	}
 
 	@Override

@@ -49,7 +49,7 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
     private final HealthQuoteSummaryService healthQuoteSummaryService = new HealthQuoteSummaryService();
 
     public HealthQuoteRouter() {
-        super(new SessionDataServiceBean());
+        super(new SessionDataServiceBean(), new ApplicationService());
     }
 
     @POST

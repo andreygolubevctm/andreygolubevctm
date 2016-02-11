@@ -5,13 +5,11 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.energy.form.model.EnergyProductInfoWebRequest;
-import com.ctm.web.energy.form.model.EnergyProviderWebRequest;
 import com.ctm.web.energy.form.response.model.EnergyProductInfoWebResponse;
-import com.ctm.web.energy.form.response.model.EnergyProvidersWebResponse;
 import com.ctm.web.energy.services.EnergyProductResultsService;
-import com.ctm.web.energy.services.EnergyProviderResultsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,7 @@ public class EnergyProductInfoController extends CommonQuoteRouter<EnergyProduct
 
     @Autowired
     public EnergyProductInfoController(SessionDataServiceBean sessionDataServiceBean) {
-        super(sessionDataServiceBean);
+        super(sessionDataServiceBean, new ApplicationService());
     }
 
     @ApiOperation(value = "moreinfo/get.json", notes = "Request a energy product information", produces = "application/json")

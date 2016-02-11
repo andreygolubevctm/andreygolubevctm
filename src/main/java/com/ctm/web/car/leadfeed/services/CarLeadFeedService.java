@@ -59,7 +59,7 @@ public class CarLeadFeedService extends LeadFeedService {
 			if(providerLeadFeedService != null) {
 				responseStatus = providerLeadFeedService.process(leadType, leadData);
 				if (responseStatus == LeadResponseStatus.SUCCESS) {
-					recordTouch(touchType.getCode(), leadData);
+					leadFeedTouchService.recordTouch(touchType, leadData);
 				}
 				LOGGER.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));
 			}

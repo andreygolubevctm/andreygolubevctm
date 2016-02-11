@@ -1,5 +1,6 @@
 package com.ctm.web.life.apply.controller;
 
+import com.ctm.interfaces.common.types.PartnerError;
 import com.ctm.web.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
@@ -9,6 +10,7 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
 import com.ctm.web.life.apply.response.LifeApplyWebResponse;
@@ -27,6 +29,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -41,7 +46,7 @@ public class LifeApplyController extends CommonQuoteRouter<LifeApplyWebRequest> 
 
     @Autowired
     public LifeApplyController(SessionDataServiceBean sessionDataServiceBean) {
-        super(sessionDataServiceBean);
+        super(sessionDataServiceBean, new ApplicationService());
     }
 
     @ApiOperation(value = "apply/apply.json", notes = "Submit an life application", produces = "application/json")
@@ -83,10 +88,7 @@ public class LifeApplyController extends CommonQuoteRouter<LifeApplyWebRequest> 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorInfo handleException(final FailedToRegisterException e) {
-        ErrorInfo errorInfo = new ErrorInfo();
-        errorInfo.setTransactionId(e.getTransactionId());
-/*        errorInfo.setErrors(e.getErrors());*/
-        return errorInfo;
+        return lifeService.mapException(e);
     }
 
 }

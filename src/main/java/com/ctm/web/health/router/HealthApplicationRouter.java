@@ -14,6 +14,7 @@ import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.TouchService;
 import com.ctm.web.core.services.TransactionAccessService;
@@ -79,7 +80,7 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
     private final LeadService leadService = new HealthLeadService();
 
     public HealthApplicationRouter() {
-        super(new SessionDataServiceBean());
+        super(new SessionDataServiceBean(), new ApplicationService());
     }
 
     @POST

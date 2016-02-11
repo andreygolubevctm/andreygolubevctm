@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 
+@Deprecated
 public class LifeLeadFeedService extends LeadFeedService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LifeLeadFeedService.class);
@@ -82,6 +83,6 @@ public class LifeLeadFeedService extends LeadFeedService {
 		if(!leadData.getProductId().isEmpty())
 			return touchService.recordTouchWithComment(leadData.getTransactionId(), touchType, Touch.ONLINE_USER, leadData.getProductId());
 		else
-			return touchService.recordTouch(leadData.getTransactionId(), touchType, Touch.ONLINE_USER);
+			return touchService.recordTouchDeprecated(leadData.getTransactionId(), touchType, Touch.ONLINE_USER);
 	}
 }

@@ -7,6 +7,7 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.Info;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.energy.form.model.EnergyResultsWebRequest;
@@ -33,8 +34,8 @@ public class EnergyQuoteController extends CommonQuoteRouter<EnergyResultsWebReq
     EnergyResultsService energyResultsService;
 
     @Autowired
-    public EnergyQuoteController(SessionDataServiceBean sessionDataServiceBean) {
-        super(sessionDataServiceBean);
+    public EnergyQuoteController(SessionDataServiceBean sessionDataServiceBean, ApplicationService applicationService) {
+        super(sessionDataServiceBean, applicationService);
     }
 
     @ApiOperation(value = "quote/get.json", notes = "Request a energy quote", produces = "application/json")

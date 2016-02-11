@@ -8,12 +8,14 @@ import com.ctm.web.core.dao.VerticalsDao;
 import com.ctm.web.core.elasticsearch.services.AddressSearchService;
 import com.ctm.web.core.exceptions.BrandException;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ConfigSetting;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class ApplicationService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationService.class);
@@ -80,7 +83,15 @@ public class ApplicationService {
 	}
 
 
-
+	public Brand getBrand(HttpServletRequest httpServletRequest, Vertical.VerticalType vertical){
+		// - Start common -- taken from Carlos' car branch
+		ApplicationService.setVerticalCodeOnRequest(httpServletRequest, vertical.getCode());
+		try {
+			return ApplicationService.getBrandFromRequest(httpServletRequest);
+		} catch (DaoException e) {
+			throw new RouterException(e);
+		}
+	}
 
 	/**
 	 * Looks at the pageContext for the brand code - this should be a param brandCode=xxx set by the F5 server's rewrite rules.

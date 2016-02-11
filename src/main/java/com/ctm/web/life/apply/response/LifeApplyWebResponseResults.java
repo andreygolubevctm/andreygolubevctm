@@ -1,18 +1,10 @@
 package com.ctm.web.life.apply.response;
 
-/**
- * Created by lbuchanan on 10/02/2016.
- */
 public class LifeApplyWebResponseResults {
 
     private Selection selection;
     private boolean success;
     private Long transactionId;
-
-
-    private LifeApplyWebResponseResults(){
-
-    }
 
     private LifeApplyWebResponseResults(Builder builder) {
         selection = builder.selection;

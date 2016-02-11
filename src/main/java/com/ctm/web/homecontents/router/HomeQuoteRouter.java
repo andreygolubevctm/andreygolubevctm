@@ -5,6 +5,7 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.homecontents.model.form.HomeRequest;
 import com.ctm.web.homecontents.model.results.HomeMoreInfo;
@@ -25,7 +26,7 @@ public class HomeQuoteRouter extends CommonQuoteRouter {
     private final HomeQuoteService homeService = new HomeQuoteService();
 
     public HomeQuoteRouter() {
-        super(new SessionDataServiceBean());
+        super(new SessionDataServiceBean(), new ApplicationService());
     }
 
     @POST

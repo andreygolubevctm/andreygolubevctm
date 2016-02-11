@@ -1,5 +1,6 @@
 package com.ctm.web.core.leadfeed.services;
 
+import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
@@ -7,8 +8,6 @@ import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.Touch.TouchType;
-import com.ctm.web.core.content.model.Content;
-import com.ctm.web.core.services.AccessTouchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +21,8 @@ public abstract class LeadFeedService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LeadFeedService.class);
 	private final BestPriceLeadsDao bestPriceDao;
 	private final ContentService contentService;
+
+	protected LeadFeedTouchService leadFeedTouchService;
 
 	protected Content ignoreBecauseOfField = null;
 	protected String ignorePhoneRule = null;
@@ -56,7 +57,7 @@ public abstract class LeadFeedService {
 
 	public LeadResponseStatus callDirect(LeadFeedData leadData) throws LeadFeedException {
 		if(!isTestOnlyLead(leadData)) {
-			recordTouch(Touch.TouchType.CALL_DIRECT.getCode(), leadData);
+			leadFeedTouchService.recordTouch(Touch.TouchType.CALL_DIRECT, leadData);
 		}
 		return LeadResponseStatus.SUCCESS;
 	}
@@ -137,14 +138,6 @@ public abstract class LeadFeedService {
 		return "{\"styleCode\":" + brandCodeId + ",\"success\":" + successCount + ",\"failure\":" + failureCount + "}";
 	}
 
-	protected Boolean recordTouch(String touchType, LeadFeedData leadData) {
-		AccessTouchService touchService = new AccessTouchService();
-
-		if(!leadData.getProductId().isEmpty())
-			return touchService.recordTouchWithProductCode(leadData.getTransactionId(), touchType, Touch.ONLINE_USER, leadData.getProductId());
-		else
-			return touchService.recordTouch(leadData.getTransactionId(), touchType, Touch.ONLINE_USER);
-	}
 
 	/**
 	 * isTestOnlyLead() will check whether the email or phone number in the lead data has been

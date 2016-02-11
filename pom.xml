@@ -16,7 +16,6 @@
     <packaging>war</packaging>
 
     <properties>
-        <powermock.version>1.6.2</powermock.version>
         <guava.version>18.0</guava.version>
         <jsonassert.version>1.2.3</jsonassert.version>
         <cxf.version>3.0.1</cxf.version>
@@ -38,8 +37,6 @@
 
         <spring-rabbit.version>1.4.6.RELEASE</spring-rabbit.version>
         <swagger-annotations.version>1.5.4</swagger-annotations.version>
-        <common-logging.version>1.5.0-RC1</common-logging.version>
-        <common-interfaces.version>1.7.0</common-interfaces.version>
         <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
 
         <!-- Compile as this version -->
@@ -50,12 +47,33 @@
         <npm.version>2.14.8</npm.version>
 
         <org.mapstruct.version>1.0.0.CR1</org.mapstruct.version>
+
+        <!-- CTM dependencies -->
+        <common-logging.version>1.5.0-RC1</common-logging.version>
+        <common-interfaces.version>1.7.0</common-interfaces.version>
+
         <energy-model-quote.version>1.0.0-RC1</energy-model-quote.version>
         <energy-apply-model.version>1.1.0-RC2</energy-apply-model.version>
 
         <life-apply-model.version>1.0.0-SNAPSHOT</life-apply-model.version>
         <life-quote-model.version>1.1.0-SNAPSHOT</life-quote-model.version>
+
+        <!-- Test dependencies -->
+        <powermock.version>1.6.4</powermock.version>
+        <junit.version>4.12</junit.version>
+
+        <!-- CTM Test dependencies -->
         <common-test.version>1.6.0</common-test.version>
+
+        <!-- Test properties -->
+        <implementation.title.integration>${project.groupId}.${project.artifactId}</implementation.title.integration>
+        <web.context.integration>${project.artifactId}</web.context.integration>
+        <!-- Needed for the MariaDB temp files -->
+        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+
+        <!-- Tomcat dependency and integration test properties -->
+        <tomcat.version>7.0.65</tomcat.version>
+        <tomcat.container.id.integration>tomcat7x</tomcat.container.id.integration>
     </properties>
 
     <dependencyManagement>
@@ -180,7 +198,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -687,6 +705,190 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>reserve-ports</id>
+                                <phase>generate-test-resources</phase>
+                                <goals>
+                                    <goal>reserve-network-port</goal>
+                                </goals>
+                                <configuration>
+                                    <portNames>
+                                        <portName>tomcat.port.servlet.integration</portName>
+                                        <portName>tomcat.port.rmi.integration</portName>
+                                        <portName>tomcat.port.ajp.integration</portName>
+                                        <portName>mysqld.port.integration</portName>
+                                        <portName>http.fakepartner.port.integration</portName>
+                                    </portNames>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>start-third-parties</id>
+                                <phase>pre-integration-test</phase>
+                                <configuration>
+                                    <target>
+                                        <tstamp>
+                                            <format property="intg.test.timestamp" pattern="yyyyMMddhhmmss"/>
+                                        </tstamp>
+                                        <echo>Looking for previously running instances of MYSQLD...</echo>
+                                        <java fork="true" classpathref="maven.test.classpath" className="com.ctm.TestMariaIntegrationDb">
+                                            <arg value="${maven.build.timestamp}-1"/>
+                                            <arg value="--stop"/>
+                                        </java>
+                                        <echo>Forking Embedded MYSQLD</echo>
+                                        <java fork="true" spawn="true" classpathref="maven.test.classpath" className="com.ctm.TestMariaIntegrationDb">
+                                            <arg value="${maven.build.timestamp}-2"/>
+                                            <arg value="--port"/>
+                                            <arg value="${mysqld.port.integration}"/>
+                                            <arg value="schema.sql"/>
+                                            <arg value="data.sql"/>
+                                        </java>
+
+                                        <echo message="Checking whether MYSQLD is running..."/>
+                                        <waitfor maxwait="60" maxwaitunit="second" checkevery="1000">
+                                            <socket server="localhost" port="${mysqld.port.integration}"/>
+                                        </waitfor>
+                                        <echo message="The MYSQLD server should be running now"/>
+                                    </target>
+                                    <skip>${maven.test.skip}</skip>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>stop-third-parties</id>
+                                <phase>post-integration-test</phase>
+                                <configuration>
+                                    <target>
+                                        <echo>Shutting down Embedded MYSQLD</echo>
+                                        <java fork="true" classpathref="maven.test.classpath" className="com.ctm.TestMariaIntegrationDb">
+                                            <arg value="${maven.build.timestamp}-3"/>
+                                            <arg value="--stop"/>
+                                        </java>
+                                    </target>
+                                    <skip>${maven.test.skip}</skip>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>start-tomcat</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                                <configuration>
+                                    <container>
+                                        <containerId>${tomcat.container.id.integration}</containerId>
+                                        <artifactInstaller>
+                                            <groupId>org.apache.tomcat</groupId>
+                                            <artifactId>tomcat</artifactId>
+                                            <version>${tomcat.version}</version>
+                                        </artifactInstaller>
+                                        <systemProperties>
+                                            <spring.profiles.active>INTG</spring.profiles.active>
+                                            <mysqld.port.integration>${mysqld.port.integration}</mysqld.port.integration>
+                                        </systemProperties>
+                                        <dependencies>
+                                            <dependency>
+                                                <groupId>mysql</groupId>
+                                                <artifactId>mysql-connector-java</artifactId>
+                                            </dependency>
+                                        </dependencies>
+                                        <timeout>240000</timeout>
+                                    </container>
+                                    <configuration>
+                                        <properties>
+                                            <cargo.servlet.port>${tomcat.port.servlet.integration}</cargo.servlet.port>
+                                            <cargo.rmi.port>${tomcat.port.rmi.integration}</cargo.rmi.port>
+                                            <cargo.tomcat.ajp.port>${tomcat.port.ajp.integration}</cargo.tomcat.ajp.port>
+                                        </properties>
+                                        <configfiles>
+                                            <configfile>
+                                                <file>${project.basedir}/src/test/resources/application-INTG.properties</file>
+                                                <todir>common/classes</todir>
+                                                <tofile>application-INTG.properties</tofile>
+                                            </configfile>
+                                        </configfiles>
+                                    </configuration>
+                                    <deployables>
+                                        <deployable>
+                                            <type>war</type>
+                                            <location>${project.build.directory}/${project.build.finalName}${dash.feature.classifier}.${project.packaging}</location>
+                                            <properties>
+                                                <context>/${web.context.integration}</context>
+                                            </properties>
+                                        </deployable>
+                                    </deployables>
+                                    <skip>${maven.test.skip}</skip>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop-tomcat</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                                <configuration>
+                                    <container>
+                                        <containerId>${tomcat.container.id.integration}</containerId>
+                                        <artifactInstaller>
+                                            <groupId>org.apache.tomcat</groupId>
+                                            <artifactId>tomcat</artifactId>
+                                            <version>${tomcat.version}</version>
+                                        </artifactInstaller>
+                                    </container>
+                                    <configuration>
+                                        <properties>
+                                            <cargo.servlet.port>${tomcat.port.servlet.integration}</cargo.servlet.port>
+                                            <cargo.rmi.port>${tomcat.port.rmi.integration}</cargo.rmi.port>
+                                            <cargo.tomcat.ajp.port>${tomcat.port.ajp.integration}</cargo.tomcat.ajp.port>
+                                        </properties>
+                                    </configuration>
+                                    <deployables>
+                                        <deployable>
+                                            <type>war</type>
+                                            <location>${project.build.directory}/${project.build.finalName}${dash.feature.classifier}.${project.packaging}</location>
+                                            <properties>
+                                                <context>/${web.context.integration}</context>
+                                            </properties>
+                                        </deployable>
+                                    </deployables>
+                                    <skip>${maven.test.skip}</skip>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <systemProperties>
+                                <implementation.title.integration>${implementation.title.integration}</implementation.title.integration>
+                                <web.context.integration>${web.context.integration}</web.context.integration>
+                                <tomcat.port.servlet.integration>${tomcat.port.servlet.integration}</tomcat.port.servlet.integration>
+                                <mysqld.port.integration>${mysqld.port.integration}</mysqld.port.integration>
+                                <http.fakepartner.port.integration>${http.fakepartner.port.integration}</http.fakepartner.port.integration>
+                            </systemProperties>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

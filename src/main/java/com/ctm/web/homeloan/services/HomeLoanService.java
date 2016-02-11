@@ -292,7 +292,7 @@ public class HomeLoanService {
 						String out = StringEncryption.decrypt(HomeLoanOpportunityService.SECRET_KEY, json.getString("responseData"));
 						JSONObject responseJson = new JSONObject(out);
 						if(responseJson.has("flexOpportunityId")) {
-							touch.recordTouch(lead.getTransactionId(), Touch.TouchType.CALL_FEED.getCode());
+							touch.recordTouchDeprecated(lead.getTransactionId(), Touch.TouchType.CALL_FEED.getCode());
 							// Add a new tran detail
 							TransactionDetail transactionDetailNew = new TransactionDetail();
 							transactionDetailNew.setXPath("homeloan/flexOpportunityId");

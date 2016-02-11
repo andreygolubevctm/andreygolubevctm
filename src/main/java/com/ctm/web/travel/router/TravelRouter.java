@@ -5,6 +5,7 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.travel.model.form.TravelRequest;
@@ -22,7 +23,7 @@ public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
     private final TravelService travelService = new TravelService();
 
     public TravelRouter() {
-        super(new SessionDataServiceBean());
+        super(new SessionDataServiceBean(), new ApplicationService());
     }
 
     @GET
