@@ -95,21 +95,17 @@
 		});
 
 		$aboutYouContainer.find(':input').on('change', function(event) {
+			var $this = $(this);
+
+			// Don't action on the DOB input fields; wait until it's serialised to the hidden field.
+			if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year') || ($this.attr('name').indexOf('partner_dob') >= 0 && $this.val() === "")) return;
+
+			togglePrimaryContinuousCover();
+			togglePartnerContinuousCover();
+
 			// update rebate
-			if ($(this).valid()) {
+			if ($this.valid()) {
 				setRebate();
-			}
-		});
-
-		$primaryDOB.on('change', function togglePrimaryContinuousCover() {
-			if ($(this).valid()) {
-				togglePrimaryContinuousCover();
-			}
-		});
-
-		$partnerDOB.on('change', function togglePartnerContinuousCover() {
-			if ($(this).valid()) {
-				togglePrimaryContinuousCover();
 			}
 		});
 	}
