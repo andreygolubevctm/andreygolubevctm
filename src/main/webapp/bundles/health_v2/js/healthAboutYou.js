@@ -63,21 +63,13 @@
 			// Handle pre-filled
 			toggleRebateDialogue();
 			// Handle toggle rebate options
-			$healthCoverRebate.find('input').on('change', function() {
+			$healthCoverRebate.find('input').on('change', function toggleRebateDiag() {
 				toggleRebateDialogue();
 			});
 		}
 
-		$tierDropdowns.on('change', function(){
+		$tierDropdowns.on('change', function updateRebateTiers(){
 			meerkat.modules.healthTiers.setTiers();
-		});
-
-		$primaryCurrentCover.find('input').on('click', function toggleYourContinuousCover() {
-			togglePrimaryContinuousCover();
-		});
-
-		$partnerCurrentCover.find('input').on('click', function togglePartnersContinuousCover() {
-			togglePartnerContinuousCover();
 		});
 
 		$healthCoverDependants.on('change', function setRebateTiers(){
@@ -94,7 +86,7 @@
 			setupForm();
 		});
 
-		$aboutYouContainer.find(':input').on('change', function(event) {
+		$aboutYouContainer.find(':input').on('change', function updateRebateContinuousCover(event) {
 			var $this = $(this);
 
 			// Don't action on the DOB input fields; wait until it's serialised to the hidden field.
