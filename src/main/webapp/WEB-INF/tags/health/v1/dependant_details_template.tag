@@ -126,6 +126,17 @@
             </form_v2:row>
             {{ } }}
 
+           <%-- used by navy --%>
+            {{ if(providerConfig.showRelationshipForNavy === true) { }}
+            <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/relationship"/>
+            <form_v2:row fieldXpath="${fieldXpath}"
+                         label="Relationship"
+                         id="${name}_relationshipGroup" className="health_dependant_details_relationshipGroup">
+                <field_v2:general_select type="healthNavQuestion_relationship" xpath="${fieldXpath}" title="Relationship to you" required="true" initialText="Please select" />
+            </form_v2:row>
+            {{ } }}
+
+
         </div>
     </div>
 </core_v1:js_template>

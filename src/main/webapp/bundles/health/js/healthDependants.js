@@ -23,6 +23,7 @@
             dobInputY: "",
             dobInputM: "",
             maritalincomestatus: "",
+            relationshipForNavy:"",
             apprentice: ""
         },
         dependantLimit = 12,
@@ -48,6 +49,7 @@
             showSchoolCommencementField: false,
             schoolDateRequired: false,
             showMaritalStatusField: false,
+            showRelationshipForNavy:false,
             defactoMinAge: 21,
             defactoMaxAge: 24,
             showApprenticeField: false
@@ -265,9 +267,13 @@
             if (providerConfig.showMaritalStatusField) {
                 $(prefix + '_maritalincomestatus').val(dependantsArr[i].maritalincomestatus);
             }
+            if(providerConfig.showRelationshipForNavy) {
+                $(prefix + '_relationship').val(dependantsArr[i].relationshipForNavy);
+            }
             if (providerConfig.showApprenticeField) {
                 $(prefix + '_apprentice').val(dependantsArr[i].apprentice);
             }
+
         }
 
         $dependantsTemplateWrapper.find('.serialise').change();
