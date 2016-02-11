@@ -23,6 +23,9 @@
 			url="/WEB-INF/option_data/home_contents_cover_type.html" />
 	</form_v2:row>
 
+	<%-- Commencement Date --%>
+	<home:commencementDate xpath="${xpath}/startDate" />
+
 	<%-- Address --%>
 	<group_v2:elastic_address xpath="${xpath}/property/address" type="R" />
 
