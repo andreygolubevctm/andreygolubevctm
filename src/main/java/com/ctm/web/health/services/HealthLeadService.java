@@ -80,8 +80,8 @@ public class HealthLeadService extends LeadService {
             leadData.getPerson().getAddress().setState(data.getString("health/situation/state"));
         }
 
-        if(!StringUtils.isEmpty(data.getString("health/application/address/suburb"))) {
-            leadData.getPerson().getAddress().setSuburb(data.getString("health/application/address/suburb"));
+        if(!StringUtils.isEmpty(data.getString("health/application/address/suburbName"))) {
+            leadData.getPerson().getAddress().setSuburb(data.getString("health/application/address/suburbName"));
         } else {
             leadData.getPerson().getAddress().setSuburb(data.getString("health/situation/suburb"));
         }
@@ -124,8 +124,8 @@ public class HealthLeadService extends LeadService {
                 StringUtils.isEmpty(shouldApplyRebate) ? null : shouldApplyRebate.equalsIgnoreCase("Y") ? true : false,
                 benefitList,
                 StringUtils.isEmpty(partnerDob) ? null : LocalDate.parse(partnerDob, DATE_TIME_FORMATTER).toString(),
-                StringUtils.isEmpty(dependants) ? null : Integer.parseInt(dependants),
-                StringUtils.isEmpty(rebateTier) ? null : Integer.parseInt(rebateTier),
+                StringUtils.isEmpty(dependants) ? null : dependants,
+                StringUtils.isEmpty(rebateTier) ? null : rebateTier,
                 gender,
                 partnerGender
         );

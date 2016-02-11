@@ -2,6 +2,7 @@ package com.ctm.web.core.services;
 
 import com.ctm.commonlogging.context.LoggingVariables;
 import com.ctm.interfaces.common.types.VerticalType;
+import com.ctm.web.core.cache.ApplicationCacheManager;
 import com.ctm.web.core.dao.BrandsDao;
 import com.ctm.web.core.dao.ConfigSettingsDao;
 import com.ctm.web.core.dao.VerticalsDao;
@@ -376,6 +377,7 @@ public class ApplicationService {
 		ServiceConfigurationService.clearCache();
 		AddressSearchService.destroy();
 		AddressSearchService.init();
+		ApplicationCacheManager.clearAll();
 		return true;
 	}
 

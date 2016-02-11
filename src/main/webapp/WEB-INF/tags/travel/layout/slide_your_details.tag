@@ -92,8 +92,8 @@
 				<form_v2:fieldset legend="Dates &amp; Travellers" className="travel_details_datesTravellers" id="datestravellersfs">
 					<field_v2:date_range xpath="travel/dates" required="true" labelFrom="When do you leave?" labelTo="When do you return?" titleFrom="departure" titleTo="return" minDateFrom="${now_Date}" maxDateFrom="${nowPlusYear_Date}" minDateTo="${now_Date}" maxDateTo="${nowPlusYear_Date}" offsetText="up to 1 year" helpIdFrom="214" helpIdTo="215" />
 
-					<form_v2:row label="Who's travelling?" className="smallWidth has-icons" helpId="216">
-						<field_v2:array_radio items="S=<i class='icon-single'></i>Single,C=<i class='icon-couple'></i>Couple,F=<i class='icon-family'></i>Family" xpath="travel/party" title="who is travelling" required="true" className="thinner_input travel_party" />
+					<form_v2:row label="Who's travelling?" className="smallWidth" helpId="216">
+						<field_v2:array_radio items="S=Single,C=Couple,F=Family" xpath="travel/party" title="who is travelling" required="true" className="thinner_input travel_party roundedCheckboxIcons" />
 					</form_v2:row>
 					<form_v2:row label="Your date of birth?" className="smallWidth">
 						<field_v2:person_dob xpath="travel/travellers/traveller1DOB" title="your" required="true" ageMin="16" ageMax="99" />

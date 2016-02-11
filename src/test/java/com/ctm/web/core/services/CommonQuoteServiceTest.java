@@ -11,6 +11,8 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.validation.Name;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +33,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ProviderService.class, EnvironmentService.class})
+@PrepareForTest(ProviderService.class)
 public class CommonQuoteServiceTest {
 
     private CommonQuoteService commonQuoteService;
@@ -46,7 +48,7 @@ public class CommonQuoteServiceTest {
     private SimpleConnection simpleConnection;
 
     @Mock
-    private RestClient restClient;
+    private ObjectMapper objectMapper;
 
     @Mock
     private ServiceConfiguration serviceConfiguration;
@@ -55,9 +57,9 @@ public class CommonQuoteServiceTest {
     public void setup() throws Exception {
         initMocks(this);
         PowerMockito.mockStatic(ProviderService.class);
-        PowerMockito.mockStatic(EnvironmentService.class);
-        PowerMockito.when(EnvironmentService.getEnvironmentFromSpring()).thenReturn(EnvironmentService.Environment.LOCALHOST);
-        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, restClient, null) {});
+
+        EnvironmentService.setEnvironment("localhost");
+        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, objectMapper) {});
     }
 
     @Test(expected = RouterException.class)
@@ -157,12 +159,10 @@ public class CommonQuoteServiceTest {
 
     @Test(expected = RouterException.class)
     public void testSetFilterNXS() throws Exception {
-        PowerMockito.when(EnvironmentService.getEnvironmentFromSpring()).thenReturn(EnvironmentService.Environment.NXS);
-
-        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, restClient, null) {});
         ProviderFilter providerFilter = mock(ProviderFilter.class);
         when(providerFilter.getProviderKey()).thenReturn("");
         when(providerFilter.getAuthToken()).thenReturn("");
+        EnvironmentService.setEnvironment("nxs");
         commonQuoteService.setFilter(providerFilter);
     }
 
@@ -176,19 +176,18 @@ public class CommonQuoteServiceTest {
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
         when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
         when(simpleConnection.get(requestUrl)).thenReturn("response message");
-//        when(objectMapper.readValue(anyString(), any(JavaType.class))).thenReturn(responseObject);
-        when(restClient.sendPOSTRequest(eq(quoteServiceProperties), eq(verticalType), eq(Endpoint.QUOTE), eq(Object.class), any())).thenReturn(responseObject);
+        when(objectMapper.readValue(anyString(), any(JavaType.class))).thenReturn(responseObject);
 
-//        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
+        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
         doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
 
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);
 
         assertEquals(responseObject, response);
 
-//        verify(quoteServiceProperties, times(1)).getServiceUrl();
-//        verify(simpleConnection, times(1)).get("http://anyURL/quote");
-//        verify(objectMapper, times(1)).readValue(eq("response message"), any(JavaType.class));
+        verify(quoteServiceProperties, times(1)).getServiceUrl();
+        verify(simpleConnection, times(1)).get("http://anyURL/quote");
+        verify(objectMapper, times(1)).readValue(eq("response message"), any(JavaType.class));
 
     }
 
@@ -201,9 +200,8 @@ public class CommonQuoteServiceTest {
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
         when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
         when(simpleConnection.get(anyString())).thenReturn(null);
-        when(restClient.sendPOSTRequest(eq(quoteServiceProperties), eq(verticalType), eq(Endpoint.QUOTE), eq(Object.class), any())).thenThrow(RouterException.class);
 
-//        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
+        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
         doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
 
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);
@@ -258,12 +256,11 @@ public class CommonQuoteServiceTest {
 
     @Test
     public void testQuoteServicePropertiesWithNoEnvironmentOverride() throws Exception {
-        PowerMockito.when(EnvironmentService.getEnvironmentFromSpring()).thenReturn(EnvironmentService.Environment.NXS);
-        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, restClient, null) {});
         Brand brand = mock(Brand.class);
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
         doReturn(serviceConfiguration).when(commonQuoteService).getServiceConfiguration("anyService", brand, verticalType.getCode());
 
+        EnvironmentService.setEnvironment("nxs");
 
         when(serviceConfiguration.getPropertyValueByKey(SERVICE_URL, ALL_BRANDS, ALL_PROVIDERS, SERVICE)).thenReturn("http://currentUrl");
         when(serviceConfiguration.getPropertyValueByKey(DEBUG_PATH, ALL_BRANDS, ALL_PROVIDERS, SERVICE)).thenReturn("debugPath");

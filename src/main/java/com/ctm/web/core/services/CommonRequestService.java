@@ -149,6 +149,7 @@ public abstract class CommonRequestService {
         request.setClientIp(data.getClientIpAddress());
         request.setTransactionId(data.getTransactionId());
         request.setPayload(payload);
+        request.setRequestAt(data.getRequestAt());
         return request;
     }
 

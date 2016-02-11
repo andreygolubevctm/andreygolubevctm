@@ -1,6 +1,5 @@
 package com.ctm.web.energy.apply.controller;
 
-import com.ctm.web.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.exceptions.ServiceRequestException;
@@ -9,8 +8,8 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.resultsData.model.Info;
 import com.ctm.web.core.router.CommonQuoteRouter;
-import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.energy.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.energy.apply.model.request.EnergyApplyPostRequestPayload;
 import com.ctm.web.energy.apply.response.EnergyApplyWebResponseModel;
 import com.ctm.web.energy.apply.services.EnergyApplyService;
@@ -41,7 +40,7 @@ public class EnergyApplyController extends CommonQuoteRouter<EnergyApplyPostRequ
 
     @Autowired
     public EnergyApplyController(SessionDataServiceBean sessionDataServiceBean) {
-        super(sessionDataServiceBean, new ApplicationService());
+        super(sessionDataServiceBean);
     }
 
     @ApiOperation(value = "apply/apply.json", notes = "Submit an energy application", produces = "application/json")

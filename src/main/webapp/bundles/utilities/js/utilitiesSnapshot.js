@@ -23,7 +23,8 @@
         $elecUsage,
         $gasBill,
         $gasStandardUsage,
-        $gasBillingDays;
+        $gasBillingDays,
+        $energyComparisonLabel;
 
     function initUtilitiesSnapshot() {
         $snapshotSituation = $('.snapshotSituation');
@@ -105,6 +106,7 @@
 
     function initYourDetailsSnapshot() {
         $energyComparison = $("input[name='utilities_householdDetails_whatToCompare']"),
+        $energyComparisonLabel = $('#utilities_householdDetails_whatToCompare'),
         $suburb = $('#utilities_householdDetails_location'),
         $elecBillingDays = $('#utilities_estimateDetails_spend_electricity_days'),
         $elecHowCharged = $("input[name='utilities_estimateDetails_electricity_meter']"),
@@ -138,7 +140,7 @@
         data = {},
         $selectedEnergyType = $energyComparison.filter(':checked');
 
-        data.whatToCompare = typeof $selectedEnergyType.val() != 'undefined' ? $selectedEnergyType.next().find('.iconLabel').text() : '';
+        data.whatToCompare = typeof $selectedEnergyType.val() != 'undefined' ? jQuery.trim($energyComparisonLabel.find('label.active').text()) : '';
         data.showWhatToCompare = typeof $selectedEnergyType.val() != 'undefined';
         data.livingIn = $suburb.val();
         data.showLivingIn = $.trim($suburb.val()) !== '';
@@ -164,7 +166,11 @@
             }
         } else {
             // or the radio button group
-            return $elecUsage.filter(':checked').siblings('h3').text();
+            if (meerkat.modules.deviceMediaState.get() === 'lg') {
+                return $elecUsage.filter(':checked').siblings('h3').text();
+            } else {
+                return $elecUsage.filter(':checked').val();
+            }
         }
         return '';
     }
@@ -177,7 +183,11 @@
                 return '';
             }
 
-            return $selectedOptions.filter(':checked').siblings('h3').text();
+            if (meerkat.modules.deviceMediaState.get() === 'lg') {
+                return $selectedOptions.filter(':checked').siblings('h3').text();
+            } else {
+                return $selectedOptions.filter(':checked').val();
+            }
         } else {
             if ($gasBill.filter(':checked').val() === 'Y') {
                 if ($gasStandardUsage.val() !== '' && $gasBillingDays.val() !== '') {

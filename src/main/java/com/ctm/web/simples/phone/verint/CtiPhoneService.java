@@ -1,23 +1,23 @@
-package com.ctm.web.simples.services;
+package com.ctm.web.simples.phone.verint;
 
 import com.ctm.web.core.connectivity.JsonConnection;
 import com.ctm.web.core.connectivity.SimpleConnection;
-import com.ctm.web.core.services.QuoteService;
-import com.ctm.web.simples.dao.InboundPhoneNumberDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.EnvironmentException;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
-import com.ctm.web.simples.model.CallInfo;
-import com.ctm.web.simples.model.InboundPhoneNumber;
+import com.ctm.web.core.services.QuoteService;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.core.web.go.xml.XmlParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.ctm.web.simples.dao.InboundPhoneNumberDao;
+import com.ctm.web.simples.model.CallInfo;
+import com.ctm.web.simples.model.InboundPhoneNumber;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import java.util.IllegalFormatException;
@@ -26,8 +26,8 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.simples.model.CallInfo.STATE_INACTIVE;
 import static java.lang.String.format;
 
-public class PhoneService {
-	private static final Logger LOGGER = LoggerFactory.getLogger(PhoneService.class);
+public class CtiPhoneService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(CtiPhoneService.class);
 	public static final String CTI_MAKE_CALL = "/dataservices/makeCall?accessToken=&extension=%s&numberToCall=%s";
 
 	/**
@@ -235,7 +235,7 @@ public class PhoneService {
 			// Look for extension on session object, if not found, get it from special service, then save it to session for next time.
 			String extension = authData.getExtension();
 			if(extension == null){
-				extension = PhoneService.getExtensionByAgentId(settings, agentId);
+				extension = CtiPhoneService.getExtensionByAgentId(settings, agentId);
 				if(extension != null){
 					authData.setExtension(extension);
 				} else {
@@ -244,7 +244,7 @@ public class PhoneService {
 			}
 
 			if(extension != null){
-				String vdn = PhoneService.getVdnByExtension(settings, extension);
+				String vdn = CtiPhoneService.getVdnByExtension(settings, extension);
 				if(vdn != null){
 					return getInboundPhoneDetailsByVdn(vdn);
 				}

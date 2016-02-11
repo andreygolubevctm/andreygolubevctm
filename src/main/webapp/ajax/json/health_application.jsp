@@ -20,6 +20,8 @@
 <jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService" scope="page" />
 <c:set var="validationResponse" value="${healthApplicationService.setUpApplication(data, pageContext.request, changeOverRebates.getEffectiveStart())}" />
 
+<jsp:useBean id="healthLeadService" class="com.ctm.web.health.services.HealthLeadService" scope="page" />
+
 <c:set var="tranId" value="${data.current.transactionId}" />
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
 <c:set var="continueOnAggregatorValidationError" value="${true}" />
@@ -54,6 +56,10 @@
 		<c:set var="errorMessage" value="You have attempted to submit this join more than 5 times." />
 		<core_v1:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
 		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "submission")}
+
+		<c:if test="${not empty data['health/privacyoptin'] and data['health/privacyoptin'] eq 'Y'}">
+			${healthLeadService.sendLead(4, data, pageContext.getRequest(), 'PENDING')}
+		</c:if>
 
 	</c:when>
 	<%-- check the latest touch, to make sure a join is not already actively in progress [HLT-1092] --%>
@@ -167,12 +173,13 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 						/>
 		<c:choose>
 					<c:when test="${isValid || continueOnAggregatorValidationError}">
-				<c:if test="${!isValid}">
-					<c:forEach var="validationError"  items="${validationErrors}">
-						<error:non_fatal_error origin="health_application.jsp"
-									errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
-					</c:forEach>
-				</c:if>
+						<c:if test="${!isValid}">
+							<c:forEach var="validationError"  items="${validationErrors}">
+								<error:non_fatal_error origin="health_application.jsp"
+											errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
+							</c:forEach>
+							${healthLeadService.sendLead(4, data, pageContext.request, 'PENDING')}
+						</c:if>
 <%-- //FIX: turn this back on when you are ready!!!!
 <%-- Write to the stats database
 <agg_v1:write_stats tranId="${tranId}" debugXml="${debugXml}" />
@@ -204,6 +211,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 		<%-- Collate fund error messages, add fail touch and add quote comment --%>
 			<c:if test="${not empty errorMessage}">
 			    <health_v1:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
+				${healthLeadService.sendLead(4, data, pageContext.request, 'PENDING')}
 			</c:if>
 		</x:if>
 
@@ -211,6 +219,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 		<x:choose>
 			<x:when select="$resultOBJ//*[local-name()='success'] = 'true'">
 				<core_v1:transaction touch="C" noResponse="true" productId="${productId}"/>
+				${healthLeadService.sendLead(4, data, pageContext.request, 'SOLD')}
 
 						<c:set var="ignore">
 								<jsp:useBean id="joinService" class="com.ctm.web.core.confirmation.services.JoinService" scope="page" />
@@ -266,6 +275,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 					<%-- if online user record a join --%>
 					<c:when test="${empty callCentre && empty errorMessage}">
 						<health_v1:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" resultJson="${healthApplicationService.createFailedResponse(tranId, pageContext.session.id)}" />
+						${healthLeadService.sendLead(4, data, pageContext.request, 'PENDING')}
 					</c:when>
 					<%-- else just record a failure --%>
 					<c:when test="${empty errorMessage}">

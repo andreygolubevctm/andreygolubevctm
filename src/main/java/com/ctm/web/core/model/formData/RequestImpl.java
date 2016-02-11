@@ -1,40 +1,46 @@
 package com.ctm.web.core.model.formData;
 
-public class RequestImpl implements Request {
+import java.time.LocalDateTime;
+
+public abstract class RequestImpl implements Request {
 
     private String clientIpAddress;
 
-    private Long transactionId;
-
     private String environmentOverride;
 
-    @Override
+    private Long transactionId;
+
+    private LocalDateTime requestAt;
+
     public Long getTransactionId() {
         return transactionId;
     }
 
-    @Override
     public void setTransactionId(Long transactionId) {
         this.transactionId = transactionId;
     }
 
-    @Override
-    public void setClientIpAddress(String clientIpAddress) {
-        this.clientIpAddress = clientIpAddress;
-    }
-
-    @Override
     public String getClientIpAddress() {
         return clientIpAddress;
     }
 
-    @Override
+    public void setClientIpAddress(String clientIpAddress) {
+        this.clientIpAddress = clientIpAddress;
+    }
+
+    public String getEnvironmentOverride() {
+        return environmentOverride;
+    }
+
     public void setEnvironmentOverride(String environmentOverride) {
         this.environmentOverride = environmentOverride;
     }
 
-    @Override
-    public String getEnvironmentOverride() {
-        return environmentOverride;
+    public LocalDateTime getRequestAt() {
+        return requestAt;
+    }
+
+    public void setRequestAt(LocalDateTime requestAt) {
+        this.requestAt = requestAt;
     }
 }

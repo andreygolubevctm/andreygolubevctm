@@ -257,8 +257,8 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
         final ConfirmationData confirmationData = new ConfirmationData(data.getTransactionId().toString(),
                 LocalDate.parse(data.getQuote().getPayment().getDetails().getStart(), AUS_FORMAT),
                 Frequency.fromCode(data.getQuote().getPayment().getDetails().getFrequency()).name(),
-                providerContentService.getProviderContentText(context.getHttpServletRequest(), data.getHealth().getApplication().getProviderName(), "ABT"),
-                providerContentService.getProviderContentText(context.getHttpServletRequest(), data.getHealth().getApplication().getProviderName(), "NXT"),
+                providerContentService.getProviderContentText(context.getHttpServletRequest(), data.getQuote().getApplication().getProviderName(), "ABT"),
+                providerContentService.getProviderContentText(context.getHttpServletRequest(), data.getQuote().getApplication().getProviderName(), "NXT"),
                 productSelected,
                 response.getProductId());
 
