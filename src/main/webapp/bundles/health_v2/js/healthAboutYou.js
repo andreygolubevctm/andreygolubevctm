@@ -92,7 +92,7 @@
 			var $this = $(this);
 
 			// Don't action on the DOB input fields; wait until it's serialised to the hidden field.
-			if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year') || ($this.attr('name').indexOf('partner_dob') >= 0 && $this.val() === "")) return;
+			if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year') || ($this.attr('name').indexOf('primary_dob') >= 0 && $this.val() === "") || ($this.attr('name').indexOf('partner_dob') >= 0 && $this.val() === "")) return;
 
 			togglePrimaryContinuousCover();
 			togglePartnerContinuousCover();
@@ -150,7 +150,7 @@
 	}
 
 	function setRebate(){
-		meerkat.modules.health.loadRatesBeforeResultsPage(function (rates) {
+		meerkat.modules.health.loadRatesBeforeResultsPage(true, function (rates) {
 			if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
 				$rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
 				$healthCoverRebate.slideDown();

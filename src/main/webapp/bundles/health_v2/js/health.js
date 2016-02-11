@@ -822,14 +822,14 @@
 		meerkat.modules.healthResults.setLhcApplicable(rates.loading);
 	}
 
-	function loadRatesBeforeResultsPage(callback) {
+	function loadRatesBeforeResultsPage(forceRebate, callback) {
 
 		var $healthCoverDetails = $('#startForm');
 
 		var postData = {
 			dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
 			income:$healthCoverDetails.find(':input[name="health_healthCover_income"]').val() || 0,
-			rebate_choice: $healthCoverDetails.find('input[name="health_healthCover_rebate"]:checked').val() || 'Y',
+			rebate_choice: forceRebate === true ? 'Y' : $healthCoverDetails.find('input[name="health_healthCover_rebate"]:checked').val(),
 			primary_dob: $healthCoverDetails.find('#health_healthCover_primary_dob').val(),
 			primary_loading:$healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
 			primary_current: $healthCoverDetails.find('input[name="health_healthCover_primary_cover"]:checked').val(),
