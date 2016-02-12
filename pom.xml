@@ -63,6 +63,7 @@
         <!-- Test dependencies -->
         <powermock.version>1.6.4</powermock.version>
         <junit.version>4.12</junit.version>
+        <mariaDB4j.version>2.1.3</mariaDB4j.version>
 
         <!-- CTM Test dependencies -->
         <common-test.version>1.6.0</common-test.version>
@@ -796,98 +797,6 @@
                                 <goals>
                                     <goal>run</goal>
                                 </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.cargo</groupId>
-                        <artifactId>cargo-maven2-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>start-tomcat</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>start</goal>
-                                </goals>
-                                <configuration>
-                                    <container>
-                                        <containerId>${tomcat.container.id.integration}</containerId>
-                                        <artifactInstaller>
-                                            <groupId>org.apache.tomcat</groupId>
-                                            <artifactId>tomcat</artifactId>
-                                            <version>${tomcat.version}</version>
-                                        </artifactInstaller>
-                                        <systemProperties>
-                                            <spring.profiles.active>INTG</spring.profiles.active>
-                                            <mysqld.port.integration>${mysqld.port.integration}</mysqld.port.integration>
-                                        </systemProperties>
-                                        <dependencies>
-                                            <dependency>
-                                                <groupId>mysql</groupId>
-                                                <artifactId>mysql-connector-java</artifactId>
-                                            </dependency>
-                                        </dependencies>
-                                        <timeout>240000</timeout>
-                                    </container>
-                                    <configuration>
-                                        <properties>
-                                            <cargo.servlet.port>${tomcat.port.servlet.integration}</cargo.servlet.port>
-                                            <cargo.rmi.port>${tomcat.port.rmi.integration}</cargo.rmi.port>
-                                            <cargo.tomcat.ajp.port>${tomcat.port.ajp.integration}</cargo.tomcat.ajp.port>
-                                        </properties>
-                                        <configfiles>
-                                            <configfile>
-                                                <file>${project.basedir}/src/test/resources/application-INTG.properties</file>
-                                                <todir>common/classes</todir>
-                                                <tofile>application-INTG.properties</tofile>
-                                            </configfile>
-                                        </configfiles>
-                                    </configuration>
-                                    <deployables>
-                                        <deployable>
-                                            <type>war</type>
-                                            <location>${project.build.directory}/${project.build.finalName}${dash.feature.classifier}.${project.packaging}</location>
-                                            <properties>
-                                                <context>/${web.context.integration}</context>
-                                            </properties>
-                                        </deployable>
-                                    </deployables>
-                                    <skip>${maven.test.skip}</skip>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>stop-tomcat</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                                <configuration>
-                                    <container>
-                                        <containerId>${tomcat.container.id.integration}</containerId>
-                                        <artifactInstaller>
-                                            <groupId>org.apache.tomcat</groupId>
-                                            <artifactId>tomcat</artifactId>
-                                            <version>${tomcat.version}</version>
-                                        </artifactInstaller>
-                                    </container>
-                                    <configuration>
-                                        <properties>
-                                            <cargo.servlet.port>${tomcat.port.servlet.integration}</cargo.servlet.port>
-                                            <cargo.rmi.port>${tomcat.port.rmi.integration}</cargo.rmi.port>
-                                            <cargo.tomcat.ajp.port>${tomcat.port.ajp.integration}</cargo.tomcat.ajp.port>
-                                        </properties>
-                                    </configuration>
-                                    <deployables>
-                                        <deployable>
-                                            <type>war</type>
-                                            <location>${project.build.directory}/${project.build.finalName}${dash.feature.classifier}.${project.packaging}</location>
-                                            <properties>
-                                                <context>/${web.context.integration}</context>
-                                            </properties>
-                                        </deployable>
-                                    </deployables>
-                                    <skip>${maven.test.skip}</skip>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
