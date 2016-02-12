@@ -38,8 +38,8 @@ public class LifeApplyCompleteService {
                               String emailAddress,
                               String productId,
                               LifeApplyResponse applyResponse,
-                              String company) {
-        if("ozicare".equals(company) && com.ctm.interfaces.common.types.Status.REGISTERED.equals(applyResponse.getResponseStatus())){
+                              boolean isOzicare) {
+        if(isOzicare && com.ctm.interfaces.common.types.Status.REGISTERED.equals(applyResponse.getResponseStatus())){
             try {
                 lifeSendEmailService.sendEmail(transactionId,emailAddress, request);
             } catch (SendEmailException e) {

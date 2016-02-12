@@ -1,7 +1,7 @@
 package com.ctm.web.life.apply.controller;
 
 import com.ctm.apply.model.response.ApplyResponse;
-import com.ctm.web.apply.exceptions.FailedToRegisterException;
+import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.exceptions.ServiceRequestException;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;

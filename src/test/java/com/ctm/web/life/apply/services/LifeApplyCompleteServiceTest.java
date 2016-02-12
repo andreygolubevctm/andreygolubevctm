@@ -37,7 +37,7 @@ public class LifeApplyCompleteServiceTest {
     private Long transactionId = 10000L;
     private String emailAddress = "emailAddress";
     private String productId = "productId";
-    private String company = "ozicare";
+    private boolean isOzicare = true;
 
     @Before
     public void setUp() throws Exception {
@@ -56,7 +56,7 @@ public class LifeApplyCompleteServiceTest {
                  emailAddress,
                  productId,
                 applyResponse,
-                 company);
+                isOzicare);
         verify( leadFeedTouchService).recordTouch(Touch.TouchType.SOLD, productId, transactionId);
     }
 }

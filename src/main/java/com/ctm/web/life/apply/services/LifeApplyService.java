@@ -4,7 +4,7 @@ import com.ctm.apply.model.response.ApplyResponse;
 import com.ctm.life.apply.model.request.lifebroker.LifeBrokerApplyRequest;
 import com.ctm.life.apply.model.request.ozicare.OzicareApplyRequest;
 import com.ctm.life.apply.model.response.LifeApplyResponse;
-import com.ctm.web.apply.exceptions.FailedToRegisterException;
+import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
@@ -24,6 +24,7 @@ import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
 import com.ctm.web.life.apply.response.LifeApplyWebResponse;
 import com.ctm.web.life.apply.response.LifeApplyWebResponseResults;
 import com.ctm.web.life.form.model.LifeQuote;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -67,7 +68,8 @@ public class LifeApplyService extends CommonRequestService {
         final Object applyRequest;
 
         String endpoint =  Endpoint.APPLY.getValue();
-        if("ozicare".equals(model.getCompany())){
+        boolean isOzicare = StringUtils.equalsIgnoreCase("Ozicare" , model.getCompany());
+        if(isOzicare){
             endpoint += OzicareApplyRequest.PATH;
             applyRequest = requestAdapter.adapt(model);
         } else {
@@ -78,8 +80,9 @@ public class LifeApplyService extends CommonRequestService {
                 LifeApplyResponse.class, requestAdapter.getProductId(model));
         LifeApplyWebResponseResults.Builder responseBuilder = responseAdapter.adapt(applyResponse);
         responseBuilder.transactionId(model.getTransactionId());
-        lifeApplyCompleteService.handleSuccess(model.getTransactionId(), request, requestAdapter.getEmailAddress(lifeQuoteRequest), requestAdapter.getProductId(model), applyResponse,
-                model.getCompany());
+        lifeApplyCompleteService.handleSuccess(model.getTransactionId(), request,
+                requestAdapter.getEmailAddress(lifeQuoteRequest), requestAdapter.getProductId(model), applyResponse,
+                isOzicare);
         return new LifeApplyWebResponse.Builder().results(responseBuilder.build()).build();
 	}
 

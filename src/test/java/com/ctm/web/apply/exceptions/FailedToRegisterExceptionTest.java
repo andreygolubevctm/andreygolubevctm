@@ -1,6 +1,7 @@
 package com.ctm.web.apply.exceptions;
 
 import com.ctm.apply.model.response.ApplyResponse;
+import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

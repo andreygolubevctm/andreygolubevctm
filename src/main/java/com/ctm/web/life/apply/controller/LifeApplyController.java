@@ -1,6 +1,6 @@
 package com.ctm.web.life.apply.controller;
 
-import com.ctm.web.apply.exceptions.FailedToRegisterException;
+import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.exceptions.ServiceRequestException;
@@ -29,8 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 
-import static com.ctm.commonlogging.common.LoggingArguments.kv;
-
 @Api(basePath = "/rest/life", value = "Life Apply")
 @RestController
 @RequestMapping("/rest/life")
@@ -54,7 +52,6 @@ public class LifeApplyController extends CommonQuoteRouter<LifeApplyWebRequest> 
                                       BindingResult result, HttpServletRequest servletRequest) throws IOException,
             ServiceConfigurationException,
             DaoException, SessionException {
-        LOGGER.debug("Request parameters={}", kv("paramters", servletRequest.getParameterMap()));
 
         if (result.hasErrors()) {
             for (ObjectError e : result.getAllErrors()) {

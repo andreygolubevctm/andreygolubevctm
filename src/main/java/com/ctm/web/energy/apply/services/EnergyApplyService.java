@@ -15,7 +15,7 @@ import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceRequestAdapter;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceResponseAdapter;
-import com.ctm.web.apply.exceptions.FailedToRegisterException;
+import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.energy.apply.model.request.EnergyApplyPostRequestPayload;
 import com.ctm.web.energy.apply.response.EnergyApplyWebResponseModel;
 import com.fasterxml.jackson.databind.ObjectMapper;

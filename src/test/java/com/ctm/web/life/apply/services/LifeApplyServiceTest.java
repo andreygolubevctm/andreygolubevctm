@@ -3,7 +3,7 @@ package com.ctm.web.life.apply.services;
 import com.ctm.apply.model.response.ApplyResponse;
 import com.ctm.data.common.TestMariaDbBean;
 import com.ctm.life.apply.model.response.LifeApplyResponse;
-import com.ctm.web.apply.exceptions.FailedToRegisterException;
+import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.Application;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.model.session.SessionData;
