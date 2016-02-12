@@ -27,10 +27,6 @@
 				<div class="policySummaryTemplateHolder productSummary horizontal"></div>
 			</c:otherwise>
 		</c:choose>
-		<div class="policyPriceWarning">You have made changes that will possibly affect your policy price</div>
-		<div class="footer hidden">
-			<a href="javascript:;" class="link-health-cover-details">Edit your details</a>
-		</div>
 	</div>
 
 	<c:if test="${healthAlternatePricingActive eq true}">
