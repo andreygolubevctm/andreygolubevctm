@@ -6,10 +6,10 @@ import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.transaction.model.TransactionDetail;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -20,13 +20,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.transaction.utils.TransactionDetailsUtil.checkLengthTextValue;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Data Access Object to interface with the transaction_details table.
@@ -288,9 +288,15 @@ public class TransactionDetailsDao {
 		final String sql = "SELECT xpath, textValue"
 				+ " FROM aggregator.transaction_details"
 				+ " WHERE transactionId = (:transactionId)"
-				+ "     AND xpath like (:xpath)";
-		TransactionDetail result = jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> createTransactionDetail(rs));
-		return Optional.ofNullable(result);
+				+ " AND xpath like (:xpath) "
+				+ " LIMIT 1";
+		try {
+			TransactionDetail result = jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> createTransactionDetail(rs));
+			return Optional.of(result);
+		}catch(EmptyResultDataAccessException e) {
+			// not an issue just means no rows found
+			return Optional.empty();
+		}
 	}
 
 	private TransactionDetail createTransactionDetail(ResultSet rs) throws SQLException {
@@ -393,11 +399,7 @@ public class TransactionDetailsDao {
 	}
 
 	/** returns transaction details based off transactionId.
-	 * @param vertical
-	 * @param type
-	 * @param email
 	 * @param transactionId
-	 * @param transactionDetails
 	 * @throws DaoException
 	 */
 	public List<TransactionDetail> getTransactionDetails(long transactionId) throws DaoException {
