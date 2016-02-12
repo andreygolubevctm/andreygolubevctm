@@ -42,7 +42,7 @@ public class InInIcwsService {
 	public static final String SESSION_ID = "ININ-ICWS-Session-ID";
 	public static final String CSRF_TOKEN = "ININ-ICWS-CSRF-Token";
 
-	public static final List<String> SUBSCRIPTION_ATTRIBUTES = asList("Eic_CallIdKey", "Eic_State");
+	public static final List<String> SUBSCRIPTION_ATTRIBUTES = asList("Eic_CallIdKey", "Eic_State", "Eic_CallStateString");
 	public static final String CIC_URL = "cicUrl";
 	private static final String CONNECTION_URL = "${cicUrl}/connection";
 	private static final String QUEUE_SUBSCRIPTION_URL = "${cicUrl}/${sessionId}/messaging/subscriptions/queues/${subscriptionName}";
@@ -196,10 +196,10 @@ public class InInIcwsService {
 				// Look at messages that have added or changed interactions
 				.filter(message -> message.getInteractionsAdded().size() > 0 || message.getInteractionsChanged().size() > 0)
 				// Look at messages that have a valid call state
-				.filter(message -> message.getInteractionsAdded().stream().filter(i -> i.getAttributes().callState != null).count() > 0
-						|| message.getInteractionsChanged().stream().filter(i -> i.getAttributes().callState != null).count() > 0)
+				.filter(message -> message.getInteractionsAdded().stream().filter(this::isValidInteractionState).count() > 0
+						|| message.getInteractionsChanged().stream().filter(this::isValidInteractionState).count() > 0)
 				.map(message -> {
-					LOGGER.debug("Checking message: " + message.toString());
+					LOGGER.info("Checking interaction message: {}", message);
 					return message;
 				})
 				// Stream the two interaction arrays and get the first ID
@@ -217,6 +217,11 @@ public class InInIcwsService {
 						return Observable.error(new Exception("Could not find valid interactionId"));
 					}
 				});
+	}
+
+	private boolean isValidInteractionState(final Interaction i) {
+		// C = Connected - the call object is connected to a user at the Client level.
+		return StringUtils.equalsIgnoreCase("C", i.getAttributes().callState);
 	}
 
 	/**
