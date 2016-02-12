@@ -176,7 +176,15 @@
 }
 
 /* SHOW/HIDE RIGHT PANELS */
-body[data-step="start"], body[data-step="contact"] {
+body[data-step="start"]{
+	.sidebar-box {
+		&.quoteSnapshot {display:block;}
+		&.callCentreHelp {display:block;}
+		&.testimonials {display:block;}
+		&.pricePromiseBox {display:block;}
+	}
+}
+body[data-step="contact"] {
 	.sidebar-box {
 		&.quoteSnapshot {display:block;}
 		&.callCentreHelp {display:none;}
