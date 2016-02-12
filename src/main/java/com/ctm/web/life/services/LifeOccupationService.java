@@ -33,7 +33,8 @@ public class LifeOccupationService extends CommonRequestService {
 
     public List<Occupation> getOccupations(Brand brand) throws DaoException, IOException, ServiceConfigurationException {
         final Vertical.VerticalType verticalType = LIFE;
-        return getRestClient().sendGETRequest(getQuoteServiceProperties("quoteServiceBER", brand, verticalType.getCode(),
+        return getRestClient().sendGETRequest(
+                getQuoteServiceProperties("quoteServiceBER", brand, verticalType.getCode(),
                         Optional.ofNullable(StringUtils.trimToNull(environmentOverride))),
                 verticalType, Endpoint.instanceOf("occupations"),
                 new TypeReference<List<Occupation>>() {

@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LifeApplyControllerTest {
 
     @Mock
-    LifeApplyService energyService;
+    LifeApplyService service;
     @Mock
     SessionDataServiceBean sessionDataServiceBean;
     @Mock
@@ -86,7 +86,7 @@ public class LifeApplyControllerTest {
     @Test
     public void applyServiceRequestException() throws Exception {
         ServiceRequestException e = new ServiceRequestException();
-        when(energyService.apply(anyObject() ,anyObject(), anyObject())).thenThrow(e);
+        when(service.apply(anyObject() ,anyObject(), anyObject())).thenThrow(e);
         mvc.perform(
                 MockMvcRequestBuilders
                         .post("/rest/life/apply/apply.json")
@@ -109,7 +109,7 @@ public class LifeApplyControllerTest {
     @Test
     public void applyFailedToRegisterException() throws Exception {
         FailedToRegisterException e = new FailedToRegisterException( applyResponse,  transactionId);
-        when(energyService.apply(anyObject() ,anyObject(), anyObject())).thenThrow(e);
+        when(service.apply(anyObject() ,anyObject(), anyObject())).thenThrow(e);
         mvc.perform(
                 MockMvcRequestBuilders
                         .post("/rest/life/apply/apply.json")

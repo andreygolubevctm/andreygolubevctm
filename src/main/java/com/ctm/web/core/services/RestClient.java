@@ -34,7 +34,8 @@ public class RestClient {
         this.objectMapper = objectMapper;
     }
 
-    public <RESPONSE> RESPONSE sendPOSTRequest(QuoteServiceProperties serviceProperties, Vertical.VerticalType vertical, Endpoint endpoint,
+    public <RESPONSE> RESPONSE sendPOSTRequest(QuoteServiceProperties serviceProperties, Vertical.VerticalType vertical,
+                                               Endpoint endpoint,
                                                Class<RESPONSE> responseClass, Object requestObj)
             throws ServiceConfigurationException, DaoException, IOException {
         return sendPOSTRequest( serviceProperties,  vertical,  endpoint.getValue(),

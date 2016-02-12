@@ -36,7 +36,7 @@ public class LifeServiceRequestAdapter {
     }
 
     private static com.ctm.life.model.request.SmokerStatus getSmokingStatus(com.ctm.web.life.form.model.Applicant person) {
-        return YesNo.getYesNoBoolean(person.getSmoker()) ? com.ctm.life.model.request.SmokerStatus.SMOKER : com.ctm.life.model.request.SmokerStatus.NON_SMOKER;
+        return YesNo.getBooleanValue(person.getSmoker()) ? com.ctm.life.model.request.SmokerStatus.SMOKER : com.ctm.life.model.request.SmokerStatus.NON_SMOKER;
     }
 
     private static com.ctm.life.model.request.Gender getGender(com.ctm.web.life.form.model.Gender gender) {
@@ -55,8 +55,10 @@ public class LifeServiceRequestAdapter {
     public static Applicants getApplicants(Applicant primary , Applicant partner) {
         final Applicants.Builder builder = Applicants.newBuilder()
                 .primary(createApplicant(primary, primary.getInsurance()));
-        Optional.ofNullable(partner)
-                .ifPresent(p -> builder.partner(createPartner(p, primary)));
+        if(primary.getInsurance().getPartner().getBooleanValue()) {
+            Optional.ofNullable(partner)
+                    .ifPresent(p -> builder.partner(createPartner(p, primary)));
+        }
         return builder.build();
     }
 
@@ -70,7 +72,7 @@ public class LifeServiceRequestAdapter {
     private static com.ctm.life.model.request.Partner createPartner(com.ctm.web.life.form.model.Applicant partner, com.ctm.web.life.form.model.Applicant primary) {
         final Partner.Builder builder = setApplicantBuilder(Partner.newPartnerBuilder(), partner);
         final Insurance primaryInsurance = primary.getInsurance();
-        if(YesNo.getYesNoBoolean(primaryInsurance.getSamecover())){
+        if(YesNo.getBooleanValue(primaryInsurance.getSamecover()) && primaryInsurance.getPartner().getBooleanValue()){
             builder.sameCoverDetailsAsPrimary(true);
         } else {
             builder.sameCoverDetailsAsPrimary(false)

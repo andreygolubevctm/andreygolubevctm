@@ -609,6 +609,7 @@
             <groupId>com.ctm.life</groupId>
             <artifactId>life-apply-model</artifactId>
             <version>${life-apply-model.version}</version>
+            <classifier>BER-106</classifier>
         </dependency>
 
         <dependency>

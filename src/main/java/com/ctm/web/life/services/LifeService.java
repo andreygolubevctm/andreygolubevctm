@@ -15,10 +15,12 @@ import java.util.List;
  * @author lbuchanan
  *
  */
+@Deprecated
 public class LifeService {
 
 	private boolean valid = false;
 	private String vertical;
+
 	/**
 	 * Used by JSP
 	 * @param request

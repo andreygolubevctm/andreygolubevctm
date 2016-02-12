@@ -119,4 +119,44 @@ public class Premium {
     public void setInfo(String info) {
         this.info = info;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Premium premium = (Premium) o;
+
+        if (insurerContact != null ? !insurerContact.equals(premium.insurerContact) : premium.insurerContact != null)
+            return false;
+        if (productId != null ? !productId.equals(premium.productId) : premium.productId != null) return false;
+        if (name != null ? !name.equals(premium.name) : premium.name != null) return false;
+        if (description != null ? !description.equals(premium.description) : premium.description != null) return false;
+        if (belowMinimum != null ? !belowMinimum.equals(premium.belowMinimum) : premium.belowMinimum != null)
+            return false;
+        if (company != null ? !company.equals(premium.company) : premium.company != null) return false;
+        if (serviceProvider != null ? !serviceProvider.equals(premium.serviceProvider) : premium.serviceProvider != null)
+            return false;
+        if (stars != null ? !stars.equals(premium.stars) : premium.stars != null) return false;
+        if (value != null ? !value.equals(premium.value) : premium.value != null) return false;
+        if (pds != null ? !pds.equals(premium.pds) : premium.pds != null) return false;
+        return info != null ? info.equals(premium.info) : premium.info == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = insurerContact != null ? insurerContact.hashCode() : 0;
+        result = 31 * result + (productId != null ? productId.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (belowMinimum != null ? belowMinimum.hashCode() : 0);
+        result = 31 * result + (company != null ? company.hashCode() : 0);
+        result = 31 * result + (serviceProvider != null ? serviceProvider.hashCode() : 0);
+        result = 31 * result + (stars != null ? stars.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (pds != null ? pds.hashCode() : 0);
+        result = 31 * result + (info != null ? info.hashCode() : 0);
+        return result;
+    }
 }
