@@ -20,7 +20,8 @@
 		$rebateLegend,
 		$healthCoverDetailsDependants,
 		$healthCoverIncomeMessage,
-		$partnersDetails;
+		$partnersDetails,
+		$lhcContainers;
 
 	function init(){
 		$(document).ready(function () {
@@ -53,7 +54,8 @@
 		$tierDropdowns = $aboutYouContainer.find('#health_healthCover_healthCvr, #health_healthCover_dependants'),
 		$primaryDOB = $aboutYouContainer.find('#health_healthCover_primary_dob'),
 		$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend'),
-		$partnersDetails = $('#health_application').find('.health-person-details-partner, #partnerFund');
+		$partnersDetails = $('#health_application').find('.health-person-details-partner, #partnerFund'),
+		$lhcContainers = $('#primary-health-cover, #partner-health-cover, #australian-government-rebate');
 
 		if (!healthChoices.hasSpouse()) {
 			$partnerContainer.hide();
@@ -90,7 +92,8 @@
 			setupForm();
 		});
 
-		$aboutYouContainer.find(':input').on('change', function updateRebateContinuousCover(event) {
+		$lhcContainers.find(':input').on('change', function updateRebateContinuousCover(event) {
+
 			var $this = $(this);
 
 			// Don't action on the DOB input fields; wait until it's serialised to the hidden field.
@@ -110,7 +113,7 @@
 		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($primaryDOB.val())) {
 			$primaryContinuousCoverContainer.slideDown();
 		} else {
-			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('label:nth-child(2)').trigger('click').end().slideUp();
+			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).end().slideUp();
 		}
 	}
 
@@ -118,7 +121,7 @@
 		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($partnerDOB.val())) {
 			$partnerContinuousCoverContainer.slideDown();
 		} else {
-			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('label:nth-child(2)').trigger('click').end().slideUp();
+			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).end().slideUp();
 		}
 	}
 
@@ -151,8 +154,8 @@
 			 break;
 		 }
 
-		togglePrimaryContinuousCover(isInitMode);
-		togglePartnerContinuousCover(isInitMode);
+		togglePrimaryContinuousCover();
+		togglePartnerContinuousCover();
 	}
 
 	function setRebate(){
