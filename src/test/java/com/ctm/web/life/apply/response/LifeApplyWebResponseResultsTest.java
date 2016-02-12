@@ -28,10 +28,10 @@ public class LifeApplyWebResponseResultsTest {
 
     @Test
     public void testGetTransactionId() throws Exception {
-        long transactionId = 1000L;
+        Long transactionId = 1000L;
         LifeApplyWebResponseResults results = new LifeApplyWebResponseResults.Builder()
                 .transactionId(transactionId).build();
-        assertEquals(transactionId , results.getSelection());
+        assertEquals(transactionId , results.getTransactionId());
 
     }
 }

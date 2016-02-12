@@ -4,8 +4,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
-<jsp:useBean id="lifeSendEmailService" class="com.ctm.web.life.apply.services.LifeSendEmailService" scope="application" />
-LifeSendEmailService
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.life_submit_application')}" />
 
 <session:get settings="true" authenticated="true" />
