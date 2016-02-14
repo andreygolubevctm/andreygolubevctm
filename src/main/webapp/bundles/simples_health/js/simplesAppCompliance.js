@@ -36,7 +36,7 @@
             }
 
             meerkat.modules.errorHandling.error({
-                message: "The recording could not be paused/started: " + errorMessage +".<br><br>Please notify your supervisor if this continues to occur.",
+                message: "The recording could not be paused/started: <strong>" + errorMessage +"</strong>.<br><br>Remember that to pause/resume you must be on a call and the call can not be on hold.<br>Please notify your supervisor if this continues to occur.",
                 page: "application_compliance.tag",
                 description: "health_application_compliance.callback(). AJAX Request failed. state=" + isMuted + '. ' + errorThrown,
                 data: jqXHR,
