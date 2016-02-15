@@ -15,4 +15,13 @@ public class InteractionAttributes {
 
 	public InteractionAttributes() {
 	}
+
+	@Override
+	public String toString() {
+		return "InteractionAttributes{" +
+				"callIdKey='" + callIdKey + '\'' +
+				", callState='" + callState + '\'' +
+				", callStateString='" + callStateString + '\'' +
+				'}';
+	}
 }

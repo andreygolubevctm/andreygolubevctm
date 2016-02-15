@@ -25,7 +25,6 @@ import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Stream;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static java.util.Arrays.asList;
@@ -96,15 +95,15 @@ public class InInIcwsService {
 		// Get session connection
 		return connection(cicUrl)
 				.flatMap(connectionResp ->
-								// Put a subscription on agent activity
-								queueSubscription(cicUrl, agentUsername, connectionResp)
-										.delay(1, TimeUnit.SECONDS)
-												// Get messages of agent activity (should give us the current phone call status)
-										.flatMap(s -> getInteractionId(cicUrl, connectionResp))
-												// Pause or resume the call
-										.flatMap(iId -> securePauseRequest(cicUrl, securePauseType, iId, connectionResp))
-										.flatMap(pauseResp -> Observable.just(PauseResumeResponse.success()))
-										.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable))
+						// Put a subscription on agent activity
+						queueSubscription(cicUrl, agentUsername, connectionResp)
+								.delay(1, TimeUnit.SECONDS)
+								// Get messages of agent activity (should give us the current phone call status)
+								.flatMap(s -> getInteractionId(cicUrl, connectionResp))
+								// Pause or resume the call
+								.flatMap(iId -> securePauseRequest(cicUrl, securePauseType, iId, connectionResp))
+								.flatMap(pauseResp -> Observable.just(PauseResumeResponse.success()))
+								.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable))
 				);
 	}
 
@@ -192,23 +191,22 @@ public class InInIcwsService {
 
 	private Observable<String> getInteractionId(final String cicUrl, final ResponseEntity<ConnectionResp> connectionResp) {
 		final Observable<Message> messages = getMessages(cicUrl, connectionResp);
-		Observable<Optional<String>> interactionId = messages
+		final Observable<Optional<String>> interactionId = messages
 				// Look at messages that have added or changed interactions
 				.filter(message -> message.getInteractionsAdded().size() > 0 || message.getInteractionsChanged().size() > 0)
-				// Look at messages that have a valid call state
-				.filter(message -> message.getInteractionsAdded().stream().filter(this::isValidInteractionState).count() > 0
-						|| message.getInteractionsChanged().stream().filter(this::isValidInteractionState).count() > 0)
-				.map(message -> {
-					LOGGER.info("Checking interaction message: {}", message);
-					return message;
+				// Smoosh all those interactions into a new stream
+				.flatMap(msgs -> Observable.merge(Observable.from(msgs.getInteractionsAdded()), Observable.from(msgs.getInteractionsChanged())))
+				.map(interaction -> {
+					LOGGER.info("Possible interaction: {}", interaction);
+					return interaction;
 				})
-				// Stream the two interaction arrays and get the first ID
-				.map(message -> Stream.concat(message.getInteractionsAdded().stream(), message.getInteractionsChanged().stream())
-							.findFirst()
-							.map(Interaction::getInteractionId));
+				// Find interaction with valid call state
+				.filter(this::isValidInteractionState)
+				.map(Interaction::getInteractionId)
+				.map(Optional::of)
+				.firstOrDefault(Optional.empty());
 
 		return interactionId
-				.defaultIfEmpty(Optional.empty())
 				.flatMap(s -> {
 					LOGGER.debug("getInteractionId: {}", s);
 					if (s.isPresent()) {
