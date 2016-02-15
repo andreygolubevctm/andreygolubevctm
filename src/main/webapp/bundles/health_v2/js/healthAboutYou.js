@@ -55,7 +55,7 @@
 		$tierDropdowns = $aboutYouContainer.find('#health_healthCover_healthCvr, #health_healthCover_dependants'),
 		$primaryDOB = $aboutYouContainer.find('#health_healthCover_primary_dob'),
 		$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend'),
-		$partnersDetails = $('.health-person-details-partner, #partnerFund'),
+		$partnersDetails = $('.health-person-details-partner, #partnerFund, #partnerMemberID'),
 		$lhcContainers = $('#primary-health-cover, #partner-health-cover, #australian-government-rebate'),
 		$medicare = $('.health-medicare_details');
 
