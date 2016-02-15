@@ -21,7 +21,8 @@
 		$healthCoverDetailsDependants,
 		$healthCoverIncomeMessage,
 		$partnersDetails,
-		$lhcContainers;
+		$lhcContainers,
+		$medicare;
 
 	function init(){
 		$(document).ready(function () {
@@ -54,8 +55,9 @@
 		$tierDropdowns = $aboutYouContainer.find('#health_healthCover_healthCvr, #health_healthCover_dependants'),
 		$primaryDOB = $aboutYouContainer.find('#health_healthCover_primary_dob'),
 		$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend'),
-		$partnersDetails = $('#health_application').find('.health-person-details-partner, #partnerFund'),
-		$lhcContainers = $('#primary-health-cover, #partner-health-cover, #australian-government-rebate');
+		$partnersDetails = $('.health-person-details-partner, #partnerFund, #partnerMemberID'),
+		$lhcContainers = $('#primary-health-cover, #partner-health-cover, #australian-government-rebate'),
+		$medicare = $('.health-medicare_details');
 
 		if (!healthChoices.hasSpouse()) {
 			$partnerContainer.hide();
@@ -73,6 +75,16 @@
 				toggleRebateDialogue();
 			});
 		}
+
+		$healthCoverRebate.on('change', function toggleMedicare() {
+			// Hide these questions as they are not required
+			if( meerkat.modules.healthCoverDetails.isRebateApplied() !== true ) {
+				$medicare.hide();
+				meerkat.modules.form.clearInitialFieldsAttribute($medicare);
+			} else {
+				$medicare.show();
+			}
+		});
 
 		$tierDropdowns.on('change', function updateRebateTiers(){
 			meerkat.modules.healthTiers.setTiers();
