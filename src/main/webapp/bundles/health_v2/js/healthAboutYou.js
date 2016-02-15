@@ -52,7 +52,7 @@
 		$healthSituationHealthCvr = $aboutYouContainer.find('#health_situation_healthCvr'),
 		$healthCoverIncome = $aboutYouContainer.find('#health_healthCover_income'),
 		$healthCoverIncomeLabel = $aboutYouContainer.find('#health_healthCover_incomelabel'),
-		$tierDropdowns = $aboutYouContainer.find('#health_healthCover_healthCvr, #health_healthCover_dependants'),
+		$tierDropdowns = $aboutYouContainer.find('#health_situation_healthCvr, #health_healthCover_dependants'),
 		$primaryDOB = $aboutYouContainer.find('#health_healthCover_primary_dob'),
 		$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend'),
 		$partnersDetails = $('.health-person-details-partner, #partnerFund, #partnerMemberID'),
