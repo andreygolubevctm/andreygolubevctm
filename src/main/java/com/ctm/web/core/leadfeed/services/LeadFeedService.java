@@ -6,6 +6,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
+import com.ctm.web.core.leadfeed.utils.LeadFeed;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.Touch.TouchType;
 import org.slf4j.Logger;
@@ -21,13 +22,15 @@ public abstract class LeadFeedService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LeadFeedService.class);
 	private final BestPriceLeadsDao bestPriceDao;
 	private final ContentService contentService;
+	private final LeadFeed leadFeed;
 
 	protected LeadFeedTouchService leadFeedTouchService;
 
-	protected Content ignoreBecauseOfField = null;
-	protected String ignorePhoneRule = null;
-
-	public LeadFeedService(BestPriceLeadsDao bestPriceDao, ContentService contentService,  LeadFeedTouchService leadFeedTouchService) {
+	public LeadFeedService(BestPriceLeadsDao bestPriceDao,
+						   ContentService contentService,
+						   LeadFeedTouchService leadFeedTouchService) {
+		LeadFeed leadFeed = new LeadFeed( contentService,  leadFeedTouchService);
+		this.leadFeed = leadFeed;
 		this.bestPriceDao = bestPriceDao;
 		this.contentService = contentService;
         this.leadFeedTouchService = leadFeedTouchService;
@@ -57,7 +60,7 @@ public abstract class LeadFeedService {
 	};
 
 	public LeadResponseStatus callDirect(LeadFeedData leadData) throws LeadFeedException {
-		if(!isTestOnlyLead(leadData)) {
+		if(!leadFeed.isTestOnlyLead(leadData)) {
 			leadFeedTouchService.recordTouch(Touch.TouchType.CALL_DIRECT, leadData);
 		}
 		return LeadResponseStatus.SUCCESS;
@@ -100,7 +103,7 @@ public abstract class LeadFeedService {
 	 * @throws LeadFeedException
 	 */
 	protected LeadResponseStatus processGateway(LeadType leadType, LeadFeedData leadData, TouchType touchType) throws LeadFeedException {
-		if(isTestOnlyLead(leadData)) {
+		if(leadFeed.isTestOnlyLead(leadData)) {
 			// Don't process or record touch for test data - simply return success
 			return LeadResponseStatus.SUCCESS;
 		} else {
@@ -137,33 +140,6 @@ public abstract class LeadFeedService {
 		}
 
 		return "{\"styleCode\":" + brandCodeId + ",\"success\":" + successCount + ",\"failure\":" + failureCount + "}";
-	}
-
-
-	/**
-	 * isTestOnlyLead() will check whether the email or phone number in the lead data has been
-	 * flagged as test data.
-	 *
-	 * @param leadData
-	 * @return
-	 * @throws LeadFeedException
-	 */
-	protected Boolean isTestOnlyLead(LeadFeedData leadData) throws LeadFeedException {
-		try {
-			if(ignoreBecauseOfField instanceof Content == false) {
-				ignoreBecauseOfField = contentService.getContent("ignoreMatchingFormField", leadData.getBrandId(), leadData.getVerticalId(), leadData.getEventDate(), true);
-				ignorePhoneRule = ignoreBecauseOfField.getSupplementaryValueByKey("phone");
-			}
-			if(ignorePhoneRule != null && !ignorePhoneRule.isEmpty() && ignorePhoneRule.contains(leadData.getPhoneNumber())) {
-				LOGGER.debug("[Lead feed] Lead identified as test-only because of phone number {},{}", kv("phoneNumber", leadData.getPhoneNumber()),
-					kv("transactionId", leadData.getTransactionId()));
-				return true;
-			} else {
-				return false;
-			}
-		} catch(DaoException e) {
-			throw new LeadFeedException(e.getMessage(), e);
-		}
 	}
 
 	protected LeadResponseStatus getLeadResponseStatus(LeadType leadType, LeadFeedData leadData, TouchType touchType, IProviderLeadFeedService providerLeadFeedService) throws LeadFeedException {

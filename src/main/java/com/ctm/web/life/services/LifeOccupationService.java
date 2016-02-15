@@ -36,7 +36,7 @@ public class LifeOccupationService extends CommonRequestService {
         return getRestClient().sendGETRequest(
                 getQuoteServiceProperties("quoteServiceBER", brand, verticalType.getCode(),
                         Optional.ofNullable(StringUtils.trimToNull(environmentOverride))),
-                verticalType, Endpoint.instanceOf("occupations"),
+                Endpoint.instanceOf("occupations"),
                 new TypeReference<List<Occupation>>() {
                 }, Collections.emptyMap());
     }

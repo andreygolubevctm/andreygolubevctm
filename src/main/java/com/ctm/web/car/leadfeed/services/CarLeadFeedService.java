@@ -23,7 +23,9 @@ public class CarLeadFeedService extends LeadFeedService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CarLeadFeedService.class);
 
 	public CarLeadFeedService(BestPriceLeadsDao bestPriceDao) {
-		super(bestPriceDao, new ContentService(), new LeadFeedTouchService(new AccessTouchService()));
+		super(bestPriceDao, new ContentService(),
+				new LeadFeedTouchService(new AccessTouchService())
+		);
 	}
 
 	protected LeadResponseStatus process(LeadType leadType, LeadFeedData leadData, TouchType touchType) {

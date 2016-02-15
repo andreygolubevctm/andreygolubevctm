@@ -38,7 +38,6 @@ public class ContactValidatorService extends CommonRequestService {
 
             final ValidateContactResponse response = getRestClient().sendPOSTRequest(
                     getQuoteServiceProperties("contactValidatorService", brand, verticalType.getCode(), environmentOverride),
-                    verticalType,
                     Endpoint.VALIDATE,
                     ValidateContactResponse.class,
                     new ValidateContactRequest(contact));

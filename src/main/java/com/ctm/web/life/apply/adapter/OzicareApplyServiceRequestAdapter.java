@@ -22,14 +22,13 @@ public class OzicareApplyServiceRequestAdapter implements WebRequestAdapter<Life
     public OzicareApplyRequest adapt(LifeApplyWebRequest requestPayload) {
         LOGGER.debug("requestPayload = {}", kv("payload", requestPayload));
 
-        // Map EnergyApplicationDetails
         OzicareApplyRequest.Builder ozicareApplyRequestBuilder = OzicareApplyRequest.newBuilder();
 
         ozicareApplyRequestBuilder.state(lifeQuoteRequest.getPrimary().getState());
-        ozicareApplyRequestBuilder.phoneNumber(lifeQuoteRequest.getContactDetails().getContactNumber());
+        ozicareApplyRequestBuilder.phoneNumber(getPhoneNumber());
         ozicareApplyRequestBuilder.firstName(lifeQuoteRequest.getPrimary().getFirstName());
         ozicareApplyRequestBuilder.lastName(lifeQuoteRequest.getPrimary().getLastname());
-        ozicareApplyRequestBuilder.productId(getProductId(requestPayload));
+        ozicareApplyRequestBuilder.leadNumber(requestPayload.getLead_number());
 
 
         OzicareApplyRequest ozicareApplyRequest = ozicareApplyRequestBuilder.build();
@@ -44,5 +43,9 @@ public class OzicareApplyServiceRequestAdapter implements WebRequestAdapter<Life
 
     public String getEmailAddress(LifeQuote lifeQuoteRequest) {
         return lifeQuoteRequest.getContactDetails().getEmail();
+    }
+
+    public String getPhoneNumber() {
+        return lifeQuoteRequest.getContactDetails().getContactNumber();
     }
 }

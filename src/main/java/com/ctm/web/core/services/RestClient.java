@@ -5,7 +5,6 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.QuoteServiceProperties;
-import com.ctm.web.core.model.settings.Vertical;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.cxf.common.i18n.UncheckedException;
@@ -34,21 +33,21 @@ public class RestClient {
         this.objectMapper = objectMapper;
     }
 
-    public <RESPONSE> RESPONSE sendPOSTRequest(QuoteServiceProperties serviceProperties, Vertical.VerticalType vertical,
+    public <RESPONSE> RESPONSE sendPOSTRequest(QuoteServiceProperties serviceProperties,
                                                Endpoint endpoint,
                                                Class<RESPONSE> responseClass, Object requestObj)
             throws ServiceConfigurationException, DaoException, IOException {
-        return sendPOSTRequest( serviceProperties,  vertical,  endpoint.getValue(),
+        return sendPOSTRequest( serviceProperties,  endpoint.getValue(),
                 responseClass,  requestObj);
     }
 
-    public <RESPONSE> RESPONSE sendPOSTRequest(QuoteServiceProperties serviceProperties, Vertical.VerticalType vertical, String endpoint, Class<RESPONSE> responseClass, Object requestObj)
+    public <RESPONSE> RESPONSE sendPOSTRequest(QuoteServiceProperties serviceProperties, String endpoint, Class<RESPONSE> responseClass, Object requestObj)
             throws ServiceConfigurationException, DaoException, IOException {
 
         String jsonRequest = objectMapper.writeValueAsString(requestObj);
 
         // Log Request
-        LOGGER.info("Sending request {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
+        LOGGER.info("Sending request {} ", kv("endpoint", endpoint));
         LOGGER.debug("Outbound message {}", kv("request", jsonRequest));
 
         String response = setupSimplePOSTConnection(serviceProperties, jsonRequest)
@@ -58,17 +57,17 @@ public class RestClient {
         }
 
         // Log response
-        LOGGER.info("Receiving response {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
+        LOGGER.info("Receiving response {} ", kv("endpoint", endpoint));
         LOGGER.debug("Inbound message {}", kv("response", response));
 
         return objectMapper.readValue(response, objectMapper.constructType(responseClass));
     }
 
-    public <RESPONSE> RESPONSE sendGETRequest(QuoteServiceProperties serviceProperties, Vertical.VerticalType vertical, Endpoint endpoint, Class<RESPONSE> responseClass, Map<String, String> params)
+    public <RESPONSE> RESPONSE sendGETRequest(QuoteServiceProperties serviceProperties,  Endpoint endpoint, Class<RESPONSE> responseClass, Map<String, String> params)
             throws ServiceConfigurationException, DaoException, IOException {
 
         // Log Request
-        LOGGER.info("Sending request {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
+        LOGGER.info("Sending request {}",  kv("endpoint", endpoint));
 
         String response = setupSimpleGETConnection(serviceProperties)
                 .get(createGETUrl(serviceProperties, endpoint, params));
@@ -77,17 +76,17 @@ public class RestClient {
         }
 
         // Log response
-        LOGGER.info("Receiving response {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
+        LOGGER.info("Receiving response {}",  kv("endpoint", endpoint));
         LOGGER.debug("Inbound message {}", kv("response", response));
 
         return objectMapper.readValue(response, objectMapper.constructType(responseClass));
     }
 
-    public <RESPONSE> RESPONSE sendGETRequest(QuoteServiceProperties serviceProperties, Vertical.VerticalType vertical, Endpoint endpoint, TypeReference<RESPONSE> typeReference, Map<String, String> params)
+    public <RESPONSE> RESPONSE sendGETRequest(QuoteServiceProperties serviceProperties, Endpoint endpoint, TypeReference<RESPONSE> typeReference, Map<String, String> params)
             throws ServiceConfigurationException, DaoException, IOException {
 
         // Log Request
-        LOGGER.info("Sending request {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
+        LOGGER.info("Sending request {}", kv("endpoint", endpoint));
 
         String response = setupSimpleGETConnection(serviceProperties)
                 .get(createGETUrl(serviceProperties, endpoint, params));
@@ -96,7 +95,7 @@ public class RestClient {
         }
 
         // Log response
-        LOGGER.info("Receiving response {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
+        LOGGER.info("Receiving response {}", kv("endpoint", endpoint));
         LOGGER.debug("Inbound message {}", kv("response", response));
 
         return objectMapper.readValue(response, typeReference);

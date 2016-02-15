@@ -1,9 +1,13 @@
 package com.ctm.web.core.leadfeed.router;
 
+import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.model.LeadFeedData.CallType;
+import com.ctm.web.core.leadfeed.services.LeadFeedTouchService;
+import com.ctm.web.core.leadfeed.utils.LeadFeed;
 import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
@@ -144,4 +148,11 @@ public abstract class LeadFeedRouter extends HttpServlet {
 	protected abstract String getVerticalCode();
 	
 	protected abstract LeadFeedService getLeadFeedService();
+
+	protected LeadFeed getLeadFeed() {
+		ContentService contentService = new ContentService();
+		AccessTouchService touchService = new AccessTouchService();
+		LeadFeedTouchService leadFeedTouchService = new LeadFeedTouchService(touchService);
+		return new LeadFeed( contentService,  leadFeedTouchService);
+	}
 }

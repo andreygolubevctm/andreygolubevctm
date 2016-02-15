@@ -1,6 +1,7 @@
 package com.ctm.web.life.apply.services;
 
 import com.ctm.apply.model.response.ApplyResponse;
+import com.ctm.interfaces.common.types.Status;
 import com.ctm.life.apply.model.request.lifebroker.LifeBrokerApplyRequest;
 import com.ctm.life.apply.model.request.ozicare.OzicareApplyRequest;
 import com.ctm.life.apply.model.response.LifeApplyResponse;
@@ -9,6 +10,8 @@ import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
+import com.ctm.web.core.leadfeed.utils.LeadFeed;
 import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
@@ -25,12 +28,15 @@ import com.ctm.web.life.apply.response.LifeApplyWebResponse;
 import com.ctm.web.life.apply.response.LifeApplyWebResponseResults;
 import com.ctm.web.life.form.model.LifeQuote;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +44,12 @@ import java.util.Map;
 @Component
 public class LifeApplyService extends CommonRequestService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LifeApplyService.class);
+
     @Autowired
     private final SessionDataServiceBean sessionDataService;
     private final LifeApplyCompleteService lifeApplyCompleteService;
+    private final LeadFeed leadFeed;
 
 
     @Autowired
@@ -48,10 +57,12 @@ public class LifeApplyService extends CommonRequestService {
                             SessionDataServiceBean sessionDataService,
                             ServiceConfigurationService serviceConfigurationService,
                             @Qualifier("environmentBean") EnvironmentService.Environment  environment,
-                            LifeApplyCompleteService lifeApplyCompleteService) {
+                            LifeApplyCompleteService lifeApplyCompleteService,
+                            LeadFeed leadFeed) {
         super(providerFilterDAO, restClient, serviceConfigurationService, environment);
         this.sessionDataService = sessionDataService;
         this.lifeApplyCompleteService = lifeApplyCompleteService;
+        this.leadFeed = leadFeed;
     }
 
 
@@ -76,8 +87,7 @@ public class LifeApplyService extends CommonRequestService {
             endpoint += LifeBrokerApplyRequest.PATH;
             applyRequest = lifeBrokeRequestAdapter.adapt(model);
         }
-        LifeApplyResponse applyResponse = sendApplyRequest(brand, Vertical.VerticalType.LIFE, "applyServiceBER", endpoint, model, applyRequest,
-                LifeApplyResponse.class, requestAdapter.getProductId(model));
+        LifeApplyResponse applyResponse = submit(model, brand, requestAdapter, applyRequest, endpoint, isOzicare);
         LifeApplyWebResponseResults.Builder responseBuilder = responseAdapter.adapt(applyResponse);
         responseBuilder.transactionId(model.getTransactionId());
         lifeApplyCompleteService.handleSuccess(model.getTransactionId(), request,
@@ -85,6 +95,26 @@ public class LifeApplyService extends CommonRequestService {
                 isOzicare);
         return new LifeApplyWebResponse.Builder().results(responseBuilder.build()).build();
 	}
+
+    public LifeApplyResponse submit(LifeApplyWebRequest model, Brand brand, OzicareApplyServiceRequestAdapter requestAdapter, Object applyRequest, String endpoint, boolean isOzicare) throws IOException, DaoException, ServiceConfigurationException {
+        LifeApplyResponse applyResponse;
+        boolean isTest = false;
+        try {
+            isTest = leadFeed.isTestOnlyLead(requestAdapter.getPhoneNumber(),
+                    brand,
+                    Vertical.VerticalType.LIFE,
+                    new Date());
+        } catch (LeadFeedException e) {
+            LOGGER.error("failed to check if request is test", e);
+        }
+        if(!isOzicare || !isTest) {
+             applyResponse = sendApplyRequest(brand, Vertical.VerticalType.LIFE, "applyServiceBER", endpoint, model, applyRequest,
+                    LifeApplyResponse.class, requestAdapter.getProductId(model));
+        } else {
+            applyResponse = new LifeApplyResponse.Builder().responseStatus(Status.REGISTERED).build();
+        }
+        return applyResponse;
+    }
 
 
     /**

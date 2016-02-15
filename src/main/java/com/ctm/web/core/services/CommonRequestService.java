@@ -106,7 +106,7 @@ public abstract class CommonRequestService {
                                         Class<RESPONSE> responseClass) throws RouterException {
         try {
             return restClient.sendPOSTRequest(getQuoteServiceProperties(serviceName,
-                    brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride())), vertical, endpoint, responseClass, getQuoteRequest(brand, data, payload));
+                    brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride())), endpoint, responseClass, getQuoteRequest(brand, data, payload));
         } catch (ServiceConfigurationException | DaoException | IOException e) {
             throw new RouterException(e);
         }
@@ -120,7 +120,7 @@ public abstract class CommonRequestService {
                                         Class<RESPONSE> responseClass, String productId) throws RouterException {
         try {
             return restClient.sendPOSTRequest(getQuoteServiceProperties(serviceName,
-                    brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride())), vertical, endpoint, responseClass, getApplyRequest(brand, data, payload, productId));
+                    brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride())), endpoint, responseClass, getApplyRequest(brand, data, payload, productId));
         } catch (ServiceConfigurationException | DaoException | IOException e) {
             throw new RouterException(e);
         }
@@ -134,7 +134,7 @@ public abstract class CommonRequestService {
                                                             Class<RESPONSE> responseClass, String productId) throws IOException, DaoException, ServiceConfigurationException {
         return restClient.sendPOSTRequest(getQuoteServiceProperties(serviceName,
                 brand, vertical.getCode(),
-                Optional.ofNullable(data.getEnvironmentOverride())), vertical, endpoint, responseClass, getApplyRequest(brand, data, payload, productId));
+                Optional.ofNullable(data.getEnvironmentOverride())), endpoint, responseClass, getApplyRequest(brand, data, payload, productId));
     }
 
     protected RestClient getRestClient() {
