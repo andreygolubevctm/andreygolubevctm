@@ -151,7 +151,10 @@
     }
 
     function _buildProviderList($input, json) {
+        $input.removeClass('init');
+
         if(!json.length) {
+            $input.addClass('init');
             return;
         }
 

@@ -18,8 +18,8 @@
 
     <form_v3:row label="Who is your current provider?" className="clear">
         <c:set var="fieldXPath" value="utilities/estimateDetails/usage/electricity/currentSupplier" />
-        <field_v2:array_select xpath="${fieldXPath}" required="true"
-                                title="your current electricity supplier." items="=Select postcode or suburb first"
+        <field_v2:array_select xpath="${fieldXPath}" required="true" className="init"
+                                title="your current electricity supplier." items="=Scroll up and re-select postcode / suburb"
                                 extraDataAttributes="data-default='${data[fieldXPath]}'" />
     </form_v3:row>
 
@@ -123,8 +123,8 @@
 
     <form_v3:row label="Who is your current provider?" className="clear">
         <c:set var="fieldXPath" value="utilities/estimateDetails/usage/gas/currentSupplier" />
-        <field_v2:array_select xpath="${fieldXPath}" required="true"
-                                title="your current gas supplier." items=""
+        <field_v2:array_select xpath="${fieldXPath}" required="true" className="init"
+                                title="your current gas supplier." items="=Scroll up and re-select postcode / suburb"
                                 extraDataAttributes="data-default='${data[fieldXPath]}'" />
     </form_v3:row>
 
