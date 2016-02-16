@@ -22,3 +22,4 @@
 /*.iml
 *.Thumbs.db
 LOG_FILE_IS_UNDEFINED
+/touch_restart.txt
