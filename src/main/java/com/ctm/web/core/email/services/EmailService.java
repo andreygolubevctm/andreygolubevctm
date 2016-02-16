@@ -1,6 +1,5 @@
 package com.ctm.web.core.email.services;
 
-import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.model.EmailResponse;
@@ -32,7 +31,6 @@ public class EmailService {
 
 	private final SessionDataService sessionDataService = new SessionDataService();
 	private final FatalErrorService fatalErrorService;
-	protected TransactionDao transactionDao;
 	private PageSettings pageSettings;
 
 	public EmailService(){

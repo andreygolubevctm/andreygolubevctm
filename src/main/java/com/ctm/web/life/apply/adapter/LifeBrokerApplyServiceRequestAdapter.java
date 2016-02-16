@@ -1,7 +1,6 @@
 package com.ctm.web.life.apply.adapter;
 
 import com.ctm.life.apply.model.request.lifebroker.LifeBrokerApplyRequest;
-import com.ctm.life.model.request.Gender;
 import com.ctm.web.energy.quote.adapter.WebRequestAdapter;
 import com.ctm.web.life.adapter.LifeServiceRequestAdapter;
 import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
@@ -37,10 +36,6 @@ public class LifeBrokerApplyServiceRequestAdapter implements WebRequestAdapter<L
         lifeBrokerApplyRequestBuilder.partnerProductId(energyApplyPostRequestPayload.getPartner_product_id());
 
         return lifeBrokerApplyRequestBuilder.build();
-    }
-
-    private Gender adaptGender() {
-        return lifeQuoteRequest.getPartner().getGender().equals(Gender.MALE) ? Gender.MALE : Gender.FEMALE;
     }
 
     public String getProductId(LifeApplyWebRequest model) {

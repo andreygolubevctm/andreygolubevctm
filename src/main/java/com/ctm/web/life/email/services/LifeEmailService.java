@@ -17,7 +17,6 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.ServiceConfigurationService;
-import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.life.email.model.LifeBestPriceEmailModel;
 import com.ctm.web.life.email.model.LifeBestPriceExactTargetFormatter;
@@ -31,20 +30,17 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 	private final EmailDetailsService emailDetailsService;
     private final ApplicationService applicationService;
     private final LifeEmailDataService lifeEmailDataService;
-    protected TransactionDao transactionDao;
 	private String optInMailingName;
     private ServiceConfigurationService serviceConfigurationService;
 
 	public LifeEmailService(PageSettings pageSettings,
                             EmailMode emailMode,
                             EmailDetailsService emailDetailsService,
-                            TransactionDao transactionDao,
                             LifeEmailDataService lifeEmailDataService,
                             ServiceConfigurationService serviceConfigurationService,
                             ApplicationService applicationService) {
 		super(pageSettings, emailMode);
 		this.emailDetailsService = emailDetailsService;
-        this.transactionDao = transactionDao;
         this.serviceConfigurationService = serviceConfigurationService;
         this.applicationService = applicationService;
         this.lifeEmailDataService = lifeEmailDataService;

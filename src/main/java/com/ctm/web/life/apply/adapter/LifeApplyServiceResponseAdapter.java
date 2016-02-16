@@ -19,14 +19,14 @@ public class LifeApplyServiceResponseAdapter implements WebResponseAdapter<LifeA
         additionalInformationMaybe.ifPresent(additionalInformation -> {
             if(!additionalInformation.containsKey(LifeApplyResponse.PRIMARY_LIFEBROKER_INFO_URL)) {
                 SelectDetails client = new SelectDetails.Builder()
-                        .info_url(additionalInformation.get(LifeApplyResponse.PRIMARY_LIFEBROKER_INFO_URL))
+                        .infoUrl(additionalInformation.get(LifeApplyResponse.PRIMARY_LIFEBROKER_INFO_URL))
                         .pds(additionalInformation.get(LifeApplyResponse.PRIMARY_LIFEBROKER_PDS))
                         .build();
                 selectionBuilder.client(client);
             }
             if(!additionalInformation.containsKey(LifeApplyResponse.PARTNER_LIFEBROKER_INFO_URL)) {
                 SelectDetails partner = new SelectDetails.Builder()
-                        .info_url(additionalInformation.get(LifeApplyResponse.PARTNER_LIFEBROKER_INFO_URL))
+                        .infoUrl(additionalInformation.get(LifeApplyResponse.PARTNER_LIFEBROKER_INFO_URL))
                         .pds(additionalInformation.get(LifeApplyResponse.PARTNER_LIFEBROKER_PDS))
                         .build();
                 selectionBuilder.partner(partner);

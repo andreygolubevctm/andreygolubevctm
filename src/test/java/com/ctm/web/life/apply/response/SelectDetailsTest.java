@@ -18,7 +18,7 @@ public class SelectDetailsTest {
 
     @Test
     public void testGetInfo_url() throws Exception {
-        SelectDetails details= new SelectDetails.Builder().info_url(url).build();
+        SelectDetails details= new SelectDetails.Builder().infoUrl(url).build();
         assertEquals(url, details.getInfo_url());
     }
 }

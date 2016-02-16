@@ -42,7 +42,6 @@ public class LifeEmailServiceFactory  {
 						 brandCode,
 						 vertical,
 						 emailDetailMappings),
-				 transactionDao,
 				 lifeEmailDataService,
 				 serviceConfigurationService,
 				 applicationService);

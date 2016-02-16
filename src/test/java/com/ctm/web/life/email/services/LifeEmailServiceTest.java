@@ -9,7 +9,6 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.ServiceConfigurationService;
-import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.web.go.Data;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,8 +38,6 @@ public class LifeEmailServiceTest {
     private EmailDetailsService emailDetailsService;
     @Mock
     private HttpServletRequest request;
-    @Mock
-    private TransactionDao transactionDao;
     @Mock
     ServiceConfigurationService serviceConfigurationService;
     @Mock
@@ -80,7 +77,7 @@ public class LifeEmailServiceTest {
         Data data = new Data();
         when(lifeEmailDataService.getDataObject(transactionId)).thenReturn(data);
         when(pageSettings.getSetting("sendClientId")).thenReturn("10000");
-        lifeEmailService = new LifeEmailService( pageSettings,  EmailMode.BEST_PRICE,  emailDetailsService, transactionDao, lifeEmailDataService, serviceConfigurationService,  applicationService);
+        lifeEmailService = new LifeEmailService( pageSettings,  EmailMode.BEST_PRICE,  emailDetailsService, lifeEmailDataService, serviceConfigurationService,  applicationService);
     }
 
     @Test

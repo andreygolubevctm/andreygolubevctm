@@ -6,7 +6,7 @@ public class SelectDetails {
 
     private SelectDetails(Builder builder) {
         pds = builder.pds;
-        info_url = builder.info_url;
+        info_url = builder.infoUrl;
     }
 
     public String getPds() {
@@ -21,7 +21,7 @@ public class SelectDetails {
 
     public static final class Builder {
         private String pds;
-        private String info_url;
+        private String infoUrl;
 
         public Builder() {
         }
@@ -31,8 +31,8 @@ public class SelectDetails {
             return this;
         }
 
-        public Builder info_url(String val) {
-            info_url = val;
+        public Builder infoUrl(String val) {
+            infoUrl = val;
             return this;
         }
 

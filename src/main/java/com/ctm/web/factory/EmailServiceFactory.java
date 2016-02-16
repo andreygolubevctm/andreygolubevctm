@@ -91,11 +91,10 @@ public class EmailServiceFactory {
 	
 	private static EmailServiceHandler getLifeEmailService(PageSettings pageSettings, EmailMode mode, Data data, VerticalType vertical) throws SendEmailException {
 		EmailDetailsService emailDetailsService = createEmailDetailsService(pageSettings, data, vertical, new LifeEmailDetailMappings());
-		TransactionDao transactionDao = new TransactionDao();
 		LifeEmailDataService lifeEmailDataService = new LifeEmailDataService( new RankingDetailsDao(),
 				new TransactionDetailsDao(), new OccupationsDao());
 		return new LifeEmailService(pageSettings, mode, emailDetailsService,
-				transactionDao, lifeEmailDataService,
+				 lifeEmailDataService,
 				new ServiceConfigurationService(),
 				new ApplicationService());
 	}
