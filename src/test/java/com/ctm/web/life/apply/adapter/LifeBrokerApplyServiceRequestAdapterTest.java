@@ -71,7 +71,6 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
 
         LifeApplyWebRequest request = getLifeApplyWebRequest();
         request.setRequest_type("REQUEST-CALL");
-        request.setApi_ref("c4aa7ccb59f5a461039f10");
         request.setClient_product_id("ff01712616fe6b7b97cd03ded3d2b492ba54a0f6");
         request.setCompany("AIA Australia");
         request.setPartner_product_id(PARTNER_PRODUCT_ID);
@@ -130,7 +129,6 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
         LifeBrokerApplyServiceRequestAdapter requestAdapter = new LifeBrokerApplyServiceRequestAdapter(lifeRequest);
         LifeApplyWebRequest request = getLifeApplyWebRequest();;
         request.setRequest_type("REQUEST-CALL");
-        request.setApi_ref("c4aa7ccb59f5a461039f10");
         request.setClient_product_id("ff01712616fe6b7b97cd03ded3d2b492ba54a0f6");
         request.setCompany("OnePath");
         request.setPartner_quote(YesNo.N);
@@ -195,7 +193,6 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
         LifeBrokerApplyServiceRequestAdapter requestAdapter = new LifeBrokerApplyServiceRequestAdapter(lifeRequest);
         LifeApplyWebRequest request = getLifeApplyWebRequest();
         request.setRequest_type("REQUEST-CALL");
-        request.setApi_ref("c4aa7ccb59f5a461039f10");
         request.setClient_product_id("ff01712616fe6b7b97cd03ded3d2b492ba54a0f6");
         request.setCompany("AIA Australia");
         request.setPartner_product_id(PARTNER_PRODUCT_ID);

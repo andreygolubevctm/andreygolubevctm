@@ -79,7 +79,6 @@ public class OzicareApplyServiceRequestAdapterTest {
         LifeApplyWebRequest request = getLifeApplyWebRequest();
         request .setLead_number(LEAD_NUMBER);
         request.setRequest_type(REQUEST_TYPE);
-        request.setApi_ref(API_REF);
         request.setClient_product_id(PRODUCT_ID);
         request.setCompany(COMPANY);
         request.setClient_product_id(PARTNER_PRODUCT_ID);
@@ -138,7 +137,6 @@ public class OzicareApplyServiceRequestAdapterTest {
         OzicareApplyServiceRequestAdapter requestAdapter = new OzicareApplyServiceRequestAdapter(lifeRequest);
         LifeApplyWebRequest request = getLifeApplyWebRequest();
         request.setRequest_type("REQUEST-CALL");
-        request.setApi_ref("c4aa7ccb59f5a461039f10");
         request.setClient_product_id(PRODUCT_ID);
         request.setCompany("OnePath");
         request.setPartner_quote(YesNo.N);
@@ -203,7 +201,6 @@ public class OzicareApplyServiceRequestAdapterTest {
         OzicareApplyServiceRequestAdapter requestAdapter = new OzicareApplyServiceRequestAdapter(lifeRequest);
         LifeApplyWebRequest request = getLifeApplyWebRequest();
         request.setRequest_type("REQUEST-CALL");
-        request.setApi_ref("c4aa7ccb59f5a461039f10");
         request.setClient_product_id(PRODUCT_ID);
         request.setCompany("AIA Australia");
         request.setPartner_product_id(PARTNER_PRODUCT_ID);

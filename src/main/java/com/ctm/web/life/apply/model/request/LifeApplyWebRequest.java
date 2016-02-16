@@ -15,41 +15,44 @@ public class LifeApplyWebRequest implements Request {
 
     private String clientIpAddress;
     private String environmentOverride;
-    private String request_type;
+    private String request_type; //NOPMD
     @NotNull
-    private String client_product_id;
-    private String partner_product_id;
-    private String api_ref;
+    private String client_product_id; //NOPMD
+    private String partner_product_id; //NOPMD
+
     private String vertical;
-    private YesNo partner_quote;
+
+    private YesNo partner_quote; //NOPMD
+
     @NotNull
     private String company;
     private String partnerBrand;
-    private String lead_number;
+
+    private String lead_number; //NOPMD
     private LocalDateTime requestAt;
 
     public LifeApplyWebRequest() {}
 
+    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
     public void setRequest_type(String request_type) {
         this.request_type = request_type;
     }
 
+    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
     public void setClient_product_id(String client_product_id) {
         this.client_product_id = client_product_id;
     }
 
+    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
     public void setPartner_product_id(String partner_product_id) {
         this.partner_product_id = partner_product_id;
     }
 
-    public void setApi_ref(String api_ref) {
-        this.api_ref = api_ref;
-    }
 
     public void setVertical(String vertical) {
         this.vertical = vertical;
     }
-
+    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
     public void setPartner_quote(YesNo partner_quote) {
         this.partner_quote = partner_quote;
     }
@@ -62,10 +65,12 @@ public class LifeApplyWebRequest implements Request {
         this.partnerBrand = partnerBrand;
     }
 
+    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
     public void setLead_number(String lead_number) {
         this.lead_number = lead_number;
     }
 
+    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
     public String getLead_number() {
         return lead_number;
     }
@@ -114,26 +119,26 @@ public class LifeApplyWebRequest implements Request {
         this.environmentOverride = environmentOverride;
     }
 
+    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
     public String getRequest_type() {
         return request_type;
     }
 
+    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
     public String getClient_product_id() {
         return client_product_id;
     }
 
+    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
     public String getPartner_product_id() {
         return partner_product_id;
-    }
-
-    public String getApi_ref() {
-        return api_ref;
     }
 
     public String getVertical() {
         return vertical;
     }
 
+    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
     public YesNo getPartner_quote() {
         return partner_quote;
     }

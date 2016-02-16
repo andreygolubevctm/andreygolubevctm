@@ -2,7 +2,7 @@ package com.ctm.web.life.apply.response;
 
 public class SelectDetails {
     String pds;
-    String info_url;
+    String info_url; //NOPMD
 
     private SelectDetails(Builder builder) {
         pds = builder.pds;
@@ -13,6 +13,7 @@ public class SelectDetails {
         return pds;
     }
 
+    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
     public String getInfo_url() {
         return info_url;
     }
