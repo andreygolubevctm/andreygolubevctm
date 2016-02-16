@@ -171,7 +171,6 @@ public class CommonQuoteServiceTest {
         when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
         when(restClient.sendPOSTRequest(
                 anyObject(),
-                eq(verticalType),
                 (Endpoint) anyObject(),
                 eq(Object.class), anyObject())).thenReturn(null);
 

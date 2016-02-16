@@ -3,9 +3,10 @@ package com.ctm.web.life.apply.services;
 import com.ctm.apply.model.response.ApplyResponse;
 import com.ctm.data.common.TestMariaDbBean;
 import com.ctm.life.apply.model.response.LifeApplyResponse;
-import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.Application;
+import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.dao.ProviderFilterDao;
+import com.ctm.web.core.leadfeed.utils.LeadFeed;
 import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.resultsData.model.ErrorInfo;
@@ -69,6 +70,8 @@ public class LifeApplyServiceTest {
     private LifeApplyCompleteService lifeApplyCompleteService;
     @Mock
     private ApplyResponse applyResponse;
+    @Mock
+    private LeadFeed leadFeed;
 
 
     @Before
@@ -77,13 +80,13 @@ public class LifeApplyServiceTest {
                  sessionDataService,
                  serviceConfigurationService,
                 EnvironmentService.Environment.LOCALHOST,
-                 lifeApplyCompleteService);
+                 lifeApplyCompleteService, leadFeed);
          when(sessionDataService.getSessionDataFromSession(request)).thenReturn(sessionData);
          Data data = getData();
          when(sessionData.getSessionDataForTransactionId(TRANSACTION_ID)).thenReturn(data);
         when(brand.getVerticalByCode(anyString())).thenReturn(vertical);
         when(serviceConfigurationService.getServiceConfiguration(anyString(), anyObject())).thenReturn(serviceConfiguration);
-        when(restClient.sendPOSTRequest(anyObject(), anyObject(), anyString(), anyObject(), anyObject())).thenReturn(response);
+        when(restClient.sendPOSTRequest(anyObject(), anyString(), anyObject(), anyObject())).thenReturn(response);
     }
 
     private Data getData() {
@@ -142,7 +145,7 @@ public class LifeApplyServiceTest {
         webRequest.setTransactionId(TRANSACTION_ID);
         webRequest.setVertical("life");
         LifeApplyWebResponse result = service.apply( webRequest,  brand,  request);
-        verify(restClient).sendPOSTRequest(anyObject(), anyObject(), anyString(), anyObject(), anyObject());
+        verify(restClient).sendPOSTRequest(anyObject(), anyString(), anyObject(), anyObject());
         assertEquals(TRANSACTION_ID , result.getResults().getTransactionId());
 
     }

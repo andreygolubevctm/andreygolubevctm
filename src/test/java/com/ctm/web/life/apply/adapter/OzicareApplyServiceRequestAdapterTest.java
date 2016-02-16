@@ -91,7 +91,7 @@ public class OzicareApplyServiceRequestAdapterTest {
         final OzicareApplyRequest result = requestAdapter.adapt(request);
 
         assertEquals(PRIMARY_FIRSTNAME , result.getFirstName());
-        assertEquals(PRODUCT_ID,result.getProductId());
+        assertEquals(PRODUCT_ID,result.getLeadNumber());
     }
 
     private LifeApplyWebRequest getLifeApplyWebRequest() {
@@ -144,7 +144,7 @@ public class OzicareApplyServiceRequestAdapterTest {
         request .setPartnerBrand("OnePath");
 
         final OzicareApplyRequest result = requestAdapter.adapt(request);
-        assertEquals(PRODUCT_ID,result.getProductId());
+        assertEquals(PRODUCT_ID,result.getLeadNumber());
         assertEquals(PRIMARY_FIRSTNAME , result.getFirstName());
     }
 
@@ -210,7 +210,7 @@ public class OzicareApplyServiceRequestAdapterTest {
         request.setTransactionId(2725461L);
 
         final OzicareApplyRequest result = requestAdapter.adapt(request);
-        assertEquals(PRODUCT_ID,result.getProductId());
+        assertEquals(PRODUCT_ID,result.getLeadNumber());
         assertEquals(PRIMARY_FIRSTNAME , result.getFirstName());
     }
 

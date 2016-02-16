@@ -69,14 +69,13 @@ public class LifeOccupationServiceTest {
         Occupation occupation = new Occupation.Builder().build();
         response.add(occupation);
 
-        when(restClient.sendGETRequest(anyObject(),
-                eq(Vertical.VerticalType.LIFE),  anyObject(), (com.fasterxml.jackson.core.type.TypeReference) anyObject(), anyObject()))
+        when(restClient.sendGETRequest(anyObject(), anyObject(), (com.fasterxml.jackson.core.type.TypeReference) anyObject(), anyObject()))
                 .thenReturn(response);
 
         List<Occupation> result = service.getOccupations(brand);
 
 
-        verify(restClient).sendGETRequest(anyObject(), eq(Vertical.VerticalType.LIFE), anyObject(), (com.fasterxml.jackson.core.type.TypeReference) anyObject(), anyObject());
+        verify(restClient).sendGETRequest(anyObject(), anyObject(), (com.fasterxml.jackson.core.type.TypeReference) anyObject(), anyObject());
         assertEquals(response , result);
 
     }

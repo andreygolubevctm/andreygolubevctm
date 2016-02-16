@@ -73,13 +73,13 @@ public class LifeQuoteServiceTest {
         when(lifeQuoteServiceResponseAdapter.adapt(response, webRequest)).thenReturn(lifeResult);
 
         Endpoint endpoint = Endpoint.QUOTE;
-        when(restClient.sendPOSTRequest(anyObject(), eq(Vertical.VerticalType.LIFE), eq(endpoint), eq(LifeQuoteResponse.class),
+        when(restClient.sendPOSTRequest(anyObject(), eq(endpoint), eq(LifeQuoteResponse.class),
                 anyObject()))
                 .thenReturn(response);
 
         LifeResultsWebResponse result = service.getQuotes( webRequest,  brand);
 
-        verify(restClient).sendPOSTRequest(anyObject(), eq(Vertical.VerticalType.LIFE), eq(endpoint), eq(LifeQuoteResponse.class),
+        verify(restClient).sendPOSTRequest(anyObject(), eq(endpoint), eq(LifeQuoteResponse.class),
                 anyObject());
         assertEquals(lifeResult , result);
 
