@@ -10,6 +10,17 @@
 <session:new verticalCode="HEALTH" authenticated="true" />
 
 <health_v1:redirect_rules />
+<c:set var="dualPricingFlag"><content:get key="isDualPricingActive"/></c:set>
+<c:set var="isDualPricingActive" scope="session">
+    <c:choose>
+        <c:when test="${not empty dualPricingFlag and dualPricingFlag eq 'Y'}">
+            ${true}
+        </c:when>
+        <c:otherwise>
+            ${false}
+        </c:otherwise>
+    </c:choose>
+</c:set>
 
 <%-- START JOURNEY OVERRIDE - Part 1 of 2) --%>
 <c:set var="journeyOverride" value="${pageSettings.getSetting('journeyOverride') eq 'Y'}" />

@@ -40,6 +40,10 @@
 			<field_v2:array_select items="=Please choose..." xpath="${fieldXpath}" title="frequency of payments" required="true" delims="||" className="health-payment_details-frequency" />
 		</form_v3:row>
 
+		<c:if test="${isDualPricingActive eq true}">
+			<div class="hidden frequencyWarning definition alert alert-info"><content:get key="frequencyWarning"/></div>
+		</c:if>
+
 		<c:set var="fieldXpath" value="${xpath}/claims" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Do you want to supply bank account details for claims to be paid into" className="health-payment_details-claims-group">
 			<field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="if you want to supply bank account details for claims to be paid into" required="true" className="health-payment_details-claims" id="${name}_claims"/>
