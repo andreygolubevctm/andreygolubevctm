@@ -30,8 +30,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public abstract class CommonQuoteRouter<REQUEST extends Request> {
@@ -59,6 +63,10 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
             throw new RouterException(e);
         }
 
+    }
+
+    protected SessionDataServiceBean getSessionDataServiceBean() {
+        return sessionDataServiceBean;
     }
 
     protected Data getDataBucket(MessageContext context, Long transactionId) {
@@ -113,10 +121,14 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     }
 
     protected void checkIPAddressCount(Brand brand, Vertical.VerticalType vertical, MessageContext context) {
+        checkIPAddressCount(brand, vertical, context.getHttpServletRequest());
+    }
+
+    protected void checkIPAddressCount(Brand brand, Vertical.VerticalType vertical, HttpServletRequest request) {
         IPCheckService ipCheckService = new IPCheckService();
         PageSettings pageSettings = getPageSettingsByCode(brand, vertical);
-        if(!ipCheckService.isPermittedAccess(context.getHttpServletRequest(), pageSettings)) {
-            LOGGER.error("Access attempts exceeded for IP {} in {}", context.getHttpServletRequest().getRemoteAddr(), vertical.getCode());
+        if(!ipCheckService.isPermittedAccess(request, pageSettings)) {
+            LOGGER.error("Access attempts exceeded for IP {} in {}", request.getRemoteAddr(), vertical.getCode());
             throw new RouterException("Access attempts exceeded");
         }
     }
@@ -219,6 +231,22 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
             FatalErrorService.logFatalError(brandId, page, sessionId, false, "Competition error", errorMessage,
                     transactionId.toString(), data, brandCode);
         }
+    }
+
+    protected void updateApplicationDate(MessageContext context, REQUEST data) {
+        updateApplicationDate(context.getHttpServletRequest(), data);
+    }
+
+    protected void updateApplicationDate(HttpServletRequest request, REQUEST data) {
+        getApplicationDate(request).ifPresent(data::setRequestAt);
+    }
+
+    protected Optional<LocalDateTime> getApplicationDate(HttpServletRequest request) {
+        final Date date = ApplicationService.getApplicationDateIfSet(request);
+        if (date != null) {
+            return Optional.of(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+        }
+        return Optional.empty();
     }
 
 

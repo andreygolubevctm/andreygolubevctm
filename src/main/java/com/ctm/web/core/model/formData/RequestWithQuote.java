@@ -1,7 +1,7 @@
 package com.ctm.web.core.model.formData;
 
-public interface RequestWithQuote<QUOTE> extends Request {
+public abstract class RequestWithQuote<QUOTE> extends RequestImpl {
 
-    QUOTE getQuote();
+    public abstract QUOTE getQuote();
 
 }

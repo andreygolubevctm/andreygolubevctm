@@ -22,16 +22,19 @@
 
 	// Add your slide feature to the particular step that it needs to be visible
 	&[data-step="start"] {
-		#navbar-main{
-			.slide-feature-hidden() !important;
-	 	}
+		.slide-feature-emailquote.privacyOptinChecked
+		{
+			.slide-feature-is-visible();
+		}
 	}
 
 	&[data-step="options"],
 	&[data-step="details"],
 	&[data-step="address"] {
-		#navbar-main{
-			.slide-feature-hidden() !important;
+		.slide-feature-back,
+		.slide-feature-emailquote.privacyOptinChecked
+		{
+			.slide-feature-is-visible();
 		}
 	}
 
@@ -49,8 +52,22 @@
 		.progress-bar-row {
 			.slide-feature-hidden() !important;
 		}
+		.navMenu-row-fixed > .container {
+			min-height: 132px;
+		}
 	}
 }
+
+@media(@xs-only) {
+	.car {
+		&[data-step="results"] {
+			.navMenu-row-fixed > .container {
+				min-height: 0px;
+			}
+		}
+	}
+}
+
 .car.moreInfoVisible {
 
 	// Add your slide feature here to be hidden by default

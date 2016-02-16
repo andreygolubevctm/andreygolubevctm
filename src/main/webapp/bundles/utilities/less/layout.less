@@ -33,7 +33,7 @@ fieldset {
   text-align: left;
   margin-bottom: 10px;
 }
-.what-to-compare .btn,
+.roundedCheckboxIcons .btn,
 .what-to-compare-reset .btn,
 .electricity-usage .btn,
 .gas-usage .btn {
@@ -54,20 +54,23 @@ fieldset {
   width: 46%;
   margin:2%;
 }
-.what-to-compare label i,
+.roundedCheckboxIcons label i,
 .what-to-compare-reset label i {
   display: block;
   font-size: 80px;
 }
-.electricity-usage label i,
-.gas-usage  label i {
-  display: block;
-  font-size: 80px;
-  line-height: 0.6;
-}
-.electricity-usage label.active h3,
-.gas-usage label.active h3 {
-  color: #ffffff;
+@media (@lg-only) {
+  .electricity-usage label i,
+  .gas-usage label i {
+    display: block;
+    font-size: 80px;
+    line-height: 0.6;
+  }
+
+  .electricity-usage label.active h3,
+  .gas-usage label.active h3 {
+    color: #ffffff;
+  }
 }
 
 .moving-in-date,
@@ -101,41 +104,6 @@ fieldset {
   background: @main-bg-colour;
 }
 
-@media(max-width: @screen-sm) {
-  .electricity-usage .btn,
-  .gas-usage .btn {
-    display: inline-block;
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  .electricity-usage span {
-    width: 25%;
-  }
-  .btn-group .btn + .btn {
-    border-left-width: 1px;
-  }}
-
-@media(min-width: @screen-md) {
-  .additional-estimate-details-row {
-    .electricity, .gas {
-      h5.structural {
-        display:block;
-      }
-      .has-error {
-        h5 {
-          visibility: hidden;
-        }
-        .error-field {
-          position: absolute;
-          top: 0px;
-          label {
-            line-height: 1em;
-          }
-        }
-      }
-    }
-  }
-}
 @media(@lg-only) {
   .additional-estimate-details-row {
     .electricity, .gas {
@@ -145,5 +113,13 @@ fieldset {
         }
       }
     }
+  }
+}
+@media(@xs-sm-only) {
+  #utilities_estimateDetails_usage_electricity_currentSupplier.init,
+  #utilities_estimateDetails_usage_gas_currentSupplier.init {
+      font-size: 12px;
+      padding-left: 5px;
+      letter-spacing: -0.04em;
   }
 }

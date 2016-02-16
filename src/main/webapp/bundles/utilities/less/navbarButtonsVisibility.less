@@ -24,11 +24,14 @@
 	  .slide-feature-is-visible();
 	}
   }
-  &[data-step="start"] {
-	#navbar-main{
-	  .slide-feature-hidden() !important;
+
+	@media (@sm) {
+		&[data-step="start"] {
+			#navbar-main {
+				.slide-feature-hidden() !important;
+			}
+		}
 	}
-  }
   &[data-step="results"] {
 	//put the sorting/filtering bar here to be shown once it exists.
 	.slide-feature-back,

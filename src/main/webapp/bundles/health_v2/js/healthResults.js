@@ -538,7 +538,7 @@
     function getBeforeResultsPage() {
         // Load rates before loading the results data (hidden fields are populated when rates are loaded).
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, {source: 'healthLoadRates'});
-        meerkat.modules.health.loadRatesBeforeResultsPage(function afterFetchRates() {
+        meerkat.modules.health.loadRatesBeforeResultsPage(false, function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health').done(function () {
                 Results.updateAggregatorEnvironment();

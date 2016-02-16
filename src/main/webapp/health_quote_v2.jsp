@@ -214,8 +214,6 @@
                 <health_v2_layout:slide_application_details />
                 <health_v2_layout:slide_payment_details />
 
-                <health_v2:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />
-
                 <field_v1:hidden xpath="environmentOverride" />
                 <field_v1:hidden xpath="environmentValidatorOverride" />
                 <input type="hidden" name="transcheck" id="transcheck" value="1" />
