@@ -1,5 +1,7 @@
 package com.ctm.web.core.services;
 
+import com.ctm.commonlogging.context.LoggingContext;
+import com.ctm.commonlogging.context.LoggingVariables;
 import com.ctm.validator.contacts.model.request.Contact;
 import com.ctm.validator.contacts.model.request.ValidateContactRequest;
 import com.ctm.validator.contacts.model.response.ValidateContactResponse;
@@ -32,13 +34,16 @@ public class ContactValidatorService extends CommonRequestService<ValidateContac
     }
 
     @Async
-    public void validateContact(Brand brand, Vertical.VerticalType verticalType, ContactValidatorRequest contactValidatorRequest) {
+    public void validateContact(Brand brand, Vertical.VerticalType verticalType, ContactValidatorRequest contactValidatorRequest, LoggingContext loggingContext) {
         try {
+            LoggingVariables.setLoggingContext(loggingContext);
             final ValidateContactResponse response = sendRequestToService(brand, verticalType, "contactValidatorService", Endpoint.VALIDATE,
                     contactValidatorRequest, ValidateContactResponse.class, new ValidateContactRequest(Contact.instanceOf(contactValidatorRequest.getContact())));
             LOGGER.debug("ValidateContact executed {} {}", kv("response", response));
         } catch (Exception e) {
             LOGGER.warn("Exception occurred while validating {}:", kv("contactValidatorRequest", contactValidatorRequest), e);
+        } finally {
+            LoggingVariables.clearLoggingContext();
         }
     }
 
