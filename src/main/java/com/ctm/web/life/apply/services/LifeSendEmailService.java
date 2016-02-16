@@ -22,19 +22,18 @@ public class LifeSendEmailService {
     private final EmailService emailService;
 
     @Deprecated // use only in jsp
+    @SuppressWarnings("unused")
     public LifeSendEmailService(){
         SqlDao sqlDao = new SqlDao();
         NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm());
         this.transactionDetailsDao = new TransactionDetailsDao( jdbcTemplate,  sqlDao);
         this.emailService = new EmailService();
-
     }
 
     @Autowired
     public LifeSendEmailService(TransactionDetailsDao transactionDetailsDao, EmailService emailService){
         this.transactionDetailsDao = transactionDetailsDao;
         this.emailService = emailService;
-
     }
 
     public void sendEmail(long transactionId, String emailAddress, HttpServletRequest request) throws SendEmailException {
