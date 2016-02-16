@@ -230,15 +230,16 @@ public class EmailMasterDao {
 		return emailDetails;
 	}
 
-	public void writeToEmailPropertiesAllVerticals(EmailMaster emailDetails) throws DaoException  {
+	public int writeToEmailPropertiesAllVerticals(EmailMaster emailDetails) throws DaoException  {
 		int count = 0;
 		PreparedStatement stmt;
+		int outcome = 0;
 		try {
 			Connection conn = dbSource.getConnection();
 			stmt = conn.prepareStatement(
 					"SELECT count(emailId) as propertiesCount " +
 					"FROM aggregator.email_properties ep " +
-					"WHERE ep.emailId = ? " +
+					"WHERE ep.emailId = ? AND ep.emailId <> 0 " +
 					"AND brand = ? ;"
 			);
 
@@ -264,7 +265,7 @@ public class EmailMasterDao {
 				stmt.setInt(2 , emailDetails.getEmailId());
 				stmt.setString(3 , "marketing");
 				stmt.setString(4 , brandCode);
-				stmt.executeUpdate();
+				outcome = stmt.executeUpdate();
 				stmt.close();
 			} else if(vertical != null && !vertical.isEmpty()){
 				writeToEmailProperties(emailDetails, conn);
@@ -277,12 +278,15 @@ public class EmailMasterDao {
 				dbSource.closeConnection();
 			}
 		}
+
+		return outcome;
 	}
 
-	public void writeToEmailProperties(EmailMaster emailDetails) throws DaoException  {
+	public int writeToEmailProperties(EmailMaster emailDetails) throws DaoException  {
+		int outcome = 0;
 		try {
 			Connection conn = dbSource.getConnection();
-			writeToEmailProperties(emailDetails, conn);
+			outcome = writeToEmailProperties(emailDetails, conn);
 		} catch (NamingException | SQLException e) {
 			LOGGER.error("failed to write to email properties {}" , kv("emailDetails", emailDetails), e);
 			throw new DaoException(e);
@@ -291,9 +295,11 @@ public class EmailMasterDao {
 				dbSource.closeConnection();
 			}
 		}
+		return outcome;
 	}
 
-	private void writeToEmailProperties(EmailMaster emailDetails , Connection conn ) throws SQLException  {
+	private int writeToEmailProperties(EmailMaster emailDetails , Connection conn ) throws SQLException  {
+		int outcome = 0;
 		PreparedStatement stmt = conn.prepareStatement("INSERT INTO aggregator.email_properties " +
 					"(emailId,emailAddress,propertyId,brand,vertical,value)" +
 					" VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE " +
@@ -306,8 +312,10 @@ public class EmailMasterDao {
 		stmt.setString(5 , vertical);
 		stmt.setString(6 , emailDetails.getOptedInMarketing(vertical) ? "Y" : "N");
 		stmt.setString(7 , emailDetails.getOptedInMarketing(vertical) ? "Y" : "N");
-		stmt.executeUpdate();
+		outcome = stmt.executeUpdate();
 		stmt.close();
+
+		return outcome;
 	}
 
 	public EmailMaster getEmailMasterById(int emailId) throws DaoException {

@@ -86,17 +86,20 @@ public class UnsubscribeService {
 	 * @param unsubscribe
 	 * @throws DaoException
 	 */
-	public void unsubscribe(PageSettings pageSettings, Unsubscribe unsubscribe) throws DaoException {
+	public int unsubscribe(PageSettings pageSettings, Unsubscribe unsubscribe) throws DaoException {
+		int outcome = 0;
 		if(emailDao == null){
             int brandId = pageSettings.getBrandId();
 			emailDao = new EmailMasterDao(brandId, pageSettings.getBrandCode() , unsubscribe.getVertical());
 		}
 		if(unsubscribe.getVertical() != null && !unsubscribe.getVertical().isEmpty()){
 			unsubscribe.getEmailDetails().setOptedInMarketing(false, unsubscribe.getVertical().toLowerCase());
-			emailDao.writeToEmailProperties(unsubscribe.getEmailDetails());
+			outcome = emailDao.writeToEmailProperties(unsubscribe.getEmailDetails());
 		} else{
-			emailDao.writeToEmailPropertiesAllVerticals(unsubscribe.getEmailDetails());
+			outcome = emailDao.writeToEmailPropertiesAllVerticals(unsubscribe.getEmailDetails());
 		}
+
+		return outcome;
 	}
 
 

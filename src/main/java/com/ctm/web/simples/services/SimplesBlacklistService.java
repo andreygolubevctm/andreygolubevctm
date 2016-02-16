@@ -115,9 +115,13 @@ public class SimplesBlacklistService {
 
         String result;
         try {
-            unsubscribeService.unsubscribe(pageSettings, unsubscribe);
-            writeBlacklistStamp(request, "email", email, "N", operator, comment);
-            result = "success";
+            int outcome = unsubscribeService.unsubscribe(pageSettings, unsubscribe);
+			if (outcome > 0) {
+				writeBlacklistStamp(request, "email", email, "N", operator, comment);
+				result = "success";
+			} else {
+				result = "Warning: This email can't be unsubscribed because it doesn't exist.";
+			}
         }
         catch (DaoException e) {
             LOGGER.error("Could not unsubscribe email from simples {},{},{}" , kv("email", email), kv("operator",operator), kv("comment", comment), e);
