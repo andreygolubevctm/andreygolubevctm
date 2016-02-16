@@ -50,6 +50,7 @@ public class LifeApplyServiceResponseAdapterTest {
     public void testAdaptWithPartnerNoAdditionalInformation() throws Exception {
         LifeApplyResponse applyResponse = new LifeApplyResponse.Builder<>()
                 .responseStatus(Status.REGISTERED)
+                .additionalInformation(null)
                 .build();
         LifeApplyWebResponseResults.Builder result = adapter.adapt(applyResponse);
         assertTrue(result.build().isSuccess());
