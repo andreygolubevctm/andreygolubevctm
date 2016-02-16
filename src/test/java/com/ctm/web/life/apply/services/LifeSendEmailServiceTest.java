@@ -48,6 +48,17 @@ public class LifeSendEmailServiceTest {
     }
 
     @Test
+    public void shouldSendEmailIfSendButNotToOzicare() throws Exception {
+        TransactionDetail existingDetails = new TransactionDetail();
+        existingDetails.setTextValue("lifebroker");
+        when(transactionDetailsDao.getTransactionDetailWhereXpathLike(transactionId, "%/emailSentBy")).thenReturn(Optional.of(existingDetails));
+        lifeSendEmailService.sendEmail( transactionId,  emailAddress,  request);
+        verify(emailService).send( request, EmailMode.BEST_PRICE,
+                emailAddress,  transactionId);
+
+    }
+
+    @Test
     public void shouldSendEmailIfNotAlreadySent() throws Exception {
         when(transactionDetailsDao.getTransactionDetailWhereXpathLike(transactionId, "%/emailSentBy")).thenReturn(Optional.empty());
         lifeSendEmailService.sendEmail( transactionId,  emailAddress,  request);
