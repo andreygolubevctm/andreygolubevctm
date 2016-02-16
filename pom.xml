@@ -830,7 +830,7 @@
             </build>
         </profile>
         <profile>
-            <id>embedded-tomcat</id>
+            <id>springboot-embedded-tomcat</id>
             <!-- include embedded tomcat and  tomcat libs so we can run app using main class from IDE -->
             <dependencies>
                 <dependency>
