@@ -12,6 +12,8 @@ import com.ctm.web.core.services.SettingsService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.List;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class ContentService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ContentService.class.getName());
@@ -29,6 +32,7 @@ public class ContentService {
 	private ContentControlCache contentControlCache;
 	private ContentDao contentDao;
 
+	@Autowired
 	public ContentService(ContentDao contentDao, ContentControlCache contentControlCache) {
 		this.contentDao = contentDao;
 		this.contentControlCache = contentControlCache;

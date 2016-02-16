@@ -10,6 +10,7 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -27,6 +28,7 @@ public class LeadFeed {
 	protected Content ignoreBecauseOfField = null;
 	protected String ignorePhoneRule = null;
 
+    @Autowired
 	public LeadFeed(ContentService contentService, LeadFeedTouchService leadFeedTouchService) {
 		this.contentService = contentService;
         this.leadFeedTouchService = leadFeedTouchService;
