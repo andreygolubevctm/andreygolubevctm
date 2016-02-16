@@ -357,12 +357,14 @@
         product.aboutFund = '<p>Apologies. This information did not download successfully.</p>';
         product.whatHappensNext = '<p>Apologies. This information did not download successfully.</p>';
         product.warningAlert = '';
+        product.cutOffDate = '';
 
         // Get the "about fund", "what happens next" and warningAlert info
         return $.when(
             getProviderContentByType( product, 'ABT'),
             getProviderContentByType( product, 'NXT'),
-            getProviderContentByType( product, 'FWM')
+            getProviderContentByType( product, 'FWM'),
+            getProviderContentByType( product, 'COD')
         );
     }
 
@@ -394,6 +396,9 @@
                             break;
                         case 'FWM':
                             product.warningAlert = result.providerContentText;
+                            break;
+                        case 'COD':
+                            product.cutOffDate =  result.providerContentText;
                             break;
                     }
                 }
