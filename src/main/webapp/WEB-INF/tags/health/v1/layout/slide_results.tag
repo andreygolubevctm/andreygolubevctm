@@ -14,8 +14,6 @@
 		<health_v1:prices_have_changed_notification />
 
 		<simples:dialogue id="24" vertical="health" mandatory="true" />
-		<simples:dialogue id="39" vertical="health" />
-		<simples:dialogue id="34" vertical="health" />
 	</layout_v3:slide_content>
 
 </layout_v3:slide>
