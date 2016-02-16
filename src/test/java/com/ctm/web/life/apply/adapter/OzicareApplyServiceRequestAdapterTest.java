@@ -91,7 +91,8 @@ public class OzicareApplyServiceRequestAdapterTest {
         final OzicareApplyRequest result = requestAdapter.adapt(request);
 
         assertEquals(PRIMARY_FIRSTNAME , result.getFirstName());
-        assertEquals(PRODUCT_ID,result.getLeadNumber());
+        assertEquals(LEAD_NUMBER,result.getLeadNumber());
+        assertEquals(PRODUCT_ID,requestAdapter.getProductId(request));
     }
 
     private LifeApplyWebRequest getLifeApplyWebRequest() {
@@ -137,14 +138,15 @@ public class OzicareApplyServiceRequestAdapterTest {
         OzicareApplyServiceRequestAdapter requestAdapter = new OzicareApplyServiceRequestAdapter(lifeRequest);
         LifeApplyWebRequest request = getLifeApplyWebRequest();
         request.setRequest_type("REQUEST-CALL");
-        request .setApi_ref("c4aa7ccb59f5a461039f10");
-        request .setClient_product_id(PRODUCT_ID);
-        request .setCompany("OnePath");
+        request.setApi_ref("c4aa7ccb59f5a461039f10");
+        request.setClient_product_id(PRODUCT_ID);
+        request.setCompany("OnePath");
         request.setPartner_quote(YesNo.N);
-        request .setPartnerBrand("OnePath");
+        request.setPartnerBrand("OnePath");
+        request.setLead_number(LEAD_NUMBER);
 
         final OzicareApplyRequest result = requestAdapter.adapt(request);
-        assertEquals(PRODUCT_ID,result.getLeadNumber());
+        assertEquals(LEAD_NUMBER,result.getLeadNumber());
         assertEquals(PRIMARY_FIRSTNAME , result.getFirstName());
     }
 
@@ -207,10 +209,12 @@ public class OzicareApplyServiceRequestAdapterTest {
         request.setPartner_product_id(PARTNER_PRODUCT_ID);
         request.setPartner_quote(YesNo.Y);
         request.setPartnerBrand("AIA Australia");
+        request.setLead_number(LEAD_NUMBER);
         request.setTransactionId(2725461L);
 
         final OzicareApplyRequest result = requestAdapter.adapt(request);
-        assertEquals(PRODUCT_ID,result.getLeadNumber());
+        assertEquals(LEAD_NUMBER,result.getLeadNumber());
+        assertEquals(PRODUCT_ID,requestAdapter.getProductId(request));
         assertEquals(PRIMARY_FIRSTNAME , result.getFirstName());
     }
 

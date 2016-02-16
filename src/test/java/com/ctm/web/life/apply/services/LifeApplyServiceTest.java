@@ -62,7 +62,7 @@ public class LifeApplyServiceTest {
     private com.ctm.web.core.model.settings.ServiceConfiguration serviceConfiguration;
     @Mock
     private com.ctm.web.core.model.settings.Vertical vertical;
-    @Mock
+
     private LifeApplyResponse response;
 
     private LifeApplyService service;
@@ -76,6 +76,7 @@ public class LifeApplyServiceTest {
 
     @Before
     public void setUp() throws Exception {
+        response = new LifeApplyResponse.Builder().build();
         service = new LifeApplyService( providerFilterDAO,  restClient,
                  sessionDataService,
                  serviceConfigurationService,
