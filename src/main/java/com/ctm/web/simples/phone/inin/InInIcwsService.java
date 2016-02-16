@@ -51,12 +51,26 @@ public class InInIcwsService {
 	public static final int DELAY = 500;
 	public static final int ATTEMPTS = 2;
 
-	@Autowired private SerializationMappers jacksonMappers;
-	@Autowired InInConfig inInConfig;
-	@Autowired private Client<ConnectionReq, ConnectionResp> connectionClient;
-	@Autowired private Client<QueueSubscriptionReq, String> queueSubscriptionClient;
-	@Autowired private Client<String, List<Message>> messageClient;
-	@Autowired private Client<SecurePause, String> securePauseClient;
+	private SerializationMappers jacksonMappers;
+	private InInConfig inInConfig;
+	private Client<ConnectionReq, ConnectionResp> connectionClient;
+	private Client<QueueSubscriptionReq, String> queueSubscriptionClient;
+	private Client<String, List<Message>> messageClient;
+	private Client<SecurePause, String> securePauseClient;
+
+	@Autowired
+	public InInIcwsService(SerializationMappers jacksonMappers, InInConfig inInConfig,
+						   Client<ConnectionReq, ConnectionResp> connectionClient,
+						   Client<QueueSubscriptionReq, String> queueSubscriptionClient,
+						   Client<String, List<Message>> messageClient,
+						   Client<SecurePause, String> securePauseClient) {
+		this.jacksonMappers = jacksonMappers;
+		this.inInConfig = inInConfig;
+		this.connectionClient = connectionClient;
+		this.queueSubscriptionClient = queueSubscriptionClient;
+		this.messageClient = messageClient;
+		this.securePauseClient = securePauseClient;
+	}
 
 	public Observable<PauseResumeResponse> pause(final String agentUsername, final Optional<String> interactionId) {
 		return securePause(SecurePauseType.PAUSE_WITH_INFINITE_TIMEOUT, agentUsername, interactionId);
@@ -107,8 +121,6 @@ public class InInIcwsService {
 										.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable))
 				);
 	}
-
-
 
 	private PauseResumeResponse handleSecurePauseError(final SecurePauseType securePauseType, final String agentUsername, final Throwable throwable) {
 		if (throwable instanceof HttpClientErrorException) {
