@@ -15,6 +15,7 @@ public class LifeApplyWebRequest implements Request {
 
     private String clientIpAddress;
     private String environmentOverride;
+
     private String request_type; //NOPMD
     @NotNull
     private String client_product_id; //NOPMD
@@ -33,17 +34,17 @@ public class LifeApplyWebRequest implements Request {
 
     public LifeApplyWebRequest() {}
 
-    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
+    @SuppressWarnings({"PMD.MethodNamingConventions","PMD.VariableNamingConventions" }) // maps to front end
     public void setRequest_type(String request_type) {
         this.request_type = request_type;
     }
 
-    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
+    @SuppressWarnings({"PMD.MethodNamingConventions","PMD.VariableNamingConventions" }) // maps to front end
     public void setClient_product_id(String client_product_id) {
         this.client_product_id = client_product_id;
     }
 
-    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
+    @SuppressWarnings({"PMD.MethodNamingConventions","PMD.VariableNamingConventions" }) // maps to front end
     public void setPartner_product_id(String partner_product_id) {
         this.partner_product_id = partner_product_id;
     }
@@ -52,7 +53,8 @@ public class LifeApplyWebRequest implements Request {
     public void setVertical(String vertical) {
         this.vertical = vertical;
     }
-    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
+
+    @SuppressWarnings({"PMD.MethodNamingConventions","PMD.VariableNamingConventions" }) // maps to front end
     public void setPartner_quote(YesNo partner_quote) {
         this.partner_quote = partner_quote;
     }
@@ -65,12 +67,12 @@ public class LifeApplyWebRequest implements Request {
         this.partnerBrand = partnerBrand;
     }
 
-    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
+    @SuppressWarnings({"PMD.MethodNamingConventions","PMD.VariableNamingConventions" }) // maps to front end
     public void setLead_number(String lead_number) {
         this.lead_number = lead_number;
     }
 
-    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
+    @SuppressWarnings({"PMD.MethodNamingConventions","PMD.VariableNamingConventions" }) // maps to front end
     public String getLead_number() {
         return lead_number;
     }

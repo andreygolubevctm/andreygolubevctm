@@ -42,7 +42,7 @@ public class OccupationsDao {
 				
 				while (resultSet.next()) {
 					occupation.setTitle(resultSet.getString("title"));
-					occupation.setTALCode(resultSet.getString("talCode"));
+					occupation.setTalCode(resultSet.getString("talCode"));
 				}
 			}
 		} catch (SQLException | NamingException e) {

@@ -6,7 +6,8 @@ import com.ctm.web.core.model.request.ContactValidatorRequest;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
-import com.ctm.web.core.services.ContactValidatorService;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.validator.services.ContactValidatorService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -28,8 +29,8 @@ public class ContactValidator extends CommonQuoteRouter implements InitializingB
     private ContactValidatorService contactValidatorService;
 
     @Autowired
-    public ContactValidator(SessionDataServiceBean sessionDataServiceBean) {
-        super(sessionDataServiceBean);
+    public ContactValidator(SessionDataServiceBean sessionDataServiceBean, ApplicationService applicationService) {
+        super(sessionDataServiceBean,applicationService);
     }
 
     @Override
