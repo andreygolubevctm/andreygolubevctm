@@ -12,7 +12,7 @@
         NAV
         =======================
         --%>
-        var healthFunds_CBH = {
+        var healthFunds_NHB = {
           processOnAmendQuote: true,
           ajaxJoinDec: false,
 
@@ -22,7 +22,7 @@
             $("label[for='health_application_contactPoint'] span").text('Navy Health');
             $("label[for='health_previousfund_primary_authority'] span").text("Navy Health");
             $("label[for='health_previousfund_partner_authority'] span").text("Navy Health");
-            // not cumpolsary
+            <%--  not cumpolsary --%>
             $("#health_application_email").prop('required', false);
 
 
@@ -57,7 +57,7 @@
                           return !$("#nav_ineligible").is(":visible");
                         }
                 );
-              //lets make ajax call to get the other values for the sub eligibility field
+              <%-- lets make ajax call to get the other values for the sub eligibility field --%>
               $('#health_application_nav_eligibility').on('change',function() {
                 $('#subreasonId').slideDown(200);
                 var $dropDown = $("#health_application_nav_subreason");
@@ -99,7 +99,6 @@
                     numberOfAttempts: 3,
                     errorLevel: "fatal",
                     onSuccess: function onSubmitSuccess(resultData) {
-                      console.log("the resultData is:"+resultData);
                       $dropDown.empty();
                       $.each(resultData,function(k,v) {
                         $dropDown.append($("<option />").val(k).text(v));
@@ -131,8 +130,8 @@
                   </c:set>
                 <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
                 var originalTitle = $("#health_application_primary_title").val();
-                console.log("original title is:"+originalTitle);
                 $('#health_application_primary_titleRow').replaceWith('<c:out value="${html}" escapeXml="false" />');
+                <%-- lets get the previous original title and apply to the replaced one --%>
                 $("#health_application_primary_title").val(originalTitle);
             }
             <%-- Partner Title replacement --%>
@@ -149,6 +148,7 @@
               <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
               var originalTitle = $("#health_application_partner_title").val();
               $('#health_application_partner_titleRow').replaceWith('<c:out value="${html}" escapeXml="false" />');
+              <%-- lets get the previous partner title and apply to the replaced one. --%>
               $("#health_application_partner_title").val(originalTitle);
             }
 
@@ -179,7 +179,6 @@
 
               meerkat.modules.healthDependants.updateConfig({showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':25, showSchoolIdField:false,showRelationshipForNavy:true,showPreferredMethodOfContact:true });
 
-
               <%-- Partner authority --%>
               healthFunds._partner_authority(true);
 
@@ -187,15 +186,12 @@
               meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
 
               <%-- Payments --%>
-
-
               meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':true, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true });
               meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':true, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true });
               meerkat.modules.healthPaymentStep.overrideSettings('frequency',{ 'weekly':27, 'fortnightly':27, 'monthly':27, 'quarterly':27, 'halfyearly':27, 'annually':27 });
               <%--credit card options--%>
               meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
               meerkat.modules.healthCreditCard.render();
-
 
               <%-- Claims account --%>
               meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
@@ -211,6 +207,7 @@
             $(".health_previous_fund_authority").addClass("hidden");
             $("label[for='health_previousfund_primary_authority'] span").text("the fund");
             $("label[for='health_previousfund_partner_authority'] span").text("the fund");
+            <%-- let set this back to its original state --%>
             $("#health_application_email").prop("required","true");
 
             <%-- Run these if not loading a quote --%>
