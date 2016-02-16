@@ -10,11 +10,13 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class LeadFeed {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LeadFeed.class);
