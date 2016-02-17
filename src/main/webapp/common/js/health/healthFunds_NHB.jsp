@@ -7,6 +7,12 @@
         <% pageContext.setAttribute("aposChar2", "\\\\'"); %>
         <% pageContext.setAttribute("slashChar", "\\\\"); %>
         <% pageContext.setAttribute("slashChar2", "\\\\\\\\"); %>
+        <%-- Because of cross domain issues with the payment gateway, we always use a CTM iframe to proxy to HAMBS' iframes so we need iframe src URL and hostOrigin to be pulled from CTM's settings (not the base and root URLs of the current brand). --%>
+        <c:set var="ctmSettings" value="${settingsService.getPageSettingsByCode('CTM','HEALTH')}"/>
+        <c:set var="hostOrigin">${ctmSettings.getRootUrl()}</c:set>
+        <c:if test="${fn:endsWith(hostOrigin, '/')}">
+        <c:set var="hostOrigin">${fn:substring( hostOrigin, 0, fn:length(hostOrigin)-1 )}</c:set>
+        </c:if>
         <%--
         =======================
         NAV
@@ -50,6 +56,7 @@
                   </div>
                 </form_v2:fieldset>
               </c:set>
+
               <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
               $('#health_application').prepend('<c:out value="${html}" escapeXml="false" />');
               $("#subreasonId, #nav_ineligible").hide();
@@ -190,14 +197,41 @@
               meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':true, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true });
               meerkat.modules.healthPaymentStep.overrideSettings('frequency',{ 'weekly':27, 'fortnightly':27, 'monthly':27, 'quarterly':27, 'halfyearly':27, 'annually':27 });
               <%--credit card options--%>
-              meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
-              meerkat.modules.healthCreditCard.render();
+              //meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
+             // meerkat.modules.healthCreditCard.render();
 
               <%-- Claims account --%>
-              meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
-              meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
+              //meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
+              //meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
+
+              $("#update-premium").on("click.NHB",function() {
+                if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
+                  $('.health_bank-details_policyDay-message').html('Your first premium payment will be deducted from your nominated bank account on receipt of your application by us, or from the actual start date of your policy');
+                  $('#health_payment_bank_policyDay').attr('type','hidden').attr('data-attach', 'true');
+                }
+                else if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc') {
+                  $('.health_credit-card-details_policyDay-message').html('Your first premium payment will be deducted from your credit card on receipt of your application by us, or from the actual start date of your policy');
+                  $('#health_payment_credit_policyDay').attr('type','hidden').attr('data-attach', 'true');
+                }
+
+              });
 
             }<%-- /not loading quote --%>
+            meerkat.modules.paymentGateway.setup({
+              "paymentEngine" : meerkat.modules.healthPaymentGatewayNAB,
+              "name" : 'health_payment_gateway',
+              "src": '${ctmSettings.getBaseUrl()}', <%-- the CTM iframe source URL --%>
+              "origin": '${hostOrigin}', <%-- the CTM host origin --%>
+              "providerCode": 'nhb',
+              "brandCode": '${pageSettings.getBrandCode()}',
+              "handledType" :  {
+                "credit" : true,
+                "bank" : false
+              },
+              "paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
+              "clearValidationSelectors" : $('#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type'),
+              "getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
+            });
           },
           unset: function() {
             <%-- Custom questions - hide in case user comes back --%>
@@ -216,6 +250,8 @@
               healthFunds._dependants(false);
               meerkat.modules.healthDependants.resetConfig();
               healthFunds._reset();
+              $("#update-premium").off("click.NHB");
+              meerkat.modules.paymentGateway.reset();
 
               <%-- Payments --%>
               $('.health-payment_details-type').off('change.NAV');
