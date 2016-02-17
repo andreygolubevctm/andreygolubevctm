@@ -41,7 +41,7 @@
 		</form_v3:row>
 
 		<c:if test="${isDualPricingActive eq true}">
-			<div class="hidden frequencyWarning definition alert alert-info"><content:get key="frequencyWarning"/></div>
+			<div class="hidden frequencyWarning definition alert alert-info"></div>
 		</c:if>
 
 		<c:set var="fieldXpath" value="${xpath}/claims" />

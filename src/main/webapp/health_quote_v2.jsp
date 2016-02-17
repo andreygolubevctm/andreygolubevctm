@@ -10,7 +10,7 @@
 <session:new verticalCode="HEALTH" authenticated="true" />
 
 <health_v1:redirect_rules />
-<c:set var="dualPricingFlag"><content:get key="isDualPricingActive"/></c:set>
+<c:set var="dualPricingFlag"><content:get key="alternatePricingActive"/></c:set>
 <c:set var="isDualPricingActive" scope="session">
     <c:choose>
         <c:when test="${not empty dualPricingFlag and dualPricingFlag eq 'Y'}">
@@ -224,6 +224,7 @@
                 <health_v1_layout:slide_results />
                 <health_v2_layout:slide_application_details />
                 <health_v2_layout:slide_payment_details />
+                <health_v2:dual_pricing_templates />
 
                 <field_v1:hidden xpath="environmentOverride" />
                 <field_v1:hidden xpath="environmentValidatorOverride" />

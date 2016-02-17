@@ -478,8 +478,8 @@
 
 				if(event.isForward === true){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
-					meerkat.modules.healthCutOffDate.initHealthCutOffDate();
-					meerkat.modules.healthCutOffDate.setProduct(selectedProduct);
+					meerkat.modules.healthDropDeadDate.initHealthDropDeadDate();
+					meerkat.modules.healthDropDeadDate.setDropDeadDate(selectedProduct);
 
 					// Show warning if applicable
 					if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {

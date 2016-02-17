@@ -8,19 +8,23 @@
 		frequencyWarningOriginalText,
 		$paymentDetailsFrequency,
 		$paymentDetailsSelection,
-		currentProduct;
+		$whyPriceRiseTemplate,
+		$priceFrequencyTemplate,
+		obj = {};
 
-	function initHealthCutOffDate(){
+	function initHealthDropDeadDate(){
 		$paymentDetailsSelection = $('#health_payment_details-selection');
 		$frequencyWarning = $paymentDetailsSelection.find('.frequencyWarning');
 		frequencyWarningOriginalText = $frequencyWarning.html(),
-		$paymentDetailsFrequency = $paymentDetailsSelection.find('#health_payment_details_frequency');
+		$paymentDetailsFrequency = $paymentDetailsSelection.find('#health_payment_details_frequency'),
+		$whyPriceRiseTemplate = $('#more-info-why-price-rise-template'),
+		$priceFrequencyTemplate = $('#price-frequency-template');
 
 		applyEventListeners();
 	}
 
-	function setProduct(product) {
-		currentProduct = product;
+	function setDropDeadDate(product) {
+		obj.dropDeadDate = product.dropDeadDate;
 	}
 
 	function applyEventListeners() {
@@ -29,15 +33,16 @@
 			if ($(this).val().toLowerCase() == 'annually') {
 				$frequencyWarning.slideUp().html("");
 			} else {
-				var updatedText = frequencyWarningOriginalText.replace('[COD]', currentProduct.cutOffDate);
-				$frequencyWarning.html(updatedText).removeClass("hidden").slideDown();
+				var template = _.template($priceFrequencyTemplate.html()),
+					htmlContent = template(obj);
+				$frequencyWarning.html(htmlContent).removeClass("hidden").slideDown();
 			}
 		});
 	}
 
-	meerkat.modules.register('healthCutOffDate', {
-		initHealthCutOffDate: initHealthCutOffDate,
-		setProduct: setProduct
+	meerkat.modules.register('healthDropDeadDate', {
+		initHealthDropDeadDate: initHealthDropDeadDate,
+		setDropDeadDate: setDropDeadDate
 	});
 
 })(jQuery);
