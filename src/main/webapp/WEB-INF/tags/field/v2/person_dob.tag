@@ -61,6 +61,8 @@
 <fmt:formatDate var="nowLessAgeMinYears" pattern="yyyy-MM-dd" value="${nowLessAgeMinYears.time}" />
 ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', nowLessAgeMinYears), log:kv('name', name))}
 
+<c:set var="minYear" value="${java.util.GregorianCalendar.YEAR - Integer.parseInt(ageMax)}" />
+
 <%-- HTML --%>
 <div class="dateinput_container" data-provide="dateinput">
 	<div class="row dateinput-tripleField">
@@ -76,7 +78,7 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 	</div>
 	<div class="hidden select dateinput-nativePicker">
 		<span class="input-group-addon"><i class="icon-calendar"></i></span>
-		<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" min="1895-01-01" max="${nowLessAgeMinYears}" data-msg-required="Please enter the ${title} date of birth" placeHolder="DD/MM/YYYY">
+		<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" min="${minYear}-01-01" max="${nowLessAgeMinYears}" data-msg-required="Please enter the ${title} date of birth" placeHolder="DD/MM/YYYY">
 	</div>
 
 	<field_v2:validatedHiddenField xpath="${xpath}" className="serialise" additionalAttributes=" ${isRequired} ${additionalAttributes} data-rule-dateEUR='true'  ${youngestDOB} ${oldestDOB} ${youngRegularDriversAgeCheck}" />
