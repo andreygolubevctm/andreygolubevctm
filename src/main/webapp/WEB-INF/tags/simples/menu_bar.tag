@@ -101,14 +101,16 @@
 			<%-- User details --%>
 			<p class="navbar-text navbar-right">
 				<c:out value="${authenticatedData['login/user/displayName']}" />
-				<c:choose>
-					<c:when test="${not empty authenticatedData['login/user/extension']}">
-						on <c:out value="${authenticatedData['login/user/extension']}" />
-					</c:when>
-					<c:otherwise>
-						(no extension)
-					</c:otherwise>
-				</c:choose>
+                <c:if test="${!pageSettings.getSetting('inInEnabled')}">
+                    <c:choose>
+                        <c:when test="${not empty authenticatedData['login/user/extension']}">
+                            on <c:out value="${authenticatedData['login/user/extension']}" />
+                        </c:when>
+                        <c:otherwise>
+                            (no extension)
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
 				<c:out value=", " />
 				<a href="${assetUrl}security/simples_logout.jsp" class="navbar-link">Log out</a>
 			</p>
