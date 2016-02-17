@@ -120,7 +120,7 @@ public class SimplesBlacklistService {
 				writeBlacklistStamp(request, "email", email, "N", operator, comment);
 				result = "success";
 			} else {
-				result = "Warning: This email can't be unsubscribed because it doesn't exist.";
+				result = "Warning: " + email + " doesn't exist.";
 			}
         }
         catch (DaoException e) {
