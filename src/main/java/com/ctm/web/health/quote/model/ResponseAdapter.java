@@ -24,7 +24,6 @@ import java.util.Map;
 
 import static com.ctm.web.health.model.Frequency.*;
 import static com.ctm.web.health.quote.model.response.Price.DEFAULT_PRICE;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
 public class ResponseAdapter {
@@ -45,14 +44,6 @@ public class ResponseAdapter {
 
         } else {
 
-            List<String> disabledFunds = emptyList();
-            if (alternatePricingContent != null) {
-                String supplementaryValueByKey = alternatePricingContent.getSupplementaryValueByKey("disabledFunds");
-                if (StringUtils.isNotBlank(supplementaryValueByKey)) {
-                    disabledFunds = asList(StringUtils.split(supplementaryValueByKey, ","));
-                }
-            }
-
             if (quoteResponse != null) {
                 int index = 1;
                 for (HealthQuote quote : quoteResponse.getQuotes()) {
@@ -69,7 +60,7 @@ public class ResponseAdapter {
                     result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
                     if (alternatePricingContent != null && StringUtils.equalsIgnoreCase(alternatePricingContent.getContentValue(), "Y")) {
                         com.ctm.web.health.quote.model.response.Premium alternativePremium = quote.getAlternativePremium();
-                        if (alternativePremium != null && !disabledFunds.contains(quote.getInfo().getFundCode())) {
+                        if (alternativePremium != null) {
                             result.setAltPremium(createPremium(alternativePremium, quote.getInfo(), request.getQuote()));
                         } else {
                             result.setAltPremium(createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote()));
