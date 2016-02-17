@@ -8,4 +8,5 @@
 </core_v1:js_template>
 
 <core_v1:js_template id="more-info-why-price-rise-template">
+	<content:get key="moreInfoWhyPricesRising"/>
 </core_v1:js_template>
