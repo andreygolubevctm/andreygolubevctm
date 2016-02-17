@@ -99,7 +99,7 @@
                 return true;
             }
         }
-        return;
+        return false;
     }
 
     $.validator.addMethod('youngestDOB', function(value, element, params) {
