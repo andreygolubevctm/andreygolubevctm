@@ -287,4 +287,126 @@
 		}
 	}
 }
+
+.why-premiums-rising-wrapper {
+	.heading {
+		font-size: 42px;
+		font-family: 'SourceSansProSemiBold';
+	}
+
+	.attention {
+		font-family: 'SourceSansProSemiBold';
+		font-size: 18px;
+	}
+}
+
+.dual-pricing-container {
+	.dual-pricing-border {
+		height: 10px;
+		background-image: url("../graphics/health/dual-pricing-border.gif");
+	}
+	.current-pricing {
+		background: @more-info-header-bg-color;
+		color: @more-info-header-text-color;
+		padding: 22px;
+
+		h2 {
+			font-size: 33px;
+			font-family: 'SourceSansProSemiBold';
+			color: @more-info-header-text-color;
+			margin-top: 0px;
+		}
+
+		h3 {
+			font-family: SourceSansProRegular;
+			color: @more-info-header-text-color;
+		}
+
+		.why-rising-premiums {
+			color:@more-info-header-text-color;
+			text-align:right;
+		}
+
+		.lhcText {
+			font-size: 17px;
+			color: @more-info-header-text-color;
+		}
+
+
+	}
+
+	.april-pricing {
+		background: @main-bg-colour;
+		padding: 22px;
+
+		h3 {
+			margin-top: 0px;
+			font-family: SourceSansProRegular;
+			color: @opening-hours-grey-colour;
+		}
+
+		.comingSoon {
+			font-size: 26px;
+			font-family: 'SourceSansProSemiBold';
+			color: @opening-hours-grey-colour;
+		}
+	}
+
+	.april-pricing,
+	.current-pricing {
+		.note {
+			margin-top: 15px;
+		}
+	}
+}
+
+.fieldset-column-side .sidebar-box.dualPricingStyle {
+	padding: 0px;
+
+	.dualPricing {
+		margin-top: 0px;
+
+		.dual-pricing-container {
+			.current-pricing,
+			.april-pricing {
+				padding: 10px;
+
+				h2 {
+					font-size: 20px;
+				}
+
+				h3 {
+					font-size: 16px;
+				}
+
+				.frequency .frequencyAmount {
+					font-size:22px;
+				}
+
+				.lhcText {
+					font-size: 13px;
+				}
+
+				.note {
+					font-size: 14px;
+				}
+			}
+
+			.current-pricing {
+				.why-rising-premiums {
+					display: none;
+				}
+			}
+
+			.april-pricing {
+				background: #FFF;
+
+				.coming-soon {
+					font-size: 18px;
+				}
+			}
+		}
+	}
+}
+
 // DUAL PRICING END

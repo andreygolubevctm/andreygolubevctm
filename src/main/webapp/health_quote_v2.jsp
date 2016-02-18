@@ -10,17 +10,6 @@
 <session:new verticalCode="HEALTH" authenticated="true" />
 
 <health_v1:redirect_rules />
-<c:set var="dualPricingFlag"><content:get key="alternatePricingActive"/></c:set>
-<c:set var="isDualPricingActive" scope="session">
-    <c:choose>
-        <c:when test="${not empty dualPricingFlag and dualPricingFlag eq 'Y'}">
-            ${true}
-        </c:when>
-        <c:otherwise>
-            ${false}
-        </c:otherwise>
-    </c:choose>
-</c:set>
 
 <%-- START JOURNEY OVERRIDE - Part 1 of 2) --%>
 <c:set var="journeyOverride" value="${pageSettings.getSetting('journeyOverride') eq 'Y'}" />
@@ -46,6 +35,8 @@
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
         <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
         <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" scope="request" />
+        <jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
+        <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 
         <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health')}" scope="request"  />
 
@@ -224,7 +215,7 @@
                 <health_v1_layout:slide_results />
                 <health_v2_layout:slide_application_details />
                 <health_v2_layout:slide_payment_details />
-                <health_v2:dual_pricing_templates />
+                <health_v1:dual_pricing_templates />
 
                 <field_v1:hidden xpath="environmentOverride" />
                 <field_v1:hidden xpath="environmentValidatorOverride" />

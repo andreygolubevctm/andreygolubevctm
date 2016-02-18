@@ -11,7 +11,8 @@
 <jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 
-<div class="sidebar-box">
+<div class="sidebar-box<c:if test="${healthAlternatePricingActive eq true}"> dualPricingStyle</c:if>">
+	<c:if test="${healthAlternatePricingActive eq false}">
 	<div class="policySummaryContainer ${className}">
 		<c:choose>
 			<c:when test="${isAltView}">
@@ -28,6 +29,7 @@
 			</c:otherwise>
 		</c:choose>
 	</div>
+	</c:if>
 
 	<c:if test="${healthAlternatePricingActive eq true}">
 		<div class="policySummary dualPricing">
@@ -57,7 +59,9 @@
 			</div>
 		</div>
 	</c:if>
+</div>
 
+<div class="sidebar-box">
 	<c:if test="${showProductDetails == true}">
 		<div class="productSummaryDetails">
 			<c:if test="${isAltView}">

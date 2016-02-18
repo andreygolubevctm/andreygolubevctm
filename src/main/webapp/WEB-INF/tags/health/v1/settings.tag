@@ -62,17 +62,8 @@
 		</c:when>
 	</c:choose>
 </c:set>
-<c:set var="dualPricingEnabled"><content:get key="isDualPricingActive"/></c:set>
-<c:set var="isDualPricingEnabled" scope="session">
-	<c:choose>
-		<c:when test="${not empty dualPricingEnabled and dualPricingEnabled eq 'Y'}">
-			${true}
-		</c:when>
-		<c:otherwise>
-			${false}
-		</c:otherwise>
-	</c:choose>
-</c:set>
+<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
+<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
@@ -89,7 +80,7 @@
 	utm_campaign: '<c:out value="${utm_campaign}" />',
 	isDefaultToHealthQuote: ${defaultToHealthQuote},
     isDefaultToHealthApply: ${defaultToHealthApply},
-	isDualPricingEnabled : ${isDualPricingEnabled},
+	healthAlternatePricingActive: ${healthAlternatePricingActive},
 	liveChat: {
 		config: {
 			lpServer			: "server.lon.liveperson.net",
