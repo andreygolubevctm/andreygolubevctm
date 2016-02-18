@@ -27,7 +27,7 @@
 			FROM aggregator.transaction_header th
 			JOIN ctm.touches t ON th.transactionId = t.transaction_id
 			WHERE th.ProductType IN ("LIFE", "IP")
-			AND t.type IN ("C", "CB", "LF")
+			AND t.type IN ("C", "CB", "LF", "CRON")
 			GROUP BY th.rootId
 		)
 		GROUP BY transaction_header.rootId;
@@ -45,6 +45,9 @@
 		<c:forEach var="result" items="${transactionIds.rows}">
 			<settings:setVertical verticalCode="${result.ProductType}" />
 			<c:set var="vertical" value="${fn:toLowerCase(result.ProductType)}" />
+
+			<%-- First, record CRON touch event --%>
+			<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "CRON", "best_price_lead.jsp")}</c:set>
 		
 			<%--
 				- Take each transaction ID
@@ -97,6 +100,7 @@
 
 					<c:choose>
 						<c:when test="${company eq 'ozicare'}">
+							<c:set var="leadSentTo" value="${company}" />
 							<%-- SEND AGIS LEAD --%>
 							<jsp:useBean id="AGISLeadFromCronJob" class="com.ctm.web.life.leadfeed.services.AGISLeadFromCronJob" scope="page" />
 							<c:set var="leadResultStatus" value="${AGISLeadFromCronJob.newLeadFeed(result.transaction_id, transactionData, rankingData, pageSettings)}" />
@@ -139,7 +143,7 @@
 												styleCodeId="${pageSettings.getBrandId()}"
 												/>
 
-							<c:set var="leadSentTo" value="${company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
+							<c:set var="leadSentTo" value="lifebroker" />
 							<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", leadSentTo)}</c:set>
 						</c:otherwise>
 					</c:choose>
