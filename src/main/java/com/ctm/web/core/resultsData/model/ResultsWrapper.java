@@ -21,7 +21,7 @@ public class ResultsWrapper {
         this(results, "", null);
     }
 
-    private ResultsWrapper(BaseResultObj results, String verificationToken, Error error) {
+    public ResultsWrapper(BaseResultObj results, String verificationToken, Error error) {
         this.results = results;
         this.verificationToken = verificationToken;
         this.error = error;

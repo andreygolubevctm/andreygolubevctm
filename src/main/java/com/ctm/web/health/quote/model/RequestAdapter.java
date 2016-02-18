@@ -24,11 +24,11 @@ import static java.util.Collections.singletonList;
 
 public class RequestAdapter {
 
-    public static HealthQuoteRequest adapt(HealthRequest request) {
-        return adapt(request, null);
+    public static HealthQuoteRequest adapt(HealthRequest request, boolean isSimples) {
+        return adapt(request, null, isSimples);
     }
 
-    public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent) {
+    public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent, boolean isSimples) {
 
         HealthQuoteRequest quoteRequest = new HealthQuoteRequest();
         Filters filters = new Filters();
@@ -57,7 +57,6 @@ public class RequestAdapter {
         filters.setPreferencesFilter(getPreferences(benefitsExtras));
 
         boolean isShowAll = toBoolean(quote.getShowAll());
-        boolean isSimples = quote.getSimples() != null;
         boolean isDirectApplication = toBoolean(quote.getDirectApplication());
         addExcludeStatus(quoteRequest, isShowAll, isSimples);
 

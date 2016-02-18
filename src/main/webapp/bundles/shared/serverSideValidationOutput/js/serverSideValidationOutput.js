@@ -25,10 +25,9 @@
 				var partialName = error.elementXpath.replace(/\//g, "_");
 				matches = $(":input[name$='" + partialName	+ "']");
 
-				if (matches.length === 0 && error.elements !== "") {
+				if (matches.length === 0 && error.elements !== "" && error.elements !== null) {
 
 					// Didn't find the element, try more attempts...
-
 					var elements = error.elements.split(",");
 					for(var x = 0; x < elements.length; x++){
 						var fieldName = partialName + "_" + $.trim(elements[x]);
