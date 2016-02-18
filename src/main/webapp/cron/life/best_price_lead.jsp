@@ -100,6 +100,7 @@
 
 					<c:choose>
 						<c:when test="${company eq 'ozicare'}">
+							<c:set var="leadSentTo" value="${company}" />
 							<%-- SEND AGIS LEAD --%>
 							<jsp:useBean id="AGISLeadFromCronJob" class="com.ctm.web.life.leadfeed.services.AGISLeadFromCronJob" scope="page" />
 							<c:set var="leadResultStatus" value="${AGISLeadFromCronJob.newLeadFeed(result.transaction_id, transactionData, rankingData, pageSettings)}" />
@@ -142,7 +143,7 @@
 												styleCodeId="${pageSettings.getBrandId()}"
 												/>
 
-							<c:set var="leadSentTo" value="${company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
+							<c:set var="leadSentTo" value="lifebroker" />
 							<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", leadSentTo)}</c:set>
 						</c:otherwise>
 					</c:choose>
