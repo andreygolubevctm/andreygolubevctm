@@ -27,7 +27,7 @@
 			FROM aggregator.transaction_header th
 			JOIN ctm.touches t ON th.transactionId = t.transaction_id
 			WHERE th.ProductType IN ("LIFE", "IP")
-			AND t.type IN ("C", "CB", "LF")
+			AND t.type IN ("C", "CB", "LF", "CRON")
 			GROUP BY th.rootId
 		)
 		GROUP BY transaction_header.rootId;
@@ -45,6 +45,9 @@
 		<c:forEach var="result" items="${transactionIds.rows}">
 			<settings:setVertical verticalCode="${result.ProductType}" />
 			<c:set var="vertical" value="${fn:toLowerCase(result.ProductType)}" />
+
+			<%-- First, record CRON touch event --%>
+			<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "CRON", "best_price_lead.jsp")}</c:set>
 		
 			<%--
 				- Take each transaction ID
