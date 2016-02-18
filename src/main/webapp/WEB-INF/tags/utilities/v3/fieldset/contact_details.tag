@@ -32,10 +32,9 @@
         <field_v2:email xpath="${fieldXPath}" required="${true}" title="your email address${competitionValidationText}" />
     </form_v3:row>
 
-    <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
-    <c:set var="privacyOptinText">I understand ${brandedName} compares energy plans based on a standard tariff from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide. I confirm that I have read the
-        <form_v1:link_privacy_statement/>.</c:set>
-    <form_v3:privacy_optin vertical="utilities" labelText="${privacyOptinText}"/>
+    <c:if test="${!showOptInOnSlide1}">
+        <form_v3:privacy_optin vertical="utilities" labelText="${privacyOptinText}"/>
+    </c:if>
 
     <c:if test="${competitionEnabled}">
         <utilities_v2:competition/>
