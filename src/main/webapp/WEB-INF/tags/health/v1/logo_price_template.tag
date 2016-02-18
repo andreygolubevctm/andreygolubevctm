@@ -35,7 +35,7 @@
 					<div class="lhcText">{{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}</div>
 					{{ } else { }}
 					<div class="frequencyAmount comingSoon">Coming Soon*</div>
-					<div class="note">*Private Health insurance premiums are expecgted to increase on average by [6.18%]</div>
+					<div class="note">*Private Health insurance premiums are expected to increase on average by [6.18%]</div>
 					{{ } }}
 					{{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
 					<div class="rounding">Premium may vary slightly due to rounding</div>

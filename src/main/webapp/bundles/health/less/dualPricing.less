@@ -304,6 +304,7 @@
 	.dual-pricing-border {
 		height: 10px;
 		background-image: url("../graphics/health/dual-pricing-border.gif");
+		background-color: @main-bg-colour;
 	}
 	.current-pricing {
 		background: @more-info-header-bg-color;
@@ -367,6 +368,10 @@
 		margin-top: 0px;
 
 		.dual-pricing-container {
+			.dual-pricing-border {
+				background-color: #fff;
+			}
+
 			.current-pricing,
 			.april-pricing {
 				padding: 10px;
