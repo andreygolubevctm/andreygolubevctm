@@ -76,16 +76,6 @@
 			});
 		}
 
-		$healthCoverRebate.on('change', function toggleMedicare() {
-			// Hide these questions as they are not required
-			if( meerkat.modules.healthCoverDetails.isRebateApplied() !== true ) {
-				$medicare.hide();
-				meerkat.modules.form.clearInitialFieldsAttribute($medicare);
-			} else {
-				$medicare.show();
-			}
-		});
-
 		$tierDropdowns.on('change', function updateRebateTiers(){
 			meerkat.modules.healthTiers.setTiers();
 		});
