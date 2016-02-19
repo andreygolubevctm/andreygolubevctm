@@ -21,4 +21,12 @@ public class Interaction {
 	public void setAttributes(InteractionAttributes attributes) {
 		this.attributes = attributes;
 	}
+
+	@Override
+	public String toString() {
+		return "Interaction{" +
+				"interactionId='" + interactionId + '\'' +
+				", attributes=" + attributes +
+				'}';
+	}
 }

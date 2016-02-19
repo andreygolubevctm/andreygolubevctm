@@ -7,9 +7,6 @@
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" />
 
 <c:set var="buttonLabel" value="Next Step" />
-<c:if test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 34) or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 35)}">
-	<c:set var="buttonLabel" value="Get Quotes" />
-</c:if>
 
 <layout_v1:slide formId="policyHolderForm" nextLabel="${buttonLabel}">
 
@@ -49,13 +46,6 @@
 		<jsp:body>
 
 			<layout_v1:slide_content>
-
-				<%-- Commencement date --%>
-				<c:if test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}">
-					<form_v2:fieldset legend="Your preferred date to start the insurance">
-						<home:commencementDate xpath="${xpath}/startDate" />
-					</form_v2:fieldset>
-				</c:if>
 
 				<home:contact_details xpath="${xpath}/policyHolder" />
 
