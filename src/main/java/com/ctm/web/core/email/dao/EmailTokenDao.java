@@ -1,21 +1,29 @@
 package com.ctm.web.core.email.dao;
 
 
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.DatabaseQueryMapping;
 import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.EmailMaster;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-/**
- * Created by voba on 13/08/2015.
- */
+@Repository
 public class EmailTokenDao {
+
+    private final SimpleDatabaseConnection databaseConnection;
+
+    @Autowired
+    public EmailTokenDao(SimpleDatabaseConnection databaseConnection) {
+        this.databaseConnection = databaseConnection;
+    }
 
     public void addEmailToken(Long transactionId, Long emailId, String emailTokenType, String action) throws DaoException {
 
@@ -23,7 +31,7 @@ public class EmailTokenDao {
         if(count == 0 ) {
             int expiryDays[] = new int[]{-1};
 
-            SqlDao<Integer> sqlDao = new SqlDao<>();
+            SqlDao<Integer> sqlDao = new SqlDao<>(databaseConnection);
             expiryDays[0] = sqlDao.get(new DatabaseQueryMapping<Integer>() {
                 @Override
                 protected void mapParams() throws SQLException {
@@ -62,8 +70,8 @@ public class EmailTokenDao {
         }
     }
 
-    public Integer getEmailTokenCount(Long transactionId, Long emailId, String emailTokenType, String action) throws DaoException {
-        SqlDao<Integer> sqlDao = new SqlDao<>();
+    public int getEmailTokenCount(Long transactionId, Long emailId, String emailTokenType, String action) throws DaoException {
+        SqlDao<Integer> sqlDao = new SqlDao<>(databaseConnection);
         return sqlDao.get(new DatabaseQueryMapping<Integer>(){
             @Override
             protected void mapParams() throws SQLException {
