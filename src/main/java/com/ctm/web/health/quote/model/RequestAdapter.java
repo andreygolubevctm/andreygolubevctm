@@ -86,6 +86,8 @@ public class RequestAdapter {
                     .map(PaymentDetails::getType)
                     .map(PaymentType::findByCode)
                     .orElse(null));
+
+
         }
 
         addCompareResultsFilter(filters, quote);
@@ -116,7 +118,10 @@ public class RequestAdapter {
     }
 
     protected static void addSearchDateFilter(HealthQuoteRequest quoteRequest, HealthQuote quote) {
-        if (StringUtils.isNotBlank(quote.getSearchDate())) {
+        final Optional<String> paymentStartDate = Optional.ofNullable(quote.getPayment()).map(Payment::getDetails).map(PaymentDetails::getStart);
+        if (paymentStartDate.isPresent() && StringUtils.isNotBlank(paymentStartDate.get())) {
+            quoteRequest.setSearchDateValue(parseAUSLocalDate(paymentStartDate.get()));
+        } else if (StringUtils.isNotBlank(quote.getSearchDate())) {
             quoteRequest.setSearchDateValue(parseAUSLocalDate(quote.getSearchDate()));
         } else {
             quoteRequest.setSearchDateValue(LocalDate.now());
