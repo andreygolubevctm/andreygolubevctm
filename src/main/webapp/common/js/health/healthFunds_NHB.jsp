@@ -165,7 +165,7 @@
             }
             else {
               <c:set var="html">
-              <c:set var="fieldXpath" value="health/application/nav/nav_partnerrel" />
+              <c:set var="fieldXpath" value="health/application/nav/partnerrel" />
               <form_v2:row id="nav_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
               <field_v2:array_select xpath="${fieldXpath}"
                       required="true"
