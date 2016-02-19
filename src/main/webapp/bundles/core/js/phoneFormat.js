@@ -60,7 +60,7 @@
 						if (window.event) {
 							keyCode = window.event.keyCode;
 						} else if (evt) {
-							keyCode = e.which;
+							keyCode = evt.which;
 						}
 
 						var key = String.fromCharCode((96 <= keyCode && keyCode <= 105) ? keyCode - 48 : keyCode);
