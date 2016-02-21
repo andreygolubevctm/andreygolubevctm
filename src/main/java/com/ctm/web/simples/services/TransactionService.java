@@ -112,14 +112,22 @@ public class TransactionService {
 		return transactionDao.getConfirmationFromTransactionChain(rootIds);
 	}
 
+	/**
+	 * Used by Simples with InIn integration, to look up tranId and make a 'fake' message.
+	 */
 	public static MessageDetail getTransaction(final long transactionId) throws DaoException {
 		final TransactionDao transactionDao = new TransactionDao();
-		final Transaction transaction = new Transaction();
 		final TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
-		final long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
+		final MessageDetailService detailService = new MessageDetailService();
+		Message message = getTransactionMessage(transactionId, transactionDao, transactionDetailsDao);
+		return detailService.getMessageDetail(message);
+	}
 
-		final MessageDetailService service = new MessageDetailService();
+	protected static Message getTransactionMessage(final long transactionId, final TransactionDao transactionDao,
+												   final TransactionDetailsDao transactionDetailsDao) throws DaoException {
+		final Transaction transaction = new Transaction();
 		final Message message = new Message();
+		final long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
 
 		transaction.setTransactionId(transactionId);
 		transactionDao.getCoreInformation(transaction);
@@ -158,7 +166,7 @@ public class TransactionService {
 			message.setPhoneNumber2(Optional.ofNullable(transactionDetails.get("health/contactDetails/contactNumber/other")).orElse(""));
 		}
 
-		return  service.getMessageDetail(message);
+		return message;
 	}
 
 }

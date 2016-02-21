@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context docBase="/" path="/ctm">
-    <!-- ${project.basedir}/src/test/resources/embedded/webapp = provides MANIFEST.MF -->
-    <!-- ${project.build.directory}/${project.build.finalName} = provides war resources and gulp post-processing (when its run in separate task) -->
-    <Resources className="org.apache.naming.resources.VirtualDirContext" extraResourcePaths="/=${project.basedir}/src/test/resources/embedded/webapp,/=${project.basedir}/src/main/webapp,/=${project.build.directory}/${project.build.finalName}"/>
 
-    <!-- ${project.build.outputDirectory} = provides local classes -->
-    <!-- ${project.basedir}/../core/target/classes = provides core classes -->
-    <!-- ${project.basedir}/../core/target/core-${project.version} = provides remaining core assets -->
+<Context docBase="${project.basedir}/src/main/webapp" reloadable="true">
+
+    <!--
+        CTM Active Directory Login Realm
+    -->
+    <Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
+           connectionURL="ldap://argon.budgetdirect.com.au:389"
+           connectionName="CTM LDAP"
+           connectionPassword="Bind_Ldap$"
+           userBase="OU=AIH Users,DC=budgetdirect,DC=com,DC=au"
+           userSearch="(sAMAccountName={0})"
+           userSubtree="true"
+           userRoleName="memberOf"
+           roleBase="OU=AIH Security Groups,OU=Security Groups,DC=budgetdirect,DC=com,DC=au"
+           roleName="cn"
+           roleSubtree="true"
+           roleSearch="(member={0})"
+            />
+
+    <Resources className="org.apache.naming.resources.VirtualDirContext" extraResourcePaths="/=${project.build.directory}/${project.build.finalName}"/>
+
     <Loader searchVirtualFirst="true" className="org.apache.catalina.loader.VirtualWebappLoader" virtualClasspath="${project.build.outputDirectory}"/>
+
+    <WatchedResource>${project.basedir}/touch_restart.txt</WatchedResource>
+
 </Context>
