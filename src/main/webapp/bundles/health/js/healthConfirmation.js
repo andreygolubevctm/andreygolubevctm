@@ -93,17 +93,20 @@
 				/// TODO: Fix this -why is it needed though?
 				//meerkat.modules.healthMoreInfo.applyEventListeners();
 
+				var tracking = {
+					productID: confirmationProduct.productId,
+					productBrandCode: confirmationProduct.info.provider,
+					productName: confirmationProduct.info.productTitle,
+					quoteReferenceNumber: confirmationProduct.transactionId,
+					reedemedCouponID: $('.coupon-confirmation').data('couponId')
+				};
+
+				meerkat.modules.tracking.updateObjectData(tracking);
+
 				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 					method:'completedApplication',
-					object:{
-						productID: confirmationProduct.productId,
-						productBrandCode: confirmationProduct.info.provider,
-						productName: confirmationProduct.info.productTitle,
-						quoteReferenceNumber: confirmationProduct.transactionId,
-						reedemedCouponID: $('.coupon-confirmation').data('couponId')
-					}
+					object:tracking
 				});
-
 			}
 
 		});
