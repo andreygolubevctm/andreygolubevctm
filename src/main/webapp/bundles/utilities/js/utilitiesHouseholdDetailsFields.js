@@ -347,10 +347,20 @@
     function _toggleElectricityMeter() {
         var meter = $(".electricity-meter").find("input[type='radio']:checked").val();
 
-        $(".standard-usage").toggle(meter === "S");
-        $(".peak-usage").toggle(meter === "T" || meter === "M");
-        $(".controlled-usage").toggle(meter === "T");
-        $(".off-peak-usage").toggle(meter === "M");
+        if(meter === 'S') {
+            $(".peak-usage .control-label").html('Standard usage');
+        } else {
+            $(".peak-usage .control-label").html('Peak usage');
+        }
+
+        if(meter === 'T') {
+            $(".off-peak-usage .control-label").html('Off-peak usage');
+        } else {
+            $(".off-peak-usage .control-label").html('Off-peak usage (if any)');
+        }
+
+        $(".peak-usage").show();
+        $(".off-peak-usage").toggle(meter === "T" || meter === "M");
         $(".shoulder-usage").toggle(meter === "M");
     }
 
