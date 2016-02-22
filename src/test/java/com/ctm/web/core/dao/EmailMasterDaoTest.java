@@ -4,6 +4,7 @@ import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.EmailMaster;
 import org.junit.Before;
+import org.junit.Test;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
@@ -15,7 +16,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
-public class EmailMasterDaoIT {
+public class EmailMasterDaoTest {
 
 
 	private SimpleDatabaseConnection dbSource = mock(SimpleDatabaseConnection.class);
@@ -39,7 +40,7 @@ public class EmailMasterDaoIT {
 	}
 
 
-	//@Test
+	@Test
 	public void testShouldGetOptOut() throws SQLException, DaoException {
 		when(resultSet.getString("optedIn")).thenReturn("N");
 
@@ -48,7 +49,7 @@ public class EmailMasterDaoIT {
 		assertFalse(emailDetails.getOptedInMarketing(vertical));
 	}
 
-	//@Test
+	@Test
 	public void testShouldGetOptIn() throws SQLException, DaoException {
 		when(resultSet.getString("optedIn")).thenReturn("Y");
 

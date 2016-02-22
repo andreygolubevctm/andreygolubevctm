@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {EmailTokenDao.class, TestMariaDbBean.class, SimpleDatabaseConnection.class})
 @ActiveProfiles({"test"})
-public class EmailTokenDaoTest extends BaseDaoTest {
+public class EmailTokenDaoIT extends BaseDaoTest {
 
     @Autowired
     private EmailTokenDao emailTokenDao;
