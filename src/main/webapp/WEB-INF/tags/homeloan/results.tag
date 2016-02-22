@@ -274,7 +274,7 @@
 <%-- NO RESULTS --%>
 <div class="hidden">
 	<c:set var="heading"><content:get key="noQuoteTitle"/></c:set>
-	<c:set var="blurb"><content:get key="noQuoteText"/></c:set>
+	<c:set var="blurb"><content:get key="noQuoteBody"/></c:set>
 	<confirmation:other_products heading="${heading}" copy="${blurb}" id="no-results-content"/>
 </div>
 
