@@ -84,7 +84,7 @@
 			<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 			<form_v2:fieldset id="primary-health-cover" legend="Your Details" className="primary">
 				<c:set var="fieldXpath" value="${xpath}/primary/dob" />
-				<form_v2:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
+				<form_v3:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
 					<field_v2:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
 				</form_v3:row>
 
