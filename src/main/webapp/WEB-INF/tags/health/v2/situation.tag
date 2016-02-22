@@ -36,7 +36,12 @@
 
 				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
 				<form_v3:row label="You are a" fieldXpath="${fieldXpath}">
-					<field_v2:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" />
+					<field_v2:general_select
+							xpath="${fieldXpath}"
+							type="healthCvr"
+							className="health-situation-healthCvr"
+							required="true"
+							title="situation you are in" />
 				</form_v3:row>
 
 				<%-- If the user is coming via a broucherware site where by a state is passed in instead of a postcode, then only show state selection --%>
@@ -89,9 +94,9 @@
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/primary/cover" />
-				<form_v2:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
+				<form_v3:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
 					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover"/>
-				</form_v2:row>
+				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/primary/healthCoverLoading" />
 				<form_v3:row label="Have you had continuous hospital cover since 1 July ${continuousCoverYear} or 1 July following your 31st birthday?" fieldXpath="${fieldXpath}" id="health-continuous-cover-primary" className="health-your_details-opt-group" helpId="239">
