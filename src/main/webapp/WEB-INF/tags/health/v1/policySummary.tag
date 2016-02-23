@@ -60,7 +60,9 @@
 		</div>
 	</c:if>
 </div>
-
+<c:if test="${healthAlternatePricingActive eq true}">
+<div class="sidebar-box sidebarFrequency hidden-xs"></div>
+</c:if>
 <div class="sidebar-box">
 	<c:if test="${showProductDetails == true}">
 		<div class="productSummaryDetails">

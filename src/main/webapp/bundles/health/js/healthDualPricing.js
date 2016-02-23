@@ -11,6 +11,8 @@
 		$whyPremiumsRiseLink,
 		$whyPremiumsRiseTemplate,
 		selectedProduct,
+		$sideBarFrequencyTemplate,
+		$sideBarFrequency,
 		modalId = null;
 
 	function initHealthDualPricing() {
@@ -21,12 +23,42 @@
 		$displayedFrequency = $("#health_payment_details_frequency"),
 		$whyPremiumsRiseLink = $('a.why-rising-premiums'),
 		$whyPremiumsRiseTemplate = $('#more-info-why-price-rise-template'),
+		$sideBarFrequency = $('.sidebarFrequency'),
+		$sideBarFrequencyTemplate = $('#sideBarFrequency'),
 		selectedProduct = {};
+
+		$sideBarFrequency.hide();
 
 		applyListenerEvents();
 	}
 
 	function applyListenerEvents() {
+
+		$displayedFrequency.on('change', function updatePaymentSidebar() {
+			var $this = $(this),
+			obj = {},
+			selectedProduct = Results.getSelectedProduct();
+
+			if ($this.val() !== '') {
+				obj.dropDeadDate = selectedProduct.dropDeadDate;
+				obj.frequency = $this.val();
+				obj.firstPremium = (selectedProduct.mode === '' ? selectedProduct.premium[obj.frequency].lhcfreetext : selectedProduct.premium[obj.frequency].text) + " " + (selectedProduct.mode === '' ? selectedProduct.premium[obj.frequency].lhcfreepricing : selectedProduct.premium[obj.frequency].pricing);
+
+				if (obj.frequency !== 'annually') {
+					if ((selectedProduct.premium.value && selectedProduct.premium.value > 0) || (selectedProduct.premium.text && selectedProduct.premium.text.indexOf('$0.') < 0) || (selectedProduct.premium.payableAmount && selectedProduct.premium.payableAmount > 0)) {
+						obj.remainingPremium = (selectedProduct.mode === '' ? selectedProduct.altPremium[obj.frequency].lhcfreetext : selectedProduct.altPremium[obj.frequency].text) + " " + (selectedProduct.mode === '' ? selectedProduct.altPremium[obj.frequency].lhcfreepricing : selectedProduct.altPremium[obj.frequency].pricing);
+					} else {
+						obj.remainingPremium = 'Coming Soon';
+					}
+				}
+
+				// render the template
+				var htmlTemplate = _.template($sideBarFrequencyTemplate.html()),
+					htmlString = htmlTemplate(obj);
+					$sideBarFrequency.html(htmlString).show();
+			}
+		});
+
 		$(document).on('click', 'a.why-rising-premiums', function showWhyModal(){
 			showModal();
 		});
@@ -103,10 +135,8 @@
 		switch (meerkat.modules.deviceMediaState.get()) {
 			case 'xs':
 				return $dualPricingTemplateXS;
-				break;
 			case 'sm':
 				return $dualPricingTemplateSM;
-				break;
 			default:
 				return $dualPricingTemplate;
 		}

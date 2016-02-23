@@ -125,6 +125,18 @@
 		.productDetails {
 			padding-left: 40px;
 		}
+
+		.insureNowContainer {
+			display: table;
+			.insureNow,
+			.text-dark {
+				display: table-cell;
+			}
+
+			.text-dark {
+				vertical-align: middle;
+			}
+		}
 	}
 
 	.moreInfoTopRightColumn {
@@ -202,176 +214,151 @@
 }
 
 @media (@md) {
-	.dual-pricing-container {
-		border-left: 1px solid @border-colour;
-
-		.frequencyAmount {
-			font-size: 55px;
-			.frequencyTitle {
-				top: -1.1em;
-				font-size: 0.3em;
-			}
-		}
-
-		.dual-pricing-border {
-			height: 10px;
-			background-image: url("../graphics/health/dual-pricing-border.gif");
-			background-color: @main-bg-colour;
-		}
-
-		.current-pricing {
-			background: @more-info-header-bg-color;
-			color: @more-info-header-text-color;
-			padding: 22px;
-
-			h3 {
-				color: #FFF;
-				font-family: @font-family-theme-light;
-			}
-
-			.lhcText {
-				font-size: 17px;
-				color: #FFF;
-			}
-
-			.why-rising-premiums {
-				color: #FFF;
-			}
-
-			.note {
-				margin-top: 10px;
-				color: #FFF;
-			}
-		}
-
-		.april-pricing {
-			background: @main-bg-colour;
-			padding: 22px;
-
-			.lhcText {
-				font-size: 17px;
-			}
-		}
-
-		.insureNowContainer {
-			h3 {
-				padding-left: 20px;
-				font-size: 21px;
-			}
-
-			.text-secondary {
-				font-size: 25px;
-			}
-		}
-	}
-}
-
-@media(@sm) {
 	.hasDualPricing {
-		.dual-pricing-container{
-			.current-pricing {
-				width: 40%;
-			}
-		}
-		.insureNowContainer {
-			display: table;
+		.dual-pricing-container {
+			border-left: 1px solid @border-colour;
 
-			.insureNow {
-				display: table-cell;
-				a {
-					width: 250px;
+			.frequencyAmount {
+				font-size: 55px;
+				.frequencyTitle {
+					top: -1.1em;
+					font-size: 0.3em;
 				}
 			}
 
-			h3 {
-				display: table-cell;
-				vertical-align: middle;
+			.dual-pricing-border {
+				height: 10px;
+				background-image: url("../graphics/health/dual-pricing-border.gif");
+				background-color: @main-bg-colour;
 			}
 
-			.text-secondary {
-				font-size: 30px;
+			.current-pricing {
+				background: @more-info-header-bg-color;
+				color: @more-info-header-text-color;
+				padding: 22px;
+				width: 100%;
+
+				h3 {
+					color: #FFF;
+					font-family: @font-family-theme-light;
+				}
+
+				.lhcText {
+					font-size: 17px;
+					color: #FFF;
+				}
+
+				.why-rising-premiums {
+					color: #FFF;
+				}
+
+				.note {
+					margin-top: 10px;
+					color: #FFF;
+				}
+			}
+
+			.april-pricing {
+				background: @main-bg-colour;
+				padding: 22px;
+
+				.lhcText {
+					font-size: 17px;
+				}
+			}
+
+			.insureNowContainer {
+				h3 {
+					padding-left: 20px;
+					font-size: 21px;
+				}
+
+				.text-secondary {
+					font-size: 25px;
+				}
 			}
 		}
 	}
 }
 
 @media(@sm-only) {
-	.dual-pricing-container {
-		border-top: 1px solid @dual-pricing-border-colour;
-		border-bottom: 1px solid @dual-pricing-border-colour;
-		padding-bottom:20px;
-		padding-top: 10px;
-
-		.pricing-row {
-			display: table;
-			width: 100%;
-
-			.current-pricing {
-				display: table-cell;
-
-				h3 {
-					color: @dual-pricing-dark-font-colour;
-					margin: 0;
-				}
-
-				.lhcText {
-					font-size: 15px;
-					color: @dual-pricing-dark-font-colour;
-				}
-			}
-
-			.icon {
-				display: table-cell;
-				font-size: 55px;
-				color: @dual-pricing-light-gray;
-				width: 100px;
-				text-align: center;
-				vertical-align: middle;
-			}
-
-			.april-pricing {
-				background: #FFF;
-				display: table-cell;
-			}
-		}
-
-		.heading-row {
-			h2 {
-				display: inline-block;
-				margin-right: 20px;
-				color: @dual-pricing-heading-color;
-				font-family: @font-family-theme-bold;
-				font-size: 28px;
-			}
-		}
-
-		// general styling. different style for XS/SM breakpoint
-		.april-pricing,
-		.current-pricing {
+	.hasDualPricing {
+		.dual-pricing-container {
+			border-top: 1px solid @dual-pricing-border-colour;
+			border-bottom: 1px solid @dual-pricing-border-colour;
+			padding-bottom: 20px;
 			padding-top: 10px;
-		}
-		.lhcText {
-			font-size: 15px;
-		}
 
-		.note {
-			margin-top: 20px;
-			color: @dual-pricing-light-note-colour;
-		}
+			.pricing-row {
+				display: table;
+				width: 100%;
 
-		.why-rising-premiums {
-			color: @dual-pricing-heading-color;
-		}
+				.current-pricing {
+					display: table-cell;
 
-		.frequencyAmount {
-			font-size: 55px;
-			.frequencyTitle {
-				font-size: 0.3em;
-				top: -1.2em;
+					h3 {
+						color: @dual-pricing-dark-font-colour;
+						margin: 0;
+					}
+
+					.lhcText {
+						font-size: 15px;
+						color: @dual-pricing-dark-font-colour;
+					}
+				}
+
+				.icon {
+					display: table-cell;
+					font-size: 55px;
+					color: @dual-pricing-light-gray;
+					width: 100px;
+					text-align: center;
+					vertical-align: middle;
+				}
+
+				.april-pricing {
+					background: #FFF;
+					display: table-cell;
+				}
+			}
+
+			.heading-row {
+				h2 {
+					display: inline-block;
+					margin-right: 20px;
+					color: @dual-pricing-heading-color;
+					font-family: @font-family-theme-bold;
+					font-size: 28px;
+				}
+			}
+
+			// general styling. different style for XS/SM breakpoint
+			.april-pricing,
+			.current-pricing {
+				padding-top: 10px;
+			}
+			.lhcText {
+				font-size: 15px;
+			}
+
+			.note {
+				margin-top: 20px;
+				color: @dual-pricing-light-note-colour;
+			}
+
+			.why-rising-premiums {
+				color: @dual-pricing-heading-color;
+			}
+
+			.frequencyAmount {
+				font-size: 55px;
+				.frequencyTitle {
+					font-size: 0.3em;
+					top: -1.2em;
+				}
 			}
 		}
 	}
-
 }
 
 @media(@xs-only) {
@@ -578,7 +565,7 @@
 				.april-pricing {
 					.price.premium {
 						.frequencyAmount {
-							font-size: 28px; //
+							font-size: 28px;
 							margin-top: 10px;
 							margin-bottom: 10px;
 						}
@@ -586,6 +573,21 @@
 				}
 			}
 		}
+	}
+}
+
+// on payments page
+.sidebarFrequency {
+	.heading {
+		color: @price-component-header-text;
+	}
+
+	.title {
+		font-family: @font-family-theme-bold;
+	}
+
+	p {
+		font-size: 14px;
 	}
 }
 // *** END: Dual pricing sidebar apply onwards

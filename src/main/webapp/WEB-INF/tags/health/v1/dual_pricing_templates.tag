@@ -18,6 +18,17 @@
 	<content:get key="moreInfoWhyPricesRising"/>
 </core_v1:js_template>
 
+<core_v1:js_template id="sideBarFrequency">
+	{{ if (obj.frequency !== 'annually') { }}
+	<h5 class="heading">If you pay {{= obj.frequency }} before {{= obj.dropDeadDate }}:</h5>
+	<p><span class="title">First Premium:</span> {{= obj.firstPremium}}</p>
+	<p><span class="title">Remaining Premiums:</span> {{= obj.remainingPremium}}</p>
+	{{ } else { }}
+	<h5 class="heading">If you pay your annual premium before {{= obj.dropDeadDate }}:</h5>
+	<p><span class="title">Premium:</span> {{= obj.firstPremium}}</p>
+	{{ } }}
+</core_v1:js_template>
+
 <c:set var="note">Advance payments before 30 March ${thisYear} will be at the current price. Applications close on {{= obj.dropDeadDate }} to allow for processing</c:set>
 <c:set var="heading">Premiums are rising April 1</c:set>
 <c:set var="whyPremiumsRising"><a href="javascript:;" class="why-rising-premiums">Why are premiums rising?</a></c:set>
