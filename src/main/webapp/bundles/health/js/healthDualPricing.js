@@ -118,7 +118,7 @@
 
 		var today = new Date();
 
-		product.dropDatePassed = today.getTime() < product.dropDeadDate.getTime();
+		product.dropDatePassed = today.getTime() > product.dropDeadDate.getTime();
 		$mainDualPricingTemplate = getTemplate(isForSidebar);
 
 		var dualPriceTemplate = _.template($mainDualPricingTemplate.html());
