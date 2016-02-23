@@ -52,7 +52,7 @@
 		</c:when>
 		<c:otherwise>
 			<c:set var="toggleHelpColLarge" value="8" />
-			<c:set var="toggleHelpColSmall" value="9" />
+			<c:set var="toggleHelpColSmall" value="6" />
 			<c:set var="toggleHelpColMobile" value="12" />
 		</c:otherwise>
 	</c:choose>
