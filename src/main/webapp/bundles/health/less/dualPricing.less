@@ -478,9 +478,33 @@
 
 @media(@md) {
 	.dropDatePassed {
+		border-left: none !important;
 		.current-pricing h2,
 		.dual-pricing-border {
 			display: none !important;
+		}
+	}
+
+	.more-info-content .fieldset-card.dropDatePassedContainer {
+		margin-top: 20px;
+		padding-top: 0px;
+	}
+
+	.dropDatePassedContainer {
+		background: @more-info-header-bg-color;
+
+		.quoteRefContainer {
+			padding-top: 20px;
+		}
+
+		.moreInfoTopRightColumn {
+			padding-left: 0px;
+		}
+
+		.quoteRefContainer,
+		.moreInfoTopLeftColumn
+		{
+			background: #fff;
 		}
 	}
 }

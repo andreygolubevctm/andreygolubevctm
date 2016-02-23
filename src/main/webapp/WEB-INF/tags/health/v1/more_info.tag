@@ -46,6 +46,10 @@
 	{{ obj.showAltPremium = true;  obj.renderedAltPriceTemplate = htmlTemplatePrice(obj); }}
 	{{ } }}
 
+	<%-- Check if drop dead date has passed --%>
+	{{ var today = new Date(); }}
+	{{ var dropDatePassed = today.getTime() < obj.dropDeadDate.getTime() }}
+
 	<%-- Prepare the call to action bar template --%>
 	{{ var template = $("#more-info-call-to-action-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
@@ -59,9 +63,9 @@
 	</c:set>
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12">
 
-		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
+		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
 
-			<div class="col-xs-12 hidden-xs">
+			<div class="col-xs-12 col-md-7 hidden-xs quoteRefContainer">
 				<p>Quote reference number <span class="text-secondary">{{= transactionId }}</span></p>
 			</div>
 			<div class="col-md-7 moreInfoTopLeftColumn">
