@@ -1,7 +1,6 @@
 package com.ctm.web.core.email.dao;
 
 
-import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.DatabaseQueryMapping;
 import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
@@ -15,16 +14,10 @@ import java.util.Calendar;
 
 public class EmailTokenDao {
 
-    private final SimpleDatabaseConnection databaseConnection;
-
-    public EmailTokenDao(SimpleDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection;
-    }
-
     public void addEmailToken(Long transactionId, Long emailId, String emailTokenType, String action) throws DaoException {
             int expiryDays[] = new int[]{-1};
 
-            SqlDao<Integer> sqlDao = new SqlDao<>(databaseConnection);
+            SqlDao<Integer> sqlDao = new SqlDao<>();
             expiryDays[0] = sqlDao.get(new DatabaseQueryMapping<Integer>() {
                 @Override
                 protected void mapParams() throws SQLException {
