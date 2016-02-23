@@ -123,7 +123,9 @@
 				</c:if>
 				<%-- COMPETITION END --%>
 
+                <c:if test="${!pageSettings.getSetting('inInEnabled')}">
 				<simples:referral_tracking vertical="health" />
+                </c:if>
 
 			</form_v2:fieldset>
 

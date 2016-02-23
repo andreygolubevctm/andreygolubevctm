@@ -20,27 +20,34 @@
 		display: none;
 	}
 
-	// Add your slide feature to the particular step that it needs to be visible
+	// Add your slide feature to the particular step that it needs to be visible test
 	&[data-step="start"] {
-		#navbar-main{
-			.slide-feature-hidden() !important;
+		.slide-feature-emailquote.privacyOptinChecked
+		{
+			.slide-feature-is-visible();
 		}
 	}
 
 	&[data-step="details"] {
-		#navbar-main{
-			.slide-feature-hidden() !important;
+		.slide-feature-back,
+		.slide-feature-emailquote.privacyOptinChecked
+		{
+			.slide-feature-is-visible();
 		}
 	}
 
 	&[data-step="benefits"] {
-		#navbar-main{
-			.slide-feature-hidden() !important;
+		.slide-feature-back,
+		.slide-feature-emailquote.privacyOptinChecked
+		{
+			.slide-feature-is-visible();
 		}
 	}
 	&[data-step="contact"] {
-		#navbar-main{
-			.slide-feature-hidden() !important;
+		.slide-feature-back,
+		.slide-feature-emailquote.privacyOptinChecked
+		{
+			.slide-feature-is-visible();
 		}
 	}
 
