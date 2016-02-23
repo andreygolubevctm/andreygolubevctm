@@ -1,0 +1,431 @@
+//------------------------------
+
+.resultsContainer.featuresMode {
+  .generate-default-result-column-widths();
+}
+
+//------------------------------
+.nowrap {
+  white-space: nowrap;
+}
+
+.journeyEngineSlide.resultsSlide {
+  padding-top: 0;
+}
+
+.restrictedTooltips {
+  box-shadow: 2px 2px 4px @gray-slight-dark;
+}
+
+.result {
+
+  .restrictedFund {
+    background-color: transparent;
+    cursor: help;
+    margin-top: 32px;
+    &:hover {
+      background-color: transparent;
+      color: #FF5F5F;
+    }
+  }
+}
+
+//
+// Feature mode styling
+//
+.featuresMode {
+
+  // Reset background colors on the body:
+  .featuresHeaders {
+    background-color: transparent;
+  }
+
+  .btn-more-info {
+    clear: both;
+    width: 85%;
+    margin: 12px auto 5px;
+    @media (@sm) {
+      position: absolute;
+      bottom: 13px;
+      left: 18%;
+      width: 64%;
+    }
+  }
+
+  .productSummary {
+    p {
+      clear: both;
+    }
+
+  }
+
+  .icon-tick {
+    color: @theme-tertiary;
+  }
+
+  .result,
+  .productSummary {
+    height: 235px;
+  }
+
+  @media (@xs-only) {
+    .result,
+    .productSummary {
+      height: 150px;
+    }
+
+    .productSummary {
+      padding: (@results-feature-cell-padding * 2) @results-feature-cell-padding;
+
+      h2 {
+        margin-left: 90px;
+        line-height: 0.9;
+      }
+
+      // Using .content to pick up normal feature row styling
+      // Needs -margin to combat the padding on .productSummary
+      .content {
+        margin: 0 -@results-feature-cell-padding;
+      }
+
+    }
+
+    // Normal heading
+    .labelInColumn {
+      .content {
+        color: contrast(@feature-odd-bg-color);
+        //background: @feature-odd-bg-color;
+      }
+    }
+  }
+
+  .expandable > .content {
+    cursor: pointer;
+  }
+  .expander {
+    .icon-arrow-right;
+    right: 5px;
+    top: 50%;
+    margin-top: -5px;
+    position: absolute;
+    font-size: 12px;
+  }
+  .expanded .labelInColumn > .content .expander,
+  .expanding .labelInColumn > .content .expander,
+  .expanded > .content .expander,
+  .expanding > .content .expander {
+    .icon-arrow-down;
+  }
+}
+
+.resultsFeaturesSections(@section-color, @section-odd-color);
+
+//categories
+// common
+.resultsFeaturesCategories(@category-hospital-color, @category-hospital-odd-color, @feature-color);
+//hospital
+.featuresMode .hospitalCover .category > .content {
+  color: @category-hospital-text-color;
+}
+
+// extras
+.resultsFeaturesCategories(@category-extras-color, @category-extras-odd-color, @feature-color, ~".extrasCover");
+.featuresMode .extrasCover .category > .content {
+  color: @category-extras-text-color;
+}
+
+// xs specific category styling
+@media (@xs-only) {
+
+  .featuresMode .hospitalCover .category {
+    .xsSection(@hospital-color, @category-hospital-color, #FFF, @hospital-expanded-color);
+  }
+
+  .featuresMode .extrasCover .category {
+    .xsSection(@extras-color, @category-extras-color, #FFF, @extras-expanded-color);
+  }
+
+}
+
+// rows mixin called
+.resultsFeaturesRows(@feature-color, @feature-odd-color);
+
+// alternate columns
+@media (@xs-only) {
+  .result-row:nth-child(2n+2) .labelInColumn {
+    > .content {
+      background-color: transparent !important;
+    }
+    .contentInner {
+      visibility: hidden;
+    }
+  }
+}
+
+// special cases / overrrides
+.featuresMode {
+
+  /** COLOURS **/
+
+  .help-icon {
+    color: @feature-text-color;
+  }
+
+  .hospitalCover, .extrasCover {
+
+    .category.expanded > .content > .help-icon,
+    .category > .content.expandableHover > .help-icon {
+      color: @theme-tertiary;
+    }
+  }
+
+  .promosFeature {
+    .labelInColumn,
+    .content {
+      color: @results-features-promos-color;
+    }
+  }
+
+  .section {
+    > .content {
+      color: @section-text-color;
+    }
+  }
+
+  .content {
+    font-size: 13px;
+    padding: 8px @results-column-side-padding-width;
+  }
+
+  // make these look like section
+  .section,
+  .featuresHeaders .promosFeature,
+  .promosFeature > .labelInColumn,
+  .featuresHeaders .ambulanceSection,
+  .ambulanceSection > .labelInColumn {
+    > .content {
+
+      font-family: @font-family-theme-bold;
+      font-size: 18px;
+      line-height: 22px;
+      font-weight: normal;
+
+      @media (@sm) {
+        .expander {
+          display: none;
+        }
+      }
+      .extraText {
+        display: block;
+
+        @media (@sm) {
+          width: ((@sm-results-column-width + @sm-results-column-gutter-width) * 3);
+        }
+        @media (@md) {
+          width: ((@md-results-column-width + @md-results-column-gutter-width) * 5);
+        }
+        @media (@lg) {
+          width: ((@lg-results-column-width + @lg-results-column-gutter-width) * 5);
+        }
+
+        text-align: left;
+        padding: 0;
+
+        font-size: 14px;
+        overflow: hidden;
+        .btn {
+          padding: 2px 5px;
+          margin-top: -2px;
+          font-size: 12px;
+          font-family: @font-family-theme-light;
+        }
+
+        strong {
+          font-weight: normal;
+          font-family: @font-family-theme-bold;
+        }
+      }
+
+    }
+    &[data-skey="GeneralHealth"],
+    &[data-skey="Hospital"] {
+      .extraText {
+        display: block;
+        text-align: center;
+        line-height: 40px;
+      }
+    }
+    &.excessSection,
+    &.selection_GeneralHealth,
+    &.selection_Hospital {
+      .extraText {
+        display: none;
+      }
+    }
+
+    &.expanded {
+      &[data-skey="GeneralHealth"],
+      &[data-skey="Hospital"] {
+        .extraText {
+          display: none;
+        }
+      }
+
+    }
+  }
+  .promosFeature {
+    > .content,
+    &:nth-child(odd) > .content {
+      background-color: @section-color;
+    }
+  }
+  @media (@xs-only) {
+    .promosFeature {
+      text-align: left;
+      > .labelInColumn > .content {
+        background-color: @promos-xs-section-color;
+        color: white;
+      }
+    }
+  }
+
+  // categories style
+  .category > .content {
+    font-size: 14px;
+  }
+
+  // features style
+  .featuresTemplateComponent,
+  .result-row {
+    .featuresElements {
+      border-left: @results-column-border-width solid @gray-lighter;
+      border-right: none;
+    }
+    &:last-of-type:not(.active) .featuresElements {
+      border-right: @results-column-border-width solid @gray-lighter;
+    }
+    &.active {
+      .featuresElements,
+      .result {
+        border-left: @results-page-border-width solid @theme-tertiary;
+        border-right: @results-page-border-width solid @theme-tertiary;
+      }
+      + div .featuresElements {
+        border-left: none;
+      }
+    }
+    .excessSection {
+      > .h,
+      > .c,
+      > .labelInColumn {
+        display: none;
+      }
+    }
+  }
+
+  .featuresHeaders {
+    background: none; //Override CORE
+    .children .feature {
+      font-weight: normal;
+      font-family: @font-family-theme-bold;
+    }
+    .featuresList > .feature > .content {
+      padding-right: 5px;
+    }
+  }
+  .feature {
+    color: @feature-text-color;
+    padding: 0; //Override CORE
+    border-bottom: none; //Override CORE
+  }
+
+  .selectionHolder .content {
+    padding-top: 25px;
+  }
+  // hospital sections
+  .hospitalCover, .extrasCover, .ambulanceSection {
+    > .content {
+      color: @hospital-color;
+    }
+    &.expanding > .children {
+      background-color: @category-hospital-color;
+    }
+  }
+  .featuresHeaders .hospitalCover,
+  .featuresHeaders .extrasCover {
+    > .content {
+      background-color: @category-hospital-color;
+      z-index: 1;
+      left: -1px;
+      margin-left: 1px;
+    }
+    &.expanded > .content,
+    &.expanding > .content {
+      background-color: @section-color;
+    }
+
+  }
+  @media (@sm) {
+    .hospitalCover .category,
+    .extrasCover .category {
+      &.expanded > .content,
+      &.expanding > .content {
+        background-color: @hospital-expanded-color;
+        color: @theme-tertiary;
+      }
+      > .content.expandableHover {
+        background-color: @hospital-hover-color;
+        color: @theme-tertiary;
+      }
+    }
+
+    .excessSection .feature:nth-child(odd) > .content {
+      background-color: #fff;
+    }
+  }
+
+  // expanded categories
+  .category.expanded {
+    border-bottom: 1px solid #f9f9f9;
+  }
+
+  .featuresHeaders .content {
+    text-align: right;
+  }
+
+}
+
+.resultsContainer {
+
+  .icon-tick,
+  .icon-cross {
+    line-height: 18px;
+    display: block;
+    text-align: center;
+  }
+
+  .icon-cross {
+    color: @cross-color;
+  }
+
+  // Moved from CORE
+  .result {
+    .productSummary,
+    .comparisonSummary {
+      padding-top: 10px;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+@media ( @sm ) {
+  .result-row.active {
+    .featuresList {
+      > .section.collapsed,
+      > .ambulanceSection.collapsed {
+        border-left: none;
+        border-right: none;
+      }
+    }
+  }
+}

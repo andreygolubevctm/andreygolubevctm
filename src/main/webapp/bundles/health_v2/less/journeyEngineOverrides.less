@@ -16,10 +16,6 @@
 }
 
 [data-step=results]:not(.moreInfoVisible) {
-	#pageContent {
-		background-color: @page-content-bg;
-		.transition(~"background-color 250ms ease-in-out");
-	}
 	#pageContentTop {
 		opacity: 1;
 		.transition(~"opacity 250ms ease-in-out");
@@ -63,11 +59,25 @@
 		letter-spacing:.5px;
 	}
 }
-.content,
+.featuresTemplateComponent .content {
+	border-top: 1px solid #fff;
+}
+.resultsOverflow .content,
 .fieldset-card,
 .fieldset-column-side .sidebar-box{
-	background-color: white;
+	background-color: #fff;
 	border:1px solid @border-colour;
+}
+.resultsOverflow .content {
+	border-bottom: none;
+	border-left: none;
+}
+
+.resultsOverflow .excessSection .content {
+	border-top: none;
+}
+.fieldset-card,
+.fieldset-column-side .sidebar-box {
 	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
 }
 .content{

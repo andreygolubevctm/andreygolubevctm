@@ -136,7 +136,7 @@
                     features: {
                         mode: 'populate',
                         headers: false,
-                        numberOfXSColumns: 2
+                        numberOfXSColumns: 1
                     },
                     dockCompareBar: false
                 },
@@ -188,7 +188,7 @@
                         },
                         {
                             key: 'N',
-                            value: "<span class='icon-cross'></span>"
+                            value: ""
                         },
                         {
                             key: 'R',
@@ -510,7 +510,11 @@
     }
 
     function startColumnWidthTracking() {
-        Results.view.startColumnWidthTracking($(window), Results.settings.render.features.numberOfXSColumns, false);
+        if (meerkat.modules.deviceMediaState.get() === 'xs' && Results.getDisplayMode() === 'features') {
+            Results.view.startColumnWidthTracking( $(window), Results.settings.render.features.numberOfXSColumns, false );
+            Results.pagination.setCurrentPageNumber(1);
+            Results.pagination.resync();
+        }
     }
 
     function stopColumnWidthTracking() {
