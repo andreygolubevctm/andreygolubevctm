@@ -359,7 +359,7 @@
             $(".off-peak-usage .control-label").html('Off-peak usage (if any)');
         }
 
-        $(".peak-usage").show();
+        $(".peak-usage").toggle(meter === "S" || meter === "T" || meter === "M");
         $(".off-peak-usage").toggle(meter === "T" || meter === "M");
         $(".shoulder-usage").toggle(meter === "M");
     }
