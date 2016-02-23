@@ -7,20 +7,16 @@ import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.EmailMaster;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-@Repository
 public class EmailTokenDao {
 
     private final SimpleDatabaseConnection databaseConnection;
 
-    @Autowired
     public EmailTokenDao(SimpleDatabaseConnection databaseConnection) {
         this.databaseConnection = databaseConnection;
     }
