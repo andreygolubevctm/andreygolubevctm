@@ -1038,7 +1038,7 @@
 
 			// Push in values from 1st slide only when have been beyond it
 			if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
-				var contactType;
+				var contactType = null;
 				if ($('#health_simples_contactType_inbound').is(':checked')) {
 					contactType = 'inbound';
 				} else if ($('#health_simples_contactType_outbound').is(':checked')) {
