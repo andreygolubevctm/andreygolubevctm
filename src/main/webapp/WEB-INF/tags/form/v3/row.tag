@@ -71,7 +71,7 @@
 
 			<field_v2:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" addForAttr="${addForAttr}" />
 
-			<div class="col-xs-2 visible-xs helpIconXSColumn ${offset}">
+			<div class="col-xs-1 visible-xs helpIconXSColumn ${offset}">
 				<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" />
 			</div>
 
