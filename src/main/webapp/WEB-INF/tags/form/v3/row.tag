@@ -59,7 +59,7 @@
 
 	<c:choose>
 		<c:when test="${labelAbove eq true}">
-			<c:set var="labelClassName" value="col-xs-${toggleHelpColMobile} col-sm-12" />
+			<c:set var="labelClassName" value="col-sm-5 col-xs-${toggleHelpColMobile}" />
 		</c:when>
 		<c:otherwise>
 			<c:set var="labelClassName" value="col-sm-5 col-xs-${toggleHelpColMobile}" />

@@ -37,14 +37,12 @@
 	}
 
 	&[data-step="benefits"] {
-		.slide-feature-back,
 		.slide-feature-emailquote.privacyOptinChecked
 		{
 			.slide-feature-is-visible();
 		}
 	}
 	&[data-step="contact"] {
-		.slide-feature-back,
 		.slide-feature-emailquote.privacyOptinChecked
 		{
 			.slide-feature-is-visible();
@@ -96,12 +94,15 @@
 	}
 
 	&[data-step="apply"] {
-		#navbar-main{
-		  .slide-feature-hidden() !important;
+		.slide-feature-back {
+			.slide-feature-is-visible();
 		}
 	}
 
 	&[data-step="payment"] {
+        .slide-feature-back {
+			.slide-feature-is-visible();
+		}
 		#navbar-main{
 		  .slide-feature-hidden() !important;
 		}
