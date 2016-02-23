@@ -26,9 +26,6 @@ public class EmailTokenDao {
     }
 
     public void addEmailToken(Long transactionId, Long emailId, String emailTokenType, String action) throws DaoException {
-
-        Integer count = getEmailTokenCount( transactionId,  emailId,  emailTokenType,  action);
-        if(count == 0 ) {
             int expiryDays[] = new int[]{-1};
 
             SqlDao<Integer> sqlDao = new SqlDao<>(databaseConnection);
@@ -65,32 +62,8 @@ public class EmailTokenDao {
                 public Integer handleResult(ResultSet rs) throws SQLException {
                     return null;
                 }
-            }, "INSERT INTO aggregator.email_token(`transactionId`, `emailId`, `emailTokenType`, `action`, `totalAttempts`, `effectiveStart`, `effectiveEnd`)" +
+            }, "INSERT IGNORE INTO aggregator.email_token(`transactionId`, `emailId`, `emailTokenType`, `action`, `totalAttempts`, `effectiveStart`, `effectiveEnd`)" +
                     " VALUES (?,?,?,?,?,?,?)");
-        }
-    }
-
-    public int getEmailTokenCount(Long transactionId, Long emailId, String emailTokenType, String action) throws DaoException {
-        SqlDao<Integer> sqlDao = new SqlDao<>(databaseConnection);
-        return sqlDao.get(new DatabaseQueryMapping<Integer>(){
-            @Override
-            protected void mapParams() throws SQLException {
-                set(transactionId);
-                set(emailId);
-                set(emailTokenType);
-                set(action);
-            }
-
-            @Override
-            public Integer handleResult(ResultSet rs) throws SQLException {
-                return rs.getInt("emailCount");
-            }
-
-        }, "SELECT count(*) as emailCount FROM aggregator.email_token\n" +
-                "WHERE transactionId = ?\n" +
-                "AND emailId = ?\n" +
-                "AND emailTokenType = ?\n" +
-                "AND action = ?");
     }
 
     public EmailMaster getEmailDetails(Long transactionId, Long emailId, String emailTokenType, String action) throws DaoException {
