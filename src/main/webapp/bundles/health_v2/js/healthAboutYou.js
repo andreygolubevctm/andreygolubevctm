@@ -67,15 +67,6 @@
 	}
 
 	function eventSubscriptions() {
-		if(meerkat.site.isCallCentreUser === true){
-			// Handle pre-filled
-			toggleRebateDialogue();
-			// Handle toggle rebate options
-			$healthCoverRebate.find('input').on('change', function toggleRebateDiag() {
-				toggleRebateDialogue();
-			});
-		}
-
 		$healthCoverRebate.on('change', function toggleMedicare() {
 			// Hide these questions as they are not required
 			if( meerkat.modules.healthCoverDetails.isRebateApplied() !== true ) {
@@ -189,17 +180,6 @@
 		resetRadio($partnerCurrentCover);
 		$partnerContinuousCoverContainer.find(':checked').prop('checked', false);
 		resetRadio($partnerContinuousCoverContainer);
-	}
-
-	function toggleRebateDialogue() {
-		// apply rebate
-		if ($healthCoverRebate.find('input:checked"]').val() === 'Y') {
-			$rebateDialogue.removeClass('hidden');
-		}
-		// no rebate
-		else {
-			$rebateDialogue.addClass('hidden');
-		}
 	}
 
 	meerkat.modules.register('healthAboutYou', {
