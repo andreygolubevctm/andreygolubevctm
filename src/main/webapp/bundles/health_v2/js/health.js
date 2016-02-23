@@ -1033,6 +1033,7 @@
 				emailID:				null,
 				marketOptIn:			null,
 				okToCall:				null,
+				contactType:			null,
 				simplesUser:			meerkat.site.isCallCentreUser
 			};
 
