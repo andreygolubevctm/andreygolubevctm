@@ -453,6 +453,40 @@
 
 // *** END: More info dual pricing
 
+// *** START: Passed drop dead date
+@media(@xs) {
+	.dropDatePassed {
+		.current-pricing h3,
+		hr,
+		hr + h2,
+		.april-pricing,
+		.note,
+		.why-rising-premiums {
+			display: none !important;
+		}
+	}
+}
+
+@media(@sm) {
+	.dropDatePassed {
+		.heading-row,
+		.pricing-row > .icon{
+			display: none !important;
+		}
+	}
+}
+
+@media(@md) {
+	.dropDatePassed {
+		.current-pricing h2,
+		.dual-pricing-border {
+			display: none !important;
+		}
+	}
+}
+// *** END: Passed drop dead date
+
+
 // *** START: Dual pricing sidebar apply onwards
 .fieldset-column-side .sidebar-box.hasDualPricing {
 	padding: 0px;

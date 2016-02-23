@@ -20,22 +20,22 @@
 
 <core_v1:js_template id="sideBarFrequency">
 	{{ if (obj.frequency !== 'annually') { }}
-	<h5 class="heading">If you pay {{= obj.frequency }} before {{= obj.dropDeadDate }}:</h5>
+	<h5 class="heading">If you pay {{= obj.frequency }} before {{= obj.dropDeadDateFormatted }}:</h5>
 	<p><span class="title">First Premium:</span> {{= obj.firstPremium}}</p>
 	<p><span class="title">Remaining Premiums:</span> {{= obj.remainingPremium}}</p>
 	{{ } else { }}
-	<h5 class="heading">If you pay your annual premium before {{= obj.dropDeadDate }}:</h5>
+	<h5 class="heading">If you pay your annual premium before {{= obj.dropDeadDateFormatted }}:</h5>
 	<p><span class="title">Premium:</span> {{= obj.firstPremium}}</p>
 	{{ } }}
 </core_v1:js_template>
 
-<c:set var="note">Advance payments before 30 March ${thisYear} will be at the current price. Applications close on {{= obj.dropDeadDate }} to allow for processing</c:set>
+<c:set var="note">Advance payments before 30 March ${thisYear} will be at the current price. Applications close on {{= obj.dropDeadDateFormatted }} to allow for processing</c:set>
 <c:set var="heading">Premiums are rising April 1</c:set>
 <c:set var="whyPremiumsRising"><a href="javascript:;" class="why-rising-premiums">Why are premiums rising?</a></c:set>
 <c:set var="april1Header">Pricing on 1 April ${thisYear}</c:set>
 
 <core_v1:js_template id="dual-pricing-template">
-	<div class="dual-pricing-container">
+	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
 		<div class="current-pricing">
 			<h2>${heading}</h2>
 			${whyPremiumsRising}
@@ -53,7 +53,7 @@
 </core_v1:js_template>
 
 <core_v1:js_template id="dual-pricing-template-sm">
-	<div class="dual-pricing-container">
+	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
 		<div class="heading-row">
 			<h2>${heading}</h2>
 			${whyPremiumsRising}
@@ -80,7 +80,7 @@
 </core_v1:js_template>
 
 <core_v1:js_template id="dual-pricing-template-xs">
-	<div class="dual-pricing-container">
+	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
 		<div class="current-pricing">
 			<h3>Current Pricing</h3>
 			{{= renderedPriceTemplate }}

@@ -37,10 +37,11 @@
 		$displayedFrequency.on('change', function updatePaymentSidebar() {
 			var $this = $(this),
 			obj = {},
-			selectedProduct = Results.getSelectedProduct();
+			selectedProduct = Results.getSelectedProduct(),
+			now = new Date();
 
-			if ($this.val() !== '') {
-				obj.dropDeadDate = selectedProduct.dropDeadDate;
+			if ($this.val() !== '' && now.getTime() < selectedProduct.dropDeadDate.getTime()) {
+				obj.dropDeadDateFormatted = selectedProduct.dropDeadDateFormatted;
 				obj.frequency = $this.val();
 				obj.firstPremium = (selectedProduct.mode === '' ? selectedProduct.premium[obj.frequency].lhcfreetext : selectedProduct.premium[obj.frequency].text) + " " + (selectedProduct.mode === '' ? selectedProduct.premium[obj.frequency].lhcfreepricing : selectedProduct.premium[obj.frequency].pricing);
 
@@ -115,6 +116,9 @@
 		htmlTemplate = _.template($logoPriceTemplate.html());
 		product.renderedAltPriceTemplate = htmlTemplate(product);
 
+		var today = new Date();
+
+		product.dropDatePassed = today.getTime() < product.dropDeadDate.getTime();
 		$mainDualPricingTemplate = getTemplate(isForSidebar);
 
 		var dualPriceTemplate = _.template($mainDualPricingTemplate.html());

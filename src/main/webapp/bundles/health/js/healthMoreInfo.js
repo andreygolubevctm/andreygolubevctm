@@ -357,7 +357,8 @@
         product.aboutFund = '<p>Apologies. This information did not download successfully.</p>';
         product.whatHappensNext = '<p>Apologies. This information did not download successfully.</p>';
         product.warningAlert = '';
-        product.dropDeadDate= '31st March 2016';
+        product.dropDeadDate = '31/3/2016';
+        product.dropDeadDateFormatted = '31st March 2016';
 
         // Get the "about fund", "what happens next" and warningAlert info
         return $.when(
@@ -398,13 +399,37 @@
                             product.warningAlert = result.providerContentText;
                             break;
                         case 'DDD':
-                            var d = new Date();
-                            product.dropDeadDate =  result.providerContentText.trim() === '' ? '31st March '+d.getFullYear() : result.providerContentText;
+                            var d = new Date(),
+                                formattedDate = '';
+
+                            if (result.providerContentText.trim() !== '') {
+                                dateSplit = result.providerContentText.split("/");
+                                rearrangedDate = dateSplit[1]+"/"+dateSplit[0]+"/"+dateSplit[2];
+                                newDate = new Date(rearrangedDate);
+                                formattedDate = newDate.getDate()+getNth(newDate.getDate())+" of "+(newDate.getMonth() == 2 ? 'March' : 'April') + ", " + newDate.getFullYear();
+
+                                product.dropDeadDateFormatted =  formattedDate;
+                                product.dropDeadDate =  new Date(rearrangedDate);
+                            } else {
+                                product.dropDeadDateFormatted = '31st March '+d.getFullYear();
+                                product.dropDeadDate =  new Date('31/3/'+d.getFullYear());
+                            }
+
                             break;
                     }
                 }
             }
         });
+    }
+
+    function getNth(day) {
+        if(day>3 && day<21) return 'th'; // thanks kennebec
+        switch (day % 10) {
+            case 1:  return "st";
+            case 2:  return "nd";
+            case 3:  return "rd";
+            default: return "th";
+        }
     }
 
     function prepareCoverFeatures(searchPath, target) {
