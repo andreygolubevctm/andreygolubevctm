@@ -1,8 +1,10 @@
 package com.ctm.web.core.email.dao;
 
+/*
 import com.ctm.data.BaseDaoTest;
 import com.ctm.data.common.TestMariaDbBean;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -23,7 +25,7 @@ public class EmailTokenDaoIT extends BaseDaoTest {
     private String emailTokenType = "brochures";
     private String action = "load";
 
-    //@Test
+    @Test
     public void testAddEmailToken() throws Exception {
         emailTokenDao.addEmailToken( transactionId,  emailId,  emailTokenType,  action);
          assertNotNull(emailTokenDao.getEmailDetails( transactionId,  emailId,  emailTokenType,  action));
@@ -32,4 +34,4 @@ public class EmailTokenDaoIT extends BaseDaoTest {
         emailTokenDao.addEmailToken( transactionId,  emailId,  emailTokenType,  action);
          assertNotNull(emailTokenDao.getEmailDetails( transactionId,  emailId,  emailTokenType,  action));
     }
-}
+}*/
