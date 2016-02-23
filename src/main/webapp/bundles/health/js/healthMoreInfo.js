@@ -357,7 +357,7 @@
         product.aboutFund = '<p>Apologies. This information did not download successfully.</p>';
         product.whatHappensNext = '<p>Apologies. This information did not download successfully.</p>';
         product.warningAlert = '';
-        product.dropDeadDate= '';
+        product.dropDeadDate= '31st March 2016';
 
         // Get the "about fund", "what happens next" and warningAlert info
         return $.when(
@@ -398,7 +398,8 @@
                             product.warningAlert = result.providerContentText;
                             break;
                         case 'DDD':
-                            product.dropDeadDate =  result.providerContentText;
+                            var d = new Date();
+                            product.dropDeadDate =  result.providerContentText.trim() === '' ? '31st March '+d.getFullYear() : result.providerContentText;
                             break;
                     }
                 }

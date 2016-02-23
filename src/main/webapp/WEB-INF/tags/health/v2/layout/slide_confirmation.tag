@@ -23,14 +23,8 @@
 
 <%-- TEMPLATES --%>
 	<c:choose>
-		<c:when test="${healthAlternatePricingActive eq true}">
-			<%-- Logo and prices template --%>
-			<health_v1:logo_price_template />
-		</c:when>
-		<c:otherwise>
-			<%-- Logo and prices template --%>
-			<health_v1:logo_price_template />
-		</c:otherwise>
+		<%-- Logo and prices template --%>
+		<health_v1:logo_price_template />
 	</c:choose>
 
 	<%-- Main page template --%>

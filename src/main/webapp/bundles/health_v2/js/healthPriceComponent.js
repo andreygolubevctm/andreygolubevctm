@@ -95,7 +95,7 @@
 		product.displayLogo = false;
 
 		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
-			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false);
+			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
 		} else {
 			var htmlTemplate = _.template(logoPriceTemplate);
 			var htmlString = htmlTemplate(product);

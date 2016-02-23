@@ -3,7 +3,10 @@
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		$logoPriceTemplate,
+		$mainDualPricingTemplate,
 		$dualPricingTemplate,
+		$dualPricingTemplateSM,
+		$dualPricingTemplateXS,
 		$displayedFrequency,
 		$whyPremiumsRiseLink,
 		$whyPremiumsRiseTemplate,
@@ -13,6 +16,8 @@
 	function initHealthDualPricing() {
 		$logoPriceTemplate = $('#logo-price-template'),
 		$dualPricingTemplate = $('#dual-pricing-template'),
+		$dualPricingTemplateSM = $('#dual-pricing-template-sm'),
+		$dualPricingTemplateXS = $('#dual-pricing-template-xs'),
 		$displayedFrequency = $("#health_payment_details_frequency"),
 		$whyPremiumsRiseLink = $('a.why-rising-premiums'),
 		$whyPremiumsRiseTemplate = $('#more-info-why-price-rise-template'),
@@ -26,13 +31,10 @@
 			showModal();
 		});
 
-		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function editDetailsEnterXsState() {
+		meerkat.messaging.subscribe(meerkatEvents.device.DEVICE_MEDIA_STATE_CHANGE, function editDetailsEnterXsState() {
 			hideModal();
 		});
 
-		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsLeaveXsState() {
-			hideModal();
-		});
 	}
 
 	/**
@@ -52,15 +54,8 @@
 			className: modalName,
 			closeOnHashChange : true,
 			onOpen : function(modalId) {
-				var $editDetails = $('.'+modalName+'-wrapper', $('#' + modalId));
-				$editDetails.html(htmlContent);
-				meerkat.modules.contentPopulation.render('#' + modalId + ' .edit-details-wrapper');
-				$('.accordion-collapse').on('show.bs.collapse', function(){
-					$(this).prev('.accordion-heading').addClass("active-panel");
-				}).on('hide.bs.collapse',function(){
-					$(this).prev('.accordion-heading').removeClass("active-panel");
-				});
-				$editDetails.show();
+				var $premiumsRising = $('.'+modalName+'-wrapper', $('#' + modalId));
+				$premiumsRising.html(htmlContent).show();
 			}
 		});
 		return modalId;
@@ -72,7 +67,7 @@
 		}
 	}
 
-	function renderTemplate(target, product, returnTemplate) {
+	function renderTemplate(target, product, returnTemplate, isForSidebar) {
 		selectedProduct = product;
 
 		product._selectedFrequency = typeof product._selectedFrequency === 'undefined' !== '' ? Results.getFrequency() : product._selectedFrequency;
@@ -88,12 +83,32 @@
 		htmlTemplate = _.template($logoPriceTemplate.html());
 		product.renderedAltPriceTemplate = htmlTemplate(product);
 
-		var dualPriceTemplate = _.template($dualPricingTemplate.html());
+		$mainDualPricingTemplate = getTemplate(isForSidebar);
+
+		var dualPriceTemplate = _.template($mainDualPricingTemplate.html());
 
 		if (returnTemplate === true) {
 			return dualPriceTemplate(product);
 		} else {
 			$(target).html(dualPriceTemplate(product));
+		}
+	}
+
+	function getTemplate(isForSidebar) {
+
+		if (isForSidebar) {
+			return $dualPricingTemplate;
+		}
+
+		switch (meerkat.modules.deviceMediaState.get()) {
+			case 'xs':
+				return $dualPricingTemplateXS;
+				break;
+			case 'sm':
+				return $dualPricingTemplateSM;
+				break;
+			default:
+				return $dualPricingTemplate;
 		}
 	}
 

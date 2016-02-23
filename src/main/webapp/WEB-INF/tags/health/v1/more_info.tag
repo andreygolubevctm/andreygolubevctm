@@ -37,7 +37,7 @@
 
 	<%-- If dual pricing is enabled, update the template --%>
 	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
-	{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true); }}
+	{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
 	{{ var logoPriceTemplate = $('#logo-price-template').html(); }}
 	{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
@@ -51,9 +51,15 @@
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var callToActionBarHtml = htmlTemplate(obj); }}
 
+	<c:set var="buyNowHeadingClass">
+		<c:choose>
+			<c:when test="${healthAlternatePricingActive eq true}">hidden-xs</c:when>
+			<c:otherwise>visible-xs</c:otherwise>
+		</c:choose>
+	</c:set>
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12">
 
-		<div class="fieldset-card row price-card">
+		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
 
 			<div class="col-xs-12 hidden-xs">
 				<p>Quote reference number <span class="text-secondary">{{= transactionId }}</span></p>
@@ -64,7 +70,7 @@
 					<div class="col-xs-3">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 					</div>
-					<div class="col-xs-9">
+					<div class="col-xs-9 <c:if test="${healthAlternatePricingActive eq true}">productDetails</c:if>">
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
 
 						<div class="hidden-xs">
@@ -79,10 +85,13 @@
 				<c:choose>
 				<c:when test="${healthAlternatePricingActive eq true}">
 					<div class="row priceRow">
-						<div class="col-xs-6">
-							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+						<div class="col-xs-12 hidden-md hidden-lg">
+							{{= renderedDualPricing }}
 						</div>
-						<div class="col-xs-6">
+						<div class="col-md-12 insureNowContainer hidden-xs hidden-sm">
+							<div class="insureNow">
+								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+							</div>
 							<h3 class="text-dark">Need help? Call <span class="text-secondary">${callCentreNumber}</span></h3>
 						</div>
 					</div>
@@ -99,7 +108,7 @@
 				</c:otherwise>
 				</c:choose>
 
-				<div class="row visible-xs">
+				<div class="row ${buyNowHeadingClass} hidden-sm hidden-md hidden-lg">
 					<div class="col-xs-12">
 						{{ if (promo.promoText !== ''){ }}
 						<h2>Buy now and benefit from these promotions</h2>
