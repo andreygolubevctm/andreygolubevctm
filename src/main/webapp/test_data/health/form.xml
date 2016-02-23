@@ -288,6 +288,7 @@
 		<dialogue-checkbox-25>Y</dialogue-checkbox-25>
 		<dialogue-checkbox-26>Y</dialogue-checkbox-26>
 		<dialogue-checkbox-28>Y</dialogue-checkbox-28>
+        <dialogue-checkbox-37>Y</dialogue-checkbox-37>
         <dialogue-checkbox-38>Y</dialogue-checkbox-38>
 		<contactType>outbound</contactType>
 	</simples>
