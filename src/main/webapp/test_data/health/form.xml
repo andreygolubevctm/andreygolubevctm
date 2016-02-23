@@ -172,7 +172,7 @@
 				<firstName>Dependeress</firstName>
 				<middleName>Middleb</middleName>
 				<lastname>Two</lastname>
-				<dob>22/02/1990</dob>
+				<dob>22/02/1997</dob>
 				<school>UNSW</school>
 				<gender>F</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
@@ -182,7 +182,7 @@
 				<firstName>Depender</firstName>
 				<middleName>Middlec</middleName>
 				<lastname>Three</lastname>
-				<dob>23/03/1991</dob>
+				<dob>23/03/1998</dob>
 				<school>UNSW</school>
 				<gender>M</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
@@ -212,7 +212,7 @@
 				<firstName>Depender</firstName>
 				<middleName>Middlef</middleName>
 				<lastname>Six</lastname>
-				<dob>06/06/1992</dob>
+				<dob>06/06/1996</dob>
 				<school>UNSW</school>
 				<gender>M</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
@@ -288,6 +288,7 @@
 		<dialogue-checkbox-25>Y</dialogue-checkbox-25>
 		<dialogue-checkbox-26>Y</dialogue-checkbox-26>
 		<dialogue-checkbox-28>Y</dialogue-checkbox-28>
+        <dialogue-checkbox-38>Y</dialogue-checkbox-38>
 		<contactType>outbound</contactType>
 	</simples>
 	<contactAuthority>Y</contactAuthority>
