@@ -22,10 +22,8 @@
 </layout_v1:slide>
 
 <%-- TEMPLATES --%>
-	<c:choose>
-		<%-- Logo and prices template --%>
-		<health_v1:logo_price_template />
-	</c:choose>
+	<%-- Logo and prices template --%>
+	<health_v1:logo_price_template />
 
 	<%-- Main page template --%>
 	<script id="confirmation-template" type="text/html">
