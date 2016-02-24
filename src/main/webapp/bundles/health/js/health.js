@@ -243,15 +243,6 @@
 
 				});
 
-				if(meerkat.site.isCallCentreUser === true){
-					// Handle pre-filled 
-					toggleRebateDialogue();
-					// Handle toggle rebate options
-					$('input[name=health_healthCover_rebate]').on('change', function() {
-						toggleRebateDialogue();
-					});
-				}
-
 			},
 			onBeforeLeave: function(event) {
 				// Store the text of the income question - for reports and audits.
@@ -1241,18 +1232,6 @@
 			$('.simples-privacycheck-statement, .new-quote-only, .follow-up-call').removeClass('hidden');
 			toggleDialogueInChatCallback();
 	}
-	}
-
-	// Hide/show simple Rebate dialogue when toggle rebate options in simples journey
-	function toggleRebateDialogue() {
-		// apply rebate
-		if ($('#health_healthCover_rebate_Y').is(':checked')) {
-			$('.simples-dialogue-37').removeClass('hidden');
-		}
-		// no rebate
-		else if ($('#health_healthCover_rebate_N').is(':checked')){
-			$('.simples-dialogue-37').addClass('hidden');
-		}
 	}
 
 	// Disable/enable follow up/New quote dialogue when the other checkbox ticked in Chat Callback sesction in simples

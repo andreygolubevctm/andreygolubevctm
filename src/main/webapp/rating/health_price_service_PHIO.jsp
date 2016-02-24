@@ -43,9 +43,6 @@
 
 <c:set var="currentJourney"><x:out select="$healthXML/request/header/currentJourney" /></c:set>
 <c:choose>
-	<c:when test="${!isSimples && currentJourney ne 12}">
-		<c:set var="situationFilter" value="none" />
-	</c:when>
 	<c:when test="${situationFilter eq 'Y'}">
 		<c:set var="situationFilter" value="Y" />
 	</c:when>

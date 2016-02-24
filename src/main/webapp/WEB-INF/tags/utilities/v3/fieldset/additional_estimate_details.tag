@@ -69,16 +69,6 @@
                                title="how you are charged." />
     </form_v3:row>
 
-    <form_v3:row label="Standard usage" className="clear usage standard-usage">
-    <utilities_v2_fieldset:additional_estimate_details_input xpath="${xpath}"
-                                                              utilityType="Electricity"
-                                                              inputType="peak"
-                                                              helpId="536"
-                                                              required="true"
-                                                              inputGroupText="kWh"
-                                                              inputGroupTextPosition="right"/>
-    </form_v3:row>
-
     <form_v3:row label="Peak usage" className="clear usage peak-usage">
         <utilities_v2_fieldset:additional_estimate_details_input xpath="${xpath}"
                                                                   utilityType="Electricity"
@@ -97,15 +87,6 @@
                                                                   helpId="537"
                                                                   inputGroupText="kWh"
                                                                   inputGroupTextPosition="right"/>
-    </form_v3:row>
-
-    <form_v3:row label="Controlled Load" className="clear usage controlled-usage">
-    <utilities_v2_fieldset:additional_estimate_details_input xpath="${xpath}"
-                                                              utilityType="Electricity"
-                                                              inputType="offpeak"
-                                                              required="false"
-                                                              inputGroupText="kWh"
-                                                              inputGroupTextPosition="right"/>
     </form_v3:row>
 
     <form_v3:row label="Shoulder usage (if any)" className="clear usage shoulder-usage">

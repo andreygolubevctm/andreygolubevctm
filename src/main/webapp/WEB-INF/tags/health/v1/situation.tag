@@ -28,6 +28,7 @@
 
 			<simples:dialogue id="19" vertical="health" />
 			<simples:dialogue id="20" vertical="health" />
+            <simples:dialogue id="42" vertical="health" />
 			<simples:dialogue id="0" vertical="health" className="red">
 				<div class="row">
 					<div class="col-sm-12">
