@@ -214,6 +214,11 @@
 
     function eventSubscriptions() {
 
+        var tStart = new Date().getTime();
+        console.log("the tSTart is:"+tStart);
+        var timerId;
+
+
         $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function () {
             _resetSelectionsStructureObject();
             _setupSelectedBenefits('Extras Selections', 'Extras Cover');
@@ -240,6 +245,8 @@
         $(document).on("resultsLoaded", onResultsLoaded);
 
         $(document).on("resultsReturned", function () {
+            console.log("results have returned!!");
+            clearTimeout(timerId);
 
             meerkat.modules.utils.scrollPageTo($("header"));
 
@@ -265,10 +272,12 @@
         });
 
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
+            timerId = _.delay(function() {
+                toggleMarketingMessage(false);
+                toggleResultsLowNumberMessage(false);
 
-            toggleMarketingMessage(false);
-            toggleResultsLowNumberMessage(false);
-            meerkat.modules.journeyEngine.loadingShow('getting your quotes');
+            },3000);
+            meerkat.modules.journeyEngine.loadingShow('We are currently retrieving the 12 cheapest products matching your needs from our participating funds',true);
 
             // Hide pagination
             $('header .slide-feature-pagination, header a[data-results-pagination-control]').addClass('hidden');
