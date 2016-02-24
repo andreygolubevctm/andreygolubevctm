@@ -45,8 +45,9 @@
 			if ($(this).val().toLowerCase() == 'annually') {
 				$frequencyWarning.slideUp().html("");
 			} else {
-				var template = _.template($priceFrequencyTemplate.html());
-				$frequencyWarning.html(template).removeClass("hidden").slideDown();
+				var template = _.template($priceFrequencyTemplate.html()),
+					selectedProduct = Results.getSelectedProduct();
+				$frequencyWarning.html(template(selectedProduct)).removeClass("hidden").slideDown();
 			}
 		});
 
