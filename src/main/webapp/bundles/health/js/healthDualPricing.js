@@ -13,6 +13,9 @@
 		selectedProduct,
 		$sideBarFrequencyTemplate,
 		$sideBarFrequency,
+		$paymentDetailsFrequency,
+		$priceFrequencyTemplate,
+		$frequencyWarning,
 		modalId = null;
 
 	function initHealthDualPricing() {
@@ -25,6 +28,10 @@
 		$whyPremiumsRiseTemplate = $('#more-info-why-price-rise-template'),
 		$sideBarFrequency = $('.sidebarFrequency'),
 		$sideBarFrequencyTemplate = $('#sideBarFrequency'),
+		$paymentDetailsSelection = $('#health_payment_details-selection'),
+		$paymentDetailsFrequency = $paymentDetailsSelection.find('#health_payment_details_frequency'),
+		$priceFrequencyTemplate = $('#price-frequency-template'),
+		$frequencyWarning = $paymentDetailsSelection.find('.frequencyWarning'),
 		selectedProduct = {};
 
 		$sideBarFrequency.hide();
@@ -33,6 +40,15 @@
 	}
 
 	function applyListenerEvents() {
+
+		$paymentDetailsFrequency.on('change', function updateWarningLabel(){
+			if ($(this).val().toLowerCase() == 'annually') {
+				$frequencyWarning.slideUp().html("");
+			} else {
+				var template = _.template($priceFrequencyTemplate.html());
+				$frequencyWarning.html(template).removeClass("hidden").slideDown();
+			}
+		});
 
 		$displayedFrequency.on('change', function updatePaymentSidebar() {
 			var $this = $(this),
