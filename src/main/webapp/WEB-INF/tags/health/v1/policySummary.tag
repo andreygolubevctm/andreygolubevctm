@@ -59,11 +59,12 @@
 			</div>
 		</div>
 	</c:if>
-</div>
+
 <c:if test="${healthAlternatePricingActive eq true}">
+</div>
 <div class="sidebar-box sidebarFrequency hidden-xs"></div>
-</c:if>
 <div class="sidebar-box">
+</c:if>
 	<c:if test="${showProductDetails == true}">
 		<div class="productSummaryDetails">
 			<c:if test="${isAltView}">
