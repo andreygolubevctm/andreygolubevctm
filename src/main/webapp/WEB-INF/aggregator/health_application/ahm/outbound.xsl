@@ -158,9 +158,6 @@
 			<xsl:otherwise>0</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="payment_date">
-		<xsl:value-of select="translate($nominated_date,'-','')" />
-	</xsl:variable>
 	<xsl:variable name="start_date">
 		<xsl:value-of select="substring(/health/payment/details/start,7,4)" />
 		<xsl:value-of select="substring(/health/payment/details/start,4,2)" />
@@ -171,7 +168,7 @@
 
 	<xsl:variable name="campaign_id">
 		<xsl:choose>
-			<xsl:when test="$valid_campaign_product = 1 and $start_date &gt;= $campaign_start and $start_date &lt;= $campaign_end and $payment_date &lt;= $campaign_end">7107</xsl:when>
+			<xsl:when test="$valid_campaign_product = 1 and $start_date &gt;= $campaign_start and $start_date &lt;= $campaign_end">7107</xsl:when>
 			<xsl:otherwise>7000</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
