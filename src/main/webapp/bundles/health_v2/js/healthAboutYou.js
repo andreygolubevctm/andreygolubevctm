@@ -67,15 +67,6 @@
 	}
 
 	function eventSubscriptions() {
-		if(meerkat.site.isCallCentreUser === true){
-			// Handle pre-filled
-			toggleRebateDialogue();
-			// Handle toggle rebate options
-			$healthCoverRebate.find('input').on('change', function toggleRebateDiag() {
-				toggleRebateDialogue();
-			});
-		}
-
 		$tierDropdowns.on('change', function updateRebateTiers(){
 			meerkat.modules.healthTiers.setTiers();
 		});
