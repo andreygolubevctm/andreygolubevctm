@@ -103,7 +103,8 @@
 	function renderTemplate(target, product, returnTemplate, isForSidebar) {
 		selectedProduct = product;
 
-		product._selectedFrequency = typeof product._selectedFrequency === 'undefined' !== '' ? Results.getFrequency() : product._selectedFrequency;
+
+		product._selectedFrequency = typeof product._selectedFrequency === 'undefined' ? Results.getFrequency() : product._selectedFrequency;
 		product.mode = product.mode !== '' ? product.mode : '';
 		product.showAltPremium = false;
 		product.displayLogo = false;
@@ -117,7 +118,7 @@
 		product.renderedAltPriceTemplate = htmlTemplate(product);
 
 		var today = new Date();
-
+		product.dropDeadDate = typeof product.dropDeadDate === 'string' ? new Date(product.dropDeadDate) : product.dropDeadDate;
 		product.dropDatePassed = today.getTime() > product.dropDeadDate.getTime();
 		$mainDualPricingTemplate = getTemplate(isForSidebar);
 
