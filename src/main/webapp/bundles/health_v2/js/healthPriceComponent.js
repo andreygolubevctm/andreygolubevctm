@@ -92,28 +92,31 @@
 			product.mode = '';
 		}
 		product.showAltPremium = false;
-		product.displayLogo = true;
+		product.displayLogo = false;
 
-		var htmlTemplate = _.template(logoPriceTemplate);
-		var htmlString = htmlTemplate(product);
-		$policySummaryTemplateHolder.html(htmlString);
+		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false);
+		} else {
+			var htmlTemplate = _.template(logoPriceTemplate);
+			var htmlString = htmlTemplate(product);
+			$policySummaryTemplateHolder.html(htmlString);
 
-		$policySummaryDualPricing.find('.Premium').html(htmlString);
-
+			$policySummaryDualPricing.find('.Premium').html(htmlString);
 //		This is a deactivated split test as it is likely to be run again in the future
-		// A/B testing price itemisation
+			// A/B testing price itemisation
 //		if (meerkat.modules.splitTest.isActive(2)) {
 //			var htmlTemplate_B = _.template($("#price-itemisation-template").html());
 //			var htmlString_B = htmlTemplate_B(product);
 //			$(".priceItemisationTemplateHolder").html(htmlString_B);
 //		}
 
-		$policySummaryContainer.find(".policyPriceWarning").hide();
+			$policySummaryContainer.find(".policyPriceWarning").hide();
 
-		if ($policySummaryDualPricing.length > 0) {
-			product.showAltPremium = true;
-			htmlString = htmlTemplate(product);
-			$policySummaryDualPricing.find('.altPremium').html(htmlString);
+			if ($policySummaryDualPricing.length > 0) {
+				product.showAltPremium = true;
+				htmlString = htmlTemplate(product);
+				$policySummaryDualPricing.find('.altPremium').html(htmlString);
+			}
 		}
 	}
 

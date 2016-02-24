@@ -31,13 +31,20 @@
 <script id="more-info-template" type="text/html">
 
 	<%-- Prepare the price and dual price templates --%>
-	{{ var logoPriceTemplate = $("#logo-price-template").html(); }}
-	{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
 	{{ obj._selectedFrequency = Results.getFrequency(); }}
 	{{ obj.mode = ''; }}
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
+
+	<%-- If dual pricing is enabled, update the template --%>
+	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
+	{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true); }}
+	{{ } else { }}
+	{{ var logoPriceTemplate = $('#logo-price-template').html(); }}
+	{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
+
 	{{ obj.showAltPremium = false; obj.renderedPriceTemplate = htmlTemplatePrice(obj); }}
 	{{ obj.showAltPremium = true;  obj.renderedAltPriceTemplate = htmlTemplatePrice(obj); }}
+	{{ } }}
 
 	<%-- Prepare the call to action bar template --%>
 	{{ var template = $("#more-info-call-to-action-template").html(); }}
@@ -51,7 +58,7 @@
 			<div class="col-xs-12 hidden-xs">
 				<p>Quote reference number <span class="text-secondary">{{= transactionId }}</span></p>
 			</div>
-			<div class="col-md-8 moreInfoTopLeftColumn">
+			<div class="col-md-7 moreInfoTopLeftColumn">
 
 				<div class="row">
 					<div class="col-xs-3">
@@ -69,6 +76,18 @@
 					</div>
 				</div>
 
+				<c:choose>
+				<c:when test="${healthAlternatePricingActive eq true}">
+					<div class="row priceRow">
+						<div class="col-xs-6">
+							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+						</div>
+						<div class="col-xs-6">
+							<h3 class="text-dark">Need help? Call <span class="text-secondary">${callCentreNumber}</span></h3>
+						</div>
+					</div>
+				</c:when>
+				<c:otherwise>
 				<div class="row priceRow">
 					<div class="col-xs-12 col-sm-6">
 						{{= renderedPriceTemplate }}
@@ -77,6 +96,8 @@
 						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
 					</div>
 				</div>
+				</c:otherwise>
+				</c:choose>
 
 				<div class="row visible-xs">
 					<div class="col-xs-12">
@@ -88,26 +109,34 @@
 				</div>
 
 			</div>
-
-			<div class="col-md-4 hidden-xs hidden-sm moreInfoTopRightColumn">
-				<h2 class="noTopMargin">You're nearly insured</h2>
-				<div class="moreInfoProgress row">
-					<div class="col-sm-2">
-						<div class="moreInfoProgressBarLeft"></div>
-						<div class="moreInfoProgressDone">75%</div>
+			<c:choose>
+				<c:when test="${healthAlternatePricingActive eq true}">
+					<div class="col-md-5 hidden-xs hidden-sm moreInfoTopRightColumn">
+						{{= renderedDualPricing }}
 					</div>
-					<div class="col-sm-10">
-						<p class="text-bold">Buy through comparethemarket</p>
-						<p>Your chosen product</p>
-						<p>Your cover preferences</p>
-						<p>About you</p>
-					</div>
-				</div>
+				</c:when>
+				<c:otherwise>
+					<div class="col-md-4 hidden-xs hidden-sm moreInfoTopRightColumn">
+						<h2 class="noTopMargin">You're nearly insured</h2>
+						<div class="moreInfoProgress row">
+							<div class="col-sm-2">
+								<div class="moreInfoProgressBarLeft"></div>
+								<div class="moreInfoProgressDone">75%</div>
+							</div>
+							<div class="col-sm-10">
+								<p class="text-bold">Buy through comparethemarket</p>
+								<p>Your chosen product</p>
+								<p>Your cover preferences</p>
+								<p>About you</p>
+							</div>
+						</div>
 
-				<h3 class="text-dark">Need help?</h3>
-				<p>Speak to one of our health insurance specialists on <span class="noWrap text-secondary">${callCentreNumber}</span></p>
-				<p>Quote your reference number <span class="text-secondary">{{= transactionId }}</span></p>
-			</div>
+						<h3 class="text-dark">Need help?</h3>
+						<p>Speak to one of our health insurance specialists on <span class="noWrap text-secondary">${callCentreNumber}</span></p>
+						<p>Quote your reference number <span class="text-secondary">{{= transactionId }}</span></p>
+					</div>
+				</c:otherwise>
+			</c:choose>
 
 		</div>
 

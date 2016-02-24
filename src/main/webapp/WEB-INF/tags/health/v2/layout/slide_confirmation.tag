@@ -2,6 +2,8 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
+<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 
 <%-- Load confirmation information (either a full confirmation or a pending one) --%>
 <c:set var="confirmationData"><health_v1:load_confirmation /></c:set>
@@ -20,8 +22,16 @@
 </layout_v1:slide>
 
 <%-- TEMPLATES --%>
-	<%-- Logo and prices template --%>
-	<health_v1:logo_price_template />
+	<c:choose>
+		<c:when test="${healthAlternatePricingActive eq true}">
+			<%-- Logo and prices template --%>
+			<health_v1:logo_price_template />
+		</c:when>
+		<c:otherwise>
+			<%-- Logo and prices template --%>
+			<health_v1:logo_price_template />
+		</c:otherwise>
+	</c:choose>
 
 	<%-- Main page template --%>
 	<script id="confirmation-template" type="text/html">
