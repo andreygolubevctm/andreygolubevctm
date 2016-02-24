@@ -86,13 +86,15 @@ public class RequestAdapter {
                     .map(PaymentDetails::getType)
                     .map(PaymentType::findByCode)
                     .orElse(null));
+
+
         }
 
         addCompareResultsFilter(filters, quote);
         addIncludeProductIfNotFound(filters, quote, isSimples, isDirectApplication);
         addCappingLimitFilter(filters, quote);
 
-        addSearchDateFilter(quoteRequest, quote);
+        addSearchDateFilter(quoteRequest, quote, isShowAll);
 
         quoteRequest.setLoading(quote.getLoading());
 
@@ -115,8 +117,12 @@ public class RequestAdapter {
         }
     }
 
-    protected static void addSearchDateFilter(HealthQuoteRequest quoteRequest, HealthQuote quote) {
-        if (StringUtils.isNotBlank(quote.getSearchDate())) {
+    protected static void addSearchDateFilter(HealthQuoteRequest quoteRequest, HealthQuote quote, boolean isShowAll) {
+        final Optional<String> paymentStartDate = Optional.ofNullable(quote.getPayment()).map(Payment::getDetails).map(PaymentDetails::getStart);
+        // Use only paymentStartDate if doing update premium
+        if (!isShowAll && paymentStartDate.isPresent() && StringUtils.isNotBlank(paymentStartDate.get())) {
+            quoteRequest.setSearchDateValue(parseAUSLocalDate(paymentStartDate.get()));
+        } else if (StringUtils.isNotBlank(quote.getSearchDate())) {
             quoteRequest.setSearchDateValue(parseAUSLocalDate(quote.getSearchDate()));
         } else {
             quoteRequest.setSearchDateValue(LocalDate.now());
