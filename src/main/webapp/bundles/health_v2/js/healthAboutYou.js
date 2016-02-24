@@ -67,16 +67,6 @@
 	}
 
 	function eventSubscriptions() {
-		$healthCoverRebate.on('change', function toggleMedicare() {
-			// Hide these questions as they are not required
-			if( meerkat.modules.healthCoverDetails.isRebateApplied() !== true ) {
-				$medicare.hide();
-				meerkat.modules.form.clearInitialFieldsAttribute($medicare);
-			} else {
-				$medicare.show();
-			}
-		});
-
 		$tierDropdowns.on('change', function updateRebateTiers(){
 			meerkat.modules.healthTiers.setTiers();
 		});
@@ -180,6 +170,17 @@
 		resetRadio($partnerCurrentCover);
 		$partnerContinuousCoverContainer.find(':checked').prop('checked', false);
 		resetRadio($partnerContinuousCoverContainer);
+	}
+
+	function toggleRebateDialogue() {
+		// apply rebate
+		if ($healthCoverRebate.find('input:checked"]').val() === 'Y') {
+			$rebateDialogue.removeClass('hidden');
+		}
+		// no rebate
+		else {
+			$rebateDialogue.addClass('hidden');
+		}
 	}
 
 	meerkat.modules.register('healthAboutYou', {
