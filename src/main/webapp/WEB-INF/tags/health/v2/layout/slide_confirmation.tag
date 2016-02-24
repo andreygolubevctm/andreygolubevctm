@@ -2,9 +2,6 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
-
 <%-- Load confirmation information (either a full confirmation or a pending one) --%>
 <c:set var="confirmationData"><health_v1:load_confirmation /></c:set>
 
