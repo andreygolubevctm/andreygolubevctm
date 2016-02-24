@@ -1,20 +1,20 @@
 package com.ctm.web.core.dao;
 
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.EmailMaster;
+import org.junit.Before;
+import org.junit.Test;
+
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.naming.NamingException;
-
-import org.junit.*;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
-
-import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.EmailMaster;
 
 public class EmailMasterDaoTest {
 
