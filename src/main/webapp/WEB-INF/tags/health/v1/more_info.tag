@@ -51,7 +51,7 @@
 	{{ var today = new Date(); }}
 	{{ var dropDatePassed = today.getTime() > obj.dropDeadDate.getTime() }}
 
-	<%-- Prepare the call to action bar template --%>
+	<%-- Prepare the call to action bar template. --%>
 	{{ var template = $("#more-info-call-to-action-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var callToActionBarHtml = htmlTemplate(obj); }}
