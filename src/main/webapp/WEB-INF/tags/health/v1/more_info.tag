@@ -9,6 +9,7 @@
 <%-- Setup variables needed for dual pricing --%>
 <jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+
 <c:if test="${healthAlternatePricingActive eq true}">
 	<c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
 </c:if>
@@ -50,7 +51,7 @@
 	{{ var today = new Date(); }}
 	{{ var dropDatePassed = today.getTime() > obj.dropDeadDate.getTime() }}
 
-	<%-- Prepare the call to action bar template --%>
+	<%-- Prepare the call to action bar template. --%>
 	{{ var template = $("#more-info-call-to-action-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var callToActionBarHtml = htmlTemplate(obj); }}
@@ -61,6 +62,12 @@
 			<c:otherwise>visible-xs</c:otherwise>
 		</c:choose>
 	</c:set>
+	<c:set var="moreInfoTopLeftColumnWidth">
+		<c:choose>
+			<c:when test="${healthAlternatePricingActive eq true}">col-md-7</c:when>
+			<c:otherwise>col-md-8</c:otherwise>
+		</c:choose>
+	</c:set>
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
@@ -68,7 +75,7 @@
 			<div class="col-xs-12 col-md-7 hidden-xs quoteRefContainer">
 				<p>Quote reference number <span class="text-secondary">{{= transactionId }}</span></p>
 			</div>
-			<div class="col-md-8 moreInfoTopLeftColumn">
+			<div class="${moreInfoTopLeftColumnWidth} moreInfoTopLeftColumn">
 
 				<div class="row">
 					<div class="col-xs-3">
