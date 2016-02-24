@@ -68,7 +68,7 @@
 			<div class="col-xs-12 col-md-7 hidden-xs quoteRefContainer">
 				<p>Quote reference number <span class="text-secondary">{{= transactionId }}</span></p>
 			</div>
-			<div class="col-md-7 moreInfoTopLeftColumn">
+			<div class="col-md-8 moreInfoTopLeftColumn">
 
 				<div class="row">
 					<div class="col-xs-3">
