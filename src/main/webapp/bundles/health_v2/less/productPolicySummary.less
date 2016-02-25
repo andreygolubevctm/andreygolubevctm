@@ -1,16 +1,29 @@
+.cents,
+.dollarSign,
+.frequencyTitle {
+	vertical-align: baseline;
+	position: relative;
+	top: -0.4em;
+	font-size: 0.6em;
+	font-family: @font-family-theme-regular;
+}
+.dollarSign {
+	font-family: @font-family-theme-bold;
+}
+
 .featuresMode,
 .policySummaryContainer {
   .productSummary {
     &.horizontal {
       .companyLogo {
         max-width: 90px;
-        max-height: @standard-logo-height;
         line-height: 18px;
-        float: left;
         @media (@sm) {
+          float: right;
+        }
+        @media (@md) {
           float: left;
         }
-
         @media (@xs-only) {
           height: 45px;
           position: absolute;
@@ -29,54 +42,35 @@
       }
     }
 
-    /*.price {
-      margin-top: 5px;
+    .price {
+      .health[data-step="results"] & {
+        margin-top: 5px;
+      }
       @media (@md) {
-        max-width: 129px;
+        max-width: 230px;
       }
       @media (@lg) {
-        max-width: 170px;
+        max-width: 280px;
       }
-    }*/
+    }
 
     .frequency {
       .frequencyAmount {
         font-family: @font-family-theme-bold;
-        //color: @price-color;
-        font-size: 16px;
-        line-height: 14px;
-        @media (@sm) {
-          font-size: 16px;
-        }
+        text-align: center;
+        font-size: 20px;
         @media (@md) {
-          font-size: 14px;
+          font-size: 30px;
         }
         @media (@lg) {
           font-size: 40px;
-          line-height: 40px;
-          .dollar {
-            font-size: 24px;
-          }
         }
-        text-align: center;
-        .dollar {
-          vertical-align: text-top;
+        .frequencyTitle {
+          font-size: 16px;
         }
-      }
-      .frequencyTitle {
-        color: @frequency-color;
-        font-size: 10px;
-        font-family: @font-family-sans-serif;
-        font-weight: normal;
-        font-family: @font-family-theme-bold;
-        margin-left: -2px;
-        letter-spacing: -0.06em;
       }
       .lhcText,
       .rounding {
-        color: @gray-light;
-        font-size: 14px;
-        line-height: 0.95;
         text-align: center;
         display: block;
       }
@@ -85,34 +79,6 @@
     &.horizontal {
       overflow: hidden;
 
-      .companyLogo {
-
-        @media (@xs-only) {
-          position: absolute;
-          overflow: hidden;
-          text-align: left;
-          .price {
-            @media (@xs-only) {
-              margin-left: 65px;
-            }
-            @media (@sm) {
-              float: right;
-            }
-
-          }
-
-          .frequency {
-            .frequencyAmount,
-            .lhcText,
-            .rounding {
-              text-align: right;
-            }
-          }
-        }
-        @media (@sm) {
-          float: left;
-        }
-      }
       .price {
         @media (@xs-only) {
           margin-left: 65px;
@@ -120,7 +86,6 @@
         @media (@sm) {
           float: right;
         }
-
       }
       .frequency {
         .frequencyAmount,
@@ -154,7 +119,7 @@
       .rounding {
         display: none;
       }
-      height: 181px;
+      height: 150px;
       overflow: hidden;
     }
     .companyLogo {
@@ -162,6 +127,8 @@
       float: none;
 
       .ie8 & {
+        max-width: 90px;
+        height: 45px;
         margin-left: 30px !important; //This is ugly... but so is IE8! There is a -10px margin-left in core logos which this needs to combat
       }
     }
@@ -268,15 +235,6 @@
   }
 }
 
-.moreInfoMainDetails {
-  .productSummary {
-    margin-bottom: 10px;
-    @media (@sm) {
-      margin-bottom: 20px;
-    }
-  }
-}
-
 .companyLogo {
   max-height: @standard-logo-height;
   max-width: 90px;
@@ -294,11 +252,6 @@ body[data-step='results'] .product-details-container .companyLogo {
 }
 
 .modal-body {
-  .btn-more-info-apply,
-  .moreInfoCallRefNo,
-  .product-details-container .companyLogo {
-    display: none;
-  }
 
   @media (@xs-only) {
     .productNameContainer {
@@ -309,15 +262,5 @@ body[data-step='results'] .product-details-container .companyLogo {
       height: 80px;
     }
 
-    body[data-step='results'] & {
-      .btn-more-info-apply,
-      .moreInfoCallRefNo {
-        display: block;
-      }
-    }
   }
-}
-
-.featuresMode {
-  //override shit
 }

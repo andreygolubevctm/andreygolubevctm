@@ -538,15 +538,6 @@
 				width: 100%;
 			}
 		}
-
-		.compared  {
-			.section {
-				&.expanded > .content,
-				&.expanding > .content{
-					background-color: @compare-section-bg-color;
-				}
-			}
-		}
 	}
 }
 .resultsFeaturesCategories(@bgColor, @bgColorOdd, @childRowBgColor, @extraSpecificity: ~''){
@@ -585,11 +576,6 @@
 			font-size: 16px;
 		}
 
-		.compared  {
-			.category{
-				.compareBackgroundColor;
-			}
-		}
 	}
 }
 .resultsFeaturesRows(@bgColor, @bgColorOdd, @extraSpecificity: ~''){
@@ -622,11 +608,6 @@
 			.labelInColumn > .content{
 				font-weight: normal;
 				font-family: @font-family-theme-bold;
-			}
-		}
-		.compared  {
-			.category{
-				.compareBackgroundColor;
 			}
 		}
 	}

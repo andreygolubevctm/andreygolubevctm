@@ -38,7 +38,9 @@
 								</div>
 							{{ } else { }}
 								<span class="frequencyAmount">
-									{{= (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
+									{{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
+									{{ premiumSplit = premiumSplit.split(".") }}
+									<span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
 								</span>
 								{{= freq === 'annually' ? 'per year' : '' }}
 								{{= freq.toLowerCase() === 'halfyearly' ? 'per half year' : '' }}
@@ -50,7 +52,9 @@
 							{{ } }}
 						{{ } else { }}
 							<div class="frequencyAmount">
-								{{= typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext  : priceText }}
+								{{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
+								{{ premiumSplit = premiumSplit.split(".") }}
+								<span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
 								<span class="frequencyTitle">
 									{{= freq === 'annually' ? 'PER YEAR' : '' }}
 									{{= freq.toLowerCase() === 'halfyearly' ? 'PER HALF YEAR' : '' }}

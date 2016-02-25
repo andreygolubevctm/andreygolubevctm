@@ -116,6 +116,10 @@
   .expanding > .content .expander {
     .icon-arrow-down;
   }
+
+  &.v2 .resultsOverflow .section > .children .category > .content {
+    border-top: 1px solid #e0e0e0;
+  }
 }
 
 .resultsFeaturesSections(@section-color, @section-odd-color);
@@ -135,17 +139,17 @@
 }
 
 // xs specific category styling
-@media (@xs-only) {
+/*@media (@xs-only) {
 
   .featuresMode .hospitalCover .category {
-    .xsSection(@hospital-color, @category-hospital-color, #FFF, @hospital-expanded-color);
+    //.xsSection(@hospital-color, @category-hospital-color, #FFF, @hospital-expanded-color);
   }
 
   .featuresMode .extrasCover .category {
-    .xsSection(@extras-color, @category-extras-color, #FFF, @extras-expanded-color);
+    //.xsSection(@extras-color, @category-extras-color, #FFF, @extras-expanded-color);
   }
 
-}
+}*/
 
 // rows mixin called
 .resultsFeaturesRows(@feature-color, @feature-odd-color);
@@ -276,7 +280,7 @@
   .promosFeature {
     > .content,
     &:nth-child(odd) > .content {
-      background-color: @section-color;
+      background-color: @section-color !important;
     }
   }
   @media (@xs-only) {
@@ -340,7 +344,7 @@
   }
 
   .selectionHolder .content {
-    padding-top: 25px;
+    padding-top: 10px;
   }
   // hospital sections
   .hospitalCover, .extrasCover, .ambulanceSection {
