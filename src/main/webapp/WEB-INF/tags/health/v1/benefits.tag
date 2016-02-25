@@ -28,7 +28,7 @@
 						<div class="col-sm-12">
 							<h4>Accident-only Cover</h4>
 							<c:set var="fieldXpath" value="health/situation/accidentOnlyCover" />
-							<field_v2:checkbox xpath="${fieldXpath}" id="accidentCover" required="false" title="Accident-only Cover" value="Y" label="true" /><simples:dialogue id="44" vertical="health" mandatory="true" /><c:if test="${not callCentre}"><span>Accident only products will only cover you in hospital for treatment as the result of an accident sustained after joining.</span></c:if>
+							<field_v2:checkbox xpath="${fieldXpath}" id="accidentCover" required="false" title="Accident-only Cover" value="Y" label="true" /><simples:dialogue id="44" vertical="health" mandatory="true" />
 						</div>
 					</div>
 				</c:if>
