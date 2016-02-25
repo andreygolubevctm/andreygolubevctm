@@ -56,7 +56,7 @@
 
 	function updateVirtualPage(step, delay) {
 		delay = delay || 1000;
-		if(step.navigationId !== activeNavigationId) {
+		if(_.isObject(step) && step.hasOwnProperty('navigationId') && step.navigationId !== activeNavigationId) {
 			activeNavigationId = step.navigationId;
 			if (window.sessionCamRecorder) {
 				if (window.sessionCamRecorder.createVirtualPageLoad) {
