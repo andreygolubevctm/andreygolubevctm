@@ -175,6 +175,7 @@
 				meerkat.modules.dialogs.show({
 					htmlContent: 'Please complete the mandatory dialogue prompts before applying.'
 				});
+				callback(false);
 			}
 		}
 
