@@ -379,6 +379,7 @@
 				meerkat.modules.healthAltPricing.initHealthAltPricing();
 				meerkat.modules.healthMoreInfo.initMoreInfo();
 				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
+				meerkat.modules.healthDualPricing.initHealthDualPricing();
 
 			},
 			onBeforeEnter:function enterResultsStep(event){
@@ -478,6 +479,7 @@
 
 				if(event.isForward === true){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+
 					// Show warning if applicable
 					if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
 						$("#health_application-warning").find(".fundWarning").show().html(selectedProduct.warningAlert);
