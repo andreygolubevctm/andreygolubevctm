@@ -138,6 +138,16 @@
 		overflow: hidden;
 	}
 
+	.simples-dialogue {
+		.checkbox {
+			color: inherit;
+
+			input + label {
+				font-size: inherit;
+				padding-top:6px;
+			}
+		}
+	}
 	.categoriesCell{
 		display: block;
 		position: relative;
@@ -204,6 +214,10 @@
 
 		}
 
+		.accident-only-container {
+			padding:10px;
+		}
+		
 		background-color: #fff;
 
 	}
@@ -276,12 +290,28 @@
 	.btn-save {
 		&:extend(.btn-clear all);
 	}
+
+	.accident-only-container {
+		.simples-dialogue {
+			display: inline-block;
+		}
+		span {
+			line-height: 2em;
+			vertical-align: top;
+		}
+	}
 }
 
 @media (@xs-only) {
 	form.benefits-component {
 		padding: 0;
 		margin: 0;
+	}
+	.accident-only-container {
+		span {
+			line-height: inherit;
+			display: block;
+		}
 	}
 }
 

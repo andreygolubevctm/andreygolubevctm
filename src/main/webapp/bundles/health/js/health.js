@@ -317,7 +317,23 @@
 
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
+
+					var accidentOnly = $('input[name="health_situation_accidentOnlyCover"]');
+					$(".simples-dialogue-44").hide();
+					if($(accidentOnly).is(':checked')) {
+						$(".simples-dialogue-44").show();
+					}
+
+					accidentOnly.on('change', function() {
+						if($(this).is(':checked')) {
+							$(".simples-dialogue-44").show();
+						} else {
+							$(".simples-dialogue-44").hide();		
+						}
+					});
+
 				}
+
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefits.getSelectedBenefits();
