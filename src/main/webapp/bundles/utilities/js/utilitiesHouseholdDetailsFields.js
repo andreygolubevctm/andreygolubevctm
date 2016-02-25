@@ -294,13 +294,11 @@
                 $additionalEstimatesElectricity.hide();
                 $electricityCalculations.hide();
             } else if (movingIn === 'N') {
+                $electricityInputs.show();
+                $electricityUsage.hide();
+                $additionalEstimatesElectricity.show();
+                _toggleElectricityMeter();
 
-                if(recentElectricityBill === 'Y') {
-                    $electricityInputs.show();
-                    $electricityUsage.hide();
-                    $additionalEstimatesElectricity.show();
-                    _toggleElectricityMeter();
-                    }
             } else {
                 $electricityInputs.hide();
             }
@@ -323,13 +321,16 @@
                 $gasUsage.show();
                 $additionalEstimatesGas.hide();
             } else if (movingIn === 'N') {
-                $('.recent-gas-bill').show();
-
-                if(recentGasBill === 'Y') {
+                //$('.recent-gas-bill').show();
+                $gasInputs.show();
+                $gasUsage.hide();
+                $additionalEstimatesGas.show();
+                /*if(recentGasBill === 'Y') {
                     $gasInputs.show();
                     $gasUsage.hide();
                     $additionalEstimatesGas.show();
                 }
+                */
             } else {
                 $gasInputs.hide();
             }

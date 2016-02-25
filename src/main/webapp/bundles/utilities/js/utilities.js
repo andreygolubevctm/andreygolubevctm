@@ -122,6 +122,9 @@
                 meerkat.modules.jqueryValidate.initJourneyValidator();
                 meerkat.modules.utilitiesSnapshot.initYourDetailsSnapshot();
             },
+            onAfterLeave: function(event) {
+                meerkat.modules.utilitiesParameters.displayHiddenFields();
+            },
             validation: {
                 validate: true,
                 customValidation: function (callback) {
