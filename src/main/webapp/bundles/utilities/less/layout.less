@@ -24,6 +24,10 @@ fieldset {
       margin-left: 10px;
     }
   }
+  h4 {
+    color: @section-text-color;
+    font-family: @font-family-base;
+  }
 }
 .form-horizontal .electricity-usage > .control-label,
 .form-horizontal .gas-usage > .control-label,
@@ -113,5 +117,13 @@ fieldset {
         }
       }
     }
+  }
+}
+@media(@xs-sm-only) {
+  #utilities_estimateDetails_usage_electricity_currentSupplier.init,
+  #utilities_estimateDetails_usage_gas_currentSupplier.init {
+      font-size: 12px;
+      padding-left: 5px;
+      letter-spacing: -0.04em;
   }
 }

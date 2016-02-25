@@ -271,14 +271,12 @@
 </core_v1:js_template>
 <%-- BLOCKED QUOTES --%>
 <div class="hidden">
-	<c:set var="heading"><content:get key="blockedIPHeading" /></c:set>
-	<c:set var="copy"><content:get key="blockedIPCopy" /></c:set>
-	<confirmation:other_products heading="${heading}" copy="${copy}" id="blocked-ip-address" />
+	<agg_v2:no_quotes id="blocked-ip-address"/>
 </div>
 
 <%-- NO RESULTS --%>
 <div class="hidden">
-	<agg_v2_results:results_none />
+	<agg_v2:no_quotes id="no-results-content"/>
 </div>
 
 <%-- FETCH ERROR --%>

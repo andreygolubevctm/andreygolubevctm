@@ -4,7 +4,8 @@
   "description": "Meerkat Asset Pipeline",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gulp": "gulp"
   },
   "author": "Christopher Dingli",
   "license": "ISC",
@@ -43,5 +44,8 @@
     "graceful-fs-extra": "^1.0.6",
     "run-sequence": "^1.1.4",
     "xml2js": "^0.4.12"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1"
   }
 }

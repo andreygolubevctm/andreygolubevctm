@@ -4,8 +4,7 @@
 
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="Fieldset XPath" %>
 
-<form_v2:fieldset legend="Preferences" className="preferences">
-    <p>Show results that match to your chosen preferences only. Choose your "must-haves" from the list below.</p>
+<form_v2:fieldset legend="Preferences" className="preferences" postLegend="Show results that match to your chosen preferences only. Choose your 'must-haves' below.">
     <div class="has-icons">
         <form_v3:row label="" className="account-fees-container">
             <field_v2:checkbox xpath="${xpath}/preferNoContract"  value="Y" title="<span class='title'>No fixed term / no exit fees</span><br />No lock-in contracts or termination fees" required="false" label="true"  />

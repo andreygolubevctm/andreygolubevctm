@@ -264,6 +264,7 @@ var ResultsModel = {
 				Object.byString( jsonResult, Results.settings.paths.results.list ) &&
 				( Object.byString( jsonResult, Results.settings.paths.results.list ).length > 0 || typeof( Object.byString( jsonResult, Results.settings.paths.results.list ) ) == "object" )
 			) {
+				var isEmptyArray = false;
 
 				if( Object.byString( jsonResult, Results.settings.paths.results.general ) &&
 					Object.byString( jsonResult, Results.settings.paths.results.general ) !== ""
@@ -275,6 +276,8 @@ var ResultsModel = {
 				if( !Object.byString( jsonResult, Results.settings.paths.results.list ).length ) {
 					// This is stupid... if there are no results it pushes 'no results' into an empty array. It actually puts an empty array inside an array.
 					Results.model.returnedProducts = [Object.byString( jsonResult, Results.settings.paths.results.list )];
+					//is because of this that a flag gets place here so that we can explicidly not display results otherwise we get exception message.
+					isEmptyArray = true;
 				} else {
 					Results.model.returnedProducts = Object.byString( jsonResult, Results.settings.paths.results.list );
 				}
@@ -383,9 +386,16 @@ var ResultsModel = {
 					Results.model.sortedProducts = []; // reset the sortedProducts array
 				}
 
-				Results.model.filterAndSort(false);
+				if(!isEmptyArray) {
 
-				Results.view.show();
+					Results.model.filterAndSort(false);
+
+					Results.view.show();
+				}
+				else {
+					Results.view.showNoResults();
+					$(Results.settings.elements.resultsContainer).trigger("noResults");
+				}
 
 			} else {
 				Results.view.showNoResults();
