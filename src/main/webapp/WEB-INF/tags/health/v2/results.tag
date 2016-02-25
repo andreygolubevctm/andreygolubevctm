@@ -92,7 +92,7 @@
 	<%-- RESULTS TABLE --%>
 	<div class="moreInfoDropdown"></div>
 
-	<div class="affixOnScroll resultsContainer featuresMode v2 results-columns-xs-1 results-columns-sm-2 results-columns-md-3 results-columns-lg-3">
+	<div class="affixOnScroll resultsContainer featuresMode v2 results-columns-xs-1 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
 
 		<div class="featuresHeaders featuresElements">
 			<div class="result headers">

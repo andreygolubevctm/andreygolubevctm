@@ -60,10 +60,7 @@
       .frequencyAmount {
         font-family: @font-family-theme-bold;
         text-align: center;
-        font-size: 20px;
-        @media (@sm-only) {
-          font-size: 28px;
-        }
+        font-size: 28px;
         @media (@md) {
           font-size: 32px;
           .frequencyTitle {
@@ -77,8 +74,10 @@
             top: -14px;
           }
         }
-        .frequencyTitle {
-          font-family: @font-family-theme-bold;
+        @media (@sm) {
+          .frequencyTitle {
+            font-family: @font-family-theme-bold;
+          }
         }
       }
       .lhcText,
@@ -131,6 +130,9 @@
         display: none;
       }
       height: 150px;
+      @media (@xs-only) {
+        height: 130px;
+      }
       overflow: hidden;
     }
     .companyLogo {
@@ -167,10 +169,8 @@
       }
 
       .price {
-        margin-top: 10px;
-        margin-left: 15%;
-        width: 75%;
-        float: right;
+        margin-left: 28%;
+        width: 72%;
         span {
           display: inline-block;
         }
