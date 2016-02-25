@@ -54,7 +54,6 @@
 		<%-- Check if we have known session data --%>
 		<c:set var="dataNodes" value="unknown" />
 
-
 		<%-- IF WE HAVE A QUOTE TYPE - LOAD IN THE VERTICAL --%>
 		<c:set var="method" value="ERROR: NO VERTICAL" />
 
@@ -118,7 +117,7 @@
 							values (
 							0,?,?,?,?,?,CURRENT_DATE,CURRENT_TIME,?,?,0,?,?
 							);
-							<sql:param value="${getTransaction.rows[0].rootId}" />
+							<sql:param value="${rootId}" />
 							<sql:param value="${requestedTransaction}" />
 							<sql:param value="${getTransaction.rows[0].ProductType}" />
 							<c:choose>
@@ -177,7 +176,8 @@
 							</sql:update>
 
 							<%-- Finally we'll replace the requestedTransaction var with the new ID --%>
-							${sessionDataUtils.setTransactionId(data, tranId )}
+							${sessionDataUtils.setTransactionId(data, tranId)}
+							${sessionDataUtils.setRootId(data, rootId)}
 						</c:otherwise>
 					</c:choose>
 				</c:catch>
@@ -201,26 +201,26 @@
 						${sessionDataUtils.setTransactionId(data, tranId )}
 					</c:otherwise>
 				</c:choose>
-			<%-- ERROR CHECK --%>
-			<c:choose>
-				<c:when test="${not empty error}">
-					${logger.error('Exception when getting transaction id. {}', log:kv('requestedTransaction',requestedTransaction ), error)}
-					<c:set var="method" value="ERROR: INCREMENT" />
+				<%-- ERROR CHECK --%>
+				<c:choose>
+					<c:when test="${not empty error}">
+						${logger.error('Exception when getting transaction id. {}', log:kv('requestedTransaction',requestedTransaction ), error)}
+						<c:set var="method" value="ERROR: INCREMENT" />
 
-					<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-						<c:param name="transactionId" value="${transactionId}" />
-						<c:param name="page" value="${pageContext.request.servletPath}" />
-						<c:param name="message" value="core:get_transaction_id INCREMENT" />
-						<c:param name="description" value="${error}" />
-						<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType}" />
-					</c:import>
+						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+							<c:param name="transactionId" value="${transactionId}" />
+							<c:param name="page" value="${pageContext.request.servletPath}" />
+							<c:param name="message" value="core:get_transaction_id INCREMENT" />
+							<c:param name="description" value="${error}" />
+							<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType}" />
+						</c:import>
 
-					<go:setData dataVar="data" value="" xpath="current/transactionId" />
-				</c:when>
-				<c:otherwise>
-					<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
-				</c:otherwise>
-			</c:choose>
+						<go:setData dataVar="data" value="" xpath="current/transactionId" />
+					</c:when>
+					<c:otherwise>
+						${sessionDataUtils.setTransactionId(data, tranId)}
+					</c:otherwise>
+				</c:choose>
 			</c:when>
 			<c:otherwise>
 				${logger.info('TRANSACTION ID NOT FOUND EITHER THE TRANSACTION DOES NOT EXIST, OR NOT LINKED WITH THIS BRAND. {},{}', log:kv('requestedTransaction',requestedTransaction ), log:kv('styleCodeId',styleCodeId ))}
@@ -232,7 +232,7 @@
 	<c:otherwise>
 		<%-- Remove any previous save content for the new quote --%>
 
-		<c:set var="previousRootId" value="${data.current.rootId}" />
+		<c:set var="previousRootId" value="${sessionDataUtils.getRootId(data)}" />
 
 		<go:setData dataVar="data" xpath="save" value="*DELETE" />
 
@@ -290,8 +290,8 @@
 						<sql:param value="${tranId}" />
 						<sql:param value="${tranId}" />
 					</sql:update>
-					${sessionDataUtils.setTransactionId(data, tranId )}
-					<go:setData dataVar="data" value="${tranId}" xpath="current/rootId" />
+					${sessionDataUtils.setTransactionId(data, tranId)}
+					${sessionDataUtils.setRootId(data, tranId)}
 				</c:otherwise>
 			</c:choose>
 		</c:catch>
@@ -318,6 +318,6 @@
 		</c:choose>
 	</c:otherwise>
 </c:choose>
-${logger.debug("Get transaction id complete. {},{}", log:kv('rootId', data.current.rootId), log:kv('method',method ))}
-<c:set var="transactionIdResponse">{"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}</c:set>
-${sessionDataService.updateTokenWithNewTransactionIdResponse(pageContext.request, transactionIdResponse, data.current.transactionId)}
+${logger.debug("Get transaction id complete. {},{}", log:kv('rootId',sessionDataUtils.getRootId(data)), log:kv('method',method ))}
+<c:set var="transactionIdResponse">{"transactionId":"${sessionDataUtils.getTransactionId(data)}","rootId":"${sessionDataUtils.getRootId(data)}","Method":"${method}"}</c:set>
+${sessionDataService.updateTokenWithNewTransactionIdResponse(pageContext.request, transactionIdResponse, sessionDataUtils.getTransactionId(data))}
