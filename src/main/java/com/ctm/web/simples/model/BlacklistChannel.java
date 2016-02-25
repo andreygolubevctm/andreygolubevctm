@@ -3,7 +3,8 @@ package com.ctm.web.simples.model;
 public enum BlacklistChannel {
 	PHONE("phone", "toggle_doNotCall"),
 	SMS("sms", "toggle_doNotSms"),
-	DIRECTMAIL("directMail", "toggle_doNotDirectMail");
+	DIRECTMAIL("directMail", "toggle_doNotDirectMail"),
+	EMAIL("email", "toggle_marketing");
 
 	private final String code, action;
 

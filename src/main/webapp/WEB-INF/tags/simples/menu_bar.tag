@@ -73,6 +73,7 @@
 						<c:if test="${isRoleSupervisor && not isInInEnabled}">
 							<li data-provide="simples-blacklist-action"><a href="javascript:void(0);" data-action="delete">Remove</a></li>
 						</c:if>
+						<li data-provide="simples-blacklist-action"><a href="javascript:void(0);" data-action="unsubscribe">Unsubscribe email</a></li>
 					</ul>
 				</li>
 

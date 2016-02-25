@@ -210,9 +210,9 @@ Process:
 			jsonData.environmentOverride = $("#developmentApplicationEnvironment").val();
 		}
 
-		var registerUrl = "ajax/json/ipp/ipp_log.jsp?ts=" + (new Date().getTime());
+		var registerUrl = '/' + meerkat.site.urls.context + "ajax/json/ipp/ipp_log.jsp?ts=" + (new Date().getTime());
 		if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
-			registerUrl = "rest/health/payment/register.json";
+			registerUrl = '/' + meerkat.site.urls.context + "rest/health/payment/register.json";
 		}
 
 		meerkat.modules.comms.post({
