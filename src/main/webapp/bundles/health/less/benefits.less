@@ -138,6 +138,16 @@
 		overflow: hidden;
 	}
 
+	.simples-dialogue {
+		.checkbox {
+			color: inherit;
+
+			input + label {
+				font-size: inherit;
+				padding-top:6px;
+			}
+		}
+	}
 	.categoriesCell{
 		display: block;
 		position: relative;
@@ -202,6 +212,10 @@
 				min-height: 55px;
 			}
 
+		}
+
+		.accident-only-container {
+			padding:10px;
 		}
 
 		background-color: #fff;
@@ -275,6 +289,12 @@
 
 	.btn-save {
 		&:extend(.btn-clear all);
+	}
+
+	.accident-only-container {
+		.simples-dialogue {
+			display: inline-block;
+		}
 	}
 }
 

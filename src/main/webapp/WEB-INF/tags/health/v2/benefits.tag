@@ -41,7 +41,7 @@
 										<div class="categoriesCell short-list-item category expandable collapsed">
 											<c:set var="fieldXpath" value="${xpath}/accidentOnlyCover" />
 											<field_v2:checkbox xpath="${fieldXpath}" required="false" title="Accident-only Cover" value="Y" label="true" />
-											<br>
+											<simples:dialogue id="44" vertical="health" mandatory="true" />
 										</div>
 									</div>
 								</div>
