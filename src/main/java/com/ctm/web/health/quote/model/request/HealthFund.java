@@ -15,7 +15,8 @@ public enum HealthFund {
     CTM(14),
     BUP(15),
     QCH(16),
-    BUD(54);
+    BUD(54),
+    NHB(17);
 
     private final int id;
 

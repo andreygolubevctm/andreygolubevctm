@@ -12,50 +12,47 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-/**
- * Created by voba on 13/08/2015.
- */
 public class EmailTokenDao {
 
     public void addEmailToken(Long transactionId, Long emailId, String emailTokenType, String action) throws DaoException {
-        int expiryDays[] = new int[]{-1};
+            int expiryDays[] = new int[]{-1};
 
-        SqlDao<Integer> sqlDao = new SqlDao<>();
-        expiryDays[0] = sqlDao.get(new DatabaseQueryMapping<Integer>() {
-            @Override
-            protected void mapParams() throws SQLException {
-                set(emailTokenType);
-                set(action);
-            }
+            SqlDao<Integer> sqlDao = new SqlDao<>();
+            expiryDays[0] = sqlDao.get(new DatabaseQueryMapping<Integer>() {
+                @Override
+                protected void mapParams() throws SQLException {
+                    set(emailTokenType);
+                    set(action);
+                }
 
-            @Override
-            public Integer handleResult(ResultSet rs) throws SQLException {
-                return rs.getInt("expiryDays");
-            }
-        }, "SELECT expiryDays FROM aggregator.email_token_type WHERE `emailTokenType` = ? AND `action` = ?");
+                @Override
+                public Integer handleResult(ResultSet rs) throws SQLException {
+                    return rs.getInt("expiryDays");
+                }
+            }, "SELECT expiryDays FROM aggregator.email_token_type WHERE `emailTokenType` = ? AND `action` = ?");
 
-        sqlDao.insert(new DatabaseQueryMapping<Integer>() {
-            @Override
-            protected void mapParams() throws SQLException {
-                set(transactionId);
-                set(emailId);
-                set(emailTokenType);
-                set(action);
-                set(0);
-                set(new Date(System.currentTimeMillis()));
+            sqlDao.insert(new DatabaseQueryMapping<Integer>() {
+                @Override
+                protected void mapParams() throws SQLException {
+                    set(transactionId);
+                    set(emailId);
+                    set(emailTokenType);
+                    set(action);
+                    set(0);
+                    set(new Date(System.currentTimeMillis()));
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(new java.util.Date());
-                calendar.add(Calendar.DAY_OF_MONTH, expiryDays[0]);
-                set(new Date(calendar.getTimeInMillis()));
-            }
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(new java.util.Date());
+                    calendar.add(Calendar.DAY_OF_MONTH, expiryDays[0]);
+                    set(new Date(calendar.getTimeInMillis()));
+                }
 
-            @Override
-            public Integer handleResult(ResultSet rs) throws SQLException {
-                return null;
-            }
-        }, "INSERT INTO aggregator.email_token(`transactionId`, `emailId`, `emailTokenType`, `action`, `totalAttempts`, `effectiveStart`, `effectiveEnd`)" +
-                " VALUES (?,?,?,?,?,?,?)");
+                @Override
+                public Integer handleResult(ResultSet rs) throws SQLException {
+                    return null;
+                }
+            }, "INSERT IGNORE INTO aggregator.email_token(`transactionId`, `emailId`, `emailTokenType`, `action`, `totalAttempts`, `effectiveStart`, `effectiveEnd`)" +
+                    " VALUES (?,?,?,?,?,?,?)");
     }
 
     public EmailMaster getEmailDetails(Long transactionId, Long emailId, String emailTokenType, String action) throws DaoException {
@@ -147,4 +144,5 @@ public class EmailTokenDao {
                 "JOIN aggregator.email_master em ON et.emailId=em.emailId \n" +
                 "WHERE et.transactionId = ? AND et.emailId = ? AND et.emailTokenType = ? AND et.action = ? AND em.emailPword <> ''");
     }
+
 }

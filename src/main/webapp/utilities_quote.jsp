@@ -16,10 +16,9 @@
 <%-- Set global variable to flags for active split tests --%>
 <utilities_v3:splittest_helper />
 
-<%-- Not sure why the below doesn't work within the splittest_helper --%>
-<c:set var="splitTestEnabled">
-    <content:get key="utilitiesRedesign" />
-</c:set>
+<c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
+<c:set var="privacyOptinText" scope="session">I understand ${brandedName} compares energy plans based on a standard tariff from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide. I confirm that I have read the
+    <form_v1:link_privacy_statement/>.</c:set>
 
 <c:set var="body_class_name">
     <c:if test="${not empty splitTestEnabled and splitTestEnabled eq 'Y'}">utilities_design_55</c:if>

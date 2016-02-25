@@ -23,15 +23,14 @@
 					</c:forEach>
 				</div>
 
-				<c:if test="${not empty callCentre or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 12)}">
-					<div class="row accident-only-container">
-						<div class="col-sm-12">
-							<h4>Accident-only Cover</h4>
-							<c:set var="fieldXpath" value="health/situation/accidentOnlyCover" />
-							<field_v2:checkbox xpath="${fieldXpath}" id="accidentCover" required="false" title="Accident-only Cover" value="Y" label="true" /><simples:dialogue id="44" vertical="health" mandatory="true" />
-						</div>
-					</div>
-				</c:if>
+                <div class="row accident-only-container">
+                    <div class="col-sm-12">
+                        <h4>Accident-only Cover</h4>
+                        <c:set var="fieldXpath" value="health/situation/accidentOnlyCover" />
+                        <field_v2:checkbox xpath="${fieldXpath}" id="accidentCover" required="false" title="Accident-only Cover" value="Y" label="true" />
+						<simples:dialogue id="44" vertical="health" mandatory="true" />
+                    </div>
+				</div>
 			</div>
 
 			<div class="ambulance col-sm-12">

@@ -380,7 +380,7 @@
 
     <%-- NO RESULTS --%>
     <div class="hidden">
-        <agg_v2_results:results_none/>
+        <agg_v2:no_quotes id="no-results-content"/>
     </div>
 
     <%-- FETCH ERROR --%>

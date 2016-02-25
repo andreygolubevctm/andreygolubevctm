@@ -8,7 +8,7 @@
     <layout_v3:slide_columns>
 
          <jsp:attribute name="rightColumn">
-            <utilities_v3_content:sidebar />
+            <utilities_v3_content:sidebar excludeContent="switchingProvidersTitle,switchingProvidersContent"/>
 		</jsp:attribute>
 
         <jsp:body>
