@@ -16,13 +16,6 @@
 	<c:set var="competitionEnabled" value="${true}" />
 </c:if>
 
-<c:set var="contactInfoIsMandatory">
-	<c:choose>
-		<c:when test="${singleOptinSplitTest eq true}">true</c:when>
-		<c:otherwise>false</c:otherwise>
-	</c:choose>
-</c:set>
-
 <%-- HTML --%>
 <form_v2:fieldset legend="Contact Details" id="${name}FieldSet">
 
@@ -37,7 +30,7 @@
 	</form_v2:row>
 
 	<form_v2:row label="Email Address" id="contactEmailRow">
-		<field_v2:email xpath="${xpath}/email" required="${contactInfoIsMandatory}" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
+		<field_v2:email xpath="${xpath}/email" required="false" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 	</form_v2:row>
 
 	<c:set var="fieldXPath" value="${xpath}/phone" />
@@ -45,7 +38,7 @@
 		<field_v1:flexi_contact_number xpath="${fieldXPath}"
 			maxLength="20"
 			id="bestNumber"
-			required="${contactInfoIsMandatory}"
+			required="false"
 			className="bestNumber"
 			labelName="best number"
 			validationAttribute=" data-rule-validateOkToCall='true' "/>

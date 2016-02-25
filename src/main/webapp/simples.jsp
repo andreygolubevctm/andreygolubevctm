@@ -63,6 +63,7 @@
 						<simples:template_touches />
 						<simples:template_blacklist_add />
 						<simples:template_blacklist_delete />
+						<simples:template_blacklist_unsubscribe />
 			</jsp:body>
 
 		</layout_v1:simples_page>

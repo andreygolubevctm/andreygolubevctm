@@ -8,20 +8,13 @@
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
-<c:set var="contactInfoIsMandatory">
-	<c:choose>
-		<c:when test="${singleOptinSplitTest eq true}">true</c:when>
-		<c:otherwise>false</c:otherwise>
-	</c:choose>
-</c:set>
-
 <form_v2:fieldset legend="Contact Details" id="${name}_FieldSet">
 
 	<%-- Email Address --%>
 	<c:set var="fieldXPath" value="${xpath}/email" />
 	<form_v2:row fieldXpath="${fieldXPath}" label="Email Address">
 		<field_v2:email xpath="${fieldXPath}"
-			required="${contactInfoIsMandatory}"
+			required="false"
 			title="the policy holder's email address"
 			additionalAttributes=" data-rule-validateOkToEmail='true' " />
 	</form_v2:row>
@@ -51,7 +44,7 @@
 	<form_v2:row fieldXpath="${fieldXPath}" label="Best contact number" className="clear" helpId="524">
 		<field_v1:flexi_contact_number xpath="${fieldXPath}"
 										maxLength="20"
-										required="${contactInfoIsMandatory}"
+										required="false"
 										labelName="best number for the insurance provider to contact you to discuss your insurance needs"
 										validationAttribute=" data-rule-validateOkToCall='true' "/>
 	</form_v2:row>

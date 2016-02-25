@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
+import static com.ctm.web.core.leadService.model.LeadStatus.INBOUND_CALL;
 
 public abstract class LeadService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LeadService.class);
@@ -59,10 +60,12 @@ public abstract class LeadService {
     }
 
     /**
-     * Restfully sends the collected lead data to the CtM API endpoint
+     * Restfully sends the collected lead data to the CtM API endpoint.
+     * Normally leads will not be processed when triggered by call centre. The exception is for INBOUND_CALL leads.
+     *    (if customer calls us, we need to knock out any of their leads that might be outbounded)
      */
     public void sendLead(final int verticalId, final Data data, final HttpServletRequest request, final String transactionStatus) {
-        if(!SessionUtils.isCallCentre(request.getSession())) {
+        if (!SessionUtils.isCallCentre(request.getSession()) || INBOUND_CALL.name().equals(transactionStatus)) {
             try {
                 ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfigurationDeprecated("leadService", verticalId);
 
