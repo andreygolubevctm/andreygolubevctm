@@ -15,11 +15,6 @@
 
 			<layout_v1:slide_content>
 
-				<form_v2:fieldset id="${name}_payment_text" legend="" className="instructional">
-					<h4>Almost done!</h4>
-					<p>Just fill in your payment details below using our secure form. These details will be provided to your new health fund.</p>
-				</form_v2:fieldset>
-
 				<health_v1:payment xpath="${pageSettings.getVerticalCode()}/payment" />
 
 				<form_v2:fieldset legend="Declaration" className="${pageSettings.getVerticalCode()}_declaration-group">
