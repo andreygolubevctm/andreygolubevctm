@@ -188,7 +188,7 @@
                         },
                         {
                             key: 'N',
-                            value: ""
+                            value: "<span class='icon-cross hidden-sm hidden-md hidden-lg'></span>"
                         },
                         {
                             key: 'R',
