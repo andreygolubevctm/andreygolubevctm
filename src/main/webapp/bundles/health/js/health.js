@@ -319,16 +319,17 @@
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 
 					var accidentOnly = $('input[name="health_situation_accidentOnlyCover"]');
-					$(".simples-dialogue-44").hide();
+					var dialog44 = $(".simples-dialogue-44");
+					dialog44.hide();
 					if($(accidentOnly).is(':checked')) {
-						$(".simples-dialogue-44").show();
+						dialog44.show();
 					}
 
 					accidentOnly.on('change', function() {
 						if($(this).is(':checked')) {
-							$(".simples-dialogue-44").show();
+							dialog44.show();
 						} else {
-							$(".simples-dialogue-44").hide();		
+							dialog44.hide();		
 						}
 					});
 
