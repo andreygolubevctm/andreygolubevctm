@@ -48,7 +48,7 @@
 	var resultLabels = ${jsonString};
 </script>
 
-<div class="resultsMarketingMessages affixOnScroll">
+<div class="resultsMarketingMessages affixOnScroll hidden">
 	<div class="resultsLowNumberMessage" >
 		<div class="insert">
 			<h4>These results are based on your selected filters.</h4>
@@ -76,7 +76,7 @@
 
 <agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
 	<c:if test="${not empty callCentreNumber}">
-		<div class="resultsMarketingMessage callCentreNumberSection" >
+		<div class="resultsMarketingMessage callCentreNumberSection hidden" >
 			<div class="insert">
 				<ul>
 					<li>You get personal service from our experienced and friendly staff.</li>
