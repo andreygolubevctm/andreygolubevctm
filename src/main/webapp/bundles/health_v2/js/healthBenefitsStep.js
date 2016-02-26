@@ -57,9 +57,15 @@
         $benefitsForm.find('.hasShortlistableChildren').each(function(){
             var $this = $(this);
 
+            //This is for the split test. The classNames in the database need to remain as is for the default but we need to force an icon
+            $this.find('.category[class*="CTMNoIcon"]').each(function() {
+                var newClass = $(this).attr('class').replace('CTMNoIcon','CTM');
+                $(this).removeClass().addClass(newClass);
+            });
+
             // wrap icons and non-icons items so we can style them differently
-            $this.find('.category[class*="CTM-"]').wrapAll('<div class="hasIcons"></div>');
-            $this.find('.category:not([class*="CTM-"])').wrapAll('<div class="noIcons"></div>');
+            $this.find('.category[class*="CTM"]').wrapAll('<div class="hasIcons"></div>');
+            //$this.find('.category:not([class*="CTM-"])').wrapAll('<div class="noIcons"></div>');
 
             // fix positioning of label and help
             $this.find('.category[class*="CTM-"] label').each(function(){
@@ -117,20 +123,21 @@
                 $benefitsForm.find('.sidebarHospital').fadeOut('fast');
                 $benefitsForm.find('.extrasCover').fadeOut('fast');
                 $benefitsForm.find('.sidebarExtras').fadeIn('fast');
-                $benefitsForm.find('.hospitalCover').removeClass('custom-col-sm').addClass('custom-col-lg').fadeIn('fast', function(){
+                //$benefitsForm.find('.hospitalCover').removeClass('custom-col-sm').addClass('custom-col-lg').fadeIn('fast', function(){
+                $benefitsForm.find('.hospitalCover').fadeIn('fast', function(){
                     movePageTitleToColumn();
                 });
                 break;
             case 'E':
                 $benefitsForm.find('.sidebarExtras').fadeOut('fast');
-                $benefitsForm.find('.hospitalCover').removeClass('custom-col-lg').addClass('custom-col-sm').fadeOut('fast');
+                //$benefitsForm.find('.hospitalCover').removeClass('custom-col-lg').addClass('custom-col-sm').fadeOut('fast');
                 $benefitsForm.find('.sidebarHospital').fadeIn('fast');
                 $benefitsForm.find('.extrasCover').fadeIn('fast', function(){
                     movePageTitleToColumn();
                 });
                 break;
             default:
-                $benefitsForm.find('.hospitalCover').removeClass('custom-col-lg').addClass('custom-col-sm');
+                //$benefitsForm.find('.hospitalCover').removeClass('custom-col-lg').addClass('custom-col-sm');
                 $benefitsForm.find('.benefits-side-bar').fadeOut('fast');
                 $benefitsForm.find('.hasShortlistableChildren').fadeIn('fast', function(){
                     $benefitsForm.find('fieldset > div').first().prepend($benefitsForm.find('.section h2'));
