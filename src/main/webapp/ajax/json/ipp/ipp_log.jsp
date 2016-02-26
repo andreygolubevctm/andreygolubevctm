@@ -2,15 +2,28 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="verticalCode" value="HEALTH" />
 
-<session:get />
+<c:set var="verticalCode" value="HEALTH" />
+<session:get settings="true" verticalCode="${verticalCode}" />
+
+
+<%-- add external testing ip address checking and loading correct config and send quotes --%>
+<c:set var="clientIpAddress" value="${pageContext.request.remoteAddr}" />
+<c:set var="tranId">
+    <c:choose>
+        <c:when test="${not empty data.current.transactionId}">
+            ${data.current.transactionId}
+        </c:when>
+        <c:otherwise>
+            <c:out escapeXml="true" value="${param.transactionId}" />
+        </c:otherwise>
+    </c:choose>
+</c:set>
 
 <jsp:useBean id="now" class="java.util.Date"/>
 
 <%-- Variables --%>
 <fmt:formatDate var="date" value="${now}" pattern="YYYY-MM-dd"/>
-<c:set var="tranId" value="${data.current.transactionId}" />
 <jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 <c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health_application/bup/config_log.xml')}" />
 
