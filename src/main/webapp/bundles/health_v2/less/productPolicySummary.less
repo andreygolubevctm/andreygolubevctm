@@ -61,9 +61,17 @@
         font-family: @font-family-theme-bold;
         text-align: center;
         font-size: 28px;
+        @media (@sm) {
+          .frequencyTitle {
+            display: block;
+            font-family: @font-family-theme-bold;
+            font-size: 14px;
+          }
+        }
         @media (@md) {
           font-size: 32px;
           .frequencyTitle {
+            display: inline;
             top: -9px;
             font-size: 16px;
           }
@@ -72,11 +80,6 @@
           font-size: 40px;
           .frequencyTitle {
             top: -14px;
-          }
-        }
-        @media (@sm) {
-          .frequencyTitle {
-            font-family: @font-family-theme-bold;
           }
         }
       }
@@ -171,6 +174,10 @@
       .price {
         margin-left: 28%;
         width: 72%;
+        @media(@sm-only) {
+          margin-left: 32%;
+          width: 68%;
+        }
         span {
           display: inline-block;
         }
@@ -179,6 +186,9 @@
       // override affixed mode frequency title/text
       .frequencyAmount {
         text-align: left;
+        @media(@sm-only) {
+          font-size: 21px;
+        }
         .frequencyTitle {
           display: block;
           font-size: 14px;

@@ -29,6 +29,30 @@
   }
 }
 
+.noResults {
+  margin-top: 60px;
+  width: 100%;
+
+  height: 500px;
+  position: relative;
+  text-align: center;
+
+  @media (@sm) {
+    width: @container-sm;
+  }
+  @media (@md) {
+    width: @container-md;
+  }
+  @media (@lg) {
+    width: @container-lg;
+  }
+
+  .alert {
+    margin: 0 80px;
+  }
+
+}
+
 //
 // Feature mode styling
 //
@@ -42,7 +66,7 @@
       position: absolute;
       bottom: 13px;
       left: 18%;
-      width: 64%;
+      width: 69%;
     }
   }
 
@@ -95,11 +119,11 @@
   &.v2 .resultsOverflow .section > .children .category > .content {
     border-top: 1px solid #e0e0e0;
   }
-  .featuresHeaders .category > .content{
+  .featuresHeaders .category > .content {
     padding: 6px 10px;
     padding-right: 20px;
   }
-  .result-row .category > .content{
+  .result-row .category > .content {
     font-family: @font-family-theme-bold;
     text-align: center;
     padding: 5px 10px;
@@ -113,7 +137,9 @@
 
 // alternate columns
 @media (@xs-only) {
-  /*.result-row:nth-child(2n+2) .labelInColumn {
+
+  /* hide the second label when 2 cols are displayed on XS.
+  .result-row:nth-child(2n+2) .labelInColumn {
     .contentInner {
       visibility: hidden;
     }
@@ -136,7 +162,6 @@
     //color: @feature-text-color;
   }
 
-
   .promosFeature {
     .labelInColumn,
     .content {
@@ -152,12 +177,11 @@
   &.v2 .children .feature > .content {
     padding-top: 8px;
     padding-bottom: 0px;
-    @media(@xs-only) {
+    @media (@xs-only) {
       padding-bottom: 4px;
       padding-top: 4px;
     }
   }
-
 
   // make these look like a section
   .section,
@@ -183,10 +207,10 @@
           width: ((@sm-results-column-width + @sm-results-column-gutter-width) * 3);
         }
         @media (@md) {
-          width: ((@md-results-column-width + @md-results-column-gutter-width) * 5);
+          width: ((@md-results-column-width + @md-results-column-gutter-width) * 3);
         }
         @media (@lg) {
-          width: ((@lg-results-column-width + @lg-results-column-gutter-width) * 5);
+          width: ((@lg-results-column-width + @lg-results-column-gutter-width) * 3);
         }
 
         text-align: left;
@@ -264,12 +288,23 @@
       left: -1px;
       margin-left: 1px;
     }
-    &.expanded > .content,
-    &.expanding > .content {
-      background-color: @section-color;
-    }
 
   }
+
+  @media (@sm) {
+    .extrasCover .category, .hospitalCover .category {
+      &.expanded > .content,
+      &.expanding > .content {
+        background-color: @hospital-expanded-color;
+        color: @hospital-color;
+      }
+      /*> .content.expandableHover {
+        background-color: @extras-hover-color;
+        color: white;
+      }*/
+    }
+  }
+
   // Override mixin style for excess.
   @media (@sm) {
     .excessSection .feature:nth-child(odd) > .content {

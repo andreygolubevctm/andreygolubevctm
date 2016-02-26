@@ -393,7 +393,7 @@
             } else {
                 toggleResultsLowNumberMessage(false);
                 if (!meerkat.modules.compare.isCompareOpen()) {
-                    if (pageNumber === pageData.measurements.numberOfPages && freeColumns > 2) {
+                    if (pageNumber === pageData.measurements.numberOfPages && freeColumns > 1) {
                         toggleMarketingMessage(true, freeColumns);
                     } else {
                     toggleMarketingMessage(false);
@@ -825,7 +825,7 @@
             } else {
                 var items = Results.getFilteredResults().length;
                 freeColumns = pageMeasurements.columnsPerPage - items;
-                if (freeColumns < 2 || pageMeasurements.numberOfPages !== 1) {
+                if (freeColumns < 1 || pageMeasurements.numberOfPages !== 1) {
                     show = false;
                 }
             }
