@@ -3,17 +3,18 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="showCreditCards" required="true" rtexprvalue="true"	%>
-<form_v3:row_with_empty_column>
-    <div class="payment_assurance_message col-sm-7 col-xs-1 fieldrow">
-		<c:if test="${showCreditCards == true}">
-			<div class="cards col-sm-3">
-				<div class="amex"></div>
-				<div class="visa"></div>
-				<div class="mastercard"></div>
-			</div>
-		</c:if>
-        <div class="col-sm-3 col-xs-1">
-            <content:get key="sslCertificateBadge" />
+
+<div class="form-group row fieldrow ">
+    <div class="payment_assurance_message col-sm-7 col-xs-1">
+        <div class="cards col-sm-6">
+            <c:if test="${showCreditCards == true}">
+                        <div class="amex"></div>
+                        <div class="visa"></div>
+                        <div class="mastercard"></div>
+            </c:if>
         </div>
-	</div>
-</form_v3:row_with_empty_column>
+        <div class="col-sm-4 col-xs-1">
+                <content:get key="sslCertificateBadge" />
+        </div>
+    </div>
+</div>
