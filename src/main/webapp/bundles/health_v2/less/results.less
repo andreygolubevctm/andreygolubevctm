@@ -298,6 +298,9 @@
         background-color: @hospital-expanded-color;
         color: @hospital-color;
       }
+      &.expanded > .content {
+        font-family: @font-family-theme-bold;
+      }
       /*> .content.expandableHover {
         background-color: @extras-hover-color;
         color: white;
@@ -305,10 +308,22 @@
     }
   }
 
-  // Override mixin style for excess.
+  // Override mixin style for excess and promos
   @media (@sm) {
+
+    .result-row {
+       .promosFeature.feature {
+        & > .content,
+        &:nth-child(odd) > .content {
+          text-align: center;
+        }
+      }
+    }
+
     .excessSection .feature:nth-child(odd) > .content {
       background-color: #fff;
     }
   }
+
+
 }
