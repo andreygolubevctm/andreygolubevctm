@@ -22,18 +22,38 @@
 			<div class="scrollable row">
 
 				<div class="benefits-list col-sm-12">
-					<c:set var="fieldXpath" value="${xpath}/coverType" />
-					<form_v2:row label="What type of cover are you looking for?" fieldXpath="${fieldXpath}">
+					<c:set var="fieldXPath" value="${xpath}/coverType" />
+					<%-- <form_v2:row label="What type of cover are you looking for?" fieldXpath="${fieldXpath}">
 						<field_v2:general_select xpath="${fieldXpath}" type="healthCvrType" className="health-situation-healthCvrType" required="true" title="your cover type" />
-					</form_v2:row>
+					</form_v2:row> --%>
+
+						<%-- Taken this from the general_select. I don't like it. Please explain. :D--%>
+                        <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
+                        <sql:query var="result">
+                            SELECT code, description FROM aggregator.general WHERE type = 'healthCvrType' AND (status IS NULL OR status != 0) ORDER BY orderSeq
+                        </sql:query>
+
+                        <c:set var="sep"></c:set>
+                        <c:set var="items">
+							<c:forEach var="row" items="${result.rows}">
+								${sep}${row.code}=${row.description}
+								<c:set var="sep">,</c:set>
+							</c:forEach>
+                        </c:set>
+
+                        <form_v3:row label="What type of cover are you looking for?" fieldXpath="${fieldXPath}">
+                            <field_v2:array_radio xpath="${fieldXPath}"
+                                                  required="true"
+                                                  className="health-situation-healthCvrType roundedCheckboxIcons"
+                                                  items="${items}"
+                                                  id="${go:nameFromXpath(fieldXPath)}"
+                                                  title="your cover type" />
+                        </form_v3:row>
 				</div>
 			</div>
 		</form_v2:fieldset>
 		<%--<form_v2:fieldset legend="" postLegend="" >--%>
-			<div class="scrollable row">
-				<div class="benefits-list col-sm-12">
 
-					<div class="row">
 							<%-- Note: ${resultTemplateItems} is a request scoped variable on health_quote.jsp page - as it is used in multiple places --%>
 						<c:forEach items="${resultTemplateItems}" var="selectedValue">
 							<health_v3:benefitsItem item="${selectedValue}" />
@@ -53,10 +73,7 @@
 								<%--</div>--%>
 							<%--</div>--%>
 									<%--</c:if>--%>
-					</div>
-				</div>
 
-			</div>
 
 		<%--</form_v2:fieldset>--%>
 

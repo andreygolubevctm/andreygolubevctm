@@ -57,15 +57,18 @@
         $benefitsForm.find('.hasShortlistableChildren').each(function(){
             var $this = $(this);
 
-            //This is for the split test. The classNames in the database need to remain as is for the default but we need to force an icon
-            $this.find('.category[class*="CTMNoIcon"]').each(function() {
-                var newClass = $(this).attr('class').replace('CTMNoIcon','CTM');
-                $(this).removeClass().addClass(newClass);
-            });
-
-            // wrap icons and non-icons items so we can style them differently
-            $this.find('.category[class*="CTM"]').wrapAll('<div class="hasIcons"></div>');
-            //$this.find('.category:not([class*="CTM-"])').wrapAll('<div class="noIcons"></div>');
+            if (meerkat.modules.splitTest.isActive(40)) {
+                //This is for the split test. The classNames in the database need to remain as is for the default but we need to force an icon
+                 $this.find('.category[class*="CTMNoIcon"]').each(function() {
+                 var newClass = $(this).attr('class').replace('CTMNoIcon','CTM');
+                    $(this).removeClass().addClass(newClass);
+                 });
+                $this.find('.category[class*="CTM"]').wrapAll('<div class="hasIcons"></div>');
+            } else {
+                // wrap icons and non-icons items so we can style them differently
+                $this.find('.category[class*="CTM-"]').wrapAll('<div class="hasIcons"></div>');
+                $this.find('.category:not([class*="CTM-"])').wrapAll('<div class="noIcons"></div>');
+            }
 
             // fix positioning of label and help
             $this.find('.category[class*="CTM-"] label').each(function(){

@@ -32,41 +32,45 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 	</c:choose>
 	<%--<c:if test="${item.getType() == 'section'}">--%>
 	<form_v2:fieldset legend="" postLegend="" >
-	<%--</c:if>--%>
-		<%--<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">--%>
-		<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">
+		<div class="scrollable row">
+			<div class="benefits-list col-sm-12">
+				<div class="row">
+			<%--</c:if>--%>
+				<%--<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">--%>
+					<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">
 
-			<c:choose>
-				<c:when test="${item.getType() == 'section'}">
-					<div class="title">
-						<h4>${item.getName()}</h4>
-						<p>${colContent}</p>
+						<c:choose>
+							<c:when test="${item.getType() == 'section'}">
+								<div class="title">
+									<h4>${item.getName()}</h4>
+									<p>${colContent}</p>
+								</div>
+							</c:when>
+							<c:otherwise>
+								|<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" />
+							</c:otherwise>
+						</c:choose>
+
+						<c:if test="${item.hasShortlistableChildren()}">
+							<div class="children">
+								<c:forEach items="${item.getChildren()}" var="selectedValue">
+									<%--<health_v3:benefitsItem item="${selectedValue}" />--%>
+									<div class="categoriesCell ${colWidthValue} short-list-item ${selectedValue.getClassString()} ${selectedValue.getShortlistKey()}_container">
+									<!-- This is a duplicate of the row above and needs to be cleaned up in the .less-->
+									<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getName()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" />
+									</div>
+								</c:forEach>
+								<%--<div class="categoriesCell category CTM-plus">--%>
+									<%--<div class="checkbox">--%>
+										<%--<input type="hidden" name="CTM_plus" class="checkbox" />--%>
+										<%--<label>View more benefits</label>--%>
+									<%--</div>--%>
+								<%--</div>--%>
+							</div>
+						</c:if>
 					</div>
-				</c:when>
-				<c:otherwise>
-					<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" />
-				</c:otherwise>
-			</c:choose>
-
-			<c:if test="${item.hasShortlistableChildren()}">
-				<div class="children">
-					<h3 class="subTitle">More ${coverType} Benefits</h3>
-					<c:forEach items="${item.getChildren()}" var="selectedValue">
-						<%--<health_v3:benefitsItem item="${selectedValue}" />--%>
-						<div class="categoriesCell ${colWidthValue} short-list-item ${selectedValue.getClassString()} ${selectedValue.getShortlistKey()}_container">
-						<!-- This is a duplicate of the row above and needs to be cleaned up in the .less-->
-						<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getName()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" />
-						</div>
-					</c:forEach>
-					<%--<div class="categoriesCell category CTM-plus">--%>
-						<%--<div class="checkbox">--%>
-							<%--<input type="hidden" name="CTM_plus" class="checkbox" />--%>
-							<%--<label>View more benefits</label>--%>
-						<%--</div>--%>
-					<%--</div>--%>
 				</div>
-			</c:if>
-
+			</div>
 		</div>
 	</form_v2:fieldset>
 
