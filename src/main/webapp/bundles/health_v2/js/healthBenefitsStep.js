@@ -57,7 +57,7 @@
         $benefitsForm.find('.hasShortlistableChildren').each(function(){
             var $this = $(this);
 
-            if (meerkat.modules.splitTest.isActive(40)) {
+            if (meerkat.modules.splitTest.isActive(13)) {
                 //This is for the split test. The classNames in the database need to remain as is for the default but we need to force an icon
                  $this.find('.category[class*="CTMNoIcon"]').each(function() {
                  var newClass = $(this).attr('class').replace('CTMNoIcon','CTM');
