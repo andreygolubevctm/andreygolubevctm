@@ -18,7 +18,36 @@
     }
 }
 
+@btn-benefit-category-bg-color: #FFF;
+@btn-benefit-category-color: @theme-secondary;
+// active
+@btn-benefit-category-active-bg-color: #1c3e93;
+@btn-benefit-category-active-color: @theme-secondary;
+// hover
+@btn-benefit-category-hover-bg-color: darken(@btn-benefit-category-bg-color, 10%);
+@btn-benefit-category-hover-color: @theme-secondary;
+// borders
+@btn-benefit-category-border-color: @btn-benefit-category-bg-color;
+@btn-benefit-category-active-border-color: @btn-benefit-category-active-bg-color;
+@btn-benefit-category-hover-border-color: @btn-benefit-category-hover-bg-color;
+
 #benefitsForm{
+
+    .benefit-category {
+
+        .btn-styles(
+                @btn-benefit-category-bg-color, @btn-benefit-category-color,
+                @btn-benefit-category-active-bg-color, @btn-benefit-category-active-color,
+                @btn-benefit-category-hover-bg-color, @btn-benefit-category-hover-color,
+                @btn-benefit-category-border-color, @btn-benefit-category-active-border-color, @btn-benefit-category-hover-border-color
+        );
+
+        width: 20%;
+    }
+
+    .hasShortlistableChildren {
+        display: none;
+    }
 
     @media(@xs-only) {
         .Orthotics_container {

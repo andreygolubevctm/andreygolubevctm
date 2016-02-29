@@ -45,9 +45,16 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 									<h4>${item.getName()}</h4>
 									<p>${colContent}</p>
 								</div>
+								<div>
+									<a href="javascript:;" class="btn btn-save benefit-category">top</a>
+									<a href="javascript:;" class="btn btn-save benefit-category">mid</a>
+									<a href="javascript:;" class="btn btn-save benefit-category">basic</a>
+									<a href="javascript:;" class="btn btn-save benefit-category">customise</a>
+									<a href="javascript:;" class="btn btn-save benefit-category">limited</a>
+								</div>
 							</c:when>
 							<c:otherwise>
-								|<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" />
+								<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" />
 							</c:otherwise>
 						</c:choose>
 

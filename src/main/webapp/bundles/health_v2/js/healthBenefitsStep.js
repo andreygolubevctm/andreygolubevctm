@@ -63,7 +63,7 @@
                  var newClass = $(this).attr('class').replace('CTMNoIcon','CTM');
                     $(this).removeClass().addClass(newClass);
                  });
-                $this.find('.category[class*="CTM"]').wrapAll('<div class="hasIcons"></div>');
+                $this.find('.category[class*="short-list-item"]').wrapAll('<div class="hasIcons"></div>');
             } else {
                 // wrap icons and non-icons items so we can style them differently
                 $this.find('.category[class*="CTM-"]').wrapAll('<div class="hasIcons"></div>');

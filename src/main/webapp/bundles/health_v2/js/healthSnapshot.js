@@ -57,6 +57,7 @@
         $('.quoteSnapshot .default').each(function(){
             $(this)[noData ? "show" : "hide"]();
         });
+        console.log(data);
         // Toggle normal content rows
         showHide(data,'.quoteSnapshot .cover-for','coverFor', noData);
         showHide(data,'.quoteSnapshot .living-in','livingIn', noData);
@@ -90,14 +91,16 @@
         var coverFor = $("#health_situation_healthCvr").val();
         var livingIn = $("#health_situation_location").val();
         var lookingTo = $("#health_situation_healthSitu").val();
-        var coverType = $("#health_situation_coverType").val();
+        var coverType = "ASDFASDFASDF";
         var hospital = fetchAllHospitalCheckedValues();
         var extras = fetchAllExtrasCheckedValues();
+
+        console.log("ASFASFASDFASF",  _.isEmpty(coverType) ? false : coverType);
         return {
             coverFor : _.isEmpty(coverFor) ? false : coverFor,
             livingIn : _.isEmpty(livingIn) ? false : livingIn,
             lookingTo : _.isEmpty(lookingTo) ? false : lookingTo,
-            coverType : _.isEmpty(coverType) ? false : coverType,
+            coverType : _.isEmpty(coverType) ? coverType : coverType,
             hospital : _.isEmpty(hospital) ? false : hospital,
             extras : _.isEmpty(extras) ? false : extras
         };
