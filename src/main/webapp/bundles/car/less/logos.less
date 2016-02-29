@@ -1,5 +1,14 @@
 @provider-list: ~"BUDD", ~"AI", ~"EXPO", ~"VIRG", ~"REIN", ~"1FOW", ~"EXDD", ~"WOOL", ~"IECO", ~"OZIC", ~"CBCK", ~"RETI";
 
+.priceMode .compare-basket .carCompanyLogo {
+  background: #fff;
+  display: block;
+  float: left;
+  margin-right: 10px;
+
+  .providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-compare-scale;);
+}
+
 .companyLogo {
 	.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list);
 }

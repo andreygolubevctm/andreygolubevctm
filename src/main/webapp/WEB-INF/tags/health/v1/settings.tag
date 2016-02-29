@@ -62,6 +62,8 @@
 		</c:when>
 	</c:choose>
 </c:set>
+<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
+<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
@@ -78,6 +80,7 @@
 	utm_campaign: '<c:out value="${utm_campaign}" />',
 	isDefaultToHealthQuote: ${defaultToHealthQuote},
     isDefaultToHealthApply: ${defaultToHealthApply},
+	healthAlternatePricingActive: ${healthAlternatePricingActive},
 	liveChat: {
 		config: {
 			lpServer			: "server.lon.liveperson.net",

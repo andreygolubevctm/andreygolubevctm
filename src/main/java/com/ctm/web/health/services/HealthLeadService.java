@@ -53,24 +53,32 @@ public class HealthLeadService extends LeadService {
             leadData.getPerson().setEmail(StringUtils.left(data.getString("health/contactDetails/email"), 128));
         }
 
-        if(!StringUtils.isEmpty(data.getString("health/application/mobile"))) {
+        if(StringUtils.isNotEmpty(data.getString("health/application/mobile"))) {
             String mobile = StringUtils.replaceEach(data.getString("health/application/mobile"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
             leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
-        } else {
+        } else if (StringUtils.isNotEmpty(data.getString("health/contactDetails/flexiContactNumber"))) {
             String mobile = StringUtils.replaceEach(data.getString("health/contactDetails/flexiContactNumber"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
             if(mobile != null && mobile.startsWith("04")) {
                 leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
             }
+        } else if (StringUtils.isNotEmpty(data.getString("health/contactDetails/contactNumber/mobile"))) {
+            // Required because flexi doesn't exist in Simples/V1 journey
+            String mobile = StringUtils.replaceEach(data.getString("health/contactDetails/contactNumber/mobile"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
+            leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
         }
 
-        if(!StringUtils.isEmpty(data.getString("health/application/other"))) {
+        if(StringUtils.isNotEmpty(data.getString("health/application/other"))) {
             String phone = StringUtils.replaceEach(data.getString("health/application/other"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
             leadData.getPerson().setPhone(StringUtils.left(phone, 10));
-        } else {
+        } else if (StringUtils.isNotEmpty(data.getString("health/contactDetails/flexiContactNumber"))) {
             String phone = StringUtils.replaceEach(data.getString("health/contactDetails/flexiContactNumber"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
             if(phone != null && !phone.startsWith("04")) {
                 leadData.getPerson().setPhone(StringUtils.left(phone, 10));
             }
+        } else if (StringUtils.isNotEmpty(data.getString("health/contactDetails/contactNumber/other"))) {
+            // Required because flexi doesn't exist in Simples/V1 journey
+            String mobile = StringUtils.replaceEach(data.getString("health/contactDetails/contactNumber/other"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
+            leadData.getPerson().setPhone(StringUtils.left(mobile, 10));
         }
 
         // Location

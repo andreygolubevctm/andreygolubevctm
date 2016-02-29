@@ -11,7 +11,8 @@
     }
 
     function isRebateApplied() {
-        return $('#health_situation-selection').find('input[name="health_healthCover_rebate"]').val() === 'Y';
+        $el = $('#health_situation-selection').find('input[name="health_healthCover_rebate"]:checked');
+        return !_.isEmpty($el) && $el.val() === 'Y';
     }
 
     //Previous funds, settings
