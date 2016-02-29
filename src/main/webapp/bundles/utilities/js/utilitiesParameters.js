@@ -29,6 +29,12 @@
 
 
     //------------------------------------------------------------------
+    /**
+     * Originally the requirement was to hide the fields if user is coming from the widget
+     * however to show the fields when coming from step 2 to step 1
+     * This requirement has been relaxed as we would always show the fields.
+     * however it may come back at a later stage. for when it does is just a mater of modifying parameters.tag
+     */
 
     function displayHiddenFields() {
         $showLocation.data("show","true");
@@ -39,30 +45,19 @@
 
     }
 
-
-
-
-
-
-
-
-
-
-
    function initParams() {
        var displayLocation = $showLocation.data("show");
        var displayCompareTo = $showCompareTo.data("show");
        var displayMovingIn = $showMovingIn.data("show");
 
-       console.log(" location :"+displayLocation+" compareto:"+displayCompareTo+" movingin:"+displayMovingIn);
-       displayLocation ? $postcodeSuburbField.show() : $postcodeSuburbField.hide();
-       displayCompareTo ? $whatToCompareField.show() : $whatToCompareField.hide();
-       displayMovingIn ? $movingInField.show() : $movingInField.hide();
+       displayLocation ? $postcodeSuburbField.removeClass('hidden') : $postcodeSuburbField.addClass('hidden');
+       displayCompareTo ? $whatToCompareField.removeClass('hidden') : $whatToCompareField.addClass('hidden');
+       displayMovingIn ? $movingInField.removeClass('hidden') : $movingInField.addClass('hidden');
        if(displayLocation && displayCompareTo && displayMovingIn) {
-           $fieldSetHouseHoldDetails.show();
+           $fieldSetHouseHoldDetails.removeClass('hidden');
        }
        else {
-           $fieldSetHouseHoldDetails.hide();
+           $fieldSetHouseHoldDetails.addClass('hidden');
        }
 
 
