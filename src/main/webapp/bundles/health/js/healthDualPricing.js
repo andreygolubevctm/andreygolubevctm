@@ -127,7 +127,7 @@
 		selectedProduct = product;
 
 		if (typeof product.dropDeadDate === 'undefined') {
-			var selectedProduct = Results.getSelectedProduct();
+			selectedProduct = Results.getSelectedProduct();
 			product.dropDeadDate = selectedProduct.dropDeadDate;
 			product.dropDeadDateFormatted = selectedProduct.dropDeadDateFormatted;
 			product.dropDeadDatePassed = selectedProduct.dropDeadDatePassed;
