@@ -86,8 +86,8 @@
 
 
 			}
-
-			if(matches.length > 0){
+        meerkat.messaging.publish(meerkatEvents.WEBAPP_UNLOCK, {source: 'validationFailure'});
+			if(matches.length > 0) {
 				// eg: work out which slide to navigate to - will be the start or the slide with the first error field
 				if(!_.has(options,"startStage") || !_.isEmpty(options.startStage)) {
 					// If not provided then work out from the elements parent form
@@ -97,8 +97,16 @@
 				if(_.isUndefined(meerkat.modules.journeyEngine.getStepIndex(options.startPage))){
 					options.startPage = "start";
 				}
-				// Jump to the slide
-				meerkat.modules.address.setHash(options.startStage);
+                meerkat.modules.address.setHash(options.startStage);
+			} else {
+                meerkat.modules.errorHandling.error({
+                    errorLevel:		'warning',
+                    message:		"It looks like there was an issue with validation please check the form and try again.",
+                    page:			"",
+                    description:	"",
+                    data:			options
+                });
+                meerkat.modules.address.setHash(options.startStage);
 			}
 	};
 
