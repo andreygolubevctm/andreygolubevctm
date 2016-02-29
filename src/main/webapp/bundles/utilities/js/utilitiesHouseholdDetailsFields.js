@@ -269,6 +269,7 @@
      * @private
      */
     function _toggleAdditionalEstimateDetails() {
+        console.log("in the toggleAdditionalEstimatesDetails");
         var $additionalEstimatesElectricity = $('.electricity-details .additional-estimate-details-row'),
             $additionalEstimatesGas = $('.gas-details .additional-estimate-details-row'),
             $electricityInputs = $(".electricity-details"),
@@ -286,6 +287,10 @@
         $movingInDate.toggle(movingIn === 'Y');
         $(".recent-electricity-bill").toggle(whatToCompare === "E" || whatToCompare === "EG");
         $(".recent-gas-bill").toggle(whatToCompare === "G" || whatToCompare === "EG");
+
+        if(whatToCompare === "EG") {
+
+        }
 
         if (whatToCompare === "E" || whatToCompare === "EG") {
             if (movingIn === 'Y' || recentElectricityBill === 'N') {
@@ -336,7 +341,8 @@
             }
 
             if (movingIn === 'N') {
-                $('.recent-gas-bill').show();
+               // $('.recent-gas-bill').show();
+
             } else {
                 $('.recent-gas-bill').hide();
             }

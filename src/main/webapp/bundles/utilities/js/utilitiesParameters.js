@@ -59,13 +59,41 @@
        else {
            $fieldSetHouseHoldDetails.addClass('hidden');
        }
-
-
    }
+
+    function _hideWhenGasSelected() {
+        $("div.spend, div.days, div.usage").hide();
+    }
+
+    function _hideWhenElectiricySelected() {
+        $("div.spend, div.days, div.electricity-meter").hide();
+    }
+
+
+
+    function initialState() {
+        var movingIn = $(".moving-in").find("input[type='radio']:checked").val();
+        var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val();
+        if(_.isEqual(movingIn,"N") ) {
+            switch(whatToCompare) {
+                case "G":
+                    _hideWhenGasSelected();
+                    break;
+                case "E":
+                    _hideWhenElectiricySelected();
+                    break;
+                default:
+                    _hideWhenElectiricySelected();
+                    _hideWhenGasSelected();
+            }
+        }
+    }
 
     meerkat.modules.register("utilitiesParameters", {
         init: initParams,
-        displayHiddenFields:displayHiddenFields
+        displayHiddenFields:displayHiddenFields,
+        initialState:initialState
+
     });
 
 })(jQuery);

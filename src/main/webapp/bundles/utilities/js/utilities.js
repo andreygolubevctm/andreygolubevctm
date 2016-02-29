@@ -121,6 +121,7 @@
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
                 meerkat.modules.utilitiesSnapshot.initYourDetailsSnapshot();
+                meerkat.modules.utilitiesParameters.initialState();
             },
             onAfterLeave: function(event) {
                 meerkat.modules.utilitiesParameters.displayHiddenFields();
