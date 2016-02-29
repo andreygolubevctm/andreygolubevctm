@@ -126,6 +126,12 @@
 	function renderTemplate(target, product, returnTemplate, isForSidebar) {
 		selectedProduct = product;
 
+		if (typeof product.dropDeadDate === 'undefined') {
+			var selectedProduct = Results.getSelectedProduct();
+			product.dropDeadDate = selectedProduct.dropDeadDate;
+			product.dropDeadDateFormatted = selectedProduct.dropDeadDateFormatted;
+			product.dropDeadDatePassed = selectedProduct.dropDeadDatePassed;
+		}
 
 		product._selectedFrequency = typeof product._selectedFrequency === 'undefined' ? Results.getFrequency() : product._selectedFrequency;
 		product.mode = product.mode !== '' ? product.mode : '';
