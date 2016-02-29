@@ -12,7 +12,7 @@ import com.ctm.web.core.security.token.JwtTokenValidator;
 import com.ctm.web.core.security.token.config.TokenConfigFactory;
 import com.ctm.web.core.security.token.config.TokenCreatorConfig;
 import com.ctm.web.core.security.token.exception.InvalidTokenException;
-import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.ResponseUtils;
 import org.json.JSONException;
@@ -31,13 +31,13 @@ public abstract class TokenValidation<T extends TokenRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenValidation.class.getName());
 
     private final JwtTokenValidator tokenValidation;
-    private final SessionDataService sessionDataService;
+    private final SessionDataServiceBean sessionDataService;
     private final SettingsService settingsService;
     private Vertical vertical;
 
     private boolean validToken;
 
-    public TokenValidation(SettingsService settingsService, SessionDataService sessionDataService, Vertical vertical) {
+    public TokenValidation(SettingsService settingsService, SessionDataServiceBean sessionDataService, Vertical vertical) {
         this.sessionDataService = sessionDataService;
         this.settingsService = settingsService;
         tokenValidation = new JwtTokenValidator(TokenConfigFactory.getJwtSecretKey(vertical));
@@ -88,7 +88,7 @@ public abstract class TokenValidation<T extends TokenRequest> {
         }
     }
 
-    public static String createToken(Long transactionId, SessionDataService sessionDataService, SettingsService settingsService, TokenCreatorConfig config, String servletPath, HttpServletRequest request) {
+    public static String createToken(Long transactionId, SessionDataServiceBean sessionDataService, SettingsService settingsService, TokenCreatorConfig config, String servletPath, HttpServletRequest request) {
         long timeoutSec = sessionDataService.getClientSessionTimeoutSeconds(request);
         if (timeoutSec == -1) {
             timeoutSec = sessionDataService.getClientDefaultExpiryTimeoutSeconds(request) + 10;
@@ -139,7 +139,17 @@ public abstract class TokenValidation<T extends TokenRequest> {
         }
     }
 
-
+    public ResultsWrapper createResultsWrapper(Long transactionId, HttpServletRequest request, Error error) {
+        if (TokenConfigFactory.getEnabled(vertical, request)) {
+            if (validToken) {
+                TokenCreatorConfig config = TokenConfigFactory.getInstance(vertical, getCurrentTouch(), request);
+                String token = TokenValidation.createToken(transactionId, sessionDataService, settingsService, config, request.getServletPath(), request);
+                return new ResultsWrapper( null , token,  error);
+            }
+        }
+        return new ResultsWrapper(null,  error);
+    }
+    
     public String createErrorResponse(Long transactionId, String errorMessage, HttpServletRequest request, String type) {
         String responseString = "";
         try {
