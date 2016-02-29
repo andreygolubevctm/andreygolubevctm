@@ -7,16 +7,21 @@
 // ---------------------------------------------------------------------------
 //
 
+// This width allows there to be gaps between the products that is subtracted from the result-row width.
+// Yes, it is a hack.
+@results-column-outer-width: 10px;
+
 @xs-results-column-width: 285px;
 @sm-results-column-width: 179px;
 @md-results-column-width: 234px;
-@lg-results-column-width: 285px;
+@lg-results-column-width: 275px;
 
 @xs-results-column-number: 1;
 @sm-results-column-number: 3;
 @md-results-column-number: 3;
 @lg-results-column-number: 3;
 
+@results-feature-cell-padding: 8px;
 
 //== QTIP based TOOLTIPS and POPOVERS
 //
@@ -32,7 +37,7 @@
 @qtip-health-price-bg-color: #fff;
 
 @qtip-health-price-title-text-color: @text-color;
-@qtip-health-price-content-text-color:@text-color;
+@qtip-health-price-content-text-color: @text-color;
 @qtip-health-price-highlight-color: #485f94; //highlighted text colour
 
 //** Tooltip override on compare items in health/simples.
@@ -44,8 +49,6 @@
 @qtip-health-help-color: @theme-dark; //border and bg
 @qtip-health-help-title-text-color: #fff;
 @qtip-health-help-content-text-color: #fff;
-
-
 
 //== BENEFITS Dropdown Interactive - HEALTH
 //
@@ -62,8 +65,7 @@
 @health-benefits-icon-bg-checked-color: @theme-secondary;
 @health-benefits-icon-border-color: darken(@health-benefits-icon-bg-color, 12%);
 @health-benefits-icon-border-checked-color: darken(@health-benefits-icon-border-color, 12%);
-@health-benefits-icon-more-border-color:#162F8A;
-
+@health-benefits-icon-more-border-color: #162F8A;
 
 // Health conventions colour style overrides
 
@@ -126,7 +128,6 @@
 @more-info-bubble-bg-color: @theme-tertiary;
 @more-info-bubble-text-color: @well-text-info;
 
-
 // Other General Health Item
 
 @button-hospital-bg: @btn-default-color;
@@ -153,7 +154,7 @@
 @compare-checkbox-height: 16px;
 
 // duel pricing
-@duel-pricing-frequencyAmount-colour : @theme-secondary;
+@duel-pricing-frequencyAmount-colour: @theme-secondary;
 
 @main-bg-colour: #F3F3F5;
 @border-colour: #E7E7E7;
@@ -166,8 +167,7 @@
 @standard-logo-height: 45px;
 @logo-price-spacer: 5px;
 @logo-compressed-scale: 0.5;
-@providerLogoNames: ~"AHM",~"AUF",~"BUD",~"BUP",~"CBH",~"CTM",~"CUA",~"FRA",~"GMH",~"HCF",~"NIB",~"QCH";
+@providerLogoNames: ~"AHM", ~"AUF", ~"BUD", ~"BUP", ~"CBH", ~"CTM", ~"CUA", ~"FRA", ~"GMH", ~"HCF", ~"NIB", ~"QCH";
 @providerMoreInfoLogoNames: ~"AHM-mi", ~"AUF-mi", ~"BUD-mi", ~"BUP-mi", ~"CBH-mi", ~"CTM-mi", ~"CUA-mi", ~"FRA-mi", ~"GMH-mi", ~"HCF-mi", ~"NIB-mi", ~"QCH-mi";
-
 
 @journeyProgressBar-border-color: @theme-default;

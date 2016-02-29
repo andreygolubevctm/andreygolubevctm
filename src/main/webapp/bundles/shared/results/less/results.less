@@ -86,16 +86,13 @@
 
   // Width available for results
   @availableWidth: (@actualResultsContainerWidth - @actualFeaturesColumnWidth);
-
   // Fit the number of columns into the available space. Left over pixels will be added to the feature headers column.
   @column-width: ( floor(@availableWidth / @from) );
-
   // Set the overflow to exactly fit X number of columns
   @overflowWidth: (@column-width * @from);
 
   // Recalculate the feature headers column to consume any left over pixels due to rounding down.
   @finalFeaturesColumnWidth: (@actualResultsContainerWidth - @overflowWidth);
-
   // The styles
   &.results-columns-@{breakpoint}-@{from} {
     .featuresHeaders {
@@ -107,7 +104,7 @@
     }
 
     .result-row {
-      width: @column-width;
+      width: (@column-width - @results-column-outer-width);
     }
   }
 
@@ -459,9 +456,9 @@
 }
 
 // features rows
-.resultsFeaturesSections(@bgColor, @bgColorOdd, @extraSpecificity: ~'') {
+.resultsFeaturesSections(@bgColor, @bgColorOdd, @extraSpecificity: ~'', @sectionSpecificity: ~'') {
   .featuresMode @{extraSpecificity} {
-    .section {
+    @{sectionSpecificity}.section {
       > .content {
         padding: 9px 5px;
         @media (@xs-only) {
@@ -486,7 +483,7 @@
         }
       }
     }
-    .featuresHeaders .section {
+    .featuresHeaders @{sectionSpecificity}.section {
 
       > .content {
 
@@ -534,7 +531,7 @@
       */
     }
     .result-row {
-      .labelInColumn.section > .content {
+      @{sectionSpecificity}.labelInColumn.section > .content {
         display: block;
         margin-left: 0;
         width: 100%;

@@ -117,7 +117,7 @@
   }
 
   &.v2 .resultsOverflow .section > .children .category > .content {
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid @results-border-color;
   }
   .featuresHeaders .category > .content {
     padding: 6px 10px;
@@ -130,7 +130,7 @@
   }
 }
 
-.resultsFeaturesSections(@section-color, @section-odd-color);
+.resultsFeaturesSections(@section-color, @section-odd-color, ~'', ~'.hasShortlistableChildren');
 
 // rows mixin called
 .resultsFeaturesRows(@feature-color, @feature-odd-color);
@@ -280,8 +280,8 @@
   }
 
   // this is for the "click to view all extras" row.
-  .featuresHeaders .hospitalCover,
-  .featuresHeaders .extrasCover {
+  .featuresHeaders [data-skey='Hospital'],
+  .featuresHeaders [data-skey='GeneralHealth'] {
     > .content {
       background-color: @category-hospital-color;
       z-index: 1;
@@ -308,22 +308,61 @@
     }
   }
 
-  // Override mixin style for excess and promos
+  // Override mixin style for Health's unique design
   @media (@sm) {
 
+    &.v2.resultsContainer {
+      margin-bottom: 15px;
+    }
+
+    &.v2.resultsContainer,
+    .featuresHeaders {
+      background: transparent;
+    }
+
+    .resultsOverflow .result-row {
+      margin-left: 10px;
+      border-left: none;
+      border-right: none;
+    }
+
+    &.v2 {
+
+      .featuresHeaders {
+        border-right: none;
+      }
+
+      .featuresTemplateComponent {
+        border-right: 1px solid @results-border-color;
+      }
+
+      .resultsOverflow .content {
+        border-right: 1px solid @results-border-color;
+        border-left: 1px solid @results-border-color;
+      }
+    }
+
     .result-row {
-       .promosFeature.feature {
+      border-left: 1px solid @results-border-color;
+      .promosFeature.feature {
         & > .content,
         &:nth-child(odd) > .content {
+          //hack for specialness.
           text-align: center;
+          border-top: none;
         }
       }
     }
 
-    .excessSection .feature:nth-child(odd) > .content {
+    .excessSection .feature:nth-child(odd) > .content,
+    &.v2 .featuresList .ambulanceSection.category:nth-child(odd) > .content {
       background-color: #fff;
     }
-  }
 
+    .compare-basket {
+      position: absolute;
+      bottom: 10px;
+    }
+  }
 
 }

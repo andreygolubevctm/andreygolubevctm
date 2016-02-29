@@ -5,7 +5,6 @@
 .fakeBannerStyle() {
   height: @results-headerbar-height;
   background: @results-headerbar-bg;
-  border-bottom: @results-headerbar-border-bottom;
 }
 
 .headerBarTransition() {
@@ -57,6 +56,8 @@
   }
 
   .result {
+    border-left: 1px solid @results-border-color;
+    border-right: 1px solid @results-border-color;
     .resultInsert {
       padding: 0 6px;
     }
@@ -65,12 +66,24 @@
     overflow: hidden;
 
     .fakeBannerStyle();
-    width: inherit;
     @media(@sm-only) {
       .btn {
         padding: 5px;
       }
     }
+    &.headers {
+      background: transparent;
+      border-right: none;
+      border-left: none;
+    }
+
+  }
+  &.affixed-compact .result {
+    &.headers {
+      background: @feature-bg-color;
+    }
+    width: inherit;
+    //border-right: 2px solid @results-border-color;
   }
 
   &.affixed-settings {
@@ -112,12 +125,19 @@
 
   &.affixed-compact {
     .result {
+      border-bottom: 1px solid @results-border-color;
+      box-shadow: 1px 3px 5px @results-border-color;
       .resultInsert {
         height: 130px;
       }
       .headerBarTransition();
       height: 130px;
-
+      @media(@sm-only) {
+        height: 110px;
+        .resultInsert {
+          height: 110px;
+        }
+      }
       .btn {
         padding: 5px;
       }
