@@ -29,7 +29,7 @@
 	{{ } }}
 </core_v1:js_template>
 
-<c:set var="note">Advance payments before 30 March ${thisYear} will be at the current price. Applications close on {{= obj.dropDeadDateFormatted }} to allow for processing</c:set>
+<c:set var="note">You must purchase before {{= obj.dropDeadDateFormatted }}.</c:set>
 <c:set var="heading">Premiums are rising April 1</c:set>
 <c:set var="whyPremiumsRising"><a href="javascript:;" class="why-rising-premiums">Why are premiums rising?</a></c:set>
 <c:set var="april1Header">Pricing on 1 April ${thisYear}</c:set>
