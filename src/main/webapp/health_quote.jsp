@@ -195,6 +195,7 @@
 		<health_v1_layout:slide_results />
 		<health_v1_layout:slide_application_details />
 		<health_v1_layout:slide_payment_details />
+		<health_v1:dual_pricing_templates />
 
 		<field_v1:hidden xpath="environmentOverride" />
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />

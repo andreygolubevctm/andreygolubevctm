@@ -2,7 +2,6 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-
 <%-- Load confirmation information (either a full confirmation or a pending one) --%>
 <c:set var="confirmationData"><health_v1:load_confirmation /></c:set>
 

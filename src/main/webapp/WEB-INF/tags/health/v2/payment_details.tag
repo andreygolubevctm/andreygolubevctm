@@ -15,6 +15,9 @@
 <%-- <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" /> --%>
 <%-- <c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" /> --%>
 
+<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
+<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+
 <%-- HTML --%>
 <div id="${name}-selection" class="health-payment_details">
 
@@ -39,6 +42,10 @@
 		<form_v3:row fieldXpath="${fieldXpath}" label="How often would you like to make payments" className="changes-premium">
 			<field_v2:array_select items="=Please choose..." xpath="${fieldXpath}" title="frequency of payments" required="true" delims="||" className="health-payment_details-frequency" />
 		</form_v3:row>
+
+		<c:if test="${healthAlternatePricingActive eq true}">
+			<div class="hidden frequencyWarning definition alert alert-info"></div>
+		</c:if>
 
 		<c:set var="fieldXpath" value="${xpath}/claims" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Do you want to supply bank account details for claims to be paid into" className="health-payment_details-claims-group">
