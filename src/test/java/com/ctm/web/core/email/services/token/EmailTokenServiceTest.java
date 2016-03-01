@@ -7,6 +7,7 @@ import com.ctm.web.core.email.model.IncomingEmail;
 import com.ctm.web.core.email.services.EmailUrlService;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.EmailMaster;
+import com.ctm.web.core.security.StringEncryption;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,9 +20,7 @@ import java.util.Map;
 
 import static org.mockito.Mockito.*;
 
-/**
- * Created by voba on 19/10/2015.
- */
+
 public class EmailTokenServiceTest {
     private EmailTokenService emailTokenService;
 
@@ -30,11 +29,12 @@ public class EmailTokenServiceTest {
 
     @Mock
     private EmailMasterDao emailMasterDao;
+    private String secretKey = "AAAAAAAAAAAAAAAAAAAAAA";
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        emailTokenService = new EmailTokenService("AAAAAAAAAAAAAAAAAAAAAA", emailTokenDao, emailMasterDao);
+        emailTokenService = new EmailTokenService(secretKey, emailTokenDao, emailMasterDao);
     }
 
     @Test
@@ -57,6 +57,15 @@ public class EmailTokenServiceTest {
         verify(emailTokenDao).addEmailToken(12345678L, 1L, "type", "subscribe");
 
         Assert.assertEquals(token, "LxdLS6JbFjoGed60PhMBb1G3-LDbW7eH_b6UzsxF32x1vflt-b2Kg6lqkrma9fondcOBAusakomj5AT_3cgTTdeJqIxtnPeWlRODczy4fjaDoPV35IudpjTkY_4SqSn2daHWp25ImHWZ2OMxwI0mCw");
+    }
+
+
+    @Test
+    public void testSetProductName() throws DaoException, GeneralSecurityException {
+        Map<String, String> params = new HashMap<>();
+        EmailTokenService.setProductName("Silver Hospital Level 2 & Bronze Extras Set Benefits" , params);
+        String expectedProductName = "Silver%20Hospital%20Level%202%20%26%20Bronze%20Extras%20Set%20Benefits";
+        Assert.assertEquals(params.get(EmailUrlService.PRODUCT_NAME), expectedProductName);
     }
 
     @Test
@@ -83,24 +92,31 @@ public class EmailTokenServiceTest {
 
     @Test
     public void testGenerateTokenAdditionalParameters() throws DaoException, GeneralSecurityException {
-        Map<String, String> expectedDecrypted = new HashMap<>();
-        expectedDecrypted.put(EmailUrlService.TRANSACTION_ID, "12345678");
-        expectedDecrypted.put(EmailUrlService.HASHED_EMAIL, "aaaaaaaa");
-        expectedDecrypted.put(EmailUrlService.STYLE_CODE_ID, "1");
-        expectedDecrypted.put(EmailUrlService.EMAIL_TOKEN_TYPE, "type");
-        expectedDecrypted.put(EmailUrlService.EMAIL_TOKEN_ACTION, "subscribe");
-        expectedDecrypted.put(EmailUrlService.PRODUCT_ID, "myProductId");
-        expectedDecrypted.put(EmailUrlService.CAMPAIGN_ID, "myCampaignId");
-        expectedDecrypted.put(EmailUrlService.VERTICAL, "myVertical");
-        expectedDecrypted.put(EmailUrlService.PRODUCT_NAME, "myProductName");
-        expectedDecrypted.put(EmailUrlService.EMAIL_ID, "1");
+        String encodedProductId = "Silver%20Hospital%20Level%202%20%26%20Bronze%20Extras%20Set%20Benefits";
+        String productId = "Silver Hospital Level 2 & Bronze Extras Set Benefits";
+
+        Map<String, String> encypted = new HashMap<>();
+        encypted.put(EmailUrlService.TRANSACTION_ID, "12345678");
+        encypted.put(EmailUrlService.HASHED_EMAIL, "aaaaaaaa");
+        encypted.put(EmailUrlService.STYLE_CODE_ID, "1");
+        encypted.put(EmailUrlService.EMAIL_TOKEN_TYPE, "type");
+        encypted.put(EmailUrlService.EMAIL_TOKEN_ACTION, "subscribe");
+        encypted.put(EmailUrlService.PRODUCT_ID, "myProductId");
+        encypted.put(EmailUrlService.CAMPAIGN_ID, "myCampaignId");
+        encypted.put(EmailUrlService.VERTICAL, "myVertical");
+        encypted.put(EmailUrlService.PRODUCT_NAME, encodedProductId);
+        encypted.put(EmailUrlService.EMAIL_ID, "1");
 
         EmailMaster emailMaster = new EmailMaster();
         emailMaster.setEmailId(1);
         when(emailMasterDao.getEmailMasterFromHashedEmail("aaaaaaaa", 1)).thenReturn(emailMaster);
         doThrow(new RuntimeException("It should not be called")).when(emailTokenDao).addEmailToken(12345678L, 1L, "type", "subscribe");
 
-        String token = emailTokenService.generateToken(expectedDecrypted, false);
+        String token = emailTokenService.generateToken(encypted, false);
+
+        HashMap<String, String> expectedDecrypted = new HashMap<>(encypted);
+        expectedDecrypted.put(EmailUrlService.PRODUCT_NAME, productId);
+
         Map<String, String> params = emailTokenService.decryptToken(token);
 
         Assert.assertEquals(expectedDecrypted, params);
@@ -120,6 +136,20 @@ public class EmailTokenServiceTest {
 
         Assert.assertEquals(expectedDecrypted, params);
     }
+
+
+    @Test
+    public void testDecryptTokenWithOut() throws DaoException, GeneralSecurityException {
+        Map<String, String> expectedDecrypted = new HashMap<>();
+        expectedDecrypted.put("productName" ,  "Silver Hospital Level 2 ");
+
+        String token = StringEncryption.encrypt(secretKey, "productName=Silver Hospital Level 2 & Bronze Extras Set Benefits");
+
+        Map<String, String> params = emailTokenService.decryptToken(token);
+
+        Assert.assertEquals(expectedDecrypted, params);
+    }
+
 
     @Test
     public void testGetIncomingEmailDetails() throws DaoException, GeneralSecurityException {
