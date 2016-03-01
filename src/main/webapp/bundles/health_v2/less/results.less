@@ -133,7 +133,7 @@
 .resultsFeaturesSections(@section-color, @section-odd-color, ~'', ~'.hasShortlistableChildren');
 
 // rows mixin called
-.resultsFeaturesRows(@feature-color, @feature-odd-color);
+.resultsFeaturesRows(@feature-odd-color, @feature-color);
 
 // alternate columns
 @media (@xs-only) {
@@ -313,6 +313,7 @@
 
     &.v2.resultsContainer {
       margin-bottom: 15px;
+      border-bottom: none;
     }
 
     &.v2.resultsContainer,
@@ -324,6 +325,22 @@
       margin-left: 10px;
       border-left: none;
       border-right: none;
+      background: transparent;
+    }
+
+    .hasShortlistableChildren {
+      &.section.collapsed {
+        border-top: none;
+        border-bottom: 1px solid @results-border-color;
+        > .content {
+          border-right: none;
+        }
+      }
+    }
+
+    .hasShortlistableChildren,
+    .ambulanceSection {
+      margin-top: 10px;
     }
 
     &.v2 {
@@ -333,13 +350,29 @@
       }
 
       .featuresTemplateComponent {
-        border-right: 1px solid @results-border-color;
+        border-left: none;
       }
 
-      .resultsOverflow .content {
+      .content {
         border-right: 1px solid @results-border-color;
         border-left: 1px solid @results-border-color;
       }
+
+      .featuresHeaders .selectionHolder > .content {
+        border-top: none;
+        padding-top: 20px;
+      }
+
+    }
+
+    .cell.category.expandable.collapsed:last-child,
+    .category.expandable.expanded:last-child .children > .feature:last-child {
+      border-bottom: 1px solid @results-border-color;
+    }
+
+    .cell.section.selection_Hospital > .children > .category.expandable:last-child,
+    .cell.section.selection_Hospital > .children > .category.expandable:last-child .children > .feature:last-child {
+      border-bottom: none;
     }
 
     .result-row {
@@ -354,8 +387,9 @@
       }
     }
 
-    .excessSection .feature:nth-child(odd) > .content,
-    &.v2 .featuresList .ambulanceSection.category:nth-child(odd) > .content {
+    .excessSection .feature:nth-child(even) > .content,
+    &.v2 .featuresList .ambulanceSection.category:nth-child(even) > .content,
+    &.v2 .featuresList > .ambulanceSection.category:nth-child(odd) .content {
       background-color: #fff;
     }
 
