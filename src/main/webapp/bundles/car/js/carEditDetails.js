@@ -30,7 +30,7 @@
 				templateCallback = _.template($e.html());
 			}
 			var data = {
-				youngDriver : $('input[name=quote_drivers_young_exists]:checked').val(),
+				youngDriver : $('input[name=quote_drivers_young_exists]:checked').val()
 			};
 
 			show(templateCallback(data));

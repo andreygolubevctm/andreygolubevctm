@@ -454,6 +454,10 @@
 		<c:when test="${confirmationQuery.rows[0]['editable'] == 'C'}">
 			${leadService.sendLead(4, data, pageContext.getRequest(), 'SOLD')}
 		</c:when>
+		<c:when test="${not empty data['health/simples/contactType'] && data['health/simples/contactType'] == 'inbound'}">
+			<%-- Consultant has flagged this transaction as an inbound call --%>
+			${leadService.sendLead(4, data, pageContext.getRequest(), 'INBOUND_CALL')}
+		</c:when>
 		<c:otherwise>
 			${leadService.sendLead(4, data, pageContext.getRequest(), 'OPEN')}
 		</c:otherwise>

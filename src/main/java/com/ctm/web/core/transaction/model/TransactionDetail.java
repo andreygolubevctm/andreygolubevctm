@@ -20,6 +20,13 @@ public class TransactionDetail extends AbstractJsonModel {
 	private String textValue;
 	private Date dateValue;
 
+	public TransactionDetail() {
+	}
+
+	public TransactionDetail(String xpath, String textValue) {
+		this.xpath = xpath;
+		this.textValue = textValue;
+	}
 
 	/**
 	 * The sequence number
