@@ -243,15 +243,6 @@
 
 				});
 
-				if(meerkat.site.isCallCentreUser === true){
-					// Handle pre-filled 
-					toggleRebateDialogue();
-					// Handle toggle rebate options
-					$('input[name=health_healthCover_rebate]').on('change', function() {
-						toggleRebateDialogue();
-					});
-				}
-
 			},
 			onBeforeLeave: function(event) {
 				// Store the text of the income question - for reports and audits.
@@ -317,24 +308,7 @@
 
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
-
-					var accidentOnly = $('input[name="health_situation_accidentOnlyCover"]');
-					var dialog44 = $(".simples-dialogue-44");
-					dialog44.hide();
-					if($(accidentOnly).is(':checked')) {
-						dialog44.show();
-					}
-
-					accidentOnly.on('change', function() {
-						if($(this).is(':checked')) {
-							dialog44.show();
-						} else {
-							dialog44.hide();		
-						}
-					});
-
 				}
-
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefits.getSelectedBenefits();
@@ -410,6 +384,7 @@
 				meerkat.modules.healthAltPricing.initHealthAltPricing();
 				meerkat.modules.healthMoreInfo.initMoreInfo();
 				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
+				meerkat.modules.healthDualPricing.initHealthDualPricing();
 			},
 			onBeforeEnter:function enterResultsStep(event){
 
@@ -654,7 +629,8 @@
 					var product = meerkat.modules.healthResults.getSelectedProduct();
 					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF"];
 
-					if( $('input[name=health_healthCover_rebate]:checked').val() == "N" && $.inArray(product.info.providerName, mustShowList) == -1) {
+					var $rebateEl = $('input[name=health_healthCover_rebate]:checked');
+					if( (!_.isEmpty($rebateEl) && $rebateEl.val() == "N") && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
 					} else {
 						$("#health_payment_medicare-selection").removeAttr("style");
@@ -1257,18 +1233,6 @@
 			$('.simples-privacycheck-statement, .new-quote-only, .follow-up-call').removeClass('hidden');
 			toggleDialogueInChatCallback();
 	}
-	}
-
-	// Hide/show simple Rebate dialogue when toggle rebate options in simples journey
-	function toggleRebateDialogue() {
-		// apply rebate
-		if ($('#health_healthCover_rebate_Y').is(':checked')) {
-			$('.simples-dialogue-37').removeClass('hidden');
-		}
-		// no rebate
-		else if ($('#health_healthCover_rebate_N').is(':checked')){
-			$('.simples-dialogue-37').addClass('hidden');
-		}
 	}
 
 	// Disable/enable follow up/New quote dialogue when the other checkbox ticked in Chat Callback sesction in simples

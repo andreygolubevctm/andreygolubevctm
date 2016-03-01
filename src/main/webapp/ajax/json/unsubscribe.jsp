@@ -10,7 +10,7 @@
     <settings:setVertical verticalCode="GENERIC"/>
     <c:choose>
         <c:when test="${unsubscribe.getEmailDetails().isValid()}">
-            ${unsubscribeService.unsubscribe(pageSettings, unsubscribe)}
+            <c:set var="ignore" value="${unsubscribeService.unsubscribe(pageSettings, unsubscribe)}" />
             <agg_v1:write_stamp
                     action="toggle_marketing"
                     vertical="${fn:toLowerCase(unsubscribe.getVertical())}"

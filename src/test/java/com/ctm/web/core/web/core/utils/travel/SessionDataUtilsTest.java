@@ -7,9 +7,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-/**
- * Created by lbuchanan on 19/12/2014.
- */
 public class SessionDataUtilsTest {
 
     @Test
@@ -31,6 +28,27 @@ public class SessionDataUtilsTest {
         String transactionId = "10000";
         SessionDataUtils.setTransactionId(data, transactionId);
         assertEquals(transactionId, data.get("current/transactionId"));
+    }
+
+    @Test
+    public void shouldGetRootIdFromDataBucket(){
+        Data data = new Data();
+        data.put("current/rootId", "10000");
+        Long result = SessionDataUtils.getRootId(data);
+        assertEquals(Long.valueOf(10000L), Long.valueOf(result));
+
+        data = new Data();
+        data.put("current/rootId" , "meerkat");
+        result = SessionDataUtils.getRootId(data);
+        assertNull(result);
+    }
+
+    @Test
+    public void shouldSetRootIdToDataBucket(){
+        Data data = new Data();
+        String id = "10000";
+        SessionDataUtils.setRootId(data, id);
+        assertEquals(id, data.get("current/rootId"));
     }
 
 }

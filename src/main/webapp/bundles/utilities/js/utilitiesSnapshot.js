@@ -159,10 +159,16 @@
         // various fields input
         if ($elecBill.filter(':checked').val() === 'Y') {
             var howChargeContent = $.trim($elecHowCharged.filter(':checked').parent().text()),
-                $elecUsageEls = $elecHowChargedParent.siblings('.usage:visible:first').find('input');
+                $elecUsageEls = 0;
+                $elecHowChargedParent.siblings('.usage:visible').each(function() {
+                    var usage = parseInt($(this).find('input').val());
+                    if(!_.isNaN(usage)) {
+                        $elecUsageEls += usage;
+                    }
+                });
 
-            if ($elecUsageEls.val() !== '' && $elecBillingDays.val() !== '' && howChargeContent !== '') {
-                return $elecUsageEls.val() + "kWh over " + $elecBillingDays.val() + " days, " + howChargeContent;
+            if ($elecUsageEls !== 0 && $elecBillingDays.val() !== '' && howChargeContent !== '') {
+                return $elecUsageEls + "kWh over " + $elecBillingDays.val() + " days, " + howChargeContent;
             }
         } else {
             // or the radio button group

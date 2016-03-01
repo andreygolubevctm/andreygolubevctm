@@ -379,6 +379,7 @@
 				meerkat.modules.healthAltPricing.initHealthAltPricing();
 				meerkat.modules.healthMoreInfo.initMoreInfo();
 				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
+				meerkat.modules.healthDualPricing.initHealthDualPricing();
 
 			},
 			onBeforeEnter:function enterResultsStep(event){
@@ -478,6 +479,7 @@
 
 				if(event.isForward === true){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+
 					// Show warning if applicable
 					if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
 						$("#health_application-warning").find(".fundWarning").show().html(selectedProduct.warningAlert);
@@ -628,7 +630,7 @@
 					var product = meerkat.modules.healthResults.getSelectedProduct();
 					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF"];
 
-					if( $('input[name=health_healthCover_rebate]:checked').val() == "N" && $.inArray(product.info.providerName, mustShowList) == -1) {
+					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
 					} else {
 						$("#health_payment_medicare-selection").removeAttr("style");
@@ -1033,16 +1035,25 @@
 				emailID:				null,
 				marketOptIn:			null,
 				okToCall:				null,
+				contactType:			null,
 				simplesUser:			meerkat.site.isCallCentreUser
 			};
 
 			// Push in values from 1st slide only when have been beyond it
 			if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
+				var contactType = null;
+				if ($('#health_simples_contactType_inbound').is(':checked')) {
+					contactType = 'inbound';
+				} else if ($('#health_simples_contactType_outbound').is(':checked')) {
+					contactType = 'outbound';
+				}
+
 				$.extend(response, {
 					postCode:				$("#health_application_address_postCode").val(),
 					state:					state,
 					healthCoverType:		$("#health_situation_healthCvr").val(),
-					healthSituation:		$("#health_situation_healthSitu").val()
+					healthSituation:		$("#health_situation_healthSitu").val(),
+					contactType:			contactType
 				});
 			}
 

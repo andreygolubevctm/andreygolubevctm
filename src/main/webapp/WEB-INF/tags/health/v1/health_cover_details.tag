@@ -127,7 +127,8 @@
 				</form_v2:row>
 
 			</form_v2:fieldset>
-				<simples:dialogue id="37" vertical="health" mandatory="true" className="hidden" />
+				<simples:dialogue id="37" vertical="health" mandatory="true" />
+                <simples:dialogue id="43" vertical="health" />
 			</jsp:body>
 
 		</form_v2:fieldset_columns>
