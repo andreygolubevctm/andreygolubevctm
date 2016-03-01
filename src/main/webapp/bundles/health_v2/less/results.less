@@ -254,16 +254,6 @@
   // features style
   .featuresTemplateComponent,
   .result-row {
-    &.active {
-      .featuresElements,
-      .result {
-        border-left: @results-page-border-width solid @theme-tertiary;
-        border-right: @results-page-border-width solid @theme-tertiary;
-      }
-      + div .featuresElements {
-        border-left: none;
-      }
-    }
     .excessSection {
       > .h,
       > .c,
@@ -308,6 +298,15 @@
     }
   }
 
+  // it doesn't fit!
+  @media (@sm-only) {
+    &.affixed .compare-basket {
+      display: none;
+    }
+    .compare-basket .compared-products-list .price {
+      font-size: 16px;
+    }
+  }
   // Override mixin style for Health's unique design
   @media (@sm) {
 
@@ -328,17 +327,22 @@
       background: transparent;
     }
 
-    .hasShortlistableChildren {
-      &.section.collapsed {
-        border-top: none;
-        border-bottom: 1px solid @results-border-color;
-      }
-    }
-
+    //  Hospital/Extras Cover rows spacing
     .hasShortlistableChildren,
     .ambulanceSection {
       margin-top: 10px;
     }
+    .hasShortlistableChildren {
+      &.section {
+        &.collapsed {
+          border-top: none;
+        }
+        > .content {
+          border-bottom: 1px solid @results-border-color;
+        }
+      }
+    }
+
 
     &.v2 {
 
@@ -350,14 +354,29 @@
         border-left: none;
       }
 
+      .featuresHeaders .selectionHolder > .content {
+        border-top: none;
+        padding-top: 20px;
+      }
+
       .content {
         border-right: 1px solid @results-border-color;
         border-left: 1px solid @results-border-color;
       }
 
-      .featuresHeaders .selectionHolder > .content {
-        border-top: none;
-        padding-top: 20px;
+      // Overwrite compared styles.
+      .result-row.compared .content, .result-row.compared .result,
+      .result-row.active .content, .result-row.active .result {
+        border-right-color: @compared-product-border-color;
+        border-left-color: @compared-product-border-color;
+      }
+      .result-row.compared, .result-row.compared:first-child {
+        border-left: none;
+        outline: none;
+      }
+
+      .compare-basket .compared-products-list li {
+        height: 25px;
       }
 
     }
@@ -370,6 +389,9 @@
     .cell.section.selection_Hospital > .children > .category.expandable:last-child,
     .cell.section.selection_Hospital > .children > .category.expandable:last-child .children > .feature:last-child {
       border-bottom: none;
+    }
+    .resultsOverflow .cell.section.hasShortlistableChildren > .children > .category:first-child > .content {
+      border-top: none;
     }
 
     .result-row {
@@ -393,6 +415,13 @@
     .compare-basket {
       position: absolute;
       bottom: 10px;
+      width: (@sm-results-column-width - 5);
+      @media(@md-only) {
+        width: (@md-results-column-width - 10);
+      }
+      @media(@lg-only) {
+        width: @lg-results-column-width;
+      }
     }
   }
 

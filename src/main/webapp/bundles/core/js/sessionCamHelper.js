@@ -49,7 +49,7 @@
 	}
 
 	function updateVirtualPageFromJourneyEngine(step, delay) {
-		if(!_.isArray(skipStepForSessionCam) || _.indexOf(skipStepForSessionCam, step.navigationId) === -1) {
+		if(!_.isArray(skipStepForSessionCam) || (_.isObject(step) && _.indexOf(skipStepForSessionCam, step.navigationId) === -1)) {
 			updateVirtualPage(step, delay);
 		}
 	}
