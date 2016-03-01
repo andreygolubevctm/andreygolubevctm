@@ -85,8 +85,8 @@
 						</div>
 						<p class="message">
 							<c:choose>
-								<c:when test="${param.vertical eq 'car'}">
-									${contentService.getContentValue(pageContext.getRequest(), "transferringText", verticalBrandCode, "car")}
+								<c:when test="${param.vertical eq 'car' || param.vertical eq 'home'}">
+									${contentService.getContentValue(pageContext.getRequest(), "transferringText", verticalBrandCode, param.vertical)}
 								</c:when>
 								<c:otherwise>
 									<content:get key="transferringText" />
