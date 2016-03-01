@@ -308,6 +308,12 @@
                 postCode: null
             };
 
+            if(special_case === 'LocationNoQuote') {
+                response.state = state;
+                response.postCode = postCode;
+                response.actionStep = 'Energy : An error occurred : No Quote';
+            }
+
             // Push in values from 2nd slide only when have been beyond it
             if (furthest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
                 _.extend(response, {
