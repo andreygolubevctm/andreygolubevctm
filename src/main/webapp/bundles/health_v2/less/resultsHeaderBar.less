@@ -66,7 +66,7 @@
     overflow: hidden;
 
     .fakeBannerStyle();
-    @media(@sm-only) {
+    @media (@sm-only) {
       .btn {
         padding: 5px;
       }
@@ -78,20 +78,13 @@
     }
 
   }
-  &.affixed-compact .result {
-    &.headers {
-      background: @feature-bg-color;
-    }
-    width: inherit;
-    //border-right: 2px solid @results-border-color;
-  }
 
   &.affixed-settings {
 
     .featuresHeaders,
     .result-row {
       // To make up for the space no longer consumed by the .result element.
-      padding-top: 130px;
+      padding-top: 175px;
     }
 
     .result {
@@ -108,7 +101,6 @@
 
     .result {
       display: none; // when in fixed mode, only display the items on the 'current page' - thanks to the pagination component for settings this.
-      position: fixed;
 
       &.headers {
         display: block;
@@ -123,24 +115,29 @@
 
   }
 
-  &.affixed-compact {
-    .result {
-      border-bottom: 1px solid @results-border-color;
-      box-shadow: 1px 3px 5px @results-border-color;
-      .resultInsert {
-        height: 130px;
-      }
-      .headerBarTransition();
+  &.affixed-compact .result {
+    position: fixed;
+    width: inherit;
+    border-bottom: 1px solid @results-border-color;
+    box-shadow: 1px 3px 5px @results-border-color;
+    &.headers {
+      background: @feature-bg-color;
+      border-left: 1px solid @results-border-color;
+      border-right: 1px solid @results-border-color;
+    }
+    .resultInsert {
       height: 130px;
-      @media(@sm-only) {
+    }
+    .headerBarTransition();
+    height: 130px;
+    @media (@sm-only) {
+      height: 110px;
+      .resultInsert {
         height: 110px;
-        .resultInsert {
-          height: 110px;
-        }
       }
-      .btn {
-        padding: 5px;
-      }
+    }
+    .btn {
+      padding: 5px;
     }
   }
 
