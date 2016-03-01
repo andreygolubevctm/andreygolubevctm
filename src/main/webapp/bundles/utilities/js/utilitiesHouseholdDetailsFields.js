@@ -99,7 +99,10 @@
 
 
     function _registerEventListeners() {
-        $(".what-to-compare, .moving-in, .recent-electricity-bill, .recent-gas-bill").change(_toggleAdditionalEstimateDetails);
+        //$(".what-to-compare, .moving-in, .recent-electricity-bill, .recent-gas-bill").change(_toggleAdditionalEstimateDetails);
+        $(".what-to-compare, .moving-in, .recent-electricity-bill").change(_toggleAdditionalElectricityDetails);
+        $(".what-to-compare, .moving-in, .recent-gas-bill").change(_toggleAdditionalGasDetails);
+
         $("#utilities_privacyoptin").change(_onPrivacyOptinChange);
         $(".electricity-meter").change(_toggleElectricityMeter);
         $("#utilities_householdDetails_location").on("typeahead:selected", _onTypeaheadSelected);
@@ -262,6 +265,100 @@
         });
     }
 
+    function _toggleAdditionalElectricityDetails() {
+        var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val();
+        var movingIn = $(".moving-in").find("input[type='radio']:checked").val();
+        var recentElectricityBill = $(".recent-electricity-bill").find("input[type='radio']:checked").val();
+
+        var $electricityUsageDetails = $('.electricity-details .electricity-usage');
+        var $electricityAdditionalDetails = $('.electricity-details .additional-estimate-details-row');
+        var $recentElecityBillField = $(".recent-electricity-bill");
+
+        var $gasDetails = $(".gas-details");
+        var $electDetails = $(".electricity-details");
+
+        if (whatToCompare === "E" && !_.isUndefined(movingIn)) {
+            $gasDetails.hide();
+            $electDetails.show();
+        }
+        if (whatToCompare === "EG" && !_.isUndefined(movingIn)) {
+            $gasDetails.show();
+            $electDetails.show();
+        }
+
+        if (movingIn === "Y") {
+            $electricityUsageDetails.show();
+            $electricityAdditionalDetails.hide();
+            $recentElecityBillField.hide();
+
+        }
+        if (movingIn === "N") {
+            if(_.isUndefined(recentElectricityBill)) {
+                $recentElecityBillField.show();
+                $electricityAdditionalDetails.hide();
+                $electricityUsageDetails.hide();
+            }
+            if (recentElectricityBill === "N" ) {
+                $electricityUsageDetails.show();
+                $electricityAdditionalDetails.hide();
+                $recentElecityBillField.show();
+            }
+            else if(recentElectricityBill === "Y") {
+                $electricityUsageDetails.hide();
+                $electricityAdditionalDetails.show();
+                $recentElecityBillField.show();
+            }
+        }
+
+
+
+    }
+
+    function _toggleAdditionalGasDetails() {
+        var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val();
+        var movingIn = $(".moving-in").find("input[type='radio']:checked").val();
+        var recentGasBill = $(".recent-gas-bill").find("input[type='radio']:checked").val();
+
+        var $gasUsageDetails = $(".gas-details .gas-usage");
+        var $gasAdditionalDetails = $(".gas-details .additional-estimate-details-row");
+        var $recentGasBillField = $(".recent-gas-bill");
+        var $electricityDetails = $('.electricity-details');
+        var $gasDetails = $('.gas-details');
+
+        if (whatToCompare == "G" && !_.isUndefined(movingIn)) {
+            $electricityDetails.hide();
+            $gasDetails.show();
+        }
+        if (whatToCompare === "EG" && !_.isUndefined(movingIn)) {
+            $gasDetails.show();
+            $electricityDetails.show();
+        }
+
+        if (movingIn === "Y") {
+            $gasUsageDetails.show();
+            $gasAdditionalDetails.hide();
+            $recentGasBillField.hide();
+        }
+        if (movingIn === "N") {
+            if(_.isUndefined(recentGasBill)) {
+                $recentGasBillField.show();
+                $gasAdditionalDetails.hide();
+                $gasUsageDetails.hide();
+            }
+            if (recentGasBill === "N" ) {
+                $gasUsageDetails.show();
+                $gasAdditionalDetails.hide();
+                $recentGasBillField.show();
+            }
+            else if(recentGasBill === "Y") {
+                $gasUsageDetails.hide();
+                $gasAdditionalDetails.show();
+                $recentGasBillField.show();
+            }
+        }
+
+    }
+
     /**
      * Toggles the additional estimate details fields which show/hide depending
      * on if the user needs electricity/gas/both and they specify if they want to
@@ -287,10 +384,6 @@
         $movingInDate.toggle(movingIn === 'Y');
         $(".recent-electricity-bill").toggle(whatToCompare === "E" || whatToCompare === "EG");
         $(".recent-gas-bill").toggle(whatToCompare === "G" || whatToCompare === "EG");
-
-        if(whatToCompare === "EG") {
-
-        }
 
         if (whatToCompare === "E" || whatToCompare === "EG") {
             if (movingIn === 'Y' || recentElectricityBill === 'N') {
