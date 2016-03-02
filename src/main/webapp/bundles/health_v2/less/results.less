@@ -174,8 +174,11 @@
       padding-top: 4px;
     }
   }
+  &.v2 .excessSection .children .feature > .content {
+    padding-bottom: 8px;
+  }
 
-  // make these look like a section
+    // make these look like a section
   .section,
   .featuresHeaders .promosFeature,
   .promosFeature > .labelInColumn,
@@ -391,11 +394,12 @@
         &:nth-child(odd) > .content {
           //hack for specialness.
           text-align: center;
-          border-top: none;
         }
       }
     }
-
+    .excessSection .feature > .content {
+      border-top: 1px solid @results-border-color;
+    }
     .excessSection .feature:nth-child(even) > .content,
     &.v2 .featuresList .ambulanceSection.category:nth-child(even) > .content,
     &.v2 .featuresList > .ambulanceSection.category:nth-child(odd) .content {
