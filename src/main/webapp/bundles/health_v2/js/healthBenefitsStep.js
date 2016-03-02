@@ -6,6 +6,13 @@
         $coverType,  //Stores the jQuery object for cover type select field in situation page
         $benefitsForm, //Stores the jQuery object for the main benefits form
         $hiddenFields,
+        $hospitalCoverToggles,
+        $hospitalCover,
+        $allHospitalButtons,
+        $defaultCover,
+        currCover = 'customise',
+        prevCover = '',
+        customisedOptions = [],
         changedByCallCentre = false;
 
     var events = {
@@ -21,8 +28,14 @@
 
             // Store the jQuery objects
             $coverType = $('#health_situation_coverType');
+            $defaultCover = $('#health_benefits_covertype_mid');
             $benefitsForm = $('#benefitsForm');
             $hiddenFields = $('#mainform').find('.hiddenFields');
+
+            if (meerkat.modules.splitTest.isActive(13)) {
+                $hospitalCoverToggles = $('.hospitalCoverToggles input[name="health_benefits_covertype"]'),
+                $hospitalCover = $('.Hospital_container');
+            }
 
             setupPage();
             eventSubscriptions();
@@ -51,6 +64,60 @@
                 alignTitle();
             }
         });
+
+
+        if (meerkat.modules.splitTest.isActive(13)) {
+            $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]');
+            $allHospitalButtons.on('click', function setCustomisedOptions() {
+                var $item = $(this);
+                if (currCover === 'customise') {
+                    if ($item.is(":checked")) {
+                        customisedOptions.push($item.attr('id'));
+                    } else {
+                        var ret = customisedOptions.splice(customisedOptions.indexOf($item.attr('id')), 1);
+                    }
+                }
+            });
+            var $hospitalSection = $('.hospitalCoverToggles, .coverExplanationContainer, .Hospital_container .children'),
+                $extrasSection = $('.GeneralHealth_container .children');
+            $coverType.find('input').on('click', function selectCoverType(){
+               switch($(this).val().toLowerCase()) {
+                   case 'c':
+                       $hospitalSection.slideDown();
+                       $extrasSection.slideDown();
+                       if (!$hospitalCoverToggles.is(":checked")) {
+                           $defaultCover.trigger('click').parent().addClass("active");
+                       }
+                       break;
+                   case 'h':
+                       $hospitalSection.slideDown();
+                       $extrasSection.slideUp();
+                       if (!$hospitalCoverToggles.is(":checked")) {
+                           $defaultCover.trigger('click').parent().addClass("active");
+                       }
+
+                       $extrasSection.find('input[type="checkbox"]').prop('checked', false);
+                       break;
+                   case 'e':
+                       $hospitalSection.slideUp();
+                       $extrasSection.slideDown();
+                       $hospitalCoverToggles.prop("checked", false);
+                       $allHospitalButtons.prop('checked', false).prop('disabled', false);
+                       break;
+                   default:
+                       $hospitalSection.slideUp();
+                       $extrasSection.slideUp();
+                       $hospitalCoverToggles.prop("checked", false);
+                       $allHospitalButtons.prop('checked', false).prop('disabled', false);
+                       $extrasSection.find('input[type="checkbox"]').prop('checked', false);
+                       break;
+               }
+            });
+        }
+    }
+
+    function modalEvents() {
+        // tieredLearnMore
     }
 
     function setupPage() {
@@ -58,6 +125,9 @@
             var $this = $(this);
 
             if (meerkat.modules.splitTest.isActive(13)) {
+                hospitalCoverToggleEvents();
+                modalEvents();
+
                 //This is for the split test. The classNames in the database need to remain as is for the default but we need to force an icon
                  $this.find('.category[class*="CTMNoIcon"]').each(function() {
                  var newClass = $(this).attr('class').replace('CTMNoIcon','CTM');
@@ -91,6 +161,49 @@
         }
         // For loading in, update benefits page layout
         changeLayoutByCoverType($coverType.val());
+    }
+
+    function hospitalCoverToggleEvents() {
+        var currentCover = 'mid',
+            previousCover = 'mid';
+
+        $hospitalCoverToggles.on('click', function toggleHospitalCover(){
+            currentCover = $(this).val();
+
+            // uncheck all tickboxes
+            $allHospitalButtons.prop('checked', false).prop('disabled', false);
+
+            switch(currentCover) {
+                case 'top':
+                        $allHospitalButtons.prop('checked', true);
+                    break;
+                default:
+                        var $coverButtons = $hospitalCover.find('.'+currentCover+' input[type="checkbox"]');
+                        if (currentCover !== 'customise') {
+                            $allHospitalButtons.not($coverButtons).prop('disabled', true);
+                        } /*else {
+                            if (customisedOptions.length > 0) {
+                                $coverButtons.add($hospitalCover.find('.'+customisedOptions.join(",")+' input[type="checkbox"]'));
+                            }
+                         //
+                        }*/
+
+                        // setup for customised options to be completed later
+                        $coverButtons.each(function() {
+                            $(this).prop('checked', true);
+                        });
+
+
+
+                        if (currentCover === 'customise') {
+
+                        }
+                    break;
+            }
+
+            $hospitalCover.find('.coverExplanation.'+previousCover+'Cover').addClass('hidden').end().find('.coverExplanation.'+currentCover+'Cover').removeClass('hidden');
+            previousCover = currentCover;
+        });
     }
 
     function alignTitle() {

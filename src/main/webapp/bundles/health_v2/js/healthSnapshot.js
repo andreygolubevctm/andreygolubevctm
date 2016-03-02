@@ -57,7 +57,7 @@
         $('.quoteSnapshot .default').each(function(){
             $(this)[noData ? "show" : "hide"]();
         });
-        console.log(data);
+
         // Toggle normal content rows
         showHide(data,'.quoteSnapshot .cover-for','coverFor', noData);
         showHide(data,'.quoteSnapshot .living-in','livingIn', noData);
@@ -95,7 +95,7 @@
         var hospital = fetchAllHospitalCheckedValues();
         var extras = fetchAllExtrasCheckedValues();
 
-        console.log("ASFASFASDFASF",  _.isEmpty(coverType) ? false : coverType);
+//        console.log("ASFASFASDFASF",  _.isEmpty(coverType) ? false : coverType);
         return {
             coverFor : _.isEmpty(coverFor) ? false : coverFor,
             livingIn : _.isEmpty(livingIn) ? false : livingIn,

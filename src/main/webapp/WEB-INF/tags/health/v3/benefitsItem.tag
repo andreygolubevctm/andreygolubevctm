@@ -42,16 +42,27 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 						<c:choose>
 							<c:when test="${item.getType() == 'section'}">
 								<div class="title">
-									<h4>${item.getName()}</h4>
+									<h3>Choose Your ${item.getName()}</h3>
 									<p>${colContent}</p>
 								</div>
-								<div>
-									<a href="javascript:;" class="btn btn-save benefit-category">top</a>
-									<a href="javascript:;" class="btn btn-save benefit-category">mid</a>
-									<a href="javascript:;" class="btn btn-save benefit-category">basic</a>
-									<a href="javascript:;" class="btn btn-save benefit-category">customise</a>
-									<a href="javascript:;" class="btn btn-save benefit-category">limited</a>
+								<c:if test="${item.getShortlistKey() eq 'Hospital'}">
+									<field_v2:array_radio items="top=top,mid=mid,basic=basic,customise=customise,limited=limited" xpath="${pageSettings.getVerticalCode()}/benefits/covertype" title="your Medicare card cover" required="true" className="hospitalCoverToggles" id="${name}_cover" />
+								<!--<div class="hospitalCoverToggles">
+									<a href="javascript:;" class="btn btn-save benefit-category" data-category="top">top</a>
+									<a href="javascript:;" class="btn btn-save benefit-category" data-category="mid">mid</a>
+									<a href="javascript:;" class="btn btn-save benefit-category" data-category="basic">basic</a>
+									<a href="javascript:;" class="btn btn-save benefit-category" data-category="customise">customise</a>
+									<a href="javascript:;" class="btn btn-save benefit-category" data-category="limited">limited</a>
+								</div>-->
+								<div class="coverExplanationContainer">
+								<c:set var="tieredBenefits" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "coverOptions")}' />
+								<c:forEach items="${tieredBenefits.getSupplementary()}" var="tieredBenefitsContent" >
+									<div class="<c:if test="${tieredBenefitsContent.getSupplementaryKey() != 'midCover'}">hidden</c:if> coverExplanation ${tieredBenefitsContent.getSupplementaryKey()}">
+											${tieredBenefitsContent.getSupplementaryValue()}
+									</div>
+								</c:forEach>
 								</div>
+								</c:if>
 							</c:when>
 							<c:otherwise>
 								<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" />

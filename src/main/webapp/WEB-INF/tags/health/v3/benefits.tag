@@ -17,7 +17,7 @@
 
 	<jsp:body>
 
-		<form_v2:fieldset legend="" postLegend="" >
+		<form_v2:fieldset legend="Choose Your Cover" postLegend="" >
 
 			<div class="scrollable row">
 
