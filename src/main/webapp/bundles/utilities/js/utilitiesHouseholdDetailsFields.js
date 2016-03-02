@@ -63,7 +63,9 @@
         $(document).ready(function () {
             $competitionRequiredElems = $('#utilities_resultsDisplayed_firstName, #utilities_resultsDisplayed_phoneinput, #utilities_resultsDisplayed_phone, #utilities_resultsDisplayed_email');
 
-            _toggleAdditionalEstimateDetails();
+            _toggleAdditionalElectricityDetails();
+            _toggleAdditionalGasDetails();
+
 
             var isIosXS = meerkat.modules.performanceProfiling.isIos() && meerkat.modules.deviceMediaState.get() == 'xs';
             if(isIosXS) {
@@ -99,7 +101,6 @@
 
 
     function _registerEventListeners() {
-        //$(".what-to-compare, .moving-in, .recent-electricity-bill, .recent-gas-bill").change(_toggleAdditionalEstimateDetails);
         $(".what-to-compare, .moving-in, .recent-electricity-bill").change(_toggleAdditionalElectricityDetails);
         $(".what-to-compare, .moving-in, .recent-gas-bill").change(_toggleAdditionalGasDetails);
 
@@ -359,90 +360,6 @@
 
     }
 
-    /**
-     * Toggles the additional estimate details fields which show/hide depending
-     * on if the user needs electricity/gas/both and they specify if they want to
-     * estimate based on their spend or usage.
-     * @private
-     */
-    function _toggleAdditionalEstimateDetails() {
-        console.log("in the toggleAdditionalEstimatesDetails");
-        var $additionalEstimatesElectricity = $('.electricity-details .additional-estimate-details-row'),
-            $additionalEstimatesGas = $('.gas-details .additional-estimate-details-row'),
-            $electricityInputs = $(".electricity-details"),
-            $electricityCalculations = $('.electricity-details .usage'),
-            $gasInputs = $(".gas-details"),
-            $electricityUsage = $(".electricity-usage"),
-            $gasUsage = $(".gas-usage"),
-            $movingInDate = $(".moving-in-date");
-
-        var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val(),
-            movingIn = $(".moving-in").find("input[type='radio']:checked").val(),
-            recentElectricityBill = $(".recent-electricity-bill").find("input[type='radio']:checked").val(),
-            recentGasBill = $(".recent-gas-bill").find("input[type='radio']:checked").val();
-
-        $movingInDate.toggle(movingIn === 'Y');
-        $(".recent-electricity-bill").toggle(whatToCompare === "E" || whatToCompare === "EG");
-        $(".recent-gas-bill").toggle(whatToCompare === "G" || whatToCompare === "EG");
-
-        if (whatToCompare === "E" || whatToCompare === "EG") {
-            if (movingIn === 'Y' || recentElectricityBill === 'N') {
-                $electricityInputs.show();
-                $electricityUsage.show();
-                $additionalEstimatesElectricity.hide();
-                $electricityCalculations.hide();
-            } else if (movingIn === 'N') {
-                $electricityInputs.show();
-                $electricityUsage.hide();
-                $additionalEstimatesElectricity.show();
-                _toggleElectricityMeter();
-
-            } else {
-                $electricityInputs.hide();
-            }
-
-            if (movingIn === 'N') {
-                $('.recent-electricity-bill').show();
-            } else {
-                $('.recent-electricity-bill').hide();
-                $(".electricity-meter").find("input[type='radio']").prop('checked',false);
-                $(".electricity-meter").find('.active').removeClass('active');
-            }
-
-        } else {
-            $electricityInputs.hide();
-        }
-
-        if (whatToCompare === "G" || whatToCompare === "EG") {
-            if (movingIn === 'Y' || recentGasBill === 'N') {
-                $gasInputs.show();
-                $gasUsage.show();
-                $additionalEstimatesGas.hide();
-            } else if (movingIn === 'N') {
-                //$('.recent-gas-bill').show();
-                $gasInputs.show();
-                $gasUsage.hide();
-                $additionalEstimatesGas.show();
-                /*if(recentGasBill === 'Y') {
-                    $gasInputs.show();
-                    $gasUsage.hide();
-                    $additionalEstimatesGas.show();
-                }
-                */
-            } else {
-                $gasInputs.hide();
-            }
-
-            if (movingIn === 'N') {
-               // $('.recent-gas-bill').show();
-
-            } else {
-                $('.recent-gas-bill').hide();
-            }
-        } else {
-            $gasInputs.hide();
-        }
-    }
 
     function _toggleElectricityMeter() {
         var meter = $(".electricity-meter").find("input[type='radio']:checked").val();
