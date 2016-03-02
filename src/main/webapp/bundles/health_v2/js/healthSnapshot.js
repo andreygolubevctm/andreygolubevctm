@@ -62,7 +62,11 @@
         showHide(data,'.quoteSnapshot .cover-for','coverFor', noData);
         showHide(data,'.quoteSnapshot .living-in','livingIn', noData);
         showHide(data,'.quoteSnapshot .looking-to','lookingTo', noData);
-        showHide(data,'.quoteSnapshot .cover-type','coverType', noData);
+
+        if(!noData && !_.isEmpty(data.coverType)) {
+            $('.cover-type .snapshot-items').text(data.coverType);
+        }
+
         // Populate hospital/extras
         if(!noData && !_.isEmpty(data.hospital)) {
             $box = $('.quoteSnapshot .hospital .snapshot-list');
@@ -91,19 +95,22 @@
         var coverFor = $("#health_situation_healthCvr").val();
         var livingIn = $("#health_situation_location").val();
         var lookingTo = $("#health_situation_healthSitu").val();
-        var coverType = "ASDFASDFASDF";
+        var coverType = $("#health_situation_coverType input:checked").parent().text().trim();
         var hospital = fetchAllHospitalCheckedValues();
         var extras = fetchAllExtrasCheckedValues();
 
-//        console.log("ASFASFASDFASF",  _.isEmpty(coverType) ? false : coverType);
         return {
             coverFor : _.isEmpty(coverFor) ? false : coverFor,
             livingIn : _.isEmpty(livingIn) ? false : livingIn,
             lookingTo : _.isEmpty(lookingTo) ? false : lookingTo,
-            coverType : _.isEmpty(coverType) ? coverType : coverType,
+            coverType : _.isEmpty(coverType) ? false : coverType,
             hospital : _.isEmpty(hospital) ? false : hospital,
             extras : _.isEmpty(extras) ? false : extras
         };
+    }
+
+    function getCoverType() {
+
     }
 
     function hasData(data) {

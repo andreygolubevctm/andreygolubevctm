@@ -13,27 +13,15 @@
         }
 
         // minimum 2 lines of label text for float to work properly
-        min-height: (@icon-font-size * 1.3 + 2) + ceil(@label-font-size * 2.2) + 15; // Icon height + label-font-size's line-height * 2 + margin-bottom
+        min-height: (@icon-font-size * 1.3 + 2) + ceil(@label-font-size * 2.2) + 34; // Icon height + label-font-size's line-height * 2 + margin-bottom
         margin: @icon-font-size * 0.15 + @margin-offset;
     }
 }
 
-@btn-benefit-category-bg-color: #FFF;
-@btn-benefit-category-color: #1c3e93;
-// active
-@btn-benefit-category-active-bg-color: #1c3e93;
-@btn-benefit-category-active-color: #FFF;
-// hover
-@btn-benefit-category-hover-bg-color: darken(@btn-benefit-category-bg-color, 10%);
-@btn-benefit-category-hover-color: @theme-secondary;
-// borders
-@btn-benefit-category-border-color: @btn-benefit-category-color;
-@btn-benefit-category-active-border-color: @btn-benefit-category-active-bg-color;
-@btn-benefit-category-hover-border-color: @btn-benefit-category-hover-bg-color;
-
 #benefitsForm{
 
     .hospitalCoverToggles {
+        border-spacing: 10px;
         .btn.btn-form-inverse {
             border: 1px solid @btn-benefit-category-border-color;
             background: @btn-benefit-category-bg-color;
@@ -110,6 +98,10 @@
                                 border-color: @health-benefits-icon-border-checked-color;
                                 color: #fff;
                             }
+                        }
+
+                        &:disabled + label:before {
+                            color: @health-benefits-icon-disabled-color;
                         }
                     }
 

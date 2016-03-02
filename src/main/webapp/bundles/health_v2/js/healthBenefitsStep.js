@@ -116,8 +116,24 @@
         }
     }
 
-    function modalEvents() {
-        // tieredLearnMore
+    function showModal() {
+        /*selectedProduct.callCentreNumber = meerkat.site.content.callCentreHelpNumber;
+
+        var htmlTemplate = _.template($whyPremiumsRiseTemplate.html()),
+            htmlContent = htmlTemplate(selectedProduct),
+            modalName = 'why-premiums-rising';
+
+        modalId = meerkat.modules.dialogs.show({
+            htmlContent : '<div class="'+modalName+'-wrapper"></div>',
+            hashId : modalName,
+            className: modalName,
+            closeOnHashChange : true,
+            onOpen : function(modalId) {
+                var $premiumsRising = $('.'+modalName+'-wrapper', $('#' + modalId));
+                $premiumsRising.html(htmlContent).show();
+            }
+        });
+        return modalId;*/
     }
 
     function setupPage() {
@@ -126,7 +142,10 @@
 
             if (meerkat.modules.splitTest.isActive(13)) {
                 hospitalCoverToggleEvents();
-                modalEvents();
+
+                $(document).on('click', 'a.tieredLearnMore', function showBenefitsLearnMoreModel() {
+                    showModal();
+                });
 
                 //This is for the split test. The classNames in the database need to remain as is for the default but we need to force an icon
                  $this.find('.category[class*="CTMNoIcon"]').each(function() {
