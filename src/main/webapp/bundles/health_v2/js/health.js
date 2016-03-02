@@ -114,6 +114,17 @@
 		$mainform.find('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
 	}
 
+	/**
+	 * incrementTranIdBeforeEnteringSlide() increment tranId when previous step
+	 * was in the application phase of the journey. To be called onBeforeEnter
+	 * method of questionset steps (current step is the previous step index).
+	 */
+	function incrementTranIdBeforeEnteringSlide() {
+		if(meerkat.modules.journeyEngine.getCurrentStepIndex() > 3) {
+			meerkat.modules.transactionId.getNew(3);
+		}
+	}
+
 	function setJourneyEngineSteps(){
 
 		var startStep = {
@@ -156,31 +167,6 @@
 				$healthSitHealthSitu.on('change',function() {
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
-				/*
-
-				$healthSitSuburb.bind('change',function() {
-					console.log("suburb changes on bind..");
-				});
-
-				$healthSitSuburb.on('blur',function() {
-					console.log("suburb changes..");
-					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-				});
-
-				$healthSitState.on('blur',function() {
-					console.log("state changes..");
-					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-				});
-
-				$healthSitPostCode.on('blur',function() {
-					console.log("postcode changes..");
-					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-				});
-				*/
-
-
-
-
 
 				$healthSitLocation.on('blur',function() {
 					healthChoices.setLocation($(this).val());
@@ -236,6 +222,7 @@
 				}
 
 			},
+			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onAfterEnter: function healthV2AfterEnter() {
 				// if coming from brochure site and all prefilled data are valid, let's hide the fields
 				if (meerkat.site.isFromBrochureSite === true) {
@@ -290,6 +277,7 @@
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
 				meerkat.modules.healthBenefitsStep.checkAndHideMoreBenefits();
+				incrementTranIdBeforeEnteringSlide();
 			},
 			onAfterEnter: function(event) {
 				// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter segment
@@ -331,8 +319,7 @@
 			onInitialise: function onContactInit(event){
 				meerkat.modules.resultsFeatures.fetchStructure('health');
 			},
-			onBeforeEnter:function enterContactStep(event) {
-			},
+			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onAfterEnter: function enteredContactStep(event) {
 			},
 			onAfterLeave:function leaveContactStep(event){
@@ -404,6 +391,12 @@
 
 				meerkat.modules.resultsHeaderBar.registerEventListeners();
 
+			},
+			onBeforeLeave: function(event) {
+				// Increment the transactionId
+				if (event.isBackward === true) {
+					meerkat.modules.transactionId.getNew(3);
+				}
 			},
 			onAfterLeave: function(event){
 				meerkat.modules.healthResults.stopColumnWidthTracking();
