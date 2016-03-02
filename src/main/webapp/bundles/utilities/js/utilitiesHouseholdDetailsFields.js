@@ -260,6 +260,11 @@
         meerkat.modules.dialogs.show({
             htmlContent: $('#blocked-ip-address')[0].outerHTML
         });
+
+        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+            method:'trackQuoteForms',
+            object: meerkat.modules.utilities.getTrackingFieldsObject('LocationNoQuote')
+        });
     }
 
     /**
