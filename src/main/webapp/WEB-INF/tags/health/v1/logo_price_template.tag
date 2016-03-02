@@ -35,6 +35,7 @@
                                     {{= freq === 'weekly' ? 'PER WEEK' : '' }}
                                 </span>
                             </div>
+                            <div class="lhcText">{{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}</div>
                         {{ } else { }}
                             <span class="frequencyAmount">
                                 {{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
@@ -49,7 +50,6 @@
                             {{= freq === 'weekly' ? 'per week' : '' }}
                             {{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}
                         {{ } }}
-						<div class="lhcText hidden-xs">{{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}</div>
 					{{ } else { }}
 					<div class="frequencyAmount comingSoon">Coming Soon^</div>
 					<div class="note">^Private Health insurance premiums are expected to increase on average by [6.18%]</div>
