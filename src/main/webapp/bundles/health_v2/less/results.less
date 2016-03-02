@@ -93,7 +93,6 @@
     .labelInColumn {
       .content {
         color: contrast(@feature-odd-bg-color);
-        //background: @feature-odd-bg-color;
       }
     }
   }
@@ -155,13 +154,6 @@
 
 // special cases / overrrides
 .featuresMode {
-
-  /** COLOURS **/
-
-  .help-icon {
-    //color: @feature-text-color;
-  }
-
   .promosFeature {
     .labelInColumn,
     .content {
@@ -291,10 +283,6 @@
       &.expanded > .content {
         font-family: @font-family-theme-bold;
       }
-      /*> .content.expandableHover {
-        background-color: @extras-hover-color;
-        color: white;
-      }*/
     }
   }
 
@@ -303,6 +291,7 @@
     &.affixed .compare-basket {
       display: none;
     }
+
     .compare-basket .compared-products-list .price {
       font-size: 16px;
     }
@@ -332,6 +321,7 @@
     .ambulanceSection {
       margin-top: 10px;
     }
+
     .hasShortlistableChildren {
       &.section {
         &.collapsed {
@@ -342,7 +332,6 @@
         }
       }
     }
-
 
     &.v2 {
 
@@ -390,6 +379,7 @@
     .cell.section.selection_Hospital > .children > .category.expandable:last-child .children > .feature:last-child {
       border-bottom: none;
     }
+
     .resultsOverflow .cell.section.hasShortlistableChildren > .children > .category:first-child > .content {
       border-top: none;
     }
@@ -416,10 +406,10 @@
       position: absolute;
       bottom: 10px;
       width: (@sm-results-column-width - 5);
-      @media(@md-only) {
+      @media (@md-only) {
         width: (@md-results-column-width - 10);
       }
-      @media(@lg-only) {
+      @media (@lg-only) {
         width: @lg-results-column-width;
       }
     }

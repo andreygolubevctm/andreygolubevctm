@@ -602,18 +602,19 @@
 
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
+					var paymentDetailsSection = $("#health_payment_details-selection");
 					// Show discount text if applicable
 					if (typeof selectedProduct.promo.discountText !== 'undefined' && selectedProduct.promo.discountText !== '') {
-						$("#health_payment_details-selection").find(".definition").show().html(selectedProduct.promo.discountText);
+						paymentDetailsSection.find(".definition").show().html(selectedProduct.promo.discountText);
 					} else {
-						$("#health_payment_details-selection").find(".definition").hide().empty();
+						paymentDetailsSection.find(".definition").hide().empty();
 					}
 
 					// Show warning if applicable
 					if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
-						$("#health_payment_details-selection").find(".fundWarning").show().html(selectedProduct.warningAlert);
+						paymentDetailsSection.find(".fundWarning").show().html(selectedProduct.warningAlert);
 					} else {
-						$("#health_payment_details-selection").find(".fundWarning").hide().empty();
+						paymentDetailsSection.find(".fundWarning").hide().empty();
 					}
 
 					// Insert fund into checkbox label
