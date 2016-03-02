@@ -96,6 +96,17 @@
 		}
 	}
 
+	/**
+	 * incrementTranIdBeforeEnteringSlide() increment tranId when previous step
+	 * was in the application phase of the journey. To be called onBeforeEnter
+	 * method of questionset steps (current step is the previous step index).
+	 */
+	function incrementTranIdBeforeEnteringSlide() {
+		if(meerkat.modules.journeyEngine.getCurrentStepIndex() > 4) {
+			meerkat.modules.transactionId.getNew(3);
+		}
+	}
+
 	function setJourneyEngineSteps(){
 
 		var startStep = {
@@ -171,7 +182,8 @@
 						toggleDialogueInChatCallback();
 					});
 				}
-			}
+			},
+			onBeforeEnter: incrementTranIdBeforeEnteringSlide
 		};
 
 		var detailsStep = {
@@ -244,6 +256,7 @@
 				});
 
 			},
+			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onBeforeLeave: function(event) {
 				// Store the text of the income question - for reports and audits.
 				var incomelabel = ($('#health_healthCover_income :selected').val().length > 0) ? $('#health_healthCover_income :selected').text() : '';
@@ -280,6 +293,7 @@
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefits.close();
 				meerkat.modules.navMenu.disable();
+				incrementTranIdBeforeEnteringSlide();
 			},
 			onAfterEnter: function(event) {
 				//Because it has no idea where the #navbar-main is on mobile because it's hidden and position: fixed... we force it to the top.
@@ -335,8 +349,7 @@
 				onInitialise: function onContactInit(event){
 					meerkat.modules.resultsFeatures.fetchStructure('health');
 				},
-				onBeforeEnter:function enterContactStep(event) {
-				},
+				onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 				onAfterEnter: function enteredContactStep(event) {
 					meerkat.modules.navMenu.enable();
 
@@ -391,9 +404,9 @@
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
 				} else {
-				// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
-				meerkat.modules.healthResults.resetSelectedProduct();
-					}
+					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
+					meerkat.modules.healthResults.resetSelectedProduct();
+				}
 
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
@@ -411,6 +424,12 @@
 
 				meerkat.modules.resultsHeaderBar.registerEventListeners();
 
+			},
+			onBeforeLeave: function(event) {
+				// Increment the transactionId
+				if (event.isBackward === true) {
+					meerkat.modules.transactionId.getNew(3);
+				}
 			},
 			onAfterLeave: function(event){
 				meerkat.modules.healthResults.stopColumnWidthTracking();
