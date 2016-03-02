@@ -184,6 +184,7 @@
 
                 <health_v1:choices xpathBenefits="${pageSettings.getVerticalCode()}/benefits" xpathSituation="${pageSettings.getVerticalCode()}/situation" />
 
+
                 <%-- generate the benefit fields (hidden) for form selection. --%>
                 <div class="hiddenFields">
                     <c:forEach items="${resultTemplateItems}" var="selectedValue">
@@ -193,6 +194,18 @@
                         <c:set var="fieldValue"><c:out value="${data['health/situation/accidentOnlyCover']}" escapeXml="true"/></c:set>
                     </c:if>
                     <input type="hidden" name="health_situation_accidentOnlyCover" class="benefit-item" value="${fieldValue}" />
+                    <c:set var="maxMilliToGetResults">
+                        <content:get key="maxMilliSecToWait"/>
+                    </c:set>
+                    <c:choose>
+                        <c:when test="${not empty maxMilliToGetResults}">
+                            <input type="hidden" id="maxMilliSecToWait" value="${maxMilliToGetResults}"/>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="hidden" id="maxMilliSecToWait" value="0"/>
+                        </c:otherwise>
+                    </c:choose>
+                    <input type="hidden" id="waitMessage" value="<content:get key='waitMessage'/>"/>
 
                     <field_v1:hidden xpath="health/renderingMode" />
                     <field_v1:hidden xpath="health/rebate" />

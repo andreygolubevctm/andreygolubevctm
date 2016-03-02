@@ -11,6 +11,7 @@
         isLhcApplicable = 'N',
         selectedBenefitsList,
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
+        maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
 
         templates = {
             premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
@@ -214,10 +215,7 @@
 
     function eventSubscriptions() {
 
-        var tStart = new Date().getTime();
-        console.log("the tSTart is:"+tStart);
-        var timerId;
-
+        var tStart = 0;
 
         $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function () {
             _resetSelectionsStructureObject();
@@ -245,8 +243,6 @@
         $(document).on("resultsLoaded", onResultsLoaded);
 
         $(document).on("resultsReturned", function () {
-            console.log("results have returned!!");
-            clearTimeout(timerId);
 
             meerkat.modules.utils.scrollPageTo($("header"));
 
@@ -263,6 +259,7 @@
             meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
                 meerkat.modules.coupon.renderCouponBanner();
             });
+
         });
 
         $(document).on("resultsDataReady", function () {
@@ -272,12 +269,11 @@
         });
 
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
-            timerId = _.delay(function() {
-                toggleMarketingMessage(false);
-                toggleResultsLowNumberMessage(false);
-
-            },3000);
-            meerkat.modules.journeyEngine.loadingShow('We are currently retrieving the 12 cheapest products matching your needs from our participating funds',true);
+            tStart = new Date().getTime();
+            toggleMarketingMessage(false);
+            toggleResultsLowNumberMessage(false);
+            var waitMessageVal = $("#waitMessage").val();
+            meerkat.modules.journeyEngine.loadingShow(waitMessageVal);
 
             // Hide pagination
             $('header .slide-feature-pagination, header a[data-results-pagination-control]').addClass('hidden');
@@ -300,8 +296,18 @@
                 // Setup scroll
                 Results.pagination.setupNativeScroll();
             });
+            var tEnd = new Date().getTime();
+            var tFetchFinish = (tEnd - tStart);
+            console.log("it took..."+ (tFetchFinish)+ " milliseconds to complete the request the maxMilliSec:"+maxMilliSecondsForMessage);
+            var tVariance = maxMilliSecondsForMessage - tFetchFinish;
+            console.log("we are keeping the message for "+(tVariance));
+            if(tVariance < 0 || meerkat.site.isCallCentreUser) {
+                tVariance = 0;
+            }
+            _.delay(function() {
+                meerkat.modules.journeyEngine.loadingHide();
+            },tVariance);
 
-            meerkat.modules.journeyEngine.loadingHide();
 
             if (!meerkat.site.isNewQuote && !Results.getSelectedProduct() && meerkat.site.isCallCentreUser) {
                 Results.setSelectedProduct($('.health_application_details_productId').val());
@@ -757,7 +763,6 @@
 
 
     function onResultsLoaded() {
-
         if (meerkat.modules.deviceMediaState.get() == "xs") {
             startColumnWidthTracking();
         }
