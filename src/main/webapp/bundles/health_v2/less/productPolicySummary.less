@@ -174,7 +174,7 @@
       .price {
         margin-left: 28%;
         //width: 72%;
-        @media(@sm-only) {
+        @media (@sm-only) {
           margin-left: 35%;
           //width: 68%;
         }
@@ -186,15 +186,19 @@
       // override affixed mode frequency title/text
       .frequencyAmount {
         text-align: left;
-        @media(@sm-only) {
+        @media (@sm-only) {
           font-size: 18px;
+        }
+        .ie8 & {
+          font-size: 24px;
         }
         .frequencyTitle {
           display: block;
           font-size: 12px;
-          @media(@md) {
+          @media (@md) {
             font-size: 14px;
           }
+
           margin-top: 5px;
           font-family: @font-family-theme-regular;
         }
@@ -266,6 +270,7 @@
     &.formMode .price {
       padding-top: 7px;
     }
+
     &:not(.formMode) {
       margin-bottom: 20px;
       margin-top: -52px;
