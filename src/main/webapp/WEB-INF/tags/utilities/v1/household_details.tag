@@ -95,8 +95,8 @@
 			<field_v1:hidden xpath="${xpath}/state" required="false" />
 		</form_v1:row>
 		
-		<form_v1:row label="Are you moving to this property?" helpId="413">
-			<field_v1:array_radio items="Y=Yes,N=No" id="${name}_movingIn" xpath="${xpath}/movingIn" title="if you are moving to this property" required="true" />
+		<form_v1:row label="Are you moving into this house or unit?" helpId="413">
+			<field_v1:array_radio items="Y=Yes,N=No" id="${name}_movingIn" xpath="${xpath}/movingIn" title="if you are moving into this house or unit" required="true" />
 		</form_v1:row>
 		
 		<div id="movingInContainer">
