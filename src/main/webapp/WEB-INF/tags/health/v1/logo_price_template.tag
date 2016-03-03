@@ -52,7 +52,7 @@
                         {{ } }}
 					{{ } else { }}
 					<div class="frequencyAmount comingSoon">Coming Soon^</div>
-					<div class="note">^Private Health insurance premiums are expected to increase on average by [6.18%]</div>
+					<div class="note">^Private Health insurance premiums are expected to increase on average by 5.6%</div>
 					{{ } }}
 					{{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
 					<div class="rounding">Premium may vary slightly due to rounding</div>
