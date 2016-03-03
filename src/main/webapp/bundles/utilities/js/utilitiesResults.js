@@ -340,8 +340,8 @@
     function addBillClick(event) {
 
         event.preventDefault();
-        $('#utilities_householdDetails_recentElectricityBill_Y').parent().click();
-        $('#utilities_householdDetails_recentGasBill_Y').parent().click();
+        $('#utilities_householdDetails_recentElectricityBill_Y').parent().show().click();
+        $('#utilities_householdDetails_recentGasBill_Y').parent().show().click();
 
         meerkat.modules.journeyEngine.gotoPath('start');
 

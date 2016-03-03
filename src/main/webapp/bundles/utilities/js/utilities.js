@@ -90,8 +90,6 @@
                     });
                 }
             });
-
-
         }
     }
 
@@ -121,6 +119,8 @@
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
                 meerkat.modules.utilitiesSnapshot.initYourDetailsSnapshot();
+                // Hide these rows until clicked on from the results page
+                $('.recent-electricity-bill').add('.recent-gas-bill').hide();
             },
             validation: {
                 validate: true,
