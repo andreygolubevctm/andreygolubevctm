@@ -162,7 +162,7 @@
             }
 
             // fix positioning of label and help
-            $this.find('.category[class*="CTM-"] label').each(function(){
+            $this.find('.category[class*="CTM-"] label, .category[class*="HLTicon-"] label').each(function(){
                 $el = $(this);
                 var labelTxt = $("<span/>").addClass('iconLabel').append($.trim($el.text().replace('Need Help?','')));
                 var helpLnk = $el.find('a').detach();
