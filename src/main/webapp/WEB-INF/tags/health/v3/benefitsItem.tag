@@ -65,7 +65,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 								</c:if>
 							</c:when>
 							<c:otherwise>
-								aaaa<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" />
+								<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" />
 							</c:otherwise>
 						</c:choose>
 
