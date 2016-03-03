@@ -101,8 +101,11 @@
 
 
     function _registerEventListeners() {
-        $(".what-to-compare, .moving-in, .recent-electricity-bill").change(_toggleAdditionalElectricityDetails);
-        $(".what-to-compare, .moving-in, .recent-gas-bill").change(_toggleAdditionalGasDetails);
+
+        $(".what-to-compare, .moving-in, .recent-gas-bill, .recent-electricity-bill").on("change",function () {
+            _toggleAdditionalGasDetails();
+            _toggleAdditionalElectricityDetails();
+        });
 
         $("#utilities_privacyoptin").change(_onPrivacyOptinChange);
         $(".electricity-meter").change(_toggleElectricityMeter);
@@ -267,16 +270,17 @@
     }
 
     function _toggleAdditionalElectricityDetails() {
-        var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val();
-        var movingIn = $(".moving-in").find("input[type='radio']:checked").val();
-        var recentElectricityBill = $(".recent-electricity-bill").find("input[type='radio']:checked").val();
+        var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val(),
+        movingIn = $(".moving-in").find("input[type='radio']:checked").val(),
+        recentElectricityBill = $(".recent-electricity-bill").find("input[type='radio']:checked").val(),
 
-        var $electricityUsageDetails = $('.electricity-details .electricity-usage');
-        var $electricityAdditionalDetails = $('.electricity-details .additional-estimate-details-row');
-        var $recentElecityBillField = $(".recent-electricity-bill");
+        $electricityUsageDetails = $('.electricity-details .electricity-usage'),
+        $electricityAdditionalDetails = $('.electricity-details .additional-estimate-details-row'),
+        $recentElecityBillField = $(".recent-electricity-bill"),
+        $electricityUsage = $('.electricity-details .usage'),
 
-        var $gasDetails = $(".gas-details");
-        var $electDetails = $(".electricity-details");
+        $gasDetails = $(".gas-details"),
+        $electDetails = $(".electricity-details");
 
         if (whatToCompare === "E" && !_.isUndefined(movingIn)) {
             $gasDetails.hide();
@@ -291,24 +295,31 @@
             $electricityUsageDetails.show();
             $electricityAdditionalDetails.hide();
             $recentElecityBillField.hide();
+            $electricityUsage.hide();
 
         }
-        if (movingIn === "N") {
+        else {
             if(_.isUndefined(recentElectricityBill)) {
                 $recentElecityBillField.show();
                 $electricityAdditionalDetails.hide();
                 $electricityUsageDetails.hide();
+                $electricityUsage.hide();
             }
-            if (recentElectricityBill === "N" ) {
-                $electricityUsageDetails.show();
-                $electricityAdditionalDetails.hide();
-                $recentElecityBillField.show();
+            else {
+                if (recentElectricityBill === "N" ) {
+                    $electricityUsageDetails.show();
+                    $electricityAdditionalDetails.hide();
+                    $recentElecityBillField.show();
+                    $electricityUsage.hide();
+                }
+                else {
+                    $electricityUsageDetails.hide();
+                    $electricityAdditionalDetails.show();
+                    $recentElecityBillField.show();
+                    _toggleElectricityMeter();
+                }
             }
-            else if(recentElectricityBill === "Y") {
-                $electricityUsageDetails.hide();
-                $electricityAdditionalDetails.show();
-                $recentElecityBillField.show();
-            }
+
         }
 
 
@@ -316,15 +327,15 @@
     }
 
     function _toggleAdditionalGasDetails() {
-        var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val();
-        var movingIn = $(".moving-in").find("input[type='radio']:checked").val();
-        var recentGasBill = $(".recent-gas-bill").find("input[type='radio']:checked").val();
+        var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val(),
+        movingIn = $(".moving-in").find("input[type='radio']:checked").val(),
+        recentGasBill = $(".recent-gas-bill").find("input[type='radio']:checked").val(),
 
-        var $gasUsageDetails = $(".gas-details .gas-usage");
-        var $gasAdditionalDetails = $(".gas-details .additional-estimate-details-row");
-        var $recentGasBillField = $(".recent-gas-bill");
-        var $electricityDetails = $('.electricity-details');
-        var $gasDetails = $('.gas-details');
+        $gasUsageDetails = $(".gas-details .gas-usage"),
+        $gasAdditionalDetails = $(".gas-details .additional-estimate-details-row"),
+        $recentGasBillField = $(".recent-gas-bill"),
+        $electricityDetails = $('.electricity-details'),
+        $gasDetails = $('.gas-details');
 
         if (whatToCompare == "G" && !_.isUndefined(movingIn)) {
             $electricityDetails.hide();
@@ -340,22 +351,25 @@
             $gasAdditionalDetails.hide();
             $recentGasBillField.hide();
         }
-        if (movingIn === "N") {
+        else  {
             if(_.isUndefined(recentGasBill)) {
                 $recentGasBillField.show();
                 $gasAdditionalDetails.hide();
                 $gasUsageDetails.hide();
             }
-            if (recentGasBill === "N" ) {
-                $gasUsageDetails.show();
-                $gasAdditionalDetails.hide();
-                $recentGasBillField.show();
+            else {
+                if (recentGasBill === "N" ) {
+                    $gasUsageDetails.show();
+                    $gasAdditionalDetails.hide();
+                    $recentGasBillField.show();
+                }
+                else {
+                    $gasUsageDetails.hide();
+                    $gasAdditionalDetails.show();
+                    $recentGasBillField.show();
+                }
             }
-            else if(recentGasBill === "Y") {
-                $gasUsageDetails.hide();
-                $gasAdditionalDetails.show();
-                $recentGasBillField.show();
-            }
+
         }
 
     }

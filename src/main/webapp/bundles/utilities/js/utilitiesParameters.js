@@ -15,15 +15,13 @@
     //------------------------------------------------------------------
 
     //Elements and Variables:
-    var $showLocation = $("#showLocation");
-    var $showCompareTo = $("#showCompareTo");
-    var $showMovingIn = $("#showMovingIn");
-
-    var $postcodeSuburbField =  $("div.postcode-suburb");
-    var $whatToCompareField  = $("div.what-to-compare");
-    var $movingInField = $("div.moving-in");
-
-    var $fieldSetHouseHoldDetails = $("fieldset.household-details");
+    var $showLocation,
+        $showCompareTo,
+        $showMovingIn,
+        $postcodeSuburbField,
+        $whatToCompareField,
+        $movingInField,
+        $fieldSetHouseHoldDetails;
 
 
 
@@ -46,6 +44,15 @@
     }
 
    function initParams() {
+       $showLocation = $("#showLocation"),
+       $showCompareTo = $("#showCompareTo"),
+       $showMovingIn = $("#showMovingIn"),
+
+       $postcodeSuburbField =  $("div.postcode-suburb"),
+       $whatToCompareField  = $("div.what-to-compare"),
+       $movingInField = $("div.moving-in"),
+       $fieldSetHouseHoldDetails = $("fieldset.household-details");
+
        var displayLocation = $showLocation.data("show");
        var displayCompareTo = $showCompareTo.data("show");
        var displayMovingIn = $showMovingIn.data("show");
@@ -62,28 +69,28 @@
    }
 
     function _hideWhenGasSelected() {
-        $("div.spend, div.days, div.usage").hide();
+        $(".gas-details div.spend,.gas-details div.days, .gas-details div.usage").hide();
     }
 
-    function _hideWhenElectiricySelected() {
-        $("div.spend, div.days, div.electricity-meter").hide();
+    function _hideWhenElectritySelected() {
+        $(".electricity-details div.spend,.electricity-details div.days, .electricity-details div.electricity-meter").hide();
     }
 
 
 
     function initialState() {
-        var movingIn = $(".moving-in").find("input[type='radio']:checked").val();
-        var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val();
+        var movingIn = $movingInField.find("input[type='radio']:checked").val();
+        var whatToCompare = $whatToCompareField.find("input[type='radio']:checked").val();
         if(_.isEqual(movingIn,"N") ) {
             switch(whatToCompare) {
                 case "G":
                     _hideWhenGasSelected();
                     break;
                 case "E":
-                    _hideWhenElectiricySelected();
+                    _hideWhenElectritySelected();
                     break;
                 default:
-                    _hideWhenElectiricySelected();
+                    _hideWhenElectritySelected();
                     _hideWhenGasSelected();
             }
         }
