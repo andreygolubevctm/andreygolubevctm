@@ -106,6 +106,7 @@
 			
 	<jsp:attribute name="vertical_settings">
 		<travel:settings />
+		<travel:parameter/>
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
