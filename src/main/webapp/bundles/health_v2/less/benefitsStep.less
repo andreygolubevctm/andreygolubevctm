@@ -90,7 +90,11 @@
                 .checkbox {
                     padding:0;
 
-                    input{
+                    input {
+                        &:disabled + label:before {
+                            color: @health-benefits-icon-disabled-color;
+                        }
+
                         &:checked,
                         &.checked {
                             & + label:before {
@@ -98,10 +102,6 @@
                                 border-color: @health-benefits-icon-border-checked-color;
                                 color: #fff;
                             }
-                        }
-
-                        &:disabled + label:before {
-                            color: @health-benefits-icon-disabled-color;
                         }
                     }
 

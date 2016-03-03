@@ -1,11 +1,11 @@
 @font-face {
 	font-family: 'ctm-health';
-	src:url('../../../../assets/fonts/ctm-health.eot?20160112');
-	src:url('../../../../assets/fonts/ctm-health.eot#iefix20160112') format('embedded-opentype'),
-	url('../../../../assets/fonts/ctm-health.woff2?20160112') format('woff2'),
-	url('../../../../assets/fonts/ctm-health.ttf?20160112') format('truetype'),
-	url('../../../../assets/fonts/ctm-health.woff?20160112') format('woff'),
-	url('../../../../assets/fonts/ctm-health.svg?20160112#ctm-health') format('svg');
+	src:url('../../../../assets/fonts/ctm-health.eot?20160303');
+	src:url('../../../../assets/fonts/ctm-health.eot#iefix20160303') format('embedded-opentype'),
+	url('../../../../assets/fonts/ctm-health.woff2?20160303') format('woff2'),
+	url('../../../../assets/fonts/ctm-health.ttf?20160303') format('truetype'),
+	url('../../../../assets/fonts/ctm-health.woff?20160303') format('woff'),
+	url('../../../../assets/fonts/ctm-health.svg?20160303#ctm-health') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -24,10 +24,11 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.hasIcons .checkbox input + label:before {
+.healthBenefits input + label:before ,
+.health-situation-healthCvrType label:before {
 	font-family: 'ctm-health';
 }
-
+/*
 .hasIcons .CTM-hospital .checkbox input + label,
 li.CTM-hospital{
 	&:before { content: "\e905"; }
@@ -92,9 +93,9 @@ li.CTM-psychology{
 li.CTM-plus{
 	&:before { font-family:'framework_font'; content: "\e929"; }
 }
-
+*/
 /* These all need to be replaced */
-
+/*
 .hasIcons .CTM-assistedreproduction .checkbox input + label,
 li.CTM-assistedreproduction{
 	&:before { content: "\e90c"; }
@@ -131,7 +132,7 @@ li.CTM-rehabilitation{
 
 
 /* ---------------------------*/
-
+/*
 
 li.CTMNoIcon-assistedreproduction{
 	&:before { content: "\e90e"; }
@@ -158,7 +159,165 @@ li.CTMNoIcon-sterilisation{
 	&:before { content: "\e91d"; }
 }
 
-/* These all need to be replaced Cover type*/
+/* These all need to be replaced Cover type
 .health-situation-healthCvrType label {
 	&:before { content: "\e91d"; }
+}*/
+
+.icon-hospital-extras:before {
+	content: "\e920";
+}
+
+.icon-hospital-only:before {
+	content: "\e905";
+}
+
+.icon-extras-only:before {
+	content: "\e904";
+}
+
+.healthBenefits {
+	.HLTicon-hospital label:before {
+		content: "\e906";
+	}
+
+	.HLTicon-heart-surgery label:before {
+		content: "\e910";
+	}
+
+	.HLTicon-birth-related label:before {
+		content: "\e91b";
+	}
+
+	.HLTicon-assisted-reproduction label:before {
+		content: "\e90e";
+	}
+
+	.HLTicon-major-eye-surgery label:before {
+		content: "\e913";
+	}
+
+	.HLTicon-joint-replacement label:before {
+		content: "\e911";
+	}
+
+	.HLTicon-cosmetic-surgery label:before {
+		content: "\e919";
+	}
+
+	.HLTicon-sterilisation label:before {
+		content: "\e91d";
+	}
+
+	.HLTicon-gastric-banding label:before {
+		content: "\e91e";
+	}
+
+	.HLTicon-dialysis label:before {
+		content: "\e90d";
+	}
+
+	.HLTicon-palliative-care label:before {
+		content: "\e917";
+	}
+
+	.HLTicon-in-hospital-rehabilitation label:before {
+		content: "\e91f";
+	}
+
+	.HLTicon-general-dental label:before {
+		content: "\e90f";
+	}
+
+	.HLTicon-major-dental label:before {
+		content: "\e912";
+	}
+
+	.HLTicon-optical label:before {
+		content: "\e916";
+	}
+
+	.HLTicon-physiotherapy label:before {
+		content: "\e918";
+	}
+
+	.HLTicon-chiropractor label:before {
+		content: "\e91c";
+	}
+
+	.HLTicon-podiatry label:before {
+		content: "\e91a";
+	}
+
+	.HLTicon-acupuncture label:before {
+		content: "\e90b";
+	}
+
+	.HLTicon-acupuncture label:before {
+		content: "\e90b";
+	}
+
+	.HLTicon-naturopathy label:before {
+		content: "\e915";
+	}
+
+	.HLTicon-remedial-massage label:before {
+		content: "\e914";
+	}
+
+	.HLTicon-in-hospital-psychiatry label:before {
+		content: "\e90c";
+	}
+
+	.HLTicon-endodontic label:before {
+		content: "\e929";
+	}
+
+	.HLTicon-orthodontic label:before {
+		content: "\e923";
+	}
+
+	.HLTicon-psychology label:before {
+		content: "\e92c";
+	}
+
+	.HLTicon-glucose-monitor label:before {
+		content: "\e927";
+	}
+
+	.HLTicon-hearing-aids label:before {
+		content: "\e926";
+	}
+
+	.HLTicon-non-pbs-pharm label:before {
+		content: "\e924";
+	}
+
+	.HLTicon-orthotics label:before {
+		content: "\e922";
+	}
+
+	.HLTicon-speech-therapy label:before {
+		content: "\e921";
+	}
+
+	.HLTicon-occupational-therapy label:before {
+		content: "\e92b";
+	}
+
+	.HLTicon-dietetics label:before {
+		content: "\e92a";
+	}
+
+	.HLTicon-eye-therapy label:before {
+		content: "\e928";
+	}
+
+	.HLTicon-lifestyle-products label:before {
+		content: "\e925";
+	}
+
+	.HLTicon-special-features label:before {
+
+	}
 }

@@ -28,7 +28,7 @@
 
             // Store the jQuery objects
             $coverType = $('#health_situation_coverType');
-            $defaultCover = $('#health_benefits_covertype_mid');
+            $defaultCover = $('#health_benefits_covertype_customise');
             $benefitsForm = $('#benefitsForm');
             $hiddenFields = $('#mainform').find('.hiddenFields');
 
@@ -78,8 +78,8 @@
                     }
                 }
             });
-            var $hospitalSection = $('.hospitalCoverToggles, .coverExplanationContainer, .Hospital_container .children'),
-                $extrasSection = $('.GeneralHealth_container .children');
+            var $hospitalSection = $('.Hospital_container').closest('fieldset'),
+                $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
             $coverType.find('input').on('click', function selectCoverType(){
                switch($(this).val().toLowerCase()) {
                    case 'c':
@@ -117,11 +117,9 @@
     }
 
     function showModal() {
-        /*selectedProduct.callCentreNumber = meerkat.site.content.callCentreHelpNumber;
-
-        var htmlTemplate = _.template($whyPremiumsRiseTemplate.html()),
-            htmlContent = htmlTemplate(selectedProduct),
-            modalName = 'why-premiums-rising';
+        var htmlTemplate = _.template($('#benefits-explanation').html()),
+            htmlContent = htmlTemplate(),
+            modalName = 'benefits-learn-more';
 
         modalId = meerkat.modules.dialogs.show({
             htmlContent : '<div class="'+modalName+'-wrapper"></div>',
@@ -129,11 +127,11 @@
             className: modalName,
             closeOnHashChange : true,
             onOpen : function(modalId) {
-                var $premiumsRising = $('.'+modalName+'-wrapper', $('#' + modalId));
-                $premiumsRising.html(htmlContent).show();
+                var $benefitsLearnMore = $('.'+modalName+'-wrapper', $('#' + modalId));
+                $benefitsLearnMore.html(htmlContent).show();
             }
         });
-        return modalId;*/
+        return modalId;
     }
 
     function setupPage() {
@@ -152,6 +150,10 @@
                  var newClass = $(this).attr('class').replace('CTMNoIcon','CTM');
                     $(this).removeClass().addClass(newClass);
                  });
+
+                // setup icons
+                $('.health-situation-healthCvrType').find('label:first-child').addClass("icon-hospital-extras").end().find('label:nth-child(2)').addClass('icon-hospital-only').end().find('label:last-child').addClass('icon-extras-only');
+
                 $this.find('.category[class*="short-list-item"]').wrapAll('<div class="hasIcons"></div>');
             } else {
                 // wrap icons and non-icons items so we can style them differently
@@ -183,8 +185,9 @@
     }
 
     function hospitalCoverToggleEvents() {
-        var currentCover = 'mid',
-            previousCover = 'mid';
+        var currentCover = 'customise',
+            previousCover = 'customise',
+            $hospitalBenefitsSection = $('.Hospital_container .children');
 
         $hospitalCoverToggles.on('click', function toggleHospitalCover(){
             currentCover = $(this).val();
@@ -194,30 +197,35 @@
 
             switch(currentCover) {
                 case 'top':
+                    $hospitalBenefitsSection.slideDown();
                         $allHospitalButtons.prop('checked', true);
                     break;
-                default:
-                        var $coverButtons = $hospitalCover.find('.'+currentCover+' input[type="checkbox"]');
-                        if (currentCover !== 'customise') {
-                            $allHospitalButtons.not($coverButtons).prop('disabled', true);
-                        } /*else {
-                            if (customisedOptions.length > 0) {
-                                $coverButtons.add($hospitalCover.find('.'+customisedOptions.join(",")+' input[type="checkbox"]'));
-                            }
-                         //
-                        }*/
+                case 'limited':
+                    $hospitalBenefitsSection.slideUp(function(){
+                        $(this).prop('checked', false);
+                    });
 
-                        // setup for customised options to be completed later
-                        $coverButtons.each(function() {
-                            $(this).prop('checked', true);
-                        });
-
-
-
-                        if (currentCover === 'customise') {
-
-                        }
                     break;
+                default:
+                    $hospitalBenefitsSection.slideDown();
+                    var $coverButtons = $hospitalCover.find('.'+currentCover+' input[type="checkbox"]');
+                    if (currentCover !== 'customise') {
+                        $allHospitalButtons.not($coverButtons);
+                    } else {
+                        $coverButtons = $hospitalCover.find('.'+previousCover+' input[type="checkbox"], .customise input[type="checkbox"]');
+                    }
+
+                    // setup for customised options to be completed later
+                    $coverButtons.each(function() {
+                        $(this).prop('checked', true);
+                    });
+                break;
+            }
+
+            // disable all buttons if customise is not selected
+            if (currentCover !== 'customise')
+            {
+                $allHospitalButtons.prop('disabled', true);
             }
 
             $hospitalCover.find('.coverExplanation.'+previousCover+'Cover').addClass('hidden').end().find('.coverExplanation.'+currentCover+'Cover').removeClass('hidden');

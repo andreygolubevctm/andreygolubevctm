@@ -65,25 +65,21 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 								</c:if>
 							</c:when>
 							<c:otherwise>
-								<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" />
+								aaaa<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" />
 							</c:otherwise>
 						</c:choose>
 
 						<c:if test="${item.hasShortlistableChildren()}">
-							<div class="children">
+							<div class="children healthBenefits">
 								<c:forEach items="${item.getChildren()}" var="selectedValue">
+									<c:if test="${selectedValue.isShortlistable()}">
 									<%--<health_v3:benefitsItem item="${selectedValue}" />--%>
 									<div class="categoriesCell ${colWidthValue} short-list-item ${selectedValue.getClassString()} ${selectedValue.getShortlistKey()}_container">
 									<!-- This is a duplicate of the row above and needs to be cleaned up in the .less-->
 									<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getName()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" />
 									</div>
+									</c:if>
 								</c:forEach>
-								<%--<div class="categoriesCell category CTM-plus">--%>
-									<%--<div class="checkbox">--%>
-										<%--<input type="hidden" name="CTM_plus" class="checkbox" />--%>
-										<%--<label>View more benefits</label>--%>
-									<%--</div>--%>
-								<%--</div>--%>
 							</div>
 						</c:if>
 					</div>
@@ -91,8 +87,6 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 			</div>
 		</div>
 	</form_v2:fieldset>
-
-
 
 		<%-- Hospital/Extra only side bar --%>
 		<c:if test="${item.getType() == 'section'}">
@@ -106,6 +100,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 						<ul class="top-5-benefits">
 							<c:forEach items="${item.getChildren()}" var="selectedValue" end="${loopCount}">
 								<c:if test="${selectedValue.isShortlistable()}">
+
 									<li class="${selectedValue.getClassString()}">${selectedValue.getName()}
 										<field_v2:help_icon helpId="${selectedValue.getHelpId()}" position="${helpPosition}" tooltipClassName="${helpClassName}" />
 									</li>
