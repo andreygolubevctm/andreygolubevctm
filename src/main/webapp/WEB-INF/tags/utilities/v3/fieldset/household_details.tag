@@ -61,7 +61,7 @@
         <content:get key="enableMovingInDateField"/>
     </c:set>
     <c:choose>
-        <c:when test="${enableMovingDate eq true}">
+        <c:when test="${enableMovingDate eq 'Y'}">
             <c:set var="fieldXPath" value="${xpath}/movingInDate" />
             <form_v3:row label="What date are you moving in?" fieldXpath="${fieldXPath}" className="clear moving-in-date">
                 <field_v2:basic_date xpath="${fieldXPath}"
