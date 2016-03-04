@@ -176,148 +176,97 @@ li.CTMNoIcon-sterilisation{
 	content: "\e904";
 }
 
+.benefitClass(@class, @labelClass, @content) {
+	.@{class} label {
+		& when not (@labelClass = '') {
+			.@{labelClass}:before {
+				font-family: 'ctm-health';
+				content: @content;
+				font-size: 26px;
+				color: @benefits-xs-icon-color;
+				vertical-align: top;
+			}
+		}
+		& when (@labelClass = '') {
+			&:before {
+				content: @content;
+			}
+		}
+	}
+}
+
 .healthBenefits {
-	.HLTicon-hospital label:before {
-		content: "\e906";
-	}
+	.benefitClass(HLTicon-hospital, '', "\e906");
+	.benefitClass(HLTicon-heart-surgery, '', "\e910");
+	.benefitClass(HLTicon-birth-related, '', "\e91b");
+	.benefitClass(HLTicon-assisted-reproduction, '', "\e90e");
+	.benefitClass(HLTicon-major-eye-surgery, '', "\e913");
+	.benefitClass(HLTicon-joint-replacement, '', "\e911");
+	.benefitClass(HLTicon-cosmetic-surgery, '', "\e919");
+	.benefitClass(HLTicon-sterilisation, '', "\e91d");
+	.benefitClass(HLTicon-gastric-banding, '', "\e91e");
+	.benefitClass(HLTicon-dialysis, '', "\e90d");
+	.benefitClass(HLTicon-palliative-care, '', "\e917");
+	.benefitClass(HLTicon-in-hospital-rehabilitation, '', "\e91f");
+	.benefitClass(HLTicon-general-dental, '', "\e90f");
+	.benefitClass(HLTicon-major-dental, '', "\e912");
+	.benefitClass(HLTicon-optical, '', "\e916");
+	.benefitClass(HLTicon-physiotherapy, '', "\e918");
+	.benefitClass(HLTicon-chiropractor, '', "\e91c");
+	.benefitClass(HLTicon-podiatry, '', "\e91a");
+	.benefitClass(HLTicon-acupuncture, '', "\e90b");
+	.benefitClass(HLTicon-naturopathy, '', "\e915");
+	.benefitClass(HLTicon-remedial-massage, '', "\e914");
+	.benefitClass(HLTicon-in-hospital-psychiatry, '', "\e90c");
+	.benefitClass(HLTicon-endodontic, '', "\e929");
+	.benefitClass(HLTicon-orthodontic, '', "\e923");
+	.benefitClass(HLTicon-psychology, '', "\e92c");
+	.benefitClass(HLTicon-glucose-monitor, '', "\e927");
+	.benefitClass(HLTicon-hearing-aids, '', "\e926");
+	.benefitClass(HLTicon-non-pbs-pharm, '', "\e924");
+	.benefitClass(HLTicon-orthotics, '', "\e922");
+	.benefitClass(HLTicon-speech-therapy, '', "\e921");
+	.benefitClass(HLTicon-occupational-therapy, '', "\e92b");
+	.benefitClass(HLTicon-dietetics, '', "\e92a");
+	.benefitClass(HLTicon-eye-therapy, '', "\e928");
+	.benefitClass(HLTicon-lifestyle-products, '', "\e925");
+}
 
-	.HLTicon-heart-surgery label:before {
-		content: "\e910";
-	}
-
-	.HLTicon-birth-related label:before {
-		content: "\e91b";
-	}
-
-	.HLTicon-assisted-reproduction label:before {
-		content: "\e90e";
-	}
-
-	.HLTicon-major-eye-surgery label:before {
-		content: "\e913";
-	}
-
-	.HLTicon-joint-replacement label:before {
-		content: "\e911";
-	}
-
-	.HLTicon-cosmetic-surgery label:before {
-		content: "\e919";
-	}
-
-	.HLTicon-sterilisation label:before {
-		content: "\e91d";
-	}
-
-	.HLTicon-gastric-banding label:before {
-		content: "\e91e";
-	}
-
-	.HLTicon-dialysis label:before {
-		content: "\e90d";
-	}
-
-	.HLTicon-palliative-care label:before {
-		content: "\e917";
-	}
-
-	.HLTicon-in-hospital-rehabilitation label:before {
-		content: "\e91f";
-	}
-
-	.HLTicon-general-dental label:before {
-		content: "\e90f";
-	}
-
-	.HLTicon-major-dental label:before {
-		content: "\e912";
-	}
-
-	.HLTicon-optical label:before {
-		content: "\e916";
-	}
-
-	.HLTicon-physiotherapy label:before {
-		content: "\e918";
-	}
-
-	.HLTicon-chiropractor label:before {
-		content: "\e91c";
-	}
-
-	.HLTicon-podiatry label:before {
-		content: "\e91a";
-	}
-
-	.HLTicon-acupuncture label:before {
-		content: "\e90b";
-	}
-
-	.HLTicon-acupuncture label:before {
-		content: "\e90b";
-	}
-
-	.HLTicon-naturopathy label:before {
-		content: "\e915";
-	}
-
-	.HLTicon-remedial-massage label:before {
-		content: "\e914";
-	}
-
-	.HLTicon-in-hospital-psychiatry label:before {
-		content: "\e90c";
-	}
-
-	.HLTicon-endodontic label:before {
-		content: "\e929";
-	}
-
-	.HLTicon-orthodontic label:before {
-		content: "\e923";
-	}
-
-	.HLTicon-psychology label:before {
-		content: "\e92c";
-	}
-
-	.HLTicon-glucose-monitor label:before {
-		content: "\e927";
-	}
-
-	.HLTicon-hearing-aids label:before {
-		content: "\e926";
-	}
-
-	.HLTicon-non-pbs-pharm label:before {
-		content: "\e924";
-	}
-
-	.HLTicon-orthotics label:before {
-		content: "\e922";
-	}
-
-	.HLTicon-speech-therapy label:before {
-		content: "\e921";
-	}
-
-	.HLTicon-occupational-therapy label:before {
-		content: "\e92b";
-	}
-
-	.HLTicon-dietetics label:before {
-		content: "\e92a";
-	}
-
-	.HLTicon-eye-therapy label:before {
-		content: "\e928";
-	}
-
-	.HLTicon-lifestyle-products label:before {
-		content: "\e925";
-	}
-
-	.HLTicon-special-features label:before {
-
+@media(@xs-only){
+	.j13abtest .healthBenefits {
+		.benefitClass(HLTicon-hospital, iconLabel, "\e906");
+		.benefitClass(HLTicon-heart-surgery, iconLabel, "\e910");
+		.benefitClass(HLTicon-birth-related, iconLabel, "\e91b");
+		.benefitClass(HLTicon-assisted-reproduction, iconLabel, "\e90e");
+		.benefitClass(HLTicon-major-eye-surgery, iconLabel, "\e913");
+		.benefitClass(HLTicon-joint-replacement, iconLabel, "\e911");
+		.benefitClass(HLTicon-cosmetic-surgery, iconLabel, "\e919");
+		.benefitClass(HLTicon-sterilisation, iconLabel, "\e91d");
+		.benefitClass(HLTicon-gastric-banding, iconLabel, "\e91e");
+		.benefitClass(HLTicon-dialysis, iconLabel, "\e90d");
+		.benefitClass(HLTicon-palliative-care, iconLabel, "\e917");
+		.benefitClass(HLTicon-in-hospital-rehabilitation, iconLabel, "\e91f");
+		.benefitClass(HLTicon-general-dental, iconLabel, "\e90f");
+		.benefitClass(HLTicon-major-dental, iconLabel, "\e912");
+		.benefitClass(HLTicon-optical, iconLabel, "\e916");
+		.benefitClass(HLTicon-physiotherapy, iconLabel, "\e918");
+		.benefitClass(HLTicon-chiropractor, iconLabel, "\e91c");
+		.benefitClass(HLTicon-podiatry, iconLabel, "\e91a");
+		.benefitClass(HLTicon-acupuncture, iconLabel, "\e90b");
+		.benefitClass(HLTicon-naturopathy, iconLabel, "\e915");
+		.benefitClass(HLTicon-remedial-massage, iconLabel, "\e914");
+		.benefitClass(HLTicon-in-hospital-psychiatry, iconLabel, "\e90c");
+		.benefitClass(HLTicon-endodontic, iconLabel, "\e929");
+		.benefitClass(HLTicon-orthodontic, iconLabel, "\e923");
+		.benefitClass(HLTicon-psychology, iconLabel, "\e92c");
+		.benefitClass(HLTicon-glucose-monitor, iconLabel, "\e927");
+		.benefitClass(HLTicon-hearing-aids, iconLabel, "\e926");
+		.benefitClass(HLTicon-non-pbs-pharm, iconLabel, "\e924");
+		.benefitClass(HLTicon-orthotics, iconLabel, "\e922");
+		.benefitClass(HLTicon-speech-therapy, iconLabel, "\e921");
+		.benefitClass(HLTicon-occupational-therapy, iconLabel, "\e92b");
+		.benefitClass(HLTicon-dietetics, iconLabel, "\e92a");
+		.benefitClass(HLTicon-eye-therapy, iconLabel, "\e928");
+		.benefitClass(HLTicon-lifestyle-products, iconLabel, "\e925");
 	}
 }
