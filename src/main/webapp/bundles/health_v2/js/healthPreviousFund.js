@@ -20,14 +20,14 @@
             $primaryFund = $('#clientFund').find('select');
             $partnerFund = $('#partnerFund').find('select');
             meerkat.messaging.subscribe(moduleEvents.POPULATE_PRIMARY, coverChangePrimary);
-            meerkat.messaging.subscribe(moduleEvents.POPULATE_PARTNER, coverChangeEventPartner);
+            meerkat.messaging.subscribe(moduleEvents.POPULATE_PARTNER, coverChangePartner);
         });
     }
 
     function coverChangePrimary(hasCover){
         coverChange( $primaryFund , hasCover);
     }
-    function coverChangeEventPartner(hasCover){
+    function coverChangePartner(hasCover){
         coverChange($partnerFund , hasCover);
     }
 
