@@ -297,8 +297,9 @@ public class RequestAdapter {
         }
     }
 
-    public static MoreInfoRequest adapt(Brand brand, String productId, String coverType, Optional<LocalDateTime> requestAt) {
+    public static MoreInfoRequest adapt(Long transactionId, Brand brand, String productId, String coverType, Optional<LocalDateTime> requestAt) {
         MoreInfoRequest request = new MoreInfoRequest();
+        request.setTransactionId(transactionId);
         request.setBrandCode(brand.getCode());
         request.setProductId(productId);
         request.setCoverType(coverType);

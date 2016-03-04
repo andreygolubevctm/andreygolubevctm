@@ -12,6 +12,8 @@ public class MoreInfoRequest {
 
     private LocalDateTime requestAt;
 
+    private Long transactionId;
+
     public String getBrandCode() {
         return brandCode;
     }
@@ -42,5 +44,13 @@ public class MoreInfoRequest {
 
     public void setRequestAt(LocalDateTime requestAt) {
         this.requestAt = requestAt;
+    }
+
+    public Long getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(Long transactionId) {
+        this.transactionId = transactionId;
     }
 }

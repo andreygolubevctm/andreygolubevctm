@@ -123,13 +123,13 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteReq
                 .collect(toList());
     }
 
-    public HomeMoreInfo getMoreInfo(Brand brand, String productId, String type, Optional<LocalDateTime> requestAt, Optional<String> environmentOverride) throws Exception {
+    public HomeMoreInfo getMoreInfo(Long transactionId, Brand brand, String productId, String type, Optional<LocalDateTime> requestAt, Optional<String> environmentOverride) throws Exception {
 
         QuoteServiceProperties serviceProperties = getQuoteServiceProperties("homeQuoteServiceBER", brand, HOME.getCode(), environmentOverride);
 
         ObjectMapper objectMapper = ObjectMapperUtil.getObjectMapper();
 
-        String jsonRequest = objectMapper.writeValueAsString(RequestAdapter.adapt(brand, productId, type, requestAt));
+        String jsonRequest = objectMapper.writeValueAsString(RequestAdapter.adapt(transactionId, brand, productId, type, requestAt));
 
         SimpleConnection connection = new SimpleConnection();
         connection.setRequestMethod("POST");

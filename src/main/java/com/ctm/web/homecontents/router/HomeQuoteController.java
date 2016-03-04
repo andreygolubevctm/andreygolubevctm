@@ -10,7 +10,6 @@ import com.ctm.web.homecontents.model.form.HomeRequest;
 import com.ctm.web.homecontents.model.results.HomeMoreInfo;
 import com.ctm.web.homecontents.model.results.HomeResult;
 import com.ctm.web.homecontents.services.HomeQuoteService;
-import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,9 +63,10 @@ public class HomeQuoteController extends CommonQuoteRouter {
             method= RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public HomeMoreInfo moreInfo(@RequestParam("code") String productId, @RequestParam("type") String type,
+                                 @RequestParam("transactionId") Long transactionId,
                                  @RequestParam(value = "environmentOverride", required = false) String environmentOverride, HttpServletRequest request) throws Exception {
         Brand brand = initRouter(request, HOME);
-        return homeService.getMoreInfo(brand, productId, type, getApplicationDate(request), Optional.ofNullable(environmentOverride));
+        return homeService.getMoreInfo(transactionId, brand, productId, type, getApplicationDate(request), Optional.ofNullable(environmentOverride));
     }
 
 }
