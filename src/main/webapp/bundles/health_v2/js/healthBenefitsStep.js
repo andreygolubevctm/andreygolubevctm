@@ -12,7 +12,6 @@
         $defaultCover,
         $hasIconsDiv,
         currCover = 'customise',
-        prevCover = '',
         customisedOptions = [],
         changedByCallCentre = false;
 
@@ -217,7 +216,8 @@
     function hospitalCoverToggleEvents() {
         var currentCover = 'customise',
             previousCover = 'customise',
-            $hospitalBenefitsSection = $('.Hospital_container .children');
+            $hospitalBenefitsSection = $('.Hospital_container .children'),
+            $limitedCover = $('#health_situation_accidentOnlyCover');
 
         $hospitalCoverToggles.on('click', function toggleHospitalCover(){
             var $item = $(this);
@@ -232,6 +232,7 @@
 
             // uncheck all tickboxes
             $allHospitalButtons.prop('checked', false).prop('disabled', false);
+            $limitedCover.prop('checked', false);
 
             switch(currentCover) {
                 case 'top':
@@ -241,6 +242,8 @@
                 case 'limited':
                     $hospitalBenefitsSection.slideUp(function(){
                         $(this).prop('checked', false);
+                        $limitedCover.prop('checked', true);
+                        $("input[name='health_benefits_benefitsExtras_Private Hospital']").prop('checked', true);
                     });
 
                     break;

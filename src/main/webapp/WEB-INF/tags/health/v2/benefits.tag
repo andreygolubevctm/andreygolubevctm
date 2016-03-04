@@ -36,7 +36,7 @@
 
 						<div class="col-sm-12 short-list-item section expandable collapsed accidentCover">
 							<div class="children">
-								<h3 class="subTitle">Accident-only Cover</h3>
+								<h3 class="subTitle">Limited Cover</h3>
 								<div class="noIcons">
 									<div class="categoriesCell short-list-item category expandable collapsed">
 										<c:set var="fieldXpath" value="${xpath}/accidentOnlyCover" />
