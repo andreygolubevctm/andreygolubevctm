@@ -139,9 +139,11 @@
 			});
 		}
 
-		// render dual pricing
-		meerkat.modules.healthDualPricing.initHealthDualPricing();
-		meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', meerkat.modules.moreInfo.getProduct(), false, true);
+		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+			// render dual pricing
+			meerkat.modules.healthDualPricing.initHealthDualPricing();
+			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', meerkat.modules.moreInfo.getProduct(), false, true);
+		}
 
 		// hide the sidebar frequncy. only needed for payment page
 		$('.hasDualPricing .sidebarFrequency').hide();

@@ -1,5 +1,7 @@
 package com.ctm.web.health.model.request;
 
+import com.ctm.web.core.validation.Name;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -22,7 +24,8 @@ public class Payment {
 	
 	@Pattern(regexp = "[\\w ]+")
 	public String gatewayNumber;
-	@Pattern(regexp = "[a-zA-Z ]+")
+
+	@Name
 	public String gatewayName;
 
 	@Valid

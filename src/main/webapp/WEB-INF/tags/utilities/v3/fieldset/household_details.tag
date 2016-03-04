@@ -48,13 +48,13 @@
     </form_v3:row>
 
     <c:set var="fieldXPath" value="${xpath}/movingIn" />
-    <form_v3:row label="Are you moving to this property?" fieldXpath="${fieldXPath}" className="clear moving-in" helpId="413">
+    <form_v3:row label="Are you moving into this house or unit?" fieldXpath="${fieldXPath}" className="clear moving-in" helpId="413">
         <field_v2:array_radio xpath="${fieldXPath}"
                                required="true"
                                className=""
                                items="Y=Yes,N=No"
                                id="${go:nameFromXpath(fieldXPath)}"
-                               title="if you are moving to this property." />
+                               title="if you are moving into this house or unit." />
     </form_v3:row>
 
     <c:set var="fieldXPath" value="${xpath}/movingInDate" />
