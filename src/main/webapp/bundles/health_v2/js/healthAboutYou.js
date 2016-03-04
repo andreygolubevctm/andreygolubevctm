@@ -1,5 +1,7 @@
 ;(function($){
 
+	// TODO: write unit test once DEVOPS-31 goes live
+
 	var meerkat = window.meerkat,
 		$aboutYouContainer,
 		$primaryCurrentCover,
@@ -183,8 +185,18 @@
 		}
 	}
 
+	function getPartnerCurrentCover() {
+		return $partnerCurrentCover.find(':checked').val();
+	}
+
+	function getPrimaryCurrentCover() {
+		return $primaryCurrentCover.find(':checked').val();
+	}
+
 	meerkat.modules.register('healthAboutYou', {
-		init: init
+		init: init,
+		getPartnerCurrentCover : getPartnerCurrentCover,
+		getPrimaryCurrentCover : getPrimaryCurrentCover
 	});
 
 })(jQuery);
