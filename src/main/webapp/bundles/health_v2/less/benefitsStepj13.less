@@ -1,6 +1,6 @@
 #benefitsForm .j13abtest{
     margin-top: 30px;
-    .hospitalCoverToggles {
+    .hospitalCoverToggles.hidden-xs {
         display:table;
         table-layout: fixed;
         width: 100%;
@@ -18,6 +18,29 @@
                 background: @btn-benefit-category-active-bg-color;
                 color: @btn-benefit-category-active-color;
                 outline: 0;
+            }
+        }
+    }
+
+    .hospitalCoverToggles.visible-xs {
+        .btn-group-justified {
+            margin-bottom: 5px;
+            .btn {
+                padding: 7px;
+            }
+        }
+
+        .nonComprehensiveCover {
+            text-align:center;
+            .btn {
+                display:block;
+                padding: 7px;
+                margin-top: 5px;
+                margin-bottom: 10px;
+            }
+
+            .limited {
+                font-size: @font-size-small;
             }
         }
     }
@@ -57,23 +80,37 @@
         display:block;
     }
 
+    @media(@xs-only) {
+        .healthBenefits .checkbox input {
+            + label {
+                line-height: 0.3em;
+            }
+
+            &:checked {
+                + label {
+                    line-height: 0.3em;
+
+                    &:before {
+                        font-family: 'framework_font';
+                        content: "\e600";
+                        background: @btn-benefit-category-bg-color;
+                        color: @btn-benefit-category-color;
+                    }
+                }
+            }
+        }
+    }
+
     .coverExplanationContainer {
         margin-bottom: 30px;
         margin-top: 20px;
     }
 
-    .hasShortlistableChildren {
-        display: none;
-    }
-
-    @media(@xs-only) {
-        .Orthotics_container {
-            padding-top: 2px;
-        }
-    }
-
     .help-icon {
         margin-top:2px;
+        @media(@xs-only) {
+            display:none;
+        }
     }
 
     .benefits-list {
@@ -105,101 +142,56 @@
 
         .hasIcons {
             float: left;
-            @media(@sm) {
-                .categoriesCell {
-                    float:left;
-                    .checkbox {
+            .categoriesCell {
+                float:left;
+                .checkbox {
+                    padding: 0;
+
+                    input {
+                        &:disabled + label:before {
+                            color: @health-benefits-icon-disabled-color;
+                        }
+
+                        &:checked,
+                        &.checked {
+                            & + label:before {
+                                background-color: @health-benefits-icon-bg-checked-color;
+                                border-color: @health-benefits-icon-border-checked-color;
+                                color: #fff;
+                            }
+                        }
+                    }
+
+                    label {
+                        display: inline-block;
                         padding: 0;
+                        margin: 0;
+                        text-align: center;
 
-                        input {
-                            &:disabled + label:before {
-                                color: @health-benefits-icon-disabled-color;
-                            }
-
-                            &:checked,
-                            &.checked {
-                                & + label:before {
-                                    background-color: @health-benefits-icon-bg-checked-color;
-                                    border-color: @health-benefits-icon-border-checked-color;
-                                    color: #fff;
-                                }
-                            }
-                        }
-
-                        label {
-                            display: inline-block;
-                            padding: 0;
-                            margin: 0;
-                            text-align: center;
-
-                            .iconLabel {
-                                display: block;
-                                height: 2.4em;
-                                margin-top: 0.25em;
-                            }
-
-                            &:before {
-                                display: table;
-                                float: none;
-                                margin: 0;
-                                margin-bottom: 10px;
-                                padding: 0.15em;
-                                border-radius: 50%;
-                                background-color: @health-benefits-icon-bg-color;
-                                border-color: @health-benefits-icon-border-color;
-                                color: @theme-tertiary;
-                            }
-                        }
-                    }
-                }
-
-                @media (@sm-only) {
-                    .benefitsIconSize(34px, @font-size-extra-small, 1);
-                }
-                @media (@md-only) {
-                    .benefitsIconSize(50px, @font-size-small, -1);
-                }
-            }
-
-            .categoriesCell.CTM-plus {
-                .checkbox {
-                    label {
                         .iconLabel {
-                            margin-top:0.34em;
-                            padding-top: 16px;
+                            display: block;
+                            height: 2.4em;
+                            margin-top: 0.25em;
                         }
-                    }
-                }
-            }
 
-            .CTM-plus label{
-                &:hover {
-                    &:before{
-                        background-color: @health-benefits-icon-bg-checked-color;
-                        color: #fff;
-                    }
-
-                }
-            }
-
-            .CTM-plus {
-                .checkbox {
-                    label {
                         &:before {
-                            background-color: white;
-                            border-color: @health-benefits-icon-more-border-color;
-                        }
-                        &:hover {
-                            &:before {
-                                background-color: @extras-color-light;
-                                border-color: @health-benefits-icon-more-border-color;
-                            }
-
+                            display: table;
+                            float: none;
+                            margin: 0;
+                            margin-bottom: 10px;
+                            padding: 0.15em;
+                            border-radius: 50%;
+                            background-color: @health-benefits-icon-bg-color;
+                            border-color: @health-benefits-icon-border-color;
+                            color: @theme-tertiary;
                         }
                     }
                 }
             }
 
+            @media (@sm-only) {
+                .benefitsIconSize(34px, @font-size-extra-small, 1);
+            }
         }
 
         .subTitle{

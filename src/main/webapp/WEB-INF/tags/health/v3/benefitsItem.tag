@@ -49,8 +49,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 									<p>${colContent}</p>
 								</div>
 								<c:if test="${category eq 'Hospital'}">
-									<%--<field_v2:array_radio items="top=top,mid=mid,basic=basic,customise=customise,limited=limited" xpath="${pageSettings.getVerticalCode()}/benefits/covertype" title="your Medicare card cover" required="true" className="hospitalCoverToggles" id="${name}_cover" />--%>
-                                <div class="row hospitalCoverToggles row hidden-xs">
+								<div class="hospitalCoverToggles row hidden-xs">
 									<div class="grouping-header">Comprehensive Cover</div>
 									<div class="grouping-border"></div>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="top">top</a>
@@ -59,6 +58,19 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="customise">customise</a>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="limited">limited</a>
                                 </div>
+								<div class="row hospitalCoverToggles visible-xs">
+									<div class="btn-group btn-group-justified btn-group-wrap">
+										<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="basic">Basic</a>
+										<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="mid">Medium</a>
+										<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="top">Top</a>
+									</div>
+									<div class="nonComprehensiveCover">
+										or
+										<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customise">Customise your cover</a>
+										<a href="javascript:;" class="benefit-category limited" data-category="limited">No thanks, I only want limited hospital cover</a>
+									</div>
+								</div>
+
                                 <field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="customise" />
                                     <div class="coverExplanationContainer">
                                     <c:set var="tieredBenefits" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "coverOptions")}' />

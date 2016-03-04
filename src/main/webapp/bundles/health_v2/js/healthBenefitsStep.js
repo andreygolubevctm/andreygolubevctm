@@ -10,6 +10,7 @@
         $hospitalCover,
         $allHospitalButtons,
         $defaultCover,
+        $hasIconsDiv,
         currCover = 'customise',
         prevCover = '',
         customisedOptions = [],
@@ -35,6 +36,7 @@
             if (meerkat.modules.splitTest.isActive(13)) {
                 $hospitalCoverToggles = $('.hospitalCoverToggles a'),
                 $hospitalCover = $('.Hospital_container');
+                $hasIconsDiv = $('.healthBenefits .categoriesCell:first-child').parent();
 
                 // setup groupings
                 // extras middle row
@@ -80,55 +82,70 @@
 
 
         if (meerkat.modules.splitTest.isActive(13)) {
-            $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]');
-            $allHospitalButtons.on('click', function setCustomisedOptions() {
-                var $item = $(this);
+            setCustomOptions();
+            toggleBenefits();
 
-                if (currCover === 'customise') {
-                    if ($item.is(":checked")) {
-                        customisedOptions.push($item.attr('id'));
-                    } else {
-                        var ret = customisedOptions.splice(customisedOptions.indexOf($item.attr('id')), 1);
-                    }
-                }
+            meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter(){
+                $hasIconsDiv.removeClass('hasIcons');
             });
 
-            var $hospitalSection = $('.Hospital_container').closest('fieldset'),
-                $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
-            $coverType.find('input').on('click', function selectCoverType(){
-               switch($(this).val().toLowerCase()) {
-                   case 'c':
-                       $hospitalSection.slideDown();
-                       $extrasSection.slideDown();
-                       if (!$hospitalCoverToggles.is(":checked")) {
-                           $defaultCover.trigger('click').parent().addClass("active");
-                       }
-                       break;
-                   case 'h':
-                       $hospitalSection.slideDown();
-                       $extrasSection.slideUp();
-                       if (!$hospitalCoverToggles.is(":checked")) {
-                           $defaultCover.trigger('click').parent().addClass("active");
-                       }
-
-                       $extrasSection.find('input[type="checkbox"]').prop('checked', false);
-                       break;
-                   case 'e':
-                       $hospitalSection.slideUp();
-                       $extrasSection.slideDown();
-                       $hospitalCoverToggles.prop("checked", false);
-                       $allHospitalButtons.prop('checked', false).prop('disabled', false);
-                       break;
-                   default:
-                       $hospitalSection.slideUp();
-                       $extrasSection.slideUp();
-                       $hospitalCoverToggles.prop("checked", false);
-                       $allHospitalButtons.prop('checked', false).prop('disabled', false);
-                       $extrasSection.find('input[type="checkbox"]').prop('checked', false);
-                       break;
-               }
+            meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsEnterXsState() {
+                $hasIconsDiv.addClass('hasIcons');
             });
         }
+    }
+
+    function setCustomOptions() {
+        $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]');
+        $allHospitalButtons.on('click', function setCustomisedOptions() {
+            var $item = $(this);
+
+            if (currCover === 'customise') {
+                if ($item.is(":checked")) {
+                    customisedOptions.push($item.attr('id'));
+                } else {
+                    var ret = customisedOptions.splice(customisedOptions.indexOf($item.attr('id')), 1);
+                }
+            }
+        });
+    }
+
+    function toggleBenefits() {
+        var $hospitalSection = $('.Hospital_container').closest('fieldset'),
+            $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
+        $coverType.find('input').on('click', function selectCoverType(){
+            switch($(this).val().toLowerCase()) {
+                case 'c':
+                    $hospitalSection.slideDown();
+                    $extrasSection.slideDown();
+                    if (!$hospitalCoverToggles.is(":checked")) {
+                        $defaultCover.trigger('click').parent().addClass("active");
+                    }
+                    break;
+                case 'h':
+                    $hospitalSection.slideDown();
+                    $extrasSection.slideUp();
+                    if (!$hospitalCoverToggles.is(":checked")) {
+                        $defaultCover.trigger('click').parent().addClass("active");
+                    }
+
+                    $extrasSection.find('input[type="checkbox"]').prop('checked', false);
+                    break;
+                case 'e':
+                    $hospitalSection.slideUp();
+                    $extrasSection.slideDown();
+                    $hospitalCoverToggles.prop("checked", false);
+                    $allHospitalButtons.prop('checked', false).prop('disabled', false);
+                    break;
+                default:
+                    $hospitalSection.slideUp();
+                    $extrasSection.slideUp();
+                    $hospitalCoverToggles.prop("checked", false);
+                    $allHospitalButtons.prop('checked', false).prop('disabled', false);
+                    $extrasSection.find('input[type="checkbox"]').prop('checked', false);
+                    break;
+            }
+        });
     }
 
     function showModal() {
