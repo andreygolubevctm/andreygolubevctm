@@ -30,7 +30,29 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 			<c:set var="colWidthValue" value="categoriesCell" />
 		</c:otherwise>
 	</c:choose>
-	<%--<c:if test="${item.getType() == 'section'}">--%>
+
+	<c:if test="${coverType == 'Hospital'}">
+	<form_v2:fieldset legend="" postLegend="" className="j13abtest visible-xs" >
+		<div class="title">
+			<h3>Choose Your Hospital Cover</h3>
+			<p>${colContent}</p>
+		</div>
+		<div class="Hospital_container">
+			<div class="hospitalCoverToggles visible-xs">
+				<div class="btn-group btn-group-justified btn-group-wrap">
+					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="basic">Basic</a>
+					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="mid">Medium</a>
+					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="top">Top</a>
+				</div>
+				<div class="nonComprehensiveCover">
+					or
+					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customise">Customise your cover</a>
+					<a href="javascript:;" class="benefit-category limited" data-category="limited">No thanks, I only want limited hospital cover</a>
+				</div>
+			</div>
+		</div>
+	</form_v2:fieldset>
+	</c:if>
 	<c:set var="fieldsetClass">
 		<c:if test='${newBenefitsLayoutSplitTest eq true}'>j13abtest</c:if>
 	</c:set>
@@ -44,7 +66,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 						<c:set var="category">${item.getShortlistKey()}</c:set>
 						<c:choose>
 							<c:when test="${item.getType() == 'section'}">
-								<div class="title">
+								<div class="title hidden-xs">
 									<h3>Choose Your ${item.getName()}</h3>
 									<p>${colContent}</p>
 								</div>
@@ -58,18 +80,6 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="customise">customise</a>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="limited">limited</a>
                                 </div>
-								<div class="row hospitalCoverToggles visible-xs">
-									<div class="btn-group btn-group-justified btn-group-wrap">
-										<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="basic">Basic</a>
-										<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="mid">Medium</a>
-										<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="top">Top</a>
-									</div>
-									<div class="nonComprehensiveCover">
-										or
-										<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customise">Customise your cover</a>
-										<a href="javascript:;" class="benefit-category limited" data-category="limited">No thanks, I only want limited hospital cover</a>
-									</div>
-								</div>
 
                                 <field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="customise" />
                                     <div class="coverExplanationContainer">
@@ -90,7 +100,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
                             <c:if test="${item.hasShortlistableChildren()}">
                                 <div class="children healthBenefits">
 									<c:if test="${category != 'Hospital'}">
-										<div class="grouping-header fourIconWidth hidden-xs">Comprehensive Cover</div>
+										<div class="grouping-header fourIconWidth hidden-xs">Dental Services</div>
 										<div class="grouping-header twoIconWidth hidden-xs">Eye Care</div>
 										<div class="grouping-header twoIconWidth hidden-xs">Foot Care</div>
 										<div class="grouping-border fourIconWidth hidden-xs"></div>

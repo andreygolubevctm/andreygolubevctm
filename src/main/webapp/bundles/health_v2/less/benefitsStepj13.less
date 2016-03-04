@@ -22,7 +22,7 @@
         }
     }
 
-    .hospitalCoverToggles.visible-xs {
+    .hospitalCoverToggles {
         .btn-group-justified {
             margin-bottom: 5px;
             .btn {
@@ -32,6 +32,7 @@
 
         .nonComprehensiveCover {
             text-align:center;
+            margin-bottom: 10px;
             .btn {
                 display:block;
                 padding: 7px;
@@ -93,11 +94,14 @@
                     &:before {
                         font-family: 'framework_font';
                         content: "\e600";
-                        background: @btn-benefit-category-bg-color;
-                        color: @btn-benefit-category-color;
                     }
                 }
             }
+        }
+
+        .Hospital_container .healthBenefits .checkbox input:checked + label:before {
+            background: @btn-benefit-category-bg-color;
+            color: @btn-benefit-category-color;
         }
     }
 
