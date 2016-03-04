@@ -3,7 +3,7 @@
     "dependencies": [
         "shared/journeyEngine/v2",
         "shared/results",
-        "shared/inspectorJson",
+        "plugins/inspectorJson",
         "shared/sliders",
         "core",
         "shared/datepicker"
