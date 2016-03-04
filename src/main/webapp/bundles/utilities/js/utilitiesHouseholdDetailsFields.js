@@ -66,7 +66,6 @@
             _toggleAdditionalElectricityDetails();
             _toggleAdditionalGasDetails();
 
-
             var isIosXS = meerkat.modules.performanceProfiling.isIos() && meerkat.modules.deviceMediaState.get() == 'xs';
             if(isIosXS) {
                 _wrapInOptGroup($('#utilities_householdDetails_howToEstimate'), "How would you like us to estimate how much energy you use?");
@@ -277,11 +276,12 @@
     function _toggleAdditionalElectricityDetails() {
         var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val(),
         movingIn = $(".moving-in").find("input[type='radio']:checked").val(),
-        recentElectricityBill = $(".recent-electricity-bill").find("input[type='radio']:checked").val(),
+        $recentElectrityBillField = $(".recent-electricity-bill"),
+        recentElectricityBill = meerkat.modules.utilitiesResults.getBillClicked() && $recentElectrityBillField.find("input[type='radio']:checked").val() !== undefined ? $recentElectrityBillField.find("input[type='radio']:checked").val() : 'N'   ,
 
         $electricityUsageDetails = $('.electricity-details .electricity-usage'),
         $electricityAdditionalDetails = $('.electricity-details .additional-estimate-details-row'),
-        $recentElecityBillField = $(".recent-electricity-bill"),
+
         $electricityUsage = $('.electricity-details .usage'),
 
         $gasDetails = $(".gas-details"),
@@ -299,13 +299,13 @@
         if (movingIn === "Y") {
             $electricityUsageDetails.show();
             $electricityAdditionalDetails.hide();
-            $recentElecityBillField.hide();
+            $recentElectrityBillField.hide();
             $electricityUsage.hide();
 
         }
         else {
             if(_.isUndefined(recentElectricityBill)) {
-                $recentElecityBillField.show();
+                meerkat.modules.utilitiesResults.getBillClicked() ? $recentElectrityBillField.show() : $recentElectrityBillField.hide();
                 $electricityAdditionalDetails.hide();
                 $electricityUsageDetails.hide();
                 $electricityUsage.hide();
@@ -314,31 +314,30 @@
                 if (recentElectricityBill === "N" ) {
                     $electricityUsageDetails.show();
                     $electricityAdditionalDetails.hide();
-                    $recentElecityBillField.show();
+                    meerkat.modules.utilitiesResults.getBillClicked() ? $recentElectrityBillField.show() : $recentElectrityBillField.hide();
                     $electricityUsage.hide();
                 }
                 else {
                     $electricityUsageDetails.hide();
                     $electricityAdditionalDetails.show();
-                    $recentElecityBillField.show();
+                    meerkat.modules.utilitiesResults.getBillClicked() ? $recentElectrityBillField.show() : $recentElectrityBillField.hide();
                     _toggleElectricityMeter();
                 }
             }
 
         }
 
-
-
     }
 
     function _toggleAdditionalGasDetails() {
         var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val(),
         movingIn = $(".moving-in").find("input[type='radio']:checked").val(),
-        recentGasBill = $(".recent-gas-bill").find("input[type='radio']:checked").val(),
+        $recentGasBillField = $(".recent-gas-bill"),
+        recentGasBill = meerkat.modules.utilitiesResults.getBillClicked() && $recentGasBillField.find("input[type='radio']:checked").val() !== undefined ?  $recentGasBillField.find("input[type='radio']:checked").val() : 'N',
 
         $gasUsageDetails = $(".gas-details .gas-usage"),
         $gasAdditionalDetails = $(".gas-details .additional-estimate-details-row"),
-        $recentGasBillField = $(".recent-gas-bill"),
+
         $electricityDetails = $('.electricity-details'),
         $gasDetails = $('.gas-details');
 
@@ -358,7 +357,7 @@
         }
         else  {
             if(_.isUndefined(recentGasBill)) {
-                $recentGasBillField.show();
+                meerkat.modules.utilitiesResults.getBillClicked() ? $recentGasBillField.show() : $recentGasBillField.hide();
                 $gasAdditionalDetails.hide();
                 $gasUsageDetails.hide();
             }
@@ -366,12 +365,12 @@
                 if (recentGasBill === "N" ) {
                     $gasUsageDetails.show();
                     $gasAdditionalDetails.hide();
-                    $recentGasBillField.show();
+                    meerkat.modules.utilitiesResults.getBillClicked() ? $recentGasBillField.show() : $recentGasBillField.hide();
                 }
                 else {
                     $gasUsageDetails.hide();
                     $gasAdditionalDetails.show();
-                    $recentGasBillField.show();
+                    meerkat.modules.utilitiesResults.getBillClicked() ? $recentGasBillField.show() : $recentGasBillField.hide();
                 }
             }
 
