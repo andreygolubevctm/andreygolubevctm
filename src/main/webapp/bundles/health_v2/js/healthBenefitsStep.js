@@ -33,8 +33,21 @@
             $hiddenFields = $('#mainform').find('.hiddenFields');
 
             if (meerkat.modules.splitTest.isActive(13)) {
-                $hospitalCoverToggles = $('.hospitalCoverToggles input[name="health_benefits_covertype"]'),
+                $hospitalCoverToggles = $('.hospitalCoverToggles a'),
                 $hospitalCover = $('.Hospital_container');
+
+                // setup groupings
+                // extras middle row
+                var htmlTemplate = _.template($('#extras-mid-row-groupings').html()),
+                    htmlContent = htmlTemplate();
+
+                $(htmlContent).insertBefore(".HLTicon-remedial-massage");
+
+                // extras last row
+                htmlTemplate = _.template($('#extras-last-row-groupings').html()),
+                    htmlContent = htmlTemplate();
+
+                $(htmlContent).insertBefore(".HLTicon-speech-therapy");
             }
 
             setupPage();
@@ -70,6 +83,7 @@
             $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]');
             $allHospitalButtons.on('click', function setCustomisedOptions() {
                 var $item = $(this);
+
                 if (currCover === 'customise') {
                     if ($item.is(":checked")) {
                         customisedOptions.push($item.attr('id'));
@@ -78,6 +92,7 @@
                     }
                 }
             });
+
             var $hospitalSection = $('.Hospital_container').closest('fieldset'),
                 $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
             $coverType.find('input').on('click', function selectCoverType(){
@@ -153,8 +168,6 @@
 
                 // setup icons
                 $('.health-situation-healthCvrType').find('label:first-child').addClass("icon-hospital-extras").end().find('label:nth-child(2)').addClass('icon-hospital-only').end().find('label:last-child').addClass('icon-extras-only');
-
-                $this.find('.category[class*="short-list-item"]').wrapAll('<div class="hasIcons"></div>');
             } else {
                 // wrap icons and non-icons items so we can style them differently
                 $this.find('.category[class*="CTM-"]').wrapAll('<div class="hasIcons"></div>');
@@ -190,7 +203,15 @@
             $hospitalBenefitsSection = $('.Hospital_container .children');
 
         $hospitalCoverToggles.on('click', function toggleHospitalCover(){
-            currentCover = $(this).val();
+            var $item = $(this);
+            currentCover = $item.data('category');
+
+            // set the active button
+            $hospitalCoverToggles.removeClass('active');
+            $item.addClass('active');
+
+            // set the hidden field
+            $('#health_benefits_covertype').val(currentCover);
 
             // uncheck all tickboxes
             $allHospitalButtons.prop('checked', false).prop('disabled', false);
