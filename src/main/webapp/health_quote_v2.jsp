@@ -16,7 +16,7 @@
 
 <c:choose>
     <c:when test="${callCentre && journeyOverride eq true}">
-        <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
+<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
         <c:forEach items="${param}" var="currentParam">
             <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
         </c:forEach>
@@ -212,7 +212,7 @@
                 <health_v2_layout:slide_all_about_you />
                 <health_v2_layout:slide_benefits />
                 <health_v2_layout:slide_your_contact />
-                <health_v1_layout:slide_results />
+                <health_v2_layout:slide_results />
                 <health_v2_layout:slide_application_details />
                 <health_v2_layout:slide_payment_details />
                 <health_v1:dual_pricing_templates />

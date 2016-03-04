@@ -125,6 +125,10 @@
 	function renderTemplate(target, product, returnTemplate, isForSidebar) {
 		selectedProduct = product;
 
+		if(!_.isObject(product)) {
+			return "";
+		}
+
 		if (typeof product.dropDeadDate === 'undefined') {
 			selectedProduct = Results.getSelectedProduct();
 			product.dropDeadDate = selectedProduct.dropDeadDate;
