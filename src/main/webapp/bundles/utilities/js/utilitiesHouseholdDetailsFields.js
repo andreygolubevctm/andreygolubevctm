@@ -285,8 +285,8 @@
 
         var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val(),
             movingIn = $(".moving-in").find("input[type='radio']:checked").val(),
-            recentElectricityBill = $(".recent-electricity-bill").find("input[type='radio']:checked").val(),
-            recentGasBill = $(".recent-gas-bill").find("input[type='radio']:checked").val();
+            recentElectricityBill = $(".recent-electricity-bill").is(":visible") ? $(".recent-electricity-bill").find("input[type='radio']:checked").val() : 'N' ,
+            recentGasBill = $(".recent-gas-bill").is(":visible") ? $(".recent-gas-bill").find("input[type='radio']:checked").val() : 'N';
 
         $movingInDate.toggle(movingIn === 'Y');
         $(".recent-electricity-bill").toggle(whatToCompare === "E" || whatToCompare === "EG");
