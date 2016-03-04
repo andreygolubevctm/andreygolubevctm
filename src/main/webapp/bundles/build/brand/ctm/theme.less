@@ -1105,231 +1105,235 @@ fieldset h2 {
 	}
 }
 //Gets rid of the double border seen on button groups
-.btn-group .btn+.btn {
-	border-left-width: 0;
-	&.active {
+.btn-group {
+  .btn {
+	word-wrap: break-word;
+	white-space: normal;
+
+	& + .btn {
+	  border-left-width: 0;
+	  &.active {
 		border-left-width: @btn-border-width;
+	  }
 	}
-}
+  }
 
-
-
-
-// CTM Overrides for On/off switch ('bootstrap-switch' plugin) in framework/jquery/plugins/bootstrap-switch-2.0.0.min.js
-.has-switch {
+  // CTM Overrides for On/off switch ('bootstrap-switch' plugin) in framework/jquery/plugins/bootstrap-switch-2.0.0.min.js
+  .has-switch {
 	border-radius: 20px;
 	min-width: 60px;
 
 	span, label, span.switch-right {
-		color: #fff;
-		text-align: center;
+	  color: #fff;
+	  text-align: center;
 	}
 	span {
-		&.switch-small {
-			width: 40%;
-			font-weight: normal;
-			font-family: @font-family-theme-bold;
-		}
-		&.switch-right {
-			width: 40%;
-			padding-right: 2.25%;
+	  &.switch-small {
+		width: 40%;
+		font-weight: normal;
+		font-family: @font-family-theme-bold;
+	  }
+	  &.switch-right {
+		width: 40%;
+		padding-right: 2.25%;
 
-		}
+	  }
 	}
 	label {
-		z-index: 9; //override default of 100
+	  z-index: 9; //override default of 100
+
+	  &:before {
+		content: '';
+		display: inline-block;
+		position: relative;
+	  }
+
+	  &.switch-small {
+		width: 20%;
 
 		&:before {
-			content: '';
-			display: inline-block;
-			position: relative;
+		  border: 8px solid #fff;
+		  border-radius: 8px;
+		  top: 4px;
+		  margin-top: -10px;
 		}
-
-		&.switch-small {
-			width: 20%;
-
-			&:before {
-				border: 8px solid #fff;
-				border-radius: 8px;
-				top: 4px;
-				margin-top: -10px;
-			}
-		}
+	  }
 	}
 
 	.switch-off {
-		&, label, span {
-			background: @form-input-common-deselected-bg-colour;
-		}
+	  &, label, span {
+		background: @form-input-common-deselected-bg-colour;
+	  }
 	}
 
 	.switch-on {
-		&, label, span {
-			background: @form-input-common-selected-bg-colour;
-		}
+	  &, label, span {
+		background: @form-input-common-selected-bg-colour;
+	  }
 	}
 
 	// Special overrides
 	> div {
-		&.switch-animate {
-			.transition(left 0.1s);
-		}
+	  &.switch-animate {
+		.transition(left 0.1s);
+	  }
 	}
 	html.lt-ie9 &.disabled {
-		> div, span, label {
-			.opacity(.5);
-		}
+	  > div, span, label {
+		.opacity(.5);
+	  }
 	}
 	input[type=radio],
 	input[type=checkbox] {
-		display: block;
-		visibility: hidden;
-		position: absolute;
+	  display: block;
+	  visibility: hidden;
+	  position: absolute;
 	}
-}
+  }
 
 
-// Form control feedback states
-//
-// Apply contextual and semantic states to individual form controls.
+  // Form control feedback states
+  //
+  // Apply contextual and semantic states to individual form controls.
 
-.error-field {
+  .error-field {
 	color: @brand-warning;
 	label {
-		font-weight: normal;
-		font-size: 0.9em;
-		display: block; //So that multiple errors display stacked.
+	  font-weight: normal;
+	  font-size: 0.9em;
+	  display: block; //So that multiple errors display stacked.
 	}
-}
+  }
 
-// Warning
-.has-warning {
+  // Warning
+  .has-warning {
 	.form-control-validation(@state-warning-text; @state-warning-border; @state-warning-bg; @state-warning-text; @state-warning-border; @state-warning-bg);
 	//Button group warning
 	.form-control-button-group-validation(@state-warning-text; @state-warning-border; @state-warning-bg);
-}
-// Error
-.has-error {
+  }
+  // Error
+  .has-error {
 	.form-control-validation(@state-danger-text; @state-danger-border; @state-danger-bg; @state-danger-text; @state-danger-border; @state-danger-bg);
 	//Button group error
 	.form-control-button-group-validation(@state-danger-text; @state-danger-border; @state-danger-bg);
-}
-// Success
-.has-success {
+  }
+  // Success
+  .has-success {
 	.form-control-validation(@state-success-text; @state-success-border; @input-bg; @state-success-text; @state-success-border; @input-bg);
 	//button group success is default style
-}
+  }
 
-//The missing disabled states. Allows for rows or forms to be given disabled state and disable all elements inside.
-.disabled, fieldset[disabled] {
+  //The missing disabled states. Allows for rows or forms to be given disabled state and disable all elements inside.
+  .disabled, fieldset[disabled] {
 	.form-control-validation(
-		@input-color-placeholder;
-		@input-border-disabled;
-		@input-bg-disabled;
-		@input-color-placeholder;
-		@input-border-disabled;
-		@input-bg-disabled
+	@input-color-placeholder;
+	@input-border-disabled;
+	@input-bg-disabled;
+	@input-color-placeholder;
+	@input-border-disabled;
+	@input-bg-disabled
 	);
 	.form-control-button-group-validation(
-		@input-color-placeholder;
-		@input-border-disabled;
-		@input-bg-disabled
+	@input-color-placeholder;
+	@input-border-disabled;
+	@input-bg-disabled
 	);
 	.btn-group>.btn { //Fixes errors around this somehow.
-		cursor: not-allowed;
+	  cursor: not-allowed;
 	}
-}
+  }
 
-input[type=text],
-input[type=password],
-input[type=email],
-select {
+  input[type=text],
+  input[type=password],
+  input[type=email],
+  select {
 	+ .spinner{
-		float: right;
-		margin-top: (-@padding-base-vertical*2 - @line-height-computed/2);
+	  float: right;
+	  margin-top: (-@padding-base-vertical*2 - @line-height-computed/2);
 	}
-}
+  }
 
 
-// // CTM Loading Spinner
-// .cssanimations {
-// 	.loading-spinner {
-// 		//Green Text Blue Shadow
-// 		&:before {
-// 			content: '$';
-// 			//color: @brand-success;
-// 			color: #92DB66; //From logo
-// 			text-shadow:
-// 				0 0 0 rgb(40,79,179),
-// 				0px -1px 0 rgb(37,76,176),
-// 				0px -2px 0 rgb(35,74,174),
-// 				0px -3px 0 rgb(32,71,171),
-// 				0px -4px 0 rgb(30,69,169),
-// 				0px -5px 0 rgb(27,66,166),
-// 				0px -6px 0 rgb(25,64,164);
-// 		}
+  // // CTM Loading Spinner
+  // .cssanimations {
+  // 	.loading-spinner {
+  // 		//Green Text Blue Shadow
+  // 		&:before {
+  // 			content: '$';
+  // 			//color: @brand-success;
+  // 			color: #92DB66; //From logo
+  // 			text-shadow:
+  // 				0 0 0 rgb(40,79,179),
+  // 				0px -1px 0 rgb(37,76,176),
+  // 				0px -2px 0 rgb(35,74,174),
+  // 				0px -3px 0 rgb(32,71,171),
+  // 				0px -4px 0 rgb(30,69,169),
+  // 				0px -5px 0 rgb(27,66,166),
+  // 				0px -6px 0 rgb(25,64,164);
+  // 		}
 
-// 		//Blue Text Green Shadow
-// 		&:after {
-// 			content: '$';
-// 			//color: @brand-info;
-// 			color: #2a51b5; //From logo
-// 			text-shadow:
-// 				0 0 0 rgb(145,217,100),
-// 				0px -1px 0 rgb(142,214,97),
-// 				0px -2px 0 rgb(140,212,95),
-// 				0px -3px 0 rgb(137,209,92),
-// 				0px -4px 0 rgb(135,207,90),
-// 				0px -5px 0 rgb(132,204,87),
-// 				0px -6px 0 rgb(130,202,85);
-// 		}
-// 	}
-// }
-
-
+  // 		//Blue Text Green Shadow
+  // 		&:after {
+  // 			content: '$';
+  // 			//color: @brand-info;
+  // 			color: #2a51b5; //From logo
+  // 			text-shadow:
+  // 				0 0 0 rgb(145,217,100),
+  // 				0px -1px 0 rgb(142,214,97),
+  // 				0px -2px 0 rgb(140,212,95),
+  // 				0px -3px 0 rgb(137,209,92),
+  // 				0px -4px 0 rgb(135,207,90),
+  // 				0px -5px 0 rgb(132,204,87),
+  // 				0px -6px 0 rgb(130,202,85);
+  // 		}
+  // 	}
+  // }
 
 
 
-//== QTIP based TOOLTIPS and POPOVERS
-//
-//## Inhouse - ctm.theme.less, ctm.mixins.less, qtip.less, health/tooltips.less.
-//** qTip / non-bootstrap-popovers defaults
-.popover {
+
+
+  //== QTIP based TOOLTIPS and POPOVERS
+  //
+  //## Inhouse - ctm.theme.less, ctm.mixins.less, qtip.less, health/tooltips.less.
+  //** qTip / non-bootstrap-popovers defaults
+  .popover {
 	.qtip-variant(@qtip-default-border, @qtip-default-border-radius, @qtip-default-title-bg-color, @qtip-default-content-bg-color, @qtip-default-padding-title, @qtip-default-padding-content, @qtip-default-title-text-color, @qtip-default-content-text-color);
-		}
+  }
 
-.journeyEngineLoader {
+  .journeyEngineLoader {
 	font-family: @font-family-theme-bold;
 
 	.loading-logo {
-		margin: 0 auto 10px;
-		width: 80px;
-		height: 53px;
-		background: transparent url(../graphics/loading.png) top left no-repeat;
+	  margin: 0 auto 10px;
+	  width: 80px;
+	  height: 53px;
+	  background: transparent url(../graphics/loading.png) top left no-repeat;
 	}
 	//There's probably a 'sexy' way to get this to work with the right font, but for now I'm just going to do a graphic.
 	//.loading-logo:before,
 	//.loading-logo:after {
-		//content: '$';
-		//display: inline-block;
-		//font-size: 50px;
+	//content: '$';
+	//display: inline-block;
+	//font-size: 50px;
 	//}
 	.loadingDisclaimerText {
-		font-family: @font-family-theme-light;
-		font-size: @font-size-base;
-	.originalDisclaimer {
+	  font-family: @font-family-theme-light;
+	  font-size: @font-size-base;
+	  .originalDisclaimer {
 		position: static;
+	  }
 	}
-}
-}
+  }
 
-// When the tranId in the navbar has .small, correct its line-height to match the other normal-sized elements.
-header .transactionIdContainer.small {
+  // When the tranId in the navbar has .small, correct its line-height to match the other normal-sized elements.
+  header .transactionIdContainer.small {
 	line-height: @line-height-computed;
-}
+  }
 
-@media print {
+  @media print {
 	.well-chatty:after, .well-info:after, .navbar-toggle.hamburger {
-			display: none !important;
+	  display: none !important;
 	}
+  }
 }
