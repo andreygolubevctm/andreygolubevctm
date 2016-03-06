@@ -298,9 +298,7 @@
             });
             var tEnd = new Date().getTime();
             var tFetchFinish = (tEnd - tStart);
-            console.log("it took..."+ (tFetchFinish)+ " milliseconds to complete the request the maxMilliSec:"+maxMilliSecondsForMessage);
             var tVariance = maxMilliSecondsForMessage - tFetchFinish;
-            console.log("we are keeping the message for "+(tVariance));
             if(tVariance < 0 || meerkat.site.isCallCentreUser) {
                 tVariance = 0;
             }
