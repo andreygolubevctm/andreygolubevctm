@@ -177,7 +177,7 @@
 	function validateField() {
 
 		// empty field, reset all
-		if ($couponCodeField.val().trim() === '') {
+		if ($.trim($couponCodeField.val()) === '') {
 			$couponCodeField.parent().removeClass('has-custom-error');
 			$couponErrorContainer.addClass('hidden');
 			resetWhenError();

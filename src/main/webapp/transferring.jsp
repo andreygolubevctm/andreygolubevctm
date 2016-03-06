@@ -83,7 +83,16 @@
 							<div class="bounce2"></div>
 							<div class="bounce3"></div>
 						</div>
-						<p class="message">Please wait while we transfer you</p>
+						<p class="message">
+							<c:choose>
+								<c:when test="${param.vertical eq 'car' || param.vertical eq 'home'}">
+									${contentService.getContentValue(pageContext.getRequest(), "transferringText", verticalBrandCode, param.vertical)}
+								</c:when>
+								<c:otherwise>
+									<content:get key="transferringText" />
+								</c:otherwise>
+							</c:choose>
+						</p>
 						<div class="quoteUrl" quoteUrl="${quoteUrl}"></div>
 					</div>
 				</div>

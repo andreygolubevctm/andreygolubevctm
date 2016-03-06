@@ -136,7 +136,7 @@
                     features: {
                         mode: 'populate',
                         headers: false,
-                        numberOfXSColumns: 2
+                        numberOfXSColumns: 1
                     },
                     dockCompareBar: false
                 },
@@ -188,7 +188,7 @@
                         },
                         {
                             key: 'N',
-                            value: "<span class='icon-cross'></span>"
+                            value: "<span class='icon-cross hidden-sm hidden-md hidden-lg'></span>"
                         },
                         {
                             key: 'R',
@@ -204,7 +204,8 @@
                     triggers: ['RESULTS_DATA_READY'],
                     callback: meerkat.modules.healthResults.rankingCallback,
                     forceIdNumeric: true
-                }
+                },
+                incrementTransactionId : false
             });
 
         } catch (e) {
@@ -393,7 +394,7 @@
             } else {
                 toggleResultsLowNumberMessage(false);
                 if (!meerkat.modules.compare.isCompareOpen()) {
-                    if (pageNumber === pageData.measurements.numberOfPages && freeColumns > 2) {
+                    if (pageNumber === pageData.measurements.numberOfPages && freeColumns > 1) {
                         toggleMarketingMessage(true, freeColumns);
                     } else {
                     toggleMarketingMessage(false);
@@ -423,6 +424,13 @@
         meerkat.messaging.subscribe(meerkatEvents.healthFilters.CHANGED, function onFilterChange(obj) {
             if (obj && obj.hasOwnProperty('filter-frequency-change')) {
                 meerkat.modules.resultsTracking.setResultsEventMode('Refresh'); // Only for events that dont cause a new TranId
+            } else {
+                // This is a little dirty however we need to temporarily override the
+                // setting which prevents the tranId from being incremented.
+                // Object only has value in above case, otherwise empty
+                Results.settings.incrementTransactionId = true;
+                get();
+                Results.settings.incrementTransactionId = false;
             }
         });
 
@@ -510,7 +518,11 @@
     }
 
     function startColumnWidthTracking() {
-        Results.view.startColumnWidthTracking($(window), Results.settings.render.features.numberOfXSColumns, false);
+        if (meerkat.modules.deviceMediaState.get() === 'xs' && Results.getDisplayMode() === 'features') {
+            Results.view.startColumnWidthTracking( $(window), Results.settings.render.features.numberOfXSColumns, false );
+            Results.pagination.setCurrentPageNumber(1);
+            Results.pagination.resync();
+        }
     }
 
     function stopColumnWidthTracking() {
@@ -821,7 +833,7 @@
             } else {
                 var items = Results.getFilteredResults().length;
                 freeColumns = pageMeasurements.columnsPerPage - items;
-                if (freeColumns < 2 || pageMeasurements.numberOfPages !== 1) {
+                if (freeColumns < 1 || pageMeasurements.numberOfPages !== 1) {
                     show = false;
                 }
             }

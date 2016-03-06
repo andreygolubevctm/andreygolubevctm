@@ -3,6 +3,7 @@ package com.ctm.web.utilities.model;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -208,14 +209,15 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		json.put("is_connection", convertBooleanToString(isConnection(), "Yes", "No"));
 		json.put("fuel_type", getFuelType());
 
-		if(isConnection) {
-			json.put("connection_date", FormDateUtils.convertDateToString(getConnectionDate(), "yyyy-MM-dd"));
-		} else {
-			json.put("connection_date", "0000-00-00");
-			json.put("el_bill_available", convertBooleanToString(getHasElectricityBill(), "Yes", "No"));
-			json.put("gas_bill_available", convertBooleanToString(getHasGasBill(), "Yes", "No"));
+		if(getConnectionDate() != null) {
+			if(isConnection) {
+				json.put("connection_date", FormDateUtils.convertDateToString(getConnectionDate(), "yyyy-MM-dd"));
+			} else {
+				json.put("connection_date", "0000-00-00");
+			}
 		}
-
+		json.put("el_bill_available", convertBooleanToString(getHasElectricityBill(), "Yes", "No"));
+		json.put("gas_bill_available", convertBooleanToString(getHasGasBill(), "Yes", "No"));
 
 		json.put("solar_panels", convertBooleanToString(getSolarPanels(), "Yes", "No"));
 
