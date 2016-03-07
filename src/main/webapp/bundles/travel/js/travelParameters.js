@@ -17,10 +17,10 @@
     //Elements and Variables:
     var $secondTravellerRow,
         $childrenRow,
-        $partyType;
-
-
-
+        $partyType,
+        $travel_adults,
+        $adult_dob_2
+        ;
 
     //------------------------------------------------------------------
 
@@ -28,32 +28,38 @@
     function initParams() {
         $secondTravellerRow = $(".second_traveller_age_row"),
         $childrenRow = $(".children_row"),
-        $partyType = $("#partyType");
+        $partyType = $("#partyType"),
+        $travel_adults = $('#travel_adults'),
+        $adult_dob_2 = $('#travel_travellers_traveller2DOB');
     }
 
-    function displayAccordingTravellerType() {
+    function noOfTravellersDisplayLogic() {
         var travelPartyVal = $partyType.data("type");
         switch(travelPartyVal) {
             case "C":
                 $secondTravellerRow.show();
                 $childrenRow.hide();
+                $travel_adults.val("2");
+                $adult_dob_2.addClass('validate').attr('required','required');
                 break;
             case "F":
                 $secondTravellerRow.show();
                 $childrenRow.show();
+                $travel_adults.val("2");
+                $adult_dob_2.removeClass('validate').removeAttr('required');
                 break;
             default:
                 $secondTravellerRow.hide();
                 $childrenRow.hide();
+                $travel_adults.val("1");
         }
-
     }
 
 
 
     meerkat.modules.register("travelParameters", {
         init: initParams,
-        displayAccordingTravellType:displayAccordingTravellerType
+        noOfTravellersDisplayLogic:noOfTravellersDisplayLogic
     });
 
 })(jQuery);

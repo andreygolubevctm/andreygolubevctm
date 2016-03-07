@@ -147,11 +147,12 @@
 				});
 
 				meerkat.modules.travelAdultAges.initAdultAges();
+				meerkat.modules.travelParameters.noOfTravellersDisplayLogic();
 
 
 			},
 			onBeforeEnter: function(event) {
-				meerkat.modules.travelParameters.displayAccordingTravellType();
+
 			},
 			onBeforeLeave: function(event) {
 				meerkat.modules.travelAdultAges.updateHiddenField();
