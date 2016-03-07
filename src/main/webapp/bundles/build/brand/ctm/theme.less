@@ -1106,18 +1106,18 @@ fieldset h2 {
 }
 //Gets rid of the double border seen on button groups
 .btn-group {
-  .btn {
-	word-wrap: break-word;
-	white-space: normal;
+	.btn {
+		word-wrap: break-word;
+		white-space: normal;
 
-	& + .btn {
-	  border-left-width: 0;
-	  &.active {
-		border-left-width: @btn-border-width;
-	  }
+		& + .btn {
+			border-left-width: 0;
+			&.active {
+				border-left-width: @btn-border-width;
+			}
+		}
 	}
-  }
-
+}
   // CTM Overrides for On/off switch ('bootstrap-switch' plugin) in framework/jquery/plugins/bootstrap-switch-2.0.0.min.js
   .has-switch {
 	border-radius: 20px;
@@ -1336,4 +1336,3 @@ fieldset h2 {
 	  display: none !important;
 	}
   }
-}
