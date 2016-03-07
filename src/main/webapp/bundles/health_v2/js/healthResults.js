@@ -11,6 +11,7 @@
         isLhcApplicable = 'N',
         selectedBenefitsList,
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
+        maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
 
         templates = {
             premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
@@ -215,6 +216,8 @@
 
     function eventSubscriptions() {
 
+        var tStart = 0;
+
         $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function () {
             _resetSelectionsStructureObject();
             _setupSelectedBenefits('Extras Selections', 'Extras Cover');
@@ -257,6 +260,7 @@
             meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
                 meerkat.modules.coupon.renderCouponBanner();
             });
+
         });
 
         $(document).on("resultsDataReady", function () {
@@ -266,10 +270,11 @@
         });
 
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
-
+            tStart = new Date().getTime();
             toggleMarketingMessage(false);
             toggleResultsLowNumberMessage(false);
-            meerkat.modules.journeyEngine.loadingShow('getting your quotes');
+            var waitMessageVal = $("#waitMessage").val();
+            meerkat.modules.journeyEngine.loadingShow(waitMessageVal);
 
             // Hide pagination
             $('header .slide-feature-pagination, header a[data-results-pagination-control]').addClass('hidden');
@@ -292,8 +297,16 @@
                 // Setup scroll
                 Results.pagination.setupNativeScroll();
             });
+            var tEnd = new Date().getTime();
+            var tFetchFinish = (tEnd - tStart);
+            var tVariance = maxMilliSecondsForMessage - tFetchFinish;
+            if(tVariance < 0 || meerkat.site.isCallCentreUser) {
+                tVariance = 0;
+            }
+            _.delay(function() {
+                meerkat.modules.journeyEngine.loadingHide();
+            },tVariance);
 
-            meerkat.modules.journeyEngine.loadingHide();
 
             if (!meerkat.site.isNewQuote && !Results.getSelectedProduct() && meerkat.site.isCallCentreUser) {
                 Results.setSelectedProduct($('.health_application_details_productId').val());
@@ -760,7 +773,6 @@
 
 
     function onResultsLoaded() {
-
         if (meerkat.modules.deviceMediaState.get() == "xs") {
             startColumnWidthTracking();
         }
