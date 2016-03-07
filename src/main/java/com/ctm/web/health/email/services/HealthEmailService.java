@@ -8,6 +8,7 @@ import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.BestPriceRanking;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.*;
+import com.ctm.web.core.email.services.token.EmailTokenService;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.EnvironmentException;
@@ -38,11 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Map;
+import java.util.*;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -351,7 +348,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "load");
 				emailParameters.put(EmailUrlService.VERTICAL, "health");
 				emailParameters.put(EmailUrlService.PRODUCT_ID, productId);
-				emailParameters.put(EmailUrlService.PRODUCT_NAME, emailBrochureRequest.productName);
+				EmailTokenService.setProductName(emailBrochureRequest.productName, emailParameters);
 				emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailParameters));
 
 				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");

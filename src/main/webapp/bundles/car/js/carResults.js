@@ -278,7 +278,7 @@
 			meerkat.modules.journeyEngine.loadingShow('getting your quotes');
 			$('#resultsPage, .loadingDisclaimerText').removeClass('hidden');
 			if (meerkat.site.tracking.brandCode == 'ctm') {
-				$('#resultsPage, .loadingQuoteText').removeClass('hidden');
+				$('.loadingQuoteText, .loadingPromise').removeClass('hidden');
 			}
 			// Hide pagination
 			Results.pagination.hide();

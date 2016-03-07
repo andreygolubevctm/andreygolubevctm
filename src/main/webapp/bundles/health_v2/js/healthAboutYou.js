@@ -67,25 +67,6 @@
 	}
 
 	function eventSubscriptions() {
-		if(meerkat.site.isCallCentreUser === true){
-			// Handle pre-filled
-			toggleRebateDialogue();
-			// Handle toggle rebate options
-			$healthCoverRebate.find('input').on('change', function toggleRebateDiag() {
-				toggleRebateDialogue();
-			});
-		}
-
-		$healthCoverRebate.on('change', function toggleMedicare() {
-			// Hide these questions as they are not required
-			if( meerkat.modules.healthCoverDetails.isRebateApplied() !== true ) {
-				$medicare.hide();
-				meerkat.modules.form.clearInitialFieldsAttribute($medicare);
-			} else {
-				$medicare.show();
-			}
-		});
-
 		$tierDropdowns.on('change', function updateRebateTiers(){
 			meerkat.modules.healthTiers.setTiers();
 		});
@@ -125,7 +106,7 @@
 		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($primaryDOB.val())) {
 			$primaryContinuousCoverContainer.slideDown();
 		} else {
-			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).end().slideUp();
+			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
 		}
 	}
 
@@ -133,7 +114,7 @@
 		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($partnerDOB.val())) {
 			$partnerContinuousCoverContainer.slideDown();
 		} else {
-			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).end().slideUp();
+			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
 		}
 	}
 

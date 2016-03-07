@@ -300,7 +300,7 @@
 				{{ if (brandsKnockedOut == obj.length && $featuresMode.length == 0) { }}
 				<c:choose>
 					<c:when test="${brandCode eq 'ctm' && not(environmentCode eq 'NXS')}">
-						<car:noResults />
+						<agg_v2:no_quotes id="no-results-content"/>
 					</c:when>
 					<c:otherwise>
 						<div class="resultInsert priceMode clearfix">
@@ -362,11 +362,10 @@
 		</div>
 	</core_v1:js_template>
 
-	<%-- NO RESULTS --%>
-	<div class="hidden">
-		<agg_new_results:results_none />
-	</div>
-
+<%-- NO RESULTS --%>
+<div class="hidden">
+	<agg_v2:no_quotes id="no-results-content"/>
+</div>
 
 <%-- FETCH ERROR --%>
 <div class="resultsFetchError displayNone">

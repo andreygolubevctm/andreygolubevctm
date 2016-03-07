@@ -7,7 +7,7 @@
 		<state>VIC</state>
 		<movingIn>N</movingIn>
 		<whatToCompare>EG</whatToCompare>
-		<recentElectricityBill>Y</recentElectricityBill>
+		<recentElectricityBill>N</recentElectricityBill>
 		<recentGasBill>N</recentGasBill>
 		<tariff>A100</tariff>
 		<solarPanels>N</solarPanels>

@@ -96,6 +96,17 @@
 		}
 	}
 
+	/**
+	 * incrementTranIdBeforeEnteringSlide() increment tranId when previous step
+	 * was in the application phase of the journey. To be called onBeforeEnter
+	 * method of questionset steps (current step is the previous step index).
+	 */
+	function incrementTranIdBeforeEnteringSlide() {
+		if(meerkat.modules.journeyEngine.getCurrentStepIndex() > 4) {
+			meerkat.modules.transactionId.getNew(3);
+		}
+	}
+
 	function setJourneyEngineSteps(){
 
 		var startStep = {
@@ -171,7 +182,8 @@
 						toggleDialogueInChatCallback();
 					});
 				}
-			}
+			},
+			onBeforeEnter: incrementTranIdBeforeEnteringSlide
 		};
 
 		var detailsStep = {
@@ -243,16 +255,8 @@
 
 				});
 
-				if(meerkat.site.isCallCentreUser === true){
-					// Handle pre-filled 
-					toggleRebateDialogue();
-					// Handle toggle rebate options
-					$('input[name=health_healthCover_rebate]').on('change', function() {
-						toggleRebateDialogue();
-					});
-				}
-
 			},
+			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onBeforeLeave: function(event) {
 				// Store the text of the income question - for reports and audits.
 				var incomelabel = ($('#health_healthCover_income :selected').val().length > 0) ? $('#health_healthCover_income :selected').text() : '';
@@ -289,6 +293,7 @@
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefits.close();
 				meerkat.modules.navMenu.disable();
+				incrementTranIdBeforeEnteringSlide();
 			},
 			onAfterEnter: function(event) {
 				//Because it has no idea where the #navbar-main is on mobile because it's hidden and position: fixed... we force it to the top.
@@ -344,8 +349,7 @@
 				onInitialise: function onContactInit(event){
 					meerkat.modules.resultsFeatures.fetchStructure('health');
 				},
-				onBeforeEnter:function enterContactStep(event) {
-				},
+				onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 				onAfterEnter: function enteredContactStep(event) {
 					meerkat.modules.navMenu.enable();
 
@@ -393,15 +397,16 @@
 				meerkat.modules.healthAltPricing.initHealthAltPricing();
 				meerkat.modules.healthMoreInfo.initMoreInfo();
 				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
+				meerkat.modules.healthDualPricing.initHealthDualPricing();
 			},
 			onBeforeEnter:function enterResultsStep(event){
 
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
 				} else {
-				// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
-				meerkat.modules.healthResults.resetSelectedProduct();
-					}
+					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
+					meerkat.modules.healthResults.resetSelectedProduct();
+				}
 
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
@@ -419,6 +424,12 @@
 
 				meerkat.modules.resultsHeaderBar.registerEventListeners();
 
+			},
+			onBeforeLeave: function(event) {
+				// Increment the transactionId
+				if (event.isBackward === true) {
+					meerkat.modules.transactionId.getNew(3);
+				}
 			},
 			onAfterLeave: function(event){
 				meerkat.modules.healthResults.stopColumnWidthTracking();
@@ -637,7 +648,8 @@
 					var product = meerkat.modules.healthResults.getSelectedProduct();
 					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF"];
 
-					if( $('input[name=health_healthCover_rebate]:checked').val() == "N" && $.inArray(product.info.providerName, mustShowList) == -1) {
+					var $rebateEl = $('input[name=health_healthCover_rebate]:checked');
+					if( (!_.isEmpty($rebateEl) && $rebateEl.val() == "N") && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
 					} else {
 						$("#health_payment_medicare-selection").removeAttr("style");
@@ -1240,18 +1252,6 @@
 			$('.simples-privacycheck-statement, .new-quote-only, .follow-up-call').removeClass('hidden');
 			toggleDialogueInChatCallback();
 	}
-	}
-
-	// Hide/show simple Rebate dialogue when toggle rebate options in simples journey
-	function toggleRebateDialogue() {
-		// apply rebate
-		if ($('#health_healthCover_rebate_Y').is(':checked')) {
-			$('.simples-dialogue-37').removeClass('hidden');
-		}
-		// no rebate
-		else if ($('#health_healthCover_rebate_N').is(':checked')){
-			$('.simples-dialogue-37').addClass('hidden');
-		}
 	}
 
 	// Disable/enable follow up/New quote dialogue when the other checkbox ticked in Chat Callback sesction in simples

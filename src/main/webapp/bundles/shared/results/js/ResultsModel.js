@@ -195,7 +195,7 @@ var ResultsModel = {
 				newTranID = jsonResult.results.transactionId;
 			}
 			else if (jsonResult.results.hasOwnProperty('info') && jsonResult.results.info.hasOwnProperty('transactionId')) {
-			newTranID = jsonResult.results.info.transactionId;
+				newTranID = jsonResult.results.info.transactionId;
 			}
 			else if (jsonResult.results.hasOwnProperty('noresults') && jsonResult.results.noresults.hasOwnProperty('transactionId')) {
 				newTranID = jsonResult.results.noresults.transactionId;
@@ -264,6 +264,7 @@ var ResultsModel = {
 				Object.byString( jsonResult, Results.settings.paths.results.list ) &&
 				( Object.byString( jsonResult, Results.settings.paths.results.list ).length > 0 || typeof( Object.byString( jsonResult, Results.settings.paths.results.list ) ) == "object" )
 			) {
+				var isEmptyArray = false;
 
 				if( Object.byString( jsonResult, Results.settings.paths.results.general ) &&
 					Object.byString( jsonResult, Results.settings.paths.results.general ) !== ""
@@ -275,8 +276,13 @@ var ResultsModel = {
 				if( !Object.byString( jsonResult, Results.settings.paths.results.list ).length ) {
 					// This is stupid... if there are no results it pushes 'no results' into an empty array. It actually puts an empty array inside an array.
 					Results.model.returnedProducts = [Object.byString( jsonResult, Results.settings.paths.results.list )];
+					//is because of this that a flag gets place here so that we can explicidly not display results otherwise we get exception message.
 				} else {
 					Results.model.returnedProducts = Object.byString( jsonResult, Results.settings.paths.results.list );
+				}
+
+				if (Results.model.returnedProducts.length == 0) {
+					isEmptyArray = true;
 				}
 
 				if( Results.model.currentProduct && Results.model.currentProduct.product ){
@@ -383,9 +389,16 @@ var ResultsModel = {
 					Results.model.sortedProducts = []; // reset the sortedProducts array
 				}
 
-				Results.model.filterAndSort(false);
+				if(!isEmptyArray) {
 
-				Results.view.show();
+					Results.model.filterAndSort(false);
+
+					Results.view.show();
+				}
+				else {
+					Results.view.showNoResults();
+					$(Results.settings.elements.resultsContainer).trigger("noResults");
+				}
 
 			} else {
 				Results.view.showNoResults();
@@ -431,10 +444,10 @@ var ResultsModel = {
 		Results.model.sort(renderView);
 		Results.model.filter(renderView);
 		$(Results.settings.elements.resultsContainer).trigger("resultsDataReady");
-			meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_BEFORE_DATA_READY);
-			_.defer(function() {
-				meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
-			});
+		meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_BEFORE_DATA_READY);
+		_.defer(function() {
+			meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
+		});
 	},
 
 	sort: function(renderView) {
@@ -607,15 +620,15 @@ var ResultsModel = {
 
 				if( typeof value !== "undefined"){
 					switch( filter.condition ){
-					case "value":
-						valid = Results.model.filterByValue( value, filter.options );
-						break;
-					case "range":
-						valid = Results.model.filterByRange( value, filter.options );
-						break;
-					default:
-						console.log("The filter condition type seems to be erroneous");
-					break;
+						case "value":
+							valid = Results.model.filterByValue( value, filter.options );
+							break;
+						case "range":
+							valid = Results.model.filterByRange( value, filter.options );
+							break;
+						default:
+							console.log("The filter condition type seems to be erroneous");
+							break;
 					}
 				}
 

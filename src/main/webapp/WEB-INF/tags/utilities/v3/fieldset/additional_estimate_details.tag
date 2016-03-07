@@ -6,6 +6,18 @@
 
 <form_v2:fieldset legend="Electricity" className="electricity-details">
 
+    <c:set var="fieldXPath" value="utilities/householdDetails/recentElectricityBill" />
+    <form_v3:row label="Do you have a recent electricity bill in front of you?" fieldXpath="${fieldXPath}" className="clear recent-electricity-bill">
+        <field_v2:array_radio xpath="${fieldXPath}"
+                              required="true"
+                              className=""
+                              items="Y=Yes,N=No"
+                              id="${go:nameFromXpath(fieldXPath)}"
+                              title="if you have a recent electricity bill." />
+    </form_v3:row>
+
+
+
     <c:set var="fieldXPath" value="utilities/householdDetails/solarPanels" />
     <form_v3:row label="Do you have solar panels installed on your property?" fieldXpath="${fieldXPath}" className="clear">
         <field_v2:array_radio xpath="${fieldXPath}"
@@ -24,7 +36,7 @@
     </form_v3:row>
 
     <c:set var="fieldXPath" value="${xpath}/electricity/usage" />
-    <form_v3:row label="Select your household size to estimate your typical electricity usage" fieldXpath="${fieldXPath}" className="clear electricity-usage hidden-lg">
+    <form_v3:row label="Select your household size to estimate your typical electricity usage" fieldXpath="${fieldXPath}" className="clear electricity-usage hidden-lg hidden-sm hidden-md">
         <field_v2:array_radio xpath="${fieldXPath}"
                                required="true"
                                className="col-md-12 roundedCheckboxIcons"
@@ -32,7 +44,7 @@
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="what household size best describes your electricity usage." />
     </form_v3:row>
-    <form_v3:row label="Select the level that best describes your typical electricity usage" fieldXpath="${fieldXPath}" className="clear electricity-usage hidden-xs hidden-sm hidden-md">
+    <form_v3:row label="Select the level that best describes your typical electricity usage" fieldXpath="${fieldXPath}" className="clear electricity-usage hidden-xs">
         <field_v2:array_radio xpath="${fieldXPath}"
                               required="true"
                               className="col-md-12"
@@ -69,16 +81,6 @@
                                title="how you are charged." />
     </form_v3:row>
 
-    <form_v3:row label="Standard usage" className="clear usage standard-usage">
-    <utilities_v2_fieldset:additional_estimate_details_input xpath="${xpath}"
-                                                              utilityType="Electricity"
-                                                              inputType="peak"
-                                                              helpId="536"
-                                                              required="true"
-                                                              inputGroupText="kWh"
-                                                              inputGroupTextPosition="right"/>
-    </form_v3:row>
-
     <form_v3:row label="Peak usage" className="clear usage peak-usage">
         <utilities_v2_fieldset:additional_estimate_details_input xpath="${xpath}"
                                                                   utilityType="Electricity"
@@ -99,15 +101,6 @@
                                                                   inputGroupTextPosition="right"/>
     </form_v3:row>
 
-    <form_v3:row label="Controlled Load" className="clear usage controlled-usage">
-    <utilities_v2_fieldset:additional_estimate_details_input xpath="${xpath}"
-                                                              utilityType="Electricity"
-                                                              inputType="offpeak"
-                                                              required="false"
-                                                              inputGroupText="kWh"
-                                                              inputGroupTextPosition="right"/>
-    </form_v3:row>
-
     <form_v3:row label="Shoulder usage (if any)" className="clear usage shoulder-usage">
         <utilities_v2_fieldset:additional_estimate_details_input xpath="${xpath}"
                                                                   utilityType="Electricity"
@@ -121,6 +114,16 @@
 
 <form_v2:fieldset legend="Gas" className="gas-details">
 
+    <c:set var="fieldXPath" value="utilities/householdDetails/recentGasBill" />
+    <form_v3:row label="Do you have a recent gas bill in front of you?" fieldXpath="${fieldXPath}" className="clear recent-gas-bill">
+        <field_v2:array_radio xpath="${fieldXPath}"
+                              required="true"
+                              className=""
+                              items="Y=Yes,N=No"
+                              id="${go:nameFromXpath(fieldXPath)}"
+                              title="if you have a recent gas bill." />
+    </form_v3:row>
+
     <form_v3:row label="Who is your current provider?" className="clear">
         <c:set var="fieldXPath" value="utilities/estimateDetails/usage/gas/currentSupplier" />
         <field_v2:array_select xpath="${fieldXPath}" required="true" className="init"
@@ -129,7 +132,7 @@
     </form_v3:row>
 
     <c:set var="fieldXPath" value="${xpath}/gas/usage" />
-    <form_v3:row label="Select your household size to estimate your typical gas usage" fieldXpath="${fieldXPath}" className="clear gas-usage hidden-lg">
+    <form_v3:row label="Select your household size to estimate your typical gas usage" fieldXpath="${fieldXPath}" className="clear gas-usage hidden-lg hidden-sm hidden-md">
         <field_v2:array_radio xpath="${fieldXPath}"
                                required="true"
                                className="col-md-12 roundedCheckboxIcons"
@@ -137,7 +140,7 @@
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="what household size best describes your gas usage." />
     </form_v3:row>
-    <form_v3:row label="Select the level that best describes your typical gas usage" fieldXpath="${fieldXPath}" className="clear gas-usage hidden-xs hidden-sm hidden-md">
+    <form_v3:row label="Select the level that best describes your typical gas usage" fieldXpath="${fieldXPath}" className="clear gas-usage hidden-xs">
         <field_v2:array_radio xpath="${fieldXPath}"
                               required="true"
                               className="col-md-12"
