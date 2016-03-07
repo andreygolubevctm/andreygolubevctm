@@ -11,6 +11,7 @@
         isLhcApplicable = 'N',
         selectedBenefitsList,
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
+        maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
 
         templates = {
             premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
@@ -136,7 +137,7 @@
                     features: {
                         mode: 'populate',
                         headers: false,
-                        numberOfXSColumns: 2
+                        numberOfXSColumns: 1
                     },
                     dockCompareBar: false
                 },
@@ -188,7 +189,7 @@
                         },
                         {
                             key: 'N',
-                            value: "<span class='icon-cross'></span>"
+                            value: "<span class='icon-cross hidden-sm hidden-md hidden-lg'></span>"
                         },
                         {
                             key: 'R',
@@ -214,6 +215,8 @@
     }
 
     function eventSubscriptions() {
+
+        var tStart = 0;
 
         $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function () {
             _resetSelectionsStructureObject();
@@ -257,6 +260,7 @@
             meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
                 meerkat.modules.coupon.renderCouponBanner();
             });
+
         });
 
         $(document).on("resultsDataReady", function () {
@@ -266,10 +270,11 @@
         });
 
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
-
+            tStart = new Date().getTime();
             toggleMarketingMessage(false);
             toggleResultsLowNumberMessage(false);
-            meerkat.modules.journeyEngine.loadingShow('getting your quotes');
+            var waitMessageVal = $("#waitMessage").val();
+            meerkat.modules.journeyEngine.loadingShow(waitMessageVal);
 
             // Hide pagination
             $('header .slide-feature-pagination, header a[data-results-pagination-control]').addClass('hidden');
@@ -292,8 +297,16 @@
                 // Setup scroll
                 Results.pagination.setupNativeScroll();
             });
+            var tEnd = new Date().getTime();
+            var tFetchFinish = (tEnd - tStart);
+            var tVariance = maxMilliSecondsForMessage - tFetchFinish;
+            if(tVariance < 0 || meerkat.site.isCallCentreUser) {
+                tVariance = 0;
+            }
+            _.delay(function() {
+                meerkat.modules.journeyEngine.loadingHide();
+            },tVariance);
 
-            meerkat.modules.journeyEngine.loadingHide();
 
             if (!meerkat.site.isNewQuote && !Results.getSelectedProduct() && meerkat.site.isCallCentreUser) {
                 Results.setSelectedProduct($('.health_application_details_productId').val());
@@ -394,7 +407,7 @@
             } else {
                 toggleResultsLowNumberMessage(false);
                 if (!meerkat.modules.compare.isCompareOpen()) {
-                    if (pageNumber === pageData.measurements.numberOfPages && freeColumns > 2) {
+                    if (pageNumber === pageData.measurements.numberOfPages && freeColumns > 1) {
                         toggleMarketingMessage(true, freeColumns);
                     } else {
                     toggleMarketingMessage(false);
@@ -522,7 +535,11 @@
     }
 
     function startColumnWidthTracking() {
-        Results.view.startColumnWidthTracking($(window), Results.settings.render.features.numberOfXSColumns, false);
+        if (meerkat.modules.deviceMediaState.get() === 'xs' && Results.getDisplayMode() === 'features') {
+            Results.view.startColumnWidthTracking( $(window), Results.settings.render.features.numberOfXSColumns, false );
+            Results.pagination.setCurrentPageNumber(1);
+            Results.pagination.resync();
+        }
     }
 
     function stopColumnWidthTracking() {
@@ -760,7 +777,6 @@
 
 
     function onResultsLoaded() {
-
         if (meerkat.modules.deviceMediaState.get() == "xs") {
             startColumnWidthTracking();
         }
@@ -833,7 +849,7 @@
             } else {
                 var items = Results.getFilteredResults().length;
                 freeColumns = pageMeasurements.columnsPerPage - items;
-                if (freeColumns < 2 || pageMeasurements.numberOfPages !== 1) {
+                if (freeColumns < 1 || pageMeasurements.numberOfPages !== 1) {
                     show = false;
                 }
             }

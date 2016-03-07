@@ -136,6 +136,13 @@
 				} else {
 					$("#health_confirmation-warning").find(".fundWarning").hide().empty();
 				}
+
+				_.defer(function(){
+					// Backup in case warning contains html but no text
+					if(_.isEmpty($.trim($("#health_confirmation-warning").text()))) {
+						$("#health_confirmation-warning").find(".fundWarning").empty().hide();
+					}
+				});
 			});
 		}
 
