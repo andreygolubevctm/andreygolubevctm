@@ -106,7 +106,6 @@
 			
 	<jsp:attribute name="vertical_settings">
 		<travel:settings />
-		<travel:parameter/>
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
@@ -114,6 +113,7 @@
 	</jsp:attribute>
 				
 	<jsp:body>
+		<travel:parameter/>
 		<%-- Slides --%>
 		<travel_layout:slide_your_details />
 		<travel_layout:slide_results />
