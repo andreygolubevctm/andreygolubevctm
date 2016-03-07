@@ -11,7 +11,7 @@
         $allHospitalButtons,
         $defaultCover,
         $hasIconsDiv,
-        currCover = 'customise',
+        currCover = 'mid',
         customisedOptions = [],
         changedByCallCentre = false;
 
@@ -35,7 +35,8 @@
             if (meerkat.modules.splitTest.isActive(13)) {
                 $hospitalCoverToggles = $('.hospitalCoverToggles a'),
                 $hospitalCover = $('.Hospital_container');
-                $hasIconsDiv = $('.healthBenefits .categoriesCell:first-child').parent();
+                // done this way since it's an a/b test and
+                $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
 
                 // setup groupings
                 // extras middle row
@@ -83,6 +84,15 @@
         if (meerkat.modules.splitTest.isActive(13)) {
             setCustomOptions();
             toggleBenefits();
+            hospitalCoverToggleEvents();
+            setDefaultCover();
+
+            $(document).on('click', 'a.tieredLearnMore', function showBenefitsLearnMoreModel() {
+                showModal();
+            });
+
+            // setup icons
+            $('.health-situation-healthCvrType').find('label:first-child').addClass("icon-hospital-extras").end().find('label:nth-child(2)').addClass('icon-hospital-only').end().find('label:last-child').addClass('icon-extras-only');
 
             meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter(){
                 $hasIconsDiv.removeClass('hasIcons');
@@ -109,6 +119,12 @@
         });
     }
 
+    function setDefaultCover() {
+        if (!$hospitalCoverToggles.hasClass('active')) {
+            $('a.benefit-category[data-category="medium"]').trigger('click');
+        }
+    }
+
     function toggleBenefits() {
         var $hospitalSection = $('.Hospital_container').closest('fieldset'),
             $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
@@ -117,16 +133,12 @@
                 case 'c':
                     $hospitalSection.slideDown();
                     $extrasSection.slideDown();
-                    if (!$hospitalCoverToggles.is(":checked")) {
-                        $defaultCover.trigger('click').parent().addClass("active");
-                    }
+                    setDefaultCover();
                     break;
                 case 'h':
                     $hospitalSection.slideDown();
                     $extrasSection.slideUp();
-                    if (!$hospitalCoverToggles.is(":checked")) {
-                        $defaultCover.trigger('click').parent().addClass("active");
-                    }
+                    setDefaultCover();
 
                     $extrasSection.find('input[type="checkbox"]').prop('checked', false);
                     break;
@@ -170,20 +182,12 @@
             var $this = $(this);
 
             if (meerkat.modules.splitTest.isActive(13)) {
-                hospitalCoverToggleEvents();
-
-                $(document).on('click', 'a.tieredLearnMore', function showBenefitsLearnMoreModel() {
-                    showModal();
-                });
 
                 //This is for the split test. The classNames in the database need to remain as is for the default but we need to force an icon
                  $this.find('.category[class*="CTMNoIcon"]').each(function() {
                  var newClass = $(this).attr('class').replace('CTMNoIcon','CTM');
                     $(this).removeClass().addClass(newClass);
                  });
-
-                // setup icons
-                $('.health-situation-healthCvrType').find('label:first-child').addClass("icon-hospital-extras").end().find('label:nth-child(2)').addClass('icon-hospital-only').end().find('label:last-child').addClass('icon-extras-only');
             } else {
                 // wrap icons and non-icons items so we can style them differently
                 $this.find('.category[class*="CTM-"]').wrapAll('<div class="hasIcons"></div>');
@@ -217,7 +221,9 @@
         var currentCover = 'customise',
             previousCover = 'customise',
             $hospitalBenefitsSection = $('.Hospital_container .children'),
-            $limitedCover = $('#health_situation_accidentOnlyCover');
+            $limitedCover = $('#health_situation_accidentOnlyCover'),
+            $coverType = $('#health_benefits_covertype'),
+            $accidentCover = $('#accidentCover');
 
         $hospitalCoverToggles.on('click', function toggleHospitalCover(){
             var $item = $(this);
@@ -228,11 +234,12 @@
             $item.addClass('active');
 
             // set the hidden field
-            $('#health_benefits_covertype').val(currentCover);
+            $coverType.val(currentCover);
 
             // uncheck all tickboxes
             $allHospitalButtons.prop('checked', false).prop('disabled', false);
             $limitedCover.prop('checked', false);
+            $accidentCover.prop('checked', false);
 
             switch(currentCover) {
                 case 'top':
@@ -243,14 +250,15 @@
                     $hospitalBenefitsSection.slideUp(function(){
                         $(this).prop('checked', false);
                         $limitedCover.prop('checked', true);
-                        $("input[name='health_benefits_benefitsExtras_Private Hospital']").prop('checked', true);
                     });
+
+                    $("input[name='health_benefits_benefitsExtras_PrHospital'], input[name='health_situation_accidentOnlyCover']").prop('checked', true);
 
                     break;
                 default:
                     $hospitalBenefitsSection.slideDown();
                     var $coverButtons = $hospitalCover.find('.'+currentCover+' input[type="checkbox"]');
-                    if (currentCover !== 'customise') {
+                    if (currentCover !== 'customised') {
                         $allHospitalButtons.not($coverButtons);
                     } else {
                         $coverButtons = $hospitalCover.find('.'+previousCover+' input[type="checkbox"], .customise input[type="checkbox"]');
@@ -264,7 +272,7 @@
             }
 
             // disable all buttons if customise is not selected
-            if (currentCover !== 'customise')
+            if (currentCover !== 'customised')
             {
                 $allHospitalButtons.prop('disabled', true);
             }

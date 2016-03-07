@@ -41,12 +41,12 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 			<div class="hospitalCoverToggles visible-xs">
 				<div class="btn-group btn-group-justified btn-group-wrap">
 					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="basic">Basic</a>
-					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="mid">Medium</a>
+					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="medium">Medium</a>
 					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="top">Top</a>
 				</div>
 				<div class="nonComprehensiveCover">
 					or
-					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customise">Customise your cover</a>
+					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customised">Customise your cover</a>
 					<a href="javascript:;" class="benefit-category limited" data-category="limited">No thanks, I only want limited hospital cover</a>
 				</div>
 			</div>
@@ -60,8 +60,6 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 		<div class="scrollable row">
 			<div class="benefits-list col-sm-12">
 				<div class="row">
-			<%--</c:if>--%>
-				<%--<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">--%>
 					<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">
 						<c:set var="category">${item.getShortlistKey()}</c:set>
 						<c:choose>
@@ -75,13 +73,12 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 									<div class="grouping-header">Comprehensive Cover</div>
 									<div class="grouping-border"></div>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="top">top</a>
-                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="mid">medium</a>
+                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="medium">medium</a>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="basic">basic</a>
-                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="customise">customise</a>
+                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="customised">customise</a>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="limited">limited</a>
                                 </div>
 
-                                <field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="customise" />
                                     <div class="coverExplanationContainer">
                                     <c:set var="tieredBenefits" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "coverOptions")}' />
                                     <c:forEach items="${tieredBenefits.getSupplementary()}" var="tieredBenefitsContent" >
@@ -118,13 +115,14 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 										</core_v1:js_template>
 									</c:if>
 									<div class="hasIcons">
+										<field_v2:checkbox xpath="health_situation_accidentOnlyCover" value="Y" required="false" label="false" title="" className="hidden" />
                                     <c:forEach items="${item.getChildren()}" var="selectedValue">
 										<c:if test="${selectedValue.isShortlistable()}">
 
 											<%--<health_v3:benefitsItem item="${selectedValue}" />--%>
 											<div class="categoriesCell ${colWidthValue} short-list-item ${selectedValue.getClassString()} ${selectedValue.getShortlistKey()}_container">
 											<!-- This is a duplicate of the row above and needs to be cleaned up in the .less-->
-											<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getName()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" />
+											<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" />
 											</div>
 										</c:if>
 									</c:forEach>

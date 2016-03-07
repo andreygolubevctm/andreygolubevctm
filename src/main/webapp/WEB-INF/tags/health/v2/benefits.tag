@@ -18,7 +18,6 @@
 	<jsp:body>
 
 		<form_v2:fieldset legend="" postLegend="" >
-
 			<div class="scrollable row">
 
 				<div class="benefits-list col-sm-12">

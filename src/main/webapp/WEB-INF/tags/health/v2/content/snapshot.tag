@@ -47,7 +47,7 @@
         </div>
         <div class="col-md-7">
             <span class="snapshot-items hidden-xs hidden-sm">
-
+                <span data-source="#health_situation_coverType"></span>
             </span>
         </div>
     </div>
