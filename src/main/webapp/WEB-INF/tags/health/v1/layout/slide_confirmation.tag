@@ -92,12 +92,7 @@
 
 				<p>Your reference number is <span class="transactionID">{{= transID }}</span></p>
 
-				{{ if ( typeof pending !== "undefined" && pending ) { }}
-				<h2 class="text-hospital">Your application is currently being processed.</h2>
-				<p>
-					We will be in contact with you should we require further information to complete your application. Once your application has been completed you will receive a confirmation email. If you have any questions about your purchased policy call us on: <span class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></span>
-				</p>
-				{{ } else if( whatsNext ) { }}
+				{{ if( whatsNext ) { }}
 				<h2 class="text-hospital">Your application has been submitted to {{= info.providerName ? info.providerName : info.fundName }} for processing. This is what happens next...</h2>
 				{{= whatsNext }}
 				{{ } }}

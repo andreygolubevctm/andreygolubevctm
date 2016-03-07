@@ -204,7 +204,8 @@
                     triggers: ['RESULTS_DATA_READY'],
                     callback: meerkat.modules.healthResults.rankingCallback,
                     forceIdNumeric: true
-                }
+                },
+                incrementTransactionId : false
             });
 
         } catch (e) {
@@ -434,6 +435,13 @@
         meerkat.messaging.subscribe(meerkatEvents.healthFilters.CHANGED, function onFilterChange(obj) {
             if (obj && obj.hasOwnProperty('filter-frequency-change')) {
                 meerkat.modules.resultsTracking.setResultsEventMode('Refresh'); // Only for events that dont cause a new TranId
+            } else {
+                // This is a little dirty however we need to temporarily override the
+                // setting which prevents the tranId from being incremented.
+                // Object only has value in above case, otherwise empty
+                Results.settings.incrementTransactionId = true;
+                get();
+                Results.settings.incrementTransactionId = false;
             }
         });
 
