@@ -8,7 +8,6 @@
 	};
 
 	var outputValidationErrors = function(options) {
-		"use strict";
 		handleServerSideValidation(options);
 		triggerErrorContainer();
 	};
@@ -41,15 +40,17 @@
 					var element = matches[b];
 					erroredElements.push(element);
 					var $element = $(element);
-					$(element).parent().removeClass("has-success");
-					$(element).parent().addClass("has-error");
+					$(element).parent()
+						.removeClass("has-success")
+						.addClass("has-error");
 
 					//Inline validation
 					//An error message placeholder will be injected above the form element, generally inside the parent .row-content
 
 					var $referenceElement = $element;
-					if($element.attr('data-validation-placement') !== null && $element.attr('data-validation-placement') !== ''){
-						$referenceElement = $($element.attr('data-validation-placement'));
+					var dataValidationPlacementAttr = $element.attr('data-validation-placement');
+					if(dataValidationPlacementAttr !== null && dataValidationPlacementAttr !== ''){
+						$referenceElement = $(dataValidationPlacementAttr);
 					}
 
 					var parent = $referenceElement.closest('.row-content, .fieldrow_value');
@@ -73,10 +74,11 @@
 							}
 						}
 					}
-					if (errorContainer.length === 0) {
+					if (!errorContainer.length) {
 						parent.prepend('<div class="error-field"></div>');
-						errorContainer = parent.children('.error-field');
-						errorContainer.hide().slideDown(100);
+						errorContainer = parent.children('.error-field')
+							.hide()
+							.slideDown(100);
 					}
 					errorContainer.append(message);
 				}
@@ -111,9 +113,12 @@
 		if(typeof FormElements != 'undefined'){
 			if( !FormElements.errorContainer.is(':visible') && FormElements.errorContainer.find('li').length > 0 ) {
 				FormElements.rightPanel.addClass('hidden');
-				FormElements.errorContainer.show();
-				FormElements.errorContainer.find('li').show();
-				FormElements.errorContainer.find('li .error').show();
+				FormElements.errorContainer
+					.show()
+					.find('li')
+					.show()
+					.find('.error')
+					.show();
 			}
 		}
 	};
