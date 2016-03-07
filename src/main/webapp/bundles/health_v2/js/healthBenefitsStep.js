@@ -50,6 +50,10 @@
                     htmlContent = htmlTemplate();
 
                 $(htmlContent).insertBefore(".HLTicon-speech-therapy");
+
+                if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                    $hasIconsDiv.removeClass('hasIcons');
+                }
             }
 
             setupPage();
@@ -120,8 +124,14 @@
     }
 
     function setDefaultCover() {
-        if (!$hospitalCoverToggles.hasClass('active')) {
-            $('a.benefit-category[data-category="medium"]').trigger('click');
+        if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            if (!$('.hospitalCoverToggles.visible-xs a.benefit-category').hasClass('active')) {
+                $('.hospitalCoverToggles.visible-xs a.benefit-category[data-category="medium"]').trigger('click').addClass('active');
+            }
+        } else {
+            if (!$('.hospitalCoverToggles.hidden-xs a.benefit-category').hasClass('active')) {
+                $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="medium"]').trigger('click').addClass('active');
+            }
         }
     }
 
@@ -261,7 +271,8 @@
                     if (currentCover !== 'customised') {
                         $allHospitalButtons.not($coverButtons);
                     } else {
-                        $coverButtons = $hospitalCover.find('.'+previousCover+' input[type="checkbox"], .customise input[type="checkbox"]');
+                        var classToSelect = previousCover === 'top' ? '' : '.'+previousCover;
+                        $coverButtons = $hospitalCover.find(classToSelect+' input[type="checkbox"], .customise input[type="checkbox"]');
                     }
 
                     // setup for customised options to be completed later

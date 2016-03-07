@@ -95,7 +95,7 @@
         var coverFor = $("#health_situation_healthCvr").val();
         var livingIn = $("#health_situation_location").val();
         var lookingTo = $("#health_situation_healthSitu").val();
-        var coverType = $("#health_situation_coverType input:checked").parent().text().trim();
+        var coverType = ''; //$("#health_situation_coverType input:checked").parent().text();
         var hospital = fetchAllHospitalCheckedValues();
         var extras = fetchAllExtrasCheckedValues();
 

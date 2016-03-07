@@ -32,7 +32,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 	</c:choose>
 
 	<c:if test="${coverType == 'Hospital'}">
-	<form_v2:fieldset legend="" postLegend="" className="j13abtest visible-xs" >
+	<form_v2:fieldset legend="" postLegend="" className="j13abtest hidden-sm hidden-md hidden-lg" >
 		<div class="title">
 			<h3>Choose Your Hospital Cover</h3>
 			<p>${colContent}</p>
