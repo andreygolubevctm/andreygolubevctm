@@ -327,14 +327,13 @@
                 $benefitsForm.find('.sidebarHospital').fadeOut('fast');
                 $benefitsForm.find('.extrasCover').fadeOut('fast');
                 $benefitsForm.find('.sidebarExtras').fadeIn('fast');
-                //$benefitsForm.find('.hospitalCover').removeClass('custom-col-sm').addClass('custom-col-lg').fadeIn('fast', function(){
-                $benefitsForm.find('.hospitalCover').fadeIn('fast', function(){
+                $benefitsForm.find('.hospitalCover').removeClass('custom-col-sm').addClass('custom-col-lg').fadeIn('fast', function(){
                     movePageTitleToColumn();
                 });
                 break;
             case 'E':
                 $benefitsForm.find('.sidebarExtras').fadeOut('fast');
-                //$benefitsForm.find('.hospitalCover').removeClass('custom-col-lg').addClass('custom-col-sm').fadeOut('fast');
+                $benefitsForm.find('.hospitalCover').removeClass('custom-col-lg').addClass('custom-col-sm').fadeOut('fast');
                 $benefitsForm.find('.sidebarHospital').fadeIn('fast');
                 $benefitsForm.find('.extrasCover').fadeIn('fast', function(){
                     movePageTitleToColumn();
