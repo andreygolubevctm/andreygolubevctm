@@ -6,8 +6,18 @@
 
 }
 
+.hideNavbar {
+    display: none !important;
+}
+
 #benefitsForm .j13abtest{
     margin-top: 30px;
+
+    .content {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
     .hospitalCoverToggles.hidden-xs {
         display:table;
         table-layout: fixed;
@@ -31,6 +41,7 @@
     }
 
     .hospitalCoverToggles {
+        margin-left: 0px;
         .btn-group-justified {
             margin-bottom: 5px;
             .btn {
@@ -57,6 +68,7 @@
     .grouping-header {
         width:60%;
         text-align:center;
+        color: @benefits-grouping-font-color;
     }
 
     .grouping-border {
@@ -70,13 +82,27 @@
     }
 
     .fourIconWidth {
-        width: 46%;
+        @media(@md){
+            width: 45%;
+        }
+
+        @media(@sm-only){
+            width: 44%;
+        }
+
         margin-left: 2%;
         display:inline-block;
     }
 
     .twoIconWidth {
-        width: 22%;
+
+        @media(@md){
+            width: 22%;
+        }
+
+        @media(@sm-only){
+            width: 21%;
+        }
         margin-left: 2%;
         display:inline-block;
     }
@@ -126,6 +152,7 @@
     }
 
     .benefits-list {
+        margin-left: 0px;
         .hasIcons {
             .categoriesCell {
                 .checkbox {
@@ -152,7 +179,7 @@
                         &.checked {
                             & + label:before {
                                 background-color: @health-benefits-icon-bg-checked-color;
-                                border-color: @health-benefits-icon-border-checked-color;
+                                border-color: @health-benefits-icon-bg-checked-color;
                                 color: #fff;
                             }
                         }
@@ -179,8 +206,10 @@
             }
         }
 
-        .Hospital_container .categoriesCell {
-            width: 14.28%;
+        @media(@sm) {
+            .Hospital_container .categoriesCell {
+                width: 14.28%;
+            }
         }
     }
 }

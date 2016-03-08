@@ -275,6 +275,9 @@
 
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
+				if (meerkat.modules.splitTest.isActive(13)) {
+					$('#navbar-main').addClass('hideNavbar').removeClass('collapse');
+				}
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
 				meerkat.modules.healthBenefitsStep.checkAndHideMoreBenefits();
 				incrementTranIdBeforeEnteringSlide();
@@ -298,6 +301,11 @@
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
 				meerkat.modules.healthResults.onBenefitsSelectionChange(selectedBenefits);
+			},
+			onBeforeLeave:function(event){
+				if (meerkat.modules.splitTest.isActive(13)) {
+					$('#navbar-main').removeClass('hideNavbar').addClass('collapse');
+				}
 			}
 		};
 		var contactStep = {
