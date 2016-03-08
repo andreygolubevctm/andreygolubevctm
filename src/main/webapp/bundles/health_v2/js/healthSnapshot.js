@@ -86,7 +86,7 @@
                 );
             }
         }
-        // Toggle benefits rows
+        // Toggle benefits rows.
         showHide(data,'.quoteSnapshot .hospital','hospital', noData);
         showHide(data,'.quoteSnapshot .extras','extras', noData);
     }
