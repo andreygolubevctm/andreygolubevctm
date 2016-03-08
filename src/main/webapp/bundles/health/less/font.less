@@ -44,20 +44,8 @@
 .benefitClass(@class, @labelClass, @content) {
 	.@{class} label,
 	li.@{class} {
-		& when not (@labelClass = '') {
-			.@{labelClass}:before {
-				font-family: 'ctm-health';
-				content: @content;
-				font-size: 26px;
-				color: @benefits-xs-icon-color;
-				vertical-align: top;
-				margin-right: 8px;
-			}
-		}
-		& when (@labelClass = '') {
-			&:before {
-				content: @content;
-			}
+		&:before {
+			content: @content;
 		}
 	}
 }
@@ -104,11 +92,9 @@
 	.benefitClass(HLTicon-lifestyle-products, @labelClass, "\e925");
 }
 
-.healthBenefits {
-	.styleBenefits('');
-}
-
-.top-5-benefits {
+.benefitsIcons,
+.top-5-benefits,
+.healthBenefits{
 	.styleBenefits('');
 }
 
