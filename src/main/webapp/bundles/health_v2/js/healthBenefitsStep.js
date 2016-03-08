@@ -200,12 +200,13 @@
                  });
             } else {
                 // wrap icons and non-icons items so we can style them differently
-                $this.find('.category[class*="CTM-"]').wrapAll('<div class="hasIcons"></div>');
-                $this.find('.category:not([class*="CTM-"])').wrapAll('<div class="noIcons"></div>');
+                $this.find('.category[class*="HLTicon-"], .category[class*="CTM-"]').wrapAll('<div class="hasIcons"></div>');
+                $this.find('.category[class*="noIcon"]').wrapAll('<div class="noIcons"></div>');
+                $this.find('.noIcons').insertAfter($this.find('.hasIcons'));
             }
 
             // fix positioning of label and help
-            $this.find('.category[class*="CTM-"] label, .category[class*="HLTicon-"] label').each(function(){
+            $this.find('.category[class*="CTM-"] label, .hasIcons .category[class*="HLTicon-"] label').each(function(){
                 $el = $(this);
                 var labelTxt = $("<span/>").addClass('iconLabel').append($.trim($el.text().replace('Need Help?','')));
                 var helpLnk = $el.find('a').detach();
