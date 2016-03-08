@@ -81,7 +81,7 @@ public class ResponseAdapter {
 
                 }
                 else if(travelQuote.getService().equals("JANE")) {
-                    planDescription += "Travel With Jane <br/> "+travelQuote.getProduct().getLongTitle();
+                    planDescription += "Travel With Jane - "+travelQuote.getProduct().getLongTitle();
                 }
 
                 else{
