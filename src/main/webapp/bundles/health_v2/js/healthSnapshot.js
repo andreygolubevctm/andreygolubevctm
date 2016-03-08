@@ -95,7 +95,7 @@
         var coverFor = $("#health_situation_healthCvr").val();
         var livingIn = $("#health_situation_location").val();
         var lookingTo = $("#health_situation_healthSitu").val();
-        var coverType = ''; //$("#health_situation_coverType input:checked").parent().text();
+        var coverType = $("#health_situation_coverType input:checked").parent().text();
         var hospital = fetchAllHospitalCheckedValues();
         var extras = fetchAllExtrasCheckedValues();
 
@@ -107,10 +107,6 @@
             hospital : _.isEmpty(hospital) ? false : hospital,
             extras : _.isEmpty(extras) ? false : extras
         };
-    }
-
-    function getCoverType() {
-
     }
 
     function hasData(data) {

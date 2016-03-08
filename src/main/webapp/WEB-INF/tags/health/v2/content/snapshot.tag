@@ -47,7 +47,9 @@
         </div>
         <div class="col-md-7">
             <span class="snapshot-items hidden-xs hidden-sm">
+                <c:if test="${not newBenefitsLayoutSplitTest eq true}">
                 <span data-source="#health_situation_coverType"></span>
+                </c:if>
             </span>
         </div>
     </div>
