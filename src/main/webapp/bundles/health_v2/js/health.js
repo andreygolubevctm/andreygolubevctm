@@ -458,14 +458,7 @@
 					healthApplicationDetails.testStatesParity();
 				});
 
-				// initialise start date datepicker from payment step as it will be used by selected fund
-				$("#health_payment_details_start_calendar")
-					.datepicker({ clearBtn:false, format:"dd/mm/yyyy" })
-					.on("changeDate", function updateStartCoverDateHiddenField(e) {
-						// fill the hidden field with selected value
-						$("#health_payment_details_start").val( e.format() );
-						meerkat.messaging.publish(moduleEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
-					});
+                meerkat.modules.healthApplyStep.onInitialise();
 
 			},
 			onBeforeEnter: function enterApplyStep(event){
@@ -501,14 +494,7 @@
 						$('#health_application_okToCall-group').show();
 					}
 
-					// Change min and max dates for start date picker based on current stored values from healthPaymentStep module which can change based on selected fund
-					//var min = meerkat.modules.healthPaymentStep.getSetting("minStartDateOffset");
-					//var max = meerkat.modules.healthPaymentStep.getSetting("maxStartDateOffset");
-					//$("#health_payment_details_start_calendar").datepicker("setStartDate", "+" + min + "d").datepicker("setEndDate", "+" + max + "d");
-					var min = meerkat.modules.healthPaymentStep.getSetting('minStartDate');
-					var max = meerkat.modules.healthPaymentStep.getSetting('maxStartDate');
-					$("#health_payment_details_start_calendar").datepicker('setStartDate', min).datepicker('setEndDate', max);
-
+					meerkat.modules.healthApplyStep.onBeforeEnter();
 				}
 			},
 			onAfterEnter: function afterEnterApplyStep(event){
