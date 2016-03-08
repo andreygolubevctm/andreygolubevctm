@@ -10,7 +10,7 @@
 	font-style: normal;
 }
 
-[class^="hltIcons-"], [class*="hltIcons-"] {
+[class^="hltIcons-"], [class*="hltIcon-"] {
 	font-family: 'ctm-health';
 	speak: none;
 	font-style: normal;
@@ -42,7 +42,8 @@
 }
 
 .benefitClass(@class, @labelClass, @content) {
-	.@{class} label {
+	.@{class} label,
+	li.@{class} {
 		& when not (@labelClass = '') {
 			.@{labelClass}:before {
 				font-family: 'ctm-health';
@@ -106,6 +107,11 @@
 .healthBenefits {
 	.styleBenefits('');
 }
+
+.top-5-benefits {
+	.styleBenefits('');
+}
+
 
 @media(@xs-only){
 	.j13abtest .healthBenefits {

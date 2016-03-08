@@ -43,13 +43,13 @@
                 var htmlTemplate = _.template($('#extras-mid-row-groupings').html()),
                     htmlContent = htmlTemplate();
 
-                $(htmlContent).insertBefore(".HLTicon-remedial-massage");
+                $(htmlContent).insertBefore(".HLTicon-physiotherapy");
 
                 // extras last row
                 htmlTemplate = _.template($('#extras-last-row-groupings').html()),
                     htmlContent = htmlTemplate();
 
-                $(htmlContent).insertBefore(".HLTicon-speech-therapy");
+                $(htmlContent).insertBefore(".HLTicon-glucose-monitor");
 
                 if (meerkat.modules.deviceMediaState.get() === 'xs') {
                     $hasIconsDiv.removeClass('hasIcons');
