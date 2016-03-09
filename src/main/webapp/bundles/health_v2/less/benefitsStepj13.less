@@ -116,18 +116,35 @@
     }
 
     @media(@xs-only) {
-        .healthBenefits .checkbox input {
-            + label {
-                line-height: 0.3em;
+        .healthBenefits {
+            br {
+                display: none;
             }
 
-            &:checked {
+            .iconLabel {
+                vertical-align: middle;
+                &:before {
+                    vertical-align: middle;
+                    font-family: 'ctm-health';
+                    font-size: 26px;
+                    color: @benefits-xs-icon-color;
+                    margin-right: 8px;
+                }
+            }
+
+            .checkbox input {
                 + label {
                     line-height: 0.3em;
-                    font-weight:bold;
-                    &:before {
-                        font-family: 'framework_font';
-                        content: "\e600";
+                }
+
+                &:checked {
+                    + label {
+                        line-height: 0.3em;
+                        font-weight: bold;
+                        &:before {
+                            font-family: 'framework_font';
+                            content: "\e600";
+                        }
                     }
                 }
             }
