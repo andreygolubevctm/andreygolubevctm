@@ -37,6 +37,7 @@
         } else if(hasCover == 'N'){
             element.val('NONE');
         }
+        meerkat.modules.healthCoverDetails.displayHealthFunds();
     }
     meerkat.modules.register('healthPreviousFund', {
         init: init,
