@@ -46,12 +46,7 @@
 	li.@{class} {
 		& when not (@labelClass = '') {
 			.@{labelClass}:before {
-				font-family: 'ctm-health';
 				content: @content;
-				font-size: 26px;
-				color: @benefits-xs-icon-color;
-				vertical-align: top;
-				margin-right: 8px;
 			}
 		}
 		& when (@labelClass = '') {
@@ -113,7 +108,13 @@
 
 @media(@xs-only){
 
-	.j13abtest .healthBenefits {
-		.styleBenefits(iconLabel);
+	.j13abtest .healthBenefits .iconLabel:before {
+		font-family: 'ctm-health';
+		font-size: 26px;
+		color: @benefits-xs-icon-color;
+		vertical-align: top;
+		margin-right: 8px;
 	}
+
+	.styleBenefits(iconLabel);
 }
