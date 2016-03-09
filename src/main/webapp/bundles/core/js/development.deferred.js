@@ -196,7 +196,7 @@
 
         }
 
-        if (hasValidatorService() == true){
+        if (hasValidatorService() === true){
 
             var $validatorEngineContainer = $('.validatorEngine');
             $validatorEngineContainer.html('Loading Validator services...');

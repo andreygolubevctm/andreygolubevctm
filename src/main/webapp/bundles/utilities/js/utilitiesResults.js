@@ -10,7 +10,8 @@
     };
     var $component, //Stores the jQuery object for the component group
         thoughtWorldCustomerRef = '',
-        initialised = false;
+        initialised = false,
+        billClicked = false;
 
     function initPage(){
         if(!initialised) {
@@ -338,13 +339,16 @@
     }
 
     function addBillClick(event) {
-
+        billClicked = true;
         event.preventDefault();
-        $('#utilities_householdDetails_recentElectricityBill_Y').parent().click();
-        $('#utilities_householdDetails_recentGasBill_Y').parent().click();
+        $('#utilities_householdDetails_recentElectricityBill_Y').parent().show().click();
+        $('#utilities_householdDetails_recentGasBill_Y').parent().show().click();
 
         meerkat.modules.journeyEngine.gotoPath('start');
 
+    }
+    function getBillClicked(){
+        return billClicked;
     }
 
     function _toggleChangeType() {
@@ -438,7 +442,8 @@
         showYearlySavings: showYearlySavings,
         showEstimatedCost: showEstimatedCost,
         showEstimatedUsage: showEstimatedUsage,
-        getThoughtWorldReferenceNumber: getThoughtWorldReferenceNumber
+        getThoughtWorldReferenceNumber: getThoughtWorldReferenceNumber,
+        getBillClicked: getBillClicked
     });
 
 })(jQuery);
