@@ -110,7 +110,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 										<div class="grouping-border fourIconWidth hidden-xs"></div>
 										</core_v1:js_template>
 										<core_v1:js_template id="extras-last-row-groupings">
-										<div class="grouping-header twoIconWidth lastRow hidden-xs">Hearing Aids</div>
+										<div class="grouping-header twoIconWidth lastRow hidden-xs">Health Aids</div>
 										<div class="grouping-border twoIconWidth lastRow hidden-xs"></div>
 										</core_v1:js_template>
 									</c:if>
