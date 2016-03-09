@@ -6,12 +6,13 @@
         events = {
              healthPreviousFund: {
                  POPULATE_PARTNER: 'POPULATE_PREVIOUS_FUND_PARTNER',
-                 POPULATE_PRIMARY: 'POPULATE_PREVIOUS_FUND_PRIMARY',
+                 POPULATE_PRIMARY: 'POPULATE_PREVIOUS_FUND_PRIMARY'
             }
         },
         moduleEvents = events.healthPreviousFund,
         $primaryFund,
-        $partnerFund;
+        $partnerFund,
+        noCurrentFund = 'NONE';
 
 
     function init() {
@@ -32,16 +33,27 @@
     }
 
     function coverChange(element , hasCover){
-        if( hasCover == 'Y' && element.val() == 'NONE'){
+        if( hasCover == 'Y' && element.val() == noCurrentFund){
             element.val('');
         } else if(hasCover == 'N'){
-            element.val('NONE');
+            element.val(noCurrentFund);
         }
         meerkat.modules.healthCoverDetails.displayHealthFunds();
     }
+
+    function getPrimaryFund(){
+        return $primaryFund.val();
+    }
+
+    function getPartnerFund(){
+        return $partnerFund.val();
+    }
+
     meerkat.modules.register('healthPreviousFund', {
         init: init,
-        events: events
+        events: events,
+        getPrimaryFund : getPrimaryFund,
+        getPartnerFund : getPartnerFund
     });
 
 })(jQuery);
