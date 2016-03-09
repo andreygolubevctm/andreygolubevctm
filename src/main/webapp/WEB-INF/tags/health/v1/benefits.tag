@@ -5,7 +5,7 @@
 	<form class="benefits-component">
 
 		<div class="scrollable row">
-			<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="customised" />
+
 			<div class="hidden-xs col-sm-12">
 				<h2>Choosing Your Cover</h2>
 				<p>You can tailor your health insurance comparison by selecting benefits that best suit your needs and personal situation. Based on the information you have given us, we have preselected a few benefits for you which you can select or unselect to suit your needs.</p>

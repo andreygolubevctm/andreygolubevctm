@@ -19,7 +19,7 @@
 
 		<form_v2:fieldset legend="" postLegend="" >
 			<div class="scrollable row">
-
+				<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="customised" />
 				<div class="benefits-list col-sm-12">
 					<c:set var="fieldXpath" value="${xpath}/coverType" />
 					<form_v2:row label="What type of cover are you looking for?" fieldXpath="${fieldXpath}">

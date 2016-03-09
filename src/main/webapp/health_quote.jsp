@@ -11,7 +11,7 @@
 <%-- START JOURNEY OVERRIDE - Part 1 of 2) --%>
 <c:set var="journeyOverride" value="${pageSettings.getSetting('journeyOverride') eq 'Y'}" />
 <c:choose>
-	<c:when test="${not callCentre && journeyOverride eq true}">
+	<c:when test="${not callCentre && journeyOverride eq false}">
 		<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v2.jsp?" />
 		<c:forEach items="${param}" var="currentParam">
 			<c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
@@ -182,6 +182,7 @@
 			<field_v1:hidden xpath="health/loading" />
 			<field_v1:hidden xpath="health/primaryCAE" />
 			<field_v1:hidden xpath="health/partnerCAE" />
+			<field_v1:hidden xpath="health/benefits/covertype" defaultValue="customised" />
 					
 			<form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
 			<core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />

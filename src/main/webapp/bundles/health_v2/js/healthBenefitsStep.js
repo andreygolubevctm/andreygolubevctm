@@ -113,7 +113,7 @@
         $allHospitalButtons.on('click', function setCustomisedOptions() {
             var $item = $(this);
 
-            if (currCover === 'customise') {
+            if (currCover === 'customised') {
                 if ($item.is(":checked")) {
                     customisedOptions.push($item.attr('id'));
                 } else {
@@ -229,8 +229,8 @@
     }
 
     function hospitalCoverToggleEvents() {
-        var currentCover = 'customise',
-            previousCover = 'customise',
+        var currentCover = 'customised',
+            previousCover = 'customised',
             $hospitalBenefitsSection = $('.Hospital_container .children'),
             $limitedCover = $('#health_situation_accidentOnlyCover'),
             $coverType = $('#health_benefits_covertype'),
