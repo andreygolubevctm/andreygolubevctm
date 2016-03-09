@@ -44,8 +44,20 @@
 .benefitClass(@class, @labelClass, @content) {
 	.@{class} label,
 	li.@{class} {
-		&:before {
-			content: @content;
+		& when not (@labelClass = '') {
+			.@{labelClass}:before {
+				font-family: 'ctm-health';
+				content: @content;
+				font-size: 26px;
+				color: @benefits-xs-icon-color;
+				vertical-align: top;
+				margin-right: 8px;
+			}
+		}
+		& when (@labelClass = '') {
+			&:before {
+				content: @content;
+			}
 		}
 	}
 }
@@ -100,6 +112,7 @@
 
 
 @media(@xs-only){
+
 	.j13abtest .healthBenefits {
 		.styleBenefits(iconLabel);
 	}
