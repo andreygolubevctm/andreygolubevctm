@@ -114,6 +114,17 @@
 		$mainform.find('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
 	}
 
+	/**
+	 * incrementTranIdBeforeEnteringSlide() increment tranId when previous step
+	 * was in the application phase of the journey. To be called onBeforeEnter
+	 * method of questionset steps (current step is the previous step index).
+	 */
+	function incrementTranIdBeforeEnteringSlide() {
+		if(meerkat.modules.journeyEngine.getCurrentStepIndex() > 3) {
+			meerkat.modules.transactionId.getNew(3);
+		}
+	}
+
 	function setJourneyEngineSteps(){
 
 		var startStep = {
@@ -156,31 +167,6 @@
 				$healthSitHealthSitu.on('change',function() {
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
-				/*
-
-				$healthSitSuburb.bind('change',function() {
-					console.log("suburb changes on bind..");
-				});
-
-				$healthSitSuburb.on('blur',function() {
-					console.log("suburb changes..");
-					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-				});
-
-				$healthSitState.on('blur',function() {
-					console.log("state changes..");
-					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-				});
-
-				$healthSitPostCode.on('blur',function() {
-					console.log("postcode changes..");
-					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-				});
-				*/
-
-
-
-
 
 				$healthSitLocation.on('blur',function() {
 					healthChoices.setLocation($(this).val());
@@ -236,6 +222,7 @@
 				}
 
 			},
+			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onAfterEnter: function healthV2AfterEnter() {
 				// if coming from brochure site and all prefilled data are valid, let's hide the fields
 				if (meerkat.site.isFromBrochureSite === true) {
@@ -290,6 +277,7 @@
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
 				meerkat.modules.healthBenefitsStep.checkAndHideMoreBenefits();
+				incrementTranIdBeforeEnteringSlide();
 			},
 			onAfterEnter: function(event) {
 				// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter segment
@@ -331,8 +319,7 @@
 			onInitialise: function onContactInit(event){
 				meerkat.modules.resultsFeatures.fetchStructure('health');
 			},
-			onBeforeEnter:function enterContactStep(event) {
-			},
+			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onAfterEnter: function enteredContactStep(event) {
 			},
 			onAfterLeave:function leaveContactStep(event){
@@ -405,6 +392,12 @@
 				meerkat.modules.resultsHeaderBar.registerEventListeners();
 
 			},
+			onBeforeLeave: function(event) {
+				// Increment the transactionId
+				if (event.isBackward === true) {
+					meerkat.modules.transactionId.getNew(3);
+				}
+			},
 			onAfterLeave: function(event){
 				meerkat.modules.healthResults.stopColumnWidthTracking();
 				meerkat.modules.healthResults.recordPreviousBreakpoint();
@@ -465,14 +458,7 @@
 					healthApplicationDetails.testStatesParity();
 				});
 
-				// initialise start date datepicker from payment step as it will be used by selected fund
-				$("#health_payment_details_start_calendar")
-					.datepicker({ clearBtn:false, format:"dd/mm/yyyy" })
-					.on("changeDate", function updateStartCoverDateHiddenField(e) {
-						// fill the hidden field with selected value
-						$("#health_payment_details_start").val( e.format() );
-						meerkat.messaging.publish(moduleEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
-					});
+                meerkat.modules.healthApplyStep.onInitialise();
 
 			},
 			onBeforeEnter: function enterApplyStep(event){
@@ -508,14 +494,7 @@
 						$('#health_application_okToCall-group').show();
 					}
 
-					// Change min and max dates for start date picker based on current stored values from healthPaymentStep module which can change based on selected fund
-					//var min = meerkat.modules.healthPaymentStep.getSetting("minStartDateOffset");
-					//var max = meerkat.modules.healthPaymentStep.getSetting("maxStartDateOffset");
-					//$("#health_payment_details_start_calendar").datepicker("setStartDate", "+" + min + "d").datepicker("setEndDate", "+" + max + "d");
-					var min = meerkat.modules.healthPaymentStep.getSetting('minStartDate');
-					var max = meerkat.modules.healthPaymentStep.getSetting('maxStartDate');
-					$("#health_payment_details_start_calendar").datepicker('setStartDate', min).datepicker('setEndDate', max);
-
+					meerkat.modules.healthApplyStep.onBeforeEnter();
 				}
 			},
 			onAfterEnter: function afterEnterApplyStep(event){
@@ -602,18 +581,19 @@
 
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
+					var paymentDetailsSection = $("#health_payment_details-selection");
 					// Show discount text if applicable
 					if (typeof selectedProduct.promo.discountText !== 'undefined' && selectedProduct.promo.discountText !== '') {
-						$("#health_payment_details-selection").find(".definition").show().html(selectedProduct.promo.discountText);
+						paymentDetailsSection.find(".definition").show().html(selectedProduct.promo.discountText);
 					} else {
-						$("#health_payment_details-selection").find(".definition").hide().empty();
+						paymentDetailsSection.find(".definition").hide().empty();
 					}
 
 					// Show warning if applicable
 					if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
-						$("#health_payment_details-selection").find(".fundWarning").show().html(selectedProduct.warningAlert);
+						paymentDetailsSection.find(".fundWarning").show().html(selectedProduct.warningAlert);
 					} else {
-						$("#health_payment_details-selection").find(".fundWarning").hide().empty();
+						paymentDetailsSection.find(".fundWarning").hide().empty();
 					}
 
 					// Insert fund into checkbox label

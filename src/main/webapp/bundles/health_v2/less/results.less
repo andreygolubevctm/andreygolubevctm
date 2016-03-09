@@ -1,0 +1,422 @@
+//------------------------------
+
+.resultsContainer.featuresMode {
+  .generate-default-result-column-widths();
+}
+
+//------------------------------
+.nowrap {
+  white-space: nowrap;
+}
+
+.journeyEngineSlide.resultsSlide {
+  padding-top: 0;
+}
+
+.restrictedTooltips {
+  box-shadow: 2px 2px 4px @gray-slight-dark;
+}
+
+.result {
+  .restrictedFund {
+    background-color: transparent;
+    cursor: help;
+    margin-top: 32px;
+    &:hover {
+      background-color: transparent;
+      color: #FF5F5F;
+    }
+  }
+}
+
+.noResults {
+  margin-top: 60px;
+  width: 100%;
+
+  height: 500px;
+  position: relative;
+  text-align: center;
+
+  @media (@sm) {
+    width: @container-sm;
+  }
+  @media (@md) {
+    width: @container-md;
+  }
+  @media (@lg) {
+    width: @container-lg;
+  }
+
+  .alert {
+    margin: 0 80px;
+  }
+
+}
+
+//
+// Feature mode styling
+//
+.featuresMode {
+
+  .btn-more-info {
+    clear: both;
+    width: 85%;
+    margin: 12px auto 5px;
+    @media (@sm) {
+      position: absolute;
+      bottom: 13px;
+      left: 18%;
+      width: 69%;
+    }
+  }
+
+  .result {
+    height: 205px;
+  }
+  .icon-tick {
+    color: @theme-tertiary;
+  }
+  .icon-tick, .icon-cross {
+    line-height: 18px;
+  }
+  .icon-cross {
+    color: @cross-color;
+  }
+
+  // Product header.
+  @media (@xs-only) {
+    .result {
+      height: 200px;
+    }
+
+    // Normal heading
+    .labelInColumn {
+      .content {
+        color: contrast(@feature-odd-bg-color);
+      }
+    }
+  }
+
+  .expandable > .content {
+    cursor: pointer;
+  }
+  .expander {
+    .icon-arrow-right;
+    right: 5px;
+    top: 50%;
+    margin-top: -5px;
+    position: absolute;
+    font-size: 12px;
+  }
+  .expanded .labelInColumn > .content .expander,
+  .expanding .labelInColumn > .content .expander,
+  .expanded > .content .expander,
+  .expanding > .content .expander {
+    .icon-arrow-down;
+  }
+
+  &.v2 .resultsOverflow .section > .children .category > .content {
+    border-top: 1px solid @results-border-color;
+  }
+  .featuresHeaders .category > .content {
+    padding: 6px 10px;
+    padding-right: 20px;
+  }
+  .result-row .category > .content {
+    font-family: @font-family-theme-bold;
+    text-align: center;
+    padding: 5px 10px;
+  }
+}
+
+.resultsFeaturesSections(@section-color, @section-odd-color, ~'', ~'.hasShortlistableChildren');
+
+// rows mixin called
+.resultsFeaturesRows(@feature-odd-color, @feature-color);
+
+// alternate columns
+@media (@xs-only) {
+
+  /* hide the second label when 2 cols are displayed on XS.
+  .result-row:nth-child(2n+2) .labelInColumn {
+    .contentInner {
+      visibility: hidden;
+    }
+  }*/
+  .featuresMode {
+    .result-row {
+      .feature > .content.c {
+        background-color: #f9f9f9;
+      }
+    }
+  }
+}
+
+// special cases / overrrides
+.featuresMode {
+  .promosFeature {
+    .labelInColumn,
+    .content {
+      color: @results-features-promos-color;
+    }
+  }
+
+  .content {
+    font-size: 13px;
+  }
+
+  // Fix padding for sub-benefit detail
+  &.v2 .children .feature > .content {
+    padding-top: 8px;
+    padding-bottom: 0px;
+    @media (@xs-only) {
+      padding-bottom: 4px;
+      padding-top: 4px;
+    }
+  }
+  &.v2 .excessSection .children .feature > .content {
+    padding-bottom: 8px;
+  }
+
+    // make these look like a section
+  .section,
+  .featuresHeaders .promosFeature,
+  .promosFeature > .labelInColumn,
+  .featuresHeaders .ambulanceSection,
+  .ambulanceSection > .labelInColumn {
+    > .content {
+
+      font-family: @font-family-theme-bold;
+      font-size: 18px;
+      line-height: 22px;
+
+      @media (@sm) {
+        .expander {
+          display: none;
+        }
+      }
+      .extraText {
+        display: block;
+
+        @media (@sm) {
+          width: ((@sm-results-column-width + @sm-results-column-gutter-width) * 3);
+        }
+        @media (@md) {
+          width: ((@md-results-column-width + @md-results-column-gutter-width) * 3);
+        }
+        @media (@lg) {
+          width: ((@lg-results-column-width + @lg-results-column-gutter-width) * 3);
+        }
+
+        text-align: left;
+        padding: 0;
+        font-size: 14px;
+        overflow: hidden;
+      }
+
+    }
+    &[data-skey="GeneralHealth"],
+    &[data-skey="Hospital"] {
+      .extraText {
+        text-align: center;
+        line-height: 40px;
+      }
+    }
+
+    &.selection_GeneralHealth,
+    &.selection_Hospital,
+    &.expanded[data-skey="GeneralHealth"],
+    &.expanded[data-skey="Hospital"] {
+      .extraText {
+        display: none;
+      }
+    }
+
+  }
+
+  .promosFeature {
+    > .content,
+    &:nth-child(odd) > .content {
+      background-color: @section-color !important;
+    }
+  }
+
+  // categories style
+  .category > .content {
+    font-size: 14px;
+  }
+
+  // features style
+  .featuresTemplateComponent,
+  .result-row {
+    .excessSection {
+      > .h,
+      > .c,
+      > .labelInColumn {
+        display: none;
+      }
+    }
+  }
+
+  // May need to hard code this to be each sections class.. the cover ones are excluded right now. @todo
+  .selectionHolder > .content, .ambulanceSection > .content {
+    padding-top: 10px;
+    color: @theme-tertiary;
+  }
+
+  // this is for the "click to view all extras" row.
+  .featuresHeaders [data-skey='Hospital'],
+  .featuresHeaders [data-skey='GeneralHealth'] {
+    > .content {
+      background-color: @category-hospital-color;
+      z-index: 1;
+      left: -1px;
+      margin-left: 1px;
+    }
+
+  }
+
+  @media (@sm) {
+    .extrasCover .category, .hospitalCover .category {
+      &.expanded > .content,
+      &.expanding > .content {
+        background-color: @hospital-expanded-color;
+        color: @hospital-color;
+      }
+      &.expanded > .content {
+        font-family: @font-family-theme-bold;
+      }
+    }
+  }
+
+  // it doesn't fit!
+  @media (@sm-only) {
+    &.affixed .compare-basket {
+      display: none;
+    }
+
+    .compare-basket .compared-products-list .price {
+      font-size: 16px;
+    }
+  }
+  // Override mixin style for Health's unique design
+  @media (@sm) {
+
+    &.v2.resultsContainer {
+      margin-bottom: 15px;
+      border-bottom: none;
+    }
+
+    &.v2.resultsContainer,
+    .featuresHeaders {
+      background: transparent;
+    }
+
+    .resultsOverflow .result-row {
+      margin-left: 10px;
+      border-left: none;
+      border-right: none;
+      background: transparent;
+    }
+
+    //  Hospital/Extras Cover rows spacing
+    .hasShortlistableChildren,
+    .ambulanceSection {
+      margin-top: 10px;
+    }
+
+    .hasShortlistableChildren {
+      &.section {
+        &.collapsed {
+          border-top: none;
+        }
+        > .content {
+          border-bottom: 1px solid @results-border-color;
+        }
+      }
+    }
+
+    &.v2 {
+
+      .featuresHeaders {
+        border-right: none;
+      }
+
+      .featuresTemplateComponent {
+        border-left: none;
+      }
+
+      .featuresHeaders .selectionHolder > .content {
+        border-top: none;
+        padding-top: 20px;
+      }
+
+      .content {
+        border-right: 1px solid @results-border-color;
+        border-left: 1px solid @results-border-color;
+      }
+
+      // Overwrite compared styles.
+      .result-row.compared .content, .result-row.compared .result,
+      .result-row.active .content, .result-row.active .result {
+        border-right-color: @compared-product-border-color;
+        border-left-color: @compared-product-border-color;
+      }
+      .result-row.compared, .result-row.compared:first-child {
+        border-left: none;
+        outline: none;
+      }
+
+      .compare-basket .compared-products-list li {
+        height: 25px;
+      }
+
+    }
+
+    .cell.category.expandable.collapsed:last-child,
+    .category.expandable.expanded:last-child .children > .feature:last-child {
+      border-bottom: 1px solid @results-border-color;
+    }
+
+    .cell.section.selection_Hospital > .children > .category.expandable:last-child,
+    .cell.section.selection_Hospital > .children > .category.expandable:last-child .children > .feature:last-child {
+      border-bottom: none;
+    }
+
+    .resultsOverflow .cell.section.hasShortlistableChildren > .children > .category:first-child > .content {
+      border-top: none;
+    }
+
+    .result-row {
+      border-left: 1px solid @results-border-color;
+      .promosFeature.feature {
+        & > .content,
+        &:nth-child(odd) > .content {
+          //hack for specialness.
+          text-align: center;
+        }
+      }
+    }
+    .resultsOverflow .excessSection .feature > .content {
+      border-top: 1px solid @results-border-color;
+    }
+    .excessSection .feature:nth-child(even) > .content,
+    &.v2 .featuresList .ambulanceSection.category:nth-child(even) > .content,
+    &.v2 .featuresList > .ambulanceSection.category:nth-child(odd) .content {
+      background-color: #fff;
+    }
+
+    .compare-basket {
+      position: absolute;
+      bottom: 10px;
+      width: (@sm-results-column-width - 5);
+      @media (@md-only) {
+        width: (@md-results-column-width - 10);
+      }
+      @media (@lg-only) {
+        width: @lg-results-column-width;
+      }
+    }
+  }
+
+}

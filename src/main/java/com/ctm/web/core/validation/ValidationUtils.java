@@ -1,16 +1,14 @@
 package com.ctm.web.core.validation;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 
 public class ValidationUtils {
 
     public static String getValueAndAddToErrorsIfEmpty(String value, String xpath, List<SchemaValidationError> validationErrors) {
-        boolean hasValue = false;
-        if(value != null){
-            value =  value.trim();
-            hasValue = !value.isEmpty();
-        }
+        boolean hasValue = StringUtils.isNotBlank(value);
         if(!hasValue) {
             createRequiredError(xpath, validationErrors);
         }

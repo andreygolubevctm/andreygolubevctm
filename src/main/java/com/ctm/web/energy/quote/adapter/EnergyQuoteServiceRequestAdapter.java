@@ -12,6 +12,7 @@ import com.ctm.web.energy.form.model.*;
 import com.ctm.web.energy.form.model.Usage;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -88,7 +89,7 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         final Optional<ResultsDisplayed> resultsDisplayedMaybe = Optional.ofNullable(quote.getResultsDisplayed());
         HasEBilling hasEBilling = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferEBilling).map( value -> new HasEBilling(value.equals(YesNo.Y))).orElse(new HasEBilling(false));
         NoContract noContract = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferNoContract).map( value -> new NoContract(value.equals(YesNo.Y))).orElse(new NoContract(false));
-        RenewableEnergy renewableEnergy = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferRenewableEnergy).map( value -> new RenewableEnergy(value.equals(YesNo.Y))).orElse(new RenewableEnergy(false));
+        RenewableEnergy renewableEnergy = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferRenewableEnergy).map(value -> new RenewableEnergy(value.equals(YesNo.Y))).orElse(new RenewableEnergy(false));
 
         return new Preferences(new DisplayDiscount(false),
                 hasEBilling,
@@ -220,13 +221,14 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
 
     private HouseholdDetails createHouseHoldDetails(EnergyPayLoad quote) {
         final Optional<HouseHoldDetailsWebRequest> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
-        return new HouseholdDetails(
-                householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getSuburb).orElse(null),
-                householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getPostcode).orElse(null),
-                householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getMovingIn).map(getYesNoBooleanFunction()).orElse(false),
-                householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getMovingInDate)
-                .map(LocalDateUtils::parseAUSLocalDate)
-                .orElse(null), householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getTariff).orElse(null));
+        String suburb = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getSuburb).orElse(null);
+        String postcode = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getPostcode).orElse(null);
+        boolean movingIn = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getMovingIn).map(getYesNoBooleanFunction()).orElse(false);
+        LocalDate movingInDate = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getMovingInDate).map(LocalDateUtils::parseAUSLocalDate)
+                .orElse(null);
+        String tarrif = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getTariff).orElse(null);
+
+        return new HouseholdDetails(suburb,postcode,movingIn,movingInDate,tarrif);
     }
 
     protected static Electricity createElectricity(EnergyPayLoad quote) {
@@ -236,8 +238,11 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         WhatToCompare whatToCompare = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getWhatToCompare).orElse(null);
         if (hasHouseholdDetails && hasElectricity(whatToCompare)  ) {
             String currentSupplier = estimateDetails.map(EstimateDetails :: getUsage).map(Usage::getElectricity).map(getCurrentSupplier()).orElse(null);
-            return new Electricity(getElectricityUsageDetails(estimateDetails, householdDetailsMaybe), getHouseholdType(estimateDetails),
-            getElectrityHasBill(householdDetailsMaybe), getHasSolarPanels(householdDetailsMaybe), currentSupplier);
+            ElectricityUsageDetails usageDetails = getElectricityUsageDetails(estimateDetails, householdDetailsMaybe);
+            HouseholdType householdType = getHouseholdType(estimateDetails);
+            boolean hasBill = getElectrityHasBill(householdDetailsMaybe);
+            boolean hasSolarPanel = getHasSolarPanels(householdDetailsMaybe);
+            return new Electricity(usageDetails, householdType,hasBill, hasSolarPanel, currentSupplier);
         } else {
             return null;
         }

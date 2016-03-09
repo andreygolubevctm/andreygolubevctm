@@ -1,5 +1,7 @@
 ;(function($){
 
+	// TODO: write unit test once DEVOPS-31 goes live
+
 	var meerkat = window.meerkat,
 		$aboutYouContainer,
 		$primaryCurrentCover,
@@ -106,7 +108,7 @@
 		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($primaryDOB.val())) {
 			$primaryContinuousCoverContainer.slideDown();
 		} else {
-			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).end().slideUp();
+			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
 		}
 	}
 
@@ -114,7 +116,7 @@
 		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($partnerDOB.val())) {
 			$partnerContinuousCoverContainer.slideDown();
 		} else {
-			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).end().slideUp();
+			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
 		}
 	}
 
@@ -183,8 +185,18 @@
 		}
 	}
 
+	function getPartnerCurrentCover() {
+		return $partnerCurrentCover.find(':checked').val();
+	}
+
+	function getPrimaryCurrentCover() {
+		return $primaryCurrentCover.find(':checked').val();
+	}
+
 	meerkat.modules.register('healthAboutYou', {
-		init: init
+		init: init,
+		getPartnerCurrentCover : getPartnerCurrentCover,
+		getPrimaryCurrentCover : getPrimaryCurrentCover
 	});
 
 })(jQuery);

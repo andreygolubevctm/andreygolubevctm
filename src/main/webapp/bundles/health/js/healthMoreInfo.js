@@ -402,7 +402,7 @@
                             var d = new Date(),
                                 formattedDate = '';
 
-                            if (result.providerContentText.trim() !== '') {
+                            if ($.trim(result.providerContentText) !== '') {
                                 dateSplit = result.providerContentText.split("/");
                                 rearrangedDate = dateSplit[1]+"/"+dateSplit[0]+"/"+dateSplit[2];
                                 newDate = new Date(rearrangedDate);

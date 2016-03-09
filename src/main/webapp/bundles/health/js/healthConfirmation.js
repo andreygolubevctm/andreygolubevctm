@@ -136,12 +136,21 @@
 				} else {
 					$("#health_confirmation-warning").find(".fundWarning").hide().empty();
 				}
+
+				_.defer(function(){
+					// Backup in case warning contains html but no text
+					if(_.isEmpty($.trim($("#health_confirmation-warning").text()))) {
+						$("#health_confirmation-warning").find(".fundWarning").empty().hide();
+					}
+				});
 			});
 		}
 
-		// render dual pricing
-		meerkat.modules.healthDualPricing.initHealthDualPricing();
-		meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', meerkat.modules.moreInfo.getProduct(), false, true);
+		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+			// render dual pricing
+			meerkat.modules.healthDualPricing.initHealthDualPricing();
+			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', meerkat.modules.moreInfo.getProduct(), false, true);
+		}
 
 		// hide the sidebar frequncy. only needed for payment page
 		$('.hasDualPricing .sidebarFrequency').hide();

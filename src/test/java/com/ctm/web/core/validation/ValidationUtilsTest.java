@@ -26,6 +26,11 @@ public class ValidationUtilsTest {
         assertTrue(validationErrors.isEmpty());
         ValidationUtils.getValueAndAddToErrorsIfEmpty("",  xpath,  validationErrors);
         assertFalse(validationErrors.isEmpty());
+        ValidationUtils.getValueAndAddToErrorsIfEmpty(" ",  xpath,  validationErrors);
+        assertFalse(validationErrors.isEmpty());
+
+        ValidationUtils.getValueAndAddToErrorsIfEmpty(null,  xpath,  validationErrors);
+        assertFalse(validationErrors.isEmpty());
     }
 
     @Test

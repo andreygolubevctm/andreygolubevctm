@@ -63,7 +63,7 @@
 				obj.firstPremium = (selectedProduct.mode === '' ? selectedProduct.premium[obj.frequency].lhcfreetext : selectedProduct.premium[obj.frequency].text) + " " + (selectedProduct.mode === '' ? selectedProduct.premium[obj.frequency].lhcfreepricing : selectedProduct.premium[obj.frequency].pricing);
 
 				if (obj.frequency !== 'annually') {
-					if ((selectedProduct.premium.value && selectedProduct.premium.value > 0) || (selectedProduct.premium.text && selectedProduct.premium.text.indexOf('$0.') < 0) || (selectedProduct.premium.payableAmount && selectedProduct.premium.payableAmount > 0)) {
+					if ((selectedProduct.premium[obj.frequency].value && selectedProduct.premium[obj.frequency].value > 0) || (selectedProduct.premium[obj.frequency].text && selectedProduct.premium[obj.frequency].text.indexOf('$0.') < 0) || (selectedProduct.premium[obj.frequency].payableAmount && selectedProduct.premium[obj.frequency].payableAmount > 0)) {
 						obj.remainingPremium = (selectedProduct.mode === '' ? selectedProduct.altPremium[obj.frequency].lhcfreetext : selectedProduct.altPremium[obj.frequency].text) + " " + (selectedProduct.mode === '' ? selectedProduct.altPremium[obj.frequency].lhcfreepricing : selectedProduct.altPremium[obj.frequency].pricing);
 					} else {
 						obj.remainingPremium = 'Coming Soon';
@@ -79,6 +79,11 @@
 
 		$(document).on('click', 'a.why-rising-premiums', function showWhyModal(){
 			showModal();
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_CHANGED, function hideSidebarFrequency(){
+			$sideBarFrequency.hide();
+			$frequencyWarning.hide();
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.device.DEVICE_MEDIA_STATE_CHANGE, function editDetailsEnterXsState() {
@@ -120,6 +125,16 @@
 	function renderTemplate(target, product, returnTemplate, isForSidebar) {
 		selectedProduct = product;
 
+		if(!_.isObject(product)) {
+			return "";
+		}
+
+		if (typeof product.dropDeadDate === 'undefined') {
+			selectedProduct = Results.getSelectedProduct();
+			product.dropDeadDate = selectedProduct.dropDeadDate;
+			product.dropDeadDateFormatted = selectedProduct.dropDeadDateFormatted;
+			product.dropDeadDatePassed = selectedProduct.dropDeadDatePassed;
+		}
 
 		product._selectedFrequency = typeof product._selectedFrequency === 'undefined' ? Results.getFrequency() : product._selectedFrequency;
 		product.mode = product.mode !== '' ? product.mode : '';
