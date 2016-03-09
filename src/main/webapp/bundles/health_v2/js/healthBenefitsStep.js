@@ -340,7 +340,6 @@
                 });
                 break;
             default:
-                //$benefitsForm.find('.hospitalCover').removeClass('custom-col-lg').addClass('custom-col-sm');
                 $benefitsForm.find('.benefits-side-bar').fadeOut('fast');
                 $benefitsForm.find('.hasShortlistableChildren').fadeIn('fast', function(){
                     $benefitsForm.find('fieldset > div').first().prepend($benefitsForm.find('.section h2'));
