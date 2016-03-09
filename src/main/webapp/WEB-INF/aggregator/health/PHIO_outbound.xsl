@@ -120,7 +120,7 @@
 					<tierExtras><xsl:value-of select="filter/tierExtras" /></tierExtras>
 				</filter>
 				<xsl:choose>
-					<xsl:when test='isSimples'>
+					<xsl:when test="isSimples = 'true'">
 						<isSimples>Y</isSimples>
 					</xsl:when>
 					<xsl:otherwise>
