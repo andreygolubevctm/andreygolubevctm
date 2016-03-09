@@ -3,7 +3,7 @@ package com.ctm.web.health.model.request;
 import com.ctm.web.core.model.PageRequest;
 
 
-public class HealthRequest extends PageRequest {
+public class BaseHealthRequest extends PageRequest {
 
     private boolean isCallCentre;
 
