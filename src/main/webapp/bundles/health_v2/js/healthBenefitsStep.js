@@ -223,7 +223,8 @@
             $hospitalBenefitsSection = $('.Hospital_container .children'),
             $limitedCover = $('#health_situation_accidentOnlyCover'),
             $coverType = $('#health_benefits_covertype'),
-            $accidentCover = $('#accidentCover');
+            $accidentCover = $('#accidentCover'),
+            $limitedCoverHidden = $("#journeyEngineSlidesContainer .hiddenFields input[name='health_situation_accidentOnlyCover']");
 
         $hospitalCoverToggles.on('click', function toggleHospitalCover(){
             var $item = $(this);
@@ -235,11 +236,10 @@
 
             // set the hidden field
             $coverType.val(currentCover);
+            $limitedCoverHidden.val('');
 
             // uncheck all tickboxes
             $allHospitalButtons.prop('checked', false).prop('disabled', false);
-            $limitedCover.prop('checked', false);
-            $accidentCover.prop('checked', false);
 
             switch(currentCover) {
                 case 'top':
@@ -253,6 +253,7 @@
                     });
 
                     $("input[name='health_benefits_benefitsExtras_PrHospital'], input[name='health_situation_accidentOnlyCover']").prop('checked', true);
+                    $limitedCoverHidden.val('Y');
 
                     break;
                 default:

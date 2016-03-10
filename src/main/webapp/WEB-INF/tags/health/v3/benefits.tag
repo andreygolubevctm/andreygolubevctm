@@ -45,7 +45,6 @@
                                                   id="${go:nameFromXpath(fieldXPath)}"
                                                   title="your cover type" />
                         </form_v3:row>
-					<field_v1:hidden xpath="health_situation_accidentOnlyCover" defaultValue="Y" />
 				</div>
 			</div>
 		</form_v2:fieldset>
