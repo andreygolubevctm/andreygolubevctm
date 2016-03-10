@@ -57,11 +57,16 @@
         $('.quoteSnapshot .default').each(function(){
             $(this)[noData ? "show" : "hide"]();
         });
+
         // Toggle normal content rows
         showHide(data,'.quoteSnapshot .cover-for','coverFor', noData);
         showHide(data,'.quoteSnapshot .living-in','livingIn', noData);
         showHide(data,'.quoteSnapshot .looking-to','lookingTo', noData);
-        showHide(data,'.quoteSnapshot .cover-type','coverType', noData);
+
+        if(!noData && !_.isEmpty(data.coverType)) {
+            $('.cover-type .snapshot-items').text(data.coverType);
+        }
+
         // Populate hospital/extras
         if(!noData && !_.isEmpty(data.hospital)) {
             $box = $('.quoteSnapshot .hospital .snapshot-list');
@@ -81,7 +86,7 @@
                 );
             }
         }
-        // Toggle benefits rows
+        // Toggle benefits rows.
         showHide(data,'.quoteSnapshot .hospital','hospital', noData);
         showHide(data,'.quoteSnapshot .extras','extras', noData);
     }
@@ -90,9 +95,10 @@
         var coverFor = $("#health_situation_healthCvr").val();
         var livingIn = $("#health_situation_location").val();
         var lookingTo = $("#health_situation_healthSitu").val();
-        var coverType = $("#health_situation_coverType").val();
+        var coverType = $("#health_situation_coverType input:checked").parent().text();
         var hospital = fetchAllHospitalCheckedValues();
         var extras = fetchAllExtrasCheckedValues();
+
         return {
             coverFor : _.isEmpty(coverFor) ? false : coverFor,
             livingIn : _.isEmpty(livingIn) ? false : livingIn,

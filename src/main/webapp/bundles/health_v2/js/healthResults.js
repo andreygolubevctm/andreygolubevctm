@@ -505,8 +505,10 @@
 
         // Fetch the relevant objects so we can update the features structure
         var structure = Features.getPageStructure();
+
         // This is the object we are going to inject the selected benefits into.
         var selectedBenefitsStructureObject = _findByKey(structure, injectIntoParent, 'name');
+
         // reset it on each build, as benefits could change
         selectedBenefitsStructureObject.children = [];
         // this is where we are going to pull the children benefits from.

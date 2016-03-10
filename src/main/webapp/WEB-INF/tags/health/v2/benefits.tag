@@ -18,9 +18,8 @@
 	<jsp:body>
 
 		<form_v2:fieldset legend="" postLegend="" >
-
 			<div class="scrollable row">
-
+				<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="customised" />
 				<div class="benefits-list col-sm-12">
 					<c:set var="fieldXpath" value="${xpath}/coverType" />
 					<form_v2:row label="What type of cover are you looking for?" fieldXpath="${fieldXpath}">
@@ -36,11 +35,11 @@
 
 						<div class="col-sm-12 short-list-item section expandable collapsed accidentCover">
 							<div class="children">
-								<h3 class="subTitle">Accident-only Cover</h3>
+								<h3 class="subTitle">Limited Cover</h3>
 								<div class="noIcons">
 									<div class="categoriesCell short-list-item category expandable collapsed">
 										<c:set var="fieldXpath" value="${xpath}/accidentOnlyCover" />
-										<field_v2:checkbox xpath="${fieldXpath}" required="false" title="Accident-only Cover" value="Y" label="true" />
+										<field_v2:checkbox xpath="${fieldXpath}" required="false" title="Limited Cover" value="Y" label="true" />
 										<br>
 									</div>
 								</div>

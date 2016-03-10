@@ -131,6 +131,9 @@
 			$('#health_filter_tierExtras').val('');
 		}
 
+		// set the cover type to customised
+		$('#health_benefits_covertype').val('customised');
+
 		return selectedBenefits;
 
 	}
