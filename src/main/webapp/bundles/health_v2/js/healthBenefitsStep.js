@@ -90,7 +90,6 @@
         if (meerkat.modules.splitTest.isActive(13)) {
             toggleBenefits();
             hospitalCoverToggleEvents();
-            setDefaultCover();
 
             $(document).on('click', 'a.tieredLearnMore', function showBenefitsLearnMoreModel() {
                 showModal();
@@ -106,16 +105,20 @@
             meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsEnterXsState() {
                 $hasIconsDiv.addClass('hasIcons');
             });
-
-            // put down here cos it was being overriden by toggleBenefits();
-            _.defer(function(){
-
-        });
-    }
+        }
     }
 
     function setDefaultCover() {
-        $hospitalCoverToggles.filter("[data-category='medium']").trigger("click");
+        if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            if (!$('.hospitalCoverToggles.visible-xs a.benefit-category').hasClass('active')) {
+                $('.hospitalCoverToggles.visible-xs a.benefit-category[data-category="medium"]').trigger('click');
+            }
+        } else {
+
+            if (!$('.hospitalCoverToggles.hidden-xs a.benefit-category').hasClass('active')) {
+                $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="medium"]').trigger('click');
+            }
+        }
     }
 
     function toggleBenefits() {
@@ -569,6 +572,7 @@
         changeLayoutByCoverType: changeLayoutByCoverType,
         updateCoverTypeByBenefitsSelected: updateCoverTypeByBenefitsSelected,
         alignSidebarHeight: alignSidebarHeight,
+        setDefaultCover: setDefaultCover,
         enableFields: enableFields,
         disableFields: disableFields,
         updateHiddenFields: updateHiddenFields,

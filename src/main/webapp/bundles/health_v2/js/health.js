@@ -284,6 +284,7 @@
 			onBeforeEnter:function enterBenefitsStep(event) {
 				if (meerkat.modules.splitTest.isActive(13)) {
 					$('#navbar-main').addClass('hideNavbar').removeClass('collapse');
+					meerkat.modules.healthBenefitsStep.setDefaultCover();
 					meerkat.modules.healthBenefitsStep.disableFields();
 				}
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
