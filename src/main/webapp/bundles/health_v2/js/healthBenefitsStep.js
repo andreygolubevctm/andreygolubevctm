@@ -11,8 +11,6 @@
         $allHospitalButtons,
         $defaultCover,
         $hasIconsDiv,
-        currCover = 'mid',
-        customisedOptions = [],
         changedByCallCentre = false;
 
     var events = {
@@ -33,8 +31,9 @@
             $hiddenFields = $('#mainform').find('.hiddenFields');
 
             if (meerkat.modules.splitTest.isActive(13)) {
-                $hospitalCoverToggles = $('.hospitalCoverToggles a'),
                 $hospitalCover = $('.Hospital_container');
+                $hospitalCoverToggles = $('.hospitalCoverToggles a'),
+                $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]'),
                 // done this way since it's an a/b test and
                 $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
 
@@ -54,6 +53,9 @@
                 if (meerkat.modules.deviceMediaState.get() === 'xs') {
                     $hasIconsDiv.removeClass('hasIcons');
                 }
+
+                // preselect hospital extras and hospital medium
+                $('#health_situation_coverType_C').trigger('click');
             }
 
             setupPage();
@@ -86,7 +88,6 @@
 
 
         if (meerkat.modules.splitTest.isActive(13)) {
-            setCustomOptions();
             toggleBenefits();
             hospitalCoverToggleEvents();
             setDefaultCover();
@@ -105,34 +106,16 @@
             meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsEnterXsState() {
                 $hasIconsDiv.addClass('hasIcons');
             });
-        }
-    }
 
-    function setCustomOptions() {
-        $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]');
-        $allHospitalButtons.on('click', function setCustomisedOptions() {
-            var $item = $(this);
+            // put down here cos it was being overriden by toggleBenefits();
+            _.defer(function(){
 
-            if (currCover === 'customised') {
-                if ($item.is(":checked")) {
-                    customisedOptions.push($item.attr('id'));
-                } else {
-                    var ret = customisedOptions.splice(customisedOptions.indexOf($item.attr('id')), 1);
-                }
-            }
         });
+    }
     }
 
     function setDefaultCover() {
-        if (meerkat.modules.deviceMediaState.get() === 'xs') {
-            if (!$('.hospitalCoverToggles.visible-xs a.benefit-category').hasClass('active')) {
-                $('.hospitalCoverToggles.visible-xs a.benefit-category[data-category="medium"]').trigger('click').addClass('active');
-            }
-        } else {
-            if (!$('.hospitalCoverToggles.hidden-xs a.benefit-category').hasClass('active')) {
-                $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="medium"]').trigger('click').addClass('active');
-            }
-        }
+        $hospitalCoverToggles.filter("[data-category='medium']").trigger("click");
     }
 
     function toggleBenefits() {
@@ -217,14 +200,17 @@
             $this.find('.subTitle').insertAfter($this.find('.hasIcons'));
         });
 
-        // Move the sidebar to the end of the container
-        $benefitsForm.find('.sidebarHospital').insertAfter($benefitsForm.find('.extrasCover'));
+        if (!meerkat.modules.splitTest.isActive(13)) {
+            // Move the sidebar to the end of the container
+            $benefitsForm.find('.sidebarHospital').insertAfter($benefitsForm.find('.extrasCover'));
 
-        // For loading in, if coverType is not selected, but benefits have been selected (mostly for all old quotes, back port to coverType)
-        if ($coverType.val() === '') {
-            updateCoverTypeByBenefitsSelected();
+            // For loading in, if coverType is not selected, but benefits have been selected (mostly for all old quotes, back port to coverType)
+            if ($coverType.val() === '') {
+                updateCoverTypeByBenefitsSelected();
+            }
         }
-        // For loading in, update benefits page layout
+
+        // For loading in, update benefits page layout. letting this default to '' for tiered benefits
         changeLayoutByCoverType($coverType.val());
     }
 
@@ -292,6 +278,16 @@
             $hospitalCover.find('.coverExplanation.'+previousCover+'Cover').addClass('hidden').end().find('.coverExplanation.'+currentCover+'Cover').removeClass('hidden');
             previousCover = currentCover;
         });
+    }
+
+    function disableFields() {
+        if ($hospitalCoverToggles.filter('.active').data('category') !== 'customised') {
+            $allHospitalButtons.prop('disabled', true);
+        }
+    }
+
+    function enableFields() {
+        $allHospitalButtons.prop('disabled', false);
     }
 
     function alignTitle() {
@@ -573,6 +569,8 @@
         changeLayoutByCoverType: changeLayoutByCoverType,
         updateCoverTypeByBenefitsSelected: updateCoverTypeByBenefitsSelected,
         alignSidebarHeight: alignSidebarHeight,
+        enableFields: enableFields,
+        disableFields: disableFields,
         updateHiddenFields: updateHiddenFields,
         resetBenefitsSelection: resetBenefitsSelection,
         resetBenefitsForProductTitleSearch: resetBenefitsForProductTitleSearch,
