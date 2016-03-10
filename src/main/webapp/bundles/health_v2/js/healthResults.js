@@ -432,12 +432,12 @@
                     $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
                 });
 
-            $coverType = $('#health_situation_coverType').val();
+            coverType = $('#health_situation_coverType').val();
 
-            if($coverType === 'E') {
+            if(coverType === 'E') {
                 $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');
             }
-            if($coverType === 'H') {
+            if(coverType === 'H') {
                 $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
             }
 
