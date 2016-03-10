@@ -1,12 +1,13 @@
 package com.ctm.web.core.validation;
 
+import com.ctm.web.core.model.resultsData.Error;
 import com.ctm.web.core.services.FatalErrorService;
-import com.ctm.web.core.validation.SchemaValidationError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.ctm.web.core.validation.model.ValidationErrorDetails;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -19,16 +20,18 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class FormValidation {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FormValidation.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FormValidation.class);
+    public static final String ERROR_TYPE = "validation";
+    public static final String MESSAGE = "It looks like some fields are incomplete please check your details and try again";
 
-	public static <T> List<SchemaValidationError> validate(T request , String vertical) {
+    public static <T> List<SchemaValidationError> validate(T request , String vertical) {
 		return validate(request, vertical, true);
 	}
 
 	public static <T> List<SchemaValidationError> validate(T request , String vertical, boolean outputErrorValue) {
 		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 		List<SchemaValidationError> validationErrors = new ArrayList<SchemaValidationError>();
-		String errorValue = "";
+		String errorValue;
 
 		final Set<ConstraintViolation<T>> violations = validator.validate(request);
 		for(ConstraintViolation<T> violation : violations) {
@@ -54,8 +57,8 @@ public class FormValidation {
 		JSONObject error = new JSONObject();
 		try {
 			reponse.put("error" , error);
-			error.put("type", "validation");
-			error.put("message", "It looks like some fields are incomplete please check your details and try again");
+			error.put("type", ERROR_TYPE);
+			error.put("message", MESSAGE);
 			error.put("transactionId", transactionId);
 
 			JSONObject errorDetails = new JSONObject();
@@ -70,6 +73,15 @@ public class FormValidation {
 			LOGGER.error("Failed to output to json.", e);
 		}
 		return reponse;
+	}
+
+	public static Error outputToObject(Long transactionId, List<SchemaValidationError> errors) {
+        String type = ERROR_TYPE;
+        String message = MESSAGE;
+        ValidationErrorDetails errorDetails = new ValidationErrorDetails(type);
+        errorDetails.setValidationErrors(errors);
+        Error response = new Error(type, message, transactionId, errorDetails);
+        return response;
 	}
 
 	public static JSONObject outputToJson(Long transactionId, List<SchemaValidationError> errors) {
