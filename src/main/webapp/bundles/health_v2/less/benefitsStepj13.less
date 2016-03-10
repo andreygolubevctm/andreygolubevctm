@@ -14,6 +14,16 @@
     margin-top: 84px;
 }
 
+// prevents non ab test checkboxes from using the health icons.
+fieldset {
+    &:not(.j13abtest) {
+        .categoriesCell.noIcon label:before{
+            font-family: 'framework_font';
+            content: "\e600";
+        }
+    }
+}
+
 #benefitsForm .j13abtest{
     margin-top: 30px;
 
