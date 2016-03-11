@@ -283,7 +283,6 @@
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				if (meerkat.modules.splitTest.isActive(13)) {
-					$('#navbar-main').addClass('hideNavbar').removeClass('collapse');
 					meerkat.modules.healthBenefitsStep.setDefaultCover();
 					meerkat.modules.healthBenefitsStep.disableFields();
 				}
@@ -313,7 +312,6 @@
 			},
 			onBeforeLeave:function(event){
 				if (meerkat.modules.splitTest.isActive(13)) {
-					$('#navbar-main').removeClass('hideNavbar').addClass('collapse');
 					meerkat.modules.healthBenefitsStep.enableFields();
 				}
 			}
