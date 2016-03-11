@@ -281,9 +281,9 @@
 			},
 			onAfterEnter: function(event) {
 				// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter segment
-				_.delay(function() {
-					meerkat.modules.healthSegment.filterSegments();
-				}, 1000);
+				//_.delay(function() {
+				//	meerkat.modules.healthSegment.filterSegments();
+				//}, 1000);
 
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
@@ -319,7 +319,18 @@
 			onInitialise: function onContactInit(event){
 				meerkat.modules.resultsFeatures.fetchStructure('health');
 			},
-			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
+            onBeforeEnter:function enterBenefitsStep(event) {
+                if (event.isForward) {
+                    // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
+                    _.delay(function() {
+                        // coupon logic, filter for user, then render banner
+                        meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+                            meerkat.modules.coupon.renderCouponBanner();
+                        });
+                    }, 1000);
+                }
+                incrementTranIdBeforeEnteringSlide();
+            },
 			onAfterEnter: function enteredContactStep(event) {
 			},
 			onAfterLeave:function leaveContactStep(event){
