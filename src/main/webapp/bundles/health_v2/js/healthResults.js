@@ -510,10 +510,6 @@
 
     function breakpointTracking() {
 
-        if (meerkat.modules.deviceMediaState.get() == "xs") {
-            startColumnWidthTracking();
-        }
-
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
             if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
                 startColumnWidthTracking();
