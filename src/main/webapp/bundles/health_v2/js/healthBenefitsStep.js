@@ -1,4 +1,4 @@
-;(function ($) {
+;(function($){
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
@@ -74,8 +74,9 @@
         });
 
         $('#health_situation_healthSitu')
-            .add('#health_healthCover_primary_dob')
-            .add('#health_situation_healthCvr').on('change', function (event) {
+        .add('#health_healthCover_primary_dob')
+        .add('#health_healthCover_partner_dob')
+        .add('#health_situation_healthCvr').on('change',function(event) {
             prefillBenefits();
         });
 

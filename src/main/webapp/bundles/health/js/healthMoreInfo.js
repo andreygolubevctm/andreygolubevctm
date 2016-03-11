@@ -177,7 +177,7 @@
         meerkat.modules.healthPhoneNumber.changePhoneNumber();
 
         // hide elements based on marketing segments
-        meerkat.modules.healthSegment.hideBySegment();
+        //meerkat.modules.healthSegment.hideBySegment();
         additionalTrackingData();
 
         var product = Results.getSelectedProduct();
