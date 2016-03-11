@@ -1,8 +1,9 @@
 package com.ctm.web.health.validation;
 
-import com.ctm.web.health.model.request.HealthApplicationRequest;
 import com.ctm.web.core.validation.FormValidation;
+import com.ctm.web.core.validation.ValidationUtils;
 import com.ctm.web.core.validation.SchemaValidationError;
+import com.ctm.web.health.model.request.HealthApplicationRequest;
 
 import java.util.List;
 
@@ -53,20 +54,6 @@ public class HealthApplicationValidation {
 		}
 	}
 
-	private String getValueAndAddToErrorsIfEmpty(String value, String xpath) {
-		boolean hasValue = false;
-		if(value != null){
-			value =  value.replaceAll( "[^\\d]", "" );
-			hasValue = !value.isEmpty();
-		}
-		if(!hasValue) {
-			SchemaValidationError error = new SchemaValidationError();
-			error.setElementXpath(xpath);
-			error.setMessage(SchemaValidationError.REQUIRED);
-			validationErrors.add(error);
-		}
-		return value;
-	}
 
 	private List<SchemaValidationError> validateMedicareNumber() {
 
@@ -75,7 +62,7 @@ public class HealthApplicationValidation {
 		 * Otherwise it is mandatory if yes was selected for do you want a rebate?
 		 */
 		if(request.hasRebate || request.application.provider.equals("BUP")) {
-			String medicareNumber  = getValueAndAddToErrorsIfEmpty(request.payment.medicare.number, MEDICARE_NUMBER_XPATH);
+			String medicareNumber  = ValidationUtils.getValueAndAddToErrorsIfEmptyNumeric(request.payment.medicare.number, MEDICARE_NUMBER_XPATH, validationErrors);
 			if (!medicareNumber.isEmpty()) {
 				// check not empty
 				if(medicareNumber.length() != 10) {

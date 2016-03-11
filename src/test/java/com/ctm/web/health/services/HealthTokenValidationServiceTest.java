@@ -2,7 +2,7 @@ package com.ctm.web.health.services;
 
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Touch;
-import com.ctm.web.health.model.request.HealthRequest;
+import com.ctm.web.health.model.request.BaseHealthRequest;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.security.token.JwtTokenCreator;
 import com.ctm.web.core.security.token.config.TokenCreatorConfig;
@@ -23,7 +23,7 @@ public class HealthTokenValidationServiceTest {
     private String expiredToken;
     private String tokenWrongStep;
 
-    private HealthRequest healthRequest;
+    private BaseHealthRequest healthRequest;
     private HealthTokenValidationService healthQuoteResultsService;
     private String secretKey = "secretKey";
     private String verticalCode = Vertical.VerticalType.HEALTH.getCode();
@@ -47,7 +47,7 @@ public class HealthTokenValidationServiceTest {
         transactionVerifier = new JwtTokenCreator(settingsService, config);
         config.setTouchType(Touch.TouchType.CALL_DIRECT);
         tokenWrongStep = transactionVerifier.createToken("test" , transactionId, 300000000);
-        healthRequest = new HealthRequest();
+        healthRequest = new BaseHealthRequest();
         healthRequest.setToken(validToken);
         healthRequest.setTransactionId(transactionId);
         healthRequest.setIsCallCentre(false);

@@ -172,6 +172,7 @@
 	<core_v1:js_template id="compare-basket-features-template">
 		<div class="compare-basket compareCheckbox">
 			{{ if(comparedResultsCount === 0) { }}
+            <coupon:promo_tile />
 			<p>
 				Click the <input type="checkbox" class="compare-tick" checked disabled><label></label> &nbsp; to add up to <span class="compare-max-count-label">{{= maxAllowable }} products</span> to your shortlist.
 			</p>
