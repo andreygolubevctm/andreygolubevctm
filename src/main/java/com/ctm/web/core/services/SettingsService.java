@@ -98,13 +98,8 @@ public class SettingsService {
 	 * @return
 	 */
 	public static PageSettings getPageSettingsByCode(String brandCode, String verticalCode){
-
 		Brand brand = ApplicationService.getBrandByCode(brandCode);
-		PageSettings pageSettings = new PageSettings();
-		pageSettings.setBrand(brand);
-		pageSettings.setVertical(brand.getVerticalByCode(verticalCode));
-
-		return pageSettings;
+		return getPageSettingsByBrand( brand,  verticalCode);
 	}
 
     /**
@@ -137,7 +132,4 @@ public class SettingsService {
 		return pageSettings;
 	}
 
-	public PageSettings getPageSettingsByCode(Brand brand, Vertical.VerticalType vertical) {
-		return getPageSettingsByCode(brand.getCode(), vertical.getCode());
-	}
 }
