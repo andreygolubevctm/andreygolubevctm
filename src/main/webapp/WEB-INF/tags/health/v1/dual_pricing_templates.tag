@@ -86,14 +86,14 @@
 			{{= renderedPriceTemplate }}
 		</div>
 		<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+		<h3>Need help? Call <span class="text-secondary">${callCentreNumber}</span></h3>
+
 		<div class="promo">
 			{{ if (promo.promoText !== ''){ }}
 			<h2>Buy now and benefit from these promotions</h2>
 			<p>{{= promo.promoText }}</p>
 			{{ } }}
 		</div>
-
-		<h3>Need help? Call <span class="text-secondary">${callCentreNumber}</span></h3>
 		<hr />
 		<h2>${heading}</h2>
 		<div class="april-pricing">
