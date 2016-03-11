@@ -1,4 +1,4 @@
-;(function ($) {
+;(function($){
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
@@ -73,11 +73,14 @@
             $coverType.val('C').change();
         });
 
-        $('#health_situation_healthSitu')
-            .add('#health_healthCover_primary_dob')
-            .add('#health_situation_healthCvr').on('change', function (event) {
-            prefillBenefits();
-        });
+        if (!meerkat.modules.splitTest.isActive(13)) {
+            $('#health_situation_healthSitu')
+                .add('#health_healthCover_primary_dob')
+                .add('#health_healthCover_partner_dob')
+                .add('#health_situation_healthCvr').on('change', function (event) {
+                prefillBenefits();
+            });
+        }
 
         // align titles when breakpoint changes
         meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function breakpointChanged(states) {
@@ -223,7 +226,7 @@
             $hospitalBenefitsSection = $('.Hospital_container .children'),
             $limitedCover = $('#health_situation_accidentOnlyCover'),
             $coverType = $('#health_benefits_covertype'),
-            $limitedCoverHidden = $("#journeyEngineSlidesContainer .hiddenFields input[name='health_situation_accidentOnlyCover']");
+            $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
 
         $hospitalCoverToggles.on('click', function toggleHospitalCover() {
             var $item = $(this);
@@ -434,9 +437,10 @@
 
         for (var i = 0; i < checkedBenefits.length; i++) {
             var path = checkedBenefits[i];
+            $hiddenFields.find("input[name='health_benefits_benefitsExtras_" + path + "']").val('Y');
             $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true);
         }
-
+        updateCoverTypeByBenefitsSelected();
     }
 
     function getBenefitsForSituation(situation, isReset, callback) {
