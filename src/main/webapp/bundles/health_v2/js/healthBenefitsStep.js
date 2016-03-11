@@ -435,9 +435,10 @@
 
         for (var i = 0; i < checkedBenefits.length; i++) {
             var path = checkedBenefits[i];
+            $hiddenFields.find("input[name='health_benefits_benefitsExtras_" + path + "']").val('Y');
             $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true);
         }
-
+        updateCoverTypeByBenefitsSelected();
     }
 
     function getBenefitsForSituation(situation, isReset, callback) {
