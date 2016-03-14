@@ -19,6 +19,7 @@
 
 		<form_v2:fieldset legend="Choose Your Cover" postLegend="" className="j13abtest" >
 			<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="medium" />
+			<field_v2:checkbox xpath="health_situation_accidentOnlyCover" value="Y" required="false" label="false" title="" className="hidden" />
 			<div class="scrollable row">
 
 				<div class="benefits-list col-sm-12">

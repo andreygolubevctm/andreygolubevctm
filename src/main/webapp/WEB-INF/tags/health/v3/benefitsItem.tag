@@ -115,7 +115,6 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 										</core_v1:js_template>
 									</c:if>
 									<div class="hasIcons">
-										<field_v2:checkbox xpath="health_situation_accidentOnlyCover" value="Y" required="false" label="false" title="" className="hidden" />
                                     <c:forEach items="${item.getChildren()}" var="selectedValue">
 										<c:if test="${selectedValue.isShortlistable()}">
 
