@@ -1,7 +1,6 @@
 package com.ctm.web.health.router;
 
-import com.ctm.web.car.model.CarMake;
-import com.ctm.web.car.services.CarVehicleSelectionService;
+
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.dao.GeneralDao;
@@ -38,7 +37,7 @@ import org.apache.cxf.jaxrs.ext.MessageContext;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
-import java.io.InputStream;
+
 import java.util.*;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
