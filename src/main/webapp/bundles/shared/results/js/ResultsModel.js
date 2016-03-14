@@ -281,7 +281,7 @@ var ResultsModel = {
 					Results.model.returnedProducts = Object.byString( jsonResult, Results.settings.paths.results.list );
 				}
 
-				if (Results.model.returnedProducts.length == 0) {
+				if (Results.model.returnedProducts.length === 0) {
 					isEmptyArray = true;
 				}
 
