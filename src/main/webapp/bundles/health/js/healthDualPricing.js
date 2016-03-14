@@ -16,6 +16,7 @@
 		$paymentDetailsFrequency,
 		$priceFrequencyTemplate,
 		$frequencyWarning,
+		$paymentDetailsSelection,
 		modalId = null;
 
 	function initHealthDualPricing() {
