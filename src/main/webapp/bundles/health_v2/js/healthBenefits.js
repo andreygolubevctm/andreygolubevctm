@@ -131,6 +131,12 @@
 			$('#health_filter_tierExtras').val('');
 		}
 
+		// set the cover type to customised
+		$('#health_benefits_covertype').val('customised');
+
+		// sync the limited cover options
+		meerkat.modules.healthBenefitsStep.syncAccidentOnly();
+
 		return selectedBenefits;
 
 	}
