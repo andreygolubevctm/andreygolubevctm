@@ -224,7 +224,6 @@
         var currentCover = 'customised',
             previousCover = 'customised',
             $hospitalBenefitsSection = $('.Hospital_container .children'),
-            $limitedCover = $('#health_situation_accidentOnlyCover'),
             $coverType = $('#health_benefits_covertype'),
             $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
 
@@ -251,12 +250,9 @@
                 case 'limited':
                     $hospitalBenefitsSection.slideUp(function () {
                         $(this).prop('checked', false);
-                        $limitedCover.prop('checked', true);
                     });
 
-                    $("input[name='health_benefits_benefitsExtras_PrHospital'], input[name='health_situation_accidentOnlyCover']").prop('checked', true);
                     $limitedCoverHidden.val('Y');
-
                     break;
                 default:
                     $hospitalBenefitsSection.slideDown();
@@ -540,6 +536,16 @@
         }
     }
 
+    function syncAccidentOnly() {
+        $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
+
+       if ($('#accidentCover').is(":checked")) {
+           $limitedCoverHidden.val("Y");
+       } else {
+           $limitedCoverHidden.val("");
+       }
+    }
+
     // Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
     function getSelectedBenefits() {
 
@@ -581,7 +587,8 @@
         updateHiddenFields: updateHiddenFields,
         resetBenefitsSelection: resetBenefitsSelection,
         resetBenefitsForProductTitleSearch: resetBenefitsForProductTitleSearch,
-        getSelectedBenefits: getSelectedBenefits
+        getSelectedBenefits: getSelectedBenefits,
+        syncAccidentOnly: syncAccidentOnly
     });
 
 })(jQuery);
