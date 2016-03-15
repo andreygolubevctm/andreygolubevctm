@@ -21,10 +21,8 @@
 			$travel_party.find('label:nth-child(1)').addClass('icon-single');
 			$travel_party.find('label:nth-child(2)').addClass('icon-couple');
 			$travel_party.find('label:nth-child(3)').addClass('icon-family');
-
-			$adult_dob_2_row.hide();
 			$children_row = $('.children_row');
-			$children_row.hide();
+
 
 			initEventListeners();
 		});
