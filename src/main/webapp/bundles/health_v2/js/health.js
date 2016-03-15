@@ -846,11 +846,10 @@
 			postData.primary_loading = 'Y';
 		}
 
-		// If has a partner, use the same data as the primary to calculate the LHC
 		if (hasPartner()) {
-			postData.partner_dob = $healthCoverDetails.find('input[name="health_healthCover_partner_dob"]').val() || postData.primary_dob;
-			postData.partner_current = $healthCoverDetails.find('input[name="health_healthCover_partner_cover"]').val() || postData.primary_current;
-			postData.partner_loading = $healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]').val() || postData.primary_loading;
+			postData.partner_dob = $healthCoverDetails.find('input[name="health_healthCover_partner_dob"]').val();
+			postData.partner_current = $healthCoverDetails.find('input[name="health_healthCover_partner_cover"]:checked').val() || 'N';
+			postData.partner_loading = $healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val() || 'N';
 			postData.partner_loading_manual = $healthCoverDetails.find('input[name="health_healthCover_partner_lhc"]').val();
 		}
 
