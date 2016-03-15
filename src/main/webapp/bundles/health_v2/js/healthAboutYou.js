@@ -1,5 +1,7 @@
 ;(function($){
 
+	// TODO: write unit test once DEVOPS-31 goes live
+
 	var meerkat = window.meerkat,
 		$aboutYouContainer,
 		$primaryCurrentCover,
@@ -158,7 +160,7 @@
 				$healthCoverRebate.slideDown();
 			} else {
 				$rebateLegend.html('');
-				$healthCoverRebate.find('input[value="N"]').prop('checked', true);
+				$healthCoverRebate.find('input[value="N"]').trigger('click');
 				$healthCoverRebate.slideUp();
 			}
 		});
@@ -183,8 +185,18 @@
 		}
 	}
 
+	function getPartnerCurrentCover() {
+		return $partnerCurrentCover.find(':checked').val();
+	}
+
+	function getPrimaryCurrentCover() {
+		return $primaryCurrentCover.find(':checked').val();
+	}
+
 	meerkat.modules.register('healthAboutYou', {
-		init: init
+		init: init,
+		getPartnerCurrentCover : getPartnerCurrentCover,
+		getPrimaryCurrentCover : getPrimaryCurrentCover
 	});
 
 })(jQuery);

@@ -1754,6 +1754,14 @@ body.stage-0 #reference_number a {display:none;}
 	background-image: url("../brand/ctm/images/results_Life_IP/5000-LIFEcompetition.jpg");
 	height: 135px;
 }
+.promo-image.ip-32 {
+	background-image: url("../brand/ctm/images/results_Life_IP/5000-IPcompetition.jpg");
+	height: 135px;
+}
+.promo-image.life-32 {
+	background-image: url("../brand/ctm/images/results_Life_IP/5000-LIFEcompetition.jpg");
+	height: 135px;
+}
 .button-wrapper #next-step {
 	float: left;
 	margin-bottom: 20px;

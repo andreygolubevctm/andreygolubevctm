@@ -9,7 +9,8 @@ public class CouponRule {
 	public enum FilterBy {
 		VALUE ("value"),
 		RANGE ("range"),
-		DATE_RANGE ("dateRange");
+		DATE_RANGE ("dateRange"),
+        AGE ("age");
 
 		private final String code;
 
