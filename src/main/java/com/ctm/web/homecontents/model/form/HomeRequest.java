@@ -2,43 +2,12 @@ package com.ctm.web.homecontents.model.form;
 
 import com.ctm.web.core.model.formData.RequestWithQuote;
 
-public class HomeRequest implements RequestWithQuote<HomeQuote> {
-
-    private Long transactionId;
-
-    private String clientIpAddress;
+public class HomeRequest extends RequestWithQuote<HomeQuote> {
 
     private HomeQuote home;
 
-    private String environmentOverride;
-
-    @Override
-    public Long getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(Long transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public String getClientIpAddress() {
-        return clientIpAddress;
-    }
-
-    public void setClientIpAddress(String clientIpAddress) {
-        this.clientIpAddress = clientIpAddress;
-    }
-
     @Override
     public HomeQuote getQuote() {
-        return home;
-    }
-
-    public void setQuote(HomeQuote quote) {
-        this.home = quote;
-    }
-
-    public HomeQuote getHome() {
         return home;
     }
 
@@ -46,21 +15,19 @@ public class HomeRequest implements RequestWithQuote<HomeQuote> {
         this.home = home;
     }
 
-    public String getEnvironmentOverride() {
-        return environmentOverride;
+    public HomeQuote getHome() {
+        return home;
     }
 
-    public void setEnvironmentOverride(String environmentOverride) {
-        this.environmentOverride = environmentOverride;
-    }
-
-    @Override
     public String toString() {
         return "HomeRequest{" +
-                "transactionId=" + transactionId +
-                ", clientIpAddress='" + clientIpAddress + '\'' +
-                ", home=" + home +
-                ", environmentOverride='" + environmentOverride + '\'' +
+                "transactionId=" + getTransactionId() +
+                ", clientIpAddress='" + getClientIpAddress() + '\'' +
+                ", home=" + getQuote() +
+                ", environmentOverride='" + getEnvironmentOverride() + '\'' +
+                ", requestAt='" +getRequestAt() + '\'' +
                 '}';
     }
+
+
 }

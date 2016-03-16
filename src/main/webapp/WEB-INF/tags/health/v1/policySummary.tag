@@ -11,7 +11,8 @@
 <jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 
-<div class="sidebar-box">
+<div class="sidebar-box<c:if test="${healthAlternatePricingActive eq true}"> hasDualPricing hidden-xs</c:if>">
+	<c:if test="${healthAlternatePricingActive eq false}">
 	<div class="policySummaryContainer ${className}">
 		<c:choose>
 			<c:when test="${isAltView}">
@@ -27,11 +28,8 @@
 				<div class="policySummaryTemplateHolder productSummary horizontal"></div>
 			</c:otherwise>
 		</c:choose>
-		<div class="policyPriceWarning">You have made changes that will possibly affect your policy price</div>
-		<div class="footer hidden">
-			<a href="javascript:;" class="link-health-cover-details">Edit your details</a>
-		</div>
 	</div>
+	</c:if>
 
 	<c:if test="${healthAlternatePricingActive eq true}">
 		<div class="policySummary dualPricing">
@@ -62,6 +60,11 @@
 		</div>
 	</c:if>
 
+<c:if test="${healthAlternatePricingActive eq true}">
+</div>
+<div class="sidebar-box sidebarFrequency hidden-xs"></div>
+<div class="sidebar-box">
+</c:if>
 	<c:if test="${showProductDetails == true}">
 		<div class="productSummaryDetails">
 			<c:if test="${isAltView}">

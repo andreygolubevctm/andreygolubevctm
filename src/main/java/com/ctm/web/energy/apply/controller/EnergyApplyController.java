@@ -9,7 +9,6 @@ import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.resultsData.model.Info;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.SessionDataServiceBean;
-import com.ctm.web.core.utils.MiscUtils;
 import com.ctm.web.energy.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.energy.apply.model.request.EnergyApplyPostRequestPayload;
 import com.ctm.web.energy.apply.response.EnergyApplyWebResponseModel;

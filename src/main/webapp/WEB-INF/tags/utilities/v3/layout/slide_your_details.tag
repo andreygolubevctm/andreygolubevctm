@@ -26,6 +26,9 @@
                 <utilities_v3_fieldset:household_details xpath="${xpath}/householdDetails" />
                 <utilities_v3_fieldset:additional_estimate_details xpath="${xpath}/estimateDetails" />
                 <utilities_v3:not_provided />
+                <c:if test="${showOptInOnSlide1}">
+                   <form_v3:privacy_optin vertical="utilities" labelText="${privacyOptinText}"/>
+                </c:if>
             </layout_v3:slide_content>
         </jsp:body>
 

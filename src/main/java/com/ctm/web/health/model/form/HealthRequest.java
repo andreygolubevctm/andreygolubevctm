@@ -2,39 +2,12 @@ package com.ctm.web.health.model.form;
 
 import com.ctm.web.core.model.formData.RequestWithQuote;
 
-public class HealthRequest implements RequestWithQuote<HealthQuote> {
-
-    private String clientIpAddress;
+public class HealthRequest extends RequestWithQuote<HealthQuote> {
 
     private HealthQuote health;
 
-    private Long transactionId;
-
-    public String getEnvironmentOverride() {
-        return environmentOverride;
-    }
-
-    public void setEnvironmentOverride(String environmentOverride) {
-        this.environmentOverride = environmentOverride;
-    }
-
-    private String environmentOverride;
-
-    public String getClientIpAddress() {
-        return clientIpAddress;
-    }
-
-    @Override
-    public void setClientIpAddress(String clientIpAddress) {
-        this.clientIpAddress = clientIpAddress;
-    }
-
     @Override
     public HealthQuote getQuote() {
-        return health;
-    }
-
-    public HealthQuote getHealth() {
         return health;
     }
 
@@ -42,17 +15,17 @@ public class HealthRequest implements RequestWithQuote<HealthQuote> {
         this.health = health;
     }
 
-    public void setQuote(HealthQuote quote) {
-        this.health = quote;
+    public HealthQuote getHealth() {
+        return health;
     }
 
-    @Override
-    public Long getTransactionId() {
-        return transactionId;
-    }
-
-    @Override
-    public void setTransactionId(Long transactionId) {
-        this.transactionId = transactionId;
+    public String toString() {
+        return "HealthQuote{" +
+                "transactionId=" + getTransactionId() +
+                ", clientIpAddress='" + getClientIpAddress() + '\'' +
+                ", health=" + getQuote() +
+                ", environmentOverride='" + getEnvironmentOverride() + '\'' +
+                ", requestAt='" +getRequestAt() + '\'' +
+                '}';
     }
 }

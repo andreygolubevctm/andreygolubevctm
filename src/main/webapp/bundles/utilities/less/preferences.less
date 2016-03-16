@@ -50,22 +50,27 @@ fieldset.preferences {
 }
 @media (@sm) {
   fieldset.preferences {
+      .content {
+          padding-right: 2px;
+      }
       .has-icons {
 
           div.row {
-              width:50%;
-              @media (@md) {
-                  width:50%;
-              }
-
+              width:33%;
               display:inline-block;
               margin-right:15px;
+
               > div.col-sm-offset-3 {
                   margin: 0px;
                   width: 100%;
                   padding: 0px;
               }
           }
+
+          div.checkbox {
+              width: 100%;
+          }
+
           .checkbox {
               padding: 0;
 
@@ -84,8 +89,13 @@ fieldset.preferences {
                   display: inline-block;
                   padding: 0;
                   margin: 0;
-                  text-align: left;
+                  text-align: center;
                   padding-top: 20px;
+
+                  span {
+                      display: block;
+                      clear: both;
+                  }
 
                   .iconLabel {
                       display: block;
@@ -98,11 +108,13 @@ fieldset.preferences {
                       margin: 0;
                       margin-top: -20px;
                       margin-bottom: 10px;
+                      margin-right: 0 !important;
                       padding: 0.15em;
                       border-radius: 50%;
                       background-color: @icon-bg-color;
                       border-color: @icon-border-color;
                       color: @theme-tertiary;
+                      float: none;
                   }
               }
           }

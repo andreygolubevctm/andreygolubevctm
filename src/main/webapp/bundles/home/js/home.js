@@ -209,7 +209,7 @@
 		var policyHoldersStep = {
 			title: 'Policy Holder',
 			navigationId: 'policyHolder',
-			slideIndex: isSplitTestOn() ? 4 : 3,
+			slideIndex: 3,
 			tracking: {
 				touchType: 'H',
 				touchComment: 'PolicyHolder',
@@ -218,9 +218,6 @@
 			externalTracking: externalTrackingSettings,
 			onInitialise: function onInitialisePolicyHolder() {
 				// Init the results objects required for next step
-				if(isSplitTestOn()) {
-					meerkat.modules.homeResults.initPage();
-				}
 				meerkat.modules.homePolicyHolder.initHomePolicyHolder();
 			},
 			onBeforeEnter: function onBeforeEnterPolicyHolder(event) {
@@ -231,7 +228,7 @@
 		var historyStep = {
 			title: 'Cover',
 			navigationId: 'history',
-			slideIndex: isSplitTestOn() ? 3 : 4,
+			slideIndex: 4,
 			tracking: {
 				touchType: 'H',
 				touchComment: 'History',
@@ -240,9 +237,7 @@
 			externalTracking: externalTrackingSettings,
 			onInitialise: function onInitialiseHistory(event){
 				// Init the results objects required for next step
-				if(!isSplitTestOn()) {
-					meerkat.modules.homeResults.initPage();
-				}
+				meerkat.modules.homeResults.initPage();
 
 				meerkat.modules.homeHistory.initHomeHistory();
 				meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
@@ -381,10 +376,10 @@
 				actionStep = 'Property';
 				break;
 			case 3:
-				actionStep = isSplitTestOn() ? 'History' : 'PolicyHolder';
+				actionStep = 'PolicyHolder';
 				break;
 			case 4:
-				actionStep = isSplitTestOn() ? 'PolicyHolder' : 'History';
+				actionStep = 'History';
 				break;
 			case 5:
 				if(special_case === true) {
@@ -469,10 +464,6 @@
 				return 'HC';
 		}
 		return '';
-	}
-
-	function isSplitTestOn() {
-		return _.indexOf(['34','35'], meerkat.modules.splitTest.get()) >= 0;
 	}
 
 	meerkat.modules.register("home", {

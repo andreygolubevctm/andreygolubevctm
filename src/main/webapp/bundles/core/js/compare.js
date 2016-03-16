@@ -16,7 +16,8 @@
                 REMOVE_PRODUCT: "COMPARE_REMOVE_PRODUCT",
                 ENTER_COMPARE: "ENTER_COMPARE",
                 AFTER_ENTER_COMPARE_MODE: "AFTER_ENTER_COMPARE_MODE",
-                EXIT_COMPARE: "EXIT_COMPARE_MODE"
+                EXIT_COMPARE: "EXIT_COMPARE_MODE",
+                RENDER_FINISHED: "RENDER_FINISHED"
             }
         },
         moduleEvents = events.compare;
@@ -373,6 +374,7 @@
                 $location.closest('nav').addClass('hidden');
             }
         }
+        meerkat.messaging.publish(moduleEvents.RENDER_FINISHED);
     }
 
     /**

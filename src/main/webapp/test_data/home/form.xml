@@ -90,9 +90,9 @@
 		<jointLastName>Usertwo</jointLastName>
 		<jointDob>11/11/1965</jointDob>
 		<email>preload.testing@comparethemarket.com.au</email>
-		<marketing>N</marketing>
+		<marketing>Y</marketing>
 		<phone>0712345678</phone>
-		<oktocall>N</oktocall>
+		<oktocall>Y</oktocall>
 		<anyoneOlder>Y</anyoneOlder>
 		<oldestPersonDob>12/05/1945</oldestPersonDob>
 		<over55>Y</over55>
@@ -108,6 +108,7 @@
 	</disclosures>
 
 	<termsAccepted>Y</termsAccepted>
+	<terms>Y</terms>
 	<fsg>Y</fsg>
 	<privacyoptin>Y</privacyoptin>
 

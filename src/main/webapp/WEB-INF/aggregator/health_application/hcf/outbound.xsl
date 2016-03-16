@@ -13,6 +13,9 @@
 
 	<xsl:include href="utils.xsl"/>
 
+	<!-- Set Deal Code -->
+	<xsl:variable name="dealCode">CTX</xsl:variable>
+
 	<!-- UnitType -->
 	<xsl:variable name="unitType">
 		<xsl:choose>
@@ -164,7 +167,7 @@
 			</GetAppInfo>
 			<GetAgentDetails>
 				<AgentId>R20903</AgentId>
-				<DealCode>CTM</DealCode>
+				<DealCode><xsl:value-of select="$dealCode" /></DealCode>
 				<Password><xsl:value-of select="$keycode" /></Password>
 				<AgentCustomerId>
 					<xsl:value-of select="$transactionId" />

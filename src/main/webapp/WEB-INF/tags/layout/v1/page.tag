@@ -308,6 +308,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 						vertical: '${pageSettings.getVerticalCode()}',
 						isDev: ${isDev}, <%-- boolean determined from conditions above in this tag --%>
                         isCallCentreUser: <c:out value="${not empty callCentre}"/>,
+						<c:if test="${pageSettings.hasSetting('inInEnabled')}">
+						inInEnabled: ${pageSettings.getSetting('inInEnabled')},
+						</c:if>
 						showLogging: <c:out value="${showLogging}" />,
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
 						serverDate: new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <c:out value="${serverMonth}" />, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>),

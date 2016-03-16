@@ -14,7 +14,7 @@
             success = false;
 
         meerkat.modules.comms.get({
-            url: "ajax/xml/pauseResumeCall.json?action=" + action,
+            url: "spring/rest/simples/pauseResumeCall.json?action=" + action,
             dataType: "text",
             async: false,
             cache: false,
@@ -25,28 +25,21 @@
             success = true;
             seize(isMuted);
         }).fail(function (jqXHR, textStatus, errorThrown) {
-
             var errorMessage = errorThrown;
-            var errorResponse;
 
-            // Don't parse
-            if (jqXHR.status != 404 && jqXHR.status != 500) {
-                try {
-                    errorResponse = $.parseJSON(jqXHR.responseText);
-                } catch (e1) {
-                    errorResponse = {};
+            try {
+                var responseJson = $.parseJSON(jqXHR.responseText);
+                if (responseJson.hasOwnProperty('errors') && responseJson.errors.hasOwnProperty('message')) {
+                    errorMessage = responseJson.errors.message;
                 }
-
-                if (errorResponse.hasOwnProperty('errors') && errorResponse.errors.length > 0) {
-                    errorMessage = errorResponse.errors[0].message;
-                }
+            } catch (e1) {
             }
 
             meerkat.modules.errorHandling.error({
-                message: "The recording could not be paused/started. Please notify your supervisor if this continues to occur: " + errorMessage,
+                message: "The recording could not be paused/started: <strong>" + errorMessage +"</strong>.<br><br>Remember that to pause/resume you must be on a call and the call can not be on hold.<br>Please notify your supervisor if this continues to occur.",
                 page: "application_compliance.tag",
-                description: "health_application_compliance.callback().  AJAX Request failed: " + jqXHR.responseText + ' ' + errorThrown,
-                data: "state = " + isMuted,
+                description: "health_application_compliance.callback(). AJAX Request failed. state=" + isMuted + '. ' + errorThrown,
+                data: jqXHR,
                 errorLevel: "warning"
             });
         });
