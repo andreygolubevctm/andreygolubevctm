@@ -26,6 +26,17 @@
 		<xsl:value-of select="$year" />
 	</xsl:template>
 
+	<xsl:variable name="todays_date">
+		<xsl:variable name="year"><xsl:value-of select="substring($today,1,4)" /></xsl:variable>
+		<xsl:variable name="month"><xsl:value-of select="substring($today,6,2)" /></xsl:variable>
+		<xsl:variable name="day"><xsl:value-of select="substring($today,9,2)" /></xsl:variable>
+
+		<xsl:value-of select="format-number($day,'00')" />
+		<xsl:value-of select="format-number($month,'00')" />
+		<xsl:value-of select="$year" />
+	</xsl:variable>
+
+
 	<xsl:template name="title_code">
 		<xsl:param name="title" />
 		<xsl:choose>
@@ -488,6 +499,7 @@
 					<!-- WX01 – Fund control in Genero -->
 					<!-- Defaults to 1 -->
 					<b:FundId>1</b:FundId>
+					<b:TierEffDte><xsl:value-of select="$todays_date" /></b:TierEffDte>
 
 					<!-- Income Tier. Data type: A string that represents Integer (2) -->
 					<!-- WX42 Rebate Definition in Genero: 0, 1, 2, 3 -->
