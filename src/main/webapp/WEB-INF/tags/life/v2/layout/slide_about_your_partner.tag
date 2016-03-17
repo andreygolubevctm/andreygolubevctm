@@ -1,0 +1,13 @@
+<%@ tag description="The Health Journey's 'All About You' Slide" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
+<%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<layout_v1:slide_new formId="aboutYourPartner" firstSlide="false" nextLabel="Next Step">
+
+	<layout_v1:slide_content >
+
+		<form_v2:fieldset legend="About your partner" postLegend="" />
+
+	</layout_v1:slide_content>
+
+</layout_v1:slide_new>

@@ -1,0 +1,13 @@
+{
+    "brandCodes": ["ctm"],
+    "dependencies": [
+        "shared/journeyEngine/v2",
+        "shared/results",
+        "shared/validation",
+        "core",
+        "shared/resultsRankings",
+        "shared/checkboxIE8",
+        "shared/dropdownInteractive",
+        "shared/ie8SelectMenuAutoExpand"
+    ]
+}

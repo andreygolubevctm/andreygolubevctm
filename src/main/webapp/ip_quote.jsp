@@ -1,6 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
+<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
+<c:if test="${deviceType eq 'MOBILE'}">
+	<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}ip_quote_mobile.jsp?" />
+	<c:forEach items="${param}" var="currentParam">
+		<c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
+	</c:forEach>
+	<c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
+</c:if>
+
 <session:new verticalCode="IP" />
 
 <c:if test="${empty param.action}">
@@ -37,7 +47,7 @@
 		<agg_v1:supertag_top type="IP"/>
 
 		<%-- History handler --%>
-		<life:history />
+		<life_v1:history />
 
 		<%-- Transferring popup holder --%>
 		<core_v1:transferring />
@@ -45,13 +55,13 @@
 		<form_v1:form action="ip_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 
 			<%-- Fields to store Lifebroker specific data --%>
-			<life:lifebroker_ref label="ip" />
+			<life_v1:lifebroker_ref label="ip" />
 					
 			<form_v1:operator_id xpath="${xpath}/operatorid" />
 			<core_v1:referral_tracking vertical="${xpath}" />
 			
 			<form_v1:header quoteType="${xpath}" hasReferenceNo="true" />
-			<life:progress_bar />
+			<life_v1:progress_bar />
 
 			<div id="wrapper">
 				<div id="page">
@@ -64,9 +74,9 @@
 							<%-- INITIAL: stage, set from parameters --%>
 							<slider:slide id="slide0" title="Your Details">
 								<h2><span>Step 1.</span> Your Details</h2>
-										<ip:insurance xpath="${xpath}/primary/insurance" />
-										<life:questionset xpath="${xpath}" />
-								<life:contact_details xpath="${xpath}/contactDetails" />
+										<ip_v1:insurance xpath="${xpath}/primary/insurance" />
+										<life_v1:questionset xpath="${xpath}" />
+								<life_v1:contact_details xpath="${xpath}/contactDetails" />
 							</slider:slide>
 							
 							<slider:slide id="slide1" title="Compare">
@@ -101,21 +111,21 @@
 						</div>
 
 				<%-- Quote results (default to be hidden) --%>  
-				<life:results vertical="ip" />
+				<life_v1:results vertical="ip" />
 								
 				<%-- Confirmation content (default to be hidden) --%>  
-				<life:confirmation />
+				<life_v1:confirmation />
 				
 			</div>
 
 
 		</form_v1:form>
 		
-		<life:footer />
+		<life_v1:footer />
 		
 		<core_v1:closing_body>
 			<agg_v1:includes supertag="true" />
-		<ip:includes />
+		<ip_v1:includes />
 		</core_v1:closing_body>
 		
 	</body>

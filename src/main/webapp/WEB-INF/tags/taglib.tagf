@@ -44,8 +44,12 @@
 <%@ taglib tagdir="/WEB-INF/tags/fuel/layout"		    prefix="fuel_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/roadside"			    prefix="roadside" %>
 <%@ taglib tagdir="/WEB-INF/tags/roadside/layout"	    prefix="roadside_layout" %>
-<%@ taglib tagdir="/WEB-INF/tags/life"					prefix="life" %>
-<%@ taglib tagdir="/WEB-INF/tags/ip"					prefix="ip" %>
+<%@ taglib tagdir="/WEB-INF/tags/life/v1"				prefix="life_v1" %>
+<%@ taglib tagdir="/WEB-INF/tags/life/v2"				prefix="life_v2" %>
+<%@ taglib tagdir="/WEB-INF/tags/life/v2/layout"		prefix="life_v2_layout" %>
+<%@ taglib tagdir="/WEB-INF/tags/ip/v1"					prefix="ip_v1" %>
+<%@ taglib tagdir="/WEB-INF/tags/ip/v2"					prefix="ip_v2" %>
+<%@ taglib tagdir="/WEB-INF/tags/ip/v2/layout"					prefix="ip_v2_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/competition"			prefix="competition" %>
 <%@ taglib tagdir="/WEB-INF/tags/competition/layout"	prefix="competition_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/home"				    prefix="home" %>
