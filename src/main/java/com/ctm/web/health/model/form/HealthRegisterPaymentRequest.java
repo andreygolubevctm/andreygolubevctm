@@ -1,14 +1,8 @@
 package com.ctm.web.health.model.form;
 
-import com.ctm.web.core.model.formData.Request;
+import com.ctm.web.core.model.formData.RequestImpl;
 
-public class HealthRegisterPaymentRequest implements Request {
-
-    private String clientIpAddress;
-
-    private Long transactionId;
-
-    private String environmentOverride;
+public class HealthRegisterPaymentRequest extends RequestImpl {
 
     private String sst;
 
@@ -25,35 +19,6 @@ public class HealthRegisterPaymentRequest implements Request {
     private String sessionId;
 
     private String providerId;
-
-    @Override
-    public String getClientIpAddress() {
-        return clientIpAddress;
-    }
-
-    @Override
-    public void setClientIpAddress(String clientIpAddress) {
-        this.clientIpAddress = clientIpAddress;
-    }
-
-    @Override
-    public Long getTransactionId() {
-        return transactionId;
-    }
-
-    @Override
-    public void setTransactionId(Long transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    @Override
-    public String getEnvironmentOverride() {
-        return environmentOverride;
-    }
-
-    public void setEnvironmentOverride(String environmentOverride) {
-        this.environmentOverride = environmentOverride;
-    }
 
     public String getSst() {
         return sst;
@@ -117,5 +82,23 @@ public class HealthRegisterPaymentRequest implements Request {
 
     public void setProviderId(String providerId) {
         this.providerId = providerId;
+    }
+
+    @Override
+    public String toString() {
+        return "HealthRegisterPaymentRequest{" +
+                "transactionId=" + getTransactionId() +
+                ", clientIpAddress='" + getClientIpAddress() + '\'' +
+                ", sst='" + sst + '\'' +
+                ", cardType='" + cardType + '\'' +
+                ", token='" + token + '\'' +
+                ", maskedcardno='" + maskedcardno + '\'' +
+                ", responsecode='" + responsecode + '\'' +
+                ", responseresult='" + responseresult + '\'' +
+                ", sessionId='" + sessionId + '\'' +
+                ", providerId='" + providerId + '\'' +
+                ", environmentOverride='" + getEnvironmentOverride() + '\'' +
+                ", requestAt='" +getRequestAt() + '\'' +
+                '}';
     }
 }

@@ -16,7 +16,7 @@
 
 <c:choose>
     <c:when test="${callCentre && journeyOverride eq true}">
-        <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
+<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
         <c:forEach items="${param}" var="currentParam">
             <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
         </c:forEach>
@@ -35,6 +35,8 @@
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
         <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
         <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" scope="request" />
+        <jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
+        <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 
         <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health')}" scope="request"  />
 
@@ -184,6 +186,7 @@
 
                 <health_v1:choices xpathBenefits="${pageSettings.getVerticalCode()}/benefits" xpathSituation="${pageSettings.getVerticalCode()}/situation" />
 
+
                 <%-- generate the benefit fields (hidden) for form selection. --%>
                 <div class="hiddenFields">
                     <c:forEach items="${resultTemplateItems}" var="selectedValue">
@@ -192,7 +195,19 @@
                     <c:if test="${data['health/situation/accidentOnlyCover'] != '' && not empty data['health/situation/accidentOnlyCover']}">
                         <c:set var="fieldValue"><c:out value="${data['health/situation/accidentOnlyCover']}" escapeXml="true"/></c:set>
                     </c:if>
-                    <input type="hidden" name="health_situation_accidentOnlyCover" class="benefit-item" value="${fieldValue}" />
+                    <input type="hidden" name="health_situation_accidentOnlyCover" class="benefit-item" value="${fieldValue}" data-skey="accidentOnlyCover" />
+                    <c:set var="maxMilliToGetResults">
+                        <content:get key="maxMilliSecToWait"/>
+                    </c:set>
+                    <c:choose>
+                        <c:when test="${not empty maxMilliToGetResults}">
+                            <input type="hidden" id="maxMilliSecToWait" value="${maxMilliToGetResults}"/>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="hidden" id="maxMilliSecToWait" value="0"/>
+                        </c:otherwise>
+                    </c:choose>
+                    <input type="hidden" id="waitMessage" value="<content:get key='waitMessage'/>"/>
 
                     <field_v1:hidden xpath="health/renderingMode" />
                     <field_v1:hidden xpath="health/rebate" />
@@ -210,11 +225,10 @@
                 <health_v2_layout:slide_all_about_you />
                 <health_v2_layout:slide_benefits />
                 <health_v2_layout:slide_your_contact />
-                <health_v1_layout:slide_results />
+                <health_v2_layout:slide_results />
                 <health_v2_layout:slide_application_details />
                 <health_v2_layout:slide_payment_details />
-
-                <health_v2:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />
+                <health_v1:dual_pricing_templates />
 
                 <field_v1:hidden xpath="environmentOverride" />
                 <field_v1:hidden xpath="environmentValidatorOverride" />

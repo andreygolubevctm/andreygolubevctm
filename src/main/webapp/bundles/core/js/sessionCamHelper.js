@@ -49,14 +49,14 @@
 	}
 
 	function updateVirtualPageFromJourneyEngine(step, delay) {
-		if(!_.isArray(skipStepForSessionCam) || _.indexOf(skipStepForSessionCam, step.navigationId) === -1) {
+		if(!_.isArray(skipStepForSessionCam) || (_.isObject(step) && _.indexOf(skipStepForSessionCam, step.navigationId) === -1)) {
 			updateVirtualPage(step, delay);
 		}
 	}
 
 	function updateVirtualPage(step, delay) {
 		delay = delay || 1000;
-		if(step.navigationId !== activeNavigationId) {
+		if(_.isObject(step) && step.hasOwnProperty('navigationId') && step.navigationId !== activeNavigationId) {
 			activeNavigationId = step.navigationId;
 			if (window.sessionCamRecorder) {
 				if (window.sessionCamRecorder.createVirtualPageLoad) {

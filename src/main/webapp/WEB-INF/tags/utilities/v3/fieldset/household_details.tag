@@ -24,7 +24,7 @@
 
 <form_v2:fieldset legend="Household Details" className="household-details">
     <c:set var="fieldXPath" value="${xpath}/location" />
-    <form_v3:row label="Postcode / Suburb" fieldXpath="${fieldXPath}" className="clear">
+    <form_v3:row label="Postcode / Suburb" fieldXpath="${fieldXPath}" className="clear postcode-suburb">
         <%-- Uses autocomplete='false' instead of 'off' due to Chrome bug https://code.google.com/p/chromium/issues/detail?id=468153 --%>
         <field_v2:lookup_suburb_postcode
                 xpath="${fieldXPath}"
@@ -38,53 +38,44 @@
     </form_v3:row>
 
     <c:set var="fieldXPath" value="${xpath}/whatToCompare" />
-    <form_v3:row label="What would you like to compare?" fieldXpath="${fieldXPath}" className="clear" helpId="528">
+    <form_v3:row label="What would you like to compare?" fieldXpath="${fieldXPath}" className="clear what-to-compare" helpId="528">
         <field_v2:array_radio xpath="${fieldXPath}"
                                required="true"
                                className="what-to-compare roundedCheckboxIcons"
-                               items="E=<i class='energy-electricity'><span class='iconLabel'>Electricity</span></i>,G=<i class='energy-gas'><span class='iconLabel'>Gas</span></i>,EG=<i class='energy-combined'><span class='iconLabel'>Electricity and Gas</span></i>"
+                               items="E=Electricity,G=Gas,EG=Electricity and Gas"
                                id="${go:nameFromXpath(fieldXPath)}"
                                title="which energies to compare." />
     </form_v3:row>
 
     <c:set var="fieldXPath" value="${xpath}/movingIn" />
-    <form_v3:row label="Are you moving to this property?" fieldXpath="${fieldXPath}" className="clear moving-in" helpId="413">
+    <form_v3:row label="Are you moving into this house or unit?" fieldXpath="${fieldXPath}" className="clear moving-in" helpId="413">
         <field_v2:array_radio xpath="${fieldXPath}"
                                required="true"
                                className=""
                                items="Y=Yes,N=No"
                                id="${go:nameFromXpath(fieldXPath)}"
-                               title="if you are moving to this property." />
+                               title="if you are moving into this house or unit." />
     </form_v3:row>
 
-    <c:set var="fieldXPath" value="${xpath}/movingInDate" />
-    <form_v3:row label="What date are you moving in?" fieldXpath="${fieldXPath}" className="clear moving-in-date">
-        <field_v2:basic_date xpath="${fieldXPath}"
-                              required="true"
-                              title="moving in date"
-                              maxDate="${nowPlusYears_Date}"
-                              minDate="${nowPlusDay_Date}" />
-    </form_v3:row>
+    <c:set var="enableMovingDate">
+        <content:get key="enableMovingInDateField"/>
+    </c:set>
+    <c:choose>
+        <c:when test="${enableMovingDate eq 'Y'}">
+            <c:set var="fieldXPath" value="${xpath}/movingInDate" />
+            <form_v3:row label="What date are you moving in?" fieldXpath="${fieldXPath}" className="clear moving-in-date">
+                <field_v2:basic_date xpath="${fieldXPath}"
+                                     required="true"
+                                     title="moving in date"
+                                     maxDate="${nowPlusYears_Date}"
+                                     minDate="${nowPlusDay_Date}" />
+            </form_v3:row>
+        </c:when>
+    </c:choose>
 
-    <c:set var="fieldXPath" value="${xpath}/recentElectricityBill" />
-    <form_v3:row label="Do you have a recent electricity bill in front of you?" fieldXpath="${fieldXPath}" className="clear recent-electricity-bill">
-        <field_v2:array_radio xpath="${fieldXPath}"
-                               required="true"
-                               className=""
-                               items="Y=Yes,N=No"
-                               id="${go:nameFromXpath(fieldXPath)}"
-                               title="if you have a recent electricity bill." />
-    </form_v3:row>
 
-    <c:set var="fieldXPath" value="${xpath}/recentGasBill" />
-    <form_v3:row label="Do you have a recent gas bill in front of you?" fieldXpath="${fieldXPath}" className="clear recent-gas-bill">
-        <field_v2:array_radio xpath="${fieldXPath}"
-                               required="true"
-                               className=""
-                               items="Y=Yes,N=No"
-                               id="${go:nameFromXpath(fieldXPath)}"
-                               title="if you have a recent gas bill." />
-    </form_v3:row>
+
+
 </form_v2:fieldset>
 
    <field_v1:hidden xpath="${xpath}/tariff" required="false" />

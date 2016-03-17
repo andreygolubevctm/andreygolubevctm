@@ -210,14 +210,6 @@
 
 <%-- UNAVAILABLE COMBINED ROW --%>
 <core_v1:js_template id="unavailable-combined-template">
-{{ var template = $("#provider-logo-template").html(); }}
-{{ var logo = _.template(template); }}
-{{ var logos = ''; }}
-{{ _.each(obj, function(result) { }}
-{{	if (result.available !== 'Y') { }}
-{{		logos += logo(result); }}
-{{	} }}
-{{ }) }}
 	<div class="result-row result_unavailable_combined notfiltered" data-available="N" style="display:block" data-position="{{= obj.length }}" data-sort="{{= obj.length }}">
 		<div class="result">
 			<div class="unavailable featuresMode">
@@ -226,9 +218,8 @@
 				</div>
 			</div>
 
-			<div class="unavailable priceMode clearfix">
-				<p>We're sorry but these providers did not return a quote:</p>
-				{{= logos }}
+			<div class="unavailable priceMode center clearfix">
+				<p>Some of our partners did not return quotes. This might be due to commercial reasons (for example, based on the information you provided,<br>they may have decided not to offer certain products to you) or because of technical issues.</p>
 				<div class="clearfix"></div>
 			</div>
 		</div>
@@ -271,14 +262,12 @@
 </core_v1:js_template>
 <%-- BLOCKED QUOTES --%>
 <div class="hidden">
-	<c:set var="heading"><content:get key="blockedIPHeading" /></c:set>
-	<c:set var="copy"><content:get key="blockedIPCopy" /></c:set>
-	<confirmation:other_products heading="${heading}" copy="${copy}" id="blocked-ip-address" />
+	<agg_v2:no_quotes id="blocked-ip-address"/>
 </div>
 
 <%-- NO RESULTS --%>
 <div class="hidden">
-	<agg_v2_results:results_none />
+	<agg_v2:no_quotes id="no-results-content"/>
 </div>
 
 <%-- FETCH ERROR --%>

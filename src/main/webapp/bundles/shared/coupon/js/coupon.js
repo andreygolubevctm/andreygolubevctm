@@ -20,6 +20,7 @@
 		currentCoupon = false,
 		hasAutoPoped = false,
 		isAvailable = false,
+        isPreload = false,
 		isCouponValidAndSubmitted = false;
 
 	function init() {
@@ -49,6 +50,15 @@
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function() {
 			resetWhenChangeStep();
 		});
+
+        meerkat.messaging.subscribe(meerkatEvents.compare.RENDER_FINISHED, function() {
+            var $couponTileContainer = $('.featuresMode').find('.coupon-tile-container');
+            if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentTile')) {
+                $couponTileContainer.html(currentCoupon.contentTile).parent().addClass('tile-enabled');
+            } else {
+                $couponTileContainer.html('').parent().removeClass('tile-enabled');
+            }
+        });
 	}
 
 	function checkCouponsAvailability() {
@@ -58,12 +68,12 @@
 	}
 
 	function preload() {
-		if (meerkat.site.isCallCentreUser && meerkat.site.vdn !== '') {
-			loadCoupon('vdn', meerkat.site.vdn);
-		}
-		else if (meerkat.site.couponId !== '' ) {
+        if (meerkat.site.couponId !== '' ) {
+            isPreload = true;
 			loadCoupon('couponId', meerkat.site.couponId);
-		}
+		} else {
+            isPreload = false;
+        }
 	}
 
 	function loadCoupon(type, dataParam, successCallBack) {
@@ -80,18 +90,15 @@
 				url = 'coupon/id/get.json';
 				data.couponId = dataParam;
 				break;
-			case "vdn":
-				url = 'coupon/vdn/get.json';
-				data.vdn = dataParam;
-				break;
 			case "filter":
 				// if already have a coupon (most likely from email campaign or vdn prefill), do not filter
-				if (isCurrentCouponValid() === true) {
+				if (isCurrentCouponValid() === true && isPreload === true) {
 					if (typeof successCallBack === 'function') {
 						successCallBack();
 					}
 					return;
 				}
+                isPreload = false;
 				url = 'coupon/filter.json';
 				break;
 			default:
@@ -145,15 +152,24 @@
 	}
 
 	function renderCouponBanner() {
-		if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentBanner')) {
+		if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentTile')) {
+            $('#contactForm').find('.quoteSnapshot').hide();
+            $('.callCentreHelp').hide();
 			$('.coupon-banner-container').html(currentCoupon.contentBanner);
+            $('.coupon-tile-container').html(currentCoupon.contentTile);
 			if (currentCoupon.showPopup === true && hasAutoPoped === false) {
 				_.defer(function(){
-					$('.coupon-banner').click();
+					$('.coupon-tile').click();
 					hasAutoPoped = true;
 				});
 			}
-		}
+		} else {
+            $('#contactForm').find('.quoteSnapshot').show();
+            $('.callCentreHelp').show();
+            $('#contactForm').find('.callCentreHelp').hide();
+            $('.coupon-banner-container').html('');
+            $('.coupon-tile-container').html('');
+        }
 	}
 
 	function isCurrentCouponValid() {
@@ -177,7 +193,7 @@
 	function validateField() {
 
 		// empty field, reset all
-		if ($couponCodeField.val().trim() === '') {
+		if ($.trim($couponCodeField.val()) === '') {
 			$couponCodeField.parent().removeClass('has-custom-error');
 			$couponErrorContainer.addClass('hidden');
 			resetWhenError();
@@ -247,7 +263,10 @@
 		if (isCurrentCouponValid() === true && currentCoupon.canPrePopulate === true) {
 			$couponIdField.val(currentCoupon.couponId);
 			$couponCodeField.val(currentCoupon.couponCode);
-		}
+		} else {
+            $couponIdField.val('');
+            $couponCodeField.val('');
+        }
 	}
 
 	function getCurrentCoupon() {

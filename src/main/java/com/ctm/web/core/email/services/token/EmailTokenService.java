@@ -1,7 +1,7 @@
 package com.ctm.web.core.email.services.token;
 
-import com.ctm.web.core.email.dao.EmailTokenDao;
 import com.ctm.web.core.dao.EmailMasterDao;
+import com.ctm.web.core.email.dao.EmailTokenDao;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.model.IncomingEmail;
 import com.ctm.web.core.email.services.EmailUrlService;
@@ -11,7 +11,9 @@ import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.FatalErrorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.util.UriUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,10 +61,18 @@ public class EmailTokenService {
             params.put(EmailUrlService.VERTICAL, vertical);
         }
         if(productName != null && !productName.isEmpty()) {
-            params.put(EmailUrlService.PRODUCT_NAME, productName);
+            setProductName(productName, params);
         }
 
         return generateToken(params, createEmailTokenRecord);
+    }
+
+    public static void setProductName(String productName, Map<String, String> params) {
+        try {
+            params.put(EmailUrlService.PRODUCT_NAME, UriUtils.encodeQueryParam(productName, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.error("Failed to encode value. {}", kv("productName" , productName) ,e );
+        }
     }
 
     public String generateToken(Map<String, String> params, boolean createEmailTokenRecord) {
@@ -123,7 +133,14 @@ public class EmailTokenService {
         try {
             String decrypted[] = StringEncryption.decrypt(encryptionKey, token).split("&");
             for(String param : decrypted) {
-                map.put(param.split("=")[0], param.split("=")[1]);
+                String[] keyPair = param.split("=");
+                if(keyPair.length > 1) {
+                    try {
+                        map.put(keyPair[0],  UriUtils.decode(keyPair[1], "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        LOGGER.error("Failed to decode value. {}", kv("value" , keyPair[1]) ,e );
+                    }
+                }
             }
             return map;
         } catch (GeneralSecurityException e) {

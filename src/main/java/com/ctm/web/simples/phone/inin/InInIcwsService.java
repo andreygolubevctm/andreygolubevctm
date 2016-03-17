@@ -17,14 +17,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import rx.Observable;
 
+import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Stream;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static java.util.Arrays.asList;
@@ -41,7 +41,7 @@ public class InInIcwsService {
 	public static final String SESSION_ID = "ININ-ICWS-Session-ID";
 	public static final String CSRF_TOKEN = "ININ-ICWS-CSRF-Token";
 
-	public static final List<String> SUBSCRIPTION_ATTRIBUTES = asList("Eic_CallIdKey", "Eic_State");
+	public static final List<String> SUBSCRIPTION_ATTRIBUTES = asList("Eic_CallIdKey", "Eic_State", "Eic_CallStateString");
 	public static final String CIC_URL = "cicUrl";
 	private static final String CONNECTION_URL = "${cicUrl}/connection";
 	private static final String QUEUE_SUBSCRIPTION_URL = "${cicUrl}/${sessionId}/messaging/subscriptions/queues/${subscriptionName}";
@@ -50,12 +50,26 @@ public class InInIcwsService {
 	public static final int DELAY = 500;
 	public static final int ATTEMPTS = 2;
 
-	@Autowired private SerializationMappers jacksonMappers;
-	@Autowired InInConfig inInConfig;
-	@Autowired private Client<ConnectionReq, ConnectionResp> connectionClient;
-	@Autowired private Client<QueueSubscriptionReq, String> queueSubscriptionClient;
-	@Autowired private Client<String, List<Message>> messageClient;
-	@Autowired private Client<SecurePause, String> securePauseClient;
+	private SerializationMappers jacksonMappers;
+	private InInConfig inInConfig;
+	private Client<ConnectionReq, ConnectionResp> connectionClient;
+	private Client<QueueSubscriptionReq, String> queueSubscriptionClient;
+	private Client<String, List<Message>> messageClient;
+	private Client<SecurePause, String> securePauseClient;
+
+	@Autowired
+	public InInIcwsService(SerializationMappers jacksonMappers, InInConfig inInConfig,
+						   Client<ConnectionReq, ConnectionResp> connectionClient,
+						   Client<QueueSubscriptionReq, String> queueSubscriptionClient,
+						   Client<String, List<Message>> messageClient,
+						   Client<SecurePause, String> securePauseClient) {
+		this.jacksonMappers = jacksonMappers;
+		this.inInConfig = inInConfig;
+		this.connectionClient = connectionClient;
+		this.queueSubscriptionClient = queueSubscriptionClient;
+		this.messageClient = messageClient;
+		this.securePauseClient = securePauseClient;
+	}
 
 	public Observable<PauseResumeResponse> pause(final String agentUsername, final Optional<String> interactionId) {
 		return securePause(SecurePauseType.PAUSE_WITH_INFINITE_TIMEOUT, agentUsername, interactionId);
@@ -80,43 +94,32 @@ public class InInIcwsService {
 	}
 
 	private boolean shouldFailover(Throwable throwable) {
-		return isServerExceptionOfStatus(throwable, SERVICE_UNAVAILABLE)
-			|| isServerExceptionOfStatus(throwable, NOT_FOUND)
+		return isHttpStatusException(throwable, SERVICE_UNAVAILABLE)
+			|| isHttpStatusException(throwable, NOT_FOUND)
 			|| throwable instanceof TimeoutException
-			|| throwable instanceof UnknownHostException;
+			|| throwable instanceof UnknownHostException
+			|| throwable instanceof ConnectException;
 	}
 
-	private boolean isServerExceptionOfStatus(final Throwable throwable, final HttpStatus httpStatus) {
-		return throwable instanceof HttpServerErrorException && ((HttpServerErrorException) throwable).getStatusCode() == httpStatus;
-	}
-
-	// TODO duplicated in ctm-leads, blacklist controller
-	private Observable<?> retryWithDelay(final Observable<? extends Throwable> attempt) {
-		return attempt
-				.zipWith(Observable.range(1, ATTEMPTS), (n, i) -> i)
-				.flatMap(n -> {
-					LOGGER.info("Retrying request {}", kv("attempt", n));
-					return Observable.timer(DELAY, TimeUnit.MILLISECONDS);
-				});
+	public static boolean isHttpStatusException(final Throwable throwable, final HttpStatus httpStatus) {
+		return throwable instanceof HttpStatusCodeException && ((HttpStatusCodeException) throwable).getStatusCode() == httpStatus;
 	}
 
 	private Observable<PauseResumeResponse> securePause(final String cicUrl, final SecurePauseType securePauseType, final String agentUsername) {
 		// Get session connection
 		return connection(cicUrl)
 				.flatMap(connectionResp ->
-								// Put a subscription on agent activity
-								queueSubscription(cicUrl, agentUsername, connectionResp)
-										.delay(1, TimeUnit.SECONDS)
-												// Get messages of agent activity (should give us the current phone call status)
-										.flatMap(s -> getInteractionId(cicUrl, connectionResp))
-												// Pause or resume the call
-										.flatMap(iId -> securePauseRequest(cicUrl, securePauseType, iId, connectionResp))
-										.flatMap(pauseResp -> Observable.just(PauseResumeResponse.success()))
-										.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable))
+						// Put a subscription on agent activity
+						queueSubscription(cicUrl, agentUsername, connectionResp)
+								.delay(1, TimeUnit.SECONDS)
+								// Get messages of agent activity (should give us the current phone call status)
+								.flatMap(s -> getInteractionId(cicUrl, connectionResp))
+								// Pause or resume the call
+								.flatMap(iId -> securePauseRequest(cicUrl, securePauseType, iId, connectionResp))
+								.flatMap(pauseResp -> Observable.just(PauseResumeResponse.success()))
+								.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable))
 				);
 	}
-
-
 
 	private PauseResumeResponse handleSecurePauseError(final SecurePauseType securePauseType, final String agentUsername, final Throwable throwable) {
 		if (throwable instanceof HttpClientErrorException) {
@@ -140,6 +143,7 @@ public class InInIcwsService {
 				.header("Content-Type", APPLICATION_JSON_VALUE)
 				.request(connectionReq)
 				.response(ConnectionResp.class)
+				.retryAttempts(ATTEMPTS).retryDelay(DELAY)
 				.url(url)
 				.build();
 
@@ -151,7 +155,7 @@ public class InInIcwsService {
 			}
 		}
 
-		return connectionClient.postWithResponseEntity(settings).retryWhen(this::retryWithDelay);
+		return connectionClient.postWithResponseEntity(settings);
 	}
 
 	/**
@@ -168,6 +172,7 @@ public class InInIcwsService {
 				.request(subscriptionReq)
 				.response(String.class)
 				.url(url)
+				.retryAttempts(ATTEMPTS).retryDelay(DELAY)
 				.build();
 
 		if (LOGGER.isDebugEnabled()) {
@@ -178,7 +183,7 @@ public class InInIcwsService {
 			}
 		}
 
-		return queueSubscriptionClient.put(settings).retryWhen(this::retryWithDelay);
+		return queueSubscriptionClient.put(settings);
 	}
 
 	private Observable<Message> getMessages(final String cicUrl, final ResponseEntity<ConnectionResp> connectionResp) {
@@ -191,29 +196,29 @@ public class InInIcwsService {
 				.request(null)
 				.response(new ParameterizedTypeReference<List<Message>>() {})
 				.url(url)
+				.retryAttempts(ATTEMPTS).retryDelay(DELAY)
 				.build();
-		return messageClient.get(settings).flatMap(Observable::<Message>from).retryWhen(this::retryWithDelay);
+		return messageClient.get(settings).flatMap(Observable::<Message>from);
 	}
 
 	private Observable<String> getInteractionId(final String cicUrl, final ResponseEntity<ConnectionResp> connectionResp) {
 		final Observable<Message> messages = getMessages(cicUrl, connectionResp);
-		Observable<Optional<String>> interactionId = messages
+		final Observable<Optional<String>> interactionId = messages
 				// Look at messages that have added or changed interactions
 				.filter(message -> message.getInteractionsAdded().size() > 0 || message.getInteractionsChanged().size() > 0)
-				// Look at messages that have a valid call state
-				.filter(message -> message.getInteractionsAdded().stream().filter(i -> i.getAttributes().callState != null).count() > 0
-						|| message.getInteractionsChanged().stream().filter(i -> i.getAttributes().callState != null).count() > 0)
-				.map(message -> {
-					LOGGER.debug("Checking message: " + message.toString());
-					return message;
+				// Smoosh all those interactions into a new stream
+				.flatMap(msgs -> Observable.merge(Observable.from(msgs.getInteractionsAdded()), Observable.from(msgs.getInteractionsChanged())))
+				.map(interaction -> {
+					LOGGER.info("Possible interaction: {}", interaction);
+					return interaction;
 				})
-				// Stream the two interaction arrays and get the first ID
-				.map(message -> Stream.concat(message.getInteractionsAdded().stream(), message.getInteractionsChanged().stream())
-							.findFirst()
-							.map(Interaction::getInteractionId));
+				// Find interaction with valid call state
+				.filter(this::isValidInteractionState)
+				.map(Interaction::getInteractionId)
+				.map(Optional::of)
+				.firstOrDefault(Optional.empty());
 
 		return interactionId
-				.defaultIfEmpty(Optional.empty())
 				.flatMap(s -> {
 					LOGGER.debug("getInteractionId: {}", s);
 					if (s.isPresent()) {
@@ -222,6 +227,11 @@ public class InInIcwsService {
 						return Observable.error(new Exception("Could not find valid interactionId"));
 					}
 				});
+	}
+
+	private boolean isValidInteractionState(final Interaction i) {
+		// C = Connected - the call object is connected to a user at the Client level.
+		return StringUtils.equalsIgnoreCase("C", i.getAttributes().callState);
 	}
 
 	/**
@@ -235,8 +245,9 @@ public class InInIcwsService {
 				.request(securePause)
 				.response(String.class)
 				.url(url)
+				.retryAttempts(ATTEMPTS).retryDelay(DELAY)
 				.build();
-		return securePauseClient.post(settings).retryWhen(this::retryWithDelay);
+		return securePauseClient.post(settings);
 	}
 
 	private String createQueueSubscriptionUrl(final String cicUrl, final String sessionId, final String subscriptionName) {
