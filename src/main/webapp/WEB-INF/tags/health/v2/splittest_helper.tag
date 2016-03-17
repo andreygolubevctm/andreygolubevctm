@@ -11,3 +11,23 @@
 </c:if>
 
 <c:set var="newBenefitsLayoutSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 13)}" />
+
+<%-- HLT-3028 ABC Test for More Info Buy Button --%>
+<c:set var="moreinfo_splittest_default" value="${true}" />
+<c:set var="moreinfo_splittest_variation1" value="${false}" />
+<c:set var="moreinfo_splittest_variation2" value="${false}" />
+<c:set var="moreinfo_splittest_variation3" value="${false}" />
+<c:choose>
+    <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 15)}">
+        <c:set var="moreinfo_splittest_variation1" value="${true}" />
+        <c:set var="moreinfo_splittest_default" value="${false}" />
+    </c:when>
+    <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 16)}">
+        <c:set var="moreinfo_splittest_variation2" value="${true}" />
+        <c:set var="moreinfo_splittest_default" value="${false}" />
+    </c:when>
+    <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 17)}">
+        <c:set var="moreinfo_splittest_variation3" value="${true}" />
+        <c:set var="moreinfo_splittest_default" value="${false}" />
+    </c:when>
+</c:choose>
