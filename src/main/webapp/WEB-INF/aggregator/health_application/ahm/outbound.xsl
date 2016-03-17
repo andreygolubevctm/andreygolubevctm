@@ -499,8 +499,6 @@
 					<!-- WX01 – Fund control in Genero -->
 					<!-- Defaults to 1 -->
 					<b:FundId>1</b:FundId>
-					<b:TierEffDte><xsl:value-of select="$todays_date" /></b:TierEffDte>
-
 					<!-- Income Tier. Data type: A string that represents Integer (2) -->
 					<!-- WX42 Rebate Definition in Genero: 0, 1, 2, 3 -->
 					<b:IncomeTier><xsl:value-of select="healthCover/income" /></b:IncomeTier>
@@ -606,8 +604,9 @@
 					<b:StreetPC><xsl:value-of select="$postCode" /></b:StreetPC>
 					<b:StreetState><xsl:value-of select="$state" /></b:StreetState>
 					<b:StreetSuburb><xsl:value-of select="$suburbName" /></b:StreetSuburb>
-					<SubFundId>1</SubFundId>
-					<RateCode>0</RateCode>
+					<b:RateCode>0</b:RateCode>
+					<b:SubFundId>1</b:SubFundId>
+					<b:TierEffDte><xsl:value-of select="$todays_date" /></b:TierEffDte>
 				</wsEnrolMemberRequest>
 				</EnrolMember>
 			</s:Body>
