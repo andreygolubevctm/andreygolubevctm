@@ -168,6 +168,16 @@
 	}
 
 	function saveBenefits(){
+		if(meerkat.site.isCallCentreUser === true){
+			// Check mandatory dialog have been ticked
+			var $_exacts = $('.benefits-component').find('.simples-dialogue.mandatory:visible');
+			if( $_exacts.length != $_exacts.find('input:checked').length ){
+				meerkat.modules.dialogs.show({
+					htmlContent: 'Please complete the mandatory dialogue prompts before applying.'
+				});
+				callback(false);
+			}
+		}
 
 		resetHiddenFields();
 
