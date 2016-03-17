@@ -250,6 +250,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 					<c:set var="partner_loading_rate" value="${0}" />
 					<c:set var="partner_loading_cae" value="${0}" />
 				</c:if>
+				<c:set var="partner_loading_rate" value="${partner_loading_rate}" />
 		</c:when>
 		<c:otherwise>
 			<fmt:formatNumber var="partner_loading_rate" value="${param.partner_loading_manual}" maxFractionDigits="0" />

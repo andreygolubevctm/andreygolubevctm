@@ -285,6 +285,7 @@ public class CouponDao {
 		coupon.setExclusive(results.getBoolean("isExclusive"));
 		coupon.setShowPopup(results.getBoolean("showPopup"));
 		coupon.setPrePopulate(results.getBoolean("canPrePopulate"));
+        coupon.setContentTile(results.getString("contentTile"));
 		coupon.setContentBanner(results.getString("contentBanner"));
 		coupon.setContentSuccess(results.getString("contentSuccess"));
 		coupon.setContentCheckbox(results.getString("contentCheckbox"));
