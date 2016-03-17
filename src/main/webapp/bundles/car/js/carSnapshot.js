@@ -46,7 +46,7 @@
 			} else {
 				selector = '.journeyEngineSlide:eq(' + i + ')';
 			}
-			meerkat.modules.contentPopulation.render(selector + ' .snapshot');
+			meerkat.modules.contentPopulation.render(selector + ' .snapshot', true);
 		}
 	}
 

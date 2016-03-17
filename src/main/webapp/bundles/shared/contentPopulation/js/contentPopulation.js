@@ -38,7 +38,7 @@
 	 * Can be used to retrieve any type of content, just add more conditions.
 	 * @param {String} container - Pass in a jQuery selector as the parent element wrapping the div template.
 	 */
-	function render(container) {
+	function render(container, hasTitle) {
 
 		$('[data-source]', $(container)).each(function () {
 			var output = '',
@@ -158,8 +158,30 @@
 
 			// currently we only want to replace the elements html, potential to replace value, select options...? extend this with further data options.
 			$el.html(output);
+
+            // If each snapshot has a heading/title, hide the parent element when it has no value
+            // default implementation of the html in jsp should follow car/snapshot.tag to make this work
+            if (hasTitle) {
+                var $parent = $el.parent();
+                if (output !== '' || hasData($parent)) {
+                    $parent.show();
+                } else {
+                    $parent.hide();
+                }
+            }
 		});
 	}
+
+    function hasData($parent) {
+        var hasData = false;
+        $parent.find('[data-source]').each( function() {
+            if ($(this).html() !== '') {
+                hasData = true;
+                return false; // get out of the each loop..
+            }
+        });
+        return hasData;
+    }
 
 	meerkat.modules.register('contentPopulation', {
 		init: init,
