@@ -27,13 +27,9 @@
 	</xsl:template>
 
 	<xsl:variable name="todays_date">
-		<xsl:variable name="year"><xsl:value-of select="substring($today,1,4)" /></xsl:variable>
-		<xsl:variable name="month"><xsl:value-of select="substring($today,6,2)" /></xsl:variable>
-		<xsl:variable name="day"><xsl:value-of select="substring($today,9,2)" /></xsl:variable>
-
-		<xsl:value-of select="format-number($day,'00')" />
-		<xsl:value-of select="format-number($month,'00')" />
-		<xsl:value-of select="$year" />
+        <xsl:call-template name="format_date_to_slashes">
+            <xsl:with-param name="date" select="$today" />
+        </xsl:call-template>
 	</xsl:variable>
 
 
