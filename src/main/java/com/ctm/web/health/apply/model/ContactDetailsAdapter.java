@@ -1,9 +1,10 @@
 package com.ctm.web.health.apply.model;
 
-import com.ctm.web.health.apply.model.request.contactDetails.*;
 import com.ctm.web.health.apply.model.request.contactDetails.Address.*;
-import com.ctm.web.health.model.form.Application;
-import com.ctm.web.health.model.form.HealthQuote;
+import com.ctm.web.health.apply.model.request.contactDetails.*;
+import com.ctm.web.health.apply.model.request.contactDetails.Address.Address;
+import com.ctm.web.health.apply.model.request.contactDetails.ContactDetails;
+import com.ctm.web.health.model.form.*;
 
 import java.util.Optional;
 
@@ -18,20 +19,12 @@ public class ContactDetailsAdapter {
                 .orElse(PostalMatch.N);
         if (contactDetails.isPresent()) {
             return new ContactDetails(
-                    contactDetails.map(com.ctm.web.health.model.form.ContactDetails::getEmail)
-                            .map(Email::new)
-                            .orElse(null),
+                    createEmail(quote),
                     contactDetails.map(com.ctm.web.health.model.form.ContactDetails::getOptin)
                             .map(OptInEmail::valueOf)
                             .orElse(null),
-                    quote.map(HealthQuote::getApplication)
-                            .map(Application::getMobile)
-                            .map(MobileNumber::new)
-                            .orElse(null),
-                    quote.map(HealthQuote::getApplication)
-                            .map(Application::getOther)
-                            .map(OtherNumber::new)
-                            .orElse(null),
+                    createMobileNumber(quote),
+                    createOtherNumber(quote),
                     quote.map(HealthQuote::getApplication)
                             .map(Application::getCall)
                             .map(Call::valueOf)
@@ -53,6 +46,47 @@ public class ContactDetailsAdapter {
         } else {
             return null;
         }
+    }
+
+    protected static OtherNumber createOtherNumber(Optional<HealthQuote> quote) {
+        return quote.map(HealthQuote::getApplication)
+                .map(Application::getOther)
+                .map(OtherNumber::new)
+                .orElse(createContactDetailsOtherNumber(quote.map(HealthQuote::getContactDetails)));
+    }
+
+    protected static OtherNumber createContactDetailsOtherNumber(Optional<com.ctm.web.health.model.form.ContactDetails> contactDetails) {
+        return contactDetails.map(com.ctm.web.health.model.form.ContactDetails::getContactNumber)
+                .map(ContactNumber::getOther)
+                .map(OtherNumber::new)
+                .orElse(null);
+    }
+
+    protected static MobileNumber createMobileNumber(Optional<HealthQuote> quote) {
+        return quote.map(HealthQuote::getApplication)
+                .map(Application::getMobile)
+                .map(MobileNumber::new)
+                .orElse(createContactDetailsMobileNumber(quote.map(HealthQuote::getContactDetails)));
+    }
+
+    protected static MobileNumber createContactDetailsMobileNumber(Optional<com.ctm.web.health.model.form.ContactDetails> contactDetails) {
+        return contactDetails.map(com.ctm.web.health.model.form.ContactDetails::getContactNumber)
+                .map(ContactNumber::getMobile)
+                .map(MobileNumber::new)
+                .orElse(null);
+    }
+
+    protected static Email createEmail(Optional<HealthQuote> quote) {
+        return quote.map(HealthQuote::getApplication)
+                .map(Application::getEmail)
+                .map(Email::new)
+                .orElse(createContactDetailsEmail(quote.map(HealthQuote::getContactDetails)));
+    }
+
+    protected static Email createContactDetailsEmail(Optional<com.ctm.web.health.model.form.ContactDetails> contactDetails) {
+        return contactDetails.map(com.ctm.web.health.model.form.ContactDetails::getEmail)
+                .map(Email::new)
+                .orElse(null);
     }
 
     protected static Address createAddress(Optional<com.ctm.web.health.model.form.Address> address) {
