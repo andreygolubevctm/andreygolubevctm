@@ -16,7 +16,7 @@
 </ui:bubble>
 <form_v2:fieldset legend="Your Car" id="${name}_selection">
 
-    <c:if test="${regoLookupSplitTest eq true and not empty param.quote_vehicle_searchRego}">
+    <c:if test="${regoLookupSplitTest eq true and not empty data.quote.vehicle.searchRego and not empty data.quote.vehicle.searchState}">
         <div id="unableToFindRego" class="hidden">
             <p class="text-warning h4">
                 <strong id="regoErrorMessage">Sorry, we were unable to find a car with registration number '<c:out value="${param.quote_vehicle_searchRego}" escapeXml="true"/>'.</strong>
@@ -24,16 +24,9 @@
             <p>Please continue by selecting your car from the fields below.</p>
             <br /><br />
         </div>
-
-        <%-- This needs to be duplicated here from settings.tag because its evaluated before settings.tag --%>
-        <c:set var="quote_vehicle_searchRego"><c:out value="${param.quote_vehicle_searchRego}" escapeXml="true"/></c:set>
-        <c:if test="${not empty param.quote_vehicle_searchRego}">
-            <go:setData dataVar="data" value="${quote_vehicle_searchRego}" xpath="quote/vehicle/searchRego"/>
-        </c:if>
-
         <field_v1:hidden xpath="${xpath}/searchRego" />
-        <%--<h2>TO BE REMOVED:</h2>
-        <car:rego_lookup xpath="${xpath}"/>--%>
+        <field_v1:hidden xpath="${xpath}/searchState" />
+        <field_v1:hidden xpath="${xpath}/nvicCode" />
     </c:if>
 
 

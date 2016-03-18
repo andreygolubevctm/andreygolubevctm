@@ -20,7 +20,7 @@
 					<p>By listing all of the options, accessories and modifications, the insurer will be able to get a more accurate idea of the car's true value.</p>
 				</ui:bubble>
 
-				<c:if test="${regoLookupSplitTest eq true}">
+				<c:if test="${regoLookupSplitTest eq true and not empty data.quote.vehicle.searchRego and not empty data.quote.vehicle.searchState}">
 				    <car:rego_with_details />
 				</c:if>
 

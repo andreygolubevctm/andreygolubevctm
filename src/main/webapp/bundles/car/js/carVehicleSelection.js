@@ -444,17 +444,6 @@
         enableDisablePreviousSelectors(activeSelector, false);
     }
 
-    function hardResetSelectors() {
-        activeSelector = selectorOrder[0];
-        var $el = $(elements[activeSelector]);
-        $el.prop('selectedIndex', 0);
-        stripValidationStyles($el);
-        disableFutureSelectors(activeSelector);
-        _.defer(function () {
-            meerkat.messaging.publish(meerkatEvents.carSnapshot.RENDER_CAR_SNAPSHOT);
-        });
-    }
-
     function selectionChanged(data) {
         useSessionDefaults = false;
         var next = getNextSelector(data.field);
@@ -605,9 +594,11 @@
 
         var self = this;
 
-        meerkat.messaging.subscribe(meerkatEvents.regoLookup.REGO_LOOKUP_FORM_IN_USE, hardResetSelectors);
-        meerkat.messaging.subscribe(meerkatEvents.regoLookup.REGO_LOOKUP_STARTED, abortGetVehicleData);
-        meerkat.messaging.subscribe(meerkatEvents.regoLookup.REGO_LOOKUP_COMPLETE, prepareSelectors);
+        if(meerkatEvents.regoLookup) {
+            meerkat.messaging.subscribe(meerkatEvents.regoLookup.REGO_LOOKUP_STARTED, abortGetVehicleData);
+            meerkat.messaging.subscribe(meerkatEvents.regoLookup.REGO_LOOKUP_COMPLETE, prepareSelectors);
+            meerkat.messaging.subscribe(meerkatEvents.regoLookup.REGO_LOOKUP_COMPLETE, setNvicCode);
+        }
 
         $(document).ready(function () {
 
@@ -625,6 +616,14 @@
 
     }
 
+    /**
+     * Used in rego lookup.
+     */
+    function setNvicCode(eventObject) {
+        if(_.isObject(eventObject) && _.has(eventObject, 'nvicCode')) {
+            $('#quote_vehicle_nvicCode').val(eventObject.nvicCode);
+        }
+    }
     function isRadioButtonField(type) {
         return _.indexOf(radioButtonFields, type) > -1;
     }

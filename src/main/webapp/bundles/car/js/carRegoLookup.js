@@ -50,8 +50,6 @@
                 onSuccess: _.bind(onLookup, this, data),
                 onError: _.bind(onLookupError, this, data)
             });
-        } else {
-            renderError("Please ensure you enter the state and registration number of your vehicle");
         }
     }
 
@@ -61,7 +59,7 @@
             if (_.has(json, "exception")) {
                 switch (json.exception) {
                     case "invalid_state":
-                        renderError("An invalid state has been selected. Please try again.");
+                        renderError("An invalid state has been selected. Please locate your vehicle using the options below.");
                         break;
                     case "rego_not_found":
                         renderError("Sorry, no registration details found for state '" + data.state + "' and registration no. '" + data.plateNumber + "'");

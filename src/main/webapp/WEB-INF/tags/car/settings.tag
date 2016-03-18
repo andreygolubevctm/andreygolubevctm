@@ -6,8 +6,6 @@
 <c:set var="quote_vehicle_make"><c:out value="${param.quote_vehicle_make}" escapeXml="true" /></c:set>
 <c:set var="quote_vehicle_model"><c:out value="${param.quote_vehicle_model}" escapeXml="true" /></c:set>
 <c:set var="quote_vehicle_year"><c:out value="${param.quote_vehicle_year}" escapeXml="true" /></c:set>
-<c:set var="quote_vehicle_searchRego"><c:out value="${param.quote_vehicle_searchRego}" escapeXml="true" /></c:set>
-<c:set var="quote_vehicle_searchState"><c:out value="${param.quote_vehicle_searchState}" escapeXml="true" /></c:set>
 
 <c:set var="fromBrochure" scope="request" value="${false}"/>
 <c:if test="${not empty quote_vehicle_make || not empty quote_vehicle_model || not empty quote_vehicle_year || not empty quote_vehicle_searchRego || not empty quote_vehicle_searchState}">
@@ -29,15 +27,6 @@
 			</c:if>
 		</c:if>
 	</c:if>
-    <c:if test="${regoLookupSplitTest eq true}">
-        <c:if test="${not empty param.quote_vehicle_searchRego}">
-            <go:setData dataVar="data" value="${quote_vehicle_searchRego}" xpath="quote/vehicle/searchRego" />
-
-        </c:if>
-		<c:if test="${not empty param.quote_vehicle_searchState}">
-            <go:setData dataVar="data" value="${quote_vehicle_searchState}" xpath="quote/vehicle/searchState" />
-        </c:if>
-    </c:if>
 </c:if>
 
 <%-- Retrieve the vehicle MAKE data --%>
