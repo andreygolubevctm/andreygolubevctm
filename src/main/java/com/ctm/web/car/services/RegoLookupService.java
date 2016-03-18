@@ -1,14 +1,13 @@
 package com.ctm.web.car.services;
 
-import au.com.motorweb.schemas.soap.autoid._1.AutoIdRequest;
-import au.com.motorweb.schemas.soap.autoid._1.AutoIdResponse;
-import au.com.motorweb.schemas.soap.autoid._1.JurisdictionEnum;
-import au.com.motorweb.schemas.soap.autoid._1.PlateType;
+import au.com.motorweb.schemas.soap.autoid._1.*;
 import au.com.motorweb.schemas.soap.autoid._1_0.AutoId;
+import com.ctm.web.car.dao.CarColourDao;
 import com.ctm.web.car.dao.CarRedbookDao;
 import com.ctm.web.car.dao.CarRegoLookupDao;
 import com.ctm.web.car.exceptions.RegoLookupException;
 import com.ctm.web.car.model.CarDetails;
+import com.ctm.web.car.model.MotorwebResponse;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
@@ -33,6 +32,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.webservice.motorweb.MotorWebProvider.createClient;
@@ -200,32 +200,38 @@ public class RegoLookupService {
                 throw new RegoLookupException(RegoLookupStatus.INVALID_STATE, e);
             }
 
-            String redbookCode = null;
+            Optional<MotorwebResponse> motorwebResponse = null;
 
             try {
                 // Step 1 - get the redbook code from MotorWeb
-                redbookCode = getRedbookCode(pageSettings, transactionId, plateNumber, state);
+                motorwebResponse = getMotorwebResponse(pageSettings, transactionId, plateNumber, state);
             } catch (Exception e) {
                 LOGGER.debug("[rego lookup] Error geting redbook code {},{}", kv("plateNumber", plateNumber), kv("stateIn", stateIn), e);
                 throw new RegoLookupException(RegoLookupStatus.SERVICE_ERROR, e);
             }
-            if (redbookCode == null || redbookCode.isEmpty()) {
+            if (motorwebResponse == null || !motorwebResponse.isPresent()) {
                 throw new RegoLookupException(RegoLookupStatus.REGO_NOT_FOUND);
             } else {
                 // Step 2 - get vehicle details from dao
                 CarRedbookDao redbookDao = new CarRedbookDao();
                 CarDetails carDetails = null;
+                final MotorwebResponse res = motorwebResponse.get();
                 try {
                     // Test regos don't return a valid redbookCode
                     if (isTestLookup(plateNumber, state)) {
                         carDetails = redbookDao.getCarDetails("TOYO14BC");
                     }
                     else {
-                        carDetails = redbookDao.getCarDetails(redbookCode);
+                        carDetails = redbookDao.getCarDetails(res.getRedbookCode());
                     }
+
+                    // set the colour
+                    carDetails.setColour(new CarColourDao().getColourCode(res.getColourCode()));
+                    carDetails.setNvicCode(res.getNvicode());
+
                     response = carDetails.getSimple();
                 } catch (DaoException e) {
-                    LOGGER.debug("[rego lookup] Error getting redbook car details {}", kv("plateNumber", plateNumber), kv("redbookCode", redbookCode), e);
+                    LOGGER.debug("[rego lookup] Error getting redbook car details {}", kv("plateNumber", plateNumber), kv("motorwebResponse", res), e);
                     throw new RegoLookupException(RegoLookupStatus.DAO_ERROR, e);
                 }
                 // Step 3 - get data for vehicle selection fields
@@ -244,8 +250,8 @@ public class RegoLookupService {
         return response;
     }
 
-    private String getRedbookCode(PageSettings pageSettings, Long transactionId, String plateNumber,
-                                  JurisdictionEnum state) throws RegoLookupException {
+    private Optional<MotorwebResponse> getMotorwebResponse(PageSettings pageSettings, Long transactionId, String plateNumber,
+                                                 JurisdictionEnum state) throws RegoLookupException {
         ServiceConfiguration serviceConfig;
         try {
             serviceConfig = ServiceConfigurationService.getServiceConfiguration("motorwebRegoLookupService", 0, 0);
@@ -289,7 +295,9 @@ public class RegoLookupService {
             autoIdRequest.setPlate(plateType);
             AutoIdResponse autoIdResponse = client.autoId(autoIdRequest);
             if(autoIdResponse.getError() == null) {
-                return autoIdResponse.getAutoreport().getVehicle().get(0).getRedbookCode();
+                return autoIdResponse.getAutoreport().getVehicle().stream()
+                        .findFirst()
+                        .map(this::createMotorwebResponse);
             } else {
                 LOGGER.debug("[rego lookup] Error motorweb response {},{}", kv("errorCode", autoIdResponse.getError().getCode()),
                     kv("errorValue", autoIdResponse.getError().getValue()));
@@ -297,6 +305,50 @@ public class RegoLookupService {
             }
         } catch (Exception e) {
             throw new RegoLookupException(e.getMessage(), e);
+        }
+    }
+
+    private MotorwebResponse createMotorwebResponse(Vehicle v) {
+        return new MotorwebResponse(v.getRedbookCode(), v.getNvicCode(),
+                getColour(v.getColour()));
+    }
+
+    private String getColour(Vehicle.Colour colour) {
+        return Optional.ofNullable(colour.getPrimary())
+                .map(this::mapColour)
+                .orElse("other");
+    }
+
+    private String mapColour(Vehicle.Colour.Primary primary) {
+        if (primary.getCode() != null) {
+            switch (primary.getCode()) {
+                case BE: return "beige";
+                case BK: return "black";
+                case BL: return "blue";
+                case BZ: return "bronze";
+                case BR: return "brown";
+                case CR: return "cream";
+                case FA: return "fawn";
+                case GO: return "gold";
+                case GN: return "green";
+                case GR: return "grey";
+                case KH: return "khaki";
+                case MN: return "maroon";
+                case MA: return "mauve";
+                case OR: return "orange";
+                case PI: return "pink";
+                case PU: return "purple";
+                case RE: return "red";
+                case SI: return "silver";
+                case TA: return "tan";
+                case TU: return "turquoise";
+                case WH: return "white";
+                case YE: return "yellow";
+                default:
+                    return null;
+            }
+        } else {
+            return primary.getValue();
         }
     }
 
