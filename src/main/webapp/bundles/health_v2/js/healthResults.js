@@ -435,9 +435,7 @@
                 // This is a little dirty however we need to temporarily override the
                 // setting which prevents the tranId from being incremented.
                 // Object only has value in above case, otherwise empty
-                Results.settings.incrementTransactionId = true;
-                get();
-                Results.settings.incrementTransactionId = false;
+                getResultsWithTransactionIdIncrement();
             }
         });
 
@@ -755,12 +753,18 @@
         // If on the results step, reload the results data. Can this be more generic?
         if (typeof callback === 'undefined') {
             if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 3) {
-                get();
+                getResultsWithTransactionIdIncrement()
             }
         } else {
             callback();
         }
 
+    }
+
+    function getResultsWithTransactionIdIncrement() {
+        Results.settings.incrementTransactionId = true;
+        get();
+        Results.settings.incrementTransactionId = false;
     }
 
 
