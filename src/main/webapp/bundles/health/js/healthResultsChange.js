@@ -2,8 +2,7 @@
     // Change the results templates to promote features to the 'selected' features row.
 
     function onBenefitsSelectionChange(selectedBenefits, callback) {
-
-        selectedBenefitsList = selectedBenefits;
+        meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits);
 
         // when hospital is set to off in [Customise Cover] hide the excess section
         var $excessSection = $component.find('.cell.excessSection');
@@ -11,7 +10,7 @@
 
         // If on the results step, reload the results data. Can this be more generic?
         if (typeof callback === 'undefined') {
-            if (meerkat.modules.journeyEngine.getCurrentStepIndex() === meerkat.modules.resultsStepIndex) {
+            if (meerkat.modules.journeyEngine.getCurrentStepIndex() === meerkat.modules.healthResults.resultsStepIndex) {
                 getWithTransactionIdIncrement();
             }
         } else {
@@ -30,8 +29,6 @@
             getWithTransactionIdIncrement();
         }
     }
-
-
 
     function getWithTransactionIdIncrement() {
         Results.settings.incrementTransactionId = true;

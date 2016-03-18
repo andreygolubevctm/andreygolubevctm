@@ -872,6 +872,10 @@
     }
 
 
+    function setSelectedBenefitsList(selectedBenefits){
+        selectedBenefitsList = selectedBenefits;
+    }
+
     meerkat.modules.register('healthResults', {
         init: init,
         events: moduleEvents,
@@ -893,7 +897,8 @@
         rankingCallback: rankingCallback,
         publishExtraSuperTagEvents: publishExtraSuperTagEvents,
         setLhcApplicable: setLhcApplicable,
-        resultsStepIndex : resultsStepIndex
+        resultsStepIndex : resultsStepIndex,
+        setSelectedBenefitsList : setSelectedBenefitsList
     });
 
 })(jQuery);
