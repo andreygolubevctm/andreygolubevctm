@@ -4,7 +4,6 @@
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
         $resultsLowNumberMessage,
-        $component, //Stores the jQuery object for the component group
         selectedProduct = null,
         previousBreakpoint,
         best_price_count = 5,
@@ -887,9 +886,6 @@
     }
 
     function init() {
-
-        $component = $("#resultsPage");
-
         meerkat.messaging.subscribe(meerkatEvents.healthBenefits.CHANGED, meerkat.modules.healthResultsChange.onBenefitsSelectionChange);
         meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
     }

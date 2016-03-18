@@ -1,4 +1,12 @@
 ;(function ($) {
+
+    var $component;
+
+    function init() {
+
+        $component = $("#resultsPage");
+    }
+
     // Change the results templates to promote features to the 'selected' features row.
 
     function onBenefitsSelectionChange(selectedBenefits, callback) {
