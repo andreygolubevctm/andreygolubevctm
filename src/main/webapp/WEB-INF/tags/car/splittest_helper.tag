@@ -6,3 +6,4 @@
 
 <!-- SINGLE OPTIN TEST - 1 & 2 default and 3 is the test -->
 <c:set var="singleOptinSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 3)}" />
+<c:set var="regoLookupSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 4)}" />

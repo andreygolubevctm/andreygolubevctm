@@ -1,19 +1,58 @@
 .car {
-	// Remove padding on slide side column
-	.fieldset-column-side {
 
-		fieldset {
-			margin-bottom: 0;
-		}
-	}
-	// Filter bar on 2 lines otherwise.
-	@media(@sm-only) {
-		#navbar-filter li.dropdown>a {
-			margin-right: 0;
-		}
-	}
+  // Rego styles for step 2:
+  #RegoFieldSet {
+    .vehicle-details-title {
+      font-size: 32px;
+      line-height: 1;
+    }
+    .icon {
+      margin-top: 5px;
+    }
+    .rego-car-details-row {
+      padding-left: 0;
+      font-size: 14px;
+      list-style-type: none;
+      li {
+        float:left;
+        margin-left: 10px;
+        margin-top: 5px;
+        &:first-child {
+          margin-left: 0;
+        }
+      }
 
-	#quote_vehicle_selection .spinner {
-		margin-right: 40px;
-	}
+    }
+    .rego-text {
+      color: @gray-light;
+      font-size: 32px;
+      @media (@sm) {
+        font-size: 42px;
+      }
+      @media (@lg) {
+        font-size: 52px;
+      }
+      line-height: 1;
+      margin-bottom: 0;
+      font-family: @font-family-theme-light;
+    }
+  }
+
+  // Remove padding on slide side column
+  .fieldset-column-side {
+
+    fieldset {
+      margin-bottom: 0;
+    }
+  }
+  // Filter bar on 2 lines otherwise.
+  @media (@sm-only) {
+    #navbar-filter li.dropdown > a {
+      margin-right: 0;
+    }
+  }
+
+  #quote_vehicle_selection .spinner {
+    margin-right: 40px;
+  }
 }
