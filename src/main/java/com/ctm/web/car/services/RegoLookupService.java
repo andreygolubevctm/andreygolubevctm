@@ -58,6 +58,38 @@ public class RegoLookupService {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
+    private static Map<String, JurisdictionEnum> fakeRegos = createFakeRegos();
+
+    private static Map<String, String> regoRedbookLookup = createRegoRedbookLookup();
+
+    private static Map<String, JurisdictionEnum> createFakeRegos() {
+        Map<String, JurisdictionEnum> fakeRegos = new LinkedHashMap<>();
+        fakeRegos.put("YBO987", JurisdictionEnum.VIC);
+        fakeRegos.put("1CG6FN", JurisdictionEnum.VIC);
+        fakeRegos.put("1CJ2TZ", JurisdictionEnum.VIC);
+        fakeRegos.put("ZGB395", JurisdictionEnum.VIC);
+        fakeRegos.put("1BY1PV", JurisdictionEnum.VIC);
+        fakeRegos.put("DEA848", JurisdictionEnum.NSW);
+        fakeRegos.put("BU20HB", JurisdictionEnum.NSW);
+        fakeRegos.put("CVF89M", JurisdictionEnum.NSW);
+        fakeRegos.put("CTX48F", JurisdictionEnum.NSW);
+        return fakeRegos;
+    }
+
+    private static Map<String, String> createRegoRedbookLookup() {
+        Map<String, String> regoRedbookLookup = new LinkedHashMap<>();
+        regoRedbookLookup.put("YBO987", "CHRY10AH");
+        regoRedbookLookup.put("1CG6FN", "HOLD12EU");
+        regoRedbookLookup.put("1CJ2TZ", "TOYO09CF");
+        regoRedbookLookup.put("ZGB395", "TOYO12FK");
+        regoRedbookLookup.put("1BY1PV", "TOYO08BL");
+        regoRedbookLookup.put("DEA848", "MITS07IE");
+        regoRedbookLookup.put("BU20HB", "FORD13AN");
+        regoRedbookLookup.put("CVF89M", "NISS13BX");
+        regoRedbookLookup.put("CTX48F", "FORD13DA");
+        return regoRedbookLookup;
+    }
+
 
     public static enum RegoLookupStatus{
         SUCCESS("success"),
@@ -219,7 +251,7 @@ public class RegoLookupService {
                 try {
                     // Test regos don't return a valid redbookCode
                     if (isTestLookup(plateNumber, state)) {
-                        carDetails = redbookDao.getCarDetails("TOYO14BC");
+                        carDetails = redbookDao.getCarDetails(getTestRedbookCode(plateNumber));
                     }
                     else {
                         carDetails = redbookDao.getCarDetails(res.getRedbookCode());
@@ -353,16 +385,10 @@ public class RegoLookupService {
     }
 
     private Boolean isTestLookup(String plateNumber, JurisdictionEnum state) {
-        Map<String, JurisdictionEnum> fakeRegos = new LinkedHashMap<>();
-        fakeRegos.put("YBO987", JurisdictionEnum.VIC);
-        fakeRegos.put("1CG6FN", JurisdictionEnum.VIC);
-        fakeRegos.put("1CJ2TZ", JurisdictionEnum.VIC);
-        fakeRegos.put("ZGB395", JurisdictionEnum.VIC);
-        fakeRegos.put("1BY1PV", JurisdictionEnum.VIC);
-        fakeRegos.put("DEA848", JurisdictionEnum.NSW);
-        fakeRegos.put("BU20HB", JurisdictionEnum.NSW);
-        fakeRegos.put("CVF89M", JurisdictionEnum.NSW);
-        fakeRegos.put("CTX48F", JurisdictionEnum.NSW);
         return fakeRegos.containsKey(plateNumber) && fakeRegos.get(plateNumber) == state;
+    }
+
+    private String getTestRedbookCode(String plateNumber) {
+        return regoRedbookLookup.getOrDefault(plateNumber, "TOYO14BC");
     }
 }
