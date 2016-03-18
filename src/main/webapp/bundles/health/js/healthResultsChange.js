@@ -3,7 +3,6 @@
     var $component;
 
     function init() {
-
         $component = $("#resultsPage");
     }
 
@@ -40,7 +39,7 @@
 
     function getWithTransactionIdIncrement() {
         Results.settings.incrementTransactionId = true;
-        get();
+        meerkat.modules.healthResults.get();
         Results.settings.incrementTransactionId = false;
     }
 
