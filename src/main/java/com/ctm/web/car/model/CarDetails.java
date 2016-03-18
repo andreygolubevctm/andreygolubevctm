@@ -47,7 +47,7 @@ public class CarDetails {
         details.put(CarType.JSON_COLLECTION_NAME, carType.getCode());
         details.put(CarType.JSON_MARKETVALUE_NAME, Integer.toString(carType.getMarketValue()));
         details.put(CarType.JSON_VARIANT_NAME, carType.getLabel());
-        details.put(CarColour.JSON_COLLECTION_NAME, carColour.getLabel());
+        details.put(CarColour.JSON_COLLECTION_NAME, carColour.getCode());
         details.put("nvicCode", nvicCode);
         return details;
     }
