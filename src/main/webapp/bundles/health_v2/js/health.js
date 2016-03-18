@@ -308,7 +308,7 @@
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
-				meerkat.modules.healthResults.onBenefitsSelectionChange(selectedBenefits);
+				meerkat.modules.healthResults.healthResultsChange(selectedBenefits);
 			},
 			onBeforeLeave:function(event){
 				if (meerkat.modules.splitTest.isActive(13)) {
