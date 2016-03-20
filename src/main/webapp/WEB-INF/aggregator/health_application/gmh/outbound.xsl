@@ -167,6 +167,11 @@
 							</xsl:choose>
 							<IsMember>true</IsMember>
 							<JoinDate><xsl:value-of select="$startDate" /></JoinDate>
+							<xsl:if test="primaryCAE = '30'">
+								<LifetimeHealthCoverLoading>
+									<EntryAge>30</EntryAge>
+								</LifetimeHealthCoverLoading>
+							</xsl:if>
 
 							<Properties>
 								<Property>
@@ -264,6 +269,11 @@
 								</xsl:choose>
 								<IsMember>false</IsMember>
 								<JoinDate><xsl:value-of select="$startDate" /></JoinDate>
+								<xsl:if test="partnerCAE = '30'">
+									<LifetimeHealthCoverLoading>
+										<EntryAge>30</EntryAge>
+									</LifetimeHealthCoverLoading>
+								</xsl:if>
 							</Person>
 						</xsl:if>
 						<xsl:for-each select="application/dependants/*">
