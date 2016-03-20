@@ -94,7 +94,7 @@
 				object:meerkat.modules.life.getTrackingFieldsObject
 			},
 			onInitialise: function onStartInit(event){
-
+				meerkat.modules.jqueryValidate.initJourneyValidator();
 			}
 		};
 
