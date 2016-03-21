@@ -109,8 +109,6 @@ Handling of the rebate tiers based off situation
 				}
 			} else {
 				// Family tiers
-				if(_cover === 'C') { _allowance = 0; }
-				
 				switch(_value) {
 					case '0':
 						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeBaseTier + _allowance) +' or less';
