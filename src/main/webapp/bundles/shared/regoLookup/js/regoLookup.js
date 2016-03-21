@@ -34,7 +34,7 @@
         if (_.isObject(settings) && !_.isEmpty(settings)) {
             request_obj = $.extend(request_obj, settings);
         }
-        meerkat.modules.comms.get(request_obj);
+        return meerkat.modules.comms.get(request_obj);
     }
 
     meerkat.modules.register("regoLookup", {

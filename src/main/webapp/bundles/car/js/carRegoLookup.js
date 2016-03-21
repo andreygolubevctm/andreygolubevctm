@@ -25,6 +25,14 @@
         $(document).ready(function () {
             $elements.container = $('#unableToFindRego');
             $elements.feedback = $('#regoErrorMessage');
+
+            eventSubscriptions();
+        });
+    }
+
+    function eventSubscriptions() {
+        $('#RegoFieldSet').on('click', '.rego-not-my-car', function () {
+            $(this).parent().addClass('hidden');
         });
     }
 
@@ -45,10 +53,13 @@
         var data = validate();
         if (data !== false) {
             meerkat.messaging.publish(moduleEvents.REGO_LOOKUP_STARTED);
+            meerkat.modules.journeyEngine.loadingShow("Please wait while we retrieve your car's details...");
             meerkat.modules.regoLookup.get(data, {
                 useDefaultErrorHandling: false,
                 onSuccess: _.bind(onLookup, this, data),
                 onError: _.bind(onLookupError, this, data)
+            }).then(function() {
+                meerkat.modules.journeyEngine.loadingHide();
             });
         }
     }
@@ -62,7 +73,7 @@
                         renderError("An invalid state has been selected.");
                         break;
                     case "rego_not_found":
-                        renderError("Sorry, no registration details found for state '" + data.state + "' and registration no. '" + data.plateNumber + "'");
+                        renderError("Sorry, no registration details found for state '" + data.state + "' and registration no. '" + data.plateNumber + "'.");
                         break;
                     case "no_redbook_code":
                         renderError("Sorry, we cannot find a complete match for registration no. '" + data.plateNumber + "'.");

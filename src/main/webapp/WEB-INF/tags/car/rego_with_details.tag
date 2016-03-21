@@ -25,7 +25,7 @@
             <p class="rego-text">
                 <span class="sessioncamhidetext" data-source="meerkat.site.vehicleSelectionDefaults.searchRego" data-type="object"></span>
             </p>
-            <a href="javascript:;" data-slide-control="previous" class="small text-warning" title="Enter your car's details instead">this is not my car</a>
+            <a href="javascript:;" data-slide-control="previous" class="small text-warning rego-not-my-car" title="Enter your car's details instead">this is not my car</a>
         </div>
     </div>
 
