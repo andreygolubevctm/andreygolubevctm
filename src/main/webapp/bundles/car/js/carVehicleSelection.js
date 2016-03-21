@@ -567,22 +567,7 @@
         checkAndNotifyOfVehicleChange();
 
         if (!isSplitTest() && meerkat.modules.performanceProfiling.isIE8()) {
-            $(document).on('focus', '#quote_vehicle_redbookCode', function () {
-                var el = $(this);
-                el.data('width', el.width());
-                el.width('auto');
-                el.data('width-auto', $(this).width());
-                // if "auto" width < start width, set to start width, otherwise set to new width
-                if (el.data('width-auto') < el.data('width')) {
-                    el.width(el.data('width'));
-                } else {
-                    el.width(el.data('width-auto') + 15);
-                }
-            }).on('blur', '#quote_vehicle_redbookCode', function () {
-                var el = $(this);
-                el.width(el.data('width'));
-                // make it reset
-            });
+            meerkat.modules.ie8SelectMenuAutoExpand.bindEvents($(document), '#quote_vehicle_redbookCode');
         }
 
         if (_.isFunction(callback)) {
