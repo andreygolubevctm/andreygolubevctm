@@ -50,7 +50,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/life/v2/layout"		prefix="life_v2_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/ip/v1"					prefix="ip_v1" %>
 <%@ taglib tagdir="/WEB-INF/tags/ip/v2"					prefix="ip_v2" %>
-<%@ taglib tagdir="/WEB-INF/tags/ip/v2/layout"					prefix="ip_v2_layout" %>
+<%@ taglib tagdir="/WEB-INF/tags/ip/v2/layout"			prefix="ip_v2_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/competition"			prefix="competition" %>
 <%@ taglib tagdir="/WEB-INF/tags/competition/layout"	prefix="competition_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/home"				    prefix="home" %>

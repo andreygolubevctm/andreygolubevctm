@@ -10,61 +10,58 @@
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
-<c:set var="vertical">
-	<c:choose>
-		<c:when test="${fn:startsWith(name, 'life_')}">life</c:when>
-		<c:otherwise>ip</c:otherwise>
-	</c:choose>
-</c:set>
-
 <c:if test="${empty label}">
-	<c:set var="label"  value="Your Details" />
+	<c:set var="label"  value="About You" />
 </c:if>
 
-<c:set var="error_phrase" value="primary person's " />
+<c:set var="error_phrase" value="the primary person's " />
 <c:set var="error_phrase_postcode" value="" />
 <c:if test="${fn:contains(name, 'partner')}">
 	<c:set var="error_phrase" value="partner's " />
 	<c:set var="error_phrase_postcode" value="partner's " />
 </c:if>
 
-<%-- HTML --%>
-<div id="${name}" class="${name}_details">
-	<form_v1:fieldset legend="${label}">
-		<life_v1:name xpath="${xpath}" error_phrase="${error_phrase}" />
+<form_v2:fieldset_columns sideHidden="false">
 
-		<div class="clear"><!-- empty --></div>
+	<jsp:attribute name="rightColumn">
+	</jsp:attribute>
 
-		<form_v1:row label="Gender">
-			<field_v1:array_radio  id="${name}_gender" xpath="${xpath}/gender" required="true" title="${error_phrase}gender" items="F=Female,M=Male" />
-		</form_v1:row>
+	<jsp:body>
+		<form_v1:fieldset legend="${label}">
+			<form_v2:row label="First Name" id="firstName">
+				<field_v1:person_name xpath="${xpath}/firstName" required="true" title="${error_phrase}first name" />
+			</form_v2:row>
 
-		<form_v1:row label="Date of birth">
-			<field_v1:person_dob xpath="${xpath}/dob" required="true" title="${error_phrase}" />
-		</form_v1:row>
+			<form_v2:row label="Last Name" id="lastName">
+				<field_v1:person_name xpath="${xpath}/lastname" required="true" title="${error_phrase}surname" />
+			</form_v2:row>
 
-		<field_v1:hidden xpath="${xpath}/age" required="false" />
+			<form_v2:row label="Gender">
+				<field_v2:array_radio xpath="${xpath}/gender"
+									  required="true"
+									  items="F=Female,M=Male"
+									  title="${error_phrase}gender" />
+			</form_v2:row>
 
-		<form_v1:row label="Smoker status">
-			<field_v1:array_radio  id="${name}_smoker" xpath="${xpath}/smoker" required="true" title="${error_phrase}smoker status" items="N=Non-Smoker,Y=Smoker" />
-		</form_v1:row>
+			<form_v2:row label="Date of Birth">
+				<field_v2:person_dob xpath="${xpath}/dob" title="primary person's" required="true" ageMin="18" ageMax="65" />
+			</form_v2:row>
 
-		<form_v1:row label="Occupation" helpId="525">
-			<jsp:useBean id="splitTests" class="com.ctm.web.core.services.tracking.SplitTestService" />
-			<c:choose>
-				<c:when test="${splitTests.isActive(pageContext.request, data.current.transactionId, 40)}">
-					<%-- <life_v1:occupation_select list="${life_util:occupations(pageContext.request)}" comboBox="true" xpath="${xpath}" required="true" title="${error_phrase}occupation"/> --%>
-				</c:when>
-				<c:otherwise>
-					<field_v1:general_select type="occupation" comboBox="true" xpath="${xpath}/occupation" hannoverXpath="${xpath}/hannover" required="true" title="${error_phrase}occupation"/>
-				</c:otherwise>
-			</c:choose>
-		</form_v1:row>
+			<form_v2:row label="Smoker status">
+				<field_v2:array_radio xpath="${xpath}/smoker"
+									  required="true"
+									  items="N=Non-Smoker,Y=Smoker"
+									  title="${error_phrase}smoker status" />
+			</form_v2:row>
 
-	</form_v1:fieldset>
-</div>
+			<form_v2:row label="Occupation" id="${name}_yearRow" helpId="525">
+				<field_v2:general_select type="occupation" xpath="${xpath}/occupation" required="true" title="${error_phrase}occupation"/>
+			</form_v2:row>
 
-<%-- JAVASCRIPT --%>
+		</form_v1:fieldset>
+	</jsp:body>
+</form_v2:fieldset_columns>
+<%-- JAVASCRIPT
 <go:script marker="js-head">
 var ${name}Handler = {
 	getAgeAtNextBday: function(dob)
@@ -132,7 +129,7 @@ $.validator.addMethod("validateAge",
 
 </go:script>
 
-<%-- CSS --%>
+<%-- CSS
 <go:style marker="css-head">
 	#${name} .clear {
 		clear: both;
@@ -148,3 +145,6 @@ $.validator.addMethod("validateAge",
 </go:style>
 
 <go:validate selector="${name}_dob" rule="validateAge" parm="true" message="Age must be between 18 and 65." />
+
+
+--%>
