@@ -11,7 +11,10 @@
     //}, "Please choose if OK to email");
 
     $.validator.addMethod('validateInsuranceAmount', function(value, element, param) {
-       return true;
-    }, 'Please specify a cover amount');
+        if(value.match(/[^0-9,]/g)) {
+            return false;
+        }
+        return true;
+    }, 'Please specify a cover amount in dollar format');
 
 })(jQuery);

@@ -29,7 +29,7 @@
 				<form_v3:row label="${fieldLabel}" helpId="409">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" placeHolder="0" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
 					</div>
 				</form_v3:row>
 
@@ -38,7 +38,7 @@
 				<form_v3:row label="${fieldLabel}" helpId="410">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" placeHolder="0" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
 					</div>
 				</form_v3:row>
 
@@ -47,7 +47,7 @@
 				<form_v3:row label="${fieldLabel}" helpId="408">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" placeHolder="0" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
 					</div>
 				</form_v3:row>
 			</div>
@@ -58,7 +58,7 @@
 				<form_v3:row label="${fieldLabel}" helpId="409">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" placeHolder="0" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
 					</div>
 				</form_v3:row>
 
@@ -67,7 +67,7 @@
 				<form_v3:row label="${fieldLabel}" helpId="410">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" placeHolder="0" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
 					</div>
 				</form_v3:row>
 
@@ -76,7 +76,7 @@
 				<form_v3:row label="${fieldLabel}" helpId="408">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" placeHolder="0" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
 					</div>
 				</form_v3:row>
 			</div>
