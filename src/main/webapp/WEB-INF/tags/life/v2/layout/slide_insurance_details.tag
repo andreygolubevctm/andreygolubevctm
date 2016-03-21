@@ -16,17 +16,17 @@
 
 			<c:set var="fieldLabel" value="Would you like to be covered for the same amount?" />
 			<c:set var="fieldXPath" value="life/primary/insurance/samecover" />
-			<form_v3:row label="${fieldLabel}">
+			<form_v3:row label="${fieldLabel}" id="partnerSameCoverRadio">
 				<field_v2:array_radio xpath="${fieldXPath}" required="true" title="if you would like to be covered for the same amount" items="Y=Same cover,N=Different cover" />
 			</form_v3:row>
 
-			<div class="primary">
+			<div id="primaryInsuranceAmountFields">
 				<c:set var="fieldLabel" value="Your Term Life Cover" />
 				<c:set var="fieldXPath" value="life/primary/insurance/term" />
 				<form_v3:row label="${fieldLabel}">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="number" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
 					</div>
 				</form_v3:row>
 
@@ -35,7 +35,7 @@
 				<form_v3:row label="${fieldLabel}">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="number" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
 					</div>
 				</form_v3:row>
 
@@ -44,18 +44,18 @@
 				<form_v3:row label="${fieldLabel}">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="number" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
 					</div>
 				</form_v3:row>
 			</div>
 
-			<div class="partner">
+			<div id="partnerInsuranceAmountFields">
 				<c:set var="fieldLabel" value="Your Partner's Term Life Cover" />
 				<c:set var="fieldXPath" value="life/partner/insurance/term" />
 				<form_v3:row label="${fieldLabel}">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="number" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
 					</div>
 				</form_v3:row>
 
@@ -64,7 +64,7 @@
 				<form_v3:row label="${fieldLabel}">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="number" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
 					</div>
 				</form_v3:row>
 
@@ -73,7 +73,7 @@
 				<form_v3:row label="${fieldLabel}">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="number" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" />
 					</div>
 				</form_v3:row>
 			</div>
