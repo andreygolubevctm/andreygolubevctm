@@ -220,32 +220,35 @@
 		padding-bottom:20px;
 	}
 
-	.moreInfoTopRightColumn {
-		.btn-more-info-apply {
-			width:auto;
-			margin: 0.75em 0.25em 0.75em 0;
-			box-shadow:none;
+	&.more-info-content-variant {
+		.moreInfoTopRightColumn {
+			.btn-more-info-apply {
+				width: auto;
+				margin: 0.75em 0.25em 0.75em 0;
+				box-shadow: none;
+			}
 		}
 	}
-	@media (@sm-only) {
-		.moreInfoTopLeftColumn {
-			.insureNowContainer {
-				.text-dark {
-					height: 5.7em;
+	&.more-info-content-variant {
+		@media (@sm-only) {
+			.moreInfoTopLeftColumn {
+				.insureNowContainer {
+					.text-dark {
+						height: 5.7em;
+					}
+				}
+			}
+		}
+		@media (@xs-only) {
+			.moreInfoTopLeftColumn {
+				.trailing-no-margin {
+					.btn {
+						margin-bottom: 0px;
+					}
 				}
 			}
 		}
 	}
-	@media (@xs-only) {
-		.moreInfoTopLeftColumn {
-			.trailing-no-margin {
-				.btn {
-					margin-bottom: 0px;
-				}
-			}
-		}
-	}
-
 }
 
 //.more-info-content

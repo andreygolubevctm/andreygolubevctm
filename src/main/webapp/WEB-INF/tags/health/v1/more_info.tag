@@ -69,7 +69,10 @@
 			<c:otherwise>col-md-8</c:otherwise>
 		</c:choose>
 	</c:set>
-	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12">
+	<c:set var="variantClassName">
+		<c:if test="${moreinfo_splittest_default eq false}">more-info-content-variant</c:if>
+	</c:set>
+	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
 
@@ -110,7 +113,7 @@
 							</c:when>
 							<c:otherwise>
 								<div class="insureNow">
-									<a href="javascript:;" class="btn btn-cta btn-more-info-apply btn-big-text" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+									<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
 								</div>
 								<h3 class="text-dark">Need help? Call <span class="text-secondary">${callCentreNumber}</span></h3>
 							</c:otherwise>
