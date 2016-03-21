@@ -8,6 +8,7 @@ import com.ctm.web.car.dao.CarRegoLookupDao;
 import com.ctm.web.car.exceptions.RegoLookupException;
 import com.ctm.web.car.model.CarDetails;
 import com.ctm.web.car.model.MotorwebResponse;
+import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
@@ -16,16 +17,17 @@ import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.services.IPCheckService;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.webservice.WebServiceUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
@@ -46,21 +48,16 @@ import static com.ctm.webservice.motorweb.MotorWebProvider.createClient;
  * There are daily caps on the number of requests that can be made
  * Daily requests are limited by IP address
  */
+@Component
 public class RegoLookupService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(RegoLookupService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegoLookupService.class);
 
-    // Used to cache results of availability tests in serviceAvailableSilent method
-    // as it's called multiple times when rendering frontend copy
-    private static Boolean isServiceAvailable = null;
+    private final String SERVICE_LABEL = "motorwebRegoLookupService";
 
-    final String SERVICE_LABEL = "motorwebRegoLookupService";
+    private static Map<String, JurisdictionEnum> FAKE_REGOS = createFakeRegos();
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
-
-    private static Map<String, JurisdictionEnum> fakeRegos = createFakeRegos();
-
-    private static Map<String, String> regoRedbookLookup = createRegoRedbookLookup();
+    private static Map<String, String> FAKE_REGOS_REDBOOK_LOOKUP = createRegoRedbookLookup();
 
     private static Map<String, JurisdictionEnum> createFakeRegos() {
         Map<String, JurisdictionEnum> fakeRegos = new LinkedHashMap<>();
@@ -91,7 +88,7 @@ public class RegoLookupService {
     }
 
 
-    public static enum RegoLookupStatus{
+    public static enum RegoLookupStatus {
         SUCCESS("success"),
         INVALID_STATE("invalid_state"),
         REGO_NOT_FOUND("rego_not_found"),
@@ -103,7 +100,8 @@ public class RegoLookupService {
         DAILY_USAGE_ERROR("daily_usage_error"),
         SERVICE_TURNED_OFF("service_turned_off"),
         SERVICE_TOGGLE_UNDEFINED("service_toggle_undefined"),
-        TRANSACTION_UNVERIFIED("transaction_unverified");
+        TRANSACTION_UNVERIFIED("transaction_unverified"),
+        NO_REDBOOK_CODE("no_redbook_code");
 
         private final String status;
 
@@ -116,20 +114,17 @@ public class RegoLookupService {
         }
     };
 
-    static public Boolean serviceAvailable(HttpServletRequest request) throws RegoLookupException {
+    @Autowired
+    private CarRegoLookupDao carRegoLookupDao;
+
+    @Autowired
+    private CarRedbookDao redbookDao;
+
+    private Boolean serviceAvailable(HttpServletRequest request) throws RegoLookupException {
         return getServiceAvailable(request, false);
     }
 
-    static public Boolean serviceAvailableSilent(HttpServletRequest request) throws RegoLookupException {
-        if(isServiceAvailable == null) {
-            isServiceAvailable = getServiceAvailable(request, true);
-        } else {
-            LOGGER.debug("[rego lookup] cached service availability returned");
-        }
-        return isServiceAvailable;
-    }
-
-    static private Boolean getServiceAvailable(HttpServletRequest request, Boolean safeMode) throws RegoLookupException {
+    private Boolean getServiceAvailable(HttpServletRequest request, Boolean safeMode) throws RegoLookupException {
         Boolean isAvailable = false;
         try {
             if (safeMode || transactionVerified(request)) {
@@ -160,19 +155,17 @@ public class RegoLookupService {
         return isAvailable;
     }
 
-    static private Boolean transactionVerified(HttpServletRequest request) throws RegoLookupException {
-        Boolean verified = false;
+    private Boolean transactionVerified(HttpServletRequest request) throws RegoLookupException {
         try {
             RequestUtils.checkForTransactionIdInDataBucket(request); // Will throw exception if fails
-            verified = true;
+            return true;
         } catch(SessionException e) {
             LOGGER.debug("[rego lookup] Error occurred verifying transaction {}", e);
             throw new RegoLookupException(RegoLookupStatus.TRANSACTION_UNVERIFIED, e);
         }
-        return verified;
     }
 
-    static private Boolean isSwitchedOn(HttpServletRequest request) throws RegoLookupException {
+    private Boolean isSwitchedOn(HttpServletRequest request) throws RegoLookupException {
         try {
             String available = ContentService.getContentValue(request, "regoLookupIsAvailable");
             return available != null && available.equalsIgnoreCase("Y");
@@ -182,12 +175,12 @@ public class RegoLookupService {
         }
     };
 
-    static private Boolean withinDailyLimit(HttpServletRequest request) throws RegoLookupException {
-        int dailyLimit = 0;
-        int todaysUsage = 0;
+    private Boolean withinDailyLimit(HttpServletRequest request) throws RegoLookupException {
+        final int dailyLimit;
+        final int todaysUsage;
 
         try {
-            todaysUsage = CarRegoLookupDao.getTodaysUsage();
+            todaysUsage = carRegoLookupDao.getTodaysUsage();
         } catch(DaoException e) {
             LOGGER.debug("[rego lookup] Error getting todays usage", e);
             throw new RegoLookupException(RegoLookupStatus.DAILY_USAGE_ERROR, e);
@@ -208,7 +201,7 @@ public class RegoLookupService {
         return dailyLimit > todaysUsage;
     };
 
-    static private Boolean isIPBlocked(HttpServletRequest request) {
+    private Boolean isIPBlocked(HttpServletRequest request) {
         Boolean isBlocked = true;
         IPCheckService ipService = new IPCheckService();
         if (ipService.isPermittedAccessAlt(request, Vertical.VerticalType.CAR)) {
@@ -217,6 +210,7 @@ public class RegoLookupService {
         return isBlocked;
     }
 
+
     public Map<String, Object> execute(HttpServletRequest request, PageSettings pageSettings,
                                        Long transactionId, String plateNumber, String stateIn) throws RegoLookupException {
 
@@ -224,7 +218,7 @@ public class RegoLookupService {
 
         if(serviceAvailable(request)) {
             // Lastly, check the postcode is valid and fail if not
-            JurisdictionEnum state = null;
+            final JurisdictionEnum state;
             try {
                 state = JurisdictionEnum.fromValue(stateIn);
             } catch (Exception e) {
@@ -232,20 +226,22 @@ public class RegoLookupService {
                 throw new RegoLookupException(RegoLookupStatus.INVALID_STATE, e);
             }
 
-            Optional<MotorwebResponse> motorwebResponse = null;
+            final Optional<MotorwebResponse> motorwebResponse;
 
             try {
                 // Step 1 - get the redbook code from MotorWeb
                 motorwebResponse = getMotorwebResponse(pageSettings, transactionId, plateNumber, state);
             } catch (Exception e) {
-                LOGGER.debug("[rego lookup] Error geting redbook code {},{}", kv("plateNumber", plateNumber), kv("stateIn", stateIn), e);
+                LOGGER.debug("[rego lookup] Error getting MotorWeb response {},{}", kv("plateNumber", plateNumber), kv("stateIn", stateIn), e);
                 throw new RegoLookupException(RegoLookupStatus.SERVICE_ERROR, e);
             }
             if (motorwebResponse == null || !motorwebResponse.isPresent()) {
                 throw new RegoLookupException(RegoLookupStatus.REGO_NOT_FOUND);
+            } else if (StringUtils.isBlank(motorwebResponse.get().getRedbookCode())) {
+                LOGGER.error("[rego lookup] No redbook code returned from Motorweb {}, {}", kv("plateNumber", plateNumber), kv("stateIn", stateIn));
+                throw new RegoLookupException(RegoLookupStatus.NO_REDBOOK_CODE);
             } else {
                 // Step 2 - get vehicle details from dao
-                CarRedbookDao redbookDao = new CarRedbookDao();
                 CarDetails carDetails = null;
                 final MotorwebResponse res = motorwebResponse.get();
                 try {
@@ -385,10 +381,10 @@ public class RegoLookupService {
     }
 
     private Boolean isTestLookup(String plateNumber, JurisdictionEnum state) {
-        return fakeRegos.containsKey(plateNumber) && fakeRegos.get(plateNumber) == state;
+        return FAKE_REGOS.containsKey(plateNumber) && FAKE_REGOS.get(plateNumber) == state;
     }
 
     private String getTestRedbookCode(String plateNumber) {
-        return regoRedbookLookup.getOrDefault(plateNumber, "TOYO14BC");
+        return FAKE_REGOS_REDBOOK_LOOKUP.getOrDefault(plateNumber, "TOYO14BC");
     }
 }
