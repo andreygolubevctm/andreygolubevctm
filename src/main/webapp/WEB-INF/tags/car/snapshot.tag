@@ -6,6 +6,7 @@
 <%@ attribute name="label" required="false" rtexprvalue="true" description="The label displayed above the element"%>
 <%@ attribute name="className" required="false" rtexprvalue="true" description="Additional classes to be added to the partent element"%>
 <%@ attribute name="asBubble" required="false" rtexprvalue="true" description="Render style for content"%>
+<%@ attribute name="isHeader" required="false" rtexprvalue="true" description="Render placement for content"%>
 
 <c:if test="${empty label}">
 	<c:set var="label" value="Snapshot of Your Quote" />
@@ -55,9 +56,40 @@
 			</div>
 		</ui:bubble>
 	</c:when>
+    <c:when test="${isHeader eq true}">
+        <form_v2:fieldset legend="${label}" className="hidden quoteSnapshot ${className}">
+            <div class="row snapshot">
+                <div class="col-sm-3">
+                    <div class="icon icon-car"></div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="row">
+                        <div class="col-sm-12 snapshot-title">
+                            <span data-source="#quote_vehicle_make"></span>
+                            <span data-source="#quote_vehicle_model"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <span data-source="#quote_vehicle_year"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span data-source="#quote_vehicle_body"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span data-source="#quote_vehicle_trans"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span data-source="#quote_vehicle_fuel"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form_v2:fieldset>
+    </c:when>
 	<c:otherwise>
 		<form_v2:fieldset legend="${label}" className="hidden quoteSnapshot ${className}">
-			<div class="row snapshot">
+			<div class="row snapshot car-snapshot">
 				<div class="col-sm-2">
 					<div class="icon icon-car-solid"></div>
 				</div>
@@ -71,7 +103,7 @@
                     <p><strong>Use: </strong><span data-source="#quote_vehicle_use"></span></p>
 				</div>
 			</div>
-            <div class="row snapshot">
+            <div class="row snapshot driver-snapshot">
                 <div class="col-sm-2">
                     <div class="icon icon-single"></div>
                 </div>
@@ -81,7 +113,7 @@
                     <p><strong>NCD / Rating: </strong><span data-source="#quote_drivers_regular_ncd"></span></p>
                 </div>
             </div>
-            <div class="row snapshot">
+            <div class="row snapshot parking-snapshot">
                 <div class="col-sm-2">
                     <div class="icon icon-house-solid"></div>
                 </div>

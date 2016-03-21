@@ -26,10 +26,11 @@
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.READY, function renderSnapshotOnJourneyReadySubscription() {
 			_.defer(renderSnapshot);
 		});
+
+        registerSnapShotFields();
 	}
 
 	function renderSnapshot() {
-		var firstSnapshotSlide = 0;
 		var carMake = $('#quote_vehicle_make');
 		var $snapshotBox = $(".quoteSnapshot");
 		if (carMake.val() !== '') {
@@ -38,17 +39,33 @@
 			$snapshotBox.addClass('hidden');
 		}
 
-		var limit = meerkat.modules.journeyEngine.getStepsTotalNum();
-		for(var i = firstSnapshotSlide; i < limit; i++) {
-			var selector = '';
-			if(i == 4) {
-				selector = '.header-wrap';
-			} else {
-				selector = '.journeyEngineSlide:eq(' + i + ')';
-			}
-			meerkat.modules.contentPopulation.render(selector + ' .snapshot', true);
-		}
+        meerkat.modules.contentPopulation.render('.header-wrap');
+        meerkat.modules.contentPopulation.render('.car-snapshot', true);
+        meerkat.modules.contentPopulation.render('.driver-snapshot', true);
+        meerkat.modules.contentPopulation.render('.parking-snapshot', true);
 	}
+
+    // Register all fields change events here instead of doing it one by one through other modules (except the ones that have already registered through carVehicleSelection.js)
+    function registerSnapShotFields() {
+
+        var fieldsArray = [
+            $('#quote_vehicle_use'),
+            $('input[name=quote_drivers_regular_gender]'),
+            $('#quote_drivers_regular_dob'),
+            $('#quote_drivers_regular_ncd'),
+            $('#quote_riskAddress_suburbName'),
+            $('#quote_riskAddress_suburb'),
+            $('#quote_riskAddress_nonStdPostCode'),
+            $('#quote_riskAddress_postCode'),
+            $('#quote_vehicle_parking')
+        ];
+
+        $(fieldsArray).each(function () {
+            $(this).on('change', function snapshotFieldChanged(){
+                meerkat.messaging.publish(meerkatEvents.carSnapshot.RENDER_CAR_SNAPSHOT);
+            });
+        });
+    }
 
 	meerkat.modules.register('carSnapshot', {
 		init: initCarSnapshot,

@@ -32,12 +32,13 @@
 		});
 	}
 
-	/**
-	 * Loop through each element with data-source attribute within the container
-	 * Fill it with the content retrieved from the data-source
-	 * Can be used to retrieve any type of content, just add more conditions.
-	 * @param {String} container - Pass in a jQuery selector as the parent element wrapping the div template.
-	 */
+    /**
+     * Loop through each element with data-source attribute within the container
+     * Fill it with the content retrieved from the data-source
+     * Can be used to retrieve any type of content, just add more conditions.
+     * @param {String} container - Pass in a jQuery selector as the parent element wrapping the div template.
+     * @param hasTitle - if true, toggle the display of the parent elment
+     */
 	function render(container, hasTitle) {
 
 		$('[data-source]', $(container)).each(function () {
@@ -51,7 +52,7 @@
 				return; // same as "continue" http://api.jquery.com/jquery.each/
 
 			// setup variables
-			sourceType = $sourceElement.get(0).tagName.toLowerCase(),
+			var sourceType = $sourceElement.get(0).tagName.toLowerCase(),
 				dataType = $el.attr('data-type'),
 				callback = $el.attr('data-callback');
 			/**
@@ -170,14 +171,21 @@
                 }
             }
 		});
+
+        // Check if the container has value for at least one [data-source]. Hide the container if false.
+        if  (hasData($(container))) {
+            $(container).show();
+        } else {
+            $(container).hide();
+        }
 	}
 
-    function hasData($parent) {
+    function hasData($container) {
         var hasData = false;
-        $parent.find('[data-source]').each( function() {
+        $container.find('[data-source]').each( function() {
             if ($(this).html() !== '') {
                 hasData = true;
-                return false; // get out of the each loop..
+                return false; // get out of the jQuery.each..
             }
         });
         return hasData;
