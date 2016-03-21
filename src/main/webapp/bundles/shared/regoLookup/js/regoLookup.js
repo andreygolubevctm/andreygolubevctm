@@ -23,7 +23,7 @@
         data = _.extend({plateNumber: null, state: null}, data);
         settings = settings || {};
         var request_obj = {
-            url: "rest/rego/lookup/list.json",
+            url: "spring/rest/rego/lookup/list.json",
             data: data,
             dataType: 'json',
             cache: true,
