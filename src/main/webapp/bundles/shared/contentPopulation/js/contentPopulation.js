@@ -43,7 +43,8 @@
 		$('[data-source]', $(container)).each(function () {
 			var output = '',
 				$el = $(this),
-				$sourceElement = $($el.attr('data-source')),
+                dataType = $el.attr('data-type'),
+				$sourceElement = dataType == 'object' ? $el : $($el.attr('data-source')),
 				$alternateSourceElement = $($el.attr('data-alternate-source')); // used primarily with prefill data.
 
 			// If the source element doesn't exist, continue
@@ -51,8 +52,7 @@
 				return; // same as "continue" http://api.jquery.com/jquery.each/
 
 			// setup variables
-			sourceType = $sourceElement.get(0).tagName.toLowerCase(),
-				dataType = $el.attr('data-type'),
+			var sourceType = $sourceElement.get(0).tagName.toLowerCase(),
 				callback = $el.attr('data-callback');
 			/**
 			 * You can perform a callback function to create the output by adding: data-callback="meerkat.modules...."
@@ -151,7 +151,15 @@
 						}
 						break;
 					case 'object':
-						// get it from an object and do stuff
+						var object = $el.attr('data-source').split('.');
+						output = window;
+						try {
+							for (var k = 0; k < object.length; k++) {
+                                output = output[object[k]];
+                            }
+						} catch(e) {
+							output = "";
+						}
 						break;
 				}
 			}
