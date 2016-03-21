@@ -2,11 +2,14 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="xpath" value="life" />
+
 <layout_v1:slide_new formId="aboutYourPartner" firstSlide="false" nextLabel="Next Step">
 
 	<layout_v1:slide_content >
 
-		<form_v2:fieldset legend="About your partner" postLegend="" />
+		<form_v2:fieldset legend="" postLegend="" />
+		<life_v2:applicant xpath="${xpath}/partner" label="About your partner" />
 
 	</layout_v1:slide_content>
 

@@ -712,11 +712,11 @@
 			name: 'stepId',
 			value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
 		});
-
+/*
 		data.push({
 			name: 'hasPrivacyOptin',
 			value: meerkat.modules.optIn.isPrivacyOptedIn()
-		});
+		});*/
 
 		$('.error-field:visible', '.journeyEngineSlide.active').each(function() {
 			var $label = $(this).find('label'),

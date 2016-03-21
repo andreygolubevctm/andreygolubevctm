@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
+<%-- <jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
 <c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
 
 <c:if test="${deviceType ne 'MOBILE'}">
 	<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}life_quote.jsp#/?stage=start" />
 	<c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL))}" />
-</c:if>
+</c:if>--%>
 
 <session:new verticalCode="LIFE" authenticated="true" />
 <jsp:useBean id="serviceConfigurationService" class="com.ctm.web.core.services.ServiceConfigurationService" scope="session"/>

@@ -2,11 +2,11 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" required="true" rtexprvalue="false" description="Parent xpath to hold individual items"%>
-<%@ attribute name="xpathhidden" required="true" rtexprvalue="false" description="xpath to hold hidden item"%>
+<%@ attribute name="xpath" required="true" rtexprvalue="true" description="Parent xpath to hold individual items"%>
+<%@ attribute name="xpathhidden" required="true" rtexprvalue="true" description="xpath to hold hidden item"%>
 <%@ attribute name="label" required="true" rtexprvalue="false" description="Label for the select field" %>
-<%@ attribute name="title" required="true" rtexprvalue="false" description="Title for the select field" %>
-<%@ attribute name="validationErrorPlacementSelector" required="false" rtexprvalue="false" description="Validation error placement selector" %>
+<%@ attribute name="title" required="true" rtexprvalue="true" description="Title for the select field" %>
+<%@ attribute name="validationErrorPlacementSelector" required="false" rtexprvalue="true" description="Validation error placement selector" %>
 <%@ attribute name="variableListName" required="true" rtexprvalue="false" description="Name of variable to contain a JS array of objects" %>
 <%@ attribute name="variableListArray" required="true" rtexprvalue="true" description="JS array of objects to use in the select" %>
 <%@ attribute name="helpId" required="false" rtexprvalue="true" description="Optional help Id" %>

@@ -4,11 +4,14 @@
         "shared/journeyEngine/v2",
         "shared/results",
         "shared/validation",
+        "shared/optIn",
         "core",
+        "shared/datepicker",
         "shared/resultsRankings",
         "shared/checkboxIE8",
         "shared/dropdownInteractive",
         "shared/ie8SelectMenuAutoExpand",
+        "shared/placeholder",
         "shared/popovers"
     ]
 }
