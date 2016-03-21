@@ -94,7 +94,7 @@
 					<div class="icon icon-car-solid"></div>
 				</div>
 				<div class="col-sm-10">
-                    <p><strong>Make &amp; Model: </strong><span data-source="#quote_vehicle_make"> </span><span data-source="#quote_vehicle_model"></span></p>
+                    <p><strong>Make &amp; Model: </strong><span data-source="#quote_vehicle_make"> </span> <span data-source="#quote_vehicle_model"></span></p>
                     <p><strong>Year: </strong><span data-source="#quote_vehicle_year"></span></p>
                     <p><strong>Body: </strong><span data-source="#quote_vehicle_body"></span></p>
                     <p><strong>Transmission: </strong><span data-source="#quote_vehicle_trans"></span></p>
