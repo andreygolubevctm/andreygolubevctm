@@ -13,21 +13,30 @@
 <c:set var="newBenefitsLayoutSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 13)}" />
 
 <%-- HLT-3028 ABC Test for More Info Buy Button --%>
-<c:set var="moreinfo_splittest_default" value="${true}" />
-<c:set var="moreinfo_splittest_variation1" value="${false}" />
-<c:set var="moreinfo_splittest_variation2" value="${false}" />
-<c:set var="moreinfo_splittest_variation3" value="${false}" />
+
+<%-- Apply defaults --%>
+<c:set var="moreinfo_splittest_default" value="${true}" scope="request" />
+<c:set var="moreinfo_splittest_variant1" value="${false}" scope="request" />
+<c:set var="moreinfo_splittest_variant2" value="${false}" scope="request" />
+<c:set var="moreinfo_splittest_variant3" value="${false}" scope="request" />
+
+<%-- Check for override in content_control --%>
+<c:set var="buttonOverride"><content:get key="forceButtonVariant" /></c:set>
+
+<%-- Apply override or apply split test value --%>
 <c:choose>
-    <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 15)}">
-        <c:set var="moreinfo_splittest_variation1" value="${true}" />
-        <c:set var="moreinfo_splittest_default" value="${false}" />
+    <c:when test="${(not empty buttonOverride and buttonOverride eq '1') or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 15)}">
+        <c:set var="moreinfo_splittest_variant1" value="${true}" scope="request" />
+        <c:set var="moreinfo_splittest_default" value="${false}" scope="request" />
     </c:when>
-    <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 16)}">
-        <c:set var="moreinfo_splittest_variation2" value="${true}" />
-        <c:set var="moreinfo_splittest_default" value="${false}" />
+    <c:when test="${(not empty buttonOverride and buttonOverride eq '2') or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 16)}">
+        <c:set var="moreinfo_splittest_variant2" value="${true}" scope="request" />
+        <c:set var="moreinfo_splittest_default" value="${false}" scope="request" />
     </c:when>
-    <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 17)}">
-        <c:set var="moreinfo_splittest_variation3" value="${true}" />
-        <c:set var="moreinfo_splittest_default" value="${false}" />
+    <c:when test="${(not empty buttonOverride and buttonOverride eq '3') or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 17)}">
+        <c:set var="moreinfo_splittest_variant3" value="${true}" scope="request" />
+        <c:set var="moreinfo_splittest_default" value="${false}" scope="request" />
     </c:when>
 </c:choose>
+
+<%-- End HLT-3028 --%>
