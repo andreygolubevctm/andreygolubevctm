@@ -23,13 +23,13 @@
 				<field_v2:array_radio xpath="${fieldXPath}" required="true" title="if you would like to be covered for the same amount" items="Y=Same cover,N=Different cover" />
 			</form_v3:row>
 
-			<div id="primaryInsuranceAmountFields">
+			<div id="primaryInsuranceAmountFields" class="insuranceAmountContainer">
 				<c:set var="fieldLabel" value="Your Term Life Cover" />
 				<c:set var="fieldXPath" value="${primaryXPath}/term" />
 				<form_v3:row label="${fieldLabel}" helpId="409">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" placeHolder="0" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="false" title="${fieldLabel}" placeHolder="0" className="currency" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
 					</div>
 				</form_v3:row>
 
@@ -38,7 +38,7 @@
 				<form_v3:row label="${fieldLabel}" helpId="410">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" placeHolder="0" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="false" title="${fieldLabel}" placeHolder="0" className="currency" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
 					</div>
 				</form_v3:row>
 
@@ -47,18 +47,18 @@
 				<form_v3:row label="${fieldLabel}" helpId="408">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" placeHolder="0" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="false" title="${fieldLabel}" placeHolder="0" className="currency" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
 					</div>
 				</form_v3:row>
 			</div>
 
-			<div id="partnerInsuranceAmountFields">
+			<div id="partnerInsuranceAmountFields" class="insuranceAmountContainer">
 				<c:set var="fieldLabel" value="Your Partner's Term Life Cover" />
 				<c:set var="fieldXPath" value="${partnerXPath}/term" />
 				<form_v3:row label="${fieldLabel}" helpId="409">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" placeHolder="0" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="false" title="${fieldLabel}" placeHolder="0" className="currency" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
 					</div>
 				</form_v3:row>
 
@@ -67,7 +67,7 @@
 				<form_v3:row label="${fieldLabel}" helpId="410">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" placeHolder="0" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="false" title="${fieldLabel}" placeHolder="0" className="currency" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
 					</div>
 				</form_v3:row>
 
@@ -76,7 +76,7 @@
 				<form_v3:row label="${fieldLabel}" helpId="408">
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<field_v2:input type="text" xpath="${fieldXPath}" required="true" title="${fieldLabel}" placeHolder="0" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
+						<field_v2:input type="text" xpath="${fieldXPath}" required="false" title="${fieldLabel}" placeHolder="0" className="currency" additionalAttributes=" data-rule-validateInsuranceAmount='true'" />
 					</div>
 				</form_v3:row>
 			</div>

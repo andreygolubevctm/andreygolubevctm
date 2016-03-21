@@ -21,6 +21,10 @@
     function _initEventListeners() {
         $('input[name="life_primary_insurance_partner"]').on('change', _togglePartnerCoverRadioContainer);
         $partnerRadioContainer.find('input[name="life_primary_insurance_samecover"]').on('change', _togglePartnerInsuranceAmountFieldsContainer);
+
+        $('.insuranceAmountContainer input').on('blur', function() {
+            $('.insuranceAmountContainer input').valid();
+        });
     }
 
     function _triggerFieldEvents() {
