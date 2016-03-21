@@ -54,20 +54,19 @@
     var tryCount = 1;
 
     var defaults = {};
-    var selectorOrder = ['makes', 'models', 'years', 'bodies', 'transmissions', 'fuels', 'types', 'colours'];
-    var selectorData = {};
-
-    var activeSelector = false;
-
-    var ajaxInProgress = false;
-
-    var useSessionDefaults = true;
-
-    var radioButtonFields = ['types'];
-
-    var isSplitTestFlag = false;
-
-    var ajaxRequest = false;
+    var selectorOrder = ['makes', 'models', 'years', 'bodies', 'transmissions', 'fuels', 'types', 'colours'],
+        selectorData = {},
+        activeSelector = false,
+        ajaxInProgress = false,
+        useSessionDefaults = true,
+        /**
+         * Specify an array of fields from selectorOrder that you want to be as radio buttons instead of select menus.
+         * Note: just doing this does not appear to be enough to enable the type to be a check box.
+         * Have removed split test logic but kept in radio button logic for future use.
+         * @type {Array}
+         */
+        radioButtonFields = [], //'types'
+        ajaxRequest = false;
 
     function abortGetVehicleData() {
         if (ajaxRequest !== false) {
@@ -103,7 +102,7 @@
 
             // Flush out the selector which is to be populated
             stripValidationStyles($element);
-            if (isSplitTest() && isRadioButtonField(type)) {
+            if (isRadioButtonField(type)) {
                 $element.empty();
             } else {
                 $element.attr('selectedIndex', 0);
@@ -222,7 +221,7 @@
 
                 var options = [];
 
-                if (!isSplitTest() || (isSplitTest() && !isRadioButtonField(type))) {
+                if (!isRadioButtonField(type)) {
                     options.push(
                         $('<option/>', {
                             text: snippets.pleaseChooseOptionHTML,
@@ -244,7 +243,7 @@
                     options.push(
                         $('<optgroup/>', {label: "All " + label})
                     );
-                } else if ((!isSplitTest() || (isSplitTest() && !isRadioButtonField(type))) && isIosXS && autoSelect !== true) {
+                } else if (!isRadioButtonField(type) && isIosXS && autoSelect !== true) {
                     options.push(
                         $('<optgroup/>', {label: (type.charAt(0).toUpperCase() + type.slice(1))})
                     );
@@ -256,7 +255,8 @@
                             continue;
                         var item = selectorData[type][i];
                         var option = null;
-                        if (isSplitTest() && isRadioButtonField(type)) {
+                        if (isRadioButtonField(type)) {
+                            // this isn't coded generically.
                             var radio_name = 'quote_vehicle_redbookCode';
                             option = $('<div/>', {
                                 'class': "radioCustom"
@@ -285,7 +285,7 @@
                         }
 
                         if (selected !== true && (autoSelect === true || (!_.isNull(selected) && selected == item.code))) {
-                            if (isSplitTest() && isRadioButtonField(type)) {
+                            if (isRadioButtonField(type)) {
                                 option.find('input').prop('checked', true);
                             } else {
                                 option.prop('selected', true);
@@ -300,7 +300,7 @@
                                 options[2].append(option);
                             }
                         } else {
-                            if ((!isSplitTest() || (isSplitTest() && !isRadioButtonField(type))) && isIosXS && autoSelect !== true) {
+                            if (!isRadioButtonField(type) && isIosXS && autoSelect !== true) {
                                 options[1].append(option);
                             } else {
                                 options.push(option);
@@ -315,7 +315,7 @@
                 }
 
                 // Add listener to selector if is radio group
-                if (isSplitTest() && isRadioButtonField(type)) {
+                if (isRadioButtonField(type)) {
                     addChangeListenerToRadioGroup($selector, type);
                 }
 
@@ -357,7 +357,7 @@
 
                 // No matches results found
             } else {
-                if (isSplitTest() && isRadioButtonField(type)) {
+                if (isRadioButtonField(type)) {
                     $(elements[activeSelector + 'Row']).addClass('hidden');
                     $(elements[activeSelector]).empty();
                 } else {
@@ -401,7 +401,7 @@
                 if (elements.hasOwnProperty(selectorOrder[i])) {
                     var $e = $(elements[selectorOrder[i]]);
                     if (i > indexOfActiveSelector) {
-                        if (isSplitTest() && isRadioButtonField(selectorOrder[i])) {
+                        if (isRadioButtonField(selectorOrder[i])) {
                             $(elements[selectorOrder[i] + 'Row']).addClass('hidden');
                             $e.empty();
                         } else {
@@ -472,8 +472,8 @@
         if (data.field === 'types') {
             var $element = $(elements.types);
             if (
-                (isSplitTest() && $element.find('input:checked')) ||
-                (!isSplitTest() && !_.isEmpty($element.val()))
+                ($element.find('input:checked')) ||
+                (!_.isEmpty($element.val()))
             ) {
                 addValidationStyles($element);
                 checkAndNotifyOfVehicleChange();
@@ -485,7 +485,7 @@
     function addChangeListeners() {
         for (var i = 0; i < selectorOrder.length; i++) {
             if (selectorOrder.hasOwnProperty(i)) {
-                if (isSplitTest() && isRadioButtonField(selectorOrder[i])) {
+                if (isRadioButtonField(selectorOrder[i])) {
                     addChangeListenerToRadioGroup($(elements[selectorOrder[i]]), selectorOrder[i]);
                 } else {
                     $(elements[selectorOrder[i]]).off().on("change", _.bind(selectionChanged, this, {field: selectorOrder[i]}));
@@ -521,7 +521,7 @@
     }
 
     function checkAndNotifyOfVehicleChange() {
-        var vehicle = isSplitTest() ? $(elements.types).find("input:checked") : $(elements.types);
+        var vehicle = isRadioButtonField('types') ? $(elements.types).find("input:checked") : $(elements.types);
         var rbc = vehicle ? vehicle.val() : null;
         if (!_.isEmpty(rbc)) {
 
@@ -541,13 +541,9 @@
                 $(elements.variant).val(type.label);
             }
 
-            if (isSplitTest()) {
-                _.defer(function () {
-                    meerkat.messaging.publish(moduleEvents.car.VEHICLE_CHANGED);
-                });
-            } else {
+            _.defer(function () {
                 meerkat.messaging.publish(moduleEvents.car.VEHICLE_CHANGED);
-            }
+            });
         }
     }
 
@@ -566,7 +562,7 @@
 
         checkAndNotifyOfVehicleChange();
 
-        if (!isSplitTest() && meerkat.modules.performanceProfiling.isIE8()) {
+        if (meerkat.modules.performanceProfiling.isIE8()) {
             meerkat.modules.ie8SelectMenuAutoExpand.bindEvents($(document), '#quote_vehicle_redbookCode');
         }
 
@@ -591,7 +587,6 @@
             if (meerkat.site.vertical !== "car")
                 return false;
 
-            isSplitTestFlag = meerkat.modules.splitTest.isActive(8);
             for (var i = 0; i < selectorOrder.length; i++) {
                 $(elements[selectorOrder[i]]).attr('tabindex', i + 1);
             }
@@ -612,15 +607,9 @@
     function isRadioButtonField(type) {
         return _.indexOf(radioButtonFields, type) > -1;
     }
-
-    function isSplitTest() {
-        return isSplitTestFlag;
-    }
-
     meerkat.modules.register("carVehicleSelection", {
         init: initCarVehicleSelection,
-        events: moduleEvents,
-        isSplitTest: isSplitTest
+        events: moduleEvents
     });
 
 })(jQuery);
