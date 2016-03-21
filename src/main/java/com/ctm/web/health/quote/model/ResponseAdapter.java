@@ -12,6 +12,7 @@ import com.ctm.web.health.quote.model.response.Promotion;
 import com.ctm.web.health.quote.model.response.SpecialOffer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -181,7 +182,7 @@ public class ResponseAdapter {
             sb.append(StringUtils.trimToEmpty(specialOffer.getSummary()));
             if (StringUtils.isNotBlank(specialOffer.getTerms())) {
                 sb.append("<p>").append("<a class=\"dialogPop\" data-content=\"")
-                        .append(specialOffer.getTerms())
+                        .append(StringEscapeUtils.escapeHtml4(specialOffer.getTerms()))
                         .append("\" title=\"Conditions\">")
                         .append("^ Conditions")
                         .append("</a>")
