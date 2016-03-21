@@ -58,9 +58,7 @@
                 useDefaultErrorHandling: false,
                 onSuccess: _.bind(onLookup, this, data),
                 onError: _.bind(onLookupError, this, data)
-            }).then(function() {
-                meerkat.modules.journeyEngine.loadingHide();
-            });
+            }).done(meerkat.modules.journeyEngine.loadingHide).fail(meerkat.modules.journeyEngine.loadingHide);
         }
     }
 
