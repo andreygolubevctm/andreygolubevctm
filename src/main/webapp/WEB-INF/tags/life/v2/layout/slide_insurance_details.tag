@@ -11,6 +11,11 @@
 
 		<form_v2:fieldset legend="Life Insurance Details" postLegend="">
 
+			<ui:bubble variant="chatty">
+				<h4>Hi there,</h4>
+				<p>We see that you're using a mobile device. This means that you won't see a table of comparison results, however you will receive a call back from one of our trusted partners to discuss your life insurance and/or income protection needs. Click <a href="#">here</a> to see the desktop view with full comparison results.</p>
+			</ui:bubble>
+
 			<c:set var="fieldLabel" value="Who is the cover for?" />
 			<c:set var="fieldXPath" value="${primaryXPath}/partner" />
 			<form_v3:row label="${fieldLabel}">

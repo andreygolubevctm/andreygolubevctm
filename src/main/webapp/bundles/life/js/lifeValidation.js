@@ -15,11 +15,11 @@
             }
         });
 
-        if(($this.val() && $this.val() != 0) || hasRelatedFieldFilled) {
+        if(($this.val() && $this.val() !== '0') || hasRelatedFieldFilled) {
             return true;
         }
 
         return false;
-    }, 'Please specify a cover amount in dollar format');
+    }, 'Please specify a cover amount greater than $0');
 
 })(jQuery);
