@@ -10,4 +10,8 @@
     //    return true;
     //}, "Please choose if OK to email");
 
+    $.validator.addMethod('validateInsuranceAmount', function(value, element, param) {
+       return true;
+    }, 'Please specify a cover amount');
+
 })(jQuery);
