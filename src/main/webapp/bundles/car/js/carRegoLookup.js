@@ -59,10 +59,13 @@
             if (_.has(json, "exception")) {
                 switch (json.exception) {
                     case "invalid_state":
-                        renderError("An invalid state has been selected. Please locate your vehicle using the options below.");
+                        renderError("An invalid state has been selected.");
                         break;
                     case "rego_not_found":
                         renderError("Sorry, no registration details found for state '" + data.state + "' and registration no. '" + data.plateNumber + "'");
+                        break;
+                    case "no_redbook_code":
+                        renderError("Sorry, we cannot find a complete match for registration no. '" + data.plateNumber + "'.");
                         break;
                     default:
                         /*case "service_error":
@@ -74,7 +77,7 @@
                          case "service_turned_off":
                          case "service_toggle_undefined":
                          case "transaction_unverified":*/
-                        renderError("Sorry, this service is presently unavailable. Please locate your vehicle using the options below.");
+                        renderError("Sorry, this service is presently unavailable.");
                         break;
                 }
             } else {

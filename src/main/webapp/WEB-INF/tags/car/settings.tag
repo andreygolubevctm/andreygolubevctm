@@ -6,6 +6,8 @@
 <c:set var="quote_vehicle_make"><c:out value="${param.quote_vehicle_make}" escapeXml="true" /></c:set>
 <c:set var="quote_vehicle_model"><c:out value="${param.quote_vehicle_model}" escapeXml="true" /></c:set>
 <c:set var="quote_vehicle_year"><c:out value="${param.quote_vehicle_year}" escapeXml="true" /></c:set>
+<c:set var="quote_vehicle_searchRego"><c:out value="${param.quote_vehicle_searchRego}" escapeXml="true" /></c:set>
+<c:set var="quote_vehicle_searchState"><c:out value="${param.quote_vehicle_searchState}" escapeXml="true" /></c:set>
 
 <c:set var="fromBrochure" scope="request" value="${false}"/>
 <c:if test="${not empty quote_vehicle_make || not empty quote_vehicle_model || not empty quote_vehicle_year || not empty quote_vehicle_searchRego || not empty quote_vehicle_searchState}">
@@ -69,8 +71,8 @@
 		marketValue:		'${data.quote.vehicle.marketValue}',
 		variant:			'${data.quote.vehicle.variant}',
 		securityOption:		'${data.quote.vehicle.securityOption}',<c:if test="${regoLookupSplitTest eq true}">
-        searchRego:         '${data.quote.vehicle.searchRego}',
-		searchState:		'${data.quote.vehicle.searchState}',</c:if>
+        searchRego:         '${quote_vehicle_searchRego}',
+		searchState:		'${quote_vehicle_searchState}',</c:if>
 		data:				${json}
 	},
 	userOptionPreselections: {
