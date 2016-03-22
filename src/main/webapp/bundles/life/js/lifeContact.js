@@ -44,7 +44,7 @@
     }
 
     function _initPreload() {
-        $('#life_contactDetails_call').val( $('#life_contactDetails_contactNumber').val().length ? 'Y' : 'N');
+        $('#life_contactDetails_call').val( $('#life_contactDetails_contactNumber').length && $('#life_contactDetails_contactNumber').val().length ? 'Y' : 'N');
     }
 
     meerkat.modules.register("lifeContact", {

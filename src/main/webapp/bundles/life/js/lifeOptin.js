@@ -17,7 +17,6 @@
         $contactDetailsEmail = $('#life_contactDetails_email');
         $contactDetailsNumberInput = $('#life_contactDetails_contactNumberinput');
 
-        $contactDetailsCall.buttonset();
         if( String($contactDetailsNumberInput.val()).length ) {
             $contactDetailsNumberInput.trigger("blur");
         }
