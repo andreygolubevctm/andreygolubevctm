@@ -77,7 +77,6 @@
 	function initProgressBar(render){
 
 		setJourneyEngineSteps();
-		configureProgressBar();
 
 		if(render){
 			meerkat.modules.journeyProgressBar.render(true);
