@@ -61,9 +61,7 @@
         ];
 
         $(fieldsArray).each(function () {
-            $(this).on('change', function snapshotFieldChanged(){
-                meerkat.messaging.publish(meerkatEvents.carSnapshot.RENDER_CAR_SNAPSHOT);
-            });
+            $(this).on('change', renderSnapshot);
         });
     }
 
