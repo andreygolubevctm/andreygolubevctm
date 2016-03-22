@@ -17,7 +17,7 @@
         if( effectiveDateString == ''){
             return false;
         }
-        var effectiveDate = returnDate(effectiveDateString);
+        var effectiveDate = meerkat.modules.utils.returnDate(effectiveDateString);
         var today = new Date();
 
         var _baseDate = null;
@@ -78,14 +78,6 @@
         $_object.parent().siblings('p').text( 'Your payment will be deducted on: ' + $_object.find('option').first().text() );
         $('.health-bank_details-policyDay, .health-credit-card_details-policyDay').html(_html);
     }
-
-
-    function returnDate(_dateString){
-        if(_dateString === '') return null;
-        var dateComponents = _dateString.split('/');
-        if(dateComponents.length < 3) return null;
-        return new Date(dateComponents[2], dateComponents[1] - 1, dateComponents[0]);
-    };
 
 
     meerkat.modules.register("healthPaymentDay", {
