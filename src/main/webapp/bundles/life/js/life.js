@@ -107,8 +107,7 @@
 				object:meerkat.modules.life.getTrackingFieldsObject
 			},
 			onInitialise:function onDetailsInit(event){
-
-
+				meerkat.modules.occupationSelector.initOccupationSelector();
 			}
 		};
 
