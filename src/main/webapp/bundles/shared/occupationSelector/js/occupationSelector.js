@@ -34,8 +34,8 @@
     function initOccupationSelector() {
         if(!initialised) {
             initialised = true;
-            $occupationSelector = $('input[type="text"][id$="_occupation"]');
-            $unknownDestinations = $('input[type="hidden"][id$="_unknownOccupation"]');
+            $occupationSelector = $('input[type="text"][id$="_occupations"]');
+            $unknownDestinations = $('input[type="hidden"][id$="_unknownOccupations"]');
             applyEventListeners();
             //setDefaultsFromDataBucket();
         }

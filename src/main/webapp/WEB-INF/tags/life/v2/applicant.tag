@@ -62,12 +62,12 @@
 						fieldType="autocomplete"
 						variableListName="occupationSelectionList"
 						variableListArray="${life_util:occupationsJSON(pageContext.request)}"
-						xpath="${xpath}/occupation"
-						xpathhidden="${xpath}/occupations"
+						xpath="${xpath}/occupations"
+						xpathhidden="${xpath}/occupation"
 						label="Occupation"
 						title="${error_phrase}occupation"
 						limit="1"
-						validationErrorPlacementSelector=".${go:nameFromXpath(xpath)}_occupation"
+						validationErrorPlacementSelector=".${go:nameFromXpath(xpath)}_occupations"
 						helpId="525"
 				/>
 				<field_v1:hidden xpath="${xpath}/unknownOccupation" />
