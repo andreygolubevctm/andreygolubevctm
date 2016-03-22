@@ -38,7 +38,7 @@
                     $this.removeClass("ui-state-active");
                     $('#' + $this.attr("for")).removeAttr("checked");
                 });
-            };
+            }
 
             life_contactDetails_original_phone_number = tel;
         });
