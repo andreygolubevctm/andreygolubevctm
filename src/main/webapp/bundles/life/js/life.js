@@ -126,6 +126,10 @@
 			title: 'Contact Details',
 			navigationId: 'contact',
 			slideIndex: 3,
+			externalTracking:{
+				method:'trackQuoteForms',
+				object:meerkat.modules.life.getTrackingFieldsObject
+			},
 			onInitialise: function onContactInit(event){
 
 			}
@@ -135,6 +139,10 @@
 			title: 'Your Results',
 			navigationId: 'results',
 			slideIndex: 4,
+			externalTracking:{
+				method:'trackQuoteForms',
+				object:meerkat.modules.life.getTrackingFieldsObject
+			},
 			onInitialise: function onInitResults(event){
 
 			}
@@ -159,9 +167,100 @@
 		};
 	}
 
+	function configureProgressBar() {
+		meerkat.modules.journeyProgressBar.configure([
+			{
+				label: 'Life Insurance Details',
+				navigationId: steps.startStep.navigationId
+			},
+			{
+				label: 'About You',
+				navigationId: steps.aboutYouStep.navigationId
+			},
+			{
+				label: 'About Your Partner',
+				navigationId: steps.aboutPartnerStep.navigationId
+			},
+			{
+				label: 'Contact Details',
+				navigationId: steps.contactStep.navigationId
+			},
+			{
+				label: 'Your Quotes',
+				navigationId: steps.resultsStep.navigationId
+			}
+		]);
+	}
+
 	// Build an object to be sent by SuperTag tracking.
 	function getTrackingFieldsObject(){
-		return {};
+		try{
+
+			var transactionId = meerkat.modules.transactionId.get();
+
+			var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
+			var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
+
+			var actionStep='';
+			switch(current_step) {
+				case 0:
+					actionStep = "life insurance details";
+					break;
+				case 1:
+					actionStep = "life about you";
+					break;
+				case 2:
+					actionStep = "life about your partner";
+					break;
+				case 3:
+					actionStep = "life contact details";
+					break;
+				case 4:
+					actionStep = "life results";
+					break;
+			}
+
+			var gender = $('input[name=life_primary_gender]:checked', '#mainform') && $('input[name=life_primary_gender]:checked', '#mainform').val() === "M" ? 'Male' : 'Female',
+			yob = $("#life_primary_dob").val().length ? $("#life_primary_dob").val().split("/")[2] : "",
+			postcode =      $("#life_primary_postCode").val(),
+			state =         $("#life_primary_state").val(),
+			email =         $("#life_contactDetails_email").val();
+
+			var response =  {
+				vertical:				meerkat.site.vertical,
+				actionStep:				actionStep,
+				transactionID:			transactionId,
+				quoteReferenceNumber:	transactionId
+			};
+
+			// Push in values from 1st slide only when have been beyond it
+			if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
+				_.extend(response, {
+					yearOfBirth: yob
+				});
+			}
+
+			// Push in values from 2nd slide only when have been beyond it
+			if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('about')) {
+				_.extend(response, {
+					gender: gender
+				});
+			}
+
+			// Push in values from 2nd slide only when have been beyond it
+			if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('contact')) {
+				_.extend(response, {
+					email: email,
+					postCode: postcode,
+					state: state
+				});
+			}
+
+			return response;
+
+		}catch(e){
+			return false;
+		}
 	}
 
 	meerkat.modules.register("life", {
