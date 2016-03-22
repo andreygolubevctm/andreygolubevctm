@@ -425,6 +425,16 @@
 
                     $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
                 });
+
+            coverType = meerkat.modules.splitTest.isActive(13) ? $('#health_situation_coverType input').filter(":checked").val() : $('#health_situation_coverType').val();
+
+            if(coverType === 'E') {
+                $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');
+            }
+            if(coverType === 'H') {
+                $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
+            }
+
         });
 
         // When the excess filter changes, fetch new results
@@ -752,7 +762,7 @@
         var $excessSection = $component.find('.cell.excessSection');
         _.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
 
-        // If on the results step, reload the results data. Can this be more generic?
+         // If on the results step, reload the results data. Can this be more generic?
         if (typeof callback === 'undefined') {
             if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 3) {
                 get();

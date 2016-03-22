@@ -51,7 +51,7 @@
 				<c:set var="competitionId"><content:get key="competitionId"/></c:set>
 				<form_v1:row label="" className="promo-row">
 					<div class="promo-container">
-						<div class="promo-image ${xpath}-${competitionId}"></div>
+						<div class="promo-image life-${competitionId}"></div>
 					</div>
 				</form_v1:row>
 
