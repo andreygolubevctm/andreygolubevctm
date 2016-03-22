@@ -41,12 +41,6 @@
 											   validationAttribute=" data-rule-validateOkToCall='true' "/>
 			</form_v2:row>
 
-
-			<c:if test="${empty callCentre}">
-				<%-- Mandatory agreement to privacy policy --%>
-				<form_v2:privacy_optin vertical="${xpath}" />
-			</c:if>
-
 			<c:set var="fieldXpath" value="${xpath}/primary/postCode"/>
 			<form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${name}_nonStdFieldRow">
 				<field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}"/>
@@ -76,9 +70,8 @@
 			</form_v1:row>
 
 			<form_v1:row label="" className="clear closer">
-				<c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${xpath}_privacyoptinInfoDialog.open()'>privacy statement</a>" />
 				<c:set var="label_text">
-					I understand ${brandedName} compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker and/or Auto and General Services, Compare the Market&#39;s trusted life insurance partners may contact me to further assist with my life insurance needs. I confirm that I have read the ${privacyLink}.
+					I understand ${brandedName} compares life insurance policies from a range of <a href="javascript:;" class="suppliersMoreInfo">participating suppliers</a>. By entering my telephone number I agree that Lifebroker and/or Auto and General Services, Compare the Market&#39;s trusted life insurance partners may contact me to further assist with my life insurance needs. I confirm that I have read the <a href="javascript:;" class="privacyStatementMoreInfo">privacy statement</a>.
 				</c:set>
 
 				<field_v2:checkbox xpath="${xpath}_privacyoptin" value="Y" title="${label_text}" errorMsg="Please confirm you have read the privacy statement" label="true" required="true"/>
@@ -90,6 +83,16 @@
 		</form_v1:fieldset>
 	</jsp:body>
 </form_v2:fieldset_columns>
+
+<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
+<c:set var="participatingSuppliers"><content:get key="participatingSuppliers" /></c:set>
+<core_v1:js_template id="participatingSuppliers">
+	${brandedName}&nbsp;&nbsp;${participatingSuppliers}
+</core_v1:js_template>
+
+<core_v1:js_template id="privacyStatement">
+	<content:get key="privacyStatement" /><a href="${pageSettings.getSetting('privacyPolicyUrl')}" target="_blank">View Privacy Policy</a>
+</core_v1:js_template>
 
 
 <%-- CSS
