@@ -32,10 +32,6 @@
         <field_v2:email xpath="${fieldXPath}" required="${true}" title="your email address${competitionValidationText}" />
     </form_v3:row>
 
-    <c:if test="${!showOptInOnSlide1}">
-        <form_v3:privacy_optin vertical="utilities" labelText="${privacyOptinText}"/>
-    </c:if>
-
     <c:if test="${competitionEnabled}">
         <utilities_v2:competition/>
     </c:if>

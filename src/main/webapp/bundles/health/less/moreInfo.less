@@ -213,6 +213,42 @@
 		border-radius: 22px;
 	}
 
+	.btn-big-text {
+		font-family:"SourceSansProSemiBold";
+		font-size:28px;
+		padding-top:20px;
+		padding-bottom:20px;
+	}
+
+	&.more-info-content-variant {
+		.moreInfoTopRightColumn {
+			.btn-more-info-apply {
+				width: auto;
+				margin: 0.75em 0.25em 0.75em 0;
+				box-shadow: none;
+			}
+		}
+	}
+	&.more-info-content-variant {
+		@media (@sm-only) {
+			.moreInfoTopLeftColumn {
+				.insureNowContainer {
+					.text-dark {
+						height: 5.7em;
+					}
+				}
+			}
+		}
+		@media (@xs-only) {
+			.moreInfoTopLeftColumn {
+				.trailing-no-margin {
+					.btn {
+						margin-bottom: 0px;
+					}
+				}
+			}
+		}
+	}
 }
 
 //.more-info-content
