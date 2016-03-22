@@ -20,38 +20,13 @@
 		email:			"#home_policyHolder_email",
 		termsAccepted:	"#home_termsAccepted"
 	};
-
-	if(meerkat.modules.splitTest.isActive(3)) {
-		elements.marketing = "#home_policyHolder_marketing";
-		elements.oktocall = "#home_policyHolder_oktocall";
-	}
-
-	function validateOptins() {
-		if(meerkat.modules.splitTest.isActive(3)) {
-			// ignore - nothing to do
-		} else {
-			var $mkt = $(elements.marketing);
-			var $otc = $(elements.oktocall);
-			if(!$mkt.is(':checked')) {
-				$mkt.filter("input[value=N]").prop("checked",true).change();
-			}
-			if(!$otc.is(':checked')) {
-				$otc.filter("input[value=N]").prop("checked",true).change();
-			}
-		}
-	}
+	elements.marketing = "#home_policyHolder_marketing";
+	elements.oktocall = "#home_policyHolder_oktocall";
 
 	function addChangeListeners() {
 		$(elements.phone).on('change', onPhoneChanged);
 		$(elements.email).on('change', onEmailChanged);
-		if(meerkat.modules.splitTest.isActive(3)) {
-			$(elements.termsAccepted).on('change', onSingleOptinChanged);
-		} else {
-			$(elements.oktocall).on('change', onOkToCallChanged);
-			$(elements.marketing).on('change', onOkToEmailChanged);
-			$(elements.privacy).on('change', onPrivacyOptinChanged);
-			$(elements.termsAccepted).on('change', onTermsOptinChanged);
-		}
+		$(elements.termsAccepted).on('change', onSingleOptinChanged);
 	}
 
 	function onPhoneChanged(){
@@ -145,7 +120,6 @@
 	meerkat.modules.register("homeContactOptins", {
 		init : initHomeContactOptins,
 		events : moduleEvents,
-		validateOptins : validateOptins,
 		dump: dump
 	});
 
