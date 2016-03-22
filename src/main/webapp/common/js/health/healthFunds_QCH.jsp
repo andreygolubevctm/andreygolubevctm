@@ -74,9 +74,9 @@ var healthFunds_QCH = {
 			$('#update-premium').on('click.QCH', function() {
 				var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
 				healthFunds._payments = { 'min':0, 'max':1, 'weekends':true };
-				var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
-				healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-				healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+				var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+				meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+				meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
 
 				$('.health_bank-details_policyDay-message').html('');
 				$('.health_credit-card-details_policyDay-message').html('');

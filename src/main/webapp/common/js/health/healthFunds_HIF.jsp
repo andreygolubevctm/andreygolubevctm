@@ -99,9 +99,9 @@
               $('#update-premium').on('click.HIF', function() {
                 var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
                 healthFunds._payments = { 'min':3, 'max':17, 'weekends':true };
-                var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
-                healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-                healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+                var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+                meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+                meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
               });
 
               meerkat.modules.paymentGateway.setup({

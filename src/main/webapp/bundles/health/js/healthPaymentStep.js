@@ -168,12 +168,7 @@
 
 	}
 
-	//paymentSelectsHandler.bank => meerkat.modules.healthPaymentStep.overrideSettings('bank', xxx);
-	//paymentSelectsHandler.credit => meerkat.modules.healthPaymentStep.overrideSettings('credit', xxx);
-	//paymentSelectsHandler.frequency => meerkat.modules.healthPaymentStep.overrideSettings('frequency', xxx);
-	//paymentSelectsHandler.creditBankSupply => meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply', xxx);
-	//paymentSelectsHandler.creditBankQuestions => meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions', xxx);
-	function overrideSettings(property, value){
+		function overrideSettings(property, value){
 		settings[property] = value;
 	}
 
@@ -487,7 +482,6 @@
 			$('.health-bank_claim_details').slideUp();
 		}
 	}
-
 
 	meerkat.modules.register("healthPaymentStep", {
 		init: initHealthPaymentStep,

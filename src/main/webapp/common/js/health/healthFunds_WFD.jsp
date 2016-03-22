@@ -114,8 +114,8 @@ var healthFunds_WFD = {
     },
     unset: function() {
         $('#update-premium').off('click.WFD');
-        healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-        healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
 
         healthFunds._reset();
 
