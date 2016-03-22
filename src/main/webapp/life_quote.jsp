@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
 <c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
-<c:if test="${deviceType eq 'MOBILE'}">
+<c:if test="${deviceType eq 'MOBILE' and empty param.source and param.source ne 'mobile'}">
 	<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}life_quote_mobile.jsp?" />
 	<c:forEach items="${param}" var="currentParam">
 		<c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>

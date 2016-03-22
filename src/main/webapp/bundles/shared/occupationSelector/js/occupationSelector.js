@@ -142,7 +142,7 @@
             template: function (data) {
                 var isAlreadySelected = meerkat.modules.selectTags.isAlreadySelected($list, data.code);
                 if (isAlreadySelected) {
-                    return "<p class='selected'>" + data.description + "</p>";
+                    return "<del class='selected'>" + data.description + "</del>";
                 }
 
                 return "<p>" + data.description + "</p>";
