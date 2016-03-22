@@ -164,20 +164,12 @@
             // default implementation of the html in jsp should follow car/snapshot.tag to make this work
             if (hasTitle) {
                 var $parent = $el.parent();
-                if (output !== '' || hasData($parent)) {
-                    $parent.show();
-                } else {
-                    $parent.hide();
-                }
+                $parent.toggle(output !== '' || hasData($parent));
             }
 		});
 
         // Check if the container has value for at least one [data-source]. Hide the container if false.
-        if  (hasData($(container))) {
-            $(container).show();
-        } else {
-            $(container).hide();
-        }
+        $(container).toggle(hasData($(container)));
 	}
 
     function hasData($container) {
