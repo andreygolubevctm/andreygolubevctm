@@ -3,7 +3,9 @@
     var $component;
 
     function init() {
-        $component = $("#resultsPage");
+        $(document).ready(function() {
+            $component = $("#resultsPage");
+        });
     }
 
     // Change the results templates to promote features to the 'selected' features row.
