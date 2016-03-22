@@ -59,14 +59,14 @@
 			<%----%>
 
 				<core_v1:select_tags
-						variableListName="occupationSelectionList"
 						fieldType="autocomplete"
+						variableListName="occupationSelectionList"
 						variableListArray="${life_util:occupationsJSON(pageContext.request)}"
 						xpath="${xpath}/occupation"
 						xpathhidden="${xpath}/occupations"
 						label="Occupation"
 						title="${error_phrase}occupation"
-						validationErrorPlacementSelector=".${xpath}_occupation"
+						validationErrorPlacementSelector=".${go:nameFromXpath(xpath)}_occupation"
 						helpId="525"
 				/>
 				<field_v1:hidden xpath="${xpath}/unknownOccupation" />
