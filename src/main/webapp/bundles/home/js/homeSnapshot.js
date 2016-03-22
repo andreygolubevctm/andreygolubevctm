@@ -73,9 +73,7 @@
 
         $(fieldsArray).each(function () {
             $(this).on('change blur', function snapshotFieldChanged(){
-                _.defer(function() {
-                    renderSnapshot();
-                });
+                _.defer(renderSnapshot);
             });
         });
     }
