@@ -255,12 +255,6 @@
                     premiumIncreaseContent.click();
                 });
             }
-
-            // coupon logic, filter for user, then render banner
-            meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
-                meerkat.modules.coupon.renderCouponBanner();
-            });
-
         });
 
         $(document).on("resultsDataReady", function () {
@@ -431,6 +425,16 @@
 
                     $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
                 });
+
+            coverType = meerkat.modules.splitTest.isActive(13) ? $('#health_situation_coverType input').filter(":checked").val() : $('#health_situation_coverType').val();
+
+            if(coverType === 'E') {
+                $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');
+            }
+            if(coverType === 'H') {
+                $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
+            }
+
         });
 
         // When the excess filter changes, fetch new results
@@ -495,8 +499,10 @@
 
         // Fetch the relevant objects so we can update the features structure
         var structure = Features.getPageStructure();
+
         // This is the object we are going to inject the selected benefits into.
         var selectedBenefitsStructureObject = _findByKey(structure, injectIntoParent, 'name');
+
         // reset it on each build, as benefits could change
         selectedBenefitsStructureObject.children = [];
         // this is where we are going to pull the children benefits from.
@@ -513,10 +519,6 @@
     }
 
     function breakpointTracking() {
-
-        if (meerkat.modules.deviceMediaState.get() == "xs") {
-            startColumnWidthTracking();
-        }
 
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
             if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
@@ -760,7 +762,7 @@
         var $excessSection = $component.find('.cell.excessSection');
         _.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
 
-        // If on the results step, reload the results data. Can this be more generic?
+         // If on the results step, reload the results data. Can this be more generic?
         if (typeof callback === 'undefined') {
             if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 3) {
                 get();
@@ -773,6 +775,7 @@
 
 
     function onResultsLoaded() {
+
         if (meerkat.modules.deviceMediaState.get() == "xs") {
             startColumnWidthTracking();
         }

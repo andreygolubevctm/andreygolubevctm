@@ -247,16 +247,12 @@
             // Reset the feature header to match the new column content.
             $(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
 
+
             if (premiumIncreaseContent.length > 0) {
                 _.defer(function () {
                     premiumIncreaseContent.click();
                 });
             }
-
-            // coupon logic, filter for user, then render banner
-            meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
-                meerkat.modules.coupon.renderCouponBanner();
-            });
         });
 
         $(document).on("resultsDataReady", function () {
@@ -418,6 +414,16 @@
 
                     $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
                 });
+
+             coverType = $('#health_situation_coverType').val();
+
+            if(coverType === 'E') {
+                $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');
+            }
+            if(coverType === 'H') {
+                $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
+            }
+
         });
 
         // When the excess filter changes, fetch new results

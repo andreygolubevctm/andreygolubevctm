@@ -258,14 +258,17 @@ var healthFunds_CBH = {
 			<%-- Load join dec into label --%>
 			healthFunds_CBH.joinDecLabelHtml = $('#health_declaration + label').html();
 			healthFunds_CBH.ajaxJoinDec = $.ajax({
-				url: '/' + meerkat.site.urls.context + 'health_fund_info/CBH/declaration.html',
+				url: '/' + meerkat.site.urls.context + 'health/provider/content/get.json?providerId=10&providerContentTypeCode=JDO',
 				type: 'GET',
 				async: true,
 				dataType: 'html',
 				timeout: 20000,
 				cache: true,
 				success: function(htmlResult) {
-					$('#health_declaration + label').html(htmlResult);
+					if(typeof htmlResult === 'string')
+						htmlResult = JSON.parse(htmlResult);
+
+					$('#health_declaration + label').html(htmlResult.providerContentText);
 				},
 				error: function(obj,txt) {
 				}

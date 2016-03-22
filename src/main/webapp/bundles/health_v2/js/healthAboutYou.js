@@ -160,7 +160,7 @@
 				$healthCoverRebate.slideDown();
 			} else {
 				$rebateLegend.html('');
-				$healthCoverRebate.find('input[value="N"]').prop('checked', true);
+				$healthCoverRebate.find('input[value="N"]').trigger('click');
 				$healthCoverRebate.slideUp();
 			}
 		});
