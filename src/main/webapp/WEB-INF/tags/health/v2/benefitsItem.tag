@@ -46,7 +46,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 		</c:choose>
 
 		<c:if test="${item.hasShortlistableChildren()}">
-			<div class="children">
+			<div class="children healthBenefits">
 				<h3 class="subTitle">More ${coverType} Benefits</h3>
 				<c:forEach items="${item.getChildren()}" var="selectedValue">
 					<health_v2:benefitsItem item="${selectedValue}" />

@@ -17,11 +17,11 @@
 
     //Previous funds, settings
     function displayHealthFunds() {
-        var $_previousFund = $('#mainform').find('.health-previous_fund'),
-            $_primaryFund = $('#clientFund').find('select'),
-            $_partnerFund = $('#partnerFund').find('select');
+        var $_previousFund = $('#mainform').find('.health-previous_fund');
 
-        if ($_primaryFund.val() !== 'NONE' && $_primaryFund.val() !== '') {
+        var primaryFund = meerkat.modules.healthPreviousFund.getPrimaryFund();
+        var partnerFund = meerkat.modules.healthPreviousFund.getPartnerFund();
+        if (primaryFund !== 'NONE' && primaryFund !== '') {
             $_previousFund.find('#clientMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onA');
         } else {
@@ -29,7 +29,7 @@
             $_previousFund.find('.membership').removeClass('onA');
         }
 
-        if (healthChoices.hasSpouse() && $_partnerFund.val() !== 'NONE' && $_partnerFund.val() !== '') {
+        if (healthChoices.hasSpouse() && partnerFund !== 'NONE' && partnerFund !== '') {
             $_previousFund.find('#partnerMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onB');
         } else {

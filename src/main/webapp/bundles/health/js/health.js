@@ -316,12 +316,27 @@
 				}
 
 				// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter segment
-				_.delay(function() {
-					meerkat.modules.healthSegment.filterSegments();
-				}, 1000);
+				//_.delay(function() {
+				//	meerkat.modules.healthSegment.filterSegments();
+				//}, 1000);
 
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
+
+					var accidentOnly = $('input[name="health_situation_accidentOnlyCover"]');
+					var dialog44 = $(".simples-dialogue-44");
+					dialog44.hide();
+					if($(accidentOnly).is(':checked')) {
+						dialog44.show();
+					}
+
+					accidentOnly.on('change', function() {
+						if($(this).is(':checked')) {
+							dialog44.show();
+						} else {
+							dialog44.hide();
+						}
+					});
 				}
 			},
 			onAfterLeave:function(event){
@@ -349,7 +364,18 @@
 				onInitialise: function onContactInit(event){
 					meerkat.modules.resultsFeatures.fetchStructure('health');
 				},
-				onBeforeEnter: incrementTranIdBeforeEnteringSlide,
+                onBeforeEnter:function enterBenefitsStep(event) {
+                    if (event.isForward) {
+                        // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
+                        _.delay(function() {
+                            // coupon logic, filter for user, then render banner
+                            meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+                                meerkat.modules.coupon.renderCouponBanner();
+                            });
+                        }, 1000);
+                    }
+                    incrementTranIdBeforeEnteringSlide();
+                },
 				onAfterEnter: function enteredContactStep(event) {
 					meerkat.modules.navMenu.enable();
 
@@ -406,10 +432,6 @@
 				} else {
 					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
 					meerkat.modules.healthResults.resetSelectedProduct();
-				}
-
-				if(event.isForward && meerkat.site.isCallCentreUser) {
-					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
 				}
 			},
 			onAfterEnter: function(event){

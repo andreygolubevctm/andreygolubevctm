@@ -118,6 +118,10 @@ public class HealthLeadService extends LeadService {
         String shouldApplyRebate = data.getString("health/healthCover/rebate");
 
         String partnerDob = data.getString("health/application/partner/dob");
+        if(StringUtils.isEmpty(partnerDob)) {
+            partnerDob = data.getString("health/healthCover/partner/dob");
+        }
+
         String dependants = data.getString("health/healthCover/dependants");
         String rebateTier = data.getString("health/healthCover/income");
         String gender = data.getString("health/application/primary/gender");
@@ -127,9 +131,9 @@ public class HealthLeadService extends LeadService {
         HealthMetadata healthMetadata = new HealthMetadata(
                 situation,
                 lookingTo,
-                StringUtils.isEmpty(hasPrivateHealthInsurance) ? null : hasPrivateHealthInsurance.equalsIgnoreCase("Y") ? true : false,
-                StringUtils.isEmpty(hasPartnerHealthInsurance) ? null : hasPartnerHealthInsurance.equalsIgnoreCase("Y") ? true : false,
-                StringUtils.isEmpty(shouldApplyRebate) ? null : shouldApplyRebate.equalsIgnoreCase("Y") ? true : false,
+                StringUtils.isEmpty(hasPrivateHealthInsurance) ? null : hasPrivateHealthInsurance.equalsIgnoreCase("Y"),
+                StringUtils.isEmpty(hasPartnerHealthInsurance) ? null : hasPartnerHealthInsurance.equalsIgnoreCase("Y"),
+                StringUtils.isEmpty(shouldApplyRebate) ? null : shouldApplyRebate.equalsIgnoreCase("Y"),
                 benefitList,
                 StringUtils.isEmpty(partnerDob) ? null : LocalDate.parse(partnerDob, DATE_TIME_FORMATTER).toString(),
                 StringUtils.isEmpty(dependants) ? null : dependants,

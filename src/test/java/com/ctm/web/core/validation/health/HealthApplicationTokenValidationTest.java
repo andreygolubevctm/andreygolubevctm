@@ -2,7 +2,7 @@ package com.ctm.web.core.validation.health;
 
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Touch;
-import com.ctm.web.health.model.request.HealthRequest;
+import com.ctm.web.health.model.request.BaseHealthRequest;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.security.token.JwtTokenCreator;
 import com.ctm.web.core.security.token.config.TokenCreatorConfig;
@@ -50,7 +50,7 @@ public class HealthApplicationTokenValidationTest {
         config.setTouchType(Touch.TouchType.PRICE_PRESENTATION);
         JwtTokenCreator jwtTokenCreator= new JwtTokenCreator(settingsService, config);
 
-        HealthRequest request = new HealthRequest();
+        BaseHealthRequest request = new BaseHealthRequest();
         request.setIsCallCentre(false);
         String token = jwtTokenCreator.createToken("test", transactionId, 1000);
         request.setToken(token);

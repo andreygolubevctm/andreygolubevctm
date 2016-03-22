@@ -32,7 +32,7 @@
 
 	<jsp:attribute name="head_meta">
 	</jsp:attribute>
-	
+
 	<jsp:attribute name="header">
 		<div class="navbar-collapse header-collapse-contact collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -73,7 +73,7 @@
 	</jsp:attribute>
 
 		<jsp:attribute name="navbar_outer">
-			
+
 		<div class="row sortbar-container navbar-inverse">
             <div class="container">
                 <ul class="sortbar-parent nav navbar-nav navbar-inverse col-sm-12 row">
@@ -122,24 +122,25 @@
 
 	<jsp:attribute name="results_loading_message">
 	</jsp:attribute>
-				
-					
+
+
 	<jsp:attribute name="form_bottom">
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
 		<core_v1:whitelabeled_footer/>
 	</jsp:attribute>
-						
+
 	<jsp:attribute name="vertical_settings">
 		<utilities_v2:settings/>
 	</jsp:attribute>
-							
+
 	<jsp:attribute name="body_end">
 	</jsp:attribute>
-								
+
     <jsp:body>
 
+        <utilities_v3:parameters xpathHouseholdDetails="utilities/householdDetails"/>
         <c:choose>
             <c:when test="${splitTestEnabled eq 'Y'}">
                 <%-- Slides --%>
@@ -166,5 +167,5 @@
         <input type="hidden" name="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" id="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" value="" />
         <field_v1:hidden xpath="environmentOverride" />
     </jsp:body>
-					
+
 </layout_v3:journey_engine_page>

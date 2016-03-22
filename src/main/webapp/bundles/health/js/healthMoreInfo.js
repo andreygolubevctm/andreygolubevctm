@@ -177,7 +177,7 @@
         meerkat.modules.healthPhoneNumber.changePhoneNumber();
 
         // hide elements based on marketing segments
-        meerkat.modules.healthSegment.hideBySegment();
+        //meerkat.modules.healthSegment.hideBySegment();
         additionalTrackingData();
 
         var product = Results.getSelectedProduct();
@@ -402,7 +402,7 @@
                             var d = new Date(),
                                 formattedDate = '';
 
-                            if (result.providerContentText.trim() !== '') {
+                            if ($.trim(result.providerContentText) !== '') {
                                 dateSplit = result.providerContentText.split("/");
                                 rearrangedDate = dateSplit[1]+"/"+dateSplit[0]+"/"+dateSplit[2];
                                 newDate = new Date(rearrangedDate);
@@ -442,8 +442,8 @@
         };
 
         if(target == "hospitalCover"){
-            coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", {name:"Public Hospital", className: "CTM-hospital"});
-            coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", {name:"Private Hospital", className: "CTM-privatehospital"});
+            coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", {name:"Public Hospital", className: "HLTicon-hospital"});
+            coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", {name:"Private Hospital", className: "HLTicon-hospital"});
         }
 
         var lookupKey;

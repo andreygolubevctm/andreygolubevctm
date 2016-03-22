@@ -6,7 +6,7 @@
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
 <c:set var="remoteAddr" value="${pageContext.request.remoteAddr}" />
 
-<c:if test="${ remoteAddr == '127.0.0.1' or remoteAddr == '0.0.0.0' or remoteAddr == '0:0:0:0:0:0:0:1' or fn:startsWith(remoteAddr, '192.168.') or (not empty(param.bucket) and param.bucket == '1') or (not empty(param.preload) and param.preload == '2') }">
+<c:if test="${environmentService.getEnvironmentAsString() == 'NXS' or remoteAddr == '127.0.0.1' or remoteAddr == '0.0.0.0' or remoteAddr == '0:0:0:0:0:0:0:1' or fn:startsWith(remoteAddr, '192.168.') or (not empty(param.bucket) and param.bucket == '1') or (not empty(param.preload) and param.preload == '2') }">
 
 	<jsp:useBean id="applicationService" class="com.ctm.web.core.services.ApplicationService" scope="page" />
 
