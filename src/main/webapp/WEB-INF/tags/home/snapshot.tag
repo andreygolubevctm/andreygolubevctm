@@ -14,7 +14,7 @@
 	</div>
     <div class="row snapshot amount-snapshot">
         <div class="col-sm-2">
-            <div class="icon icon-money-solid"></div>
+            <div class="icon icon-dollar"></div>
         </div>
         <div class="col-sm-10">
             <p><strong>Home cover: </strong><span data-source="#home_coverAmounts_rebuildCostentry"></span></p>
