@@ -12,8 +12,13 @@
 <%@ attribute name="helpId" required="false" rtexprvalue="true" description="Optional help Id" %>
 <%@ attribute name="fieldType" required="false" rtexprvalue="true" description="Which field type to use. Default is select" %>
 <%@ attribute name="source" required="false" rtexprvalue="true" description="The URL for the Ajax call or a function that will handle the call (and potentially a callback) for autocomplete types only" %>
+<%@ attribute name="limit" required="false" rtexprvalue="true" description="A number representing the maximum number of items that may be selected. Defaults to 0 for unlimited" %>
 <c:if test="${empty fieldType}">
 	<c:set var="fieldType" value="select" />
+</c:if>
+
+<c:if test="${empty limit}">
+	<c:set var="limit" value="0" />
 </c:if>
 
 <script type="text/javascript">
@@ -37,5 +42,5 @@
 </form_v2:row>
 
 <form_v2:row label="" className="selected-tags-row clear" hideHelpIconCol="true">
-	<ul class="selected-tags col-xs-12 col-sm-12"></ul>
+	<ul class="selected-tags col-xs-12 col-sm-12" data-selectlimit='${limit}'></ul>
 </form_v2:row>

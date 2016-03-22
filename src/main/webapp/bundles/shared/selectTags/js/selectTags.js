@@ -93,38 +93,42 @@
     }
 
     function appendToTagList($list, selectedTextHTML, selectedText, value) {
-        _.defer(function delayTagAppearance() {
+        var selectLimit = $list.data('selectlimit');
 
-            if(typeof selectedItems[$list.index()] == 'undefined') {
-                selectedItems[$list.index()] = ["0000"];
-            }
-            selectedItems[$list.index()].push(value);
+        if(selectLimit === 0 || (!!selectLimit && $list.find('li').length < selectLimit)) {
+            _.defer(function delayTagAppearance() {
 
-            $list.append(
-                $('<li>')
-                    .html(selectedTextHTML)
-                    .data('value', value)
-                    .data('fulltext', selectedText)
-                    .addClass('selected-tag')
-                    .hide()
-                    .append(
-                    $('<button>')
-                        .html('&times;')
-                        .attr('type', 'button')
-                        .addClass('btn')
-                        .on('click', function onClickRemoveTagCallback() {
-                            _onRemoveListItem(this);
+                if (typeof selectedItems[$list.index()] == 'undefined') {
+                    selectedItems[$list.index()] = ["0000"];
+                }
+                selectedItems[$list.index()].push(value);
+
+                $list.append(
+                    $('<li>')
+                        .html(selectedTextHTML)
+                        .data('value', value)
+                        .data('fulltext', selectedText)
+                        .addClass('selected-tag')
+                        .hide()
+                        .append(
+                        $('<button>')
+                            .html('&times;')
+                            .attr('type', 'button')
+                            .addClass('btn')
+                            .on('click', function onClickRemoveTagCallback() {
+                                _onRemoveListItem(this);
+                            })
+                            .hover(function onSelectTagHoverIn() {
+                                $(this).parents('li').addClass('hover');
+                            }, function onSelectTagHoverOut() {
+                                $(this).parents('li').removeClass('hover');
+                            })
+                    ).fadeIn(fadeSpeed, function () {
+                            _updateHiddenInputs();
                         })
-                        .hover(function onSelectTagHoverIn() {
-                            $(this).parents('li').addClass('hover');
-                        }, function onSelectTagHoverOut() {
-                            $(this).parents('li').removeClass('hover');
-                        })
-                ).fadeIn(fadeSpeed, function () {
-                        _updateHiddenInputs();
-                    })
-            );
-        });
+                );
+            });
+        }
     }
 
     function _onRemoveListItem(listItem) {

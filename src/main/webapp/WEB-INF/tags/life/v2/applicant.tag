@@ -66,6 +66,7 @@
 						xpathhidden="${xpath}/occupations"
 						label="Occupation"
 						title="${error_phrase}occupation"
+						limit="1"
 						validationErrorPlacementSelector=".${go:nameFromXpath(xpath)}_occupation"
 						helpId="525"
 				/>
