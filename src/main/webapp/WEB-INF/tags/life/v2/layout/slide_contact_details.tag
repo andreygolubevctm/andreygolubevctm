@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="xpath" value="life" />
+<c:set var="xpath" value="life_contactDetails" />
 <layout_v3:slide formId="contactForm" className="contactSlide" nextLabel="Next Step">
 
 	<layout_v3:slide_content>
