@@ -83,6 +83,13 @@
 
 	}
 
+	function updateOptinText() {
+		$('.optinText:contains(comparethemarket.com.au)').html(
+			function(i,h){
+				return h.replace(/(comparethemarket.com.au)/g,'<strong>compare</strong>the<strong>market</strong>.com.au');
+			});
+	}
+
 	function fetch( infoToCheck ){
 
 		// @todo = improve "ajax/json/get_user_exists.jsp" to accept any kind of marketing type and adapt the sent data below accordingly
@@ -119,7 +126,8 @@
 		init: init,
 		events: events,
 		fetch: fetch,
-		isPrivacyOptedIn: isPrivacyOptedIn
+		isPrivacyOptedIn: isPrivacyOptedIn,
+		updateOptinText: updateOptinText
 	});
 
 })(jQuery);
