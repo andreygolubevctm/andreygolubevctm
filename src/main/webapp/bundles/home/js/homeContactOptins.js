@@ -12,64 +12,17 @@
 
 	var elements = {
 		fsg:			"#home_fsg",
-		marketing:		"#home_policyHolder_FieldSet input[name='home_policyHolder_marketing']",
-		oktocall:		"#home_policyHolder_FieldSet input[name='home_policyHolder_oktocall']",
+		marketing:		"#home_policyHolder_marketing",
+		oktocall:		"#home_policyHolder_oktocall",
 		privacy:		"#home_privacyoptin",
 		terms:			"#home_terms",
 		phone:			"#home_policyHolder_phoneinput",
 		email:			"#home_policyHolder_email",
 		termsAccepted:	"#home_termsAccepted"
 	};
-	elements.marketing = "#home_policyHolder_marketing";
-	elements.oktocall = "#home_policyHolder_oktocall";
 
 	function addChangeListeners() {
-		$(elements.phone).on('change', onPhoneChanged);
-		$(elements.email).on('change', onEmailChanged);
 		$(elements.termsAccepted).on('change', onSingleOptinChanged);
-	}
-
-	function onPhoneChanged(){
-		if($(elements.oktocall).closest('.row-content').hasClass('has-error')) {
-			_.defer(function(){
-				$(elements.oktocall).valid();
-			});
-		}
-	}
-
-	function onOkToCallChanged(){
-		if (getValue(elements.oktocall) !== 'Y') {
-			var $row = $(elements.phone).closest('.row-content');
-			$row.removeClass('has-error').find(".has-error").removeClass('has-error');
-			$row.find(".error-field").empty().hide();
-		}
-	}
-
-	function onEmailChanged(){
-		if($(elements.marketing).closest('.row-content').hasClass('has-error')) {
-			_.defer(function(){
-				$(elements.marketing).valid();
-			});
-		}
-	}
-
-	function onOkToEmailChanged(){
-		if (getValue(elements.marketing) !== 'Y') {
-			var $row = $(elements.email).closest('.row-content');
-			$row.removeClass('has-error').find(".has-error").removeClass('has-error');
-			$row.find(".error-field").empty().hide();
-		}
-	}
-
-	function onPrivacyOptinChanged(){
-		var optin = getValue(elements.privacy);
-		$(elements.fsg).val(optin);
-	}
-
-	function onTermsOptinChanged(){
-		var optin = getValue(elements.termsAccepted);
-		$(elements.fsg).val(optin);
-		$(elements.terms).val(optin);
 	}
 
 	function onSingleOptinChanged(){
