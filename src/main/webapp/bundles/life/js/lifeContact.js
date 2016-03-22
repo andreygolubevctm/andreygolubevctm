@@ -8,6 +8,7 @@
     function initLifeContact() {
         _initFields();
         _initEventListeners();
+        _initPreload();
     }
 
     function _initFields() {
@@ -40,6 +41,10 @@
         });
 
         return false;
+    }
+
+    function _initPreload() {
+        $('#life_contactDetails_call').val( $('#life_contactDetails_contactNumber').val().length ? 'Y' : 'N');
     }
 
     meerkat.modules.register("lifeContact", {
