@@ -31,18 +31,13 @@
                 runShowResultsPage: false, // Don't let Results.view do it's normal thing.
                 paths: {
                     results: {
-                        list: "results.plans",
-                        general: "results.uniqueCustomerId"
+                        list: "results.client.premium",
                     }
                 },
-                render: {
-                    templateEngine: '_',
-                    dockCompareBar: false
+                sort: {
+                    sortBy: 'value'
                 },
                 displayMode: 'price', // features, price
-                pagination: {
-                    touchEnabled: false
-                },
                 animation: {},
                 rankings: {
                     triggers : ['RESULTS_DATA_READY'],
@@ -53,7 +48,7 @@
             });
         }
         catch(e) {
-            Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.utilitiesResults.initResults(); '+e.message, e);
+            Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.lifeResults._initResults(); '+e.message, e);
         }
     }
 
@@ -61,8 +56,9 @@
         var data = {};
 
         // If the is the first time sorting, send the prm as well
-        //data["rank_premium" + position] = product.price;
-        data["rank_productId" + position] = product.productId;
+        data["rank_premium" + position] = product.value;
+        data["rank_productId" + position] = product.product_id;
+        data["rank_premium" + position] = product.service_provider;
 
         return data;
     }
