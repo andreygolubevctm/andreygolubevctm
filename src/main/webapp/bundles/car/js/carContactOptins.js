@@ -22,10 +22,8 @@
 			email:			"#quote_contact_email"
 	};
 
-	if(meerkat.modules.splitTest.isActive(3)) {
-		elements.marketing = "#quote_contact_marketing";
-		elements.oktocall = "#quote_contact_oktocall";
-	}
+	elements.marketing = "#quote_contact_marketing";
+	elements.oktocall = "#quote_contact_oktocall";
 
 	function toggleValidation() {
 		var isMobile = meerkat.modules.performanceProfiling.isMobile();
@@ -36,31 +34,12 @@
 		}
 	}
 
-	function validateOptins() {
-		if(meerkat.modules.splitTest.isActive(3)) {
-			// ignore - nothing to do
-		} else {
-			var $mkt = $(elements.marketing);
-			var $otc = $(elements.oktocall);
-			if(!$mkt.is(':checked')) {
-				$mkt.filter("input[value=N]").prop("checked",true).change();
-			}
-			if(!$otc.is(':checked')) {
-				$otc.filter("input[value=N]").prop("checked",true).change();
-			}
-		}
-	}
+	function validateOptins() {}
 
 	function addChangeListeners() {
 		$(elements.phone).on('change', onPhoneChanged);
 		$(elements.email).on('change', onEmailChanged);
-		if(meerkat.modules.splitTest.isActive(3)) {
-			$(elements.privacy).on('change', onSingleOptinChanged);
-		} else {
-			$(elements.oktocall).on('change', onOkToCallChanged);
-			$(elements.marketing).on('change', onOkToEmailChanged);
-			$(elements.privacy).on('change', onTermsOptinChanged);
-		}
+		$(elements.privacy).on('change', onSingleOptinChanged);
 	}
 
 	function onPhoneChanged(){
