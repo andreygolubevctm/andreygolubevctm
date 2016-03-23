@@ -179,10 +179,14 @@
 
 				// change benefits page layout when change the coverType
 				$healthSitCoverType.on('change', function() {
-					var coverTypeVal = $(this).val();
+					var coverTypeVal = (meerkat.modules.splitTest.isActive(13)) ? $(this).find('input:checked').val() : $(this).val();
 
 					// this is done cos it affacts the layout far too greatly for the tiered benefits
-					meerkat.modules.healthBenefitsStep.changeLayoutByCoverType('');
+					if (!meerkat.modules.splitTest.isActive(13)) {
+						meerkat.modules.healthBenefitsStep.changeLayoutByCoverType(coverTypeVal);
+					} else {
+						meerkat.modules.healthBenefitsStep.changeLayoutByCoverType('');
+					}
 					meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
 				});
 
@@ -278,8 +282,10 @@
 
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
-				meerkat.modules.healthBenefitsStep.setDefaultCover();
-				meerkat.modules.healthBenefitsStep.disableFields();
+				if (meerkat.modules.splitTest.isActive(13)) {
+					meerkat.modules.healthBenefitsStep.setDefaultCover();
+					meerkat.modules.healthBenefitsStep.disableFields();
+				}
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
 				meerkat.modules.healthBenefitsStep.checkAndHideMoreBenefits();
 				incrementTranIdBeforeEnteringSlide();
@@ -305,7 +311,9 @@
 				meerkat.modules.healthResults.onBenefitsSelectionChange(selectedBenefits);
 			},
 			onBeforeLeave:function(event){
-				meerkat.modules.healthBenefitsStep.enableFields();
+				if (meerkat.modules.splitTest.isActive(13)) {
+					meerkat.modules.healthBenefitsStep.enableFields();
+				}
 			}
 		};
 		var contactStep = {

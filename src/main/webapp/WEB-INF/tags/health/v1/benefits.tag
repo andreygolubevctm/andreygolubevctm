@@ -28,9 +28,18 @@
                 <div class="row accident-only-container">
 
                     <div class="col-sm-12">
-                        <h4>Limited Cover</h4>
-                        <c:set var="fieldXpath" value="health/situation/accidentOnlyCover"/>
-                        <field_v2:checkbox xpath="${fieldXpath}" id="accidentCover" required="false" title="Limited Cover" value="Y" label="true"/>
+                        <c:choose>
+                            <c:when test="${newBenefitsLayoutSplitTest eq true}">
+                                <h4>Limited Cover</h4>
+                                <c:set var="fieldXpath" value="health/situation/accidentOnlyCover"/>
+                                <field_v2:checkbox xpath="${fieldXpath}" id="accidentCover" required="false" title="Limited Cover" value="Y" label="true"/>
+                            </c:when>
+                            <c:otherwise>
+                                <h4>Accident-only Cover</h4>
+                                <c:set var="fieldXpath" value="health/situation/accidentOnlyCover"/>
+                                <field_v2:checkbox xpath="${fieldXpath}" id="accidentCover" required="false" title="Accident-only Cover" value="Y" label="true"/>
+                            </c:otherwise>
+                        </c:choose>
                         <simples:dialogue id="44" vertical="health" mandatory="true" />
                     </div>
                 </div>
