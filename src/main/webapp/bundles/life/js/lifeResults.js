@@ -11,7 +11,7 @@
         if(!initialised) {
             initialised = true;
             $component = $("#resultsPage");
-            meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
+            meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, meerkat.modules.resultsTracking.trackQuoteResultsList);
             _initResults();
             _initEventListeners();
         }
@@ -20,8 +20,8 @@
     function _initResults() {
         try {
 
-            var quoteResultsUrl = "ajax/json/life_quote_results.jsp";
-            if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToEnergyQuote) {
+            var quoteResultsUrl = "ajax/json/life_quote_results.jsp?vertical=life";
+            if (meerkat.modules.splitTest.isActive(40)) {
                 quoteResultsUrl = "ajax/json/life_quote_results_ws.jsp";
             }
 
@@ -33,24 +33,7 @@
                     results: {
                         list: "results.plans",
                         general: "results.uniqueCustomerId"
-                    },
-                    productId: "productId",
-                    productName: "planName",
-                    productBrandCode: "retailerName",
-                    contractPeriodValue: "contractPeriodValue",
-                    totalDiscountValue: "totalDiscountValue",
-                    yearlySavingsValue: "yearlySavingsValue",
-                    estimatedCostValue: "estimatedCostValue",
-                    availability: {
-                        product: "productAvailable"
                     }
-                },
-                show: {
-                    nonAvailableProducts: false, // This will apply the availability.product rule
-                    unavailableCombined: true    // Whether or not to render a 'fake' product which is a placeholder for all unavailable products.
-                },
-                availability: {
-                    product: ["equals", "Y"]
                 },
                 render: {
                     templateEngine: '_',
@@ -60,38 +43,7 @@
                 pagination: {
                     touchEnabled: false
                 },
-                sort: {
-                    sortBy: 'totalDiscountValue',
-                    sortByMethod: meerkat.modules.utilitiesSorting.sortDiscounts,
-                    sortDir: 'desc'
-                },
-                //frequency: "premium",
-                animation: {
-                    results: {
-                        individual: {
-                            active: false
-                        },
-                        delay: 500,
-                        options: {
-                            easing: "swing", // animation easing type
-                            duration: 1000
-                        }
-                    },
-                    shuffle: {
-                        active: true,
-                        options: {
-                            easing: "swing", // animation easing type
-                            duration: 1000
-                        }
-                    },
-                    filter: {
-                        reposition: {
-                            options: {
-                                easing: "swing" // animation easing type
-                            }
-                        }
-                    }
-                },
+                animation: {},
                 rankings: {
                     triggers : ['RESULTS_DATA_READY'],
                     callback : rankingCallback,
@@ -103,6 +55,16 @@
         catch(e) {
             Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.utilitiesResults.initResults(); '+e.message, e);
         }
+    }
+
+    function rankingCallback(product, position) {
+        var data = {};
+
+        // If the is the first time sorting, send the prm as well
+        //data["rank_premium" + position] = product.price;
+        data["rank_productId" + position] = product.productId;
+
+        return data;
     }
 
     function _initEventListeners() {
