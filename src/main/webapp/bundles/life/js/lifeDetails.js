@@ -28,7 +28,7 @@
     }
 
     function _triggerFieldEvents() {
-        _togglePartnerCoverRadioContainer($('input[name="life_primary_insurance_partner"]'));
+        _togglePartnerCoverRadioContainer($('input[name="life_primary_insurance_partner"]:checked'));
     }
 
     function _togglePartnerCoverRadioContainer($field) {
