@@ -81,7 +81,7 @@
 
                 var $list = meerkat.modules.selectTags.getListElement($this);
 
-                if (typeof datum.description !== 'undefined' && !meerkat.modules.selectTags.isAlreadySelected($list, datum.code)) {
+                if (typeof datum.description !== 'undefined' && !meerkat.modules.selectTags.isAlreadySelected($list, $this.attr('id') + datum.code)) {
                     selectedTextHTML = datum.description;
                     var selectedOccupation = selectedTextHTML.length > 25 ? selectedTextHTML.substr(0, 20) + '...' : selectedTextHTML;
                     meerkat.modules.selectTags.appendToTagList($list, selectedOccupation, datum.description, datum.code);
@@ -140,7 +140,7 @@
             name: componentName,
             valueKey: "description", // the duplicate name
             template: function (data) {
-                var isAlreadySelected = meerkat.modules.selectTags.isAlreadySelected($list, data.code);
+                var isAlreadySelected = meerkat.modules.selectTags.isAlreadySelected($list, $component.attr('id') + data.code);
                 if (isAlreadySelected) {
                     return "<del class='selected'>" + data.description + "</del>";
                 }
