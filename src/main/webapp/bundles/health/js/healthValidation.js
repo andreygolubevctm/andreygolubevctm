@@ -165,7 +165,7 @@
         "Please enter a valid credit card number"
     );
 
-    $.validator.addMethod('validateBupaCard', function(val, el, param) {
+    $.validator.addMethod('validateBupaCard', function(value, el, param) {
         var val = $(el).val();
         // Validation rules:
         // - Digits and asterisks only (no spaces or what not)
