@@ -6,6 +6,7 @@
 
     var $partnerRadioContainer;
     var $partnerInsuranceAmountsFields;
+    var $aboutYourPartner;
 
     function initLifeDetails() {
         _initFields();
@@ -16,6 +17,7 @@
     function _initFields() {
         $partnerRadioContainer = $('#partnerSameCoverRadio');
         $partnerInsuranceAmountsFields = $('#partnerInsuranceAmountFields');
+        $aboutYourPartner = $('#aboutYourPartner');
     }
 
     function _initEventListeners() {
@@ -43,6 +45,7 @@
         var $coverForRadioVal = $('input[name="life_primary_insurance_partner"]:checked');
 
         $partnerInsuranceAmountsFields.toggle($coverForRadioVal.val() === 'Y' && $this.val() === 'N');
+        $aboutYourPartner.toggle($coverForRadioVal.val() === 'Y' && $this.val() === 'N');
     }
 
     meerkat.modules.register("lifeDetails", {

@@ -84,6 +84,8 @@
 	}
 
 	function setJourneyEngineSteps(){
+		var $aboutPartnerContainer = $('#aboutYourPartner');
+		$aboutPartnerContainer.hide();
 
 		var startStep = {
 			title: 'Life Insurance Details',
@@ -119,7 +121,13 @@
 				method:'trackQuoteForms',
 				object:meerkat.modules.life.getTrackingFieldsObject
 			},
-			onInitialise: function onResultsInit(event){
+			onInitialise: function aboutPartnerInit(event){
+			},
+			onBeforeEnter: function aboutPartnerBeforeEnter(event){
+				if (!$aboutPartnerContainer.is(":visible")) {
+					meerkat.modules.journeyEngine.gotoPath("next");
+					meerkat.modules.journeyEngine.loadingShow('getting your quotes', true);
+				}
 			}
 		};
 		var contactStep = {
