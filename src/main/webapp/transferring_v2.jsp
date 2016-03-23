@@ -97,7 +97,7 @@
                             <div class="bounce3"></div>
                         </div>
                         <c:if test='${contentService.getContentValue(pageContext.getRequest(), "transferringLogoEnabled", verticalBrandCode, param.vertical) eq "Y"}'>
-                            <img src="assets/graphics/logos/travel/src/${providerCode}.png" />
+                            <img src="assets/graphics/logos/${param.vertical}/src/${providerCode}.png" />
                         </c:if>
 						<div class="quoteUrl" quoteUrl="${quoteUrl}"></div>
 					</div>
