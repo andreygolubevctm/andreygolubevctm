@@ -11,6 +11,8 @@
 
 <layout_v1:simples_page fullWidth="true">
 	<jsp:attribute name="head">
+	</jsp:attribute>
+	<jsp:attribute name="body_end">
 		<script src="${assetUrl}js/bundles/plugins/trumbowyg.min.js?${revision}"></script>
 	</jsp:attribute>
 

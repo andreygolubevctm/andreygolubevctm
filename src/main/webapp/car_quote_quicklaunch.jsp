@@ -16,26 +16,6 @@
 <layout_v1:generic_page title="Car Quote Quicklaunch">
 
 	<jsp:attribute name="head">
-		<script type="text/javascript" src="common/js/car/vehicle_selection.js?${revision}"></script>
-		<script type="text/javascript">
-			$(document).ready(function(){
-				$('body').attr("STYLE", "background-color:transparent");
-				car.vehicleSelect.fields = {
-					namePfx : "quote_vehicle",
-					ajaxPfx : "car_",
-					button  : "#quote_vehicle_button",
-					year    : "#quote_vehicle_year",
-					make    : "#quote_vehicle_make",
-					model   : "#quote_vehicle_model",
-					context : "/${pageSettings.getContextFolder()}"
-				};
-				<c:if test="${not empty json}">
-				var vehicleData = ${json};
-				car.vehicleSelect.data.make = vehicleData.makes;
-				</c:if>
-				car.vehicleSelect.init();
-			});
-		</script>
 		<style type="text/css">
 			body {
 				background-color: transparent !important;
@@ -116,7 +96,26 @@
 	<jsp:attribute name="footer" />
 
 	<jsp:attribute name="body_end" />
-
+	<script type="text/javascript" src="common/js/car/vehicle_selection.js?${revision}"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('body').attr("STYLE", "background-color:transparent");
+			car.vehicleSelect.fields = {
+				namePfx : "quote_vehicle",
+				ajaxPfx : "car_",
+				button  : "#quote_vehicle_button",
+				year    : "#quote_vehicle_year",
+				make    : "#quote_vehicle_make",
+				model   : "#quote_vehicle_model",
+				context : "/${pageSettings.getContextFolder()}"
+			};
+			<c:if test="${not empty json}">
+			var vehicleData = ${json};
+			car.vehicleSelect.data.make = vehicleData.makes;
+			</c:if>
+			car.vehicleSelect.init();
+		});
+	</script>
 	<jsp:body>
 		<car_layout:slide_quicklaunch />
 	</jsp:body>
