@@ -40,7 +40,7 @@
                                 <field_v2:checkbox xpath="${fieldXpath}" id="accidentCover" required="false" title="Accident-only Cover" value="Y" label="true"/>
                             </c:otherwise>
                         </c:choose>
-
+                        <simples:dialogue id="44" vertical="health" mandatory="true" />
                     </div>
                 </div>
             </div>
