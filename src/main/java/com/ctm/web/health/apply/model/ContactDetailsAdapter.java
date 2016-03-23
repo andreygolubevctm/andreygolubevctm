@@ -5,6 +5,7 @@ import com.ctm.web.health.apply.model.request.contactDetails.*;
 import com.ctm.web.health.apply.model.request.contactDetails.Address.Address;
 import com.ctm.web.health.apply.model.request.contactDetails.ContactDetails;
 import com.ctm.web.health.model.form.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
 
@@ -97,7 +98,7 @@ public class ContactDetailsAdapter {
                             .orElse(null),
                     address.map(com.ctm.web.health.model.form.Address::getFullAddressLineOne)
                             .map(FullAddressOneLine::new)
-                            .orElse(null),
+                            .orElseGet(() -> createFullAddressOneLine(address)),
                     address.map(com.ctm.web.health.model.form.Address::getSuburbName)
                             .map(Suburb::new)
                             .orElse(null),
@@ -113,6 +114,19 @@ public class ContactDetailsAdapter {
         } else {
             return null;
         }
+    }
+
+    private static FullAddressOneLine createFullAddressOneLine(Optional<com.ctm.web.health.model.form.Address> optionalAddress) {
+        if (optionalAddress.isPresent()) {
+            final com.ctm.web.health.model.form.Address address = optionalAddress.get();
+            StringBuilder sb = new StringBuilder();
+            if (StringUtils.isNotBlank(address.getUnitShop())) {
+                sb.append(address.getUnitShop()).append(" ");
+            }
+            sb.append(address.getStreetNum()).append(" ").append(address.getStreetName());
+            return new FullAddressOneLine(sb.toString());
+        }
+        return null;
     }
 
 }
