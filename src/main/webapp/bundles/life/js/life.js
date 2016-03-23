@@ -84,9 +84,6 @@
 	}
 
 	function setJourneyEngineSteps(){
-		var $aboutPartnerContainer = $('#aboutYourPartner');
-		$aboutPartnerContainer.hide();
-
 		var startStep = {
 			title: 'Life Insurance Details',
 			navigationId: 'start',
@@ -97,6 +94,9 @@
 			},
 			onInitialise: function onStartInit(event){
 				meerkat.modules.jqueryValidate.initJourneyValidator();
+			}, onBeforeLeave: function onInsuranceDetailsLeave() {
+				var $coverForRadioVal = $('input[name="life_primary_insurance_partner"]:checked');
+				meerkat.modules.lifePartner.togglePartnerFields($coverForRadioVal.val() === 'Y');
 			}
 		};
 
@@ -123,11 +123,8 @@
 			},
 			onInitialise: function aboutPartnerInit(event){
 			},
-			onBeforeEnter: function aboutPartnerBeforeEnter(event){
-				if (!$aboutPartnerContainer.is(":visible")) {
-					meerkat.modules.journeyEngine.gotoPath("next");
-					meerkat.modules.journeyEngine.loadingShow('getting your quotes', true);
-				}
+			onAfterEnter: function aboutPartnerBeforeEnter(event){
+				meerkat.modules.lifePartner.toggleSkipToResults();
 			}
 		};
 		var contactStep = {
