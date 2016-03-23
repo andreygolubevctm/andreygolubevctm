@@ -11,6 +11,7 @@
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
 <jsp:useBean id="resultsService" class="com.ctm.web.core.services.ResultsService" scope="request" />
+<jsp:useBean id="configurationService" class="com.ctm.web.core.services.ServiceConfigurationService" scope="request" />
 <c:set var="providerCode" value="brandCode" /> <%-- prefer to use providerCode which makes more sense than brandCode --%>
 <c:if test="${param.vertical eq 'travel'}"><c:set var="providerCode" value="providerCode" /></c:if>
 <c:set var="quoteUrl" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, 'quoteUrl'),'%26','&') }" />
@@ -33,7 +34,7 @@
 <layout_v1:generic_page title="Transferring you...">
 
 	<jsp:attribute name="head">
-		<link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/transferring${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+		<link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/transferring_v2${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 		<script>
 			<%-- In case we want to turn off looped URI Decoding --%>
 			window.useLoopedTransferringURIDecoding = ${pageSettings.getSetting("useLoopedTransferringURIDecoding")};
@@ -49,7 +50,6 @@
 			window.ResultsModel = { moduleEvents: { WEBAPP_LOCK: 'WEBAPP_LOCK' } };
 			window.ResultsView = { moduleEvents: { RESULTS_TOGGLE_MODE: 'RESULTS_TOGGLE_MODE' } };
 		</script>
-		<script src="${assetUrl}assets/js/bundles/transferring${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 	</jsp:attribute>
 
 	<jsp:attribute name="head_meta">
@@ -68,6 +68,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
+        <script src="${assetUrl}assets/js/bundles/transferring_v2${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 	</jsp:attribute>
 
 	<jsp:body>
@@ -78,11 +79,7 @@
 				<div id="journeyEngineContainer">
 					<div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
 						<span id="logo" class="navbar-brand text-hide">Compare The Market Australia</span>
-						<div class="spinner">
-							<div class="bounce1"></div>
-							<div class="bounce2"></div>
-							<div class="bounce3"></div>
-						</div>
+                        <p class="custom-message text-tertiary">${contentService.getContentValue(pageContext.getRequest(), "customTransferringContent", verticalBrandCode, param.vertical)}</p>
 						<p class="message">
 							<c:choose>
 								<c:when test="${param.vertical eq 'car' || param.vertical eq 'home'}">
@@ -93,6 +90,15 @@
 								</c:otherwise>
 							</c:choose>
 						</p>
+                        <p class="no-redirect">If you are not redirected in 3 seconds <a href="${quoteUrl}">click here</a></p>
+                        <div class="spinner">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                        <c:if test='${contentService.getContentValue(pageContext.getRequest(), "transferringLogoEnabled", verticalBrandCode, param.vertical) eq "Y"}'>
+                            <img src="assets/graphics/logos/travel/src/${providerCode}.png" />
+                        </c:if>
 						<div class="quoteUrl" quoteUrl="${quoteUrl}"></div>
 					</div>
 				</div>
