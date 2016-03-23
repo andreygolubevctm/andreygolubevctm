@@ -47,6 +47,7 @@
 				<field_v2:person_dob xpath="${xpath}/dob" title="primary person's" required="true" ageMin="18" ageMax="65" />
 			</form_v2:row>
 
+			<field_v1:hidden xpath="${xpath}/age" required="false" />
 
 			<form_v2:row label="Smoker status">
 				<field_v2:array_radio xpath="${xpath}/smoker"
