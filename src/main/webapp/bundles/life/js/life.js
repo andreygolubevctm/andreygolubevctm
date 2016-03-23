@@ -144,7 +144,12 @@
 				object:meerkat.modules.life.getTrackingFieldsObject
 			},
 			onInitialise: function onInitResults(event){
-
+				meerkat.modules.lifeResults.initLifeResults();
+			},
+			onAfterEnter: function afterEnterResults(event) {
+				if (event.isForward === true) {
+					meerkat.modules.lifeResults.get();
+				}
 			}
 		};
 
