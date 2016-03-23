@@ -53,10 +53,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 		</div>
 	</form_v2:fieldset>
 	</c:if>
-	<c:set var="fieldsetClass">
-		<c:if test='${newBenefitsLayoutSplitTest eq true}'>j13abtest</c:if>
-	</c:set>
-	<form_v2:fieldset legend="" postLegend="" className="${fieldsetClass}" >
+	<form_v2:fieldset legend="" postLegend="" >
 		<div class="scrollable row">
 			<div class="benefits-list col-sm-12">
 				<div class="row">
