@@ -6,6 +6,7 @@
 <%@ attribute name="title"			required="false"  rtexprvalue="true"	 description="Page title" %>
 <%@ attribute name="navbar_show_back_button"			required="false"  rtexprvalue="true"	 description="Flag to show or hide the back button within the navbar" %>
 <%@ attribute required="false" name="body_class_name" description="Allow extra styles to be added to the rendered body tag" %>
+<%@ attribute name="ignore_journey_tracking" required="false"  rtexprvalue="true" description="Ignore Journey Tracking" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -149,7 +150,9 @@
 
 					<div id="mainform" class="form-horizontal" >
 
-						<core_v2:journey_tracking />
+						<c:if test="${ignore_journey_tracking != 'true'}">
+							<core_v2:journey_tracking />
+						</c:if>
 
 						<core_v2:tracking_key />
 
