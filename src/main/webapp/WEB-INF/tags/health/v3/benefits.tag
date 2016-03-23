@@ -17,7 +17,7 @@
 
 	<jsp:body>
 
-		<form_v2:fieldset legend="Choose Your Cover" postLegend="" className="j13abtest" >
+		<form_v2:fieldset legend="Choose Your Cover" postLegend="" className="tieredHospitalCover" >
 			<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="medium" />
 			<div class="scrollable row">
 

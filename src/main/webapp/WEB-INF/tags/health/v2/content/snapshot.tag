@@ -2,7 +2,7 @@
 <%@ tag description="Home & Contents Snapshot"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<fieldset class="quoteSnapshot sidebar-box hidden-sm">
+<fieldset class="quoteSnapshot sidebar-box hidden-sm tieredHospitalCover">
     <h4>Quote Summary</h4>
     <div class="default">
         <div>
@@ -46,7 +46,9 @@
             <span class="snapshot-title">Cover type:</span>
         </div>
         <div class="col-md-7">
-            <span class="snapshot-items hidden-xs hidden-sm"><!-- empty --></span>
+            <span class="snapshot-items hidden-xs hidden-sm">
+                <span data-source="#health_situation_coverType"></span>
+            </span>
         </div>
     </div>
     <div class="row snapshot hospital">
