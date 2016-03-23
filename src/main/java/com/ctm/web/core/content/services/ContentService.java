@@ -62,6 +62,19 @@ public class ContentService {
 	 *
 	 * @param request
 	 * @param contentKey
+	 * @return
+	 * @throws DaoException
+	 * @throws ConfigSettingException
+	 */
+	public  String getContentValueNonStatic(HttpServletRequest request, String contentKey) throws DaoException, ConfigSettingException {
+		return ContentService.getContentValue( request,  contentKey) ;
+	}
+
+	/**
+	 * Returns the value of the content key (as a string) this is the one that should be called by the JSP page.
+	 *
+	 * @param request
+	 * @param contentKey
 	 * @param brandCode
 	 * @param vertical
 	 * @return

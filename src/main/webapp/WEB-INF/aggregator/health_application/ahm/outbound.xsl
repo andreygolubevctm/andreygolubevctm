@@ -26,6 +26,13 @@
 		<xsl:value-of select="$year" />
 	</xsl:template>
 
+	<xsl:variable name="todays_date">
+        <xsl:call-template name="format_date_to_slashes">
+            <xsl:with-param name="date" select="$today" />
+        </xsl:call-template>
+	</xsl:variable>
+
+
 	<xsl:template name="title_code">
 		<xsl:param name="title" />
 		<xsl:choose>
@@ -488,7 +495,6 @@
 					<!-- WX01 – Fund control in Genero -->
 					<!-- Defaults to 1 -->
 					<b:FundId>1</b:FundId>
-
 					<!-- Income Tier. Data type: A string that represents Integer (2) -->
 					<!-- WX42 Rebate Definition in Genero: 0, 1, 2, 3 -->
 					<b:IncomeTier><xsl:value-of select="healthCover/income" /></b:IncomeTier>
@@ -570,6 +576,7 @@
 								<!-- Condition to avoid error "No Rate record found in database [code F11]" -->
 								<xsl:choose>
 									<!-- Black+White is only available to Single/Couples -->
+									<xsl:when test="fundData/hospitalCoverName = 'black+white deluxe' or fundData/extrasCoverName = 'black+white deluxe'">D</xsl:when>
 									<xsl:when test="fundData/hospitalCoverName = 'black+white starter' or fundData/extrasCoverName = 'black+white starter'">D</xsl:when>
 									<xsl:when test="fundData/hospitalCoverName = 'Lite Cover' or fundData/hospitalCoverName = 'First Step'">D</xsl:when>
 									<xsl:when test="fundData/extrasCoverName = 'Lite Cover' or fundData/extrasCoverName = 'First Step'">D</xsl:when>
@@ -594,8 +601,9 @@
 					<b:StreetPC><xsl:value-of select="$postCode" /></b:StreetPC>
 					<b:StreetState><xsl:value-of select="$state" /></b:StreetState>
 					<b:StreetSuburb><xsl:value-of select="$suburbName" /></b:StreetSuburb>
-					<SubFundId>1</SubFundId>
-					<RateCode>0</RateCode>
+					<b:RateCode>0</b:RateCode>
+					<b:SubFundId>1</b:SubFundId>
+					<b:TierEffDte><xsl:value-of select="$todays_date" /></b:TierEffDte>
 				</wsEnrolMemberRequest>
 				</EnrolMember>
 			</s:Body>

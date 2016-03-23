@@ -80,6 +80,9 @@ public class ResponseAdapter {
                     }
 
                 }
+                else if(travelQuote.getService().equals("JANE")) {
+                    planDescription += "Travel With Jane - "+travelQuote.getProduct().getLongTitle();
+                }
 
                 else{
                     planDescription = travelQuote.getProduct().getLongTitle();
