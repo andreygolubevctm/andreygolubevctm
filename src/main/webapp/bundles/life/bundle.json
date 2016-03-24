@@ -15,6 +15,7 @@
         "shared/occupationSelector",
         "shared/placeholder",
         "shared/saveQuote",
+        "shared/contentPopulation",
         "shared/leavePageWarning"
     ]
 }

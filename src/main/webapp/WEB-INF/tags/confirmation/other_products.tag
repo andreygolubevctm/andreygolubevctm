@@ -26,10 +26,9 @@
 	<c:set var="brand" value="${applicationService.getBrandFromRequest(pageContext.getRequest())}" />
 	<c:if test="${not empty heading}">
 	<h3>${heading}</h3>
-
+	</c:if>
 	<c:if test="${not empty copy}">
 		${copy}
-	</c:if>
 	</c:if>
 	<div class="options-list clearfix verticalButtons">
 	<c:forEach items="${brand.getVerticals()}" var="vertical" varStatus="loop">

@@ -94,7 +94,6 @@
         // Run the show method even when there are no available products
         // This will render the unavailable combined template
         $(Results.settings.elements.resultsContainer).on("noFilteredResults", function () {
-            console.log('wat');
             Results.view.show();
         });
 
@@ -109,7 +108,8 @@
         // Scroll to the top when results come back
         $(document).on("resultsReturned", function () {
             meerkat.modules.utils.scrollPageTo($("header"));
-            console.log('results returned');
+
+            _showResultsMessage();
         });
 
         // Start fetching results
@@ -119,7 +119,6 @@
 
             // Hide pagination
             Results.pagination.hide();
-            console.log('r u even starting');
         });
 
         // Fetching done
@@ -131,18 +130,28 @@
             meerkat.modules.journeyEngine.loadingHide();
 
             $(document.body).addClass('priceMode');
-
-            console.log('y u do this? finish!');
         });
 
         $(Results.settings.elements.resultsContainer).on("noResults", function onResultsNone() {
-            showNoResults();
+            _showResultsMessage();
         });
     }
 
     function get() {
         Results.updateAggregatorEnvironment();
         Results.get();
+    }
+
+    function _showResultsMessage() {
+        var topProduct = Results.getTopResult();
+        var templateHTML = $('#thank-you-template').html();
+        var _template = _.template(templateHTML);
+
+        topProduct.consultantFrom = topProduct.service_provider === 'Ozicare' ? 'Auto &amp; General Services' : 'Lifebroker';
+
+        var $container = $('.resultsContainer');
+        $container.html(_template(topProduct));
+        meerkat.modules.contentPopulation.render($container);
     }
 
     meerkat.modules.register("lifeResults", {

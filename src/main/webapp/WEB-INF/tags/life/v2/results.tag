@@ -4,8 +4,7 @@
 
 <jsp:useBean id="now" class="java.util.Date" scope="request"/>
 
-<div class="resultsHeadersBg">
-</div>
+<div class="resultsHeadersBg"></div>
 
 <agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
     <%-- RESULTS TABLE --%>
@@ -13,8 +12,7 @@
     <div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
         <div class="featuresHeaders featuresElements">
             <div class="result headers">
-                <div class="resultInsert">
-                </div>
+                <div class="resultInsert"></div>
             </div>
             <%-- Feature headers --%>
             <div class="featuresList featuresTemplateComponent"></div>
@@ -30,10 +28,13 @@
 
         <div class="featuresFooterPusher"></div>
     </div>
+    <div>
+        <confirmation:other_products heading="" copy="Have you considered your other insurance needs? <span class='optinText'>comparethemarket.com.au</span> also compares:" id="resultsAlsoCompares"/>
+    </div>
 
     <%-- DEFAULT RESULT ROW --%>
     <core_v1:js_template id="result-template">
-        <div class="result-row available result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
+        <div class="hidden result-row available result_{{= obj.product_id }}" data-productId="{{= obj.product_id }}" data-available="Y">
             <div class="result">
                 <div class="resultInsert priceMode"></div>
                 <%-- /resultInsert --%>
@@ -69,11 +70,16 @@
     </div>
 
     <%-- Logo template --%>
-    <core_v1:js_template id="provider-logo-template">
-        {{ var img = 'default_w'; }}
-        {{ if (obj.hasOwnProperty('providerCode') && obj.providerCode.length > 1) img = obj.providerCode.toUpperCase().replace(/ /g, '_'); }}
-        {{ var noShrinkClass = obj.hasOwnProperty('addNoShrinkClass') && obj.addNoShrinkClass ? 'noshrink' : ''; }}
-        <div class="companyLogo logo_{{= img }} {{= noShrinkClass }}"></div>
+    <core_v1:js_template id="provider-logo-template"></core_v1:js_template>
+
+    <%-- Thank you template --%>
+    <core_v1:js_template id="thank-you-template">
+        <div class="mockResults">
+            <h1>Thank you for submitting your insurance enquiry</h1>
+
+            <p>A consultant from <span class="results-highlighted">{{= obj.consultantFrom }}</span> will be in contact with you shortly to discuss your life insurance needs and process your application.</p>
+            <p>An email has been sent to <span class="results-highlighted" data-source="#life_contactDetails_email"></span> with a summary of your details and your reference number.</p>
+        </div>
     </core_v1:js_template>
 
 </agg_v2_results:results>
