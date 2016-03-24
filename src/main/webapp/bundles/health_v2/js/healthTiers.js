@@ -45,6 +45,10 @@ Handling of the rebate tiers based off situation
 		$income = $('#health_healthCover_income');
 	};
 
+	isActive = function() {
+		return true;
+	};
+
 	// Manages the descriptive titles of the tier drop-down
 	setTiers =  function(initMode){
 		// Set the dependants allowance and income message
@@ -125,7 +129,8 @@ Handling of the rebate tiers based off situation
 
 	meerkat.modules.register("healthTiers", {
 		initHealthTiers: initHealthTiers,
-		setTiers: setTiers
+		setTiers: setTiers,
+		isActive: isActive
 	});
 
 })(jQuery);
