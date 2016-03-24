@@ -2,13 +2,15 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- SET ESCAPEXML'd VARIABLES HERE FROM BROCHUREWARE --%>
+<%-- SET ESCAPEXML'd VARIABLES HERE FROM WEBSITE --%>
 <c:set var="quote_vehicle_make"><c:out value="${param.quote_vehicle_make}" escapeXml="true" /></c:set>
 <c:set var="quote_vehicle_model"><c:out value="${param.quote_vehicle_model}" escapeXml="true" /></c:set>
 <c:set var="quote_vehicle_year"><c:out value="${param.quote_vehicle_year}" escapeXml="true" /></c:set>
-<%-- VARIABLES --%>
+<c:set var="quote_vehicle_searchRego"><c:out value="${param.quote_vehicle_searchRego}" escapeXml="true" /></c:set>
+<c:set var="quote_vehicle_searchState"><c:out value="${param.quote_vehicle_searchState}" escapeXml="true" /></c:set>
+
 <c:set var="fromBrochure" scope="request" value="${false}"/>
-<c:if test="${not empty quote_vehicle_make || not empty quote_vehicle_model || not empty quote_vehicle_year}">
+<c:if test="${not empty quote_vehicle_make || not empty quote_vehicle_model || not empty quote_vehicle_year || not empty quote_vehicle_searchRego || not empty quote_vehicle_searchState}">
 	<c:set var="fromBrochure" scope="request" value="${true}"/>
 </c:if>
 <c:set var="priceDisplayMode" value="price"/>
@@ -16,14 +18,14 @@
 	<c:set var="priceDisplayMode" value="features"/>
 </c:if>
 
-<%-- Retrieve values passed from Brochure Site --%>
+<%-- Retrieve values passed from website --%>
 <c:if test="${not empty param.action && param.action == 'ql'}">
 	<c:if test="${not empty param.quote_vehicle_make}">
-		<go:setData dataVar="data" value="${param.quote_vehicle_make}" xpath="quote/vehicle/make" />
+		<go:setData dataVar="data" value="${quote_vehicle_make}" xpath="quote/vehicle/make" />
 		<c:if test="${not empty param.quote_vehicle_model}">
-			<go:setData dataVar="data" value="${param.quote_vehicle_model}" xpath="quote/vehicle/model" />
+			<go:setData dataVar="data" value="${quote_vehicle_model}" xpath="quote/vehicle/model" />
 			<c:if test="${not empty param.quote_vehicle_year}">
-				<go:setData dataVar="data" value="${param.quote_vehicle_year}" xpath="quote/vehicle/year" />
+				<go:setData dataVar="data" value="${quote_vehicle_year}" xpath="quote/vehicle/year" />
 			</c:if>
 		</c:if>
 	</c:if>
@@ -68,7 +70,9 @@
 		colours:			'${data.quote.vehicle.colour}',
 		marketValue:		'${data.quote.vehicle.marketValue}',
 		variant:			'${data.quote.vehicle.variant}',
-		securityOption:		'${data.quote.vehicle.securityOption}',
+		securityOption:		'${data.quote.vehicle.securityOption}',<c:if test="${regoLookupSplitTest eq true}">
+        searchRego:         '${quote_vehicle_searchRego}',
+		searchState:		'${quote_vehicle_searchState}',</c:if>
 		data:				${json}
 	},
 	userOptionPreselections: {

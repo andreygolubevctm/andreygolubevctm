@@ -179,10 +179,10 @@
 
 				// change benefits page layout when change the coverType
 				$healthSitCoverType.on('change', function() {
-					var coverTypeVal = (meerkat.modules.splitTest.isActive(13)) ? $(this).find('input:checked').val() : $(this).val();
+					var coverTypeVal = (meerkat.modules.healthTiers.isActive()) ? $(this).find('input:checked').val() : $(this).val();
 
 					// this is done cos it affacts the layout far too greatly for the tiered benefits
-					if (!meerkat.modules.splitTest.isActive(13)) {
+					if (!meerkat.modules.healthTiers.isActive()) {
 						meerkat.modules.healthBenefitsStep.changeLayoutByCoverType(coverTypeVal);
 					} else {
 						meerkat.modules.healthBenefitsStep.changeLayoutByCoverType('');
@@ -282,7 +282,7 @@
 
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
-				if (meerkat.modules.splitTest.isActive(13)) {
+				if (meerkat.modules.healthTiers.isActive()) {
 					meerkat.modules.healthBenefitsStep.setDefaultCover();
 					meerkat.modules.healthBenefitsStep.disableFields();
 				}
@@ -308,10 +308,10 @@
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
-				meerkat.modules.healthResults.onBenefitsSelectionChange(selectedBenefits);
+				meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
 			},
 			onBeforeLeave:function(event){
-				if (meerkat.modules.splitTest.isActive(13)) {
+				if (meerkat.modules.healthTiers.isActive()) {
 					meerkat.modules.healthBenefitsStep.enableFields();
 				}
 			}
@@ -770,8 +770,8 @@
 				},
 				// otherPhone and mobile from quote step
 				{
-					$field: $("#health_contactDetails_contactNumber_mobile"),
-					$otherField: $("#health_contactDetails_contactNumber_other")
+					$field: $("#health_application_mobileinput"),
+					$otherField: $("#health_application_otherinput")
 				}
 			],
 			postcode: [

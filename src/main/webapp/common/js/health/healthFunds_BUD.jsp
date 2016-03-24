@@ -84,8 +84,8 @@ var healthFunds_BUD = {
 		$('.person-title').append( healthFunds.$_optionDR    );
 
 		<%-- selections for payment date --%>
-		healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-		healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
 		$('#update-premium').off('click.BUD');
 
 		<%-- credit card options --%>

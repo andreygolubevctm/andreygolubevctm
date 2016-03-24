@@ -24,6 +24,7 @@
     "shared/saveQuote",
     "shared/resultsRankings",
     "shared/leadFeed",
-    "shared/formNumberFormatInputs"
+    "shared/formNumberFormatInputs",
+    "shared/ie8SelectMenuAutoExpand"
   ]
 }

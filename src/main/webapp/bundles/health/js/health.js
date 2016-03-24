@@ -322,11 +322,26 @@
 
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
+
+					var accidentOnly = $('input[name="health_situation_accidentOnlyCover"]');
+					var dialog44 = $(".simples-dialogue-44");
+					dialog44.hide();
+					if($(accidentOnly).is(':checked')) {
+						dialog44.show();
+					}
+
+					accidentOnly.on('change', function() {
+						if($(this).is(':checked')) {
+							dialog44.show();
+						} else {
+							dialog44.hide();
+						}
+					});
 				}
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefits.getSelectedBenefits();
-				meerkat.modules.healthResults.onBenefitsSelectionChange(selectedBenefits);
+				meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
 				meerkat.modules.navMenu.enable();
 			}
 		};

@@ -1,4 +1,4 @@
-;(function($, undefined){
+;(function ($, undefined) {
 
     /**
      * regoLookup provides a common gateway to make requests to the java service
@@ -9,12 +9,8 @@
      **/
 
     var meerkat = window.meerkat,
-        meerkatEvents =  meerkat.modules.events,
+        meerkatEvents = meerkat.modules.events,
         events = {};
-
-    function init(){
-        // Nothing to be done
-    }
 
     /**
      * get - calls a java service for the registration lookup. It expects at least the
@@ -23,11 +19,11 @@
      * @param data
      * @param settings
      */
-    function get(data, settings) {
-        data = _.extend({plateNumber:null,state:null}, data);
+    function getData(data, settings) {
+        data = _.extend({plateNumber: null, state: null}, data);
         settings = settings || {};
         var request_obj = {
-            url: "rest/rego/lookup/list.json",
+            url: "spring/rest/rego/lookup/list.json",
             data: data,
             dataType: 'json',
             cache: true,
@@ -35,16 +31,15 @@
             numberOfAttempts: 3,
             errorLevel: "fatal"
         };
-        if(_.isObject(settings) && !_.isEmpty(settings)) {
+        if (_.isObject(settings) && !_.isEmpty(settings)) {
             request_obj = $.extend(request_obj, settings);
         }
-        meerkat.modules.comms.get(request_obj);
+        return meerkat.modules.comms.get(request_obj);
     }
 
     meerkat.modules.register("regoLookup", {
-        init: init,
         events: events,
-        get: get
+        get: getData
     });
 
 })(jQuery);

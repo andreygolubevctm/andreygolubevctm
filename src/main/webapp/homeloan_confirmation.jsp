@@ -31,7 +31,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<homeloan:footer />
+		<core_v1:whitelabeled_footer/>
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">

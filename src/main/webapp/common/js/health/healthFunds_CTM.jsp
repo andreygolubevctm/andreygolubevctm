@@ -76,10 +76,10 @@ set: function () {
 
 		$('#update-premium').on('click.CTM', function() {
 
-			healthFunds._payments = { 'min':0, 'max':14, 'weekends':true, 'countFrom' : healthFunds.countFrom.EFFECTIVE_DATE, 'maxDay' : 28};
-			var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
-			healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-			healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+			healthFunds._payments = { 'min':0, 'max':14, 'weekends':true, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28};
+			var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
 			$('.ctm-payment-legend').remove();
 			$('#health_payment_credit_policyDay').parent().after('<p class="ctm-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');
 			$('#health_payment_bank_policyDay').parent().after('<p class="ctm-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');
