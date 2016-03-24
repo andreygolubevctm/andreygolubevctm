@@ -41,7 +41,7 @@
                 animation: {},
                 rankings: {
                     triggers : ['RESULTS_DATA_READY'],
-                    callback : rankingCallback,
+                    callback : _rankingCallback,
                     forceIdNumeric : false,
                     filterUnavailableProducts : true
                 }
@@ -52,13 +52,14 @@
         }
     }
 
-    function rankingCallback(product, position) {
+    function _rankingCallback(product, position) {
         var data = {};
 
         // If the is the first time sorting, send the prm as well
         data["rank_premium" + position] = product.value;
         data["rank_productId" + position] = product.product_id;
-        data["rank_premium" + position] = product.service_provider;
+        data["rank_company" + position] = product.company;
+        data["rank_provider" + position] = product.service_provider;
 
         return data;
     }

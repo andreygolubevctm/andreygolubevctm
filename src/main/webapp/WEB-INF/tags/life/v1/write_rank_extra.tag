@@ -10,7 +10,7 @@
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
 <c:set var="oriPrefix" value="rank_" />
-<c:set var="suffixes" value="company,leadNumber,productName,premium,callCentreHours,partnerBrand" />
+<c:set var="suffixes" value="company,leadNumber,productName,premium,callCentreHours,partnerBrand,provider" />
 <jsp:useBean id="insertParams" class="java.util.ArrayList" />
 <c:set var="sandbox">${insertParams.clear()}</c:set>
 <c:set var="sqlBulkInsert" value="${go:getStringBuilder()}" />
