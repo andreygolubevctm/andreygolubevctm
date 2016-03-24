@@ -9,26 +9,18 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
-<form_v2:fieldset_columns sideHidden="false">
 
-	<jsp:attribute name="rightColumn">
-	</jsp:attribute>
 
-	<jsp:body>
+<form_v2:fieldset legend="Address" id="${name}FieldSet">
 
-		<form_v2:fieldset legend="Address" id="${name}FieldSet">
+    <group_v2:elastic_address xpath="${xpath}" type="R" />
 
-			<group_v2:elastic_address xpath="${xpath}" type="R" />
+    <form_v2:row label="Where is the car parked at night" helpId="7">
+        <field_v2:import_select xpath="quote/vehicle/parking"
+                            url="/WEB-INF/option_data/parking_location.html"
+                            title="the location where the car is parked at night"
+                            className="parking_location"
+                            required="true" />
+    </form_v2:row>
 
-			<form_v2:row label="Where is the car parked at night" helpId="7">
-				<field_v2:import_select xpath="quote/vehicle/parking"
-									url="/WEB-INF/option_data/parking_location.html"
-									title="the location where the car is parked at night"
-									className="parking_location"
-									required="true" />
-			</form_v2:row>
-
-		</form_v2:fieldset>
-
-	</jsp:body>
-</form_v2:fieldset_columns>
+</form_v2:fieldset>

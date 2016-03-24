@@ -21,10 +21,12 @@
 					<p>In order to supply car insurance quotes, we'll need to know some more information about the regular driver of the car (this is the person who will be driving the car the most).</p>
 				</ui:bubble>
 
+                <car:drivers_regular xpath="${xpath}/drivers/regular" />
+
 			</jsp:body>
 		</form_v2:fieldset_columns>
 
-		<car:drivers_regular xpath="${xpath}/drivers/regular" />
+
 
 		<car:drivers_regular_cont xpath="${xpath}/drivers/regular" />
 
