@@ -203,6 +203,7 @@
 				<h1 class="text-dark">Hospital cover</h1>
 				<p><strong>Hospital Excess:</strong> {{= hospital.inclusions.excess }}</p>
 				<p><strong>Excess Waivers:</strong> {{= hospital.inclusions.waivers }}</p>
+                <p><strong>Hospital waiting period for pre-existing conditions:</strong> 12 months. <strong>For all other conditions:</strong> 2 months. See policy brochure for more details</p>
 				<p><strong>Co-payment / % Hospital Contribution:</strong> {{= hospital.inclusions.copayment }}</p>
 				{{ } }}
 
