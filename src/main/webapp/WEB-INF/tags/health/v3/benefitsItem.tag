@@ -64,9 +64,12 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 						<c:set var="category">${item.getShortlistKey()}</c:set>
 						<c:choose>
 							<c:when test="${item.getType() == 'section'}">
-								<div class="title hidden-xs">
+								<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
 									<h3>Choose Your ${item.getName()}</h3>
-									<p>${colContent}</p>
+									<p class="hidden-xs">${colContent}</p>
+									<c:if test="${item.getName() eq 'Extras Cover'}">
+										<p>Select the icons below to add extras specific to your needs</p>
+									</c:if>
 								</div>
 								<c:if test="${category eq 'Hospital'}">
 								<div class="hospitalCoverToggles row hidden-xs">
