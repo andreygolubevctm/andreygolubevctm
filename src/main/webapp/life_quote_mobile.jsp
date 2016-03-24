@@ -14,14 +14,42 @@
 <core_v2:quote_check quoteType="life" />
 <core_v2:load_preload />
 
+<%-- Initialise Save Quote --%>
+<c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
+
+<%-- Life Broker Number--%>
+<c:set var="lifeBrokerNumber" scope="request"><content:get key="lifeBrokerNumber"/></c:set>
+
 <%-- HTML --%>
 <layout_v1:journey_engine_page title="Life Quote">
 
 	<jsp:attribute name="head"></jsp:attribute>
 	<jsp:attribute name="head_meta"></jsp:attribute>
-	<jsp:attribute name="header_button_left"></jsp:attribute>
+	<jsp:attribute name="header_button_left">
+		<button type="button" class="navbar-toggle contact collapsed pull-left" data-toggle="collapse" data-target=".header-collapse-contact">
+			<span class="sr-only">Toggle Contact Us</span>
+			<span class="icon icon-phone"></span>
+			<span class="icon icon-cross"></span>
+		</button>
+	</jsp:attribute>
 
 	<jsp:attribute name="header">
+		<div class="navbar-collapse header-collapse-contact collapse">
+			<ul class="nav navbar-nav navbar-right callCentreNumberSection">
+				<c:if test="${not empty lifeBrokerNumber}">
+					<li>
+						<div class="navbar-text visible-xs">
+							<h4>Do you need a hand?</h4>
+							<h1>
+								<a class="needsclick" href="tel:${lifeBrokerNumber}">
+									Call <span class="noWrap callCentreNumber">${lifeBrokerNumber}</span>
+								</a>
+							</h1>
+						</div>
+					</li>
+				</c:if>
+			</ul>
+		</div>
 	</jsp:attribute>
 
 	<jsp:attribute name="progress_bar">
@@ -37,9 +65,32 @@
 			<li class="visible-xs">
 				<span class="navbar-text-block navMenu-header">Menu</span>
 			</li>
-			<li class="slide-feature-back visible-xs">
-				<a href="javascript:;" data-slide-control="previous" class="btn-back">
-					<span class="icon icon-arrow-left"></span> <span>Revise Your Details</span></a>
+			<li class="slide-feature-back">
+				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+			</li>
+			<c:if test="${saveQuoteEnabled == 'Y'}">
+				<li class="slide-feature-emailquote hidden-lg hidden-md hidden-sm" data-openSaveQuote="true">
+					<a href="javascript:;" class="save-quote-openAsModal"><span class="icon icon-envelope"></span> <span><c:choose>
+						<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
+						<c:otherwise>Save Quote</c:otherwise>
+					</c:choose></span> <b class="caret"></b></a>
+				</li>
+
+				<li class="dropdown dropdown-interactive slide-feature-emailquote hidden-xs" id="email-quote-dropdown">
+					<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose>
+						<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
+						<c:otherwise>Save Quote</c:otherwise>
+					</c:choose></span> <b class="caret"></b></a>
+					<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
+						<div class="dropdown-container">
+							<agg_v2:save_quote includeCallMeback="false" />
+						</div>
+					</div>
+				</li>
+			</c:if>
+			<li class="dropdown dropdown-interactive slide-edit-quote-dropdown" id="edit-details-dropdown">
+				<a class="activator needsclick dropdown-toggle btn-back" href="#start"><span class="icon icon-cog"></span>
+					<span>Edit Details</span></a>
 			</li>
 		</ul>
 
