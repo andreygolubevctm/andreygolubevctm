@@ -1,25 +1,26 @@
 package com.ctm.web.car.router;
 
 import com.ctm.web.car.dao.CarRegoLookupDao;
+import com.ctm.web.car.exceptions.RegoLookupException;
+import com.ctm.web.car.services.RegoLookupService;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.car.exceptions.RegoLookupException;
 import com.ctm.web.core.exceptions.VerticalException;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
-import com.ctm.web.car.services.RegoLookupService;
-import org.apache.cxf.jaxrs.ext.MessageContext;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -28,9 +29,10 @@ import java.util.stream.Stream;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-@Path("/rego")
-public class RegoLookupRouter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RegoLookupRouter.class);
+@RestController
+@RequestMapping("/rest/rego")
+public class RegoLookupController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegoLookupController.class);
 
     private static final String COLLECTION_LABEL = "vehicle_data";
     /*
@@ -38,18 +40,23 @@ public class RegoLookupRouter {
      */
     private final String REG_EXP_FOR_PLATE = "[^0-9A-Za-z ]";
 
-    @GET
-    @Path("/lookup/list.json")
-    @Produces("application/json")
-    public Map<String, Object> getRegolookup(@Context MessageContext context,
-                                             @QueryParam("transactionId") Long transactionId,
-                                             @QueryParam("plateNumber") String plateNumber,
-                                             @QueryParam("state") String state) {
+    @Autowired
+    private RegoLookupService regoLookupService;
+
+    @Autowired
+    private CarRegoLookupDao carRegoLookupDao;
+
+    @ApiOperation(value = "/lookup/list.json", notes = "Request a rego lookup", produces = "application/json")
+    @RequestMapping(value = "/lookup/list.json",
+            method= RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> getRegolookup(@RequestParam("transactionId") Long transactionId,
+                                             @RequestParam("plateNumber") String plateNumber,
+                                             @RequestParam("state") String state,
+                                             HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         String request_status = RegoLookupService.RegoLookupStatus.SUCCESS.getLabel();
         try {
-            RegoLookupService regoLookupService = new RegoLookupService();
-            HttpServletRequest request = context.getHttpServletRequest();
             ApplicationService.setVerticalCodeOnRequest(request, Vertical.VerticalType.CAR.getCode());
             Optional<String> plateOptional = Stream.of(plateNumber).map(String::toUpperCase).
                     map(s -> s.replaceAll(REG_EXP_FOR_PLATE, "")).
@@ -65,7 +72,7 @@ public class RegoLookupRouter {
             }
 
             Map<String, Object> carDetails =
-                    regoLookupService.execute(context.getHttpServletRequest(),
+                    regoLookupService.execute(request,
                             pageSettings,
                             transactionId,
                             plateOptional.orElse(""), state);
@@ -79,7 +86,7 @@ public class RegoLookupRouter {
 
         // Log the lookup attempt
         try {
-            CarRegoLookupDao.logLookup(transactionId, plateNumber, state, request_status);
+            carRegoLookupDao.logLookup(transactionId, plateNumber, state, request_status);
         } catch (DaoException e) {
             LOGGER.error("[rego lookup] Error logging car rego request {},{},{},{}", kv("transactionId", transactionId),
                     kv("plateNumber", plateNumber), kv("state", state), kv("request_status", request_status));

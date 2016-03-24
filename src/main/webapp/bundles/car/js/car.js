@@ -157,7 +157,9 @@
                         $emailQuoteBtn.removeClass("privacyOptinChecked");
                     }
                 });
-
+                if(meerkat.modules.splitTest.isActive(4)) {
+                    meerkat.modules.carRegoLookup.lookup();
+                }
             },
             validation: {
                 validate: true,
@@ -284,7 +286,8 @@
     }
 
     function configureProgressBar() {
-        meerkat.modules.journeyProgressBar.configure([
+
+        var progressBarConfig = [
             {
                 label: 'Your Car',
                 navigationId: steps.startStep.navigationId
@@ -305,7 +308,15 @@
                 label: 'Your Quotes',
                 navigationId: steps.resultsStep.navigationId
             }
-        ]);
+        ];
+        // Split Test for Rego Lookup Combines the first two steps in the progress bar.
+        if(meerkat.modules.splitTest.isActive(4)) {
+            // Make car details match your car.
+            progressBarConfig[0].matchAdditionalSteps = [steps.optionsStep.navigationId];
+            //Remove the car details step.
+            progressBarConfig.splice(1,1);
+        }
+        meerkat.modules.journeyProgressBar.configure(progressBarConfig);
     }
 
     // Build an object to be sent by SuperTag tracking.
