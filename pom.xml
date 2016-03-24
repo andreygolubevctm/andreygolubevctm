@@ -31,7 +31,7 @@
         <cxf.version>3.0.1</cxf.version>
         <spring-boot.version>1.2.7.RELEASE</spring-boot.version>
         <spring-boot-legacy.version>1.0.1.RELEASE</spring-boot-legacy.version>
-        <spring.version>4.1.8.RELEASE</spring.version> <!-- must match spring version -->
+        <spring.version>4.2.4.RELEASE</spring.version> <!-- must match spring version -->
         <spring.ws.version>2.2.0.RELEASE</spring.ws.version>
         <tomcat.version>7.0.65</tomcat.version>
         <jaxws-maven-plugin.version>2.3</jaxws-maven-plugin.version>
@@ -458,6 +458,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-oxm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
             <version>${spring.version}</version>
         </dependency>
 

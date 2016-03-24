@@ -2,31 +2,58 @@ package com.ctm.web.car.router;
 
 import com.ctm.web.car.model.*;
 import com.ctm.web.car.services.CarVehicleSelectionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 @Path("/car")
 public class CarRouter {
+	private static final Logger LOGGER = LoggerFactory.getLogger(CarRouter.class);
 
 	@GET
 	@Path("/makes/list.json")
 	@Produces("application/json")
-	public Map<String, List<CarMake>> getMakes() {
+	public Map<String, List<CarMake>> getMakes(@Context HttpServletRequest request,
+											   @Context HttpServletResponse response) {
+		addAllowOriginHeader(request, response);
+
 		Map<String, List<CarMake>> result = new HashMap<>();
 		result.put(CarMake.JSON_COLLECTION_NAME, CarVehicleSelectionService.getAllMakes());
 		return result;
 	}
 
+	private void addAllowOriginHeader(@Context HttpServletRequest request, @Context HttpServletResponse response) {
+		final Optional<String> origin = Optional.ofNullable(request.getHeader("Origin"))
+				.map(String::toLowerCase)
+				.filter(s -> s.contains("comparethemarket.com.au"));
+		if(origin.isPresent()) {
+			LOGGER.debug("Adding Allow-Origin header for: {}", kv("remote address access", origin));
+			response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		}
+	}
+
 	@GET
 	@Path("/models/list.json")
 	@Produces("application/json")
-	public Map<String, List<CarModel>> getModels(@QueryParam("make") String makeCode) {
+	public Map<String, List<CarModel>> getModels(@QueryParam("make") String makeCode,
+												 @Context HttpServletRequest request,
+												 @Context HttpServletResponse response) {
+		addAllowOriginHeader(request, response);
+
 		Map<String, List<CarModel>> result = new HashMap<>();
 		result.put(CarModel.JSON_COLLECTION_NAME, CarVehicleSelectionService.getModels(makeCode));
 		return result;
@@ -35,7 +62,12 @@ public class CarRouter {
 	@GET
 	@Path("/years/list.json")
 	@Produces("application/json")
-	public Map<String, List<CarYear>> getYears(@QueryParam("make") String makeCode, @QueryParam("model") String modelCode) {
+	public Map<String, List<CarYear>> getYears(@QueryParam("make") String makeCode,
+											   @QueryParam("model") String modelCode,
+											   @Context HttpServletRequest request,
+											   @Context HttpServletResponse response) {
+		addAllowOriginHeader(request, response);
+
 		Map<String, List<CarYear>> result = new HashMap<>();
 		result.put(CarYear.JSON_COLLECTION_NAME, CarVehicleSelectionService.getYears(makeCode, modelCode));
 		return result;
