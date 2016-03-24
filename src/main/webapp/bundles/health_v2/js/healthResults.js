@@ -4,7 +4,6 @@
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
         $resultsLowNumberMessage,
-        $component, //Stores the jQuery object for the component group
         selectedProduct = null,
         previousBreakpoint,
         best_price_count = 5,
@@ -12,6 +11,7 @@
         selectedBenefitsList,
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
+        resultsStepIndex =  3,
 
         templates = {
             premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
@@ -428,18 +428,7 @@
         });
 
         // When the excess filter changes, fetch new results
-        meerkat.messaging.subscribe(meerkatEvents.healthFilters.CHANGED, function onFilterChange(obj) {
-            if (obj && obj.hasOwnProperty('filter-frequency-change')) {
-                meerkat.modules.resultsTracking.setResultsEventMode('Refresh'); // Only for events that dont cause a new TranId
-            } else {
-                // This is a little dirty however we need to temporarily override the
-                // setting which prevents the tranId from being incremented.
-                // Object only has value in above case, otherwise empty
-                Results.settings.incrementTransactionId = true;
-                get();
-                Results.settings.incrementTransactionId = false;
-            }
-        });
+        meerkat.messaging.subscribe(meerkatEvents.healthFilters.CHANGED, meerkat.modules.healthResultsChange.onFilterChange);
 
     }
 
@@ -741,29 +730,6 @@
         });
     }
 
-
-    // Change the results templates to promote features to the 'selected' features row.
-
-    function onBenefitsSelectionChange(selectedBenefits, callback) {
-
-        selectedBenefitsList = selectedBenefits;
-
-        // when hospital is set to off in [Customise Cover] hide the excess section
-        var $excessSection = $component.find('.cell.excessSection');
-        _.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
-
-        // If on the results step, reload the results data. Can this be more generic?
-        if (typeof callback === 'undefined') {
-            if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 3) {
-                get();
-            }
-        } else {
-            callback();
-        }
-
-    }
-
-
     function onResultsLoaded() {
 
         if (meerkat.modules.deviceMediaState.get() == "xs") {
@@ -920,13 +886,14 @@
     }
 
     function init() {
-
-        $component = $("#resultsPage");
-
-        meerkat.messaging.subscribe(meerkatEvents.healthBenefits.CHANGED, onBenefitsSelectionChange);
+        meerkat.messaging.subscribe(meerkatEvents.healthBenefits.CHANGED, meerkat.modules.healthResultsChange.onBenefitsSelectionChange);
         meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
     }
 
+
+    function setSelectedBenefitsList(selectedBenefits){
+        selectedBenefitsList = selectedBenefits;
+    }
 
     meerkat.modules.register('healthResults', {
         init: init,
@@ -946,11 +913,12 @@
         stopColumnWidthTracking: stopColumnWidthTracking,
         toggleMarketingMessage: toggleMarketingMessage,
         toggleResultsLowNumberMessage: toggleResultsLowNumberMessage,
-        onBenefitsSelectionChange: onBenefitsSelectionChange,
         recordPreviousBreakpoint: recordPreviousBreakpoint,
         rankingCallback: rankingCallback,
         publishExtraSuperTagEvents: publishExtraSuperTagEvents,
-        setLhcApplicable: setLhcApplicable
+        setLhcApplicable: setLhcApplicable,
+        resultsStepIndex : resultsStepIndex,
+        setSelectedBenefitsList : setSelectedBenefitsList
     });
 
 })(jQuery);
