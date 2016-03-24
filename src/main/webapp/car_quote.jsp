@@ -101,21 +101,8 @@
 			<li class="slide-feature-filters hidden-sm hidden-md hidden-lg" id="">
 				<a href="javascript:;"><span class="icon icon-filter"></span> <span>Filter Results</span></a>
 			</li>
-				
-			<%-- @todo = showReferenceNo needs to be an attribute, this tag should potentially be rewritten or moved in a different place + that script is loaded via a marker in the tag. Probably should be moved to journey_engine_page --%>
-			<%-- Reference number is not visible on CAR yet, until the inbound call centre. --%>
-			<li class="navbar-text hidden">
-				<form_v2:reference_number />
-			</li>
 		</ul>
-		<%-- Out of scope originally.
-		<div>
-			<ul>
-			<li><span class="icon icon-info"></span> Need some help?</li>
-			<li><span class="icon icon-thumbsup"></span> Got some feedback?</li>
-			</ul>
-		</div>
-		--%>
+
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
 		</div>
