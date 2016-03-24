@@ -151,6 +151,12 @@
 			onInitialise: function onInitResults(event){
 				meerkat.modules.lifeResults.initLifeResults();
 			},
+			onBeforeEnter: function enterResultsStep(event) {
+				Results.removeSelectedProduct();
+				// Always force it to be a "Load" in Life, as currently, we always get a new tranid.
+				meerkat.modules.resultsTracking.setResultsEventMode('Load');
+				$('#resultsPage').addClass('hidden');
+			},
 			onAfterEnter: function afterEnterResults(event) {
 				if (event.isForward === true) {
 					meerkat.modules.lifeResults.get();

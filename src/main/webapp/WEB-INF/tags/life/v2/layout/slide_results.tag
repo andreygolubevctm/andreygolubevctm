@@ -14,6 +14,7 @@
 
 			<layout_v1:slide_content>
 
+				<life_v2:results />
 
 			</layout_v1:slide_content>
 
