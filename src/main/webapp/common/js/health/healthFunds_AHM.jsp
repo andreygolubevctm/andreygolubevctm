@@ -196,8 +196,8 @@ var healthFunds_AHM = {
     meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
-    healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
-    healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
     $('#update-premium').off('click.AHM');
 
     <%--Payment gateway--%>

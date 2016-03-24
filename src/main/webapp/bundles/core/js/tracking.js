@@ -229,8 +229,8 @@
         // Create the value object here, to reduce duplicate code.
         var values, object = eventObject.object;
 
-        if (meerkat.site.tracking.superTagEnabled === true || meerkat.site.tracking.DTMEnabled === true) {
-            values = typeof object === 'function' ? object() : object;
+        if (meerkat.site.tracking.superTagEnabled === true || meerkat.site.tracking.DTMEnabled === true || meerkat.site.tracking.GTMEnabled === true) {
+        values = typeof object === 'function' ? object() : object;
         } else {
             // just set it to what it originally was.
             values = object;

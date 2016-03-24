@@ -36,7 +36,7 @@
                               required="true"
                               ageMin="17"
                               ageMax="99"
-                              title="date of birth" />
+                              title="" />
     </form_v3:row>
 
     <c:set var="fieldXPath" value="${xpath}/mobile" />

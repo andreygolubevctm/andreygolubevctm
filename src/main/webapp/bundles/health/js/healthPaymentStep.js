@@ -488,7 +488,6 @@
 		}
 	}
 
-
 	meerkat.modules.register("healthPaymentStep", {
 		init: initHealthPaymentStep,
 		events: moduleEvents,

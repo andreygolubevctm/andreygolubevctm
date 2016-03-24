@@ -49,9 +49,9 @@ set: function () {
 			var d = pad(date.getDate().toString(), 2);
 			var m = pad((date.getMonth()+1).toString(), 2);
 			var y = date.getFullYear();
-			var _html = healthFunds._paymentDays(d + '/' + m + '/' + y);
-			healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-			healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+			var _html = meerkat.modules.healthPaymentDay.paymentDays(d + '/' + m + '/' + y);
+			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
 
 			<%-- Select the only option --%>
 			$('.health-credit-card_details-policyDay').prop('selectedIndex',1);
@@ -103,8 +103,8 @@ set: function () {
 		meerkat.modules.healthPaymentIPP.hide();
 
 		<%-- selections for payment date --%>
-		healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
-		healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
 		$('#update-premium').off('click.BUP');
 
 		$('.bup-payment-legend').remove();

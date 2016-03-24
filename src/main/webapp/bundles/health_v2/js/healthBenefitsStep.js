@@ -30,7 +30,7 @@
             $benefitsForm = $('#benefitsForm');
             $hiddenFields = $('#mainform').find('.hiddenFields');
 
-            if (meerkat.modules.splitTest.isActive(13)) {
+            if (meerkat.modules.healthTiers.isActive()) {
                 $hospitalCover = $('.Hospital_container');
                 $hospitalCoverToggles = $('.hospitalCoverToggles a'),
                     $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]'),
@@ -73,7 +73,7 @@
             $coverType.val('C').change();
         });
 
-        if (!meerkat.modules.splitTest.isActive(13)) {
+        if (!meerkat.modules.healthTiers.isActive()) {
             $('#health_situation_healthSitu')
                 .add('#health_healthCover_primary_dob')
                 .add('#health_healthCover_partner_dob')
@@ -90,7 +90,7 @@
         });
 
 
-        if (meerkat.modules.splitTest.isActive(13)) {
+        if (meerkat.modules.healthTiers.isActive()) {
             toggleBenefits();
             hospitalCoverToggleEvents();
 
@@ -180,7 +180,7 @@
         $benefitsForm.find('.hasShortlistableChildren').each(function () {
             var $this = $(this);
 
-            if (meerkat.modules.splitTest.isActive(13)) {
+            if (meerkat.modules.healthTiers.isActive()) {
 
                 //This is for the split test. The classNames in the database need to remain as is for the default but we need to force an icon
                 $this.find('.category[class*="CTMNoIcon"]').each(function () {
@@ -206,7 +206,7 @@
             $this.find('.subTitle').insertAfter($this.find('.hasIcons'));
         });
 
-        if (!meerkat.modules.splitTest.isActive(13)) {
+        if (!meerkat.modules.healthTiers.isActive()) {
             // Move the sidebar to the end of the container
             $benefitsForm.find('.sidebarHospital').insertAfter($benefitsForm.find('.extrasCover'));
 

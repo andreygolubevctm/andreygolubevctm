@@ -38,6 +38,8 @@ public class Vehicle {
 
     private String redbookCode;
 
+    private String nvicCode;
+
     private String registrationYear;
 
     private String securityOption;
@@ -198,6 +200,14 @@ public class Vehicle {
 
     public void setRedbookCode(String redbookCode) {
         this.redbookCode = redbookCode;
+    }
+
+    public String getNvicCode() {
+        return nvicCode;
+    }
+
+    public void setNvicCode(String nvicCode) {
+        this.nvicCode = nvicCode;
     }
 
     public String getRegistrationYear() {
