@@ -12,8 +12,8 @@
 
 	var elements = {
 			fsg:			"#quote_fsg",
-			marketing:		"#quote_contactFieldSet input[name='quote_contact_marketing']",
-			oktocall:		"#quote_contactFieldSet input[name='quote_contact_oktocall']",
+			marketing:		"#quote_contact_marketing",
+			oktocall:		"#quote_contact_oktocall",
 			privacy:		"#quote_privacyoptin",
 			terms:			"#quote_terms",
 			phone:			"#quote_contact_phoneinput",
@@ -21,9 +21,6 @@
 			emailRow:		"#contactEmailRow",
 			email:			"#quote_contact_email"
 	};
-
-	elements.marketing = "#quote_contact_marketing";
-	elements.oktocall = "#quote_contact_oktocall";
 
 	function toggleValidation() {
 		var isMobile = meerkat.modules.performanceProfiling.isMobile();
