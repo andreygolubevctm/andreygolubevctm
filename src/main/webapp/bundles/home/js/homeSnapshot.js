@@ -25,6 +25,22 @@
         registerSnapShotFields();
 	}
 
+    function getHomeAmount($sourceElement) {
+        return meerkat.modules.home.getCoverType() === 'H' || meerkat.modules.home.getCoverType() === 'HC' ? $sourceElement.val() : '';
+    }
+
+    function getContentAmount($sourceElement) {
+        return meerkat.modules.home.getCoverType() === 'C' || meerkat.modules.home.getCoverType() === 'HC' ? $sourceElement.val() : '';
+    }
+
+    function getJointHolderName($sourceElement) {
+        return meerkat.modules.homePolicyHolder.getHasJointHolder() === true ? $sourceElement.val() + ' ' + $('#home_policyHolder_jointFirstName').val() + ' ' + $('#home_policyHolder_jointLastName').val() : '';
+    }
+
+    function getJointHolderDob($sourceElement) {
+        return meerkat.modules.homePolicyHolder.getHasJointHolder() === true ? $sourceElement.val() : '';
+    }
+
 	/**
 	 * Which icon to render depending on what the cover type is.
 	 */
@@ -76,6 +92,10 @@
                 _.defer(renderSnapshot);
             });
         });
+
+        $(".toggleJointPolicyHolder").on('click', function snapshotToogleClicked() {
+            _.defer(renderSnapshot);
+        });
     }
 
 	/**
@@ -116,7 +136,11 @@
 		init: initHomeSnapshot,
 		events: events,
 		getIcon: getIcon,
-		getAddress: getAddress
+		getAddress: getAddress,
+        getHomeAmount: getHomeAmount,
+        getContentAmount: getContentAmount,
+        getJointHolderName: getJointHolderName,
+        getJointHolderDob: getJointHolderDob
 	});
 
 })(jQuery);

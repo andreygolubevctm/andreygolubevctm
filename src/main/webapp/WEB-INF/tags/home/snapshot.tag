@@ -17,8 +17,8 @@
             <div class="icon icon-dollar"></div>
         </div>
         <div class="col-sm-10">
-            <p><strong>Home cover: </strong><span data-source="#home_coverAmounts_rebuildCostentry"></span></p>
-            <p><strong>Contents cover: </strong><span data-source="#home_coverAmounts_replaceContentsCostentry"></span></p>
+            <p><strong>Home cover: </strong><span data-source="#home_coverAmounts_rebuildCostentry" data-callback="meerkat.modules.homeSnapshot.getHomeAmount"></span></p>
+            <p><strong>Contents cover: </strong><span data-source="#home_coverAmounts_replaceContentsCostentry" data-callback="meerkat.modules.homeSnapshot.getContentAmount"></span></p>
         </div>
     </div>
     <div class="row snapshot holder-snapshot">
@@ -28,8 +28,8 @@
         <div class="col-sm-10">
             <p><strong>Policy holder: </strong><span data-source="#home_policyHolder_title"></span> <span data-source="#home_policyHolder_firstName"></span> <span data-source="#home_policyHolder_lastName"></span></p>
             <p><strong>DOB: </strong><span data-source="#home_policyHolder_dob"></span></p>
-            <p><strong>Joint Policy holder: </strong><span data-source="#home_policyHolder_jointTitle"></span> <span data-source="#home_policyHolder_jointFirstName"></span> <span data-source="#home_policyHolder_jointLastName"></span></p>
-            <p><strong>DOB: </strong><span data-source="#home_policyHolder_jointDob"></span></p>
+            <p><strong>Joint Policy holder: </strong><span data-source="#home_policyHolder_jointTitle" data-callback="meerkat.modules.homeSnapshot.getJointHolderName"></span></p>
+            <p><strong>DOB: </strong><span data-source="#home_policyHolder_jointDob" data-callback="meerkat.modules.homeSnapshot.getJointHolderDob"></span></p>
         </div>
     </div>
 </form_v2:fieldset>
