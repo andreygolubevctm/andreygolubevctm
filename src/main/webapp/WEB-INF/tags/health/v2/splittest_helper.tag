@@ -10,7 +10,7 @@
     <c:set var="showOptInOnSlide3" value="${not empty forceOptinOnSlide3 and forceOptinOnSlide3 eq 'Y'}" scope="session" />
 </c:if>
 
-<c:set var="newBenefitsLayoutSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 13)}" />
+<c:set var="newBenefitsLayoutSplitTest" scope="request" value="${true}" />
 
 <%-- HLT-3028 ABC Test for More Info Buy Button --%>
 
