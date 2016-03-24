@@ -14,6 +14,7 @@
         "shared/ie8SelectMenuAutoExpand",
         "shared/occupationSelector",
         "shared/placeholder",
-        "shared/popovers"
+        "shared/saveQuote",
+        "shared/leavePageWarning"
     ]
 }

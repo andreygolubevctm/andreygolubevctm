@@ -1,4 +1,3 @@
-;
 (function($, undefined) {
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
@@ -16,7 +15,7 @@
         month = Number(month) - 1;
         year = Number(year);
 
-        var age = today.getFullYear() - year
+        var age = today.getFullYear() - year;
 
         if(today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)){
             age--;
