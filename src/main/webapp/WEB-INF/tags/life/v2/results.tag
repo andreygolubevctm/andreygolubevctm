@@ -9,7 +9,8 @@
 <agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
     <%-- RESULTS TABLE --%>
     <div class="bridgingContainer"></div>
-    <div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
+
+    <div class="resultsContainer v2 fake-results-padding">
         <div class="featuresHeaders featuresElements">
             <div class="result headers">
                 <div class="resultInsert"></div>
@@ -28,7 +29,7 @@
 
         <div class="featuresFooterPusher"></div>
     </div>
-    <div>
+    <div class="fake-results-padding">
         <confirmation:other_products heading="" copy="Have you considered your other insurance needs? <span class='optinText'>comparethemarket.com.au</span> also compares:" id="resultsAlsoCompares"/>
     </div>
 
