@@ -43,6 +43,7 @@
         meerkat.modules.contentPopulation.render('.car-snapshot', true);
         meerkat.modules.contentPopulation.render('.driver-snapshot', true);
         meerkat.modules.contentPopulation.render('.parking-snapshot', true);
+        meerkat.modules.contentPopulation.render('#RegoFieldSet', true);
 	}
 
     // Register all fields change events here instead of doing it one by one through other modules (except the ones that have already registered through carVehicleSelection.js)
