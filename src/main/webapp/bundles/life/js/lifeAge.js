@@ -15,16 +15,16 @@
 
                 $container.find('input[id$="dobInput"]').each(function() {
                     var $this = $(this);
-                    var val;
+                    var val = $this.val();
 
                     if(!!val) {
-                        var dob_pieces = $this.val().split("/");
-                        var day = Number(dob_pieces[0]);
+                        var dob_pieces = val.split("-");
+                        var day = Number(dob_pieces[2]);
                         var month = Number(dob_pieces[1]) - 1;
-                        var year = Number(dob_pieces[2]);
+                        var year = Number(dob_pieces[0]);
 
-                        var age = meerkat.modules.age.getNextBirthday(day, month, year);
-                        $this.next('input[id$="_age"]').val(age);
+                        var age = meerkat.modules.age.get(day, month, year);
+                        $this.parents('row').find('input[id$="_age"]').val(age);
                     }
                 });
             })
