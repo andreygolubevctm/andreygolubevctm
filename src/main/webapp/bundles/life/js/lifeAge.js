@@ -24,7 +24,7 @@
                         var year = Number(dob_pieces[0]);
 
                         var age = meerkat.modules.age.get(day, month, year);
-                        $this.parents('row').find('input[id$="_age"]').val(age);
+                        $this.parents('.row').find('input[id$="_age"]').val(age);
                     }
                 });
             })
