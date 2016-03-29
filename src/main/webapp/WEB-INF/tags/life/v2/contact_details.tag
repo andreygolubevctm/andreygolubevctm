@@ -46,6 +46,8 @@
 				<field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}"/>
 			</form_v2:row>
 
+			<field_v1:hidden xpath="${xpath}/primary/state" />
+
 			<%-- COMPETITION START --%>
 			<c:if test="${competitionEnabled == true}">
 				<c:set var="competitionId"><content:get key="competitionId"/></c:set>

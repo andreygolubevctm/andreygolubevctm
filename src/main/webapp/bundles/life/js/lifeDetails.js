@@ -35,6 +35,23 @@
             $('#' + idPrefix + '_hannover').val(hannover);
             $('#' + idPrefix + '_occupationTitle').val(title);
         });
+
+        $('#life_primary_postCode').on('blur', function(e) {
+           meerkat.modules.comms.post({
+               url: '/' + meerkat.site.urls.context + 'ajax/json/get_state.jsp',
+               data: {
+                   postCode: $(this).val()
+               },
+               dataType: 'json',
+               cache: true,
+               errorLevel: 'silent',
+               onSuccess: function onSubmitSuccess(resultData) {
+                   if(_.isArray(resultData) && resultData.length) {
+                       $('#life_primary_state').val(resultData[0].state);
+                   }
+               }
+           });
+        });
     }
 
     function _triggerFieldEvents() {
