@@ -110,9 +110,6 @@
 			},
 			onInitialise:function onDetailsInit(event){
 				meerkat.modules.occupationSelector.initOccupationSelector();
-			},
-			onBeforeEnter: function onDetailsBeforeEnter(e) {
-				meerkat.modules.lifePrefill.occupations();
 			}
 		};
 
@@ -125,9 +122,7 @@
 				object:meerkat.modules.life.getTrackingFieldsObject
 			},
 			onInitialise: function aboutPartnerInit(event){
-			},
-			onBeforeEnter: function onDetailsBeforeEnter(e) {
-				meerkat.modules.lifePrefill.occupations();
+				meerkat.modules.occupationSelector.initOccupationSelector();
 			},
 			onAfterEnter: function aboutPartnerBeforeEnter(event){
 				meerkat.modules.lifePartner.toggleSkipToResults();

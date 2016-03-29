@@ -37,28 +37,33 @@
             $occupationSelector = $('input[type="text"][id$="_occupations"]');
             $unknownDestinations = $('input[type="hidden"][id$="_unknownOccupations"]');
             applyEventListeners();
-            //setDefaultsFromDataBucket();
+            setDefaultsFromDataBucket();
         }
     }
 
-    //function setDefaultsFromDataBucket() {
-    //    if (meerkat.site.occupationSelectionDefaults
-    //        && meerkat.site.occupationSelectionDefaults.length) {
-    //
-    //        var locations = meerkat.site.occupationSelectionDefaults.split(',');
-    //        var $list = meerkat.modules.selectTags.getListElement($occupationSelector);
-    //        for (var i = 0; i < locations.length; i++) {
-    //            if (locations[i].length) {
-    //                // will not work to re-set cities for example.
-    //                var locationName = findOccupationNameByIsoCode(locations[i]);
-    //                var selectedLocation = locationName.length > 25 ? locationName.substr(0, 20) + '...' : locationName;
-    //                meerkat.modules.selectTags.appendToTagList($list, selectedLocation, locationName, locations[i]);
-    //                $occupationSelector.val('');
-    //            }
-    //        }
-    //    }
-    //}
-    //
+    function setDefaultsFromDataBucket() {
+        $occupationSelector.each(function() {
+            var $hidden = $('#' + $(this).attr('id').slice(0, -1));
+
+            if(!!$hidden.val()) {
+                // Get the tag list
+                var $list = $hidden.parents('.row').next('.row').find('.selected-tags');
+
+                if(!!occupationSelectionList) {
+                    var selectedOccupation = occupationSelectionList.filter(function (val) {
+                        return val.code === $hidden.val();
+                    });
+
+                    if(_.isArray(selectedOccupation) && selectedOccupation.length) {
+                        var occ = selectedOccupation[0];
+                        var descriptionHTML = meerkat.modules.selectTags.getHTML(occ.description);
+                        meerkat.modules.selectTags.appendToTagList($list, descriptionHTML, occ.description, occ.code);
+                    }
+                }
+            }
+        });
+    }
+
     function applyEventListeners() {
         $occupationSelector
             .on('keydown', function (e) {
