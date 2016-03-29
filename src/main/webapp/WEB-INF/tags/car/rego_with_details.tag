@@ -15,14 +15,15 @@
                 <li><span data-source="#quote_vehicle_trans"></span></li>
                 <li><span data-source="#quote_vehicle_fuel"></span></li>
             </ul>
-            <ul class="rego-car-details-row clearfix">
+            <div class="clearfix"></div>
+            <ul class="rego-car-details-row">
                 <li>
                     <span data-source="#quote_vehicle_redbookCode"></span>
                 </li>
             </ul>
         </div>
         <div class="col-xs-4 col-lg-4 text-right">
-            <p class="rego-text">
+            <p class="rego-text invisible">
                 <span class="sessioncamhidetext" data-source="meerkat.site.vehicleSelectionDefaults.searchRego" data-type="object"></span>
             </p>
             <a href="javascript:;" data-slide-control="previous" class="small text-warning rego-not-my-car" title="Enter your car's details instead">this is not my car</a>

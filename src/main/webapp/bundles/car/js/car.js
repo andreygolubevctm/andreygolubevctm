@@ -310,7 +310,8 @@
             }
         ];
         // Split Test for Rego Lookup Combines the first two steps in the progress bar.
-        if(meerkat.modules.splitTest.isActive(4)) {
+        if(meerkat.modules.splitTest.isActive(4)
+        || meerkat.modules.splitTest.isActive(41)) {
             // Make car details match your car.
             progressBarConfig[0].matchAdditionalSteps = [steps.optionsStep.navigationId];
             //Remove the car details step.
