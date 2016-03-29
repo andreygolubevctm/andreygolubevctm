@@ -72,9 +72,8 @@
 						helpId="525"
 				/>
 				<field_v1:hidden xpath="${xpath}/unknownOccupation" />
-			<%-- <form_v2:row label="Occupation" id="${name}_yearRow" helpId="525">
-				<field_v1:general_select type="occupation" comboBox="true" xpath="${xpath}/occupation" hannoverXpath="${xpath}/hannover" required="true" title="${error_phrase}occupation"/>
-			</form_v2:row> --%>
+				<field_v1:hidden xpath="${xpath}/hannover" />
+				<field_v1:hidden xpath="${xpath}/occupationTitle" />
 
 		</form_v2:fieldset>
 	</jsp:body>

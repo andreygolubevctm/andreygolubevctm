@@ -25,6 +25,16 @@
         $('.insuranceAmountContainer input').on('blur', function() {
             $('.insuranceAmountContainer input').valid();
         });
+
+        $('#life_primary_occupations, #life_partner_occupations').on('typeahead:selected', function(e, data) {
+            var $this = $(this);
+            var idPrefix = $this.attr('id').replace('_occupations', '');
+            var hannover = data.groupId;
+            var title = data.description;
+
+            $('#' + idPrefix + '_hannover').val(hannover);
+            $('#' + idPrefix + '_occupationTitle').val(title);
+        });
     }
 
     function _triggerFieldEvents() {
