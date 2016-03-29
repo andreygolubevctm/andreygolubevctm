@@ -3,12 +3,14 @@ package com.ctm.web.car.dao;
 import com.ctm.web.car.model.*;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
+import org.springframework.stereotype.Component;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class CarRedbookDao {
 
     public CarRedbookDao() {

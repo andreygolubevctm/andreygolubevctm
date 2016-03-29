@@ -19,6 +19,9 @@
 
         $parent.on('focus', selector, function () {
             var el = $(this);
+            if(el.get(0).tagName.toLowerCase() !== 'select') {
+                return;
+            }
             el.data('width', el.width());
             el.width('auto');
             el.data('width-auto', $(this).width());

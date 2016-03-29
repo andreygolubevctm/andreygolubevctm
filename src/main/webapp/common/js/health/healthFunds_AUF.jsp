@@ -27,9 +27,9 @@ var healthFunds_AUF = {
     <%--selections for payment date--%>
     healthFunds._payments = { 'min':0, 'max':5, 'weekends':false };
     $('#update-premium').on('click.AUF', function(){
-      var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
-      healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-      healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+      var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+      meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+      meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
     });
 
     <%--credit card options--%>
@@ -51,8 +51,8 @@ var healthFunds_AUF = {
     meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
-    healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
-    healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
     $('#update-premium').off('click.AUF');
 
     <%--failed application--%>
