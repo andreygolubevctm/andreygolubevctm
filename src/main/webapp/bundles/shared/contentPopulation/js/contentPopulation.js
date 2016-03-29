@@ -32,18 +32,20 @@
 		});
 	}
 
-	/**
-	 * Loop through each element with data-source attribute within the container
-	 * Fill it with the content retrieved from the data-source
-	 * Can be used to retrieve any type of content, just add more conditions.
-	 * @param {String} container - Pass in a jQuery selector as the parent element wrapping the div template.
-	 */
-	function render(container) {
+    /**
+     * Loop through each element with data-source attribute within the container
+     * Fill it with the content retrieved from the data-source
+     * Can be used to retrieve any type of content, just add more conditions.
+     * @param {String} container - Pass in a jQuery selector as the parent element wrapping the div template.
+     * @param hasTitle - if true, toggle the display of the parent elment
+     */
+	function render(container, hasTitle) {
 
 		$('[data-source]', $(container)).each(function () {
 			var output = '',
 				$el = $(this),
-				$sourceElement = $($el.attr('data-source')),
+                dataType = $el.attr('data-type'),
+				$sourceElement = dataType == 'object' ? $el : $($el.attr('data-source')),
 				$alternateSourceElement = $($el.attr('data-alternate-source')); // used primarily with prefill data.
 
 			// If the source element doesn't exist, continue
@@ -51,8 +53,7 @@
 				return; // same as "continue" http://api.jquery.com/jquery.each/
 
 			// setup variables
-			sourceType = $sourceElement.get(0).tagName.toLowerCase(),
-				dataType = $el.attr('data-type'),
+			var sourceType = $sourceElement.get(0).tagName.toLowerCase(),
 				callback = $el.attr('data-callback');
 			/**
 			 * You can perform a callback function to create the output by adding: data-callback="meerkat.modules...."
@@ -151,15 +152,44 @@
 						}
 						break;
 					case 'object':
-						// get it from an object and do stuff
+						var object = $el.attr('data-source').split('.');
+						output = window;
+						try {
+							for (var k = 0; k < object.length; k++) {
+                                output = output[object[k]];
+                            }
+						} catch(e) {
+							output = "";
+						}
 						break;
 				}
 			}
 
 			// currently we only want to replace the elements html, potential to replace value, select options...? extend this with further data options.
 			$el.html(output);
+
+            // If each snapshot has a heading/title, hide the parent element when it has no value
+            // default implementation of the html in jsp should follow car/snapshot.tag to make this work
+            if (hasTitle) {
+                var $parent = $el.parent();
+                $parent.toggle(output !== '' || hasData($parent));
+            }
 		});
+
+        // Check if the container has value for at least one [data-source]. Hide the container if false.
+        $(container).toggle(hasData($(container)));
 	}
+
+    function hasData($container) {
+        var hasData = false;
+        $container.find('[data-source]').each( function() {
+            if ($(this).html() !== '') {
+                hasData = true;
+                return false; // get out of the jQuery.each..
+            }
+        });
+        return hasData;
+    }
 
 	meerkat.modules.register('contentPopulation', {
 		init: init,

@@ -11,7 +11,8 @@
 	var moduleEvents = {}, steps = null;
 
 	/* Variables */
-	var initialised = false;
+	var initialised = false,
+        hasJointHolder = false;
 	var elements = {
 			name:						'home_policyHolder',
 			anyoneOlder:				'home_policyHolder_anyoneOlder',
@@ -98,11 +99,13 @@
 			});
 			elements.toggleJointPolicyHolder.on("click", function(){
 				if ( elements.jointPolicyHolder.is(":visible") ){
+                    hasJointHolder = false;
 					elements.jointPolicyHolder.slideUp(400, function() {
 						blurOldestPersonField();
 					});
 					elements.addPolicyHolderBtn.slideDown();
 				} else {
+                    hasJointHolder = true;
 					elements.jointPolicyHolder.slideDown(400, function() {
 						blurOldestPersonField();
 					});
@@ -112,6 +115,9 @@
 			});
 		});
 	}
+    function getHasJointHolder() {
+        return hasJointHolder;
+    }
 	/* main entrypoint for the module to run first */
 	function initHomePolicyHolder() {
 		if(!initialised) {
@@ -131,6 +137,7 @@
 	meerkat.modules.register('homePolicyHolder', {
 		initHomePolicyHolder: initHomePolicyHolder, //main entrypoint to be called.
 		togglePolicyHolderFields : togglePolicyHolderFields,
+        getHasJointHolder: getHasJointHolder,
 		events: moduleEvents //exposes the events object
 		//here you can optionally expose functions for use on the 'meerkat.modules.example' object
 	});

@@ -770,8 +770,8 @@
 				},
 				// otherPhone and mobile from quote step
 				{
-					$field: $("#health_contactDetails_contactNumber_mobile"),
-					$otherField: $("#health_contactDetails_contactNumber_other")
+					$field: $("#health_application_mobileinput"),
+					$otherField: $("#health_application_otherinput")
 				}
 			],
 			postcode: [

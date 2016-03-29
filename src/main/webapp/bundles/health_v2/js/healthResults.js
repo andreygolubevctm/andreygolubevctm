@@ -425,6 +425,16 @@
 
                     $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
                 });
+
+            coverType = meerkat.modules.splitTest.isActive(13) ? $('#health_situation_coverType input').filter(":checked").val() : $('#health_situation_coverType').val();
+
+            if(coverType === 'E') {
+                $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');
+            }
+            if(coverType === 'H') {
+                $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
+            }
+
         });
 
         // When the excess filter changes, fetch new results
@@ -729,6 +739,29 @@
 
         });
     }
+
+
+    // Change the results templates to promote features to the 'selected' features row.
+
+    function onBenefitsSelectionChange(selectedBenefits, callback) {
+
+        selectedBenefitsList = selectedBenefits;
+
+        // when hospital is set to off in [Customise Cover] hide the excess section
+        var $excessSection = $component.find('.cell.excessSection');
+        _.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
+
+         // If on the results step, reload the results data. Can this be more generic?
+        if (typeof callback === 'undefined') {
+            if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 3) {
+                get();
+            }
+        } else {
+            callback();
+        }
+
+    }
+
 
     function onResultsLoaded() {
 

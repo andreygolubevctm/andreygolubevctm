@@ -5,5 +5,5 @@
 
 <%-- HTML --%>
 <agg_v1:footer_outer>
-	<content:get key="footerTextStart"/><content:get key="footerParticipatingSuppliers"/><content:get key="footerTextEnd"/>
+	<content:get key="footerText"/>
 </agg_v1:footer_outer>
