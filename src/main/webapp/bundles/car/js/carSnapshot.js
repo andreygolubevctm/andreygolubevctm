@@ -39,7 +39,7 @@
 			$snapshotBox.addClass('hidden');
 		}
 
-        meerkat.modules.contentPopulation.render('.header-wrap');
+        meerkat.modules.contentPopulation.render('.header-wrap .quoteSnapshot');
         meerkat.modules.contentPopulation.render('.car-snapshot', true);
         meerkat.modules.contentPopulation.render('.driver-snapshot', true);
         meerkat.modules.contentPopulation.render('.parking-snapshot', true);
