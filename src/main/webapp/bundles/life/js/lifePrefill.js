@@ -11,8 +11,8 @@
             $('#life_primary_occupation, #life_partner_occupation').each(function() {
                 var $this = $(this);
                 if(!!$this.val()) {
-                    // Get the pluralised field
-                    var $displayField = $this.parents('.row-content').find('#' + $this.attr('id') + 's');
+                    // Get the tag list
+                    var $list = $this.parents('.row').next('.row').find('.selected-tags');
 
                     if(!!occupationSelectionList) {
                         var selectedOccupation = occupationSelectionList.filter(function (val) {
@@ -20,7 +20,9 @@
                         });
 
                         if(_.isArray(selectedOccupation) && selectedOccupation.length) {
-                            $displayField.typeahead('setQuery', selectedOccupation[0].description);
+                            var occ = selectedOccupation[0];
+                            var descriptionHTML = meerkat.modules.selectTags.getHTML(occ.description);
+                            meerkat.modules.selectTags.appendToTagList($list, descriptionHTML, occ.description, occ.code);
                         }
                     }
                 }

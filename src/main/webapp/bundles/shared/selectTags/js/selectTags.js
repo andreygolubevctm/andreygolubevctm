@@ -55,20 +55,21 @@
         $element.append(optionsHTML);
     }
 
+    function _trim(text) {
+        return (text.length > 25) ? text.substr(0, 20) + '...' : text;
+    }
+
+    function getHTML(text) {
+        return '<span>' + _trim(text) + '</span>';
+    }
+
     function _onOptionSelect(selectElement) {
         var $select = $(selectElement),
             $selected = $select.find('option:selected'),
             value = $select.val(),
             $list = getListElement($select),
             selectedText = $selected.text(),
-            selectedTextHTML = selectedText;
-
-        if (selectedTextHTML.length > 25) {
-            selectedTextHTML = selectedTextHTML.substr(0, 20) + '...';
-        }
-
-        selectedTextHTML = '<span>' + selectedTextHTML + '</span>';
-
+            selectedTextHTML = getHTML(selectedText);
 
         if ($selected.not('[readonly]').length && !isAlreadySelected(value)) {
             $select[0].selectedIndex = 0;
@@ -190,7 +191,8 @@
         getListElement: getListElement,
         appendToTagList: appendToTagList,
         isAlreadySelected: isAlreadySelected,
-        getItemsSelected: getItemsSelected
+        getItemsSelected: getItemsSelected,
+        getHTML: getHTML
     });
 
 })(jQuery);
