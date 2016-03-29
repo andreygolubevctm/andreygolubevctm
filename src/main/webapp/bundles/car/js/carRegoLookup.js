@@ -30,7 +30,7 @@
     }
 
     function applyEventListeners() {
-        meerkat.messaging.subscribe(meerkatEvents.car.VEHICLE_CHANGED, function invisibleRego(states) {
+        meerkat.messaging.subscribe(meerkatEvents.car.DROPDOWN_CHANGED, function invisibleRego(states) {
             $('.rego-text').addClass('invisible');
         });
     }
@@ -60,6 +60,7 @@
             }).done(meerkat.modules.journeyEngine.loadingHide)
                 .fail(meerkat.modules.journeyEngine.loadingHide)
                 .then(function () {
+
                     $('.rego-text').removeClass('invisible');
                 });
         }
