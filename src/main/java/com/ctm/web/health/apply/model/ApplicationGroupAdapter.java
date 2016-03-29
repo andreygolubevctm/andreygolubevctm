@@ -77,7 +77,7 @@ public class ApplicationGroupAdapter {
         if (person.isPresent()) {
             return new Applicant(
                     person.map(Person::getTitle)
-                            .map(Title::valueOf)
+                            .map(Title::findByCode)
                             .orElse(null),
                     person.map(Person::getFirstname)
                             .map(FirstName::new)
@@ -147,7 +147,7 @@ public class ApplicationGroupAdapter {
         if (dependant.isPresent()) {
             return new com.ctm.web.health.apply.model.request.application.dependant.Dependant(
                     dependant.map(com.ctm.web.health.model.form.Dependant::getTitle)
-                            .map(Title::valueOf)
+                            .map(Title::findByCode)
                             .orElse(null),
                     dependant.map(com.ctm.web.health.model.form.Dependant::getFirstname)
                             .map(FirstName::new)
@@ -168,7 +168,7 @@ public class ApplicationGroupAdapter {
                             .map(SchoolId::new)
                             .orElse(null),
                     dependant.map(com.ctm.web.health.model.form.Dependant::getTitle)
-                            .map(Title::valueOf)
+                            .map(Title::findByCode)
                             .filter(t -> t == Title.MR)
                             .map(v -> Gender.M)
                             .orElse(Gender.F),
