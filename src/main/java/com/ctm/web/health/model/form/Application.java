@@ -42,6 +42,8 @@ public class Application {
 
     private Qch qch;
 
+    private Nav nav;
+
     public Address getAddress() {
         return address;
     }
@@ -200,5 +202,13 @@ public class Application {
 
     public void setQch(Qch qch) {
         this.qch = qch;
+    }
+
+    public Nav getNav() {
+        return nav;
+    }
+
+    public void setNav(Nav nav) {
+        this.nav = nav;
     }
 }

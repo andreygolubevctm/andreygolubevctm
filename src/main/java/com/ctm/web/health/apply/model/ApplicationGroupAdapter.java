@@ -174,6 +174,9 @@ public class ApplicationGroupAdapter {
                             .orElse(Gender.F),
                     dependant.map(com.ctm.web.health.model.form.Dependant::getFulltime)
                             .map(FullTimeStudent::valueOf)
+                            .orElse(null),
+                    dependant.map(com.ctm.web.health.model.form.Dependant::getRelationship)
+                            .map(Relationship::fromCode)
                             .orElse(null));
         } else {
             return null;
