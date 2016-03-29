@@ -20,7 +20,7 @@
                     if(!!val) {
                         var dob_pieces = val.split("-");
                         var day = Number(dob_pieces[2]);
-                        var month = Number(dob_pieces[1]) - 1;
+                        var month = Number(dob_pieces[1]);
                         var year = Number(dob_pieces[0]);
 
                         var age = meerkat.modules.age.get(day, month, year);
