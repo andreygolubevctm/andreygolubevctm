@@ -49,7 +49,7 @@
 			<div class="col-lg-3 col-sm-4 col-xs-6">
 				<a href="${verticalSettings.getSetting('exitUrl')}"
 					title="${vertical.getName()}">
-					<div class="icon icon-${fn:toLowerCase(vertical.getCode())}"></div>${titleParts[0]}<span>${title2}</span>
+					<div class="icon icon-${fn:toLowerCase(vertical.getCode())}"></div>${titleParts[0]}<span>&nbsp;${title2}</span>
 				</a>
 			</div>
 		</c:if>
