@@ -104,12 +104,10 @@
 
 	<jsp:attribute name="form_bottom"></jsp:attribute>
 
-	<jsp:attribute name="footer">
-		<travel:footer />
-	</jsp:attribute>
+	<jsp:attribute name="footer"></jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">
-		<travel:settings />
+		<life_v2:settings />
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
