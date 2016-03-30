@@ -37,6 +37,7 @@
         });
 
         $('#life_primary_postCode').on('blur', function(e) {
+            meerkat.messaging.publish(meerkat.modules.events.WEBAPP_UNLOCK, { source: 'lifeDetails.js' });
            meerkat.modules.comms.post({
                url: '/' + meerkat.site.urls.context + 'ajax/json/get_state.jsp',
                data: {
@@ -49,6 +50,9 @@
                    if(_.isArray(resultData) && resultData.length) {
                        $('#life_primary_state').val(resultData[0].state);
                    }
+               },
+               onComplete: function onSubmitComplete() {
+                   meerkat.messaging.publish(meerkat.modules.events.WEBAPP_UNLOCK, { source: 'lifeDetails.js' });
                }
            });
         });
