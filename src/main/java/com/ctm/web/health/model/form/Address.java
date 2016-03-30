@@ -26,6 +26,8 @@ public class Address {
 
     private String unitShop;
 
+    private String unitType;
+
     public String getType() {
         return type;
     }
@@ -120,5 +122,13 @@ public class Address {
 
     public void setUnitShop(String unitShop) {
         this.unitShop = unitShop;
+    }
+
+    public String getUnitType() {
+        return unitType;
+    }
+
+    public void setUnitType(String unitType) {
+        this.unitType = unitType;
     }
 }

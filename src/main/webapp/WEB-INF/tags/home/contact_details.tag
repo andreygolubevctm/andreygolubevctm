@@ -20,24 +20,7 @@
 	</form_v2:row>
 
 	<%-- Marketing --%>
-	<c:choose>
-		<c:when test="${singleOptinSplitTest eq true}">
-			<field_v1:hidden xpath="${xpath}/marketing" defaultValue="N" />
-		</c:when>
-		<c:otherwise>
-			<c:set var="fieldXPath" value="${xpath}/marketing" />
-			<form_v2:row fieldXpath="${fieldXPath}" label="OK to email">
-				<field_v2:array_radio xpath="${fieldXPath}"
-									  required="true"
-									  items="Y=Yes,N=No"
-									  className="pretty_buttons"
-									  id="marketing"
-									  title="if you would like to be informed via email of news and other offers"
-									  additionalAttributes=" data-rule-validateOkToEmailRadio='true' " />
-				<content:optin key="okToEmail"/>
-			</form_v2:row>
-		</c:otherwise>
-	</c:choose>
+	<field_v1:hidden xpath="${xpath}/marketing" defaultValue="N" />
 
 	<%-- Best Contact Number --%>
 	<c:set var="fieldXPath" value="${xpath}/phone" />
@@ -50,33 +33,9 @@
 	</form_v2:row>
 
 	<%-- OK to call --%>
-	<c:choose>
-		<c:when test="${singleOptinSplitTest eq true}">
-			<field_v1:hidden xpath="${xpath}/oktocall" defaultValue="N" />
-		</c:when>
-		<c:otherwise>
-			<c:set var="fieldXPath" value="${xpath}/oktocall" />
-			<form_v2:row fieldXpath="${fieldXPath}" label="OK to call">
-				<field_v2:array_radio xpath="${fieldXPath}"
-					required="true"
-					items="Y=Yes,N=No"
-					className="pretty_buttons"
-					id="oktocall"
-					title="if it's OK to call the policy holder regarding the lowest price quote"
-				    additionalAttributes=" data-rule-validateOkToCallRadio='true' " />
-				<p class="optinText">I give permission for the insurance provider that presents the lowest price to call me within the next 4 business days to discuss my home &amp; contents insurance needs.</p>
-			</form_v2:row>
-		</c:otherwise>
-	</c:choose>
+	<field_v1:hidden xpath="${xpath}/oktocall" defaultValue="N" />
 
 	<%-- Mandatory agreement to privacy policy --%>
-	<c:choose>
-		<c:when test="${singleOptinSplitTest eq true}">
-			<field_v1:hidden xpath="home/privacyoptin" defaultValue="N" />
-		</c:when>
-		<c:otherwise>
-			<form_v2:privacy_optin vertical="home" />
-		</c:otherwise>
-	</c:choose>
+	<field_v1:hidden xpath="home/privacyoptin" defaultValue="N" />
 
 </form_v2:fieldset>

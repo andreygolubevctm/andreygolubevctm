@@ -1,44 +1,39 @@
 /* TODO: to read the src from DB so we don't have to set this up for each promo */
 .health100eftpos {
-	width: 280px;
-	height: 175px;
-	.highResImg('../graphics/coupon/100-eftpos-card.jpg'; '../graphics/coupon/100-eftpos-card@2x.jpg'; 280px; 175px);
+  width: 280px;
+  height: 175px;
+  .highResImg('../graphics/coupon/100-eftpos-card.jpg'; '../graphics/coupon/100-eftpos-card@2x.jpg'; 280px; 175px);
 }
 
 .health200eftpos {
-	width: 280px;
-	height: 177px;
-	.highResImg('../graphics/coupon/200-eftpos-card.png'; '../graphics/coupon/200-eftpos-card@2x.png'; 280px; 177px);
+  width: 280px;
+  height: 177px;
+  .highResImg('../graphics/coupon/200-eftpos-card.png'; '../graphics/coupon/200-eftpos-card@2x.png'; 280px; 177px);
 }
 
 .healthX00eftpos {
-	width: 280px;
-	height: 177px;
-	.highResImg('../graphics/coupon/blank-eftpos-card.png'; '../graphics/coupon/blank-eftpos-card@2x.png'; 280px; 177px);
+  width: 280px;
+  height: 177px;
+  .highResImg('../graphics/coupon/blank-eftpos-card.png'; '../graphics/coupon/blank-eftpos-card@2x.png'; 280px; 177px);
 }
 
-
-img.affixed-tile{
-  display:none
+img.affixed-tile {
+  display: none
 }
 
 .resultsContainer.featuresMode {
-  .compare-basket{
+  .compare-basket {
     &.tile-enabled {
       p {
         display: none;
       }
     }
   }
-  &.affixed-compact{
-    .compare-basket{
+
+  &.affixed-compact {
+    .compare-basket {
       &.tile-enabled {
         bottom: 0;
-        .coupon-tile-container {
-          img.affixed-tile{
-            display:block;
-          }
-        }
       }
     }
   }
@@ -48,5 +43,51 @@ img.affixed-tile{
   h2 {
     font-family: @font-family-theme-bold;
     font-size: 24px;
+  }
+}
+// HLT-3066 promotion
+.resultsContainer.featuresMode {
+  .compare-basket {
+    &.tile-enabled {
+      img {
+        display: none;
+      }
+      width: 100%;
+      background-repeat: no-repeat;
+      background-position: top left;
+      @media (@sm-only) {
+        background-image: url('../graphics/coupon/100-promotion-tile-sm.jpg');
+        height: 200px;
+      }
+      @media (@md-only) {
+        background-image: url('../graphics/coupon/100-promotion-tile-md.jpg');
+        height: 200px;
+      }
+      @media (@lg-only) {
+        background-image: url('../graphics/coupon/100-promotion-tile.jpg');
+        height: 197px;
+      }
+    }
+  }
+
+  &.affixed-compact {
+    .compare-basket {
+      &.tile-enabled {
+        display: block;
+        @media (@sm-only) {
+          background-image: url('../graphics/coupon/100-promotion-tile-affixed-sm.jpg');
+          height: 120px;
+          width: 178px;
+        }
+        @media (@md-only) {
+          background-image: url('../graphics/coupon/100-promotion-tile-affixed-md.jpg');
+          height: 130px;
+        }
+        @media (@lg-only) {
+          background-image: url('../graphics/coupon/100-promotion-tile-affixed.jpg');
+          height: 130px;
+        }
+      }
+    }
   }
 }

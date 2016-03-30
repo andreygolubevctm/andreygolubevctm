@@ -20,6 +20,10 @@
 					<p>By listing all of the options, accessories and modifications, the insurer will be able to get a more accurate idea of the car's true value.</p>
 				</ui:bubble>
 
+				<c:if test="${regoLookupSplitTest eq true and not empty param.quote_vehicle_searchRego and not empty param.quote_vehicle_searchState}">
+				    <car:rego_with_details />
+				</c:if>
+
 				<car:options_factory xpath="${xpath}/vehicle/factoryOptions" />
 
 				<car:options_accessories xpath="${xpath}/vehicle/accessories" />

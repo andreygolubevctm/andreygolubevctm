@@ -44,35 +44,8 @@
 			validationAttribute=" data-rule-validateOkToCall='true' "/>
 	</form_v2:row>
 
-
-<c:choose>
-	<c:when test="${singleOptinSplitTest eq true}">
-		<field_v1:hidden xpath="quote/contact/marketing" defaultValue="N" />
-		<field_v1:hidden xpath="quote/contact/oktocall" defaultValue="N" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="okToCall">
-			I give permission for the insurance provider that represents the lowest price to call me within
-			the next 4 business days to discuss my car insurance needs.
-		</c:set>
-		<form_v2:row label="OK to email" className="">
-			<field_v2:array_radio xpath="quote/contact/marketing"
-								  required="false"
-								  items="Y=Yes,N=No"
-								  title="if OK to email" additionalAttributes=" data-rule-validateOkToEmailRadio='true' " />
-			<content:optin key="okToEmail" />
-		</form_v2:row>
-
-		<form_v2:row label="OK to call" className="">
-			<field_v2:array_radio xpath="quote/contact/oktocall"
-								  required="false"
-								  items="Y=Yes,N=No"
-								  title="if OK to call" additionalAttributes=" data-rule-validateOkToCallRadio='true' " />
-
-			<p class="optinText">${okToCall}</p>
-		</form_v2:row>
-	</c:otherwise>
-</c:choose>
+	<field_v1:hidden xpath="quote/contact/marketing" defaultValue="N" />
+	<field_v1:hidden xpath="quote/contact/oktocall" defaultValue="N" />
 
 	<%-- COMPETITION START --%>
 	<c:if test="${competitionEnabled == true}">
