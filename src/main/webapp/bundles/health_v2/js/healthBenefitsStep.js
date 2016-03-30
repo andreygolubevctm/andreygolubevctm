@@ -275,7 +275,8 @@
             // disable all buttons if customise is not selected
             if (currentCover !== 'customised') {
                 $allHospitalButtons.prop('disabled', true).each(function(){
-                    $(this).parent().on('click.customisingTHCover', customiseCover);
+                    $btn = $(this);
+                    $btn.parent().on('click.customisingTHCover', _.bind(customiseCover, $btn));
                 });
             } else {
                 $allHospitalButtons.each(function(){
@@ -581,6 +582,7 @@
     }
 
     function customiseCover() {
+        var preselectedBtn = this;
         customiseDialogId = meerkat.modules.dialogs.show({
             title: "Oops. Looks like you are trying to customise your cover?",
             className: "customiseTHCover-modal",
@@ -598,16 +600,19 @@
                 var noEvent = 'click.customiseTHCoverNO',
                     yesEvent = 'click.customiseTHCoverYES';
                 $modal.find('.customerCover-no button').off(noEvent).on(noEvent, _.bind(meerkat.modules.dialogs.close, this, modalId));
-                $modal.find('.customerCover-yes button').off(yesEvent).on(yesEvent, _.bind(onCustomiseCover, this, modalId));
+                $modal.find('.customerCover-yes button').off(yesEvent).on(yesEvent, _.bind(onCustomiseCover, this, {modalId:modalId,btn:preselectedBtn}));
             },
             buttons: []
         });
         return false;
     }
 
-    function onCustomiseCover(modalId) {
-        $benefitsForm.find("a[data-category=customised]:visible").first().trigger('click');
-        meerkat.modules.dialogs.close(modalId);
+    function onCustomiseCover(obj) {
+        meerkat.modules.dialogs.close(obj.modalId);
+        _.defer(function(){
+            $benefitsForm.find("a[data-category=customised]:visible").first().trigger('click');
+            obj.btn.trigger('click');
+        });
     }
 
     meerkat.modules.register('healthBenefitsStep', {
