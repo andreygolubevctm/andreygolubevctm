@@ -25,7 +25,10 @@ fieldset {
 }
 
 #benefitsForm .j13abtest {
-  margin-top: 30px;
+
+  @media(@sm) {
+    margin-top:30px;
+  }
 
   .content {
     padding-left: 15px;
@@ -241,5 +244,20 @@ fieldset {
         width: 14.28%;
       }
     }
+  }
+}
+
+.customiseTHCover-modal {
+  .customerCover-yes {
+    text-align: right;
+    button {
+      margin-top: 0;
+    }
+  }
+  .customerCover-no {
+    text-align: left;
+  }
+  @media(@sm) {
+    max-width:375px;
   }
 }

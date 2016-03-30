@@ -85,9 +85,17 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
                                     <div class="coverExplanationContainer">
                                     <c:set var="tieredBenefits" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "coverOptions")}' />
                                     <c:forEach items="${tieredBenefits.getSupplementary()}" var="tieredBenefitsContent" >
-                                        <div class="<c:if test="${tieredBenefitsContent.getSupplementaryKey() != 'midCover'}">hidden</c:if> coverExplanation ${tieredBenefitsContent.getSupplementaryKey()}">
-                                                ${tieredBenefitsContent.getSupplementaryValue()}
-                                        </div>
+										<c:if test="${!fn:endsWith(tieredBenefitsContent.getSupplementaryKey(), 'XS')}">
+											<div class="<c:if test="${tieredBenefitsContent.getSupplementaryKey() != 'midCover'}">hidden</c:if> coverExplanation ${tieredBenefitsContent.getSupplementaryKey()}">
+												<div class="hidden-xs">${tieredBenefitsContent.getSupplementaryValue()}</div>
+												<c:set var="xsLabel" value="${tieredBenefitsContent.getSupplementaryKey()}XS" />
+												<c:forEach items="${tieredBenefits.getSupplementary()}" var="tieredBenefitsContentXS" >
+													<c:if test="${tieredBenefitsContentXS.getSupplementaryKey() eq xsLabel}">
+														<div class="visible-xs">${tieredBenefitsContentXS.getSupplementaryValue()}</div>
+													</c:if>
+												</c:forEach>
+											</div>
+										</c:if>
                                     </c:forEach>
                                     </div>
                                     </c:if>

@@ -11,7 +11,8 @@
         $allHospitalButtons,
         $defaultCover,
         $hasIconsDiv,
-        changedByCallCentre = false;
+        changedByCallCentre = false,
+        customiseDialogId;
 
     var events = {
             healthBenefitsStep: {
@@ -273,7 +274,13 @@
 
             // disable all buttons if customise is not selected
             if (currentCover !== 'customised') {
-                $allHospitalButtons.prop('disabled', true);
+                $allHospitalButtons.prop('disabled', true).each(function(){
+                    $(this).parent().on('click.customisingTHCover', customiseCover);
+                });
+            } else {
+                $allHospitalButtons.each(function(){
+                    $(this).parent().off('click.customisingTHCover');
+                });
             }
 
             $hospitalCover.find('.coverExplanation.' + previousCover + 'Cover').addClass('hidden').end().find('.coverExplanation.' + currentCover + 'Cover').removeClass('hidden');
@@ -571,6 +578,36 @@
 
         return benefits;
 
+    }
+
+    function customiseCover() {
+        customiseDialogId = meerkat.modules.dialogs.show({
+            title: "Oops. Looks like you are trying to customise your cover?",
+            className: "customiseTHCover-modal",
+            onOpen: function(modalId){
+                // update with the text within the cover type dropdown
+                var htmlContent = $('#customise-cover-template').html(),
+                    $modal = $('#'+modalId);
+                meerkat.modules.dialogs.changeContent(modalId, htmlContent); // update the content
+
+                // tweak the sizing to fit the content
+                $modal.find('.modal-body').outerHeight($('#'+modalId).find('.modal-body').outerHeight() - 20);
+                $modal.find('.modal-footer').outerHeight($('#'+modalId).find('.modal-footer').outerHeight() + 20);
+
+                // Add listeners for buttons
+                var noEvent = 'click.customiseTHCoverNO',
+                    yesEvent = 'click.customiseTHCoverYES';
+                $modal.find('.customerCover-no button').off(noEvent).on(noEvent, _.bind(meerkat.modules.dialogs.close, this, modalId));
+                $modal.find('.customerCover-yes button').off(yesEvent).on(yesEvent, _.bind(onCustomiseCover, this, modalId));
+            },
+            buttons: []
+        });
+        return false;
+    }
+
+    function onCustomiseCover(modalId) {
+        $benefitsForm.find("a[data-category=customised]:visible").first().trigger('click');
+        meerkat.modules.dialogs.close(modalId);
     }
 
     meerkat.modules.register('healthBenefitsStep', {

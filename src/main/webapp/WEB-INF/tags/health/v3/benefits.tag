@@ -58,6 +58,10 @@
 		<c:forEach items="${resultTemplateItems}" var="selectedValue">
 			<health_v3:benefitsItem item="${selectedValue}" />
 		</c:forEach>
+
+		<core_v1:js_template id="customise-cover-template">
+			<content:get key="customiseCoverTemplate"/>
+		</core_v1:js_template>
 	</jsp:body>
 
 	</form_v2:fieldset_columns>
