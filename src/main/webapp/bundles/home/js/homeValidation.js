@@ -64,48 +64,4 @@
         },
         "Please confirm that the oldest person living at the home is older than the policy holder."
     );
-
-
-    /**
-     * These could be made core if we did these on other verticals. Would just have to pass in the element as a param
-     */
-    if(!meerkat.modules.splitTest.isActive(3)) {
-        $.validator.addMethod('validateOkToEmail', function (value, element, param) {
-            var optin = ($("#home_policyHolder_FieldSet input[name='home_policyHolder_marketing']:checked").val() === 'Y');
-            var email = $('#home_policyHolder_email').val();
-            if (optin && _.isEmpty(email)) {
-                return false;
-            }
-            return true;
-        }, "Please enter your email address");
-
-        $.validator.addMethod('validateOkToCall', function (value, element, param) {
-            var optin = ($("#home_policyHolder_FieldSet input[name='home_policyHolder_oktocall']:checked").val() === 'Y');
-            var phone = $('#home_policyHolder_phone').val();
-            if (optin && _.isEmpty(phone)) {
-                return false;
-            }
-            return true;
-        }, "Please enter a contact number");
-
-        $.validator.addMethod('validateOkToCallRadio', function (value, element, param) {
-            var $optin = $("#home_policyHolder_FieldSet input[name='home_policyHolder_oktocall']:checked");
-            var noOptin = $optin.length === 0;
-            var phone = $('#home_policyHolder_phone').val();
-            if (!_.isEmpty(phone) && noOptin) {
-                return false;
-            }
-            return true;
-        }, "Please choose if OK to call");
-
-        $.validator.addMethod('validateOkToEmailRadio', function (value, element, param) {
-            var $optin = $("#home_policyHolder_FieldSet input[name='home_policyHolder_marketing']:checked");
-            var noOptin = $optin.length === 0;
-            var email = $('#home_policyHolder_email').val();
-            if (!_.isEmpty(email) && noOptin) {
-                return false;
-            }
-            return true;
-        }, "Please choose if OK to email");
-    }
 })(jQuery);

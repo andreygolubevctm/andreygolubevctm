@@ -27,7 +27,7 @@
 
 		$(document).ready(function() {
 
-			checkCouponsAvailability();
+			isAvailable = checkCouponsAvailability();
 
 			if (isAvailable === true) {
 				$couponIdField = $('.coupon-id-field'),
@@ -62,9 +62,7 @@
 	}
 
 	function checkCouponsAvailability() {
-		if ($('.coupon-id-field').length > 0) {
-			isAvailable = true;
-		}
+		return $('.coupon-id-field').length > 0;
 	}
 
 	function preload() {
@@ -167,8 +165,7 @@
             $('#contactForm').find('.quoteSnapshot').show();
             $('.callCentreHelp').show();
             $('#contactForm').find('.callCentreHelp').hide();
-            $('.coupon-banner-container').html('');
-            $('.coupon-tile-container').html('');
+            $('.coupon-banner-container, .coupon-tile-container').html('');
         }
 	}
 
@@ -208,8 +205,7 @@
 		// hard rule validation fail
 		else if (currentCoupon.hasOwnProperty('errors') && currentCoupon.errors.length > 0) {
 			$couponCodeField.parent().addClass('has-custom-error');
-			$couponErrorContainer.find('label').html(currentCoupon.errors[0].message);
-			$couponErrorContainer.removeClass('hidden');
+			$couponErrorContainer.find('label').html(currentCoupon.errors[0].message).end().removeClass('hidden');
 			resetWhenError();
 		}
 		// valid coupon
@@ -222,13 +218,11 @@
 			$couponErrorContainer.addClass('hidden');
 
 			if (currentCoupon.hasOwnProperty('contentSuccess') && currentCoupon.contentSuccess !== '') {
-				$couponSuccessContainer.html(currentCoupon.contentSuccess);
-				$couponSuccessContainer.removeClass('hidden');
+				$couponSuccessContainer.html(currentCoupon.contentSuccess).removeClass('hidden');
 			}
 
 			if (currentCoupon.hasOwnProperty('contentCheckbox') && currentCoupon.contentCheckbox !== '') {
-				$couponOptinGroup.find('.checkbox label').html(currentCoupon.contentCheckbox);
-				$couponOptinGroup.removeClass('hidden');
+				$couponOptinGroup.find('.checkbox label').html(currentCoupon.contentCheckbox).end().removeClass('hidden');
 			}
 			else{
 				// if no checkbox required, still insert optin=Y in DB so we know it is a confirmed coupon
