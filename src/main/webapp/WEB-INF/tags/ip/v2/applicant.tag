@@ -54,97 +54,22 @@
 									  title="${error_phrase}smoker status" />
 			</form_v2:row>
 
-			<form_v2:row label="Occupation" id="${name}_yearRow" helpId="525">
-				<field_v2:general_select type="occupation" xpath="${xpath}/occupation" required="true" title="${error_phrase}occupation"/>
-			</form_v2:row>
+			<core_v1:select_tags
+					fieldType="autocomplete"
+					variableListName="occupationSelectionList"
+					variableListArray="${life_util:occupationsJSON(pageContext.request)}"
+					xpath="${xpath}/occupations"
+					xpathhidden="${xpath}/occupation"
+					label="Occupation"
+					title="${error_phrase}occupation"
+					limit="1"
+					validationErrorPlacementSelector=".${go:nameFromXpath(xpath)}_occupations"
+					helpId="525"
+					/>
+			<field_v1:hidden xpath="${xpath}/unknownOccupation" />
+			<field_v1:hidden xpath="${xpath}/hannover" />
+			<field_v1:hidden xpath="${xpath}/occupationTitle" />
 
 		</form_v1:fieldset>
 	</jsp:body>
 </form_v2:fieldset_columns>
-<%-- JAVASCRIPT
-<go:script marker="js-head">
-var ${name}Handler = {
-	getAgeAtNextBday: function(dob)
-	{
-		var dob_pieces = dob.split("/");
-		var year = Number(dob_pieces[2]);
-		var month = Number(dob_pieces[1]) - 1;
-		var day = Number(dob_pieces[0]);
-		var today = new Date();
-		var age = today.getFullYear() - year;
-		if(today.getMonth() < month || (today.getMonth() == month && today.getDate() < day))
-		{
-			age--;
-		}
-
-		return ++age;
-	}
-};
-
-$.validator.addMethod("validateAge",
-	function(value, element) {
-		var getAge = function(dob) {
-			var dob_pieces = dob.split("/");
-			var year = Number(dob_pieces[2]);
-			var month = Number(dob_pieces[1]) - 1;
-			var day = Number(dob_pieces[0]);
-			var today = new Date();
-			var age = today.getFullYear() - year;
-			if(today.getMonth() < month || (today.getMonth() == month && today.getDate() < day))
-			{
-				age--;
-			}
-		}
-
-		var age = getAge( value );
-
-		if( age < 18 || age > 65 )
-		{
-			return false;
-		}
-
-		return true;
-	},
-	"Replace this message with something else"
-);
-</go:script>
-
-<go:script marker="onready">
-
-	$("#${name}_smoker, #${name}_gender").buttonset();
-
-	if( $('input[name=${name}_smoker]:checked', '#mainform').val() == undefined )
-	{
-		$('#${name}_smoker_N').attr('checked', true).button('refresh');
-	}
-
-	if( $('#${name}_dob').val().length )
-	{
-		$('#${name}_age').val(${name}Handler.getAgeAtNextBday( $('#${name}_dob').val() ));
-	}
-
-	$('#${name}_dob').on("change keyup", function(){
-		$('#${name}_age').val(${name}Handler.getAgeAtNextBday( $('#${name}_dob').val() ) );
-	});
-
-</go:script>
-
-<%-- CSS
-<go:style marker="css-head">
-	#${name} .clear {
-		clear: both;
-	}
-
-	#${name} .content {
-		position: relative;
-	}
-
-	#${name}_occupation {
-		width: 380px;
-	}
-</go:style>
-
-<go:validate selector="${name}_dob" rule="validateAge" parm="true" message="Age must be between 18 and 65." />
-
-
---%>
