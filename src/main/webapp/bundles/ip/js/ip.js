@@ -1,19 +1,19 @@
 ;(function($, undefined){
 
-    var meerkat = window.meerkat,
-        meerkatEvents = meerkat.modules.events,
-        moduleEvents = {
-            life: {
+	var meerkat = window.meerkat,
+		meerkatEvents = meerkat.modules.events,
+		moduleEvents = {
+			ip: {
 
-            },
-            WEBAPP_LOCK: 'WEBAPP_LOCK',
-            WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
-        },
-        steps = null;
+			},
+			WEBAPP_LOCK: 'WEBAPP_LOCK',
+			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
+		},
+		steps = null;
 
     function initIP() {
         $(document).ready(function() {
-            // Only init if life
+            // Only init if ip
             if (meerkat.site.vertical !== "ip")
                 return false;
 
@@ -74,89 +74,217 @@
         });
     }
 
-    function initProgressBar(render){
+	function initProgressBar(render){
+		setJourneyEngineSteps();
+		configureProgressBar();
 
-        setJourneyEngineSteps();
+		if(render){
+			meerkat.modules.journeyProgressBar.render(true);
+		}
+	}
 
-        if(render){
-            meerkat.modules.journeyProgressBar.render(true);
-        }
-    }
+	function setJourneyEngineSteps(){
+		var startStep = {
+			title: 'IP Insurance Details',
+			navigationId: 'start',
+			slideIndex:0,
+			externalTracking:{
+				method:'trackQuoteForms',
+				object:meerkat.modules.ip.getTrackingFieldsObject
+			},
+			onInitialise: function onStartInit(event){
+				meerkat.modules.jqueryValidate.initJourneyValidator();
+			}, onBeforeLeave: function onInsuranceDetailsLeave() {
+				var $coverForRadioVal = $('input[name="ip_primary_insurance_partner"]:checked');
+				meerkat.modules.ipPartner.togglePartnerFields($coverForRadioVal.val() === 'Y');
+			}
+		};
 
-    function setJourneyEngineSteps(){
+		var aboutYouStep = {
+			title: 'About You',
+			navigationId: 'about',
+			slideIndex:1,
+			externalTracking:{
+				method:'trackQuoteForms',
+				object:meerkat.modules.ip.getTrackingFieldsObject
+			},
+			onInitialise:function onDetailsInit(event){
+				meerkat.modules.occupationSelector.initOccupationSelector();
+			}
+		};
 
-        var startStep = {
-            title: 'Income Protection Details',
-            navigationId: 'start',
-            slideIndex:0,
-            externalTracking:{
-                method:'trackQuoteForms',
-                object:meerkat.modules.ip.getTrackingFieldsObject
-            },
-            onInitialise: function onStartInit(event){
+		var aboutPartnerStep = {
+			title: 'About your partner',
+			navigationId: 'partner',
+			slideIndex: 2,
+			externalTracking:{
+				method:'trackQuoteForms',
+				object:meerkat.modules.ip.getTrackingFieldsObject
+			},
+			onInitialise: function aboutPartnerInit(event){
+				meerkat.modules.occupationSelector.initOccupationSelector();
+			},
+			onAfterEnter: function aboutPartnerBeforeEnter(event){
+				meerkat.modules.ipPartner.toggleSkipToResults();
+			}
+		};
+		var contactStep = {
+			title: 'Contact Details',
+			navigationId: 'contact',
+			slideIndex: 3,
+			externalTracking:{
+				method:'trackQuoteForms',
+				object:meerkat.modules.ip.getTrackingFieldsObject
+			},
+			onInitialise: function onContactInit(event){
 
-            }
-        };
+			}
+		};
 
-        var aboutYouStep = {
-            title: 'About You',
-            navigationId: 'about',
-            slideIndex:1,
-            externalTracking:{
-                method:'trackQuoteForms',
-                object:meerkat.modules.ip.getTrackingFieldsObject
-            },
-            onInitialise:function onDetailsInit(event){
+		var resultsStep = {
+			title: 'Your Results',
+			navigationId: 'results',
+			slideIndex: 4,
+			externalTracking:{
+				method:'trackQuoteForms',
+				object:meerkat.modules.ip.getTrackingFieldsObject
+			},
+			onInitialise: function onInitResults(event){
+				meerkat.modules.ipResults.initIPResults();
+			},
+			onBeforeEnter: function enterResultsStep(event) {
+				Results.removeSelectedProduct();
+				// Always force it to be a "Load" in IP, as currently, we always get a new tranid.
+				meerkat.modules.resultsTracking.setResultsEventMode('Load');
+				$('#resultsPage').addClass('hidden');
+			},
+			onAfterEnter: function afterEnterResults(event) {
+				if (event.isForward === true) {
+					meerkat.modules.ipResults.get();
+				}
+			}
+		};
 
+		var confirmationStep = {
+			title: 'Confirmation',
+			navigationId: 'apply',
+			slideIndex: 5,
+			onInitialise: function onInitApplyStep(event) {
 
-            }
-        };
-        var contactStep = {
-            title: 'Contact Details',
-            navigationId: 'contact',
-            slideIndex: 2,
-            onInitialise: function onContactInit(event){
+			}
+		};
 
-            }
-        };
+		steps = {
+			startStep: startStep,
+			aboutYouStep: aboutYouStep,
+			aboutPartnerStep: aboutPartnerStep,
+			contactStep: contactStep,
+			resultsStep: resultsStep,
+			confirmationStep: confirmationStep
+		};
+	}
 
-        var resultsStep = {
-            title: 'Your Results',
-            navigationId: 'results',
-            slideIndex: 3,
-            onInitialise: function onInitResults(event){
+	function configureProgressBar() {
+		meerkat.modules.journeyProgressBar.configure([
+			{
+				label: 'IP Insurance Details',
+				navigationId: steps.startStep.navigationId
+			},
+			{
+				label: 'About You',
+				navigationId: steps.aboutYouStep.navigationId
+			},
+			{
+				label: 'About Your Partner',
+				navigationId: steps.aboutPartnerStep.navigationId
+			},
+			{
+				label: 'Contact Details',
+				navigationId: steps.contactStep.navigationId
+			},
+			{
+				label: 'Your Quotes',
+				navigationId: steps.resultsStep.navigationId
+			}
+		]);
+	}
 
-            }
-        };
+	// Build an object to be sent by SuperTag tracking.
+	function getTrackingFieldsObject(){
+		try{
 
-        var confirmationStep = {
-            title: 'Confirmation',
-            navigationId: 'apply',
-            slideIndex: 4,
-            onInitialise: function onInitApplyStep(event) {
+			var transactionId = meerkat.modules.transactionId.get();
 
-            }
-        };
+			var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
+			var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
 
-        steps = {
-            startStep: startStep,
-            aboutYouStep: aboutYouStep,
-            contactStep: contactStep,
-            resultsStep: resultsStep,
-            confirmationStep: confirmationStep
-        };
-    }
+			var actionStep='';
+			switch(current_step) {
+				case 0:
+					actionStep = "ip insurance details";
+					break;
+				case 1:
+					actionStep = "ip about you";
+					break;
+				case 2:
+					actionStep = "ip about your partner";
+					break;
+				case 3:
+					actionStep = "ip contact details";
+					break;
+				case 4:
+					actionStep = "ip results";
+					break;
+			}
 
-    // Build an object to be sent by SuperTag tracking.
-    function getTrackingFieldsObject(){
-        return {};
-    }
+			var gender = $('input[name=ip_primary_gender]:checked', '#mainform') && $('input[name=ip_primary_gender]:checked', '#mainform').val() === "M" ? 'Male' : 'Female',
+			yob = $("#ip_primary_dob").val().length ? $("#ip_primary_dob").val().split("/")[2] : "",
+			postcode =      $("#ip_primary_postCode").val(),
+			state =         $("#ip_primary_state").val(),
+			email =         $("#ip_contactDetails_email").val();
 
-    meerkat.modules.register("ip", {
-        init: initIP,
-        events: moduleEvents,
-        initProgressBar: initProgressBar,
-        getTrackingFieldsObject: getTrackingFieldsObject
-    });
+			var response =  {
+				vertical:				meerkat.site.vertical,
+				actionStep:				actionStep,
+				transactionID:			transactionId,
+				quoteReferenceNumber:	transactionId
+			};
+
+			// Push in values from 1st slide only when have been beyond it
+			if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
+				_.extend(response, {
+					yearOfBirth: yob
+				});
+			}
+
+			// Push in values from 2nd slide only when have been beyond it
+			if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('about')) {
+				_.extend(response, {
+					gender: gender
+				});
+			}
+
+			// Push in values from 2nd slide only when have been beyond it
+			if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('contact')) {
+				_.extend(response, {
+					email: email,
+					postCode: postcode,
+					state: state
+				});
+			}
+
+			return response;
+
+		}catch(e){
+			return false;
+		}
+	}
+
+	meerkat.modules.register("ip", {
+		init: initIP,
+		events: moduleEvents,
+		initProgressBar: initProgressBar,
+		getTrackingFieldsObject: getTrackingFieldsObject
+	});
 
 })(jQuery);

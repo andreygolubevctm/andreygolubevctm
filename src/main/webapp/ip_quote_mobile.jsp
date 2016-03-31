@@ -54,11 +54,11 @@
 	<jsp:attribute name="form_bottom"></jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<travel:footer />
+			<content:get key="footerText" />
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">
-		<travel:settings />
+		<ip_v2:settings />
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
