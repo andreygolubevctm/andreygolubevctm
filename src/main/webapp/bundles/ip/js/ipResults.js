@@ -105,32 +105,31 @@
             }, 1000);
         });
 
-        // Scroll to the top when results come back
-        $(document).on("resultsReturned", function () {
-            meerkat.modules.utils.scrollPageTo($("header"));
+        $(document)
+            // Scroll to the top when results come back
+            .on("resultsReturned", function () {
+                meerkat.modules.utils.scrollPageTo($("header"));
 
-            _showResultsMessage();
-        });
+                _showResultsMessage();
+            })
+            // Start fetching results
+            .on("resultsFetchStart", function onResultsFetchStart() {
+                meerkat.modules.journeyEngine.loadingShow('...getting your quotes...');
+                $component.removeClass('hidden');
 
-        // Start fetching results
-        $(document).on("resultsFetchStart", function onResultsFetchStart() {
-            meerkat.modules.journeyEngine.loadingShow('...getting your quotes...');
-            $component.removeClass('hidden');
+                // Hide pagination
+                Results.pagination.hide();
+            })
+            // Fetching done
+            .on("resultsFetchFinish", function onResultsFetchFinish() {
 
-            // Hide pagination
-            Results.pagination.hide();
-        });
+                // Results are hidden in the CSS so we don't see the scaffolding after #benefits
+                $(Results.settings.elements.page).show();
 
-        // Fetching done
-        $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
+                meerkat.modules.journeyEngine.loadingHide();
 
-            // Results are hidden in the CSS so we don't see the scaffolding after #benefits
-            $(Results.settings.elements.page).show();
-
-            meerkat.modules.journeyEngine.loadingHide();
-
-            $(document.body).addClass('priceMode');
-        });
+                $(document.body).addClass('priceMode');
+            });
 
         $(Results.settings.elements.resultsContainer).on("noResults", function onResultsNone() {
             _showResultsMessage();
@@ -146,9 +145,6 @@
         var topProduct = Results.getTopResult();
         var templateHTML = $('#thank-you-template').html();
         var _template = _.template(templateHTML);
-
-        topProduct.consultantFrom = topProduct.service_provider === 'Ozicare' ? 'Auto &amp; General Services' : 'IPbroker';
-
         var $container = $('.resultsContainer');
         $container.html(_template(topProduct));
         meerkat.modules.contentPopulation.render($container);
