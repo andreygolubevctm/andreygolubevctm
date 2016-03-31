@@ -27,7 +27,7 @@
 	</jsp:attribute>
 
 	<jsp:body>
-		<form_v1:fieldset legend="${label}">
+		<form_v2:fieldset legend="${label}">
 			<form_v2:row label="First Name" id="firstName">
 				<field_v1:person_name xpath="${xpath}/firstName" required="true" title="${error_phrase}first name" />
 			</form_v2:row>
@@ -70,6 +70,6 @@
 			<field_v1:hidden xpath="${xpath}/hannover" />
 			<field_v1:hidden xpath="${xpath}/occupationTitle" />
 
-		</form_v1:fieldset>
+		</form_v2:fieldset>
 	</jsp:body>
 </form_v2:fieldset_columns>

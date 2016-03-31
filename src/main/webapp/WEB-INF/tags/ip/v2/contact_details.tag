@@ -19,72 +19,60 @@
 <%-- Standard journey --%>
 <c:set var="splitTestingJourney" value="0" />
 
-<form_v2:fieldset_columns sideHidden="false">
+<form_v2:row label="Email Address" id="contactEmailRow">
+	<field_v2:email xpath="${xpath}/contactDetails/email" required="true" title="your email address" additionalAttributes=" data-rule-validateOkToEmail='true' " /><span id="email_note">For confirming quote and transaction details</span>
+</form_v2:row>
 
-	<jsp:attribute name="rightColumn">
-	</jsp:attribute>
+<c:set var="fieldXPath" value="${xpath}/contactDetails/contactNumber" />
+<form_v2:row label="Phone Number" id="contactNoRow">
+	<field_v1:flexi_contact_number xpath="${fieldXPath}"
+								   maxLength="20"
+								   id="bestNumber"
+								   required="false"
+								   labelName="phone number"
+								   validationAttribute=" data-rule-validateOkToCall='true' "/>
+</form_v2:row>
 
-	<jsp:body>
-		<form_v1:fieldset legend="Contact Details">
+<c:set var="fieldXpath" value="${xpath}/primary/postCode"/>
+<form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${name}_nonStdFieldRow">
+	<field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}"/>
+</form_v2:row>
 
-			<form_v2:row label="Email Address" id="contactEmailRow">
-				<field_v2:email xpath="${xpath}/contactDetails/email" required="true" title="your email address" additionalAttributes=" data-rule-validateOkToEmail='true' " /><span id="email_note">For confirming quote and transaction details</span>
-			</form_v2:row>
+<field_v1:hidden xpath="${xpath}/primary/state" />
 
-			<c:set var="fieldXPath" value="${xpath}/contactDetails/contactNumber" />
-			<form_v2:row label="Phone Number" id="contactNoRow">
-				<field_v1:flexi_contact_number xpath="${fieldXPath}"
-											   maxLength="20"
-											   id="bestNumber"
-											   required="false"
-											   labelName="phone number"
-											   validationAttribute=" data-rule-validateOkToCall='true' "/>
-			</form_v2:row>
+<%-- COMPETITION START --%>
+<c:if test="${competitionEnabled == true}">
+	<c:set var="competitionId"><content:get key="competitionId"/></c:set>
+	<form_v1:row label="" className="promo-row">
+		<div class="promo-container">
+			<div class="promo-image ip-${competitionId}"></div>
+		</div>
+	</form_v1:row>
 
-			<c:set var="fieldXpath" value="${xpath}/primary/postCode"/>
-			<form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${name}_nonStdFieldRow">
-				<field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}"/>
-			</form_v2:row>
+	<form_v1:row label="" className="clear">
+		<c:set var="competitionCheckboxText">
+			<content:get key="competitionCheckboxText" />
+		</c:set>
+		<field_v2:checkbox xpath="${xpath}/competition/optin" value="Y" title="${competitionCheckboxText}" label="true" required="false"/>
+		<field_v1:hidden xpath="${xpath}/competition/previous" />
+	</form_v1:row>
+</c:if>
+<%-- COMPETITION END--%>
 
-			<field_v1:hidden xpath="${xpath}/primary/state" />
+<form_v1:row label="" className="clear">
+	<field_v2:checkbox xpath="${xpath}/optin" value="Y" title="I agree to receive news &amp; offer emails from ${brandedName}" label="true" required="false"/>
+</form_v1:row>
 
-			<%-- COMPETITION START --%>
-			<c:if test="${competitionEnabled == true}">
-				<c:set var="competitionId"><content:get key="competitionId"/></c:set>
-				<form_v1:row label="" className="promo-row">
-					<div class="promo-container">
-						<div class="promo-image ip-${competitionId}"></div>
-					</div>
-				</form_v1:row>
+<form_v1:row label="" className="clear closer">
+	<c:set var="label_text">
+		I understand ${brandedName} compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life insurance partner may contact me to further assist with my life insurance and income protection needs. I confirm that I have read the ${privacyLink}.
+	</c:set>
 
-				<form_v1:row label="" className="clear">
-					<c:set var="competitionCheckboxText">
-						<content:get key="competitionCheckboxText" />
-					</c:set>
-					<field_v2:checkbox xpath="${xpath}/competition/optin" value="Y" title="${competitionCheckboxText}" label="true" required="false"/>
-					<field_v1:hidden xpath="${xpath}/competition/previous" />
-				</form_v1:row>
-			</c:if>
-			<%-- COMPETITION END--%>
+	<field_v2:checkbox xpath="${xpath}_privacyoptin" value="Y" title="${label_text}" errorMsg="Please confirm you have read the privacy statement" label="true" required="true"/>
+</form_v1:row>
 
-			<form_v1:row label="" className="clear">
-				<field_v2:checkbox xpath="${xpath}/optin" value="Y" title="I agree to receive news &amp; offer emails from ${brandedName}" label="true" required="false"/>
-			</form_v1:row>
-
-			<form_v1:row label="" className="clear closer">
-				<c:set var="label_text">
-					I understand ${brandedName} compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life insurance partner may contact me to further assist with my life insurance and income protection needs. I confirm that I have read the ${privacyLink}.
-				</c:set>
-
-				<field_v2:checkbox xpath="${xpath}_privacyoptin" value="Y" title="${label_text}" errorMsg="Please confirm you have read the privacy statement" label="true" required="true"/>
-			</form_v1:row>
-
-			<field_v1:hidden xpath="${xpath}/call" />
-			<field_v1:hidden xpath="${xpath}/splitTestingJourney" constantValue="${splitTestingJourney}" />
-
-		</form_v1:fieldset>
-	</jsp:body>
-</form_v2:fieldset_columns>
+<field_v1:hidden xpath="${xpath}/call" />
+<field_v1:hidden xpath="${xpath}/splitTestingJourney" constantValue="${splitTestingJourney}" />
 
 <c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 <c:set var="participatingSuppliers"><content:get key="participatingSuppliers" /></c:set>
