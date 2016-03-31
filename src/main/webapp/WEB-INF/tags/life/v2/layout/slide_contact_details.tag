@@ -7,8 +7,9 @@
 
 	<layout_v3:slide_content>
 
-		<form_v2:fieldset legend="" postLegend="" />
-		<life_v2:contact_details xpath="life" />
+		<form_v2:fieldset legend="" postLegend="">
+			<life_v2:contact_details xpath="life" />
+		</form_v2:fieldset>
 
 	</layout_v3:slide_content>
 

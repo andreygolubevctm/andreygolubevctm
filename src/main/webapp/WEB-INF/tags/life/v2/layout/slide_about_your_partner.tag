@@ -8,8 +8,9 @@
 
 	<layout_v1:slide_content >
 
-		<form_v2:fieldset legend="" postLegend="" />
-		<life_v2:applicant xpath="${xpath}/partner" label="About your partner" />
+		<form_v2:fieldset legend="" postLegend="">
+			<life_v2:applicant xpath="${xpath}/partner" label="About your partner" />
+		</form_v2:fieldset>
 
 	</layout_v1:slide_content>
 
