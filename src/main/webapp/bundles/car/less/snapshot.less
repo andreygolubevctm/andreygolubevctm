@@ -34,7 +34,10 @@ body.car[data-step=results] {
 	.header-wrap {
 		.quoteSnapshot {
 			display: block !important;
-		}
+            @media (@xs-only) {
+              display:none !important;
+            }
+        }
 	}
 }
 
