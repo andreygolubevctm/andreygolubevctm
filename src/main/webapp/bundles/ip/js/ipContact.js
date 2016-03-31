@@ -24,7 +24,7 @@
         });
 
         $privacyStatementMoreInfoLink.on('click', function showModal(){
-            displayModal('Privacy Statement', 'privacty-statement', 'privacyStatement');
+            displayModal('Privacy Statement', 'privacy-statement', 'privacyStatement');
         });
     }
 

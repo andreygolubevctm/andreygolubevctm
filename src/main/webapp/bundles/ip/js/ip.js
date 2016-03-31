@@ -113,7 +113,7 @@
 		var contactStep = {
 			title: 'Contact Details',
 			navigationId: 'contact',
-			slideIndex: 3,
+			slideIndex: 2,
 			externalTracking:{
 				method:'trackQuoteForms',
 				object:meerkat.modules.ip.getTrackingFieldsObject
@@ -126,7 +126,7 @@
 		var resultsStep = {
 			title: 'Your Results',
 			navigationId: 'results',
-			slideIndex: 4,
+			slideIndex: 3,
 			externalTracking:{
 				method:'trackQuoteForms',
 				object:meerkat.modules.ip.getTrackingFieldsObject
@@ -150,7 +150,7 @@
 		var confirmationStep = {
 			title: 'Confirmation',
 			navigationId: 'apply',
-			slideIndex: 5,
+			slideIndex: 4,
 			onInitialise: function onInitApplyStep(event) {
 
 			}

@@ -5,7 +5,7 @@
     var $aboutPartnerContainer,
         $nextStep;
 
-    function initIPPartner() {
+    function initLifePartner() {
         _initFields();
     }
 
@@ -26,8 +26,8 @@
         }
     }
 
-    meerkat.modules.register("ipPartner", {
-        init: initIPPartner,
+    meerkat.modules.register("lifePartner", {
+        init: initLifePartner,
         toggleSkipToResults: toggleSkipToResults,
         togglePartnerFields: togglePartnerFields,
         events: events
