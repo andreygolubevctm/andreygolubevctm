@@ -1,25 +1,8 @@
 ;(function ($) {
-
-    $.validator.addMethod('validateInsuranceAmount', function(value, element, param) {
+    $.validator.addMethod('validateBenefitAmount', function(value, element, param) {
         var $this = $(element);
-        $this.val($this.val().replace(/[^0-9]/g, ''));
+        var $income = $('#ip_primary_insurance_income');
 
-        var $parentInputs = $this.parents('.insuranceAmountContainer').find('input');
-        var hasRelatedFieldFilled = false;
-
-        $parentInputs.each(function() {
-            var $current = $(this);
-            if($current.val() && $this.attr('id') !== $current.attr('id')) {
-                hasRelatedFieldFilled = true;
-                return false;
-            }
-        });
-
-        if(($this.val() && $this.val() !== '0') || hasRelatedFieldFilled) {
-            return true;
-        }
-
-        return false;
-    }, 'Please specify a cover amount greater than $0');
-
+        return (Number($('#ip_primary_insurance_income').val()) * 0.75 / 12) >= Number($this.val()) ;
+    }, 'Your benefit amount must be a monthly calculation of 75% of your gross annual income');
 })(jQuery);

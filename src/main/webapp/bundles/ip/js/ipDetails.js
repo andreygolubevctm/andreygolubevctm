@@ -2,10 +2,8 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info;
-    var events = {};
 
-    var $partnerRadioContainer;
-    var $partnerInsuranceAmountsFields;
+    var events = {};
 
     function initIPDetails() {
         _initFields();
@@ -13,20 +11,15 @@
         _triggerFieldEvents();
     }
 
-    function _initFields() {
-        $partnerRadioContainer = $('#partnerSameCoverRadio');
-        $partnerInsuranceAmountsFields = $('#partnerInsuranceAmountFields');
-    }
+    function _initFields() {}
 
     function _initEventListeners() {
-        $('input[name="ip_primary_insurance_partner"]').on('change', _togglePartnerCoverRadioContainer);
-        $partnerRadioContainer.find('input[name="ip_primary_insurance_samecover"]').on('change', _togglePartnerInsuranceAmountFieldsContainer);
-
-        $('.insuranceAmountContainer input').on('blur', function() {
-            $('.insuranceAmountContainer input').valid();
+        $('#ip_primary_insurance_income').on('blur', function(e) {
+            var newVal = Number($(this).val()) * 0.75 / 12;
+            $('#ip_primary_insurance_amount').val(newVal);
         });
 
-        $('#ip_primary_occupations, #ip_partner_occupations').on('typeahead:selected', function(e, data) {
+        $('#ip_primary_occupations').on('typeahead:selected', function(e, data) {
             var $this = $(this);
             var idPrefix = $this.attr('id').replace('_occupations', '');
             var hannover = data.groupId;
@@ -58,23 +51,7 @@
         });
     }
 
-    function _triggerFieldEvents() {
-        _togglePartnerCoverRadioContainer($('input[name="ip_primary_insurance_partner"]:checked'));
-    }
-
-    function _togglePartnerCoverRadioContainer($field) {
-        var $this = typeof $field.originalEvent === 'undefined' ? $field : $(this);
-        $partnerRadioContainer.toggle($this.val() === 'Y');
-
-        _togglePartnerInsuranceAmountFieldsContainer($partnerRadioContainer.find('input[name="ip_primary_insurance_samecover"]'));
-    }
-
-    function _togglePartnerInsuranceAmountFieldsContainer($field) {
-        var $this = typeof $field.originalEvent === 'undefined' ? $field : $(this);
-        var $coverForRadioVal = $('input[name="ip_primary_insurance_partner"]:checked');
-
-        $partnerInsuranceAmountsFields.toggle($coverForRadioVal.val() === 'Y' && $this.val() === 'N');
-    }
+    function _triggerFieldEvents() {}
 
     meerkat.modules.register("ipDetails", {
         init: initIPDetails,

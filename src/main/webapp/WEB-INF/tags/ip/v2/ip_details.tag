@@ -5,19 +5,21 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"		 rtexprvalue="true"	 description="data xpath" %>
 
+<c:set var="xpath" value="${xpath}/primary/insurance" />
+
 <form_v3:row label="Your gross annual income" helpId="411">
-    <c:set var="fieldXPath" value="${xpath}/term" />
+    <c:set var="fieldXPath" value="${xpath}/income" />
     <div class="input-group">
         <div class="input-group-addon">$</div>
         <field_v2:input xpath="${fieldXPath}" title="Gross Annual Income" required="true" type="text" className="currency" placeHolder="0" />
     </div>
 </form_v3:row>
 
-<form_v3:row label="Benefit amount" helpId="411">
+<form_v3:row label="Benefit amount" helpId="412">
     <c:set var="fieldXPath" value="${xpath}/amount" />
     <div class="input-group">
         <div class="input-group-addon">$</div>
-        <field_v2:input xpath="${fieldXPath}" title="Gross Annual Income" required="true" type="text" className="currency" placeHolder="0" />
+        <field_v2:input xpath="${fieldXPath}" title="Gross Annual Income" required="true" type="text" className="currency" placeHolder="0" additionalAttributes=" data-rule-validateBenefitAmount='true'" />
     </div>
 </form_v3:row>
 
