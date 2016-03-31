@@ -85,7 +85,7 @@
 
 	function setJourneyEngineSteps(){
 		var startStep = {
-			title: 'IP Insurance Details',
+			title: 'Income Protection Details',
 			navigationId: 'start',
 			slideIndex:0,
 			externalTracking:{
@@ -94,9 +94,6 @@
 			},
 			onInitialise: function onStartInit(event){
 				meerkat.modules.jqueryValidate.initJourneyValidator();
-			}, onBeforeLeave: function onInsuranceDetailsLeave() {
-				var $coverForRadioVal = $('input[name="ip_primary_insurance_partner"]:checked');
-				meerkat.modules.ipPartner.togglePartnerFields($coverForRadioVal.val() === 'Y');
 			}
 		};
 
@@ -113,21 +110,6 @@
 			}
 		};
 
-		var aboutPartnerStep = {
-			title: 'About your partner',
-			navigationId: 'partner',
-			slideIndex: 2,
-			externalTracking:{
-				method:'trackQuoteForms',
-				object:meerkat.modules.ip.getTrackingFieldsObject
-			},
-			onInitialise: function aboutPartnerInit(event){
-				meerkat.modules.occupationSelector.initOccupationSelector();
-			},
-			onAfterEnter: function aboutPartnerBeforeEnter(event){
-				meerkat.modules.ipPartner.toggleSkipToResults();
-			}
-		};
 		var contactStep = {
 			title: 'Contact Details',
 			navigationId: 'contact',
@@ -177,7 +159,6 @@
 		steps = {
 			startStep: startStep,
 			aboutYouStep: aboutYouStep,
-			aboutPartnerStep: aboutPartnerStep,
 			contactStep: contactStep,
 			resultsStep: resultsStep,
 			confirmationStep: confirmationStep
@@ -187,16 +168,12 @@
 	function configureProgressBar() {
 		meerkat.modules.journeyProgressBar.configure([
 			{
-				label: 'IP Insurance Details',
+				label: 'Income Protection Details',
 				navigationId: steps.startStep.navigationId
 			},
 			{
 				label: 'About You',
 				navigationId: steps.aboutYouStep.navigationId
-			},
-			{
-				label: 'About Your Partner',
-				navigationId: steps.aboutPartnerStep.navigationId
 			},
 			{
 				label: 'Contact Details',
@@ -227,12 +204,9 @@
 					actionStep = "ip about you";
 					break;
 				case 2:
-					actionStep = "ip about your partner";
-					break;
-				case 3:
 					actionStep = "ip contact details";
 					break;
-				case 4:
+				case 3:
 					actionStep = "ip results";
 					break;
 			}
