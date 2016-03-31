@@ -12,7 +12,7 @@
         $defaultCover,
         $hasIconsDiv,
         changedByCallCentre = false,
-        customiseDialogId;
+        customiseDialogId = null;
 
     var events = {
             healthBenefitsStep: {
@@ -581,38 +581,45 @@
 
     }
 
-    function customiseCover() {
-        var preselectedBtn = this;
-        customiseDialogId = meerkat.modules.dialogs.show({
-            title: "Oops. Looks like you are trying to customise your cover?",
-            className: "customiseTHCover-modal",
-            onOpen: function(modalId){
-                // update with the text within the cover type dropdown
-                var htmlContent = $('#customise-cover-template').html(),
-                    $modal = $('#'+modalId);
-                meerkat.modules.dialogs.changeContent(modalId, htmlContent); // update the content
+    function customiseCover(event) {
+        if(!$(event.target).is('a')) { // Allow help icon to work as normal
+            event.preventDefault();
+            var preselectedBtn = this;
+            meerkat.modules.dialogs.close(customiseDialogId);
+            customiseDialogId = meerkat.modules.dialogs.show({
+                title: "Oops. Looks like you are trying to customise your cover?",
+                className: "customiseTHCover-modal",
+                onOpen: function (modalId) {
+                    // update with the text within the cover type dropdown
+                    var htmlContent = $('#customise-cover-template').html(),
+                        $modal = $('#' + modalId);
+                    meerkat.modules.dialogs.changeContent(modalId, htmlContent); // update the content
 
-                // tweak the sizing to fit the content
-                $modal.find('.modal-body').outerHeight($('#'+modalId).find('.modal-body').outerHeight() - 20);
-                $modal.find('.modal-footer').outerHeight($('#'+modalId).find('.modal-footer').outerHeight() + 20);
+                    // tweak the sizing to fit the content
+                    $modal.find('.modal-body').outerHeight($('#' + modalId).find('.modal-body').outerHeight() - 20);
+                    $modal.find('.modal-footer').outerHeight($('#' + modalId).find('.modal-footer').outerHeight() + 20);
 
-                // Add listeners for buttons
-                var noEvent = 'click.customiseTHCoverNO',
-                    yesEvent = 'click.customiseTHCoverYES';
-                $modal.find('.customerCover-no button').off(noEvent).on(noEvent, _.bind(meerkat.modules.dialogs.close, this, modalId));
-                $modal.find('.customerCover-yes button').off(yesEvent).on(yesEvent, _.bind(onCustomiseCover, this, {modalId:modalId,btn:preselectedBtn}));
-            },
-            buttons: []
-        });
-        return false;
+                    // Add listeners for buttons
+                    var noEvent = 'click.customiseTHCoverNO',
+                        yesEvent = 'click.customiseTHCoverYES';
+                    $modal.find('.customerCover-no button').off(noEvent).on(noEvent, _.bind(meerkat.modules.dialogs.close, this, modalId));
+                    $modal.find('.customerCover-yes button').off(yesEvent).on(yesEvent, _.bind(onCustomiseCover, this, {
+                        modalId: modalId,
+                        btn: preselectedBtn
+                    }));
+                },
+                buttons: []
+            });
+            return false;
+        } else {
+            // Must be help icon so allow to proceed unhindered
+        }
     }
 
     function onCustomiseCover(obj) {
         meerkat.modules.dialogs.close(obj.modalId);
-        _.defer(function(){
-            $benefitsForm.find("a[data-category=customised]:visible").first().trigger('click');
-            obj.btn.trigger('click');
-        });
+        $benefitsForm.find("a[data-category=customised]:visible").first().trigger('click');
+        obj.btn.trigger('click');
     }
 
     meerkat.modules.register('healthBenefitsStep', {
