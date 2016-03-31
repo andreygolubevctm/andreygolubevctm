@@ -4,7 +4,11 @@
 
 <c:set var="xpath" value="quote" />
 
-<layout_v1:slide formId="startForm" firstSlide="true" nextLabel="Next Step">
+<c:set var="nextStepLabel" value="Next Step" />
+<c:if test="${regoLookupSplitTest eq true}">
+	<c:set var="nextStepLabel" value="Continue" />
+</c:if>
+<layout_v1:slide formId="startForm" firstSlide="true" nextLabel="${nextStepLabel}">
 
 	<layout_v1:slide_columns sideHidden="false">
 

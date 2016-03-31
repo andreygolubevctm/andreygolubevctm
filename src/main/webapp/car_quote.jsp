@@ -40,7 +40,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
-		<car:snapshot label="Vehicle Quoted" className="hidden-xs" isHeader="true" />
+		<car:snapshot label="Vehicle Quoted" isHeader="true" />
 	</jsp:attribute>
 
 
