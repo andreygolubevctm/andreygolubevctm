@@ -75,6 +75,9 @@
                   case 'ES':
                     populateDropdownOnKey('healthNavQuestion_subES',$dropDown);
                     break;
+                  case 'CO':
+                    populateDropdownOnKey('healthNavQuestion_subCO',$dropDown);
+                    break;
                   case 'CR':
                     populateDropdownOnKey('healthNavQuestion_subCR',$dropDown);
                     break;
@@ -84,8 +87,14 @@
                   case 'F':
                     populateDropdownOnKey('healthNavQuestion_subF',$dropDown);
                     break;
+                  case 'O':
+                    populateDropdownOnKey('healthNavQuestion_subO',$dropDown);
+                    break;
                   case 'CF':
                     populateDropdownOnKey('healthNavQuestion_subCF',$dropDown);
+                    break;
+                  case 'DOD':
+                    populateDropdownOnKey('healthNavQuestion_subDOD',$dropDown);
                     break;
                   default:
                     $dropDown.empty();

@@ -8,13 +8,13 @@ public enum EligibilityReasonID {
 
     Current("CS", "Currently Serving"),
     ExServing("ES", "Ex-Serving"),
-    Contractor("003", "Contractor"),
+    Contractor("CO", "Contractor"),
     Reservist("CR", "Current Reservist"),
     Former("FO", "Former"),
     Family("F", "Family of"),
-    OTHER("007", "Other"),
-    ContractorFamily("CO", "Contractor – Family of"),
-    DeptofDefense("009", "Dept of Defense");
+    OTHER("O", "Other"),
+    ContractorFamily("CF", "Contractor – Family of"),
+    DeptofDefense("DOD", "Dept of Defense");
 
 
     @JsonIgnore
