@@ -204,7 +204,7 @@
 				<p><strong>Hospital Excess:</strong> {{= hospital.inclusions.excess }}</p>
 				<p><strong>Excess Waivers:</strong> {{= hospital.inclusions.waivers }}</p>
 				<p><strong>Co-payment / % Hospital Contribution:</strong> {{= hospital.inclusions.copayment }}</p>
-				{{ } }}
+                   {{ } }}
 
 				{{ if(hospitalCover.inclusions.length > 0) { }}
 				<h5>You will be covered for the following services</h5>
