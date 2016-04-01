@@ -163,7 +163,7 @@
 	</jsp:attribute>
 			
 	<jsp:attribute name="footer">
-		<core_v1:whitelabeled_footer />
+		<core_v1:footer_participatingsuppliers />
 	</jsp:attribute>
 			
 	<jsp:attribute name="vertical_settings">
