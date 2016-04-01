@@ -174,7 +174,7 @@
 							<div class="col-xs-12">
 								{{= renderedPriceTemplate }}
 							</div>
-							<c:if test="${moreinfo_splittest_default eq true}">
+							<c:if test="${not empty callCentre or moreinfo_splittest_default eq true}">
 								<div class="col-xs-12">
 									<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
 								</div>
