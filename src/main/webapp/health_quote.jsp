@@ -132,7 +132,7 @@
 	</jsp:attribute>
 							
 	<jsp:attribute name="footer">
-		<health_v1:footer_participatingsuppliers />
+		<health_v1:footer />
 	</jsp:attribute>
 							
 	<jsp:attribute name="vertical_settings">
