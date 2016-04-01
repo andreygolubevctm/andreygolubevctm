@@ -124,14 +124,14 @@ var healthFunds_THF = {
 
 		$('#update-premium').on('click.THF', function() {
 			healthFunds._payments = {
-							'minType':healthFunds.minType.FROM_EFFECTIVE_DATE,
+							'minType':meerkat.modules.healthPaymentDay.FROM_EFFECTIVE_DATE,
 							'min':7,
 							'max':16,
 							'weekends':false,
-							'countFrom' : healthFunds.countFrom.EFFECTIVE_DATE
+							'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE
 							};
-			var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
-			healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+			var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
 			$('.thf-payment-legend').remove();
 			$('#health_payment_bank_policyDay').parent().after('<span class="thf-payment-legend">Your account will be debited on or as close to the selected date possible.</span>');
 		});

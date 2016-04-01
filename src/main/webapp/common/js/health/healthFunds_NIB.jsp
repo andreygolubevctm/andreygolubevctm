@@ -49,9 +49,9 @@ var healthFunds_NIB = {
             } else {
                 healthFunds._payments = { 'min':0, 'max':27, 'weekends':true , 'countFrom' : 'today', 'maxDay' : 27};
             }
-            var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
-            healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-            healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+            var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
         });
 
         function onChangeNoEmailChkBox(){
@@ -93,8 +93,8 @@ var healthFunds_NIB = {
         $("#health_application_contactPoint_E").prop('disabled', false).parents('.btn-form-inverse').attr('disabled',false);
 
         $('#health_application_no_email').off('click.NIB');
-        healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-        healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
 
         <%--Contact Point question--%>
         healthApplicationDetails.hideHowToSendInfo();
