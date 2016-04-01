@@ -139,7 +139,7 @@ public class RequestUtils {
     private static Object convertValue(Class<?> type, String param) throws ParseException {
         Object value = null;
         try {
-            if( type == LocalDate.class && param != null){
+            if( type == LocalDate.class && param != null && !param.isEmpty()){
                 value = LocalDate.parse(param, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             } else if( type == Date.class && param != null){
                 value = sdf.parse(param);
