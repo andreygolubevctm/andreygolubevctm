@@ -40,8 +40,8 @@
      * @param hasTitle - if true, toggle the display of the parent elment
      */
 	function render(container, hasTitle) {
-
-		$('[data-source]', $(container)).each(function () {
+		var $container = $(container);
+		$('[data-source]', $container).each(function () {
 			var output = '',
 				$el = $(this),
                 dataType = $el.attr('data-type'),
@@ -177,7 +177,7 @@
 		});
 
         // Check if the container has value for at least one [data-source]. Hide the container if false.
-        $(container).toggle(hasData($(container)));
+		$container.toggle(hasData($container));
 	}
 
     function hasData($container) {
