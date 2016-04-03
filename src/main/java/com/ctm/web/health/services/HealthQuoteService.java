@@ -136,7 +136,7 @@ public class HealthQuoteService extends CommonQuoteService<HealthQuote, HealthQu
 
     // TODO: move providerKeys to the database and use CommonQuoteService.setFilter
     protected void setFilter(ProviderFilter providerFilter) throws Exception {
-        if (StringUtils.isNotBlank(providerFilter.getProviderKey())) {
+        if (providerFilter != null && StringUtils.isNotBlank(providerFilter.getProviderKey())) {
             switch (providerFilter.getProviderKey()) {
                 case "au_74815263":
                     providerFilter.setSingleProvider("1");
