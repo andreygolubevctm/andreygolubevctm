@@ -122,8 +122,8 @@ public class DateUtils {
     }
 
 
-    public static java.util.Date getUtilDate(java.sql.Date date) throws SQLException {
-        return date != null ? new java.util.Date(date.getTime()) : null;
+    public static java.time.LocalDate getUtilDate(java.sql.Date date) throws SQLException {
+        return date != null ? date.toLocalDate() : null;
     }
 
 
