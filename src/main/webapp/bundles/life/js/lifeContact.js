@@ -31,7 +31,7 @@
     function displayModal(title, hashID, templateName) {
         var template = _.template($('#'+templateName).html());
 
-        modalId = meerkat.modules.dialogs.show({
+        meerkat.modules.dialogs.show({
             title : title,
             hashId : hashID,
             className : hashID +'-modal',

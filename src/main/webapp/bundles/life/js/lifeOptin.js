@@ -4,7 +4,8 @@
 
     var $contactDetailsCall,
         $contactDetailsOptin,
-        $contactDetailsEmail;
+        $contactDetailsEmail,
+        $contactDetailsNumberInput;
 
     function initLifeOptin() {
         _initFields();
