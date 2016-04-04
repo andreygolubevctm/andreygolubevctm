@@ -14,7 +14,7 @@
     //NOTE: max - min cannot be a negative number
     function paymentDays( effectiveDateString ){
         // main check for real value
-        if( effectiveDateString == ''){
+        if( effectiveDateString === ''){
             return false;
         }
         var effectiveDate = meerkat.modules.utils.returnDate(effectiveDateString);
@@ -53,7 +53,7 @@
             if( typeof(healthFunds._payments.maxDay) != 'undefined' && healthFunds._payments.maxDay < _date.getDate() ){
                 _days++;
                 // Parse out the weekends
-            } else if( !healthFunds._payments.weekends && ( _day == 0 || _day == 6 ) ){
+            } else if( !healthFunds._payments.weekends && ( _day === 0 || _day == 6 ) ){
                 _days++;
             } else {
                 var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
@@ -61,8 +61,8 @@
                 _html += '<option value="'+ _date.getFullYear() +'-'+ _monthString +'-'+ _dayString +'">'+ healthFunds._getNiceDate(_date) +'</option>';
                 _days++;
                 _count++;
-            };
-        };
+            }
+        }
 
         // Return the html
         return _html;
