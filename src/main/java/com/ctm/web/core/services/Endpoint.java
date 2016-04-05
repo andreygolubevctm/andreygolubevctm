@@ -9,7 +9,8 @@ public enum Endpoint {
     PAYMENT_REGISTER("payment/register"),
     PROVIDER("provider"),
     PRODUCT_INFO("product"),
-    VALIDATE("validate");
+    VALIDATE("validate"),
+    POPULAR_DESTINATIONS("popularDestinations");
 
     private final String value;
 
