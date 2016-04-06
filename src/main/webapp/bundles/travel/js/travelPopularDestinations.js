@@ -27,9 +27,7 @@
             // IE8-10 is not working because for some reason the promise doesn't get set until 10 secs later
 
             meerkat.modules.utils.pluginReady("development").done(function() {
-                console.log('ready');
                 meerkat.modules.development.getAggregationServicePromise().done(function() {
-                    console.log('done');
                     data.environmentOverride = $("#developmentAggregatorEnvironment").val();
                     getPopularCountriesList(data);
                 });
