@@ -104,7 +104,7 @@
     function appendToTagList($list, selectedTextHTML, selectedText, value) {
         var selectLimit = $list.data('selectlimit');
 
-        if(selectLimit === 0 || (!!selectLimit && $list.find('li').length < selectLimit)) {
+        if (selectLimit === 0 || (!!selectLimit && $list.find('li').length < selectLimit)) {
             _.defer(function delayTagAppearance() {
 
                 if (typeof selectedItems[$list.index()] == 'undefined') {
@@ -112,33 +112,34 @@
                 }
                 selectedItems[$list.index()].push(value);
 
-            $list.append(
-                $('<li>')
-                    .html(selectedTextHTML)
-                    .data('value', value)
-                    .data('fulltext', selectedText)
-                    .addClass('selected-tag')
-                    .hide()
-                    .append(
-                        $('<button>')
-                            .html('&times;')
-                            .attr('type', 'button')
-                            .addClass('btn')
-                            .on('click', function onClickRemoveTagCallback() {
-                                _onRemoveListItem(this);
-                            })
-                            .hover(function onSelectTagHoverIn() {
-                                $(this).parents('li').addClass('hover');
-                            }, function onSelectTagHoverOut() {
-                                $(this).parents('li').removeClass('hover');
-                            })
-                    )
-                    .fadeIn(fadeSpeed, function selectTagFadeIn() {
-                        _updateHiddenInputs();
-                        meerkat.messaging.publish(moduleEvents.SELECTED_TAG_ADDED, value);
-                    })
-            );
-        });
+                $list.append(
+                    $('<li>')
+                        .html(selectedTextHTML)
+                        .data('value', value)
+                        .data('fulltext', selectedText)
+                        .addClass('selected-tag')
+                        .hide()
+                        .append(
+                            $('<button>')
+                                .html('&times;')
+                                .attr('type', 'button')
+                                .addClass('btn')
+                                .on('click', function onClickRemoveTagCallback() {
+                                    _onRemoveListItem(this);
+                                })
+                                .hover(function onSelectTagHoverIn() {
+                                    $(this).parents('li').addClass('hover');
+                                }, function onSelectTagHoverOut() {
+                                    $(this).parents('li').removeClass('hover');
+                                })
+                        )
+                        .fadeIn(fadeSpeed, function selectTagFadeIn() {
+                            _updateHiddenInputs();
+                            meerkat.messaging.publish(moduleEvents.SELECTED_TAG_ADDED, value);
+                        })
+                );
+            });
+        }
     }
 
     function _onRemoveListItem(listItem) {
@@ -168,6 +169,7 @@
         $listItem.fadeOut(fadeSpeed, function removeTagFadeOutCallback() {
             $(this).remove();
             _updateHiddenInputs();
+            meerkat.messaging.publish(moduleEvents.SELECTED_TAG_REMOVED, value);
         });
     }
 
