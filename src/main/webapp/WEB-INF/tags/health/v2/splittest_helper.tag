@@ -40,3 +40,13 @@
 </c:choose>
 
 <%-- End HLT-3028 --%>
+
+<%-- New elastic search for health --%>
+<c:set var="useElasticSearch">
+    <c:choose>
+        <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 18)}">true</c:when>
+        <c:otherwise>false</c:otherwise>
+    </c:choose>
+
+</c:set>
+<%-- End HLT-2931 --%>
