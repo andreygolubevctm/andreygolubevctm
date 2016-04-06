@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" required="true" rtexprvalue="false" description="Parent xpath to hold individual items"%>
+<%@ attribute name="xpath" required="true" rtexprvalue="true" description="Parent xpath to hold individual items"%>
 <%@ attribute name="xpathhidden" required="true" rtexprvalue="false" description="xpath to hold hidden item"%>
 <%@ attribute name="label" required="true" rtexprvalue="true" description="Label for the select field" %>
 <%@ attribute name="title" required="true" rtexprvalue="false" description="Title for the select field" %>
