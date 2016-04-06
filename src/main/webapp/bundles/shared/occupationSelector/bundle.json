@@ -1,0 +1,7 @@
+{
+    "dependencies": [
+        "meerkat",
+        "core",
+        "shared/selectTags"
+    ]
+}
