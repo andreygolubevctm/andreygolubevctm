@@ -13,7 +13,10 @@ package com.ctm.web.core.model.session;
 
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.utils.SessionDataUtils;
 import com.ctm.web.core.web.go.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +24,8 @@ import java.util.Date;
 import static com.ctm.web.core.utils.SessionDataUtils.getTransactionId;
 
 public class SessionData {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionData.class);
 
 	final private ArrayList<Data> transactionSessionData;
 	private AuthenticatedData authenticatedSessionData;
@@ -72,10 +77,12 @@ public class SessionData {
 		ArrayList<Data> sessions = getTransactionSessionData();
 
 		for (Data session : sessions) {
-			String sessionTransactionId = (String) session.get("current/transactionId");
+			String sessionTransactionId = (String) session.get(SessionDataUtils.CURRENT_TRANSACTION_ID_XPATH);
 			if(sessionTransactionId != null && sessionTransactionId.equals(transactionId)){
 				return session;
-			}
+			} else if("0".equals(transactionId) && sessionTransactionId == null){
+                return session;
+            }
 		}
 
 		return null;
@@ -117,7 +124,9 @@ public class SessionData {
 		TransactionDao tranDao = new TransactionDao();
 		try {
 			latestTransactionId = tranDao.getMostRecentRelatedTransactionId(transactionId);
-		} catch (DaoException e) {}
+		} catch (DaoException e) {
+            LOGGER.error("failed to check db" , e);
+        }
 
 		if(latestTransactionId > 0) {
 			ArrayList<Data> sessions = getTransactionSessionData();

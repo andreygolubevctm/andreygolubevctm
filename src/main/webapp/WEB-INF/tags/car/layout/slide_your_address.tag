@@ -20,28 +20,16 @@
 					<p>We're looking for the address where the car is parked at night which could be different to your postal address. This information will be used when determining your premium.</p>
 				</ui:bubble>
 
-			</layout_v1:slide_content>
-		</jsp:body>
-	</layout_v1:slide_columns>
+                <car:risk_address xpath="${xpath}/riskAddress" />
 
-	<car:risk_address xpath="${xpath}/riskAddress" />
+                <car:commencement_date xpath="${xpath}/options/commencementDate" />
 
-	<layout_v1:slide_columns sideHidden="true">
+                <car:contact_details xpath="${xpath}/contact" />
 
-		<jsp:attribute name="rightColumn"></jsp:attribute>
-
-		<jsp:body>
-			<layout_v1:slide_content>
-
-				<car:commencement_date xpath="${xpath}/options/commencementDate" />
-
-				<car:contact_details xpath="${xpath}/contact" />
-
-				<car:contact_optins xpath="${xpath}/termsAndConditions" />
+                <car:contact_optins xpath="${xpath}/termsAndConditions" />
 
 			</layout_v1:slide_content>
 		</jsp:body>
-
 	</layout_v1:slide_columns>
 
 </layout_v1:slide>

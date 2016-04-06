@@ -129,7 +129,7 @@
 		// if pending, it might not have the about fund info so let's get it
 		if(confirmationProduct.about === ''  || !confirmationProduct.hasOwnProperty('warningAlert') || confirmationProduct.warningAlert === '') {
 			meerkat.modules.healthMoreInfo.retrieveExternalCopy(confirmationProduct).then(function confirmationExternalCopySuccess() {
-				$(".aboutFund").append(confirmationProduct.aboutFund).parents(".displayNone").first().removeClass("displayNone");
+				$(".aboutFund").html(confirmationProduct.aboutFund).parents(".displayNone").first().removeClass("displayNone");
 
 				if (confirmationProduct.hasOwnProperty('warningAlert') && confirmationProduct.warningAlert !== '') {
 					$("#health_confirmation-warning").find(".fundWarning").show().html(confirmationProduct.warningAlert);

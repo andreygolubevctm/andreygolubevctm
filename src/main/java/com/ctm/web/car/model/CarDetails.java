@@ -18,6 +18,7 @@ public class CarDetails {
     private CarFuel carFuel;
     private CarType carType;
     private CarColour carColour;
+    private String nvicCode;
 
     public Map<String, Object> get() {
         Map<String, Object> details = new LinkedHashMap<>();
@@ -47,6 +48,7 @@ public class CarDetails {
         details.put(CarType.JSON_MARKETVALUE_NAME, Integer.toString(carType.getMarketValue()));
         details.put(CarType.JSON_VARIANT_NAME, carType.getLabel());
         details.put(CarColour.JSON_COLLECTION_NAME, carColour.getCode());
+        details.put("nvicCode", nvicCode);
         return details;
     }
 
@@ -104,5 +106,13 @@ public class CarDetails {
     }
     public void setColour(CarColour carColour) {
         this.carColour = carColour;
+    }
+
+    public String getNvicCode() {
+        return nvicCode;
+    }
+
+    public void setNvicCode(String nvicCode) {
+        this.nvicCode = nvicCode;
     }
 }

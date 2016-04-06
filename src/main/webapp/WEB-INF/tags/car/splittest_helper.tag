@@ -4,5 +4,5 @@
 
 <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 
-<!-- SINGLE OPTIN TEST - 1 & 2 default and 3 is the test -->
-<c:set var="singleOptinSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 3)}" />
+<%-- CAR-1206 Split Test J=4 test --%>
+<c:set var="regoLookupSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 4) or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 41)}" />

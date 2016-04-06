@@ -78,7 +78,7 @@
 		modalId = meerkat.modules.dialogs.show({
 			title : $(this).attr('title'),
 			hashId : 'travel-brands',
-			className : 'travel-brands-modal',
+			className : 'brands-modal',
 			htmlContent: template(),
 			closeOnHashChange: true,
 			openOnHashChange: false
