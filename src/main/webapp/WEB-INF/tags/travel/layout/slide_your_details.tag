@@ -12,6 +12,10 @@
 <% nowPlusYear.add(java.util.GregorianCalendar.YEAR, 1); %>
 <fmt:formatDate var="nowPlusYear_Date" pattern="yyyy-MM-dd" value="${nowPlusYear.time}" />
 
+<%-- A/B test popular destinations --%>
+ <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
+ <c:set var="popularDestinationsEnabled" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 99)}" />
+
 <c:if test="${param.preload eq 'true'}">
 
 	<jsp:useBean id="preloadToDate" class="java.util.GregorianCalendar" />
@@ -72,6 +76,17 @@
 
 				<%-- COUNTRY SECTION --%>
 				<form_v2:fieldset showHelpText="true" legend="Where are you going?" className="travel_details_destinations" id="destinationsfs">
+                    <c:set var="labelText" value="What Country(ies) are you going to?" />
+                    <c:if test="${popularDestinationsEnabled eq true}">
+                        <core_v1:js_template id="travel-popular-countries-template">
+                            <form_v2:row label="What Country(ies) are you going to?" className="popular-countries-container" hideHelpIconCol="true">
+                                {{ _.each(obj, function(country) { }}
+                                    <a href="javascript:;" class="icon-{{= country.isoCode }} base" data-country='{{= JSON.stringify(country) }}'>{{= country.countryName }}</a>
+                                {{ }) }}
+                            </form_v2:row>
+                        </core_v1:js_template>
+                        <c:set var="labelText" value="" />
+                    </c:if>
 					<jsp:useBean id="locationsService" class="com.ctm.web.travel.services.TravelIsoLocationsService" scope="page" />
 					<core_v1:select_tags
 							variableListName="countrySelectionList"
@@ -79,7 +94,7 @@
 							variableListArray="${locationsService.getCountrySelectionList()}"
 							xpath="travel/destinations"
 							xpathhidden="travel/destination"
-							label="What Country(ies) are you going to?"
+							label="${labelText}"
 							title="Where are you travelling?"
 							validationErrorPlacementSelector=".travel_details_destinations"
 							helpId="213"

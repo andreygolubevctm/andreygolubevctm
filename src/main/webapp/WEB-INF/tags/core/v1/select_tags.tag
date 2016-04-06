@@ -4,7 +4,7 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="false" description="Parent xpath to hold individual items"%>
 <%@ attribute name="xpathhidden" required="true" rtexprvalue="false" description="xpath to hold hidden item"%>
-<%@ attribute name="label" required="true" rtexprvalue="false" description="Label for the select field" %>
+<%@ attribute name="label" required="true" rtexprvalue="true" description="Label for the select field" %>
 <%@ attribute name="title" required="true" rtexprvalue="false" description="Title for the select field" %>
 <%@ attribute name="validationErrorPlacementSelector" required="false" rtexprvalue="false" description="Validation error placement selector" %>
 <%@ attribute name="variableListName" required="true" rtexprvalue="false" description="Name of variable to contain a JS array of objects" %>

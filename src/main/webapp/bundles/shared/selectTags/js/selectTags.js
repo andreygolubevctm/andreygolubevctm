@@ -14,6 +14,14 @@
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info;
 
+    var events = {
+            selectTags: {
+                SELECTED_TAG_ADDED: "SELECTED_TAG_ADDED",
+                SELECTED_TAG_REMOVED: "SELECTED_TAG_REMOVED"
+            }
+        },
+        moduleEvents = events.selectTags;
+
     var $selectObj = $('.select-tags'),
         selectedTagsListClass = '.selected-tags',
         fadeSpeed = 'fast',
@@ -108,20 +116,22 @@
                     .addClass('selected-tag')
                     .hide()
                     .append(
-                    $('<button>')
-                        .html('&times;')
-                        .attr('type', 'button')
-                        .addClass('btn')
-                        .on('click', function onClickRemoveTagCallback() {
-                            _onRemoveListItem(this);
-                        })
-                        .hover(function onSelectTagHoverIn() {
-                            $(this).parents('li').addClass('hover');
-                        }, function onSelectTagHoverOut() {
-                            $(this).parents('li').removeClass('hover');
-                        })
-                ).fadeIn(fadeSpeed, function () {
+                        $('<button>')
+                            .html('&times;')
+                            .attr('type', 'button')
+                            .addClass('btn')
+                            .on('click', function onClickRemoveTagCallback() {
+                                _onRemoveListItem(this);
+                            })
+                            .hover(function onSelectTagHoverIn() {
+                                $(this).parents('li').addClass('hover');
+                            }, function onSelectTagHoverOut() {
+                                $(this).parents('li').removeClass('hover');
+                            })
+                    )
+                    .fadeIn(fadeSpeed, function () {
                         _updateHiddenInputs();
+                        meerkat.messaging.publish(moduleEvents.SELECTED_TAG_ADDED, value);
                     })
             );
         });
@@ -154,6 +164,7 @@
         $listItem.fadeOut(fadeSpeed, function removeTagFadeOutCallback() {
             $(this).remove();
             _updateHiddenInputs();
+            meerkat.messaging.publish(moduleEvents.SELECTED_TAG_REMOVED, value);
         });
     }
 
@@ -183,6 +194,7 @@
 
     meerkat.modules.register('selectTags', {
         init: init,
+        events: events,
         getListElement: getListElement,
         appendToTagList: appendToTagList,
         isAlreadySelected: isAlreadySelected,
