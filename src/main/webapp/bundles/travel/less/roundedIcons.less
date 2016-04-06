@@ -1,21 +1,20 @@
 // Mixins for icon sizes.
-.radioIconSize(@icon-font-size, @label-font-size, @margin-offset){
+.roundIconSize(@icon-font-size, @label-font-size, @margin-offset, @min-height-offset, @selector){
+  @{selector} {
+    float: left;
+    width: @icon-font-size * 1.6 + 2; // padding * 2 + font-size + border * 2
+    font-size: @label-font-size;
+    font-family: @font-family-theme-regular;
+    color: @gray-dark;
+    &:before{
+      font-size: @icon-font-size;
+      line-height: @icon-font-size * 1.6 + 2;
+      width: @icon-font-size * 1.6 + 2; // padding * 2 + font-size + border * 2. also fixes ie 10 & 11
+    }
 
-  label {
-	float: left;
-	width: @icon-font-size * 1.6 + 2; // padding * 2 + font-size + border * 2
-	font-size: @label-font-size;
-	font-family: @font-family-theme-regular;
-	color: @gray-dark;
-	&:before{
-	  font-size: @icon-font-size;
-	  line-height: @icon-font-size * 1.6 + 2;
-	  width: @icon-font-size * 1.6 + 2; // padding * 2 + font-size + border * 2. also fixes ie 10 & 11
-	}
-
-	// minimum 2 lines of label text for float to work properly
-	min-height: (@icon-font-size * 1.6 + 2) + ceil(@label-font-size * 2.2) + 15; // Icon height + label-font-size's line-height * 2 + margin-bottom
-	margin: @icon-font-size * 0.15 + @margin-offset;
+    // minimum 2 lines of label text for float to work properly
+    min-height: (@icon-font-size * 1.6 + 2) + ceil(@label-font-size * 2.2) + @min-height-offset; // Icon height + label-font-size's line-height * 2 + margin-bottom
+    margin: @icon-font-size * 0.15 + @margin-offset;
   }
 }
 
@@ -73,13 +72,13 @@ div.roundedCheckboxIcons {
   }
 
   @media (@xs) {
-	.radioIconSize(50px, @font-size-base, 0);
+	.roundIconSize(50px, @font-size-base, 0, 15, label);
   }
   @media (@sm-only) {
-	.radioIconSize(40px, @font-size-small, 1);
+	.roundIconSize(40px, @font-size-small, 1, 15, label);
   }
   @media (@md-only) {
-	.radioIconSize(50px, @font-size-small, -1);
+	.roundIconSize(50px, @font-size-small, -1, 15, label);
   }
 }
 
@@ -100,5 +99,5 @@ div.roundedCheckboxIcons {
 }
 
 .btn-group-justified > .btn, .btn-group-justified > .btn-group {
-  width: auto;
+  width: auto !important;
 }

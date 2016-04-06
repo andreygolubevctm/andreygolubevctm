@@ -7,6 +7,9 @@
 <core_v2:quote_check quoteType="travel" />
 <core_v2:load_preload />
 
+<%-- Set global variable to flags for active split tests --%>
+<travel:splittest_helper />
+
 <%-- HTML --%>
 <layout_v1:journey_engine_page title="Travel Quote">
 
