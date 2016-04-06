@@ -12,10 +12,6 @@
 <% nowPlusYear.add(java.util.GregorianCalendar.YEAR, 1); %>
 <fmt:formatDate var="nowPlusYear_Date" pattern="yyyy-MM-dd" value="${nowPlusYear.time}" />
 
-<%-- A/B test popular destinations --%>
- <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
- <c:set var="popularDestinationsEnabled" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 99)}" />
-
 <c:if test="${param.preload eq 'true'}">
 
 	<jsp:useBean id="preloadToDate" class="java.util.GregorianCalendar" />

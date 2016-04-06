@@ -129,7 +129,7 @@
                                 $(this).parents('li').removeClass('hover');
                             })
                     )
-                    .fadeIn(fadeSpeed, function () {
+                    .fadeIn(fadeSpeed, function selectTagFadeIn() {
                         _updateHiddenInputs();
                         meerkat.messaging.publish(moduleEvents.SELECTED_TAG_ADDED, value);
                     })

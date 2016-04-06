@@ -10,8 +10,8 @@
         travelPopularDestinations: {}
     };
 
-    var $destinationsfs;
-
+    var $destinationsfs,
+        $travelDestinations;
 
     function initTravelPopularDestinations() {
 
@@ -19,17 +19,22 @@
 
         var data = {};
         $destinationsfs = $('#destinationsfs');
+        $travelDestinations = $('#travel_destinations');
 
-        if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
-            // need to wait for the development.deferred module to be initialised then wait for the ajax call there to get all available service URL,
-            // It is pretty painful to get something working/tested in DEV because of the branches
-            // this is not working in IE because they take 5-10 secs to be dom ready thus the deferred module is pushed to be loaded after that
-            _.delay(function() {
-                meerkat.modules.development.getAggregationServicePromise().then(function() {
+        if(meerkat.site.isDev === true){
+            // need to wait for the development.deferred module to be initialised
+            // then wait for the ajax call there to get all available service URL
+            // IE8-10 is not working because for some reason the promise doesn't get set until 10 secs later
+
+            meerkat.modules.utils.pluginReady("development").done(function() {
+                console.log('ready');
+                meerkat.modules.development.getAggregationServicePromise().done(function() {
+                    console.log('done');
                     data.environmentOverride = $("#developmentAggregatorEnvironment").val();
                     getPopularCountriesList(data);
                 });
-            }, 1000);
+            });
+
             return;
         }
         getPopularCountriesList(data);
@@ -63,23 +68,25 @@
                     return country.isoCode === $(this).data('value');
                 }).find('button').trigger('click');
             } else {
-                $('#travel_destinations').trigger('typeahead:selected', country);
+                $travelDestinations.trigger('typeahead:selected', country);
             }
 
             $this.toggleClass('active');
         });
 
         meerkat.messaging.subscribe(meerkatEvents.selectTags.SELECTED_TAG_REMOVED, function onSelectedTagRemove(isoCode) {
-            $destinationsfs.find('.popular-countries-container a').filter(function filterByIsoCode() {
-                return $(this).data('country').isoCode === isoCode;
-            }).removeClass('active');
+            toggleSelectedIcon(isoCode, false);
         });
 
         meerkat.messaging.subscribe(meerkatEvents.selectTags.SELECTED_TAG_ADDED, function onSelectedTagAdd(isoCode) {
-            $destinationsfs.find('.popular-countries-container a').filter(function filterByIsoCode() {
-                return $(this).data('country').isoCode === isoCode;
-            }).addClass('active');
+            toggleSelectedIcon(isoCode, true);
         });
+    }
+
+    function toggleSelectedIcon(isoCode, state) {
+        $destinationsfs.find('.popular-countries-container a').filter(function filterByIsoCode() {
+            return $(this).data('country').isoCode === isoCode;
+        }).toggleClass('active', state);
     }
 
 
