@@ -550,11 +550,6 @@
 					// Update the state of the dependants object.
 					meerkat.modules.healthDependants.updateDependantConfiguration();
 
-					// Check okToCall optin - show if no phone numbers in questionset and NOT Simples
-					if($('#health_contactDetails_contactNumber_mobile').val() === '' &&	$('#health_contactDetails_contactNumber_other').val() === '' &&	meerkat.site.isCallCentreUser === false) {
-						$('#health_application_okToCall-group').show();
-					}
-
 					// Change min and max dates for start date picker based on current stored values from healthPaymentStep module which can change based on selected fund
 					//var min = meerkat.modules.healthPaymentStep.getSetting("minStartDateOffset");
 					//var max = meerkat.modules.healthPaymentStep.getSetting("maxStartDateOffset");
