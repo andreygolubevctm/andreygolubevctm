@@ -40,7 +40,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
-		<car:snapshot label="Vehicle Quoted" className="hidden-xs" isHeader="true" />
+		<car:snapshot label="Vehicle Quoted" isHeader="true" />
 	</jsp:attribute>
 
 
@@ -163,7 +163,7 @@
 	</jsp:attribute>
 			
 	<jsp:attribute name="footer">
-		<core_v1:whitelabeled_footer />
+		<core_v1:footer_participatingsuppliers />
 	</jsp:attribute>
 			
 	<jsp:attribute name="vertical_settings">

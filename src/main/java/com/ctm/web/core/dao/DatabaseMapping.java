@@ -3,6 +3,7 @@ package com.ctm.web.core.dao;
 import com.ctm.web.core.utils.common.utils.DateUtils;
 
 import java.sql.*;
+import java.time.LocalDate;
 
 public abstract class DatabaseMapping {
 	protected int count;
@@ -23,6 +24,8 @@ public abstract class DatabaseMapping {
 			stmt.setInt(++count, (Integer) value);
 		} else if(value instanceof String){
 			stmt.setString(++count, (String) value);
+		} else if(value instanceof LocalDate){
+			setLocalDate(stmt, (LocalDate) value);
 		} else if(value instanceof java.util.Date){
 			if(value instanceof Timestamp){
 				setTimeStamp(stmt,(java.util.Date)value);
@@ -32,6 +35,10 @@ public abstract class DatabaseMapping {
 		}else if(value instanceof Long){
 			stmt.setLong(++count, (Long) value);
 		}
+	}
+
+	private void setLocalDate(PreparedStatement stmt, LocalDate value) throws SQLException {
+		stmt.setDate(++count, java.sql.Date.valueOf( value ));
 	}
 
 	private void setDate(PreparedStatement stmt, java.util.Date value) throws SQLException {
