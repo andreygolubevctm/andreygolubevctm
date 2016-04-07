@@ -72,15 +72,6 @@
             $coverType.val('C').change();
         });
 
-        if (!meerkat.modules.healthTiers.isActive()) {
-            $('#health_situation_healthSitu')
-                .add('#health_healthCover_primary_dob')
-                .add('#health_healthCover_partner_dob')
-                .add('#health_situation_healthCvr').on('change', function (event) {
-                prefillBenefits();
-            });
-        }
-
         // align titles when breakpoint changes
         meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function breakpointChanged(states) {
             if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "benefits") {
@@ -176,19 +167,10 @@
         $benefitsForm.find('.hasShortlistableChildren').each(function () {
             var $this = $(this);
 
-            if (meerkat.modules.healthTiers.isActive()) {
-
-                //This is for the split test. The classNames in the database need to remain as is for the default but we need to force an icon
-                $this.find('.category[class*="CTMNoIcon"]').each(function () {
-                    var newClass = $(this).attr('class').replace('CTMNoIcon', 'CTM');
-                    $(this).removeClass().addClass(newClass);
-                });
-            } else {
-                // wrap icons and non-icons items so we can style them differently
-                $this.find('.category[class*="HLTicon-"], .category[class*="CTM-"]').wrapAll('<div class="hasIcons"></div>');
-                $this.find('.category[class*="noIcon"]').wrapAll('<div class="noIcons"></div>');
-                $this.find('.noIcons').insertAfter($this.find('.hasIcons'));
-            }
+            $this.find('.category[class*="CTMNoIcon"]').each(function () {
+                var newClass = $(this).attr('class').replace('CTMNoIcon', 'CTM');
+                $(this).removeClass().addClass(newClass);
+            });
 
             // fix positioning of label and help
             $this.find('.category[class*="CTM-"] label, .hasIcons .category[class*="HLTicon-"] label').each(function () {
