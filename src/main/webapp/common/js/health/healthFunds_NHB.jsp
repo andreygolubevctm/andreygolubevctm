@@ -34,16 +34,16 @@
 
 
             <%-- Custom questions: Eligibility --%>
-            if ($('#nav_eligibility').length > 0) {
+            if ($('#nhb_eligibility').length > 0) {
               <%-- HTML was already injected so unhide it --%>
-              $('#nav_eligibility').show();
+              $('#nhb_eligibility').show();
             }
             else {
 
               <c:set var="html">
-                <c:set var="fieldXpath" value="health/application/nav" />
-                <form_v2:fieldset id="nav_eligibility" legend="How are you eligible to join Navy Health?" className="primary">
-                  <div id="nav_currentemployee">
+                <c:set var="fieldXpath" value="health/application/nhb" />
+                <form_v2:fieldset id="nhb_eligibility" legend="How are you eligible to join Navy Health?" className="primary">
+                  <div id="nhb_currentemployee">
                       <form_v2:row fieldXpath="${fieldXpath}/eligibility" label="Eligibility reason"  className="cbhmain">
                         <field_v2:general_select type="healthNavQuestion_eligibility" xpath="${fieldXpath}/eligibility" title="Eligibility reason" required="true" initialText="Please select" />
                       </form_v2:row>
@@ -52,7 +52,7 @@
                         <field_v2:general_select xpath="${fieldXpath}/subreason" title="Sub reason" required="true" initialText="&nbsp;" />
                       </form_v2:row>
                   </div>
-                  <div id="nav_ineligible" class="alert alert-danger">
+                  <div id="nhb_ineligible" class="alert alert-danger">
                        <span></span>
                   </div>
                 </form_v2:fieldset>
@@ -60,15 +60,15 @@
 
               <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
               $('#health_application').prepend('<c:out value="${html}" escapeXml="false" />');
-              $("#subreasonId, #nav_ineligible").hide();
+              $("#subreasonId, #nhb_ineligible").hide();
               $.validator.addMethod("validateNAVEligibility", function(value, element) {
-                          return !$("#nav_ineligible").is(":visible");
+                          return !$("#nhb_ineligible").is(":visible");
                         }
                 );
               <%-- lets make ajax call to get the other values for the sub eligibility field --%>
-              $('#health_application_nav_eligibility').on('change',function() {
+              $('#health_application_nhb_eligibility').on('change',function() {
                 $('#subreasonId').slideDown(200);
-                var $dropDown = $("#health_application_nav_subreason");
+                var $dropDown = $("#health_application_nhb_subreason");
                 switch($(this).val()) {
                   case 'CS':
                     populateDropdownOnKey('healthNavQuestion_subCS',$dropDown);
@@ -135,8 +135,8 @@
             }<%-- /injection --%>
 
             <%-- Title replacement --%>
-            if($('#nav_title_prim').length) {
-              $('#nav_title_prim').show();
+            if($('#nhb_title_prim').length) {
+              $('#nhb_title_prim').show();
             }
             else {
                 <c:set var="html">
@@ -152,8 +152,8 @@
                 $("#health_application_primary_title").val(originalTitle);
             }
             <%-- Partner Title replacement --%>
-            if($('#nav_title_partner').length) {
-              $('#nav_title_partner').show();
+            if($('#nhb_title_partner').length) {
+              $('#nhb_title_partner').show();
             }
             else {
               <c:set var="html">
@@ -170,13 +170,13 @@
             }
 
             <%-- Custom question: Partner relationship --%>
-            if ($('#nav_partnerrel').length > 0) {
-              $('#nav_partnerrel').show();
+            if ($('#nhb_partnerrel').length > 0) {
+              $('#nhb_partnerrel').show();
             }
             else {
               <c:set var="html">
-              <c:set var="fieldXpath" value="health/application/nav/partnerrel" />
-              <form_v2:row id="nav_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
+              <c:set var="fieldXpath" value="health/application/nhb/partnerrel" />
+              <form_v2:row id="nhb_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
               <field_v2:array_select xpath="${fieldXpath}"
                       required="true"
                       title="Relationship to you" items="=Please choose...,Ptnr=Partner,Sps=Spouse" />
@@ -245,7 +245,7 @@
           },
           unset: function() {
             <%-- Custom questions - hide in case user comes back --%>
-            $('#nav_eligibility, #nav_ineligible, #nav_partnerrel').hide();
+            $('#nhb_eligibility, #nhb_ineligible, #nhb_partnerrel').hide();
             $("#health_application_contactPoint-group").addClass('hidden');
             $("label[for='health_application_contactPoint'] span").text("the fund");
             $(".health_previous_fund_authority").addClass("hidden");
