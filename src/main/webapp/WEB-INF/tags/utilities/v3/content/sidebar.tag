@@ -5,6 +5,8 @@
 
 <div class="yourDetailsSnapshotContainer"></div>
 
+<content:get key="competitionPromoSidebarImage"/>
+
 <c:set var="sidebarContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "snapshot")}' />
 
 <c:set var="snapshotTitle" value="" />

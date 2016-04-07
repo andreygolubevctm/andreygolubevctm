@@ -25,14 +25,13 @@
         $(document).ready(function () {
             $elements.container = $('#unableToFindRego');
             $elements.feedback = $('#regoErrorMessage');
-
-            eventSubscriptions();
+            applyEventListeners();
         });
     }
 
-    function eventSubscriptions() {
-        $('#RegoFieldSet').on('click', '.rego-not-my-car', function () {
-            $(this).parent().addClass('hidden');
+    function applyEventListeners() {
+        meerkat.messaging.subscribe(meerkatEvents.car.DROPDOWN_CHANGED, function invisibleRego(states) {
+            $('.rego-text').addClass('invisible');
         });
     }
 
@@ -58,7 +57,12 @@
                 useDefaultErrorHandling: false,
                 onSuccess: _.bind(onLookup, this, data),
                 onError: _.bind(onLookupError, this, data)
-            }).done(meerkat.modules.journeyEngine.loadingHide).fail(meerkat.modules.journeyEngine.loadingHide);
+            }).done(meerkat.modules.journeyEngine.loadingHide)
+                .fail(meerkat.modules.journeyEngine.loadingHide)
+                .then(function () {
+
+                    $('.rego-text').removeClass('invisible');
+                });
         }
     }
 

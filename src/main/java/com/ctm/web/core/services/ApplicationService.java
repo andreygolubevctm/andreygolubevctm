@@ -9,6 +9,7 @@ import com.ctm.web.core.dao.VerticalsDao;
 import com.ctm.web.core.elasticsearch.services.AddressSearchService;
 import com.ctm.web.core.exceptions.BrandException;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ConfigSetting;
 import com.ctm.web.core.model.settings.Vertical;
@@ -80,8 +81,15 @@ public class ApplicationService {
 		return enabledBrands;
 	}
 
-
-
+	public Brand getBrand(HttpServletRequest httpServletRequest, Vertical.VerticalType vertical){
+		// - Start common -- taken from Carlos' car branch
+		ApplicationService.setVerticalCodeOnRequest(httpServletRequest, vertical.getCode());
+		try {
+			return ApplicationService.getBrandFromRequest(httpServletRequest);
+		} catch (DaoException e) {
+			throw new RouterException(e);
+		}
+	}
 
 	/**
 	 * Looks at the pageContext for the brand code - this should be a param brandCode=xxx set by the F5 server's rewrite rules.
