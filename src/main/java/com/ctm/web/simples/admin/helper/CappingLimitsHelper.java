@@ -4,7 +4,7 @@ import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.health.model.request.CappingLimit;
 import com.ctm.web.simples.admin.model.response.CappingLimitInformation;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class CappingLimitsHelper {
@@ -19,14 +19,14 @@ public class CappingLimitsHelper {
         return validationErrors;
     }
 
-    public CappingLimit createCappingLimitsObject(int providerId, String propertyId, int sequenceNo, int cappingAmount, Date effectiveStart, Date effectiveEnd) {
+    public CappingLimit createCappingLimitsObject(int providerId, String propertyId, int sequenceNo, int cappingAmount, LocalDate effectiveStart, LocalDate effectiveEnd) {
         CappingLimit cappingLimit = new CappingLimit();
         mapCappingLimitsObject(cappingLimit, providerId, propertyId, sequenceNo, cappingAmount, effectiveStart, effectiveEnd);
         return cappingLimit;
     }
 
     private void mapCappingLimitsObject(CappingLimit cappingLimit, int providerId, String propertyId,
-                                        int sequenceNo, int cappingAmount, Date effectiveStart, Date effectiveEnd) {
+                                        int sequenceNo, int cappingAmount, LocalDate effectiveStart, LocalDate effectiveEnd) {
         cappingLimit.setProviderId(providerId);
         if (CappingLimit.CappingLimitType.Monthly.text.equals(propertyId)) {
             cappingLimit.setLimitType(CappingLimit.CappingLimitType.Monthly.toString());
@@ -42,7 +42,7 @@ public class CappingLimitsHelper {
 
     public CappingLimitInformation createCappingLimitsObject(int providerId, String providerName, String propertyId,
                                                              int sequenceNo, int cappingAmount, int currentJoinCount,
-                                                             Date effectiveStart, Date effectiveEnd, boolean isCurrent, String limitCategory) {
+                                                             LocalDate effectiveStart, LocalDate effectiveEnd, boolean isCurrent, String limitCategory) {
         CappingLimitInformation cappingLimit = new CappingLimitInformation();
         mapCappingLimitsObject(cappingLimit, providerId, propertyId, sequenceNo, cappingAmount, effectiveStart, effectiveEnd);
         cappingLimit.setProviderName(providerName);
