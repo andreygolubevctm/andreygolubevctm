@@ -23,7 +23,7 @@
         <energy-model-quote.version>1.0.0-RC1</energy-model-quote.version>
         <energy-apply-model.version>1.1.0-RC2</energy-apply-model.version>
         <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
-        <life-quote-model.version>1.1.0-SNAPSHOT</life-quote-model.version>
+        <life-quote-model.version>1.1.0-RC1</life-quote-model.version>
 
         <!-- 3rd party -->
         <powermock.version>1.6.2</powermock.version>
