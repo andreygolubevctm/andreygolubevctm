@@ -83,14 +83,14 @@ fieldset {
   }
 
   .grouping-header {
-    width: 60%;
+    width: 81%;
     text-align: center;
     color: @benefits-grouping-font-color;
   }
 
   .grouping-border {
     margin-top: 8px;
-    width: 58%;
+    width: 79%;
     margin-left: 1%;
     border: 1px solid @benefits-grouping-border-color;
     border-bottom: 0;
@@ -248,11 +248,19 @@ fieldset {
 }
 
 .customiseTHCover-modal {
-  .customerCover-yes {
-    text-align: right;
+  .modal-closebar {
+    a {
+      visibility: hidden !important;
+    }
+  }
+  .customerCover-yes,
+  .customerCover-no {
     button {
       margin-top: 0;
     }
+  }
+  .customerCover-yes {
+    text-align: right;
   }
   .customerCover-no {
     text-align: left;

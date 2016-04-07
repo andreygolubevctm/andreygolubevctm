@@ -587,7 +587,6 @@
             var preselectedBtn = this;
             meerkat.modules.dialogs.close(customiseDialogId);
             customiseDialogId = meerkat.modules.dialogs.show({
-                title: "Oops. Looks like you are trying to customise your cover?",
                 className: "customiseTHCover-modal",
                 onOpen: function (modalId) {
                     // update with the text within the cover type dropdown
