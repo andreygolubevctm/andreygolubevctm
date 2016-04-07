@@ -179,7 +179,7 @@
 
 				// change benefits page layout when change the coverType
 				$healthSitCoverType.on('change', function() {
-					var coverTypeVal = (meerkat.modules.healthTiers.isActive()) ? $(this).find('input:checked').val() : $(this).val();
+					var coverTypeVal = $(this).find('input:checked').val();
 
 					// this is done cos it affacts the layout far too greatly for the tiered benefits
 					if (!meerkat.modules.healthTiers.isActive()) {
@@ -282,10 +282,8 @@
 
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
-				if (meerkat.modules.healthTiers.isActive()) {
-					meerkat.modules.healthBenefitsStep.setDefaultCover();
-					meerkat.modules.healthBenefitsStep.disableFields();
-				}
+				meerkat.modules.healthBenefitsStep.setDefaultCover();
+				meerkat.modules.healthBenefitsStep.disableFields();
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
 				meerkat.modules.healthBenefitsStep.checkAndHideMoreBenefits();
 				incrementTranIdBeforeEnteringSlide();

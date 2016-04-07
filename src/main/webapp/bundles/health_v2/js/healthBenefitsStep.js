@@ -31,33 +31,31 @@
             $benefitsForm = $('#benefitsForm');
             $hiddenFields = $('#mainform').find('.hiddenFields');
 
-            if (meerkat.modules.healthTiers.isActive()) {
-                $hospitalCover = $('.Hospital_container');
-                $hospitalCoverToggles = $('.hospitalCoverToggles a'),
-                    $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]'),
-                    // done this way since it's an a/b test and
-                    $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
+            $hospitalCover = $('.Hospital_container');
+            $hospitalCoverToggles = $('.hospitalCoverToggles a'),
+                $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]'),
+                // done this way since it's an a/b test and
+                $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
 
-                // setup groupings
-                // extras middle row
-                var htmlTemplate = _.template($('#extras-mid-row-groupings').html()),
-                    htmlContent = htmlTemplate();
+            // setup groupings
+            // extras middle row
+            var htmlTemplate = _.template($('#extras-mid-row-groupings').html()),
+                htmlContent = htmlTemplate();
 
-                $(htmlContent).insertBefore(".HLTicon-physiotherapy");
+            $(htmlContent).insertBefore(".HLTicon-physiotherapy");
 
-                // extras last row
-                htmlTemplate = _.template($('#extras-last-row-groupings').html()),
-                    htmlContent = htmlTemplate();
+            // extras last row
+            htmlTemplate = _.template($('#extras-last-row-groupings').html()),
+                htmlContent = htmlTemplate();
 
-                $(htmlContent).insertBefore(".HLTicon-glucose-monitor");
+            $(htmlContent).insertBefore(".HLTicon-glucose-monitor");
 
-                if (meerkat.modules.deviceMediaState.get() === 'xs') {
-                    $hasIconsDiv.removeClass('hasIcons');
-                }
-
-                // preselect hospital extras and hospital medium
-                $('#health_situation_coverType_C').trigger('click');
+            if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                $hasIconsDiv.removeClass('hasIcons');
             }
+
+            // preselect hospital extras and hospital medium
+            $('#health_situation_coverType_C').trigger('click');
 
             setupPage();
             eventSubscriptions();
@@ -90,26 +88,23 @@
             }
         });
 
+        toggleBenefits();
+        hospitalCoverToggleEvents();
 
-        if (meerkat.modules.healthTiers.isActive()) {
-            toggleBenefits();
-            hospitalCoverToggleEvents();
+        $(document).on('click', 'a.tieredLearnMore', function showBenefitsLearnMoreModel() {
+            showModal();
+        });
 
-            $(document).on('click', 'a.tieredLearnMore', function showBenefitsLearnMoreModel() {
-                showModal();
-            });
+        // setup icons
+        $('.health-situation-healthCvrType').find('label:first-child').addClass("icon-hospital-extras").end().find('label:nth-child(2)').addClass('icon-hospital-only').end().find('label:last-child').addClass('icon-extras-only');
 
-            // setup icons
-            $('.health-situation-healthCvrType').find('label:first-child').addClass("icon-hospital-extras").end().find('label:nth-child(2)').addClass('icon-hospital-only').end().find('label:last-child').addClass('icon-extras-only');
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
+            $hasIconsDiv.removeClass('hasIcons');
+        });
 
-            meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
-                $hasIconsDiv.removeClass('hasIcons');
-            });
-
-            meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsEnterXsState() {
-                $hasIconsDiv.addClass('hasIcons');
-            });
-        }
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsEnterXsState() {
+            $hasIconsDiv.addClass('hasIcons');
+        });
     }
 
     function setDefaultCover() {
@@ -206,16 +201,6 @@
             // Move the subtitle
             $this.find('.subTitle').insertAfter($this.find('.hasIcons'));
         });
-
-        if (!meerkat.modules.healthTiers.isActive()) {
-            // Move the sidebar to the end of the container
-            $benefitsForm.find('.sidebarHospital').insertAfter($benefitsForm.find('.extrasCover'));
-
-            // For loading in, if coverType is not selected, but benefits have been selected (mostly for all old quotes, back port to coverType)
-            if ($coverType.val() === '') {
-                updateCoverTypeByBenefitsSelected();
-            }
-        }
 
         // For loading in, update benefits page layout. letting this default to '' for tiered benefits
         changeLayoutByCoverType($coverType.val());
