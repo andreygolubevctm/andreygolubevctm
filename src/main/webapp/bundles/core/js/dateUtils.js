@@ -16,8 +16,20 @@
     var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 	var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     var token = /d{1,4}|M{1,4}|YY(?:YY)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
+    DoFn: function DoFn(D) {
+        return D + ['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : (D - D % 10 !== 10) * D % 10];
+    }
 
 	var formatFlags = {
+        D: function(dateObj) {
+            return dateObj.getDate();
+        },
+        DD: function(dateObj) {
+            return pad(dateObj.getDate());
+        },
+        Do: function(dateObj) {
+            return DoFn(dateObj.getDate());
+        },
 		MMMM: function(dateObj) {
 			return monthNames[dateObj.getMonth()];
 		},
@@ -27,12 +39,6 @@
 		MM: function(dateObj) {
 			return pad(dateObj.getMonth() + 1);
 		},
-        D: function(dateObj) {
-            return dateObj.getDate();
-        },
-        DD: function(dateObj) {
-            return pad(dateObj.getDate());
-        },
         dddd: function(dateObj) {
             return dayNames[dateObj.getDay()];
         }
