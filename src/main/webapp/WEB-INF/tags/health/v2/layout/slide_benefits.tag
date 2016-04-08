@@ -5,7 +5,6 @@
 <layout_v1:slide_new formId="benefitsForm" firstSlide="false" nextLabel="Next Step">
 
 	<layout_v1:slide_content >
-		<%--Split test this--%>
 		<health_v3:benefits xpath="${pageSettings.getVerticalCode()}/situation" />
 	</layout_v1:slide_content>
 
