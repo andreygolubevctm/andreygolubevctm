@@ -44,8 +44,8 @@
 			foundMatch = _.contains(daysMatch, earliestDate.getDate());
 			i++;
 		}
-		$policyDateHiddenField.val(meerkat.modules.utils.returnDateValue(earliestDate));
-		$message.text( 'Your payment will be deducted on: ' + healthFunds._getNiceDate(earliestDate) );
+		$policyDateHiddenField.val(meerkat.modules.dateUtils.returnDateValue(earliestDate));
+		$message.text( 'Your payment will be deducted on: ' + meerkat.modules.dateUtils.getNiceDate(earliestDate) );
 
 	}
 	/*
@@ -72,11 +72,15 @@
 		if (typeof excludeWeekend === "undefined") excludeWeekend = false; // default not to exclude weekend
 		if (typeof isBank === "undefined") isBank = true; // default as bank payment
 
+        var baseId = "";
+
 		if (isBank) {
-			$paymentDays = $('#health_payment_bank_paymentDay');
+            baseId = '#health_payment_bank_paymentDay';
+            $paymentDays = $('#health_payment_bank_paymentDay');
 		} else {
+            baseId = '#health_payment_credit_paymentDay';
 			$paymentDays = $('#health_payment_credit_paymentDay');
-			}
+        }
 
 		minimumDate = new Date(startDate);
 		if (excludeWeekend) {
@@ -89,7 +93,11 @@
 			if ($(this).val() !== '') {
 				childDateOriginal = new Date($(this).val());
 				childDateNew = compareAndAddMonth(childDateOriginal, minimumDate);
-				$(this).val(meerkat.modules.utils.returnDateValue(childDateNew));
+				var value = meerkat.modules.dateUtils.returnDateValue(childDateNew);
+				var text = meerkat.modules.dateUtils.getNiceDate(childDateNew);
+				$(this).val(value);
+				$(this).text(text);
+                $(this).id(baseId + "_" + value);
 			}
 		});
 	}

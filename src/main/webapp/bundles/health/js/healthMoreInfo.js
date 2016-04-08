@@ -406,7 +406,7 @@
                                 dateSplit = result.providerContentText.split("/");
                                 rearrangedDate = dateSplit[1]+"/"+dateSplit[0]+"/"+dateSplit[2];
                                 newDate = new Date(rearrangedDate);
-                                formattedDate = newDate.getDate()+getNth(newDate.getDate())+" of "+(newDate.getMonth() == 2 ? 'March' : 'April') + ", " + newDate.getFullYear();
+                                formattedDate = meerkat.modules.dateUtils.format(_date, "Do of MMMM, YYYY");
 
                                 product.dropDeadDateFormatted =  formattedDate;
                                 product.dropDeadDate =  new Date(rearrangedDate);

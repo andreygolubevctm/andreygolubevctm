@@ -651,9 +651,7 @@ var healthFunds = {
 				// Loop through the selected days and attempt a match
 				for(a=0; a < a_Match.length; a++) {
 					if(a_Match[a] == _date.getDate() ){
-						var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
-						var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
-						/*var*/ _html = '<option value="'+ _date.getFullYear() +'-'+ _monthString +'-'+ _dayString +'" selected="selected">'+ healthFunds._getNiceDate(_date) +'</option>';
+						/*var*/ _html = '<option value="'+ meerkat.modules.dateUtils.returnDateValue(_date) +'" selected="selected">'+ meerkat.modules.dateUtils.getNiceDate(_date) +'</option>';
 						i = 99;
 						break;
 					}
@@ -671,12 +669,6 @@ var healthFunds = {
 	_getMonth: function( dateObj ) {
 		var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 		return  months[dateObj.getMonth()];
-	},
-
-	_getNiceDate : function( dateObj ) {
-		var day = dateObj.getDate();
-		var year = dateObj.getFullYear();
-		return healthFunds._getDayOfWeek(dateObj) + ", " + day + " " + healthFunds._getMonth(dateObj) + " " + year;
 	},
 
 	_setPolicyDate : function (dateObj, addDays) {

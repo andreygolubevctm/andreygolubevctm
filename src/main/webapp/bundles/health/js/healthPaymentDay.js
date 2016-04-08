@@ -58,7 +58,8 @@
             } else {
                 var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
                 var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
-                _html += '<option value="'+ _date.getFullYear() +'-'+ _monthString +'-'+ _dayString +'">'+ healthFunds._getNiceDate(_date) +'</option>';
+                _html += '<option value="'+ meerkat.modules.dateUtils.returnDateValue(_date) +'">'+
+                    meerkat.modules.dateUtils.getNiceDate(_date) +'</option>';
                 _days++;
                 _count++;
             }
