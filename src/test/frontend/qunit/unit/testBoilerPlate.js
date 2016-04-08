@@ -9,6 +9,7 @@ setupBoilerplate = function(base) {
     document.write('<script src="' + base + '/bundles/meerkat/js/meerkat.modules.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/numberUtils/js/numberUtils.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/utils.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/core/js/dateUtils.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/transactionId.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/tracking.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/deviceMediaState.js">\x3C/script>');
