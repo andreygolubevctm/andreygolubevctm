@@ -71,7 +71,7 @@ var healthFunds_WFD = {
             }
 
             var deductionText = 'Please note that your first or full payment (annual frequency) ' +
-                    'will be debited from your payment method on ' + healthFunds._getDayOfWeek(deductionDate) + " " + day + " " + healthFunds._getMonth(deductionDate);
+                    'will be debited from your payment method on ' + meerkat.modules.dateUtils.getNiceDate(deductionDate);
 
             $('.health_credit-card-details_policyDay-message').text( deductionText);
             $('.health_bank-details_policyDay-message').text(deductionText);

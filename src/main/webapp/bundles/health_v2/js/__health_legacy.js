@@ -438,17 +438,6 @@ var healthFunds = {
 			return _html;
 	},
 
-
-	_getDayOfWeek: function( dateObj ) {
-		var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-		return  days[dateObj.getDay()];
-	},
-
-	_getMonth: function( dateObj ) {
-		var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-		return  months[dateObj.getMonth()];
-	},
-
 	_setPolicyDate : function (dateObj, addDays) {
 
 		var dateSplit = dateObj.split('/');
