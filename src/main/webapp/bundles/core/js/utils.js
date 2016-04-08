@@ -76,7 +76,7 @@
 	function returnAge(_dobString, round) {
 		var _now = new Date();
 			_now.setHours(0,0,0);
-		var _dob = returnDate(_dobString);
+		var _dob = meerkat.modules.dateUtils.returnDate(_dobString);
 		var _years = _now.getFullYear() - _dob.getFullYear();
 
 		if(_years < 1){
@@ -96,10 +96,6 @@
 
 		var _age = (_now - _dob) / (1000 * 60 * 60 * 24 * _offset1) + _offset2;
 		return round ? Math.floor(_age) : _age;
-	}
-
-	function returnDate(_dateString){
-		return new Date(_dateString.substring(6,10), _dateString.substring(3,5) - 1, _dateString.substring(0,2));
 	}
 
 	function invertDate(dt, del) {
@@ -239,7 +235,6 @@
 		scrollPageTo: scrollPageTo,
 		getUTCToday: UTCToday,
 		returnAge: returnAge,
-		returnDate: returnDate,
 		isValidNumericKeypressEvent: isValidNumericKeypressEvent,
 		invertDate: invertDate,
 		pluginReady: pluginReady,

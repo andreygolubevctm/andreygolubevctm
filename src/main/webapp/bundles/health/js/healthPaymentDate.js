@@ -30,7 +30,7 @@
 		if (typeof euroDate === "undefined" || euroDate === "") {
 			earliestDate = new Date();
 		} else {
-			earliestDate = meerkat.modules.utils.returnDate(euroDate);
+			earliestDate = meerkat.modules.dateUtils.returnDate(euroDate);
 		}
 
 		// creating the base date from the exclusion
@@ -63,7 +63,7 @@
 		if (typeof euroDate === "undefined" || euroDate === "") {
 			startDate = new Date(); // default to use today
 		} else {
-			startDate = meerkat.modules.utils.returnDate(euroDate);
+			startDate = meerkat.modules.dateUtils.returnDate(euroDate);
 			}
 
 		if (typeof exclusion === "undefined") exclusion = 7; // default a week buffer

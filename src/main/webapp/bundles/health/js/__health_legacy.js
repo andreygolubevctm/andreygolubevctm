@@ -8,14 +8,6 @@
 
 */
 
-/* Utilities functions for health */
-function returnDate(_dateString){
-	if(_dateString === '') return null;
-	var dateComponents = _dateString.split('/');
-	if(dateComponents.length < 3) return null;
-	return new Date(dateComponents[2], dateComponents[1] - 1, dateComponents[0]);
-}
-
 /**
  * isLessThan31Or31AndBeforeJuly1() test whether the dob provided makes the user less than
  * 31 or is currently 31 but the current datea is before 1st July following their birthday.
@@ -29,8 +21,8 @@ function isLessThan31Or31AndBeforeJuly1(_dobString) {
 	if( age < 31 ) {
 		return true;
 	} else if( age == 31 ){
-		var dob = returnDate(_dobString);
-		var birthday = returnDate(_dobString);
+		var dob = meerkat.modules.dateUtils.returnDate(_dobString);
+		var birthday = meerkat.modules.dateUtils.returnDate(_dobString);
 		birthday.setFullYear(dob.getFullYear() + 31);
 		var now = new Date();
 		if ( dob.getMonth() + 1 < 7 && (now.getMonth() + 1 >= 7 || now.getFullYear() > birthday.getFullYear()) ) {

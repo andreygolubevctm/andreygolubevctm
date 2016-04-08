@@ -8,13 +8,6 @@
 
 */
 
-/* Utilities functions for health */
-function returnDate(_dateString){
-	if(_dateString === '') return null;
-	var dateComponents = _dateString.split('/');
-	if(dateComponents.length < 3) return null;
-	return new Date(dateComponents[2], dateComponents[1] - 1, dateComponents[0]);
-};
 
 /**
  * isLessThan31Or31AndBeforeJuly1() test whether the dob provided makes the user less than
@@ -29,8 +22,8 @@ function isLessThan31Or31AndBeforeJuly1(_dobString) {
 	if( age < 31 ) {
 		return true;
 	} else if( age == 31 ){
-		var dob = returnDate(_dobString);
-		var birthday = returnDate(_dobString);
+		var dob = meerkat.modules.dateUtils.returnDate(_dobString);
+		var birthday = meerkat.modules.dateUtils.returnDate(_dobString);
 		birthday.setFullYear(dob.getFullYear() + 31);
 		var now = new Date();
 		if ( dob.getMonth() + 1 < 7 && (now.getMonth() + 1 >= 7 || now.getFullYear() > birthday.getFullYear()) ) {
@@ -415,7 +408,7 @@ var healthFunds = {
 				return false;
 			};
 			// creating the base date from the exclusion
-			var _now = returnDate(euroDate);
+			var _now = meerkat.modules.dateUtils.returnDate(euroDate);
 			// 2014-03-05 Leto: Why is this hardcoded when it's also a function argument?
 			_exclusion = 7;
 			var _date = new Date( _now.getTime() + (_exclusion * 24 * 60 * 60 * 1000));

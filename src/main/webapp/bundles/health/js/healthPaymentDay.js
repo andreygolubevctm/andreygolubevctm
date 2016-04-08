@@ -17,12 +17,7 @@
         if( effectiveDateInput === ''){
             return false;
         }
-        var effectiveDate;
-        if( effectiveDateInput instanceof Date){
-            effectiveDate = effectiveDateInput;
-        } else {
-            effectiveDate = meerkat.modules.utils.returnDate(effectiveDateInput);
-        }
+        var effectiveDate = meerkat.modules.dateUtils.returnDate(effectiveDateInput);
         var today = new Date();
 
         var _baseDate = null;

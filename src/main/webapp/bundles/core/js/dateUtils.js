@@ -16,6 +16,8 @@
     var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 	var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     var token = /d{1,4}|M{1,4}|YY(?:YY)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
+    var twoDigits = /\d\d?/;
+    var fourDigits = /\d{4}/;
 
 	var formatFlags = {
         D: function(dateObj) {
@@ -40,6 +42,25 @@
             return dayNames[dateObj.getDay()];
         }
 	};
+
+    masks = {
+        formDate: "DD/MM/YYYY"
+    };
+
+    var parseFlags = {
+        D: [twoDigits, function (d, v) {
+            d.day = v;
+        }],
+        M: [twoDigits, function (d, v) {
+            d.month = v - 1;
+        }],
+        YYYY: [fourDigits, function (d, v) {
+            d.year = v;
+        }]
+    };
+    parseFlags.DD = parseFlags.D;
+    parseFlags.MM = parseFlags.M;
+
 
     function doFn(day) {
         return day + ['th', 'st', 'nd', 'rd'][day % 10 > 3 ? 0 : (day - day % 10 !== 10) * day % 10];
@@ -69,6 +90,45 @@
 		});
 	}
 
+    /**
+     * Parse a date string into an object, changes - into /
+     * @method parse
+     * @param {string} dateStr Date string
+     * @param {string} format Date parse format
+     * @returns {Date|null}
+     */
+    function parse(dateStr, format) {
+
+        if (typeof format !== 'string') {
+            throw new Error('Invalid format in parse');
+        }
+        var isValid = true;
+        var dateInfo = {};
+        format.replace(token, function ($0) {
+            if (parseFlags[$0]) {
+                var info = parseFlags[$0];
+                var index = dateStr.search(info[0]);
+                if (!~index) {
+                    isValid = false;
+                } else {
+                    dateStr.replace(info[0], function (result) {
+                        info[1](dateInfo, result);
+                        dateStr = dateStr.substr(index + result.length);
+                        return result;
+                    });
+                }
+            }
+
+            return parseFlags[$0] ? '' : $0.slice(1, $0.length - 1);
+        });
+
+        if (!isValid) {
+            return null;
+        }
+        var today = new Date();
+        return new Date(dateInfo.year || today.getFullYear(), dateInfo.month || 0, dateInfo.day || 1);
+    };
+
     // return nice date string in dddd, D MMMM YYYY e.g. Monday, 25 April 2016
     function getNiceDate( dateObj ) {
         return format(dateObj, "dddd, D MMMM YYYY");
@@ -81,14 +141,25 @@
 
     // return date string in DD/MM/YYYY
     function returnDateValueFormFormat(dateObj){
-        return format(dateObj, "DD/MM/YYYY");
+        return format(dateObj, masks.formDate);
+    }
+
+    // return date object following format DD/MM/YYYY
+    function returnDate(dateInput) {
+        if( dateInput instanceof Date){
+            return dateInput;
+        } else {
+            return parse(dateInput , masks.formDate);
+        }
     }
 
 	meerkat.modules.register('dateUtils', {
 		format  : format,
+        parse : parse,
         getNiceDate : getNiceDate,
         returnDateValue : returnDateValue,
-        returnDateValueFormFormat : returnDateValueFormFormat
+        returnDateValueFormFormat : returnDateValueFormFormat,
+        returnDate : returnDate
 	});
 
 })(jQuery);

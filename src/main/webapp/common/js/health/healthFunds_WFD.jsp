@@ -51,7 +51,7 @@ var healthFunds_WFD = {
         <%--selections for payment date--%>
         $('#update-premium').on('click.WFD', function() {
 
-            var deductionDate = returnDate($('#health_payment_details_start').val());
+            var deductionDate = meerkat.modules.dateUtils.returnDate($('#health_payment_details_start').val());
             var distance = 4 - deductionDate.getDay();
             if(distance < 2) { <%-- COB Tue cutoff to make Thu of same week for payment--%>
                 distance += 7;
