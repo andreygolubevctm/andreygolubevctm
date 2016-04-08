@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/javascript; charset=UTF-8" pageEncoding="UTF-8"%>
         <%@ include file="/WEB-INF/tags/taglib.tagf" %>
         <session:get settings="true" />
         <% response.setHeader("Content-type", "text/javascript"); %>
@@ -215,6 +215,12 @@
               //meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
               $("#update-premium").on("click.NHB",function() {
+
+                healthFunds._payments = { 'min':0, 'max':14, 'weekends':false, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28};
+                var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+                meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+                meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+
                 if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
                   $('.health_bank-details_policyDay-message').html('Your first premium payment will be deducted from your nominated bank account on receipt of your application by us, or from the actual start date of your policy');
                   $('#health_payment_bank_policyDay').attr('type','hidden').attr('data-attach', 'true');
