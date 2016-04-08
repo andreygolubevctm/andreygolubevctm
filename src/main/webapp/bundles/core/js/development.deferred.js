@@ -5,6 +5,8 @@
         log = meerkat.logging.info,
         msg = meerkat.messaging;
 
+    var aggregationServicePromise;
+
     // Refresh just the css when shift+s is pressed
     function initRefreshCSS(){
         function refreshStyles(event){
@@ -92,7 +94,7 @@
             var aggregationBaseUrl = "http://taws01_ass3:8080"; // for NXI
 
 
-            meerkat.modules.comms.get({
+            aggregationServicePromise = meerkat.modules.comms.get({
                 url: aggregationBaseUrl+"/launcher/wars",
                 cache: false,
                 useDefaultErrorHandling: false,
@@ -265,8 +267,13 @@
         }
     }
 
+    function getAggregationServicePromise () {
+        return aggregationServicePromise;
+    }
+
     meerkat.modules.register("development", {
-        init: initDevelopment
+        init: initDevelopment,
+        getAggregationServicePromise: getAggregationServicePromise
     });
 
 })(jQuery);

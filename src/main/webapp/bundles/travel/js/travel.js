@@ -121,6 +121,7 @@
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 				meerkat.modules.travelCountrySelector.initTravelCountrySelector();
 				meerkat.modules.travelContactDetails.initContactDetails();
+                meerkat.modules.travelPopularDestinations.initTravelPopularDestinations();
 
 				// if preloaded or load from EDM
 				if ($policyTypeBtn.is(':checked')) {
