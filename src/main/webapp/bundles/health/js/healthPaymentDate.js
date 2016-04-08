@@ -94,10 +94,9 @@
 				childDateOriginal = new Date($(this).val());
 				childDateNew = compareAndAddMonth(childDateOriginal, minimumDate);
 				var value = meerkat.modules.dateUtils.returnDateValue(childDateNew);
-				var text = meerkat.modules.dateUtils.getNiceDate(childDateNew);
 				$(this).val(value);
-				$(this).text(text);
-                $(this).id(baseId + "_" + value);
+				$(this).text(meerkat.modules.dateUtils.getNiceDate(childDateNew));
+                $(this).attr("id", baseId + "_" + value);
 			}
 		});
 	}
