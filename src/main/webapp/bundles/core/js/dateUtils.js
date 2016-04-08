@@ -15,6 +15,7 @@
 
     var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 	var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var token = /d{1,4}|M{1,4}|YY(?:YY)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
 
 	var formatFlags = {
 		MMMM: function(dateObj) {
@@ -26,9 +27,12 @@
 		MM: function(dateObj) {
 			return pad(dateObj.getMonth() + 1);
 		},
-		dd: function(dateObj) {
-			return pad(dateObj.getDay());
-		},
+        D: function(dateObj) {
+            return dateObj.getDate();
+        },
+        DD: function(dateObj) {
+            return pad(dateObj.getDate());
+        },
         dddd: function(dateObj) {
             return dayNames[dateObj.getDay()];
         }
@@ -58,8 +62,9 @@
 		});
 	}
 
+    // return nice date string in dddd, D MMMM YYYY e.g. Monday, 25 April 2016
     function getNiceDate( dateObj ) {
-        return format(dateObj, "dddd, dd MMMM YYYY");
+        return format(dateObj, "dddd, D MMMM YYYY");
     }
 
     // return date string in YYYY-MM-DD
