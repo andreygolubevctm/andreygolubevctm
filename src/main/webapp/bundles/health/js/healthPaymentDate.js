@@ -58,8 +58,6 @@
 	function populateFuturePaymentDays(euroDate, exclusion, excludeWeekend, isBank) {
 		var startDate,
 			minimumDate,
-			childDateOriginal,
-			childDateNew,
 			$paymentDays;
 
 		if (typeof euroDate === "undefined" || euroDate === "") {
@@ -76,11 +74,11 @@
 
 		if (isBank) {
             baseId = '#health_payment_bank_paymentDay';
-            $paymentDays = $('#health_payment_bank_paymentDay');
 		} else {
             baseId = '#health_payment_credit_paymentDay';
-			$paymentDays = $('#health_payment_credit_paymentDay');
         }
+
+        $paymentDays = $(baseId);
 
 		minimumDate = new Date(startDate);
 		if (excludeWeekend) {
@@ -88,17 +86,8 @@
 		} else {
 			minimumDate.setDate(minimumDate.getDate() + exclusion);
 		}
-		
-		$paymentDays.children().each(function playWithChildren () {
-			if ($(this).val() !== '') {
-				childDateOriginal = new Date($(this).val());
-				childDateNew = compareAndAddMonth(childDateOriginal, minimumDate);
-				var value = meerkat.modules.dateUtils.returnDateValue(childDateNew);
-				$(this).val(value);
-				$(this).text(meerkat.modules.dateUtils.getNiceDate(childDateNew));
-                $(this).attr("id", baseId + "_" + value);
-			}
-		});
+        var html = meerkat.modules.healthPaymentDay.paymentDays( minimumDate );
+		$paymentDays.html(html);
 	}
 
 	function compareAndAddMonth(oldDate, minDate) {
