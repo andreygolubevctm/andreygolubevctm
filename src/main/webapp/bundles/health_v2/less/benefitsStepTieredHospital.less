@@ -10,13 +10,13 @@
   display: none !important;
 }
 
-#benefitsForm .quoteSnapshot.j13abtest {
+#benefitsForm .quoteSnapshot.tieredHospitalCover {
   margin-top: 84px;
 }
 
 // prevents non ab test checkboxes from using the health icons.
 fieldset {
-  &:not(.j13abtest) {
+  &:not(.tieredHospitalCover) {
     .categoriesCell.noIcon label:before {
       font-family: 'framework_font';
       content: "\e600";
@@ -24,8 +24,11 @@ fieldset {
   }
 }
 
-#benefitsForm .j13abtest {
-  margin-top: 30px;
+#benefitsForm .tieredHospitalCover {
+
+  @media(@sm) {
+    margin-top:30px;
+  }
 
   .content {
     padding-left: 15px;
@@ -80,14 +83,14 @@ fieldset {
   }
 
   .grouping-header {
-    width: 60%;
+    width: 81%;
     text-align: center;
     color: @benefits-grouping-font-color;
   }
 
   .grouping-border {
     margin-top: 8px;
-    width: 58%;
+    width: 79%;
     margin-left: 1%;
     border: 1px solid @benefits-grouping-border-color;
     border-bottom: 0;
@@ -241,5 +244,28 @@ fieldset {
         width: 14.28%;
       }
     }
+  }
+}
+
+.customiseTHCover-modal {
+  .modal-closebar {
+    a {
+      visibility: hidden !important;
+    }
+  }
+  .customerCover-yes,
+  .customerCover-no {
+    button {
+      margin-top: 0;
+    }
+  }
+  .customerCover-yes {
+    text-align: right;
+  }
+  .customerCover-no {
+    text-align: left;
+  }
+  @media(@sm) {
+    max-width:375px;
   }
 }

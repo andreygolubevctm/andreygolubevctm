@@ -53,7 +53,7 @@
             if( typeof(healthFunds._payments.maxDay) != 'undefined' && healthFunds._payments.maxDay < _date.getDate() ){
                 _days++;
                 // Parse out the weekends
-            } else if( !healthFunds._payments.weekends && ( _day === 0 || _day == 6 ) ){
+            } else if( !healthFunds._payments.weekends && ( _day === 0 || _day === 6 ) ){
                 _days++;
             } else {
                 var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );

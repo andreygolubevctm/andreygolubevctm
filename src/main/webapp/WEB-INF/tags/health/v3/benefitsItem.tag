@@ -32,7 +32,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 	</c:choose>
 
 	<c:if test="${coverType == 'Hospital'}">
-	<form_v2:fieldset legend="" postLegend="" className="j13abtest hidden-sm hidden-md hidden-lg" >
+	<form_v2:fieldset legend="" postLegend="" className="tieredHospitalCover hidden-sm hidden-md hidden-lg" >
 		<div class="title">
 			<h3>Choose Your Hospital Cover</h3>
 			<p>${colContent}</p>
@@ -53,9 +53,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 		</div>
 	</form_v2:fieldset>
 	</c:if>
-	<c:set var="fieldsetClass">
-		<c:if test='${newBenefitsLayoutSplitTest eq true}'>j13abtest</c:if>
-	</c:set>
+	<c:set var="fieldsetClass">tieredHospitalCover</c:set>
 	<form_v2:fieldset legend="" postLegend="" className="${fieldsetClass}" >
 		<div class="scrollable row">
 			<div class="benefits-list col-sm-12">
@@ -64,9 +62,12 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 						<c:set var="category">${item.getShortlistKey()}</c:set>
 						<c:choose>
 							<c:when test="${item.getType() == 'section'}">
-								<div class="title hidden-xs">
+								<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
 									<h3>Choose Your ${item.getName()}</h3>
-									<p>${colContent}</p>
+									<p class="hidden-xs">${colContent}</p>
+									<c:if test="${item.getName() eq 'Extras Cover'}">
+										<p>Select the icons below to add extras specific to your needs</p>
+									</c:if>
 								</div>
 								<c:if test="${category eq 'Hospital'}">
 								<div class="hospitalCoverToggles row hidden-xs">
@@ -82,9 +83,17 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
                                     <div class="coverExplanationContainer">
                                     <c:set var="tieredBenefits" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "coverOptions")}' />
                                     <c:forEach items="${tieredBenefits.getSupplementary()}" var="tieredBenefitsContent" >
-                                        <div class="<c:if test="${tieredBenefitsContent.getSupplementaryKey() != 'midCover'}">hidden</c:if> coverExplanation ${tieredBenefitsContent.getSupplementaryKey()}">
-                                                ${tieredBenefitsContent.getSupplementaryValue()}
-                                        </div>
+										<c:if test="${!fn:endsWith(tieredBenefitsContent.getSupplementaryKey(), 'XS')}">
+											<div class="<c:if test="${tieredBenefitsContent.getSupplementaryKey() != 'midCover'}">hidden</c:if> coverExplanation ${tieredBenefitsContent.getSupplementaryKey()}">
+												<div class="hidden-xs">${tieredBenefitsContent.getSupplementaryValue()}</div>
+												<c:set var="xsLabel" value="${tieredBenefitsContent.getSupplementaryKey()}XS" />
+												<c:forEach items="${tieredBenefits.getSupplementary()}" var="tieredBenefitsContentXS" >
+													<c:if test="${tieredBenefitsContentXS.getSupplementaryKey() eq xsLabel}">
+														<div class="visible-xs">${tieredBenefitsContentXS.getSupplementaryValue()}</div>
+													</c:if>
+												</c:forEach>
+											</div>
+										</c:if>
                                     </c:forEach>
                                     </div>
                                     </c:if>
