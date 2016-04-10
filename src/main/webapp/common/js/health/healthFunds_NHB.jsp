@@ -29,8 +29,15 @@
             $("label[for='health_application_contactPoint'] span").text('Navy Health');
             $("label[for='health_previousfund_primary_authority'] span").text("Navy Health");
             $("label[for='health_previousfund_partner_authority'] span").text("Navy Health");
+
             <%--  not cumpolsary --%>
-            $("#health_application_email").prop('required', false);
+            $("#health_application_email").removeAttr('required');
+
+              <%-- Increase minimum age requirement for applicants from 16 to 18 --%>
+              healthFunds_NHB.$_dobPrimary = $('#health_application_primary_dob');
+              healthFunds_NHB.$_dobPartner = $('#health_application_partner_dob');
+              healthFunds_NHB.$_dobPrimary.addRule('youngestDOB', 18, "primary person's age cannot be under 18");
+              healthFunds_NHB.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under 18");
 
 
             <%-- Custom questions: Eligibility --%>
@@ -142,7 +149,7 @@
                 <c:set var="html">
                   <c:set var="fieldXpath" value="health/application/primary/title" />
                     <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow" >
-                      <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title"/>
+                      <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title" additionalAttributes=" data-rule-genderTitle='true' "/>
                     </form_v2:row>
                   </c:set>
                 <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
@@ -159,7 +166,7 @@
               <c:set var="html">
                 <c:set var="fieldXpath" value="health/application/partner/title" />
                 <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow" >
-                  <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title"/>
+                  <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title" additionalAttributes=" data-rule-genderTitle='true' "/>
                 </form_v2:row>
               </c:set>
               <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
@@ -212,24 +219,13 @@
 
               <%-- Claims account --%>
               //meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
-              //meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
+              meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',false);
 
               $("#update-premium").on("click.NHB",function() {
-
                 healthFunds._payments = { 'min':0, 'max':14, 'weekends':false, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28};
                 var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
                 meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
                 meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
-
-                if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
-                  $('.health_bank-details_policyDay-message').html('Your first premium payment will be deducted from your nominated bank account on receipt of your application by us, or from the actual start date of your policy');
-                  $('#health_payment_bank_policyDay').attr('type','hidden').attr('data-attach', 'true');
-                }
-                else if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc') {
-                  $('.health_credit-card-details_policyDay-message').html('Your first premium payment will be deducted from your credit card on receipt of your application by us, or from the actual start date of your policy');
-                  $('#health_payment_credit_policyDay').attr('type','hidden').attr('data-attach', 'true');
-                }
-
               });
 
             }<%-- /not loading quote --%>
@@ -258,7 +254,14 @@
             $("label[for='health_previousfund_primary_authority'] span").text("the fund");
             $("label[for='health_previousfund_partner_authority'] span").text("the fund");
             <%-- let set this back to its original state --%>
-            $("#health_application_email").prop("required","true");
+              $("#health_application_email").attr('required', 'required');
+
+              <%-- Age requirements for applicants (back to default) --%>
+              healthFunds_NHB.$_dobPrimary.addRule('youngestDOB', dob_health_application_primary_dob.ageMin, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
+              healthFunds_NHB.$_dobPartner.addRule('youngestDOB', dob_health_application_partner_dob.ageMin, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
+
+              delete healthFunds_NHB.$_dobPrimary;
+              delete healthFunds_NHB.$_dobPartner;
 
             <%-- Run these if not loading a quote --%>
             if (!$('body').hasClass('injectingFund')) {
@@ -270,10 +273,10 @@
               meerkat.modules.paymentGateway.reset();
 
               <%-- Payments --%>
-              $('.health-payment_details-type').off('change.NAV');
-              $('#health_payment_details-selection p.NAV').remove();
+              $('.health-payment_details-type').off('change.NHB');
+              $('#health_payment_details-selection p.NHB').remove();
 
-              $('#health_payment_details_frequency').off('change.NAV');
+              $('#health_payment_details_frequency').off('change.NHB');
               $('.health_bank-details_policyDay-message').html('');
 
               <%-- lets undo the title massive values from nav --%>
