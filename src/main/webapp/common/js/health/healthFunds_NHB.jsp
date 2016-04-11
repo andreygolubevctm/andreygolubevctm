@@ -24,14 +24,21 @@
           ajaxJoinDec: false,
 
           set: function() {
-            $(".health_application-details_contact-group").removeClass('hidden');
             $(".health_previous_fund_authority").removeClass("hidden");
-            $("label[for='health_application_contactPoint'] span").text('Navy Health');
             $("label[for='health_previousfund_primary_authority'] span").text("Navy Health");
             $("label[for='health_previousfund_partner_authority'] span").text("Navy Health");
 
-            <%--  not cumpolsary --%>
-            $("#health_application_email").removeAttr('required');
+            <%-- Email not cumpolsary, but when you select email as how to sent you, then it is required --%>
+              var $emailField = $("#health_application_email");
+              $emailField.setRequired(false);
+
+              $('input[name="health_application_contactPoint"]').on('change.NHB', function onHowToSendChange(){
+                  if ($('#health_application_contactPoint_E').is(':checked')) {
+                      $emailField.setRequired(true);
+                  }else{
+                      $emailField.setRequired(false);
+                  }
+              });
 
               <%-- Increase minimum age requirement for applicants from 16 to 18 --%>
               healthFunds_NHB.$_dobPrimary = $('#health_application_primary_dob');
@@ -146,6 +153,7 @@
               $('#nhb_title_prim').show();
             }
             else {
+                var originalTitle = $("#health_application_primary_title").val();
                 <c:set var="html">
                   <c:set var="fieldXpath" value="health/application/primary/title" />
                     <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow" >
@@ -153,27 +161,26 @@
                     </form_v2:row>
                   </c:set>
                 <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
-                var originalTitle = $("#health_application_primary_title").val();
                 $('#health_application_primary_titleRow').replaceWith('<c:out value="${html}" escapeXml="false" />');
                 <%-- lets get the previous original title and apply to the replaced one --%>
-                $("#health_application_primary_title").val(originalTitle);
+                $("#health_application_primary_title").val(healthFunds_NHB.primaryTitleValue || originalTitle);
             }
             <%-- Partner Title replacement --%>
             if($('#nhb_title_partner').length) {
               $('#nhb_title_partner').show();
             }
             else {
-              <c:set var="html">
-                <c:set var="fieldXpath" value="health/application/partner/title" />
-                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow" >
-                  <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title" additionalAttributes=" data-rule-genderTitle='true' "/>
-                </form_v2:row>
-              </c:set>
-              <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
-              var originalTitle = $("#health_application_partner_title").val();
-              $('#health_application_partner_titleRow').replaceWith('<c:out value="${html}" escapeXml="false" />');
-              <%-- lets get the previous partner title and apply to the replaced one. --%>
-              $("#health_application_partner_title").val(originalTitle);
+                var originalTitle = $("#health_application_partner_title").val();
+                <c:set var="html">
+                    <c:set var="fieldXpath" value="health/application/partner/title" />
+                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow" >
+                        <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title" additionalAttributes=" data-rule-genderTitle='true' "/>
+                    </form_v2:row>
+                </c:set>
+                <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
+                $('#health_application_partner_titleRow').replaceWith('<c:out value="${html}" escapeXml="false" />');
+                <%-- lets get the previous partner title and apply to the replaced one. --%>
+                $("#health_application_partner_title").val(healthFunds_NHB.partnerTitleValue || originalTitle);
             }
 
             <%-- Custom question: Partner relationship --%>
@@ -201,10 +208,13 @@
               <%-- Dependants --%>
               healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
 
-              meerkat.modules.healthDependants.updateConfig({showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':25, showSchoolIdField:false,showRelationshipForNavy:true,showPreferredMethodOfContact:true });
+              meerkat.modules.healthDependants.updateConfig({showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':25, showSchoolIdField:false,showRelationship:true,showPreferredMethodOfContact:true });
 
               <%-- Partner authority --%>
               healthFunds._partner_authority(true);
+
+                <%-- How to send information. Second argument = validation required --%>
+                healthApplicationDetails.showHowToSendInfo('Navy Health', true);
 
               <%-- Calendar for start cover --%>
               meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
@@ -248,13 +258,13 @@
           unset: function() {
             <%-- Custom questions - hide in case user comes back --%>
             $('#nhb_eligibility, #nhb_ineligible, #nhb_partnerrel').hide();
-            $("#health_application_contactPoint-group").addClass('hidden');
-            $("label[for='health_application_contactPoint'] span").text("the fund");
             $(".health_previous_fund_authority").addClass("hidden");
             $("label[for='health_previousfund_primary_authority'] span").text("the fund");
             $("label[for='health_previousfund_partner_authority'] span").text("the fund");
-            <%-- let set this back to its original state --%>
-              $("#health_application_email").attr('required', 'required');
+
+              <%-- let set this back to its original state --%>
+              $('input[name="health_application_contactPoint"]').off('change.NHB');
+              $("#health_application_email").setRequired(true);
 
               <%-- Age requirements for applicants (back to default) --%>
               healthFunds_NHB.$_dobPrimary.addRule('youngestDOB', dob_health_application_primary_dob.ageMin, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
@@ -279,6 +289,13 @@
               $('#health_payment_details_frequency').off('change.NHB');
               $('.health_bank-details_policyDay-message').html('');
 
+                <%-- How to send information --%>
+                healthApplicationDetails.hideHowToSendInfo();
+
+                <%-- Remember the selections--%>
+                healthFunds_NHB.primaryTitleValue = $('#health_application_primary_title').val();
+                healthFunds_NHB.partnerTitleValue = $('#health_application_partner_title').val();
+
               <%-- lets undo the title massive values from nav --%>
               <c:set var="html">
                 <c:set var="fieldXpath" value="health/application/primary/title" />
@@ -287,9 +304,8 @@
                 </form_v2:row>
               </c:set>
               <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
-              var originalTitle = $("#health_application_primary_title").val();
-              $('#health_application_primary_titleRow').replaceWith('<c:out value="${html}" escapeXml="false" />');
-              $("#health_application_primary_title").val(originalTitle);
+                $('#health_application_primary_titleRow').replaceWith('<c:out value="${html}" escapeXml="false" />')
+                $('#health_application_primary_title').val(healthFunds_NHB.primaryTitleValue);
 
               <%-- lets undo the partner title massive values from nav --%>
               <c:set var="html">
@@ -299,9 +315,8 @@
                 </form_v2:row>
                 </c:set>
                 <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
-                var originalTitle = $("#health_application_partner_title").val();
                 $('#health_application_partner_titleRow').replaceWith('<c:out value="${html}" escapeXml="false" />');
-                $("#health_application_partner_title").val(originalTitle);
+                $('#health_application_partner_title').val(healthFunds_NHB.partnerTitleValue);
             }
           }
         };

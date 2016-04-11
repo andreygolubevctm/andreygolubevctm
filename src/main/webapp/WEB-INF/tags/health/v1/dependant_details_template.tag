@@ -127,7 +127,7 @@
             {{ } }}
 
            <%-- used by navy --%>
-            {{ if(providerConfig.showRelationshipForNavy === true) { }}
+            {{ if(providerConfig.showRelationship === true) { }}
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/relationship"/>
             <form_v2:row fieldXpath="${fieldXpath}"
                          label="Relationship"
