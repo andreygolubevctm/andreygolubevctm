@@ -1,3 +1,6 @@
 {
-  "extends": "health"
+  "extends": "health",
+  "dependencies": [
+    "shared/health_v4"
+  ]
 }

@@ -5,7 +5,7 @@
 <layout_v3:slide formId="resultsForm" className="resultsSlide">
 
     <layout_v3:slide_content>
-        <health_v4:results />
+        <health_v3:results />
     </layout_v3:slide_content>
 
 </layout_v3:slide>
