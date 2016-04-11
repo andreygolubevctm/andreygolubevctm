@@ -32,7 +32,7 @@
 	function setHeaderBarStartOffset(forceUpdate){
 
 		// if not set yet, then set it
-		if(topStartOffset === 0 || forceUpdate){
+		if($resultsHeaderBg &&  $resultsHeaderBg.length && (topStartOffset === 0 || forceUpdate)) {
 			var dynamicTopHeaderContentHeight = 0;
 			$(".dynamicTopHeaderContent > *").each(function(){
 				// don't calculate height of hidden elements for Simples users if the user is a Simples user

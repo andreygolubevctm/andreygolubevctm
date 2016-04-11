@@ -3,7 +3,7 @@
   "dependencies": [
     "shared/journeyEngine/v2",
     "plugins/scrollTo",
-    "shared/results",
+    "shared/results_v3",
     "shared/features",
     "shared/validation",
     "core",
