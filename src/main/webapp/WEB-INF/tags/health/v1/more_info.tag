@@ -122,11 +122,11 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-				<div class="row priceRow">
-					<div class="col-xs-12 col-sm-6">
+				<div class="row priceRow hidden-md hidden-lg">
+					<div class="col-xs-12 col-sm-8">
 						{{= renderedPriceTemplate }}
 					</div>
-					<div class="col-xs-12 col-sm-6 col-md-12">
+					<div class="col-xs-12 col-sm-4 text-right">
 						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
 					</div>
 				</div>
@@ -170,18 +170,15 @@
 								<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply btn-big-text" data-productId="{{= productId }}">Get insured now <span class="icon-arrow-right" /></a>
 							</c:when>
 						</c:choose>
-						<h2 class="noTopMargin">You're nearly insured</h2>
-						<div class="moreInfoProgress row">
-							<div class="col-sm-2">
-								<div class="moreInfoProgressBarLeft"></div>
-								<div class="moreInfoProgressDone">75%</div>
+						<div class="row priceRow">
+							<div class="col-xs-12">
+								{{= renderedPriceTemplate }}
 							</div>
-							<div class="col-sm-10">
-								<p class="text-bold">Buy through comparethemarket</p>
-								<p>Your chosen product</p>
-								<p>Your cover preferences</p>
-								<p>About you</p>
-							</div>
+							<c:if test="${not empty callCentre or moreinfo_splittest_default eq true}">
+								<div class="col-xs-12">
+									<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+								</div>
+							</c:if>
 						</div>
 						<c:if test="${moreinfo_splittest_variant3 eq true}">
 							<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply btn-big-text" data-productId="{{= productId }}">Buy Now</a>
@@ -204,8 +201,8 @@
 				<p><strong>Hospital Excess:</strong> {{= hospital.inclusions.excess }}</p>
 				<p><strong>Excess Waivers:</strong> {{= hospital.inclusions.waivers }}</p>
 				<p><strong>Co-payment / % Hospital Contribution:</strong> {{= hospital.inclusions.copayment }}</p>
-                <p><strong>Hospital waiting period for pre-existing conditions:</strong> 12 months. For all other conditions: 2 months. See policy brochure for more details</p>
-                {{ } }}
+				<p><strong>Hospital waiting period for pre-existing conditions:</strong> 12 months. For all other conditions: 2 months. See policy brochure for more details</p>
+				{{ } }}
 
 				{{ if(hospitalCover.inclusions.length > 0) { }}
 				<h5>You will be covered for the following services</h5>
@@ -252,6 +249,7 @@
 			{{ if(typeof extrasCover !== 'undefined') { }}
 			<div class="col-xs-12 col-md-6">
 				<h1 class="text-dark extrasCoverTitle">Extras cover</h1>
+				<p>Please note that the below amounts are individual limits for each benefit. Group limits may apply to restrict these individual limits, meaning that the more you claim on one benefit, the less you might be able to claim on another benefit in the same group. Please refer to the Policy Brochure or the previous page for details.</p>
 				<table class="extrasTable table table-bordered table-striped">
 					<thead>
 						<tr>

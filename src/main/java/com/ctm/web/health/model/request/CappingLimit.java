@@ -1,10 +1,12 @@
 package com.ctm.web.health.model.request;
 
 import com.ctm.web.core.validation.DateRange;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 
 
 @DateRange.List({
@@ -39,10 +41,12 @@ public class CappingLimit {
     private Integer cappingAmount;
 
     @NotNull(message="Effective Start date can not be empty")
-    private Date effectiveStart;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate effectiveStart;
 
     @NotNull(message="Effective end date can not be empty")
-    private Date effectiveEnd;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate effectiveEnd;
 
     @NotNull(message="Capping limit Category can not be empty and must be either Hard 'H' or Soft 'S'")
     private CappingLimitCategory cappingLimitCategory;
@@ -86,19 +90,19 @@ public class CappingLimit {
         }
     }
 
-    public Date getEffectiveStart() {
+    public LocalDate getEffectiveStart() {
         return this.effectiveStart;
     }
 
-    public void setEffectiveStart(Date effectiveStart) {
+    public void setEffectiveStart(LocalDate effectiveStart) {
         this.effectiveStart = effectiveStart;
     }
 
-    public Date getEffectiveEnd() {
+    public LocalDate getEffectiveEnd() {
         return this.effectiveEnd;
     }
 
-    public void setEffectiveEnd(Date effectiveEnd) {
+    public void setEffectiveEnd(LocalDate effectiveEnd) {
         this.effectiveEnd = effectiveEnd;
     }
 
