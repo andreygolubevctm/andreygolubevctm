@@ -11,8 +11,7 @@
         $allHospitalButtons,
         $defaultCover,
         $hasIconsDiv,
-        changedByCallCentre = false,
-        customiseDialogId = null;
+        changedByCallCentre = false;
 
     var events = {
             healthBenefitsStep: {
@@ -31,31 +30,33 @@
             $benefitsForm = $('#benefitsForm');
             $hiddenFields = $('#mainform').find('.hiddenFields');
 
-            $hospitalCover = $('.Hospital_container');
-            $hospitalCoverToggles = $('.hospitalCoverToggles a'),
-                $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]'),
-                // done this way since it's an a/b test and
-                $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
+            if (meerkat.modules.healthTiers.isActive()) {
+                $hospitalCover = $('.Hospital_container');
+                $hospitalCoverToggles = $('.hospitalCoverToggles a'),
+                    $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]'),
+                    // done this way since it's an a/b test and
+                    $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
 
-            // setup groupings
-            // extras middle row
-            var htmlTemplate = _.template($('#extras-mid-row-groupings').html()),
-                htmlContent = htmlTemplate();
+                // setup groupings
+                // extras middle row
+                var htmlTemplate = _.template($('#extras-mid-row-groupings').html()),
+                    htmlContent = htmlTemplate();
 
-            $(htmlContent).insertBefore(".HLTicon-physiotherapy");
+                $(htmlContent).insertBefore(".HLTicon-physiotherapy");
 
-            // extras last row
-            htmlTemplate = _.template($('#extras-last-row-groupings').html()),
-                htmlContent = htmlTemplate();
+                // extras last row
+                htmlTemplate = _.template($('#extras-last-row-groupings').html()),
+                    htmlContent = htmlTemplate();
 
-            $(htmlContent).insertBefore(".HLTicon-glucose-monitor");
+                $(htmlContent).insertBefore(".HLTicon-glucose-monitor");
 
-            if (meerkat.modules.deviceMediaState.get() === 'xs') {
-                $hasIconsDiv.removeClass('hasIcons');
+                if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                    $hasIconsDiv.removeClass('hasIcons');
+                }
+
+                // preselect hospital extras and hospital medium
+                $('#health_situation_coverType_C').trigger('click');
             }
-
-            // preselect hospital extras and hospital medium
-            $('#health_situation_coverType_C').trigger('click');
 
             setupPage();
             eventSubscriptions();
@@ -72,6 +73,15 @@
             $coverType.val('C').change();
         });
 
+        if (!meerkat.modules.healthTiers.isActive()) {
+            $('#health_situation_healthSitu')
+                .add('#health_healthCover_primary_dob')
+                .add('#health_healthCover_partner_dob')
+                .add('#health_situation_healthCvr').on('change', function (event) {
+                prefillBenefits();
+            });
+        }
+
         // align titles when breakpoint changes
         meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function breakpointChanged(states) {
             if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "benefits") {
@@ -79,23 +89,26 @@
             }
         });
 
-        toggleBenefits();
-        hospitalCoverToggleEvents();
 
-        $(document).on('click', 'a.tieredLearnMore', function showBenefitsLearnMoreModel() {
-            showModal();
-        });
+        if (meerkat.modules.healthTiers.isActive()) {
+            toggleBenefits();
+            hospitalCoverToggleEvents();
 
-        // setup icons
-        $('.health-situation-healthCvrType').find('label:first-child').addClass("icon-hospital-extras").end().find('label:nth-child(2)').addClass('icon-hospital-only').end().find('label:last-child').addClass('icon-extras-only');
+            $(document).on('click', 'a.tieredLearnMore', function showBenefitsLearnMoreModel() {
+                showModal();
+            });
 
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
-            $hasIconsDiv.removeClass('hasIcons');
-        });
+            // setup icons
+            $('.health-situation-healthCvrType').find('label:first-child').addClass("icon-hospital-extras").end().find('label:nth-child(2)').addClass('icon-hospital-only').end().find('label:last-child').addClass('icon-extras-only');
 
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsEnterXsState() {
-            $hasIconsDiv.addClass('hasIcons');
-        });
+            meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
+                $hasIconsDiv.removeClass('hasIcons');
+            });
+
+            meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsEnterXsState() {
+                $hasIconsDiv.addClass('hasIcons');
+            });
+        }
     }
 
     function setDefaultCover() {
@@ -167,10 +180,19 @@
         $benefitsForm.find('.hasShortlistableChildren').each(function () {
             var $this = $(this);
 
-            $this.find('.category[class*="CTMNoIcon"]').each(function () {
-                var newClass = $(this).attr('class').replace('CTMNoIcon', 'CTM');
-                $(this).removeClass().addClass(newClass);
-            });
+            if (meerkat.modules.healthTiers.isActive()) {
+
+                //This is for the split test. The classNames in the database need to remain as is for the default but we need to force an icon
+                $this.find('.category[class*="CTMNoIcon"]').each(function () {
+                    var newClass = $(this).attr('class').replace('CTMNoIcon', 'CTM');
+                    $(this).removeClass().addClass(newClass);
+                });
+            } else {
+                // wrap icons and non-icons items so we can style them differently
+                $this.find('.category[class*="HLTicon-"], .category[class*="CTM-"]').wrapAll('<div class="hasIcons"></div>');
+                $this.find('.category[class*="noIcon"]').wrapAll('<div class="noIcons"></div>');
+                $this.find('.noIcons').insertAfter($this.find('.hasIcons'));
+            }
 
             // fix positioning of label and help
             $this.find('.category[class*="CTM-"] label, .hasIcons .category[class*="HLTicon-"] label').each(function () {
@@ -183,6 +205,16 @@
             // Move the subtitle
             $this.find('.subTitle').insertAfter($this.find('.hasIcons'));
         });
+
+        if (!meerkat.modules.healthTiers.isActive()) {
+            // Move the sidebar to the end of the container
+            $benefitsForm.find('.sidebarHospital').insertAfter($benefitsForm.find('.extrasCover'));
+
+            // For loading in, if coverType is not selected, but benefits have been selected (mostly for all old quotes, back port to coverType)
+            if ($coverType.val() === '') {
+                updateCoverTypeByBenefitsSelected();
+            }
+        }
 
         // For loading in, update benefits page layout. letting this default to '' for tiered benefits
         changeLayoutByCoverType($coverType.val());
@@ -241,14 +273,7 @@
 
             // disable all buttons if customise is not selected
             if (currentCover !== 'customised') {
-                $allHospitalButtons.prop('disabled', true).each(function(){
-                    $btn = $(this);
-                    $btn.parent().on('click.customisingTHCover', _.bind(customiseCover, $btn));
-                });
-            } else {
-                $allHospitalButtons.each(function(){
-                    $(this).parent().off('click.customisingTHCover');
-                });
+                $allHospitalButtons.prop('disabled', true);
             }
 
             $hospitalCover.find('.coverExplanation.' + previousCover + 'Cover').addClass('hidden').end().find('.coverExplanation.' + currentCover + 'Cover').removeClass('hidden');
@@ -546,46 +571,6 @@
 
         return benefits;
 
-    }
-
-    function customiseCover(event) {
-        if(!$(event.target).is('a')) { // Allow help icon to work as normal
-            event.preventDefault();
-            var preselectedBtn = this;
-            meerkat.modules.dialogs.close(customiseDialogId);
-            customiseDialogId = meerkat.modules.dialogs.show({
-                className: "customiseTHCover-modal",
-                onOpen: function (modalId) {
-                    // update with the text within the cover type dropdown
-                    var htmlContent = $('#customise-cover-template').html(),
-                        $modal = $('#' + modalId);
-                    meerkat.modules.dialogs.changeContent(modalId, htmlContent); // update the content
-
-                    // tweak the sizing to fit the content
-                    $modal.find('.modal-body').outerHeight($('#' + modalId).find('.modal-body').outerHeight() - 20);
-                    $modal.find('.modal-footer').outerHeight($('#' + modalId).find('.modal-footer').outerHeight() + 20);
-
-                    // Add listeners for buttons
-                    var noEvent = 'click.customiseTHCoverNO',
-                        yesEvent = 'click.customiseTHCoverYES';
-                    $modal.find('.customerCover-no button').off(noEvent).on(noEvent, _.bind(meerkat.modules.dialogs.close, this, modalId));
-                    $modal.find('.customerCover-yes button').off(yesEvent).on(yesEvent, _.bind(onCustomiseCover, this, {
-                        modalId: modalId,
-                        btn: preselectedBtn
-                    }));
-                },
-                buttons: []
-            });
-            return false;
-        } else {
-            // Must be help icon so allow to proceed unhindered
-        }
-    }
-
-    function onCustomiseCover(obj) {
-        meerkat.modules.dialogs.close(obj.modalId);
-        $benefitsForm.find("a[data-category=customised]:visible").first().trigger('click');
-        obj.btn.trigger('click');
     }
 
     meerkat.modules.register('healthBenefitsStep', {

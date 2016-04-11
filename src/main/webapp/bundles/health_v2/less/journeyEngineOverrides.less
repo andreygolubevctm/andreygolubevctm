@@ -2,24 +2,10 @@
 	position: inherit;
 }
 
-.journeyEngineSlide.resultsSlide {
-	padding-top: 0;
-	@media (@xs-only) {
-		padding-top: @page-offset-xs;
-	}
-}
-
 #pageContent {
 	position: relative;
 	.transition(~"background-color 1000ms ease-in-out");
 	background-color: @main-bg-colour;
-}
-
-[data-step=results]:not(.moreInfoVisible) {
-	#pageContentTop {
-		opacity: 1;
-		.transition(~"opacity 250ms ease-in-out");
-	}
 }
 
 .fieldset-column-side {
