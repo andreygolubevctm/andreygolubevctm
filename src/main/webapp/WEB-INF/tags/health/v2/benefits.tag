@@ -35,28 +35,14 @@
 
                         <div class="col-sm-12 short-list-item section expandable collapsed accidentCover">
                             <div class="children">
-                                <c:choose>
-                                    <c:when test="${newBenefitsLayoutSplitTest eq true}">
-                                        <h3 class="subTitle">Limited Cover</h3>
-                                        <div class="noIcons">
-                                            <div class="categoriesCell short-list-item category expandable collapsed">
-                                                <c:set var="fieldXpath" value="${xpath}/accidentOnlyCover"/>
-                                                <field_v2:checkbox xpath="${fieldXpath}" required="false" title="Limited Cover" value="Y" label="true"/>
-                                                <br>
-                                            </div>
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h3 class="subTitle">Accident-only Cover</h3>
-                                        <div class="noIcons">
-                                            <div class="categoriesCell short-list-item category expandable collapsed">
-                                                <c:set var="fieldXpath" value="${xpath}/accidentOnlyCover"/>
-                                                <field_v2:checkbox xpath="${fieldXpath}" required="false" title="Accident-only Cover" value="Y" label="true"/>
-                                                <br>
-                                            </div>
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
+                                <h3 class="subTitle">Limited Cover</h3>
+                                <div class="noIcons">
+                                    <div class="categoriesCell short-list-item category expandable collapsed">
+                                        <c:set var="fieldXpath" value="${xpath}/accidentOnlyCover"/>
+                                        <field_v2:checkbox xpath="${fieldXpath}" required="false" title="Limited Cover" value="Y" label="true"/>
+                                        <br>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
