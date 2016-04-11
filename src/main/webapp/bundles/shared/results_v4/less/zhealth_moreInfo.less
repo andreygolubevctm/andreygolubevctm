@@ -1,0 +1,60 @@
+#product-presentation-step{
+  clear: both;
+
+  .productInfo {
+    overflow: hidden;
+    width: 100%;
+    background: @theme-tertiary;
+    color: white;
+    padding-bottom: 15px;
+    
+    h2 {
+      font-size: 28px;
+    }
+
+    .price-component {
+      padding :0;
+
+      .primary-price-value {
+        font-size: 50px;
+        display: inline-block;
+        margin-right: 5px;
+      }
+
+      .price-component-value {
+        text-align: right;
+      }
+
+      .price-component-row {
+        div {
+          padding :0;
+        }
+      }
+    }
+
+    .pds-links {
+      padding :0;
+
+      .btn-pds {
+        background: white;
+        color: @theme-tertiary;
+        margin-top: 15px;
+      }
+    }
+  }
+
+  .moreInfoSidebar {
+    @media (@sm) {
+      width: 357px;
+    }
+    @media (@md) {
+      width: 467px;
+    }
+    @media (@lg) {
+      width: 569px;
+    }
+
+    float: left;
+    padding: 0 20px;
+  }
+}

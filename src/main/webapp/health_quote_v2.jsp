@@ -225,7 +225,7 @@
                 <health_v2_layout:slide_all_about_you />
                 <health_v2_layout:slide_benefits />
                 <health_v2_layout:slide_your_contact />
-                <health_v2_layout:slide_results />
+                <health_v4_layout:slide_results />
                 <health_v2_layout:slide_application_details />
                 <health_v2_layout:slide_payment_details />
                 <health_v1:dual_pricing_templates />

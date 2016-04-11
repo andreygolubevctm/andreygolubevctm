@@ -1,0 +1,114 @@
+/* ------------------------*/
+/* RESULTS: STRUCTURE      */
+/* ------------------------*/
+
+/*---
+title:   Results Component
+section: Results v4
+---
+
+### Root Container
+The Root container for this module is `#resultsPage`.
+The structure to resultsContainer: `.resultsSlide #resultsForm #resultsPage`
+
+#### `.controlContainer`
+The top left of the features mode where pagination or compare controls are located.
+
+#### `.resultsContainer`
+- Contains the entire module.
+- To change the number of results that display in one view, change the values on resultsContainer
+-- e.g. `results-columns-sm-1 results-columns-md-2 results-columns-lg-3`
+
+#### `.featuresMode`
+- Used to differentiate between priceMode in some verticals.
+- All styles for featuresMode will be nested within that class.
+
+#### `.section`
+- A primary feature row.
+- A section header e.g. "Hospital Selections".
+- It separates two different types of features and has a solid coloured underline, no border top/left/right and top margin to separate sections.
+
+#### `.category`
+- A secondary feature row
+- A top level feature (inside a `.section > .children > .category`) e.g. "General Dental".
+- A category can have features inside it as children.
+- Characterised by a larger font e.g. 14px and usually contains just a tick or a cross
+
+#### `.feature`
+- A tertiary feature row.
+- A detail of a feature (inside a `.section > .children > .category > .children > .feature`) e.g. "General Dental".
+- These are generally the details of a top level feature e.g. "waiting period" inside "General Dental" category.
+- Contains mostly textual detail, is generally a smaller font size with a darker background to differentiate
+
+#### `.result-row`
+A full product column (in features mode) or a row (in price mode).
+
+#### Example HTML:
+
+<pre><code>
+    &lt;div class="resultsContainer featuresMode results-columns-sm-3 results-columns-md-3 results-columns-lg-3"&gt;
+      &lt;div class="featuresHeaders featuresElements  "&gt;
+        &lt;div class="result headers"&gt;
+          &lt;div class="resultInsert controlContainer"&gt;
+            &lt;span class="icon icon-arrow-left"&gt;&lt;/span&gt;
+            &lt;span class="icon icon-arrow-right"&gt;&lt;/span&gt;
+            &lt;h3&gt;Products 1-3 of 12&lt;/h3&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="featuresList featuresTemplateComponent"&gt;
+          -- feature labels here --
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="resultsOverflow"&gt;
+            &lt;div class="results-table"&gt;
+            &lt;div class="result-row" data-productid="PHIO-HEALTH-5615316"&gt;
+              &lt;div class="result"&gt;
+                &lt;div class="resultInsert"&gt;
+                  -- product title --
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class="featuresList featuresElements"&gt;
+                &lt;div class="cell section expanded excessSection" data-index="1"&gt;
+                  &lt;div class="children"&gt;
+                    &lt;div class="category"&gt;
+                      &lt;div class="children"&gt;
+                        &lt;div class="feature"&gt;
+                        &lt;/div&gt;
+                      &lt;/div&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+</code></pre>
+*/
+
+.resultsContainer {
+  padding: 0;
+  margin: 0;
+  position: relative;
+
+  &.featuresMode {
+    .generate-default-result-column-widths();
+    float: left;
+  }
+  &.priceMode {
+    // whatever here for price mode
+  }
+
+}
+
+.result-row {
+  opacity: 1;
+
+  .result {
+    position: relative;
+  }
+  // If the result is filtered out, hide it
+  &.filtered {
+    opacity: 0;
+  }
+}

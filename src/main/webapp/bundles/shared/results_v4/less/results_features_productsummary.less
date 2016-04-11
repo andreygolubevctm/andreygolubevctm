@@ -1,0 +1,97 @@
+/*---
+title:   Features: Product Summary
+section: Results v4
+---
+`.productSummary` sits within the result-row `.resultInsert` at the top of each product column in features mode. It is where the select product button is etc.
+
+<code><pre>
+&lt;div class="resultsOverflow"&gt;
+      &lt;div class="results-table"&gt;
+      &lt;div class="result-row" data-productid="PHIO-HEALTH-5615316"&gt;
+        &lt;div class="result"&gt;
+          &lt;div class="resultInsert"&gt;
+            &lt;div class="productSummary"&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+*/
+
+.featuresMode {
+  /*---
+    title:   Product Summary
+    section: Features: Product Summary
+    ---
+
+    Product Summary is the div that contains the price/buy now button in features mode.
+    */
+  .productSummary {
+    padding: 10px 7px 7px;
+    .companyLogo {
+      float: none;
+    }
+  }
+
+  /*---
+  title:   Price Component
+  section: Features: Product Summary
+  ---
+  Sits within .productSummary with the intention on providing height, alignment and typography styles to the pricing.
+
+  Available classes in this module are:
+  - `.price-component` (top level)
+  - `.price-component-row` (if like health, you have multiple rows of detail)
+  - `.price-component-value` (the value in a price component row)
+
+  Within a price-component, you can style the "primary price" e.g. total premium or total price.
+  - `.primary-price` is the container
+  - `.primary-price-value` is the number
+  - `.primary-price-label` is the label if any, e.g. "PER YEAR"
+
+<code><pre>
+...
+  &lt;div class="resultInsert"&gt;
+    &lt;div class="productSummary"&gt;
+      &lt;div class="row price-component-row"&gt;
+        &lt;div class="col-xs-12"&gt;
+          &lt;span class="primary-price-value"&gt;
+            $2.198.00
+          &lt;/span&gt;
+          &lt;span class="primary-price-label"&gt;
+            PER YEAR
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+...
+</code></pre>
+  */
+  .price-component {
+    height: 130px;
+
+    .price-component-row {
+      .small;
+      margin-bottom: 2px;
+    }
+    .price-component-value {
+      text-align: right;
+    }
+
+    .primary-price {
+      margin-bottom: 10px;
+      .primary-price-value {
+        font-size: 26px;
+        line-height: 26px;
+        font-weight: bold;
+        display: inline-block;
+        margin-right: 5px;
+      }
+    }
+
+  } // end .price-component
+
+} // end .featuresMode

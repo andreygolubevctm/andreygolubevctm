@@ -1,0 +1,93 @@
+/* ------------------------*/
+/* DEBUGGING ONLY          */
+/* ------------------------*/
+
+/* The purpose of this mixin is to produce Bootstrap-like classes that can be applied to the .resultsContainer e.g.:
+		<div class="resultsContainer results-columns-sm-2 results-columns-md-5 results-columns-lg-3">
+
+	The most basic way to call the mixin is with the only mandatory argument:
+		.generate-result-column-widths(sm);
+
+	@featuresColumnWidth: Total width of the features headers column. If not provided, its width will match evenly with the results columns.
+	@resultsContainerWidth: The total container width in which features headers and results columns will fit. By default this is the breakpoint's container width.
+	@from: The minimum number of columns to calculate widths for. Defaults to 2.
+	@to: The maximum number of columns to calculate widths for. Defaults to 5.
+*/
+.generate-result-column-widths(@breakpoint; @featuresColumnWidth:-1; @resultsContainerWidth:-1; @from:2; @to:5) when (@from =< @to) {
+
+  // If container width is not provided, use the container variables.
+  .setContainerWidth(@w) when (@w = -1) {
+    @containerVar: ~"container-@{breakpoint}";
+    @actualResultsContainerWidth: (@@containerVar - @grid-gutter-width);
+  }
+  .setContainerWidth(@w) when (@w > -1) {
+    @actualResultsContainerWidth: @w;
+  }
+  .setContainerWidth(@resultsContainerWidth);
+
+  // If feature width is not provided, default it to evenly match width of results columns.
+  .setFeaturesWidth(@w) when (@w = -1) {
+    @actualFeaturesColumnWidth: (@actualResultsContainerWidth / (@from + 1));
+  }
+  .setFeaturesWidth(@w) when (@w > -1) {
+    @actualFeaturesColumnWidth: @w;
+  }
+  .setFeaturesWidth(@featuresColumnWidth);
+
+  // Width available for results
+  @availableWidth: (@actualResultsContainerWidth - @actualFeaturesColumnWidth);
+
+  // Fit the number of columns into the available space. Left over pixels will be added to the feature headers column.
+  @column-width: ( floor(@availableWidth / @from) );
+
+  // Set the overflow to exactly fit X number of columns
+  @overflowWidth: (@column-width * @from);
+
+  // Recalculate the feature headers column to consume any left over pixels due to rounding down.
+  @finalFeaturesColumnWidth: (@actualResultsContainerWidth - @overflowWidth);
+
+  // The styles
+  &.results-columns-@{breakpoint}-@{from} {
+    .featuresHeaders {
+      width: @finalFeaturesColumnWidth;
+    }
+
+    .resultsOverflow {
+      width: @overflowWidth;
+    }
+
+    .result-row {
+      width: @column-width;
+    }
+  }
+
+  // Increment the counter and run next loop
+  .generate-result-column-widths(@breakpoint; @featuresColumnWidth; @resultsContainerWidth; (@from + 1); @to);
+}
+
+.generate-default-result-column-widths() {
+  @media (@sm) {
+    .generate-result-column-widths(sm);
+  }
+  @media (@md) {
+    .generate-result-column-widths(md);
+  }
+  @media (@lg) {
+    .generate-result-column-widths(lg);
+  }
+}
+
+/*
+	Produce a sequence of classes for use in features row height.
+	.height20 {
+		height: 20px;
+	}
+*/
+.generate-result-cell-heights();
+.generate-result-cell-heights(@i: 5) when (@i =< 270) {
+  .height@{i} {
+    height: (1px*@i);
+  }
+
+  .generate-result-cell-heights((@i + 5));
+}

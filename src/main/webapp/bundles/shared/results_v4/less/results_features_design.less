@@ -1,0 +1,180 @@
+/*---
+title:   Features: Design
+section: Results v4
+---
+
+The design file contains the design for the features mode in terms of:
+ * background
+ * borders
+ * font sizes, colors
+ * margin, padding
+
+The purpose of abstracting these styles from the scaffolding is because different verticals may want to implement different styles. Separating the rules will make it easier to know what to leave and what to change/override and reduce the amount of duplicated CSS when trying to override a specific rule.
+*/
+
+.featuresMode {
+
+  // Give the whole container a bottom border and background color.
+  &.resultsContainer {
+    border-bottom: 1px solid @results-border-color;
+    background: #FFF;
+  }
+
+  // Each product column is a result-row, floated left so they fit beside each other.
+  .result-row {
+    // All columns get a side border
+    border-top: 1px solid @results-border-color;
+  }
+
+  // .featuresHeaders is just the first column of feature labels.
+  .featuresHeaders {
+
+    margin: 0;
+    background: @feature-bg-color;
+    border-top: 1px solid #fff; // hidden white border to keep alignment as the control container does not have a border.
+
+    .content {
+      text-align: right;
+    }
+    .resultInsert {
+      border-right: 1px solid @results-border-color;
+    }
+  }
+
+  // The feature labels column
+  .featuresTemplateComponent {
+    // We only need a border on features and categories (not sections)
+    .feature > .content,
+    .category > .content {
+      border-left: 1px solid @results-border-color;
+    }
+    .category .feature .content {
+      font-weight: bold;
+    }
+  }
+
+  // The actual results container, to the right of the feature labels.
+  .resultsOverflow {
+    .resultInsert {
+      border-bottom: 1px solid @results-border-color;
+      border-right: 1px solid @results-border-color;
+    }
+
+    .result-row {
+      margin: 0;
+      background: @feature-bg-color;
+    }
+  }
+
+  // The bottom more feature section
+  .features-more {
+    clear: both;
+
+    .features-more-row{
+      padding-top: 20px;
+
+      h2 {
+        font-size: @font-size-h3;
+        font-weight: bold;
+        line-height: @line-height-base;
+        border-top: none;
+        border-left: none;
+        border-bottom: 3px solid @gray-dark;
+        margin: 0;
+        padding: 5px 0 5px 15px;
+      }
+
+      .features-more-content {
+        border-bottom: 1px solid @results-border-color;
+        border-right: 1px solid @results-border-color;
+        border-left: 1px solid @results-border-color;
+        overflow: hidden;
+        padding: 15px 0;
+
+        * {
+          font-size: @results-font-size;
+        }
+
+        .features-more-value {
+          padding: 5px 0;
+        }
+      }
+    }
+
+  }
+
+  .content {
+    font-size: @results-font-size;
+    border-top: 1px solid @results-border-color;
+    padding: @results-column-side-padding-width;
+    text-align: center;
+    // Content of certain feature cells. This needs to be relative so the expander icon inside can be absolutely positioned.
+    position: relative;
+  }
+
+  .category .children .content {
+    font-size: 85%;
+  }
+  .children .content {
+    border-top: 0;
+  }
+
+  .extraText {
+    display: none;
+  }
+
+  @media (@sm) {
+    // Content is internals of .feature/.category/.section
+    .content {
+      background: @feature-bg-color;
+      .transition(background-color 0.5s);
+      border-left: 1px solid @results-border-color;
+    }
+
+    /**
+     * Styles for the section headers: Hospital Selections, Extras Selections, Ambulence
+     */
+    .featuresList {
+
+      vertical-align: middle;
+      #results-step & {
+        margin-top: 20px;
+      }
+
+      > .section, > .category {
+        border-bottom: 1px solid @results-border-color;
+        margin-bottom: 20px;
+        // Find the first descendant to get the title row.
+        > .content {
+          font-size: @font-size-h3;
+          font-weight: bold;
+
+          border-top: none;
+          border-left: none;
+          border-bottom: 3px solid @gray-dark;
+          // border-bottom-color overridden by vertical
+          padding-bottom: 0;
+          // These rows won't need an expander icon
+          > .icon.expander {
+            display: none;
+          }
+        }
+      }
+    }
+
+    /**
+     * Zebra Striping for the category/feature children inside the results row only.
+     */
+    .result-row .featuresList {
+      .children > .category:nth-child(odd),
+      .children > .feature:nth-child(odd) {
+        .content {
+          background: @feature-odd-bg-color;
+        }
+      }
+    }
+
+  }
+  //media sm+
+
+}

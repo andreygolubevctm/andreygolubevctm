@@ -1,0 +1,80 @@
+/*---
+title:   Features: Scaffolding
+section: Results v4
+---
+This file should define ONLY the scaffolding/structure to render a skeleton of the results page. Any base design should go in results_features_design.less. Things such as margins, padding, colors, borders etc should not be in this file.
+*/
+.featuresMode {
+
+  .featuresHeaders {
+    float: left;
+    width: @xs-results-column-width;
+  }
+
+  .result,
+  .productSummary,
+  .controlContainer {
+    height: 245px;
+  }
+
+  .resultsOverflow {
+    overflow: hidden;
+    float: left;
+    width: 100%;
+    .touch & {
+      overflow-x: scroll !important;
+      -webkit-overflow-scrolling: touch; //elastic scroll on.
+    }
+
+    #product-presentation-step & {
+      width: auto !important;
+      border-right: 1px solid @results-border-color;
+    }
+
+    .results-table, .result-row {
+      float: left;
+    }
+
+    .result-row {
+      width: @xs-results-column-width;
+    }
+  }
+}
+
+/**
+ * Styles for expanding/collapsing feature rows
+ */
+.featuresMode {
+  // If a .category or .section is collapsed, hide the children.
+  .collapsed > .children {
+    display: none;
+  }
+
+  // .expanding is a temporary class applied while row height balancing is being performed
+  .expanding > .children {
+    display: block;
+    > .cell {
+      visibility: hidden;
+      height: 30px;
+      overflow: hidden;
+    }
+  }
+
+  // Show children when .category or .section is expanded
+  .expanded > .children {
+    display: block;
+  }
+
+  .expandable {
+    // Make the cell look clickable
+    > .content {
+      cursor: pointer;
+    }
+
+    // Make space for the expander icon
+    > .h {
+      padding-right: (@results-feature-cell-padding + 18px);
+    }
+  }
+
+}
