@@ -259,12 +259,9 @@
         }
     }
 
-    /**
-     * Not actually for blocked IPs, but if their state has no providers. Kept same id for styling.
-     */
     function showErrorOccurred() {
         meerkat.modules.dialogs.show({
-            htmlContent: $('#blocked-ip-address')[0].outerHTML
+            htmlContent: $('#no-quote-available')[0].outerHTML
         });
 
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
