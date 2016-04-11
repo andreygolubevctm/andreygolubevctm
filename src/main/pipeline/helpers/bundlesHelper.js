@@ -170,14 +170,23 @@ Bundles.prototype.getDependencies = function (bundle) {
     var rootDependencies = [],
         returnDependencies = [];
     var originalBundleName = bundle;
-    if (typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].extends !== "undefined")
+    if (typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].extends !== "undefined") {
+        // Add the dependencies of the original bundle:
+        if (typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].dependencies !== "undefined")
+            rootDependencies = rootDependencies.concat(this.collection[bundle].dependencies);
+        else
+            rootDependencies = rootDependencies.concat(getBundleDependenciesList(bundle));
+        console.log(bundle, rootDependencies);
+        // Now reset it to the bundle its extending
         bundle = this.collection[bundle].extends;
 
-    if (typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].dependencies !== "undefined")
-        rootDependencies = this.collection[bundle].dependencies;
-    else
-        rootDependencies = getBundleDependenciesList(bundle);
+    }
 
+    if (typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].dependencies !== "undefined")
+        rootDependencies = rootDependencies.concat(this.collection[bundle].dependencies);
+    else
+        rootDependencies = rootDependencies.concat(getBundleDependenciesList(bundle));
+    console.log(bundle, rootDependencies);
     for (var i = 0; i < rootDependencies.length; i++) {
         var dependency = rootDependencies[i],
             dependencies = this.getDependencies(dependency);
