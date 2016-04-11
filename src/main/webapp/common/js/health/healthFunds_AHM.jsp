@@ -171,11 +171,6 @@ var healthFunds_AHM = {
 
     <%--calendar for start cover--%>
     meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
-
-    <%-- Show/Hide Aust Govt Rebate question if call centre --%>
-    if(meerkat.site.isCallCentreUser) {
-      $('#health_declaration-selection .ausgovtrebateform').addClass('hidden');
-    }
   },
   unset: function(){
     healthFunds._reset();
@@ -207,11 +202,6 @@ var healthFunds_AHM = {
 
     <%--Payment gateway--%>
     meerkat.modules.paymentGateway.reset();
-
-    <%-- Show/Hide Aust Govt Rebate question if call centre --%>
-    if(meerkat.site.isCallCentreUser) {
-      $('#health_declaration-selection .ausgovtrebateform').removeClass('hidden');
-    }
   }
 };
 </c:set>
