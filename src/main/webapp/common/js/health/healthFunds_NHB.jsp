@@ -28,16 +28,12 @@
             $("label[for='health_previousfund_primary_authority'] span").text("Navy Health");
             $("label[for='health_previousfund_partner_authority'] span").text("Navy Health");
 
-            <%-- Email not cumpolsary, but when you select email as how to sent you, then it is required --%>
+            <%-- Email not compulsory, but when you select email as how to sent you, then it is required --%>
               var $emailField = $("#health_application_email");
               $emailField.setRequired(false);
 
               $('input[name="health_application_contactPoint"]').on('change.NHB', function onHowToSendChange(){
-                  if ($('#health_application_contactPoint_E').is(':checked')) {
-                      $emailField.setRequired(true);
-                  }else{
-                      $emailField.setRequired(false);
-                  }
+                  $emailField.setRequired($('#health_application_contactPoint_E').is(':checked'));
               });
 
               <%-- Increase minimum age requirement for applicants from 16 to 18 --%>
