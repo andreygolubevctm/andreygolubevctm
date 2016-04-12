@@ -1,14 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
-<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
-<c:if test="${deviceType eq 'MOBILE'}">
-	<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}ip_quote_mobile.jsp?" />
-	<c:forEach items="${param}" var="currentParam">
-		<c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
-	</c:forEach>
-	<c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
+<settings:setVertical verticalCode="IP" />
+<c:set var="mobileVariant" value="${pageSettings.getSetting('mobileVariant') eq 'Y'}" />
+<c:if test="${mobileVariant eq true}">
+	<jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
+	<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
+	<c:if test="${deviceType eq 'MOBILE'}">
+		<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}ip_quote_mobile.jsp?" />
+		<c:forEach items="${param}" var="currentParam">
+			<c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
+		</c:forEach>
+		<c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
+	</c:if>
 </c:if>
 
 <session:new verticalCode="IP" />
