@@ -1,6 +1,6 @@
 package com.ctm.web.health.model.form;
 
-public class Nav {
+public class Nhb {
 
     private String eligibility;
 

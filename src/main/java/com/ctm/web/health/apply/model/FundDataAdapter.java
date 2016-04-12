@@ -44,7 +44,7 @@ public class FundDataAdapter {
                     .map(Application::getCbh)
                     .map(FundDataAdapter::createMembership)
                     .orElseGet(() -> quote.map(HealthQuote::getApplication)
-                        .map(Application::getNav)
+                        .map(Application::getNhb)
                         .map(FundDataAdapter::createMembership)
                         .orElse(null)));
     }
@@ -111,29 +111,29 @@ public class FundDataAdapter {
         }
     }
 
-    protected static Membership createMembership(Nav theNav) {
-        Optional<Nav> nav = Optional.ofNullable(theNav);
-        if (nav.isPresent()) {
+    protected static Membership createMembership(Nhb theNhb) {
+        Optional<Nhb> nhb = Optional.ofNullable(theNhb);
+        if (nhb.isPresent()) {
             return new Membership(
                     null,
                     null,
                     null,
                     null,
-                    createPartnerDetailsNAV(nav),
+                    createPartnerDetailsNHB(nhb),
                     null,
-                    createEligibility(nav));
+                    createEligibility(nhb));
         } else {
             return null;
         }
     }
 
-    protected static Eligibility createEligibility(Optional<Nav> nav) {
-        if (nav.isPresent()) {
+    protected static Eligibility createEligibility(Optional<Nhb> nhb) {
+        if (nhb.isPresent()) {
             return new Eligibility(
-                    nav.map(Nav::getEligibility)
+                    nhb.map(Nhb::getEligibility)
                         .map(EligibilityReasonID::fromValue)
                         .orElse(null),
-                    nav.map(Nav::getSubreason)
+                    nhb.map(Nhb::getSubreason)
                         .map(EligibilitySubReasonID::fromValue)
                         .orElse(null));
         } else {
@@ -155,10 +155,10 @@ public class FundDataAdapter {
         }
     }
 
-    private static PartnerDetails createPartnerDetailsNAV(Optional<Nav> nav) {
-        if (nav.isPresent()) {
+    private static PartnerDetails createPartnerDetailsNHB(Optional<Nhb> nhb) {
+        if (nhb.isPresent()) {
             return new PartnerDetails(
-                    nav.map(Nav::getPartnerrel)
+                    nhb.map(Nhb::getPartnerrel)
                             .map(Relationship::fromCode)
                             .map(Relationship::toString)
                             .map(RelationshipToPrimary::new)

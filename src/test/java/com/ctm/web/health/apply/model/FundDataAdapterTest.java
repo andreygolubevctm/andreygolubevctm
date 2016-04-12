@@ -139,12 +139,12 @@ public class FundDataAdapterTest {
 
     @Test
     public void testNavEmpty() throws Exception {
-        assertNull(FundDataAdapter.createMembership((Nav)null));
+        assertNull(FundDataAdapter.createMembership((Nhb)null));
     }
 
     @Test
     public void testNav() throws Exception {
-        Nav nav = mock(Nav.class);
+        Nhb nav = mock(Nhb.class);
         FundDataAdapter.createMembership(nav);
         verify(nav, times(1)).getEligibility();
         verify(nav, times(1)).getSubreason();

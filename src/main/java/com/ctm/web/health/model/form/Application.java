@@ -42,7 +42,7 @@ public class Application {
 
     private Qch qch;
 
-    private Nav nav;
+    private Nhb nhb;
 
     public Address getAddress() {
         return address;
@@ -204,11 +204,11 @@ public class Application {
         this.qch = qch;
     }
 
-    public Nav getNav() {
-        return nav;
+    public Nhb getNhb() {
+        return nhb;
     }
 
-    public void setNav(Nav nav) {
-        this.nav = nav;
+    public void setNhb(Nhb nhb) {
+        this.nhb = nhb;
     }
 }
