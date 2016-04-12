@@ -171,32 +171,28 @@ Bundles.prototype.getDependencies = function (bundle) {
         returnDependencies = [];
     var originalBundleName = bundle;
     if (typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].extends !== "undefined") {
-        // Add the dependencies of the original bundle:
-        if (typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].dependencies !== "undefined")
-            rootDependencies = rootDependencies.concat(this.collection[bundle].dependencies);
-        else
-            rootDependencies = rootDependencies.concat(getBundleDependenciesList(bundle));
-        console.log(bundle, rootDependencies);
         // Now reset it to the bundle its extending
         bundle = this.collection[bundle].extends;
-
     }
 
     if (typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].dependencies !== "undefined")
         rootDependencies = rootDependencies.concat(this.collection[bundle].dependencies);
     else
         rootDependencies = rootDependencies.concat(getBundleDependenciesList(bundle));
-    console.log(bundle, rootDependencies);
+
     for (var i = 0; i < rootDependencies.length; i++) {
         var dependency = rootDependencies[i],
             dependencies = this.getDependencies(dependency);
-
         returnDependencies = returnDependencies.concat(dependencies);
     }
 
     returnDependencies = returnDependencies.concat(rootDependencies);
 
-    if(typeof this.collection[originalBundleName] !== "undefined" && typeof this.collection[originalBundleName].exclusions !== 'undefined') {
+    // Will only exclude from the bundle it is specified in. If extending a bundle and want a dependency in it,
+    // e.g. health/health v2 with health v2 wanting resultsv4, add resultsv4 as a dependency to health,
+    // and also add resultsv4 as an exclusion to health as well.
+
+    if (typeof this.collection[originalBundleName] !== "undefined" && typeof this.collection[originalBundleName].exclusions !== 'undefined') {
         for (var k = 0; k < returnDependencies.length; k++) {
             if (this.collection[originalBundleName].exclusions.indexOf(returnDependencies[k]) !== -1) {
                 returnDependencies.splice(k, 1);
@@ -275,37 +271,37 @@ Bundles.prototype.getBundleFiles = function (bundle, fileType, useFullPath, getE
         if (typeof this.fileListCache[fileListCacheKey] !== "undefined") {
             return this.fileListCache[fileListCacheKey];
         } else {
-        var fileList,
-            filePath = path.join(gulpConfig.bundles.dir, bundle, fileType);
+            var fileList,
+                filePath = path.join(gulpConfig.bundles.dir, bundle, fileType);
 
-        fileList = fileHelper.getFilesFromFolderPath(filePath, useFullPath);
+            fileList = fileHelper.getFilesFromFolderPath(filePath, useFullPath);
 
-        // Get the original bundle files and replace them with the new file path
-        if (getExtended && typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].extends !== "undefined") {
+            // Get the original bundle files and replace them with the new file path
+            if (getExtended && typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].extends !== "undefined") {
                 var originalBundle = this.collection[bundle].extends,
-                originalBundleFilePath = path.join(gulpConfig.bundles.dir, originalBundle, fileType),
-                originalBundleFileList = fileHelper.getFilesFromFolderPath(originalBundleFilePath, useFullPath);
+                    originalBundleFilePath = path.join(gulpConfig.bundles.dir, originalBundle, fileType),
+                    originalBundleFileList = fileHelper.getFilesFromFolderPath(originalBundleFilePath, useFullPath);
 
-            var extendedFiles = fileList;
+                var extendedFiles = fileList;
 
-            fileList = originalBundleFileList.map(function (file) {
-                for (var i = 0; i < fileList.length; i++) {
-                    if (file.replace("bundles\\" + originalBundle, "bundles\\" + bundle) === fileList[i] || file.replace("bundles\/" + originalBundle, "bundles\/" + bundle) === fileList[i])
-                        return path.normalize(fileList[i]);
+                fileList = originalBundleFileList.map(function (file) {
+                    for (var i = 0; i < fileList.length; i++) {
+                        if (file.replace("bundles\\" + originalBundle, "bundles\\" + bundle) === fileList[i] || file.replace("bundles\/" + originalBundle, "bundles\/" + bundle) === fileList[i])
+                            return path.normalize(fileList[i]);
+                    }
+
+                    return file;
+                });
+
+                // Add the remaining files to the list
+                for (var j = 0; j < extendedFiles.length; j++) {
+                    if (fileList.indexOf(extendedFiles[j]) === -1)
+                        fileList.push(extendedFiles[j]);
                 }
-
-                return file;
-            });
-
-            // Add the remaining files to the list
-            for (var j = 0; j < extendedFiles.length; j++) {
-                if (fileList.indexOf(extendedFiles[j]) === -1)
-                    fileList.push(extendedFiles[j]);
             }
-        }
 
-        this.fileListCache[fileListCacheKey] = fileList;
-        return this.fileListCache[fileListCacheKey];
+            this.fileListCache[fileListCacheKey] = fileList;
+            return this.fileListCache[fileListCacheKey];
         }
     } catch (err) {
         return [];

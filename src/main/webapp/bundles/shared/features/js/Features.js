@@ -77,8 +77,10 @@ Features = {
 
 	},
 	populateFeaturesHeaders: function() {
-		var $targetContainer = $( ".featuresHeaders" ).find( Results.settings.elements.features.list );
-		$targetContainer.html( Results.view.parseTemplate($("#feature-template-labels").html(), {}) );
+		if($( ".featuresHeaders" ).length) {
+			var $targetContainer = $(".featuresHeaders").find(Results.settings.elements.features.list);
+			$targetContainer.html(Results.view.parseTemplate($("#feature-template-labels").html(), {}));
+		}
 	},
 	populateFeatures: function() {
 		// population of features into product columns

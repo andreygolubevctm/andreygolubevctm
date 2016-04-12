@@ -1,0 +1,42 @@
+/*---
+title:   Sidebar: Filters
+section: Results v4
+---
+
+This file contains styles for sidebar widgets.
+NOTE: The purpose is ONLY to style generic containers, not to get stuck into specific styles for specific verticals.
+ * sidebar-widget-contained-: a box style widget with border, background color, inner padding and box shadow.
+ * sidebar-widget-uncontained: a container with no margins or padding to allow a full width image for example.
+*/
+
+.sidebar-widget {
+  margin-bottom: 30px;
+}
+.sidebar-widget-padded {
+  padding: 20px 15px;
+}
+.sidebar-widget-contained {
+  background-color: #fff;
+  border: 1px solid #E4E4E4;
+  box-shadow: 1px 1px 0 0 #DBDBDC;
+  padding: 20px 15px;
+
+  .title {
+    font-family: @font-family-theme-bold;
+    font-size: @font-size-xlarge;
+    color: @theme-tertiary;
+  }
+
+  .sub-title {
+    font-family: @font-family-theme-bold;
+    font-size: @font-size-large;
+    color: #000;
+    margin-top: 15px;
+    margin-bottom: 7px;
+  }
+}
+
+.sidebar-widget-uncontained {
+  overflow: hidden;
+  width: 100%;
+}

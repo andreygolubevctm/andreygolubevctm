@@ -3,7 +3,7 @@
   "dependencies": [
     "shared/journeyEngine/v3",
     "shared/validation",
-    "shared/results",
+    "shared/results/v2",
     "core",
     "shared/addressLookup",
     "shared/datepicker",

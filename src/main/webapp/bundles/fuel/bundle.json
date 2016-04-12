@@ -2,7 +2,7 @@
   "brandCodes": ["ctm"],
   "dependencies": [
     "shared/journeyEngine/v2",
-    "shared/results",
+    "shared/results/v2",
     "shared/validation",
     "core",
     "shared/addressLookup",

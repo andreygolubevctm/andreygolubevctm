@@ -1,15 +1,39 @@
 <%@ tag description="Layout for a results page" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-
+<%--
+    This is a core template for results to use along with results_v4 LESS.
+    It can be customised with the number of columns etc, a sidebar, compare mode, error messages etc.
+--%>
 <%-- Attributes --%>
 <%@ attribute required="false" name="includeCompareTemplates" %>
+<%@ attribute required="false" name="xsResultsColumns" %>
+<%@ attribute required="false" name="smResultsColumns" %>
+<%@ attribute required="false" name="mdResultsColumns" %>
+<%@ attribute required="false" name="lgResultsColumns" %>
+<c:if test="${empty xsResultsColumns}">
+    <c:set var="xsResultsColumns" value="1"/>
+</c:if>
+<c:if test="${empty smResultsColumns}">
+    <c:set var="smResultsColumns" value="3"/>
+</c:if>
+<c:if test="${empty mdResultsColumns}">
+    <c:set var="mdResultsColumns" value="3"/>
+</c:if>
+<c:if test="${empty lgResultsColumns}">
+    <c:set var="lgResultsColumns" value="3"/>
+</c:if>
 
 <%-- Fragments --%>
 <%@ attribute fragment="true" required="false" name="preResultsRow" %>
 <%@ attribute fragment="true" required="false" name="sidebarColumn" %>
 <%@ attribute fragment="true" required="false" name="zeroResultsFoundMessage" %>
 <%@ attribute fragment="true" required="false" name="resultsErrorMessage" %>
+<%@ attribute fragment="true" required="false" name="hiddenInputs" description="Any hidden " %>
+<%@ attribute fragment="true" required="true" name="logoTemplate"
+              description="A template just for the logo. Logos tend to be displayed in different places independent of price, so should be a different template." %>
+<%@ attribute fragment="true" required="true" name="priceTemplate" description="A template customisable to display price based on frequency etc, must exclude logo" %>
+<%@ attribute fragment="true" required="true" name="resultsContainerTemplate" description="A template from the result-row" %>
 
 <%-- So we can test --%>
 <c:set var="preResultsRow">
@@ -24,18 +48,12 @@
 <c:set var="zeroResultsFoundMessage">
     <jsp:invoke fragment="zeroResultsFoundMessage"/>
 </c:set>
+<c:set var="resultsCols" value="9"/>
+<c:if test="${empty sidebarColumn}">
+    <c:set var="resultsCols" value="12"/>
+</c:if>
 
-
-<c:choose>
-    <c:when test="${not empty sidebarColumn}">
-        <c:set var="resultsCols" value="9"/>
-    </c:when>
-    <c:otherwise>
-        <c:set var="resultsCols" value="12"/>
-    </c:otherwise>
-</c:choose>
-
-<div class="row" id="resultsPasge">
+<div class="row" id="resultsPage">
 
     <c:if test="${not empty preResultsRow}">
         <div class="col-xs-12">
@@ -50,45 +68,56 @@
         </div>
     </c:if>
 
-    <div class="resultsContainer featuresMode results-columns-xs-2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
+    <div class="col-sm-${resultsCols}">
+        <div class="resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
+            <div class="resultsOverflow">
 
-        <div class="col-sm-${resultsCols} resultsOverflow">
+                <div class="results-table">
+                    Results col-sm-${resultsCols} displaying with results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns}
+                    results-columns-lg-${lgResultsColumns}
+                </div>
 
-            <div class="results-table">
-                Results col-sm-${resultsCols}
+
+                <div class="resultsFetchError displayNone">
+                    <c:choose>
+                        <c:when test="${not empty resultsErrorMessage}">
+                            ${resultsErrorMessage}
+                        </c:when>
+                        <c:otherwise>
+
+                            Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later.</a>
+
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+
+                <div class="noResults displayNone alert alert-info">
+                    <c:choose>
+                        <c:when test="${not empty zeroResultsFoundMessage}">
+                            ${zeroResultsFoundMessage}
+                        </c:when>
+                        <c:otherwise>
+                            No results found, please alter your filters and selections to find a match.
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+
             </div>
-
-
-            <div class="resultsFetchError displayNone">
-                <c:choose>
-                    <c:when test="${not empty resultsErrorMessage}">
-                        ${resultsErrorMessage}
-                    </c:when>
-                    <c:otherwise>
-
-                        Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later.</a>
-
-                    </c:otherwise>
-                </c:choose>
-            </div>
-
-            <div class="noResults displayNone alert alert-info">
-                <c:choose>
-                    <c:when test="${not empty zeroResultsFoundMessage}">
-                        ${zeroResultsFoundMessage}
-                    </c:when>
-                    <c:otherwise>
-                        No results found, please alter your filters and selections to find a match.
-                    </c:otherwise>
-                </c:choose>
-            </div>
-
         </div>
     </div>
     <div class="clear"></div>
+
     <jsp:doBody/>
+
+    <jsp:invoke fragment="hiddenInputs"/>
+
 </div>
 
+<jsp:invoke fragment="logoTemplate"/>
+<jsp:invoke fragment="priceTemplate"/>
+<script type="text/html" id="result-template">
+    <jsp:invoke fragment="resultsContainerTemplate"/>
+</script>
 
 <c:if test="${includeCompareTemplates eq true}">
     <!-- COMPARE PANEL -->

@@ -1,9 +1,13 @@
 {
-  "brandCodes": ["ctm", "yhoo"],
+  "brandCodes": [
+    "ctm",
+    "yhoo"
+  ],
   "dependencies": [
     "shared/journeyEngine/v2",
     "plugins/scrollTo",
-    "shared/results",
+    "shared/results/v2",
+    "shared/results/v4",
     "shared/features",
     "shared/validation",
     "core",
@@ -28,5 +32,8 @@
     "shared/sendEmail",
     "shared/emailBrochures",
     "shared/serverSideValidationOutput"
+  ],
+  "exclusions": [
+    "shared/results/v4"
   ]
 }

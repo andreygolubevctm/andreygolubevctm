@@ -1,9 +1,7 @@
 {
   "extends": "health",
-  "dependencies": [
-    "shared/results_v4"
-  ],
   "exclusions": [
-    "shared/resultsHeaderBar"
+    "shared/resultsHeaderBar",
+    "shared/results/v2"
   ]
 }
