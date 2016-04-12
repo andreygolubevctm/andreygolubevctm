@@ -1,0 +1,14 @@
+body {
+  &[data-step="start"] {
+    .slide-feature-back,
+    .slide-edit-quote-dropdown {
+      .slide-feature-hidden();
+    }
+  }
+
+  &[data-step="results"] {
+    #navbar-main {
+      display: none !important;
+    }
+  }
+}
