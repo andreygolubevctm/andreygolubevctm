@@ -82,13 +82,6 @@
 					</div>
 					<div class="col-xs-9 <c:if test="${healthAlternatePricingActive eq true}">productDetails</c:if>">
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
-
-						<div class="hidden-xs">
-							{{ if (promo.promoText !== ''){ }}
-							<h2>Buy now and benefit from these promotions</h2>
-							<p>{{= promo.promoText }}</p>
-							{{ } }}
-						</div>
 					</div>
 				</div>
 				<div class="row priceRow hidden-xs">
@@ -142,7 +135,20 @@
 							{{= renderedPriceTemplate }}
 						</div>
 						<div class="col-xs-12 col-sm-4 text-right">
+							<c:choose>
+								<c:when test="${moreinfo_splittest_variant1 eq true}">
+									<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}">Buy Now</a>
+								</c:when>
+								<c:when test="${moreinfo_splittest_variant2 eq true}">
+									<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}">Get insured now <span class="icon-arrow-right" /></a>
+								</c:when>
+								<c:when test="${moreinfo_splittest_variant3 eq true}">
+									<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Buy Now</a>
+								</c:when>
+								<c:otherwise>
 							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
 				</c:otherwise>
