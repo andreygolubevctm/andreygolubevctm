@@ -140,11 +140,11 @@ public class ResponseAdapter {
         price.setDiscounted(hasDiscount ? "Y" : "N");
         price.setDiscountAmount(formatCurrency(quotePrice.getDiscountAmount(), true, true));
         price.setDiscountPercentage(quotePrice.getDiscountPercentage());
-        price.setText((hasDiscount ? "*" : "") + formatCurrency(quotePrice.getPayableAmount(), true, true));
+        price.setText(formatCurrency(quotePrice.getPayableAmount(), true, true) + (hasDiscount ? "*" : ""));
         price.setValue(quotePrice.getPayableAmount());
         price.setPricing("Includes rebate of " + formatCurrency(quotePrice.getRebateAmount(), true, true) + " & LHC loading of " +
                 formatCurrency(quotePrice.getLhcAmount(), true, true));
-        price.setLhcfreetext((hasDiscount ? "*" : "") + formatCurrency(quotePrice.getLhcFreeAmount(), true, true));
+        price.setLhcfreetext(formatCurrency(quotePrice.getLhcFreeAmount(), true, true) + (hasDiscount ? "*" : ""));
         price.setLhcfreevalue(quotePrice.getLhcFreeAmount());
         price.setLhcfreepricing("+ " + formatCurrency(quotePrice.getLhcAmount(), true, true) + " LHC inc " +
                 formatCurrency(quotePrice.getRebateAmount(), true, true) + " Government Rebate");

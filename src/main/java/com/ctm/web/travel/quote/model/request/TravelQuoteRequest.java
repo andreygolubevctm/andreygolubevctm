@@ -20,6 +20,8 @@ public class TravelQuoteRequest {
     private boolean mobileUrls = false;
     private int numberOfAdults;
     private int numberOfChildren;
+    private String firstName;
+    private String lastName;
 
     @JsonSerialize(contentUsing = LocalDateSerializer.class)
     private List<LocalDate> travellersDOB;
@@ -83,5 +85,21 @@ public class TravelQuoteRequest {
 
     public void setSingleTripDetails(SingleTripDetails singleTripDetails) {
         this.singleTripDetails = singleTripDetails;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

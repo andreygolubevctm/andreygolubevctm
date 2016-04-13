@@ -17,7 +17,7 @@
 
 	<jsp:body>
 
-		<form_v2:fieldset legend="Choose Your Cover" postLegend="" className="j13abtest" >
+		<form_v2:fieldset legend="Choose Your Cover" postLegend="" className="tieredHospitalCover" >
 			<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="medium" />
 			<div class="scrollable row">
 
@@ -58,6 +58,10 @@
 		<c:forEach items="${resultTemplateItems}" var="selectedValue">
 			<health_v3:benefitsItem item="${selectedValue}" />
 		</c:forEach>
+
+		<core_v1:js_template id="customise-cover-template">
+			<content:get key="customiseCoverTemplate"/>
+		</core_v1:js_template>
 	</jsp:body>
 
 	</form_v2:fieldset_columns>

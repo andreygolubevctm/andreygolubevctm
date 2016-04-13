@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.21.0-SNAPSHOT</version>
+    <version>1.22.0-SNAPSHOT</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -23,6 +23,7 @@
         <energy-model-quote.version>1.0.0-RC1</energy-model-quote.version>
         <energy-apply-model.version>1.1.0-RC2</energy-apply-model.version>
         <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
+        <life-quote-model.version>1.1.0-RC1</life-quote-model.version>
 
         <!-- 3rd party -->
         <powermock.version>1.6.2</powermock.version>
@@ -287,6 +288,12 @@
             <groupId>com.ctm.validator</groupId>
             <artifactId>contact-validator-model</artifactId>
             <version>${contact-validator-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ctm.life</groupId>
+            <artifactId>life-quote-model</artifactId>
+            <version>${life-quote-model.version}</version>
         </dependency>
 
         <dependency>

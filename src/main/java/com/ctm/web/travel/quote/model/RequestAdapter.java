@@ -5,16 +5,12 @@ import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.web.travel.quote.model.request.PolicyType;
 import com.ctm.web.travel.quote.model.request.SingleTripDetails;
 import com.ctm.web.travel.quote.model.request.TravelQuoteRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
 import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDate;
 
 public class RequestAdapter {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(RequestAdapter.class);
 
     /**
      * web_ctm to trave-quote adapter
@@ -57,7 +53,8 @@ public class RequestAdapter {
         if(quote.getRenderingMode() != null && quote.getRenderingMode().equalsIgnoreCase("XS")){
             quoteRequest.setMobileUrls(true);
         }
-
+        quoteRequest.setFirstName(quote.getFirstName());
+        quoteRequest.setLastName(quote.getSurname());
         return quoteRequest;
 
     }
