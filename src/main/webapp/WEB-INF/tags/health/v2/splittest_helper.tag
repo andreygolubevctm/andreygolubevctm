@@ -40,5 +40,5 @@
 <%-- End HLT-3028 --%>
 
 <%-- New elastic search for health --%>
-<c:set var="useElasticSearch" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 18)}" />
+<c:set var="useElasticSearch" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 18)}" scope="request" />
 <%-- End HLT-2931 --%>
