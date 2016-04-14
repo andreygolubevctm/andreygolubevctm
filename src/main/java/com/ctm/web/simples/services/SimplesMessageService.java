@@ -3,8 +3,8 @@ package com.ctm.web.simples.services;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
-import com.ctm.web.core.model.Role;
 import com.ctm.web.core.model.Rule;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.transaction.model.Transaction;
 import com.ctm.web.simples.dao.*;
 import com.ctm.web.simples.model.*;
@@ -24,6 +24,17 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 public class SimplesMessageService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesMessageService.class);
 
+	private final IPAddressHandler ipAddressHandler;
+
+	public SimplesMessageService(IPAddressHandler ipAddressHandler) {
+		this.ipAddressHandler = ipAddressHandler;
+	}
+
+    @SuppressWarnings("unused")
+    @Deprecated
+    public SimplesMessageService() {
+        this.ipAddressHandler = IPAddressHandler.getInstance();
+    }
 
 
 	public List<Message> postponedMessages(final int userId) throws DaoException {
@@ -36,7 +47,7 @@ public class SimplesMessageService {
 		return personalMessageDao.getPersonalMessages(userId);
 	}
 
-	public MessageDetail getMessage(final HttpServletRequest request, final int messageId) throws DaoException {
+	public MessageDetail getMessage(final int messageId) throws DaoException {
 		final MessageDao messageDao = new MessageDao();
 		final Message message = messageDao.getMessage(messageId);
 
@@ -59,7 +70,7 @@ public class SimplesMessageService {
 	 * @param userId ID of the user who is getting the message
 	 * @throws ParseException
 	 */
-	public MessageDetail getNextMessageForUser(final HttpServletRequest request, final int userId, final List<Role> userRoles, final List<Rule> getNextMessageRules) throws ConfigSettingException, DaoException, ParseException {
+	public MessageDetail getNextMessageForUser(final HttpServletRequest request, final int userId, final List<Rule> getNextMessageRules) throws ConfigSettingException, DaoException, ParseException {
 		MessageDetail messageDetail = new MessageDetail();
 		Message message;
 
@@ -82,7 +93,6 @@ public class SimplesMessageService {
 		else {
 			// Build the associated details
 			MessageDetailService messageDetailService = new MessageDetailService();
-			TransactionService transactionService = new TransactionService();
 			SimplesTransactionService simplesTransactionService = new SimplesTransactionService();
 			messageDetail = messageDetailService.getMessageDetail(message);
 
@@ -96,7 +106,7 @@ public class SimplesMessageService {
 
 					setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED, MessageStatus.STATUS_DONOTCONTACT);
 
-					return getNextMessageForUser(request, userId, userRoles, getNextMessageRules);
+					return getNextMessageForUser(request, userId, getNextMessageRules);
 				}
 			}
 			/* get all root Ids that has been created by same users and are queued in message table*/
@@ -118,7 +128,7 @@ public class SimplesMessageService {
 					setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED, MessageStatus.STATUS_ALREADYCUSTOMER);
 				}
 
-				return getNextMessageForUser(request, userId, userRoles, getNextMessageRules);
+				return getNextMessageForUser(request, userId, getNextMessageRules);
 			}
 
 			// If the message is new or is a different user, assign it to our user.
@@ -219,7 +229,7 @@ public class SimplesMessageService {
 			// Check the reasonStatusId, if it equals Do Not Contact, add contact to Blacklist
 			if (reasonStatusId == MessageStatus.STATUS_DONOTCONTACT) {
 
-				SimplesBlacklistService simplesBlacklistService = new SimplesBlacklistService();
+				SimplesBlacklistService simplesBlacklistService = new SimplesBlacklistService(ipAddressHandler);
 				UserDao userDao = new UserDao();
 				User user = userDao.getUser(actionIsPerformedByUserId);
 				String comment = "added to blacklist by choosing (Do not Contact)";

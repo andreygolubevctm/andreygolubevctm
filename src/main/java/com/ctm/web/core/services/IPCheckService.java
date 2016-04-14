@@ -6,6 +6,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.IpAddress;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.utils.RequestUtils;
 import org.slf4j.Logger;
@@ -19,8 +20,9 @@ import static com.ctm.commonlogging.common.LoggingArguments.v;
 public class IPCheckService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(IPCheckService.class);
+    private final IPAddressHandler ipAddressHandler;
 
-    private IpAddressDao ipAddressDao;
+    private final IpAddressDao ipAddressDao;
 
     public enum IPCheckStatus{
         OVER(1),
@@ -38,12 +40,15 @@ public class IPCheckService {
         }
     }
 
+    @SuppressWarnings("unused") // used in jsp
     public IPCheckService() {
         ipAddressDao = new IpAddressDao();
+        this.ipAddressHandler =  IPAddressHandler.getInstance();
     }
 
-    public IPCheckService(IpAddressDao ipAddressDao) {
+    public IPCheckService(IpAddressDao ipAddressDao, IPAddressHandler ipAddressHandler) {
         this.ipAddressDao = ipAddressDao;
+        this.ipAddressHandler = ipAddressHandler;
     }
 
     /**
@@ -62,7 +67,7 @@ public class IPCheckService {
             IPCheckStatus permitted = isWithinLimit(request, pageSettings);
 
             // Insert/Update IP request
-            Long ipAddress = getIPAddressAsLong(request);
+            Long ipAddress = getIPAddressAsLong(request, pageSettings);
             if (ipAddress != 0) {
                 IpAddress ipAddressModel = ipAddressDao.findMatch(pageSettings, ipAddress);
                 if (ipAddressModel != null) {
@@ -94,19 +99,21 @@ public class IPCheckService {
      * @param pageSettings
      * @return
      */
-    public IPCheckStatus isWithinLimit(HttpServletRequest request, PageSettings pageSettings) {
+    private IPCheckStatus isWithinLimit(HttpServletRequest request, PageSettings pageSettings) {
         try {
-            Long ipAddress = getIPAddressAsLong(request);
+            Long ipAddress = getIPAddressAsLong(request, pageSettings);
             if (ipAddress != 0) {
                 IpAddress ipAddressModel = ipAddressDao.findMatch(pageSettings, ipAddress);
                 if (ipAddressModel != null) {
                     int limit = ipAddressModel.getRole().getLimit(pageSettings);
                     // If they have hit more than the limit for their role, they are NOT permitted access.
                     if (ipAddressModel.getNumberOfHits() > limit) {
-                        LOGGER.warn("[IPCheckService] User's IP Address has been blocked after exceeding limit. {},{},{}" , kv("ipAddress", getIPAddress(request)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
+                        LOGGER.warn("[IPCheckService] User's IP Address has been blocked after exceeding limit. {},{},{}" , kv("ipAddress",
+                                ipAddressHandler.getIPAddress(request, pageSettings)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
                         return IPCheckStatus.OVER;
                     } else if (ipAddressModel.getNumberOfHits() == limit) {
-                        LOGGER.warn("[IPCheckService] User's IP Address has been blocked after reaching limit. {},{},{}" , v("ipAddress", getIPAddress(request)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
+                        LOGGER.warn("[IPCheckService] User's IP Address has been blocked after reaching limit. {},{},{}" , v("ipAddress",
+                                ipAddressHandler.getIPAddress(request, pageSettings)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
                         return IPCheckStatus.LIMIT;
                     }
                 }
@@ -115,30 +122,6 @@ public class IPCheckService {
             LOGGER.error("[IPCheckService] An error occurred while checking the count of requests from the user's IP Address", e);
         }
         return IPCheckStatus.UNDER;
-    }
-
-    /**
-     * isWithinLimitAlt - overloaded the standard isWithinLimit method to allow it to be called
-     * via ajax requests to routing end points (which won't be able to send pageSettings object)
-     * Does a passive check of current IP request count without incrementing the counter
-     *
-     * @param request
-     * @param vertical
-     * @return
-     */
-    public IPCheckStatus isWithinLimitAlt(HttpServletRequest request, Vertical.VerticalType vertical) {
-        try {
-            PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, vertical.getCode());
-            return isWithinLimit(request, pageSettings);
-        } catch(ConfigSettingException | DaoException e) {
-            LOGGER.error(" An exception was thrown getting the pageSettings object {}", kv("vertical", vertical.getCode()), e);
-        }
-        return IPCheckStatus.UNDER;
-    }
-
-    public Boolean isWithinLimitAsBoolean(HttpServletRequest request, PageSettings pageSettings) {
-        IPCheckStatus status = isWithinLimit(request, pageSettings);
-        return !(status == IPCheckStatus.LIMIT || status == IPCheckStatus.OVER);
     }
 
     /**
@@ -159,15 +142,6 @@ public class IPCheckService {
         return true;
     }
 
-    /**
-     * Get the REMOTE_ADDR header.
-     *
-     * @param request
-     * @return
-     */
-    public String getIPAddress(HttpServletRequest request) {
-        return request.getRemoteAddr();
-    }
 
     /**
      * Formula for converting an IP to a long.
@@ -177,12 +151,13 @@ public class IPCheckService {
      * =	3392683266
      *
      * @param request
+     * @param pageSettings
      * @return
      * @source: http://www.mkyong.com/java/java-convert-ip-address-to-decimal-number/
      */
-    public long getIPAddressAsLong(HttpServletRequest request) {
+    public long getIPAddressAsLong(HttpServletRequest request, PageSettings pageSettings) {
 
-        String[] ipAddressInArray = getIPAddress(request).split("\\.");
+        String[] ipAddressInArray = ipAddressHandler.getIPAddress(request, pageSettings).split("\\.");
 
         long result = 0;
         if (ipAddressInArray.length > 1) {

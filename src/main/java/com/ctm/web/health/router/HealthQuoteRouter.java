@@ -14,6 +14,7 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.tracking.TrackingKeyService;
@@ -52,12 +53,12 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
     private final ContentService contentService;
 
     public HealthQuoteRouter() throws ConfigSettingException, DaoException {
-        super(new SessionDataServiceBean());
+        super(new SessionDataServiceBean(), IPAddressHandler.getInstance());
         this.contentService =  ContentService.getInstance();
     }
 
-    public HealthQuoteRouter(SessionDataServiceBean sessionDataServiceBean, ContentService contentService) {
-        super(sessionDataServiceBean);
+    public HealthQuoteRouter(SessionDataServiceBean sessionDataServiceBean, ContentService contentService, IPAddressHandler ipAddressHandler) {
+        super(sessionDataServiceBean, ipAddressHandler);
         this.contentService = contentService;
     }
 
@@ -72,7 +73,7 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
         // Initialise request
         Brand brand = initRouter(context, vertical);
         updateTransactionIdAndClientIP(context, data);
-        HealthQuoteEndpointService healthQuoteTokenService = new HealthQuoteEndpointService();
+        HealthQuoteEndpointService healthQuoteTokenService = new HealthQuoteEndpointService(ipAddressHandler);
         boolean isCallCentre = SessionUtils.isCallCentre(context.getHttpServletRequest().getSession());
         try{
             validateRequest(context.getHttpServletRequest(), vertical, brand, healthQuoteTokenService, data, isCallCentre);

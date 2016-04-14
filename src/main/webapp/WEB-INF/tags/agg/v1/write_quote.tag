@@ -3,6 +3,8 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+
 <c:set var="logger" value="${log:getLogger('tag.agg.write_quote')}" />
 
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
@@ -48,7 +50,7 @@
 
 
 <%-- Capture the Client IP and User Agent AGG-1439 for any vertical--%>
-<go:setData dataVar="data" xpath="${rootPathData}/clientIpAddress" value="${pageContext.request.remoteAddr}" />
+<go:setData dataVar="data" xpath="${rootPathData}/clientIpAddress" value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
 <go:setData dataVar="data" xpath="${rootPathData}/clientUserAgent" value='<%=request.getHeader("user-agent")%>' />
 
 

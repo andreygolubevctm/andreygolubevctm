@@ -1,6 +1,8 @@
 package com.ctm.web.health.model.form;
 
-public class Situation {
+import com.ctm.web.core.model.ProviderFilter;
+
+public class Situation implements ProviderFilter {
 
     private String healthCvr;
 
@@ -17,6 +19,8 @@ public class Situation {
     private String singleProvider;
 
     private String accidentOnlyCover;
+
+    private String providerKey;
 
     public String getHealthCvr() {
         return healthCvr;
@@ -70,6 +74,7 @@ public class Situation {
         return singleProvider;
     }
 
+    @Override
     public void setSingleProvider(String singleProvider) {
         this.singleProvider = singleProvider;
     }
@@ -80,5 +85,14 @@ public class Situation {
 
     public void setAccidentOnlyCover(String accidentOnlyCover) {
         this.accidentOnlyCover = accidentOnlyCover;
+    }
+
+    @Override
+    public String getProviderKey() {
+        return providerKey;
+    }
+
+    public void setProviderKey(String providerKey) {
+        this.providerKey = providerKey;
     }
 }

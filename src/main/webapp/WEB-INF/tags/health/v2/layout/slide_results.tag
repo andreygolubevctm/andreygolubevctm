@@ -7,7 +7,7 @@
     <layout_v3:slide_content>
 
         <health_v2:results/>
-        <health_v1:more_info/>
+        <health_v3:more_info/>
         <health_v1:prices_have_changed_notification/>
 
     </layout_v3:slide_content>

@@ -1,5 +1,6 @@
 package com.ctm.web.simples.admin.services;
 
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.transaction.model.TransactionDetail;
@@ -22,7 +23,10 @@ public class SpecialOffersService {
 
 	private final SpecialOffersDao specialOffersDao = new SpecialOffersDao();
 	private final SpecialOffersHelper specialOffersHelper = new SpecialOffersHelper();
+	private final IPAddressHandler ipAddressHandler;
+
 	public SpecialOffersService() {
+		ipAddressHandler =  IPAddressHandler.getInstance();
 	}
 
 	public List<SpecialOffers> getAllOffers()  {
@@ -49,7 +53,7 @@ public class SpecialOffersService {
 	public SpecialOffers updateSpecialOffers(HttpServletRequest request,AuthenticatedData authenticatedData)  {
 		try {
 			SpecialOffers specialOffers = new SpecialOffers();
-			final String ipAddress = request.getRemoteAddr();
+			final String ipAddress = ipAddressHandler.getIPAddress(request);
 			specialOffers = RequestUtils.createObjectFromRequest(request, specialOffers);
 			final String userName = authenticatedData.getUid();
 			return specialOffersDao.updateSpecialOffers(specialOffers,userName,ipAddress);
@@ -63,7 +67,7 @@ public class SpecialOffersService {
 			SpecialOffers specialOffers = new SpecialOffers();
 			specialOffers = RequestUtils.createObjectFromRequest(request, specialOffers);
 			final String userName = authenticatedData.getUid();
-			final String ipAddress = request.getRemoteAddr();
+			final String ipAddress = ipAddressHandler.getIPAddress(request);
 			
 			return specialOffersDao.createSpecialOffers(specialOffers,userName,ipAddress);
 		} catch (DaoException d) {
@@ -86,7 +90,7 @@ public class SpecialOffersService {
 		try {
 			Date serverDate = ApplicationService.getApplicationDate(request);
 			final String userName = authenticatedData.getUid();
-			final String ipAddress = request.getRemoteAddr();
+			final String ipAddress = ipAddressHandler.getIPAddress(request);
 			return specialOffersDao.deleteSpecialOffers(request.getParameter("offerId"),serverDate,userName,ipAddress);
 		} catch (DaoException d) {
 			throw new RuntimeException(d);
