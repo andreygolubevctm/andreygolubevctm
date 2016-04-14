@@ -104,7 +104,7 @@ public class ContactDetailsAdapter {
                     address.map(com.ctm.web.health.model.form.Address::getSuburbName)
                             .map(Suburb::new)
                             .orElse(null),
-                    address.map(com.ctm.web.health.model.form.Address::getStreetNum)
+                    address.map(com.ctm.web.health.model.form.Address::getHouseNoSel)
                             .map(StreetNumber::new)
                             .orElse(null),
                     address.map(com.ctm.web.health.model.form.Address::getDpId)
