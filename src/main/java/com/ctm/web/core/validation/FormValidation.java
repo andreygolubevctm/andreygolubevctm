@@ -94,7 +94,7 @@ public class FormValidation {
 		for(SchemaValidationError error: errors){
 			String description = "Message: " + error.getMessage() + " xpath:" + error.getElementXpath();
 			LOGGER.error("validation errors. {}", kv("description", description));
-			fatalErrorService.logFatalErrorTransactionId(styleCodeId, page, false, "validationError ", description, transactionId);
+			fatalErrorService.logFatalError(styleCodeId, page, false, "validationError ", description, transactionId);
 		}
 	}
 

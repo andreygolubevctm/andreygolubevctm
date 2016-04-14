@@ -90,7 +90,7 @@ public class FatalErrorService {
 		logFatalError(styleCodeId, page, this.sessionId, isFatal, message, description, String.valueOf(transactionId), "" , this.property);
 	}
 
-	public void logFatalErrorTransactionId(int styleCodeId, String page, boolean isFatal, String message, String description, String transactionId) {
+	public void logFatalError(int styleCodeId, String page, boolean isFatal, String message, String description, String transactionId) {
 		logFatalError(styleCodeId, page, this.sessionId, isFatal, message, description, transactionId, "" , this.property);
 	}
 

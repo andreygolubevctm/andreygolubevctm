@@ -26,7 +26,7 @@
 
 <c:if test="${empty transactionId}">
 	<%-- If the transactionId is empty, revert back to the param.transactionId otherwise it fails to write to the fatal_error_log table --%>
-	${fatalErrorService.logFatalErrorTransactionId(0,  pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
+	${fatalErrorService.logFatalError(0,  pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
 
 	<%-- Set the new transaction id so we can write to the ranking tables --%>
 	<c:set var="transactionId" value="${transactionId}" />
