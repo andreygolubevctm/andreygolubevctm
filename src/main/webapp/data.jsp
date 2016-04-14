@@ -119,8 +119,12 @@
             </td>
         </tr>
         <tr>
-            <td>Client remoteAddr</td>
+            <td>Application IP Address</td>
             <td>${ipAddressHandler.getIPAddress(pageContext.request)}</td>
+        </tr>
+        <tr>
+            <td>Client remoteAddr</td>
+            <td>${pageContext.request.remoteAddr}</td>
         </tr>
         <tr>
             <td>Client remoteHost</td>
