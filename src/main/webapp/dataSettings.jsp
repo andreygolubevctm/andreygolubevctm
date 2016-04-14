@@ -11,7 +11,7 @@
 	<body class="dataSettings">
 	
 		<%-- SECURITY FEATURE --%>
-		<c:if test="${fn:startsWith(ipAddressHandler.getIPAddress(request),'192.168.') or fn:startsWith(ipAddressHandler.getIPAddress(request),'0:0:0:')or fn:startsWith(ipAddressHandler.getIPAddress(request),'127.0.0.1')}">
+		<c:if test="${fn:startsWith(ipAddressHandler.getIPAddress(pageContext.request),'192.168.') or fn:startsWith(ipAddressHandler.getIPAddress(pageContext.request),'0:0:0:')or fn:startsWith(ipAddressHandler.getIPAddress(pageContext.request),'127.0.0.1')}">
 			<c:import var="prettyXml" url="/WEB-INF/xslt/pretty_xml.xsl"/>
 	
 			<session:core />
