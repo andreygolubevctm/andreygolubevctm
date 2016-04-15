@@ -301,13 +301,13 @@
         };
         switch (coverType) {
             case 'H':
+                updateSelectedBenefits(coverType);
                 $benefitsForm.find('.sidebarHospital').fadeOut('fast');
                 $benefitsForm.find('.extrasCover').fadeOut('fast');
                 $benefitsForm.find('.sidebarExtras').fadeIn('fast');
                 $benefitsForm.find('.hospitalCover').removeClass('custom-col-sm').addClass('custom-col-lg').fadeIn('fast', function () {
                     movePageTitleToColumn();
                 });
-                updateSelectedBenefits(coverType);
                 break;
             case 'E':
                 $benefitsForm.find('.sidebarExtras').fadeOut('fast');
@@ -318,12 +318,12 @@
                 });
                 break;
             default:
+                updateSelectedBenefits(coverType);
                 $benefitsForm.find('.benefits-side-bar').fadeOut('fast');
                 $benefitsForm.find('.hasShortlistableChildren').fadeIn('fast', function () {
                     $benefitsForm.find('fieldset > div').first().prepend($benefitsForm.find('.section h2'));
                 });
                 alignTitle();
-                updateSelectedBenefits(coverType);
         }
     }
 
