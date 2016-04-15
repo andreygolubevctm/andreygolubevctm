@@ -24,20 +24,10 @@ public class IPCheckService {
 
     private final IpAddressDao ipAddressDao;
 
-    public enum IPCheckStatus{
-        OVER(1),
-        LIMIT(0),
-        UNDER(-1);
-
-        private final Integer status;
-
-        IPCheckStatus(Integer status) {
-            this.status = status;
-        }
-
-        public Integer getLabel() {
-            return status;
-        }
+    private enum IPCheckStatus{
+        OVER,
+        LIMIT,
+        UNDER
     }
 
     @SuppressWarnings("unused") // used in jsp
@@ -56,7 +46,7 @@ public class IPCheckService {
      *
      * Increments the count of IP attempts
      *
-     * @param request
+     * @param request used to get the IP from the request
      * @param pageSettings
      * @return
      */
@@ -124,6 +114,13 @@ public class IPCheckService {
         return IPCheckStatus.UNDER;
     }
 
+
+    @SuppressWarnings("unused") // used by fuel_quote.jsp
+    public Boolean isWithinLimitAsBoolean(HttpServletRequest request, PageSettings pageSettings) {
+        IPCheckStatus status = isWithinLimit(request, pageSettings);
+        return !(status == IPCheckStatus.LIMIT || status == IPCheckStatus.OVER);
+    }
+
     /**
      * isPermittedAccessAlt - overloaded the standard isPermittedAccess method to allow it to be called
      * via ajax requests to routing end points (which won't be able to send pageSettings object)
@@ -152,7 +149,7 @@ public class IPCheckService {
      *
      * @param request
      * @param pageSettings
-     * @return
+     * @return IP converted to a long
      * @source: http://www.mkyong.com/java/java-convert-ip-address-to-decimal-number/
      */
     public long getIPAddressAsLong(HttpServletRequest request, PageSettings pageSettings) {
