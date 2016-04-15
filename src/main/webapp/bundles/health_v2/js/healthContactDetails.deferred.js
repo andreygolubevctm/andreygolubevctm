@@ -1,6 +1,7 @@
 ;(function($, undefined) {
 
-    var meerkat = window.meerkat;
+    var meerkat = window.meerkat,
+        postalMatch = '#health_application_postalMatch';
 
     function initHealthContactDetails() {
         $(document).ready(function () {
@@ -8,13 +9,22 @@
         });
     }
 
-   function _eventSubscriptions() {
-       $(document).on("change", "#health_application_postalMatch", _onChooseSamePostalAddress).on("#health_application-selection input, .elasticsearch_container_health_application_postal select", _onAddressChange);
-   }
+    function _eventSubscriptions() {
+        $(document).on("#health_application-selection input, .elasticsearch_container_health_application_postal select", _onAddressChange);
+        _togglePostalGroup();
 
-    function _onChooseSamePostalAddress(e) {
-        _onAddressChange(e);
-        $(".elasticsearch_container_health_application_postal").toggle(!$(e.target).prop('checked'));
+        $(postalMatch).on('change', function() {
+            _togglePostalGroup();
+        });
+    }
+
+    function _togglePostalGroup(){
+        var postalGroup = '#health_application_postalGroup';
+        if( $(postalMatch).is(':checked')  ){
+            $(postalGroup).slideUp();
+        } else {
+            $(postalGroup).slideDown();
+        }
     }
 
     function _onAddressChange(e) {
@@ -22,7 +32,7 @@
         if($(e.target).attr("id") === "health_application_postal_nonStd")
             $(".elasticsearch_container_health_application_address .error-field label").remove();
 
-        if($("#health_application_postalMatch").prop('checked')) {
+        if($(postalMatch).prop('checked')) {
             $(".elasticsearch_container_health_application_postal").find("input, select").each(function() {
                 $(this).val("");
             });
