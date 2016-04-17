@@ -3,8 +3,10 @@ package com.ctm.web.health.services;
 import com.ctm.web.core.dao.StyleCodeDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.health.dao.HealthPriceDao;
+import com.ctm.web.health.model.Frequency;
 import com.ctm.web.health.model.HealthPricePremiumRange;
 import com.ctm.web.health.model.HealthPriceRequest;
+import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.services.results.ProviderRestrictionsService;
 import org.junit.Test;
 
@@ -13,6 +15,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -127,6 +131,26 @@ public class HealthPriceServiceTest {
 
 		assertEquals("wrong date", "2014-08-18", healthPriceService.getHealthPriceRequest().getSearchDate());
 
+	}
+
+	@Test
+	public void shouldNotHaveDiscountIfOnResults() throws Exception {
+		boolean onResultsPage = true;
+		String provider = "AUF";
+		PaymentType paymentType = PaymentType.CREDIT;
+		Frequency frequency = Frequency.WEEKLY;
+		Boolean response = HealthPriceService.hasDiscountRates( frequency,  provider,  paymentType,  onResultsPage);
+		assertFalse(response);
+	}
+
+	@Test
+	public void shouldHaveDiscountIfNotOnResults() throws Exception {
+		boolean onResultsPage = false;
+		String provider = "AUF";
+		PaymentType paymentType = PaymentType.CREDIT;
+		Frequency frequency = Frequency.WEEKLY;
+		Boolean response = HealthPriceService.hasDiscountRates( frequency,  provider,  paymentType,  onResultsPage);
+		assertTrue(response);
 	}
 
 }
