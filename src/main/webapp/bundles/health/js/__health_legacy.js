@@ -17,7 +17,7 @@
  */
 function isLessThan31Or31AndBeforeJuly1(_dobString) {
 	if(_dobString === '') return false;
-	var age = Math.floor(meerkat.modules.utils.returnAge(_dobString));
+	var age = Math.floor(meerkat.modules.age.returnAge(_dobString));
 	if( age < 31 ) {
 		return true;
 	} else if( age == 31 ){

@@ -891,8 +891,8 @@
 		if(postData.primary_dob === '') return false;
 		if(coverTypeHasPartner && postData.partner_dob === '')  return false;
 
-		if(meerkat.modules.utils.returnAge(postData.primary_dob) < 0) return false;
-		if(coverTypeHasPartner && meerkat.modules.utils.returnAge(postData.partner_dob) < 0)  return false;
+		if(meerkat.modules.age.returnAge(postData.primary_dob) < 0) return false;
+		if(coverTypeHasPartner && meerkat.modules.age.returnAge(postData.partner_dob) < 0)  return false;
 		if(postData.rebate_choice === "Y" && postData.income === "") return false;
 
 		// check in valid date format

@@ -158,8 +158,7 @@
         parse : parse,
         getNiceDate : getNiceDate,
         returnDateValue : returnDateValue,
-        returnDateValueFormFormat : returnDateValueFormFormat,
-        returnDate : returnDate
+        returnDateValueFormFormat : returnDateValueFormFormat
 	});
 
 })(jQuery);
