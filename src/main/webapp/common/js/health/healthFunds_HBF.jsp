@@ -12,10 +12,16 @@ HBF
 
 var healthFunds_HBF = {
     set: function(){
+        <%-- Custom question: HBF flexi extras --%>
+        if ($('#hbf_fexi_extras').length > 0) {
+            $('#hbf_fexi_extras').show();
+        }
+
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
     },
     unset: function(){
+        $('#hbf_fexi_extras').hide();
     }
 };
 </c:set>
