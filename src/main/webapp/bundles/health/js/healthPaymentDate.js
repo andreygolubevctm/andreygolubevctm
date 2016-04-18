@@ -44,8 +44,8 @@
 			foundMatch = _.contains(daysMatch, earliestDate.getDate());
 			i++;
 		}
-		$policyDateHiddenField.val(meerkat.modules.dateUtils.returnDateValue(earliestDate));
-		$message.text( 'Your payment will be deducted on: ' + meerkat.modules.dateUtils.getNiceDate(earliestDate) );
+		$policyDateHiddenField.val(meerkat.modules.dateUtils.dateValueServerFormat(earliestDate));
+		$message.text( 'Your payment will be deducted on: ' + meerkat.modules.dateUtils.dateValueLongFormat(earliestDate) );
 
 	}
 	/*

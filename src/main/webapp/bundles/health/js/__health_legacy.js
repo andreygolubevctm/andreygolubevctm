@@ -643,7 +643,7 @@ var healthFunds = {
 				// Loop through the selected days and attempt a match
 				for(a=0; a < a_Match.length; a++) {
 					if(a_Match[a] == _date.getDate() ){
-						/*var*/ _html = '<option value="'+ meerkat.modules.dateUtils.returnDateValue(_date) +'" selected="selected">'+ meerkat.modules.dateUtils.getNiceDate(_date) +'</option>';
+						/*var*/ _html = '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'" selected="selected">'+ meerkat.modules.dateUtils.dateValueLongFormat(_date) +'</option>';
 						i = 99;
 						break;
 					}

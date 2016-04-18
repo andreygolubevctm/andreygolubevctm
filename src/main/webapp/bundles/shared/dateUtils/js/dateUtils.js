@@ -41,13 +41,13 @@
         dddd: function(dateObj) {
             return dayNames[dateObj.getDay()];
         }
-	};
-
-    masks = {
-        formDate: "DD/MM/YYYY"
-    };
-
-    var parseFlags = {
+	},
+        masks = {
+        formDate: "DD/MM/YYYY",
+        serverDate : "YYYY-MM-DD",
+        longDate : "dddd, D MMMM YYYY"
+    },
+        parseFlags = {
         D: [twoDigits, function (d, v) {
             d.day = v;
         }],
@@ -127,20 +127,29 @@
         }
         var today = new Date();
         return new Date(dateInfo.year || today.getFullYear(), dateInfo.month || 0, dateInfo.day || 1);
-    };
-
-    // return nice date string in dddd, D MMMM YYYY e.g. Monday, 25 April 2016
-    function getNiceDate( dateObj ) {
-        return format(dateObj, "dddd, D MMMM YYYY");
     }
 
-    // return date string in YYYY-MM-DD
-    function returnDateValue(dateObj){
-        return format(dateObj, "YYYY-MM-DD");
+    // param: Date object
+    // returns: long date string in the following format:
+    // dddd, D MMMM YYYY
+    // e.g. Monday, 25 April 2016
+    function dateValueLongFormat( dateObj ) {
+        return format(dateObj, masks.longDate);
     }
 
-    // return date string in DD/MM/YYYY
-    function returnDateValueFormFormat(dateObj){
+    // param: Date object
+    // returns: server date string in the following format:
+    // YYYY-MM-DD
+    // e.g. 2016-04-25
+    function dateValueServerFormat(dateObj){
+        return format(dateObj, masks.serverDate);
+    }
+
+    // param: Date object
+    // returns: form date string in the following format:
+    // DD/MM/YYYY
+    // e.g. 25/04/2016
+    function dateValueFormFormat(dateObj){
         return format(dateObj, masks.formDate);
     }
 
@@ -156,9 +165,10 @@
 	meerkat.modules.register('dateUtils', {
 		format  : format,
         parse : parse,
-        getNiceDate : getNiceDate,
-        returnDateValue : returnDateValue,
-        returnDateValueFormFormat : returnDateValueFormFormat
+        returnDate: returnDate,
+        dateValueLongFormat : dateValueLongFormat,
+        dateValueServerFormat : dateValueServerFormat,
+        dateValueFormFormat : dateValueFormFormat
 	});
 
 })(jQuery);

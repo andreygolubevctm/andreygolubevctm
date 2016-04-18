@@ -421,8 +421,8 @@ var healthFunds = {
 					if(a_Match[a] == _date.getDate() ){
 						var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
 						var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
-						/*var*/ _html = '<option value="'+ meerkat.modules.dateUtils.returnDateValue(_date) +'" selected="selected">' +
-							meerkat.modules.dateUtils.getNiceDate(_date) +'</option>';
+						/*var*/ _html = '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'" selected="selected">' +
+							meerkat.modules.dateUtils.dateValueLongFormat(_date) +'</option>';
 						i = 99;
 						break;
 					};

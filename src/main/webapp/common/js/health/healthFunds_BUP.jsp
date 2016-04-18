@@ -44,7 +44,7 @@ set: function () {
 			healthFunds._payments = { 'min':6, 'max':7, 'weekends':false };
 
 			var date = new Date();
-			var _html = meerkat.modules.healthPaymentDay.paymentDays(meerkat.modules.dateUtils.returnDateValueFormFormat(date));
+			var _html = meerkat.modules.healthPaymentDay.paymentDays(meerkat.modules.dateUtils.dateValueFormFormat(date));
 			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
 			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
 

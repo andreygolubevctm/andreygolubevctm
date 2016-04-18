@@ -55,8 +55,8 @@
             } else if( !healthFunds._payments.weekends && ( _day === 0 || _day === 6 ) ){
                 _days++;
             } else {
-                _html += '<option value="'+ meerkat.modules.dateUtils.returnDateValue(_date) +'">'+
-                    meerkat.modules.dateUtils.getNiceDate(_date) +'</option>';
+                _html += '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'">'+
+                    meerkat.modules.dateUtils.dateValueLongFormat(_date) +'</option>';
                 _days++;
                 _count++;
             }

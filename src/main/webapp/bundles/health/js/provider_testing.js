@@ -48,7 +48,7 @@
 	function updateCalendar (dateResult) {
 		if (dateResult !== null && dateResult !== ''){
 			var date = new Date(dateResult.replace(/ [A]?EST/, ''));
-			var newDate = meerkat.modules.dateUtils.returnDateValueFormFormat(date);
+			var newDate = meerkat.modules.dateUtils.dateValueFormFormat(date);
 			$('#health_searchDate').val(newDate);
 		}
 	}
