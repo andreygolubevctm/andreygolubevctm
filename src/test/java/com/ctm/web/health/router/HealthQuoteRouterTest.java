@@ -122,8 +122,10 @@ public class HealthQuoteRouterTest {
 
     @Test
     public void testValidateRequestValid() throws Exception {
+        EnvironmentService.setEnvironment("localhost");
         when(SessionUtils.isCallCentre(anyObject())).thenReturn(false);
         ResultsWrapper result = healthQuoteRouter.getHealthQuote(context,  data);
         assertNull(result.getError());
     }
+
 }

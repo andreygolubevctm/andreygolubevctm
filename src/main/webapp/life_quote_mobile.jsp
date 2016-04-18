@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<settings:setVertical verticalCode="LIFE" />
+<c:set var="mobileVariant" value="${pageSettings.getSetting('mobileVariant') eq 'Y'}" />
 <jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
 <c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
-
-<c:if test="${deviceType ne 'MOBILE'}">
+<c:if test="${mobileVariant eq false or deviceType ne 'MOBILE'}">
 	<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}life_quote.jsp#/?stage=start" />
 	<c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL))}" />
 </c:if>
