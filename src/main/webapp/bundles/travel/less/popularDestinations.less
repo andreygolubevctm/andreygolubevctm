@@ -1,0 +1,42 @@
+div.popular-countries-container {
+  a {
+    text-align: center;
+
+    &:before {
+      display: block;
+      margin-bottom: 10px;
+      border-radius: 50%;
+      background-color: @icon-bg-color;
+      border: 1px solid @icon-border-color;
+      color: @theme-tertiary;
+      font-family: ctm-travel;
+      text-align: center;
+    }
+
+
+    &.active {
+      color: @gray-dark;
+
+      &:before {
+        background-color: @icon-bg-checked-color;
+        border-color: @icon-border-checked-color;
+        color: #fff;
+      }
+    }
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+
+  @media (@xs) {
+    .roundIconSize(50px, @font-size-base, -1, 10, a);
+  }
+  @media (@sm) {
+    .roundIconSize(40px, @font-size-small, 1, 22, a);
+  }
+  @media (@md) {
+    .roundIconSize(50px, @font-size-base, 1, 10, a);
+  }
+}

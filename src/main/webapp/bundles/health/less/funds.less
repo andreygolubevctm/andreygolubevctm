@@ -64,7 +64,7 @@ body{
 			display:block !important;
 		}
 		.ausgovtrebateform {
-			display:block;
+			display:none;
 		}
 		.ausgovtrebateform em {
 			display:none;
@@ -106,8 +106,7 @@ body{
 		.health_credit-card-details_policyDay-message,
 		#clientMemberID .health_previous_fund_authority,
 		.health_bank-details_policyDay-group,
-		.health_bank-details_policyDay-message,
-		.health-medicare_details  {
+		.health_bank-details_policyDay-message {
 			display:block !important;
 		}
 
@@ -146,7 +145,6 @@ body{
 	  .health_bank-details_policyDay-group,
 	  .health_bank-details_paymentDay_group,
 	  #clientMemberID .health_previous_fund_authority,
-	  .health-medicare_details,
 	  .health_credit-card-details_policyDay-message,
 	  .health_bank-details_policyDay-message {
 		  display:block !important;
@@ -310,7 +308,6 @@ body{
 	&.BUP{
 		.health_popup_payment_ipp,
 		.health_person-details_middlename,
-		.health-medicare_details,
 		.health_previous_fund_authority,
 		.health_bank-details_policyDay-group,
 		.health_bank-details_policyDay-message,
@@ -521,6 +518,10 @@ body{
 		}
 	}
   	&.HCF {
+		.health_credit-card-details_paymentDay_group,
+		.health_credit-card-details_policyDay-group {
+			display:none !important;
+		}
 		.health_contact_authority{
 	  		display:none !important;
 		}

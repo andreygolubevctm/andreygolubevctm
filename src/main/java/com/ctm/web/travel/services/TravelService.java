@@ -17,14 +17,19 @@ import com.ctm.web.travel.quote.model.RequestAdapter;
 import com.ctm.web.travel.quote.model.ResponseAdapter;
 import com.ctm.web.travel.quote.model.request.TravelQuoteRequest;
 import com.ctm.web.travel.quote.model.response.TravelResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class TravelService extends CommonQuoteService<TravelQuote, TravelQuoteRequest, TravelResponse> {
 
-    public TravelService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+    @Autowired
+    public TravelService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
+        super(providerFilterDAO, objectMapper);
     }
 
     /**

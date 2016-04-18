@@ -14,6 +14,14 @@
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info;
 
+    var events = {
+            selectTags: {
+                SELECTED_TAG_ADDED: "SELECTED_TAG_ADDED",
+                SELECTED_TAG_REMOVED: "SELECTED_TAG_REMOVED"
+            }
+        },
+        moduleEvents = events.selectTags;
+
     var $selectObj = $('.select-tags'),
         selectedTagsListClass = '.selected-tags',
         fadeSpeed = 'fast',
@@ -55,20 +63,21 @@
         $element.append(optionsHTML);
     }
 
+    function _trim(text) {
+        return (text.length > 25) ? text.substr(0, 20) + '...' : text;
+    }
+
+    function getHTML(text) {
+        return '<span>' + _trim(text) + '</span>';
+    }
+
     function _onOptionSelect(selectElement) {
         var $select = $(selectElement),
             $selected = $select.find('option:selected'),
             value = $select.val(),
             $list = getListElement($select),
             selectedText = $selected.text(),
-            selectedTextHTML = selectedText;
-
-        if (selectedTextHTML.length > 25) {
-            selectedTextHTML = selectedTextHTML.substr(0, 20) + '...';
-        }
-
-        selectedTextHTML = '<span>' + selectedTextHTML + '</span>';
-
+            selectedTextHTML = getHTML(selectedText);
 
         if ($selected.not('[readonly]').length && !isAlreadySelected(value)) {
             $select[0].selectedIndex = 0;
@@ -93,38 +102,44 @@
     }
 
     function appendToTagList($list, selectedTextHTML, selectedText, value) {
-        _.defer(function delayTagAppearance() {
+        var selectLimit = $list.data('selectlimit');
 
-            if(typeof selectedItems[$list.index()] == 'undefined') {
-                selectedItems[$list.index()] = ["0000"];
-            }
-            selectedItems[$list.index()].push(value);
+        if (selectLimit === 0 || (!!selectLimit && $list.find('li').length < selectLimit)) {
+            _.defer(function delayTagAppearance() {
 
-            $list.append(
-                $('<li>')
-                    .html(selectedTextHTML)
-                    .data('value', value)
-                    .data('fulltext', selectedText)
-                    .addClass('selected-tag')
-                    .hide()
-                    .append(
-                    $('<button>')
-                        .html('&times;')
-                        .attr('type', 'button')
-                        .addClass('btn')
-                        .on('click', function onClickRemoveTagCallback() {
-                            _onRemoveListItem(this);
+                if (typeof selectedItems[$list.index()] == 'undefined') {
+                    selectedItems[$list.index()] = ["0000"];
+                }
+                selectedItems[$list.index()].push(value);
+
+                $list.append(
+                    $('<li>')
+                        .html(selectedTextHTML)
+                        .data('value', value)
+                        .data('fulltext', selectedText)
+                        .addClass('selected-tag')
+                        .hide()
+                        .append(
+                            $('<button>')
+                                .html('&times;')
+                                .attr('type', 'button')
+                                .addClass('btn')
+                                .on('click', function onClickRemoveTagCallback() {
+                                    _onRemoveListItem(this);
+                                })
+                                .hover(function onSelectTagHoverIn() {
+                                    $(this).parents('li').addClass('hover');
+                                }, function onSelectTagHoverOut() {
+                                    $(this).parents('li').removeClass('hover');
+                                })
+                        )
+                        .fadeIn(fadeSpeed, function selectTagFadeIn() {
+                            _updateHiddenInputs();
+                            meerkat.messaging.publish(moduleEvents.SELECTED_TAG_ADDED, value);
                         })
-                        .hover(function onSelectTagHoverIn() {
-                            $(this).parents('li').addClass('hover');
-                        }, function onSelectTagHoverOut() {
-                            $(this).parents('li').removeClass('hover');
-                        })
-                ).fadeIn(fadeSpeed, function () {
-                        _updateHiddenInputs();
-                    })
-            );
-        });
+                );
+            });
+        }
     }
 
     function _onRemoveListItem(listItem) {
@@ -154,6 +169,7 @@
         $listItem.fadeOut(fadeSpeed, function removeTagFadeOutCallback() {
             $(this).remove();
             _updateHiddenInputs();
+            meerkat.messaging.publish(moduleEvents.SELECTED_TAG_REMOVED, value);
         });
     }
 
@@ -183,10 +199,12 @@
 
     meerkat.modules.register('selectTags', {
         init: init,
+        events: events,
         getListElement: getListElement,
         appendToTagList: appendToTagList,
         isAlreadySelected: isAlreadySelected,
-        getItemsSelected: getItemsSelected
+        getItemsSelected: getItemsSelected,
+        getHTML: getHTML
     });
 
 })(jQuery);

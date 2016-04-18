@@ -392,6 +392,10 @@
 					// TODO work out this: //Results._refreshSimplesTooltipContent($('#update-premium .premium'));
 				}
 
+				if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+					meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', data, false, true);
+				}
+
 				meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthPaymentStep' });
 			});
 		});
@@ -483,7 +487,6 @@
 			$('.health-bank_claim_details').slideUp();
 		}
 	}
-
 
 	meerkat.modules.register("healthPaymentStep", {
 		init: initHealthPaymentStep,

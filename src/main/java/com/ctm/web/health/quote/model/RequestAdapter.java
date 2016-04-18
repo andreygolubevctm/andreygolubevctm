@@ -24,11 +24,11 @@ import static java.util.Collections.singletonList;
 
 public class RequestAdapter {
 
-    public static HealthQuoteRequest adapt(HealthRequest request) {
-        return adapt(request, null);
+    public static HealthQuoteRequest adapt(HealthRequest request, boolean isSimples) {
+        return adapt(request, null, isSimples);
     }
 
-    public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent) {
+    public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent, boolean isSimples) {
 
         HealthQuoteRequest quoteRequest = new HealthQuoteRequest();
         Filters filters = new Filters();
@@ -57,7 +57,6 @@ public class RequestAdapter {
         filters.setPreferencesFilter(getPreferences(benefitsExtras));
 
         boolean isShowAll = toBoolean(quote.getShowAll());
-        boolean isSimples = quote.getSimples() != null;
         boolean isDirectApplication = toBoolean(quote.getDirectApplication());
         addExcludeStatus(quoteRequest, isShowAll, isSimples);
 
@@ -86,13 +85,15 @@ public class RequestAdapter {
                     .map(PaymentDetails::getType)
                     .map(PaymentType::findByCode)
                     .orElse(null));
+
+
         }
 
         addCompareResultsFilter(filters, quote);
         addIncludeProductIfNotFound(filters, quote, isSimples, isDirectApplication);
         addCappingLimitFilter(filters, quote);
 
-        addSearchDateFilter(quoteRequest, quote);
+        addSearchDateFilter(quoteRequest, quote, isShowAll);
 
         quoteRequest.setLoading(quote.getLoading());
 
@@ -115,8 +116,12 @@ public class RequestAdapter {
         }
     }
 
-    protected static void addSearchDateFilter(HealthQuoteRequest quoteRequest, HealthQuote quote) {
-        if (StringUtils.isNotBlank(quote.getSearchDate())) {
+    protected static void addSearchDateFilter(HealthQuoteRequest quoteRequest, HealthQuote quote, boolean isShowAll) {
+        final Optional<String> paymentStartDate = Optional.ofNullable(quote.getPayment()).map(Payment::getDetails).map(PaymentDetails::getStart);
+        // Use only paymentStartDate if doing update premium
+        if (!isShowAll && paymentStartDate.isPresent() && StringUtils.isNotBlank(paymentStartDate.get())) {
+            quoteRequest.setSearchDateValue(parseAUSLocalDate(paymentStartDate.get()));
+        } else if (StringUtils.isNotBlank(quote.getSearchDate())) {
             quoteRequest.setSearchDateValue(parseAUSLocalDate(quote.getSearchDate()));
         } else {
             quoteRequest.setSearchDateValue(LocalDate.now());
@@ -287,8 +292,8 @@ public class RequestAdapter {
     }
 
     protected static void addSituationFilter(Filters filters, Situation situation) {
-        if(situation != null && situation.getAccidentOnlyCover() != null) {
-            filters.setSituationFilter(!toBoolean(situation.getAccidentOnlyCover()));
+        if(situation != null) {
+            filters.setSituationFilter(toBoolean(situation.getAccidentOnlyCover()));
         }
     }
 

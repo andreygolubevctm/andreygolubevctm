@@ -12,8 +12,8 @@
 
 	var elements = {
 			fsg:			"#quote_fsg",
-			marketing:		"#quote_contactFieldSet input[name='quote_contact_marketing']",
-			oktocall:		"#quote_contactFieldSet input[name='quote_contact_oktocall']",
+			marketing:		"#quote_contact_marketing",
+			oktocall:		"#quote_contact_oktocall",
 			privacy:		"#quote_privacyoptin",
 			terms:			"#quote_terms",
 			phone:			"#quote_contact_phoneinput",
@@ -31,23 +31,12 @@
 		}
 	}
 
-	function validateOptins() {
-		var $mkt = $(elements.marketing);
-		var $otc = $(elements.oktocall);
-		if(!$mkt.is(':checked')) {
-			$mkt.filter("input[value=N]").prop("checked",true).change();
-		}
-		if(!$otc.is(':checked')) {
-			$otc.filter("input[value=N]").prop("checked",true).change();
-		}
-	}
+	function validateOptins() {}
 
 	function addChangeListeners() {
-		$(elements.oktocall).on('change', onOkToCallChanged);
-		$(elements.marketing).on('change', onOkToEmailChanged);
-		$(elements.privacy).on('change', onTermsOptinChanged);
 		$(elements.phone).on('change', onPhoneChanged);
 		$(elements.email).on('change', onEmailChanged);
+		$(elements.privacy).on('change', onSingleOptinChanged);
 	}
 
 	function onPhoneChanged(){
@@ -88,24 +77,33 @@
 		$(elements.terms).val(optin);
 	}
 
+	function onSingleOptinChanged(){
+		var optin = getValue(elements.privacy);
+		$(elements.fsg).val(optin);
+		$(elements.terms).val(optin);
+		$(elements.marketing).val(optin);
+		$(elements.oktocall).val(optin);
+	}
+
 	function dump() {
 		meerkat.logging.debug("optin data", {
-			oktocall:		getValue(elements.oktocall),
 			privacy:		getValue(elements.privacy),
+			oktocall:		getValue(elements.oktocall),
 			marketing:		getValue(elements.marketing),
-			fsg:			$(elements.fsg).val(),
-			terms:			$(elements.terms).val()
+			fsg:			getValue(elements.fsg),
+			terms:			getValue(elements.terms)
 		});
 	}
 
 	function getValue(elementId) {
 		var $element = $(elementId);
-
 		if ($element.first().attr('type') === 'radio' ) {
 			return ($element.filter(':checked').val() === 'Y') ? 'Y' : 'N';
+		} else if($element.first().attr('type') === 'hidden'){
+			return $element.val();
+		} else {
+			return $element.is(":checked") ? "Y" : "N";
 		}
-
-		return $element.is(":checked") ? "Y" : "N";
 	}
 
 	function initCarContactOptins() {

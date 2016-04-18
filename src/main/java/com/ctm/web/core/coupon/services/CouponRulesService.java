@@ -8,6 +8,8 @@ import com.ctm.web.core.model.Error;
 import com.ctm.web.core.utils.FormDateUtils;
 import com.ctm.web.core.web.go.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.LocalDate;
+import org.joda.time.Years;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,11 +57,13 @@ public class CouponRulesService {
 		if (formValue != null && ruleValue != null) {
 			switch(filterBy){
 				case VALUE:
-					return filterByValue(formValue, ruleValue, option);
+ 					return filterByValue(formValue, ruleValue, option);
 				case RANGE:
 					return filterByRange(formValue, ruleValue, option);
 				case DATE_RANGE:
 					return filterByDateRange(formValue, ruleValue, option);
+                case AGE:
+                    return filterByAge(formValue, ruleValue, option);
 			}
 		}
 		return false;
@@ -119,4 +123,27 @@ public class CouponRulesService {
 		}
 		return false;
 	}
+
+    private boolean filterByAge(String formValue, String ruleValue, Option option) {
+        try{
+            LocalDate birthDate = new LocalDate(FormDateUtils.parseDateFromForm(formValue));
+            LocalDate now = new LocalDate();
+            int age = Years.yearsBetween(birthDate, now).getYears();
+            int ageLimit = Integer.parseInt(ruleValue);
+
+            switch(option){
+                case MIN:
+                    return age >= ageLimit;
+                case MAX:
+                    return age <= ageLimit;
+                default:
+                    return false;
+            }
+        }
+        catch (Exception e) {
+            LOGGER.error("Error filtering by age {},{},{}", kv("formvalue", formValue), kv("ruleValue", ruleValue),
+                    kv("option", option));
+        }
+        return false;
+    }
 }

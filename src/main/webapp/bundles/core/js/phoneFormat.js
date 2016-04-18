@@ -29,7 +29,7 @@
 	 */
 	function startFormatNumber (element){
 		/* Lets format the field each time a key is entered, but don't validate on it until it blurs */
-		$(element).on('keyup', function(evt) {
+		$(element).on('blur keyup', function(evt) {
 			evt.preventDefault();
 			evt.stopPropagation();
 
@@ -60,7 +60,7 @@
 						if (window.event) {
 							keyCode = window.event.keyCode;
 						} else if (evt) {
-							keyCode = e.which;
+							keyCode = evt.which;
 						}
 
 						var key = String.fromCharCode((96 <= keyCode && keyCode <= 105) ? keyCode - 48 : keyCode);
@@ -146,7 +146,7 @@
 	}
 
 	function cleanNumber (number){
-		return number.replace('+61', '0').replace(/^61/, '0').replace(/ /g,'').replace('(', '').replace(')', '');
+		return number.replace('+61', '0').replace(/^61/, '0').replace(/ /g,'').replace('(', '').replace(')', '').replace(/\D/g, "");
 	}
 
 	function applyEventListeners() {

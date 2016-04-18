@@ -23,9 +23,11 @@
   }
 
   // Add your slide feature to the particular step that it needs to be visible
-  &[data-step="start"] {
-    #navbar-main{
-      .slide-feature-hidden() !important;
+  @media (@sm) {
+    &[data-step="start"] {
+      #navbar-main {
+        .slide-feature-hidden() !important;
+      }
     }
   }
   &[data-step="results"] {

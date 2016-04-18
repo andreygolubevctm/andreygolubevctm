@@ -53,24 +53,32 @@ public class HealthLeadService extends LeadService {
             leadData.getPerson().setEmail(StringUtils.left(data.getString("health/contactDetails/email"), 128));
         }
 
-        if(!StringUtils.isEmpty(data.getString("health/application/mobile"))) {
+        if(StringUtils.isNotEmpty(data.getString("health/application/mobile"))) {
             String mobile = StringUtils.replaceEach(data.getString("health/application/mobile"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
             leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
-        } else {
+        } else if (StringUtils.isNotEmpty(data.getString("health/contactDetails/flexiContactNumber"))) {
             String mobile = StringUtils.replaceEach(data.getString("health/contactDetails/flexiContactNumber"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
             if(mobile != null && mobile.startsWith("04")) {
                 leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
             }
+        } else if (StringUtils.isNotEmpty(data.getString("health/contactDetails/contactNumber/mobile"))) {
+            // Required because flexi doesn't exist in Simples/V1 journey
+            String mobile = StringUtils.replaceEach(data.getString("health/contactDetails/contactNumber/mobile"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
+            leadData.getPerson().setMobile(StringUtils.left(mobile, 10));
         }
 
-        if(!StringUtils.isEmpty(data.getString("health/application/other"))) {
+        if(StringUtils.isNotEmpty(data.getString("health/application/other"))) {
             String phone = StringUtils.replaceEach(data.getString("health/application/other"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
             leadData.getPerson().setPhone(StringUtils.left(phone, 10));
-        } else {
+        } else if (StringUtils.isNotEmpty(data.getString("health/contactDetails/flexiContactNumber"))) {
             String phone = StringUtils.replaceEach(data.getString("health/contactDetails/flexiContactNumber"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
             if(phone != null && !phone.startsWith("04")) {
                 leadData.getPerson().setPhone(StringUtils.left(phone, 10));
             }
+        } else if (StringUtils.isNotEmpty(data.getString("health/contactDetails/contactNumber/other"))) {
+            // Required because flexi doesn't exist in Simples/V1 journey
+            String mobile = StringUtils.replaceEach(data.getString("health/contactDetails/contactNumber/other"), CHARS_TO_REPLACE_PHONE_NUMBER, CHARS_TO_REPLACE_WITH_PHONE_NUMBER);
+            leadData.getPerson().setPhone(StringUtils.left(mobile, 10));
         }
 
         // Location
@@ -80,8 +88,8 @@ public class HealthLeadService extends LeadService {
             leadData.getPerson().getAddress().setState(data.getString("health/situation/state"));
         }
 
-        if(!StringUtils.isEmpty(data.getString("health/application/address/suburb"))) {
-            leadData.getPerson().getAddress().setSuburb(data.getString("health/application/address/suburb"));
+        if(!StringUtils.isEmpty(data.getString("health/application/address/suburbName"))) {
+            leadData.getPerson().getAddress().setSuburb(data.getString("health/application/address/suburbName"));
         } else {
             leadData.getPerson().getAddress().setSuburb(data.getString("health/situation/suburb"));
         }
@@ -110,6 +118,10 @@ public class HealthLeadService extends LeadService {
         String shouldApplyRebate = data.getString("health/healthCover/rebate");
 
         String partnerDob = data.getString("health/application/partner/dob");
+        if(StringUtils.isEmpty(partnerDob)) {
+            partnerDob = data.getString("health/healthCover/partner/dob");
+        }
+
         String dependants = data.getString("health/healthCover/dependants");
         String rebateTier = data.getString("health/healthCover/income");
         String gender = data.getString("health/application/primary/gender");
@@ -119,13 +131,13 @@ public class HealthLeadService extends LeadService {
         HealthMetadata healthMetadata = new HealthMetadata(
                 situation,
                 lookingTo,
-                StringUtils.isEmpty(hasPrivateHealthInsurance) ? null : hasPrivateHealthInsurance.equalsIgnoreCase("Y") ? true : false,
-                StringUtils.isEmpty(hasPartnerHealthInsurance) ? null : hasPartnerHealthInsurance.equalsIgnoreCase("Y") ? true : false,
-                StringUtils.isEmpty(shouldApplyRebate) ? null : shouldApplyRebate.equalsIgnoreCase("Y") ? true : false,
+                StringUtils.isEmpty(hasPrivateHealthInsurance) ? null : hasPrivateHealthInsurance.equalsIgnoreCase("Y"),
+                StringUtils.isEmpty(hasPartnerHealthInsurance) ? null : hasPartnerHealthInsurance.equalsIgnoreCase("Y"),
+                StringUtils.isEmpty(shouldApplyRebate) ? null : shouldApplyRebate.equalsIgnoreCase("Y"),
                 benefitList,
                 StringUtils.isEmpty(partnerDob) ? null : LocalDate.parse(partnerDob, DATE_TIME_FORMATTER).toString(),
-                StringUtils.isEmpty(dependants) ? null : Integer.parseInt(dependants),
-                StringUtils.isEmpty(rebateTier) ? null : Integer.parseInt(rebateTier),
+                StringUtils.isEmpty(dependants) ? null : dependants,
+                StringUtils.isEmpty(rebateTier) ? null : rebateTier,
                 gender,
                 partnerGender
         );

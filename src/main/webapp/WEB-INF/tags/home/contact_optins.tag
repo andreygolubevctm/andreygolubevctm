@@ -11,28 +11,12 @@
 <%-- HTML --%>
 <form_v2:fieldset legend="Terms and Conditions" id="${name}FieldSet">
 
-	<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
-<%--
-	<form_v2:row className="" hideHelpIconCol="true">
-		<field_v2:checkbox
-			xpath="quote/contact/oktocall"
-			value="Y"
-			className="validate"
-			required="false"
-			label="${true}"
-			title="${okToCall}"
-		/>
-	</form_v2:row>
-	--%>
-
-	<c:set var="genericOptin">
-		<p>Please confirm you have read, understood and accept the
-			<a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>,
-			the <a href="${pageSettings.getSetting('fsgUrl')}" target="_blank" data-title="Financial Services Guide" class="termsLink showDoc">Financial Services Guide</a>.
-
-			You confirm that you are accessing this service to obtain an insurance quote as (or on the behalf of) a genuine customer, and not for commercial or competitive purposes (as further detailed in the <a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>).
-		</p>
-	</c:set>
+	<c:set var="genericOptin"><p>
+		I understand and accept the
+		<a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>,
+		<a href="${pageSettings.getSetting('fsgUrl')}" target="_blank" data-title="Financial Services Guide" class="termsLink showDoc">Financial Services Guide</a> and
+		<form_v1:link_privacy_statement overrideLabel="Privacy Policy" />. I agree that comparethemarket.com.au may contact me about the services it provides, and that one of comparethemarket.com.au's trusted home and/or contents insurance partners may call or email me to discuss my insurance needs.
+	</p></c:set>
 
 	<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 	<%-- Previous Insurance --%>

@@ -90,8 +90,6 @@
                     });
                 }
             });
-
-
         }
     }
 
@@ -121,6 +119,12 @@
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
                 meerkat.modules.utilitiesSnapshot.initYourDetailsSnapshot();
+                meerkat.modules.utilitiesParameters.initialState();
+                // Hide these rows until clicked on from the results page
+                $('.recent-electricity-bill').add('.recent-gas-bill').hide();
+            },
+            onAfterLeave: function(event) {
+                meerkat.modules.utilitiesParameters.displayHiddenFields();
             },
             validation: {
                 validate: true,
@@ -307,6 +311,12 @@
                 state: null,
                 postCode: null
             };
+
+            if(special_case === 'LocationNoQuote') {
+                response.state = state;
+                response.postCode = postCode;
+                response.actionStep = 'Energy : An error occurred : No Quote';
+            }
 
             // Push in values from 2nd slide only when have been beyond it
             if (furthest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {

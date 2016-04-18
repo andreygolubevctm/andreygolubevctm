@@ -38,35 +38,14 @@
 		<field_v1:flexi_contact_number xpath="${fieldXPath}"
 			maxLength="20"
 			id="bestNumber"
-			required="${false}"
+			required="false"
 			className="bestNumber"
 			labelName="best number"
 			validationAttribute=" data-rule-validateOkToCall='true' "/>
 	</form_v2:row>
 
-
-
-	<c:set var="okToCall">
-		I give permission for the insurance provider that represents the lowest price to call me within
-		the next 4 business days to discuss my car insurance needs.
-	</c:set>
-
-	<form_v2:row label="OK to email" className="">
-		<field_v2:array_radio xpath="quote/contact/marketing"
-			required="false"
-			items="Y=Yes,N=No"
-			title="if OK to email" additionalAttributes=" data-rule-validateOkToEmailRadio='true' " />
-		<content:optin key="okToEmail" />
-	</form_v2:row>
-
-	<form_v2:row label="OK to call" className="">
-		<field_v2:array_radio xpath="quote/contact/oktocall"
-			required="false"
-			items="Y=Yes,N=No"
-			title="if OK to call" additionalAttributes=" data-rule-validateOkToCallRadio='true' " />
-
-		<p class="optinText">${okToCall}</p>
-	</form_v2:row>
+	<field_v1:hidden xpath="quote/contact/marketing" defaultValue="N" />
+	<field_v1:hidden xpath="quote/contact/oktocall" defaultValue="N" />
 
 	<%-- COMPETITION START --%>
 	<c:if test="${competitionEnabled == true}">

@@ -16,7 +16,7 @@
 
 <core_v1:quote_check quoteType="health" />
 
-<layout_v1:journey_engine_page title="Health Confirmation">
+<layout_v1:journey_engine_page title="Health Confirmation" ignore_journey_tracking="true">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -89,6 +89,7 @@
 
 	<jsp:body>
 		<health_v2_layout:slide_confirmation />
+		<health_v1:dual_pricing_templates />
 	</jsp:body>
 
 </layout_v1:journey_engine_page>

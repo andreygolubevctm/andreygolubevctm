@@ -11,8 +11,7 @@
 </c:if>
 
 <%-- The email and phone are required on load to set the proper validation rules, and on initialise, have their required attribute removed --%>
-<form_v2:fieldset legend="Your Contact Details" className="contact-details">
-    <p>Let us help you find the best energy plan for you. Supply your details below</p>
+<form_v2:fieldset legend="Your details" className="contact-details" postLegend="Enter your details below and we'll show you products that match your needs on the next page">
     <c:set var="fieldXPath" value="${xpath}/firstName" />
     <form_v3:row label="First name" fieldXpath="${fieldXPath}" className="clear">
         <%--<field_v2:input xpath="${fieldXPath}" required="false"/>--%>
@@ -32,11 +31,6 @@
     <form_v3:row label="Your email address" fieldXpath="${fieldXPath}" className="clear">
         <field_v2:email xpath="${fieldXPath}" required="${true}" title="your email address${competitionValidationText}" />
     </form_v3:row>
-
-    <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
-    <c:set var="privacyOptinText">I understand ${brandedName} compares energy plans based on a standard tariff from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide. I confirm that I have read the
-        <form_v1:link_privacy_statement/>.</c:set>
-    <form_v3:privacy_optin vertical="utilities" labelText="${privacyOptinText}"/>
 
     <c:if test="${competitionEnabled}">
         <utilities_v2:competition/>

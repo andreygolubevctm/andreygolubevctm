@@ -26,6 +26,13 @@
 		<xsl:value-of select="$year" />
 	</xsl:template>
 
+	<xsl:variable name="todays_date">
+        <xsl:call-template name="format_date_to_slashes">
+            <xsl:with-param name="date" select="$today" />
+        </xsl:call-template>
+	</xsl:variable>
+
+
 	<xsl:template name="title_code">
 		<xsl:param name="title" />
 		<xsl:choose>
@@ -149,6 +156,34 @@
 	</xsl:variable>
 
 
+	<xsl:variable name="product_title">
+		<xsl:value-of select="/health/application/productTitle" />
+	</xsl:variable>
+	<xsl:variable name="valid_campaign_product">
+		<xsl:choose>
+			<xsl:when test="contains($product_title, 'black+white')">1</xsl:when>
+			<xsl:otherwise>0</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="start_date">
+		<xsl:value-of select="substring(/health/payment/details/start,7,4)" />
+		<xsl:value-of select="substring(/health/payment/details/start,4,2)" />
+		<xsl:value-of select="substring(/health/payment/details/start,1,2)" />
+	</xsl:variable>
+
+	<!-- Campaign Active Dates -->
+	<xsl:variable name="campaign_start">20160412</xsl:variable>
+	<xsl:variable name="campaign_end">20160430</xsl:variable>
+
+	<!-- Determine Campaign Code -->
+	<xsl:variable name="campaign_id">
+		<xsl:choose>
+			<xsl:when test="$valid_campaign_product = 1 and $start_date &gt;= $campaign_start and $start_date &lt;= $campaign_end">7445</xsl:when>
+			<xsl:otherwise>7000</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+
+
 
 	<!-- MAIN TEMPLATE -->
 	<xsl:template match="/health">
@@ -168,7 +203,7 @@
 					<b:WHICSUserIP>202.56.61.2</b:WHICSUserIP><!-- 192.168.12.168 -->
 
 					<!-- Campaign Code -->
-					<b:Campaign>9000</b:Campaign>
+					<b:Campaign><xsl:value-of select="$campaign_id" /></b:Campaign>
 
 					<!-- Indicator telling if information is complete (Y/N). Incomplete records can be found via WR26. Data type: A string that represents String (1) -->
 					<b:Complete>Y</b:Complete>
@@ -463,7 +498,6 @@
 					<!-- WX01 – Fund control in Genero -->
 					<!-- Defaults to 1 -->
 					<b:FundId>1</b:FundId>
-
 					<!-- Income Tier. Data type: A string that represents Integer (2) -->
 					<!-- WX42 Rebate Definition in Genero: 0, 1, 2, 3 -->
 					<b:IncomeTier><xsl:value-of select="healthCover/income" /></b:IncomeTier>
@@ -545,6 +579,7 @@
 								<!-- Condition to avoid error "No Rate record found in database [code F11]" -->
 								<xsl:choose>
 									<!-- Black+White is only available to Single/Couples -->
+									<xsl:when test="fundData/hospitalCoverName = 'black+white deluxe' or fundData/extrasCoverName = 'black+white deluxe'">D</xsl:when>
 									<xsl:when test="fundData/hospitalCoverName = 'black+white starter' or fundData/extrasCoverName = 'black+white starter'">D</xsl:when>
 									<xsl:when test="fundData/hospitalCoverName = 'Lite Cover' or fundData/hospitalCoverName = 'First Step'">D</xsl:when>
 									<xsl:when test="fundData/extrasCoverName = 'Lite Cover' or fundData/extrasCoverName = 'First Step'">D</xsl:when>
@@ -569,8 +604,9 @@
 					<b:StreetPC><xsl:value-of select="$postCode" /></b:StreetPC>
 					<b:StreetState><xsl:value-of select="$state" /></b:StreetState>
 					<b:StreetSuburb><xsl:value-of select="$suburbName" /></b:StreetSuburb>
-					<SubFundId>1</SubFundId>
-					<RateCode>0</RateCode>
+					<b:RateCode>0</b:RateCode>
+					<b:SubFundId>1</b:SubFundId>
+					<b:TierEffDte><xsl:value-of select="$todays_date" /></b:TierEffDte>
 				</wsEnrolMemberRequest>
 				</EnrolMember>
 			</s:Body>

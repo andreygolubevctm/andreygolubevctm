@@ -12,7 +12,10 @@
         phone_comp_label,
         $utilities_resultsDisplayed_firstName,
         $utilities_resultsDisplayed_email,
-        $utilities_resultsDisplayed_phoneinput;
+        $utilities_resultsDisplayed_phoneinput,
+        $utilities_energy_comparison,
+        $utilities_electricity_icons,
+        $utilities_gas_icons;
 
 
 
@@ -24,11 +27,26 @@
         $utilities_resultsDisplayed_firstName = $('#utilities_resultsDisplayed_firstName');
         $utilities_resultsDisplayed_email = $('#utilities_resultsDisplayed_email');
         $utilities_resultsDisplayed_phoneinput = $('#utilities_resultsDisplayed_phoneinput');
+        $utilities_energy_comparison = $('#utilities_householdDetails_whatToCompare');
+        $utilities_electricity_icons = $('.electricity-usage.hidden-lg .roundedCheckboxIcons');
+        $utilities_gas_icons = $('.gas-usage.hidden-lg .roundedCheckboxIcons');
 
         // save a copy of the competition text
         firstname_comp_label = $utilities_resultsDisplayed_firstName.attr('data-msg-required');
         email_comp_label = $utilities_resultsDisplayed_email.attr('data-msg-required');
         phone_comp_label = $utilities_resultsDisplayed_phoneinput.attr('data-msg-required');
+
+        $utilities_energy_comparison.find('label:nth-child(1)').addClass('energy-electricity');
+        $utilities_energy_comparison.find('label:nth-child(2)').addClass('energy-gas');
+        $utilities_energy_comparison.find('label:nth-child(3)').addClass('energy-combined');
+
+        $utilities_electricity_icons.find('label:nth-child(1)').addClass('energy-people-sm');
+        $utilities_electricity_icons.find('label:nth-child(2)').addClass('energy-people-md');
+        $utilities_electricity_icons.find('label:nth-child(3)').addClass('energy-people-hi');
+
+        $utilities_gas_icons.find('label:nth-child(1)').addClass('energy-people-sm');
+        $utilities_gas_icons.find('label:nth-child(2)').addClass('energy-people-md');
+        $utilities_gas_icons.find('label:nth-child(3)').addClass('energy-people-hi');
 
         if(meerkat.site.providerResults !== null &&  (
                 ( typeof meerkat.site.providerResults.gasProviders !== "undefined"
@@ -45,7 +63,8 @@
         $(document).ready(function () {
             $competitionRequiredElems = $('#utilities_resultsDisplayed_firstName, #utilities_resultsDisplayed_phoneinput, #utilities_resultsDisplayed_phone, #utilities_resultsDisplayed_email');
 
-            _toggleAdditionalEstimateDetails();
+            _toggleAdditionalElectricityDetails();
+            _toggleAdditionalGasDetails();
 
             var isIosXS = meerkat.modules.performanceProfiling.isIos() && meerkat.modules.deviceMediaState.get() == 'xs';
             if(isIosXS) {
@@ -81,7 +100,12 @@
 
 
     function _registerEventListeners() {
-        $(".what-to-compare, .moving-in, .recent-electricity-bill, .recent-gas-bill").change(_toggleAdditionalEstimateDetails);
+
+        $(".what-to-compare, .moving-in, .recent-gas-bill, .recent-electricity-bill").on("change",function () {
+            _toggleAdditionalGasDetails();
+            _toggleAdditionalElectricityDetails();
+        });
+
         $("#utilities_privacyoptin").change(_onPrivacyOptinChange);
         $(".electricity-meter").change(_toggleElectricityMeter);
         $("#utilities_householdDetails_location").on("typeahead:selected", _onTypeaheadSelected);
@@ -133,7 +157,10 @@
     }
 
     function _buildProviderList($input, json) {
+        $input.removeClass('init');
+
         if(!json.length) {
+            $input.addClass('init');
             return;
         }
 
@@ -239,97 +266,136 @@
         meerkat.modules.dialogs.show({
             htmlContent: $('#blocked-ip-address')[0].outerHTML
         });
+
+        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+            method:'trackQuoteForms',
+            object: meerkat.modules.utilities.getTrackingFieldsObject('LocationNoQuote')
+        });
     }
 
-    /**
-     * Toggles the additional estimate details fields which show/hide depending
-     * on if the user needs electricity/gas/both and they specify if they want to
-     * estimate based on their spend or usage.
-     * @private
-     */
-    function _toggleAdditionalEstimateDetails() {
-        var $additionalEstimatesElectricity = $('.electricity-details .additional-estimate-details-row'),
-            $additionalEstimatesGas = $('.gas-details .additional-estimate-details-row'),
-            $electricityInputs = $(".electricity-details"),
-            $electricityCalculations = $('.electricity-details .usage'),
-            $gasInputs = $(".gas-details"),
-            $electricityUsage = $(".electricity-usage"),
-            $gasUsage = $(".gas-usage"),
-            $movingInDate = $(".moving-in-date");
-
+    function _toggleAdditionalElectricityDetails() {
         var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val(),
-            movingIn = $(".moving-in").find("input[type='radio']:checked").val(),
-            recentElectricityBill = $(".recent-electricity-bill").find("input[type='radio']:checked").val(),
-            recentGasBill = $(".recent-gas-bill").find("input[type='radio']:checked").val();
+        movingIn = $(".moving-in").find("input[type='radio']:checked").val(),
+        $recentElectrityBillField = $(".recent-electricity-bill"),
+        recentElectricityBill = meerkat.modules.utilitiesResults.getBillClicked() && $recentElectrityBillField.find("input[type='radio']:checked").val() !== undefined ? $recentElectrityBillField.find("input[type='radio']:checked").val() : 'N'   ,
 
-        $movingInDate.toggle(movingIn === 'Y');
-        $(".recent-electricity-bill").toggle(whatToCompare === "E" || whatToCompare === "EG");
-        $(".recent-gas-bill").toggle(whatToCompare === "G" || whatToCompare === "EG");
+        $electricityUsageDetails = $('.electricity-details .electricity-usage'),
+        $electricityAdditionalDetails = $('.electricity-details .additional-estimate-details-row'),
 
-        if (whatToCompare === "E" || whatToCompare === "EG") {
-            if (movingIn === 'Y' || recentElectricityBill === 'N') {
-                $electricityInputs.show();
-                $electricityUsage.show();
-                $additionalEstimatesElectricity.hide();
-                $electricityCalculations.hide();
-            } else if (movingIn === 'N') {
+        $electricityUsage = $('.electricity-details .usage'),
 
-                if(recentElectricityBill === 'Y') {
-                    $electricityInputs.show();
+        $gasDetails = $(".gas-details"),
+        $electDetails = $(".electricity-details");
+
+        if (whatToCompare === "E" && !_.isUndefined(movingIn)) {
+            $gasDetails.hide();
+            $electDetails.show();
+        }
+        if (whatToCompare === "EG" && !_.isUndefined(movingIn)) {
+            $gasDetails.show();
+            $electDetails.show();
+        }
+
+        if (movingIn === "Y") {
+            $electricityUsageDetails.show();
+            $electricityAdditionalDetails.hide();
+            $recentElectrityBillField.hide();
+            $electricityUsage.hide();
+
+        }
+        else {
+            if(_.isUndefined(recentElectricityBill)) {
+                meerkat.modules.utilitiesResults.getBillClicked() ? $recentElectrityBillField.show() : $recentElectrityBillField.hide();
+                $electricityAdditionalDetails.hide();
+                $electricityUsageDetails.hide();
+                $electricityUsage.hide();
+            }
+            else {
+                if (recentElectricityBill === "N" ) {
+                    $electricityUsageDetails.show();
+                    $electricityAdditionalDetails.hide();
+                    meerkat.modules.utilitiesResults.getBillClicked() ? $recentElectrityBillField.show() : $recentElectrityBillField.hide();
                     $electricityUsage.hide();
-                    $additionalEstimatesElectricity.show();
-                    _toggleElectricityMeter();
-                    }
-            } else {
-                $electricityInputs.hide();
-            }
-
-            if (movingIn === 'N') {
-                $('.recent-electricity-bill').show();
-            } else {
-                $('.recent-electricity-bill').hide();
-                $(".electricity-meter").find("input[type='radio']").prop('checked',false);
-                $(".electricity-meter").find('.active').removeClass('active');
-            }
-
-        } else {
-            $electricityInputs.hide();
-        }
-
-        if (whatToCompare === "G" || whatToCompare === "EG") {
-            if (movingIn === 'Y' || recentGasBill === 'N') {
-                $gasInputs.show();
-                $gasUsage.show();
-                $additionalEstimatesGas.hide();
-            } else if (movingIn === 'N') {
-                $('.recent-gas-bill').show();
-
-                if(recentGasBill === 'Y') {
-                    $gasInputs.show();
-                    $gasUsage.hide();
-                    $additionalEstimatesGas.show();
                 }
-            } else {
-                $gasInputs.hide();
+                else {
+                    $electricityUsageDetails.hide();
+                    $electricityAdditionalDetails.show();
+                    meerkat.modules.utilitiesResults.getBillClicked() ? $recentElectrityBillField.show() : $recentElectrityBillField.hide();
+                    _toggleElectricityMeter();
+                }
             }
 
-            if (movingIn === 'N') {
-                $('.recent-gas-bill').show();
-            } else {
-                $('.recent-gas-bill').hide();
-            }
-        } else {
-            $gasInputs.hide();
         }
+
     }
+
+    function _toggleAdditionalGasDetails() {
+        var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val(),
+        movingIn = $(".moving-in").find("input[type='radio']:checked").val(),
+        $recentGasBillField = $(".recent-gas-bill"),
+        recentGasBill = meerkat.modules.utilitiesResults.getBillClicked() && $recentGasBillField.find("input[type='radio']:checked").val() !== undefined ?  $recentGasBillField.find("input[type='radio']:checked").val() : 'N',
+
+        $gasUsageDetails = $(".gas-details .gas-usage"),
+        $gasAdditionalDetails = $(".gas-details .additional-estimate-details-row"),
+
+        $electricityDetails = $('.electricity-details'),
+        $gasDetails = $('.gas-details');
+
+        if (whatToCompare == "G" && !_.isUndefined(movingIn)) {
+            $electricityDetails.hide();
+            $gasDetails.show();
+        }
+        if (whatToCompare === "EG" && !_.isUndefined(movingIn)) {
+            $gasDetails.show();
+            $electricityDetails.show();
+        }
+
+        if (movingIn === "Y") {
+            $gasUsageDetails.show();
+            $gasAdditionalDetails.hide();
+            $recentGasBillField.hide();
+        }
+        else  {
+            if(_.isUndefined(recentGasBill)) {
+                meerkat.modules.utilitiesResults.getBillClicked() ? $recentGasBillField.show() : $recentGasBillField.hide();
+                $gasAdditionalDetails.hide();
+                $gasUsageDetails.hide();
+            }
+            else {
+                if (recentGasBill === "N" ) {
+                    $gasUsageDetails.show();
+                    $gasAdditionalDetails.hide();
+                    meerkat.modules.utilitiesResults.getBillClicked() ? $recentGasBillField.show() : $recentGasBillField.hide();
+                }
+                else {
+                    $gasUsageDetails.hide();
+                    $gasAdditionalDetails.show();
+                    meerkat.modules.utilitiesResults.getBillClicked() ? $recentGasBillField.show() : $recentGasBillField.hide();
+                }
+            }
+
+        }
+
+    }
+
 
     function _toggleElectricityMeter() {
         var meter = $(".electricity-meter").find("input[type='radio']:checked").val();
 
-        $(".standard-usage").toggle(meter === "S");
-        $(".peak-usage").toggle(meter === "T" || meter === "M");
-        $(".controlled-usage").toggle(meter === "T");
-        $(".off-peak-usage").toggle(meter === "M");
+        if(meter === 'S') {
+            $(".peak-usage .control-label").html('Standard usage');
+        } else {
+            $(".peak-usage .control-label").html('Peak usage');
+        }
+
+        if(meter === 'T') {
+            $(".off-peak-usage .control-label").html('Off-peak usage');
+        } else {
+            $(".off-peak-usage .control-label").html('Off-peak usage (if any)');
+        }
+
+        $(".peak-usage").toggle(meter === "S" || meter === "T" || meter === "M");
+        $(".off-peak-usage").toggle(meter === "T" || meter === "M");
         $(".shoulder-usage").toggle(meter === "M");
     }
 

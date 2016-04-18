@@ -1,5 +1,7 @@
 package com.ctm.web.core.validator;
 
+import com.ctm.commonlogging.context.LoggingContext;
+import com.ctm.commonlogging.context.LoggingVariables;
 import com.ctm.web.core.model.request.ContactValidatorRequest;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
@@ -38,7 +40,8 @@ public class ContactValidator extends CommonQuoteRouter implements InitializingB
     public void validate(HttpServletRequest request, String verticalCode, ContactValidatorRequest validatorRequest) {
         final Vertical.VerticalType vertical = Vertical.VerticalType.findByCode(verticalCode);
         final Brand brand = initRouter(request, vertical);
-        contactValidatorService.validateContact(brand, vertical, validatorRequest);
+        final LoggingContext loggingContext = LoggingVariables.getLoggingContext();
+        contactValidatorService.validateContact(brand, vertical, validatorRequest, loggingContext);
     }
 
     public static void validateContact(HttpServletRequest request, String verticalCode, String contact) {

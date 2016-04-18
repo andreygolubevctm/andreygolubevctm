@@ -2,7 +2,7 @@
 <%@ tag description="This is the login procedure, which adds the user to the data bucket"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="simplesUserService" class="com.ctm.web.simples.services.SimplesUserService" scope="application" />
-<jsp:useBean id="phoneService" class="com.ctm.web.simples.services.PhoneService" scope="page" />
+<jsp:useBean id="phoneService" class="com.ctm.web.simples.phone.verint.CtiPhoneService" scope="page" />
 
 <c:set var="logger" value="${log:getLogger('tag.core.login')}" />
 
@@ -57,9 +57,12 @@
 
 				<%-- Get the operator's phone extension --%>
 				<%-- This is retrieved via the Verint recording/auditing service --%>
-				<c:catch var="extensionError">
-					<c:set var="extension" value="${phoneService.getExtensionByAgentId(pageSettings, sessionScope.userDetails['postalCode'])}" />
-				</c:catch>
+				<%-- Only try to get the extention when Inin is not enabled --%>
+				<c:if test="${!pageSettings.getSetting('inInEnabled')}">
+					<c:catch var="extensionError">
+						<c:set var="extension" value="${phoneService.getExtensionByAgentId(pageSettings, sessionScope.userDetails['postalCode'])}" />
+					</c:catch>
+				</c:if>
 
 				<c:set var="userXML">
 					<user>

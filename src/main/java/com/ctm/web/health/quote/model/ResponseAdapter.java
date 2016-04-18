@@ -12,6 +12,7 @@ import com.ctm.web.health.quote.model.response.Promotion;
 import com.ctm.web.health.quote.model.response.SpecialOffer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -24,7 +25,6 @@ import java.util.Map;
 
 import static com.ctm.web.health.model.Frequency.*;
 import static com.ctm.web.health.quote.model.response.Price.DEFAULT_PRICE;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
 public class ResponseAdapter {
@@ -45,14 +45,6 @@ public class ResponseAdapter {
 
         } else {
 
-            List<String> disabledFunds = emptyList();
-            if (alternatePricingContent != null) {
-                String supplementaryValueByKey = alternatePricingContent.getSupplementaryValueByKey("disabledFunds");
-                if (StringUtils.isNotBlank(supplementaryValueByKey)) {
-                    disabledFunds = asList(StringUtils.split(supplementaryValueByKey, ","));
-                }
-            }
-
             if (quoteResponse != null) {
                 int index = 1;
                 for (HealthQuote quote : quoteResponse.getQuotes()) {
@@ -69,7 +61,7 @@ public class ResponseAdapter {
                     result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
                     if (alternatePricingContent != null && StringUtils.equalsIgnoreCase(alternatePricingContent.getContentValue(), "Y")) {
                         com.ctm.web.health.quote.model.response.Premium alternativePremium = quote.getAlternativePremium();
-                        if (alternativePremium != null && !disabledFunds.contains(quote.getInfo().getFundCode())) {
+                        if (alternativePremium != null) {
                             result.setAltPremium(createPremium(alternativePremium, quote.getInfo(), request.getQuote()));
                         } else {
                             result.setAltPremium(createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote()));
@@ -148,11 +140,11 @@ public class ResponseAdapter {
         price.setDiscounted(hasDiscount ? "Y" : "N");
         price.setDiscountAmount(formatCurrency(quotePrice.getDiscountAmount(), true, true));
         price.setDiscountPercentage(quotePrice.getDiscountPercentage());
-        price.setText((hasDiscount ? "*" : "") + formatCurrency(quotePrice.getPayableAmount(), true, true));
+        price.setText(formatCurrency(quotePrice.getPayableAmount(), true, true) + (hasDiscount ? "*" : ""));
         price.setValue(quotePrice.getPayableAmount());
         price.setPricing("Includes rebate of " + formatCurrency(quotePrice.getRebateAmount(), true, true) + " & LHC loading of " +
                 formatCurrency(quotePrice.getLhcAmount(), true, true));
-        price.setLhcfreetext((hasDiscount ? "*" : "") + formatCurrency(quotePrice.getLhcFreeAmount(), true, true));
+        price.setLhcfreetext(formatCurrency(quotePrice.getLhcFreeAmount(), true, true) + (hasDiscount ? "*" : ""));
         price.setLhcfreevalue(quotePrice.getLhcFreeAmount());
         price.setLhcfreepricing("+ " + formatCurrency(quotePrice.getLhcAmount(), true, true) + " LHC inc " +
                 formatCurrency(quotePrice.getRebateAmount(), true, true) + " Government Rebate");
@@ -190,7 +182,7 @@ public class ResponseAdapter {
             sb.append(StringUtils.trimToEmpty(specialOffer.getSummary()));
             if (StringUtils.isNotBlank(specialOffer.getTerms())) {
                 sb.append("<p>").append("<a class=\"dialogPop\" data-content=\"")
-                        .append(specialOffer.getTerms())
+                        .append(StringEscapeUtils.escapeHtml4(specialOffer.getTerms()))
                         .append("\" title=\"Conditions\">")
                         .append("^ Conditions")
                         .append("</a>")

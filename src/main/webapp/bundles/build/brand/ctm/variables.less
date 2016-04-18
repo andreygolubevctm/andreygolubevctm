@@ -111,6 +111,7 @@
 @font-size-xlarge:		  floor((@font-size-base * 1.7)); // ~24px 23.8
 @font-size-large:         ceil((@font-size-base * 1.25)); // ~18px 17.5
 @font-size-small:         ceil((@font-size-base * 0.85)); // ~12px 11.9
+@font-size-extra-small:   ceil((@font-size-base * 0.7)); // ~10px 9.8
 
 @font-size-h1:            @font-size-xlarge;
 @font-size-h2:            ceil((@font-size-base * 1.6));  // ~22px 22.4
@@ -1601,7 +1602,6 @@
 //** Basic Properties
 @journeyProgressBar-size:                       13px;
 @journeyProgressBar-lineheight:                 20px;
-@journeyProgressBar-weight:                     bold;
 @journeyProgressBar-horizontal-push:            -2px;
 @journeyProgressBar-margin-bottom:              0;
 @journeyProgressBar-margin-top:                 -21px;
@@ -1751,7 +1751,7 @@
 //== RESULTS PAGE Component
 //
 //##
-
+@results-column-outer-width: 0;
 @xs-results-column-width: 280px;
 @sm-results-column-width: 179px;
 @md-results-column-width: 156px;
@@ -1946,6 +1946,16 @@
 
 // Logo Vars
 @logo-xs-scale: 0.7;
+@logo-compare-scale: 0.37;
 
 // New field border colors
 @field-border-color: #7B8386;
+
+//== Dual Pricing
+//
+
+@dual-pricing-heading-color: #525252;
+@dual-pricing-border-colour: #D3D3D3;
+@dual-pricing-dark-font-colour: @theme-dark;
+@dual-pricing-light-note-colour: @opening-hours-grey-colour;
+@dual-pricing-light-gray: #C4C4C4;

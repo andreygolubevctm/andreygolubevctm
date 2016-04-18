@@ -88,7 +88,7 @@
 		&.productName {
 			font-size: 30px;
 			@media (@sm) {
-				font-size: 42px;
+				font-size: 35px;
 			}
 			font-family: @font-family-theme-bold;
 		}
@@ -186,6 +186,7 @@
 		font-family: @font-family-theme-regular;
 		vertical-align: super;
 	}
+
 	.lhcText,
 	.rounding {
 		font-size: 14px;
@@ -200,6 +201,15 @@
 				width: 100%;
 			}
 		}
+		.price.premium {
+			margin-left:11em;
+			@media (@sm-only) {
+				margin-left:13em;
+			}
+			@media (@md) {
+				margin-left:0;
+			}
+		}
 	}
 
 	.btn-more-info-apply {
@@ -212,6 +222,42 @@
 		border-radius: 22px;
 	}
 
+	.btn-big-text {
+		font-family:"SourceSansProSemiBold";
+		font-size:28px;
+		padding-top:20px;
+		padding-bottom:20px;
+	}
+
+	&.more-info-content-variant {
+		.moreInfoTopRightColumn {
+			.btn-more-info-apply {
+				width: auto;
+				margin: 0.75em 0.25em 0.75em 0;
+				box-shadow: none;
+			}
+		}
+	}
+	&.more-info-content-variant {
+		@media (@sm-only) {
+			.moreInfoTopLeftColumn {
+				.insureNowContainer {
+					.text-dark {
+						height: 5.7em;
+					}
+				}
+			}
+		}
+		@media (@xs-only) {
+			.moreInfoTopLeftColumn {
+				.trailing-no-margin {
+					.btn {
+						margin-bottom: 0px;
+					}
+				}
+			}
+		}
+	}
 }
 
 //.more-info-content
@@ -318,7 +364,7 @@
 	tbody {
 		th {
 			font-weight: normal;
-			font-size: 18px;
+			font-size: 14px;
 		}
 		td:nth-child(2) {
 			font-size: 16px;

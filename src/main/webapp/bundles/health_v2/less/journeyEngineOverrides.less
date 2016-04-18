@@ -16,10 +16,6 @@
 }
 
 [data-step=results]:not(.moreInfoVisible) {
-	#pageContent {
-		background-color: @page-content-bg;
-		.transition(~"background-color 250ms ease-in-out");
-	}
 	#pageContentTop {
 		opacity: 1;
 		.transition(~"opacity 250ms ease-in-out");
@@ -63,11 +59,18 @@
 		letter-spacing:.5px;
 	}
 }
-.content,
+.featuresTemplateComponent .content {
+	border-top: 1px solid #fff;
+}
+fieldset > .content,
 .fieldset-card,
 .fieldset-column-side .sidebar-box{
-	background-color: white;
+	background-color: #fff;
 	border:1px solid @border-colour;
+}
+
+.fieldset-card,
+.fieldset-column-side .sidebar-box {
 	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
 }
 .content{
@@ -85,7 +88,6 @@
   }
 
 }
-
 .fieldset,
 .fieldset-column-side {
 	&.lhc-group,
@@ -102,7 +104,8 @@
 	h2 {
 		border-bottom: none;
 		color: @header-color;
-		font-weight: bold;
+		font-weight: normal;
+		font-family: @font-family-theme-bold;
 		font-size: 38px;
 		margin-bottom: 10px;
   	}
@@ -176,7 +179,15 @@
 }
 
 /* SHOW/HIDE RIGHT PANELS */
-body[data-step="start"], body[data-step="contact"] {
+body[data-step="start"]{
+	.sidebar-box {
+		&.quoteSnapshot {display:block;}
+		&.callCentreHelp {display:block;}
+		&.testimonials {display:block;}
+		&.pricePromiseBox {display:block;}
+	}
+}
+body[data-step="contact"] {
 	.sidebar-box {
 		&.quoteSnapshot {display:block;}
 		&.callCentreHelp {display:none;}
