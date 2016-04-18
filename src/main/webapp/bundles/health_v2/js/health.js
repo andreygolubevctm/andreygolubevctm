@@ -497,11 +497,6 @@
 					// Update the state of the dependants object.
 					meerkat.modules.healthDependants.updateDependantConfiguration();
 
-					// Check okToCall optin - show if no phone numbers in questionset and NOT Simples
-					if($('#health_contactDetails_contactNumber_mobile').val() === '' &&	$('#health_contactDetails_contactNumber_other').val() === '' &&	meerkat.site.isCallCentreUser === false) {
-						$('#health_application_okToCall-group').show();
-					}
-
 					meerkat.modules.healthApplyStep.onBeforeEnter();
 				}
 			},
