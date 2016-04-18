@@ -64,10 +64,6 @@
 
     function eventSubscriptions() {
 
-        $benefitsForm.find('.CTM-plus label').on('click', function () {
-            showMoreBenefits();
-        });
-
         $benefitsForm.find('.benefits-side-bar .btn-edit').on('click', function () {
             $coverType.val('C').change();
         });
