@@ -49,7 +49,7 @@
 
 			// Containers
 			$updatePremiumButtonContainer = $(".health-payment-details_update");
-			$paymentContainer = $("#update-content");
+			$paymentContainer = $(".update-content");
 
 
 			$premiumContainer = $(".health-payment-details_premium");

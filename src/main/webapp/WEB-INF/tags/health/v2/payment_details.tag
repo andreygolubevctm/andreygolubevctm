@@ -4,6 +4,7 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
+<%@ attribute name="base_xpath" required="true"	 rtexprvalue="true"	 description="the base xpath without 'details' as we have moved credit/payment inside this fieldset. " %>
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
@@ -79,6 +80,9 @@
 			</div>
 		</form_v3:row>
 
+		<div class="update-content">
+			<health_v2:application_compliance xpath="${base_xpath}" />
+		</div>
 	</form_v2:fieldset>
 
 </div>
