@@ -210,7 +210,12 @@
 	 * activation should be separate to template rendering
 	 */
 	function activateDefault() {
-		$('.clt-action:visible.active').click();
+		state = meerkat.modules.deviceMediaState.get();
+		if(state === 'xs') {
+			$('.visible-xs .clt-action.active').click();
+		} else {
+			$('.hidden-xs .clt-action.active').click();
+		}
 	}
 
 	/**

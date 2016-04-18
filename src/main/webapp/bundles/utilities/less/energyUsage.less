@@ -7,7 +7,7 @@ html.ie8 body.utilities_design_55 {
 
 
 body.utilities_design_55 {
-  @media(@lg-only) {
+  @media(@sm) {
     .gas-usage .btn-group-justified.visible-lg,
     .electricity-usage .btn-group-justified.visible-lg {
       border-spacing: 20px;
@@ -29,9 +29,30 @@ body.utilities_design_55 {
       }
     }
 
-    .electricity-usage label i,
-    .gas-usage  label i {
-      font-size: 80px;
+    .electricity-usage,
+    .gas-usage {
+      label {
+        i {
+          font-size: 80px;
+        }
+
+        span {
+          .optionText {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+  @media (@sm-only) {
+    .electricity-usage,
+    .gas-usage {
+      label {
+        i {
+          font-size: 50px;
+        }
+      }
     }
   }
 }

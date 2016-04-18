@@ -25,23 +25,23 @@
 			counter-reset: section;
 		}
 
-		li {
-			white-space: nowrap;
-			counter-increment: section;
-			line-height: @journeyProgressBar-lineheight;
-			display: inline-block;
-			font-size: @journeyProgressBar-size;
-			font-weight: @journeyProgressBar-weight;
-			position: relative;
-			height: 28px;
-			&.end{
-				width: 1%;
-				div { width: 0 }
-			}
-			span {
-				margin-left: 13px;
-			}
-		}
+	li {
+	  white-space: nowrap;
+	  counter-increment: section;
+	  line-height: @journeyProgressBar-lineheight;
+	  display: inline-block;
+	  font-size: @journeyProgressBar-size;
+	  font-family: @font-family-theme-bold;
+	  position: relative;
+	  height: 28px;
+	  &.end{
+		width: 1%;
+		div { width: 0 }
+	  }
+	  span {
+		margin-left: 13px;
+	  }
+	}
 
 		a, div {
 			color: @journeyProgressBar-color;

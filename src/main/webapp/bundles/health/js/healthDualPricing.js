@@ -16,6 +16,7 @@
 		$paymentDetailsFrequency,
 		$priceFrequencyTemplate,
 		$frequencyWarning,
+		$paymentDetailsSelection,
 		modalId = null;
 
 	function initHealthDualPricing() {
@@ -124,6 +125,10 @@
 
 	function renderTemplate(target, product, returnTemplate, isForSidebar) {
 		selectedProduct = product;
+
+		if(!_.isObject(product)) {
+			return "";
+		}
 
 		if (typeof product.dropDeadDate === 'undefined') {
 			selectedProduct = Results.getSelectedProduct();

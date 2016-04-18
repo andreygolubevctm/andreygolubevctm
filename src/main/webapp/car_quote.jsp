@@ -40,7 +40,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
-		<car:snapshot label="Vehicle Quoted" className="hidden-xs"/>
+		<car:snapshot label="Vehicle Quoted" isHeader="true" />
 	</jsp:attribute>
 
 
@@ -101,21 +101,8 @@
 			<li class="slide-feature-filters hidden-sm hidden-md hidden-lg" id="">
 				<a href="javascript:;"><span class="icon icon-filter"></span> <span>Filter Results</span></a>
 			</li>
-				
-			<%-- @todo = showReferenceNo needs to be an attribute, this tag should potentially be rewritten or moved in a different place + that script is loaded via a marker in the tag. Probably should be moved to journey_engine_page --%>
-			<%-- Reference number is not visible on CAR yet, until the inbound call centre. --%>
-			<li class="navbar-text hidden">
-				<form_v2:reference_number />
-			</li>
 		</ul>
-		<%-- Out of scope originally.
-		<div>
-			<ul>
-			<li><span class="icon icon-info"></span> Need some help?</li>
-			<li><span class="icon icon-thumbsup"></span> Got some feedback?</li>
-			</ul>
-		</div>
-		--%>
+
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
 		</div>
@@ -153,19 +140,22 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="results_loading_message">
+		<div class="row loadingPromise hidden">
+			<div class="col-xs-12">
+				<br><img src="#" data-defer-src="assets/brand/ctm/images/price_promise/Price-Promise-Blue.png">
+			</div>
+		</div>
 		<div class="row loadingQuoteText hidden">
 			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3">
-				<div class="quoteContainer">
-					<div class="quote">${quoteText}</div>
-					<div class="quoteAuthor">${quoteAuthor}</div>
-				</div>
+				<br>
+				<p><content:get key="priceGuarantee" /></p>
 			</div>
 		</div>
 		<div class="row loadingDisclaimerText hidden">
 			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3">
 				<p>Each brand may have differing terms as well as price. Please consider the Product Disclosure Statement for each brand before making any decisions to buy.</p>
-						</div>
-					</div>
+			</div>
+		</div>
 	</jsp:attribute>
 
 			
@@ -173,7 +163,7 @@
 	</jsp:attribute>
 			
 	<jsp:attribute name="footer">
-		<core_v1:whitelabeled_footer />
+		<core_v1:footer_participatingsuppliers />
 	</jsp:attribute>
 			
 	<jsp:attribute name="vertical_settings">

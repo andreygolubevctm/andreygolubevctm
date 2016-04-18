@@ -31,15 +31,16 @@
                     $fieldInput: $("#utilities_application_details_movingDate")
                 }
             ],
-            alternatePhone: [
+            flexiPhone: [
+                // flexiPhone from details step
                 {
-                    $field: $("#utilities_resultsDisplayed_phoneinput")
+                    $field: $("#utilities_resultsDisplayed_phone"),
+                    $fieldInput: $("#utilities_resultsDisplayed_phoneinput")
                 },
+                // otherPhone and mobile from quote step
                 {
                     $field: $("#utilities_application_details_mobileinput"),
-                    $fieldInput: $("#utilities_application_details_mobileinput"),
-                    $otherField: $("#utilities_application_details_otherinput"),
-                    $otherFieldInput: $("#utilities_application_details_otherinput")
+                    $otherField: $("#utilities_application_details_otherinput")
                 }
             ]
         };

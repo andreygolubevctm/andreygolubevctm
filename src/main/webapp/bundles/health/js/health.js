@@ -96,6 +96,17 @@
 		}
 	}
 
+	/**
+	 * incrementTranIdBeforeEnteringSlide() increment tranId when previous step
+	 * was in the application phase of the journey. To be called onBeforeEnter
+	 * method of questionset steps (current step is the previous step index).
+	 */
+	function incrementTranIdBeforeEnteringSlide() {
+		if(meerkat.modules.journeyEngine.getCurrentStepIndex() > 4) {
+			meerkat.modules.transactionId.getNew(3);
+		}
+	}
+
 	function setJourneyEngineSteps(){
 
 		var startStep = {
@@ -171,7 +182,8 @@
 						toggleDialogueInChatCallback();
 					});
 				}
-			}
+			},
+			onBeforeEnter: incrementTranIdBeforeEnteringSlide
 		};
 
 		var detailsStep = {
@@ -244,6 +256,7 @@
 				});
 
 			},
+			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onBeforeLeave: function(event) {
 				// Store the text of the income question - for reports and audits.
 				var incomelabel = ($('#health_healthCover_income :selected').val().length > 0) ? $('#health_healthCover_income :selected').text() : '';
@@ -280,6 +293,7 @@
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefits.close();
 				meerkat.modules.navMenu.disable();
+				incrementTranIdBeforeEnteringSlide();
 			},
 			onAfterEnter: function(event) {
 				//Because it has no idea where the #navbar-main is on mobile because it's hidden and position: fixed... we force it to the top.
@@ -302,17 +316,32 @@
 				}
 
 				// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter segment
-				_.delay(function() {
-					meerkat.modules.healthSegment.filterSegments();
-				}, 1000);
+				//_.delay(function() {
+				//	meerkat.modules.healthSegment.filterSegments();
+				//}, 1000);
 
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
+
+					var accidentOnly = $('input[name="health_situation_accidentOnlyCover"]');
+					var dialog44 = $(".simples-dialogue-44");
+					dialog44.hide();
+					if($(accidentOnly).is(':checked')) {
+						dialog44.show();
+					}
+
+					accidentOnly.on('change', function() {
+						if($(this).is(':checked')) {
+							dialog44.show();
+						} else {
+							dialog44.hide();
+						}
+					});
 				}
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefits.getSelectedBenefits();
-				meerkat.modules.healthResults.onBenefitsSelectionChange(selectedBenefits);
+				meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
 				meerkat.modules.navMenu.enable();
 			}
 		};
@@ -335,8 +364,18 @@
 				onInitialise: function onContactInit(event){
 					meerkat.modules.resultsFeatures.fetchStructure('health');
 				},
-				onBeforeEnter:function enterContactStep(event) {
-				},
+                onBeforeEnter:function enterBenefitsStep(event) {
+                    if (event.isForward) {
+                        // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
+                        _.delay(function() {
+                            // coupon logic, filter for user, then render banner
+                            meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+                                meerkat.modules.coupon.renderCouponBanner();
+                            });
+                        }, 1000);
+                    }
+                    incrementTranIdBeforeEnteringSlide();
+                },
 				onAfterEnter: function enteredContactStep(event) {
 					meerkat.modules.navMenu.enable();
 
@@ -391,12 +430,8 @@
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
 				} else {
-				// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
-				meerkat.modules.healthResults.resetSelectedProduct();
-					}
-
-				if(event.isForward && meerkat.site.isCallCentreUser) {
-					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
+					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
+					meerkat.modules.healthResults.resetSelectedProduct();
 				}
 			},
 			onAfterEnter: function(event){
@@ -411,6 +446,12 @@
 
 				meerkat.modules.resultsHeaderBar.registerEventListeners();
 
+			},
+			onBeforeLeave: function(event) {
+				// Increment the transactionId
+				if (event.isBackward === true) {
+					meerkat.modules.transactionId.getNew(3);
+				}
 			},
 			onAfterLeave: function(event){
 				meerkat.modules.healthResults.stopColumnWidthTracking();
@@ -508,11 +549,6 @@
 
 					// Update the state of the dependants object.
 					meerkat.modules.healthDependants.updateDependantConfiguration();
-
-					// Check okToCall optin - show if no phone numbers in questionset and NOT Simples
-					if($('#health_contactDetails_contactNumber_mobile').val() === '' &&	$('#health_contactDetails_contactNumber_other').val() === '' &&	meerkat.site.isCallCentreUser === false) {
-						$('#health_application_okToCall-group').show();
-					}
 
 					// Change min and max dates for start date picker based on current stored values from healthPaymentStep module which can change based on selected fund
 					//var min = meerkat.modules.healthPaymentStep.getSetting("minStartDateOffset");

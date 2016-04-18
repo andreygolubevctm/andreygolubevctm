@@ -97,14 +97,17 @@ var healthFunds_WFD = {
         <%-- Load join dec into label--%>
         healthFunds_WFD.joinDecLabelHtml = $('#health_declaration + label').html();
         healthFunds_WFD.ajaxJoinDec = $.ajax({
-            url: 'health_fund_info/WFD/declaration.html',
+            url: '/' + meerkat.site.urls.context + 'health/provider/content/get.json?providerId=7&providerContentTypeCode=JDO',
             type: 'GET',
             async: true,
             dataType: 'html',
             timeout: 20000,
             cache: true,
             success: function(htmlResult) {
-                $('#health_declaration + label').html(htmlResult);
+                if(typeof htmlResult === 'string')
+                    htmlResult = JSON.parse(htmlResult);
+
+                $('#health_declaration + label').html(htmlResult.providerContentText);
                 $('a#joinDeclarationDialog_link').remove();
             },
             error: function(obj,txt) {
@@ -114,8 +117,8 @@ var healthFunds_WFD = {
     },
     unset: function() {
         $('#update-premium').off('click.WFD');
-        healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-        healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
 
         healthFunds._reset();
 

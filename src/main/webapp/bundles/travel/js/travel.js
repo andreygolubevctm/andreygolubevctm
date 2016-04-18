@@ -121,6 +121,7 @@
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 				meerkat.modules.travelCountrySelector.initTravelCountrySelector();
 				meerkat.modules.travelContactDetails.initContactDetails();
+                meerkat.modules.travelPopularDestinations.initTravelPopularDestinations();
 
 				// if preloaded or load from EDM
 				if ($policyTypeBtn.is(':checked')) {
@@ -147,9 +148,12 @@
 				});
 
 				meerkat.modules.travelAdultAges.initAdultAges();
+				meerkat.modules.travelParameters.noOfTravellersDisplayLogic();
+
 
 			},
 			onBeforeEnter: function(event) {
+
 			},
 			onBeforeLeave: function(event) {
 				meerkat.modules.travelAdultAges.updateHiddenField();

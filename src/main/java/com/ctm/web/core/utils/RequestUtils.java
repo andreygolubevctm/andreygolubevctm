@@ -14,6 +14,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -137,7 +139,9 @@ public class RequestUtils {
     private static Object convertValue(Class<?> type, String param) throws ParseException {
         Object value = null;
         try {
-            if( type == Date.class && param != null){
+            if( type == LocalDate.class && param != null && !param.isEmpty()){
+                value = LocalDate.parse(param, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            } else if( type == Date.class && param != null){
                 value = sdf.parse(param);
             }  else if( type == Integer.class){
                 value =  !param.isEmpty() ? new Integer(param) : null;
