@@ -139,6 +139,8 @@
      */
     function updateDependantConfiguration() {
 
+        initHealthDependants(true);
+
         var dependantCountSpecified = $('#health_healthCover_dependants').val() || 1;
         var hasChildren = situationEnablesDependants();
         $('#health_application_dependants-selection').toggle(hasChildren);
