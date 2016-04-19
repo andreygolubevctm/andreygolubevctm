@@ -12,6 +12,7 @@
     "shared/validation",
     "core",
     "shared/currency",
+    "shared/bootstrapSwitch",
     "shared/datepicker",
     "shared/commencementDate",
     "shared/autocomplete",
