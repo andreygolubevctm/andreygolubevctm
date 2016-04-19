@@ -435,9 +435,7 @@
 
 				meerkat.modules.healthDependants.initHealthDependants();
 
-				if (meerkat.modules.splitTest.isActive(18)) {
-					meerkat.modules.healthContactDetails.initHealthContactDetails();
-				} else {
+				if (!meerkat.modules.splitTest.isActive(18)) {
 					healthApplicationDetails.init();
 				}
 

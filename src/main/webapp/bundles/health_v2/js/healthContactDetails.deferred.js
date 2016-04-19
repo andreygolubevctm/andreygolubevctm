@@ -5,6 +5,11 @@
 
     function initHealthContactDetails() {
         $(document).ready(function () {
+
+            if (!meerkat.modules.splitTest.isActive(18)) {
+                return false;
+            }
+
             _eventSubscriptions();
         });
     }
@@ -40,7 +45,7 @@
     }
 
     meerkat.modules.register("healthContactDetails", {
-        initHealthContactDetails: initHealthContactDetails
+        init: initHealthContactDetails
     });
 
 })(jQuery);
