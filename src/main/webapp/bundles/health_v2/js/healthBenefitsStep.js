@@ -294,8 +294,14 @@
     }
 
     function changeLayoutByCoverType(coverType) {
+        var updateSelectedBenefits = function(coverT) {
+            if("HE".indexOf(coverT) >= 0) {
+                $('.hospitalCoverToggles .benefit-category.active').trigger('click');
+            }
+        };
         switch (coverType) {
             case 'H':
+                updateSelectedBenefits(coverType);
                 $benefitsForm.find('.sidebarHospital').fadeOut('fast');
                 $benefitsForm.find('.extrasCover').fadeOut('fast');
                 $benefitsForm.find('.sidebarExtras').fadeIn('fast');
@@ -312,6 +318,7 @@
                 });
                 break;
             default:
+                updateSelectedBenefits(coverType);
                 $benefitsForm.find('.benefits-side-bar').fadeOut('fast');
                 $benefitsForm.find('.hasShortlistableChildren').fadeIn('fast', function () {
                     $benefitsForm.find('fieldset > div').first().prepend($benefitsForm.find('.section h2'));
