@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+
+	<springProperty scope="context" name="ctmLoggingPath" source="logging.path"
+					defaultValue="localhost"/>
+
 	<property name="APPNAME" value="webctm"/>
 	<include resource="ctmbase.xml" />
 
@@ -15,7 +19,7 @@
 			<appender name="FILE-${loggerName}" class="ch.qos.logback.core.FileAppender">
 				<prudent>false</prudent>
 				<!-- ${logLocation} comes from environmentConfigLocation properties file -->
-				<file>${LOG_PATH}/${loggerName}.log</file>
+				<file>${ctmLoggingPath}/${loggerName}.log</file>
 				<encoder>
 					<pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
 				</encoder>
