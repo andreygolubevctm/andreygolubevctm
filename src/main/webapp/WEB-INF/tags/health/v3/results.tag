@@ -14,6 +14,15 @@
 
 <layout_v1:results_template includeCompareTemplates="true">
 
+    <jsp:attribute name="preResultsRow">
+        <h3>Hi Sergei,</h3> <%-- Delete this once template rendering --%>
+        <p>We found 12 Combined Hospital and Extras products for your family</p>
+        <core_v1:js_template id="preResultsRowContentTemplate">
+            <h3>Hi Sergei,</h3> <%-- Helper functions to retrieve snapshot details? --%>
+            <p>We found 12 Combined Hospital and Extras products for your family</p>
+        </core_v1:js_template>
+    </jsp:attribute>
+
     <jsp:attribute name="sidebarColumn">
 
         <%-- FILTERS Module will be for standard filters, health filters etc.
@@ -21,7 +30,7 @@
         Uses semibold h3 and h4 for titles
         Buttons all caps 12px or 13px?
         --%>
-        <div class="col-xs-12 sidebar-widget sidebar-widget-contained results-filters">
+        <div class="col-xs-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
 
             <div class="title">Filter results</div>
             <div class="row filter">
@@ -44,7 +53,7 @@
 
         </div>
 
-        <div class="col-xs-12 sidebar-widget sidebar-widget-contained results-filters">
+        <div class="col-xs-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
 
         </div>
 

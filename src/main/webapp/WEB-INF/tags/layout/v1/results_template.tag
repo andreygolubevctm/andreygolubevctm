@@ -55,11 +55,18 @@
 
 <div class="row" id="resultsPage">
 
+
     <c:if test="${not empty preResultsRow}">
-        <div class="col-xs-12">
+        <div class="col-xs-12 col-sm-8">
                 ${preResultsRow}
         </div>
-        <div class="clear"></div>
+        <div class="hidden-xs col-sm-4">
+            <div class="collapse navbar-collapse">
+                <span class="pagination-text-label">See more results</span>
+                <ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
+            </div>
+        </div>
+        <div class="clearfix"></div>
     </c:if>
 
     <c:if test="${not empty sidebarColumn}">
@@ -105,7 +112,7 @@
             </div>
         </div>
     </div>
-    <div class="clear"></div>
+    <div class="clearfix"></div>
 
     <jsp:doBody/>
 

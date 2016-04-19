@@ -31,9 +31,11 @@
     "shared/coupon",
     "shared/sendEmail",
     "shared/emailBrochures",
-    "shared/serverSideValidationOutput"
+    "shared/serverSideValidationOutput",
+    "shared/sidebarWidgets"
   ],
   "exclusions": [
-    "shared/results/v4"
+    "shared/results/v4",
+    "shared/sidebarWidgets"
   ]
 }
