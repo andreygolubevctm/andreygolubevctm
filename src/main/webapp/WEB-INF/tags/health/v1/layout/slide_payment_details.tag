@@ -21,7 +21,6 @@
 					<p>Just fill in your payment details below using our secure form. These details will be provided to your new health fund.</p>
 				</ui:bubble>
 
-				<health_v1:payment xpath="${pageSettings.getVerticalCode()}/payment" />
 				<health_v1:declaration xpath="${pageSettings.getVerticalCode()}/declaration" className="${pageSettings.getVerticalCode()}_declaration-group"/>
 				<health_v1:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
 				<health_v1:whats-next />

@@ -17,9 +17,7 @@
 
 
 <%-- HTML --%>
-<nta id="${name}-selection" class="health_application-details">
-
-	<form_v2:fieldset legend="Contact Details">
+<div id="${name}-selection" class="health_application-details">
 
 		<group_v2:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"/>
 
@@ -75,7 +73,6 @@
 		<field_v1:hidden xpath="${xpath}/productTitle" className="health_application_details_productTitle" />
 		<field_v1:hidden xpath="${xpath}/providerName" className="health_application_details_providerName" />
 
-	</form_v2:fieldset>
 
 </div>
 

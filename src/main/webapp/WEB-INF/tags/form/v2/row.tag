@@ -7,6 +7,7 @@
 <%@ attribute name="label" 				required="false" rtexprvalue="true"	 description="label for the field"%>
 <%@ attribute name="fieldXpath"			required="false" rtexprvalue="true"	 description="The xpath of the field the label needs to point to"%>
 <%@ attribute name="className" 			required="false" rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="labelClassName" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="id" 				required="false" rtexprvalue="true"	 description="optional id for this row"%>
 <%@ attribute name="helpId"				required="false" rtexprvalue="true"	 description="Help tooltip ID"%>
 <%@ attribute name="showHelpText"		required="false" rtexprvalue="true"	 description="Trigger to display help icon as text rather than icon" %>
@@ -14,6 +15,15 @@
 <%@ attribute name="hideHelpIconCol"	required="false" rtexprvalue="true"	 description="Set to a value to hide the help icon placeholder column" %>
 <%@ attribute name="labelAbove"			required="false" rtexprvalue="true"	 description="Have the label above the element instead of beside it" %>
 <%@ attribute name="addForAttr" 		required="false" rtexprvalue="true"	 description="Bool to add or not the for attribute" %>
+
+<%-- Added to deal with the new field sizes introduced in health --%>
+<%@ attribute name="smRowOverride" 		required="false" rtexprvalue="true"	 description="Override the SM value" %>
+<%@ attribute name="removeSMsize" 		required="false" rtexprvalue="true"	 description="Toggle to disable sm col size" %>
+<%@ attribute name="addRowClass" 		required="false" rtexprvalue="true"	 description="Toggle to add the class row to fix formatting with new collapsed fields" %>
+<%@ attribute name="disableFormGroup" 	required="false" rtexprvalue="true"	 description="Toggle to add the class row to fix formatting with new collapsed fields on the parent div" %>
+
+
+
 
 <%-- VARIABLES --%>
 <c:if test="${empty labelAbove}">
@@ -23,6 +33,11 @@
 <c:if test="${empty addForAttr}">
 	<c:set var="addForAttr" value="${true}" />
 </c:if>
+
+<c:if test="${not disableFormGroup eq true}">
+	<c:set var="formGroupClasses" value="form-group row" />
+</c:if>
+
 <%-- HTML --%>
 <%--
 	Bootstrap classes:
@@ -42,7 +57,7 @@
 		readonly
 		imgOnlyLabel
 --%>
-<div class="${readonlyClass} form-group row fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
+<div class="${readonlyClass} ${formGroupClasses} fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
 
 	<c:choose>
 		<c:when test="${empty hideHelpIconCol}">
@@ -57,12 +72,16 @@
 		</c:otherwise>
 	</c:choose>
 
+	<c:if test="${not empty smRowOverride}">
+		<c:set var="toggleHelpColSmall" value="${smRowOverride}" />
+	</c:if>
+
 	<c:choose>
 		<c:when test="${labelAbove eq true}">
-			<c:set var="labelClassName" value="col-xs-${toggleHelpColMobile} col-sm-12" />
+			<c:set var="labelClassName" value="col-xs-${toggleHelpColMobile} col-sm-12 ${labelClassName}" />
 		</c:when>
 		<c:otherwise>
-			<c:set var="labelClassName" value="col-sm-4 col-xs-${toggleHelpColMobile}" />
+			<c:set var="labelClassName" value="col-sm-4 col-xs-${toggleHelpColMobile} ${labelClassName}" />
 		</c:otherwise>
 	</c:choose>
 
@@ -87,8 +106,16 @@
 	</c:choose>
 
 
+	<c:set var="smColClass" value="col-sm-${toggleHelpColSmall} " />
+	<c:if test="${removeSMsize eq true}">
+		<c:set var="smColClass" value="" />
+	</c:if>
 
-	<div class="col-sm-<c:out value="${toggleHelpColSmall} " /> ${fieldCol} <c:out value=" ${offset}" /> row-content">
+	<c:set var="rowClass">
+		<c:if test="${addRowClass eq true}"> row </c:if>
+	</c:set>
+
+	<div class="${smColClass} ${fieldCol} <c:out value=" ${rowClass}" /> <c:out value=" ${offset}" /> row-content">
 		<jsp:doBody />
 		<div class="fieldrow_legend"<c:if test="${not empty id}"> id="${id}_row_legend"</c:if>>${legend}</div>
 	</div>

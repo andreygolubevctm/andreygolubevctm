@@ -13,4 +13,4 @@
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
-<field_v2:input xpath="${xpath}" className="medicare_number ${className}" title="${title}" required="false" maxlength="15" additionalAttributes=" data-rule-medicareNumber='${required}' " />
+<field_v2:input xpath="${xpath}" className="medicare_number ${className}" title="${title}" required="false" maxlength="15" additionalAttributes=" data-rule-medicareNumber='${required}' " placeHolder="Card Number" />
