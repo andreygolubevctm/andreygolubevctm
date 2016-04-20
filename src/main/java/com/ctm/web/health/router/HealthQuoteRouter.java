@@ -2,6 +2,7 @@ package com.ctm.web.health.router;
 
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
+import com.ctm.web.core.dao.GeneralDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
@@ -40,6 +41,7 @@ import javax.ws.rs.core.Context;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 
@@ -56,9 +58,22 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
         this.contentService =  ContentService.getInstance();
     }
 
+
     public HealthQuoteRouter(SessionDataServiceBean sessionDataServiceBean, ContentService contentService) {
         super(sessionDataServiceBean);
         this.contentService = contentService;
+    }
+
+
+    @GET
+    @Path("/dropdown/list.json")
+    @Produces("application/json")
+    // call by rest/health/dropdown/list.json?type=X
+    public Map<String,String> getContent(@QueryParam("type") String type) {
+        final Map<String,String> result;
+        GeneralDao generalDao = new GeneralDao();
+        result = generalDao.getValuesOrdered(type);
+        return result;
     }
 
     @POST
