@@ -67,55 +67,6 @@
 		return Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), today.getUTCHours(), 0, 0, 0);
 	}
 
-	/**
-	 * Accepts date in the format DD/MM/YYYY
-	 * @param _dobString
-	 * @param round
-	 * @returns {number}
-	 */
-	function returnAge(_dobString, round) {
-		var _now = new Date();
-			_now.setHours(0,0,0);
-		var _dob = returnDate(_dobString);
-		var _years = _now.getFullYear() - _dob.getFullYear();
-
-		if(_years < 1){
-			return (_now - _dob) / (1000 * 60 * 60 * 24 * 365);
-		}
-
-		//leap year offset
-		var _leapYears = _years - ( _now.getFullYear() % 4);
-		_leapYears = (_leapYears - ( _leapYears % 4 )) /4;
-		var _offset1 = ((_leapYears * 366) + ((_years - _leapYears) * 365)) / _years;
-
-		//birthday offset - as it's always so close
-		var _offset2 = +0.005;
-		if(  (_dob.getMonth() == _now.getMonth()) && (_dob.getDate() > _now.getDate()) ){
-			_offset2 = -0.005;
-		}
-
-		var _age = (_now - _dob) / (1000 * 60 * 60 * 24 * _offset1) + _offset2;
-		return round ? Math.floor(_age) : _age;
-	}
-
-	function returnDate(_dateString){
-		return new Date(_dateString.substring(6,10), _dateString.substring(3,5) - 1, _dateString.substring(0,2));
-	}
-
-	// return date string in YYYY-MM-DD
-	function returnDateValue(_date){
-		var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
-		var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
-		return _date.getFullYear() +'-'+ _monthString +'-'+ _dayString;
-	}
-
-	// return date string in DD/MM/YYYY
-	function returnDateValueFormFormat(_date){
-		var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
-		var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
-		return _dayString+'/'+_monthString+'/'+_date.getFullYear();
-	}
-
 	function invertDate(dt, del) {
 		del = del || "/";
 		return dt.split(del).reverse().join(del);
@@ -252,12 +203,8 @@
 		slugify: slugify,
 		scrollPageTo: scrollPageTo,
 		getUTCToday: UTCToday,
-		returnAge: returnAge,
-		returnDate: returnDate,
 		isValidNumericKeypressEvent: isValidNumericKeypressEvent,
 		invertDate: invertDate,
-		returnDateValue : returnDateValue,
-		returnDateValueFormFormat: returnDateValueFormFormat,
 		pluginReady: pluginReady,
 		calcWorkingDays: calcWorkingDays,
 		getTimeAgo: getTimeAgo,
