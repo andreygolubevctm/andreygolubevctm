@@ -29,7 +29,7 @@
 	<form_v2:fieldset legend="${title} Details">
 
 		<c:set var="fieldXpath" value="${xpath}/title" />
-		<form_v2:row fieldXpath="${fieldXpath}" label="Title" >
+		<form_v2:row fieldXpath="${fieldXpath}" label="Title" id="${name}_titleRow" >
 			<field_v2:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' "/>
 		</form_v2:row>
 
