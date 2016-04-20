@@ -16,6 +16,10 @@ var healthFunds_HBF = {
         if ($('#hbf_fexi_extras').length > 0) {
             $('#hbf_fexi_extras').show();
         }
+        <c:set var="html">
+
+        </c:set>
+
 
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
