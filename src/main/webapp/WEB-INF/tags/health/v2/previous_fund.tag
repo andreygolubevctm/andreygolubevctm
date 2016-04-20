@@ -12,7 +12,7 @@
 <%-- HTML --%>
 <div id="${name}">
 
-	<form_v2:fieldset id="${id}" legend="Previous Fund Details" className="health-previous_fund">
+	<form_v3:fieldset id="${id}" legend="Previous Fund Details" className="health-previous_fund">
 
 		<div class="instructional ">
 			<h4>Switching made simple</h4>
@@ -54,7 +54,7 @@
 			</form_v3:row>
 		</div>
 
-	</form_v2:fieldset>
+	</form_v3:fieldset>
 
 </div>
 

@@ -32,7 +32,7 @@
 			<simples:dialogue id="36" vertical="health" mandatory="true" className="hidden simples-privacycheck-statement" /> <%-- Inbound --%>
 			<simples:dialogue id="25" vertical="health" mandatory="true" className="hidden follow-up-call" /> <%-- Follow up call --%>
 
-			<form_v2:fieldset id="healthAboutYou" legend="" postLegend="">
+			<form_v3:fieldset id="healthAboutYou" legend="" postLegend="">
 
 				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
 				<form_v3:row label="You are a" fieldXpath="${fieldXpath}">
@@ -73,7 +73,7 @@
 					<field_v2:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="reason you are looking to quote" />
 				</form_v3:row>
 
-			</form_v2:fieldset>
+			</form_v3:fieldset>
 
 			<simples:dialogue id="22" vertical="health" />
 
@@ -87,7 +87,7 @@
 			<%-- Did it this way to prevent the snapshot from pushing the fields below up/down depending on the option selected with the health_situation_healthCvr field --%>
 			<c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
 			<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-			<form_v2:fieldset id="primary-health-cover" legend="Your Details" className="primary">
+			<form_v3:fieldset id="primary-health-cover" legend="Your Details" className="primary">
 				<c:set var="fieldXpath" value="${xpath}/primary/dob" />
 				<form_v3:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
 					<field_v2:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
@@ -109,9 +109,9 @@
 						<field_v1:input_numeric xpath="${fieldXpath}" minValue="0" maxValue="70" title="Applicant's LHC" required="false" id="${name}_primary_lhc" maxLength="2" className="primary-lhc"/>
 					</form_v2:row>
 				</c:if>
-			</form_v2:fieldset>
+			</form_v3:fieldset>
 
-			<form_v2:fieldset id="partner-health-cover" legend="Your Partner's Details" className="partner">
+			<form_v3:fieldset id="partner-health-cover" legend="Your Partner's Details" className="partner">
 				<c:set var="fieldXpath" value="${xpath}/partner/dob" />
 				<form_v3:row label="Your partner's date of birth" fieldXpath="${fieldXpath}">
 					<field_v2:person_dob xpath="${fieldXpath}" title="partner's" required="true" ageMin="16" ageMax="120" />
@@ -133,9 +133,9 @@
 						<field_v1:input_numeric xpath="${fieldXpath}" minValue="0" maxValue="70" title="Partner's LHC" required="false" id="${name}_partner_lhc" maxLength="2" className="partner-lhc"/>
 					</form_v2:row>
 				</c:if>
-			</form_v2:fieldset>
+			</form_v3:fieldset>
 			<simples:dialogue id="26" vertical="health" mandatory="true" />
-			<form_v2:fieldset id="australian-government-rebate" legend="Australian Government Rebate">
+			<form_v3:fieldset id="australian-government-rebate" legend="Australian Government Rebate">
 				<c:set var="fieldXpath" value="${xpath}/dependants" />
 				<form_v3:row label="How many dependent children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants">
 					<field_v2:count_select xpath="${fieldXpath}" max="12" min="1" title="number of dependants" required="true"  className="${name}_health_cover_dependants dependants"/>
@@ -185,7 +185,7 @@
 					</form_v3:row>
 				</c:if>
 
-			</form_v2:fieldset>
+			</form_v3:fieldset>
 			<simples:dialogue id="37" vertical="health" mandatory="true" className="hidden" />
 		</jsp:body>
 

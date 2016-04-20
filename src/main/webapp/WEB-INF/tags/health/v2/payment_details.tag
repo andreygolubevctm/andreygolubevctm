@@ -21,7 +21,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-payment_details">
 
-	<form_v2:fieldset legend="Payment Details" >
+	<form_v3:fieldset legend="Payment Details" >
 
 		<div class="definition alert alert-info">
 				<%-- insert promo data --%>
@@ -83,7 +83,7 @@
 			</div>
 		</form_v3:row>
 
-	</form_v2:fieldset>
+	</form_v3:fieldset>
 
 </div>
 

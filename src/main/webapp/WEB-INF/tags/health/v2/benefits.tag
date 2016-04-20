@@ -17,7 +17,7 @@
 
     <jsp:body>
 
-        <form_v2:fieldset legend="" postLegend="">
+        <form_v3:fieldset legend="" postLegend="">
             <div class="scrollable row">
                 <field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="customised"/>
                 <div class="benefits-list col-sm-12">
@@ -50,7 +50,7 @@
 
             </div>
 
-        </form_v2:fieldset>
+        </form_v3:fieldset>
 
     </jsp:body>
 

@@ -20,7 +20,7 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 					<jsp:attribute name="rightColumn">
 					</jsp:attribute>
 					<jsp:body>
-						<form_v2:fieldset legend="Provider Testing">
+						<form_v3:fieldset legend="Provider Testing">
 
 							<c:set var="fieldXpath" value="${xpath}/situation/singleProvider" />
 							<form_v3:row label="Provider" fieldXpath="${fieldXpath}">
@@ -34,7 +34,7 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 								<field_v2:count_select max="36" xpath="${fieldXpath}" min="12" title="Number of Results" required="false" step="12"/>
 							</form_v3:row>
 
-						</form_v2:fieldset>
+						</form_v3:fieldset>
 					</jsp:body>
 				</form_v3:fieldset_columns>
 
@@ -59,13 +59,13 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 		<jsp:attribute name="rightColumn">
 		</jsp:attribute>
 		<jsp:body>
-			<form_v2:fieldset legend="">
+			<form_v3:fieldset legend="">
 				<c:set var="fieldXpath" value="${xpath}/searchDate" />
 				<form_v3:row label="Application/Cover Date" fieldXpath="${fieldXpath}">
 					<field_v2:calendar validateMinMax="false" xpath="${fieldXpath}" required="false" title="searchDate" startView="0" nonLegacy="true"/>
 					For testing future product searches
 				</form_v3:row>
-			</form_v2:fieldset>
+			</form_v3:fieldset>
 		</jsp:body>
 	</form_v3:fieldset_columns>
 

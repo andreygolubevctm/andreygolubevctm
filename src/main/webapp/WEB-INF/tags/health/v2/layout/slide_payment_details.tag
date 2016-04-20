@@ -17,11 +17,11 @@
 
 				<health_v2:payment xpath="${pageSettings.getVerticalCode()}/payment" />
 
-				<form_v2:fieldset legend="Declaration" className="${pageSettings.getVerticalCode()}_declaration-group">
+				<form_v3:fieldset legend="Declaration" className="${pageSettings.getVerticalCode()}_declaration-group">
 					<health_v2:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
 					<health_v1:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
 					<health_v2:whats-next />
-				</form_v2:fieldset>
+				</form_v3:fieldset>
 
 				<simples:dialogue id="31" vertical="health" mandatory="true" />
 

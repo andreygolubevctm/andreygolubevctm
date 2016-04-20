@@ -14,7 +14,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-credit_card_details">
 
-	<form_v2:fieldset legend="Credit Card Details">
+	<form_v3:fieldset legend="Credit Card Details">
 		<field_v2:creditcard_assurance_message showCreditCards="true" />
 
 		<health_v1:payment_external xpath="${gatewayXpath}" />
@@ -78,6 +78,6 @@
 			<p class="health_credit-card-details_policyDay-message"></p>
 		</form_v3:row>
 
-	</form_v2:fieldset>
+	</form_v3:fieldset>
 
 </div>

@@ -44,7 +44,7 @@
 
 		<jsp:body>
 
-			<form_v2:fieldset legend="Your details" postLegend="Enter your details below and we'll show you products that match your needs on the next page" >
+			<form_v3:fieldset legend="Your details" postLegend="Enter your details below and we'll show you products that match your needs on the next page" >
 
 				<c:set var="firstNamePlaceHolder">
 					<content:get key="firstNamePlaceHolder"/>
@@ -138,7 +138,7 @@
 				    <simples:referral_tracking vertical="health" />
                 </c:if>
 
-			</form_v2:fieldset>
+			</form_v3:fieldset>
 
 		</jsp:body>
 

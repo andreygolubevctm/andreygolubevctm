@@ -17,7 +17,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-dependants">
 
-	<form_v2:fieldset legend="Your Dependants' Details" >
+	<form_v3:fieldset legend="Your Dependants' Details" >
 
 		<%-- //FIX: need to insert fund's real definition here --%>
 		<p class="definition">
@@ -59,6 +59,6 @@
 			</form_v3:row>
 		</div>
 
-	</form_v2:fieldset>
+	</form_v3:fieldset>
 
 </div>
