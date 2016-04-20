@@ -12,7 +12,7 @@
 </c:if>
 
 
-<layout_v1:results_template includeCompareTemplates="true">
+<layout_v1:results_template includeCompareTemplates="false">
 
     <jsp:attribute name="preResultsRow">
         <h3>Hi Sergei,</h3> <%-- Delete this once template rendering --%>
@@ -30,40 +30,8 @@
         Uses semibold h3 and h4 for titles
         Buttons all caps 12px or 13px?
         --%>
-        <div class="col-xs-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
-
-            <div class="title">Filter results</div>
-            <div class="row filter">
-                <div class="col-xs-12">
-                    <div class="sub-title">Payment frequency</div>
-                    <div id="filter-frequency" data-filter-type="radio">
-                        <field_v2:array_radio xpath="health/show-price" title="Repayments" items="F=Fortnightly,M=Monthly,A=Annually" required="false"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row filter">
-                <div class="col-xs-12">
-                    <div class="sub-title">Excess</div>
-                    <div id="filter-excess" data-filter-type="slider" data-filter-serverside="true">
-                        <health_v1:filter_excess/>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="col-xs-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
-
-        </div>
-
-        <div class="col-xs-12 sidebar-widget sidebar-widget-uncontained">
-
-        </div>
-
-        <div class="col-xs-12 sidebar-widget sidebar-widget-uncontained sidebar-widget-padded">
-            testimonial thing
-        </div>
+        <health_v3:filters />
+        <health_v3:filters_benefits />
 
     </jsp:attribute>
 
@@ -84,7 +52,7 @@
 
     <jsp:attribute name="hiddenInputs">
         <%-- Hidden fields necessary for Results page --%>
-    <input type="hidden" name="health_showAll" value="Y"/>
+        <input type="hidden" name="health_showAll" value="Y"/>
         <input type="hidden" name="health_onResultsPage" value="Y"/>
         <input type="hidden" name="health_incrementTransactionId" value="Y"/>
 
@@ -100,8 +68,8 @@
             </c:choose>
         </c:if>
 
-    <%-- The following are hidden fields set by filters --%>
-    <field_v1:hidden xpath="health/excess" defaultValue="4"/>
+        <%-- The following are hidden fields set by filters --%>
+        <field_v1:hidden xpath="health/excess" defaultValue="4"/>
         <field_v1:hidden xpath="health/filter/providerExclude"/>
         <field_v1:hidden xpath="health/filter/priceMin" defaultValue="0"/>
         <field_v1:hidden xpath="health/filter/frequency" defaultValue="M"/>
@@ -151,8 +119,8 @@
     </jsp:attribute>
     <jsp:body>
 
-        <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
-        <c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('health', 'category')}" scope="request"  />
+        <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request"/>
+        <c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('health', 'category')}" scope="request"/>
         <script>
             var resultLabels = ${jsonString};
         </script>

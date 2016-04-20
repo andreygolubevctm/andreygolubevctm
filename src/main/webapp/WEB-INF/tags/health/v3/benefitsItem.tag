@@ -129,7 +129,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 
 											<%--<health_v3:benefitsItem item="${selectedValue}" />--%>
 											<div class="categoriesCell ${colWidthValue} short-list-item ${selectedValue.getClassString()} ${selectedValue.getShortlistKey()}_container">
-											<!-- This is a duplicate of the row above and needs to be cleaned up in the .less-->
+											<%-- This is a duplicate of the row above and needs to be cleaned up in the .less--%>
 											<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" customAttribute="data-attach=true" />
 											</div>
 										</c:if>

@@ -76,11 +76,6 @@
     }
 
     function initResults() {
-        $('.adjustFilters').on("click", function displayFiltersClicked(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            meerkat.modules.healthFilters.open();
-        });
 
         $resultsLowNumberMessage = $(".resultsLowNumberMessage, .resultsMarketingMessages");
 
@@ -137,7 +132,7 @@
                     features: {
                         mode: 'populate',
                         headers: false,
-                        numberOfXSColumns: 1
+                        numberOfXSColumns: 3
                     },
                     dockCompareBar: false
                 },

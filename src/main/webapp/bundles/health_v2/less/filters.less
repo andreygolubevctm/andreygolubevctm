@@ -1,1 +1,35 @@
 // new filter sidebar stuff.
+.filter {
+
+  /**
+  Override radio button group styles to keep "green" emphasis on the more info button.
+  */
+  .btn-form-inverse {
+    &.active, &:active, &:focus {
+      background-color: @gray-light;
+      border-color: @gray-light;
+    }
+  }
+
+  // Make the provider list 2 columns
+  .provider-list {
+    @media (@sm) {
+      -webkit-columns: auto 2; /* Chrome, Safari, Opera */
+      -moz-columns: auto 2; /* Firefox */
+      columns: auto 2;
+    }
+  }
+
+  // Add some extra margin to slider filter.
+  .filter-slider {
+    margin-top: 15px;
+  }
+
+  // Buttons tyles
+  .filter-frequency {
+    .btn {
+      padding: 10px 5px;
+      .small();
+    }
+  }
+}

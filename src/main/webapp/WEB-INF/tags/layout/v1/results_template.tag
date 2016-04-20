@@ -7,12 +7,13 @@
 --%>
 <%-- Attributes --%>
 <%@ attribute required="false" name="includeCompareTemplates" %>
+<%-- Number of results to show at each breakpoint --%>
 <%@ attribute required="false" name="xsResultsColumns" %>
 <%@ attribute required="false" name="smResultsColumns" %>
 <%@ attribute required="false" name="mdResultsColumns" %>
 <%@ attribute required="false" name="lgResultsColumns" %>
 <c:if test="${empty xsResultsColumns}">
-    <c:set var="xsResultsColumns" value="1"/>
+    <c:set var="xsResultsColumns" value="3"/>
 </c:if>
 <c:if test="${empty smResultsColumns}">
     <c:set var="smResultsColumns" value="3"/>
@@ -48,9 +49,11 @@
 <c:set var="zeroResultsFoundMessage">
     <jsp:invoke fragment="zeroResultsFoundMessage"/>
 </c:set>
-<c:set var="resultsCols" value="9"/>
+<c:set var="resultsColsSm" value="8"/>
+<c:set var="resultsColsMd" value="9" />
 <c:if test="${empty sidebarColumn}">
-    <c:set var="resultsCols" value="12"/>
+    <c:set var="resultsColsSm" value="12"/>
+    <c:set var="resultsColsMd" value="12" />
 </c:if>
 
 <div class="row" id="resultsPage">
@@ -70,18 +73,18 @@
     </c:if>
 
     <c:if test="${not empty sidebarColumn}">
-        <div class="col-sm-3" id="results-sidebar">
-                ${sidebarColumn}
+        <div class="hidden-xs col-md-3 col-sm-4" id="results-sidebar">
+            ${sidebarColumn}
         </div>
     </c:if>
 
-    <div class="col-sm-${resultsCols}">
+    <div class="col-sm-${resultsColsSm} col-md-${resultsColsMd} results-column-container">
         <div class="resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
             <div class="resultsOverflow">
 
                 <div class="results-table">
-                    Results col-sm-${resultsCols} displaying with results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns}
-                    results-columns-lg-${lgResultsColumns}
+                    <!--Results col-sm-${resultsColsSm} displaying with results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns}
+                    results-columns-lg-${lgResultsColumns}--!>
                 </div>
 
 

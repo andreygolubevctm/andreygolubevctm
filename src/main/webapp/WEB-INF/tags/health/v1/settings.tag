@@ -80,8 +80,12 @@
 	utm_campaign: '<c:out value="${utm_campaign}" />',
 	isDefaultToHealthQuote: ${defaultToHealthQuote},
     isDefaultToHealthApply: ${defaultToHealthApply},
-	healthAlternatePricingActive: ${healthAlternatePricingActive},
-	liveChat: {
+	healthAlternatePricingActive: ${healthAlternatePricingActive},<c:if test="${isHealthV2 eq true}">
+	navMenu: {
+		type: 'offcanvas',
+		direction: 'right'
+	},
+</c:if>liveChat: {
 		config: {
 			lpServer			: "server.lon.liveperson.net",
 			lpTagSrv			: "sr1.liveperson.net",

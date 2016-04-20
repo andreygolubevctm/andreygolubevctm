@@ -923,6 +923,12 @@
 //
 //## Define the maximum width of `.container` for different screen sizes.
 
+// Custom for results -- not used for .container's width
+// Mobile
+@container-mobile:             ((568px + @grid-gutter-width));
+//** For `@screen-sm-min` and up.
+@container-xs:                 @container-mobile;
+
 // Small screen / tablet
 @container-tablet:             ((717px + @grid-gutter-width));
 //** For `@screen-sm-min` and up.
@@ -1757,9 +1763,9 @@
 @md-results-column-width: 156px;
 @lg-results-column-width: 190px;
 
-@xs-results-column-number: 2;
+@xs-results-column-number: 1;
 @sm-results-column-number: 3;
-@md-results-column-number: 5;
+@md-results-column-number: 3;
 @lg-results-column-number: 5;
 
 @xs-results-column-gutter-width: 0px;

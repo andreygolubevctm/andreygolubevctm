@@ -4,8 +4,6 @@
 	.slide-feature-back,
 	.slide-feature-emailquote,
 	.slide-feature-emailresults,
-	.slide-feature-filters,
-	.slide-feature-benefits,
 	.slide-feature-close-more-info
 	{
 		.slide-feature-hidden();
@@ -16,115 +14,12 @@
 		}
 	}
 
-	.slide-feature-pagination {
-		display: none;
+	.slide-feature-back {
+		.slide-feature-is-visible();
 	}
-
-	// Add your slide feature to the particular step that it needs to be visible test
-	&[data-step="start"] {
-		.slide-feature-emailquote.privacyOptinChecked
-		{
-			.slide-feature-is-visible();
-		}
-	}
-
-	&[data-step="details"] {
-		.slide-feature-back,
-		.slide-feature-emailquote.privacyOptinChecked
-		{
-			.slide-feature-is-visible();
-		}
-	}
-
-	&[data-step="benefits"] {
-		.slide-feature-back,
-		.slide-feature-emailquote.privacyOptinChecked
-		{
-			.slide-feature-is-visible();
-		}
-	}
-	&[data-step="contact"] {
-		.slide-feature-back,
-		.slide-feature-emailquote.privacyOptinChecked
-		{
-			.slide-feature-is-visible();
-		}
-	}
-
-	&[data-step="results"] {
-		.slide-feature-back,
-		.slide-feature-emailquote.privacyOptinChecked,
-		.slide-feature-filters,
-		.slide-feature-benefits,
-		.slide-feature-pagination {
-			.slide-feature-is-visible();
-		}
-
-		.progress-bar-row{
-			.slide-feature-hidden() !important;
-		}
-
-		header{
-			@media (@sm){
-				min-height: inherit;
-			}
-		}
-
-		&.moreInfoVisible {
-			#navbar-main{
-				background: @theme-tertiary;
-				border: none;
-			}
-
-			// hiding the whole navbar when More Info is open
-			.slide-feature-back,
-			.slide-feature-emailquote.privacyOptinChecked,
-			.slide-feature-filters,
-			.slide-feature-benefits,
-			.slide-feature-pagination,
-			.slide-feature-reference{
-				.slide-feature-hidden();
-			}
-			.slide-feature-close-more-info{
-				.slide-feature-is-visible();
-			}
-			#pageContent{
-				padding-top: 10px;
-			}
-		}
-
-	}
-
-	&[data-step="apply"] {
-		#navbar-main{
-		  .slide-feature-hidden() !important;
-		}
-	}
-
-	&[data-step="payment"] {
-		#navbar-main{
-		  .slide-feature-hidden() !important;
-		}
-	}
-	.progress-bar-row {
-	  &.confirmation {
-		.slide-feature-hidden() !important;
-	  }
-	}
-
-	// Simples overrides
-	&.simples{
-		&[data-step="start"],
-		&[data-step="details"] {
-			.slide-feature-benefits{
-				.slide-feature-is-visible();
-			}
-		}
-
-		&[data-step="results"] {
-			.slide-feature-emailresults {
-				.slide-feature-is-visible();
-			}
+	@media(@sm) {
+		#navbar-main {
+			display: none !important;
 		}
 	}
 
