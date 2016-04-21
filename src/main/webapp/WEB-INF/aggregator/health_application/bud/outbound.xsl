@@ -477,8 +477,8 @@
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
 							<GroupID>
 								<xsl:choose>
-									<xsl:when test="payment/details/type='ba'">BBA10</xsl:when>
-									<xsl:otherwise>BCC10</xsl:otherwise>
+									<xsl:when test="payment/details/type='ba'">BBA00</xsl:when>
+									<xsl:otherwise>BCC00</xsl:otherwise>
 								</xsl:choose>
 							</GroupID>
 							<PayrollNo></PayrollNo>
