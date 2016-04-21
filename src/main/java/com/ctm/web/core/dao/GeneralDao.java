@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
@@ -43,6 +44,37 @@ public class GeneralDao {
 			dbSource.closeConnection();
 		}
 		return values;
+	}
+
+	public Map<String,String> getValuesOrdered(String type) {
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		Map<String,String> values = new LinkedHashMap<>();
+		Connection conn;
+		try {
+			conn = dbSource.getConnection();
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(
+					"SELECT code, description " +
+							"FROM aggregator.general g " +
+							"WHERE g.type = ? order by g.orderSeq ;");
+			stmt.setString(1, type);
+
+			ResultSet rs = stmt.executeQuery();
+
+
+			while (rs.next()) {
+				values.put(rs.getString("code"), rs.getString("description"));
+			}
+			rs.close();
+		} catch (SQLException | NamingException e) {
+			LOGGER.error("failed retrieving value from general table {}", kv("type", type), e);
+		} finally {
+			dbSource.closeConnection();
+		}
+		return values;
+
+
+
 	}
 
 }

@@ -1,10 +1,7 @@
 package com.ctm.web.health.apply.model.request.application.dependant;
 
 import com.ctm.web.health.apply.helper.TypeSerializer;
-import com.ctm.web.health.apply.model.request.application.common.FirstName;
-import com.ctm.web.health.apply.model.request.application.common.Gender;
-import com.ctm.web.health.apply.model.request.application.common.LastName;
-import com.ctm.web.health.apply.model.request.application.common.Title;
+import com.ctm.web.health.apply.model.request.application.common.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -40,9 +37,12 @@ public class Dependant {
 
     private FullTimeStudent fullTimeStudent;
 
+    private Relationship relationship;
+
     public Dependant(final Title title, final FirstName firstName, final LastName lastName,
                      final LocalDate dateOfBirth, final School school, final LocalDate schoolDate,
-                     final SchoolId schoolID, final Gender gender, final FullTimeStudent fullTimeStudent) {
+                     final SchoolId schoolID, final Gender gender, final FullTimeStudent fullTimeStudent,
+                     final Relationship relationship) {
         this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,5 +52,46 @@ public class Dependant {
         this.schoolID = schoolID;
         this.gender = gender;
         this.fullTimeStudent = fullTimeStudent;
+        this.relationship = relationship;
+    }
+
+    public Title getTitle() {
+        return title;
+    }
+
+    public FirstName getFirstName() {
+        return firstName;
+    }
+
+    public LastName getLastName() {
+        return lastName;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public School getSchool() {
+        return school;
+    }
+
+    public LocalDate getSchoolDate() {
+        return schoolDate;
+    }
+
+    public SchoolId getSchoolID() {
+        return schoolID;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public FullTimeStudent getFullTimeStudent() {
+        return fullTimeStudent;
+    }
+
+    public Relationship getRelationship() {
+        return relationship;
     }
 }

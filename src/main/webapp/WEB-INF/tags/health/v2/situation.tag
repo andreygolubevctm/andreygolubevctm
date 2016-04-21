@@ -130,10 +130,16 @@
 				</c:if>
 			</form_v2:fieldset>
 			<simples:dialogue id="26" vertical="health" mandatory="true" />
-			<form_v2:fieldset id="australian-government-rebate" legend="Australian Government Rebate">
+			<form_v2:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians with Private Health insurance can reduce their upfront health insurance costs by applying the Government Rebate.">
 				<c:set var="fieldXpath" value="${xpath}/dependants" />
 				<form_v3:row label="How many dependent children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants">
 					<field_v2:count_select xpath="${fieldXpath}" max="12" min="1" title="number of dependants" required="true"  className="${name}_health_cover_dependants dependants"/>
+				</form_v3:row>
+
+
+				<c:set var="fieldXpath" value="${xpath}/rebate" />
+				<form_v3:row label="Would you like to reduce your upfront premium by applying the rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
+					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate btn-group-wrap"/>
 				</form_v3:row>
 
 				<c:if test="${callCentre}">
@@ -144,17 +150,12 @@
 				</c:if>
 
 				<c:set var="fieldXpath" value="${xpath}/income" />
-				<form_v3:row label="What is the estimated taxable income for your household for the financial year 1st July ${financialYearStart} to 30 June ${financialYearEnd}?" fieldXpath="${fieldXpath}" id="${name}_tier">
+				<form_v3:row label="To receive the correct rebate, please select your expected annual income?" fieldXpath="${fieldXpath}" id="${name}_tier">
 					<field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_cover_details_income"/>
 					<span class="fieldrow_legend" id="${name}_incomeMessage"></span>
 					<c:set var="income_label_xpath" value="${xpath}/incomelabel" />
 					<div class="fieldrow_legend" id="health_healthCover_tier_row_legend"></div>
 					<input type="hidden" name="${go:nameFromXpath(xpath)}_incomelabel" id="${go:nameFromXpath(xpath)}_incomelabel" value="${data[income_label_xpath]}" />
-				</form_v3:row>
-
-				<c:set var="fieldXpath" value="${xpath}/rebate" />
-				<form_v3:row label="Would you like to receive the rebate as?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
-					<field_v2:array_radio items="Y=Discount on premium,N=Part of tax refund" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate btn-group-wrap"/>
 				</form_v3:row>
 
 				<%-- Override set in splittest_helper tag --%>
