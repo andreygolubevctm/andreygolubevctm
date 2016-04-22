@@ -232,10 +232,23 @@
 
 					if($healthSitHealthCvr.isValid()) {
 						$healthSitHealthCvr.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
+
+						$('.health-cover').addClass('hidden');
+						$('.health-about-you').addClass('hidden');
 					}
 					if($healthSitLocation.isValid(true)) {
 						$healthSitLocation.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
+
+						$('.health-location').addClass('hidden');
+					} else {
+						$('.health-about-you').removeClass('hidden'); // Only hide if both hidden
 					}
+
+					meerkat.site.isFromBrochureSite = false;
+				} else {
+					$('.health-cover').removeClass('hidden');
+					$('.health-location').removeClass('hidden');
+					$('.health-about-you').removeClass('hidden');
 				}
 			}
 		};

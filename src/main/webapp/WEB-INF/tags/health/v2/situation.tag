@@ -32,10 +32,10 @@
 			<simples:dialogue id="36" vertical="health" mandatory="true" className="hidden simples-privacycheck-statement" /> <%-- Inbound --%>
 			<simples:dialogue id="25" vertical="health" mandatory="true" className="hidden follow-up-call" /> <%-- Follow up call --%>
 
-			<form_v2:fieldset id="healthAboutYou" legend="" postLegend="">
+			<form_v2:fieldset id="healthAboutYou" legend="" postLegend="" className="health-about-you">
 
 				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
-				<form_v2:row label="You are a" fieldXpath="${fieldXpath}">
+				<form_v2:row label="You are a" fieldXpath="${fieldXpath}" className="health-cover">
 					<field_v2:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" />
 				</form_v2:row>
 
@@ -45,7 +45,7 @@
 				<c:set var="state" value="${data['health/situation/state']}" />
 				<c:set var="location" value="${data['health/situation/location']}" />
 
-				<form_v2:row label="Living in" fieldXpath="${fieldXpath}">
+				<form_v2:row label="Living in" fieldXpath="${fieldXpath}" className="health-location">
 
 					<c:choose>
 						<c:when test="${not empty param.state || (not empty state && empty location && (param.action == 'amend' || param.action == 'load'))}">
@@ -63,11 +63,6 @@
 
 				</form_v2:row>
 
-				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
-				<form_v2:row label="Looking to" fieldXpath="${fieldXpath}">
-					<field_v2:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="reason you are looking to quote" />
-				</form_v2:row>
-
 			</form_v2:fieldset>
 
 			<simples:dialogue id="22" vertical="health" />
@@ -79,10 +74,17 @@
 				</div>
 			</simples:dialogue>
 
+			<form_v2:fieldset id="primary-health-cover" legend="Your Details" className="primary">
+
+				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
+				<form_v2:row label="Looking to" fieldXpath="${fieldXpath}">
+					<field_v2:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="reason you are looking to quote" />
+				</form_v2:row>
+
 			<%-- Did it this way to prevent the snapshot from pushing the fields below up/down depending on the option selected with the health_situation_healthCvr field --%>
 			<c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
 			<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-			<form_v2:fieldset id="primary-health-cover" legend="Your Details" className="primary">
+
 				<c:set var="fieldXpath" value="${xpath}/primary/dob" />
 				<form_v2:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
 					<field_v2:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />

@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-7">
             <span class="snapshot-items hidden-xs hidden-sm">
-                <span data-source="#health_situation_healthCvr"></span>
+                <span data-source="#health_situation_healthCvr"></span><a data-slide-control="start" href="javascript:;" class="btn btn-xs btn-edit"><span>Edit</span></a>
             </span>
         </div>
     </div>
@@ -27,7 +27,7 @@
         </div>
         <div class="col-md-7">
             <span class="snapshot-items hidden-xs hidden-sm">
-                <span data-source="#health_situation_location"></span>
+                <span data-source="#health_situation_location"></span><a data-slide-control="start" href="javascript:;" class="btn btn-xs btn-edit"><span>Edit</span></a>
             </span>
         </div>
     </div>
