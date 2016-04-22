@@ -51,7 +51,7 @@ var healthFunds_WFD = {
         <%--selections for payment date--%>
         $('#update-premium').on('click.WFD', function() {
 
-            var deductionDate = returnDate($('#health_payment_details_start').val());
+            var deductionDate = meerkat.modules.dateUtils.returnDate($('#health_payment_details_start').val());
             var distance = 4 - deductionDate.getDay();
             if(distance < 2) { <%-- COB Tue cutoff to make Thu of same week for payment--%>
                 distance += 7;
@@ -71,7 +71,7 @@ var healthFunds_WFD = {
             }
 
             var deductionText = 'Please note that your first or full payment (annual frequency) ' +
-                    'will be debited from your payment method on ' + healthFunds._getDayOfWeek(deductionDate) + " " + day + " " + healthFunds._getMonth(deductionDate);
+                    'will be debited from your payment method on ' + meerkat.modules.dateUtils.dateValueLongFormat(deductionDate);
 
             $('.health_credit-card-details_policyDay-message').text( deductionText);
             $('.health_bank-details_policyDay-message').text(deductionText);
