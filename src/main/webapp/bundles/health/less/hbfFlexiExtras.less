@@ -1,0 +1,72 @@
+#hbf_fexi_extras {
+  h2 {
+    font-size: 28px;
+  }
+
+  .no-padding{
+    padding: 0;
+  }
+
+  .flexi-message,
+  .flexi-message-complete{
+    clear: both;
+    font-size:@font-size-large;
+    padding: 20px 0;
+
+    .text-tertiary{
+      font-weight: bold;
+    }
+  }
+  .felxi-extras-icons {
+    overflow: hidden;
+    a {
+      text-align: center;
+      line-height: 1.1;
+
+      &:before {
+        display: block;
+        margin-bottom: 10px;
+        border-radius: 50%;
+        background-color: @icon-bg-color;
+        border: 1px solid @icon-border-color;
+        color: @theme-tertiary;
+        font-family: ctm-health;
+        text-align: center;
+      }
+
+      &.disabled {
+        &:before {
+          color: #8A8A8A;
+        }
+      }
+
+      &.active {
+        color: @gray-dark;
+
+        &:before {
+          background-color: @icon-bg-checked-color;
+          border-color: @icon-border-checked-color;
+          color: #fff;
+        }
+      }
+
+      &:hover,
+      &:focus {
+        text-decoration: none;
+      }
+    }
+
+    @media (@xs) {
+      .roundIconSize(50px, @font-size-base, 0, 11, a);
+    }
+    @media (@sm) {
+      .roundIconSize(40px, @font-size-small, 1, 11, a);
+    }
+    @media (@md) {
+      .roundIconSize(55px, @font-size-base, 0, 11, a);
+    }
+    @media (@lg) {
+      .roundIconSize(60px, @font-size-base, 7, 11, a);
+    }
+  }
+}
