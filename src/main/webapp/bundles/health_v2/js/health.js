@@ -232,16 +232,22 @@
 
 					if($healthSitHealthCvr.isValid()) {
 						$healthSitHealthCvr.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
-
-						$('.health-cover').addClass('hidden');
-						$('.health-about-you').addClass('hidden');
 					}
+
 					if($healthSitLocation.isValid(true)) {
 						$healthSitLocation.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
+					}
 
+					if($healthSitHealthCvr.val() !== '') {
+						$('.health-cover').addClass('hidden');
+					}
+
+					if($healthSitLocation.val() !== '') {
 						$('.health-location').addClass('hidden');
-					} else {
-						$('.health-about-you').removeClass('hidden'); // Only hide if both hidden
+					}
+
+					if($healthSitHealthCvr.val() !== '' && $healthSitLocation.val() !== '') {
+						$('.health-about-you').addClass('hidden');
 					}
 
 					meerkat.site.isFromBrochureSite = false;
