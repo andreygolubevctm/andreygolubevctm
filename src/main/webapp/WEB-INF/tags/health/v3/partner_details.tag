@@ -4,7 +4,7 @@
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}/application" />
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-<form_v2:fieldset legend="Your Partner's Details">
+<form_v2:fieldset legend="Your Partner's Details" id="partnerContainer">
 	<div id="${name}" class="health_application">
 		<health_v3:person_details xpath="${xpath}/partner" title="Your Partner's" id="partner" />
 	</div>
