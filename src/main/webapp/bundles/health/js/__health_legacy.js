@@ -141,9 +141,11 @@ var healthChoices = {
 
 		if (!healthChoices.hasSpouse()) {
 			healthChoices.flushPartnerDetails();
-			$('#partner-health-cover, #partner, .health-person-details-partner, #partnerFund').hide();
+			$('#partner-health-cover, #partner, #partnerFund').hide();
+			$('.health-person-details-partner').closest('fieldset').hide();
 		} else {
-			$('#partner-health-cover, #partner, .health-person-details-partner, #partnerFund').show();
+			$('#partner-health-cover, #partner, #partnerFund').show();
+			$('.health-person-details-partner').closest('fieldset').show();
 		}
 
 		//// See if Children should be on or off

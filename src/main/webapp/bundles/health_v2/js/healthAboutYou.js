@@ -23,6 +23,7 @@
 		$healthCoverDetailsDependants,
 		$healthCoverIncomeMessage,
 		$partnersDetails,
+		$partnersDetailsApplyContainer,
 		$lhcContainers,
 		$medicare;
 
@@ -57,9 +58,11 @@
 		$tierDropdowns = $aboutYouContainer.find('#health_situation_healthCvr, #health_healthCover_dependants'),
 		$primaryDOB = $aboutYouContainer.find('#health_healthCover_primary_dob'),
 		$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend'),
-		$partnersDetails = $('.health-person-details-partner, #partnerFund, #partnerMemberID'),
+		$partnersDetails = $('#partnerFund, #partnerMemberID'),
+		$partnersDetailsApplyContainer = $(".health-person-details-partner").closest('fieldset'), /* this is due to the new layout. hate this */
 		$lhcContainers = $('#primary-health-cover, #partner-health-cover, #australian-government-rebate'),
 		$medicare = $('.health-medicare_details');
+
 
 		if (!healthChoices.hasSpouse()) {
 			$partnerContainer.hide();
@@ -129,23 +132,27 @@
 				 $healthCoverDetailsDependants.slideDown();
 				 $partnerContainer.slideDown();
 			 	 $partnersDetails.show();
+			 	 $partnersDetailsApplyContainer.show();
 			 break;
 		 case 'SPF':
 				 $partnerContainer.slideUp();
 				 $healthCoverDetailsDependants.slideDown();
 			 	 $partnersDetails.hide();
+			 	 $partnersDetailsApplyContainer.hide();
 			 break;
 		 case 'C':
 				 $healthCoverDetailsDependants.slideUp();
 				 $partnerContainer.slideDown();
 			 	 $partnersDetails.show();
+			 	 $partnersDetailsApplyContainer.show();
 			 break;
-		 default:
+			default:
 				 isInitMode === true ? $partnerContainer.hide() : $partnerContainer.slideUp();
 			 	 isInitMode === true ? $healthCoverDetailsDependants.hide() : $healthCoverDetailsDependants.slideUp();
 				 resetPartnerDetails();
 				 $healthCoverIncomeMessage.hide();
 			 	 $partnersDetails.hide();
+				 $partnersDetailsApplyContainer.hide();
 			 break;
 		 }
 

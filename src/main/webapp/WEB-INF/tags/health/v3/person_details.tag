@@ -25,12 +25,7 @@
 
 <%-- HTML --%>
 <div class="health-person-details-${id} health-person-details ${id}">
-
-
-
-		<div class="health-person-details-${id} health-person-details ${id}">
-			<field_v3:name_group xpath="${xpath}" />
-		</div>
+		<field_v3:name_group xpath="${xpath}" />
 
 		<c:set var="fieldXpath" value="${xpath}/dob" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium">
