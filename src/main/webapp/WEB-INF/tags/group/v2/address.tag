@@ -41,9 +41,7 @@
 <go:script href="common/javascript/legacy_address.js" marker="js-href"/>
 
 <c:if test="${empty showTitle or showTitle == 'true'}">
-	<form_v2:row fieldXpath="${fieldXpath}" label="${isPostalAddress? 'Postal' : 'Residential'} Address" id="22">
-	&nbsp;
-	</form_v2:row>
+	<form_v2:row fieldXpath="${fieldXpath}" label="${isPostalAddress? 'Postal' : 'Residential'} Address" id="22" className="addressHeading" hideHelpIconCol="true"></form_v2:row>
 </c:if>
 
 <field_v1:hidden xpath="${xpath}/elasticSearch" defaultValue="N" />
@@ -51,14 +49,14 @@
 
 <%-- POSTCODE --%>
 <c:set var="fieldXpath" value="${xpath}/postCode" />
-<form_v2:row label="Postcode"  labelClassName="hidden-xs" addRowClass="${true}">
-	<form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" smRowOverride="5" labelClassName="hidden-sm hidden-md hidden-lg" hideHelpIconCol="${true}" disableFormGroup="${true}">
+<form_v2:row label="Postcode" isNestedStyleGroup="${true}">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" smRowOverride="5" isNestedField="${true}" hideHelpIconCol="${true}">
 		<field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode' " />
 	</form_v2:row>
 
 	<%-- SUBURB DROPDOWN (NON STD) --%>
 	<c:set var="fieldXpath" value="${xpath}/suburb" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Suburb" className="${name}_nonStd_street" smRowOverride="7" labelClassName="hidden-sm hidden-md hidden-lg" hideHelpIconCol="${true}" disableFormGroup="${true}">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Suburb" className="${name}_nonStd_street" smRowOverride="7" hideHelpIconCol="${true}" isNestedField="${true}">
 		<c:choose>
 			<c:when test="${not empty address.postCode}">
 				<sql:query var="result" dataSource="${datasource:getDataSource()}">
@@ -126,10 +124,10 @@
 </form_v2:row>
 
 
-<form_v2:row label="Unit / Street Number" addRowClass="${true}">
+<form_v2:row label="Unit / Street Number" isNestedStyleGroup="${true}" className="${name}_non_standard_container">
 	<%-- UNIT/SHOP (BOTH STD & NON STD) --%>
 	<c:set var="fieldXpath" value="${xpath}/unitShop" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow" smRowOverride="5" labelClassName="hidden-sm hidden-md hidden-lg" hideHelpIconCol="${true}" disableFormGroup="${true}">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow" smRowOverride="5" isNestedField="${true}" hideHelpIconCol="${true}">
 		<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false" placeHolder="Unit/Shop/Level"  />
 	</form_v2:row>
 
@@ -140,7 +138,7 @@
 	</c:if>
 
 	<c:set var="fieldXpath" value="${xpath}/streetNum" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="${streetLabel}" id="${name}_streetNumRow" className="std_streetNum" smRowOverride="2" labelClassName="hidden-sm hidden-md hidden-lg" hideHelpIconCol="${true}" disableFormGroup="${true}">
+	<form_v2:row fieldXpath="${fieldXpath}" label="${streetLabel}" id="${name}_streetNumRow" className="std_streetNum" smRowOverride="2"  isNestedField="${true}" hideHelpIconCol="${true}">
 		<div class="${name}_streetNum_container">
 			<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="false" />
 		</div>
@@ -149,7 +147,7 @@
 	<%-- UNIT/SHOP (BOTH STD & NON STD) --%>
 
 	<c:set var="fieldXpath" value="${xpath}/unitType" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStd_street ${name}_unitShopRow" smRowOverride="5" labelClassName="hidden-sm hidden-md hidden-lg" hideHelpIconCol="${true}" disableFormGroup="${true}">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStd_street ${name}_unitShopRow" smRowOverride="5"  isNestedField="${true}" hideHelpIconCol="${true}">
 		<field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" />
 	</form_v2:row>
 

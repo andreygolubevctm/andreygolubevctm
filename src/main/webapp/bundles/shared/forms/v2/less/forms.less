@@ -165,7 +165,7 @@ fieldset{
 		}
 	}
 }
-.dateinput-tripleField .form-control { padding: 10px 10px; text-align: center; }
+.dateinput-tripleField .form-control { padding: 10px 8px; text-align: center; }
 
 .datepicker {
 	z-index: (@zindex-modal - 10) !important;
@@ -190,8 +190,49 @@ fieldset{
 	font-family: @font-family-theme-bold;
 }
 
+.form-control,
+.twitter-typeahead .tt-query {
+	padding: 10px 8px;
+}
+
 @media(@sm) {
 	div[class*="col-sm-"] {
 		padding-right:0px;
+	}
+}
+
+@media(@xs-only) {
+	.nestedGroup {
+		margin-bottom: 0px;
+		.row-content {
+			margin-bottom: 15px;
+		}
+	}
+}
+
+
+.selectContainerTitle {
+	@media(@sm-only) {
+		> .col-sm-2 {
+			width: 26%;
+		}
+		> .col-sm-3 {
+			width: 30%;
+		}
+	}
+
+	@media(@md-only) {
+		> .col-sm-2  {
+			width: 20%;
+		}
+	}
+}
+
+@media(@sm-only) {
+	.dateinput_container {
+		.dayContainer,
+		.monthContainer {
+			width: 20%;
+		}
 	}
 }

@@ -26,47 +26,34 @@
 
         <div class="items">
 
-            <form_v2:row label="Name" hideHelpIconCol="true" className="row" addRowClass="${true}">
-            <div class="col-sm-2 col-xs-12">
-            <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/title"/>
-            <form_v2:row fieldXpath="${fieldXpath}" label="Title" labelClassName="hidden-sm hidden-md hidden-lg" removeSMsize="${true}">
-                <field_v2:import_select xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s title" required="true" url="/WEB-INF/option_data/titles_pithy.html"/>
-            </form_v2:row>
-            </div>
+            <form_v2:row label="Name" hideHelpIconCol="true" className="row" isNestedStyleGroup="${true}">
+                <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/title"/>
+                <form_v2:row fieldXpath="${fieldXpath}" label="Title" smRowOverride="3" isNestedField="${true}" hideHelpIconCol="${true}" className="selectContainerTitle">
+                    <field_v2:import_select xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s title" required="true" url="/WEB-INF/option_data/titles_pithy.html"/>
+                </form_v2:row>
 
-            {{ if(providerConfig.showMiddleName === true) { }}
-            <div class="col-sm-4 col-xs-12">
-            {{ } else { }}
-            <div class="col-sm-5 col-xs-12">
-            {{ } }}
-            <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/firstName"/>
-            <form_v2:row fieldXpath="${fieldXpath}" label="First Name" labelClassName="hidden-sm hidden-md hidden-lg" removeSMsize="${true}">
-                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s first name" required="true" className="sessioncamexclude"
-                                 additionalAttributes=" data-rule-personName='true' " defaultValue="{{= obj.firstName }}" />
-            </form_v2:row>
-            </div>
 
-            {{ if(providerConfig.showMiddleName === true) { }}
-            <div class="col-sm-2 col-xs-12">
-            <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/middleName"/>
-            <form_v2:row fieldXpath="${fieldXpath}" label="Middle Name" className="health_dependant_details_middleName" labelClassName="hidden-sm hidden-md hidden-lg"  removeSMsize="${true}">
-                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s middle name" required="false" className="sessioncamexclude"
-                                 additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.middleName }}" />
-            </form_v2:row>
-            </div>
-            {{ } }}
+                <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/firstName"/>
+                <form_v2:row fieldXpath="${fieldXpath}" label="First Name" smRowOverride="3" isNestedField="${true}" hideHelpIconCol="${true}">
+                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s first name" required="true" className="sessioncamexclude"
+                                     additionalAttributes=" data-rule-personName='true' " defaultValue="{{= obj.firstName }}" />
+                </form_v2:row>
 
-            {{ if(providerConfig.showMiddleName === true) { }}
-            <div class="col-sm-4 col-xs-12">
-            {{ } else { }}
-            <div class="col-sm-5 col-xs-12">
-            {{ } }}
-            <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/lastname"/>
-            <form_v2:row fieldXpath="${fieldXpath}" label="Last Name" labelClassName="hidden-sm hidden-md hidden-lg" removeSMsize="${true}">
-                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s last name" required="true" className="sessioncamexclude"
-                                 additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.lastname }}" />
-            </form_v2:row>
-            </div>
+                {{ if(providerConfig.showMiddleName === true) { }}
+                <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/middleName"/>
+                <form_v2:row fieldXpath="${fieldXpath}" label="Middle Name" className="health_dependant_details_middleName" smRowOverride="3" isNestedField="${true}" hideHelpIconCol="${true}">
+                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s middle name" required="false" className="sessioncamexclude"
+                                     additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.middleName }}" />
+                </form_v2:row>
+                {{ } }}
+
+
+                <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/lastname"/>
+                <form_v2:row fieldXpath="${fieldXpath}" label="Last Name" smRowOverride="3" isNestedField="${true}" hideHelpIconCol="${true}">
+                    <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s last name" required="true" className="sessioncamexclude"
+                                     additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.lastname }}" />
+                </form_v2:row>
+
             </form_v2:row>
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/dob"/>

@@ -7,7 +7,6 @@
 <%@ attribute name="label" 				required="false" rtexprvalue="true"	 description="label for the field"%>
 <%@ attribute name="fieldXpath"			required="false" rtexprvalue="true"	 description="The xpath of the field the label needs to point to"%>
 <%@ attribute name="className" 			required="false" rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="labelClassName" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="id" 				required="false" rtexprvalue="true"	 description="optional id for this row"%>
 <%@ attribute name="helpId"				required="false" rtexprvalue="true"	 description="Help tooltip ID"%>
 <%@ attribute name="showHelpText"		required="false" rtexprvalue="true"	 description="Trigger to display help icon as text rather than icon" %>
@@ -18,9 +17,8 @@
 
 <%-- Added to deal with the new field sizes introduced in health --%>
 <%@ attribute name="smRowOverride" 		required="false" rtexprvalue="true"	 description="Override the SM value" %>
-<%@ attribute name="removeSMsize" 		required="false" rtexprvalue="true"	 description="Toggle to disable sm col size" %>
-<%@ attribute name="addRowClass" 		required="false" rtexprvalue="true"	 description="Toggle to add the class row to fix formatting with new collapsed fields" %>
-<%@ attribute name="disableFormGroup" 	required="false" rtexprvalue="true"	 description="Toggle to add the class row to fix formatting with new collapsed fields on the parent div" %>
+<%@ attribute name="isNestedField" 		required="false" rtexprvalue="true"	 description="Toggle to automatically set some styling values for the nested fields eg name_group.tag" %>
+<%@ attribute name="isNestedStyleGroup" required="false" rtexprvalue="true"	 description="Toggle to remove the col-xs-12 class. If not removed breaks the nesting design introduced to health" %>
 
 
 
@@ -34,9 +32,13 @@
 	<c:set var="addForAttr" value="${true}" />
 </c:if>
 
-<c:if test="${not disableFormGroup eq true}">
+<c:if test="${not isNestedField eq true}">
 	<c:set var="formGroupClasses" value="form-group row" />
 </c:if>
+<c:if test="${isNestedStyleGroup eq true}">
+	<c:set var="formGroupClasses" value="nestedGroup form-group" />
+</c:if>
+
 
 <%-- HTML --%>
 <%--
@@ -78,12 +80,21 @@
 
 	<c:choose>
 		<c:when test="${labelAbove eq true}">
-			<c:set var="labelClassName" value="col-xs-${toggleHelpColMobile} col-sm-12 ${labelClassName}" />
+			<c:set var="labelClassName" value="col-xs-${toggleHelpColMobile} col-sm-12" />
 		</c:when>
 		<c:otherwise>
-			<c:set var="labelClassName" value="col-sm-4 col-xs-${toggleHelpColMobile} ${labelClassName}" />
+			<c:set var="labelClassName" value="col-sm-4 col-xs-${toggleHelpColMobile}" />
 		</c:otherwise>
 	</c:choose>
+
+	<c:if test="${isNestedField eq true}">
+		<c:set var="labelClassName" value="${labelClassName} hidden-sm hidden-md hidden-lg" />
+	</c:if>
+
+	<c:if test="${isNestedStyleGroup eq true}">
+		<c:set var="labelClassName" value="${labelClassName} hidden-xs" />
+	</c:if>
+
 
 	<c:choose>
 		<c:when test="${not empty label and label ne ''}">
@@ -105,17 +116,15 @@
 		</c:otherwise>
 	</c:choose>
 
-
-	<c:set var="smColClass" value="col-sm-${toggleHelpColSmall} " />
-	<c:if test="${removeSMsize eq true}">
-		<c:set var="smColClass" value="" />
-	</c:if>
-
 	<c:set var="rowClass">
-		<c:if test="${addRowClass eq true}"> row </c:if>
+		<c:if test="${isNestedStyleGroup eq true}"> row </c:if>
 	</c:set>
 
-	<div class="${smColClass} ${fieldCol} <c:out value=" ${rowClass}" /> <c:out value=" ${offset}" /> row-content">
+	<c:if test="${isNestedStyleGroup eq true}">
+		<c:set var="fieldCol" value=" " />
+	</c:if>
+
+	<div class="col-sm-<c:out value="${toggleHelpColSmall} " /> ${fieldCol} <c:out value=" ${rowClass}" /> <c:out value=" ${offset}" /> row-content">
 		<jsp:doBody />
 		<div class="fieldrow_legend"<c:if test="${not empty id}"> id="${id}_row_legend"</c:if>>${legend}</div>
 	</div>

@@ -13,21 +13,23 @@
 	<c:set var="xpath" value="${pageSettings.getVerticalCode()}/previousfund" />
 	<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 	<div id="${name}">
-		<c:set var="fieldXpath" value="${xpath}/partner/fundName" />
-		<form_v2:row fieldXpath="${fieldXpath}" label="Partner's Current Health Fund" id="partnerFund" className="changes-premium">
-			<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="partner's health fund" required="true" />
-		</form_v2:row>
-
-		<div id="partnerMemberID" class="membership">
-			<c:set var="fieldXpath" value="${xpath}/partner/memberID" />
-			<form_v2:row fieldXpath="${fieldXpath}" label="Membership Number" className="partnerMemberID" smRowOverride="3">
-				<field_v2:input xpath="${fieldXpath}" title="partner's member ID" required="true" className="sessioncamexclude" />
+		<div id="partnerpreviousfund" legend="Previous Fund Details" className="health-previous_fund">
+			<c:set var="fieldXpath" value="${xpath}/partner/fundName" />
+			<form_v2:row fieldXpath="${fieldXpath}" label="Partner's Current Health Fund" id="partnerFund" className="changes-premium">
+				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="partner's health fund" required="true" />
 			</form_v2:row>
 
-			<c:set var="fieldXpath" value="${xpath}/partner/authority" />
-			<form_v2:row fieldXpath="${fieldXpath}" className="health_previous_fund_authority hidden" helpId="522">
-				<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="My partner authorises <span>the fund</span> to contact their previous fund to obtain a clearance certificate" label="My partner authorises <span>the fund</span> to contact my previous fund to obtain a transfer certificate" required="false" />
-			</form_v2:row>
+			<div id="partnerMemberID" class="membership">
+				<c:set var="fieldXpath" value="${xpath}/partner/memberID" />
+				<form_v2:row fieldXpath="${fieldXpath}" label="Membership Number" className="partnerMemberID" smRowOverride="3">
+					<field_v2:input xpath="${fieldXpath}" title="partner's member ID" required="true" className="sessioncamexclude" />
+				</form_v2:row>
+
+				<c:set var="fieldXpath" value="${xpath}/partner/authority" />
+				<form_v2:row fieldXpath="${fieldXpath}" className="health_previous_fund_authority hidden" helpId="522">
+					<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="My partner authorises <span>the fund</span> to contact their previous fund to obtain a clearance certificate" label="My partner authorises <span>the fund</span> to contact my previous fund to obtain a transfer certificate" required="false" />
+				</form_v2:row>
+			</div>
 		</div>
 	</div>
 

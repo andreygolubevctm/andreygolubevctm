@@ -17,11 +17,25 @@
 
 
 <%-- HTML --%>
-<nta id="${name}-selection" class="health_application-details">
+<div id="${name}-selection" class="health_application-details">
 
 	<form_v2:fieldset legend="Contact Details">
-
-		<group_v2:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"/>
+		<c:choose>
+			<c:when test="${useElasticSearch eq true}">
+				aaaa
+				<group_v3:elastic_address
+						xpath="${xpath}/address"
+						type="R"
+						suburbAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='Your address does not match the original suburb provided.' autocomplete='false'"
+						suburbNameAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='The selected suburb does not match the original suburb selected.' autocomplete='false'"
+						postCodeAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='Your address does not match the original postcode provided.' autocomplete='false'"
+						postCodeNameAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='The entered postcode does not match the original postcode provided.' autocomplete='false'"
+				/>
+			</c:when>
+			<c:otherwise>bbbb
+				<group_v2:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"/>
+			</c:otherwise>
+		</c:choose>
 
 		<%-- POSTAL defaults to Y if not pre-loaded --%>
 		<c:if test="${ (empty data[xpath].postalMatch) && (empty data['health/contactDetails/email']) }">
@@ -33,7 +47,21 @@
 		</form_v2:row>
 
 		<div id="${name}_postalGroup">
-			<group_v2:address xpath="${xpath}/postal" type="P" stateValidationField="#health_application-selection .content"/>
+			<c:choose>
+				<c:when test="${useElasticSearch eq true}">
+					<group_v3:elastic_address
+							xpath="${xpath}/postal"
+							type="P"
+							suburbNameAdditionalAttributes=" autocomplete='false'"
+							suburbAdditionalAttributes=" autocomplete='false'"
+							postCodeNameAdditionalAttributes=" autocomplete='false'"
+							postCodeAdditionalAttributes=" autocomplete='false'"
+					/>
+				</c:when>
+				<c:otherwise>
+					<group_v2:address xpath="${xpath}/postal" type="P" stateValidationField="#health_application-selection .content"/>
+				</c:otherwise>
+			</c:choose>
 		</div>
 
 		<group_v2:contact_numbers xpath="${xpath}" required="true" />
@@ -49,16 +77,23 @@
 		<c:set var="fieldXpath" value="${xpath}_no_email" />
 		<form_v2:row fieldXpath="${fieldXpath}" id="${name}_noEmailGroup">
 			<field_v2:checkbox xpath="${fieldXpath}" value="N"
-				title="No email address"
-				required="false"
-				label="true" />
+							   title="No email address"
+							   required="false"
+							   label="true" />
 		</form_v2:row>
-		
+
 		<form_v2:row id="${name}_optInEmail-group" hideHelpIconCol="true">
 			<field_v2:checkbox xpath="${xpath}/optInEmail" value="Y"
-				title="Stay up to date with news and offers direct to your inbox"
-				required="false"
-				label="true" />
+							   title="Stay up to date with news and offers direct to your inbox"
+							   required="false"
+							   label="true" />
+		</form_v2:row>
+
+		<form_v2:row id="${name}_okToCall-group" hideHelpIconCol="true">
+			<field_v2:checkbox xpath="${xpath}_call" value="Y"
+							   title="Our dedicated Health Insurance consultants will give you a call to chat about your Health Insurance needs and questions."
+							   required="false"
+							   label="true" />
 		</form_v2:row>
 		
 		<form_v2:row id="${name}_okToCall-group" hideHelpIconCol="true">
@@ -71,10 +106,10 @@
 		<%-- Default contact Point to off --%>
 		<c:set var="fieldXpath" value="${xpath}/contactPoint" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="How would you like <span>the Fund</span> to send you information?" id="${name}_contactPoint-group"
-					className="health_application-details_contact-group hidden">
+					 className="health_application-details_contact-group hidden">
 			<field_v2:array_radio items="E=Email,P=Post" xpath="${fieldXpath}" title="like the fund to contact you" required="false" id="${name}_contactPoint" />
 		</form_v2:row>
-		
+
 		<%-- Product Information --%>
 		<field_v1:hidden xpath="${xpath}/provider" className="health_application_details_provider" />
 		<field_v1:hidden xpath="${xpath}/productId" className="health_application_details_productId" />

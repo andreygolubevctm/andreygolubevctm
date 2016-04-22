@@ -16,7 +16,7 @@
 	<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 	<div id="${name}">
 
-		<div id="previousfund" legend="Previous Fund Details" className="health-previous_fund">
+		<div id="yourpreviousfund" legend="Previous Fund Details" className="health-previous_fund">
 
 			<c:set var="fieldXpath" value="${xpath}/primary/fundName" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Your Current Health Fund" id="clientFund" className="changes-premium">

@@ -19,7 +19,22 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health_application-details">
 
-		<group_v2:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"/>
+	<c:choose>
+		<c:when test="${useElasticSearch eq true}">
+			<group_v3:elastic_address
+					xpath="${xpath}/address"
+					type="R"
+					suburbAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='Your address does not match the original suburb provided.' autocomplete='false'"
+					suburbNameAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='The selected suburb does not match the original suburb selected.' autocomplete='false'"
+					postCodeAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='Your address does not match the original postcode provided.' autocomplete='false'"
+					postCodeNameAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='The entered postcode does not match the original postcode provided.' autocomplete='false'"
+			/>
+		</c:when>
+		<c:otherwise>
+			<group_v2:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"/>
+		</c:otherwise>
+	</c:choose>
+
 
 		<%-- POSTAL defaults to Y if not pre-loaded --%>
 		<c:if test="${ (empty data[xpath].postalMatch) && (empty data['health/contactDetails/email']) }">
@@ -31,7 +46,21 @@
 		</form_v2:row>
 
 		<div id="${name}_postalGroup">
-			<group_v2:address xpath="${xpath}/postal" type="P" stateValidationField="#health_application-selection .content"/>
+			<c:choose>
+				<c:when test="${useElasticSearch eq true}">
+					<group_v3:elastic_address
+							xpath="${xpath}/postal"
+							type="P"
+							suburbNameAdditionalAttributes=" autocomplete='false'"
+							suburbAdditionalAttributes=" autocomplete='false'"
+							postCodeNameAdditionalAttributes=" autocomplete='false'"
+							postCodeAdditionalAttributes=" autocomplete='false'"
+					/>
+				</c:when>
+				<c:otherwise>
+					<group_v2:address xpath="${xpath}/postal" type="P" stateValidationField="#health_application-selection .content"/>
+				</c:otherwise>
+			</c:choose>
 		</div>
 
 		<group_v2:contact_numbers xpath="${xpath}" required="true" />

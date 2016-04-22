@@ -21,42 +21,27 @@
 		& + label:before {
 			.user-select(none);
 
-			border-radius: @border-radius-base;
+			border-radius: 3px;
 			/* By default, apply the success theme */
-			border: 1px solid @input-border;
+			border: 1px solid lighten(@theme-dark, 60%);
 			font-family: 'framework_font';
-			font-size: 16px; //Icon font is built at this base size
-			display: block;
-			float: left;
+			font-size: 8px; //Icon font is built at this base size
+			display: inline-block;
 			visibility: visible;
 			left: 0;
 			margin: 0;
 			margin-left: -34px;
 			margin-top:-6px;
-			padding:0.22em;
-			padding-top:0.26em;
-			padding-bottom:0.17em;
+			margin-right: 5px;
+			padding: 2px;
 			line-height: 1;
 			text-align: center;
 			/* Put checkbox styles here: */
 			color: #fff;
 			background-color: white;
 
-			@media(@sm) {
-				border-radius: 3px;
-				border: 1px solid lighten(@theme-dark, 60%);
-				padding: 2px;
-				margin-right: 5px;
-				float: none;
-				display: inline-block;
-				font-size: 8px; //Icon font is built at this base size
-			}
-
 			&:hover,
 			&:focus {
-				@media(@xs-only) {
-					color: @form-input-common-selected-text-colour;
-				}
 				text-decoration: none;
 			}
 			&.disabled,
@@ -65,25 +50,13 @@
 				cursor: not-allowed;
 				pointer-events: none; // Future-proof disabling of clicks
 				//.opacity(.65);
-				@media(@xs-only) {
-					.box-shadow(none);
-                    background-color: @input-bg-disabled;
-                    border-color: @input-border-disabled;
-				}
 			}
-		} 
+		}
 
 		/* Checked state */
 		&:checked {
 			& + label:before {
-				@media(@sm) {
-					color: #000;
-				}
-
-				@media(@xs-only) {
-					background-color: @form-input-common-selected-bg-colour;
-					border-color: @form-input-common-selected-bg-colour;
-				}
+				color: #000;
 			}
 		}
 

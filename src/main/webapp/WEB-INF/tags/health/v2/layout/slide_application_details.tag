@@ -23,10 +23,6 @@
 					</div>
 				</div>
 
-				<form_v2:fieldset id="${name}_application_text" legend="" className="instructional">
-					<h4>In a few more steps, you'll be done</h4>
-					<p>Just fill in your details below and we'll pass them onto your chosen health fund, making the application process easier for you!</p>
-				</form_v2:fieldset>
 				<%-- The reason for the multiple forms here is because of an issue with iOS7 --%>
 
 				<form  id="applicationForm_1" autocomplete="off" class="form-horizontal" role="form">

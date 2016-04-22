@@ -65,6 +65,7 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 	stdStreetFld			= $("#" + name + "_std_street"),
 	nonStdFld				= $("#" + name + "_nonStd"),
 	nonStdFldRow			= $("#" + name + "_nonStd_row"),
+	nonStdContainer			= $("." + name + "_non_standard_container"),
 	fieldName				= name,
 	selectedStreetFld		= "",
 	userStartedTyping		= true;
@@ -707,8 +708,8 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 
 	// NON STANDARD ADDRESS
 	nonStdFld.on('change' /*click*/, function nonStdFldClick() {
-
 		if ($(this).is(':checked')) {
+			nonStdContainer.show();
 			stdStreetFld.hide();
 			nonStdstreetRow.show();
 			streetNumRow.show();
@@ -718,6 +719,7 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 			window.selectedAddressObj[getType()].hasUnits = true;
 			streetFld.valid();
 		} else {
+			nonStdContainer.hide();
 			nonStdstreetRow.hide();
 			stdStreetFld.show();
 			streetNumRow.hide();
