@@ -24,14 +24,11 @@
     </jsp:attribute>
 
     <jsp:attribute name="sidebarColumn">
+        <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
+            <health_v3:filters_template/>
+        </div>
 
-        <%-- FILTERS Module will be for standard filters, health filters etc.
-        Style is: Boxed border, standard row gutter
-        Uses semibold h3 and h4 for titles
-        Buttons all caps 12px or 13px?
-        --%>
-        <health_v3:filters />
-        <health_v3:filters_benefits />
+        <health_v3:filters_benefits/>
 
     </jsp:attribute>
 

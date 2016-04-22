@@ -81,10 +81,13 @@
 	isDefaultToHealthQuote: ${defaultToHealthQuote},
     isDefaultToHealthApply: ${defaultToHealthApply},
 	healthAlternatePricingActive: ${healthAlternatePricingActive},<c:if test="${isHealthV2 eq true}">
+	<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService"/>
+	<c:set var="providerList" value="${miscUtils:convertToJson(healthApplicationService.getAllProviders(pageSettings.getBrandId()))}"/>
 	navMenu: {
 		type: 'offcanvas',
 		direction: 'right'
 	},
+	providerList: ${providerList},
 </c:if>liveChat: {
 		config: {
 			lpServer			: "server.lon.liveperson.net",

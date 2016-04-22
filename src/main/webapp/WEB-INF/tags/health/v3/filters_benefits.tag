@@ -17,6 +17,7 @@
                         <health_v3:benefit_checkbox_label item="${selectedValue}" category="Hospital" />
                     </c:forEach>
             </div>
+            <a>show all <span class="icon icon-angle-down"></span></a>
         </div>
     </div>
 
@@ -31,6 +32,8 @@
                         <health_v3:benefit_checkbox_label item="${selectedValue}" category="GeneralHealth" />
                     </c:forEach>
             </div>
+            <a>show all <span class="icon icon-angle-down"></span></a>
         </div>
     </div>
 </div>
+<health_v3:filters_update_widget_template />

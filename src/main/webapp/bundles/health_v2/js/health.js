@@ -102,11 +102,13 @@
 		var $mainform = $('#mainform');
 		$mainform.find('.col-sm-8')
 			.not('.short-list-item')
+			.not('.results-column-container')
 			.removeClass('col-sm-8').addClass('col-sm-9');
 		$mainform.find('.col-sm-4')
 			.not("label[for*=health_healthCover]")
 			.not('label[for*=health_situation_coverType]')
 			.not('.short-list-item')
+			.not('#results-sidebar')
 			.add("label[for=health_healthCover_primary_dob]")
 			.add("label[for=health_healthCover_primary_cover]")
 			.add("label[for=health_healthCover_primary_coverType]")
@@ -288,7 +290,7 @@
 				//	meerkat.modules.healthSegment.filterSegments();
 				//}, 1000);
 
-				if (event.isForward && meerkat.site.isCallCentreUser === true){
+				if (event.isForward && meerkat.site.isCallCentreUser === true) {
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
 
@@ -377,7 +379,7 @@
 			},
 			onInitialise: function onInitResults(event){
 
-				meerkat.modules.healthFilters.initHealthFilters();
+				//meerkat.modules.healthFilters.initHealthFilters();
 				meerkat.modules.healthSafariColumnCountFix.initHealthSafariColumnCountFix();
 				meerkat.modules.healthPriceRangeFilter.initHealthPriceRangeFilter();
 				meerkat.modules.healthAltPricing.initHealthAltPricing();

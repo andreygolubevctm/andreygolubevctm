@@ -33,10 +33,12 @@
     "shared/sendEmail",
     "shared/emailBrochures",
     "shared/serverSideValidationOutput",
-    "shared/sidebarWidgets"
+    "shared/sidebarWidgets",
+    "shared/filters"
   ],
   "exclusions": [
     "shared/results/v4",
-    "shared/sidebarWidgets"
+    "shared/sidebarWidgets",
+    "shared/filters"
   ]
 }
