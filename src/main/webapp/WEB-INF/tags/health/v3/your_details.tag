@@ -23,7 +23,9 @@
 			<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="your health fund" required="true" additionalAttributes=" data-attach='true' " />
 		</form_v2:row>
 
-			<%-- Optional Membership ID's --%>
+		</div>
+
+		<%-- Optional Membership ID's --%>
 		<div id="clientMemberID" class="membership">
 			<c:set var="fieldXpath" value="${xpath}/primary/memberID" />
 			<form_v2:row fieldXpath="${fieldXpath}" label="Membership Number" className="clientMemberID" smRowOverride="3">
@@ -36,6 +38,7 @@
 			</form_v2:row>
 		</div>
 	</div>
+
 
 
 	<c:set var="xpath" value="${pageSettings.getVerticalCode()}/payment" />
