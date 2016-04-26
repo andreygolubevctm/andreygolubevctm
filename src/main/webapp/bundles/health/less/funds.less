@@ -64,7 +64,7 @@ body{
 			display:block !important;
 		}
 		.ausgovtrebateform {
-			display:none;
+			display:block;
 		}
 		.ausgovtrebateform em {
 			display:none;
@@ -561,6 +561,16 @@ body{
 	  		display:none !important;
 		}
   	}
+}
+
+/* Call Centre Overrides */
+body.callCentre {
+	/* AHM */
+	&.AHM {
+		.ausgovtrebateform {
+			display: none;
+		}
+	}
 }
 
 .health_declaration {
