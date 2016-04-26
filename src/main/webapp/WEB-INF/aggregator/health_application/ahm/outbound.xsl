@@ -170,12 +170,15 @@
 		<xsl:value-of select="substring(/health/payment/details/start,4,2)" />
 		<xsl:value-of select="substring(/health/payment/details/start,1,2)" />
 	</xsl:variable>
-	<xsl:variable name="campaign_start">20160226</xsl:variable>
-	<xsl:variable name="campaign_end">20160306</xsl:variable>
 
+	<!-- Campaign Active Dates -->
+	<xsl:variable name="campaign_start">20160412</xsl:variable>
+	<xsl:variable name="campaign_end">20160430</xsl:variable>
+
+	<!-- Determine Campaign Code -->
 	<xsl:variable name="campaign_id">
 		<xsl:choose>
-			<xsl:when test="$valid_campaign_product = 1 and $start_date &gt;= $campaign_start and $start_date &lt;= $campaign_end">7107</xsl:when>
+			<xsl:when test="$valid_campaign_product = 1 and $start_date &gt;= $campaign_start and $start_date &lt;= $campaign_end">7445</xsl:when>
 			<xsl:otherwise>7000</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>

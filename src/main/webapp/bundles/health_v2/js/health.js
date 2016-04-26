@@ -179,14 +179,8 @@
 
 				// change benefits page layout when change the coverType
 				$healthSitCoverType.on('change', function() {
-					var coverTypeVal = (meerkat.modules.healthTiers.isActive()) ? $(this).find('input:checked').val() : $(this).val();
-
-					// this is done cos it affacts the layout far too greatly for the tiered benefits
-					if (!meerkat.modules.healthTiers.isActive()) {
-						meerkat.modules.healthBenefitsStep.changeLayoutByCoverType(coverTypeVal);
-					} else {
-						meerkat.modules.healthBenefitsStep.changeLayoutByCoverType('');
-					}
+					var coverTypeVal = $(this).find('input:checked').val();
+					meerkat.modules.healthBenefitsStep.changeLayoutByCoverType('');
 					meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
 				});
 
@@ -282,10 +276,8 @@
 
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
-				if (meerkat.modules.healthTiers.isActive()) {
-					meerkat.modules.healthBenefitsStep.setDefaultCover();
-					meerkat.modules.healthBenefitsStep.disableFields();
-				}
+				meerkat.modules.healthBenefitsStep.setDefaultCover();
+				meerkat.modules.healthBenefitsStep.disableFields();
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
 				meerkat.modules.healthBenefitsStep.checkAndHideMoreBenefits();
 				incrementTranIdBeforeEnteringSlide();
@@ -311,9 +303,7 @@
 				meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
 			},
 			onBeforeLeave:function(event){
-				if (meerkat.modules.healthTiers.isActive()) {
-					meerkat.modules.healthBenefitsStep.enableFields();
-				}
+				meerkat.modules.healthBenefitsStep.enableFields();
 			}
 		};
 		var contactStep = {
@@ -510,11 +500,6 @@
 
 					// Update the state of the dependants object.
 					meerkat.modules.healthDependants.updateDependantConfiguration();
-
-					// Check okToCall optin - show if no phone numbers in questionset and NOT Simples
-					if($('#health_contactDetails_contactNumber_mobile').val() === '' &&	$('#health_contactDetails_contactNumber_other').val() === '' &&	meerkat.site.isCallCentreUser === false) {
-						$('#health_application_okToCall-group').show();
-					}
 
 					meerkat.modules.healthApplyStep.onBeforeEnter();
 				}
@@ -906,8 +891,8 @@
 		if(postData.primary_dob === '') return false;
 		if(coverTypeHasPartner && postData.partner_dob === '')  return false;
 
-		if(meerkat.modules.utils.returnAge(postData.primary_dob) < 0) return false;
-		if(coverTypeHasPartner && meerkat.modules.utils.returnAge(postData.partner_dob) < 0)  return false;
+		if(meerkat.modules.age.returnAge(postData.primary_dob) < 0) return false;
+		if(coverTypeHasPartner && meerkat.modules.age.returnAge(postData.partner_dob) < 0)  return false;
 		if(postData.rebate_choice === "Y" && postData.income === "") return false;
 
 		// check in valid date format

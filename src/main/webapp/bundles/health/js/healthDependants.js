@@ -141,6 +141,8 @@
      */
     function updateDependantConfiguration() {
 
+        initHealthDependants(true);
+
         var dependantCountSpecified = $('#health_healthCover_dependants').val() || 1;
         var hasChildren = situationEnablesDependants();
         $('#health_application_dependants-selection').toggle(hasChildren);
@@ -179,7 +181,7 @@
         var dependantId = $wrapper.attr('data-id'),
             selectorPrefix = '#health_application_dependants_dependant' + dependantId,
             $dob = $(selectorPrefix + '_dob');
-        var age = meerkat.modules.utils.returnAge($dob.val(), true) || 0;
+        var age = meerkat.modules.age.returnAge($dob.val(), true) || 0;
         // If the dependant is between the school age
         if (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) {
             // If the config is set to true, we want to remove the class.
