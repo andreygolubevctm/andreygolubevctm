@@ -1,4 +1,4 @@
-#hbf_fexi_extras {
+#hbf_flexi_extras {
   h2 {
     font-size: 28px;
   }
@@ -17,7 +17,7 @@
       font-weight: bold;
     }
   }
-  .felxi-extras-icons {
+  .flexi-extras-icons {
     overflow: hidden;
     a {
       text-align: center;
@@ -35,6 +35,7 @@
       }
 
       &.disabled {
+        cursor: default;
         &:before {
           color: #8A8A8A;
         }
@@ -57,16 +58,16 @@
     }
 
     @media (@xs) {
-      .roundIconSize(50px, @font-size-base, 0, 11, a);
+      .roundIconSize(50px, @font-size-base, 0, 12, a);
     }
     @media (@sm) {
-      .roundIconSize(40px, @font-size-small, 1, 11, a);
+      .roundIconSize(40px, @font-size-small, 1, 12, a);
     }
     @media (@md) {
-      .roundIconSize(55px, @font-size-base, 0, 11, a);
+      .roundIconSize(55px, @font-size-base, 0, 12, a);
     }
     @media (@lg) {
-      .roundIconSize(60px, @font-size-base, 7, 11, a);
+      .roundIconSize(60px, @font-size-base, 7, 12, a);
     }
   }
 }
