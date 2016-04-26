@@ -70,8 +70,7 @@ fieldset > .content,
 	border:1px solid @border-colour;
 }
 
-.fieldset-card,
-.fieldset-column-side .sidebar-box {
+.fieldset-card {
 	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
 }
 .content{
@@ -130,6 +129,10 @@ fieldset > .content,
 	.competition-optin-group .col-sm-offset-3 {
 		margin-left: 2%;
 		width: 93%;
+	}
+
+	.health-contact-details-optin-group {
+		margin-bottom: 25px;
 	}
 
 	.definition {
@@ -212,4 +215,20 @@ body[data-step="apply"], body[data-step="payment"] {
 
 .journeyNavButton{
 	font-size: 16px;
+}
+
+#footer {
+	padding-bottom: 0px;
+	a {
+		color: @footer-text-color;
+		text-decoration:underline;
+	}
+}
+
+#copyright {
+	text-align:left;
+}
+
+.popover {
+	.qtip-variant(@qtip-health-popover-border, @qtip-default-border-radius, @qtip-health-popover-background-color, @qtip-health-popover-background-color, @qtip-default-padding-title, @qtip-default-padding-content, @qtip-health-popover-text-color, @qtip-health-popover-text-color);
 }

@@ -65,13 +65,17 @@ ul.themed {
 // Footer
 //
 #footer {
-	background: @footer-bg-color;
+	background: #ffff00;/*@footer-bg-color;*/
 	color: @footer-text-color;
 	padding-top: 20px;
-	padding-bottom: 15px;
+	padding-bottom: 0px;
 	.clearfix();
 	p {
 		.small;
+	}
+	a {
+		color: @footer-text-color !important;
+		text-decoration:underline;
 	}
 }
 #footer_mcafee {
@@ -1332,8 +1336,8 @@ select {
 //## Inhouse - ctm.theme.less, ctm.mixins.less, qtip.less, health/tooltips.less.
 //** qTip / non-bootstrap-popovers defaults
 .popover {
-	.qtip-variant(@qtip-default-border, @qtip-default-border-radius, @qtip-default-title-bg-color, @qtip-default-content-bg-color, @qtip-default-padding-title, @qtip-default-padding-content, @qtip-default-title-text-color, @qtip-default-content-text-color);
-		}
+	.qtip-variant(@qtip-health-popover-border, @qtip-default-border-radius, @qtip-health-popover-background-color, @qtip-health-popover-background-color, @qtip-default-padding-title, @qtip-default-padding-content, @qtip-health-popover-text-color, @qtip-health-popover-text-color);
+}
 
 .journeyEngineLoader {
 	font-family: @font-family-theme-bold;
