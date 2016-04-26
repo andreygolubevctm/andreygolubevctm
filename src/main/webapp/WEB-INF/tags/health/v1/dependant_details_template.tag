@@ -18,7 +18,7 @@
         <form_v2:row>
             <div class="inlineHeadingWithButton">
                 <h5>Dependant {{= obj.dependantId }}</h5>{{ if(obj.dependantId != 1) { }}
-                <a href="javascript:void(0);" class="remove-dependent btn btn-danger" title="Remove last dependent"
+                <a href="javascript:void(0);" class="remove-dependent btn btn-danger" title="Remove last dependant"
                                                                                             data-id="{{= obj.dependantId }}">Remove Dependant</a>
                 {{ } }}
             </div>
@@ -125,6 +125,17 @@
                                        className="health-person-details"/>
             </form_v2:row>
             {{ } }}
+
+           <%-- used by navy --%>
+            {{ if(providerConfig.showRelationship === true) { }}
+            <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/relationship"/>
+            <form_v2:row fieldXpath="${fieldXpath}"
+                         label="Relationship"
+                         id="${name}_relationshipGroup" className="health_dependant_details_relationshipGroup">
+                <field_v2:general_select type="healthNavQuestion_relationship" xpath="${fieldXpath}" title="Relationship to you" required="true" initialText="Please select" />
+            </form_v2:row>
+            {{ } }}
+
 
         </div>
     </div>

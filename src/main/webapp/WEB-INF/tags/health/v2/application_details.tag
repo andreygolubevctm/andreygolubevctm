@@ -61,13 +61,6 @@
 								label="true" />
 		</form_v3:row>
 
-		<form_v3:row id="${name}_okToCall-group" hideHelpIconCol="true">
-			<field_v2:checkbox xpath="${xpath}_call" value="Y"
-								title="Our dedicated Health Insurance consultants will give you a call to chat about your Health Insurance needs and questions."
-								required="false"
-								label="true" />
-		</form_v3:row>
-
 		<%-- Default contact Point to off --%>
 		<c:set var="fieldXpath" value="${xpath}/contactPoint" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="How would you like <span>the Fund</span> to send you information?" id="${name}_contactPoint-group"

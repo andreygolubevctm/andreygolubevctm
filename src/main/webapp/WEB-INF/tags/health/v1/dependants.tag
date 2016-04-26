@@ -42,7 +42,7 @@
 		<health_v1:dependant_details_template xpath="${xpath}/dependant" />
 
 		<form_v2:row id="dependents_list_options">
-			<a href="javascript:void(0);" class="add-new-dependent btn btn-form" title="Add new dependent">Add New Dependant</a>
+			<a href="javascript:void(0);" class="add-new-dependent btn btn-form" title="Add new dependant">Add New Dependant</a>
 		</form_v2:row>
 		
 		<%-- If the user changes the amount of dependants here, we will need to re-confirm their selection --%>
