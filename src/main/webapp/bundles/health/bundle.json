@@ -13,6 +13,7 @@
 	"shared/datepicker",
 	"shared/commencementDate",
   	"shared/autocomplete",
+	"shared/addressLookup",
 	"shared/placeholder",
 	"shared/sliders",
 	"shared/saveQuote",

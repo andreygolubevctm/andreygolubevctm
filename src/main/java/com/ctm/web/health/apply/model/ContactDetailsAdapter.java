@@ -104,7 +104,7 @@ public class ContactDetailsAdapter {
                     address.map(com.ctm.web.health.model.form.Address::getSuburbName)
                             .map(Suburb::new)
                             .orElse(null),
-                    address.map(com.ctm.web.health.model.form.Address::getStreetNum)
+                    address.map(com.ctm.web.health.model.form.Address::getHouseNoSel)
                             .map(StreetNumber::new)
                             .orElse(null),
                     address.map(com.ctm.web.health.model.form.Address::getDpId)
@@ -125,11 +125,18 @@ public class ContactDetailsAdapter {
             if (StringUtils.isNotBlank(address.getUnitType())) {
                 sb.append(Optional.ofNullable(UnitType.findByCode(address.getUnitType()))
                         .orElse(UnitType.OTHER).getLabel()).append(" ");
+            } else if (StringUtils.isNotBlank(address.getNonStdUnitType())) {
+                sb.append(Optional.ofNullable(UnitType.findByCode(address.getNonStdUnitType()))
+                        .orElse(UnitType.OTHER).getLabel()).append(" ");
             }
+
             if (StringUtils.isNotBlank(address.getUnitShop())) {
                 sb.append(address.getUnitShop()).append(" ");
             }
-            sb.append(address.getStreetNum()).append(" ").append(address.getStreetName());
+
+            String streetName = StringUtils.isNotBlank(address.getStreetName()) ? address.getStreetName() : address.getNonStdStreet();
+
+            sb.append(address.getStreetNum()).append(" ").append(streetName);
             return new FullAddressOneLine(sb.toString());
         }
         return null;
