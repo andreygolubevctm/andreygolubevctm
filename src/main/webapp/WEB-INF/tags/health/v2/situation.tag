@@ -135,7 +135,7 @@
 				</c:if>
 			</form_v3:fieldset>
 			<simples:dialogue id="26" vertical="health" mandatory="true" />
-			<form_v3:fieldset id="australian-government-rebate" legend="Most Australians with Private Health insurance can reduce their upfront health insurance costs by applying the Government Rebate.">
+			<form_v3:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians can reduce their upfront health insurance costs by applying the Government Rebate.">
 				<c:set var="fieldXpath" value="${xpath}/dependants" />
 				<form_v3:row label="How many dependent children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants">
 					<field_v2:count_select xpath="${fieldXpath}" max="12" min="1" title="number of dependants" required="true"  className="${name}_health_cover_dependants dependants"/>
