@@ -415,7 +415,7 @@
                     $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
                 });
 
-             coverType = $('#health_situation_coverType').val();
+             var coverType = meerkat.modules.health.getCoverType();
 
             if(coverType === 'E') {
                 $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');

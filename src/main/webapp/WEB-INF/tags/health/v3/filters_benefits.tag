@@ -2,8 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<div class="col-xs-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
-
+<core_v1:js_template id="filter-benefits-template">
     <div class="sidebar-title">Cover Selections</div>
 
     <div class="row filter">
@@ -13,9 +12,16 @@
                 <span class="heading-text">Hospital cover</span>
             </div>
             <div data-filter-type="checkbox">
-                    <c:forEach items="${resultTemplateItems}" var="selectedValue">
-                        <health_v3:benefit_checkbox_label item="${selectedValue}" category="Hospital" />
-                    </c:forEach>
+                {{ _.each(model.benefitsHospital.values, function(object) { }}
+                {{ var checked = object.selected ? ' checked="checked"' : ''; }}
+                {{ var active = object.selected ? ' active' : ''; }}
+                <div class="checkbox-none">
+                    <input type="checkbox" name="{{= model.benefitsHospital.name }}" id="{{= object.id }}_{{= object.value }}" value="{{= object.value }}" {{=checked }}
+                           title="{{= object.label }}"/> <label for="{{= object.id }}_{{= object.value }}">{{= object.label }}</label>
+                    <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1"><span
+                            class="text-hide">Need Help?</span></a>
+                </div>
+                {{ }) }}
             </div>
             <a>show all <span class="icon icon-angle-down"></span></a>
         </div>
@@ -28,12 +34,18 @@
                 <span class="heading-text">Extras cover</span>
             </div>
             <div data-filter-type="checkbox">
-                    <c:forEach items="${resultTemplateItems}" var="selectedValue">
-                        <health_v3:benefit_checkbox_label item="${selectedValue}" category="GeneralHealth" />
-                    </c:forEach>
+                {{ _.each(model.benefitsExtras.values, function(object) { }}
+                {{ var checked = object.selected ? ' checked="checked"' : ''; }}
+                {{ var active = object.selected ? ' active' : ''; }}
+                <div class="checkbox-none">
+                    <input type="checkbox" name="{{= model.benefitsExtras.name }}" id="{{= object.id }}_{{= object.value }}" value="{{= object.value }}" {{=checked }}
+                           title="{{= object.label }}"/> <label for="{{= object.id }}_{{= object.value }}">{{= object.label }}</label>
+                    <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1"><span
+                            class="text-hide">Need Help?</span></a>
+                </div>
+                {{ }) }}
             </div>
             <a>show all <span class="icon icon-angle-down"></span></a>
         </div>
     </div>
-</div>
-<health_v3:filters_update_widget_template />
+</core_v1:js_template>

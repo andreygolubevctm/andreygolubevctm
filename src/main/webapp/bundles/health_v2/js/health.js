@@ -1364,11 +1364,16 @@
 
 	}
 
+	function getCoverType() {
+		return meerkat.modules.splitTest.isActive(13) ? $('#health_situation_coverType input').filter(":checked").val() : $('#health_situation_coverType').val()
+	}
+
 	meerkat.modules.register("health", {
 		init: initHealth,
 		events: moduleEvents,
 		initProgressBar: initProgressBar,
 		getTrackingFieldsObject: getTrackingFieldsObject,
+		getCoverType: getCoverType,
 		getRates: getRates,
 		setRates: setRates,
 		getRebate: getRebate,

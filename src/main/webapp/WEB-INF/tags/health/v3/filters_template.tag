@@ -4,7 +4,7 @@
 
 <core_v1:js_template id="filter-results-template">
 
-    {{ var coverType = meerkat.modules.splitTest.isActive(13) ? $('#health_situation_coverType input').filter(":checked").val() : $('#health_situation_coverType').val() }}
+    {{ var coverType = meerkat.modules.health.getCoverType(); }}
 
     <div class="sidebar-title">Filter Results</div>
     <div class="row filter">
@@ -34,7 +34,7 @@
                 <span class="heading-text">Hospital cover level</span>
             </div>
             <div class="filter-cover-type" data-filter-type="radio">
-                <field_v2:slider type="coverType" value="4" range="1,4" markers="4" legend="Limited,Basic,Mid,Top" xpath="health/filterBar/coverType"/>
+                <field_v2:array_select xpath="health/filterBar/coverType" required="false" title="" items="=Please choose...,L=Limited,B=Basic,M=Mid,T=Top" />
             </div>
         </div>
     </div>
@@ -79,7 +79,7 @@
                 {{ var checked = !object.selected ? ' checked="checked"' : ''; }}
                 {{ var active = !object.selected ? ' active' : ''; }}
                 <div class="checkbox-none">
-                    <input type="checkbox" name="{{= model.brands.name }}" id="{{= model.brands.name }}_{{= object.value }}" value="{{= object.value }}" {{= checked }}
+                    <input type="checkbox" name="{{= model.brands.name }}" id="{{= model.brands.name }}_{{= object.value }}" value="{{= object.value }}" {{=checked }}
                            title="{{= object.label }}"/> <label for="{{= model.brands.name }}_{{= object.value }}">{{= object.label }}</label>
                 </div>
                 {{ }) }}
@@ -87,6 +87,3 @@
         </div>
     </div>
 </core_v1:js_template>
-
-
-<health_v3:filters_update_widget_template/>

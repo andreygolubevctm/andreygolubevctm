@@ -107,18 +107,27 @@
             <li class="slide-feature-back">
                 <a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
             </li>
-            <li class="dropdown dropdown-interactive slide-feature-filters" id="filters-dropdown">
-                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter</span><span class="hidden-sm"> Results</span> <b class="caret"></b></a>
-                <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-                   <%-- <health_v3:filters_template/>
-                    <health_v3:filters_benefits/>--%>
-                </div>
-            </li>
             <li class="hidden-sm hidden-md hidden-lg dropdown dropdown-interactive slide-feature-emailquote" id="email-quote-dropdown">
                 <a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose><c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></span> <b class="caret"></b></a>
                 <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
                     <div class="dropdown-container">
                         <agg_v2:save_quote includeCallMeback="true" />
+                    </div>
+                </div>
+            </li>
+            <li class="dropdown dropdown-interactive slide-feature-filters">
+                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter Your Results</span> <b class="caret"></b></a>
+                <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
+                    <div class="results-filters">
+
+                    </div>
+                </div>
+            </li>
+            <li class="dropdown dropdown-interactive slide-feature-benefits">
+                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Customise Cover</span> <b class="caret"></b></a>
+                <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
+                    <div class="results-filters-benefits">
+
                     </div>
                 </div>
             </li>

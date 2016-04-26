@@ -24,12 +24,20 @@
     </jsp:attribute>
 
     <jsp:attribute name="sidebarColumn">
+
         <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
-            <health_v3:filters_template/>
         </div>
-
+        <div class="col-xs-12 sidebar-widget sidebar-widget-attached sidebar-widget-padded filters-update-container" style="display: none">
+            <!-- update button placeholder-->
+        </div>
+        <div class="col-xs-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters-benefits">
+        </div>
+        <div class="col-xs-12 sidebar-widget sidebar-widget-attached sidebar-widget-padded filters-update-container" style="display: none">
+            <!-- update button placeholder-->
+        </div>
         <health_v3:filters_benefits/>
-
+        <health_v3:filters_template/>
+        <health_v3:filters_update_widget_template/>
     </jsp:attribute>
 
     <jsp:attribute name="resultsErrorMessage">

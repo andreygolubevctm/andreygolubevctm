@@ -1,26 +1,33 @@
-.health{
+.health {
 
-	// Add your slide feature here to be hidden by default
-	.slide-feature-back,
-	.slide-feature-emailquote,
-	.slide-feature-emailresults,
-	.slide-feature-close-more-info
-	{
-		.slide-feature-hidden();
+  // Add your slide feature here to be hidden by default
+  .slide-feature-back,
+  .slide-feature-emailquote,
+  .slide-feature-emailresults,
+  .slide-feature-close-more-info {
+    .slide-feature-hidden();
 
-		// Necessary to make use of the journeyEngine slide-feature styles that animate max-width.
-		a {
-			white-space: nowrap;
-		}
-	}
+    // Necessary to make use of the journeyEngine slide-feature styles that animate max-width.
+    a {
+      white-space: nowrap;
+    }
+  }
+  @media (@xs) {
+    &[data-step="results"] {
+      .slide-feature-filters,
+      .slide-feature-benefits {
+        .slide-feature-is-visible();
+      }
+    }
+  }
+  .slide-feature-back {
+    .slide-feature-is-visible();
+  }
 
-	.slide-feature-back {
-		.slide-feature-is-visible();
-	}
-	@media(@sm) {
-		#navbar-main {
-			display: none !important;
-		}
-	}
+  @media (@sm) {
+    #navbar-main {
+      display: none !important;
+    }
+  }
 
 }
