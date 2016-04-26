@@ -1,5 +1,5 @@
 {
-  "brandCodes": ["ctm", "cc", "choo"],
+  "brandCodes": ["ctm", "choo"],
   "dependencies": [
     "shared/journeyEngine/v2",
     "plugins/scrollTo",
