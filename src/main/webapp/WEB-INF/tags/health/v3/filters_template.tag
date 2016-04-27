@@ -34,7 +34,7 @@
                 <span class="heading-text">Hospital cover level</span>
             </div>
             <div class="filter-cover-type" data-filter-type="radio">
-                <field_v2:array_select xpath="health/filterBar/coverType" required="false" title="" items="=Please choose...,L=Limited,B=Basic,M=Mid,T=Top" />
+                <field_v2:array_select xpath="health/filterBar/coverLevel" required="false" title="" items="=Please choose...,L=Limited,B=Basic,M=Mid,T=Top" />
             </div>
         </div>
     </div>

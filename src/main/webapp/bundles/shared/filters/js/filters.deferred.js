@@ -8,7 +8,10 @@
         meerkatEvents = meerkat.modules.events;
 
     var moduleEvents = {
-            filters: {}
+            filters: {
+                FILTERS_UPDATED: "FILTERS_UPDATED",
+                FILTER_CHANGED: "FILTER_CHANGED"
+            }
         },
         settings = {
             templates: {
@@ -16,7 +19,7 @@
                 updates: '#filters-update-template'
             },
             containers: {
-                filters: '#results-sidebar .results-filters', // todo needs to change if changed to xs
+                filters: '#results-sidebar .results-filters', // todo needs to change if changed to xs so it can render off canvas..
                 updates: '.filters-update-container'
             }
         },
@@ -49,6 +52,7 @@
      */
     function resetFilters() {
         setDefaultsToModel();
+
         render('filters');
     }
 
@@ -73,7 +77,9 @@
 
             // Bind update events:
             if (filterObject.hasOwnProperty('events') && _.isFunction(filterObject.events.update)) {
-                $(document).on('filters.update', filterObject.events.update.apply(window, [filterObject]));
+                meerkat.messaging.subscribe(moduleEvents.FILTERS_UPDATED, function() {
+                    filterObject.events.update.apply(window, [filterObject]);
+                });
             }
             // Run pre-init if exists
             if (filterObject.hasOwnProperty('events') && _.isFunction(filterObject.events.beforeInit)) {
@@ -106,15 +112,15 @@
      * @param template
      */
     function render(template) {
-        $(settings.containers[template]).html(getTemplateHtml(template));
+        $(settings.containers[template]).empty().html(getTemplateHtml(template));
 
         _.each(model, function (filterObject) {
             if (filterObject.hasOwnProperty('events') && _.isFunction(filterObject.events.init)) {
                 filterObject.events.init.apply(window, [filterObject]);
             }
         });
-
-        $(settings.containers.updates).html(getTemplateHtml('updates')).slideDown();
+        // Render the update template too.
+        $(settings.containers.updates).empty().html(getTemplateHtml('updates'));
     }
 
     /**
@@ -127,6 +133,7 @@
         if (!$(settings.templates[template]).length) {
             exception("This template does not exist: " + template);
         }
+
         _htmlTemplate[template] = _.template($(settings.templates[template]).html(), {variable: "model"});
         return _htmlTemplate[template](model);
     }
@@ -136,6 +143,8 @@
     }
 
     function eventSubscriptions() {
+
+        // Every time we get to results, reset the filter model and re-render.
         meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function journeyEngineSlideChange(eventObject) {
             if (eventObject.isForward && eventObject.navigationId == 'results') {
                 resetFilters(model);
@@ -146,12 +155,17 @@
     function applyEventListeners() {
         $('#navbar-main').on('click', '.slide-feature-filters a, .slide-feature-benefits a', function (e) {
             e.preventDefault();
-            //?? do stuff? render it?
+            /**
+             * If not rendered, render the template in the XS container (not yet defined in the settings..)
+             * If rendered, shouldn't need to do anything? Or should it always re-render on open because
+             * data could have changed.
+             *
+             */
         });
 
         $document.on('click', '.filter-update-changes', function() {
-            $.trigger('filters.update');
-            // or publish filters update and make each subscribe?
+            meerkat.messaging.publish(moduleEvents.FILTERS_UPDATED, model);
+            
         }
     );
 }

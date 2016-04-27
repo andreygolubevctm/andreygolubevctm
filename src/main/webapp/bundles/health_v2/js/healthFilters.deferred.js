@@ -39,22 +39,35 @@
                         label: 'Annually'
                     }
                 ],
-                events: {
-                    change: function (filterObject) {
 
-                    },
-                    init: function (filterObject) {
-
-                    }
-                },
                 defaultValueSourceSelector: '#health_filter_frequency',
-                defaultValue: 'M'
+                defaultValue: 'M',
+                events: {
+                    update: function (filterObject) {
+                        $(filterObject.defaultValueSourceSelector).val($('input[name=' + filterObject.name + ']:checked').val());
+                    }
+                }
             },
             "coverLevel": {
                 name: 'health_filterBar_coverLevel',
                 defaultValueSourceSelector: '#health_filter_coverLevel',
                 defaultValue: '',
-                events: {}
+                events: {
+                    update: function (filterObject) {
+                        // Set to default value
+                        // set defaults from model source
+                        // additional backports
+                        var value = $('input[name=' + filterObject.name + ']').val();
+                        $(filterObject.defaultValueSourceSelector).val(value);
+                        $('input[name=health_situation_coverType]').each(function () {
+                            $(this).prop('checked', false);
+                            if ($(this).val() == value) {
+                                //seem to need both events...
+                                $(this).prop('checked', true).change().click();
+                            }
+                        });
+                    }
+                }
             },
             "hospitalExcess": {
                 name: "health_filterBar_excess",
@@ -65,7 +78,7 @@
                     init: function (filterObject) {
                         var $slider = $('.health-filter-excess .slider-control');
                         $slider.data('value', '2'); // todo: make sure this sets the default value to whats in the default value.
-                       meerkat.modules.sliders.initSlider($slider);
+                        meerkat.modules.sliders.initSlider($slider);
                     }
                 }
             },
@@ -82,8 +95,8 @@
                             .attr('id', model.rebate.name).attr('name', model.rebate.name);
                         $('.filter-rebate-holder').html(rebateElement);
                     },
-                    update: function(filterObject) {
-                        $(filterObject.defaultValueSourceSelector).val($(filterObject.name).val()).trigger('change');
+                    update: function (filterObject) {
+                        $(filterObject.defaultValueSourceSelector).val($('select[name=' + filterObject.name + ']').val()).trigger('change');
                     }
                 }
             },
@@ -105,8 +118,14 @@
                         });
                         filterObject.values = arr;
                     },
-                    init: function (filterObject) {
-
+                    update: function (filterObject) {
+                        var excluded = [];
+                        $('input[name=' + filterObject.name + ']').each(function () {
+                            if (!$(this).prop('checked')) {
+                                excluded.push($(this).val());
+                            }
+                        });
+                        $(filterObject.defaultValueSourceSelector).val(excluded.join(',')).trigger('change');
                     }
                 }
             },
