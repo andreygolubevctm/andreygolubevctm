@@ -594,7 +594,7 @@
     function buildSuburbOptionList(suburbs, suburbSeqNo) {
         var options = '';
         if (suburbs.length != 1) {
-            options = '<option value="">Please select...</option>';
+            options = '<option value="">Suburb</option>';
         }
         for (var i = 0; i < suburbs.length; i++) {
             var sel = suburbs.length == 1 || (typeof suburbSeqNo !== 'undefined' && suburbSeqNo !== null && suburbs[i].id == suburbSeqNo)

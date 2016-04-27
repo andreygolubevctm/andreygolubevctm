@@ -27,6 +27,14 @@
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PRIMARY,
             meerkat.modules.healthAboutYou.getPrimaryCurrentCover());
 
+        var currentProduct = Results.getSelectedProduct().info.FundCode,
+            $medicareLabel = $('#medicare_group').find('label');
+
+        if (currentProduct === 'NHB' || currentProduct === 'QCH') {
+            $medicareLabel.text('Position and name on Medicare card');
+        } else {
+            $medicareLabel.text('Name on Medicare card');
+        }
     }
 
     function onInitialise() {

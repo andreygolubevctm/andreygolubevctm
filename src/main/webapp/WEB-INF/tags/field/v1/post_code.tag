@@ -20,4 +20,4 @@
 
 
 <%-- HTML --%>
-<input type="${inputType}" ${requiredAttribute} name="${name}" pattern="[0-9]*" maxlength="4" id="${name}" class="form-control ${className}" value="${value}" size="4" data-rule-minlength="4" data-msg-minlength="Postcode should be 4 characters long" data-rule-number="true" data-msg-number="Postcode must contain numbers only." ${additionalAttributes} />
+<input type="${inputType}" ${requiredAttribute} name="${name}" pattern="[0-9]*" maxlength="4" id="${name}" class="form-control ${className}" value="${value}" size="4" data-rule-minlength="4" data-msg-minlength="Postcode should be 4 characters long" data-rule-number="true" data-msg-number="Postcode must contain numbers only." ${additionalAttributes} placeholder="PostCode" />

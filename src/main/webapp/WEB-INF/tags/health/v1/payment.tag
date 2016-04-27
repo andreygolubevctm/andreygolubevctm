@@ -15,6 +15,8 @@
 	<health_v1:payment_details xpath="${xpath}/details" />
 	<div id="update-content">
 	<health_v1:application_compliance xpath="${xpath}" />
+	<health_v1:medicare_details xpath="${xpath}/medicare" />
+
 	</div>
 	 
 </div>

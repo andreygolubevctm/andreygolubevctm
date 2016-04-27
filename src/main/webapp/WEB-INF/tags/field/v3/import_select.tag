@@ -12,6 +12,7 @@
 <%@ attribute name="width" 		 required="false" rtexprvalue="true"	 description="the size attribute of this select input"%>
 <%@ attribute name="omitPleaseChoose" required="false"	rtexprvalue="true"	 description="should 'please choose' be omitted?" %>
 <%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
+<%@ attribute name="placeHolder" required="false"	rtexprvalue="true"	 description="dropdown placeholder" %>
 
 
 <%-- VARIABLES --%>
@@ -22,6 +23,12 @@
 <c:if test="${not empty width}">
 	<c:set var="sizeAttribute" value=' style="max-width:${width}"' />
 </c:if>
+
+<c:set var="placeholderText" value='Please choose...' />
+<c:if test="${not empty placeHolder}">
+	<c:set var="placeholderText" value='${placeHolder}' />
+</c:if>
+
 
 
 <%-- HTML --%>
@@ -49,10 +56,10 @@
 		<c:choose>
 			<c:when test="${omitPleaseChoose == 'Y'}"></c:when>
 			<c:when test="${value == ''}">
-				<option value="" selected="selected">Please choose...</option>
+				<option value="" selected="selected">${placeholderText}</option>
 			</c:when>
 			<c:otherwise>
-				<option value="">Please choose...</option>
+				<option value="">${placeholderText}</option>
 			</c:otherwise>
 		</c:choose>
 		${fn:replace(optionData,findVal,replaceVal)}

@@ -4,11 +4,10 @@
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}/application" />
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
+<div id="${name}" class="health_application">
 <form_v2:fieldset legend="Your Details">
-	<div id="${name}" class="health_application">
-		<health_v3:person_details xpath="${xpath}/primary" title="Your" id="primary" />
-	</div>
 
+	<health_v3:person_details xpath="${xpath}/primary" title="Your" id="primary" />
 	<health_v3:contact_details xpath="${pageSettings.getVerticalCode()}/application" />
 
 	<%-- HTML --%>
@@ -47,3 +46,4 @@
 		<health_v1:medicare_details xpath="${xpath}/medicare" />
 	</div>
 </form_v2:fieldset>
+</div>

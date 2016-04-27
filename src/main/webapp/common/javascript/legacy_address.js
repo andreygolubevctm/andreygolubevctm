@@ -142,7 +142,7 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 					suburbFld.removeAttr("disabled");
 					var options = '';
 					if(resp.suburbs.length != 1) {
-						options = '<option value="">Please select...</option>';
+						options = '<option value="">Suburb</option>';
 					}
 					for (var i = 0; i < resp.suburbs.length; i++) {
 						if (resp.suburbs.length == 1  || (typeof defaultSuburbSeq !== 'undefined' && defaultSuburbSeq !== null && resp.suburbs[i].id == defaultSuburbSeq)) {

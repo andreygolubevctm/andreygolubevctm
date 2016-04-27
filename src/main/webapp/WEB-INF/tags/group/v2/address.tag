@@ -19,7 +19,7 @@
 <c:set var="isPostalAddress" value="${type == 'P'}" />
 <c:set var="isResidentialAddress" value="${type == 'R'}" />
 
-<c:set var="unitTypes">=Please choose...,CO=Cottage,DU=Duplex</c:set>
+<c:set var="unitTypes">=Unit Type,CO=Cottage,DU=Duplex</c:set>
 <c:if test="${!isResidentialAddress}">
 	<c:set var="unitTypes">${unitTypes},FA=Factory</c:set>
 </c:if>
@@ -72,7 +72,7 @@
 					</span>
 					<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" data-msg-validSuburb="Please select a suburb">
 						<%-- Write the initial "Please select" option --%>
-						<option value="">Please select</option>
+						<option value="">Suburb</option>
 						<%-- Write the options for each row --%>
 						<c:forEach var="row" items="${result.rows}">
 							<c:choose>
@@ -148,7 +148,7 @@
 
 	<c:set var="fieldXpath" value="${xpath}/unitType" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStd_street ${name}_unitShopRow" smRowOverride="5"  isNestedField="${true}" hideHelpIconCol="${true}">
-		<field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" />
+		<field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" placeHolder="Unit Type" />
 	</form_v2:row>
 
 </form_v2:row>
