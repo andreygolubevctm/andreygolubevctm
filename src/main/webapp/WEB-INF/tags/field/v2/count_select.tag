@@ -12,6 +12,7 @@
 <%@ attribute name="max" 				required="true"	 	rtexprvalue="true"  	description="maximum (ending) value, Note: will not appear if 'stepped' over" %>
 <%@ attribute name="step" 				required="false"	rtexprvalue="true"  	description="the amount each value steps up (defaults to 1)" %>
 <%@ attribute name="omitPleaseChoose" 	required="false"	rtexprvalue="true"		description="should 'please choose' be omitted? Y/N (Yes omits)" %>
+<%@ attribute name="placeHolder"	 	required="false"	rtexprvalue="true"		description="dropdown placeholder" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
@@ -20,7 +21,10 @@
 	<c:set var="step" value="1" />
 </c:if>
 
-
+<c:set var="placeHolderText" value="Please choose&hellip;" />
+<c:if test="${not empty placeHolder}">
+	<c:set var="placeHolderText" value="${placeHolder}" />
+</c:if>
 <%-- HTML --%>
 <div class="select">
 	<span class=" input-group-addon" >
@@ -28,7 +32,7 @@
 	</span>
 	<select class="form-control field-count_select ${className}" id="${name}" name="${name}" <c:if test="${required}">required data-msg-required="Please choose ${title}"</c:if>>
 		<c:if test="${empty omitPleaseChoose || omitPleaseChoose == 'N'}">
-			<option id="${name}_" value="">Please choose&hellip;</option>
+			<option id="${name}_" value="">${placeHolderText}</option>
 		</c:if>
 		<c:forEach begin="${min}" end="${max}" step="${step}" varStatus="status">
 			<c:choose>

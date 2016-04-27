@@ -42,7 +42,7 @@
 <%-- HTML --%>
 <div class="row">
 	<div class="col-xs-6 col-md-5">
-		<field_v2:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"	title="expiry month" required="true" omitPleaseChoose="Y" className="${className}" placeHolder="Month"/>
+		<field_v2:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"	title="expiry month" required="true" className="${className}" placeHolder="Month"/>
 	</div>
 	<div class="col-xs-6 col-md-5">
 		<field_v2:array_select

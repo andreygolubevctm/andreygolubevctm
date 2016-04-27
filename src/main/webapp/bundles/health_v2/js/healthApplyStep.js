@@ -31,7 +31,7 @@
             $medicareLabel = $('#medicare_group').find('label');
 
         if (currentProduct === 'NHB' || currentProduct === 'QCH') {
-            $medicareLabel.text('Position and name on Medicare card');
+            $medicareLabel.text('# and name on Medicare card');
         } else {
             $medicareLabel.text('Name on Medicare card');
         }
