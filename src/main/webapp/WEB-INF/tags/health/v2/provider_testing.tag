@@ -11,7 +11,7 @@
 <%-- NOTE: a List of Provider Keys can be found in aggregator/health/phio_outbound --%>
 
 <%-- Make sure we're in a proper environment to test this --%>
-${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentService.getEnvironmentAsString()), log:kv('remoteaddr', ipAddressHandler.getIPAddress(request)))}
+${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentService.getEnvironmentAsString()), log:kv('remoteaddr', ipAddressHandler.getIPAddress(pageContext.request)))}
 <c:if test="${environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI'  || environmentService.getEnvironmentAsString() == 'NXS'}">
 
 	<c:choose>
