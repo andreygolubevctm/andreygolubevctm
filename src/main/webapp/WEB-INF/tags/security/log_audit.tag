@@ -2,6 +2,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <sql:setDataSource dataSource="${datasource:getDataSource()}" />
 
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+
 <%-- Inspiration:
 	https://www.owasp.org/index.php/Logging_Cheat_Sheet
 	http://stackoverflow.com/questions/549/the-definitive-guide-to-form-based-website-authentication#477585
@@ -81,7 +83,7 @@
 		<sql:param value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.requestURI}" />
 		<sql:param value="${pageSettings.getBrandCode()}-${buildIdentifier}" />
 		<sql:param value="${encryptedSessionId}" />
-		<sql:param value="${pageContext.request.remoteAddr}" />
+		<sql:param value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
 	</sql:update>
 </c:if>
 
@@ -91,7 +93,7 @@
 		SELECT `id`, `result`, `action`
 		FROM `ctm`.`log_audit`
 		WHERE `ip` = ?
-			<sql:param value="${pageContext.request.remoteAddr}" />
+			<sql:param value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
 			<c:if test="${not empty identity}" >
 						AND `identity` = ?
 						<sql:param value="${identity}" />
@@ -120,7 +122,7 @@
 	<sql:query var="result">
 	SELECT * FROM `ctm`.`log_audit`
 		WHERE `ip` = ?
-			<sql:param value="${pageContext.request.remoteAddr}" />
+			<sql:param value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
 			<c:if test="${not empty identity}" >
 						AND `identity` = ?
 						<sql:param value="${identity}" />

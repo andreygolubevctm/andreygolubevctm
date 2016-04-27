@@ -8,6 +8,7 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.Info;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.IPCheckService;
 import com.ctm.web.core.services.SessionDataServiceBean;
@@ -31,10 +32,12 @@ import java.util.Optional;
 
 public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
+    protected final IPAddressHandler ipAddressHandler;
     protected SessionDataServiceBean sessionDataServiceBean;
 
-    public CommonQuoteRouter(SessionDataServiceBean sessionDataServiceBean) {
+    public CommonQuoteRouter(SessionDataServiceBean sessionDataServiceBean,IPAddressHandler ipAddressHandler) {
         this.sessionDataServiceBean = sessionDataServiceBean;
+        this.ipAddressHandler = ipAddressHandler;
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteRouter.class);
@@ -84,7 +87,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
             data.setTransactionId(Long.parseLong(dataBucket.getString("current/transactionId")));
         }
         if (StringUtils.isBlank((String) dataBucket.get("quote/clientIpAddress"))) {
-            clientIpAddress = request.getRemoteAddr();
+            clientIpAddress = ipAddressHandler.getIPAddress(request);
         } else {
             clientIpAddress = (String) dataBucket.get("quote/clientIpAddress");
         }
@@ -119,7 +122,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
         IPCheckService ipCheckService = new IPCheckService();
         PageSettings pageSettings = getPageSettingsByCode(brand, vertical);
         if(!ipCheckService.isPermittedAccess(request, pageSettings)) {
-            LOGGER.error("Access attempts exceeded for IP {} in {}", request.getRemoteAddr(), vertical.getCode());
+            LOGGER.error("Access attempts exceeded for IP {} in {}", ipAddressHandler.getIPAddress(request), vertical.getCode());
             throw new RouterException("Access attempts exceeded");
         }
     }
