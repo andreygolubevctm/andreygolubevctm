@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <core_v2:no_cache_header/>
