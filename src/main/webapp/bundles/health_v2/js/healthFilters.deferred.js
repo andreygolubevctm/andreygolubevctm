@@ -55,7 +55,8 @@
                 events: {
                     update: function (filterObject) {
                         // Set to default value
-                        // set defaults from model source
+                        // set defaults from model source -- if this part is generic and done after we 
+                        // update default value, then it should default update the model if we run setDefaultsToModel again.
                         // additional backports
                         var value = $('input[name=' + filterObject.name + ']').val();
                         $(filterObject.defaultValueSourceSelector).val(value);

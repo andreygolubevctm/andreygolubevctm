@@ -77,12 +77,14 @@
 
             // Bind update events:
             if (filterObject.hasOwnProperty('events') && _.isFunction(filterObject.events.update)) {
+                //todo: if this is run more than once, make sure we don't double subscribe!!!
                 meerkat.messaging.subscribe(moduleEvents.FILTERS_UPDATED, function() {
                     filterObject.events.update.apply(window, [filterObject]);
                 });
             }
             // Run pre-init if exists
             if (filterObject.hasOwnProperty('events') && _.isFunction(filterObject.events.beforeInit)) {
+                //todo: if this is run more than once, make sure we don't double up on this function!!!
                 filterObject.events.beforeInit.apply(window, [filterObject]);
             }
             // Set default values onto the model.
