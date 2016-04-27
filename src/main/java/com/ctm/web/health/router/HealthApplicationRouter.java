@@ -213,7 +213,7 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
                     i++;
                 }
             }
-        } else {
+        } else if (!nonFatalErrors) {
             sb.append(PROVIDER_FAILED_MESSAGE);
         }
         return sb.toString();
