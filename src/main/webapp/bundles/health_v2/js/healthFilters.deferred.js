@@ -50,23 +50,16 @@
             },
             "coverLevel": {
                 name: 'health_filterBar_coverLevel',
-                defaultValueSourceSelector: '#health_filter_coverLevel',
+                defaultValueSourceSelector: '#health_filter_coverLevel', //todo: input doesn't exist yet
                 defaultValue: '',
                 events: {
                     update: function (filterObject) {
-                        // Set to default value
-                        // set defaults from model source -- if this part is generic and done after we 
+                        // todo Set to default value
+                        // todo set defaults from model source -- if this part is generic and done after we
                         // update default value, then it should default update the model if we run setDefaultsToModel again.
                         // additional backports
-                        var value = $('input[name=' + filterObject.name + ']').val();
-                        $(filterObject.defaultValueSourceSelector).val(value);
-                        $('input[name=health_situation_coverType]').each(function () {
-                            $(this).prop('checked', false);
-                            if ($(this).val() == value) {
-                                //seem to need both events...
-                                $(this).prop('checked', true).change().click();
-                            }
-                        });
+                        var value = $('select[name=' + filterObject.name + ']').val();
+                        $('.hospitalCoverToggles a[data-category="' + value + '"]').click();
                     }
                 }
             },
@@ -127,6 +120,27 @@
                             }
                         });
                         $(filterObject.defaultValueSourceSelector).val(excluded.join(',')).trigger('change');
+                    }
+                }
+            },
+            "coverType": {
+                // Note: how this filter will look has not been designed as yet...
+                // its more the add/remove, so it may need to be separate -.-
+                name: 'health_filterBar_coverType',
+                values: {},
+                defaultValueSourceSelector: 'input[name=health_situation_coverType]',
+                defaultValue: 'C',
+                events: {
+                    update: function (filterObject) {
+                        var value = $('input[name=' + filterObject.name + ']').val();
+                        $(filterObject.defaultValueSourceSelector).val(value);
+                        $('input[name=health_situation_coverType]').each(function () {
+                            $(this).prop('checked', false);
+                            if ($(this).val() == value) {
+                                //seem to need both events...
+                                $(this).prop('checked', true).change().click();
+                            }
+                        });
                     }
                 }
             },
