@@ -62,10 +62,15 @@
      */
     function setModel(newModel) {
         model = newModel;
+        setDefaultsToModel();
     }
 
     function getModel() {
         return model;
+    }
+
+    function updateModel(newModel) {
+        model = newModel;
     }
 
     /**
@@ -96,7 +101,7 @@
                 return;
             }
             var defaultValue = $defaultValueElement.val() || filterObject.defaultValue || "";
-            if (filterObject.defaultValueType == 'array') {
+            if (filterObject.defaultValueType == 'csv') {
                 defaultValue = defaultValue.split(',');
             }
             _.each(filterObject.values, function (valueObject) {

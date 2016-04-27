@@ -99,7 +99,7 @@
                 values: meerkat.site.providerList,
                 defaultValueSourceSelector: '#health_filter_providerExclude',
                 defaultValue: '',
-                defaultValueType: 'array',
+                defaultValueType: 'csv',
                 events: {
                     /**
                      * We have to remap the array to match the model format as its straight from a Dao
@@ -108,7 +108,7 @@
                     beforeInit: function (filterObject) {
                         var arr = [];
                         _.each(filterObject.values, function (object) {
-                            arr.push({value: object.code, label: object.name});
+                            arr.push({value: object.value || object.code, label: object.label || object.name});
                         });
                         filterObject.values = arr;
                     },
@@ -147,15 +147,15 @@
             "benefitsHospital": {
                 name: 'health_filterBar_benefitsHospital',
                 values: {},
-                defaultValueSourceSelector: '',
-                defaultValue: '',
+                defaultValueSourceSelector: '.Hospital_container',
+                defaultValue: meerkat.modules.healthBenefitsStep.getSelectedBenefits(),
                 events: {}
             },
             "benefitsExtras": {
                 name: 'health_filterBar_benefitsExtras',
                 values: {},
-                defaultValueSourceSelector: '',
-                defaultValue: '',
+                defaultValueSourceSelector: '.GeneralHealth_container',
+                defaultValue: meerkat.modules.healthBenefitsStep.getSelectedBenefits(),
                 events: {}
             }
 
@@ -221,7 +221,7 @@
             if (isShortlistable(object) && hasShortlistableChildren(object) && object.shortlistKey == category) {
                 _.each(object.children, function (child) {
                     if (child.shortlistKey)
-                        arr.push({value: "Y", label: child.name, helpId: child.helpId, id: child.shortlistKey});
+                        arr.push({value: child.shortlistKey, label: child.name, helpId: child.helpId, id: child.shortlistKey});
                 });
             }
         });
