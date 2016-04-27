@@ -226,36 +226,7 @@
 			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onAfterEnter: function healthV2AfterEnter() {
 				// if coming from brochure site and all prefilled data are valid, let's hide the fields
-				if (meerkat.site.isFromBrochureSite === true) {
-					var $healthSitLocation = $('#health_situation_location'),
-						$healthSitHealthCvr = $('#health_situation_healthCvr');
-
-					if($healthSitHealthCvr.isValid()) {
-						$healthSitHealthCvr.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
-					}
-
-					if($healthSitLocation.isValid(true)) {
-						$healthSitLocation.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
-					}
-
-					if($healthSitHealthCvr.val() !== '') {
-						$('.health-cover').addClass('hidden');
-					}
-
-					if($healthSitLocation.val() !== '') {
-						$('.health-location').addClass('hidden');
-					}
-
-					if($healthSitHealthCvr.val() !== '' && $healthSitLocation.val() !== '') {
-						$('.health-about-you').addClass('hidden');
-					}
-
-					meerkat.site.isFromBrochureSite = false;
-				} else {
-					$('.health-cover').removeClass('hidden');
-					$('.health-location').removeClass('hidden');
-					$('.health-about-you').removeClass('hidden');
-				}
+				toggleAboutYou();
 			}
 		};
 
@@ -1270,6 +1241,47 @@
 			}
 		}
 
+	}
+
+	// Hide/show about you
+	function toggleAboutYou() {
+
+		if (meerkat.site.isFromBrochureSite === true) {
+			var $healthSitLocation = $('#health_situation_location'),
+				$healthSitHealthCvr = $('#health_situation_healthCvr');
+
+			if($healthSitHealthCvr.isValid()) {
+				$healthSitHealthCvr.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
+			}
+
+			if($healthSitLocation.isValid(true)) {
+				$healthSitLocation.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
+			}
+
+			if($healthSitHealthCvr.val() !== '') {
+				$('.health-cover').addClass('hidden');
+			}
+
+			if($healthSitLocation.val() !== '') {
+				$('.health-location').addClass('hidden');
+			}
+
+			if($healthSitHealthCvr.val() !== '' && $healthSitLocation.val() !== '') {
+				$('.health-about-you').addClass('hidden');
+				$('.health-situation .fieldset-column-side .sidebar-box').css('margin-top','55px');
+			}
+
+			$('.btn-edit').on('click', function() {
+				toggleAboutYou();
+			});
+
+			meerkat.site.isFromBrochureSite = false;
+		} else {
+			$('.health-cover').removeClass('hidden');
+			$('.health-location').removeClass('hidden');
+			$('.health-about-you').removeClass('hidden');
+			$('.health-situation .fieldset-column-side .sidebar-box').css('margin-top','');
+		}
 	}
 
 	// Hide/show simple dialogues when toggle inbound/outbound in simples journey

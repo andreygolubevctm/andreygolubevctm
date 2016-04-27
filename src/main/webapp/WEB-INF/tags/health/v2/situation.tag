@@ -77,7 +77,7 @@
 			<form_v2:fieldset id="primary-health-cover" legend="Your Details" className="primary">
 
 				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
-				<form_v2:row label="Looking to" fieldXpath="${fieldXpath}">
+				<form_v2:row label="You're looking to" fieldXpath="${fieldXpath}">
 					<field_v2:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="reason you are looking to quote" />
 				</form_v2:row>
 
