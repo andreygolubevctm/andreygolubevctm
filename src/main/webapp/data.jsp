@@ -2,11 +2,13 @@
 <%@ page import="java.util.*" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" />
+
 <c:set var="logger" value="${log:getLogger('jsp.data')}"/>
 
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
 <c:set var="buildIdentifier"><core_v1:buildIdentifier></core_v1:buildIdentifier></c:set>
-<c:set var="remoteAddr" value="${pageContext.request.remoteAddr}"/>
+<c:set var="remoteAddr" value="${ipAddressHandler.getIPAddress(pageContext.request)}"/>
 
 <jsp:useBean id="sessionDataService" class="com.ctm.web.core.services.SessionDataService" scope="application"/>
 <jsp:useBean id="applicationService" class="com.ctm.web.core.services.ApplicationService" scope="page"/>
@@ -115,6 +117,10 @@
             <td>Session Last Accessed</td>
             <td><%=new Date(session.getLastAccessedTime())%>
             </td>
+        </tr>
+        <tr>
+            <td>Application IP Address</td>
+            <td>${ipAddressHandler.getIPAddress(pageContext.request)}</td>
         </tr>
         <tr>
             <td>Client remoteAddr</td>

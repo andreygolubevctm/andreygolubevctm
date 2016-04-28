@@ -6,6 +6,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -77,13 +78,37 @@ public class SettingsService {
 	 * Call this method on ajax calls where the transaction id is passed through as a parameter.
 	 */
 	public static PageSettings getPageSettingsForPage(HttpServletRequest request) throws DaoException, ConfigSettingException {
-		Brand brand = ApplicationService.getBrandFromRequest(request);
-		PageSettings pageSettings = new PageSettings();
-		pageSettings.setBrand(brand);
 		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
 		if(verticalCode == null || verticalCode.equals("")){
 			throw new ConfigSettingException("No vertical set on page context");
 		}
+
+		return getPageSettingsForPage( request,   verticalCode);
+	}
+
+	/**
+	 * Gets the page settings object by determining the current vertical by checking the provided session transaction data.
+	 * Call this method on ajax calls where the transaction id is passed through as a parameter.
+	 */
+	public static PageSettings getPageSettingsForPage(HttpServletRequest request, boolean defaultVertical) throws DaoException, ConfigSettingException {
+		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
+		if(StringUtils.isBlank(verticalCode) && !defaultVertical){
+			throw new ConfigSettingException("No vertical set on page context");
+		} else if(StringUtils.isBlank(verticalCode)){
+			verticalCode = Vertical.VerticalType.GENERIC.getCode();
+		}
+
+		return getPageSettingsForPage( request,   verticalCode);
+	}
+
+	/**
+	 * Gets the page settings object by determining the current vertical by checking the provided session transaction data.
+	 * Call this method on ajax calls where the transaction id is passed through as a parameter.
+	 */
+	public static PageSettings getPageSettingsForPage(HttpServletRequest request, String  verticalCode) throws DaoException, ConfigSettingException {
+		Brand brand = ApplicationService.getBrandFromRequest(request);
+		PageSettings pageSettings = new PageSettings();
+		pageSettings.setBrand(brand);
 
 		pageSettings.setVertical(brand.getVerticalByCode(verticalCode));
 

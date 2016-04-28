@@ -15,7 +15,7 @@
 
 	<form_v2:row>
 		<div class="inlineHeadingWithButton">
-			<h5>Dependant ${count}</h5> <a href="javascript:void(0);" class="remove-last-dependent btn btn-danger" title="Remove last dependent">Remove Dependant</a>
+			<h5>Dependant ${count}</h5> <a href="javascript:void(0);" class="remove-last-dependent btn btn-danger" title="Remove last dependant">Remove Dependant</a>
 		</div>
 	</form_v2:row>
 	

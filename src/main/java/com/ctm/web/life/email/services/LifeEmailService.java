@@ -3,6 +3,7 @@ package com.ctm.web.life.email.services;
 import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.RankingDetail;
 import com.ctm.web.core.dao.RankingDetailsDao;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
@@ -40,8 +41,9 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 	EmailDetailsService emailDetailsService;
 	protected TransactionDao transactionDao = new TransactionDao();
 	private String optInMailingName;
-	public LifeEmailService(PageSettings pageSettings, EmailMode emailMode, EmailDetailsService emailDetailsService, EmailUrlService urlService) {
-		super(pageSettings, emailMode);
+
+	public LifeEmailService(PageSettings pageSettings, EmailMode emailMode, EmailDetailsService emailDetailsService, IPAddressHandler ipAddressHandler) {
+		super(pageSettings, emailMode,  ipAddressHandler);
 		this.emailDetailsService = emailDetailsService;
 	}
 
@@ -56,7 +58,7 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 		emailDetails.setSource("QUOTE");
 		
 		try {
-			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE", request.getRemoteAddr());
+			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE", ipAddressHandler.getIPAddress(request));
 		} catch (EmailDetailsException e) {
 			throw new SendEmailException("Failed to handleReadAndWriteEmailDetails emailAddress:" + emailAddress + " transactionId:" + transactionId, e);
 		}

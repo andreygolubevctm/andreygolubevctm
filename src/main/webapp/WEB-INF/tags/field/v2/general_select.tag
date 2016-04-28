@@ -11,6 +11,7 @@
 <%@ attribute name="type" required="false" rtexprvalue="true" description="type code on general table" %>
 <%@ attribute name="initialText" required="false" rtexprvalue="true" description="Text used to invite selection" %>
 <%@ attribute name="tabIndex" required="false" rtexprvalue="true" description="additional tab index specification" %>
+<%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}"/>
@@ -49,7 +50,7 @@
 	<span class=" input-group-addon">
 		<i class="icon-sort"></i>
 	</span>
-    <select name="${name}" id="${name}" class="form-control ${className}"<c:if test="${not empty tabIndex}"> tabindex="${tabIndex}"</c:if><c:if test="${required}">required data-msg-required="Please enter the ${title}"</c:if>>
+    <select name="${name}" id="${name}" class="form-control ${className}"<c:if test="${not empty tabIndex}"> tabindex="${tabIndex}"</c:if><c:if test="${required}"> required data-msg-required="Please enter the ${title}"</c:if> ${additionalAttributes}>
         <%-- Write the initial "please choose" option --%>
         <option value="">${initialText}</option>
 

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" />
+
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.home_results')}" />
 
 <c:set var="verticalCode" value="HOME" />
@@ -77,7 +79,7 @@
 		<%-- <go:setData dataVar="data" xpath="${vertical}" value="*DELETE" /> --%>
 		<go:setData dataVar="data" value="*PARAMS" />
 
-		<go:setData dataVar="data" xpath="${vertical}/clientIpAddress" value="${pageContext.request.remoteAddr}" />
+		<go:setData dataVar="data" xpath="${vertical}/clientIpAddress" value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
 		<go:setData dataVar="data" xpath="${vertical}/clientUserAgent" value="${header['User-Agent']}" />
 
 		<%-- Fix the commencement date if prior to the current date --%>
