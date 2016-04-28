@@ -34,7 +34,7 @@ var healthFunds_QCH = {
 
 
 			<%-- Dependant definition --%>
-			healthFunds._dependants('Queensland Country Health Fund(QCHF) policies provide cover for all dependents up to the age of 21, including step and foster children. Adult dependents who are single, aged between 21 and 25 years and who are: studying full time at a school, college or university, or are training as an apprentice and earning no more than $30,000 p.a. may continue to be covered by QCHF policies.');
+			healthFunds._dependants('Queensland Country Health Fund(QCHF) policies provide cover for all dependants up to the age of 21, including step and foster children. Adult dependants who are single, aged between 21 and 25 years and who are: studying full time at a school, college or university, or are training as an apprentice and earning no more than $30,000 p.a. may continue to be covered by QCHF policies.');
 
 			meerkat.modules.healthDependants.updateConfig({ showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:false, showApprenticeField:true});
 			healthFunds_QCH.tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();

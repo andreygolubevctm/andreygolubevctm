@@ -23,18 +23,22 @@
 
 <%-- Apply override or apply split test value --%>
 <c:choose>
-    <c:when test="${(not empty buttonOverride and buttonOverride eq '1') or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 15)}">
+    <c:when test="${(not empty buttonOverride and buttonOverride eq '1') or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 22)}">
         <c:set var="moreinfo_splittest_variant1" value="${true}" scope="request" />
         <c:set var="moreinfo_splittest_default" value="${false}" scope="request" />
     </c:when>
-    <c:when test="${(not empty buttonOverride and buttonOverride eq '2') or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 16)}">
+    <c:when test="${(not empty buttonOverride and buttonOverride eq '2') or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 21)}">
         <c:set var="moreinfo_splittest_variant2" value="${true}" scope="request" />
         <c:set var="moreinfo_splittest_default" value="${false}" scope="request" />
     </c:when>
-    <c:when test="${(not empty buttonOverride and buttonOverride eq '3') or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 17)}">
+    <c:when test="${(not empty buttonOverride and buttonOverride eq '3') or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 20)}">
         <c:set var="moreinfo_splittest_variant3" value="${true}" scope="request" />
         <c:set var="moreinfo_splittest_default" value="${false}" scope="request" />
     </c:when>
 </c:choose>
 
 <%-- End HLT-3028 --%>
+
+<%-- New elastic search for health --%>
+<c:set var="useElasticSearch" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 18)}" scope="request" />
+<%-- End HLT-2931 --%>

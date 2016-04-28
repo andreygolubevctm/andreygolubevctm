@@ -8,6 +8,7 @@ import com.ctm.web.core.exceptions.EnvironmentException;
 import com.ctm.web.core.exceptions.VerticalException;
 import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.EnvironmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +38,12 @@ public abstract class EmailServiceHandler {
 
 	protected String mailingName;
 	protected String splitTestEnabledKey;
+	protected IPAddressHandler ipAddressHandler;
 
-	public EmailServiceHandler(PageSettings pageSettings, EmailMode emailMode) {
+	public EmailServiceHandler(PageSettings pageSettings, EmailMode emailMode, IPAddressHandler ipAddressHandler) {
 		this.pageSettings = pageSettings;
 		this.emailMode = emailMode;
+		this.ipAddressHandler = ipAddressHandler;
 	}
 
 	public abstract String send(HttpServletRequest request, String emailAddress,

@@ -5,6 +5,7 @@ import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.*;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
@@ -57,6 +58,8 @@ public class HealthQuoteRouterTest {
     private com.ctm.web.core.model.settings.ServiceConfiguration serviceConfig;
     @Mock
     private com.ctm.web.core.connectivity.SimpleConnection simpleConnection;
+    @Mock
+    private IPAddressHandler ipAddressHandler;
 
     private HealthRequest data;
     private Long transactionId = 100000L;
@@ -108,7 +111,7 @@ public class HealthQuoteRouterTest {
         when(context.getHttpServletRequest()).thenReturn(httpServletRequest);
         when(sessionDataServiceBean.getDataForTransactionId(httpServletRequest, transactionId.toString(), true)).thenReturn(dataB);
         when(httpServletRequest.getSession()).thenReturn(session);
-        healthQuoteRouter = new HealthQuoteRouter(sessionDataServiceBean, contentService);
+        healthQuoteRouter = new HealthQuoteRouter(sessionDataServiceBean, contentService,  ipAddressHandler);
 
     }
 
@@ -122,8 +125,10 @@ public class HealthQuoteRouterTest {
 
     @Test
     public void testValidateRequestValid() throws Exception {
+        EnvironmentService.setEnvironment("localhost");
         when(SessionUtils.isCallCentre(anyObject())).thenReturn(false);
         ResultsWrapper result = healthQuoteRouter.getHealthQuote(context,  data);
         assertNull(result.getError());
     }
+
 }

@@ -3,6 +3,7 @@ package com.ctm.web.core.email.services;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.security.IPAddressHandler;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 
 public class EmailServiceHandlerTest {
@@ -19,7 +21,7 @@ public class EmailServiceHandlerTest {
 		public Map<String , String> pageSettings = new HashMap<String , String> ();
 
 		public TestEmailHandler(PageSettings pageSettings, EmailMode emailMode) {
-			super(pageSettings, emailMode);
+			super(pageSettings, emailMode, mock(IPAddressHandler.class));
 			splitTestEnabledKey = "splitTestEnabled";
 		}
 
