@@ -151,7 +151,7 @@
         <form_v2:row fieldXpath="${fieldXpath}" label="${streetNoLabel}" id="${name}_streetNumRow" className="${name}_nonStdFieldRow" smRowOverride="2"  isNestedField="${true}" hideHelpIconCol="${true}">
             <div class="${name}_streetNum_container">
                 <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true"
-                                required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid street number'"/>
+                                required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid street number'" placeHolder="St. #"/>
             </div>
         </form_v2:row>
 

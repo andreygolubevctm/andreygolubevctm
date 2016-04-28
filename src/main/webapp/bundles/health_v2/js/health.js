@@ -434,6 +434,7 @@
 			onInitialise: function onInitApplyStep(event){
 
 				meerkat.modules.healthDependants.initHealthDependants();
+				meerkat.modules.healthMedicare.initHealthMedicare();
 
 				if (!meerkat.modules.splitTest.isActive(18)) {
 					healthApplicationDetails.init();
