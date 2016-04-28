@@ -256,6 +256,7 @@
 						{{ } }}
 					</c:if>
 				</ul>
+				<p class="text-danger">Please note that this is not an exhaustive list - there may be additional services that this policy does not cover. Please see the brochure for more information.</p>
 				{{ } }}
 
 			</div>
