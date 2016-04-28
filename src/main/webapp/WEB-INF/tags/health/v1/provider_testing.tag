@@ -2,6 +2,8 @@
 <%@ tag description="Provides a method for external providers to test their prices only, without affecting production or future users"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+
 <c:set var="logger" value="${log:getLogger('tag.health.provider_testing')}" />
 
 <%@ attribute name="xpath" required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
@@ -9,12 +11,13 @@
 <%-- NOTE: a List of Provider Keys can be found in aggregator/health/phio_outbound --%>
 
 <%-- Make sure we're in a proper environment to test this --%>
-${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentService.getEnvironmentAsString()), log:kv('remoteaddr', pageContext.request.remoteAddr))}
+<c:set var="remoteaddr" value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
+${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentService.getEnvironmentAsString()), log:kv('remoteaddr', remoteaddr))}
 <c:if test="${environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI'  || environmentService.getEnvironmentAsString() == 'NXS'}">
 
 	<c:choose>
 		<c:when test="${empty param.providerKey}">
-			<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:') or fn:startsWith(pageContext.request.remoteAddr,'127.0.0.1')}">
+			<c:if test="${fn:startsWith(remoteaddr,'192.168.') or fn:startsWith(remoteaddr,'0:0:0:') or fn:startsWith(remoteaddr,'127.0.0.1')}">
 
 				<form_v3:fieldset_columns>
 					<jsp:attribute name="rightColumn">

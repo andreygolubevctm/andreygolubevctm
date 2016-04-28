@@ -259,7 +259,10 @@
 	</form_v2:row>
 
 	<form_v2:row label="ip_address (not used?)">
-		<field_v1:ip_address />
+		<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+		<%-- Pull out the IP Address --%>
+		<c:set var="ip" value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
+		<c:out value="${ip}" />
 	</form_v2:row>
 
 	<form_v2:row label="ip_number">

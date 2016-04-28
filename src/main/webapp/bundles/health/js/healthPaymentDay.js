@@ -12,12 +12,12 @@
 
     // Create payment day options on the fly - min and max are in + days from the selected date;
     //NOTE: max - min cannot be a negative number
-    function paymentDays( effectiveDateString ){
+    function paymentDays( effectiveDateInput){
         // main check for real value
-        if( effectiveDateString === ''){
+        if( effectiveDateInput === ''){
             return false;
         }
-        var effectiveDate = meerkat.modules.utils.returnDate(effectiveDateString);
+        var effectiveDate = meerkat.modules.dateUtils.returnDate(effectiveDateInput);
         var today = new Date();
 
         var _baseDate = null;
@@ -45,7 +45,6 @@
         var _html = '<option value="">Please choose...</option>';
 
         // The loop to create the payment days
-        var continueCounting = true;
         while (_count < _limit) {
             var _date = new Date( _baseDate.getTime() + (_days * 24 * 60 * 60 * 1000));
             var _day = _date.getDay();
@@ -56,9 +55,8 @@
             } else if( !healthFunds._payments.weekends && ( _day === 0 || _day === 6 ) ){
                 _days++;
             } else {
-                var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
-                var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
-                _html += '<option value="'+ _date.getFullYear() +'-'+ _monthString +'-'+ _dayString +'">'+ healthFunds._getNiceDate(_date) +'</option>';
+                _html += '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'">'+
+                    meerkat.modules.dateUtils.dateValueLongFormat(_date) +'</option>';
                 _days++;
                 _count++;
             }

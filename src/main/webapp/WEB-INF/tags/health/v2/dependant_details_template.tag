@@ -18,7 +18,7 @@
         <form_v3:row>
             <div class="inlineHeadingWithButton">
                 <h5>Dependant {{= obj.dependantId }}</h5>{{ if(obj.dependantId != 1) { }}
-                <a href="javascript:void(0);" class="remove-dependent btn btn-danger" title="Remove last dependent"
+                <a href="javascript:void(0);" class="remove-dependent btn btn-danger" title="Remove last dependant"
                    data-id="{{= obj.dependantId }}">Remove Dependant</a>
                 {{ } }}
             </div>

@@ -72,7 +72,7 @@
 		<result productId="${row.getProductCat()}-${row.getProductId()}">
 				<restrictedFund>
 				<c:choose>
-				<c:when test="${active_fund eq 'CBH' || active_fund eq 'THF' }">Y</c:when>
+				<c:when test="${active_fund eq 'CBH' || active_fund eq 'THF' || active_fund eq 'NHB' }">Y</c:when>
 					<c:otherwise>N</c:otherwise>
 				</c:choose>
 				</restrictedFund>

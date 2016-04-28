@@ -20,6 +20,8 @@ public class Dependant {
 
     private String fulltime;
 
+    private String relationship;
+
     public String getSchool() {
         return school;
     }
@@ -90,5 +92,13 @@ public class Dependant {
 
     public void setFulltime(String fulltime) {
         this.fulltime = fulltime;
+    }
+
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
     }
 }
