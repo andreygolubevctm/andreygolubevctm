@@ -1,6 +1,9 @@
-<%@ page language="java" contentType="text/json; charset=UTF-8"
+<%@ page language="java" contentType="application/json; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" />
+
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.fuel_price_results')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="FUEL"/>
@@ -52,7 +55,7 @@ ${quoteResults.init(pageContext.request, pageSettings)}
         </c:if>
 
         <%-- Capture the Client IP and User Agent used later to check limits--%>
-        <go:setData dataVar="data" xpath="fuel/clientIpAddress" value="${pageContext.request.remoteAddr}"/>
+        <go:setData dataVar="data" xpath="fuel/clientIpAddress" value="${ipAddressHandler.getIPAddress(pageContext.request)}"/>
         <go:setData dataVar="data" xpath="fuel/clientUserAgent" value='<%=request.getHeader("user-agent")%>' />
 
         <%-- Save Client Data --%>

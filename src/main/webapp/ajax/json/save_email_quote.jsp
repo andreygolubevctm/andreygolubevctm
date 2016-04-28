@@ -1,8 +1,8 @@
-<%@page import="java.util.Date"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="application/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.save_email_quote')}" />
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" />
 
 <session:get settings="true" authenticated="true" />
 
@@ -33,7 +33,7 @@
 		${logger.debug('PROCEEDINATOR PASSED')}
 
 		<c:set var="sessionid" value="${pageContext.session.id}" />
-		<c:set var="ipaddress" value="${pageContext.request.remoteAddr}" />
+		<c:set var="ipaddress" value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
 		<c:set var="status" value="" />
 		<c:set var="prodtyp" value="${quoteType}" />
 		<c:set var="source">

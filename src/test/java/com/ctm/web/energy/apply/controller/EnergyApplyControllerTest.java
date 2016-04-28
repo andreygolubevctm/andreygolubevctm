@@ -1,5 +1,6 @@
 package com.ctm.web.energy.apply.controller;
 
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.energy.apply.services.EnergyApplyService;
@@ -39,6 +40,8 @@ public class EnergyApplyControllerTest {
     EnergyApplyService energyService;
     @Mock
     SessionDataServiceBean sessionDataServiceBean;
+    @Mock
+    IPAddressHandler ipAddressHandler;
 
     @InjectMocks
     EnergyApplyController controllerUnderTest;

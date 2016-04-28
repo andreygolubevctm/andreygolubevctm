@@ -4,7 +4,6 @@ import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.dao.CountryMappingDao;
 import com.ctm.web.core.dao.RankingDetailsDao;
-import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
@@ -18,7 +17,9 @@ import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.RankingDetail;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.travel.email.model.TravelBestPriceEmailModel;
 import com.ctm.web.travel.email.model.TravelBestPriceRanking;
@@ -31,11 +32,6 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 public class TravelEmailService extends EmailServiceHandler implements BestPriceEmailHandler {
 
 	private static final String VERTICAL = VerticalType.TRAVEL.getCode();
@@ -46,8 +42,11 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 	private final EmailUrlServiceOld urlServiceOld;
 	private Data data;
 
-	public TravelEmailService(PageSettings pageSettings, EmailMode emailMode, EmailDetailsService emailDetailsService, EmailUrlService urlService, Data data, EmailUrlServiceOld urlServiceOld) {
-		super(pageSettings, emailMode);
+	public TravelEmailService(PageSettings pageSettings, EmailMode emailMode,
+							  EmailDetailsService emailDetailsService,
+							  EmailUrlService urlService, Data data,
+							  EmailUrlServiceOld urlServiceOld, IPAddressHandler ipAddressHandler) {
+		super(pageSettings, emailMode,  ipAddressHandler);
 		this.emailDetailsService = emailDetailsService;
 		this.urlService = urlService;
 		this.data = data;
@@ -78,7 +77,7 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			EmailMaster emailDetails = new EmailMaster();
 			emailDetails.setEmailAddress(emailAddress);
 			emailDetails.setSource("QUOTE");
-			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE",  request.getRemoteAddr());
+			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE",  ipAddressHandler.getIPAddress(request));
 
 			if(!isTestEmailAddress) {
 				return emailSender.sendToExactTarget(new TravelBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId));

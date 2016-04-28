@@ -58,11 +58,17 @@
 	  .slide-feature-hidden() !important;
 	}
   }
-
-  &[data-step="enquiry"] {
-	#navbar-main{
-	  .slide-feature-hidden() !important;
+	&[data-step="enquiry"] {
+		#navbar-main {
+			.slide-feature-hidden() !important;
+			@media(@xs-only) {
+				.slide-feature-is-visible() !important;
+				.slide-reference-number,
+				.slide-feature-back {
+					.slide-feature-is-visible();
+				}
+			}
+		}
 	}
-  }
 
 }

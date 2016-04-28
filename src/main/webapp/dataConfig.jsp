@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" />
+
 <jsp:useBean id="serviceConfigurationService" class="com.ctm.web.core.services.ServiceConfigurationService" scope="session"/>
 
 <core_v1:doctype/>
@@ -11,7 +13,7 @@
 <body class="dataConfig">
 
 <%-- SECURITY FEATURE --%>
-<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:') or fn:startsWith(pageContext.request.remoteAddr,'127.0.0.1')}">
+<c:if test="${fn:startsWith(ipAddressHandler.getIPAddress(pageContext.request),'192.168.') or fn:startsWith(ipAddressHandler.getIPAddress(pageContext.request),'0:0:0:') or fn:startsWith(ipAddressHandler.getIPAddress(pageContext.request),'127.0.0.1')}">
     <c:import var="prettyXml" url="/WEB-INF/xslt/pretty_xml.xsl"/>
 
     <session:core/>

@@ -4,6 +4,7 @@ import com.ctm.web.core.exceptions.CrudValidationException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.ProviderContent;
 import com.ctm.web.core.model.session.AuthenticatedData;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.CrudService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.utils.RequestUtils;
@@ -16,8 +17,15 @@ import java.util.List;
 
 public class AdminProviderContentService implements CrudService {
 
+    private final IPAddressHandler ipAddressHandler;
+
     private final ProviderContentHelper providerContentHelper = new ProviderContentHelper();
     private final ProviderContentDao providerContentDao = new ProviderContentDao();
+
+    public AdminProviderContentService(IPAddressHandler ipAddressHandler) {
+        this.ipAddressHandler =  ipAddressHandler;
+    }
+
 
     @Override
     public List<?> getAll(HttpServletRequest request) throws DaoException {
@@ -31,7 +39,7 @@ public class AdminProviderContentService implements CrudService {
             providerContentHelper.validate(providerContent);
             providerContent = RequestUtils.createObjectFromRequest(request, providerContent);
             final String userName = getAuthenticatedData(request).getUid();
-            final String ipAddress = request.getRemoteAddr();
+            final String ipAddress = ipAddressHandler.getIPAddress(request);
             return providerContentDao.updateProviderContent(providerContent, userName, ipAddress);
         } catch (DaoException d) {
             throw new RuntimeException(d);
@@ -45,7 +53,7 @@ public class AdminProviderContentService implements CrudService {
             providerContentHelper.validate(providerContent);
             providerContent = RequestUtils.createObjectFromRequest(request, providerContent);
             final String userName = getAuthenticatedData(request).getUid();
-            final String ipAddress = request.getRemoteAddr();
+            final String ipAddress = ipAddressHandler.getIPAddress(request);
             return providerContentDao.createProviderContent(providerContent, userName, ipAddress);
         } catch (DaoException d) {
             throw new RuntimeException(d);
@@ -56,7 +64,7 @@ public class AdminProviderContentService implements CrudService {
     public String delete(HttpServletRequest request) throws DaoException, CrudValidationException {
         try {
             final String userName = getAuthenticatedData(request).getUid();
-            final String ipAddress = request.getRemoteAddr();
+            final String ipAddress = ipAddressHandler.getIPAddress(request);
             return providerContentDao.deleteProviderContent(Integer.parseInt(request.getParameter("providerContentId")), userName, ipAddress);
         } catch (DaoException d) {
             throw new RuntimeException(d);
