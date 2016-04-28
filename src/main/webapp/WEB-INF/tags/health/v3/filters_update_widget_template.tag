@@ -6,6 +6,6 @@
     <div class="text-center">
         <p><strong>Changing your filters means we need to get updated results.</strong></p>
         <a href="javascript:;" class="btn btn-block btn-cta filter-update-changes">Update Results</a>
-        <a class="small filter-cancel-changes">cancel changes</a>
+        <a class="small filter-cancel-changes" href="javascript:;">cancel changes</a>
     </div>
 </core_v1:js_template>

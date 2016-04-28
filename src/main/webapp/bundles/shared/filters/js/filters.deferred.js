@@ -10,7 +10,8 @@
     var moduleEvents = {
             filters: {
                 FILTERS_UPDATED: "FILTERS_UPDATED",
-                FILTER_CHANGED: "FILTER_CHANGED"
+                FILTER_CHANGED: "FILTER_CHANGED",
+                FILTERS_CANCELLED: "FILTERS_CANCELLED"
             }
         },
         settings = {
@@ -25,7 +26,9 @@
         },
         model = {},
         _htmlTemplate = {},
-        $document;
+        $document,
+        subscriptionHandles = {},
+        resettingFilters = false;
 
 
     /**
@@ -52,7 +55,6 @@
      */
     function resetFilters() {
         setDefaultsToModel();
-
         render('filters');
     }
 
@@ -82,14 +84,16 @@
 
             // Bind update events:
             if (filterObject.hasOwnProperty('events') && _.isFunction(filterObject.events.update)) {
-                //todo: if this is run more than once, make sure we don't double subscribe!!!
-                meerkat.messaging.subscribe(moduleEvents.FILTERS_UPDATED, function() {
+                if (subscriptionHandles[filterObject.name]) {
+                    meerkat.messaging.unsubscribe(moduleEvents.filters.FILTERS_UPDATED, subscriptionHandles[filterObject.name]);
+                }
+                subscriptionHandles[filterObject.name] = meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_UPDATED, function () {
                     filterObject.events.update.apply(window, [filterObject]);
                 });
             }
             // Run pre-init if exists
+            //todo: add hasRun flag so beforeInit only needs to run once?
             if (filterObject.hasOwnProperty('events') && _.isFunction(filterObject.events.beforeInit)) {
-                //todo: if this is run more than once, make sure we don't double up on this function!!!
                 filterObject.events.beforeInit.apply(window, [filterObject]);
             }
             // Set default values onto the model.
@@ -145,10 +149,6 @@
         return _htmlTemplate[template](model);
     }
 
-    function update() {
-        //resets the models defaultValueSoruces to the current value in the filter/form so update hidden fields etc.
-    }
-
     function eventSubscriptions() {
 
         // Every time we get to results, reset the filter model and re-render.
@@ -157,9 +157,22 @@
                 resetFilters(model);
             }
         });
+
+        meerkat.messaging.subscribe(moduleEvents.filters.FILTER_CHANGED, function (event) {
+            $(settings.containers.updates).slideDown();
+        });
+        meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_UPDATED, function (event) {
+            $(settings.containers.updates).slideUp();
+        });
+        meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_CANCELLED, function (event) {
+            resetFilters();
+            $(settings.containers.updates).slideUp();
+            resettingFilters = false;
+        });
     }
 
     function applyEventListeners() {
+
         $('#navbar-main').on('click', '.slide-feature-filters a, .slide-feature-benefits a', function (e) {
             e.preventDefault();
             /**
@@ -170,12 +183,24 @@
              */
         });
 
-        $document.on('click', '.filter-update-changes', function() {
-            meerkat.messaging.publish(moduleEvents.FILTERS_UPDATED, model);
-            
-        }
-    );
-}
+        _.each(model, function (filterObject) {
+
+            $document.on('change', ':input[name=' + filterObject.name + ']', function (e) {
+                if (!resettingFilters) {
+                    meerkat.messaging.publish(moduleEvents.filters.FILTER_CHANGED, e);
+                }
+            });
+        });
+
+        $document.on('click', '.filter-update-changes', function (e) {
+            e.preventDefault();
+            meerkat.messaging.publish(moduleEvents.filters.FILTERS_UPDATED, e);
+        }).on('click', '.filter-cancel-changes', function (e) {
+            e.preventDefault();
+            resettingFilters = true;
+            meerkat.messaging.publish(moduleEvents.filters.FILTERS_CANCELLED, e);
+        });
+    }
 
     meerkat.modules.register("filters", {
         initFilters: initFilters,

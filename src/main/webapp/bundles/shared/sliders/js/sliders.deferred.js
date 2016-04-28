@@ -46,12 +46,8 @@ ELEMENT EVENTS:
 		$sliders = $sliders || $('.slider-control');
 		$sliders.each(function() {
 			var $controller = $(this),
-			$slider			= $controller.find('.slider');
-			if($slider.data('markers')) {
-				// already initialised
-				return;
-			}
-			var $field		= $controller.find('input'),
+			$slider			= $controller.find('.slider'), 
+            $field		    = $controller.find('input'),
 			$selection		= $controller.find('.selection'),
 			initialValue	= $slider.data('value'),
 			range			= $slider.data('range').split(','),

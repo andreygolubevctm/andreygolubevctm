@@ -54,9 +54,8 @@
                 defaultValue: '',
                 events: {
                     update: function (filterObject) {
-                        // todo Set to default value
-                        // todo set defaults from model source -- if this part is generic and done after we
-                        // update default value, then it should default update the model if we run setDefaultsToModel again.
+                        // todo Set to defaultValueSourceSelector
+                        // it should default update the model if we run setDefaultsToModel again.
                         // additional backports
                         var value = $('select[name=' + filterObject.name + ']').val();
                         $('.hospitalCoverToggles a[data-category="' + value + '"]').click();
@@ -85,7 +84,7 @@
                         /**
                          * Copy the element and place it in the filters with a new id etc.
                          */
-                        var rebateElement = $(filterObject.defaultValueSourceSelector).parent('.select').clone()
+                        var rebateElement = $(filterObject.defaultValueSourceSelector).parent('.select').clone().find('select')
                             .attr('id', model.rebate.name).attr('name', model.rebate.name);
                         $('.filter-rebate-holder').html(rebateElement);
                     },
@@ -149,7 +148,11 @@
                 values: {},
                 defaultValueSourceSelector: '.Hospital_container',
                 defaultValue: meerkat.modules.healthBenefitsStep.getSelectedBenefits(),
-                events: {}
+                events: {
+                    update: function () {
+                        // populateBenefitsSelection
+                    }
+                }
             },
             "benefitsExtras": {
                 name: 'health_filterBar_benefitsExtras',
@@ -221,7 +224,7 @@
             if (isShortlistable(object) && hasShortlistableChildren(object) && object.shortlistKey == category) {
                 _.each(object.children, function (child) {
                     if (child.shortlistKey)
-                        arr.push({value: child.shortlistKey, label: child.name, helpId: child.helpId, id: child.shortlistKey});
+                        arr.push({value: child.shortlistKey, label: child.name, helpId: child.helpId});
                 });
             }
         });
