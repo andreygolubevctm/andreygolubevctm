@@ -15,14 +15,20 @@
             }
         },
         settings = {
-            templates: {
-                filters: '#filter-results-template',
-                updates: '#filters-update-template'
-            },
-            containers: {
-                filters: '#results-sidebar .results-filters', // todo needs to change if changed to xs so it can render off canvas..
-                updates: '.filters-update-container'
-            }
+            filters: [
+                {
+                    template: '#filter-results-template',
+                    container: '.results-filters',
+                    context: '#results-sidebar'
+                }
+            ],
+
+            updates: [
+                {
+                    template: '#filters-update-template',
+                    container: '.filters-update-container'
+                }
+            ]
         },
         model = {},
         _htmlTemplate = {},
@@ -38,11 +44,15 @@
      * @param options
      * @param filterModel
      */
-    function initFilters(options, filterModel) {
+    function initFilters(options, filterModel, optionNode) {
         $(document).ready(function () {
             $document = $(this);
             model = filterModel;
-            settings = $.extend(true, settings, options);
+            if(optionNode){
+                $.merge(settings[optionNode], options[optionNode]);
+            } else {
+                settings = $.extend(true, settings, options);
+            }
 
             eventSubscriptions();
             applyEventListeners();
@@ -64,7 +74,7 @@
      */
     function setModel(newModel) {
         model = newModel;
-        setDefaultsToModel();
+        // setDefaultsToModel();
     }
 
     function getModel() {
@@ -120,18 +130,25 @@
 
     /**
      * Allow us to render a different template with the same model
-     * @param template
+     * @param component
      */
-    function render(template) {
-        $(settings.containers[template]).empty().html(getTemplateHtml(template));
+    function render(component) {
+        buildHtml(component);
 
         _.each(model, function (filterObject) {
             if (filterObject.hasOwnProperty('events') && _.isFunction(filterObject.events.init)) {
                 filterObject.events.init.apply(window, [filterObject]);
             }
         });
+
         // Render the update template too.
-        $(settings.containers.updates).empty().html(getTemplateHtml('updates'));
+        buildHtml('updates');
+    }
+
+    function buildHtml(component) {
+        _.each(settings[component], function(setting) {
+            $(setting.container, setting.context).empty().html(getTemplateHtml(setting.template));
+        });
     }
 
     /**
@@ -141,11 +158,11 @@
         if (template && _htmlTemplate[template]) {
             return _htmlTemplate[template](model);
         }
-        if (!$(settings.templates[template]).length) {
+        if (!$(template).length) {
             exception("This template does not exist: " + template);
         }
 
-        _htmlTemplate[template] = _.template($(settings.templates[template]).html(), {variable: "model"});
+        _htmlTemplate[template] = _.template($(template).html(), {variable: "model"});
         return _htmlTemplate[template](model);
     }
 

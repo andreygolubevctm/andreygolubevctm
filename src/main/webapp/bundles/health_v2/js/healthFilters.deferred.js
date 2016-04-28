@@ -145,7 +145,7 @@
             },
             "benefitsHospital": {
                 name: 'health_filterBar_benefitsHospital',
-                values: {},
+                values: meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel(),
                 defaultValueSourceSelector: '.Hospital_container',
                 defaultValue: meerkat.modules.healthBenefitsStep.getSelectedBenefits(),
                 events: {
@@ -156,7 +156,7 @@
             },
             "benefitsExtras": {
                 name: 'health_filterBar_benefitsExtras',
-                values: {},
+                values: meerkat.modules.healthBenefitsStep.getExtraBenefitsModel(),
                 defaultValueSourceSelector: '.GeneralHealth_container',
                 defaultValue: meerkat.modules.healthBenefitsStep.getSelectedBenefits(),
                 events: {}
@@ -164,16 +164,17 @@
 
         },
         settings = {
-            templates: {
-                benefits: '#filter-benefits-template'
-            },
-            containers: {
-                benefits: '#results-sidebar .results-filters-benefits'
-            }
+            filters: [
+                {
+                    template: '#filter-benefits-template',
+                    container: '.results-filters-benefits',
+                    context: '#results-sidebar'
+                }
+            ]
         };
 
     function init() {
-        meerkat.modules.filters.initFilters(settings, model);
+        meerkat.modules.filters.initFilters(settings, model, 'filters');
         applyEventListeners();
         eventSubscriptions();
     }
@@ -195,18 +196,18 @@
          * Features.getPageStructure does not contain anything until the async call has come back from results.
          * This means that we cannot trigger the render until this is done...
          */
-        meerkat.messaging.subscribe(meerkatEvents.resultsFeatures.STRUCTURE_FETCHED, function () {
-            var updatedModel = meerkat.modules.filters.getModel();
-
-            updatedModel.benefitsHospital.values = Features.getPageStructure();
-            updatedModel.benefitsHospital.values = preInitBenefits(updatedModel.benefitsHospital, 'Hospital');
-
-            updatedModel.benefitsExtras.values = Features.getPageStructure();
-            updatedModel.benefitsExtras.values = preInitBenefits(updatedModel.benefitsExtras, 'GeneralHealth');
-
-            meerkat.modules.filters.setModel(updatedModel);
-            meerkat.modules.filters.render('benefits');
-        });
+        //meerkat.messaging.subscribe(meerkatEvents.resultsFeatures.STRUCTURE_FETCHED, function () {
+        //    var updatedModel = meerkat.modules.filters.getModel();
+        //
+        //    updatedModel.benefitsHospital.values = Features.getPageStructure();
+        //    updatedModel.benefitsHospital.values = preInitBenefits(updatedModel.benefitsHospital, 'Hospital');
+        //
+        //    updatedModel.benefitsExtras.values = Features.getPageStructure();
+        //    updatedModel.benefitsExtras.values = preInitBenefits(updatedModel.benefitsExtras, 'GeneralHealth');
+        //
+        //    meerkat.modules.filters.setModel(updatedModel);
+        //    meerkat.modules.filters.render('benefits');
+        //});
     }
 
     /**

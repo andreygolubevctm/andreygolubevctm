@@ -12,7 +12,9 @@
         $defaultCover,
         $hasIconsDiv,
         changedByCallCentre = false,
-        customiseDialogId = null;
+        customiseDialogId = null,
+        hospitalBenefits = [],
+        extrasBenefits = [];
 
     var events = {
             healthBenefitsStep: {
@@ -182,10 +184,36 @@
 
             // Move the subtitle
             $this.find('.subTitle').insertAfter($this.find('.hasIcons'));
+
+            // Set benefits model
+            hospitalBenefits = getBenefitsModelFromPage($benefitsForm.find('.hospitalCover'));
+            extrasBenefits = getBenefitsModelFromPage($benefitsForm.find('.extrasCover'));
         });
 
         // For loading in, update benefits page layout. letting this default to '' for tiered benefits
         changeLayoutByCoverType($coverType.val());
+    }
+
+    function getBenefitsModelFromPage($container) {
+        var benefits = [];
+        $container.find('.short-list-item').each(function () {
+            var benefit = {},
+                $this = $(this);
+            benefit.value = $this.find('input[type="checkbox"]').attr('id').replace('health_benefits_benefitsExtras_', '');
+            benefit.label = $this.find('.iconLabel').text();
+            benefit.helpId = $this.find('.help-icon').data('content').replace('healpid:', '');
+            benefit.class = $this.hasClass('medium') ? 'medium ' : '' + $this.hasClass('basic') ? 'basic ' : '' + $this.hasClass('customise') ? 'customise ' : '';
+            benefits.push(benefit);
+        });
+        return benefits;
+    }
+
+    function getHospitalBenefitsModel(){
+        return hospitalBenefits;
+    }
+
+    function getExtraBenefitsModel(){
+        return extrasBenefits;
     }
 
     function hospitalCoverToggleEvents() {
@@ -603,7 +631,9 @@
         resetBenefitsSelection: resetBenefitsSelection,
         resetBenefitsForProductTitleSearch: resetBenefitsForProductTitleSearch,
         getSelectedBenefits: getSelectedBenefits,
-        syncAccidentOnly: syncAccidentOnly
+        syncAccidentOnly: syncAccidentOnly,
+        getHospitalBenefitsModel: getHospitalBenefitsModel,
+        getExtraBenefitsModel: getExtraBenefitsModel
     });
 
 })(jQuery);
