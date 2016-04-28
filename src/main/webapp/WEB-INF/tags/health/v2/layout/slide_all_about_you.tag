@@ -9,7 +9,7 @@
 		<%-- PROVIDER TESTING --%>
 		<health_v1:provider_testing xpath="${pageSettings.getVerticalCode()}" />
 
-		<form_v2:fieldset legend="About you" postLegend="Tell us about yourself, so we can find the right cover for you" />
+		<form_v2:fieldset legend="About you" postLegend="Tell us about yourself, so we can find the right cover for you"  className="health-about-you" />
 
 		<%-- COVER TYPE / SITUATION --%>
 		<div id="${pageSettings.getVerticalCode()}_situation">

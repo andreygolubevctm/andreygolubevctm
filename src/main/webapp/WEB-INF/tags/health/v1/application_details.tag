@@ -29,6 +29,7 @@
 						suburbNameAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='The selected suburb does not match the original suburb selected.' autocomplete='false'"
 						postCodeAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='Your address does not match the original postcode provided.' autocomplete='false'"
 						postCodeNameAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='The entered postcode does not match the original postcode provided.' autocomplete='false'"
+						stateValidationField="#health_application-selection .content"
 				/>
 			</c:when>
 			<c:otherwise>
@@ -55,6 +56,7 @@
 							suburbAdditionalAttributes=" autocomplete='false'"
 							postCodeNameAdditionalAttributes=" autocomplete='false'"
 							postCodeAdditionalAttributes=" autocomplete='false'"
+							stateValidationField="#health_application-selection .content"
 					/>
 				</c:when>
 				<c:otherwise>
