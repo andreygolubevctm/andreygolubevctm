@@ -22,7 +22,6 @@
 	<form_v2:fieldset legend="Contact Details">
 		<c:choose>
 			<c:when test="${useElasticSearch eq true}">
-				aaaa
 				<group_v3:elastic_address
 						xpath="${xpath}/address"
 						type="R"
@@ -32,7 +31,7 @@
 						postCodeNameAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='The entered postcode does not match the original postcode provided.' autocomplete='false'"
 				/>
 			</c:when>
-			<c:otherwise>bbbb
+			<c:otherwise>
 				<group_v2:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"/>
 			</c:otherwise>
 		</c:choose>
