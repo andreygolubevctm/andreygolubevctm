@@ -117,6 +117,18 @@
 		return step;
 	}
 
+	/**
+	 * @jira HLT-2820
+	 * Completely stops the recording.
+	 * NOTE: this may not be a long term supported function from sessioncam.
+	 * They don't have the ability to pause and resume. Health results is too heavy, even on Chrome Desktop
+	 */
+	function stopSessionCam() {
+		if(window.sessionCamRecorder && _.isFunction(window.sessionCamRecorder.endSession)) {
+			window.sessionCamRecorder.endSession();
+		}
+	}
+
 	meerkat.modules.register("sessionCamHelper", {
 		init: init,
 		events: events,
@@ -126,7 +138,8 @@
 		setResultsLoadingPage: setResultsLoadingPage,
 		setResultsShownPage: setResultsShownPage,
 		setMoreInfoModal: setMoreInfoModal,
-		getMoreInfoStep: getMoreInfoStep
+		getMoreInfoStep: getMoreInfoStep,
+		stop: stopSessionCam
 	});
 
 })(jQuery);
