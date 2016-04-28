@@ -146,6 +146,12 @@ var healthFunds_AHM = {
     meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
+      healthFunds._payments = {
+          'min':0,
+          'max':28,
+          'weekends':true,
+          'maxDay' : 28
+      };
     $('#update-premium').on('click.AHM', function() {
       if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
         meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, false);

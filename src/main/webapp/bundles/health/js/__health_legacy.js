@@ -8,14 +8,6 @@
 
 */
 
-/* Utilities functions for health */
-function returnDate(_dateString){
-	if(_dateString === '') return null;
-	var dateComponents = _dateString.split('/');
-	if(dateComponents.length < 3) return null;
-	return new Date(dateComponents[2], dateComponents[1] - 1, dateComponents[0]);
-}
-
 /**
  * isLessThan31Or31AndBeforeJuly1() test whether the dob provided makes the user less than
  * 31 or is currently 31 but the current datea is before 1st July following their birthday.
@@ -25,12 +17,12 @@ function returnDate(_dateString){
  */
 function isLessThan31Or31AndBeforeJuly1(_dobString) {
 	if(_dobString === '') return false;
-	var age = Math.floor(meerkat.modules.utils.returnAge(_dobString));
+	var age = Math.floor(meerkat.modules.age.returnAge(_dobString));
 	if( age < 31 ) {
 		return true;
 	} else if( age == 31 ){
-		var dob = returnDate(_dobString);
-		var birthday = returnDate(_dobString);
+		var dob = meerkat.modules.dateUtils.returnDate(_dobString);
+		var birthday = meerkat.modules.dateUtils.returnDate(_dobString);
 		birthday.setFullYear(dob.getFullYear() + 31);
 		var now = new Date();
 		if ( dob.getMonth() + 1 < 7 && (now.getMonth() + 1 >= 7 || now.getFullYear() > birthday.getFullYear()) ) {
@@ -651,32 +643,13 @@ var healthFunds = {
 				// Loop through the selected days and attempt a match
 				for(a=0; a < a_Match.length; a++) {
 					if(a_Match[a] == _date.getDate() ){
-						var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
-						var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
-						/*var*/ _html = '<option value="'+ _date.getFullYear() +'-'+ _monthString +'-'+ _dayString +'" selected="selected">'+ healthFunds._getNiceDate(_date) +'</option>';
+						/*var*/ _html = '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'" selected="selected">'+ meerkat.modules.dateUtils.dateValueLongFormat(_date) +'</option>';
 						i = 99;
 						break;
 					}
 				}
 			}
 			return _html;
-	},
-
-
-	_getDayOfWeek: function( dateObj ) {
-		var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-		return  days[dateObj.getDay()];
-	},
-
-	_getMonth: function( dateObj ) {
-		var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-		return  months[dateObj.getMonth()];
-	},
-
-	_getNiceDate : function( dateObj ) {
-		var day = dateObj.getDate();
-		var year = dateObj.getFullYear();
-		return healthFunds._getDayOfWeek(dateObj) + ", " + day + " " + healthFunds._getMonth(dateObj) + " " + year;
 	},
 
 	_setPolicyDate : function (dateObj, addDays) {

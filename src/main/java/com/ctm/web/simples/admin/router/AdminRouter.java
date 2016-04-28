@@ -1,6 +1,7 @@
 package com.ctm.web.simples.admin.router;
 
 import com.ctm.web.core.router.core.CrudRouter;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.CrudService;
 import com.ctm.web.simples.admin.dao.CappingLimitsDao;
 import com.ctm.web.simples.admin.services.AdminProviderContentService;
@@ -24,13 +25,15 @@ public class AdminRouter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminRouter.class);
     private final HttpServletResponse response;
     private final CrudRouter crudRouter;
+    private final IPAddressHandler ipAddressHandler;
     CrudService crudService = null;
     //mention your Interface name here that has been used in CMS URL
     private static final String CAPPING_LIMIT = "cappingLimits";
     private static final String PROVIDER_CONTENT = "providerContent";
 
-    public AdminRouter(HttpServletRequest request , HttpServletResponse response) {
+    public AdminRouter(HttpServletRequest request , HttpServletResponse response, IPAddressHandler ipAddressHandler) {
         this.response= response;
+        this.ipAddressHandler = ipAddressHandler;
         this.crudRouter = new CrudRouter(request ,  response);
     }
 
@@ -48,7 +51,7 @@ public class AdminRouter {
                         crudRouter.routePostRequest(writer, getAction(uri), crudService);
                         break;
                 case PROVIDER_CONTENT:
-                        crudService = new AdminProviderContentService();
+                        crudService = new AdminProviderContentService( ipAddressHandler);
                         crudRouter.routePostRequest(writer, getAction(uri), crudService);
                         break;
                 default:
@@ -74,7 +77,7 @@ public class AdminRouter {
                     crudRouter.routGetRequest(writer, getAction(uri), crudService);
                     break;
                 case PROVIDER_CONTENT:
-                    crudService = new AdminProviderContentService();
+                    crudService = new AdminProviderContentService(ipAddressHandler);
                     crudRouter.routGetRequest(writer, getAction(uri), crudService);
                     break;
                 default:

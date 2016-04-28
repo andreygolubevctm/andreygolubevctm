@@ -266,58 +266,52 @@ public class HealthPriceService {
 	public HealthPriceResult setUpAltProductId(HealthPriceResult healthPriceResult) throws DaoException {
 		return healthPriceDao.setUpAltProductId(healthPriceRequest, healthPriceResult);
 	}
-	
-	
-	/**
-		DISCOUNT HACK: NEEDS TO BE REVISED
-		if onResultsPage = true
-			= Discount
-			Show all .. and default to discount rates
-	
-		else if NIB + Bank account
-			= Discount
-	
-		else if GMHBA + Bank account
-			= Discount
-	
-		else if GMF + Annualy payment
-			= Discount
-	
-		else if HIF + Annualy/Halfyealy payment
-			= Discount
-			
-		else if BUD || AUF
-			= Discount
 
-		else
-			= No Discount
-	
-		1=AUF, 3=NIB, 5=GMHBA, 6=GMF, 54=BUD, 11=HIF
-	**/
+
+	/**
+         DISCOUNT HACK: NEEDS TO BE REVISED
+         if onResultsPage = true
+         = No Discount
+
+         else if NIB + Bank account
+         = Discount
+
+         else if GMHBA + Bank account
+         = Discount
+
+         else if GMF + Annualy payment
+         = Discount
+
+         else if HIF + Annualy/Halfyealy payment
+         = Discount
+
+         else if AUF
+         = Discount
+
+         else
+         = No Discount
+
+         1=AUF, 3=NIB, 5=GMHBA, 6=GMF, 54=BUD, 11=HIF
+	 **/
 	public static boolean hasDiscountRates(Frequency frequency, String provider, PaymentType paymentType, boolean onResultsPage) {
+		if(onResultsPage) {
+			return false;
+		}
 		boolean isBankAccount = paymentType != null && paymentType == PaymentType.BANK;
-		boolean isDiscountRates ;
 		switch(provider){
 			case "NIB":
-				isDiscountRates = onResultsPage || isBankAccount;
-				break;
+				return isBankAccount;
 			case "GMH":
-				isDiscountRates = onResultsPage || isBankAccount;
-				break;
+				return isBankAccount;
 			case "GMF":
-				isDiscountRates = onResultsPage || frequency.equals(ANNUALLY);
-				break;
+				return  frequency.equals(ANNUALLY);
 			case "HIF":
-				isDiscountRates = onResultsPage || frequency.equals(ANNUALLY) || frequency.equals(HALF_YEARLY);
-				break;
-			case "BUD":
+				return frequency.equals(ANNUALLY) || frequency.equals(HALF_YEARLY);
 			case "AUF":
-				isDiscountRates = true;
-				break;
+				return true;
 			default:
-				isDiscountRates = false;
+				return false;
 		}
-		return isDiscountRates;
 	}
 
 	public boolean hasDiscountRates(String provider, String paymentType) {
