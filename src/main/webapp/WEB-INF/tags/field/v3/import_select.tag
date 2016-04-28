@@ -10,10 +10,10 @@
 <%@ attribute name="title" 		required="true"	 rtexprvalue="true"	 description="subject of the select box" %>
 <%@ attribute name="url" 		required="true"	 rtexprvalue="true"	 description="url of import file containing options" %>
 <%@ attribute name="width" 		 required="false" rtexprvalue="true"	 description="the size attribute of this select input"%>
-<%@ attribute name="omitPleaseChoose" required="false"	rtexprvalue="true"	 description="should 'please choose' be omitted?" %>
-<%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
-<%@ attribute name="placeHolder" required="false"	rtexprvalue="true"	 description="dropdown placeholder" %>
-
+<%@ attribute name="omitPleaseChoose" 		required="false"	rtexprvalue="true"	 description="should 'please choose' be omitted?" %>
+<%@ attribute name="additionalAttributes" 	required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
+<%@ attribute name="placeHolder" 			required="false"	rtexprvalue="true"	 description="dropdown placeholder" %>
+<%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -48,6 +48,9 @@
 	<c:set var="requiredAttribute" value=' required="required" '/>
 </c:if>
 
+<c:if test="${disableErrorContainer eq true}">
+	<c:set var="additionalAttributes" value='${additionalAttributes} disableErrorContainer'/>
+</c:if>
 
 <div class="select">
 

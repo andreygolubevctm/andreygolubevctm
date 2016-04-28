@@ -13,6 +13,7 @@
 <%@ attribute name="step" 				required="false"	rtexprvalue="true"  	description="the amount each value steps up (defaults to 1)" %>
 <%@ attribute name="omitPleaseChoose" 	required="false"	rtexprvalue="true"		description="should 'please choose' be omitted? Y/N (Yes omits)" %>
 <%@ attribute name="placeHolder"	 	required="false"	rtexprvalue="true"		description="dropdown placeholder" %>
+<%@ attribute name="disableErrorContainer" required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
@@ -30,7 +31,7 @@
 	<span class=" input-group-addon" >
 		<i class="icon-sort"></i>
 	</span>
-	<select class="form-control field-count_select ${className}" id="${name}" name="${name}" <c:if test="${required}">required data-msg-required="Please choose ${title}"</c:if>>
+	<select class="form-control field-count_select ${className}" id="${name}" name="${name}" <c:if test="${required}">required data-msg-required="Please choose ${title}"</c:if> <c:if test="${disableErrorContainer eq true}">disableErrorContainer</c:if>>
 		<c:if test="${empty omitPleaseChoose || omitPleaseChoose == 'N'}">
 			<option id="${name}_" value="">${placeHolderText}</option>
 		</c:if>

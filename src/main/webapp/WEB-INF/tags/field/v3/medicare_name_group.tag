@@ -10,21 +10,21 @@
 
 	<c:set var="fieldXpath" value="${xpath}/cardPosition" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Position you appear on your medicare card"  className="health_payment_medicare_cardPosition-group"  isNestedField="${true}" smRowOverride="2" hideHelpIconCol="${true}">
-		<field_v2:count_select xpath="${fieldXpath}" min="1" max="5" step="1" title="your medicare card position" required="true" className="health_payment_medicare_cardPosition" placeHolder="#"/>
+		<field_v2:count_select xpath="${fieldXpath}" min="1" max="5" step="1" title="your medicare card position" required="true" className="health_payment_medicare_cardPosition" placeHolder="#" disableErrorContainer="${true}"/>
 	</form_v2:row>
 
 	<c:set var="fieldXpath" value="${xpath}/firstName" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="First Name" hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
-		<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField" placeholder="First name" />
+		<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField" placeholder="First name" disableErrorContainer="${true}" />
 	</form_v2:row>
 	<c:if test="${showInitial eq true}">
 		<c:set var="fieldXpath" value="${xpath}/middleName" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Middle Name" hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">
-			<field_v1:person_name xpath="${fieldXpath}" required="false" title="${title} middle name" className="contactField" placeholder="M" />
+			<field_v1:person_name xpath="${fieldXpath}" required="false" title="${title} middle name" className="contactField" placeholder="M" disableErrorContainer="${true}" />
 		</form_v2:row>
 	</c:if>
 	<c:set var="fieldXpath" value="${xpath}/surname" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Last Name" hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
-		<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField" placeholder="Last name" />
+		<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField" placeholder="Last name" disableErrorContainer="${true}" />
 	</form_v2:row>
 </form_v2:row>

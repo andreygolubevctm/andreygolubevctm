@@ -11,6 +11,7 @@
 <%@ attribute name="size" 		 required="false" rtexprvalue="true"	 description="the size attribute of this input"%>
 <%@ attribute name="placeholder" required="false" rtexprvalue="true"  	 description="HTML5 placeholder" %>
 <%@ attribute name="maxlength" required="false" rtexprvalue="true"    	 description="The maximum length for the input field" %>
+<%@ attribute name="disableErrorContainer" required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -32,8 +33,15 @@
 
 <%-- HTML --%>
 <c:set var="validationAttributes" value=" data-rule-personName='true'" />
+
 <c:if test="${required}">
+	<c:if test="${disableErrorContainer eq true}">
+		<c:set var="validationAttributes" value="${validationAttributes} disableErrorContainer" />
+	</c:if>
 	<c:set var="validationAttributes">${validationAttributes} required data-msg-required='Please enter ${fn:replace(title, '\'', "&#39;")}' </c:set>
 </c:if>
+
+
+
 <input type="text" name="${name}" id="${name}" class="form-control person_name sessioncamexclude ${className}"
 	   value="${value}" ${validationAttributes} ${sizeAttribute}${placeHolderAttribute}${maxlengthAttribute}>

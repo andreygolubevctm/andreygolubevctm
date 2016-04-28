@@ -27,6 +27,7 @@
 <%@ attribute name="defaultValue" 			required="false" rtexprvalue="true"  description="An optional default value for the field" %>
 <%@ attribute name="inputGroupText" 	required="false" rtexprvalue="true"  description="Optional inputgroup text" %>
 <%@ attribute name="inputGroupTextPosition" 	required="false" rtexprvalue="true"  description="left or right. Position of group text element specified by inputGroupText" %>
+<%@ attribute name="disableErrorContainer" required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <%-- VARIABLES --%>
 <c:if test="${readOnly}">
@@ -86,6 +87,11 @@
 		<c:otherwise></c:otherwise>
 	</c:choose>
 </c:set>
+
+<c:if test="${disableErrorContainer eq true}">
+	<c:set var="additionalAttributes" value='${additionalAttributes} disableErrorContainer'/>
+</c:if>
+
 
 <c:set var="className">
 	<c:choose>

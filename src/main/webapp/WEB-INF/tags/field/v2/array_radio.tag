@@ -13,6 +13,7 @@
 <%@ attribute name="helpId" 	required="false" rtexprvalue="true"  description="The rows help id (if non provided, help is not shown)" %>
 <%@ attribute name="style"  	required="false" rtexprvalue="true"  description="Options: 'inline' = standard inline floating; 'group' = grouped together like buttons" %>
 <%@ attribute name="additionalAttributes"  	required="false" rtexprvalue="true"  description="Additional attributes" %>
+<%@ attribute name="disableErrorContainer" required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
@@ -31,7 +32,7 @@
 
 <c:if test="${empty style}">
 	<c:set var="style" value="group" />
-</c:if>
+</c:if>;
 
 <c:choose>
 	<c:when test="${style == 'inline'}">
