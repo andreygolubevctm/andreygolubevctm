@@ -32,7 +32,7 @@
 			/>
 		</c:when>
 		<c:otherwise>
-			<group_v2:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"/>
+			<group_v2:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"  disableErrorContainer="${true}"/>
 		</c:otherwise>
 	</c:choose>
 
@@ -60,7 +60,7 @@
 					/>
 				</c:when>
 				<c:otherwise>
-					<group_v2:address xpath="${xpath}/postal" type="P" stateValidationField="#health_application-selection .content"/>
+					<group_v2:address xpath="${xpath}/postal" type="P" stateValidationField="#health_application-selection .content" disableErrorContainer="${true}"/>
 				</c:otherwise>
 			</c:choose>
 		</div>
