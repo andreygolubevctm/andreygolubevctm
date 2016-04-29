@@ -147,7 +147,11 @@
                 name: 'health_filterBar_benefitsHospital',
                 values: meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel(),
                 defaultValueSourceSelector: '.Hospital_container',
-                defaultValue: meerkat.modules.healthBenefitsStep.getSelectedBenefits(),
+                defaultValue: {
+                    getDefaultValue: function () {
+                        return meerkat.modules.healthBenefitsStep.getSelectedBenefits();
+                    }
+                },
                 events: {
                     update: function () {
                         // populateBenefitsSelection
@@ -158,7 +162,11 @@
                 name: 'health_filterBar_benefitsExtras',
                 values: meerkat.modules.healthBenefitsStep.getExtraBenefitsModel(),
                 defaultValueSourceSelector: '.GeneralHealth_container',
-                defaultValue: meerkat.modules.healthBenefitsStep.getSelectedBenefits(),
+                defaultValue: {
+                    getDefaultValue: function () {
+                        return meerkat.modules.healthBenefitsStep.getSelectedBenefits();
+                    }
+                },
                 events: {}
             }
 
@@ -191,70 +199,6 @@
 
     function eventSubscriptions() {
 
-        /**
-         * I do not like this code...
-         * Features.getPageStructure does not contain anything until the async call has come back from results.
-         * This means that we cannot trigger the render until this is done...
-         */
-        //meerkat.messaging.subscribe(meerkatEvents.resultsFeatures.STRUCTURE_FETCHED, function () {
-        //    var updatedModel = meerkat.modules.filters.getModel();
-        //
-        //    updatedModel.benefitsHospital.values = Features.getPageStructure();
-        //    updatedModel.benefitsHospital.values = preInitBenefits(updatedModel.benefitsHospital, 'Hospital');
-        //
-        //    updatedModel.benefitsExtras.values = Features.getPageStructure();
-        //    updatedModel.benefitsExtras.values = preInitBenefits(updatedModel.benefitsExtras, 'GeneralHealth');
-        //
-        //    meerkat.modules.filters.setModel(updatedModel);
-        //    meerkat.modules.filters.render('benefits');
-        //});
-    }
-
-    /**
-     * Initialise the benefits object internally as it is stored in Features.getPageStructure()
-     * @param filterObject
-     * @param category
-     */
-    function preInitBenefits(filterObject, category) {
-        var arr = [];
-        if (!filterObject) {
-            exception('There is nothing in the values for benefits!');
-            return;
-        }
-        _.each(filterObject.values, function (object) {
-            if (isShortlistable(object) && hasShortlistableChildren(object) && object.shortlistKey == category) {
-                _.each(object.children, function (child) {
-                    if (child.shortlistKey)
-                        arr.push({value: child.shortlistKey, label: child.name, helpId: child.helpId});
-                });
-            }
-        });
-        return arr;
-    }
-
-    /**
-     * Helper function to determine if a benefit in the array is one
-     * that can be selected, or if its just a section/sub-feature.
-     * @param object
-     * @returns {boolean}
-     */
-    function isShortlistable(object) {
-        if (object.shortlistKey == null || object.shortlistKey === "") return false;
-        return true;
-    }
-
-    /**
-     * Helper function to determine if a benefit in the array is one that can be selected, or if its just a section/sub-feature.
-     * @param object
-     * @returns {boolean}
-     */
-    function hasShortlistableChildren(object) {
-        for (var i = 0; i < object.children.length; i++) {
-            if (isShortlistable(object.children[i])) {
-                return true;
-            }
-        }
-        return false;
     }
 
     meerkat.modules.register("healthFilters", {

@@ -201,8 +201,8 @@
                 $this = $(this);
             benefit.value = $this.find('input[type="checkbox"]').attr('id').replace('health_benefits_benefitsExtras_', '');
             benefit.label = $this.find('.iconLabel').text();
-            benefit.helpId = $this.find('.help-icon').data('content').replace('healpid:', '');
-            benefit.class = $this.hasClass('medium') ? 'medium ' : '' + $this.hasClass('basic') ? 'basic ' : '' + $this.hasClass('customise') ? 'customise ' : '';
+            benefit.helpId = $this.find('.help-icon').data('content').replace('helpid:', '');
+            benefit.class = ($this.hasClass('medium') ? 'medium ' : '') + ($this.hasClass('basic') ? 'basic ' : '') + ($this.hasClass('customise') ? 'customise ' : '');
             benefits.push(benefit);
         });
         return benefits;

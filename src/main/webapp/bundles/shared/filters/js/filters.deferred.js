@@ -114,7 +114,9 @@
             if (!$defaultValueElement.length) {
                 return;
             }
-            var defaultValue = $defaultValueElement.val() || filterObject.defaultValue || "";
+            var defaultValue = $defaultValueElement.val() ||
+                (_.isFunction(filterObject.defaultValue.getDefaultValue) ? filterObject.defaultValue.getDefaultValue.apply(window, [filterObject]) : "") ||
+                filterObject.defaultValue || "";
             if (filterObject.defaultValueType == 'csv') {
                 defaultValue = defaultValue.split(',');
             }
@@ -176,14 +178,14 @@
         });
 
         meerkat.messaging.subscribe(moduleEvents.filters.FILTER_CHANGED, function (event) {
-            $(settings.containers.updates).slideDown();
+            $(settings.updates[0].container).slideDown();
         });
         meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_UPDATED, function (event) {
-            $(settings.containers.updates).slideUp();
+            $(settings.updates[0].container).slideUp();
         });
         meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_CANCELLED, function (event) {
             resetFilters();
-            $(settings.containers.updates).slideUp();
+            $(settings.updates[0].container).slideUp();
             resettingFilters = false;
         });
     }

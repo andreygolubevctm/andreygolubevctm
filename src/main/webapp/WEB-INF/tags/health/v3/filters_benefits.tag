@@ -16,8 +16,8 @@
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                 {{ var active = object.selected ? ' active' : ''; }}
                 <div class="checkbox-none">
-                    <input type="checkbox" name="health_filterBar_{{= object.value }}" id="health_filterBar_{{= object.value }}" value="{{= object.value }}" {{=checked }}
-                           title="{{= object.label }}"/> <label for="health_filterBar_{{= object.value }}">{{= object.label }}</label>
+                    <input type="checkbox" name="health_filterBar_benefitsHospital" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }}
+                           title="{{= object.label }}"/> <label for="health_filterBar_benefits_{{= object.value }}">{{= object.label }}</label>
                     <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1"><span
                             class="text-hide">Need Help?</span></a>
                 </div>
@@ -38,8 +38,8 @@
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                 {{ var active = object.selected ? ' active' : ''; }}
                 <div class="checkbox-none">
-                    <input type="checkbox" name="health_filterBar_{{= object.value }}" id="health_filterBar_{{= object.value }}" value="{{= object.value }}" {{=checked }}
-                           title="{{= object.label }}"/> <label for="health_filterBar_{{= object.value }}">{{= object.label }}</label>
+                    <input type="checkbox" name="health_filterBar_benefitsExtras" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }}
+                           title="{{= object.label }}"/> <label for="health_filterBar_benefits_{{= object.value }}">{{= object.label }}</label>
                     <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1"><span
                             class="text-hide">Need Help?</span></a>
                 </div>
