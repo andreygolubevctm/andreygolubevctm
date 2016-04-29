@@ -1,6 +1,7 @@
 package com.ctm.web.core.router;
 
 import com.ctm.web.core.model.HandoverConfirmation;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.HandoverConfirmationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class HandoverConfirmationRouter extends HttpServlet {
         executor.execute(() -> {
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setContentType("application/json");
-            final String ip = request.getRemoteAddr();
+            final String ip = IPAddressHandler.getInstance().getIPAddress(request);
             final boolean status = confirm(request.getParameterMap(), ip);
             writeResponse(response, status);
             asyncContext.complete();

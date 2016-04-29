@@ -2,6 +2,8 @@
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+
 <%@ attribute name="source"		 	required="true"	 rtexprvalue="true"	 description="Where we are saving the email from (ie. QUOTE, SIGNUP, SAVE_QUOTE, etc.)" %>
 <%@ attribute name="brand"		 	required="true"	 rtexprvalue="true"	 description="The brand source (ie. ctm, cc, etc.)" %>
 <%@ attribute name="vertical"	 	required="true"	 rtexprvalue="true"	 description="The vertical source (ie. health, car, etc.)" %>
@@ -15,7 +17,7 @@
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <jsp:useBean id="emailDetailsService" class="com.ctm.web.core.email.services.EmailDetailsService" scope="page" />
 
-<c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}" />
+<c:set var="ipAddress" 		value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
 <c:set var="sessionId" 		value="${pageContext.session.id}" />
 <c:set var="transactionId"	value="${data.current.transactionId}" />
 <c:set var="emailAddress" 	value="${fn:trim(emailAddress)}" />

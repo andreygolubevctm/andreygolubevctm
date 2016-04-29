@@ -3,6 +3,7 @@ package com.ctm.web.travel.router;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.travel.model.results.Country;
 import com.ctm.web.travel.services.TravelPopularDestinationService;
@@ -26,8 +27,8 @@ public class TravelPopularDestinationController extends CommonQuoteRouter {
     private TravelPopularDestinationService travelPopularDestinationService;
 
     @Autowired
-    public TravelPopularDestinationController(SessionDataServiceBean sessionDataServiceBean) {
-        super(sessionDataServiceBean);
+    public TravelPopularDestinationController(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler) {
+        super(sessionDataServiceBean,  ipAddressHandler);
     }
 
     @RequestMapping(value = "/popularDestinations/list.json",
