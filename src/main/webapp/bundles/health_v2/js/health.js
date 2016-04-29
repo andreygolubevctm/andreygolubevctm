@@ -148,7 +148,8 @@
 				var $healthSitLocation = $('#health_situation_location'),
 					$healthSitHealthCvr = $('#health_situation_healthCvr'),
 					$healthSitHealthSitu = $('#health_situation_healthSitu'),
-					$healthSitCoverType = $('#health_situation_coverType');
+					$healthSitCoverType = $('#health_situation_coverType'),
+					$healthSitRebate = $('#health_healthCover_health_cover_rebate');
 
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
@@ -221,6 +222,20 @@
 						toggleDialogueInChatCallback();
 					});
 				}
+
+				$healthSitRebate.on('change', function() {
+					if($(this).find('input:checked').val() === 'N'){
+						$('#health_healthCover_tier').hide();
+						$('.health_cover_details_dependants').hide();
+					} else {
+						$('#health_healthCover_tier').show();
+						var cover = $(':input[name="health_situation_healthCvr"]').val();
+						if(cover === 'F' || cover === 'SPF'){
+							$('.health_cover_details_dependants').show();
+						}
+					}
+				});
+
 
 			},
 			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
@@ -501,11 +516,6 @@
 					// Update the state of the dependants object.
 					meerkat.modules.healthDependants.updateDependantConfiguration();
 
-					// Check okToCall optin - show if no phone numbers in questionset and NOT Simples
-					if($('#health_contactDetails_contactNumber_mobile').val() === '' &&	$('#health_contactDetails_contactNumber_other').val() === '' &&	meerkat.site.isCallCentreUser === false) {
-						$('#health_application_okToCall-group').show();
-					}
-
 					meerkat.modules.healthApplyStep.onBeforeEnter();
 				}
 			},
@@ -620,7 +630,7 @@
 					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF"];
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
 
 					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
@@ -896,8 +906,8 @@
 		if(postData.primary_dob === '') return false;
 		if(coverTypeHasPartner && postData.partner_dob === '')  return false;
 
-		if(meerkat.modules.utils.returnAge(postData.primary_dob) < 0) return false;
-		if(coverTypeHasPartner && meerkat.modules.utils.returnAge(postData.partner_dob) < 0)  return false;
+		if(meerkat.modules.age.returnAge(postData.primary_dob) < 0) return false;
+		if(coverTypeHasPartner && meerkat.modules.age.returnAge(postData.partner_dob) < 0)  return false;
 		if(postData.rebate_choice === "Y" && postData.income === "") return false;
 
 		// check in valid date format

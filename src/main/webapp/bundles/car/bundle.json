@@ -9,6 +9,8 @@
     "core",
     "shared/currency",
     "shared/addressLookup",
+    "shared/dateUtils",
+    "shared/age",
     "shared/placeholder",
     "shared/emailLoadQuote",
     "shared/commencementDate",

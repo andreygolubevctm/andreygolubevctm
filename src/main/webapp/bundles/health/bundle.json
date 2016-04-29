@@ -8,6 +8,8 @@
 	"shared/validation",
 	"core",
 	"shared/currency",
+    "shared/dateUtils",
+    "shared/age",
 	"shared/datepicker",
 	"shared/commencementDate",
   	"shared/autocomplete",

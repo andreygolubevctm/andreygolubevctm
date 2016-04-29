@@ -13,7 +13,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 			<c:choose>
 				<c:when test="${item.getClassName() == 'hospitalCover'}">
 					<%--<c:set var="colWidthValue" value="custom-col-sm" />--%>
-					<c:set var="colContent">Hospital cover gives you the power to choose amongst a fund's participating hospitals, choose your own doctor and help you avoid public hospital waiting lists.</c:set>
+					<c:set var="colContent">Hospital cover gives you the power to choose your own doctor at any one of the fund's partner hospitals allowing you avoid public hospital waiting lists.</c:set>
 					<c:set var="coverType">Hospital</c:set>
 					<%-- Hospital needs to loop one more time because the first child of hospital is not shortListAable --%>
 					<c:set var="loopCount" value="5" />
@@ -66,7 +66,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 									<h3>Choose Your ${item.getName()}</h3>
 									<p class="hidden-xs">${colContent}</p>
 									<c:if test="${item.getName() eq 'Extras Cover'}">
-										<p>Select the icons below to add extras specific to your needs</p>
+										<p><strong>Select the benefits below to add extras specific to your needs</strong></p>
 									</c:if>
 								</div>
 								<c:if test="${category eq 'Hospital'}">
