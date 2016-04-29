@@ -32,7 +32,7 @@
 
 <c:if test="${empty style}">
 	<c:set var="style" value="group" />
-</c:if>;
+</c:if>
 
 <c:choose>
 	<c:when test="${style == 'inline'}">
@@ -48,6 +48,9 @@
 	</c:otherwise>
 </c:choose>
 
+<c:if test="${disableErrorContainer eq true}">
+	<c:set var="additionalAttributes" value="${additionalAttributes}  data-disable-error-container='true' "/>
+</c:if>
 
 <%-- HTML --%>
 <div class="${className}" ${id}>

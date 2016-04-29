@@ -19,7 +19,7 @@
 
 			<c:set var="fieldXpath" value="${xpath}/primary/fundName" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Your Current Health Fund" id="clientFund" className="changes-premium">
-			<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="your health fund" required="true" additionalAttributes=" data-attach='true' " />
+			<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="your health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
 		</form_v2:row>
 
 		</div>
@@ -28,7 +28,7 @@
 		<div id="clientMemberID" class="membership">
 			<c:set var="fieldXpath" value="${xpath}/primary/memberID" />
 			<form_v2:row fieldXpath="${fieldXpath}" label="Membership Number" className="clientMemberID" smRowOverride="3">
-				<field_v2:input xpath="${fieldXpath}" title="your member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " />
+				<field_v2:input xpath="${fieldXpath}" title="your member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" placeHolder="Membership No." />
 			</form_v2:row>
 
 			<c:set var="fieldXpath" value="${xpath}/primary/authority" />

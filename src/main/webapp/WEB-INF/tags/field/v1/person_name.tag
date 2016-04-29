@@ -36,7 +36,7 @@
 
 <c:if test="${required}">
 	<c:if test="${disableErrorContainer eq true}">
-		<c:set var="validationAttributes" value="${validationAttributes} disableErrorContainer" />
+		<c:set var="validationAttributes" value="${validationAttributes}  data-disable-error-container='true'" />
 	</c:if>
 	<c:set var="validationAttributes">${validationAttributes} required data-msg-required='Please enter ${fn:replace(title, '\'', "&#39;")}' </c:set>
 </c:if>

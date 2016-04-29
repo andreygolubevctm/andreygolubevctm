@@ -14,6 +14,7 @@
 <%@ attribute name="helpId" 		required="false" rtexprvalue="true"	 description="The select help id (if non provided, help is not shown)" %>
 <%@ attribute name="includeInForm"	required="false" rtexprvalue="true"  description="Force attribute to include value in data bucket - use true/false" %>
 <%@ attribute name="placeHolder"	required="false" rtexprvalue="true"  description="dropdown placeholder" %>
+<%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <c:choose>
 	<c:when test="${includeInForm eq true}">
@@ -23,6 +24,10 @@
 		<c:set var="includeInForm" value='false' />
 	</c:otherwise>
 </c:choose>
+
+<c:if test="${disableErrorContainer eq true}">
+	<c:set var="extraDataAttributes" value='${extraDataAttributes}  data-disable-error-container="true" '/>
+</c:if>
 
 <div class="select">
 	<span class=" input-group-addon">

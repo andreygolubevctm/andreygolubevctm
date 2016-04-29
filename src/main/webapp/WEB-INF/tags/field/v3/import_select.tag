@@ -49,7 +49,7 @@
 </c:if>
 
 <c:if test="${disableErrorContainer eq true}">
-	<c:set var="additionalAttributes" value='${additionalAttributes} disableErrorContainer'/>
+	<c:set var="additionalAttributes" value='${additionalAttributes}  data-disable-error-container="true" '/>
 </c:if>
 
 <div class="select">

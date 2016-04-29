@@ -18,6 +18,7 @@
 <%@ attribute name="startView" 				required="false" rtexprvalue="true"	 description="The view either 0:Month|1:Year|2:Decade|"%>
 <%@ attribute name="mode"	 				required="false" rtexprvalue="true"	 description="Component: Display as input with a click bound calendar. Inline: embedded calendar (with hidden field). Separated: DD MM YYYY inputs with a calendar click bound button and hidden input."%>
 <%@ attribute name="nonLegacy" 				required="false" rtexprvalue="true"	 description="If the component is non legacy, format the dates as to be expected. So that Min/Max validation works."%>
+<%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -102,7 +103,7 @@
 	--%>
 	<c:when test="${mode eq 'inline'}">
 		<div id="${name}_calendar"></div>
-		<field_v2:validatedHiddenField xpath="${xpath}" className="${className}" title="Please enter the ${title}" validationErrorPlacementSelector="#${name}_calendar" additionalAttributes=" required ${dateEurRule} ${minDateEurRule} ${maxDateEurRule}" />
+		<field_v2:validatedHiddenField xpath="${xpath}" className="${className}" title="Please enter the ${title}" validationErrorPlacementSelector="#${name}_calendar" additionalAttributes=" required ${dateEurRule} ${minDateEurRule} ${maxDateEurRule}" disableErrorContainer="${true}" />
 	</c:when>
 	<%--
 		The calendar input picker's default component mode:
@@ -111,6 +112,11 @@
 	<c:when test="${mode eq 'component'}">
 		<%-- This was the old usage in the platform --%>
 		<%-- Exposed some attributes here so the tag define a few JS settings --%>
+		<c:set var="disableErrorContainer">
+		<c:if test="${disableErrorContainer eq true}">
+			data-disable-error-container='true'
+		</c:if>
+		</c:set>
 		<div class="input-group date ${mobileClassName}" data-provide="datepicker" data-date-mode="${mode}"
 			${maxDateAttribute}
 			${minDateAttribute} data-date-start-view="${startView}">
@@ -120,7 +126,7 @@
 				id="${name}"
 				class="form-control dateinput-date ${className}"
 				value="${value}"
-				title="${title}" ${requiredAttribute} ${dateEurRule}>
+				title="${title}" ${requiredAttribute} ${dateEurRule} ${disableErrorContainer}>
 			<span class="input-group-addon">
 				<i class="icon-calendar"></i>
 			</span>
@@ -153,7 +159,7 @@
 				<span class="input-group-addon"><i class="icon-calendar"></i></span>
 				<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" <c:if test="${not empty minDate}">min="${minDate}"</c:if> <c:if test="${not empty maxDate}">max="${maxDate}"</c:if> placeHolder="YYYY-MM-DD">
 			</div>
-			<field_v2:validatedHiddenField xpath="${xpath}" className="serialise hidden-datepicker" title="Please enter the ${title} date" additionalAttributes=" required ${calAdditionalAttributes} ${dateEurRule} ${minDateEurRule} ${maxDateEurRule} data-provide='datepicker' data-date-mode='${mode}' ${minDateAttribute} ${maxDateAttribute} " />
+			<field_v2:validatedHiddenField xpath="${xpath}" className="serialise hidden-datepicker" title="Please enter the ${title} date" additionalAttributes=" required ${calAdditionalAttributes} ${dateEurRule} ${minDateEurRule} ${maxDateEurRule} data-provide='datepicker' data-date-mode='${mode}' ${minDateAttribute} ${maxDateAttribute} " disableErrorContainer="${true}" />
 		</div>
 	</c:when>
 	<%-- A fallback warning if someone typo'd the mode name --%>

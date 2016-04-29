@@ -10,6 +10,7 @@
 <%@ attribute name="postCodeNameAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
 <%@ attribute name="postCodeAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
 <%@ attribute name="stateValidationField"		required="false" rtexprvalue="true"	 description="true/false to show the main title" %>
+<%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
 <c:set var="isPostal" value="${type eq 'P'}"/>
 
 <%-- VARIABLES --%>
@@ -76,14 +77,14 @@
         <c:set var="placeholder" value="e.g. 5/20 Sample St"/>
         <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address"
                         placeHolder="${placeholder}" required="false"
-                        additionalAttributes=" data-rule-validAutofilllessSearch='${name}' data-msg-validAutofilllessSearch='Please select a valid address' "/>
+                        additionalAttributes=" data-rule-validAutofilllessSearch='${name}' data-msg-validAutofilllessSearch='Please select a valid address' " disableErrorContainer="${disableErrorContainer}"/>
     </form_v3:row>
 
     <%-- POSTCODE --%>
     <form_v2:row label="Postcode" isNestedStyleGroup="${true}" className="${name}_nonStdFieldRow">
         <c:set var="fieldXpath" value="${xpath}/nonStdPostCode"/>
         <form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${name}_nonStdFieldRow" smRowOverride="5" isNestedField="${true}" hideHelpIconCol="${true}">
-            <field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}"/>
+            <field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}" disableErrorContainer="${disableErrorContainer}" />
         </form_v2:row>
 
         <%-- SUBURB DROPDOWN (populated from postcode) --%>
@@ -95,7 +96,7 @@
                         <span class=" input-group-addon" data-target="${name}">
                             <i class="icon-sort"></i>
                         </span>
-                        <select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes}>
+                        <select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes} <c:if test="${disableErrorContainer eq true}"> data-disable-error-container='true'</c:if>>
                                 <%-- Write the initial "Please select" option --%>
                             <option value="">Suburb</option>
                                 <%-- Write the options for each row --%>
@@ -170,7 +171,7 @@
     <c:set var="fieldXpath" value="${xpath}/nonStdStreet"/>
     <form_v2:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStdFieldRow">
         <field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude"
-                        additionalAttributes=" data-rule-validAddress='${name}' data-rule-validAddress='Please enter the residential street' "/>
+                        additionalAttributes=" data-rule-validAddress='${name}' data-rule-validAddress='Please enter the residential street' " disableErrorContainer="${disableErrorContainer}" placeHolder="Street Name"/>
     </form_v2:row>
 
     <core_v1:clear/>

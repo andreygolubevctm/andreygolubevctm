@@ -31,7 +31,7 @@
 				</form>
 
 				<form  id="applicationForm_2" autocomplete="off" class="form-horizontal" role="form">
-					<health_v1:dependants xpath="${pageSettings.getVerticalCode()}/application/dependants" />
+					<health_v3:dependants xpath="${pageSettings.getVerticalCode()}/application/dependants" />
 				</form>
 
 			</layout_v1:slide_content>

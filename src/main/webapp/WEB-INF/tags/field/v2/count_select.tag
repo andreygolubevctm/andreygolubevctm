@@ -31,7 +31,7 @@
 	<span class=" input-group-addon" >
 		<i class="icon-sort"></i>
 	</span>
-	<select class="form-control field-count_select ${className}" id="${name}" name="${name}" <c:if test="${required}">required data-msg-required="Please choose ${title}"</c:if> <c:if test="${disableErrorContainer eq true}">disableErrorContainer</c:if>>
+	<select class="form-control field-count_select ${className}" id="${name}" name="${name}" <c:if test="${required}">required data-msg-required="Please choose ${title}"</c:if> <c:if test="${disableErrorContainer eq true}"> data-disable-error-container='true'</c:if>>
 		<c:if test="${empty omitPleaseChoose || omitPleaseChoose == 'N'}">
 			<option id="${name}_" value="">${placeHolderText}</option>
 		</c:if>

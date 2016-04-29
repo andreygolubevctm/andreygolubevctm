@@ -143,7 +143,7 @@ var validation = false;
                  An error message placeholder will be injected above the form element, generally inside the parent .row-content
                  **/
                 var $referenceElement = $element;
-                if (typeof $element.attr('disableerrorcontainer') === 'undefined') {
+                if ($element.data('disable-error-container') !== true) {
                     if (typeof $element.attr('data-validation-placement') !== 'undefined' &&
                         $element.attr('data-validation-placement') !== null && $element.attr('data-validation-placement') !== '') {
                         $referenceElement = $($element.attr('data-validation-placement'));

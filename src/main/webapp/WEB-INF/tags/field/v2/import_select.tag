@@ -12,6 +12,7 @@
 <%@ attribute name="omitPleaseChoose" required="false"	rtexprvalue="true"	 description="should 'please choose' be omitted?" %>
 <%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
 <%@ attribute name="placeHolder" required="false"	rtexprvalue="true"	 description="dropdown placeholder" %>
+<%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -39,6 +40,9 @@
 	<c:set var="requiredAttribute" value=' required="required" '/>
 </c:if>
 
+<c:if test="${disableErrorContainer eq true}">
+	<c:set var="additionalAttributes" value='${additionalAttributes}  data-disable-error-container="true" '/>
+</c:if>
 
 <div class="select">
 	<span class=" input-group-addon">

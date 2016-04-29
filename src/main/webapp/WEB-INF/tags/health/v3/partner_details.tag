@@ -16,13 +16,13 @@
 		<div id="partnerpreviousfund" legend="Previous Fund Details" className="health-previous_fund">
 			<c:set var="fieldXpath" value="${xpath}/partner/fundName" />
 			<form_v2:row fieldXpath="${fieldXpath}" label="Partner's Current Health Fund" id="partnerFund" className="changes-premium">
-				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="partner's health fund" required="true" additionalAttributes=" data-attach='true' " />
+				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="partner's health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
 			</form_v2:row>
 
 			<div id="partnerMemberID" class="membership">
 				<c:set var="fieldXpath" value="${xpath}/partner/memberID" />
 				<form_v2:row fieldXpath="${fieldXpath}" label="Membership Number" className="partnerMemberID" smRowOverride="3">
-					<field_v2:input xpath="${fieldXpath}" title="partner's member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " />
+					<field_v2:input xpath="${fieldXpath}" title="partner's member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" placeHolder="Membership No." />
 				</form_v2:row>
 
 				<c:set var="fieldXpath" value="${xpath}/partner/authority" />
