@@ -50,8 +50,26 @@
             },
             "coverLevel": {
                 name: 'health_filterBar_coverLevel',
-                defaultValueSourceSelector: '#health_filter_coverLevel', //todo: input doesn't exist yet
+                defaultValueSourceSelector: '#health_benefits_covertype',
                 defaultValue: '',
+                values: [
+                    {
+                        value: 'limited',
+                        label: 'Limited'
+                    },
+                    {
+                        value: 'basic',
+                        label: 'Basic'
+                    },
+                    {
+                        value: 'medium',
+                        label: 'Medium'
+                    },
+                    {
+                        value: 'top',
+                        label: 'Top'
+                    }
+                ],
                 events: {
                     update: function (filterObject) {
                         // todo Set to defaultValueSourceSelector
@@ -82,10 +100,10 @@
                 events: {
                     init: function (filterObject) {
                         /**
-                         * Copy the element and place it in the filters with a new id etc.
+                         * Copy the element and place it in the filters with a new id etc. (jQuery Clone doesn't copy the value...)
                          */
                         var rebateElement = $(filterObject.defaultValueSourceSelector).parent('.select').clone().find('select')
-                            .attr('id', model.rebate.name).attr('name', model.rebate.name);
+                            .attr('id', model.rebate.name).attr('name', model.rebate.name).val($(filterObject.defaultValueSourceSelector).val());
                         $('.filter-rebate-holder').html(rebateElement);
                     },
                     update: function (filterObject) {

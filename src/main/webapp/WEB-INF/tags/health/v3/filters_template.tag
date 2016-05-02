@@ -34,7 +34,13 @@
                 <span class="heading-text">Hospital cover level</span>
             </div>
             <div class="filter-cover-type" data-filter-type="radio">
-                <field_v2:array_select xpath="health/filterBar/coverLevel" required="false" title="" items="=Please choose...,limited=Limited,basic=Basic,mid=Mid,top=Top" />
+                <select class="form-control array_select " id="health_filterBar_coverLevel" name="health_filterBar_coverLevel" data-msg-required="Please choose ">
+                    <option id="health_filterBar_coverLevel_" value="">Please choose...</option>
+                    {{ _.each(model.coverLevel.values, function(object) { }}
+                    {{ var selected = object.selected ? ' selected="selected"' : ''; }}
+                    <option id="health_filterBar_coverLevel_{{= object.value }}" value="{{= object.value }}" {{=selected }}>{{= object.label }}</option>
+                    {{ }) }}
+                </select>
             </div>
         </div>
     </div>
