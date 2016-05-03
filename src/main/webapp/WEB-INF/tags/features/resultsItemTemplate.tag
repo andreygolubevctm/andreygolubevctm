@@ -30,7 +30,6 @@
             </div>
         </div>
 
-
         <div class="c content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">
             {{ if(ft.resultPath != null && ft.resultPath != '') { }}
                 {{ var pathValue = Object.byString( obj, ft.resultPath ); }}
@@ -38,12 +37,9 @@
                 <c:if test="${vertical eq 'car'}">
                     <features:resultsItemTemplate_car />
                 </c:if> <%-- Below compressed to reduce number of whitespace nodes in DOM --%>
-                <%-- hide tick icons and associated div tags --%>
-
                 {{ if( pathValue ) { }}<div>{{= displayValue }}</div>{{ } else { }}{{= "&nbsp;" }}{{ } }}{{ } else { }}{{= "&nbsp;" }}
             {{ } }}
         </div>
-
 
         {{ var hasFeatureChildren = typeof ft.children != 'undefined' && ft.children.length; }}
         {{ var isSelectionHolder = ft.classString && ft.classString.indexOf('selectionHolder') != -1; }}
