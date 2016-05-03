@@ -103,7 +103,7 @@
 	--%>
 	<c:when test="${mode eq 'inline'}">
 		<div id="${name}_calendar"></div>
-		<field_v2:validatedHiddenField xpath="${xpath}" className="${className}" title="Please enter the ${title}" validationErrorPlacementSelector="#${name}_calendar" additionalAttributes=" required ${dateEurRule} ${minDateEurRule} ${maxDateEurRule}" disableErrorContainer="${true}" />
+		<field_v2:validatedHiddenField xpath="${xpath}" className="${className}" title="Please enter the ${title}" validationErrorPlacementSelector="#${name}_calendar" additionalAttributes=" required ${dateEurRule} ${minDateEurRule} ${maxDateEurRule}" disableErrorContainer="${disableErrorContainer}" />
 	</c:when>
 	<%--
 		The calendar input picker's default component mode:
@@ -159,7 +159,7 @@
 				<span class="input-group-addon"><i class="icon-calendar"></i></span>
 				<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" <c:if test="${not empty minDate}">min="${minDate}"</c:if> <c:if test="${not empty maxDate}">max="${maxDate}"</c:if> placeHolder="YYYY-MM-DD">
 			</div>
-			<field_v2:validatedHiddenField xpath="${xpath}" className="serialise hidden-datepicker" title="Please enter the ${title} date" additionalAttributes=" required ${calAdditionalAttributes} ${dateEurRule} ${minDateEurRule} ${maxDateEurRule} data-provide='datepicker' data-date-mode='${mode}' ${minDateAttribute} ${maxDateAttribute} " disableErrorContainer="${true}" />
+			<field_v2:validatedHiddenField xpath="${xpath}" className="serialise hidden-datepicker" title="Please enter the ${title} date" additionalAttributes=" required ${calAdditionalAttributes} ${dateEurRule} ${minDateEurRule} ${maxDateEurRule} data-provide='datepicker' data-date-mode='${mode}' ${minDateAttribute} ${maxDateAttribute} " disableErrorContainer="${disableErrorContainer}" />
 		</div>
 	</c:when>
 	<%-- A fallback warning if someone typo'd the mode name --%>
