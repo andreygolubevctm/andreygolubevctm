@@ -256,7 +256,7 @@
 						{{ } }}
 					</c:if>
 				</ul>
-				<p>Please note that this is not an exhaustive list - there may be additional services that this policy does not cover. Please see the brochure for more information.</p>
+				<content:get key="hospitalExclusionsDisclaimer"/>
 				{{ } }}
 
 			</div>
