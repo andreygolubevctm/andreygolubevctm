@@ -23,7 +23,7 @@
                         <field_v2:help_icon helpId="{{= ft.helpId }}" position="left"/>
                     {{ } }}
                     {{= ft.safeName }}
-                    {{ if(typeof ft.children !== 'undefined') { }}
+                    {{ if(typeof ft.children !== 'undefined' && ft.children.length) { }}
                     <span class="icon expander"></span>
                     {{ } }}
                 </div>

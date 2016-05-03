@@ -18,7 +18,10 @@
   // If container width is not provided, use the container variables.
   .setContainerWidth(@w) when (@w = -1) {
     @containerVar: ~"container-@{breakpoint}";
-    @actualResultsContainerWidth: (@@containerVar - @grid-gutter-width);
+
+    // incidental gutter width based off border / shadow widths
+    @incidental-gutter-width: 10px;
+    @actualResultsContainerWidth: (@@containerVar - @grid-gutter-width - @incidental-gutter-width);
   }
   .setContainerWidth(@w) when (@w > -1) {
     @actualResultsContainerWidth: @w;
