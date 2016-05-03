@@ -11,11 +11,11 @@
                 <span class="helper-text"><a class="filters-remove-extras">remove <span class="icon icon-cross"></span></a></span>
                 <span class="heading-text">Hospital cover</span>
             </div>
-            <div data-filter-type="checkbox">
+            <div class="benefitsHospital" data-filter-type="checkbox">
                 {{ _.each(model.benefitsHospital.values, function(object) { }}
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                 {{ var active = object.selected ? ' active' : ''; }}
-                <div class="checkbox-none">
+                <div class="checkbox-none {{=object.class }}">
                     <input type="checkbox" name="health_filterBar_benefitsHospital" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }}
                            title="{{= object.label }}"/> <label for="health_filterBar_benefits_{{= object.value }}">{{= object.label }}</label>
                     <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1"><span
@@ -33,11 +33,11 @@
                 <span class="helper-text"><a class="filters-remove-extras">remove <span class="icon icon-cross"></span></a></span>
                 <span class="heading-text">Extras cover</span>
             </div>
-            <div data-filter-type="checkbox">
+            <div class="benefitsExtras" data-filter-type="checkbox">
                 {{ _.each(model.benefitsExtras.values, function(object) { }}
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                 {{ var active = object.selected ? ' active' : ''; }}
-                <div class="checkbox-none">
+                <div class="checkbox-none {{=object.class }}">
                     <input type="checkbox" name="health_filterBar_benefitsExtras" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }}
                            title="{{= object.label }}"/> <label for="health_filterBar_benefits_{{= object.value }}">{{= object.label }}</label>
                     <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1"><span

@@ -54,21 +54,26 @@
                 defaultValue: '',
                 values: [
                     {
-                        value: 'limited',
-                        label: 'Limited'
-                    },
-                    {
-                        value: 'basic',
-                        label: 'Basic'
+                        value: 'top',
+                        label: 'Top'
                     },
                     {
                         value: 'medium',
                         label: 'Medium'
                     },
                     {
-                        value: 'top',
-                        label: 'Top'
+                        value: 'basic',
+                        label: 'Basic'
+                    },
+                    {
+                        value: 'customise',
+                        label: 'Customise'
+                    },
+                    {
+                        value: 'limited',
+                        label: 'Limited'
                     }
+
                 ],
                 events: {
                     update: function (filterObject) {
@@ -102,9 +107,10 @@
                         /**
                          * Copy the element and place it in the filters with a new id etc. (jQuery Clone doesn't copy the value...)
                          */
-                        var rebateElement = $(filterObject.defaultValueSourceSelector).parent('.select').clone().find('select')
+                        var $rebateElement = $(filterObject.defaultValueSourceSelector).parent('.select').clone().find('select')
                             .attr('id', model.rebate.name).attr('name', model.rebate.name).val($(filterObject.defaultValueSourceSelector).val());
-                        $('.filter-rebate-holder').html(rebateElement);
+                        $rebateElement.find('option[value=""]').remove();
+                        $('.filter-rebate-holder').html($rebateElement);
                     },
                     update: function (filterObject) {
                         $(filterObject.defaultValueSourceSelector).val($('select[name=' + filterObject.name + ']').val()).trigger('change');
@@ -216,6 +222,32 @@
     }
 
     function eventSubscriptions() {
+
+        meerkat.messaging.subscribe(meerkatEvents.filters.FILTER_CHANGED, function (event) {
+            // coverLevel change event subscription
+            if (event.target.id === 'health_filterBar_coverLevel') {
+                var $sidebar = $('#results-sidebar'),
+                    currentCover = $(event.target).val(),
+                    $allHospitalButtons = $sidebar.find('.benefitsHospital').find('input[type="checkbox"]');
+
+                // uncheck all checkboxes
+                $allHospitalButtons.prop('checked', false);
+
+                switch (currentCover) {
+                    case 'top':
+                        $allHospitalButtons.prop('checked', true);
+                        break;
+                    case 'limited':
+                        //todo: untick all but do we slide up the hosipital?
+                        $allHospitalButtons.prop('checked', false);
+                        break;
+                    default:
+                        var $coverButtons = $sidebar.find('.benefitsHospital').find('.' + currentCover + ' input[type="checkbox"]');
+                        $coverButtons.prop('checked', true);
+                        break;
+                }
+            }
+        });
 
     }
 

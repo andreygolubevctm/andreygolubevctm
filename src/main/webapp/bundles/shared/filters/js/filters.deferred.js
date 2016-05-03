@@ -223,7 +223,7 @@
 
     meerkat.modules.register("filters", {
         initFilters: initFilters,
-        events: {},
+        events: moduleEvents,
         getModel: getModel,
         setModel: setModel,
         render: render

@@ -35,7 +35,6 @@
             </div>
             <div class="filter-cover-type" data-filter-type="radio">
                 <select class="form-control array_select " id="health_filterBar_coverLevel" name="health_filterBar_coverLevel" data-msg-required="Please choose ">
-                    <option id="health_filterBar_coverLevel_" value="">Please choose...</option>
                     {{ _.each(model.coverLevel.values, function(object) { }}
                     {{ var selected = object.selected ? ' selected="selected"' : ''; }}
                     <option id="health_filterBar_coverLevel_{{= object.value }}" value="{{= object.value }}" {{=selected }}>{{= object.label }}</option>
