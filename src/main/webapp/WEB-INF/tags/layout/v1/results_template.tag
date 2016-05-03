@@ -7,6 +7,7 @@
 --%>
 <%-- Attributes --%>
 <%@ attribute required="false" name="includeCompareTemplates" %>
+<%@ attribute required="false" name="resultsContainerClassName" description="Optional class names for the resultsContainer" %>
 <%@ attribute required="false" name="xsResultsColumns" %>
 <%@ attribute required="false" name="smResultsColumns" %>
 <%@ attribute required="false" name="mdResultsColumns" %>
@@ -33,7 +34,8 @@
 <%@ attribute fragment="true" required="true" name="logoTemplate"
               description="A template just for the logo. Logos tend to be displayed in different places independent of price, so should be a different template." %>
 <%@ attribute fragment="true" required="true" name="priceTemplate" description="A template customisable to display price based on frequency etc, must exclude logo" %>
-<%@ attribute fragment="true" required="true" name="resultsContainerTemplate" description="A template from the result-row" %>
+<%@ attribute fragment="true" required="true" name="resultsContainerTemplate" description="A template from the result-row wrapper" %>
+<%@ attribute fragment="true" required="true" name="resultsHeaderTemplate" description="A template from the result header section" %>
 
 <%-- So we can test --%>
 <c:set var="preResultsRow">
@@ -76,14 +78,10 @@
     </c:if>
 
     <div class="col-sm-${resultsCols}">
-        <div class="resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
+        <div class="${resultsContainerClassName} resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
             <div class="resultsOverflow">
 
-                <div class="results-table">
-                    Results col-sm-${resultsCols} displaying with results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns}
-                    results-columns-lg-${lgResultsColumns}
-                </div>
-
+                <div class="results-table"></div>
 
                 <div class="resultsFetchError displayNone">
                     <c:choose>
@@ -124,6 +122,9 @@
 <jsp:invoke fragment="priceTemplate"/>
 <script type="text/html" id="result-template">
     <jsp:invoke fragment="resultsContainerTemplate"/>
+</script>
+<script type="text/html" id="result-header-template">
+    <jsp:invoke fragment="resultsHeaderTemplate"/>
 </script>
 
 <c:if test="${includeCompareTemplates eq true}">

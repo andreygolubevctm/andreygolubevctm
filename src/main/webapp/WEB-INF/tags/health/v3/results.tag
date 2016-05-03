@@ -12,7 +12,7 @@
 </c:if>
 
 
-<layout_v1:results_template includeCompareTemplates="true">
+<layout_v1:results_template includeCompareTemplates="true" xsResultsColumns="2" resultsContainerClassName =" affixOnScroll sessioncamignorechanges ">
 
     <jsp:attribute name="preResultsRow">
         <h3>Hi Sergei,</h3> <%-- Delete this once template rendering --%>
@@ -75,16 +75,16 @@
     </jsp:attribute>
 
     <jsp:attribute name="logoTemplate">
-        <health_v1:logo_price_template/>
+        <health_v3:logo_template/>
     </jsp:attribute>
 
     <jsp:attribute name="priceTemplate">
-        <%--<health_v1:logo_price_template/>--%>
+        <health_v3:price_template/>
     </jsp:attribute>
 
     <jsp:attribute name="hiddenInputs">
         <%-- Hidden fields necessary for Results page --%>
-    <input type="hidden" name="health_showAll" value="Y"/>
+        <input type="hidden" name="health_showAll" value="Y"/>
         <input type="hidden" name="health_onResultsPage" value="Y"/>
         <input type="hidden" name="health_incrementTransactionId" value="Y"/>
 
@@ -100,8 +100,8 @@
             </c:choose>
         </c:if>
 
-    <%-- The following are hidden fields set by filters --%>
-    <field_v1:hidden xpath="health/excess" defaultValue="4"/>
+        <%-- The following are hidden fields set by filters --%>
+        <field_v1:hidden xpath="health/excess" defaultValue="4"/>
         <field_v1:hidden xpath="health/filter/providerExclude"/>
         <field_v1:hidden xpath="health/filter/priceMin" defaultValue="0"/>
         <field_v1:hidden xpath="health/filter/frequency" defaultValue="M"/>
@@ -114,45 +114,74 @@
         </c:if>
     </jsp:attribute>
 
-    <jsp:attribute name="resultsContainerTemplate">
-        <div class="result-row result_{{= productId }}" data-productId="{{= productId }}">
-            <div class="result">
-                <div class="resultInsert">
-                    <div class="compare-toggle-wrapper" data-toggle="popover" data-trigger="mouseenter" data-class="compareTooltip" data-adjust-x="5" data-content="click<br/> to compare">
-                        <input type="checkbox" class="compare-tick" data-productId="{{= productId }}" id="features_compareTick_{{= productId }}"/>
-                        <label for="features_compareTick_{{= productId }}"></label>
-                    </div>
-                    <div class="productSummary vertical results">
-
-                        {{ var logoPriceTemplate = $("#logo-price-template").html(); }}
-                        {{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
-                        {{ obj._selectedFrequency = Results.getFrequency(); }}
-                        {{ obj.showAltPremium = false; obj.htmlString = htmlTemplatePrice(obj); }}
-                        {{= htmlString }}
-
-                    </div>
-
-                    <a class="btn btn-cta btn-block btn-more-info more-info-showapply new-cta" href="javascript:;" data-productId="{{= productId }}">
-                        <div class="more-info-text">Find out more <span class="icon icon-arrow-right"/></div>
-                    </a>
+    <jsp:attribute name="resultsHeaderTemplate">
+        <div class="result">
+            <div class="resultInsert">
+                <div class="result-header-utility-bar">
                     {{ if( info.restrictedFund === 'Y' ) { }}
                     <div class="restrictedFund" data-title="This is a Restricted Fund" data-toggle="popover" data-adjust-y="5" data-trigger="mouseenter click" data-my="top center"
-                         data-at="bottom center" data-content="#restrictedFundText" data-class="restrictedTooltips">RESTRICTED FUND
+                         data-at="bottom center" data-content="#restrictedFundText" data-class="restrictedTooltips">Restricted Fund (?)
                     </div>
+                    {{ } else { }}<div class="utility-bar-blank">&nbsp;</div>{{ } }}
+                    <div class="filter-component remove-result">
+                        <span class="icon icon-cross" title="Remove this product"></span>
+                    </div>
+                </div>
+                <div class="results-header-inner-container">
+                    <div class="productSummary vertical results">
+                        {{ var logoTemplate = meerkat.modules.sharedResults.getTemplate($("#logo-template")); }}
+                        {{ var priceTemplate = meerkat.modules.sharedResults.getTemplate($("#price-template")); }}
+                        {{ obj._selectedFrequency = Results.getFrequency(); obj.showAltPremium = false; }}
+                        {{= logoTemplate(obj) }}
+                        {{= priceTemplate(obj) }}
+                    </div>
+
+                    <a class="btn btn-cta btn-block btn-more-info more-info-showapply" href="javascript:;" data-productId="{{= productId }}">
+                        <div class="more-info-text">More Info</div>
+                    </a>
+                    {{ var coverType = meerkat.modules.health.getCoverType(); }}
+                    {{ if(coverType == 'C' && promo.hospitalPDF == promo.extrasPDF) { }}
+                    <a class="hide-on-affix btn btn-block btn-download" href="{{= promo.hospitalPDF }}" target="_blank">Download Brochure</a>
+                    {{ } else if(coverType == 'C' && promo.hospitalPDF != promo.extrasPDF) { }}
+                    <a class="hide-on-affix btn btn-block btn-download" href="javascript:;" data-title="" data-toggle="popover" data-adjust-y="5" data-trigger=" click" data-my="top center" data-at="bottom center"
+                       data-content="#brochurePopover{{= productId }}">Download Brochures</a>
+                    <div id="brochurePopover{{= productId }}" class="hidden">
+                        <a class="btn btn-block btn-tertiary" href="{{= promo.hospitalPDF }}" target="_blank">Hospital Brochure</a>
+                        <a class="btn btn-block btn-secondary" href="{{= promo.extrasPDF }}" target="_blank">Extras Brochures</a>
+                    </div>
+                    {{ } else { }}
+                        {{ if(coverType == 'H') { }} <a class="btn btn-block btn-download" href="{{= promo.hospitalPDF }}" target="_blank">Download Brochure</a> {{ } }}
+                        {{ if(coverType == 'E') { }} <a class="btn btn-block btn-download" href="{{= promo.extrasPDF }}" target="_blank">Download Brochure</a> {{ } }}
                     {{ } }}
+
+                    {{ var specialOffer = Features.getPageStructure()[0]; }}
+                    {{ var pathValue = Object.byString( obj, specialOffer.resultPath ); }}
+                    {{ var displayValue = Features.parseFeatureValue( pathValue, true ); }}
+
+                    <fieldset class="hide-on-affix result-special-offer {{ if (!pathValue) { }}invisible{{ } }}">
+                        <legend>Special Offer</legend>
+                        {{= displayValue }}
+                    </fieldset>
                 </div>
             </div>
+        </div>
+    </jsp:attribute>
 
+    <jsp:attribute name="resultsContainerTemplate">
+        {{ var headerTemplate = meerkat.modules.sharedResults.getTemplate($('#result-header-template')); }}
+        {{ headerHtml = headerTemplate(obj); }}
+        <div class="result-row result_{{= productId }}" data-productId="{{= productId }}">
+            {{= headerHtml }}
             <div class="featuresList featuresElements">
-                <img src="brand/ctm/images/icons/spinning_orange_arrows.gif" class="featuresLoading"/> <%-- #WHITELABEL CX --%>
+
             </div>
 
         </div>
     </jsp:attribute>
     <jsp:body>
 
-        <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
-        <c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('health', 'category')}" scope="request"  />
+        <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request"/>
+        <c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('health', 'category')}" scope="request"/>
         <script>
             var resultLabels = ${jsonString};
         </script>

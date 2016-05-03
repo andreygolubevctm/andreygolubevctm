@@ -1,7 +1,6 @@
 {
   "extends": "health",
   "exclusions": [
-    "shared/resultsHeaderBar",
     "shared/results/v2"
   ]
 }

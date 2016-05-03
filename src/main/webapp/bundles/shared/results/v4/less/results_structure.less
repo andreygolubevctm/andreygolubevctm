@@ -11,9 +11,6 @@ section: Results v4
 The Root container for this module is `#resultsPage`.
 The structure to resultsContainer: `.resultsSlide #resultsForm #resultsPage`
 
-#### `.controlContainer`
-The top left of the features mode where pagination or compare controls are located.
-
 #### `.resultsContainer`
 - Contains the entire module.
 - To change the number of results that display in one view, change the values on resultsContainer
@@ -49,11 +46,6 @@ A full product column (in features mode) or a row (in price mode).
     &lt;div class="resultsContainer featuresMode results-columns-sm-3 results-columns-md-3 results-columns-lg-3"&gt;
       &lt;div class="featuresHeaders featuresElements  "&gt;
         &lt;div class="result headers"&gt;
-          &lt;div class="resultInsert controlContainer"&gt;
-            &lt;span class="icon icon-arrow-left"&gt;&lt;/span&gt;
-            &lt;span class="icon icon-arrow-right"&gt;&lt;/span&gt;
-            &lt;h3&gt;Products 1-3 of 12&lt;/h3&gt;
-          &lt;/div&gt;
         &lt;/div&gt;
         &lt;div class="featuresList featuresTemplateComponent"&gt;
           -- feature labels here --
@@ -103,9 +95,13 @@ A full product column (in features mode) or a row (in price mode).
 
 .result-row {
   opacity: 1;
+  position: relative;
 
   .result {
     position: relative;
+    z-index: (@results-zindex-resultsHeadersBg+1);
+    overflow: hidden;
+    background: @results-headerbar-bg;
   }
   // If the result is filtered out, hide it
   &.filtered {
