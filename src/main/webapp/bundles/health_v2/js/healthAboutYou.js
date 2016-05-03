@@ -125,17 +125,23 @@
 		switch($healthSituationHealthCvr.val())
 		 {
 		 case 'F':
-				 $partnerContainer.slideDown();
-				 $healthCoverIncomeMessage.show();
-				 $healthCoverDetailsDependants.slideDown();
-				 $partnerContainer.slideDown();
-			 	 $partnersDetails.show();
-			 break;
+			$partnerContainer.slideDown();
+			$healthCoverIncomeMessage.show();
+
+			if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
+				$healthCoverDetailsDependants.slideDown();
+			}
+			$partnerContainer.slideDown();
+			$partnersDetails.show();
+			break;
 		 case 'SPF':
-				 $partnerContainer.slideUp();
-				 $healthCoverDetailsDependants.slideDown();
-			 	 $partnersDetails.hide();
-			 break;
+			$partnerContainer.slideUp();
+
+			if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
+				$healthCoverDetailsDependants.slideDown();
+			}
+			$partnersDetails.hide();
+			break;
 		 case 'C':
 				 $healthCoverDetailsDependants.slideUp();
 				 $partnerContainer.slideDown();
