@@ -148,7 +148,8 @@
 				var $healthSitLocation = $('#health_situation_location'),
 					$healthSitHealthCvr = $('#health_situation_healthCvr'),
 					$healthSitHealthSitu = $('#health_situation_healthSitu'),
-					$healthSitCoverType = $('#health_situation_coverType');
+					$healthSitCoverType = $('#health_situation_coverType'),
+					$healthSitRebate = $('#health_healthCover_health_cover_rebate');
 
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
@@ -221,6 +222,20 @@
 						toggleDialogueInChatCallback();
 					});
 				}
+
+				$healthSitRebate.on('change', function() {
+					if($(this).find('input:checked').val() === 'N'){
+						$('#health_healthCover_tier').hide();
+						$('.health_cover_details_dependants').hide();
+					} else {
+						$('#health_healthCover_tier').show();
+						var cover = $(':input[name="health_situation_healthCvr"]').val();
+						if(cover === 'F' || cover === 'SPF'){
+							$('.health_cover_details_dependants').show();
+						}
+					}
+				});
+
 
 			},
 			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
@@ -377,7 +392,7 @@
 
 			},
 			onBeforeEnter:function enterResultsStep(event){
-
+				meerkat.modules.sessionCamHelper.stop();
 				meerkat.modules.healthDependants.resetConfig();
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
@@ -1394,17 +1409,16 @@
 
 	}
 
-	function getCoverType() {
-		return $('#health_situation_coverType input').filter(":checked").val();
-	}
-
+    function getCoverType() {
+        return $('#health_situation_coverType input').filter(":checked").val();
+    }
 
 	meerkat.modules.register("health", {
 		init: initHealth,
 		events: moduleEvents,
 		initProgressBar: initProgressBar,
 		getTrackingFieldsObject: getTrackingFieldsObject,
-		getCoverType: getCoverType,
+        getCoverType: getCoverType,
 		getRates: getRates,
 		setRates: setRates,
 		getRebate: getRebate,
