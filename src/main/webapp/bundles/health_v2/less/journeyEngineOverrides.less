@@ -182,7 +182,10 @@ fieldset > .content,
 /* SHOW/HIDE RIGHT PANELS */
 body[data-step="start"]{
 	.sidebar-box {
-		&.quoteSnapshot {display:block;}
+		&.quoteSnapshot {
+			display:block;
+			.btn-edit {display:none;}
+		}
 		&.callCentreHelp {display:block;}
 		&.testimonials {display:block;}
 		&.pricePromiseBox {display:block;}
