@@ -13,7 +13,7 @@
 <%-- Make sure we're in a proper environment to test this --%>
 <c:set var="remoteaddr" value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
 ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentService.getEnvironmentAsString()), log:kv('remoteaddr', remoteaddr))}
-<c:if test="${environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI'  || environmentService.getEnvironmentAsString() == 'NXS'}">
+<c:if test="${environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI' || environmentService.getEnvironmentAsString() == 'NXS' || environmentService.getEnvironmentAsString() == 'NXQ'}">
 
 	<c:choose>
 		<c:when test="${empty param.providerKey}">
