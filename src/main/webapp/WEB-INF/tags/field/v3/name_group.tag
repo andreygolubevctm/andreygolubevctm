@@ -8,7 +8,7 @@
 <%-- HTML --%>
 <form_v2:row label="Name" hideHelpIconCol="true" className="row" isNestedStyleGroup="${true}">
 	<c:set var="fieldXpath" value="${xpath}/title" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Title" hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}" className="selectContainerTitle">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Title" hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}" className="selectContainerTitle" id="${go:nameFromXpath(fieldXpath)}Row">
 		<field_v3:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' " placeHolder="Title" disableErrorContainer="${true}" />
 	</form_v2:row>
 

@@ -11,7 +11,6 @@
 <core_v1:js_template id="health-dependants-template">
 
     {{ var providerConfig = meerkat.modules.healthDependants.getConfig(); }}
-    {{ console.log("AAAA", providerConfig); }}
     {{ var usesSchoolDropdown = providerConfig.useSchoolDropdownMenu === true; }}
     <%-- HTML --%>
     <div id="${name}" class="health_dependant_details dependant{{= obj.dependantId }}" data-id="{{= obj.dependantId }}">
@@ -138,7 +137,7 @@
             <form_v2:row fieldXpath="${fieldXpath}"
                          label="Relationship"
                          id="${name}_relationshipGroup" className="health_dependant_details_relationshipGroup">
-                <field_v2:general_select type="healthNavQuestion_relationship" xpath="${fieldXpath}" title="Relationship to you" required="true" initialText="Relationship" disableErrorContainer="${true}" />
+                <field_v2:general_select type="healthNavQuestion_relationship" xpath="${fieldXpath}" title="Relationship to you" required="true" initialText="Please select" disableErrorContainer="${true}" />
             </form_v2:row>
             {{ } }}
 
