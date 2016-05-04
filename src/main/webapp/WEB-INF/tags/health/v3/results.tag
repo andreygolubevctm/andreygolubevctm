@@ -12,7 +12,7 @@
 </c:if>
 
 
-<layout_v1:results_template includeCompareTemplates="true" xsResultsColumns="2" resultsContainerClassName =" affixOnScroll sessioncamignorechanges ">
+<layout_v1:results_template includeCompareTemplates="true" xsResultsColumns="2" resultsContainerClassName=" affixOnScroll sessioncamignorechanges ">
 
     <jsp:attribute name="preResultsRow">
         <h3>Hi Sergei,</h3> <%-- Delete this once template rendering --%>
@@ -122,8 +122,10 @@
                     <div class="restrictedFund" data-title="This is a Restricted Fund" data-toggle="popover" data-adjust-y="5" data-trigger="mouseenter click" data-my="top center"
                          data-at="bottom center" data-content="#restrictedFundText" data-class="restrictedTooltips">Restricted Fund (?)
                     </div>
-                    {{ } else { }}<div class="utility-bar-blank">&nbsp;</div>{{ } }}
-                    <div class="filter-component remove-result">
+                    {{ } else { }}
+                    <div class="utility-bar-blank">&nbsp;</div>
+                    {{ } }}
+                    <div class="filter-component remove-result hidden-xs">
                         <span class="icon icon-cross" title="Remove this product"></span>
                     </div>
                 </div>
@@ -139,20 +141,8 @@
                     <a class="btn btn-cta btn-block btn-more-info more-info-showapply" href="javascript:;" data-productId="{{= productId }}">
                         <div class="more-info-text">More Info</div>
                     </a>
-                    {{ var coverType = meerkat.modules.health.getCoverType(); }}
-                    {{ if(coverType == 'C' && promo.hospitalPDF == promo.extrasPDF) { }}
-                    <a class="hide-on-affix btn btn-block btn-download" href="{{= promo.hospitalPDF }}" target="_blank">Download Brochure</a>
-                    {{ } else if(coverType == 'C' && promo.hospitalPDF != promo.extrasPDF) { }}
-                    <a class="hide-on-affix btn btn-block btn-download" href="javascript:;" data-title="" data-toggle="popover" data-adjust-y="5" data-trigger=" click" data-my="top center" data-at="bottom center"
-                       data-content="#brochurePopover{{= productId }}">Download Brochures</a>
-                    <div id="brochurePopover{{= productId }}" class="hidden">
-                        <a class="btn btn-block btn-tertiary" href="{{= promo.hospitalPDF }}" target="_blank">Hospital Brochure</a>
-                        <a class="btn btn-block btn-secondary" href="{{= promo.extrasPDF }}" target="_blank">Extras Brochures</a>
-                    </div>
-                    {{ } else { }}
-                        {{ if(coverType == 'H') { }} <a class="btn btn-block btn-download" href="{{= promo.hospitalPDF }}" target="_blank">Download Brochure</a> {{ } }}
-                        {{ if(coverType == 'E') { }} <a class="btn btn-block btn-download" href="{{= promo.extrasPDF }}" target="_blank">Download Brochure</a> {{ } }}
-                    {{ } }}
+                    {{ var brochureTemplate = meerkat.modules.sharedResults.getTemplate($("#brochure-download-template")); }}
+                    {{= brochureTemplate(obj) }}
 
                     {{ var specialOffer = Features.getPageStructure()[0]; }}
                     {{ var pathValue = Object.byString( obj, specialOffer.resultPath ); }}
@@ -179,7 +169,7 @@
         </div>
     </jsp:attribute>
     <jsp:body>
-
+        <div class="moreInfoDropdown"></div>
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request"/>
         <c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('health', 'category')}" scope="request"/>
         <script>
@@ -194,6 +184,7 @@
 
         <%-- FEATURE TEMPLATE --%>
         <features:resultsItemTemplate/>
+        <health_v3:brochure_template/>
     </jsp:body>
 
 

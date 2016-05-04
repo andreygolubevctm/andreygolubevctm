@@ -70,6 +70,7 @@
 
 }
 
+
 .more-info-content {
 
 	background-color: @main-bg-colour;
@@ -229,27 +230,35 @@
 		text-align: center;
 	}
 
-	.frequencyAmount {
+	/*.frequencyAmount {
 		font-size: 40px;
-		color: #000;
 		@media (@sm) {
 			font-size: 80px;
-			color: #555;
 		}
-
-		font-family: @font-family-theme-bold;
 	}
 
 	@media (@sm) {
-		.moreInfoTopLeftColumn .dollarSign {
-			font-size: 36px;
+		.moreInfoTopLeftColumn {
+			.dollarSign {
+				font-size: 36px;
+			}
+			.cents {
+				top: -1.1em;
+				font-size: 0.375em;
+			}
+
+			// put in here otherwise it affects the formatting on the results page
+			.dollarSign,
+			.frequencyTitle {
+				top: -0.7em;
+			}
 		}
 	}
+
 	.frequencyTitle {
 		font-size: 18px;
-		font-family: @font-family-theme-regular;
 		vertical-align: super;
-	}
+	}*/
 
 	.lhcText,
 	.rounding {

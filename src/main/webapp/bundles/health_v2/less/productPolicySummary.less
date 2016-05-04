@@ -295,14 +295,22 @@
 
 .companyLogo {
   max-height: @standard-logo-height;
-  max-width: 90px;
+  max-width: 200px;
 
   margin-left: auto;
   margin-right: auto;
 
   overflow: hidden;
-
-  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames);
+  min-height: (@standard-logo-height * 0.55);
+  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; 0.55);
+  @media (@md-only) {
+    .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; 0.8);
+    min-height: (@standard-logo-height * 0.8);
+  }
+  @media (@lg-only) {
+    min-height: @standard-logo-height;
+    .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames);
+  }
 }
 
 .modal-body {

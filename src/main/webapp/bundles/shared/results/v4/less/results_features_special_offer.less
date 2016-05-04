@@ -23,13 +23,15 @@ section: Results v4
   // Make it look more like a true fieldset.
   .result-special-offer {
     margin-top: 30px;
-    padding: 10px 25px;
+    padding: 5px 10px;
+    @media(@md) {
+      padding: 10px 25px;
+    }
+
     border: 1px solid #ccc;
     margin-bottom: 0;
-    // TEMPORARY
     height: 100px;
-    overflow-y: scroll;
-    // END TEMPORARY
+    overflow-y: hidden;
 
     text-align: center;
     font-family: @font-family-theme-bold;

@@ -32,7 +32,9 @@
             <div class="frequencyAmount">
                 {{ var premiumSplit = lhcFreePriceMode ? priceLhcfreetext : priceText }}
                 {{ premiumSplit = premiumSplit.split(".") }}
-                <span class="dollarSign">$</span>{{= premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
+                {{ var dollarPrice = premiumSplit[0].replace('$', ''); }}
+                {{ dollarPrice = dollarPrice.replace(',','<span class="comma">,</span>'); }}
+                <span class="dollarSign">$</span>{{= dollarPrice }}<span class="cents">.{{= premiumSplit[1] }}</span>
                 <span class="frequencyTitle">{{= freqObj.label }}</span>
             </div>
 

@@ -13,15 +13,13 @@
 	@from: The minimum number of columns to calculate widths for. Defaults to 2.
 	@to: The maximum number of columns to calculate widths for. Defaults to 5.
 */
-.generate-result-column-widths(@breakpoint; @featuresColumnWidth:-1; @resultsContainerWidth:-1; @from:2; @to:5) when (@from =< @to) {
+.generate-result-column-widths(@breakpoint; @featuresColumnWidth:-1; @resultsContainerWidth:-1; @from:2; @to:4) when (@from =< @to) {
 
   // If container width is not provided, use the container variables.
   .setContainerWidth(@w) when (@w = -1) {
     @containerVar: ~"container-@{breakpoint}";
 
-    // incidental gutter width based off border / shadow widths
-    @incidental-gutter-width: 10px;
-    @actualResultsContainerWidth: (@@containerVar - @grid-gutter-width - @incidental-gutter-width);
+    @actualResultsContainerWidth: (@@containerVar - @grid-gutter-width);
   }
   .setContainerWidth(@w) when (@w > -1) {
     @actualResultsContainerWidth: @w;
@@ -51,16 +49,12 @@
 
   // The styles
   &.results-columns-@{breakpoint}-@{from} {
-    .featuresHeaders {
-      width: @finalFeaturesColumnWidth;
-    }
-
     .resultsOverflow {
       width: @overflowWidth;
     }
 
     .result-row {
-      width: @column-width;
+      width: (@column-width - @results-column-outer-width);
     }
   }
 
@@ -69,14 +63,17 @@
 }
 
 .generate-default-result-column-widths() {
+  @media (@xs) {
+    .generate-result-column-widths(xs, @sidebar-width-xs);
+  }
   @media (@sm) {
-    .generate-result-column-widths(sm);
+    .generate-result-column-widths(sm, @sidebar-width-sm);
   }
   @media (@md) {
-    .generate-result-column-widths(md);
+    .generate-result-column-widths(md, @sidebar-width-md);
   }
   @media (@lg) {
-    .generate-result-column-widths(lg);
+    .generate-result-column-widths(lg, @sidebar-width-lg);
   }
 }
 

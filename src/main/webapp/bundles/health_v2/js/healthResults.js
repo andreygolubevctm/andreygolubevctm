@@ -158,7 +158,7 @@
                     features: {
                         mode: 'populate',
                         headers: false,
-                        numberOfXSColumns: 1
+                        numberOfXSColumns: 2
                     },
                     dockCompareBar: false
                 },
