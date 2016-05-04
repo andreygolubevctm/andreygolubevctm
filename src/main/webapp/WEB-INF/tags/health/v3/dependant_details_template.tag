@@ -84,7 +84,7 @@
                     </select>
                 </div>
                 {{ } else { }}
-                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s school" required="true" className="sessioncamexclude" defaultValue="{{= obj.school }}" disableErrorContainer="${true}"/>
+                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s school" required="true" className="sessioncamexclude" defaultValue="{{= obj.school }}" disableErrorContainer="${true}" placeHolder="School"/>
                 {{ } }}
             </form_v2:row>
 
