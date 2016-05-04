@@ -3,10 +3,7 @@ package com.ctm.web.health.apply.model;
 import com.ctm.web.health.apply.model.request.fundData.Declaration;
 import com.ctm.web.health.apply.model.request.fundData.membership.Membership;
 import com.ctm.web.health.apply.model.request.fundData.membership.PartnerDetails;
-import com.ctm.web.health.model.form.Application;
-import com.ctm.web.health.model.form.Cbh;
-import com.ctm.web.health.model.form.HealthQuote;
-import com.ctm.web.health.model.form.PaymentDetails;
+import com.ctm.web.health.model.form.*;
 import org.junit.Test;
 
 import java.util.Optional;
@@ -53,13 +50,13 @@ public class FundDataAdapterTest {
 
     @Test
     public void testMembershipEmpty() throws Exception {
-        assertNull(FundDataAdapter.createMembership(Optional.empty()));
+        assertNull(FundDataAdapter.createMembership((Cbh)null));
     }
 
     @Test
     public void testMembership() throws Exception {
         final Cbh cbh = mock(Cbh.class);
-        final Membership membership = FundDataAdapter.createMembership(Optional.ofNullable(cbh));
+        final Membership membership = FundDataAdapter.createMembership(cbh);
         assertNull(membership.getCurrentMember());
         assertNull(membership.getRegisteredMember());
         assertNull(membership.getMembershipNumber());
@@ -87,7 +84,7 @@ public class FundDataAdapterTest {
     public void testMembershipCurrent() throws Exception {
         final Cbh cbh = mock(Cbh.class);
         when(cbh.getCurrentemployee()).thenReturn("Y");
-        FundDataAdapter.createMembership(Optional.ofNullable(cbh));
+        FundDataAdapter.createMembership(cbh);
         verify(cbh, times(1)).getCurrentemployee();
         verify(cbh, times(1)).getCurrentnumber();
         verify(cbh, times(1)).getCurrentwork();
@@ -106,7 +103,7 @@ public class FundDataAdapterTest {
     public void testMembershipFormer() throws Exception {
         final Cbh cbh = mock(Cbh.class);
         when(cbh.getFormeremployee()).thenReturn("Y");
-        FundDataAdapter.createMembership(Optional.ofNullable(cbh));
+        FundDataAdapter.createMembership(cbh);
         verify(cbh, times(1)).getCurrentemployee();
         verify(cbh, never()).getCurrentnumber();
         verify(cbh, never()).getCurrentwork();
@@ -125,7 +122,7 @@ public class FundDataAdapterTest {
     public void testMembershipFamily() throws Exception {
         final Cbh cbh = mock(Cbh.class);
         when(cbh.getFamilymember()).thenReturn("Y");
-        FundDataAdapter.createMembership(Optional.ofNullable(cbh));
+        FundDataAdapter.createMembership(cbh);
         verify(cbh, times(1)).getCurrentemployee();
         verify(cbh, never()).getCurrentnumber();
         verify(cbh, never()).getCurrentwork();
@@ -138,6 +135,20 @@ public class FundDataAdapterTest {
         verify(cbh, times(1)).getPartnerrel();
         verify(cbh, times(1)).getPartneremployee();
         verify(cbh, times(1)).getRegister();
+    }
+
+    @Test
+    public void testNavEmpty() throws Exception {
+        assertNull(FundDataAdapter.createMembership((Nhb)null));
+    }
+
+    @Test
+    public void testNav() throws Exception {
+        Nhb nav = mock(Nhb.class);
+        FundDataAdapter.createMembership(nav);
+        verify(nav, times(1)).getEligibility();
+        verify(nav, times(1)).getSubreason();
+        verify(nav, times(1)).getPartnerrel();
     }
 
 }

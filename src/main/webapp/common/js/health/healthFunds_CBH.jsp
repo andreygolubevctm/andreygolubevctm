@@ -91,7 +91,7 @@ var healthFunds_CBH = {
 
 						<c:set var="fieldXpath" value="health/application/cbh/familyrel" />
 						<form_v2:row fieldXpath="${fieldXpath}" label="What is your relationship to the family member?" className="cbhsub">
-							<field_v2:array_select xpath="${fieldXpath}" required="true" title="your relationship to the family member" items="=Please choose...,partner=Partner,parent=Parent,child=Child,grandchild=Grandchild,sibling=Sibling,nephew=Nephew,niece=Niece" />
+							<field_v2:array_select xpath="${fieldXpath}" required="true" title="your relationship to the family member" items="=Please choose...,partner=Partner,parent=Parent,child=Child,grand_child=Grandchild,sibling=Sibling,nephew=Nephew,niece=Niece" />
 						</form_v2:row>
 
 					</div>
@@ -210,7 +210,7 @@ var healthFunds_CBH = {
 		if (!$('body').hasClass('injectingFund')) {
 
 			<%-- Dependants --%>
-			healthFunds._dependants('CBHS policies provide cover for all dependents under the age of 18 including step and foster children. Adult dependents who are aged between 18 and 24 years and who are: studying full time (min 20 hours per week), 1st or 2nd year apprentices or employed on an unpaid internship may continue to be covered by CBHS policies. Other adult dependents can apply for a separate policy (subject to meeting eligibility criteria).');
+			healthFunds._dependants('CBHS policies provide cover for all dependants under the age of 18 including step and foster children. Adult dependants who are aged between 18 and 24 years and who are: studying full time (min 20 hours per week), 1st or 2nd year apprentices or employed on an unpaid internship may continue to be covered by CBHS policies. Other adult dependants can apply for a separate policy (subject to meeting eligibility criteria).');
 
 			meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, 'schoolMinAge':18, 'schoolMaxAge':24, showSchoolIdField:false });
 

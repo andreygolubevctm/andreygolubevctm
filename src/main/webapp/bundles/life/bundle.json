@@ -11,6 +11,7 @@
         "shared/checkboxIE8",
         "shared/dropdownInteractive",
         "shared/age",
+        "shared/dateUtils",
         "shared/ie8SelectMenuAutoExpand",
         "shared/occupationSelector",
         "shared/placeholder",
