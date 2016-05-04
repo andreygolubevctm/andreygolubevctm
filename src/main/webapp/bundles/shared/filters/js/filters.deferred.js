@@ -124,6 +124,8 @@
                 if (defaultValue == valueObject.value ||
                     (_.isArray(defaultValue) && _.contains(defaultValue, valueObject.value))) {
                     valueObject.selected = true;
+                } else {
+                    delete valueObject.selected;
                 }
             });
 

@@ -93,8 +93,13 @@
                 events: {
                     init: function (filterObject) {
                         var $slider = $('.health-filter-excess .slider-control');
-                        $slider.data('value', '2'); // todo: make sure this sets the default value to whats in the default value.
                         meerkat.modules.sliders.initSlider($slider);
+                        $slider.find('.slider')
+                            .val($(filterObject.defaultValueSourceSelector).val())
+                            // todo: move this to core module with type = 'slider'?
+                            .on('change', function(event){
+                                meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, event);
+                            });
                     }
                 }
             },
@@ -109,6 +114,7 @@
                          */
                         var $rebateElement = $(filterObject.defaultValueSourceSelector).parent('.select').clone().find('select')
                             .attr('id', model.rebate.name).attr('name', model.rebate.name).val($(filterObject.defaultValueSourceSelector).val());
+                        // remove the empty value option
                         $rebateElement.find('option[value=""]').remove();
                         $('.filter-rebate-holder').html($rebateElement);
                     },
@@ -230,20 +236,19 @@
                     currentCover = $(event.target).val(),
                     $allHospitalButtons = $sidebar.find('.benefitsHospital').find('input[type="checkbox"]');
 
-                // uncheck all checkboxes
-                $allHospitalButtons.prop('checked', false);
-
                 switch (currentCover) {
                     case 'top':
                         $allHospitalButtons.prop('checked', true);
                         break;
                     case 'limited':
-                        //todo: untick all but do we slide up the hosipital?
                         $allHospitalButtons.prop('checked', false);
                         break;
                     default:
-                        var $coverButtons = $sidebar.find('.benefitsHospital').find('.' + currentCover + ' input[type="checkbox"]');
-                        $coverButtons.prop('checked', true);
+                        // if is customise, leave as it is, but make sure prHospital is ticked
+                        if (currentCover !== 'customise') {
+                            $allHospitalButtons.prop('checked', false);
+                        }
+                        $sidebar.find('.benefitsHospital').find('.' + currentCover + ' input[type="checkbox"]').prop('checked', true);
                         break;
                 }
             }
