@@ -12,16 +12,9 @@
 </c:if>
 
 
-<layout_v1:results_template includeCompareTemplates="true" xsResultsColumns="2" resultsContainerClassName=" affixOnScroll sessioncamignorechanges ">
+<layout_v1:results_template xsResultsColumns="2" resultsContainerClassName=" affixOnScroll sessioncamignorechanges ">
 
-    <jsp:attribute name="preResultsRow">
-        <h3>Hi Sergei,</h3> <%-- Delete this once template rendering --%>
-        <p>We found 12 Combined Hospital and Extras products for your family</p>
-        <core_v1:js_template id="preResultsRowContentTemplate">
-            <h3>Hi Sergei,</h3> <%-- Helper functions to retrieve snapshot details? --%>
-            <p>We found 12 Combined Hospital and Extras products for your family</p>
-        </core_v1:js_template>
-    </jsp:attribute>
+    <jsp:attribute name="preResultsRow"><health_v3:pre_results_row_content_template/></jsp:attribute>
 
     <jsp:attribute name="sidebarColumn">
 
@@ -82,6 +75,20 @@
         <health_v3:price_template/>
     </jsp:attribute>
 
+    <jsp:attribute name="resultsHeaderTemplate">
+            <health_v3:product_header_template/>
+    </jsp:attribute>
+
+    <jsp:attribute name="resultsContainerTemplate">
+        {{ var headerTemplate = meerkat.modules.templateCache.getTemplate($('#result-header-template')); }}
+        {{ headerHtml = headerTemplate(obj); }}
+        <div class="result-row result_{{= productId }}" data-productId="{{= productId }}">
+            {{= headerHtml }}
+            <div class="featuresList featuresElements">
+            </div>
+        </div>
+    </jsp:attribute>
+
     <jsp:attribute name="hiddenInputs">
         <%-- Hidden fields necessary for Results page --%>
         <input type="hidden" name="health_showAll" value="Y"/>
@@ -114,60 +121,6 @@
         </c:if>
     </jsp:attribute>
 
-    <jsp:attribute name="resultsHeaderTemplate">
-        <div class="result">
-            <div class="resultInsert">
-                <div class="result-header-utility-bar">
-                    {{ if( info.restrictedFund === 'Y' ) { }}
-                    <div class="restrictedFund" data-title="This is a Restricted Fund" data-toggle="popover" data-adjust-y="5" data-trigger="mouseenter click" data-my="top center"
-                         data-at="bottom center" data-content="#restrictedFundText" data-class="restrictedTooltips">Restricted Fund (?)
-                    </div>
-                    {{ } else { }}
-                    <div class="utility-bar-blank">&nbsp;</div>
-                    {{ } }}
-                    <div class="filter-component remove-result hidden-xs">
-                        <span class="icon icon-cross" title="Remove this product"></span>
-                    </div>
-                </div>
-                <div class="results-header-inner-container">
-                    <div class="productSummary vertical results">
-                        {{ var logoTemplate = meerkat.modules.sharedResults.getTemplate($("#logo-template")); }}
-                        {{ var priceTemplate = meerkat.modules.sharedResults.getTemplate($("#price-template")); }}
-                        {{ obj._selectedFrequency = Results.getFrequency(); obj.showAltPremium = false; }}
-                        {{= logoTemplate(obj) }}
-                        {{= priceTemplate(obj) }}
-                    </div>
-
-                    <a class="btn btn-cta btn-block btn-more-info more-info-showapply" href="javascript:;" data-productId="{{= productId }}">
-                        <div class="more-info-text">More Info</div>
-                    </a>
-                    {{ var brochureTemplate = meerkat.modules.sharedResults.getTemplate($("#brochure-download-template")); }}
-                    {{= brochureTemplate(obj) }}
-
-                    {{ var specialOffer = Features.getPageStructure()[0]; }}
-                    {{ var pathValue = Object.byString( obj, specialOffer.resultPath ); }}
-                    {{ var displayValue = Features.parseFeatureValue( pathValue, true ); }}
-
-                    <fieldset class="hide-on-affix result-special-offer {{ if (!pathValue) { }}invisible{{ } }}">
-                        <legend>Special Offer</legend>
-                        {{= displayValue }}
-                    </fieldset>
-                </div>
-            </div>
-        </div>
-    </jsp:attribute>
-
-    <jsp:attribute name="resultsContainerTemplate">
-        {{ var headerTemplate = meerkat.modules.sharedResults.getTemplate($('#result-header-template')); }}
-        {{ headerHtml = headerTemplate(obj); }}
-        <div class="result-row result_{{= productId }}" data-productId="{{= productId }}">
-            {{= headerHtml }}
-            <div class="featuresList featuresElements">
-
-            </div>
-
-        </div>
-    </jsp:attribute>
     <jsp:body>
         <div class="col-xs-12 moreInfoDropdown"></div>
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request"/>
@@ -185,6 +138,7 @@
         <%-- FEATURE TEMPLATE --%>
         <features:resultsItemTemplate/>
         <health_v3:brochure_template/>
+
     </jsp:body>
 
 

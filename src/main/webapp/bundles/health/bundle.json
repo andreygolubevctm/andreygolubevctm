@@ -28,6 +28,7 @@
     "shared/popovers",
     "shared/moreInfo",
     "shared/resultsHeaderBar",
+    "shared/templateCache",
     "shared/coupon",
     "shared/sendEmail",
     "shared/emailBrochures",

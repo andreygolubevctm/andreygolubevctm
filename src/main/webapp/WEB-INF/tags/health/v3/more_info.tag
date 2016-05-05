@@ -41,8 +41,8 @@
 	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
 	{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
-	{{ var logoTemplate = meerkat.modules.sharedResults.getTemplate($("#logo-template")); }}
-	{{ var priceTemplate = meerkat.modules.sharedResults.getTemplate($("#price-template")); }}
+	{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
+	{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
 
 	{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
 	{{ } }}

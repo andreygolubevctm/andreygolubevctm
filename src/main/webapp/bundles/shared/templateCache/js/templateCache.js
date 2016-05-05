@@ -24,7 +24,7 @@
     }
 
 
-    meerkat.modules.register('sharedResults', {
+    meerkat.modules.register('templateCache', {
         init: init,
         getTemplate: getTemplate
     });
