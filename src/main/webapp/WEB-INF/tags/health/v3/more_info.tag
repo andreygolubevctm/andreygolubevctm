@@ -249,12 +249,11 @@
 					<li>{{= exclusion.name }}</li>
 					{{ }) }}
 
-					<c:if test="${not empty callCentre}">
 						{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
 						<li class="text-danger"><span class="icon-cross" /></span>{{= custom.info.exclusions.cover }}</li>
 						{{ } }}
-					</c:if>
 				</ul>
+				<content:get key="hospitalExclusionsDisclaimer"/>
 				{{ } }}
 
 			</div>
