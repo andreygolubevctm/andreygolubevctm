@@ -169,7 +169,7 @@
         </div>
     </jsp:attribute>
     <jsp:body>
-        <div class="moreInfoDropdown"></div>
+        <div class="col-xs-12 moreInfoDropdown"></div>
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request"/>
         <c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('health', 'category')}" scope="request"/>
         <script>

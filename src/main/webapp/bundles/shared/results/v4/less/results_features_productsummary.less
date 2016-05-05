@@ -31,20 +31,111 @@ section: Results v4
   .results-header-inner-container {
     padding: 10px 15px 25px 15px;
   }
-  /*---
+}
+
+// end .featuresMode
+
+/*---
+/*---
     title:   Product Summary
     section: Features: Product Summary
     ---
 
     Product Summary is the div that contains the price/buy now button in features mode.
     */
-  .productSummary {
+.productSummary {
+
+  // Logo Setup
+
+  .companyLogo {
+    &:extend(.companyLogo);
+    float: none;
+    .ie8 & {
+      max-width: 90px;
+      height: 45px;
+      margin-left: 30px !important; //This is ugly... but so is IE8! There is a -10px margin-left in core logos which this needs to combat
+    }
+  }
+  &.no-logo {
     .companyLogo {
-      float: none;
-      min-height: 45px;
+      .hidden;
     }
   }
 
+  // Price Structure & Design
+  // Components are: .frequency, .frequencyAmount, .cents, .dollarSign, .comma, .frequencyTitle
+  .frequency {
+    text-align: center;
+    .frequencyAmount {
+      color: #000;
+      @media (@sm) {
+        color: #555;
+      }
+      text-align: center;
+      // set font family:
+      font-family: @font-family-theme-bold;
+      .cents,
+      .comma,
+      .frequencyTitle {
+        font-family: @font-family-theme-regular;
+      }
+      // set font sizes
+      font-size: 32px;
+      @media (@md-only) {
+        font-size: 42px;
+      }
+      @media (@lg-only) {
+        font-size: 52px;
+      }
+      .dollarSign {
+        font-size: 18px;
+      }
+      .cents, .frequencyTitle {
+        font-size: 15px;
+      }
+      .comma {
+        font-size: 80%;
+      }
+
+      // now position the elements.
+      .cents,
+      .dollarSign,
+      .frequencyTitle {
+        position: relative;
+        vertical-align: super;
+      }
+      .dollarSign {
+        top: 2px;
+      }
+      .cents {
+        left: 3px;
+      }
+      .frequencyTitle {
+        display: block;
+        top: -11px;
+        white-space: nowrap;
+        @media (@md) {
+          display: inline;
+          top: 11px;
+          left: -24px;
+        }
+      }
+
+    }
+    // end frequency amount
+    .lhcText,
+    .rounding {
+      text-align: center;
+      display: block;
+      font-size: 11px;
+      color: @gray-light;
+      @media(@md) {
+        font-size: 13px;
+      }
+    }
+
+  }
+  // end frequency
 }
 
-// end .featuresMode
+// end product summary

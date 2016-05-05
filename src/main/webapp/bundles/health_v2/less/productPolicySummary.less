@@ -1,298 +1,3 @@
-/* Copied from dual pricing */
-.cents,
-.dollarSign,
-.frequencyTitle {
-  vertical-align: baseline;
-  position: relative;
-  top: -0.4em;
-  font-size: 0.6em;
-  font-family: @font-family-theme-regular;
-}
-
-@media(@sm) {
-  .moreInfoTopLeftColumn {
-    .cents {
-      top: -1.1em;
-      font-size: 0.375em;
-    }
-
-    /* put in here otherwise it affects the formatting on the results page */
-    .dollarSign,
-    .frequencyTitle {
-      top: -0.7em;
-    }
-  }
-}
-
-.dollarSign {
-  font-family: @font-family-theme-bold;
-}
-
-.featuresMode,
-.policySummaryContainer {
-  .productSummary {
-    &.horizontal {
-      .companyLogo {
-        max-width: 90px;
-        line-height: 18px;
-        @media (@sm) {
-          float: right;
-        }
-        @media (@md) {
-          float: left;
-        }
-        @media (@xs-only) {
-          height: 45px;
-          position: absolute;
-          overflow: hidden;
-          text-align: left;
-        }
-        @media (@sm-only) {
-          text-align: left;
-        }
-      }
-    }
-
-    &.no-logo {
-      .companyLogo {
-        .hidden;
-      }
-    }
-
-    .price {
-      .health[data-step="results"] & {
-        margin-top: 5px;
-      }
-      @media (@md) {
-        max-width: 221px;
-      }
-      @media (@lg) {
-        max-width: 273px;
-      }
-    }
-
-    .frequency {
-      .frequencyAmount {
-        font-family: @font-family-theme-bold;
-        text-align: center;
-        font-size: 28px;
-        @media (@sm) {
-          .frequencyTitle {
-            display: block;
-            font-family: @font-family-theme-bold;
-            font-size: 14px;
-          }
-        }
-        @media (@md) {
-          font-size: 32px;
-          .frequencyTitle {
-            display: inline;
-            top: -10px;
-            font-size: 15px;
-          }
-        }
-        @media (@lg) {
-          font-size: 40px;
-          .frequencyTitle {
-            top: -14px;
-          }
-        }
-      }
-      .lhcText,
-      .rounding {
-        text-align: center;
-        display: block;
-        font-size: 13px;
-        color: @gray-light;
-      }
-    }
-
-    &.horizontal {
-      overflow: hidden;
-
-      .price {
-        @media (@xs-only) {
-          margin-left: 65px;
-        }
-        @media (@sm) {
-          float: right;
-        }
-      }
-      .frequency {
-        .frequencyAmount,
-        .lhcText,
-        .rounding {
-          text-align: right;
-        }
-      }
-    }
-
-    &.no-logo.horizontal {
-      .price {
-        float: none;
-        .frequencyAmount {
-          font-size: 32px;
-          line-height: 20px;
-          text-align: left;
-        }
-        .frequencyAmount,
-        .lhcText,
-        .rounding {
-          text-align: left;
-        }
-      }
-    }
-
-    &.results {
-      .rounding {
-        display: none;
-      }
-      height: 150px;
-      @media (@xs-only) {
-        height: 130px;
-      }
-      overflow: hidden;
-    }
-    .companyLogo {
-      &:extend(.companyLogo);
-      float: none;
-
-      .ie8 & {
-        max-width: 90px;
-        height: 45px;
-        margin-left: 30px !important; //This is ugly... but so is IE8! There is a -10px margin-left in core logos which this needs to combat
-      }
-    }
-    /*&.compressed {
-
-      // Compressed is the shorter version when the header bar is docked.
-      height: 77px;
-      padding: 0;
-
-      .companyLogo {
-
-        :not(.ie8) & {
-
-          position: absolute; //Stops price colliding and being forced below
-          margin-top: 10px;
-          margin-left: 3%;
-
-          .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale);
-        }
-      }
-
-      .lhcText,
-      .rounding {
-        display: none;
-      }
-
-      .price {
-        margin-left: 28%;
-        //width: 72%;
-        @media (@sm-only) {
-          margin-left: 35%;
-          //width: 68%;
-        }
-        span {
-          display: inline-block;
-        }
-      }
-
-      // override affixed mode frequency title/text
-      .frequencyAmount {
-        text-align: left;
-        @media (@sm-only) {
-          font-size: 18px;
-        }
-        .ie8 & {
-          font-size: 24px;
-        }
-        .frequencyTitle {
-          display: block;
-          font-size: 12px;
-          @media (@md) {
-            font-size: 14px;
-          }
-
-          margin-top: 5px;
-          font-family: @font-family-theme-regular;
-        }
-      }
-    }*/
-  }
-  .priceItemisation {
-    overflow: hidden;
-    line-height: 18px;
-
-    .rounding {
-      clear: both;
-      font-size: @font-size-small;
-      text-align: right;
-    }
-
-    .item {
-      padding-bottom: 6px;
-
-      .item-label-text {
-        font-size: @font-size-small;
-      }
-      .item-value {
-        text-align: right;
-      }
-
-      &.basePremium {
-        .item-value {
-          font-size: @font-size-large;
-        }
-      }
-
-      &.totalPremium {
-        border-top: solid 1px;
-        border-color: @theme-light;
-        font-family: @font-family-theme-bold;
-        color: @price-color;
-        padding-top: 10px;
-
-        .item-label-text {
-          font-size: @font-size-large;
-        }
-        .item-value {
-          font-size: @font-size-h2;
-          .frequencyTitle {
-            color: @frequency-color;
-            font-size: 10px;
-            font-family: @font-family-sans-serif;
-            font-weight: normal;
-            font-family: @font-family-theme-bold;
-            margin-top: 5px;
-            letter-spacing: -0.06em;
-            display: block;
-            line-height: 1;
-          }
-        }
-      }
-    }
-  }
-}
-
-/* Policy summary in right hand column */
-.policySummaryContainer {
-  @media (@xs-only) {
-    position: relative;
-    padding: 5px;
-  }
-  @media (@sm) {
-    &.formMode .price {
-      padding-top: 7px;
-    }
-
-    &:not(.formMode) {
-      margin-bottom: 20px;
-      margin-top: -52px;
-    }
-  }
-}
-
 .companyLogo {
   max-height: @standard-logo-height;
   max-width: 200px;
@@ -313,6 +18,39 @@
   }
 }
 
+// sidebar overrides on apply/payment
+@media (@xs-only) {
+  .policySummaryContainer {
+    padding-top: 5px;
+    .productSummary.horizontal {
+      .companyLogo {
+        float: left;
+      }
+      .frequency {
+        .frequencyAmount {
+          .frequencyTitle {
+            display: inline;
+            top: 11px;
+            left: -22px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (@sm) {
+  .policySummaryTemplateHolder.productSummary {
+    .frequency {
+      text-align: right;
+      .frequencyAmount, .lhcText {
+        text-align: right;
+      }
+    }
+  }
+}
+
+// no idea what this is for!
 .modal-body {
 
   @media (@xs-only) {

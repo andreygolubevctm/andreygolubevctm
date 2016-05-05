@@ -206,15 +206,15 @@
                     valueMap: [
                         {
                             key: 'Y',
-                            value: "<span class='icon-tick'></span>"
+                            value: ""
                         },
                         {
                             key: 'N',
-                            value: "<span class='icon-cross hidden-sm hidden-md hidden-lg'></span>"
+                            value: ""
                         },
                         {
                             key: 'R',
-                            value: "Restricted"
+                            value: ""
                         },
                         {
                             key: '-',

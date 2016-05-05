@@ -83,7 +83,7 @@
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
 					</div>
 				</div>
-				<div class="row priceRow hidden-xs">
+				<div class="row priceRow productSummary hidden-xs">
 					<div class="col-xs-12">
 						{{= renderedPriceTemplate }}
 					</div>
@@ -106,7 +106,7 @@
 				</div>
 				<c:choose>
 				<c:when test="${healthAlternatePricingActive eq true}">
-					<div class="row priceRow">
+					<div class="row priceRow productSummary">
 						<div class="col-xs-12 hidden-md hidden-lg">
 							{{= renderedDualPricing }}
 						</div>
@@ -129,7 +129,7 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					<div class="row priceRow hidden-sm hidden-md hidden-lg">
+					<div class="row priceRow productSummary hidden-sm hidden-md hidden-lg">
 						<div class="col-xs-12 col-sm-8">
 							{{= renderedPriceTemplate }}
 						</div>

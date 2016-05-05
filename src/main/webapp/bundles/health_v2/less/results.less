@@ -5,6 +5,22 @@
     color: #000;
     font-family: @font-family-base;
   }
+
+  .featuresMode {
+    .productSummary {
+      height: 140px;
+      @media (@sm-only) {
+        height: 150px;
+      }
+      @media (@md-only) {
+        height: 165px;
+      }
+      @media (@lg-only) {
+        height: 175px;
+      }
+      overflow: hidden;
+    }
+  }
 }
 
 .resultInsert {
@@ -32,5 +48,12 @@
   // override core to give greater gap.
   .btn-block + .btn-block {
     margin-top: 10px;
+  }
+  // pretend to make the btn-block a btn-small.
+  @media(@xs-sm-only) {
+    .btn-download.btn-block {
+      padding: 5px 4px;
+      font-size: 12px;
+    }
   }
 }

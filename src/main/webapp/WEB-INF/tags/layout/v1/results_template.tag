@@ -62,7 +62,7 @@
         <div class="col-xs-12 col-sm-8 results-prologue-row">
                 ${preResultsRow}
         </div>
-        <div class="hidden-xs col-sm-4">
+        <div class="hidden-xs col-sm-4 results-prologue-row">
             <div class="collapse navbar-collapse">
                 <span class="pagination-text-label">See more results</span>
                 <ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>

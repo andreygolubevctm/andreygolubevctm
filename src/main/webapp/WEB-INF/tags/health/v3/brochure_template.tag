@@ -10,8 +10,16 @@
     <a class="hide-on-affix btn btn-block btn-download" href="javascript:;" data-title="" data-toggle="popover" data-adjust-y="5" data-trigger=" click" data-my="top center" data-at="bottom center"
        data-content="#brochurePopover{{= productId }}">Download Brochures</a>
     <div id="brochurePopover{{= productId }}" class="hidden">
-        <a class="btn btn-block btn-tertiary" href="{{= promo.hospitalPDF }}" target="_blank">Hospital Brochure</a>
-        <a class="btn btn-block btn-secondary" href="{{= promo.extrasPDF }}" target="_blank">Extras Brochures</a>
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <a class="btn btn-sm btn-tertiary" href="{{= promo.hospitalPDF }}" target="_blank">Hospital <span class="icon icon-angle-down"></span></a>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <a class="btn btn-sm btn-secondary" href="{{= promo.extrasPDF }}" target="_blank">Extras <span class="icon icon-angle-down"></span></a>
+            </div>
+        </div>
+
+
     </div>
     {{ } else { }}
     {{ if(coverType == 'H') { }} <a class="btn btn-block btn-download" href="{{= promo.hospitalPDF }}" target="_blank">Download Brochure</a> {{ } }}
