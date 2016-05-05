@@ -1,1 +1,65 @@
-//empty to override health v1.
+/**********************************************
+	LESS PORTED FROM core/resultsHeaderBar.less
+**********************************************/
+
+.headerBarTransition() {
+  -webkit-transition: height 100ms ease-in-out;
+  -moz-transition: height 100ms ease-in-out;
+  transition: height 100ms ease-in-out;
+}
+
+.resultsContainer {
+  position: relative;
+  z-index: @results-zindex-resultItems;
+
+
+  // always in effect
+  &.affixed-settings {
+
+    .result-row {
+      // To make up for the space no longer consumed by the .result element.
+      padding-top: 230px;
+    }
+
+    .result {
+      top: 40px;
+      width: inherit;
+    }
+    .hide-on-affix {
+      display: none;
+    }
+  }
+
+  // .affixed is not in effect while going between pages.
+  &.affixed {
+
+    .result {
+      display: none; // when in fixed mode, only display the items on the 'current page' - thanks to the pagination component for settings this.
+      position: fixed;
+    }
+
+    .currentPage {
+      .result {
+        display: block;
+      }
+    }
+
+  }
+
+  &.affixed-compact {
+    .result {
+      .resultInsert {
+        height: 270px;
+      }
+      .headerBarTransition();
+      height: 270px;
+    }
+  }
+
+  // only in effect during the pagination animation
+  &.affixed-absoluted {
+    .result {
+      position: absolute;
+    }
+  }
+}

@@ -19,21 +19,18 @@ The purpose of abstracting these styles from the scaffolding is because differen
     border-bottom: 1px solid @results-border-color;
   }
 
-
   // Each product column is a result-row, floated left so they fit beside each other.
   .result-row {
     // All columns get a side border
 
     .result {
-      border: 1px solid @results-border-color;;
+      border: 1px solid @results-border-color;
       border-bottom: none;
       background: @feature-bg-color;
-      padding: 15px;
     }
 
     .cell {
       border-right: 1px solid @results-border-color;
-
 
       &.expanded {
         .category {
@@ -109,15 +106,11 @@ The purpose of abstracting these styles from the scaffolding is because differen
 
   // The actual results container, to the right of the feature labels.
   .resultsOverflow {
-    .resultInsert {
-
-    }
 
     .result-row {
-      padding-right: 15px;
-
-      &:nth-child(3n) {
-        padding-right: 0px;
+      margin-left: 15px;
+      &.notfiltered:first-child {
+        margin-left: 0;
       }
     }
   }
@@ -126,7 +119,7 @@ The purpose of abstracting these styles from the scaffolding is because differen
   .features-more {
     clear: both;
 
-    .features-more-row{
+    .features-more-row {
       padding-top: 20px;
 
       h2 {
@@ -167,8 +160,6 @@ The purpose of abstracting these styles from the scaffolding is because differen
     // Content of certain feature cells. This needs to be relative so the expander icon inside can be absolutely positioned.
     position: relative;
   }
-
-
 
   .category .children .content {
     font-size: 85%;

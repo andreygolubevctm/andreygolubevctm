@@ -6,6 +6,7 @@
 
     <layout_v3:slide_content>
         <health_v3:results />
+        <health_v3:more_info/>
     </layout_v3:slide_content>
 
 </layout_v3:slide>

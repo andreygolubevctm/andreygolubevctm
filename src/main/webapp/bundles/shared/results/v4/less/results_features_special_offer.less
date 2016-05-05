@@ -1,0 +1,58 @@
+/*---
+title:   Features: Special Offer
+section: Results v4
+---
+`.result-special-offer` sits within the result-row `.resultInsert` and contains the special offer text.
+
+<code><pre>
+&lt;div class="resultsOverflow"&gt;
+      &lt;div class="results-table"&gt;
+      &lt;div class="result-row" data-productid="PHIO-HEALTH-5615316"&gt;
+        &lt;div class="result"&gt;
+          &lt;div class="resultInsert"&gt;
+            &lt;div class="productSummary"&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+*/
+.featuresMode {
+  // Make it look more like a true fieldset.
+  .result-special-offer {
+    margin-top: 30px;
+    padding: 5px 10px;
+    @media(@md) {
+      padding: 10px 25px;
+    }
+
+    border: 1px solid #ccc;
+    margin-bottom: 0;
+    height: 100px;
+    overflow-y: hidden;
+
+    text-align: center;
+    font-family: @font-family-theme-bold;
+    p {
+      margin-bottom: 0;
+    }
+
+    legend {
+      margin-bottom: 0;
+      padding: 0 5px;
+      border-bottom: none;
+      width: auto;
+      text-transform: uppercase;
+
+      font-size: 12px;
+      color: @gray-light;
+      letter-spacing: 1.3px;
+      @media(@sm-only) {
+        letter-spacing: normal;
+      }
+    }
+
+  }
+}

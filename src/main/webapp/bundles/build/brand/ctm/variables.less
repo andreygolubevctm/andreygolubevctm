@@ -923,6 +923,13 @@
 //
 //## Define the maximum width of `.container` for different screen sizes.
 
+// Custom for results -- not used for .container's width
+// Mobile
+@container-mobile:             ((568px + @grid-gutter-width));
+//** For `@screen-sm-min` and up.
+@container-xs:                 @container-mobile;
+
+
 // Small screen / tablet
 @container-tablet:             ((717px + @grid-gutter-width));
 //** For `@screen-sm-min` and up.

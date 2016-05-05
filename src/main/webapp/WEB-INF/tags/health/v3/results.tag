@@ -12,16 +12,9 @@
 </c:if>
 
 
-<layout_v1:results_template includeCompareTemplates="true">
+<layout_v1:results_template xsResultsColumns="2" resultsContainerClassName=" affixOnScroll sessioncamignorechanges ">
 
-    <jsp:attribute name="preResultsRow">
-        <h3>Hi Sergei,</h3> <%-- Delete this once template rendering --%>
-        <p>We found 12 Combined Hospital and Extras products for your family</p>
-        <core_v1:js_template id="preResultsRowContentTemplate">
-            <h3>Hi Sergei,</h3> <%-- Helper functions to retrieve snapshot details? --%>
-            <p>We found 12 Combined Hospital and Extras products for your family</p>
-        </core_v1:js_template>
-    </jsp:attribute>
+    <jsp:attribute name="preResultsRow"><health_v3:pre_results_row_content_template/></jsp:attribute>
 
     <jsp:attribute name="sidebarColumn">
 
@@ -75,16 +68,30 @@
     </jsp:attribute>
 
     <jsp:attribute name="logoTemplate">
-        <health_v1:logo_price_template/>
+        <health_v3:logo_template/>
     </jsp:attribute>
 
     <jsp:attribute name="priceTemplate">
-        <%--<health_v1:logo_price_template/>--%>
+        <health_v3:price_template/>
+    </jsp:attribute>
+
+    <jsp:attribute name="resultsHeaderTemplate">
+            <health_v3:product_header_template/>
+    </jsp:attribute>
+
+    <jsp:attribute name="resultsContainerTemplate">
+        {{ var headerTemplate = meerkat.modules.templateCache.getTemplate($('#result-header-template')); }}
+        {{ headerHtml = headerTemplate(obj); }}
+        <div class="result-row result_{{= productId }}" data-productId="{{= productId }}">
+            {{= headerHtml }}
+            <div class="featuresList featuresElements">
+            </div>
+        </div>
     </jsp:attribute>
 
     <jsp:attribute name="hiddenInputs">
         <%-- Hidden fields necessary for Results page --%>
-    <input type="hidden" name="health_showAll" value="Y"/>
+        <input type="hidden" name="health_showAll" value="Y"/>
         <input type="hidden" name="health_onResultsPage" value="Y"/>
         <input type="hidden" name="health_incrementTransactionId" value="Y"/>
 
@@ -100,8 +107,8 @@
             </c:choose>
         </c:if>
 
-    <%-- The following are hidden fields set by filters --%>
-    <field_v1:hidden xpath="health/excess" defaultValue="4"/>
+        <%-- The following are hidden fields set by filters --%>
+        <field_v1:hidden xpath="health/excess" defaultValue="4"/>
         <field_v1:hidden xpath="health/filter/providerExclude"/>
         <field_v1:hidden xpath="health/filter/priceMin" defaultValue="0"/>
         <field_v1:hidden xpath="health/filter/frequency" defaultValue="M"/>
@@ -114,45 +121,10 @@
         </c:if>
     </jsp:attribute>
 
-    <jsp:attribute name="resultsContainerTemplate">
-        <div class="result-row result_{{= productId }}" data-productId="{{= productId }}">
-            <div class="result">
-                <div class="resultInsert">
-                    <div class="compare-toggle-wrapper" data-toggle="popover" data-trigger="mouseenter" data-class="compareTooltip" data-adjust-x="5" data-content="click<br/> to compare">
-                        <input type="checkbox" class="compare-tick" data-productId="{{= productId }}" id="features_compareTick_{{= productId }}"/>
-                        <label for="features_compareTick_{{= productId }}"></label>
-                    </div>
-                    <div class="productSummary vertical results">
-
-                        {{ var logoPriceTemplate = $("#logo-price-template").html(); }}
-                        {{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
-                        {{ obj._selectedFrequency = Results.getFrequency(); }}
-                        {{ obj.showAltPremium = false; obj.htmlString = htmlTemplatePrice(obj); }}
-                        {{= htmlString }}
-
-                    </div>
-
-                    <a class="btn btn-cta btn-block btn-more-info more-info-showapply new-cta" href="javascript:;" data-productId="{{= productId }}">
-                        <div class="more-info-text">Find out more <span class="icon icon-arrow-right"/></div>
-                    </a>
-                    {{ if( info.restrictedFund === 'Y' ) { }}
-                    <div class="restrictedFund" data-title="This is a Restricted Fund" data-toggle="popover" data-adjust-y="5" data-trigger="mouseenter click" data-my="top center"
-                         data-at="bottom center" data-content="#restrictedFundText" data-class="restrictedTooltips">RESTRICTED FUND
-                    </div>
-                    {{ } }}
-                </div>
-            </div>
-
-            <div class="featuresList featuresElements">
-                <img src="brand/ctm/images/icons/spinning_orange_arrows.gif" class="featuresLoading"/> <%-- #WHITELABEL CX --%>
-            </div>
-
-        </div>
-    </jsp:attribute>
     <jsp:body>
-
-        <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
-        <c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('health', 'category')}" scope="request"  />
+        <div class="col-xs-12 moreInfoDropdown"></div>
+        <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request"/>
+        <c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('health', 'category')}" scope="request"/>
         <script>
             var resultLabels = ${jsonString};
         </script>
@@ -165,6 +137,8 @@
 
         <%-- FEATURE TEMPLATE --%>
         <features:resultsItemTemplate/>
+        <health_v3:brochure_template/>
+
     </jsp:body>
 
 

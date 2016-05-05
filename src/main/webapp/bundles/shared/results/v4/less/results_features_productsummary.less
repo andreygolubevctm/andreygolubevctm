@@ -22,76 +22,120 @@ section: Results v4
 
 .featuresMode {
   /*---
+    title:   Results Header: Inner Container
+    section: Features: Product Summary
+    ---
+
+    Inner Container wraps the content that needs to be constrained within the padding of the resultInsert.
+    */
+  .results-header-inner-container {
+    padding: 10px 15px 25px 15px;
+  }
+}
+
+// end .featuresMode
+
+/*---
+/*---
     title:   Product Summary
     section: Features: Product Summary
     ---
 
     Product Summary is the div that contains the price/buy now button in features mode.
     */
-  .productSummary {
-    padding: 10px 7px 7px;
+.productSummary {
+
+  // Logo Setup
+
+  .companyLogo {
+    &:extend(.companyLogo);
+    float: none;
+    .ie8 & {
+      max-width: 90px;
+      height: 45px;
+      margin-left: 30px !important; //This is ugly... but so is IE8! There is a -10px margin-left in core logos which this needs to combat
+    }
+  }
+  &.no-logo {
     .companyLogo {
-      float: none;
+      .hidden;
     }
   }
 
-  /*---
-  title:   Price Component
-  section: Features: Product Summary
-  ---
-  Sits within .productSummary with the intention on providing height, alignment and typography styles to the pricing.
+  // Price Structure & Design
+  // Components are: .frequency, .frequencyAmount, .cents, .dollarSign, .comma, .frequencyTitle
+  .frequency {
+    text-align: center;
+    .frequencyAmount {
+      color: #000;
+      @media (@sm) {
+        color: #555;
+      }
+      text-align: center;
+      // set font family:
+      font-family: @font-family-theme-bold;
+      .cents,
+      .comma,
+      .frequencyTitle {
+        font-family: @font-family-theme-regular;
+      }
+      // set font sizes
+      font-size: 32px;
+      @media (@md-only) {
+        font-size: 42px;
+      }
+      @media (@lg-only) {
+        font-size: 52px;
+      }
+      .dollarSign {
+        font-size: 18px;
+      }
+      .cents, .frequencyTitle {
+        font-size: 15px;
+      }
+      .comma {
+        font-size: 80%;
+      }
 
-  Available classes in this module are:
-  - `.price-component` (top level)
-  - `.price-component-row` (if like health, you have multiple rows of detail)
-  - `.price-component-value` (the value in a price component row)
+      // now position the elements.
+      .cents,
+      .dollarSign,
+      .frequencyTitle {
+        position: relative;
+        vertical-align: super;
+      }
+      .dollarSign {
+        top: 2px;
+      }
+      .cents {
+        left: 3px;
+      }
+      .frequencyTitle {
+        display: block;
+        top: -11px;
+        white-space: nowrap;
+        @media (@md) {
+          display: inline;
+          top: 11px;
+          left: -24px;
+        }
+      }
 
-  Within a price-component, you can style the "primary price" e.g. total premium or total price.
-  - `.primary-price` is the container
-  - `.primary-price-value` is the number
-  - `.primary-price-label` is the label if any, e.g. "PER YEAR"
-
-<code><pre>
-...
-  &lt;div class="resultInsert"&gt;
-    &lt;div class="productSummary"&gt;
-      &lt;div class="row price-component-row"&gt;
-        &lt;div class="col-xs-12"&gt;
-          &lt;span class="primary-price-value"&gt;
-            $2.198.00
-          &lt;/span&gt;
-          &lt;span class="primary-price-label"&gt;
-            PER YEAR
-          &lt;/span&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-...
-</code></pre>
-  */
-  .price-component {
-    height: 130px;
-
-    .price-component-row {
-      .small;
-      margin-bottom: 2px;
     }
-    .price-component-value {
-      text-align: right;
-    }
-
-    .primary-price {
-      margin-bottom: 10px;
-      .primary-price-value {
-        font-size: 26px;
-        line-height: 26px;
-        font-weight: bold;
-        display: inline-block;
-        margin-right: 5px;
+    // end frequency amount
+    .lhcText,
+    .rounding {
+      text-align: center;
+      display: block;
+      font-size: 11px;
+      color: @gray-light;
+      @media(@md) {
+        font-size: 13px;
       }
     }
 
-  } // end .price-component
+  }
+  // end frequency
+}
 
-} // end .featuresMode
+// end product summary

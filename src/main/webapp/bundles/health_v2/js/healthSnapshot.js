@@ -27,11 +27,13 @@
         meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.BEFORE_STEP_CHANGED, function renderSnapshotOnJourneyReadySubscription() {
             _.defer(function() {
                 renderSnapshot();
+                renderPreResultsRowSnapshot();
             });
         });
          meerkat.messaging.subscribe(meerkat.modules.events.health.SNAPSHOT_FIELDS_CHANGE, function renderSnapshotOnJourneyReadySubscription() {
             _.defer(function() {
                 renderSnapshot();
+                renderPreResultsRowSnapshot();
             });
         });
     }
@@ -152,6 +154,16 @@
             }
         });
         return list;
+    }
+    
+    function renderPreResultsRowSnapshot() {
+        var obj = {
+            name: "Test",
+            coverType: "Hospital and Extras",
+            situation: "your family"
+        };
+        var template = meerkat.modules.templateCache.getTemplate($("#pre-results-row-content-template"));
+        $('.preResultsContainer').html(template(obj));
     }
 
     meerkat.modules.register('healthSnapshot', {

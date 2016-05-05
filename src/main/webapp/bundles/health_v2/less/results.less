@@ -1,1 +1,59 @@
-// empty on purpose!
+#resultsPage {
+  a.dialogPop {
+    text-decoration: underline;
+    .small;
+    color: #000;
+    font-family: @font-family-base;
+  }
+
+  .featuresMode {
+    .productSummary {
+      height: 140px;
+      @media (@sm-only) {
+        height: 150px;
+      }
+      @media (@md-only) {
+        height: 165px;
+      }
+      @media (@lg-only) {
+        height: 175px;
+      }
+      overflow: hidden;
+    }
+  }
+}
+
+.resultInsert {
+  .utility-bar-blank {
+    padding: 5px;
+  }
+  .restrictedFund {
+    cursor: help;
+    background-color: #EDEDED;
+    padding: 5px;
+    color: #8A8A8A;
+    text-align: center;
+  }
+  .remove-result {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    padding: 5px;
+    color: #ccc;
+    cursor: pointer;
+    & .icon:hover {
+      color: #555;
+    }
+  }
+  // override core to give greater gap.
+  .btn-block + .btn-block {
+    margin-top: 10px;
+  }
+  // pretend to make the btn-block a btn-small.
+  @media(@xs-sm-only) {
+    .btn-download.btn-block {
+      padding: 5px 4px;
+      font-size: 12px;
+    }
+  }
+}
