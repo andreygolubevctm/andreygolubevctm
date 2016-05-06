@@ -4,6 +4,7 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.EnvironmentException;
 import com.ctm.web.core.exceptions.VerticalException;
 import com.ctm.web.core.services.EnvironmentService;
+import org.apache.commons.lang3.StringUtils;
 
 public class PageSettings {
 
@@ -54,6 +55,17 @@ public class PageSettings {
 	public int getSettingAsInt(String name) throws EnvironmentException, ConfigSettingException {
 		String setting = getSetting(name);
 		return Integer.parseInt(setting);
+	}
+
+	/**
+	 * Returns a matching setting as an integer
+	 * No error handling is in place. this will throw an exception if the value isn't an integer!
+	 *
+	 * @param name Setting key
+	 */
+	public boolean getSettingAsBoolean(String name) throws EnvironmentException, ConfigSettingException {
+		String setting = getSetting(name);
+		return StringUtils.equalsIgnoreCase("Y", setting);
 	}
 
 	public String getBrandCode() {

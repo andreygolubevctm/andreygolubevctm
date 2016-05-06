@@ -4,6 +4,7 @@ import com.ctm.httpclient.jackson.DefaultJacksonMappers;
 import com.ctm.interfaces.common.exception.InvalidQuoteException;
 import com.ctm.interfaces.common.util.SerializationMappers;
 import com.ctm.web.core.resultsData.model.ErrorInfo;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.simples.phone.inin.InInIcwsService;
 import com.ctm.web.simples.phone.inin.model.PauseResumeResponse;
@@ -25,9 +26,11 @@ public class PhoneControllerTest {
 	@Autowired
 	private SerializationMappers jacksonMappers;
 
+
+
 	@Test
 	public void testHandleException() throws Exception {
-		PhoneController phoneController = new PhoneController(mock(SessionDataServiceBean.class), mock(InInIcwsService.class));
+		PhoneController phoneController = new PhoneController(mock(SessionDataServiceBean.class), mock(InInIcwsService.class), mock(IPAddressHandler.class));
 		InvalidQuoteException exceptionMock = mock(InvalidQuoteException.class);
 		when(exceptionMock.getMessage()).thenReturn("Failed!");
 

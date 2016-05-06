@@ -148,7 +148,8 @@
 				var $healthSitLocation = $('#health_situation_location'),
 					$healthSitHealthCvr = $('#health_situation_healthCvr'),
 					$healthSitHealthSitu = $('#health_situation_healthSitu'),
-					$healthSitCoverType = $('#health_situation_coverType');
+					$healthSitCoverType = $('#health_situation_coverType'),
+					$healthSitRebate = $('#health_healthCover_health_cover_rebate');
 
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
@@ -222,21 +223,17 @@
 					});
 				}
 
+				$healthSitRebate.on('change', function() {
+					toggleRebate();
+				});
+				toggleRebate();
+
+
 			},
 			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onAfterEnter: function healthV2AfterEnter() {
 				// if coming from brochure site and all prefilled data are valid, let's hide the fields
-				if (meerkat.site.isFromBrochureSite === true) {
-					var $healthSitLocation = $('#health_situation_location'),
-						$healthSitHealthCvr = $('#health_situation_healthCvr');
-
-					if($healthSitHealthCvr.isValid()) {
-						$healthSitHealthCvr.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
-					}
-					if($healthSitLocation.isValid(true)) {
-						$healthSitLocation.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
-					}
-				}
+				toggleAboutYou();
 			}
 		};
 
@@ -387,7 +384,7 @@
 
 			},
 			onBeforeEnter:function enterResultsStep(event){
-
+				meerkat.modules.sessionCamHelper.stop();
 				meerkat.modules.healthDependants.resetConfig();
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
@@ -435,7 +432,9 @@
 
 				meerkat.modules.healthDependants.initHealthDependants();
 
-				healthApplicationDetails.init();
+				if (!meerkat.modules.splitTest.isActive(18)) {
+					healthApplicationDetails.init();
+				}
 
 				// Listen to any input field which could change the premium. (on step 4 and 5)
 				$(".changes-premium :input").on('change', function(event){
@@ -1253,6 +1252,47 @@
 
 	}
 
+	// Hide/show about you
+	function toggleAboutYou() {
+
+		if (meerkat.site.isFromBrochureSite === true) {
+			var $healthSitLocation = $('#health_situation_location'),
+				$healthSitHealthCvr = $('#health_situation_healthCvr');
+
+			if($healthSitHealthCvr.isValid()) {
+				$healthSitHealthCvr.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
+			}
+
+			if($healthSitLocation.isValid(true)) {
+				$healthSitLocation.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
+			}
+
+			if($healthSitHealthCvr.val() !== '') {
+				$('.health-cover').addClass('hidden');
+			}
+
+			if($healthSitLocation.val() !== '') {
+				$('.health-location').addClass('hidden');
+			}
+
+			if($healthSitHealthCvr.val() !== '' && $healthSitLocation.val() !== '') {
+				$('.health-about-you').addClass('hidden');
+				$('.health-situation .fieldset-column-side .sidebar-box').css('margin-top','55px');
+			}
+
+			$('.btn-edit').on('click', function() {
+				toggleAboutYou();
+			});
+
+			meerkat.site.isFromBrochureSite = false;
+		} else {
+			$('.health-cover').removeClass('hidden');
+			$('.health-location').removeClass('hidden');
+			$('.health-about-you').removeClass('hidden');
+			$('.health-situation .fieldset-column-side .sidebar-box').css('margin-top','');
+		}
+	}
+
 	// Hide/show simple dialogues when toggle inbound/outbound in simples journey
 	function toggleInboundOutbound() {
 		// Inbound
@@ -1296,6 +1336,19 @@
 			$followUpCallField.prop('disabled', false);
 			$('.simples-privacycheck-statement .error-field').show();
 			$('.follow-up-call .error-field').show();
+		}
+	}
+
+	function toggleRebate() {
+		if($('#health_healthCover_health_cover_rebate').find('input:checked').val() === 'N'){
+			$('#health_healthCover_tier').hide();
+			$('.health_cover_details_dependants').hide();
+		} else {
+			$('#health_healthCover_tier').show();
+			var cover = $(':input[name="health_situation_healthCvr"]').val();
+			if(cover === 'F' || cover === 'SPF'){
+				$('.health_cover_details_dependants').show();
+			}
 		}
 	}
 

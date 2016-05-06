@@ -32,10 +32,10 @@
 			<simples:dialogue id="36" vertical="health" mandatory="true" className="hidden simples-privacycheck-statement" /> <%-- Inbound --%>
 			<simples:dialogue id="25" vertical="health" mandatory="true" className="hidden follow-up-call" /> <%-- Follow up call --%>
 
-			<form_v2:fieldset id="healthAboutYou" legend="" postLegend="">
+			<form_v2:fieldset id="healthAboutYou" legend="" postLegend="" className="health-about-you">
 
 				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
-				<form_v2:row label="You are a" fieldXpath="${fieldXpath}">
+				<form_v2:row label="You are a" fieldXpath="${fieldXpath}" className="health-cover">
 					<field_v2:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" />
 				</form_v2:row>
 
@@ -45,7 +45,7 @@
 				<c:set var="state" value="${data['health/situation/state']}" />
 				<c:set var="location" value="${data['health/situation/location']}" />
 
-				<form_v2:row label="Living in" fieldXpath="${fieldXpath}">
+				<form_v2:row label="Living in" fieldXpath="${fieldXpath}" className="health-location">
 
 					<c:choose>
 						<c:when test="${not empty param.state || (not empty state && empty location && (param.action == 'amend' || param.action == 'load'))}">
@@ -63,11 +63,6 @@
 
 				</form_v2:row>
 
-				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
-				<form_v2:row label="Looking to" fieldXpath="${fieldXpath}">
-					<field_v2:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="reason you are looking to quote" />
-				</form_v2:row>
-
 			</form_v2:fieldset>
 
 			<simples:dialogue id="22" vertical="health" />
@@ -79,10 +74,17 @@
 				</div>
 			</simples:dialogue>
 
+			<form_v2:fieldset id="primary-health-cover" legend="Your Details" className="primary">
+
+				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
+				<form_v2:row label="You're looking to" fieldXpath="${fieldXpath}">
+					<field_v2:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="reason you are looking to quote" />
+				</form_v2:row>
+
 			<%-- Did it this way to prevent the snapshot from pushing the fields below up/down depending on the option selected with the health_situation_healthCvr field --%>
 			<c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
 			<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-			<form_v2:fieldset id="primary-health-cover" legend="Your Details" className="primary">
+
 				<c:set var="fieldXpath" value="${xpath}/primary/dob" />
 				<form_v2:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
 					<field_v2:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
@@ -130,13 +132,7 @@
 				</c:if>
 			</form_v2:fieldset>
 			<simples:dialogue id="26" vertical="health" mandatory="true" />
-			<form_v2:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians with Private Health insurance can reduce their upfront health insurance costs by applying the Government Rebate.">
-				<c:set var="fieldXpath" value="${xpath}/dependants" />
-				<form_v3:row label="How many dependent children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants">
-					<field_v2:count_select xpath="${fieldXpath}" max="12" min="1" title="number of dependants" required="true"  className="${name}_health_cover_dependants dependants"/>
-				</form_v3:row>
-
-
+			<form_v2:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians can reduce their upfront health insurance costs by applying the Government Rebate.">
 				<c:set var="fieldXpath" value="${xpath}/rebate" />
 				<form_v3:row label="Would you like to reduce your upfront premium by applying the rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
 					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate btn-group-wrap"/>
@@ -148,6 +144,11 @@
 						<field_v2:array_radio items="S=Single income,H=Household income" style="group" xpath="${fieldXpath}" title="income based on" required="true"  />
 					</form_v2:row>
 				</c:if>
+
+				<c:set var="fieldXpath" value="${xpath}/dependants" />
+				<form_v3:row label="How many dependent children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants">
+					<field_v2:count_select xpath="${fieldXpath}" max="12" min="1" title="number of dependants" required="true"  className="${name}_health_cover_dependants dependants"/>
+				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/income" />
 				<form_v3:row label="To receive the correct rebate, please select your expected annual income?" fieldXpath="${fieldXpath}" id="${name}_tier">

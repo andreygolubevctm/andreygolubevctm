@@ -5,6 +5,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.openinghours.model.OpeningHours;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.validation.SchemaValidationError;
@@ -21,7 +22,10 @@ public class OpeningHoursAdminService {
 	private final AdminOpeningHoursHelper adminOpeningHoursHelper = new AdminOpeningHoursHelper();
 	public static final String dateField = "date";
 	public static final String sequenceField = "daySequence";
-	public OpeningHoursAdminService() {
+	private final IPAddressHandler ipAddressHandler;
+
+	public OpeningHoursAdminService(IPAddressHandler ipAddressHandler) {
+		this.ipAddressHandler =  ipAddressHandler;
 	}
 
 	public List<OpeningHours> getAllHours(HttpServletRequest request)  {
@@ -70,7 +74,7 @@ public class OpeningHoursAdminService {
 			OpeningHours openingHours = new OpeningHours();
 			openingHours = RequestUtils.createObjectFromRequest(request, openingHours);
 			final String userName = authenticatedData.getUid();
-			final String ipAddress = request.getRemoteAddr();
+			final String ipAddress = ipAddressHandler.getIPAddress(request);
 			return openingHoursAdminDao.updateOpeningHours(openingHours,userName,ipAddress);
 		} catch (DaoException d) {
 			throw new RuntimeException(d);
@@ -82,7 +86,7 @@ public class OpeningHoursAdminService {
 			OpeningHours openingHours = new OpeningHours();
 			openingHours = RequestUtils.createObjectFromRequest(request, openingHours);
 			final String userName = authenticatedData.getUid();
-			final String ipAddress = request.getRemoteAddr();
+			final String ipAddress = ipAddressHandler.getIPAddress(request);
 			return openingHoursAdminDao.createOpeningHours(openingHours, userName, ipAddress);
 		} catch (DaoException d) {
 			throw new RuntimeException(d);
@@ -92,7 +96,7 @@ public class OpeningHoursAdminService {
 	public String deleteOpeningHours(HttpServletRequest request,AuthenticatedData authenticatedData){
 		try {
 			final String userName = authenticatedData.getUid();
-			final String ipAddress = request.getRemoteAddr();
+			final String ipAddress = ipAddressHandler.getIPAddress(request);
 			return openingHoursAdminDao.deleteOpeningHours(request.getParameter("openingHoursId"), userName, ipAddress);
 		} catch (DaoException d) {
 			throw new RuntimeException(d);

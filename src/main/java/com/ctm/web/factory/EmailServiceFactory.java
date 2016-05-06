@@ -19,6 +19,7 @@ import com.ctm.web.core.exceptions.EnvironmentException;
 import com.ctm.web.core.exceptions.VerticalException;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.transaction.dao.TransactionDao;
@@ -70,7 +71,7 @@ public class EmailServiceFactory {
 		SessionDataService sessionDataService = new SessionDataService();
 		TouchDao dao = new TouchDao();
 		AccessTouchService accessTouchService = new AccessTouchService(dao , sessionDataService);
-		return new HealthEmailService(pageSettings, mode , emailDetailsService, contentDao, urlService , accessTouchService, urlServiceOld, sessionDataService);
+		return new HealthEmailService(pageSettings, mode , emailDetailsService, contentDao, urlService , accessTouchService, urlServiceOld, sessionDataService, IPAddressHandler.getInstance());
 	}
 
 	private static EmailServiceHandler getTravelEmailService(
@@ -80,13 +81,13 @@ public class EmailServiceFactory {
 		EmailUrlService urlService = createEmailUrlService(pageSettings,
 				vertical);
 		EmailUrlServiceOld urlServiceOld = createEmailUrlServiceOld(pageSettings, vertical);
-		return new TravelEmailService(pageSettings, mode , emailDetailsService, urlService, data, urlServiceOld);
+		return new TravelEmailService(pageSettings, mode , emailDetailsService, urlService, data, urlServiceOld, IPAddressHandler.getInstance());
 	}
 	
 	private static EmailServiceHandler getLifeEmailService(PageSettings pageSettings, EmailMode mode, Data data, VerticalType vertical) throws SendEmailException {
 		EmailDetailsService emailDetailsService = createEmailDetailsService(pageSettings, data, vertical, new LifeEmailDetailMappings());
 		EmailUrlService urlService = createEmailUrlService(pageSettings, vertical);
-		return new LifeEmailService(pageSettings, mode, emailDetailsService, urlService);
+		return new LifeEmailService(pageSettings, mode, emailDetailsService, IPAddressHandler.getInstance());
 	}
 
 	private static EmailDetailsService createEmailDetailsService(
