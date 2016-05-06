@@ -426,7 +426,7 @@
 				meerkat.modules.healthDualPricing.initHealthDualPricing();
 			},
 			onBeforeEnter:function enterResultsStep(event){
-
+				meerkat.modules.sessionCamHelper.stop();
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
 				} else {
@@ -444,8 +444,6 @@
 					meerkat.modules.healthResults.get();
 				}
 
-				meerkat.modules.resultsHeaderBar.registerEventListeners();
-
 			},
 			onBeforeLeave: function(event) {
 				// Increment the transactionId
@@ -458,8 +456,6 @@
 				meerkat.modules.healthResults.recordPreviousBreakpoint();
 				meerkat.modules.healthResults.toggleMarketingMessage(false);
 				meerkat.modules.healthResults.toggleResultsLowNumberMessage(false);
-
-				meerkat.modules.resultsHeaderBar.removeEventListeners();
 			}
 		};
 

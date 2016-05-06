@@ -19,27 +19,28 @@
     .expanding > .content .expander {
       .icon-arrow-down;
     }
+    .featuresList {
+      .icon-tick,
+      .icon-cross {
+        line-height: 18px;
+        display: block;
+        text-align: center;
+      }
 
-    .icon-tick,
-    .icon-cross {
-      line-height: 18px;
-      display: block;
-      text-align: center;
+      .icon-tick {
+        color: @theme-secondary;
+      }
+      .icon-cross {
+        color: @cross-color;
+      }
     }
-
-    .icon-tick {
-      color: @theme-secondary;
-    }
-    .icon-cross {
-      color: @cross-color;
-    }
-
     @media (@sm) {
 
       .help-icon {
         line-height: 18px;
         position: relative;
       }
+
       .expanded > .content,
       .expanding > .content {
         .help-icon,

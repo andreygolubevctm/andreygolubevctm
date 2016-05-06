@@ -48,7 +48,28 @@
             WEBAPP_LOCK: 'WEBAPP_LOCK',
             WEBAPP_UNLOCK: 'WEBAPP_UNLOCK',
             RESULTS_ERROR: 'RESULTS_ERROR'
-        };
+        },
+        paymentFrequencyDictionary = [
+            {
+                key: "annually",
+                label: "per year"
+            }, {
+                key: "halfyearly",
+                label: "per half year"
+            }, {
+                key: "quarterly",
+                label: "per quarter"
+            }, {
+                key: "monthly",
+                label: "per month"
+            }, {
+                key: "fortnightly",
+                label: "per <span class='hidden-xs'>fortnight</span><span class='hidden-sm hidden-md hidden-lg'>f/night</span>"
+            }, {
+                key: "weekly",
+                label: "per week"
+            }
+        ];
 
 
     function initPage() {
@@ -132,7 +153,7 @@
                     features: {
                         mode: 'populate',
                         headers: false,
-                        numberOfXSColumns: 3
+                        numberOfXSColumns: 2
                     },
                     dockCompareBar: false
                 },
@@ -180,15 +201,15 @@
                     valueMap: [
                         {
                             key: 'Y',
-                            value: "<span class='icon-tick'></span>"
+                            value: ""
                         },
                         {
                             key: 'N',
-                            value: "<span class='icon-cross hidden-sm hidden-md hidden-lg'></span>"
+                            value: ""
                         },
                         {
                             key: 'R',
-                            value: "Restricted"
+                            value: ""
                         },
                         {
                             key: '-',
@@ -623,6 +644,10 @@
         }
     }
 
+    function getPaymentFrequencies() {
+        return paymentFrequencyDictionary;
+    }
+
     function setSelectedProduct(product, premiumChangeEvent, showIncPrice) {
 
         selectedProduct = product;
@@ -938,6 +963,7 @@
         getNumberOfPeriodsForFrequency: getNumberOfPeriodsForFrequency,
         getFrequencyInLetters: getFrequencyInLetters,
         getFrequencyInWords: getFrequencyInWords,
+        getPaymentFrequencies: getPaymentFrequencies,
         stopColumnWidthTracking: stopColumnWidthTracking,
         toggleMarketingMessage: toggleMarketingMessage,
         toggleResultsLowNumberMessage: toggleResultsLowNumberMessage,

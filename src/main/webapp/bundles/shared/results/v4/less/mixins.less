@@ -18,6 +18,7 @@
   // If container width is not provided, use the container variables.
   .setContainerWidth(@w) when (@w = -1) {
     @containerVar: ~"container-@{breakpoint}";
+
     @actualResultsContainerWidth: (@@containerVar - @grid-gutter-width);
   }
   .setContainerWidth(@w) when (@w > -1) {
@@ -48,16 +49,12 @@
 
   // The styles
   &.results-columns-@{breakpoint}-@{from} {
-    .featuresHeaders {
-      width: @finalFeaturesColumnWidth;
-    }
-
     .resultsOverflow {
       width: @overflowWidth;
     }
 
     .result-row {
-      width: @column-width;
+      width: (@column-width - @results-column-outer-width);
     }
   }
 
@@ -67,16 +64,16 @@
 
 .generate-default-result-column-widths() {
   @media (@xs) {
-    .generate-result-column-widths(xs);
+    .generate-result-column-widths(xs, @sidebar-width-xs);
   }
   @media (@sm) {
-    .generate-result-column-widths(sm);
+    .generate-result-column-widths(sm, @sidebar-width-sm);
   }
   @media (@md) {
-    .generate-result-column-widths(md);
+    .generate-result-column-widths(md, @sidebar-width-md);
   }
   @media (@lg) {
-    .generate-result-column-widths(lg);
+    .generate-result-column-widths(lg, @sidebar-width-lg);
   }
 }
 

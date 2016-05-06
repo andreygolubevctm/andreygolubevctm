@@ -41,11 +41,10 @@
 	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
 	{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
-	{{ var logoPriceTemplate = $('#logo-price-template').html(); }}
-	{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
+	{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
+	{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
 
-	{{ obj.showAltPremium = false; obj.renderedPriceTemplate = htmlTemplatePrice(obj); }}
-	{{ obj.showAltPremium = true;  obj.renderedAltPriceTemplate = htmlTemplatePrice(obj); }}
+	{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
 	{{ } }}
 
 	<%-- Check if drop dead date has passed --%>
@@ -84,7 +83,7 @@
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
 					</div>
 				</div>
-				<div class="row priceRow hidden-xs">
+				<div class="row priceRow productSummary hidden-xs">
 					<div class="col-xs-12">
 						{{= renderedPriceTemplate }}
 					</div>
@@ -107,7 +106,7 @@
 				</div>
 				<c:choose>
 				<c:when test="${healthAlternatePricingActive eq true}">
-					<div class="row priceRow">
+					<div class="row priceRow productSummary">
 						<div class="col-xs-12 hidden-md hidden-lg">
 							{{= renderedDualPricing }}
 						</div>
@@ -130,7 +129,7 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					<div class="row priceRow hidden-sm hidden-md hidden-lg">
+					<div class="row priceRow productSummary hidden-sm hidden-md hidden-lg">
 						<div class="col-xs-12 col-sm-8">
 							{{= renderedPriceTemplate }}
 						</div>
@@ -250,12 +249,11 @@
 					<li>{{= exclusion.name }}</li>
 					{{ }) }}
 
-					<c:if test="${not empty callCentre}">
 						{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
 						<li class="text-danger"><span class="icon-cross" /></span>{{= custom.info.exclusions.cover }}</li>
 						{{ } }}
-					</c:if>
 				</ul>
+				<content:get key="hospitalExclusionsDisclaimer"/>
 				{{ } }}
 
 			</div>
