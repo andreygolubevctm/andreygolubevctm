@@ -152,7 +152,7 @@
             htmlContent = htmlTemplate(),
             modalName = 'benefits-learn-more';
 
-        modalId = meerkat.modules.dialogs.show({
+        var modalId = meerkat.modules.dialogs.show({
             htmlContent: '<div class="' + modalName + '-wrapper"></div>',
             hashId: modalName,
             className: modalName,
@@ -435,107 +435,19 @@
         $hiddenFields.find(".benefit-item").val('');
     }
 
-    function populateBenefitsSelection(checkedBenefits, isReset) {
+    function populateBenefitsSelection(checkedBenefits) {
 
-        if (isReset) {
-            resetBenefitsSelection();
-        }
+        resetBenefitsSelection();
 
         for (var i = 0; i < checkedBenefits.length; i++) {
             var path = checkedBenefits[i];
             $hiddenFields.find("input[name='health_benefits_benefitsExtras_" + path + "']").val('Y');
             $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true);
         }
+
         updateCoverTypeByBenefitsSelected();
     }
 
-    function getBenefitsForSituation(situation, isReset, callback) {
-
-        if (situation === "") {
-            populateBenefitsSelection([], isReset);
-            if (typeof callback === 'function') {
-                callback();
-            }
-            return;
-        }
-
-        meerkat.modules.comms.post({
-            url: "ajax/csv/get_benefits.jsp",
-            data: {
-                situation: situation
-            },
-            errorLevel: "silent",
-            cache: true,
-            onSuccess: function onBenefitSuccess(data) {
-                var defaultBenefits = data.split(',');
-                populateBenefitsSelection(defaultBenefits, isReset);
-                if (typeof callback === 'function') {
-                    callback();
-                }
-            }
-        });
-
-    }
-
-    // Rules and logic to decide which code to be sent to the ajax call to prefill the benefits
-    function prefillBenefits() {
-        //if callCentre user made change on benefits dropdown, do not prefill
-        // TODO: fix it when call centre start using V2. For now, it will always be false
-        if (changedByCallCentre) return;
-
-        var healthSitu = $('#health_situation_healthSitu').val(),// 3 digit code from step 1 health situation drop down.
-            healthSituCvr = getHealthSituCvr();// 3 digit code calculated from other situations, e.g. Age, cover type
-
-        if (healthSituCvr === '' || healthSitu === 'ATP') {// if only step 1 healthSitu has value or ATP is selected, reset the benefits and call ajax once
-            getBenefitsForSituation(healthSitu, true);
-        } else {
-            getBenefitsForSituation(healthSitu, true, function () {// otherwise call ajax twice to get conbined benefits.
-                getBenefitsForSituation(healthSituCvr, false);
-            });
-        }
-    }
-
-    // Get 3 digit code for health situation cover based on cover type and age bands
-    // YOU = Young [16-30] Single/Couple
-    // MID = Middle [31-55] Single/Couple
-    // MAT = Mature [56-120] Single/Couple
-    // FAM = Family and SP Family (all ages)
-    function getHealthSituCvr() {
-        var cover = $('#health_situation_healthCvr').val(),
-            primary_dob = $('#health_healthCover_primary_dob').val(),
-            partner_dob = $('.healthDetailsHiddenFields').find('input[name="health_healthCover_partner_dob"]').val() || primary_dob,
-            primary_age = 0, partner_age = 0, ageAverage = 0,
-            healthSituCvr = '';
-
-        if (cover === 'F' || cover === 'SPF') {
-            healthSituCvr = 'FAM';
-        } else if ((cover === 'S' || cover === 'SM' || cover === 'SF') && primary_dob !== '') {
-            ageAverage = meerkat.modules.age.returnAge(primary_dob, true);
-            healthSituCvr = getAgeBands(ageAverage);
-        } else if (cover === 'C' && primary_dob !== '' && partner_dob !== '') {
-            primary_age = meerkat.modules.age.returnAge(primary_dob),
-                partner_age = meerkat.modules.age.returnAge(partner_dob);
-            if (16 <= primary_age && primary_age <= 120 && 16 <= partner_age && partner_age <= 120) {
-                ageAverage = Math.floor((primary_age + partner_age) / 2);
-                healthSituCvr = getAgeBands(ageAverage);
-            }
-        }
-
-        return healthSituCvr;
-    }
-
-    // use age to calculate the Age Bands
-    function getAgeBands(age) {
-        if (16 <= age && age <= 30) {
-            return 'YOU';
-        } else if (31 <= age && age <= 55) {
-            return 'MID';
-        } else if (56 <= age && age <= 120) {
-            return 'MAT';
-        } else {
-            return '';
-        }
-    }
 
     // reset benefits for devs when use product title to search
     function resetBenefitsForProductTitleSearch() {
@@ -547,13 +459,13 @@
     }
 
     function syncAccidentOnly() {
-        $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
+        var $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
 
-       if ($('#accidentCover').is(":checked")) {
-           $limitedCoverHidden.val("Y");
-       } else {
-           $limitedCoverHidden.val("");
-       }
+        if ($('#accidentCover').is(":checked")) {
+            $limitedCoverHidden.val("Y");
+        } else {
+            $limitedCoverHidden.val("");
+        }
     }
 
     // Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
@@ -639,6 +551,7 @@
         resetBenefitsForProductTitleSearch: resetBenefitsForProductTitleSearch,
         getSelectedBenefits: getSelectedBenefits,
         syncAccidentOnly: syncAccidentOnly,
+        populateBenefitsSelection: populateBenefitsSelection,
         getHospitalBenefitsModel: getHospitalBenefitsModel,
         getExtraBenefitsModel: getExtraBenefitsModel
     });

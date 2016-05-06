@@ -54,7 +54,7 @@
                 <span class="heading-text">Hospital excess</span>
             </div>
             <div class="filter-excess" data-filter-type="slider" data-filter-serverside="true">
-                <health_v1:filter_excess/>
+                <health_v1:filter_excess useDefaultOutputField="true" />
             </div>
         </div>
     </div>

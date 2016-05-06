@@ -44,7 +44,9 @@
                 defaultValue: 'M',
                 events: {
                     update: function (filterObject) {
-                        $(filterObject.defaultValueSourceSelector).val($('input[name=' + filterObject.name + ']:checked').val());
+                        var valueNew = $('input[name=' + filterObject.name + ']:checked').val();
+                        $(filterObject.defaultValueSourceSelector).val(valueNew);
+                        Results.setFrequency(meerkat.modules.healthResults.getFrequencyInWords(valueNew), false);
                     }
                 }
             },
@@ -92,7 +94,7 @@
                 defaultValue: '4',
                 events: {
                     init: function (filterObject) {
-                        var $slider = $('.health-filter-excess .slider-control');
+                        var $slider = $('#results-sidebar .health-filter-excess .slider-control');
                         meerkat.modules.sliders.initSlider($slider);
                         $slider.find('.slider')
                             .val($(filterObject.defaultValueSourceSelector).val())
@@ -100,6 +102,10 @@
                             .on('change', function(event){
                                 meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, event);
                             });
+                    },
+                    update: function (filterObject) {
+                        var $slider = $('#results-sidebar .health-filter-excess .slider-control .slider');
+                        $(filterObject.defaultValueSourceSelector).val($slider.val());
                     }
                 }
             },
@@ -184,7 +190,7 @@
                 },
                 events: {
                     update: function () {
-                        // populateBenefitsSelection
+                        populateSelectedBenefits();
                     }
                 }
             },
@@ -197,7 +203,11 @@
                         return meerkat.modules.healthBenefitsStep.getSelectedBenefits();
                     }
                 },
-                events: {}
+                events: {
+                    update: function () {
+                        populateSelectedBenefits();
+                    }
+                }
             }
 
         },
@@ -210,6 +220,13 @@
                 }
             ]
         };
+
+    function populateSelectedBenefits() {
+        var selectedBenefits = $('#results-sidebar').find('.results-filters-benefits input[type="checkbox"]:checked').map(function() {
+            return this.value;
+        });
+        meerkat.modules.healthBenefitsStep.populateBenefitsSelection(selectedBenefits);
+    }
 
     function init() {
         meerkat.modules.filters.initFilters(settings, model, 'filters');

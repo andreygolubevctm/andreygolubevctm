@@ -34,7 +34,8 @@
         _htmlTemplate = {},
         $document,
         subscriptionHandles = {},
-        resettingFilters = false;
+        resettingFilters = false,
+        needToFetchFromServer = true;
 
 
     /**
@@ -99,6 +100,17 @@
                 }
                 subscriptionHandles[filterObject.name] = meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_UPDATED, function () {
                     filterObject.events.update.apply(window, [filterObject]);
+                    if (needToFetchFromServer) {
+                        _.defer(function(){
+                            meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
+                            // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
+                            _.delay(function(){
+                                meerkat.modules.healthResults.get();
+                            },100);
+                        });
+                    }else{
+                        Results.applyFiltersAndSorts();
+                    }
                 });
             }
             // Run pre-init if exists
