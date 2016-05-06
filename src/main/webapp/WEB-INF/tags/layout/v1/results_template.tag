@@ -81,7 +81,7 @@
 
     <div class="col-sm-${resultsColsSm} col-md-${resultsColsMd} results-column-container">
         <div class="${resultsContainerClassName} resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
-            <div class="resultsOverflow">
+            <div class="resultsOverflow notScrolling">
 
                 <div class="results-table"></div>
 

@@ -7,6 +7,21 @@ This file should define ONLY the scaffolding/structure to render a skeleton of t
 .featuresMode {
 
   .resultsOverflow {
+
+    &.notScrolling {
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 0;
+        height: 100%;
+        border-style: solid;
+        border-width: @results-row-dropshadow-width;
+        border-color: @main-bg-colour;
+        z-index: 5;
+      }
+    }
+
     overflow: hidden;
     float: left;
     width: 100%;
@@ -25,7 +40,6 @@ This file should define ONLY the scaffolding/structure to render a skeleton of t
     }
 
     .result-row {
-      //width: @xs-results-column-width;
     }
   }
 }
