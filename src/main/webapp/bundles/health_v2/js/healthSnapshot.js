@@ -130,12 +130,6 @@
             }
 
         });
-        $(".Hospital_container .noIcons").find(':checked').each(function(item) {
-            var label = $.trim($($(this).next('label').contents()[0]).text());
-            if(!_.isEmpty(label)) {
-                list.push(label);
-            }
-        });
         return list;
     }
 
@@ -143,12 +137,6 @@
         var list = [];
         $(".GeneralHealth_container").find(':checked').each(function(item) {
             var label = $.trim($(this).next('label').find('span.iconLabel').text());
-            if(!_.isEmpty(label)) {
-                list.push(label);
-            }
-        });
-        $(".GeneralHealth_container .noIcons").find(':checked').each(function(item) {
-            var label = $.trim($($(this).next('label').contents()[0]).text());
             if(!_.isEmpty(label)) {
                 list.push(label);
             }

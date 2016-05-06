@@ -12,14 +12,12 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 		<c:when test="${item.getType() == 'section'}">
 			<c:choose>
 				<c:when test="${item.getClassName() == 'hospitalCover'}">
-					<%--<c:set var="colWidthValue" value="custom-col-sm" />--%>
 					<c:set var="colContent">Hospital cover gives you the power to choose your own doctor at any one of the fund's partner hospitals allowing you avoid public hospital waiting lists.</c:set>
 					<c:set var="coverType">Hospital</c:set>
 					<%-- Hospital needs to loop one more time because the first child of hospital is not shortListAable --%>
 					<c:set var="loopCount" value="5" />
 				</c:when>
 				<c:otherwise>
-					<%--<c:set var="colWidthValue" value="custom-col-lg" />--%>
 					<c:set var="colContent">Extras cover gives you money back for day to day services like dental, optical and physiotherapy.</c:set>
 					<c:set var="coverType">Extras</c:set>
 					<c:set var="loopCount" value="4" />
@@ -142,32 +140,5 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 			</div>
 		</div>
 	</form_v2:fieldset>
-
-		<%-- Hospital/Extra only side bar --%>
-		<c:if test="${item.getType() == 'section'}">
-			<div class="custom-col-sm benefits-side-bar sidebar${coverType} section">
-				<div class="sidebar-wrapper">
-					<div class="title">
-						<h4>Interested in ${coverType} cover?</h4>
-						<p>${colContent}</p>
-					</div>
-					<c:if test="${item.hasShortlistableChildren()}">
-						<ul class="top-5-benefits">
-							<c:forEach items="${item.getChildren()}" var="selectedValue" end="${loopCount}">
-								<c:if test="${selectedValue.isShortlistable()}">
-
-									<li class="${selectedValue.getClassString()}">${selectedValue.getName()}
-										<field_v2:help_icon helpId="${selectedValue.getHelpId()}" position="${helpPosition}" tooltipClassName="${helpClassName}" />
-									</li>
-								</c:if>
-							</c:forEach>
-						</ul>
-					</c:if>
-					<div class="footer">
-						<a class="btn btn-edit" href="javascript:;">Add ${coverType} Cover</a>
-					</div>
-				</div>
-			</div>
-		</c:if>
 
 </c:if>

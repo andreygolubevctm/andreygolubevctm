@@ -35,7 +35,7 @@
         $document,
         subscriptionHandles = {},
         resettingFilters = false,
-        needToFetchFromServer = true;
+        needToFetchFromServer = false;
 
 
     /**

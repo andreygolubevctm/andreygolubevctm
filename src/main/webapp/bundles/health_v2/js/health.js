@@ -183,7 +183,6 @@
 				// change benefits page layout when change the coverType
 				$healthSitCoverType.on('change', function() {
 					var coverTypeVal = $(this).find('input:checked').val();
-					meerkat.modules.healthBenefitsStep.changeLayoutByCoverType('');
 					meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
 				});
 
@@ -278,7 +277,6 @@
 				meerkat.modules.healthBenefitsStep.setDefaultCover();
 				meerkat.modules.healthBenefitsStep.disableFields();
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
-				meerkat.modules.healthBenefitsStep.checkAndHideMoreBenefits();
 				incrementTranIdBeforeEnteringSlide();
 			},
 			onAfterEnter: function(event) {
@@ -290,9 +288,6 @@
 				if (event.isForward && meerkat.site.isCallCentreUser === true) {
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
-
-				meerkat.modules.healthBenefitsStep.alignTitle();
-				meerkat.modules.healthBenefitsStep.alignSidebarHeight();
 
 				if(event.isForward)
 					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
