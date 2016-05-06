@@ -149,17 +149,28 @@ var ResultsView = {
 			Results.settings.elements.resultsContainer + " " + Results.settings.elements.container
 		);
 	},
-
+	/**
+	 *
+	 * @param $container
+	 * @param nbColumns number of columns to display on XS
+	 * @param hasOutsideGutters Whether it has an outside margin-right (XS should be margin-right if it starts right from the left side)
+     */
 	setColumnWidth: function( $container, nbColumns, hasOutsideGutters ){
 
 		if( typeof( hasOutsideGutters ) === "undefined" ){
 			hasOutsideGutters = true;
 		}
 
-		var columnMargin = parseInt( $(Results.settings.elements.rows).first().css("margin-right") );
-
-		var nbMargins = nbColumns * 2;
+		// We divide the margin by nbColumns so that it only appears in the middle
+		// e.g. if displaying 2 products, we don't have 2 columns with 2 gutters, we have 1 col with 1 gutter and 1 without
+		// and we evenly split it out by the number of columns.
+		var columnMargin = parseInt( $(Results.settings.elements.rows).first().css("margin-right") ) / nbColumns;
+		var nbMargins = nbColumns;
+		if(hasOutsideGutters) {
+			columnMargin /= nbColumns;
+		}
 		if( !hasOutsideGutters ) {
+			nbMargins *= 2;
 			nbMargins -= 2;
 		}
 

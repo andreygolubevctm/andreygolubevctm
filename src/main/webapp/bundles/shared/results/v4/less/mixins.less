@@ -4,12 +4,11 @@
 	The most basic way to call the mixin is with the only mandatory argument:
 		.generate-result-column-widths(sm);
 
-	@featuresColumnWidth: Total width of the features headers column. If not provided, its width will match evenly with the results columns.
-	@resultsContainerWidth: The total container width in which features headers and results columns will fit. By default this is the breakpoint's container width.
+	@resultsContainerWidth: The total container width in which the results columns will fit. If there is a sidebar, you will need to specify it manually. Otherwise, the breakpoints container width is used.
 	@from: The minimum number of columns to calculate widths for. Defaults to 2.
 	@to: The maximum number of columns to calculate widths for. Defaults to 4.
 */
-.debug(@var) {
+/*.debug(@var) {
   &:after {
     content: "@{var}";
     font-size: 20px;
@@ -23,71 +22,54 @@
     top: 50%;
     left: 50%;
   }
-}
-.generate-result-column-widths(@breakpoint; @featuresColumnWidth:-1; @resultsContainerWidth:-1; @from:2; @to:4) when (@from =< @to) {
+}*/
+
+.generate-result-column-widths(@breakpoint; @resultsContainerWidth:-1; @from:2; @to:4) when (@from =< @to) {
 
   // If container width is not provided, use the container variables.
   .setContainerWidth(@w) when (@w = -1) {
     @containerVar: ~"container-@{breakpoint}";
-
     @actualResultsContainerWidth: (@@containerVar - @grid-gutter-width);
   }
   .setContainerWidth(@w) when (@w > -1) {
     @actualResultsContainerWidth: @w;
   }
   .setContainerWidth(@resultsContainerWidth);
-
-  // If feature width is not provided, default it to evenly match width of results columns.
-  .setFeaturesWidth(@w) when (@w = -1) {
-    @actualFeaturesColumnWidth: (@actualResultsContainerWidth / (@from + 1));
-  }
-  .setFeaturesWidth(@w) when (@w > -1) {
-    @actualFeaturesColumnWidth: @w;
-  }
-  .setFeaturesWidth(@featuresColumnWidth);
+  //.debug(@actualResultsContainerWidth);
 
   // Width available for results
-  @availableWidth: (@actualResultsContainerWidth - @actualFeaturesColumnWidth - @results-column-outer-width);
+  @overflowWidth: @actualResultsContainerWidth;
+  // Fit the number of columns into the available space.
+  @column-width: ( round((@overflowWidth / @from), 2) - @results-column-outer-width);
 
-  // Fit the number of columns into the available space. Left over pixels will be added to the feature headers column.
-  @column-width: ( round((@availableWidth / @from), 2) );
-
-  // Set the overflow to exactly fit X number of columns
-  @overflowWidth: (@column-width * @from);
-
-  //.debug(@overflowWidth);
-  // Recalculate the feature headers column to consume any left over pixels due to rounding down.
-  @finalFeaturesColumnWidth: (@actualResultsContainerWidth - @overflowWidth);
 
   // The styles
   &.results-columns-@{breakpoint}-@{from} {
     .resultsOverflow {
       width: @overflowWidth;
-      .debug(@overflowWidth);
     }
 
     .result-row {
       width: @column-width;
-      .debug(@column-width);
     }
   }
 
   // Increment the counter and run next loop
-  .generate-result-column-widths(@breakpoint; @featuresColumnWidth; @resultsContainerWidth; (@from + 1); @to);
+  .generate-result-column-widths(@breakpoint; @resultsContainerWidth; (@from + 1); @to);
 }
 
 .generate-default-result-column-widths() {
   @media (@xs) {
-    .generate-result-column-widths(xs);
+    .generate-result-column-widths(xs; @results-overflow-width-xs);
   }
   @media (@sm) {
-    .generate-result-column-widths(sm);
+    .generate-result-column-widths(sm; @results-overflow-width-sm);
   }
   @media (@md) {
-    .generate-result-column-widths(md);
+    .generate-result-column-widths(md; @results-overflow-width-md);
   }
   @media (@lg) {
-    .generate-result-column-widths(lg);
+    .generate-result-column-widths(lg; @results-overflow-width-lg);
   }
 }
 
