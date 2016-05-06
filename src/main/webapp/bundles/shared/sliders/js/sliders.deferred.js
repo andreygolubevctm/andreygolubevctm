@@ -32,20 +32,22 @@ ELEMENT EVENTS:
 	var moduleEvents = events.sliders;
 
 	function initModule() {
-		$(document).ready( initSliders );
+		$(document).ready( function() {
+			initSliders();
+		} );
 	}
 
-	function initSliders() {
+	function initSliders($sliders) {
 		// Check noUiSlider is available
 		if (typeof $.fn.noUiSlider !== 'function') {
 			log('[sliders.js]', 'noUiSlider plugin is not available.');
 			return;
 		}
-
-		$('.slider-control').each(function() {
+		$sliders = $sliders || $('.slider-control');
+		$sliders.each(function() {
 			var $controller = $(this),
-			$slider			= $controller.find('.slider'),
-			$field			= $controller.find('input'),
+			$slider			= $controller.find('.slider'), 
+            $field		    = $controller.find('input'),
 			$selection		= $controller.find('.selection'),
 			initialValue	= $slider.data('value'),
 			range			= $slider.data('range').split(','),
@@ -271,7 +273,8 @@ ELEMENT EVENTS:
 
 	meerkat.modules.register('sliders', {
 		init: initModule,
-		events: events
+		events: events,
+		initSlider: initSliders
 	});
 
 })(jQuery);

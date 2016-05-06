@@ -97,11 +97,6 @@
     }
 
     function initResults() {
-        $('.adjustFilters').on("click", function displayFiltersClicked(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            meerkat.modules.healthFilters.open();
-        });
 
         $resultsLowNumberMessage = $(".resultsLowNumberMessage, .resultsMarketingMessages");
 
@@ -447,7 +442,7 @@
                     $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
                 });
 
-            coverType = meerkat.modules.splitTest.isActive(13) ? $('#health_situation_coverType input').filter(":checked").val() : $('#health_situation_coverType').val();
+            var coverType = meerkat.modules.health.getCoverType();
 
             if(coverType === 'E') {
                 $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');

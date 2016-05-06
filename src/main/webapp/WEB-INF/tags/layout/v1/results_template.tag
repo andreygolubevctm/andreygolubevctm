@@ -50,9 +50,11 @@
 <c:set var="zeroResultsFoundMessage">
     <jsp:invoke fragment="zeroResultsFoundMessage"/>
 </c:set>
-<c:set var="resultsCols" value="8"/>
+<c:set var="resultsColsSm" value="8"/>
+<c:set var="resultsColsMd" value="9" />
 <c:if test="${empty sidebarColumn}">
-    <c:set var="resultsCols" value="12"/>
+    <c:set var="resultsColsSm" value="12"/>
+    <c:set var="resultsColsMd" value="12" />
 </c:if>
 
 <div class="row" id="resultsPage">
@@ -77,8 +79,8 @@
         </div>
     </c:if>
 
-    <div class="col-sm-${resultsCols} col-md-9 results-column-container">
-        <div class="${resultsContainerClassName} resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
+    <div class="col-sm-${resultsColsSm} col-md-${resultsColsMd} results-column-container">
+        <div class="resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
             <div class="resultsOverflow">
 
                 <div class="results-table"></div>

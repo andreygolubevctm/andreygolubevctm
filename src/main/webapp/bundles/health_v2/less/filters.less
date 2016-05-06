@@ -1,0 +1,70 @@
+// new filter sidebar stuff.
+// this could be core but who knows whats gonna happen with UTL etc.
+
+.filters-update-container {
+  margin: 0 5px;
+  background-color: #E6F7ED;
+  border: 1px solid @theme-secondary;
+  border-top: none;
+  width: 96%;
+  margin-left: 2%;
+  .filter-cancel-changes {
+    margin-top: 10px;
+    display: inline-block;
+  }
+}
+
+.filter {
+
+  /**
+  Override radio button group styles to keep "green" emphasis on the more info button.
+  */
+  .btn-form-inverse {
+    &.active, &:active, &:focus {
+      background-color: @gray-light;
+      border-color: @gray-light;
+    }
+  }
+
+  // Make the provider list 2 columns
+  .provider-list {
+    @media (@sm) {
+      -webkit-columns: auto 2; /* Chrome, Safari, Opera */
+      -moz-columns: auto 2; /* Firefox */
+      columns: auto 2;
+    }
+  }
+
+  // Add some extra margin to slider filter.
+  .filter-slider {
+    margin-top: 15px;
+  }
+
+  // Buttons tyles
+  .filter-frequency {
+    .btn {
+      padding: 10px 5px;
+      .small();
+    }
+  }
+
+  .checkbox-none {
+    margin-bottom: 5px;
+    label {
+      display: inline;
+      font-size: 13px;
+      color: #555;
+      vertical-align: top;
+    }
+    .help-icon {
+      float: right;
+      margin-top: 3px;
+    }
+    input:checked + label,
+    input.checked + label {
+      font-family: @font-family-theme-bold;
+      color: #000;
+    }
+  }
+
+}

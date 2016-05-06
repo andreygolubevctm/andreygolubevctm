@@ -18,28 +18,40 @@ NOTE: The purpose is ONLY to style generic containers, not to get stuck into spe
 </code></pre>
 */
 
-/** Note:
-No padding or borders by default
+/** Note: No padding or borders by default
 */
 .sidebar-widget {
-  margin-bottom: 30px;
-
-  .title, .sub-title, label {
-    font-family: @font-family-theme-bold;
+  margin-top: 30px;
+  &:first-child {
+    margin-top: 0;
   }
-
-  .title {
+  .sidebar-title {
+    font-family: @font-family-theme-bold;
     font-size: @font-size-xlarge;
     color: @theme-tertiary;
   }
 
-  .sub-title {
-    font-size: @font-size-large;
-    color: #000;
-    margin-top: 15px;
+  .sidebar-subtitle-container {
+    margin-top: 20px;
     margin-bottom: 7px;
-  }
+    position: relative;
 
+    .heading-text {
+      font-family: @font-family-theme-bold;
+      float: left;
+      font-size: (@font-size-large - 2);
+      color: #000;
+    }
+    .helper-text {
+      float: right;
+      font-size: @font-size-small;
+      color: @gray-slight-dark;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+    .clearfix();
+  }
 }
 
 /** Optional Classes **/
@@ -57,7 +69,7 @@ Contained sidebar box, with padding, border, box-shadow.
 .sidebar-widget-contained {
   background-color: #fff;
   border: 1px solid @border-colour;
-  box-shadow: 1px 1px 0 0 #DBDBDC;
+  //box-shadow: 1px 1px 0 0 #DBDBDC;
 }
 
 /**
@@ -65,4 +77,8 @@ Uncontained widget: if its just a full width image for instance */
 .sidebar-widget-uncontained {
   overflow: hidden;
   width: 100%;
+}
+
+.sidebar-widget-attached {
+  margin-top: 0;
 }

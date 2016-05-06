@@ -18,46 +18,19 @@
 
     <jsp:attribute name="sidebarColumn">
 
-        <%-- FILTERS Module will be for standard filters, health filters etc.
-        Style is: Boxed border, standard row gutter
-        Uses semibold h3 and h4 for titles
-        Buttons all caps 12px or 13px?
-        --%>
-        <div class="col-xs-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
-
-            <div class="title">Filter results</div>
-            <div class="row filter">
-                <div class="col-xs-12">
-                    <div class="sub-title">Payment frequency</div>
-                    <div id="filter-frequency" data-filter-type="radio">
-                        <field_v2:array_radio xpath="health/show-price" title="Repayments" items="F=Fortnightly,M=Monthly,A=Annually" required="false"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row filter">
-                <div class="col-xs-12">
-                    <div class="sub-title">Excess</div>
-                    <div id="filter-excess" data-filter-type="slider" data-filter-serverside="true">
-                        <health_v1:filter_excess/>
-                    </div>
-                </div>
-            </div>
-
+        <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
         </div>
-
-        <div class="col-xs-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
-
+        <div class="col-xs-12 sidebar-widget sidebar-widget-attached sidebar-widget-padded filters-update-container" style="display: none">
+            <!-- update button placeholder-->
         </div>
-
-        <div class="col-xs-12 sidebar-widget sidebar-widget-uncontained">
-
+        <div class="col-xs-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters-benefits">
         </div>
-
-        <div class="col-xs-12 sidebar-widget sidebar-widget-uncontained sidebar-widget-padded">
-            testimonial thing
+        <div class="col-xs-12 sidebar-widget sidebar-widget-attached sidebar-widget-padded filters-update-container" style="display: none">
+            <!-- update button placeholder-->
         </div>
-
+        <health_v3:filters_benefits/>
+        <health_v3:filters_template/>
+        <health_v3:filters_update_widget_template/>
     </jsp:attribute>
 
     <jsp:attribute name="resultsErrorMessage">

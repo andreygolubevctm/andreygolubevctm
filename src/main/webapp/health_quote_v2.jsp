@@ -47,7 +47,7 @@
         <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
         <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber"/></c:set>
 
-<c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours displayTodayOnly="true"/></c:set>
+        <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours displayTodayOnly="true"/></c:set>
         <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
 
         <c:set var="isHealthV2" value="${true}" scope="request" />

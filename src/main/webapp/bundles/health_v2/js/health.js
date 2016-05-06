@@ -287,7 +287,7 @@
 				//	meerkat.modules.healthSegment.filterSegments();
 				//}, 1000);
 
-				if (event.isForward && meerkat.site.isCallCentreUser === true){
+				if (event.isForward && meerkat.site.isCallCentreUser === true) {
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
 
@@ -376,7 +376,7 @@
 			},
 			onInitialise: function onInitResults(event){
 
-				meerkat.modules.healthFilters.initHealthFilters();
+				//meerkat.modules.healthFilters.initHealthFilters();
 				meerkat.modules.healthSafariColumnCountFix.initHealthSafariColumnCountFix();
 				meerkat.modules.healthPriceRangeFilter.initHealthPriceRangeFilter();
 				meerkat.modules.healthAltPricing.initHealthAltPricing();
