@@ -108,10 +108,13 @@ The purpose of abstracting these styles from the scaffolding is because differen
   .resultsOverflow {
 
     .result-row {
-      margin-left: 15px;
-      &.notfiltered:first-child {
-        margin-left: 0;
+      @media(@xs-only) {
+        margin-right: 15px;
       }
+      @media(@sm) {
+        margin-left: 15px;
+      }
+      box-shadow: 2px 3px 3px #cfcfcf;
     }
   }
 

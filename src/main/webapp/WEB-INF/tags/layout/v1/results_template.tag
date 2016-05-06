@@ -61,7 +61,7 @@
 
     <c:if test="${not empty preResultsRow}">
         <div class="col-xs-12 col-sm-8 results-prologue-row">
-            <div class="preResultsContainer"></div>
+            <div class="preResultsContainer hidden-xs"></div>
                 ${preResultsRow}
         </div>
         <div class="hidden-xs col-sm-4 results-prologue-row">
@@ -80,7 +80,7 @@
     </c:if>
 
     <div class="col-sm-${resultsColsSm} col-md-${resultsColsMd} results-column-container">
-        <div class="resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
+        <div class="${resultsContainerClassName} resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
             <div class="resultsOverflow">
 
                 <div class="results-table"></div>
