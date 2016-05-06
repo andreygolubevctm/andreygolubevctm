@@ -1,26 +1,18 @@
 // SLIDER
 .slider-control {
 	@border-size: 3px;
-	@height: 14px;
-	@handle-size: @height;
-	@first-marker-left: (@height * .36);
+	@height: 2px;
+	@handle-size: 14px;
 
 	.noUi-background {
 		background: none;
 	}
 	.noUi-base, .noUi-origin {
-		background: @form-input-common-selected-bg-colour; //Bar colour to left of handle
+		background: #868780; //Bar colour to left of handle
 		cursor: pointer;
 	}
-	.noUi-base {
-		border-radius: (@height / 2) 0 0 (@height / 2);
-	}
 	.noUi-origin {
-		border-radius: 0 (@height / 2) (@height / 2) 0;
-		background: #fff; //Bar colour to right of handle
-		@media(@xs-only){
-			border: 1px solid @input-border;
-		}
+		background: #E4E4E4; //Bar colour to right of handle
 	}
 	.noUi-target {
 		border: 0;
@@ -35,21 +27,17 @@
 			margin: 5px 0;
 		}
 		.noUi-handle {
+			border: none;
 			cursor: pointer;
 			box-shadow: none;
 			.box-sizing(content-box);
 			height: @handle-size;
 			width: @handle-size;
-			top: -@border-size;
-			left: -@border-size;
-			background: @form-input-common-slidehandle-bg-colour;
+			top: -(@handle-size / 2);
+			left: 0;
+			background: #868780;
 			border-radius: @handle-size;
-			border: @border-size solid @theme-light;
-			@media(@xs-only){
-				border-color: #fff;
-				border-width: 2px;
-			}
-
+			border: 1px solid #868780;
 			&:before, &:after {
 				display: none;
 			}
@@ -64,23 +52,23 @@
 			content: '';
 			background: @theme-light;
 			display: block;
-			width: (@height * .43);
-			height: (@height * .43);
-			border-radius: (@height * .43);
+			width: @handle-size;
+			height: @handle-size;
+			border-radius: @handle-size;
 			position: relative;
-			top: (@height * .29);
+			top: -(@handle-size / 2);
 			left: 100%;
+			border: 1px solid #E4E4E4;
 		}
 
 		&.first:before {
 			position: absolute;
-			left: @first-marker-left;
+			left: 0;
 		}
 	}
 
 	.selection,
 	.slider-legends {
-		//.clearfix();
 		height: 1em;
 		position: relative;
 		padding-right: 15px;
@@ -88,10 +76,7 @@
 
 		font-size: 80%;
 		font-family: @font-family-theme-bold;
-		color: #868780; //TODO
-	}
-	.slider-legends {
-		padding-left: @first-marker-left;
+		color: #868780;
 	}
 	.slider-legend {
 		float: left;
@@ -111,9 +96,6 @@
 		&.first {
 			position: absolute;
 			text-align: left;
-			b {
-				left: -@first-marker-left;
-			}
 		}
 		&.last {
 			position: absolute;

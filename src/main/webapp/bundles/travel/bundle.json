@@ -7,6 +7,7 @@
     "shared/optIn",
     "core",
     "shared/selectTags",
+    "shared/coverLevelTabs",
     "shared/datepicker",
     "shared/popovers",
     "shared/moreInfo",
