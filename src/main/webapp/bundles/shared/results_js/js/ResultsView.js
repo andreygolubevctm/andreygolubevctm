@@ -164,7 +164,8 @@ var ResultsView = {
 		// We divide the margin by nbColumns so that it only appears in the middle
 		// e.g. if displaying 2 products, we don't have 2 columns with 2 gutters, we have 1 col with 1 gutter and 1 without
 		// and we evenly split it out by the number of columns.
-		var columnMargin = parseInt( $(Results.settings.elements.rows).first().css("margin-right") ) / nbColumns;
+		var columnMargin = parseInt( $(Results.settings.elements.rows).first().css("margin-right") );
+
 		var nbMargins = nbColumns;
 		if(hasOutsideGutters) {
 			columnMargin /= nbColumns;

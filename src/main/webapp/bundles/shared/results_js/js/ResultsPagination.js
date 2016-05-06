@@ -296,7 +296,7 @@ var ResultsPagination = {
 		var mediaState = typeof meerkat != 'undefined' ? meerkat.modules.deviceMediaState.get().toLowerCase() : false;
 		if(mediaState !== false && mediaState !== "xs" && Results.pagination.hasLessDrivenColumns(mediaState)) {
 			columnsPerPage = Results.pagination.getColumnCountFromContainer(mediaState);
-			columnWidth = Math.round(viewableArea / columnsPerPage);
+			columnWidth = Math.round((viewableArea / columnsPerPage) * 100) / 100;
 		} else {
 			columnWidth =  $rows.outerWidth(true);
 			columnsPerPage = Math.round(viewableArea/columnWidth);
@@ -387,86 +387,87 @@ var ResultsPagination = {
 		if(Results.settings.animation.features.scroll.active === false){
 			Results.pagination.scroll(newScroll);
 			Results.pagination._afterPaginationMotion(false);
-		}else{
+			return;
+		}
 
-			Results.pagination.lock();
+		Results.pagination.lock();
 
-			$(Results.settings.elements.resultsContainer).trigger("pagination.scrolling.start");
+		$(Results.settings.elements.resultsContainer).trigger("pagination.scrolling.start");
+		$(Results.settings.elements.resultsOverflow).removeClass('notScrolling');
 
-			switch(Results.pagination.scrollMode){
-				case "scrollto":
-					var rowEq = (Results.pagination.getCurrentPageNumber() - 1) * Results.pagination.currentPageMeasurements.columnsPerPage;
-					$(Results.settings.elements.resultsOverflow).scrollTo($(Results.settings.elements.rows).not(".filtered").eq(rowEq), 500, {
-						onAfter: function () {
-							Results.pagination._afterPaginationMotion(true);
-						}
-					});
-				break;
-				/* CSS TRANSLATE/TRANSFORM3D */
-				case "csstransforms3d":
-					var css = {
-						marginLeft:0
-					};
-					css[Modernizr.prefixed("transform")] = 'translate3d(' +ResultsPagination.previousScrollPosition + 'px,0,0)';
+		switch(Results.pagination.scrollMode){
+			case "scrollto":
+				var rowEq = (Results.pagination.getCurrentPageNumber() - 1) * Results.pagination.currentPageMeasurements.columnsPerPage;
+				$(Results.settings.elements.resultsOverflow).scrollTo($(Results.settings.elements.rows).not(".filtered").eq(rowEq), 500, {
+					onAfter: function () {
+						Results.pagination._afterPaginationMotion(true);
+					}
+				});
+			break;
+			/* CSS TRANSLATE/TRANSFORM3D */
+			case "csstransforms3d":
+				var css = {
+					marginLeft:0
+				};
+				css[Modernizr.prefixed("transform")] = 'translate3d(' +ResultsPagination.previousScrollPosition + 'px,0,0)';
 
-					Results.view.$containerElement.css(css);
+				Results.view.$containerElement.css(css);
+
+				_.delay(function(){
+
+					Results.view.$containerElement.addClass("resultsTransformTransition");
+					Results.view.$containerElement.css( Modernizr.prefixed("transform"), 'translate3d(' + newScroll + 'px,0,0)');
 
 					_.delay(function(){
+						//todo somehow get the 3px
+						Results.view.$containerElement.removeClass("resultsTransformTransition");
+						var css = {
+							marginLeft:newScroll+'px'
+						};
+						css[Modernizr.prefixed("transform")] = '';
+						Results.view.$containerElement.css(css);
 
-						Results.view.$containerElement.addClass("resultsTransformTransition");
-						Results.view.$containerElement.css( Modernizr.prefixed("transform"), 'translate3d(' + newScroll + 'px,0,0)');
-
-						_.delay(function(){
-
-							Results.view.$containerElement.removeClass("resultsTransformTransition");
-							var css = {
-								marginLeft:newScroll+'px'
-							};
-							css[Modernizr.prefixed("transform")] = '';
-							Results.view.$containerElement.css(css);
-
-							Results.pagination._afterPaginationMotion(true);
-
-						}, Results.view.$containerElement.transitionDuration()+10);
-
-					},25);
-					break;
-
-
-				/* CSS TRANSITIONS */
-				case "csstransitions":
-					if( !Results.view.$containerElement.hasClass("resultsTableLeftMarginTransition")){
-						Results.view.$containerElement.addClass("resultsTableLeftMarginTransition");
-					}
-
-					_.defer(function(){
-
-						var duration = Results.view.$containerElement.transitionDuration();
-
-						Results.view.$containerElement.css("margin-left", newScroll);
-
-						_.delay(function(){
-							Results.pagination._afterPaginationMotion(true);
-							Results.view.$containerElement.removeClass("resultsTableLeftMarginTransition");
-						},duration);
-
-					});
-					break;
-
-
-				/* JQUERY */
-				default:
-					var duration = Results.settings.animation.features.scroll.duration;
-					Results.view.$containerElement.animate( { "margin-left": newScroll }, duration, function(){
 						Results.pagination._afterPaginationMotion(true);
-					});
-					break;
 
-			}
+					}, Results.view.$containerElement.transitionDuration()+10);
 
-			ResultsPagination.previousScrollPosition = newScroll;
+				},25);
+				break;
+
+
+			/* CSS TRANSITIONS */
+			case "csstransitions":
+				if( !Results.view.$containerElement.hasClass("resultsTableLeftMarginTransition")){
+					Results.view.$containerElement.addClass("resultsTableLeftMarginTransition");
+				}
+
+				_.defer(function(){
+
+					var duration = Results.view.$containerElement.transitionDuration();
+					//todo somehow get the 3px
+					Results.view.$containerElement.css("margin-left", newScroll);
+
+					_.delay(function(){
+						Results.pagination._afterPaginationMotion(true);
+						Results.view.$containerElement.removeClass("resultsTableLeftMarginTransition");
+					},duration);
+
+				});
+				break;
+
+
+			/* JQUERY */
+			default:
+				var duration = Results.settings.animation.features.scroll.duration;
+				Results.view.$containerElement.animate( { "margin-left": newScroll }, duration, function(){
+					Results.pagination._afterPaginationMotion(true);
+				});
+				break;
 
 		}
+
+		ResultsPagination.previousScrollPosition = newScroll;
+
 
 	},
 
@@ -476,6 +477,7 @@ var ResultsPagination = {
 		Results.pagination.refresh();
 
 		if(wasAnimated){
+			$(Results.settings.elements.resultsOverflow).addClass('notScrolling');
 			$(Results.settings.elements.resultsContainer).trigger("pagination.scrolling.end");
 		}
 	},

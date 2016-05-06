@@ -42,11 +42,10 @@
   // Fit the number of columns into the available space.
   @column-width: ( round((@overflowWidth / @from), 2) - @results-column-outer-width);
 
-
   // The styles
   &.results-columns-@{breakpoint}-@{from} {
     .resultsOverflow {
-      width: @overflowWidth;
+      width: @overflowWidth;// + @results-row-dropshadow-width // todo: make this work
     }
 
     .result-row {
