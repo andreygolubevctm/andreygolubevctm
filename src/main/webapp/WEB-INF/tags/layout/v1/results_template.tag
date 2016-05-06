@@ -58,7 +58,8 @@
 <div class="row" id="resultsPage">
 
     <c:if test="${not empty preResultsRow}">
-        <div class="col-xs-12 col-sm-8 results-prologue-row preResultsContainer">
+        <div class="col-xs-12 col-sm-8 results-prologue-row">
+            <div class="preResultsContainer"></div>
                 ${preResultsRow}
         </div>
         <div class="hidden-xs col-sm-4 results-prologue-row">
