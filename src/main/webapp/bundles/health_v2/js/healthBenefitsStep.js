@@ -190,8 +190,8 @@
     }
 
     function hospitalCoverToggleEvents() {
-        var currentCover = 'customised',
-            previousCover = 'customised',
+        var currentCover = 'customise',
+            previousCover = 'customise',
             $hospitalBenefitsSection = $('.Hospital_container .children'),
             $coverType = $('#health_benefits_covertype'),
             $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
@@ -226,7 +226,7 @@
                 default:
                     $hospitalBenefitsSection.slideDown();
                     var $coverButtons = $hospitalCover.find('.' + currentCover + ' input[type="checkbox"]');
-                    if (currentCover !== 'customised') {
+                    if (currentCover !== 'customise') {
                         $allHospitalButtons.not($coverButtons);
                     } else {
                         var classToSelect = previousCover === 'top' ? '' : '.' + previousCover;
@@ -241,7 +241,7 @@
             }
 
             // disable all buttons if customise is not selected
-            if (currentCover !== 'customised') {
+            if (currentCover !== 'customise') {
                 $allHospitalButtons.prop('disabled', true).each(function(){
                     $btn = $(this);
                     $btn.parent().on('click.customisingTHCover', _.bind(customiseCover, $btn));
@@ -258,7 +258,7 @@
     }
 
     function disableFields() {
-        if ($hospitalCoverToggles.filter('.active').data('category') !== 'customised') {
+        if ($hospitalCoverToggles.filter('.active').data('category') !== 'customise') {
             $allHospitalButtons.prop('disabled', true);
         }
     }
@@ -268,22 +268,16 @@
     }
 
     function updateCoverTypeByBenefitsSelected() {
-        // after the re-design we only have two hidden fields for the old yes/no toggle, check these first
-        var isHospitalCover = $hiddenFields.find('input[name="health_benefits_benefitsExtras_Hospital"]').val() === 'Y',
-            isExtraCover = $hiddenFields.find('input[name="health_benefits_benefitsExtras_GeneralHealth"]').val() === 'Y';
-
-        // In case the above hidden fields are empty, check children benefits as well
-        isHospitalCover = isHospitalCover || $benefitsForm.find('.hospitalCover input:checked').length > 0;
-        isExtraCover = isExtraCover || $benefitsForm.find('.extrasCover input:checked').length > 0;
+        // If any children benefits are selected, the section is selected
+        var isHospitalCover = $benefitsForm.find('.hospitalCover input:checked').length > 0,
+            isExtraCover = $benefitsForm.find('.extrasCover input:checked').length > 0;
 
         if (isHospitalCover && isExtraCover) {
-            $coverType.val('C');
+            $coverType.find('input[value="C"]').prop('checked', true);
         } else if (isHospitalCover) {
-            $coverType.val('H');
+            $coverType.find('input[value="H"]').prop('checked', true);
         } else if (isExtraCover) {
-            $coverType.val('E');
-        } else {
-            $coverType.val('');
+            $coverType.find('input[value="E"]').prop('checked', true);
         }
 
         $coverType.change();
@@ -415,7 +409,7 @@
 
     function onCustomiseCover(obj) {
         meerkat.modules.dialogs.close(obj.modalId);
-        $benefitsForm.find("a[data-category=customised]:visible").first().trigger('click');
+        $benefitsForm.find("a[data-category=customise]:visible").first().trigger('click');
         obj.btn.trigger('click');
     }
 

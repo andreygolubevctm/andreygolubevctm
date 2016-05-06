@@ -74,7 +74,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="top">top</a>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="medium">medium</a>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="basic">basic</a>
-                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="customised">customise</a>
+                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="customise">customise</a>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="limited">limited</a>
                                 </div>
 

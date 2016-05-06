@@ -79,10 +79,8 @@
                 ],
                 events: {
                     update: function (filterObject) {
-                        // todo Set to defaultValueSourceSelector
-                        // it should default update the model if we run setDefaultsToModel again.
-                        // additional backports
                         var value = $('select[name=' + filterObject.name + ']').val();
+                        $(filterObject.defaultValueSourceSelector).val(value);
                         $('.hospitalCoverToggles a[data-category="' + value + '"]').click();
                     }
                 }
@@ -158,27 +156,6 @@
                     }
                 }
             },
-            "coverType": {
-                // Note: how this filter will look has not been designed as yet...
-                // its more the add/remove, so it may need to be separate -.-
-                name: 'health_filterBar_coverType',
-                values: {},
-                defaultValueSourceSelector: 'input[name=health_situation_coverType]',
-                defaultValue: 'C',
-                events: {
-                    update: function (filterObject) {
-                        var value = $('input[name=' + filterObject.name + ']').val();
-                        $(filterObject.defaultValueSourceSelector).val(value);
-                        $('input[name=health_situation_coverType]').each(function () {
-                            $(this).prop('checked', false);
-                            if ($(this).val() == value) {
-                                //seem to need both events...
-                                $(this).prop('checked', true).change().click();
-                            }
-                        });
-                    }
-                }
-            },
             "benefitsHospital": {
                 name: 'health_filterBar_benefitsHospital',
                 values: meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel(),
@@ -247,28 +224,35 @@
     function eventSubscriptions() {
 
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTER_CHANGED, function (event) {
-            // coverLevel change event subscription
-            if (event.target.id === 'health_filterBar_coverLevel') {
-                var $sidebar = $('#results-sidebar'),
-                    currentCover = $(event.target).val(),
-                    $allHospitalButtons = $sidebar.find('.benefitsHospital').find('input[type="checkbox"]');
+            var $sidebar = $('#results-sidebar');
 
-                switch (currentCover) {
-                    case 'top':
-                        $allHospitalButtons.prop('checked', true);
-                        break;
-                    case 'limited':
-                        $allHospitalButtons.prop('checked', false);
-                        break;
-                    default:
-                        // if is customise, leave as it is, but make sure prHospital is ticked
-                        if (currentCover !== 'customise') {
+            // coverLevel change event subscription
+            switch (event.target.name) {
+                case 'health_filterBar_coverLevel':
+                    var currentCover = $(event.target).val(),
+                        $allHospitalButtons = $sidebar.find('.benefitsHospital').find('input[type="checkbox"]');
+
+                    switch (currentCover) {
+                        case 'top':
+                            $allHospitalButtons.prop('checked', true);
+                            break;
+                        case 'limited':
                             $allHospitalButtons.prop('checked', false);
-                        }
-                        $sidebar.find('.benefitsHospital').find('.' + currentCover + ' input[type="checkbox"]').prop('checked', true);
-                        break;
-                }
+                            break;
+                        default:
+                            // if is customise, leave as it is, but make sure prHospital is ticked
+                            if (currentCover !== 'customise') {
+                                $allHospitalButtons.prop('checked', false);
+                            }
+                            $sidebar.find('.benefitsHospital').find('.' + currentCover + ' input[type="checkbox"]').prop('checked', true);
+                            break;
+                    }
+                    break;
+                case 'health_filterBar_benefitsHospital':
+                    $('#health_filterBar_coverLevel').val('customise');
+                    break;
             }
+
         });
 
     }
