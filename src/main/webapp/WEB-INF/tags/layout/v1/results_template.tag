@@ -71,7 +71,7 @@
     </c:if>
 
     <c:if test="${not empty sidebarColumn}">
-        <div class="col-sm-4 col-md-3" id="results-sidebar">
+        <div class="hidden-xs col-sm-4 col-md-3" id="results-sidebar">
                 ${sidebarColumn}
         </div>
     </c:if>
