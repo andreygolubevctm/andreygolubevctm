@@ -103,7 +103,7 @@
                     },
                     update: function (filterObject) {
                         var $slider = $('#results-sidebar .health-filter-excess .slider-control .slider');
-                        $(filterObject.defaultValueSourceSelector).val($slider.val());
+                        $(filterObject.defaultValueSourceSelector).val($slider.val().replace('.00', ''));
                     }
                 }
             },
@@ -195,18 +195,34 @@
                     container: '.results-filters-benefits',
                     context: '#results-sidebar'
                 }
-            ]
+            ],
+            events: {
+                update: function() {
+                    meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
+                    // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
+                    _.delay(function(){
+                        Results.settings.incrementTransactionId = true;
+                        meerkat.modules.healthResults.get();
+                        Results.settings.incrementTransactionId = false;
+                    },100);
+                }
+            }
         };
 
     function populateSelectedBenefits() {
         var selectedBenefits = $('#results-sidebar').find('.results-filters-benefits input[type="checkbox"]:checked').map(function() {
             return this.value;
         });
+        meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits);
         meerkat.modules.healthBenefitsStep.populateBenefitsSelection(selectedBenefits);
+
+        // when hospital is set to off in [Customise Cover] hide the excess section
+        var $excessSection = $("#resultsPage").find('.cell.excessSection');
+        _.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
     }
 
     function init() {
-        meerkat.modules.filters.initFilters(settings, model, 'filters');
+        meerkat.modules.filters.initFilters(settings, model);
         applyEventListeners();
         eventSubscriptions();
     }

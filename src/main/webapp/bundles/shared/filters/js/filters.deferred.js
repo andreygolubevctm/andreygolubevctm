@@ -28,7 +28,9 @@
                     template: '#filters-update-template',
                     container: '.filters-update-container'
                 }
-            ]
+            ],
+
+            events:{}
         },
         model = {},
         _htmlTemplate = {},
@@ -45,14 +47,17 @@
      * @param options
      * @param filterModel
      */
-    function initFilters(options, filterModel, optionNode) {
+    function initFilters(options, filterModel) {
         $(document).ready(function () {
             $document = $(this);
             model = filterModel;
-            if(optionNode){
-                $.merge(settings[optionNode], options[optionNode]);
-            } else {
-                settings = $.extend(true, settings, options);
+
+            for(var optionName in options) {
+                if (_.isArray(settings[optionName])){
+                    $.merge(settings[optionName], options[optionName]);
+                } else {
+                    $.extend(true, settings[optionName], options[optionName]);
+                }
             }
 
             eventSubscriptions();
@@ -100,17 +105,6 @@
                 }
                 subscriptionHandles[filterObject.name] = meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_UPDATED, function () {
                     filterObject.events.update.apply(window, [filterObject]);
-                    if (needToFetchFromServer) {
-                        _.defer(function(){
-                            meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
-                            // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
-                            _.delay(function(){
-                                meerkat.modules.healthResults.get();
-                            },100);
-                        });
-                    }else{
-                        Results.applyFiltersAndSorts();
-                    }
                 });
             }
             // Run pre-init if exists
@@ -196,6 +190,15 @@
         });
         meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_UPDATED, function (event) {
             $(settings.updates[0].container).slideUp();
+
+            _.defer(function() {
+                if (needToFetchFromServer) {
+                    settings.events.update.apply(window, [event]);
+                }else{
+                    meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
+                    Results.applyFiltersAndSorts();
+                }
+            });
         });
         meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_CANCELLED, function (event) {
             resetFilters();
