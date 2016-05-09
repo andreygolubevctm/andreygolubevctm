@@ -105,7 +105,6 @@
         }).on('change', '.dateinput_container input.serialise, .health_dependant_details_fulltimeGroup input', function dependantAgeFullTimeChange() {
             var $wrapper = $(this).closest('.health_dependant_details');
             toggleDependantFields($wrapper);
-            $(this).valid();
         }).on('change', ':input', function changeInput() {
             var $el = $(this),
                 dependantId = $el.closest('.health_dependant_details').attr('data-id'),
