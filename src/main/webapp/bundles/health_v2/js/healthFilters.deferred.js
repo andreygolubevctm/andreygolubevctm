@@ -81,7 +81,7 @@
                     update: function (filterObject) {
                         var value = $('select[name=' + filterObject.name + ']').val();
                         $(filterObject.defaultValueSourceSelector).val(value);
-                        $('.hospitalCoverToggles a[data-category="' + value + '"]').click();
+                        $('.hospitalCoverToggles a[data-category="' + value + '"]').trigger('click');
                     }
                 }
             },
@@ -118,6 +118,7 @@
                          */
                         var $rebateElement = $(filterObject.defaultValueSourceSelector).parent('.select').clone().find('select')
                             .attr('id', model.rebate.name).attr('name', model.rebate.name).val($(filterObject.defaultValueSourceSelector).val());
+
                         // remove the empty value option
                         $rebateElement.find('option[value=""]').remove();
                         $('.filter-rebate-holder').html($rebateElement);
@@ -181,9 +182,7 @@
                     }
                 },
                 events: {
-                    update: function () {
-                        populateSelectedBenefits();
-                    }
+                    // already run in hospital events
                 }
             }
 
@@ -198,6 +197,10 @@
             ],
             events: {
                 update: function() {
+                    // Update benefits step coverType
+                    coverType = coverType || meerkat.modules.health.getCoverType();
+                    $('#health_situation_coverType').trigger('change').find('input[value="' + coverType + '"]').trigger('click');
+
                     meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
                     // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
                     _.delay(function(){
@@ -207,7 +210,8 @@
                     },100);
                 }
             }
-        };
+        },
+        coverType;
 
     function populateSelectedBenefits() {
         var selectedBenefits = $('#results-sidebar').find('.results-filters-benefits input[type="checkbox"]:checked').map(function() {
@@ -233,6 +237,72 @@
         $(document).on('click', '.filter-brands-toggle', function selectAllNoneFilterBrands(e) {
             e.preventDefault();
             $('input[name=health_filterBar_brands]').prop('checked', $(this).attr('data-toggle') == "true");
+            meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
+        });
+
+        $(document).on('click', '.filter-remove', function removeBenefitsSection(e) {
+            var $this = $(e.target),
+                $sidebar = $('#results-sidebar');
+
+            if ($this.hasClass('hospital')) {
+                $sidebar.find('.need-hospital').slideUp('fast', function () {
+                    $(this).addClass('hidden').find('input').prop('checked', false).trigger('change');
+                    $sidebar.find('.filter-remove.extras').addClass('hidden');
+                    $sidebar.find('.need-no-hospital').removeClass('hidden').slideDown('fast');
+                });
+                coverType = 'E';
+            }
+            else if ($this.hasClass('extras')) {
+                $sidebar.find('.need-extras').slideUp('fast', function () {
+                    $(this).addClass('hidden').find('input').prop('checked', false).trigger('change');
+                    $sidebar.find('.filter-remove.hospital').addClass('hidden');
+                    $sidebar.find('.need-no-extras').removeClass('hidden').slideDown();
+                });
+                coverType = 'C';
+            }
+            meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
+        });
+
+        $(document).on('click', '.filter-add', function addBenefitsSection(e) {
+            var $this = $(e.target),
+                $sidebar = $('#results-sidebar');
+
+            if ($this.hasClass('hospital')) {
+                $sidebar.find('.need-no-hospital').slideUp('fast', function () {
+                    $(this).addClass('hidden');
+                    $sidebar.find('.filter-remove.extras').removeClass('hidden');
+                    $sidebar.find('.need-hospital').removeClass('hidden').slideDown('fast');
+                });
+            }
+            else if ($this.hasClass('extras')) {
+                $sidebar.find('.need-no-extras').slideUp('fast', function () {
+                    $(this).addClass('hidden');
+                    $sidebar.find('.filter-remove.hospital').removeClass('hidden');
+                    $sidebar.find('.need-extras').removeClass('hidden').slideDown('fast');
+                });
+            }
+            coverType = 'C';
+            meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
+        });
+
+        $(document).on('click', '.filter-toggle-all', function toggleAllBenefits(e) {
+            var $this = $(e.currentTarget),
+                $benefitsList = $this.parents('.benefits-list');
+
+            if ($benefitsList.hasClass('expanded')) {
+                $this.find('.text').text('add more selections');
+                $benefitsList.find('.checkbox-none').filter(function () {
+                    return !$(this).find('input').is(':checked');
+                }).slideUp('fast', function () {
+                    $(this).addClass('hidden');
+                });
+            } else {
+                $this.find('.text').text('show less');
+                $benefitsList.find('.checkbox-none').removeClass('hidden').slideDown('fast');
+            }
+
+            $benefitsList.toggleClass('expanded');
+            $this.find('.icon').toggleClass('icon-angle-up icon-angle-down');
         });
 
     }

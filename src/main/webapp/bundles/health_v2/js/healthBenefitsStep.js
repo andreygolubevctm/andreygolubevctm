@@ -243,7 +243,7 @@
             // disable all buttons if customise is not selected
             if (currentCover !== 'customise') {
                 $allHospitalButtons.prop('disabled', true).each(function(){
-                    $btn = $(this);
+                    var $btn = $(this);
                     $btn.parent().on('click.customisingTHCover', _.bind(customiseCover, $btn));
                 });
             } else {
@@ -265,22 +265,6 @@
 
     function enableFields() {
         $allHospitalButtons.prop('disabled', false);
-    }
-
-    function updateCoverTypeByBenefitsSelected() {
-        // If any children benefits are selected, the section is selected
-        var isHospitalCover = $benefitsForm.find('.hospitalCover input:checked').length > 0,
-            isExtraCover = $benefitsForm.find('.extrasCover input:checked').length > 0;
-
-        if (isHospitalCover && isExtraCover) {
-            $coverType.find('input[value="C"]').prop('checked', true);
-        } else if (isHospitalCover) {
-            $coverType.find('input[value="H"]').prop('checked', true);
-        } else if (isExtraCover) {
-            $coverType.find('input[value="E"]').prop('checked', true);
-        }
-
-        $coverType.change();
     }
 
     function updateHiddenFields(coverType) {
@@ -320,10 +304,8 @@
 
         for (var i = 0; i < checkedBenefits.length; i++) {
             var path = checkedBenefits[i];
-            $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true);
+            $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true).prop('disabled', false);
         }
-
-        updateCoverTypeByBenefitsSelected();
     }
 
 
@@ -416,7 +398,6 @@
     meerkat.modules.register('healthBenefitsStep', {
         init: init,
         events: events,
-        updateCoverTypeByBenefitsSelected: updateCoverTypeByBenefitsSelected,
         setDefaultCover: setDefaultCover,
         enableFields: enableFields,
         disableFields: disableFields,

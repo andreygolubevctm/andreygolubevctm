@@ -60,6 +60,10 @@
                 }
             }
 
+            if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                changeFilterContext('#navbar-main');
+            }
+
             eventSubscriptions();
             applyEventListeners();
             resetFilters();
@@ -80,15 +84,10 @@
      */
     function setModel(newModel) {
         model = newModel;
-        // setDefaultsToModel();
     }
 
     function getModel() {
         return model;
-    }
-
-    function updateModel(newModel) {
-        model = newModel;
     }
 
     /**
@@ -176,6 +175,12 @@
         return _htmlTemplate[template](model);
     }
 
+    function changeFilterContext(context) {
+        _.each(settings.filters, function (filter) {
+            filter.context = context;
+        });
+    }
+
     function eventSubscriptions() {
 
         // Every time we get to results, reset the filter model and re-render.
@@ -188,6 +193,7 @@
         meerkat.messaging.subscribe(moduleEvents.filters.FILTER_CHANGED, function (event) {
             $(settings.updates[0].container).slideDown();
         });
+
         meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_UPDATED, function (event) {
             $(settings.updates[0].container).slideUp();
 
@@ -200,10 +206,19 @@
                 }
             });
         });
+
         meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_CANCELLED, function (event) {
             resetFilters();
             $(settings.updates[0].container).slideUp();
             resettingFilters = false;
+        });
+
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
+            changeFilterContext('#navbar-main');
+        });
+
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsEnterXsState() {
+            changeFilterContext('#results-sidebar');
         });
     }
 
