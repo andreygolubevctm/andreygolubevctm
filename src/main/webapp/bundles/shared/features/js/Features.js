@@ -5,7 +5,7 @@ Features = {
 	results: false,
 	featuresIds: false,
 	pageStructure: [],
-	cachedProcessedTemplate: false,
+	cachedProcessedTemplates: {},
 	emptyAdditionalInfoCategory: true,
 	moduleEvents: {
 		FEATURE_TOGGLED: 'FEATURE_TOGGLED'
@@ -38,8 +38,17 @@ Features = {
 		Features.applyExpandableEvents();
 	},
 
-	getPageStructure: function() {
-		return Features.pageStructure || [];
+	/**
+	 *
+	 * @param featuresStructureIndexToUse - If you want to render different sections in different divs, set Results.settings.elements.features.renderTemplatesBasedOnFeatureIndex to true and add data-feature-index="#" to the markup.
+	 * @returns Array - Must return an array
+     */
+	getPageStructure: function(featuresStructureIndexToUse) {
+		if(_.isUndefined(featuresStructureIndexToUse) || _.isNull(featuresStructureIndexToUse)) {
+			return Features.pageStructure || [];
+		} else {
+			return _.isObject(Features.pageStructure[featuresStructureIndexToUse]) ? [Features.pageStructure[featuresStructureIndexToUse]] : [];
+		}
 	},
 	buildHtml: function( results){
 		// Which set of results to use
@@ -53,42 +62,47 @@ Features = {
 		Features.template = $(Results.settings.elements.templates.feature).html();
 
 		if (Features.template === "") {
-			console.log("The comparison feature template could not be found: templateSelector=", Compare.settings.elements.templates.feature, "This template is mandatory, make sure to pass the correct selector to the Compare.settings.elements.templates.feature user setting when calling Compare.init()");
-		} else {
-
-			Features.cachedProcessedTemplate = _.template(Features.template);
-
-			$(Results.settings.elements.resultsContainer).trigger("populateFeaturesStart");
-
-			Features.populateFeatures();
-			Features.populateFeaturesHeaders();
-			Features.setExpandableRows();
-
-			_.defer(function(){
-				Features.clearSetHeights();
-				Features.balanceVisibleRowsHeight();
-				$(Results.settings.elements.resultsContainer).trigger("populateFeaturesEnd");
-			});
-
-			Features.hideEmptyRows();
-
-			$(Features.target).trigger("FeaturesRendered");
+			console.log("The feature template could not be found: templateSelector=", Results.settings.elements.templates.feature, "This template is mandatory, make sure to pass the correct selector to the Results.settings.elements.templates.feature user setting when calling Results.init()");
+			return;
 		}
+
+		$(Results.settings.elements.resultsContainer).trigger("populateFeaturesStart");
+
+		Features.populateFeatures();
+		Features.populateFeaturesHeaders();
+		Features.setExpandableRows();
+
+		_.defer(function(){
+			Features.clearSetHeights();
+			Features.balanceVisibleRowsHeight();
+			$(Results.settings.elements.resultsContainer).trigger("populateFeaturesEnd");
+		});
+
+		Features.hideEmptyRows();
+
+		$(Features.target).trigger("FeaturesRendered");
+
 
 	},
 	populateFeaturesHeaders: function() {
 		if($( ".featuresHeaders" ).length) {
 			var $targetContainer = $(".featuresHeaders").find(Results.settings.elements.features.list);
-			$targetContainer.html(Results.view.parseTemplate($("#feature-template-labels").html(), {}));
+			$targetContainer.html(Results.view.parseTemplate("#feature-template-labels", {}));
 		}
 	},
 	populateFeatures: function() {
+
+		// If specified, use data-feature-index on the div you want to render the template inside.
+		var renderBasedOnFeatureIndex = Results.settings.elements.features.renderTemplatesBasedOnFeatureIndex,
+			structure = Features.getPageStructure(),
+			defaultTemplate = Results.settings.elements.templates.feature;
+
 		// population of features into product columns
 		$.each( Features.results, function(index, product) {
 
-			var productAvailability = null;
-			if( Results.settings.paths.availability.product && Results.settings.paths.availability.product !== "" ){
-				productAvailability = Object.byString(product, Results.settings.paths.availability.product);
+			var productAvailability = null, availabilityObj =  Results.settings.paths.availability.product;
+			if( availabilityObj && availabilityObj !== "" ){
+				productAvailability = Object.byString(product, availabilityObj);
 			}
 
 			// only for available products and not the user's current insurer
@@ -101,18 +115,27 @@ Features = {
 				var featuresContainerTarget = Features.target + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']";
 				var $targetContainer = $( featuresContainerTarget ).find( Results.settings.elements.features.list );
 
-				// remove the loading spinner
-				var html = '';
-
-				html = Features.populateTemplate(product);
-				/** @deprecated in CTMIT-543
-				if(Results.settings.render.features.mode == 'populate'){
-						html = Features.populateTemplate(product);
-				}else{
-					html = Features.buildAndPopulateTemplate(product);
-				}*/
-
-				$targetContainer.html( html );
+				// Only use this mode if not
+				if(renderBasedOnFeatureIndex === true) {
+					if(!$targetContainer.find('[data-feature-index]').length) {
+						console.log("Error: Did not find any feature containers for this product");
+						return;
+					}
+					$targetContainer.find('[data-feature-index]').each(function() {
+						var $el = $(this),
+							dataIndex = $el.attr('data-feature-index'),
+							differentTemplateSelector = $el.attr('data-feature-template');
+						if(!_.isUndefined(structure) && _.isObject(structure[dataIndex])) {
+							product.featuresStructureIndexToUse = dataIndex;
+							product.featuresTemplate = differentTemplateSelector && $(differentTemplateSelector).length ? differentTemplateSelector : defaultTemplate;
+							$el.html( Features.populateTemplate(product.featuresTemplate, product) );
+						}
+					});
+				} else {
+					product.featuresStructureIndexToUse = null;
+					product.featuresTemplate = defaultTemplate;
+					$targetContainer.html( Features.populateTemplate(product.featuresTemplate, product) );
+				}
 
 			}
 
@@ -124,69 +147,10 @@ Features = {
 			$(Features.target + " [data-featureId=category-9]").next().remove().end().remove();
 		}
 	},
-	populateTemplate: function(product){
+	populateTemplate: function(templateSelector, product){
 		// The server has rendered a 'flat' template for a single product, therefore just populate this flat template with product values.
-		return Results.view.parseTemplate(Features.template, product, Features.cachedProcessedTemplate);
-
+		return Results.view.parseTemplate(templateSelector, product);
 	},
-
-	/** @deprecated in CTMIT-543 - No existing verticals are using this function anymore. All use populate.
-	buildAndPopulateTemplate: function(product){
-
-		// Build the features dynamically based on the data model.
-
-		var html = '';
-		var currentCategory = "";
-
-		$.each( Features.featuresIds, function( featureIdIndex, featureId ){
-
-			// get the current product features
-			var features = Object.byString( product, Results.settings.paths.features );
-
-			var foundFeature = false;
-			var parsedFeature = "";
-
-			// look for the current feature we want to display in the list of features of the current product
-			$.each( features, function( featureIndex, feature ){
-
-				// if we found it
-				if( feature.featureId == featureId ){
-
-					foundFeature = feature;
-
-					feature.value = Features.parseFeatureValue( feature.value );
-					if( feature.extra === "" ){
-						feature.extra = "&nbsp;";
-					}
-					if (feature.value === "" && feature.extra !== "") {
-						feature.value = feature.extra;
-						feature.extra = "&nbsp;";
-					}
-
-					parsedFeature = Results.view.parseTemplate( Features.template, $.extend( feature, {cellType: "feature"} ) );
-
-					return false;
-				}
-
-			} );
-
-			if( !foundFeature ){
-				var parsedFeature = Results.view.parseTemplate( Features.template, { value: "&nbsp;", featureId: featureId, extra: "", cellType: "feature" } );
-			} else {
-				if( Results.settings.show.featuresCategories && currentCategory != foundFeature.categoryId ){
-					parsedCategory = Results.view.parseTemplate( Features.template, { value: "&nbsp;", featureId: "category-"+foundFeature.categoryId, extra: "", cellType: "category" } );
-					html += parsedCategory;
-					currentCategory = foundFeature.categoryId;
-				}
-			}
-
-			// add html to the feature list DOM element of the product
-			html += parsedFeature;
-
-		});
-
-		return html;
-	},*/
 
 	parseFeatureValue: function(value, decode) {
 

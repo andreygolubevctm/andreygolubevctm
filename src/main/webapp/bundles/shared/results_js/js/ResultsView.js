@@ -33,7 +33,7 @@ var ResultsView = {
 				Results.view.toggleCompare('show');
 				if(Results.settings.render.dockCompareBar === true){
 					ResultsUtilities.makeElementSticky( "top", $(Compare.settings.elements.bar), "fixed-top",	$(Compare.settings.elements.bar).offset().top );
-					ResultsUtilities.makeElementSticky( "top", $(Results.settings.elements.page), 	"fixedThree", 	$(Compare.settings.elements.bar).offset().top );					
+					ResultsUtilities.makeElementSticky( "top", $(Results.settings.elements.page), 	"fixedThree", 	$(Compare.settings.elements.bar).offset().top );
 				}
 			}
 		}
@@ -80,12 +80,12 @@ var ResultsView = {
 
 		// what to do when the last animation is over
 		$(animatedElement).queue("fx", function(next) {
-			
+
 			// trigger the end of animated custom event
 			$(Results.settings.elements.resultsContainer).trigger("resultsAnimated");
 			// @todo probably should enable things that needed to wait for the animations to be over (sliders/filter?)
 			// Results.view.enableStuff();
-			
+
 			next();
 		});
 
@@ -251,35 +251,11 @@ var ResultsView = {
 			console.log("The result template could not be found: templateSelector=",Results.settings.elements.templates.result,"This template is mandatory, make sure to pass the correct selector to the Results.settings.elements.templates.result user setting when calling Results.init()");
 		}
 
-		// unavailable template
-		if(Results.settings.elements.templates.unavailable){
-			var unavailableTemplate = $(Results.settings.elements.templates.unavailable).html();
-			if( unavailableTemplate === "" ){
-				console.log("The unavailable template could not be found: templateSelector=",Results.settings.elements.templates.unavailable,"If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.unavailable user setting when calling Results.init()");
-			}
-		}
-
 		// unavailable combined template
 		if (Results.settings.elements.templates.unavailableCombined) {
 			unavailableCombinedTemplate = $(Results.settings.elements.templates.unavailableCombined).html();
 			if (unavailableCombinedTemplate === "") {
 				console.log("The unavailable combined template could not be found: templateSelector=",Results.settings.elements.templates.unavailableCombinedTemplate, "If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.unavailableCombinedTemplate user setting when calling Results.init()");
-			}
-		}
-
-		// error template
-		if(Results.settings.elements.templates.error){
-			var errorTemplate = $(Results.settings.elements.templates.error).html();
-			if( errorTemplate === "" ){
-				console.log("The error template could not be found: templateSelector=",Results.settings.elements.templates.error,"If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.error user setting when calling Results.init()");
-			}
-		}
-
-		// current product template
-		if(Results.settings.elements.templates.currentProduct){
-			var currentProductTemplate = $(Results.settings.elements.templates.currentProduct).html();
-			if( currentProductTemplate === "" ){
-				console.log("The current Product template could not be found: templateSelector=",Results.settings.elements.templates.currentProduct,"If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.currentProduct user setting when calling Results.init()");
 			}
 		}
 
@@ -289,7 +265,7 @@ var ResultsView = {
 		var countUnavailable = 0;
 
 		results = Results.model.sortedProducts;
-		
+
 		// build the HTML results
 		$.each(results, function(index, result){
 
@@ -300,30 +276,30 @@ var ResultsView = {
 
 			if( typeof productAvailability !== "undefined" && productAvailability !== "Y" && !unavailableTemplate ){
 				countUnavailable++;
-				resultRow = $( Results.view.parseTemplate("<div></div>", result) ); // fake parsed non available template
+				resultRow = $('<div></div>');
+
 			} else if( typeof productAvailability !== "undefined" && productAvailability === "E" ) {
 				countUnavailable++;
-				resultRow = $( Results.view.parseTemplate(errorTemplate, result) ); // parsed error row
+				resultRow = $( Results.view.parseTemplate(Results.settings.elements.templates.error, result) ); // parsed error row
 			} else if( typeof productAvailability !== "undefined" && productAvailability !== "Y" ) {
 				countUnavailable++;
-				resultRow = $( Results.view.parseTemplate(unavailableTemplate, result) ); // parsed non available row
+				resultRow = $( Results.view.parseTemplate(Results.settings.elements.templates.unavailable, result) ); // parsed non available row
 			}else {
 				if(
 					Results.model.currentProduct && // current product has been set
 					Results.model.currentProduct.value == Object.byString(result, Results.model.currentProduct.path) // the user's current product = the currently checked product
 				){
 					// current product template parsing
-					resultRow = $( Results.view.parseTemplate(currentProductTemplate, result) );
+					resultRow = $( Results.view.parseTemplate(Results.settings.elements.templates.currentProduct, result) );
 				} else {
 					// default row template parsing
-					resultRow = $( Results.view.parseTemplate(resultTemplate, result) );
+					resultRow = $( Results.view.parseTemplate(Results.settings.elements.templates.result, result) );
 				}
 			}
-			// @todo = look for "< # ERROR: xxxx has no properties # >" in the returned resultRow and display it in a popup error if present
 
 			// If the product is filtered, mark it as such.
 			if( $.inArray(result, Results.model.filteredProducts ) == -1 ){
-				$row = $(resultRow);
+				var $row = $(resultRow);
 				$row.addClass("filtered");
 				$row.hide();
 				$row.attr("data-position", "undefined");
@@ -342,7 +318,7 @@ var ResultsView = {
 		});
 
 		if (Results.settings.show.hasOwnProperty('unavailableCombined') && Results.settings.show.unavailableCombined === true && countUnavailable > 0 && unavailableCombinedTemplate !== "") {
-			resultRow = $( Results.view.parseTemplate(unavailableCombinedTemplate, results) );
+			resultRow = $( Results.view.parseTemplate(Results.settings.elements.templates.unavailableCombined, results) );
 			resultsHtml += $(resultRow)[0].outerHTML;
 		}
 
@@ -357,9 +333,21 @@ var ResultsView = {
 		Results.pagination.refresh();
 	},
 
-	parseTemplate:function(template, data, cachedProcessTemplate){
-		var htmlTemplate = cachedProcessTemplate || _.template(template);
-		return htmlTemplate(data);
+	/**
+	 * Pass in a template selector so that it can be cached
+	 * @param templateSelector
+	 * @param data
+	 * @returns {*}
+     */
+	parseTemplate:function(templateSelector, data){
+		if(!$(templateSelector).length || $(templateSelector).html() === "") {
+			console.log("Results.view.parseTemplate: templateSelector does not exist or is empty: ", templateSelector);
+			return "";
+		}
+		if(!Features.cachedProcessedTemplates[templateSelector]) {
+			Features.cachedProcessedTemplates[templateSelector] = _.template($(templateSelector).html());
+		}
+		return Features.cachedProcessedTemplates[templateSelector](data);
 	},
 
 	getRowHeight: function(){
@@ -460,7 +448,7 @@ var ResultsView = {
 	},
 
 	shuffle: function( previousSortedResults ){
-		
+
 		// position all elements absolutely for the time of the animation
 		var allRows = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows );
 		if(Results.settings.animation.shuffle.active === true) {
@@ -482,7 +470,7 @@ var ResultsView = {
 			var rowWidth = Results.view.getRowWidth();
 
 			$(Results.settings.elements.resultsContainer).trigger("results.view.animation.start");
-			
+
 			$.each(Results.model.sortedProducts, function(sortedIndex, sortedResult){
 
 				// look for current ordered element in previously ordered results
@@ -511,7 +499,7 @@ var ResultsView = {
 					Results.view.shuffleTransitionDuration = currentResult.transitionDuration(); // jquery plugin in common/js/results/ResultsUtilities.js
 				}
 
-				
+
 				currentResult.attr("data-sort", sortedIndex);
 
 				// reposition the "top result" badge to the first result
@@ -530,7 +518,7 @@ var ResultsView = {
 				}
 
 			});
-			
+
 			var animationDuration = Results.view.shuffleTransitionDuration !== 0 ? Results.view.shuffleTransitionDuration : Results.settings.animation.shuffle.options.duration + 50;
 
 			// launch the animations (this is for jQuery animations)
@@ -803,8 +791,8 @@ var ResultsView = {
 		}
 
 		resultElement.attr("data-position", position);
-		
-		
+
+
 		if(animationOptions !== false){
 
 			// if hardware acceleration enabled, use translate3d
@@ -846,7 +834,7 @@ var ResultsView = {
 
 			}
 
-			
+
 
 
 		}else{
@@ -871,7 +859,7 @@ var ResultsView = {
 		}
 
 		if(animate === true){
-			
+
 			if( Modernizr.csstransitions ){
 				resultElement.addClass("hardwareAcceleration");
 				resultElement.addClass("opacityTransition").css("display", "block");
@@ -895,7 +883,7 @@ var ResultsView = {
 			}
 
 
-			
+
 
 		}else{
 			resultElement.removeClass("filtered").addClass("notfiltered");

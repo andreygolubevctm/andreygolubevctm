@@ -3,7 +3,7 @@
 
 <c:set var="vertical" value="${pageSettings.getVerticalCode()}" />
 <core_v1:js_template id="feature-template">
-    {{ var featureIterator = obj.childFeatureDetails || Features.getPageStructure(); }}
+    {{ var featureIterator = obj.childFeatureDetails || Features.getPageStructure(obj.featuresStructureIndexToUse); }}
 
     {{ for(var i = 0; i < featureIterator.length; i++) { }}
 
@@ -49,7 +49,7 @@
                 {{ ft.children[m].shortlistKeyParent = ft.shortlistKey; }}
             {{ } }}
             {{ obj.childFeatureDetails = ft.children; }}
-            {{= Features.cachedProcessedTemplate(obj) }}
+            {{= Features.cachedProcessedTemplates[obj.featuresTemplate](obj) }}
         </div>
         {{ } else { }}
             {{ delete obj.childFeatureDetails; }}
