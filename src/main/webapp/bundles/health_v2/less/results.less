@@ -6,35 +6,6 @@
     font-family: @font-family-base;
   }
 
-  // only apply a height in results so the rows stay all the same height.
-  .featuresMode {
-    .productSummary {
-      height: 140px;
-      @media (@sm-only) {
-        height: 150px;
-      }
-      @media (@md-only) {
-        height: 165px;
-      }
-      @media (@lg-only) {
-        height: 175px;
-      }
-      overflow: hidden;
-    }
-
-    .category {
-      > .labelInColumn {
-        display: block;
-        + .content {
-          display: none;
-        }
-        .content {
-          height: auto !important;
-        }
-      }
-    }
-
-  }
 }
 
 #results-sidebar {
@@ -46,6 +17,7 @@
 }
 
 .resultInsert {
+
   .utility-bar-blank {
     padding: 5px;
   }
@@ -67,6 +39,22 @@
       color: #555;
     }
   }
+
+  // only apply a height in results so the rows stay all the same height.
+  .productSummary {
+    height: 140px;
+    @media (@sm-only) {
+      height: 150px;
+    }
+    @media (@md-only) {
+      height: 165px;
+    }
+    @media (@lg-only) {
+      height: 175px;
+    }
+    overflow: hidden;
+  }
+
   // override core to give greater gap.
   .btn-block + .btn-block {
     margin-top: 10px;
@@ -80,11 +68,197 @@
   }
 }
 
+//outside as the tooltip is appended to the DOM
 @media (@xs-sm-only) {
   .brochuresTooltip {
     .brochureRow {
       text-align: center;
       margin: 5px 0;
+    }
+  }
+}
+
+/*---
+title:   Features: Design
+section: Results v4
+---
+
+The design file contains the design for the features mode in terms of:
+ * background
+ * borders
+ * font sizes, colors
+ * margin, padding
+
+The purpose of abstracting these styles from the scaffolding is because different verticals may want to implement different styles. Separating the rules will make it easier to know what to leave and what to change/override and reduce the amount of duplicated CSS when trying to override a specific rule.
+*/
+@dark-blue-stroke: darken(@theme-tertiary, 20%);
+.featuresMode {
+
+  .health-icon {
+    vertical-align: top;
+    font-size: 30px;
+    margin-right: 5px;
+  }
+
+  // The actual results container, to the right of the feature labels.
+  .resultsOverflow {
+
+    .result-row {
+      @media (@xs-only) {
+        margin-right: 15px;
+      }
+      @media (@sm) {
+        margin-left: 15px;
+      }
+    }
+  }
+
+  // Each product column is a result-row, floated left so they fit beside each other.
+  .result-row {
+
+    // .result is just the top section.
+    .result {
+      border: 1px solid @results-border-color;
+      background: @feature-bg-color;
+      box-shadow: 2px 3px 3px #cfcfcf;
+    }
+
+    // .cell is used as parent wrapper as .category is re-used on non-cell divs.
+    .cell {
+
+      &.category { //.cell.category
+        .content {
+          border-right: 1px solid @results-border-color;
+        }
+
+        &.expanded {
+          border-bottom: 1px solid @theme-tertiary;
+          .category { //.cell.category.expanded
+
+            > .content {
+              background-color: @theme-tertiary;
+              color: #fff;
+              border-left-color: @theme-tertiary;
+              border-top: none;
+              border-bottom: 2px solid @dark-blue-stroke;
+              border-right: 1px solid @theme-tertiary;
+            }
+          }
+        }
+      }
+
+      &.expandable {
+
+        .children {
+          margin-left: 10px;
+          position: relative;
+
+          .content {
+            border-left-color: #C0C9DE;
+            border-right: 1px solid #C0C9DE;
+            border-bottom: 1px solid #C0C9DE;
+            background-color: #DDE1EB;
+          }
+          &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -9px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 10px 10px 0;
+            border-color: transparent @dark-blue-stroke transparent transparent;
+          }
+        }
+      }
+    }
+  }
+
+  .content {
+    font-size: @results-font-size;
+    border-top: 1px solid @results-border-color;
+    padding: @results-column-side-padding-width;
+    text-align: left;
+    // Content of certain feature cells. This needs to be relative so the expander icon inside can be absolutely positioned.
+    position: relative;
+  }
+
+  .children .content {
+    //border-top: 0;
+    color: #000;
+  }
+
+  .extraText {
+    display: none;
+  }
+
+  @media (@sm) {
+    // Content is internals of .feature/.category/.section
+    .content {
+      background: @feature-bg-color;
+      .transition(background-color 0.5s);
+      border-left: 1px solid @results-border-color;
+    }
+
+    /**
+     * Styles for the section headers: Hospital Selections, Extras Selections, Ambulence
+     */
+    .featuresList {
+
+      vertical-align: middle;
+      #results-step & {
+        margin-top: 20px;
+      }
+
+      > .section, > .category {
+        border-bottom: 1px solid @results-border-color;
+
+        // Find the first descendant to get the title row.
+        > .content {
+          font-size: @font-size-h3;
+          font-weight: bold;
+
+          border-top: none;
+          border-left: none;
+          border-bottom: 3px solid @gray-dark;
+          // border-bottom-color overridden by vertical
+          padding-bottom: 0;
+          // These rows won't need an expander icon
+          > .icon.expander {
+            display: none;
+          }
+        }
+      }
+    }
+
+    /**
+     * Zebra Striping for the category/feature children inside the results row only.
+     */
+    .result-row .featuresList {
+      .children > .category:nth-child(odd),
+      .children > .feature:nth-child(odd) {
+        .content {
+          //background: @feature-odd-bg-color;
+        }
+      }
+    }
+
+  }
+  //media sm+
+
+}
+
+// for the top level categories, hide the content and display the label.
+.category {
+  > .labelInColumn {
+    display: block;
+    .content {
+      line-height: 30px;
+    }
+    // for the label
+    .content {
+      padding: 5px 10px;
     }
   }
 }

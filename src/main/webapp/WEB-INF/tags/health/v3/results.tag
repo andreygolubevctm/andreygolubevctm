@@ -136,7 +136,7 @@
         </div>
 
         <%-- FEATURE TEMPLATE --%>
-        <features:resultsItemTemplate/>
+        <health_v3:resultsItemTemplate/>
         <health_v3:brochure_template/>
         <health_v3:excess_template/>
         <health_v3:extras_list_template/>
