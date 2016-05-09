@@ -28,7 +28,7 @@
 			<go:setData dataVar="data" xpath="${xpath}/postalMatch" value="Y" />
 		</c:if>
 
-		<form_v3:row>
+		<form_v3:row label="empty">
 			<field_v2:checkbox xpath="${xpath}/postalMatch" value="Y" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
 		</form_v3:row>
 
@@ -47,14 +47,14 @@
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}_no_email" />
-		<form_v3:row fieldXpath="${fieldXpath}" id="${name}_noEmailGroup">
+		<form_v3:row fieldXpath="${fieldXpath}" id="${name}_noEmailGroup" label="empty">
 			<field_v2:checkbox xpath="${fieldXpath}" value="N"
 								title="No email address"
 								required="false"
 								label="true" />
 		</form_v3:row>
 
-		<form_v3:row id="${name}_optInEmail-group" hideHelpIconCol="true">
+		<form_v3:row id="${name}_optInEmail-group" hideHelpIconCol="true" label="empty">
 			<field_v2:checkbox xpath="${xpath}/optInEmail" value="Y"
 								title="Stay up to date with news and offers direct to your inbox"
 								required="false"

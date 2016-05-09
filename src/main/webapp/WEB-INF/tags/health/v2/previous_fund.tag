@@ -32,7 +32,7 @@
 			</form_v3:row>
 
 			<c:set var="fieldXpath" value="${xpath}/primary/authority" />
-			<form_v3:row fieldXpath="${fieldXpath}" className="health_previous_fund_authority hidden" helpId="522">
+			<form_v3:row fieldXpath="${fieldXpath}" label="empty" className="health_previous_fund_authority hidden" helpId="522">
 				<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="I authorise <span>the fund</span> to contact my previous fund to obtain a clearance certificate" label="I authorise <span>the fund</span> to contact my previous fund to obtain a transfer certificate" required="false" />
 			</form_v3:row>
 		</div>
@@ -49,7 +49,7 @@
 			</form_v3:row>
 
 			<c:set var="fieldXpath" value="${xpath}/partner/authority" />
-			<form_v3:row fieldXpath="${fieldXpath}" className="health_previous_fund_authority hidden" helpId="522">
+			<form_v3:row fieldXpath="${fieldXpath}" label="empty" className="health_previous_fund_authority hidden" helpId="522">
 				<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="My partner authorises <span>the fund</span> to contact their previous fund to obtain a clearance certificate" label="My partner authorises <span>the fund</span> to contact my previous fund to obtain a transfer certificate" required="false" />
 			</form_v3:row>
 		</div>

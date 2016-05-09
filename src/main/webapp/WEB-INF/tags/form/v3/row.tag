@@ -69,6 +69,10 @@
 	<c:choose>
 		<c:when test="${not empty label and label ne ''}">
 
+			<c:if test="${label eq 'empty'}">
+				<c:set var="label" value="" />
+			</c:if>
+
 			<field_v2:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" addForAttr="${addForAttr}" />
 
 			<div class="col-xs-1 visible-xs helpIconXSColumn ${offset}">
