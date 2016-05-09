@@ -167,8 +167,6 @@
 				$healthCoverRebate.slideDown();
 			} else {
 				$rebateLegend.html('');
-				$healthCoverRebate.find('input[value="N"]').trigger('click');
-				$healthCoverRebate.slideUp();
 			}
 		});
 	}
