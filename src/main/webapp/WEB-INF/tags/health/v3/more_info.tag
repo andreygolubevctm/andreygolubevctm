@@ -254,6 +254,7 @@
 						<li class="text-danger"><span class="icon-cross" /></span>{{= custom.info.exclusions.cover }}</li>
 						{{ } }}
 				</ul>
+				<content:get key="hospitalExclusionsDisclaimer"/>
 				{{ } }}
 
 			</div>
