@@ -278,7 +278,12 @@
 
         }
 
-        $dependantsTemplateWrapper.find('.serialise').change();
+        $dependantsTemplateWrapper.find('.serialise').each(function(){
+            var $that = $(this)
+            if(!_.isEmpty($that.val())) {
+                $that.change();
+            }
+        });
     }
 
     /**
