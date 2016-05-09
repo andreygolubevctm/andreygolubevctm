@@ -202,15 +202,15 @@
                     valueMap: [
                         {
                             key: 'Y',
-                            value: ""
+                            value: "Y"
                         },
                         {
                             key: 'N',
-                            value: ""
+                            value: "N"
                         },
                         {
                             key: 'R',
-                            value: ""
+                            value: "R"
                         },
                         {
                             key: '-',

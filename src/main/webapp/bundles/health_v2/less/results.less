@@ -21,6 +21,19 @@
       }
       overflow: hidden;
     }
+
+    .category {
+      > .labelInColumn {
+        display: block;
+        + .content {
+          display: none;
+        }
+        .content {
+          height: auto !important;
+        }
+      }
+    }
+
   }
 }
 
@@ -59,14 +72,15 @@
     margin-top: 10px;
   }
   // pretend to make the download brochures btn-block a btn-small.
-  @media(@xs-sm-only) {
+  @media (@xs-sm-only) {
     .btn-download.btn-block {
       padding: 5px 4px;
       font-size: 12px;
     }
   }
 }
-@media(@xs-sm-only) {
+
+@media (@xs-sm-only) {
   .brochuresTooltip {
     .brochureRow {
       text-align: center;
