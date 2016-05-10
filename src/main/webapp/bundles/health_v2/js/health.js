@@ -224,17 +224,9 @@
 				}
 
 				$healthSitRebate.on('change', function() {
-					if($(this).find('input:checked').val() === 'N'){
-						$('#health_healthCover_tier').hide();
-						$('.health_cover_details_dependants').hide();
-					} else {
-						$('#health_healthCover_tier').show();
-						var cover = $(':input[name="health_situation_healthCvr"]').val();
-						if(cover === 'F' || cover === 'SPF'){
-							$('.health_cover_details_dependants').show();
-						}
-					}
+					toggleRebate();
 				});
+				toggleRebate();
 
 
 			},
@@ -1344,6 +1336,19 @@
 			$followUpCallField.prop('disabled', false);
 			$('.simples-privacycheck-statement .error-field').show();
 			$('.follow-up-call .error-field').show();
+		}
+	}
+
+	function toggleRebate() {
+		if($('#health_healthCover_health_cover_rebate').find('input:checked').val() === 'N'){
+			$('#health_healthCover_tier').hide();
+			$('.health_cover_details_dependants').hide();
+		} else {
+			$('#health_healthCover_tier').show();
+			var cover = $(':input[name="health_situation_healthCvr"]').val();
+			if(cover === 'F' || cover === 'SPF'){
+				$('.health_cover_details_dependants').show();
+			}
 		}
 	}
 
