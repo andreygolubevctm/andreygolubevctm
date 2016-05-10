@@ -577,6 +577,19 @@
 @btn-call-inverse-active-bg-color: transparent;
 @btn-call-inverse-active-border-color: @btn-call-inverse-active-color;
 
+// add button green hollow
+@btn-add-color: @theme-secondary;
+@btn-add-bg-color: lighten(@btn-add-color, 60%);
+@btn-add-border-color: @btn-add-color;
+
+@btn-add-hover-color: @btn-add-color;
+@btn-add-hover-bg-color: darken(@btn-add-bg-color, 12%);
+@btn-add-hover-border-color: @btn-add-hover-color;
+
+@btn-add-active-color: @btn-add-color;
+@btn-add-active-bg-color: @btn-add-bg-color;
+@btn-add-active-border-color: @btn-add-active-color;
+
 //TODO: make a generic hollow override, and set up the sidebar contrast check once car is ready.
 
 //== Form Inputs Variables - Used on Radio/CheckBox/Toggle/Slider and above on a btn mixin called .btn-form for use in the radio (button group) and checkbox.

@@ -4,9 +4,9 @@
 
 <core_v1:js_template id="filter-results-template">
 
-    {{ var coverType = meerkat.modules.health.getCoverType(); }}
+    {{ var hiddenHospital = meerkat.modules.health.getCoverType() === 'E' ? ' hidden' : ''; }}
 
-    <div class="sidebar-title">Filter Results</div>
+    <div class="sidebar-title hidden-xs">Filter Results</div>
     <div class="row filter">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
@@ -26,8 +26,7 @@
         </div>
     </div>
 
-    {{ if (coverType != 'E') { }}
-    <div class="row filter">
+    <div class="row filter need-hospital {{=hiddenHospital }}">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
                 <span class="helper-text"><a>Help ?</a></span>
@@ -44,10 +43,7 @@
         </div>
     </div>
 
-    {{ } }}
-
-    {{ if (coverType != 'E') { }}
-    <div class="row filter">
+    <div class="row filter need-hospital {{=hiddenHospital }}">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
                 <span class="helper-text"><a>Help ?</a></span>
@@ -58,9 +54,9 @@
             </div>
         </div>
     </div>
-    {{ } }}
-    {{ if (coverType != 'E') { }}
-    <div class="row filter">
+
+    {{ if (meerkat.modules.healthCoverDetails.isRebateApplied()) { }}
+    <div class="row filter need-hospital {{=hiddenHospital }}">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
                 <span class="helper-text"><a>Help ?</a></span>
@@ -69,9 +65,7 @@
             <div data-filter-type="select" data-filter-serverside="true" class="filter-rebate-holder"></div>
         </div>
     </div>
-
     {{ } }}
-
 
     <div class="row filter">
         <div class="col-xs-12">
