@@ -30,7 +30,7 @@
 				<p>The Government may charge a levy known as the <strong>Lifetime Health Cover</strong> (LHC) loading.</p>
 				<p>The levy is based on a number of factors including your age and the number of years you have held private health cover.</p>
 				<p>By filling in these details, we can work out what your LHC loading will be when you are comparing health insurance quotes.</p>
-				<p>This is confirmed by your previous health fund if required</p>
+				<p>This is confirmed by your previous health fund if required.</p>
 			</ui:bubble>
 		</jsp:attribute>
 
