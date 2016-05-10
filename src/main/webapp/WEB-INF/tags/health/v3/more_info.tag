@@ -213,6 +213,14 @@
 		</div>
 
 		<div class="fieldset-card row cover-card">
+			<c:if test="${moreinfolayout_splittest_variant1 eq true}">
+			<div class="col-xs-12 col-md-6 aboutTheFund">
+				<h2>About the Fund</h2>
+				{{= aboutFund }}
+			</div>
+			</c:if>
+
+			<c:if test="${moreinfolayout_splittest_default eq true}">
 			{{ if(typeof hospital !== 'undefined' && typeof hospitalCover !== 'undefined') { }}
 			<div class="col-xs-12 col-md-6">
 				{{ if(typeof hospital.inclusions !== 'undefined') { }}
@@ -259,7 +267,16 @@
 
 			</div>
 			{{ } }}
+			</c:if>
 
+			<c:if test="${moreinfolayout_splittest_variant1 eq true}">
+			<div class="col-xs-12 col-md-6 whatsNext">
+				<h2>Next Steps</h2>
+				{{= whatHappensNext }}
+			</div>
+			</c:if>
+
+			<c:if test="${moreinfolayout_splittest_default eq true}">
 			{{ if(typeof extrasCover !== 'undefined') { }}
 			<div class="col-xs-12 col-md-6 extrasCover">
 				<h2>Extras cover</h2>
@@ -286,6 +303,7 @@
 				</table>
 			</div>
 			{{ } }}
+			</c:if>
 
 		<div class="policyBrochures col-xs-12">
 			<div class="col-xs-12">
