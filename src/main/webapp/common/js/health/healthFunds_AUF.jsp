@@ -13,6 +13,7 @@ var healthFunds_AUF = {
   $paymentType : $('#health_payment_details_type input'),
   $paymentFrequency : $('#health_payment_details_frequency'),
   $paymentStartDate: $("#health_payment_details_start"),
+  $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
   set: function(){
     <%--dependant definition--%>
     healthFunds._dependants('This policy provides cover for children under the age of 23 or who are aged between 23-25 years and engaged in full time study. Student dependants do not need to be living at home to be added to the policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
@@ -29,9 +30,7 @@ var healthFunds_AUF = {
 
     <%--selections for payment date--%>
     healthFunds._payments = { 'min':0, 'max':5, 'weekends':false };
-    $('#update-premium').on('click.AUF', function(){
 
-    });
     healthFunds_AUF.$paymentType.on('click.AUF', function renderPaymentDayPaymentType(){
       healthFunds_AUF.renderPaymentDay();
     });
@@ -54,6 +53,12 @@ var healthFunds_AUF = {
     };
   },
   renderPaymentDay: function(){
+    if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc') {
+      healthFunds_AUF.$paymentTypeContainer.slideUp();
+    } else {
+      healthFunds_AUF.$paymentTypeContainer.text('Australian Unity offers a 4% discount for direct debit payments').slideDown();
+    }
+
     var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);

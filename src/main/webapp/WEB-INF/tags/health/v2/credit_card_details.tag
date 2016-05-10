@@ -21,8 +21,10 @@
 
 		<c:set var="fieldXpath" value="${xpath}/type" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Credit Card Type" className="health_credit-card_details_type_group">
-			<field_v2:array_select xpath="${fieldXpath}" required="true" delims="||" className="health-credit_card_details-type" title="type of credit card" items="=Please choose...||v=Visa||m=Mastercard||a=AMEX" />
+			<%--<field_v2:array_select xpath="${fieldXpath}" required="true" delims="||" className="health-credit_card_details-type" title="type of credit card" items="=Please choose...||v=Visa||m=Mastercard||a=AMEX" />--%>
+			<field_v2:array_radio items="v=Visa,m=Mastercard,a=AMEX" xpath="${fieldXpath}" title="type of credit card" required="true" className="health-credit_card_details-type" />
 		</form_v3:row>
+
 
 		<c:set var="fieldXpath" value="${xpath}/name" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Name on Credit Card" className="health_credit-card-details_name">

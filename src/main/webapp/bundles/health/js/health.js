@@ -635,7 +635,6 @@
 
 				if(event.isForward === true){
 
-					meerkat.modules.healthPaymentStep.updatePremium();
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
 					// Show discount text if applicable
@@ -673,6 +672,7 @@
 						$("#health_payment_medicare-selection").removeAttr("style");
 					}
 
+					meerkat.modules.healthPaymentStep.updatePremium();
 				}
 			}
 		};

@@ -188,8 +188,10 @@ Process:
 
 		$('body').addClass(settings.name + '-active');
 
-		// Hook into: "update premium" button to determine which panels to display
-		$('#update-premium').on('click.' + settings.name, setTypeFromControl);
+		// Hook into: (replacement) "update premium" button to determine which panels to display
+		$('#health_payment_details_type input').on('click.' + settings.name, setTypeFromControl);
+		$('#health_payment_details_frequency').on('change.' + settings.name, setTypeFromControl);
+		$('#health_payment_details_start').on('changeDate.' + settings.name, setTypeFromControl);
 
 		if(typeof settings.clearValidationSelectors === 'object' ) {
 			settings.clearValidationSelectors.on('change', clearValidation);

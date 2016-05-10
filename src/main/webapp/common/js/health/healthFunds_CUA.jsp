@@ -77,10 +77,7 @@ set: function () {
 				};
 			});
 		</c:if>
-		$('#update-premium').on('click.CUA', function() {
 
-
-		});
 		healthFunds_CUA.$paymentType.on('click.CUA', function renderPaymentDaysPaymentType(){
 			healthFunds_CUA.renderPaymentDays();
 		});

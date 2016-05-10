@@ -14,6 +14,7 @@ var healthFunds_NIB = {
     $paymentType : $('#health_payment_details_type input'),
     $paymentFrequency : $('#health_payment_details_frequency'),
     $paymentStartDate: $("#health_payment_details_start"),
+    $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
     set: function(){
         <%--Contact Point question--%>
         healthApplicationDetails.showHowToSendInfo('NIB', true);
@@ -99,6 +100,12 @@ var healthFunds_NIB = {
         var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+
+        if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
+            $paymentTypeContainer.slideUp();
+        } else {
+            $paymentTypeContainer.text('NIB offers a 4% discount for bank account payments').slideDown();
+        }
     },
     unset: function(){
         healthFunds_NIB.$paymentType.off('click.NIB');

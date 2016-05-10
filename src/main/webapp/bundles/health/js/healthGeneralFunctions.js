@@ -34,35 +34,47 @@
     }
 
     function renderFields() {
-        var $_obj = $('#health_payment_credit_type');
+        var $cardContainer = $('.health-credit_card_details-type');
         var $_icons = $('#health_payment_credit-selection .cards');
         $_icons.children().hide();
-        var prefix = "health_payment_credit_type_";
-        var _html = '<option id="'+prefix+'" value="">Please choose...</option>';
-        var _selected = $_obj.find(':selected').val();
-
+        var _html = '';
+        var _selected = $cardContainer.find('input').filter(':checked').val();
 
         if( config.visa === true ){
-            _html += '<option id="'+prefix+'v" value="v">Visa</option>';
+            _html += setCreditCardObj('v', 'Visa', _selected);
             $_icons.find('.visa').show();
         }
 
         if( config.mc === true ){
-            _html += '<option id="'+prefix+'m" value="m">Mastercard</option>';
+            _html += setCreditCardObj('m', 'Mastercard', _selected);
             $_icons.find('.mastercard').show();
         }
 
         if( config.amex === true ){
-            _html += '<option id="'+prefix+'a" value="a">AMEX</option>';
+            _html += setCreditCardObj('a', 'Amex', _selected);
             $_icons.find('.amex').show();
         }
 
         if( config.diners === true ){
-            _html += '<option id="'+prefix+'d" value="d">Diners Club</option>';
+            _html += setCreditCardObj('d', 'Diners Club', _selected);
             $_icons.find('.diners').show();
         }
 
-        $_obj.html( _html ).find('option[value="'+ _selected +'"]').attr('selected', 'selected');
+        $cardContainer.html(_html).find('input');
+    }
+
+    function setCreditCardObj(value, label, selected){
+        var obj = {inputname : 'health_payment_credit_type'};
+        var creditCardTemplate = $('#credit-card-template').html();
+        var ccHtmlTemplate = _.template(creditCardTemplate);
+        var prefix = "health_payment_credit_type_";
+
+        obj.inputvalue = prefix+""+value;
+        obj.inputid = obj.inputname+"_"+value;
+        obj.inputlabel = label;
+        obj.inputSelected = value == selected;
+
+        return ccHtmlTemplate(obj);
     }
 
     function setCreditCardRules() {

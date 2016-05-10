@@ -12,6 +12,9 @@
 	var $paymentRadioGroup;
 	var $paymentContainer;
 	var $paymentMethodLHCText;
+	var $bankSection;
+	var $creditCardSection;
+	var $paymentCalendar;
 
 	var $frequencySelect;
 
@@ -40,6 +43,9 @@
 			$bankAccountDetailsRadioGroup = $("#health_payment_details_claims");
 			$sameBankAccountRadioGroup = $("#health_payment_bank_claims");
 			$paymentMethodLHCText = $('.changes-premium .lhcText');
+			$bankSection = $('#health_payment_bank-selection');
+			$creditCardSection = $('#health_payment_credit-selection');
+			$paymentCalendar = $('#health_payment_details_start');
 
 			// Containers
 			$paymentContainer = $(".update-content");
@@ -60,6 +66,8 @@
 			});
 
 			$paymentRadioGroup.find('input').on('change', function() {
+				togglePaymentGroups();
+				toggleClaimsBankAccountQuestion();
 				updatePaymentPremium();
 			});
 
@@ -121,7 +129,7 @@
 
 		// Clear start date
 
-		$("#health_payment_details_start").val('');
+		$paymentCalendar.val('');
 
 		// Clear payment method selection
 		$paymentRadioGroup.find('input').prop('checked', false).change();
@@ -188,10 +196,8 @@
 	}
 
 	// Show approved listings only, this can potentially change per fund
-	function updateFrequencySelectOptions(premiums){
-		if (_.isEmpty(premiums)) {
-			premiums = meerkat.modules.healthResults.getSelectedProduct();
-		}
+	function updateFrequencySelectOptions(){
+		var premiums = meerkat.modules.healthResults.getSelectedProduct();
 
 		if (!_.isEmpty(premiums) && !_.isEmpty(premiums.paymentTypePremiums)) {
 			premiums = premiums.paymentTypePremiums;
@@ -223,7 +229,7 @@
 		// Non-inline datepicker
 		//$('#health_payment_details_start').parent().addClass('input-group').find('.input-group-addon').removeClass('hidden');
 		// Inline datepicker
-		$('#health_payment_details_start').parent().find('.datepicker').children().css('visibility', 'visible');
+		$paymentCalendar.parent().find('.datepicker').children().css('visibility', 'visible');
 
 		meerkat.modules.loadingAnimation.hide($button);
 	}
@@ -244,7 +250,7 @@
 			// Non-inline datepicker
 			//$('#health_payment_details_start').parent().removeClass('input-group').find('.input-group-addon').addClass('hidden');
 			// Inline datepicker
-			$('#health_payment_details_start').parent().find('.datepicker').children().css('visibility', 'hidden');
+			$paymentCalendar.parent().find('.datepicker').children().css('visibility', 'hidden');
 		}
 
 		if (isSameSource === true) {
@@ -296,13 +302,8 @@
 
 					// Show payment input questions
 					$paymentContainer.show();
-					if(getSelectedPaymentMethod() === 'cc' ) {
-						$('#health_payment_credit-selection').slideDown();
-						$('#health_payment_bank-selection').hide();
-					} else {
-						$('#health_payment_bank-selection').slideDown();
-						$('#health_payment_credit-selection').hide();
-					}
+
+					togglePaymentGroups();
 
 					// Show declaration checkbox
 					$(".health_declaration-group").slideDown();
@@ -313,6 +314,11 @@
 					updatePaymentDayOptions();
 
 					updateFrequencySelectOptions();
+
+
+					_.defer(function(){
+						setDefaultFields();
+					});
 
 					$("#confirm-step").show();
 					$(".simples-dialogue-31").show();
@@ -327,6 +333,18 @@
 				meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthPaymentStep' });
 			});
 		});
+	}
+
+	function togglePaymentGroups() {
+		if(getSelectedPaymentMethod() === 'cc' ) {
+			$bankSection.slideUp('slow', function(){
+				$creditCardSection.slideDown();
+			});
+		} else {
+			$creditCardSection.slideUp('slow', function(){
+				$bankSection.slideDown();
+			});
+		}
 	}
 
 	function updatePaymentPremium() {
@@ -378,6 +396,13 @@
 		$paymentMethodLHCText.html(lhcText);
 	}
 
+	function setDefaultFields() {
+		// default values are sent over when the premium is loaded for the first time on this page
+		// and the code below essentially sets the visual aspect of the payment page.
+		$paymentCalendar.datepicker("update", new Date());
+		$paymentRadioGroup.find('input').filter('[value=dd]').trigger('click');
+	}
+
 	// Check if details for the claims bank account needs to be shown
 	function toggleClaimsBankAccountQuestion(){
 
@@ -414,7 +439,6 @@
 		}
 
 	}
-
 
 	// What day would you like your payment deducted?
 	function updatePaymentDayOptions() {
@@ -473,7 +497,8 @@
 		setCoverStartRange: setCoverStartRange,
 		getSelectedFrequency: getSelectedFrequency,
 		getSelectedPaymentMethod: getSelectedPaymentMethod,
-		updatePremium: updatePremium
+		updatePremium: updatePremium,
+		setDefaultFields: setDefaultFields
 	});
 
 })(jQuery);

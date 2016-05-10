@@ -622,8 +622,8 @@
 						$("#health_payment_medicare-selection").removeAttr("style");
 					}
 
+					meerkat.modules.healthPaymentStep.updatePremium();
 				}
-				meerkat.modules.healthPaymentStep.updatePremium();
 			}
 		};
 

@@ -46,6 +46,5 @@
 </div>
 
 <div id="${name}_claim-selection" class="health-bank_claim_details">
-    <form_v3:row fieldXpath="${fieldXpath}" label="Would you like to nominate a bank account for future claim payments?" />
-    <health_v2:bank_account_details xpath="${xpath}/claim" />
+	<health_v2:bank_account_details xpath="${xpath}/claim" />
 </div>
