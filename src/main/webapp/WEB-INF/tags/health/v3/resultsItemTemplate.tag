@@ -11,11 +11,9 @@
     when copying it to the 'your selected benefits'. --%>
     {{ if(ft.doNotRender === true) { continue; } }}
 
-    {{ var dataSKey = typeof ft.shortlistKey != 'undefined' && ft.shortlistKey != '' ? 'data-skey="'+ft.shortlistKey + '"' : ''; }}
-    {{ var dataSKeyParent = typeof ft.shortlistKeyParent != 'undefined' && ft.shortlistKeyParent != '' ? 'data-par-skey="'+ft.shortlistKeyParent + '"' : ''; }}
     {{ var hasResult = ft.resultPath != null && ft.resultPath != ''; }}
     {{ var pathValue = hasResult ? Object.byString( obj, ft.resultPath ) : false; }}
-    <div class="cell {{= ft.classString }}" data-index="{{= i }}" {{= dataSKey }} {{= dataSKeyParent }}>
+    <div class="cell {{= ft.classString }}">
         {{ if(ft.type != 'section') { }}<%-- section headers are not rendered anymore --%>
             <div class="labelInColumn {{= ft.classStringForInlineLabel }}{{ if (ft.name == '') { }} noLabel{{ } }}"{{ if(pathValue == "N") { }} title='Not covered' {{ } }}>
                 <div class="content{{ if(pathValue == 'N') { }} noCover{{ } }}" data-featureId="{{= ft.id }}">

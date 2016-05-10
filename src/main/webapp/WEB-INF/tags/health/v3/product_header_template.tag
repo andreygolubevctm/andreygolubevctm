@@ -12,7 +12,7 @@
             {{ } else { }}
             <div class="utility-bar-blank">&nbsp;</div>
             {{ } }}
-            <div class="filter-component remove-result hidden-xs">
+            <div class="filter-component remove-result hidden-xs" data-productId="{{= obj.productId }}">
                 <span class="icon icon-cross" title="Remove this product"></span>
             </div>
         </div>

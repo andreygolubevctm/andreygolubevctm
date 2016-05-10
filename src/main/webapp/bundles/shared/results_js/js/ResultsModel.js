@@ -673,6 +673,8 @@ var ResultsModel = {
 				return value != options.notEquals;
 			} else if( options.hasOwnProperty('inArray') && $.isArray( options.inArray ) ){
 				return $.inArray( String( value) , options.inArray ) != -1;
+			} else if( options.hasOwnProperty('notInArray') && $.isArray( options.notInArray ) ){
+				return $.inArray( String( value) , options.notInArray ) == -1;
 			} else {
 				console.log("Options from this value filter are incorrect and has not been applied: ", value, options);
 				return true;

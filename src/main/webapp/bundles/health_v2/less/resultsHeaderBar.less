@@ -2,12 +2,6 @@
 	LESS PORTED FROM core/resultsHeaderBar.less
 **********************************************/
 
-.headerBarTransition() {
-  -webkit-transition: height 100ms ease-in-out;
-  -moz-transition: height 100ms ease-in-out;
-  transition: height 100ms ease-in-out;
-}
-
 .resultsContainer {
   position: relative;
   z-index: @results-zindex-resultItems;
@@ -49,13 +43,6 @@
   &.affixed-compact {
     h3 {
       display: block; // for some reason it's hidden in the core.
-    }
-    .result {
-      .resultInsert {
-        height: 270px;
-      }
-      .headerBarTransition();
-      height: 270px;
     }
   }
 

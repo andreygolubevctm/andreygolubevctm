@@ -253,8 +253,8 @@ Features = {
 		if(Features.target === false || (typeof Results.getDisplayMode === 'function' && Results.getDisplayMode() == 'price')) {
 			return;
 		}
-		var visibleMultirowElements = $( Features.target + " " + Results.settings.elements.features.values+":visible"  ); // Removed .filter(":visible") because IE couldn't handle it.
-		Features.sameHeightRows( visibleMultirowElements );
+		var visibleMultiRowElements = $( Features.target + " " + Results.settings.elements.features.values+":visible"  ); // Removed .filter(":visible") because IE couldn't handle it.
+		Features.sameHeightRows( visibleMultiRowElements );
 	},
 
 	sameHeightRows: function( elements ){
@@ -266,16 +266,15 @@ Features = {
 			var $e = $(element);
 
 			var featureId = $e.attr("data-featureId");
-
 			var item = _.findWhere(featureRowCache, {featureId: featureId});
 
 			if(typeof item != 'undefined'){
-				item.height = Math.max(getHeight($e), item.height);
+				item.height = Math.max(Features.getHeight($e), item.height);
 				item.elements.push($e);
 			}else{
 				var obj = {};
 				obj.featureId = featureId;
-				obj.height = getHeight($e);
+				obj.height = Features.getHeight($e);
 				obj.elements = [];
 				obj.elements.push($e);
 				featureRowCache.push(obj);
@@ -304,7 +303,8 @@ Features = {
 				}
 
 				if(roundedHeight <= 270){
-					$ee.addClass('height'+roundedHeight);
+					if(roundedHeight != 0)
+						$ee.addClass('height'+roundedHeight);
 				}else{
 					$ee.height(item2.height);
 				}
@@ -313,16 +313,16 @@ Features = {
 		}
 
 
-		function getHeight($h){
-			// the h class means its a header cell which is always recalculated
-			if($h.hasClass('isMultiRow') || $h.hasClass('h')){
-				return $h.innerHeight();
-			}else{
-				return 0;
-			}
+
+	},
+	getHeight: function($h){
+		// the h class means its a header cell which is always recalculated
+		if($h.hasClass('isMultiRow') || $h.hasClass('h')){
+			return $h.innerHeight();
+		}else{
+			return 0;
 		}
 	},
-
 	hideEmptyRows: function() {
 		if(!Features.featuresIds) {
 			return;

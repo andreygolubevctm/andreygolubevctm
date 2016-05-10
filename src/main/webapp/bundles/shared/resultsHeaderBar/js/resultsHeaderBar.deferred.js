@@ -52,14 +52,12 @@
                 }
                 dynamicTopHeaderContentHeight += $(this).height();
             });
-            console.log("dynamicTopHeaderContentHeight", dynamicTopHeaderContentHeight)
             // height of the header without navbar (which gets affixed at the same time)
             topStartOffset = $('.resultsOverflow').offset().top;//dynamicTopHeaderContentHeight + $(".header-top .container").height();
             if ($resultsHeaderBg && $resultsHeaderBg.length) {
                 topStartOffset += $resultsHeaderBg.position().top;
             }
         }
-        console.log("top offset", topStartOffset)
 
     }
 

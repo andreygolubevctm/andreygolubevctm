@@ -37,7 +37,7 @@
             Custom message resultsErrorMessage
     </jsp:attribute>
     <jsp:attribute name="zeroResultsFoundMessage">
-            Custom message zeroResultsFoundMessage
+            No results match your filters. Please try resetting your results by <a href="javascript;" class="reset-filters">clicking here</a>.
     </jsp:attribute>
 
     <jsp:attribute name="logoTemplate">
@@ -68,8 +68,8 @@
                             <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1">
                             </div>
                             <div class="yourSelectionsHospital">
-                            <h5>Your selections</h5>
-                            <span class="restrictedBenefit hidden"># restricted benefit</span>
+                                <h5>Your selections</h5>
+                                <span class="restrictedBenefit hidden"># restricted benefit</span>
                             </div>
                         </div>
                         <div class="featuresListHospitalSelections" data-feature-index="2"></div>

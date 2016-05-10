@@ -12,6 +12,7 @@
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
         resultsStepIndex =  3,
+        filteredOutResults = [], // this is used for removing the results when clicking the "x"
 
         templates = {
             premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
@@ -238,14 +239,22 @@
 
         $('.featuresListHospitalOther > .collapsed').removeClass('collapsed');
 
-        if($('.hospitalCoverSection').length) {
             $('.hospitalCoverSection').each(function () {
                 var $el = $(this);
                 if ($el.find('sup').length) {
                     $el.find('.restrictedBenefit').removeClass('hidden');
                 }
             });
-        }
+
+        $(document).on('click', '.remove-result', function() {
+            filteredOutResults.push($(this).attr('data-productId'));
+            Results.filterBy("productId", "value", { "notInArray": filteredOutResults }, true);
+        }).on('click', '.reset-filters', function(e) {
+            e.preventDefault();
+            filteredOutResults = [];
+            Results.unfilterBy('productId', "value", true);
+        })
+
     }
     function eventSubscriptions() {
 
@@ -278,7 +287,7 @@
         $(document).on("resultsLoaded", onResultsLoaded);
 
         $(document).on("resultsReturned", function () {
-
+            filteredOutResults = []; //reset
             meerkat.modules.utils.scrollPageTo($("header"));
 
             // Reset the feature header to match the new column content.

@@ -11,13 +11,14 @@
 #results-sidebar {
   // need to remove this columns padding so we can apply left margin to all result-rows.
   padding-right: 0;
-  .sidebar-widget-contained {
-    box-shadow: 2px 3px 3px @main-bg-colour;
-  }
 }
-
+.noResults {
+  margin-left: 20px;
+}
+// The product header
 .resultInsert {
 
+  // top bar in header where restricted fund and compare are.
   .utility-bar-blank {
     padding: 5px;
   }
@@ -78,19 +79,6 @@
   }
 }
 
-/*---
-title:   Features: Design
-section: Results v4
----
-
-The design file contains the design for the features mode in terms of:
- * background
- * borders
- * font sizes, colors
- * margin, padding
-
-The purpose of abstracting these styles from the scaffolding is because different verticals may want to implement different styles. Separating the rules will make it easier to know what to leave and what to change/override and reduce the amount of duplicated CSS when trying to override a specific rule.
-*/
 @dark-blue-stroke: darken(@theme-tertiary, 20%);
 @subfeature-border-color: #C0C9DE;
 @dulled-color: #8A8A8A;
@@ -105,6 +93,7 @@ The purpose of abstracting these styles from the scaffolding is because differen
   // The actual results container, to the right of the feature labels.
   .resultsOverflow {
 
+    // Fix margins for rows on XS
     .result-row {
       @media (@xs-only) {
         margin-right: 15px;
@@ -124,11 +113,31 @@ The purpose of abstracting these styles from the scaffolding is because differen
       background: @feature-bg-color;
       box-shadow: 2px 3px 3px #cfcfcf;
     }
+    h5 {
+      padding: 15px 0 10px 5px;
+      margin: 0;
+    }
 
     // .cell is used as parent wrapper as .category is re-used on non-cell divs.
     .cell {
 
+      // No feature icons in XS as there isn't enough space!
+      .health-icon {
+        @media(@xs-only) {
+          display: none;
+        }
+      }
+
+      // An override for last border-bottom of a section's categories.
+      &.section {
+        // .cell.section's children's last feature: set border-bottom on its .content
+        .children .cell.category.collapsed:last-child .labelInColumn .content {
+          border-bottom: 1px solid @results-border-color;
+        }
+      }
+      // A top level category e.g. the Non Cosmetic Plastic Surgery cell
       &.category { //.cell.category
+        // The label cell "Non Cosmetic Plastic Surgery"
         > .labelInColumn {
           display: block;
           .content {
@@ -142,6 +151,7 @@ The purpose of abstracting these styles from the scaffolding is because differen
             color: #A90000;
             font-family: @font-family-theme-bold;
           }
+          // When a benefit is not covered
           &.noCover {
             background-color: #EDEDED;
             color: @dulled-color;
@@ -153,6 +163,7 @@ The purpose of abstracting these styles from the scaffolding is because differen
           }
         }
 
+        // Style the feature label cell when its expanded.
         &.expanded {
           border-bottom: 1px solid @theme-tertiary;
           .category { //.cell.category.expanded
@@ -182,12 +193,14 @@ The purpose of abstracting these styles from the scaffolding is because differen
             border-left-color: @subfeature-border-color;
             border-right: 1px solid @subfeature-border-color;
             border-bottom: 1px solid @subfeature-border-color;
+            border-top: none; // disable inherited border.
             background-color: #DDE1EB;
           }
           // remove border bottom on last cell in children
           .cell:last-child .content {
             border-bottom: none;
           }
+          // The corner wedge when expanded.
           &:before {
             content: '';
             position: absolute;
@@ -205,7 +218,10 @@ The purpose of abstracting these styles from the scaffolding is because differen
   }
 
   .content {
-    font-size: @results-font-size;
+    font-size: (@results-font-size * .85);
+    @media(@sm) {
+      font-size: @results-font-size;
+    }
     border-top: 1px solid @results-border-color;
     padding: @results-column-side-padding-width;
     text-align: left;
@@ -214,7 +230,6 @@ The purpose of abstracting these styles from the scaffolding is because differen
   }
 
   .children .content {
-    //border-top: 0;
     color: #000;
   }
 
@@ -229,47 +244,13 @@ The purpose of abstracting these styles from the scaffolding is because differen
     border-left: 1px solid @results-border-color;
   }
 
-  /**
-   * Styles for the section headers: Hospital Selections, Extras Selections, Ambulence
-   */
-  .featuresList {
 
-    vertical-align: middle;
-    #results-step & {
-      margin-top: 20px;
-    }
-
-    > .section, > .category {
-      border-bottom: 1px solid @results-border-color;
-
-      // Find the first descendant to get the title row.
-      > .content {
-        font-size: @font-size-h3;
-        font-weight: bold;
-
-        border-top: none;
-        border-left: none;
-        border-bottom: 3px solid @gray-dark;
-        // border-bottom-color overridden by vertical
-        padding-bottom: 0;
-        // These rows won't need an expander icon
-        > .icon.expander {
-          display: none;
-        }
-      }
-    }
-  }
-
-  // Override styles for the excess section and hospital cover.
+  // Override styles for the excess and hospital cover sections.
   .hospitalSelectionsExcessContainer {
-    background-color: #fff;
     .hospitalExcessSectionBorder {
+      background-color: #fff;
       border: 1px solid @results-border-color;
       border-bottom: none;
-    }
-    h5 {
-      padding: 10px;
-      margin: 0;
     }
     .featuresListExcess {
       .content {
@@ -278,14 +259,20 @@ The purpose of abstracting these styles from the scaffolding is because differen
       }
     }
 
+    h5 {
+      padding: 10px;
+    }
     .yourSelectionsHospital {
       position: relative;
       .restrictedBenefit {
         .small;
-        position: absolute;
-        top: 14px;
-        right: 10px;
         color: @dulled-color;
+        position: absolute;
+        right: 10px;
+        top: 0px;
+        @media(@lg) {
+          top: 14px;
+        }
       }
     }
   }
