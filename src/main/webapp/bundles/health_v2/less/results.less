@@ -92,6 +92,8 @@ The design file contains the design for the features mode in terms of:
 The purpose of abstracting these styles from the scaffolding is because different verticals may want to implement different styles. Separating the rules will make it easier to know what to leave and what to change/override and reduce the amount of duplicated CSS when trying to override a specific rule.
 */
 @dark-blue-stroke: darken(@theme-tertiary, 20%);
+@subfeature-border-color: #C0C9DE;
+@dulled-color: #8A8A8A;
 .featuresMode {
 
   .health-icon {
@@ -127,8 +129,28 @@ The purpose of abstracting these styles from the scaffolding is because differen
     .cell {
 
       &.category { //.cell.category
+        > .labelInColumn {
+          display: block;
+          .content {
+            line-height: 30px;
+            padding: 5px 10px;
+          }
+        }
         .content {
           border-right: 1px solid @results-border-color;
+          sup {
+            color: #A90000;
+            font-family: @font-family-theme-bold;
+          }
+          &.noCover {
+            background-color: #EDEDED;
+            color: @dulled-color;
+            cursor: not-allowed;
+            .expander {
+              // this makes the expander invisible until its opened.
+              color: #EDEDED;
+            }
+          }
         }
 
         &.expanded {
@@ -138,6 +160,9 @@ The purpose of abstracting these styles from the scaffolding is because differen
             > .content {
               background-color: @theme-tertiary;
               color: #fff;
+              sup {
+                color: #fff;
+              }
               border-left-color: @theme-tertiary;
               border-top: none;
               border-bottom: 2px solid @dark-blue-stroke;
@@ -149,15 +174,19 @@ The purpose of abstracting these styles from the scaffolding is because differen
 
       &.expandable {
 
-        .children {
+        &.category .children { // sub-features
           margin-left: 10px;
           position: relative;
 
           .content {
-            border-left-color: #C0C9DE;
-            border-right: 1px solid #C0C9DE;
-            border-bottom: 1px solid #C0C9DE;
+            border-left-color: @subfeature-border-color;
+            border-right: 1px solid @subfeature-border-color;
+            border-bottom: 1px solid @subfeature-border-color;
             background-color: #DDE1EB;
+          }
+          // remove border bottom on last cell in children
+          .cell:last-child .content {
+            border-bottom: none;
           }
           &:before {
             content: '';
@@ -193,72 +222,72 @@ The purpose of abstracting these styles from the scaffolding is because differen
     display: none;
   }
 
-  @media (@sm) {
-    // Content is internals of .feature/.category/.section
-    .content {
-      background: @feature-bg-color;
-      .transition(background-color 0.5s);
-      border-left: 1px solid @results-border-color;
+  // Content is internals of .feature/.category/.section
+  .content {
+    background: @feature-bg-color;
+    .transition(background-color 0.5s);
+    border-left: 1px solid @results-border-color;
+  }
+
+  /**
+   * Styles for the section headers: Hospital Selections, Extras Selections, Ambulence
+   */
+  .featuresList {
+
+    vertical-align: middle;
+    #results-step & {
+      margin-top: 20px;
     }
 
-    /**
-     * Styles for the section headers: Hospital Selections, Extras Selections, Ambulence
-     */
-    .featuresList {
+    > .section, > .category {
+      border-bottom: 1px solid @results-border-color;
 
-      vertical-align: middle;
-      #results-step & {
-        margin-top: 20px;
-      }
+      // Find the first descendant to get the title row.
+      > .content {
+        font-size: @font-size-h3;
+        font-weight: bold;
 
-      > .section, > .category {
-        border-bottom: 1px solid @results-border-color;
-
-        // Find the first descendant to get the title row.
-        > .content {
-          font-size: @font-size-h3;
-          font-weight: bold;
-
-          border-top: none;
-          border-left: none;
-          border-bottom: 3px solid @gray-dark;
-          // border-bottom-color overridden by vertical
-          padding-bottom: 0;
-          // These rows won't need an expander icon
-          > .icon.expander {
-            display: none;
-          }
+        border-top: none;
+        border-left: none;
+        border-bottom: 3px solid @gray-dark;
+        // border-bottom-color overridden by vertical
+        padding-bottom: 0;
+        // These rows won't need an expander icon
+        > .icon.expander {
+          display: none;
         }
       }
     }
+  }
 
-    /**
-     * Zebra Striping for the category/feature children inside the results row only.
-     */
-    .result-row .featuresList {
-      .children > .category:nth-child(odd),
-      .children > .feature:nth-child(odd) {
-        .content {
-          //background: @feature-odd-bg-color;
-        }
+  // Override styles for the excess section and hospital cover.
+  .hospitalSelectionsExcessContainer {
+    background-color: #fff;
+    .hospitalExcessSectionBorder {
+      border: 1px solid @results-border-color;
+      border-bottom: none;
+    }
+    h5 {
+      padding: 10px;
+      margin: 0;
+    }
+    .featuresListExcess {
+      .content {
+        border-left: none;
+        border-top: none;
       }
     }
 
-  }
-  //media sm+
-
-}
-
-// for the top level categories, hide the content and display the label.
-.category {
-  > .labelInColumn {
-    display: block;
-    .content {
-      line-height: 30px;
-    }
-    // for the label
-    .content {
-      padding: 5px 10px;
+    .yourSelectionsHospital {
+      position: relative;
+      .restrictedBenefit {
+        .small;
+        position: absolute;
+        top: 14px;
+        right: 10px;
+        color: @dulled-color;
+      }
     }
   }
+
 }

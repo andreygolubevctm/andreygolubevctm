@@ -18,7 +18,7 @@
 
     .result-row {
       // To make up for the space no longer consumed by the .result element.
-      padding-top: 230px;
+      padding-top: 330px;
     }
 
     .result {
@@ -47,6 +47,9 @@
   }
 
   &.affixed-compact {
+    h3 {
+      display: block; // for some reason it's hidden in the core.
+    }
     .result {
       .resultInsert {
         height: 270px;

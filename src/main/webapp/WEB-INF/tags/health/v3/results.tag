@@ -61,15 +61,18 @@
             <div class="featuresList featuresElements">
                 {{ if(coverType == 'H' || coverType == 'C') { }}
                 <div class="hospitalCoverSection">
-                    <h3>Hospital Cover</h3>
+                    <h3><span class="health-icon HLTicon-hospital"></span> Hospital Cover</h3>
                     <div class="hospitalSelectionsExcessContainer">
-                        <h5>Excess</h5>
-                        <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1">
+                        <div class="hospitalExcessSectionBorder">
+                            <h5>Excess</h5>
+                            <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1">
+                            </div>
+                            <div class="yourSelectionsHospital">
+                            <h5>Your selections</h5>
+                            <span class="restrictedBenefit hidden"># restricted benefit</span>
+                            </div>
                         </div>
-                        <h5>Your selections</h5>
-                        <div class="featuresListHospitalSelections" data-feature-index="2">
-
-                        </div>
+                        <div class="featuresListHospitalSelections" data-feature-index="2"></div>
                     </div>
                     <h5>Other options</h5>
                     <div class="featuresListHospitalOther" data-feature-index="4"></div>
@@ -77,15 +80,18 @@
                 {{ } }}
                 {{ if(coverType == 'E' || coverType == 'C') { }}
                 <div class="extrasCoverSection">
-                    <h3>Extras Cover</h3>
+                    <h3><span class="health-icon HLTicon-extras"></span> Extras Cover</h3>
                     <div class="featuresListExtrasSelections" data-feature-index="3"></div>
                     <h5>Other options</h5>
                     <div class="featuresListExtrasOtherList" data-feature-template="#results-features-extras-template" data-feature-index="5"></div>
                     <div class="featuresListExtrasFullList" data-feature-index="5"></div>
                 </div>
                 {{ } }}
+                <div class="ambulanceCoverSection">
+                    <h3><span class="health-icon HLTicon-extras"></span> Ambulance Cover</h3>
+                    <div class="featuresListAmbulance" data-feature-index="6"></div>
+                </div>
             </div>
-        </div>
         </div>
     </jsp:attribute>
 

@@ -231,6 +231,22 @@
         }
     }
 
+    /**
+     * The following hacks are required to ensure we do not affect HealthV1 (Simples) journey
+     */
+    function healthResultsV4Hacks() {
+
+        $('.featuresListHospitalOther > .collapsed').removeClass('collapsed');
+
+        if($('.hospitalCoverSection').length) {
+            $('.hospitalCoverSection').each(function () {
+                var $el = $(this);
+                if ($el.find('sup').length) {
+                    $el.find('.restrictedBenefit').removeClass('hidden');
+                }
+            });
+        }
+    }
     function eventSubscriptions() {
 
         var tStart = 0;
@@ -240,7 +256,7 @@
             _setupSelectedBenefits('Extras Selections', 'Extras Cover');
             _setupSelectedBenefits('Hospital Selections', 'Hospital Cover');
             Features.buildHtml();
-            
+            _.defer(healthResultsV4Hacks);
         });
 
         $(document).on("generalReturned", function () {
