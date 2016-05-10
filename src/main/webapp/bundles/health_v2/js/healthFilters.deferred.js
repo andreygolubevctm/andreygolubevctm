@@ -92,7 +92,7 @@
                 defaultValue: '4',
                 events: {
                     init: function (filterObject) {
-                        var $slider = $('#results-sidebar .health-filter-excess .slider-control');
+                        var $slider = $('.health-filter-excess .slider-control');
                         meerkat.modules.sliders.initSlider($slider);
                         $slider.find('.slider')
                             .val($(filterObject.defaultValueSourceSelector).val())
@@ -102,7 +102,7 @@
                             });
                     },
                     update: function (filterObject) {
-                        var $slider = $('#results-sidebar .health-filter-excess .slider-control .slider');
+                        var $slider = $('.health-filter-excess .slider-control .slider');
                         $(filterObject.defaultValueSourceSelector).val($slider.val().replace('.00', ''));
                     }
                 }
@@ -214,7 +214,7 @@
         coverType;
 
     function populateSelectedBenefits() {
-        var selectedBenefits = $('#results-sidebar').find('.results-filters-benefits input[type="checkbox"]:checked').map(function() {
+        var selectedBenefits = $('.results-filters-benefits input[type="checkbox"]:checked').map(function() {
             return this.value;
         });
         meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits);
@@ -242,7 +242,7 @@
 
         $(document).on('click', '.filter-remove', function removeBenefitsSection(e) {
             var $this = $(e.target),
-                $sidebar = $('#results-sidebar');
+                $sidebar = $('.results-filters-benefits');
 
             if ($this.hasClass('hospital')) {
                 $sidebar.find('.need-hospital').slideUp('fast', function () {
@@ -265,7 +265,7 @@
 
         $(document).on('click', '.filter-add', function addBenefitsSection(e) {
             var $this = $(e.target),
-                $sidebar = $('#results-sidebar');
+                $sidebar = $('.results-filters-benefits');
 
             if ($this.hasClass('hospital')) {
                 $sidebar.find('.need-no-hospital').slideUp('fast', function () {
@@ -310,7 +310,7 @@
     function eventSubscriptions() {
 
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTER_CHANGED, function (event) {
-            var $sidebar = $('#results-sidebar');
+            var $sidebar = $('.sidebar-widget');
 
             // coverLevel change event subscription
             switch (event.target.name) {

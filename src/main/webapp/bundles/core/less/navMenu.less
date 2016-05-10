@@ -43,15 +43,18 @@
 			.navbar-nav {
 				> li > a,
 				> .navbar-text {
-					color: @navMenu-level1-link-color;
-					background-color: @navMenu-level1-bg-color !important; //TODO: loose this!
+					color: @navMenu-level1-link-color !important;
+                    background-color: @navMenu-bg-color !important; //TODO: loose this!
 					border-bottom: 1px solid @navMenu-level1-border-color;
-					margin: 14px @navMenu-padding-horizontal 0;
-					padding: 5px;
+					padding: 15px @navMenu-padding-horizontal;
 					
 					font-weight: normal;
 					font-size: 14px;
 					font-family: @font-family-theme-light;
+
+                    .icon {
+                      min-width: 11px;
+                    }
 					
 					.icon + span, .icon + div {
 						margin-left: 6px !important; //TODO: loose this!
@@ -80,11 +83,35 @@
 						}
 					}
 				}
-				.active, .active a {
-					color: @navMenu-level1-link-active-color;
-					font-weight: normal;
-					font-family: @font-family-theme-bold;
-				}
+				.open {
+                     > a {
+                        background-color: @navMenu-level1-open-bg-color !important;
+                        color: @navMenu-level1-link-open-color !important;
+                        border-bottom: 2px solid @dark-blue-stroke;
+                    }
+
+                    .dropdown-menu {
+                        margin-left: 10px;
+                        position: relative;
+                        background-color: #fff;
+
+                        &:before {
+                          content: '';
+                          position: absolute;
+                          top: 0;
+                          left: -9px;
+                          width: 0;
+                          height: 0;
+                          border-style: solid;
+                          border-width: 0 10px 10px 0;
+                          border-color: transparent @dark-blue-stroke transparent transparent;
+                        }
+
+                        > * {
+                          padding: 15px;
+                        }
+                    }
+                }
 			}
 		}
 
@@ -110,7 +137,7 @@
 					right: @navMenu-push-value;
 				}
 				.navMenu-contents {
-					left: @navMenu-remainder-value;
+					left: 0%;
 					right: 0%;
 				}
 				// This shouldn't be needed as you'd have updated the actual html structure, but hey, why not, use it when you're ready.
@@ -153,11 +180,19 @@
 		.navbar-default .navMenu-header {
 			color: @navMenu-header-color;
 			background-color: @navMenu-header-bg-color;
-			box-shadow: inset 0px -1px 0px 0px darken(@btn-cta-bg-color, 10%);
-			text-transform: uppercase;
 			font-weight: normal;
 			font-family: @font-family-theme-bold;
-			margin-bottom: 18px; //NOTE: Apologies if this bites you in a situation i don't know of yet.
+
+            .title{
+                font-size: @font-size-large;
+                line-height: 40px;
+                padding-left: 15px;
+            }
+
+            .navbar-toggle {
+                border: none;
+                background-color: transparent;
+            }
 		}
 
 		//When inside the offcanvas mode the underlay should be transparent
