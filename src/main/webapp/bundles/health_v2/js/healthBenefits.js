@@ -132,7 +132,7 @@
 		}
 
 		// set the cover type to customised
-		$('#health_benefits_covertype').val('customised');
+		$('#health_benefits_covertype').val('customise');
 
 		// sync the limited cover options
 		meerkat.modules.healthBenefitsStep.syncAccidentOnly();

@@ -11,7 +11,6 @@
         $allHospitalButtons,
         $defaultCover,
         $hasIconsDiv,
-        changedByCallCentre = false,
         customiseDialogId = null,
         hospitalBenefits = [],
         extrasBenefits = [];
@@ -65,21 +64,6 @@
     }
 
     function eventSubscriptions() {
-
-        $benefitsForm.find('.CTM-plus label').on('click', function () {
-            showMoreBenefits();
-        });
-
-        $benefitsForm.find('.benefits-side-bar .btn-edit').on('click', function () {
-            $coverType.val('C').change();
-        });
-
-        // align titles when breakpoint changes
-        meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function breakpointChanged(states) {
-            if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "benefits") {
-                alignTitle();
-            }
-        });
 
         toggleBenefits();
         hospitalCoverToggleEvents();
@@ -169,29 +153,18 @@
         $benefitsForm.find('.hasShortlistableChildren').each(function () {
             var $this = $(this);
 
-            $this.find('.category[class*="CTMNoIcon"]').each(function () {
-                var newClass = $(this).attr('class').replace('CTMNoIcon', 'CTM');
-                $(this).removeClass().addClass(newClass);
-            });
-
             // fix positioning of label and help
             $this.find('.category[class*="CTM-"] label, .hasIcons .category[class*="HLTicon-"] label').each(function () {
-                $el = $(this);
-                var labelTxt = $("<span/>").addClass('iconLabel').append($.trim($el.text().replace('Need Help?', '')));
-                var helpLnk = $el.find('a').detach();
+                var $el = $(this),
+                    labelTxt = $("<span/>").addClass('iconLabel').append($.trim($el.text().replace('Need Help?', ''))),
+                    helpLnk = $el.find('a').detach();
                 $el.empty().append(helpLnk).append("<br>").append(labelTxt);
             });
-
-            // Move the subtitle
-            $this.find('.subTitle').insertAfter($this.find('.hasIcons'));
 
             // Set benefits model
             hospitalBenefits = getBenefitsModelFromPage($benefitsForm.find('.hospitalCover'));
             extrasBenefits = getBenefitsModelFromPage($benefitsForm.find('.extrasCover'));
         });
-
-        // For loading in, update benefits page layout. letting this default to '' for tiered benefits
-        changeLayoutByCoverType($coverType.val());
     }
 
     function getBenefitsModelFromPage($container) {
@@ -217,8 +190,8 @@
     }
 
     function hospitalCoverToggleEvents() {
-        var currentCover = 'customised',
-            previousCover = 'customised',
+        var currentCover = 'customise',
+            previousCover = 'customise',
             $hospitalBenefitsSection = $('.Hospital_container .children'),
             $coverType = $('#health_benefits_covertype'),
             $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
@@ -253,7 +226,7 @@
                 default:
                     $hospitalBenefitsSection.slideDown();
                     var $coverButtons = $hospitalCover.find('.' + currentCover + ' input[type="checkbox"]');
-                    if (currentCover !== 'customised') {
+                    if (currentCover !== 'customise') {
                         $allHospitalButtons.not($coverButtons);
                     } else {
                         var classToSelect = previousCover === 'top' ? '' : '.' + previousCover;
@@ -268,9 +241,9 @@
             }
 
             // disable all buttons if customise is not selected
-            if (currentCover !== 'customised') {
+            if (currentCover !== 'customise') {
                 $allHospitalButtons.prop('disabled', true).each(function(){
-                    $btn = $(this);
+                    var $btn = $(this);
                     $btn.parent().on('click.customisingTHCover', _.bind(customiseCover, $btn));
                 });
             } else {
@@ -285,125 +258,13 @@
     }
 
     function disableFields() {
-        if ($hospitalCoverToggles.filter('.active').data('category') !== 'customised') {
+        if ($hospitalCoverToggles.filter('.active').data('category') !== 'customise') {
             $allHospitalButtons.prop('disabled', true);
         }
     }
 
     function enableFields() {
         $allHospitalButtons.prop('disabled', false);
-    }
-
-    function alignTitle() {
-        // only align the title if it is a combined cover and no in mobile breakpoint
-        if ($coverType.val() !== 'C' || meerkat.modules.deviceMediaState.get() === 'xs') {
-            $benefitsForm.find('.custom-col-lg .title').height('auto');
-        } else {
-            var targetHeight = $benefitsForm.find('.custom-col-sm .title').height() + 9; // other col's height plus margin
-            $benefitsForm.find('.custom-col-lg .title').height(targetHeight);
-        }
-    }
-
-    function showMoreBenefits() {
-        $benefitsForm.find('.CTM-plus').fadeOut('fast');
-        $benefitsForm.find('.subTitle').slideDown('fast');
-        $benefitsForm.find('.noIcons').slideDown('fast', function () {
-            alignSidebarHeight();
-        });
-    }
-
-    function checkAndHideMoreBenefits() {
-        // if any nonIcons benefits selected, do not hide
-        if ($benefitsForm.find('.noIcons input:checked').length > 0) return;
-
-        $benefitsForm.find('.subTitle').slideUp('fast');
-        $benefitsForm.find('.noIcons').slideUp('fast');
-        $benefitsForm.find('.CTM-plus').fadeIn('fast');
-    }
-
-    function changeLayoutByCoverType(coverType) {
-        var updateSelectedBenefits = function(coverT) {
-            if("HE".indexOf(coverT) >= 0) {
-                $('.hospitalCoverToggles .benefit-category.active').trigger('click');
-            }
-        };
-        switch (coverType) {
-            case 'H':
-                updateSelectedBenefits(coverType);
-                $benefitsForm.find('.sidebarHospital').fadeOut('fast');
-                $benefitsForm.find('.extrasCover').fadeOut('fast');
-                $benefitsForm.find('.sidebarExtras').fadeIn('fast');
-                $benefitsForm.find('.hospitalCover').removeClass('custom-col-sm').addClass('custom-col-lg').fadeIn('fast', function () {
-                    movePageTitleToColumn();
-                });
-                break;
-            case 'E':
-                $benefitsForm.find('.sidebarExtras').fadeOut('fast');
-                $benefitsForm.find('.hospitalCover').removeClass('custom-col-lg').addClass('custom-col-sm').fadeOut('fast');
-                $benefitsForm.find('.sidebarHospital').fadeIn('fast');
-                $benefitsForm.find('.extrasCover').fadeIn('fast', function () {
-                    movePageTitleToColumn();
-                });
-                break;
-            default:
-                updateSelectedBenefits(coverType);
-                $benefitsForm.find('.benefits-side-bar').fadeOut('fast');
-                $benefitsForm.find('.hasShortlistableChildren').fadeIn('fast', function () {
-                    $benefitsForm.find('fieldset > div').first().prepend($benefitsForm.find('.section h2'));
-                });
-                alignTitle();
-        }
-    }
-
-    function movePageTitleToColumn() {
-        $benefitsForm.find('.custom-col-lg').first().prepend($benefitsForm.find('h2'));
-    }
-
-    function updateCoverTypeByBenefitsSelected() {
-        // after the re-design we only have two hidden fields for the old yes/no toggle, check these first
-        var isHospitalCover = $hiddenFields.find('input[name="health_benefits_benefitsExtras_Hospital"]').val() === 'Y',
-            isExtraCover = $hiddenFields.find('input[name="health_benefits_benefitsExtras_GeneralHealth"]').val() === 'Y';
-
-        // In case the above hidden fields are empty, check children benefits as well
-        isHospitalCover = isHospitalCover || $benefitsForm.find('.hospitalCover input:checked').length > 0;
-        isExtraCover = isExtraCover || $benefitsForm.find('.extrasCover input:checked').length > 0;
-
-        if (isHospitalCover && isExtraCover) {
-            $coverType.val('C');
-        } else if (isHospitalCover) {
-            $coverType.val('H');
-        } else if (isExtraCover) {
-            $coverType.val('E');
-        } else {
-            $coverType.val('');
-        }
-
-        $coverType.change();
-    }
-
-    function alignSidebarHeight() {
-        // no need to align if no sidebar is showing
-        if ($coverType.val() === 'C' || $coverType.val() === '') return;
-
-        var $hospitalMainCol = $benefitsForm.find('.hospitalCover'),
-            $extrasMainCol = $benefitsForm.find('.extrasCover'),
-            $hospitalSidebar = $benefitsForm.find('.sidebarHospital .sidebar-wrapper'),
-            $extrasSidebar = $benefitsForm.find('.sidebarExtras .sidebar-wrapper');
-
-        var hospitalMainColHeight = $hospitalMainCol.height() + 15, // plus bottom padding;
-            extrasMainColHeight = $extrasMainCol.height() + 15; // plus bottom padding;
-
-        // reset
-        $hospitalSidebar.height('auto');
-        $extrasSidebar.height('auto');
-
-        if (hospitalMainColHeight > $extrasSidebar.height()) {
-            $extrasSidebar.height(hospitalMainColHeight);
-        }
-
-        if (extrasMainColHeight > $hospitalSidebar.height()) {
-            $hospitalSidebar.height(extrasMainColHeight);
-        }
     }
 
     function updateHiddenFields(coverType) {
@@ -430,22 +291,21 @@
      * All below functions are moved from original healthBenefits.js (drop down version)
      * */
 
-    function resetBenefitsSelection() {
+    function resetBenefitsSelection(includeHidden) {
         $benefitsForm.find("input[type='checkbox']").prop('checked', false);
-        $hiddenFields.find(".benefit-item").val('');
+        if(includeHidden === true){
+            $hiddenFields.find(".benefit-item").val('');
+        }
     }
 
     function populateBenefitsSelection(checkedBenefits) {
 
-        resetBenefitsSelection();
+        resetBenefitsSelection(false);
 
         for (var i = 0; i < checkedBenefits.length; i++) {
             var path = checkedBenefits[i];
-            $hiddenFields.find("input[name='health_benefits_benefitsExtras_" + path + "']").val('Y');
-            $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true);
+            $benefitsForm.find("input[name='health_benefits_benefitsExtras_" + path + "']").prop('checked', true).prop('disabled', false);
         }
-
-        updateCoverTypeByBenefitsSelected();
     }
 
 
@@ -453,7 +313,7 @@
     function resetBenefitsForProductTitleSearch() {
         if (meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi' || meerkat.site.environment === 'nxs') {
             if ($.trim($('#health_productTitleSearch').val()) !== '') {
-                resetBenefitsSelection();
+                resetBenefitsSelection(true);
             }
         }
     }
@@ -531,18 +391,13 @@
 
     function onCustomiseCover(obj) {
         meerkat.modules.dialogs.close(obj.modalId);
-        $benefitsForm.find("a[data-category=customised]:visible").first().trigger('click');
+        $benefitsForm.find("a[data-category=customise]:visible").first().trigger('click');
         obj.btn.trigger('click');
     }
 
     meerkat.modules.register('healthBenefitsStep', {
         init: init,
         events: events,
-        alignTitle: alignTitle,
-        checkAndHideMoreBenefits: checkAndHideMoreBenefits,
-        changeLayoutByCoverType: changeLayoutByCoverType,
-        updateCoverTypeByBenefitsSelected: updateCoverTypeByBenefitsSelected,
-        alignSidebarHeight: alignSidebarHeight,
         setDefaultCover: setDefaultCover,
         enableFields: enableFields,
         disableFields: disableFields,

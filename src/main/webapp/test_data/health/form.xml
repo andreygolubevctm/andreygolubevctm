@@ -29,10 +29,14 @@
 		<coverType>C</coverType>
 	</situation>
 	<benefits>
-		<covertype>customise</covertype>
+		<covertype>medium</covertype>
 		<benefitsExtras>
 			<Hospital>Y</Hospital>
 			<PrHospital>Y</PrHospital>
+            <Cardiac>Y</Cardiac>
+            <Rehabilitation>Y</Rehabilitation>
+            <PlasticNonCosmetic>Y</PlasticNonCosmetic>
+            <Palliative>Y</Palliative>
 			<GeneralHealth>Y</GeneralHealth>
 			<DentalGeneral>Y</DentalGeneral>
 		</benefitsExtras>
