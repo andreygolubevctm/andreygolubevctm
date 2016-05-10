@@ -31,7 +31,7 @@
             <div class="c content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">
                 {{ if(hasResult) { }}
                 {{ var displayValue = Features.parseFeatureValue( pathValue, true ); }}<%-- Below compressed to reduce number of whitespace nodes in DOM --%>
-                {{ if( pathValue ) { }}<div>{{= displayValue }}</div>{{ } else { }}{{= "-" }}{{ } }}{{ } else { }}{{= "-" }}
+                {{ if( pathValue ) { }}<div><strong>{{= displayValue }}</strong> {{= ft.safeName.toLowerCase() }}</div>{{ } else { }}{{= "-" }}{{ } }}{{ } else { }}{{= "-" }}
                 {{ } }}
             </div>
             {{ } }}

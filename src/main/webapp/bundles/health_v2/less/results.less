@@ -1,3 +1,6 @@
+// NOTE: This file provides the design for the structure outlined in shared/results/v4.
+//       For a list of what a .section or .category is, see ../../../shared/results/v4/less/results_structure.less
+
 #resultsPage {
   a.dialogPop {
     text-decoration: underline;
@@ -128,15 +131,15 @@
         }
       }
 
-      // An override for last border-bottom of a section's categories.
-      &.section {
-        // .cell.section's children's last feature: set border-bottom on its .content
-        .children .cell.category.collapsed:last-child .labelInColumn .content {
-          border-bottom: 1px solid @results-border-color;
-        }
-      }
+
       // A top level category e.g. the Non Cosmetic Plastic Surgery cell
       &.category { //.cell.category
+        // An override for last border-bottom of a category
+        // .cell.section's children's last feature: set border-bottom on its .content
+        &.collapsed:last-child .labelInColumn .content {
+          border-bottom: 1px solid @results-border-color;
+        }
+
         // The label cell "Non Cosmetic Plastic Surgery"
         > .labelInColumn {
           display: block;
@@ -274,6 +277,13 @@
           top: 14px;
         }
       }
+    }
+  }
+
+  // Overrides for the extras "other" list template:
+  .featuresListExtrasOtherList {
+    .cell {
+      border-bottom: 1px solid @results-border-color;
     }
   }
 

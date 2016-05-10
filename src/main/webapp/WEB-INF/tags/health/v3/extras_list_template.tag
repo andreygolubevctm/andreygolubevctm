@@ -9,7 +9,7 @@
         {{ if(pathValue == "Y") { availableExtras.push(ft); } }}
     {{ }); }}
     <div class="cell category">
-        <div class="content" data-featureId="99999">
+        <div class="content isMultiRow" data-featureId="99999">
         <strong>Product also covers:</strong> {{ _.each(availableExtras, function(ft, i) { }}
         {{= ft.safeName }}{{ if(i == (availableExtras.length-2) ) { }} and {{ } else if(i != availableExtras.length-1) { }}, {{ } }}
         {{ }); }}</div>

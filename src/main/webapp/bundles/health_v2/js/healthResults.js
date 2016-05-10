@@ -253,7 +253,12 @@
             e.preventDefault();
             filteredOutResults = [];
             Results.unfilterBy('productId', "value", true);
-        })
+        }).on('click', '.featuresListExtrasOtherList', function() {
+            $('.featuresListExtrasOtherList').addClass('hidden');
+            $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
+        });
+
+
 
     }
     function eventSubscriptions() {

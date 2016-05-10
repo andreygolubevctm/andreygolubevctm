@@ -2,7 +2,6 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <core_v1:js_template id="results-features-excess-template">
-
     {{ var feature = Features.getPageStructure(obj.featuresStructureIndexToUse)[0]; }}
     {{ _.each(feature.children, function(ft) { }}
     <div class="cell {{= ft.classString }}">
@@ -16,5 +15,4 @@
         </div>
     </div>
     {{ }); }}
-
 </core_v1:js_template>

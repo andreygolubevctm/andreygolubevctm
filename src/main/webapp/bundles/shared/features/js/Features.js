@@ -157,7 +157,7 @@ Features = {
 		decode = decode || false;
 
 		if (typeof value == 'undefined' || value === '') {
-			value = "&nbsp;";
+			value = false;
 		} else {
 			var obj = _.findWhere(Results.settings.dictionary.valueMap, {key:value});
 			if (typeof obj != 'undefined') {
@@ -303,7 +303,7 @@ Features = {
 				}
 
 				if(roundedHeight <= 270){
-					if(roundedHeight != 0)
+					if(roundedHeight !== 0)
 						$ee.addClass('height'+roundedHeight);
 				}else{
 					$ee.height(item2.height);
