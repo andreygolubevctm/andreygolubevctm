@@ -7,18 +7,13 @@
   &.resultsContainer {
 
     .expander {
-      .icon-angle-right;
+      .icon-angle-down;
       right: @results-feature-cell-padding;
       top: @results-feature-cell-padding + floor(14 / 4);
       position: absolute;
       font-size: 12px;
     }
-    .expanded .labelInColumn > .content .expander,
-    .expanding .labelInColumn > .content .expander,
-    .expanded > .content .expander,
-    .expanding > .content .expander {
-      .icon-angle-down;
-    }
+
     .featuresList {
       .icon-tick,
       .icon-cross {

@@ -194,7 +194,8 @@
                 elements: {
                     features: {
                         values: ".content",
-                        extras: ".children"
+                        extras: ".children",
+                        renderTemplatesBasedOnFeatureIndex: true
                     }
                 },
                 dictionary: {
@@ -239,6 +240,7 @@
             _setupSelectedBenefits('Extras Selections', 'Extras Cover');
             _setupSelectedBenefits('Hospital Selections', 'Hospital Cover');
             Features.buildHtml();
+            
         });
 
         $(document).on("generalReturned", function () {

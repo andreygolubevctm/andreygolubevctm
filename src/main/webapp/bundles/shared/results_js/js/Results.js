@@ -159,7 +159,8 @@ var Results = {
 					expandable: ".expandable",
 					expandableHover: ".expandableHover",
 					values: ".featuresValues",
-					extras: ".featuresExtras"
+					extras: ".featuresExtras",
+					renderTemplatesBasedOnFeatureIndex: false
 				}
 			},
 			render:{
