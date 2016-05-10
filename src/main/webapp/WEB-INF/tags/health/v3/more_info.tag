@@ -212,11 +212,11 @@
 
 		</div>
 
-		<div class="fieldset-card row cover-card">
+		<div class="fieldset-card row cover-card ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
 
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 			{{ if(typeof hospital !== 'undefined' && typeof hospitalCover !== 'undefined') { }}
-			<div class="col-xs-12 col-md-6">
+			<div class="col-xs-12 col-md-6 hospitalCover">
 				{{ if(typeof hospital.inclusions !== 'undefined') { }}
 				<h2>Hospital cover</h2>
 				<p><strong>Hospital Excess:</strong> {{= hospital.inclusions.excess }}</p>
@@ -374,7 +374,7 @@
 			</c:if>
 
 
-			<div class="col-md-8">
+			<div class="col-md-8 switching">
 				<h2>Switching is simple</h2>
 				<ol>
 					<li>You can change your fund whenever you like</li>
