@@ -11,16 +11,16 @@
     when copying it to the 'your selected benefits'. --%>
     {{ if(ft.doNotRender === true) { continue; } }}
 
-    {{ var dataSKey = typeof ft.shortlistKey != 'undefined' && ft.shortlistKey != '' ? 'data-skey="'+ft.shortlistKey + '"' : ''; }}
-    {{ var dataSKeyParent = typeof ft.shortlistKeyParent != 'undefined' && ft.shortlistKeyParent != '' ? 'data-par-skey="'+ft.shortlistKeyParent + '"' : ''; }}
-    <div class="cell {{= ft.classString }}" data-index="{{= i }}" {{= dataSKey }} {{= dataSKeyParent }}>
+    {{ var hasResult = ft.resultPath != null && ft.resultPath != ''; }}
+    {{ var pathValue = hasResult ? Object.byString( obj, ft.resultPath ) : false; }}
+    <div class="cell {{= ft.classString }}">
         {{ if(ft.type != 'section') { }}<%-- section headers are not rendered anymore --%>
-            <div class="labelInColumn {{= ft.classStringForInlineLabel }}{{ if (ft.name == '') { }} noLabel{{ } }}">
-                <div class="content" data-featureId="{{= ft.id }}">
+            <div class="labelInColumn {{= ft.classStringForInlineLabel }}{{ if (ft.name == '') { }} noLabel{{ } }}"{{ if(pathValue == "N") { }} title='Not covered' {{ } }}>
+                <div class="content{{ if(pathValue == 'N') { }} noCover{{ } }}" data-featureId="{{= ft.id }}">
                     <div class="contentInner">
                         {{ var iconClassSet = ft.classString.match(/(HLTicon-[^\s]+)/); }}
                         {{ var iconClass = iconClassSet && iconClassSet.length && iconClassSet[0].indexOf('HLTicon') != -1 ? iconClassSet[0] : "" }}
-                        <span class="health-icon {{= iconClass }}"></span> {{= ft.safeName }}
+                        <span class="health-icon {{= iconClass }}"></span> {{= ft.safeName }} {{ if(pathValue == "R") { }}<sup title="Restricted">#</sup>{{ } }}
                         {{ if(typeof ft.children !== 'undefined' && ft.children.length) { }}
                         <span class="icon expander"></span>
                         {{ } }}
@@ -29,10 +29,9 @@
             </div>
             {{ if(ft.type != 'category') { }}<%--  category no longer has content like a tick/cross. --%>
             <div class="c content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">
-                {{ if(ft.resultPath != null && ft.resultPath != '') { }}
-                {{ var pathValue = Object.byString( obj, ft.resultPath ); }}
+                {{ if(hasResult) { }}
                 {{ var displayValue = Features.parseFeatureValue( pathValue, true ); }}<%-- Below compressed to reduce number of whitespace nodes in DOM --%>
-                {{ if( pathValue ) { }}<div>{{= displayValue }}</div>{{ } else { }}{{= "-" }}{{ } }}{{ } else { }}{{= "-" }}
+                {{ if( pathValue ) { }}<div><strong>{{= displayValue }}</strong> {{= ft.safeName.toLowerCase() }}</div>{{ } else { }}{{= "-" }}{{ } }}{{ } else { }}{{= "-" }}
                 {{ } }}
             </div>
             {{ } }}

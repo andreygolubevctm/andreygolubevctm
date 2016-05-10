@@ -52,9 +52,8 @@
                 }
                 dynamicTopHeaderContentHeight += $(this).height();
             });
-
             // height of the header without navbar (which gets affixed at the same time)
-            topStartOffset = dynamicTopHeaderContentHeight + $(".header-top .container").height();
+            topStartOffset = $('.resultsOverflow').offset().top;//dynamicTopHeaderContentHeight + $(".header-top .container").height();
             if ($resultsHeaderBg && $resultsHeaderBg.length) {
                 topStartOffset += $resultsHeaderBg.position().top;
             }

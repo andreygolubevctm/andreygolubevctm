@@ -12,6 +12,7 @@
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
         resultsStepIndex =  3,
+        filteredOutResults = [], // this is used for removing the results when clicking the "x"
 
         templates = {
             premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
@@ -231,6 +232,35 @@
         }
     }
 
+    /**
+     * The following hacks are required to ensure we do not affect HealthV1 (Simples) journey
+     */
+    function healthResultsV4Hacks() {
+
+        $('.featuresListHospitalOther > .collapsed').removeClass('collapsed');
+
+            $('.hospitalCoverSection').each(function () {
+                var $el = $(this);
+                if ($el.find('sup').length) {
+                    $el.find('.restrictedBenefit').removeClass('hidden');
+                }
+            });
+
+        $(document).on('click', '.remove-result', function() {
+            filteredOutResults.push($(this).attr('data-productId'));
+            Results.filterBy("productId", "value", { "notInArray": filteredOutResults }, true);
+        }).on('click', '.reset-filters', function(e) {
+            e.preventDefault();
+            filteredOutResults = [];
+            Results.unfilterBy('productId', "value", true);
+        }).on('click', '.featuresListExtrasOtherList', function() {
+            $('.featuresListExtrasOtherList').addClass('hidden');
+            $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
+        });
+
+
+
+    }
     function eventSubscriptions() {
 
         var tStart = 0;
@@ -240,7 +270,7 @@
             _setupSelectedBenefits('Extras Selections', 'Extras Cover');
             _setupSelectedBenefits('Hospital Selections', 'Hospital Cover');
             Features.buildHtml();
-            
+            _.defer(healthResultsV4Hacks);
         });
 
         $(document).on("generalReturned", function () {
@@ -262,7 +292,7 @@
         $(document).on("resultsLoaded", onResultsLoaded);
 
         $(document).on("resultsReturned", function () {
-
+            filteredOutResults = []; //reset
             meerkat.modules.utils.scrollPageTo($("header"));
 
             // Reset the feature header to match the new column content.
