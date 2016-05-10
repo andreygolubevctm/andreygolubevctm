@@ -13,7 +13,9 @@ WFD
 var healthFunds_WFD = {
 
     ajaxJoinDec: false,
-
+    $paymentType : $('#health_payment_details_type input'),
+    $paymentFrequency : $('#health_payment_details_frequency'),
+    $paymentStartDate: $("#health_payment_details_start"),
     set: function(){
         <%--calendar for start cover--%>
         meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
@@ -48,41 +50,16 @@ var healthFunds_WFD = {
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
         meerkat.modules.healthCreditCard.render();
 
-        <%--selections for payment date--%>
-        $('#update-premium').on('click.WFD', function() {
+        healthFunds_WFD.$paymentType.on('click.WFD', function renderPaymentDaysPaymentType(){
+            healthFunds_WFD.renderPaymentDays();
+        });
 
-            var deductionDate = meerkat.modules.dateUtils.returnDate($('#health_payment_details_start').val());
-            var distance = 4 - deductionDate.getDay();
-            if(distance < 2) { <%-- COB Tue cutoff to make Thu of same week for payment--%>
-                distance += 7;
-            }
-            deductionDate.setDate(deductionDate.getDate() + distance);
+        healthFunds_WFD.$paymentFrequency.on('change.WFD', function renderPaymentDaysFrequency(){
+            healthFunds_WFD.renderPaymentDays();
+        });
 
-            var day = deductionDate.getDate();
-            var isTeen = (day > 10 && day < 20);
-            if((day % 10) == 1 && !isTeen ) {
-                day += "st";
-            } else if((day % 10) == 2 && !isTeen ) {
-                day += "nd";
-            } else if((day % 10) == 3 && !isTeen ) {
-                day += "rd";
-            } else {
-                day += "th";
-            }
-
-            var deductionText = 'Please note that your first or full payment (annual frequency) ' +
-                    'will be debited from your payment method on ' + meerkat.modules.dateUtils.dateValueLongFormat(deductionDate);
-
-            $('.health_credit-card-details_policyDay-message').text( deductionText);
-            $('.health_bank-details_policyDay-message').text(deductionText);
-
-            var _dayString = meerkat.modules.numberUtils.leadingZero(deductionDate.getDate() );
-            var _monthString = meerkat.modules.numberUtils.leadingZero(deductionDate.getMonth() + 1 );
-            var deductionDateValue = deductionDate.getFullYear() +'-'+ _monthString +'-'+ _dayString;
-
-            $('.health-credit-card_details-policyDay option').val(deductionDateValue);
-            $('.health-bank_details-policyDay option').val(deductionDateValue);
-
+        healthFunds_WFD.$paymentStartDate.on("changeDate.WFD", function renderPaymentDaysCalendar(e) {
+            healthFunds_WFD.renderPaymentDays();
         });
 
         <%--Age requirements for applicants--%>
@@ -115,8 +92,43 @@ var healthFunds_WFD = {
         });
 
     },
+    renderPaymentDays: function() {
+        var deductionDate = meerkat.modules.dateUtils.returnDate($('#health_payment_details_start').val());
+        var distance = 4 - deductionDate.getDay();
+        if(distance < 2) { <%-- COB Tue cutoff to make Thu of same week for payment--%>
+            distance += 7;
+        }
+        deductionDate.setDate(deductionDate.getDate() + distance);
+
+        var day = deductionDate.getDate();
+        var isTeen = (day > 10 && day < 20);
+        if((day % 10) == 1 && !isTeen ) {
+            day += "st";
+        } else if((day % 10) == 2 && !isTeen ) {
+            day += "nd";
+        } else if((day % 10) == 3 && !isTeen ) {
+            day += "rd";
+        } else {
+            day += "th";
+        }
+
+        var deductionText = 'Please note that your first or full payment (annual frequency) ' +
+                'will be debited from your payment method on ' + meerkat.modules.dateUtils.dateValueLongFormat(deductionDate);
+
+        $('.health_credit-card-details_policyDay-message').text( deductionText);
+        $('.health_bank-details_policyDay-message').text(deductionText);
+
+        var _dayString = meerkat.modules.numberUtils.leadingZero(deductionDate.getDate() );
+        var _monthString = meerkat.modules.numberUtils.leadingZero(deductionDate.getMonth() + 1 );
+        var deductionDateValue = deductionDate.getFullYear() +'-'+ _monthString +'-'+ _dayString;
+
+        $('.health-credit-card_details-policyDay option').val(deductionDateValue);
+        $('.health-bank_details-policyDay option').val(deductionDateValue);
+    },
     unset: function() {
-        $('#update-premium').off('click.WFD');
+        healthFunds_WFD.$paymentType.off('click.WFD');
+        healthFunds_WFD.$paymentFrequency.off('change.WFD');
+        healthFunds_WFD.$paymentStartDate.off("changeDate.WFD");
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
 

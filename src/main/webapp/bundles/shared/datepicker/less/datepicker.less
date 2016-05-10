@@ -68,6 +68,11 @@
 		-moz-user-select: none;
 		-ms-user-select: none;
 		user-select: none;
+
+		&.table-condensed {
+			background-color: @datepicker-switch-bg-color;
+		}
+
 		tr {
 			td, th {
 				text-align: center;
@@ -124,7 +129,7 @@
 		&.old:hover,
 		&.new,
 		&.new:hover {
-			color: @datepicker-cells-oldnew-color;
+			color: @datepicker-disabled-background-color;
 		}
 		&.disabled,
 		&.disabled:hover {
@@ -135,7 +140,7 @@
 
 		&.new.disabled,
 		&.new.disabled:hover {
-			background: none;
+			background: @datepicker-cells-disabled-color;
 		  	color: @datepicker-cells-disabled-color;
 		}
 		&.today,

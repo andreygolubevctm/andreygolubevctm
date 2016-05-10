@@ -34,7 +34,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/number" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Credit Card Number" className="health_credit-card-details_number_group">
-			<field_v2:creditcard_number xpath="${fieldXpath}" title="Credit card number" required="true" className="health-credit_card_details-number sessioncamexclude" />
+			<field_v2:creditcard_number xpath="${fieldXpath}" title="Credit card number" required="true" className="health-credit_card_details-number sessioncamexclude" placeHolder="XXXX - XXXX - XXXX - XXXX" />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/expiry" />
@@ -44,7 +44,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/ccv" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="CCV number" helpId="402" className="health_credit-card-details_ccv">
-			<field_v2:creditcard_ccv xpath="${fieldXpath}" required="true"  />
+			<field_v2:creditcard_ccv xpath="${fieldXpath}" required="true" placeHolder="CCV Number" />
 		</form_v3:row>
 
 		<health_v2:payment_ipp xpath="${xpath}/ipp" />

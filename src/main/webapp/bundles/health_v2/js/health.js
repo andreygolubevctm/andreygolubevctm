@@ -631,6 +631,7 @@
 					}
 
 				}
+				meerkat.modules.healthPaymentStep.updatePremium();
 			}
 		};
 

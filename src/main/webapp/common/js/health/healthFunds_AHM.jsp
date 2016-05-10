@@ -11,6 +11,9 @@ AHM
 --%>
 
 var healthFunds_AHM = {
+  $paymentType : $('#health_payment_details_type input'),
+  $paymentFrequency : $('#health_payment_details_frequency'),
+  $paymentStartDate: $("#health_payment_details_start"),
   set: function(){
 
     <%--Dependants--%>
@@ -153,12 +156,19 @@ var healthFunds_AHM = {
           'maxDay' : 28
       };
     $('#update-premium').on('click.AHM', function() {
-      if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
-        meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, false);
-      }
-      else {
-        meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, true);
-      }
+
+    });
+
+    healthFunds_AHM.$paymentType.on('click.AHM', function populateFuturePaymentDaysPaymentType(){
+      healthFunds_AHM.populateFuturePaymentDays();
+    });
+
+    healthFunds_AHM.$paymentFrequency.on('change.AHM', function populateFuturePaymentDaysFrequency(){
+      healthFunds_AHM.populateFuturePaymentDays();
+    });
+
+    healthFunds_AHM.$paymentStartDate.on("changeDate.AHM", function populateFuturePaymentDaysCalendar(e) {
+      healthFunds_AHM.populateFuturePaymentDays();
     });
 
     $('.health-credit_card_details .fieldrow').hide();
@@ -177,6 +187,14 @@ var healthFunds_AHM = {
 
     <%--calendar for start cover--%>
     meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
+  },
+  populateFuturePaymentDays: function() {
+    if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
+      meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, false);
+    }
+    else {
+      meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, true);
+    }
   },
   unset: function(){
     healthFunds._reset();
@@ -204,7 +222,10 @@ var healthFunds_AHM = {
     <%--selections for payment date--%>
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-    $('#update-premium').off('click.AHM');
+
+    healthFunds_AHM.$paymentType.off('click.AHM');
+    healthFunds_AHM.$paymentFrequency.off('change.AHM');
+    healthFunds_AHM.$paymentStartDate.off("changeDate.AHM");
 
     <%--Payment gateway--%>
     meerkat.modules.paymentGateway.reset();

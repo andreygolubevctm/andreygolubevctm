@@ -9,16 +9,11 @@
 		};
 
 	var modalId;
-	var $coverStartDate;
 	var $paymentRadioGroup;
-	var $premiumContainer;
-	var $updatePremiumButtonContainer;
 	var $paymentContainer;
+	var $paymentMethodLHCText;
 
 	var $frequencySelect;
-	var $priceCell;
-	var $frequncyCell;
-	var $lhcCell;
 
 	var settings = {
 		bank: [],
@@ -40,23 +35,14 @@
 			if(meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
 
 			// Fields
-			$coverStateDate = $('#health_payment_details_start');
-			$coverStateDateCalendar = $('#health_payment_details_start_calendar');
 			$paymentRadioGroup = $("#health_payment_details_type");
 			$frequencySelect = $("#health_payment_details_frequency");
 			$bankAccountDetailsRadioGroup = $("#health_payment_details_claims");
 			$sameBankAccountRadioGroup = $("#health_payment_bank_claims");
+			$paymentMethodLHCText = $('.changes-premium .lhcText');
 
 			// Containers
-			$updatePremiumButtonContainer = $(".health-payment-details_update");
 			$paymentContainer = $(".update-content");
-
-
-			$premiumContainer = $(".health-payment-details_premium");
-			$priceCell = $premiumContainer.find(".amount");
-			$frequncyCell = $premiumContainer.find(".frequencyText");
-			$lhcCell = $premiumContainer.find(".lhcText");
-
 
 			// Add event listeners
 			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockPaymentStep(obj) {
@@ -69,25 +55,24 @@
 				enableUpdatePremium();
 			});
 
-			meerkat.messaging.subscribe(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM, resetState);
-
 			meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_RESET, function jeStepChange(step){
-				resetState();
 				resetSettings();
 			});
 
-			$paymentRadioGroup.find('input').on('change', updateFrequencySelectOptions);
-
-			// validate coupon
-			$('#update-premium').on('click', function(){
-				meerkat.modules.coupon.validateCouponCode($('.coupon-code-field').val());
+			$paymentRadioGroup.find('input').on('change', function() {
+				updatePaymentPremium();
 			});
 
-			// reset state when change coupon code to bring update premium button back
-			$('.coupon-code-field').on('change', resetState);
-
 			// Update premium button
-			$('#update-premium').on('click', updatePremium);
+			$('#health_payment_details_type input').on('click', function(){
+				// validate coupon
+				meerkat.modules.coupon.validateCouponCode($('.coupon-code-field').val());
+				updatePaymentPremium();
+			});
+
+			$frequencySelect.on('change', function updateSidebarQuote(){
+				updateProductFrequency();
+			});
 
 			$('#health_payment_credit_type').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
 			meerkat.modules.healthCreditCard.setCreditCardRules();
@@ -118,25 +103,9 @@
 			resetSettings();
 
 			// Set Dom state
-			$premiumContainer.hide();
-			$updatePremiumButtonContainer.show();
 			$paymentContainer.hide();
 
 		});
-	}
-
-	// Reset the step
-	function resetState(){
-
-		$premiumContainer.hide();
-		$updatePremiumButtonContainer.show();
-		$paymentContainer.hide();
-		$(".health_declaration-group").hide();
-		$("#confirm-step").hide();
-		$(".simples-dialogue-31").hide();
-
-		$('#update-premium').removeClass("hasAltPremium"); // TODO WORK OUT ALT PREMIUM STUFF
-
 	}
 
 	// Settings should be reset when the selected product changes.
@@ -219,58 +188,24 @@
 	}
 
 	// Show approved listings only, this can potentially change per fund
-	function updateFrequencySelectOptions(){
-
-		var paymentMethod = getSelectedPaymentMethod();
-		var selectedFrequency = getSelectedFrequency();
-		var product = meerkat.modules.healthResults.getSelectedProduct();
-
-		var _html = '<option id="health_payment_details_frequency_" value="">Please choose...</option>';
-
-		if(paymentMethod === '' || product === null){
-			return false;
+	function updateFrequencySelectOptions(premiums){
+		if (_.isEmpty(premiums)) {
+			premiums = meerkat.modules.healthResults.getSelectedProduct();
 		}
 
-		var method;
+		if (!_.isEmpty(premiums) && !_.isEmpty(premiums.paymentTypePremiums)) {
+			premiums = premiums.paymentTypePremiums;
 
-		if(paymentMethod === 'cc'){
-			method = settings.credit;
-		}else if(paymentMethod === 'ba'){
-			method = settings.bank;
-		}else{
-			return false;
+			premiums.paymentNode = getPaymentMethodNode();
+			premiums.selectedFrequency = (!_.isEmpty(getSelectedFrequency()) ? getSelectedFrequency() : Results.getFrequency());
+
+			var htmlTemplate = _.template($('#payment_frequency_options').html());
+			var options = htmlTemplate(premiums);
+
+			$frequencySelect.empty().append(options);
+			updateLHCText(premiums);
 		}
-
-		var premium = product.premium;
-
-		if( method.weekly === true && premium.weekly.value > 0 ){
-			_html += '<option id="health_payment_details_frequency_W" value="weekly">Weekly</option>';
-		}
-
-		if( method.fortnightly === true && premium.fortnightly.value > 0 ){
-			_html += '<option id="health_payment_details_frequency_F" value="fortnightly">Fortnightly</option>';
-		}
-
-		if( method.monthly === true && premium.monthly.value > 0 ){
-			_html += '<option id="health_payment_details_frequency_M" value="monthly">Monthly</option>';
-		}
-
-		if( method.quarterly === true && premium.quarterly.value > 0 ){
-			_html += '<option id="health_payment_details_frequency_Q" value="quarterly">Quarterly</option>';
-		}
-
-		if( method.halfyearly === true && premium.halfyearly.value > 0 ){
-			_html += '<option id="health_payment_details_frequency_H" value="halfyearly">Half-yearly</option>';
-		}
-
-		if( method.annually === true && premium.annually.value > 0){
-			_html += '<option id="health_payment_details_frequency_A" value="annually">Annually</option>';
-		}
-
-		$frequencySelect.html( _html ).find('option[value="'+ selectedFrequency +'"]').attr('selected', 'SELECTED');
 	}
-
-
 
 	// Update premium button
 	function enableUpdatePremium() {
@@ -320,9 +255,6 @@
 	// Calls the server for a new premium price based on current selections.
 	function updatePremium() {
 
-		if( meerkat.modules.journeyEngine.isCurrentStepValid() === false){
-			return false;
-		}
 		// fire the tracking call
 		var data = {
 			actionStep: ' health application premium update'
@@ -358,15 +290,9 @@
 						meerkat.modules.journeyEngine.gotoPath('results');
 					});
 				}else{
-
 					if (_.isArray(data)) data = data[0];
 
-					// Update selected product
-					meerkat.modules.healthResults.setSelectedProduct(data, true);
-
-					// Show premium, hide update premium button
-					$premiumContainer.slideDown();
-					$updatePremiumButtonContainer.hide();
+					updateCurrentProduct(data);
 
 					// Show payment input questions
 					$paymentContainer.show();
@@ -386,6 +312,8 @@
 					//re-set the days if required
 					updatePaymentDayOptions();
 
+					updateFrequencySelectOptions();
+
 					$("#confirm-step").show();
 					$(".simples-dialogue-31").show();
 
@@ -401,12 +329,61 @@
 		});
 	}
 
+	function updatePaymentPremium() {
+		var product = meerkat.modules.healthResults.getSelectedProduct();
+
+		if (!_.isEmpty(product)) {
+			var freq = !_.isEmpty(product._selectedFrequency) ? product._selectedFrequency : Results.getFrequency();
+			product._selectedFrequency = getSelectedFrequency();
+			product.premium = product.paymentTypePremiums[getPaymentMethodNode(freq)];
+			meerkat.modules.healthResults.setSelectedProduct(product, true);
+
+			updateFrequencySelectOptions();
+		}
+	}
+
+	function updateProductFrequency() {
+		var product = meerkat.modules.healthResults.getSelectedProduct();
+		product._selectedFrequency = getSelectedFrequency();
+		meerkat.modules.healthResults.setSelectedProduct(product, true);
+	}
+
+	function updateCurrentProduct(data) {
+		var freq = !_.isEmpty(data._selectedFrequency) ? data._selectedFrequency : Results.getFrequency();
+
+		// due to the new model, need to reset the premium node
+			 data.premium = data.paymentTypePremiums[getPaymentMethodNode()];
+			data._selectedFrequency = freq;
+
+			// Update selected product
+			 meerkat.modules.healthResults.setSelectedProduct(data, true);
+	}
+
+	function getPaymentMethodNode(){
+		var nodeName = '';
+		switch (getSelectedPaymentMethod()) {
+			case 'cc': nodeName = 'CreditCard'; break;
+			default: nodeName = 'BankAccount'; break;
+		}
+
+		return nodeName;
+	}
+
+	function updateLHCText(premiums) {
+		var lhcText = "";
+		if (premiums[premiums.paymentNode] && premiums[premiums.paymentNode][premiums.selectedFrequency]) {
+			lhcText = premiums[premiums.paymentNode][premiums.selectedFrequency].pricing;
+		}
+
+		$paymentMethodLHCText.html(lhcText);
+	}
+
 	// Check if details for the claims bank account needs to be shown
 	function toggleClaimsBankAccountQuestion(){
 
 		var _type = getSelectedPaymentMethod();
 
-		if(_type == 'ba'){
+		if(_type == 'dd'){
 
 			// Show sub question?
 			if($bankAccountDetailsRadioGroup.find('input:checked').val() == 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
@@ -495,7 +472,8 @@
 		overrideSettings: overrideSettings,
 		setCoverStartRange: setCoverStartRange,
 		getSelectedFrequency: getSelectedFrequency,
-		getSelectedPaymentMethod: getSelectedPaymentMethod
+		getSelectedPaymentMethod: getSelectedPaymentMethod,
+		updatePremium: updatePremium
 	});
 
 })(jQuery);

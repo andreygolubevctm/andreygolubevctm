@@ -229,6 +229,7 @@
                 <health_v2_layout:slide_application_details />
                 <health_v2_layout:slide_payment_details />
                 <health_v1:dual_pricing_templates />
+                <health_v3:payment_frequency_template />
 
                 <field_v1:hidden xpath="environmentOverride" />
                 <field_v1:hidden xpath="environmentValidatorOverride" />

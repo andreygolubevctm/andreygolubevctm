@@ -12,6 +12,7 @@
 	{{ } }}
 	<div class="price premium">
 		{{ var formatCurrency = meerkat.modules.currencyField.formatCurrency }}
+        {{ obj._selectedFrequency = _.isEmpty(obj._selectedFrequency) ? Results.getFrequency() : obj._selectedFrequency; }}
 		{{ _.each(['annually','halfyearly','halfYearly','quarterly','monthly','fortnightly','weekly'], function(freq){ }}
 			{{ if (typeof property[freq] !== "undefined") { }}
 				{{ var premium = property[freq] }}

@@ -10,6 +10,7 @@
 <%@ attribute name="title" 			required="true"	 rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
 <%@ attribute name="minLength" 		required="false"	 rtexprvalue="true"	 description="Maximum number of digits"%>
 <%@ attribute name="maxLength" 		required="false"	 rtexprvalue="true"	 description="Minimum number of digits"%>
+<%@ attribute name="placeHolder"			required="false" rtexprvalue="true"	 description="Placeholder text" %>
 
 <%-- VARIABLES --%>
 <c:set var="accountnum" value="${go:nameFromXpath(xpath)}" />
@@ -17,4 +18,4 @@
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
-<field_v2:input type="text" xpath="${xpath}" required="${required}" className="account_name numeric ${className}" size="10" maxlength="${maxLength}" title="${title}" pattern="[0-9]*" additionalAttributes=" data-rule-digits='true' data-msg-digits='Please enter ${title}'" />
+<field_v2:input type="text" xpath="${xpath}" required="${required}" className="account_name numeric ${className}" size="10" maxlength="${maxLength}" title="${title}" pattern="[0-9]*" additionalAttributes=" data-rule-digits='true' data-msg-digits='Please enter ${title}'" placeHolder="${placeHolder}" />

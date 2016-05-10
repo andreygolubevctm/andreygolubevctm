@@ -8,6 +8,7 @@
 <%@ attribute name="required" 	required="true"	 rtexprvalue="true"  description="is this field required?" %>
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		required="true"	 rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
+<%@ attribute name="placeHolder"			required="false" rtexprvalue="true"	 description="Placeholder text" %>
 
 <%-- VARIABLES --%>
 <c:set var="bsbnumber" value="${go:nameFromXpath(xpath)}" />
@@ -15,4 +16,4 @@
 
 <%-- HTML --%>
 <input type="hidden" name="${bsbnumber}" id="${bsbnumber}" class="" value="${value}">
-<field_v2:input pattern="[0-9]*" xpath="${xpath}input" className="bsb_number numeric ${className}" required="${required}" size="8" maxlength="7" title="${title}" additionalAttributes=" data-rule-regex='[0-9]{3}[- ]?[0-9]{3}' data-msg-regex='BSB must be six numbers e.g. 999-999' " />
+<field_v2:input pattern="[0-9]*" xpath="${xpath}input" className="bsb_number numeric ${className}" required="${required}" size="8" maxlength="7" title="${title}" additionalAttributes=" data-rule-regex='[0-9]{3}[- ]?[0-9]{3}' data-msg-regex='BSB must be six numbers e.g. 999-999' " placeHolder="${placeHolder}" />

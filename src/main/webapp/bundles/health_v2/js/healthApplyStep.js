@@ -8,7 +8,7 @@
 
     function init(){
         $(document).ready(function () {
-            $paymentDetailsStart = $("#health_payment_details_start_calendar");
+            $paymentDetailsStart = $("#health_payment_details_start");
         });
     }
 
