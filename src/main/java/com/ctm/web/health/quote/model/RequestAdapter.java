@@ -74,7 +74,7 @@ public class RequestAdapter {
             addBoundedExcessFilter(quoteRequest, filters, quote);
             addProductTitleSearchFilter(filters, quote);
             addSingleProviderFilterFromSituation(filters, situation);
-            filters.setApplyDiscounts(true);
+            filters.setApplyDiscounts(false);
         } else {
             // returns a single result with the criteria below
             quoteRequest.setSearchResults(1);
@@ -254,7 +254,7 @@ public class RequestAdapter {
         boolean isPrHospital = toBoolean(StringUtils.defaultIfEmpty(benefitsExtras.get("PrHospital"), "N"));
         boolean isPuHospital = toBoolean(StringUtils.defaultIfEmpty(benefitsExtras.get("PuHospital"), "N"));
 
-        if (quoteRequest.getProductType().equals("GeneralHealth")) {
+        if (quoteRequest.getProductType() == ProductType.GENERALHEALTH) {
             quoteRequest.setHospitalSelection(BOTH);
         } else if (!isPrHospital && !isPuHospital) {
             if (filters.getTierHospitalFilter() != null && filters.getTierHospitalFilter() == 1) {
