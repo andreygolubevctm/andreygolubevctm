@@ -214,6 +214,20 @@
 
 		<div class="fieldset-card row cover-card ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
 
+			<c:if test="${moreinfolayout_splittest_variant1 eq true}">
+			<div class="col-xs-12 col-md-6 aboutTheFund">
+				<h2>About {{= info.productTitle }}</h2>
+				{{= aboutFund }}
+			</div>
+			</c:if>
+
+			<c:if test="${moreinfolayout_splittest_variant1 eq true}">
+			<div class="col-xs-12 col-md-6 whatsNext">
+				<h2>Next Steps</h2>
+				{{= whatHappensNext }}
+			</div>
+			</c:if>
+
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 			{{ if(typeof hospital !== 'undefined' && typeof hospitalCover !== 'undefined') { }}
 			<div class="col-xs-12 col-md-6 hospitalCover">
@@ -358,21 +372,6 @@
 
 				</div>
 			</div>
-
-			<c:if test="${moreinfolayout_splittest_variant1 eq true}">
-			<div class="col-xs-12 col-md-6 aboutTheFund">
-				<h2>About the Fund</h2>
-				{{= aboutFund }}
-			</div>
-			</c:if>
-
-			<c:if test="${moreinfolayout_splittest_variant1 eq true}">
-			<div class="col-xs-12 col-md-6 whatsNext">
-				<h2>Next Steps</h2>
-				{{= whatHappensNext }}
-			</div>
-			</c:if>
-
 
 			<div class="col-md-8 switching">
 				<h2>Switching is simple</h2>
