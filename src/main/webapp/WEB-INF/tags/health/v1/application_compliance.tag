@@ -12,6 +12,6 @@
 	<field_v1:hidden xpath="${xpath}/policyDate" className="health_details-policyDate" />
 </health_v1:privacy>
 
-<simples:dialogue id="38" vertical="health" mandatory="true" />
 <simples:dialogue id="29" vertical="health" mandatory="true" />
+<simples:dialogue id="38" vertical="health" mandatory="true" />
 <simples:dialogue id="40" vertical="health" mandatory="true" />
