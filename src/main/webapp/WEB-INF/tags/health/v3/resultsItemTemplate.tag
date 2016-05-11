@@ -14,8 +14,8 @@
     {{ var hasResult = ft.resultPath != null && ft.resultPath != ''; }}
     {{ var pathValue = hasResult ? Object.byString( obj, ft.resultPath ) : false; }}
     <div class="cell {{= ft.classString }}">
-        {{ if(ft.type != 'section') { }}<%-- section headers are not rendered anymore --%>
-            <div class="labelInColumn {{= ft.classStringForInlineLabel }}{{ if (ft.name == '') { }} noLabel{{ } }}"{{ if(pathValue == "N") { }} title='Not covered' {{ } }}>
+        {{ if(ft.type != 'section') { }}<%-- section headers are not displayed anymore but we need the section container --%>{{ if(ft.type == 'category') { }}
+            <div class="labelInColumn {{= ft.classStringForInlineLabel }}{{ if(ft.name == '') { }} noLabel{{ } }}"{{ if(pathValue =="N" ) { }} title="Not covered" {{ } }}>
                 <div class="content{{ if(pathValue == 'N') { }} noCover{{ } }}" data-featureId="{{= ft.id }}">
                     <div class="contentInner">
                         {{ var iconClassSet = ft.classString.match(/(HLTicon-[^\s]+)/); }}
@@ -26,12 +26,12 @@
                         {{ } }}
                     </div>
                 </div>
-            </div>
-            {{ if(ft.type != 'category') { }}<%--  category no longer has content like a tick/cross. --%>
+            </div>{{ } }}
+            {{ if(ft.type == 'feature') { }}<%-- only feature types have content --%>
             <div class="c content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">
                 {{ if(hasResult) { }}
                 {{ var displayValue = Features.parseFeatureValue( pathValue, true ); }}<%-- Below compressed to reduce number of whitespace nodes in DOM --%>
-                {{ if( pathValue ) { }}<div><strong>{{= displayValue }}</strong> {{= ft.safeName.toLowerCase() }}</div>{{ } else { }}{{= "-" }}{{ } }}{{ } else { }}{{= "-" }}
+                {{ if( pathValue) { }}<strong>{{= displayValue }}</strong> {{= ft.safeName.toLowerCase() }}{{ } else { }}{{= "-" }}{{ } }}{{ } else { }}{{= "-" }}
                 {{ } }}
             </div>
             {{ } }}
@@ -40,6 +40,9 @@
         {{ var isSelectionHolder = ft.classString && ft.classString.indexOf('selectionHolder') != -1; }}
         {{ if(hasFeatureChildren || isSelectionHolder) { }}
         <div class="children" data-fid="{{= ft.id }}">
+            {{ if(pathValue == "N") { }}
+
+            {{ } }}
             {{ for(var m =0; m < ft.children.length; m++) { }}
             {{ ft.children[m].shortlistKeyParent = ft.shortlistKey; }}
             {{ } }}

@@ -1,0 +1,82 @@
+.results-pagination {
+
+  @media (@sm) {
+    &.results-prologue-row {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .navbar-nav {
+      border-left: none;
+    }
+
+    .nav > li {
+      a:hover, a.active:hover {
+        border-bottom-color: @theme-secondary;
+        border-bottom-width: 2px;
+      }
+      font-family: @font-family-theme-bold;
+      margin-left: 10px;
+      .btn-pagination {
+        border: 1px solid @results-border-color;
+        &.active, &:active {
+          border-color: @results-border-color;
+          border-bottom: 2px solid @theme-secondary;
+        }
+        background-color: #fff;
+        color: @gray-slight-dark;
+        &.active {
+          color: @theme-secondary;
+        }
+      }
+    }
+
+    .pagination-text-label {
+      display: inline-block;
+      margin-top: 10px;
+    }
+  }
+
+  // The display arrow to indicate more pages of results to the right.
+  &.floated-next-arrow {
+    position: absolute;
+    background-color: #BEBEBF;
+    border-radius: 0 5px 5px 0;
+    .icon {
+      color: #fff;
+      line-height: 1;
+      padding: 10px;
+    }
+    @media (@sm-only) {
+      right: -35px;
+      top: 85px;
+      height: 60px;
+      width: 35px;
+      font-size: 38px;
+    }
+    @media (@md-only) {
+      right: -40px;
+      top: 105px;
+      height: 65px;
+      width: 40px;
+      font-size: 42px;
+    }
+
+    @media (@lg) {
+      right: -49px;
+      top: 130px;
+      width: 50px;
+      font-size: 48px;
+      .icon {
+        padding-left: 15px;
+      }
+
+    }
+
+    .affixed & {
+      //position: fixed;
+      // how to make this affix properly to the right? we can set top properly but not left/right due to breakpoints?
+    }
+  }
+
+}
