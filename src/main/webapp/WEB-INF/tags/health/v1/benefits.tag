@@ -18,7 +18,7 @@
             </div>
 
             <div class="benefits-list col-sm-12">
-                <div class="row">
+                <div class="row benefit-row">
                     <%-- Note: ${resultTemplateItems} is a request scoped variable on health_quote.jsp page - as it is used in multiple places --%>
                     <c:forEach items="${resultTemplateItems}" var="selectedValue">
                         <health_v1:benefitsItem item="${selectedValue}"/>

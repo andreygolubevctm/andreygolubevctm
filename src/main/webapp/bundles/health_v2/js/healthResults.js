@@ -467,12 +467,12 @@
 
                 $hoverRow.addClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
             })
-                .on("mouseleave", function () {
-                    var featureId = $(this).attr("data-featureId");
-                    var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
+            .on("mouseleave", function () {
+                var featureId = $(this).attr("data-featureId");
+                var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
 
-                    $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
-                });
+                $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
+            });
 
             var coverType = meerkat.modules.health.getCoverType();
 

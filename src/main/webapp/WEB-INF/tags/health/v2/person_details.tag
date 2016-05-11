@@ -26,7 +26,7 @@
 <%-- HTML --%>
 <div class="health-person-details-${id} health-person-details ${id}">
 
-	<form_v2:fieldset legend="${title} Details">
+	<form_v3:fieldset legend="${title} Details">
 
 		<c:set var="fieldXpath" value="${xpath}/title" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Title" >
@@ -65,6 +65,6 @@
 			</form_v3:row>
 		</c:if>
 
-	</form_v2:fieldset>
+	</form_v3:fieldset>
 
 </div>

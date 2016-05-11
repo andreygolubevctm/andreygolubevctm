@@ -32,12 +32,12 @@
 			<simples:dialogue id="36" vertical="health" mandatory="true" className="hidden simples-privacycheck-statement" /> <%-- Inbound --%>
 			<simples:dialogue id="25" vertical="health" mandatory="true" className="hidden follow-up-call" /> <%-- Follow up call --%>
 
-			<form_v2:fieldset id="healthAboutYou" legend="" postLegend="" className="health-about-you">
+			<form_v3:fieldset id="healthAboutYou" legend="" postLegend="" className="health-about-you">
 
 				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
-				<form_v2:row label="You are a" fieldXpath="${fieldXpath}" className="health-cover">
+				<form_v3:row label="You are a" fieldXpath="${fieldXpath}" className="health-cover">
 					<field_v2:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" />
-				</form_v2:row>
+				</form_v3:row>
 
 				<%-- If the user is coming via a broucherware site where by a state is passed in instead of a postcode, then only show state selection --%>
 
@@ -45,7 +45,7 @@
 				<c:set var="state" value="${data['health/situation/state']}" />
 				<c:set var="location" value="${data['health/situation/location']}" />
 
-				<form_v2:row label="Living in" fieldXpath="${fieldXpath}" className="health-location">
+				<form_v3:row label="Living in" fieldXpath="${fieldXpath}" className="health-location">
 
 					<c:choose>
 						<c:when test="${not empty param.state || (not empty state && empty location && (param.action == 'amend' || param.action == 'load'))}">
@@ -61,9 +61,9 @@
 					<field_v1:hidden xpath="${xpath}/postcode" />
 
 
-				</form_v2:row>
+				</form_v3:row>
 
-			</form_v2:fieldset>
+			</form_v3:fieldset>
 
 			<simples:dialogue id="22" vertical="health" />
 
@@ -74,26 +74,26 @@
 				</div>
 			</simples:dialogue>
 
-			<form_v2:fieldset id="primary-health-cover" legend="Your Details" className="primary">
+			<form_v3:fieldset id="primary-health-cover" legend="Your Details" className="primary">
 
 				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
-				<form_v2:row label="You're looking to" fieldXpath="${fieldXpath}">
+				<form_v3:row label="You're looking to" fieldXpath="${fieldXpath}">
 					<field_v2:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="reason you are looking to quote" />
-				</form_v2:row>
+				</form_v3:row>
 
 			<%-- Did it this way to prevent the snapshot from pushing the fields below up/down depending on the option selected with the health_situation_healthCvr field --%>
 			<c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
 			<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
 				<c:set var="fieldXpath" value="${xpath}/primary/dob" />
-				<form_v2:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
+				<form_v3:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
 					<field_v2:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
-				</form_v2:row>
+				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/primary/cover" />
-				<form_v2:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
+				<form_v3:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
 					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover"/>
-				</form_v2:row>
+				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/primary/healthCoverLoading" />
 				<form_v3:row label="Have you had continuous hospital cover since 1 July ${continuousCoverYear} or 1 July following your 31st birthday?" fieldXpath="${fieldXpath}" id="health-continuous-cover-primary" className="health-your_details-opt-group" helpId="239">
@@ -106,9 +106,9 @@
 						<field_v1:input_numeric xpath="${fieldXpath}" minValue="0" maxValue="70" title="Applicant's LHC" required="false" id="${name}_primary_lhc" maxLength="2" className="primary-lhc"/>
 					</form_v2:row>
 				</c:if>
-			</form_v2:fieldset>
+			</form_v3:fieldset>
 
-			<form_v2:fieldset id="partner-health-cover" legend="Your Partner's Details" className="partner">
+			<form_v3:fieldset id="partner-health-cover" legend="Your Partner's Details" className="partner">
 				<c:set var="fieldXpath" value="${xpath}/partner/dob" />
 				<form_v3:row label="Your partner's date of birth" fieldXpath="${fieldXpath}">
 					<field_v2:person_dob xpath="${fieldXpath}" title="partner's" required="true" ageMin="16" ageMax="120" />
@@ -130,9 +130,9 @@
 						<field_v1:input_numeric xpath="${fieldXpath}" minValue="0" maxValue="70" title="Partner's LHC" required="false" id="${name}_partner_lhc" maxLength="2" className="partner-lhc"/>
 					</form_v2:row>
 				</c:if>
-			</form_v2:fieldset>
+			</form_v3:fieldset>
 			<simples:dialogue id="26" vertical="health" mandatory="true" />
-			<form_v2:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians can reduce their upfront health insurance costs by applying the Government Rebate.">
+			<form_v3:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians can reduce their upfront health insurance costs by applying the Government Rebate.">
 				<c:set var="fieldXpath" value="${xpath}/rebate" />
 				<form_v3:row label="Would you like to reduce your upfront premium by applying the rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
 					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate btn-group-wrap"/>
@@ -159,18 +159,21 @@
 					<input type="hidden" name="${go:nameFromXpath(xpath)}_incomelabel" id="${go:nameFromXpath(xpath)}_incomelabel" value="${data[income_label_xpath]}" />
 				</form_v3:row>
 
-				<%-- Override set in splittest_helper tag --%>
-				<c:if test="${showOptInOnSlide3 eq false}">
-					<c:set var="termsAndConditions">
-						<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
-						I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
-						<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
-						By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
-						I confirm that I have read the <form_v1:link_privacy_statement />.
-					</c:set>
+			</form_v3:fieldset>
 
-					<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
-					<form_v3:row className="health-contact-details-optin-group" hideHelpIconCol="true">
+			<%-- Override set in splittest_helper tag --%>
+			<c:if test="${showOptInOnSlide3 eq false}">
+				<c:set var="termsAndConditions">
+					<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
+					I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
+					<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
+					By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
+					I confirm that I have read the <form_v1:link_privacy_statement />.
+				</c:set>
+
+				<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
+				<div class="health-contact-details-optin-group">
+					<div class="col-xs-12">
 						<field_v2:checkbox
 								xpath="${pageSettings.getVerticalCode()}/contactDetails/optin"
 								value="Y"
@@ -179,10 +182,9 @@
 								label="${true}"
 								title="${termsAndConditions}"
 								errorMsg="Please agree to the Terms &amp; Conditions" />
-					</form_v3:row>
-				</c:if>
-
-			</form_v2:fieldset>
+					</div>
+				</div>
+			</c:if>
 			<simples:dialogue id="37" vertical="health" mandatory="true" className="hidden" />
 		</jsp:body>
 
