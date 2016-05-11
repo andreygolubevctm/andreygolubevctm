@@ -251,6 +251,14 @@ var ResultsView = {
 			console.log("The result template could not be found: templateSelector=",Results.settings.elements.templates.result,"This template is mandatory, make sure to pass the correct selector to the Results.settings.elements.templates.result user setting when calling Results.init()");
 		}
 
+		// unavailable template
+		if(Results.settings.elements.templates.unavailable){
+			var unavailableTemplate = $(Results.settings.elements.templates.unavailable).html();
+			if( unavailableTemplate === "" ){
+				console.log("The unavailable template could not be found: templateSelector=",Results.settings.elements.templates.unavailable,"If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.unavailable user setting when calling Results.init()");
+			}
+		}
+		
 		// unavailable combined template
 		if (Results.settings.elements.templates.unavailableCombined) {
 			unavailableCombinedTemplate = $(Results.settings.elements.templates.unavailableCombined).html();

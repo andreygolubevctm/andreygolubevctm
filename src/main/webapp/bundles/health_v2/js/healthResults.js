@@ -215,7 +215,7 @@
                         },
                         {
                             key: '-',
-                            value: "&nbsp;"
+                            value: ""
                         }
                     ]
                 },
@@ -233,9 +233,9 @@
     }
 
     /**
-     * The following hacks are required to ensure we do not affect HealthV1 (Simples) journey
+     * The following are additional requirements for resultsv4 and also so we don't affect simples journey.
      */
-    function healthResultsV4Hacks() {
+    function healthResultsV4Additions() {
 
         $('.featuresListHospitalOther > .collapsed').removeClass('collapsed');
 
@@ -270,7 +270,7 @@
             _setupSelectedBenefits('Extras Selections', 'Extras Cover');
             _setupSelectedBenefits('Hospital Selections', 'Hospital Cover');
             Features.buildHtml();
-            _.defer(healthResultsV4Hacks);
+            _.defer(healthResultsV4Additions);
         });
 
         $(document).on("generalReturned", function () {
@@ -294,7 +294,7 @@
         $(document).on("resultsReturned", function () {
             filteredOutResults = []; //reset
             meerkat.modules.utils.scrollPageTo($("header"));
-
+            $('.floated-next-arrow').removeClass('hidden');
             // Reset the feature header to match the new column content.
             $(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
 
@@ -980,6 +980,9 @@
         selectedBenefitsList = selectedBenefits;
     }
 
+    function hideNavigationLink() {
+        $('.floated-next-arrow').addClass('hidden');
+    }
     meerkat.modules.register('healthResults', {
         init: init,
         events: moduleEvents,
@@ -1004,7 +1007,8 @@
         publishExtraSuperTagEvents: publishExtraSuperTagEvents,
         setLhcApplicable: setLhcApplicable,
         resultsStepIndex : resultsStepIndex,
-        setSelectedBenefitsList : setSelectedBenefitsList
+        setSelectedBenefitsList : setSelectedBenefitsList,
+        hideNavigationLink: hideNavigationLink
     });
 
 })(jQuery);

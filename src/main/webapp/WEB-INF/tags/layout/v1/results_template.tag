@@ -60,11 +60,11 @@
 <div class="row" id="resultsPage">
 
     <c:if test="${not empty preResultsRow}">
-        <div class="col-xs-12 col-sm-8 results-prologue-row">
+        <div class="col-xs-12 col-sm-7 col-lg-8 results-prologue-row">
             <div class="preResultsContainer hidden-xs"></div>
                 ${preResultsRow}
         </div>
-        <div class="hidden-xs col-sm-4 results-prologue-row">
+        <div class="hidden-xs col-sm-5 col-lg-4 results-prologue-row results-pagination">
             <div class="collapse navbar-collapse">
                 <span class="pagination-text-label">See more results</span>
                 <ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
@@ -81,6 +81,11 @@
 
     <div class="col-sm-${resultsColsSm} col-md-${resultsColsMd} results-column-container">
         <div class="${resultsContainerClassName} resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
+            <div class="results-pagination floated-next-arrow hidden-xs">
+                <a href="javascript:;" data-results-pagination-control="next">
+                    <span class="icon icon-angle-right" title="Next Page"></span>
+                </a>
+            </div>
             <div class="resultsOverflow notScrolling">
 
                 <div class="results-table"></div>
