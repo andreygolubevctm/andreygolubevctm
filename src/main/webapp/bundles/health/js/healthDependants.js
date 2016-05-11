@@ -73,10 +73,14 @@
         // set up template
         dependantTemplate = _.template($('#health-dependants-template').html());
 
+        var noOfDependants = getNumberOfDependants();
         if (typeof meerkat.site.dependants != 'undefined') {
             dependantsArr = addDataBucketDependantsToList();
-        }
-        if (getNumberOfDependants() === 0) {
+        } else if (_.isNumber(noOfDependants) && noOfDependants > 0) {
+            for(var i=0; i<noOfDependants; i++) {
+                dependantsArr.push(defaultDependant);
+            }
+        } else if (noOfDependants === 0) {
             dependantsArr.push(defaultDependant);
         }
 
