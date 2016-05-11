@@ -99,7 +99,7 @@
             }
         });
 
-        $dependantsTemplateWrapper.on('click', ".remove-dependent", function removeDependantClick() {
+        $dependantsTemplateWrapper.off('click.removeDependant').on('click.removeDependant', ".remove-dependent", function removeDependantClick(e) {
             deleteDependant($(this).attr('data-id'), true);
             updateApplicationDetails();
         }).on('change', '.dateinput_container input.serialise, .health_dependant_details_fulltimeGroup input', function dependantAgeFullTimeChange() {
@@ -278,7 +278,7 @@
         }
 
         $dependantsTemplateWrapper.find('.serialise').each(function(){
-            var $that = $(this)
+            var $that = $(this);
             if(!_.isEmpty($that.val())) {
                 $that.change();
             }
