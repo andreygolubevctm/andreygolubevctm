@@ -156,6 +156,7 @@ var healthFunds_AHM = {
           'weekends':true,
           'maxDay' : 28
       };
+    healthFunds_AHM.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
     healthFunds_AHM.$paymentType.on('click.AHM', function populateFuturePaymentDaysPaymentType(){
       healthFunds_AHM.populateFuturePaymentDays();

@@ -28,7 +28,7 @@ var healthFunds_WFD = {
 
         <%--Adding a statement--%>
         var msg = 'Please note that the LHC amount quoted is an estimate and will be confirmed once Westfund has verified your details.';
-        $('.health-payment-details_premium .row-content').append('<p class="statement" style="margin-top:1em">' + msg + '</p>');
+        $paymentFrequency.closest('div.row-content').append('<p class="statement" style="margin-top:1em">' + msg + '</p>');
 
         <%--fund Name's become optional--%>
         $('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').setRequired(false);
@@ -61,6 +61,8 @@ var healthFunds_WFD = {
         healthFunds_WFD.$paymentStartDate.on("changeDate.WFD", function renderPaymentDaysCalendar(e) {
             healthFunds_WFD.renderPaymentDays();
         });
+        <%--allow weekend selection from the datepicker--%>
+        healthFunds_WFD.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
         <%--Age requirements for applicants--%>
         <%--primary--%>
@@ -143,7 +145,7 @@ var healthFunds_WFD = {
         }
         $('#health_declaration + label').html(healthFunds_WFD.joinDecLabelHtml);
 
-        $('.health-payment-details_premium .statement').remove();
+        $paymentFrequency.closest('div.row-content').find('p.statement').remove();
 
         <%--fund Name's become mandaory (back to default)--%>
         $('#health_previousfund_primary_fundName').attr('required', 'required');

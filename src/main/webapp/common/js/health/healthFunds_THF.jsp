@@ -240,6 +240,7 @@ var healthFunds_THF = {
 			'weekends':false,
 			'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE
 		};
+		healthFunds_THF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
 		$('.thf-payment-legend').remove();

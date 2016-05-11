@@ -206,6 +206,9 @@ var healthFunds_CBH = {
 			$('#health_application_optInEmail-group').after('<c:out value="${html}" escapeXml="false" />');
 		}
 
+		<%--allow weekend selection from the datepicker--%>
+		healthFunds_CBH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+		
 		<%-- Run these if not loading a quote --%>
 		if (!$('body').hasClass('injectingFund')) {
 

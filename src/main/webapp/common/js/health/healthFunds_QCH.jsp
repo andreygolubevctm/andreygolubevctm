@@ -69,6 +69,9 @@ var healthFunds_QCH = {
 			<%-- Calendar for start cover --%>
 			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
 
+			<%--allow weekend selection from the datepicker--%>
+			healthFunds_QCH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+
 			<%-- Payments --%>
 			meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':true, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 			meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':true, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
@@ -107,6 +110,7 @@ var healthFunds_QCH = {
 	renderPaymentDays: function() {
 		var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
 		healthFunds._payments = { 'min':0, 'max':1, 'weekends':true };
+		healthFunds_QCH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);

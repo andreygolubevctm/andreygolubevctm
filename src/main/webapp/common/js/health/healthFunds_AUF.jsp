@@ -30,6 +30,7 @@ var healthFunds_AUF = {
 
     <%--selections for payment date--%>
     healthFunds._payments = { 'min':0, 'max':5, 'weekends':false };
+    healthFunds_AUF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 
     healthFunds_AUF.$paymentType.on('click.AUF', function renderPaymentDayPaymentType(){
       healthFunds_AUF.renderPaymentDay();

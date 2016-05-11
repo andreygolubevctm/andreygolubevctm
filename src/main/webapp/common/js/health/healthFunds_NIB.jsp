@@ -94,17 +94,19 @@ var healthFunds_NIB = {
         var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
         if (freq == 'fortnightly') {
             healthFunds._payments = { 'min':0, 'max':10, 'weekends':false, 'countFrom' : 'effectiveDate'};
+            healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
         } else {
             healthFunds._payments = { 'min':0, 'max':27, 'weekends':true , 'countFrom' : 'today', 'maxDay' : 27};
+            healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
         }
         var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
 
         if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
-            $paymentTypeContainer.slideUp();
+            healthFunds_NIB.$paymentTypeContainer.slideUp();
         } else {
-            $paymentTypeContainer.text('NIB offers a 4% discount for bank account payments').slideDown();
+            healthFunds_NIB.$paymentTypeContainer.text('NIB offers a 4% discount for bank account payments').slideDown();
         }
     },
     unset: function(){

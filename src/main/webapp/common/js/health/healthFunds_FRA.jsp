@@ -40,6 +40,9 @@ var healthFunds_FRA = {
             healthFunds_FRA.updateMessage();
         });
 
+        <%--allow weekend selection from the datepicker--%>
+        healthFunds_FRA.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+
         <%--change age of dependants and school--%>
         meerkat.modules.healthDependants.updateConfig({school:false});
         meerkat.modules.healthDependants.setMaxAge(21);

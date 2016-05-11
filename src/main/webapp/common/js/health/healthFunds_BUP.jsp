@@ -67,6 +67,7 @@ set: function () {
 		};
 
 		healthFunds._payments = { 'min':6, 'max':7, 'weekends':false };
+		healthFunds_BUP.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 
 		var date = new Date();
 		var _html = meerkat.modules.healthPaymentDay.paymentDays(meerkat.modules.dateUtils.dateValueFormFormat(date));
