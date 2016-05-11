@@ -215,11 +215,7 @@
 
 	// Update premium button
 	function enableUpdatePremium() {
-		// Enable button, hide spinner
-		var $button = $('#update-premium');
-		$button.removeClass('disabled');
-
-		// Enable the other premium-related inputs
+			// Enable the other premium-related inputs
 		// Ignore fields that were specifically disabled by funds' rules.
 		var $paymentSection = $('#health_payment_details-selection');
 		$paymentSection.find(':input').not('.disabled-by-fund').prop('disabled', false);
@@ -230,14 +226,9 @@
 		//$('#health_payment_details_start').parent().addClass('input-group').find('.input-group-addon').removeClass('hidden');
 		// Inline datepicker
 		$paymentCalendar.parent().find('.datepicker').children().css('visibility', 'visible');
-
-		meerkat.modules.loadingAnimation.hide($button);
 	}
 
 	function disableUpdatePremium(isSameSource, disableFields) {
-		// Disable button, show spinner
-		var $button = $('#update-premium');
-		$button.addClass('disabled');
 
 		if(disableFields === true){
 			// Disable the other premium-related inputs
@@ -253,9 +244,6 @@
 			$paymentCalendar.parent().find('.datepicker').children().css('visibility', 'hidden');
 		}
 
-		if (isSameSource === true) {
-			meerkat.modules.loadingAnimation.showAfter($button);
-		}
 	}
 
 	// Calls the server for a new premium price based on current selections.
@@ -399,7 +387,10 @@
 	function setDefaultFields() {
 		// default values are sent over when the premium is loaded for the first time on this page
 		// and the code below essentially sets the visual aspect of the payment page.
-		$paymentCalendar.datepicker("update", new Date());
+		if (_.isEmpty($paymentCalendar.val())) {
+			$paymentCalendar.datepicker("update", new Date());
+		}
+
 		$paymentRadioGroup.find('input').filter('[value=dd]').trigger('click');
 	}
 
