@@ -4,7 +4,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="label" 				required="false" rtexprvalue="true"	 description="label for the field"%>
 <%@ attribute name="fieldXpath"			required="false" rtexprvalue="true"	 description="The xpath of the field the label needs to point to"%>
 <%@ attribute name="className" 			required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="id" 				required="false" rtexprvalue="true"	 description="optional id for this row"%>
@@ -57,40 +56,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	<c:choose>
-		<c:when test="${labelAbove eq true}">
-			<c:set var="labelClassName" value="col-sm-5 col-xs-${toggleHelpColMobile}" />
-		</c:when>
-		<c:otherwise>
-			<c:set var="labelClassName" value="col-sm-5 col-xs-${toggleHelpColMobile}" />
-		</c:otherwise>
-	</c:choose>
-
-	<c:choose>
-		<c:when test="${not empty label and label ne ''}">
-
-			<c:if test="${label eq 'empty'}">
-				<c:set var="label" value="" />
-			</c:if>
-
-			<field_v2:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" addForAttr="${addForAttr}" />
-
-			<div class="col-xs-1 visible-xs helpIconXSColumn ${offset}">
-				<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" />
-			</div>
-
-			<c:set var="helpIconCol" value="hidden-xs" />
-			<c:set var="fieldCol" value="col-xs-12" />
-
-		</c:when>
-		<c:otherwise>
-			<c:set var="offset" value="col-sm-offset-3" />
-			<c:set var="helpIconCol" value="col-xs-2" />
-			<c:set var="fieldCol" value="col-xs-${toggleHelpColMobile}" />
-		</c:otherwise>
-	</c:choose>
-
-
+	<div class="col-sm-5 col-xs-${toggleHelpColMobile} row-content"></div>
 
 	<div class="col-sm-<c:out value="${toggleHelpColSmall} " /> ${fieldCol} <c:out value=" ${offset}" /> row-content">
 		<jsp:doBody />

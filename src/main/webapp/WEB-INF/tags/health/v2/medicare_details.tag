@@ -14,7 +14,7 @@
 
 	<simples:dialogue id="30" vertical="health" mandatory="true" />
 
-	<form_v2:fieldset legend="Medicare Details" id="medicare_details" className="medicare_details">
+	<form_v3:fieldset legend="Medicare Details" id="medicare_details" className="medicare_details">
 
 		<c:set var="fieldXpath" value="${xpath}/cover" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Are all people to be included on this policy covered by a green or blue Medicare card?" id="medicareCoveredRow" helpId="291">
@@ -53,6 +53,6 @@
 			<field_v2:count_select xpath="${fieldXpath}" min="1" max="5" step="1" title="your medicare card position" required="true" className="health_payment_medicare_cardPosition"/>
 		</form_v3:row>
 
-	</form_v2:fieldset>
+	</form_v3:fieldset>
 
 </div>

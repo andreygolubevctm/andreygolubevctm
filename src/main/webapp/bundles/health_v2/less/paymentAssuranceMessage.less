@@ -1,113 +1,122 @@
 .payment_assurance_message{
-	
-	@media(@xs-only){
-		display: none;
-	}
 
-	position: absolute;
-   @media(@sm-only) {
-	 right: 10px;
-   }
-   @media(@md-only) {
-	 right: 0px;
-   }
+  @media(@xs-only){
+    display: none;
+  }
+
+  position: absolute;
+  @media(@sm-only) {
+    right: 10px;
+  }
+  @media(@md-only) {
+    right: 0px;
+  }
+
+  @media(@lg-only) {
+    right: 0px;
+    float: right;
+    position: relative;
+    height: 90px;
+    top: 0px;
+  }
+  padding-right: 0;
+  top: 25px;
+
+  .cards img {
+    display: block;
+    float: left;
+    margin-right: 4px;
+  }
+
+  .message{
+
+    line-height: 10px;
+
+    h5 {
+      margin-bottom: 0;
+    }
+
+    small{
+      font-size: 10px;
+    }
+
+  }
+
+  .cards{
+
+    margin-bottom: 8px;
 
     @media(@lg-only) {
-	 right: 0px;
-   }
-	padding-right: 0;
-	top: 25px;
-	
-	.cards img {
-		display: block;
-		float: left;
-		margin-right: 4px;
-	}	
+      margin-bottom: 0px;
+      margin-top: 13%;
+    }
+    .clearfix();
 
-	.message{
+    .visa, .mastercard, .amex {
 
-		line-height: 10px;
-			
-		h5 {
-			margin-bottom: 0;
-		}
+      background-image: url('../../../graphics/credit-card-sprite.png');
+      background-repeat: no-repeat;
 
-		small{
-			font-size: 10px;
-		}
+      .highResBgSize(271px, 260px);
 
-	}
+      width: 20px;
+      height: 15px;
 
-	.cards{
-		
-		margin-bottom: 8px;
-		.clearfix();
+      margin-left:1px;
 
-		.visa, .mastercard, .amex {
+      float:left;
 
-			background-image: url('../../../graphics/credit-card-sprite.png');
-			background-repeat: no-repeat;
-			
-			.highResBgSize(271px, 260px);
-			
-			width: 20px;
-			height: 15px;
-			
-			margin-left:1px;
-			
-			float:left;
+      @media(@md){
+        margin-left:2px;
+      }
 
-			@media(@md){
-				margin-left:2px;
-			}
+      @media(@lg){
+        width: 56px;
+        height: 38px;
+        margin-right:6px;
+      }
 
-			@media(@lg){
-				width: 56px;
-				height: 38px;
-				margin-right:6px;
-			}
-			
-		}
+    }
 
-		.visa {		
+    .visa {
 
-			.highResBgPosition(-250px, -66px, -100px, -26px);	
+      .highResBgPosition(-250px, -66px, -100px, -26px);
 
-			@media(@lg){
-				.highResBgPosition(-130px, -42px, 0, -2px);
-			}
-			
-		}
+      @media(@lg){
+        .highResBgPosition(-130px, -42px, 0, -2px);
+      }
 
-		.mastercard {
-			
-			.highResBgPosition(-250px, -156px, -100px, -71px);
-			
-			@media(@lg){
-				.highResBgPosition(-130px, -132px, 0, -47px);
-			}
-		}
+    }
 
-		.amex {
+    .mastercard {
 
-			.highResBgPosition(-250px, -246px, -100px, -116px);
+      .highResBgPosition(-250px, -156px, -100px, -71px);
 
-			@media(@lg){
-				.highResBgPosition(-130px, -222px, 0, -92px);
-			}
-		}
-	}
+      @media(@lg){
+        .highResBgPosition(-130px, -132px, 0, -47px);
+      }
+    }
 
-	
+    .amex {
+
+      .highResBgPosition(-250px, -246px, -100px, -116px);
+
+      @media(@lg){
+        .highResBgPosition(-130px, -222px, 0, -92px);
+      }
+    }
+  }
+
+
 }
 
 .visa{
-	.highResBgSize(200px, 260px);
+  .highResBgSize(200px, 260px);
 }
 
 .nortonIframe{
-	width: 600px;
-	iframe{
-		height: 466px; 
-	}
+  width: 600px;
+  iframe{
+    height: 466px;
+  }
 }
