@@ -22,10 +22,12 @@
 	<%--To handle :empty usage in css and to hide this when empty we do need it on one line--%>
 	<div class="content">
 		<c:if test="${not empty legend}">
-			<div><h2>${legend}<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" /></h2></div>
-			<c:if test="${not empty postLegend}">
-				<span><h4>${postLegend}</h4></span>
-			</c:if>
+			<div>
+				<h2>${legend}<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" /></h2>
+				<c:if test="${not empty postLegend}">
+				<p class="legend">${postLegend}</p>
+				</c:if>
+			</div>
 		</c:if>
 		<jsp:doBody />
 	</div>

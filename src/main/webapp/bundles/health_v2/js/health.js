@@ -104,15 +104,6 @@
 			.not('.short-list-item')
 			.not('.results-column-container')
 			.removeClass('col-sm-8').addClass('col-sm-9');
-		$mainform.find('.col-sm-4')
-			.not("label[for*=health_healthCover]")
-			.not('label[for*=health_situation_coverType]')
-			.not('.short-list-item')
-			.not('#results-sidebar')
-			.add("label[for=health_healthCover_primary_dob]")
-			.add("label[for=health_healthCover_primary_cover]")
-			.add("label[for=health_healthCover_primary_coverType]")
-			.removeClass('col-sm-4').addClass('col-sm-3');
 		$mainform.find('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
 	}
 
@@ -371,7 +362,6 @@
 			},
 			onInitialise: function onInitResults(event){
 
-				//meerkat.modules.healthFilters.initHealthFilters();
 				meerkat.modules.healthSafariColumnCountFix.initHealthSafariColumnCountFix();
 				meerkat.modules.healthPriceRangeFilter.initHealthPriceRangeFilter();
 				meerkat.modules.healthAltPricing.initHealthAltPricing();
