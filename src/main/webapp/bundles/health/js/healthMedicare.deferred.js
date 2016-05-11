@@ -7,6 +7,7 @@
     function initHealthMedicare() {
         _setupFields();
         _applyEventListeners();
+        _updateMedicareLabel();
     }
 
     function _setupFields() {
@@ -14,6 +15,19 @@
         nameFields.appSurname = $('#health_application_primary_surname');
         nameFields.medFirstname = $('#health_payment_medicare_firstName');
         nameFields.medSurname = $('#health_payment_medicare_surname');
+    }
+
+    // Did think of moving healthApplyStep.js in health_v2 but it had some dependancies that exist only in v2
+    function _updateMedicareLabel(){
+
+        var currentProduct = Results.getSelectedProduct().info.FundCode,
+            $medicareLabel = $('#medicare_group').find('label:first');
+
+        if (currentProduct === 'NHB' || currentProduct === 'QCH') {
+            $medicareLabel.text('Position and name on Medicare card');
+        } else {
+            $medicareLabel.text('Name on Medicare card');
+        }
     }
 
     function _applyEventListeners(){

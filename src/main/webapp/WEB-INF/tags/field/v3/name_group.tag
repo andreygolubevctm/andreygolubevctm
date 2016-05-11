@@ -5,10 +5,16 @@
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="Set xpath base"%>
 <%@ attribute name="showInitial" required="false" rtexprvalue="true" description="Toggle to display initial field"%>
 
+<c:set var="titleOverride">3</c:set>
+
+<c:if test="${showInitial eq true}">
+	<c:set var="titleOverride">2</c:set>
+</c:if>
+
 <%-- HTML --%>
 <form_v2:row label="Name" hideHelpIconCol="true" className="row" isNestedStyleGroup="${true}">
 	<c:set var="fieldXpath" value="${xpath}/title" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Title" hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}" className="selectContainerTitle" id="${go:nameFromXpath(fieldXpath)}Row">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Title" hideHelpIconCol="true" smRowOverride="${titleOverride}" isNestedField="${true}" className="selectContainerTitle" id="${go:nameFromXpath(fieldXpath)}Row">
 		<field_v3:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' " placeHolder="Title" disableErrorContainer="${true}" />
 	</form_v2:row>
 
