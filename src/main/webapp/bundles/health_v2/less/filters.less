@@ -2,15 +2,21 @@
 // this could be core but who knows whats gonna happen with UTL etc.
 
 .filters-update-container {
-  margin: 0 5px;
   background-color: #E6F7ED;
   border: 1px solid @theme-secondary;
   border-top: none;
   width: 96%;
-  margin-left: 2%;
+  margin: 0 5px 0 2%;
   .filter-cancel-changes {
     margin-top: 10px;
     display: inline-block;
+  }
+
+  @media (@xs-only) {
+    width: 100%;
+    border: none;
+    margin : 0;
+    border-top: 1px solid @theme-secondary;
   }
 }
 
@@ -28,11 +34,12 @@
 
   // Make the provider list 2 columns
   .provider-list {
-    @media (@sm) {
-      -webkit-columns: auto 2; /* Chrome, Safari, Opera */
-      -moz-columns: auto 2; /* Firefox */
-      columns: auto 2;
-    }
+    -webkit-columns: auto 2; /* Chrome, Safari, Opera */
+    -moz-columns: auto 2; /* Firefox */
+    columns: auto 2;
+    //@media (@xs) {
+    //
+    //}
   }
 
   // Add some extra margin to slider filter.

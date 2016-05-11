@@ -112,8 +112,7 @@
 				}
 			});
 
-            $closeElement.on('click', function(e) {
-                if (e.cu)
+            $closeElement.on('click', function() {
                 close();
             });
 
