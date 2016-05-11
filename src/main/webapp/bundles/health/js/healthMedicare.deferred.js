@@ -7,7 +7,6 @@
     function initHealthMedicare() {
         _setupFields();
         _applyEventListeners();
-        _updateMedicareLabel();
     }
 
     function _setupFields() {
@@ -18,7 +17,7 @@
     }
 
     // Did think of moving healthApplyStep.js in health_v2 but it had some dependancies that exist only in v2
-    function _updateMedicareLabel(){
+    function updateMedicareLabel(){
 
         var currentProduct = Results.getSelectedProduct().info.FundCode,
             $medicareLabel = $('#medicare_group').find('label:first');
@@ -43,7 +42,8 @@
     }
 
     meerkat.modules.register("healthMedicare", {
-        initHealthMedicare: initHealthMedicare
+        initHealthMedicare: initHealthMedicare,
+        updateMedicareLabel: updateMedicareLabel
     });
 
 })(jQuery);

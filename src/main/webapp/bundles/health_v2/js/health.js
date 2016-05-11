@@ -502,6 +502,7 @@
 					meerkat.modules.healthDependants.updateDependantConfiguration();
 
 					meerkat.modules.healthApplyStep.onBeforeEnter();
+					meerkat.modules.healthMedicare.updateMedicareLabel();
 				}
 			},
 			onAfterEnter: function afterEnterApplyStep(event){

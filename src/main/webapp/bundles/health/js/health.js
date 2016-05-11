@@ -559,6 +559,8 @@
 					var min = meerkat.modules.healthPaymentStep.getSetting('minStartDate');
 					var max = meerkat.modules.healthPaymentStep.getSetting('maxStartDate');
 					$("#health_payment_details_start_calendar").datepicker('setStartDate', min).datepicker('setEndDate', max);
+
+					meerkat.modules.healthMedicare.updateMedicareLabel();
 				}
 			}
 		};
