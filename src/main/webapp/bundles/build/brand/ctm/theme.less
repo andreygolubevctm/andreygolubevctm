@@ -127,16 +127,16 @@ ul.themed {
 }
 
 // Apply the mixin to the buttons
-.btn-default	{ .btn-styles(@btn-default-bg, contrast(@btn-default-bg), @theme-secondary);	}
-.btn-primary	{ .btn-styles(@theme-primary, contrast(@theme-primary), @theme-secondary);		}
-.btn-secondary	{ .btn-styles(@theme-secondary, contrast(@theme-secondary), @theme-primary);	}
+.btn-default	{ .btn-styles(@btn-default-bg, #fff, @theme-secondary);	}
+.btn-primary	{ .btn-styles(@theme-primary, #fff, @theme-secondary, #fff);		}
+.btn-secondary	{ .btn-styles(@theme-secondary, #fff, @theme-primary);	}
 //TODO - this is being mixed in and shouldn't be
-.btn-tertiary	{ .btn-styles(@theme-tertiary, contrast(@theme-tertiary), @theme-secondary);	}
+.btn-tertiary	{ .btn-styles(@theme-tertiary, #fff, @theme-secondary);	}
 //TODO - this is being mixed in and shouldn't be
 
-.btn-info		{ .btn-styles(@btn-info-bg, contrast(@btn-info-bg), @btn-success-bg);			}
-.btn-success	{ .btn-styles(@btn-success-bg, contrast(@btn-success-bg), @btn-info-bg);		}
-.btn-warning	{ .btn-styles(@btn-warning-bg, contrast(@btn-warning-bg), @btn-primary-bg);		}
+.btn-info		{ .btn-styles(@btn-info-bg, #fff, @btn-success-bg);			}
+.btn-success	{ .btn-styles(@btn-success-bg, #fff, @btn-info-bg);		}
+.btn-warning	{ .btn-styles(@btn-warning-bg, #fff, @btn-primary-bg);		}
 .btn-danger		{ .btn-styles(@btn-danger-bg, contrast(@btn-danger-bg), @btn-danger-bg);		}
 .btn-danger{ // Overrides for btn danger styles
 	border: @btn-border-width solid @btn-danger-border;
@@ -640,7 +640,7 @@ a{
 		width: 100%;
 		position: absolute;
 		text-align: center;
-		color: contrast(@btn-pagination-bg-color, #000, #fff, 46%);
+		color: contrast(@btn-pagination-bg-color, #000, #fff);
 	}
 	.spacer{
 		position: relative;
@@ -941,7 +941,7 @@ a{
 		}
 	}
 	a {
-		color: contrast(@well-bg-info, @link-color);
+		color: contrast(@link-color, @well-bg-info); //todo fix
 		text-decoration: underline;
 		&.btn { text-decoration: none; }
 		}
