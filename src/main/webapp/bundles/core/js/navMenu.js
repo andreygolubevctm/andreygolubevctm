@@ -73,7 +73,7 @@
 	function hasContent() {
 		var count = -1; // Will always contain menu as an LI
 		$('.navMenu-contents').find('.navbar-nav').find('li').each(function(){
-			if($(this).css('display') == 'block') {
+			if($(this).is(':visible')) {
 				count++;
 			}
 			if(count > 0) return;

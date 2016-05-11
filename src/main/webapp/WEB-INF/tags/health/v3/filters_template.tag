@@ -32,7 +32,10 @@
                 <span class="helper-text"><a>Help ?</a></span>
                 <span class="heading-text">Hospital cover level</span>
             </div>
-            <div class="filter-cover-type" data-filter-type="radio">
+            <div class="filter-cover-level select" data-filter-type="select">
+                <span class=" input-group-addon">
+                    <i class="icon-sort"></i>
+                </span>
                 <select class="form-control array_select " id="health_filterBar_coverLevel" name="health_filterBar_coverLevel" data-msg-required="Please choose ">
                     {{ _.each(model.coverLevel.values, function(object) { }}
                     {{ var selected = object.selected ? ' selected="selected"' : ''; }}
