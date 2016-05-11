@@ -17,14 +17,14 @@
 
     <jsp:body>
 
-        <form_v2:fieldset legend="" postLegend="">
+        <form_v3:fieldset legend="" postLegend="">
             <div class="scrollable row">
                 <field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="customised"/>
                 <div class="benefits-list col-sm-12">
                     <c:set var="fieldXpath" value="${xpath}/coverType"/>
-                    <form_v2:row label="What type of cover are you looking for?" fieldXpath="${fieldXpath}">
+                    <form_v3:row label="What type of cover are you looking for?" fieldXpath="${fieldXpath}">
                         <field_v2:general_select xpath="${fieldXpath}" type="healthCvrType" className="health-situation-healthCvrType" required="true" title="your cover type"/>
-                    </form_v2:row>
+                    </form_v3:row>
 
                     <div class="row">
                             <%-- Note: ${resultTemplateItems} is a request scoped variable on health_quote.jsp page - as it is used in multiple places --%>
@@ -50,7 +50,7 @@
 
             </div>
 
-        </form_v2:fieldset>
+        </form_v3:fieldset>
 
     </jsp:body>
 
