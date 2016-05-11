@@ -19,7 +19,7 @@
 
 				<div id="health_application-warning">
 					<div class="fundWarning alert alert-danger">
-						<%-- insert fund warning data --%>
+							<%-- insert fund warning data --%>
 					</div>
 				</div>
 
