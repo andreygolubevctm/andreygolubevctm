@@ -484,10 +484,6 @@
             }
 
         });
-
-        // When the excess filter changes, fetch new results
-        meerkat.messaging.subscribe(meerkatEvents.healthFilters.CHANGED, meerkat.modules.healthResultsChange.onFilterChange);
-
     }
 
     /**
