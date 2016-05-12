@@ -211,9 +211,25 @@
 
 		</div>
 
-		<div class="fieldset-card row cover-card">
+		<div class="fieldset-card row cover-card ${moreinfolayout_splittest_variant1 eq true ? 'moreinfolayout-splittest' : ''}">
+
+			<c:if test="${moreinfolayout_splittest_variant1 eq true}">
+			<div class="col-xs-12 col-md-6 aboutTheFund">
+				<h2>About {{= info.productTitle }}</h2>
+				{{= aboutFund }}
+			</div>
+			</c:if>
+
+			<c:if test="${moreinfolayout_splittest_variant1 eq true}">
+			<div class="col-xs-12 col-md-6 whatsNext">
+				<h2>Next Steps</h2>
+				{{= whatHappensNext }}
+			</div>
+			</c:if>
+
+			<c:if test="${moreinfolayout_splittest_default eq true}">
 			{{ if(typeof hospital !== 'undefined' && typeof hospitalCover !== 'undefined') { }}
-			<div class="col-xs-12 col-md-6">
+			<div class="col-xs-12 col-md-6 hospitalCover">
 				{{ if(typeof hospital.inclusions !== 'undefined') { }}
 				<h2>Hospital cover</h2>
 				<p><strong>Hospital Excess:</strong> {{= hospital.inclusions.excess }}</p>
@@ -258,7 +274,9 @@
 
 			</div>
 			{{ } }}
+			</c:if>
 
+			<c:if test="${moreinfolayout_splittest_default eq true}">
 			{{ if(typeof extrasCover !== 'undefined') { }}
 			<div class="col-xs-12 col-md-6 extrasCover">
 				<h2>Extras cover</h2>
@@ -285,76 +303,76 @@
 				</table>
 			</div>
 			{{ } }}
+			</c:if>
 
-		<div class="policyBrochures col-xs-12">
-			<div class="col-xs-12">
-				<h2>Policy brochures</h2>
-				<p>See your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
-			</div>
-
-			<div class="col-xs-12 col-md-6">
-
-				<div class="row">
-					{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
-					<div class="col-xs-12">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12">Policy Brochure</a>
-					</div>
-					{{ } else { }}
-
-					{{ if(typeof hospitalCover !== 'undefined') { }}
-					<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12">Hospital Policy Brochure</a>
-					</div>
-					{{ } }}
-
-					{{ if(typeof extrasCover !== 'undefined') { }}
-					<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12 ">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Extras Policy Brochure</a>
-					</div>
-					{{ } }}
-					{{ } }}
+			<div class="policyBrochures col-xs-12">
+				<div class="col-xs-12">
+					<h2>Policy brochures</h2>
+					<p>See your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
 				</div>
 
-			</div>
-			<div class="col-xs-12 col-md-6 moreInfoEmailBrochures" novalidate="novalidate">
+				<div class="col-xs-12 col-md-6">
 
-				<div class="row formInput">
-					<div class="col-sm-7 col-xs-12">
-						<field_v2:email xpath="emailAddress"  required="true"
-										 className="sendBrochureEmailAddress"
-										 placeHolder="${emailPlaceHolder}" />
-					</div>
-					<div class="col-sm-5 hidden-xs">
-						<a href="javascript:;" class="btn btn-save disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
-					</div>
-				</div>
-				<div class="row row-content formInput optInMarketingRow">
-					<div class="col-xs-12">
-						<field_v2:checkbox className="optInMarketing checkbox-custom"
-											xpath="health/sendBrochures/optInMarketing" required="false"
-											value="Y" label="true"
-											title="Stay up to date with news and offers direct to your inbox" />
-					</div>
-				</div>
+					<div class="row">
+						{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
+						<div class="col-xs-12">
+							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12">Policy Brochure</a>
+						</div>
+						{{ } else { }}
 
-				<div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
-					<div class="col-xs-12">
-						<a href="javascript:;" class="btn btn-save disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
+						{{ if(typeof hospitalCover !== 'undefined') { }}
+						<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12">
+							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12">Hospital Policy Brochure</a>
+						</div>
+						{{ } }}
+
+						{{ if(typeof extrasCover !== 'undefined') { }}
+						<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12 ">
+							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Extras Policy Brochure</a>
+						</div>
+						{{ } }}
+						{{ } }}
 					</div>
+
 				</div>
-				<div class="row row-content moreInfoEmailBrochuresSuccess hidden">
-					<div class="col-xs-12">
-						<div class="success alert alert-success">
-							Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
+				<div class="col-xs-12 col-md-6 moreInfoEmailBrochures" novalidate="novalidate">
+
+					<div class="row formInput">
+						<div class="col-sm-7 col-xs-12">
+							<field_v2:email xpath="emailAddress"  required="true"
+											 className="sendBrochureEmailAddress"
+											 placeHolder="${emailPlaceHolder}" />
+						</div>
+						<div class="col-sm-5 hidden-xs">
+							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
 						</div>
 					</div>
+					<div class="row row-content formInput optInMarketingRow">
+						<div class="col-xs-12">
+							<field_v2:checkbox className="optInMarketing checkbox-custom"
+												xpath="health/sendBrochures/optInMarketing" required="false"
+												value="Y" label="true"
+												title="Stay up to date with news and offers direct to your inbox" />
+						</div>
+					</div>
+
+					<div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
+						<div class="col-xs-12">
+							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
+						</div>
+					</div>
+					<div class="row row-content moreInfoEmailBrochuresSuccess hidden">
+						<div class="col-xs-12">
+							<div class="success alert alert-success">
+								Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
+							</div>
+						</div>
+					</div>
+
 				</div>
-
 			</div>
-		</div>
 
-
-			<div class="col-md-8">
+			<div class="col-md-8 switching">
 				<h2>Switching is simple</h2>
 				<ol>
 					<li>You can change your fund whenever you like</li>

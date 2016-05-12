@@ -241,6 +241,8 @@
 
 							$('.health_cover_details_rebate .fieldrow_legend').html('Overall LHC ' + rates.loading + '%');
 
+							$('.health-cover_details .dialog-26-lhc').html(rates.loading);
+
 							if(hasPartner()){
 								$('#health_healthCover_primaryCover .fieldrow_legend').html('Individual LHC ' + rates.primaryLoading + '%, overall  LHC ' + rates.loading + '%');
 								$('#health_healthCover_partnerCover .fieldrow_legend').html('Individual LHC ' + rates.partnerLoading + '%, overall  LHC ' + rates.loading + '%');

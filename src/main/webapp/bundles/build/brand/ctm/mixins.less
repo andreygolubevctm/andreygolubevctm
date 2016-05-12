@@ -143,7 +143,7 @@
 // Mixin for generating new button styles
 .btn-styles(
 		@btn-bg,
-		@btn-color: contrast(@btn-bg),
+		@btn-color: @btn-bg,
 		@btn-active-bg: darken(@btn-bg, 12%),
 		@btn-active-color: contrast(@btn-active-bg),
 		@btn-interact-bg: darken(@btn-bg, 12%),
