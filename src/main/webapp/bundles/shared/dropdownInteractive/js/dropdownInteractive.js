@@ -25,6 +25,10 @@
 			$(document).on('touchmove', '.dropdown-interactive .scrollable', function(e) {
 				e.stopPropagation();
 			});
+            // Allow the dropdown body to be clicked 
+            $(document).on('click', '.dropdown-interactive .dropdown-menu', function(e) {
+                e.stopPropagation();
+            });
 		});
 
 
