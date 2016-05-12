@@ -48,7 +48,9 @@ public class ProviderContentService {
         try {
             providerId = NumberUtils.parseNumber(providerIdString, Integer.class);
          } catch (NumberFormatException e) {
-            LOGGER.info("Failed to convert providerId to number. {}", kv("providerIdString", providerIdString), kv("providerContentTypeCode", providerContentTypeCode), e);
+            LOGGER.warn("Failed to convert providerId to number. {}",
+                    kv("providerIdString", providerIdString),
+                    kv("providerContentTypeCode", providerContentTypeCode), e);
             throw new ServiceException("Failed to convert providerId to number.", e);
         }
         Date currDate = ApplicationService.getApplicationDate(request);

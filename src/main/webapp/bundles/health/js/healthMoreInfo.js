@@ -390,6 +390,25 @@
             data: data,
             cache: true,
             errorLevel: "silent",
+            onError: function onError(jqXHR, txt, errorThrown) {
+                var errorMessage = errorThrown;
+
+                try {
+                    var responseJson = $.parseJSON(jqXHR.responseText);
+                    if (responseJson.hasOwnProperty('errors') && responseJson.errors.hasOwnProperty('message')) {
+                        errorMessage = responseJson.errors.message;
+                    }
+                } catch (e1) {
+                }
+
+                meerkat.modules.errorHandling.error({
+                    message: "Failed to get provider content errorMessage:" + errorMessage,
+                    page: "healthMoreInfo.js",
+                    errorLevel: "silent",
+                    description: "product: " + product + " txt: " + txt + " data: " + data,
+                    data: errorThrown
+                });
+            },
             onSuccess: function getProviderContentSuccess(result) {
                 if (result.hasOwnProperty('providerContentText')) {
                     switch (providerContentTypeCode) {
