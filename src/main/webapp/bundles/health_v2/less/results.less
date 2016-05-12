@@ -2,6 +2,7 @@
 //       For a list of what a .section or .category is, see ../../../shared/results/v4/less/results_structure.less
 
 #resultsPage {
+  margin-bottom: 20px;
   a.dialogPop {
     text-decoration: underline;
     .small;
@@ -9,23 +10,34 @@
     font-family: @font-family-base;
   }
 
+  .preResultsContainer {
+    margin-bottom: 20px;
+    h3 {
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+  }
 }
 
 #results-sidebar {
   // need to remove this columns padding so we can apply left margin to all result-rows.
   padding-right: 0;
 }
+
 .noResults {
   margin-left: 20px;
 }
+
 // The product header
 .resultInsert {
 
   // top bar in header where restricted fund and compare are.
   .utility-bar-blank {
     padding: 5px;
+    .user-select(none);
   }
   .restrictedFund {
+    .user-select(none);
     cursor: help;
     background-color: #EDEDED;
     padding: 5px;
@@ -90,6 +102,14 @@
     vertical-align: top;
     font-size: 30px;
     margin-right: 5px;
+    @media (@sm-only) {
+      font-size: 20px;
+      margin-right: 2px;
+      line-height: 14px;
+    }
+    @media(@md-only) {
+      line-height: 20px;
+    }
   }
 
   // The actual results container, to the right of the feature labels.
@@ -116,9 +136,20 @@
       // box shadow descoped due to issues with the box shadow displaying behind the filters and also on the 3rd result.
       //box-shadow: 2px 3px 3px #cfcfcf;
     }
+    h3 {
+      @media (@sm-only) {
+        font-size: 14px;
+      }
+      @media (@md-only) {
+        font-size: 20px;
+      }
+    }
     h5 {
       padding: 15px 0 10px 5px;
       margin: 0;
+      @media (@sm-only) {
+        font-size: 16px;
+      }
     }
 
     // .cell is used as parent wrapper as .category is re-used on non-cell divs.
@@ -126,14 +157,21 @@
 
       // No feature icons in XS as there isn't enough space!
       .health-icon {
-        @media(@xs-only) {
+        line-height: 30px; // maintain same height of rows.
+        @media (@xs-only) {
           display: none;
+        }
+        @media (@sm-only) {
+          font-size: 14px;
+        }
+        @media (@md-only) {
+          font-size: 24px;
         }
       }
 
-
       // A top level category e.g. the Non Cosmetic Plastic Surgery cell
       &.category { //.cell.category
+
         // An override for last border-bottom of a category
         // .cell.section's children's last feature: set border-bottom on its .content
         &.collapsed:last-child .labelInColumn .content {
@@ -142,18 +180,22 @@
 
         // The label cell "Non Cosmetic Plastic Surgery"
         > .labelInColumn {
+          .contentInner {
+            margin-right: 16px;
+          }
+          .user-select(none);
           display: block;
           .content {
             line-height: 30px;
             padding: 5px 10px;
+            sup {
+              color: #A90000;
+              font-family: @font-family-theme-bold;
+            }
           }
         }
         .content {
           border-right: 1px solid @results-border-color;
-          sup {
-            color: #A90000;
-            font-family: @font-family-theme-bold;
-          }
           // When a benefit is not covered
           &.noCover {
             background-color: #EDEDED;
@@ -200,15 +242,36 @@
             background-color: #DDE1EB;
           }
           // remove border bottom on last cell in children
+          // or when not covered container is shown
+          .noCoverContainer.content,
           .cell:last-child .content {
             border-bottom: none;
           }
+
+          &.hideChildren {
+            .cell.feature {
+              .invisible;
+            }
+          }
+          .noCoverContainer {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            .noCoverLabel {
+              font-size: 12px;
+              position: relative;
+              text-align: center;
+              top: 40%;
+              color: @gray-light;
+            }
+          }
+
           // The corner wedge when expanded.
           &:before {
             content: '';
             position: absolute;
             top: 0;
-            left: -9px;
+            left: -10px;
             width: 0;
             height: 0;
             border-style: solid;
@@ -221,8 +284,8 @@
   }
 
   .content {
-    font-size: (@results-font-size * .85);
-    @media(@sm) {
+    font-size: 12px;
+    @media (@lg) {
       font-size: @results-font-size;
     }
     border-top: 1px solid @results-border-color;
@@ -247,7 +310,6 @@
     border-left: 1px solid @results-border-color;
   }
 
-
   // Override styles for the excess and hospital cover sections.
   .hospitalSelectionsExcessContainer {
     .hospitalExcessSectionBorder {
@@ -269,11 +331,14 @@
       position: relative;
       .restrictedBenefit {
         .small;
+        @media(@sm-only) {
+          font-size: 10px;
+        }
         color: @dulled-color;
         position: absolute;
         right: 10px;
         top: 0px;
-        @media(@lg) {
+        @media (@lg) {
           top: 14px;
         }
       }

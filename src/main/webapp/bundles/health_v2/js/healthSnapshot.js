@@ -27,13 +27,11 @@
         meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.BEFORE_STEP_CHANGED, function renderSnapshotOnJourneyReadySubscription() {
             _.defer(function() {
                 renderSnapshot();
-                renderPreResultsRowSnapshot();
             });
         });
          meerkat.messaging.subscribe(meerkat.modules.events.health.SNAPSHOT_FIELDS_CHANGE, function renderSnapshotOnJourneyReadySubscription() {
             _.defer(function() {
                 renderSnapshot();
-                renderPreResultsRowSnapshot();
             });
         });
     }
@@ -160,19 +158,58 @@
         }
         return list;
     }
+
+    /**
+     * Utility function to map cover type to a label.
+     * @returns {*}
+     */
+    function getLabelForCoverType() {
+        switch(meerkat.modules.health.getCoverType()) {
+            case 'C':
+                return "Hospital and Extras";
+            case 'H':
+                return "Hospital";
+            case 'E':
+                return "Extras";
+        }
+        return "";
+    }
+
+    /**
+     * Utility function to map situation to a label.
+     * @returns {*}
+     */
+    function getLabelForSituation() {
+
+        switch(meerkat.modules.health.getSituation()) {
+            case 'SM':
+            case 'SF':
+                return "you";
+            case 'C':
+                return "you and your partner";
+            case 'F':
+                return "you and your family";
+            case 'SPF':
+                var $dependants = $('#health_healthCover_dependants');
+                var childrenLabel = parseInt($dependants.val(),10) > 1 ? 'children' : 'child';
+                return "you and your " + childrenLabel;
+        }
+    }
     
     function renderPreResultsRowSnapshot() {
+
         var obj = {
-            name: "Test",
-            coverType: "Hospital and Extras",
-            situation: "your family"
+            name: $('#health_contactDetails_name').val(),
+            coverType: getLabelForCoverType(),
+            situation: getLabelForSituation()
         };
         var template = meerkat.modules.templateCache.getTemplate($("#pre-results-row-content-template"));
         $('.preResultsContainer').html(template(obj));
     }
 
     meerkat.modules.register('healthSnapshot', {
-        init:initHealthSnapshot
+        init:initHealthSnapshot,
+        renderPreResultsRowSnapshot: renderPreResultsRowSnapshot
     });
 
 })(jQuery);

@@ -1405,6 +1405,9 @@
     function getCoverType() {
         return $('#health_situation_coverType input').filter(":checked").val();
     }
+	function getSituation() {
+		return $('#health_situation_healthCvr').val();
+	}
 
 	meerkat.modules.register("health", {
 		init: initHealth,
@@ -1412,6 +1415,7 @@
 		initProgressBar: initProgressBar,
 		getTrackingFieldsObject: getTrackingFieldsObject,
         getCoverType: getCoverType,
+		getSituation: getSituation,
 		getRates: getRates,
 		setRates: setRates,
 		getRebate: getRebate,

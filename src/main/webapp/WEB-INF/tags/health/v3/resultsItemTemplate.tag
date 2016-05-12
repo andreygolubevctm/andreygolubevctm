@@ -5,14 +5,8 @@
 
 <core_v1:js_template id="feature-template">
     {{ var featureIterator = obj.childFeatureDetails || Features.getPageStructure(obj.featuresStructureIndexToUse); }}
-    {{ for(var i = 0; i < featureIterator.length; i++) { }}
-    {{ var ft = featureIterator[i]; }}
-    <%-- In health, we need to do this check, as we apply a property to the child object of the initial structure,
-    when copying it to the 'your selected benefits'. --%>
-    {{ if(ft.doNotRender === true) { continue; } }}
-
-    {{ var hasResult = ft.resultPath != null && ft.resultPath != ''; }}
-    {{ var pathValue = hasResult ? Object.byString( obj, ft.resultPath ) : false; }}
+    {{ for(var i = 0; i < featureIterator.length; i++) { }} {{ var ft = featureIterator[i]; }} {{ if(ft.doNotRender === true) { continue; } }}
+    {{ var hasResult = ft.resultPath != null && ft.resultPath != ''; var pathValue = hasResult ? Object.byString( obj, ft.resultPath ) : false; }}
     <div class="cell {{= ft.classString }}">
         {{ if(ft.type != 'section') { }}<%-- section headers are not displayed anymore but we need the section container --%>{{ if(ft.type == 'category') { }}
             <div class="labelInColumn {{= ft.classStringForInlineLabel }}{{ if(ft.name == '') { }} noLabel{{ } }}"{{ if(pathValue =="N" ) { }} title="Not covered" {{ } }}>
@@ -35,23 +29,12 @@
                 {{ } }}
             </div>
             {{ } }}
-        {{ } }}
-        {{ var hasFeatureChildren = typeof ft.children != 'undefined' && ft.children.length; }}
-        {{ var isSelectionHolder = ft.classString && ft.classString.indexOf('selectionHolder') != -1; }}
+        {{ } }}{{ var hasFeatureChildren = typeof ft.children != 'undefined' && ft.children.length; }}{{ var isSelectionHolder = ft.classString && ft.classString.indexOf('selectionHolder') != -1; }}
         {{ if(hasFeatureChildren || isSelectionHolder) { }}
-        <div class="children" data-fid="{{= ft.id }}">
-            {{ if(pathValue == "N") { }}
-
-            {{ } }}
-            {{ for(var m =0; m < ft.children.length; m++) { }}
-            {{ ft.children[m].shortlistKeyParent = ft.shortlistKey; }}
-            {{ } }}
-            {{ obj.childFeatureDetails = ft.children; }}
-            {{= Features.cachedProcessedTemplates[obj.featuresTemplate](obj) }}
+        <div class="children {{ if(pathValue == 'N') { }}hideChildren{{ } }}" data-fid="{{= ft.id }}">
+            {{ if(pathValue == "N") { }}<div class="content noCoverContainer"><p class="noCoverLabel">NOT COVERED IN THIS PRODUCT</p></div>{{ } }}{{ obj.childFeatureDetails = ft.children; }}{{= Features.cachedProcessedTemplates[obj.featuresTemplate](obj) }}
         </div>
-        {{ } else { }}
-        {{ delete obj.childFeatureDetails; }}
-        {{ } }}
+        {{ } else { }}{{ delete obj.childFeatureDetails; }}{{ } }}
     </div>
     {{ } }}
 </core_v1:js_template>

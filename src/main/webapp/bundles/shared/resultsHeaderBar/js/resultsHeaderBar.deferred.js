@@ -14,7 +14,6 @@
         $resultsContainer,
         navBarHeight,
         topStartOffset = 0,
-        previousStartOffset = 0,
         contentAnimating = false,
         enterXsSubscription,
         leaveXsSubscription;
