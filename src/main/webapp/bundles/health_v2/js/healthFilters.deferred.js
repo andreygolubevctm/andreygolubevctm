@@ -309,7 +309,7 @@
     }
 
     function toggleBenefitsLink($benefitsList) {
-        $benefitsList.find('.filter-toggle-all').toggle($benefitsList.find('input[type="checkbox"]:not(:checked)').length > 0);
+        $benefitsList.find('.filter-toggle-all').toggle($benefitsList.find('input[type="checkbox"]:checked').length !== $benefitsList.find('input[type="checkbox"]').length);
     }
 
     function eventSubscriptions() {
