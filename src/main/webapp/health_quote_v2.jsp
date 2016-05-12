@@ -101,14 +101,20 @@
 		<ul class="nav navbar-nav" role="menu">
 
             <li class="visible-xs">
-                <span class="navbar-text-block navMenu-header">Menu</span>
+                <div class="navMenu-header">
+                    <span class="title">Menu</span>
+                    <button type="button" class="navbar-toggle" data-toggle="navMenuClose" data-target=".navbar-collapse-menu">
+                        <span class="sr-only">Toggle Navigation</span>
+                        <span class="icon icon-cross"></span>
+                    </button>
+                </div>
             </li>
 
             <li class="slide-feature-back">
-                <a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+                <a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-angle-left"></span> <span>Go Back</span></a>
             </li>
             <li class="hidden-sm hidden-md hidden-lg dropdown dropdown-interactive slide-feature-emailquote" id="email-quote-dropdown">
-                <a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose><c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></span> <b class="caret"></b></a>
+                <a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose><c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
                 <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
                     <div class="dropdown-container">
                         <agg_v2:save_quote includeCallMeback="true" />
@@ -116,17 +122,22 @@
                 </div>
             </li>
             <li class="dropdown dropdown-interactive slide-feature-filters">
-                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter Your Results</span> <b class="caret"></b></a>
+                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter Your Results</span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
                 <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-                    <div class="results-filters">
+                    <div class="sidebar-widget results-filters">
 
                     </div>
-                </div>
+                    <div class="sidebar-widget sidebar-widget-attached filters-update-container" style="display: none">
+
+                    </div>
             </li>
             <li class="dropdown dropdown-interactive slide-feature-benefits">
-                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Customise Cover</span> <b class="caret"></b></a>
+                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Customise Cover</span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
                 <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-                    <div class="results-filters-benefits">
+                    <div class="sidebar-widget results-filters-benefits">
+
+                    </div>
+                    <div class="sidebar-widget sidebar-widget-attached filters-update-container" style="display: none">
 
                     </div>
                 </div>

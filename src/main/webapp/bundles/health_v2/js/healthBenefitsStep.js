@@ -173,7 +173,7 @@
             var benefit = {},
                 $this = $(this);
             benefit.value = $this.find('input[type="checkbox"]').attr('id').replace('health_benefits_benefitsExtras_', '');
-            benefit.label = $this.find('.iconLabel').text();
+            benefit.label = $this.find('.iconLabel').text() || $.trim($this.find('label')[0].firstChild.nodeValue);
             benefit.helpId = $this.find('.help-icon').data('content').replace('helpid:', '');
             benefit.class = ($this.hasClass('medium') ? 'medium ' : '') + ($this.hasClass('basic') ? 'basic ' : '') + ($this.hasClass('customise') ? 'customise ' : '');
             benefits.push(benefit);

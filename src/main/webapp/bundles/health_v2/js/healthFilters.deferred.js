@@ -92,7 +92,7 @@
                 defaultValue: '4',
                 events: {
                     init: function (filterObject) {
-                        var $slider = $('#results-sidebar .health-filter-excess .slider-control');
+                        var $slider = $('.health-filter-excess .slider-control');
                         meerkat.modules.sliders.initSlider($slider);
                         $slider.find('.slider')
                             .val($(filterObject.defaultValueSourceSelector).val())
@@ -102,7 +102,7 @@
                             });
                     },
                     update: function (filterObject) {
-                        var $slider = $('#results-sidebar .health-filter-excess .slider-control .slider');
+                        var $slider = $('.health-filter-excess .slider-control .slider');
                         $(filterObject.defaultValueSourceSelector).val($slider.val().replace('.00', ''));
                     }
                 }
@@ -199,7 +199,7 @@
                 update: function() {
                     // Update benefits step coverType
                     coverType = coverType || meerkat.modules.health.getCoverType();
-                    $('#health_situation_coverType').trigger('change').find('input[value="' + coverType + '"]').trigger('click');
+                    $('#health_situation_coverType').find('input[value="' + coverType + '"]').trigger('click').end().trigger('change');
 
                     meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
                     // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
@@ -214,7 +214,7 @@
         coverType;
 
     function populateSelectedBenefits() {
-        var selectedBenefits = $('#results-sidebar').find('.results-filters-benefits input[type="checkbox"]:checked').map(function() {
+        var selectedBenefits = $('.results-filters-benefits input[type="checkbox"]:checked').map(function() {
             return this.value;
         });
         meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits);
@@ -241,8 +241,8 @@
         });
 
         $(document).on('click', '.filter-remove', function removeBenefitsSection(e) {
-            var $this = $(e.target),
-                $sidebar = $('#results-sidebar');
+            var $this = $(this),
+                $sidebar = $('.sidebar-widget');
 
             if ($this.hasClass('hospital')) {
                 $sidebar.find('.need-hospital').slideUp('fast', function () {
@@ -264,8 +264,8 @@
         });
 
         $(document).on('click', '.filter-add', function addBenefitsSection(e) {
-            var $this = $(e.target),
-                $sidebar = $('#results-sidebar');
+            var $this = $(this),
+                $sidebar = $('.sidebar-widget');
 
             if ($this.hasClass('hospital')) {
                 $sidebar.find('.need-no-hospital').slideUp('fast', function () {
@@ -303,14 +303,19 @@
 
             $benefitsList.toggleClass('expanded');
             $this.find('.icon').toggleClass('icon-angle-up icon-angle-down');
+            toggleBenefitsLink($benefitsList);
         });
 
     }
 
-    function eventSubscriptions() {
+    function toggleBenefitsLink($benefitsList) {
+        $benefitsList.find('.filter-toggle-all').toggle($benefitsList.find('input[type="checkbox"]:not(:checked)').length > 0);
+    }
 
+    function eventSubscriptions() {
+        // health specific logic attached to filter change
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTER_CHANGED, function (event) {
-            var $sidebar = $('#results-sidebar');
+            var $sidebar = $('.sidebar-widget');
 
             // coverLevel change event subscription
             switch (event.target.name) {
@@ -320,7 +325,7 @@
 
                     switch (currentCover) {
                         case 'top':
-                            $allHospitalButtons.prop('checked', true);
+                            $allHospitalButtons.prop('checked', true).parents('.benefits-list').find('.filter-toggle-all').trigger('click');
                             break;
                         case 'limited':
                             $allHospitalButtons.prop('checked', false);
@@ -330,12 +335,16 @@
                             if (currentCover !== 'customise') {
                                 $allHospitalButtons.prop('checked', false);
                             }
-                            $sidebar.find('.benefitsHospital').find('.' + currentCover + ' input[type="checkbox"]').prop('checked', true);
+                            $sidebar.find('.benefitsHospital').find('.' + currentCover + ' input[type="checkbox"]').prop('checked', true).parent().removeClass('hidden').slideDown('fast');
                             break;
                     }
                     break;
                 case 'health_filterBar_benefitsHospital':
                     $('#health_filterBar_coverLevel').val('customise');
+                    toggleBenefitsLink($sidebar.find('.benefitsHospital'));
+                    break;
+                case 'health_filterBar_benefitsExtras':
+                    toggleBenefitsLink($sidebar.find('.benefitsExtras'));
                     break;
             }
 
