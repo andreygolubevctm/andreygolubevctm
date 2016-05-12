@@ -98,8 +98,9 @@
         var livingIn = $("#health_situation_location").val();
         var lookingTo = $("#health_situation_healthSitu").val();
         var coverType = $("#health_situation_coverType input:checked").parent().text();
-        var hospital = fetchAllHospitalCheckedValues();
-        var extras = fetchAllExtrasCheckedValues();
+        var tieredCoverType = $('#health_situation_coverType input').filter(":checked").val();
+        var hospital = fetchAllHospitalCheckedValues(tieredCoverType);
+        var extras = fetchAllExtrasCheckedValues(tieredCoverType);
 
         return {
             coverFor : _.isEmpty(coverFor) ? false : coverFor,
@@ -121,26 +122,42 @@
         return false;
     }
 
-    function fetchAllHospitalCheckedValues() {
+    function fetchAllHospitalCheckedValues(coverType) {
         var list = [];
-        $(".Hospital_container").find(':checked').each(function(item) {
-            var label = $.trim($(this).next('label').find('span.iconLabel').text());
-            if(!_.isEmpty(label)) {
-                list.push(label);
-            }
+        if(_.indexOf(["C","H"], coverType) >= 0) {
+            $(".Hospital_container").find(':checked').each(function (item) {
+                var label = $.trim($(this).next('label').find('span.iconLabel').text());
+                if (!_.isEmpty(label)) {
+                    list.push(label);
+                }
 
-        });
+            });
+            $(".Hospital_container .noIcons").find(':checked').each(function (item) {
+                var label = $.trim($($(this).next('label').contents()[0]).text());
+                if (!_.isEmpty(label)) {
+                    list.push(label);
+                }
+            });
+        }
         return list;
     }
 
-    function fetchAllExtrasCheckedValues() {
+    function fetchAllExtrasCheckedValues(coverType) {
         var list = [];
-        $(".GeneralHealth_container").find(':checked').each(function(item) {
-            var label = $.trim($(this).next('label').find('span.iconLabel').text());
-            if(!_.isEmpty(label)) {
-                list.push(label);
-            }
-        });
+        if(_.indexOf(["C","E"], coverType) >= 0) {
+            $(".GeneralHealth_container").find(':checked').each(function (item) {
+                var label = $.trim($(this).next('label').find('span.iconLabel').text());
+                if (!_.isEmpty(label)) {
+                    list.push(label);
+                }
+            });
+            $(".GeneralHealth_container .noIcons").find(':checked').each(function (item) {
+                var label = $.trim($($(this).next('label').contents()[0]).text());
+                if (!_.isEmpty(label)) {
+                    list.push(label);
+                }
+            });
+        }
         return list;
     }
     

@@ -25,6 +25,12 @@
                     </c:forEach>
                 </div>
 
+                <div class="row">
+                    <div class="col-sm-12">
+                        <simples:dialogue id="46" vertical="health" />
+                    </div>
+                </div>
+
                 <div class="row accident-only-container">
 
                     <div class="col-sm-12">
@@ -32,6 +38,12 @@
                         <c:set var="fieldXpath" value="health/situation/accidentOnlyCover"/>
                         <field_v2:checkbox xpath="${fieldXpath}" id="accidentCover" required="false" title="Limited Cover" value="Y" label="true"/>
                         <simples:dialogue id="44" vertical="health" mandatory="true" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <simples:dialogue id="45" vertical="health" />
                     </div>
                 </div>
             </div>
