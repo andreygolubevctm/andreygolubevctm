@@ -971,7 +971,6 @@
     }
 
     function init() {
-        meerkat.messaging.subscribe(meerkatEvents.healthBenefits.CHANGED, meerkat.modules.healthResultsChange.onBenefitsSelectionChange);
         meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
     }
 

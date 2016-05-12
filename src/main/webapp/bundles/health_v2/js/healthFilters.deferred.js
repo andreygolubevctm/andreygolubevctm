@@ -242,7 +242,7 @@
 
         $(document).on('click', '.filter-remove', function removeBenefitsSection(e) {
             var $this = $(e.target),
-                $sidebar = $('.results-filters-benefits');
+                $sidebar = $('.sidebar-widget');
 
             if ($this.hasClass('hospital')) {
                 $sidebar.find('.need-hospital').slideUp('fast', function () {
@@ -265,7 +265,7 @@
 
         $(document).on('click', '.filter-add', function addBenefitsSection(e) {
             var $this = $(e.target),
-                $sidebar = $('.results-filters-benefits');
+                $sidebar = $('.sidebar-widget');
 
             if ($this.hasClass('hospital')) {
                 $sidebar.find('.need-no-hospital').slideUp('fast', function () {
@@ -320,7 +320,7 @@
 
                     switch (currentCover) {
                         case 'top':
-                            $allHospitalButtons.prop('checked', true);
+                            $allHospitalButtons.prop('checked', true).parents('.benefits-list').find('.filter-toggle-all').trigger('click');
                             break;
                         case 'limited':
                             $allHospitalButtons.prop('checked', false);
@@ -330,7 +330,7 @@
                             if (currentCover !== 'customise') {
                                 $allHospitalButtons.prop('checked', false);
                             }
-                            $sidebar.find('.benefitsHospital').find('.' + currentCover + ' input[type="checkbox"]').prop('checked', true);
+                            $sidebar.find('.benefitsHospital').find('.' + currentCover + ' input[type="checkbox"]').prop('checked', true).parent().removeClass('hidden').slideDown('fast');
                             break;
                     }
                     break;
