@@ -259,8 +259,27 @@
         });
 
 
-
+        /*
+        // Does not work
+        meerkat.messaging.subscribe(Results.moduleEvents.FEATURE_TOGGLED, function(eventObject) {
+            _.defer(function() {
+                var $el = eventObject.element,
+                    heights = [];
+                var $children = $(Results.settings.elements.resultsOverflow + ' .children[data-fid="'+$el.attr('data-fid')+'"]');
+                $children.each(function() {
+                    heights.push($(this).innerHeight());
+                });
+                var heightToUse = _getMax(heights),
+                    $containers = $children.find('.noCoverContainer');
+                $containers.height(heightToUse);
+            });
+        });*/
     }
+
+    function _getMax( array ){
+        return Math.max.apply( Math, array );
+    }
+
     function eventSubscriptions() {
 
         var tStart = 0;
@@ -294,7 +313,10 @@
         $(document).on("resultsReturned", function () {
             filteredOutResults = []; //reset
             meerkat.modules.utils.scrollPageTo($("header"));
+
             $('.floated-next-arrow').removeClass('hidden');
+            meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
+
             // Reset the feature header to match the new column content.
             $(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
 

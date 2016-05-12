@@ -24,8 +24,10 @@
   // top bar in header where restricted fund and compare are.
   .utility-bar-blank {
     padding: 5px;
+    .user-select(none);
   }
   .restrictedFund {
+    .user-select(none);
     cursor: help;
     background-color: #EDEDED;
     padding: 5px;
@@ -135,6 +137,7 @@
 
       // A top level category e.g. the Non Cosmetic Plastic Surgery cell
       &.category { //.cell.category
+
         // An override for last border-bottom of a category
         // .cell.section's children's last feature: set border-bottom on its .content
         &.collapsed:last-child .labelInColumn .content {
@@ -143,18 +146,19 @@
 
         // The label cell "Non Cosmetic Plastic Surgery"
         > .labelInColumn {
+          .user-select(none);
           display: block;
           .content {
             line-height: 30px;
             padding: 5px 10px;
+            sup {
+              color: #A90000;
+              font-family: @font-family-theme-bold;
+            }
           }
         }
         .content {
           border-right: 1px solid @results-border-color;
-          sup {
-            color: #A90000;
-            font-family: @font-family-theme-bold;
-          }
           // When a benefit is not covered
           &.noCover {
             background-color: #EDEDED;
@@ -164,6 +168,18 @@
               // this makes the expander invisible until its opened.
               color: #EDEDED;
             }
+
+            /*.noCoverContainer {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              .noCoverLabel {
+                text-align: center;
+                position: relative;
+                top: 45%;
+                color: @gray-dark;
+              }
+            }*/
           }
         }
 
@@ -193,6 +209,7 @@
           margin-left: 10px;
           position: relative;
 
+
           .content {
             border-left-color: @subfeature-border-color;
             border-right: 1px solid @subfeature-border-color;
@@ -201,15 +218,36 @@
             background-color: #DDE1EB;
           }
           // remove border bottom on last cell in children
+          // or when not covered container is shown
+          .noCoverContainer.content,
           .cell:last-child .content {
             border-bottom: none;
           }
+
+          &.hideChildren {
+            .cell.feature {
+              .invisible;
+            }
+          }
+          .noCoverContainer {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            .noCoverLabel {
+              font-size: 12px;
+              position: relative;
+              text-align: center;
+              top: 40%;
+              color: @gray-light;
+            }
+          }
+
           // The corner wedge when expanded.
           &:before {
             content: '';
             position: absolute;
             top: 0;
-            left: -9px;
+            left: -10px;
             width: 0;
             height: 0;
             border-style: solid;

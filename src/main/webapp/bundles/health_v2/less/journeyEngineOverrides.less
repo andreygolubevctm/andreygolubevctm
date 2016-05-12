@@ -55,9 +55,12 @@ fieldset > .content,
 .fieldset-card {
 	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
 }
-.content{
-	padding: 25px;
-	box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.1);
+.fieldset {
+	// .content IS USED IN EVERY RESULTS CELL!!!
+	> .content {
+		padding: 25px;
+		box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.1);
+	}
 }
 //Overriding a 40px bottom
 .fieldset {

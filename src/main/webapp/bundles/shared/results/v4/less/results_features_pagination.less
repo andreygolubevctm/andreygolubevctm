@@ -11,12 +11,15 @@
     }
 
     .nav > li {
+      font-family: @font-family-theme-bold;
+      margin-left: 10px;
+
       a:hover, a.active:hover {
         border-bottom-color: @theme-secondary;
         border-bottom-width: 2px;
+        color: @theme-secondary;
       }
-      font-family: @font-family-theme-bold;
-      margin-left: 10px;
+
       .btn-pagination {
         border: 1px solid @results-border-color;
         &.active, &:active {
