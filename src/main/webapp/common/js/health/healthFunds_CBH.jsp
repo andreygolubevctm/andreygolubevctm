@@ -38,7 +38,7 @@ var healthFunds_CBH = {
 
 						<c:set var="fieldXpath" value="health/application/cbh/currentemployee" />
 						<form_v3:row fieldXpath="${fieldXpath}" label="Are you a current employee, contractor or franchisee of the CBA Group?" className="cbhmain">
-							<field_v2:array_select xpath="${fieldXpath}" required="true" title="if you are a current employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
+							<field_v2:array_select xpath="${fieldXpath}" required="true" title="if you are a current employee of the CBA Group" items="=Please choose...,Y=Yes,N=No"  disableErrorContainer="${true}" />
 						</form_v3:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/currentnumber" />
@@ -169,7 +169,7 @@ var healthFunds_CBH = {
 			<c:set var="html">
 				<c:set var="fieldXpath" value="health/application/cbh/partnerrel" />
 				<form_v3:row id="cbh_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
-					<field_v2:array_select xpath="${fieldXpath}" required="true" title="relationship to you" items="=Please choose...,2=Spouse,3=Defacto" />
+					<field_v2:array_select xpath="${fieldXpath}" required="true" title="relationship to you" items="=Please choose...,2=Spouse,3=Defacto"  placeHolder="Relationship" disableErrorContainer="${true}" />
 				</form_v3:row>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />

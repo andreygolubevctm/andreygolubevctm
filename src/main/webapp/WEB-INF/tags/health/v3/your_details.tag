@@ -18,21 +18,21 @@
 		<div id="yourpreviousfund" legend="Previous Fund Details" class="health-previous_fund">
 
 			<c:set var="fieldXpath" value="${xpath}/primary/fundName" />
-			<form_v2:row fieldXpath="${fieldXpath}" label="Your Current Health Fund" id="clientFund" className="changes-premium">
+			<form_v3:row fieldXpath="${fieldXpath}" label="Your Current Health Fund" id="clientFund" className="changes-premium">
 				<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="your health fund" required="true" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" />
-			</form_v2:row>
+			</form_v3:row>
 
 			<%-- Optional Membership ID's --%>
 			<div id="clientMemberID" class="membership">
 				<c:set var="fieldXpath" value="${xpath}/primary/memberID" />
-				<form_v2:row fieldXpath="${fieldXpath}" label="Membership Number" className="clientMemberID" smRowOverride="3">
+				<form_v3:row fieldXpath="${fieldXpath}" label="Membership Number" className="clientMemberID" smRowOverride="3">
 					<field_v2:input xpath="${fieldXpath}" title="your member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${true}" placeHolder="Membership No." />
-				</form_v2:row>
+				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/primary/authority" />
-				<form_v2:row fieldXpath="${fieldXpath}" className="health_previous_fund_authority hidden" helpId="522">
+				<form_v3:row fieldXpath="${fieldXpath}" className="health_previous_fund_authority hidden" helpId="522">
 					<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="I authorise <span>the fund</span> to contact my previous fund to obtain a clearance certificate" label="I authorise <span>the fund</span> to contact my previous fund to obtain a transfer certificate" required="false" customAttribute=" data-attach='true' " />
-				</form_v2:row>
+				</form_v3:row>
 			</div>
 		</div>
 	</div>
