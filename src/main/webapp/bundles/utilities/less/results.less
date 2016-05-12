@@ -128,8 +128,12 @@
 
   .moreInfo {
     margin-top: 10px;
+    text-align:center;
     a {
       text-decoration: underline;
+      @media(@md) {
+        padding:0px;
+      }
     }
   }
 
@@ -232,12 +236,6 @@
         height: auto;
       }
     }
-  }
-}
-
-@media (@lg) {
-  .moreInfo {
-    text-align: right;
   }
 }
 

@@ -198,7 +198,7 @@
                                        data-productId="{{= obj.productId }}">
                                         Apply Now <span class="icon icon-arrow-right"/></a>
                                 </div>
-                                <div class="col-sm-4 col-sm-pull-4 col-lg-12 moreInfo">
+                                <div class="col-sm-4 col-sm-push-8 col-lg-push-0 col-lg-12 moreInfo">
                                     <a href="javascript:;" class="btn-more-info"
                                        data-available="{{= obj.productAvailable }}"
                                        data-productId="{{= obj.productId }}">More
