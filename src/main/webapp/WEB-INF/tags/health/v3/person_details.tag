@@ -28,20 +28,20 @@
 		<field_v3:name_group xpath="${xpath}" />
 
 		<c:set var="fieldXpath" value="${xpath}/dob" />
-		<form_v2:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium">
+		<form_v3:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium">
 			<field_v2:person_dob xpath="${fieldXpath}" title="${dobTitle}" required="true" ageMin="16" ageMax="120" disableErrorContainer="${true}" />
-		</form_v2:row>
+		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/gender" />
-		<form_v2:row fieldXpath="${fieldXpath}" label="Gender" id="${name}_genderRow" smRowOverride="5">
+		<form_v3:row fieldXpath="${fieldXpath}" label="Gender" id="${name}_genderRow" smRowOverride="5">
 			<field_v2:array_radio id="${name}_gender" xpath="${fieldXpath}" required="true" items="M=Male,F=Female" title="${title} gender" className="health-person-details person-gender" disableErrorContainer="${true}" />
-		</form_v2:row>
+		</form_v3:row>
 
 		<c:if test="${id == 'partner'}">
 			<c:set var="fieldXpath" value="${xpath}/authority" />
-			<form_v2:row fieldXpath="${fieldXpath}" label="Would you like to give your partner authority to make claims, changes or enquire about the policy on behalf of anyone listed on the policy?" id="${name}_authority_group" className="health_person-details_authority_group hidden">
+			<form_v3:row fieldXpath="${fieldXpath}" label="Would you like to give your partner authority to make claims, changes or enquire about the policy on behalf of anyone listed on the policy?" id="${name}_authority_group" className="health_person-details_authority_group hidden">
 				<field_v2:array_radio id="${name}_authority" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="${title} authority permission" className="health-person-details-authority" />
-			</form_v2:row>
+			</form_v3:row>
 		</c:if>
 
 

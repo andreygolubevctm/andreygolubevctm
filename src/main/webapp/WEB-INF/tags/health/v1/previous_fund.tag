@@ -38,9 +38,9 @@
 		</div>
 
 		<c:set var="fieldXpath" value="${xpath}/partner/fundName" />
-		<form_v2:row fieldXpath="${fieldXpath}" label="Partner's Current Health Fund" id="partnerFund" className="changes-premium">
+		<form_v3:row fieldXpath="${fieldXpath}" label="Partner's Current Health Fund" id="partnerFund" className="changes-premium">
 			<field_v2:import_select xpath="${fieldXpath}" url="/WEB-INF/option_data/health_funds.html" title="partner's health fund" required="true" />
-		</form_v2:row>
+		</form_v3:row>
 
 		<div id="partnerMemberID" class="membership">
 			<c:set var="fieldXpath" value="${xpath}/partner/memberID" />

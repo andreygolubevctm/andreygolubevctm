@@ -55,9 +55,9 @@
 
 <div class="elasticSearchTypeaheadComponent elasticsearch_container_${name}" data-address-id="${name}" data-suburbSeqNo="${address.suburb}" data-search-type="${type}"
      data-address-streetNum="${address.streetNum}" data-address-unitShop="${address.unitShop}">
-    <form_v2:row id="${name}_error_container">
+    <form_v3:row id="${name}_error_container">
         <div class="error-field"></div>
-    </form_v2:row>
+    </form_v3:row>
 
     <%-- STREET-SEARCH (ELASTIC) --%>
     <!-- Since Chrome now ignores the autofill="off" param we can't have address or street in the name/id of the search field. Thanks Chrome... -->
@@ -81,7 +81,7 @@
     </form_v3:row>
 
     <%-- POSTCODE --%>
-    <form_v2:row label="Postcode" isNestedStyleGroup="${true}" className="${name}_nonStdFieldRow">
+    <form_v3:row label="Postcode" isNestedStyleGroup="${true}" className="${name}_nonStdFieldRow">
         <c:set var="fieldXpath" value="${xpath}/nonStdPostCode"/>
         <form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${name}_nonStdFieldRow" smRowOverride="5" isNestedField="${true}" hideHelpIconCol="${true}">
             <field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}" disableErrorContainer="${disableErrorContainer}" />
@@ -130,12 +130,12 @@
                 </c:otherwise>
             </c:choose>
         </form_v2:row>
-    </form_v2:row>
+    </form_v3:row>
 
     <core_v1:clear/>
 
 
-    <form_v2:row label="Unit / Street Number" isNestedStyleGroup="${true}" className="${name}_nonStdFieldRow">
+    <form_v3:row label="Unit / Street Number" isNestedStyleGroup="${true}" className="${name}_nonStdFieldRow">
         <%-- UNIT/SHOP NUMBER (Optional) --%>
         <c:set var="fieldXpath" value="${xpath}/unitShop"/>
         <form_v2:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="${name}_nonStdFieldRow" smRowOverride="5" isNestedField="${true}" hideHelpIconCol="${true}">
@@ -163,16 +163,16 @@
         <form_v2:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStdFieldRow" smRowOverride="5"  isNestedField="${true}" hideHelpIconCol="${true}">
             <field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" placeHolder="Unit Type"/>
         </form_v2:row>
-    </form_v2:row>
+    </form_v3:row>
 
     <core_v1:clear/>
 
     <%-- STREET NAME --%>
     <c:set var="fieldXpath" value="${xpath}/nonStdStreet"/>
-    <form_v2:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStdFieldRow">
+    <form_v3:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStdFieldRow">
         <field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude"
                         additionalAttributes=" data-rule-validAddress='${name}' data-rule-validAddress='Please enter the residential street' " disableErrorContainer="${disableErrorContainer}" placeHolder="Street Name"/>
-    </form_v2:row>
+    </form_v3:row>
 
     <core_v1:clear/>
 
@@ -186,9 +186,9 @@
         </c:if>
     </form_v3:row>
 
-    <form_v2:row fieldXpath="${fieldXpath}" label="" className="nonStd">
+    <form_v3:row fieldXpath="${fieldXpath}" label="" className="nonStd">
         <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="${unableToFindCheckboxText}" label="true" required="false"/>
-    </form_v2:row>
+    </form_v3:row>
 
 
     <!-- HIDDEN FIELDS (Populated in autocomplete.js or elastic_search.js) -->
