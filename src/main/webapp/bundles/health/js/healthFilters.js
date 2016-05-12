@@ -330,21 +330,11 @@
 				}
 			}
 
-
-				meerkat.messaging.publish(moduleEvents.CHANGED,filterChanges);
-
-				if (needToFetchFromServer) {
-					_.defer(function(){
-						meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
-						// Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
-						_.delay(function(){
-							meerkat.modules.healthResults.get();
-						},100);
-					});
-				}else{
-					Results.applyFiltersAndSorts();
-				}
-
+			if (needToFetchFromServer) {
+				meerkat.messaging.publish(moduleEvents.CHANGED, filterChanges);
+			} else  {
+				Results.applyFiltersAndSorts();
+			}
 
 		});
 
