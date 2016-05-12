@@ -58,6 +58,9 @@
 
         //We no longer need the underlay as we have just closed
         $('.navMenu-backdrop-underlay').remove();
+
+        // remove backdrop underlay for any dropdown that may exist in the navMenu
+        $('.dropdown-backdrop').remove();
 	}
 
 	/* Toggle menu dependent on whether it contains any content */

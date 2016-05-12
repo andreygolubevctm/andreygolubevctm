@@ -37,7 +37,7 @@
         $document,
         subscriptionHandles = {},
         resettingFilters = false,
-        needToFetchFromServer = true;
+        needToFetchFromServer = false;
 
 
     /**
@@ -156,7 +156,8 @@
 
     function buildHtml(component) {
         _.each(settings[component], function(setting) {
-            $(setting.container, setting.context).empty().html(getTemplateHtml(setting.template));
+            $(setting.container).empty(); // empty all so if we switch breakpoint it still works
+            $(setting.container, setting.context).html(getTemplateHtml(setting.template));
         });
     }
 
@@ -186,11 +187,14 @@
         // Every time we get to results, reset the filter model and re-render.
         meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function journeyEngineSlideChange(eventObject) {
             if (eventObject.isForward && eventObject.navigationId == 'results') {
-                resetFilters(model);
+                resetFilters();
             }
         });
 
         meerkat.messaging.subscribe(moduleEvents.filters.FILTER_CHANGED, function (event) {
+            if ($(event.target).parents('.filter').data('filterServerside') === true) {
+                needToFetchFromServer = true;
+            }
             $(settings.updates[0].container).slideDown();
         });
 
@@ -204,6 +208,7 @@
                     meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
                     Results.applyFiltersAndSorts();
                 }
+                needToFetchFromServer = false;
             });
         });
 
@@ -215,24 +220,16 @@
 
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
             changeFilterContext('#navbar-main');
+            resetFilters();
         });
 
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsEnterXsState() {
             changeFilterContext('#results-sidebar');
+            resetFilters();
         });
     }
 
     function applyEventListeners() {
-
-        $('#navbar-main').on('click', '.slide-feature-filters a, .slide-feature-benefits a', function (e) {
-            e.preventDefault();
-            /**
-             * If not rendered, render the template in the XS container (not yet defined in the settings..)
-             * If rendered, shouldn't need to do anything? Or should it always re-render on open because
-             * data could have changed.
-             *
-             */
-        });
 
         _.each(model, function (filterObject) {
 

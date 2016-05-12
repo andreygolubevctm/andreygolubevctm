@@ -199,7 +199,7 @@
                 update: function() {
                     // Update benefits step coverType
                     coverType = coverType || meerkat.modules.health.getCoverType();
-                    $('#health_situation_coverType').trigger('change').find('input[value="' + coverType + '"]').trigger('click');
+                    $('#health_situation_coverType').find('input[value="' + coverType + '"]').trigger('click').end().trigger('change');
 
                     meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
                     // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
@@ -308,7 +308,7 @@
     }
 
     function eventSubscriptions() {
-
+        // health specific logic attached to filter change
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTER_CHANGED, function (event) {
             var $sidebar = $('.sidebar-widget');
 
