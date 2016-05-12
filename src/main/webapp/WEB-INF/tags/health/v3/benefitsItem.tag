@@ -44,7 +44,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 				</div>
 				<div class="nonComprehensiveCover">
 					or
-					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customised">Customise your cover</a>
+					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customise">Customise your cover</a>
 					<a href="javascript:;" class="benefit-category limited" data-category="limited">No thanks, I only want limited hospital cover</a>
 				</div>
 			</div>
