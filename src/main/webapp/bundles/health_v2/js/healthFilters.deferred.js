@@ -241,7 +241,7 @@
         });
 
         $(document).on('click', '.filter-remove', function removeBenefitsSection(e) {
-            var $this = $(e.target),
+            var $this = $(this),
                 $sidebar = $('.sidebar-widget');
 
             if ($this.hasClass('hospital')) {
@@ -264,7 +264,7 @@
         });
 
         $(document).on('click', '.filter-add', function addBenefitsSection(e) {
-            var $this = $(e.target),
+            var $this = $(this),
                 $sidebar = $('.sidebar-widget');
 
             if ($this.hasClass('hospital')) {
@@ -303,8 +303,13 @@
 
             $benefitsList.toggleClass('expanded');
             $this.find('.icon').toggleClass('icon-angle-up icon-angle-down');
+            toggleBenefitsLink($benefitsList);
         });
 
+    }
+
+    function toggleBenefitsLink($benefitsList) {
+        $benefitsList.find('.filter-toggle-all').toggle($benefitsList.find('input[type="checkbox"]:not(:checked)').length > 0);
     }
 
     function eventSubscriptions() {
@@ -336,6 +341,10 @@
                     break;
                 case 'health_filterBar_benefitsHospital':
                     $('#health_filterBar_coverLevel').val('customise');
+                    toggleBenefitsLink($sidebar.find('.benefitsHospital'));
+                    break;
+                case 'health_filterBar_benefitsExtras':
+                    toggleBenefitsLink($sidebar.find('.benefitsExtras'));
                     break;
             }
 
