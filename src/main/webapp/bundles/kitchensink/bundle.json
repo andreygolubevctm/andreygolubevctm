@@ -4,6 +4,7 @@
     "meerkat",
     "shared/journeyEngine/v2",
     "core",
+    "shared/forms/v1",
     "plugins/bootstrapSwitch",
     "shared/addressLookup",
     "shared/currency",
