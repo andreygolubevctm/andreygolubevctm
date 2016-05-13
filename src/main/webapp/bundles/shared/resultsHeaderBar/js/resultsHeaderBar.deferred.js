@@ -16,13 +16,16 @@
         topStartOffset = 0,
         contentAnimating = false,
         enterXsSubscription,
-        leaveXsSubscription;
+        leaveXsSubscription,
+        disableOnXs = false; // whether to disable on XS
 
     function init() {
         $resultsHeaderBg = $('.resultsHeadersBg');
         $affixOnScroll = $('.affixOnScroll');
         $resultsContainer = $('.resultsContainer');
         navBarHeight = $("#navbar-main").height();
+
+        // disableOnXs = meerkat.site. .... get this from a meerkat site setting if you really want to disable it.
 
         // Self-initialise
         $(document).on('resultsLoaded', registerEventListeners);
@@ -143,12 +146,12 @@
 
     function enableAffixMode() {
 
-        if (meerkat.modules.deviceMediaState.get() !== "xs") {
-            _.defer(function () {
-                onScroll(); // force call it once in case we just entered the breakpoint and did not scroll
-            });
-            $(window).on('scroll.resultsHeaderBar', _.throttle(onScroll, 25));
+        _.defer(function () {
+            onScroll(); // force call it once in case we just entered the breakpoint and did not scroll
+        });
+        $(window).on('scroll.resultsHeaderBar', _.throttle(onScroll, 25));
 
+        if (disableOnXs === true) {
             // subscribe to enter XS to disable fixed headers in that breakpoint
             enterXsSubscription = meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function () {
                 disableAffixMode();
@@ -156,6 +159,9 @@
         }
     }
 
+    /**
+     * Only runs if disabling on XS.
+     */
     function disableAffixMode() {
 
         // unsubscribe to enter XS
@@ -182,7 +188,7 @@
     // Add remove event listeners (on entering / leaving results page)...
     function registerEventListeners() {
 
-        if (meerkat.modules.deviceMediaState.get() === "xs") {
+        if (meerkat.modules.deviceMediaState.get() === "xs" && disableOnXs === true) {
             subscribeToLeaveXs();
         } else {
             enableAffixMode();

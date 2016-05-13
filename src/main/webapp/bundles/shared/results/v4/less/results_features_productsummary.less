@@ -29,7 +29,10 @@ section: Results v4
     Inner Container wraps the content that needs to be constrained within the padding of the resultInsert.
     */
   .results-header-inner-container {
-    padding: 10px 15px 25px 15px;
+    padding: 10px 10px 15px 10px;
+    @media(@sm) {
+      padding: 10px 15px 25px 15px;
+    }
   }
 }
 

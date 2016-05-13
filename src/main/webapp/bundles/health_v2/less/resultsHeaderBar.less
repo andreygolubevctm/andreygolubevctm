@@ -6,18 +6,21 @@
   position: relative;
   z-index: @results-zindex-resultItems;
 
-
   // always in effect
   &.affixed-settings {
 
     .result-row {
       // To make up for the space no longer consumed by the .result element.
-      padding-top: 330px;
+      padding-top: 230px;
+      @media(@sm) {
+        padding-top: 330px;
+      }
     }
 
     .result {
       top: 0px;
       width: inherit;
+      box-shadow: 0 4px 2px -2px #ccc;
     }
     .hide-on-affix {
       display: none;
@@ -27,6 +30,21 @@
   // .affixed is not in effect while going between pages.
   &.affixed {
 
+    @media (@xs-only) {
+      .result {
+        top: 80px; // to make up for pagination and header bar.
+      }
+      .utility-bar-blank,
+      .lhcText {
+        display: none;
+      }
+      .productSummary {
+        height: 100px;
+      }
+      .btn-more-info {
+        .btn-sm;
+      }
+    }
     .result {
       display: none; // when in fixed mode, only display the items on the 'current page' - thanks to the pagination component for settings this.
       position: fixed;
