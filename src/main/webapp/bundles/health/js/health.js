@@ -241,6 +241,8 @@
 
 							$('.health_cover_details_rebate .fieldrow_legend').html('Overall LHC ' + rates.loading + '%');
 
+							$('.health-cover_details .dialog-26-lhc').html(rates.loading);
+
 							if(hasPartner()){
 								$('#health_healthCover_primaryCover .fieldrow_legend').html('Individual LHC ' + rates.primaryLoading + '%, overall  LHC ' + rates.loading + '%');
 								$('#health_healthCover_partnerCover .fieldrow_legend').html('Individual LHC ' + rates.partnerLoading + '%, overall  LHC ' + rates.loading + '%');
@@ -426,7 +428,7 @@
 				meerkat.modules.healthDualPricing.initHealthDualPricing();
 			},
 			onBeforeEnter:function enterResultsStep(event){
-
+				meerkat.modules.sessionCamHelper.stop();
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
 				} else {
@@ -477,6 +479,7 @@
 			onInitialise: function onInitApplyStep(event) {
 
 				meerkat.modules.healthDependants.initHealthDependants();
+				meerkat.modules.healthMedicare.initHealthMedicare();
 
 				healthApplicationDetails.init();
 
@@ -522,6 +525,7 @@
 						meerkat.messaging.publish(moduleEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
 					});
 
+
 			},
 			onBeforeEnter: function enterApplyStep(event){
 
@@ -558,6 +562,7 @@
 					var max = meerkat.modules.healthPaymentStep.getSetting('maxStartDate');
 					$("#health_payment_details_start_calendar").datepicker('setStartDate', min).datepicker('setEndDate', max);
 
+					meerkat.modules.healthMedicare.updateMedicareLabel();
 				}
 			}
 		};

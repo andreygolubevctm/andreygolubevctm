@@ -259,7 +259,10 @@
 	</form_v2:row>
 
 	<form_v2:row label="ip_address (not used?)">
-		<field_v1:ip_address />
+		<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+		<%-- Pull out the IP Address --%>
+		<c:set var="ip" value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
+		<c:out value="${ip}" />
 	</form_v2:row>
 
 	<form_v2:row label="ip_number">
@@ -503,17 +506,11 @@
 	<form_v2:row label="btn btn-dropdown">
 		<a class="btn btn-dropdown" href="javascript:;">Button text</a>
 	</form_v2:row>
-	<form_v2:row label="btn btn-">
-		<a class="btn btn-" href="javascript:;">Button text</a>
-	</form_v2:row>
 	<form_v2:row label="btn btn-pagination">
 		<a class="btn btn-pagination" href="javascript:;">Button text</a>
 	</form_v2:row>
 	<form_v2:row label="btn btn-save">
-		<a class="btn btn-" href="javascript:;">Button text</a>
-	</form_v2:row>
-	<form_v2:row label="btn btn-save">
-		<a class="btn btn-" href="javascript:;">Button text</a>
+		<a class="btn btn-save" href="javascript:;">Button text</a>
 	</form_v2:row>
 	<form_v2:row label="btn btn-cancel">
 		<a class="btn btn-cancel" href="javascript:;">Button text</a>

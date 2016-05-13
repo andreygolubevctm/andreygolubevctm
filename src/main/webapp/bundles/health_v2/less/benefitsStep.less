@@ -74,7 +74,7 @@
                         &.checked {
                             & + label:before {
                                 background-color: @health-benefits-icon-bg-checked-color;
-                                border-color: @health-benefits-icon-border-checked-color;
+                                border-color: @benefits-selected-checkbox-border;
                                 color: #fff;
                             }
                         }
@@ -159,6 +159,8 @@
 
         .subTitle{
             clear: left;
+            padding-top: 5px;
+            padding-bottom: 5px;
         }
 
         .noIcons {
@@ -191,17 +193,33 @@
             }
         }
 
+        .benefit-row {
+            position: relative;
+            padding-bottom: 10px;
+            min-height: 510px;
+        }
         .benefits-side-bar {
-            @media (@sm) {
-                padding-right: 5px;
+            padding-right: 5px;
+            bottom: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            @media (@sm-only) {
                 padding-left: 0;
+
+            }
+            @media (@xs-only){
+                position: relative;
             }
 
             .sidebar-wrapper {
+                height: 100%;
                 float:left;
                 padding:0 15px;
                 background-color: @sidebar-gray-bg-color;
                 border-left: 1px solid @sidebar-gray-bg-border-color;
+                border-top: 1px solid @sidebar-gray-bg-border-color;
+
 
                 .top-5-benefits {
                     list-style: none;
@@ -233,7 +251,14 @@
                 }
 
                 @media (@sm) {
-                    padding-top: 67px;
+                    padding-top: 10px;
+                }
+                @media (@sm-only) {
+                    padding: 8px;
+                }
+                @media (@xs-only){
+                    border-right: 1px solid @sidebar-gray-bg-border-color;
+                    border-bottom: 1px solid @sidebar-gray-bg-border-color;
                 }
             }
         }

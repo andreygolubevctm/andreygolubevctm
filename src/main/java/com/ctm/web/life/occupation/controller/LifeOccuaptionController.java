@@ -6,6 +6,7 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.life.services.LifeOccupationService;
 import io.swagger.annotations.Api;
@@ -29,8 +30,8 @@ public class LifeOccuaptionController extends CommonQuoteRouter {
     private LifeOccupationService lifeOccupationService;
 
     @Autowired
-    public LifeOccuaptionController(SessionDataServiceBean sessionDataServiceBean) {
-        super(sessionDataServiceBean);
+    public LifeOccuaptionController(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler) {
+        super(sessionDataServiceBean, ipAddressHandler);
     }
 
     @ApiOperation(value = "occupation/list.json", notes = "Request a list of Life occupations", produces = "application/json")

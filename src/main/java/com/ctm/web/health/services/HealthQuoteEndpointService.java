@@ -4,6 +4,7 @@ import com.ctm.web.core.model.resultsData.BaseResultObj;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.*;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.validation.FormValidation;
@@ -55,6 +56,11 @@ public class HealthQuoteEndpointService extends CTMEndpointService {
         sessionDataService = new SessionDataServiceBean();
         this.tokenService = tokenService;
         this.requestService = requestService;
+    }
+
+    public HealthQuoteEndpointService(IPAddressHandler ipAddressHandler) {
+        sessionDataService = new SessionDataServiceBean();
+        this.requestService = new RequestService(Vertical.VerticalType.HEALTH , ipAddressHandler);
     }
 
     public void init(HttpServletRequest httpRequest, PageSettings pageSettings, HealthRequest healthRequest, boolean isCallCentre) {

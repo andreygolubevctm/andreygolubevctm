@@ -369,7 +369,7 @@
 	function onAccessoriesFormRendered() {
 
 		$('.nonStandardAccessoryCheckbox').on('change', function(){
-			var $rowCheckbox = $(this),
+			var $rowCheckbox = $(this).find(":input").first(),
 				itemIndex = $rowCheckbox.attr('itemIndex'),
 				$relatedPriceSelect = $('select[itemIndex="'+itemIndex+'"]');
 
@@ -380,7 +380,7 @@
 				$relatedPriceSelect.prop('disabled', true);
 				$relatedPriceSelect.val('');
 			}
-				});
+		});
 
 		// Watch the dropdowns to remove any errors that may have been added previously, or add an error if the user selects nothing.
 		$('.nonStandardAccessorySelect').on('change', function() {

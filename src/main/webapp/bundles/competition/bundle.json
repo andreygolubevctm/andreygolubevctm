@@ -6,6 +6,7 @@
         "shared/journeyEngine/v2",
         "shared/results",
         "core",
+        "shared/forms/v1",
         "shared/validation"
     ]
 }

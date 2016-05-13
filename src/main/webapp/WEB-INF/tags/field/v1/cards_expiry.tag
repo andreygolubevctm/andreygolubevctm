@@ -12,6 +12,7 @@
 <%@ attribute name="title" 		required="true"	 	rtexprvalue="true"	description="The subject of the field (e.g. 'regular driver')"%>
 <%@ attribute name="rule" 		required="false"	rtexprvalue="true"	description="Create a new rule name in case of conflict"%>
 <%@ attribute name="maxYears" 		required="false"	rtexprvalue="true"	description="The number of years to display"%>
+<%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <%-- VARIABLES --%>
 <c:set var="cardExpiryMonth" value="${go:nameFromXpath(xpath)}_cardExpiryMonth" />
@@ -42,7 +43,7 @@
 <%-- HTML --%>
 <div class="row">
 	<div class="col-xs-6 col-md-5">
-		<field_v2:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"	title="expiry month" required="true" omitPleaseChoose="Y" className="${className}"/>
+		<field_v2:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"	title="expiry month" required="true" className="${className}" placeHolder="Month" disableErrorContainer="${disableErrorContainer}"/>
 	</div>
 	<div class="col-xs-6 col-md-5">
 		<field_v2:array_select
@@ -50,6 +51,6 @@
 			xpath="${xpath}/cardExpiryYear"
 			title="expiry year"
 			className="${className}"
-			required="true" extraDataAttributes="${validationAttributes}" />
+			required="true" extraDataAttributes="${validationAttributes}" placeHolder="Year"  disableErrorContainer="${disableErrorContainer}" />
 	</div>
 </div>

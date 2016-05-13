@@ -57,9 +57,10 @@
 		$tierDropdowns = $aboutYouContainer.find('#health_situation_healthCvr, #health_healthCover_dependants'),
 		$primaryDOB = $aboutYouContainer.find('#health_healthCover_primary_dob'),
 		$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend'),
-		$partnersDetails = $('.health-person-details-partner, #partnerFund, #partnerMemberID'),
+		$partnersDetails = $('#partnerFund, #partnerMemberID, #partnerContainer'),
 		$lhcContainers = $('#primary-health-cover, #partner-health-cover, #australian-government-rebate'),
 		$medicare = $('.health-medicare_details');
+
 
 		if (!healthChoices.hasSpouse()) {
 			$partnerContainer.hide();
@@ -146,7 +147,7 @@
 				 $partnerContainer.slideDown();
 			 	 $partnersDetails.show();
 			 break;
-		 default:
+			default:
 				 isInitMode === true ? $partnerContainer.hide() : $partnerContainer.slideUp();
 			 	 isInitMode === true ? $healthCoverDetailsDependants.hide() : $healthCoverDetailsDependants.slideUp();
 				 resetPartnerDetails();
