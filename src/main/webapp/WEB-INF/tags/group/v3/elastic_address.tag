@@ -9,6 +9,7 @@
 <%@ attribute name="suburbAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
 <%@ attribute name="postCodeNameAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
 <%@ attribute name="postCodeAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
+<%@ attribute name="stateValidationField"		required="false" rtexprvalue="true"	 description="true/false to show the main title" %>
 <c:set var="isPostal" value="${type eq 'P'}"/>
 
 <%-- VARIABLES --%>
@@ -65,7 +66,13 @@
     <c:if test="${not empty data[fullAddressFieldXpath]}">
         <go:setData dataVar="data" xpath="${fieldXpath}" value="${data[fullAddressFieldXpath]}"/>
     </c:if>
-    <form_v3:row fieldXpath="${fieldXpath}" label="Street Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false">
+    <c:set var="addressLabel">
+        <c:choose>
+            <c:when test="${isPostal eq true}">Postal</c:when>
+            <c:otherwise>Street</c:otherwise>
+        </c:choose>
+    </c:set>
+    <form_v3:row fieldXpath="${fieldXpath}" label="${addressLabel} Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false">
         <c:set var="placeholder" value="e.g. 5/20 Sample St"/>
         <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address"
                          placeHolder="${placeholder}" required="false"
@@ -191,5 +198,13 @@
     <field_v2:validatedHiddenField xpath="${xpath}/suburbName" validationErrorPlacementSelector="${errorPlacementSelector}" additionalAttributes="${suburbAdditionalAttributes}"/>
     <field_v2:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}"
                                     additionalAttributes="${postCodeAdditionalAttributes} data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode'"/>
-    <field_v1:hidden xpath="${xpath}/state"/>
+
+    <c:choose>
+        <c:when test="${not empty stateValidationField}">
+            <field_v2:validatedHiddenField xpath="${xpath}/state" validationErrorPlacementSelector="${stateValidationField}" additionalAttributes=" required data-rule-matchStates='true' " />
+        </c:when>
+        <c:otherwise>
+            <field_v1:hidden xpath="${xpath}/state" />
+        </c:otherwise>
+    </c:choose>
 </div>

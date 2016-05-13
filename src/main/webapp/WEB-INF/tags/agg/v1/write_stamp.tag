@@ -2,6 +2,8 @@
 <%@ tag description="Stamp an action in the database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="styleCode">${pageSettings.getBrandCode()}</c:set>
 
@@ -22,7 +24,7 @@
 		<c:otherwise>ONLINE</c:otherwise>
 	</c:choose>
 </c:set>
-<c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}" />
+<c:set var="ipAddress" 		value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
 
 <%-- for toggle actions replace Y/N by more meaningful on/off values --%>
 <c:choose>

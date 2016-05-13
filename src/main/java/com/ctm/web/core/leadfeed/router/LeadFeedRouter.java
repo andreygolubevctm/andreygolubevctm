@@ -4,6 +4,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.model.LeadFeedData.CallType;
 import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
@@ -136,7 +137,7 @@ public abstract class LeadFeedRouter extends HttpServlet {
 			lead.setProductId(request.getParameter("productId"));
 		}
 
-		lead.setClientIpAddress(request.getRemoteAddr());
+		lead.setClientIpAddress(IPAddressHandler.getInstance().getIPAddress(request));
 
 		return lead;
 	}

@@ -185,6 +185,10 @@
         $('#health_fundData_hospitalPDF').val(product.promo.hospitalPDF !== undefined ? meerkat.site.urls.base + product.promo.hospitalPDF : "");
         $('#health_fundData_extrasPDF').val(product.promo.extrasPDF !== undefined ? meerkat.site.urls.base + product.promo.extrasPDF : "");
         $('#health_fundData_providerPhoneNumber').val(product.promo.providerPhoneNumber !== undefined ? product.promo.providerPhoneNumber : "");
+
+        $('.next-info li').each(function () {
+            $(this).prepend('<span class="icon icon-angle-right"></span>');
+        });
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
@@ -403,10 +407,10 @@
                                 formattedDate = '';
 
                             if ($.trim(result.providerContentText) !== '') {
-                                dateSplit = result.providerContentText.split("/");
-                                rearrangedDate = dateSplit[1]+"/"+dateSplit[0]+"/"+dateSplit[2];
-                                newDate = new Date(rearrangedDate);
-                                formattedDate = newDate.getDate()+getNth(newDate.getDate())+" of "+(newDate.getMonth() == 2 ? 'March' : 'April') + ", " + newDate.getFullYear();
+                                var dateSplit = result.providerContentText.split("/");
+                                var rearrangedDate = dateSplit[1]+"/"+dateSplit[0]+"/"+dateSplit[2];
+                                var newDate = new Date(rearrangedDate);
+                                formattedDate = meerkat.modules.dateUtils.format(newDate, "Do of MMMM, YYYY");
 
                                 product.dropDeadDateFormatted =  formattedDate;
                                 product.dropDeadDate =  new Date(rearrangedDate);
@@ -420,16 +424,6 @@
                 }
             }
         });
-    }
-
-    function getNth(day) {
-        if(day>3 && day<21) return 'th'; // thanks kennebec
-        switch (day % 10) {
-            case 1:  return "st";
-            case 2:  return "nd";
-            case 3:  return "rd";
-            default: return "th";
-        }
     }
 
     function prepareCoverFeatures(searchPath, target) {

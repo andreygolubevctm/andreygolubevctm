@@ -6,6 +6,7 @@
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
 <%@ attribute name="required" 	required="true"	 rtexprvalue="true"  description="is this field required?" %>
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="classLabel"	required="false" rtexprvalue="true"	 description="additional css class attribute for label" %>
 <%@ attribute name="id" 		required="false" rtexprvalue="true"	 description="id of the surround div" %>
 <%@ attribute name="title" 		required="true"  rtexprvalue="true"	 description="title of the radio buttons" %>
 <%@ attribute name="items" 		required="true"  rtexprvalue="true"  description="comma seperated list of values in value=description format" %>
@@ -35,14 +36,14 @@
 
 <c:choose>
 	<c:when test="${style == 'inline'}">
-		<c:set var="classVar" value="radio-inline" />
+		<c:set var="classVar" value="radio-inline ${classLabel}" />
 	</c:when>
 	<c:when test="${style == 'horizontal'}">
-		<c:set var="classVar" value="btn btn-form-inverse" />
+		<c:set var="classVar" value="btn btn-form-inverse ${classLabel}" />
 		<c:set var="className" value='btn-group btn-group-horizontal" data-toggle="radio' />
 	</c:when>
 	<c:otherwise>
-		<c:set var="classVar" value="btn btn-form-inverse" />
+		<c:set var="classVar" value="btn btn-form-inverse ${classLabel}" />
 		<c:set var="className" value='btn-group btn-group-justified ${className}" data-toggle="radio' />
 	</c:otherwise>
 </c:choose>

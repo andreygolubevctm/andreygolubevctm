@@ -28,6 +28,10 @@ public class Address {
 
     private String unitType;
 
+    private String nonStdUnitType;
+
+    private String nonStdStreet;
+
     public String getType() {
         return type;
     }
@@ -131,4 +135,22 @@ public class Address {
     public void setUnitType(String unitType) {
         this.unitType = unitType;
     }
+
+    public String getNonStdUnitType() {
+        return nonStdUnitType;
+    }
+
+    public void setNonStdUnitType(String nonStdUnitType) {
+        this.nonStdUnitType = nonStdUnitType;
+    }
+
+    public String getNonStdStreet() {
+        return nonStdStreet;
+    }
+
+    public void getNonStdUnitType(String nonStdStreet) {
+        this.nonStdStreet = nonStdStreet;
+    }
+
+
 }

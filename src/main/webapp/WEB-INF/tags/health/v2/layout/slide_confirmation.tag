@@ -59,7 +59,7 @@
 
 				<layout_v1:slide_content >
 
-					<form_v2:fieldset legend="" className="confirmation">
+					<form_v3:fieldset legend="" className="confirmation">
 
 						<div id="health_confirmation-warning">
 							<div class="fundWarning alert alert-danger">
@@ -180,7 +180,7 @@
 
 						<simples:dialogue id="41" vertical="health" className="yellow" />
 
-					</form_v2:fieldset>
+					</form_v3:fieldset>
 
 				</layout_v1:slide_content>
 

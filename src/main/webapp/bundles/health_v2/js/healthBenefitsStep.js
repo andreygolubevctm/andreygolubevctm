@@ -64,10 +64,6 @@
 
     function eventSubscriptions() {
 
-        $benefitsForm.find('.CTM-plus label').on('click', function () {
-            showMoreBenefits();
-        });
-
         $benefitsForm.find('.benefits-side-bar .btn-edit').on('click', function () {
             $coverType.val('C').change();
         });
@@ -276,14 +272,6 @@
         }
     }
 
-    function showMoreBenefits() {
-        $benefitsForm.find('.CTM-plus').fadeOut('fast');
-        $benefitsForm.find('.subTitle').slideDown('fast');
-        $benefitsForm.find('.noIcons').slideDown('fast', function () {
-            alignSidebarHeight();
-        });
-    }
-
     function checkAndHideMoreBenefits() {
         // if any nonIcons benefits selected, do not hide
         if ($benefitsForm.find('.noIcons input:checked').length > 0) return;
@@ -294,8 +282,14 @@
     }
 
     function changeLayoutByCoverType(coverType) {
+        var updateSelectedBenefits = function(coverT) {
+            if("HE".indexOf(coverT) >= 0) {
+                $('.hospitalCoverToggles .benefit-category.active').trigger('click');
+            }
+        };
         switch (coverType) {
             case 'H':
+                updateSelectedBenefits(coverType);
                 $benefitsForm.find('.sidebarHospital').fadeOut('fast');
                 $benefitsForm.find('.extrasCover').fadeOut('fast');
                 $benefitsForm.find('.sidebarExtras').fadeIn('fast');
@@ -312,6 +306,7 @@
                 });
                 break;
             default:
+                updateSelectedBenefits(coverType);
                 $benefitsForm.find('.benefits-side-bar').fadeOut('fast');
                 $benefitsForm.find('.hasShortlistableChildren').fadeIn('fast', function () {
                     $benefitsForm.find('fieldset > div').first().prepend($benefitsForm.find('.section h2'));
@@ -344,31 +339,6 @@
         }
 
         $coverType.change();
-    }
-
-    function alignSidebarHeight() {
-        // no need to align if no sidebar is showing
-        if ($coverType.val() === 'C' || $coverType.val() === '') return;
-
-        var $hospitalMainCol = $benefitsForm.find('.hospitalCover'),
-            $extrasMainCol = $benefitsForm.find('.extrasCover'),
-            $hospitalSidebar = $benefitsForm.find('.sidebarHospital .sidebar-wrapper'),
-            $extrasSidebar = $benefitsForm.find('.sidebarExtras .sidebar-wrapper');
-
-        var hospitalMainColHeight = $hospitalMainCol.height() + 15, // plus bottom padding;
-            extrasMainColHeight = $extrasMainCol.height() + 15; // plus bottom padding;
-
-        // reset
-        $hospitalSidebar.height('auto');
-        $extrasSidebar.height('auto');
-
-        if (hospitalMainColHeight > $extrasSidebar.height()) {
-            $extrasSidebar.height(hospitalMainColHeight);
-        }
-
-        if (extrasMainColHeight > $hospitalSidebar.height()) {
-            $hospitalSidebar.height(extrasMainColHeight);
-        }
     }
 
     function updateHiddenFields(coverType) {
@@ -475,11 +445,11 @@
         if (cover === 'F' || cover === 'SPF') {
             healthSituCvr = 'FAM';
         } else if ((cover === 'S' || cover === 'SM' || cover === 'SF') && primary_dob !== '') {
-            ageAverage = meerkat.modules.utils.returnAge(primary_dob, true);
+            ageAverage = meerkat.modules.age.returnAge(primary_dob, true);
             healthSituCvr = getAgeBands(ageAverage);
         } else if (cover === 'C' && primary_dob !== '' && partner_dob !== '') {
-            primary_age = meerkat.modules.utils.returnAge(primary_dob),
-                partner_age = meerkat.modules.utils.returnAge(partner_dob);
+            primary_age = meerkat.modules.age.returnAge(primary_dob),
+                partner_age = meerkat.modules.age.returnAge(partner_dob);
             if (16 <= primary_age && primary_age <= 120 && 16 <= partner_age && partner_age <= 120) {
                 ageAverage = Math.floor((primary_age + partner_age) / 2);
                 healthSituCvr = getAgeBands(ageAverage);
@@ -595,7 +565,6 @@
         checkAndHideMoreBenefits: checkAndHideMoreBenefits,
         changeLayoutByCoverType: changeLayoutByCoverType,
         updateCoverTypeByBenefitsSelected: updateCoverTypeByBenefitsSelected,
-        alignSidebarHeight: alignSidebarHeight,
         setDefaultCover: setDefaultCover,
         enableFields: enableFields,
         disableFields: disableFields,
