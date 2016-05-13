@@ -479,6 +479,7 @@
 			onInitialise: function onInitApplyStep(event) {
 
 				meerkat.modules.healthDependants.initHealthDependants();
+				meerkat.modules.healthMedicare.initHealthMedicare();
 
 				healthApplicationDetails.init();
 
@@ -524,6 +525,7 @@
 						meerkat.messaging.publish(moduleEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
 					});
 
+
 			},
 			onBeforeEnter: function enterApplyStep(event){
 
@@ -560,6 +562,7 @@
 					var max = meerkat.modules.healthPaymentStep.getSetting('maxStartDate');
 					$("#health_payment_details_start_calendar").datepicker('setStartDate', min).datepicker('setEndDate', max);
 
+					meerkat.modules.healthMedicare.updateMedicareLabel();
 				}
 			}
 		};

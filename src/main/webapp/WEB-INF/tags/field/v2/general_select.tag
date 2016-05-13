@@ -12,6 +12,7 @@
 <%@ attribute name="initialText" required="false" rtexprvalue="true" description="Text used to invite selection" %>
 <%@ attribute name="tabIndex" required="false" rtexprvalue="true" description="additional tab index specification" %>
 <%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
+<%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}"/>
@@ -36,6 +37,9 @@
     <c:set var="disabled" value="selected"/>
 </c:if>
 
+<c:if test="${disableErrorContainer eq true}">
+    <c:set var="additionalAttributes" value='${additionalAttributes}  data-disable-error-container="true" '/>
+</c:if>
 
 <%-- HTML --%>
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>

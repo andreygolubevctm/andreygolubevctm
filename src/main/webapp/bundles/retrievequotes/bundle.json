@@ -5,6 +5,7 @@
     "shared/results",
     "shared/validation",
     "core",
+    "shared/forms/v1",
     "shared/datepicker"
   ]
 }

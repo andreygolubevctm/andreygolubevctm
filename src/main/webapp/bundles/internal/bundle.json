@@ -5,6 +5,7 @@
     "dependencies": [
         "meerkat",
         "shared/journeyEngine/v2",
-        "core"
+        "core",
+        "shared/forms/v1"
     ]
 }
