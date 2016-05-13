@@ -28,6 +28,10 @@
 	}
 }
 
+.btn-close-more-info {
+	display:inline-block;
+}
+
 .moreInfoVisible #resultsPage{
 	margin-bottom: 30px;
 }
@@ -49,15 +53,15 @@
 		max-height: none;
 		max-width: none;
 
-		.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames);
+		.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.8);
 		@media(@xs-only){
 			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.4);
 		}
 		@media(@sm-only){
-			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.9);
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.6);
 		}
 		@media(@md-only){
-			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.8);
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.7);
 		}
 
 	}
