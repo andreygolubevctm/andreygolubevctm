@@ -181,7 +181,10 @@
         // The label cell "Non Cosmetic Plastic Surgery"
         > .labelInColumn {
           .contentInner {
-            margin-right: 16px;
+            margin-right: 10px;
+            @media(@sm) {
+              margin-right: 16px;
+            }
           }
           .user-select(none);
           display: block;
