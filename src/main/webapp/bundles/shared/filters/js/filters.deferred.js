@@ -5,7 +5,8 @@
 (function ($, undefined) {
 
     var meerkat = window.meerkat,
-        meerkatEvents = meerkat.modules.events;
+        meerkatEvents = meerkat.modules.events,
+        exception = meerkat.logging.exception;
 
     var moduleEvents = {
             filters: {
@@ -200,6 +201,10 @@
 
         meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_UPDATED, function (event) {
             $(settings.updates[0].container).slideUp();
+
+            if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                meerkat.modules.navMenu.close();
+            }
 
             _.defer(function() {
                 if (needToFetchFromServer) {

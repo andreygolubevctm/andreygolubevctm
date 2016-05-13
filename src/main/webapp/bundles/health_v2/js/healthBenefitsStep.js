@@ -200,9 +200,8 @@
             var $item = $(this);
             currentCover = $item.data('category');
 
-            // set the active button
-            $hospitalCoverToggles.removeClass('active');
-            $item.addClass('active');
+            // set the active  (not using $this here to addClass due to we have another sets of link for mobile...)
+            $hospitalCoverToggles.removeClass('active').filter('[data-category="' + currentCover + '"]').addClass('active');
 
             // set the hidden field
             $coverType.val(currentCover);
