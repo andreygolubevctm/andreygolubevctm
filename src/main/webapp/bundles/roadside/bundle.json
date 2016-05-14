@@ -7,6 +7,7 @@
     "shared/results/v2",
     "shared/validation",
     "core",
+    "shared/forms/v1",
     "shared/moreInfo",
     "shared/popovers",
     "shared/checkboxIE8",

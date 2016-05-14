@@ -6,6 +6,7 @@
     "shared/validation",
     "shared/optIn",
     "core",
+    "shared/forms/v1",
     "shared/selectTags",
     "shared/coverLevelTabs",
     "shared/datepicker",

@@ -3,6 +3,7 @@
     "dependencies": [
         "shared/results/v2",
         "shared/journeyEngine/v2",
-        "core"
+        "core",
+        "shared/forms/v1"
     ]
 }

@@ -2,6 +2,7 @@
     "brandCodes": "all",
     "dependencies": [
         "shared/journeyEngine/v2",
-        "core"
+        "core",
+        "shared/forms/v1"
     ]
 }

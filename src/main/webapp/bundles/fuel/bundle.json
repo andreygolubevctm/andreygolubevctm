@@ -5,6 +5,7 @@
     "shared/results/v2",
     "shared/validation",
     "core",
+    "shared/forms/v1",
     "shared/addressLookup",
     "shared/showMoreQuotesPrompt",
     "shared/resultsRankings",

@@ -8,6 +8,7 @@
     "shared/features",
     "shared/validation",
     "core",
+    "shared/forms/v1",
     "shared/showMoreQuotesPrompt",
     "shared/optIn",
     "shared/resultsRankings"

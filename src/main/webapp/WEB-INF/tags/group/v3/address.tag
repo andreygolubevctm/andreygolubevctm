@@ -19,7 +19,7 @@
 <c:set var="isPostalAddress" value="${type == 'P'}" />
 <c:set var="isResidentialAddress" value="${type == 'R'}" />
 
-<c:set var="unitTypes">=Please choose...,CO=Cottage,DU=Duplex</c:set>
+<c:set var="unitTypes">=Unit Types...,CO=Cottage,DU=Duplex</c:set>
 <c:if test="${!isResidentialAddress}">
 	<c:set var="unitTypes">${unitTypes},FA=Factory</c:set>
 </c:if>

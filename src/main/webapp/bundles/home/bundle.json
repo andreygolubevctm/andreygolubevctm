@@ -8,6 +8,7 @@
     "shared/features",
     "shared/validation",
     "core",
+    "shared/forms/v1",
     "shared/addressLookup",
     "shared/placeholder",
     "shared/datepicker",

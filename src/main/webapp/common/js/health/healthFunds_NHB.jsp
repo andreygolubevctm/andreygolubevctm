@@ -55,7 +55,7 @@
                 <form_v2:fieldset id="nhb_eligibility" legend="How are you eligible to join Navy Health?" className="primary">
                   <div id="nhb_currentemployee">
                       <form_v2:row fieldXpath="${fieldXpath}/eligibility" label="Eligibility reason"  className="cbhmain">
-                        <field_v2:general_select type="healthNavQuestion_eligibility" xpath="${fieldXpath}/eligibility" title="Eligibility reason" required="true" initialText="Please select" />
+                        <field_v2:general_select type="healthNavQuestion_eligibility" xpath="${fieldXpath}/eligibility" title="Eligibility reason" required="true" initialText="Please select" disableErrorContainer="${true}" />
                       </form_v2:row>
 
                       <form_v2:row label="Sub Reason" id="subreasonId">
@@ -152,8 +152,8 @@
                 var originalTitle = $("#health_application_primary_title").val();
                 <c:set var="html">
                   <c:set var="fieldXpath" value="health/application/primary/title" />
-                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow" >
-                      <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title" additionalAttributes=" data-rule-genderTitle='true' "/>
+                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow"  hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">
+                      <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title" additionalAttributes=" data-rule-genderTitle='true' " disableErrorContainer="${true}" />
                     </form_v2:row>
                   </c:set>
                 <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
@@ -169,8 +169,8 @@
                 var originalTitle = $("#health_application_partner_title").val();
                 <c:set var="html">
                     <c:set var="fieldXpath" value="health/application/partner/title" />
-                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow" >
-                        <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title" additionalAttributes=" data-rule-genderTitle='true' "/>
+                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow" hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">
+                        <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title" additionalAttributes=" data-rule-genderTitle='true' "  disableErrorContainer="${true}"/>
                     </form_v2:row>
                 </c:set>
                 <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
@@ -189,7 +189,7 @@
               <form_v2:row id="nhb_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
               <field_v2:array_select xpath="${fieldXpath}"
                       required="true"
-                      title="Relationship to you" items="=Please choose...,Ptnr=Partner,Sps=Spouse" />
+                      title="Relationship to you" items="=Please choose...,Ptnr=Partner,Sps=Spouse" placeHolder="Relationship" disableErrorContainer="${true}" />
               </form_v2:row>
               </c:set>
               <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
@@ -295,8 +295,8 @@
               <%-- lets undo the title massive values from nav --%>
               <c:set var="html">
                 <c:set var="fieldXpath" value="health/application/primary/title" />
-                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow" >
-                  <field_v2:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' "/>
+                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow"  hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">
+                  <field_v2:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' " disableErrorContainer="${true}"/>
                 </form_v2:row>
               </c:set>
               <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
@@ -306,8 +306,8 @@
               <%-- lets undo the partner title massive values from nav --%>
               <c:set var="html">
                 <c:set var="fieldXpath" value="health/application/partner/title" />
-                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow" >
-                  <field_v2:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' "/>
+                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow"  hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">
+                  <field_v2:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' " disableErrorContainer="${true}" />
                 </form_v2:row>
                 </c:set>
                 <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />

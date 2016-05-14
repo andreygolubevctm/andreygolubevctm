@@ -20,6 +20,7 @@
 
 		& + label:before {
 			.user-select(none);
+
 			border-radius: @border-radius-base;
 			/* By default, apply the success theme */
 			border: 1px solid @input-border;
@@ -41,9 +42,21 @@
 			color: #fff;
 			background-color: white;
 
+			@media(@sm) {
+				border-radius: 3px;
+				border: 1px solid lighten(@theme-dark, 60%);
+				padding: 2px;
+				margin-right: 5px;
+				float: none;
+				display: inline-block;
+				font-size: 8px; //Icon font is built at this base size
+			}
+
 			&:hover,
 			&:focus {
-				color: @form-input-common-selected-text-colour;
+				@media(@xs-only) {
+					color: @form-input-common-selected-text-colour;
+				}
 				text-decoration: none;
 			}
 			&.disabled,
@@ -52,17 +65,25 @@
 				cursor: not-allowed;
 				pointer-events: none; // Future-proof disabling of clicks
 				//.opacity(.65);
-				.box-shadow(none);
-				background-color: @input-bg-disabled;
-				border-color: @input-border-disabled;
+				@media(@xs-only) {
+					.box-shadow(none);
+					background-color: @input-bg-disabled;
+					border-color: @input-border-disabled;
+				}
 			}
-		} 
+		}
 
 		/* Checked state */
 		&:checked {
 			& + label:before {
-				background-color: @form-input-common-selected-bg-colour;
-				border-color: @form-input-common-selected-bg-colour;
+				@media(@sm) {
+					color: #000;
+				}
+
+				@media(@xs-only) {
+					background-color: @form-input-common-selected-bg-colour;
+					border-color: @form-input-common-selected-bg-colour;
+				}
 			}
 		}
 
@@ -84,7 +105,7 @@
 
 		/* Focused state */
 		&:focus + label:before {
-    		border-color: darken(@form-input-common-selected-border-colour, 10%);
+			border-color: darken(@form-input-common-selected-border-colour, 10%);
 		}
 
 		/* Parent Disabled state */
