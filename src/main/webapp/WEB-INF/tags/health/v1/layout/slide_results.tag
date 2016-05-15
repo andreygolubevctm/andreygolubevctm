@@ -5,7 +5,6 @@
 <layout_v3:slide formId="resultsForm" className="resultsSlide">
 
 	<layout_v3:slide_content>
-		<simples:dialogue id="38" vertical="health" mandatory="true" />
 		<simples:dialogue id="28" vertical="health" mandatory="true" />
 		<simples:dialogue id="33" vertical="health" />
 

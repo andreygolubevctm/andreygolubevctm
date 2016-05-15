@@ -6,6 +6,7 @@
     "shared/features",
     "shared/validation",
     "core",
+    "shared/forms/v1",
     "shared/currency",
     "shared/placeholder",
     "shared/dropdownInteractive",

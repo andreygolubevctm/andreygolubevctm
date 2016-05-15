@@ -22,7 +22,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-payment_details">
 
-	<form_v2:fieldset legend="Payment Details" >
+	<form_v3:fieldset legend="Payment Details" >
 
 		<div class="fundWarning alert alert-danger">
 				<%-- insert fund warning data --%>

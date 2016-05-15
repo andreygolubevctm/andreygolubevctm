@@ -12,6 +12,8 @@
         moduleEvents = events.healthPreviousFund,
         $primaryFund,
         $partnerFund,
+        $primaryFundContainer,
+        $partnerFundContainer,
         noCurrentFund = 'NONE';
 
 
@@ -20,23 +22,35 @@
         $(document).ready(function(){
             $primaryFund = $('#clientFund').find('select');
             $partnerFund = $('#partnerFund').find('select');
+
+            $primaryFundContainer = $('#health_previousfund');
+            $partnerFundContainer = $('#partnerpreviousfund');
+
             meerkat.messaging.subscribe(moduleEvents.POPULATE_PRIMARY, coverChangePrimary);
             meerkat.messaging.subscribe(moduleEvents.POPULATE_PARTNER, coverChangePartner);
         });
     }
 
     function coverChangePrimary(hasCover){
-        coverChange( $primaryFund , hasCover);
+        coverChange( $primaryFund , hasCover, 'primary');
+
+        //$primaryFundContainer
+//            $partnerFundContainer,
     }
     function coverChangePartner(hasCover){
-        coverChange($partnerFund , hasCover);
+        coverChange($partnerFund , hasCover, 'partner');
     }
 
-    function coverChange(element , hasCover){
+    function coverChange(element , hasCover, person){
+        // did this so i don't rely on the id's
+        var $fundFields = person === 'primary' ? $primaryFundContainer : $partnerFundContainer;
+
+        $fundFields.show();
         if( hasCover == 'Y' && element.val() == noCurrentFund){
             element.val('');
         } else if(hasCover == 'N'){
             element.val(noCurrentFund);
+            $fundFields.hide();
         }
         meerkat.modules.healthCoverDetails.displayHealthFunds();
     }
