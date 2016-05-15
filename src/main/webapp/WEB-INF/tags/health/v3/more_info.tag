@@ -71,6 +71,7 @@
 	<c:set var="variantClassName">
 		<c:if test="${moreinfo_splittest_default eq false}">more-info-content-variant</c:if>
 	</c:set>
+	<a data-slide-control="prev" href="javascript:;" class="btn btn-tertiary btn-close-more-info"><span class="icon icon-arrow-left"></span> Back to all results</a>
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
