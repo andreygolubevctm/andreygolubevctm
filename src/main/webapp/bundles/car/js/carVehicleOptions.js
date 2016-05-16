@@ -733,7 +733,7 @@
 			var accessoriesToSave = [];
 			var validationPasses = true;
 			// Get all the selected items, validate then and create the accessory object.
-			$('.nonStandardAccessoryCheckbox:checked').each(function () {
+			$('.nonStandardAccessoryCheckbox input:checked').each(function () {
 				// We need to use this element as a jQuery object.
 				var checkedBox = $(this);
 				var itemIndex = checkedBox.attr('itemIndex');
