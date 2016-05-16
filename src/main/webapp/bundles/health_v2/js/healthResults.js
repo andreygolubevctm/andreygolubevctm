@@ -161,7 +161,7 @@
                 displayMode: "features",
                 pagination: {
                     mode: 'page',
-                    touchEnabled: Modernizr.touch
+                    touchEnabled: false
                 },
                 sort: {
                     sortBy: "benefitsSort"

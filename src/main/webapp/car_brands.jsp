@@ -46,15 +46,7 @@
 	<jsp:attribute name="navbar">
 
 		<ul class="nav navbar-nav" role="menu">
-			<li class="visible-xs">
-                <div class="navMenu-header">
-                    <span class="title">Menu</span>
-                    <button type="button" class="navbar-toggle" data-toggle="navMenuClose" data-target=".navbar-collapse-menu">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon icon-cross"></span>
-                    </button>
-                </div>
-			</li>
+			<core_v2:offcanvas_header />
 
 			<li class="slide-feature-back">
 				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>

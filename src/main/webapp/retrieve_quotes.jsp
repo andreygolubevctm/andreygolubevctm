@@ -83,15 +83,7 @@
         <jsp:attribute name="navbar">
 
             <ul class="nav navbar-nav" role="menu">
-                <li class="visible-xs">
-                    <div class="navMenu-header">
-                        <span class="title">Menu</span>
-                        <button type="button" class="navbar-toggle" data-toggle="navMenuClose" data-target=".navbar-collapse-menu">
-                            <span class="sr-only">Toggle Navigation</span>
-                            <span class="icon icon-cross"></span>
-                        </button>
-                    </div>
-                </li>
+                <core_v2:offcanvas_header />
                 <li class="slide-feature-my-quotes">
                     <a href="javascript:;" class="btn-email"><span>My Quotes</span></a>
                 </li>
