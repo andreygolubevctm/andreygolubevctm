@@ -80,6 +80,7 @@
 
 			$frequencySelect.on('change', function updateSidebarQuote(){
 				updateProductFrequency();
+				updatePaymentDayOptions();
 			});
 
 			$('#health_payment_credit_type').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
@@ -163,7 +164,7 @@
 	}
 
 	function getSelectedFrequency(){
-		return $frequencySelect.val();
+		return (!_.isEmpty($frequencySelect.val()) ? $frequencySelect.val() : Results.getFrequency());
 	}
 
 	function setCoverStartRange(min, max){
@@ -203,7 +204,7 @@
 			premiums = premiums.paymentTypePremiums;
 
 			premiums.paymentNode = getPaymentMethodNode();
-			premiums.selectedFrequency = (!_.isEmpty(getSelectedFrequency()) ? getSelectedFrequency() : Results.getFrequency());
+			premiums.selectedFrequency = getSelectedFrequency();
 
 			var htmlTemplate = _.template($('#payment_frequency_options').html());
 			var options = htmlTemplate(premiums);
