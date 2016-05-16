@@ -1273,8 +1273,7 @@
 			}
 
 			if($healthSitHealthCvr.val() !== '' && $healthSitLocation.val() !== '') {
-				$('.health-about-you').addClass('hidden');
-				$('.health-situation .fieldset-column-side .sidebar-box').css('margin-top','55px');
+				$('.health-about-you, .health-about-you-title').addClass('hidden');
 			}
 
 			$('.btn-edit').on('click', function() {
@@ -1285,7 +1284,7 @@
 		} else {
 			$('.health-cover').removeClass('hidden');
 			$('.health-location').removeClass('hidden');
-			$('.health-about-you').removeClass('hidden');
+			$('.health-about-you, .health-about-you-title').removeClass('hidden');
 			$('.health-situation .fieldset-column-side .sidebar-box').css('margin-top','');
 		}
 	}
