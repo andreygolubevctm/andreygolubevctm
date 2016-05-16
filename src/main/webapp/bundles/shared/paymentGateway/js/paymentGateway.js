@@ -94,7 +94,8 @@ Process:
 		}
 
 		togglePanels();
-		return (_type !== '');
+		// this doesn't seem required so have commented out. I'm not as familiar with the payment code so have only made this change for now instead of removing code.
+		// return (_type !== '');
 	}
 
 	function showSuccessPanel(){
@@ -159,9 +160,9 @@ Process:
 		// Turn off events
 		$('[data-provide="paymentGateway"]').off( "click", '[data-gateway="launcher"]', launch);
 
-		$('#health_payment_details_type input').off('click.' + settings.name, setTypeFromControl);
-		$('#health_payment_details_frequency').off('change.' + settings.name, setTypeFromControl);
-		$('#health_payment_details_start').off('changeDate.' + settings.name, setTypeFromControl);
+		$('#health_payment_details_type input').off('click.' + settings.name);
+		$('#health_payment_details_frequency').off('change.' + settings.name);
+		$('#health_payment_details_start').off('changeDate.' + settings.name);
 
 		// Reset normal question panels in case user is moving between different products
 		if(typeof settings.paymentTypeSelector !== 'undefined') {
