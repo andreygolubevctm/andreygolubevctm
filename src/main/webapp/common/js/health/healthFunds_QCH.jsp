@@ -124,7 +124,7 @@ var healthFunds_QCH = {
 		$('#health_payment_credit_policyDay option[value='+policyStart+']').attr('selected','selected');
 		$('#health_payment_bank_policyDay option[value='+policyStart+']').attr('selected','selected');
 
-		if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'dd') {
+		if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
 			$('.health_bank-details_policyDay-message').html('Your first premium payment will be deducted from your nominated bank account on receipt of your application by us, or from the actual start date of your policy');
 			$('#health_payment_bank_policyDay').attr('type','hidden').attr('data-attach', 'true');
 		}

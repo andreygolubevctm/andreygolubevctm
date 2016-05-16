@@ -391,7 +391,7 @@
 			$paymentCalendar.datepicker("update", new Date());
 		}
 
-		$paymentRadioGroup.find('input').filter('[value=dd]').trigger('click');
+		$paymentRadioGroup.find('input').filter('[value=ba]').trigger('click');
 	}
 
 	// Check if details for the claims bank account needs to be shown
@@ -399,7 +399,7 @@
 
 		var _type = getSelectedPaymentMethod();
 
-		if(_type == 'dd'){
+		if(_type == 'ba'){
 
 			// Show sub question?
 			if($bankAccountDetailsRadioGroup.find('input:checked').val() == 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){

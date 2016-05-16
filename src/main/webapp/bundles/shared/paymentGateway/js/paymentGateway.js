@@ -92,6 +92,7 @@ Process:
 		} else {
 			_type = '';
 		}
+
 		togglePanels();
 		return (_type !== '');
 	}
@@ -157,7 +158,10 @@ Process:
 
 		// Turn off events
 		$('[data-provide="paymentGateway"]').off( "click", '[data-gateway="launcher"]', launch);
-		$('#update-premium').off('click.' + settings.name, setTypeFromControl);
+
+		$('#health_payment_details_type input').off('click.' + settings.name, setTypeFromControl);
+		$('#health_payment_details_frequency').off('change.' + settings.name, setTypeFromControl);
+		$('#health_payment_details_start').off('changeDate.' + settings.name, setTypeFromControl);
 
 		// Reset normal question panels in case user is moving between different products
 		if(typeof settings.paymentTypeSelector !== 'undefined') {

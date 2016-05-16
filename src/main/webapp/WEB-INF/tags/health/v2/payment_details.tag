@@ -32,7 +32,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/type" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Payment method" className="changes-premium">
-			<field_v2:array_radio items="cc=Credit Card,dd=Direct Debit" xpath="${fieldXpath}" title="how would you like to pay" required="true" className="health-payment_details-type" id="${name}_type" />
+			<field_v2:array_radio items="cc=Credit Card,ba=Direct Debit" xpath="${fieldXpath}" title="how would you like to pay" required="true" className="health-payment_details-type" id="${name}_type" />
 		</form_v3:row>
 
 		<%-- Note: this form row's HTML is changed by JavaScript --%>
@@ -63,7 +63,7 @@
 		<div>
 			<health_v2:application_compliance xpath="${base_xpath}" />
 		</div>
-	</form_v2:fieldset>
+	</form_v3:fieldset>
 
 </div>
 
