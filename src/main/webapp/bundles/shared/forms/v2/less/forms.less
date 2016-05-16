@@ -1,235 +1,255 @@
-fieldset{
-	.icon-text {
-		font-family: 	@font-family-sans-serif;
-		font-size: 		@font-size-small;
-		line-height:	@font-size-small;
-		color: 			#7b8386;
-		white-space:	nowrap;
-	}
+fieldset {
+  .icon-text {
+    font-family: @font-family-sans-serif;
+    font-size: @font-size-small;
+    line-height: @font-size-small;
+    color: #7b8386;
+    white-space: nowrap;
+  }
 }
 
-fieldset{
-	h2{
-		.icon-text {
-			float:		right;
-			position:	relative;
-			top:		0.75em;
-		}
-	}
+fieldset {
+  h2 {
+    .icon-text {
+      float: right;
+      position: relative;
+      top: 0.75em;
+    }
+  }
 }
 
-.fieldrow{
-	input{
-		&[type="text"],
-		&[type="email"],
-		&[type="number"]{
-			/* removes shadow on ios fields */
-			-webkit-appearance: none;
-		}
-	}
-	.help-icon{
-		line-height: (@input-height-base - (@padding-base-vertical/2));
-	}
-  	&.hide-help-icon .help-icon {
-	  display: none;
-	}
+.fieldrow {
+  input {
+    &[type="text"],
+    &[type="email"],
+    &[type="number"] {
+      /* removes shadow on ios fields */
+      -webkit-appearance: none;
+    }
+  }
+  .help-icon {
+    line-height: (@input-height-base - (@padding-base-vertical/2));
+  }
+  &.hide-help-icon .help-icon {
+    display: none;
+  }
 }
 
-@media(@xs-only){
-	.form-horizontal {
-		// Consistent vertical alignment of labels, radios, and checkboxes
-		.control-label{
-			padding-top: 0;
-			padding-bottom: (@padding-base-vertical/2);
+@media (@xs-only) {
+  .form-horizontal {
+    // Consistent vertical alignment of labels, radios, and checkboxes
+    .control-label {
+      padding-top: 0;
+      padding-bottom: (@padding-base-vertical/2);
 
-		}
+    }
 
-		.help-icon{
-			padding-top: 0;//(@padding-base-vertical + 1);
-			line-height: 1em;
-		}
-	}
+    .help-icon {
+      padding-top: 0; //(@padding-base-vertical + 1);
+      line-height: 1em;
+    }
+  }
 
-	.helpIconXSColumn{
-		text-align: right;
-	}
+  .helpIconXSColumn {
+    text-align: right;
+  }
 
-	fieldset{
-		.icon-text {
-			line-height:	1em;
-		}
-	}
+  fieldset {
+    .icon-text {
+      line-height: 1em;
+    }
+  }
 
-	fieldset{
-		h2{
-			.icon-text {
-			position:		relative;
-				bottom:		-0.75em;
-				right:		0;
-			}
-		}
-	}
+  fieldset {
+    h2 {
+      .icon-text {
+        position: relative;
+        bottom: -0.75em;
+        right: 0;
+      }
+    }
+  }
 
-	.fieldrow{
-		.icon-text {
-			position:		absolute;
-			bottom:			-1.25em;
-			right:			1em;
-		}
-	}
+  .fieldrow {
+    .icon-text {
+      position: absolute;
+      bottom: -1.25em;
+      right: 1em;
+    }
+  }
 }
-.select{
-	position: relative;
-	//Round and background the parent of this fake input-group use for selects.
-	background-color: @input-bg;
-	border-radius: @input-border-radius;
 
-	select, input[type="date"] {
-		z-index: 1; //ie doesn't put the select above the input-group-addon span
-		position: relative;
-		text-indent: 0.01px; // firefox hack
-		text-overflow: ''; // firefox hack
-		background:none;
-		margin-right:-40px;
-		padding-right:40px;
-		display: block;
-		text-align: left;
+@media (@sm) {
+  .form-horizontal {
+    .radio, .checkbox {
+      .user-select(none);
+      min-height: 21px;
+    }
+  }
+}
 
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		-ms-appearance:none;
-		appearance: none;
+.select {
+  position: relative;
+  //Round and background the parent of this fake input-group use for selects.
+  background-color: @input-bg;
+  border-radius: @input-border-radius;
 
-		//Livechat weirdness actually causes a select visibility bug.
-		//visibility: visible !important;
-	}
+  select, input[type="date"] {
+    z-index: 1; //ie doesn't put the select above the input-group-addon span
+    position: relative;
+    text-indent: 0.01px; // firefox hack
+    text-overflow: ''; // firefox hack
+    background: none;
+    margin-right: -40px;
+    padding-right: 40px;
+    display: block;
+    text-align: left;
 
-	select::-ms-expand{
-		display: none; // ie
-	}
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
 
-	.input-group-addon{
-		position: absolute;
-		right:0;
-		top:0;
-		padding: 12px 25px 8px 11px;
-		line-height: 19px;
-		border-radius: 0 @border-radius-base @border-radius-base 0;
-	}
+    //Livechat weirdness actually causes a select visibility bug.
+    //visibility: visible !important;
+  }
 
-	select.form-control{
-		background:none;
-	}
+  select::-ms-expand {
+    display: none; // ie
+  }
 
-	.lt-ie10 &{
-		.input-group-addon{
-			display: none;
-		}
-		select{
-			margin-right:0px;
-			padding-right:10px;
-		}
-	}
+  .input-group-addon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 12px 25px 8px 11px;
+    line-height: 19px;
+    border-radius: 0 @border-radius-base @border-radius-base 0;
+  }
+
+  select.form-control {
+    background: none;
+  }
+
+  .lt-ie10 & {
+    .input-group-addon {
+      display: none;
+    }
+    select {
+      margin-right: 0px;
+      padding-right: 10px;
+    }
+  }
 }
 
 // until firefox fixes https://bugzilla.mozilla.org/show_bug.cgi?id=649849
 .ff-no-custom-menu .select .input-group-addon {
-		display: none !important;
+  display: none !important;
 }
 
 //
 // field_new:person_dob & field_new:calendar.tag in separated mode
 //
 .dateinput_container {
-	input {
-		text-align: center;
-	}
+  input {
+    text-align: center;
+  }
 
-	.serialise{
-	  position: relative;
-	  top: 0;
-	  left: 0;
-	  display: block;
-	}
+  .serialise {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: block;
+  }
 }
 
-@media(@sm-only){
-	.dateinput_container {
-		.dateinput-tripleField {
-			.col-sm-3 {
-				padding-right: 0;
-			}
-			.hidden-xs.col-sm-3.hidden-xs {
-				margin-left: -22px;
-			}
-		}
-	}
+@media (@sm-only) {
+  .dateinput_container {
+    .dateinput-tripleField {
+      .col-sm-3 {
+        padding-right: 0;
+      }
+      .hidden-xs.col-sm-3.hidden-xs {
+        margin-left: -22px;
+      }
+    }
+  }
 }
-.dateinput-tripleField .form-control { padding: 10px 8px; text-align: center; }
+
+.dateinput-tripleField .form-control {
+  padding: 10px 8px;
+  text-align: center;
+}
 
 .datepicker {
-	z-index: (@zindex-modal - 10) !important;
+  z-index: (@zindex-modal - 10) !important;
 }
 
 /* Ensure first letter of validation error is uppercase */
 .error-field label.has-error:first-letter {
-	text-transform: capitalize;
+  text-transform: capitalize;
 }
+
 .optinText {
-	.small;
-	margin-top: 0.5em;
+  .small;
+  margin-top: 0.5em;
 }
 
 #mailCheckOutput {
-	font-size:12px;
-	margin-top: 0.5em;
+  font-size: 12px;
+  margin-top: 0.5em;
 }
 
 #mailCheckOutput a {
-	font-weight: normal;
-	font-family: @font-family-theme-bold;
+  font-weight: normal;
+  font-family: @font-family-theme-bold;
 }
 
 .form-control,
 .twitter-typeahead {
-	.tt-hint,
-	.tt-query {
-		padding: 10px 8px;
-	}
+  .tt-hint,
+  .tt-query {
+    padding: 10px 8px;
+  }
 }
 
-@media(@xs-only) {
-	.nestedGroup {
-		margin-bottom: 0px;
-		.row-content {
-			margin-bottom: 15px;
-		}
-	}
+@media (@xs-only) {
+  .nestedGroup {
+    margin-bottom: 0px;
+    .row-content {
+      margin-bottom: 15px;
+    }
+  }
 }
-
 
 .selectContainerTitle {
-	@media(@sm-only) {
-		> .col-sm-2 {
-			width: 26%;
-		}
-		> .col-sm-3 {
-			width: 30%;
-		}
-	}
+  @media (@sm-only) {
+    > .col-sm-2 {
+      width: 26%;
+    }
 
-	@media(@md-only) {
-		> .col-sm-2  {
-			width: 20%;
-		}
-	}
+    > .col-sm-3 {
+      width: 30%;
+    }
+  }
+
+  @media (@md-only) {
+    > .col-sm-2 {
+      width: 20%;
+    }
+  }
 }
 
-@media(@sm-only) {
-	.dateinput_container {
-		.dayContainer,
-		.monthContainer {
-			width: 20%;
-		}
-	}
+.dateinput_container {
+  @media (@sm) {
+    div[class*="col-sm-"] {
+      padding-right: 0px;
+    }
+  }
+  @media (@sm-only) {
+    .dayContainer,
+    .monthContainer {
+      width: 20%;
+    }
+  }
 }

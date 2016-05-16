@@ -81,7 +81,7 @@
                 {{ _.each(model.brands.values, function(object) { }}
                 {{ var checked = !object.selected ? ' checked="checked"' : ''; }}
                 {{ var active = !object.selected ? ' active' : ''; }}
-                <div class="checkbox-none">
+                <div class="checkbox">
                     <input type="checkbox" name="{{= model.brands.name }}" id="{{= model.brands.name }}_{{= object.value }}" value="{{= object.value }}" {{=checked }}
                            title="{{= object.label }}"/> <label for="{{= model.brands.name }}_{{= object.value }}">{{= object.label }}</label>
                 </div>

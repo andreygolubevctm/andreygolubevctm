@@ -20,6 +20,6 @@
     </div>
     {{ } else { }}
         {{ var pdfLink = coverType == 'H' ? promo.hospitalPDF : (coverType == 'E' ? promo.extrasPDF : ''); }}
-        {{ if(pdfLink != '') { }} <a class="btn btn-block btn-download" href="{{= pdfLink }}" target="_blank">Download Brochure</a> {{ } }}
+        {{ if(pdfLink != '') { }} <a class="hide-on-affix btn btn-block btn-download" href="{{= pdfLink }}" target="_blank">Download Brochure</a> {{ } }}
     {{ } }}
 </core_v1:js_template>

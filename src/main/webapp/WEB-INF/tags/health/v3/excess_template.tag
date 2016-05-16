@@ -5,7 +5,7 @@
     for the individual excess prices that are being added to the model during this project --%>
 <core_v1:js_template id="results-features-excess-template">
     {{ var feature = Features.getPageStructure(obj.featuresStructureIndexToUse)[0]; }}
-    {{ var excessData = Object.byString( obj, "hospital.inclusions.excesses" );  var formatCurrency = meerkat.modules.currencyField.formatCurrency; }}
+    {{ var excessData = Object.byString( obj, "hospital.inclusions.excesses" );  var formatCurrency = meerkat.modules.currencyField.formatCurrency; }}{{ if(_.isObject(excessData)) { }}
     <div class="row excessDetailContainer">
         <div class="col-xs-12 col-md-4">
             <p class="excess-label">Per Admission</p>
@@ -19,7 +19,7 @@
             <p class="excess-label">Per Policy</p>
             <span class="excess-value">{{= formatCurrency(excessData.perPolicy, {roundToDecimalPlace: 0}) }}</span>
         </div>
-    </div>
+    </div>{{ } }}
     {{ _.each(feature.children, function(ft) { if(ft.name == "Excess") { return; } }}
     <div class="cell {{= ft.classString }}">
         <div class="c content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">

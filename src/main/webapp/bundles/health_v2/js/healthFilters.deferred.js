@@ -291,14 +291,14 @@
 
             if ($benefitsList.hasClass('expanded')) {
                 $this.find('.text').text('add more selections');
-                $benefitsList.find('.checkbox-none').filter(function () {
+                $benefitsList.find('.checkbox').filter(function () {
                     return !$(this).find('input').is(':checked');
                 }).slideUp('fast', function () {
                     $(this).addClass('hidden');
                 });
             } else {
                 $this.find('.text').text('show less');
-                $benefitsList.find('.checkbox-none').removeClass('hidden').slideDown('fast');
+                $benefitsList.find('.checkbox').removeClass('hidden').slideDown('fast');
             }
 
             $benefitsList.toggleClass('expanded');

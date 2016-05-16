@@ -42,6 +42,6 @@
                 value="${FundCode}"
                 xpath="${xpath}/${fn:toLowerCase(FundCode)}"
                 label="${FundCode}"
-                title='${Name}' theme="none"/>
+                title='${Name}' />
     </c:if>
 </c:forEach>

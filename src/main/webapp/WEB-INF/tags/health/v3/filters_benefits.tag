@@ -28,7 +28,7 @@
                 {{ _.each(model.benefitsHospital.values, function(object) { }}
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                 {{ var hidden = !object.selected ? ' hidden' : ''; }}
-                <div class="checkbox-none {{=object.class }} {{=hidden }}">
+                <div class="checkbox {{=object.class }} {{=hidden }}">
                     <input type="checkbox" name="health_filterBar_benefitsHospital" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}">{{= object.label }}</label>
                     <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1"><span class="text-hide">Need Help?</span></a>
                 </div>
@@ -56,7 +56,7 @@
                 {{ _.each(model.benefitsExtras.values, function(object) { }}
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                 {{ var hidden = !object.selected ? ' hidden' : ''; }}
-                <div class="checkbox-none {{=object.class }} {{=hidden }}">
+                <div class="checkbox {{=object.class }} {{=hidden }}">
                     <input type="checkbox" name="health_filterBar_benefitsExtras" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}">{{= object.label }}</label>
                     <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1"><span class="text-hide">Need Help?</span></a>
                 </div>
