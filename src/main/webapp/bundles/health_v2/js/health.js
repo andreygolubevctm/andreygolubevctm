@@ -105,7 +105,8 @@
 			.not('.nestedGroup .col-sm-8')
 			.removeClass('col-sm-8').addClass('col-sm-9');
 		$mainform.find('.col-sm-offset-4')
-			.not('.health_application')
+			.not('#applicationForm_1 .col-sm-offset-4')
+			.not('#applicationForm_2 .col-sm-offset-4')
 			.removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
 	}
 
