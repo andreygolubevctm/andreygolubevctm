@@ -31,6 +31,8 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="GTMEnabled" value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />
 
+<ip_v1:widget_values />
+
 <core_v1:doctype />
 <go:html>
 	<core_v1:head quoteType="${xpath}" title="Income Protection Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
