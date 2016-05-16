@@ -448,7 +448,7 @@
 		for(var i=0; i<data.length; i++) {
 			var obj = data[i];
 			var id = 'tmp_fact_' + i + '_chk';
-			var name = 'tmp_quote_opts_opt' + ("0" + i).slice(-2);
+			var name = 'tmp_quote_opts_opt' + ("00" + i).slice(-3);
 			var chkbox = $('<input/>',{
 					type:	'checkbox',
 					name:	name,
@@ -579,14 +579,14 @@
 					var pos = String(parseInt(i.substring(3), 10));
 					var name = "tmp_fact_" + pos + "_chk";
 					var fItem = getFactoryOptionByIndex(pos);
-					fItem.position = ("0" + pos).slice(-2);
+					fItem.position = ("00" + pos).slice(-3);
 
 					if(fItem !== false) {
 						savedSelections.factory.push("tmp_fact_" + pos + "_chk");
 						$(elements.factory.inputs).append(
 							getInputHTML({
 								id:		name.slice(4),
-								name:	"quote_opts_opt" + ("0" + pos).slice(-2),
+								name:	"quote_opts_opt" + ("00" + pos).slice(-3),
 								value:	fItem.code
 							})
 						);
