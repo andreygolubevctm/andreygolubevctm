@@ -1,14 +1,11 @@
 package com.ctm.web.core.model.settings;
 
-import com.ctm.web.core.email.services.LoadQuoteService;
-import org.junit.Before;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by lbuchanan on 16/05/2016.
- */
+
 public class VerticalSettingsTest {
 
     @Test
