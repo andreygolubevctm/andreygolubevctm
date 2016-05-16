@@ -5,7 +5,7 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
-<field_v2:creditcard_assurance_message showCreditCards="false" />
+<field_v3:creditcard_assurance_message showCreditCards="false" />
 
 <%-- HTML --%>
 <c:set var="fieldXpath" value="${xpath}/name" />

@@ -495,6 +495,15 @@
 
 					meerkat.modules.healthApplyStep.onBeforeEnter();
 					meerkat.modules.healthMedicare.updateMedicareLabel();
+
+					var product = meerkat.modules.healthResults.getSelectedProduct();
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
+
+					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
+						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
+					} else {
+						$("#health_payment_medicare-selection").removeAttr("style");
+					}
 				}
 			},
 			onAfterEnter: function afterEnterApplyStep(event){
@@ -601,16 +610,6 @@
 					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
 					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
 
-					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
-
-					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
-						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
-					} else {
-						$("#health_payment_medicare-selection").removeAttr("style");
-					}
-
-					meerkat.modules.healthPaymentStep.updatePremium();
 				}
 			}
 		};
@@ -1265,8 +1264,7 @@
 			}
 
 			if($healthSitHealthCvr.val() !== '' && $healthSitLocation.val() !== '') {
-				$('.health-about-you').addClass('hidden');
-				$('.health-situation .fieldset-column-side .sidebar-box').css('margin-top','55px');
+				$('.health-about-you, .health-about-you-title').addClass('hidden');
 			}
 
 			$('.btn-edit').on('click', function() {
@@ -1277,7 +1275,7 @@
 		} else {
 			$('.health-cover').removeClass('hidden');
 			$('.health-location').removeClass('hidden');
-			$('.health-about-you').removeClass('hidden');
+			$('.health-about-you, .health-about-you-title').removeClass('hidden');
 			$('.health-situation .fieldset-column-side .sidebar-box').css('margin-top','');
 		}
 	}
