@@ -3,7 +3,7 @@ package com.ctm.web.core.model.settings;
 
 public class VerticalSettings {
 
-    public static String getHomePage(Vertical.VerticalType vertical) {
+    private static String getHomePage(Vertical.VerticalType vertical) {
         switch (vertical) {
             case HOME:
                 return  "home_contents_quote.jsp";

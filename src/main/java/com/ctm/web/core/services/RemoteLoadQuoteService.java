@@ -57,11 +57,11 @@ public class RemoteLoadQuoteService {
 	}
 
 	public String getStartAgainQuoteUrl(String vertical , Long transactionId , String jParam){
-		return VerticalSettings.getHomePageJsp(vertical) + "?action=start-again&amp;transactionId="+ transactionId + jParam;
+		return getActionQuoteUrl( vertical , "start-again" ,  transactionId ,  jParam);
 	}
 
 	public String getLatestQuoteUrl(String vertical , Long transactionId , String jParam){
-		return VerticalSettings.getHomePageJsp(vertical) + "?action=latest&amp;transactionId=" + transactionId + jParam;
+		return getActionQuoteUrl( vertical , "latest" ,  transactionId ,  jParam);
 	}
 
 
