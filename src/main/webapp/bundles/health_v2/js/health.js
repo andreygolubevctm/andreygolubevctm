@@ -482,6 +482,12 @@
 					// Load the selected product details.
 					healthFunds.load(selectedProduct.info.provider);
 
+					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
+					var $firstnameField = $("#health_payment_medicare_firstName");
+					var $surnameField = $("#health_payment_medicare_surname");
+					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
+					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
+
 					// Clear any previous validation errors on Apply or Payment
 					var $slide = $('#journeyEngineSlidesContainer .journeyEngineSlide').slice(meerkat.modules.journeyEngine.getCurrentStepIndex() - 1);
 					$slide.find('.error-field').remove();
@@ -600,12 +606,6 @@
 					$('#mainform').find('.health_declaration span').text( selectedProduct.info.providerName  );
 					// Insert fund into Contact Authority
 					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
-
-					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
-					var $firstnameField = $("#health_payment_medicare_firstName");
-					var $surnameField = $("#health_payment_medicare_surname");
-					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
-					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
 					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
