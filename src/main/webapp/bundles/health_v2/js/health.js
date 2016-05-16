@@ -582,12 +582,6 @@
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
 					var paymentDetailsSection = $("#health_payment_details-selection");
-					// Show discount text if applicable
-					if (typeof selectedProduct.promo.discountText !== 'undefined' && selectedProduct.promo.discountText !== '') {
-						paymentDetailsSection.find(".definition").show().html(selectedProduct.promo.discountText);
-					} else {
-						paymentDetailsSection.find(".definition").hide().empty();
-					}
 
 					// Show warning if applicable
 					if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
