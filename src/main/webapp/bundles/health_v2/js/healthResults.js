@@ -609,7 +609,7 @@
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, {source: 'healthLoadRates'});
         meerkat.modules.health.loadRates(function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
-            meerkat.modules.resultsFeatures.fetchStructure('health').done(function () {
+            meerkat.modules.resultsFeatures.fetchStructure('health2016').done(function () {
                 Results.updateAggregatorEnvironment();
                 Results.get();
             });
@@ -622,7 +622,7 @@
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, {source: 'healthLoadRates'});
         meerkat.modules.health.loadRatesBeforeResultsPage(false, function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
-            meerkat.modules.resultsFeatures.fetchStructure('health').done(function () {
+            meerkat.modules.resultsFeatures.fetchStructure('health2016').done(function () {
                 Results.updateAggregatorEnvironment();
                 Results.get();
             });
