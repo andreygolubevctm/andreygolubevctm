@@ -37,7 +37,7 @@
     .user-select(none);
   }
   .restrictedFund {
-    @media(@sm-only) {
+    @media (@sm-only) {
       font-size: 12px;
     }
     .user-select(none);
@@ -183,7 +183,7 @@
       &.category { //.cell.category
 
         // An override for last border-bottom of a category
-        // .cell.section's children's last feature: set border-bottom on its .content
+        // .cell.category's children's last feature: set border-bottom on its .content
         &.collapsed:last-child .labelInColumn .content {
           border-bottom: 1px solid @results-border-color;
         }
@@ -201,11 +201,11 @@
           .content {
             line-height: 30px;
             padding: 5px;
-            @media(@md) {
+            @media (@md) {
               padding: 5px 10px;
             }
             sup {
-              @media(@sm-only) {
+              @media (@sm-only) {
                 position: absolute;
                 top: 14px;
                 right: 21px;
@@ -229,77 +229,91 @@
           }
         }
 
-        // Style the feature label cell when its expanded.
-        &.expanded {
-          border-bottom: 1px solid @theme-tertiary;
-          .category { //.cell.category.expanded
-
-            > .content {
-              background-color: @theme-tertiary;
-              color: #fff;
-              sup {
-                color: #fff;
-              }
-              border-left-color: @theme-tertiary;
-              border-top: none;
-              border-bottom: 2px solid @dark-blue-stroke;
-              border-right: 1px solid @theme-tertiary;
-            }
-          }
-        }
       }
 
       &.expandable {
 
-        &.category .children { // sub-features
-          margin-left: 10px;
-          position: relative;
+        &.category {
+          // Style the feature label cell when its expanded.
+          &.expanded {
+            border-bottom: 1px solid @theme-tertiary;
 
-          .content {
-            border-left-color: @subfeature-border-color;
-            border-right: 1px solid @subfeature-border-color;
-            border-bottom: 1px solid @subfeature-border-color;
-            border-top: none; // disable inherited border.
-            background-color: #DDE1EB;
+            .category { //.cell.category.expanded
+
+              > .content {
+                background-color: @theme-tertiary;
+                color: #fff;
+                sup {
+                  color: #fff;
+                }
+                border-left-color: @theme-tertiary;
+                border-top: none;
+                border-bottom: 2px solid @dark-blue-stroke;
+                border-right: 1px solid @theme-tertiary;
+              }
+            }
           }
-          // remove border bottom on last cell in children
-          // or when not covered container is shown
-          .noCoverContainer.content,
-          .cell:last-child .content {
+          .children { // sub-features
+            margin-left: 10px;
+            position: relative;
+
+            .content {
+              border-left-color: @subfeature-border-color;
+              border-right: 1px solid @subfeature-border-color;
+              border-bottom: 1px solid @subfeature-border-color;
+              border-top: none; // disable inherited border.
+              background-color: #DDE1EB;
+            }
+            // remove border bottom on last cell in children
+            // or when not covered container is shown
+            .noCoverContainer.content,
+            .cell:last-child .content {
+              border-bottom: none;
+            }
+
+            &.hideChildren {
+              .cell.feature {
+                .invisible;
+              }
+            }
+            .noCoverContainer {
+              position: absolute;
+              height: 100%;
+              width: 100%;
+              .noCoverLabel {
+                font-size: 12px;
+                position: relative;
+                text-align: center;
+                top: 40%;
+                color: @dulled-color;
+              }
+            }
+
+            // The corner wedge when expanded.
+            &:before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: -10px;
+              width: 0;
+              height: 0;
+              border-style: solid;
+              border-width: 0 10px 10px 0;
+              border-color: transparent @dark-blue-stroke transparent transparent;
+            }
+          }
+
+          // the last category in a list, remove its blue border bottom and
+          // for its last children .cell.feature, set the border bottom to normal.
+          &:last-child.expanded {
             border-bottom: none;
-          }
-
-          &.hideChildren {
-            .cell.feature {
-              .invisible;
-            }
-          }
-          .noCoverContainer {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            .noCoverLabel {
-              font-size: 12px;
-              position: relative;
-              text-align: center;
-              top: 40%;
-              color: @dulled-color;
+            .children .cell.feature:last-child, .noCoverContainer {
+              border-bottom: 1px solid @subfeature-border-color;
             }
           }
 
-          // The corner wedge when expanded.
-          &:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -10px;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 0 10px 10px 0;
-            border-color: transparent @dark-blue-stroke transparent transparent;
-          }
         }
+
       }
     }
   }

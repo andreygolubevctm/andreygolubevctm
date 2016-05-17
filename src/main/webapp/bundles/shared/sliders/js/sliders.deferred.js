@@ -37,6 +37,11 @@
         });
     }
 
+    function applySelectedClasses($controller, value) {
+        var numMarkers = $('.slider-marker', $controller).length - 1;
+        value = value - 1 > numMarkers ? numMarkers : value - 1;
+        $('.slider-marker', $controller).removeClass('down-range').eq(value).prevAll().addClass('down-range');
+    }
     function initSliders($sliders) {
         // Check noUiSlider is available
         if (typeof $.fn.noUiSlider !== 'function') {
@@ -78,9 +83,7 @@
             if ('excess' === type) {
 
                 $controller.on('slide set', function (event, value) {
-                    var numMarkers = $('.slider-marker').length - 1;
-                    value = value - 1 > numMarkers ? numMarkers : value - 1;
-                    $('.slider-marker').removeClass('down-range').eq(value).prevAll().addClass('down-range');
+                    applySelectedClasses($controller, value);
                 });
 
                 if (useDefaultOutput === false) {
@@ -215,6 +218,7 @@
 
             addMarkers($controller, markerCount);
             addLegend($controller, legend);
+            applySelectedClasses($controller, initialValue);
         });
     }
 

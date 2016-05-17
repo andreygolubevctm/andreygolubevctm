@@ -84,8 +84,8 @@ var ResultsPagination = {
 	reset:function(){
 		Results.pagination.invalidate();
 
-		Results.pagination.$nextButton.addClass("inactive");
-		Results.pagination.$previousButton.addClass("inactive");
+		Results.pagination.deactivateButton(this.$nextButton);
+		Results.pagination.deactivateButton(this.$previousButton);
 		Results.pagination.$pageText.empty();
 
 		if(Results.pagination.isSlideMode()){
@@ -146,15 +146,15 @@ var ResultsPagination = {
 
 			// Update state on prev/next buttons
 			if(Results.pagination.getCurrentPageNumber() == 1){
-				Results.pagination.$previousButton.addClass("inactive");
+				Results.pagination.deactivateButton(this.$previousButton);
 			}else{
-				Results.pagination.$previousButton.removeClass("inactive");
+				Results.pagination.activateButton(this.$previousButton);
 			}
 
 			if(Results.pagination.getCurrentPageNumber() === pageMeasurements.numberOfPages){
-				Results.pagination.$nextButton.addClass("inactive");
+				Results.pagination.deactivateButton(this.$nextButton);
 			}else{
-				Results.pagination.$nextButton.removeClass("inactive");
+				Results.pagination.activateButton(this.$nextButton);
 			}
 
 			// Done
@@ -299,7 +299,8 @@ var ResultsPagination = {
 			columnWidth = Math.round((viewableArea / columnsPerPage) * 100) / 100;
 		} else {
 			columnWidth =  $rows.outerWidth(true);
-			columnsPerPage = Math.round(viewableArea/columnWidth);
+			viewableArea += Results.settings.pagination.margin;
+			columnsPerPage = Math.round((viewableArea/columnWidth) * 100) / 100;
 		}
 
 		var pageWidth = columnWidth*columnsPerPage;
@@ -393,7 +394,7 @@ var ResultsPagination = {
 		Results.pagination.lock();
 
 		$(Results.settings.elements.resultsContainer).trigger("pagination.scrolling.start");
-		$(Results.settings.elements.resultsOverflow).removeClass('notScrolling');
+		$(Results.settings.elements.resultsOverflow).removeClass('notScrolling').addClass('isScrolling');
 
 		switch(Results.pagination.scrollMode){
 			case "scrollto":
@@ -419,7 +420,6 @@ var ResultsPagination = {
 					Results.view.$containerElement.css( Modernizr.prefixed("transform"), 'translate3d(' + newScroll + 'px,0,0)');
 
 					_.delay(function(){
-						//todo somehow get the 3px
 						Results.view.$containerElement.removeClass("resultsTransformTransition");
 						var css = {
 							marginLeft:newScroll+'px'
@@ -444,7 +444,6 @@ var ResultsPagination = {
 				_.defer(function(){
 
 					var duration = Results.view.$containerElement.transitionDuration();
-					//todo somehow get the 3px
 					Results.view.$containerElement.css("margin-left", newScroll);
 
 					_.delay(function(){
@@ -477,7 +476,7 @@ var ResultsPagination = {
 		Results.pagination.refresh();
 
 		if(wasAnimated){
-			$(Results.settings.elements.resultsOverflow).addClass('notScrolling');
+			$(Results.settings.elements.resultsOverflow).addClass('notScrolling').removeClass('isScrolling');
 			$(Results.settings.elements.resultsContainer).trigger("pagination.scrolling.end");
 		}
 	},
@@ -528,41 +527,40 @@ var ResultsPagination = {
 
 	scrollResults: function( clickedButton ){
 
-		if(clickedButton.hasClass("inactive") === false){
-			if( Results.pagination.isLocked === false ){ //Only run if its not currently sliding
-
-				Results.pagination.lock();
-
-				var fullWidth = Results.view.$containerElement.parent().width();
-				var widthAllColumns = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows ).first().outerWidth( true ) * $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered" ).length;
-				var scrollWidth = fullWidth * Results.settings.animation.features.scroll.percentage;
-				var currentScroll = ResultsUtilities.getScroll( 'x', Results.view.$containerElement );
-				var newScroll;
-
-				if( clickedButton.attr('data-results-pagination-control') == 'previous' ){
-
-					newScroll = currentScroll + scrollWidth;
-
-					if( newScroll >= 0) {
-						newScroll = 0;
-					}
-
-				} else {
-
-					newScroll = currentScroll - scrollWidth;
-
-					if( widthAllColumns <= fullWidth ){
-						newScroll = 0;
-					} else if( Math.abs( newScroll ) >= (widthAllColumns - fullWidth) && ( fullWidth < widthAllColumns ) ) {
-						newScroll = widthAllColumns * -1 + fullWidth;
-					}
-
-				}
-
-				Results.pagination.animateScroll( newScroll );
-
-			}
+		if (clickedButton.hasClass("inactive") || Results.pagination.isLocked !== false) {
+			return;
 		}
+		//Only run if its not currently sliding
+
+		Results.pagination.lock();
+
+		var fullWidth = Results.view.$containerElement.parent().width();
+		var widthAllColumns = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows).first().outerWidth(true) * $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered").length;
+		var scrollWidth = fullWidth * Results.settings.animation.features.scroll.percentage;
+		var currentScroll = ResultsUtilities.getScroll('x', Results.view.$containerElement);
+		var newScroll;
+		if (clickedButton.attr('data-results-pagination-control') == 'previous') {
+
+			newScroll = currentScroll + scrollWidth;
+
+			if (newScroll >= 0) {
+				newScroll = 0;
+			}
+
+		} else {
+
+			newScroll = currentScroll - scrollWidth;
+
+			if (widthAllColumns <= fullWidth) {
+				newScroll = 0;
+			} else if (Math.abs(newScroll) >= (widthAllColumns - fullWidth) && ( fullWidth < widthAllColumns )) {
+				newScroll = widthAllColumns * -1 + fullWidth;
+			}
+
+		}
+
+		Results.pagination.animateScroll(newScroll);
+
 
 	},
 
@@ -602,27 +600,33 @@ var ResultsPagination = {
 
 
 			if ( rightStatus == "active" ){
-				Results.pagination.$nextButton.removeClass("inactive");
+				Results.pagination.activateButton(this.$nextButton);
 			}
 			else {
-				Results.pagination.$nextButton.addClass("inactive");
+				Results.pagination.deactivateButton(this.$nextButton);
 			}
 
 			if ( leftStatus == "active" ){
-				Results.pagination.$previousButton.removeClass("inactive");
+				Results.pagination.activateButton(this.$previousButton);
 			}
 			else {
-				Results.pagination.$previousButton.addClass("inactive");
+				Results.pagination.deactivateButton(this.$previousButton);
 			}
 
 		}
 
 	},
 
+	deactivateButton: function($button) {
+		$button.addClass('inactive').parent().addClass('inactive');
+	},
+	activateButton: function($button) {
+		$button.removeClass('inactive').parent().removeClass('inactive');
+	},
 	lock:function(){
 		Results.pagination.isLocked = true;
-		Results.pagination.$nextButton.addClass("inactive");
-		Results.pagination.$previousButton.addClass("inactive");
+		Results.pagination.deactivateButton(this.$nextButton);
+		Results.pagination.deactivateButton(this.$previousButton);
 		Results.pagination.$pagesContainer.find("a").addClass("inactive");
 	},
 
@@ -703,14 +707,16 @@ var ResultsPagination = {
 			columnsLength++;
 		}
 
+        var pageMeasurements = Results.pagination.getPageMeasurements();
+        if(pageMeasurements === null) return false;
 		// Determine and set the new width of the results-table based on pageWidth * number of pages.
-		var numPages = Math.ceil(columnsLength / Results.pagination.currentPageMeasurements.columnsPerPage);
-		var newWidth = Results.pagination.currentPageMeasurements.pageWidth * numPages;
+		var numPages = Math.ceil(columnsLength / pageMeasurements.columnsPerPage);
+		var newWidth = pageMeasurements.pageWidth * numPages;
 		$(Results.settings.elements.container, $featuresModeContainer).width(newWidth);
 
 		// Setup scroll/touch events on the results overflow
 		$(Results.settings.elements.resultsOverflow).off('scroll.results').on("scroll.results", Results.pagination.nativePaginationOnScroll);
-		if(Modernizr.touch) {
+		if(Results.settings.pagination.touchEnabled) {
 			$(Results.settings.elements.resultsOverflow, $featuresModeContainer).off('touchstart.results').on('touchstart.results', function() {
 				Results.pagination.isTouching = true;
 				Results.pagination.cancelExistingSnapTo();
@@ -754,7 +760,7 @@ var ResultsPagination = {
 			Results.pagination.invalidate();
 			// Sets it to the object.
 			Results.pagination.setCurrentPageNumber(pageNumber);
-			// To refresh t/he page count at the top
+			// To refresh the page count at the top
 			Results.pagination.refresh();
 			// This is used to snap to the nearest page.
 			if(meerkat.modules.deviceMediaState.get() == 'xs' && Results.pagination.isTouching === false && isNewPage === true) {

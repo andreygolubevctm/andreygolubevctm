@@ -11,9 +11,12 @@
 
     .result-row {
       // To make up for the space no longer consumed by the .result element.
-      padding-top: 230px;
-      @media(@sm) {
-        padding-top: 330px;
+      padding-top: 360px;
+      @media (@sm) {
+        padding-top: 400px;
+      }
+      @media (@lg) {
+        padding-top: 430px;
       }
     }
 
@@ -34,17 +37,21 @@
       .result {
         top: 80px; // to make up for pagination and header bar.
       }
+
       .utility-bar-blank,
       .lhcText {
         display: none;
       }
+
       .productSummary {
         height: 100px;
       }
+
       .btn-more-info {
         .btn-sm;
       }
     }
+
     .result {
       display: none; // when in fixed mode, only display the items on the 'current page' - thanks to the pagination component for settings this.
       position: fixed;
@@ -65,6 +72,23 @@
   &.affixed-compact {
     h3 {
       display: block; // for some reason it's hidden in the core.
+    }
+
+    @media (@xs-only) {
+      .result {
+        .opacity(0);
+      }
+
+      .isScrolling .result {
+        .opacity(0);
+      }
+
+      .currentPage {
+        .result {
+          .opacity(1);
+        }
+      }
+
     }
   }
 

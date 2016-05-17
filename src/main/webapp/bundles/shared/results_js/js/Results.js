@@ -72,6 +72,7 @@ var Results = {
 			frequency: "annually",
 			displayMode: "price",
 			pagination: {
+				margin: 0,
 				mode: 'slide', //page
 				touchEnabled: false,
 				emptyContainerFunction: false, //You can specify a function for custom code that will empty the pagination container

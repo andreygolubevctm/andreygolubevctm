@@ -9,26 +9,38 @@
         },
         moduleEvents = events.resultsHeaderBar;
 
-    var $resultsHeaderBg,
+    var settings = {
+            disableOnXs: false,
+            getStartOffset: function () {
+                return $(".header-top .container").height();
+            }
+        },
+        listenersRegistered = false,
+        $resultsHeaderBg,
         $affixOnScroll,
         $resultsContainer,
         navBarHeight,
         topStartOffset = 0,
         contentAnimating = false,
         enterXsSubscription,
-        leaveXsSubscription,
-        disableOnXs = false; // whether to disable on XS
+        leaveXsSubscription; // whether to disable on XS
 
-    function init() {
+    /**
+     * Extend the default options from a vertical specific module
+     * @param options
+     */
+    function initResultsHeaderBar(options) {
+
+        settings = $.extend({}, settings, options);
+
         $resultsHeaderBg = $('.resultsHeadersBg');
         $affixOnScroll = $('.affixOnScroll');
         $resultsContainer = $('.resultsContainer');
         navBarHeight = $("#navbar-main").height();
 
-        // disableOnXs = meerkat.site. .... get this from a meerkat site setting if you really want to disable it.
-
         // Self-initialise
         $(document).on('resultsLoaded', registerEventListeners);
+
         if (meerkat.modules.journeyEngine.getCurrentStep().navigationId == 'results') {
             registerEventListeners();
         }
@@ -54,8 +66,8 @@
                 }
                 dynamicTopHeaderContentHeight += $(this).height();
             });
+            topStartOffset = settings.getStartOffset() + dynamicTopHeaderContentHeight;
             // height of the header without navbar (which gets affixed at the same time)
-            topStartOffset = $('.resultsOverflow').offset().top;//dynamicTopHeaderContentHeight + $(".header-top .container").height();
             if ($resultsHeaderBg && $resultsHeaderBg.length) {
                 topStartOffset += $resultsHeaderBg.position().top;
             }
@@ -65,14 +77,12 @@
 
     // Helpers to determine current state...
     function isWindowInAffixPosition() {
-        if ($(window).scrollTop() >= topStartOffset) return true;
-        return false;
+        return $(window).scrollTop() >= topStartOffset;
     }
 
     function isWindowInCompactPosition() {
         // the +5 is to force the headers to affix first before we switch to compact mode for performance reasons
-        if ($(window).scrollTop() >= topStartOffset + 5) return true;
-        return false;
+        return $(window).scrollTop() >= topStartOffset + 5;
     }
 
     function isContentAffixed() {
@@ -101,12 +111,15 @@
             if (isWindowInCompactPosition() === true && isContentCompact() === false) {
                 $affixOnScroll.addClass("affixed-compact");
                 $resultsContainer.find(".result .productSummary").addClass("compressed");
+                $(document).trigger('headerAffixed');
             } else if (isWindowInCompactPosition() === false && isContentCompact() === true) {
                 removeCompactClasses();
+                $(document).trigger('headerUnaffixed');
             }
 
         } else if (isWindowInAffixPosition() === false && isContentAffixed() === true) {
             removeAffixClasses();
+            $(document).trigger('headerUnaffixed');
         }
 
     }
@@ -146,12 +159,10 @@
 
     function enableAffixMode() {
 
-        _.defer(function () {
-            onScroll(); // force call it once in case we just entered the breakpoint and did not scroll
-        });
+        _.defer(onScroll);
         $(window).on('scroll.resultsHeaderBar', _.throttle(onScroll, 25));
 
-        if (disableOnXs === true) {
+        if (settings.disableOnXs === true) {
             // subscribe to enter XS to disable fixed headers in that breakpoint
             enterXsSubscription = meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function () {
                 disableAffixMode();
@@ -179,16 +190,21 @@
     }
 
     function subscribeToLeaveXs() {
-        leaveXsSubscription = meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function () {
-            meerkat.messaging.unsubscribe(leaveXsSubscription);
-            registerEventListeners();
-        });
+        if (settings.disableOnXs === true) {
+            leaveXsSubscription = meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function () {
+                meerkat.messaging.unsubscribe(leaveXsSubscription);
+                registerEventListeners();
+            });
+        }
     }
 
     // Add remove event listeners (on entering / leaving results page)...
     function registerEventListeners() {
-
-        if (meerkat.modules.deviceMediaState.get() === "xs" && disableOnXs === true) {
+        // don't double up on needing to bind/unbind
+        if (listenersRegistered) {
+            return;
+        }
+        if (meerkat.modules.deviceMediaState.get() === "xs" && settings.disableOnXs === true) {
             subscribeToLeaveXs();
         } else {
             enableAffixMode();
@@ -209,6 +225,7 @@
                 }, 300);
             });
         }
+        listenersRegistered = true;
     }
 
     function removeEventListeners() {
@@ -227,10 +244,12 @@
             .off("pagination.scrolling.end")
             .off("results.view.animation.start")
             .off("results.view.animation.end");
+
+        listenersRegistered = false;
     }
 
     meerkat.modules.register("resultsHeaderBar", {
-        init: init
+        initResultsHeaderBar: initResultsHeaderBar
     });
 
 })(jQuery);

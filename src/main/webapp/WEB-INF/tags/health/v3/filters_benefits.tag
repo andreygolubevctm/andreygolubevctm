@@ -21,8 +21,7 @@
                 <span class="heading-text">Hospital cover</span>
             </div>
             <div class="sidebar-intro-text need-no-hospital {{=hiddenExtras }} {{=hiddenOnCombined }}">
-                <p>Extras cover gives you money back for day to day services like <strong>dental, optical</strong> and <strong>physiotherapy</strong>.</p>
-                <p>These services are not covered by Medicare.</p>
+                <p>Hospital cover enables you to choose your own doctor at the fund's partner hospitals, allowing you to avoid public hospital waiting lists</p>
             </div>
             <div class="benefits-list benefitsHospital need-hospital {{=hiddenHospital }}">
                 {{ _.each(model.benefitsHospital.values, function(object) { }}
@@ -49,8 +48,7 @@
                 <span class="heading-text">Extras cover</span>
             </div>
             <div class="sidebar-intro-text need-no-extras {{=hiddenHospital }} {{=hiddenOnCombined }} ">
-                <p>Extras cover gives you money back for day to day services like <strong>dental, optical</strong> and <strong>physiotherapy</strong>.</p>
-                <p>These services are not covered by Medicare.</p>
+                <p>Extras cover gives you money back for day to day services like dental, optical and physiotherapy.</p>
             </div>
             <div class="benefits-list benefitsExtras need-extras {{=hiddenExtras }}">
                 {{ _.each(model.benefitsExtras.values, function(object) { }}

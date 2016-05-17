@@ -27,6 +27,7 @@
 			});
             // Allow the dropdown body to be clicked 
             $(document).on('click', '.dropdown-interactive .dropdown-menu', function(e) {
+				e.preventDefault();
                 e.stopPropagation();
             });
 		});

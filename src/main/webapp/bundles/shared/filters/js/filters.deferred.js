@@ -248,6 +248,7 @@
         $document.on('click', '.filter-update-changes', function (e) {
             e.preventDefault();
             meerkat.messaging.publish(moduleEvents.filters.FILTERS_UPDATED, e);
+            meerkat.modules.utils.scrollPageTo($("header"));
         }).on('click', '.filter-cancel-changes', function (e) {
             e.preventDefault();
             resettingFilters = true;

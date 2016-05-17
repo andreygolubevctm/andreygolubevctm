@@ -160,6 +160,7 @@
                 },
                 displayMode: "features",
                 pagination: {
+                    margin: 15,
                     mode: 'page',
                     touchEnabled: false
                 },
