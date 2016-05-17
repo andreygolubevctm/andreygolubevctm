@@ -68,7 +68,6 @@
 			$paymentRadioGroup.find('input').on('change', function() {
 				togglePaymentGroups();
 				toggleClaimsBankAccountQuestion();
-				updatePaymentPremium();
 			});
 
 			// Update premium button
@@ -201,15 +200,14 @@
 		var premiums = meerkat.modules.healthResults.getSelectedProduct();
 
 		if (!_.isEmpty(premiums) && !_.isEmpty(premiums.paymentTypePremiums)) {
-			premiums = premiums.paymentTypePremiums;
-
 			premiums.paymentNode = getPaymentMethodNode();
-			premiums.selectedFrequency = getSelectedFrequency();
+			premiums._selectedFrequency = getSelectedFrequency();
 
 			var htmlTemplate = _.template($('#payment_frequency_options').html());
 			var options = htmlTemplate(premiums);
 
 			$frequencySelect.empty().append(options);
+
 			updateLHCText(premiums);
 		}
 	}
@@ -349,7 +347,10 @@
 	function updateProductFrequency() {
 		var product = meerkat.modules.healthResults.getSelectedProduct();
 		product._selectedFrequency = getSelectedFrequency();
+		product.paymentNode = getPaymentMethodNode();
 		meerkat.modules.healthResults.setSelectedProduct(product, true);
+
+		updateLHCText(product);
 	}
 
 	function updateCurrentProduct(data) {
@@ -364,7 +365,7 @@
 	}
 
 	function getPaymentMethodNode(freq){
-		var nodeName = '',
+		var nodeName = '';
 			freq = (_.isEmpty(freq) ? getSelectedPaymentMethod() : freq);
 
 		switch (freq) {
@@ -377,8 +378,9 @@
 
 	function updateLHCText(premiums) {
 		var lhcText = "";
-		if (premiums[premiums.paymentNode] && premiums[premiums.paymentNode][premiums.selectedFrequency]) {
-			lhcText = premiums[premiums.paymentNode][premiums.selectedFrequency].pricing;
+
+		if (premiums.paymentTypePremiums[premiums.paymentNode] && premiums.paymentTypePremiums[premiums.paymentNode][premiums._selectedFrequency]) {
+			lhcText = premiums.paymentTypePremiums[premiums.paymentNode][premiums._selectedFrequency].pricing;
 		}
 
 		$paymentMethodLHCText.html(lhcText);
