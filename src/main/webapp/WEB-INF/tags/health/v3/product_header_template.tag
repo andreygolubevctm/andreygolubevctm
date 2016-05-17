@@ -31,13 +31,11 @@
             {{ var brochureTemplate = meerkat.modules.templateCache.getTemplate($("#brochure-download-template")); }}
             {{= brochureTemplate(obj) }}
 
-            {{ var specialOffer = Features.getPageStructure()[0]; }}
-            {{ var pathValue = Object.byString( obj, specialOffer.resultPath ); }}
-            {{ var displayValue = Features.parseFeatureValue( pathValue, true ); }}
+            {{ var result = meerkat.modules.healthResultsTemplate.getSpecialOffer(); }}
 
-            <fieldset class="hide-on-affix result-special-offer {{ if (!pathValue) { }}invisible{{ } }}">
+            <fieldset class="hide-on-affix result-special-offer {{ if (!result.pathValue) { }}invisible{{ } }}">
                 <legend>Special Offer</legend>
-                {{= displayValue }}
+                {{= result.displayValue }}
             </fieldset>
         </div>
     </div>

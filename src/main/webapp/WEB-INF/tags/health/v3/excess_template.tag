@@ -24,7 +24,7 @@
     {{ _.each(feature.children, function(ft) { if(ft.name == "Excess") { return; } }}
     <div class="cell {{= ft.classString }}">
         <div class="c content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">
-            {{= meerkat.modules.healthv4Results.getExcessChildTemplate(obj, ft) }}
+            {{= meerkat.modules.healthResultsTemplate.getExcessChildTemplate(obj, ft) }}
         </div>
     </div>
     {{ }); }}
