@@ -14,20 +14,13 @@
 
 		// Set up touch events on touch devices, not just for dropdown-interactive.
 		$(document).ready(function() {
-			if (!Modernizr.touch) return;
 			// Stop the background page being scrollable when a dropdown is open (doesn't work on mobiles really)
-			$(document).on('touchmove', '.dropdown-backdrop, .dropdown-interactive form', function(e) {
+			$(document).on('touchmove', '.dropdown-backdrop, .dropdown-interactive form, .dropdown-interactive .scrollable', function(e) {
 				//if (meerkat.modules.deviceMediaState.get() === 'xs') return true;
-				e.preventDefault();
-				e.stopPropagation();
-			});
-			// Allow the dropdown body to be scrollable
-			$(document).on('touchmove', '.dropdown-interactive .scrollable', function(e) {
 				e.stopPropagation();
 			});
             // Allow the dropdown body to be clicked 
             $(document).on('click', '.dropdown-interactive .dropdown-menu', function(e) {
-				e.preventDefault();
                 e.stopPropagation();
             });
 		});
