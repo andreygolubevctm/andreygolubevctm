@@ -304,11 +304,6 @@
 
 					updateFrequencySelectOptions();
 
-
-					_.defer(function(){
-						setDefaultFields();
-					});
-
 					$("#confirm-step").show();
 					$(".simples-dialogue-31").show();
 
@@ -320,6 +315,8 @@
 				}
 
 				meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthPaymentStep' });
+
+				setDefaultFields();
 			});
 		});
 	}
@@ -366,9 +363,11 @@
 			 meerkat.modules.healthResults.setSelectedProduct(data, true);
 	}
 
-	function getPaymentMethodNode(){
-		var nodeName = '';
-		switch (getSelectedPaymentMethod()) {
+	function getPaymentMethodNode(freq){
+		var nodeName = '',
+			freq = (_.isEmpty(freq) ? getSelectedPaymentMethod() : freq);
+
+		switch (freq) {
 			case 'cc': nodeName = 'CreditCard'; break;
 			default: nodeName = 'BankAccount'; break;
 		}
@@ -490,7 +489,7 @@
 		getSelectedFrequency: getSelectedFrequency,
 		getSelectedPaymentMethod: getSelectedPaymentMethod,
 		updatePremium: updatePremium,
-		setDefaultFields: setDefaultFields
+		getPaymentMethodNode: getPaymentMethodNode
 	});
 
 })(jQuery);

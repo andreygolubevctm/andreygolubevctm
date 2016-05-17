@@ -610,6 +610,8 @@
 					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
 					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
 
+					meerkat.modules.healthPaymentStep.updatePremium();
+
 				}
 			}
 		};

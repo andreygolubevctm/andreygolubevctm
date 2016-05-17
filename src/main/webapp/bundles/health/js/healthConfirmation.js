@@ -86,7 +86,10 @@
 					confirmationProduct.frequency = meerkat.modules.healthResults.getFrequencyInWords(confirmationProduct.frequency);
 				}
 				confirmationProduct._selectedFrequency = confirmationProduct.frequency;
+				confirmationProduct.premium = confirmationProduct.paymentTypePremiums[meerkat.modules.healthPaymentStep.getPaymentMethodNode(confirmationProduct.frequency)];
 
+// 				product.premium = product.paymentTypePremiums[getPaymentMethodNode(meerkat.modules.getPaymentMethodNode.getPaymentMethodNode(confirmationProduct.frequency))];
+console.log("confirmationProduct 2", confirmationProduct);
 				fillTemplate();
 				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
 
