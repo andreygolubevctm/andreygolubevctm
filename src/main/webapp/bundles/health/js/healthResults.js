@@ -415,15 +415,6 @@
                     $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
                 });
 
-             var coverType = meerkat.modules.health.getCoverType();
-
-            if(coverType === 'E') {
-                $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');
-            }
-            if(coverType === 'H') {
-                $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
-            }
-
         });
 
         // When the excess filter changes, fetch new results

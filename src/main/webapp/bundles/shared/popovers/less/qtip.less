@@ -15,6 +15,21 @@
   line-height: 1.1em;
 
   max-width: @qtip-default-max-width;
+  &.bigTooltip {
+    h5 {
+      font-size: @font-size-base;
+    }
+    max-width: @container-xs * 0.5;
+    @media (@sm-only) {
+      max-width: @container-sm * 0.5;
+    }
+    @media (@md-only) {
+      max-width: @container-md * 0.5;
+    }
+    @media (@lg-only) {
+      max-width: @container-lg * 0.5;
+    }
+  }
 }
 
 .qtip-content {
@@ -26,7 +41,7 @@
   word-wrap: break-word;
   box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.2);
   max-height: 400px;
-  max-height: 65vh;
+  max-height: 50vh;
   overflow-y: auto;
 }
 

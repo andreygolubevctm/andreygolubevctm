@@ -1357,7 +1357,7 @@
 		});
 
 	}
-
+	
 	meerkat.modules.register("health", {
 		init: initHealth,
 		events: moduleEvents,
