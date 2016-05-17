@@ -309,7 +309,7 @@
 				validate: true
 			},
 			onInitialise: function onContactInit(event){
-				meerkat.modules.resultsFeatures.fetchStructure('health');
+				meerkat.modules.resultsFeatures.fetchStructure('health2016');
 			},
             onBeforeEnter:function enterBenefitsStep(event) {
                 if (event.isForward) {
