@@ -104,7 +104,10 @@
 			.not('.short-list-item')
 			.not('.nestedGroup .col-sm-8')
 			.removeClass('col-sm-8').addClass('col-sm-9');
-		$mainform.find('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
+		$mainform.find('.col-sm-offset-4')
+			.not('#applicationForm_1 .col-sm-offset-4')
+			.not('#applicationForm_2 .col-sm-offset-4')
+			.removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
 	}
 
 	/**
@@ -604,14 +607,7 @@
 					// Insert fund into Contact Authority
 					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
-					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
-					var $firstnameField = $("#health_payment_medicare_firstName");
-					var $surnameField = $("#health_payment_medicare_surname");
-					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
-					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
-
 					meerkat.modules.healthPaymentStep.updatePremium();
-
 				}
 			}
 		};
