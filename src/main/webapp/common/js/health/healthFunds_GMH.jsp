@@ -65,6 +65,7 @@ var healthFunds_GMH = {
             healthFunds_GMH.updateMessage();
         });
 
+
     },
     updateMessage: function() {
         <%--selections for payment date--%>

@@ -15,6 +15,7 @@
 	var $bankSection;
 	var $creditCardSection;
 	var $paymentCalendar;
+	var initialWriteQuoteDone = false;
 
 	var $frequencySelect;
 
@@ -339,7 +340,11 @@
 			product._selectedFrequency = freq;
 			product.premium = product.paymentTypePremiums[getPaymentMethodNode(freq)];
 
-			meerkat.modules.healthResults.setSelectedProduct(product, true);
+			// this prevents write quote being called twice on initial step load
+			if (!initialWriteQuoteDone) {
+				meerkat.modules.healthResults.setSelectedProduct(product, true);
+			}
+
 			updateFrequencySelectOptions();
 		}
 	}
@@ -362,6 +367,8 @@
 
 		// Update selected product
 		meerkat.modules.healthResults.setSelectedProduct(data, true);
+
+		initialWriteQuoteDone = true;
 	}
 
 	function getPaymentMethodNode(freq){
@@ -394,7 +401,8 @@
 		}
 
 		if (!$("#health_payment_details_type_cc").is(':checked')) {
-			$paymentRadioGroup.find('input').filter('[value=ba]').prop('checked', true).closest('label').addClass('active');
+			// had to revert this back to a trigger as fund messaging wasn't being set otherwise
+			$paymentRadioGroup.find('input').filter('[value=ba]').trigger('click');
 		}
 	}
 

@@ -18,12 +18,14 @@
 	<field_v2:input xpath="${fieldXpath}" title="account name" required="true" className="health-bank_details-account_name sessioncamexclude" maxlength="50" additionalAttributes=" data-rule-regex='[a-zA-Z ]{1,30}' data-msg-regex='For account name, please use only alphabetic characters (A-Z) and space, up to 30 characters in length.' " placeHolder="Account Name"/>
 </form_v3:row>
 
-<c:set var="fieldXpath" value="${xpath}/bsb" />
-<form_v3:row fieldXpath="${fieldXpath}input" label="BSB">
-	<field_v2:bsb_number xpath="${fieldXpath}" title="bsb number" required="true" className="health-bank_details-bsb sessioncamexclude" placeHolder="BSB #" />
-</form_v3:row>
+<form_v3:row isNestedStyleGroup="${true}" label="BSB and Account Number">
+	<c:set var="fieldXpath" value="${xpath}/bsb" />
+	<form_v3:row fieldXpath="${fieldXpath}input" label="BSB" isNestedField="${true}" hideHelpIconCol="${true}" smRowOverride="6">
+		<field_v2:bsb_number xpath="${fieldXpath}" title="bsb number" required="true" className="health-bank_details-bsb sessioncamexclude" placeHolder="BSB #" disableErrorContainer="${true}" />
+	</form_v3:row>
 
-<c:set var="fieldXpath" value="${xpath}/number" />
-<form_v3:row fieldXpath="${fieldXpath}" label="Account Number">
-	<field_v2:account_number xpath="${fieldXpath}" title="account number" minLength="5" maxLength="9" required="true" className="health-bank_details-account_number sessioncamexclude" placeHolder="Account #" />
+	<c:set var="fieldXpath" value="${xpath}/number" />
+	<form_v3:row fieldXpath="${fieldXpath}" label="Account Number" isNestedField="${true}" hideHelpIconCol="${true}" smRowOverride="6">
+		<field_v2:account_number xpath="${fieldXpath}" title="account number" minLength="5" maxLength="9" required="true" className="health-bank_details-account_number sessioncamexclude" placeHolder="Account #" disableErrorContainer="${true}" />
+	</form_v3:row>
 </form_v3:row>
