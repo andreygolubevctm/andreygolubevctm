@@ -393,8 +393,9 @@
 			$paymentCalendar.datepicker("update", new Date());
 		}
 
-		// $paymentRadioGroup.find('input').filter('[value=ba]').trigger('click');
-		$paymentRadioGroup.find('input').filter('[value=ba]').prop('checked', true).closest('label').addClass('active');
+		if (!$("#health_payment_details_type_cc").is(':checked')) {
+			$paymentRadioGroup.find('input').filter('[value=ba]').prop('checked', true).closest('label').addClass('active');
+		}
 	}
 
 	// Check if details for the claims bank account needs to be shown
