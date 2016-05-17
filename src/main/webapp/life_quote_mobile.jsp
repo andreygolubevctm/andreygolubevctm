@@ -16,6 +16,8 @@
 <core_v2:quote_check quoteType="life" />
 <core_v2:load_preload />
 
+<life_v1:widget_values />
+
 <%-- Initialise Save Quote --%>
 <c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 

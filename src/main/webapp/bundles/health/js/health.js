@@ -544,6 +544,12 @@
 					$slide.find('.error-field').remove();
 					$slide.find('.has-error').removeClass('has-error');
 
+					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
+					var $firstnameField = $("#health_payment_medicare_firstName");
+					var $surnameField = $("#health_payment_medicare_surname");
+					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
+					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
+
 					// Unset the Health Declaration checkbox (could be refactored to only uncheck if the fund changes)
 					$('#health_declaration input:checked').prop('checked', false).change();
 
@@ -559,6 +565,16 @@
 					$("#health_payment_details_start_calendar").datepicker('setStartDate', min).datepicker('setEndDate', max);
 
 					meerkat.modules.healthMedicare.updateMedicareLabel();
+
+					var product = meerkat.modules.healthResults.getSelectedProduct();
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
+
+					var $rebateEl = $('input[name=health_healthCover_rebate]:checked');
+					if( (!_.isEmpty($rebateEl) && $rebateEl.val() == "N") && $.inArray(product.info.providerName, mustShowList) == -1) {
+						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
+					} else {
+						$("#health_payment_medicare-selection").removeAttr("style");
+					}
 				}
 			}
 		};
@@ -656,22 +672,6 @@
 					$('#mainform').find('.health_declaration span').text( selectedProduct.info.providerName  );
 					// Insert fund into Contact Authority
 					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
-
-					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
-					var $firstnameField = $("#health_payment_medicare_firstName");
-					var $surnameField = $("#health_payment_medicare_surname");
-					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
-					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
-
-					var product = meerkat.modules.healthResults.getSelectedProduct();
-                    var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
-
-					var $rebateEl = $('input[name=health_healthCover_rebate]:checked');
-					if( (!_.isEmpty($rebateEl) && $rebateEl.val() == "N") && $.inArray(product.info.providerName, mustShowList) == -1) {
-						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
-					} else {
-						$("#health_payment_medicare-selection").removeAttr("style");
-					}
 
 				}
 			}

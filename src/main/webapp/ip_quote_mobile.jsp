@@ -16,6 +16,8 @@
 <core_v2:quote_check quoteType="ip" />
 <core_v2:load_preload />
 
+<ip_v1:widget_values />
+
 <%-- HTML --%>
 <layout_v1:journey_engine_page title="Income Protection Quote">
 
