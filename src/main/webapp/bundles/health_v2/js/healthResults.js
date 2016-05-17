@@ -326,7 +326,7 @@
             meerkat.modules.journeyEngine.loadingShow(waitMessageVal);
 
             // Hide pagination
-            $('header .slide-feature-pagination, header a[data-results-pagination-control]').addClass('hidden');
+            $('header .slide-feature-pagination, header a[data-results-pagination-control], .floated-next-arrow').addClass('hidden');
         });
 
         // If error occurs, go back in the journey
@@ -342,7 +342,7 @@
 
             _.defer(function () {
                 // Show pagination
-                $('header .slide-feature-pagination, header a[data-results-pagination-control]').removeClass('hidden');
+                $('header .slide-feature-pagination, header a[data-results-pagination-control], .floated-next-arrow').removeClass('hidden');
                 // Setup scroll
                 Results.pagination.setupNativeScroll();
             });

@@ -14,7 +14,8 @@ var Results = {
 
 	view: {},
 	model: {},
-
+	cachedProcessedTemplates: {},
+	
 	moduleEvents: {
 		RESULTS_INITIALISED: 'RESULTS_INITIALISED',
 		RESULTS_ERROR: 'RESULTS_ERROR'

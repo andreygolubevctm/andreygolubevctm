@@ -28,7 +28,7 @@
         {{ } }}{{ var hasFeatureChildren = typeof ft.children != 'undefined' && ft.children.length; var isSelectionHolder = ft.classString && ft.classString.indexOf('selectionHolder') != -1; }}
         {{ if(hasFeatureChildren || isSelectionHolder) { }}
         <div class="children {{ if(pathValue == 'N') { }}hideChildren{{ } }}" data-fid="{{= ft.id }}">
-            {{ if(pathValue == "N") { }}<div class="content noCoverContainer"><p class="noCoverLabel">NOT COVERED IN THIS PRODUCT</p></div>{{ } }}{{ obj.childFeatureDetails = ft.children; }}{{= Features.cachedProcessedTemplates[obj.featuresTemplate](obj) }}
+            {{ if(pathValue == "N") { }}<div class="content noCoverContainer"><p class="noCoverLabel">NOT COVERED IN THIS PRODUCT</p></div>{{ } }}{{ obj.childFeatureDetails = ft.children; }}{{= Results.cachedProcessedTemplates[obj.featuresTemplate](obj) }}
         </div>
         {{ } else { }}{{ delete obj.childFeatureDetails; }}{{ } }}
     </div>

@@ -49,7 +49,7 @@
                 {{ ft.children[m].shortlistKeyParent = ft.shortlistKey; }}
             {{ } }}
             {{ obj.childFeatureDetails = ft.children; }}
-            {{= Features.cachedProcessedTemplates[obj.featuresTemplate](obj) }}
+            {{= Results.cachedProcessedTemplates[obj.featuresTemplate](obj) }}
         </div>
         {{ } else { }}
             {{ delete obj.childFeatureDetails; }}

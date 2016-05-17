@@ -352,10 +352,10 @@ var ResultsView = {
 			console.log("Results.view.parseTemplate: templateSelector does not exist or is empty: ", templateSelector);
 			return "";
 		}
-		if(!Features.cachedProcessedTemplates[templateSelector]) {
-			Features.cachedProcessedTemplates[templateSelector] = _.template($(templateSelector).html());
+		if(!Results.cachedProcessedTemplates[templateSelector]) {
+			Results.cachedProcessedTemplates[templateSelector] = _.template($(templateSelector).html());
 		}
-		return Features.cachedProcessedTemplates[templateSelector](data);
+		return Results.cachedProcessedTemplates[templateSelector](data);
 	},
 
 	getRowHeight: function(){

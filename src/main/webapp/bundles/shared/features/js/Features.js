@@ -5,7 +5,6 @@ Features = {
 	results: false,
 	featuresIds: false,
 	pageStructure: [],
-	cachedProcessedTemplates: {},
 	emptyAdditionalInfoCategory: true,
 	moduleEvents: {
 		FEATURE_TOGGLED: 'FEATURE_TOGGLED'
