@@ -8,7 +8,7 @@
         var feature = Features.getPageStructure(obj.featuresStructureIndexToUse)[0];
         var availableExtras = [], output = "";
         _.each(feature.children, function (ft) {
-            var hasResult = ft.resultPath != null && ft.resultPath != '';
+            var hasResult = ft.resultPath !== null && ft.resultPath !== '';
             var pathValue = hasResult ? Object.byString(obj, ft.resultPath) : false;
             if (pathValue == "Y") {
                 availableExtras.push(ft);
@@ -16,7 +16,7 @@
         });
         _.each(availableExtras, function (ft, i) {
             var separator = '';
-            if (i != availableExtras.length - 1) {
+            if (i !== availableExtras.length - 1) {
                 separator = ', ';
             } else if (i == (availableExtras.length - 2)) {
                 separator = ' and ';
@@ -28,7 +28,7 @@
 
 
     function getExcessChildTemplate(obj, ft) {
-        var hasResult = ft.resultPath != null && ft.resultPath != '';
+        var hasResult = ft.resultPath !== null && ft.resultPath !== '';
         var pathValue = hasResult ? Object.byString(obj, ft.resultPath) : false;
         if (hasResult) {
             var displayValue = Features.parseFeatureValue(pathValue, true);
@@ -53,7 +53,7 @@
         ' & LHC loading of ' + formatCurrency(prem.lhcAmount);
         result.hasValidPrice = (prem.value && prem.value > 0) || (prem.text && prem.text.indexOf('$0.') < 0) ||
             (prem.payableAmount && prem.payableAmount > 0);
-        result.lhcFreePriceMode = typeof mode === "undefined" || mode != "lhcInc";
+        result.lhcFreePriceMode = typeof mode === "undefined" || mode !== "lhcInc";
         return result;
     }
 
