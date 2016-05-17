@@ -25,6 +25,16 @@
         "v": '999' // VISA
     };
 
+    var creditCardTemplate;
+    var ccHtmlTemplate;
+
+    function init(){
+        $(document).ready(function () {
+            creditCardTemplate = $('#credit-card-template').html();
+            ccHtmlTemplate = _.template(creditCardTemplate);
+        });
+    }
+
     function resetCreditCardConfig() {
         config = { 'visa':true, 'mc':true, 'amex':true, 'diners':false };
     }
@@ -65,8 +75,6 @@
 
     function setCreditCardObj(value, label, selected){
         var obj = {inputname : 'health_payment_credit_type'};
-        var creditCardTemplate = $('#credit-card-template').html();
-        var ccHtmlTemplate = _.template(creditCardTemplate);
         var prefix = "health_payment_credit_type_";
 
         obj.inputvalue = prefix+""+value;
@@ -113,6 +121,7 @@
     }
 
     meerkat.modules.register("healthCreditCard", {
+        init: init,
         events: events,
         resetConfig: resetCreditCardConfig,
         setCreditCardRules: setCreditCardRules,
