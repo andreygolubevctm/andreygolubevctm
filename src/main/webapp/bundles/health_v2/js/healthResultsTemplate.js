@@ -64,7 +64,7 @@
         premiumSplit = premiumSplit.split(".");
         priceResult.dollarPrice = premiumSplit[0]
             .replace('$', '')
-            .replace(',','<span class="comma">,</span>');
+            .replace(',', '<span class="comma">,</span>');
         priceResult.cents = premiumSplit[1];
         return priceResult;
     }
@@ -72,8 +72,8 @@
     function getSpecialOffer(obj) {
         var result = {};
         var specialOffer = Features.getPageStructure()[0];
-        result.pathValue = Object.byString( obj, specialOffer.resultPath );
-        result.displayValue = Features.parseFeatureValue( result.pathValue, true );
+        result.pathValue = Object.byString(obj, specialOffer.resultPath);
+        result.displayValue = Features.parseFeatureValue(result.pathValue, true);
         return result;
     }
 
@@ -81,9 +81,9 @@
     meerkat.modules.register('healthResultsTemplate', {
         getAvailableExtrasAsList: getAvailableExtrasAsList,
         getExcessChildTemplate: getExcessChildTemplate,
-        getPricePremium : getPricePremium,
-        getPrice : getPrice,
-        getSpecialOffer : getSpecialOffer
+        getPricePremium: getPricePremium,
+        getPrice: getPrice,
+        getSpecialOffer: getSpecialOffer
     });
 
 })(jQuery);

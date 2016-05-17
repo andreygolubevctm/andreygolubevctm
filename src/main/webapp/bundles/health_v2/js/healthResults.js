@@ -11,7 +11,7 @@
         selectedBenefitsList,
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
-        resultsStepIndex =  3,
+        resultsStepIndex = 3,
         filteredOutResults = [], // this is used for removing the results when clicking the "x"
 
         templates = {
@@ -225,7 +225,7 @@
                     callback: meerkat.modules.healthResults.rankingCallback,
                     forceIdNumeric: true
                 },
-                incrementTransactionId : false
+                incrementTransactionId: false
             });
 
         } catch (e) {
@@ -240,45 +240,25 @@
 
         $('.featuresListHospitalOther > .collapsed').removeClass('collapsed');
 
-            $('.hospitalCoverSection').each(function () {
-                var $el = $(this);
-                if ($el.find('sup').length) {
-                    $el.find('.restrictedBenefit').removeClass('hidden');
-                }
-            });
+        // For each result, check if there are restricted benefits. If there are, display the restricted benefit text.
+        $('.hospitalCoverSection', $('.result-row')).each(function () {
+            var $el = $(this);
+            if ($el.find('sup').length) {
+                $el.find('.restrictedBenefit').removeClass('hidden');
+            }
+        });
 
-        $(document).on('click', '.remove-result', function() {
+        $(document).on('click', '.remove-result', function () {
             filteredOutResults.push($(this).attr('data-productId'));
-            Results.filterBy("productId", "value", { "notInArray": filteredOutResults }, true);
-        }).on('click', '.reset-filters', function(e) {
+            Results.filterBy("productId", "value", {"notInArray": filteredOutResults}, true);
+        }).on('click', '.reset-filters', function (e) {
             e.preventDefault();
             filteredOutResults = [];
             Results.unfilterBy('productId', "value", true);
-        }).on('click', '.featuresListExtrasOtherList', function() {
+        }).on('click', '.featuresListExtrasOtherList', function () {
             $('.featuresListExtrasOtherList').addClass('hidden');
             $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
         });
-
-
-        /*
-        // Does not work
-        meerkat.messaging.subscribe(Results.moduleEvents.FEATURE_TOGGLED, function(eventObject) {
-            _.defer(function() {
-                var $el = eventObject.element,
-                    heights = [];
-                var $children = $(Results.settings.elements.resultsOverflow + ' .children[data-fid="'+$el.attr('data-fid')+'"]');
-                $children.each(function() {
-                    heights.push($(this).innerHeight());
-                });
-                var heightToUse = _getMax(heights),
-                    $containers = $children.find('.noCoverContainer');
-                $containers.height(heightToUse);
-            });
-        });*/
-    }
-
-    function _getMax( array ){
-        return Math.max.apply( Math, array );
     }
 
     function eventSubscriptions() {
@@ -365,12 +345,12 @@
             var tEnd = new Date().getTime();
             var tFetchFinish = (tEnd - tStart);
             var tVariance = maxMilliSecondsForMessage - tFetchFinish;
-            if(tVariance < 0 || meerkat.site.isCallCentreUser) {
+            if (tVariance < 0 || meerkat.site.isCallCentreUser) {
                 tVariance = 0;
             }
-            _.delay(function() {
+            _.delay(function () {
                 meerkat.modules.journeyEngine.loadingHide();
-            },tVariance);
+            }, tVariance);
 
 
             if (!meerkat.site.isNewQuote && !Results.getSelectedProduct() && meerkat.site.isCallCentreUser) {
@@ -395,14 +375,14 @@
                     if (productUpdated) {
                         meerkat.modules.healthResults.setSelectedProduct(productUpdated);
                         htmlContent = "Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Please note that for this particular product, " +
-                        "the price and/or features have changed since the last time you were comparing. If you need further assistance, " +
-                        "you can chat to one of our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">" + meerkat.site.content.callCentreHelpNumber + "</span>, and they will be able to help you with your options.";
+                            "the price and/or features have changed since the last time you were comparing. If you need further assistance, " +
+                            "you can chat to one of our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">" + meerkat.site.content.callCentreHelpNumber + "</span>, and they will be able to help you with your options.";
                     } else {
                         $('#health_application_productId').val(''); // reset selected productId to prevent it getting saved into transaction details.
                         $('#health_application_productTitle').val(''); // reset selected productTitle to prevent it getting saved into transaction details.
                         htmlContent = "Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Unfortunately the product you're looking for is no longer available. " +
-                        "Please head to your results page to compare available policies or alternatively, " +
-                        "chat to one of our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">" + meerkat.site.content.callCentreHelpNumber + "</span>, and they will be able to help you with your options.";
+                            "Please head to your results page to compare available policies or alternatively, " +
+                            "chat to one of our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">" + meerkat.site.content.callCentreHelpNumber + "</span>, and they will be able to help you with your options.";
                     }
 
                     meerkat.modules.dialogs.show({
@@ -475,9 +455,9 @@
                     if (pageNumber === pageData.measurements.numberOfPages && freeColumns > 1) {
                         toggleMarketingMessage(true, freeColumns);
                     } else {
-                    toggleMarketingMessage(false);
+                        toggleMarketingMessage(false);
+                    }
                 }
-            }
             }
 
         });
@@ -485,24 +465,24 @@
         $(document).on("FeaturesRendered", function () {
 
             $(Features.target + " .expandable > " + Results.settings.elements.features.values).on("mouseenter", function () {
-                var featureId = $(this).attr("data-featureId");
-                var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
+                    var featureId = $(this).attr("data-featureId");
+                    var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
 
-                $hoverRow.addClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
-            })
-            .on("mouseleave", function () {
-                var featureId = $(this).attr("data-featureId");
-                var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
+                    $hoverRow.addClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
+                })
+                .on("mouseleave", function () {
+                    var featureId = $(this).attr("data-featureId");
+                    var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
 
-                $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
-            });
+                    $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
+                });
 
             var coverType = meerkat.modules.health.getCoverType();
 
-            if(coverType === 'E') {
+            if (coverType === 'E') {
                 $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');
             }
-            if(coverType === 'H') {
+            if (coverType === 'H') {
                 $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
             }
 
@@ -534,14 +514,15 @@
      */
     function _resetSelectionsStructureObject() {
         var structure = Features.getPageStructure();
-        for(var i = 0; i < structure.length; i++) {
-            if(typeof structure[i].children !== 'undefined' && structure[i].children.length) {
-                for(var m = 0; m < structure[i].children.length; m++) {
+        for (var i = 0; i < structure.length; i++) {
+            if (typeof structure[i].children !== 'undefined' && structure[i].children.length) {
+                for (var m = 0; m < structure[i].children.length; m++) {
                     delete structure[i].children[m].doNotRender;
                 }
             }
         }
     }
+
     /**
      * This function copies the benefits from the parent's pageStructure object, and injects it into the "selections" object.
      * We cannot splice from the original object, as if someone changes their filter, a benefit that used to be selected will not appear anymore.
@@ -590,7 +571,7 @@
 
     function startColumnWidthTracking() {
         if (meerkat.modules.deviceMediaState.get() === 'xs' && Results.getDisplayMode() === 'features') {
-            Results.view.startColumnWidthTracking( $(window), Results.settings.render.features.numberOfXSColumns, true );
+            Results.view.startColumnWidthTracking($(window), Results.settings.render.features.numberOfXSColumns, true);
             Results.pagination.setCurrentPageNumber(1);
             Results.pagination.resync();
         }
@@ -721,7 +702,7 @@
             if (premiumChangeEvent === true) {
                 meerkat.messaging.publish(moduleEvents.healthResults.PREMIUM_UPDATED, selectedProduct, showIncPrice);
             } else {
-                if(!meerkat.site.skipResultsPopulation) {
+                if (!meerkat.site.skipResultsPopulation) {
                     meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
                     $(Results.settings.elements.rows).removeClass("active");
 
@@ -732,13 +713,13 @@
                 }
             }
 
-                // update transaction details otherwise we will have to wait until people get to payment page
-                meerkat.modules.writeQuote.write({
-                    health_application_provider: selectedProduct.info.provider,
-                    health_application_productId: selectedProduct.productId,
-                    health_application_productName: selectedProduct.info.productCode,
-                    health_application_productTitle: selectedProduct.info.productTitle
-                }, false);
+            // update transaction details otherwise we will have to wait until people get to payment page
+            meerkat.modules.writeQuote.write({
+                health_application_provider: selectedProduct.info.provider,
+                health_application_productId: selectedProduct.productId,
+                health_application_productName: selectedProduct.info.productCode,
+                health_application_productTitle: selectedProduct.info.productTitle
+            }, false);
 
         }
 
@@ -822,7 +803,7 @@
         var $excessSection = $component.find('.cell.excessSection');
         _.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
 
-         // If on the results step, reload the results data. Can this be more generic?
+        // If on the results step, reload the results data. Can this be more generic?
         if (typeof callback === 'undefined') {
             if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 3) {
                 get();
@@ -994,13 +975,14 @@
     }
 
 
-    function setSelectedBenefitsList(selectedBenefits){
+    function setSelectedBenefitsList(selectedBenefits) {
         selectedBenefitsList = selectedBenefits;
     }
 
     function hideNavigationLink() {
         $('.floated-next-arrow').addClass('hidden');
     }
+
     meerkat.modules.register('healthResults', {
         init: init,
         events: moduleEvents,
@@ -1024,8 +1006,8 @@
         rankingCallback: rankingCallback,
         publishExtraSuperTagEvents: publishExtraSuperTagEvents,
         setLhcApplicable: setLhcApplicable,
-        resultsStepIndex : resultsStepIndex,
-        setSelectedBenefitsList : setSelectedBenefitsList,
+        resultsStepIndex: resultsStepIndex,
+        setSelectedBenefitsList: setSelectedBenefitsList,
         hideNavigationLink: hideNavigationLink
     });
 
