@@ -4,7 +4,8 @@
 
 <%-- LOGO AND PRICES TEMPLATE --%>
 <script id="credit-card-template" type="text/html">
+		{{ var checked = obj.inputSelected === true ? 'checked="checked"': '' }}
 		<label class="btn btn-form-inverse {{=obj.inputSelected === true ? 'active': '' }}">
-		<input type="radio" name="{{=obj.inputname}}" id="{{=obj.inputid}}" value="{{=obj.inputvalue}}" data-msg-required="Please choose type of credit card" required="required" aria-required="true" {{= obj.inputSelected === true ? 'checked="checked"': '' }} />
+		<input type="radio" name="{{=obj.inputname}}" id="{{=obj.inputid}}" value="{{=obj.inputvalue}}" data-msg-required="Please choose type of credit card" required="required" aria-required="true" {{= checked }} />
 		{{=obj.inputlabel}}</label>
 </script>

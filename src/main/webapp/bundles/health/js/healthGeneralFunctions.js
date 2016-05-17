@@ -60,7 +60,7 @@
             $_icons.find('.diners').show();
         }
 
-        $cardContainer.html(_html).find('input');
+        $cardContainer.html(_html);
     }
 
     function setCreditCardObj(value, label, selected){
