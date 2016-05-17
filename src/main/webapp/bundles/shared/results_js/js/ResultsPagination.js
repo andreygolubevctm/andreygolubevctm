@@ -394,7 +394,7 @@ var ResultsPagination = {
 		Results.pagination.lock();
 
 		$(Results.settings.elements.resultsContainer).trigger("pagination.scrolling.start");
-		$(Results.settings.elements.resultsOverflow).removeClass('notScrolling');
+		$(Results.settings.elements.resultsOverflow).removeClass('notScrolling').addClass('isScrolling');
 
 		switch(Results.pagination.scrollMode){
 			case "scrollto":
@@ -476,7 +476,7 @@ var ResultsPagination = {
 		Results.pagination.refresh();
 
 		if(wasAnimated){
-			$(Results.settings.elements.resultsOverflow).addClass('notScrolling');
+			$(Results.settings.elements.resultsOverflow).addClass('notScrolling').removeClass('isScrolling');
 			$(Results.settings.elements.resultsContainer).trigger("pagination.scrolling.end");
 		}
 	},

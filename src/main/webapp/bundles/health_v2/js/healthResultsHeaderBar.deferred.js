@@ -19,6 +19,7 @@
                             topOffset = 150;
                             break;
                         case 'xs':
+                            topOffset = 120;
                             break;
                     }
                     return $('.resultsOverflow').offset().top + topOffset;

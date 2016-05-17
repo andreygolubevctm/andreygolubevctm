@@ -22,6 +22,12 @@
 
 .filter {
 
+  .need-no-extras,
+  .need-no-hospital {
+    p {
+      color: @gray-slight-dark;
+    }
+  }
   /**
   Override radio button group styles to keep "green" emphasis on the more info button.
   */
@@ -47,7 +53,11 @@
     -moz-columns: auto 2; /* Firefox */
     columns: auto 2;
   }
-
+  @media(@xs-only) {
+    div.checkbox {
+      padding-bottom: 12px;
+    }
+  }
   // Add some extra margin to slider filter.
   .filter-slider {
     margin-top: 15px;
@@ -58,7 +68,7 @@
     .btn {
       padding: 10px 5px;
       .small();
-      @media(@md-only) {
+      @media (@md-only) {
         font-size: 11px;
       }
     }
@@ -74,7 +84,7 @@
     label {
       display: inline;
       font-size: 13px;
-      @media(@md-only) {
+      @media (@md-only) {
         font-size: 12px;
       }
       color: #555;
