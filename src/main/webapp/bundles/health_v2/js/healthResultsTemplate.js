@@ -39,7 +39,7 @@
         return "-";
     }
 
-    function getPremiumModel(frequency, availablePremiums) {
+    function getPricePremium(frequency, availablePremiums) {
         var formatCurrency = meerkat.modules.currencyField.formatCurrency;
         var result = {};
         var prem = availablePremiums[frequency];
@@ -69,7 +69,7 @@
         return priceResult;
     }
 
-    function getSpecialOffer() {
+    function getSpecialOffer(obj) {
         var result = {};
         var specialOffer = Features.getPageStructure()[0];
         result.pathValue = Object.byString( obj, specialOffer.resultPath );
@@ -81,7 +81,7 @@
     meerkat.modules.register('healthResultsTemplate', {
         getAvailableExtrasAsList: getAvailableExtrasAsList,
         getExcessChildTemplate: getExcessChildTemplate,
-        getPremiumModel : getPremiumModel,
+        getPricePremium : getPricePremium,
         getPrice : getPrice,
         getSpecialOffer : getSpecialOffer
     });

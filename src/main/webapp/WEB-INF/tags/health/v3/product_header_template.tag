@@ -31,7 +31,7 @@
             {{ var brochureTemplate = meerkat.modules.templateCache.getTemplate($("#brochure-download-template")); }}
             {{= brochureTemplate(obj) }}
 
-            {{ var result = meerkat.modules.healthResultsTemplate.getSpecialOffer(); }}
+            {{ var result = meerkat.modules.healthResultsTemplate.getSpecialOffer(obj); }}
 
             <fieldset class="hide-on-affix result-special-offer {{ if (!result.pathValue) { }}invisible{{ } }}">
                 <legend>Special Offer</legend>

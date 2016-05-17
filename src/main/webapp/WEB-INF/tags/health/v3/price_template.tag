@@ -10,7 +10,7 @@
     {{ var frequency = freqObj.key; }}
     {{ if (typeof availablePremiums[frequency] === "undefined") { return; } }}
 
-    {{= var result = healthResultsTemplate.getPremiumModel(frequency, availablePremiums); }}
+    {{ var result = healthResultsTemplate.getPricePremium(frequency, availablePremiums); }}
 
     <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
 
@@ -20,7 +20,7 @@
     <%-- Close the opened tags and return, to reduce complexity of nesting --%>
     {{ return; } }}
     <div class="frequencyAmount">
-        {{ dollarPriceResult = healthResultsTemplate.getPrice(result); }}
+        {{ var dollarPriceResult = healthResultsTemplate.getPrice(result); }}
         <span class="dollarSign">$</span>{{= dollarPriceResult.dollarPrice }}<span class="cents">.{{= dollarPriceResult.cents }}</span>
         <span class="frequencyTitle">{{= freqObj.label }}</span>
     </div>
