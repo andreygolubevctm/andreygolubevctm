@@ -83,19 +83,13 @@ public class RequestAdapter {
                 addProductTitleSearchExactFilter(filters, application);
                 addProductIdSameExcessAmountFilter(filters, application);
                 addSingleProviderFilterFromApplication(filters, application);
-                if (isSimples) {
-                    quoteRequest.setPaymentTypes(singletonList(Optional.ofNullable(quote.getPayment())
-                            .map(Payment::getDetails)
-                            .map(PaymentDetails::getType)
-                            .map(PaymentType::findByCode)
-                            .orElse(null)));
+
+                if (HealthFund.valueOf(application.getProvider()) == HealthFund.CBH) {
+                    quoteRequest.setPaymentTypes(asList(PaymentType.BANK, PaymentType.INVOICE));
                 } else {
-                    if (HealthFund.valueOf(application.getProvider()) == HealthFund.CBH) {
-                        quoteRequest.setPaymentTypes(asList(PaymentType.BANK, PaymentType.INVOICE));
-                    } else {
-                        quoteRequest.setPaymentTypes(asList(PaymentType.BANK, PaymentType.CREDIT));
-                    }
+                    quoteRequest.setPaymentTypes(asList(PaymentType.BANK, PaymentType.CREDIT));
                 }
+
                 filters.setApplyDiscounts(true);
             }
         }
