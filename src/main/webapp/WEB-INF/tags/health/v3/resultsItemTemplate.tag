@@ -20,7 +20,7 @@
             {{ if(ft.type == 'feature') { }}<%-- only feature types have content --%>
             <div class="c content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">{{ if(hasResult) { }}
                 {{ var displayValue = Features.parseFeatureValue( pathValue, true ); }}<%-- Below compressed to reduce number of whitespace nodes in DOM --%>
-                {{ if(pathValue) { }}<strong>{{= displayValue }}</strong> {{= ft.safeName.toLowerCase() }}
+                {{ if(pathValue) { }}{{ if(ft.flag & 2) { }}{{= ft.safeName }}: {{ } }}<strong>{{= displayValue }}</strong>{{ if(ft.extraText != null && ft.extraText != '') { }} {{= ft.extraText }} {{ } }}{{ if(!(ft.flag & (1|2))) { }} {{= ft.safeName.toLowerCase() }}{{ } }}
                 {{ if(ft.helpId != '' && ft.helpId != '0') { }}<field_v2:help_icon helpId="{{= ft.helpId }}" position="left"/>{{ } }}
                 {{ } else { }}{{= "-" }}{{ } }}{{ } else { }}{{= "-" }}
             {{ } }}</div>
