@@ -18,7 +18,7 @@
 		</div>
 	</c:if>
 
-	<div class="fieldset-column-side col-sm-4<c:if test="${not empty sideAbove}"> col-sm-push-8</c:if><c:if test="${not empty sideHidden}"> hidden-xs</c:if>">
+	<div class="fieldset-column-side col-sm-3<c:if test="${not empty sideAbove}"> col-sm-push-8</c:if><c:if test="${not empty sideHidden}"> hidden-xs</c:if>">
 		<jsp:invoke fragment="rightColumn" />
 	</div>
 	

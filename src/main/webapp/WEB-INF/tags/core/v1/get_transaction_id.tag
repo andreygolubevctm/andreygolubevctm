@@ -2,6 +2,8 @@
 <%@ tag description="Form to searching/displaying saved quotes"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+
 <c:set var="logger" value="${log:getLogger('tag.core.get_transaction_id')}" />
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
@@ -62,7 +64,7 @@
 			<c:param name="page" value="${pageContext.request.servletPath}" />
 			<c:param name="message" value="core:get_transaction_id VERTICAL EMPTY" />
 			<c:param name="description" value="${error}" />
-			<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType} emailAddress=${emailAddress} ipAddress=${pageContext.request.remoteAddr} serverAddress=${serverIp} dataNodes=${dataNodes} " />
+			<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType} emailAddress=${emailAddress} ipAddress=${ipAddressHandler.getIPAddress(pageContext.request)} serverAddress=${serverIp} dataNodes=${dataNodes} " />
 		</c:import>
 
 		${sessionDataUtils.setTransactionId(data, '' )}
@@ -102,7 +104,7 @@
 		<c:choose>
 			<c:when test="${not empty getTransaction and getTransaction.rowCount > 0 and rootId ne 0}">
 
-				<c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}"  />
+				<c:set var="ipAddress" 		value="${ipAddressHandler.getIPAddress(pageContext.request)}"  />
 				<c:set var="sessionId" 		value="${pageContext.session.id}" />
 				<c:set var="status" 		value="" />
 
@@ -236,7 +238,7 @@
 
 		<go:setData dataVar="data" xpath="save" value="*DELETE" />
 
-		<c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}"  />
+		<c:set var="ipAddress" 		value="${ipAddressHandler.getIPAddress(pageContext.request)}"  />
 		<c:set var="sessionId" 		value="${pageContext.session.id}" />
 		<c:set var="status" 		value="" />
 		<c:catch var="error">

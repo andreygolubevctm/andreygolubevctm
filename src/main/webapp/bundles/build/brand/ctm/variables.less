@@ -257,6 +257,8 @@
 @btn-padding-standard:     10px 15px;
 @btn-padding-bordered:     8px 13px;
 
+@btn-foreground-color: #fff;
+
 //** default
 @btn-default-color:              #fff;
 @btn-default-bg:                 @theme-dark;
@@ -295,7 +297,8 @@
 @btn-border-radius-large:        @border-radius-large;
 @btn-border-radius-small:        @border-radius-small;
 
-
+@btn-padding-base-vertical:     10px; //6px
+@btn-padding-base-horizontal:   15px; //12px
 
 
 //== Journey CTM BUTTONS:
@@ -305,136 +308,136 @@
 
 //** Toolbar dropdown modifiers
 @btn-back-bg-color: @theme-default;
-@btn-back-color: contrast(@btn-back-bg-color, #000 , @theme-light, 46%);
+@btn-back-color: @btn-foreground-color;
 @btn-back-border-color: @btn-back-bg-color;
 
 @btn-back-hover-bg-color: darken(@btn-back-bg-color, 12%);
-@btn-back-hover-color: contrast(@btn-back-hover-bg-color);
+@btn-back-hover-color: @btn-foreground-color;
 @btn-back-hover-border-color: @btn-back-hover-bg-color;
 
 @btn-back-active-bg-color: @theme-tertiary;
-@btn-back-active-color: contrast(@btn-back-active-bg-color);
+@btn-back-active-color: @btn-foreground-color;
 @btn-back-active-border-color: @btn-back-active-bg-color;
 
 
 @xs-btn-pagination-bg-color: @theme-dark;
 
 @btn-pagination-bg-color: @theme-default;
-@btn-pagination-color: contrast(@btn-pagination-bg-color, #000, #fff, 46%);
+@btn-pagination-color: @btn-foreground-color;
 @btn-pagination-border-color: @btn-pagination-bg-color;
 
 @btn-pagination-hover-bg-color: darken(@btn-pagination-bg-color, 12%);
-@btn-pagination-hover-color: contrast(@btn-pagination-hover-bg-color);
+@btn-pagination-hover-color: @btn-foreground-color;
 @btn-pagination-hover-border-color: @btn-pagination-hover-bg-color;
 
 @btn-pagination-active-bg-color: @theme-tertiary;
-@btn-pagination-active-color: contrast(@btn-pagination-active-bg-color);
+@btn-pagination-active-color: @btn-foreground-color;
 @btn-pagination-active-border-color: @btn-pagination-active-bg-color;
 
 
 @btn-email-bg-color: @theme-tertiary;
-@btn-email-color: contrast(@btn-email-bg-color);
+@btn-email-color: @btn-foreground-color;
 @btn-email-border-color: @btn-email-bg-color;
 
 @btn-email-hover-bg-color: darken(@btn-email-bg-color, 12%);
-@btn-email-hover-color: contrast(@btn-email-hover-bg-color);
+@btn-email-hover-color: @btn-foreground-color;
 @btn-email-hover-border-color: @btn-email-hover-bg-color;
 
 @btn-email-active-bg-color: @theme-secondary;
-@btn-email-active-color: contrast(@btn-email-active-bg-color);
+@btn-email-active-color: @btn-foreground-color;
 @btn-email-active-border-color: @btn-email-active-bg-color;
 
 //** Generic default dropdown that isn't one of the above
 @btn-dropdown-bg-color: @theme-secondary;
-@btn-dropdown-color: contrast(@btn-dropdown-bg-color);
+@btn-dropdown-color: @btn-foreground-color;
 @btn-dropdown-border-color: @btn-dropdown-bg-color;
 
 @btn-dropdown-hover-bg-color: darken(@btn-dropdown-bg-color, 12%);
-@btn-dropdown-hover-color: contrast(@btn-dropdown-hover-bg-color);
+@btn-dropdown-hover-color: @btn-foreground-color;
 @btn-dropdown-hover-border-color: @btn-dropdown-hover-bg-color;
 
 @btn-dropdown-active-bg-color: @theme-secondary;
-@btn-dropdown-active-color: contrast(@btn-dropdown-active-bg-color);
+@btn-dropdown-active-color: @btn-foreground-color;
 @btn-dropdown-active-border-color: @btn-dropdown-active-bg-color;
 
 
 //** Dropdown Content & Modal Content
 @btn-save-bg-color: @theme-primary;
-@btn-save-color: contrast(@btn-save-bg-color);
+@btn-save-color: @btn-foreground-color;
 @btn-save-border-color: @btn-save-bg-color;
 
 @btn-save-hover-bg-color: darken(@btn-save-bg-color, 12%);
-@btn-save-hover-color: contrast(@btn-save-hover-bg-color);
+@btn-save-hover-color: @btn-foreground-color;
 @btn-save-hover-border-color: @btn-save-hover-bg-color;
 
 @btn-save-active-bg-color: @theme-secondary;
-@btn-save-active-color: contrast(@btn-save-active-bg-color);
+@btn-save-active-color: @btn-foreground-color;
 @btn-save-active-border-color: @btn-save-active-bg-color;
 
 
 @btn-cancel-bg-color: @theme-dark;
-@btn-cancel-color: contrast(@btn-cancel-bg-color);
+@btn-cancel-color: @btn-foreground-color;
 @btn-cancel-border-color: @btn-cancel-bg-color;
 
 @btn-cancel-hover-bg-color: darken(@btn-cancel-bg-color, 12%);
-@btn-cancel-hover-color: contrast(@btn-cancel-hover-bg-color);
+@btn-cancel-hover-color: @btn-foreground-color;
 @btn-cancel-hover-border-color: @btn-cancel-hover-bg-color;
 
 @btn-cancel-active-bg-color: @theme-secondary;
-@btn-cancel-active-color: contrast(@btn-cancel-active-bg-color);
+@btn-cancel-active-color: @btn-foreground-color;
 @btn-cancel-active-border-color: @btn-cancel-active-bg-color;
 
 
 //** Form (nextstep, toggles, default-switches, radio buttons)
 @btn-next-bg-color: @theme-secondary;
-@btn-next-color: contrast(@btn-next-bg-color);
+@btn-next-color: @btn-foreground-color;
 @btn-next-border-color: @btn-next-bg-color;
 
 @btn-next-hover-bg-color: darken(@btn-next-bg-color, 12%);
-@btn-next-hover-color: contrast(@btn-next-hover-bg-color);
+@btn-next-hover-color: @btn-foreground-color;
 @btn-next-hover-border-color: @btn-next-hover-bg-color;
 
 @btn-next-active-bg-color: @theme-tertiary;
-@btn-next-active-color: contrast(@btn-next-active-bg-color);
+@btn-next-active-color: @btn-foreground-color;
 @btn-next-active-border-color: @btn-next-active-bg-color;
 
 // Unsubscribe action buttons
 @btn-unsubscribe-bg-color: @theme-secondary;
-@btn-unsubscribe-color: contrast(@btn-unsubscribe-bg-color);
+@btn-unsubscribe-color: @btn-foreground-color;
 @btn-unsubscribe-border-color: @btn-unsubscribe-bg-color;
 
 @btn-unsubscribe-hover-bg-color: darken(@btn-unsubscribe-bg-color, 12%);
-@btn-unsubscribe-hover-color: contrast(@btn-unsubscribe-hover-bg-color);
+@btn-unsubscribe-hover-color: @btn-foreground-color;
 @btn-unsubscribe-hover-border-color: @btn-unsubscribe-hover-bg-color;
 
 @btn-unsubscribe-active-bg-color: @theme-tertiary;
-@btn-unsubscribe-active-color: contrast(@btn-unsubscribe-active-bg-color);
+@btn-unsubscribe-active-color: @btn-foreground-color;
 @btn-unsubscribe-active-border-color: @btn-unsubscribe-active-bg-color;
 
 @btn-unsubscribe-cancel-bg-color: @theme-tertiary;
-@btn-unsubscribe-cancel-color: contrast(@btn-unsubscribe-cancel-bg-color);
+@btn-unsubscribe-cancel-color: @btn-foreground-color;
 @btn-unsubscribe-cancel-border-color: @btn-unsubscribe-cancel-bg-color;
 
 @btn-unsubscribe-cancel-hover-bg-color: darken(@btn-unsubscribe-cancel-bg-color, 12%);
-@btn-unsubscribe-cancel-hover-color: contrast(@btn-unsubscribe-cancel-hover-bg-color);
+@btn-unsubscribe-cancel-hover-color: @btn-foreground-color;
 @btn-unsubscribe-cancel-hover-border-color: @btn-unsubscribe-cancel-hover-bg-color;
 
 @btn-unsubscribe-cancel-active-bg-color: @theme-secondary;
-@btn-unsubscribe-cancel-active-color: contrast(@btn-unsubscribe-cancel-active-bg-color);
+@btn-unsubscribe-cancel-active-color: @btn-foreground-color;
 @btn-unsubscribe-cancel-active-border-color: @btn-unsubscribe-cancel-active-bg-color;
 
 
 // Login button
 @btn-login-bg-color: @theme-secondary;
-@btn-login-color: contrast(@btn-login-bg-color);
+@btn-login-color: @btn-foreground-color;
 @btn-login-border-color: @btn-login-bg-color;
 
 @btn-login-hover-bg-color: darken(@btn-login-bg-color, 12%);
-@btn-login-hover-color: contrast(@btn-login-hover-bg-color);
+@btn-login-hover-color: @btn-foreground-color;
 @btn-login-hover-border-color: @btn-login-hover-bg-color;
 
 @btn-login-active-bg-color: @theme-tertiary;
-@btn-login-active-color: contrast(@btn-login-active-bg-color);
+@btn-login-active-color: @btn-foreground-color;
 @btn-login-active-border-color: @btn-login-active-bg-color;
 
 //.form-inverse used for mixin use of button styles on toggles - because the active state in toggles should reflect the inputs, we have specific variables for the inverse mixin's active state variables.
@@ -451,11 +454,11 @@
 @btn-form-border-color: @form-input-common-selected-border-colour;
 
 @btn-form-hover-bg-color: darken(@btn-form-bg-color, 12%);
-@btn-form-hover-color: contrast(@btn-form-hover-bg-color);
+@btn-form-hover-color: @btn-foreground-color;
 @btn-form-hover-border-color: @btn-form-hover-bg-color;
 
 @btn-form-active-bg-color: @theme-tertiary;
-@btn-form-active-color: contrast(@btn-form-active-bg-color);
+@btn-form-active-color: @btn-foreground-color;
 @btn-form-active-border-color: @btn-form-active-bg-color;
 
 
@@ -464,15 +467,15 @@
 // Hi! When @btn-cta-bg-color gets changed from theme-primary to theme-secondary as per new design, please delete ctm.theme.new-cta.less
 //
 @btn-cta-bg-color: @theme-primary;
-@btn-cta-color: contrast(@btn-cta-bg-color);
+@btn-cta-color: @btn-foreground-color;
 @btn-cta-border-color: @btn-cta-bg-color;
 
 @btn-cta-hover-bg-color: darken(@btn-cta-bg-color, 12%);
-@btn-cta-hover-color: contrast(@btn-cta-hover-bg-color);
+@btn-cta-hover-color: @btn-foreground-color;
 @btn-cta-hover-border-color: @btn-cta-hover-bg-color;
 
 @btn-cta-active-bg-color: @theme-secondary;
-@btn-cta-active-color: contrast(@btn-cta-active-bg-color);
+@btn-cta-active-color: @btn-foreground-color;
 @btn-cta-active-border-color: @btn-cta-active-bg-color;
 
 @btn-compare-clear-color: @theme-tertiary;
@@ -489,15 +492,15 @@
 
 
 @btn-features-compare-bg-color: @theme-default;
-@btn-features-compare-color: contrast(@btn-features-compare-bg-color, #000 , @theme-light, 46%);
+@btn-features-compare-color: @btn-foreground-color;
 @btn-features-compare-border-color: @btn-features-compare-bg-color;
 
 @btn-features-compare-hover-bg-color: darken(@btn-features-compare-bg-color, 12%);
-@btn-features-compare-hover-color: contrast(@btn-features-compare-hover-bg-color);
+@btn-features-compare-hover-color: @btn-foreground-color;
 @btn-features-compare-hover-border-color: @btn-features-compare-hover-bg-color;
 
 @btn-features-compare-active-bg-color: @theme-tertiary;
-@btn-features-compare-active-color: contrast(@btn-features-compare-active-bg-color);
+@btn-features-compare-active-color: @btn-foreground-color;
 @btn-features-compare-active-border-color: @btn-features-compare-active-bg-color;
 
 @results-no-quote-text: @theme-tertiary;
@@ -505,27 +508,27 @@
 
 // Results (health)
 @btn-shortlist-bg-color: @theme-secondary;
-@btn-shortlist-color: contrast(@btn-shortlist-bg-color);
+@btn-shortlist-color: @btn-foreground-color;
 @btn-shortlist-border-color: @btn-shortlist-bg-color;
 
 @btn-shortlist-hover-bg-color: darken(@btn-shortlist-bg-color, 12%);
-@btn-shortlist-hover-color: contrast(@btn-shortlist-hover-bg-color);
+@btn-shortlist-hover-color: @btn-foreground-color;
 @btn-shortlist-hover-border-color: @btn-shortlist-hover-bg-color;
 
 @btn-shortlist-active-bg-color: @theme-tertiary;
-@btn-shortlist-active-color: contrast(@btn-shortlist-active-bg-color);
+@btn-shortlist-active-color: @btn-foreground-color;
 @btn-shortlist-active-border-color: @btn-shortlist-active-bg-color;
 
 @btn-clear-bg-color: @theme-tertiary;
-@btn-clear-color: contrast(@btn-clear-bg-color);
+@btn-clear-color: @btn-foreground-color;
 @btn-clear-border-color: @btn-clear-bg-color;
 
 @btn-clear-hover-bg-color: darken(@btn-clear-bg-color, 12%);
-@btn-clear-hover-color: contrast(@btn-clear-hover-bg-color);
+@btn-clear-hover-color: @btn-foreground-color;
 @btn-clear-hover-border-color: @btn-clear-hover-bg-color;
 
 @btn-clear-active-bg-color: @theme-secondary;
-@btn-clear-active-color: contrast(@btn-clear-active-bg-color);
+@btn-clear-active-color: @btn-foreground-color;
 @btn-clear-active-border-color: @btn-clear-active-bg-color;
 
 

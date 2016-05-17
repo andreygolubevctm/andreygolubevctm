@@ -19,7 +19,7 @@
 <c:set var="isPostalAddress" value="${type == 'P'}" />
 <c:set var="isResidentialAddress" value="${type == 'R'}" />
 
-<c:set var="unitTypes">=Please choose...,CO=Cottage,DU=Duplex</c:set>
+<c:set var="unitTypes">=Unit Types...,CO=Cottage,DU=Duplex</c:set>
 <c:if test="${!isResidentialAddress}">
 	<c:set var="unitTypes">${unitTypes},FA=Factory</c:set>
 </c:if>
@@ -169,7 +169,7 @@
 </form_v3:row>
 
 <c:set var="fieldXpath" value="${xpath}/nonStd" />
-<form_v3:row fieldXpath="${fieldXpath}" label="" id="${name}_nonStd_row" className="nonStd">
+<form_v3:row fieldXpath="${fieldXpath}" label="empty" id="${name}_nonStd_row" className="nonStd">
 	<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="Tick here if you are unable to find the address" label="true" required="false" customAttribute=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter the address'" />
 </form_v3:row>
 <core_v1:clear />

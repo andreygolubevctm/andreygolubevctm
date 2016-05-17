@@ -70,7 +70,7 @@ public class ContactDetailsAdapterTest {
         verify(address, times(1)).getPostCode();
         verify(address, times(1)).getFullAddressLineOne();
         verify(address, times(1)).getSuburbName();
-        verify(address, times(1)).getStreetNum();
+        verify(address, never()).getStreetNum();
         verify(address, times(1)).getDpId();
         verify(address, times(1)).getState();
     }

@@ -5,6 +5,7 @@
     "shared/validation",
     "shared/results",
     "core",
+    "shared/forms/v1",
     "shared/addressLookup",
     "shared/datepicker",
     "shared/optIn",

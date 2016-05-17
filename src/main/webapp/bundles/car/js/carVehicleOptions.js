@@ -369,7 +369,7 @@
 	function onAccessoriesFormRendered() {
 
 		$('.nonStandardAccessoryCheckbox').on('change', function(){
-			var $rowCheckbox = $(this),
+			var $rowCheckbox = $(this).find(":input").first(),
 				itemIndex = $rowCheckbox.attr('itemIndex'),
 				$relatedPriceSelect = $('select[itemIndex="'+itemIndex+'"]');
 
@@ -380,7 +380,7 @@
 				$relatedPriceSelect.prop('disabled', true);
 				$relatedPriceSelect.val('');
 			}
-				});
+		});
 
 		// Watch the dropdowns to remove any errors that may have been added previously, or add an error if the user selects nothing.
 		$('.nonStandardAccessorySelect').on('change', function() {
@@ -733,7 +733,7 @@
 			var accessoriesToSave = [];
 			var validationPasses = true;
 			// Get all the selected items, validate then and create the accessory object.
-			$('.nonStandardAccessoryCheckbox:checked').each(function () {
+			$('.nonStandardAccessoryCheckbox input:checked').each(function () {
 				// We need to use this element as a jQuery object.
 				var checkedBox = $(this);
 				var itemIndex = checkedBox.attr('itemIndex');
