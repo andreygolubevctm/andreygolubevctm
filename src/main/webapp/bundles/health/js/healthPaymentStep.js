@@ -336,10 +336,10 @@
 
 		if (!_.isEmpty(product)) {
 			var freq = !_.isEmpty(product._selectedFrequency) ? product._selectedFrequency : Results.getFrequency();
-			product._selectedFrequency = getSelectedFrequency();
+			product._selectedFrequency = freq;
 			product.premium = product.paymentTypePremiums[getPaymentMethodNode(freq)];
-			meerkat.modules.healthResults.setSelectedProduct(product, true);
 
+			meerkat.modules.healthResults.setSelectedProduct(product, true);
 			updateFrequencySelectOptions();
 		}
 	}
@@ -357,11 +357,11 @@
 		var freq = !_.isEmpty(data._selectedFrequency) ? data._selectedFrequency : Results.getFrequency();
 
 		// due to the new model, need to reset the premium node
-			 data.premium = data.paymentTypePremiums[getPaymentMethodNode()];
-			data._selectedFrequency = freq;
+		data.premium = data.paymentTypePremiums[getPaymentMethodNode()];
+		data._selectedFrequency = freq;
 
-			// Update selected product
-			 meerkat.modules.healthResults.setSelectedProduct(data, true);
+		// Update selected product
+		meerkat.modules.healthResults.setSelectedProduct(data, true);
 	}
 
 	function getPaymentMethodNode(freq){
@@ -393,7 +393,8 @@
 			$paymentCalendar.datepicker("update", new Date());
 		}
 
-		$paymentRadioGroup.find('input').filter('[value=ba]').trigger('click');
+		// $paymentRadioGroup.find('input').filter('[value=ba]').trigger('click');
+		$paymentRadioGroup.find('input').filter('[value=ba]').prop('checked', true).closest('label').addClass('active');
 	}
 
 	// Check if details for the claims bank account needs to be shown
