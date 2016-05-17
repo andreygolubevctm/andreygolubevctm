@@ -39,7 +39,7 @@
 <%-- HTML --%>
 <div class="slider-control ${className}">
 
-	<div class="selection hidden"></div>
+	<div class="selection"></div>
 	<div class="slider" data-use-default-output="${useDefaultOutputField}" data-value="${value}" data-range="${range}" data-markers="${markers}" data-step="${step}" data-legend="${legend}" data-type="${type}"></div>
 	<div class="slider-legends"></div>
 

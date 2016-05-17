@@ -5,10 +5,7 @@
     function init() {
         $(document).ready(function () {
             var settings = {
-                disableOnXs: true,
-                getStartOffset: function () {
-                    return $('.resultsOverflow').offset().top;
-                }
+                disableOnXs: true
             };
             meerkat.modules.resultsHeaderBar.initResultsHeaderBar(settings);
         });
