@@ -8,7 +8,7 @@
         var feature = Features.getPageStructure(obj.featuresStructureIndexToUse)[0];
         var availableExtras = [], output = "";
         _.each(feature.children, function (ft) {
-            var hasResult = ft.resultPath != null && ft.resultPath != '';
+            var hasResult = ft.resultPath != null && ft.resultPath !== '';
             var pathValue = hasResult ? Object.byString(obj, ft.resultPath) : false;
             if (pathValue == "Y") {
                 availableExtras.push(ft);
@@ -23,12 +23,14 @@
             }
             output += ft.safeName + separator;
         });
+        
+        return output;
 
     }
 
 
     function getExcessChildTemplate(obj, ft) {
-        var hasResult = ft.resultPath != null && ft.resultPath != '';
+        var hasResult = ft.resultPath != null && ft.resultPath !== '';
         var pathValue = hasResult ? Object.byString(obj, ft.resultPath) : false;
         if (hasResult) {
             var displayValue = Features.parseFeatureValue(pathValue, true);

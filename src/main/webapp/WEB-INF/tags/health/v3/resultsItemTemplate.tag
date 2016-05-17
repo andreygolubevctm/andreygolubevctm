@@ -20,7 +20,7 @@
             {{ if(ft.type == 'feature') { }}<%-- only feature types have content --%>
             <div class="c content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">{{ if(hasResult) { }}
                 {{ var displayValue = Features.parseFeatureValue( pathValue, true ); }}<%-- Below compressed to reduce number of whitespace nodes in DOM --%>
-                {{ if( pathValue) { }}<strong>{{= displayValue }}</strong> {{= ft.safeName.toLowerCase() }}{{ } else { }}{{= "-" }}{{ } }}{{ } else { }}{{= "-" }}
+                {{ if(pathValue) { }}<strong>{{= displayValue }}</strong> {{= ft.safeName.toLowerCase() }}{{ } else { }}{{= "-" }}{{ } }}{{ } else { }}{{= "-" }}
             {{ } }}</div>
             {{ } }}
         {{ } }}{{ var hasFeatureChildren = typeof ft.children != 'undefined' && ft.children.length; var isSelectionHolder = ft.classString && ft.classString.indexOf('selectionHolder') != -1; }}

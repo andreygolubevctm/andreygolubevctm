@@ -96,7 +96,6 @@
                         meerkat.modules.sliders.initSlider($slider);
                         $slider.find('.slider')
                             .val($(filterObject.defaultValueSourceSelector).val())
-                            // todo: move this to core module with type = 'slider'?
                             .on('change', function(event){
                                 meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, event);
                             });
