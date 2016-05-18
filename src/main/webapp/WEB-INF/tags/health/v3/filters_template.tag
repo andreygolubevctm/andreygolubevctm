@@ -30,7 +30,7 @@
     <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
-                <span class="helper-text"><a data-content="helpid:542" data-class="bigTooltip" data-toggle="popover" tabindex="-1">Help ?</a></span>
+                <span class="helper-text"><a href="javascript:;" data-content="helpid:542" data-toggle="dialog" data-dialog-hash-id="hospitalCover" tabindex="-1" data-cache="true">Help ?</a></span>
                 <span class="heading-text">Hospital cover level</span>
             </div>
             <div class="filter-cover-level select">
