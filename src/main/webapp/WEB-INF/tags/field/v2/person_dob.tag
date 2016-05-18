@@ -67,13 +67,13 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 <%-- HTML --%>
 <div class="dateinput_container" data-provide="dateinput">
 	<div class="row dateinput-tripleField">
-		<div class="col-sm-2 col-xs-4 dayContainer">
+		<div class="col-sm-3 col-xs-4 dayContainer">
 			<field_v2:input type="text" className="sessioncamexclude dateinput-day dontSubmit ${className}" xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="false" requiredMessage="Please enter the day" />
 		</div>
-		<div class="col-sm-2 col-xs-4 monthContainer">
+		<div class="col-sm-3 col-xs-4 monthContainer">
 			<field_v2:input type="text" className="sessioncamexclude dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="false" requiredMessage="Please enter the month" />
 		</div>
-		<div class="col-sm-3 col-xs-4">
+		<div class="col-md-4 col-sm-5 col-xs-4">
 			<field_v2:input type="text" className="sessioncamexclude dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="false" requiredMessage="Please enter the year" />
 		</div>
 	</div>
