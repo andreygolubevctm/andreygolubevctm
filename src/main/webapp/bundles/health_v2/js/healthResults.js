@@ -4,6 +4,7 @@
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
         $resultsLowNumberMessage,
+        $resultsPagination,
         selectedProduct = null,
         previousBreakpoint,
         best_price_count = 5,
@@ -100,7 +101,7 @@
     function initResults() {
 
         $resultsLowNumberMessage = $(".resultsLowNumberMessage, .resultsMarketingMessages");
-
+        $resultsPagination = $('.results-pagination');
         var frequencyValue = $('#health_filter_frequency').val();
         frequencyValue = meerkat.modules.healthResults.getFrequencyInWords(frequencyValue) || 'monthly';
 
@@ -255,14 +256,24 @@
         $(document).on('click', '.remove-result', function () {
             filteredOutResults.push($(this).attr('data-productId'));
             Results.filterBy("productId", "value", {"notInArray": filteredOutResults}, true);
+            toggleRemoveResultPagination();
         }).on('click', '.reset-filters', function (e) {
             e.preventDefault();
             filteredOutResults = [];
             Results.unfilterBy('productId', "value", true);
+            toggleRemoveResultPagination();
         }).on('click', '.featuresListExtrasOtherList', function () {
             $('.featuresListExtrasOtherList').addClass('hidden');
             $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
         });
+    }
+
+    function toggleRemoveResultPagination() {
+        if (Results.getFilteredResults().length === 0) {
+            $resultsPagination.addClass('hidden');
+        } else {
+            $resultsPagination.removeClass('hidden');
+        }
     }
 
     function eventSubscriptions() {
@@ -469,11 +480,11 @@
         $(document).on("FeaturesRendered", function () {
 
             $(Features.target + " .expandable > " + Results.settings.elements.features.values).on("mouseenter", function () {
-                    var featureId = $(this).attr("data-featureId");
-                    var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
+                var featureId = $(this).attr("data-featureId");
+                var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
 
-                    $hoverRow.addClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
-                })
+                $hoverRow.addClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
+            })
                 .on("mouseleave", function () {
                     var featureId = $(this).attr("data-featureId");
                     var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');

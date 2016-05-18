@@ -307,7 +307,7 @@ var ResultsPagination = {
 
 		var obj = {
 			pageWidth: pageWidth,
-			columnsPerPage:columnsPerPage,
+			columnsPerPage:Math.ceil(columnsPerPage),
 			numberOfColumns:numberOfColumns,
 			numberOfPages: Math.ceil(numberOfColumns/columnsPerPage)
 		};
