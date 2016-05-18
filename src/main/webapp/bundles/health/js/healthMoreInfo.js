@@ -186,7 +186,7 @@
         $('#health_fundData_extrasPDF').val(product.promo.extrasPDF !== undefined ? meerkat.site.urls.base + product.promo.extrasPDF : "");
         $('#health_fundData_providerPhoneNumber').val(product.promo.providerPhoneNumber !== undefined ? product.promo.providerPhoneNumber : "");
 
-        $('.next-info li').each(function () {
+        $('.whatsNext li').each(function () {
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
     }
@@ -215,6 +215,10 @@
     function onAfterShowModal() {
         additionalTrackingData();
         meerkat.modules.healthPhoneNumber.changePhoneNumber(true);
+        
+        $('.whatsNext li').each(function () {
+            $(this).prepend('<span class="icon icon-angle-right"></span>');
+        });
     }
 
 
