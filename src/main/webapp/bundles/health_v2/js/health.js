@@ -104,7 +104,10 @@
 			.not('.short-list-item')
 			.not('.nestedGroup .col-sm-8')
 			.removeClass('col-sm-8').addClass('col-sm-9');
-		$mainform.find('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
+		$mainform.find('.col-sm-offset-4')
+			.not('#applicationForm_1 .col-sm-offset-4')
+			.not('#applicationForm_2 .col-sm-offset-4')
+			.removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
 	}
 
 	/**
@@ -495,6 +498,15 @@
 
 					meerkat.modules.healthApplyStep.onBeforeEnter();
 					meerkat.modules.healthMedicare.updateMedicareLabel();
+
+					var product = meerkat.modules.healthResults.getSelectedProduct();
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
+
+					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
+						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
+					} else {
+						$("#health_payment_medicare-selection").removeAttr("style");
+					}
 				}
 			},
 			onAfterEnter: function afterEnterApplyStep(event){
@@ -600,21 +612,6 @@
 					$('#mainform').find('.health_declaration span').text( selectedProduct.info.providerName  );
 					// Insert fund into Contact Authority
 					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
-
-					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
-					var $firstnameField = $("#health_payment_medicare_firstName");
-					var $surnameField = $("#health_payment_medicare_surname");
-					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
-					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
-
-					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
-
-					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
-						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
-					} else {
-						$("#health_payment_medicare-selection").removeAttr("style");
-					}
 
 				}
 			}
@@ -1270,8 +1267,7 @@
 			}
 
 			if($healthSitHealthCvr.val() !== '' && $healthSitLocation.val() !== '') {
-				$('.health-about-you').addClass('hidden');
-				$('.health-situation .fieldset-column-side .sidebar-box').css('margin-top','55px');
+				$('.health-about-you, .health-about-you-title').addClass('hidden');
 			}
 
 			$('.btn-edit').on('click', function() {
@@ -1282,7 +1278,7 @@
 		} else {
 			$('.health-cover').removeClass('hidden');
 			$('.health-location').removeClass('hidden');
-			$('.health-about-you').removeClass('hidden');
+			$('.health-about-you, .health-about-you-title').removeClass('hidden');
 			$('.health-situation .fieldset-column-side .sidebar-box').css('margin-top','');
 		}
 	}
