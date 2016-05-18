@@ -86,7 +86,7 @@
 
     function _getExtraText(ft) {
         var text = '';
-        if (ft.extraText != null && ft.extraText != '') {
+        if (ft.extraText != null && ft.extraText !== '') {
             return ft.extraText;
         }
         return text;
@@ -114,6 +114,7 @@
     }
 
     function getItem(obj, ft) {
+        ft = $.extend(true, {}, ft);
         ft.displayItem = ft.type != 'section';
         // section headers are not displayed anymore but we need the section container
         //if (ft.displayItem) {
