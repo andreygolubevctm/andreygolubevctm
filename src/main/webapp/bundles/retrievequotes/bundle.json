@@ -4,7 +4,10 @@
     "shared/journeyEngine/v2",
     "shared/results",
     "shared/validation",
+    "shared/dateUtils",
+    "shared/age",
     "core",
+    "shared/forms/v1",
     "shared/datepicker"
   ]
 }

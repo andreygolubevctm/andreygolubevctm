@@ -30,6 +30,7 @@
 				<p>The Government may charge a levy known as the <strong>Lifetime Health Cover</strong> (LHC) loading.</p>
 				<p>The levy is based on a number of factors including your age and the number of years you have held private health cover.</p>
 				<p>By filling in these details, we can work out what your LHC loading will be when you are comparing health insurance quotes.</p>
+				<p>This is confirmed by your previous health fund if required.</p>
 			</ui:bubble>
 		</jsp:attribute>
 
@@ -97,6 +98,11 @@
 				<p>The rebates offered depend on your household's taxable income, the number of dependants you have and your age.</p>
 				<p>For more information on the Government Rebate please <a data-toggle="dialog" data-content="ajax/html/health_info_rebates.jsp" data-cache="true" data-dialog-hash-id="rebates" data-supertag-method="trackCustomPage" data-supertag-value="Rebates Info Dialog" href="ajax/html/health_info_rebates.jsp" target="_blank">click here</a>.</p>
 			</ui:bubble>
+
+			<ui:bubble variant="help">
+				<h4>Medicare Levy Surcharge</h4>
+				<p>The Medicare Levy Surcharge is a tax the Government charges people who earn over certain income thresholds and don't have private hospital cover.</p>
+			</ui:bubble>
 		</jsp:attribute>
 
 		<jsp:body>
@@ -128,7 +134,6 @@
 
 			</form_v2:fieldset>
 				<simples:dialogue id="37" vertical="health" mandatory="true" />
-                <simples:dialogue id="43" vertical="health" />
 			</jsp:body>
 
 		</form_v2:fieldset_columns>

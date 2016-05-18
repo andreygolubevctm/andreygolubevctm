@@ -419,14 +419,14 @@
 
                 $hoverRow.addClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
             })
-                .on("mouseleave", function () {
-                    var featureId = $(this).attr("data-featureId");
-                    var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
+            .on("mouseleave", function () {
+                var featureId = $(this).attr("data-featureId");
+                var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
 
-                    $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
-                });
+                $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
+            });
 
-            coverType = meerkat.modules.splitTest.isActive(13) ? $('#health_situation_coverType input').filter(":checked").val() : $('#health_situation_coverType').val();
+            coverType = $('#health_situation_coverType input').filter(":checked").val();
 
             if(coverType === 'E') {
                 $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');

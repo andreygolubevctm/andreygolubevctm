@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:get settings="true" verticalCode="${param.vertical}" />
@@ -140,12 +140,12 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
-								<destUrl>${quoteType}_quote.jsp?action=${param.action}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
+								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quoteType,param.action,data.current.transactionId,jParam)}</destUrl>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
 						<c:when test="${param.type != 'promotion' && param.type != 'bestprice' && (param.action=='latest' || param.action=='load') && data[xpathQuoteType].privacyoptin!='Y'}">
-							<destUrl>${quoteType}_quote.jsp?action=start-again&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
+							<destUrl>${remoteLoadQuoteService.getStartAgainQuoteUrl(quoteType,data.current.transactionId,jParam)}</destUrl>
 						</c:when>
 
 							<%-- GET TRAVEL MULTI-TRIP --%>
@@ -186,7 +186,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 										<c:otherwise>expired</c:otherwise>
 								</c:choose>
 								</c:set>
-								<destUrl>${quotePagePrefix}_quote.jsp?action=${action}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
+								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quotePagePrefix,action,data.current.transactionId,jParam)}</destUrl>
 							</c:when>
 
 							<%-- GET LATEST --%>
@@ -196,7 +196,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								</c:if>
 
 								<core_v1:transaction touch="L" noResponse="true" />
-								<destUrl>${quoteType}_quote.jsp?action=latest&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
+								<destUrl>${remoteLoadQuoteService.getLatestQuoteUrl(quoteType, data.current.transactionId,jParam)}</destUrl>
 								<%-- Have only made this happen for travel --%>
 								<c:if test="${quoteType eq 'travel'}">
 									<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>

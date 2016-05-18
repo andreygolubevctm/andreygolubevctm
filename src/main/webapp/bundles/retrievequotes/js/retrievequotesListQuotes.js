@@ -41,9 +41,13 @@
     }
 
     function _onClickPending(e) {
-        var data = _getClickElementData(e.target),
-            url = data.vertical + "_quote.jsp?action=confirmation&PendingID=" + encodeURIComponent(data.pendingID);
-        
+
+        var data = _getClickElementData(e.target);
+        var vertical  = data.vertical;
+        if(vertical === 'home'){
+            vertical  = 'home_contents';
+        }
+        var url = vertical + "_quote.jsp?action=confirmation&PendingID=" + encodeURIComponent(data.pendingID);
         window.location.href = url;
     }
 

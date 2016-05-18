@@ -102,16 +102,12 @@
 		var $mainform = $('#mainform');
 		$mainform.find('.col-sm-8')
 			.not('.short-list-item')
+			.not('.nestedGroup .col-sm-8')
 			.removeClass('col-sm-8').addClass('col-sm-9');
-		$mainform.find('.col-sm-4')
-			.not("label[for*=health_healthCover]")
-			.not('label[for*=health_situation_coverType]')
-			.not('.short-list-item')
-			.add("label[for=health_healthCover_primary_dob]")
-			.add("label[for=health_healthCover_primary_cover]")
-			.add("label[for=health_healthCover_primary_coverType]")
-			.removeClass('col-sm-4').addClass('col-sm-3');
-		$mainform.find('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
+		$mainform.find('.col-sm-offset-4')
+			.not('#applicationForm_1 .col-sm-offset-4')
+			.not('#applicationForm_2 .col-sm-offset-4')
+			.removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
 	}
 
 	/**
@@ -148,7 +144,8 @@
 				var $healthSitLocation = $('#health_situation_location'),
 					$healthSitHealthCvr = $('#health_situation_healthCvr'),
 					$healthSitHealthSitu = $('#health_situation_healthSitu'),
-					$healthSitCoverType = $('#health_situation_coverType');
+					$healthSitCoverType = $('#health_situation_coverType'),
+					$healthSitRebate = $('#health_healthCover_health_cover_rebate');
 
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
@@ -222,21 +219,17 @@
 					});
 				}
 
+				$healthSitRebate.on('change', function() {
+					toggleRebate();
+				});
+				toggleRebate();
+
+
 			},
 			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onAfterEnter: function healthV2AfterEnter() {
 				// if coming from brochure site and all prefilled data are valid, let's hide the fields
-				if (meerkat.site.isFromBrochureSite === true) {
-					var $healthSitLocation = $('#health_situation_location'),
-						$healthSitHealthCvr = $('#health_situation_healthCvr');
-
-					if($healthSitHealthCvr.isValid()) {
-						$healthSitHealthCvr.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
-					}
-					if($healthSitLocation.isValid(true)) {
-						$healthSitLocation.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
-					}
-				}
+				toggleAboutYou();
 			}
 		};
 
@@ -293,7 +286,6 @@
 				}
 
 				meerkat.modules.healthBenefitsStep.alignTitle();
-				meerkat.modules.healthBenefitsStep.alignSidebarHeight();
 
 				if(event.isForward)
 					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
@@ -387,7 +379,7 @@
 
 			},
 			onBeforeEnter:function enterResultsStep(event){
-
+				meerkat.modules.sessionCamHelper.stop();
 				meerkat.modules.healthDependants.resetConfig();
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
@@ -434,8 +426,11 @@
 			onInitialise: function onInitApplyStep(event){
 
 				meerkat.modules.healthDependants.initHealthDependants();
+				meerkat.modules.healthMedicare.initHealthMedicare();
 
-				healthApplicationDetails.init();
+				if (!meerkat.modules.splitTest.isActive(18)) {
+					healthApplicationDetails.init();
+				}
 
 				// Listen to any input field which could change the premium. (on step 4 and 5)
 				$(".changes-premium :input").on('change', function(event){
@@ -495,6 +490,12 @@
 					$slide.find('.error-field').remove();
 					$slide.find('.has-error').removeClass('has-error');
 
+					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
+					var $firstnameField = $("#health_payment_medicare_firstName");
+					var $surnameField = $("#health_payment_medicare_surname");
+					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
+					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
+
 					// Unset the Health Declaration checkbox (could be refactored to only uncheck if the fund changes)
 					$('#health_declaration input:checked').prop('checked', false).change();
 
@@ -502,6 +503,16 @@
 					meerkat.modules.healthDependants.updateDependantConfiguration();
 
 					meerkat.modules.healthApplyStep.onBeforeEnter();
+					meerkat.modules.healthMedicare.updateMedicareLabel();
+
+					var product = meerkat.modules.healthResults.getSelectedProduct();
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
+
+					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
+						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
+					} else {
+						$("#health_payment_medicare-selection").removeAttr("style");
+					}
 				}
 			},
 			onAfterEnter: function afterEnterApplyStep(event){
@@ -607,21 +618,6 @@
 					$('#mainform').find('.health_declaration span').text( selectedProduct.info.providerName  );
 					// Insert fund into Contact Authority
 					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
-
-					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
-					var $firstnameField = $("#health_payment_medicare_firstName");
-					var $surnameField = $("#health_payment_medicare_surname");
-					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
-					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
-
-					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
-
-					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
-						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
-					} else {
-						$("#health_payment_medicare-selection").removeAttr("style");
-					}
 
 				}
 			}
@@ -1253,6 +1249,46 @@
 
 	}
 
+	// Hide/show about you
+	function toggleAboutYou() {
+
+		if (meerkat.site.isFromBrochureSite === true) {
+			var $healthSitLocation = $('#health_situation_location'),
+				$healthSitHealthCvr = $('#health_situation_healthCvr');
+
+			if($healthSitHealthCvr.isValid()) {
+				$healthSitHealthCvr.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
+			}
+
+			if($healthSitLocation.isValid(true)) {
+				$healthSitLocation.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
+			}
+
+			if($healthSitHealthCvr.val() !== '') {
+				$('.health-cover').addClass('hidden');
+			}
+
+			if($healthSitLocation.val() !== '') {
+				$('.health-location').addClass('hidden');
+			}
+
+			if($healthSitHealthCvr.val() !== '' && $healthSitLocation.val() !== '') {
+				$('.health-about-you, .health-about-you-title').addClass('hidden');
+			}
+
+			$('.btn-edit').on('click', function() {
+				toggleAboutYou();
+			});
+
+			meerkat.site.isFromBrochureSite = false;
+		} else {
+			$('.health-cover').removeClass('hidden');
+			$('.health-location').removeClass('hidden');
+			$('.health-about-you, .health-about-you-title').removeClass('hidden');
+			$('.health-situation .fieldset-column-side .sidebar-box').css('margin-top','');
+		}
+	}
+
 	// Hide/show simple dialogues when toggle inbound/outbound in simples journey
 	function toggleInboundOutbound() {
 		// Inbound
@@ -1296,6 +1332,19 @@
 			$followUpCallField.prop('disabled', false);
 			$('.simples-privacycheck-statement .error-field').show();
 			$('.follow-up-call .error-field').show();
+		}
+	}
+
+	function toggleRebate() {
+		if($('#health_healthCover_health_cover_rebate').find('input:checked').val() === 'N'){
+			$('#health_healthCover_tier').hide();
+			$('.health_cover_details_dependants').hide();
+		} else {
+			$('#health_healthCover_tier').show();
+			var cover = $(':input[name="health_situation_healthCvr"]').val();
+			if(cover === 'F' || cover === 'SPF'){
+				$('.health_cover_details_dependants').show();
+			}
 		}
 	}
 

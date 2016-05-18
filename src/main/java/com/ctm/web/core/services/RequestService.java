@@ -5,6 +5,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.PageRequest;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
@@ -25,8 +26,10 @@ public class RequestService {
     public Long transactionId;
     private String token;
     private String ipAddress;
+    private final IPAddressHandler ipAddressHandler;
 
     public RequestService(HttpServletRequest request, Vertical.VerticalType vertical){
+        ipAddressHandler= IPAddressHandler.getInstance();
         transactionId = RequestUtils.getTransactionIdFromRequest(request);
         this.request = request;
         this.vertical = vertical;
@@ -34,6 +37,7 @@ public class RequestService {
     }
 
     public RequestService(HttpServletRequest request, String vertical, Data data){
+        ipAddressHandler= IPAddressHandler.getInstance();
         this.request = request;
         this.vertical = Vertical.VerticalType.findByCode(vertical);
         transactionId = data.getLong("current/transactionId");
@@ -41,6 +45,7 @@ public class RequestService {
     }
 
     public RequestService(HttpServletRequest request, String vertical, Data data, PageSettings pageSettings){
+        ipAddressHandler= IPAddressHandler.getInstance();
         this.pageSettings = pageSettings;
         this.request = request;
         this.vertical = Vertical.VerticalType.findByCode(vertical);
@@ -48,16 +53,18 @@ public class RequestService {
         init(request);
     }
 
-    public RequestService(Vertical.VerticalType vertical, PageSettings pageSettings){
+    public RequestService(Vertical.VerticalType vertical, PageSettings pageSettings, IPAddressHandler ipAddressHandler){
         this.vertical = vertical;
         this.pageSettings = pageSettings;
+        this.ipAddressHandler = ipAddressHandler;
     }
 
     public RequestService(Vertical.VerticalType vertical) {
-        this.vertical = vertical;
+        this(vertical, IPAddressHandler.getInstance());
     }
 
     public RequestService(HttpServletRequest httpRequest, Vertical.VerticalType vertical, PageSettings pageSettings) {
+        ipAddressHandler= IPAddressHandler.getInstance();
         transactionId = RequestUtils.getTransactionIdFromRequest(httpRequest);
         this.request = httpRequest;
         this.vertical = vertical;
@@ -66,15 +73,20 @@ public class RequestService {
     }
 
     public RequestService(HttpServletRequest request, String vertical) {
+        ipAddressHandler= IPAddressHandler.getInstance();
         this.request = request;
         this.vertical = Vertical.VerticalType.findByCode(vertical);
         init(request);
     }
 
+    public RequestService(Vertical.VerticalType vertical, IPAddressHandler ipAddressHandler) {
+        this.ipAddressHandler= ipAddressHandler;
+        this.vertical = vertical;
+    }
+
     public void setRequest(HttpServletRequest request) {
         transactionId = RequestUtils.getTransactionIdFromRequest(request);
-        IPCheckService ipCheckService= new IPCheckService();
-        this.ipAddress = ipCheckService.getIPAddress(request);
+        this.ipAddress = ipAddressHandler.getIPAddress(request);
         this.request = request;
         init(request);
     }

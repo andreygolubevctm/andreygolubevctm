@@ -21,7 +21,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-payment_details">
 
-	<form_v2:fieldset legend="Payment Details" >
+	<form_v3:fieldset legend="Payment Details" >
 
 		<div class="definition alert alert-info">
 				<%-- insert promo data --%>
@@ -34,7 +34,11 @@
 
 		<c:set var="fieldXpath" value="${xpath}/type" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Payment method" className="changes-premium">
-			<field_v2:array_radio items="cc=Credit Card,ba=Bank Account" xpath="${fieldXpath}" title="how would you like to pay" required="true" className="health-payment_details-type" id="${name}_type"/>
+			<field_v2:array_radio items="cc=Credit Card,ba=Bank Account" xpath="${fieldXpath}"
+								  title="how would you like to pay"
+								  required="true"
+								  className="health-payment_details-type"
+								  id="${name}_type"/>
 		</form_v3:row>
 
 		<%-- Note: this form row's HTML is changed by JavaScript --%>
@@ -62,7 +66,7 @@
 		</c:if>
 
 		<form_v3:row className="health-payment-details_update" hideHelpIconCol="true">
-			<a href="javascript:void(0);" class="btn btn-next col-xs-12 col-sm-8 col-md-5 journeyNavButton" id="update-premium">Update Premium <span class="icon icon-arrow-right"></span></a>
+			<a href="javascript:void(0);" class="btn btn-next col-xs-12 col-sm-8 col-md-7 journeyNavButton" id="update-premium">Update Premium <span class="icon icon-arrow-right"></span></a>
 		</form_v3:row>
 
 		<form_v3:row label="Your Premium" className="health-payment-details_premium">
@@ -79,7 +83,7 @@
 			</div>
 		</form_v3:row>
 
-	</form_v2:fieldset>
+	</form_v3:fieldset>
 
 </div>
 

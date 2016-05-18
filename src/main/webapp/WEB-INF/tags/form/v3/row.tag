@@ -52,26 +52,30 @@
 		</c:when>
 		<c:otherwise>
 			<c:set var="toggleHelpColLarge" value="8" />
-			<c:set var="toggleHelpColSmall" value="9" />
+			<c:set var="toggleHelpColSmall" value="6" />
 			<c:set var="toggleHelpColMobile" value="12" />
 		</c:otherwise>
 	</c:choose>
 
 	<c:choose>
 		<c:when test="${labelAbove eq true}">
-			<c:set var="labelClassName" value="col-xs-${toggleHelpColMobile} col-sm-12" />
+			<c:set var="labelClassName" value="col-sm-5 col-xs-${toggleHelpColMobile}" />
 		</c:when>
 		<c:otherwise>
-			<c:set var="labelClassName" value="col-sm-3 col-xs-${toggleHelpColMobile}" />
+			<c:set var="labelClassName" value="col-sm-5 col-xs-${toggleHelpColMobile}" />
 		</c:otherwise>
 	</c:choose>
 
 	<c:choose>
 		<c:when test="${not empty label and label ne ''}">
 
+			<c:if test="${label eq 'empty'}">
+				<c:set var="label" value="" />
+			</c:if>
+
 			<field_v2:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" addForAttr="${addForAttr}" />
 
-			<div class="col-xs-2 visible-xs helpIconXSColumn ${offset}">
+			<div class="col-xs-1 visible-xs helpIconXSColumn ${offset}">
 				<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" />
 			</div>
 
@@ -94,7 +98,7 @@
 	</div>
 
 	<c:if test="${empty hideHelpIconCol}">
-		<div class="col-sm-2 ${helpIconCol}">
+		<div class="col-sm-1 ${helpIconCol}">
 			<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}"/>
 		</div>
 	</c:if>
