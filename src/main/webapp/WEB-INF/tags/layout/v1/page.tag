@@ -71,6 +71,10 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<link rel="apple-touch-icon" sizes="152x152" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/tablet@2x.png">
 		<link rel="apple-touch-icon" sizes="180x180" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone@3x.png">
 	</c:if>
+
+	<%-- DISTIL - Comment for script injection --%>
+	<!-- <body><head><form><a></a><input /></form></head></body> -->
+
 <c:choose>
 	<c:when test="${empty skipJSCSS}">
 		<c:set var="browserName" value="${userAgentSniffer.getBrowserName(pageContext.getRequest().getHeader('user-agent'))}" />
