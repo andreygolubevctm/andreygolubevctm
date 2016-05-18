@@ -11,6 +11,9 @@
         var availableExtras = [],
             output = "";
         _.each(feature.children, function (ft) {
+            if(ft.doNotRender === true) {
+                return;
+            }
             var hasResult = ft.resultPath !== null && ft.resultPath !== '';
             var pathValue = hasResult ? Object.byString(obj, ft.resultPath) : false;
             if (pathValue == "Y") {

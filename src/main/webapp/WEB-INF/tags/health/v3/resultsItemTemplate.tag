@@ -21,7 +21,7 @@
         <div class="children {{= ft.hideChildrenClass }}" data-fid="{{= ft.id }}">
             {{ if(ft.isNotCovered) { }}<div class="content noCoverContainer"><p class="noCoverLabel">NOT COVERED IN THIS PRODUCT</p></div>{{ } }}
             {{ obj.childFeatureDetails = ft.children; }}
-            {{= Results.cachedProcessedTemplates[obj.featuresTemplate](obj) }}
+            {{= Results.cachedProcessedTemplates[obj.featuresTemplate](obj) }}{{ delete obj.childFeatureDetails; }}<%-- needs deleting between iterations or when all hospital selected, it  --%>
         </div>
         {{ } else { }}{{ delete obj.childFeatureDetails; }}{{ } }}
     </div>
