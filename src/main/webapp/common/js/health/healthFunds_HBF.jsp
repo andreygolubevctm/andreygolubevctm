@@ -140,14 +140,56 @@ var healthFunds_HBF = {
 
         }
 
+        <%--Contact Point question--%>
+        healthApplicationDetails.showHowToSendInfo('HBF', true);
+
+        <%-- Increase minimum age requirement for applicants from 16 to 18 --%>
+        healthFunds_HBF.$_dobPrimary = $('#health_application_primary_dob');
+        healthFunds_HBF.$_dobPartner = $('#health_application_partner_dob');
+        healthFunds_HBF.$_dobPrimary.addRule('youngestDOB', 18, "primary person's age cannot be under 18");
+        healthFunds_HBF.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under 18");
+
+        <%--dependant definition--%>
+        healthFunds._dependants('A dependent must be under 25, not married or living in a de facto relationship, and studying full time or earning less than $21,250 taxable income per calendar year.');
+
+        <%--schoolgroups and defacto--%>
+        meerkat.modules.healthDependants.updateConfig({ showSchoolFields:false, 'schoolMinAge':18, 'schoolMaxAge':24, showSchoolIdField:false });
 
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
+
+        <%-- Email not compulsory, but when you select email as how to sent you, then it is required --%>
+        var $emailField = $("#health_application_email");
+        $emailField.setRequired(false);
+        $('input[name="health_application_contactPoint"]').on('change.HBF', function onHowToSendChange(){
+            $emailField.setRequired($('#health_application_contactPoint_E').is(':checked')).valid();
+        });
     },
     unset: function(){
         var $hbf_flexi_extras = $('#hbf_flexi_extras');
+
+        <%-- Hide Fund specific questions --%>
         $hbf_flexi_extras.find('.flexi-extras-icons a').off('click.HBF');
         $hbf_flexi_extras.hide();
+
+        <%-- How to send information --%>
+        healthApplicationDetails.hideHowToSendInfo();
+
+        <%-- Age requirements for applicants (back to default) --%>
+        healthFunds_HBF.$_dobPrimary.addRule('youngestDOB', dob_health_application_primary_dob.ageMin, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
+        healthFunds_HBF.$_dobPartner.addRule('youngestDOB', dob_health_application_partner_dob.ageMin, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
+        delete healthFunds_HBF.$_dobPrimary;
+        delete healthFunds_HBF.$_dobPartner;
+
+        <%--dependant definition off--%>
+        healthFunds._dependants(false);
+
+        <%-- Reset dependants config --%>
+        meerkat.modules.healthDependants.resetConfig();
+
+        <%-- let set this back to its original state --%>
+        $('input[name="health_application_contactPoint"]').off('change.HBF');
+        $("#health_application_email").setRequired(true);
 
     }
 };
