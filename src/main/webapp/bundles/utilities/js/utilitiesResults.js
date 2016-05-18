@@ -369,6 +369,10 @@
         if (meerkat.modules.deviceMediaState.get() !== 'xs') return;
 
         var $resultrow = $(event.target);
+        if ($resultrow.parents('.btn-add-bill').length > 0) {
+            return;
+        }
+
         if ($resultrow.hasClass('result-row') === false) {
             $resultrow = $resultrow.parents('.result-row');
         }

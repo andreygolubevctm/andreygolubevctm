@@ -70,7 +70,7 @@
     text-align: right;
     font-size: @savingsSize;
     line-height: @savingsSize;
-  }
+    }
 
   .yearlySavingsTitle {
     float: none;
@@ -84,12 +84,12 @@
     text-align: left;
     padding: 7px 0 7px 0;
   }
-  .subDiscounts,
+  /*.subDiscounts,
   .totalDiscounts,
   .yearlySavings {
     font-size: @savingsSize;
     line-height: @savingsSize;
-  }
+  }*/
 
   // aligns the arrow - should be backported to core if the other vertical designs
   .priceMode .result-row[data-available="Y"] .resultInsert.priceMode:after {
@@ -165,8 +165,18 @@
     font-size: @priceSize;
     line-height: @priceSize;
   }
-}
 
+  .yearly-savings {
+    .btn-add-bill {
+      display: block;
+      width: 90px;
+      text-align: left;
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+}
 //-------------------------------------------------------------------------------------------
 //SM and greater vertical centering magic
 
