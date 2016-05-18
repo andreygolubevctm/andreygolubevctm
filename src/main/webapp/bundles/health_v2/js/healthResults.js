@@ -254,9 +254,19 @@
         });
 
         $(document).on('click', '.remove-result', function () {
-            filteredOutResults.push($(this).attr('data-productId'));
-            Results.filterBy("productId", "value", {"notInArray": filteredOutResults}, true);
-            toggleRemoveResultPagination();
+            var $el = $(this);
+            if (!$el.hasClass('disabled')) {
+                $el.addClass('disabled');
+                filteredOutResults.push($el.attr('data-productId'));
+                Results.filterBy("productId", "value", {"notInArray": filteredOutResults}, true);
+                toggleRemoveResultPagination();
+
+            } else {
+                _.delay(function () {
+                    $el.removeClass('disabled');
+                }, 1000);
+            }
+
         }).on('click', '.reset-filters', function (e) {
             e.preventDefault();
             filteredOutResults = [];
@@ -269,7 +279,8 @@
     }
 
     function toggleRemoveResultPagination() {
-        if (Results.getFilteredResults().length === 0) {
+        var pageMeasurements = Results.pagination.getPageMeasurements();
+        if (pageMeasurements && pageMeasurements.numberOfPages <= 1) {
             $resultsPagination.addClass('hidden');
         } else {
             $resultsPagination.removeClass('hidden');
