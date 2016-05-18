@@ -75,6 +75,9 @@
 		</c:choose>
 	</title>
 
+	<%-- DISTIL - Comment for script injection --%>
+	<!-- <body><head><form><a></a><input /></form></head></body> -->
+
 <%-- STYLESHEETS --%>
 
 	<%-- WHITELABEL: HERE LIES A GREAT BIG DIRTY IF STATEMENT!, ...allowing us to brand our Generic verticals like retrieve quote and unsubscribe. We are doing this here temporarily because we have little choice as we can't yet put those vertical pages onto the new framework due to time constraints. If the brandCode isn't CTM, we'll replace the css with one we're building with grunt out of the framework's generic vertical less directory. --%>
