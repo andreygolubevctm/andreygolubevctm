@@ -346,6 +346,10 @@ Features = {
 
 	},
 
+	/**
+	 * This is used in Car/Home LMI. Not sure how to get Features.featureIds in other verticals.
+	 * Removes
+	 */
 	removeEmptyDropdowns: function() {
 		if(!Features.featuresIds) {
 			return;

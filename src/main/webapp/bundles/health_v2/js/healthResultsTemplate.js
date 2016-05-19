@@ -7,6 +7,8 @@
 
     /**
      * Get the list of available extras.
+     * @param obj The Result object for that product.
+     * @returns {string}
      */
     function getAvailableExtrasAsList(obj) {
         var feature = Features.getPageStructure(obj.featuresStructureIndexToUse)[0];
@@ -27,10 +29,10 @@
         } else {
             _.each(availableExtras, function (ft, i) {
                 var separator = '';
-                if (i !== availableExtras.length - 1) {
-                    separator = ', ';
-                } else if (i == (availableExtras.length - 2)) {
+                if (i == (availableExtras.length - 2)) {
                     separator = ' and ';
+                } else if (i !== availableExtras.length - 1) {
+                    separator = ', ';
                 }
                 output += ft.safeName + separator;
             });
@@ -65,6 +67,7 @@
      * Remap the class string to just get the HLTicon- part of it.
      * @param ft
      * @returns {string}
+     * @private
      */
     function _getIconClass(ft) {
         var iconClassSet = ft.classString.match(/(HLTicon-[^\s]+)/);
@@ -81,14 +84,33 @@
         return ft.helpId !== '' && ft.helpId != '0' ? '<a href="javascript:void(0);" class="help-icon" data-content="helpid:' + ft.helpId + '" data-toggle="popover" data-my="right center" data-at="left center">(?)</a>' : '';
     }
 
+    /**
+     * Helper function
+     * @param ft
+     * @returns {boolean}
+     * @private
+     */
     function _hasResult(ft) {
         return ft.resultPath !== null && ft.resultPath !== '';
     }
 
+    /**
+     * Helper function - pathValue is the value at the features resultPath when looking at the Results object.
+     * @param obj
+     * @param ft
+     * @returns {boolean}
+     * @private
+     */
     function _getPathValue(obj, ft) {
         return _hasResult(ft) ? Object.byString(obj, ft.resultPath) : false;
     }
 
+    /**
+     *
+     * @param ft
+     * @returns {*}
+     * @private
+     */
     function _getExtraText(ft) {
         var text = '';
         if (ft.extraText != null && ft.extraText !== '') {
@@ -98,28 +120,34 @@
     }
 
     /**
-     * Generate the display value logic.
-     *
+     * Generate the display value with title before or after, extra text, etc.
+     * Logic may not work as expected compared to the old way
      * @param pathValue
      * @param ft
-     * @param useDefaultReturn
      * @returns {*}
      */
-    function buildDisplayValue(pathValue, ft, useDefaultReturn) {
-        if (pathValue || pathValue === "") {
+    function buildDisplayValue(pathValue, ft) {
+        if (pathValue || pathValue === "") { // this condition used to be "hasResult"
             var displayValue = Features.parseFeatureValue(pathValue, true);
             if (pathValue) {
                 return getTitleBefore(ft) + '<strong>' + displayValue + '</strong> ' + _getExtraText(ft) + getTitleAfter(ft) + _getHelpTooltip(ft);
-            } else if (useDefaultReturn) {
-                return "-";
             }
-        } else {
-            return "-";
         }
+        return "-";
     }
 
+    /**
+     * resultsItemTemplate helper to remove logic out of the template.
+     * @param obj
+     * @param ft
+     * @returns {*}
+     */
     function getItem(obj, ft) {
-        ft = $.extend(true, {}, ft);
+        //NOTE: Not sure if we need to extend the feature object each time to clone it.
+        // If you don't, the last row's data ends up on Features.getPageStructure. Is that a problem? Not sure...
+        // If data isn't displaying properly after a refresh/reset of results uncomment this line:
+        //ft = $.extend(true, {}, ft);
+
         ft.displayItem = ft.type != 'section';
         // section headers are not displayed anymore but we need the section container
         //if (ft.displayItem) {
@@ -142,7 +170,7 @@
             }
             ft.iconClass = _getIconClass(ft);
         } else if (ft.type == 'feature') {
-            ft.displayValue = buildDisplayValue(ft.pathValue, ft, true);
+            ft.displayValue = buildDisplayValue(ft.pathValue, ft);
         }
 
         // For sub-category feature detail
@@ -164,7 +192,7 @@
      */
     function getExcessChildDisplayValue(obj, ft) {
         var pathValue = _getPathValue(obj, ft);
-        var displayValue = buildDisplayValue(pathValue, ft, false);
+        var displayValue = buildDisplayValue(pathValue, ft);
         if (displayValue == "-") {
             return getTitleBefore(ft) + " None";
         }
@@ -206,9 +234,9 @@
         }
         return data;
     }
-    
+
     function _formatExcess(price) {
-        return _.isNull(price) ? "$0" : meerkat.modules.currencyField.formatCurrency(price, {roundToDecimalPlace: 0})
+        return _.isNull(price) ? "$0" : meerkat.modules.currencyField.formatCurrency(price, {roundToDecimalPlace: 0});
     }
 
     function getPrice(result) {
@@ -240,6 +268,7 @@
     function postRenderFeatures() {
 
         eventSubscriptions();
+
         $('.featuresListHospitalOther > .collapsed').removeClass('collapsed');
 
         // For each result, check if there are restricted benefits. If there are, display the restricted benefit text.
@@ -252,7 +281,11 @@
 
         // populate extras selections list with empty div
         if (numberOfSelectedExtras() === 0) {
-            $('.featuresListExtrasSelections .children').html('<div class="cell category collapsed"><div class="labelInColumn no-extras-selected"><div class="content" data-featureid="9997"><div class="contentInner">No extras selected</div></div></div></div>');
+            $('.featuresListExtrasSelections .children').html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9997"><div class="contentInner">No extras selected</div></div></div></div>');
+        }
+
+        if(numberOfSelectedHospitals() === 0 && meerkat.modules.health.getHospitalCoverLevel() != 'limited') {
+            $('.featuresListHospitalSelections .children').html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9996"><div class="contentInner">No hospital cover selected</div></div></div></div>');
         }
 
     }
@@ -261,10 +294,14 @@
         var pageStructure = Features.getPageStructure(3);
         return pageStructure && pageStructure.length ? pageStructure[0].children.length : 0;
     }
+    function numberOfSelectedHospitals() {
+        var pageStructure = Features.getPageStructure(2);
+        return pageStructure && pageStructure.length ? pageStructure[0].children.length : 0;
+    }
 
     function eventSubscriptions() {
 
-        $(document).on('click', '.remove-result', function () {
+        $(document).off('click', '.remove-result').on('click', '.remove-result', function () {
             var $el = $(this);
             if (!$el.hasClass('disabled')) {
                 $el.addClass('disabled');
@@ -278,12 +315,12 @@
                 }, 1000);
             }
 
-        }).on('click', '.reset-filters', function (e) {
+        }).off('click', '.reset-filters').on('click', '.reset-filters', function (e) {
             e.preventDefault();
             filteredOutResults = [];
             Results.unfilterBy('productId', "value", true);
             toggleRemoveResultPagination();
-        }).on('click', '.featuresListExtrasOtherList', function () {
+        }).off('click', '.featuresListExtrasOtherList').on('click', '.featuresListExtrasOtherList', function () {
             $('.featuresListExtrasOtherList').addClass('hidden');
             $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
         });
