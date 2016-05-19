@@ -4,7 +4,6 @@
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
         $resultsLowNumberMessage,
-        $resultsPagination,
         selectedProduct = null,
         previousBreakpoint,
         best_price_count = 5,
@@ -13,7 +12,6 @@
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
         resultsStepIndex = 3,
-        filteredOutResults = [], // this is used for removing the results when clicking the "x"
 
         templates = {
             premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
@@ -101,7 +99,6 @@
     function initResults() {
 
         $resultsLowNumberMessage = $(".resultsLowNumberMessage, .resultsMarketingMessages");
-        $resultsPagination = $('.results-pagination');
         var frequencyValue = $('#health_filter_frequency').val();
         frequencyValue = meerkat.modules.healthResults.getFrequencyInWords(frequencyValue) || 'monthly';
 
@@ -237,55 +234,7 @@
             Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.healthResults.initResults(); ' + e.message, e);
         }
     }
-
-    /**
-     * The following are additional requirements for resultsv4 and also so we don't affect simples journey.
-     */
-    function healthResultsV4Additions() {
-
-        $('.featuresListHospitalOther > .collapsed').removeClass('collapsed');
-
-        // For each result, check if there are restricted benefits. If there are, display the restricted benefit text.
-        $('.hospitalCoverSection', $('.result-row')).each(function () {
-            var $el = $(this);
-            if ($el.find('sup').length) {
-                $el.find('.restrictedBenefit').removeClass('hidden');
-            }
-        });
-
-        $(document).on('click', '.remove-result', function () {
-            var $el = $(this);
-            if (!$el.hasClass('disabled')) {
-                $el.addClass('disabled');
-                filteredOutResults.push($el.attr('data-productId'));
-                Results.filterBy("productId", "value", {"notInArray": filteredOutResults}, true);
-                toggleRemoveResultPagination();
-
-            } else {
-                _.delay(function () {
-                    $el.removeClass('disabled');
-                }, 1000);
-            }
-
-        }).on('click', '.reset-filters', function (e) {
-            e.preventDefault();
-            filteredOutResults = [];
-            Results.unfilterBy('productId', "value", true);
-            toggleRemoveResultPagination();
-        }).on('click', '.featuresListExtrasOtherList', function () {
-            $('.featuresListExtrasOtherList').addClass('hidden');
-            $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
-        });
-    }
-
-    function toggleRemoveResultPagination() {
-        var pageMeasurements = Results.pagination.getPageMeasurements();
-        if (pageMeasurements && pageMeasurements.numberOfPages <= 1) {
-            $resultsPagination.addClass('hidden');
-        } else {
-            $resultsPagination.removeClass('hidden');
-        }
-    }
+        
 
     function eventSubscriptions() {
 
@@ -296,7 +245,7 @@
             _setupSelectedBenefits('Extras Selections', 'Extras Cover');
             _setupSelectedBenefits('Hospital Selections', 'Hospital Cover');
             Features.buildHtml();
-            _.defer(healthResultsV4Additions);
+            _.defer(meerkat.modules.healthResultsTemplate.postRenderFeatures);
         });
 
         $(document).on("generalReturned", function () {

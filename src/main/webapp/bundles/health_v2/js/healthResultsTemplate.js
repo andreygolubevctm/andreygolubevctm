@@ -1,7 +1,9 @@
 ;(function ($) {
     var meerkat = window.meerkat,
         LABEL_ON_LEFT = 2,
-        HIDE_LABEL = 1;
+        HIDE_LABEL = 1,
+        $resultsPagination,
+        filteredOutResults = []; // this is used for removing the results when clicking the "x";
 
     /**
      * Get the list of available extras.
@@ -11,7 +13,7 @@
         var availableExtras = [],
             output = "";
         _.each(feature.children, function (ft) {
-            if(ft.doNotRender === true) {
+            if (ft.doNotRender === true) {
                 return;
             }
             var hasResult = ft.resultPath !== null && ft.resultPath !== '';
@@ -214,13 +216,73 @@
     }
 
 
+    function init() {
+        $(document).ready(function() {
+            $resultsPagination = $('.results-pagination');
+        });
+    }
+
+    function postRenderFeatures() {
+
+        eventSubscriptions();
+        $('.featuresListHospitalOther > .collapsed').removeClass('collapsed');
+
+        // For each result, check if there are restricted benefits. If there are, display the restricted benefit text.
+        $('.hospitalCoverSection', $('.result-row')).each(function () {
+            var $el = $(this);
+            if ($el.find('sup').length) {
+                $el.find('.restrictedBenefit').removeClass('hidden');
+            }
+        });
+
+
+    }
+
+    function eventSubscriptions() {
+
+        $(document).on('click', '.remove-result', function () {
+            var $el = $(this);
+            if (!$el.hasClass('disabled')) {
+                $el.addClass('disabled');
+                filteredOutResults.push($el.attr('data-productId'));
+                Results.filterBy("productId", "value", {"notInArray": filteredOutResults}, true);
+                toggleRemoveResultPagination();
+
+            } else {
+                _.delay(function () {
+                    $el.removeClass('disabled');
+                }, 1000);
+            }
+
+        }).on('click', '.reset-filters', function (e) {
+            e.preventDefault();
+            filteredOutResults = [];
+            Results.unfilterBy('productId', "value", true);
+            toggleRemoveResultPagination();
+        }).on('click', '.featuresListExtrasOtherList', function () {
+            $('.featuresListExtrasOtherList').addClass('hidden');
+            $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
+        });
+    }
+
+    function toggleRemoveResultPagination() {
+        var pageMeasurements = Results.pagination.getPageMeasurements();
+        if (pageMeasurements && pageMeasurements.numberOfPages <= 1) {
+            $resultsPagination.addClass('hidden');
+        } else {
+            $resultsPagination.removeClass('hidden');
+        }
+    }
+
     meerkat.modules.register('healthResultsTemplate', {
+        init: init,
         getAvailableExtrasAsList: getAvailableExtrasAsList,
         getExcessChildDisplayValue: getExcessChildDisplayValue,
         getPricePremium: getPricePremium,
         getPrice: getPrice,
         getSpecialOffer: getSpecialOffer,
-        getItem: getItem
+        getItem: getItem,
+        postRenderFeatures: postRenderFeatures
     });
 
 })(jQuery);

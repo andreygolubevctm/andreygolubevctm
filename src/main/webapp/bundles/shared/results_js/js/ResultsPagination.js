@@ -300,6 +300,8 @@ var ResultsPagination = {
 		} else {
 			columnWidth =  $rows.outerWidth(true);
 			viewableArea += Results.settings.pagination.margin;
+			//todo fix this on XS!!
+			// max # pages on XS is 6...
 			columnsPerPage = Math.round((viewableArea/columnWidth) * 100) / 100;
 		}
 

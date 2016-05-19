@@ -1413,6 +1413,10 @@
 	function getSituation() {
 		return $('#health_situation_healthCvr').val();
 	}
+	
+	function getHospitalCoverLevel() {
+		return $('#health_benefits_covertype').val();
+	}
 
 	meerkat.modules.register("health", {
 		init: initHealth,
@@ -1421,6 +1425,7 @@
 		getTrackingFieldsObject: getTrackingFieldsObject,
         getCoverType: getCoverType,
 		getSituation: getSituation,
+		getHospitalCoverLevel: getHospitalCoverLevel,
 		getRates: getRates,
 		setRates: setRates,
 		getRebate: getRebate,

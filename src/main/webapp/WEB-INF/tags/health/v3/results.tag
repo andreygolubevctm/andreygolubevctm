@@ -69,7 +69,9 @@
                                 <span class="restrictedBenefit hidden"># restricted benefit</span>
                             </div>
                         </div>
-                        <div class="featuresListHospitalSelections" data-feature-index="2"></div>
+                        {{ if(meerkat.modules.health.getHospitalCoverLevel() == 'limited') { }}
+                        <div class="featuresListHospitalSelections"><health_v3:limited_cover_label /></div>
+                        {{ } else { }}<div class="featuresListHospitalSelections" data-feature-index="2"></div>{{ } }}
                     </div>
                     <h5>Other options</h5>
                     <div class="featuresListHospitalOther" data-feature-index="4"></div>
