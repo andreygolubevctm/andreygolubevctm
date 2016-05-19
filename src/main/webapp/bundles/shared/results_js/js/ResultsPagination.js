@@ -298,18 +298,16 @@ var ResultsPagination = {
 			columnsPerPage = Results.pagination.getColumnCountFromContainer(mediaState);
 			columnWidth = Math.round((viewableArea / columnsPerPage) * 100) / 100;
 		} else {
-			columnWidth =  $rows.outerWidth(true);
+			columnWidth = Results.settings.pagination.useSubPixelWidths ? Results.pagination.getSubPixelWidth($rows) : $rows.outerWidth(true);
 			viewableArea += Results.settings.pagination.margin;
-			//todo fix this on XS!!
-			// max # pages on XS is 6...
-			columnsPerPage = Math.round((viewableArea/columnWidth) * 100) / 100;
+			columnsPerPage = Math.round(viewableArea/columnWidth);
 		}
 
-		var pageWidth = columnWidth*columnsPerPage;
+		var pageWidth = columnWidth * columnsPerPage;
 
 		var obj = {
 			pageWidth: pageWidth,
-			columnsPerPage:Math.ceil(columnsPerPage),
+			columnsPerPage:columnsPerPage,
 			numberOfColumns:numberOfColumns,
 			numberOfPages: Math.ceil(numberOfColumns/columnsPerPage)
 		};
@@ -317,7 +315,21 @@ var ResultsPagination = {
 		Results.pagination.currentPageMeasurements = obj;
 		return obj;
 	},
-
+	/**
+	 * jQuery outerWidth/width/.css('width') doesn't support subpixel widths.
+	 * @param $el
+	 * @returns {*}
+     */
+	getSubPixelWidth: function($el) {
+		if($el[0] && _.isFunction($el[0].getBoundingClientRect)) {
+			var rects = $el[0].getBoundingClientRect();
+			if(rects.width) {
+				return rects.width + Results.settings.pagination.margin;
+			}
+		}
+		// fallback
+		return $el.outerWidth(true);
+	},
 	hasLessDrivenColumns: function(mediaState) {
 		return $('.resultsContainer[class*="results-columns-' + mediaState + '-"]').length > 0;
 	},
@@ -537,7 +549,8 @@ var ResultsPagination = {
 		Results.pagination.lock();
 
 		var fullWidth = Results.view.$containerElement.parent().width();
-		var widthAllColumns = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows).first().outerWidth(true) * $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered").length;
+		var $row = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows).first();
+		var widthAllColumns = (Results.settings.pagination.useSubPixelWidths ? Results.pagination.getSubPixelWidth($row) : $row.outerWidth(true)) * $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered").length;
 		var scrollWidth = fullWidth * Results.settings.animation.features.scroll.percentage;
 		var currentScroll = ResultsUtilities.getScroll('x', Results.view.$containerElement);
 		var newScroll;

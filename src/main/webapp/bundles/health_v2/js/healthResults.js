@@ -160,7 +160,8 @@
                 pagination: {
                     margin: 15,
                     mode: 'page',
-                    touchEnabled: false
+                    touchEnabled: false,
+                    useSubPixelWidths: true
                 },
                 sort: {
                     sortBy: "benefitsSort"

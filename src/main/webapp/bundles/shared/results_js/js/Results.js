@@ -77,7 +77,8 @@ var Results = {
 				mode: 'slide', //page
 				touchEnabled: false,
 				emptyContainerFunction: false, //You can specify a function for custom code that will empty the pagination container
-				afterPaginationRefreshFunction: false //You can specify a function for custom code to run after the pagination links have been generated
+				afterPaginationRefreshFunction: false, //You can specify a function for custom code to run after the pagination links have been generated
+				useSubPixelWidths: false
 			},
 			availability: {
 				// These are arrays so that $.extend does not combine with overrides
