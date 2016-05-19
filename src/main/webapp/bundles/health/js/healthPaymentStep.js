@@ -194,17 +194,16 @@
 
 	// Show approved listings only, this can potentially change per fund
 	function updateFrequencySelectOptions(){
-		var premiums = meerkat.modules.healthResults.getSelectedProduct();
+		var product = meerkat.modules.healthResults.getSelectedProduct();
 
-		if (!_.isEmpty(premiums) && !_.isEmpty(premiums.paymentTypePremiums)) {
-			premiums.paymentNode = getPaymentMethodNode();
-			premiums._selectedFrequency = getSelectedFrequency();
+		if (!_.isEmpty(product) && !_.isEmpty(product.paymentTypePremiums)) {
+            product.paymentNode = getPaymentMethodNode();
+            product._selectedFrequency = getSelectedFrequency();
 			var htmlTemplate = _.template($('#payment_frequency_options').html());
-			var options = htmlTemplate(premiums);
+			var options = htmlTemplate(product);
 
 			$frequencySelect.empty().append(options);
-
-			updateLHCText(premiums);
+			updateLHCText(product);
 		}
 	}
 
@@ -281,10 +280,8 @@
 				}else{
 					if (_.isArray(data)) data = data[0];
 
-					data = updateProductObject(data);
-
-					// Update selected product
-					meerkat.modules.healthResults.setSelectedProduct(data, true);
+                    // Update selected product
+					updateProductObject(data);
 
 					// Show payment input questions
 					$paymentContainer.show();
@@ -332,10 +329,7 @@
 		var product = meerkat.modules.healthResults.getSelectedProduct();
 
 		if (!_.isEmpty(product)) {
-			product = updateProductObject(product);
-
-			meerkat.messaging.publish(meerkat.modules.healthResults.events.healthResults.PREMIUM_UPDATED, product);
-
+			updateProductObject(product);
 			updateFrequencySelectOptions();
 		}
 	}
@@ -345,10 +339,8 @@
 		product._selectedFrequency = getSelectedFrequency();
 		product.paymentNode = getPaymentMethodNode();
 		product.premium = product.paymentTypePremiums[getPaymentMethodNode()];
-
-		meerkat.messaging.publish(meerkat.modules.healthResults.events.healthResults.PREMIUM_UPDATED, product);
-
 		updateLHCText(product);
+        meerkat.modules.healthResults.setSelectedProduct(product, true);
 	}
 
 	function updateProductObject(data) {
@@ -358,7 +350,7 @@
 		data.premium = data.paymentTypePremiums[getPaymentMethodNode(freq)];
 		data._selectedFrequency = freq;
 
-		return data;
+        meerkat.modules.healthResults.setSelectedProduct(data, true);
 	}
 
 	function getPaymentMethodNode(freq){
@@ -373,11 +365,11 @@
 		return nodeName;
 	}
 
-	function updateLHCText(premiums) {
+	function updateLHCText(product) {
 		var lhcText = "";
 
-		if (premiums.paymentTypePremiums[premiums.paymentNode] && premiums.paymentTypePremiums[premiums.paymentNode][premiums._selectedFrequency]) {
-			lhcText = premiums.paymentTypePremiums[premiums.paymentNode][premiums._selectedFrequency].pricing;
+		if (product.paymentTypePremiums[product.paymentNode] && product.paymentTypePremiums[product.paymentNode][product._selectedFrequency]) {
+			lhcText = product.paymentTypePremiums[product.paymentNode][product._selectedFrequency].pricing;
 		}
 
 		$paymentMethodLHCText.html(lhcText);
