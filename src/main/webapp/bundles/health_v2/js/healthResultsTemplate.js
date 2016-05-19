@@ -195,6 +195,21 @@
         return result;
     }
 
+    function getExcessPrices(obj) {
+        var data = {},
+            excessData = Object.byString(obj, "hospital.inclusions.excesses");
+        data.hasExcesses = _.isObject(excessData);
+        if (data.hasExcesses) {
+            data.perAdmission = _formatExcess(excessData.perAdmission);
+            data.perPerson = _formatExcess(excessData.perPerson);
+            data.perPolicy = _formatExcess(excessData.perPolicy);
+        }
+        return data;
+    }
+    
+    function _formatExcess(price) {
+        return _.isNull(price) ? "$0" : meerkat.modules.currencyField.formatCurrency(price, {roundToDecimalPlace: 0})
+    }
 
     function getPrice(result) {
         var priceResult = {};
@@ -217,7 +232,7 @@
 
 
     function init() {
-        $(document).ready(function() {
+        $(document).ready(function () {
             $resultsPagination = $('.results-pagination');
         });
     }
@@ -235,7 +250,16 @@
             }
         });
 
+        // populate extras selections list with empty div
+        if (numberOfSelectedExtras() === 0) {
+            $('.featuresListExtrasSelections .children').html('<div class="cell category collapsed"><div class="labelInColumn no-extras-selected"><div class="content" data-featureid="9997"><div class="contentInner">No extras selected</div></div></div></div>');
+        }
 
+    }
+
+    function numberOfSelectedExtras() {
+        var pageStructure = Features.getPageStructure(3);
+        return pageStructure && pageStructure.length ? pageStructure[0].children.length : 0;
     }
 
     function eventSubscriptions() {
@@ -279,10 +303,12 @@
         getAvailableExtrasAsList: getAvailableExtrasAsList,
         getExcessChildDisplayValue: getExcessChildDisplayValue,
         getPricePremium: getPricePremium,
+        getExcessPrices: getExcessPrices,
         getPrice: getPrice,
         getSpecialOffer: getSpecialOffer,
         getItem: getItem,
-        postRenderFeatures: postRenderFeatures
+        postRenderFeatures: postRenderFeatures,
+        numberOfSelectedExtras: numberOfSelectedExtras
     });
 
 })(jQuery);
