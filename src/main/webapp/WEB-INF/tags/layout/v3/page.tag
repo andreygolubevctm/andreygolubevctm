@@ -51,6 +51,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 <!DOCTYPE html>
 <go:html>
 <head>
+	<%-- Google Optimise 360 --%>
+	<content:get key="googleOptimise360" />
+
 	<title>${title} - ${pageSettings.getSetting('brandName')}</title>
 	<meta charset='utf-8'>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">

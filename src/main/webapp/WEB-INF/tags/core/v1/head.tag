@@ -55,6 +55,9 @@
 </c:set>
 
 <head>
+	<%-- Google Optimise 360 --%>
+	<content:get key="googleOptimise360" />
+
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta http-equiv="Cache-Control" content="no-cache, max-age=0" />
 	<meta http-equiv="Expires" content="-1">
