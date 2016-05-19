@@ -78,7 +78,7 @@
      * @private
      */
     function _getHelpTooltip(ft) {
-        return ft.helpId !== '' && ft.helpId != '0' ? '<a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:' + ft.helpId + '" data-toggle="popover" data-my="right center" data-at="left center"><span class="text-hide">Need Help?</span></a>' : '';
+        return ft.helpId !== '' && ft.helpId != '0' ? '<a href="javascript:void(0);" class="help-icon" data-content="helpid:' + ft.helpId + '" data-toggle="popover" data-my="right center" data-at="left center">(?)</a>' : '';
     }
 
     function _hasResult(ft) {
