@@ -70,7 +70,17 @@
     text-align: right;
     font-size: @savingsSize;
     line-height: @savingsSize;
+
+    .btn-add-bill {
+      display: block;
+      width: 90px;
+      margin-bottom: 7px;
+      text-align: left;
+      span {
+        font-size: 12px;
+      }
     }
+  }
 
   .yearlySavingsTitle {
     float: none;
@@ -159,28 +169,18 @@
     }
   }
 
-}
-
-@media (@sm-only) {
-  @priceSize: 23px;
-  .totalDiscounts,
-  .yearlySavings,
-  .quoteNumber {
-    font-size: @priceSize;
-    line-height: @priceSize;
-  }
-
-  .yearly-savings {
+  .yearlySavings {
     .btn-add-bill {
       display: block;
-      width: 90px;
       text-align: left;
       span {
-        font-size: 12px;
+        font-size: 15px;
       }
     }
   }
 }
+
+
 //-------------------------------------------------------------------------------------------
 //SM and greater vertical centering magic
 

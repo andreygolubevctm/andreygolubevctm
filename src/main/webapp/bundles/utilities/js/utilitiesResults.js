@@ -341,8 +341,16 @@
     function addBillClick(event) {
         billClicked = true;
         event.preventDefault();
-        $('#utilities_householdDetails_recentElectricityBill_Y').parent().show().click();
-        $('#utilities_householdDetails_recentGasBill_Y').parent().show().click();
+
+        var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val() || null;
+
+        if(whatToCompare === "EG" || whatToCompare === "E") {
+            $('#utilities_householdDetails_recentElectricityBill_Y').parent().show().click();
+        }
+
+        if(whatToCompare === "EG" || whatToCompare === "G") {
+            $('#utilities_householdDetails_recentGasBill_Y').parent().show().click();
+        }
 
         meerkat.modules.journeyEngine.gotoPath('start');
 
