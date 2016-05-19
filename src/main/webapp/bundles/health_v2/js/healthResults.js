@@ -3,7 +3,6 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
-        $resultsLowNumberMessage,
         selectedProduct = null,
         previousBreakpoint,
         best_price_count = 5,
@@ -98,7 +97,6 @@
 
     function initResults() {
 
-        $resultsLowNumberMessage = $(".resultsLowNumberMessage, .resultsMarketingMessages");
         var frequencyValue = $('#health_filter_frequency').val();
         frequencyValue = meerkat.modules.healthResults.getFrequencyInWords(frequencyValue) || 'monthly';
 
@@ -292,8 +290,6 @@
 
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
             tStart = new Date().getTime();
-            toggleMarketingMessage(false);
-            toggleResultsLowNumberMessage(false);
             var waitMessageVal = $("#waitMessage").val();
             meerkat.modules.journeyEngine.loadingShow(waitMessageVal);
 
@@ -310,8 +306,6 @@
         });
 
         $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
-            toggleResultsLowNumberMessage(true);
-
             _.defer(function () {
                 // Show pagination
                 $('header .slide-feature-pagination, header a[data-results-pagination-control], .floated-next-arrow').removeClass('hidden');
@@ -411,30 +405,11 @@
             if (_.isNull(pageData.measurements)) {
                 return false;
             }
-            var pageNumber = pageData.pageNumber;
-            var numberOfPages = pageData.measurements.numberOfPages;
-            var items = Results.getFilteredResults().length;
-            var columnsPerPage = pageData.measurements.columnsPerPage;
-            var freeColumns = (columnsPerPage * numberOfPages) - items;
 
             meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
                 additionalData: {},
                 onAfterEventMode: 'Pagination'
             });
-
-            if (freeColumns > 1 && numberOfPages === 1) {
-                toggleResultsLowNumberMessage(true);
-                toggleMarketingMessage(false);
-            } else {
-                toggleResultsLowNumberMessage(false);
-                if (!meerkat.modules.compare.isCompareOpen()) {
-                    if (pageNumber === pageData.measurements.numberOfPages && freeColumns > 1) {
-                        toggleMarketingMessage(true, freeColumns);
-                    } else {
-                        toggleMarketingMessage(false);
-                    }
-                }
-            }
 
         });
 
@@ -845,41 +820,6 @@
         });
     }
 
-
-    function toggleMarketingMessage(show, columns) {
-        var $marketingMessage = $(".resultsMarketingMessage");
-        if (show) {
-            $marketingMessage.addClass('show').attr('data-columns', columns);
-        } else {
-            $marketingMessage.removeClass('show');
-        }
-    }
-
-
-    function toggleResultsLowNumberMessage(show) {
-        var freeColumns;
-        if (show) {
-            var pageMeasurements = Results.pagination.calculatePageMeasurements();
-            if (pageMeasurements === null || meerkat.modules.compare.isCompareOpen()) {
-                show = false;
-            } else {
-                var items = Results.getFilteredResults().length;
-                freeColumns = pageMeasurements.columnsPerPage - items;
-                if (freeColumns < 1 || pageMeasurements.numberOfPages !== 1) {
-                    show = false;
-                }
-            }
-        }
-
-        if (show) {
-            $resultsLowNumberMessage.addClass('show');
-            $resultsLowNumberMessage.attr('data-columns', freeColumns);
-        } else {
-            $resultsLowNumberMessage.removeClass('show');
-        }
-        return show;
-    }
-
     function rankingCallback(product, position) {
 
         var data = {};
@@ -976,8 +916,6 @@
         getFrequencyInWords: getFrequencyInWords,
         getPaymentFrequencies: getPaymentFrequencies,
         stopColumnWidthTracking: stopColumnWidthTracking,
-        toggleMarketingMessage: toggleMarketingMessage,
-        toggleResultsLowNumberMessage: toggleResultsLowNumberMessage,
         recordPreviousBreakpoint: recordPreviousBreakpoint,
         rankingCallback: rankingCallback,
         publishExtraSuperTagEvents: publishExtraSuperTagEvents,

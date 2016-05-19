@@ -399,8 +399,6 @@
 			},
 			onAfterLeave: function(event){
 				meerkat.modules.healthResults.recordPreviousBreakpoint();
-				meerkat.modules.healthResults.toggleMarketingMessage(false);
-				meerkat.modules.healthResults.toggleResultsLowNumberMessage(false);
 			}
 		};
 
