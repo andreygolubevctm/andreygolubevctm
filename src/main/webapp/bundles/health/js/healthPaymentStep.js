@@ -4,9 +4,9 @@
 		meerkatEvents = meerkat.modules.events;
 
 	var moduleEvents = {
-			WEBAPP_LOCK: 'WEBAPP_LOCK',
-			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
-		};
+		WEBAPP_LOCK: 'WEBAPP_LOCK',
+		WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
+	};
 
 	var modalId;
 	var $paymentRadioGroup;
@@ -15,7 +15,6 @@
 	var $bankSection;
 	var $creditCardSection;
 	var $paymentCalendar;
-	var initialWriteQuoteDone = false;
 
 	var $frequencySelect;
 
@@ -69,10 +68,7 @@
 			$paymentRadioGroup.find('input').on('change', function() {
 				togglePaymentGroups();
 				toggleClaimsBankAccountQuestion();
-			});
 
-			// Update premium button
-			$('#health_payment_details_type input').on('click', function(){
 				// validate coupon
 				meerkat.modules.coupon.validateCouponCode($('.coupon-code-field').val());
 				updatePaymentPremium();
@@ -203,7 +199,6 @@
 		if (!_.isEmpty(premiums) && !_.isEmpty(premiums.paymentTypePremiums)) {
 			premiums.paymentNode = getPaymentMethodNode();
 			premiums._selectedFrequency = getSelectedFrequency();
-
 			var htmlTemplate = _.template($('#payment_frequency_options').html());
 			var options = htmlTemplate(premiums);
 
@@ -215,7 +210,7 @@
 
 	// Update premium button
 	function enableUpdatePremium() {
-			// Enable the other premium-related inputs
+		// Enable the other premium-related inputs
 		// Ignore fields that were specifically disabled by funds' rules.
 		var $paymentSection = $('#health_payment_details-selection');
 		$paymentSection.find(':input').not('.disabled-by-fund').prop('disabled', false);
@@ -268,11 +263,11 @@
 
 					// Sometimes the date selected by the user is not actually available, show message.
 					var notAvailableHtml =
-									'<p>Unfortunately this policy is not currently available. Please select another policy or call our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">'+meerkat.site.content.callCentreHelpNumber+'</span> for assistance.</p>' +
-									'<div class="col-sm-offset-4 col-xs-12 col-sm-4">' +
-										'<a class="btn btn-next btn-block" id="select-another-product" href="javascript:;">Select Another Product</a>' +
-										'<a class="btn btn-cta btn-block visible-xs" href="tel:'+meerkat.site.content.callCentreHelpNumber+'">Call Us Now</a>' +
-									'</div>';
+						'<p>Unfortunately this policy is not currently available. Please select another policy or call our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">'+meerkat.site.content.callCentreHelpNumber+'</span> for assistance.</p>' +
+						'<div class="col-sm-offset-4 col-xs-12 col-sm-4">' +
+						'<a class="btn btn-next btn-block" id="select-another-product" href="javascript:;">Select Another Product</a>' +
+						'<a class="btn btn-cta btn-block visible-xs" href="tel:'+meerkat.site.content.callCentreHelpNumber+'">Call Us Now</a>' +
+						'</div>';
 
 					modalId = meerkat.modules.dialogs.show({
 						title: 'Policy not available',
@@ -286,7 +281,10 @@
 				}else{
 					if (_.isArray(data)) data = data[0];
 
-					updateCurrentProduct(data);
+					data = updateProductObject(data);
+
+					// Update selected product
+					meerkat.modules.healthResults.setSelectedProduct(data, true);
 
 					// Show payment input questions
 					$paymentContainer.show();
@@ -300,8 +298,6 @@
 
 					//re-set the days if required
 					updatePaymentDayOptions();
-
-					updateFrequencySelectOptions();
 
 					$("#confirm-step").show();
 					$(".simples-dialogue-31").show();
@@ -336,14 +332,10 @@
 		var product = meerkat.modules.healthResults.getSelectedProduct();
 
 		if (!_.isEmpty(product)) {
-			var freq = !_.isEmpty(product._selectedFrequency) ? product._selectedFrequency : Results.getFrequency();
-			product._selectedFrequency = freq;
-			product.premium = product.paymentTypePremiums[getPaymentMethodNode(freq)];
+			product = updateProductObject(product);
 
 			// this prevents write quote being called twice on initial step load
-			if (!initialWriteQuoteDone) {
-				meerkat.modules.healthResults.setSelectedProduct(product, true);
-			}
+			meerkat.messaging.publish(meerkat.modules.healthResults.events.healthResults.PREMIUM_UPDATED, product);
 
 			updateFrequencySelectOptions();
 		}
@@ -353,27 +345,26 @@
 		var product = meerkat.modules.healthResults.getSelectedProduct();
 		product._selectedFrequency = getSelectedFrequency();
 		product.paymentNode = getPaymentMethodNode();
-		meerkat.modules.healthResults.setSelectedProduct(product, true);
+		product.premium = product.paymentTypePremiums[getPaymentMethodNode()];
+
+		meerkat.messaging.publish(meerkat.modules.healthResults.events.healthResults.PREMIUM_UPDATED, product);
 
 		updateLHCText(product);
 	}
 
-	function updateCurrentProduct(data) {
+	function updateProductObject(data) {
 		var freq = !_.isEmpty(data._selectedFrequency) ? data._selectedFrequency : Results.getFrequency();
 
 		// due to the new model, need to reset the premium node
-		data.premium = data.paymentTypePremiums[getPaymentMethodNode()];
+		data.premium = data.paymentTypePremiums[getPaymentMethodNode(freq)];
 		data._selectedFrequency = freq;
 
-		// Update selected product
-		meerkat.modules.healthResults.setSelectedProduct(data, true);
-
-		initialWriteQuoteDone = true;
+		return data;
 	}
 
 	function getPaymentMethodNode(freq){
 		var nodeName = '';
-			freq = (_.isEmpty(freq) ? getSelectedPaymentMethod() : freq);
+		freq = (_.isEmpty(freq) ? getSelectedPaymentMethod() : freq);
 
 		switch (freq) {
 			case 'cc': nodeName = 'CreditCard'; break;
