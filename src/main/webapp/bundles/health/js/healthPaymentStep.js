@@ -334,7 +334,6 @@
 		if (!_.isEmpty(product)) {
 			product = updateProductObject(product);
 
-			// this prevents write quote being called twice on initial step load
 			meerkat.messaging.publish(meerkat.modules.healthResults.events.healthResults.PREMIUM_UPDATED, product);
 
 			updateFrequencySelectOptions();
