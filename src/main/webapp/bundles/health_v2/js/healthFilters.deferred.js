@@ -257,7 +257,7 @@
                     $sidebar.find('.filter-remove.hospital').addClass('hidden');
                     $sidebar.find('.need-no-extras').removeClass('hidden').slideDown();
                 });
-                coverType = 'C';
+                coverType = 'H';
             }
             meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
         });
