@@ -224,9 +224,6 @@ var healthFunds_HBF = {
         <%-- Reset dependants config --%>
         meerkat.modules.healthDependants.resetConfig();
 
-        <%--dependant definition off--%>
-        healthFunds._dependants(false);
-
         <%--Authority off--%>
         healthFunds_HBF.$partnerAuthority.find('label').text(healthFunds_HBF.originalPartnerAuthorityLabelHtml);
         healthFunds._previousfund_authority(false);
