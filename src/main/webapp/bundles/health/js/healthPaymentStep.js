@@ -329,35 +329,30 @@
 		var product = meerkat.modules.healthResults.getSelectedProduct();
 
 		if (!_.isEmpty(product)) {
-			updateProductObject(product);
 			updateFrequencySelectOptions();
+			updateProductObject(product);
 		}
 	}
 
 	function updateProductFrequency() {
 		var product = meerkat.modules.healthResults.getSelectedProduct();
-		product._selectedFrequency = getSelectedFrequency();
-		product.paymentNode = getPaymentMethodNode();
-		product.premium = product.paymentTypePremiums[getPaymentMethodNode()];
+		updateProductObject(product);
 		updateLHCText(product);
+	}
+
+	function updateProductObject(product) {
+		// due to the new model, need to reset the premium node
+		product.paymentNode = getPaymentMethodNode();
+		product.premium = product.paymentTypePremiums[product.paymentNode];
+		product._selectedFrequency = getSelectedFrequency();
+
         meerkat.modules.healthResults.setSelectedProduct(product, true);
 	}
 
-	function updateProductObject(data) {
-		var freq = !_.isEmpty(data._selectedFrequency) ? data._selectedFrequency : Results.getFrequency();
-
-		// due to the new model, need to reset the premium node
-		data.premium = data.paymentTypePremiums[getPaymentMethodNode(freq)];
-		data._selectedFrequency = freq;
-
-        meerkat.modules.healthResults.setSelectedProduct(data, true);
-	}
-
-	function getPaymentMethodNode(freq){
+	function getPaymentMethodNode(){
 		var nodeName = '';
-		freq = (_.isEmpty(freq) ? getSelectedPaymentMethod() : freq);
 
-		switch (freq) {
+		switch (getSelectedPaymentMethod()) {
 			case 'cc': nodeName = 'CreditCard'; break;
 			default: nodeName = 'BankAccount'; break;
 		}
