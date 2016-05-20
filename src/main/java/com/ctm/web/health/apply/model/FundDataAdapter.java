@@ -15,7 +15,11 @@ import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.El
 import com.ctm.web.health.model.form.*;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+
+import static java.util.Collections.emptyList;
 
 public class FundDataAdapter {
 
@@ -36,10 +40,7 @@ public class FundDataAdapter {
                         .map(PaymentDetails::getStart)
                         .map(LocalDateUtils::parseAUSLocalDate)
                         .orElse(null),
-                quote.map(HealthQuote::getSituation)
-                        .map(com.ctm.web.health.model.form.Situation::getHealthSitu)
-                        .map(v -> new Benefits(HealthSituation.valueOf(v)))
-                        .orElse(null),
+                createBenefits(quote),
                 quote.map(HealthQuote::getApplication)
                     .map(Application::getCbh)
                     .map(FundDataAdapter::createMembership)
@@ -47,6 +48,23 @@ public class FundDataAdapter {
                         .map(Application::getNhb)
                         .map(FundDataAdapter::createMembership)
                         .orElse(null)));
+    }
+
+    protected static Benefits createBenefits(Optional<HealthQuote> quote) {
+        HealthSituation healthSitu = quote.map(HealthQuote::getSituation)
+                .map(com.ctm.web.health.model.form.Situation::getHealthSitu)
+                .map(HealthSituation::valueOf)
+                .orElse(null);
+        List<String> benefits = quote.map(HealthQuote::getApplication)
+                .map(Application::getHbf)
+                .map(Hbf::getFlexiextras)
+                .map(f -> Arrays.asList(StringUtils.split(f, ",")))
+                .orElse(emptyList());
+        if (healthSitu != null && benefits != null && !benefits.isEmpty()) {
+            return new Benefits(healthSitu, benefits);
+        } else {
+            return null;
+        }
     }
 
     protected static Membership createMembership(Cbh theCbh) {
