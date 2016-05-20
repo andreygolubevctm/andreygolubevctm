@@ -345,11 +345,13 @@
         var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val() || null;
 
         if(whatToCompare === "EG" || whatToCompare === "E") {
-            $('#utilities_householdDetails_recentElectricityBill_Y').parent().show().click();
+            $('.recent-electricity-bill').show();
+            $('#utilities_householdDetails_recentElectricityBill_Y').parent().click();
         }
 
         if(whatToCompare === "EG" || whatToCompare === "G") {
-            $('#utilities_householdDetails_recentGasBill_Y').parent().show().click();
+            $('.recent-gas-bill').show();
+            $('#utilities_householdDetails_recentGasBill_Y').parent().click();
         }
 
         meerkat.modules.journeyEngine.gotoPath('start');
