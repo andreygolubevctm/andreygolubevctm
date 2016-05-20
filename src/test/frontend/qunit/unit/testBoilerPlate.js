@@ -54,8 +54,8 @@ setupBoilerplate = function(base) {
                 root: 'http://localhost:8080/',
                 exit: 'http://int.comparethemarket.com.au/',
                 quote: '',
-                privacyPolicy: '/static/legal/privacy_policy.pdf',
-                websiteTerms: '/static/legal/website_terms_of_use.pdf',
+                privacyPolicy: '/ctm/legal/privacy_policy.pdf',
+                websiteTerms: '/ctm/legal/website_terms_of_use.pdf',
                 fsg: ''
             },
             liveChat: {
