@@ -89,8 +89,7 @@
         {{ var estimatedGasCostLabelPrefix = gasOnly ? "" : "Gas: "; }}
         {{ var estimatedGasCostLabel = estimatedGasCostValue >= 0 ? estimatedGasCostLabelPrefix + "$" + estimatedGasCostValue.toFixed(2) : estimatedGasCostLabelPrefix + '<a class="btn-add-bill" href="javascript:;"><span>Add bill information</span> <span class="icon icon-arrow-right"/></a>'; }}
         {{ } }}
-        {{ var estimatedCostLabelBreak = ""; }}
-
+        {{ var estimatedCostLabelBreak = estimatedElectricityCostLabel !== "" && estimatedGasCostLabel !== "" ? "<br>" : ""; }}
         {{ var showYearlySavings = meerkat.modules.utilitiesResults.showYearlySavings(); }}
         {{ var showEstimatedCost = meerkat.modules.utilitiesResults.showEstimatedCost(); }}
         {{ var showEstimatedUsage = meerkat.modules.utilitiesResults.showEstimatedUsage(); }}
