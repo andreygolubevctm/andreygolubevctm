@@ -1369,7 +1369,8 @@
 		getTrackingFieldsObject: getTrackingFieldsObject,
 		getRates: getRates,
 		getRebate: getRebate,
-		loadRates: loadRates
+		loadRates: loadRates,
+        hasPartner: hasPartner
 	});
 
 })(jQuery);

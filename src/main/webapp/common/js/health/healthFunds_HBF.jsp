@@ -12,8 +12,8 @@ HBF
 
 var healthFunds_HBF = {
     set: function(){
-        var productType = meerkat.modules.healthResults.getSelectedProduct().info.ProductType;
-        if (productType === 'GeneralHealth' || productType === 'Combined') {
+        healthFunds_HBF.productType = meerkat.modules.healthResults.getSelectedProduct().info.ProductType;
+        if (healthFunds_HBF.productType === 'GeneralHealth' || healthFunds_HBF.productType === 'Combined') {
             <%-- Custom question: HBF flexi extras --%>
             if ($('#hbf_flexi_extras').length > 0) {
                 $('#hbf_flexi_extras').show();
@@ -155,8 +155,45 @@ var healthFunds_HBF = {
         <%--schoolgroups and defacto--%>
         meerkat.modules.healthDependants.updateConfig({ showSchoolFields:false, 'schoolMinAge':18, 'schoolMaxAge':24, showSchoolIdField:false });
 
+        <%-- Authority Fund Name --%>
+        healthFunds._previousfund_authority(true);
+        healthFunds_HBF.$primaryAuthority = $('#health_previousfund_primary_authority').parents('.health_previous_fund_authority');
+        healthFunds_HBF.$partnerAuthority = $('#health_previousfund_partner_authority').parents('.health_previous_fund_authority');
+        healthFunds_HBF.originalPartnerAuthorityLabelHtml = healthFunds_HBF.$partnerAuthority.find('label').html();
+        if (meerkat.modules.health.hasPartner() === true) {
+            healthFunds_HBF.$primaryAuthority.addClass('hidden');
+            healthFunds_HBF.$partnerAuthority.find('label').text('We authorise HBF to contact our previous fund(s) to obtain a clearance certificate');
+        } else {
+            healthFunds_HBF.$primaryAuthority.removeClass('hidden');
+            healthFunds_HBF.$partnerAuthority.find('label').text(healthFunds_HBF.originalPartnerAuthorityLabelHtml);
+        }
+
+        <%-- Calendar for start cover --%>
+        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
+
         <%--credit card & bank account frequency & day frequency--%>
+        meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
         meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
+
+        <%--credit card options--%>
+        meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
+        meerkat.modules.healthCreditCard.render();
+
+        <%-- Payment deduction dates --%>
+        $('#update-premium').on('click.HBF', function() {
+            var isBank = meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() !== 'cc';
+
+            if (meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'fortnightly') {
+                healthFunds._payments = {
+                    'min':0,
+                    'max':14,
+                    'weekends':true
+                };
+                meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, isBank);
+            } else {
+                meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, isBank, 28);
+            }
+        });
 
         <%-- Email not compulsory, but when you select email as how to sent you, then it is required --%>
         var $emailField = $("#health_application_email");
@@ -187,9 +224,25 @@ var healthFunds_HBF = {
         <%-- Reset dependants config --%>
         meerkat.modules.healthDependants.resetConfig();
 
+        <%--dependant definition off--%>
+        healthFunds._dependants(false);
+
+        <%--Authority off--%>
+        healthFunds_HBF.$partnerAuthority.find('label').text(healthFunds_HBF.originalPartnerAuthorityLabelHtml);
+        healthFunds._previousfund_authority(false);
+
         <%-- let set this back to its original state --%>
         $('input[name="health_application_contactPoint"]').off('change.HBF');
         $("#health_application_email").setRequired(true);
+
+        <%--credit card options--%>
+        meerkat.modules.healthCreditCard.resetConfig();
+        meerkat.modules.healthCreditCard.render();
+
+        <%--off payment deduction dates--%>
+        $('#update-premium').off('click.HBF');
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('#health_payment_bank_paymentDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('#health_payment_credit_paymentDay'), false);
 
     }
 };

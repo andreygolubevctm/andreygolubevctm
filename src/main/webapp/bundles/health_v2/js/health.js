@@ -1419,7 +1419,8 @@
 		getRebate: getRebate,
 		fetchRates: fetchRates,
 		loadRates: loadRates,
-		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage
+		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage,
+        hasPartner: hasPartner
 	});
 
 })(jQuery);
