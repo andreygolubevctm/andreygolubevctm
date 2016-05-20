@@ -169,7 +169,7 @@ var healthFunds_HBF = {
         }
 
         <%-- Calendar for start cover --%>
-        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
+        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 365);
 
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
@@ -189,7 +189,7 @@ var healthFunds_HBF = {
                     'max':14,
                     'weekends':true
                 };
-                meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, isBank);
+                meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, true, isBank);
             } else {
                 meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, isBank, 28);
             }
