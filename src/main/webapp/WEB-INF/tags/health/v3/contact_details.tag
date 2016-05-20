@@ -43,7 +43,7 @@
 		</c:if>
 
 		<form_v2:row>
-			<field_v2:checkbox xpath="${xpath}/postalMatch" value="Y" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
+			<field_v3:checkbox xpath="${xpath}/postalMatch" value="Y" checked="true" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
 		</form_v2:row>
 
 		<div id="${name}_postalGroup">

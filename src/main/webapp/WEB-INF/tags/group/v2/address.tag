@@ -175,7 +175,7 @@
 
 <c:set var="fieldXpath" value="${xpath}/nonStd" />
 <form_v2:row fieldXpath="${fieldXpath}" label="" id="${name}_nonStd_row" className="nonStd">
-	<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="Tick here if you are unable to find the address" label="true" required="false" customAttribute=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter the address'" />
+	<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="Tick here if you are unable to find the address or would like to enter a PO Box address" label="true" required="false" customAttribute=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter the address'" />
 </form_v2:row>
 
 <field_v1:hidden xpath="${xpath}/lastSearch" />

@@ -170,7 +170,7 @@
 
 <c:set var="fieldXpath" value="${xpath}/nonStd" />
 <form_v3:row fieldXpath="${fieldXpath}" label="empty" id="${name}_nonStd_row" className="nonStd">
-	<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="Tick here if you are unable to find the address" label="true" required="false" customAttribute=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter the address'" />
+	<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="Tick here if you are unable to find the address" to say "Tick here if you are unable to find the address or would like to enter a PO Box address" label="true" required="false" customAttribute=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter the address'" />
 </form_v3:row>
 <core_v1:clear />
 
