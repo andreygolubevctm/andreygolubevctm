@@ -52,7 +52,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 <go:html>
 <head>
 	<%-- Google Optimise 360 --%>
-	<content:get key="googleOptimise360" />
+	<c:if test="${empty callCentre or not callCentre}">
+		<content:get key="googleOptimise360" />
+	</c:if>
 
 	<title>${title} - ${pageSettings.getSetting('brandName')}</title>
 	<meta charset='utf-8'>
