@@ -659,7 +659,7 @@
 				navigationId: steps.resultsStep.navigationId
 			},
 			{
-				label:'Application',
+				label:'Purchase',
 				navigationId: steps.applyStep.navigationId
 			},
 			{
