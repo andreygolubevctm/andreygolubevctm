@@ -47,6 +47,9 @@
                         var valueNew = $('input[name=' + filterObject.name + ']:checked').val();
                         $(filterObject.defaultValueSourceSelector).val(valueNew);
                         Results.setFrequency(meerkat.modules.healthResults.getFrequencyInWords(valueNew), false);
+                        _.defer(function () {
+                            meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
+                        });
                     }
                 }
             },

@@ -326,7 +326,7 @@
 
     function toggleRemoveResultPagination() {
         var pageMeasurements = Results.pagination.getPageMeasurements();
-        if (pageMeasurements && pageMeasurements.numberOfPages <= 1) {
+        if (!pageMeasurements || pageMeasurements && pageMeasurements.numberOfPages <= 1) {
             $resultsPagination.addClass('hidden');
         } else {
             $resultsPagination.removeClass('hidden');
@@ -343,7 +343,8 @@
         getSpecialOffer: getSpecialOffer,
         getItem: getItem,
         postRenderFeatures: postRenderFeatures,
-        numberOfSelectedExtras: numberOfSelectedExtras
+        numberOfSelectedExtras: numberOfSelectedExtras,
+        toggleRemoveResultPagination: toggleRemoveResultPagination
     });
 
 })(jQuery);

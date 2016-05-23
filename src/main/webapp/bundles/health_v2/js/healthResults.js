@@ -270,12 +270,7 @@
         $(document).on("resultsLoaded", onResultsLoaded);
 
         $(document).on("resultsReturned", function () {
-            filteredOutResults = []; //reset
             meerkat.modules.utils.scrollPageTo($("header"));
-
-            $('.floated-next-arrow').removeClass('hidden');
-            meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
-
             // Reset the feature header to match the new column content.
             $(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
 
@@ -290,6 +285,8 @@
             if (meerkat.site.isCallCentreUser) {
                 createPremiumsPopOver();
             }
+            // update preResultsRowSnapshot
+            meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
         });
 
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
@@ -298,7 +295,7 @@
             meerkat.modules.journeyEngine.loadingShow(waitMessageVal);
 
             // Hide pagination
-            $('header .slide-feature-pagination, header a[data-results-pagination-control], .floated-next-arrow').addClass('hidden');
+            $('.results-pagination').add('header a[data-results-pagination-control]').addClass('hidden');
         });
 
         // If error occurs, go back in the journey
@@ -311,8 +308,10 @@
 
         $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
             _.defer(function () {
-                // Show pagination
-                $('header .slide-feature-pagination, header a[data-results-pagination-control], .floated-next-arrow').removeClass('hidden');
+                // Show pagination header for mobile
+                $('header a[data-results-pagination-control]').removeClass('hidden');
+                // Setup pagination for non-mobile journey
+                meerkat.modules.healthResultsTemplate.toggleRemoveResultPagination();
                 // Setup scroll
                 Results.pagination.setupNativeScroll();
             });
