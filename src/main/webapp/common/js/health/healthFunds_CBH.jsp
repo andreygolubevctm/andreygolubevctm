@@ -183,9 +183,9 @@ var healthFunds_CBH = {
 		else {
 			<c:set var="html">
 				<c:set var="fieldXpath" value="health/application/cbh/partneremployee" />
-				<form_v3:row id="cbh_partneremployee" fieldXpath="${fieldXpath}" label="Is your partner a current or former employee, contractor or franchisee of the CBA Group?">
+				<form_v2:row id="cbh_partneremployee" fieldXpath="${fieldXpath}" label="Is your partner a current or former employee, contractor or franchisee of the CBA Group?">
 					<field_v2:array_select xpath="${fieldXpath}" required="true" title="if your partner is a current or former employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
-				</form_v3:row>
+				</form_v2:row>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
 			$('#health_application_partner_authority_group').after('<c:out value="${html}" escapeXml="false" />');
@@ -198,9 +198,9 @@ var healthFunds_CBH = {
 		else {
 			<c:set var="html">
 				<c:set var="fieldXpath" value="health/application/cbh/register" />
-				<form_v3:row id="cbh_register" fieldXpath="${fieldXpath}" >
+				<form_v2:row id="cbh_register" fieldXpath="${fieldXpath}" >
 					<field_v2:checkbox xpath="${fieldXpath}" required="false" value="Y" label="true" title="Would you like to be registered for CBHS Online Services?" />
-				</form_v3:row>
+				</form_v2:row>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
 			$('#health_application_optInEmail-group').after('<c:out value="${html}" escapeXml="false" />');
