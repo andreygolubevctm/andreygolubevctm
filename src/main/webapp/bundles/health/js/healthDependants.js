@@ -78,14 +78,18 @@
             dependantsArr = addDataBucketDependantsToList();
         } else if (_.isNumber(noOfDependants) && noOfDependants > 0) {
             for(var i=0; i<noOfDependants; i++) {
-                dependantsArr.push(defaultDependant);
+                dependantsArr.push(getDefaultDependant());
             }
         } else if (noOfDependants === 0) {
-            dependantsArr.push(defaultDependant);
+            dependantsArr.push(getDefaultDependant());
         }
 
         renderDependants();
         applyEventListeners();
+    }
+
+    function getDefaultDependant() {
+        return _.extend({},defaultDependant);
     }
 
     /**
@@ -299,7 +303,7 @@
         if (numDependants < dependantLimit) {
             var dependantId = numDependants + 1;
 
-            var blankDependant = $.extend({}, defaultDependant, {dependantId: dependantId});
+            var blankDependant = $.extend({}, getDefaultDependant(), {dependantId: dependantId});
             $dependantsTemplateWrapper.append(dependantTemplate(blankDependant));
             dependantsArr.push(blankDependant);
 
