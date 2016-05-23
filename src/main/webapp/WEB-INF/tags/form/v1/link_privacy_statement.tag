@@ -27,6 +27,6 @@
 		<a data-toggle="dialog" data-content="${openingContent}${bodyContent}" data-cache="true" data-dialog-hash-id="privacystatement">${anchorLabel}</a>
 	</c:when>
 	<c:otherwise>
-		<a href='/ctm/legal/privacy_policy.pdf' target='_blank'>${anchorLabel}</a>
+		<a href='/static/legal/privacy_policy.pdf' target='_blank'>${anchorLabel}</a>
 	</c:otherwise>
 </c:choose>
