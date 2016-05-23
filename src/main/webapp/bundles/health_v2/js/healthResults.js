@@ -218,6 +218,10 @@
                         {
                             key: 'None',
                             value: 'No'
+                        },
+                        {
+                            key: 'No Waiting Period',
+                            value: 'No'
                         }
                     ]
                 },
