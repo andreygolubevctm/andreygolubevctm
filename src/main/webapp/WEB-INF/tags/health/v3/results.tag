@@ -85,7 +85,7 @@
                     <div class="featuresListExtrasFullList" data-feature-index="5"></div>
                 </div>{{ } }}
                 <div class="ambulanceCoverSection">
-                    <h3><span class="health-icon HLTicon-extras"></span> Ambulance Cover</h3>
+                    <h3><span class="health-icon HLTicon-ambulance"></span> Ambulance Cover</h3>
                     <div class="featuresListAmbulance" data-feature-index="6"></div>
                 </div>
             </div>
