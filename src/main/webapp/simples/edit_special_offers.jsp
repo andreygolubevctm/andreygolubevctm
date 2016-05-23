@@ -25,7 +25,7 @@
 								<span>Fund</span>
 							</a>
 						</li>
-						<li class="col-lg-3">
+						<li class="col-lg-2">
 							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Offer</span>
@@ -43,6 +43,12 @@
 								<span>State</span>
 							</a>
 						</li>
+                        <li class="col-lg-1">
+                            <a href="javascript:;">
+                                <span class="icon"></span>
+                                <span>Cover Type</span>
+                            </a>
+                        </li>
 						<li class="col-lg-1">
 							<a href="javascript:;">
 								<span class="icon"></span>
@@ -140,7 +146,7 @@
 	</div>
 
 	<div class="row">
-		<div class="form-group col-sm-4">
+		<div class="form-group col-sm-3">
 			<label>Brand</label>
 			<select name="styleCodeId" class="form-control" {{= data.modalAction === "edit" ? "disabled" : "" }}>
 			{{ for(var i in brands) { }}
@@ -149,7 +155,7 @@
 			</select>
 		</div>
 
-		<div class="form-group col-sm-4">
+		<div class="form-group col-sm-3">
 			<label>Provider</label>
 			<select name="providerId" class="form-control" {{= data.modalAction === "edit" ? "disabled" : "" }}>
 			{{ for(var i in providers) { }}
@@ -158,7 +164,7 @@
 			</select>
 		</div>
 
-		<div class="form-group col-sm-4">
+		<div class="form-group col-sm-3">
 			<label>State</label>
 			<select name="state" class="form-control" >
 				<c:set var="stateOptions" value="=Select a State,0=All,ACT=Australian Capital Territory,NSW=New South Wales,NT=Northern Territory,QLD=Queensland,SA=South Australia,TAS=Tasmania,VIC=Victoria,WA=Western Australia" />
@@ -170,6 +176,19 @@
 				</c:forTokens>
 			</select>
 		</div>
+
+        <div class="form-group col-sm-3">
+            <label>Cover Type</label>
+            <select name="coverType" class="form-control" >
+                <c:set var="coverTypeOptions" value="=Select a CoverType,H=Hospital,E=Extras,C=Combined" />
+                <c:forTokens items="${coverTypeOptions}" delims="," var="coverType">
+                    <c:set var="val" value="${fn:substringBefore(coverType,'=')}" />
+                    <c:set var="des" value="${fn:substringAfter(coverType,'=')}" />
+
+                    <option value="${val}" {{= "${val}" === data.coverType ? "selected" : "" }}>${des}</option>
+                </c:forTokens>
+            </select>
+        </div>
 	</div>
 
 	<div class="row">
@@ -206,7 +225,7 @@
 		<div class="col-lg-1">
 			{{= data.providerName }}
 		</div>
-		<div class="col-lg-3">
+		<div class="col-lg-2">
 			{{= data.content }}
 		</div>
 		<div class="col-lg-3">
@@ -215,6 +234,9 @@
 		<div class="col-lg-1">
 			{{= data.state === "0" ? "All States" : data.state }}
 		</div>
+        <div class="col-lg-1">
+            {{= data.coverType }}
+        </div>
 		<div class="col-lg-1">
 			{{= data.styleCode }}
 		</div>

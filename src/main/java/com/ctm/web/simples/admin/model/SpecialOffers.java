@@ -32,6 +32,9 @@ public class SpecialOffers {
 	@NotEmpty(message="Please provide a state")
 	public String state;
 
+    @NotEmpty(message="Please provide a coverType")
+    public String coverType;
+
 	public String providerName;
 	public SpecialOffers(){
 
@@ -98,6 +101,14 @@ public class SpecialOffers {
 	public void setState(String state) {
 		this.state = state!=null?state.toUpperCase():"0";
 	}
+
+    public String getCoverType() {
+        return coverType;
+    }
+
+    public void setCoverType(String coverType) {
+        this.coverType = coverType;
+    }
 
 	public String getStyleCode() {
 		return styleCode;
