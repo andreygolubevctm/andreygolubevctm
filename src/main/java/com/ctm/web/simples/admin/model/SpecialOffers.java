@@ -107,7 +107,7 @@ public class SpecialOffers {
     }
 
     public void setCoverType(String coverType) {
-        this.coverType = coverType;
+        this.coverType = coverType!=null?coverType.toUpperCase():"0";
     }
 
 	public String getStyleCode() {

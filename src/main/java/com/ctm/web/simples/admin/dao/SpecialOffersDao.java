@@ -102,7 +102,7 @@ public class SpecialOffersDao {
      * @param styleCodeId     : brand code id , function also look for default '0' value
      * @param applicationDate : Current date
      * @param state           : name of state (i.e QLD), function also search for default value '0'
-     * @param coverType       : type of Cover (i.e C for Combined, H for Hospital, E for Extras)
+     * @param coverType       : type of Cover (i.e C for Combined, H for Hospital, E for Extras), function also search for default value '0'
      * @param verticalId      : vertical ID
      */
     public List<SpecialOffers> getSpecialOffers(int providerId, int styleCodeId, Date applicationDate, String state, String coverType, int verticalId) throws DaoException {
@@ -113,7 +113,7 @@ public class SpecialOffersDao {
         try {
             stmt = dbSource.getConnection().prepareStatement(
                     "SELECT content, terms FROM ctm.hlt_specialoffer_master WHERE providerId=? AND  (styleCodeId=?  OR styleCodeId = 0) " +
-                            "AND (state=? OR state='0') AND coverType=? AND ? BETWEEN effectiveStart AND effectiveEnd order by state DESC limit 1");
+                            "AND (state=? OR state='0') AND (coverType=? OR coverType='0') AND ? BETWEEN effectiveStart AND effectiveEnd order by state DESC limit 1");
             stmt.setInt(1, providerId);
             stmt.setInt(2, styleCodeId);
             stmt.setString(3, state.trim().toUpperCase());

@@ -180,7 +180,7 @@
         <div class="form-group col-sm-3">
             <label>Cover Type</label>
             <select name="coverType" class="form-control" >
-                <c:set var="coverTypeOptions" value="=Select a CoverType,H=Hospital,E=Extras,C=Combined" />
+                <c:set var="coverTypeOptions" value="=Select a CoverType,0=All,H=Hospital,E=Extras,C=Combined" />
                 <c:forTokens items="${coverTypeOptions}" delims="," var="coverType">
                     <c:set var="val" value="${fn:substringBefore(coverType,'=')}" />
                     <c:set var="des" value="${fn:substringAfter(coverType,'=')}" />
@@ -235,7 +235,7 @@
 			{{= data.state === "0" ? "All States" : data.state }}
 		</div>
         <div class="col-lg-1">
-            {{= data.coverType }}
+            {{= data.coverType === "0" ? "All Cover Types" : data.coverType }}
         </div>
 		<div class="col-lg-1">
 			{{= data.styleCode }}
