@@ -127,13 +127,11 @@
      * @returns {*}
      */
     function buildDisplayValue(pathValue, ft) {
-        if (pathValue || pathValue === "") { // this condition used to be "hasResult"
-            var displayValue = Features.parseFeatureValue(pathValue, true);
-            if (pathValue) {
-                return getTitleBefore(ft) + '<strong>' + displayValue + '</strong> ' + _getExtraText(ft) + getTitleAfter(ft) + _getHelpTooltip(ft);
-            }
+        var displayValue = Features.parseFeatureValue(pathValue, true);
+        if (displayValue) {
+            return getTitleBefore(ft) + '<strong>' + displayValue + '</strong> ' + _getExtraText(ft) + getTitleAfter(ft) + _getHelpTooltip(ft);
         }
-        return "-";
+        return ft.safeName + ": <strong>N/A</strong>";
     }
 
     /**
