@@ -33,7 +33,6 @@
 			<simples:dialogue id="25" vertical="health" mandatory="true" className="hidden follow-up-call" /> <%-- Follow up call --%>
 
 
-			<%--<form_v3:fieldset legend="" postLegend=""  className="health-about-you-title" />--%>
 			<form_v3:fieldset id="healthAboutYou" legend="About you" postLegend="Tell us about yourself, so we can find the right cover for you" className="health-about-you">
 
 				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
