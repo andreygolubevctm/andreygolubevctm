@@ -30,7 +30,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/type" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Payment method" className="changes-premium">
-			<field_v2:array_radio items="cc=Credit Card,ba=Direct Debit" xpath="${fieldXpath}" title="how would you like to pay" required="true" className="health-payment_details-type" id="${name}_type" defaultValue="dd"/>
+			<field_v2:array_radio items="cc=Credit Card,ba=Bank Account" xpath="${fieldXpath}" title="how would you like to pay" required="true" className="health-payment_details-type" id="${name}_type" defaultValue="ba"/>
 		</form_v2:row>
 
 		<%-- Note: this form row's HTML is changed by JavaScript --%>

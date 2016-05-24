@@ -106,7 +106,7 @@ var healthFunds_NIB = {
         if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
             healthFunds_NIB.$paymentTypeContainer.slideUp();
         } else {
-            healthFunds_NIB.$paymentTypeContainer.text('NIB offers a 4% discount for bank account payments').slideDown();
+            healthFunds_NIB.$paymentTypeContainer.text('*NIB offers a 4% discount for bank account payments').slideDown();
         }
     },
     unset: function(){
@@ -120,6 +120,8 @@ var healthFunds_NIB = {
         $('#health_application_no_email').off('click.NIB');
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
+
+        healthFunds_NIB.$paymentTypeContainer.text('').slideUp();
 
         <%--Contact Point question--%>
         healthApplicationDetails.hideHowToSendInfo();

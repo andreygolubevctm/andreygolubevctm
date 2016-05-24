@@ -54,11 +54,7 @@ var healthFunds_AUF = {
     };
   },
   renderPaymentDay: function(){
-    if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc') {
-      healthFunds_AUF.$paymentTypeContainer.slideUp();
-    } else {
-      healthFunds_AUF.$paymentTypeContainer.text('Australian Unity offers a 4% discount for direct debit payments').slideDown();
-    }
+    healthFunds_AUF.$paymentTypeContainer.text('*Australian Unity offers a 4% discount for direct debit payments').slideDown();
 
     var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
@@ -76,6 +72,9 @@ var healthFunds_AUF = {
     <%--selections for payment date--%>
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+
+    healthFunds_AUF.$paymentTypeContainer.text('').slideUp();
+
     healthFunds_AUF.$paymentType.off('click.AUF');
     healthFunds_AUF.$paymentFrequency.off('change.AUF');
     healthFunds_AUF.$paymentStartDate.off("changeDate.AUF");

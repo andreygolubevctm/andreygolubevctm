@@ -597,6 +597,7 @@
 
 				if(event.isForward === true){
 
+					meerkat.modules.healthPaymentStep.rebindCreditCardRules();
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
 					var paymentDetailsSection = $("#health_payment_details-selection");

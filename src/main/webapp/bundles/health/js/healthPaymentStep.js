@@ -38,17 +38,7 @@
 			if(meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
 
 			// Fields
-			$paymentRadioGroup = $("#health_payment_details_type");
-			$frequencySelect = $("#health_payment_details_frequency");
-			$bankAccountDetailsRadioGroup = $("#health_payment_details_claims");
-			$sameBankAccountRadioGroup = $("#health_payment_bank_claims");
-			$paymentMethodLHCText = $('.changes-premium .lhcText');
-			$bankSection = $('#health_payment_bank-selection');
-			$creditCardSection = $('#health_payment_credit-selection');
-			$paymentCalendar = $('#health_payment_details_start');
-
-			// Containers
-			$paymentContainer = $(".update-content");
+			initFields();
 
 			// Add event listeners
 			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockPaymentStep(obj) {
@@ -79,7 +69,6 @@
 				updatePaymentDayOptions();
 			});
 
-			$('#health_payment_credit_type').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
 			meerkat.modules.healthCreditCard.setCreditCardRules();
 
 			// show pay claims into bank account question (and supporting section).
@@ -111,6 +100,25 @@
 			$paymentContainer.hide();
 
 		});
+	}
+
+	function initFields() {
+		$paymentRadioGroup = $("#health_payment_details_type");
+		$frequencySelect = $("#health_payment_details_frequency");
+		$bankAccountDetailsRadioGroup = $("#health_payment_details_claims");
+		$sameBankAccountRadioGroup = $("#health_payment_bank_claims");
+		$paymentMethodLHCText = $('.changes-premium .lhcText');
+		$bankSection = $('#health_payment_bank-selection');
+		$creditCardSection = $('#health_payment_credit-selection');
+		$paymentCalendar = $('#health_payment_details_start');
+
+		// Containers
+		$paymentContainer = $(".update-content");
+	}
+
+	// Need this function because healthGeneralFunctions destroys the event bindings via renderFields() whereas the old version only updates the dropdown
+	function rebindCreditCardRules() {
+		$('.health-credit_card_details-type input').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
 	}
 
 	// Settings should be reset when the selected product changes.
@@ -471,6 +479,7 @@
 
 	meerkat.modules.register("healthPaymentStep", {
 		init: initHealthPaymentStep,
+		initFields: initFields,
 		events: moduleEvents,
 		getSetting: getSetting,
 		overrideSettings: overrideSettings,
@@ -478,7 +487,8 @@
 		getSelectedFrequency: getSelectedFrequency,
 		getSelectedPaymentMethod: getSelectedPaymentMethod,
 		updatePremium: updatePremium,
-		getPaymentMethodNode: getPaymentMethodNode
+		getPaymentMethodNode: getPaymentMethodNode,
+		rebindCreditCardRules: rebindCreditCardRules
 	});
 
 })(jQuery);

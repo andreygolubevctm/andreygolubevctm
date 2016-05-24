@@ -656,6 +656,7 @@
 
 				if(event.isForward === true){
 
+					meerkat.modules.healthPaymentStep.rebindCreditCardRules();
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
 					// Show discount text if applicable

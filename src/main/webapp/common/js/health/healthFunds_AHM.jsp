@@ -190,7 +190,7 @@ var healthFunds_AHM = {
   populateFuturePaymentDays: function() {
     if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
       meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, false);
-      healthFunds_AHM.$paymentTypeContainer.text('AHM will apply a 1.5% surcharge for all credit card transactions').slideDown();
+      healthFunds_AHM.$paymentTypeContainer.text('*AHM will apply a 1.5% surcharge for all credit card transactions').slideDown();
     }
     else {
       meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, true);
@@ -223,6 +223,8 @@ var healthFunds_AHM = {
     <%--selections for payment date--%>
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+
+    healthFunds_AHM.$paymentTypeContainer.text('').slideUp();
 
     healthFunds_AHM.$paymentType.off('click.AHM');
     healthFunds_AHM.$paymentFrequency.off('change.AHM');

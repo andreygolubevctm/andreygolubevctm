@@ -30,6 +30,7 @@
 
     function init(){
         $(document).ready(function () {
+            if (meerkat.site.pageAction === "confirmation") return;
             creditCardTemplate = $('#credit-card-template').html();
             ccHtmlTemplate = _.template(creditCardTemplate);
         });
@@ -89,7 +90,9 @@
     }
 
     function _getCardType() {
-        return $('.health-credit_card_details-type input').filter(":checked").val();
+        var creditCard = $('.health-credit_card_details-type input').filter(":checked").val();
+        /** default to empty string which is what the old dropdown did */
+        return _.isEmpty(creditCard) ? '' : creditCard;
     }
 
     function _setRules(cardType, $creditCardInput, $ccvInput) {

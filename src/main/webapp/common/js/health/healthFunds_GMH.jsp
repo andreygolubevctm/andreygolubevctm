@@ -76,7 +76,7 @@ var healthFunds_GMH = {
             healthFunds_GMH.$paymentTypeContainer.slideUp();
         } else {
             messageField = healthFunds_GMH.$policyDateBankMessage;
-            healthFunds_GMH.$paymentTypeContainer.text('GMHBA offers a 2% discount for bank account payments').slideDown();
+            healthFunds_GMH.$paymentTypeContainer.text('*GMHBA offers a 2% discount for bank account payments').slideDown();
         }
 
         var premiumType = $('#health_payment_details_frequency').val(),
@@ -107,6 +107,8 @@ var healthFunds_GMH = {
     unset: function(){
         meerkat.messaging.unsubscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_GMH.paymentDayChange);
 
+        healthFunds_GMH.$paymentTypeContainer.text('').slideUp();
+
         healthFunds._reset();
 
         <%--Authority off--%>
@@ -118,6 +120,7 @@ var healthFunds_GMH = {
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.resetConfig();
         meerkat.modules.healthCreditCard.render();
+
         <%--selections for payment date--%>
         healthFunds_GMH.$paymentType.off('click.GMH');
         healthFunds_GMH.$paymentFrequency.off('change.GMH');
