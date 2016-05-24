@@ -10,7 +10,7 @@
     {{ var frequency = freqObj.key; }}
     {{ if (typeof availablePremiums[frequency] === "undefined") { return; } }}
 
-    {{ var result = healthResultsTemplate.getPricePremium(frequency, availablePremiums); }}
+    {{ var result = healthResultsTemplate.getPricePremium(frequency, availablePremiums, obj.mode); }}
 
     <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
 

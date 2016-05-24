@@ -20,8 +20,8 @@
 
 <%-- TEMPLATES --%>
 	<%-- Logo and prices template --%>
-	<health_v3:logo_template />
-	<health_v3:price_template />
+    <core_v1:js_template id="logo-template"><health_v3:logo_template /></core_v1:js_template>
+    <core_v1:js_template id="price-template"><health_v3:price_template /></core_v1:js_template>
 
 	<%-- Main page template --%>
 	<script id="confirmation-template" type="text/html">

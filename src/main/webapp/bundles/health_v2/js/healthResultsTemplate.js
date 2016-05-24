@@ -201,9 +201,10 @@
      * Pre-processing function for price_template.tag
      * @param frequency
      * @param availablePremiums
+     * @param mode
      * @returns {{}}
      */
-    function getPricePremium(frequency, availablePremiums) {
+    function getPricePremium(frequency, availablePremiums, mode) {
         var formatCurrency = meerkat.modules.currencyField.formatCurrency;
         var result = {};
         var prem = availablePremiums[frequency];
