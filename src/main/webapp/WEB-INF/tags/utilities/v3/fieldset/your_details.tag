@@ -86,7 +86,7 @@
 
     <h5 class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-xs-12 row-content">Postal Address</h5>
     <form_v3:row>
-        <field_v3:checkbox xpath="${xpath}/postalMatch" required="false" checked="true" title="My postal address is the same" label="true" value="Y" />
+        <field_v2:checkbox xpath="${xpath}/postalMatch" required="false" title="My postal address is the same" label="true" value="Y" />
     </form_v3:row>
 
     <c:set var="fieldXPath" value="${xpath}/postal" />
