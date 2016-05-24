@@ -3,7 +3,15 @@
 	{{ _.each(obj.paymentTypePremiums[obj.paymentNode], function(item, key) { }}
 		{{ if (item.value > 0) { }}
 			{{ selected = obj._selectedFrequency == key ? "selected" : "" }}
-			<option value="{{= key}}" {{= selected}}>{{= item.text}} {{= key }} premium</option>
+			{{ var label = ''; }}
+			{{ if (key == 'annually') { }}
+			{{ 		label = 'annual';  }}
+			{{ } else if (key == 'halfyearly') { }}
+			{{ 		label = 'half-yearly'; }}
+			{{ } else { }}
+			{{ 		label = key; }}
+			{{ } }}
+			<option value="{{= key}}" {{= selected}}>{{= item.text}} {{= label }} premium</option>
 		{{ } }}
 	{{ }); }}
 </script>

@@ -75,9 +75,8 @@
 
     function setCreditCardObj(value, label, selected){
         var obj = {inputname : 'health_payment_credit_type'};
-        var prefix = "health_payment_credit_type_";
 
-        obj.inputvalue = prefix+""+value;
+        obj.inputvalue = value;
         obj.inputid = obj.inputname+"_"+value;
         obj.inputlabel = label;
         obj.inputSelected = value == selected;
@@ -90,7 +89,7 @@
     }
 
     function _getCardType() {
-        return $('#health_payment_credit_type').find(':selected').val();
+        return $('.health-credit_card_details-type input').filter(":checked").val();
     }
 
     function _setRules(cardType, $creditCardInput, $ccvInput) {
