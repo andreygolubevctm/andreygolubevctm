@@ -309,14 +309,14 @@
                 updateSelectedBenefits(coverType);
                 $benefitsForm.find('.benefits-side-bar').fadeOut('fast');
                 $benefitsForm.find('.hasShortlistableChildren').fadeIn('fast', function () {
-                    $benefitsForm.find('fieldset > div').first().prepend($benefitsForm.find('.section h2'));
+                    $benefitsForm.find('fieldset > div').first().prepend($benefitsForm.find('.section h2:not(.ignore)'));
                 });
                 alignTitle();
         }
     }
 
     function movePageTitleToColumn() {
-        $benefitsForm.find('.custom-col-lg').first().prepend($benefitsForm.find('h2'));
+        $benefitsForm.find('.custom-col-lg').first().prepend($benefitsForm.find('h2:not(.ignore)'));
     }
 
     function updateCoverTypeByBenefitsSelected() {

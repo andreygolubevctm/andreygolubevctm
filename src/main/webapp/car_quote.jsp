@@ -142,7 +142,7 @@
 	<jsp:attribute name="results_loading_message">
 		<div class="row loadingPromise hidden">
 			<div class="col-xs-12">
-				<br><img src="#" data-defer-src="assets/brand/ctm/images/price_promise/Price-Promise-Blue.png">
+				<br><img src="" data-defer-src="assets/brand/ctm/images/price_promise/Price-Promise-Blue.png">
 			</div>
 		</div>
 		<div class="row loadingQuoteText hidden">

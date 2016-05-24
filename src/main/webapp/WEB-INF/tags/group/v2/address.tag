@@ -41,7 +41,7 @@
 <go:script href="common/javascript/legacy_address.js" marker="js-href"/>
 
 <c:if test="${empty showTitle or showTitle == 'true'}">
-	<form_v2:row fieldXpath="${fieldXpath}" label="${isPostalAddress? 'Postal' : 'Residential'} Address" id="22" className="addressHeading" hideHelpIconCol="true"></form_v2:row>
+	<form_v2:row fieldXpath="${fieldXpath}" labelTag="h5" label="${isPostalAddress? 'Postal' : 'Residential'} Address" id="22" className="addressHeading" hideHelpIconCol="true"></form_v2:row>
 </c:if>
 
 <field_v1:hidden xpath="${xpath}/elasticSearch" defaultValue="N" />

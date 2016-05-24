@@ -65,7 +65,7 @@
 			</form_v3:row>
 		</c:if>
 
-		<form_v3:row className="health-payment-details_update" hideHelpIconCol="true">
+		<form_v3:row className="health-payment-details_update" label="empty" hideHelpIconCol="true">
 			<a href="javascript:void(0);" class="btn btn-next col-xs-12 col-sm-8 col-md-7 journeyNavButton" id="update-premium">Update Premium <span class="icon icon-arrow-right"></span></a>
 		</form_v3:row>
 
