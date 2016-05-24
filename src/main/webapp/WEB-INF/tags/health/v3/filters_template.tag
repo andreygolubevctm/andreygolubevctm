@@ -63,7 +63,7 @@
     <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
-                <span class="helper-text"><a>Help ?</a></span>
+                <span class="helper-text"><a data-content="helpid:544" data-toggle="popover" tabindex="-1">Help ?</a></span>
                 <span class="heading-text">Government rebate</span>
             </div>
             <div class="filter-rebate-holder"></div>
