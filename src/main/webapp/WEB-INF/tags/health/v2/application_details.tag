@@ -24,7 +24,7 @@
 		<group_v3:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"/>
 
 		<form_v3:row label="empty">
-			<field_v2:checkbox xpath="${xpath}/postalMatch" value="Y" ctitle="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
+			<field_v2:checkbox xpath="${xpath}/postalMatch" value="Y" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
 		</form_v3:row>
 
 		<div id="${name}_postalGroup">
