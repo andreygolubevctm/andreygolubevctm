@@ -49,9 +49,12 @@
 
   // Make the provider list 2 columns
   .provider-list {
-    -webkit-columns: auto 2; /* Chrome, Safari, Opera */
-    -moz-columns: auto 2; /* Firefox */
-    columns: auto 2;
+    .content-columns(2, auto);
+
+    // hack for the css3 multi columns, it is buggy when two columns doesn't have the same amount of children
+    .checkbox:nth-child(7) {
+      display: inline-block;
+    }
   }
   @media (@xs-only) {
     div.checkbox {
@@ -100,9 +103,36 @@
       float: right;
       margin-top: 3px;
     }
-    input:checked + label,
-    input.checked + label {
-      color: #000;
+
+    input {
+      & + label:before {
+        @media(@sm) {
+          border-radius: 3px;
+          border: 1px solid lighten(@theme-dark, 60%);
+          padding: 2px;
+          margin-right: 5px;
+          float: none;
+          display: inline-block;
+          font-size: 8px;
+        }
+
+        &:hover,
+        &:focus {
+          @media(@sm) {
+            color: inherit;
+            background-color: inherit;
+          }
+        }
+      }
+
+      &:checked {
+        & + label:before {
+          @media(@sm) {
+            color: #000;
+            background-color: inherit;
+          }
+        }
+      }
     }
   }
 

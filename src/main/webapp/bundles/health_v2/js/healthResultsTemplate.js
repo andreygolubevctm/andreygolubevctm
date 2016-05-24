@@ -302,22 +302,24 @@
         $(document).off('click', '.remove-result').on('click', '.remove-result', function () {
             var $el = $(this);
             if (!$el.hasClass('disabled')) {
+                // prevent multi clicking
                 $el.addClass('disabled');
                 filteredOutResults.push($el.attr('data-productId'));
                 Results.filterBy("productId", "value", {"notInArray": filteredOutResults}, true);
                 toggleRemoveResultPagination();
-
-            } else {
-                _.delay(function () {
-                    $el.removeClass('disabled');
-                }, 1000);
             }
+            // reset the disable so they can click again when reset
+            _.delay(function () {
+                $el.removeClass('disabled');
+            }, 1000);
 
         }).off('click', '.reset-filters').on('click', '.reset-filters', function (e) {
             e.preventDefault();
             filteredOutResults = [];
             Results.unfilterBy('productId', "value", true);
-            toggleRemoveResultPagination();
+            _.defer(function(){
+                toggleRemoveResultPagination();
+            });
         }).off('click', '.featuresListExtrasOtherList').on('click', '.featuresListExtrasOtherList', function () {
             $('.featuresListExtrasOtherList').addClass('hidden');
             $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
@@ -325,7 +327,7 @@
     }
 
     function toggleRemoveResultPagination() {
-        var pageMeasurements = Results.pagination.getPageMeasurements();
+        var pageMeasurements = Results.pagination.calculatePageMeasurements();
         if (!pageMeasurements || pageMeasurements && pageMeasurements.numberOfPages <= 1) {
             $resultsPagination.addClass('hidden');
         } else {
