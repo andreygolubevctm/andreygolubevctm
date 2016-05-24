@@ -373,9 +373,15 @@
 					if(getSelectedPaymentMethod() === 'cc' ) {
 						$('#health_payment_credit-selection').slideDown();
 						$('#health_payment_bank-selection').hide();
+
+						$('.health_payment_credit-selection').slideDown();
+						$('.health_payment_bank-selection').hide();
 					} else {
 						$('#health_payment_bank-selection').slideDown();
 						$('#health_payment_credit-selection').hide();
+
+						$('.health_payment_bank-selection').slideDown();
+						$('.health_payment_credit-selection').hide();
 					}
 
 					// Show declaration checkbox
