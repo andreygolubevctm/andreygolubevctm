@@ -57,9 +57,9 @@
         providerConfig,
         maxDependantAge = 25;
 
-    function initHealthDependants(reset) {
+    function initHealthDependants() {
         $dependantsTemplateWrapper = $("#health-dependants-wrapper");
-        if (!situationEnablesDependants() || reset) {
+        if (!situationEnablesDependants()) {
             clearDependants();
         }
 
@@ -74,14 +74,16 @@
         dependantTemplate = _.template($('#health-dependants-template').html());
 
         var noOfDependants = getNumberOfDependants();
-        if (typeof meerkat.site.dependants != 'undefined') {
-            dependantsArr = addDataBucketDependantsToList();
-        } else if (_.isNumber(noOfDependants) && noOfDependants > 0) {
-            for(var i=0; i<noOfDependants; i++) {
+        if(_.isEmpty(dependantsArr)) {
+            if (typeof meerkat.site.dependants != 'undefined') {
+                dependantsArr = addDataBucketDependantsToList();
+            } else if (_.isNumber(noOfDependants) && noOfDependants > 0) {
+                for (var i = 0; i < noOfDependants; i++) {
+                    dependantsArr.push(getDefaultDependant());
+                }
+            } else if (noOfDependants === 0) {
                 dependantsArr.push(getDefaultDependant());
             }
-        } else if (noOfDependants === 0) {
-            dependantsArr.push(getDefaultDependant());
         }
 
         renderDependants();
@@ -148,7 +150,7 @@
      */
     function updateDependantConfiguration() {
 
-        initHealthDependants(true);
+        initHealthDependants();
 
         var dependantCountSpecified = $('#health_healthCover_dependants').val() || 1;
         var hasChildren = situationEnablesDependants();
