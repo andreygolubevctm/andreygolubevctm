@@ -55,13 +55,15 @@
 				resetSettings();
 			});
 
-			$paymentRadioGroup.find('input').on('change', function() {
+			$paymentRadioGroup.find('input').on('click', function() {
 				togglePaymentGroups();
 				toggleClaimsBankAccountQuestion();
 
 				// validate coupon
 				meerkat.modules.coupon.validateCouponCode($('.coupon-code-field').val());
-				updatePaymentPremium();
+				_.defer(function delayPaymentUpdate(){
+					updatePaymentPremium();
+				});
 			});
 
 			$frequencySelect.on('change', function updateSidebarQuote(){
