@@ -19,6 +19,11 @@ import static com.ctm.web.core.leadService.model.LeadStatus.INBOUND_CALL;
 public abstract class LeadService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LeadService.class);
     public static final String LAST_LEAD_SERVICE_VALUES = "LAST_LEAD_SERVICE_VALUES";
+    private final ServiceConfigurationService serviceConfigurationService;
+
+    public LeadService(ServiceConfigurationService serviceConfigurationService) {
+        this.serviceConfigurationService  = serviceConfigurationService;
+    }
 
     /**
      * Determines if we have the fields required for sending
@@ -67,7 +72,7 @@ public abstract class LeadService {
     public void sendLead(final int verticalId, final Data data, final HttpServletRequest request, final String transactionStatus) {
         if (!SessionUtils.isCallCentre(request.getSession()) || INBOUND_CALL.name().equals(transactionStatus)) {
             try {
-                ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfigurationDeprecated("leadService", verticalId);
+                ServiceConfiguration serviceConfig = serviceConfigurationService.getServiceConfiguration("leadService", verticalId);
 
                 Boolean enabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
                 String url = serviceConfig.getPropertyValueByKey("url", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);

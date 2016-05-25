@@ -135,6 +135,19 @@ public class ServiceConfigurationService {
 	 * @throws DaoException
 	 * @throws ServiceConfigurationException
 	 */
+	public ServiceConfiguration getServiceConfiguration(String code, int verticalId) throws DaoException, ServiceConfigurationException {
+		return getServiceConfigurationDeprecated( code,  verticalId);
+	}
+
+	/**
+	 * Get the service configuration for a specific code, vertical and brand - only call this directly if you are not able to rely on F5 rewriting rules.
+	 * @param code 'serviceCode' key in ctm.service_master
+	 * @param verticalId
+	 * @param brandId
+	 * @return
+	 * @throws DaoException
+	 * @throws ServiceConfigurationException
+	 */
 	public  ServiceConfiguration getServiceConfiguration(String code, Vertical vertical) throws DaoException, ServiceConfigurationException {
 
 		getServiceConfigurations();

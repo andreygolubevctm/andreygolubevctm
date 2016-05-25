@@ -6,12 +6,14 @@ import com.ctm.web.core.leadService.model.LeadMetadata;
 import com.ctm.web.core.leadService.model.LeadRequest;
 import com.ctm.web.core.leadService.model.LeadStatus;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -22,6 +24,7 @@ import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
+import static org.mockito.MockitoAnnotations.initMocks;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 @RunWith(PowerMockRunner.class)
@@ -32,21 +35,14 @@ public class LeadServiceTest {
 	HttpServletRequest mockRequest = mock(HttpServletRequest.class);
 	Data mockData = mock(Data.class);
 
-	LeadService leadService = new LeadService() {
-		@Override
-		protected LeadRequest updatePayloadData(Data data) {
-			LeadRequest lr = new LeadRequest();
-			lr.setVerticalType("health");
-			lr.getPerson().setFirstName("Firstname");
-			lr.getPerson().setEmail("Email");
-			lr.getPerson().setMobile("Mobile");
-			lr.setMetadata(mock(LeadMetadata.class));
-			return lr;
-		}
-	};
+	LeadService leadService;
+
+    @Mock
+    ServiceConfigurationService serviceConfigurationService;
 
 	@Before
 	public void setup() throws ServiceConfigurationException, DaoException {
+		initMocks(this);
 		mockStatic(SessionUtils.class);
 		when(SessionUtils.isCallCentre(any())).thenReturn(false);
 
@@ -57,13 +53,25 @@ public class LeadServiceTest {
 		when(mockData.getLong("current/transactionId")).thenReturn(1111L);
 		when(mockData.getString("current/brandCode")).thenReturn("ctm");
 
-		mockStatic(ServiceConfigurationService.class);
-		when(ServiceConfigurationService.getServiceConfiguration("leadService", 4, 0)).thenReturn(mockServiceConfig);
+		when(serviceConfigurationService.getServiceConfiguration("leadService", 4)).thenReturn(mockServiceConfig);
 
 		when(mockServiceConfig.getPropertyValueByKey("enabled", 0, 0, SERVICE)).thenReturn("true");
 		when(mockServiceConfig.getPropertyValueByKey("url", 0, 0, SERVICE)).thenReturn("url");
 
 		mockStatic(LeadServiceUtil.class);
+
+        leadService = new LeadService(serviceConfigurationService) {
+            @Override
+            protected LeadRequest updatePayloadData(Data data) {
+                LeadRequest lr = new LeadRequest();
+                lr.setVerticalType("health");
+                lr.getPerson().setFirstName("Firstname");
+                lr.getPerson().setEmail("Email");
+                lr.getPerson().setMobile("Mobile");
+                lr.setMetadata(mock(LeadMetadata.class));
+                return lr;
+            }
+        };
 	}
 
 	@Test
