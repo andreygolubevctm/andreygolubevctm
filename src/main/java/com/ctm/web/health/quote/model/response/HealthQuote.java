@@ -1,6 +1,9 @@
 package com.ctm.web.health.quote.model.response;
 
+import com.ctm.web.health.model.PaymentType;
 import com.fasterxml.jackson.databind.JsonNode;
+
+import java.util.Map;
 
 public class HealthQuote {
 
@@ -15,6 +18,10 @@ public class HealthQuote {
     private Premium premium;
 
     private Premium alternativePremium;
+
+    private Map<PaymentType, Premium> paymentTypePremiums;
+
+    private Map<PaymentType, Premium> paymentTypeAltPremiums;
 
     private JsonNode custom;
     private JsonNode hospital;
@@ -119,5 +126,21 @@ public class HealthQuote {
 
     public void setPriceChanged(boolean priceChanged) {
         this.priceChanged = priceChanged;
+    }
+
+    public Map<PaymentType, Premium> getPaymentTypePremiums() {
+        return paymentTypePremiums;
+    }
+
+    public void setPaymentTypePremiums(Map<PaymentType, Premium> paymentTypePremiums) {
+        this.paymentTypePremiums = paymentTypePremiums;
+    }
+
+    public Map<PaymentType, Premium> getPaymentTypeAltPremiums() {
+        return paymentTypeAltPremiums;
+    }
+
+    public void setPaymentTypeAltPremiums(Map<PaymentType, Premium> paymentTypeAltPremiums) {
+        this.paymentTypeAltPremiums = paymentTypeAltPremiums;
     }
 }

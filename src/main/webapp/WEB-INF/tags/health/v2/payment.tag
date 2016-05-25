@@ -12,10 +12,6 @@
 <%-- HTML --%>
 <div class="health-payment ${className}" id="${id}">
 
-	<health_v2:payment_details xpath="${xpath}/details" />
-	<div id="update-content">
-	<health_v2:application_compliance xpath="${xpath}" />
-
-	</div>
+	<health_v2:payment_details xpath="${xpath}/details" base_xpath="${xpath}" />
 	 
 </div>

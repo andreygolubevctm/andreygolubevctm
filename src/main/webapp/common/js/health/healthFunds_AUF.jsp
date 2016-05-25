@@ -10,6 +10,10 @@ AUF
 =======================
 --%>
 var healthFunds_AUF = {
+  $paymentType : $('#health_payment_details_type input'),
+  $paymentFrequency : $('#health_payment_details_frequency'),
+  $paymentStartDate: $("#health_payment_details_start"),
+  $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
   set: function(){
     <%--dependant definition--%>
     healthFunds._dependants('This policy provides cover for children under the age of 23 or who are aged between 23-25 years and engaged in full time study. Student dependants do not need to be living at home to be added to the policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
@@ -26,10 +30,18 @@ var healthFunds_AUF = {
 
     <%--selections for payment date--%>
     healthFunds._payments = { 'min':0, 'max':5, 'weekends':false };
-    $('#update-premium').on('click.AUF', function(){
-      var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-      meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
-      meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
+    healthFunds_AUF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
+
+    healthFunds_AUF.$paymentType.on('click.AUF', function renderPaymentDayPaymentType(){
+      healthFunds_AUF.renderPaymentDay();
+    });
+
+    healthFunds_AUF.$paymentFrequency.on('change.AUF', function renderPaymentDayFrequency(){
+      healthFunds_AUF.renderPaymentDay();
+    });
+
+    healthFunds_AUF.$paymentStartDate.on("changeDate.AUF", function renderPaymentDayCalendar(e) {
+      healthFunds_AUF.renderPaymentDay();
     });
 
     <%--credit card options--%>
@@ -41,6 +53,13 @@ var healthFunds_AUF = {
       meerkat.modules.transactionId.getNew();
     };
   },
+  renderPaymentDay: function(){
+    healthFunds_AUF.$paymentTypeContainer.text('*Australian Unity offers a 4% discount for direct debit payments').slideDown();
+
+    var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+  },
   unset: function(){
     healthFunds._reset();
     <%--dependant definition off--%>
@@ -51,9 +70,14 @@ var healthFunds_AUF = {
     meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
-    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
-    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
-    $('#update-premium').off('click.AUF');
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+
+    healthFunds_AUF.$paymentTypeContainer.text('').slideUp();
+
+    healthFunds_AUF.$paymentType.off('click.AUF');
+    healthFunds_AUF.$paymentFrequency.off('change.AUF');
+    healthFunds_AUF.$paymentStartDate.off("changeDate.AUF");
 
     <%--failed application--%>
     healthFunds.applicationFailed = function(){ return false; };

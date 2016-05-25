@@ -11,6 +11,10 @@ AHM
 --%>
 
 var healthFunds_AHM = {
+  $paymentType : $('#health_payment_details_type input'),
+  $paymentFrequency : $('#health_payment_details_frequency'),
+  $paymentStartDate: $("#health_payment_details_start"),
+  $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
   set: function(){
 
     <%--Dependants--%>
@@ -152,13 +156,18 @@ var healthFunds_AHM = {
           'weekends':true,
           'maxDay' : 28
       };
-    $('#update-premium').on('click.AHM', function() {
-      if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
-        meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, false);
-      }
-      else {
-        meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, true);
-      }
+    healthFunds_AHM.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+
+    healthFunds_AHM.$paymentType.on('click.AHM', function populateFuturePaymentDaysPaymentType(){
+      healthFunds_AHM.populateFuturePaymentDays();
+    });
+
+    healthFunds_AHM.$paymentFrequency.on('change.AHM', function populateFuturePaymentDaysFrequency(){
+      healthFunds_AHM.populateFuturePaymentDays();
+    });
+
+    healthFunds_AHM.$paymentStartDate.on("changeDate.AHM", function populateFuturePaymentDaysCalendar(e) {
+      healthFunds_AHM.populateFuturePaymentDays();
     });
 
     $('.health-credit_card_details .fieldrow').hide();
@@ -177,6 +186,16 @@ var healthFunds_AHM = {
 
     <%--calendar for start cover--%>
     meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
+  },
+  populateFuturePaymentDays: function() {
+    if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
+      meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, false);
+      healthFunds_AHM.$paymentTypeContainer.text('*AHM will apply a 1.5% surcharge for all credit card transactions').slideDown();
+    }
+    else {
+      meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, true);
+      healthFunds_AHM.$paymentTypeContainer.slideUp();
+    }
   },
   unset: function(){
     healthFunds._reset();
@@ -202,9 +221,14 @@ var healthFunds_AHM = {
     meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
-    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
-    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
-    $('#update-premium').off('click.AHM');
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+
+    healthFunds_AHM.$paymentTypeContainer.text('').slideUp();
+
+    healthFunds_AHM.$paymentType.off('click.AHM');
+    healthFunds_AHM.$paymentFrequency.off('change.AHM');
+    healthFunds_AHM.$paymentStartDate.off("changeDate.AHM");
 
     <%--Payment gateway--%>
     meerkat.modules.paymentGateway.reset();

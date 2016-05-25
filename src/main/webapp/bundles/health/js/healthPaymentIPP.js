@@ -29,7 +29,7 @@ Process:
 
 				$token = $this.find('.payment-ipp-tokenisation');
 
-				$cardtype = $('#health_payment_credit_type');
+				$cardtype = $('.health-credit_card_details-type input');
 
 				$maskedNumber = $this.find('.payment-ipp-maskedNumber');
 				$maskedNumber.prop('readonly', true);
@@ -186,7 +186,7 @@ Process:
 	}
 
 	function cardType() {
-		switch ($cardtype.find('option:selected').val())
+		switch ($cardtype.find(':checked').val())
 		{
 		case 'v':
 			return 'Visa';
