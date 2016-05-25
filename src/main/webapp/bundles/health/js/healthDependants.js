@@ -57,9 +57,9 @@
         providerConfig,
         maxDependantAge = 25;
 
-    function initHealthDependants(reset) {
+    function initHealthDependants() {
         $dependantsTemplateWrapper = $("#health-dependants-wrapper");
-        if (!situationEnablesDependants() || reset) {
+        if (!situationEnablesDependants()) {
             clearDependants();
         }
 
@@ -74,18 +74,24 @@
         dependantTemplate = _.template($('#health-dependants-template').html());
 
         var noOfDependants = getNumberOfDependants();
-        if (typeof meerkat.site.dependants != 'undefined') {
-            dependantsArr = addDataBucketDependantsToList();
-        } else if (_.isNumber(noOfDependants) && noOfDependants > 0) {
-            for(var i=0; i<noOfDependants; i++) {
-                dependantsArr.push(defaultDependant);
+        if(_.isEmpty(dependantsArr)) {
+            if (typeof meerkat.site.dependants != 'undefined') {
+                dependantsArr = addDataBucketDependantsToList();
+            } else if (_.isNumber(noOfDependants) && noOfDependants > 0) {
+                for (var i = 0; i < noOfDependants; i++) {
+                    dependantsArr.push(getDefaultDependant());
+                }
+            } else if (noOfDependants === 0) {
+                dependantsArr.push(getDefaultDependant());
             }
-        } else if (noOfDependants === 0) {
-            dependantsArr.push(defaultDependant);
         }
 
         renderDependants();
         applyEventListeners();
+    }
+
+    function getDefaultDependant() {
+        return _.extend({},defaultDependant);
     }
 
     /**
@@ -144,7 +150,7 @@
      */
     function updateDependantConfiguration() {
 
-        initHealthDependants(true);
+        initHealthDependants();
 
         var dependantCountSpecified = $('#health_healthCover_dependants').val() || 1;
         var hasChildren = situationEnablesDependants();
@@ -299,7 +305,7 @@
         if (numDependants < dependantLimit) {
             var dependantId = numDependants + 1;
 
-            var blankDependant = $.extend({}, defaultDependant, {dependantId: dependantId});
+            var blankDependant = $.extend({}, getDefaultDependant(), {dependantId: dependantId});
             $dependantsTemplateWrapper.append(dependantTemplate(blankDependant));
             dependantsArr.push(blankDependant);
 
