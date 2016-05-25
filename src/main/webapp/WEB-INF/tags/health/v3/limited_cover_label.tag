@@ -8,7 +8,7 @@
             <div class="labelInColumn limited-cover-warning">
                 <div class="content" data-featureid="9998">
                     <div class="contentInner">
-                        You have selected a limited hospital product. More info <a href="javascript:void(0);" class="help-icon" data-content="helpid:543" data-toggle="popover" data-my="right center" data-at="left center">(?)</a></div>
+                        You have selected a limited hospital product. More info <a href="javascript:;" data-content="helpid:542" data-toggle="dialog" data-title="Hospital Cover Information" data-dialog-hash-id="hospitalCover" tabindex="-1" data-cache="true">(?)</a></div>
                 </div>
             </div>
         </div>

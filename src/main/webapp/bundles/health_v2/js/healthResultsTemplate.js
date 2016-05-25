@@ -131,7 +131,7 @@
         if (displayValue) {
             return getTitleBefore(ft) + '<strong>' + displayValue + '</strong> ' + _getExtraText(ft) + getTitleAfter(ft) + _getHelpTooltip(ft);
         }
-        return ft.safeName + ": <strong>N/A</strong>";
+        return ft.safeName + ": <strong>None</strong>";
     }
 
     /**
