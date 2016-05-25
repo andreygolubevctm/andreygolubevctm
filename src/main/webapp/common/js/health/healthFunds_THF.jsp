@@ -131,7 +131,7 @@ var healthFunds_THF = {
 							'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE
 							};
 			var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
 			$('.thf-payment-legend').remove();
 			$('#health_payment_bank_policyDay').parent().after('<span class="thf-payment-legend">Your account will be debited on or as close to the selected date possible.</span>');
 		});

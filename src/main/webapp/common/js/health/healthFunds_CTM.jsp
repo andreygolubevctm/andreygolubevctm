@@ -32,13 +32,13 @@ set: function () {
 					display: block !important;
 				}
 
-				.health_bank-details_policyDay-group,
+				.health_payment_bank-details_policyDay-group,
 				.health_credit-card-details_policyDay-group{
 					display: block !important;
 				}
 
-				.health_credit-card-details_day_group,
-				.health_bank-details_day-group {
+				.health_payment_credit-details_day_group,
+				.health_payment_bank-details_day-group {
 					display: none !important;
 				}
 
@@ -78,8 +78,8 @@ set: function () {
 
 			healthFunds._payments = { 'min':0, 'max':14, 'weekends':true, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28};
 			var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
 			$('.ctm-payment-legend').remove();
 			$('#health_payment_credit_policyDay').parent().after('<p class="ctm-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');
 			$('#health_payment_bank_policyDay').parent().after('<p class="ctm-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');

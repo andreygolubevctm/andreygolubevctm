@@ -74,14 +74,14 @@ var healthFunds_WFD = {
                     'will be debited from your payment method on ' + meerkat.modules.dateUtils.dateValueLongFormat(deductionDate);
 
             $('.health_credit-card-details_policyDay-message').text( deductionText);
-            $('.health_bank-details_policyDay-message').text(deductionText);
+            $('.health_payment_bank-details_policyDay-message').text(deductionText);
 
             var _dayString = meerkat.modules.numberUtils.leadingZero(deductionDate.getDate() );
             var _monthString = meerkat.modules.numberUtils.leadingZero(deductionDate.getMonth() + 1 );
             var deductionDateValue = deductionDate.getFullYear() +'-'+ _monthString +'-'+ _dayString;
 
-            $('.health-credit-card_details-policyDay option').val(deductionDateValue);
-            $('.health-bank_details-policyDay option').val(deductionDateValue);
+            $('.health_payment_credit_details-policyDay option').val(deductionDateValue);
+            $('.health_payment_bank_details-policyDay option').val(deductionDateValue);
 
         });
 
@@ -117,8 +117,8 @@ var healthFunds_WFD = {
     },
     unset: function() {
         $('#update-premium').off('click.WFD');
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
 
         healthFunds._reset();
 

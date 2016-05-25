@@ -100,8 +100,8 @@
                 var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
                 healthFunds._payments = { 'min':3, 'max':17, 'weekends':true };
                 var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-                meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-                meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+                meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+                meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
               });
 
               meerkat.modules.paymentGateway.setup({

@@ -11,7 +11,7 @@ BUD (Budget Direct)
 --%>
 var healthFunds_BUD = {
 	$policyDateCreditMessage : $('.health_credit-card-details_policyDay-message'),
-	$policyDateBankMessage : $('.health_bank-details_policyDay-message'),
+	$policyDateBankMessage : $('.health_payment_bank-details_policyDay-message'),
 	set: function(){
 		<%-- dependant definition --%>
 		healthFunds._dependants('This policy provides cover for children until their 21st birthday. Adult dependants over 21 years old can be covered by applying for a separate singles policy.');
@@ -84,8 +84,8 @@ var healthFunds_BUD = {
 		$('.person-title').append( healthFunds.$_optionDR    );
 
 		<%-- selections for payment date --%>
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
 		$('#update-premium').off('click.BUD');
 
 		<%-- credit card options --%>

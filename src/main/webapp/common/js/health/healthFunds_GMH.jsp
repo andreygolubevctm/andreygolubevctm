@@ -12,7 +12,7 @@ GMH
 var healthFunds_GMH = {
     $policyDateHiddenField : $('.health_details-policyDate'),
     $policyDateCreditMessage : $('.health_credit-card-details_policyDay-message'),
-    $policyDateBankMessage : $('.health_bank-details_policyDay-message'),
+    $policyDateBankMessage : $('.health_payment_bank-details_policyDay-message'),
     paymentDayChange : function(value) {
         healthFunds_GMH.$policyDateHiddenField.val(value);
     },
