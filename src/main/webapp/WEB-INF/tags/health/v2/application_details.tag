@@ -23,7 +23,8 @@
 
 		<group_v3:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"/>
 
-		<c:if test="${empty callCentre && empty data[xpath].postalMatch}">
+		<%-- POSTAL defaults to Y if not pre-loaded --%>
+		<c:if test="${ (empty data[xpath].postalMatch) && (empty data['health/contactDetails/email']) }">
 			<go:setData dataVar="data" xpath="${xpath}/postalMatch" value="Y" />
 		</c:if>
 
