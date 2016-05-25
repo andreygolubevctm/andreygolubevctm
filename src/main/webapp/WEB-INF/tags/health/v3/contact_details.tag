@@ -36,14 +36,11 @@
 		</c:otherwise>
 	</c:choose>
 
-
-	<%-- POSTAL defaults to Y if not pre-loaded and not simples user--%>
-	<c:if test="${!callCentre && (empty data[xpath].postalMatch) && (empty data['health/contactDetails/email']) }">
+	<c:if test="${empty callCentre && empty data[xpath].postalMatch}">
 		<go:setData dataVar="data" xpath="${xpath}/postalMatch" value="Y" />
 	</c:if>
 
-
-	<form_v2:row>
+		<form_v2:row>
 			<field_v2:checkbox xpath="${xpath}/postalMatch" value="Y" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
 		</form_v2:row>
 
