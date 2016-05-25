@@ -73,12 +73,12 @@
             <c:otherwise>Street</c:otherwise>
         </c:choose>
     </c:set>
-    <form_v3:row fieldXpath="${fieldXpath}" label="${addressLabel} Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false">
+    <form_v2:row fieldXpath="${fieldXpath}" label="${addressLabel} Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false">
         <c:set var="placeholder" value="e.g. 5/20 Sample St"/>
         <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address"
                         placeHolder="${placeholder}" required="false"
                         additionalAttributes=" data-rule-validAutofilllessSearch='${name}' data-msg-validAutofilllessSearch='Please select a valid address' " disableErrorContainer="${disableErrorContainer}"/>
-    </form_v3:row>
+    </form_v2:row>
 
     <%-- POSTCODE --%>
     <form_v2:row label="Postcode" isNestedStyleGroup="${true}" className="${name}_nonStdFieldRow">

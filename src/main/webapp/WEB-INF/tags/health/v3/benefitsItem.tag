@@ -32,7 +32,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 	<c:if test="${coverType == 'Hospital'}">
 	<form_v2:fieldset legend="" postLegend="" className="tieredHospitalCover hidden-sm hidden-md hidden-lg" >
 		<div class="title">
-			<h3>Choose Your Hospital Cover</h3>
+			<h2 class="ignore">Choose Your Hospital Cover</h2>
 			<p>${colContent}</p>
 		</div>
 		<div class="Hospital_container">
@@ -61,7 +61,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 						<c:choose>
 							<c:when test="${item.getType() == 'section'}">
 								<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
-									<h3>Choose Your ${item.getName()}</h3>
+									<h2 class="ignore">Choose Your ${item.getName()}</h2>
 									<p class="hidden-xs">${colContent}</p>
 									<c:if test="${item.getName() eq 'Extras Cover'}">
 										<p><strong>Select the benefits below to add extras specific to your needs</strong></p>
