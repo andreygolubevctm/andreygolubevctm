@@ -232,7 +232,7 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 				<c:set var="result">
 					<result>
 
-						<c:set var="pageName" value="${verticalSettings.getHomeUrlForVertical(param.vertical)}" />
+						<c:set var="pageName" value="${verticalSettings.getHomePageJsp(param.vertical)}" />
 
 						<c:choose>
 
