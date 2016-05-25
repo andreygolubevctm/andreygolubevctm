@@ -12,8 +12,8 @@
 <div id="${name}-selection" class="health_contact_authority">
 
 	<c:set var="fieldXpath" value="${xpath}" />
-	<form_v2:row fieldXpath="${fieldXpath}" label='Do you want to be contacted by <span>Provider</span>?'>
+	<form_v3:row fieldXpath="${fieldXpath}" label='Do you want to be contacted by <span>Provider</span>?'>
 		<field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="if you wish to be contacted." required="true" className="${name}-contact-authority" id="${name}_contact-authority"/>
-	</form_v2:row>
+	</form_v3:row>
 
 </div>

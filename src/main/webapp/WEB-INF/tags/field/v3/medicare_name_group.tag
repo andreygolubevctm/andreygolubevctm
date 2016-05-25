@@ -14,9 +14,9 @@
 	</form_v2:row>
 
 	<c:set var="fieldXpath" value="${xpath}/firstName" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="First Name" hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
+	<form_v3:row fieldXpath="${fieldXpath}" label="First Name" hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
 		<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField" placeholder="First name" disableErrorContainer="${true}" />
-	</form_v2:row>
+	</form_v3:row>
 	<c:if test="${showInitial eq true}">
 		<c:set var="fieldXpath" value="${xpath}/middleName" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Middle Name" hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">

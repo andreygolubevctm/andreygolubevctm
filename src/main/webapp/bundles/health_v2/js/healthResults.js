@@ -632,26 +632,27 @@
 
         selectedProduct = product;
 
-        // Set hidden fields with selected product info.
-        var $_main = $('#mainform');
-        if (product === null) {
-            $_main.find('.health_application_details_provider').val("");
-            $_main.find('.health_application_details_productId').val("");
-            $_main.find('.health_application_details_productNumber').val("");
-            $_main.find('.health_application_details_productTitle').val("");
-            $_main.find('.health_application_details_providerName').val("");
+        // if updating premium, no need to write quote and update the dom as the product info isn't changing
+        if (premiumChangeEvent === true) {
+            meerkat.messaging.publish(moduleEvents.healthResults.PREMIUM_UPDATED, selectedProduct, showIncPrice);
         } else {
-            $_main.find('.health_application_details_provider').val(selectedProduct.info.provider);
-            $_main.find('.health_application_details_productId').val(selectedProduct.productId);
-            $_main.find('.health_application_details_productNumber').val(selectedProduct.info.productCode);
-            $_main.find('.health_application_details_productTitle').val(selectedProduct.info.productTitle);
-            $_main.find('.health_application_details_providerName').val(selectedProduct.info.providerName);
-
-            if (premiumChangeEvent === true) {
-                meerkat.messaging.publish(moduleEvents.healthResults.PREMIUM_UPDATED, selectedProduct, showIncPrice);
+            // Set hidden fields with selected product info.
+            var $_main = $('#mainform');
+            if (product === null) {
+                $_main.find('.health_application_details_provider').val("");
+                $_main.find('.health_application_details_productId').val("");
+                $_main.find('.health_application_details_productNumber').val("");
+                $_main.find('.health_application_details_productTitle').val("");
+                $_main.find('.health_application_details_providerName').val("");
             } else {
+                $_main.find('.health_application_details_provider').val(selectedProduct.info.provider);
+                $_main.find('.health_application_details_productId').val(selectedProduct.productId);
+                $_main.find('.health_application_details_productNumber').val(selectedProduct.info.productCode);
+                $_main.find('.health_application_details_productTitle').val(selectedProduct.info.productTitle);
+                $_main.find('.health_application_details_providerName').val(selectedProduct.info.providerName);
+
+                meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
                 if(!meerkat.site.skipResultsPopulation) {
-                    meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
                     $(Results.settings.elements.rows).removeClass("active");
 
                     var $targetProduct = $(Results.settings.elements.rows + "[data-productid='" + selectedProduct.productId + "']");
@@ -659,7 +660,6 @@
                     $targetProduct.addClass("active");
                     Results.pagination.gotoPosition(targetPosition, true, false);
                 }
-            }
 
                 // update transaction details otherwise we will have to wait until people get to payment page
                 meerkat.modules.writeQuote.write({
@@ -668,7 +668,7 @@
                     health_application_productName: selectedProduct.info.productCode,
                     health_application_productTitle: selectedProduct.info.productTitle
                 }, false);
-
+            }
         }
 
     }

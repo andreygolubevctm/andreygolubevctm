@@ -15,7 +15,7 @@
 
                 // Little kludge to ensure that images are loaded absolutely.
                 // Used due to images previously being loaded relatively to subfolders and getting 404s
-                if (targetSrc.charAt(0) !== '/' && !(targetSrc.indexOf('http',0) === 0)) {
+                if (targetSrc.charAt(0) !== '/' && (targetSrc.indexOf('http',0) !== 0)) {
                     targetSrc = '/' + meerkat.site.urls.context + targetSrc;
                 }
 

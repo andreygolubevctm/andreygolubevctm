@@ -11,9 +11,13 @@ HCF (HCF is usually setting the default values)
 --%>
 
 var healthFunds_HCF = {
+  $paymentStartDate: $("#health_payment_details_start"),
   set: function(){
     <%--credit card & bank account frequency & day frequency--%>
     meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
+
+    <%--allow weekend selection from the datepicker--%>
+    healthFunds_HCF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
   },
   unset: function(){
   }

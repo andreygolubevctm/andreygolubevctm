@@ -42,6 +42,8 @@ var healthFunds_GMF = {
 					}
 				});
 			}
+		<%--allow weekend selection from the datepicker--%>
+		healthFunds_GMF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
 		<%-- credit card & bank account frequency & day frequency --%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank', { 'weekly': false, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': false, 'annually': true });
