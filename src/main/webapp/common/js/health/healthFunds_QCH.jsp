@@ -112,8 +112,8 @@ var healthFunds_QCH = {
 		healthFunds._payments = { 'min':0, 'max':1, 'weekends':true };
 		healthFunds_QCH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
 
 		$('.health_bank-details_policyDay-message').html('');
 		$('.health_credit-card-details_policyDay-message').html('');

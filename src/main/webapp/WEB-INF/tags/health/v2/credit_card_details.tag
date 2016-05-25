@@ -12,7 +12,7 @@
 
 
 <%-- HTML --%>
-<div id="${name}-selection" class="health-credit_card_details">
+<div id="${name}-selection" class="health-credit_card_details ${name}-selection">
 
 
 		<field_v2:creditcard_assurance_message showCreditCards="true" />

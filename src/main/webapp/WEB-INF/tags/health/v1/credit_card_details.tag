@@ -12,7 +12,7 @@
 
 
 <%-- HTML --%>
-<div id="${name}-selection" class="health-credit_card_details">
+<div id="${name}-selection" class="health-credit_card_details ${name}-selection">
 
 	<form_v2:fieldset legend="Credit Card Details">
 	

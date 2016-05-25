@@ -10,7 +10,7 @@
 
 
 <%-- HTML --%>
-<div id="${name}-selection" class="health-bank_details">
+<div id="${name}-selection" class="health-bank_details ${name}-selection">
 
 	<form_v2:fieldset legend="Bank Account Details" >
 	
