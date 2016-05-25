@@ -59,6 +59,7 @@
   @media (@xs-only) {
     div.checkbox {
       padding-bottom: 12px;
+      margin-top: 0;
     }
   }
   // Add some extra margin to slider filter.
@@ -106,6 +107,9 @@
 
     input {
       & + label:before {
+        @media (@xs-only) {
+          margin-top: 0;
+        }
         @media(@sm) {
           border-radius: 3px;
           border: 1px solid lighten(@theme-dark, 60%);
