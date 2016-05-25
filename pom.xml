@@ -57,7 +57,7 @@
         <energy-model-quote.version>1.0.0-RC1</energy-model-quote.version>
         <energy-apply-model.version>1.1.0-RC2</energy-apply-model.version>
 
-        <life-apply-model.version>1.0.0-SNAPSHOT</life-apply-model.version>
+        <life-apply-model.version>1.0.0-RC0</life-apply-model.version>
         <life-quote-model.version>1.1.0-SNAPSHOT</life-quote-model.version>
 
         <!-- Test dependencies -->
