@@ -168,18 +168,9 @@
 	<field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" />
 </form_v3:row>
 
-<c:choose>
-	<c:when test="${pageSettings.getVerticalCode() eq 'health'}">
-		<c:set var="nonStdPostalMessage" value="Tick here if you are unable to find the address or would like to enter a PO Box address" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="nonStdPostalMessage" value="Tick here if you are unable to find the address" />
-	</c:otherwise>
-</c:choose>
-
 <c:set var="fieldXpath" value="${xpath}/nonStd" />
 <form_v3:row fieldXpath="${fieldXpath}" label="empty" id="${name}_nonStd_row" className="nonStd">
-	<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="${nonStdPostalMessage}" label="true" required="false" customAttribute=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter the address'" />
+	<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="Tick here if you are unable to find the address" label="true" required="false" customAttribute=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter the address'" />
 </form_v3:row>
 <core_v1:clear />
 

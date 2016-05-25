@@ -174,7 +174,7 @@
 </form_v2:row>
 
 <c:choose>
-	<c:when test="${pageSettings.getVerticalCode() eq 'health'}">
+	<c:when test="${pageSettings.getVerticalCode() eq 'health' and isPostalAddress}">
 		<c:set var="nonStdPostalMessage" value="Tick here if you are unable to find the address or would like to enter a PO Box address" />
 	</c:when>
 	<c:otherwise>
