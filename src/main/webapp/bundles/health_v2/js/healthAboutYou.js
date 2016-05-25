@@ -1,5 +1,7 @@
 ;(function($){
 
+	// TODO: write unit test once DEVOPS-31 goes live
+
 	var meerkat = window.meerkat,
 		$aboutYouContainer,
 		$primaryCurrentCover,
@@ -55,9 +57,10 @@
 		$tierDropdowns = $aboutYouContainer.find('#health_situation_healthCvr, #health_healthCover_dependants'),
 		$primaryDOB = $aboutYouContainer.find('#health_healthCover_primary_dob'),
 		$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend'),
-		$partnersDetails = $('.health-person-details-partner, #partnerFund, #partnerMemberID'),
+		$partnersDetails = $('#partnerFund, #partnerMemberID, #partnerContainer'),
 		$lhcContainers = $('#primary-health-cover, #partner-health-cover, #australian-government-rebate'),
 		$medicare = $('.health-medicare_details');
+
 
 		if (!healthChoices.hasSpouse()) {
 			$partnerContainer.hide();
@@ -106,7 +109,7 @@
 		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($primaryDOB.val())) {
 			$primaryContinuousCoverContainer.slideDown();
 		} else {
-			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).end().slideUp();
+			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
 		}
 	}
 
@@ -114,7 +117,7 @@
 		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($partnerDOB.val())) {
 			$partnerContinuousCoverContainer.slideDown();
 		} else {
-			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).end().slideUp();
+			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
 		}
 	}
 
@@ -122,23 +125,29 @@
 		switch($healthSituationHealthCvr.val())
 		 {
 		 case 'F':
-				 $partnerContainer.slideDown();
-				 $healthCoverIncomeMessage.show();
-				 $healthCoverDetailsDependants.slideDown();
-				 $partnerContainer.slideDown();
-			 	 $partnersDetails.show();
-			 break;
+			$partnerContainer.slideDown();
+			$healthCoverIncomeMessage.show();
+
+			if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
+				$healthCoverDetailsDependants.slideDown();
+			}
+			$partnerContainer.slideDown();
+			$partnersDetails.show();
+			break;
 		 case 'SPF':
-				 $partnerContainer.slideUp();
-				 $healthCoverDetailsDependants.slideDown();
-			 	 $partnersDetails.hide();
-			 break;
+			$partnerContainer.slideUp();
+
+			if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
+				$healthCoverDetailsDependants.slideDown();
+			}
+			$partnersDetails.hide();
+			break;
 		 case 'C':
 				 $healthCoverDetailsDependants.slideUp();
 				 $partnerContainer.slideDown();
 			 	 $partnersDetails.show();
 			 break;
-		 default:
+			default:
 				 isInitMode === true ? $partnerContainer.hide() : $partnerContainer.slideUp();
 			 	 isInitMode === true ? $healthCoverDetailsDependants.hide() : $healthCoverDetailsDependants.slideUp();
 				 resetPartnerDetails();
@@ -158,8 +167,6 @@
 				$healthCoverRebate.slideDown();
 			} else {
 				$rebateLegend.html('');
-				$healthCoverRebate.find('input[value="N"]').prop('checked', true);
-				$healthCoverRebate.slideUp();
 			}
 		});
 	}
@@ -183,8 +190,18 @@
 		}
 	}
 
+	function getPartnerCurrentCover() {
+		return $partnerCurrentCover.find(':checked').val();
+	}
+
+	function getPrimaryCurrentCover() {
+		return $primaryCurrentCover.find(':checked').val();
+	}
+
 	meerkat.modules.register('healthAboutYou', {
-		init: init
+		init: init,
+		getPartnerCurrentCover : getPartnerCurrentCover,
+		getPrimaryCurrentCover : getPrimaryCurrentCover
 	});
 
 })(jQuery);

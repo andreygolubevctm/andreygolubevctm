@@ -6,7 +6,7 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
-import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.health.model.form.HealthRegisterPaymentRequest;
 import com.ctm.web.health.model.results.HealthResultWrapper;
@@ -25,7 +25,7 @@ public class HealthRegisterPaymentRouter extends CommonQuoteRouter<HealthRegiste
     private HealthRegisterPaymentService healthRegisterPaymentService = new HealthRegisterPaymentService();
 
     public HealthRegisterPaymentRouter() {
-        super(new SessionDataServiceBean(), new ApplicationService());
+        super(new SessionDataServiceBean(), IPAddressHandler.getInstance());
     }
 
     @POST

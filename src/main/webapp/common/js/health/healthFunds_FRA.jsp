@@ -34,7 +34,7 @@ var healthFunds_FRA = {
             }
 
             var premiumType = $('#health_payment_details_frequency').val(),
-                    startDate = meerkat.modules.utils.returnDate($('#health_payment_details_start').val()).getTime(),
+                    startDate = meerkat.modules.dateUtils.returnDate($('#health_payment_details_start').val()).getTime(),
                     <%-- Get today's date without hours --%>
                     todayDate = new Date(new Date(meerkat.modules.utils.getUTCToday()).setHours(0,0,0,0)).getTime();
 
@@ -86,8 +86,8 @@ var healthFunds_FRA = {
         $('.person-title').append( healthFunds.$_optionDR    );
 
         <%--selections for payment date--%>
-        healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-        healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
         $('#update-premium').off('click.FRA');
 
         <%--credit card options--%>

@@ -1,0 +1,24 @@
+{
+    "brandCodes": ["ctm"],
+    "dependencies": [
+        "shared/journeyEngine/v3",
+        "shared/results",
+        "shared/validation",
+        "shared/optIn",
+        "core",
+        "shared/forms/v1",
+        "shared/datepicker",
+        "shared/resultsRankings",
+        "shared/checkboxIE8",
+        "shared/dropdownInteractive",
+        "shared/age",
+        "shared/dateUtils",
+        "shared/ie8SelectMenuAutoExpand",
+        "shared/occupationSelector",
+        "shared/placeholder",
+        "shared/popovers",
+        "shared/saveQuote",
+        "shared/contentPopulation",
+        "shared/leavePageWarning"
+    ]
+}

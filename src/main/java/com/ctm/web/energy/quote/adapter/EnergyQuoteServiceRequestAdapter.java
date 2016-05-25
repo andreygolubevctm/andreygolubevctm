@@ -6,13 +6,13 @@ import com.ctm.energy.quote.request.model.Gas;
 import com.ctm.energy.quote.request.model.preferences.*;
 import com.ctm.energy.quote.request.model.usage.*;
 import com.ctm.interfaces.common.types.TransactionId;
-import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
 import com.ctm.web.energy.form.model.Energy;
 import com.ctm.web.energy.form.model.*;
 import com.ctm.web.energy.form.model.Usage;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +42,7 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
 
     private ContactDetails createContactDetails(EnergyPayLoad request) {
         Optional<ResultsDisplayed> resultsDisplayedMaybe = Optional.ofNullable(request.getResultsDisplayed());
-        Boolean optinPhone = resultsDisplayedMaybe.map(ResultsDisplayed::getOptinPhone).map(YesNo.getYesNoBooleanFunction()).orElse(false);
+        Boolean optinPhone = resultsDisplayedMaybe.map(ResultsDisplayed::getOptinPhone).map(getYesNoBooleanFunction()).orElse(false);
         return new ContactDetails(optinPhone, null, resultsDisplayedMaybe.map(ResultsDisplayed :: getFirstName).orElse(null), resultsDisplayedMaybe.map(ResultsDisplayed :: getPhone).orElse(null));
     }
 
@@ -89,7 +89,7 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         final Optional<ResultsDisplayed> resultsDisplayedMaybe = Optional.ofNullable(quote.getResultsDisplayed());
         HasEBilling hasEBilling = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferEBilling).map( value -> new HasEBilling(value.equals(YesNo.Y))).orElse(new HasEBilling(false));
         NoContract noContract = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferNoContract).map( value -> new NoContract(value.equals(YesNo.Y))).orElse(new NoContract(false));
-        RenewableEnergy renewableEnergy = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferRenewableEnergy).map( value -> new RenewableEnergy(value.equals(YesNo.Y))).orElse(new RenewableEnergy(false));
+        RenewableEnergy renewableEnergy = resultsDisplayedMaybe.map(ResultsDisplayed :: getPreferRenewableEnergy).map(value -> new RenewableEnergy(value.equals(YesNo.Y))).orElse(new RenewableEnergy(false));
 
         return new Preferences(new DisplayDiscount(false),
                 hasEBilling,
@@ -116,7 +116,7 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
     }
 
     private GasUsageDetails getGasUsageDetails(Optional<EstimateDetails> estimateDetailsMaybe, Optional<HouseHoldDetailsWebRequest> householdDetailsMaybe) {
-        boolean hasUsage = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getRecentGasBill).map(YesNo.getYesNoBooleanFunction()).orElse(false);
+        boolean hasUsage = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getRecentGasBill).map(getYesNoBooleanFunction()).orElse(false);
         if(hasUsage) {
             Integer days =getDays(estimateDetailsMaybe.map(EstimateDetails::getSpend).map(Spend::getGas));
             return new GasUsageDetails(estimateDetailsMaybe.map(EstimateDetails::getSpend)
@@ -145,7 +145,7 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
     }
 
     private static ElectricityUsageDetails  getElectricityUsageDetails(Optional<EstimateDetails> estimateDetailsMaybe, Optional<HouseHoldDetailsWebRequest> householdDetailsMaybe) {
-        boolean hasUsage = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getRecentElectricityBill).map(YesNo.getYesNoBooleanFunction()).orElse(false);
+        boolean hasUsage = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getRecentElectricityBill).map(getYesNoBooleanFunction()).orElse(false);
         if(hasUsage) {
             Integer days = getDays(estimateDetailsMaybe.map(EstimateDetails::getSpend).map(Spend::getElectricity));
             return new ElectricityUsageDetails(estimateDetailsMaybe.map(EstimateDetails::getSpend).map(Spend::getElectricity)
@@ -216,18 +216,19 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
 
 
     private boolean getGasHasBill(Optional<HouseHoldDetailsWebRequest> householdDetailsMaybe) {
-        return householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getRecentGasBill).map(YesNo.getYesNoBooleanFunction()).orElse(false);
+        return householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getRecentGasBill).map(getYesNoBooleanFunction()).orElse(false);
     }
 
     private HouseholdDetails createHouseHoldDetails(EnergyPayLoad quote) {
         final Optional<HouseHoldDetailsWebRequest> householdDetailsMaybe = Optional.ofNullable(quote.getHouseholdDetails());
-        return new HouseholdDetails(
-                householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getSuburb).orElse(null),
-                householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getPostcode).orElse(null),
-                householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getMovingIn).map(YesNo.getYesNoBooleanFunction()).orElse(false),
-                householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getMovingInDate)
-                .map(LocalDateUtils::parseAUSLocalDate)
-                .orElse(null), householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getTariff).orElse(null));
+        String suburb = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getSuburb).orElse(null);
+        String postcode = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getPostcode).orElse(null);
+        boolean movingIn = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getMovingIn).map(getYesNoBooleanFunction()).orElse(false);
+        LocalDate movingInDate = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getMovingInDate).map(LocalDateUtils::parseAUSLocalDate)
+                .orElse(null);
+        String tarrif = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getTariff).orElse(null);
+
+        return new HouseholdDetails(suburb,postcode,movingIn,movingInDate,tarrif);
     }
 
     protected static Electricity createElectricity(EnergyPayLoad quote) {
@@ -237,8 +238,11 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
         WhatToCompare whatToCompare = householdDetailsMaybe.map(HouseHoldDetailsWebRequest::getWhatToCompare).orElse(null);
         if (hasHouseholdDetails && hasElectricity(whatToCompare)  ) {
             String currentSupplier = estimateDetails.map(EstimateDetails :: getUsage).map(Usage::getElectricity).map(getCurrentSupplier()).orElse(null);
-            return new Electricity(getElectricityUsageDetails(estimateDetails, householdDetailsMaybe), getHouseholdType(estimateDetails),
-            getElectrityHasBill(householdDetailsMaybe), getHasSolarPanels(householdDetailsMaybe), currentSupplier);
+            ElectricityUsageDetails usageDetails = getElectricityUsageDetails(estimateDetails, householdDetailsMaybe);
+            HouseholdType householdType = getHouseholdType(estimateDetails);
+            boolean hasBill = getElectrityHasBill(householdDetailsMaybe);
+            boolean hasSolarPanel = getHasSolarPanels(householdDetailsMaybe);
+            return new Electricity(usageDetails, householdType,hasBill, hasSolarPanel, currentSupplier);
         } else {
             return null;
         }
@@ -249,11 +253,11 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
     }
 
     private static boolean getElectrityHasBill(Optional<HouseHoldDetailsWebRequest> quote) {
-        return quote.map(HouseHoldDetailsWebRequest::getRecentElectricityBill).map(YesNo.getYesNoBooleanFunction()).orElse(false);
+        return quote.map(HouseHoldDetailsWebRequest::getRecentElectricityBill).map(getYesNoBooleanFunction()).orElse(false);
     }
 
     private static boolean getHasSolarPanels(Optional<HouseHoldDetailsWebRequest> estimateDetailsMaybe) {
-        return estimateDetailsMaybe.map(HouseHoldDetailsWebRequest::getSolarPanels).map(YesNo.getYesNoBooleanFunction()).orElse(false);
+        return estimateDetailsMaybe.map(HouseHoldDetailsWebRequest::getSolarPanels).map(getYesNoBooleanFunction()).orElse(false);
     }
 
 
@@ -263,5 +267,9 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
 
     private static HouseholdType getGasHouseholdType(Optional<EstimateDetails> estimateDetails) {
         return estimateDetails.map(EstimateDetails::getGas).map(com.ctm.web.energy.form.model.Energy::getUsage).orElse(null);
+    }
+
+    private static Function<YesNo, Boolean> getYesNoBooleanFunction() {
+        return value -> value.equals(YesNo.Y);
     }
 }

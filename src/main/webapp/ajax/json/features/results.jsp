@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
 
 <%-- Variables --%>
 <c:set var="vertical" value="${param.vertical}"/>
@@ -135,7 +136,7 @@
         <results>
         <transactionId>${tranId}</transactionId>
         <sessionId>${pageContext.session.id}</sessionId>
-        <clientIp>${pageContext.request.remoteAddr}</clientIp>
+        <clientIp>${ipAddressHandler.getIPAddress(pageContext.request)}</clientIp>
         <browser>${clientUserAgent}</browser>
         <products>
                 ${products}

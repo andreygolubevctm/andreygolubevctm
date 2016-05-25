@@ -7,6 +7,9 @@
 <core_v2:quote_check quoteType="travel" />
 <core_v2:load_preload />
 
+<%-- Set global variable to flags for active split tests --%>
+<travel:splittest_helper />
+
 <%-- HTML --%>
 <layout_v1:journey_engine_page title="Travel Quote">
 
@@ -101,7 +104,7 @@
 	<jsp:attribute name="form_bottom"></jsp:attribute>
 			
 	<jsp:attribute name="footer">
-		<travel:footer />
+		<core_v1:whitelabeled_footer />
 	</jsp:attribute>
 			
 	<jsp:attribute name="vertical_settings">
@@ -113,6 +116,7 @@
 	</jsp:attribute>
 				
 	<jsp:body>
+		<travel:parameter/>
 		<%-- Slides --%>
 		<travel_layout:slide_your_details />
 		<travel_layout:slide_results />

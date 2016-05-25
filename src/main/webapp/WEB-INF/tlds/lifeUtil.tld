@@ -22,4 +22,18 @@
         </example>
     </function>
 
+    <function>
+        <description>List of life occupations in JSON</description>
+        <name>occupationsJSON</name>
+        <function-class>com.ctm.web.life.occupation.LifeOccupationUtils</function-class>
+        <function-signature>
+            java.lang.String occupationsJSON(javax.servlet.http.HttpServletRequest)
+        </function-signature>
+        <example>
+            <![CDATA[
+				${life_util:occupationsJSON(pageContext.request)};
+			]]>
+        </example>
+    </function>
+
 </taglib>

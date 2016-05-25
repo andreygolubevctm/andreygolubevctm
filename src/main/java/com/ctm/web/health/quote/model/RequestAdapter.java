@@ -7,6 +7,8 @@ import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.*;
 import com.ctm.web.health.quote.model.request.*;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,11 +26,13 @@ import static java.util.Collections.singletonList;
 
 public class RequestAdapter {
 
-    public static HealthQuoteRequest adapt(HealthRequest request) {
-        return adapt(request, null);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestAdapter.class);
+
+    public static HealthQuoteRequest adapt(HealthRequest request, boolean isSimples) {
+        return adapt(request, null, isSimples);
     }
 
-    public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent) {
+    public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent, boolean isSimples) {
 
         HealthQuoteRequest quoteRequest = new HealthQuoteRequest();
         Filters filters = new Filters();
@@ -57,7 +61,6 @@ public class RequestAdapter {
         filters.setPreferencesFilter(getPreferences(benefitsExtras));
 
         boolean isShowAll = toBoolean(quote.getShowAll());
-        boolean isSimples = quote.getSimples() != null;
         boolean isDirectApplication = toBoolean(quote.getDirectApplication());
         addExcludeStatus(quoteRequest, isShowAll, isSimples);
 
@@ -305,9 +308,15 @@ public class RequestAdapter {
             providerFilter.setProviderIds(providerIds);
             providerFilter.setExclude(true);
             for (String code : StringUtils.split(filter.getProviderExclude(), ",")) {
-                providerIds.add(HealthFund.valueOf(code).getId());
+                try {
+                    providerIds.add(HealthFund.valueOf(code).getId());
+                } catch (IllegalArgumentException e) {
+                    LOGGER.warn("Error while getting health fund", e);
+                }
             }
-            filters.setProviderFilter(providerFilter);
+            if (!providerIds.isEmpty()) {
+                filters.setProviderFilter(providerFilter);
+            }
         }
     }
 

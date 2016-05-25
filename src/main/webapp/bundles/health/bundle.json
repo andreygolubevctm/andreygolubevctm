@@ -1,5 +1,5 @@
 {
-  "brandCodes": ["ctm", "yhoo"],
+  "brandCodes": ["ctm"],
   "dependencies": [
 	"shared/journeyEngine/v2",
   	"plugins/scrollTo",
@@ -7,10 +7,14 @@
   	"shared/features",
 	"shared/validation",
 	"core",
+	"shared/forms/v2",
 	"shared/currency",
+    "shared/dateUtils",
+    "shared/age",
 	"shared/datepicker",
 	"shared/commencementDate",
   	"shared/autocomplete",
+	"shared/addressLookup",
 	"shared/placeholder",
 	"shared/sliders",
 	"shared/saveQuote",

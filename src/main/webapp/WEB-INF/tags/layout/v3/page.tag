@@ -51,6 +51,11 @@ ${newPage.init(pageContext.request, pageSettings)}
 <!DOCTYPE html>
 <go:html>
 <head>
+	<%-- Google Optimise 360 --%>
+	<c:if test="${empty callCentre or not callCentre}">
+		<content:get key="googleOptimise360" />
+	</c:if>
+
 	<title>${title} - ${pageSettings.getSetting('brandName')}</title>
 	<meta charset='utf-8'>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -69,6 +74,10 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<link rel="apple-touch-icon" sizes="152x152" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/tablet@2x.png">
 		<link rel="apple-touch-icon" sizes="180x180" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone@3x.png">
 	</c:if>
+
+	<%-- DISTIL - Comment for script injection --%>
+	<!-- <body><head><form><a></a><input /></form></head></body> -->
+
 <c:choose>
 	<c:when test="${empty skipJSCSS}">
 		<c:set var="browserName" value="${userAgentSniffer.getBrowserName(pageContext.getRequest().getHeader('user-agent'))}" />
@@ -142,7 +151,7 @@ ${newPage.init(pageContext.request, pageSettings)}
                     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','${pageSettings.getSetting('GTMPropertyId')}');</script>
+            })(window,document,'script','CtMDataLayer','${pageSettings.getSetting('GTMPropertyId')}');</script>
         </c:if>
     </c:if>
 

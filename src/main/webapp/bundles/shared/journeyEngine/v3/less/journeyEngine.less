@@ -3,104 +3,98 @@
 //
 
 #journeyEngineContainer {
-	min-height: 500px;
+  min-height: 500px;
 
-	// Relative required to contain the journeyEngineLoader
-  	position: inherit;
+  // Relative required to contain the journeyEngineLoader
+  position: inherit;
 
-	@media print {
-		min-height: 0;
-	}
+  @media print {
+    min-height: 0;
+  }
 }
-
-
 
 // Loading / blocking
 .journeyEngineLoader {
-	display: none;
-	text-align: center;
-	position: absolute;
+  display: none;
+  text-align: center;
+  position: absolute;
 
-	height: 100%;
-	background: #fff;
-	z-index: 50;
-	padding-top: 3em;
-	font-size: 1.4em;
-	opacity: 0;
+  height: 100%;
+  background: #fff;
+  z-index: 50;
+  padding-top: 3em;
+  font-size: 1.4em;
+  opacity: 0;
 
+  width: 100%;
 
-	width:100%;
+  @media (@xs-only) {
+    left: 0;
+  }
 
-	@media (@xs-only) {
-		left:0;
-	}
-
-	@media (@sm) {
-		width: (@container-sm - @grid-gutter-width);
-	}
-	@media (@md) {
-		width: (@container-md - @grid-gutter-width);
-	}
-	@media (@lg) {
-		width: (@container-lg - @grid-gutter-width);
-	}
+  @media (@sm) {
+    width: (@container-sm - @grid-gutter-width);
+  }
+  @media (@md) {
+    width: (@container-md - @grid-gutter-width);
+  }
+  @media (@lg) {
+    width: (@container-lg - @grid-gutter-width);
+  }
 
 }
+
 // Show indicator while journey engine is initialising
 body.jeinit .journeyEngineLoader {
-	display: block;
-	opacity: 1;
+  display: block;
+  opacity: 1;
 }
-
-
 
 .journeyEngineSlide {
-	display: none;
+  display: none;
 
-	padding-top: 20px;
-	@media (@xs-only) {
-		padding-top: (@page-offset-xs + 20px);
-	}
-	&.first .nav-prev-btn,
-	&.last .nav-next-btn {
-		.hide();
-	}
+  padding-top: 20px;
+  @media (@xs-only) {
+    padding-top: (@page-offset-xs + 20px);
+  }
+  &.first .nav-prev-btn,
+  &.last .nav-next-btn {
+    .hide();
+  }
 
-	&.active{
-		display: block;
-	}
+  &.active {
+    display: block;
+  }
 
-	&.resultsSlide {
-	  padding-top: 0;
-	  @media (@xs-only) {
-		padding-top: @page-offset-xs;
-	  }
-	}
+  &.resultsSlide {
+    padding-top: 0;
+    @media (@xs-only) {
+      padding-top: @page-offset-xs;
+    }
+  }
 }
-
 
 // When loading animation sits after a button
 .btn {
-	& + .spinner {
-		display: inline-block;
-	}
-	> .spinner {
-		display: inline-block;
-		margin-top: 0;
-		margin-bottom: 0;
-	}
+  & + .spinner {
+    display: inline-block;
+  }
+  > .spinner {
+    display: inline-block;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 }
-
-
 
 //
 // Slide features hidden/shown on certain steps
 //
 .slide-feature-hidden() {
-	display: none;
+  display: none;
 }
+
 .slide-feature-is-visible() {
-	display: block;
+  display: block;
 }
 
 /*
@@ -141,113 +135,113 @@ DISABLED due to breaking iPad iOS6 rendering
 */
 body.utilities_design_55,
 body.health {
-  .journeyEngineSlide.resultsSlide{
-	padding-top: 0;
-	@media (@xs-only) {
-	  padding-top: @page-offset-xs;
-	}
+  .journeyEngineSlide.resultsSlide {
+    padding-top: 0;
+    @media (@xs-only) {
+      padding-top: @page-offset-xs;
+    }
   }
 
   label {
-	font-weight:bold;
+    font-weight: normal;
+    font-family: @font-family-theme-bold;
 
-	&.btn {
-	  font-weight: initial;
-	}
+    &.btn {
+      font-weight: initial;
+    }
   }
 
   select, input, span.input-group-addon, label.btn {
-	border-color: @field-border-color;
+    border-color: @field-border-color;
   }
-
-
 
   &[data-step=benefits],
-  &[data-step=results]{
-	#pageContent{
-	  background-color: @page-content-bg;
-	  .transition(~"background-color 250ms ease-in-out");
-	}
-	#pageContentTop{
-	  opacity: 1;
-	  .transition(~"opacity 250ms ease-in-out");
-	}
+  &[data-step=results] {
+    #pageContent {
+      background-color: @page-content-bg;
+      .transition(~"background-color 250ms ease-in-out");
+    }
+    #pageContentTop {
+      opacity: 1;
+      .transition(~"opacity 250ms ease-in-out");
+    }
   }
 
-
-  .fieldset-card{
-	background-color: white;
-	border:1px solid @border-colour;
-	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
+  .fieldset-card {
+    background-color: white;
+    border: 1px solid @border-colour;
+    box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
   }
 
   .fieldset-column-side {
 
-	@media (min-width: @screen-sm-min) {
-	  padding-top: 32px; //47px
-	}
+    @media (min-width: @screen-sm-min) {
+      padding-top: 32px; //47px
+    }
   }
 
   .btn-modal {
-	&:extend(.btn-email all);
+    &:extend(.btn-email all);
   }
 
   .btn-next, .btn-cta, .btn-save, .btn-cancel, .btn-download, .btn-edit {
-	border-radius: 22px;
+    border-radius: 22px;
   }
 
   .btn-next {
-	margin-top: 5px;
+    margin-top: 5px;
   }
 
   .slideAction {
-	div:first-child {
-	  float: right;
-	}
+    div:first-child {
+      float: right;
+    }
   }
 
   /*
 	  Content changes
   */
 
-
   #pageContent {
-	position: relative;
-	.transition(~"background-color 1000ms ease-in-out");
-	background-color: @main-bg-colour;
+    position: relative;
+    .transition(~"background-color 1000ms ease-in-out");
+    background-color: @main-bg-colour;
   }
 
   .navMenu-row {
-	background-color: @main-bg-colour;
+    background-color: @main-bg-colour;
   }
 
-
   .content {
-	background-color: @body-bg;
-	border: 1px solid @input-bg-disabled;
-	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
-	padding-top: 25px;
-	@media (min-width: 0) {
-	  padding-left: 25px;
-	  padding-right: 25px;
-	}
+    background-color: @body-bg;
+    border: 1px solid @input-bg-disabled;
+    box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
+    padding-top: 25px;
+    @media (min-width: 0) {
+      padding-left: 25px;
+      padding-right: 25px;
+    }
   }
 
   .fieldset h2 {
-	border-bottom: none;
-	color: #162F8A;
-	font-weight: bold;
-	font-size: 38px;
-	margin-bottom: 10px;
+    border-bottom: none;
+    color: #162F8A;
+    font-weight: bold;
+    font-size: 38px;
+    margin-bottom: 10px;
   }
 
   fieldset h2 {
-	padding-bottom: 3px;
-	margin-top: 0;
+    padding-bottom: 3px;
+    margin-top: 0;
   }
 
   .contact-details-optin-group .col-sm-offset-3 {
-	margin-left: 2%;
-	width: 93%;
+    margin-left: 2%;
+    width: 93%;
   }
+}
+
+.journeyNavButton {
+	font-size: 16px;
 }

@@ -20,6 +20,7 @@ import com.ctm.web.core.exceptions.EnvironmentException;
 import com.ctm.web.core.exceptions.VerticalException;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.ServiceConfigurationService;
@@ -76,7 +77,7 @@ public class EmailServiceFactory {
 		SessionDataService sessionDataService = new SessionDataService();
 		TouchDao dao = new TouchDao();
 		AccessTouchService accessTouchService = new AccessTouchService(dao , sessionDataService);
-		return new HealthEmailService(pageSettings, mode , emailDetailsService, contentDao, urlService , accessTouchService, urlServiceOld, sessionDataService);
+		return new HealthEmailService(pageSettings, mode , emailDetailsService, contentDao, urlService , accessTouchService, urlServiceOld, sessionDataService, IPAddressHandler.getInstance());
 	}
 
 	private static EmailServiceHandler getTravelEmailService(
@@ -86,7 +87,7 @@ public class EmailServiceFactory {
 		EmailUrlService urlService = createEmailUrlService(pageSettings,
 				vertical);
 		EmailUrlServiceOld urlServiceOld = createEmailUrlServiceOld(pageSettings, vertical);
-		return new TravelEmailService(pageSettings, mode , emailDetailsService, urlService, data, urlServiceOld);
+		return new TravelEmailService(pageSettings, mode , emailDetailsService, urlService, data, urlServiceOld, IPAddressHandler.getInstance());
 	}
 	
 	private static EmailServiceHandler getLifeEmailService(PageSettings pageSettings, EmailMode mode, Data data, VerticalType vertical) throws SendEmailException {

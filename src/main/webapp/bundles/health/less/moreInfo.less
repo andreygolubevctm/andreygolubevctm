@@ -28,6 +28,10 @@
 	}
 }
 
+.btn-close-more-info {
+	display:inline-block;
+}
+
 .moreInfoVisible #resultsPage{
 	margin-bottom: 30px;
 }
@@ -49,15 +53,15 @@
 		max-height: none;
 		max-width: none;
 
-		.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames);
+		.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.8);
 		@media(@xs-only){
 			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.4);
 		}
 		@media(@sm-only){
-			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.9);
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.6);
 		}
 		@media(@md-only){
-			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.8);
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.7);
 		}
 
 	}
@@ -88,7 +92,7 @@
 		&.productName {
 			font-size: 30px;
 			@media (@sm) {
-				font-size: 42px;
+				font-size: 35px;
 			}
 			font-family: @font-family-theme-bold;
 		}
@@ -201,6 +205,15 @@
 				width: 100%;
 			}
 		}
+		.price.premium {
+			margin-left:11em;
+			@media (@sm-only) {
+				margin-left:13em;
+			}
+			@media (@md) {
+				margin-left:0;
+			}
+		}
 	}
 
 	.btn-more-info-apply {
@@ -213,6 +226,42 @@
 		border-radius: 22px;
 	}
 
+	.btn-big-text {
+		font-family:"SourceSansProSemiBold";
+		font-size:28px;
+		padding-top:20px;
+		padding-bottom:20px;
+	}
+
+	&.more-info-content-variant {
+		.moreInfoTopRightColumn {
+			.btn-more-info-apply {
+				width: auto;
+				margin: 0.75em 0.25em 0.75em 0;
+				box-shadow: none;
+			}
+		}
+	}
+	&.more-info-content-variant {
+		@media (@sm-only) {
+			.moreInfoTopLeftColumn {
+				.insureNowContainer {
+					.text-dark {
+						height: 5.7em;
+					}
+				}
+			}
+		}
+		@media (@xs-only) {
+			.moreInfoTopLeftColumn {
+				.trailing-no-margin {
+					.btn {
+						margin-bottom: 0px;
+					}
+				}
+			}
+		}
+	}
 }
 
 //.more-info-content
@@ -319,7 +368,7 @@
 	tbody {
 		th {
 			font-weight: normal;
-			font-size: 18px;
+			font-size: 14px;
 		}
 		td:nth-child(2) {
 			font-size: 16px;
@@ -555,15 +604,15 @@ ul.benefitsIcons {
 
 // Old CTA buttons variables for A/B testing
 @old-btn-cta-bg-color: @theme-primary;
-@old-btn-cta-color: contrast(@old-btn-cta-bg-color);
+@old-btn-cta-color: @btn-foreground-color;
 @old-btn-cta-border-color: @old-btn-cta-bg-color;
 
 @old-btn-cta-hover-bg-color: darken(@old-btn-cta-bg-color, 12%);
-@old-btn-cta-hover-color: contrast(@old-btn-cta-hover-bg-color);
+@old-btn-cta-hover-color: @btn-foreground-color;
 @old-btn-cta-hover-border-color: @old-btn-cta-hover-bg-color;
 
 @old-btn-cta-active-bg-color: @theme-secondary;
-@old-btn-cta-active-color: contrast(@old-btn-cta-active-bg-color);
+@old-btn-cta-active-color: @btn-foreground-color;
 @old-btn-cta-active-border-color: @old-btn-cta-active-bg-color;
 
 // A/B testing for old organge color buttons

@@ -145,6 +145,7 @@
 	}
 
 	.dual-pricing-container {
+
 		.cents,
 		.dollarSign,
 		.frequencyTitle {
@@ -155,8 +156,8 @@
 			font-family: @font-family-theme-regular;
 		}
 
-		.dollarSign {
-			font-family: @font-family-theme-bold;
+		.why-rising-premiums {
+			text-decoration: underline;
 		}
 
 		.current-pricing {
@@ -295,6 +296,7 @@
 
 				.current-pricing {
 					display: table-cell;
+					width: 40%;
 
 					h3 {
 						color: @dual-pricing-dark-font-colour;
@@ -405,13 +407,12 @@
 				margin-top: 20px;
 				margin-bottom: 20px;
 				display: inline-block;
-				text-decoration:none;
 			}
 
 			h2 {
 				font-family: @font-family-theme-bold;
 				color: @dual-pricing-heading-color;
-				font-size: 26px;
+				font-size: 24px;
 			}
 
 			> h3 {
@@ -487,11 +488,9 @@
 
 	.more-info-content .fieldset-card.dropDatePassedContainer {
 		margin-top: 20px;
-		padding-top: 0px;
 	}
 
 	.dropDatePassedContainer {
-		background: @more-info-header-bg-color;
 
 		.quoteRefContainer {
 			padding-top: 20px;

@@ -2,12 +2,14 @@ package com.ctm.web.car.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
+import org.springframework.stereotype.Component;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class CarRegoLookupDao {
     private static final String LOG_TABLE = "ctm.rego_lookup_usage";
 
@@ -18,7 +20,7 @@ public class CarRegoLookupDao {
      * @return
      * @throws DaoException
      */
-    public static int getTodaysUsage() throws DaoException {
+    public int getTodaysUsage() throws DaoException {
         int usage = 0;
         SimpleDatabaseConnection dbSource = null;
 

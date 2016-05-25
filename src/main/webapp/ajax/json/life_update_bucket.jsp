@@ -1,6 +1,8 @@
-<%@ page language="java" contentType="text/json; charset=UTF-8"
+<%@ page language="java" contentType="application/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
+
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" />
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.life_update_bucket')}" />
 
@@ -22,7 +24,7 @@
 		<%-- Load the params into data --%>
 		<security:populateDataFromParams rootPath="${vertical}" />
 
-		<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/clientIpAddress" value="${pageContext.request.remoteAddr}" />
+		<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/clientIpAddress" value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
 		<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/clientUserAgent" value="${clientUserAgent}" />
 
 		<%-- Save client data --%>

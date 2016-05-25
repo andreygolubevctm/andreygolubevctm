@@ -7,6 +7,7 @@ import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.Unsubscribe;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.services.StampingService;
@@ -15,14 +16,23 @@ import com.ctm.web.simples.dao.BlacklistDao;
 import com.ctm.web.simples.model.BlacklistChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class SimplesBlacklistService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesBlacklistService.class);
 
+	private final IPAddressHandler ipAddressHandler;
+
+    @Autowired
+	public SimplesBlacklistService(IPAddressHandler ipAddressHandler) {
+		this.ipAddressHandler = ipAddressHandler;
+	}
 
 
 	/**
@@ -146,7 +156,7 @@ public class SimplesBlacklistService {
 		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 		int styleCodeId = pageSettings.getBrandId();
 		String brand = pageSettings.getBrandCode();
-		String ipAddress = request.getRemoteAddr();
+		String ipAddress = ipAddressHandler.getIPAddress(request);
 		String action = BlacklistChannel.findByCode(channel).getAction();
 		StampingService stampingService = new StampingService();
 		stampingService.writeStamp(styleCodeId, action, brand, Vertical.VerticalType.SIMPLES.getCode().toLowerCase(), target, value, operator, comment, ipAddress);

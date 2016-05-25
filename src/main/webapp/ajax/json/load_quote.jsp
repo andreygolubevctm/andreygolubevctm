@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.load_quote')}" />
 
 <session:new verticalCode="${fn:toUpperCase(param.vertical)}" forceNew="true" authenticated="true" />
+<jsp:useBean id="verticalSettings" class="com.ctm.web.core.model.settings.VerticalSettings" scope="page" />
 
 <%--
 	load_quote.jsp
@@ -231,10 +232,7 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 				<c:set var="result">
 					<result>
 
-						<c:set var="pageName" value="${param.vertical}_quote.jsp" />
-						<c:if test="${param.vertical eq 'home'}">
-							<c:set var="pageName" value="home_contents_quote.jsp" />
-						</c:if>
+						<c:set var="pageName" value="${verticalSettings.getHomeUrlForVertical(param.vertical)}" />
 
 						<c:choose>
 

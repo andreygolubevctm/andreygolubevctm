@@ -27,8 +27,8 @@ public class HealthQuoteSummaryService extends CommonQuoteService<HealthQuote> {
         super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new ServiceConfigurationService(), EnvironmentService.getEnvironmentFromSpring());
     }
 
-    public PremiumRange getSummary(Brand brand, HealthRequest data) throws DaoException, IOException, ServiceConfigurationException {
-        final HealthQuoteRequest quoteRequest = RequestAdapter.adapt(data);
+    public PremiumRange getSummary(Brand brand, HealthRequest data, boolean isSimples) throws DaoException, IOException, ServiceConfigurationException {
+        final HealthQuoteRequest quoteRequest = RequestAdapter.adapt(data, isSimples);
         final HealthSummaryResponse healthResponse = sendRequest(brand, HEALTH, "healthQuoteServiceBER", Endpoint.SUMMARY, data, quoteRequest, HealthSummaryResponse.class);
         return SummaryResponseAdapter.adapt(data, healthResponse);
 

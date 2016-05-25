@@ -52,7 +52,7 @@
 	function canHide(segment) {
 		if (isSegmentsValid(segment) !== true) return false;
 		if (!segment.hasOwnProperty('canHide') || segment.canHide !== true) return false;
-		if (!segment.hasOwnProperty('classToHide') || segment.classToHide.length === 0 || !segment.classToHide.trim()) return false;
+		if (!segment.hasOwnProperty('classToHide') || segment.classToHide.length === 0 || !$.trim(segment.classToHide)) return false;
 		return true;
 	}
 

@@ -40,7 +40,7 @@
             Costs and savings include GST & are effective as at <fmt:formatDate value="${now}" pattern="dd/MM/yyyy"/>.
         </p>
         <core_v1:clear/>
-        <a href="javascript:;" class="btn btn-primary btn-change-type"> Change fuel type</a>
+        <a href="javascript:;" class="btn btn-primary btn-change-type"> Change energy type</a>
         <utilities_v2:change_type />
 
         <div class="featuresFooterPusher"></div>
@@ -198,7 +198,7 @@
                                        data-productId="{{= obj.productId }}">
                                         Apply Now <span class="icon icon-arrow-right"/></a>
                                 </div>
-                                <div class="col-sm-4 col-sm-pull-4 col-lg-12 moreInfo">
+                                <div class="col-sm-4 col-sm-push-8 col-lg-push-0 col-lg-12 moreInfo">
                                     <a href="javascript:;" class="btn-more-info"
                                        data-available="{{= obj.productAvailable }}"
                                        data-productId="{{= obj.productId }}">More

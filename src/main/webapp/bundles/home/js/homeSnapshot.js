@@ -11,63 +11,92 @@
 			homeSnapshot: {
 			}
 		},
-		$coverType = $('#home_coverType'),
-		$quoteSnapshot = $(".quoteSnapshot"),
-		$nonStdToggle = $("#home_property_address_nonStd");
+		$coverType = $('#home_coverType');
 
 	function initHomeSnapshot() {
 
 		// Initial render
 		meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.READY, function renderSnapshotOnJourneyReadySubscription() {
 			_.defer(function() {
-				renderSnapshot(getIcon());
+				renderSnapshot();
 			});
 		});
 
-		// On change
-		$coverType.on('change', function changeHomeCoverDetails() {
-			renderSnapshot(getIcon());
-		});
-
-		$nonStdToggle.on('change', function toggleNonStd() {
-			_.defer(function(){
-				renderSnapshot(getIcon());
-			});
-		});
-
-		/**
-		 * Legacy address search sucks. Can't properly listen to change events on the hidden inputs
-		 * that I wanted to use to render the snapshot.
-		 */
-		$('#home_property_address_autofilllessSearch, #home_property_address_streetSearch, #home_property_address_streetNum, #home_property_address_nonStdPostCode, #home_property_address_suburb, #home_property_address_nonStdStreet, #home_property_address_unitShop, #home_property_address_nonStdUnitType').on('change blur', function() {
-			_.defer(function(){
-				renderSnapshot(getIcon());
-			});
-		});
+        registerSnapShotFields();
 	}
+
+    function getHomeAmount($sourceElement) {
+        return meerkat.modules.home.getCoverType() === 'H' || meerkat.modules.home.getCoverType() === 'HC' ? $sourceElement.val() : '';
+    }
+
+    function getContentAmount($sourceElement) {
+        return meerkat.modules.home.getCoverType() === 'C' || meerkat.modules.home.getCoverType() === 'HC' ? $sourceElement.val() : '';
+    }
+
+    function getJointHolderName($sourceElement) {
+        return meerkat.modules.homePolicyHolder.getHasJointHolder() === true ? $sourceElement.val() + ' ' + $('#home_policyHolder_jointFirstName').val() + ' ' + $('#home_policyHolder_jointLastName').val() : '';
+    }
+
+    function getJointHolderDob($sourceElement) {
+        return meerkat.modules.homePolicyHolder.getHasJointHolder() === true ? $sourceElement.val() : '';
+    }
 
 	/**
 	 * Which icon to render depending on what the cover type is.
 	 */
-	function renderSnapshot(icon) {
-		var firstSnapshotSlide = 0;
+	function renderSnapshot() {
 		var coverType = $coverType.val();
 		var $snapshotBox = $(".quoteSnapshot");
-		var limit = meerkat.modules.journeyEngine.getStepsTotalNum();
 
 		if (!_.isEmpty(coverType)) {
 			$snapshotBox.removeClass('hidden');
-			if(!_.isEmpty(icon)) {
-				$quoteSnapshot.find('.icon:first').attr('class','icon').addClass(icon);
-			}
 		} else {
 			$snapshotBox.addClass('hidden');
 		}
 
-		for(var i = firstSnapshotSlide; i < limit; i++) {
-			meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(' + i + ') .snapshot');
-		}
+        meerkat.modules.contentPopulation.render('.cover-snapshot', true);
+        meerkat.modules.contentPopulation.render('.amount-snapshot', true);
+        meerkat.modules.contentPopulation.render('.holder-snapshot', true);
 	}
+
+    /**
+     * Register all fields change events here instead of doing it one by one through other modules
+     */
+    function registerSnapShotFields() {
+
+        var fieldsArray = [
+            $coverType,
+            $("#home_property_address_nonStd"),
+            $('#home_property_address_autofilllessSearch'),
+            $('#home_property_address_streetSearch'),
+            $('#home_property_address_streetNum'),
+            $('#home_property_address_nonStdPostCode'),
+            $('#home_property_address_suburb'),
+            $('#home_property_address_nonStdStreet'),
+            $('#home_property_address_unitShop'),
+            $('#home_property_address_nonStdUnitType'),
+            $('#home_coverAmounts_rebuildCostentry'),
+            $('#home_coverAmounts_replaceContentsCostentry'),
+            $('#home_policyHolder_title'),
+            $('#home_policyHolder_firstName'),
+            $('#home_policyHolder_lastName'),
+            $('#home_policyHolder_dob'),
+            $('#home_policyHolder_jointTitle'),
+            $('#home_policyHolder_jointFirstName'),
+            $('#home_policyHolder_jointLastName'),
+            $('#home_policyHolder_jointDob')
+        ];
+
+        $(fieldsArray).each(function () {
+            $(this).on('change blur', function snapshotFieldChanged(){
+                _.defer(renderSnapshot);
+            });
+        });
+
+        $(".toggleJointPolicyHolder").on('click', function snapshotToogleClicked() {
+            _.defer(renderSnapshot);
+        });
+    }
 
 	/**
 	 * Utility function used here and in edit details
@@ -107,7 +136,11 @@
 		init: initHomeSnapshot,
 		events: events,
 		getIcon: getIcon,
-		getAddress: getAddress
+		getAddress: getAddress,
+        getHomeAmount: getHomeAmount,
+        getContentAmount: getContentAmount,
+        getJointHolderName: getJointHolderName,
+        getJointHolderDob: getJointHolderDob
 	});
 
 })(jQuery);

@@ -1,5 +1,5 @@
 {
-  "brandCodes": ["ctm", "cc", "choo"],
+  "brandCodes": ["ctm", "choo"],
   "dependencies": [
     "shared/journeyEngine/v2",
     "plugins/scrollTo",
@@ -7,8 +7,11 @@
     "shared/features",
     "shared/validation",
     "core",
+    "shared/forms/v1",
     "shared/currency",
     "shared/addressLookup",
+    "shared/dateUtils",
+    "shared/age",
     "shared/placeholder",
     "shared/emailLoadQuote",
     "shared/commencementDate",
@@ -24,6 +27,7 @@
     "shared/saveQuote",
     "shared/resultsRankings",
     "shared/leadFeed",
-    "shared/formNumberFormatInputs"
+    "shared/formNumberFormatInputs",
+    "shared/ie8SelectMenuAutoExpand"
   ]
 }

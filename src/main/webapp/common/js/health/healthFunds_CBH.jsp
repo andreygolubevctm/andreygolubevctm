@@ -38,7 +38,7 @@ var healthFunds_CBH = {
 
 						<c:set var="fieldXpath" value="health/application/cbh/currentemployee" />
 						<form_v2:row fieldXpath="${fieldXpath}" label="Are you a current employee, contractor or franchisee of the CBA Group?" className="cbhmain">
-							<field_v2:array_select xpath="${fieldXpath}" required="true" title="if you are a current employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
+							<field_v2:array_select xpath="${fieldXpath}" required="true" title="if you are a current employee of the CBA Group" items="=Please choose...,Y=Yes,N=No"  disableErrorContainer="${true}" />
 						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/currentnumber" />
@@ -91,7 +91,7 @@ var healthFunds_CBH = {
 
 						<c:set var="fieldXpath" value="health/application/cbh/familyrel" />
 						<form_v2:row fieldXpath="${fieldXpath}" label="What is your relationship to the family member?" className="cbhsub">
-							<field_v2:array_select xpath="${fieldXpath}" required="true" title="your relationship to the family member" items="=Please choose...,partner=Partner,parent=Parent,child=Child,grandchild=Grandchild,sibling=Sibling,nephew=Nephew,niece=Niece" />
+							<field_v2:array_select xpath="${fieldXpath}" required="true" title="your relationship to the family member" items="=Please choose...,partner=Partner,parent=Parent,child=Child,grand_child=Grandchild,sibling=Sibling,nephew=Nephew,niece=Niece" />
 						</form_v2:row>
 
 					</div>
@@ -169,7 +169,7 @@ var healthFunds_CBH = {
 			<c:set var="html">
 				<c:set var="fieldXpath" value="health/application/cbh/partnerrel" />
 				<form_v2:row id="cbh_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
-					<field_v2:array_select xpath="${fieldXpath}" required="true" title="relationship to you" items="=Please choose...,2=Spouse,3=Defacto" />
+					<field_v2:array_select xpath="${fieldXpath}" required="true" title="relationship to you" items="=Please choose...,2=Spouse,3=Defacto"  placeHolder="Relationship" disableErrorContainer="${true}" />
 				</form_v2:row>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
@@ -210,7 +210,7 @@ var healthFunds_CBH = {
 		if (!$('body').hasClass('injectingFund')) {
 
 			<%-- Dependants --%>
-			healthFunds._dependants('CBHS policies provide cover for all dependents under the age of 18 including step and foster children. Adult dependents who are aged between 18 and 24 years and who are: studying full time (min 20 hours per week), 1st or 2nd year apprentices or employed on an unpaid internship may continue to be covered by CBHS policies. Other adult dependents can apply for a separate policy (subject to meeting eligibility criteria).');
+			healthFunds._dependants('CBHS policies provide cover for all dependants under the age of 18 including step and foster children. Adult dependants who are aged between 18 and 24 years and who are: studying full time (min 20 hours per week), 1st or 2nd year apprentices or employed on an unpaid internship may continue to be covered by CBHS policies. Other adult dependants can apply for a separate policy (subject to meeting eligibility criteria).');
 
 			meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, 'schoolMinAge':18, 'schoolMaxAge':24, showSchoolIdField:false });
 
@@ -258,14 +258,17 @@ var healthFunds_CBH = {
 			<%-- Load join dec into label --%>
 			healthFunds_CBH.joinDecLabelHtml = $('#health_declaration + label').html();
 			healthFunds_CBH.ajaxJoinDec = $.ajax({
-				url: '/' + meerkat.site.urls.context + 'health_fund_info/CBH/declaration.html',
+				url: '/' + meerkat.site.urls.context + 'health/provider/content/get.json?providerId=10&providerContentTypeCode=JDO',
 				type: 'GET',
 				async: true,
 				dataType: 'html',
 				timeout: 20000,
 				cache: true,
 				success: function(htmlResult) {
-					$('#health_declaration + label').html(htmlResult);
+					if(typeof htmlResult === 'string')
+						htmlResult = JSON.parse(htmlResult);
+
+					$('#health_declaration + label').html(htmlResult.providerContentText);
 				},
 				error: function(obj,txt) {
 				}

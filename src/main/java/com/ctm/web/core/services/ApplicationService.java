@@ -100,7 +100,6 @@ public class ApplicationService {
 		return enabledBrands;
 	}
 
-
 	public Brand getBrand(HttpServletRequest httpServletRequest, Vertical.VerticalType vertical){
 		// - Start common -- taken from Carlos' car branch
 		ApplicationService.setVerticalCodeOnRequest(httpServletRequest, vertical.getCode());

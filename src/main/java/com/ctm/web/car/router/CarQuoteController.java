@@ -12,11 +12,15 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -33,8 +37,8 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
     private CarQuoteService carService;
 
     @Autowired
-    public CarQuoteController(SessionDataServiceBean sessionDataServiceBean, ApplicationService applicationService) {
-        super(sessionDataServiceBean, applicationService);
+    public CarQuoteController(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler) {
+        super(sessionDataServiceBean, ipAddressHandler);
     }
 
     @RequestMapping(value = "/quote/get.json",

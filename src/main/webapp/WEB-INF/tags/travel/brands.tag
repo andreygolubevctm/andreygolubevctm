@@ -9,7 +9,7 @@
 	<%-- To add another brand, just add another item to the list and
 		remember to add a new class in framework\modules\less\homeloan\logos.less --%>
 
-	<div class="travel-brands-content">
+	<div class="brands-content">
 		<h2><content:get key="modalHeading"/></h2>
 		<p><content:get key="modalCopy"/></p>
 	<c:forEach items="${providerCodes}" var="pc">

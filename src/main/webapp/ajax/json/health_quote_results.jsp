@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <c:set var="verticalCode" value="HEALTH" />
@@ -7,19 +7,19 @@
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true" />
 <jsp:useBean id="healthQuoteResults" class="com.ctm.web.health.services.HealthQuoteEndpointService" />
-${healthQuoteResults.init(pageContext.request, pageSettings)}
+<%-- Load the params into data --%>
+<security:populateDataFromParams rootPath="health" />
+${healthQuoteResults.init(pageContext.request, pageSettings, data)}
 <c:choose>
-<%-- Only continue if token is valid --%>
-<c:when test="${healthQuoteResults.validToken}">
+	<%-- Only continue if token is valid --%>
+	<c:when test="${healthQuoteResults.validToken && healthQuoteResults.validRequest}">
 	<jsp:useBean id="soapdata" class="com.ctm.web.core.web.go.Data" scope="request" />
 
 	<%-- First check owner of the quote --%>
 	<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 
-	<c:set var="continueOnValidationError" value="${true}" />
+	<c:set var="continueOnSchemaValidationError" value="${true}" />
 
-			<%-- Load the params into data --%>
-	<security:populateDataFromParams rootPath="health" />
 
 	<%-- Test and or Increment ID if required --%>
 	<c:choose>
@@ -47,6 +47,7 @@ ${healthQuoteResults.init(pageContext.request, pageSettings)}
 
 			<%-- Set custom application date from data.jsp --%>
 			<go:setData dataVar="data" xpath="health/applicationDate" value="${applicationService.getApplicationDate(pageContext.getRequest())}" />
+			<go:setData dataVar="data" xpath="health/isSimples" value="${callCentre}" />
 			<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 			<%-- Removed specific email writing operations from here as they're handled in core:transaction above --%>
 			<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health/config_ALL.xml')}" />
@@ -57,14 +58,14 @@ ${healthQuoteResults.init(pageContext.request, pageSettings)}
 				var = "resultXml"
 				debugVar="debugXml"
 				validationErrorsVar="validationErrors"
-				continueOnValidationError="${continueOnValidationError}"
+				continueOnValidationError="${continueOnSchemaValidationError}"
 								isValidVar="isValid"
 								verticalCode="HEALTH"
 								configDbKey="quoteService"
 								sendCorrelationId="true"
 								styleCodeId="${pageSettings.getBrandId()}" />
 
-			<c:if test="${isValid || continueOnValidationError}">
+			<c:if test="${isValid || continueOnSchemaValidationError}">
 				<c:if test="${!isValid}">
 					<c:forEach var="validationError"  items="${validationErrors}">
 						<error:non_fatal_error origin="health_quote_results.jsp"
@@ -103,7 +104,7 @@ ${healthQuoteResults.init(pageContext.request, pageSettings)}
 			</c:if>
 
 	<c:choose>
-		<c:when test="${isValid || continueOnValidationError}" >
+		<c:when test="${isValid || continueOnSchemaValidationError}" >
 			<c:set var="outputXml">
 				${go:getEscapedXml(soapdata['soap-response/results'])}
 				<timeout>${sessionDataService.getClientSessionTimeout(pageContext.getRequest())}</timeout>
@@ -151,6 +152,9 @@ ${healthQuoteResults.init(pageContext.request, pageSettings)}
 			<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="health_quote_results.jsp"/>
 		</c:otherwise>
 	</c:choose>
+	</c:when>
+	<c:when test="${!healthQuoteResults.validRequest}">
+		${healthQuoteResults.createErrorResponseInvalidRequest(data.text['current/transactionId'])}
 	</c:when>
 	<c:otherwise>
 		${healthQuoteResults.createErrorResponseInvalidToken(data.text['current/transactionId'])}

@@ -7,7 +7,7 @@ import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.router.CommonQuoteRouter;
-import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.simples.phone.inin.InInIcwsService;
@@ -44,9 +44,8 @@ public class PhoneController extends CommonQuoteRouter {
     private InInIcwsService inInIcwsService;
 
     @Autowired
-    public PhoneController(SessionDataServiceBean sessionDataServiceBean,
-                           InInIcwsService inInIcwsService, ApplicationService applicationService) {
-        super(sessionDataServiceBean, applicationService);
+    public PhoneController(SessionDataServiceBean sessionDataServiceBean, InInIcwsService inInIcwsService, IPAddressHandler ipAddressHandler) {
+        super(sessionDataServiceBean, ipAddressHandler);
         this.inInIcwsService = inInIcwsService;
     }
 

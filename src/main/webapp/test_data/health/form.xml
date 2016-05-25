@@ -29,6 +29,7 @@
 		<coverType>C</coverType>
 	</situation>
 	<benefits>
+		<covertype>customise</covertype>
 		<benefitsExtras>
 			<Hospital>Y</Hospital>
 			<PrHospital>Y</PrHospital>

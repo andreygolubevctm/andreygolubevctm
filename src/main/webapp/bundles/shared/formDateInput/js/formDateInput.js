@@ -8,13 +8,12 @@
 	function init() {
 		var iOS = meerkat.modules.performanceProfiling.isIos();
 		var iOS5 = meerkat.modules.performanceProfiling.isIos5();
-		var Android = meerkat.modules.performanceProfiling.isAndroid();
-		var Chrome = meerkat.modules.performanceProfiling.isChrome();
 
 		$(document).ready(function() {
 			// Decide whether to activate an HTML5 native date picker
 			// (This is also known as Impress The Bosses On Their iPads feature)
-			if (Modernizr.inputtypes.date && ((iOS && !iOS5) || (Android && Chrome))) {
+			// Dropped native datepicker on Android due to default date and format issues
+			if (Modernizr.inputtypes.date && iOS && !iOS5) {
 				nativePickerEnabled = true;
 			}
 			// Set up each date input component

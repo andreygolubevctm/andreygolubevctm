@@ -1,5 +1,6 @@
 package com.ctm.web.core.services;
 
+import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.model.ProviderFilter;
@@ -10,6 +11,8 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.validation.Name;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,20 +45,21 @@ public class CommonQuoteServiceTest {
     private QuoteServiceProperties quoteServiceProperties;
 
     @Mock
-    private RestClient restClient;
+    private SimpleConnection simpleConnection;
+
+    @Mock
+    private ObjectMapper objectMapper;
 
     @Mock
     private ServiceConfiguration serviceConfiguration;
-    @Mock
-    private ServiceConfigurationService serviceConfigurationService;
 
     @Before
     public void setup() throws Exception {
         initMocks(this);
         PowerMockito.mockStatic(ProviderService.class);
 
-        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, restClient,  serviceConfigurationService,
-                EnvironmentService.Environment.LOCALHOST) {});
+        EnvironmentService.setEnvironment("localhost");
+        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, objectMapper) {});
     }
 
     @Test(expected = RouterException.class)
@@ -88,6 +92,7 @@ public class CommonQuoteServiceTest {
         ProviderFilter providerFilter = mock(ProviderFilter.class);
         when(providerFilter.getProviderKey()).thenReturn("");
         when(providerFilter.getAuthToken()).thenReturn("");
+        // when(providerFilter.getProviders()).thenReturn(null);
         commonQuoteService.setFilter(providerFilter);
 
         verify(providerFilter, times(2)).getProviderKey();
@@ -157,27 +162,51 @@ public class CommonQuoteServiceTest {
         ProviderFilter providerFilter = mock(ProviderFilter.class);
         when(providerFilter.getProviderKey()).thenReturn("");
         when(providerFilter.getAuthToken()).thenReturn("");
-        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, restClient,  serviceConfigurationService,
-                EnvironmentService.Environment.NXS) {});
+        EnvironmentService.setEnvironment("nxs");
         commonQuoteService.setFilter(providerFilter);
     }
 
+    @Test
+    public void testSendRequest() throws Exception {
+        String requestUrl = "http://anyURL/quote";
+        Brand brand = mock(Brand.class);
+        Request request = mock(Request.class);
+        Object payload = mock(Object.class);
+        Object responseObject = mock(Object.class);
+        Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
+        when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
+        when(simpleConnection.get(requestUrl)).thenReturn("response message");
+        when(objectMapper.readValue(anyString(), any(JavaType.class))).thenReturn(responseObject);
 
+        doReturn(simpleConnection).when(commonQuoteService).setupSimplePOSTConnection(any(QuoteServiceProperties.class), anyString());
+        doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
+
+        final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);
+
+        assertEquals(responseObject, response);
+
+        verify(quoteServiceProperties, times(1)).getServiceUrl();
+        verify(simpleConnection, times(1)).get("http://anyURL/quote");
+        verify(objectMapper, times(1)).readValue(eq("response message"), any(JavaType.class));
+
+    }
+
+    @Test(expected = RouterException.class)
     public void testSendRequestEmptyResponse() throws Exception {
         Brand brand = mock(Brand.class);
         Request request = mock(Request.class);
         Object payload = mock(Object.class);
+        Object responseObject = mock(Object.class);
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
         when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
-        when(restClient.sendPOSTRequest(
-                anyObject(),
-                (Endpoint) anyObject(),
-                eq(Object.class), anyObject())).thenReturn(null);
+        when(simpleConnection.get(anyString())).thenReturn(null);
 
-        when(serviceConfigurationService.getServiceConfiguration(anyString(), anyObject())).thenReturn(serviceConfiguration);
+        doReturn(simpleConnection).when(commonQuoteService).setupSimplePOSTConnection(any(QuoteServiceProperties.class), anyString());
+        doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
+
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);
 
-        assertEquals(null, response);
+        assertEquals(responseObject, response);
     }
 
     @Test
@@ -227,13 +256,11 @@ public class CommonQuoteServiceTest {
 
     @Test
     public void testQuoteServicePropertiesWithNoEnvironmentOverride() throws Exception {
-        when(serviceConfigurationService.getServiceConfiguration(anyString(), anyObject())).thenReturn(serviceConfiguration);
-
         Brand brand = mock(Brand.class);
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
+        doReturn(serviceConfiguration).when(commonQuoteService).getServiceConfiguration("anyService", brand, verticalType.getCode());
 
-        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, restClient,  serviceConfigurationService,
-                EnvironmentService.Environment.NXS) {});
+        EnvironmentService.setEnvironment("nxs");
 
         when(serviceConfiguration.getPropertyValueByKey(SERVICE_URL, ALL_BRANDS, ALL_PROVIDERS, SERVICE)).thenReturn("http://currentUrl");
         when(serviceConfiguration.getPropertyValueByKey(DEBUG_PATH, ALL_BRANDS, ALL_PROVIDERS, SERVICE)).thenReturn("debugPath");

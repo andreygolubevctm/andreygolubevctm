@@ -97,8 +97,12 @@ public class TransactionService {
 
 	public static void writeAllowableErrors(Long transactionId, String allowedErrors) throws DaoException {
 		if (StringUtils.isNotBlank(allowedErrors)) {
-			final HealthTransactionDao transactionHealthDao = new HealthTransactionDao();
-			transactionHealthDao.writeAllowableErrors(transactionId, allowedErrors);
+			try {
+				final HealthTransactionDao transactionHealthDao = new HealthTransactionDao();
+				transactionHealthDao.writeAllowableErrors(transactionId, allowedErrors);
+			} catch (DaoException e) {
+				LOGGER.warn("Exception thrown writing allowable errors. {}", kv("allowedErrors", allowedErrors), e);
+			}
 		}
 	}
 

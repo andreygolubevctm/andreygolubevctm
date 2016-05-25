@@ -8,13 +8,6 @@
 
 */
 
-/* Utilities functions for health */
-function returnDate(_dateString){
-	if(_dateString === '') return null;
-	var dateComponents = _dateString.split('/');
-	if(dateComponents.length < 3) return null;
-	return new Date(dateComponents[2], dateComponents[1] - 1, dateComponents[0]);
-};
 
 /**
  * isLessThan31Or31AndBeforeJuly1() test whether the dob provided makes the user less than
@@ -25,12 +18,12 @@ function returnDate(_dateString){
  */
 function isLessThan31Or31AndBeforeJuly1(_dobString) {
 	if(_dobString === '') return false;
-	var age = Math.floor(meerkat.modules.utils.returnAge(_dobString));
+	var age = Math.floor(meerkat.modules.age.returnAge(_dobString));
 	if( age < 31 ) {
 		return true;
 	} else if( age == 31 ){
-		var dob = returnDate(_dobString);
-		var birthday = returnDate(_dobString);
+		var dob = meerkat.modules.dateUtils.returnDate(_dobString);
+		var birthday = meerkat.modules.dateUtils.returnDate(_dobString);
 		birthday.setFullYear(dob.getFullYear() + 31);
 		var now = new Date();
 		if ( dob.getMonth() + 1 < 7 && (now.getMonth() + 1 >= 7 || now.getFullYear() > birthday.getFullYear()) ) {
@@ -213,13 +206,6 @@ var healthChoices = {
 var healthFunds = {
 	_fund: false,
 	name: 'the fund',
-
-	countFrom : {
-		TODAY: 'today' , NOCOUNT: '' , EFFECTIVE_DATE: 'effectiveDate'
-	},
-	minType : {
-		FROM_TODAY: 'today' , FROM_EFFECTIVE_DATE: 'effectiveDate'
-	},
 
 	// If retrieving a quote and a product had been selected, inject the fund's application set.
 	// This is in case any custom form fields need access to the data bucket, because write_quote will erase the data when it's not present in the form.
@@ -416,71 +402,13 @@ var healthFunds = {
 		meerkat.modules.healthDependants.resetConfig();
 	},
 
-	// Create payment day options on the fly - min and max are in + days from the selected date;
-	//NOTE: max - min cannot be a negative number
-	_paymentDays: function( effectiveDateString ){
-		// main check for real value
-		if( effectiveDateString == ''){
-			return false;
-		}
-		var effectiveDate = returnDate(effectiveDateString);
-		var today = new Date();
-
-		var _baseDate = null;
-		if(healthFunds._payments.countFrom == healthFunds.countFrom.TODAY ) {
-			_baseDate = today;
-		} else {
-			_baseDate = effectiveDate;
-		}
-		var _count = 0;
-
-		var _days = 0;
-		var _limit = healthFunds._payments.max;
-		if(healthFunds._payments.minType == healthFunds.minType.FROM_TODAY ) {
-			var difference = Math.round((effectiveDate-today)/(1000*60*60*24));
-			if(difference < healthFunds._payments.min) {
-				_days = healthFunds._payments.min - difference;
-			}
-		} else {
-			_days = healthFunds._payments.min;
-			_limit -= healthFunds._payments.min;
-		}
-
-
-
-		var _html = '<option value="">Please choose...</option>';
-
-		// The loop to create the payment days
-		var continueCounting = true;
-		while (_count < _limit) {
-			var _date = new Date( _baseDate.getTime() + (_days * 24 * 60 * 60 * 1000));
-			var _day = _date.getDay();
-			// up to certain payment day
-			if( typeof(healthFunds._payments.maxDay) != 'undefined' && healthFunds._payments.maxDay < _date.getDate() ){
-				_days++;
-				// Parse out the weekends
-			} else if( !healthFunds._payments.weekends && ( _day == 0 || _day == 6 ) ){
-				_days++;
-			} else {
-				var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
-				var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
-				_html += '<option value="'+ _date.getFullYear() +'-'+ _monthString +'-'+ _dayString +'">'+ healthFunds._getNiceDate(_date) +'</option>';
-				_days++;
-				_count++;
-			};
-		};
-
-		// Return the html
-		return _html;
-	},
-
 	// Creates the earliest date based on any of the matching days (not including an exclusion date)
 	_earliestDays: function(euroDate, a_Match, _exclusion){
 			if( !$.isArray(a_Match) || euroDate == '' ){
 				return false;
 			};
 			// creating the base date from the exclusion
-			var _now = returnDate(euroDate);
+			var _now = meerkat.modules.dateUtils.returnDate(euroDate);
 			// 2014-03-05 Leto: Why is this hardcoded when it's also a function argument?
 			_exclusion = 7;
 			var _date = new Date( _now.getTime() + (_exclusion * 24 * 60 * 60 * 1000));
@@ -493,41 +421,14 @@ var healthFunds = {
 					if(a_Match[a] == _date.getDate() ){
 						var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
 						var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
-						/*var*/ _html = '<option value="'+ _date.getFullYear() +'-'+ _monthString +'-'+ _dayString +'" selected="selected">'+ healthFunds._getNiceDate(_date) +'</option>';
+						/*var*/ _html = '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'" selected="selected">' +
+							meerkat.modules.dateUtils.dateValueLongFormat(_date) +'</option>';
 						i = 99;
 						break;
 					};
 				};
 			};
 			return _html;
-	},
-
-	// Renders the payment days text
-	_paymentDaysRender: function($_object,_html){
-		if(_html === false){
-			healthFunds._payments = { 'min':0, 'max':5, 'weekends':false };
-			_html = '<option value="">Please choose...</option>';
-		};
-		$_object.html(_html);
-		$_object.parent().siblings('p').text( 'Your payment will be deducted on: ' + $_object.find('option').first().text() );
-		$('.health-bank_details-policyDay, .health-credit-card_details-policyDay').html(_html);
-	},
-
-
-	_getDayOfWeek: function( dateObj ) {
-		var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-		return  days[dateObj.getDay()];
-	},
-
-	_getMonth: function( dateObj ) {
-		var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-		return  months[dateObj.getMonth()];
-	},
-
-	_getNiceDate : function( dateObj ) {
-		var day = dateObj.getDate();
-		var year = dateObj.getFullYear();
-		return healthFunds._getDayOfWeek(dateObj) + ", " + day + " " + healthFunds._getMonth(dateObj) + " " + year;
 	},
 
 	_setPolicyDate : function (dateObj, addDays) {

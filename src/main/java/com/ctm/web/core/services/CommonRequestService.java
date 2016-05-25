@@ -11,6 +11,7 @@ import com.ctm.web.core.model.formData.Request;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormat;
@@ -19,8 +20,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.ctm.web.core.model.settings.ConfigSetting.ALL_BRANDS;
 import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.ALL_PROVIDERS;
@@ -44,7 +48,7 @@ public abstract class CommonRequestService {
     private EnvironmentService.Environment environment;
 
     public CommonRequestService(final ProviderFilterDao providerFilterDAO,
-                                final ObjectMapper objectMapper, ServiceConfigurationService serviceConfigurationService, 
+                                final ObjectMapper objectMapper, ServiceConfigurationService serviceConfigurationService,
                                 EnvironmentService.Environment environment) {
         this.providerFilterDAO = providerFilterDAO;
         this.restClient = new RestClient(objectMapper);
@@ -53,8 +57,8 @@ public abstract class CommonRequestService {
     }
 
     public CommonRequestService(final ProviderFilterDao providerFilterDAO,
-                                final RestClient restClient, 
-                                ServiceConfigurationService serviceConfigurationService, 
+                                final RestClient restClient,
+                                ServiceConfigurationService serviceConfigurationService,
                                 EnvironmentService.Environment environment) {
         this.providerFilterDAO = providerFilterDAO;
         this.restClient = restClient;
@@ -137,11 +141,57 @@ public abstract class CommonRequestService {
                 Optional.ofNullable(data.getEnvironmentOverride())), endpoint, responseClass, getApplyRequest(brand, data, payload, productId));
     }
 
-    protected RestClient getRestClient() {
-        return restClient;
+    protected RESPONSE sendRequestToService(Brand brand, Vertical.VerticalType vertical, String serviceName, Endpoint endpoint, Request data, Class<RESPONSE> responseClass, Object requestObj) throws ServiceConfigurationException, DaoException, IOException {
+        QuoteServiceProperties serviceProperties = getQuoteServiceProperties(serviceName, brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
+
+        String jsonRequest = objectMapper.writeValueAsString(requestObj);
+
+        // Log Request
+        LOGGER.info("Sending request {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
+        LOGGER.debug("Outbound message {}", kv("request", jsonRequest));
+
+        String response = setupSimplePOSTConnection(serviceProperties, jsonRequest)
+                .get(serviceProperties.getServiceUrl() + "/" + endpoint.getValue());
+        if (response == null) {
+            throw new RouterException("Connection failed");
+        }
+
+        // Log response
+        LOGGER.info("Receiving response {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
+        LOGGER.debug("Inbound message {}", kv("response", response));
+
+        return objectMapper.readValue(response, objectMapper.constructType(responseClass));
     }
 
-    protected <PAYLOAD> ApplyRequest getApplyRequest(Brand brand, Request data, PAYLOAD payload, String productId) {
+    protected RESPONSE sendGETRequestToService(Brand brand, Vertical.VerticalType vertical, String serviceName, Endpoint endpoint, String environmentOverride, TypeReference<RESPONSE> typeReference, Map<String, String> requestParams) throws ServiceConfigurationException, DaoException, IOException {
+
+        QuoteServiceProperties serviceProperties = getQuoteServiceProperties(serviceName, brand, vertical.getCode(), Optional.ofNullable(environmentOverride));
+
+        String params = Optional.ofNullable(requestParams)
+                .orElse(Collections.emptyMap())
+                .entrySet()
+                .stream()
+                .map(e -> e.getKey() + "=" + e.getValue())
+                .collect(Collectors.joining("&"));
+
+        // Log Request
+        LOGGER.info("Sending request {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
+        LOGGER.debug("Outbound params {}", kv("params", params));
+
+        String response = setupSimpleGETConnection(serviceProperties)
+                .get(serviceProperties.getServiceUrl() + "/" + endpoint.getValue() + (StringUtils.isNotBlank(params) ? "?" : "") + (StringUtils.isNotBlank(params) ? params : ""));
+        if (response == null) {
+            throw new RouterException("Connection failed");
+        }
+
+        // Log response
+        LOGGER.info("Receiving response {} {}", kv("vertical", vertical), kv("endpoint", endpoint));
+        LOGGER.debug("Inbound message {}", kv("response", response));
+
+        return objectMapper.readValue(response, typeReference);
+    }
+
+    private ApplyRequest getApplyRequest(Brand brand, Request data, PAYLOAD payload, String productId) {
         ApplyRequest.Builder<PAYLOAD> applyRequestBuilder= new ApplyRequest.Builder<>();
         applyRequestBuilder.productId(productId);
         applyRequestBuilder.brandCode(brand.getCode());
@@ -161,7 +211,28 @@ public abstract class CommonRequestService {
         return request;
     }
 
-    protected QuoteServiceProperties getQuoteServiceProperties(String service, Brand brand, String verticalCode, Optional<String> environmentOverride) throws ServiceConfigurationException, DaoException {
+    protected SimpleConnection setupSimplePOSTConnection(QuoteServiceProperties serviceProperties, String jsonRequest) {
+        SimpleConnection connection = new SimpleConnection();
+        connection.setRequestMethod("POST");
+        connection.setConnectTimeout(serviceProperties.getTimeout());
+        connection.setReadTimeout(serviceProperties.getTimeout());
+        connection.setContentType("application/json");
+        connection.setPostBody(jsonRequest);
+        connection.setHasCorrelationId(true);
+        return connection;
+    }
+
+    protected SimpleConnection setupSimpleGETConnection(QuoteServiceProperties serviceProperties) {
+        SimpleConnection connection = new SimpleConnection();
+        connection.setRequestMethod("GET");
+        connection.setConnectTimeout(serviceProperties.getTimeout());
+        connection.setReadTimeout(serviceProperties.getTimeout());
+        connection.setContentType("application/json");
+        connection.setHasCorrelationId(true);
+        return connection;
+    }
+
+    public QuoteServiceProperties getQuoteServiceProperties(String service, Brand brand, String verticalCode, Optional<String> environmentOverride) throws ServiceConfigurationException, DaoException {
         // Get URL of home-quote service
         final QuoteServiceProperties properties = new QuoteServiceProperties();
         ServiceConfiguration serviceConfig = getServiceConfiguration(service, brand, verticalCode);

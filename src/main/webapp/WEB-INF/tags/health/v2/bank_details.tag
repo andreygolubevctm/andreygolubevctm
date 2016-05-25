@@ -12,7 +12,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-bank_details">
 
-	<form_v2:fieldset legend="Bank Account Details" >
+	<form_v3:fieldset legend="Bank Account Details" >
 
 
 
@@ -27,7 +27,12 @@
 		<%-- NIB based payment day --%>
 		<c:set var="fieldXpath" value="${xpath}/paymentDay" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?" className="health_bank-details_paymentDay_group">
-			<field_v1:payment_day xpath="${fieldXpath}" title="your chosen day" required="true" className="health_payment_day health-bank_details-paymentDay" messageClassName="health_payment-day_message" displayDatePattern="d" startOfMonth="true" days="28" message="It can take up to 6 days to set up your direct debit so your payment may not be deducted until the following month if you chose a date within this time frame"/>
+			<field_v1:payment_day xpath="${fieldXpath}" title="your chosen day"
+								  required="true"
+								  className="health_payment_day health-bank_details-paymentDay"
+								  messageClassName="health_payment-day_message"
+								  startOfMonth="true"
+								  message="It can take up to 6 days to set up your direct debit so your payment may not be deducted until the following month if you chose a date within this time frame"/>
 		</form_v3:row>
 
 		<%-- AUF based payment day --%>
@@ -42,12 +47,12 @@
 			<field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="would you like your claim refunds paid into the same account" required="true" className="health-bank_details-claims" id="${name}_claims"/>
 		</form_v3:row>
 
-	</form_v2:fieldset>
+	</form_v3:fieldset>
 
 </div>
 
 <div id="${name}_claim-selection" class="health-bank_claim_details">
-	<form_v2:fieldset legend="Please nominate a bank account for future claim payments">
+	<form_v3:fieldset legend="Please nominate a bank account for future claim payments">
 		<health_v2:bank_account_details xpath="${xpath}/claim" />
-	</form_v2:fieldset>
+	</form_v3:fieldset>
 </div>

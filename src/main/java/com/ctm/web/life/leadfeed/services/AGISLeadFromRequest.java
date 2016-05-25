@@ -6,6 +6,7 @@ import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
@@ -24,6 +25,14 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 public class AGISLeadFromRequest {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AGISLeadFromRequest.class);
+
+	private final IPAddressHandler ipAddressHandler;
+
+    @Deprecated
+    @SuppressWarnings("unused")
+    public AGISLeadFromRequest() {
+        this.ipAddressHandler = IPAddressHandler.getInstance();
+    }
 
 	public String newPolicySold(HttpServletRequest request, PageSettings pageSettings, String transactionId) {
 		return process(request, pageSettings, transactionId, true);
@@ -68,7 +77,7 @@ public class AGISLeadFromRequest {
 			lead.setState(data.get(vertical + "/primary/state") != null ? data.get(vertical + "/primary/state").toString() : "");
 			lead.setPartnerBrand(data.get("lead/brand").toString());
 			lead.setProductId(data.get("lead/company").toString().toLowerCase());
-			lead.setClientIpAddress(data.get(vertical + "/clientIpAddress") != null ? data.get(vertical + "/clientIpAddress").toString() : request.getRemoteAddr());
+			lead.setClientIpAddress(data.get(vertical + "/clientIpAddress") != null ? data.get(vertical + "/clientIpAddress").toString() : ipAddressHandler.getIPAddress(request));
 			lead.setPartnerReference(data.get("lead/leadNumber").toString());
 
 			// Call Lead Feed Service

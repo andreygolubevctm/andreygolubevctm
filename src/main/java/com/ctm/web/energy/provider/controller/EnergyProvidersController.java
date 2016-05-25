@@ -5,7 +5,7 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
-import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.energy.form.model.EnergyProviderWebRequest;
 import com.ctm.web.energy.form.response.model.EnergyProvidersWebResponse;
@@ -31,8 +31,8 @@ public class EnergyProvidersController extends CommonQuoteRouter<EnergyProviderW
     private EnergyProviderResultsService energyProviderResultsService;
 
     @Autowired
-    public EnergyProvidersController(SessionDataServiceBean sessionDataServiceBean) {
-        super(sessionDataServiceBean, new ApplicationService());
+    public EnergyProvidersController(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler) {
+        super(sessionDataServiceBean, ipAddressHandler);
     }
 
     @ApiOperation(value = "providers/get.json", notes = "Request a energy providers list", produces = "application/json")

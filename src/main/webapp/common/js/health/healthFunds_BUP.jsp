@@ -42,16 +42,11 @@ set: function () {
 			};
 
 			healthFunds._payments = { 'min':6, 'max':7, 'weekends':false };
-			function pad (str, max) {
-				return str.length < max ? pad("0" + str, max) : str;
-			}
+
 			var date = new Date();
-			var d = pad(date.getDate().toString(), 2);
-			var m = pad((date.getMonth()+1).toString(), 2);
-			var y = date.getFullYear();
-			var _html = healthFunds._paymentDays(d + '/' + m + '/' + y);
-			healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-			healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+			var _html = meerkat.modules.healthPaymentDay.paymentDays(meerkat.modules.dateUtils.dateValueFormFormat(date));
+			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
 
 			<%-- Select the only option --%>
 			$('.health-credit-card_details-policyDay').prop('selectedIndex',1);
@@ -103,8 +98,8 @@ set: function () {
 		meerkat.modules.healthPaymentIPP.hide();
 
 		<%-- selections for payment date --%>
-		healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
-		healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
 		$('#update-premium').off('click.BUP');
 
 		$('.bup-payment-legend').remove();

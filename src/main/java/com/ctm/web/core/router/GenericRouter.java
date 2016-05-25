@@ -8,6 +8,7 @@ import com.ctm.web.core.model.LogAudit;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.*;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -115,7 +116,7 @@ public class GenericRouter extends HttpServlet {
 		logAudit.setRequestUri(requestUri);
 		logAudit.setUserAgent(request.getHeader("User-Agent"));
 		logAudit.setSessionId(request.getSession().getId());
-		logAudit.setIp(request.getRemoteAddr());
+		logAudit.setIp(IPAddressHandler.getInstance().getIPAddress(request));
 		return resetPasswordService.reset(resetId, resetPassword, logAudit);
 	}
 }

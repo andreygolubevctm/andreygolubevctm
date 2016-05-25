@@ -4,6 +4,7 @@ import com.ctm.web.core.leadService.model.LeadRequest;
 import com.ctm.web.core.leadService.model.LeadStatus;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
@@ -21,8 +22,9 @@ public abstract class LeadService {
     public static final String LAST_LEAD_SERVICE_VALUES = "LAST_LEAD_SERVICE_VALUES";
     private final ServiceConfigurationService serviceConfigurationService;
 
-    public LeadService(ServiceConfigurationService serviceConfigurationService) {
+    public LeadService(ServiceConfigurationService serviceConfigurationService, IPAddressHandler ipAddressHandler) {
         this.serviceConfigurationService  = serviceConfigurationService;
+        this.ipAddressHandler = ipAddressHandler;
     }
 
     /**
@@ -72,7 +74,7 @@ public abstract class LeadService {
     public void sendLead(final int verticalId, final Data data, final HttpServletRequest request, final String transactionStatus) {
         if (!SessionUtils.isCallCentre(request.getSession()) || INBOUND_CALL.name().equals(transactionStatus)) {
             try {
-                ServiceConfiguration serviceConfig = serviceConfigurationService.getServiceConfiguration("leadService", verticalId);
+                ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", verticalId, 0);
 
                 Boolean enabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
                 String url = serviceConfig.getPropertyValueByKey("url", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);

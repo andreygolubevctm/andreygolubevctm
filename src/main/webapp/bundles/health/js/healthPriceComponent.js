@@ -21,7 +21,8 @@
 	var $displayedFrequency;
 	var $startDateInput;
 
-	var initialised = false;
+	var initialised = false,
+		premiumChangeEventFired = false;
 
 	function initHealthPriceComponent(){
 
@@ -44,11 +45,13 @@
 
 				meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_CHANGED, function(selectedProduct){
 					// This should be called when the user selects a product on the results page.
+					premiumChangeEventFired = false;
 					onProductPremiumChange(selectedProduct, false);
 				});
 
 				meerkat.messaging.subscribe(meerkatEvents.healthResults.PREMIUM_UPDATED, function(selectedProduct){
 					// This should be called when the user updates their premium on the payment step.
+					premiumChangeEventFired = true;
 					onProductPremiumChange(selectedProduct, true);
 				});
 
@@ -92,7 +95,7 @@
 		product.showAltPremium = false;
 		product.displayLogo = true;
 
-		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true && premiumChangeEventFired === false) {
 			if (typeof product.dropDeadDate === 'undefined') {
 				var selectedProduct = Results.getSelectedProduct();
 				product.dropDeadDate = selectedProduct.dropDeadDate;

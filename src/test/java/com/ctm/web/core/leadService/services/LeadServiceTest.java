@@ -7,6 +7,7 @@ import com.ctm.web.core.leadService.model.LeadRequest;
 import com.ctm.web.core.leadService.model.LeadStatus;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
@@ -31,14 +32,37 @@ import static org.powermock.api.mockito.PowerMockito.*;
 @PrepareForTest({SessionUtils.class, ServiceConfigurationService.class, LeadServiceUtil.class})
 public class LeadServiceTest {
 
-	ServiceConfiguration mockServiceConfig = mock(ServiceConfiguration.class);
-	HttpServletRequest mockRequest = mock(HttpServletRequest.class);
-	Data mockData = mock(Data.class);
+    @Mock
+	ServiceConfiguration mockServiceConfig;
+    @Mock
+	HttpServletRequest mockRequest;
+    @Mock
+	Data mockData;
+	@Mock
+	IPAddressHandler ipAddressHandler;
 
 	LeadService leadService;
 
     @Mock
     ServiceConfigurationService serviceConfigurationService;
+	LeadService leadService;
+
+	@Before
+	public void setup() throws ServiceConfigurationException, DaoException {
+		initMocks(this);
+
+		leadService = new LeadService(ipAddressHandler) {
+			@Override
+			protected LeadRequest updatePayloadData(Data data) {
+				LeadRequest lr = new LeadRequest();
+				lr.setVerticalType("health");
+				lr.getPerson().setFirstName("Firstname");
+				lr.getPerson().setEmail("Email");
+				lr.getPerson().setMobile("Mobile");
+				lr.setMetadata(mock(LeadMetadata.class));
+				return lr;
+			}
+		};
 
 	@Before
 	public void setup() throws ServiceConfigurationException, DaoException {
@@ -47,7 +71,7 @@ public class LeadServiceTest {
 		when(SessionUtils.isCallCentre(any())).thenReturn(false);
 
 		when(mockRequest.getSession()).thenReturn(mock(HttpSession.class));
-		when(mockRequest.getRemoteAddr()).thenReturn("1.1.1.1");
+		when(ipAddressHandler.getIPAddress(mockRequest)).thenReturn("1.1.1.1");
 
 		when(mockData.getLong("current/rootId")).thenReturn(1111L);
 		when(mockData.getLong("current/transactionId")).thenReturn(1111L);

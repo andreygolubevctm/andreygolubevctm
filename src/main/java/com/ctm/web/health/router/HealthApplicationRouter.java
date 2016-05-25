@@ -14,7 +14,7 @@ import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
-import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.TouchService;
 import com.ctm.web.core.services.TransactionAccessService;
@@ -77,10 +77,10 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
 
     private final ConfirmationService confirmationService = new ConfirmationService();
 
-    private final LeadService leadService = new HealthLeadService();
+    private final LeadService leadService = new HealthLeadService(IPAddressHandler.getInstance());
 
     public HealthApplicationRouter() {
-        super(new SessionDataServiceBean(), new ApplicationService());
+        super(new SessionDataServiceBean(), IPAddressHandler.getInstance());
     }
 
     @POST
@@ -213,7 +213,7 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
                     i++;
                 }
             }
-        } else {
+        } else if (!nonFatalErrors) {
             sb.append(PROVIDER_FAILED_MESSAGE);
         }
         return sb.toString();

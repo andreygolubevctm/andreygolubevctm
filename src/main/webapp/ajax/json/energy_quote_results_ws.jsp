@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
@@ -16,7 +16,7 @@
 </c:if>
 
 <%-- Save data --%>
-<core:transaction touch="R" noResponse="true" />
+<core_v1:transaction touch="R" noResponse="true" />
 
 <%-- Fetch the transaction id --%>
 <c:set var="tranId" value="${data['current/transactionId']}" />

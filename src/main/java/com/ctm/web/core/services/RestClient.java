@@ -63,7 +63,7 @@ public class RestClient {
         return objectMapper.readValue(response, objectMapper.constructType(responseClass));
     }
 
-    public <RESPONSE> RESPONSE sendGETRequest(QuoteServiceProperties serviceProperties,  Endpoint endpoint, Class<RESPONSE> responseClass, Map<String, String> params)
+    public <RESPONSE> RESPONSE sendGETRequest(QuoteServiceProperties serviceProperties, Endpoint endpoint, Class<RESPONSE> responseClass, Map<String, String> params)
             throws ServiceConfigurationException, DaoException, IOException {
 
         // Log Request

@@ -9,6 +9,7 @@ setupBoilerplate = function(base) {
     document.write('<script src="' + base + '/bundles/meerkat/js/meerkat.modules.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/numberUtils/js/numberUtils.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/utils.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/shared/dateUtils/js/dateUtils.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/transactionId.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/tracking.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/deviceMediaState.js">\x3C/script>');
@@ -28,7 +29,7 @@ setupBoilerplate = function(base) {
     document.write('<script src="' + base + '/bundles/core/js/contactDetails.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/sendEmail/js/sendEmail.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/journeyEngine/v2/js/journeyEngine.js">\x3C/script>');
-    document.write('<script src="' + base + '/bundles/core/js/form.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/shared/forms/v1/js/form.js">\x3C/script>');
 
     $.support.transition = false;
     // See https://github.com/axemclion/grunt-saucelabs#test-result-details-with-qunit

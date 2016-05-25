@@ -23,6 +23,7 @@
             dobInputY: "",
             dobInputM: "",
             maritalincomestatus: "",
+            relationship:"",
             apprentice: ""
         },
         dependantLimit = 12,
@@ -48,6 +49,7 @@
             showSchoolCommencementField: false,
             schoolDateRequired: false,
             showMaritalStatusField: false,
+            showRelationship:false,
             defactoMinAge: 21,
             defactoMaxAge: 24,
             showApprenticeField: false
@@ -55,9 +57,9 @@
         providerConfig,
         maxDependantAge = 25;
 
-    function initHealthDependants(reset) {
+    function initHealthDependants() {
         $dependantsTemplateWrapper = $("#health-dependants-wrapper");
-        if (!situationEnablesDependants() || reset) {
+        if (!situationEnablesDependants()) {
             clearDependants();
         }
 
@@ -71,15 +73,25 @@
         // set up template
         dependantTemplate = _.template($('#health-dependants-template').html());
 
-        if (typeof meerkat.site.dependants != 'undefined') {
-            dependantsArr = addDataBucketDependantsToList();
-        }
-        if (getNumberOfDependants() === 0) {
-            dependantsArr.push(defaultDependant);
+        var noOfDependants = getNumberOfDependants();
+        if(_.isEmpty(dependantsArr)) {
+            if (typeof meerkat.site.dependants != 'undefined') {
+                dependantsArr = addDataBucketDependantsToList();
+            } else if (_.isNumber(noOfDependants) && noOfDependants > 0) {
+                for (var i = 0; i < noOfDependants; i++) {
+                    dependantsArr.push(getDefaultDependant());
+                }
+            } else if (noOfDependants === 0) {
+                dependantsArr.push(getDefaultDependant());
+            }
         }
 
         renderDependants();
         applyEventListeners();
+    }
+
+    function getDefaultDependant() {
+        return _.extend({},defaultDependant);
     }
 
     /**
@@ -97,13 +109,12 @@
             }
         });
 
-        $dependantsTemplateWrapper.on('click', ".remove-dependent", function removeDependantClick() {
+        $dependantsTemplateWrapper.off('click.removeDependant').on('click.removeDependant', ".remove-dependent", function removeDependantClick(e) {
             deleteDependant($(this).attr('data-id'), true);
             updateApplicationDetails();
         }).on('change', '.dateinput_container input.serialise, .health_dependant_details_fulltimeGroup input', function dependantAgeFullTimeChange() {
             var $wrapper = $(this).closest('.health_dependant_details');
             toggleDependantFields($wrapper);
-            $(this).valid();
         }).on('change', ':input', function changeInput() {
             var $el = $(this),
                 dependantId = $el.closest('.health_dependant_details').attr('data-id'),
@@ -138,6 +149,8 @@
      * and then you went back and set it to 3. So in this case, it should delete the 3.
      */
     function updateDependantConfiguration() {
+
+        initHealthDependants();
 
         var dependantCountSpecified = $('#health_healthCover_dependants').val() || 1;
         var hasChildren = situationEnablesDependants();
@@ -177,7 +190,7 @@
         var dependantId = $wrapper.attr('data-id'),
             selectorPrefix = '#health_application_dependants_dependant' + dependantId,
             $dob = $(selectorPrefix + '_dob');
-        var age = meerkat.modules.utils.returnAge($dob.val(), true) || 0;
+        var age = meerkat.modules.age.returnAge($dob.val(), true) || 0;
         // If the dependant is between the school age
         if (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) {
             // If the config is set to true, we want to remove the class.
@@ -265,12 +278,21 @@
             if (providerConfig.showMaritalStatusField) {
                 $(prefix + '_maritalincomestatus').val(dependantsArr[i].maritalincomestatus);
             }
+            if(providerConfig.showRelationship) {
+                $(prefix + '_relationship').val(dependantsArr[i].relationship);
+            }
             if (providerConfig.showApprenticeField) {
                 $(prefix + '_apprentice').val(dependantsArr[i].apprentice);
             }
+
         }
 
-        $dependantsTemplateWrapper.find('.serialise').change();
+        $dependantsTemplateWrapper.find('.serialise').each(function(){
+            var $that = $(this);
+            if(!_.isEmpty($that.val())) {
+                $that.change();
+            }
+        });
     }
 
     /**
@@ -283,7 +305,7 @@
         if (numDependants < dependantLimit) {
             var dependantId = numDependants + 1;
 
-            var blankDependant = $.extend({}, defaultDependant, {dependantId: dependantId});
+            var blankDependant = $.extend({}, getDefaultDependant(), {dependantId: dependantId});
             $dependantsTemplateWrapper.append(dependantTemplate(blankDependant));
             dependantsArr.push(blankDependant);
 

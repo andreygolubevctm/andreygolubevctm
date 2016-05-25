@@ -25,23 +25,23 @@
 			counter-reset: section;
 		}
 
-		li {
-			white-space: nowrap;
-			counter-increment: section;
-			line-height: @journeyProgressBar-lineheight;
-			display: inline-block;
-			font-size: @journeyProgressBar-size;
-			font-weight: @journeyProgressBar-weight;
-			position: relative;
-			height: 28px;
-			&.end{
-				width: 1%;
-				div { width: 0 }
-			}
-			span {
-				margin-left: 13px;
-			}
-		}
+	li {
+	  white-space: nowrap;
+	  counter-increment: section;
+	  line-height: @journeyProgressBar-lineheight;
+	  display: inline-block;
+	  font-size: @journeyProgressBar-size;
+	  font-family: @font-family-theme-bold;
+	  position: relative;
+	  height: 28px;
+	  &.end{
+		width: 1%;
+		div { width: 0 }
+	  }
+	  span {
+		margin-left: 13px;
+	  }
+	}
 
 		a, div {
 			color: @journeyProgressBar-color;
@@ -56,7 +56,7 @@
 			&:before {
 				content: counters(section, ".") "\A";
 				border-radius: 36px;
-				border: 3px solid;
+				border: @journeyProgressBar-border-size @journeyProgressBar-border-style;
 				font-size: 20px;
 				display: block;
 				float: left;
@@ -64,9 +64,9 @@
 				left: 0;
 				margin: 0;
 				margin-left: -6px;
-				padding: 10px;
+				padding: 12px;
 				padding-top: 6px;
-				padding-left: 20px;
+				padding-left: 21px;
 				padding-bottom: 7px;
 				line-height: 1;
 				text-align: center;
@@ -89,7 +89,7 @@
 					content: "\e600";
 					font-family: 'framework_font';
 					padding: 7px;
-					padding-left: 14px;
+					padding-left: 16px;
 					color: @journeyProgressBar-separator-color-complete;
 					border-color: @journeyProgressBar-border-color-complete;
 				}
