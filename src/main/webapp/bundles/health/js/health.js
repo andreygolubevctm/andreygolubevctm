@@ -513,7 +513,7 @@
 				});
 
 				// initialise start date datepicker from payment step as it will be used by selected fund
-				$("#health_payment_details_start_calendar")
+				$("#health_payment_details_start")
 					.datepicker({ clearBtn:false, format:"dd/mm/yyyy" })
 					.on("changeDate", function updateStartCoverDateHiddenField(e) {
 						// fill the hidden field with selected value
@@ -562,7 +562,7 @@
 					//$("#health_payment_details_start_calendar").datepicker("setStartDate", "+" + min + "d").datepicker("setEndDate", "+" + max + "d");
 					var min = meerkat.modules.healthPaymentStep.getSetting('minStartDate');
 					var max = meerkat.modules.healthPaymentStep.getSetting('maxStartDate');
-					$("#health_payment_details_start_calendar").datepicker('setStartDate', min).datepicker('setEndDate', max);
+					$("#health_payment_details_start").datepicker('setStartDate', min).datepicker('setEndDate', max);
 
 					meerkat.modules.healthMedicare.updateMedicareLabel();
 
@@ -652,6 +652,7 @@
 
 				if(event.isForward === true){
 
+					meerkat.modules.healthPaymentStep.rebindCreditCardRules();
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
 					// Show discount text if applicable
@@ -673,6 +674,7 @@
 					// Insert fund into Contact Authority
 					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
+					meerkat.modules.healthPaymentStep.updatePremium();
 				}
 			}
 		};

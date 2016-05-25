@@ -19,7 +19,9 @@ CTM
 =======================
 --%>
 var healthFunds_CTM = {
-
+	$paymentType : $('#health_payment_details_type input'),
+	$paymentFrequency : $('#health_payment_details_frequency'),
+	$paymentStartDate: $("#health_payment_details_start"),
 set: function () {
 	"use strict";
 
@@ -74,15 +76,16 @@ set: function () {
 	meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa': true, 'mc': true, 'amex':false, 'diners':false });
 		meerkat.modules.healthCreditCard.render();
 
-		$('#update-premium').on('click.CTM', function() {
+		healthFunds_CTM.$paymentType.on('click.CTM', function renderPaymentDaysPaymentType(){
+			healthFunds_CTM.renderPaymentDays();
+		});
 
-			healthFunds._payments = { 'min':0, 'max':14, 'weekends':true, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28};
-			var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
-			$('.ctm-payment-legend').remove();
-			$('#health_payment_credit_policyDay').parent().after('<p class="ctm-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');
-			$('#health_payment_bank_policyDay').parent().after('<p class="ctm-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');
+		healthFunds_CTM.$paymentFrequency.on('change.CTM', function renderPaymentDaysFrequency(){
+			healthFunds_CTM.renderPaymentDays();
+		});
+
+		healthFunds_CTM.$paymentStartDate.on("changeDate.CTM", function renderPaymentDaysCalendar(e) {
+			healthFunds_CTM.renderPaymentDays();
 		});
 
 		<c:if test="${data.health.situation.healthCvr == 'F' || data.health.situation.healthCvr == 'SPF' }">
@@ -124,11 +127,25 @@ set: function () {
 			"getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
 		});
 	},
+	renderPaymentDays: function (){
+		healthFunds._payments = { 'min':0, 'max':14, 'weekends':true, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28};
+		healthFunds_CTM.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+		$('.ctm-payment-legend').remove();
+		$('#health_payment_credit_policyDay').parent().after('<p class="ctm-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');
+		$('#health_payment_bank_policyDay').parent().after('<p class="ctm-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');
+	},
 	unset: function () {
 		"use strict";
 
 		$('.ctm-payment-legend').remove();
 		$('#update-premium').off('click.CTM');
+
+		healthFunds_CTM.$paymentType.off('click.CTM');
+		healthFunds_CTM.$paymentFrequency.off('change.CTM');
+		healthFunds_CTM.$paymentStartDate.off("changeDate.CTM");
 
 		healthFunds._reset();
 

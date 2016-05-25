@@ -20,6 +20,10 @@
 		modalId = null;
 
 	function initHealthDualPricing() {
+		if (meerkat.site.healthAlternatePricingActive !== true) {
+			return false;
+		}
+
 		$logoPriceTemplate = $('#logo-price-template'),
 		$dualPricingTemplate = $('#dual-pricing-template'),
 		$dualPricingTemplateSM = $('#dual-pricing-template-sm'),
