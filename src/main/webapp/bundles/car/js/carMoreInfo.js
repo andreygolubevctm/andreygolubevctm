@@ -97,7 +97,7 @@
 			clientName.val($("#quote_drivers_regular_firstname").val() + " " + $("#quote_drivers_regular_surname").val());
 		}
 
-		var telNum = $('#quote_CrClientTel');
+		var telNum = $('#quote_CrClientTelinput');
 		// populate client number if empty
 		if (telNum.length && !telNum.val().length) {
 			telNum.val($('#quote_contact_phone').val()).blur();
