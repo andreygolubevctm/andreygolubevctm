@@ -35,12 +35,6 @@ public class LifeOccupationService extends CommonRequestService {
     private String environmentOverride;
 
     @Autowired
-    public LifeOccupationService(ProviderFilterDao providerFilterDAO, RestClient restClient, ObjectMapper objectMapper) {
-        super(providerFilterDAO, objectMapper);
-        this.restClient = restClient;
-
-
-    @Autowired
     public LifeOccupationService(ProviderFilterDao providerFilterDAO, RestClient restClient, ServiceConfigurationService serviceConfigurationService) {
         super(providerFilterDAO, restClient,serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
     }

@@ -15,7 +15,10 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.web.core.services.*;
+import com.ctm.web.core.services.CommonQuoteService;
+import com.ctm.web.core.services.Endpoint;
+import com.ctm.web.core.services.ResultsService;
+import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.validation.CommencementDateValidation;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
@@ -34,14 +37,13 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class CarQuoteService extends CommonQuoteService<CarQuote> {
+public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteRequest, CarResponse> {
 
     private SessionDataServiceBean sessionDataServiceBean;
 
     @Autowired
-    public CarQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper,
-                           SessionDataServiceBean sessionDataServiceBean, ServiceConfigurationService serviceConfigurationService) {
-        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
+    public CarQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, SessionDataServiceBean sessionDataServiceBean) {
+        super(providerFilterDAO, objectMapper);
         this.sessionDataServiceBean = sessionDataServiceBean;
     }
 

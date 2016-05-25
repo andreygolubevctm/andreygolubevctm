@@ -9,6 +9,7 @@ import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.exceptions.ServiceException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.utils.LeadFeed;
@@ -67,12 +68,14 @@ public class LifeApplyService extends CommonRequestService {
 
 
     public LifeApplyWebResponse apply(LifeApplyWebRequest model, Brand brand, HttpServletRequest request) throws
-            IOException,
-            DaoException,
-            ServiceConfigurationException,
-            SessionException {
+            ServiceException {
         LifeApplyServiceResponseAdapter responseAdapter= new LifeApplyServiceResponseAdapter();
-        LifeQuote lifeQuoteRequest = DataParser.createObjectFromData(getData( request, model.getTransactionId()), LifeQuote.class, model.getVertical());
+        LifeQuote lifeQuoteRequest;
+        try {
+            lifeQuoteRequest = DataParser.createObjectFromData(getData( request, model.getTransactionId()), LifeQuote.class, model.getVertical());
+        } catch (SessionException e) {
+            throw new ServiceException("Could not get data from session", e);
+        }
 
         LifeBrokerApplyServiceRequestAdapter lifeBrokeRequestAdapter= new LifeBrokerApplyServiceRequestAdapter(lifeQuoteRequest);
         OzicareApplyServiceRequestAdapter requestAdapter = new OzicareApplyServiceRequestAdapter(lifeQuoteRequest);
@@ -96,7 +99,8 @@ public class LifeApplyService extends CommonRequestService {
         return new LifeApplyWebResponse.Builder().results(responseBuilder.build()).build();
 	}
 
-    public LifeApplyResponse submit(LifeApplyWebRequest model, Brand brand, OzicareApplyServiceRequestAdapter requestAdapter, Object applyRequest, String endpoint, boolean isOzicare) throws IOException, DaoException, ServiceConfigurationException {
+    public LifeApplyResponse submit(LifeApplyWebRequest model, Brand brand, OzicareApplyServiceRequestAdapter requestAdapter, Object applyRequest,
+                                    String endpoint, boolean isOzicare) throws ServiceException {
         LifeApplyResponse applyResponse;
         boolean isTest = false;
         try {

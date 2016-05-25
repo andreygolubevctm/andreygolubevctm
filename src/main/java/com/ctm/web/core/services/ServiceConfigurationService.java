@@ -9,197 +9,152 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ConfigSetting;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-@Component
 public class ServiceConfigurationService {
 
-	private static ArrayList<ServiceConfiguration> services = new ArrayList<ServiceConfiguration>();
-	private static Date servicesLastAccessed;
+    private static ArrayList<ServiceConfiguration> services = new ArrayList<ServiceConfiguration>();
+    private static Date servicesLastAccessed;
 
-	/**
-	 * Get the all the service configuration objects
-	 * Caches the service configuration object for an hour
-	 *
-	 * @return
-	 * @throws DaoException
-	 */
-	public static ArrayList<ServiceConfiguration> getServiceConfigurations() throws DaoException {
+    /**
+     * Get the all the service configuration objects
+     * Caches the service configuration object for an hour
+     *
+     * @return
+     * @throws DaoException
+     */
+    public static ArrayList<ServiceConfiguration> getServiceConfigurations() throws DaoException {
 
-		Calendar oneHourAgo = Calendar.getInstance();
-		oneHourAgo.add(Calendar.HOUR, -1);
+        Calendar oneHourAgo = Calendar.getInstance();
+        oneHourAgo.add(Calendar.HOUR, -1);
 
-		if(services.size() == 0 || (servicesLastAccessed == null || servicesLastAccessed.before(oneHourAgo.getTime()) )){
+        if(services.size() == 0 || (servicesLastAccessed == null || servicesLastAccessed.before(oneHourAgo.getTime()) )){
 
-			// Get all service configurations from Db.
-			ServiceConfigurationDao serviceConfigurationDao = new ServiceConfigurationDao();
-			services = serviceConfigurationDao.getAllConfigurations(ApplicationService.getServerDate());
+            // Get all service configurations from Db.
+            ServiceConfigurationDao serviceConfigurationDao = new ServiceConfigurationDao();
+            services = serviceConfigurationDao.getAllConfigurations(ApplicationService.getServerDate());
 
-			// Update last accessed timestamp
-			servicesLastAccessed = new Date();
+            // Update last accessed timestamp
+            servicesLastAccessed = new Date();
 
-		}
+        }
 
-		return services;
+        return services;
 
-	}
+    }
 
-	/**
-	 * Gets the excluded providers list from the database, this array is cached in application memory for an hour.
-	 *
-	 * @param brandId
-	 * @param verticalId
-	 * @return
-	 * @throws DaoException
-	 */
-	public static ArrayList<ProviderExclusion> getExcludedProviders(int brandId, int verticalId) throws DaoException {
+    /**
+     * Gets the excluded providers list from the database, this array is cached in application memory for an hour.
+     *
+     * @param brandId
+     * @param verticalId
+     * @return
+     * @throws DaoException
+     */
+    public static ArrayList<ProviderExclusion> getExcludedProviders(int brandId, int verticalId) throws DaoException {
 
-		//Calendar oneHourAgo = Calendar.getInstance();
-		//oneHourAgo.add(Calendar.HOUR, -1);
+        //Calendar oneHourAgo = Calendar.getInstance();
+        //oneHourAgo.add(Calendar.HOUR, -1);
 
-		//if(excludedProviders == null && (excludedProvidersLastAccessed == null || excludedProvidersLastAccessed.before(oneHourAgo.getTime()) )){
+        //if(excludedProviders == null && (excludedProvidersLastAccessed == null || excludedProvidersLastAccessed.before(oneHourAgo.getTime()) )){
 
-			// Get all service configurations from Db.
-			ProviderExclusionsDao providerExclusionsDao = new ProviderExclusionsDao();
-			return providerExclusionsDao.getForVerticalId(brandId, verticalId, ApplicationService.getServerDate());
+        // Get all service configurations from Db.
+        ProviderExclusionsDao providerExclusionsDao = new ProviderExclusionsDao();
+        return providerExclusionsDao.getForVerticalId(brandId, verticalId, ApplicationService.getServerDate());
 
-			// Update last accessed timestamp
-			//excludedProvidersLastAccessed = new Date();
+        // Update last accessed timestamp
+        //excludedProvidersLastAccessed = new Date();
 
-		//}
+        //}
 
-		//return excludedProviders;
+        //return excludedProviders;
 
-	}
+    }
 
-	/**
-	 * Get the service configuration object for a code. (uses page context to determine the correct brand and vertical)
-	 * DO NOT USE FOR SERVER TO SERVER transactions, in order for the page context to be set correctly, this page must
-	 * have been accessed via the F5 url rewriting rules.
-	 *
-	 * @param request
-	 * @param code 'serviceCode' key in ctm.service_master
-	 * @return
-	 * @throws DaoException
-	 * @throws ServiceConfigurationException
-	 */
-	public static ServiceConfiguration getServiceConfigurationForContext(HttpServletRequest request, String code) throws DaoException, ServiceConfigurationException{
+    /**
+     * Get the service configuration object for a code. (uses page context to determine the correct brand and vertical)
+     * DO NOT USE FOR SERVER TO SERVER transactions, in order for the page context to be set correctly, this page must
+     * have been accessed via the F5 url rewriting rules.
+     *
+     * @param request
+     * @param code 'serviceCode' key in ctm.service_master
+     * @return
+     * @throws DaoException
+     * @throws ServiceConfigurationException
+     */
+    public static ServiceConfiguration getServiceConfigurationForContext(HttpServletRequest request, String code) throws DaoException, ServiceConfigurationException{
 
-		Brand brand = ApplicationService.getBrandFromRequest(request);
-		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
-		Vertical vertical = brand.getVerticalByCode(verticalCode);
+        Brand brand = ApplicationService.getBrandFromRequest(request);
+        String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
+        Vertical vertical = brand.getVerticalByCode(verticalCode);
 
-		return getServiceConfigurationDeprecated(code, vertical.getId());
-	}
+        return getServiceConfiguration(code, vertical.getId());
+    }
 
-	/**
-	 * Get the service configuration for a specific code, vertical and brand - only call this directly if you are not able to rely on F5 rewriting rules.
-	 * @param code 'serviceCode' key in ctm.service_master
-	 * @param verticalId
-	 * @param brandId
-	 * @return
-	 * @throws DaoException
-	 * @throws ServiceConfigurationException
-	 */
-	@Deprecated
-	public static ServiceConfiguration getServiceConfigurationDeprecated(String code, int verticalId) throws DaoException, ServiceConfigurationException {
+    /**
+     * Get the service configuration for a specific code, vertical and brand - only call this directly if you are not able to rely on F5 rewriting rules.
+     * @param code 'serviceCode' key in ctm.service_master
+     * @param verticalId
+     * @return
+     * @throws DaoException
+     * @throws ServiceConfigurationException
+     */
+    public static ServiceConfiguration getServiceConfiguration(String code, int verticalId) throws DaoException, ServiceConfigurationException {
 
-		getServiceConfigurations();
+        getServiceConfigurations();
 
-		ServiceConfiguration serviceConfiguration = null;
-		
-		for(ServiceConfiguration service : services){
-			if(service.getCode().equals(code) && ((service.getVerticalId() == ConfigSetting.ALL_VERTICALS && serviceConfiguration == null) || service.getVerticalId() == verticalId)){
-				serviceConfiguration = service;
-			}
-		}
-		
-		if(serviceConfiguration != null)
-			return serviceConfiguration;
+        ServiceConfiguration serviceConfiguration = null;
 
-		throw new ServiceConfigurationException("Unable to find matching service with code "+code);
+        for(ServiceConfiguration service : services){
+            if(service.getCode().equals(code) && ((service.getVerticalId() == ConfigSetting.ALL_VERTICALS && serviceConfiguration == null) || service.getVerticalId() == verticalId)){
+                serviceConfiguration = service;
+            }
+        }
 
-	}
+        if(serviceConfiguration != null)
+            return serviceConfiguration;
 
-	/**
-	 * Get the service configuration for a specific code, vertical and brand - only call this directly if you are not able to rely on F5 rewriting rules.
-	 * @param code 'serviceCode' key in ctm.service_master
-	 * @param verticalId
-	 * @param brandId
-	 * @return
-	 * @throws DaoException
-	 * @throws ServiceConfigurationException
-	 */
-	public ServiceConfiguration getServiceConfiguration(String code, int verticalId) throws DaoException, ServiceConfigurationException {
-		return getServiceConfigurationDeprecated( code,  verticalId);
-	}
+        throw new ServiceConfigurationException("Unable to find matching service with code "+code);
 
-	/**
-	 * Get the service configuration for a specific code, vertical and brand - only call this directly if you are not able to rely on F5 rewriting rules.
-	 * @param code 'serviceCode' key in ctm.service_master
-	 * @param verticalId
-	 * @param brandId
-	 * @return
-	 * @throws DaoException
-	 * @throws ServiceConfigurationException
-	 */
-	public  ServiceConfiguration getServiceConfiguration(String code, Vertical vertical) throws DaoException, ServiceConfigurationException {
+    }
 
-		getServiceConfigurations();
+    /**
+     * Work out which of the provider ids contained in the Service Configuration object are actually enabled
+     * Looks up the provider exclusions table.
+     *
+     * @param brandId
+     * @param verticalId
+     * @param serviceConfiguration
+     * @return
+     * @throws DaoException
+     */
+    public static ArrayList<Integer> getEnabledProviderIdsForConfiguration(int brandId, int verticalId, ServiceConfiguration serviceConfiguration) throws DaoException{
 
-		ServiceConfiguration serviceConfiguration = null;
+        ArrayList<Integer> providerIds = serviceConfiguration.getProviderIds();
+        ArrayList<ProviderExclusion> excludedProvidersList = getExcludedProviders(brandId, verticalId);
+        ArrayList<Integer> excludedIds = new ArrayList<Integer>();
 
-		for(ServiceConfiguration service : services){
-			if(service.getCode().equals(code) && ((service.getVerticalId() == ConfigSetting.ALL_VERTICALS && serviceConfiguration == null) || service.getVerticalId() == vertical.getId())){
-				serviceConfiguration = service;
-			}
-		}
+        for(ProviderExclusion exclusion : excludedProvidersList){
+            excludedIds.add(exclusion.getProviderId());
+        }
 
-		if(serviceConfiguration != null)
-			return serviceConfiguration;
+        providerIds.removeAll(excludedIds);
 
-		throw new ServiceConfigurationException("Unable to find matching service with code "+code);
+        if(providerIds.size() == 0) providerIds.add(0);
 
-	}
-
-	/**
-	 * Work out which of the provider ids contained in the Service Configuration object are actually enabled
-	 * Looks up the provider exclusions table.
-	 *
-	 * @param brandId
-	 * @param verticalId
-	 * @param serviceConfiguration
-	 * @return
-	 * @throws DaoException
-	 */
-	public static ArrayList<Integer> getEnabledProviderIdsForConfiguration(int brandId, int verticalId, ServiceConfiguration serviceConfiguration) throws DaoException{
-
-		ArrayList<Integer> providerIds = serviceConfiguration.getProviderIds();
-		ArrayList<ProviderExclusion> excludedProvidersList = getExcludedProviders(brandId, verticalId);
-		ArrayList<Integer> excludedIds = new ArrayList<Integer>();
-
-		for(ProviderExclusion exclusion : excludedProvidersList){
-			excludedIds.add(exclusion.getProviderId());
-		}
-
-		providerIds.removeAll(excludedIds);
-
-		if(providerIds.size() == 0) providerIds.add(0);
-
-		return providerIds;
-	}
+        return providerIds;
+    }
 
 
-	/**
-	 * Clear the services array, therefore forcing the application to reload the services from the database.
-	 */
-	public static void clearCache(){
-		services = new ArrayList<ServiceConfiguration>();
-	}
+    /**
+     * Clear the services array, therefore forcing the application to reload the services from the database.
+     */
+    public static void clearCache(){
+        services = new ArrayList<ServiceConfiguration>();
+    }
 
 }

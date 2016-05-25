@@ -53,6 +53,9 @@ public class CommonQuoteServiceTest {
     @Mock
     private ServiceConfiguration serviceConfiguration;
 
+    @Mock
+    private RestClient restClient;
+
     @Before
     public void setup() throws Exception {
         initMocks(this);
@@ -178,7 +181,7 @@ public class CommonQuoteServiceTest {
         when(simpleConnection.get(requestUrl)).thenReturn("response message");
         when(objectMapper.readValue(anyString(), any(JavaType.class))).thenReturn(responseObject);
 
-        doReturn(simpleConnection).when(commonQuoteService).setupSimplePOSTConnection(any(QuoteServiceProperties.class), anyString());
+        doReturn(simpleConnection).when(restClient).setupSimplePOSTConnection(any(QuoteServiceProperties.class), anyString());
         doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
 
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);
@@ -201,7 +204,7 @@ public class CommonQuoteServiceTest {
         when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
         when(simpleConnection.get(anyString())).thenReturn(null);
 
-        doReturn(simpleConnection).when(commonQuoteService).setupSimplePOSTConnection(any(QuoteServiceProperties.class), anyString());
+        doReturn(simpleConnection).when(restClient).setupSimplePOSTConnection(any(QuoteServiceProperties.class), anyString());
         doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
 
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);

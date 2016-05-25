@@ -9,7 +9,6 @@ import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.validator.services.ContactValidatorService;
 import com.ctm.web.core.security.IPAddressHandler;
-import com.ctm.web.core.services.ContactValidatorService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

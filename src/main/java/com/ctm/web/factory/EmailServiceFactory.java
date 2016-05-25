@@ -38,7 +38,7 @@ import com.ctm.web.travel.services.email.TravelEmailDetailMappings;
 
 public class EmailServiceFactory {
 
-	public static EmailServiceHandler newInstance(PageSettings pageSettings, EmailMode mode, Data data) throws SendEmailException{
+	public static EmailServiceHandler newInstance(PageSettings pageSettings, EmailMode mode, Data data, IPAddressHandler ipAddressHandler) throws SendEmailException{
 		VerticalType vertical = pageSettings.getVertical().getType();
 
 		EmailServiceHandler emailService = null;
@@ -51,7 +51,7 @@ public class EmailServiceFactory {
 				emailService = getTravelEmailService(pageSettings, mode, data , vertical);
 				break;
 			case LIFE:
-				emailService = getLifeEmailService(pageSettings, mode, data, vertical);
+				emailService = getLifeEmailService(pageSettings, mode, data, vertical, ipAddressHandler);
 				break;
 			case HOME:
 				// TODO: refactor this
@@ -90,14 +90,15 @@ public class EmailServiceFactory {
 		return new TravelEmailService(pageSettings, mode , emailDetailsService, urlService, data, urlServiceOld, IPAddressHandler.getInstance());
 	}
 	
-	private static EmailServiceHandler getLifeEmailService(PageSettings pageSettings, EmailMode mode, Data data, VerticalType vertical) throws SendEmailException {
+	private static LifeEmailService getLifeEmailService(PageSettings pageSettings, EmailMode mode, Data data,
+														VerticalType vertical,  IPAddressHandler ipAddressHandler) throws SendEmailException {
 		EmailDetailsService emailDetailsService = createEmailDetailsService(pageSettings, data, vertical, new LifeEmailDetailMappings());
 		LifeEmailDataService lifeEmailDataService = new LifeEmailDataService( new RankingDetailsDao(),
 				new TransactionDetailsDao(), new OccupationsDao());
 		return new LifeEmailService(pageSettings, mode, emailDetailsService,
 				 lifeEmailDataService,
 				new ServiceConfigurationService(),
-				new ApplicationService());
+				new ApplicationService(), ipAddressHandler);
 	}
 
 	private static EmailDetailsService createEmailDetailsService(

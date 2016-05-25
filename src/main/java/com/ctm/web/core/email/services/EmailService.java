@@ -8,6 +8,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.FatalErrorService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.SettingsService;
@@ -108,7 +109,7 @@ public class EmailService {
 				} catch (DaoException | ConfigSettingException  e) {
 					throw new SendEmailException("failed to get settings", e);
 				}
-			EmailServiceHandler emailService = EmailServiceFactory.newInstance(pageSettings, mode, data);
+			EmailServiceHandler emailService = EmailServiceFactory.newInstance(pageSettings, mode, data , IPAddressHandler.getInstance());
 			emailService.send(request, emailAddress, transactionId);
 		} else {
 			throw new SendEmailException(transactionId + ": invalid email received emailAddress:" +  emailAddress);

@@ -10,20 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-public abstract class CommonQuoteService<QUOTE> extends CommonRequestService {
+public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> extends CommonRequestService<PAYLOAD, RESPONSE> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteService.class);
 
-    public CommonQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper,
-                              ServiceConfigurationService serviceConfigurationService,
-                              EnvironmentService.Environment environment) {
-        super(providerFilterDAO, objectMapper,serviceConfigurationService, environment);
-    }
-
-    public CommonQuoteService(final ProviderFilterDao providerFilterDAO, final RestClient restClient,
-                              ServiceConfigurationService serviceConfigurationService,
-                              EnvironmentService.Environment environment) {
-        super(providerFilterDAO, restClient,serviceConfigurationService, environment);
+    public CommonQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
+        super(providerFilterDAO, objectMapper);
     }
 
     public void validateRequest(RequestWithQuote<QUOTE> data, String verticalCode) {

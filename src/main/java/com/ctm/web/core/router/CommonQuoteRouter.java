@@ -35,12 +35,19 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> extends CommonR
     protected final IPAddressHandler ipAddressHandler;
     protected SessionDataServiceBean sessionDataServiceBean;
 
-    public CommonQuoteRouter(SessionDataServiceBean sessionDataServiceBean,IPAddressHandler ipAddressHandler) {
+    public CommonQuoteRouter(SessionDataServiceBean sessionDataServiceBean, ApplicationService applicationService, IPAddressHandler ipAddressHandler) {
+        super(applicationService);
         this.sessionDataServiceBean = sessionDataServiceBean;
         this.ipAddressHandler = ipAddressHandler;
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteRouter.class);
+
+    public CommonQuoteRouter(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler) {
+        super(new ApplicationService());
+        this.sessionDataServiceBean = sessionDataServiceBean;
+        this.ipAddressHandler = ipAddressHandler;
+    }
 
     protected Brand initRouter(MessageContext context, Vertical.VerticalType vertical){
         return super.initRouter(context.getHttpServletRequest(), vertical);

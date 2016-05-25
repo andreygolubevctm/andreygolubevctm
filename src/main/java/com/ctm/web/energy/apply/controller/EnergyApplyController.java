@@ -1,5 +1,6 @@
 package com.ctm.web.energy.apply.controller;
 
+import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.exceptions.ServiceRequestException;
@@ -10,7 +11,6 @@ import com.ctm.web.core.resultsData.model.Info;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
-import com.ctm.web.energy.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.energy.apply.model.request.EnergyApplyPostRequestPayload;
 import com.ctm.web.energy.apply.response.EnergyApplyWebResponseModel;
 import com.ctm.web.energy.apply.services.EnergyApplyService;

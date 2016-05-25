@@ -6,6 +6,7 @@ import com.ctm.web.core.leadService.services.LeadService;
 import com.ctm.web.core.results.model.ResultsTemplateItem;
 import com.ctm.web.core.results.services.ResultsDisplayService;
 import com.ctm.web.core.security.IPAddressHandler;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.model.leadservice.HealthMetadata;
 import org.apache.commons.lang3.StringUtils;
@@ -27,12 +28,12 @@ public class HealthLeadService extends LeadService {
     @Deprecated // used by write_quote.tag
     @SuppressWarnings("unused")
     public HealthLeadService() {
-        super(IPAddressHandler.getInstance());
+        super(new ServiceConfigurationService() , IPAddressHandler.getInstance());
     }
 
 
     public HealthLeadService(IPAddressHandler ipAddressHandler) {
-        super(ipAddressHandler);
+        super(new ServiceConfigurationService() ,ipAddressHandler);
     }
 
     @Override
