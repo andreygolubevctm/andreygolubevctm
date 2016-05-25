@@ -53,6 +53,7 @@
 </div>
 
 <div id="${name}_claim-selection" class="health-bank_claim_details">
+	<h3>Please nominate a bank account for future claim payments</h3>
 	<form_v2:fieldset legend="Please nominate a bank account for future claim payments">
 		<health_v1:bank_account_details xpath="${xpath}/claim" />
 	</form_v2:fieldset>

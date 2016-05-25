@@ -361,7 +361,15 @@
 		var nodeName = '';
 
 		switch (getSelectedPaymentMethod()) {
-			case 'cc': nodeName = 'CreditCard'; break;
+			case 'cc':
+				var label = $paymentRadioGroup.find('label.active').text().trim();
+
+				if (label == 'Credit Card') {
+					nodeName = 'CreditCard';
+				} else {
+					nodeName = 'Invoice';
+				}
+				break;
 			default: nodeName = 'BankAccount'; break;
 		}
 
