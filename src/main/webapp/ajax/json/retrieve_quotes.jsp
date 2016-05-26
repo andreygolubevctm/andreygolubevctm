@@ -213,7 +213,7 @@
 											pageContext.setAttribute("inPast" , "N");
 										}
 									%>
-									<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/quote/inPast" value="${inPast}" />
+									<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/quote/inPast" value="${pageContext.getAttribute('inPast')}" />
 								</c:if>
 
 								<c:if test="${fn:toLowerCase(row.productType) eq 'home' and fn:startsWith(row.xpath, 'home/')}">
@@ -236,7 +236,7 @@
 												pageContext.setAttribute("inPast" , "N");
 											}
 										%>
-										<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/home/inPast" value="${inPast}" />
+										<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/home/inPast" value="${pageContext.getAttribute('inPast')}" />
 									</c:if>
 								</c:if>
 
