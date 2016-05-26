@@ -1,8 +1,3 @@
-/**
- * Brief explanation of the module and what it achieves. <example: Example pattern code for a meerkat module.>
- * Link to any applicable confluence docs: <example: http://confluence:8090/display/EBUS/Meerkat+Modules>
- */
-
 ;(function($, undefined){
 
     var meerkat = window.meerkat,
@@ -159,8 +154,57 @@
         return list;
     }
 
+    /**
+     * Utility function to map cover type to a label.
+     * @returns {*}
+     */
+    function getLabelForCoverType() {
+        switch(meerkat.modules.health.getCoverType()) {
+            case 'C':
+                return "Hospital and Extras";
+            case 'H':
+                return "Hospital";
+            case 'E':
+                return "Extras";
+        }
+        return "";
+    }
+
+    /**
+     * Utility function to map situation to a label.
+     * @returns {*}
+     */
+    function getLabelForSituation() {
+
+        switch(meerkat.modules.health.getSituation()) {
+            case 'SM':
+            case 'SF':
+                return "you";
+            case 'C':
+                return "you and your partner";
+            case 'F':
+                return "you and your family";
+            case 'SPF':
+                var $dependants = $('#health_healthCover_dependants');
+                var childrenLabel = parseInt($dependants.val(),10) > 1 ? 'children' : 'child';
+                return "you and your " + childrenLabel;
+        }
+    }
+    
+    function renderPreResultsRowSnapshot() {
+
+        var obj = {
+            name: $('#health_contactDetails_name').val(),
+            coverType: getLabelForCoverType(),
+            situation: getLabelForSituation()
+        };
+        var template = meerkat.modules.templateCache.getTemplate($("#pre-results-row-content-template"));
+        $('.preResultsContainer').html(template(obj));
+    }
+
     meerkat.modules.register('healthSnapshot', {
-        init:initHealthSnapshot
+        init:initHealthSnapshot,
+        renderPreResultsRowSnapshot: renderPreResultsRowSnapshot
     });
 
 })(jQuery);

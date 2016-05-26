@@ -446,8 +446,6 @@
 					meerkat.modules.healthResults.get();
 				}
 
-				meerkat.modules.resultsHeaderBar.registerEventListeners();
-
 			},
 			onBeforeLeave: function(event) {
 				// Increment the transactionId
@@ -460,8 +458,6 @@
 				meerkat.modules.healthResults.recordPreviousBreakpoint();
 				meerkat.modules.healthResults.toggleMarketingMessage(false);
 				meerkat.modules.healthResults.toggleResultsLowNumberMessage(false);
-
-				meerkat.modules.resultsHeaderBar.removeEventListeners();
 			}
 		};
 
@@ -1363,7 +1359,7 @@
 		});
 
 	}
-
+	
 	meerkat.modules.register("health", {
 		init: initHealth,
 		events: moduleEvents,
