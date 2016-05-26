@@ -603,7 +603,7 @@ var ResultsModel = {
 		return false;
 	},
 
-	filter: function( renderView ){
+	filter: function( renderView, doNotGoToStart ){
 
 		var initialProducts = Results.model.sortedProducts.slice();
 		var finalProducts = [];
@@ -654,6 +654,7 @@ var ResultsModel = {
 				$(Results.settings.elements.resultsContainer).trigger("noFilteredResults");
 			}else{
 				Results.view.filter();
+                if (doNotGoToStart === true) { return; }
 				Results.pagination.gotoStart(true);
 			}
 

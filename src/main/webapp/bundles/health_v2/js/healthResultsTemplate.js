@@ -306,7 +306,7 @@
                 // prevent multi clicking
                 $el.addClass('disabled');
                 filteredOutResults.push($el.attr('data-productId'));
-                Results.filterBy("productId", "value", {"notInArray": filteredOutResults}, true);
+                Results.filterBy("productId", "value", {"notInArray": filteredOutResults}, true, true);
                 toggleRemoveResultPagination();
             }
             // reset the disable so they can click again when reset
