@@ -122,6 +122,8 @@
     <jsp:invoke fragment="hiddenInputs"/>
 
 </div>
+<%-- Temp div to hold the snapshot and complance text until new desgin can figure our where to put this --%>
+<div id="temp-health-snapshot" class="visible-xs"><p>Please download the policy brochures for the full policy limits, inclusions and exclusions.</p></div>
 <%-- Dump out the templates --%>
 <core_v1:js_template id="logo-template"><jsp:invoke fragment="logoTemplate"/></core_v1:js_template>
 <core_v1:js_template id="price-template"><jsp:invoke fragment="priceTemplate"/></core_v1:js_template>

@@ -66,7 +66,7 @@
                             <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1"></div>
                             <div class="yourSelectionsHospital">
                                 <h5>Your selections</h5>
-                                <a href="javascript:;" class="restrictedBenefit hidden" data-content="helpid:543" data-toggle="dialog" data-title="Hospital Cover Information" data-dialog-hash-id="hospitalCover" tabindex="-1" data-cache="true"># restricted benefit</a>
+                                <a href="javascript:;" class="restrictedBenefit hidden" data-content="helpid:543" data-toggle="dialog" data-title="" data-dialog-hash-id="hospitalCover" tabindex="-1" data-cache="true"># restricted benefit</a>
                             </div>
                         </div>
                         {{ if(meerkat.modules.health.getHospitalCoverLevel() == 'limited') { }}
