@@ -13,7 +13,7 @@
 		<c:set var="fieldXpath" value="${xpath}/day" />
 		<form_v2:row fieldXpath="${fieldXpath}"
 					 label="What day would you like your payment deducted?"
-					 className="${name}-details_day_group">
+					 className="${name}-details_day-group">
 			<field_v2:count_select xpath="${fieldXpath}"
 								   min="1"
 								   max="27"
