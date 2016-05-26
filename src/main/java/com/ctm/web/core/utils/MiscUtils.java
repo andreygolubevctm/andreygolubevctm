@@ -1,8 +1,12 @@
 package com.ctm.web.core.utils;
 
 import com.ctm.web.core.content.model.Content;
+import com.ctm.web.health.services.HealthApplicationService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -12,6 +16,7 @@ import java.util.function.Supplier;
 
 public class MiscUtils {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MiscUtils.class);
     /**
      * Receives a Content Model, randomises the order and returns the new Content Model.
      *
@@ -67,6 +72,15 @@ public class MiscUtils {
         }
         catch (NullPointerException e) {
             return Optional.empty();
+        }
+    }
+
+    public static String convertToJson(Object object) {
+        try {
+            return ObjectMapperUtil.getObjectMapper().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            LOGGER.warn("Unable to convert to JSON", e);
+            return "";
         }
     }
 

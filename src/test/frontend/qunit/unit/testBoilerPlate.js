@@ -16,10 +16,10 @@ setupBoilerplate = function(base) {
     document.write('<script src="' + base + '/bundles/core/js/dialogs.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/loadingAnimation.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/performanceProfiling.js">\x3C/script>');
-    document.write('<script src="' + base + '/bundles/shared/results/js/Results.js">\x3C/script>');
-    document.write('<script src="' + base + '/bundles/shared/results/js/ResultsView.js">\x3C/script>');
-    document.write('<script src="' + base + '/bundles/shared/results/js/ResultsPagination.js">\x3C/script>');
-    document.write('<script src="' + base + '/bundles/shared/results/js/ResultsPagination.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/shared/results_js/js/Results.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/shared/results_js/js/ResultsView.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/shared/results_js/js/ResultsPagination.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/shared/results_js/js/ResultsPagination.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/validation/js/validationAddress.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/validation/js/validationBaseRules.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/validation/js/validationCurrency.js">\x3C/script>');
@@ -54,8 +54,8 @@ setupBoilerplate = function(base) {
                 root: 'http://localhost:8080/',
                 exit: 'http://int.comparethemarket.com.au/',
                 quote: '',
-                privacyPolicy: '/ctm/legal/privacy_policy.pdf',
-                websiteTerms: '/ctm/legal/website_terms_of_use.pdf',
+                privacyPolicy: '/static/legal/privacy_policy.pdf',
+                websiteTerms: '/static/legal/website_terms_of_use.pdf',
                 fsg: ''
             },
             liveChat: {

@@ -42,10 +42,10 @@
 
 <%-- HTML --%>
 <div class="row">
-	<div class="col-xs-6 col-md-5">
+	<div class="col-xs-6">
 		<field_v2:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"	title="expiry month" required="true" className="${className}" placeHolder="Month" disableErrorContainer="${disableErrorContainer}"/>
 	</div>
-	<div class="col-xs-6 col-md-5">
+	<div class="col-xs-6 row">
 		<field_v2:array_select
 			items="=,${year_list}"
 			xpath="${xpath}/cardExpiryYear"

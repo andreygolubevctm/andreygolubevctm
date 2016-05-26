@@ -51,6 +51,11 @@ ${newPage.init(pageContext.request, pageSettings)}
 <!DOCTYPE html>
 <go:html>
 <head>
+	<%-- Google Optimise 360 --%>
+	<c:if test="${empty callCentre or not callCentre}">
+		<content:get key="googleOptimise360" />
+	</c:if>
+
 	<title>${title} - ${pageSettings.getSetting('brandName')}</title>
 	<meta charset='utf-8'>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -192,10 +197,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 							<jsp:invoke fragment="header_button_left" />
 
-							<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenu" data-target=".navbar-collapse-menu">
+							<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
 								<span class="sr-only">Toggle Navigation</span>
 								<span class="icon icon-reorder"></span>
-								<span class="icon icon-cross"></span>
 							</button>
 							<c:set var="exitUrl" value="" />
 							<c:if test="${pageSettings.hasSetting('exitUrl')}">

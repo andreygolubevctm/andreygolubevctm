@@ -14,14 +14,12 @@
 <%@ attribute name="hideHelpIconCol"	required="false" rtexprvalue="true"	 description="Set to a value to hide the help icon placeholder column" %>
 <%@ attribute name="labelAbove"			required="false" rtexprvalue="true"	 description="Have the label above the element instead of beside it" %>
 <%@ attribute name="addForAttr" 		required="false" rtexprvalue="true"	 description="Bool to add or not the for attribute" %>
+<%@ attribute name="labelTag"			required="false" rtexprvalue="true"  description="Override tag used for labels" %>
 
 <%-- Added to deal with the new field sizes introduced in health --%>
 <%@ attribute name="smRowOverride" 		required="false" rtexprvalue="true"	 description="Override the SM value" %>
 <%@ attribute name="isNestedField" 		required="false" rtexprvalue="true"	 description="Toggle to automatically set some styling values for the nested fields eg name_group.tag" %>
 <%@ attribute name="isNestedStyleGroup" required="false" rtexprvalue="true"	 description="Toggle to remove the col-xs-12 class. If not removed breaks the nesting design introduced to health" %>
-
-
-
 
 <%-- VARIABLES --%>
 <c:if test="${empty labelAbove}">
@@ -99,7 +97,14 @@
 	<c:choose>
 		<c:when test="${not empty label and label ne ''}">
 
-			<field_v2:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" addForAttr="${addForAttr}" />
+			<c:choose>
+				<c:when test="${not empty labelTag}">
+					<${labelTag} class="col-xs-12">${label}</${labelTag}>
+				</c:when>
+				<c:otherwise>
+					<field_v2:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" addForAttr="${addForAttr}" />
+				</c:otherwise>
+			</c:choose>
 
 			<div class="col-xs-2 visible-xs helpIconXSColumn ${offset}">
 				<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" />

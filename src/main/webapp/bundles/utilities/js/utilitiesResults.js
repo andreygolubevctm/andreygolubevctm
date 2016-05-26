@@ -341,8 +341,18 @@
     function addBillClick(event) {
         billClicked = true;
         event.preventDefault();
-        $('#utilities_householdDetails_recentElectricityBill_Y').parent().show().click();
-        $('#utilities_householdDetails_recentGasBill_Y').parent().show().click();
+
+        var whatToCompare = $(".what-to-compare").find("input[type='radio']:checked").val() || null;
+
+        if(whatToCompare === "EG" || whatToCompare === "E") {
+            $('.recent-electricity-bill').show();
+            $('#utilities_householdDetails_recentElectricityBill_Y').parent().click();
+        }
+
+        if(whatToCompare === "EG" || whatToCompare === "G") {
+            $('.recent-gas-bill').show();
+            $('#utilities_householdDetails_recentGasBill_Y').parent().click();
+        }
 
         meerkat.modules.journeyEngine.gotoPath('start');
 
@@ -369,6 +379,10 @@
         if (meerkat.modules.deviceMediaState.get() !== 'xs') return;
 
         var $resultrow = $(event.target);
+        if ($resultrow.parents('.btn-add-bill').length > 0) {
+            return;
+        }
+
         if ($resultrow.hasClass('result-row') === false) {
             $resultrow = $resultrow.parents('.result-row');
         }

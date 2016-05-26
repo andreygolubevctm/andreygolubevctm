@@ -1,414 +1,424 @@
-//------------------------------
+// NOTE: This file provides the design for the structure outlined in shared/results/v4.
+//       For a list of what a .section or .category is, see ../../../shared/results/v4/less/results_structure.less
 
-.resultsContainer.featuresMode {
-  .generate-default-result-column-widths();
-}
+#resultsPage {
+  margin-bottom: 20px;
+  a.dialogPop {
+    text-decoration: underline;
+    .small;
+    color: #000;
+    font-family: @font-family-base;
+  }
 
-//------------------------------
-.nowrap {
-  white-space: nowrap;
-}
-
-.journeyEngineSlide.resultsSlide {
-  padding-top: 0;
-}
-
-.restrictedTooltips {
-  box-shadow: 2px 2px 4px @gray-slight-dark;
-}
-
-.result {
-  .restrictedFund {
-    background-color: transparent;
-    cursor: help;
-    margin-top: 32px;
-    &:hover {
-      background-color: transparent;
-      color: #FF5F5F;
+  .preResultsContainer {
+    margin-bottom: 20px;
+    h3 {
+      margin-top: 10px;
+      margin-bottom: 6px;
     }
   }
+}
+
+#results-sidebar {
+  // need to remove this columns padding so we can apply left margin to all result-rows.
+  padding-right: 0;
 }
 
 .noResults {
-  margin-top: 60px;
-  width: 100%;
-
-  height: 500px;
-  position: relative;
-  text-align: center;
-
-  @media (@sm) {
-    width: @container-sm;
-  }
-  @media (@md) {
-    width: @container-md;
-  }
-  @media (@lg) {
-    width: @container-lg;
-  }
-
-  .alert {
-    margin: 0 80px;
-  }
-
+  margin-left: 20px;
 }
 
-//
-// Feature mode styling
-//
+// The product header
+.resultInsert {
+
+  // top bar in header where restricted fund and compare are.
+  .utility-bar-blank {
+    padding: 5px;
+    .user-select(none);
+  }
+  .restrictedFund {
+    @media (@sm-only) {
+      font-size: 12px;
+    }
+    .user-select(none);
+    cursor: help;
+    background-color: #EDEDED;
+    padding: 5px;
+    color: #8A8A8A;
+    text-align: center;
+  }
+  .remove-result {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    padding: 5px;
+    color: #ccc;
+    cursor: pointer;
+    & .icon:hover {
+      color: #555;
+    }
+  }
+
+  // only apply a height in results so the rows stay all the same height.
+  .productSummary {
+    height: 140px;
+    @media (@sm-only) {
+      height: 150px;
+    }
+    @media (@md-only) {
+      height: 165px;
+    }
+    @media (@lg-only) {
+      height: 175px;
+    }
+    overflow: hidden;
+  }
+
+  // override core to give greater gap.
+  .btn-block + .btn-block {
+    margin-top: 10px;
+  }
+  // pretend to make the download brochures btn-block a btn-small.
+  @media (@xs-sm-only) {
+    .btn-download.btn-block {
+      padding: 5px 4px;
+      font-size: 12px;
+    }
+  }
+}
+
+//outside as the tooltip is appended to the DOM
+.brochuresTooltip {
+  @media (@xs-sm-only) {
+    .brochureRow {
+      text-align: center;
+      margin: 5px 0;
+    }
+  }
+  .btn-sm {
+    display: inline-block;
+    padding: 7px 12px;
+  }
+}
+
+@subfeature-border-color: #C0C9DE;
+@dulled-color: #8A8A8A;
 .featuresMode {
 
-  .btn-more-info {
-    clear: both;
-    width: 85%;
-    margin: 12px auto 5px;
-    @media (@sm) {
-      position: absolute;
-      bottom: 13px;
-      left: 18%;
-      width: 69%;
+  .health-icon {
+    vertical-align: top;
+    font-size: 30px;
+    margin-right: 5px;
+    @media (@xs-sm-only) {
+      font-size: 20px;
+      margin-right: 2px;
+      line-height: 14px;
+    }
+    @media (@md-only) {
+      line-height: 20px;
     }
   }
 
-  .result {
-    height: 205px;
-  }
-  .icon-tick {
-    color: @theme-tertiary;
-  }
-  .icon-tick, .icon-cross {
-    line-height: 18px;
-  }
-  .icon-cross {
-    color: @cross-color;
-  }
+  // The actual results container, to the right of the feature labels.
+  .resultsOverflow {
 
-  // Product header.
-  @media (@xs-only) {
-    .result {
-      height: 200px;
-    }
-  }
-
-  .expandable > .content {
-    cursor: pointer;
-  }
-  .expander {
-    .icon-arrow-right;
-    right: 5px;
-    top: 50%;
-    margin-top: -5px;
-    position: absolute;
-    font-size: 12px;
-  }
-  .expanded .labelInColumn > .content .expander,
-  .expanding .labelInColumn > .content .expander,
-  .expanded > .content .expander,
-  .expanding > .content .expander {
-    .icon-arrow-down;
-  }
-
-  &.v2 .resultsOverflow .section > .children .category > .content {
-    border-top: 1px solid @results-border-color;
-  }
-  .featuresHeaders .category > .content {
-    padding: 6px 10px;
-    padding-right: 20px;
-  }
-  .result-row .category > .content {
-    font-family: @font-family-theme-bold;
-    text-align: center;
-    padding: 5px 10px;
-  }
-}
-
-.resultsFeaturesSections(@section-color, @section-odd-color, ~'', ~'.hasShortlistableChildren');
-
-// rows mixin called
-.resultsFeaturesRows(@feature-odd-color, @feature-color);
-
-// alternate columns
-@media (@xs-only) {
-
-  /* hide the second label when 2 cols are displayed on XS.
-  .result-row:nth-child(2n+2) .labelInColumn {
-    .contentInner {
-      visibility: hidden;
-    }
-  }*/
-  .featuresMode {
+    // Fix margins for rows on XS
     .result-row {
-      .feature > .content.c {
-        background-color: #f9f9f9;
+      @media (@xs-only) {
+        margin-right: 15px;
+      }
+      @media (@sm) {
+        margin-left: 15px;
       }
     }
   }
-}
 
-// special cases / overrrides
-.featuresMode {
-  .promosFeature {
-    .labelInColumn,
-    .content {
-      color: @results-features-promos-color;
+  // Each product column is a result-row, floated left so they fit beside each other.
+  .result-row {
+
+    // .result is just the top section.
+    .result {
+      border: 1px solid @results-border-color;
+      background: @feature-bg-color;
+      // box shadow descoped due to issues with the box shadow displaying behind the filters and also on the 3rd result.
+      //box-shadow: 2px 3px 3px #cfcfcf;
+    }
+    h3 {
+      @media (@xs-sm-only) {
+        font-size: 14px;
+      }
+      @media (@md-only) {
+        font-size: 20px;
+      }
+    }
+    h5 {
+      padding: 15px 0 10px 5px;
+      margin: 0;
+      @media (@xs-only) {
+        font-size: 14px;
+      }
+      @media (@sm-only) {
+        font-size: 16px;
+      }
+    }
+
+    // .cell is used as parent wrapper as .category is re-used on non-cell divs.
+    .cell {
+
+      // No feature icons in XS as there isn't enough space!
+      .health-icon {
+        line-height: 30px; // maintain same height of rows.
+        @media (@xs-only) {
+          display: none;
+        }
+        @media (@sm-only) {
+          font-size: 14px;
+        }
+        @media (@md-only) {
+          font-size: 24px;
+        }
+      }
+
+      // A top level category e.g. the Non Cosmetic Plastic Surgery cell
+      &.category { //.cell.category
+
+        // An override for last border-bottom of a category
+        // .cell.category's children's last feature: set border-bottom on its .content
+        &.collapsed:last-child .labelInColumn .content {
+          border-bottom: 1px solid @results-border-color;
+        }
+
+        // The label cell "Non Cosmetic Plastic Surgery"
+        > .labelInColumn {
+          .contentInner {
+            margin-right: 10px;
+            @media (@sm) {
+              margin-right: 16px;
+            }
+          }
+          .user-select(none);
+          display: block;
+          .content {
+            line-height: 30px;
+            padding: 5px;
+            @media (@md) {
+              padding: 5px 10px;
+            }
+            sup {
+              @media (@sm-only) {
+                position: absolute;
+                top: 14px;
+                right: 21px;
+              }
+              color: #A90000;
+              font-family: @font-family-theme-bold;
+            }
+          }
+        }
+        .content {
+          border-right: 1px solid @results-border-color;
+          // When a benefit is not covered
+          &.noCover {
+            background-color: #EDEDED;
+            color: @dulled-color;
+            cursor: not-allowed;
+            .expander {
+              // this makes the expander invisible until its opened.
+              color: #EDEDED;
+            }
+          }
+        }
+
+      }
+
+      &.expandable {
+
+        &.category {
+          // Style the feature label cell when its expanded.
+          &.expanded {
+            border-bottom: 1px solid @theme-tertiary;
+
+            .category { //.cell.category.expanded
+
+              > .content {
+                background-color: @theme-tertiary;
+                color: #fff;
+                sup {
+                  color: #fff;
+                }
+                border-left-color: @theme-tertiary;
+                border-top: none;
+                border-bottom: 2px solid @dark-blue-stroke;
+                border-right: 1px solid @theme-tertiary;
+              }
+            }
+          }
+          .children { // sub-features
+            margin-left: 10px;
+            position: relative;
+
+            .content {
+              border-left-color: @subfeature-border-color;
+              border-right: 1px solid @subfeature-border-color;
+              border-bottom: 1px solid @subfeature-border-color;
+              border-top: none; // disable inherited border.
+              background-color: #DDE1EB;
+            }
+            // remove border bottom on last cell in children
+            // or when not covered container is shown
+            .noCoverContainer.content,
+            .cell:last-child .content {
+              border-bottom: none;
+            }
+
+            &.hideChildren {
+              .cell.feature {
+                .invisible;
+              }
+            }
+            .noCoverContainer {
+              position: absolute;
+              height: 100%;
+              width: 100%;
+              .noCoverLabel {
+                font-size: 12px;
+                position: relative;
+                text-align: center;
+                top: 40%;
+                color: @dulled-color;
+              }
+            }
+
+            // The corner wedge when expanded.
+            &:before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: -10px;
+              width: 0;
+              height: 0;
+              border-style: solid;
+              border-width: 0 10px 10px 0;
+              border-color: transparent @dark-blue-stroke transparent transparent;
+            }
+          }
+
+          // the last category in a list, remove its blue border bottom and
+          // for its last children .cell.feature, set the border bottom to normal.
+          &:last-child.expanded {
+            border-bottom: none;
+            .children .cell.feature:last-child, .noCoverContainer {
+              border-bottom: 1px solid @subfeature-border-color;
+            }
+          }
+
+        }
+
+      }
     }
   }
 
   .content {
-    font-size: 13px;
-  }
-
-  // Fix padding for sub-benefit detail
-  &.v2 .children .feature > .content {
-    padding-top: 8px;
-    padding-bottom: 0px;
-    @media (@xs-only) {
-      padding-bottom: 4px;
-      padding-top: 4px;
+    font-size: 12px;
+    @media (@lg) {
+      font-size: @results-font-size;
     }
+    border-top: 1px solid @results-border-color;
+    padding: @results-column-side-padding-width;
+    text-align: left;
+    // Content of certain feature cells. This needs to be relative so the expander icon inside can be absolutely positioned.
+    position: relative;
   }
-  &.v2 .excessSection .children .feature > .content {
-    padding-bottom: 8px;
+
+  .children .content {
+    color: #000;
   }
 
-    // make these look like a section
-  .section,
-  .featuresHeaders .promosFeature,
-  .promosFeature > .labelInColumn,
-  .featuresHeaders .ambulanceSection,
-  .ambulanceSection > .labelInColumn {
-    > .content {
+  .extraText {
+    display: none;
+  }
 
-      font-family: @font-family-theme-bold;
-      font-size: 18px;
-      line-height: 22px;
+  // Content is internals of .feature/.category/.section
+  .content {
+    background: @feature-bg-color;
+    .transition(background-color 0.5s);
+    border-left: 1px solid @results-border-color;
+  }
 
-      @media (@sm) {
-        .expander {
-          display: none;
+  // Override styles for the excess and hospital cover sections.
+  .hospitalSelectionsExcessContainer {
+    .hospitalExcessSectionBorder {
+      background-color: #fff;
+      border: 1px solid @results-border-color;
+      border-bottom: none;
+    }
+    .featuresListExcess {
+      .content {
+        border-left: none;
+        border-top: none;
+        padding: 0 10px;
+      }
+      // Overrides for the excess section:
+      .excessDetailContainer {
+        padding: 0 10px 10px 10px;
+        div {
+          @media (@xs) {
+            padding-top: 5px;
+          }
+          @media (@md) {
+            padding-top: 10px;
+          }
+          padding-right: 0;
+        }
+        .excess-label {
+          font-size: 10px;
+          color: @dulled-color;
+          text-transform: lowercase;
+          margin-bottom: 0;
+        }
+        .excess-value {
+          font-family: @font-family-theme-bold;
         }
       }
-      .extraText {
-        display: block;
 
-        @media (@sm) {
-          width: ((@sm-results-column-width + @sm-results-column-gutter-width) * 3);
-        }
-        @media (@md) {
-          width: ((@md-results-column-width + @md-results-column-gutter-width) * 3);
+    }
+
+    h5 {
+      padding: 10px 0 0 10px;
+      @media (@lg) {
+        padding: 10px;
+      }
+    }
+    .yourSelectionsHospital {
+      position: relative;
+      .restrictedBenefit {
+        .small;
+        color: #A90000;
+        @media (@xs) {
+          padding: 0 0 10px 10px;
+          display: inline-block;
         }
         @media (@lg) {
-          width: ((@lg-results-column-width + @lg-results-column-gutter-width) * 3);
-        }
-
-        text-align: left;
-        padding: 0;
-        font-size: 14px;
-        overflow: hidden;
-      }
-
-    }
-    &[data-skey="GeneralHealth"],
-    &[data-skey="Hospital"] {
-      .extraText {
-        text-align: center;
-        line-height: 40px;
-      }
-    }
-
-    &.selection_GeneralHealth,
-    &.selection_Hospital,
-    &.expanded[data-skey="GeneralHealth"],
-    &.expanded[data-skey="Hospital"] {
-      .extraText {
-        display: none;
-      }
-    }
-
-  }
-
-  .promosFeature {
-    > .content,
-    &:nth-child(odd) > .content {
-      background-color: @section-color !important;
-    }
-  }
-
-  // categories style
-  .category > .content {
-    font-size: 14px;
-  }
-
-  // features style
-  .featuresTemplateComponent,
-  .result-row {
-    .excessSection {
-      > .h,
-      > .c,
-      > .labelInColumn {
-        display: none;
-      }
-    }
-  }
-
-  // May need to hard code this to be each sections class.. the cover ones are excluded right now. @todo
-  .selectionHolder > .content, .ambulanceSection > .content {
-    padding-top: 10px;
-    color: @theme-tertiary;
-  }
-
-  // this is for the "click to view all extras" row.
-  .featuresHeaders [data-skey='Hospital'],
-  .featuresHeaders [data-skey='GeneralHealth'] {
-    > .content {
-      background-color: @category-hospital-color;
-      z-index: 1;
-      left: -1px;
-      margin-left: 1px;
-    }
-
-  }
-
-  @media (@sm) {
-    .extrasCover .category, .hospitalCover .category {
-      &.expanded > .content,
-      &.expanding > .content {
-        background-color: @hospital-expanded-color;
-        color: @hospital-color;
-      }
-      &.expanded > .content {
-        font-family: @font-family-theme-bold;
-      }
-    }
-  }
-
-  // it doesn't fit!
-  @media (@sm-only) {
-    &.affixed .compare-basket {
-      display: none;
-    }
-
-    .compare-basket .compared-products-list .price {
-      font-size: 16px;
-    }
-  }
-  // Override mixin style for Health's unique design
-  @media (@sm) {
-
-    &.v2.resultsContainer {
-      margin-bottom: 15px;
-      border-bottom: none;
-    }
-
-    &.v2.resultsContainer,
-    .featuresHeaders {
-      background: transparent;
-    }
-
-    .resultsOverflow .result-row {
-      margin-left: 10px;
-      border-left: none;
-      border-right: none;
-      background: transparent;
-    }
-
-    //  Hospital/Extras Cover rows spacing
-    .hasShortlistableChildren,
-    .ambulanceSection {
-      margin-top: 10px;
-    }
-
-    .hasShortlistableChildren {
-      &.section {
-        &.collapsed {
-          border-top: none;
-        }
-        > .content {
-          border-bottom: 1px solid @results-border-color;
+          position: absolute;
+          right: 10px;
+          top: 0px;
+          top: 14px;
         }
       }
     }
+  }
 
-    &.v2 {
-
-      .featuresHeaders {
-        border-right: none;
-      }
-
-      .featuresTemplateComponent {
-        border-left: none;
-      }
-
-      .featuresHeaders .selectionHolder > .content {
-        border-top: none;
-        padding-top: 20px;
-      }
-
-      .content {
-        border-right: 1px solid @results-border-color;
-        border-left: 1px solid @results-border-color;
-      }
-
-      // Overwrite compared styles.
-      .result-row.compared .content, .result-row.compared .result,
-      .result-row.active .content, .result-row.active .result {
-        border-right-color: @compared-product-border-color;
-        border-left-color: @compared-product-border-color;
-      }
-      .result-row.compared, .result-row.compared:first-child {
-        border-left: none;
-        outline: none;
-      }
-
-      .compare-basket .compared-products-list li {
-        height: 25px;
-      }
-
+  .featuresListHospitalSelections {
+    .limited-cover-warning .content {
+      color: #A90000;
+      line-height: 1 !important;
     }
-
-    .cell.category.expandable.collapsed:last-child,
-    .category.expandable.expanded:last-child .children > .feature:last-child {
+  }
+  // Overrides for the extras "other" list template:
+  .featuresListExtrasOtherList {
+    cursor: pointer;
+    .cell {
       border-bottom: 1px solid @results-border-color;
-    }
-
-    .cell.section.selection_Hospital > .children > .category.expandable:last-child,
-    .cell.section.selection_Hospital > .children > .category.expandable:last-child .children > .feature:last-child {
-      border-bottom: none;
-    }
-
-    .resultsOverflow .cell.section.hasShortlistableChildren > .children > .category:first-child > .content {
-      border-top: none;
-    }
-
-    .result-row {
-      border-left: 1px solid @results-border-color;
-      .promosFeature.feature {
-        & > .content,
-        &:nth-child(odd) > .content {
-          //hack for specialness.
-          text-align: center;
-        }
-      }
-    }
-    .resultsOverflow .excessSection .feature > .content {
-      border-top: 1px solid @results-border-color;
-    }
-    .excessSection .feature:nth-child(even) > .content,
-    &.v2 .featuresList .ambulanceSection.category:nth-child(even) > .content,
-    &.v2 .featuresList > .ambulanceSection.category:nth-child(odd) .content {
-      background-color: #fff;
-    }
-
-    .compare-basket {
-      position: absolute;
-      bottom: 10px;
-      width: (@sm-results-column-width - 5);
-      @media (@md-only) {
-        width: (@md-results-column-width - 10);
-      }
-      @media (@lg-only) {
-        width: @lg-results-column-width;
-      }
     }
   }
 

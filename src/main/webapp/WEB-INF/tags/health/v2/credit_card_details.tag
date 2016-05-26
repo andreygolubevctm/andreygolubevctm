@@ -14,14 +14,14 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-credit_card_details">
 
-	<form_v3:fieldset legend="Credit Card Details">
+
 		<field_v2:creditcard_assurance_message showCreditCards="true" />
 
 		<health_v1:payment_external xpath="${gatewayXpath}" />
 
 		<c:set var="fieldXpath" value="${xpath}/type" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Credit Card Type" className="health_credit-card_details_type_group">
-			<field_v2:array_select xpath="${fieldXpath}" required="true" delims="||" className="health-credit_card_details-type" title="type of credit card" items="=Please choose...||v=Visa||m=Mastercard||a=AMEX" />
+			<field_v2:array_radio items="v=Visa,m=Mastercard,a=AMEX" xpath="${fieldXpath}" title="type of credit card" required="true" className="health-credit_card_details-type" />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/name" />
@@ -31,21 +31,13 @@
 							 className="health-credit_card_details-name sessioncamexclude" additionalAttributes=" data-rule-regex='[^0-9]*' data-msg-regex='For credit card name, please do not use numbers' "/>
 		</form_v3:row>
 
-
 		<c:set var="fieldXpath" value="${xpath}/number" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Credit Card Number" className="health_credit-card-details_number_group">
-			<field_v2:creditcard_number xpath="${fieldXpath}" title="Credit card number" required="true" className="health-credit_card_details-number sessioncamexclude" />
+			<field_v2:creditcard_number xpath="${fieldXpath}" title="Credit card number" required="true" className="health-credit_card_details-number sessioncamexclude" placeHolder="Card #" />
 		</form_v3:row>
 
-		<c:set var="fieldXpath" value="${xpath}/expiry" />
-		<form_v3:row fieldXpath="${fieldXpath}_cardExpiryMonth" label="Credit Card Expiry" id="${name}_expiry" className="health_credit-card-details_expiry_group">
-			<field_v1:cards_expiry rule="ccExp" xpath="${fieldXpath}" title="Credit card expiry date" required="true" className="health-credit_card_details-expiry sessioncamexclude" maxYears="7"/>
-		</form_v3:row>
 
-		<c:set var="fieldXpath" value="${xpath}/ccv" />
-		<form_v3:row fieldXpath="${fieldXpath}" label="CCV number" helpId="402" className="health_credit-card-details_ccv">
-			<field_v2:creditcard_ccv xpath="${fieldXpath}" required="true"  />
-		</form_v3:row>
+		<health_v3:credit_card_expiry_group xpath="${xpath}" />
 
 		<health_v2:payment_ipp xpath="${xpath}/ipp" />
 
@@ -78,6 +70,5 @@
 			<p class="health_credit-card-details_policyDay-message"></p>
 		</form_v3:row>
 
-	</form_v3:fieldset>
 
 </div>

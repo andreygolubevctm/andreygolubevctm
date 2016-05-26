@@ -181,7 +181,7 @@
 		  margin-top: 10px;
 		  margin-left: 3%;
 
-		  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale);
+		  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale * 0.60);
 		}
 	  }
 
@@ -260,7 +260,7 @@
 .policySummaryContainer{
   @media (@xs-only) {
 	position: relative;
-	padding:5px;
+	padding: 5px;
   }
   @media (@sm) {
 	&:not(.formMode){
@@ -289,7 +289,7 @@
 
   overflow: hidden;
 
-  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames);
+  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale);
 }
 
 body[data-step='results'] .product-details-container .companyLogo {

@@ -40,8 +40,8 @@
 <div class="slider-control ${className}">
 
 	<div class="selection"></div>
-	<div class="slider-legends"></div>
 	<div class="slider" data-use-default-output="${useDefaultOutputField}" data-value="${value}" data-range="${range}" data-markers="${markers}" data-step="${step}" data-legend="${legend}" data-type="${type}"></div>
+	<div class="slider-legends"></div>
 
 	<%-- If xpath was defined, add a hidden field to store it --%>
 	<c:if test="${not empty name}">
