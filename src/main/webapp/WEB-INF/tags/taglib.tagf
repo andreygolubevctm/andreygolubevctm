@@ -24,7 +24,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/core/v2"				prefix="core_v2" %>
 <%@ taglib tagdir="/WEB-INF/tags/creditcard"			prefix="creditcard" %>
 <%@ taglib tagdir="/WEB-INF/tags/creditcard/layout"		prefix="creditcard_layout" %>
-<%@ taglib tagdir="/WEB-INF/tags/group/v1"				prefix="group_v1" %>
 <%@ taglib tagdir="/WEB-INF/tags/group/v2"				prefix="group_v2" %>
 <%@ taglib tagdir="/WEB-INF/tags/group/v3"				prefix="group_v3" %>
 <%@ taglib tagdir="/WEB-INF/tags/slider"				prefix="slider" %>
@@ -39,6 +38,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/health/v2/content"	    prefix="health_v2_content" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v2/layout"		prefix="health_v2_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v3"			    prefix="health_v3" %>
+<%@ taglib tagdir="/WEB-INF/tags/health/v3/layout"	    prefix="health_v3_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/simples"				prefix="simples" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel"				prefix="travel" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel/layout"			prefix="travel_layout" %>
@@ -61,7 +61,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/ui"					prefix="ui" %>
 <%@ taglib tagdir="/WEB-INF/tags/css"					prefix="css" %>
 <%@ taglib tagdir="/WEB-INF/tags/security"				prefix="security" %>
-<%@ taglib tagdir="/WEB-INF/tags/utilities/v1"			prefix="utilities_v1" %>
 <%@ taglib tagdir="/WEB-INF/tags/utilities/v2"			prefix="utilities_v2" %>
 <%@ taglib tagdir="/WEB-INF/tags/utilities/v2/layout"	prefix="utilities_v2_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/utilities/v2/fieldset" prefix="utilities_v2_fieldset" %>
@@ -71,7 +70,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/utilities/v3/content" prefix="utilities_v3_content" %>
 <%@ taglib tagdir="/WEB-INF/tags/social"				prefix="social" %>
 <%@ taglib tagdir="/WEB-INF/tags/read"					prefix="read" %>
-<%@ taglib tagdir="/WEB-INF/tags/meerkatrewards"		prefix="meerkatrewards" %>
 <%@ taglib tagdir="/WEB-INF/tags/features"				prefix="features" %>
 <%@ taglib tagdir="/WEB-INF/tags/confirmation"			prefix="confirmation" %>
 <%@ taglib tagdir="/WEB-INF/tags/layout/v1"				prefix="layout_v1" %>

@@ -16,7 +16,7 @@ public class SpecialOffersHelper {
 
 	public SpecialOffers createSpecialOffersObject(int offerId, String content, String terms,
 			String effectiveEnd, String effectiveStart, int providerId,
-			int styleCodeId,String state,String styleCodeName,String providerName) {
+			int styleCodeId,String state,String coverType,String styleCodeName,String providerName) {
 		SpecialOffers specialOffers = new SpecialOffers();
 		specialOffers.setContent(content);
 		specialOffers.setTerms(terms);
@@ -26,6 +26,7 @@ public class SpecialOffersHelper {
 		specialOffers.setEffectiveEnd(effectiveEnd);
 		specialOffers.setStyleCodeId(styleCodeId);
 		specialOffers.setState(state);
+        specialOffers.setCoverType(coverType);
 		specialOffers.setStyleCode(styleCodeName);
 		specialOffers.setProviderName(providerName);
 		return specialOffers;

@@ -70,6 +70,16 @@
     text-align: right;
     font-size: @savingsSize;
     line-height: @savingsSize;
+
+    .btn-add-bill {
+      display: block;
+      width: 90px;
+      margin-bottom: 7px;
+      text-align: left;
+      span {
+        font-size: 12px;
+      }
+    }
   }
 
   .yearlySavingsTitle {
@@ -83,12 +93,6 @@
   .yearlySavingsContainer {
     text-align: left;
     padding: 7px 0 7px 0;
-  }
-  .subDiscounts,
-  .totalDiscounts,
-  .yearlySavings {
-    font-size: @savingsSize;
-    line-height: @savingsSize;
   }
 
   // aligns the arrow - should be backported to core if the other vertical designs
@@ -159,17 +163,17 @@
     }
   }
 
-}
-
-@media (@sm-only) {
-  @priceSize: 23px;
-  .totalDiscounts,
-  .yearlySavings,
-  .quoteNumber {
-    font-size: @priceSize;
-    line-height: @priceSize;
+  .yearlySavings {
+    .btn-add-bill {
+      display: block;
+      text-align: left;
+      span {
+        font-size: 15px;
+      }
+    }
   }
 }
+
 
 //-------------------------------------------------------------------------------------------
 //SM and greater vertical centering magic

@@ -205,10 +205,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 							<jsp:invoke fragment="header_button_left" />
 
-							<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenu" data-target=".navbar-collapse-menu">
+							<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
 								<span class="sr-only">Toggle Navigation</span>
 								<span class="icon icon-reorder"></span>
-								<span class="icon icon-cross"></span>
 							</button>
 							<c:set var="exitUrl" value="" />
 							<c:if test="${pageSettings.hasSetting('exitUrl')}">
@@ -273,7 +272,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<c:if test="${isDev eq false}">
 			<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 		</c:if>
-		<script>window._ || document.write('<script src="${assetUrl}/libraries/underscore-1.8.3.min.js">\x3C/script>')</script>
+		<script>window._ || document.write('<script src="${assetUrl}libraries/underscore-1.8.3.min.js">\x3C/script>')</script>
 
 		<!--  Meerkat -->
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
