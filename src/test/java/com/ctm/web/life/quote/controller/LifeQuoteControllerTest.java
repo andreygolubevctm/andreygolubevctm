@@ -1,6 +1,7 @@
 package com.ctm.web.life.quote.controller;
 
 import com.ctm.apply.model.response.ApplyResponse;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.web.go.Data;
@@ -36,6 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LifeQuoteControllerTest {
     @Mock
     LifeQuoteService service;
+    @Mock
+    IPAddressHandler ipAddressHandler;
     @Mock
     SessionDataServiceBean sessionDataServiceBean;
     @Mock

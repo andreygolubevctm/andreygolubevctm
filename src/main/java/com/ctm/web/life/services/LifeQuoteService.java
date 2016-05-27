@@ -18,6 +18,7 @@ import com.ctm.web.life.form.response.model.LifeResultsWebResponse;
 import com.ctm.web.life.model.LifeQuoteResponse;
 import com.ctm.web.life.quote.adapter.LifeQuoteServiceRequestAdapter;
 import com.ctm.web.life.quote.adapter.LifeQuoteServiceResponseAdapter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,8 +31,9 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.LIFE;
 
 @Component
-public class LifeQuoteService extends CommonRequestService<Object, LifeQuoteResponse> {
+public class LifeQuoteService {
 
+    private final CommonRequestService<Object, LifeQuoteResponse> requestService;
     @Autowired
     private LifeQuoteServiceRequestAdapter requestAdapter;
 
@@ -41,15 +43,16 @@ public class LifeQuoteService extends CommonRequestService<Object, LifeQuoteResp
     private final CompetitionService competitionService;
 
     @Autowired
-    public LifeQuoteService(ProviderFilterDao providerFilterDAO, RestClient restClient,
-                            ServiceConfigurationService serviceConfigurationService, CompetitionService competitionService) {
-        super(providerFilterDAO, restClient, serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
+    public LifeQuoteService(
+                            CompetitionService competitionService,
+                            CommonRequestService<Object, LifeQuoteResponse> requestService) {
         this.competitionService = competitionService;
+        this.requestService = requestService;
     }
 
     public LifeResultsWebResponse getQuotes(LifeQuoteWebRequest request, Brand brand) throws DaoException, IOException, ServiceConfigurationException {
         LifeQuoteRequest serviceRequest = requestAdapter.adapt(request);
-        final LifeQuoteResponse response = sendRequest(brand, LIFE, "quoteServiceBER", Endpoint.QUOTE, request,
+        final LifeQuoteResponse response = requestService.sendRequest(brand, LIFE, "quoteServiceBER", Endpoint.QUOTE, request,
                 serviceRequest, LifeQuoteResponse.class);
 
         return responseAdapter.adapt(response, request);

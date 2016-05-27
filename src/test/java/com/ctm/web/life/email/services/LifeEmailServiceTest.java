@@ -6,9 +6,11 @@ import com.ctm.web.core.email.services.ExactTargetEmailSender;
 import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.ServiceConfigurationService;
+import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.web.go.Data;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +41,7 @@ public class LifeEmailServiceTest {
     @Mock
     private HttpServletRequest request;
     @Mock
-    ServiceConfigurationService serviceConfigurationService;
+    ServiceConfigurationServiceBean serviceConfigurationService;
     @Mock
     ApplicationService applicationService;
     @Mock
@@ -50,14 +52,16 @@ public class LifeEmailServiceTest {
     private LifeEmailDataService lifeEmailDataService;
     @Mock
     private com.ctm.web.core.email.services.ExactTargetEmailSender exactTargetEmailSender;
+    @Mock
+    private IPAddressHandler ipAddressHandler;
 
     private String emailAddress = "Meer@kat.com";
     private long transactionId = 1000L;
     private String serviceUrl = "serviceUrl";
     private String serviceUser = "serviceUser";
     private String servicePassword = "servicePassword";
-    private String decryptedPassword  = "decryptedPassword";
 
+    private String decryptedPassword  = "decryptedPassword";
     private EmailMaster emailDetails;
 
     @Before
@@ -77,7 +81,13 @@ public class LifeEmailServiceTest {
         Data data = new Data();
         when(lifeEmailDataService.getDataObject(transactionId)).thenReturn(data);
         when(pageSettings.getSetting("sendClientId")).thenReturn("10000");
-        lifeEmailService = new LifeEmailService( pageSettings,  EmailMode.BEST_PRICE,  emailDetailsService, lifeEmailDataService, serviceConfigurationService,  applicationService);
+        lifeEmailService = new LifeEmailService(
+                pageSettings,
+                EmailMode.BEST_PRICE,
+                emailDetailsService,
+                lifeEmailDataService,
+                serviceConfigurationService,
+                applicationService,  ipAddressHandler);
     }
 
     @Test

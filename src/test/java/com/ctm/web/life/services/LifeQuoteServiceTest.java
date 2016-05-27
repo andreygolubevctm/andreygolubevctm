@@ -5,10 +5,7 @@ import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
-import com.ctm.web.core.services.Endpoint;
-import com.ctm.web.core.services.RestClient;
-import com.ctm.web.core.services.ServiceConfigurationService;
-import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.core.services.*;
 import com.ctm.web.life.form.model.LifeQuoteWebRequest;
 import com.ctm.web.life.form.response.model.LifeResultsWebResponse;
 import com.ctm.web.life.model.LifeQuoteResponse;
@@ -51,7 +48,7 @@ public class LifeQuoteServiceTest {
     private ServiceConfiguration serviceConfig;
 
     private RestClient restClient = TestConfig.getRestClient();
-    private ServiceConfigurationService serviceConfigurationService = TestConfig.getServiceConfigurationService();
+    private ServiceConfigurationServiceBean serviceConfigurationService = TestConfig.getServiceConfigurationServiceBean();
     private LifeQuoteServiceResponseAdapter lifeQuoteServiceResponseAdapter = TestConfig.getLifeQuoteServiceResponseAdapter();
 
     @Autowired

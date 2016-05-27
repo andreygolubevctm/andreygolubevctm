@@ -19,6 +19,9 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -32,7 +35,8 @@ import static com.ctm.web.core.model.settings.ConfigSetting.ALL_BRANDS;
 import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.ALL_PROVIDERS;
 import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope.SERVICE;
 
-public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
+@Component
+public class CommonRequestService<PAYLOAD, RESPONSE> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonRequestService.class);
 
@@ -45,45 +49,48 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
 
     private final ProviderFilterDao providerFilterDAO;
     private final RestClient restClient;
-    private final ServiceConfigurationService serviceConfigurationService;
+    private final ServiceConfigurationServiceBean serviceConfigurationService;
     private final EnvironmentService.Environment environment;
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     public CommonRequestService(final ProviderFilterDao providerFilterDAO,
                                 final ObjectMapper objectMapper, EnvironmentService.Environment environment) {
         this.providerFilterDAO = providerFilterDAO;
         this.environment = environment;
         this.restClient = new RestClient(objectMapper);
+        this.serviceConfigurationService = new ServiceConfigurationServiceBean();
         this.objectMapper = objectMapper;
-        this.serviceConfigurationService = new ServiceConfigurationService();
     }
 
     public CommonRequestService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
         this.providerFilterDAO = providerFilterDAO;
         this.restClient = new RestClient(objectMapper);
-        this.objectMapper = objectMapper;
         this.environment = EnvironmentService.getEnvironmentFromSpring();
-        this.serviceConfigurationService = new ServiceConfigurationService();
+        this.serviceConfigurationService = new ServiceConfigurationServiceBean();
+        this.objectMapper = objectMapper;
     }
 
+    @Autowired
     public CommonRequestService(final ProviderFilterDao providerFilterDAO,
                                 final RestClient restClient,
-                                ServiceConfigurationService serviceConfigurationService,
-                                EnvironmentService.Environment environment) {
+                                ServiceConfigurationServiceBean serviceConfigurationService,
+                                @Qualifier("environmentBean") EnvironmentService.Environment environment, ObjectMapper objectMapper) {
         this.providerFilterDAO = providerFilterDAO;
         this.restClient = restClient;
         this.serviceConfigurationService = serviceConfigurationService;
         this.environment = environment;
+        this.objectMapper = objectMapper;
     }
 
     public CommonRequestService(final ProviderFilterDao providerFilterDAO,
                                 final ObjectMapper objectMapper,
-                                ServiceConfigurationService serviceConfigurationService,
+                                ServiceConfigurationServiceBean serviceConfigurationService,
                                 EnvironmentService.Environment environment) {
         this.providerFilterDAO = providerFilterDAO;
         this.restClient = new RestClient(objectMapper);
         this.serviceConfigurationService = serviceConfigurationService;
         this.environment = environment;
+        this.objectMapper = objectMapper;
     }
 
     protected void setFilter(ProviderFilter providerFilter) throws Exception {
@@ -117,12 +124,12 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
                 providerFilter.setProviders(providers);
             }
             // Provider Key is mandatory in NXS
-        } else if(EnvironmentService.getEnvironmentAsString().equalsIgnoreCase("nxs")) {
-            throw new RouterException("Provider Key required in '" + EnvironmentService.getEnvironmentAsString() + "' environment");
+        } else if(environment.toString().equalsIgnoreCase("nxs")) {
+            throw new RouterException("Provider Key required in '" + environment + "' environment");
         }
     }
 
-    protected RESPONSE sendRequest(Brand brand,
+    public RESPONSE sendRequest(Brand brand,
                                    Vertical.VerticalType vertical,
                                    String serviceName,
                                    Endpoint endpoint, Request data,
@@ -146,7 +153,7 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
         }
     }
 
-    protected <RESPONSE> RESPONSE sendApplyRequest(Brand brand,
+    public <RESPONSE> RESPONSE sendApplyRequest(Brand brand,
                                                    Vertical.VerticalType vertical,
                                                    String serviceName,
                                                    String endpoint, Request data,
@@ -256,8 +263,8 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
         }
 
         environmentOverride.ifPresent(data -> {
-            if (EnvironmentService.getEnvironment() == EnvironmentService.Environment.LOCALHOST ||
-                    EnvironmentService.getEnvironment() == EnvironmentService.Environment.NXI) {
+            if (environment == EnvironmentService.Environment.LOCALHOST ||
+                    environment == EnvironmentService.Environment.NXI) {
                 if (StringUtils.isNotBlank(data)) {
                     properties.setServiceUrl(data);
                 }
@@ -269,7 +276,11 @@ public abstract class CommonRequestService<PAYLOAD, RESPONSE> {
     }
 
     protected ServiceConfiguration getServiceConfiguration(String service, Brand brand, String verticalCode) throws DaoException, ServiceConfigurationException {
-        return ServiceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode).getId());
+        if(serviceConfigurationService == null) {
+            return ServiceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode).getId());
+        }else {
+            return serviceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode).getId());
+        }
     }
 
 }

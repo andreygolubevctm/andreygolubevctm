@@ -2,6 +2,7 @@ package com.ctm.web.life.services;
 
 import com.ctm.web.core.services.RestClient;
 import com.ctm.web.core.services.ServiceConfigurationService;
+import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.life.quote.adapter.LifeQuoteServiceRequestAdapter;
 import com.ctm.web.life.quote.adapter.LifeQuoteServiceResponseAdapter;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +15,7 @@ import static org.mockito.Mockito.mock;
 public class TestConfig {
 
     private static RestClient restClient = mock(RestClient.class);
-    private static ServiceConfigurationService serviceConfigurationService = mock(ServiceConfigurationService.class);
+    private static ServiceConfigurationServiceBean serviceConfigurationService = mock(ServiceConfigurationServiceBean.class);
     private static LifeQuoteServiceRequestAdapter lifeQuoteServiceRequestAdapter = mock(LifeQuoteServiceRequestAdapter.class);
     private static LifeQuoteServiceResponseAdapter lifeQuoteServiceResponseAdapter = mock(LifeQuoteServiceResponseAdapter.class);
 
@@ -24,7 +25,7 @@ public class TestConfig {
     }
 
     @Bean
-    public static ServiceConfigurationService getServiceConfigurationService() {
+    public static ServiceConfigurationServiceBean getServiceConfigurationServiceBean() {
         return serviceConfigurationService;
     }
 
@@ -40,7 +41,7 @@ public class TestConfig {
 
     public static void reset(){
         restClient = mock(RestClient.class);
-        serviceConfigurationService = mock(ServiceConfigurationService.class);
+        serviceConfigurationService = mock(ServiceConfigurationServiceBean.class);
         lifeQuoteServiceRequestAdapter = mock(LifeQuoteServiceRequestAdapter.class);
         lifeQuoteServiceResponseAdapter = mock(LifeQuoteServiceResponseAdapter.class);
     }

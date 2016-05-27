@@ -55,6 +55,10 @@ public class CommonQuoteServiceTest {
 
     @Mock
     private RestClient restClient;
+    @Mock
+    private ServiceConfigurationServiceBean serviceConfigurationService;
+    @Mock
+    private EnvironmentService.Environment environment;
 
     @Before
     public void setup() throws Exception {
@@ -62,7 +66,8 @@ public class CommonQuoteServiceTest {
         PowerMockito.mockStatic(ProviderService.class);
 
         EnvironmentService.setEnvironment("localhost");
-        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, objectMapper) {});
+        commonQuoteService = spy(new CommonQuoteService( providerFilterDao,
+        restClient, serviceConfigurationService, environment, objectMapper) {});
     }
 
     @Test(expected = RouterException.class)

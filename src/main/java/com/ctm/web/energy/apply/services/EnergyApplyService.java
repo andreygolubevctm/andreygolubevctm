@@ -33,9 +33,8 @@ public class EnergyApplyService extends CommonRequestService<EnergyApplicationDe
 
     @Autowired
     public EnergyApplyService(ProviderFilterDao providerFilterDAO,
-                              ObjectMapper objectMapper,
-                              ServiceConfigurationService serviceConfigurationService) {
-        super(providerFilterDAO, objectMapper, serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
+                              ObjectMapper objectMapper) {
+        super(providerFilterDAO, objectMapper, EnvironmentService.getEnvironmentFromSpring());
     }
 
 

@@ -9,11 +9,9 @@ import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.leadfeed.utils.LeadFeed;
 import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ErrorInfo;
-import com.ctm.web.core.services.EnvironmentService;
-import com.ctm.web.core.services.RestClient;
-import com.ctm.web.core.services.ServiceConfigurationService;
-import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.core.services.*;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
 import com.ctm.web.life.apply.response.LifeApplyWebResponse;
@@ -32,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 
@@ -47,8 +45,6 @@ public class LifeApplyServiceTest {
     @Mock
     private ProviderFilterDao providerFilterDAO;
     @Mock
-    private RestClient restClient;
-    @Mock
     private SessionDataServiceBean sessionDataService;
     @Mock
     private Brand brand;
@@ -56,10 +52,6 @@ public class LifeApplyServiceTest {
     private HttpServletRequest request;
     @Mock
     SessionData sessionData;
-    @Mock
-    ServiceConfigurationService serviceConfigurationService;
-    @Mock
-    private com.ctm.web.core.model.settings.ServiceConfiguration serviceConfiguration;
     @Mock
     private com.ctm.web.core.model.settings.Vertical vertical;
 
@@ -72,22 +64,20 @@ public class LifeApplyServiceTest {
     private ApplyResponse applyResponse;
     @Mock
     private LeadFeed leadFeed;
+    @Mock
+    private CommonRequestService<Object, LifeApplyResponse> commonRequestService;
 
 
     @Before
     public void setUp() throws Exception {
         response = new LifeApplyResponse.Builder().build();
-        service = new LifeApplyService( providerFilterDAO,  restClient,
-                 sessionDataService,
-                 serviceConfigurationService,
-                EnvironmentService.Environment.LOCALHOST,
-                 lifeApplyCompleteService, leadFeed);
+        service = new LifeApplyService( sessionDataService,
+                 lifeApplyCompleteService,
+                 leadFeed, commonRequestService);
          when(sessionDataService.getSessionDataFromSession(request)).thenReturn(sessionData);
          Data data = getData();
          when(sessionData.getSessionDataForTransactionId(TRANSACTION_ID)).thenReturn(data);
         when(brand.getVerticalByCode(anyString())).thenReturn(vertical);
-        when(serviceConfigurationService.getServiceConfiguration(anyString(), anyObject())).thenReturn(serviceConfiguration);
-        when(restClient.sendPOSTRequest(anyObject(), anyString(), anyObject(), anyObject())).thenReturn(response);
     }
 
     private Data getData() {
@@ -142,11 +132,17 @@ public class LifeApplyServiceTest {
 
     @Test
     public void shouldCallServiceAndReturnTransactionId() throws Exception {
+        when(commonRequestService.sendApplyRequest(eq(brand), eq(Vertical.VerticalType.LIFE),
+                eq("applyServiceBER"),
+                anyObject(),
+                anyObject(),
+                anyObject(),
+                eq(LifeApplyResponse.class),
+                anyObject())).thenReturn(response);
         LifeApplyWebRequest webRequest = new LifeApplyWebRequest();
         webRequest.setTransactionId(TRANSACTION_ID);
         webRequest.setVertical("life");
         LifeApplyWebResponse result = service.apply( webRequest,  brand,  request);
-        verify(restClient).sendPOSTRequest(anyObject(), anyString(), anyObject(), anyObject());
         assertEquals(TRANSACTION_ID , result.getResults().getTransactionId());
 
     }

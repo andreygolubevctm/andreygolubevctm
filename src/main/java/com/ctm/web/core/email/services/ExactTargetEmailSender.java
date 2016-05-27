@@ -11,6 +11,7 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.*;
 import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.ServiceConfigurationService;
+import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.webservice.WebServiceUtils;
 import com.exacttarget.wsdl.partnerapi.*;
 import org.apache.cxf.endpoint.Client;
@@ -33,7 +34,7 @@ import static java.lang.Integer.parseInt;
 
 public class ExactTargetEmailSender<T extends EmailModel> {
 
-    private ServiceConfigurationService serviceConfigurationService;
+    private ServiceConfigurationServiceBean serviceConfigurationService;
     private PageSettings pageSettings;
     private Client client;
     private Long transactionId;
@@ -57,7 +58,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
                                   Vertical vertical,
                                   int brandId,
                                   int providerId,
-                                  ServiceConfigurationService serviceConfigurationService) throws SendEmailException {
+                                  ServiceConfigurationServiceBean serviceConfigurationService) throws SendEmailException {
         this.pageSettings = pageSettings;
         this.transactionId = transactionId;
         this.serviceConfigurationService = serviceConfigurationService;

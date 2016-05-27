@@ -21,10 +21,7 @@ import com.ctm.web.core.exceptions.VerticalException;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.security.IPAddressHandler;
-import com.ctm.web.core.services.AccessTouchService;
-import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.services.ServiceConfigurationService;
-import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.*;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.web.go.Data;
@@ -101,7 +98,7 @@ public class EmailServiceFactory {
 				new TransactionDetailsDao(), new OccupationsDao());
 		return new LifeEmailService(pageSettings, mode, emailDetailsService,
 				 lifeEmailDataService,
-				new ServiceConfigurationService(),
+				new ServiceConfigurationServiceBean(),
 				new ApplicationService(), ipAddressHandler);
 	}
 

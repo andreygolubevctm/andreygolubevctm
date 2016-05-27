@@ -28,12 +28,12 @@ public class HealthLeadService extends LeadService {
     @Deprecated // used by write_quote.tag
     @SuppressWarnings("unused")
     public HealthLeadService() {
-        super(new ServiceConfigurationService() , IPAddressHandler.getInstance());
+        super(IPAddressHandler.getInstance());
     }
 
 
     public HealthLeadService(IPAddressHandler ipAddressHandler) {
-        super(new ServiceConfigurationService() ,ipAddressHandler);
+        super(ipAddressHandler);
     }
 
     @Override

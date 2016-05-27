@@ -1,11 +1,8 @@
 package com.ctm.web.life.email.services;
 
 import com.ctm.web.core.model.EmailMaster;
-import com.ctm.web.core.model.RankingDetail;
-import com.ctm.web.core.dao.RankingDetailsDao;
 import com.ctm.web.core.security.IPAddressHandler;
-import com.ctm.web.core.transaction.dao.TransactionDao;
-import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
+import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
@@ -15,14 +12,12 @@ import com.ctm.web.core.email.services.EmailServiceHandler;
 import com.ctm.web.core.email.services.ExactTargetEmailSender;
 import com.ctm.web.core.exceptions.EnvironmentException;
 import com.ctm.web.core.exceptions.VerticalException;
-import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ConfigSetting;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.life.email.model.LifeBestPriceEmailModel;
 import com.ctm.web.life.email.model.LifeBestPriceExactTargetFormatter;
@@ -37,13 +32,13 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
     private final ApplicationService applicationService;
     private final LifeEmailDataService lifeEmailDataService;
 	private String optInMailingName;
-    private ServiceConfigurationService serviceConfigurationService;
+    private ServiceConfigurationServiceBean serviceConfigurationService;
 
 	public LifeEmailService(PageSettings pageSettings,
                             EmailMode emailMode,
                             EmailDetailsService emailDetailsService,
                             LifeEmailDataService lifeEmailDataService,
-                            ServiceConfigurationService serviceConfigurationService,
+                            ServiceConfigurationServiceBean serviceConfigurationService,
                             ApplicationService applicationService, IPAddressHandler ipAddressHandler) {
 		super(pageSettings, emailMode, ipAddressHandler);
 		this.emailDetailsService = emailDetailsService;
@@ -56,7 +51,7 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
                             EmailMode emailMode,
                             EmailDetailsService emailDetailsService,
                             LifeEmailDataService lifeEmailDataService,
-                            ServiceConfigurationService serviceConfigurationService,
+                            ServiceConfigurationServiceBean serviceConfigurationService,
                             ApplicationService applicationService) {
 		super(pageSettings, emailMode, IPAddressHandler.getInstance());
 		this.emailDetailsService = emailDetailsService;

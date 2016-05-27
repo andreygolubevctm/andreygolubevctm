@@ -4,8 +4,10 @@ import com.ctm.web.core.email.mapping.EmailDetailsMappings;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.EmailDetailsFactory;
 import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.ServiceConfigurationService;
+import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.web.go.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,20 +19,22 @@ public class LifeEmailServiceFactory  {
 	private final EmailDetailsFactory emailDetailsFactory;
     private final ApplicationService applicationService;
     private final LifeEmailDataService lifeEmailDataService;
-    protected TransactionDao transactionDao;
-    private ServiceConfigurationService serviceConfigurationService;
+	private final IPAddressHandler ipAddressHandler;
+	protected TransactionDao transactionDao;
+    private ServiceConfigurationServiceBean serviceConfigurationService;
 
     @Autowired
 	public LifeEmailServiceFactory( EmailDetailsFactory emailDetailsFactory,
 								   TransactionDao transactionDao,
 								   LifeEmailDataService lifeEmailDataService,
-								   ServiceConfigurationService serviceConfigurationService,
-								   ApplicationService applicationService) {
+									ServiceConfigurationServiceBean serviceConfigurationService,
+								   ApplicationService applicationService, IPAddressHandler ipAddressHandler) {
 		this.emailDetailsFactory = emailDetailsFactory;
         this.transactionDao = transactionDao;
         this.serviceConfigurationService = serviceConfigurationService;
         this.applicationService = applicationService;
         this.lifeEmailDataService = lifeEmailDataService;
+		this.ipAddressHandler = ipAddressHandler;
 	}
 
 	public LifeEmailService getInstance(PageSettings pageSettings,
@@ -44,7 +48,8 @@ public class LifeEmailServiceFactory  {
 						 emailDetailMappings),
 				 lifeEmailDataService,
 				 serviceConfigurationService,
-				 applicationService);
+				 applicationService,
+				ipAddressHandler);
 	}
 	
 }

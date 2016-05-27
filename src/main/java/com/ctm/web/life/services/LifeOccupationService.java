@@ -9,6 +9,7 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.CommonRequestService;
 import com.ctm.web.core.services.Endpoint;
 import com.ctm.web.core.services.RestClient;
+import com.ctm.web.life.model.LifeQuoteResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,22 +28,25 @@ import java.util.Optional;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.LIFE;
 
 @Component
-public class LifeOccupationService extends CommonRequestService {
+public class LifeOccupationService  {
 
-    private RestClient restClient;
+    private final RestClient restClient;
 
     @Value("${life.occupation.environmentOverride}")
     private String environmentOverride;
 
+    private final CommonRequestService requestService;
+
     @Autowired
-    public LifeOccupationService(ProviderFilterDao providerFilterDAO, RestClient restClient, ServiceConfigurationService serviceConfigurationService) {
-        super(providerFilterDAO, restClient,serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
+    public LifeOccupationService(RestClient restClient, CommonRequestService requestService) {
+        this.restClient = restClient;
+        this.requestService = requestService;
     }
 
     public List<Occupation> getOccupations(Brand brand) throws DaoException, IOException, ServiceConfigurationException {
             final Vertical.VerticalType verticalType = LIFE;
             return restClient.sendGETRequest(
-                    getQuoteServiceProperties("quoteServiceBER", brand, verticalType.getCode(),
+                    requestService.getQuoteServiceProperties("quoteServiceBER", brand, verticalType.getCode(),
                             Optional.ofNullable(StringUtils.trimToNull(environmentOverride))),
                     Endpoint.instanceOf("occupations"),
                     new TypeReference<List<Occupation>>() {

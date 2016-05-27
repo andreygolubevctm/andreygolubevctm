@@ -7,7 +7,7 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.RestClient;
-import com.ctm.web.core.services.ServiceConfigurationService;
+import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.life.form.response.model.LifeResultsWebResponse;
 import org.junit.After;
@@ -50,7 +50,7 @@ public class LifeOccupationServiceTest {
     private ServiceConfiguration serviceConfig;
 
     private RestClient restClient = TestConfig.getRestClient();
-    private ServiceConfigurationService serviceConfigurationService = TestConfig.getServiceConfigurationService();
+    private ServiceConfigurationServiceBean serviceConfigurationServiceBean = TestConfig.getServiceConfigurationServiceBean();
 
     @Autowired
     private LifeOccupationService service;
@@ -60,7 +60,7 @@ public class LifeOccupationServiceTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         when(brand.getVerticalByCode(anyString())).thenReturn(vertical);
-        when(serviceConfigurationService.getServiceConfiguration(eq("quoteServiceBER"), anyObject())).thenReturn(serviceConfig);
+        when(serviceConfigurationServiceBean.getServiceConfiguration(eq("quoteServiceBER"), anyObject())).thenReturn(serviceConfig);
     }
 
     @Test
