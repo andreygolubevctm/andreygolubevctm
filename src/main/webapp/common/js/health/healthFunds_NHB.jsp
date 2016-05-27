@@ -155,7 +155,7 @@
                 var originalTitle = $("#health_application_primary_title").val();
                 <c:set var="html">
                   <c:set var="fieldXpath" value="health/application/primary/title" />
-                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow"  hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">
+                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow"  hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
                       <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title" additionalAttributes=" data-rule-genderTitle='true' " disableErrorContainer="${true}" />
                     </form_v2:row>
                   </c:set>
@@ -313,7 +313,7 @@
               <%-- lets undo the title massive values from nav --%>
               <c:set var="html">
                 <c:set var="fieldXpath" value="health/application/primary/title" />
-                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow"  hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">
+                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow"  hideHelpIconCol="true" smRowOverride="3" isNestedField="${true}">
                   <field_v2:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' " disableErrorContainer="${true}"/>
                 </form_v2:row>
               </c:set>
@@ -324,7 +324,7 @@
               <%-- lets undo the partner title massive values from nav --%>
               <c:set var="html">
                 <c:set var="fieldXpath" value="health/application/partner/title" />
-                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow"  hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">
+                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow"  hideHelpIconCol="true" smRowOverride="3" isNestedField="${true}">
                   <field_v2:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' " disableErrorContainer="${true}" />
                 </form_v2:row>
                 </c:set>
