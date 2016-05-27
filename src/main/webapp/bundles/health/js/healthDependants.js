@@ -57,9 +57,9 @@
         providerConfig,
         maxDependantAge = 25;
 
-    function initHealthDependants(reset) {
+    function initHealthDependants() {
         $dependantsTemplateWrapper = $("#health-dependants-wrapper");
-        if (!situationEnablesDependants() || reset) {
+        if (!situationEnablesDependants()) {
             clearDependants();
         }
 
@@ -73,15 +73,25 @@
         // set up template
         dependantTemplate = _.template($('#health-dependants-template').html());
 
-        if (typeof meerkat.site.dependants != 'undefined') {
-            dependantsArr = addDataBucketDependantsToList();
-        }
-        if (getNumberOfDependants() === 0) {
-            dependantsArr.push(defaultDependant);
+        var noOfDependants = getNumberOfDependants();
+        if(_.isEmpty(dependantsArr)) {
+            if (typeof meerkat.site.dependants != 'undefined') {
+                dependantsArr = addDataBucketDependantsToList();
+            } else if (_.isNumber(noOfDependants) && noOfDependants > 0) {
+                for (var i = 0; i < noOfDependants; i++) {
+                    dependantsArr.push(getDefaultDependant());
+                }
+            } else if (noOfDependants === 0) {
+                dependantsArr.push(getDefaultDependant());
+            }
         }
 
         renderDependants();
         applyEventListeners();
+    }
+
+    function getDefaultDependant() {
+        return _.extend({},defaultDependant);
     }
 
     /**
@@ -99,13 +109,12 @@
             }
         });
 
-        $dependantsTemplateWrapper.on('click', ".remove-dependent", function removeDependantClick() {
+        $dependantsTemplateWrapper.off('click.removeDependant').on('click.removeDependant', ".remove-dependent", function removeDependantClick(e) {
             deleteDependant($(this).attr('data-id'), true);
             updateApplicationDetails();
         }).on('change', '.dateinput_container input.serialise, .health_dependant_details_fulltimeGroup input', function dependantAgeFullTimeChange() {
             var $wrapper = $(this).closest('.health_dependant_details');
             toggleDependantFields($wrapper);
-            $(this).valid();
         }).on('change', ':input', function changeInput() {
             var $el = $(this),
                 dependantId = $el.closest('.health_dependant_details').attr('data-id'),
@@ -141,7 +150,7 @@
      */
     function updateDependantConfiguration() {
 
-        initHealthDependants(true);
+        initHealthDependants();
 
         var dependantCountSpecified = $('#health_healthCover_dependants').val() || 1;
         var hasChildren = situationEnablesDependants();
@@ -278,7 +287,12 @@
 
         }
 
-        $dependantsTemplateWrapper.find('.serialise').change();
+        $dependantsTemplateWrapper.find('.serialise').each(function(){
+            var $that = $(this);
+            if(!_.isEmpty($that.val())) {
+                $that.change();
+            }
+        });
     }
 
     /**
@@ -291,7 +305,7 @@
         if (numDependants < dependantLimit) {
             var dependantId = numDependants + 1;
 
-            var blankDependant = $.extend({}, defaultDependant, {dependantId: dependantId});
+            var blankDependant = $.extend({}, getDefaultDependant(), {dependantId: dependantId});
             $dependantsTemplateWrapper.append(dependantTemplate(blankDependant));
             dependantsArr.push(blankDependant);
 

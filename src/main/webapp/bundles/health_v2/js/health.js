@@ -102,16 +102,13 @@
 		var $mainform = $('#mainform');
 		$mainform.find('.col-sm-8')
 			.not('.short-list-item')
+			.not('.nestedGroup .col-sm-8')
+			.not('.results-column-container')
 			.removeClass('col-sm-8').addClass('col-sm-9');
-		$mainform.find('.col-sm-4')
-			.not("label[for*=health_healthCover]")
-			.not('label[for*=health_situation_coverType]')
-			.not('.short-list-item')
-			.add("label[for=health_healthCover_primary_dob]")
-			.add("label[for=health_healthCover_primary_cover]")
-			.add("label[for=health_healthCover_primary_coverType]")
-			.removeClass('col-sm-4').addClass('col-sm-3');
-		$mainform.find('.col-sm-offset-4').removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
+		$mainform.find('.col-sm-offset-4')
+			.not('#applicationForm_1 .col-sm-offset-4')
+			.not('#applicationForm_2 .col-sm-offset-4')
+			.removeClass('col-sm-offset-4').addClass('col-sm-offset-3');
 	}
 
 	/**
@@ -181,7 +178,6 @@
 				// change benefits page layout when change the coverType
 				$healthSitCoverType.on('change', function() {
 					var coverTypeVal = $(this).find('input:checked').val();
-					meerkat.modules.healthBenefitsStep.changeLayoutByCoverType('');
 					meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
 				});
 
@@ -276,7 +272,6 @@
 				meerkat.modules.healthBenefitsStep.setDefaultCover();
 				meerkat.modules.healthBenefitsStep.disableFields();
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
-				meerkat.modules.healthBenefitsStep.checkAndHideMoreBenefits();
 				incrementTranIdBeforeEnteringSlide();
 			},
 			onAfterEnter: function(event) {
@@ -285,12 +280,9 @@
 				//	meerkat.modules.healthSegment.filterSegments();
 				//}, 1000);
 
-				if (event.isForward && meerkat.site.isCallCentreUser === true){
+				if (event.isForward && meerkat.site.isCallCentreUser === true) {
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
-
-				meerkat.modules.healthBenefitsStep.alignTitle();
-				meerkat.modules.healthBenefitsStep.alignSidebarHeight();
 
 				if(event.isForward)
 					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
@@ -320,7 +312,7 @@
 				validate: true
 			},
 			onInitialise: function onContactInit(event){
-				meerkat.modules.resultsFeatures.fetchStructure('health');
+				meerkat.modules.resultsFeatures.fetchStructure('health2016');
 			},
             onBeforeEnter:function enterBenefitsStep(event) {
                 if (event.isForward) {
@@ -374,7 +366,6 @@
 			},
 			onInitialise: function onInitResults(event){
 
-				meerkat.modules.healthFilters.initHealthFilters();
 				meerkat.modules.healthSafariColumnCountFix.initHealthSafariColumnCountFix();
 				meerkat.modules.healthPriceRangeFilter.initHealthPriceRangeFilter();
 				meerkat.modules.healthAltPricing.initHealthAltPricing();
@@ -386,6 +377,7 @@
 			onBeforeEnter:function enterResultsStep(event){
 				meerkat.modules.sessionCamHelper.stop();
 				meerkat.modules.healthDependants.resetConfig();
+				meerkat.modules.healthResults.hideNavigationLink();
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
 				} else {
@@ -398,9 +390,6 @@
 				if(event.isForward === true){
 					meerkat.modules.healthResults.getBeforeResultsPage();
 				}
-
-				meerkat.modules.resultsHeaderBar.registerEventListeners();
-
 			},
 			onBeforeLeave: function(event) {
 				// Increment the transactionId
@@ -410,10 +399,6 @@
 			},
 			onAfterLeave: function(event){
 				meerkat.modules.healthResults.recordPreviousBreakpoint();
-				meerkat.modules.healthResults.toggleMarketingMessage(false);
-				meerkat.modules.healthResults.toggleResultsLowNumberMessage(false);
-
-				meerkat.modules.resultsHeaderBar.removeEventListeners();
 			}
 		};
 
@@ -431,6 +416,7 @@
 			onInitialise: function onInitApplyStep(event){
 
 				meerkat.modules.healthDependants.initHealthDependants();
+				meerkat.modules.healthMedicare.initHealthMedicare();
 
 				if (!meerkat.modules.splitTest.isActive(18)) {
 					healthApplicationDetails.init();
@@ -494,6 +480,12 @@
 					$slide.find('.error-field').remove();
 					$slide.find('.has-error').removeClass('has-error');
 
+					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
+					var $firstnameField = $("#health_payment_medicare_firstName");
+					var $surnameField = $("#health_payment_medicare_surname");
+					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
+					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
+
 					// Unset the Health Declaration checkbox (could be refactored to only uncheck if the fund changes)
 					$('#health_declaration input:checked').prop('checked', false).change();
 
@@ -501,6 +493,16 @@
 					meerkat.modules.healthDependants.updateDependantConfiguration();
 
 					meerkat.modules.healthApplyStep.onBeforeEnter();
+					meerkat.modules.healthMedicare.updateMedicareLabel();
+
+					var product = meerkat.modules.healthResults.getSelectedProduct();
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
+
+					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
+						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
+					} else {
+						$("#health_payment_medicare-selection").removeAttr("style");
+					}
 				}
 			},
 			onAfterEnter: function afterEnterApplyStep(event){
@@ -585,15 +587,10 @@
 
 				if(event.isForward === true){
 
+					meerkat.modules.healthPaymentStep.rebindCreditCardRules();
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
 					var paymentDetailsSection = $("#health_payment_details-selection");
-					// Show discount text if applicable
-					if (typeof selectedProduct.promo.discountText !== 'undefined' && selectedProduct.promo.discountText !== '') {
-						paymentDetailsSection.find(".definition").show().html(selectedProduct.promo.discountText);
-					} else {
-						paymentDetailsSection.find(".definition").hide().empty();
-					}
 
 					// Show warning if applicable
 					if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
@@ -607,21 +604,7 @@
 					// Insert fund into Contact Authority
 					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
-					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
-					var $firstnameField = $("#health_payment_medicare_firstName");
-					var $surnameField = $("#health_payment_medicare_surname");
-					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
-					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
-
-					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
-
-					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
-						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
-					} else {
-						$("#health_payment_medicare-selection").removeAttr("style");
-					}
-
+					meerkat.modules.healthPaymentStep.updatePremium();
 				}
 			}
 		};
@@ -662,7 +645,7 @@
 				navigationId: steps.resultsStep.navigationId
 			},
 			{
-				label:'Application',
+				label:'Purchase',
 				navigationId: steps.applyStep.navigationId
 			},
 			{
@@ -1276,8 +1259,7 @@
 			}
 
 			if($healthSitHealthCvr.val() !== '' && $healthSitLocation.val() !== '') {
-				$('.health-about-you').addClass('hidden');
-				$('.health-situation .fieldset-column-side .sidebar-box').css('margin-top','55px');
+				$('.health-about-you, .health-about-you-title').addClass('hidden');
 			}
 
 			$('.btn-edit').on('click', function() {
@@ -1288,7 +1270,7 @@
 		} else {
 			$('.health-cover').removeClass('hidden');
 			$('.health-location').removeClass('hidden');
-			$('.health-about-you').removeClass('hidden');
+			$('.health-about-you, .health-about-you-title').removeClass('hidden');
 			$('.health-situation .fieldset-column-side .sidebar-box').css('margin-top','');
 		}
 	}
@@ -1419,11 +1401,25 @@
 
 	}
 
+    function getCoverType() {
+        return $('#health_situation_coverType input').filter(":checked").val();
+    }
+	function getSituation() {
+		return $('#health_situation_healthCvr').val();
+	}
+	
+	function getHospitalCoverLevel() {
+		return $('#health_benefits_covertype').val();
+	}
+
 	meerkat.modules.register("health", {
 		init: initHealth,
 		events: moduleEvents,
 		initProgressBar: initProgressBar,
 		getTrackingFieldsObject: getTrackingFieldsObject,
+        getCoverType: getCoverType,
+		getSituation: getSituation,
+		getHospitalCoverLevel: getHospitalCoverLevel,
 		getRates: getRates,
 		setRates: setRates,
 		getRebate: getRebate,

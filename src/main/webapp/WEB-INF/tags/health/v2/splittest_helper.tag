@@ -39,6 +39,27 @@
 
 <%-- End HLT-3028 --%>
 
+
+
+<%-- HLT-3174 AB Test for More Info Layout change --%>
+
+<%-- Apply defaults --%>
+<c:set var="moreinfolayout_splittest_default" value="${true}" scope="request" />
+<c:set var="moreinfolayout_splittest_variant1" value="${false}" scope="request" />
+
+
+<%-- Apply split test value --%>
+<c:choose>
+    <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 23)}">
+        <c:set var="moreinfolayout_splittest_variant1" value="${true}" scope="request" />
+        <c:set var="moreinfolayout_splittest_default" value="${false}" scope="request" />
+    </c:when>
+</c:choose>
+
+<%-- End HLT-3174 --%>
+
+
+
 <%-- New elastic search for health --%>
 <c:set var="useElasticSearch" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 18)}" scope="request" />
 <%-- End HLT-2931 --%>

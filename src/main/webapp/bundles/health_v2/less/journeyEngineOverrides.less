@@ -2,24 +2,10 @@
 	position: inherit;
 }
 
-.journeyEngineSlide.resultsSlide {
-	padding-top: 0;
-	@media (@xs-only) {
-		padding-top: @page-offset-xs;
-	}
-}
-
 #pageContent {
 	position: relative;
 	.transition(~"background-color 1000ms ease-in-out");
 	background-color: @main-bg-colour;
-}
-
-[data-step=results]:not(.moreInfoVisible) {
-	#pageContentTop {
-		opacity: 1;
-		.transition(~"opacity 250ms ease-in-out");
-	}
 }
 
 .fieldset-column-side {
@@ -33,10 +19,6 @@
 	&:extend(.btn-email all);
 }
 
-.btn-next, .btn-cta, .btn-save, .btn-cancel, .btn-download, .btn-edit {
-	border-radius: 22px;
-}
-
 .btn-next {
   margin-top: 5px;
 }
@@ -44,6 +26,7 @@
 .confirm-step {
 	div:first-child {
 		float: right;
+	  	text-align: right;
 	}
 }
 @media (@sm){
@@ -66,23 +49,22 @@ fieldset > .content,
 .fieldset-card,
 .fieldset-column-side .sidebar-box{
 	background-color: #fff;
-	border:1px solid @border-colour;
+	border:1px solid @border-color;
 }
 
-.fieldset-card,
-.fieldset-column-side .sidebar-box {
+.fieldset-card {
 	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
 }
-.content{
-	padding-top: 25px;
-	@media (@xs) {
-		padding-left: 25px;
-		padding-right: 25px;
+.fieldset {
+	// .content IS USED IN EVERY RESULTS CELL
+	> .content {
+		padding: 25px;
+		box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.1);
 	}
 }
 //Overriding a 40px bottom
 .fieldset {
-  margin-bottom: 5px;
+  margin-bottom: 25px;
   h4 {
 	color: @section-text-color;
   }
@@ -106,8 +88,9 @@ fieldset > .content,
 		color: @header-color;
 		font-weight: normal;
 		font-family: @font-family-theme-bold;
-		font-size: 38px;
-		margin-bottom: 10px;
+		font-size: 28px;
+		margin-bottom: 20px;
+		padding-bottom:0px;
   	}
   	h4 {
 		font-family: @font-family-base;
@@ -133,6 +116,10 @@ fieldset > .content,
 		width: 93%;
 	}
 
+	.health-contact-details-optin-group {
+		margin-bottom: 25px;
+	}
+
 	.definition {
 		margin-left: 20px;
 	}
@@ -142,7 +129,6 @@ fieldset > .content,
   padding-top: 0;
 
   .sidebar-box {
-	font-size: 1.2em;
 	padding: 20px;
 	margin-bottom: 1em;
 
@@ -181,7 +167,10 @@ fieldset > .content,
 /* SHOW/HIDE RIGHT PANELS */
 body[data-step="start"]{
 	.sidebar-box {
-		&.quoteSnapshot {display:block;}
+		&.quoteSnapshot {
+			display:block;
+			.btn-edit {display:none;}
+		}
 		&.callCentreHelp {display:block;}
 		&.testimonials {display:block;}
 		&.pricePromiseBox {display:block;}
@@ -212,3 +201,31 @@ body[data-step="apply"], body[data-step="payment"] {
 	}
 }
 
+.journeyNavButton{
+	font-size: 16px;
+}
+
+#footer {
+	padding-bottom: 0px;
+	a {
+		color: @footer-text-color;
+		text-decoration:underline;
+	}
+}
+
+#copyright {
+	text-align:left;
+}
+
+.popover {
+	.qtip-variant(@qtip-health-popover-border, @qtip-default-border-radius, @qtip-health-popover-background-color, @qtip-health-popover-background-color, @qtip-default-padding-title, @qtip-default-padding-content, @qtip-health-popover-text-color, @qtip-health-popover-text-color);
+}
+
+fieldset.health-about-you-title {
+	.content {
+		padding:0px;
+		background: transparent;
+		border:none;
+		box-shadow:none;
+	}
+}

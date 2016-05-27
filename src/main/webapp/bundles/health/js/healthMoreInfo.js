@@ -185,6 +185,10 @@
         $('#health_fundData_hospitalPDF').val(product.promo.hospitalPDF !== undefined ? meerkat.site.urls.base + product.promo.hospitalPDF : "");
         $('#health_fundData_extrasPDF').val(product.promo.extrasPDF !== undefined ? meerkat.site.urls.base + product.promo.extrasPDF : "");
         $('#health_fundData_providerPhoneNumber').val(product.promo.providerPhoneNumber !== undefined ? product.promo.providerPhoneNumber : "");
+
+        $('.whatsNext li').each(function () {
+            $(this).prepend('<span class="icon icon-angle-right"></span>');
+        });
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
@@ -211,6 +215,10 @@
     function onAfterShowModal() {
         additionalTrackingData();
         meerkat.modules.healthPhoneNumber.changePhoneNumber(true);
+        
+        $('.whatsNext li').each(function () {
+            $(this).prepend('<span class="icon icon-angle-right"></span>');
+        });
     }
 
 
@@ -302,12 +310,12 @@
 
         // hide the results before showing the more info page (except for xs as we use a modal)
         if (meerkat.modules.deviceMediaState.get() != 'xs') {
-            $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage').addClass("hidden");
+            $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage, #results-sidebar, .results-column-container, .results-prologue-row').addClass("hidden");
         }
     }
 
     function onAfterHideTemplate() {
-        $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage').removeClass("hidden");
+        $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage, #results-sidebar, .results-column-container, .results-prologue-row').removeClass("hidden");
         $(window).scrollTop(scrollPosition);
     }
 

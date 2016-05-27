@@ -29,6 +29,11 @@
 	font-family: 'ctm-health';
 }
 
+.health_situation_medicare {
+	label[for="health_situation_cover"] {
+    	color: @alert-danger-text;
+    }
+}
 .icon-hospital-extras:before {
 	content: "\e920";
 }
@@ -55,11 +60,6 @@
 			}
 		}
 	}
-}
-
-.healthBenefits .categoriesCell.CTM-plus label:before {
-	font-family: 'framework_font';
-	content: "\e929";
 }
 
 .styleBenefits(@labelClass) {
@@ -100,7 +100,6 @@
 }
 
 .benefitsIcons,
-.top-5-benefits,
 .healthBenefits{
 	.styleBenefits('');
 }

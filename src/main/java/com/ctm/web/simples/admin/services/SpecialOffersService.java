@@ -80,8 +80,9 @@ public class SpecialOffersService {
 		PageSettings pageSettings = SettingsService.getPageSettings(styleCodeId, "HEALTH");
 		int verticalId = pageSettings.getVertical().getId();
 		TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
-		TransactionDetail transactionDetails = transactionDetailsDao.getTransactionDetailByXpath(healthPriceService.getTransactionId(), "health/situation/state");
-		return specialOffersDao.getSpecialOffers(providerId, styleCodeId, applicationDate, transactionDetails.getTextValue(), verticalId);
+		TransactionDetail transactionDetailsState = transactionDetailsDao.getTransactionDetailByXpath(healthPriceService.getTransactionId(), "health/situation/state");
+        TransactionDetail transactionDetailsCoverType = transactionDetailsDao.getTransactionDetailByXpath(healthPriceService.getTransactionId(), "health/situation/coverType");
+		return specialOffersDao.getSpecialOffers(providerId, styleCodeId, applicationDate, transactionDetailsState.getTextValue(), transactionDetailsCoverType.getTextValue(), verticalId);
 	}
 
 

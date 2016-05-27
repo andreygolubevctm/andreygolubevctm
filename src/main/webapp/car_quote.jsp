@@ -55,9 +55,7 @@
 	<jsp:attribute name="navbar">
 	
 		<ul class="nav navbar-nav" role="menu">
-			<li class="visible-xs">
-				<span class="navbar-text-block navMenu-header">Menu</span>
-			</li>
+			<core_v2:offcanvas_header />
 	
 			<li class="slide-feature-back">
 				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
@@ -142,7 +140,7 @@
 	<jsp:attribute name="results_loading_message">
 		<div class="row loadingPromise hidden">
 			<div class="col-xs-12">
-				<br><img src="#" data-defer-src="assets/brand/ctm/images/price_promise/Price-Promise-Blue.png">
+				<br><img src="" data-defer-src="assets/brand/ctm/images/price_promise/Price-Promise-Blue.png">
 			</div>
 		</div>
 		<div class="row loadingQuoteText hidden">

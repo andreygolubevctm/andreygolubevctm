@@ -30,13 +30,13 @@
 	<form_v2:row label="Will the car be used for carrying passengers for payment, providing paid driving instruction or hiring out to other people?" className="passengerPayment">
 		<field_v2:array_radio xpath="${xpath}/passengerPayment" required="true"
 							   className="quote_passengerPayment" id="quote_passengerPayment" items="Y=Yes,N=No"
-							   title="if the car has any accident or hail damage" />
+							   title="if the car will be used for carrying passengers for payment, providing paid driving instruction or hiring out to other people?" />
 	</form_v2:row>
 
 	<form_v2:row label="Will the car be used for carrying goods for payment?" className="goodsPayment"  helpId="541">
 		<field_v2:array_radio xpath="${xpath}/goodsPayment" required="true"
 							   className="quote_goodsPayment" id="quote_goodsPayment" items="Y=Yes,N=No"
-							   title="if the car has any accident or hail damage" />
+							   title="if the car will be used for carrying goods for payment?" />
 	</form_v2:row>
 
 	<form_v2:row label="Is there any finance on the car?" helpId="9">

@@ -20,7 +20,8 @@
 
 
 	/* Variables */
-	var $toggleElement,
+	var $openElement,
+        $closeElement,
 		$contentPane,
 		$navMenuRow,
 		$underlayContainer;
@@ -28,45 +29,38 @@
 
 	/* Functions that affect the toggle */
 	function disable(){
-		$toggleElement.addClass('disabled');
+		$openElement.addClass('disabled');
 	}
 	function enable(){
-		$toggleElement.removeClass('disabled');
+		$openElement.removeClass('disabled');
 	}
 
 
 	/* Functions that affect the menu system state itself */
 	function open(){
-		if($toggleElement.hasClass('collapsed') === true){
+        //The collapsing animation is too slow for some rapid open close calls. For simplicity, we stopped calling the collapse plugin functions.
+        //$contentPane.collapse('show');
+        $contentPane.addClass('in');
 
-			//The collapsing animation is too slow for some rapid open close calls. For simplicity, we stopped calling the collapse plugin functions.
-			//$contentPane.collapse('show');
-			$contentPane.addClass('in');
+        //Push the page over, in whatever direction was designed or previously set.
+        $navMenuRow.addClass('active');
 
-			//Push the page over, in whatever direction was designed or previously set.
-			$navMenuRow.addClass('active');
-			//Set the toggle element state
-			$toggleElement.removeClass('collapsed');
-
-			//An underlay closes the menu in case you click away
-			$('<div class="navMenu-backdrop-underlay" />').prependTo($underlayContainer).on('click', close);
-		}
+        //An underlay closes the menu in case you click away
+        $('<div class="navMenu-backdrop-underlay" />').prependTo($underlayContainer).on('click', close);
 	}
 	function close(){
-		if($toggleElement.hasClass('collapsed') === false){
+        //The collapsing animation is too slow for some rapid open close calls. For simplicity, we stopped calling the collapse plugin functions.
+        //$contentPane.collapse('hide');
+        $contentPane.removeClass('in');
 
-			//The collapsing animation is too slow for some rapid open close calls. For simplicity, we stopped calling the collapse plugin functions.
-			//$contentPane.collapse('hide');
-			$contentPane.removeClass('in');
+        //Restore page state.
+        $navMenuRow.removeClass('active');
 
-			//Restore page state.
-			$navMenuRow.removeClass('active');
-			//Set the toggle element state
-			$toggleElement.addClass("collapsed");
+        //We no longer need the underlay as we have just closed
+        $('.navMenu-backdrop-underlay').remove();
 
-			//We no longer need the underlay as we have just closed
-			$('.navMenu-backdrop-underlay').remove();
-		}
+        // remove backdrop underlay for any dropdown that may exist in the navMenu
+        $('.dropdown-backdrop').remove();
 	}
 
 	/* Toggle menu dependent on whether it contains any content */
@@ -82,7 +76,7 @@
 	function hasContent() {
 		var count = -1; // Will always contain menu as an LI
 		$('.navMenu-contents').find('.navbar-nav').find('li').each(function(){
-			if($(this).css('display') == 'block') {
+			if($(this).is(':visible')) {
 				count++;
 			}
 			if(count > 0) return;
@@ -95,7 +89,8 @@
 		//log("[navMenu] Initialised"); //purely informational
 
 		$(document).ready(function domready() {
-			$toggleElement = $('[data-toggle=navMenu]');
+			$openElement = $('[data-toggle=navMenuOpen]');
+            $closeElement = $('[data-toggle=navMenuClose]');
 			$contentPane = $('.navMenu-contents');
 			$navMenuRow = $('.navMenu-row');
 			$underlayContainer = $('.navMenu-row .navMenu-row-fixed');
@@ -114,15 +109,15 @@
 
 			debug("[navMenu] Configured as: " + meerkat.site.navMenu.type + " " + meerkat.site.navMenu.direction); //more info again.
 
-			$toggleElement.on('click', function() {
-				if($toggleElement.hasClass('disabled') === false){
-					if($toggleElement.hasClass('collapsed') === true){
-						open();
-					}else{
-						close();
-					}
+			$openElement.on('click', function() {
+				if($openElement.hasClass('disabled') === false){
+                    open();
 				}
 			});
+
+            $closeElement.on('click', function() {
+                close();
+            });
 
 			// Toggle the visibility of the offcanvas icon (no point showing if empty)
 			toggleNavMenu();

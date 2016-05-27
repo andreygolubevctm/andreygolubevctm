@@ -12,8 +12,6 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-bank_details">
 
-	<form_v2:fieldset legend="Bank Account Details" >
-
 
 
 		<health_v2:bank_account_details xpath="${xpath}" />
@@ -47,12 +45,10 @@
 			<field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="would you like your claim refunds paid into the same account" required="true" className="health-bank_details-claims" id="${name}_claims"/>
 		</form_v3:row>
 
-	</form_v2:fieldset>
 
 </div>
 
 <div id="${name}_claim-selection" class="health-bank_claim_details">
-	<form_v2:fieldset legend="Please nominate a bank account for future claim payments">
-		<health_v2:bank_account_details xpath="${xpath}/claim" />
-	</form_v2:fieldset>
+	<h3>Please nominate a bank account for future claim payments</h3>
+	<health_v2:bank_account_details xpath="${xpath}/claim" />
 </div>

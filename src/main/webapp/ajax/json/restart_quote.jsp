@@ -3,6 +3,8 @@
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.restart_quote')}" />
 
+<jsp:useBean id="verticalSettings" class="com.ctm.web.core.model.settings.VerticalSettings" scope="session" />
+
 <session:delete transactionId="${param.transactionId}" />
 ${logger.debug('RESTART QUOTE. {}',log:kv('param',param ))}
 
@@ -10,7 +12,7 @@ ${logger.debug('RESTART QUOTE. {}',log:kv('param',param ))}
 
 <c:set var="result">
 	<result>
-		<destUrl>${vertical}_quote.jsp</destUrl>
+		<destUrl>${verticalSettings.getHomePageJsp(vertical)}</destUrl>
 	</result>
 </c:set>
 

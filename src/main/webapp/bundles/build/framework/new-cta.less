@@ -9,15 +9,15 @@ So it's going to be done progressively. Include this file in your framework.buil
 
 // Should be in ctm.variables.less
 @btn-cta-bg-color: @theme-secondary;
-@btn-cta-color: contrast(@btn-cta-bg-color);
+@btn-cta-color: @btn-foreground-color;
 @btn-cta-border-color: @btn-cta-bg-color;
 
 @btn-cta-hover-bg-color: darken(@btn-cta-bg-color, 12%);
-@btn-cta-hover-color: contrast(@btn-cta-hover-bg-color);
+@btn-cta-hover-color: @btn-foreground-color;
 @btn-cta-hover-border-color: @btn-cta-hover-bg-color;
 
 @btn-cta-active-bg-color: @theme-tertiary;
-@btn-cta-active-color: contrast(@btn-cta-active-bg-color);
+@btn-cta-active-color: @btn-foreground-color;
 @btn-cta-active-border-color: lighten(@btn-cta-active-bg-color, 40%);
 
 // Should be removed; already in ctm.theme.less
