@@ -301,7 +301,7 @@
               $('#health_payment_details-selection p.NHB').remove();
 
               $('#health_payment_details_frequency').off('change.NHB');
-              $('.health_bank-details_policyDay-message').html('');
+              $('.health_payment_bank_details-policyDay-message').html('');
 
                 <%-- How to send information --%>
                 healthApplicationDetails.hideHowToSendInfo();
