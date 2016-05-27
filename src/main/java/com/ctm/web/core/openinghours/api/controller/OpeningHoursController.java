@@ -5,6 +5,7 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.openinghours.api.model.request.OpeningHoursRequest;
+import com.ctm.web.core.openinghours.api.model.response.OpeningHoursDataResponse;
 import com.ctm.web.core.openinghours.api.model.response.OpeningHoursResponse;
 import com.ctm.web.core.openinghours.model.OpeningHours;
 import com.ctm.web.core.openinghours.services.OpeningHoursService;
@@ -49,10 +50,11 @@ public class OpeningHoursController extends CommonQuoteRouter<OpeningHoursReques
     @RequestMapping(value = "/data.json",
             method= RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<OpeningHours> getOpeningHoursData(@RequestParam("vertical") String vertical, HttpServletRequest request) throws DaoException,ConfigSettingException {
+    public OpeningHoursDataResponse getOpeningHoursData(@RequestParam("vertical") String vertical, HttpServletRequest request) throws DaoException,ConfigSettingException {
         ApplicationService.setVerticalCodeOnRequest(request, vertical.toUpperCase());
         openingHoursService = new OpeningHoursService();
         List<OpeningHours> openingHours = openingHoursService.getAllOpeningHoursForDisplay(request, false);
-        return openingHours;
+        OpeningHoursDataResponse response = new OpeningHoursDataResponse(openingHours);
+        return response;
     }
 }
