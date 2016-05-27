@@ -37,7 +37,7 @@ public class TravelServiceTest {
 	public void setup() throws Exception {
 		initMocks(this);
 		EnvironmentService.setEnvironment("localhost");
-		travelService = new TravelService(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), serviceConfigurationService);
+		travelService = new TravelService(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
 		travelRequest = new TravelRequest();
 		travelQuote = new TravelQuote();
 

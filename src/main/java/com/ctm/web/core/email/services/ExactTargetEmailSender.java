@@ -103,7 +103,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
     private void setWebserviceConfigurationDeprecated(int verticalId, int brandId, int providerId) throws SendEmailException {
         ServiceConfiguration serviceConfig;
         try {
-             serviceConfig = ServiceConfigurationService.getServiceConfigurationDeprecated("exactTargetService", verticalId);
+             serviceConfig = serviceConfigurationService.getServiceConfiguration("exactTargetService", verticalId);
         } catch (DaoException | ServiceConfigurationException e1) {
             throw new SendEmailException("Could not successfully get default exact target service configuration from database", e1);
         }

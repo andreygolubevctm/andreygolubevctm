@@ -34,7 +34,7 @@ public class SoapConfiguration {
 					return;
 				}
 
-				ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration(configDbKey, vertical.getId(), brand.getId());
+				ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration(configDbKey, vertical.getId());
 				configuration.setFromDb(serviceConfig, brand.getId(), 0);
 				setUpIsWriteToFile(serviceConfig, brand.getId(), 0, configuration);
 

@@ -1,13 +1,16 @@
 package com.ctm.web.life.quote.controller;
 
+import com.ctm.web.core.competition.services.CompetitionService;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.exceptions.ServiceException;
 import com.ctm.web.core.model.CompetitionEntry;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.life.form.model.*;
@@ -29,6 +32,8 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Optional;
 
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
+
 @Api(basePath = "/rest/life", value = "Life Quote")
 @RestController
 @RequestMapping("/rest/life")
@@ -40,8 +45,10 @@ public class LifeQuoteController extends CommonQuoteRouter<LifeQuoteWebRequest> 
     private LifeQuoteService lifeQuoteService;
 
     @Autowired
-    public LifeQuoteController(SessionDataServiceBean sessionDataServiceBean, ApplicationService applicationService) {
-        super(sessionDataServiceBean, applicationService);
+    public LifeQuoteController(SessionDataServiceBean sessionDataServiceBean,
+                               ApplicationService applicationService,
+                               IPAddressHandler ipAddressHandler) {
+        super(sessionDataServiceBean, applicationService, ipAddressHandler);
     }
 
     @ApiOperation(value = "quote/get.json", notes = "Request a life quote", produces = "application/json")
@@ -55,56 +62,11 @@ public class LifeQuoteController extends CommonQuoteRouter<LifeQuoteWebRequest> 
         final LifeResultsWebResponse quotes = lifeQuoteService.getQuotes(quoteRequest, brand);
 
         try {
-            addCompetition(quoteRequest, request);
+            lifeQuoteService.addCompetition(quoteRequest, request);
         } catch (Exception e) {
             LOGGER.warn("An error occurred while adding competition", e);
         }
 
         return quotes;
-    }
-
-    private void addCompetition(LifeQuoteWebRequest quoteRequest, HttpServletRequest request) throws DaoException, ConfigSettingException, com.ctm.web.core.email.exceptions.EmailDetailsException {
-        final boolean competitionEnabled = StringUtils.equalsIgnoreCase(ContentService.getContentValue(request, "competitionEnabled"), "Y");
-        final Optional<LifeQuote> quote = Optional.ofNullable(quoteRequest.getQuote());
-        final boolean optInCompetition = quote
-                                            .map(LifeQuote::getContactDetails)
-                                            .map(ContactDetails::getCompetition)
-                                            .map(Competition::getOptin)
-                                            .filter(o -> StringUtils.equals(o, "Y"))
-                                            .isPresent();
-
-        if (competitionEnabled && optInCompetition) {
-            CompetitionEntry entry = new CompetitionEntry();
-            final Integer competitionId = Integer.parseInt(ContentService.getContentValue(request, "competitionId"));
-            entry.setCompetitionId(competitionId);
-            entry.setEmail(quote.map(LifeQuote::getContactDetails)
-                    .map(ContactDetails::getEmail)
-                    .map(StringUtils::trim)
-                    .orElseThrow(() -> new IllegalArgumentException("Email missing")));
-            entry.setFirstName(quote.map(LifeQuote::getPrimary)
-                    .map(Applicant::getFirstName)
-                    .orElseThrow(() -> new IllegalArgumentException("FirstName missing")));
-            entry.setLastName(quote.map(LifeQuote::getPrimary)
-                    .map(Applicant::getLastname)
-                    .orElseThrow(() -> new IllegalArgumentException("Lastname missing")));
-            entry.setPhoneNumber(quote.map(LifeQuote::getContactDetails)
-                    .map(ContactDetails::getContactNumber)
-                    .orElseThrow(() -> new IllegalArgumentException("ContactNumber missing")));
-            entry.setPhoneNumberRequired(true);
-            entry.setSource(getSource(competitionId));
-
-            addCompetitionEntry(request, quoteRequest.getTransactionId(), entry);
-
-        }
-    }
-
-    private String getSource(Integer competitionId) {
-        switch (competitionId) {
-            case 13 : return "Life$1000CashNov2014";
-            case 17 : return "Life$1000CashFeb2015";
-            case 22 : return "Life$1000CashJune2015";
-            case 27 : return "Life$5000Cash2015";
-            default: return "OctPromo1000grubs";
-        }
     }
 }

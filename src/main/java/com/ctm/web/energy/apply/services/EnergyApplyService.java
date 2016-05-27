@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Component
-public class EnergyApplyService extends CommonRequestService {
+public class EnergyApplyService extends CommonRequestService<EnergyApplicationDetails, ApplyResponse> {
 
     @Autowired
     private EnergyApplyConfirmationService energyApplyConfirmation;

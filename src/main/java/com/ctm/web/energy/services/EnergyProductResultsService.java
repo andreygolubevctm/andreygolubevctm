@@ -25,7 +25,7 @@ import java.io.IOException;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.ENERGY;
 
 @Component
-public class EnergyProductResultsService extends CommonRequestService {
+public class EnergyProductResultsService  extends CommonRequestService<EnergyProductRequest, EnergyProductResponse> {
 
     @Autowired
     private EnergyProductServiceRequestAdapter energyProductServiceRequestAdapter;
@@ -33,8 +33,8 @@ public class EnergyProductResultsService extends CommonRequestService {
     private EnergyProductServiceResponseAdapter energyProductServiceResponseAdapter;
 
     @Autowired
-    public EnergyProductResultsService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, ServiceConfigurationService serviceConfigurationService) {
-        super(providerFilterDAO, objectMapper,serviceConfigurationService, EnvironmentService.getEnvironmentFromSpring());
+    public EnergyProductResultsService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper) {
+        super(providerFilterDAO, objectMapper);
     }
 
     public EnergyProductInfoWebResponse getResults(EnergyProductInfoWebRequest model, Brand brand) throws IOException, DaoException, ServiceConfigurationException {

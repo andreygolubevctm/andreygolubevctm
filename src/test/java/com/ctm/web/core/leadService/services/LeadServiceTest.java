@@ -40,18 +40,16 @@ public class LeadServiceTest {
 	Data mockData;
 	@Mock
 	IPAddressHandler ipAddressHandler;
-
-	LeadService leadService;
-
     @Mock
     ServiceConfigurationService serviceConfigurationService;
+
 	LeadService leadService;
 
 	@Before
 	public void setup() throws ServiceConfigurationException, DaoException {
 		initMocks(this);
 
-		leadService = new LeadService(ipAddressHandler) {
+		leadService = new LeadService(serviceConfigurationService, ipAddressHandler) {
 			@Override
 			protected LeadRequest updatePayloadData(Data data) {
 				LeadRequest lr = new LeadRequest();
@@ -63,10 +61,6 @@ public class LeadServiceTest {
 				return lr;
 			}
 		};
-
-	@Before
-	public void setup() throws ServiceConfigurationException, DaoException {
-		initMocks(this);
 		mockStatic(SessionUtils.class);
 		when(SessionUtils.isCallCentre(any())).thenReturn(false);
 
@@ -83,19 +77,6 @@ public class LeadServiceTest {
 		when(mockServiceConfig.getPropertyValueByKey("url", 0, 0, SERVICE)).thenReturn("url");
 
 		mockStatic(LeadServiceUtil.class);
-
-        leadService = new LeadService(serviceConfigurationService) {
-            @Override
-            protected LeadRequest updatePayloadData(Data data) {
-                LeadRequest lr = new LeadRequest();
-                lr.setVerticalType("health");
-                lr.getPerson().setFirstName("Firstname");
-                lr.getPerson().setEmail("Email");
-                lr.getPerson().setMobile("Mobile");
-                lr.setMetadata(mock(LeadMetadata.class));
-                return lr;
-            }
-        };
 	}
 
 	@Test

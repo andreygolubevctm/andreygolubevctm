@@ -95,7 +95,7 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 
 		try {
 			provider = ProviderService.getProvider(leadData.getPartnerBrand(), ApplicationService.getServerDate());
-			serviceConfig = ServiceConfigurationService.getServiceConfigurationDeprecated(serviceCode, leadData.getVerticalId());
+			serviceConfig = ServiceConfigurationService.getServiceConfiguration(serviceCode, leadData.getVerticalId());
 		} catch (DaoException | ServiceConfigurationException e) {
 			throw new LeadFeedException("[Lead feed] Could not load the required configuration for the " + leadData.getPartnerBrand() + " Lead Feed Service", e);
 		}

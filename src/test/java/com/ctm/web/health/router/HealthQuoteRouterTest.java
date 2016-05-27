@@ -87,7 +87,7 @@ public class HealthQuoteRouterTest {
 
         PowerMockito.when(SettingsService.getPageSettingsByBrand(eq(brand), anyObject())).thenReturn(pageSettings);
         PowerMockito.when(SettingsService.getPageSettingsForPage(anyObject())).thenReturn(pageSettings);
-        PowerMockito.when(ServiceConfigurationService.getServiceConfiguration(anyString(), anyInt(),anyInt())).thenReturn(serviceConfig);
+        PowerMockito.when(ServiceConfigurationService.getServiceConfiguration(anyString(), anyInt())).thenReturn(serviceConfig);
         when(pageSettings.getVertical()).thenReturn(vertical);
         when(pageSettings.getBrandId()).thenReturn(brandId);
         when(brand.getCode()).thenReturn(brandCode);

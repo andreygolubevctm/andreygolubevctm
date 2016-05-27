@@ -68,6 +68,10 @@ public class EmailServiceFactory {
 		return emailService;
 	}
 
+	public static EmailServiceHandler newInstance(PageSettings pageSettings, EmailMode mode, Data data) throws SendEmailException {
+		return newInstance( pageSettings,  mode,  data, IPAddressHandler.getInstance());
+	}
+
 	private static EmailServiceHandler getHealthEmailService(
 			PageSettings pageSettings, EmailMode mode, Data data, VerticalType vertical) throws SendEmailException {
 		ContentDao contentDao = new ContentDao(pageSettings.getBrandId(), pageSettings.getVertical().getId());

@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class LifeApplyService extends CommonRequestService {
+public class LifeApplyService extends CommonRequestService<Object, LifeApplyResponse> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LifeApplyService.class);
 

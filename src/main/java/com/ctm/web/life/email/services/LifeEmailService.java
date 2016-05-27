@@ -52,6 +52,19 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
         this.lifeEmailDataService = lifeEmailDataService;
 	}
 
+	public LifeEmailService(PageSettings pageSettings,
+                            EmailMode emailMode,
+                            EmailDetailsService emailDetailsService,
+                            LifeEmailDataService lifeEmailDataService,
+                            ServiceConfigurationService serviceConfigurationService,
+                            ApplicationService applicationService) {
+		super(pageSettings, emailMode, IPAddressHandler.getInstance());
+		this.emailDetailsService = emailDetailsService;
+		this.serviceConfigurationService = serviceConfigurationService;
+		this.applicationService = applicationService;
+		this.lifeEmailDataService = lifeEmailDataService;
+	}
+
 	@Override
 	public String sendBestPriceEmail(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);

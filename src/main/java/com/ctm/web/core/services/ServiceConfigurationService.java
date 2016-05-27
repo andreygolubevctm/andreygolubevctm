@@ -123,6 +123,18 @@ public class ServiceConfigurationService {
     }
 
     /**
+     * Get the service configuration for a specific code, vertical and brand - only call this directly if you are not able to rely on F5 rewriting rules.
+     * @param code 'serviceCode' key in ctm.service_master
+     * @param verticalId
+     * @return
+     * @throws DaoException
+     * @throws ServiceConfigurationException
+     */
+    public static ServiceConfiguration getServiceConfiguration(String code, Vertical vertical) throws DaoException, ServiceConfigurationException {
+        return  getServiceConfiguration( code, vertical.getId());
+    }
+
+    /**
      * Work out which of the provider ids contained in the Service Configuration object are actually enabled
      * Looks up the provider exclusions table.
      *

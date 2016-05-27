@@ -23,7 +23,7 @@ public class CarQuoteServiceTest {
 
     private CarQuoteService service = new CarQuoteService(
             new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(),
-            new SessionDataServiceBean(), null);
+            new SessionDataServiceBean());
 
     @Mock
     private CarRequest carRequest;

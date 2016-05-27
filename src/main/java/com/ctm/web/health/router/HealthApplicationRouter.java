@@ -244,9 +244,9 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
                 .map(HealthQuote::getApplication)
                 .map(Application::getEmail)
                 .orElseGet(() -> hasData.map(HealthRequest::getQuote)
-                                        .map(HealthQuote::getContactDetails)
-                                        .map(ContactDetails::getEmail)
-                                        .orElseThrow(() -> new NotFoundException("Email not found")));
+                        .map(HealthQuote::getContactDetails)
+                        .map(ContactDetails::getEmail)
+                        .orElseThrow(() -> new NotFoundException("Email not found")));
     }
 
     private void createAndSaveConfirmation(MessageContext context, HealthRequest data, HealthApplicationResponse response, String confirmationId, Data dataBucket) throws DaoException, ConfigSettingException, JsonProcessingException {
