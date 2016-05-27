@@ -37,7 +37,7 @@
 		<c:set var="fieldXpath" value="${xpath}/policyDay" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?" className="${name}-details_policyDay-group">
 			<field_v2:array_select xpath="${fieldXpath}"
-						required="true" className="${name}-policyDay" items="=Please choose..." title="your chosen day" />
+						required="true" className="${name}_details-policyDay" items="=Please choose..." title="your chosen day" />
 			<p class="${name}-details_policyDay-message"></p>
 		</form_v2:row>
 

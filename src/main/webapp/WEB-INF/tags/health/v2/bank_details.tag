@@ -38,7 +38,7 @@
 
 		<%-- AUF based payment day --%>
 		<c:set var="fieldXpath" value="${xpath}/policyDay" />
-		<form_v3:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?" className="health_bank-details_policyDay-group">
+		<form_v3:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?" className="health_payment_bank-details_policyDay-group">
 			<field_v2:array_select xpath="${fieldXpath}" required="true" className="${name}_details-policyDay" items="=Please choose..." title="your chosen day" />
 			<p class="${name}-details_policyDay-message"></p>
 		</form_v3:row>

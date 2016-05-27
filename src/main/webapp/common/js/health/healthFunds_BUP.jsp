@@ -71,16 +71,16 @@ set: function () {
 
 		var date = new Date();
 		var _html = meerkat.modules.healthPaymentDay.paymentDays(meerkat.modules.dateUtils.dateValueFormFormat(date));
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank-details_policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit-details_policyDay'), _html);
 
 		<%-- Select the only option --%>
-		$('.health_payment_credit_details-policyDay').prop('selectedIndex',1);
-		$('.health_payment_bank_details-policyDay').prop('selectedIndex',1);
+		$('.health_payment_credit-details_policyDay').prop('selectedIndex',1);
+		$('.health_payment_bank-details_policyDay').prop('selectedIndex',1);
 		<%-- Change the deduction rate --%>
 
-		$('.health_credit-card-details_policyDay-message').text( deductionText);
-		$('.health_bank-details_policyDay-message').text(deductionText);
+		$('.health_payment_credit-details_policyDay-message').text( deductionText);
+		$('.health_payment_bank-details_policyDay-message').text(deductionText);
 	},
 	unset: function () {
 		"use strict";
@@ -111,8 +111,8 @@ set: function () {
 		meerkat.modules.healthPaymentIPP.hide();
 
 		<%-- selections for payment date --%>
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank-details_policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit-details_policyDay'), false);
 
 		healthFunds_BUP.$paymentType.off('click.BUP');
 		healthFunds_BUP.$paymentFrequency.off('change.BUP');
