@@ -295,10 +295,10 @@
         )
         <% ratesImporter.handleCount(newResultCount,initialResultCount);
             if(newResultCount <= initialResultCount - 1) {  %>
-        ; <!--  put a semi colon or comma here if last one. -->
+        , <!--  put a semi colon or comma here if last one. -->
         <!--  also report on the nubmer of inserts per product id -->
         <% } else { %>
-        ,
+        ;
         <% } %>
 
         <br />
