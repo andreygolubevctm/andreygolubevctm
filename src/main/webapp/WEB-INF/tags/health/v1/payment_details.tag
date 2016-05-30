@@ -18,7 +18,7 @@
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 
 <%-- HTML --%>
-<div id="${name}-selection" class="health-payment_details">
+<div id="${name}-selection" class="health-payment_details ">
 
 	<form_v3:fieldset legend="Payment Details" >
 

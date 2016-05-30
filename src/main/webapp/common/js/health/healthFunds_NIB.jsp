@@ -100,8 +100,8 @@ var healthFunds_NIB = {
             healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
         }
         var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
 
         if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
             healthFunds_NIB.$paymentTypeContainer.slideUp();
@@ -118,8 +118,8 @@ var healthFunds_NIB = {
         $("#health_application_contactPoint_E").prop('disabled', false).parents('.btn-form-inverse').attr('disabled',false);
 
         $('#health_application_no_email').off('click.NIB');
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
 
         healthFunds_NIB.$paymentTypeContainer.text('').slideUp();
 
