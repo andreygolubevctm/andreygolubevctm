@@ -313,11 +313,11 @@
 						meerkat.modules.healthBenefits.open('journey-mode');
 
 						if(event.isForward) {
-							$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
+							var accidentOnly = $('input[name="health_situation_accidentOnlyCover"]');
+							$(accidentOnly).prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
 
 							if (meerkat.site.isCallCentreUser === true){
 
-								var accidentOnly = $('input[name="health_situation_accidentOnlyCover"]');
 								var dialog44 = $(".simples-dialogue-44");
 								dialog44.hide();
 								if($(accidentOnly).is(':checked')) {
