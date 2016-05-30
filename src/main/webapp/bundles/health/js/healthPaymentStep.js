@@ -55,6 +55,14 @@
 				resetSettings();
 			});
 
+			$paymentCalendar.on('changeDate', function updateThePremiumOnCalendar(){
+				updatePremium();
+			});
+
+			$('#health_payment_details-selection .dateinput-tripleField input').on('change', function updateThePremiumOnInput(){
+				updatePremium();
+			});
+
 			$paymentRadioGroup.find('input').on('click', function() {
 				togglePaymentGroups();
 				toggleClaimsBankAccountQuestion();

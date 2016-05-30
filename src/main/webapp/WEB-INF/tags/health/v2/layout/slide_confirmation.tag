@@ -13,7 +13,7 @@
 <layout_v1:slide formId="confirmationForm" className="displayBlock">
 
 	<layout_v1:slide_content>
-		<div id="confirmation" class="more-info-content"></div>
+		<div id="confirmation"></div>
 	</layout_v1:slide_content>
 
 </layout_v1:slide>
