@@ -118,8 +118,8 @@
 		$bankAccountDetailsRadioGroup = $("#health_payment_details_claims");
 		$sameBankAccountRadioGroup = $("#health_payment_bank_claims");
 		$paymentMethodLHCText = $('.changes-premium .lhcText');
-		$bankSection = $('#health_payment_bank-selection');
-		$creditCardSection = $('#health_payment_credit-selection');
+		$bankSection = $('.health_payment_bank-selection');
+		$creditCardSection = $('.health_payment_credit-selection');
 		$paymentCalendar = $('#health_payment_details_start');
 
 		// Containers

@@ -11,8 +11,8 @@ GMH
 --%>
 var healthFunds_GMH = {
     $policyDateHiddenField : $('.health_details-policyDate'),
-    $policyDateCreditMessage : $('.health_credit-card-details_policyDay-message'),
-    $policyDateBankMessage : $('.health_bank-details_policyDay-message'),
+    $policyDateCreditMessage : $('.health_payment_credit-details_policyDay-message'),
+    $policyDateBankMessage : $('.health_payment_bank-details_policyDay-message'),
     $paymentType : $('#health_payment_details_type input'),
     $paymentFrequency : $('#health_payment_details_frequency'),
     $paymentStartDate: $("#health_payment_details_start"),
