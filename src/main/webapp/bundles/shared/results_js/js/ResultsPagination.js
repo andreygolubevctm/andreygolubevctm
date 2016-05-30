@@ -128,9 +128,11 @@ var ResultsPagination = {
 			}
 
 			/* fix issue where clearing the products on the last page doesn't automatically scroll left */
-			if ((pageMeasurements.numberOfPages * pageMeasurements.columnsPerPage) == pageMeasurements.numberOfColumns && Results.pagination.$pagesContainer.find('a.active').length == 0) {
-				Results.pagination.$previousButton.click();
-			}
+            _.defer(function(){
+                if ((pageMeasurements.numberOfPages * pageMeasurements.columnsPerPage) === pageMeasurements.numberOfColumns && Results.pagination.$pagesContainer.find('a.active').length === 0) {
+                    Results.pagination.$previousButton.trigger('click');
+                }
+            });
 
 			//
 			if (Results.pagination.$pageText !== null && Results.pagination.$pageText.length > 0) {

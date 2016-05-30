@@ -285,8 +285,6 @@
             if (meerkat.site.isCallCentreUser) {
                 createPremiumsPopOver();
             }
-            // update preResultsRowSnapshot
-            meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
         });
 
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
@@ -314,6 +312,8 @@
                 meerkat.modules.healthResultsTemplate.toggleRemoveResultPagination();
                 // Setup scroll
                 Results.pagination.setupNativeScroll();
+                // render snapshot
+                meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
             });
             var tEnd = new Date().getTime();
             var tFetchFinish = (tEnd - tStart);
