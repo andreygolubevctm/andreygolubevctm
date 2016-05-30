@@ -353,6 +353,11 @@
 
         });
 
+        meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_RENDERED, function (){
+            // reset coverType to use the journey value
+            coverType = meerkat.modules.health.getCoverType();
+        });
+
     }
 
     meerkat.modules.register("healthFilters", {
