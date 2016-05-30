@@ -311,9 +311,10 @@
 
     // reset benefits for devs when use product title to search
     function resetBenefitsForProductTitleSearch() {
-        if (meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi' || meerkat.site.environment === 'nxs') {
+        if (meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi' || meerkat.site.environment === 'nxs' || meerkat.site.environment === 'nxq') {
             if ($.trim($('#health_productTitleSearch').val()) !== '') {
                 resetBenefitsSelection(true);
+                $('#health_situation_coverType_C').trigger('click');
             }
         }
     }
