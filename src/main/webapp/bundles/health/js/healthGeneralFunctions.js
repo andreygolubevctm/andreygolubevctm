@@ -49,7 +49,11 @@
         var $_icons = $('#health_payment_credit-selection .cards');
         $_icons.children().hide();
         var _html = '';
-        var _selected = $cardContainer.find('input').filter(':checked').val();
+        var _selected = $cardContainer.find(meerkat.site.isCallCentreUser ? 'option' : 'input').filter(':checked').val();
+
+        if( meerkat.site.isCallCentreUser ){
+            _html += setCreditCardObj('', 'Please choose...', _selected);
+        }
 
         if( config.visa === true ){
             _html += setCreditCardObj('v', 'Visa', _selected);
