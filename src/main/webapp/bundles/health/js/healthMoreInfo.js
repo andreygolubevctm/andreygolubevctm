@@ -383,16 +383,16 @@
 
         var data = {};
         data.providerId = product.info.providerId;
-        data.providerContentTypeCode = providerContentTypeCode;
         if(typeof data.providerId === 'undefined' ||  data.providerId === '') {
             meerkat.modules.errorHandling.error({
                 message: "providerId is empty",
-                page: "healthMoreInfo.js",
+                page: "healthMoreInfo.js:getProviderContentByType",
                 errorLevel: "silent",
-                description: "product: " + product ,
-                data: data
+                description: "providerId is empty providerContentTypeCode: " + providerContentTypeCode ,
+                data: product
             });
         } else {
+            data.providerContentTypeCode = providerContentTypeCode;
             return meerkat.modules.comms.get({
                 url: "health/provider/content/get.json",
                 data: data,
