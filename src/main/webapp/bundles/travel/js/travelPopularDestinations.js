@@ -15,11 +15,13 @@
 
     function initTravelPopularDestinations() {
 
+        if(meerkat.modules.splitTest.isActive(99) !== true) { return; }
+
         var data = {};
         $destinationsfs = $('#destinationsfs');
         $travelDestinations = $('#travel_destinations');
 
-        if(meerkat.site.isDev === true){
+        if(meerkat.site.isDev === true) {
             // need to wait for the development.deferred module to be initialised
             // then wait for the ajax call there to get all available service URL
             // IE8-10 is not working because for some reason the promise doesn't get set until 10 secs later
