@@ -7,12 +7,13 @@ import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.openinghours.model.OpeningHours;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
-
+@Component
 public class OpeningHoursService {
 
     private final OpeningHoursDao openingHoursDao;
