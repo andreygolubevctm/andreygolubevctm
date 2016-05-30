@@ -10,8 +10,8 @@ BUD (Budget Direct)
 =======================
 --%>
 var healthFunds_BUD = {
-	$policyDateCreditMessage : $('.health_credit-card-details_policyDay-message'),
-	$policyDateBankMessage : $('.health_bank-details_policyDay-message'),
+	$policyDateCreditMessage : $('.health_payment_credit-details_policyDay-message'),
+	$policyDateBankMessage : $('.health_payment_bank-details_policyDay-message'),
 	$paymentType : $('#health_payment_details_type input'),
 	$paymentFrequency : $('#health_payment_details_frequency'),
 	$paymentStartDate: $("#health_payment_details_start"),
@@ -101,8 +101,8 @@ var healthFunds_BUD = {
 		$('.person-title').append( healthFunds.$_optionDR    );
 
 		<%-- selections for payment date --%>
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit-details_policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank-details_policyDay'), false);
 
 		healthFunds_BUD.$paymentType.off('click.BUD');
 		healthFunds_BUD.$paymentFrequency.off('change.BUD');
