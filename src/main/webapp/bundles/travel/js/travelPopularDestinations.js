@@ -15,8 +15,6 @@
 
     function initTravelPopularDestinations() {
 
-        if(meerkat.modules.splitTest.isActive(99) !== true) { return; }
-
         var data = {};
         $destinationsfs = $('#destinationsfs');
         $travelDestinations = $('#travel_destinations');
