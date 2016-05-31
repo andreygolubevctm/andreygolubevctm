@@ -50,11 +50,6 @@
   // Make the provider list 2 columns
   .provider-list {
     .content-columns(2, auto);
-
-    // hack for the css3 multi columns, it is buggy when two columns doesn't have the same amount of children
-    .checkbox:nth-child(7) {
-      display: inline-block;
-    }
   }
   @media (@xs-only) {
     div.checkbox {
