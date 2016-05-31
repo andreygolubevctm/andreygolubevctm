@@ -356,6 +356,11 @@
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_RENDERED, function (){
             // reset coverType to use the journey value
             coverType = meerkat.modules.health.getCoverType();
+
+            // hack for the css3 multi columns, it is buggy when two columns doesn't have the same amount of children
+            var $providerListCheckboxes = $('.provider-list .checkbox'),
+                nthChild = Math.ceil($providerListCheckboxes.length / 2);
+            $providerListCheckboxes.filter(':nth-child(' + nthChild + ')').css('display', 'inline-block');
         });
 
     }
