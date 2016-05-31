@@ -19,7 +19,9 @@ CUA
 =======================
 --%>
 var healthFunds_CUA = {
-
+	$paymentType : $('#health_payment_details_type input'),
+	$paymentFrequency : $('#health_payment_details_frequency'),
+	$paymentStartDate: $("#health_payment_details_start"),
 set: function () {
 	"use strict";
 		<%-- Previous fund authority --%>
@@ -75,15 +77,17 @@ set: function () {
 				};
 			});
 		</c:if>
-		$('#update-premium').on('click.CUA', function() {
 
-			healthFunds._payments = { 'min':0, 'max':14, 'weekends':true, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28};
-			var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
-			$('.cua-payment-legend').remove();
-			$('#health_payment_credit_policyDay').parent().after('<p class="cua-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');
-			$('#health_payment_bank_policyDay').parent().after('<p class="cua-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');
+		healthFunds_CUA.$paymentType.on('click.CUA', function renderPaymentDaysPaymentType(){
+			healthFunds_CUA.renderPaymentDays();
+		});
+
+		healthFunds_CUA.$paymentFrequency.on('change.CUA', function renderPaymentDaysFrequency(){
+			healthFunds_CUA.renderPaymentDays();
+		});
+
+		healthFunds_CUA.$paymentStartDate.on("changeDate.CUA", function renderPaymentDaysCalendar(e) {
+			healthFunds_CUA.renderPaymentDays();
 		});
 
 		<c:if test="${data.health.situation.healthCvr == 'F' || data.health.situation.healthCvr == 'SPF' }">
@@ -126,11 +130,23 @@ set: function () {
 			"getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
 		});
 	},
+	renderPaymentDays: function (){
+		healthFunds._payments = { 'min':0, 'max':14, 'weekends':true, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28};
+		healthFunds_CUA.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
+		$('.cua-payment-legend').remove();
+		$('#health_payment_credit_policyDay').parent().after('<p class="cua-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');
+		$('#health_payment_bank_policyDay').parent().after('<p class="cua-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');
+	},
 	unset: function () {
 		"use strict";
 
 		$('.cua-payment-legend').remove();
-		$('#update-premium').off('click.CUA');
+		healthFunds_CUA.$paymentType.off('click.CUA');
+		healthFunds_CUA.$paymentFrequency.off('change.CUA');
+		healthFunds_CUA.$paymentStartDate.off("changeDate.CUA");
 
 		healthFunds._reset();
 

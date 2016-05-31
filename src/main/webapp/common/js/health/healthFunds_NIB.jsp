@@ -11,6 +11,10 @@ NIB
 --%>
         
 var healthFunds_NIB = {
+    $paymentType : $('#health_payment_details_type input'),
+    $paymentFrequency : $('#health_payment_details_frequency'),
+    $paymentStartDate: $("#health_payment_details_start"),
+    $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
     set: function(){
         <%--Contact Point question--%>
         healthApplicationDetails.showHowToSendInfo('NIB', true);
@@ -42,16 +46,16 @@ var healthFunds_NIB = {
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':true, 'diners':false });
         meerkat.modules.healthCreditCard.render();
 
-        $('#update-premium').on('click.NIB', function() {
-            var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
-            if (freq == 'fortnightly') {
-                healthFunds._payments = { 'min':0, 'max':10, 'weekends':false, 'countFrom' : 'effectiveDate'};
-            } else {
-                healthFunds._payments = { 'min':0, 'max':27, 'weekends':true , 'countFrom' : 'today', 'maxDay' : 27};
-            }
-            var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+        healthFunds_NIB.$paymentType.on('click.NIB', function renderPaymentDaysPaymentType(){
+            healthFunds_NIB.renderPaymentDays();
+        });
+
+        healthFunds_NIB.$paymentFrequency.on('change.NIB', function renderPaymentDaysFrequency(){
+            healthFunds_NIB.renderPaymentDays();
+        });
+
+        healthFunds_NIB.$paymentStartDate.on("changeDate.NIB", function renderPaymentDaysCalendar(e) {
+            healthFunds_NIB.renderPaymentDays();
         });
 
         function onChangeNoEmailChkBox(){
@@ -86,15 +90,38 @@ var healthFunds_NIB = {
         $("#health_application_no_email").on("click.NIB",function() {onChangeNoEmailChkBox();});
 
     },
+    renderPaymentDays: function(){
+        var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
+        if (freq == 'fortnightly') {
+            healthFunds._payments = { 'min':0, 'max':10, 'weekends':false, 'countFrom' : 'effectiveDate'};
+            healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
+        } else {
+            healthFunds._payments = { 'min':0, 'max':27, 'weekends':true , 'countFrom' : 'today', 'maxDay' : 27};
+            healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+        }
+        var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
+
+        if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
+            healthFunds_NIB.$paymentTypeContainer.slideUp();
+        } else {
+            healthFunds_NIB.$paymentTypeContainer.text('*NIB offers a 4% discount for bank account payments').slideDown();
+        }
+    },
     unset: function(){
-        $('#update-premium').off('click.NIB');
+        healthFunds_NIB.$paymentType.off('click.NIB');
+        healthFunds_NIB.$paymentFrequency.off('change.NIB');
+        healthFunds_NIB.$paymentStartDate.off("changeDate.NIB");
 
         $("#health_application_email").setRequired(true).prop('disabled', false);
         $("#health_application_contactPoint_E").prop('disabled', false).parents('.btn-form-inverse').attr('disabled',false);
 
         $('#health_application_no_email').off('click.NIB');
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
+
+        healthFunds_NIB.$paymentTypeContainer.text('').slideUp();
 
         <%--Contact Point question--%>
         healthApplicationDetails.hideHowToSendInfo();

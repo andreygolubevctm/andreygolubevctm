@@ -22,6 +22,7 @@ public class ResultsTemplateItem implements Comparable<ResultsTemplateItem> {
 	private String extraText;
 	private int helpId;
 	private String shortlistKey;
+	private int flag;
 
 	ArrayList<ResultsTemplateItem> children;
 
@@ -152,6 +153,13 @@ public class ResultsTemplateItem implements Comparable<ResultsTemplateItem> {
 
 	public void setShortlistKey(String shortlistKey) {
 		this.shortlistKey = shortlistKey;
+	}
+
+	public int getFlag() {
+		return flag;
+	}
+	public void setFlag(int flag) {
+		this.flag = flag;
 	}
 
 	public boolean hasShortlistableChildren(){

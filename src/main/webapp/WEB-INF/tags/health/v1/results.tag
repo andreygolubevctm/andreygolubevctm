@@ -88,6 +88,7 @@
 		</div>
 	</c:if>
 	<health_v1:logo_price_template />
+	<health_v3:credit_card_template />
 
 	<%-- RESULTS TABLE --%>
 	<div class="moreInfoDropdown"></div>

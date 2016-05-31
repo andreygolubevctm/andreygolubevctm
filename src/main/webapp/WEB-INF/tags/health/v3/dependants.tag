@@ -20,7 +20,7 @@
 	<form_v2:fieldset legend="Your Dependants' Details" >
 	
 		<%-- //FIX: need to insert fund's real definition here --%>
-		<p class="definition">
+		<p>
 			This policy provides cover for your children aged less than 22 years plus students studying full time between the ages of 22 and 24. You can still obtain cover for your adult child outside these criteria by applying for a separate singles policy
 		</p>
 		

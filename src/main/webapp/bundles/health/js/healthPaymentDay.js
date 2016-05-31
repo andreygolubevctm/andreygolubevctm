@@ -95,7 +95,7 @@
         }
         $_object.html(_html);
         $_object.parent().siblings('p').text( 'Your payment will be deducted on: ' + $_object.find('option').first().text() );
-        $('.health-bank_details-policyDay, .health-credit-card_details-policyDay').html(_html);
+        $('.health_payment_bank_details-policyDay, .health_payment_credit-policyDay').html(_html);
     }
 
     /*

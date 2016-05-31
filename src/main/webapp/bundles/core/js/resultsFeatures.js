@@ -6,19 +6,15 @@
 ;(function($, undefined){
 
     var meerkat = window.meerkat,
-        meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info;
 
     var events = {
             resultsFeatures: {
-
+                    STRUCTURE_FETCHED: "STRUCTURE_FETCHED"
             }
         };
 
     var fetchingFeatures;
-
-    function init(){
-    }
 
     /**
      * Fetch the page structure separately.
@@ -46,6 +42,7 @@
 
         fetchingFeatures.done(function onSuccess(json) {
             Features.pageStructure = json;
+            meerkat.messaging.publish(events.resultsFeatures.STRUCTURE_FETCHED);
         }).fail(function onError(obj, textStatus, errorThrown) {
             var transactionId = meerkat.modules.transactionId.get();
             meerkat.modules.errorHandling.error({
@@ -61,7 +58,6 @@
     }
 
     meerkat.modules.register("resultsFeatures", {
-        init: init,
         events: events,
         fetchStructure: fetchStructure
     });
