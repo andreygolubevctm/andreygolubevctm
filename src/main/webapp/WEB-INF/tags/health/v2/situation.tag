@@ -32,7 +32,8 @@
 			<simples:dialogue id="36" vertical="health" mandatory="true" className="hidden simples-privacycheck-statement" /> <%-- Inbound --%>
 			<simples:dialogue id="25" vertical="health" mandatory="true" className="hidden follow-up-call" /> <%-- Follow up call --%>
 
-			<form_v3:fieldset id="healthAboutYou" legend="" postLegend="" className="health-about-you">
+
+			<form_v3:fieldset id="healthAboutYou" legend="About you" postLegend="Tell us about yourself, so we can find the right cover for you" className="health-about-you">
 
 				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
 				<form_v3:row label="You are a" fieldXpath="${fieldXpath}" className="health-cover">

@@ -1,0 +1,61 @@
+/**
+ * Styles for icons go in here!
+ */
+@cross-color: #FF5F5F;
+
+.featuresMode {
+  &.resultsContainer {
+
+    .expander {
+      .icon-angle-down;
+      right: @results-feature-cell-padding;
+      top: @results-feature-cell-padding + floor(14 / 4);
+      @media(@sm-only) {
+        right: 5px;
+        top: 9px;
+      }
+      position: absolute;
+      font-size: 12px;
+    }
+
+    .featuresList {
+      .icon-tick,
+      .icon-cross {
+        line-height: 18px;
+        display: block;
+        text-align: center;
+      }
+
+      .icon-tick {
+        color: @theme-secondary;
+      }
+      .icon-cross {
+        color: @cross-color;
+      }
+    }
+    @media (@sm) {
+
+      .help-icon {
+        line-height: 18px;
+        position: relative;
+      }
+
+      .expanded > .content,
+      .expanding > .content {
+        .help-icon,
+        .icon-tick,
+        .icon-cross {
+          color: #fff;
+        }
+      }
+
+      .expandableHover {
+        .help-icon,
+        .icon-tick,
+        .icon-cross {
+          color: #fff;
+        }
+      }
+    }
+  }
+}

@@ -3,7 +3,7 @@ package com.ctm.web.health.quote.model;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.providers.model.QuoteResponse;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.web.health.model.Frequency;
+import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.results.*;
 import com.ctm.web.health.quote.model.response.HealthQuote;
@@ -20,10 +20,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ctm.web.health.model.Frequency.*;
 import static com.ctm.web.health.quote.model.response.Price.DEFAULT_PRICE;
 import static java.util.Collections.emptyList;
 
@@ -58,17 +58,37 @@ public class ResponseAdapter {
                     result.setPromo(createPromo(quote.getPromotion()));
                     result.setCustom(validateNode(quote.getCustom()));
 
-                    result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
-                    if (alternatePricingContent != null && StringUtils.equalsIgnoreCase(alternatePricingContent.getContentValue(), "Y")) {
-                        com.ctm.web.health.quote.model.response.Premium alternativePremium = quote.getAlternativePremium();
-                        if (alternativePremium != null) {
-                            result.setAltPremium(createPremium(alternativePremium, quote.getInfo(), request.getQuote()));
+                    if (quote.getPremium() != null) {
+                        result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
+                        if (alternatePricingContent != null && StringUtils.equalsIgnoreCase(alternatePricingContent.getContentValue(), "Y")) {
+                            com.ctm.web.health.quote.model.response.Premium alternativePremium = quote.getAlternativePremium();
+                            if (alternativePremium != null) {
+                                result.setAltPremium(createPremium(alternativePremium, quote.getInfo(), request.getQuote()));
+                            } else {
+                                result.setAltPremium(createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote()));
+                            }
                         } else {
-                            result.setAltPremium(createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote()));
+                            result.setAltPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
                         }
-                    } else {
-                        result.setAltPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
+                    } else if (quote.getPaymentTypePremiums() != null) {
+                        final HashMap<String, Premium> paymentTypePremiums = new HashMap<>();
+                        quote.getPaymentTypePremiums().entrySet()
+                                .stream()
+                                .forEach(entry -> {
+                                    paymentTypePremiums.put(getPaymentType(entry.getKey()), createPremium(entry.getValue(), quote.getInfo(), request.getQuote()));
+                                });
+                        result.setPaymentTypePremiums(paymentTypePremiums);
+                        if (quote.getPaymentTypeAltPremiums() != null && !quote.getPaymentTypeAltPremiums().isEmpty()) {
+                            final HashMap<String, Premium> paymentTypeAltPremiums = new HashMap<>();
+                            quote.getPaymentTypeAltPremiums().entrySet()
+                                    .stream()
+                                    .forEach(entry -> {
+                                        paymentTypeAltPremiums.put(getPaymentType(entry.getKey()), createPremium(entry.getValue(), quote.getInfo(), request.getQuote()));
+                                    });
+                            result.setPaymentTypeAltPremiums(paymentTypeAltPremiums);
+                        }
                     }
+
 
                     result.setInfo(createInfo(quote.getInfo(), index++));
                     result.setHospital(validateNode(quote.getHospital()));
@@ -85,6 +105,16 @@ public class ResponseAdapter {
 
 
             return Pair.of(hasPriceChanged, results);
+        }
+    }
+
+    private static String getPaymentType(PaymentType paymentType) {
+        switch (paymentType) {
+            case BANK: return "BankAccount";
+            case CREDIT: return "CreditCard";
+            case INVOICE: return "Invoice";
+            default:
+                throw new RuntimeException("Not supported paymentType " +  paymentType);
         }
     }
 
@@ -121,18 +151,19 @@ public class ResponseAdapter {
                                          com.ctm.web.health.quote.model.response.Info info,
                                          com.ctm.web.health.model.form.HealthQuote healthQuote) {
         Premium premium = new Premium();
-        premium.setAnnually(createPrice(quotePremium.getAnnually(), info, healthQuote, ANNUALLY));
-        premium.setMonthly(createPrice(quotePremium.getMonthly(), info, healthQuote, MONTHLY));
-        premium.setFortnightly(createPrice(quotePremium.getFortnightly(), info, healthQuote, FORTNIGHTLY));
-        premium.setWeekly(createPrice(quotePremium.getWeekly(), info, healthQuote, WEEKLY));
-        premium.setHalfyearly(createPrice(quotePremium.getHalfYearly(), info, healthQuote, HALF_YEARLY));
-        premium.setQuarterly(createPrice(quotePremium.getQuarterly(), info, healthQuote, QUARTERLY));
+        premium.setAnnually(createPrice(quotePremium.getAnnually(), healthQuote));
+        premium.setMonthly(createPrice(quotePremium.getMonthly(), healthQuote));
+        premium.setFortnightly(createPrice(quotePremium.getFortnightly(), healthQuote));
+        premium.setWeekly(createPrice(quotePremium.getWeekly(), healthQuote));
+        premium.setHalfyearly(createPrice(quotePremium.getHalfYearly(), healthQuote));
+        premium.setQuarterly(createPrice(quotePremium.getQuarterly(), healthQuote));
         return premium;
     }
 
     private static Price createPrice(com.ctm.web.health.quote.model.response.Price quotePrice,
-                                     com.ctm.web.health.quote.model.response.Info info,
-                                     com.ctm.web.health.model.form.HealthQuote healthQuote, Frequency frequency) {
+                                     com.ctm.web.health.model.form.HealthQuote healthQuote) {
+
+        if (quotePrice == null) return null;
 
         Price price = new Price();
 

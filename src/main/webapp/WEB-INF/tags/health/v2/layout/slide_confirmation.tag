@@ -13,14 +13,15 @@
 <layout_v1:slide formId="confirmationForm" className="displayBlock">
 
 	<layout_v1:slide_content>
-		<div id="confirmation" class="more-info-content"></div>
+		<div id="confirmation"></div>
 	</layout_v1:slide_content>
 
 </layout_v1:slide>
 
 <%-- TEMPLATES --%>
 	<%-- Logo and prices template --%>
-	<health_v1:logo_price_template />
+    <core_v1:js_template id="logo-template"><health_v3:logo_template /></core_v1:js_template>
+    <core_v1:js_template id="price-template"><health_v3:price_template /></core_v1:js_template>
 
 	<%-- Main page template --%>
 	<script id="confirmation-template" type="text/html">
@@ -81,9 +82,11 @@
 							<div class="productSummary horizontal visible-xs clearfix">
 
 
-								{{ var logoPriceTemplate = $("#logo-price-template").html(); }}
-								{{ var htmlTemplate = _.template(logoPriceTemplate); }}
-								{{ obj.htmlString = htmlTemplate(obj); }}
+								{{ var priceTemplate = $("#price-template").html(); }}
+								{{ var logoTemplate = $("#logo-template").html(); }}
+								{{ var priceHtmlTemplate = _.template(priceTemplate); }}
+								{{ var logoHtmlTemplate = _.template(logoTemplate); }}
+								{{ obj.htmlString = logoHtmlTemplate(obj) + priceHtmlTemplate(obj); }}
 								{{= htmlString }}
 
 								<h1 class="productName">{{= info.title ? info.title : info.productTitle }}</h1>

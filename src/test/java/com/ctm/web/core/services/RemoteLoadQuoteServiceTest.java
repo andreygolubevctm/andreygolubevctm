@@ -93,4 +93,22 @@ public class RemoteLoadQuoteServiceTest {
 		assertTrue(transactionDetails.isEmpty());
 	}
 
+	@Test
+	public void testGetActionQuoteUrl() throws Exception {
+		String action = "test";
+		String jParam = "&amp;test=true";
+		assertEquals("car_quote.jsp?action=test&amp;transactionId=111111111111&amp;test=true" , remoteLoadQuoteService.getActionQuoteUrl( vertical ,  action ,  transactionId ,  jParam));
+	}
+
+	@Test
+	public void testGetLatestQuoteUrl() throws Exception {
+		String jParam = "&amp;test=true";
+		assertEquals("car_quote.jsp?action=latest&amp;transactionId=111111111111&amp;test=true" , remoteLoadQuoteService.getLatestQuoteUrl( vertical  ,  transactionId ,  jParam));
+	}
+
+	@Test
+	public void testGetStartAgainQuoteUrl() throws Exception {
+		String jParam = "&amp;test=true";
+		assertEquals("car_quote.jsp?action=start-again&amp;transactionId=111111111111&amp;test=true" , remoteLoadQuoteService.getStartAgainQuoteUrl( vertical  ,  transactionId ,  jParam));
+	}
 }

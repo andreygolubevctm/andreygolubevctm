@@ -90,6 +90,7 @@
         {{ var estimatedGasCostLabel = estimatedGasCostValue >= 0 ? estimatedGasCostLabelPrefix + "$" + estimatedGasCostValue.toFixed(2) : estimatedGasCostLabelPrefix + '<a class="btn-add-bill" href="javascript:;"><span>Add bill information</span> <span class="icon icon-arrow-right"/></a>'; }}
         {{ } }}
         {{ var estimatedCostLabelBreak = estimatedElectricityCostLabel !== "" && estimatedGasCostLabel !== "" ? "<br>" : ""; }}
+        {{ var yearlySavingsBreak = yearlyElectricitySavingsLabel !== "" && yearlyGasSavingsLabel !== "" ? "<br>" : ""; }}
 
         {{ var showYearlySavings = meerkat.modules.utilitiesResults.showYearlySavings(); }}
         {{ var showEstimatedCost = meerkat.modules.utilitiesResults.showEstimatedCost(); }}
@@ -172,8 +173,7 @@
                         </div>
                         {{ } else if(showYearlySavings === true) { }}
                         <div class="col-sm-3 col-lg-2 yearlySavingsContainer {{= (yearlySavingsValue <= 0 ? 'noSavings' : '') }}">
-                            <div class="dataColumn"><span class="yearlySavings">{{= yearlyElectricitySavingsLabel }}<br>
-                                {{= yearlyGasSavingsLabel }}</span></div>
+                            <div class="dataColumn"><span class="yearlySavings">{{= yearlyElectricitySavingsLabel }}{{= yearlySavingsBreak }}{{= yearlyGasSavingsLabel }}</span></div>
                         </div>
                         {{ } }}
                         <div class="col-sm-{{= smColCountDiscounts }} col-lg-{{= lgColCountDiscounts }} totalDiscountsContainer">
@@ -253,7 +253,7 @@
                                     </div>
                                     {{ } else if(showYearlySavings === true) { }}
                                     <div class="col-xs-6 yearlySavingsContainer {{= (yearlySavingsValue <= 0 ? 'noSavings' : '') }}">
-                                        <span class="yearlySavings">{{= yearlyElectricitySavingsLabel }}<br>
+                                        <span class="yearlySavings">{{= yearlyElectricitySavingsLabel }}
                                 {{= yearlyGasSavingsLabel }}</span>
                                         {{ if(yearlySavingsValue >= 0) { }}
                                         <span class="yearlySavingsTitle">Savings</span>
