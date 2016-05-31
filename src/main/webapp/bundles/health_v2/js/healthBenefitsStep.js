@@ -101,7 +101,11 @@
         var $hospitalSection = $('.Hospital_container').closest('fieldset'),
             $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
         $coverType.find('input').on('click', function selectCoverType() {
-            switch ($(this).val().toLowerCase()) {
+            var $this = $(this);
+            // weird case in touch device, click doesn't necessary set the checked to true
+            $this.prop( "checked", true );
+
+            switch ($this.val().toLowerCase()) {
                 case 'c':
                     $hospitalSection.slideDown();
                     $extrasSection.slideDown();
