@@ -49,7 +49,8 @@
 	{{ } }}
 
 	<%-- Check if drop dead date has passed --%>
-	{{ var dropDatePassed = meerkat.modules.healthDropDeadDate.getDropDatePassed(obj); }}
+	{{ var today = new Date(); }}
+	{{ var dropDatePassed = today.getTime() > obj.dropDeadDate.getTime() }}
 
 	<%-- Prepare the call to action bar template. --%>
 	{{ var template = $("#more-info-call-to-action-template").html(); }}
