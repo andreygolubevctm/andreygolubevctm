@@ -200,6 +200,7 @@
 		<health_v3:payment_frequency_template />
 
 		<field_v1:hidden xpath="environmentOverride" />
+		<field_v1:hidden xpath="health/staticOverride" />
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 	</jsp:body>
 </layout_v1:journey_engine_page>
