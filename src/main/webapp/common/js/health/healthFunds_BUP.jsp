@@ -71,12 +71,12 @@ set: function () {
 
 		var date = new Date();
 		var _html = meerkat.modules.healthPaymentDay.paymentDays(meerkat.modules.dateUtils.dateValueFormFormat(date));
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank-details_policyDay'), _html);
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit-details_policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
 
 		<%-- Select the only option --%>
-		$('.health_payment_credit-details_policyDay').prop('selectedIndex',1);
-		$('.health_payment_bank-details_policyDay').prop('selectedIndex',1);
+		$('.health_payment_bank_details-policyDay').prop('selectedIndex',1);
+		$('.health_payment_bank_details-policyDay').prop('selectedIndex',1);
 		<%-- Change the deduction rate --%>
 
 		$('.health_payment_credit-details_policyDay-message').text( deductionText);
