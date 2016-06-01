@@ -230,7 +230,7 @@
               //meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
               meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',false);
 
-			  healthFunds_NHB.$paymentType.on('click.NHB', function renderPaymentDaysPaymentType(){
+			  healthFunds_NHB.$paymentType.on('change.NHB', function renderPaymentDaysPaymentType(){
 				healthFunds_NHB.renderPaymentDays();
 			});
 
@@ -291,7 +291,7 @@
               healthFunds._dependants(false);
               meerkat.modules.healthDependants.resetConfig();
               healthFunds._reset();
-			  healthFunds_NHB.$paymentType.off('click.NHB');
+			  healthFunds_NHB.$paymentType.off('change.NHB');
 				healthFunds_NHB.$paymentFrequency.off('change.NHB');
 				healthFunds_NHB.$paymentStartDate.off("changeDate.NHB");
               meerkat.modules.paymentGateway.reset();

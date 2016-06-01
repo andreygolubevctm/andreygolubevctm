@@ -32,7 +32,7 @@ var healthFunds_AUF = {
     healthFunds._payments = { 'min':0, 'max':5, 'weekends':false };
     healthFunds_AUF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 
-    healthFunds_AUF.$paymentType.on('click.AUF', function renderPaymentDayPaymentType(){
+    healthFunds_AUF.$paymentType.on('change.AUF', function renderPaymentDayPaymentType(){
       healthFunds_AUF.renderPaymentDay();
     });
 
@@ -75,7 +75,7 @@ var healthFunds_AUF = {
 
     healthFunds_AUF.$paymentTypeContainer.text('').slideUp();
 
-    healthFunds_AUF.$paymentType.off('click.AUF');
+    healthFunds_AUF.$paymentType.off('change.AUF');
     healthFunds_AUF.$paymentFrequency.off('change.AUF');
     healthFunds_AUF.$paymentStartDate.off("changeDate.AUF");
 
