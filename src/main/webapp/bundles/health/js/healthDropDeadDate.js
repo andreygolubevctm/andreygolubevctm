@@ -7,8 +7,7 @@
         var dropDatePassed = true;
         if(typeof obj.dropDeadDate !== 'undefined') {
             var today = new Date();
-            var dropDeadDate = getDropDeadDate(obj);
-            dropDatePassed = today.getTime() > dropDeadDate.getTime();
+            dropDatePassed = today.getTime() > getDropDeadDate(obj).getTime();
         }
         return dropDatePassed;
     }
