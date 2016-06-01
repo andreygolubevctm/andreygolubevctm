@@ -34,7 +34,7 @@ set: function () {
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':false, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 
-		healthFunds_BUP.$paymentType.on('click.BUP', function updatePaymentMsgPaymentType(){
+		healthFunds_BUP.$paymentType.on('change.BUP', function updatePaymentMsgPaymentType(){
 			healthFunds_BUP.updateMessage();
 		});
 
@@ -114,7 +114,7 @@ set: function () {
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
 
-		healthFunds_BUP.$paymentType.off('click.BUP');
+		healthFunds_BUP.$paymentType.off('change.BUP');
 		healthFunds_BUP.$paymentFrequency.off('change.BUP');
 		healthFunds_BUP.$paymentStartDate.off("changeDate.BUP");
 

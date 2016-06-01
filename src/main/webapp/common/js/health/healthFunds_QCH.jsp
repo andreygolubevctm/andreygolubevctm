@@ -76,7 +76,7 @@ var healthFunds_QCH = {
 			meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':true, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 			meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':true, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 
-			healthFunds_QCH.$paymentType.on('click.QCH', function renderPaymentDaysPaymentType(){
+			healthFunds_QCH.$paymentType.on('change.QCH', function renderPaymentDaysPaymentType(){
 				healthFunds_QCH.renderPaymentDays();
 			});
 
@@ -168,7 +168,7 @@ var healthFunds_QCH = {
 			$('#health_payment_bank_policyDay').attr('type','').attr('data-attach', '');
 			$('#health_payment_credit_policyDay').attr('type','').attr('data-attach', '');
 
-			healthFunds_QCH.$paymentType.off('click.QCH');
+			healthFunds_QCH.$paymentType.off('change.QCH');
 			healthFunds_QCH.$paymentFrequency.off('change.QCH');
 			healthFunds_QCH.$paymentStartDate.off("changeDate.QCH");
 			meerkat.modules.paymentGateway.reset();

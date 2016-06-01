@@ -158,7 +158,7 @@ var healthFunds_AHM = {
       };
     healthFunds_AHM.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
-    healthFunds_AHM.$paymentType.on('click.AHM', function populateFuturePaymentDaysPaymentType(){
+    healthFunds_AHM.$paymentType.on('change.AHM', function populateFuturePaymentDaysPaymentType(){
       healthFunds_AHM.populateFuturePaymentDays();
     });
 
@@ -226,7 +226,7 @@ var healthFunds_AHM = {
 
     healthFunds_AHM.$paymentTypeContainer.text('').slideUp();
 
-    healthFunds_AHM.$paymentType.off('click.AHM');
+    healthFunds_AHM.$paymentType.off('change.AHM');
     healthFunds_AHM.$paymentFrequency.off('change.AHM');
     healthFunds_AHM.$paymentStartDate.off("changeDate.AHM");
 
