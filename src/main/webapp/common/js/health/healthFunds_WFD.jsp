@@ -50,7 +50,7 @@ var healthFunds_WFD = {
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
         meerkat.modules.healthCreditCard.render();
 
-        healthFunds_WFD.$paymentType.on('click.WFD', function renderPaymentDaysPaymentType(){
+        healthFunds_WFD.$paymentType.on('change.WFD', function renderPaymentDaysPaymentType(){
             healthFunds_WFD.renderPaymentDays();
         });
 
@@ -128,7 +128,7 @@ var healthFunds_WFD = {
         $('.health_payment_bank_details-policyDay option').val(deductionDateValue);
     },
     unset: function() {
-        healthFunds_WFD.$paymentType.off('click.WFD');
+        healthFunds_WFD.$paymentType.off('change.WFD');
         healthFunds_WFD.$paymentFrequency.off('change.WFD');
         healthFunds_WFD.$paymentStartDate.off("changeDate.WFD");
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
