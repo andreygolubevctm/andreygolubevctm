@@ -76,7 +76,7 @@ set: function () {
 	meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa': true, 'mc': true, 'amex':false, 'diners':false });
 		meerkat.modules.healthCreditCard.render();
 
-		healthFunds_CTM.$paymentType.on('click.CTM', function renderPaymentDaysPaymentType(){
+		healthFunds_CTM.$paymentType.on('change.CTM', function renderPaymentDaysPaymentType(){
 			healthFunds_CTM.renderPaymentDays();
 		});
 
@@ -143,7 +143,7 @@ set: function () {
 		$('.ctm-payment-legend').remove();
 		$('#update-premium').off('click.CTM');
 
-		healthFunds_CTM.$paymentType.off('click.CTM');
+		healthFunds_CTM.$paymentType.off('change.CTM');
 		healthFunds_CTM.$paymentFrequency.off('change.CTM');
 		healthFunds_CTM.$paymentStartDate.off("changeDate.CTM");
 

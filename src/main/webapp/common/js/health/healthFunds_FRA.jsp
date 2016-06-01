@@ -28,7 +28,7 @@ var healthFunds_FRA = {
         $('.person-title').find('option[value=DR]').remove();
 
         <%--selections for payment date--%>
-        healthFunds_FRA.$paymentType.on('click.FRA', function updatePaymentMsgPaymentType(){
+        healthFunds_FRA.$paymentType.on('change.FRA', function updatePaymentMsgPaymentType(){
             healthFunds_FRA.updateMessage();
         });
 
@@ -105,7 +105,7 @@ var healthFunds_FRA = {
         <%--selections for payment date--%>
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
-        healthFunds_FRA.$paymentType.off('click.FRA');
+        healthFunds_FRA.$paymentType.off('change.FRA');
         healthFunds_FRA.$paymentFrequency.off('change.FRA');
         healthFunds_FRA.$paymentStartDate.off("changeDate.FRA");
 
