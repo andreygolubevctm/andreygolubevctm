@@ -153,10 +153,8 @@
 		product.showAltPremium = true;
 		htmlTemplate = _.template($logoPriceTemplate.html());
 		product.renderedAltPriceTemplate = htmlTemplate(product);
-
-		var today = new Date();
 		product.dropDeadDate = typeof product.dropDeadDate === 'string' ? new Date(product.dropDeadDate) : product.dropDeadDate;
-		product.dropDatePassed = today.getTime() > product.dropDeadDate.getTime();
+		product.dropDatePassed = meerkat.modules.healthDropDeadDate.getDropDatePassed(product);
 		$mainDualPricingTemplate = getTemplate(isForSidebar);
 
 		var dualPriceTemplate = _.template($mainDualPricingTemplate.html());
