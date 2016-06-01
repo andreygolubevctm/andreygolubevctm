@@ -112,8 +112,8 @@ var healthFunds_QCH = {
 		healthFunds._payments = { 'min':0, 'max':1, 'weekends':true };
 		healthFunds_QCH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank-details_policyDay'), _html);
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit-details_policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
 
 		$('.health_payment_bank-details_policyDay-message').html('');
 		$('.health_payment_credit-card_policyDay-message').html('');
@@ -165,8 +165,8 @@ var healthFunds_QCH = {
 			$('#health_payment_details_type_ba').prop('disabled', false);
 			$('#health_payment_details_type_ba').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
 
-			$('#health_payment_bank-details_policyDay').attr('type','').attr('data-attach', '');
-			$('#health_payment_credit-details_policyDay').attr('type','').attr('data-attach', '');
+			$('#health_payment_bank_policyDay').attr('type','').attr('data-attach', '');
+			$('#health_payment_credit_policyDay').attr('type','').attr('data-attach', '');
 
 			healthFunds_QCH.$paymentType.off('click.QCH');
 			healthFunds_QCH.$paymentFrequency.off('change.QCH');
