@@ -154,7 +154,7 @@
 		htmlTemplate = _.template($logoPriceTemplate.html());
 		product.renderedAltPriceTemplate = htmlTemplate(product);
 		product.dropDeadDate = typeof product.dropDeadDate === 'string' ? new Date(product.dropDeadDate) : product.dropDeadDate;
-		product.dropDatePassed = meerkat.modules.healthDropDeadDate.getDropDatePassed(obj);
+		product.dropDatePassed = meerkat.modules.healthDropDeadDate.getDropDatePassed(product);
 		$mainDualPricingTemplate = getTemplate(isForSidebar);
 
 		var dualPriceTemplate = _.template($mainDualPricingTemplate.html());
