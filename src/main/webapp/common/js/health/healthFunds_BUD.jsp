@@ -27,7 +27,7 @@ var healthFunds_BUD = {
 		$('.person-title').find('option[value=DR]').remove();
 
 		<%-- selections for payment date --%>
-		healthFunds_BUD.$paymentType.on('click.BUD', function updatePaymentMsgPaymentType(){
+		healthFunds_BUD.$paymentType.on('change.BUD', function updatePaymentMsgPaymentType(){
 			healthFunds_BUD.updateMessage();
 		});
 
@@ -101,10 +101,10 @@ var healthFunds_BUD = {
 		$('.person-title').append( healthFunds.$_optionDR    );
 
 		<%-- selections for payment date --%>
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit-details_policyDay'), false);
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank-details_policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
 
-		healthFunds_BUD.$paymentType.off('click.BUD');
+		healthFunds_BUD.$paymentType.off('change.BUD');
 		healthFunds_BUD.$paymentFrequency.off('change.BUD');
 		healthFunds_BUD.$paymentStartDate.off("changeDate.BUD");
 
