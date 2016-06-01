@@ -4,18 +4,30 @@
 	overflow: hidden;
 }
 
+.companyLogo {
+	.providersHighResSpriteImages(~"homeloan"; ~"logo_"; @brands-list;);
+}
+
 .priceMode .compare-basket .companyLogo {
 	.providersHighResSpriteImages(~"homeloan"; ~"logo_"; @brands-list; @logo-compare-scale;);
 }
 
-.companyLogo {
-  .providersHighResSpriteImages(~"homeloan"; ~"logo_"; @brands-list;);
+.featuresMode .productSummary .companyLogo {
+	.providersHighResSpriteImages(~"homeloan"; ~"logo_"; @brands-list; 0.75;);
 }
 
 @media (@sm-only) {
-  .featuresMode {
-	.companyLogo {
-	  .providersHighResSpriteImages(~"homeloan"; ~"logo_"; @brands-list; @logo-xs-scale; ~"");
+	.featuresMode {
+		.companyLogo {
+			margin-top:0;
+		}
 	}
-  }
+}
+
+@media (@md) {
+	.featuresMode {
+		.companyLogo {
+			margin-top:-0.75em;
+		}
+	}
 }
