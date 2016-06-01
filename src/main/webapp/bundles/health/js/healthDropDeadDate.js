@@ -19,7 +19,7 @@
     meerkat.modules.register("healthDropDeadDate", {
         init : init,
         getDropDatePassed: getDropDatePassed,
-        getDropDate : getDropDeadDate
+        getDropDeadDate : getDropDeadDate
     });
 
 })(jQuery);
