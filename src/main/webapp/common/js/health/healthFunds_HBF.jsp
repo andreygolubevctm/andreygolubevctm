@@ -11,6 +11,9 @@ HBF
 --%>
 
 var healthFunds_HBF = {
+    $paymentType : $('#health_payment_details_type input'),
+    $paymentFrequency : $('#health_payment_details_frequency'),
+    $paymentStartDate: $("#health_payment_details_start"),
     set: function(){
         healthFunds_HBF.productType = meerkat.modules.healthResults.getSelectedProduct().info.ProductType;
         if (healthFunds_HBF.productType === 'GeneralHealth' || healthFunds_HBF.productType === 'Combined') {
@@ -179,28 +182,39 @@ var healthFunds_HBF = {
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
         meerkat.modules.healthCreditCard.render();
 
-        <%-- Payment deduction dates --%>
-        $('#update-premium').on('click.HBF', function() {
-            var isBank = meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() !== 'cc';
-
-            if (meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'fortnightly') {
-                healthFunds._payments = {
-                    'min':0,
-                    'max':14,
-                    'weekends':true
-                };
-                meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, true, isBank);
-            } else {
-                meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, isBank, 28);
-            }
-        });
-
         <%-- Email not compulsory, but when you select email as how to sent you, then it is required --%>
         var $emailField = $("#health_application_email");
         $emailField.setRequired(false);
         $('input[name="health_application_contactPoint"]').on('change.HBF', function onHowToSendChange(){
             $emailField.setRequired($('#health_application_contactPoint_E').is(':checked')).valid();
         });
+
+        <%-- update dom when change premium related fields --%>
+        healthFunds_HBF.$paymentType.on('change.HBF', function updatePaymentMsgPaymentType(){
+            healthFunds_HBF.updateMessage();
+        });
+
+        healthFunds_HBF.$paymentFrequency.on('change.HBF', function updatePaymentMsgFrequency(){
+            healthFunds_HBF.updateMessage();
+        });
+
+        healthFunds_HBF.$paymentStartDate.on("changeDate.HBF", function updatePaymentMsgCalendar(e) {
+            healthFunds_HBF.updateMessage();
+        });
+    },
+    updateMessage: function() {
+        var isBank = meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() !== 'cc';
+
+        if (meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'fortnightly') {
+            healthFunds._payments = {
+                'min':0,
+                'max':14,
+                'weekends':false
+            };
+            meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, isBank);
+        } else {
+            meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, isBank, 28);
+        }
     },
     unset: function(){
         var $hbf_flexi_extras = $('#hbf_flexi_extras');
@@ -237,7 +251,9 @@ var healthFunds_HBF = {
         meerkat.modules.healthCreditCard.render();
 
         <%--off payment deduction dates--%>
-        $('#update-premium').off('click.HBF');
+        healthFunds_HBF.$paymentType.off('change.HBF');
+        healthFunds_HBF.$paymentFrequency.off('change.HBF');
+        healthFunds_HBF.$paymentStartDate.off("changeDate.HBF");
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('#health_payment_bank_paymentDay'), false);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('#health_payment_credit_paymentDay'), false);
 
