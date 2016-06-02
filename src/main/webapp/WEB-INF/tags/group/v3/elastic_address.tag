@@ -10,6 +10,7 @@
 <%@ attribute name="postCodeNameAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
 <%@ attribute name="postCodeAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
 <%@ attribute name="stateValidationField"		required="false" rtexprvalue="true"	 description="true/false to show the main title" %>
+<%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
 <c:set var="isPostal" value="${type eq 'P'}"/>
 
 <%-- VARIABLES --%>
@@ -72,61 +73,96 @@
             <c:otherwise>Street</c:otherwise>
         </c:choose>
     </c:set>
-    <form_v3:row fieldXpath="${fieldXpath}" label="${addressLabel} Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false">
+    <form_v2:row fieldXpath="${fieldXpath}" label="${addressLabel} Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false">
         <c:set var="placeholder" value="e.g. 5/20 Sample St"/>
         <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address"
-                         placeHolder="${placeholder}" required="false"
-                         additionalAttributes=" data-rule-validAutofilllessSearch='${name}' data-msg-validAutofilllessSearch='Please select a valid address' "/>
-    </form_v3:row>
-
-    <%-- POSTCODE --%>
-    <c:set var="fieldXpath" value="${xpath}/nonStdPostCode"/>
-    <form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${name}_nonStdFieldRow">
-        <field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}"/>
+                        placeHolder="${placeholder}" required="false"
+                        additionalAttributes=" data-rule-validAutofilllessSearch='${name}' data-msg-validAutofilllessSearch='Please select a valid address' " disableErrorContainer="${disableErrorContainer}"/>
     </form_v2:row>
 
-    <%-- SUBURB DROPDOWN (populated from postcode) --%>
-    <c:set var="fieldXpath" value="${xpath}/suburb"/>
-    <form_v2:row fieldXpath="${fieldXpath}" label="Suburb" className="${name}_nonStdFieldRow">
-        <c:choose>
-            <c:when test="${not empty address.postCode or not empty address.nonStdPostCode}">
-                <div class="select">
-					<span class=" input-group-addon" data-target="${name}">
-						<i class="icon-sort"></i>
-					</span>
-                    <select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes}>
-                            <%-- Write the initial "Please select" option --%>
-                        <option value="">Please select</option>
-                            <%-- Write the options for each row --%>
-                        <c:forEach var="row" items="${result.rows}">
-                            <c:choose>
-                                <c:when test="${row.suburbSeq == address.suburb || row.suburb == address.suburbName}">
-                                    <option value="${row.suburbSeq}" selected="selected">${row.suburb}</option>
-                                    <%-- Fix Suburb for really old quotes --%>
-                                    <c:if test="${empty address.suburb}">
-                                        <go:setData dataVar="data" value="${row.suburbSeq}" xpath="${xpath}/suburb"/>
-                                        <c:set var="address" value="${data.node[xpath]}"/>
-                                    </c:if>
-                                </c:when>
-                                <c:otherwise>
-                                    <option value="${row.suburbSeq}">${row.suburb}</option>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach>
-                    </select>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="select">
-					<span class=" input-group-addon" data-target="${name}">
-						<i class="icon-sort"></i>
-					</span>
-                    <select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" disabled="disabled" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes}>
-                        <option value=''>Enter Postcode</option>
-                    </select>
-                </div>
-            </c:otherwise>
-        </c:choose>
+    <%-- POSTCODE --%>
+    <form_v2:row label="Postcode" isNestedStyleGroup="${true}" className="${name}_nonStdFieldRow">
+        <c:set var="fieldXpath" value="${xpath}/nonStdPostCode"/>
+        <form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${name}_nonStdFieldRow" smRowOverride="5" isNestedField="${true}" hideHelpIconCol="${true}">
+            <field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}" disableErrorContainer="${disableErrorContainer}" />
+        </form_v2:row>
+
+        <%-- SUBURB DROPDOWN (populated from postcode) --%>
+        <c:set var="fieldXpath" value="${xpath}/suburb"/>
+        <form_v2:row fieldXpath="${fieldXpath}" label="Suburb" className="${name}_nonStdFieldRow" smRowOverride="7" hideHelpIconCol="${true}" isNestedField="${true}">
+            <c:choose>
+                <c:when test="${not empty address.postCode or not empty address.nonStdPostCode}">
+                    <div class="select">
+                        <span class=" input-group-addon" data-target="${name}">
+                            <i class="icon-sort"></i>
+                        </span>
+                        <select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes} <c:if test="${disableErrorContainer eq true}"> data-disable-error-container='true'</c:if>>
+                                <%-- Write the initial "Please select" option --%>
+                            <option value="">Suburb</option>
+                                <%-- Write the options for each row --%>
+                            <c:forEach var="row" items="${result.rows}">
+                                <c:choose>
+                                    <c:when test="${row.suburbSeq == address.suburb || row.suburb == address.suburbName}">
+                                        <option value="${row.suburbSeq}" selected="selected">${row.suburb}</option>
+                                        <%-- Fix Suburb for really old quotes --%>
+                                        <c:if test="${empty address.suburb}">
+                                            <go:setData dataVar="data" value="${row.suburbSeq}" xpath="${xpath}/suburb"/>
+                                            <c:set var="address" value="${data.node[xpath]}"/>
+                                        </c:if>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="${row.suburbSeq}">${row.suburb}</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="select">
+                        <span class=" input-group-addon" data-target="${name}">
+                            <i class="icon-sort"></i>
+                        </span>
+                        <select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" disabled="disabled" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes}>
+                            <option value=''>Enter Postcode</option>
+                        </select>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </form_v2:row>
+    </form_v2:row>
+
+    <core_v1:clear/>
+
+
+    <form_v2:row label="Unit / Street Number" isNestedStyleGroup="${true}" className="${name}_nonStdFieldRow">
+        <%-- UNIT/SHOP NUMBER (Optional) --%>
+        <c:set var="fieldXpath" value="${xpath}/unitShop"/>
+        <form_v2:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="${name}_nonStdFieldRow" smRowOverride="5" isNestedField="${true}" hideHelpIconCol="${true}">
+            <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true"
+                            required="false" placeHolder="Unit/Shop/Level"/>
+        </form_v2:row>
+
+        <%-- STREET NUMBER --%>
+        <c:set var="fieldXpath" value="${xpath}/streetNum"/>
+        <c:set var="streetNoLabel" value="Street No."/>
+        <c:if test="${isPostal}">
+            <c:set var="streetNoLabel" value="${streetNoLabel} or PO Box"/>
+        </c:if>
+
+        <form_v2:row fieldXpath="${fieldXpath}" label="${streetNoLabel}" id="${name}_streetNumRow" className="${name}_nonStdFieldRow" smRowOverride="2"  isNestedField="${true}" hideHelpIconCol="${true}">
+            <div class="${name}_streetNum_container">
+                <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true"
+                                required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid street number'" placeHolder="St. #"/>
+            </div>
+        </form_v2:row>
+
+        <%-- UNIT/SHOP TYPE (Optional) --%>
+        <c:set var="unitTypes">=Please choose...,CO=Cottage,DU=Duplex,FA=Factory,HO=House,KI=Kiosk,L=Level,M=Maisonette,MA=Marine Berth,OF=Office,PE=Penthouse,RE=Rear,RO=Room,SH=Shop,ST=Stall,SI=Site,SU=Suite,TO=Townhouse,UN=Unit,VI=Villa,WA=Ward,OT=Other</c:set>
+        <c:set var="fieldXpath" value="${xpath}/nonStdUnitType"/>
+        <form_v2:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStdFieldRow" smRowOverride="5"  isNestedField="${true}" hideHelpIconCol="${true}">
+            <field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" placeHolder="Unit Type"/>
+        </form_v2:row>
     </form_v2:row>
 
     <core_v1:clear/>
@@ -135,50 +171,25 @@
     <c:set var="fieldXpath" value="${xpath}/nonStdStreet"/>
     <form_v2:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStdFieldRow">
         <field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude"
-                         additionalAttributes=" data-rule-validAddress='${name}' data-rule-validAddress='Please enter the residential street' "/>
+                        additionalAttributes=" data-rule-validAddress='${name}' data-rule-validAddress='Please enter the residential street' " disableErrorContainer="${disableErrorContainer}" placeHolder="Street Name"/>
     </form_v2:row>
 
-    <%-- STREET NUMBER --%>
-    <c:set var="fieldXpath" value="${xpath}/streetNum"/>
-    <c:set var="streetNoLabel" value="Street No."/>
-    <c:if test="${isPostal}">
-        <c:set var="streetNoLabel" value="${streetNoLabel} or PO Box"/>
-    </c:if>
-
-    <form_v2:row fieldXpath="${fieldXpath}" label="${streetNoLabel}" id="${name}_streetNumRow" className="${name}_nonStdFieldRow">
-        <div class="${name}_streetNum_container">
-            <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true"
-                             required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid street number'"/>
-        </div>
-    </form_v2:row>
-
-    <%-- UNIT/SHOP NUMBER (Optional) --%>
-    <c:set var="fieldXpath" value="${xpath}/unitShop"/>
-    <form_v2:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="${name}_nonStdFieldRow">
-        <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true"
-                         required="false"/>
-    </form_v2:row>
-
-    <%-- UNIT/SHOP TYPE (Optional) --%>
-    <c:set var="unitTypes">=Please choose...,CO=Cottage,DU=Duplex,FA=Factory,HO=House,KI=Kiosk,L=Level,M=Maisonette,MA=Marine Berth,OF=Office,PE=Penthouse,RE=Rear,RO=Room,SH=Shop,ST=Stall,SI=Site,SU=Suite,TO=Townhouse,UN=Unit,VI=Villa,WA=Ward,OT=Other</c:set>
-    <c:set var="fieldXpath" value="${xpath}/nonStdUnitType"/>
-    <form_v2:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStdFieldRow">
-        <field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true"/>
-    </form_v2:row>
+    <core_v1:clear/>
 
     <!-- NON STANDARD CHECKBOX -->
     <c:set var="fieldXpath" value="${xpath}/nonStd"/>
-    <form_v3:row fieldXpath="${fieldXpath}" label="" id="${name}_nonStd_row" className="nonStd">
+    <form_v3:row fieldXpath="${fieldXpath}" label="" className="${name}_nonStd_row nonStd">
         <c:set var="unableToFindCheckboxText" value="Tick here if you are unable to find the address"/>
 
         <c:if test="${isPostal}">
             <c:set var="unableToFindCheckboxText" value="${unableToFindCheckboxText} or your address is a PO Box"/>
         </c:if>
-
-        <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="${unableToFindCheckboxText}" label="true" required="false"/>
     </form_v3:row>
 
-    <core_v1:clear/>
+    <form_v2:row fieldXpath="${fieldXpath}" label="" className="nonStd">
+        <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="${unableToFindCheckboxText}" label="true" required="false"/>
+    </form_v2:row>
+
 
     <!-- HIDDEN FIELDS (Populated in autocomplete.js or elastic_search.js) -->
     <c:set var="errorPlacementSelector" value="#${name}_error_container .error-field"/>

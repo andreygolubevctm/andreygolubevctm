@@ -11,8 +11,11 @@ FRA
 --%>
 
 var healthFunds_FRA = {
-    $policyDateCreditMessage : $('.health_credit-card-details_policyDay-message'),
-    $policyDateBankMessage : $('.health_bank-details_policyDay-message'),
+    $policyDateCreditMessage : $('.health_payment_credit-details_policyDay-message'),
+    $policyDateBankMessage : $('.health_payment_bank-details_policyDay-message'),
+    $paymentType : $('#health_payment_details_type input'),
+    $paymentFrequency : $('#health_payment_details_frequency'),
+    $paymentStartDate: $("#health_payment_details_start"),
     set: function(){
         <%--dependant definition--%>
         healthFunds._dependants('This policy provides cover for children until their 21st birthday. Adult dependants over 21 years old can be covered by applying for a separate singles policy.');
@@ -25,34 +28,20 @@ var healthFunds_FRA = {
         $('.person-title').find('option[value=DR]').remove();
 
         <%--selections for payment date--%>
-        $('#update-premium').on('click.FRA', function(){
-            var messageField = null;
-            if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
-                messageField = healthFunds_FRA.$policyDateCreditMessage;
-            } else {
-                messageField = healthFunds_FRA.$policyDateBankMessage;
-            }
-
-            var premiumType = $('#health_payment_details_frequency').val(),
-                    startDate = meerkat.modules.dateUtils.returnDate($('#health_payment_details_start').val()).getTime(),
-                    <%-- Get today's date without hours --%>
-                    todayDate = new Date(new Date(meerkat.modules.utils.getUTCToday()).setHours(0,0,0,0)).getTime();
-
-            var messageText;
-            if(startDate === todayDate && premiumType === 'annually') {
-                messageText = 'Your payment will be debited in the next 24 hours';
-            } else if(startDate > todayDate && premiumType === 'annually') {
-                messageText = 'Your payment will be debited on your policy start date';
-            } else if(startDate === todayDate && premiumType === 'monthly') {
-                messageText = 'Your first payment will be debited in the next 24 hours and thereafter on the same day each month';
-            } else if(startDate > todayDate && premiumType === 'monthly') {
-                messageText = 'Your first payment will be debited on your policy start date and thereafter on the same day each month';
-            } else {
-                messageText = 'Your payment will be deducted on the policy start date';
-            }
-
-            messageField.text(messageText);
+        healthFunds_FRA.$paymentType.on('change.FRA', function updatePaymentMsgPaymentType(){
+            healthFunds_FRA.updateMessage();
         });
+
+        healthFunds_FRA.$paymentFrequency.on('change.FRA', function updatePaymentMsgFrequency(){
+            healthFunds_FRA.updateMessage();
+        });
+
+        healthFunds_FRA.$paymentStartDate.on("changeDate.FRA", function updatePaymentMsgCalendar(e) {
+            healthFunds_FRA.updateMessage();
+        });
+
+        <%--allow weekend selection from the datepicker--%>
+        healthFunds_FRA.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
         <%--change age of dependants and school--%>
         meerkat.modules.healthDependants.updateConfig({school:false});
@@ -73,6 +62,34 @@ var healthFunds_FRA = {
         meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
 
     },
+    updateMessage: function() {
+        var messageField = null;
+        if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
+            messageField = healthFunds_FRA.$policyDateCreditMessage;
+        } else {
+            messageField = healthFunds_FRA.$policyDateBankMessage;
+        }
+
+        var premiumType = $('#health_payment_details_frequency').val(),
+                startDate = meerkat.modules.dateUtils.returnDate($('#health_payment_details_start').val()).getTime(),
+                <%-- Get today's date without hours --%>
+                todayDate = new Date(new Date(meerkat.modules.utils.getUTCToday()).setHours(0,0,0,0)).getTime();
+
+        var messageText;
+        if(startDate === todayDate && premiumType === 'annually') {
+            messageText = 'Your payment will be debited in the next 24 hours';
+        } else if(startDate > todayDate && premiumType === 'annually') {
+            messageText = 'Your payment will be debited on your policy start date';
+        } else if(startDate === todayDate && premiumType === 'monthly') {
+            messageText = 'Your first payment will be debited in the next 24 hours and thereafter on the same day each month';
+        } else if(startDate > todayDate && premiumType === 'monthly') {
+            messageText = 'Your first payment will be debited on your policy start date and thereafter on the same day each month';
+        } else {
+            messageText = 'Your payment will be deducted on the policy start date';
+        }
+
+        messageField.text(messageText);
+    },
     unset: function(){
         healthFunds._reset();
 
@@ -86,9 +103,11 @@ var healthFunds_FRA = {
         $('.person-title').append( healthFunds.$_optionDR    );
 
         <%--selections for payment date--%>
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
-        $('#update-premium').off('click.FRA');
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
+        healthFunds_FRA.$paymentType.off('change.FRA');
+        healthFunds_FRA.$paymentFrequency.off('change.FRA');
+        healthFunds_FRA.$paymentStartDate.off("changeDate.FRA");
 
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.resetConfig();

@@ -2573,7 +2573,7 @@ var highlightMeTextObj = new HighlightMeText();
 						</span>
 						<span class="panel">
 							<h4>Financial Services Guide</h4>
-							<p class="pds"><a href="javascript:void(0);" class="showDoc" data-url="legal/Life_FSG.pdf" data-title="Financial Services Guide">Financial Services Guide (Life Insurance Products)</a></p>
+							<p class="pds"><a href="javascript:void(0);" class="showDoc" data-url="/static/legal/Life_FSG.pdf" data-title="Financial Services Guide">Financial Services Guide (Life Insurance Products)</a></p>
 						</span>
 						<div class="clear"><!-- empty --></div>
 					</div></td>

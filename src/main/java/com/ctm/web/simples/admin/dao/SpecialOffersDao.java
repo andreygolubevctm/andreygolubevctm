@@ -56,14 +56,14 @@ public class SpecialOffersDao {
         try {
             StringBuilder sql = new StringBuilder(
                     "SELECT offerId,content, terms,so.providerId,  so.effectiveStart, so.effectiveEnd," +
-                            "so.styleCodeId,state,sc.styleCodeName ,pm.Name providerName  " +
+                            "so.styleCodeId,state,so.coverType, sc.styleCodeName ,pm.Name providerName  " +
                             "from ctm.hlt_specialoffer_master so inner join stylecodes sc on so.styleCodeId = sc.styleCodeId " +
                             "inner join provider_master pm on pm.ProviderId = so.providerId");
             if (offerId != 0) {
                 sql.append(" where offerId = ?  ");
             }
 
-            sql.append(" ORDER BY providerName, so.styleCodeId, so.state, so.effectiveStart, so.effectiveEnd");
+            sql.append(" ORDER BY providerName, so.styleCodeId, so.state, so.coverType, so.effectiveStart, so.effectiveEnd");
 
             stmt = dbSource.getConnection().prepareStatement(sql.toString());
             if (offerId != 0) {
@@ -80,6 +80,7 @@ public class SpecialOffersDao {
                         resultSet.getInt("providerId"),
                         resultSet.getInt("styleCodeId"),
                         resultSet.getString("state"),
+                        resultSet.getString("coverType"),
                         resultSet.getString("styleCodeName"),
                         resultSet.getString("providerName")
                     );
@@ -101,9 +102,10 @@ public class SpecialOffersDao {
      * @param styleCodeId     : brand code id , function also look for default '0' value
      * @param applicationDate : Current date
      * @param state           : name of state (i.e QLD), function also search for default value '0'
+     * @param coverType       : type of Cover (i.e C for Combined, H for Hospital, E for Extras), function also search for default value '0'
      * @param verticalId      : vertical ID
      */
-    public List<SpecialOffers> getSpecialOffers(int providerId, int styleCodeId, Date applicationDate, String state, int verticalId) throws DaoException {
+    public List<SpecialOffers> getSpecialOffers(int providerId, int styleCodeId, Date applicationDate, String state, String coverType, int verticalId) throws DaoException {
         SimpleDatabaseConnection dbSource;
         List<SpecialOffers> specialOffersList = new ArrayList<>();
         PreparedStatement stmt;
@@ -111,21 +113,22 @@ public class SpecialOffersDao {
         try {
             stmt = dbSource.getConnection().prepareStatement(
                     "SELECT content, terms FROM ctm.hlt_specialoffer_master WHERE providerId=? AND  (styleCodeId=?  OR styleCodeId = 0) " +
-                            "AND (state=? OR state='0')AND ? BETWEEN effectiveStart AND effectiveEnd order by state DESC limit 1");
+                            "AND (state=? OR state='0') AND (coverType=? OR coverType='0') AND ? BETWEEN effectiveStart AND effectiveEnd order by state DESC limit 1");
             stmt.setInt(1, providerId);
             stmt.setInt(2, styleCodeId);
             stmt.setString(3, state.trim().toUpperCase());
-            stmt.setTimestamp(4, new java.sql.Timestamp(applicationDate.getTime()));
+            stmt.setString(4, coverType.trim().toUpperCase());
+            stmt.setTimestamp(5, new java.sql.Timestamp(applicationDate.getTime()));
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
                 SpecialOffers specialOffers = helper.createSpecialOffersObject(0,
-                        resultSet.getString("content"), resultSet.getString("terms"), null, null, 0, 0, null, null, null);
+                        resultSet.getString("content"), resultSet.getString("terms"), null, null, 0, 0, null, null, null, null);
                 specialOffersList.add(specialOffers);
             }
             return specialOffersList;
         } catch (SQLException | NamingException e) {
             LOGGER.error("Failed to retrieve Special Offers {}, {}, {}, {}, {}", kv("providerId", providerId), kv("styleCodeId",
-                styleCodeId), kv("applicationDate", applicationDate), kv("state", state), kv("verticalId", verticalId), e);
+                styleCodeId), kv("applicationDate", applicationDate), kv("state", state), kv("coverType", coverType), kv("verticalId", verticalId), e);
             throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
@@ -195,7 +198,7 @@ public class SpecialOffersDao {
                 throw new DaoException("failed : offerId is null");
             }
             stmt = dbSource.getConnection().prepareStatement(" UPDATE ctm.hlt_specialoffer_master SET  " +
-                    "content = ?,terms=?, providerId = ?,effectiveStart = ?, effectiveEnd = ?,styleCodeId=?,state=? " +
+                    "content = ?,terms=?, providerId = ?,effectiveStart = ?, effectiveEnd = ?,styleCodeId=?,state=?,coverType=? " +
                     " WHERE offerId= ?");
             if (specialOffersParams.getContent() != null && !specialOffersParams.getContent().equals(""))
                 stmt.setString(1, specialOffersParams.getContent());
@@ -210,7 +213,8 @@ public class SpecialOffersDao {
             stmt.setTimestamp(5, endDate);
             stmt.setInt(6, specialOffersParams.getStyleCodeId());
             stmt.setString(7, specialOffersParams.getState().toUpperCase());
-            stmt.setInt(8, offerId);
+            stmt.setString(8, specialOffersParams.getCoverType().toUpperCase());
+            stmt.setInt(9, offerId);
             stmt.executeUpdate();
             auditTableDao.auditAction("hlt_specialoffer_master", "offerId", offerId, userName, ipAddress, AuditTableDao.UPDATE, dbSource.getConnection());
             // Commit these records to the DB before fetching them
@@ -249,8 +253,8 @@ public class SpecialOffersDao {
 
             stmt = dbSource.getConnection().prepareStatement(
                     " INSERT INTO ctm.hlt_specialoffer_master " +
-                            "( content, terms,providerId,  effectiveStart, effectiveEnd,styleCodeId,state ) VALUES " +
-                            "(?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                            "( content, terms,providerId,  effectiveStart, effectiveEnd,styleCodeId,state,coverType ) VALUES " +
+                            "(?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             if (specialOffersParams.getContent() != null && !specialOffersParams.getContent().equals(""))
                 stmt.setString(1, specialOffersParams.getContent());
             else
@@ -264,6 +268,7 @@ public class SpecialOffersDao {
             stmt.setTimestamp(5, endDate);
             stmt.setInt(6, specialOffersParams.getStyleCodeId());
             stmt.setString(7, specialOffersParams.getState());
+            stmt.setString(8, specialOffersParams.getCoverType());
             stmt.executeUpdate();
             ResultSet rsKey = stmt.getGeneratedKeys();
             if (rsKey.next()) {

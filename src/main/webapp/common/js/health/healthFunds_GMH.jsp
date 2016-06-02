@@ -11,10 +11,15 @@ GMH
 --%>
 var healthFunds_GMH = {
     $policyDateHiddenField : $('.health_details-policyDate'),
-    $policyDateCreditMessage : $('.health_credit-card-details_policyDay-message'),
-    $policyDateBankMessage : $('.health_bank-details_policyDay-message'),
+    $policyDateCreditMessage : $('.health_payment_credit-details_policyDay-message'),
+    $policyDateBankMessage : $('.health_payment_bank-details_policyDay-message'),
+    $paymentType : $('#health_payment_details_type input'),
+    $paymentFrequency : $('#health_payment_details_frequency'),
+    $paymentStartDate: $("#health_payment_details_start"),
+    $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
     paymentDayChange : function(value) {
         healthFunds_GMH.$policyDateHiddenField.val(value);
+        healthFunds_GMH.updateMessage();
     },
 
     set: function() {
@@ -43,46 +48,66 @@ var healthFunds_GMH = {
 
         <%--calendar for start cover--%>
         meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
+        healthFunds_GMH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
         meerkat.messaging.subscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_GMH.paymentDayChange);
 
-        <%--selections for payment date--%>
-        $('#update-premium').on('click.GMH', function(){
-            var messageField = null;
-            if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
-                messageField = healthFunds_GMH.$policyDateCreditMessage;
-            } else {
-                messageField = healthFunds_GMH.$policyDateBankMessage;
-            }
 
-            var premiumType = $('#health_payment_details_frequency').val(),
+        healthFunds_GMH.$paymentType.on('change.GMH', function updatePaymentMsgPaymentType(){
+            healthFunds_GMH.updateMessage();
+        });
+
+        healthFunds_GMH.$paymentFrequency.on('change.GMH', function updatePaymentMsgFrequency(){
+            healthFunds_GMH.updateMessage();
+        });
+
+        healthFunds_GMH.$paymentStartDate.on("changeDate.GMH", function updatePaymentMsgCalendar(e) {
+            healthFunds_GMH.updateMessage();
+        });
+
+
+    },
+    updateMessage: function() {
+        <%--selections for payment date--%>
+
+        var messageField = null;
+        if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
+            messageField = healthFunds_GMH.$policyDateCreditMessage;
+            healthFunds_GMH.$paymentTypeContainer.slideUp();
+        } else {
+            messageField = healthFunds_GMH.$policyDateBankMessage;
+            healthFunds_GMH.$paymentTypeContainer.text('*GMHBA offers a 2% discount for bank account payments').slideDown();
+        }
+
+        var premiumType = $('#health_payment_details_frequency').val(),
                 startDate = meerkat.modules.dateUtils.returnDate($('#health_payment_details_start').val()).getTime(),
                 <%-- Get today's date without hours --%>
                 todayDate = new Date(new Date(meerkat.modules.utils.getUTCToday()).setHours(0,0,0,0)).getTime();
 
-            var messageText;
-            if(startDate === todayDate && premiumType === 'annually') {
-                messageText = 'Your payment will be debited in the next 24 hours';
-            } else if(startDate > todayDate && premiumType === 'annually') {
-                messageText = 'Your payment will be debited on your policy start date';
-            } else if(startDate === todayDate && premiumType === 'monthly') {
-                messageText = 'Your first payment will be debited in the next 24 hours and thereafter on the same day each month';
-            } else if(startDate > todayDate && premiumType === 'monthly') {
-                messageText = 'Your first payment will be debited on your policy start date and thereafter on the same day each month';
-            } else if(startDate === todayDate && premiumType === 'fortnightly') {
-                messageText = 'Your first payment will be debited in the next 24 hours and thereafter on the same day each fortnight';
-            } else if(startDate > todayDate && premiumType === 'fortnightly') {
-                messageText = 'Your first payment will be debited on your policy start date and thereafter on the same day each fortnight';
-            } else {
-                messageText = 'Your payment will be deducted on the policy start date';
-            }
+        var messageText;
+        if(startDate === todayDate && premiumType === 'annually') {
+            messageText = 'Your payment will be debited in the next 24 hours';
+        } else if(startDate > todayDate && premiumType === 'annually') {
+            messageText = 'Your payment will be debited on your policy start date';
+        } else if(startDate === todayDate && premiumType === 'monthly') {
+            messageText = 'Your first payment will be debited in the next 24 hours and thereafter on the same day each month';
+        } else if(startDate > todayDate && premiumType === 'monthly') {
+            messageText = 'Your first payment will be debited on your policy start date and thereafter on the same day each month';
+        } else if(startDate === todayDate && premiumType === 'fortnightly') {
+            messageText = 'Your first payment will be debited in the next 24 hours and thereafter on the same day each fortnight';
+        } else if(startDate > todayDate && premiumType === 'fortnightly') {
+            messageText = 'Your first payment will be debited on your policy start date and thereafter on the same day each fortnight';
+        } else {
+            messageText = 'Your payment will be deducted on the policy start date';
+        }
 
-            messageField.text(messageText);
-        });
+        messageField.text(messageText);
 
     },
     unset: function(){
         meerkat.messaging.unsubscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_GMH.paymentDayChange);
+
+        healthFunds_GMH.$paymentTypeContainer.text('').slideUp();
 
         healthFunds._reset();
 
@@ -95,8 +120,11 @@ var healthFunds_GMH = {
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.resetConfig();
         meerkat.modules.healthCreditCard.render();
+
         <%--selections for payment date--%>
-        $('#update-premium').off('click.GMH');
+        healthFunds_GMH.$paymentType.off('change.GMH');
+        healthFunds_GMH.$paymentFrequency.off('change.GMH');
+        healthFunds_GMH.$paymentStartDate.off("changeDate.GMH");
 
     }
 };

@@ -1,27 +1,20 @@
 .payment_assurance_message{
 
+  padding-left:25px;
+
   @media(@xs-only){
     display: none;
   }
-
-  position: absolute;
-  @media(@sm-only) {
-    right: 10px;
+  .norton,
+  .message,
+  .cards {
+    display:inline-block;
+    margin-right:2em;
+    vertical-align:top;
+    div {
+      margin-top:0.75em;
+    }
   }
-  @media(@md-only) {
-    right: 0px;
-  }
-
-  @media(@lg-only) {
-    right: 0px;
-    float: right;
-    position: relative;
-    height: 90px;
-    top: 0px;
-  }
-  padding-right: 0;
-  top: 25px;
-
   .cards img {
     display: block;
     float: left;
@@ -44,12 +37,6 @@
 
   .cards{
 
-    margin-bottom: 8px;
-
-    @media(@lg-only) {
-      margin-bottom: 0px;
-      margin-top: 13%;
-    }
     .clearfix();
 
     .visa, .mastercard, .amex {
@@ -66,44 +53,22 @@
 
       float:left;
 
-      @media(@md){
-        margin-left:2px;
-      }
-
-      @media(@lg){
-        width: 56px;
-        height: 38px;
-        margin-right:6px;
-      }
+      width: 56px;
+      height: 38px;
+      margin-right:6px;
 
     }
 
     .visa {
-
-      .highResBgPosition(-250px, -66px, -100px, -26px);
-
-      @media(@lg){
-        .highResBgPosition(-130px, -42px, 0, -2px);
-      }
-
+      .highResBgPosition(-130px, -42px, 0, -2px);
     }
 
     .mastercard {
-
-      .highResBgPosition(-250px, -156px, -100px, -71px);
-
-      @media(@lg){
         .highResBgPosition(-130px, -132px, 0, -47px);
-      }
     }
 
     .amex {
-
-      .highResBgPosition(-250px, -246px, -100px, -116px);
-
-      @media(@lg){
         .highResBgPosition(-130px, -222px, 0, -92px);
-      }
     }
   }
 

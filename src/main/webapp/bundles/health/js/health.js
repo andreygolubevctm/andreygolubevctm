@@ -312,8 +312,28 @@
 					_.defer(function() {
 						meerkat.modules.healthBenefits.open('journey-mode');
 
-						if(event.isForward)
-							$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
+						if(event.isForward) {
+							var accidentOnly = $('input[name="health_situation_accidentOnlyCover"]');
+							$(accidentOnly).prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
+
+							if (meerkat.site.isCallCentreUser === true){
+
+								var dialog44 = $(".simples-dialogue-44");
+								dialog44.hide();
+								if($(accidentOnly).is(':checked')) {
+									dialog44.show();
+								}
+
+								accidentOnly.on('change', function() {
+									if($(this).is(':checked')) {
+										dialog44.show();
+									} else {
+										dialog44.hide();
+									}
+								});
+							}
+
+						}
 					});
 				}
 
@@ -324,21 +344,6 @@
 
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
-
-					var accidentOnly = $('input[name="health_situation_accidentOnlyCover"]');
-					var dialog44 = $(".simples-dialogue-44");
-					dialog44.hide();
-					if($(accidentOnly).is(':checked')) {
-						dialog44.show();
-					}
-
-					accidentOnly.on('change', function() {
-						if($(this).is(':checked')) {
-							dialog44.show();
-						} else {
-							dialog44.hide();
-						}
-					});
 				}
 			},
 			onAfterLeave:function(event){
@@ -446,8 +451,6 @@
 					meerkat.modules.healthResults.get();
 				}
 
-				meerkat.modules.resultsHeaderBar.registerEventListeners();
-
 			},
 			onBeforeLeave: function(event) {
 				// Increment the transactionId
@@ -460,8 +463,6 @@
 				meerkat.modules.healthResults.recordPreviousBreakpoint();
 				meerkat.modules.healthResults.toggleMarketingMessage(false);
 				meerkat.modules.healthResults.toggleResultsLowNumberMessage(false);
-
-				meerkat.modules.resultsHeaderBar.removeEventListeners();
 			}
 		};
 
@@ -479,6 +480,7 @@
 			onInitialise: function onInitApplyStep(event) {
 
 				meerkat.modules.healthDependants.initHealthDependants();
+				meerkat.modules.healthMedicare.initHealthMedicare();
 
 				healthApplicationDetails.init();
 
@@ -516,13 +518,14 @@
 				});
 
 				// initialise start date datepicker from payment step as it will be used by selected fund
-				$("#health_payment_details_start_calendar")
+				$("#health_payment_details_start")
 					.datepicker({ clearBtn:false, format:"dd/mm/yyyy" })
 					.on("changeDate", function updateStartCoverDateHiddenField(e) {
 						// fill the hidden field with selected value
 						$("#health_payment_details_start").val( e.format() );
 						meerkat.messaging.publish(moduleEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
 					});
+
 
 			},
 			onBeforeEnter: function enterApplyStep(event){
@@ -546,6 +549,12 @@
 					$slide.find('.error-field').remove();
 					$slide.find('.has-error').removeClass('has-error');
 
+					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
+					var $firstnameField = $("#health_payment_medicare_firstName");
+					var $surnameField = $("#health_payment_medicare_surname");
+					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
+					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
+
 					// Unset the Health Declaration checkbox (could be refactored to only uncheck if the fund changes)
 					$('#health_declaration input:checked').prop('checked', false).change();
 
@@ -558,8 +567,19 @@
 					//$("#health_payment_details_start_calendar").datepicker("setStartDate", "+" + min + "d").datepicker("setEndDate", "+" + max + "d");
 					var min = meerkat.modules.healthPaymentStep.getSetting('minStartDate');
 					var max = meerkat.modules.healthPaymentStep.getSetting('maxStartDate');
-					$("#health_payment_details_start_calendar").datepicker('setStartDate', min).datepicker('setEndDate', max);
+					$("#health_payment_details_start").datepicker('setStartDate', min).datepicker('setEndDate', max);
 
+					meerkat.modules.healthMedicare.updateMedicareLabel();
+
+					var product = meerkat.modules.healthResults.getSelectedProduct();
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
+
+					var $rebateEl = $('input[name=health_healthCover_rebate]:checked');
+					if( (!_.isEmpty($rebateEl) && $rebateEl.val() == "N") && $.inArray(product.info.providerName, mustShowList) == -1) {
+						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
+					} else {
+						$("#health_payment_medicare-selection").removeAttr("style");
+					}
 				}
 			}
 		};
@@ -637,6 +657,7 @@
 
 				if(event.isForward === true){
 
+					meerkat.modules.healthPaymentStep.rebindCreditCardRules();
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
 					// Show discount text if applicable
@@ -658,22 +679,7 @@
 					// Insert fund into Contact Authority
 					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
-					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
-					var $firstnameField = $("#health_payment_medicare_firstName");
-					var $surnameField = $("#health_payment_medicare_surname");
-					if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
-					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
-
-					var product = meerkat.modules.healthResults.getSelectedProduct();
-                    var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
-
-					var $rebateEl = $('input[name=health_healthCover_rebate]:checked');
-					if( (!_.isEmpty($rebateEl) && $rebateEl.val() == "N") && $.inArray(product.info.providerName, mustShowList) == -1) {
-						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
-					} else {
-						$("#health_payment_medicare-selection").removeAttr("style");
-					}
-
+					meerkat.modules.healthPaymentStep.updatePremium();
 				}
 			}
 		};
@@ -1358,7 +1364,7 @@
 		});
 
 	}
-
+	
 	meerkat.modules.register("health", {
 		init: initHealth,
 		events: moduleEvents,

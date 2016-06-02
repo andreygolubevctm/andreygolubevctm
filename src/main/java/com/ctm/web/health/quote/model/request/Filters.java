@@ -1,7 +1,5 @@
 package com.ctm.web.health.quote.model.request;
 
-import org.apache.xpath.operations.Bool;
-
 import java.util.List;
 
 public class Filters {
@@ -27,6 +25,8 @@ public class Filters {
     private IncludeProductIfNotFound includeProductIfNotFound;
 
     private Boolean situationFilter;
+
+    private Boolean applyDiscounts;
 
     public CappingLimit getCappingLimitFilter() {
         return cappingLimitFilter;
@@ -114,5 +114,13 @@ public class Filters {
 
     public void setSituationFilter(Boolean situationFilter) {
         this.situationFilter = situationFilter;
+    }
+
+    public Boolean getApplyDiscounts() {
+        return applyDiscounts;
+    }
+
+    public void setApplyDiscounts(Boolean applyDiscounts) {
+        this.applyDiscounts = applyDiscounts;
     }
 }

@@ -2,9 +2,10 @@
   "brandCodes": ["ctm"],
   "dependencies": [
     "shared/journeyEngine/v2",
-    "shared/results",
+    "shared/results/v2",
     "shared/validation",
     "core",
+    "shared/forms/v1",
     "shared/addressLookup",
     "shared/showMoreQuotesPrompt",
     "shared/resultsRankings",

@@ -83,9 +83,7 @@
         <jsp:attribute name="navbar">
 
             <ul class="nav navbar-nav" role="menu">
-                <li class="visible-xs">
-                    <span class="navbar-text-block navMenu-header">Menu</span>
-                </li>
+                <core_v2:offcanvas_header />
                 <li class="slide-feature-my-quotes">
                     <a href="javascript:;" class="btn-email"><span>My Quotes</span></a>
                 </li>

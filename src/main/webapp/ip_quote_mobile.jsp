@@ -16,6 +16,8 @@
 <core_v2:quote_check quoteType="ip" />
 <core_v2:load_preload />
 
+<ip_v1:widget_values />
+
 <%-- HTML --%>
 <layout_v1:journey_engine_page title="Income Protection Quote">
 
@@ -36,9 +38,7 @@
 
 	<jsp:attribute name="navbar">
 		<ul class="nav navbar-nav" role="menu">
-			<li class="visible-xs">
-				<span class="navbar-text-block navMenu-header">Menu</span>
-			</li>
+			<core_v2:offcanvas_header />
 			<li class="slide-feature-back visible-xs">
 				<a href="javascript:;" data-slide-control="previous" class="btn-back">
 					<span class="icon icon-arrow-left"></span> <span>Revise Your Details</span></a>

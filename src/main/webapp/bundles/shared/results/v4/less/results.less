@@ -1,0 +1,33 @@
+/*---
+title:   Overview
+section: Results v4
+---
+
+_AUTHOR NOTE: I developed this by copying the original core/health.less. I re-arranged some styles to put them into more logical sections. And documented/structured different aspects of the styles._
+
+*/
+
+/* ------------------------*/
+/* DEBUGGING ONLY          */
+/* ------------------------*/
+
+.results-table {
+  position: relative;
+
+  #product-presentation-step & {
+    width: auto;
+  }
+}
+/* ------------------------*/
+/* END DEBUG ONLY          */
+/* ------------------------*/
+
+
+#resultsPage {
+  position: relative;
+  .clearfix();
+  // Removes the container padding/margins on XS
+  @media (@xs-only) {
+    margin: 0 (-@grid-gutter-width / 2);
+  }
+}

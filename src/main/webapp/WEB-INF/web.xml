@@ -118,7 +118,7 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
-	<!-- Error and Security Failure Handler Pages -->
+	<!-- Error and Security Failure Handler Pages  -->
 
 	<error-page>
 		<error-code>400</error-code>

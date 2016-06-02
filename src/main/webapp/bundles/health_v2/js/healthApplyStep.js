@@ -8,7 +8,7 @@
 
     function init(){
         $(document).ready(function () {
-            $paymentDetailsStart = $("#health_payment_details_start_calendar");
+            $paymentDetailsStart = $("#health_payment_details_start");
         });
     }
 
@@ -26,7 +26,6 @@
 
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PRIMARY,
             meerkat.modules.healthAboutYou.getPrimaryCurrentCover());
-
     }
 
     function onInitialise() {

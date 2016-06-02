@@ -15,6 +15,7 @@ CBHS (Commbank)
 var healthFunds_CBH = {
 	processOnAmendQuote: true,
 	ajaxJoinDec: false,
+	$paymentStartDate: $("#health_payment_details_start"),
 
 	set: function() {
 		<%-- Custom questions: Eligibility --%>
@@ -37,62 +38,62 @@ var healthFunds_CBH = {
 					<div id="cbh_currentemployee">
 
 						<c:set var="fieldXpath" value="health/application/cbh/currentemployee" />
-						<form_v3:row fieldXpath="${fieldXpath}" label="Are you a current employee, contractor or franchisee of the CBA Group?" className="cbhmain">
-							<field_v2:array_select xpath="${fieldXpath}" required="true" title="if you are a current employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
-						</form_v3:row>
+						<form_v2:row fieldXpath="${fieldXpath}" label="Are you a current employee, contractor or franchisee of the CBA Group?" className="cbhmain">
+							<field_v2:array_select xpath="${fieldXpath}" required="true" title="if you are a current employee of the CBA Group" items="=Please choose...,Y=Yes,N=No"  disableErrorContainer="${true}" />
+						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/currentnumber" />
-						<form_v3:row fieldXpath="${fieldXpath}" label="What is your employee number?" className="cbhsub">
+						<form_v2:row fieldXpath="${fieldXpath}" label="What is your employee number?" className="cbhsub">
 							<field_v2:input xpath="${fieldXpath}" title="" required="true" maxlength="16" />
-						</form_v3:row>
+						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/currentwork" />
-						<form_v3:row fieldXpath="${fieldXpath}" label="Who do you currently work for?" className="cbhsub">
+						<form_v2:row fieldXpath="${fieldXpath}" label="Who do you currently work for?" className="cbhsub">
 							<field_v2:array_select xpath="${fieldXpath}" required="true" title="" items="=Please choose...,1=Commonwealth Bank of Australia,4=Contractor/Franchisee,5=BankWest" />
-						</form_v3:row>
+						</form_v2:row>
 
 					</div>
 
 					<div id="cbh_formeremployee">
 
 						<c:set var="fieldXpath" value="health/application/cbh/formeremployee" />
-						<form_v3:row fieldXpath="${fieldXpath}" label="Are you a former employee, contractor or franchisee of the CBA Group?" className="cbhmain">
+						<form_v2:row fieldXpath="${fieldXpath}" label="Are you a former employee, contractor or franchisee of the CBA Group?" className="cbhmain">
 							<field_v2:array_select xpath="${fieldXpath}" required="true" title="if you are a former employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
-						</form_v3:row>
+						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/formernumber" />
-						<form_v3:row fieldXpath="${fieldXpath}" label="What was your employee number?" className="cbhsub">
+						<form_v2:row fieldXpath="${fieldXpath}" label="What was your employee number?" className="cbhsub">
 							<field_v2:input xpath="${fieldXpath}" title="" required="true" maxlength="16" />
-						</form_v3:row>
+						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/formerwork" />
-						<form_v3:row fieldXpath="${fieldXpath}" label="Who did you work for?" className="cbhsub">
+						<form_v2:row fieldXpath="${fieldXpath}" label="Who did you work for?" className="cbhsub">
 							<field_v2:array_select xpath="${fieldXpath}" required="true" title="who you currently work for" items="=Please choose...,1=Commonwealth Bank of Australia,4=Contractor/Franchisee,5=BankWest" />
-						</form_v3:row>
+						</form_v2:row>
 
 					</div>
 
 					<div id="cbh_familymember">
 
 						<c:set var="fieldXpath" value="health/application/cbh/familymember" />
-						<form_v3:row fieldXpath="${fieldXpath}" label="Are you an immediate family member of a current or former employee, contractor or franchisee of the CBA Group?" className="cbhmain">
+						<form_v2:row fieldXpath="${fieldXpath}" label="Are you an immediate family member of a current or former employee, contractor or franchisee of the CBA Group?" className="cbhmain">
 							<field_v2:array_select xpath="${fieldXpath}" required="true" title="if an immediate family member is a current or former employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
-						</form_v3:row>
+						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/familynumber" />
-						<form_v3:row fieldXpath="${fieldXpath}" label="Name or employee number or CBHS membership number of family member" className="cbhsub">
+						<form_v2:row fieldXpath="${fieldXpath}" label="Name or employee number or CBHS membership number of family member" className="cbhsub">
 							<field_v2:input xpath="${fieldXpath}" title="" required="true" maxlength="30" />
-						</form_v3:row>
+						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/familywork" />
-						<form_v3:row fieldXpath="${fieldXpath}" label="Who did your family member work for?" className="cbhsub">
+						<form_v2:row fieldXpath="${fieldXpath}" label="Who did your family member work for?" className="cbhsub">
 							<field_v2:array_select xpath="${fieldXpath}" required="true" title="who your family member worked for" items="=Please choose...,1=Commonwealth Bank of Australia,4=Contractor/Franchisee,5=BankWest" />
-						</form_v3:row>
+						</form_v2:row>
 
 						<c:set var="fieldXpath" value="health/application/cbh/familyrel" />
-						<form_v3:row fieldXpath="${fieldXpath}" label="What is your relationship to the family member?" className="cbhsub">
+						<form_v2:row fieldXpath="${fieldXpath}" label="What is your relationship to the family member?" className="cbhsub">
 							<field_v2:array_select xpath="${fieldXpath}" required="true" title="your relationship to the family member" items="=Please choose...,partner=Partner,parent=Parent,child=Child,grand_child=Grandchild,sibling=Sibling,nephew=Nephew,niece=Niece" />
-						</form_v3:row>
+						</form_v2:row>
 
 					</div>
 
@@ -168,9 +169,9 @@ var healthFunds_CBH = {
 		else {
 			<c:set var="html">
 				<c:set var="fieldXpath" value="health/application/cbh/partnerrel" />
-				<form_v3:row id="cbh_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
-					<field_v2:array_select xpath="${fieldXpath}" required="true" title="relationship to you" items="=Please choose...,2=Spouse,3=Defacto" />
-				</form_v3:row>
+				<form_v2:row id="cbh_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
+					<field_v2:array_select xpath="${fieldXpath}" required="true" title="relationship to you" items="=Please choose...,2=Spouse,3=Defacto"  placeHolder="Relationship" disableErrorContainer="${true}" />
+				</form_v2:row>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
 			$('#health_application_partner_genderRow').after('<c:out value="${html}" escapeXml="false" />');
@@ -183,9 +184,9 @@ var healthFunds_CBH = {
 		else {
 			<c:set var="html">
 				<c:set var="fieldXpath" value="health/application/cbh/partneremployee" />
-				<form_v3:row id="cbh_partneremployee" fieldXpath="${fieldXpath}" label="Is your partner a current or former employee, contractor or franchisee of the CBA Group?">
+				<form_v2:row id="cbh_partneremployee" fieldXpath="${fieldXpath}" label="Is your partner a current or former employee, contractor or franchisee of the CBA Group?">
 					<field_v2:array_select xpath="${fieldXpath}" required="true" title="if your partner is a current or former employee of the CBA Group" items="=Please choose...,Y=Yes,N=No" />
-				</form_v3:row>
+				</form_v2:row>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
 			$('#health_application_partner_authority_group').after('<c:out value="${html}" escapeXml="false" />');
@@ -198,14 +199,17 @@ var healthFunds_CBH = {
 		else {
 			<c:set var="html">
 				<c:set var="fieldXpath" value="health/application/cbh/register" />
-				<form_v3:row id="cbh_register" fieldXpath="${fieldXpath}" >
+				<form_v2:row id="cbh_register" fieldXpath="${fieldXpath}" >
 					<field_v2:checkbox xpath="${fieldXpath}" required="false" value="Y" label="true" title="Would you like to be registered for CBHS Online Services?" />
-				</form_v3:row>
+				</form_v2:row>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
 			$('#health_application_optInEmail-group').after('<c:out value="${html}" escapeXml="false" />');
 		}
 
+		<%--allow weekend selection from the datepicker--%>
+		healthFunds_CBH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+		
 		<%-- Run these if not loading a quote --%>
 		if (!$('body').hasClass('injectingFund')) {
 
@@ -238,14 +242,14 @@ var healthFunds_CBH = {
 			});
 
 			$('#health_payment_details_frequency').on('change.CBH', function() {
-				$('.health_bank-details_policyDay-message').html('');
+				$('.health_payment_bank-details_policyDay-message').html('');
 				if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
 					switch (meerkat.modules.healthPaymentStep.getSelectedFrequency()) {
 						case 'fortnightly':
-							$('.health_bank-details_policyDay-message').html('Fortnightly payments will be deducted on a Thursday.');
+							$('.health_payment_bank-details_policyDay-message').html('Fortnightly payments will be deducted on a Thursday.');
 							break;
 						case 'monthly':
-							$('.health_bank-details_policyDay-message').html('Monthly payments will be deducted on the 15th of each month.');
+							$('.health_payment_bank-details_policyDay-message').html('Monthly payments will be deducted on the 15th of each month.');
 							break;
 					}
 				}
@@ -295,7 +299,7 @@ var healthFunds_CBH = {
 			$('#health_payment_details-selection p.CBH').remove();
 
 			$('#health_payment_details_frequency').off('change.CBH');
-			$('.health_bank-details_policyDay-message').html('');
+			$('.health_payment_bank-details_policyDay-message').html('');
 
 			<%-- Load join dec into label --%>
 			if (healthFunds_CBH.ajaxJoinDec) {

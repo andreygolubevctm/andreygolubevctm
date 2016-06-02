@@ -86,6 +86,11 @@
 					confirmationProduct.frequency = meerkat.modules.healthResults.getFrequencyInWords(confirmationProduct.frequency);
 				}
 				confirmationProduct._selectedFrequency = confirmationProduct.frequency;
+				meerkat.modules.healthPaymentStep.initFields(); // not sure why this works to allow the next call to work but it seems to be the only way to figure out what payment type they selected
+
+				if(!confirmationProduct.hasOwnProperty('premium')) {
+					confirmationProduct.premium = confirmationProduct.paymentTypePremiums[meerkat.modules.healthPaymentStep.getPaymentMethodNode(confirmationProduct.frequency)];
+				}
 
 				fillTemplate();
 				meerkat.modules.healthPriceComponent.initHealthPriceComponent();

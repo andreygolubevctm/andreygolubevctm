@@ -1,0 +1,27 @@
+.health_application_address_non_standard_container,
+.health_application_postal_nonStd_row {
+	display: none;
+}
+
+#health_application_address_autofilllessSearchRow
+.health_application_address_nonStd_row + .form-group{
+	margin-bottom: 0px;
+}
+
+@media(@xs-only) {
+	.addressHeading {
+		margin-top: 40px;
+		label {
+			font-family: 'SourceSansProSemiBold';
+			font-size: 18px;
+
+		}
+	}
+}
+@media(@sm) {
+	#applicationForm_1, #applicationForm_2{
+		div[class*="col-sm-"] {
+			padding-right:0px;
+		}
+	}
+}
