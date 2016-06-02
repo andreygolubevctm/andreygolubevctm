@@ -264,8 +264,8 @@
 			healthFunds_NHB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 			
             var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank-details_policyDay'), _html);
-            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit-details_policyDay'), _html);
+            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
 		  },
           unset: function() {
             <%-- Custom questions - hide in case user comes back --%>
@@ -301,8 +301,7 @@
               $('#health_payment_details-selection p.NHB').remove();
 
               $('#health_payment_details_frequency').off('change.NHB');
-              $('.health_payment_bank-details_policyDay-message').html('');
-              $('.health_payment_credit-details_policyDay-message').html('');
+              $('.health_payment_bank_details-policyDay-message').html('');
 
                 <%-- How to send information --%>
                 healthApplicationDetails.hideHowToSendInfo();
