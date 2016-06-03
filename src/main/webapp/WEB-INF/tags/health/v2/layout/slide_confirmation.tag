@@ -26,33 +26,9 @@
 	<%-- Main page template --%>
 	<script id="confirmation-template" type="text/html">
 
-		<layout_v1:slide_columns>
+		<layout_v1:slide_columns colSize="12" sideHidden="true">
 
 			<jsp:attribute name="rightColumn">
-
-				<div class="hidden-xs">
-					<health_v1:policySummary showProductDetails="true" />
-				</div>
-
-				<div class="row">
-					<div class="col-xs-12">
-						{{ if((obj.promo && promo.promoText) || (obj.promotion && promotion.specialOffer.summary)) { }}
-							<div class="confirmation">
-								<h2 class="text-hospital">Promotions &amp; Offers</h2>
-								{{= obj.promo ? promo.promoText : promotion.specialOffer.summary }}
-							</div>
-						{{ } }}
-
-						{{ if(!about) { className="displayNone"; }  else { className="displayBlock"; } }}
-						<div class="{{= className }} confirmation">
-							<h2 class="text-hospital">About the fund</h2>
-							<span class="aboutFund">{{= about }}</span>
-						</div>
-					</div>
-				</div>
-
-				<coupon:confirmation transactionId="${transactionId}" />
-				<health_v1:competition_jeep />
 
 			</jsp:attribute>
 
@@ -67,7 +43,7 @@
 								<%-- insert fund warning data --%>
 							</div>
 						</div>
-
+<!--
 						{{ if ( typeof pending !== "undefined" && pending ) { }}
 							<h2 class="pending">Your application is being processed.</h2>
 							<p>Thanks for comparing with <content:get key="brandDisplayName"/>. If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></strong>.
@@ -75,9 +51,36 @@
 							<h2 class="success">Success!</h2>
 							<p>Your health insurance application is complete and has been submitted to <span class="providerName">{{= info.providerName ? info.providerName : info.fundName }}</span> for processing. Thanks for comparing with <content:get key="brandDisplayName"/>.</p>
 							<p>If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></strong>.
-						{{ } }}
+						{{ } }}-->
 
-						<div class="moreInfoMainDetails">
+						<h1 class="success">Congratulations!</h1>
+						{{ var fundName = info.providerName ? info.providerName : info.fundName }}
+						<div class="row confirmation-complete">
+							<div class="col-xs-12">
+								<p>Well done <span>[name]</span>,<br />
+								Your Application has been submitted to {{= fundName }} for processing.</p>
+
+								<p>Your new policy number is <span>{{= transID }}</span>.</p>
+
+								<p>Thank you for comparing <span>Health Insurance</span> with <content:get key="boldedBrandDisplayName"/></p>
+
+								<hr />
+								<div class="row fundDetails">
+									<div class="col-xs-12">
+										<p>For any questions, contact {{= fundName }} via any of the methods below</p>
+									</div>
+									<!-- leveraging existing styles -->
+									<div class="col-xs-4 companyLogo {{= info.provider }}-mi" ></div>
+									<div class="col-xs-8">
+										<p>[number]</p>
+										<p>[email]</p>
+										<p>[website]</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- <div class="moreInfoMainDetails">
 
 							<div class="productSummary horizontal visible-xs clearfix">
 
@@ -180,9 +183,13 @@
 							{{ } }}
 
 						{{ } }}
-
+-->
 						<simples:dialogue id="41" vertical="health" className="yellow" />
 
+					</form_v3:fieldset>
+
+					<form_v3:fieldset legend="">
+						<confirmation:other_products heading="More ways to compare" copy="Find more ways to save with comparethemarket.com.au bu selecting any of the insurance or utilities below." />
 					</form_v3:fieldset>
 
 				</layout_v1:slide_content>
