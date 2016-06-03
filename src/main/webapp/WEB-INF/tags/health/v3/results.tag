@@ -17,7 +17,7 @@
     <jsp:attribute name="preResultsRow"><health_v3:pre_results_row_content_template/></jsp:attribute>
 
     <jsp:attribute name="sidebarColumn">
-
+        <coupon:promo_tile cssClass="col-sm-12 sidebar-widget sidebar-widget-padded" />
         <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
         </div>
         <div class="col-xs-12 sidebar-widget sidebar-widget-attached sidebar-widget-padded filters-update-container" style="display: none">
