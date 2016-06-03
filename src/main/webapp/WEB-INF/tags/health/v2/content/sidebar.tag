@@ -3,7 +3,7 @@
 
 <%-- <health_content:xxx /> --%>
 <health_v2_content:snapshot/>
-<coupon:promo_tile cssClass="sidebar-box" />
+<coupon:promo_tile />
 <health_v1_content:call_centre_help />
 <content:get_random_content cssClass="sidebar-box testimonials" contentKey="healthTestimonials" />
 <health_v2_content:price_promise />
