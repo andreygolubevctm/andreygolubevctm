@@ -206,6 +206,7 @@
                     meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
                     // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
                     _.delay(function(){
+                        Results.unfilterBy('productId', "value", false);
                         Results.settings.incrementTransactionId = true;
                         meerkat.modules.healthResults.get();
                         Results.settings.incrementTransactionId = false;
@@ -350,6 +351,16 @@
                     break;
             }
 
+        });
+
+        meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_RENDERED, function (){
+            // reset coverType to use the journey value
+            coverType = meerkat.modules.health.getCoverType();
+
+            // hack for the css3 multi columns, it is buggy when two columns doesn't have the same amount of children
+            var $providerListCheckboxes = $('.provider-list .checkbox'),
+                nthChild = Math.ceil($providerListCheckboxes.length / 2);
+            $providerListCheckboxes.filter(':nth-child(' + nthChild + ')').css('display', 'inline-block');
         });
 
     }

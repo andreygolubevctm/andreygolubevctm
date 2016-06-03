@@ -76,7 +76,7 @@ set: function () {
 	meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa': true, 'mc': true, 'amex':false, 'diners':false });
 		meerkat.modules.healthCreditCard.render();
 
-		healthFunds_CTM.$paymentType.on('click.CTM', function renderPaymentDaysPaymentType(){
+		healthFunds_CTM.$paymentType.on('change.CTM', function renderPaymentDaysPaymentType(){
 			healthFunds_CTM.renderPaymentDays();
 		});
 
@@ -131,8 +131,8 @@ set: function () {
 		healthFunds._payments = { 'min':0, 'max':14, 'weekends':true, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28};
 		healthFunds_CTM.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
 		$('.ctm-payment-legend').remove();
 		$('#health_payment_credit_policyDay').parent().after('<p class="ctm-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');
 		$('#health_payment_bank_policyDay').parent().after('<p class="ctm-payment-legend">Your account will be debited on or as close to the selected date possible.</p>');
@@ -143,7 +143,7 @@ set: function () {
 		$('.ctm-payment-legend').remove();
 		$('#update-premium').off('click.CTM');
 
-		healthFunds_CTM.$paymentType.off('click.CTM');
+		healthFunds_CTM.$paymentType.off('change.CTM');
 		healthFunds_CTM.$paymentFrequency.off('change.CTM');
 		healthFunds_CTM.$paymentStartDate.off("changeDate.CTM");
 

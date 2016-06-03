@@ -230,7 +230,7 @@
               //meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
               meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',false);
 
-			  healthFunds_NHB.$paymentType.on('click.NHB', function renderPaymentDaysPaymentType(){
+			  healthFunds_NHB.$paymentType.on('change.NHB', function renderPaymentDaysPaymentType(){
 				healthFunds_NHB.renderPaymentDays();
 			});
 
@@ -264,8 +264,8 @@
 			healthFunds_NHB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 			
             var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);  
+            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
 		  },
           unset: function() {
             <%-- Custom questions - hide in case user comes back --%>
@@ -291,7 +291,7 @@
               healthFunds._dependants(false);
               meerkat.modules.healthDependants.resetConfig();
               healthFunds._reset();
-			  healthFunds_NHB.$paymentType.off('click.NHB');
+			  healthFunds_NHB.$paymentType.off('change.NHB');
 				healthFunds_NHB.$paymentFrequency.off('change.NHB');
 				healthFunds_NHB.$paymentStartDate.off("changeDate.NHB");
               meerkat.modules.paymentGateway.reset();
@@ -301,7 +301,7 @@
               $('#health_payment_details-selection p.NHB').remove();
 
               $('#health_payment_details_frequency').off('change.NHB');
-              $('.health_bank-details_policyDay-message').html('');
+              $('.health_payment_bank_details-policyDay-message').html('');
 
                 <%-- How to send information --%>
                 healthApplicationDetails.hideHowToSendInfo();

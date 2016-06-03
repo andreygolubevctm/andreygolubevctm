@@ -76,7 +76,7 @@ var healthFunds_QCH = {
 			meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':true, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 			meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':true, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 
-			healthFunds_QCH.$paymentType.on('click.QCH', function renderPaymentDaysPaymentType(){
+			healthFunds_QCH.$paymentType.on('change.QCH', function renderPaymentDaysPaymentType(){
 				healthFunds_QCH.renderPaymentDays();
 			});
 
@@ -112,11 +112,11 @@ var healthFunds_QCH = {
 		healthFunds._payments = { 'min':0, 'max':1, 'weekends':true };
 		healthFunds_QCH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
 
-		$('.health_bank-details_policyDay-message').html('');
-		$('.health_credit-card-details_policyDay-message').html('');
+		$('.health_payment_bank-details_policyDay-message').html('');
+		$('.health_payment_credit-card_policyDay-message').html('');
 
 		var startDate = $('#health_payment_details_start').val();
 		var policyStart = healthFunds._setPolicyDate(startDate, 0);
@@ -125,11 +125,11 @@ var healthFunds_QCH = {
 		$('#health_payment_bank_policyDay option[value='+policyStart+']').attr('selected','selected');
 
 		if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
-			$('.health_bank-details_policyDay-message').html('Your first premium payment will be deducted from your nominated bank account on receipt of your application by us, or from the actual start date of your policy');
+			$('.health_payment_bank-details_policyDay-message').html('Your first premium payment will be deducted from your nominated bank account on receipt of your application by us, or from the actual start date of your policy');
 			$('#health_payment_bank_policyDay').attr('type','hidden').attr('data-attach', 'true');
 		}
 		else if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc') {
-			$('.health_credit-card-details_policyDay-message').html('Your first premium payment will be deducted from your credit card on receipt of your application by us, or from the actual start date of your policy');
+			$('.health_payment_credit-details_policyDay-message').html('Your first premium payment will be deducted from your credit card on receipt of your application by us, or from the actual start date of your policy');
 			$('#health_payment_credit_policyDay').attr('type','hidden').attr('data-attach', 'true');
 		}
 	},
@@ -168,7 +168,7 @@ var healthFunds_QCH = {
 			$('#health_payment_bank_policyDay').attr('type','').attr('data-attach', '');
 			$('#health_payment_credit_policyDay').attr('type','').attr('data-attach', '');
 
-			healthFunds_QCH.$paymentType.off('click.QCH');
+			healthFunds_QCH.$paymentType.off('change.QCH');
 			healthFunds_QCH.$paymentFrequency.off('change.QCH');
 			healthFunds_QCH.$paymentStartDate.off("changeDate.QCH");
 			meerkat.modules.paymentGateway.reset();

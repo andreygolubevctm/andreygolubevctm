@@ -46,7 +46,7 @@ var healthFunds_NIB = {
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':true, 'diners':false });
         meerkat.modules.healthCreditCard.render();
 
-        healthFunds_NIB.$paymentType.on('click.NIB', function renderPaymentDaysPaymentType(){
+        healthFunds_NIB.$paymentType.on('change.NIB', function renderPaymentDaysPaymentType(){
             healthFunds_NIB.renderPaymentDays();
         });
 
@@ -100,8 +100,8 @@ var healthFunds_NIB = {
             healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
         }
         var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
 
         if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
             healthFunds_NIB.$paymentTypeContainer.slideUp();
@@ -110,7 +110,7 @@ var healthFunds_NIB = {
         }
     },
     unset: function(){
-        healthFunds_NIB.$paymentType.off('click.NIB');
+        healthFunds_NIB.$paymentType.off('change.NIB');
         healthFunds_NIB.$paymentFrequency.off('change.NIB');
         healthFunds_NIB.$paymentStartDate.off("changeDate.NIB");
 
@@ -118,8 +118,8 @@ var healthFunds_NIB = {
         $("#health_application_contactPoint_E").prop('disabled', false).parents('.btn-form-inverse').attr('disabled',false);
 
         $('#health_application_no_email').off('click.NIB');
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
+        meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
 
         healthFunds_NIB.$paymentTypeContainer.text('').slideUp();
 

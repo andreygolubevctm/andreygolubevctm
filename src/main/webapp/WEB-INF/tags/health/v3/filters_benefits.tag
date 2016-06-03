@@ -16,7 +16,7 @@
             <div class="sidebar-subtitle-container">
                 <span class="helper-text">
                     <a class="filter-remove hospital need-hospital {{=hiddenHospital }} {{=hiddenExtras }} btn btn-xs btn-danger">remove <span class="icon icon-cross"></span></a>
-                    <a class="filter-add hospital need-no-hospital {=hiddenExtras }} {{=hiddenOnCombined }} btn btn-xs btn-add">add hospital <span class="icon icon-plus"></span></a>
+                    <a class="filter-add hospital need-no-hospital {{=hiddenExtras }} {{=hiddenOnCombined }} btn btn-xs btn-add">add hospital <span class="icon icon-plus"></span></a>
                 </span>
                 <span class="heading-text">Hospital cover</span>
             </div>

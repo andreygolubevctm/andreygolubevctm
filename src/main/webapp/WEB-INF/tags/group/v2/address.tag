@@ -173,9 +173,18 @@
 	<field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}' " disableErrorContainer="${disableErrorContainer}" />
 </form_v2:row>
 
+<c:choose>
+	<c:when test="${pageSettings.getVerticalCode() eq 'health' and isPostalAddress}">
+		<c:set var="nonStdPostalMessage" value="Tick here if you are unable to find the address or would like to enter a PO Box address" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="nonStdPostalMessage" value="Tick here if you are unable to find the address" />
+	</c:otherwise>
+</c:choose>
+
 <c:set var="fieldXpath" value="${xpath}/nonStd" />
 <form_v2:row fieldXpath="${fieldXpath}" label="" id="${name}_nonStd_row" className="nonStd">
-	<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="Tick here if you are unable to find the address" label="true" required="false" customAttribute=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter the address'" />
+	<field_v2:checkbox xpath="${fieldXpath}" value="Y" title="${nonStdPostalMessage}" label="true" required="false" customAttribute=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter the address'" />
 </form_v2:row>
 
 <field_v1:hidden xpath="${xpath}/lastSearch" />

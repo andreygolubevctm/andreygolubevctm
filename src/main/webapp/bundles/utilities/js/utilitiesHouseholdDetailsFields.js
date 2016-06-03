@@ -170,6 +170,8 @@
             var provider = json[i];
             providerList += "<option value=\"" + provider.id + "\">" + provider.name + "</option>";
         }
+        
+        providerList += "<option value=\"Other\">I don't know/Other</option>";
 
         $input.html(providerList);
     }
