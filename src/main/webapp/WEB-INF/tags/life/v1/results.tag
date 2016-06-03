@@ -2025,7 +2025,7 @@ Results = {
 			.on("keyup", {type:type}, Results.showHideUpdateResultsButton)
 	</c:otherwise>
 </c:choose>
-			.on("blur", {type:type}, Results.toggleRefineInputVisibility)
+			.on("keyup blur", {type:type}, Results.toggleRefineInputVisibility)
 			.formatCurrency('.${vertical}_refine_primary_insurance_' + type + '_value', {symbol:'',roundToDecimalPlace:-2});
 			}
 
