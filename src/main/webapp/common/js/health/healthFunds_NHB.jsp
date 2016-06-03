@@ -137,6 +137,12 @@
                       return true;
                     },
                     onComplete: function onSubmitComplete() {
+                      <%-- Set subreason if set --%>
+                      <c:set var="subreasonxpath" value="${fieldXpath}/subreason"/>
+                      <c:set var="subreasonval"><c:out value="${data[subreasonxpath]}" escapeXml="true"/></c:set>
+                      <c:if test="${fn:length(subreasonval) > 0}">
+                        $("#health_application_nhb_subreason").val('<c:out value="${subreasonval}" escapeXml="true"/>');
+                      </c:if>
                       return true;
                     }
                   });
@@ -144,6 +150,11 @@
                     $dropDown.val(originalKey).change();
                   }
                 });
+              }
+
+              var $eligibility = $('#health_application_nhb_eligibility');
+              if($eligibility.val() !== '') {
+                $eligibility.trigger('change');
               }
             }<%-- /injection --%>
 
