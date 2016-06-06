@@ -73,7 +73,8 @@ public class ProviderInfoDao {
                 .orElse(ProviderPhoneNumber.empty());
     }
 
-    private Optional<String> getProviderContent(final Provider providerId, final Brand brand, final java.util.Date searchDate,
+    private Optional<String> getProviderContent(final Provider providerId, final Brand brand,
+                                                final java.util.Date searchDate,
                                                 final String key) {
         return jdbcTemplate.query(PROVIDER_CONTENT_QUERY,
                 new MapSqlParameterSource()

@@ -54,7 +54,7 @@ public class HealthRouter extends HttpServlet {
 		JSONObject json = new JSONObject();
 		try {
 			json.put("providerContentText", providerContentService.getProviderContentText(request));
-		} catch (final DaoException | JSONException | ConfigSettingException e) {
+		} catch (final DaoException | JSONException  e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			objectMapper.writeValue(writer, errors(e));
 		}

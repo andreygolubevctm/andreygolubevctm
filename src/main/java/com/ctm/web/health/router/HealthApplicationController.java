@@ -77,17 +77,16 @@ public class HealthApplicationController extends CommonQuoteRouter<HealthRequest
     private  JoinService joinService;
     @Autowired
     private TransactionAccessService transactionAccessService;
+    @Autowired
+    private  HealthConfirmationService healthConfirmationService;
 
     private final LeadService leadService;
-    private final HealthConfirmationService healthConfirmationService;
 
     @Autowired
     public HealthApplicationController(SessionDataServiceBean sessionDataServiceBean ,
                                        IPAddressHandler ipAddressHandler,
-                                       HealthConfirmationService healthConfirmationService,
                                        HealthLeadService leadService) {
         super(sessionDataServiceBean, ipAddressHandler);
-        this.healthConfirmationService = healthConfirmationService;
         this.leadService = leadService;
     }
 
