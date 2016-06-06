@@ -48,8 +48,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.NotFoundException;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -61,7 +61,6 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 import static java.util.stream.Collectors.toList;
 
-@Path("/health")
 @Api(basePath = "/rest/health", value = "Health Apply")
 @RestController
 @RequestMapping("/rest/health")
@@ -70,7 +69,7 @@ public class HealthApplicationController extends CommonQuoteRouter<HealthRequest
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplicationController.class);
 
     private static final DateTimeFormatter LONG_FORMAT = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy");
-    public static final String PROVIDER_FAILED_MESSAGE = "The provider failed to process the application, Please contact support team.";
+    private static final String PROVIDER_FAILED_MESSAGE = "The provider failed to process the application, Please contact support team.";
 
     @Autowired
     private HealthApplyService healthApplyService;
@@ -79,15 +78,17 @@ public class HealthApplicationController extends CommonQuoteRouter<HealthRequest
     @Autowired
     private TransactionAccessService transactionAccessService;
 
-    private final LeadService leadService = new HealthLeadService(IPAddressHandler.getInstance());
+    private final LeadService leadService;
     private final HealthConfirmationService healthConfirmationService;
 
     @Autowired
     public HealthApplicationController(SessionDataServiceBean sessionDataServiceBean ,
                                        IPAddressHandler ipAddressHandler,
-                                       HealthConfirmationService healthConfirmationService) {
+                                       HealthConfirmationService healthConfirmationService,
+                                       HealthLeadService leadService) {
         super(sessionDataServiceBean, ipAddressHandler);
         this.healthConfirmationService = healthConfirmationService;
+        this.leadService = leadService;
     }
 
 
@@ -98,7 +99,8 @@ public class HealthApplicationController extends CommonQuoteRouter<HealthRequest
             produces = MediaType.APPLICATION_JSON_VALUE)
     public HealthResultWrapper getHealthApply(@ModelAttribute final HealthRequest data,
                                               BindingResult bindingResult,
-                                              HttpServletRequest request) throws DaoException, IOException, ServiceConfigurationException, ConfigSettingException, ServiceException {
+                                              HttpServletRequest request) throws DaoException, IOException,
+            ServiceConfigurationException, ConfigSettingException, ServiceException {
         if (bindingResult.hasErrors()) {
             for (ObjectError e : bindingResult.getAllErrors()) {
                 LOGGER.error("FORM POST MAPPING ERROR: {},", kv("error" , e));

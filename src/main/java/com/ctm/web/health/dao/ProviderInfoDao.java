@@ -1,6 +1,5 @@
 package com.ctm.web.health.dao;
 
-import com.ctm.interfaces.common.config.types.ProviderId;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.provider.model.Provider;
 import com.ctm.web.health.model.providerInfo.ProviderEmail;
@@ -12,19 +11,14 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import rx.Observable;
 import javax.cache.annotation.CacheResult;
 
-import java.sql.Date;
 import java.util.Optional;
 
 import static java.util.Optional.empty;
 
 @Repository
 public class ProviderInfoDao {
-    private static String PROVIDER_PHONE_CONTENT_KEY = "providerPhoneNumber";
-    private static String PROVIDER_EMAIL_CONTENT_KEY = "providerEmail";
-    private static String PROVIDER_WEBSITE_CONTENT_KEY = "providerWebsite";
 
     private static final String PROVIDER_CONTENT_QUERY =
             "SELECT cc.contentValue " +
@@ -45,11 +39,7 @@ public class ProviderInfoDao {
     }
 
     /**
-     * Gets the provider email for the promotion
-     * @param provider
-     * @param brand
-     * @param searchDate
-     * @return
+     * Gets the provider information from content control
      */
     @CacheResult(cacheName = "getProviderInfo")
     public ProviderInfo getProviderInfo(final Provider provider,
@@ -62,47 +52,24 @@ public class ProviderInfoDao {
     }
 
 
-    /**
-     * Gets the provider email
-     * @param providerId
-     * @param brand
-     * @param searchDate
-     * @return
-     */
     private ProviderEmail getProviderEmail(final Provider providerId,
                                            final Brand brand,
                                            final java.util.Date searchDate) {
-        return getProviderContent(providerId, brand, searchDate, PROVIDER_EMAIL_CONTENT_KEY)
-                .map(providerContent -> ProviderEmail.instanceOf(providerContent))
+        return getProviderContent(providerId, brand, searchDate, "providerEmail")
+                .map(ProviderEmail::instanceOf)
                 .orElse(ProviderEmail.empty());
     }
 
-
-    /**
-     * Gets the provider website
-     * @param providerId
-     * @param brand
-     * @param searchDate
-     * @return
-     */
     private ProviderWebsite getProviderWebsite(final Provider providerId, final Brand brand, final java.util.Date searchDate) {
-        return getProviderContent(providerId, brand, searchDate, PROVIDER_WEBSITE_CONTENT_KEY)
-                .map(providerContent -> ProviderWebsite.instanceOf(providerContent))
+        return getProviderContent(providerId, brand, searchDate, "providerWebsite")
+                .map(ProviderWebsite::instanceOf)
                 .orElse(ProviderWebsite.empty());
     }
 
-
-    /**
-     * Gets the provider phone number
-     * @param providerId
-     * @param brand
-     * @param searchDate
-     * @return
-     */
     private ProviderPhoneNumber getProviderPhoneNumber(final Provider providerId, final Brand brand,
                                                        final java.util.Date searchDate) {
-        return getProviderContent(providerId, brand, searchDate, PROVIDER_PHONE_CONTENT_KEY)
-                .map(providerContent -> ProviderPhoneNumber.instanceOf(providerContent))
+        return getProviderContent(providerId, brand, searchDate, "providerPhoneNumber")
+                .map(ProviderPhoneNumber::instanceOf)
                 .orElse(ProviderPhoneNumber.empty());
     }
 

@@ -9,7 +9,6 @@ import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.apply.model.request.payment.details.Frequency;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
-import com.ctm.web.health.dao.ProviderInfoDao;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.providerInfo.ProviderInfo;
 import com.ctm.web.health.router.ConfirmationData;

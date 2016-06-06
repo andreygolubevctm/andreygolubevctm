@@ -26,10 +26,7 @@ public class ConfirmationData {
     @JacksonXmlCData
     private final String about;
 
-    @JacksonXmlCData
     private final String firstName;
-
-    @JacksonXmlCData
     private final String lastName;
 
     private final String phoneNumber;

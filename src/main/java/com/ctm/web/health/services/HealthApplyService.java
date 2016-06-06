@@ -23,8 +23,6 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 @Component
 public class HealthApplyService extends CommonQuoteService<HealthQuote, HealthApplicationRequest, HealthApplyResponse> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplyService.class);
-
     public HealthApplyService() {
         super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
     }

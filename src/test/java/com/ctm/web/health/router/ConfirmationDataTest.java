@@ -16,11 +16,11 @@ public class ConfirmationDataTest {
     @Test
     public void testConfirmData() throws Exception {
 
-        String firstName = null;
-        String lastName = null;
-        ProviderEmail providerEmail = null;
-        ProviderPhoneNumber providerPhoneNumber = null;
-        ProviderWebsite providerWebsite = null;
+        String firstName = "Test";
+        String lastName = "O'Testing";
+        ProviderEmail providerEmail = ProviderEmail.instanceOf("ahm.com.au");
+        ProviderPhoneNumber providerPhoneNumber = ProviderPhoneNumber.instanceOf("134 246");
+        ProviderWebsite providerWebsite = ProviderWebsite.empty();
         final ConfirmationData confirmationData = new ConfirmationData(
                 "2643064",
                 LocalDate.of(2015, Month.SEPTEMBER, 24),
