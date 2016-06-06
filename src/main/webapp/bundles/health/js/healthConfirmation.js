@@ -20,6 +20,7 @@
 
 			meerkat.modules.journeyProgressBar.setComplete();
 			meerkat.modules.journeyProgressBar.disable();
+			meerkat.modules.journeyProgressBar.hide();
 
 			// Handle error display
 			// 'results' is a global object added by slide_confirmation.tag
@@ -75,17 +76,6 @@
 					confirmationProduct.pending = true;
 				}
 
-				// prepare hospital and extras covers inclusions, exclusions and restrictions
-				meerkat.modules.moreInfo.setProduct(confirmationProduct);
-				
-				//Now prepare cover.
-				meerkat.modules.healthMoreInfo.prepareCover();
-
-				// prepare necessary frequency values
-				if( confirmationProduct.frequency.length == 1) { // if found frequency is a letter code, translate it to full word
-					confirmationProduct.frequency = meerkat.modules.healthResults.getFrequencyInWords(confirmationProduct.frequency);
-				}
-				confirmationProduct._selectedFrequency = confirmationProduct.frequency;
 				meerkat.modules.healthPaymentStep.initFields(); // not sure why this works to allow the next call to work but it seems to be the only way to figure out what payment type they selected
 
 				if(!confirmationProduct.hasOwnProperty('premium')) {
@@ -93,10 +83,6 @@
 				}
 
 				fillTemplate();
-				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
-
-				/// TODO: Fix this -why is it needed though?
-				//meerkat.modules.healthMoreInfo.applyEventListeners();
 
 				var tracking = {
 					productID: confirmationProduct.productId,
@@ -125,12 +111,6 @@
 		var htmlString = htmlTemplate(confirmationProduct);
 		$("#confirmation").html(htmlString);
 
-		meerkat.messaging.subscribe(meerkatEvents.healthPriceComponent.INIT, function(selectedProduct){
-			// inject the price and product summary
-			meerkat.modules.healthPriceComponent.updateProductSummaryHeader(confirmationProduct, confirmationProduct.frequency, true);
-			meerkat.modules.healthPriceComponent.updateProductSummaryDetails(confirmationProduct, confirmationProduct.startDate, false);
-		});
-
 		// if pending, it might not have the about fund info so let's get it
 		if(confirmationProduct.about === ''  || !confirmationProduct.hasOwnProperty('warningAlert') || confirmationProduct.warningAlert === '') {
 			meerkat.modules.healthMoreInfo.retrieveExternalCopy(confirmationProduct).then(function confirmationExternalCopySuccess() {
@@ -150,15 +130,6 @@
 				});
 			});
 		}
-
-		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
-			// render dual pricing
-			meerkat.modules.healthDualPricing.initHealthDualPricing();
-			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', meerkat.modules.moreInfo.getProduct(), false, true);
-		}
-
-		// hide the sidebar frequncy. only needed for payment page
-		$('.hasDualPricing .sidebarFrequency').hide();
 	}
 
 	meerkat.modules.register('healthConfirmation', {
