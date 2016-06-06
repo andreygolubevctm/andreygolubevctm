@@ -314,6 +314,8 @@
                 Results.pagination.setupNativeScroll();
                 // render snapshot
                 meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
+                // turn off increment tranId
+                Results.settings.incrementTransactionId = false;
             });
             var tEnd = new Date().getTime();
             var tFetchFinish = (tEnd - tStart);
