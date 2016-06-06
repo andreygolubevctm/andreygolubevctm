@@ -158,7 +158,7 @@ var healthFunds_AHM = {
       };
     healthFunds_AHM.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
-    healthFunds_AHM.$paymentType.on('click.AHM', function populateFuturePaymentDaysPaymentType(){
+    healthFunds_AHM.$paymentType.on('change.AHM', function populateFuturePaymentDaysPaymentType(){
       healthFunds_AHM.populateFuturePaymentDays();
     });
 
@@ -221,12 +221,12 @@ var healthFunds_AHM = {
     meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
-    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
-    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
 
     healthFunds_AHM.$paymentTypeContainer.text('').slideUp();
 
-    healthFunds_AHM.$paymentType.off('click.AHM');
+    healthFunds_AHM.$paymentType.off('change.AHM');
     healthFunds_AHM.$paymentFrequency.off('change.AHM');
     healthFunds_AHM.$paymentStartDate.off("changeDate.AHM");
 

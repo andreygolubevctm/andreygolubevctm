@@ -32,7 +32,7 @@ var healthFunds_AUF = {
     healthFunds._payments = { 'min':0, 'max':5, 'weekends':false };
     healthFunds_AUF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 
-    healthFunds_AUF.$paymentType.on('click.AUF', function renderPaymentDayPaymentType(){
+    healthFunds_AUF.$paymentType.on('change.AUF', function renderPaymentDayPaymentType(){
       healthFunds_AUF.renderPaymentDay();
     });
 
@@ -57,8 +57,8 @@ var healthFunds_AUF = {
     healthFunds_AUF.$paymentTypeContainer.text('*Australian Unity offers a 4% discount for direct debit payments').slideDown();
 
     var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
   },
   unset: function(){
     healthFunds._reset();
@@ -70,12 +70,12 @@ var healthFunds_AUF = {
     meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
-    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
-    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
+    meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
 
     healthFunds_AUF.$paymentTypeContainer.text('').slideUp();
 
-    healthFunds_AUF.$paymentType.off('click.AUF');
+    healthFunds_AUF.$paymentType.off('change.AUF');
     healthFunds_AUF.$paymentFrequency.off('change.AUF');
     healthFunds_AUF.$paymentStartDate.off("changeDate.AUF");
 

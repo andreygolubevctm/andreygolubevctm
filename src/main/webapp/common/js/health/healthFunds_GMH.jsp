@@ -11,8 +11,8 @@ GMH
 --%>
 var healthFunds_GMH = {
     $policyDateHiddenField : $('.health_details-policyDate'),
-    $policyDateCreditMessage : $('.health_credit-card-details_policyDay-message'),
-    $policyDateBankMessage : $('.health_bank-details_policyDay-message'),
+    $policyDateCreditMessage : $('.health_payment_credit-details_policyDay-message'),
+    $policyDateBankMessage : $('.health_payment_bank-details_policyDay-message'),
     $paymentType : $('#health_payment_details_type input'),
     $paymentFrequency : $('#health_payment_details_frequency'),
     $paymentStartDate: $("#health_payment_details_start"),
@@ -53,7 +53,7 @@ var healthFunds_GMH = {
         meerkat.messaging.subscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_GMH.paymentDayChange);
 
 
-        healthFunds_GMH.$paymentType.on('click.GMH', function updatePaymentMsgPaymentType(){
+        healthFunds_GMH.$paymentType.on('change.GMH', function updatePaymentMsgPaymentType(){
             healthFunds_GMH.updateMessage();
         });
 
@@ -122,7 +122,7 @@ var healthFunds_GMH = {
         meerkat.modules.healthCreditCard.render();
 
         <%--selections for payment date--%>
-        healthFunds_GMH.$paymentType.off('click.GMH');
+        healthFunds_GMH.$paymentType.off('change.GMH');
         healthFunds_GMH.$paymentFrequency.off('change.GMH');
         healthFunds_GMH.$paymentStartDate.off("changeDate.GMH");
 
