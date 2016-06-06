@@ -1,13 +1,17 @@
 package com.ctm.web.health.router;
 
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
+import com.ctm.web.core.dao.ProviderDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
+import com.ctm.web.health.dao.ProviderInfoDao;
 import com.ctm.web.health.services.ProviderContentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,7 +48,9 @@ public class HealthRouter extends HttpServlet {
 	
 	
 	private void getProviderContent(HttpServletRequest request, HttpServletResponse response, PrintWriter writer) throws IOException {
-		ProviderContentService providerContentService = new ProviderContentService();
+		ProviderInfoDao providerInfoDao = new ProviderInfoDao(new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm()));
+		ProviderDao providerDao = new ProviderDao();
+		ProviderContentService providerContentService = new ProviderContentService( providerInfoDao,  providerDao);
 		JSONObject json = new JSONObject();
 		try {
 			json.put("providerContentText", providerContentService.getProviderContentText(request));
