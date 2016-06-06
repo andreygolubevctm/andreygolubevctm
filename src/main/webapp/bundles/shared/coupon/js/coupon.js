@@ -50,15 +50,6 @@
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function() {
 			resetWhenChangeStep();
 		});
-
-        meerkat.messaging.subscribe(meerkatEvents.compare.RENDER_FINISHED, function() {
-            var $couponTileContainer = $('.featuresMode').find('.coupon-tile-container');
-            if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentTile')) {
-                $couponTileContainer.html(currentCoupon.contentTile).parent().addClass('tile-enabled');
-            } else {
-                $couponTileContainer.html('').parent().removeClass('tile-enabled');
-            }
-        });
 	}
 
 	function checkCouponsAvailability() {
