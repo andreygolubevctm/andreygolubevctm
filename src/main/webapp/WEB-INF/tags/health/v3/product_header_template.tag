@@ -26,7 +26,7 @@
             </div>
 
             <a class="btn btn-cta btn-block btn-more-info more-info-showapply" href="javascript:;" data-productId="{{= productId }}">
-                <div class="more-info-text">More Info</div>
+                <div class="more-info-text">Get Insured</div>
             </a>
             {{ var brochureTemplate = meerkat.modules.templateCache.getTemplate($("#brochure-download-template")); }}
             {{= brochureTemplate(obj) }}
