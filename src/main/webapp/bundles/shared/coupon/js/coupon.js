@@ -32,7 +32,7 @@
 			if (isAvailable === true) {
 				$couponIdField = $('.coupon-id-field'),
 				$couponCodeField = $('.coupon-code-field'),
-				$couponOptinField = $('.coupon-optin-field'),
+				$couponOptinField = $('.coupon-optin-field').find('input'),
 				$couponOptinGroup = $('.coupon-optin-group'),
 				$couponErrorContainer = $('.coupon-error-container'),
 				$couponSuccessContainer = $('.coupon-success-container');
