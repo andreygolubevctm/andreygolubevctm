@@ -16,19 +16,21 @@
         return typeof obj.dropDeadDate === 'string' ? new Date(obj.dropDeadDate) : obj.dropDeadDate;
     }
 
-    function setDropDeadDate(providerContentText, product) {
-        var formattedDate = '';
-
-        if ($.trim(providerContentText) !== '') {
-            var dateSplit = providerContentText.split("/");
-            var rearrangedDate = dateSplit[1]+"/"+dateSplit[0]+"/"+dateSplit[2];
-            var newDate = new Date(rearrangedDate);
-            if ( isNaN( newDate.getTime() ) ) {
+    function setDropDeadDate(dropDeadDateText, product) {
+        if ($.trim(dropDeadDateText) !== '') {
+            try {
+                var newDate = meerkat.modules.dateUtils.returnDate(dropDeadDateText);
+                product.dropDeadDateFormatted = meerkat.modules.dateUtils.format(newDate, "Do of MMMM, YYYY");
+                product.dropDeadDate =  newDate;
+            } catch(err) {
+                meerkat.modules.errorHandling.error({
+                    errorLevel: 'silent',
+                    page: "healthDropDeadDate.js",
+                    message: "Failed to parse dropDeadDateText",
+                    description: "Failed to parse dropDeadDateText: " + dropDeadDateText,
+                    data: "Error message: " + err.message + " error: " + err
+                });
                 setDefaultDropDeadDate(product);
-            } else {
-                formattedDate = meerkat.modules.dateUtils.format(newDate, "Do of MMMM, YYYY");
-                product.dropDeadDateFormatted =  formattedDate;
-                product.dropDeadDate =  new Date(rearrangedDate);
             }
         } else {
             setDefaultDropDeadDate(product);
