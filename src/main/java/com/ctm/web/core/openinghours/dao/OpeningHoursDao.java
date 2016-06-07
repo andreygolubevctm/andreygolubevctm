@@ -29,6 +29,15 @@ public class OpeningHoursDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OpeningHoursDao.class);
     private final OpeningHoursHelper helper = new OpeningHoursHelper();
+    private final SimpleDatabaseConnection dbSource;
+
+    public OpeningHoursDao() {
+        this.dbSource = new SimpleDatabaseConnection();
+    }
+
+    public OpeningHoursDao(final SimpleDatabaseConnection dbSource) {
+        this.dbSource = dbSource;
+    }
 
     /**
      * Get data to display on website
@@ -39,7 +48,6 @@ public class OpeningHoursDao {
      * @return Data to display on website
      */
     public List<OpeningHours> getAllOpeningHoursForDisplay(int verticalId, Date effectiveDate, boolean isSpecial) throws DaoException {
-        SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         List<OpeningHours> mapOpeningHoursDetails = new ArrayList<>();
         try {
             PreparedStatement stmt;
@@ -82,7 +90,9 @@ public class OpeningHoursDao {
             LOGGER.error("Failed to get opening hours for display {}, {}, {}", kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), kv("isSpecial", isSpecial), e);
             throw new DaoException(e);
         } finally {
-            dbSource.closeConnection();
+            if (dbSource != null) {
+                dbSource.closeConnection();
+            }
         }
     }
 
@@ -111,7 +121,6 @@ public class OpeningHoursDao {
      *                      Sat-Sun	    10:00:00	24:00:00
      */
     public List<OpeningHours> getCurrentNormalOpeningHoursForEmail(int verticalId, Date effectiveDate) throws DaoException {
-        SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         List<OpeningHours> openingHoursList = new ArrayList<>();
         try {
             PreparedStatement stmt;
@@ -175,7 +184,9 @@ public class OpeningHoursDao {
             LOGGER.error("Failed while executing getting current normal opening hours for email {}, {}", kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), e);
             throw new DaoException(e);
         } finally {
-            dbSource.closeConnection();
+            if (dbSource != null) {
+                dbSource.closeConnection();
+            }
         }
     }
 
@@ -227,7 +238,7 @@ public class OpeningHoursDao {
         try {
             ResultSet resultSet = getPreparedStatementForOneDay("today", effectiveDate.toLocalDate(), verticalId);
 
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 LocalTime effectiveTime = effectiveDate.toLocalTime();
                 LocalTime startTime = resultSet.getTime("startTime").toLocalTime();
                 LocalTime endTime = resultSet.getTime("endTime").toLocalTime();
@@ -244,7 +255,6 @@ public class OpeningHoursDao {
 
     protected ResultSet getPreparedStatementForOneDay(final String dayDescription, final LocalDate effectiveDate,
                                                     final int verticalId) throws DaoException {
-        SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         try {
             PreparedStatement stmt;
             stmt = dbSource.getConnection().prepareStatement(
@@ -266,7 +276,9 @@ public class OpeningHoursDao {
         } catch (SQLException | NamingException e) {
             throw new DaoException(e);
         } finally {
-            dbSource.closeConnection();
+            if (dbSource != null) {
+                dbSource.closeConnection();
+            }
         }
     }
 
