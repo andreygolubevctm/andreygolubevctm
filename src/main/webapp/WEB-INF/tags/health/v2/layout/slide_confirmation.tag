@@ -34,7 +34,7 @@
 					<form_v3:fieldset legend="" className="confirmation">
 						{{ var fundName = info.providerName ? info.providerName : info.fundName }}
 						<div class="row confirmation-complete">
-							<div class="col-xs-8">
+							<div class="col-md-8 col-xs-12">
 								<h1 class="success">Congratulations!</h1>
 
 								<p>Well done <span>[name]</span>,<br />
@@ -44,7 +44,7 @@
 
 								<p>Thank you for comparing <span>Health Insurance</span> with <content:get key="boldedBrandDisplayName"/></p>
 							</div>
-							<div class="col-xs-4">
+							<div class="col-md-4 col-xs-12">
 								<coupon:confirmation transactionId="${transactionId}" />
 							</div>
 							<div class="fundDetails">
