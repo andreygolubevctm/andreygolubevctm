@@ -319,6 +319,8 @@
             if ($.trim($('#health_productTitleSearch').val()) !== '') {
                 resetBenefitsSelection(true);
                 $('#health_situation_coverType_C').trigger('click');
+                $('.hospitalCoverToggles a.benefit-category.active').removeClass("active");
+                setDefaultCover();
             }
         }
     }
