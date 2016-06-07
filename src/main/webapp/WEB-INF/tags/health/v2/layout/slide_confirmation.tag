@@ -32,30 +32,31 @@
 				<layout_v1:slide_content >
 
 					<form_v3:fieldset legend="" className="confirmation">
-
-
-						<h1 class="success">Congratulations!</h1>
 						{{ var fundName = info.providerName ? info.providerName : info.fundName }}
 						<div class="row confirmation-complete">
-							<div class="col-xs-12">
+							<div class="col-xs-8">
+								<h1 class="success">Congratulations!</h1>
+
 								<p>Well done <span>[name]</span>,<br />
 								Your Application has been submitted to {{= fundName }} for processing.</p>
 
 								<p>Your new policy number is <span>{{= transID }}</span>.</p>
 
 								<p>Thank you for comparing <span>Health Insurance</span> with <content:get key="boldedBrandDisplayName"/></p>
-
-								<div class="row fundDetails">
-									<div class="col-xs-12">
-										<p>For any questions, contact {{= fundName }} via any of the methods below</p>
-									</div>
-									<!-- leveraging existing styles -->
-									<div class="col-xs-4 companyLogo {{= info.provider }}-mi" ></div>
-									<div class="col-xs-8">
-										<p>[number]</p>
-										<p>[email]</p>
-										<p>[website]</p>
-									</div>
+							</div>
+							<div class="col-xs-4">
+								<coupon:confirmation transactionId="${transactionId}" />
+							</div>
+							<div class="fundDetails">
+								<div class="col-xs-12">
+									<p>For any questions, contact {{= fundName }} via any of the methods below</p>
+								</div>
+								<!-- leveraging existing styles -->
+								<div class="col-xs-4 companyLogo {{= info.provider }}-mi" ></div>
+								<div class="col-xs-8">
+									<p>[number]</p>
+									<p>[email]</p>
+									<p>[website]</p>
 								</div>
 							</div>
 						</div>
