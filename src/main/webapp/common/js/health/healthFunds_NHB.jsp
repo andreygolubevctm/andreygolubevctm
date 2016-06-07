@@ -137,6 +137,12 @@
                       return true;
                     },
                     onComplete: function onSubmitComplete() {
+                      <%-- Set subreason if set --%>
+                      <c:set var="subreasonxpath" value="${fieldXpath}/subreason"/>
+                      <c:set var="subreasonval"><c:out value="${data[subreasonxpath]}" escapeXml="true"/></c:set>
+                      <c:if test="${fn:length(subreasonval) > 0}">
+                        $("#health_application_nhb_subreason").val('<c:out value="${subreasonval}" escapeXml="true"/>');
+                      </c:if>
                       return true;
                     }
                   });
@@ -144,6 +150,11 @@
                     $dropDown.val(originalKey).change();
                   }
                 });
+              }
+
+              var $eligibility = $('#health_application_nhb_eligibility');
+              if($eligibility.val() !== '') {
+                $eligibility.trigger('change');
               }
             }<%-- /injection --%>
 
@@ -230,7 +241,7 @@
               //meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
               meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',false);
 
-			  healthFunds_NHB.$paymentType.on('click.NHB', function renderPaymentDaysPaymentType(){
+			  healthFunds_NHB.$paymentType.on('change.NHB', function renderPaymentDaysPaymentType(){
 				healthFunds_NHB.renderPaymentDays();
 			});
 
@@ -291,7 +302,7 @@
               healthFunds._dependants(false);
               meerkat.modules.healthDependants.resetConfig();
               healthFunds._reset();
-			  healthFunds_NHB.$paymentType.off('click.NHB');
+			  healthFunds_NHB.$paymentType.off('change.NHB');
 				healthFunds_NHB.$paymentFrequency.off('change.NHB');
 				healthFunds_NHB.$paymentStartDate.off("changeDate.NHB");
               meerkat.modules.paymentGateway.reset();

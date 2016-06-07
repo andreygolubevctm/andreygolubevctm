@@ -97,7 +97,7 @@
               meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
               meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 
-              healthFunds_HIF.$paymentType.on('click.HIF', function renderPaymentDaysPaymentType(){
+              healthFunds_HIF.$paymentType.on('change.HIF', function renderPaymentDaysPaymentType(){
 				healthFunds_HIF.renderPaymentDays();
 			});
 
@@ -167,7 +167,7 @@
               $('#health_payment_details_type_ba').prop('disabled', false);
               $('#health_payment_details_type_ba').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
 
-			  healthFunds_HIF.$paymentType.off('click.HIF');
+			  healthFunds_HIF.$paymentType.off('change.HIF');
 				healthFunds_HIF.$paymentFrequency.off('change.HIF');
 				healthFunds_HIF.$paymentStartDate.off("changeDate.HIF");
               meerkat.modules.paymentGateway.reset();

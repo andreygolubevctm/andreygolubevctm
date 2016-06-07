@@ -78,7 +78,7 @@ set: function () {
 			});
 		</c:if>
 
-		healthFunds_CUA.$paymentType.on('click.CUA', function renderPaymentDaysPaymentType(){
+		healthFunds_CUA.$paymentType.on('change.CUA', function renderPaymentDaysPaymentType(){
 			healthFunds_CUA.renderPaymentDays();
 		});
 
@@ -144,7 +144,7 @@ set: function () {
 		"use strict";
 
 		$('.cua-payment-legend').remove();
-		healthFunds_CUA.$paymentType.off('click.CUA');
+		healthFunds_CUA.$paymentType.off('change.CUA');
 		healthFunds_CUA.$paymentFrequency.off('change.CUA');
 		healthFunds_CUA.$paymentStartDate.off("changeDate.CUA");
 
