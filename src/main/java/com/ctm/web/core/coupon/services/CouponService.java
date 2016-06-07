@@ -9,6 +9,7 @@ import com.ctm.web.core.coupon.model.request.CouponRequest;
 import com.ctm.web.core.coupon.dao.CouponDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.utils.common.utils.DateUtils;
 import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +82,8 @@ public class CouponService {
 			int verticalId = pageSettings.getVertical().getId();
 			Date effectiveDate = ApplicationService.getApplicationDate(request);
 
-			List<Coupon> coupons = couponDao.getAvailableCoupons(styleCodeId, verticalId, CouponChannel.findByCode(couponChannelCode), effectiveDate);
+			List<Coupon> coupons = couponDao.getAvailableCoupons(styleCodeId, verticalId,
+					CouponChannel.findByCode(couponChannelCode), DateUtils.toLocalDateTime(effectiveDate));
 			return !coupons.isEmpty();
 		} catch (DaoException | ConfigSettingException e) {
 			LOGGER.error("Failed to check if coupon field can be displayed {}", kv("couponChannelCode", couponChannelCode), e);

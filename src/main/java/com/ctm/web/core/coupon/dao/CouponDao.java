@@ -16,6 +16,7 @@ import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -192,15 +193,16 @@ public class CouponDao {
 	}
 
 	public List<Coupon> getAvailableCoupons(CouponRequest couponRequest) throws DaoException {
-		return getAvailableCoupons(couponRequest.styleCodeId, couponRequest.verticalId, couponRequest.couponChannel, couponRequest.effectiveDate);
+		return getAvailableCoupons(couponRequest.styleCodeId, couponRequest.verticalId, couponRequest.couponChannel,
+				DateUtils.toLocalDateTime(couponRequest.effectiveDate));
 	}
 
-	public List<Coupon> getAvailableCoupons(int styleCodeId, int verticalId, CouponChannel couponChannel, Date effectiveDate) throws DaoException {
+	public List<Coupon> getAvailableCoupons(int styleCodeId, int verticalId, CouponChannel couponChannel, LocalDateTime effectiveDate) throws DaoException {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
 		try {
 			final OpeningHoursDao openingHoursDao = new OpeningHoursDao(dbSource);
-			final boolean callCentreOpen = openingHoursDao.isCallCentreOpen(verticalId, DateUtils.toLocalDateTime(effectiveDate));
+			final boolean callCentreOpen = openingHoursDao.isCallCentreOpen(verticalId, effectiveDate);
 
 			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
 				"SELECT * FROM ctm.coupons " +
@@ -216,7 +218,7 @@ public class CouponDao {
 			stmt.setInt(2, verticalId);
 			stmt.setString(3, couponChannel.getCode());
 			stmt.setString(4, callCentreOpen ? CouponOpenHoursCondition.OPEN.name() : CouponOpenHoursCondition.CLOSED.name());
-			stmt.setTimestamp(5, new java.sql.Timestamp(effectiveDate.getTime()));
+			stmt.setTimestamp(5, java.sql.Timestamp.valueOf(effectiveDate));
 
 			return mapFieldsFromResultsToCoupon(stmt.executeQuery());
 		}

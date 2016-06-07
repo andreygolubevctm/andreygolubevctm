@@ -46,8 +46,8 @@
 				com.ctm.web.health.router.HealthQuoteRouter,
 				com.ctm.web.health.router.HealthApplicationRouter,
 				com.ctm.web.health.router.HealthAuthorisePaymentRouter,
-				com.ctm.web.health.router.HealthRegisterPaymentRouter
-
+				com.ctm.web.health.router.HealthRegisterPaymentRouter,
+				com.ctm.web.health.router.HealthCouponRouter
 			</param-value>
 		</init-param>
 		<init-param>
