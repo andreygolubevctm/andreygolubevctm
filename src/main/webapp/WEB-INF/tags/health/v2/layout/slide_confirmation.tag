@@ -33,6 +33,7 @@
 
 					<form_v3:fieldset legend="" className="confirmation">
 
+
 						<h1 class="success">Congratulations!</h1>
 						{{ var fundName = info.providerName ? info.providerName : info.fundName }}
 						<div class="row confirmation-complete">
@@ -44,7 +45,6 @@
 
 								<p>Thank you for comparing <span>Health Insurance</span> with <content:get key="boldedBrandDisplayName"/></p>
 
-								<hr />
 								<div class="row fundDetails">
 									<div class="col-xs-12">
 										<p>For any questions, contact {{= fundName }} via any of the methods below</p>
@@ -65,7 +65,7 @@
 					</form_v3:fieldset>
 
 					<form_v3:fieldset legend="">
-						<confirmation:other_products heading="More ways to compare" copy="Find more ways to save with comparethemarket.com.au bu selecting any of the insurance or utilities below." />
+						<confirmation:other_products heading="More ways to compare" copy="Find more ways to save with comparethemarket.com.au bu selecting any of the insurance or utilities below." ignore="fuel,roadside"  />
 					</form_v3:fieldset>
 
 				</layout_v1:slide_content>

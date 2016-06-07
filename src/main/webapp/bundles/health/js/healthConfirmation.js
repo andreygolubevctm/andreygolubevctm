@@ -16,6 +16,8 @@
 			if (typeof meerkat.site === 'undefined') return;
 			if (meerkat.site.pageAction !== "confirmation") return;
 
+			meerkat.modules.coupon.renderCouponBanner();
+
 			meerkat.modules.health.initProgressBar(true);
 
 			meerkat.modules.journeyProgressBar.setComplete();
