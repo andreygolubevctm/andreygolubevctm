@@ -248,7 +248,7 @@ public class RequestAdapter {
         boolean isPrHospital = toBoolean(StringUtils.defaultIfEmpty(benefitsExtras.get("PrHospital"), "N"));
         boolean isPuHospital = toBoolean(StringUtils.defaultIfEmpty(benefitsExtras.get("PuHospital"), "N"));
 
-        if (quoteRequest.getProductType() == ProductType.GENERALHEALTH || toBoolean(situation.getAccidentOnlyCover())) {
+        if (quoteRequest.getProductType() == ProductType.GENERALHEALTH || (situation != null && toBoolean(situation.getAccidentOnlyCover()))) {
             quoteRequest.setHospitalSelection(BOTH);
         } else if (!isPrHospital && !isPuHospital) {
             if (filters.getTierHospitalFilter() != null && filters.getTierHospitalFilter() == 1) {
