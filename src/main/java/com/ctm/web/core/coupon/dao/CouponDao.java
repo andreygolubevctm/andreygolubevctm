@@ -7,6 +7,8 @@ import com.ctm.web.core.coupon.model.CouponOpenHoursCondition;
 import com.ctm.web.core.coupon.model.CouponRule;
 import com.ctm.web.core.coupon.model.request.CouponRequest;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.openinghours.dao.OpeningHoursDao;
+import com.ctm.web.core.utils.common.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -196,13 +198,16 @@ public class CouponDao {
 	public List<Coupon> getAvailableCoupons(int styleCodeId, int verticalId, CouponChannel couponChannel, Date effectiveDate) throws DaoException {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
-		try{
+		try {
+			final OpeningHoursDao openingHoursDao = new OpeningHoursDao(dbSource);
+			final boolean callCentreOpen = openingHoursDao.isCallCentreOpen(verticalId, DateUtils.toLocalDateTime(effectiveDate));
+
 			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-				"SELECT * " +
-				"FROM ctm.coupons " +
+				"SELECT * FROM ctm.coupons " +
 				"WHERE styleCodeId = ? " +
 				"AND verticalId = ? " +
 				"AND couponChannel IN (?, '') " +
+				"AND openHoursCond IN ('" + CouponOpenHoursCondition.UNRESTRICTED.name() + "', ?) " +
 				"AND ? BETWEEN effectiveStart AND effectiveEnd " +
 				"ORDER BY orderSeq ASC"
 			);
@@ -210,7 +215,8 @@ public class CouponDao {
 			stmt.setInt(1, styleCodeId);
 			stmt.setInt(2, verticalId);
 			stmt.setString(3, couponChannel.getCode());
-			stmt.setTimestamp(4, new java.sql.Timestamp(effectiveDate.getTime()));
+			stmt.setString(4, callCentreOpen ? CouponOpenHoursCondition.OPEN.name() : CouponOpenHoursCondition.CLOSED.name());
+			stmt.setTimestamp(5, new java.sql.Timestamp(effectiveDate.getTime()));
 
 			return mapFieldsFromResultsToCoupon(stmt.executeQuery());
 		}

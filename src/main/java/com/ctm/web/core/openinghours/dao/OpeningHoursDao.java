@@ -215,7 +215,7 @@ public class OpeningHoursDao {
     public String getOpeningHoursForDisplay(String dayDescription, Date effectiveDate, int verticalId) throws DaoException {
         String openingHours = null;
         try {
-            ResultSet resultSet = getPreparedStatementForOneDay(dayDescription, effectiveDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), verticalId);
+            ResultSet resultSet = getPreparedStatementForOneDay(dayDescription, DateUtils.toLocalDateTime(effectiveDate).toLocalDate(), verticalId);
 
             while (resultSet.next()) {
                 String startTime, endTime;
