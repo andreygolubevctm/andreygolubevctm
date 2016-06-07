@@ -11,7 +11,7 @@ import com.ctm.web.health.apply.model.request.payment.details.Frequency;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.providerInfo.ProviderInfo;
-import com.ctm.web.health.router.ConfirmationData;
+import com.ctm.web.health.confirmation.model.ConfirmationData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -42,6 +42,7 @@ public class HealthConfirmationService {
     public void createAndSaveConfirmation(HttpServletRequest request, HealthRequest data, HealthApplicationResponse response,
                                           String confirmationId, Data dataBucket) throws ServiceException {
         try {
+            LocalDate startDate = LocalDate.parse(data.getQuote().getPayment().getDetails().getStart(), AUS_FORMAT);
             String providerName = data.getQuote().getApplication().getProviderName();
             final String productSelected = StringUtils.removeEnd(
                     StringUtils.removeStart(dataBucket.getString("confirmation/health"), "<![CDATA["),
@@ -51,19 +52,16 @@ public class HealthConfirmationService {
             String about = getContent(request, providerName, "ABT");
             String firstName = data.getQuote().getApplication().getPrimary().getFirstname();
             String surname = data.getQuote().getApplication().getPrimary().getSurname();
-            ProviderInfo providerInfo= providerContentService.getProviderInfo(request, providerName);
-            final ConfirmationData confirmationData = new ConfirmationData(data.getTransactionId().toString(),
-                    LocalDate.parse(data.getQuote().getPayment().getDetails().getStart(), AUS_FORMAT),
-                    frequency,
-                    about,
-                    firstName,
-                    surname,
-                    providerInfo.getEmail(),
-                    providerInfo.getPhoneNumber(),
-                    providerInfo.getWebsite(),
-                    next,
-                    productSelected,
-                    response.getProductId());
+            ProviderInfo providerInfo = providerContentService.getProviderInfo(request, providerName);
+            final ConfirmationData confirmationData = ConfirmationData.newConfirmationData()
+                            .about(about)
+                            .transID(data.getTransactionId().toString())
+                            .startDate(startDate)
+                            .frequency(frequency).firstName(firstName)
+                            .lastName(surname)
+                            .providerInfo(providerInfo)
+                            .whatsNext(next).product(productSelected)
+                            .policyNo(response.getProductId()).build();
 
             Confirmation confirmation = new Confirmation();
             confirmation.setKey(confirmationId);

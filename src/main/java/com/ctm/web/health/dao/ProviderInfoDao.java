@@ -2,10 +2,7 @@ package com.ctm.web.health.dao;
 
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.provider.model.Provider;
-import com.ctm.web.health.model.providerInfo.ProviderEmail;
 import com.ctm.web.health.model.providerInfo.ProviderInfo;
-import com.ctm.web.health.model.providerInfo.ProviderPhoneNumber;
-import com.ctm.web.health.model.providerInfo.ProviderWebsite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -45,32 +42,29 @@ public class ProviderInfoDao {
     public ProviderInfo getProviderInfo(final Provider provider,
                                         final Brand brand,
                                         final java.util.Date searchDate) {
-            return    new ProviderInfo(
-                        getProviderEmail(provider, brand, searchDate),
-                        getProviderWebsite(provider, brand, searchDate),
-                        getProviderPhoneNumber(provider, brand, searchDate));
+            return ProviderInfo.newProviderInfo()
+                    .email(getProviderEmail(provider, brand, searchDate))
+                    .phoneNumber(getProviderPhoneNumber(provider, brand, searchDate))
+                    .website(getProviderWebsite(provider, brand, searchDate)).build();
     }
 
 
-    private ProviderEmail getProviderEmail(final Provider providerId,
+    private String getProviderEmail(final Provider providerId,
                                            final Brand brand,
                                            final java.util.Date searchDate) {
         return getProviderContent(providerId, brand, searchDate, "providerEmail")
-                .map(ProviderEmail::instanceOf)
-                .orElse(ProviderEmail.empty());
+                .orElse("");
     }
 
-    private ProviderWebsite getProviderWebsite(final Provider providerId, final Brand brand, final java.util.Date searchDate) {
+    private String getProviderWebsite(final Provider providerId, final Brand brand, final java.util.Date searchDate) {
         return getProviderContent(providerId, brand, searchDate, "providerWebsite")
-                .map(ProviderWebsite::instanceOf)
-                .orElse(ProviderWebsite.empty());
+                .orElse("");
     }
 
-    private ProviderPhoneNumber getProviderPhoneNumber(final Provider providerId, final Brand brand,
+    private String getProviderPhoneNumber(final Provider providerId, final Brand brand,
                                                        final java.util.Date searchDate) {
         return getProviderContent(providerId, brand, searchDate, "providerPhoneNumber")
-                .map(ProviderPhoneNumber::instanceOf)
-                .orElse(ProviderPhoneNumber.empty());
+                .orElse("");
     }
 
     private Optional<String> getProviderContent(final Provider providerId, final Brand brand,

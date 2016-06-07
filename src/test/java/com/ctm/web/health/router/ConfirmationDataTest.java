@@ -1,6 +1,7 @@
 package com.ctm.web.health.router;
 
 import com.ctm.web.core.utils.ObjectMapperUtil;
+import com.ctm.web.health.confirmation.model.ConfirmationData;
 import com.ctm.web.health.model.providerInfo.ProviderEmail;
 import com.ctm.web.health.model.providerInfo.ProviderPhoneNumber;
 import com.ctm.web.health.model.providerInfo.ProviderWebsite;

@@ -2,29 +2,60 @@ package com.ctm.web.health.model.providerInfo;
 
 
 public class ProviderInfo {
-    private ProviderPhoneNumber phoneNumber;
-    private ProviderEmail email;
-    private ProviderWebsite website;
+    private String phoneNumber;
+    private String email;
+    private String website;
 
-    public ProviderInfo(ProviderEmail email, ProviderWebsite website, ProviderPhoneNumber phoneNumber) {
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.website = website;
-
+    private ProviderInfo(Builder builder) {
+        this.phoneNumber = builder.phoneNumber;
+        this.email = builder.email;
+        this.website = builder.website;
     }
 
-    public ProviderPhoneNumber getPhoneNumber() {
+    public static Builder newProviderInfo() {
+        return new Builder();
+    }
+
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
 
-    public ProviderEmail getEmail() {
+    public String getEmail() {
         return email;
     }
 
 
-    public ProviderWebsite getWebsite() {
+    public String getWebsite() {
         return website;
     }
 
+
+    public static final class Builder {
+        private String phoneNumber;
+        private String email;
+        private String website;
+
+        private Builder() {
+        }
+
+        public ProviderInfo build() {
+            return new ProviderInfo(this);
+        }
+
+        public Builder phoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder website(String website) {
+            this.website = website;
+            return this;
+        }
+    }
 }
