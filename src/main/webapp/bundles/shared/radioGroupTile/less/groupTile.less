@@ -10,7 +10,6 @@
 
   label {
     display:inline-block;
-    margin-right: 15px;
 
     @media(@md) {
       width: 120px;
@@ -24,7 +23,11 @@
       font-size: 12px;
     }
 
-    @media(@sm-only) {
+    @media(@md) {
+      margin-right: 15px;
+    }
+
+    @media(@xs) {
       margin-right: 10px;
     }
 
