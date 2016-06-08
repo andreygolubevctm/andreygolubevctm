@@ -44,7 +44,7 @@
 
 		<jsp:body>
 
-			<form_v3:fieldset legend="Your details" postLegend="Enter your details below and we'll show you products that match your needs on the next page" >
+			<form_v3:fieldset id="health-contact-fieldset" legend="Your details" postLegend="Enter your details below and we'll show you products that match your needs on the next page" >
 
 				<c:set var="firstNamePlaceHolder">
 					<content:get key="firstNamePlaceHolder"/>

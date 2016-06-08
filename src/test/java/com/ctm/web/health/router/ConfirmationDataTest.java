@@ -47,6 +47,7 @@ public class ConfirmationDataTest {
                 .lastName(lastName)
                 .product("test")
                 .policyNo("12334")
+                .paymentType("cc")
                 .build();
 
         final String actual = ObjectMapperUtil.getXmlMapper().writeValueAsString(confirmationData);

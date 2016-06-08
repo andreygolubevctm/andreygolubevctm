@@ -87,7 +87,22 @@
 				}
 				confirmationProduct._selectedFrequency = confirmationProduct.frequency;
 				meerkat.modules.healthPaymentStep.initFields(); // not sure why this works to allow the next call to work but it seems to be the only way to figure out what payment type they selected
-				confirmationProduct.premium = confirmationProduct.paymentTypePremiums[meerkat.modules.healthPaymentStep.getPaymentMethodNode(confirmationProduct.frequency)];
+
+				if(!confirmationProduct.hasOwnProperty('premium')) {
+                    if (confirmationProduct.paymentType) {
+                        var paymentType;
+                        switch (confirmationProduct.paymentType) {
+                            case 'cc':
+                                paymentType = 'CreditCard';
+                                break;
+                            case 'ba':
+                                paymentType = 'BankAccount';
+                                break;
+
+                        }
+                        confirmationProduct.premium = confirmationProduct.paymentTypePremiums[paymentType];
+                    }
+				}
 
 				fillTemplate();
 				meerkat.modules.healthPriceComponent.initHealthPriceComponent();

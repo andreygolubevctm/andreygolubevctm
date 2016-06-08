@@ -125,7 +125,7 @@ var healthFunds_THF = {
 		healthFunds_THF.ineligibleMessage 	= $('#thf_ineligible');
 
 
-		healthFunds_THF.$paymentType.on('click.THF', function renderPaymentDaysPaymentType(){
+		healthFunds_THF.$paymentType.on('change.THF', function renderPaymentDaysPaymentType(){
 			healthFunds_THF.renderPaymentDays();
 		});
 
@@ -272,7 +272,7 @@ var healthFunds_THF = {
 
 		healthFunds._previousfund_authority(false);
 
-		healthFunds_THF.$paymentType.off('click.THF');
+		healthFunds_THF.$paymentType.off('change.THF');
 		healthFunds_THF.$paymentFrequency.off('change.THF');
 		healthFunds_THF.$paymentStartDate.off("changeDate.THF");
 	}
