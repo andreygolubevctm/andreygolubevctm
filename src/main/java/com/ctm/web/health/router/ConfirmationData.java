@@ -20,6 +20,8 @@ public class ConfirmationData {
 
     private final String frequency;
 
+    private final String paymentType;
+
     @JacksonXmlCData
     private final String about;
 
@@ -31,10 +33,12 @@ public class ConfirmationData {
 
     private final String policyNo;
 
-    public ConfirmationData(String transID, LocalDate startDate, String frequency, String about, String whatsNext, String product, String policyNo) {
+    public ConfirmationData(String transID, LocalDate startDate, String frequency, String about,
+                            String whatsNext, String product, String policyNo, String paymentType) {
         this.transID = transID;
         this.startDate = startDate;
         this.frequency = frequency;
+        this.paymentType = paymentType;
         this.about = about;
         this.whatsNext = whatsNext;
         this.product = product;
@@ -59,6 +63,10 @@ public class ConfirmationData {
 
     public String getFrequency() {
         return frequency;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
     }
 
     public String getAbout() {

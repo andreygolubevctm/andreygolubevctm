@@ -228,6 +228,7 @@
     }
 
     function init() {
+        if(meerkat.site.pageAction === "confirmation") { return false; }
         meerkat.modules.filters.initFilters(settings, model);
         applyEventListeners();
         eventSubscriptions();
