@@ -160,13 +160,6 @@
 		}
 	}
 
-	function toggleContactFields() {
-		if (sectionsToSkip.length === 0) {
-			// it's journey as per normal but we're still in fast track mode
-			$contactDetailsFieldSet.show();
-		}
-	}
-
 	function updateFastTrack(fastTrack) {
 		doFastTrack = fastTrack;
 	}
@@ -178,7 +171,6 @@
 		isFastTrack : isFastTrack,
 		moveContactDetailsToStep3 : moveContactDetailsToStep3,
 		resetBenefitsStep: resetBenefitsStep,
-		toggleContactFields: toggleContactFields,
 		updateFastTrack : updateFastTrack
 	});
 
