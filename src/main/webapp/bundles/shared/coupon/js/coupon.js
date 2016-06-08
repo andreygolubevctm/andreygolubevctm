@@ -8,6 +8,7 @@
 
 	var events = {
 		coupon: {
+			COUPON_LOADED : "COUPON_LOADED"
 		}
 	};
 
@@ -105,6 +106,7 @@
 		.done(function onSuccess(json) {
 			setCurrentCoupon(json);
 			populateFields();
+			meerkat.messaging.publish(events.coupon.COUPON_LOADED);
 			if (typeof successCallBack === 'function') {
 				successCallBack();
 			}
