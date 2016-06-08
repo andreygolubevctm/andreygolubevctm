@@ -19,7 +19,6 @@ public final class PrivacyBlacklist {
 			"claim/number",
 			"password",
 			"save/confirm",
-			"payment/details/type",
 			// necessary for write quote lite, but don't want to save.
 			"hasPrivacyOptin"
 	};

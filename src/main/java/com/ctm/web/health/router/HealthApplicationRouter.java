@@ -260,7 +260,9 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
                 providerContentService.getProviderContentText(context.getHttpServletRequest(), data.getQuote().getApplication().getProviderName(), "ABT"),
                 providerContentService.getProviderContentText(context.getHttpServletRequest(), data.getQuote().getApplication().getProviderName(), "NXT"),
                 productSelected,
-                response.getProductId());
+                response.getProductId(),
+                data.getQuote().getPayment().getDetails().getType()
+        );
 
         Confirmation confirmation = new Confirmation();
         confirmation.setKey(confirmationId);
