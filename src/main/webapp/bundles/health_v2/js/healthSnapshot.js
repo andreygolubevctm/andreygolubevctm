@@ -29,11 +29,16 @@
                 renderSnapshot();
             });
         });
+        meerkat.messaging.subscribe(meerkat.modules.events.RESULTS_SORTED, function renderSnapshotOnJourneyReadySubscription() {
+            _.defer(function() {
+                renderSnapshot();
+            });
+        });
     }
 
     function renderSnapshot() {
         meerkat.modules.contentPopulation.render('.quoteSnapshot');
-        render();
+        _.defer(render);
     }
 
     function showHide(data, selector, property, forceHide) {
@@ -85,7 +90,7 @@
         showHide(data,'.quoteSnapshot .hospital','hospital', noData);
         showHide(data,'.quoteSnapshot .extras','extras', noData);
 
-        $box.toggle(!noData && meerkat.modules.journeyEngine.getCurrentStepIndex() < 4);
+        $('.quoteSnapshot').toggle(!noData && meerkat.modules.journeyEngine.getCurrentStepIndex() < 3);
     }
 
     function getData() {
