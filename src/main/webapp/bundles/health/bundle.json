@@ -35,7 +35,8 @@
     "shared/emailBrochures",
     "shared/serverSideValidationOutput",
     "shared/sidebarWidgets",
-    "shared/filters"
+    "shared/filters",
+    "shared/radioGroupTile"
   ],
   "exclusions": [
     "shared/results/v4",
