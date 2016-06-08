@@ -71,7 +71,7 @@
 					currentCoupon = couponInput;
 					meerkat.modules.coupon.validateCouponCode(currentCoupon);
 				}
-			}
+			};
 
 			$paymentRadioGroup.find('input').on('click', function() {
 				togglePaymentGroups();
