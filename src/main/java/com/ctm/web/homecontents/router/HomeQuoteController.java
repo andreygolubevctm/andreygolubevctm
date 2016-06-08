@@ -63,10 +63,12 @@ public class HomeQuoteController extends CommonQuoteRouter {
     @RequestMapping(value = "/more_info/get.json",
             method= RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public HomeMoreInfo moreInfo(@RequestParam("code") String productId, @RequestParam("type") String type,
+    public HomeMoreInfo moreInfo(@RequestParam("code") String productId,
+                                 @RequestParam("type") String type,
+                                 @RequestParam("transactionId") Long transactionId,
                                  @RequestParam(value = "environmentOverride", required = false) String environmentOverride, HttpServletRequest request) throws Exception {
         Brand brand = initRouter(request, HOME);
-        return homeService.getMoreInfo(brand, productId, type, getApplicationDate(request), Optional.ofNullable(environmentOverride));
+        return homeService.getMoreInfo(transactionId, brand, productId, type, getApplicationDate(request), Optional.ofNullable(environmentOverride));
     }
 
 }
