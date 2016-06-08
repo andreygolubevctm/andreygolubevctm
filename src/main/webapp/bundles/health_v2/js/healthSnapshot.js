@@ -89,7 +89,7 @@
     function getData() {
         var coverFor = $("#health_situation_healthCvr").val();
         var livingIn = $("#health_situation_location").val();
-        var lookingTo = $("#health_situation_healthSitu").val();
+        var lookingTo = $("input[name=health_situation_healthSitu]").filter(":checked").closest('label').text().trim();
         var coverType = $("#health_situation_coverType input:checked").parent().text();
         var tieredCoverType = $('#health_situation_coverType input').filter(":checked").val();
         var hospital = fetchAllHospitalCheckedValues(tieredCoverType);

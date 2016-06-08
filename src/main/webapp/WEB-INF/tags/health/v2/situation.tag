@@ -35,6 +35,8 @@
 
 			<form_v3:fieldset id="healthAboutYou" legend="About you" postLegend="Tell us about yourself, so we can find the right cover for you" className="health-about-you">
 
+			<form_v3:fieldset id="healthAboutYou" legend="About you" postLegend="Tell us about yourself, so we can find the right cover for you" className="health-about-you">
+
 				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
 				<form_v3:row label="You are a" fieldXpath="${fieldXpath}" className="health-cover">
 					<field_v2:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" />
@@ -76,10 +78,43 @@
 			</simples:dialogue>
 
 			<form_v3:fieldset id="primary-health-cover" legend="Your Details" className="primary">
+				<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
+				<sql:query var="result">
+					SELECT code, description FROM aggregator.general WHERE type = 'healthSitu' AND (status IS NULL OR status != 0)
+					<c:if test="${empty taxTimeSplitTest or  taxTimeSplitTest eq '1'}">
+						and code != 'CHC'
+					</c:if>
+					<c:choose>
+						<c:when test="${taxTimeSplitTest eq 31}">
+							ORDER BY FIELD(code,'CHC', 'LC','LBC','CSF','ATP')
+						</c:when>
+						<c:otherwise>
+							ORDER BY orderSeq
+						</c:otherwise>
+					</c:choose>
+				</sql:query>
+				<c:set var="sep"></c:set>
+				<c:set var="items">
+					<c:forEach var="row" items="${result.rows}">
+						${sep}${row.code}=${row.description}
+						<c:set var="sep">,</c:set>
+					</c:forEach>
+				</c:set>
 				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
 				<form_v3:row label="You're looking to" fieldXpath="${fieldXpath}">
-					<field_v2:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="reason you are looking to quote" />
+					<field_v2:array_radio xpath="${fieldXpath}"
+										  required="true"
+										  className="health-situation-healthSitu"
+										  items="${items}"
+										  style="group-tile"
+										  id="${go:nameFromXpath(fieldXPath)}"
+										  title="reason you are looking to quote" />
+				</form_v3:row>
+
+				<c:set var="fieldXpath" value="${xpath}/addExtrasCover" />
+				<form_v3:row label="Do you wisth to add extras cover for services like Dental, Optical or Physio?" fieldXpath="${fieldXpath}" id="extrasCoverOptionContainer">
+					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="extras cover" required="true" />
 				</form_v3:row>
 
 			<%-- Did it this way to prevent the snapshot from pushing the fields below up/down depending on the option selected with the health_situation_healthCvr field --%>
@@ -161,8 +196,10 @@
 				</form_v3:row>
 
 			</form_v3:fieldset>
+			<%--
+                        <health_v3:about_you_contact_details xpath="${xpath}" />--%>
 
-			<%-- Override set in splittest_helper tag --%>
+                        <%-- Override set in splittest_helper tag --%>
 			<c:if test="${showOptInOnSlide3 eq false}">
 				<c:set var="termsAndConditions">
 					<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
@@ -187,7 +224,7 @@
 				</div>
 			</c:if>
 			<simples:dialogue id="37" vertical="health" mandatory="true" className="hidden" />
-		</jsp:body>
 
+		</jsp:body>
 	</form_v2:fieldset_columns>
 </div>

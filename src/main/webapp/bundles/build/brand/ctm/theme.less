@@ -1115,6 +1115,7 @@ fieldset h2 {
 	}
 }
 //Gets rid of the double border seen on button groups
+.btn-tile,
 .btn-group {
 	.btn {
 		word-wrap: break-word;
@@ -1248,6 +1249,7 @@ fieldset h2 {
 	@input-border-disabled;
 	@input-bg-disabled
 	);
+	.btn-tile > .btn,
 	.btn-group>.btn { //Fixes errors around this somehow.
 	  cursor: not-allowed;
 	}

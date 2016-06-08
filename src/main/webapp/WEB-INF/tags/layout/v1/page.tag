@@ -9,6 +9,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 <%@ attribute name="title"				required="false"  rtexprvalue="true"	 description="The title of the page" %>
 <%@ attribute name="skipJSCSS"	required="false"  rtexprvalue="true"	 description="Provide if wanting to exclude loading normal js/css (except jquery)" %>
+<%@ attribute required="false" name="body_class_name" description="Allow extra styles to be added to the rendered body tag" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -138,9 +139,14 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<script src="${pageSettings.getSetting('DTMSourceUrl')}"></script>
 	</c:if>
 </c:if>
+
+<%-- There's a bug in the JSTL parser which eats up the spaces between dynamic classes like this so using c:out sorts it out --%>
+<c:set var="bodyClass">
+	<c:out value="${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''} ${body_class_name}" />
+</c:set>
 </head>
 
-	<body class="jeinit ${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''}">
+	<body class="jeinit  ${bodyClass}">
 
     <c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
         <c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
@@ -332,6 +338,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							exit: '${exitUrl}',
 							context: '${pageSettings.getContextFolder()}'
 						},
+						isTaxTime: '<content:get key="taxTime"/>',
 						watchedFields: '<content:get key="watchedFields"/>',
 						content:{
 							brandDisplayName: '<content:get key="brandDisplayName"/>'

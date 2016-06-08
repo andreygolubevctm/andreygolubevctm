@@ -321,6 +321,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							exit: '${exitUrl}',
 							context: '${pageSettings.getContextFolder()}'
 						},
+						isTaxTime: '<content:get key="taxTime"/>',
 						watchedFields: '<content:get key="watchedFields"/>',
 						content:{
 							brandDisplayName: '<content:get key="brandDisplayName"/>'
