@@ -16,6 +16,7 @@ import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -119,7 +120,18 @@ public class CouponService {
 	}
 
 	/**
-	 * Get active coupons, taking into account if the call centre is currently open or closed.
+	 * Get active coupons now, taking into account if the call centre is currently open or closed.
+	 */
+	@Cacheable(cacheNames = {"couponGetActiveCouponsCache"})
+	public List<Coupon> getActiveCoupons(int styleCodeId, int verticalId, CouponChannel couponChannel) throws DaoException {
+		final LocalDateTime now = LocalDateTime.now();
+		final boolean callCentreOpen = openingHoursService.isCallCentreOpen(verticalId, now);
+		final CouponOpenHoursCondition openHoursCondition = callCentreOpen ? CouponOpenHoursCondition.OPEN : CouponOpenHoursCondition.CLOSED;
+		return couponDao.getAvailableCoupons(styleCodeId, verticalId, couponChannel, now, Optional.of(openHoursCondition));
+	}
+
+	/**
+	 * Get active coupons at a specific datetime, taking into account if the call centre is currently open or closed.
 	 */
 	public List<Coupon> getActiveCoupons(int styleCodeId, int verticalId, CouponChannel couponChannel, LocalDateTime effectiveDate) throws DaoException {
 		final boolean callCentreOpen = openingHoursService.isCallCentreOpen(verticalId, effectiveDate);

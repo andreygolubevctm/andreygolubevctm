@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public class HealthCouponController {
 		try {
 			// Only return maximum of one coupon
 			// Returns a list to describe "0 or 1" items
-			return couponService.getActiveCoupons(1, 4, CouponChannel.ONLINE, LocalDateTime.now()).stream().limit(1).collect(Collectors.toList());
+			return couponService.getActiveCoupons(1, 4, CouponChannel.ONLINE).stream().limit(1).collect(Collectors.toList());
 		} catch (DaoException e) {
 			LOGGER.error("Failed to getCurrentCoupon", e);
 		}
