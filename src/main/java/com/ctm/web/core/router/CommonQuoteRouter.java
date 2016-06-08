@@ -4,6 +4,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.formData.Request;
+import com.ctm.web.core.model.resultsData.Error;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
@@ -14,8 +15,8 @@ import com.ctm.web.core.services.IPCheckService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.services.tracking.TrackingKeyService;
+import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.validation.FormValidation;
-import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.core.validation.ValidationUtils;
 import com.ctm.web.core.web.go.Data;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 public abstract class CommonQuoteRouter<REQUEST extends Request> {
@@ -153,17 +154,17 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
         return Optional.empty();
     }
 
+
     @ExceptionHandler(BindException.class)
     @ResponseBody
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public List<SchemaValidationError> handleException(BindException e, HttpServletResponse response) {
-        LOGGER.warn("Validation failed", e);
-        response.setStatus(200);
-        return ValidationUtils.handleSpringValidationErrors(e);
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Error handleValidationException(BindException e, HttpServletRequest request) {
+        LOGGER.error("Validation failure encountered", e);
+        return FormValidation.outputToObject(RequestUtils.getTransactionIdFromRequest(request), ValidationUtils.handleSpringValidationErrors(e));
     }
 
 
-    @ExceptionHandler
+    @ExceptionHandler(RouterException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public com.ctm.web.core.model.resultsData.Error handleException(final RouterException e) {
         if(e.getValidationErrors() == null){
