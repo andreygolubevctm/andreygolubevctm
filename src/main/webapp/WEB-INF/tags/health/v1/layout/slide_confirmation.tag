@@ -42,8 +42,8 @@
 								<h1 class="success">Congratulations!</h1>
 							{{ } }}
 
-							<p>Well done <span>[name]</span>,<br />
-								Your Application has been submitted to {{= fundName }} for processing.</p>
+							<p>Well done <span>{{= firstName }} {{= lastName }}</span>,<br />
+								Your Application has been submitted to <span>{{= fundName }}</span> for processing.</p>
 
 							<p>Your transaction number is <span>{{= transID }}</span>.</p>
 
@@ -59,9 +59,9 @@
 							<!-- leveraging existing styles -->
 							<div class="col-xs-4 companyLogo {{= info.provider }}-mi" ></div>
 							<div class="col-xs-8">
-								<p>[number]</p>
-								<p>[email]</p>
-								<p>[website]</p>
+								{{ if(!_.isEmpty(providerInfo.phoneNumber)) { }}<p class="phoneNumber">{{= providerInfo.phoneNumber }}</p class="phoneNumber">{{ } }}
+								{{ if(!_.isEmpty(providerInfo.email)) { }}<p>{{= providerInfo.email }}</p>{{ } }}
+								{{ if(!_.isEmpty(providerInfo.website)) { }}<p>{{= providerInfo.website }}</p>{{ } }}
 							</div>
 						</div>
 					</div>
