@@ -5,20 +5,15 @@
  */
 ;(function ($, undefined) {
 
-    var meerkat = window.meerkat;
-
-    var events = {
-        coupon: {
-            COUPON_LOADED : "COUPON_LOADED"
-        }
-    };
+    var meerkat = window.meerkat,
+        moduleEvents = meerkat.events;
 
     function init() {
         applyEventListeners();
     }
 
     function applyEventListeners() {
-        meerkat.messaging.subscribe(events.coupon.COUPON_LOADED, moveCouponToTopOfSidePanel);
+        meerkat.messaging.subscribe(moduleEvents.coupon.COUPON_LOADED, moveCouponToTopOfSidePanel);
     }
 
     function moveCouponToTopOfSidePanel() {
@@ -33,8 +28,7 @@
     }
 
     meerkat.modules.register('healthOverrides', {
-        init: init,
-        events: events
+        init: init
     });
 
 })(jQuery);
