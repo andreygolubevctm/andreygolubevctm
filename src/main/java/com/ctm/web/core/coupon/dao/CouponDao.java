@@ -7,10 +7,10 @@ import com.ctm.web.core.coupon.model.CouponOpenHoursCondition;
 import com.ctm.web.core.coupon.model.CouponRule;
 import com.ctm.web.core.coupon.model.request.CouponRequest;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.openinghours.dao.OpeningHoursDao;
 import com.ctm.web.core.utils.common.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
@@ -20,9 +20,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class CouponDao {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CouponDao.class);
@@ -194,16 +196,14 @@ public class CouponDao {
 
 	public List<Coupon> getAvailableCoupons(CouponRequest couponRequest) throws DaoException {
 		return getAvailableCoupons(couponRequest.styleCodeId, couponRequest.verticalId, couponRequest.couponChannel,
-				DateUtils.toLocalDateTime(couponRequest.effectiveDate));
+				DateUtils.toLocalDateTime(couponRequest.effectiveDate), Optional.empty());
 	}
 
-	public List<Coupon> getAvailableCoupons(int styleCodeId, int verticalId, CouponChannel couponChannel, LocalDateTime effectiveDate) throws DaoException {
+	public List<Coupon> getAvailableCoupons(int styleCodeId, int verticalId, CouponChannel couponChannel, LocalDateTime effectiveDate,
+											Optional<CouponOpenHoursCondition> openHoursCondition) throws DaoException {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
 		try {
-			final OpeningHoursDao openingHoursDao = new OpeningHoursDao(dbSource);
-			final boolean callCentreOpen = openingHoursDao.isCallCentreOpen(verticalId, effectiveDate);
-
 			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
 				"SELECT * FROM ctm.coupons " +
 				"WHERE styleCodeId = ? " +
@@ -217,7 +217,7 @@ public class CouponDao {
 			stmt.setInt(1, styleCodeId);
 			stmt.setInt(2, verticalId);
 			stmt.setString(3, couponChannel.getCode());
-			stmt.setString(4, callCentreOpen ? CouponOpenHoursCondition.OPEN.name() : CouponOpenHoursCondition.CLOSED.name());
+			stmt.setString(4, openHoursCondition.map(CouponOpenHoursCondition::name).orElse(""));
 			stmt.setTimestamp(5, java.sql.Timestamp.valueOf(effectiveDate));
 
 			return mapFieldsFromResultsToCoupon(stmt.executeQuery());

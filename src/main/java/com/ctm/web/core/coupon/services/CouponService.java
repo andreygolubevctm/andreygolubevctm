@@ -1,35 +1,47 @@
 package com.ctm.web.core.coupon.services;
 
-import  com.ctm.web.core.model.settings.PageSettings;
-import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.core.coupon.dao.CouponDao;
 import com.ctm.web.core.coupon.model.Coupon;
 import com.ctm.web.core.coupon.model.CouponChannel;
+import com.ctm.web.core.coupon.model.CouponOpenHoursCondition;
 import com.ctm.web.core.coupon.model.request.CouponRequest;
-import com.ctm.web.core.coupon.dao.CouponDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.openinghours.services.OpeningHoursService;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.common.utils.DateUtils;
 import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class CouponService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CouponService.class);
 	private CouponDao couponDao;
+	private OpeningHoursService openingHoursService;
 
+	// Constructor required for JSP usage
 	public CouponService(){
 		this.couponDao = new CouponDao();
+		this.openingHoursService = new OpeningHoursService();
 	}
 
-	public CouponService(CouponDao couponDao){
+	@Autowired
+	public CouponService(CouponDao couponDao, OpeningHoursService openingHoursService) {
 		this.couponDao = couponDao;
+		this.openingHoursService = openingHoursService;
 	}
 
 	public Coupon getCouponById(CouponRequest couponRequest) throws DaoException {
@@ -52,7 +64,6 @@ public class CouponService {
 	}
 
 	public Coupon filterCouponForUser(CouponRequest couponRequest, Data data) throws DaoException {
-
 		CouponRulesService couponRulesService = new CouponRulesService();
 		List<Coupon> coupons = couponDao.getAvailableCoupons(couponRequest);
 
@@ -74,7 +85,6 @@ public class CouponService {
 	 * Used in jsp, to check if we need to show coupon field during page load
 	 */
 	public boolean canShowCouponField(HttpServletRequest request, String couponChannelCode) {
-
 		try {
 			PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 
@@ -82,7 +92,7 @@ public class CouponService {
 			int verticalId = pageSettings.getVertical().getId();
 			Date effectiveDate = ApplicationService.getApplicationDate(request);
 
-			List<Coupon> coupons = couponDao.getAvailableCoupons(styleCodeId, verticalId,
+			List<Coupon> coupons = getActiveCoupons(styleCodeId, verticalId,
 					CouponChannel.findByCode(couponChannelCode), DateUtils.toLocalDateTime(effectiveDate));
 			return !coupons.isEmpty();
 		} catch (DaoException | ConfigSettingException e) {
@@ -106,5 +116,14 @@ public class CouponService {
 			LOGGER.error("Failed to get coupon confirmation html for " + transactionId, e);
 		}
 		return confirmationHTML;
+	}
+
+	/**
+	 * Get active coupons, taking into account if the call centre is currently open or closed.
+	 */
+	public List<Coupon> getActiveCoupons(int styleCodeId, int verticalId, CouponChannel couponChannel, LocalDateTime effectiveDate) throws DaoException {
+		final boolean callCentreOpen = openingHoursService.isCallCentreOpen(verticalId, effectiveDate);
+		final CouponOpenHoursCondition openHoursCondition = callCentreOpen ? CouponOpenHoursCondition.OPEN : CouponOpenHoursCondition.CLOSED;
+		return couponDao.getAvailableCoupons(styleCodeId, verticalId, couponChannel, effectiveDate, Optional.of(openHoursCondition));
 	}
 }

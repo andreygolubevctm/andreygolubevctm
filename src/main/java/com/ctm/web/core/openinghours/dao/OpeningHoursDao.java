@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,9 +41,9 @@ public class OpeningHoursDao {
     /**
      * Get data to display on website
      *
-     * @param verticalId Must be pass to display opening hours for respective vertical
-     * @param effectiveDate Is the server date and must be pass
-     * @param isSpecial If 'true' returns special hours records else returns normal hours
+     * @param verticalId Required to display opening hours for respective vertical
+     * @param effectiveDate Required. The effective datetime.
+     * @param isSpecial If true returns special hours records else returns normal hours
      * @return Data to display on website
      */
     public List<OpeningHours> getAllOpeningHoursForDisplay(int verticalId, Date effectiveDate, boolean isSpecial) throws DaoException {
@@ -209,8 +208,6 @@ public class OpeningHoursDao {
      * @param dayDescription Can only be "today" or "tomorrow"
      * @param effectiveDate Effective date
      * @param verticalId Vertical Id
-     * @return String representation of opening hours
-     * @throws DaoException
      */
     public String getOpeningHoursForDisplay(String dayDescription, Date effectiveDate, int verticalId) throws DaoException {
         String openingHours = null;
