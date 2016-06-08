@@ -1,6 +1,7 @@
 package com.ctm.web.core.coupon.model;
 
 import com.ctm.web.core.model.AbstractJsonModel;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,6 +17,7 @@ public class Coupon extends AbstractJsonModel {
 	private int couponId;
 	private int styleCodeId;
 	private int verticalId;
+	@JsonView(Views.ForWordpressSite.class)
 	private String couponCode;
 	private boolean isExclusive;
 	private boolean showPopup;
@@ -25,6 +27,7 @@ public class Coupon extends AbstractJsonModel {
 	private String contentSuccess;
 	private String contentCheckbox;
 	private String contentConfirmation;
+	@JsonView(Views.ForWordpressSite.class)
 	private String contentWordpress;
 	private Date effectiveStart;
 	private Date effectiveEnd;
@@ -172,7 +175,6 @@ public class Coupon extends AbstractJsonModel {
 		json.put("contentSuccess", getContentSuccess());
 		json.put("contentCheckbox", getContentCheckbox());
 		json.put("contentConfirmation", getContentConfirmation());
-		json.put("contentWordpress", getContentWordpress());
 		json.put("showPopup", isShowPopup());
 		json.put("canPrePopulate", canPrePopulate());
 
