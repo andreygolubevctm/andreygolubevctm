@@ -8,12 +8,16 @@
     var meerkat = window.meerkat,
         moduleEvents = meerkat.events;
 
+    var events = {
+        COUPON_LOADED : "COUPON_LOADED"
+    };
+
     function init() {
         applyEventListeners();
     }
 
     function applyEventListeners() {
-        meerkat.messaging.subscribe(moduleEvents.coupon.COUPON_LOADED, moveCouponToTopOfSidePanel);
+        meerkat.messaging.subscribe(events.COUPON_LOADED, moveCouponToTopOfSidePanel);
     }
 
     function moveCouponToTopOfSidePanel() {
@@ -28,7 +32,8 @@
     }
 
     meerkat.modules.register('healthOverrides', {
-        init: init
+        init: init,
+        events: events
     });
 
 })(jQuery);
