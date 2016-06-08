@@ -162,7 +162,7 @@
 
 				});
 
-				$healthSitHealthSitu.on('click',function() {
+				$healthSitHealthSitu.on('change',function() {
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
 
