@@ -144,7 +144,7 @@
 
 				var $healthSitLocation = $('#health_situation_location'),
 					$healthSitHealthCvr = $('#health_situation_healthCvr'),
-					$healthSitHealthSitu = $('#health_situation_healthSitu'),
+					$healthSitHealthSitu = $("input[name=health_situation_healthSitu]"),
 					$healthSitCoverType = $('#health_situation_coverType'),
 					$healthSitRebate = $('#health_healthCover_health_cover_rebate');
 
@@ -187,7 +187,7 @@
 
 				// Don't fire the change event by default if amend mode and the user has selected items.
 				if (meerkat.site.pageAction !== 'amend' && meerkat.site.pageAction !== 'start-again' && meerkat.modules.healthBenefitsStep.getSelectedBenefits().length === 0) {
-					if($healthSitHealthSitu.val() !== ''){
+					if($healthSitHealthSitu.filter(":checked").val() !== ''){
 						$healthSitHealthSitu.change();
 					}
 				}
@@ -230,6 +230,13 @@
 			onAfterEnter: function healthV2AfterEnter() {
 				// if coming from brochure site and all prefilled data are valid, let's hide the fields
 				toggleAboutYou();
+
+				if (meerkat.modules.healthTaxTime.isFastTrack()) {
+					meerkat.modules.healthTaxTime.disableNewQuestion(false);
+				}
+			},
+			onBeforeLeave:function(event){
+				meerkat.modules.healthTaxTime.disableNewQuestion(true);
 			}
 		};
 
@@ -285,7 +292,7 @@
 				}
 
 				if(event.isForward)
-					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($('#health_situation_healthSitu').val() === 'ATP'));
+					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($("input[name=health_situation_healthSitu]").filter(":checked").val() === 'ATP'));
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
@@ -293,6 +300,7 @@
 			},
 			onBeforeLeave:function(event){
 				meerkat.modules.healthBenefitsStep.enableFields();
+				meerkat.modules.healthTaxTime.toggleContactFields();
 			}
 		};
 		var contactStep = {
@@ -389,6 +397,10 @@
 
 				if(event.isForward === true){
 					meerkat.modules.healthResults.getBeforeResultsPage();
+				}
+
+				if (meerkat.modules.healthTaxTime.isFastTrack()) {
+					meerkat.modules.healthTaxTime.disableFastTrack();
 				}
 			},
 			onBeforeLeave: function(event) {
@@ -1020,7 +1032,7 @@
 					postCode:				$("#health_application_address_postCode").val(),
 					state:					state,
 					healthCoverType:		$("#health_situation_healthCvr").val(),
-					healthSituation:		$("#health_situation_healthSitu").val(),
+					healthSituation:		$("input[name=health_situation_healthSitu]").filter(":checked").val(),
 					contactType:			contactType
 				});
 			}
@@ -1407,7 +1419,7 @@
 	function getSituation() {
 		return $('#health_situation_healthCvr').val();
 	}
-	
+
 	function getHospitalCoverLevel() {
 		return $('#health_benefits_covertype').val();
 	}

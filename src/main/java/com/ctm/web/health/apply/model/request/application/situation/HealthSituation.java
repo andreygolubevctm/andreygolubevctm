@@ -5,5 +5,6 @@ public enum HealthSituation {
     FK,
     LBC,
     CSF,
-    ATP;
+    ATP,
+    CHC;
 }
