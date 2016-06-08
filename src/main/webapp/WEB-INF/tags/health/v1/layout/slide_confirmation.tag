@@ -35,12 +35,17 @@
 					{{ var fundName = info.providerName ? info.providerName : info.fundName }}
 					<div class="row confirmation-complete">
 						<div class="col-sm-8 col-xs-12">
-							<h1 class="success">Congratulations!</h1>
+							{{ if ( typeof pending !== "undefined" && pending ) { }}
+								<h1>Your application is being processed.</h1>
+								<p>Thanks for comparing with <content:get key="brandDisplayName"/>. If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></strong>.
+							{{ } else if( whatsNext ) { }}
+								<h1 class="success">Congratulations!</h1>
+							{{ } }}
 
 							<p>Well done <span>[name]</span>,<br />
 								Your Application has been submitted to {{= fundName }} for processing.</p>
 
-							<p>Your new policy number is <span>{{= transID }}</span>.</p>
+							<p>Your transaction number is <span>{{= transID }}</span>.</p>
 
 							<p>Thank you for comparing <span>Health Insurance</span> with <content:get key="boldedBrandDisplayName"/></p>
 						</div>
