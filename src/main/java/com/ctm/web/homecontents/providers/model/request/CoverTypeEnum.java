@@ -8,13 +8,13 @@ public enum CoverTypeEnum {
 
     private String code;
 
-    private CoverTypeEnum(String code) {
+    CoverTypeEnum(String code) {
         this.code = code;
     }
 
     public static CoverTypeEnum fromCode(String code) {
         for (CoverTypeEnum e : values()) {
-            if (code.equals(e.code)) {
+            if (e.code.equals(code)) {
                 return e;
             }
         }

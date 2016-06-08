@@ -22,14 +22,22 @@ import com.ctm.web.core.services.tracking.TrackingKeyService;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.validation.SchemaValidationError;
+import com.ctm.web.core.validation.ValidationUtils;
+import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.core.web.go.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -247,6 +255,15 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
             return Optional.of(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
         }
         return Optional.empty();
+    }
+
+    @ExceptionHandler(BindException.class)
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public List<SchemaValidationError> handleException(BindException e, HttpServletResponse response) {
+        LOGGER.warn("Validation failed", e);
+        response.setStatus(200);
+        return ValidationUtils.handleSpringValidationErrors(e);
     }
 
 
