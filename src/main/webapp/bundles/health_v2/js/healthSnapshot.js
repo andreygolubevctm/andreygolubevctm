@@ -32,8 +32,8 @@
     }
 
     function renderSnapshot() {
-        render();
         meerkat.modules.contentPopulation.render('.quoteSnapshot');
+        render();
     }
 
     function showHide(data, selector, property, forceHide) {
@@ -84,6 +84,8 @@
         // Toggle benefits rows.
         showHide(data,'.quoteSnapshot .hospital','hospital', noData);
         showHide(data,'.quoteSnapshot .extras','extras', noData);
+
+        $box.toggle(!noData && meerkat.modules.journeyEngine.getCurrentStepIndex() < 4);
     }
 
     function getData() {
