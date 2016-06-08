@@ -143,7 +143,11 @@ var healthChoices = {
 			healthChoices._situation = situation;
 		};
 
-		$('#health_benefits_healthSitu, #health_situation_healthSitu').val( situation );
+		$('#health_benefits_healthSitu').val( situation );
+
+		if (!_.isEmpty(situation)) {
+			$("input[name=health_situation_healthSitu]").filter('[value='+situation+']').prop('checked', true).trigger('change');
+		}
 
 	},
 
