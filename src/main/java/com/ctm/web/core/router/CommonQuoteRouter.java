@@ -23,7 +23,6 @@ import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.core.validation.ValidationUtils;
-import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.core.web.go.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
