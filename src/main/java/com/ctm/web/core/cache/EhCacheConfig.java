@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static net.sf.ehcache.store.MemoryStoreEvictionPolicy.LFU;
 
@@ -48,7 +49,12 @@ public class EhCacheConfig implements CachingConfigurer {
         contentControlCache.setMemoryStoreEvictionPolicyFromObject(LFU);
         contentControlCache.setTransactionalMode("off");
 
-        return asList(contentControlCache);
+        final CacheConfiguration getProviderInfo = new CacheConfiguration("getProviderInfo", 5000);
+        getProviderInfo.setLogging(true);
+        getProviderInfo.setTimeToLiveSeconds(HOURS.toSeconds(12));
+        getProviderInfo.setMemoryStoreEvictionPolicyFromObject(LFU);
+
+        return asList(contentControlCache, getProviderInfo);
     }
 
     @Bean

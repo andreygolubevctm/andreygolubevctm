@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,8 +19,8 @@ import javax.servlet.ServletException;
 @ComponentScan({"com.ctm.web.core.connectivity", "com.ctm.web.energy", "com.ctm.web.simples",
         "com.ctm.commonlogging", "com.ctm.web.core", "com.ctm.httpclient",
         "com.ctm.web.car", "com.ctm.web.homecontents",
-        "com.ctm.web.travel", "com.ctm.web.life"})
-@EnableAutoConfiguration
+        "com.ctm.web.travel", "com.ctm.web.life", "com.ctm.web.health"})
+@EnableAutoConfiguration(exclude = RabbitAutoConfiguration.class)
 @Configuration
 @EnableAsync
 public class Application extends SpringBootServletInitializer {

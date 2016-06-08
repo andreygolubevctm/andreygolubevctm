@@ -1,0 +1,238 @@
+//
+// Button groups
+// --------------------------------------------------
+
+// Make the div behave like a button
+.btn-tile {
+  position: relative;
+  display: block;
+  vertical-align: middle; // match .btn alignment given font-size hack above
+
+  label {
+    display:inline-block;
+
+    @media(@md) {
+      width: 120px;
+      height: 115px;
+      font-size: 14px;
+    }
+
+    @media(@xs) {
+      width: 100px;
+      height: 100px;
+      font-size: 12px;
+    }
+
+    @media(@md) {
+      margin-right: 15px;
+    }
+
+    @media(@xs) {
+      margin-right: 10px;
+    }
+
+    float:left;
+    border: 1px solid @icon-inactive-color;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    padding: 5px;
+
+    input {
+      opacity: 0;
+    }
+  }
+  > .btn {
+    + .btn {
+      border-left-width: 1px;
+    }
+    position: relative;
+    float: left;
+    border-color: @icon-inactive-color;
+    // Bring the "active" button to the front
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+      z-index: 2;
+      outline: 0;
+    }
+
+  }
+}
+
+// Prevent double borders when buttons are next to each other
+.btn-tile {
+  .btn + .btn-tile,
+  .btn-tile + .btn,
+  .btn-tile + .btn-tile {
+    margin-left: -1px;
+  }
+}
+
+// Optional: Group multiple button groups together for a toolbar
+.btn-toolbar {
+  margin-left: -5px; // Offset the first child's margin
+  &:extend(.clearfix all);
+
+  .btn-tile {
+    float: left;
+  }
+
+  > .btn-tile {
+    margin-left: 5px;
+  }
+}
+
+
+// Custom edits for including btn-groups within btn-groups (useful for including dropdown buttons within a btn-group)
+.btn-tile > .btn-tile {
+  float: left;
+}
+
+// On active and open, don't show outline
+.btn-tile .dropdown-toggle:active,
+.btn-tile.open .dropdown-toggle {
+  outline: 0;
+}
+
+
+// Split button dropdowns
+// ----------------------
+
+// Give the line between buttons some depth
+.btn-tile > .btn + .dropdown-toggle {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.btn-tile > .btn-lg + .dropdown-toggle {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+// The clickable button for toggling the menu
+// Remove the gradient and set the same inset shadow as the :active state
+.btn-tile.open .dropdown-toggle {
+  .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+
+  // Show no shadow for `.btn-link` since it has no other button styles.
+  &.btn-link {
+    .box-shadow(none);
+  }
+}
+
+
+
+
+// Vertical button groups
+// ----------------------
+
+.btn-group-horizontal {
+  > .btn-tile,
+  > .btn-tile > .btn {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  // Clear floats so dropdown menus can be properly placed
+  > .btn-tile {
+    &:extend(.clearfix all);
+    > .btn {
+      float: none;
+    }
+  }
+
+}
+
+.btn-group-horizontal > .btn-tile:not(:first-child):not(:last-child) > .btn {
+  border-radius: 10px;
+}
+.btn-group-horizontal > .btn-tile:first-child:not(:last-child) {
+  > .btn:last-child,
+  > .dropdown-toggle {
+    .border-bottom-radius(10);
+  }
+}
+.btn-group-horizontal > .btn-tile:last-child:not(:first-child) > .btn:first-child {
+  .border-top-radius(10);
+}
+
+
+.btn-group-vertical {
+  > .btn-tile,
+  > .btn-tile > .btn {
+    display: block;
+    float: none;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  // Clear floats so dropdown menus can be properly placed
+  > .btn-tile {
+    &:extend(.clearfix all);
+    > .btn {
+      float: none;
+    }
+  }
+
+  > .btn + .btn-tile,
+  > .btn-tile + .btn,
+  > .btn-tile + .btn-tile {
+    margin-top: -1px;
+    margin-left: 0;
+  }
+}
+
+
+
+
+// Checkbox and radio options
+//
+// In order to support the browser's form validation feedback, powered by the
+// `required` attribute, we have to "hide" the inputs via `clip`. We cannot use
+// `display: none;` or `visibility: hidden;` as that also hides the popover.
+// Simply visually hiding the inputs via `opacity` would leave them clickable in
+// certain cases which is prevented by using `clip` and `pointer-events`.
+// This way, we ensure a DOM element is visible to position the popover from.
+//
+// See https://github.com/twbs/bootstrap/pull/12794 and
+// https://github.com/twbs/bootstrap/pull/14559 for more information.
+
+[data-toggle="buttons"] {
+  > .btn,
+  > .btn-tile > .btn {
+    input[type="radio"],
+    input[type="checkbox"] {
+      position: absolute;
+      clip: rect(0,0,0,0);
+      pointer-events: none;
+    }
+  }
+}
+
+.setTileContent(@class, @child, @content, @size: 60px) {
+  @className: ~"@{class}"; /* this removes the quotes */
+  @fontSize: ~"@{size}"; /* this removes the quotes */
+  .btn-tile@{className} {
+    label {
+      &:nth-child(@{child}) {
+
+        &:before {
+          display: block;
+          font-family: 'ctm-health';
+          content: @content;
+          font-size: @fontSize;
+          color: @icon-inactive-color;
+          line-height: 50px;
+
+          padding-top: 5px;
+          padding-bottom: 5px;
+        }
+
+        &.active:before {
+          color: @icon-active-color;
+        }
+      }
+    }
+  }
+}
