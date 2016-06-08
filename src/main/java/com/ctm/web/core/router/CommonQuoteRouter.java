@@ -159,7 +159,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Error handleValidationException(BindException e, HttpServletRequest request) {
-        LOGGER.error("Validation failure encountered", e);
+        LOGGER.warn("Validation failure encountered", e);
         return FormValidation.outputToObject(RequestUtils.getTransactionIdFromRequest(request), ValidationUtils.handleSpringValidationErrors(e));
     }
 
