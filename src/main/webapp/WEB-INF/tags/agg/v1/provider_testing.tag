@@ -2,6 +2,8 @@
 <%@ tag description="Provides a method for external providers to test their prices only, without affecting production or future users"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+
 <%@ attribute name="xpath" required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 <%@ attribute name="displayFullWidth" required="false"	 rtexprvalue="true"	 description="Determine's whether or not to display the provider testing fields as full width" %>
 <%@ attribute name="keyLabel" required="false" rtexprvalue="false" description="Label to override the default being 'providerKey'" %>
@@ -21,7 +23,7 @@
 <%-- Make sure we're in a proper environment to test this --%>
 <c:choose>
 	<c:when test="${empty param[keyLabel] && (environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI')}">
-		<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:') or pageContext.request.remoteAddr == '127.0.0.1'}">
+		<c:if test="${fn:startsWith(ipAddressHandler.getIPAddress(pageContext.request),'192.168.') or fn:startsWith(ipAddressHandler.getIPAddress(pageContext.request),'0:0:0:') or ipAddressHandler.getIPAddress(pageContext.request) == '127.0.0.1'}">
 			<c:if test="${hideSelector eq false}">
 				<form_v2:fieldset_columns displayFullWidth="${displayFullWidth}">
 					<jsp:attribute name="rightColumn">

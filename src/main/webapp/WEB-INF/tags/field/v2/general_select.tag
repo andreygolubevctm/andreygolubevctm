@@ -11,6 +11,8 @@
 <%@ attribute name="type" required="false" rtexprvalue="true" description="type code on general table" %>
 <%@ attribute name="initialText" required="false" rtexprvalue="true" description="Text used to invite selection" %>
 <%@ attribute name="tabIndex" required="false" rtexprvalue="true" description="additional tab index specification" %>
+<%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
+<%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}"/>
@@ -35,6 +37,9 @@
     <c:set var="disabled" value="selected"/>
 </c:if>
 
+<c:if test="${disableErrorContainer eq true}">
+    <c:set var="additionalAttributes" value='${additionalAttributes}  data-disable-error-container="true" '/>
+</c:if>
 
 <%-- HTML --%>
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
@@ -49,7 +54,7 @@
 	<span class=" input-group-addon">
 		<i class="icon-sort"></i>
 	</span>
-    <select name="${name}" id="${name}" class="form-control ${className}"<c:if test="${not empty tabIndex}"> tabindex="${tabIndex}"</c:if><c:if test="${required}">required data-msg-required="Please enter the ${title}"</c:if>>
+    <select name="${name}" id="${name}" class="form-control ${className}"<c:if test="${not empty tabIndex}"> tabindex="${tabIndex}"</c:if><c:if test="${required}"> required data-msg-required="Please enter the ${title}"</c:if> ${additionalAttributes}>
         <%-- Write the initial "please choose" option --%>
         <option value="">${initialText}</option>
 

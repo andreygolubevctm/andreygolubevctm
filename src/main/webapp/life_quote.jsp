@@ -1,6 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<settings:setVertical verticalCode="LIFE" />
+<c:set var="mobileVariant" value="${pageSettings.getSetting('mobileVariant') eq 'Y'}" />
+<c:if test="${mobileVariant eq true}">
+	<jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
+	<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
+	<c:if test="${deviceType eq 'MOBILE' and empty param.source and param.source ne 'mobile'}">
+		<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}life_quote_mobile.jsp?" />
+		<c:forEach items="${param}" var="currentParam">
+			<c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
+		</c:forEach>
+		<c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
+	</c:if>
+</c:if>
+
 <session:new verticalCode="LIFE"/>
 
 <c:if test="${empty param.action}">
@@ -16,6 +30,8 @@
 <c:set var="xpath" value="life" scope="session" />
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="GTMEnabled" value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />
+
+<life_v1:widget_values />
 
 <core_v1:doctype />
 <go:html>
@@ -37,7 +53,7 @@
 		<agg_v1:supertag_top type="Life"/>
 
 		<%-- History handler --%>
-		<life:history />
+		<life_v1:history />
 
 		<%-- Transferring popup holder --%>
 		<core_v1:transferring />
@@ -45,13 +61,13 @@
 		<form_v1:form action="health_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 
 			<%-- Fields to store Lifebroker specific data --%>
-			<life:lifebroker_ref label="life" />
+			<life_v1:lifebroker_ref label="life" />
 					
 			<form_v1:operator_id xpath="${xpath}/operatorid" />
 			<core_v1:referral_tracking vertical="${xpath}" />
 			
 			<form_v1:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="true"/>
-			<life:progress_bar />
+			<life_v1:progress_bar />
 
 			<div id="wrapper">
 				<div id="page">
@@ -61,7 +77,7 @@
 						<!-- Main Quote Engine content -->
 						<slider:slideContainer className="sliderContainer">
 						
-							<life:engine	xpathInsurance="${xpath}/insurance"
+							<life_v1:engine	xpathInsurance="${xpath}/insurance"
 											xpathPrimary="${xpath}/primary"
 											xpathPartner="${xpath}/partner"
 											xpathContactDetails="${xpath}/contactDetails" />
@@ -69,9 +85,9 @@
 							<%-- INITIAL: stage, set from parameters --%>
 							<slider:slide id="slide0" title="Your Needs">
 								<h2><span>Step 1.</span> Your Details</h2>
-										<life:insurance xpath="${xpath}" />
-										<life:questionset xpath="${xpath}" />
-								<life:contact_details xpath="${xpath}/contactDetails" />
+										<life_v1:insurance xpath="${xpath}" />
+										<life_v1:questionset xpath="${xpath}" />
+								<life_v1:contact_details xpath="${xpath}/contactDetails" />
 							</slider:slide>
 							
 							<slider:slide id="slide1" title="Compare">
@@ -103,23 +119,23 @@
 					</div>
 					<form_v1:help />
 					
-				<life:side_panel />
+				<life_v1:side_panel />
 			</div>
 
 				<%-- Quote results (default to be hidden) --%>  
-				<life:results />
+				<life_v1:results />
 								
 				<%-- Confirmation content (default to be hidden) --%>  
-				<life:confirmation />		
+				<life_v1:confirmation />		
 			</div>
 						
 		</form_v1:form>
 		
-		<life:footer />
+		<life_v1:footer />
 		
 		<core_v1:closing_body>
 			<agg_v1:includes supertag="true" />
-		<life:includes />
+		<life_v1:includes />
 		</core_v1:closing_body>
 		
 	</body>

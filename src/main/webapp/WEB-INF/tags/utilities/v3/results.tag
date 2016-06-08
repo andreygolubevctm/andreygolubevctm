@@ -40,7 +40,7 @@
             Costs and savings include GST & are effective as at <fmt:formatDate value="${now}" pattern="dd/MM/yyyy"/>.
         </p>
         <core_v1:clear/>
-        <a href="javascript:;" class="btn btn-primary btn-change-type"> Change fuel type</a>
+        <a href="javascript:;" class="btn btn-primary btn-change-type"> Change energy type</a>
         <utilities_v2:change_type />
 
         <div class="featuresFooterPusher"></div>
@@ -90,6 +90,7 @@
         {{ var estimatedGasCostLabel = estimatedGasCostValue >= 0 ? estimatedGasCostLabelPrefix + "$" + estimatedGasCostValue.toFixed(2) : estimatedGasCostLabelPrefix + '<a class="btn-add-bill" href="javascript:;"><span>Add bill information</span> <span class="icon icon-arrow-right"/></a>'; }}
         {{ } }}
         {{ var estimatedCostLabelBreak = estimatedElectricityCostLabel !== "" && estimatedGasCostLabel !== "" ? "<br>" : ""; }}
+        {{ var yearlySavingsBreak = yearlyElectricitySavingsLabel !== "" && yearlyGasSavingsLabel !== "" ? "<br>" : ""; }}
 
         {{ var showYearlySavings = meerkat.modules.utilitiesResults.showYearlySavings(); }}
         {{ var showEstimatedCost = meerkat.modules.utilitiesResults.showEstimatedCost(); }}
@@ -172,8 +173,7 @@
                         </div>
                         {{ } else if(showYearlySavings === true) { }}
                         <div class="col-sm-3 col-lg-2 yearlySavingsContainer {{= (yearlySavingsValue <= 0 ? 'noSavings' : '') }}">
-                            <div class="dataColumn"><span class="yearlySavings">{{= yearlyElectricitySavingsLabel }}<br>
-                                {{= yearlyGasSavingsLabel }}</span></div>
+                            <div class="dataColumn"><span class="yearlySavings">{{= yearlyElectricitySavingsLabel }}{{= yearlySavingsBreak }}{{= yearlyGasSavingsLabel }}</span></div>
                         </div>
                         {{ } }}
                         <div class="col-sm-{{= smColCountDiscounts }} col-lg-{{= lgColCountDiscounts }} totalDiscountsContainer">
@@ -198,7 +198,7 @@
                                        data-productId="{{= obj.productId }}">
                                         Apply Now <span class="icon icon-arrow-right"/></a>
                                 </div>
-                                <div class="col-sm-4 col-sm-pull-4 col-lg-12 moreInfo">
+                                <div class="col-sm-4 col-sm-push-8 col-lg-push-0 col-lg-12 moreInfo">
                                     <a href="javascript:;" class="btn-more-info"
                                        data-available="{{= obj.productAvailable }}"
                                        data-productId="{{= obj.productId }}">More
@@ -253,7 +253,7 @@
                                     </div>
                                     {{ } else if(showYearlySavings === true) { }}
                                     <div class="col-xs-6 yearlySavingsContainer {{= (yearlySavingsValue <= 0 ? 'noSavings' : '') }}">
-                                        <span class="yearlySavings">{{= yearlyElectricitySavingsLabel }}<br>
+                                        <span class="yearlySavings">{{= yearlyElectricitySavingsLabel }}
                                 {{= yearlyGasSavingsLabel }}</span>
                                         {{ if(yearlySavingsValue >= 0) { }}
                                         <span class="yearlySavingsTitle">Savings</span>

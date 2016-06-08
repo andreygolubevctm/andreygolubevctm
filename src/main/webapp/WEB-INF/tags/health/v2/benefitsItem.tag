@@ -13,7 +13,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 			<c:choose>
 				<c:when test="${item.getClassName() == 'hospitalCover'}">
 					<c:set var="colWidthValue" value="custom-col-sm" />
-					<c:set var="colContent">Hospital cover gives you the power to choose amongst a fund's participating hospitals, choose your own doctor and help you avoid public hospital waiting lists.</c:set>
+					<c:set var="colContent">Hospital cover gives you the power to choose your own doctor at any one of the fund's partner hospitals allowing you to avoid public hospital waiting lists.</c:set>
 					<c:set var="coverType">Hospital</c:set>
 					<%-- Hospital needs to loop one more time because the first child of hospital is not shortListAable --%>
 					<c:set var="loopCount" value="5" />
@@ -46,7 +46,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 		</c:choose>
 
 		<c:if test="${item.hasShortlistableChildren()}">
-			<div class="children">
+			<div class="children healthBenefits">
 				<h3 class="subTitle">More ${coverType} Benefits</h3>
 				<c:forEach items="${item.getChildren()}" var="selectedValue">
 					<health_v2:benefitsItem item="${selectedValue}" />

@@ -18,5 +18,12 @@
 
 <c:if test="${includeCopyRight}">
 	<%-- Copyright notice --%>
-	<agg_v1:copyright_notice />
+	<c:choose>
+		<c:when test="${pageSettings.getVerticalCode() eq 'health'}">
+			<agg_v2:copyright_notice />
+		</c:when>
+		<c:otherwise>
+			<agg_v1:copyright_notice />
+		</c:otherwise>
+	</c:choose>
 </c:if>

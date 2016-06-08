@@ -1,6 +1,7 @@
 package com.ctm.web.health.apply.model.request.fundData.membership;
 
 import com.ctm.web.health.apply.helper.TypeSerializer;
+import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.Eligibility;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class Membership {
@@ -19,18 +20,22 @@ public class Membership {
 
     private RegisterForGroupServices registerForGroupServices;
 
+    private Eligibility eligibility;
+
     public Membership(RegisteredMember registeredMember,
                       CurrentMember currentMember,
                       MembershipNumber membershipNumber,
                       MembershipGroup membershipGroup,
                       PartnerDetails partnerDetails,
-                      RegisterForGroupServices registerForGroupServices) {
+                      RegisterForGroupServices registerForGroupServices,
+                      Eligibility eligibility) {
         this.registeredMember = registeredMember;
         this.currentMember = currentMember;
         this.membershipNumber = membershipNumber;
         this.membershipGroup = membershipGroup;
         this.partnerDetails = partnerDetails;
         this.registerForGroupServices = registerForGroupServices;
+        this.eligibility = eligibility;
     }
 
     public RegisteredMember getRegisteredMember() {
@@ -55,5 +60,9 @@ public class Membership {
 
     public RegisterForGroupServices getRegisterForGroupServices() {
         return registerForGroupServices;
+    }
+
+    public Eligibility getEligibility() {
+        return eligibility;
     }
 }

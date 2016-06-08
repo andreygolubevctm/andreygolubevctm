@@ -14,6 +14,12 @@
 <%@ attribute name="hideHelpIconCol"	required="false" rtexprvalue="true"	 description="Set to a value to hide the help icon placeholder column" %>
 <%@ attribute name="labelAbove"			required="false" rtexprvalue="true"	 description="Have the label above the element instead of beside it" %>
 <%@ attribute name="addForAttr" 		required="false" rtexprvalue="true"	 description="Bool to add or not the for attribute" %>
+<%@ attribute name="labelTag"			required="false" rtexprvalue="true"  description="Override tag used for labels" %>
+
+<%-- Added to deal with the new field sizes introduced in health --%>
+<%@ attribute name="smRowOverride" 		required="false" rtexprvalue="true"	 description="Override the SM value" %>
+<%@ attribute name="isNestedField" 		required="false" rtexprvalue="true"	 description="Toggle to automatically set some styling values for the nested fields eg name_group.tag" %>
+<%@ attribute name="isNestedStyleGroup" required="false" rtexprvalue="true"	 description="Toggle to remove the col-xs-12 class. If not removed breaks the nesting design introduced to health" %>
 
 <%-- VARIABLES --%>
 <c:if test="${empty labelAbove}">
@@ -23,6 +29,15 @@
 <c:if test="${empty addForAttr}">
 	<c:set var="addForAttr" value="${true}" />
 </c:if>
+
+<c:if test="${not isNestedField eq true}">
+	<c:set var="formGroupClasses" value="form-group row" />
+</c:if>
+<c:if test="${isNestedStyleGroup eq true}">
+	<c:set var="formGroupClasses" value="nestedGroup form-group" />
+</c:if>
+
+
 <%-- HTML --%>
 <%--
 	Bootstrap classes:
@@ -42,7 +57,7 @@
 		readonly
 		imgOnlyLabel
 --%>
-<div class="${readonlyClass} form-group row fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
+<div class="${readonlyClass} ${formGroupClasses} fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
 
 	<c:choose>
 		<c:when test="${empty hideHelpIconCol}">
@@ -57,6 +72,10 @@
 		</c:otherwise>
 	</c:choose>
 
+	<c:if test="${not empty smRowOverride}">
+		<c:set var="toggleHelpColSmall" value="${smRowOverride}" />
+	</c:if>
+
 	<c:choose>
 		<c:when test="${labelAbove eq true}">
 			<c:set var="labelClassName" value="col-xs-${toggleHelpColMobile} col-sm-12" />
@@ -66,10 +85,26 @@
 		</c:otherwise>
 	</c:choose>
 
+	<c:if test="${isNestedField eq true}">
+		<c:set var="labelClassName" value="${labelClassName} hidden-sm hidden-md hidden-lg" />
+	</c:if>
+
+	<c:if test="${isNestedStyleGroup eq true}">
+		<c:set var="labelClassName" value="${labelClassName} hidden-xs" />
+	</c:if>
+
+
 	<c:choose>
 		<c:when test="${not empty label and label ne ''}">
 
-			<field_v2:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" addForAttr="${addForAttr}" />
+			<c:choose>
+				<c:when test="${not empty labelTag}">
+					<${labelTag} class="col-xs-12">${label}</${labelTag}>
+				</c:when>
+				<c:otherwise>
+					<field_v2:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" addForAttr="${addForAttr}" />
+				</c:otherwise>
+			</c:choose>
 
 			<div class="col-xs-2 visible-xs helpIconXSColumn ${offset}">
 				<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" />
@@ -86,9 +121,15 @@
 		</c:otherwise>
 	</c:choose>
 
+	<c:set var="rowClass">
+		<c:if test="${isNestedStyleGroup eq true}"> row </c:if>
+	</c:set>
 
+	<c:if test="${isNestedStyleGroup eq true}">
+		<c:set var="fieldCol" value=" " />
+	</c:if>
 
-	<div class="col-sm-<c:out value="${toggleHelpColSmall} " /> ${fieldCol} <c:out value=" ${offset}" /> row-content">
+	<div class="col-sm-<c:out value="${toggleHelpColSmall} " /> ${fieldCol} <c:out value=" ${rowClass}" /> <c:out value=" ${offset}" /> row-content">
 		<jsp:doBody />
 		<div class="fieldrow_legend"<c:if test="${not empty id}"> id="${id}_row_legend"</c:if>>${legend}</div>
 	</div>

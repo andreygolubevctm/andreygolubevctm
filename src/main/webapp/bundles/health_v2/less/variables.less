@@ -9,23 +9,15 @@
 
 // This width allows there to be gaps between the products that is subtracted from the result-row width.
 // Yes, it is a hack.
-@results-column-outer-width: 10px;
+@results-column-outer-width: 15px;
+@results-overflow-width-xs: 550px;
+@results-overflow-width-sm: 483px;
+@results-overflow-width-md: 710px;
+@results-overflow-width-lg: 863px;
+@results-row-dropshadow-width: 3px;
 
-@xs-results-column-width: 285px;
-@sm-results-column-width: 179px;
-@md-results-column-width: 234px;
-@lg-results-column-width: 275px;
-
-@xs-results-column-number: 1;
-@sm-results-column-number: 3;
-@md-results-column-number: 3;
-@lg-results-column-number: 3;
-
-@sm-results-column-gutter-width: 0.34px;
-@md-results-column-gutter-width: 0.34px;
-@lg-results-column-gutter-width: 7px;
-@results-feature-cell-padding: 8px;
-
+@results-border-color: #D4D4D4;
+@header-min-height-sm: 128px;
 //== QTIP based TOOLTIPS and POPOVERS
 //
 //## /health/Tooltips.less
@@ -53,10 +45,13 @@
 @qtip-health-help-title-text-color: #fff;
 @qtip-health-help-content-text-color: #fff;
 
+/** Popover specific styling **/
+@qtip-health-popover-background-color: #fff;
+@qtip-health-popover-text-color: #555;
+@qtip-health-popover-border: 1px solid #d4d4d4;
+
 //== BENEFITS Dropdown Interactive - HEALTH
 //
-//## todo: delete once new benefits redesign A/B testing finishes
-
 @health-benefits-color-disabled: #B4B6AB;
 @health-benefits-checkbox-bg: #C9C9BF;
 @health-benefits-checkbox-bg-disbled: #D6D7CB;
@@ -69,6 +64,23 @@
 @health-benefits-icon-border-color: darken(@health-benefits-icon-bg-color, 12%);
 @health-benefits-icon-border-checked-color: darken(@health-benefits-icon-border-color, 12%);
 @health-benefits-icon-more-border-color: #162F8A;
+
+//== BENEFITS HEALTH redesign v2349234789
+//
+//##
+@btn-benefit-category-bg-color: #FFF;
+@btn-benefit-category-color: #1c3e93;
+// active
+@btn-benefit-category-active-bg-color: #1c3e93;
+@btn-benefit-category-active-color: #FFF;
+// borders
+@btn-benefit-category-border-color: @btn-benefit-category-color;
+// disabled icon color
+@health-benefits-icon-disabled-color: #8A8A8A;
+@benefits-grouping-border-color: #cecece;
+@benefits-grouping-font-color: #8a8a8a;
+@benefits-xs-icon-color: #545454;
+
 
 // Health conventions colour style overrides
 
@@ -160,17 +172,34 @@
 @duel-pricing-frequencyAmount-colour: @theme-secondary;
 
 @main-bg-colour: #F3F3F5;
-@border-colour: #E7E7E7;
+@border-color: #d4d4d4;
 @header-color: #162F8A;
 @required-color: #A90000;
 
 @benefits-checkbox-border: #D1D1D1;
+@benefits-selected-checkbox-border: #0A8C3C;
 
 // Logos
-@standard-logo-height: 45px;
+@standard-logo-height: 80px;
 @logo-price-spacer: 5px;
 @logo-compressed-scale: 0.5;
-@providerLogoNames: ~"AHM", ~"AUF", ~"BUD", ~"BUP", ~"CBH", ~"CTM", ~"CUA", ~"FRA", ~"GMH", ~"HCF", ~"NIB", ~"QCH";
-@providerMoreInfoLogoNames: ~"AHM-mi", ~"AUF-mi", ~"BUD-mi", ~"BUP-mi", ~"CBH-mi", ~"CTM-mi", ~"CUA-mi", ~"FRA-mi", ~"GMH-mi", ~"HCF-mi", ~"NIB-mi", ~"QCH-mi";
+@providerLogoNames: ~"AHM", ~"AUF", ~"BUD", ~"BUP", ~"CBH", ~"CTM", ~"CUA", ~"FRA", ~"GMH", ~"HCF", ~"HBF", ~"NHB", ~"NIB", ~"QCH";
+@providerMoreInfoLogoNames: ~"AHM-mi", ~"AUF-mi", ~"BUD-mi", ~"BUP-mi", ~"CBH-mi", ~"CTM-mi", ~"CUA-mi", ~"FRA-mi", ~"GMH-mi", ~"HBF-mi", ~"HCF-mi", ~"NHB-mi", ~"NIB-mi", ~"QCH-mi";
 
 @journeyProgressBar-border-color: @theme-default;
+
+
+//== Rounded Icons
+//
+//##
+@extras-color-light: #0db14b;
+@icon-bg-color: #EDEDED;
+@icon-bg-checked-color: @theme-secondary;
+@icon-border-color: darken(@icon-bg-color, 12%);
+@icon-border-checked-color: darken(@icon-border-color, 12%);
+@icon-more-border-color:#162F8A;
+
+@journeyProgressBar-border-size: 2px;
+
+@footer-bg-color: #333333;
+@footer-text-color: #FFFFFF;

@@ -13,14 +13,15 @@
 <layout_v1:slide formId="confirmationForm" className="displayBlock">
 
 	<layout_v1:slide_content>
-		<div id="confirmation" class="more-info-content"></div>
+		<div id="confirmation"></div>
 	</layout_v1:slide_content>
 
 </layout_v1:slide>
 
 <%-- TEMPLATES --%>
 	<%-- Logo and prices template --%>
-	<health_v1:logo_price_template />
+    <core_v1:js_template id="logo-template"><health_v3:logo_template /></core_v1:js_template>
+    <core_v1:js_template id="price-template"><health_v3:price_template /></core_v1:js_template>
 
 	<%-- Main page template --%>
 	<script id="confirmation-template" type="text/html">
@@ -59,7 +60,7 @@
 
 				<layout_v1:slide_content >
 
-					<form_v2:fieldset legend="" className="confirmation">
+					<form_v3:fieldset legend="" className="confirmation">
 
 						<div id="health_confirmation-warning">
 							<div class="fundWarning alert alert-danger">
@@ -81,9 +82,11 @@
 							<div class="productSummary horizontal visible-xs clearfix">
 
 
-								{{ var logoPriceTemplate = $("#logo-price-template").html(); }}
-								{{ var htmlTemplate = _.template(logoPriceTemplate); }}
-								{{ obj.htmlString = htmlTemplate(obj); }}
+								{{ var priceTemplate = $("#price-template").html(); }}
+								{{ var logoTemplate = $("#logo-template").html(); }}
+								{{ var priceHtmlTemplate = _.template(priceTemplate); }}
+								{{ var logoHtmlTemplate = _.template(logoTemplate); }}
+								{{ obj.htmlString = logoHtmlTemplate(obj) + priceHtmlTemplate(obj); }}
 								{{= htmlString }}
 
 								<h1 class="productName">{{= info.title ? info.title : info.productTitle }}</h1>
@@ -93,12 +96,7 @@
 
 						<p>Your reference number is <span class="transactionID">{{= transID }}</span></p>
 
-						{{ if ( typeof pending !== "undefined" && pending ) { }}
-							<h2 class="text-hospital">Your application is currently being processed.</h2>
-							<p>
-								We will be in contact with you should we require further information to complete your application. Once your application has been completed you will receive a confirmation email. If you have any questions about your purchased policy call us on: <span class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></span>
-							</p>
-						{{ } else if( whatsNext ) { }}
+						{{ if( whatsNext ) { }}
 							<h2 class="text-hospital">Your application has been submitted to {{= info.providerName ? info.providerName : info.fundName }} for processing. This is what happens next...</h2>
 							{{= whatsNext }}
 						{{ } }}
@@ -185,7 +183,7 @@
 
 						<simples:dialogue id="41" vertical="health" className="yellow" />
 
-					</form_v2:fieldset>
+					</form_v3:fieldset>
 
 				</layout_v1:slide_content>
 

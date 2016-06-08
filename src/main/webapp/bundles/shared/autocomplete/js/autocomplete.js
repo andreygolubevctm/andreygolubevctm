@@ -84,6 +84,8 @@
 				};
 			} else if($component.attr('data-varname') == 'countrySelectionList') {
 				params = meerkat.modules.travelCountrySelector.getCountrySelectorParams($component);
+			} else if($component.attr('data-varname') == 'occupationSelectionList') {
+				params = meerkat.modules.occupationSelector.getOccupationSelectorParams($component);
 			} else {
 				url = $component.attr('data-source-url');
 				params = {

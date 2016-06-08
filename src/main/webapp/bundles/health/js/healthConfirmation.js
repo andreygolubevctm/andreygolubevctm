@@ -86,6 +86,11 @@
 					confirmationProduct.frequency = meerkat.modules.healthResults.getFrequencyInWords(confirmationProduct.frequency);
 				}
 				confirmationProduct._selectedFrequency = confirmationProduct.frequency;
+				meerkat.modules.healthPaymentStep.initFields(); // not sure why this works to allow the next call to work but it seems to be the only way to figure out what payment type they selected
+
+				if(!confirmationProduct.hasOwnProperty('premium')) {
+					confirmationProduct.premium = confirmationProduct.paymentTypePremiums[meerkat.modules.healthPaymentStep.getPaymentMethodNode(confirmationProduct.frequency)];
+				}
 
 				fillTemplate();
 				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
@@ -129,13 +134,20 @@
 		// if pending, it might not have the about fund info so let's get it
 		if(confirmationProduct.about === ''  || !confirmationProduct.hasOwnProperty('warningAlert') || confirmationProduct.warningAlert === '') {
 			meerkat.modules.healthMoreInfo.retrieveExternalCopy(confirmationProduct).then(function confirmationExternalCopySuccess() {
-				$(".aboutFund").append(confirmationProduct.aboutFund).parents(".displayNone").first().removeClass("displayNone");
+				$(".aboutFund").html(confirmationProduct.aboutFund).parents(".displayNone").first().removeClass("displayNone");
 
 				if (confirmationProduct.hasOwnProperty('warningAlert') && confirmationProduct.warningAlert !== '') {
 					$("#health_confirmation-warning").find(".fundWarning").show().html(confirmationProduct.warningAlert);
 				} else {
 					$("#health_confirmation-warning").find(".fundWarning").hide().empty();
 				}
+
+				_.defer(function(){
+					// Backup in case warning contains html but no text
+					if(_.isEmpty($.trim($("#health_confirmation-warning").text()))) {
+						$("#health_confirmation-warning").find(".fundWarning").empty().hide();
+					}
+				});
 			});
 		}
 

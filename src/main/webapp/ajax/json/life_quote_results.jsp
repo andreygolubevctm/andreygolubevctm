@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=UTF-8"
+<%@ page language="java" contentType="application/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
@@ -89,7 +89,7 @@
 
 								<%-- Write to the stats database --%>
 								<c:set var="ignore">
-									<life:get_soap_response_stats debugXml="${debugXml}" />
+									<life_v1:get_soap_response_stats debugXml="${debugXml}" />
 									<agg_v1:write_stats rootPath="${vertical}" tranId="${tranId}" />
 								</c:set>
 

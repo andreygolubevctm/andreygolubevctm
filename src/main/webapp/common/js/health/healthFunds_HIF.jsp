@@ -18,7 +18,9 @@
         --%>
         var healthFunds_HIF = {
           processOnAmendQuote: true,
-
+		  $paymentType : $('#health_payment_details_type input'),
+			$paymentFrequency : $('#health_payment_details_frequency'),
+			$paymentStartDate: $("#health_payment_details_start"),
           set: function() {
             <%-- HTML was already injected so unhide it --%>
             if ($('#hif_questionset').length > 0) {
@@ -95,14 +97,17 @@
               meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
               meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 
-              <%--selections for payment date --%>
-              $('#update-premium').on('click.HIF', function() {
-                var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
-                healthFunds._payments = { 'min':3, 'max':17, 'weekends':true };
-                var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
-                healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-                healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
-              });
+              healthFunds_HIF.$paymentType.on('change.HIF', function renderPaymentDaysPaymentType(){
+				healthFunds_HIF.renderPaymentDays();
+			});
+
+			healthFunds_HIF.$paymentFrequency.on('change.HIF', function renderPaymentDaysFrequency(){
+				healthFunds_HIF.renderPaymentDays();
+			});
+
+			healthFunds_HIF.$paymentStartDate.on("changeDate.HIF", function renderPaymentDaysCalendar(e) {
+				healthFunds_HIF.renderPaymentDays();
+			});
 
               meerkat.modules.paymentGateway.setup({
                 "paymentEngine" : meerkat.modules.healthPaymentGatewayNAB,
@@ -121,6 +126,15 @@
               });
             }<%-- not loading quote --%>
           },
+		  renderPaymentDays: function() {
+			  var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
+                healthFunds._payments = { 'min':3, 'max':17, 'weekends':true };
+				healthFunds_HIF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+
+                var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+                meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+                meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
+		  },
           unset: function() {
             $('#hif_questionset').hide();
 
@@ -153,7 +167,9 @@
               $('#health_payment_details_type_ba').prop('disabled', false);
               $('#health_payment_details_type_ba').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
 
-              $('#update-premium').off('click.HIF');
+			  healthFunds_HIF.$paymentType.off('change.HIF');
+				healthFunds_HIF.$paymentFrequency.off('change.HIF');
+				healthFunds_HIF.$paymentStartDate.off("changeDate.HIF");
               meerkat.modules.paymentGateway.reset();
             }
           }

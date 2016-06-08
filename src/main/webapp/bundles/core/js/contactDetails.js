@@ -349,13 +349,18 @@
 
 			if(fieldDetails.type === "flexiPhone" && typeof laterFieldDetails.$otherField !== "undefined") {
 				var flexiNumber = updatedElementValue.replace(/\D/g, "");
-				if (flexiNumber.match(/^04/g)) { // Mobile
+				var $elementToChange;
+				if (flexiNumber.match(/^(04|614|6104)/g)) { // Mobile
 					$fieldElement.val(meerkat.modules.phoneFormat.cleanNumber(updatedElementValue));
 					laterFieldDetails.$otherField.val("");
+					$elementToChange = $fieldElement;
 				} else {// Other
 					laterFieldDetails.$otherField.val(meerkat.modules.phoneFormat.cleanNumber(updatedElementValue));
 					$fieldElement.val("");
+					$elementToChange = laterFieldDetails.$otherField;
 				}
+
+				$elementToChange.trigger("change").trigger("blur").trigger("focusout");
 			}
 
 			// if (later field is empty or its value=the previous value of updated field) and (no other related field or other field is empty)

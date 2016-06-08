@@ -8,6 +8,7 @@ import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.BestPriceRanking;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.*;
+import com.ctm.web.core.email.services.token.EmailTokenService;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.EnvironmentException;
@@ -19,10 +20,11 @@ import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.openinghours.services.OpeningHoursService;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.EnvironmentService;
-import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
 import com.ctm.web.health.apply.model.response.HealthApplyResponse;
@@ -38,11 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Map;
+import java.util.*;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -53,7 +51,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	private static final String VERTICAL = VerticalType.HEALTH.getCode();
 
 	private final AccessTouchService accessTouchService;
-	private final SessionDataService sessionDataService;
+	private final SessionDataServiceBean sessionDataService;
 
 	EmailDetailsService emailDetailsService;
 	protected TransactionDao transactionDao = new TransactionDao();
@@ -68,8 +66,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 														EmailUrlService urlService,
 														AccessTouchService accessTouchService,
 							  							EmailUrlServiceOld urlServiceOld,
-							  							SessionDataService sessionDataService) {
-		super(pageSettings, emailMode);
+							  							SessionDataServiceBean sessionDataService, IPAddressHandler ipAddressHandler) {
+		super(pageSettings, emailMode,ipAddressHandler);
 		this.emailDetailsService = emailDetailsService;
 		this.contentDao = contentDao;
 		this.urlService = urlService;
@@ -107,7 +105,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			EmailMaster emailDetails = new EmailMaster();
 			emailDetails.setEmailAddress(emailAddress);
 			emailDetails.setSource("QUOTE");
-			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE",  request.getRemoteAddr());
+			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE",  ipAddressHandler.getIPAddress(request));
 			if(!isTestEmailAddress) {
 				return emailSender.sendToExactTarget(new HealthBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId, request));
 			} else {
@@ -142,7 +140,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				operator = "ONLINE";
 			}
 
-			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, operator,  request.getRemoteAddr());
+			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, operator,  ipAddressHandler.getIPAddress(request));
 			if(!isTestEmailAddress) {
 				return emailSender.sendToExactTarget(new HealthApplicationExactTargetFormatter(), buildApplicationEmailModel(emailDetails, transactionId, request));
 			} else {
@@ -181,7 +179,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 			emailDetails.setSource("BROCHURE");
 
-			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(emailBrochureRequest.transactionId, emailDetails, "ONLINE" ,  request.getRemoteAddr());
+			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(emailBrochureRequest.transactionId, emailDetails, "ONLINE" ,  ipAddressHandler.getIPAddress(request));
 			if(!isTestEmailAddress) {
 				emailSender.sendToExactTarget(new HealthProductBrochuresExactTargetFormatter(), buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest));
 			}
@@ -351,7 +349,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "load");
 				emailParameters.put(EmailUrlService.VERTICAL, "health");
 				emailParameters.put(EmailUrlService.PRODUCT_ID, productId);
-				emailParameters.put(EmailUrlService.PRODUCT_NAME, emailBrochureRequest.productName);
+				EmailTokenService.setProductName(emailBrochureRequest.productName, emailParameters);
 				emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailParameters));
 
 				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");

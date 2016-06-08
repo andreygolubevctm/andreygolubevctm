@@ -6,7 +6,7 @@ package com.ctm.web.health.model;
 public enum PaymentType {
     BANK ("ba"),
     CREDIT ("cc"),
-    INV ("inv");
+    INVOICE ("inv");
 
     private final String code;
 
@@ -30,7 +30,7 @@ public enum PaymentType {
                 }
             }
         }
-        return INV;
+        return INVOICE;
     }
 
 }

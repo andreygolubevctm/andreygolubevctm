@@ -1,24 +1,43 @@
 package com.ctm.web.core.validation;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
-import  com.ctm.web.core.validation.SchemaValidationError;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class ValidationUtils {
 
+    public static String getValueAndAddToErrorsIfEmpty(String value, String xpath, List<SchemaValidationError> validationErrors) {
+        boolean hasValue = StringUtils.isNotBlank(value);
+        if(!hasValue) {
+            createRequiredError(xpath, validationErrors);
+        }
+        return value;
+    }
 
-
-    private static void createRequiredError(String xpath, List<com.ctm.web.core.validation.SchemaValidationError> validationErrors) {
-        com.ctm.web.core.validation.SchemaValidationError error = new com.ctm.web.core.validation.SchemaValidationError();
+    private static void createRequiredError(String xpath, List<SchemaValidationError> validationErrors) {
+        SchemaValidationError error = new SchemaValidationError();
         error.setElementXpath(xpath);
-        error.setMessage(com.ctm.web.core.validation.SchemaValidationError.REQUIRED);
+        error.setMessage(SchemaValidationError.REQUIRED);
         validationErrors.add(error);
+    }
+
+    public static void getValueAndAddToErrorsIfNull(Object value, String xpath, List<SchemaValidationError> validationErrors) {
+        if(value == null) {
+            createRequiredError(xpath, validationErrors);
+        }
+    }
+
+    public static String getValueAndAddToErrorsIfEmptyNumeric(String number, String xpath, List<SchemaValidationError> validationErrors) {
+        boolean hasValue = false;
+        if(number != null){
+            number =  number.replaceAll( "[^\\d]", "" );
+            hasValue = !number.isEmpty();
+        }
+        if(!hasValue) {
+            createRequiredError(xpath, validationErrors);
+        }
+        return number;
     }
 
     public static List<SchemaValidationError> handleSpringValidationErrors(BindException e) {

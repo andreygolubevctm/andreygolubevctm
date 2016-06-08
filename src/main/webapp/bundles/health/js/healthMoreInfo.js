@@ -177,7 +177,7 @@
         meerkat.modules.healthPhoneNumber.changePhoneNumber();
 
         // hide elements based on marketing segments
-        meerkat.modules.healthSegment.hideBySegment();
+        //meerkat.modules.healthSegment.hideBySegment();
         additionalTrackingData();
 
         var product = Results.getSelectedProduct();
@@ -185,6 +185,10 @@
         $('#health_fundData_hospitalPDF').val(product.promo.hospitalPDF !== undefined ? meerkat.site.urls.base + product.promo.hospitalPDF : "");
         $('#health_fundData_extrasPDF').val(product.promo.extrasPDF !== undefined ? meerkat.site.urls.base + product.promo.extrasPDF : "");
         $('#health_fundData_providerPhoneNumber').val(product.promo.providerPhoneNumber !== undefined ? product.promo.providerPhoneNumber : "");
+
+        $('.whatsNext li').each(function () {
+            $(this).prepend('<span class="icon icon-angle-right"></span>');
+        });
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
@@ -211,6 +215,10 @@
     function onAfterShowModal() {
         additionalTrackingData();
         meerkat.modules.healthPhoneNumber.changePhoneNumber(true);
+        
+        $('.whatsNext li').each(function () {
+            $(this).prepend('<span class="icon icon-angle-right"></span>');
+        });
     }
 
 
@@ -302,12 +310,12 @@
 
         // hide the results before showing the more info page (except for xs as we use a modal)
         if (meerkat.modules.deviceMediaState.get() != 'xs') {
-            $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage').addClass("hidden");
+            $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage, #results-sidebar, .results-column-container, .results-prologue-row').addClass("hidden");
         }
     }
 
     function onAfterHideTemplate() {
-        $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage').removeClass("hidden");
+        $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage, #results-sidebar, .results-column-container, .results-prologue-row').removeClass("hidden");
         $(window).scrollTop(scrollPosition);
     }
 
@@ -399,37 +407,12 @@
                             product.warningAlert = result.providerContentText;
                             break;
                         case 'DDD':
-                            var d = new Date(),
-                                formattedDate = '';
-
-                            if ($.trim(result.providerContentText) !== '') {
-                                dateSplit = result.providerContentText.split("/");
-                                rearrangedDate = dateSplit[1]+"/"+dateSplit[0]+"/"+dateSplit[2];
-                                newDate = new Date(rearrangedDate);
-                                formattedDate = newDate.getDate()+getNth(newDate.getDate())+" of "+(newDate.getMonth() == 2 ? 'March' : 'April') + ", " + newDate.getFullYear();
-
-                                product.dropDeadDateFormatted =  formattedDate;
-                                product.dropDeadDate =  new Date(rearrangedDate);
-                            } else {
-                                product.dropDeadDateFormatted = '31st March '+d.getFullYear();
-                                product.dropDeadDate =  new Date('31/3/'+d.getFullYear());
-                            }
-
+                            meerkat.modules.healthDropDeadDate.setDropDeadDate(result.providerContentText, product);
                             break;
                     }
                 }
             }
         });
-    }
-
-    function getNth(day) {
-        if(day>3 && day<21) return 'th'; // thanks kennebec
-        switch (day % 10) {
-            case 1:  return "st";
-            case 2:  return "nd";
-            case 3:  return "rd";
-            default: return "th";
-        }
     }
 
     function prepareCoverFeatures(searchPath, target) {
@@ -442,8 +425,8 @@
         };
 
         if(target == "hospitalCover"){
-            coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", {name:"Public Hospital", className: "CTM-hospital"});
-            coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", {name:"Private Hospital", className: "CTM-privatehospital"});
+            coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", {name:"Public Hospital", className: "HLTicon-hospital"});
+            coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", {name:"Private Hospital", className: "HLTicon-hospital"});
         }
 
         var lookupKey;

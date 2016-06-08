@@ -7,6 +7,8 @@ import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.*;
 import com.ctm.web.health.quote.model.request.*;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,11 +26,13 @@ import static java.util.Collections.singletonList;
 
 public class RequestAdapter {
 
-    public static HealthQuoteRequest adapt(HealthRequest request) {
-        return adapt(request, null);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestAdapter.class);
+
+    public static HealthQuoteRequest adapt(HealthRequest request, boolean isSimples) {
+        return adapt(request, null, isSimples);
     }
 
-    public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent) {
+    public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent, boolean isSimples) {
 
         HealthQuoteRequest quoteRequest = new HealthQuoteRequest();
         Filters filters = new Filters();
@@ -53,11 +57,10 @@ public class RequestAdapter {
 
         Map<String, String> benefitsExtras = quote.getBenefits().getBenefitsExtras();
         addProductType(quoteRequest, benefitsExtras);
-        addHospitalSelection(quoteRequest, filters, benefitsExtras);
+        addHospitalSelection(quoteRequest, filters, benefitsExtras, situation);
         filters.setPreferencesFilter(getPreferences(benefitsExtras));
 
         boolean isShowAll = toBoolean(quote.getShowAll());
-        boolean isSimples = quote.getSimples() != null;
         boolean isDirectApplication = toBoolean(quote.getDirectApplication());
         addExcludeStatus(quoteRequest, isShowAll, isSimples);
 
@@ -71,6 +74,7 @@ public class RequestAdapter {
             addBoundedExcessFilter(quoteRequest, filters, quote);
             addProductTitleSearchFilter(filters, quote);
             addSingleProviderFilterFromSituation(filters, situation);
+            filters.setApplyDiscounts(false);
         } else {
             // returns a single result with the criteria below
             quoteRequest.setSearchResults(1);
@@ -79,15 +83,15 @@ public class RequestAdapter {
                 addProductTitleSearchExactFilter(filters, application);
                 addProductIdSameExcessAmountFilter(filters, application);
                 addSingleProviderFilterFromApplication(filters, application);
+
+                if (HealthFund.valueOf(application.getProvider()) == HealthFund.CBH) {
+                    quoteRequest.setPaymentTypes(asList(PaymentType.BANK, PaymentType.INVOICE));
+                } else {
+                    quoteRequest.setPaymentTypes(asList(PaymentType.BANK, PaymentType.CREDIT));
+                }
+
+                filters.setApplyDiscounts(true);
             }
-
-            quoteRequest.setPaymentType(Optional.ofNullable(quote.getPayment())
-                    .map(Payment::getDetails)
-                    .map(PaymentDetails::getType)
-                    .map(PaymentType::findByCode)
-                    .orElse(null));
-
-
         }
 
         addCompareResultsFilter(filters, quote);
@@ -205,7 +209,7 @@ public class RequestAdapter {
     protected static void addBoundedExcessFilter(HealthQuoteRequest quoteRequest, Filters filters, HealthQuote quote) {
         BoundedExcessFilter boundedExcessFilter = new BoundedExcessFilter();
         filters.setExcessFilter(boundedExcessFilter);
-        if (quoteRequest.getProductType().equals("GeneralHealth")) {
+        if (quoteRequest.getProductType() == ProductType.GENERALHEALTH) {
             boundedExcessFilter.setExcessMax(99999);
             boundedExcessFilter.setExcessMin(0);
         } else {
@@ -240,11 +244,11 @@ public class RequestAdapter {
         }
     }
 
-    protected static void addHospitalSelection(HealthQuoteRequest quoteRequest, Filters filters, Map<String, String> benefitsExtras) {
+    protected static void addHospitalSelection(HealthQuoteRequest quoteRequest, Filters filters, Map<String, String> benefitsExtras, Situation situation) {
         boolean isPrHospital = toBoolean(StringUtils.defaultIfEmpty(benefitsExtras.get("PrHospital"), "N"));
         boolean isPuHospital = toBoolean(StringUtils.defaultIfEmpty(benefitsExtras.get("PuHospital"), "N"));
 
-        if (quoteRequest.getProductType().equals("GeneralHealth")) {
+        if (quoteRequest.getProductType() == ProductType.GENERALHEALTH || (situation != null && toBoolean(situation.getAccidentOnlyCover()))) {
             quoteRequest.setHospitalSelection(BOTH);
         } else if (!isPrHospital && !isPuHospital) {
             if (filters.getTierHospitalFilter() != null && filters.getTierHospitalFilter() == 1) {
@@ -263,13 +267,13 @@ public class RequestAdapter {
         boolean hasHospitalBenefit = toBoolean(StringUtils.defaultIfEmpty(benefitsExtras.get("Hospital"), "N"));
         boolean hasExtrasBenefit = toBoolean(StringUtils.defaultIfEmpty(benefitsExtras.get("GeneralHealth"), "N"));
         if (hasHospitalBenefit && hasExtrasBenefit) {
-            quoteRequest.setProductType("Combined");
+            quoteRequest.setProductType(ProductType.COMBINED);
         } else if (hasHospitalBenefit) {
-            quoteRequest.setProductType("Hospital");
+            quoteRequest.setProductType(ProductType.HOSPITAL);
         } else if (hasExtrasBenefit) {
-            quoteRequest.setProductType("GeneralHealth");
+            quoteRequest.setProductType(ProductType.GENERALHEALTH);
         } else {
-            quoteRequest.setProductType("Combined");
+            quoteRequest.setProductType(ProductType.COMBINED);
         }
     }
 
@@ -305,9 +309,15 @@ public class RequestAdapter {
             providerFilter.setProviderIds(providerIds);
             providerFilter.setExclude(true);
             for (String code : StringUtils.split(filter.getProviderExclude(), ",")) {
-                providerIds.add(HealthFund.valueOf(code).getId());
+                try {
+                    providerIds.add(HealthFund.valueOf(code).getId());
+                } catch (IllegalArgumentException e) {
+                    LOGGER.warn("Error while getting health fund", e);
+                }
             }
-            filters.setProviderFilter(providerFilter);
+            if (!providerIds.isEmpty()) {
+                filters.setProviderFilter(providerFilter);
+            }
         }
     }
 

@@ -1,0 +1,88 @@
+/* The purpose of this mixin is to produce Bootstrap-like classes that can be applied to the .resultsContainer e.g.:
+		<div class="resultsContainer results-columns-sm-2 results-columns-md-5 results-columns-lg-3">
+
+	The most basic way to call the mixin is with the only mandatory argument:
+		.generate-result-column-widths(sm);
+
+	@resultsContainerWidth: The total container width in which the results columns will fit. If there is a sidebar, you will need to specify it manually. Otherwise, the breakpoints container width is used.
+	@from: The minimum number of columns to calculate widths for. Defaults to 2.
+	@to: The maximum number of columns to calculate widths for. Defaults to 4.
+*/
+/*.debug(@var) {
+  &:after {
+    content: "@{var}";
+    font-size: 20px;
+    background-color: #fff;
+    border: 1px solid red;
+    padding: 10px;
+    border-radius: 5px;
+    color: red;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+}*/
+
+.generate-result-column-widths(@breakpoint; @resultsContainerWidth:-1; @from:2; @to:4) when (@from =< @to) {
+
+  // If container width is not provided, use the container variables.
+  .setContainerWidth(@w) when (@w = -1) {
+    @containerVar: ~"container-@{breakpoint}";
+    @actualResultsContainerWidth: (@@containerVar - @grid-gutter-width);
+  }
+  .setContainerWidth(@w) when (@w > -1) {
+    @actualResultsContainerWidth: @w;
+  }
+  .setContainerWidth(@resultsContainerWidth);
+  //.debug(@actualResultsContainerWidth);
+
+  // Width available for results
+  @overflowWidth: @actualResultsContainerWidth;
+  // Fit the number of columns into the available space.
+  @column-width: ( round((@overflowWidth / @from), 2) - @results-column-outer-width);
+
+  // The styles
+  &.results-columns-@{breakpoint}-@{from} {
+    .resultsOverflow {
+      width: @overflowWidth;// + @results-row-dropshadow-width // todo: make this work
+    }
+
+    .result-row {
+      width: @column-width;
+    }
+  }
+
+  // Increment the counter and run next loop
+  .generate-result-column-widths(@breakpoint; @resultsContainerWidth; (@from + 1); @to);
+}
+
+.generate-default-result-column-widths() {
+  @media (@xs) {
+    .generate-result-column-widths(xs; @results-overflow-width-xs);
+  }
+  @media (@sm) {
+    .generate-result-column-widths(sm; @results-overflow-width-sm);
+  }
+  @media (@md) {
+    .generate-result-column-widths(md; @results-overflow-width-md);
+  }
+  @media (@lg) {
+    .generate-result-column-widths(lg; @results-overflow-width-lg);
+  }
+}
+
+/*
+	Produce a sequence of classes for use in features row height.
+	.height20 {
+		height: 20px;
+	}
+*/
+.generate-result-cell-heights();
+.generate-result-cell-heights(@i: 5) when (@i =< 270) {
+  .height@{i} {
+    height: (1px*@i);
+  }
+
+  .generate-result-cell-heights((@i + 5));
+}

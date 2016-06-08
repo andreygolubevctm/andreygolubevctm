@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.17.0-SNAPSHOT</version>
+    <version>1.25.0-SNAPSHOT</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -23,16 +23,17 @@
         <energy-model-quote.version>1.0.0-RC1</energy-model-quote.version>
         <energy-apply-model.version>1.1.0-RC2</energy-apply-model.version>
         <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
+        <life-quote-model.version>1.1.0-RC1</life-quote-model.version>
 
         <!-- 3rd party -->
         <powermock.version>1.6.2</powermock.version>
         <guava.version>18.0</guava.version>
         <jsonassert.version>1.2.3</jsonassert.version>
         <cxf.version>3.0.1</cxf.version>
-        <spring-boot.version>1.2.7.RELEASE</spring-boot.version>
-        <spring-boot-legacy.version>1.0.1.RELEASE</spring-boot-legacy.version>
-        <spring.version>4.1.8.RELEASE</spring.version> <!-- must match spring version -->
-        <spring.ws.version>2.2.0.RELEASE</spring.ws.version>
+        <spring-boot.version>1.3.3.RELEASE</spring-boot.version>
+        <spring-boot-legacy.version>1.0.2.RELEASE</spring-boot-legacy.version>
+        <spring.version>4.2.5.RELEASE</spring.version> <!-- must match spring version -->
+        <spring.ws.version>2.3.0.RELEASE</spring.ws.version>
         <tomcat.version>7.0.65</tomcat.version>
         <jaxws-maven-plugin.version>2.3</jaxws-maven-plugin.version>
         <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
@@ -43,7 +44,6 @@
         <javax.jsp.version>2.2</javax.jsp.version>
         <mysql.connector.version>5.1.29</mysql.connector.version>
         <org.mapstruct.version>1.0.0.CR1</org.mapstruct.version>
-        <spring-rabbit.version>1.4.6.RELEASE</spring-rabbit.version>
         <swagger-annotations.version>1.5.4</swagger-annotations.version>
 
         <!-- Compile as this version -->
@@ -97,6 +97,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <dependency>
@@ -290,6 +294,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.ctm.life</groupId>
+            <artifactId>life-quote-model</artifactId>
+            <version>${life-quote-model.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.ctm.common</groupId>
             <artifactId>http-client</artifactId>
             <version>${http-client.version}</version>
@@ -462,6 +472,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.ws</groupId>
             <artifactId>spring-ws-security</artifactId>
             <version>${spring.ws.version}</version>
@@ -488,7 +504,7 @@
         <dependency>
             <groupId>eu.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
-            <version>1.15</version>
+            <version>1.19</version>
         </dependency>
 
         <dependency>

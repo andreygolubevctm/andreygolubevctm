@@ -21,43 +21,34 @@ public class UploadService {
 
 		StringBuilder update = new StringBuilder();
 
-		int providerId = 0;
 		String providerCode = file.providerCode;
 		String effectiveDate = file.effectiveDate;
 
 		try {
-			SimpleDatabaseConnection dbSource = null;
-			try {
-				PreparedStatement stmt;
 
-				dbSource = new SimpleDatabaseConnection();
-
-				stmt = dbSource.getConnection().prepareStatement(
-						"SELECT providerId, Name  FROM ctm.provider_master WHERE providerCode = ?"
-				);
-				stmt.setString(1, providerCode);
-
-				ResultSet results = stmt.executeQuery();
-
-				while (results.next()) {
-					providerId = results.getInt("ProviderId");
-				}
-
-			} catch (SQLException | NamingException e) {
-				throw new RuntimeException("Error fetching Provider ID.", e);
-			}
-			finally {
-				dbSource.closeConnection();
-			}
-
-			if(providerId == 0) {
+			if(providerCode == "") {
 				throw new RuntimeException("FATAL ERROR: Provider ID not found.");
 			}
 
-			update.append("DELETE FROM ctm.category_product_mapping WHERE productid IN (SELECT productid FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid="+providerId+");\r\n");
-			update.append("DELETE FROM ctm.product_properties_text WHERE productid IN (SELECT productid FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid="+providerId+");\r\n");
-			update.append("DELETE FROM ctm.product_properties WHERE productid IN (SELECT productid FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid="+providerId+");\r\n");
-			update.append("DELETE FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid="+providerId+";\r\n");
+			update.append("USE ctm;\r\n\r\n");
+
+			update.append("-- Get Provider ID from Provider Code\r\n");
+			update.append("SET @provider_id = (SELECT providerId FROM ctm.provider_master WHERE providerCode = '"+providerCode+"');\r\n\r\n");
+
+			update.append("-- Create temporary table of product ids\r\n");
+			update.append("CREATE TEMPORARY TABLE _products SELECT productid FROM ctm.product_master WHERE productCat='CREDITCARD' AND providerid=@provider_id;\r\n\r\n");
+
+			update.append("-- Should return less than 12 products for most providers\r\n");
+			update.append("SELECT * FROM _products;\r\n\r\n");
+
+			update.append("-- Delete using join with temporary table\r\n");
+			update.append("DELETE cpm FROM ctm.category_product_mapping cpm INNER JOIN _products ON cpm.productID=_products.productId;\r\n");
+			update.append("DELETE pp FROM ctm.product_properties pp INNER JOIN _products ON pp.productID=_products.productId;\r\n");
+			update.append("DELETE ppt FROM ctm.product_properties_text ppt INNER JOIN _products ON ppt.productID=_products.productId;\r\n");
+			update.append("DELETE pm FROM ctm.product_master pm INNER JOIN _products ON pm.productID=_products.productId;\r\n\r\n");
+
+			update.append("-- Clean up\r\n");
+			update.append("DROP TEMPORARY TABLE _products;\r\n");
 
 			int PRODUCT_CODE_COLUMN_NUMBER = 0;
 			//int PROVIDER_NAME_COLUMN_NUMBER = 1;
@@ -150,7 +141,7 @@ public class UploadService {
 				}
 
 				if(part.length > 0){
-					update.append("\r\n\r\nINSERT INTO ctm.product_master (ProductCat,ProductCode,ProviderId, ShortTitle, LongTitle,EffectiveStart,EffectiveEnd,Status) VALUES('CREDITCARD','"+part[PRODUCT_CODE_COLUMN_NUMBER]+"',"+providerId+",'"+part[PRODUCT_SHORT_DESC_COLUMN_NUMBER]+"','"+part[PRODUCT_SHORT_DESC_COLUMN_NUMBER]+"','"+effectiveDate+"','2040-12-31','');\r\n");
+					update.append("\r\n\r\nINSERT INTO ctm.product_master (ProductCat,ProductCode,ProviderId, ShortTitle, LongTitle,EffectiveStart,EffectiveEnd,Status) VALUES('CREDITCARD','"+part[PRODUCT_CODE_COLUMN_NUMBER]+"',@provider_id,'"+part[PRODUCT_SHORT_DESC_COLUMN_NUMBER]+"','"+part[PRODUCT_SHORT_DESC_COLUMN_NUMBER]+"','"+effectiveDate+"','2040-12-31','');\r\n");
 					update.append("SET @product_id = LAST_INSERT_ID();\r\n");
 
 					if (!productCode.equals(prevProductCode)){

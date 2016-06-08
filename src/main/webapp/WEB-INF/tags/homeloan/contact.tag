@@ -55,7 +55,7 @@
 			<c:otherwise>--%>
 				<form_v2:row hideHelpIconCol="true">
 					<c:set var="label">
-						* I have read the <form_v1:link_privacy_statement /> and <a href="legal/CreditGuide.pdf" target="_blank">credit guide</a>.
+						* I have read the <form_v1:link_privacy_statement /> and <a href="/static/legal/CreditGuide.pdf" target="_blank">credit guide</a>.
 					</c:set>
 					<field_v2:checkbox
 						xpath="homeloan/privacyoptin"

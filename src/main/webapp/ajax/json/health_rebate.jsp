@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%--TODO: why can't this be done client side?
@@ -250,6 +250,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 					<c:set var="partner_loading_rate" value="${0}" />
 					<c:set var="partner_loading_cae" value="${0}" />
 				</c:if>
+				<c:set var="partner_loading_rate" value="${partner_loading_rate}" />
 		</c:when>
 		<c:otherwise>
 			<fmt:formatNumber var="partner_loading_rate" value="${param.partner_loading_manual}" maxFractionDigits="0" />

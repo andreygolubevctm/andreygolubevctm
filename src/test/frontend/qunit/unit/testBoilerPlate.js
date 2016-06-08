@@ -9,16 +9,17 @@ setupBoilerplate = function(base) {
     document.write('<script src="' + base + '/bundles/meerkat/js/meerkat.modules.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/numberUtils/js/numberUtils.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/utils.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/shared/dateUtils/js/dateUtils.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/transactionId.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/tracking.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/deviceMediaState.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/dialogs.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/loadingAnimation.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/core/js/performanceProfiling.js">\x3C/script>');
-    document.write('<script src="' + base + '/bundles/shared/results/js/Results.js">\x3C/script>');
-    document.write('<script src="' + base + '/bundles/shared/results/js/ResultsView.js">\x3C/script>');
-    document.write('<script src="' + base + '/bundles/shared/results/js/ResultsPagination.js">\x3C/script>');
-    document.write('<script src="' + base + '/bundles/shared/results/js/ResultsPagination.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/shared/results_js/js/Results.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/shared/results_js/js/ResultsView.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/shared/results_js/js/ResultsPagination.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/shared/results_js/js/ResultsPagination.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/validation/js/validationAddress.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/validation/js/validationBaseRules.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/validation/js/validationCurrency.js">\x3C/script>');
@@ -28,7 +29,7 @@ setupBoilerplate = function(base) {
     document.write('<script src="' + base + '/bundles/core/js/contactDetails.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/sendEmail/js/sendEmail.js">\x3C/script>');
     document.write('<script src="' + base + '/bundles/shared/journeyEngine/v2/js/journeyEngine.js">\x3C/script>');
-    document.write('<script src="' + base + '/bundles/core/js/form.js">\x3C/script>');
+    document.write('<script src="' + base + '/bundles/shared/forms/v1/js/form.js">\x3C/script>');
 
     $.support.transition = false;
     // See https://github.com/axemclion/grunt-saucelabs#test-result-details-with-qunit
@@ -53,8 +54,8 @@ setupBoilerplate = function(base) {
                 root: 'http://localhost:8080/',
                 exit: 'http://int.comparethemarket.com.au/',
                 quote: '',
-                privacyPolicy: '/ctm/legal/privacy_policy.pdf',
-                websiteTerms: '/ctm/legal/website_terms_of_use.pdf',
+                privacyPolicy: '/static/legal/privacy_policy.pdf',
+                websiteTerms: '/static/legal/website_terms_of_use.pdf',
                 fsg: ''
             },
             liveChat: {

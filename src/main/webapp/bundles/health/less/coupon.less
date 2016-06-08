@@ -1,18 +1,50 @@
 /* TODO: to read the src from DB so we don't have to set this up for each promo */
 .health100eftpos {
-	width: 280px;
-	height: 175px;
-	.highResImg('../coupon/100-eftpos-card.jpg'; '../coupon/100-eftpos-card@2x.jpg'; 280px; 175px);
+  width: 280px;
+  height: 175px;
+  .highResImg('../graphics/coupon/100-eftpos-card.jpg'; '../graphics/coupon/100-eftpos-card@2x.jpg'; 280px; 175px);
 }
 
 .health200eftpos {
-	width: 280px;
-	height: 177px;
-	.highResImg('../coupon/200-eftpos-card.png'; '../coupon/200-eftpos-card@2x.png'; 280px; 177px);
+  width: 280px;
+  height: 177px;
+  .highResImg('../graphics/coupon/200-eftpos-card.png'; '../graphics/coupon/200-eftpos-card@2x.png'; 280px; 177px);
 }
 
-.healthX00eftpos {
-	width: 280px;
-	height: 177px;
-	.highResImg('../coupon/blank-eftpos-card.png'; '../coupon/blank-eftpos-card@2x.png'; 280px; 177px);
+.healthBlankeftpos {
+  width: 280px;
+  height: 177px;
+  .highResImg('../graphics/coupon/blank-eftpos-card-modal.png'; '../graphics/coupon/blank-eftpos-card-modal@2x'; 264px; 167px);
+}
+
+.fieldset-column-side,
+#results-sidebar {
+  .coupon-tile-container {
+    padding: 0;
+    a {
+      display: block;
+      padding: 20px 15px;
+      margin-bottom: 1em;
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      background: @theme-tertiary;
+      img {
+        margin-bottom: 10px;
+      }
+      p {
+        font-size: 16px;
+      }
+      .more-info {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.coupon-confirmation {
+  h2 {
+    font-family: @font-family-theme-bold;
+    font-size: 24px;
+  }
 }

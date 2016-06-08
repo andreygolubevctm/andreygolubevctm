@@ -84,20 +84,22 @@ Handling of the rebate tiers based off situation
 				// Single tiers
 				switch(_value) {
 					case '0':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeBaseTier + _allowance) +' or less';
+						_text = '$'+ formatMoney(rebateTiers.single.incomeBaseTier) +' or less';
 						break;
 					case '1':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeTier1.from + _allowance) +' - $'+ formatMoney(rebateTiers.single.incomeTier1.to + _allowance);
+						_text = '$'+ formatMoney(rebateTiers.single.incomeTier1.from) +' - $'+ formatMoney(rebateTiers.single.incomeTier1.to);
 						break;
 					case '2':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeTier2.from + _allowance) +' - $'+ formatMoney(rebateTiers.single.incomeTier2.to + _allowance);
+						_text = '$'+ formatMoney(rebateTiers.single.incomeTier2.from) +' - $'+ formatMoney(rebateTiers.single.incomeTier2.to);
 						break;
 					case '3':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeTier3 + _allowance) + '+ (no rebate)';
+						_text = '$'+ formatMoney(rebateTiers.single.incomeTier3) + '+ (no rebate)';
 						break;
 				}
 			} else {
 				// Family tiers
+				if(_cover === 'C') { _allowance = 0; }
+
 				switch(_value) {
 					case '0':
 						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeBaseTier + _allowance) +' or less';

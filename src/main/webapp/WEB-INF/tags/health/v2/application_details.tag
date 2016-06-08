@@ -19,7 +19,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health_application-details">
 
-	<form_v2:fieldset legend="Contact Details">
+	<form_v3:fieldset legend="Contact Details">
 
 		<group_v3:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"/>
 
@@ -28,7 +28,7 @@
 			<go:setData dataVar="data" xpath="${xpath}/postalMatch" value="Y" />
 		</c:if>
 
-		<form_v3:row>
+		<form_v3:row label="empty">
 			<field_v2:checkbox xpath="${xpath}/postalMatch" value="Y" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
 		</form_v3:row>
 
@@ -47,23 +47,16 @@
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}_no_email" />
-		<form_v3:row fieldXpath="${fieldXpath}" id="${name}_noEmailGroup">
+		<form_v3:row fieldXpath="${fieldXpath}" id="${name}_noEmailGroup" label="empty">
 			<field_v2:checkbox xpath="${fieldXpath}" value="N"
 								title="No email address"
 								required="false"
 								label="true" />
 		</form_v3:row>
 
-		<form_v3:row id="${name}_optInEmail-group" hideHelpIconCol="true">
+		<form_v3:row id="${name}_optInEmail-group" hideHelpIconCol="true" label="empty">
 			<field_v2:checkbox xpath="${xpath}/optInEmail" value="Y"
 								title="Stay up to date with news and offers direct to your inbox"
-								required="false"
-								label="true" />
-		</form_v3:row>
-
-		<form_v3:row id="${name}_okToCall-group" hideHelpIconCol="true">
-			<field_v2:checkbox xpath="${xpath}_call" value="Y"
-								title="Our dedicated Health Insurance consultants will give you a call to chat about your Health Insurance needs and questions."
 								required="false"
 								label="true" />
 		</form_v3:row>
@@ -82,7 +75,7 @@
 		<field_v1:hidden xpath="${xpath}/productTitle" className="health_application_details_productTitle" />
 		<field_v1:hidden xpath="${xpath}/providerName" className="health_application_details_providerName" />
 
-	</form_v2:fieldset>
+	</form_v3:fieldset>
 
 </div>
 

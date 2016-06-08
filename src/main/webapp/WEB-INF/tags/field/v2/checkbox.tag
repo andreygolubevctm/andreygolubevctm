@@ -16,6 +16,7 @@
 <%@ attribute name="helpClassName" 		required="false"	rtexprvalue="true"	%>
 <%@ attribute name="helpPosition" 		required="false"	rtexprvalue="true"	%>
 <%@ attribute name="customAttribute"	required="false"	rtexprvalue="true" description="Add a custom attribute to the element." %>
+<%@ attribute name="checkBoxClassName" %>
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.benefits')}" />
 
@@ -36,9 +37,11 @@
 <c:choose>
 	<c:when test="${not empty theme}">
 		<c:set var="className" value="${className} checkbox-${theme}" />
+		<c:set var="checkBoxClassName" value="${checkBoxClassName} checkbox-${theme}" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="className" value="${className} checkbox" />
+		<c:set var="checkBoxClassName" value="${checkBoxClassName} checkbox" />
 	</c:otherwise>
 </c:choose>
 
@@ -64,7 +67,7 @@
 
 <%-- HTML --%>
 <div class="${className}">
-	<input type="checkbox" name="${name}" id="${id}" class="checkbox-custom ${className}" value="${value}"${checked} ${customAttribute} ${requiredAttr} ${checkboxRule}>
+	<input type="checkbox" name="${name}" id="${id}" class="checkbox-custom ${checkBoxClassName}" value="${value}"${checked} ${customAttribute} ${requiredAttr} ${checkboxRule}>
 
 	<label for="${id}">
 		<c:if test="${label!=null && not empty label}">${title}</c:if>

@@ -13,6 +13,7 @@
 <%@ attribute name="delims"			required="false"  rtexprvalue="true"  description="Appoints a new delimiter set, i.e. ||" %>
 <%@ attribute name="helpId" 		required="false" rtexprvalue="true"	 description="The select help id (if non provided, help is not shown)" %>
 <%@ attribute name="includeInForm"	required="false" rtexprvalue="true"  description="Force attribute to include value in data bucket - use true/false" %>
+<%@ attribute name="placeHolder"	required="false" rtexprvalue="true"  description="dropdown placeholder" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
@@ -35,7 +36,6 @@
 	<c:set var="requiredAttribute" value=' required="required" ' />
 </c:if>
 
-
 <%-- HTML --%>
 <select class="form-control array_select ${className}" id="${name}" name="${name}" ${extraDataAttributes} ${requiredAttribute} data-msg-required="Please choose ${title}" ${includeAttribute}>
 	<c:forTokens items="${items}" delims="${delims}" var="option">
@@ -47,7 +47,14 @@
 				<option id="${id}" value="${val}" selected="selected">${des}</option>
 			</c:when>
 			<c:otherwise>
-				<option id="${id}" value="${val}">${des}</option>
+				<c:choose>
+					<c:when test="${empty des and not empty placeHolder}">
+						<option id="${id}" value="${val}">${placeHolder}</option>
+					</c:when>
+					<c:otherwise>
+						<option id="${id}" value="${val}">${des}</option>
+					</c:otherwise>
+				</c:choose>
 			</c:otherwise>
 		</c:choose>
 	</c:forTokens>

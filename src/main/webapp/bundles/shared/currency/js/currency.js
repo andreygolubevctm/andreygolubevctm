@@ -267,7 +267,7 @@
 				$this.val('');
 			}
 
-			entryName.formatCurrency({symbol:'$',roundToDecimalPlace:-2});
+			entryName.formatCurrency({symbol:'$',roundToDecimalPlace:-2}).change();
 		});
 		entryName.on("focus", function() {
 			entryName.toNumber().setCursorPosition(entryName.val().length, entryName.val().length);

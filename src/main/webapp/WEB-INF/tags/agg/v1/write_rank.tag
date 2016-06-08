@@ -118,7 +118,7 @@
 		</c:if>
 
 				<c:if test="${pageSettings.getVerticalCode() == 'life'}">
-					<life:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
+					<life_v1:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
 		</c:if>
 	
 			</c:if>

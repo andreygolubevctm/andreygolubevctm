@@ -2,6 +2,8 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+
 <c:set var="logger" value="${log:getLogger('tag.error.recover')}" />
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
@@ -27,7 +29,7 @@ ${logger.info('core:recover START. {},{}', log:kv('quoteType',quoteType ), log:k
 
 <core_v1:transaction touch="H" comment="Recover" noResponse="true" writeQuoteOverride="N" />
 
-<c:set var="message">error:recovery quoteType=${quoteType} transactionId=${data['current/transactionId']} ipAddress=${pageContext.request.remoteAddr}</c:set>
+<c:set var="message">error:recovery quoteType=${quoteType} transactionId=${data['current/transactionId']} ipAddress=${ipAddressHandler.getIPAddress(pageContext.request)}</c:set>
 <c:set var="code">500: serverIP=${serverIp} sessionId=<%=session.getId()%></c:set>
 
 <%-- Log the error into the database, as this is an error recovery --%>
