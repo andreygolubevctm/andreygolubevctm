@@ -194,10 +194,8 @@
 				</form_v3:row>
 
 			</form_v3:fieldset>
-			<%--
-                        <health_v3:about_you_contact_details xpath="${xpath}" />--%>
 
-                        <%-- Override set in splittest_helper tag --%>
+            <%-- Override set in splittest_helper tag --%>
 			<c:if test="${showOptInOnSlide3 eq false}">
 				<c:set var="termsAndConditions">
 					<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>

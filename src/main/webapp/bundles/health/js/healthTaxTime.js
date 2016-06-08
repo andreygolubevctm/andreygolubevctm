@@ -21,7 +21,7 @@
 
 	function init() {
 
-		jQuery(document).ready(function ($) {
+		$(document).ready(function ($) {
 			taxTimeIsActive = (meerkat.site.isTaxTime === 'Y' && (meerkat.modules.splitTest.isActive(30) || meerkat.modules.splitTest.isActive(31)));
 			if (!taxTimeIsActive) {
 				doFastTrack = false;
@@ -48,11 +48,11 @@
 	}
 
 	function _applyEventListeners() {
-		$healthSituation.on('click.FT', function toggleFields() {
+		$healthSituation.on('change.FT', function toggleFields() {
 			_toggleFastTrackFields($healthSituation.filter(':checked').val());
 		});
 
-		$extrasCoverOptionContainer.on('click.FT', function setSectionsToSkip(){
+		$extrasCoverOptionContainer.on('change.FT', function setSectionsToSkip(){
 			if ($extrasCoverOptionContainer.find('input').filter(':checked').val()=== 'Y') {
 				sectionsToSkip = ['contact'];
 			} else {
@@ -92,8 +92,8 @@
 		updateFastTrack(false);
 
 		// remove the fast track events
-		$healthSituation.off('click.FT');
-		$extrasCoverOptionContainer.off('click.FT');
+		$healthSituation.off('change.FT');
+		$extrasCoverOptionContainer.off('change.FT');
 
 		$extrasCoverOptionContainer.hide();
 
@@ -142,10 +142,10 @@
 			if (isFastTrack() && $healthSituation.filter(':checked').val() === 'CHC') {
 				if ($extrasCoverOptionContainer.find('input').filter(':checked').val()=== 'Y') {
 					// pre-select hospital only. .trigger('change'); to update active class. a .change()
-					$tieredHospitalCover.find('input[value="C"]').click().trigger('change');
+					$tieredHospitalCover.find('input[value="C"]').prop('checked', true).trigger('change');
 				} else {
 					// pre-select hospital & extras .trigger('change'); to update active class
-					$tieredHospitalCover.find('input[value="H"]').click().trigger('change');
+					$tieredHospitalCover.find('input[value="H"]').prop('checked', true).trigger('change');
 				}
 
 				_onlyShowExtras();
@@ -160,6 +160,13 @@
 		}
 	}
 
+	function toggleContactFields() {
+		if (sectionsToSkip.length === 0) {
+			// it's journey as per normal but we're still in fast track mode
+			$contactDetailsFieldSet.show();
+		}
+	}
+
 	function updateFastTrack(fastTrack) {
 		doFastTrack = fastTrack;
 	}
@@ -171,6 +178,7 @@
 		isFastTrack : isFastTrack,
 		moveContactDetailsToStep3 : moveContactDetailsToStep3,
 		resetBenefitsStep: resetBenefitsStep,
+		toggleContactFields: toggleContactFields,
 		updateFastTrack : updateFastTrack
 	});
 

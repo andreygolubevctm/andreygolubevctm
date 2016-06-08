@@ -300,6 +300,7 @@
 			},
 			onBeforeLeave:function(event){
 				meerkat.modules.healthBenefitsStep.enableFields();
+				meerkat.modules.healthTaxTime.toggleContactFields();
 			}
 		};
 		var contactStep = {
