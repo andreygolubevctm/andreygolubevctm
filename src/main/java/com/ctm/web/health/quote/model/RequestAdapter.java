@@ -57,7 +57,7 @@ public class RequestAdapter {
 
         Map<String, String> benefitsExtras = quote.getBenefits().getBenefitsExtras();
         addProductType(quoteRequest, benefitsExtras);
-        addHospitalSelection(quoteRequest, filters, benefitsExtras);
+        addHospitalSelection(quoteRequest, filters, benefitsExtras, situation);
         filters.setPreferencesFilter(getPreferences(benefitsExtras));
 
         boolean isShowAll = toBoolean(quote.getShowAll());
@@ -244,11 +244,11 @@ public class RequestAdapter {
         }
     }
 
-    protected static void addHospitalSelection(HealthQuoteRequest quoteRequest, Filters filters, Map<String, String> benefitsExtras) {
+    protected static void addHospitalSelection(HealthQuoteRequest quoteRequest, Filters filters, Map<String, String> benefitsExtras, Situation situation) {
         boolean isPrHospital = toBoolean(StringUtils.defaultIfEmpty(benefitsExtras.get("PrHospital"), "N"));
         boolean isPuHospital = toBoolean(StringUtils.defaultIfEmpty(benefitsExtras.get("PuHospital"), "N"));
 
-        if (quoteRequest.getProductType() == ProductType.GENERALHEALTH) {
+        if (quoteRequest.getProductType() == ProductType.GENERALHEALTH || (situation != null && toBoolean(situation.getAccidentOnlyCover()))) {
             quoteRequest.setHospitalSelection(BOTH);
         } else if (!isPrHospital && !isPuHospital) {
             if (filters.getTierHospitalFilter() != null && filters.getTierHospitalFilter() == 1) {
