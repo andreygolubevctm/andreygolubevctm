@@ -38,6 +38,8 @@ public class ConfirmationData {
 
     private final String policyNo;
 
+    private final String paymentType;
+
     private ConfirmationData(Builder builder) {
         this.transID = builder.transID;
         this.startDate = builder.startDate;
@@ -49,6 +51,7 @@ public class ConfirmationData {
         this.whatsNext = builder.whatsNext;
         this.product = builder.product;
         this.policyNo = builder.policyNo;
+        this.paymentType = builder.paymentType;
     }
 
     public static Builder newConfirmationData() {
@@ -103,6 +106,9 @@ public class ConfirmationData {
         return providerInfo;
     }
 
+    public String getPaymentType() {
+        return paymentType;
+    }
 
     public static final class Builder {
         private String transID;
@@ -115,6 +121,7 @@ public class ConfirmationData {
         private String whatsNext;
         private String product;
         private String policyNo;
+        private String paymentType;
 
         private Builder() {
         }
@@ -170,6 +177,11 @@ public class ConfirmationData {
 
         public Builder policyNo(String policyNo) {
             this.policyNo = policyNo;
+            return this;
+        }
+
+        public Builder paymentType(String paymentType) {
+            this.paymentType = paymentType;
             return this;
         }
     }

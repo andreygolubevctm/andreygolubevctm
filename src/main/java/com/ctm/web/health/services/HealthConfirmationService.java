@@ -52,6 +52,7 @@ public class HealthConfirmationService {
             String about = getContent(request, providerName, "ABT");
             String firstName = data.getQuote().getApplication().getPrimary().getFirstname();
             String surname = data.getQuote().getApplication().getPrimary().getSurname();
+            String paymentType =  data.getQuote().getPayment().getDetails().getType();
             ProviderInfo providerInfo = providerContentService.getProviderInfo(request, providerName);
             final ConfirmationData confirmationData = ConfirmationData.newConfirmationData()
                             .about(about)
@@ -61,7 +62,9 @@ public class HealthConfirmationService {
                             .lastName(surname)
                             .providerInfo(providerInfo)
                             .whatsNext(next).product(productSelected)
-                            .policyNo(response.getProductId()).build();
+                            .policyNo(response.getProductId())
+                            .paymentType(paymentType)
+                    .build();
 
             Confirmation confirmation = new Confirmation();
             confirmation.setKey(confirmationId);

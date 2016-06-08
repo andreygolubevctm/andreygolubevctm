@@ -28,7 +28,8 @@ public class ConfirmationDataTest {
         final ConfirmationData confirmationData = ConfirmationData.newConfirmationData()
                 .transID("2643064")
                 .startDate(LocalDate.of(2015, Month.SEPTEMBER, 24))
-                .frequency("M").about( "<ul> \t\t<li>HIF is all about choice. Choice of cover, choice of providers, " +
+                .frequency("M")
+                .about( "<ul> \t\t<li>HIF is all about choice. Choice of cover, choice of providers, " +
                         "choice of ways to claim, and more.</li> \t\t<li>HIF is one of Australia's most affordable health funds, " +
                         "with Extras cover starting from a tiny 50 cents per day.</li> \t\t<li>HIF is a not-for-profit, 100% member " +
                         "based organisation which is committed to providing excellent value for money.</li> \t\t<li>HIF is Australia's " +

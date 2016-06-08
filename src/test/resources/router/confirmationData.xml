@@ -12,6 +12,8 @@
         <email>ahm.com.au</email>
         <website></website>
     </providerInfo>
-    <whatsNext><![CDATA[<ul> 		<li>HIF will send a welcome letter to your nominated email address within ten working days of receiving your application. The welcome letter will confirm all the details of your new HIF health policy, so please take a few minutes to read it carefully.</li> 		<li>Your first premium will be deducted on the date you have chosen today. Please note that if your nominated payment date is different to your nominated commencement date, your initial premium will include any arrears incurred between your commencement date and the deduction "providerPhoneNumber":"1300 134 060","extrasPDF":"health_brochure.jsp?pdf=/HIF/SpecialOptions.pdf","discountText":"HIF offer 4% discount for annual payment and 2% for half-yearly"}]]></whatsNext><product><![CDATA[test]]></product>
+    <whatsNext><![CDATA[<ul> 		<li>HIF will send a welcome letter to your nominated email address within ten working days of receiving your application. The welcome letter will confirm all the details of your new HIF health policy, so please take a few minutes to read it carefully.</li> 		<li>Your first premium will be deducted on the date you have chosen today. Please note that if your nominated payment date is different to your nominated commencement date, your initial premium will include any arrears incurred between your commencement date and the deduction "providerPhoneNumber":"1300 134 060","extrasPDF":"health_brochure.jsp?pdf=/HIF/SpecialOptions.pdf","discountText":"HIF offer 4% discount for annual payment and 2% for half-yearly"}]]></whatsNext>
+    <product><![CDATA[test]]></product>
     <policyNo>12334</policyNo>
+    <paymentType>cc</paymentType>
 </data>
