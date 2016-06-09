@@ -50,6 +50,7 @@ public class ContactValidator extends CommonQuoteRouter implements InitializingB
             if (StringUtils.isNotBlank(contact)) {
                 ContactValidatorRequest validatorRequest = new ContactValidatorRequest();
                 validatorRequest.setEnvironmentOverride(request.getParameter("environmentValidatorOverride"));
+                validatorRequest.setStaticOverride(request.getParameter("staticOverride"));
                 validatorRequest.setContact(contact);
                 INSTANCE.validate(request, verticalCode, validatorRequest);
             }
