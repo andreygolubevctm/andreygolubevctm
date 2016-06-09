@@ -14,7 +14,7 @@
 .healthBlankeftpos {
   width: 280px;
   height: 177px;
-  .highResImg('../graphics/coupon/blank-eftpos-card-modal.png'; '../graphics/coupon/blank-eftpos-card-modal@2x'; 264px; 167px);
+  .highResImg('../graphics/coupon/blank-eftpos-card-modal.png'; '../graphics/coupon/blank-eftpos-card-modal@2x.png'; 264px; 167px);
 }
 
 .fieldset-column-side,
@@ -57,6 +57,20 @@
   a {
     text-decoration: underline;
     font-size: 14px;
+  }
+}
+
+// hard code this for now unless we change the design.
+@coupon-banner-height: 40px;
+@media (@xs-only) {
+  body.couponShown {
+    &[data-step="results"] {
+      padding-top: @navbar-height + @coupon-banner-height;
+
+      .xs-results-pagination {
+        top: @navbar-height + @page-offset-xs + @coupon-banner-height;
+      }
+    }
   }
 }
 

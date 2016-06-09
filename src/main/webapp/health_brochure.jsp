@@ -9,6 +9,9 @@
 <c:set var="pdf" 			value="${fn:replace(param.pdf, ' ', '%20')}" />
 <c:set var="brand"			value="${pageSettings.getBrandId()}" />
 <c:set var="url_prefix"		value="${pageSettings.getSetting('staticAssetUrl')}health/brochures/" />
+<c:if test="${not empty param.staticBranch}">
+	<c:set var="url_prefix" value="${fn:replace(url_prefix,'/static',param.staticBranch)}" />
+</c:if>
 <c:if test='${!fn:startsWith(url_prefix, "http") && !fn:startsWith(url_prefix, "//")}'>
 	<c:set var="url_prefix" value="${pageSettings.getRootUrl()}${url_prefix}" />
 </c:if>

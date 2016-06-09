@@ -25,6 +25,7 @@ public class HealthRequest extends RequestWithQuote<HealthQuote> {
                 ", clientIpAddress='" + getClientIpAddress() + '\'' +
                 ", health=" + getQuote() +
                 ", environmentOverride='" + getEnvironmentOverride() + '\'' +
+                ", staticOverride='" + getStaticOverride() + '\'' +
                 ", requestAt='" +getRequestAt() + '\'' +
                 '}';
     }
