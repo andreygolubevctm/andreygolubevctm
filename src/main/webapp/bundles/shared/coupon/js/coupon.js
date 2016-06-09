@@ -8,6 +8,7 @@
 
 	var events = {
 		coupon: {
+			COUPON_LOADED : "COUPON_LOADED"
 		}
 	};
 
@@ -105,6 +106,7 @@
 		.done(function onSuccess(json) {
 			setCurrentCoupon(json);
 			populateFields();
+			meerkat.messaging.publish(events.coupon.COUPON_LOADED);
 			if (typeof successCallBack === 'function') {
 				successCallBack();
 			}
@@ -152,11 +154,13 @@
 					hasAutoPoped = true;
 				});
 			}
+            $('body').addClass('couponShown');
 		} else {
             $('#contactForm').find('.quoteSnapshot').show();
             $('.callCentreHelp').show();
             $('#contactForm').find('.callCentreHelp').hide();
             $('.coupon-banner-container, .coupon-tile-container').html('');
+            $('body').removeClass('couponShown');
         }
 	}
 
