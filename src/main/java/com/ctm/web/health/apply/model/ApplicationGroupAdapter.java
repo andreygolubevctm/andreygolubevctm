@@ -18,9 +18,10 @@ import com.ctm.web.health.apply.model.request.application.situation.HealthSituat
 import com.ctm.web.health.apply.model.request.fundData.HealthFund;
 import com.ctm.web.health.model.form.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 public class ApplicationGroupAdapter {
 
@@ -112,32 +113,12 @@ public class ApplicationGroupAdapter {
 
     protected static List<com.ctm.web.health.apply.model.request.application.dependant.Dependant> createDependants(Optional<Dependants> dependants) {
         if (dependants.isPresent()) {
-            final List<com.ctm.web.health.apply.model.request.application.dependant.Dependant> dependantList = new ArrayList<>();
-            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant1)))
-                    .ifPresent(dependantList::add);
-            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant2)))
-                    .ifPresent(dependantList::add);
-            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant3)))
-                    .ifPresent(dependantList::add);
-            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant4)))
-                    .ifPresent(dependantList::add);
-            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant5)))
-                    .ifPresent(dependantList::add);
-            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant6)))
-                    .ifPresent(dependantList::add);
-            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant7)))
-                    .ifPresent(dependantList::add);
-            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant8)))
-                    .ifPresent(dependantList::add);
-            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant9)))
-                    .ifPresent(dependantList::add);
-            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant10)))
-                    .ifPresent(dependantList::add);
-            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant11)))
-                    .ifPresent(dependantList::add);
-            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant12)))
-                    .ifPresent(dependantList::add);
-            return dependantList;
+            return dependants.get()
+                    .getDependant()
+                    .stream()
+                    .filter(d -> d != null)
+                    .map(d -> createDependant(Optional.ofNullable(d)))
+                    .collect(toList());
         } else {
             return null;
         }
