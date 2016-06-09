@@ -50,9 +50,7 @@
 
 							<p>Thank you for comparing <span>Health Insurance</span> with <content:get key="boldedBrandDisplayName"/></p>
 						</div>
-						<div class="col-sm-4 col-xs-12">
-							<coupon:confirmation transactionId="${transactionId}" />
-						</div>
+						<div class="col-sm-4 col-xs-12"><coupon:confirmation transactionId="${transactionId}" /></div>
 						{{ if(typeof providerInfo !== 'undefined') { }}
 						<div class="fundDetails">
 							<div class="col-xs-12">
