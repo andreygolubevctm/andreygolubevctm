@@ -116,7 +116,7 @@ public class ApplicationGroupAdapter {
             return dependants.get()
                     .getDependant()
                     .stream()
-                    .filter(d -> d != null)
+                    .filter(d -> d != null && d.getLastname() != null)
                     .map(d -> createDependant(Optional.ofNullable(d)))
                     .collect(toList());
         } else {
@@ -130,7 +130,7 @@ public class ApplicationGroupAdapter {
                     dependant.map(com.ctm.web.health.model.form.Dependant::getTitle)
                             .map(Title::findByCode)
                             .orElse(null),
-                    dependant.map(com.ctm.web.health.model.form.Dependant::getFirstname)
+                    dependant.map(com.ctm.web.health.model.form.Dependant::getFirstName)
                             .map(FirstName::new)
                             .orElse(null),
                     dependant.map(com.ctm.web.health.model.form.Dependant::getLastname)

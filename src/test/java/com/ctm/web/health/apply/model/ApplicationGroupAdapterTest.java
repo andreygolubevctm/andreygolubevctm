@@ -137,6 +137,7 @@ public class ApplicationGroupAdapterTest {
     public void testCreateDependants1Dependant() throws Exception {
         final Dependants dependants = mock(Dependants.class);
         final Dependant dependant = mock(Dependant.class);
+        when(dependant.getLastname()).thenReturn("x");
         List<Dependant> dependantList = new ArrayList<>();
         when(dependants.getDependant()).thenReturn(dependantList);
         dependantList.add(dependant);
@@ -149,6 +150,7 @@ public class ApplicationGroupAdapterTest {
     public void testCreateDependants12Dependant() throws Exception {
         final Dependants dependants = mock(Dependants.class);
         final Dependant dependant = mock(Dependant.class);
+        when(dependant.getLastname()).thenReturn("x");
         List<Dependant> dependantList = new ArrayList<>();
         when(dependants.getDependant()).thenReturn(dependantList);
         dependantList.add(dependant);
@@ -179,7 +181,7 @@ public class ApplicationGroupAdapterTest {
         assertNotNull(ApplicationGroupAdapter.createDependant(Optional.of(dependant)));
         // 2 times - title and gender
         verify(dependant, times(2)).getTitle();
-        verify(dependant, times(1)).getFirstname();
+        verify(dependant, times(1)).getFirstName();
         verify(dependant, times(1)).getLastname();
         verify(dependant, times(1)).getDob();
         verify(dependant, times(1)).getSchool();

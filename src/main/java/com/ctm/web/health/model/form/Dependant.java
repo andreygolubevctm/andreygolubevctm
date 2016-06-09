@@ -4,7 +4,7 @@ public class Dependant {
 
     private String title;
 
-    private String firstname;
+    private String firstName;
 
     private String lastname;
 
@@ -54,12 +54,12 @@ public class Dependant {
         this.title = title;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastname() {
