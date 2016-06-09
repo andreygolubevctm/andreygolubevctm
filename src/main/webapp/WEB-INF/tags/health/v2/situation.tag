@@ -80,11 +80,11 @@
 
 				<sql:query var="result">
 					SELECT code, description FROM aggregator.general WHERE type = 'healthSitu' AND (status IS NULL OR status != 0)
-					<c:if test="${empty taxTimeSplitTest or  taxTimeSplitTest eq '1'}">
+					<c:if test="${not taxTimeSplitTest}">
 						and code != 'CHC'
 					</c:if>
 					<c:choose>
-						<c:when test="${taxTimeSplitTest eq 31}">
+						<c:when test="${taxTimeSplitTest eq true and data.health.currentJourney eq 31}">
 							ORDER BY FIELD(code,'CHC', 'LC','LBC','CSF','ATP')
 						</c:when>
 						<c:otherwise>
