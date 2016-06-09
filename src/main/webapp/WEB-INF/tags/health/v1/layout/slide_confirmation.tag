@@ -33,6 +33,7 @@
 
 				<form_v3:fieldset legend="" className="confirmation">
 					{{ var fundName = info.providerName ? info.providerName : info.fundName }}
+					{{ var personName = typeof firstName !== 'undefined' && typeof lastName !== 'undefined' ? "Well done <span>" + firstName + " " + lastName + "</span>,<br />": '' }}
 					<div class="row confirmation-complete">
 						<div class="col-sm-8 col-xs-12">
 							{{ if ( typeof pending !== "undefined" && pending ) { }}
@@ -42,7 +43,7 @@
 								<h1 class="success">Congratulations!</h1>
 							{{ } }}
 
-							<p>Well done <span>{{= firstName }} {{= lastName }}</span>,<br />
+							<p>{{= personName }}
 								Your Application has been submitted to <span>{{= fundName }}</span> for processing.</p>
 
 							<p>Your transaction number is <span>{{= transID }}</span>.</p>
@@ -52,6 +53,7 @@
 						<div class="col-sm-4 col-xs-12">
 							<coupon:confirmation transactionId="${transactionId}" />
 						</div>
+						{{ if(typeof providerInfo !== 'undefined') { }}
 						<div class="fundDetails">
 							<div class="col-xs-12">
 								<p>For any questions, contact {{= fundName }} via any of the methods below</p>
@@ -64,6 +66,7 @@
 								{{ if(!_.isEmpty(providerInfo.website)) { }}<p>{{= providerInfo.website }}</p>{{ } }}
 							</div>
 						</div>
+						{{ } }}
 					</div>
 
 					<simples:dialogue id="41" vertical="health" className="yellow" />
