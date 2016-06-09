@@ -407,22 +407,7 @@
                             product.warningAlert = result.providerContentText;
                             break;
                         case 'DDD':
-                            var d = new Date(),
-                                formattedDate = '';
-
-                            if ($.trim(result.providerContentText) !== '') {
-                                var dateSplit = result.providerContentText.split("/");
-                                var rearrangedDate = dateSplit[1]+"/"+dateSplit[0]+"/"+dateSplit[2];
-                                var newDate = new Date(rearrangedDate);
-                                formattedDate = meerkat.modules.dateUtils.format(newDate, "Do of MMMM, YYYY");
-
-                                product.dropDeadDateFormatted =  formattedDate;
-                                product.dropDeadDate =  new Date(rearrangedDate);
-                            } else {
-                                product.dropDeadDateFormatted = '31st March '+d.getFullYear();
-                                product.dropDeadDate =  new Date('31/3/'+d.getFullYear());
-                            }
-
+                            meerkat.modules.healthDropDeadDate.setDropDeadDate(result.providerContentText, product);
                             break;
                     }
                 }

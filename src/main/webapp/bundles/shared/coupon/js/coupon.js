@@ -8,6 +8,7 @@
 
 	var events = {
 		coupon: {
+			COUPON_LOADED : "COUPON_LOADED"
 		}
 	};
 
@@ -32,7 +33,7 @@
 			if (isAvailable === true) {
 				$couponIdField = $('.coupon-id-field'),
 				$couponCodeField = $('.coupon-code-field'),
-				$couponOptinField = $('.coupon-optin-field'),
+				$couponOptinField = $('.coupon-optin-field').find('input'),
 				$couponOptinGroup = $('.coupon-optin-group'),
 				$couponErrorContainer = $('.coupon-error-container'),
 				$couponSuccessContainer = $('.coupon-success-container');
@@ -50,15 +51,6 @@
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function() {
 			resetWhenChangeStep();
 		});
-
-        meerkat.messaging.subscribe(meerkatEvents.compare.RENDER_FINISHED, function() {
-            var $couponTileContainer = $('.featuresMode').find('.coupon-tile-container');
-            if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentTile')) {
-                $couponTileContainer.html(currentCoupon.contentTile).parent().addClass('tile-enabled');
-            } else {
-                $couponTileContainer.html('').parent().removeClass('tile-enabled');
-            }
-        });
 	}
 
 	function checkCouponsAvailability() {
@@ -114,6 +106,7 @@
 		.done(function onSuccess(json) {
 			setCurrentCoupon(json);
 			populateFields();
+			meerkat.messaging.publish(events.coupon.COUPON_LOADED);
 			if (typeof successCallBack === 'function') {
 				successCallBack();
 			}
@@ -161,11 +154,13 @@
 					hasAutoPoped = true;
 				});
 			}
+            $('body').addClass('couponShown');
 		} else {
             $('#contactForm').find('.quoteSnapshot').show();
             $('.callCentreHelp').show();
             $('#contactForm').find('.callCentreHelp').hide();
             $('.coupon-banner-container, .coupon-tile-container').html('');
+            $('body').removeClass('couponShown');
         }
 	}
 

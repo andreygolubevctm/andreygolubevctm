@@ -30,6 +30,8 @@ public class UploadService {
 				throw new RuntimeException("FATAL ERROR: Provider ID not found.");
 			}
 
+			update.append("USE ctm;\r\n\r\n");
+
 			update.append("-- Get Provider ID from Provider Code\r\n");
 			update.append("SET @provider_id = (SELECT providerId FROM ctm.provider_master WHERE providerCode = '"+providerCode+"');\r\n\r\n");
 

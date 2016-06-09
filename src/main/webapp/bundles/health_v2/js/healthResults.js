@@ -314,6 +314,8 @@
                 Results.pagination.setupNativeScroll();
                 // render snapshot
                 meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
+                // turn off increment tranId
+                Results.settings.incrementTransactionId = false;
             });
             var tEnd = new Date().getTime();
             var tFetchFinish = (tEnd - tStart);
@@ -547,6 +549,7 @@
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health2016').done(function () {
                 Results.updateAggregatorEnvironment();
+                Results.updateStaticBranch();
                 Results.get();
             });
         });
@@ -560,6 +563,7 @@
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health2016').done(function () {
                 Results.updateAggregatorEnvironment();
+                Results.updateStaticBranch();
                 Results.get();
             });
         });

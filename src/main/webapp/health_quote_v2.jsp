@@ -16,7 +16,7 @@
 
 <c:choose>
     <c:when test="${callCentre && journeyOverride eq true}">
-<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
+        <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
         <c:forEach items="${param}" var="currentParam">
             <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
         </c:forEach>
@@ -52,14 +52,19 @@
 
         <c:set var="isHealthV2" value="${true}" scope="request" />
 
+        <c:set var="isTaxTime"><content:get key="taxTime"/></c:set>
+        <c:set var="taxTimeClass">
+            <c:if test="${not empty isTaxTime and isTaxTime eq 'Y' and taxTimeSplitTest eq 31 or taxTimeSplitTest eq 30}">taxTime${taxTimeSplitTest}</c:if>
+        </c:set>
+
         <%-- HTML --%>
-        <layout_v1:journey_engine_page title="Health Quote">
+        <layout_v1:journey_engine_page title="Health Quote" body_class_name="${taxTimeClass}">
 
-	<jsp:attribute name="head">
-	</jsp:attribute>
+        <jsp:attribute name="head">
+        </jsp:attribute>
 
-	<jsp:attribute name="head_meta">
-	</jsp:attribute>
+        <jsp:attribute name="head_meta">
+        </jsp:attribute>
 
 	<jsp:attribute name="header">
 		<div class="navbar-collapse header-collapse-contact collapse">
@@ -88,15 +93,15 @@
         </div>
 	</jsp:attribute>
 
-    <jsp:attribute name="progress_bar">
-      <div class="progress-bar-row collapse navbar-collapse">
-          <div class="container">
-              <ul class="journeyProgressBar_v2"></ul>
+        <jsp:attribute name="progress_bar">
+          <div class="progress-bar-row collapse navbar-collapse">
+              <div class="container">
+                  <ul class="journeyProgressBar_v2"></ul>
+              </div>
           </div>
-      </div>
-    </jsp:attribute>
+        </jsp:attribute>
 
-	<jsp:attribute name="navbar">
+        <jsp:attribute name="navbar">
 
 		<ul class="nav navbar-nav" role="menu">
 
@@ -140,29 +145,29 @@
             <a href="javascript:;" class="btn btn-close-more-info btn-hollow">Back to results</a>
         </div>
 
-	</jsp:attribute>
-							
-	<jsp:attribute name="form_bottom">
-	</jsp:attribute>
-							
-	<jsp:attribute name="footer">
-		<health_v1:footer />
-	</jsp:attribute>
-							
-	<jsp:attribute name="vertical_settings">
-		<health_v1:settings />
-	</jsp:attribute>
+        </jsp:attribute>
 
-	<jsp:attribute name="body_end">
-		<jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
-		<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
-	</jsp:attribute>
+        <jsp:attribute name="form_bottom">
+        </jsp:attribute>
 
-	<jsp:attribute name="additional_meerkat_scripts">
-		<c:if test="${callCentre}">
-            <script src="${assetUrl}assets/js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-        </c:if>
-	</jsp:attribute>
+        <jsp:attribute name="footer">
+            <health_v1:footer />
+        </jsp:attribute>
+
+        <jsp:attribute name="vertical_settings">
+            <health_v1:settings />
+        </jsp:attribute>
+
+        <jsp:attribute name="body_end">
+            <jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
+            <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
+        </jsp:attribute>
+
+        <jsp:attribute name="additional_meerkat_scripts">
+            <c:if test="${callCentre}">
+                <script src="${assetUrl}assets/js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+            </c:if>
+        </jsp:attribute>
 
             <jsp:body>
                 <health_v1:product_title_search />
@@ -223,6 +228,7 @@
                 <health_v3:payment_frequency_template />
 
                 <field_v1:hidden xpath="environmentOverride" />
+                <field_v1:hidden xpath="staticOverride" />
                 <field_v1:hidden xpath="environmentValidatorOverride" />
                 <input type="hidden" name="transcheck" id="transcheck" value="1" />
             </jsp:body>

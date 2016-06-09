@@ -201,7 +201,7 @@
                 update: function() {
                     // Update benefits step coverType
                     coverType = coverType || meerkat.modules.health.getCoverType();
-                    $('#health_situation_coverType').find('input[value="' + coverType + '"]').trigger('click').end().trigger('change');
+                    $('#health_situation_coverType').find('input[value="' + coverType + '"]').prop("checked", true).trigger('change').end().trigger('change');
 
                     meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
                     // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
@@ -209,7 +209,6 @@
                         Results.unfilterBy('productId', "value", false);
                         Results.settings.incrementTransactionId = true;
                         meerkat.modules.healthResults.get();
-                        Results.settings.incrementTransactionId = false;
                     },100);
                 }
             }
@@ -229,6 +228,7 @@
     }
 
     function init() {
+        if(meerkat.site.pageAction === "confirmation") { return false; }
         meerkat.modules.filters.initFilters(settings, model);
         applyEventListeners();
         eventSubscriptions();
@@ -361,6 +361,14 @@
             var $providerListCheckboxes = $('.provider-list .checkbox'),
                 nthChild = Math.ceil($providerListCheckboxes.length / 2);
             $providerListCheckboxes.filter(':nth-child(' + nthChild + ')').css('display', 'inline-block');
+        });
+
+        meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateCoupon() {
+            _.defer(function(){
+                meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+                    meerkat.modules.coupon.renderCouponBanner();
+                });
+            });
         });
 
     }
