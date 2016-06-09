@@ -2,19 +2,6 @@
 	display:none;
 }
 
-.coupon-confirmation {
-	.coupon-msg {
-		padding-top: 10px;
-	}
-
-	margin-top: 0px;
-
-	a {
-		text-decoration: underline;
-		font-size: 14px;
-	}
-}
-
 #confirmation-compare-options {
 	margin-bottom: 0px;
 	.options-list {
@@ -104,6 +91,10 @@
 		.phoneNumber {
 			font-size: 30px;
 		}
+
+		p {
+			margin-bottom:10px;
+		}
 	}
 
 	.companyLogo {
@@ -123,24 +114,4 @@
 
 		margin-left: 15px;
 	}
-
-	@media(@sm-only) {
-		.health100eftpos {
-			background-size: 200px 125px;
-			width: 200px;
-			height: 125px;
-		}
-	}
-
-	@media(@xs-only) {
-		.coupon-confirmation {
-			text-align:center;
-		}
-
-		.health100eftpos {
-			width: 100%;
-			background-position: center;
-		}
-	}
-
 }

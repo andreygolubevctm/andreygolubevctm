@@ -37,7 +37,7 @@
 						<div class="row confirmation-complete">
 							<div class="col-sm-8 col-xs-12">
 								{{ if ( typeof pending !== "undefined" && pending ) { }}
-									<h2 class="pending">Your application is being processed.</h2>
+									<h1 class="pending">Your application is being processed.</h1>
 									<p>Thanks for comparing with <content:get key="brandDisplayName"/>. If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></strong>.
 								{{ } else if( whatsNext ) { }}
 									<h1 class="success">Congratulations!</h1>
