@@ -1,26 +1,117 @@
-/**********************************************
-	LESS PORTED FROM core/confirmation.less
-**********************************************/
-@success-color: #0db14b;
-@pending-color: #0db14b;
+.journeyProgressBar_v2 {
+	display:none;
+}
 
-#health_confirmation-warning {
-	ul {
-		padding-left: 40px;
-		list-style: disc;
-		li {
-			padding-bottom: 0px;
+#confirmation-compare-options {
+	margin-bottom: 0px;
+	.options-list {
+		margin-top: 40px;
+
+		> div {
+			min-height: 150px;
+			width: 155px;
+		}
+
+		a {
+			text-transform: none;
+			font-size: 14px;
+
+			.icon {
+				color: @theme-tertiary;
+				background-color: @icon-bg-color;
+
+				width: 76px;
+				height: 76px;
+				border-radius: 76px;
+				font-size: 38px;
+				line-height: 60px;
+
+				// filled in icon versions only for health for now
+				&.icon-travel:before {
+					content: "\e928";
+				}
+
+				&.icon-car:before {
+					content: "\e923";
+				}
+
+				&.icon-life:before {
+					content: "\e926";
+				}
+
+				&.icon-homeloan:before {
+					content: "\e927";
+				}
+
+				&.icon-home:before {
+					content: "\e925";
+				}
+
+				&.icon-fuel:before {
+					content: "\e920";
+				}
+
+				&.icon-ip:before {
+					content: "\e921";
+				}
+
+				&.icon-roadside:before {
+					content: "\e922";
+				}
+
+				&.icon-utilities:before {
+					content: "\e91f";
+				}
+			}
 		}
 	}
 }
-.confirmation {
-  .success {
-	color: @success-color;
-  }
-  .pending {
-	color: @pending-color;
-  }
-  .providerName {
-	color: @success-color;
-  }
+
+
+.confirmation-complete {
+	background-color: transparent;
+	font-size: 22px;
+
+	h1 {
+		font-size: 30px;
+		margin-bottom: 20px;
+	}
+
+	p {
+		margin-bottom: 20px;
+	}
+
+	span {
+		font-family: SourceSansProSemiBold;
+	}
+
+	.fundDetails {
+		font-size:16px;
+
+		.phoneNumber {
+			font-size: 30px;
+		}
+
+		p {
+			margin-bottom:10px;
+		}
+	}
+
+	.companyLogo {
+		max-height: none;
+		max-width: none;
+
+		.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames);
+		@media (@xs-only) {
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.4);
+		}
+		@media (@sm-only) {
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.9);
+		}
+		@media (@md-only) {
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.8);
+		}
+
+		margin-left: 15px;
+	}
 }
