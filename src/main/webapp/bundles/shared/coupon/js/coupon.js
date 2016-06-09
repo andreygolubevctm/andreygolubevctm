@@ -154,11 +154,13 @@
 					hasAutoPoped = true;
 				});
 			}
+            $('body').addClass('couponShown');
 		} else {
             $('#contactForm').find('.quoteSnapshot').show();
             $('.callCentreHelp').show();
             $('#contactForm').find('.callCentreHelp').hide();
             $('.coupon-banner-container, .coupon-tile-container').html('');
+            $('body').removeClass('couponShown');
         }
 	}
 
