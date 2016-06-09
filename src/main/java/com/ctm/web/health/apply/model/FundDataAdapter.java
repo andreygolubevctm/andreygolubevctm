@@ -60,7 +60,7 @@ public class FundDataAdapter {
                 .map(Hbf::getFlexiextras)
                 .map(f -> Arrays.asList(StringUtils.split(f, ",")))
                 .orElse(emptyList());
-        if (healthSitu != null && benefits != null && !benefits.isEmpty()) {
+        if (healthSitu != null || !benefits.isEmpty()) {
             return new Benefits(healthSitu, benefits);
         } else {
             return null;
