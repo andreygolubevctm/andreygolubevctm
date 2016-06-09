@@ -48,3 +48,17 @@
     font-size: 24px;
   }
 }
+
+// hard code this for now unless we change the design.
+@coupon-banner-height: 40px;
+@media (@xs-only) {
+  body.couponShown {
+    &[data-step="results"] {
+      padding-top: @navbar-height + @coupon-banner-height;
+
+      .xs-results-pagination {
+        top: @navbar-height + @page-offset-xs + @coupon-banner-height;
+      }
+    }
+  }
+}
