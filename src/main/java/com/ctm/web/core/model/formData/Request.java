@@ -19,4 +19,8 @@ public interface Request {
     void setRequestAt(LocalDateTime requestAt);
 
     LocalDateTime getRequestAt();
+
+    void setStaticOverride(String staticOverride);
+
+    String getStaticOverride();
 }

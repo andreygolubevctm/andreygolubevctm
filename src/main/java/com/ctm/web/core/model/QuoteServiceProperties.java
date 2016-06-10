@@ -4,6 +4,8 @@ public class QuoteServiceProperties {
 
     private String serviceUrl;
 
+    private String staticBranch;
+
     private String debugPath;
 
     private int timeout = 32000;
@@ -14,6 +16,14 @@ public class QuoteServiceProperties {
 
     public void setServiceUrl(String serviceUrl) {
         this.serviceUrl = serviceUrl;
+    }
+
+    public String getStaticBranch() {
+        return staticBranch;
+    }
+
+    public void setStaticBranch(String staticBranch) {
+        this.staticBranch = staticBranch;
     }
 
     public String getDebugPath() {
