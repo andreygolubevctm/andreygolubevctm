@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
+import static com.ctm.web.core.coupon.model.CouponOpenHoursCondition.CLOSED;
+import static com.ctm.web.core.coupon.model.CouponOpenHoursCondition.OPEN;
 
 @Component
 public class CouponService {
@@ -50,11 +52,13 @@ public class CouponService {
 	}
 
 	public Coupon getCouponByVdn(CouponRequest couponRequest) throws DaoException {
-		return couponDao.getCouponByVdn(couponRequest);
+		final CouponOpenHoursCondition openHoursCondition = getOpenHoursCondition(couponRequest.verticalId, DateUtils.toLocalDateTime(couponRequest.effectiveDate));
+		return couponDao.getCouponByVdn(couponRequest, Optional.of(openHoursCondition));
 	}
 
 	public Coupon validateCouponCode(CouponRequest couponRequest, Data data) throws DaoException {
-		return validateHardRules(couponDao.getCouponByCode(couponRequest), data);
+		final CouponOpenHoursCondition openHoursCondition = getOpenHoursCondition(couponRequest.verticalId, DateUtils.toLocalDateTime(couponRequest.effectiveDate));
+		return validateHardRules(couponDao.getCouponByCode(couponRequest, Optional.of(openHoursCondition)), data);
 	}
 
 	private Coupon validateHardRules(Coupon coupon, Data data) throws DaoException {
@@ -66,7 +70,8 @@ public class CouponService {
 
 	public Coupon filterCouponForUser(CouponRequest couponRequest, Data data) throws DaoException {
 		CouponRulesService couponRulesService = new CouponRulesService();
-		List<Coupon> coupons = couponDao.getAvailableCoupons(couponRequest);
+		List<Coupon> coupons = getActiveCoupons(couponRequest.styleCodeId, couponRequest.verticalId,
+				couponRequest.couponChannel, DateUtils.toLocalDateTime(couponRequest.effectiveDate));
 
 		if(!coupons.isEmpty()){
 			for(Coupon coupon : coupons){
@@ -121,12 +126,12 @@ public class CouponService {
 
 	/**
 	 * Get active coupons now, taking into account if the call centre is currently open or closed.
+	 * Result is cached for a short period.
 	 */
 	@Cacheable(cacheNames = {"couponGetActiveCouponsCache"})
 	public List<Coupon> getActiveCoupons(int styleCodeId, int verticalId, CouponChannel couponChannel) throws DaoException {
 		final LocalDateTime now = LocalDateTime.now();
-		final boolean callCentreOpen = openingHoursService.isCallCentreOpen(verticalId, now);
-		final CouponOpenHoursCondition openHoursCondition = callCentreOpen ? CouponOpenHoursCondition.OPEN : CouponOpenHoursCondition.CLOSED;
+		final CouponOpenHoursCondition openHoursCondition = getOpenHoursCondition(verticalId, now);
 		return couponDao.getAvailableCoupons(styleCodeId, verticalId, couponChannel, now, Optional.of(openHoursCondition));
 	}
 
@@ -134,8 +139,11 @@ public class CouponService {
 	 * Get active coupons at a specific datetime, taking into account if the call centre is currently open or closed.
 	 */
 	public List<Coupon> getActiveCoupons(int styleCodeId, int verticalId, CouponChannel couponChannel, LocalDateTime effectiveDate) throws DaoException {
-		final boolean callCentreOpen = openingHoursService.isCallCentreOpen(verticalId, effectiveDate);
-		final CouponOpenHoursCondition openHoursCondition = callCentreOpen ? CouponOpenHoursCondition.OPEN : CouponOpenHoursCondition.CLOSED;
+		final CouponOpenHoursCondition openHoursCondition = getOpenHoursCondition(verticalId, effectiveDate);
 		return couponDao.getAvailableCoupons(styleCodeId, verticalId, couponChannel, effectiveDate, Optional.of(openHoursCondition));
+	}
+
+	private CouponOpenHoursCondition getOpenHoursCondition(int verticalId, LocalDateTime now) throws DaoException {
+		return openingHoursService.isCallCentreOpen(verticalId, now) ? OPEN : CLOSED;
 	}
 }
