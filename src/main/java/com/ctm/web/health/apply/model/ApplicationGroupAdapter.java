@@ -30,7 +30,7 @@ public class ApplicationGroupAdapter {
                 createApplicant(
                         quote.map(HealthQuote::getApplication)
                                 .map(Application::getPrimary),
-                        quote.map(HealthQuote::getPreviousFund)
+                        quote.map(HealthQuote::getPreviousfund)
                                 .map(com.ctm.web.health.model.form.PreviousFund::getPrimary),
                         quote.map(HealthQuote::getPrimaryCAE),
                         quote.map(HealthQuote::getHealthCover)
@@ -41,7 +41,7 @@ public class ApplicationGroupAdapter {
                         ? createApplicant(
                         quote.map(HealthQuote::getApplication)
                                 .map(Application::getPartner),
-                        quote.map(HealthQuote::getPreviousFund)
+                        quote.map(HealthQuote::getPreviousfund)
                                 .map(com.ctm.web.health.model.form.PreviousFund::getPartner),
                         quote.map(HealthQuote::getPartnerCAE),
                         quote.map(HealthQuote::getHealthCover)
@@ -171,7 +171,7 @@ public class ApplicationGroupAdapter {
         if (previousFund.isPresent() && !HealthFund.NONE.equals(healthFund)) {
             return new com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund(
                     healthFund,
-                    previousFund.map(Fund::getMemberId)
+                    previousFund.map(Fund::getMemberID)
                             .map(MemberId::new)
                             .orElse(null),
                     ConfirmCover.Y,
