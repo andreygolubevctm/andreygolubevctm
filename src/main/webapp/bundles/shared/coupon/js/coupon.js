@@ -148,12 +148,6 @@
             $('.callCentreHelp').hide();
 			$('.coupon-banner-container').html(currentCoupon.contentBanner);
             $('.coupon-tile-container').html(currentCoupon.contentTile);
-			if (currentCoupon.showPopup === true && hasAutoPoped === false) {
-				_.defer(function(){
-					$('.coupon-tile').click();
-					hasAutoPoped = true;
-				});
-			}
             $('body').addClass('couponShown');
 		} else {
             $('#contactForm').find('.quoteSnapshot').show();
@@ -258,6 +252,13 @@
         }
 	}
 
+    function triggerPopup() {
+        if (isCurrentCouponValid() === true && currentCoupon.showPopup === true && hasAutoPoped === false) {
+            $('.coupon-tile:first').trigger('click');
+            hasAutoPoped = true;
+        }
+    }
+
 	function getCurrentCoupon() {
 		return currentCoupon;
 	}
@@ -272,7 +273,8 @@
 		loadCoupon: loadCoupon,
 		getCurrentCoupon: getCurrentCoupon,
 		validateCouponCode: validateCouponCode,
-		renderCouponBanner: renderCouponBanner
+		renderCouponBanner: renderCouponBanner,
+        triggerPopup: triggerPopup
 	});
 
 })(jQuery);
