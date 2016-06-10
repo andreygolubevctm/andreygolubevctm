@@ -111,7 +111,7 @@
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/addExtrasCover" />
-				<form_v3:row label="Do you wisth to add extras cover for services like Dental, Optical or Physio?" fieldXpath="${fieldXpath}" id="extrasCoverOptionContainer">
+				<form_v3:row label="Do you wish to add extras cover for services like Dental, Optical or Physio?" fieldXpath="${fieldXpath}" id="extrasCoverOptionContainer">
 					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="extras cover" required="true" />
 				</form_v3:row>
 
