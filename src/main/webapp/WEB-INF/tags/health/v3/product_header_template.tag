@@ -4,6 +4,9 @@
 
 <div class="result">
     <div class="resultInsert">
+        <div class="triangle">
+            <span class="text">Discount<br />Available</span>
+        </div>
         <div class="result-header-utility-bar">
             {{ if( info.restrictedFund === 'Y' ) { }}
             <div class="restrictedFund" data-title="This is a Restricted Fund" data-toggle="popover" data-adjust-y="5" data-trigger="mouseenter click" data-my="top center"
