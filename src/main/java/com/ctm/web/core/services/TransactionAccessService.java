@@ -11,11 +11,9 @@ import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-@Component
 public class TransactionAccessService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionAccessService.class);
