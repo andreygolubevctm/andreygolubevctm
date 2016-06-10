@@ -2614,5 +2614,4 @@
 			</div>
 		</div>
 	</core_v1:js_template>
-
 </div>
