@@ -11,7 +11,7 @@ import com.ctm.web.health.apply.model.request.payment.details.Frequency;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.providerInfo.ProviderInfo;
-import com.ctm.web.health.confirmation.model.ConfirmationData;
+import com.ctm.web.health.router.ConfirmationData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,7 +25,6 @@ import java.time.LocalDate;
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.utils.common.utils.LocalDateUtils.AUS_FORMAT;
 
-@Component
 public class HealthConfirmationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthConfirmationService.class);
@@ -33,7 +32,6 @@ public class HealthConfirmationService {
     private final ProviderContentService providerContentService;
     private final ConfirmationService confirmationService;
 
-    @Autowired
     public HealthConfirmationService(ProviderContentService providerContentService, ConfirmationService confirmationService) {
         this.providerContentService = providerContentService;
         this.confirmationService = confirmationService;
@@ -55,15 +53,15 @@ public class HealthConfirmationService {
             String paymentType =  data.getQuote().getPayment().getDetails().getType();
             ProviderInfo providerInfo = providerContentService.getProviderInfo(request, providerName);
             final ConfirmationData confirmationData = ConfirmationData.newConfirmationData()
-                            .about(about)
-                            .transID(data.getTransactionId().toString())
-                            .startDate(startDate)
-                            .frequency(frequency).firstName(firstName)
-                            .lastName(surname)
-                            .providerInfo(providerInfo)
-                            .whatsNext(next).product(productSelected)
-                            .policyNo(response.getProductId())
-                            .paymentType(paymentType)
+                    .about(about)
+                    .transID(data.getTransactionId().toString())
+                    .startDate(startDate)
+                    .frequency(frequency).firstName(firstName)
+                    .lastName(surname)
+                    .providerInfo(providerInfo)
+                    .whatsNext(next).product(productSelected)
+                    .policyNo(response.getProductId())
+                    .paymentType(paymentType)
                     .build();
 
             Confirmation confirmation = new Confirmation();

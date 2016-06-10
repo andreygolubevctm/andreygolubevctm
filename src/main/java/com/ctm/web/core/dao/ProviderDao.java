@@ -5,7 +5,6 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.provider.model.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
@@ -16,7 +15,6 @@ import java.util.Date;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-@Repository
 public class ProviderDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderDao.class);
 

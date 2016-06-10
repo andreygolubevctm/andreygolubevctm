@@ -14,14 +14,14 @@ import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 
-@Component
 public class HealthApplyService extends CommonQuoteService<HealthQuote, HealthApplicationRequest, HealthApplyResponse> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplyService.class);
 
     public HealthApplyService() {
         super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());

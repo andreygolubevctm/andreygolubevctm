@@ -1,11 +1,9 @@
 package com.ctm.web.core.confirmation.services;
 
 import com.ctm.web.core.dao.JoinDao;
-import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
 
-@Component
 public class JoinService {
 
 	private JoinDao joinDao;

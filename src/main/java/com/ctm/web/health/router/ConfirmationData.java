@@ -1,7 +1,6 @@
-package com.ctm.web.health.confirmation.model;
+package com.ctm.web.health.router;
 
 import com.ctm.web.health.model.providerInfo.ProviderInfo;
-import com.ctm.web.health.router.AUSLocalDateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
