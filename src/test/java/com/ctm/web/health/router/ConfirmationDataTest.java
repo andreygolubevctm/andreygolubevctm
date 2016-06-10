@@ -1,7 +1,6 @@
 package com.ctm.web.health.router;
 
 import com.ctm.web.core.utils.ObjectMapperUtil;
-import com.ctm.web.health.confirmation.model.ConfirmationData;
 import com.ctm.web.health.model.providerInfo.ProviderInfo;
 import org.apache.commons.io.IOUtils;
 import org.custommonkey.xmlunit.XMLUnit;
@@ -40,9 +39,9 @@ public class ConfirmationDataTest {
                         "minutes to read it carefully.</li> \t\t<li>Your first premium will be deducted on the date you have chosen today. " +
                         "Please note that if your nominated payment date is different to your nominated commencement date, " +
                         "your initial premium will include any arrears incurred between your commencement date and the deduction " +
-                                   "\"providerPhoneNumber\":\"1300 134 060\",\"extrasPDF\":\"health_brochure.jsp?pdf=/HIF/SpecialOptions.pdf\"," +
-                                "\"discountText\":\"HIF offer 4% discount for annual payment and 2% for half-yearly\"}"
-                        )
+                        "\"providerPhoneNumber\":\"1300 134 060\",\"extrasPDF\":\"health_brochure.jsp?pdf=/HIF/SpecialOptions.pdf\"," +
+                        "\"discountText\":\"HIF offer 4% discount for annual payment and 2% for half-yearly\"}"
+                )
                 .providerInfo(providerInfo)
                 .firstName(firstName)
                 .lastName(lastName)
@@ -56,7 +55,7 @@ public class ConfirmationDataTest {
         String expected = IOUtils.toString(getClass().getResourceAsStream("/router/confirmationData.xml"));
 
         XMLUnit.setIgnoreWhitespace(true);
-        assertTrue(XMLUnit.compareXML(expected, actual).identical());
+        assertTrue("expected: " + expected + "\nactual: " + actual , XMLUnit.compareXML(expected, actual).identical());
     }
 
 }
