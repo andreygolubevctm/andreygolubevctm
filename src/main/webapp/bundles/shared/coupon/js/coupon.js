@@ -22,7 +22,8 @@
 		hasAutoPoped = false,
 		isAvailable = false,
         isPreload = false,
-		isCouponValidAndSubmitted = false;
+		isCouponValidAndSubmitted = false,
+        subscriptionHandles = {};
 
 	function init() {
 
@@ -253,9 +254,24 @@
 	}
 
     function triggerPopup() {
-        if (isCurrentCouponValid() === true && currentCoupon.showPopup === true && hasAutoPoped === false) {
-            $('.coupon-tile:first').trigger('click');
-            hasAutoPoped = true;
+        // make sure we only subscribe one time
+        if (hasAutoPoped === false) {
+            if (isCurrentCouponValid() === true) {
+                if (currentCoupon.showPopup === true) {
+                    $('.coupon-tile:first').trigger('click');
+                    hasAutoPoped = true;
+                }
+            } else if (!subscriptionHandles['firstTimeAutoPopup']) {
+                // if no coupon available, waite for the event
+                subscriptionHandles['firstTimeAutoPopup'] = meerkat.messaging.subscribe(events.coupon.COUPON_LOADED, function autoPopupCoupon() {
+                    _.defer(function(){
+                        if (hasAutoPoped === false && isCurrentCouponValid() === true && currentCoupon.showPopup === true) {
+                            $('.coupon-tile:first').trigger('click');
+                            hasAutoPoped = true;
+                        }
+                    });
+                });
+            }
         }
     }
 
