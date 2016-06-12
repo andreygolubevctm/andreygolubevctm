@@ -29,11 +29,16 @@
                 renderSnapshot();
             });
         });
+        meerkat.messaging.subscribe(meerkat.modules.events.RESULTS_SORTED, function renderSnapshotOnJourneyReadySubscription() {
+            _.defer(function() {
+                renderSnapshot();
+            });
+        });
     }
 
     function renderSnapshot() {
-        render();
         meerkat.modules.contentPopulation.render('.quoteSnapshot');
+        _.defer(render);
     }
 
     function showHide(data, selector, property, forceHide) {
@@ -84,6 +89,8 @@
         // Toggle benefits rows.
         showHide(data,'.quoteSnapshot .hospital','hospital', noData);
         showHide(data,'.quoteSnapshot .extras','extras', noData);
+
+        $('.quoteSnapshot').toggle(!noData && meerkat.modules.journeyEngine.getCurrentStepIndex() < 3);
     }
 
     function getData() {

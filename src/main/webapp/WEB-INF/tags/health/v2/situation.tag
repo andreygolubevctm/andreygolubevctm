@@ -80,11 +80,11 @@
 
 				<sql:query var="result">
 					SELECT code, description FROM aggregator.general WHERE type = 'healthSitu' AND (status IS NULL OR status != 0)
-					<c:if test="${empty taxTimeSplitTest or  taxTimeSplitTest eq '1'}">
+					<c:if test="${not taxTimeSplitTest}">
 						and code != 'CHC'
 					</c:if>
 					<c:choose>
-						<c:when test="${taxTimeSplitTest eq 31}">
+						<c:when test="${taxTimeSplitTest eq true and data.health.currentJourney eq 31}">
 							ORDER BY FIELD(code,'CHC', 'LC','LBC','CSF','ATP')
 						</c:when>
 						<c:otherwise>
@@ -111,7 +111,7 @@
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/addExtrasCover" />
-				<form_v3:row label="Do you wisth to add extras cover for services like Dental, Optical or Physio?" fieldXpath="${fieldXpath}" id="extrasCoverOptionContainer">
+				<form_v3:row label="Do you wish to add extras cover for services like Dental, Optical or Physio?" fieldXpath="${fieldXpath}" id="extrasCoverOptionContainer">
 					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="extras cover" required="true" />
 				</form_v3:row>
 
