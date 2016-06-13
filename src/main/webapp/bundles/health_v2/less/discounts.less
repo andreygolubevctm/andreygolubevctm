@@ -4,22 +4,23 @@
   width: 0; height: 0;
   position:absolute;
 
+  @media(@xs) {
+    font-size:8px;
+    border-top: 60px solid #0B7632;
+    border-right: 60px solid transparent;
+  }
+
+  @media(@sm) {
+    border-top: 55px solid #0B7632;
+    border-right: 55px solid transparent;
+  }
+
   @media(@md) {
     font-size: 11px;
     border-top: 85px solid #0B7632;
     border-right: 85px solid transparent;
   }
 
-  @media(@md) {
-    border-top: 55px solid #0B7632;
-    border-right: 55px solid transparent;
-  }
-
-  @media(@xs) {
-    font-size:8px;
-    border-top: 60px solid #0B7632;
-    border-right: 60px solid transparent;
-  }
   font-family: 'SourceSansProSemiBold';
   text-align:center;
   text-transform: uppercase;
@@ -39,6 +40,13 @@
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
 
+    @media(@xs) {
+      height: 13px;
+      width: 13px;
+      line-height: 11px;
+      margin-top: -52px;
+    }
+
     @media(@md) {
       height: 17px;
       width: 17px;
@@ -46,12 +54,6 @@
       margin-top: -80px;
     }
 
-    @media(@xs) {
-      height: 13px;
-      width: 13px;
-      line-height: 11px;
-      margin-top: -54px;
-    }
   }
   span.text {
     position: absolute;
@@ -59,17 +61,18 @@
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
 
-    @media(@md) {
-      left: 5px;
-      margin-top: -6px;
-      margin-left: 2px;
-    }
-
     @media(@xs) {
       left:0px;
       margin-top: -3px;
       margin-left: 3px;
       line-height: 7px;
+    }
+
+    @media(@md) {
+      left: 5px;
+      margin-top: -6px;
+      margin-left: 2px;
+      line-height: 14px;
     }
   }
 }
