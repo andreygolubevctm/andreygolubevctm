@@ -39,6 +39,7 @@ var healthFunds_HBF = {
                             <div class="flexi-icon HLTicon-eye-therapy non-saver" data-value="EYT"><field_v2:help_icon helpId="294" /><br />Eye Therapy</div>
                             <div class="flexi-icon HLTicon-podiatry" data-value="POD"><field_v2:help_icon helpId="556" /><br />Podiatry</div>
                             <div class="flexi-icon HLTicon-physiotherapy" data-value="PHY"><field_v2:help_icon helpId="274" /><br />Physiotherapy</div>
+                            <div class="flexi-icon HLTicon-exercise-physiology non-saver" data-value="EXP"><field_v2:help_icon helpId="559" /><br />Exercise Physiology</div>
                             <div class="flexi-icon HLTicon-chiropractor" data-value="CHI"><field_v2:help_icon helpId="275" /><br />Chiropractic</div>
                             <div class="flexi-icon HLTicon-osteopathy"  data-value="OST"><field_v2:help_icon helpId="562" /><br />Osteopathy</div>
                             <div class="flexi-icon HLTicon-non-pbs-pharm" data-value="PHA"><field_v2:help_icon helpId="283" /><br />Pharmacy</div>
@@ -51,7 +52,6 @@ var healthFunds_HBF = {
                             <div class="flexi-icon HLTicon-hearing-aids non-saver" data-value="APP"><field_v2:help_icon helpId="558" /><br />Appliances</div>
                             <div class="flexi-icon HLTicon-lifestyle-products non-saver" data-value="HLP"><field_v2:help_icon helpId="293" /><br />Lifestyle Products</div>
                             <div class="flexi-icon HLTicon-ambulance" data-value="UAM"><field_v2:help_icon helpId="557" /><br />Urgent Ambulance</div>
-                            <div class="flexi-icon HLTicon-exercise-physiology" data-value="EXP"><field_v2:help_icon helpId="559" /><br />Exercise Physiology</div>
                         </div>
                         <field_v2:validatedHiddenField xpath="health/application/hbf/flexiextras" additionalAttributes=' data-rule-flexiExtras="true"' />
                     </form_v2:fieldset>
