@@ -379,6 +379,8 @@
 
             // Results are hidden in the CSS so we don't see the scaffolding after #benefits
             $(Results.settings.elements.page).show();
+
+            createDiscountPopOver();
         });
 
         $(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
@@ -781,6 +783,22 @@
         if (meerkat.site.isCallCentreUser) {
             createPremiumsPopOver();
         }
+    }
+
+    function createDiscountPopOver(){
+        meerkat.modules.popovers.create({
+            element: $this,
+            contentValue: text,
+            contentType: 'content',
+            showEvent: 'mouseenter',
+            position: {
+                my: 'top center',
+                at: 'bottom center'
+            },
+            style: {
+                classes: 'priceTooltips'
+            }
+        });
     }
 
     /*
