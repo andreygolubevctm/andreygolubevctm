@@ -30,13 +30,26 @@
     }
 
     function _applyEventListeners(){
-        nameFields.appFirstname.add(nameFields.appSurname).add(nameFields.medFirstname).add(nameFields.medSurname).on('change', function syncApplicationPageNames(e) {
-            if ($(e.target).attr('id') === 'health_application_primary_firstname' || $(e.target).attr('id') === 'health_application_primary_surname') {
-                nameFields.medFirstname.val(nameFields.appFirstname.val());
-                nameFields.medSurname.val(nameFields.appSurname.val());
-            } else {
-                nameFields.appFirstname.val(nameFields.medFirstname.val());
-                nameFields.appSurname.val(nameFields.medSurname.val());
+        /* ONLY need to forward update the firstname/surname to the medicare fields
+            if the medicare field is empty - otherwise ignore. Definitely no more
+            reverse updating the primary user from the medicare fields.
+         */
+        nameFields.appFirstname.add(nameFields.appSurname).on('change', function syncApplicationPageNames(e) {
+            var names = {
+                    medi : {
+                        first: nameFields.medFirstname.val(),
+                        last: nameFields.medSurname.val()
+                    },
+                    prim : {
+                        first: nameFields.appFirstname.val(),
+                        last: nameFields.appSurname.val()
+                    }
+            };
+            if(_.isEmpty(names.medi.first)) {
+                nameFields.medFirstname.val(names.prim.first);
+            }
+            if(_.isEmpty(names.medi.last)) {
+                nameFields.medSurname.val(names.prim.last);
             }
         });
     }
