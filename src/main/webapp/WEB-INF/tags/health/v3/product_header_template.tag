@@ -4,7 +4,7 @@
 
 <div class="result">
     <div class="resultInsert">
-        <div class="triangle">
+        <div class="discountPanel">
             <span class="text">Discount<br />Available</span>
         </div>
         <div class="result-header-utility-bar">

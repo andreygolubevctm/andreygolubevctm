@@ -1,42 +1,38 @@
-.resultInsert {
-  position: relative;
-  overflow: hidden;
+.discountPanel {
+  margin-top:1px;
+  margin-left: 1px;
+  width: 0; height: 0;
+  border-top: 85px solid #0B7632;
+  border-right: 85px solid transparent;
+  position:absolute;
+  font-size: 11px;
+  font-family: 'SourceSansProSemiBold';
+  text-align:center;
+  text-transform: uppercase;
 
-  .triangle {
-    margin-top:1px;
-    margin-left: 1px;
-    width: 0; height: 0;
-    border-top: 85px solid #0B7632;
-    border-right: 85px solid transparent;
-    &:before  {
-      position: absolute;
-      display: block;
-      height: 15px;
-      width: 15px;
-      line-height: 15px;
+  &:before  {
+    display: block;
+    height: 17px;
+    width: 17px;
+    line-height: 15px;
 
-      -moz-border-radius: 50%; /* or 50% */
-      border-radius: 50%; /* or 50% */
+    -moz-border-radius: 50%; /* or 50% */
+    border-radius: 50%; /* or 50% */
 
-      text-align: center;
-      color: #0B7632;
-      border: 1px solid #0B7632;
-      content:'?';
-      margin-top: -80px;
-      margin-left: 5px;
-      transform: rotate(-45deg);
-      background: white;
-      font-size: 11px;
-    }
-    span.text {
-      position: absolute;
-      top: 20px;
-      left: 5px;
-      transform: rotate(-45deg);
-      font-size: 11px; color: white;
-      text-transform: uppercase;
-      font-family: 'SourceSansProSemiBold';
-      text-align:center;
-    }
+    color: #0B7632;
+    border: 1px solid #0B7632;
+    content:'?';
+    margin-top: -80px;
+    margin-left: 5px;
+    background: white;
+    transform: rotate(-45deg);
+  }
+  span.text {
+    position: absolute;
+    left: 5px;
+    color: white;
+    transform: rotate(-45deg);
+    margin-top: -5px;
+    margin-left: 5px;
   }
 }
