@@ -18,43 +18,49 @@ var healthFunds_HBF = {
         healthFunds_HBF.productType = meerkat.modules.healthResults.getSelectedProduct().info.ProductType;
         if (healthFunds_HBF.productType === 'GeneralHealth' || healthFunds_HBF.productType === 'Combined') {
             <%-- Custom question: HBF flexi extras --%>
-            <c:set var="html">
-                <form_v2:fieldset id="hbf_flexi_extras" legend="" className="primary">
-                    <div class="col-sm-8 col-md-4 col-lg-3 hidden-xs no-padding"><img src="assets/graphics/logos/health/HBF.png" /></div>
-                    <div class="col-sm-7 col-md-8 col-lg-9 no-padding">
-                        <h2>HBF <span class="saver-flexi">Saver </span>Flexi Extras</h2>
-                        <p><strong>HBF <span class="saver-flexi">Saver </span>Flexi Extras</strong> allows you to chosse your extras cover for your needs, pick any <strong><span class="flexi-available">4</span> extras</strong> from the selection below to build the right cover for your needs.</p>
-                    </div>
-                    <div class="flexi-message">You have selected <span class="flexi-selected text-tertiary"></span> of your <span class="flexi-available text-tertiary">4</span> <span class="text-tertiary">available</span> extras cover inclusions, <strong class="text-warning"><span class="flexi-remaining"></span> more selections remaining</strong></div>
-                    <div class="flexi-message-complete hidden">You have selected all of your <span class="flexi-available">4</span> available extras cover inclusions.</div>
+            if ($('#hbf_flexi_extras').length > 0) {
+                $('#hbf_flexi_extras').show();
+            }else{
 
-                    <div class="flexi-extras-icons benefitsIcons">
-                        <div class="HLTicon-general-dental" data-value="GDL"><field_v2:help_icon helpId="269" /><br />General Dental</div>
-                        <div class="HLTicon-major-dental"  data-value="MDL"><field_v2:help_icon helpId="555" /><br />Major Dental</div>
-                        <div class="HLTicon-optical" data-value="OPT"><field_v2:help_icon helpId="273" /><br />Optical</div>
-                        <div class="HLTicon-eye-therapy non-saver" data-value="EYT"><field_v2:help_icon helpId="293" /><br />Eye Therapy</div>
-                        <div class="HLTicon-podiatry" data-value="POD"><field_v2:help_icon helpId="556" /><br />Podiatry</div>
-                        <div class="HLTicon-physiotherapy" data-value="PHY"><field_v2:help_icon helpId="274" /><br />Physiotherapy</div>
-                        <div class="HLTicon-chiropractor" data-value="CHI"><field_v2:help_icon helpId="275" /><br />Chiropractic</div>
-                        <div class="HLTicon-osteopathy"  data-value="OST"><field_v2:help_icon helpId="562" /><br />Osteopathy</div>
-                        <div class="HLTicon-non-pbs-pharm" data-value="PHA"><field_v2:help_icon helpId="283" /><br />Pharmacy</div>
-                        <div class="HLTicon-remedial-massage" data-value="REM"><field_v2:help_icon helpId="279" /><br />Remedial Massage</div>
-                        <div class="HLTicon-speech-therapy non-saver" data-value="SPT"><field_v2:help_icon helpId="297" /><br />Speech Therapy</div>
-                        <div class="HLTicon-occupational-therapy non-saver" data-value="OCT"><field_v2:help_icon helpId="296" /><br />Occupational Therapy</div>
-                        <div class="HLTicon-psychology non-saver" data-value="PSY"><field_v2:help_icon helpId="280" /><br />Psychology</div>
-                        <div class="HLTicon-naturopathy non-saver" data-value="NAT"><field_v2:help_icon helpId="278" /><br />Natural Therapies</div>
-                        <div class="HLTicon-dietetics non-saver" data-value="NTN"><field_v2:help_icon helpId="561" /><br />Nutritionist</div>
-                        <div class="HLTicon-hearing-aids non-saver" data-value="APP"><field_v2:help_icon helpId="558" /><br />Appliances</div>
-                        <div class="HLTicon-lifestyle-products non-saver" data-value="HLP"><field_v2:help_icon helpId="293" /><br />Lifestyle Products</div>
-                        <div class="HLTicon-ambulance" data-value="UAM"><field_v2:help_icon helpId="557" /><br />Urgent Ambulance</div>
-                        <div class="HLTicon-exercise-physiology" data-value="EXP"><field_v2:help_icon helpId="559" /><br />Exercise Physiology</div>
-                    </div>
-                    <field_v2:validatedHiddenField xpath="health/application/hbf/flexiextras" additionalAttributes=' data-rule-flexiExtras="true"' />
-                </form_v2:fieldset>
-            </c:set>
-            <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
+                <c:set var="html">
+                    <form_v2:fieldset id="hbf_flexi_extras" legend="" className="primary">
+                        <div class="col-sm-8 col-md-4 col-lg-3 hidden-xs no-padding"><img src="assets/graphics/logos/health/HBF.png" /></div>
+                        <div class="col-sm-7 col-md-8 col-lg-9 no-padding">
+                            <h2>HBF <span class="saver-flexi">Saver </span>Flexi Extras</h2>
+                            <p><strong>HBF <span class="saver-flexi">Saver </span>Flexi Extras</strong> allows you to chosse your extras cover for your needs, pick any <strong><span class="flexi-available">4</span> extras</strong> from the selection below to build the right cover for your needs.</p>
+                        </div>
+                        <div class="flexi-message">You have selected <span class="flexi-selected text-tertiary"></span> of your <span class="flexi-available text-tertiary">4</span> <span class="text-tertiary">available</span> extras cover inclusions, <strong class="text-warning"><span class="flexi-remaining"></span> more selections remaining</strong></div>
+                        <div class="flexi-message-complete hidden">You have selected all of your <span class="flexi-available">4</span> available extras cover inclusions.</div>
 
-            $('#health_application').prepend('<c:out value="${html}" escapeXml="false" />');
+                        <div class="flexi-extras-icons benefitsIcons">
+                            <div class="flexi-icon HLTicon-general-dental" data-value="GDL"><field_v2:help_icon helpId="269" /><br />General Dental</div>
+                            <div class="flexi-icon HLTicon-major-dental"  data-value="MDL"><field_v2:help_icon helpId="555" /><br />Major Dental</div>
+                            <div class="flexi-icon HLTicon-optical" data-value="OPT"><field_v2:help_icon helpId="273" /><br />Optical</div>
+                            <div class="flexi-icon HLTicon-eye-therapy non-saver" data-value="EYT"><field_v2:help_icon helpId="293" /><br />Eye Therapy</div>
+                            <div class="flexi-icon HLTicon-podiatry" data-value="POD"><field_v2:help_icon helpId="556" /><br />Podiatry</div>
+                            <div class="flexi-icon HLTicon-physiotherapy" data-value="PHY"><field_v2:help_icon helpId="274" /><br />Physiotherapy</div>
+                            <div class="flexi-icon HLTicon-chiropractor" data-value="CHI"><field_v2:help_icon helpId="275" /><br />Chiropractic</div>
+                            <div class="flexi-icon HLTicon-osteopathy"  data-value="OST"><field_v2:help_icon helpId="562" /><br />Osteopathy</div>
+                            <div class="flexi-icon HLTicon-non-pbs-pharm" data-value="PHA"><field_v2:help_icon helpId="283" /><br />Pharmacy</div>
+                            <div class="flexi-icon HLTicon-remedial-massage" data-value="REM"><field_v2:help_icon helpId="279" /><br />Remedial Massage</div>
+                            <div class="flexi-icon HLTicon-speech-therapy non-saver" data-value="SPT"><field_v2:help_icon helpId="297" /><br />Speech Therapy</div>
+                            <div class="flexi-icon HLTicon-occupational-therapy non-saver" data-value="OCT"><field_v2:help_icon helpId="296" /><br />Occupational Therapy</div>
+                            <div class="flexi-icon HLTicon-psychology non-saver" data-value="PSY"><field_v2:help_icon helpId="280" /><br />Psychology</div>
+                            <div class="flexi-icon HLTicon-naturopathy non-saver" data-value="NAT"><field_v2:help_icon helpId="278" /><br />Natural Therapies</div>
+                            <div class="flexi-icon HLTicon-dietetics non-saver" data-value="NTN"><field_v2:help_icon helpId="561" /><br />Nutritionist</div>
+                            <div class="flexi-icon HLTicon-hearing-aids non-saver" data-value="APP"><field_v2:help_icon helpId="558" /><br />Appliances</div>
+                            <div class="flexi-icon HLTicon-lifestyle-products non-saver" data-value="HLP"><field_v2:help_icon helpId="293" /><br />Lifestyle Products</div>
+                            <div class="flexi-icon HLTicon-ambulance" data-value="UAM"><field_v2:help_icon helpId="557" /><br />Urgent Ambulance</div>
+                            <div class="flexi-icon HLTicon-exercise-physiology" data-value="EXP"><field_v2:help_icon helpId="559" /><br />Exercise Physiology</div>
+                        </div>
+                        <field_v2:validatedHiddenField xpath="health/application/hbf/flexiextras" additionalAttributes=' data-rule-flexiExtras="true"' />
+                    </form_v2:fieldset>
+                </c:set>
+                <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
+
+                $('#health_application').prepend('<c:out value="${html}" escapeXml="false" />');
+
+            }
 
             var $hbf_flexi_extras = $('#hbf_flexi_extras'),
                     $flexiExtrasHidden = $('#health_application_hbf_flexiextras'),
@@ -64,15 +70,15 @@ var healthFunds_HBF = {
                 $hbf_flexi_extras.find('.non-saver').hide();
                 $hbf_flexi_extras.find('.saver-flexi').show();
                 $hbf_flexi_extras.find('.flexi-available').text('4');
-                $hbf_flexi_extras.find('.HLTicon-major-dental').find('.help-icon').attr('data-content', 'helpid:555');
+                $hbf_flexi_extras.find('.HLTicon-major-dental').find('.help-icon').removeAttr('data-hasqtip aria-describedby').attr('data-content', 'helpid:555');
             } else {
                 $hbf_flexi_extras.find('.non-saver').show();
                 $hbf_flexi_extras.find('.saver-flexi').hide();
                 $hbf_flexi_extras.find('.flexi-available').text('10');
-                $hbf_flexi_extras.find('.HLTicon-major-dental').find('.help-icon').attr('data-content', 'helpid:560');
+                $hbf_flexi_extras.find('.HLTicon-major-dental').find('.help-icon').removeAttr('data-hasqtip aria-describedby').attr('data-content', 'helpid:560');
             }
 
-            $hbf_flexi_extras.find('.flexi-extras-icons a').on('click.HBF', function onFlexiExtraClick() {
+            $hbf_flexi_extras.find('.flexi-extras-icons .flexi-icon').on('click.HBF', function onFlexiExtraClick() {
                 var $this = $(this);
                 if ($this.hasClass('disabled')) {return;}
                 toggleFlexiExtra($this.data('value'), !$this.hasClass('active'))
@@ -82,7 +88,7 @@ var healthFunds_HBF = {
             updateFromHiddenField();
 
             function toggleFlexiExtra(value, state){
-                $hbf_flexi_extras.find('.flexi-extras-icons a').filter(function filterByValue() {
+                $hbf_flexi_extras.find('.flexi-extras-icons .flexi-icon').filter(function filterByValue() {
                     return $(this).data('value')=== value;
                 }).toggleClass('active', state);
 
@@ -90,7 +96,7 @@ var healthFunds_HBF = {
             }
 
             function updateHiddenField() {
-                var selectedExtrasArray = $hbf_flexi_extras.find('.flexi-extras-icons a.active').map(function() {
+                var selectedExtrasArray = $hbf_flexi_extras.find('.flexi-extras-icons .flexi-icon.active').map(function() {
                             return $(this).data('value');
                         }).get(),
                         selectedCount = selectedExtrasArray.length,
@@ -100,20 +106,20 @@ var healthFunds_HBF = {
                 $flexiExtrasHidden.val(selectedExtrasArray.join());
 
                 if (remainingCount > 0) {
-                    $hbf_flexi_extras.find('.flexi-extras-icons a.disabled').removeClass('disabled');
+                    $hbf_flexi_extras.find('.flexi-extras-icons .flexi-icon.disabled').removeClass('disabled');
                     $hbf_flexi_extras.find('.flexi-message-complete').addClass('hidden');
                     $hbf_flexi_extras.find('.flexi-message').removeClass('hidden');
                     $hbf_flexi_extras.find('.flexi-selected').text(selectedCount);
                     $hbf_flexi_extras.find('.flexi-remaining').text(remainingCount);
                 } else if (remainingCount === 0){
-                    $hbf_flexi_extras.find('.flexi-extras-icons a:not(.active)').addClass('disabled');
+                    $hbf_flexi_extras.find('.flexi-extras-icons .flexi-icon:not(.active)').addClass('disabled');
                     $hbf_flexi_extras.find('.flexi-message-complete').removeClass('hidden');
                     $hbf_flexi_extras.find('.flexi-message').addClass('hidden');
                     $flexiExtrasHidden.valid();
                 } else {
                     <%-- remainingCount < 0, reset, only happens when user selected Flexi extra then go back selects Saver --%>
-                    $hbf_flexi_extras.find('.flexi-extras-icons a.active').removeClass('active');
-                    $hbf_flexi_extras.find('.flexi-extras-icons a.disabled').removeClass('disabled');
+                    $hbf_flexi_extras.find('.flexi-extras-icons .flexi-icon.active').removeClass('active');
+                    $hbf_flexi_extras.find('.flexi-extras-icons .flexi-icon.disabled').removeClass('disabled');
                     $hbf_flexi_extras.find('.flexi-message-complete').addClass('hidden');
                     $hbf_flexi_extras.find('.flexi-message').removeClass('hidden');
                     $hbf_flexi_extras.find('.flexi-selected').text(0);
@@ -127,14 +133,14 @@ var healthFunds_HBF = {
             function updateFromHiddenField() {
                 var values = $flexiExtrasHidden.val().split(',');
 
-                $hbf_flexi_extras.find('.flexi-extras-icons a').each(function() {
+                $hbf_flexi_extras.find('.flexi-extras-icons .flexi-icon').each(function() {
                     var value = $(this).data('value');
                     return toggleFlexiExtra(value, $.inArray( value, values ) > -1);
                 });
             }
 
             $.validator.addMethod('flexiExtras', function() {
-                var isValid = $hbf_flexi_extras.find('.flexi-extras-icons a.active').length - $hbf_flexi_extras.find('.flexi-available:first').text() === 0;
+                var isValid = $hbf_flexi_extras.find('.flexi-extras-icons .flexi-icon.active').length - $hbf_flexi_extras.find('.flexi-available:first').text() === 0;
                 $hbf_flexi_extras.toggleClass('has-error', !isValid);
                 return isValid;
             });
@@ -215,8 +221,11 @@ var healthFunds_HBF = {
         }
     },
     unset: function(){
+        var $hbf_flexi_extras = $('#hbf_flexi_extras');
+
         <%-- Hide Fund specific questions --%>
-        $('#hbf_flexi_extras').remove();
+        $hbf_flexi_extras.find('.flexi-extras-icons .flexi-icon').off('click.HBF');
+        $hbf_flexi_extras.hide();
 
         <%-- How to send information --%>
         healthApplicationDetails.hideHowToSendInfo();
