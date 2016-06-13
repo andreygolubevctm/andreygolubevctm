@@ -2,19 +2,30 @@
   margin-top:1px;
   margin-left: 1px;
   width: 0; height: 0;
-  border-top: 85px solid #0B7632;
-  border-right: 85px solid transparent;
   position:absolute;
-  font-size: 11px;
+
+  @media(@md) {
+    font-size: 11px;
+    border-top: 85px solid #0B7632;
+    border-right: 85px solid transparent;
+  }
+
+  @media(@md) {
+    border-top: 55px solid #0B7632;
+    border-right: 55px solid transparent;
+  }
+
+  @media(@xs) {
+    font-size:8px;
+    border-top: 60px solid #0B7632;
+    border-right: 60px solid transparent;
+  }
   font-family: 'SourceSansProSemiBold';
   text-align:center;
   text-transform: uppercase;
 
   &:before  {
     display: block;
-    height: 17px;
-    width: 17px;
-    line-height: 15px;
 
     -moz-border-radius: 50%; /* or 50% */
     border-radius: 50%; /* or 50% */
@@ -22,17 +33,43 @@
     color: #0B7632;
     border: 1px solid #0B7632;
     content:'?';
-    margin-top: -80px;
+
     margin-left: 5px;
     background: white;
     transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+
+    @media(@md) {
+      height: 17px;
+      width: 17px;
+      line-height: 15px;
+      margin-top: -80px;
+    }
+
+    @media(@xs) {
+      height: 13px;
+      width: 13px;
+      line-height: 11px;
+      margin-top: -54px;
+    }
   }
   span.text {
     position: absolute;
-    left: 5px;
     color: white;
     transform: rotate(-45deg);
-    margin-top: -5px;
-    margin-left: 5px;
+    -webkit-transform: rotate(-45deg);
+
+    @media(@md) {
+      left: 5px;
+      margin-top: -6px;
+      margin-left: 2px;
+    }
+
+    @media(@xs) {
+      left:0px;
+      margin-top: -3px;
+      margin-left: 3px;
+      line-height: 7px;
+    }
   }
 }
