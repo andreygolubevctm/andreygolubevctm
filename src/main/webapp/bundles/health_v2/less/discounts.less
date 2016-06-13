@@ -6,18 +6,18 @@
 
   @media(@xs) {
     font-size:8px;
-    border-top: 60px solid #0B7632;
+    border-top: 60px solid @discount-triangle-color;
     border-right: 60px solid transparent;
   }
 
   @media(@sm) {
-    border-top: 55px solid #0B7632;
+    border-top: 55px solid @discount-triangle-color;
     border-right: 55px solid transparent;
   }
 
   @media(@md) {
     font-size: 11px;
-    border-top: 85px solid #0B7632;
+    border-top: 85px solid @discount-triangle-color;
     border-right: 85px solid transparent;
   }
 
@@ -31,12 +31,12 @@
     -moz-border-radius: 50%; /* or 50% */
     border-radius: 50%; /* or 50% */
 
-    color: #0B7632;
-    border: 1px solid #0B7632;
+    color: @discount-triangle-color;
+    border: 1px solid @discount-triangle-color;
     content:'?';
 
     margin-left: 5px;
-    background: white;
+    background: @discount-text-color;
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
 
@@ -57,7 +57,7 @@
   }
   span.text {
     position: absolute;
-    color: white;
+    color: @discount-text-color;
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
 
