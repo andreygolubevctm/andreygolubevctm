@@ -64,7 +64,7 @@ public class ReferralTracking {
 				if(valid ){
 					LOGGER.info("Content is valid. {},{}", kv("key", key), kv("value", value));
 				} else {
-					LOGGER.warn("Content is invalid param - Aborting. {},{}", kv("key", key), kv("value", value));
+					LOGGER.warn("Referral Tracking code is not registered in content control table. {},{}", kv("key", key), kv("value", value));
 					value = "";
 				}
 			}

@@ -54,7 +54,7 @@
 
         <c:set var="isTaxTime"><content:get key="taxTime"/></c:set>
         <c:set var="taxTimeClass">
-            <c:if test="${not empty isTaxTime and isTaxTime eq 'Y' and taxTimeSplitTest eq 31 or taxTimeSplitTest eq 30}">taxTime${taxTimeSplitTest}</c:if>
+            <c:if test="${taxTimeSplitTest eq true and data.health.currentJourney eq 31 or data.health.currentJourney eq 30}">taxTime${taxTimeSplitTest}</c:if>
         </c:set>
 
         <%-- HTML --%>
@@ -228,6 +228,7 @@
                 <health_v3:payment_frequency_template />
 
                 <field_v1:hidden xpath="environmentOverride" />
+                <field_v1:hidden xpath="staticOverride" />
                 <field_v1:hidden xpath="environmentValidatorOverride" />
                 <input type="hidden" name="transcheck" id="transcheck" value="1" />
             </jsp:body>

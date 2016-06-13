@@ -8,6 +8,8 @@ public abstract class RequestImpl implements Request {
 
     private String environmentOverride;
 
+    private String staticOverride;
+
     private Long transactionId;
 
     private LocalDateTime requestAt;
@@ -34,6 +36,14 @@ public abstract class RequestImpl implements Request {
 
     public void setEnvironmentOverride(String environmentOverride) {
         this.environmentOverride = environmentOverride;
+    }
+
+    public String getStaticOverride() {
+        return staticOverride;
+    }
+
+    public void setStaticOverride(String staticOverride) {
+        this.staticOverride = staticOverride;
     }
 
     public LocalDateTime getRequestAt() {
