@@ -36,7 +36,7 @@ var healthFunds_HBF = {
                             <div class="flexi-icon HLTicon-general-dental" data-value="GDL"><field_v2:help_icon helpId="269" /><br />General Dental</div>
                             <div class="flexi-icon HLTicon-major-dental"  data-value="MDL"><field_v2:help_icon helpId="555" /><br />Major Dental</div>
                             <div class="flexi-icon HLTicon-optical" data-value="OPT"><field_v2:help_icon helpId="273" /><br />Optical</div>
-                            <div class="flexi-icon HLTicon-eye-therapy non-saver" data-value="EYT"><field_v2:help_icon helpId="293" /><br />Eye Therapy</div>
+                            <div class="flexi-icon HLTicon-eye-therapy non-saver" data-value="EYT"><field_v2:help_icon helpId="294" /><br />Eye Therapy</div>
                             <div class="flexi-icon HLTicon-podiatry" data-value="POD"><field_v2:help_icon helpId="556" /><br />Podiatry</div>
                             <div class="flexi-icon HLTicon-physiotherapy" data-value="PHY"><field_v2:help_icon helpId="274" /><br />Physiotherapy</div>
                             <div class="flexi-icon HLTicon-chiropractor" data-value="CHI"><field_v2:help_icon helpId="275" /><br />Chiropractic</div>
