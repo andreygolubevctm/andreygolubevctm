@@ -30,7 +30,7 @@
   }
   .flexi-extras-icons {
     overflow: hidden;
-    a {
+    > div {
       text-align: center;
       line-height: 1.1;
 
@@ -69,16 +69,16 @@
     }
 
     @media (@xs) {
-      .roundIconSize(50px, @font-size-base, 0, 12, a);
+      .roundIconSize(50px, @font-size-base, 0, 28, div);
     }
     @media (@sm) {
-      .roundIconSize(40px, @font-size-small, 1, 12, a);
+      .roundIconSize(40px, @font-size-small, 1, 28, div);
     }
     @media (@md) {
-      .roundIconSize(55px, @font-size-base, 0, 12, a);
+      .roundIconSize(55px, @font-size-base, 0, 28, div);
     }
     @media (@lg) {
-      .roundIconSize(60px, @font-size-base, 7, 12, a);
+      .roundIconSize(60px, @font-size-base, 7, 28, div);
     }
   }
 }
