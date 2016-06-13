@@ -460,6 +460,7 @@
 
             var hashValue = event.element.attr('data-dialog-hash-id');
             var hashId = null;
+            var closeOnHashChange = event.element.attr('data-close-on-hash-change') === 'false' ? false : true;
             if (hashValue !== '') hashId = hashValue;
 
             if (event.contentType === 'url') {
@@ -487,7 +488,7 @@
 
             var instanceSettings = $.extend({
                     hashId: hashId,
-                    closeOnHashChange: true,
+                    closeOnHashChange: closeOnHashChange,
                     className: event.element.attr('data-class')
                 },
                 dialogInfoObject

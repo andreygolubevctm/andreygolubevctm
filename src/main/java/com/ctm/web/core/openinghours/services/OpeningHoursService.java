@@ -1,15 +1,16 @@
 package com.ctm.web.core.openinghours.services;
 
-import com.ctm.web.core.openinghours.dao.OpeningHoursDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.openinghours.dao.OpeningHoursDao;
 import com.ctm.web.core.openinghours.model.OpeningHours;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -50,5 +51,9 @@ public class OpeningHoursService {
         int verticalId = pageSettings.getVertical().getId();
         Date serverDate = ApplicationService.getApplicationDate(request);
         return openingHoursDao.getOpeningHoursForDisplay(dayType, serverDate,verticalId);
+    }
+
+    public boolean isCallCentreOpen(final int verticalId, final LocalDateTime effectiveDate) throws DaoException {
+        return openingHoursDao.isCallCentreOpen(verticalId, effectiveDate);
     }
 }
