@@ -298,7 +298,7 @@
         , <!--  put a semi colon or comma here if last one. -->
         <!--  also report on the nubmer of inserts per product id -->
         <% } else { %>
-        ,
+        ;
         <% } %>
 
         <br />

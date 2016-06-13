@@ -55,7 +55,7 @@ public class ResponseAdapter {
                     result.setServiceName("PHIO");
                     result.setProductId(quote.getProductId());
 
-                    result.setPromo(createPromo(quote.getPromotion()));
+                    result.setPromo(createPromo(quote.getPromotion(),request.getStaticOverride()));
                     result.setCustom(validateNode(quote.getCustom()));
 
                     if (quote.getPremium() != null) {
@@ -137,13 +137,13 @@ public class ResponseAdapter {
         return new TextNode("");
     }
 
-    private static Promo createPromo(Promotion quotePromotion) {
+    private static Promo createPromo(Promotion quotePromotion, String staticBranch) {
         Promo promo = new Promo();
         promo.setPromoText(createPromoText(quotePromotion.getSpecialOffer()));
         promo.setProviderPhoneNumber(quotePromotion.getProviderPhoneNumber());
         promo.setDiscountText(StringUtils.trimToEmpty(quotePromotion.getDiscountDescription()));
-        promo.setExtrasPDF(HEALTH_BROCHURE_URL + quotePromotion.getExtrasPDF());
-        promo.setHospitalPDF(HEALTH_BROCHURE_URL + quotePromotion.getHospitalPDF());
+        promo.setExtrasPDF(HEALTH_BROCHURE_URL + quotePromotion.getExtrasPDF() + (staticBranch != null ? ("&staticBranch=" + staticBranch) : ""));
+        promo.setHospitalPDF(HEALTH_BROCHURE_URL + quotePromotion.getHospitalPDF() + (staticBranch != null ? ("&staticBranch=" + staticBranch) : ""));
         return promo;
     }
 

@@ -5,6 +5,7 @@
 <%@ attribute name="id" required="false" rtexprvalue="true" description="id of the fieldset" %>
 <%@ attribute name="heading" required="false" rtexprvalue="true" description="Heading for the popup" %>
 <%@ attribute name="copy" required="false" rtexprvalue="true" description="Extra copy if required" %>
+<%@ attribute name="ignore" required="false" rtexprvalue="true" description="Verticals to ignore" %>
 
 <c:set var="fieldSetID">
 	<c:choose>
@@ -32,25 +33,34 @@
 	</c:if>
 	<div class="options-list clearfix verticalButtons">
 	<c:forEach items="${brand.getVerticals()}" var="vertical" varStatus="loop">
-		<c:set var="verticalSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), fn:toUpperCase(vertical.getCode()))}" scope="page"  />
+		<c:set var="displayVertical">
+			<c:choose>
+				<c:when test="${not empty ignore and fn:contains(ignore, fn:toLowerCase(vertical.getCode()))}">${false}</c:when>
+				<c:otherwise>${true}</c:otherwise>
+			</c:choose>
+		</c:set>
 
-		<c:if test="${verticalSettings.getSetting('displayOption') eq 'Y' and currentVertical ne fn:toLowerCase(vertical.getCode())}">
+		<c:if test="${displayVertical eq true}">
+			<c:set var="verticalSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), fn:toUpperCase(vertical.getCode()))}" scope="page"  />
 
-			<c:set var="titleParts" value="${fn:split(vertical.getName(), ' ')}" />
-			<c:set var="title2" value="${titleParts[1]}" />
-			<c:set var="title3" value="${titleParts[2]}" />
-			<c:if test="${empty title2 }">
-				<c:set var="title2" value="&nbsp;" />
+			<c:if test="${verticalSettings.getSetting('displayOption') eq 'Y' and currentVertical ne fn:toLowerCase(vertical.getCode())}">
+
+				<c:set var="titleParts" value="${fn:split(vertical.getName(), ' ')}" />
+				<c:set var="title2" value="${titleParts[1]}" />
+				<c:set var="title3" value="${titleParts[2]}" />
+				<c:if test="${empty title2 }">
+					<c:set var="title2" value="&nbsp;" />
+				</c:if>
+				<c:if test="${not empty title2 and not empty title3 }">
+					<c:set var="title2" value="${title2} ${title3}" />
+				</c:if>
+				<div class="col-lg-3 col-sm-4 col-xs-6">
+					<a href="${verticalSettings.getSetting('exitUrl')}"
+						title="${vertical.getName()}">
+						<div class="icon icon-${fn:toLowerCase(vertical.getCode())}"></div>${titleParts[0]}<span>&nbsp;${title2}</span>
+					</a>
+				</div>
 			</c:if>
-			<c:if test="${not empty title2 and not empty title3 }">
-				<c:set var="title2" value="${title2} ${title3}" />
-			</c:if>
-			<div class="col-lg-3 col-sm-4 col-xs-6">
-				<a href="${verticalSettings.getSetting('exitUrl')}"
-					title="${vertical.getName()}">
-					<div class="icon icon-${fn:toLowerCase(vertical.getCode())}"></div>${titleParts[0]}<span>&nbsp;${title2}</span>
-				</a>
-			</div>
 		</c:if>
 	</c:forEach>
 	</div>
