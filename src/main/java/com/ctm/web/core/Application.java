@@ -19,7 +19,7 @@ import javax.servlet.ServletException;
 @ComponentScan({"com.ctm.web.core.connectivity", "com.ctm.web.energy", "com.ctm.web.simples",
         "com.ctm.commonlogging", "com.ctm.web.core", "com.ctm.httpclient",
         "com.ctm.web.car", "com.ctm.web.homecontents",
-        "com.ctm.web.travel", "com.ctm.web.life", "com.ctm.web.health"})
+        "com.ctm.web.travel", "com.ctm.web.life", "com.ctm.web.health.router"})
 @EnableAutoConfiguration(exclude = RabbitAutoConfiguration.class)
 @Configuration
 @EnableAsync

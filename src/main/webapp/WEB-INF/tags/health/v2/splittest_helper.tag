@@ -65,4 +65,4 @@
 <%-- End HLT-2931 --%>
 
 <%-- HLT-3273 --%>
-<c:set var="taxTimeSplitTest" value="${data.health.currentJourney}" scope="request" />
+<c:set var="taxTimeSplitTest" value="${data.health.currentJourney eq 30 or data.health.currentJourney eq 31}" scope="request" />

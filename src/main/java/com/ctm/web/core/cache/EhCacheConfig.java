@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static net.sf.ehcache.store.MemoryStoreEvictionPolicy.LFU;
 
@@ -44,17 +43,16 @@ public class EhCacheConfig implements CachingConfigurer {
         final CacheConfiguration contentControlCache = new CacheConfiguration("contentControlCache", 10000);
         contentControlCache.setLogging(true);
         contentControlCache.setDiskSpoolBufferSizeMB(20);
-        contentControlCache.setTimeToLiveSeconds(MINUTES.toSeconds(60));
         contentControlCache.setTimeToLiveSeconds(MINUTES.toSeconds(30));
         contentControlCache.setMemoryStoreEvictionPolicyFromObject(LFU);
         contentControlCache.setTransactionalMode("off");
 
-        final CacheConfiguration getProviderInfo = new CacheConfiguration("getProviderInfo", 5000);
-        getProviderInfo.setLogging(true);
-        getProviderInfo.setTimeToLiveSeconds(HOURS.toSeconds(12));
-        getProviderInfo.setMemoryStoreEvictionPolicyFromObject(LFU);
+        final CacheConfiguration couponGetActiveCouponsCache = new CacheConfiguration("couponGetActiveCouponsCache", 5);
+        couponGetActiveCouponsCache.setTimeToLiveSeconds(MINUTES.toSeconds(2));
+        couponGetActiveCouponsCache.setMemoryStoreEvictionPolicyFromObject(LFU);
+        couponGetActiveCouponsCache.setTransactionalMode("off");
 
-        return asList(contentControlCache, getProviderInfo);
+        return asList(contentControlCache, couponGetActiveCouponsCache);
     }
 
     @Bean

@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import javax.cache.annotation.CacheResult;
 
 import java.util.Optional;
 
@@ -38,20 +37,19 @@ public class ProviderInfoDao {
     /**
      * Gets the provider information from content control
      */
-    @CacheResult(cacheName = "getProviderInfo")
     public ProviderInfo getProviderInfo(final Provider provider,
                                         final Brand brand,
                                         final java.util.Date searchDate) {
-            return ProviderInfo.newProviderInfo()
-                    .email(getProviderEmail(provider, brand, searchDate))
-                    .phoneNumber(getProviderPhoneNumber(provider, brand, searchDate))
-                    .website(getProviderWebsite(provider, brand, searchDate)).build();
+        return ProviderInfo.newProviderInfo()
+                .email(getProviderEmail(provider, brand, searchDate))
+                .phoneNumber(getProviderPhoneNumber(provider, brand, searchDate))
+                .website(getProviderWebsite(provider, brand, searchDate)).build();
     }
 
 
     private String getProviderEmail(final Provider providerId,
-                                           final Brand brand,
-                                           final java.util.Date searchDate) {
+                                    final Brand brand,
+                                    final java.util.Date searchDate) {
         return getProviderContent(providerId, brand, searchDate, "providerEmail")
                 .orElse("");
     }
@@ -62,7 +60,7 @@ public class ProviderInfoDao {
     }
 
     private String getProviderPhoneNumber(final Provider providerId, final Brand brand,
-                                                       final java.util.Date searchDate) {
+                                          final java.util.Date searchDate) {
         return getProviderContent(providerId, brand, searchDate, "providerPhoneNumber")
                 .orElse("");
     }

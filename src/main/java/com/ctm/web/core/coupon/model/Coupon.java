@@ -1,6 +1,7 @@
 package com.ctm.web.core.coupon.model;
 
 import com.ctm.web.core.model.AbstractJsonModel;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,14 +10,14 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This model represents the ctm.conpons database table.
- *
+ * This model represents the ctm.coupons database table.
  */
 public class Coupon extends AbstractJsonModel {
 
 	private int couponId;
 	private int styleCodeId;
 	private int verticalId;
+	@JsonView(Views.ForWordpressSite.class)
 	private String couponCode;
 	private boolean isExclusive;
 	private boolean showPopup;
@@ -26,9 +27,12 @@ public class Coupon extends AbstractJsonModel {
 	private String contentSuccess;
 	private String contentCheckbox;
 	private String contentConfirmation;
+	@JsonView(Views.ForWordpressSite.class)
+	private String contentWordpress;
 	private Date effectiveStart;
 	private Date effectiveEnd;
 	private CouponChannel couponChannel;
+	private CouponOpenHoursCondition openHoursCond;
 	private boolean removeFromLeads;
 	private int vdn;
 	private List<CouponRule> couponRules;
@@ -105,6 +109,12 @@ public class Coupon extends AbstractJsonModel {
 	public void setContentConfirmation(String contentConfirmation) {
 		this.contentConfirmation = contentConfirmation;
 	}
+	public String getContentWordpress() {
+		return contentWordpress;
+	}
+	public void setContentWordpress(String contentWordpress) {
+		this.contentWordpress = contentWordpress;
+	}
 	public Date getEffectiveStart() {
 		return effectiveStart;
 	}
@@ -126,6 +136,12 @@ public class Coupon extends AbstractJsonModel {
 	public void setCouponChannel(String couponChannelString) {
 		this.couponChannel = CouponChannel.findByCode(couponChannelString);
 	}
+	public CouponOpenHoursCondition getOpenHoursCond() {
+		return openHoursCond;
+	}
+	public void setOpenHoursCond(CouponOpenHoursCondition openHoursCond) {
+		this.openHoursCond = openHoursCond;
+	}
 	public boolean isRemoveFromLeads() {
 		return removeFromLeads;
 	}
@@ -140,7 +156,7 @@ public class Coupon extends AbstractJsonModel {
 	}
 	public List<CouponRule> getCouponRules() {
 		if (couponRules == null) {
-			couponRules = new ArrayList<CouponRule>();
+			couponRules = new ArrayList<>();
 		}
 		return couponRules;
 	}
@@ -175,14 +191,16 @@ public class Coupon extends AbstractJsonModel {
 				", isExclusive=" + isExclusive +
 				", showPopup=" + showPopup +
 				", canPrePopulate=" + canPrePopulate +
-                ", contentTile='" + contentTile + '\'' +
+				", contentTile='" + contentTile + '\'' +
 				", contentBanner='" + contentBanner + '\'' +
 				", contentSuccess='" + contentSuccess + '\'' +
 				", contentCheckbox='" + contentCheckbox + '\'' +
 				", contentConfirmation='" + contentConfirmation + '\'' +
+				", contentWordpress='" + contentWordpress + '\'' +
 				", effectiveStart=" + effectiveStart +
 				", effectiveEnd=" + effectiveEnd +
 				", couponChannel=" + couponChannel +
+				", openHoursCond=" + openHoursCond +
 				", removeFromLeads=" + removeFromLeads +
 				", vdn=" + vdn +
 				", couponRules=" + couponRules +
