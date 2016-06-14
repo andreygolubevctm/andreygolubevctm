@@ -4,6 +4,10 @@
   width: 0; height: 0;
   position:absolute;
 
+  &:hover {
+    cursor: pointer;
+  }
+
   @media(@xs) {
     font-size:8px;
     border-top: 60px solid @discount-triangle-color;
@@ -74,5 +78,17 @@
       margin-left: 2px;
       line-height: 14px;
     }
+  }
+}
+
+.priceTooltips.discount {
+  @media (@sm) {
+    width: 146px;
+  }
+  @media (@md) {
+    width: 180px;
+  }
+  @media (@lg) {
+    width: 190px;
   }
 }

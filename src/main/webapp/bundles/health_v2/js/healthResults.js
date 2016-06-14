@@ -787,17 +787,19 @@
     }
 
     function createDiscountPopOver(){
+        var text= 'Australian Unity offers a 4% discount for direct debit payments';
+        var position = meerkat.modules.deviceMediaState.get() === 'xs' ? 'top' : 'bottom';
         meerkat.modules.popovers.create({
-            element: $this,
+            element: $('.discountPanel'),
             contentValue: text,
             contentType: 'content',
-            showEvent: 'mouseenter',
+            showEvent: 'click',
             position: {
-                my: 'top center',
-                at: 'bottom center'
+                my: position +' left',
+                at: 'top left'
             },
             style: {
-                classes: 'priceTooltips'
+                classes: 'priceTooltips discount'
             }
         });
     }
