@@ -21,8 +21,6 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest( { LifeOccupationUtils.class, ApplicationService.class})
 public class LifeOccupationUtilsTest {
 
     @Mock
@@ -39,11 +37,10 @@ public class LifeOccupationUtilsTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        PowerMockito.mockStatic(ApplicationService.class);
-        PowerMockito.whenNew(ApplicationService.class).withNoArguments().thenReturn(applicationService);
         when(request.getServletContext()).thenReturn(servletContext);
         when(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(applicationContext);
         when(applicationContext.getBean(LifeOccupationService.class)).thenReturn(lifeOccupationService);
+        when(applicationContext.getBean(ApplicationService.class)).thenReturn(applicationService);
     }
 
     @Test
