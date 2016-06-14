@@ -2,7 +2,7 @@ package com.ctm.web.life.apply.response;
 
 public class LifeApplyWebResponse {
 
-    LifeApplyWebResponseResults results;
+    private final LifeApplyWebResponseResults results;
 
     private LifeApplyWebResponse(Builder builder) {
         results = builder.results;

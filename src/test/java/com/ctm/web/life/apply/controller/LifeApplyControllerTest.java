@@ -3,6 +3,7 @@ package com.ctm.web.life.apply.controller;
 import com.ctm.apply.model.response.ApplyResponse;
 import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.core.exceptions.ServiceRequestException;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.web.go.Data;
@@ -16,6 +17,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
@@ -43,6 +45,8 @@ public class LifeApplyControllerTest {
     SessionDataServiceBean sessionDataServiceBean;
     @Mock
     ApplicationService applicationService;
+    @Mock
+    IPAddressHandler ipAddressHandler;
 
     @InjectMocks
     LifeApplyController controllerUnderTest;

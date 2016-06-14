@@ -2,11 +2,13 @@ package com.ctm.web.core.router;
 
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
+import com.ctm.web.core.exceptions.ServiceRequestException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.formData.Request;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.resultsData.model.Info;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
@@ -151,6 +153,17 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> extends CommonR
         LOGGER.error("Validation failure encountered", e);
         return FormValidation.outputToObject(e.getTransactionId(), e.getValidationErrors());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorInfo handleException(final ServiceRequestException e) {
+        LOGGER.error("Failed to handle request", e);
+        ErrorInfo errorInfo = new ErrorInfo();
+        errorInfo.setTransactionId(e.getTransactionId());
+        errorInfo.setErrors(e.getErrors());
+        return errorInfo;
+    }
+
 
 
 }

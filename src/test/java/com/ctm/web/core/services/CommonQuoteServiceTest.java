@@ -57,8 +57,8 @@ public class CommonQuoteServiceTest {
     private RestClient restClient;
     @Mock
     private ServiceConfigurationServiceBean serviceConfigurationService;
-    @Mock
-    private EnvironmentService.Environment environment;
+
+    private EnvironmentService.Environment environment = EnvironmentService.Environment.LOCALHOST;
 
     @Before
     public void setup() throws Exception {
@@ -167,10 +167,11 @@ public class CommonQuoteServiceTest {
 
     @Test(expected = RouterException.class)
     public void testSetFilterNXS() throws Exception {
+        commonQuoteService = spy(new CommonQuoteService( providerFilterDao,
+                restClient, serviceConfigurationService, EnvironmentService.Environment.NXS, objectMapper) {});
         ProviderFilter providerFilter = mock(ProviderFilter.class);
         when(providerFilter.getProviderKey()).thenReturn("");
         when(providerFilter.getAuthToken()).thenReturn("");
-        EnvironmentService.setEnvironment("nxs");
         commonQuoteService.setFilter(providerFilter);
     }
 
@@ -264,6 +265,8 @@ public class CommonQuoteServiceTest {
 
     @Test
     public void testQuoteServicePropertiesWithNoEnvironmentOverride() throws Exception {
+        commonQuoteService = spy(new CommonQuoteService( providerFilterDao,
+                restClient, serviceConfigurationService, EnvironmentService.Environment.PRO, objectMapper) {});
         Brand brand = mock(Brand.class);
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
         doReturn(serviceConfiguration).when(commonQuoteService).getServiceConfiguration("anyService", brand, verticalType.getCode());

@@ -153,6 +153,20 @@ public class CommonRequestService<PAYLOAD, RESPONSE> {
         }
     }
 
+    public <RESPONSE> RESPONSE sendQuoteRequest(Brand brand,
+                                                   Vertical.VerticalType vertical,
+                                                   String serviceName, Request data,
+                                                   PAYLOAD payload,
+                                                   Class<RESPONSE> responseClass) throws RouterException {
+        try {
+            return restClient.sendPOSTRequest(getQuoteServiceProperties(serviceName,
+                    brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride())), Endpoint.QUOTE, responseClass,
+                    getQuoteRequest( brand,  data,  payload));
+        } catch (ServiceConfigurationException | DaoException | IOException e) {
+            throw new RouterException(e);
+        }
+    }
+
     public <RESPONSE> RESPONSE sendApplyRequest(Brand brand,
                                                    Vertical.VerticalType vertical,
                                                    String serviceName,
@@ -277,9 +291,9 @@ public class CommonRequestService<PAYLOAD, RESPONSE> {
 
     protected ServiceConfiguration getServiceConfiguration(String service, Brand brand, String verticalCode) throws DaoException, ServiceConfigurationException {
         if(serviceConfigurationService == null) {
-            return ServiceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode).getId());
+            return ServiceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode));
         }else {
-            return serviceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode).getId());
+            return serviceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode));
         }
     }
 

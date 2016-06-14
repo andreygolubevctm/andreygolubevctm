@@ -25,6 +25,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class CompetitionService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CompetitionService.class);
@@ -44,6 +47,7 @@ public class CompetitionService {
         this.sessionDataServiceBean = new SessionDataServiceBean();
     }
 
+	@Autowired
     public CompetitionService(SessionDataServiceBean sessionDataServiceBean) {
         this.sessionDataServiceBean = sessionDataServiceBean;
     }

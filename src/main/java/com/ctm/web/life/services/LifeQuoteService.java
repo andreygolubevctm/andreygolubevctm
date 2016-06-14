@@ -12,6 +12,7 @@ import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.exceptions.ServiceException;
 import com.ctm.web.core.model.CompetitionEntry;
 import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.*;
 import com.ctm.web.life.form.model.*;
 import com.ctm.web.life.form.response.model.LifeResultsWebResponse;
@@ -52,7 +53,7 @@ public class LifeQuoteService {
 
     public LifeResultsWebResponse getQuotes(LifeQuoteWebRequest request, Brand brand) throws DaoException, IOException, ServiceConfigurationException {
         LifeQuoteRequest serviceRequest = requestAdapter.adapt(request);
-        final LifeQuoteResponse response = requestService.sendRequest(brand, LIFE, "quoteServiceBER", Endpoint.QUOTE, request,
+        final LifeQuoteResponse response = requestService.sendQuoteRequest(brand, LIFE, "quoteServiceBER", request,
                 serviceRequest, LifeQuoteResponse.class);
 
         return responseAdapter.adapt(response, request);

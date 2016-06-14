@@ -122,7 +122,7 @@ public class RestClient {
         }
     }
 
-    protected SimpleConnection setupSimplePOSTConnection(QuoteServiceProperties serviceProperties, String jsonRequest) {
+    public SimpleConnection setupSimplePOSTConnection(QuoteServiceProperties serviceProperties, String jsonRequest) {
         SimpleConnection connection = new SimpleConnection();
         connection.setRequestMethod("POST");
         connection.setConnectTimeout(serviceProperties.getTimeout());

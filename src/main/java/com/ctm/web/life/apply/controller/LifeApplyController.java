@@ -34,12 +34,14 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 public class LifeApplyController extends CommonQuoteRouter<LifeApplyWebRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(LifeApplyController.class);
 
-    @Autowired
     LifeApplyService lifeService;
 
     @Autowired
-    public LifeApplyController(SessionDataServiceBean sessionDataServiceBean, ApplicationService applicationService, IPAddressHandler ipAddressHandler) {
+    public LifeApplyController(SessionDataServiceBean sessionDataServiceBean,
+                               ApplicationService applicationService,
+                               IPAddressHandler ipAddressHandler, LifeApplyService lifeService) {
         super(sessionDataServiceBean, applicationService, ipAddressHandler);
+        this.lifeService = lifeService;
     }
 
     @ApiOperation(value = "apply/apply.json", notes = "Submit an life application", produces = "application/json")

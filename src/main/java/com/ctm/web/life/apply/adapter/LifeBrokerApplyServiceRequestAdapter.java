@@ -33,7 +33,7 @@ public class LifeBrokerApplyServiceRequestAdapter implements WebRequestAdapter<L
         lifeBrokerApplyRequestBuilder
                 .contactDetails(LifeServiceRequestAdapter
                         .createContactDetails(lifeQuoteRequest.getContactDetails(), primary));
-        lifeBrokerApplyRequestBuilder.partnerProductId(energyApplyPostRequestPayload.getPartner().getProductId());
+        lifeBrokerApplyRequestBuilder.partnerProductId(LifeServiceRequestAdapter.getPartnerProductId(energyApplyPostRequestPayload));
 
         return lifeBrokerApplyRequestBuilder.build();
     }

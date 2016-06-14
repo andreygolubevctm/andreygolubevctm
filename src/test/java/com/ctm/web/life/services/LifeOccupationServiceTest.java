@@ -6,6 +6,7 @@ import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.services.CommonRequestService;
 import com.ctm.web.core.services.RestClient;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataServiceBean;
@@ -37,6 +38,7 @@ import static org.mockito.Mockito.when;
         LifeOccupationServiceTest.class,
         SessionDataServiceBean.class,
         ProviderFilterDao.class,
+        CommonRequestService.class,
         TestConfig.class})
 @ActiveProfiles({"test"})
 @WebAppConfiguration
@@ -61,6 +63,7 @@ public class LifeOccupationServiceTest {
         MockitoAnnotations.initMocks(this);
         when(brand.getVerticalByCode(anyString())).thenReturn(vertical);
         when(serviceConfigurationServiceBean.getServiceConfiguration(eq("quoteServiceBER"), anyObject())).thenReturn(serviceConfig);
+        when(serviceConfigurationServiceBean.getServiceConfiguration(eq("quoteServiceBER"), anyInt())).thenReturn(serviceConfig);
     }
 
     @Test

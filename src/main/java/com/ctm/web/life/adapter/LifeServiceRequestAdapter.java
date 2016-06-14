@@ -49,7 +49,11 @@ public class LifeServiceRequestAdapter {
     }
 
     public static String getProductId(LifeApplyWebRequest model) {
-        return model.getClient().getProductId();
+        return model.getClient() != null ? model.getClient().getProductId() : null;
+    }
+
+    public static String getPartnerProductId(LifeApplyWebRequest model) {
+        return model.getPartner() != null ? model.getPartner().getProductId() : null;
     }
 
     public static Applicants getApplicants(Applicant primary , Applicant partner) {

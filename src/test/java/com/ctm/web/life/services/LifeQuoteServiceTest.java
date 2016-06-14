@@ -1,7 +1,9 @@
 package com.ctm.web.life.services;
 
 import com.ctm.data.common.TestMariaDbBean;
+import com.ctm.web.core.competition.services.CompetitionService;
 import com.ctm.web.core.dao.ProviderFilterDao;
+import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
@@ -34,6 +36,9 @@ import static org.mockito.Mockito.*;
         LifeQuoteServiceTest.class,
         SessionDataServiceBean.class,
         ProviderFilterDao.class,
+        CompetitionService.class,
+        CommonRequestService.class,
+        EnvironmentService.class,
         TestConfig.class})
 @ActiveProfiles({"test"})
 @WebAppConfiguration
@@ -46,11 +51,13 @@ public class LifeQuoteServiceTest {
     private Vertical vertical;
     @Mock
     private ServiceConfiguration serviceConfig;
+    @Mock
+    private com.ctm.web.core.connectivity.SimpleConnection connection;
 
     private RestClient restClient = TestConfig.getRestClient();
     private ServiceConfigurationServiceBean serviceConfigurationService = TestConfig.getServiceConfigurationServiceBean();
-    private LifeQuoteServiceResponseAdapter lifeQuoteServiceResponseAdapter = TestConfig.getLifeQuoteServiceResponseAdapter();
 
+    private LifeQuoteServiceResponseAdapter lifeQuoteServiceResponseAdapter = TestConfig.getLifeQuoteServiceResponseAdapter();
     @Autowired
     private LifeQuoteService service;
     LifeQuoteWebRequest webRequest = new LifeQuoteWebRequest();
@@ -60,6 +67,7 @@ public class LifeQuoteServiceTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         when(brand.getVerticalByCode(anyString())).thenReturn(vertical);
+        when(serviceConfigurationService.getServiceConfiguration(eq("quoteServiceBER"), anyInt())).thenReturn(serviceConfig);
         when(serviceConfigurationService.getServiceConfiguration(eq("quoteServiceBER"), anyObject())).thenReturn(serviceConfig);
         webRequest.setTransactionId(TRANSACTION_ID);
     }

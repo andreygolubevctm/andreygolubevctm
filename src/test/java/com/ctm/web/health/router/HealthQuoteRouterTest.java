@@ -34,7 +34,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest( { ApplicationService.class, SettingsService.class, SessionUtils.class,
-        RequestService.class, ServiceConfigurationService.class, SimpleConnection.class, CommonRequestService.class})
+        RequestService.class, ServiceConfigurationService.class, SimpleConnection.class, CommonRequestService.class, RestClient.class})
 public class HealthQuoteRouterTest {
 
     private HealthQuoteRouter healthQuoteRouter;
@@ -81,13 +81,14 @@ public class HealthQuoteRouterTest {
 
         when(simpleConnection.get(anyString())).thenReturn("{" +
                 "\"payload\" : {" +
-                    "\"quotes\" : []" +
-                    "}" +
+                "\"quotes\" : []" +
+                "}" +
                 "}");
 
         PowerMockito.when(SettingsService.getPageSettingsByBrand(eq(brand), anyObject())).thenReturn(pageSettings);
         PowerMockito.when(SettingsService.getPageSettingsForPage(anyObject())).thenReturn(pageSettings);
         PowerMockito.when(ServiceConfigurationService.getServiceConfiguration(anyString(), anyInt())).thenReturn(serviceConfig);
+        PowerMockito.when(ServiceConfigurationService.getServiceConfiguration(anyString(), (Vertical) anyObject())).thenReturn(serviceConfig);
         when(pageSettings.getVertical()).thenReturn(vertical);
         when(pageSettings.getBrandId()).thenReturn(brandId);
         when(brand.getCode()).thenReturn(brandCode);

@@ -24,6 +24,7 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
 
     @Test
     public void adaptTest() throws Exception {
+        String partnerProductId = "c5e560a26d8fafbe313acc1988eb4e139430045e";
         Data data = new Data();
         data.put("life/primary/insurance/partner" , "Y");
         data.put("life/primary/insurance/samecover" , "N");
@@ -78,7 +79,7 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
         LifeBrokerApplyServiceRequestAdapterTestUtils.setRequestType(request, "REQUEST-CALL");
         setProductId(request, "ff01712616fe6b7b97cd03ded3d2b492ba54a0f6");
         request.setCompany("AIA Australia");
-        setPartnerProductId( request,  PARTNER_PRODUCT_ID);
+        setPartnerProductId( request,  partnerProductId);
         setPartnerQuote( request, YesNo.Y);
         request .setPartnerBrand("AIA Australia");
 
@@ -89,7 +90,7 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
         assertEquals(PRIMARY_FIRSTNAME , result.getApplicants().getPrimary().getFirstName());
         assertTrue(PARTNER_SURNAME , result.getApplicants().getPartner().isPresent());
         assertEquals(PARTNER_SURNAME , result.getApplicants().getPartner().get().getLastName());
-        assertEquals(PARTNER_PRODUCT_ID,result.getPartnerProductId().get());
+        assertEquals(partnerProductId, result.getPartnerProductId().get());
     }
 
     private LifeApplyWebRequest getLifeApplyWebRequest() {

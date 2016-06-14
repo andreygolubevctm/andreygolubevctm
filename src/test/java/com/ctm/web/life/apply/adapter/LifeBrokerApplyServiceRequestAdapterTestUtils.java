@@ -31,15 +31,15 @@ public class LifeBrokerApplyServiceRequestAdapterTestUtils {
         request.setPartner(partner);
     }
 
-    public static void setPartnerProductId(LifeApplyWebRequest request, String PARTNER_PRODUCT_ID) {
-        LifeApplyPartner client = request.getPartner();
-        if(client == null) {
-            client = new LifeApplyPartner();
+    public static void setPartnerProductId(LifeApplyWebRequest request, String partnerProductId) {
+        LifeApplyPartner partner = request.getPartner();
+        if(partner == null) {
+            partner = new LifeApplyPartner();
         }
         LifeApplyProduct product = new LifeApplyProduct();
-        product.setId(PARTNER_PRODUCT_ID);
-        client.setProduct(product);
-        request.setPartner(client);
+        product.setId(partnerProductId);
+        partner.setProduct(product);
+        request.setPartner(partner);
 
     }
 }

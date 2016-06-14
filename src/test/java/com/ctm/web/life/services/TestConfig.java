@@ -1,5 +1,7 @@
 package com.ctm.web.life.services;
 
+import com.ctm.web.core.exceptions.EnvironmentException;
+import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.RestClient;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
@@ -18,6 +20,11 @@ public class TestConfig {
     private static ServiceConfigurationServiceBean serviceConfigurationService = mock(ServiceConfigurationServiceBean.class);
     private static LifeQuoteServiceRequestAdapter lifeQuoteServiceRequestAdapter = mock(LifeQuoteServiceRequestAdapter.class);
     private static LifeQuoteServiceResponseAdapter lifeQuoteServiceResponseAdapter = mock(LifeQuoteServiceResponseAdapter.class);
+
+    @Bean
+    public static EnvironmentService.Environment environmentBean() throws EnvironmentException {
+        return EnvironmentService.Environment.LOCALHOST;
+    }
 
     @Bean
     public static RestClient getRestClient() {
