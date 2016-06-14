@@ -1,62 +1,46 @@
 package com.ctm.web.life.apply.model.request;
 
-import com.ctm.web.core.model.formData.Request;
-import com.ctm.web.core.model.formData.YesNo;
+import com.ctm.web.core.model.formData.RequestImpl;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LifeApplyWebRequest implements Request {
+public class LifeApplyWebRequest extends RequestImpl {
 
     @NotNull
     private Long transactionId;
+    private LifeApplyRequest request;
 
-    private String clientIpAddress;
-    private String environmentOverride;
-
-    private String request_type; //NOPMD
     @NotNull
-    private String client_product_id; //NOPMD
-    private String partner_product_id; //NOPMD
-
+    @Valid
+    private Client client;
+    private LifeApplyPartner partner;
     private String vertical;
-
-    private YesNo partner_quote; //NOPMD
 
     @NotNull
     private String company;
     private String partnerBrand;
-
-    private String lead_number; //NOPMD
-    private LocalDateTime requestAt;
+    private Lead lead;
 
     public LifeApplyWebRequest() {}
 
-    @SuppressWarnings({"PMD.MethodNamingConventions","PMD.VariableNamingConventions" }) // maps to front end
-    public void setRequest_type(String request_type) {
-        this.request_type = request_type;
+    public void setRequest(LifeApplyRequest request) {
+        this.request = request;
     }
 
-    @SuppressWarnings({"PMD.MethodNamingConventions","PMD.VariableNamingConventions" }) // maps to front end
-    public void setClient_product_id(String client_product_id) {
-        this.client_product_id = client_product_id;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
-    @SuppressWarnings({"PMD.MethodNamingConventions","PMD.VariableNamingConventions" }) // maps to front end
-    public void setPartner_product_id(String partner_product_id) {
-        this.partner_product_id = partner_product_id;
+    public void setPartner(LifeApplyPartner partner) {
+        this.partner = partner;
     }
 
 
     public void setVertical(String vertical) {
         this.vertical = vertical;
-    }
-
-    @SuppressWarnings({"PMD.MethodNamingConventions","PMD.VariableNamingConventions" }) // maps to front end
-    public void setPartner_quote(YesNo partner_quote) {
-        this.partner_quote = partner_quote;
     }
 
     public void setCompany(String company) {
@@ -67,14 +51,12 @@ public class LifeApplyWebRequest implements Request {
         this.partnerBrand = partnerBrand;
     }
 
-    @SuppressWarnings({"PMD.MethodNamingConventions","PMD.VariableNamingConventions" }) // maps to front end
-    public void setLead_number(String lead_number) {
-        this.lead_number = lead_number;
+    public void setLead(Lead lead) {
+        this.lead = lead;
     }
 
-    @SuppressWarnings({"PMD.MethodNamingConventions","PMD.VariableNamingConventions" }) // maps to front end
-    public String getLead_number() {
-        return lead_number;
+    public Lead getLead() {
+        return lead;
     }
 
     public String getCompany() {
@@ -91,61 +73,31 @@ public class LifeApplyWebRequest implements Request {
         this.transactionId = transactionId;
     }
 
-    @Override
-    public String getClientIpAddress() {
-        return clientIpAddress;
+    public LifeApplyRequest getRequest() {
+        return request;
     }
 
-    @Override
-    public void setClientIpAddress(String clientIpAddress) {
-        this.clientIpAddress = clientIpAddress;
+    public Client getClient() {
+        return client;
     }
 
-    @Override
-    public String getEnvironmentOverride() {
-        return environmentOverride;
-    }
-
-    @Override
-    public void setRequestAt(LocalDateTime requestAt) {
-        this.requestAt = requestAt;
-    }
-
-    @Override
-    public LocalDateTime getRequestAt() {
-        return requestAt;
-    }
-
-    @Override
-    public void setEnvironmentOverride(String environmentOverride) {
-        this.environmentOverride = environmentOverride;
-    }
-
-    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
-    public String getRequest_type() {
-        return request_type;
-    }
-
-    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
-    public String getClient_product_id() {
-        return client_product_id;
-    }
-
-    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
-    public String getPartner_product_id() {
-        return partner_product_id;
+    public LifeApplyPartner getPartner() {
+        return partner;
     }
 
     public String getVertical() {
         return vertical;
     }
 
-    @SuppressWarnings("PMD.MethodNamingConventions") // maps to front end
-    public YesNo getPartner_quote() {
-        return partner_quote;
-    }
-
     public String getPartnerBrand() {
         return partnerBrand;
+    }
+
+    public String getRequestType() {
+        return getRequest() != null ? getRequest().getType() : null;
+    }
+
+    public String getLeadNumber() {
+        return getLead() != null ? getLead().getNumber() : null;
     }
 }

@@ -48,8 +48,8 @@ public class LifeServiceRequestAdapter {
         }
     }
 
-    public String getProductId(LifeApplyWebRequest model) {
-        return model.getClient_product_id();
+    public static String getProductId(LifeApplyWebRequest model) {
+        return model.getClient().getProductId();
     }
 
     public static Applicants getApplicants(Applicant primary , Applicant partner) {

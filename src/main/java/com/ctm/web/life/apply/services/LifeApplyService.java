@@ -20,6 +20,7 @@ import com.ctm.web.core.services.Endpoint;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.web.DataParser;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.life.adapter.LifeServiceRequestAdapter;
 import com.ctm.web.life.apply.adapter.LifeApplyServiceResponseAdapter;
 import com.ctm.web.life.apply.adapter.LifeBrokerApplyServiceRequestAdapter;
 import com.ctm.web.life.apply.adapter.OzicareApplyServiceRequestAdapter;
@@ -89,7 +90,7 @@ public class LifeApplyService {
         LifeApplyWebResponseResults.Builder responseBuilder = responseAdapter.adapt(applyResponse);
         responseBuilder.transactionId(model.getTransactionId());
         lifeApplyCompleteService.handleSuccess(model.getTransactionId(), request,
-                requestAdapter.getEmailAddress(lifeQuoteRequest), requestAdapter.getProductId(model), applyResponse,
+                requestAdapter.getEmailAddress(lifeQuoteRequest), LifeServiceRequestAdapter.getProductId(model), applyResponse,
                 isOzicare);
         return new LifeApplyWebResponse.Builder().results(responseBuilder.build()).build();
 	}
@@ -108,7 +109,7 @@ public class LifeApplyService {
         }
         if(!isOzicare || !isTest) {
              applyResponse = commonRequestService.sendApplyRequest(brand, Vertical.VerticalType.LIFE, "applyServiceBER", endpoint, model, applyRequest,
-                    LifeApplyResponse.class, requestAdapter.getProductId(model));
+                    LifeApplyResponse.class, LifeServiceRequestAdapter.getProductId(model));
         } else {
             applyResponse = new LifeApplyResponse.Builder().responseStatus(Status.REGISTERED).build();
         }

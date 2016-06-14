@@ -88,7 +88,7 @@ public abstract class LeadService {
 
                     leadData.setStatus(LeadStatus.valueOf(transactionStatus));
 
-                    leadData.setClientIP(request.getRemoteAddr());
+                    leadData.setClientIP(ipAddressHandler.getIPAddress(request));
 
                     String previousValues = (String) request.getSession().getAttribute(LAST_LEAD_SERVICE_VALUES);
                     String currentValues = leadData.getValues();

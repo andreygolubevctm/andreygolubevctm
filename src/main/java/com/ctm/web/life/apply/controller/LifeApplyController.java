@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -64,23 +63,10 @@ public class LifeApplyController extends CommonQuoteRouter<LifeApplyWebRequest> 
             return lifeService.apply(webRequest, brand, servletRequest);
         } catch(ServiceException e) {
             LOGGER.error("Failed to call apply. {}" , kv("webRequest" , webRequest) ,  e);
-            ServiceRequestException exception = new ServiceRequestException("Exception encounted when trying to apply", e);
+            ServiceRequestException exception = new ServiceRequestException("Exception encountered when trying to apply", e);
             exception.setTransactionId(webRequest.getTransactionId());
             throw exception;
         }
-    }
-
-
-
-    //@TODO Run the service servletRequest through the hibernate validator and then throw a ServiceRequestException
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorInfo handleException(final ServiceRequestException e) {
-        LOGGER.error("Failed to handle servletRequest", e);
-        ErrorInfo errorInfo = new ErrorInfo();
-        errorInfo.setTransactionId(e.getTransactionId());
-        errorInfo.setErrors(e.getErrors());
-        return errorInfo;
     }
 
     @ExceptionHandler

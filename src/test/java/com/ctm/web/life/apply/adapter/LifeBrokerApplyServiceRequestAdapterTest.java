@@ -8,8 +8,12 @@ import com.ctm.web.life.apply.model.request.LifeApplyWebRequest;
 import com.ctm.web.life.form.model.LifeQuote;
 import org.junit.Test;
 
+import static com.ctm.web.life.apply.adapter.LifeBrokerApplyServiceRequestAdapterTestUtils.setPartnerProductId;
+import static com.ctm.web.life.apply.adapter.LifeBrokerApplyServiceRequestAdapterTestUtils.setPartnerQuote;
+import static com.ctm.web.life.apply.adapter.LifeBrokerApplyServiceRequestAdapterTestUtils.setProductId;
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class LifeBrokerApplyServiceRequestAdapterTest {
 
@@ -70,11 +74,12 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
         LifeQuote lifeRequest = DataParser.createObjectFromData(data,LifeQuote.class, "life");
 
         LifeApplyWebRequest request = getLifeApplyWebRequest();
-        request.setRequest_type("REQUEST-CALL");
-        request.setClient_product_id("ff01712616fe6b7b97cd03ded3d2b492ba54a0f6");
+        
+        LifeBrokerApplyServiceRequestAdapterTestUtils.setRequestType(request, "REQUEST-CALL");
+        setProductId(request, "ff01712616fe6b7b97cd03ded3d2b492ba54a0f6");
         request.setCompany("AIA Australia");
-        request.setPartner_product_id(PARTNER_PRODUCT_ID);
-        request.setPartner_quote(YesNo.Y);
+        setPartnerProductId( request,  PARTNER_PRODUCT_ID);
+        setPartnerQuote( request, YesNo.Y);
         request .setPartnerBrand("AIA Australia");
 
         LifeBrokerApplyServiceRequestAdapter requestAdapter = new LifeBrokerApplyServiceRequestAdapter(lifeRequest);
@@ -82,6 +87,7 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
 
         assertEquals(EMAIL, result.getContactDetails().getEmail());
         assertEquals(PRIMARY_FIRSTNAME , result.getApplicants().getPrimary().getFirstName());
+        assertTrue(PARTNER_SURNAME , result.getApplicants().getPartner().isPresent());
         assertEquals(PARTNER_SURNAME , result.getApplicants().getPartner().get().getLastName());
         assertEquals(PARTNER_PRODUCT_ID,result.getPartnerProductId().get());
     }
@@ -127,11 +133,11 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
 
         LifeQuote lifeRequest = DataParser.createObjectFromData(data,LifeQuote.class, "life");
         LifeBrokerApplyServiceRequestAdapter requestAdapter = new LifeBrokerApplyServiceRequestAdapter(lifeRequest);
-        LifeApplyWebRequest request = getLifeApplyWebRequest();;
-        request.setRequest_type("REQUEST-CALL");
-        request.setClient_product_id("ff01712616fe6b7b97cd03ded3d2b492ba54a0f6");
+        LifeApplyWebRequest request = getLifeApplyWebRequest();
+        LifeBrokerApplyServiceRequestAdapterTestUtils.setRequestType(request, "REQUEST-CALL");
+        setProductId(request, "ff01712616fe6b7b97cd03ded3d2b492ba54a0f6");
         request.setCompany("OnePath");
-        request.setPartner_quote(YesNo.N);
+        setPartnerQuote( request,YesNo.N);
         request.setPartnerBrand("OnePath");
 
         final LifeBrokerApplyRequest result = requestAdapter.adapt(request);
@@ -192,12 +198,12 @@ public class LifeBrokerApplyServiceRequestAdapterTest {
         LifeQuote lifeRequest = DataParser.createObjectFromData(data,LifeQuote.class, "life");
         LifeBrokerApplyServiceRequestAdapter requestAdapter = new LifeBrokerApplyServiceRequestAdapter(lifeRequest);
         LifeApplyWebRequest request = getLifeApplyWebRequest();
-        request.setRequest_type("REQUEST-CALL");
-        request.setClient_product_id("ff01712616fe6b7b97cd03ded3d2b492ba54a0f6");
+        LifeBrokerApplyServiceRequestAdapterTestUtils.setRequestType(request, "REQUEST-CALL");
+        setProductId(request, "ff01712616fe6b7b97cd03ded3d2b492ba54a0f6");
         request.setCompany("AIA Australia");
-        request.setPartner_product_id(PARTNER_PRODUCT_ID);
-        request.setPartner_quote(YesNo.Y);
-        request.setPartnerBrand("AIA Australia");;
+        setPartnerProductId( request,  PARTNER_PRODUCT_ID);
+        setPartnerQuote( request, YesNo.Y);
+        request.setPartnerBrand("AIA Australia");
 
         final LifeBrokerApplyRequest result = requestAdapter.adapt(request);
         assertEquals(PARTNER_PRODUCT_ID,result.getPartnerProductId().get());

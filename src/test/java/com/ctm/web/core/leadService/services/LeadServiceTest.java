@@ -68,6 +68,7 @@ public class LeadServiceTest {
         when(mockData.getLong("current/rootId")).thenReturn(1111L);
         when(mockData.getLong("current/transactionId")).thenReturn(1111L);
         when(mockData.getString("current/brandCode")).thenReturn("ctm");
+        when(mockData.getString("current/brandCode")).thenReturn("ctm");
 
         mockStatic(ServiceConfigurationService.class);
         when(ServiceConfigurationService.getServiceConfiguration("leadService", 4)).thenReturn(mockServiceConfig);

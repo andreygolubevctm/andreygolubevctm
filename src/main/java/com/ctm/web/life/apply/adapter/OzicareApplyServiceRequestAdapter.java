@@ -28,7 +28,7 @@ public class OzicareApplyServiceRequestAdapter implements WebRequestAdapter<Life
         ozicareApplyRequestBuilder.phoneNumber(getPhoneNumber());
         ozicareApplyRequestBuilder.firstName(lifeQuoteRequest.getPrimary().getFirstName());
         ozicareApplyRequestBuilder.lastName(lifeQuoteRequest.getPrimary().getLastname());
-        ozicareApplyRequestBuilder.leadNumber(requestPayload.getLead_number());
+        ozicareApplyRequestBuilder.leadNumber(requestPayload.getLeadNumber());
 
 
         OzicareApplyRequest ozicareApplyRequest = ozicareApplyRequestBuilder.build();
@@ -36,11 +36,6 @@ public class OzicareApplyServiceRequestAdapter implements WebRequestAdapter<Life
 
         return ozicareApplyRequest;
     }
-
-    public String getProductId(LifeApplyWebRequest requestPayload) {
-        return requestPayload.getClient_product_id();
-    }
-
     public String getEmailAddress(LifeQuote lifeQuoteRequest) {
         return lifeQuoteRequest.getContactDetails().getEmail();
     }
