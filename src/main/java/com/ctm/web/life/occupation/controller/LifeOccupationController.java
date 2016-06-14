@@ -24,13 +24,13 @@ import java.util.List;
 @Api(basePath = "/rest/life", value = "Life Occupation")
 @RestController
 @RequestMapping("/rest/life")
-public class LifeOccuaptionController extends CommonQuoteRouter {
+public class LifeOccupationController extends CommonQuoteRouter {
 
     @Autowired
     private LifeOccupationService lifeOccupationService;
 
     @Autowired
-    public LifeOccuaptionController(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler) {
+    public LifeOccupationController(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler) {
         super(sessionDataServiceBean, ipAddressHandler);
     }
 

@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -35,7 +34,6 @@ import static com.ctm.web.core.model.settings.ConfigSetting.ALL_BRANDS;
 import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.ALL_PROVIDERS;
 import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope.SERVICE;
 
-@Component
 public class CommonRequestService<PAYLOAD, RESPONSE> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonRequestService.class);
@@ -48,7 +46,7 @@ public class CommonRequestService<PAYLOAD, RESPONSE> {
     protected static final DateTimeFormatter NORMAL_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     private final ProviderFilterDao providerFilterDAO;
-    private final RestClient restClient;
+    protected final RestClient restClient;
     private final ServiceConfigurationServiceBean serviceConfigurationService;
     private final EnvironmentService.Environment environment;
     private final ObjectMapper objectMapper;
