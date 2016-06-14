@@ -16,7 +16,7 @@
 
 <c:choose>
     <c:when test="${callCentre && journeyOverride eq true}">
-<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
+        <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
         <c:forEach items="${param}" var="currentParam">
             <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
         </c:forEach>
@@ -47,29 +47,24 @@
         <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
         <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber"/></c:set>
 
-<c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours displayTodayOnly="true"/></c:set>
+        <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours displayTodayOnly="true"/></c:set>
         <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
 
         <c:set var="isHealthV2" value="${true}" scope="request" />
 
+        <c:set var="isTaxTime"><content:get key="taxTime"/></c:set>
+        <c:set var="taxTimeClass">
+            <c:if test="${taxTimeSplitTest eq true and data.health.currentJourney eq 31 or data.health.currentJourney eq 30}">taxTime${taxTimeSplitTest}</c:if>
+        </c:set>
+
         <%-- HTML --%>
-        <layout_v1:journey_engine_page title="Health Quote">
+        <layout_v1:journey_engine_page title="Health Quote" body_class_name="${taxTimeClass}">
 
-	<jsp:attribute name="head">
-	</jsp:attribute>
+        <jsp:attribute name="head">
+        </jsp:attribute>
 
-	<jsp:attribute name="head_meta">
-	</jsp:attribute>
-
-	<jsp:attribute name="header_button_left">
-		<button type="button" class="navbar-toggle contact collapsed pull-left" data-toggle="collapse" data-target=".header-collapse-contact">
-            <span class="sr-only">Toggle Contact Us</span>
-            <span class="icon icon-phone"></span>
-            <span class="icon icon-cross"></span>
-        </button>
-	</jsp:attribute>
-
-
+        <jsp:attribute name="head_meta">
+        </jsp:attribute>
 
 	<jsp:attribute name="header">
 		<div class="navbar-collapse header-collapse-contact collapse">
@@ -98,80 +93,81 @@
         </div>
 	</jsp:attribute>
 
-    <jsp:attribute name="progress_bar">
-      <div class="progress-bar-row collapse navbar-collapse">
-          <div class="container">
-              <ul class="journeyProgressBar_v2"></ul>
+        <jsp:attribute name="progress_bar">
+          <div class="progress-bar-row collapse navbar-collapse">
+              <div class="container">
+                  <ul class="journeyProgressBar_v2"></ul>
+              </div>
           </div>
-      </div>
-    </jsp:attribute>
+        </jsp:attribute>
 
-	<jsp:attribute name="navbar">
+        <jsp:attribute name="navbar">
 
-		<ul class="nav navbar-nav">
+		<ul class="nav navbar-nav" role="menu">
+
+            <core_v2:offcanvas_header />
+
             <li class="slide-feature-back">
-                <a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+                <a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-angle-left"></span> <span>Go Back</span></a>
             </li>
-
-            <li class="dropdown dropdown-interactive slide-feature-emailquote" id="email-quote-dropdown">
-                <a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose><c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></span> <b class="caret"></b></a>
+            <li class="hidden-sm hidden-md hidden-lg dropdown dropdown-interactive slide-feature-emailquote" id="email-quote-dropdown">
+                <a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose><c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
                 <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
                     <div class="dropdown-container">
                         <agg_v2:save_quote includeCallMeback="true" />
                     </div>
                 </div>
             </li>
-
-            <li class="dropdown dropdown-interactive slide-feature-filters" id="filters-dropdown">
-                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter</span><span class="hidden-sm"> Results</span> <b class="caret"></b></a>
+            <li class="dropdown dropdown-interactive slide-feature-filters">
+                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter Your Results</span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
                 <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-                    <health_v1:filters />
-                </div>
-            </li>
-            <li class="dropdown dropdown-interactive slide-feature-benefits" id="benefits-dropdown">
-                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-cog"></span> <span>Customise</span><span class="hidden-sm"> Cover</span> <b class="caret"></b></a>
-                <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-                    <health_v1:benefits />
-                </div>
-            </li>
+                    <div class="sidebar-widget results-filters">
 
-                <%-- @todo = showReferenceNo needs to be an attribute, this tag should potentially be rewritten or moved in a different place + that script is loaded via a marker in the tag. Probably should be moved to journey_engine_page --%>
-            <li class="navbar-text-block slide-feature-reference">
-                <form_v2:reference_number />
+                    </div>
+                    <div class="sidebar-widget sidebar-widget-attached filters-update-container" style="display: none">
+
+                    </div>
+            </li>
+            <li class="dropdown dropdown-interactive slide-feature-benefits">
+                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Customise Cover</span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
+                <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
+                    <div class="sidebar-widget results-filters-benefits">
+
+                    </div>
+                    <div class="sidebar-widget sidebar-widget-attached filters-update-container" style="display: none">
+
+                    </div>
+                </div>
             </li>
         </ul>
-
-		<div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
-        </div>
 
         <div class="slide-feature-close-more-info">
             <a href="javascript:;" class="btn btn-close-more-info btn-hollow">Back to results</a>
         </div>
 
-	</jsp:attribute>
-							
-	<jsp:attribute name="form_bottom">
-	</jsp:attribute>
-							
-	<jsp:attribute name="footer">
-		<health_v1:footer />
-	</jsp:attribute>
-							
-	<jsp:attribute name="vertical_settings">
-		<health_v1:settings />
-	</jsp:attribute>
+        </jsp:attribute>
 
-	<jsp:attribute name="body_end">
-		<jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
-		<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
-	</jsp:attribute>
+        <jsp:attribute name="form_bottom">
+        </jsp:attribute>
 
-	<jsp:attribute name="additional_meerkat_scripts">
-		<c:if test="${callCentre}">
-            <script src="${assetUrl}assets/js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-        </c:if>
-	</jsp:attribute>
+        <jsp:attribute name="footer">
+            <health_v1:footer />
+        </jsp:attribute>
+
+        <jsp:attribute name="vertical_settings">
+            <health_v1:settings />
+        </jsp:attribute>
+
+        <jsp:attribute name="body_end">
+            <jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
+            <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
+        </jsp:attribute>
+
+        <jsp:attribute name="additional_meerkat_scripts">
+            <c:if test="${callCentre}">
+                <script src="${assetUrl}assets/js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+            </c:if>
+        </jsp:attribute>
 
             <jsp:body>
                 <health_v1:product_title_search />
@@ -225,12 +221,14 @@
                 <health_v2_layout:slide_all_about_you />
                 <health_v2_layout:slide_benefits />
                 <health_v2_layout:slide_your_contact />
-                <health_v2_layout:slide_results />
+                <health_v3_layout:slide_results />
                 <health_v2_layout:slide_application_details />
                 <health_v2_layout:slide_payment_details />
                 <health_v1:dual_pricing_templates />
+                <health_v3:payment_frequency_template />
 
                 <field_v1:hidden xpath="environmentOverride" />
+                <field_v1:hidden xpath="staticOverride" />
                 <field_v1:hidden xpath="environmentValidatorOverride" />
                 <input type="hidden" name="transcheck" id="transcheck" value="1" />
             </jsp:body>

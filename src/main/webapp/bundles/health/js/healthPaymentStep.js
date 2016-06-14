@@ -4,21 +4,19 @@
 		meerkatEvents = meerkat.modules.events;
 
 	var moduleEvents = {
-			WEBAPP_LOCK: 'WEBAPP_LOCK',
-			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
-		};
+		WEBAPP_LOCK: 'WEBAPP_LOCK',
+		WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
+	};
 
 	var modalId;
-	var $coverStartDate;
 	var $paymentRadioGroup;
-	var $premiumContainer;
-	var $updatePremiumButtonContainer;
 	var $paymentContainer;
+	var $paymentMethodLHCText;
+	var $bankSection;
+	var $creditCardSection;
+	var $paymentCalendar;
 
 	var $frequencySelect;
-	var $priceCell;
-	var $frequncyCell;
-	var $lhcCell;
 
 	var settings = {
 		bank: [],
@@ -32,6 +30,8 @@
 		maxStartDate: ''
 	};
 
+	var currentCoupon = false;
+
 	function initHealthPaymentStep() {
 
 		$(document).ready(function(){
@@ -40,23 +40,7 @@
 			if(meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
 
 			// Fields
-			$coverStateDate = $('#health_payment_details_start');
-			$coverStateDateCalendar = $('#health_payment_details_start_calendar');
-			$paymentRadioGroup = $("#health_payment_details_type");
-			$frequencySelect = $("#health_payment_details_frequency");
-			$bankAccountDetailsRadioGroup = $("#health_payment_details_claims");
-			$sameBankAccountRadioGroup = $("#health_payment_bank_claims");
-
-			// Containers
-			$updatePremiumButtonContainer = $(".health-payment-details_update");
-			$paymentContainer = $("#update-content");
-
-
-			$premiumContainer = $(".health-payment-details_premium");
-			$priceCell = $premiumContainer.find(".amount");
-			$frequncyCell = $premiumContainer.find(".frequencyText");
-			$lhcCell = $premiumContainer.find(".lhcText");
-
+			initFields();
 
 			// Add event listeners
 			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockPaymentStep(obj) {
@@ -69,27 +53,43 @@
 				enableUpdatePremium();
 			});
 
-			meerkat.messaging.subscribe(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM, resetState);
-
 			meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_RESET, function jeStepChange(step){
-				resetState();
 				resetSettings();
 			});
 
-			$paymentRadioGroup.find('input').on('change', updateFrequencySelectOptions);
-
-			// validate coupon
-			$('#update-premium').on('click', function(){
-				meerkat.modules.coupon.validateCouponCode($('.coupon-code-field').val());
+			$paymentCalendar.on('changeDate', function updateThePremiumOnCalendar(){
+				updatePremium();
 			});
 
-			// reset state when change coupon code to bring update premium button back
-			$('.coupon-code-field').on('change', resetState);
+			$('#health_payment_details-selection .dateinput-tripleField input').on('change', function updateThePremiumOnInput(){
+				updatePremium();
+			});
 
-			// Update premium button
-			$('#update-premium').on('click', updatePremium);
+			var validateCoupon = function() {
+				var couponInput = $('.coupon-code-field').val();
+				if(currentCoupon === false || currentCoupon !== couponInput) {
+					currentCoupon = couponInput;
+					meerkat.modules.coupon.validateCouponCode(currentCoupon);
+				}
+			};
 
-			$('#health_payment_credit_type').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
+			$paymentRadioGroup.find('input').on('click', function() {
+				togglePaymentGroups();
+				toggleClaimsBankAccountQuestion();
+				// validate coupon
+				validateCoupon();
+				_.defer(function delayPaymentUpdate(){
+					updatePaymentPremium();
+				});
+			});
+
+			$('#health_coupon_code').blur(validateCoupon);
+
+			$frequencySelect.on('change', function updateSidebarQuote(){
+				updateProductFrequency();
+				updatePaymentDayOptions();
+			});
+
 			meerkat.modules.healthCreditCard.setCreditCardRules();
 
 			// show pay claims into bank account question (and supporting section).
@@ -118,25 +118,32 @@
 			resetSettings();
 
 			// Set Dom state
-			$premiumContainer.hide();
-			$updatePremiumButtonContainer.show();
 			$paymentContainer.hide();
 
 		});
 	}
 
-	// Reset the step
-	function resetState(){
+	function initFields() {
+		$paymentRadioGroup = $("#health_payment_details_type");
+		$frequencySelect = $("#health_payment_details_frequency");
+		$bankAccountDetailsRadioGroup = $("#health_payment_details_claims");
+		$sameBankAccountRadioGroup = $("#health_payment_bank_claims");
+		$paymentMethodLHCText = $('.changes-premium .lhcText');
+		$bankSection = $('.health_payment_bank-selection');
+		$creditCardSection = $('.health_payment_credit-selection');
+		$paymentCalendar = $('#health_payment_details_start');
 
-		$premiumContainer.hide();
-		$updatePremiumButtonContainer.show();
-		$paymentContainer.hide();
-		$(".health_declaration-group").hide();
-		$("#confirm-step").hide();
-		$(".simples-dialogue-31").hide();
+		// Containers
+		$paymentContainer = $(".update-content");
+	}
 
-		$('#update-premium').removeClass("hasAltPremium"); // TODO WORK OUT ALT PREMIUM STUFF
-
+	// Need this function because healthGeneralFunctions destroys the event bindings via renderFields() whereas the old version only updates the dropdown
+	function rebindCreditCardRules() {
+		if (meerkat.site.isCallCentreUser === true) {
+			$('#health_payment_credit_type').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
+		} else {
+			$('.health-credit_card_details-type input').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
+		}
 	}
 
 	// Settings should be reset when the selected product changes.
@@ -152,7 +159,7 @@
 
 		// Clear start date
 
-		$("#health_payment_details_start").val('');
+		$paymentCalendar.val('');
 
 		// Clear payment method selection
 		$paymentRadioGroup.find('input').prop('checked', false).change();
@@ -186,7 +193,7 @@
 	}
 
 	function getSelectedFrequency(){
-		return $frequencySelect.val();
+		return (!_.isEmpty($frequencySelect.val()) ? $frequencySelect.val() : Results.getFrequency());
 	}
 
 	function setCoverStartRange(min, max){
@@ -220,64 +227,21 @@
 
 	// Show approved listings only, this can potentially change per fund
 	function updateFrequencySelectOptions(){
-
-		var paymentMethod = getSelectedPaymentMethod();
-		var selectedFrequency = getSelectedFrequency();
 		var product = meerkat.modules.healthResults.getSelectedProduct();
 
-		var _html = '<option id="health_payment_details_frequency_" value="">Please choose...</option>';
+		if (!_.isEmpty(product) && !_.isEmpty(product.paymentTypePremiums)) {
+            product.paymentNode = getPaymentMethodNode();
+            product._selectedFrequency = getSelectedFrequency();
+			var htmlTemplate = _.template($('#payment_frequency_options').html());
+			var options = htmlTemplate(product);
 
-		if(paymentMethod === '' || product === null){
-			return false;
+			$frequencySelect.empty().append(options);
+			updateLHCText(product);
 		}
-
-		var method;
-
-		if(paymentMethod === 'cc'){
-			method = settings.credit;
-		}else if(paymentMethod === 'ba'){
-			method = settings.bank;
-		}else{
-			return false;
-		}
-
-		var premium = product.premium;
-
-		if( method.weekly === true && premium.weekly.value > 0 ){
-			_html += '<option id="health_payment_details_frequency_W" value="weekly">Weekly</option>';
-		}
-
-		if( method.fortnightly === true && premium.fortnightly.value > 0 ){
-			_html += '<option id="health_payment_details_frequency_F" value="fortnightly">Fortnightly</option>';
-		}
-
-		if( method.monthly === true && premium.monthly.value > 0 ){
-			_html += '<option id="health_payment_details_frequency_M" value="monthly">Monthly</option>';
-		}
-
-		if( method.quarterly === true && premium.quarterly.value > 0 ){
-			_html += '<option id="health_payment_details_frequency_Q" value="quarterly">Quarterly</option>';
-		}
-
-		if( method.halfyearly === true && premium.halfyearly.value > 0 ){
-			_html += '<option id="health_payment_details_frequency_H" value="halfyearly">Half-yearly</option>';
-		}
-
-		if( method.annually === true && premium.annually.value > 0){
-			_html += '<option id="health_payment_details_frequency_A" value="annually">Annually</option>';
-		}
-
-		$frequencySelect.html( _html ).find('option[value="'+ selectedFrequency +'"]').attr('selected', 'SELECTED');
 	}
-
-
 
 	// Update premium button
 	function enableUpdatePremium() {
-		// Enable button, hide spinner
-		var $button = $('#update-premium');
-		$button.removeClass('disabled');
-
 		// Enable the other premium-related inputs
 		// Ignore fields that were specifically disabled by funds' rules.
 		var $paymentSection = $('#health_payment_details-selection');
@@ -288,15 +252,10 @@
 		// Non-inline datepicker
 		//$('#health_payment_details_start').parent().addClass('input-group').find('.input-group-addon').removeClass('hidden');
 		// Inline datepicker
-		$('#health_payment_details_start').parent().find('.datepicker').children().css('visibility', 'visible');
-
-		meerkat.modules.loadingAnimation.hide($button);
+		$paymentCalendar.parent().find('.datepicker').children().css('visibility', 'visible');
 	}
 
 	function disableUpdatePremium(isSameSource, disableFields) {
-		// Disable button, show spinner
-		var $button = $('#update-premium');
-		$button.addClass('disabled');
 
 		if(disableFields === true){
 			// Disable the other premium-related inputs
@@ -309,20 +268,14 @@
 			// Non-inline datepicker
 			//$('#health_payment_details_start').parent().removeClass('input-group').find('.input-group-addon').addClass('hidden');
 			// Inline datepicker
-			$('#health_payment_details_start').parent().find('.datepicker').children().css('visibility', 'hidden');
+			$paymentCalendar.parent().find('.datepicker').children().css('visibility', 'hidden');
 		}
 
-		if (isSameSource === true) {
-			meerkat.modules.loadingAnimation.showAfter($button);
-		}
 	}
 
 	// Calls the server for a new premium price based on current selections.
 	function updatePremium() {
 
-		if( meerkat.modules.journeyEngine.isCurrentStepValid() === false){
-			return false;
-		}
 		// fire the tracking call
 		var data = {
 			actionStep: ' health application premium update'
@@ -342,11 +295,11 @@
 
 					// Sometimes the date selected by the user is not actually available, show message.
 					var notAvailableHtml =
-									'<p>Unfortunately this policy is not currently available. Please select another policy or call our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">'+meerkat.site.content.callCentreHelpNumber+'</span> for assistance.</p>' +
-									'<div class="col-sm-offset-4 col-xs-12 col-sm-4">' +
-										'<a class="btn btn-next btn-block" id="select-another-product" href="javascript:;">Select Another Product</a>' +
-										'<a class="btn btn-cta btn-block visible-xs" href="tel:'+meerkat.site.content.callCentreHelpNumber+'">Call Us Now</a>' +
-									'</div>';
+						'<p>Unfortunately this policy is not currently available. Please select another policy or call our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">'+meerkat.site.content.callCentreHelpNumber+'</span> for assistance.</p>' +
+						'<div class="col-sm-offset-4 col-xs-12 col-sm-4">' +
+						'<a class="btn btn-next btn-block" id="select-another-product" href="javascript:;">Select Another Product</a>' +
+						'<a class="btn btn-cta btn-block visible-xs" href="tel:'+meerkat.site.content.callCentreHelpNumber+'">Call Us Now</a>' +
+						'</div>';
 
 					modalId = meerkat.modules.dialogs.show({
 						title: 'Policy not available',
@@ -358,25 +311,15 @@
 						meerkat.modules.journeyEngine.gotoPath('results');
 					});
 				}else{
-
 					if (_.isArray(data)) data = data[0];
 
-					// Update selected product
-					meerkat.modules.healthResults.setSelectedProduct(data, true);
-
-					// Show premium, hide update premium button
-					$premiumContainer.slideDown();
-					$updatePremiumButtonContainer.hide();
+                    // Update selected product
+					updateProductObject(data);
 
 					// Show payment input questions
 					$paymentContainer.show();
-					if(getSelectedPaymentMethod() === 'cc' ) {
-						$('#health_payment_credit-selection').slideDown();
-						$('#health_payment_bank-selection').hide();
-					} else {
-						$('#health_payment_bank-selection').slideDown();
-						$('#health_payment_credit-selection').hide();
-					}
+
+					togglePaymentGroups();
 
 					// Show declaration checkbox
 					$(".health_declaration-group").slideDown();
@@ -397,8 +340,88 @@
 				}
 
 				meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthPaymentStep' });
+
+				setDefaultFields();
 			});
 		});
+	}
+
+	function togglePaymentGroups() {
+		if(getSelectedPaymentMethod() === 'cc' ) {
+			$bankSection.slideUp('slow', function(){
+				$creditCardSection.slideDown();
+			});
+		} else {
+			$creditCardSection.slideUp('slow', function(){
+				$bankSection.slideDown();
+			});
+		}
+	}
+
+	function updatePaymentPremium() {
+		var product = meerkat.modules.healthResults.getSelectedProduct();
+
+		if (!_.isEmpty(product)) {
+			updateFrequencySelectOptions();
+			updateProductObject(product);
+		}
+	}
+
+	function updateProductFrequency() {
+		var product = meerkat.modules.healthResults.getSelectedProduct();
+		updateProductObject(product);
+		updateLHCText(product);
+	}
+
+	function updateProductObject(product) {
+		// due to the new model, need to reset the premium node
+		product.paymentNode = getPaymentMethodNode();
+		product.premium = product.paymentTypePremiums[product.paymentNode];
+		product._selectedFrequency = getSelectedFrequency();
+
+        meerkat.modules.healthResults.setSelectedProduct(product, true);
+	}
+
+	function getPaymentMethodNode(){
+		var nodeName = '';
+
+		switch (getSelectedPaymentMethod()) {
+			case 'cc':
+				var label = $paymentRadioGroup.find('label.active').text().trim();
+
+				if (label == 'Credit Card') {
+					nodeName = 'CreditCard';
+				} else {
+					nodeName = 'Invoice';
+				}
+				break;
+			default: nodeName = 'BankAccount'; break;
+		}
+
+		return nodeName;
+	}
+
+	function updateLHCText(product) {
+		var lhcText = "";
+
+		if (product.paymentTypePremiums[product.paymentNode] && product.paymentTypePremiums[product.paymentNode][product._selectedFrequency]) {
+			lhcText = product.paymentTypePremiums[product.paymentNode][product._selectedFrequency].pricing;
+		}
+
+		$paymentMethodLHCText.html(lhcText);
+	}
+
+	function setDefaultFields() {
+		// default values are sent over when the premium is loaded for the first time on this page
+		// and the code below essentially sets the visual aspect of the payment page.
+		if (_.isEmpty($paymentCalendar.val())) {
+			$paymentCalendar.datepicker("update", new Date());
+		}
+
+		if (!$("#health_payment_details_type_cc").is(':checked')) {
+			// had to revert this back to a trigger as fund messaging wasn't being set otherwise
+			$paymentRadioGroup.find('input').filter('[value=ba]').trigger('click');
+		}
 	}
 
 	// Check if details for the claims bank account needs to be shown
@@ -437,7 +460,6 @@
 		}
 
 	}
-
 
 	// What day would you like your payment deducted?
 	function updatePaymentDayOptions() {
@@ -490,12 +512,16 @@
 
 	meerkat.modules.register("healthPaymentStep", {
 		init: initHealthPaymentStep,
+		initFields: initFields,
 		events: moduleEvents,
 		getSetting: getSetting,
 		overrideSettings: overrideSettings,
 		setCoverStartRange: setCoverStartRange,
 		getSelectedFrequency: getSelectedFrequency,
-		getSelectedPaymentMethod: getSelectedPaymentMethod
+		getSelectedPaymentMethod: getSelectedPaymentMethod,
+		updatePremium: updatePremium,
+		getPaymentMethodNode: getPaymentMethodNode,
+		rebindCreditCardRules: rebindCreditCardRules
 	});
 
 })(jQuery);

@@ -174,8 +174,8 @@
 			$fromDateInput = $("#travel_dates_fromDate");
 			$toDateInput = $("#travel_dates_toDate");
 
-			$fromDateInput.datepicker({ orientation: "top left", numberOfMonths: 2, allowHeaderStyling: true});
-			$toDateInput.datepicker({ orientation: "top left", numberOfMonths: 2, allowHeaderStyling: true });
+			$fromDateInput.datepicker({ orientation: "bottom", numberOfMonths: 1, allowHeaderStyling: true});
+			$toDateInput.datepicker({ orientation: "bottom", numberOfMonths: 1, allowHeaderStyling: true });
 
 			initDatePickers();
 			initDateEvents();

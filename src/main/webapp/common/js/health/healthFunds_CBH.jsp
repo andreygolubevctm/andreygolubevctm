@@ -15,6 +15,7 @@ CBHS (Commbank)
 var healthFunds_CBH = {
 	processOnAmendQuote: true,
 	ajaxJoinDec: false,
+	$paymentStartDate: $("#health_payment_details_start"),
 
 	set: function() {
 		<%-- Custom questions: Eligibility --%>
@@ -206,6 +207,9 @@ var healthFunds_CBH = {
 			$('#health_application_optInEmail-group').after('<c:out value="${html}" escapeXml="false" />');
 		}
 
+		<%--allow weekend selection from the datepicker--%>
+		healthFunds_CBH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+		
 		<%-- Run these if not loading a quote --%>
 		if (!$('body').hasClass('injectingFund')) {
 
@@ -238,14 +242,14 @@ var healthFunds_CBH = {
 			});
 
 			$('#health_payment_details_frequency').on('change.CBH', function() {
-				$('.health_bank-details_policyDay-message').html('');
+				$('.health_payment_bank-details_policyDay-message').html('');
 				if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
 					switch (meerkat.modules.healthPaymentStep.getSelectedFrequency()) {
 						case 'fortnightly':
-							$('.health_bank-details_policyDay-message').html('Fortnightly payments will be deducted on a Thursday.');
+							$('.health_payment_bank-details_policyDay-message').html('Fortnightly payments will be deducted on a Thursday.');
 							break;
 						case 'monthly':
-							$('.health_bank-details_policyDay-message').html('Monthly payments will be deducted on the 15th of each month.');
+							$('.health_payment_bank-details_policyDay-message').html('Monthly payments will be deducted on the 15th of each month.');
 							break;
 					}
 				}
@@ -295,7 +299,7 @@ var healthFunds_CBH = {
 			$('#health_payment_details-selection p.CBH').remove();
 
 			$('#health_payment_details_frequency').off('change.CBH');
-			$('.health_bank-details_policyDay-message').html('');
+			$('.health_payment_bank-details_policyDay-message').html('');
 
 			<%-- Load join dec into label --%>
 			if (healthFunds_CBH.ajaxJoinDec) {

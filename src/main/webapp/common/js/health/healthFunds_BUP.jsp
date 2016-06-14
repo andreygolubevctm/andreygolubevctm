@@ -10,7 +10,9 @@ BUP
 =======================
 --%>
 var healthFunds_BUP = {
-
+	$paymentType : $('#health_payment_details_type input'),
+	$paymentFrequency : $('#health_payment_details_frequency'),
+	$paymentStartDate: $("#health_payment_details_start"),
 set: function () {
 	"use strict";
 
@@ -32,29 +34,16 @@ set: function () {
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':false, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 
-		<%-- Payment Day --%>
-		$('#update-premium').on('click.BUP', function() {
-			var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
-			if (freq == 'fortnightly') {
-				var deductionText = "Your initial payment will be one month's premium and a fortnightly amount thereafter. Your account will be debited within the next 24 hours.";
-			} else {
-				var deductionText = 'Your account will be debited within the next 24 hours.';
-			};
+		healthFunds_BUP.$paymentType.on('change.BUP', function updatePaymentMsgPaymentType(){
+			healthFunds_BUP.updateMessage();
+		});
 
-			healthFunds._payments = { 'min':6, 'max':7, 'weekends':false };
+		healthFunds_BUP.$paymentFrequency.on('change.BUP', function updatePaymentMsgFrequency(){
+			healthFunds_BUP.updateMessage();
+		});
 
-			var date = new Date();
-			var _html = meerkat.modules.healthPaymentDay.paymentDays(meerkat.modules.dateUtils.dateValueFormFormat(date));
-			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-			meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
-
-			<%-- Select the only option --%>
-			$('.health-credit-card_details-policyDay').prop('selectedIndex',1);
-			$('.health-bank_details-policyDay').prop('selectedIndex',1);
-			<%-- Change the deduction rate --%>
-
-			$('.health_credit-card-details_policyDay-message').text( deductionText);
-			$('.health_bank-details_policyDay-message').text(deductionText);
+		healthFunds_BUP.$paymentStartDate.on("changeDate.BUP", function updatePaymentMsgCalendar(e) {
+			healthFunds_BUP.updateMessage();
 		});
 
 		<%-- credit card options --%>
@@ -68,6 +57,30 @@ set: function () {
 	meerkat.modules.healthDependants.setMaxAge(25);
 	meerkat.modules.healthDependants.updateConfig({showMiddleName: true});
 
+	},
+	updateMessage: function() {
+		var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
+		if (freq == 'fortnightly') {
+			var deductionText = "Your initial payment will be one month's premium and a fortnightly amount thereafter. Your account will be debited within the next 24 hours.";
+		} else {
+			var deductionText = 'Your account will be debited within the next 24 hours.';
+		};
+
+		healthFunds._payments = { 'min':6, 'max':7, 'weekends':false };
+		healthFunds_BUP.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
+
+		var date = new Date();
+		var _html = meerkat.modules.healthPaymentDay.paymentDays(meerkat.modules.dateUtils.dateValueFormFormat(date));
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
+
+		<%-- Select the only option --%>
+		$('.health_payment_credit_details-policyDay').prop('selectedIndex',1);
+		$('.health_payment_bank_details-policyDay').prop('selectedIndex',1);
+		<%-- Change the deduction rate --%>
+
+		$('.health_payment_credit-details_policyDay-message').text( deductionText);
+		$('.health_payment_bank-details_policyDay-message').text(deductionText);
 	},
 	unset: function () {
 		"use strict";
@@ -98,9 +111,12 @@ set: function () {
 		meerkat.modules.healthPaymentIPP.hide();
 
 		<%-- selections for payment date --%>
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), false);
-		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-		$('#update-premium').off('click.BUP');
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
+
+		healthFunds_BUP.$paymentType.off('change.BUP');
+		healthFunds_BUP.$paymentFrequency.off('change.BUP');
+		healthFunds_BUP.$paymentStartDate.off("changeDate.BUP");
 
 		$('.bup-payment-legend').remove();
 	}

@@ -8,10 +8,10 @@ body > div > header {
 
 	//The header needs to take up space, lest the content be hidden underneath by accident once the header is position fixed or docking.
 	min-height: @navbar-height; //XS
-	@media all and (min-width: @screen-sm) {
+	@media(@sm) {
 		min-height: @header-min-height-sm; //SM
 	}
-	@media all and (min-width: @screen-md) {
+	@media(@md) {
 		min-height: @header-min-height-md; //MD and LG
 	}
 

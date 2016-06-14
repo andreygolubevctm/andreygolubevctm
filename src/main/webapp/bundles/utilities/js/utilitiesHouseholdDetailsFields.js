@@ -170,6 +170,8 @@
             var provider = json[i];
             providerList += "<option value=\"" + provider.id + "\">" + provider.name + "</option>";
         }
+        
+        providerList += "<option value=\"Other\">I don't know/Other</option>";
 
         $input.html(providerList);
     }
@@ -259,12 +261,9 @@
         }
     }
 
-    /**
-     * Not actually for blocked IPs, but if their state has no providers. Kept same id for styling.
-     */
     function showErrorOccurred() {
         meerkat.modules.dialogs.show({
-            htmlContent: $('#blocked-ip-address')[0].outerHTML
+            htmlContent: $('#no-quote-available')[0].outerHTML
         });
 
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {

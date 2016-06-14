@@ -155,6 +155,8 @@ ${newPage.init(pageContext.request, pageSettings)}
         </c:if>
     </c:if>
 
+	<snippets:benchmarketing />
+
 	<div class="navMenu-row">
 
 	<!-- body content -->
@@ -197,10 +199,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 							<jsp:invoke fragment="header_button_left" />
 
-							<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenu" data-target=".navbar-collapse-menu">
+							<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
 								<span class="sr-only">Toggle Navigation</span>
 								<span class="icon icon-reorder"></span>
-								<span class="icon icon-cross"></span>
 							</button>
 							<c:set var="exitUrl" value="" />
 							<c:if test="${pageSettings.hasSetting('exitUrl')}">

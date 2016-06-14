@@ -277,7 +277,7 @@ var LifeQuote = {
 				prod.thumb = prod.company.toLowerCase().replace(" ", "_") + ".png";
 				
 				if(prod.company !== "ozicare") {
-					prod.pds = "pds/life/" + decodeURI(prod.pds.split("/").pop()).replace(/ /g, "_");
+					prod.pds = "/static/pds/life/" + decodeURI(prod.pds.split("/").pop()).replace(/ /g, "_");
 				}
 
 				return prod;

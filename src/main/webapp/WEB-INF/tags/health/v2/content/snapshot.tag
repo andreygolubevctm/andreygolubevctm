@@ -37,7 +37,7 @@
         </div>
         <div class="col-md-7">
             <span class="snapshot-items hidden-xs hidden-sm">
-                <span data-source="#health_situation_healthSitu"></span>
+                <span data-source=".health-situation-healthSitu" data-type="radiogroup"></span>
             </span>
         </div>
     </div>

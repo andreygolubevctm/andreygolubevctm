@@ -251,8 +251,7 @@
 
 	function applyEventListeners($this) {
 		var entryName = getEntryName ($this);
-
-		entryName.on("blur", function() {
+		entryName.on("keyup blur", function() {
 
 			// Strip out any non numbers
 			entryName.val( $.trim( entryName.val().replace(/[^\d.-]/g, '') ) );

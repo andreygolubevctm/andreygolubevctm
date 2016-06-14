@@ -34,6 +34,7 @@ import com.ctm.web.health.model.results.HealthApplicationResult;
 import com.ctm.web.health.model.results.HealthResultWrapper;
 import com.ctm.web.health.model.results.ResponseError;
 import com.ctm.web.health.services.HealthApplyService;
+import com.ctm.web.health.services.HealthConfirmationService;
 import com.ctm.web.health.services.HealthLeadService;
 import com.ctm.web.health.services.ProviderContentService;
 import com.ctm.web.simples.services.TransactionService;
@@ -71,16 +72,15 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
 
     private final JoinService joinService = new JoinService();
 
-    private final ProviderContentService providerContentService = new ProviderContentService();
-
     private final TransactionAccessService transactionAccessService = new TransactionAccessService();
 
-    private final ConfirmationService confirmationService = new ConfirmationService();
 
     private final LeadService leadService = new HealthLeadService(IPAddressHandler.getInstance());
+    private final HealthConfirmationService healthConfirmationService;
 
     public HealthApplicationRouter() {
         super(new SessionDataServiceBean(), IPAddressHandler.getInstance());
+        healthConfirmationService = new HealthConfirmationService(new ProviderContentService(), new ConfirmationService());
     }
 
     @POST
@@ -133,7 +133,7 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
 
             final Data dataBucket = getDataBucket(context, data.getTransactionId());
 
-            createAndSaveConfirmation(context, data, response, confirmationId, dataBucket);
+            healthConfirmationService.createAndSaveConfirmation(context.getHttpServletRequest(), data, response, confirmationId, dataBucket);
 
             // TODO: add competition entry
 
@@ -247,31 +247,6 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
                         .map(HealthQuote::getContactDetails)
                         .map(ContactDetails::getEmail)
                         .orElseThrow(() -> new NotFoundException("Email not found")));
-    }
-
-    private void createAndSaveConfirmation(MessageContext context, HealthRequest data, HealthApplicationResponse response, String confirmationId, Data dataBucket) throws DaoException, ConfigSettingException, JsonProcessingException {
-        final String productSelected = StringUtils.removeEnd(
-                StringUtils.removeStart(dataBucket.getString("confirmation/health"), "<![CDATA["),
-                "]]>");
-
-        final ConfirmationData confirmationData = new ConfirmationData(data.getTransactionId().toString(),
-                LocalDate.parse(data.getQuote().getPayment().getDetails().getStart(), AUS_FORMAT),
-                Frequency.fromCode(data.getQuote().getPayment().getDetails().getFrequency()).name(),
-                providerContentService.getProviderContentText(context.getHttpServletRequest(), data.getQuote().getApplication().getProviderName(), "ABT"),
-                providerContentService.getProviderContentText(context.getHttpServletRequest(), data.getQuote().getApplication().getProviderName(), "NXT"),
-                productSelected,
-                response.getProductId());
-
-        Confirmation confirmation = new Confirmation();
-        confirmation.setKey(confirmationId);
-        confirmation.setTransactionId(data.getTransactionId());
-        confirmation.setXmlData(ObjectMapperUtil.getXmlMapper().writeValueAsString(confirmationData));
-
-        try {
-            confirmationService.addConfirmation(confirmation);
-        } catch (Exception e) {
-            LOGGER.warn("Failed to add confirmation {}", kv("confirmationId", confirmationId), e);
-        }
     }
 
     private void writePolicyNoToTransactionDetails(@FormParam("") HealthRequest data, HealthApplicationResponse response) {

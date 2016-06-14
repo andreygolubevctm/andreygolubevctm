@@ -269,6 +269,7 @@
 
             // Hide pagination
             $('header .slide-feature-pagination, header a[data-results-pagination-control]').addClass('hidden');
+            meerkat.modules.coupon.triggerPopup();
         });
 
         // If error occurs, go back in the journey
@@ -415,15 +416,6 @@
                     $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
                 });
 
-             coverType = $('#health_situation_coverType').val();
-
-            if(coverType === 'E') {
-                $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');
-            }
-            if(coverType === 'H') {
-                $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
-            }
-
         });
 
         // When the excess filter changes, fetch new results
@@ -532,6 +524,7 @@
         meerkat.modules.health.loadRates(function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health').done(function () {
+                Results.updateStaticBranch();
                 Results.updateAggregatorEnvironment();
                 Results.get();
             });
@@ -607,24 +600,25 @@
 
         selectedProduct = product;
 
-        // Set hidden fields with selected product info.
-        var $_main = $('#mainform');
-        if (product === null) {
-            $_main.find('.health_application_details_provider').val("");
-            $_main.find('.health_application_details_productId').val("");
-            $_main.find('.health_application_details_productNumber').val("");
-            $_main.find('.health_application_details_productTitle').val("");
-            $_main.find('.health_application_details_providerName').val("");
+        // if updating premium, no need to write quote and update the dom as the product info isn't changing
+        if (premiumChangeEvent === true) {
+            meerkat.messaging.publish(moduleEvents.healthResults.PREMIUM_UPDATED, selectedProduct);
         } else {
-            $_main.find('.health_application_details_provider').val(selectedProduct.info.provider);
-            $_main.find('.health_application_details_productId').val(selectedProduct.productId);
-            $_main.find('.health_application_details_productNumber').val(selectedProduct.info.productCode);
-            $_main.find('.health_application_details_productTitle').val(selectedProduct.info.productTitle);
-            $_main.find('.health_application_details_providerName').val(selectedProduct.info.providerName);
-
-            if (premiumChangeEvent === true) {
-                meerkat.messaging.publish(moduleEvents.healthResults.PREMIUM_UPDATED, selectedProduct);
+            // Set hidden fields with selected product info.
+            var $_main = $('#mainform');
+            if (product === null) {
+                $_main.find('.health_application_details_provider').val("");
+                $_main.find('.health_application_details_productId').val("");
+                $_main.find('.health_application_details_productNumber').val("");
+                $_main.find('.health_application_details_productTitle').val("");
+                $_main.find('.health_application_details_providerName').val("");
             } else {
+                $_main.find('.health_application_details_provider').val(selectedProduct.info.provider);
+                $_main.find('.health_application_details_productId').val(selectedProduct.productId);
+                $_main.find('.health_application_details_productNumber').val(selectedProduct.info.productCode);
+                $_main.find('.health_application_details_productTitle').val(selectedProduct.info.productTitle);
+                $_main.find('.health_application_details_providerName').val(selectedProduct.info.providerName);
+
                 meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
 
                 if(!meerkat.site.skipResultsPopulation) {
@@ -635,18 +629,16 @@
                     $targetProduct.addClass("active");
                     Results.pagination.gotoPosition(targetPosition, true, false);
                 }
+
+                // update transaction details otherwise we will have to wait until people get to payment page
+                meerkat.modules.writeQuote.write({
+                    health_application_provider: selectedProduct.info.provider,
+                    health_application_productId: selectedProduct.productId,
+                    health_application_productName: selectedProduct.info.productCode,
+                    health_application_productTitle: selectedProduct.info.productTitle
+                }, false);
             }
-
-            // update transaction details otherwise we will have to wait until people get to payment page
-            meerkat.modules.writeQuote.write({
-                health_application_provider: selectedProduct.info.provider,
-                health_application_productId: selectedProduct.productId,
-                health_application_productName: selectedProduct.info.productCode,
-                health_application_productTitle: selectedProduct.info.productTitle
-            }, false);
-
         }
-
     }
 
     function resetSelectedProduct() {

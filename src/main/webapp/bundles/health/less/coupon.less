@@ -11,29 +11,32 @@
   .highResImg('../graphics/coupon/200-eftpos-card.png'; '../graphics/coupon/200-eftpos-card@2x.png'; 280px; 177px);
 }
 
-.healthX00eftpos {
+.healthBlankeftpos {
   width: 280px;
   height: 177px;
-  .highResImg('../graphics/coupon/blank-eftpos-card.png'; '../graphics/coupon/blank-eftpos-card@2x.png'; 280px; 177px);
+  .highResImg('../graphics/coupon/blank-eftpos-card-modal.png'; '../graphics/coupon/blank-eftpos-card-modal@2x.png'; 264px; 167px);
 }
 
-img.affixed-tile {
-  display: none
-}
-
-.resultsContainer.featuresMode {
-  .compare-basket {
-    &.tile-enabled {
-      p {
-        display: none;
+.fieldset-column-side,
+#results-sidebar {
+  .coupon-tile-container {
+    padding: 0;
+    a {
+      display: block;
+      padding: 20px 15px;
+      margin-bottom: 1em;
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      background: @theme-tertiary;
+      img {
+        margin-bottom: 10px;
       }
-    }
-  }
-
-  &.affixed-compact {
-    .compare-basket {
-      &.tile-enabled {
-        bottom: 0;
+      p {
+        font-size: 16px;
+      }
+      .more-info {
+        text-decoration: underline;
       }
     }
   }
@@ -44,50 +47,48 @@ img.affixed-tile {
     font-family: @font-family-theme-bold;
     font-size: 24px;
   }
+
+  .coupon-msg {
+    padding-top: 10px;
+  }
+
+  margin-top: 0px;
+
+  a {
+    text-decoration: underline;
+    font-size: 14px;
+  }
 }
-// HLT-3066 promotion
-.resultsContainer.featuresMode {
-  .compare-basket {
-    &.tile-enabled {
-      img {
-        display: none;
-      }
-      width: 100%;
-      background-repeat: no-repeat;
-      background-position: top left;
-      @media (@sm-only) {
-        background-image: url('../graphics/coupon/100-promotion-tile-sm.jpg');
-        height: 200px;
-      }
-      @media (@md-only) {
-        background-image: url('../graphics/coupon/100-promotion-tile-md.jpg');
-        height: 200px;
-      }
-      @media (@lg-only) {
-        background-image: url('../graphics/coupon/100-promotion-tile.jpg');
-        height: 197px;
+
+// hard code this for now unless we change the design.
+@coupon-banner-height: 40px;
+@media (@xs-only) {
+  body.couponShown {
+    &[data-step="results"] {
+      padding-top: @navbar-height + @coupon-banner-height;
+
+      .xs-results-pagination {
+        top: @navbar-height + @page-offset-xs + @coupon-banner-height;
       }
     }
   }
+}
 
-  &.affixed-compact {
-    .compare-basket {
-      &.tile-enabled {
-        display: block;
-        @media (@sm-only) {
-          background-image: url('../graphics/coupon/100-promotion-tile-affixed-sm.jpg');
-          height: 120px;
-          width: 178px;
-        }
-        @media (@md-only) {
-          background-image: url('../graphics/coupon/100-promotion-tile-affixed-md.jpg');
-          height: 130px;
-        }
-        @media (@lg-only) {
-          background-image: url('../graphics/coupon/100-promotion-tile-affixed.jpg');
-          height: 130px;
-        }
-      }
-    }
+@media(@sm-only) {
+  .coupon-confirmation-image {
+    background-size: 200px 125px;
+    width: 200px;
+    height: 125px;
+  }
+}
+
+@media(@xs-only) {
+  .coupon-confirmation {
+    text-align:center;
+  }
+
+  .coupon-confirmation-image {
+    width: 100%;
+    background-position: center;
   }
 }
