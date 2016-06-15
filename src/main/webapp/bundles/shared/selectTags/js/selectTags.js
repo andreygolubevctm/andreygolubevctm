@@ -121,14 +121,16 @@
                         .hide()
                         .hover(function onSelectTagHoverIn() {
                             $(this).addClass('hover');
+                            $(this).find('button').addClass('icon-cross');
+
                         }, function onSelectTagHoverOut() {
                             $(this).removeClass('hover');
+                            $(this).find('button').removeClass('icon-cross');
                         })
                         .append(
                             $('<button>')
-                                .html('&times;')
                                 .attr('type', 'button')
-                                .addClass('btn')
+                                .addClass('btn icon icon-tick')
                                 .on('click', function onClickRemoveTagCallback() {
                                     _onRemoveListItem(this);
                                 })

@@ -11,11 +11,11 @@ ul.selected-tags {
 		border: 2px solid @theme-secondary;
 		border-radius: @border-radius-base;
 		float: left;
-		padding: 4px 10px;
+		padding: 0 0 0 10px;
 		color: @theme-secondary;
 		margin: 8px 8px 0 0;
 		font-size: 14px;
-		position: relative;
+		line-height: 24px;
 		
 		span {
 			padding-top: 3px;
@@ -25,15 +25,12 @@ ul.selected-tags {
 		
 		button {
 			margin-left: 10px;
-			border-radius: 0 @border-radius-small @border-radius-small 0;
+			border-radius: 0 0 0 0;
 			color: #fff;
 			background: transparent;
-			background: rgba(255,255,255,0);
-			padding: 6px 8px;
-			display: none;
-			position: absolute;
-			top: -2px;
-			right: -22px;
+			background: @theme-secondary;
+			padding: 4px 6px;
+			float: right;
 			
 			&:focus {
 				outline: none;
@@ -43,7 +40,6 @@ ul.selected-tags {
 		&.hover {
 			color: #a90000;
 			border-color: #a90000;
-			margin-right: 30px;
 
 			button {
 				background: #a90000;
