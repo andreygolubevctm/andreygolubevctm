@@ -127,13 +127,13 @@
                             $(this).removeClass('hover');
                             $(this).find('button').removeClass('icon-cross');
                         })
+                        .on('click', function onClickRemoveTagCallback() {
+                            _onRemoveListItem(this);
+                        })
                         .append(
                             $('<button>')
                                 .attr('type', 'button')
                                 .addClass('btn icon icon-tick')
-                                .on('click', function onClickRemoveTagCallback() {
-                                    _onRemoveListItem(this);
-                                })
                         )
                         .fadeIn(fadeSpeed, function selectTagFadeIn() {
                             _updateHiddenInputs();
