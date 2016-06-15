@@ -119,6 +119,11 @@
                         .data('fulltext', selectedText)
                         .addClass('selected-tag')
                         .hide()
+                        .hover(function onSelectTagHoverIn() {
+                            $(this).addClass('hover');
+                        }, function onSelectTagHoverOut() {
+                            $(this).removeClass('hover');
+                        })
                         .append(
                             $('<button>')
                                 .html('&times;')
@@ -126,11 +131,6 @@
                                 .addClass('btn')
                                 .on('click', function onClickRemoveTagCallback() {
                                     _onRemoveListItem(this);
-                                })
-                                .hover(function onSelectTagHoverIn() {
-                                    $(this).parents('li').addClass('hover');
-                                }, function onSelectTagHoverOut() {
-                                    $(this).parents('li').removeClass('hover');
                                 })
                         )
                         .fadeIn(fadeSpeed, function selectTagFadeIn() {
@@ -144,7 +144,7 @@
 
     function _onRemoveListItem(listItem) {
         var $this = $(listItem),
-            $select = $this.closest('.row').prev('.select-tags-row').find(':input'),
+            $select = $this.closest('.row').find(':input'),
             $listItem = $this.closest('li'),
             value = $listItem.data('value'),
             text = $listItem.data('fulltext');
@@ -190,7 +190,7 @@
     }
 
     function getListElement($el) {
-        return $el.closest('.row').next(selectedTagsListClass + '-row').find(selectedTagsListClass);
+        return $el.closest('.row').parent().find(selectedTagsListClass);
     }
 
     function getItemsSelected(index) {
