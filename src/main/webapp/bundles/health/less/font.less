@@ -48,7 +48,6 @@
 
 .benefitClass(@class, @labelClass, @content) {
 	.@{class} label,
-    div.@{class},
 	li.@{class} {
 		& when not (@labelClass = '') {
 			.@{labelClass}:before {
@@ -104,7 +103,8 @@
 }
 
 .benefitsIcons,
-.healthBenefits{
+.healthBenefits,
+.flexi-extras-icons{
 	.styleBenefits('');
 }
 

@@ -32,27 +32,27 @@ var healthFunds_HBF = {
                         <div class="flexi-message">You have selected <span class="flexi-selected text-tertiary"></span> of your <span class="flexi-available text-tertiary">4</span> <span class="text-tertiary">available</span> extras cover inclusions, <strong class="text-warning"><span class="flexi-remaining"></span> more selections remaining</strong></div>
                         <div class="flexi-message-complete hidden">You have selected all of your <span class="flexi-available">4</span> available extras cover inclusions.</div>
 
-                        <div class="flexi-extras-icons benefitsIcons">
-                            <div class="flexi-icon HLTicon-general-dental" data-value="GDL"><field_v2:help_icon helpId="269" /><br />General Dental</div>
-                            <div class="flexi-icon HLTicon-major-dental"  data-value="MDL"><field_v2:help_icon helpId="555" /><br />Major Dental</div>
-                            <div class="flexi-icon HLTicon-optical" data-value="OPT"><field_v2:help_icon helpId="273" /><br />Optical</div>
-                            <div class="flexi-icon HLTicon-eye-therapy non-saver" data-value="EYT"><field_v2:help_icon helpId="294" /><br />Eye Therapy</div>
-                            <div class="flexi-icon HLTicon-podiatry" data-value="POD"><field_v2:help_icon helpId="556" /><br />Podiatry</div>
-                            <div class="flexi-icon HLTicon-physiotherapy" data-value="PHY"><field_v2:help_icon helpId="274" /><br />Physiotherapy</div>
-                            <div class="flexi-icon HLTicon-exercise-physiology non-saver" data-value="EXP"><field_v2:help_icon helpId="559" /><br />Exercise Physiology</div>
-                            <div class="flexi-icon HLTicon-chiropractor" data-value="CHI"><field_v2:help_icon helpId="275" /><br />Chiropractic</div>
-                            <div class="flexi-icon HLTicon-osteopathy"  data-value="OST"><field_v2:help_icon helpId="562" /><br />Osteopathy</div>
-                            <div class="flexi-icon HLTicon-non-pbs-pharm" data-value="PHA"><field_v2:help_icon helpId="283" /><br />Pharmacy</div>
-                            <div class="flexi-icon HLTicon-remedial-massage" data-value="REM"><field_v2:help_icon helpId="279" /><br />Remedial Massage</div>
-                            <div class="flexi-icon HLTicon-speech-therapy non-saver" data-value="SPT"><field_v2:help_icon helpId="297" /><br />Speech Therapy</div>
-                            <div class="flexi-icon HLTicon-occupational-therapy non-saver" data-value="OCT"><field_v2:help_icon helpId="296" /><br />Occupational Therapy</div>
-                            <div class="flexi-icon HLTicon-psychology non-saver" data-value="PSY"><field_v2:help_icon helpId="280" /><br />Psychology</div>
-                            <div class="flexi-icon HLTicon-naturopathy non-saver" data-value="NAT"><field_v2:help_icon helpId="278" /><br />Natural Therapies</div>
-                            <div class="flexi-icon HLTicon-dietetics non-saver" data-value="NTN"><field_v2:help_icon helpId="561" /><br />Nutritionist</div>
-                            <div class="flexi-icon HLTicon-hearing-aids non-saver" data-value="APP"><field_v2:help_icon helpId="558" /><br />Appliances</div>
-                            <div class="flexi-icon HLTicon-lifestyle-products non-saver" data-value="HLP"><field_v2:help_icon helpId="293" /><br />Lifestyle Products</div>
-                            <div class="flexi-icon HLTicon-ambulance" data-value="UAM"><field_v2:help_icon helpId="557" /><br />Urgent Ambulance</div>
-                        </div>
+                        <ul class="flexi-extras-icons">
+                            <li class="flexi-icon HLTicon-general-dental" data-value="GDL"><field_v2:help_icon helpId="269" /><br />General Dental</li>
+                            <li class="flexi-icon HLTicon-major-dental"  data-value="MDL"><field_v2:help_icon helpId="555" /><br />Major Dental</li>
+                            <li class="flexi-icon HLTicon-optical" data-value="OPT"><field_v2:help_icon helpId="273" /><br />Optical</li>
+                            <li class="flexi-icon HLTicon-eye-therapy non-saver" data-value="EYT"><field_v2:help_icon helpId="294" /><br />Eye Therapy</li>
+                            <li class="flexi-icon HLTicon-podiatry" data-value="POD"><field_v2:help_icon helpId="556" /><br />Podiatry</li>
+                            <li class="flexi-icon HLTicon-physiotherapy" data-value="PHY"><field_v2:help_icon helpId="274" /><br />Physiotherapy</li>
+                            <li class="flexi-icon HLTicon-exercise-physiology non-saver" data-value="EXP"><field_v2:help_icon helpId="559" /><br />Exercise Physiology</li>
+                            <li class="flexi-icon HLTicon-chiropractor" data-value="CHI"><field_v2:help_icon helpId="275" /><br />Chiropractic</li>
+                            <li class="flexi-icon HLTicon-osteopathy"  data-value="OST"><field_v2:help_icon helpId="562" /><br />Osteopathy</li>
+                            <li class="flexi-icon HLTicon-non-pbs-pharm" data-value="PHA"><field_v2:help_icon helpId="283" /><br />Pharmacy</li>
+                            <li class="flexi-icon HLTicon-remedial-massage" data-value="REM"><field_v2:help_icon helpId="279" /><br />Remedial Massage</li>
+                            <li class="flexi-icon HLTicon-speech-therapy non-saver" data-value="SPT"><field_v2:help_icon helpId="297" /><br />Speech Therapy</li>
+                            <li class="flexi-icon HLTicon-occupational-therapy non-saver" data-value="OCT"><field_v2:help_icon helpId="296" /><br />Occupational Therapy</li>
+                            <li class="flexi-icon HLTicon-psychology non-saver" data-value="PSY"><field_v2:help_icon helpId="280" /><br />Psychology</li>
+                            <li class="flexi-icon HLTicon-naturopathy non-saver" data-value="NAT"><field_v2:help_icon helpId="278" /><br />Natural Therapies</li>
+                            <li class="flexi-icon HLTicon-dietetics non-saver" data-value="NTN"><field_v2:help_icon helpId="561" /><br />Nutritionist</li>
+                            <li class="flexi-icon HLTicon-hearing-aids non-saver" data-value="APP"><field_v2:help_icon helpId="558" /><br />Appliances</li>
+                            <li class="flexi-icon HLTicon-lifestyle-products non-saver" data-value="HLP"><field_v2:help_icon helpId="293" /><br />Healthy living programs</li>
+                            <li class="flexi-icon HLTicon-ambulance" data-value="UAM"><field_v2:help_icon helpId="557" /><br />Urgent Ambulance</li>
+                        </ul>
                         <field_v2:validatedHiddenField xpath="health/application/hbf/flexiextras" additionalAttributes=' data-rule-flexiExtras="true"' />
                     </form_v2:fieldset>
                 </c:set>
