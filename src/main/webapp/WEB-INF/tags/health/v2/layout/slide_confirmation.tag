@@ -13,46 +13,17 @@
 <layout_v1:slide formId="confirmationForm" className="displayBlock">
 
 	<layout_v1:slide_content>
-		<div id="confirmation" class="more-info-content"></div>
+		<div id="confirmation"></div>
 	</layout_v1:slide_content>
 
 </layout_v1:slide>
 
-<%-- TEMPLATES --%>
-	<%-- Logo and prices template --%>
-    <core_v1:js_template id="logo-template"><health_v3:logo_template /></core_v1:js_template>
-    <core_v1:js_template id="price-template"><health_v3:price_template /></core_v1:js_template>
-
 	<%-- Main page template --%>
 	<script id="confirmation-template" type="text/html">
 
-		<layout_v1:slide_columns>
+		<layout_v1:slide_columns colSize="12" sideHidden="true">
 
 			<jsp:attribute name="rightColumn">
-
-				<div class="hidden-xs">
-					<health_v1:policySummary showProductDetails="true" />
-				</div>
-
-				<div class="row">
-					<div class="col-xs-12">
-						{{ if((obj.promo && promo.promoText) || (obj.promotion && promotion.specialOffer.summary)) { }}
-							<div class="confirmation">
-								<h2 class="text-hospital">Promotions &amp; Offers</h2>
-								{{= obj.promo ? promo.promoText : promotion.specialOffer.summary }}
-							</div>
-						{{ } }}
-
-						{{ if(!about) { className="displayNone"; }  else { className="displayBlock"; } }}
-						<div class="{{= className }} confirmation">
-							<h2 class="text-hospital">About the fund</h2>
-							<span class="aboutFund">{{= about }}</span>
-						</div>
-					</div>
-				</div>
-
-				<coupon:confirmation transactionId="${transactionId}" />
-				<health_v1:competition_jeep />
 
 			</jsp:attribute>
 
@@ -61,128 +32,47 @@
 				<layout_v1:slide_content >
 
 					<form_v3:fieldset legend="" className="confirmation">
+						{{ var fundName = info.providerName ? info.providerName : info.fundName }}
+						{{ var personName = typeof firstName !== 'undefined' && typeof lastName !== 'undefined' ? "Well done <span>" + firstName + " " + lastName + "</span>,<br />": '' }}
+						<div class="row confirmation-complete">
+							<div class="col-sm-8 col-xs-12">
+								{{ if ( typeof pending !== "undefined" && pending ) { }}
+									<h1 class="pending">Your application is being processed.</h1>
+									<p>Thanks for comparing with <content:get key="brandDisplayName"/>. If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></strong>.
+								{{ } else if( whatsNext ) { }}
+									<h1 class="success">Congratulations!</h1>
+								{{ } }}
 
-						<div id="health_confirmation-warning">
-							<div class="fundWarning alert alert-danger">
-								<%-- insert fund warning data --%>
+								<p>{{= personName }}
+								Your Application has been submitted to <span>{{= fundName }}</span> for processing.</p>
+
+								<p>Your transaction number is <span>{{= transID }}</span>.</p>
+
+								<p>Thank you for comparing <span>Health Insurance</span> with <content:get key="boldedBrandDisplayName"/></p>
 							</div>
-						</div>
-
-						{{ if ( typeof pending !== "undefined" && pending ) { }}
-							<h2 class="pending">Your application is being processed.</h2>
-							<p>Thanks for comparing with <content:get key="brandDisplayName"/>. If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></strong>.
-						{{ } else if( whatsNext ) { }}
-							<h2 class="success">Success!</h2>
-							<p>Your health insurance application is complete and has been submitted to <span class="providerName">{{= info.providerName ? info.providerName : info.fundName }}</span> for processing. Thanks for comparing with <content:get key="brandDisplayName"/>.</p>
-							<p>If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></strong>.
-						{{ } }}
-
-						<div class="moreInfoMainDetails">
-
-							<div class="productSummary horizontal visible-xs clearfix">
-
-
-								{{ var priceTemplate = $("#price-template").html(); }}
-								{{ var logoTemplate = $("#logo-template").html(); }}
-								{{ var priceHtmlTemplate = _.template(priceTemplate); }}
-								{{ var logoHtmlTemplate = _.template(logoTemplate); }}
-								{{ obj.htmlString = logoHtmlTemplate(obj) + priceHtmlTemplate(obj); }}
-								{{= htmlString }}
-
-								<h1 class="productName">{{= info.title ? info.title : info.productTitle }}</h1>
+							<div class="col-sm-4 col-xs-12"><coupon:confirmation transactionId="${transactionId}" /></div>
+							{{ if(typeof providerInfo !== 'undefined') { }}
+							<div class="fundDetails">
+								<div class="col-xs-12">
+									<p>For any questions, contact {{= fundName }} via any of the methods below</p>
+								</div>
+								<!-- leveraging existing styles -->
+								<div class="col-xs-4 companyLogo {{= info.provider }}-mi" ></div>
+								<div class="col-xs-8">
+									{{ if(!_.isEmpty(providerInfo.phoneNumber)) { }}<p class="phoneNumber">{{= providerInfo.phoneNumber }}</p>{{ } }}
+									{{ if(!_.isEmpty(providerInfo.email)) { }}<p>{{= providerInfo.email }}</p>{{ } }}
+									{{ if(!_.isEmpty(providerInfo.website)) { }}<p>{{= providerInfo.website }}</p>{{ } }}
+								</div>
 							</div>
-
+							{{ } }}
 						</div>
-
-						<p>Your reference number is <span class="transactionID">{{= transID }}</span></p>
-
-						{{ if( whatsNext ) { }}
-							<h2 class="text-hospital">Your application has been submitted to {{= info.providerName ? info.providerName : info.fundName }} for processing. This is what happens next...</h2>
-							{{= whatsNext }}
-						{{ } }}
-
-						<div class="row">
-
-							{{ if(typeof hospitalCover !== 'undefined') { }}
-
-								<div class="col-xs-6">
-
-									{{ if(hospitalCover.inclusions.length > 0) { }}
-									<h2 class="text-hospital">Hospital Benefits</h2>
-										{{ if((obj.promo && promo.hospitalPDF) || (obj.promotion && promotion.hospitalPDF)) { }}
-											<div class="brochureLinks">
-												<p>
-													<a href="${pageSettings.getBaseUrl()}{{= obj.promo ? promo.hospitalPDF : promotion.hospitalPDF }}" target="_blank" class="btn btn-download">Download Hospital Brochure</a>
-												</p>
-											</div>
-										{{ } }}
-										<h5>You are covered for:</h5>
-										<ul class="indent">
-											{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
-											<li>{{= inclusion.name }}</li>
-											{{ }) }}
-										</ul>
-									{{ } }}
-
-									{{ if(hospitalCover.restrictions.length > 0) { }}
-										<h5>You have restricted cover for:</h5>
-										<ul class="indent">
-											{{ _.each(hospitalCover.restrictions, function(restriction){ }}
-											<li>{{= restriction.name }}</li>
-											{{ }) }}
-										</ul>
-										<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
-									{{ } }}
-
-								</div>
-
-							{{ } }}
-
-							{{ if(typeof extrasCover !== 'undefined') { }}
-
-								<div class="col-xs-6">
-									{{ if(extrasCover.inclusions.length > 0) { }}
-									<h2 class="text-extras">Extras Benefits</h2>
-										{{ if((obj.promo && promo.extrasPDF) || (obj.promotion && promotion.extrasPDF)) { }}
-											<div class="brochureLinks">
-												<p>
-													<a href="${pageSettings.getBaseUrl()}{{= obj.promo ? promo.extrasPDF : promotion.extrasPDF }}" target="_blank" class="btn btn-download">Download Extras Brochure</a>
-												</p>
-											</div>
-										{{ } }}
-										<h5>You are covered for:</h5>
-										<ul class="indent">
-											{{ _.each(extrasCover.inclusions, function(inclusion){ }}
-											<li>{{= inclusion.name }}</li>
-											{{ }) }}
-										</ul>
-										<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
-									{{ } }}
-								</div>
-
-							{{ } }}
-
-						</div>
-
-						{{ if(typeof hospitalCover !== 'undefined') { }}
-
-							{{ if(hospitalCover.exclusions.length > 0) { }}
-								<div class="row moreInfoExclusions">
-									<div class="col-xs-12">
-										<h5 class="text-hospital">Your Hospital Exclusions:</h5>
-										<ul class="exclusions">
-											{{ _.each(hospitalCover.exclusions, function(exclusion){ }}
-											<li><span class="icon-cross" />{{= exclusion.name }}</li>
-											{{ }) }}
-										</ul>
-									</div>
-								</div>
-							{{ } }}
-
-						{{ } }}
 
 						<simples:dialogue id="41" vertical="health" className="yellow" />
 
+					</form_v3:fieldset>
+
+					<form_v3:fieldset legend="">
+						<confirmation:other_products heading="More ways to compare" copy="Find more ways to save with comparethemarket.com.au bu selecting any of the insurance or utilities below." ignore="fuel,roadside"  />
 					</form_v3:fieldset>
 
 				</layout_v1:slide_content>

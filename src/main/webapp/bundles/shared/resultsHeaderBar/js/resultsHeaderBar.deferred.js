@@ -41,7 +41,7 @@
         // Self-initialise
         $(document).on('resultsLoaded', registerEventListeners);
 
-        if (meerkat.modules.journeyEngine.getCurrentStep().navigationId == 'results') {
+        if (meerkat.modules.journeyEngine.getCurrentStep() && meerkat.modules.journeyEngine.getCurrentStep().navigationId == 'results') {
             registerEventListeners();
         }
         meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function (eventObject) {

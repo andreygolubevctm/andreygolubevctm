@@ -49,7 +49,11 @@
         var $_icons = $('#health_payment_credit-selection .cards');
         $_icons.children().hide();
         var _html = '';
-        var _selected = $cardContainer.find('input').filter(':checked').val();
+        var _selected = $cardContainer.find(meerkat.site.isCallCentreUser ? 'option' : 'input').filter(':checked').val();
+
+        if( meerkat.site.isCallCentreUser ){
+            _html += setCreditCardObj('', 'Please choose...', _selected);
+        }
 
         if( config.visa === true ){
             _html += setCreditCardObj('v', 'Visa', _selected);
@@ -90,7 +94,13 @@
     }
 
     function _getCardType() {
-        var creditCard = $('.health-credit_card_details-type input').filter(":checked").val();
+        var creditCard;
+        if (meerkat.site.isCallCentreUser === true) {
+            creditCard = $('#health_payment_credit_type').find(':selected').val();
+        } else {
+            creditCard = $('.health-credit_card_details-type input').filter(":checked").val();
+        }
+
         /** default to empty string which is what the old dropdown did */
         return _.isEmpty(creditCard) ? '' : creditCard;
     }

@@ -100,7 +100,7 @@
     function toggleBenefits() {
         var $hospitalSection = $('.Hospital_container').closest('fieldset'),
             $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
-        $coverType.find('input').on('click', function selectCoverType() {
+        $coverType.find('input').on('change', function selectCoverType() {
             switch ($(this).val().toLowerCase()) {
                 case 'c':
                     $hospitalSection.slideDown();
@@ -311,9 +311,12 @@
 
     // reset benefits for devs when use product title to search
     function resetBenefitsForProductTitleSearch() {
-        if (meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi' || meerkat.site.environment === 'nxs') {
+        if (meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi' || meerkat.site.environment === 'nxs' || meerkat.site.environment === 'nxq') {
             if ($.trim($('#health_productTitleSearch').val()) !== '') {
                 resetBenefitsSelection(true);
+                $('#health_situation_coverType_C').trigger('click');
+                $('.hospitalCoverToggles a.benefit-category.active').removeClass("active");
+                setDefaultCover();
             }
         }
     }

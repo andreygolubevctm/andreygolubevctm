@@ -29,11 +29,16 @@
                 renderSnapshot();
             });
         });
+        meerkat.messaging.subscribe(meerkat.modules.events.RESULTS_SORTED, function renderSnapshotOnJourneyReadySubscription() {
+            _.defer(function() {
+                renderSnapshot();
+            });
+        });
     }
 
     function renderSnapshot() {
-        render();
         meerkat.modules.contentPopulation.render('.quoteSnapshot');
+        _.defer(render);
     }
 
     function showHide(data, selector, property, forceHide) {
@@ -84,12 +89,14 @@
         // Toggle benefits rows.
         showHide(data,'.quoteSnapshot .hospital','hospital', noData);
         showHide(data,'.quoteSnapshot .extras','extras', noData);
+
+        $('.quoteSnapshot').toggle(!noData && meerkat.modules.journeyEngine.getCurrentStepIndex() < 3);
     }
 
     function getData() {
         var coverFor = $("#health_situation_healthCvr").val();
         var livingIn = $("#health_situation_location").val();
-        var lookingTo = $("#health_situation_healthSitu").val();
+        var lookingTo = $.trim($("input[name=health_situation_healthSitu]").filter(":checked").closest('label').text());
         var coverType = $("#health_situation_coverType input:checked").parent().text();
         var tieredCoverType = $('#health_situation_coverType input').filter(":checked").val();
         var hospital = fetchAllHospitalCheckedValues(tieredCoverType);

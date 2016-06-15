@@ -89,7 +89,6 @@
 
 	<jsp:body>
 		<health_v2_layout:slide_confirmation />
-		<health_v1:dual_pricing_templates />
 	</jsp:body>
 
 </layout_v1:journey_engine_page>

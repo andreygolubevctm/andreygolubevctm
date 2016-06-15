@@ -100,6 +100,10 @@ fieldset > .content,
 		h2 {
 			font-size: 24px;
 		}
+
+		.btn {
+			white-space: normal;
+		}
 	}
 	.well-chatty {
 		margin-left: 14px;
@@ -198,6 +202,18 @@ body[data-step="apply"], body[data-step="payment"] {
 		&.callCentreHelp {display:block;}
 		&.testimonials {display:block;}
 		&.pricePromiseBox {display:block;}
+	}
+}
+
+/* Hide all the excess sidebar copy for callcentre users */
+body.callCentre {
+	.fieldset-column-side {
+		.sidebar-box.quoteSnapshot,
+		.sidebar-box.callCentreHelp,
+		.sidebar-box.testimonials,
+		.sidebar-box.pricePromiseBox {
+			display: none !important;
+		}
 	}
 }
 

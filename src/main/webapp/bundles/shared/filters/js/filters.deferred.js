@@ -12,7 +12,8 @@
             filters: {
                 FILTERS_UPDATED: "FILTERS_UPDATED",
                 FILTER_CHANGED: "FILTER_CHANGED",
-                FILTERS_CANCELLED: "FILTERS_CANCELLED"
+                FILTERS_CANCELLED: "FILTERS_CANCELLED",
+                FILTERS_RENDERED: "FILTERS_RENDERED"
             }
         },
         settings = {
@@ -153,6 +154,8 @@
 
         // Render the update template too.
         buildHtml('updates');
+
+        meerkat.messaging.publish(moduleEvents.filters.FILTERS_RENDERED);
     }
 
     function buildHtml(component) {

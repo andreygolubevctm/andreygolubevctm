@@ -23,21 +23,29 @@ section: Results v4
   // Make it look more like a true fieldset.
   .result-special-offer {
     margin-top: 20px;
-    @media(@lg) {
-      margin-top: 30px;
-    }
-    padding: 5px 10px;
-    @media(@md) {
-      padding: 10px 25px;
-    }
-
+    padding: 5px 5px;
     border: 1px solid #ccc;
     margin-bottom: 0;
     height: 100px;
     overflow-y: hidden;
-
     text-align: center;
     font-family: @font-family-theme-bold;
+    font-size: @font-size-small;
+    a.dialogPop{
+      .small;
+    }
+    @media(@sm-only) {
+      padding: 5px 2px;
+      font-size: 11px;
+      a.dialogPop{
+        font-size: 11px;
+      }
+    }
+    @media(@lg) {
+      margin-top: 30px;
+      font-size: @font-size-base;
+    }
+
     p {
       margin-bottom: 0;
     }

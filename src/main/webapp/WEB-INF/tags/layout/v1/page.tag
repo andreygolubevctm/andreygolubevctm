@@ -9,6 +9,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 <%@ attribute name="title"				required="false"  rtexprvalue="true"	 description="The title of the page" %>
 <%@ attribute name="skipJSCSS"	required="false"  rtexprvalue="true"	 description="Provide if wanting to exclude loading normal js/css (except jquery)" %>
+<%@ attribute required="false" name="body_class_name" description="Allow extra styles to be added to the rendered body tag" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -34,7 +35,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 <c:set var="superTagEnabled" value="${pageSettings.getSetting('superTagEnabled') eq 'Y'}" />
 <c:set var="DTMEnabled" value="${pageSettings.getSetting('DTMEnabled') eq 'Y'}" />
 <c:set var="GTMEnabled" value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />
-<c:set var="BenchMarketingScriptEnabled" value="${pageSettings.getSetting('BenchMarketingScriptEnabled') eq 'Y'}" />
 
 <c:set var="separateJS" value="${param.separateJS eq 'true'}"/>
 
@@ -138,9 +138,14 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<script src="${pageSettings.getSetting('DTMSourceUrl')}"></script>
 	</c:if>
 </c:if>
+
+<%-- There's a bug in the JSTL parser which eats up the spaces between dynamic classes like this so using c:out sorts it out --%>
+<c:set var="bodyClass">
+	<c:out value="${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''} ${body_class_name}" />
+</c:set>
 </head>
 
-	<body class="jeinit ${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''}">
+	<body class="jeinit  ${bodyClass}">
 
     <c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
         <c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
@@ -152,16 +157,7 @@ ${newPage.init(pageContext.request, pageSettings)}
         </c:if>
     </c:if>
 
-	<c:if test="${BenchMarketingScriptEnabled eq true}">
-		<script type="text/javascript">
-			(function(i,s,o,r,a,m){
-				var g = 'https://benchtag.co/benchmarketingsmarttag/get?357ebe653e68ec1c276f78c60897b23808e0b2092459a645a797ef03ea4e66ab';
-				i['TagObject']=r;i[r]=i[r]||function(){
-					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-						m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
-			})(window,document,'script','bs');
-		</script>
-	</c:if>
+	<snippets:benchmarketing />
 
 	<div class="navMenu-row">
 
@@ -332,6 +328,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							exit: '${exitUrl}',
 							context: '${pageSettings.getContextFolder()}'
 						},
+						isTaxTime: '<content:get key="taxTime"/>',
 						watchedFields: '<content:get key="watchedFields"/>',
 						content:{
 							brandDisplayName: '<content:get key="brandDisplayName"/>'

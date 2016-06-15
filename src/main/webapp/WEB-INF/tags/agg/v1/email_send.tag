@@ -59,6 +59,6 @@
 		${logger.warn('[sendYN] No email sent - Emails are not sent for this brand/vertical combo')}
 	</c:when>
 	<c:otherwise>
-		${logger.warn('[sendYN] No email sent - Value is not defind')}
+		${logger.warn('[sendYN] No email sent - No setting defined for this brand/vertical combo')}
 	</c:otherwise>
 </c:choose>

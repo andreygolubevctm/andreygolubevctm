@@ -285,8 +285,6 @@
             if (meerkat.site.isCallCentreUser) {
                 createPremiumsPopOver();
             }
-            // update preResultsRowSnapshot
-            meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
         });
 
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
@@ -296,6 +294,7 @@
 
             // Hide pagination
             $('.results-pagination').add('header a[data-results-pagination-control]').addClass('hidden');
+            meerkat.modules.coupon.triggerPopup();
         });
 
         // If error occurs, go back in the journey
@@ -314,6 +313,10 @@
                 meerkat.modules.healthResultsTemplate.toggleRemoveResultPagination();
                 // Setup scroll
                 Results.pagination.setupNativeScroll();
+                // render snapshot
+                meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
+                // turn off increment tranId
+                Results.settings.incrementTransactionId = false;
             });
             var tEnd = new Date().getTime();
             var tFetchFinish = (tEnd - tStart);
@@ -547,6 +550,7 @@
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health2016').done(function () {
                 Results.updateAggregatorEnvironment();
+                Results.updateStaticBranch();
                 Results.get();
             });
         });
@@ -560,6 +564,7 @@
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health2016').done(function () {
                 Results.updateAggregatorEnvironment();
+                Results.updateStaticBranch();
                 Results.get();
             });
         });

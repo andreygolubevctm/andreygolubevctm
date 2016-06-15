@@ -137,6 +137,12 @@
                       return true;
                     },
                     onComplete: function onSubmitComplete() {
+                      <%-- Set subreason if set --%>
+                      <c:set var="subreasonxpath" value="${fieldXpath}/subreason"/>
+                      <c:set var="subreasonval"><c:out value="${data[subreasonxpath]}" escapeXml="true"/></c:set>
+                      <c:if test="${fn:length(subreasonval) > 0}">
+                        $("#health_application_nhb_subreason").val('<c:out value="${subreasonval}" escapeXml="true"/>');
+                      </c:if>
                       return true;
                     }
                   });
@@ -144,6 +150,11 @@
                     $dropDown.val(originalKey).change();
                   }
                 });
+              }
+
+              var $eligibility = $('#health_application_nhb_eligibility');
+              if($eligibility.val() !== '') {
+                $eligibility.trigger('change');
               }
             }<%-- /injection --%>
 
@@ -155,7 +166,7 @@
                 var originalTitle = $("#health_application_primary_title").val();
                 <c:set var="html">
                   <c:set var="fieldXpath" value="health/application/primary/title" />
-                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow"  hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">
+                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow"  hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
                       <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title" additionalAttributes=" data-rule-genderTitle='true' " disableErrorContainer="${true}" />
                     </form_v2:row>
                   </c:set>
@@ -172,7 +183,7 @@
                 var originalTitle = $("#health_application_partner_title").val();
                 <c:set var="html">
                     <c:set var="fieldXpath" value="health/application/partner/title" />
-                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow" hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">
+                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow" hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
                         <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title" additionalAttributes=" data-rule-genderTitle='true' "  disableErrorContainer="${true}"/>
                     </form_v2:row>
                 </c:set>
@@ -230,7 +241,7 @@
               //meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
               meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',false);
 
-			  healthFunds_NHB.$paymentType.on('click.NHB', function renderPaymentDaysPaymentType(){
+			  healthFunds_NHB.$paymentType.on('change.NHB', function renderPaymentDaysPaymentType(){
 				healthFunds_NHB.renderPaymentDays();
 			});
 
@@ -264,8 +275,8 @@
 			healthFunds_NHB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 			
             var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
-            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);  
+            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
 		  },
           unset: function() {
             <%-- Custom questions - hide in case user comes back --%>
@@ -291,7 +302,7 @@
               healthFunds._dependants(false);
               meerkat.modules.healthDependants.resetConfig();
               healthFunds._reset();
-			  healthFunds_NHB.$paymentType.off('click.NHB');
+			  healthFunds_NHB.$paymentType.off('change.NHB');
 				healthFunds_NHB.$paymentFrequency.off('change.NHB');
 				healthFunds_NHB.$paymentStartDate.off("changeDate.NHB");
               meerkat.modules.paymentGateway.reset();
@@ -301,7 +312,7 @@
               $('#health_payment_details-selection p.NHB').remove();
 
               $('#health_payment_details_frequency').off('change.NHB');
-              $('.health_bank-details_policyDay-message').html('');
+              $('.health_payment_bank_details-policyDay-message').html('');
 
                 <%-- How to send information --%>
                 healthApplicationDetails.hideHowToSendInfo();
@@ -313,7 +324,7 @@
               <%-- lets undo the title massive values from nav --%>
               <c:set var="html">
                 <c:set var="fieldXpath" value="health/application/primary/title" />
-                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow"  hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">
+                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow"  hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
                   <field_v2:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' " disableErrorContainer="${true}"/>
                 </form_v2:row>
               </c:set>
@@ -324,7 +335,7 @@
               <%-- lets undo the partner title massive values from nav --%>
               <c:set var="html">
                 <c:set var="fieldXpath" value="health/application/partner/title" />
-                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow"  hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">
+                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow"  hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
                   <field_v2:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' " disableErrorContainer="${true}" />
                 </form_v2:row>
                 </c:set>

@@ -30,6 +30,8 @@
 		maxStartDate: ''
 	};
 
+	var currentCoupon = false;
+
 	function initHealthPaymentStep() {
 
 		$(document).ready(function(){
@@ -55,16 +57,33 @@
 				resetSettings();
 			});
 
+			$paymentCalendar.on('changeDate', function updateThePremiumOnCalendar(){
+				updatePremium();
+			});
+
+			$('#health_payment_details-selection .dateinput-tripleField input').on('change', function updateThePremiumOnInput(){
+				updatePremium();
+			});
+
+			var validateCoupon = function() {
+				var couponInput = $('.coupon-code-field').val();
+				if(currentCoupon === false || currentCoupon !== couponInput) {
+					currentCoupon = couponInput;
+					meerkat.modules.coupon.validateCouponCode(currentCoupon);
+				}
+			};
+
 			$paymentRadioGroup.find('input').on('click', function() {
 				togglePaymentGroups();
 				toggleClaimsBankAccountQuestion();
-
 				// validate coupon
-				meerkat.modules.coupon.validateCouponCode($('.coupon-code-field').val());
+				validateCoupon();
 				_.defer(function delayPaymentUpdate(){
 					updatePaymentPremium();
 				});
 			});
+
+			$('#health_coupon_code').blur(validateCoupon);
 
 			$frequencySelect.on('change', function updateSidebarQuote(){
 				updateProductFrequency();
@@ -110,8 +129,8 @@
 		$bankAccountDetailsRadioGroup = $("#health_payment_details_claims");
 		$sameBankAccountRadioGroup = $("#health_payment_bank_claims");
 		$paymentMethodLHCText = $('.changes-premium .lhcText');
-		$bankSection = $('#health_payment_bank-selection');
-		$creditCardSection = $('#health_payment_credit-selection');
+		$bankSection = $('.health_payment_bank-selection');
+		$creditCardSection = $('.health_payment_credit-selection');
 		$paymentCalendar = $('#health_payment_details_start');
 
 		// Containers
@@ -120,7 +139,11 @@
 
 	// Need this function because healthGeneralFunctions destroys the event bindings via renderFields() whereas the old version only updates the dropdown
 	function rebindCreditCardRules() {
-		$('.health-credit_card_details-type input').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
+		if (meerkat.site.isCallCentreUser === true) {
+			$('#health_payment_credit_type').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
+		} else {
+			$('.health-credit_card_details-type input').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
+		}
 	}
 
 	// Settings should be reset when the selected product changes.
