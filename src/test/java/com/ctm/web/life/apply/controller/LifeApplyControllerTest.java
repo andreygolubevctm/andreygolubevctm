@@ -2,30 +2,27 @@ package com.ctm.web.life.apply.controller;
 
 import com.ctm.apply.model.response.ApplyResponse;
 import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
-import com.ctm.web.core.exceptions.ServiceRequestException;
+import com.ctm.web.core.exceptions.ServiceException;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.test.controller.BaseControllerTest;
 import com.ctm.web.life.apply.services.LifeApplyService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Matchers.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -37,33 +34,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringApplicationConfiguration(classes = MockServletContext.class)
 @WebAppConfiguration
 @PrepareForTest({ApplicationService.class})
-public class LifeApplyControllerTest {
+public class LifeApplyControllerTest extends BaseControllerTest {
 
     @Mock
     LifeApplyService service;
-    @Mock
-    SessionDataServiceBean sessionDataServiceBean;
-    @Mock
-    ApplicationService applicationService;
-    @Mock
-    IPAddressHandler ipAddressHandler;
 
     @InjectMocks
     LifeApplyController controllerUnderTest;
-    private MockMvc mvc;
 
-    @Mock
-    private Data value;
     private Long transactionId = 100000L;
+
     @Mock
     private ApplyResponse applyResponse;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        when(sessionDataServiceBean.getDataForTransactionId(anyObject(), anyString(), anyBoolean())).thenReturn(value);
-        PowerMockito.mockStatic(ApplicationService.class);
-        mvc = MockMvcBuilders.standaloneSetup(controllerUnderTest).build();
+        setUp(controllerUnderTest);
     }
 
     @Test
@@ -89,7 +76,7 @@ public class LifeApplyControllerTest {
 
     @Test
     public void applyServiceRequestException() throws Exception {
-        ServiceRequestException e = new ServiceRequestException();
+        ServiceException e = new ServiceException("" , null);
         when(service.apply(anyObject() ,anyObject(), anyObject())).thenThrow(e);
         mvc.perform(
                 MockMvcRequestBuilders
