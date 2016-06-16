@@ -53,20 +53,17 @@ public class LifeEmailDataService {
             data.put(detail.getXPath(), detail.getTextValue());
         }
 
-
-        RankingDetail rankingDetail = null;
         try {
             List<RankingDetail> rankingDetails = rdDao.getDetailsByPropertyValue(transactionId, "company", "ozicare");
             RankingDetail rankingDetail = rankingDetails.get(0);
-            Map<String,String> rankingDetailProperties = rankingDetail.getProperties();
+            Map<String, String> rankingDetailProperties = rankingDetail.getProperties();
+            for (Map.Entry<String, String> property : rankingDetailProperties.entrySet()) {
+                String key = property.getKey();
+                Object value = property.getValue();
+                data.put("life/rankingDetails/" + key, value);
+            }
         } catch (DaoException e1) {
             LOGGER.error("Could not populate life email data object with ranking details {}", kv("transactionId", transactionId), e1);
-        }
-
-        for (Map.Entry<String, String> property : rankingDetailProperties.entrySet()) {
-            String key = property.getKey();
-            Object value = property.getValue();
-            data.put("life/rankingDetails/" + key, value);
         }
         Occupation occupation = oDao.getOccupation((String) data.get("life/primary/occupation"));
         data.put("life/primary/occupationName", occupation.getTitle());
