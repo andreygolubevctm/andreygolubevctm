@@ -2,9 +2,9 @@ package com.ctm.web.life.apply.response;
 
 public class LifeApplyWebResponseResults {
 
-    private Selection selection;
-    private boolean success;
-    private Long transactionId;
+    private final Selection selection;
+    private final boolean success;
+    private final Long transactionId;
 
     private LifeApplyWebResponseResults(Builder builder) {
         selection = builder.selection;

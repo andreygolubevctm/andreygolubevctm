@@ -25,7 +25,7 @@ public class LifeEmailDataService {
 
     private final RankingDetailsDao rdDao;
     private final OccupationsDao oDao;
-    protected TransactionDetailsDao tdDao;
+    private final TransactionDetailsDao tdDao;
 
     @Autowired
     public LifeEmailDataService(RankingDetailsDao rdDao, TransactionDetailsDao tdDao, OccupationsDao oDao) {
@@ -53,16 +53,15 @@ public class LifeEmailDataService {
             data.put(detail.getXPath(), detail.getTextValue());
         }
 
-        List<RankingDetail> rankingDetails = null;
 
+        RankingDetail rankingDetail = null;
         try {
-            rankingDetails = rdDao.getDetailsByPropertyValue(transactionId, "company", "ozicare");
+            List<RankingDetail> rankingDetails = rdDao.getDetailsByPropertyValue(transactionId, "company", "ozicare");
+            RankingDetail rankingDetail = rankingDetails.get(0);
+            Map<String,String> rankingDetailProperties = rankingDetail.getProperties();
         } catch (DaoException e1) {
             LOGGER.error("Could not populate life email data object with ranking details {}", kv("transactionId", transactionId), e1);
         }
-
-        RankingDetail rankingDetail = rankingDetails.get(0);
-        Map<String,String> rankingDetailProperties = rankingDetail.getProperties();
 
         for (Map.Entry<String, String> property : rankingDetailProperties.entrySet()) {
             String key = property.getKey();

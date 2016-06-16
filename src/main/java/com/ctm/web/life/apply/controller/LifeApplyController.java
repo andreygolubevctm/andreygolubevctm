@@ -34,7 +34,7 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 public class LifeApplyController extends CommonQuoteRouter<LifeApplyWebRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(LifeApplyController.class);
 
-    LifeApplyService lifeService;
+    private final LifeApplyService lifeService;
 
     @Autowired
     public LifeApplyController(SessionDataServiceBean sessionDataServiceBean,

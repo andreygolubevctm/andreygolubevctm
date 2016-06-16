@@ -95,7 +95,7 @@ public class LifeApplyService {
         return new LifeApplyWebResponse.Builder().results(responseBuilder.build()).build();
 	}
 
-    public LifeApplyResponse submit(LifeApplyWebRequest model, Brand brand, OzicareApplyServiceRequestAdapter requestAdapter, Object applyRequest,
+    private LifeApplyResponse submit(LifeApplyWebRequest model, Brand brand, OzicareApplyServiceRequestAdapter requestAdapter, Object applyRequest,
                                     String endpoint, boolean isOzicare) throws ServiceException {
         LifeApplyResponse applyResponse;
         boolean isTest = false;

@@ -20,9 +20,9 @@ public class LifeApplyCompleteService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LifeApplyCompleteService.class);
 
-    private AccessTouchService accessTouchService;
-    private LeadFeedTouchService leadFeedTouchService;
-    private LifeSendEmailService lifeSendEmailService;
+    private final AccessTouchService accessTouchService;
+    private final LeadFeedTouchService leadFeedTouchService;
+    private final LifeSendEmailService lifeSendEmailService;
 
     @Autowired
     public LifeApplyCompleteService(AccessTouchService accessTouchService,
