@@ -160,7 +160,6 @@ var ResultsModel = {
 			error: function(jqXHR, txt, errorThrown) {
 				var jsonResult = {};
 				try {
-					jqXHR.responseText;
 					jsonResult = $.parseJSON(jqXHR.responseText);
 				} catch (error) {}
                 Results.model.ajaxRequest = false;
