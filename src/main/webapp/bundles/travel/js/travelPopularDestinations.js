@@ -46,7 +46,7 @@
         })
         .done(function onSuccess(json) {
             var popularCountriesTemplate = _.template($("#travel-popular-countries-template").html());
-            $destinationsfs.find('.content').prepend(popularCountriesTemplate(json));
+            $destinationsfs.find('.content > div:first-child').after(popularCountriesTemplate(json));
             eventSubscriptions();
         })
         .fail(function onError(obj, txt, errorThrown) {
