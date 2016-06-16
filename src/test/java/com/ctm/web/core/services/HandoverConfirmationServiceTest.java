@@ -15,8 +15,6 @@ import java.util.Map;
 
 import static com.ctm.web.core.model.Touch.TouchType.SOLD;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class HandoverConfirmationServiceTest {

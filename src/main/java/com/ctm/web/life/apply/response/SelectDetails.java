@@ -1,8 +1,8 @@
 package com.ctm.web.life.apply.response;
 
 public class SelectDetails {
-    String pds;
-    String info_url; //NOPMD
+    final String pds;
+    final String info_url; //NOPMD
 
     private SelectDetails(Builder builder) {
         pds = builder.pds;

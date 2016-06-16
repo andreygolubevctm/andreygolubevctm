@@ -32,7 +32,7 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
     private final ApplicationService applicationService;
     private final LifeEmailDataService lifeEmailDataService;
 	private String optInMailingName;
-    private ServiceConfigurationServiceBean serviceConfigurationService;
+    private final ServiceConfigurationServiceBean serviceConfigurationService;
 
 	public LifeEmailService(PageSettings pageSettings,
                             EmailMode emailMode,

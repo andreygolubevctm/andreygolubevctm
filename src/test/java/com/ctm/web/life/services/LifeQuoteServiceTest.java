@@ -3,7 +3,6 @@ package com.ctm.web.life.services;
 import com.ctm.data.common.TestMariaDbBean;
 import com.ctm.web.core.competition.services.CompetitionService;
 import com.ctm.web.core.dao.ProviderFilterDao;
-import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.Vertical;
@@ -25,8 +24,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)

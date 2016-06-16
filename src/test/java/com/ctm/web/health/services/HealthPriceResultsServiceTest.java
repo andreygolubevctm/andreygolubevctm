@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 public class HealthPriceResultsServiceTest {

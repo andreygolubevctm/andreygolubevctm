@@ -1,25 +1,20 @@
 package com.ctm.web.life.services;
 
 import com.ctm.life.quote.model.request.LifeQuoteRequest;
-import com.ctm.web.car.model.request.CarRequest;
-import com.ctm.web.car.quote.model.response.CarResponse;
 import com.ctm.web.core.competition.services.CompetitionService;
 import com.ctm.web.core.content.services.ContentService;
-import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.exceptions.ServiceException;
 import com.ctm.web.core.model.CompetitionEntry;
 import com.ctm.web.core.model.settings.Brand;
-import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.*;
 import com.ctm.web.life.form.model.*;
 import com.ctm.web.life.form.response.model.LifeResultsWebResponse;
 import com.ctm.web.life.model.LifeQuoteResponse;
 import com.ctm.web.life.quote.adapter.LifeQuoteServiceRequestAdapter;
 import com.ctm.web.life.quote.adapter.LifeQuoteServiceResponseAdapter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.LIFE;
 
 @Component
@@ -51,7 +45,7 @@ public class LifeQuoteService {
         this.requestService = requestService;
     }
 
-    public LifeResultsWebResponse getQuotes(LifeQuoteWebRequest request, Brand brand) throws DaoException, IOException, ServiceConfigurationException {
+    public LifeResultsWebResponse getQuotes(LifeQuoteWebRequest request, Brand brand)  {
         LifeQuoteRequest serviceRequest = requestAdapter.adapt(request);
         final LifeQuoteResponse response = requestService.sendQuoteRequest(brand, LIFE, "quoteServiceBER", request,
                 serviceRequest, LifeQuoteResponse.class);

@@ -9,7 +9,6 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.web.go.Data;
 import org.junit.Before;

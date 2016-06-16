@@ -3,7 +3,6 @@ package com.ctm.web.life.services;
 import com.ctm.web.core.exceptions.EnvironmentException;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.RestClient;
-import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.life.quote.adapter.LifeQuoteServiceRequestAdapter;
 import com.ctm.web.life.quote.adapter.LifeQuoteServiceResponseAdapter;

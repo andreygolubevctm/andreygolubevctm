@@ -1,8 +1,8 @@
 package com.ctm.web.life.apply.response;
 
 public class Selection {
-    SelectDetails partner;
-    SelectDetails client;
+    private final SelectDetails partner;
+    private final SelectDetails client;
 
     private Selection(Builder builder) {
         partner = builder.partner;

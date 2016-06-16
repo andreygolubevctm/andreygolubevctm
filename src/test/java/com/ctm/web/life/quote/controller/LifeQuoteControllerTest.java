@@ -3,7 +3,6 @@ package com.ctm.web.life.quote.controller;
 import com.ctm.apply.model.response.ApplyResponse;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.test.controller.BaseControllerTest;
 import com.ctm.web.life.services.LifeQuoteService;
@@ -23,7 +22,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.powermock.api.mockito.PowerMockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(PowerMockRunner.class)

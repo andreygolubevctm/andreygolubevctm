@@ -139,8 +139,7 @@ public class Premium {
             return false;
         if (stars != null ? !stars.equals(premium.stars) : premium.stars != null) return false;
         if (value != null ? !value.equals(premium.value) : premium.value != null) return false;
-        if (pds != null ? !pds.equals(premium.pds) : premium.pds != null) return false;
-        return info != null ? info.equals(premium.info) : premium.info == null;
+        return pds != null ? pds.equals(premium.pds) : premium.pds == null && (info != null ? info.equals(premium.info) : premium.info == null);
 
     }
 

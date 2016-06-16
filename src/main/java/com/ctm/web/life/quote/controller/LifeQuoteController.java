@@ -1,12 +1,7 @@
 package com.ctm.web.life.quote.controller;
 
-import com.ctm.web.core.competition.services.CompetitionService;
-import com.ctm.web.core.content.services.ContentService;
-import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
-import com.ctm.web.core.exceptions.ServiceException;
-import com.ctm.web.core.model.CompetitionEntry;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
@@ -18,7 +13,6 @@ import com.ctm.web.life.form.response.model.LifeResultsWebResponse;
 import com.ctm.web.life.services.LifeQuoteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Optional;
-
-import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 @Api(basePath = "/rest/life", value = "Life Quote")
 @RestController

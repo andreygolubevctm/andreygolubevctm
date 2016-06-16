@@ -81,12 +81,11 @@ public class AGISLeadFromRequest {
 			lead.setPartnerReference(data.get("lead/leadNumber").toString());
 
 			// Call Lead Feed Service
-			LeadFeedData leadDataPack = lead;
 			LifeLeadFeedService service = new LifeLeadFeedService(new BestPriceLeadsDao());
-			if(policySold == true) {
-				output = service.policySold(leadDataPack);
+			if(policySold) {
+				output = service.policySold(lead);
 			} else {
-				output = service.callMeBack(leadDataPack);
+				output = service.callMeBack(lead);
 			}
 		} catch (Exception e) {
 			LOGGER.error("[lead feed] Failed creating new lead feed {}, {}, {}", kv("pageSettings", pageSettings),
