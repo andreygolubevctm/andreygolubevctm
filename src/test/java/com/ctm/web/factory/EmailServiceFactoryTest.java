@@ -7,6 +7,7 @@ import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.email.services.HealthEmailService;
+import com.ctm.web.life.dao.OccupationsDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,10 +19,15 @@ public class EmailServiceFactoryTest {
 
     @Mock
 	private IPAddressHandler ipHandler;
+	@Mock
+	private OccupationsDao occupationsDao;
 
-    @Before
+	private EmailServiceFactory emailServiceFactory;
+
+	@Before
     public void setUp() throws Exception {
         initMocks(this);
+		 emailServiceFactory = new EmailServiceFactory(occupationsDao, ipHandler);
     }
 
     @Test
@@ -29,7 +35,7 @@ public class EmailServiceFactoryTest {
 		PageSettings pageSettings = TestUtils.getCTMHealthPageSettings();
 		EmailMode mode = EmailMode.BEST_PRICE;
 		Data data = new Data();
-		EmailServiceHandler emailServiceHandler = EmailServiceFactory.newInstance(pageSettings, mode, data, ipHandler);
+		EmailServiceHandler emailServiceHandler = emailServiceFactory.newInstance(pageSettings, mode, data);
 		Assert.assertEquals(emailServiceHandler.getClass(), HealthEmailService.class);
 
 	}

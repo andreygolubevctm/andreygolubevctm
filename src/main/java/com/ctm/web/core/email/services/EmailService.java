@@ -8,7 +8,6 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
-import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.FatalErrorService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.SettingsService;
@@ -20,6 +19,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -109,7 +110,11 @@ public class EmailService {
 				} catch (DaoException | ConfigSettingException  e) {
 					throw new SendEmailException("failed to get settings", e);
 				}
-			EmailServiceHandler emailService = EmailServiceFactory.newInstance(pageSettings, mode, data , IPAddressHandler.getInstance());
+
+			final WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
+			EmailServiceFactory emailServiceFactory = applicationContext.getBean(EmailServiceFactory.class);
+
+			EmailServiceHandler emailService = emailServiceFactory.newInstance(pageSettings, mode, data);
 			emailService.send(request, emailAddress, transactionId);
 		} else {
 			throw new SendEmailException(transactionId + ": invalid email received emailAddress:" +  emailAddress);

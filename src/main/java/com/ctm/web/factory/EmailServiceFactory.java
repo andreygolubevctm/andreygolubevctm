@@ -32,10 +32,23 @@ import com.ctm.web.life.email.services.LifeEmailDataService;
 import com.ctm.web.life.email.services.LifeEmailService;
 import com.ctm.web.travel.email.services.TravelEmailService;
 import com.ctm.web.travel.services.email.TravelEmailDetailMappings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EmailServiceFactory {
 
-	public static EmailServiceHandler newInstance(PageSettings pageSettings, EmailMode mode, Data data, IPAddressHandler ipAddressHandler) throws SendEmailException{
+	private final OccupationsDao occupationsDao;
+    private final IPAddressHandler ipAddressHandler;
+
+    @Autowired
+	EmailServiceFactory(OccupationsDao occupationsDao, IPAddressHandler ipAddressHandler) {
+		this.occupationsDao = occupationsDao;
+        this.ipAddressHandler = ipAddressHandler;
+	}
+
+
+	public EmailServiceHandler newInstance(PageSettings pageSettings, EmailMode mode, Data data) throws SendEmailException{
 		VerticalType vertical = pageSettings.getVertical().getType();
 
 		EmailServiceHandler emailService = null;
@@ -65,10 +78,6 @@ public class EmailServiceFactory {
 		return emailService;
 	}
 
-	public static EmailServiceHandler newInstance(PageSettings pageSettings, EmailMode mode, Data data) throws SendEmailException {
-		return newInstance( pageSettings,  mode,  data, IPAddressHandler.getInstance());
-	}
-
 	private static EmailServiceHandler getHealthEmailService(
 			PageSettings pageSettings, EmailMode mode, Data data, VerticalType vertical) throws SendEmailException {
 		ContentDao contentDao = new ContentDao(pageSettings.getBrandId(), pageSettings.getVertical().getId());
@@ -91,11 +100,11 @@ public class EmailServiceFactory {
 		return new TravelEmailService(pageSettings, mode , emailDetailsService, urlService, data, urlServiceOld, IPAddressHandler.getInstance());
 	}
 	
-	private static LifeEmailService getLifeEmailService(PageSettings pageSettings, EmailMode mode, Data data,
+	private LifeEmailService getLifeEmailService(PageSettings pageSettings, EmailMode mode, Data data,
 														VerticalType vertical,  IPAddressHandler ipAddressHandler) throws SendEmailException {
 		EmailDetailsService emailDetailsService = createEmailDetailsService(pageSettings, data, vertical, new LifeEmailDetailMappings());
 		LifeEmailDataService lifeEmailDataService = new LifeEmailDataService( new RankingDetailsDao(),
-				new TransactionDetailsDao(), new OccupationsDao());
+				new TransactionDetailsDao(), occupationsDao);
 		return new LifeEmailService(pageSettings, mode, emailDetailsService,
 				 lifeEmailDataService,
 				new ServiceConfigurationServiceBean(),
@@ -130,7 +139,6 @@ public class EmailServiceFactory {
 			throws SendEmailException {
 		EmailUrlServiceOld urlService;
 		try {
-			EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(pageSettings);
 			urlService = new EmailUrlServiceOld(vertical, pageSettings.getBaseUrl());
 		} catch (EnvironmentException | VerticalException
 				| ConfigSettingException e) {

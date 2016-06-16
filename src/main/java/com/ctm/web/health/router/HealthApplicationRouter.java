@@ -38,16 +38,15 @@ import com.ctm.web.health.services.HealthConfirmationService;
 import com.ctm.web.health.services.HealthLeadService;
 import com.ctm.web.health.services.ProviderContentService;
 import com.ctm.web.simples.services.TransactionService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -224,8 +223,11 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
         try {
 
             final String email = getEmail(data);
-
-            final EmailServiceHandler emailServiceHandler = EmailServiceFactory.newInstance(getPageSettingsByCode(brand, vertical), EmailMode.APP, dataBucket);
+            final WebApplicationContext applicationContext = WebApplicationContextUtils
+                    .getWebApplicationContext(context.getHttpServletRequest().getServletContext());
+            EmailServiceFactory emailServiceFactory = applicationContext.getBean(EmailServiceFactory.class);
+            final EmailServiceHandler emailServiceHandler = emailServiceFactory.newInstance(getPageSettingsByCode(brand, vertical),
+                    EmailMode.APP, dataBucket);
             confirmationEmailCode = emailServiceHandler.send(context.getHttpServletRequest(), email, data.getTransactionId());
         } catch (SendEmailException se) {
             confirmationEmailCode = "0";
