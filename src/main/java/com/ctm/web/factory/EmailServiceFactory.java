@@ -40,11 +40,18 @@ public class EmailServiceFactory {
 
 	private final OccupationsDao occupationsDao;
     private final IPAddressHandler ipAddressHandler;
+    private final TransactionDetailsDao transactionDetailsDao;
+    private final ApplicationService applicationService;
 
     @Autowired
-	EmailServiceFactory(OccupationsDao occupationsDao, IPAddressHandler ipAddressHandler) {
+	EmailServiceFactory(OccupationsDao occupationsDao,
+                        IPAddressHandler ipAddressHandler,
+                        TransactionDetailsDao transactionDetailsDao,
+                        ApplicationService applicationService) {
 		this.occupationsDao = occupationsDao;
         this.ipAddressHandler = ipAddressHandler;
+        this.transactionDetailsDao = transactionDetailsDao;
+        this.applicationService = applicationService;
 	}
 
 
@@ -61,7 +68,7 @@ public class EmailServiceFactory {
 				emailService = getTravelEmailService(pageSettings, mode, data , vertical);
 				break;
 			case LIFE:
-				emailService = getLifeEmailService(pageSettings, mode, data, vertical, ipAddressHandler);
+				emailService = getLifeEmailService(pageSettings, mode, data, vertical);
 				break;
 			case HOME:
 				// TODO: refactor this
@@ -101,14 +108,14 @@ public class EmailServiceFactory {
 	}
 	
 	private LifeEmailService getLifeEmailService(PageSettings pageSettings, EmailMode mode, Data data,
-														VerticalType vertical,  IPAddressHandler ipAddressHandler) throws SendEmailException {
+														VerticalType vertical) throws SendEmailException {
 		EmailDetailsService emailDetailsService = createEmailDetailsService(pageSettings, data, vertical, new LifeEmailDetailMappings());
 		LifeEmailDataService lifeEmailDataService = new LifeEmailDataService( new RankingDetailsDao(),
-				new TransactionDetailsDao(), occupationsDao);
+                transactionDetailsDao, occupationsDao);
 		return new LifeEmailService(pageSettings, mode, emailDetailsService,
 				 lifeEmailDataService,
 				new ServiceConfigurationServiceBean(),
-				new ApplicationService(), ipAddressHandler);
+                applicationService, ipAddressHandler);
 	}
 
 	private static EmailDetailsService createEmailDetailsService(
