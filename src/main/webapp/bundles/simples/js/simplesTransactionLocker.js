@@ -57,6 +57,12 @@
 				data: {
 					transactionId: currentTransactionId
 				},
+                onSuccess: function onSuccess(json) {
+                    if (json.hasOwnProperty('status') && json.status === 'OK') {
+                        // un-hide the unlock button only when the lock is down
+                        $('a.action-unlock').removeClass('hidden');
+                    }
+                },
 				onError: function onError(obj, txt, errorThrown) {
 					meerkat.modules.errorHandling.error({
 						page: "simplesTransactionLocker.js",
@@ -69,12 +75,46 @@
 		}
 	}
 
+    function unlock() {
+        if(currentTransactionId > 0) {
+            meerkat.modules.comms.get({
+                url: 'simples/transactions/unlock.json',
+                cache: false,
+                errorLevel: 'silent',
+                useDefaultErrorHandling: false,
+                timeout: 5000,
+                data: {
+                    transactionId: currentTransactionId
+                },
+                onSuccess: function onSuccess(json) {
+                    if (json.hasOwnProperty('status') && json.status === 'OK') {
+                        alert('Quote: ' + currentTransactionId + ' is unlocked...\n You should close this quote ASAP so other operators can start amending the quote.');
+                        // hide it as we don't need it anymore, if user leave the tab open, it will come back again from the lock.json
+                        $('a.action-unlock').addClass('hidden');
+                        return;
+                    }
+                    alert('Could not unlock quote: ' + currentTransactionId);
+                },
+                onError: function onError(obj, txt, errorThrown) {
+                    alert('Could not unlock the quote...\n' + txt + ': ' + errorThrown);
+                    meerkat.modules.errorHandling.error({
+                        page: "simplesTransactionLocker.js",
+                        errorLevel: "silent",
+                        description: "failed to unlock " + txt,
+                        data: errorThrown
+                    });
+                }
+            });
+        }
+    }
+
 
 
 	meerkat.modules.register('simplesTransactionLocker', {
 		init: init,
 		start: start,
-		stop: stop
+		stop: stop,
+        unlock: unlock
 	});
 
 })(jQuery);
