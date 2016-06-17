@@ -23,6 +23,7 @@ import com.ctm.web.homecontents.model.results.HomeResult;
 import com.ctm.web.homecontents.providers.model.RequestAdapter;
 import com.ctm.web.homecontents.providers.model.ResponseAdapter;
 import com.ctm.web.homecontents.providers.model.request.HomeQuoteRequest;
+import com.ctm.web.homecontents.providers.model.request.MoreInfoRequest;
 import com.ctm.web.homecontents.providers.model.response.HomeResponse;
 import com.ctm.web.homecontents.providers.model.response.MoreInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -123,13 +124,13 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteReq
                 .collect(toList());
     }
 
-    public HomeMoreInfo getMoreInfo(Long transactionId, Brand brand, String productId, String type, Optional<LocalDateTime> requestAt, Optional<String> environmentOverride) throws Exception {
+    public HomeMoreInfo getMoreInfo(Brand brand, MoreInfoRequest moreInfoRequest, Optional<LocalDateTime> requestAt, Optional<String> environmentOverride) throws Exception {
 
         QuoteServiceProperties serviceProperties = getQuoteServiceProperties("homeQuoteServiceBER", brand, HOME.getCode(), environmentOverride);
 
         ObjectMapper objectMapper = ObjectMapperUtil.getObjectMapper();
 
-        String jsonRequest = objectMapper.writeValueAsString(RequestAdapter.adapt(transactionId, brand, productId, type, requestAt));
+        String jsonRequest = objectMapper.writeValueAsString(RequestAdapter.adapt(brand, moreInfoRequest, requestAt));
 
         SimpleConnection connection = new SimpleConnection();
         connection.setRequestMethod("POST");

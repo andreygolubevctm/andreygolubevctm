@@ -1,5 +1,7 @@
 package com.ctm.web.homecontents.providers.model.request;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class MoreInfoRequest {
@@ -8,6 +10,9 @@ public class MoreInfoRequest {
 
     private String productId;
 
+
+    @NotNull
+    @Size(min=1)
     private String coverType;
 
     private LocalDateTime requestAt;

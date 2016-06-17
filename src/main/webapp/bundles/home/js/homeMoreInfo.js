@@ -464,8 +464,8 @@
 			url: "spring/rest/home/more_info/get.json",
 			cache: true,
 			data: {
-				code: product.productId,
-				type: meerkat.modules.home.getCoverType(),
+				productId: product.productId,
+				coverType: meerkat.modules.home.getCoverType(),
 				environmentOverride: $('#environmentOverride').val()
 			},
 			errorLevel: "silent",

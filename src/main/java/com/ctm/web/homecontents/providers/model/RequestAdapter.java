@@ -297,14 +297,10 @@ public class RequestAdapter {
         }
     }
 
-    public static MoreInfoRequest adapt(Long transactionId, Brand brand, String productId, String coverType, Optional<LocalDateTime> requestAt) {
-        MoreInfoRequest request = new MoreInfoRequest();
-        request.setTransactionId(transactionId);
-        request.setBrandCode(brand.getCode());
-        request.setProductId(productId);
-        request.setCoverType(coverType);
-        requestAt.ifPresent(v -> request.setRequestAt(v));
-        return request;
+    public static MoreInfoRequest adapt(Brand brand, MoreInfoRequest moreInfoRequest, Optional<LocalDateTime> requestAt) {
+        moreInfoRequest.setBrandCode(brand.getCode());
+        requestAt.ifPresent(v -> moreInfoRequest.setRequestAt(v));
+        return moreInfoRequest;
     }
 
 

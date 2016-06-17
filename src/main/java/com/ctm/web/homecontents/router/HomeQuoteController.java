@@ -10,6 +10,7 @@ import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.homecontents.model.form.HomeRequest;
 import com.ctm.web.homecontents.model.results.HomeMoreInfo;
 import com.ctm.web.homecontents.model.results.HomeResult;
+import com.ctm.web.homecontents.providers.model.request.MoreInfoRequest;
 import com.ctm.web.homecontents.services.HomeQuoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -63,12 +64,10 @@ public class HomeQuoteController extends CommonQuoteRouter {
     @RequestMapping(value = "/more_info/get.json",
             method= RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public HomeMoreInfo moreInfo(@RequestParam("code") String productId,
-                                 @RequestParam("type") String type,
-                                 @RequestParam("transactionId") Long transactionId,
+    public HomeMoreInfo moreInfo(@Valid MoreInfoRequest moreInfoRequest,
                                  @RequestParam(value = "environmentOverride", required = false) String environmentOverride, HttpServletRequest request) throws Exception {
         Brand brand = initRouter(request, HOME);
-        return homeService.getMoreInfo(transactionId, brand, productId, type, getApplicationDate(request), Optional.ofNullable(environmentOverride));
+        return homeService.getMoreInfo( brand, moreInfoRequest, getApplicationDate(request), Optional.ofNullable(environmentOverride));
     }
 
 }
