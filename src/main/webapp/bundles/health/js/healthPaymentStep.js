@@ -517,7 +517,7 @@
 		$('#health_payment_details_start').on('changeDate.' + name, functionToCall);
 	}
 
-	// Hook into: (replacement) "update premium" button to determine which panels to display
+	// Reset Hook into "update premium"
 	function resetValidationSelectorsPaymentGateway( name){
         $('#health_payment_details_type input').off('click.' + name);
         $('#health_payment_details_frequency').off('change.' + name);
