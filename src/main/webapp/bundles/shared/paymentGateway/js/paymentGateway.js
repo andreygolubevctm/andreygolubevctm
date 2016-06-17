@@ -161,7 +161,7 @@ Process:
 		$('[data-provide="paymentGateway"]').off( "click", '[data-gateway="launcher"]', launch);
 
         if(typeof settings.resetValidationSelectors === 'function' ) {
-            settings.resetValidationSelectors(name);
+            settings.resetValidationSelectors(settings.name);
         }
 
 		// Reset normal question panels in case user is moving between different products
