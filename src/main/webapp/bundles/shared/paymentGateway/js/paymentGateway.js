@@ -160,9 +160,13 @@ Process:
 		// Turn off events
 		$('[data-provide="paymentGateway"]').off( "click", '[data-gateway="launcher"]', launch);
 
-		$('#health_payment_details_type input').off('click.' + settings.name);
-		$('#health_payment_details_frequency').off('change.' + settings.name);
-		$('#health_payment_details_start').off('changeDate.' + settings.name);
+        if(typeof settings.resetValidationSelectors === 'function' ) {
+            settings.resetValidationSelectors(name);
+        }
+
+        if(typeof settings.updateValidationSelectors === 'object' ) {
+			settings.updateValidationSelectors.off('change.' + settings.name, setTypeFromControl);
+		}
 
 		// Reset normal question panels in case user is moving between different products
 		if(typeof settings.paymentTypeSelector !== 'undefined') {
@@ -194,12 +198,9 @@ Process:
 		$('body').addClass(settings.name + '-active');
 
 		// Hook into: (replacement) "update premium" button to determine which panels to display
-		$('#health_payment_details_type input').on('click.' + settings.name, setTypeFromControl);
-		$('#health_payment_details_frequency').on('change.' + settings.name, setTypeFromControl);
-		$('#health_payment_details_start').on('changeDate.' + settings.name, setTypeFromControl);
 
-		if(typeof settings.clearValidationSelectors === 'object' ) {
-			settings.clearValidationSelectors.on('change', clearValidation);
+		if(typeof settings.updateValidationSelectors === 'function' ) {
+			settings.updateValidationSelectors(setTypeFromControl, settings.name);
 		}
 
 		successEventHandlerId = meerkat.messaging.subscribe(moduleEvents.SUCCESS, success);
