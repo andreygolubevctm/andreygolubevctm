@@ -18,7 +18,7 @@ public class HealthQuoteRequest
 
     private Membership membership;
 
-    private String productType;
+    private ProductType productType;
 
     private Integer loading;
 
@@ -37,7 +37,7 @@ public class HealthQuoteRequest
 
     private BigDecimal rebate;
 
-    private PaymentType paymentType;
+    private List<PaymentType> paymentTypes;
 
     public String getState() {
         return state;
@@ -55,11 +55,11 @@ public class HealthQuoteRequest
         this.membership = membership;
     }
 
-    public String getProductType() {
+    public ProductType getProductType() {
         return productType;
     }
 
-    public void setProductType(String productType) {
+    public void setProductType(ProductType productType) {
         this.productType = productType;
     }
 
@@ -127,11 +127,11 @@ public class HealthQuoteRequest
         this.rebate = rebate;
     }
 
-    public PaymentType getPaymentType() {
-        return paymentType;
+    public List<PaymentType> getPaymentTypes() {
+        return paymentTypes;
     }
 
-    public void setPaymentType(PaymentType paymentType) {
-        this.paymentType = paymentType;
+    public void setPaymentTypes(List<PaymentType> paymentTypes) {
+        this.paymentTypes = paymentTypes;
     }
 }

@@ -3,7 +3,6 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
-        $resultsLowNumberMessage,
         selectedProduct = null,
         previousBreakpoint,
         best_price_count = 5,
@@ -11,7 +10,7 @@
         selectedBenefitsList,
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
-        resultsStepIndex =  3,
+        resultsStepIndex = 3,
 
         templates = {
             premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
@@ -48,7 +47,28 @@
             WEBAPP_LOCK: 'WEBAPP_LOCK',
             WEBAPP_UNLOCK: 'WEBAPP_UNLOCK',
             RESULTS_ERROR: 'RESULTS_ERROR'
-        };
+        },
+        paymentFrequencyDictionary = [
+            {
+                key: "annually",
+                label: "per year"
+            }, {
+                key: "halfyearly",
+                label: "per half year"
+            }, {
+                key: "quarterly",
+                label: "per quarter"
+            }, {
+                key: "monthly",
+                label: "per month"
+            }, {
+                key: "fortnightly",
+                label: "per <span class='hidden-xs'>fortnight</span><span class='hidden-sm hidden-md hidden-lg'>f/night</span>"
+            }, {
+                key: "weekly",
+                label: "per week"
+            }
+        ];
 
 
     function initPage() {
@@ -76,13 +96,6 @@
     }
 
     function initResults() {
-        $('.adjustFilters').on("click", function displayFiltersClicked(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            meerkat.modules.healthFilters.open();
-        });
-
-        $resultsLowNumberMessage = $(".resultsLowNumberMessage, .resultsMarketingMessages");
 
         var frequencyValue = $('#health_filter_frequency').val();
         frequencyValue = meerkat.modules.healthResults.getFrequencyInWords(frequencyValue) || 'monthly';
@@ -137,14 +150,16 @@
                     features: {
                         mode: 'populate',
                         headers: false,
-                        numberOfXSColumns: 1
+                        numberOfXSColumns: 2
                     },
                     dockCompareBar: false
                 },
                 displayMode: "features",
                 pagination: {
+                    margin: 15,
                     mode: 'page',
-                    touchEnabled: Modernizr.touch
+                    touchEnabled: false,
+                    useSubPixelWidths: true
                 },
                 sort: {
                     sortBy: "benefitsSort"
@@ -178,26 +193,35 @@
                 elements: {
                     features: {
                         values: ".content",
-                        extras: ".children"
+                        extras: ".children",
+                        renderTemplatesBasedOnFeatureIndex: true
                     }
                 },
                 dictionary: {
                     valueMap: [
                         {
                             key: 'Y',
-                            value: "<span class='icon-tick'></span>"
+                            value: ""
                         },
                         {
                             key: 'N',
-                            value: "<span class='icon-cross hidden-sm hidden-md hidden-lg'></span>"
+                            value: ""
                         },
                         {
                             key: 'R',
-                            value: "Restricted"
+                            value: ""
                         },
                         {
                             key: '-',
-                            value: "&nbsp;"
+                            value: ""
+                        },
+                        {
+                            key: 'None',
+                            value: 'No'
+                        },
+                        {
+                            key: 'No Waiting Period',
+                            value: 'No'
                         }
                     ]
                 },
@@ -206,13 +230,14 @@
                     callback: meerkat.modules.healthResults.rankingCallback,
                     forceIdNumeric: true
                 },
-                incrementTransactionId : false
+                incrementTransactionId: false
             });
 
         } catch (e) {
             Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.healthResults.initResults(); ' + e.message, e);
         }
     }
+
 
     function eventSubscriptions() {
 
@@ -223,6 +248,7 @@
             _setupSelectedBenefits('Extras Selections', 'Extras Cover');
             _setupSelectedBenefits('Hospital Selections', 'Hospital Cover');
             Features.buildHtml();
+            _.defer(meerkat.modules.healthResultsTemplate.postRenderFeatures);
         });
 
         $(document).on("generalReturned", function () {
@@ -244,9 +270,7 @@
         $(document).on("resultsLoaded", onResultsLoaded);
 
         $(document).on("resultsReturned", function () {
-
             meerkat.modules.utils.scrollPageTo($("header"));
-
             // Reset the feature header to match the new column content.
             $(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
 
@@ -265,13 +289,12 @@
 
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
             tStart = new Date().getTime();
-            toggleMarketingMessage(false);
-            toggleResultsLowNumberMessage(false);
             var waitMessageVal = $("#waitMessage").val();
             meerkat.modules.journeyEngine.loadingShow(waitMessageVal);
 
             // Hide pagination
-            $('header .slide-feature-pagination, header a[data-results-pagination-control]').addClass('hidden');
+            $('.results-pagination').add('header a[data-results-pagination-control]').addClass('hidden');
+            meerkat.modules.coupon.triggerPopup();
         });
 
         // If error occurs, go back in the journey
@@ -283,23 +306,27 @@
         });
 
         $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
-            toggleResultsLowNumberMessage(true);
-
             _.defer(function () {
-                // Show pagination
-                $('header .slide-feature-pagination, header a[data-results-pagination-control]').removeClass('hidden');
+                // Show pagination header for mobile
+                $('header a[data-results-pagination-control]').removeClass('hidden');
+                // Setup pagination for non-mobile journey
+                meerkat.modules.healthResultsTemplate.toggleRemoveResultPagination();
                 // Setup scroll
                 Results.pagination.setupNativeScroll();
+                // render snapshot
+                meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
+                // turn off increment tranId
+                Results.settings.incrementTransactionId = false;
             });
             var tEnd = new Date().getTime();
             var tFetchFinish = (tEnd - tStart);
             var tVariance = maxMilliSecondsForMessage - tFetchFinish;
-            if(tVariance < 0 || meerkat.site.isCallCentreUser) {
+            if (tVariance < 0 || meerkat.site.isCallCentreUser) {
                 tVariance = 0;
             }
-            _.delay(function() {
+            _.delay(function () {
                 meerkat.modules.journeyEngine.loadingHide();
-            },tVariance);
+            }, tVariance);
 
 
             if (!meerkat.site.isNewQuote && !Results.getSelectedProduct() && meerkat.site.isCallCentreUser) {
@@ -324,14 +351,14 @@
                     if (productUpdated) {
                         meerkat.modules.healthResults.setSelectedProduct(productUpdated);
                         htmlContent = "Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Please note that for this particular product, " +
-                        "the price and/or features have changed since the last time you were comparing. If you need further assistance, " +
-                        "you can chat to one of our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">" + meerkat.site.content.callCentreHelpNumber + "</span>, and they will be able to help you with your options.";
+                            "the price and/or features have changed since the last time you were comparing. If you need further assistance, " +
+                            "you can chat to one of our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">" + meerkat.site.content.callCentreHelpNumber + "</span>, and they will be able to help you with your options.";
                     } else {
                         $('#health_application_productId').val(''); // reset selected productId to prevent it getting saved into transaction details.
                         $('#health_application_productTitle').val(''); // reset selected productTitle to prevent it getting saved into transaction details.
                         htmlContent = "Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Unfortunately the product you're looking for is no longer available. " +
-                        "Please head to your results page to compare available policies or alternatively, " +
-                        "chat to one of our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">" + meerkat.site.content.callCentreHelpNumber + "</span>, and they will be able to help you with your options.";
+                            "Please head to your results page to compare available policies or alternatively, " +
+                            "chat to one of our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">" + meerkat.site.content.callCentreHelpNumber + "</span>, and they will be able to help you with your options.";
                     }
 
                     meerkat.modules.dialogs.show({
@@ -384,30 +411,11 @@
             if (_.isNull(pageData.measurements)) {
                 return false;
             }
-            var pageNumber = pageData.pageNumber;
-            var numberOfPages = pageData.measurements.numberOfPages;
-            var items = Results.getFilteredResults().length;
-            var columnsPerPage = pageData.measurements.columnsPerPage;
-            var freeColumns = (columnsPerPage * numberOfPages) - items;
 
             meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
                 additionalData: {},
                 onAfterEventMode: 'Pagination'
             });
-
-            if (freeColumns > 1 && numberOfPages === 1) {
-                toggleResultsLowNumberMessage(true);
-                toggleMarketingMessage(false);
-            } else {
-                toggleResultsLowNumberMessage(false);
-                if (!meerkat.modules.compare.isCompareOpen()) {
-                    if (pageNumber === pageData.measurements.numberOfPages && freeColumns > 1) {
-                        toggleMarketingMessage(true, freeColumns);
-                    } else {
-                    toggleMarketingMessage(false);
-                }
-            }
-            }
 
         });
 
@@ -419,27 +427,23 @@
 
                 $hoverRow.addClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
             })
-            .on("mouseleave", function () {
-                var featureId = $(this).attr("data-featureId");
-                var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
+                .on("mouseleave", function () {
+                    var featureId = $(this).attr("data-featureId");
+                    var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
 
-                $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
-            });
+                    $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
+                });
 
-            coverType = $('#health_situation_coverType input').filter(":checked").val();
+            var coverType = meerkat.modules.health.getCoverType();
 
-            if(coverType === 'E') {
+            if (coverType === 'E') {
                 $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');
             }
-            if(coverType === 'H') {
+            if (coverType === 'H') {
                 $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
             }
 
         });
-
-        // When the excess filter changes, fetch new results
-        meerkat.messaging.subscribe(meerkatEvents.healthFilters.CHANGED, meerkat.modules.healthResultsChange.onFilterChange);
-
     }
 
     /**
@@ -467,14 +471,15 @@
      */
     function _resetSelectionsStructureObject() {
         var structure = Features.getPageStructure();
-        for(var i = 0; i < structure.length; i++) {
-            if(typeof structure[i].children !== 'undefined' && structure[i].children.length) {
-                for(var m = 0; m < structure[i].children.length; m++) {
+        for (var i = 0; i < structure.length; i++) {
+            if (typeof structure[i].children !== 'undefined' && structure[i].children.length) {
+                for (var m = 0; m < structure[i].children.length; m++) {
                     delete structure[i].children[m].doNotRender;
                 }
             }
         }
     }
+
     /**
      * This function copies the benefits from the parent's pageStructure object, and injects it into the "selections" object.
      * We cannot splice from the original object, as if someone changes their filter, a benefit that used to be selected will not appear anymore.
@@ -523,7 +528,7 @@
 
     function startColumnWidthTracking() {
         if (meerkat.modules.deviceMediaState.get() === 'xs' && Results.getDisplayMode() === 'features') {
-            Results.view.startColumnWidthTracking( $(window), Results.settings.render.features.numberOfXSColumns, false );
+            Results.view.startColumnWidthTracking($(window), Results.settings.render.features.numberOfXSColumns, true);
             Results.pagination.setCurrentPageNumber(1);
             Results.pagination.resync();
         }
@@ -543,8 +548,9 @@
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, {source: 'healthLoadRates'});
         meerkat.modules.health.loadRates(function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
-            meerkat.modules.resultsFeatures.fetchStructure('health').done(function () {
+            meerkat.modules.resultsFeatures.fetchStructure('health2016').done(function () {
                 Results.updateAggregatorEnvironment();
+                Results.updateStaticBranch();
                 Results.get();
             });
         });
@@ -556,8 +562,9 @@
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, {source: 'healthLoadRates'});
         meerkat.modules.health.loadRatesBeforeResultsPage(false, function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
-            meerkat.modules.resultsFeatures.fetchStructure('health').done(function () {
+            meerkat.modules.resultsFeatures.fetchStructure('health2016').done(function () {
                 Results.updateAggregatorEnvironment();
+                Results.updateStaticBranch();
                 Results.get();
             });
         });
@@ -628,30 +635,35 @@
         }
     }
 
+    function getPaymentFrequencies() {
+        return paymentFrequencyDictionary;
+    }
+
     function setSelectedProduct(product, premiumChangeEvent, showIncPrice) {
 
         selectedProduct = product;
 
-        // Set hidden fields with selected product info.
-        var $_main = $('#mainform');
-        if (product === null) {
-            $_main.find('.health_application_details_provider').val("");
-            $_main.find('.health_application_details_productId').val("");
-            $_main.find('.health_application_details_productNumber').val("");
-            $_main.find('.health_application_details_productTitle').val("");
-            $_main.find('.health_application_details_providerName').val("");
+        // if updating premium, no need to write quote and update the dom as the product info isn't changing
+        if (premiumChangeEvent === true) {
+            meerkat.messaging.publish(moduleEvents.healthResults.PREMIUM_UPDATED, selectedProduct, showIncPrice);
         } else {
-            $_main.find('.health_application_details_provider').val(selectedProduct.info.provider);
-            $_main.find('.health_application_details_productId').val(selectedProduct.productId);
-            $_main.find('.health_application_details_productNumber').val(selectedProduct.info.productCode);
-            $_main.find('.health_application_details_productTitle').val(selectedProduct.info.productTitle);
-            $_main.find('.health_application_details_providerName').val(selectedProduct.info.providerName);
-
-            if (premiumChangeEvent === true) {
-                meerkat.messaging.publish(moduleEvents.healthResults.PREMIUM_UPDATED, selectedProduct, showIncPrice);
+            // Set hidden fields with selected product info.
+            var $_main = $('#mainform');
+            if (product === null) {
+                $_main.find('.health_application_details_provider').val("");
+                $_main.find('.health_application_details_productId').val("");
+                $_main.find('.health_application_details_productNumber').val("");
+                $_main.find('.health_application_details_productTitle').val("");
+                $_main.find('.health_application_details_providerName').val("");
             } else {
+                $_main.find('.health_application_details_provider').val(selectedProduct.info.provider);
+                $_main.find('.health_application_details_productId').val(selectedProduct.productId);
+                $_main.find('.health_application_details_productNumber').val(selectedProduct.info.productCode);
+                $_main.find('.health_application_details_productTitle').val(selectedProduct.info.productTitle);
+                $_main.find('.health_application_details_providerName').val(selectedProduct.info.providerName);
+
+                meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
                 if(!meerkat.site.skipResultsPopulation) {
-                    meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
                     $(Results.settings.elements.rows).removeClass("active");
 
                     var $targetProduct = $(Results.settings.elements.rows + "[data-productid='" + selectedProduct.productId + "']");
@@ -659,7 +671,6 @@
                     $targetProduct.addClass("active");
                     Results.pagination.gotoPosition(targetPosition, true, false);
                 }
-            }
 
                 // update transaction details otherwise we will have to wait until people get to payment page
                 meerkat.modules.writeQuote.write({
@@ -668,7 +679,7 @@
                     health_application_productName: selectedProduct.info.productCode,
                     health_application_productTitle: selectedProduct.info.productTitle
                 }, false);
-
+            }
         }
 
     }
@@ -751,7 +762,7 @@
         var $excessSection = $component.find('.cell.excessSection');
         _.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
 
-         // If on the results step, reload the results data. Can this be more generic?
+        // If on the results step, reload the results data. Can this be more generic?
         if (typeof callback === 'undefined') {
             if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 3) {
                 get();
@@ -815,41 +826,6 @@
                 });
             }
         });
-    }
-
-
-    function toggleMarketingMessage(show, columns) {
-        var $marketingMessage = $(".resultsMarketingMessage");
-        if (show) {
-            $marketingMessage.addClass('show').attr('data-columns', columns);
-        } else {
-            $marketingMessage.removeClass('show');
-        }
-    }
-
-
-    function toggleResultsLowNumberMessage(show) {
-        var freeColumns;
-        if (show) {
-            var pageMeasurements = Results.pagination.calculatePageMeasurements();
-            if (pageMeasurements === null || meerkat.modules.compare.isCompareOpen()) {
-                show = false;
-            } else {
-                var items = Results.getFilteredResults().length;
-                freeColumns = pageMeasurements.columnsPerPage - items;
-                if (freeColumns < 1 || pageMeasurements.numberOfPages !== 1) {
-                    show = false;
-                }
-            }
-        }
-
-        if (show) {
-            $resultsLowNumberMessage.addClass('show');
-            $resultsLowNumberMessage.attr('data-columns', freeColumns);
-        } else {
-            $resultsLowNumberMessage.removeClass('show');
-        }
-        return show;
     }
 
     function rankingCallback(product, position) {
@@ -919,13 +895,16 @@
     }
 
     function init() {
-        meerkat.messaging.subscribe(meerkatEvents.healthBenefits.CHANGED, meerkat.modules.healthResultsChange.onBenefitsSelectionChange);
         meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
     }
 
 
-    function setSelectedBenefitsList(selectedBenefits){
+    function setSelectedBenefitsList(selectedBenefits) {
         selectedBenefitsList = selectedBenefits;
+    }
+
+    function hideNavigationLink() {
+        $('.floated-next-arrow').addClass('hidden');
     }
 
     meerkat.modules.register('healthResults', {
@@ -943,15 +922,15 @@
         getNumberOfPeriodsForFrequency: getNumberOfPeriodsForFrequency,
         getFrequencyInLetters: getFrequencyInLetters,
         getFrequencyInWords: getFrequencyInWords,
+        getPaymentFrequencies: getPaymentFrequencies,
         stopColumnWidthTracking: stopColumnWidthTracking,
-        toggleMarketingMessage: toggleMarketingMessage,
-        toggleResultsLowNumberMessage: toggleResultsLowNumberMessage,
         recordPreviousBreakpoint: recordPreviousBreakpoint,
         rankingCallback: rankingCallback,
         publishExtraSuperTagEvents: publishExtraSuperTagEvents,
         setLhcApplicable: setLhcApplicable,
-        resultsStepIndex : resultsStepIndex,
-        setSelectedBenefitsList : setSelectedBenefitsList
+        resultsStepIndex: resultsStepIndex,
+        setSelectedBenefitsList: setSelectedBenefitsList,
+        hideNavigationLink: hideNavigationLink
     });
 
 })(jQuery);

@@ -16,6 +16,8 @@
 <core_v2:quote_check quoteType="life" />
 <core_v2:load_preload />
 
+<life_v1:widget_values />
+
 <%-- Initialise Save Quote --%>
 <c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 
@@ -64,9 +66,7 @@
 
 	<jsp:attribute name="navbar">
 		<ul class="nav navbar-nav" role="menu">
-			<li class="visible-xs">
-				<span class="navbar-text-block navMenu-header">Menu</span>
-			</li>
+			<core_v2:offcanvas_header />
 			<li class="slide-feature-back">
 				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 			</li>

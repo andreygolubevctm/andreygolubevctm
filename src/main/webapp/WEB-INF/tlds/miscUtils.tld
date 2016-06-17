@@ -21,5 +21,18 @@
 			]]>
 		</example>
 	</function>
+	<function>
+		<description>MiscUtils</description>
+		<name>convertToJson</name>
+		<function-class>com.ctm.web.core.utils.MiscUtils</function-class>
+		<function-signature>
+			java.lang.String convertToJson(java.lang.Object)
+		</function-signature>
+		<example>
+			<![CDATA[
+				${miscUtils:convertToJson(contentObject)};
+			]]>
+		</example>
+	</function>
 
 </taglib>

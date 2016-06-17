@@ -36,16 +36,16 @@
 				<group_v2:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"/>
 			</c:otherwise>
 		</c:choose>
-		
+
 		<%-- POSTAL defaults to Y if not pre-loaded --%>
-		<c:if test="${ (empty data[xpath].postalMatch) && (empty data['health/contactDetails/email']) }">
+		<c:if test="${empty callCentre && (empty data[xpath].postalMatch) && (empty data['health/contactDetails/email']) }">
 			<go:setData dataVar="data" xpath="${xpath}/postalMatch" value="Y" />
-		</c:if>	
-		
+		</c:if>
+
 		<form_v2:row>
 			<field_v2:checkbox xpath="${xpath}/postalMatch" value="Y" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
 		</form_v2:row>
-		
+
 		<div id="${name}_postalGroup">
 			<c:choose>
 				<c:when test="${useElasticSearch eq true}">
@@ -66,7 +66,7 @@
 		</div>
 
 		<group_v2:contact_numbers xpath="${xpath}" required="true" />
-		
+
 		<c:set var="fieldXpath" value="${xpath}/email" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Email Address" id="${name}_emailGroup">
 			<field_v2:email xpath="${fieldXpath}" title="your email address" required="true" size="40" />
@@ -78,14 +78,28 @@
 		<c:set var="fieldXpath" value="${xpath}_no_email" />
 		<form_v2:row fieldXpath="${fieldXpath}" id="${name}_noEmailGroup">
 			<field_v2:checkbox xpath="${fieldXpath}" value="N"
-				title="No email address"
-				required="false"
-				label="true" />
+							   title="No email address"
+							   required="false"
+							   label="true" />
 		</form_v2:row>
-		
+
 		<form_v2:row id="${name}_optInEmail-group" hideHelpIconCol="true">
 			<field_v2:checkbox xpath="${xpath}/optInEmail" value="Y"
-				title="Stay up to date with news and offers direct to your inbox"
+							   title="Stay up to date with news and offers direct to your inbox"
+							   required="false"
+							   label="true" />
+		</form_v2:row>
+
+		<form_v2:row id="${name}_okToCall-group" hideHelpIconCol="true">
+			<field_v2:checkbox xpath="${xpath}_call" value="Y"
+							   title="Our dedicated Health Insurance consultants will give you a call to chat about your Health Insurance needs and questions."
+							   required="false"
+							   label="true" />
+		</form_v2:row>
+		
+		<form_v2:row id="${name}_okToCall-group" hideHelpIconCol="true">
+			<field_v2:checkbox xpath="${xpath}_call" value="Y"
+				title="Our dedicated Health Insurance consultants will give you a call to chat about your Health Insurance needs and questions."
 				required="false"
 				label="true" />
 		</form_v2:row>
@@ -93,10 +107,10 @@
 		<%-- Default contact Point to off --%>
 		<c:set var="fieldXpath" value="${xpath}/contactPoint" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="How would you like <span>the Fund</span> to send you information?" id="${name}_contactPoint-group"
-					className="health_application-details_contact-group hidden">
+					 className="health_application-details_contact-group hidden">
 			<field_v2:array_radio items="E=Email,P=Post" xpath="${fieldXpath}" title="like the fund to contact you" required="false" id="${name}_contactPoint" />
 		</form_v2:row>
-		
+
 		<%-- Product Information --%>
 		<field_v1:hidden xpath="${xpath}/provider" className="health_application_details_provider" />
 		<field_v1:hidden xpath="${xpath}/productId" className="health_application_details_productId" />

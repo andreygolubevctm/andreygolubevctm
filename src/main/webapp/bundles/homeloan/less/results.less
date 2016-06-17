@@ -235,69 +235,6 @@
 		height: 182px;
 	}
 
-	@media(@xs-only) {
-		.result,
-		.productSummary {
-			height: 150px;
-		}
-
-		.btn-enquire-now {
-			clear: both;
-		}
-
-		.productSummary {
-			padding: (@results-feature-cell-padding * 2) @results-feature-cell-padding;
-
-			h2 {
-				margin-left: 90px;
-				line-height: 0.9;
-			}
-			.btn-more-info {
-				clear: none;
-				width: auto;
-				margin: @results-feature-cell-padding @results-feature-cell-padding 0 90px;
-			}
-
-			// Using .content to pick up normal feature row styling
-			// Needs -margin to combat the padding on .productSummary
-			.content {
-				margin: 0 -@results-feature-cell-padding;
-			}
-
-		}
-
-		// Normal heading
-		.labelInColumn {
-			.content {
-				color: contrast(@feature-odd-bg-color);
-				background: @feature-odd-bg-color;
-			}
-		}
-
-		// Not a real feature, but shares the styling.
-		.fakeFeatures {
-			.labelInColumn .content {
-				color: #fff;
-				background: @theme-secondary;
-			}
-		}
-
-		// Special feature row with "inverse" colouring. Note this should be same specificity or less as expanded row.
-		.inverseRow.labelInColumn {
-			.content {
-				color: @feature-inverse-color;
-				background: @feature-inverse-bg-color;
-			}
-		}
-
-		// Special case as per design
-		.excessFeature.labelInColumn {
-			.content {
-				color: contrast(@btn-pagination-bg-color, #000, #fff, 46%);
-				background: @btn-pagination-bg-color; //Match xs-results-pagination
-			}
-		}
-	}
 
 	@media(@sm-only) {
 		.productSummary {
@@ -355,25 +292,5 @@
 
 		}
 	}// lg
-
-	@media(@sm-only) {
-		// Shrink the logo due to layout
-		.companyLogo {
-			width: 60px;
-			height: 60px;
-			line-height: 60px;
-			background-size: 60px 60px !important; //important for iPad
-		}
-	}
-	@media(@lg) {
-		// Shrink the logo due to layout
-		.companyLogo {
-			width: 60px;
-			height: 60px;
-			line-height: 60px;
-			background-size: 60px 60px !important; //important for iPad
-		}
-	}
-
 }// features mode
 

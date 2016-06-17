@@ -35,8 +35,10 @@ Handling changes to the price range coming back from the ajax
 	}
 
 	function setUp() {
-		var frequency = meerkat.modules.healthResults.getFrequencyInWords($('#health_filter_frequency').val());
-		$('.health-filter-price .slider-control').trigger(meerkatEvents.sliders.EVENT_UPDATE_RANGE, getPremiumRange(frequency , false));
+		meerkat.modules.utils.pluginReady('sliders').done(function() {
+			var frequency = meerkat.modules.healthResults.getFrequencyInWords($('#health_filter_frequency').val());
+			$('.health-filter-price .slider-control').trigger(meerkatEvents.sliders.EVENT_UPDATE_RANGE, getPremiumRange(frequency , false));
+		});
 	}
 
 	function onUpdateFrequency() {

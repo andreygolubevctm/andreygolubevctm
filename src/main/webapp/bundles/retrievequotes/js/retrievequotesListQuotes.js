@@ -41,9 +41,13 @@
     }
 
     function _onClickPending(e) {
-        var data = _getClickElementData(e.target),
-            url = data.vertical + "_quote.jsp?action=confirmation&PendingID=" + encodeURIComponent(data.pendingID);
-        
+
+        var data = _getClickElementData(e.target);
+        var vertical  = data.vertical;
+        if(vertical === 'home'){
+            vertical  = 'home_contents';
+        }
+        var url = vertical + "_quote.jsp?action=confirmation&PendingID=" + encodeURIComponent(data.pendingID);
         window.location.href = url;
     }
 
@@ -115,11 +119,9 @@
         var data = {
             $element: $element,
             vertical: $element.attr("data-vertical"),
-            transactionId: $element.attr("data-transactionid")
+            transactionId: $element.attr("data-transactionid"),
+            inPast: $element.attr("data-inpast") || false
         };
-
-        if($element.attr("data-inpast") === "Y")
-            data.inPast = "Y";
 
         if($element.attr("data-pendingid"))
             data.pendingID = $element.attr("data-pendingid");
@@ -129,30 +131,33 @@
 
     function _onClickLatest(e) {
         var data = _getClickElementData(e.target);
+        if(data.inPast === "Y") {
+            meerkat.modules.dialogs.show({
+                title: "Enter New Commencement Date",
+                htmlContent: $("#new-commencement-date-template").html(),
+                buttons: [
+                    {
+                        label: 'Cancel',
+                        className: 'btn-close-dialog'
+                    }, {
+                        label: 'Get Latest Results',
+                        className: 'btn-cta btn-submit'
+                    }
+                ],
+                onOpen: function (dialogId) {
+                    meerkat.modules.datepicker.setDefaults();
+                    meerkat.modules.datepicker.initModule();
 
-        meerkat.modules.dialogs.show({
-            title: "Enter New Commencement Date",
-            htmlContent: $("#new-commencement-date-template").html(),
-            buttons: [
-                {
-                    label: 'Cancel',
-                    className: 'btn-close-dialog'
-                }, {
-                    label: 'Get Latest Results',
-                    className: 'btn-cta btn-submit'
+                    $(document).on("click", "#" + dialogId + " .btn-submit", function () {
+                        var newDate = $("#newCommencementDate").val();
+                        meerkat.modules.dialogs.close(dialogId);
+                        _retrieveQuote(data.vertical, "latest", data.transactionId, newDate);
+                    });
                 }
-            ],
-            onOpen: function(dialogId) {
-                meerkat.modules.datepicker.setDefaults();
-                meerkat.modules.datepicker.initModule();
-
-                $(document).on("click", "#" + dialogId + " .btn-submit", function() {
-                    var newDate = $("#newCommencementDate").val();
-                    meerkat.modules.dialogs.close(dialogId);
-                    _retrieveQuote(data.vertical, "latest", data.transactionId, newDate);
-                });
-            }
-        });
+            });
+        } else {
+            _retrieveQuote(data.vertical, "latest", data.transactionId);
+        }
     }
 
     function _onClickStartAgainFresh(e) {

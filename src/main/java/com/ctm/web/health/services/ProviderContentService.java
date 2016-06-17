@@ -1,8 +1,11 @@
 package com.ctm.web.health.services;
 
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.ProviderDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.provider.model.Provider;
 import com.ctm.web.core.exceptions.ServiceException;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.web.go.Data;
@@ -10,7 +13,9 @@ import com.ctm.web.health.dao.ProviderContentDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.NumberUtils;
-import org.springframework.util.StringUtils;
+import com.ctm.web.health.dao.ProviderInfoDao;
+import com.ctm.web.health.model.providerInfo.ProviderInfo;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -22,8 +27,12 @@ public class ProviderContentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
 
     private final ProviderContentDao providerContentDao = new ProviderContentDao();
+    private final ProviderDao providerDao;
+    private final ProviderInfoDao providerInfoDao;
 
     public ProviderContentService() {
+        providerDao = new ProviderDao();
+        providerInfoDao = new ProviderInfoDao(new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm()));
     }
 
     /**
@@ -60,6 +69,13 @@ public class ProviderContentService {
         } catch (DaoException e) {
             throw new ServiceException("Failed to get provider content text.", e);
         }
+    }
+
+    public ProviderInfo getProviderInfo(HttpServletRequest request, String providerName) throws DaoException {
+        Date currDate = ApplicationService.getApplicationDate(request);
+        Brand brand = ApplicationService.getBrandFromRequest(request);
+        Provider provider = providerDao.getByName(providerName, currDate);
+        return providerInfoDao.getProviderInfo(provider, brand, currDate);
     }
 
 }

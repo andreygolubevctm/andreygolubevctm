@@ -14,6 +14,7 @@
 <%@ attribute name="helpId" 	required="false" rtexprvalue="true"  description="The rows help id (if non provided, help is not shown)" %>
 <%@ attribute name="style"  	required="false" rtexprvalue="true"  description="Options: 'inline' = standard inline floating; 'group' = grouped together like buttons" %>
 <%@ attribute name="additionalAttributes"  	required="false" rtexprvalue="true"  description="Additional attributes" %>
+<%@ attribute name="disableErrorContainer" required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
@@ -42,12 +43,19 @@
 		<c:set var="classVar" value="btn btn-form-inverse ${classLabel}" />
 		<c:set var="className" value='btn-group btn-group-horizontal" data-toggle="radio' />
 	</c:when>
+	<c:when test="${style == 'group-tile'}">
+		<c:set var="classVar" value="btn btn-form-inverse ${classLabel}" />
+		<c:set var="className" value='btn-tile ${className}" data-toggle="radio' />
+	</c:when>
 	<c:otherwise>
 		<c:set var="classVar" value="btn btn-form-inverse ${classLabel}" />
 		<c:set var="className" value='btn-group btn-group-justified ${className}" data-toggle="radio' />
 	</c:otherwise>
 </c:choose>
 
+<c:if test="${disableErrorContainer eq true}">
+	<c:set var="additionalAttributes" value="${additionalAttributes}  data-disable-error-container='true' "/>
+</c:if>
 
 <%-- HTML --%>
 <div class="${className}" ${id}>
@@ -66,7 +74,7 @@
 
 		<c:choose>
 			<%-- FOR GROUPED STYLE --%>
-			<c:when test="${style == 'group' or style == 'inline'}">
+			<c:when test="${style == 'group' or style == 'group-tile' or style == 'inline'}">
 				<label class="${classVar} ${active}">
 					<input type="radio" name="${name}" id="${id}" value="${val}" ${checked} data-msg-required="Please choose ${title}" ${requiredAttribute} ${additionalAttributes}>
 					<c:out value="${des}" escapeXml="false" />

@@ -1,8 +1,3 @@
-/**
- * Brief explanation of the module and what it achieves. <example: Example pattern code for a meerkat module.>
- * Link to any applicable confluence docs: <example: http://confluence:8090/display/EBUS/Meerkat+Modules>
- */
-
 ;(function($, undefined){
 
     var meerkat = window.meerkat,
@@ -34,11 +29,16 @@
                 renderSnapshot();
             });
         });
+        meerkat.messaging.subscribe(meerkat.modules.events.RESULTS_SORTED, function renderSnapshotOnJourneyReadySubscription() {
+            _.defer(function() {
+                renderSnapshot();
+            });
+        });
     }
 
     function renderSnapshot() {
-        render();
         meerkat.modules.contentPopulation.render('.quoteSnapshot');
+        _.defer(render);
     }
 
     function showHide(data, selector, property, forceHide) {
@@ -89,12 +89,14 @@
         // Toggle benefits rows.
         showHide(data,'.quoteSnapshot .hospital','hospital', noData);
         showHide(data,'.quoteSnapshot .extras','extras', noData);
+
+        $('.quoteSnapshot').toggle(!noData && meerkat.modules.journeyEngine.getCurrentStepIndex() < 3);
     }
 
     function getData() {
         var coverFor = $("#health_situation_healthCvr").val();
         var livingIn = $("#health_situation_location").val();
-        var lookingTo = $("#health_situation_healthSitu").val();
+        var lookingTo = $.trim($("input[name=health_situation_healthSitu]").filter(":checked").closest('label').text());
         var coverType = $("#health_situation_coverType input:checked").parent().text();
         var tieredCoverType = $('#health_situation_coverType input').filter(":checked").val();
         var hospital = fetchAllHospitalCheckedValues(tieredCoverType);
@@ -159,8 +161,57 @@
         return list;
     }
 
+    /**
+     * Utility function to map cover type to a label.
+     * @returns {*}
+     */
+    function getLabelForCoverType() {
+        switch(meerkat.modules.health.getCoverType()) {
+            case 'C':
+                return "Hospital and Extras";
+            case 'H':
+                return "Hospital";
+            case 'E':
+                return "Extras";
+        }
+        return "";
+    }
+
+    /**
+     * Utility function to map situation to a label.
+     * @returns {*}
+     */
+    function getLabelForSituation() {
+
+        switch(meerkat.modules.health.getSituation()) {
+            case 'SM':
+            case 'SF':
+                return "you";
+            case 'C':
+                return "you and your partner";
+            case 'F':
+                return "you and your family";
+            case 'SPF':
+                var $dependants = $('#health_healthCover_dependants');
+                var childrenLabel = parseInt($dependants.val(),10) > 1 ? 'children' : 'child';
+                return "you and your " + childrenLabel;
+        }
+    }
+    
+    function renderPreResultsRowSnapshot() {
+
+        var obj = {
+            name: $('#health_contactDetails_name').val(),
+            coverType: getLabelForCoverType(),
+            situation: getLabelForSituation()
+        };
+        var template = meerkat.modules.templateCache.getTemplate($("#pre-results-row-content-template"));
+        $('.preResultsContainer').html(template(obj));
+    }
+
     meerkat.modules.register('healthSnapshot', {
-        init:initHealthSnapshot
+        init:initHealthSnapshot,
+        renderPreResultsRowSnapshot: renderPreResultsRowSnapshot
     });
 
 })(jQuery);

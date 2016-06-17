@@ -4,8 +4,9 @@
     ],
     "dependencies": [
         "shared/journeyEngine/v2",
-        "shared/results",
+        "shared/results/v2",
         "core",
+        "shared/forms/v1",
         "shared/validation"
     ]
 }

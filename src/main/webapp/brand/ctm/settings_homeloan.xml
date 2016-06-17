@@ -2,6 +2,6 @@
 <settings>
 	<window-title>Compare The Market Australia</window-title>
 	<exit-url>http://int.comparethemarket.com.au/home-loan/</exit-url>
-	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
+	<fsg-url>/static/legal/FSG.pdf</fsg-url>
 	<vertical>HOMELOAN</vertical>
 </settings>

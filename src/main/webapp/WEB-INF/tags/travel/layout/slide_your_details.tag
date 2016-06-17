@@ -73,7 +73,6 @@
 				<%-- COUNTRY SECTION --%>
 				<form_v2:fieldset showHelpText="true" legend="Where are you going?" className="travel_details_destinations" id="destinationsfs">
                     <c:set var="labelText" value="What Country(ies) are you going to?" />
-                    <c:if test="${popularDestinationsEnabled eq true}">
                         <core_v1:js_template id="travel-popular-countries-template">
                             <form_v2:row label="What Country(ies) are you going to?" className="popular-countries-container" hideHelpIconCol="true">
                                 {{ _.each(obj, function(country) { }}
@@ -81,8 +80,6 @@
                                 {{ }) }}
                             </form_v2:row>
                         </core_v1:js_template>
-                        <c:set var="labelText" value="" />
-                    </c:if>
 					<jsp:useBean id="locationsService" class="com.ctm.web.travel.services.TravelIsoLocationsService" scope="page" />
 					<core_v1:select_tags
 							variableListName="countrySelectionList"
@@ -90,7 +87,7 @@
 							variableListArray="${locationsService.getCountrySelectionList()}"
 							xpath="travel/destinations"
 							xpathhidden="travel/destination"
-							label="${labelText}"
+							label="Your selected Countries"
 							title="Where are you travelling?"
 							validationErrorPlacementSelector=".travel_details_destinations"
 							helpId="213"

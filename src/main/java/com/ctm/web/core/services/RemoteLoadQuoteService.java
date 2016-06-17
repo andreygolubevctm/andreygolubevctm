@@ -3,6 +3,7 @@ package com.ctm.web.core.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ctm.web.core.model.settings.VerticalSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,5 +51,18 @@ public class RemoteLoadQuoteService {
 		}
 		return new ArrayList<>();
 	}
+
+	public String getActionQuoteUrl(String vertical , String action , Long transactionId , String jParam){
+		return VerticalSettings.getHomePageJsp(vertical) + "?action=" + action + "&amp;transactionId=" + transactionId + jParam;
+	}
+
+	public String getStartAgainQuoteUrl(String vertical , Long transactionId , String jParam){
+		return getActionQuoteUrl( vertical , "start-again" ,  transactionId ,  jParam);
+	}
+
+	public String getLatestQuoteUrl(String vertical , Long transactionId , String jParam){
+		return getActionQuoteUrl( vertical , "latest" ,  transactionId ,  jParam);
+	}
+
 
 }

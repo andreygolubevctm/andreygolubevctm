@@ -395,7 +395,7 @@
 
 	function setUpFequency() {
 		var frequencyValue = $('#health_filter_frequency').val();
-		if (frequencyValue.length > 0) {
+		if (frequencyValue && frequencyValue.length > 0) {
 			$('#filter-fequency').find('input[value="' + frequencyValue + '"]').prop('checked', true);
 			meerkat.modules.healthPriceRangeFilter.setUp();
 		}
