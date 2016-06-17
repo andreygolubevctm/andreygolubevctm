@@ -1,5 +1,6 @@
 package com.ctm.web.homecontents.router;
 
+import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsObj;
@@ -30,6 +31,8 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.HOME;
 @RequestMapping("/rest/home")
 public class HomeQuoteController extends CommonQuoteRouter {
 
+    private VerticalType verticalType = VerticalType.HOME;
+
     @Autowired
     private HomeQuoteService homeService;
 
@@ -44,10 +47,8 @@ public class HomeQuoteController extends CommonQuoteRouter {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResultsWrapper getHomeQuote(@Valid final HomeRequest data, HttpServletRequest request) throws Exception {
 
-        Vertical.VerticalType vertical = HOME;
-
         // Initialise request
-        Brand brand = initRouter(request, vertical);
+        Brand brand = initRouter(request);
         updateTransactionIdAndClientIP(request, data);
         updateApplicationDate(request, data);
 
@@ -68,6 +69,11 @@ public class HomeQuoteController extends CommonQuoteRouter {
                                  @RequestParam(value = "environmentOverride", required = false) String environmentOverride, HttpServletRequest request) throws Exception {
         Brand brand = initRouter(request, HOME);
         return homeService.getMoreInfo( brand, moreInfoRequest, getApplicationDate(request), Optional.ofNullable(environmentOverride));
+    }
+
+    @Override
+    protected VerticalType getVerticalType() {
+        return verticalType;
     }
 
 }

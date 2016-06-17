@@ -1,5 +1,7 @@
 package com.ctm.web.core.router;
 
+import com.ctm.commonlogging.context.LoggingVariables;
+import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.SessionException;
@@ -41,6 +43,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
     protected final IPAddressHandler ipAddressHandler;
     protected SessionDataServiceBean sessionDataServiceBean;
+    private VerticalType verticalType = VerticalType.GENERIC;
 
     public CommonQuoteRouter(SessionDataServiceBean sessionDataServiceBean,IPAddressHandler ipAddressHandler) {
         this.sessionDataServiceBean = sessionDataServiceBean;
@@ -52,6 +55,11 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     protected Brand initRouter(MessageContext context, Vertical.VerticalType vertical){
         return initRouter(context.getHttpServletRequest(), vertical);
     }
+
+    protected Brand initRouter(HttpServletRequest request) {
+        return initRouter(request, Vertical.VerticalType.findByCode(getVerticalType().toString()));
+    }
+
 
     protected Brand initRouter(HttpServletRequest httpServletRequest, Vertical.VerticalType vertical){
         // - Start common -- taken from Carlos' car branch
@@ -159,6 +167,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Error handleValidationException(BindException e, HttpServletRequest request) {
+        LoggingVariables.setVerticalType(getVerticalType());
         LOGGER.warn("Validation failure encountered", e);
         return FormValidation.outputToObject(RequestUtils.getTransactionIdFromRequest(request), ValidationUtils.handleSpringValidationErrors(e));
     }
@@ -175,4 +184,7 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     }
 
 
+    protected VerticalType getVerticalType() {
+        return verticalType;
+    }
 }

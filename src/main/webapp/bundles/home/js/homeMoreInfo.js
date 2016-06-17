@@ -471,6 +471,17 @@
 			errorLevel: "silent",
 			onSuccess: function (result) {
 				meerkat.modules.moreInfo.setDataResult(result);
+			},
+			onError: function(jqXHR) {
+				Results.model.ajaxRequest = false;
+				var jsonResult = {};
+				try {
+					jsonResult = $.parseJSON(jqXHR.responseText);
+				} catch (error) {}
+				Results.model.ajaxRequest = false;
+				if(jsonResult.type == "validation") {
+					Results.model.handleValidationError({error : jsonResult});
+				}
 			}
 		});
 	}
