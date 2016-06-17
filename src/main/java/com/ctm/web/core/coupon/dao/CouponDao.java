@@ -3,22 +3,29 @@ package com.ctm.web.core.coupon.dao;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.coupon.model.Coupon;
 import com.ctm.web.core.coupon.model.CouponChannel;
+import com.ctm.web.core.coupon.model.CouponOpenHoursCondition;
 import com.ctm.web.core.coupon.model.CouponRule;
 import com.ctm.web.core.coupon.model.request.CouponRequest;
 import com.ctm.web.core.exceptions.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
+import static com.ctm.web.core.coupon.model.CouponOpenHoursCondition.UNRESTRICTED;
 
+@Component
 public class CouponDao {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CouponDao.class);
@@ -83,7 +90,7 @@ public class CouponDao {
 			stmt.setInt(2, styleCodeId);
 			stmt.setInt(3, verticalId);
 			stmt.setString(4, couponChannel.getCode());
-			stmt.setTimestamp(5, new java.sql.Timestamp(effectiveDate.getTime()));
+			stmt.setTimestamp(5, new Timestamp(effectiveDate.getTime()));
 
 			List<Coupon> coupons = mapFieldsFromResultsToCoupon(stmt.executeQuery());
 
@@ -102,11 +109,13 @@ public class CouponDao {
 		}
 	}
 
-	public Coupon getCouponByCode(CouponRequest couponRequest) throws DaoException{
-		return getCouponByCode(couponRequest.couponCode, couponRequest.styleCodeId, couponRequest.verticalId, couponRequest.couponChannel, couponRequest.effectiveDate);
+	public Coupon getCouponByCode(CouponRequest couponRequest, Optional<CouponOpenHoursCondition> openHoursCondition) throws DaoException{
+		return getCouponByCode(couponRequest.couponCode, couponRequest.styleCodeId, couponRequest.verticalId,
+				couponRequest.couponChannel, couponRequest.effectiveDate, openHoursCondition);
 	}
 
-	public Coupon getCouponByCode(String couponCode, int styleCodeId, int verticalId, CouponChannel couponChannel, Date effectiveDate) throws DaoException {
+	public Coupon getCouponByCode(String couponCode, int styleCodeId, int verticalId, CouponChannel couponChannel,
+								  Date effectiveDate, Optional<CouponOpenHoursCondition> openHoursCondition) throws DaoException {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
 		try{
@@ -118,6 +127,7 @@ public class CouponDao {
 				"AND verticalId = ? " +
 				"AND couponChannel IN (?, '') " +
 				"AND ? BETWEEN effectiveStart AND effectiveEnd " +
+				"AND openHoursCond IN ('" + UNRESTRICTED.name() + "', ?) " +
 				"ORDER BY orderSeq ASC " +
 				"LIMIT 1;"
 			);
@@ -126,7 +136,8 @@ public class CouponDao {
 			stmt.setInt(2, styleCodeId);
 			stmt.setInt(3, verticalId);
 			stmt.setString(4, couponChannel.getCode());
-			stmt.setTimestamp(5, new java.sql.Timestamp(effectiveDate.getTime()));
+			stmt.setTimestamp(5, new Timestamp(effectiveDate.getTime()));
+			stmt.setString(6, openHoursCondition.map(CouponOpenHoursCondition::name).orElse(""));
 
 			List<Coupon> coupons = mapFieldsFromResultsToCoupon(stmt.executeQuery());
 
@@ -145,11 +156,13 @@ public class CouponDao {
 		}
 	}
 
-	public Coupon getCouponByVdn(CouponRequest couponRequest) throws DaoException{
-		return getCouponByVdn(couponRequest.vdn, couponRequest.styleCodeId, couponRequest.verticalId, couponRequest.couponChannel, couponRequest.effectiveDate);
+	public Coupon getCouponByVdn(CouponRequest couponRequest, Optional<CouponOpenHoursCondition> openHoursCondition) throws DaoException{
+		return getCouponByVdn(couponRequest.vdn, couponRequest.styleCodeId, couponRequest.verticalId,
+				couponRequest.couponChannel, couponRequest.effectiveDate, openHoursCondition);
 	}
 
-	public Coupon getCouponByVdn(String vdn, int styleCodeId, int verticalId, CouponChannel couponChannel, Date effectiveDate) throws DaoException {
+	public Coupon getCouponByVdn(String vdn, int styleCodeId, int verticalId, CouponChannel couponChannel,
+								 Date effectiveDate, Optional<CouponOpenHoursCondition> openHoursCondition) throws DaoException {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
 		try{
@@ -161,6 +174,7 @@ public class CouponDao {
 				"AND verticalId = ? " +
 				"AND couponChannel IN (?, '') " +
 				"AND ? BETWEEN effectiveStart AND effectiveEnd " +
+				"AND openHoursCond IN ('" + UNRESTRICTED.name() + "', ?) " +
 				"ORDER BY orderSeq ASC " +
 				"LIMIT 1;"
 			);
@@ -169,7 +183,8 @@ public class CouponDao {
 			stmt.setInt(2, styleCodeId);
 			stmt.setInt(3, verticalId);
 			stmt.setString(4, couponChannel.getCode());
-			stmt.setTimestamp(5, new java.sql.Timestamp(effectiveDate.getTime()));
+			stmt.setTimestamp(5, new Timestamp(effectiveDate.getTime()));
+			stmt.setString(6, openHoursCondition.map(CouponOpenHoursCondition::name).orElse(""));
 
 			List<Coupon> coupons = mapFieldsFromResultsToCoupon(stmt.executeQuery());
 
@@ -188,28 +203,26 @@ public class CouponDao {
 		}
 	}
 
-	public List<Coupon> getAvailableCoupons(CouponRequest couponRequest) throws DaoException {
-		return getAvailableCoupons(couponRequest.styleCodeId, couponRequest.verticalId, couponRequest.couponChannel, couponRequest.effectiveDate);
-	}
-
-	public List<Coupon> getAvailableCoupons(int styleCodeId, int verticalId, CouponChannel couponChannel, Date effectiveDate) throws DaoException {
+	public List<Coupon> getAvailableCoupons(int styleCodeId, int verticalId, CouponChannel couponChannel, LocalDateTime effectiveDate,
+											Optional<CouponOpenHoursCondition> openHoursCondition) throws DaoException {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
-		try{
+		try {
 			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-				"SELECT * " +
-				"FROM ctm.coupons " +
+				"SELECT * FROM ctm.coupons " +
 				"WHERE styleCodeId = ? " +
 				"AND verticalId = ? " +
 				"AND couponChannel IN (?, '') " +
 				"AND ? BETWEEN effectiveStart AND effectiveEnd " +
+				"AND openHoursCond IN ('" + UNRESTRICTED.name() + "', ?) " +
 				"ORDER BY orderSeq ASC"
 			);
 
 			stmt.setInt(1, styleCodeId);
 			stmt.setInt(2, verticalId);
 			stmt.setString(3, couponChannel.getCode());
-			stmt.setTimestamp(4, new java.sql.Timestamp(effectiveDate.getTime()));
+			stmt.setTimestamp(4, Timestamp.valueOf(effectiveDate));
+			stmt.setString(5, openHoursCondition.map(CouponOpenHoursCondition::name).orElse(""));
 
 			return mapFieldsFromResultsToCoupon(stmt.executeQuery());
 		}
@@ -235,7 +248,7 @@ public class CouponDao {
 
 				ResultSet resultSet = stmt.executeQuery();
 
-				List<CouponRule> couponRules = new ArrayList<CouponRule>();
+				List<CouponRule> couponRules = new ArrayList<>();
 
 				while (resultSet.next()) {
 					CouponRule couponRule = new CouponRule();
@@ -268,7 +281,7 @@ public class CouponDao {
 	 * @param results Result set
 	 */
 	private List<Coupon> mapFieldsFromResultsToCoupon(final ResultSet results) throws SQLException {
-		final List<Coupon> coupons = new ArrayList<Coupon>();
+		final List<Coupon> coupons = new ArrayList<>();
 		while (results.next()) {
 			coupons.add(coupon(results));
 		}
@@ -290,9 +303,11 @@ public class CouponDao {
 		coupon.setContentSuccess(results.getString("contentSuccess"));
 		coupon.setContentCheckbox(results.getString("contentCheckbox"));
 		coupon.setContentConfirmation(results.getString("contentConfirmation"));
+		coupon.setContentWordpress(results.getString("contentWordpress"));
 		coupon.setEffectiveStart(results.getDate("effectiveStart"));
 		coupon.setEffectiveEnd(results.getDate("effectiveEnd"));
 		coupon.setCouponChannel(results.getString("couponChannel"));
+		coupon.setOpenHoursCond(CouponOpenHoursCondition.valueOf(results.getString("openHoursCond")));
 		coupon.setRemoveFromLeads(results.getBoolean("removeFromLeads"));
 		coupon.setVdn(results.getInt("vdn"));
 		return coupon;

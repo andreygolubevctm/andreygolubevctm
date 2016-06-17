@@ -149,6 +149,7 @@
     // returns: form date string in the following format:
     // DD/MM/YYYY
     // e.g. 25/04/2016
+    // throw Error if date is invalid
     function dateValueFormFormat(dateObj){
         return format(dateObj, masks.formDate);
     }

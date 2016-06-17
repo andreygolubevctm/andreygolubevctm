@@ -1,11 +1,10 @@
 package com.ctm.web.core.openinghours.dao;
 
-
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.utils.common.utils.DateUtils;
-import com.ctm.web.core.openinghours.model.OpeningHours;
 import com.ctm.web.core.openinghours.helper.OpeningHoursHelper;
+import com.ctm.web.core.openinghours.model.OpeningHours;
+import com.ctm.web.core.utils.common.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +13,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,21 +28,25 @@ public class OpeningHoursDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OpeningHoursDao.class);
     private final OpeningHoursHelper helper = new OpeningHoursHelper();
+    private final SimpleDatabaseConnection dbSource;
+
+    public OpeningHoursDao() {
+        this.dbSource = new SimpleDatabaseConnection();
+    }
+
+    public OpeningHoursDao(final SimpleDatabaseConnection dbSource) {
+        this.dbSource = dbSource;
+    }
 
     /**
-     * This method will return data to display on website verticalId : must be
-     * pass to display opening hours for respective vertical effectiveDate : is
-     * the server date and must be pass isSpecial : if 'true' returns special
-     * hours records else returns normal hours
+     * Get data to display on website
      *
-     * @param verticalId
-     * @param effectiveDate
-     * @param isSpecial
-     * @return
-     * @throws DaoException
+     * @param verticalId Required to display opening hours for respective vertical
+     * @param effectiveDate Required. The effective datetime.
+     * @param isSpecial If true returns special hours records else returns normal hours
+     * @return Data to display on website
      */
     public List<OpeningHours> getAllOpeningHoursForDisplay(int verticalId, Date effectiveDate, boolean isSpecial) throws DaoException {
-        SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         List<OpeningHours> mapOpeningHoursDetails = new ArrayList<>();
         try {
             PreparedStatement stmt;
@@ -82,7 +89,9 @@ public class OpeningHoursDao {
             LOGGER.error("Failed to get opening hours for display {}, {}, {}", kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), kv("isSpecial", isSpecial), e);
             throw new DaoException(e);
         } finally {
-            dbSource.closeConnection();
+            if (dbSource != null) {
+                dbSource.closeConnection();
+            }
         }
     }
 
@@ -111,7 +120,6 @@ public class OpeningHoursDao {
      *                      Sat-Sun	    10:00:00	24:00:00
      */
     public List<OpeningHours> getCurrentNormalOpeningHoursForEmail(int verticalId, Date effectiveDate) throws DaoException {
-        SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         List<OpeningHours> openingHoursList = new ArrayList<>();
         try {
             PreparedStatement stmt;
@@ -175,7 +183,9 @@ public class OpeningHoursDao {
             LOGGER.error("Failed while executing getting current normal opening hours for email {}, {}", kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), e);
             throw new DaoException(e);
         } finally {
-            dbSource.closeConnection();
+            if (dbSource != null) {
+                dbSource.closeConnection();
+            }
         }
     }
 
@@ -193,37 +203,16 @@ public class OpeningHoursDao {
     }
 
     /**
-     * this method returns string representation of opening hours to display on
-     * the website header dayDescription : can only be "today" or "tomorrow"
+     * Get string representation of opening hours to display on the website header
      *
-     * @param dayDescription
-     * @param effectiveDate
-     * @return
-     * @throws DaoException
+     * @param dayDescription Can only be "today" or "tomorrow"
+     * @param effectiveDate Effective date
+     * @param verticalId Vertical Id
      */
     public String getOpeningHoursForDisplay(String dayDescription, Date effectiveDate, int verticalId) throws DaoException {
         String openingHours = null;
-        ResultSet resultSet;
-        SimpleDatabaseConnection dbSource =  new SimpleDatabaseConnection();
         try {
-            PreparedStatement stmt;
-            stmt = dbSource.getConnection().prepareStatement(
-                    "SELECT startTime,endTime,description, date FROM ctm.opening_hours "
-                            + "WHERE" +
-                            " ? between effectiveStart and effectiveEnd and" +
-                            " (lower(description) = ?  AND hoursType  ='N') or (date = ? AND hoursType  ='S') AND" +
-                            " verticalId = ?" +
-                            " ORDER BY date DESC  LIMIT 1;");
-            String day = new SimpleDateFormat("EEEE").format(
-                    dayDescription.equalsIgnoreCase("tomorrow") ? DateUtils.addDays(effectiveDate, 1) : effectiveDate).toLowerCase();
-            java.sql.Date dayDate = new java.sql.Date((dayDescription.equalsIgnoreCase("tomorrow") ? DateUtils.addDays(effectiveDate, 1)
-                    : effectiveDate).getTime());
-            java.sql.Date sqlEffectiveDate = new java.sql.Date(effectiveDate.getTime());
-            stmt.setDate(1, sqlEffectiveDate);
-            stmt.setString(2, day);
-            stmt.setDate(3, dayDate);
-            stmt.setInt(4, verticalId);
-            resultSet = stmt.executeQuery();
+            ResultSet resultSet = getPreparedStatementForOneDay(dayDescription, DateUtils.toLocalDateTime(effectiveDate).toLocalDate(), verticalId);
 
             while (resultSet.next()) {
                 String startTime, endTime;
@@ -236,11 +225,57 @@ public class OpeningHoursDao {
                 }
             }
             return openingHours;
-        } catch (SQLException | NamingException e) {
+        } catch (DaoException | SQLException e) {
             LOGGER.error("Failed while getting opening hours for display {}, {}, {}", kv("dayDescription", dayDescription), kv("effectiveDate", effectiveDate), kv("verticalId", verticalId));
             throw new DaoException(e);
+        }
+    }
+
+    public boolean isCallCentreOpen(final int verticalId, final LocalDateTime effectiveDate) throws DaoException {
+        try {
+            ResultSet resultSet = getPreparedStatementForOneDay("today", effectiveDate.toLocalDate(), verticalId);
+
+            if (resultSet.next()) {
+                LocalTime effectiveTime = effectiveDate.toLocalTime();
+                LocalTime startTime = resultSet.getTime("startTime").toLocalTime();
+                LocalTime endTime = resultSet.getTime("endTime").toLocalTime();
+                if ((effectiveTime.equals(startTime) || effectiveTime.isAfter(startTime)) && effectiveTime.isBefore(endTime)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (DaoException | SQLException e) {
+            LOGGER.error("Failed to check if call centre is open now. {}, {}", kv("verticalId", verticalId), kv("effectiveDate", effectiveDate));
+            throw new DaoException(e);
+        }
+    }
+
+    protected ResultSet getPreparedStatementForOneDay(final String dayDescription, final LocalDate effectiveDate,
+                                                    final int verticalId) throws DaoException {
+        try {
+            PreparedStatement stmt;
+            stmt = dbSource.getConnection().prepareStatement(
+                    "SELECT startTime, endTime, description, date FROM ctm.opening_hours "
+                            + "WHERE" +
+                            " ? BETWEEN effectiveStart AND effectiveEnd" +
+                            " AND ((LOWER(description) = ? AND hoursType = 'N') OR (date = ? AND hoursType = 'S'))" +
+                            " AND verticalId = ?" +
+                            " ORDER BY date DESC LIMIT 1");
+            LocalDate dayDate = dayDescription.equalsIgnoreCase("tomorrow")
+                    ? effectiveDate.plusDays(1)
+                    : effectiveDate;
+            String day = dayDate.format(DateTimeFormatter.ofPattern("EEEE")).toLowerCase();
+            stmt.setDate(1, java.sql.Date.valueOf(effectiveDate));
+            stmt.setString(2, day);
+            stmt.setDate(3, java.sql.Date.valueOf(dayDate));
+            stmt.setInt(4, verticalId);
+            return stmt.executeQuery();
+        } catch (SQLException | NamingException e) {
+            throw new DaoException(e);
         } finally {
-            dbSource.closeConnection();
+            if (dbSource != null) {
+                dbSource.closeConnection();
+            }
         }
     }
 

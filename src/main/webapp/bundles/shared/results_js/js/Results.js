@@ -569,6 +569,12 @@ var Results = {
 		}
 	},
 
+	updateStaticBranch:function() {
+		if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
+			$("#staticOverride").val($("#developmentStaticBranches").val());
+		}
+	},
+
 	updateApplicationEnvironment:function() {
 		if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
 			$("#environmentOverride").val($("#developmentApplicationEnvironment").val());
