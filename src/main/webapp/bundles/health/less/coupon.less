@@ -47,4 +47,48 @@
     font-family: @font-family-theme-bold;
     font-size: 24px;
   }
+
+  .coupon-msg {
+    padding-top: 10px;
+  }
+
+  margin-top: 0px;
+
+  a {
+    text-decoration: underline;
+    font-size: 14px;
+  }
+}
+
+// hard code this for now unless we change the design.
+@coupon-banner-height: 40px;
+@media (@xs-only) {
+  body.couponShown {
+    &[data-step="results"] {
+      padding-top: @navbar-height + @coupon-banner-height;
+
+      .xs-results-pagination {
+        top: @navbar-height + @page-offset-xs + @coupon-banner-height;
+      }
+    }
+  }
+}
+
+@media(@sm-only) {
+  .coupon-confirmation-image {
+    background-size: 200px 125px;
+    width: 200px;
+    height: 125px;
+  }
+}
+
+@media(@xs-only) {
+  .coupon-confirmation {
+    text-align:center;
+  }
+
+  .coupon-confirmation-image {
+    width: 100%;
+    background-position: center;
+  }
 }

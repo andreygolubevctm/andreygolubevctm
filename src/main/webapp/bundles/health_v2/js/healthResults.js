@@ -294,6 +294,7 @@
 
             // Hide pagination
             $('.results-pagination').add('header a[data-results-pagination-control]').addClass('hidden');
+            meerkat.modules.coupon.triggerPopup();
         });
 
         // If error occurs, go back in the journey
