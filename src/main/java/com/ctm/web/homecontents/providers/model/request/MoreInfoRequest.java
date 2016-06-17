@@ -10,7 +10,6 @@ public class MoreInfoRequest {
 
     private String productId;
 
-
     @NotNull
     @Size(min=1)
     private String coverType;

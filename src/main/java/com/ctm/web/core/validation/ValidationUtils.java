@@ -49,9 +49,10 @@ public class ValidationUtils {
         for(ObjectError objectError : e.getAllErrors()) {
             String xpath = objectError.getObjectName();
             if(objectError instanceof FieldError) {
-                xpath = ((FieldError) objectError).getField().replace(".", "/");
+                FieldError fieldError = ((FieldError) objectError);
+                xpath = fieldError.getField().replace(".", "/");
             }
-            if(objectError.getCode().equals("NotNull")) {
+            if(objectError.getCode().equals("NotNull") || isEmptyStringError(objectError)) {
                 ValidationUtils.createRequiredError( xpath, validationErrors);
             } else {
                 SchemaValidationError error = new SchemaValidationError();
@@ -61,5 +62,17 @@ public class ValidationUtils {
             }
         }
         return validationErrors;
+    }
+
+    private static boolean isEmptyStringError(ObjectError objectError){
+        boolean isEmptyStringError = false;
+        if(objectError instanceof FieldError) {
+            FieldError fieldError = ((FieldError) objectError);
+            Object rejectedValue = fieldError.getRejectedValue();
+            if(rejectedValue instanceof String) {
+                return objectError.getCode().equals("Size") && StringUtils.isEmpty((String) rejectedValue);
+            }
+        }
+        return isEmptyStringError;
     }
 }

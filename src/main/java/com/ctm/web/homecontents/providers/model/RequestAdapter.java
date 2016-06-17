@@ -23,7 +23,7 @@ public class RequestAdapter {
     public static HomeQuoteRequest adapt(HomeRequest homeRequest) {
         HomeQuoteRequest quoteRequest = new HomeQuoteRequest();
         final HomeQuote quote = homeRequest.getQuote();
-        CoverTypeEnum coverType = CoverTypeEnum.fromCode(quote.getCoverType());
+        CoverTypeEnum coverType = CoverTypeEnum.fromDescription(quote.getCoverType());
         boolean isContentsCover = false;
         boolean isHomeCover = false;
         if (CoverTypeEnum.HOME_CONTENTS.equals(coverType)) {
