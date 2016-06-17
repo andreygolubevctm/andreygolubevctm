@@ -190,6 +190,9 @@
 					<span class="fieldrow_legend" id="${name}_incomeMessage"></span>
 					<c:set var="income_label_xpath" value="${xpath}/incomelabel" />
 					<div class="fieldrow_legend" id="health_healthCover_tier_row_legend"></div>
+                    <div class="hidden" id="health_healthCover_tier_row_legend_mls">
+                        If you earn under $90,000 (or $180,000 total, for couples or families) in any financial year, you won’t be liable to pay the Medicare Levy Surcharge in that financial year. For help or further information call us on ${callCentreNumber}.
+                    </div>
 					<input type="hidden" name="${go:nameFromXpath(xpath)}_incomelabel" id="${go:nameFromXpath(xpath)}_incomelabel" value="${data[income_label_xpath]}" />
 				</form_v3:row>
 
