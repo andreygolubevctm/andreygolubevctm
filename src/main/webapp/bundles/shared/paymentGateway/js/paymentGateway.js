@@ -164,10 +164,6 @@ Process:
             settings.resetValidationSelectors(name);
         }
 
-        if(typeof settings.updateValidationSelectors === 'object' ) {
-			settings.updateValidationSelectors.off('change.' + settings.name, setTypeFromControl);
-		}
-
 		// Reset normal question panels in case user is moving between different products
 		if(typeof settings.paymentTypeSelector !== 'undefined') {
 			settings.paymentTypeSelector.trigger('change');
