@@ -81,20 +81,9 @@
 				<li class="dropdown hidden" data-provide="simples-quote-actions">
 					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">Actions <b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li class="dropdown-header hidden">Message ID: <span class="simples-show-messageid"></span></li>
-						<c:if test="${!pageSettings.getSetting('inInEnabled')}">
-							<li><a class="action-complete" href="javascript:void(0);">Complete</a></li>
-							<li><a class="action-postpone" href="javascript:void(0);">Postpone</a></li>
-							<li><a class="action-unsuccessful" href="javascript:void(0);">Unsuccessful</a></li>
-							<li><a class="action-complete-pm" href="javascript:void(0);">Complete as PM</a></li>
-							<li><a class="action-remove-pm" href="javascript:void(0);">Remove from PM</a></li>
-							<li><a class="action-change-time" href="javascript:void(0);">Change Time</a></li>
-						</c:if>
-
-						<li class="divider"></li>
-
-						<li class="dropdown-header hidden">Tran ID: <span class="simples-show-transactionid"></span></li>
+						<li class="dropdown-header">Tran ID: <span class="simples-show-transactionid"></span></li>
 						<li><a class="action-comment" href="javascript:void(0);">Comments</a></li>
+                        <li><a class="action-unlock hidden" href="javascript:void(0);">Unlock quote</a></li>
 			</ul>
 				</li>
 			</ul>
