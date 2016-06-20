@@ -2,7 +2,9 @@ package com.ctm.web.core.transaction.dao;
 
 import com.ctm.data.BaseDaoTest;
 import com.ctm.data.common.TestMariaDbBean;
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.SqlDao;
+import com.ctm.web.core.dao.SqlDaoFactory;
 import com.ctm.web.core.transaction.model.TransactionDetail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +19,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {TransactionDetailsDao.class, TestMariaDbBean.class, SqlDao.class})
+@SpringApplicationConfiguration(classes = {TransactionDetailsDao.class,
+        TestMariaDbBean.class,
+        SqlDaoFactory.class, SimpleDatabaseConnection.class})
 @ActiveProfiles({"test"})
 public class TransactionDetailsDaoTest extends BaseDaoTest {
 
