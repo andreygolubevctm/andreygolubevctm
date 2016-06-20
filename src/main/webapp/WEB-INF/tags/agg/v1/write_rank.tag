@@ -32,7 +32,7 @@
 	<c:set var="transactionId" value="${transactionId}" />
 </c:if>
 
-<c:if test="${calcSequence == null}">
+<c:if test="${empty calcSequence}">
 	<%-- Current bug where by after performing a comparison the calcSequence value is lost and causes an SQL exception below --%>
 	<c:set var="calcSequence" value="1" />
 </c:if>
