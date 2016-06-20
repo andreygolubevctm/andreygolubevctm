@@ -51,6 +51,7 @@ import static javax.servlet.http.HttpServletResponse.*;
         "/simples/messages/postponed.json",//anything in the future scheduled for the current user
         "/simples/tickle.json",
 		"/simples/transactions/lock.json",
+        "/simples/transactions/unlock.json",
 		"/simples/transactions/details.json",
 		"/simples/users/list_online.json",
 		"/simples/users/stats_today.json",
@@ -138,6 +139,8 @@ public class SimplesRouter extends HttpServlet {
 			doTickle(request, response, writer, transactionId, authenticatedData);
 		} else if (uri.endsWith("/simples/transactions/lock.json")) {
 			doLock(response, writer, transactionId, authenticatedData);
+        } else if (uri.endsWith("/simples/transactions/unlock.json")) {
+            doUnlock(response, writer, transactionId, authenticatedData);
 		} else if (uri.endsWith("/simples/transactions/details.json")) {
 			objectMapper.writeValue(writer, TransactionService.getMoreDetailsOfTransaction(RequestUtils.getTransactionIdFromRequest(request)));
 		} else if (uri.endsWith("/simples/users/list_online.json")) {
@@ -298,6 +301,16 @@ public class SimplesRouter extends HttpServlet {
 			throw new ServletException("failed to perform lock");
 		}
 	}
+
+    private void doUnlock(HttpServletResponse response, PrintWriter writer, Long transactionId, AuthenticatedData authenticatedData) throws  ServletException, IOException {
+        setHeader(response);
+        try {
+            new AccessCheckService().deleteTransactionLock(transactionId, authenticatedData.getUid());
+            objectMapper.writeValue(writer, jsonObjectNode("status", "OK"));
+        } catch (DaoException e) {
+            throw new ServletException("failed to perform unlock");
+        }
+    }
 
 	private void setHeader(HttpServletResponse response) {
 		response.setHeader("Cache-Control", "no-cache, max-age=0");

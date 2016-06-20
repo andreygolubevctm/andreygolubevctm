@@ -88,6 +88,18 @@ public class AccessCheckService {
         }
     }
 
+    /**
+     * Release the lock from the operator and transaction Id to other operators can amend the quote
+     * @param transactionId transaction id to unlock to this operator uid
+     * @param operatorUid ldap username to release the lock from
+     * @throws DaoException if unable to a update database
+     */
+    public void deleteTransactionLock(Long transactionId, String operatorUid) throws DaoException {
+        if(isOperator(operatorUid) && transactionId != null && transactionId > 0){
+            transactionLockDao.unlock(transactionId);
+        }
+    }
+
 
     public boolean isLocked(long transactionId , String operatorId, String vertical) {
         return handleAccessCheck(transactionId, operatorId, vertical);
