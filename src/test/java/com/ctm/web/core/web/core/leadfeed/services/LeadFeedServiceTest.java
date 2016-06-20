@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -24,6 +26,8 @@ public class LeadFeedServiceTest {
 
     private class TestLeadFeedService extends LeadFeedService{
 
+        private boolean processCalled = false;
+
         public TestLeadFeedService(BestPriceLeadsDao bestPriceDao, ContentService contentService) {
             super(bestPriceDao, contentService);
         }
@@ -31,6 +35,7 @@ public class LeadFeedServiceTest {
         @Override
         protected com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus process(com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType
         leadType, LeadFeedData leadData, Touch.TouchType touchType) {
+            processCalled = true;
             return com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus.SUCCESS;
         }
 
@@ -44,6 +49,10 @@ public class LeadFeedServiceTest {
          */
         public Boolean isTestOnlyLead(LeadFeedData leadData) throws LeadFeedException {
             return super.isTestOnlyLead( leadData);
+        }
+
+        public boolean isProcessCalled() {
+            return processCalled;
         }
     };
 
@@ -76,6 +85,27 @@ public class LeadFeedServiceTest {
 
         LeadFeedService.LeadResponseStatus outcome = leadFeedService.callMeBack(leadData);
         assertEquals(LeadFeedService.LeadResponseStatus.SUCCESS, outcome);
+        assertTrue(leadFeedService.isProcessCalled());
+    }
+
+    @Test
+    public void testCallMeBackEmptyNumber() throws Exception {
+        LeadFeedData leadData = getLeadFeedData("");
+
+        LeadFeedService.LeadResponseStatus outcome = leadFeedService.callMeBack(leadData);
+        assertEquals(LeadFeedService.LeadResponseStatus.SUCCESS, outcome);
+        assertFalse(leadFeedService.isProcessCalled());
+    }
+
+    @Test
+    public void testCallMeBackTestNumber() throws Exception {
+        String testPhoneNumber = "0412345678";
+        LeadFeedData leadData = getLeadFeedData(testPhoneNumber);
+        when(ignoreMatchingFormFieldContent.getSupplementaryValueByKey("phone")).thenReturn(testPhoneNumber);
+
+        LeadFeedService.LeadResponseStatus outcome = leadFeedService.callMeBack(leadData);
+        assertEquals(LeadFeedService.LeadResponseStatus.SUCCESS, outcome);
+        assertFalse(leadFeedService.isProcessCalled());
     }
 
     @Test

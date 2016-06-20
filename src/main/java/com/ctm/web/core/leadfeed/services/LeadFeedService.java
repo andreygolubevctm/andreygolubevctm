@@ -99,7 +99,7 @@ public abstract class LeadFeedService {
 	 * @throws LeadFeedException
 	 */
 	protected LeadResponseStatus processGateway(LeadType leadType, LeadFeedData leadData, TouchType touchType) throws LeadFeedException {
-		if(StringUtils.isEmpty(leadData.getPhoneNumber()) && isTestOnlyLead(leadData)) {
+		if(StringUtils.isEmpty(leadData.getPhoneNumber()) || isTestOnlyLead(leadData)) {
 			// Don't process or record touch for test data - simply return success
 			return LeadResponseStatus.SUCCESS;
 		} else {
