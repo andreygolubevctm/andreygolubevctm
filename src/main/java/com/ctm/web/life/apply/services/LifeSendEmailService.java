@@ -1,16 +1,16 @@
 package com.ctm.web.life.apply.services;
 
-import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.web.core.dao.SqlDaoFactory;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.EmailService;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.transaction.model.TransactionDetail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
@@ -18,21 +18,30 @@ import java.util.Optional;
 public class LifeSendEmailService {
 
     private static final String OZICARE = "ozicare";
-    private final TransactionDetailsDao transactionDetailsDao;
-    private final EmailService emailService;
+    private TransactionDetailsDao transactionDetailsDao;
+    private EmailService emailService;
 
     @Deprecated // use only in jsp
     @SuppressWarnings("unused")
-    public LifeSendEmailService(){
-        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm());
-        this.transactionDetailsDao = new TransactionDetailsDao( jdbcTemplate,  SqlDaoFactory.getInstance());
-        this.emailService = new EmailService();
-    }
+    public LifeSendEmailService(){}
 
     @Autowired
     public LifeSendEmailService(TransactionDetailsDao transactionDetailsDao, EmailService emailService){
         this.transactionDetailsDao = transactionDetailsDao;
         this.emailService = emailService;
+    }
+
+    @Deprecated
+    private void init(ServletContext sc) {
+        final WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(sc);
+        this.transactionDetailsDao = applicationContext.getBean(TransactionDetailsDao.class);
+        this.emailService = applicationContext.getBean(EmailService.class);
+    }
+
+    @Deprecated
+    public void sendEmailJsp(long transactionId, String emailAddress, HttpServletRequest request) throws SendEmailException {
+        init(request.getServletContext());
+       this.sendEmail( transactionId,  emailAddress,  request);
     }
 
     public void sendEmail(long transactionId, String emailAddress, HttpServletRequest request) throws SendEmailException {

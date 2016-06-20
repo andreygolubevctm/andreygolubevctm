@@ -18,10 +18,12 @@ import com.ctm.web.factory.EmailServiceFactory;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
@@ -33,10 +35,24 @@ public class EmailService {
 
 	private final SessionDataService sessionDataService = new SessionDataService();
 	private final FatalErrorService fatalErrorService;
+	private  EmailServiceFactory emailServiceFactory;
 	private PageSettings pageSettings;
 
+	@Deprecated
 	public EmailService(){
 		fatalErrorService = new FatalErrorService();
+	}
+
+    @Deprecated
+    private void init(ServletContext sc) {
+        final WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(sc);
+        this.emailServiceFactory = applicationContext.getBean(EmailServiceFactory.class);
+    }
+
+    @Autowired
+	public EmailService(EmailServiceFactory emailServiceFactory){
+		fatalErrorService = new FatalErrorService();
+		this.emailServiceFactory = emailServiceFactory;
 	}
 
 	/**
@@ -67,6 +83,22 @@ public class EmailService {
 		return emailResponse.toJsonObject();
 	}
 
+    /**
+     * Sends a email based on the EmailMode.
+     * Failures are thrown with SendEmailException and it is up to the caller to handle these errors
+     *
+     * @param request
+     * @param mode
+     * @param emailAddress
+     * @param transactionId
+     */
+    @Deprecated
+    public void sendJsp(HttpServletRequest request, EmailMode mode,
+                     String emailAddress, long transactionId) throws SendEmailException {
+        init(request.getServletContext());
+        this.send( request,  mode,emailAddress,  transactionId);
+
+    }
 	/**
 	 * Sends a email based on the EmailMode.
 	 * Failures are thrown with SendEmailException and it is up to the caller to handle these errors
@@ -111,10 +143,7 @@ public class EmailService {
 					throw new SendEmailException("failed to get settings", e);
 				}
 
-			final WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
-			EmailServiceFactory emailServiceFactory = applicationContext.getBean(EmailServiceFactory.class);
-
-			EmailServiceHandler emailService = emailServiceFactory.newInstance(pageSettings, mode, data);
+			EmailServiceHandler emailService = this.emailServiceFactory.newInstance(pageSettings, mode, data);
 			emailService.send(request, emailAddress, transactionId);
 		} else {
 			throw new SendEmailException(transactionId + ": invalid email received emailAddress:" +  emailAddress);

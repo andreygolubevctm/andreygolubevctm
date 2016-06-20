@@ -144,7 +144,7 @@
 					<%-- enums are not will handled in jsp --%>
 				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
-					${emailService.send(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
+					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
 				</c:catch>
 				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
 				<%--
@@ -160,11 +160,10 @@
 		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
 			<%-- Attempt to send email only once and only if not call centre user --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">
-				<%-- <jsp:useBean id="emailService" class="com.ctm.web.core.services.email.EmailService" scope="page" />--%>
 				<%-- enums are not will handled in jsp --%>
 				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
-					${emailService.send(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
+					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
 				</c:catch>
 				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
 				<%--

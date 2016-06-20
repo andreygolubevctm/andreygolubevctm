@@ -41,7 +41,7 @@
 						<go:setData dataVar="data" xpath="soap-response/results/success" value="true" />
 						<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 						<jsp:useBean id="lifeSendEmailService" class="com.ctm.web.life.apply.services.LifeSendEmailService" scope="application" />
-						${lifeSendEmailService.sendEmail(tranId, data.life.contactDetails.email, pageContext.request)}
+						${lifeSendEmailService.sendEmailJsp(tranId, data.life.contactDetails.email, pageContext.request)}
 					</c:when>
 					<c:otherwise>
 						<go:setData dataVar="data" xpath="soap-response/results/success" value="false" />
