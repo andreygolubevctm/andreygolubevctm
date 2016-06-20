@@ -17,7 +17,7 @@ var healthFunds_BUD = {
 	$paymentStartDate: $("#health_payment_details_start"),
 	set: function(){
 		<%-- dependant definition --%>
-		healthFunds._dependants('This policy provides cover for children until their 21st birthday. Adult dependants over 21 years old can be covered by applying for a separate singles policy.');
+		healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
 
 		<%-- Authority --%>
 		healthFunds._previousfund_authority(true);
