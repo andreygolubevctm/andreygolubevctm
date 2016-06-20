@@ -4,7 +4,6 @@ import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import javax.naming.NamingException;
 import java.sql.*;
@@ -13,7 +12,6 @@ import java.util.List;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
-@Component
 public class SqlDao<T> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SqlDao.class);
@@ -28,6 +26,11 @@ public class SqlDao<T> {
 		databaseConnection = SimpleDatabaseConnection.getInstance();
 		this.context = SimpleDatabaseConnection.JDBC_CTM;
 	}
+
+    public SqlDao(SimpleDatabaseConnection databaseConnection, String context) {
+        this.databaseConnection = databaseConnection;
+        this.context = context;
+    }
 
     /**
      * Run a sequence of updates in a single transaction

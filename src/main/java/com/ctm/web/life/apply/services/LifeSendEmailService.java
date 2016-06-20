@@ -1,7 +1,7 @@
 package com.ctm.web.life.apply.services;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
-import com.ctm.web.core.dao.SqlDao;
+import com.ctm.web.core.dao.SqlDaoFactory;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.EmailService;
@@ -24,9 +24,8 @@ public class LifeSendEmailService {
     @Deprecated // use only in jsp
     @SuppressWarnings("unused")
     public LifeSendEmailService(){
-        SqlDao sqlDao = new SqlDao();
         NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm());
-        this.transactionDetailsDao = new TransactionDetailsDao( jdbcTemplate,  sqlDao);
+        this.transactionDetailsDao = new TransactionDetailsDao( jdbcTemplate,  SqlDaoFactory.getInstance());
         this.emailService = new EmailService();
     }
 

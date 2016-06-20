@@ -50,6 +50,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
     public ExactTargetEmailSender(PageSettings pageSettings, Long transactionId) throws SendEmailException {
         this.pageSettings = pageSettings;
         this.transactionId = transactionId;
+        this.serviceConfigurationService = new ServiceConfigurationServiceBean();
         setWebserviceConfigurationDeprecated(ConfigSetting.ALL_VERTICALS, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS);
     }
 

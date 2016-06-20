@@ -4,6 +4,7 @@ import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.constants.PrivacyBlacklist;
 import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
+import com.ctm.web.core.dao.SqlDaoFactory;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.transaction.model.TransactionDetail;
 import org.slf4j.Logger;
@@ -39,14 +40,14 @@ public class TransactionDetailsDao {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
-	private final SqlDao sqlDao;
+	private final SqlDaoFactory sqlDaoFactory;
 
     /**
 	 * Constructor
 	 */
 	@Deprecated
 	public TransactionDetailsDao() {
-		sqlDao = new SqlDao();
+		sqlDaoFactory = new SqlDaoFactory(SimpleDatabaseConnection.getInstance());
 		jdbcTemplate = new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm());
 	}
 
@@ -55,8 +56,8 @@ public class TransactionDetailsDao {
 
 	@Autowired
 	@SuppressWarnings("SpringJavaAutowiringInspection")
-	public TransactionDetailsDao(final NamedParameterJdbcTemplate jdbcTemplate, SqlDao sqlDao) {
-        this.sqlDao = sqlDao;
+	public TransactionDetailsDao(final NamedParameterJdbcTemplate jdbcTemplate, SqlDaoFactory sqlDaoFactory) {
+        this.sqlDaoFactory = sqlDaoFactory;
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
@@ -370,6 +371,7 @@ public class TransactionDetailsDao {
                         "(?,?,?,?,CURDATE());";
             }
         };
+		SqlDao sqlDao = sqlDaoFactory.createDao();
 		sqlDao.update(databaseMapping);
 		
 	}
@@ -394,6 +396,7 @@ public class TransactionDetailsDao {
 						"ON DUPLICATE KEY UPDATE xpath = VALUES(xpath), textValue = VALUES(textValue), dateValue=VALUES(dateValue);";
 			}
 		};
+		SqlDao sqlDao = sqlDaoFactory.createDao();
 		sqlDao.update(databaseMapping);
 
 	}
