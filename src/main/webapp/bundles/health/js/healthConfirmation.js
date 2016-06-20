@@ -37,6 +37,7 @@
 
 				// prepare data
 				confirmationProduct = $.extend({},result.data);
+				confirmationProduct.mode = "lhcInc";
 
 				// if confirmation has been loaded from the confirmations table in the db, confirmationProduct.product should exist
 				if( confirmationProduct.product ){
@@ -74,7 +75,37 @@
 					confirmationProduct.pending = true;
 				}
 
+				// prepare hospital and extras covers inclusions, exclusions and restrictions
+				meerkat.modules.moreInfo.setProduct(confirmationProduct);
+
+				//Now prepare cover.
+				meerkat.modules.healthMoreInfo.prepareCover();
+
+				// prepare necessary frequency values
+				if( confirmationProduct.frequency.length == 1) { // if found frequency is a letter code, translate it to full word
+					confirmationProduct.frequency = meerkat.modules.healthResults.getFrequencyInWords(confirmationProduct.frequency);
+				}
+				confirmationProduct._selectedFrequency = confirmationProduct.frequency;
+				meerkat.modules.healthPaymentStep.initFields(); // not sure why this works to allow the next call to work but it seems to be the only way to figure out what payment type they selected
+
+				if(!confirmationProduct.hasOwnProperty('premium')) {
+					if (confirmationProduct.paymentType) {
+						var paymentType;
+						switch (confirmationProduct.paymentType) {
+							case 'cc':
+								paymentType = 'CreditCard';
+								break;
+							case 'ba':
+								paymentType = 'BankAccount';
+								break;
+
+						}
+						confirmationProduct.premium = confirmationProduct.paymentTypePremiums[paymentType];
+					}
+				}
+
 				fillTemplate();
+				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
 
 				/// TODO: Fix this -why is it needed though?
 				//meerkat.modules.healthMoreInfo.applyEventListeners();
@@ -105,6 +136,19 @@
 		var htmlTemplate = _.template(confirmationTemplate);
 		var htmlString = htmlTemplate(confirmationProduct);
 		$("#confirmation").html(htmlString);
+
+		meerkat.messaging.subscribe(meerkatEvents.healthPriceComponent.INIT, function(selectedProduct){
+			// inject the price and product summary
+			meerkat.modules.healthPriceComponent.updateProductSummaryHeader(confirmationProduct, confirmationProduct.frequency, true);
+			meerkat.modules.healthPriceComponent.updateProductSummaryDetails(confirmationProduct, confirmationProduct.startDate, false);
+		});
+
+
+		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+			// render dual pricing
+			meerkat.modules.healthDualPricing.initHealthDualPricing();
+			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', meerkat.modules.moreInfo.getProduct(), false, true);
+		}
 
 		// hide the sidebar frequncy. only needed for payment page
 		$('.hasDualPricing .sidebarFrequency').hide();

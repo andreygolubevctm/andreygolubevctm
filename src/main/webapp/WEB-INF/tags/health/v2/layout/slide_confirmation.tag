@@ -18,12 +18,24 @@
 
 </layout_v1:slide>
 
+<%-- TEMPLATES --%>
+	<%-- Logo and prices template --%>
+	<core_v1:js_template id="logo-template"><health_v3:logo_template /></core_v1:js_template>
+	<core_v1:js_template id="price-template"><health_v3:price_template /></core_v1:js_template>
+
 	<%-- Main page template --%>
 	<script id="confirmation-template" type="text/html">
 
-		<layout_v1:slide_columns colSize="12" sideHidden="true">
+		<layout_v1:slide_columns>
 
 			<jsp:attribute name="rightColumn">
+				<div class="hidden-xs">
+					<health_v1:policySummary showProductDetails="true" />
+				</div>
+
+				<form_v3:fieldset legend="">
+					<coupon:confirmation transactionId="${transactionId}" />
+				</form_v3:fieldset>
 
 			</jsp:attribute>
 
@@ -35,7 +47,7 @@
 						{{ var fundName = info.providerName ? info.providerName : info.fundName }}
 						{{ var personName = typeof firstName !== 'undefined' && typeof lastName !== 'undefined' ? "Well done <span>" + firstName + " " + lastName + "</span>,<br />": '' }}
 						<div class="row confirmation-complete">
-							<div class="col-sm-8 col-xs-12">
+							<div class="col-xs-12">
 								{{ if ( typeof pending !== "undefined" && pending ) { }}
 									<h1 class="pending">Your application is being processed.</h1>
 									<p>Thanks for comparing with <content:get key="brandDisplayName"/>. If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></strong>.
@@ -46,11 +58,11 @@
 								<p>{{= personName }}
 								Your Application has been submitted to <span>{{= fundName }}</span> for processing.</p>
 
-								<p>Your transaction number is <span>{{= transID }}</span>.</p>
+								<p>Your transaction number is <span>{{= transID }}</span>.<br />Please remember to read your policy brochures so that you know exactly what you are covered for.</p>
 
 								<p>Thank you for comparing <span>Health Insurance</span> with <content:get key="boldedBrandDisplayName"/></p>
 							</div>
-							<div class="col-sm-4 col-xs-12"><coupon:confirmation transactionId="${transactionId}" /></div>
+
 							{{ if(typeof providerInfo !== 'undefined') { }}
 							<div class="fundDetails">
 								<div class="col-xs-12">
@@ -63,6 +75,14 @@
 									{{ if(!_.isEmpty(providerInfo.email)) { }}<p>{{= providerInfo.email }}</p>{{ } }}
 									{{ if(!_.isEmpty(providerInfo.website)) { }}<p>{{= providerInfo.website }}</p>{{ } }}
 								</div>
+							</div>
+							{{ } }}
+
+
+							{{ if( whatsNext ) { }}
+							<div class="col-xs-12 nextSteps">
+								<h2 class="text-hospital">Next steps with {{= fundName}}</h2>
+								{{= whatsNext }}
 							</div>
 							{{ } }}
 						</div>
