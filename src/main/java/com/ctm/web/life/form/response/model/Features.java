@@ -1,58 +1,56 @@
 package com.ctm.web.life.form.response.model;
 
-import com.ctm.life.quote.model.response.Feature;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
 
 public class Features {
 
-    private List<Feature> feature;
+    private FeaturesInner features;
     @JsonProperty("special_offers")
-    private List<Feature> specialOffers;
+    private FeaturesInner specialOffers;
     @JsonProperty("whats_included")
-    private  List<Feature> whatsIncluded;
+    private  FeaturesInner whatsIncluded;
     @JsonProperty("optional_extras")
-    private  List<Feature> optionalExtras;
-    private  List<Feature> exclusions;
+    private  FeaturesInner optionalExtras;
+    private  FeaturesInner exclusions;
 
-    public List<Feature> getFeature() {
-        return feature;
+    public FeaturesInner getFeatures() {
+        return features;
     }
 
-    public void setFeature(List<Feature> features) {
-        this.feature = features;
+    public void setFeatures(FeaturesInner features) {
+        this.features = features;
     }
 
-    public List<Feature> getSpecialOffers() {
+    public FeaturesInner getSpecialOffers() {
         return specialOffers;
     }
 
-    public void setSpecialOffers(List<Feature> specialOffers) {
+    public void setSpecialOffers(FeaturesInner specialOffers) {
         this.specialOffers = specialOffers;
     }
 
-    public List<Feature> getWhatsIncluded() {
+    public FeaturesInner getWhatsIncluded() {
         return whatsIncluded;
     }
 
-    public void setWhatsIncluded(List<Feature> whatsIncluded) {
+    public void setWhatsIncluded(FeaturesInner whatsIncluded) {
         this.whatsIncluded = whatsIncluded;
     }
 
-    public List<Feature> getOptionalExtras() {
+    public FeaturesInner getOptionalExtras() {
         return optionalExtras;
     }
 
-    public void setOptionalExtras(List<Feature> optionalExtras) {
+    public void setOptionalExtras(FeaturesInner optionalExtras) {
         this.optionalExtras = optionalExtras;
     }
 
-    public List<Feature> getExclusions() {
+    public FeaturesInner getExclusions() {
         return exclusions;
     }
 
-    public void setExclusions(List<Feature> exclusions) {
+    public void setExclusions(FeaturesInner exclusions) {
         this.exclusions = exclusions;
     }
 }

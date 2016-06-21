@@ -10,6 +10,8 @@ import com.ctm.web.life.form.response.model.Premium;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -70,11 +72,12 @@ public class LifeQuoteServiceResponseAdapter {
                 premium.setCallCentreHours(productDetails.getCallCentreHours());
                 Benefits benefits  = productDetails.getBenefits();
                 Features features = new Features();
-                features.setExclusions(benefits.getExclusions());
-                features.setFeature(benefits.getFeatures());
-                features.setOptionalExtras(benefits.getOptionalExtras());
-                features.setSpecialOffers(benefits.getSpecialOffers());
-                features.setWhatsIncluded(benefits.getWhatsIncluded());
+
+                features.setExclusions(mapFeature(benefits.getExclusions()));
+                features.setFeatures(mapFeature(benefits.getFeatures()));
+                features.setOptionalExtras(mapFeature(benefits.getOptionalExtras()));
+                features.setSpecialOffers(mapFeature(benefits.getSpecialOffers()));
+                features.setWhatsIncluded(mapFeature(benefits.getWhatsIncluded()));
                 premium.setFeatures(features);
             });
             premium.setCompanyName(company.getName());
@@ -89,6 +92,19 @@ public class LifeQuoteServiceResponseAdapter {
         premium.setPds(product.getPds());
         premium.setInfo(company.getInfo().orElse(""));
         return premium;
+    }
+
+    private FeaturesInner mapFeature(List<Feature> features) {
+        FeaturesInner featuresInner = new FeaturesInner();
+        List<FeatureWithAvailability> targetLongList = features.stream().map(element ->
+                new FeatureWithAvailability.Builder()
+                        .available(
+                                element.getAvailable()
+                                        .map(aval -> Optional.of( aval ? 1 : 0)).orElse(Optional.empty()))
+                        .id(element.getId()).name(element.getName()).build())
+                .collect(Collectors.toList());
+        featuresInner.setFeature(targetLongList);
+        return featuresInner;
     }
 
     private String getServiceProvider(ServiceId service) {
