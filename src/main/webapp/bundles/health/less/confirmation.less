@@ -6,19 +6,6 @@
 	background-color: transparent;
 	font-size: 22px;
 
-	.policySummaryContainer:not(.formMode) {
-		margin-top: 0px;
-	}
-
-	@media(@xs-only) {
-		font-size: 16px;
-	}
-
-	.confirmation-complete h1 {
-		font-size: 30px;
-		margin-bottom: 20px;
-	}
-
 	p {
 		margin-bottom: 20px;
 	}
@@ -27,15 +14,38 @@
 		font-family: SourceSansProSemiBold;
 	}
 
+	ul {
+		list-style-type: none;
+		padding-left: 0px;
+
+		li {
+			margin-bottom: 10px;
+		}
+	}
+
+	div.nextSteps {
+		margin-top: 60px;
+	}
+
+	.policySummaryContainer:not(.formMode) {
+		margin-top: 0px;
+	}
+
+	@media(@xs-only) {
+		font-size: 16px;
+	}
 
 	@media(@xs-only){
 		.policySummary-sidebar {
 			margin-bottom: 25px;
 		}
 	}
-	div.nextSteps {
-		margin-top: 60px;
+
+	.confirmation-complete h1 {
+		font-size: 30px;
+		margin-bottom: 20px;
 	}
+
 	.nextSteps {
 		font-size: 12px;
 		ul li {
@@ -67,15 +77,6 @@
 
 		.brochurePlaceholder {
 			margin-top: 20px;
-		}
-	}
-
-	ul {
-		list-style-type: none;
-		padding-left: 0px;
-
-		li {
-			margin-bottom: 10px;
 		}
 	}
 
