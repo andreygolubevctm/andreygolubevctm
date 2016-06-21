@@ -27,23 +27,23 @@
 
 	<%-- Main page template --%>
 	<script id="confirmation-template" type="text/html">
-
+		{{ var fundName = info.providerName ? info.providerName : info.fundName }}
+		{{ providerInfo.fundName = fundName }}
+		{{ providerInfo.provider = info.provider }}
+		{{ var fundDetailsTemplate = meerkat.modules.templateCache.getTemplate($("#confirmation-fund-details-template")) }}
+		{{ var fundDetailsHTML = fundDetailsTemplate(providerInfo) }}
 		<layout_v1:slide_columns>
 
 			<jsp:attribute name="rightColumn">
 				<health_v1:policySummary showProductDetails="true" />
 
 				{{ if( whatsNext ) { }}
-				{{ var fundName = info.providerName ? info.providerName : info.fundName }}
 				<form_v3:fieldset legend="" className="nextSteps visible-xs">
 					<h2 class="text-hospital">Next steps with {{= fundName}}</h2>
 					{{= whatsNext }}
 					{{ if(typeof providerInfo !== 'undefined') { }}
 					<div class="row">
-						{{ providerInfo.fundName = fundName }}
-						{{ providerInfo.provider = info.provider }}
-						{{ var fundDetailsTemplate = meerkat.modules.templateCache.getTemplate($("#confirmation-fund-details-template")) }}
-						{{= fundDetailsTemplate(providerInfo) }}
+						{{= fundDetailsHTML }}
 					</div>
 					{{ } }}
 				</form_v3:fieldset>
@@ -64,7 +64,6 @@
 				<layout_v1:slide_content >
 
 					<form_v3:fieldset legend="" className="confirmation">
-						{{ var fundName = info.providerName ? info.providerName : info.fundName }}
 						{{ var personName = typeof firstName !== 'undefined' && typeof lastName !== 'undefined' ? "Well done <span>" + firstName + " " + lastName + "</span>,<br />": '' }}
 						<div class="row confirmation-complete">
 							<div class="col-xs-12">
@@ -85,13 +84,9 @@
 
 							{{ if(typeof providerInfo !== 'undefined') { }}
 								<div class="col-xs-12 hidden-xs">
-								{{ providerInfo.fundName = fundName }}
-								{{ providerInfo.provider = info.provider }}
-								{{ var fundDetailsTemplate = meerkat.modules.templateCache.getTemplate($("#confirmation-fund-details-template")) }}
-								{{= fundDetailsTemplate(providerInfo) }}
+									{{= fundDetailsHTML }}
 								</div>
 							{{ } }}
-
 
 							{{ if( whatsNext ) { }}
 							<div class="col-xs-12 nextSteps hidden-xs">
