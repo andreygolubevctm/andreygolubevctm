@@ -88,6 +88,13 @@
 				confirmationProduct._selectedFrequency = confirmationProduct.frequency;
 				meerkat.modules.healthPaymentStep.initFields(); // not sure why this works to allow the next call to work but it seems to be the only way to figure out what payment type they selected
 
+				// prep the coverType since we can't access  meerkat.modules.health.getCoverType()
+				switch(confirmationProduct.info.ProductType.toLowerCase()) {
+					case 'combined': confirmationProduct.promo.coverType = 'C'; break;
+					case 'hospital': confirmationProduct.promo.coverType = 'H'; break;
+					default:  confirmationProduct.promo.coverType = 'E'; break;
+				}
+
 				if(!confirmationProduct.hasOwnProperty('premium')) {
 					if (confirmationProduct.paymentType) {
 						var paymentType;
@@ -110,6 +117,10 @@
 				/// TODO: Fix this -why is it needed though?
 				//meerkat.modules.healthMoreInfo.applyEventListeners();
 
+				// add the brochure
+				var brochureTemplate = meerkat.modules.templateCache.getTemplate($("#brochure-download-template"));
+				$('.brochurePlaceholder').html(brochureTemplate(confirmationProduct));
+
 				var tracking = {
 					productID: confirmationProduct.productId,
 					productBrandCode: confirmationProduct.info.provider,
@@ -130,6 +141,16 @@
 
 	}
 
+	function adjustLayout() {
+		var $mainForm = $('#mainform');
+
+		// widen the side bars so we're now 12 cols across
+		$mainForm.find('.fieldset-column-side.col-sm-3').removeClass('col-sm-3').addClass('col-sm-4');
+
+		// move the footer to match design
+		$mainForm.find('.confirmation-other-products').appendTo('#confirmation');
+	}
+
 	function fillTemplate(){
 
 		var confirmationTemplate = $("#confirmation-template").html();
@@ -143,6 +164,7 @@
 			meerkat.modules.healthPriceComponent.updateProductSummaryDetails(confirmationProduct, confirmationProduct.startDate, false);
 		});
 
+		adjustLayout();
 
 		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
 			// render dual pricing

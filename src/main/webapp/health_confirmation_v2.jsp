@@ -89,6 +89,7 @@
 
 	<jsp:body>
 		<health_v2_layout:slide_confirmation />
+		<health_v3:brochure_template/>
 	</jsp:body>
 
 </layout_v1:journey_engine_page>

@@ -23,19 +23,39 @@
 	<core_v1:js_template id="logo-template"><health_v3:logo_template /></core_v1:js_template>
 	<core_v1:js_template id="price-template"><health_v3:price_template /></core_v1:js_template>
 
+
+
 	<%-- Main page template --%>
 	<script id="confirmation-template" type="text/html">
 
 		<layout_v1:slide_columns>
 
 			<jsp:attribute name="rightColumn">
-				<div class="hidden-xs">
-					<health_v1:policySummary showProductDetails="true" />
-				</div>
+				<health_v1:policySummary showProductDetails="true" />
 
-				<form_v3:fieldset legend="">
-					<coupon:confirmation transactionId="${transactionId}" />
+				{{ if( whatsNext ) { }}
+				{{ var fundName = info.providerName ? info.providerName : info.fundName }}
+				<form_v3:fieldset legend="" className="nextSteps visible-xs">
+					<h2 class="text-hospital">Next steps with {{= fundName}}</h2>
+					{{= whatsNext }}
+					{{ if(typeof providerInfo !== 'undefined') { }}
+					<div class="row">
+						{{ providerInfo.fundName = fundName }}
+						{{ providerInfo.provider = info.provider }}
+						{{ var fundDetailsTemplate = meerkat.modules.templateCache.getTemplate($("#confirmation-fund-details-template")) }}
+						{{= fundDetailsTemplate(providerInfo) }}
+					</div>
+					{{ } }}
 				</form_v3:fieldset>
+				{{ } }}
+
+				<c:set var="coupon"><coupon:confirmation transactionId="${transactionId}" /></c:set>
+
+				<c:if test="${not empty coupon}">
+				<form_v3:fieldset legend="">
+					${coupon}
+				</form_v3:fieldset>
+				</c:if>
 
 			</jsp:attribute>
 
@@ -64,23 +84,17 @@
 							</div>
 
 							{{ if(typeof providerInfo !== 'undefined') { }}
-							<div class="fundDetails">
-								<div class="col-xs-12">
-									<p>For any questions, contact {{= fundName }} via any of the methods below</p>
+								<div class="col-xs-12 hidden-xs">
+								{{ providerInfo.fundName = fundName }}
+								{{ providerInfo.provider = info.provider }}
+								{{ var fundDetailsTemplate = meerkat.modules.templateCache.getTemplate($("#confirmation-fund-details-template")) }}
+								{{= fundDetailsTemplate(providerInfo) }}
 								</div>
-								<!-- leveraging existing styles -->
-								<div class="col-xs-4 companyLogo {{= info.provider }}-mi" ></div>
-								<div class="col-xs-8">
-									{{ if(!_.isEmpty(providerInfo.phoneNumber)) { }}<p class="phoneNumber">{{= providerInfo.phoneNumber }}</p>{{ } }}
-									{{ if(!_.isEmpty(providerInfo.email)) { }}<p>{{= providerInfo.email }}</p>{{ } }}
-									{{ if(!_.isEmpty(providerInfo.website)) { }}<p>{{= providerInfo.website }}</p>{{ } }}
-								</div>
-							</div>
 							{{ } }}
 
 
 							{{ if( whatsNext ) { }}
-							<div class="col-xs-12 nextSteps">
+							<div class="col-xs-12 nextSteps hidden-xs">
 								<h2 class="text-hospital">Next steps with {{= fundName}}</h2>
 								{{= whatsNext }}
 							</div>
@@ -91,7 +105,7 @@
 
 					</form_v3:fieldset>
 
-					<form_v3:fieldset legend="">
+					<form_v3:fieldset legend="" className="confirmation-other-products">
 						<confirmation:other_products heading="More ways to compare" copy="Find more ways to save with comparethemarket.com.au bu selecting any of the insurance or utilities below." ignore="fuel,roadside"  />
 					</form_v3:fieldset>
 
@@ -120,4 +134,19 @@
 			<c:set var="sessionProduct" value="${fn:replace( fn:replace( data.confirmation.health, '<![CDATA[', ''), ']]>', '' ) }" />
 			var sessionProduct = ${sessionProduct};
 		</c:if>
+	</script>
+
+	<script id="confirmation-fund-details-template" type="text/html">
+		<div class="fundDetails">
+			<div class="col-xs-12">
+				<p>For any questions, contact {{= fundName }} via any of the methods below</p>
+			</div>
+			<!-- leveraging existing styles -->
+			<div class="col-xs-4 companyLogo {{= provider }}-mi" ></div>
+			<div class="col-xs-8">
+				{{ if(!_.isEmpty(phoneNumber)) { }}<p class="phoneNumber">{{= phoneNumber }}</p>{{ } }}
+				{{ if(!_.isEmpty(email)) { }}<p>{{= email }}</p>{{ } }}
+				{{ if(!_.isEmpty(website)) { }}<p>{{= website }}</p>{{ } }}
+			</div>
+		</div>
 	</script>

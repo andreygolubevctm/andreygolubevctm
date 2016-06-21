@@ -2,6 +2,96 @@
 	display: none;
 }
 
+#confirmation {
+	background-color: transparent;
+	font-size: 22px;
+
+	@media(@xs-only) {
+		font-size: 16px;
+	}
+
+	h1 {
+		font-size: 30px;
+		margin-bottom: 20px;
+	}
+
+	p {
+		margin-bottom: 20px;
+	}
+
+	span {
+		font-family: SourceSansProSemiBold;
+	}
+
+	.nextSteps {
+		font-size: 12px;
+		margin-top: 60px;
+		ul li {
+			font-size: 16px;
+		}
+	}
+
+	.confirmation-complete .companyLogo {
+		max-height: none;
+		max-width: none;
+
+		.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames);
+		@media (@xs-only) {
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.4);
+		}
+		@media (@sm-only) {
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.9);
+		}
+		@media (@md-only) {
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.8);
+		}
+
+		margin-left: 15px;
+	}
+
+	.productSummaryDetails {
+		padding-bottom:0px;
+		margin-bottom: 0px;
+
+		.brochurePlaceholder {
+			margin-top: 20px;
+		}
+	}
+
+	ul {
+		list-style-type: none;
+		padding-left: 0px;
+
+		li {
+			margin-bottom: 10px;
+		}
+	}
+
+	.fundDetails {
+		font-size: 16px;
+
+		.phoneNumber {
+			font-size: 30px;
+		}
+
+		p {
+			margin-bottom: 10px;
+
+			font-family: "SourceSansProRegular";
+			@media(@xs-only) {
+				font-family: "SourceSansProSemiBold";
+				font-size: 18px;
+			}
+		}
+
+		@media(@xs-only) {
+			.companyLogo {
+				display: none;
+			}
+		}
+	}
+}
+
 #confirmation-compare-options {
 	margin-bottom: 0px;
 	.options-list {
@@ -67,58 +157,8 @@
 	}
 }
 
-.confirmation-complete {
-	background-color: transparent;
-	font-size: 22px;
-
-	h1 {
-		font-size: 30px;
-		margin-bottom: 20px;
-	}
-
-	p {
-		margin-bottom: 20px;
-	}
-
+.coupon-confirmation {
 	span {
 		font-family: SourceSansProSemiBold;
-	}
-
-	.nextSteps {
-		font-size: 12px;
-		margin-top: 60px;
-		ul li {
-			font-size: 16px;
-		}
-	}
-
-	.fundDetails {
-		font-size: 16px;
-
-		.phoneNumber {
-			font-size: 30px;
-		}
-
-		p {
-			margin-bottom: 10px;
-		}
-	}
-
-	.companyLogo {
-		max-height: none;
-		max-width: none;
-
-		.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames);
-		@media (@xs-only) {
-			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.4);
-		}
-		@media (@sm-only) {
-			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.9);
-		}
-		@media (@md-only) {
-			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.8);
-		}
-
-		margin-left: 15px;
 	}
 }

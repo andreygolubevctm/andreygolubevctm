@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <core_v1:js_template id="brochure-download-template">
-    {{ var coverType = meerkat.modules.health.getCoverType(); }}
+    {{ var coverType = typeof meerkat.modules.health.getCoverType() === 'undefined' ? promo.coverType : meerkat.modules.health.getCoverType(); }}
     {{ if(coverType == 'C' && promo.hospitalPDF == promo.extrasPDF) { }}
     <a class="hide-on-affix btn btn-block btn-download" href="{{= promo.hospitalPDF }}" target="_blank">Download Brochure</a>
     {{ } else if(coverType == 'C' && promo.hospitalPDF != promo.extrasPDF) { }}
