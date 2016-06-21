@@ -31,44 +31,15 @@
 				$checkHasActionsDropdown.each(function(){
 					$actionsDropdown = $(this);
 
-					$actionsDropdown.on('click', '.action-complete', function() {
-						if ($(this).parent('li').hasClass('disabled')) return false;
-						actionFinish('complete');
-					});
-
-					$actionsDropdown.on('click', '.action-unsuccessful', function() {
-						if ($(this).parent('li').hasClass('disabled')) return false;
-						actionFinish('unsuccessful');
-					});
-
-					$actionsDropdown.on('click', '.action-postpone', function(event) {
-						if ($(this).parent('li').hasClass('disabled')) return false;
-						actionPostpone(false, 'postpone');
-					});
-
 					$actionsDropdown.on('click', '.action-comment', function(event) {
 						if ($(this).parent('li').hasClass('disabled')) return false;
 						actionComments();
 					});
 
-					$actionsDropdown.on('click', '.action-remove-pm', function() {
-						if ($(this).parent('li').hasClass('disabled')) return false;
-						if (meerkat.site.inInEnabled === true) {
-							actionRemovePM();
-						}else {
-							actionFinish('remove_pm');
-						}
-					});
-
-					$actionsDropdown.on('click', '.action-complete-pm', function() {
-						if ($(this).parent('li').hasClass('disabled')) return false;
-						actionPostpone(true, 'complete_pm');
-					});
-
-					$actionsDropdown.on('click', '.action-change-time', function() {
-						if ($(this).parent('li').hasClass('disabled')) return false;
-						actionPostpone(true, 'change_time');
-					});
+                    $actionsDropdown.on('click', '.action-unlock', function(event) {
+                        if ($(this).parent('li').hasClass('disabled')) return false;
+                        meerkat.modules.simplesTransactionLocker.unlock();
+                    });
 				});
 
 

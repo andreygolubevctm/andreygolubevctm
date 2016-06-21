@@ -119,19 +119,21 @@
                         .data('fulltext', selectedText)
                         .addClass('selected-tag')
                         .hide()
+                        .hover(function onSelectTagHoverIn() {
+                            $(this).addClass('hover');
+                            $(this).find('button').addClass('icon-cross');
+
+                        }, function onSelectTagHoverOut() {
+                            $(this).removeClass('hover');
+                            $(this).find('button').removeClass('icon-cross');
+                        })
+                        .on('click', function onClickRemoveTagCallback() {
+                            _onRemoveListItem(this);
+                        })
                         .append(
                             $('<button>')
-                                .html('&times;')
                                 .attr('type', 'button')
-                                .addClass('btn')
-                                .on('click', function onClickRemoveTagCallback() {
-                                    _onRemoveListItem(this);
-                                })
-                                .hover(function onSelectTagHoverIn() {
-                                    $(this).parents('li').addClass('hover');
-                                }, function onSelectTagHoverOut() {
-                                    $(this).parents('li').removeClass('hover');
-                                })
+                                .addClass('btn icon icon-tick')
                         )
                         .fadeIn(fadeSpeed, function selectTagFadeIn() {
                             _updateHiddenInputs();
@@ -144,7 +146,7 @@
 
     function _onRemoveListItem(listItem) {
         var $this = $(listItem),
-            $select = $this.closest('.row').prev('.select-tags-row').find(':input'),
+            $select = $this.closest('.row').find(':input'),
             $listItem = $this.closest('li'),
             value = $listItem.data('value'),
             text = $listItem.data('fulltext');
@@ -190,7 +192,7 @@
     }
 
     function getListElement($el) {
-        return $el.closest('.row').next(selectedTagsListClass + '-row').find(selectedTagsListClass);
+        return $el.closest('.row').parent().find(selectedTagsListClass);
     }
 
     function getItemsSelected(index) {
