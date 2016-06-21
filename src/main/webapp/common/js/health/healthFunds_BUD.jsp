@@ -17,7 +17,7 @@ var healthFunds_BUD = {
 	$paymentStartDate: $("#health_payment_details_start"),
 	set: function(){
 		<%-- dependant definition --%>
-		healthFunds._dependants('This policy provides cover for children until their 21st birthday. Adult dependants over 21 years old can be covered by applying for a separate singles policy.');
+		healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
 
 		<%-- Authority --%>
 		healthFunds._previousfund_authority(true);
@@ -44,7 +44,7 @@ var healthFunds_BUD = {
 
 		<%-- change age of dependants and school --%>
 		meerkat.modules.healthDependants.updateConfig({school: false});
-		meerkat.modules.healthDependants.setMaxAge(21);
+		meerkat.modules.healthDependants.setMaxAge(25);
 
 		<%-- credit card & bank account frequency & day frequency --%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
