@@ -49,7 +49,7 @@ var healthFunds_HBF = {
                             <li class="flexi-icon HLTicon-psychology non-saver" data-value="PSY"><field_v2:help_icon helpId="280" /><br />Psychology</li>
                             <li class="flexi-icon HLTicon-naturopathy non-saver" data-value="NAT"><field_v2:help_icon helpId="278" /><br />Natural Therapies</li>
                             <li class="flexi-icon HLTicon-dietetics non-saver" data-value="NTN"><field_v2:help_icon helpId="561" /><br />Nutritionist</li>
-                            <li class="flexi-icon HLTicon-hearing-aids non-saver" data-value="APP"><field_v2:help_icon helpId="558" /><br />Appliances</li>
+                            <li class="flexi-icon HLTicon-appliances non-saver" data-value="APP"><field_v2:help_icon helpId="558" /><br />Appliances</li>
                             <li class="flexi-icon HLTicon-lifestyle-products non-saver" data-value="HLP"><field_v2:help_icon helpId="293" /><br />Healthy living programs</li>
                             <li class="flexi-icon HLTicon-ambulance" data-value="UAM"><field_v2:help_icon helpId="557" /><br />Urgent Ambulance</li>
                         </ul>
