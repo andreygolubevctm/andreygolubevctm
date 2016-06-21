@@ -1,17 +1,12 @@
 package com.ctm.web.life.quote.adapter;
 
 import com.ctm.interfaces.common.types.ServiceId;
-import com.ctm.life.quote.model.response.ApplicantType;
-import com.ctm.life.quote.model.response.Company;
-import com.ctm.life.quote.model.response.LifeQuote;
-import com.ctm.life.quote.model.response.Product;
+import com.ctm.life.quote.model.response.*;
 import com.ctm.web.core.providers.model.Response;
 import com.ctm.web.life.form.model.Api;
 import com.ctm.web.life.form.model.LifeQuoteWebRequest;
-import com.ctm.web.life.form.response.model.LifeResults;
-import com.ctm.web.life.form.response.model.LifeResultsWebResponse;
+import com.ctm.web.life.form.response.model.*;
 import com.ctm.web.life.form.response.model.Premium;
-import com.ctm.web.life.form.response.model.ResultPremiums;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -66,6 +61,24 @@ public class LifeQuoteServiceResponseAdapter {
         final Company company = product.getCompany();
         premium.setInsurerContact(company.getInsurerContact());
         premium.setProductId(quote.getProductId().get());
+
+        if(quote.getService().get().equals("OZIC") ) {
+            quote.getProduct().getProductDetails().ifPresent(productDetails -> {
+                premium.setSpecial_offer(productDetails.getSpecialOffer());
+                premium.setLeadNumber(productDetails.getLeadNumber());
+                premium.setFsg(productDetails.getFsg());
+                premium.setCallCentreHours(productDetails.getCallCentreHours());
+                Benefits benefits  = productDetails.getBenefits();
+                Features features = new Features();
+                features.setExclusions(benefits.getExclusions());
+                features.setFeature(benefits.getFeatures());
+                features.setOptionalExtras(benefits.getOptionalExtras());
+                features.setSpecialOffers(benefits.getSpecialOffers());
+                features.setWhatsIncluded(benefits.getWhatsIncluded());
+                premium.setFeatures(features);
+            });
+            premium.setCompanyName(company.getName());
+        }
         premium.setName(product.getName());
         premium.setDescription(product.getDescription());
         premium.setBelowMinimum(product.getBelowMinimum());

@@ -13,6 +13,7 @@ public class Premium {
     private String productId;
 
     private String name;
+    private String companyName;
 
     private String description;
 
@@ -31,6 +32,15 @@ public class Premium {
     private String pds;
 
     private String info;
+    private String leadNumber;
+    private Features features;
+
+    @JsonProperty("special_offer")
+    private String special_offer;
+
+    @JsonProperty("call_centre_hours")
+    private String callCentreHours;
+    private String fsg;
 
     public String getInsurerContact() {
         return insurerContact;
@@ -120,6 +130,34 @@ public class Premium {
         this.info = info;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getLeadNumber() {
+        return leadNumber;
+    }
+
+    public Features getFeatures() {
+        return features;
+    }
+
+    public String getSpecialOffer() {
+        return special_offer;
+    }
+
+    public String getCallCentreHours() {
+        return callCentreHours;
+    }
+
+    public String getFsg() {
+        return fsg;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -157,5 +195,25 @@ public class Premium {
         result = 31 * result + (pds != null ? pds.hashCode() : 0);
         result = 31 * result + (info != null ? info.hashCode() : 0);
         return result;
+    }
+
+    public void setLeadNumber(String leadNumber) {
+        this.leadNumber = leadNumber;
+    }
+
+    public void setFeatures(Features features) {
+        this.features = features;
+    }
+
+    public void setSpecial_offer(String special_offer) {
+        this.special_offer = special_offer;
+    }
+
+    public void setCallCentreHours(String call_centre_hours) {
+        this.callCentreHours = call_centre_hours;
+    }
+
+    public void setFsg(String fsg) {
+        this.fsg = fsg;
     }
 }

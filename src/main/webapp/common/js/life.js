@@ -276,7 +276,7 @@ var LifeQuote = {
 				prod.priceFrequency = LifeQuote.getPremiumFrequencyTerm();
 				prod.thumb = prod.company.toLowerCase().replace(" ", "_") + ".png";
 				
-				if(prod.company !== "ozicare") {
+				if(prod.company.toLowerCase() !== "ozicare") {
 					prod.pds = "/static/pds/life/" + decodeURI(prod.pds.split("/").pop()).replace(/ /g, "_");
 				}
 
@@ -1176,7 +1176,7 @@ var LifeQuote = {
 		
 		var primaryProduct = Results.getPrimarySelectedProduct();
 		
-		if(primaryProduct.service_provider == "Ozicare") {
+		if(primaryProduct.service_provider.toLowerCase() == "ozicare") {
 			data = data + "&partnerBrand=OZIC&company=ozicare&lead_number=" + primaryProduct.lead_number;
 		}
 
