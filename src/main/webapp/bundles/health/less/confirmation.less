@@ -3,6 +3,7 @@
 }
 
 #confirmation {
+	/* general styles */
 	background-color: transparent;
 	font-size: 22px;
 
@@ -20,66 +21,15 @@
 
 		li {
 			margin-bottom: 10px;
+			font-size: 16px;
 		}
-	}
-
-	div.nextSteps {
-		margin-top: 60px;
-	}
-
-	.policySummaryContainer:not(.formMode) {
-		margin-top: 0px;
 	}
 
 	@media(@xs-only) {
 		font-size: 16px;
 	}
 
-	@media(@xs-only){
-		.policySummary-sidebar {
-			margin-bottom: 25px;
-		}
-	}
-
-	.confirmation-complete h1 {
-		font-size: 30px;
-		margin-bottom: 20px;
-	}
-
-	.nextSteps {
-		font-size: 12px;
-		ul li {
-			font-size: 16px;
-		}
-	}
-
-	.confirmation-complete .companyLogo {
-		max-height: none;
-		max-width: none;
-
-		.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames);
-		@media (@xs-only) {
-			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.4);
-		}
-		@media (@sm-only) {
-			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.9);
-		}
-		@media (@md-only) {
-			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.8);
-		}
-
-		margin-left: 15px;
-	}
-
-	.productSummaryDetails {
-		padding-bottom:0px;
-		margin-bottom: 0px;
-
-		.brochurePlaceholder {
-			margin-top: 20px;
-		}
-	}
-
+	/* placed here due to the two different layouts */
 	.fundDetails {
 		font-size: 16px;
 
@@ -89,8 +39,6 @@
 
 		p {
 			margin-bottom: 10px;
-
-			font-family: "SourceSansProRegular";
 			@media(@xs-only) {
 				font-family: "SourceSansProSemiBold";
 				font-size: 18px;
@@ -104,6 +52,61 @@
 		}
 	}
 
+	/* main copy area*/
+	.confirmation-complete {
+
+		h1 {
+			font-size: 30px;
+			margin-bottom: 20px;
+		}
+
+		.companyLogo {
+			max-height: none;
+			max-width: none;
+
+			.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames);
+			@media (@xs-only) {
+				.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.4);
+			}
+			@media (@sm-only) {
+				.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.9);
+			}
+			@media (@md-only) {
+				.providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.8);
+			}
+
+			margin-left: 15px;
+		}
+
+		/* There is also a fieldset.nextSteps */
+		div.nextSteps {
+			margin-top: 60px;
+		}
+	}
+
+	/* right hand column */
+	.fieldset-column-side {
+		@media(@xs-only){
+			.policySummary-sidebar {
+				margin-bottom: 25px;
+			}
+		}
+
+		.policySummaryContainer:not(.formMode) {
+			margin-top: 0px;
+		}
+
+		.productSummaryDetails {
+			padding-bottom: 0px;
+			margin-bottom: 0px;
+
+			.brochurePlaceholder {
+				margin-top: 20px;
+			}
+		}
+	}
+
+	/* cross sell */
 	#confirmation-compare-options {
 		margin-bottom: 0px;
 		.options-list {
@@ -166,12 +169,6 @@
 					}
 				}
 			}
-		}
-	}
-
-	.coupon-confirmation {
-		span {
-			font-family: SourceSansProSemiBold;
 		}
 	}
 }
