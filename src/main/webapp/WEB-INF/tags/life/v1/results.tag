@@ -921,7 +921,7 @@ Results = {
 						}});
 					};
 
-					if(product.company == "ozicare") {
+					if(product.company.toLowerCase() == "ozicare") {
 						Results.populateMoreDetails(product);
 						openDropdownInstance();
 					} else {
@@ -1296,7 +1296,7 @@ Results = {
 			qs += "&rank_productName" + i + "=" + product.name;
 			qs += "&rank_premium" + i + "=" + product.price;
 			
-			if(product.hasOwnProperty('companyName') && product.companyName == "Ozicare") {
+			if(product.hasOwnProperty('companyName') && product.companyName.toLowerCase() == "ozicare") {
 				qs += "&rank_callCentreHours" + i + "=" + product.call_centre_hours;
 				qs += "&rank_partnerBrand" + i + "=" + "OZIC";
 			}

@@ -108,6 +108,13 @@ public class LifeQuoteServiceResponseAdapter {
     }
 
     private String getServiceProvider(ServiceId service) {
-        return service.get().equals("LFBR") ? "Lifebroker" : service.get();
+        switch (service.get()) {
+            case  "LFBR" :
+                return "Lifebroker";
+            case  "OZIC" :
+                return "Ozicare";
+            default:
+                return service.get();
+        }
     }
 }
