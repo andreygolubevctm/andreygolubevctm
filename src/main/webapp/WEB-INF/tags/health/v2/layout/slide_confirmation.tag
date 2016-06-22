@@ -28,10 +28,12 @@
 	<%-- Main page template --%>
 	<script id="confirmation-template" type="text/html">
 		{{ var fundName = info.providerName ? info.providerName : info.fundName }}
-		{{ providerInfo.fundName = fundName }}
-		{{ providerInfo.provider = info.provider }}
-		{{ var fundDetailsTemplate = meerkat.modules.templateCache.getTemplate($("#confirmation-fund-details-template")) }}
-		{{ var fundDetailsHTML = fundDetailsTemplate(providerInfo) }}
+		{{ if(typeof providerInfo !== 'undefined') { }}
+			{{ providerInfo.fundName = fundName }}
+			{{ providerInfo.provider = info.provider }}
+			{{ var fundDetailsTemplate = meerkat.modules.templateCache.getTemplate($("#confirmation-fund-details-template")) }}
+			{{ var fundDetailsHTML = fundDetailsTemplate(providerInfo) }}
+		{{ } }}
 		<layout_v1:slide_columns>
 
 			<jsp:attribute name="rightColumn">
