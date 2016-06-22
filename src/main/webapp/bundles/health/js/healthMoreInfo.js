@@ -389,45 +389,40 @@
         data.providerId = product.info.providerId;
         data.providerContentTypeCode = providerContentTypeCode;
 
-        return meerkat.modules.comms.get({
-            url: "health/provider/content/get.json",
-            data: data,
-            cache: true,
-            errorLevel: "silent",
-            onSuccess: function getProviderContentSuccess(result) {
-                if (result.hasOwnProperty('providerContentText')) {
-                    switch (providerContentTypeCode) {
-                        case 'ABT':
-                            product.aboutFund = result.providerContentText;
-                            break;
-                        case 'NXT':
-                            product.whatHappensNext = result.providerContentText;
-                            break;
-                        case 'FWM':
-                            product.warningAlert = result.providerContentText;
-                            break;
-                        case 'DDD':
-                            var d = new Date(),
-                                formattedDate = '';
-
-                            if ($.trim(result.providerContentText) !== '') {
-                                var dateSplit = result.providerContentText.split("/");
-                                var rearrangedDate = dateSplit[1]+"/"+dateSplit[0]+"/"+dateSplit[2];
-                                var newDate = new Date(rearrangedDate);
-                                formattedDate = meerkat.modules.dateUtils.format(newDate, "Do of MMMM, YYYY");
-
-                                product.dropDeadDateFormatted =  formattedDate;
-                                product.dropDeadDate =  new Date(rearrangedDate);
-                            } else {
-                                product.dropDeadDateFormatted = '31st March '+d.getFullYear();
-                                product.dropDeadDate =  new Date('31/3/'+d.getFullYear());
-                            }
-
-                            break;
+        if(typeof data.providerId === 'undefined' ||  data.providerId === '') {
+            meerkat.modules.errorHandling.error({
+                message: "providerId is empty",
+                page: "healthMoreInfo.js:getProviderContentByType",
+                errorLevel: "silent",
+                description: "providerId is empty providerContentTypeCode: " + providerContentTypeCode ,
+                data: product
+            });
+        } else {
+            return meerkat.modules.comms.get({
+                url: "health/provider/content/get.json",
+                data: data,
+                cache: true,
+                errorLevel: "silent",
+                onSuccess: function getProviderContentSuccess(result) {
+                    if (result.hasOwnProperty('providerContentText')) {
+                        switch (providerContentTypeCode) {
+                            case 'ABT':
+                                product.aboutFund = result.providerContentText;
+                                break;
+                            case 'NXT':
+                                product.whatHappensNext = result.providerContentText;
+                                break;
+                            case 'FWM':
+                                product.warningAlert = result.providerContentText;
+                                break;
+                            case 'DDD':
+                                meerkat.modules.healthDropDeadDate.setDropDeadDate(result.providerContentText, product);
+                                break;
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     function prepareCoverFeatures(searchPath, target) {

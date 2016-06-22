@@ -269,6 +269,7 @@
 
             // Hide pagination
             $('header .slide-feature-pagination, header a[data-results-pagination-control]').addClass('hidden');
+            meerkat.modules.coupon.triggerPopup();
         });
 
         // If error occurs, go back in the journey
@@ -523,6 +524,7 @@
         meerkat.modules.health.loadRates(function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health').done(function () {
+                Results.updateStaticBranch();
                 Results.updateAggregatorEnvironment();
                 Results.get();
             });

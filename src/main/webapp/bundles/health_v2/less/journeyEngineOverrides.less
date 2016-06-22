@@ -205,6 +205,18 @@ body[data-step="apply"], body[data-step="payment"] {
 	}
 }
 
+/* Hide all the excess sidebar copy for callcentre users */
+body.callCentre {
+	.fieldset-column-side {
+		.sidebar-box.quoteSnapshot,
+		.sidebar-box.callCentreHelp,
+		.sidebar-box.testimonials,
+		.sidebar-box.pricePromiseBox {
+			display: none !important;
+		}
+	}
+}
+
 .journeyNavButton{
 	font-size: 16px;
 }

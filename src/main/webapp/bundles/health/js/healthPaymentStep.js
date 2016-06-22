@@ -30,6 +30,8 @@
 		maxStartDate: ''
 	};
 
+	var currentCoupon = false;
+
 	function initHealthPaymentStep() {
 
 		$(document).ready(function(){
@@ -63,16 +65,25 @@
 				updatePremium();
 			});
 
+			var validateCoupon = function() {
+				var couponInput = $('.coupon-code-field').val();
+				if(currentCoupon === false || currentCoupon !== couponInput) {
+					currentCoupon = couponInput;
+					meerkat.modules.coupon.validateCouponCode(currentCoupon);
+				}
+			};
+
 			$paymentRadioGroup.find('input').on('click', function() {
 				togglePaymentGroups();
 				toggleClaimsBankAccountQuestion();
-
 				// validate coupon
-				meerkat.modules.coupon.validateCouponCode($('.coupon-code-field').val());
+				validateCoupon();
 				_.defer(function delayPaymentUpdate(){
 					updatePaymentPremium();
 				});
 			});
+
+			$('#health_coupon_code').blur(validateCoupon);
 
 			$frequencySelect.on('change', function updateSidebarQuote(){
 				updateProductFrequency();
