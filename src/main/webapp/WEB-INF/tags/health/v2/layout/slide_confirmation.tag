@@ -103,7 +103,7 @@
 					</form_v3:fieldset>
 
 					<form_v3:fieldset legend="" className="confirmation-other-products">
-						<confirmation:other_products heading="More ways to compare" copy="Find more ways to save with comparethemarket.com.au bu selecting any of the insurance or utilities below." ignore="fuel,roadside"  />
+						<confirmation:other_products heading="More ways to compare" copy="Find more ways to save with comparethemarket.com.au by selecting any of the insurance or utilities below." ignore="fuel,roadside"  />
 					</form_v3:fieldset>
 
 				</layout_v1:slide_content>
