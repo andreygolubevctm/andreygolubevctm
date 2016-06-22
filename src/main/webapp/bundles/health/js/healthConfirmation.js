@@ -89,10 +89,19 @@
 				meerkat.modules.healthPaymentStep.initFields(); // not sure why this works to allow the next call to work but it seems to be the only way to figure out what payment type they selected
 
 				// prep the coverType since we can't access  meerkat.modules.health.getCoverType()
-				switch(confirmationProduct.info.ProductType.toLowerCase()) {
-					case 'combined': confirmationProduct.promo.coverType = 'C'; break;
-					case 'hospital': confirmationProduct.promo.coverType = 'H'; break;
-					default:  confirmationProduct.promo.coverType = 'E'; break;
+				// info.ProductType doesn't exist if it's a failed join
+				if (!_.isEmpty(confirmationProduct.info.ProductType)) {
+					switch (confirmationProduct.info.ProductType.toLowerCase()) {
+						case 'combined':
+							confirmationProduct.promo.coverType = 'C';
+							break;
+						case 'hospital':
+							confirmationProduct.promo.coverType = 'H';
+							break;
+						default:
+							confirmationProduct.promo.coverType = 'E';
+							break;
+					}
 				}
 
 				if(!confirmationProduct.hasOwnProperty('premium')) {
@@ -117,9 +126,11 @@
 				/// TODO: Fix this -why is it needed though?
 				//meerkat.modules.healthMoreInfo.applyEventListeners();
 
-				// add the brochure
-				var brochureTemplate = meerkat.modules.templateCache.getTemplate($("#brochure-download-template"));
-				$('.brochurePlaceholder').html(brochureTemplate(confirmationProduct));
+				// add the brochure if it's not a failed join
+				if (!_.isEmpty(confirmationProduct.info.ProductType)) {
+					var brochureTemplate = meerkat.modules.templateCache.getTemplate($("#brochure-download-template"));
+					$('.brochurePlaceholder').html(brochureTemplate(confirmationProduct));
+				}
 
 				var tracking = {
 					productID: confirmationProduct.productId,
