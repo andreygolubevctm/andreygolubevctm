@@ -217,6 +217,7 @@ var healthFunds_AHM = {
     healthFunds._previousfund_authority(false);
 
     <%--credit card options--%>
+    $('.health-credit_card_details .fieldrow').show();
     meerkat.modules.healthCreditCard.resetConfig();
     meerkat.modules.healthCreditCard.render();
 
