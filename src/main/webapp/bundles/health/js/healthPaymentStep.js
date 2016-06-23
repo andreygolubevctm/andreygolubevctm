@@ -432,14 +432,14 @@
 		if(_type == 'ba'){
 
 			// Show sub question?
-			if($bankAccountDetailsRadioGroup.find('input:checked').val() == 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
+			if($bankAccountDetailsRadioGroup.find('input:checked').val() === 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
 				toggleClaimsBankSubQuestion(true);
 			}else{
 				toggleClaimsBankSubQuestion(false);
 			}
 
 			// Show form?
-			if($sameBankAccountRadioGroup.find("input:checked").val() == 'N'){
+			if($sameBankAccountRadioGroup.find("input:checked").val() === 'N' && $bankAccountDetailsRadioGroup.is(':visible') === true){
 				toggleClaimsBankAccountForm(true);
 			}else{
 				toggleClaimsBankAccountForm(false);
@@ -451,7 +451,7 @@
 			toggleClaimsBankSubQuestion(false);
 
 			// Show form?
-			if($bankAccountDetailsRadioGroup.find("input:checked").val() == 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
+			if($bankAccountDetailsRadioGroup.find("input:checked").val() === 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
 				toggleClaimsBankAccountForm(true);
 			}else{
 				toggleClaimsBankAccountForm(false);
