@@ -121,7 +121,8 @@
                   "bank" : false
                 },
                 "paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
-                "clearValidationSelectors" : $('#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type'),
+				"updateValidationSelectors" : meerkat.modules.healthPaymentStep.updateValidationSelectorsPaymentGateway,
+				"resetValidationSelectors" : meerkat.modules.healthPaymentStep.resetValidationSelectorsPaymentGateway,
                 "getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
               });
             }<%-- not loading quote --%>
