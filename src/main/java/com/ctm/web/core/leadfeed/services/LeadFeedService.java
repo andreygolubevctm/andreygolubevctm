@@ -9,6 +9,7 @@ import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.utils.LeadFeed;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.Touch.TouchType;
+import com.ctm.web.core.services.AccessTouchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -24,6 +25,8 @@ public abstract class LeadFeedService {
 	private final BestPriceLeadsDao bestPriceDao;
 	private final ContentService contentService;
 	private final LeadFeed leadFeed;
+	protected Content ignoreBecauseOfField = null;
+	protected String ignorePhoneRule = null;
 
 	protected LeadFeedTouchService leadFeedTouchService;
 
@@ -169,9 +172,16 @@ public abstract class LeadFeedService {
 				ignoreBecauseOfField = contentService.getContent("ignoreMatchingFormField", leadData.getBrandId(), leadData.getVerticalId(), leadData.getEventDate(), true);
 				ignorePhoneRule = ignoreBecauseOfField.getSupplementaryValueByKey("phone");
 			}
-			LOGGER.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));
+			if(ignorePhoneRule != null && !ignorePhoneRule.isEmpty() && ignorePhoneRule.contains(leadData.getPhoneNumber())) {
+				LOGGER.debug("[Lead feed] Lead identified as test-only because of phone number {},{}", kv("phoneNumber", leadData.getPhoneNumber()),
+						kv("transactionId", leadData.getTransactionId()));
+				return true;
+			} else {
+				return false;
+			}
+		} catch(DaoException e) {
+			throw new LeadFeedException(e.getMessage(), e);
 		}
-		return responseStatus;
 	}
 
 	protected LeadResponseStatus getLeadResponseStatus(LeadType leadType, LeadFeedData leadData, TouchType touchType, IProviderLeadFeedService providerLeadFeedService) throws LeadFeedException {

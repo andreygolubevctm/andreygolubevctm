@@ -23,12 +23,18 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class LeadFeedServiceTest {
     private TestLeadFeedService leadFeedService;
 
+    @Mock
+    private  LeadFeedTouchService leadFeedTouchService;
+    @Mock
+    private IProviderLeadFeedService providerLeadFeedService;
+
     private class TestLeadFeedService extends LeadFeedService{
 
         private boolean processCalled = false;
 
-        public TestLeadFeedService(BestPriceLeadsDao bestPriceDao, ContentService contentService) {
-            super(bestPriceDao, contentService);
+        public TestLeadFeedService(BestPriceLeadsDao bestPriceDao, ContentService contentService,
+                                   LeadFeedTouchService leadFeedTouchService) {
+            super(bestPriceDao, contentService,leadFeedTouchService);
         }
 
         @Override

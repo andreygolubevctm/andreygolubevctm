@@ -78,12 +78,13 @@ public class LifeLeadFeedService extends LeadFeedService {
 		return processGateway(LeadType.CALL_ME_BACK, leadData, TouchType.SOLD);
 	}
 
-	protected void recordTouch(String touchType, LeadFeedData leadData) {
+	@Override
+	protected Boolean recordTouch(String touchType, LeadFeedData leadData) {
 		AccessTouchService touchService = new AccessTouchService();
 
 		if(!leadData.getProductId().isEmpty())
-			 touchService.recordTouchWithComment(leadData.getTransactionId(), touchType, Touch.ONLINE_USER, leadData.getProductId());
+			return touchService.recordTouchWithComment(leadData.getTransactionId(), touchType, Touch.ONLINE_USER, leadData.getProductId());
 		else
-			 touchService.recordTouchDeprecated(leadData.getTransactionId(), touchType, Touch.ONLINE_USER);
+			return touchService.recordTouchDeprecated(leadData.getTransactionId(), touchType, Touch.ONLINE_USER);
 	}
 }
