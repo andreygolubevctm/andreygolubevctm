@@ -97,10 +97,12 @@
 			clientName.val($("#quote_drivers_regular_firstname").val() + " " + $("#quote_drivers_regular_surname").val());
 		}
 
-		var telNum = $('#quote_CrClientTelinput');
+		var telNum = $('#quote_CrClientTel');
 		// populate client number if empty
 		if (telNum.length && !telNum.val().length) {
-			telNum.val($('#quote_contact_phone').val()).blur();
+			var telNumInput = $('#quote_CrClientTelinput');
+			telNum.val($('#quote_contact_phone').val());
+			telNumInput.val($('#quote_contact_phoneinput').val()).blur();
 		}
 		telNum.attr('data-msg-required', "Please enter your contact number");
 
@@ -187,9 +189,9 @@
 
 		$.extend(defaultData, {
 			clientNumber: quoteNumber,
-			clientName: $('#quote_CrClientName').val() || '',
-			phoneNumber: $('#quote_CrClientTel').val() || '',
-			partnerReference: meerkat.modules.transactionId.get()
+            clientName: $('#quote_CrClientName').val() || '',
+            phoneNumber: $('#quote_CrClientTel').val() || '',
+            partnerReference: meerkat.modules.transactionId.get()
 		});
 
 

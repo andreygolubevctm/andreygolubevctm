@@ -11,6 +11,7 @@ import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.Touch.TouchType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -103,7 +104,7 @@ public abstract class LeadFeedService {
 	 * @throws LeadFeedException
 	 */
 	protected LeadResponseStatus processGateway(LeadType leadType, LeadFeedData leadData, TouchType touchType) throws LeadFeedException {
-		if(leadFeed.isTestOnlyLead(leadData)) {
+		if(StringUtils.isEmpty(leadData.getPhoneNumber()) || isTestOnlyLead(leadData)) {
 			// Don't process or record touch for test data - simply return success
 			return LeadResponseStatus.SUCCESS;
 		} else {
@@ -142,10 +143,41 @@ public abstract class LeadFeedService {
 		return "{\"styleCode\":" + brandCodeId + ",\"success\":" + successCount + ",\"failure\":" + failureCount + "}";
 	}
 
+	protected Boolean recordTouch(String touchType, LeadFeedData leadData) {
+		AccessTouchService touchService = new AccessTouchService();
+
+		if(!leadData.getProductId().isEmpty())
+			return touchService.recordTouchWithProductCode(leadData.getTransactionId(), touchType, Touch.ONLINE_USER, leadData.getProductId());
+		else
+			return touchService.recordTouch(leadData.getTransactionId(), touchType, Touch.ONLINE_USER);
+	}
+
+	/**
+	 * isTestOnlyLead() will check whether the email or phone number in the lead data has been
+	 * flagged as test data.
+	 *
+	 * @param leadData
+	 * @return
+	 * @throws LeadFeedException
+	 */
+	protected Boolean isTestOnlyLead(LeadFeedData leadData) throws LeadFeedException {
+		try {
+			if(StringUtils.isEmpty(leadData.getPhoneNumber())){
+				return false;
+			}
+			if(ignoreBecauseOfField instanceof Content == false) {
+				ignoreBecauseOfField = contentService.getContent("ignoreMatchingFormField", leadData.getBrandId(), leadData.getVerticalId(), leadData.getEventDate(), true);
+				ignorePhoneRule = ignoreBecauseOfField.getSupplementaryValueByKey("phone");
+			}
+			LOGGER.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));
+		}
+		return responseStatus;
+	}
+
 	protected LeadResponseStatus getLeadResponseStatus(LeadType leadType, LeadFeedData leadData, TouchType touchType, IProviderLeadFeedService providerLeadFeedService) throws LeadFeedException {
-        LeadResponseStatus responseStatus =  LeadResponseStatus.SUCCESS;;
-        if(providerLeadFeedService != null) {
-            responseStatus = providerLeadFeedService.process(leadType, leadData);
+		LeadResponseStatus responseStatus =  LeadResponseStatus.SUCCESS;;
+		if(providerLeadFeedService != null) {
+			responseStatus = providerLeadFeedService.process(leadType, leadData);
 			if (responseStatus == LeadResponseStatus.SUCCESS) {
 				leadFeedTouchService.recordTouch(touchType, leadData);
 			}

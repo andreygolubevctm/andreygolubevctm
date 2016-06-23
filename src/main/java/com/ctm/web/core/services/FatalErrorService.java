@@ -55,7 +55,6 @@ public class FatalErrorService {
 			page = page.substring(0, page.length() - 45);
 		}
 
-		FatalErrorDao fatalErrorDao = new FatalErrorDao();
 		FatalError fatalError = new FatalError();
 		fatalError.setStyleCodeId(styleCodeId);
 		fatalError.setPage(page);
@@ -70,12 +69,18 @@ public class FatalErrorService {
 		} else {
 			fatalError.setFatal("0");
 		}
-		try {
-			fatalErrorDao.add(fatalError);
-		} catch (DaoException e) {
-			LOGGER.error("Cannot log to fatal error table {}", kv("fatalError", fatalError), e);
-		}
+        logFatalError(fatalError);
 	}
+
+
+    public static void logFatalError(FatalError fatalError) {
+        FatalErrorDao fatalErrorDao = new FatalErrorDao();
+        try {
+            fatalErrorDao.add(fatalError);
+        } catch (DaoException e) {
+            LOGGER.error("Cannot log to fatal error table {}", kv("fatalError", fatalError), e);
+        }
+    }
 
 	public static void logFatalError(Exception exception, int styleCodeId, String page , String sessionId, boolean isFatal, Long transactionId) {
 		logFatalError(exception, styleCodeId, page,
