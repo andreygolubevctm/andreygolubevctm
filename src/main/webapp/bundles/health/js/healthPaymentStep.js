@@ -434,14 +434,16 @@
 			// Show sub question?
 			if($bankAccountDetailsRadioGroup.find('input:checked').val() === 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
 				toggleClaimsBankSubQuestion(true);
+
+				// Show form?
+				if($sameBankAccountRadioGroup.find("input:checked").val() === 'N'){
+					toggleClaimsBankAccountForm(true);
+				}else{
+					toggleClaimsBankAccountForm(false);
+				}
+
 			}else{
 				toggleClaimsBankSubQuestion(false);
-			}
-
-			// Show form?
-			if($sameBankAccountRadioGroup.find("input:checked").val() === 'N'){
-				toggleClaimsBankAccountForm(true);
-			}else{
 				toggleClaimsBankAccountForm(false);
 			}
 
