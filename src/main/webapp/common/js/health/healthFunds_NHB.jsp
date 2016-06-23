@@ -25,6 +25,7 @@
 		  $paymentType : $('#health_payment_details_type input'),
 			$paymentFrequency : $('#health_payment_details_frequency'),
 			$paymentStartDate: $("#health_payment_details_start"),
+			$paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
 
           set: function() {
             $(".health_previous_fund_authority").removeClass("hidden");
@@ -272,6 +273,7 @@
             });
           },
 		  renderPaymentDays: function() {
+			healthFunds_NHB.$paymentTypeContainer.text('*Navy Health offers a 2% discount on Half Yearly or a 4% discount on Annual payments').slideDown();
 			healthFunds._payments = { 'min':0, 'max':14, 'weekends':false, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28};
 			healthFunds_NHB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 			
@@ -344,5 +346,6 @@
                 $('#health_application_partner_titleRow').replaceWith('<c:out value="${html}" escapeXml="false" />');
                 $('#health_application_partner_title').val(healthFunds_NHB.partnerTitleValue);
             }
+			healthFunds_NHB.$paymentTypeContainer.text('').slideUp();
           }
         };
