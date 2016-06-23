@@ -439,7 +439,7 @@
 			}
 
 			// Show form?
-			if($sameBankAccountRadioGroup.find("input:checked").val() === 'N' && $bankAccountDetailsRadioGroup.is(':visible') === true){
+			if($sameBankAccountRadioGroup.find("input:checked").val() === 'N'){
 				toggleClaimsBankAccountForm(true);
 			}else{
 				toggleClaimsBankAccountForm(false);

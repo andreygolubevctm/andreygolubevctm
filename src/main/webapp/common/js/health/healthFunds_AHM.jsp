@@ -170,7 +170,6 @@ var healthFunds_AHM = {
       healthFunds_AHM.populateFuturePaymentDays();
     });
 
-    $('.health-credit_card_details .fieldrow').hide();
     meerkat.modules.paymentGateway.setup({
       "paymentEngine" : meerkat.modules.healthPaymentGatewayWestpac,
       "name" : 'health_payment_gateway',
@@ -217,7 +216,6 @@ var healthFunds_AHM = {
     healthFunds._previousfund_authority(false);
 
     <%--credit card options--%>
-    $('.health-credit_card_details .fieldrow').show();
     meerkat.modules.healthCreditCard.resetConfig();
     meerkat.modules.healthCreditCard.render();
 
