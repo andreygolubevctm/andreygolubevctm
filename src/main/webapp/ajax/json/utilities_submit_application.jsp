@@ -18,8 +18,8 @@
 <jsp:useBean id="utilitiesApplicationService" class="com.ctm.web.utilities.services.UtilitiesApplicationService" scope="request" />
 <c:set var="serviceResponse" value="${utilitiesApplicationService.validate(pageContext.request, data)}" />
 
-
-<c:when test="${!utilitiesApplicationService.isValid()}">
+<c:choose>
+	<c:when test="${!utilitiesApplicationService.isValid()}">
 		<c:out value="${serviceResponse}" escapeXml="false" />
 	</c:when>
 	<c:otherwise>
@@ -67,5 +67,8 @@
 		<agg_v1:write_touch touch="C" transaction_id="${tranId}" />
 
 		<c:out value="${json}" escapeXml="false" />
+
+	</c:otherwise>
+</c:choose>
 
 
