@@ -15,5 +15,6 @@
     <field_v1:hidden xpath="${xpath}/hidden/retailerName" />
     <field_v1:hidden xpath="${xpath}/hidden/planName" />
     <field_v1:hidden xpath="${xpath}/receiveInfo" defaultValue="N" />
+    <field_v1:hidden xpath="${xpath}/termsAndConditions"  />
 
 </form_v2:fieldset>
