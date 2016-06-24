@@ -3612,9 +3612,6 @@ body.utilities #contact-panel {
 	.confirm-reset-email {
 		font-weight:bold;
 	}
-	.termsAndConditionslabel {
-		margin-left: 1em;
-	}
 /* Fix size difference between PC-Mac */
 [size="12"] {
 	width: 86px;

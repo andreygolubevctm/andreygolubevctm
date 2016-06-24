@@ -100,7 +100,7 @@
                             </li>
                             <li class="hidden col-sm-3 col-lg-2 colEstimatedCost">
                                 <a href="javascript:;" data-sort-type="estimatedCostValue" data-sort-dir="asc">
-                                    <span class="icon"></span> <span>Estimated Cost</span>
+                                    <span class="icon"></span> <span>Estimated Bill Cost</span>
                                 </a>
                             </li>
                             <li class="hidden col-sm-3 col-lg-2 colEstimatedUsage">

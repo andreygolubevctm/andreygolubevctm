@@ -18,11 +18,8 @@
 <jsp:useBean id="utilitiesApplicationService" class="com.ctm.web.utilities.services.UtilitiesApplicationService" scope="request" />
 <c:set var="serviceResponse" value="${utilitiesApplicationService.validate(pageContext.request, data)}" />
 
-<c:choose>
-	<c:when test="${empty data.utilities.application.thingsToKnow.termsAndConditions != 'Y'}">
-		ERROR - NO TERMS AND CONDITIONS
-	</c:when>
-	<c:when test="${!utilitiesApplicationService.isValid()}">
+
+<c:when test="${!utilitiesApplicationService.isValid()}">
 		<c:out value="${serviceResponse}" escapeXml="false" />
 	</c:when>
 	<c:otherwise>
@@ -70,8 +67,5 @@
 		<agg_v1:write_touch touch="C" transaction_id="${tranId}" />
 
 		<c:out value="${json}" escapeXml="false" />
-
-	</c:otherwise>
-</c:choose>
 
 
