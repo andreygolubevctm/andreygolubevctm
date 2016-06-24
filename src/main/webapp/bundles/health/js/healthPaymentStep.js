@@ -429,7 +429,19 @@
 
 		var _type = getSelectedPaymentMethod();
 
-		if(_type == 'ba'){
+		if(_type == 'cc'){
+
+			// Show sub question? (always no)
+			toggleClaimsBankSubQuestion(false);
+
+			// Show form?
+			if($bankAccountDetailsRadioGroup.find("input:checked").val() === 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
+				toggleClaimsBankAccountForm(true);
+			}else{
+				toggleClaimsBankAccountForm(false);
+			}
+
+		} else {
 
 			// Show sub question?
 			if($bankAccountDetailsRadioGroup.find('input:checked').val() === 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
@@ -446,21 +458,7 @@
 				toggleClaimsBankSubQuestion(false);
 				toggleClaimsBankAccountForm(false);
 			}
-
-		}else if(_type == 'cc'){
-
-			// Show sub question? (always no)
-			toggleClaimsBankSubQuestion(false);
-
-			// Show form?
-			if($bankAccountDetailsRadioGroup.find("input:checked").val() === 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
-				toggleClaimsBankAccountForm(true);
-			}else{
-				toggleClaimsBankAccountForm(false);
-			}
-
 		}
-
 	}
 
 	// What day would you like your payment deducted?

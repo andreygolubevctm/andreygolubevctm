@@ -110,7 +110,6 @@ set: function () {
 		healthFunds._medicareCoveredHelpId = $('#medicareCoveredRow .help_icon').attr("id");
 		$('#medicareCoveredRow .help_icon').attr("id","help_520");
 
-		$('.health-credit_card_details .fieldrow').hide();
 		meerkat.modules.paymentGateway.setup({
 			"paymentEngine" : meerkat.modules.healthPaymentGatewayNAB,
 			"name" : 'health_payment_gateway',

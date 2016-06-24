@@ -57,7 +57,6 @@ var healthFunds_GMF = {
 		meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex': false, 'diners': false });
 		meerkat.modules.healthCreditCard.render();
 
-		$('.health-credit_card_details .fieldrow').hide();
 		meerkat.modules.paymentGateway.setup({
 			"paymentEngine" : meerkat.modules.healthPaymentGatewayNAB,
 			"name" : 'health_payment_gateway',
