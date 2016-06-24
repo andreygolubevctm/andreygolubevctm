@@ -115,8 +115,8 @@
                                 {{ if (typeof obj.discountDetails !== 'undefined' && obj.discountDetails.length > 0) { }}
                                 <div class="promotion small">
                                     <strong>Discounts:</strong>
-                                    {{ if(obj.discountDetails.length > 190) { }}
-                                    {{= obj.discountDetails.substring(0, 190) }} <span title="Click More Info to see extra details">...</span>
+                                    {{ if(obj.discountDetails.length > 150) { }}
+                                    {{= obj.discountDetails.substring(0, 150) }} <span title="Click More Info to see extra details">Show T&Cs</span>
                                     {{ } else { }}
                                     {{= obj.discountDetails }}
                                     {{ } }}
@@ -150,7 +150,7 @@
                                 <div class="promotion small">
                                     <strong>Discounts:</strong>
                                     {{ if(obj.discountDetails.length > 150) { }}
-                                    {{= obj.discountDetails.substring(0, 150) }} <span title="Click More Info to see extra details">...</span>
+                                    {{= obj.discountDetails.substring(0, 150) }} <span title="Click More Info to see extra details">Show T&Cs</span>
                                     {{ } else { }}
                                     {{= obj.discountDetails }}
                                     {{ } }}

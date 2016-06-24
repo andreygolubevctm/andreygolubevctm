@@ -115,7 +115,7 @@
                                 <div class="promotion small">
                                     <strong>Discounts:</strong>
                                     {{ if(obj.discountDetails.length > 150) { }}
-                                    {{= obj.discountDetails.substring(0, 150) }} <span title="Show T&Cs">...</span>
+                                    {{= obj.discountDetails.substring(0, 150) }} <span title="Click More Info to see extra details">Show T&Cs</span>
                                     {{ } else { }}
                                     {{= obj.discountDetails }}
                                     {{ } }}
@@ -149,7 +149,7 @@
                                 <div class="promotion small">
                                     <strong>Discounts:</strong>
                                     {{ if(obj.discountDetails.length > 150) { }}
-                                    {{= obj.discountDetails.substring(0, 150) }} <span title="Click More Info to see extra details">...</span>
+                                    {{= obj.discountDetails.substring(0, 150) }} <span title="Click More Info to see extra details">Show T&Cs</span>
                                     {{ } else { }}
                                     {{= obj.discountDetails }}
                                     {{ } }}
