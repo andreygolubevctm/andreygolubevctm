@@ -191,7 +191,7 @@
 						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</fortnightly>
 					<monthly>
-						<text><c:out value="${premium}" /></text>datepicker
+						<text><c:out value="${premium}" /></text>
 						<lhcAmount><c:out value="${lhc}" /></lhcAmount>
 						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</monthly>
