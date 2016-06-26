@@ -106,7 +106,7 @@
                         <div id="pricingInformation"></div>
 
                         <h5>Next Steps</h5>
-                        <div id="nextSteps">If you apply for an energy plan, Thought World (our trusted energy partner) will contact you to discuss your energy needs and finalise your application.</div>
+                        <div id="nextSteps"><content:get key="nextSteps"/></div>
                     </div>
                     <div class="col-xs-12">
                         <div class="hidden-md hidden-lg">{{= termsDisclaimerHtml }}</div>
