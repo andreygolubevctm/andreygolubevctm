@@ -276,7 +276,7 @@ var LifeQuote = {
 				prod.priceFrequency = LifeQuote.getPremiumFrequencyTerm();
 				prod.thumb = prod.company.toLowerCase().replace(" ", "_") + ".png";
 				
-				if(prod.company.toLowerCase() !== "ozicare") {
+				if(!LifeQuote.isOzicare(prod.company)) {
 					prod.pds = "/static/pds/life/" + decodeURI(prod.pds.split("/").pop()).replace(/ /g, "_");
 				}
 
@@ -877,7 +877,7 @@ var LifeQuote = {
 				partnerBrand:			products.primary.company
 			};
 
-			if(data.company.toLowerCase() == "ozicare") {
+			if(LifeQuote.isOzicare(data.company.toLowerCase())) {
 				data.partnerBrand = "OZIC";
 			}
 
@@ -1176,7 +1176,7 @@ var LifeQuote = {
 		
 		var primaryProduct = Results.getPrimarySelectedProduct();
 		
-		if(primaryProduct.service_provider.toLowerCase() == "ozicare") {
+		if(LifeQuote.isOzicare(primaryProduct.service_provider)) {
 			data = data + "&partnerBrand=OZIC&company=ozicare&lead_number=" + primaryProduct.lead_number;
 		}
 
@@ -1255,6 +1255,9 @@ var LifeQuote = {
 				});
 			}
 		});
+	},
+	isOzicare : function( company ) {
+		return company !== null && company !== undefined && company.toUpperCase() === "OZICARE"
 	}
 };
 
