@@ -282,9 +282,7 @@
                 {{ if (custom.info && custom.info.content && custom.info.content.moreInfo && custom.info.content.moreInfo.extras) { }}
                 <h2>{{= custom.info.content.moreInfo.extras.label}}</h2>
                 <p>{{= custom.info.content.moreInfo.extras.text}}</p>
-                {{ } }}
-				{{ var noExtrasTableFundList = ["HBF"]; }}
-				{{ if(_.indexOf(noExtrasTableFundList,info.FundCode) === -1) { }}
+                {{ } else { }}
 				<h2>Extras cover</h2>
 				<p>Please note that the below amounts are individual limits for each benefit. Group limits may apply to restrict these individual limits, meaning that the more you claim on one benefit, the less you might be able to claim on another benefit in the same group. Please refer to the Policy Brochure or the previous page for details.</p>
 				<table class="extrasTable table table-bordered table-striped">
