@@ -319,7 +319,7 @@
                                 $e.attr("href", href);
                             }
                         });
-                    }
+                    };
 
                     $("#developmentStaticBranches").change(changeEvent);
                     $('body').change(changeEvent);

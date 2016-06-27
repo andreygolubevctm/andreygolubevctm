@@ -510,6 +510,20 @@
 		}
 	}
 
+	// Hook into: (replacement) "update premium" button to determine which panels to display
+	function updateValidationSelectorsPaymentGateway(functionToCall, name){
+		$('#health_payment_details_type input').on('click.' + name, functionToCall);
+		$('#health_payment_details_frequency').on('change.' + name, functionToCall);
+		$('#health_payment_details_start').on('changeDate.' + name, functionToCall);
+	}
+
+	// Reset Hook into "update premium"
+	function resetValidationSelectorsPaymentGateway( name){
+        $('#health_payment_details_type input').off('click.' + name);
+        $('#health_payment_details_frequency').off('change.' + name);
+        $('#health_payment_details_start').off('changeDate.' + name);
+	}
+
 	meerkat.modules.register("healthPaymentStep", {
 		init: initHealthPaymentStep,
 		initFields: initFields,
@@ -521,7 +535,9 @@
 		getSelectedPaymentMethod: getSelectedPaymentMethod,
 		updatePremium: updatePremium,
 		getPaymentMethodNode: getPaymentMethodNode,
-		rebindCreditCardRules: rebindCreditCardRules
+		rebindCreditCardRules: rebindCreditCardRules,
+		updateValidationSelectorsPaymentGateway : updateValidationSelectorsPaymentGateway,
+		resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway
 	});
 
 })(jQuery);
