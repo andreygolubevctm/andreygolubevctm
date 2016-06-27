@@ -69,20 +69,6 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> extends CommonR
         return initRouter(request, Vertical.VerticalType.findByCode(getVerticalType().toString()));
     }
 
-
-    protected Brand initRouter(HttpServletRequest httpServletRequest, Vertical.VerticalType vertical){
-        // - Start common -- taken from Carlos' car branch
-        ApplicationService.setVerticalCodeOnRequest(httpServletRequest, vertical.getCode());
-
-        try {
-            return ApplicationService.getBrandFromRequest(httpServletRequest);
-
-        } catch (DaoException e) {
-            throw new RouterException(e);
-        }
-
-    }
-
     protected SessionDataServiceBean getSessionDataServiceBean() {
         return sessionDataServiceBean;
     }
