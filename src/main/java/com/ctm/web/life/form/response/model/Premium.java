@@ -32,6 +32,8 @@ public class Premium {
     private String pds;
 
     private String info;
+
+    @JsonProperty("lead_number")
     private String leadNumber;
     private Features features;
 
