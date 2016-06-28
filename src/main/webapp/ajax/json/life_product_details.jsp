@@ -6,6 +6,7 @@
 
 <c:set var="tranId" value="${data.current.transactionId}" />
 <c:set var="continueOnValidationError" value="${false}" />
+<c:set var="vertical">${param.vertical}</c:set>
 
 <%-- Build XML required for Life Broker request --%>
 <c:set var="requestXML">
