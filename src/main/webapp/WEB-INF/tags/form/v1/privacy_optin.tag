@@ -17,8 +17,8 @@
 <c:choose>
 	<c:when test="${vertical eq 'utilities'}">
 		<c:set var="label_text">
-			I understand ${brandedName} compares energy plans based on a standard tariff from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide. I confirm that I have read the ${privacyLink}.
-	</c:set>
+			I understand ${brandedName} compares energy plans based on peak tariffs from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide.
+			I confirm that I have read the <form_v1:link_privacy_statement/>.</c:set>
 	</c:when>
 
 	<c:otherwise>
