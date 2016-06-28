@@ -17,8 +17,8 @@
 <utilities_v3:splittest_helper />
 
 <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
-<c:set var="privacyOptinText" scope="session">I understand ${brandedName} compares energy plans based on a standard tariff from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide. I confirm that I have read the
-    <form_v1:link_privacy_statement/>.</c:set>
+<c:set var="energyPrivacyOptinText" scope="session">I understand ${brandedName} compares energy plans based on peak tariffs from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide.
+    I confirm that I have read the <form_v1:link_privacy_statement/>.</c:set>
 
 <c:set var="body_class_name">
     <c:if test="${not empty splitTestEnabled and splitTestEnabled eq 'Y'}">utilities_design_55</c:if>
@@ -95,12 +95,12 @@
                             </li>
                             <li class="col-sm-3 col-lg-2 colYearlySavings">
                                 <a href="javascript:;" data-sort-type="yearlySavingsValue" data-sort-dir="desc">
-                                    <span class="icon"></span> <span>Savings <br class="hidden-sm hidden-md" />up to</span>
+                                    <span class="icon"></span> <span>Estimated Bill Cost</span>
                                 </a>
                             </li>
                             <li class="hidden col-sm-3 col-lg-2 colEstimatedCost">
                                 <a href="javascript:;" data-sort-type="estimatedCostValue" data-sort-dir="asc">
-                                    <span class="icon"></span> <span>Estimated Cost</span>
+                                    <span class="icon"></span> <span>Estimated Bill Cost</span>
                                 </a>
                             </li>
                             <li class="hidden col-sm-3 col-lg-2 colEstimatedUsage">
