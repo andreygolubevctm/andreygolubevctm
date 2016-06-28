@@ -25,11 +25,18 @@
 <c:set var="calcSequence" value="${data[calcSequence]}" />
 
 <c:if test="${empty transactionId}">
-	<%-- If the transactionId is empty, revert back to the param.transactionId otherwise it fails to write to the fatal_error_log table --%>
-	${fatalErrorService.logFatalError(0,  pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
-
-	<%-- Set the new transaction id so we can write to the ranking tables --%>
-	<c:set var="transactionId" value="${transactionId}" />
+	<jsp:useBean id="fatalError" class="com.ctm.web.core.model.FatalError" scope="page" />
+    ${fatalError.setStyleCodeId(pageSettings.getBrandId())}
+    ${fatalError.setPage(pageContext.request.servletPath)}
+    ${fatalError.setFatal("0")}
+    ${fatalError.setSessionId(pageContext.session.id)}
+    <%-- Set the new transaction id so we can write to the ranking tables --%>
+    <c:set var="transactionId" value="${param.transactionId}" />
+    <%-- If the param.transactionId is not empty, use param.transactionId --%>
+    <c:if test="${not empty transactionId}">
+		${fatalError.setTransactionId(param.transactionId)}
+	</c:if>
+	${fatalErrorService.logFatalError(fatalError)}
 </c:if>
 
 <c:if test="${calcSequence == null}">

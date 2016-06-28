@@ -429,36 +429,36 @@
 
 		var _type = getSelectedPaymentMethod();
 
-		if(_type == 'ba'){
-
-			// Show sub question?
-			if($bankAccountDetailsRadioGroup.find('input:checked').val() == 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
-				toggleClaimsBankSubQuestion(true);
-			}else{
-				toggleClaimsBankSubQuestion(false);
-			}
-
-			// Show form?
-			if($sameBankAccountRadioGroup.find("input:checked").val() == 'N'){
-				toggleClaimsBankAccountForm(true);
-			}else{
-				toggleClaimsBankAccountForm(false);
-			}
-
-		}else if(_type == 'cc'){
+		if(_type == 'cc'){
 
 			// Show sub question? (always no)
 			toggleClaimsBankSubQuestion(false);
 
 			// Show form?
-			if($bankAccountDetailsRadioGroup.find("input:checked").val() == 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
+			if($bankAccountDetailsRadioGroup.find("input:checked").val() === 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
 				toggleClaimsBankAccountForm(true);
 			}else{
 				toggleClaimsBankAccountForm(false);
 			}
 
-		}
+		} else {
 
+			// Show sub question?
+			if($bankAccountDetailsRadioGroup.find('input:checked').val() === 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
+				toggleClaimsBankSubQuestion(true);
+
+				// Show form?
+				if($sameBankAccountRadioGroup.find("input:checked").val() === 'N'){
+					toggleClaimsBankAccountForm(true);
+				}else{
+					toggleClaimsBankAccountForm(false);
+				}
+
+			}else{
+				toggleClaimsBankSubQuestion(false);
+				toggleClaimsBankAccountForm(false);
+			}
+		}
 	}
 
 	// What day would you like your payment deducted?
@@ -510,6 +510,20 @@
 		}
 	}
 
+	// Hook into: (replacement) "update premium" button to determine which panels to display
+	function updateValidationSelectorsPaymentGateway(functionToCall, name){
+		$('#health_payment_details_type input').on('click.' + name, functionToCall);
+		$('#health_payment_details_frequency').on('change.' + name, functionToCall);
+		$('#health_payment_details_start').on('changeDate.' + name, functionToCall);
+	}
+
+	// Reset Hook into "update premium"
+	function resetValidationSelectorsPaymentGateway( name){
+        $('#health_payment_details_type input').off('click.' + name);
+        $('#health_payment_details_frequency').off('change.' + name);
+        $('#health_payment_details_start').off('changeDate.' + name);
+	}
+
 	meerkat.modules.register("healthPaymentStep", {
 		init: initHealthPaymentStep,
 		initFields: initFields,
@@ -521,7 +535,9 @@
 		getSelectedPaymentMethod: getSelectedPaymentMethod,
 		updatePremium: updatePremium,
 		getPaymentMethodNode: getPaymentMethodNode,
-		rebindCreditCardRules: rebindCreditCardRules
+		rebindCreditCardRules: rebindCreditCardRules,
+		updateValidationSelectorsPaymentGateway : updateValidationSelectorsPaymentGateway,
+		resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway
 	});
 
 })(jQuery);
