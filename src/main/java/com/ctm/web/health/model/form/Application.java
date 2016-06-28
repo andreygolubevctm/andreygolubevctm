@@ -44,6 +44,8 @@ public class Application {
 
     private Nhb nhb;
 
+    private Hbf hbf;
+
     public Address getAddress() {
         return address;
     }
@@ -210,5 +212,14 @@ public class Application {
 
     public void setNhb(Nhb nhb) {
         this.nhb = nhb;
+    }
+
+    public Hbf getHbf() {
+        return hbf;
+    }
+
+    public Application setHbf(Hbf hbf) {
+        this.hbf = hbf;
+        return this;
     }
 }

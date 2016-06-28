@@ -572,7 +572,7 @@
 					meerkat.modules.healthMedicare.updateMedicareLabel();
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF"];
 
 					var $rebateEl = $('input[name=health_healthCover_rebate]:checked');
 					if( (!_.isEmpty($rebateEl) && $rebateEl.val() == "N") && $.inArray(product.info.providerName, mustShowList) == -1) {
@@ -1372,7 +1372,8 @@
 		getTrackingFieldsObject: getTrackingFieldsObject,
 		getRates: getRates,
 		getRebate: getRebate,
-		loadRates: loadRates
+		loadRates: loadRates,
+        hasPartner: hasPartner
 	});
 
 })(jQuery);
