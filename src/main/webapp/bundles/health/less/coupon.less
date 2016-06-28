@@ -74,11 +74,29 @@
   }
 }
 
+.coupon-confirmation-image {
+  background-size: 305px 192px;
+  width: 305px;
+  height: 192px;
+}
+
+@media(@md-only) {
+  .coupon-confirmation-image {
+    background-size: 240px 150px;
+    width: 240px;
+    height: 150px;
+  }
+}
+
 @media(@sm-only) {
   .coupon-confirmation-image {
-    background-size: 200px 125px;
-    width: 200px;
-    height: 125px;
+    background-size: 167px 105px;
+    width: 167px;
+    height: 105px;
+  }
+
+  .coupon-msg {
+    font-size: 16px;
   }
 }
 
@@ -88,7 +106,9 @@
   }
 
   .coupon-confirmation-image {
+    background-size: 167px 105px;
     width: 100%;
+    height: 105px;
     background-position: center;
   }
 }
