@@ -114,7 +114,6 @@ public class EnergyApplyControllerTest {
                         .param("utilities.application.details.address.postCode", "3044")
                         .param("utilities.application.details.address.state", "VIC")
                         .param("utilities.application.details.postalMatch", "Y")
-                        .param("utilities.application.thingsToKnow.termsAndConditions", "Y")
                         .param("utilities.application.thingsToKnow.hidden.productId", "2213")
                         .param("utilities.application.thingsToKnow.hidden.retailerName", "Simply Energy")
                         .param("utilities.application.thingsToKnow.hidden.planName", "Simply Summer Sale Plan (Dual Fuel)")

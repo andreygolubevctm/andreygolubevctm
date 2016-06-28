@@ -11,6 +11,7 @@ import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.services.AccessTouchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,7 +99,7 @@ public abstract class LeadFeedService {
 	 * @throws LeadFeedException
 	 */
 	protected LeadResponseStatus processGateway(LeadType leadType, LeadFeedData leadData, TouchType touchType) throws LeadFeedException {
-		if(isTestOnlyLead(leadData)) {
+		if(StringUtils.isEmpty(leadData.getPhoneNumber()) || isTestOnlyLead(leadData)) {
 			// Don't process or record touch for test data - simply return success
 			return LeadResponseStatus.SUCCESS;
 		} else {
@@ -156,6 +157,9 @@ public abstract class LeadFeedService {
 	 */
 	protected Boolean isTestOnlyLead(LeadFeedData leadData) throws LeadFeedException {
 		try {
+			if(StringUtils.isEmpty(leadData.getPhoneNumber())){
+				return false;
+			}
 			if(ignoreBecauseOfField instanceof Content == false) {
 				ignoreBecauseOfField = contentService.getContent("ignoreMatchingFormField", leadData.getBrandId(), leadData.getVerticalId(), leadData.getEventDate(), true);
 				ignorePhoneRule = ignoreBecauseOfField.getSupplementaryValueByKey("phone");

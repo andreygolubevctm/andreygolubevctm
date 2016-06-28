@@ -80,7 +80,6 @@
                                 {{ }) }}
                             </form_v2:row>
                         </core_v1:js_template>
-                        <c:set var="labelText" value="" />
 					<jsp:useBean id="locationsService" class="com.ctm.web.travel.services.TravelIsoLocationsService" scope="page" />
 					<core_v1:select_tags
 							variableListName="countrySelectionList"
@@ -88,7 +87,7 @@
 							variableListArray="${locationsService.getCountrySelectionList()}"
 							xpath="travel/destinations"
 							xpathhidden="travel/destination"
-							label="${labelText}"
+							label="Your selected Countries"
 							title="Where are you travelling?"
 							validationErrorPlacementSelector=".travel_details_destinations"
 							helpId="213"

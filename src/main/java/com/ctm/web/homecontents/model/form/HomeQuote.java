@@ -1,8 +1,11 @@
 package com.ctm.web.homecontents.model.form;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class HomeQuote {
 
@@ -18,6 +21,8 @@ public class HomeQuote {
 
     private CoverAmounts coverAmounts;
 
+    @NotNull
+    @Size(min=1)
     private String coverType;
 
     private Disclosures disclosures;
