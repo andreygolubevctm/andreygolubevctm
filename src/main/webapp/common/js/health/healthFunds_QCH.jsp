@@ -102,8 +102,9 @@ var healthFunds_QCH = {
 				"credit" : true,
 				"bank" : false
 			},
+			"updateValidationSelectors" : meerkat.modules.healthPaymentStep.updateValidationSelectorsPaymentGateway,
+			"resetValidationSelectors" : meerkat.modules.healthPaymentStep.resetValidationSelectorsPaymentGateway,
 			"paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
-			"clearValidationSelectors" : $('#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type'),
 			"getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
 		});
 	},
