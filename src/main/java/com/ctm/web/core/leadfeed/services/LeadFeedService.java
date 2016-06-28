@@ -1,13 +1,14 @@
 package com.ctm.web.core.leadfeed.services;
 
+import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
+import com.ctm.web.core.leadfeed.utils.LeadFeed;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.Touch.TouchType;
-import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.services.AccessTouchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +24,20 @@ public abstract class LeadFeedService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LeadFeedService.class);
 	private final BestPriceLeadsDao bestPriceDao;
 	private final ContentService contentService;
-
+	private final LeadFeed leadFeed;
 	protected Content ignoreBecauseOfField = null;
 	protected String ignorePhoneRule = null;
 
-	public LeadFeedService(BestPriceLeadsDao bestPriceDao, ContentService contentService) {
+	protected LeadFeedTouchService leadFeedTouchService;
+
+	public LeadFeedService(BestPriceLeadsDao bestPriceDao,
+						   ContentService contentService,
+						   LeadFeedTouchService leadFeedTouchService) {
+		LeadFeed leadFeed = new LeadFeed( contentService,  leadFeedTouchService);
+		this.leadFeed = leadFeed;
 		this.bestPriceDao = bestPriceDao;
 		this.contentService = contentService;
+        this.leadFeedTouchService = leadFeedTouchService;
 	}
 
 	public static enum LeadType{
@@ -56,8 +64,8 @@ public abstract class LeadFeedService {
 	};
 
 	public LeadResponseStatus callDirect(LeadFeedData leadData) throws LeadFeedException {
-		if(!isTestOnlyLead(leadData)) {
-			recordTouch(Touch.TouchType.CALL_DIRECT.getCode(), leadData);
+		if(!leadFeed.isTestOnlyLead(leadData)) {
+			leadFeedTouchService.recordTouch(Touch.TouchType.CALL_DIRECT, leadData);
 		}
 		return LeadResponseStatus.SUCCESS;
 	}
@@ -166,7 +174,7 @@ public abstract class LeadFeedService {
 			}
 			if(ignorePhoneRule != null && !ignorePhoneRule.isEmpty() && ignorePhoneRule.contains(leadData.getPhoneNumber())) {
 				LOGGER.debug("[Lead feed] Lead identified as test-only because of phone number {},{}", kv("phoneNumber", leadData.getPhoneNumber()),
-					kv("transactionId", leadData.getTransactionId()));
+						kv("transactionId", leadData.getTransactionId()));
 				return true;
 			} else {
 				return false;
@@ -174,5 +182,17 @@ public abstract class LeadFeedService {
 		} catch(DaoException e) {
 			throw new LeadFeedException(e.getMessage(), e);
 		}
+	}
+
+	protected LeadResponseStatus getLeadResponseStatus(LeadType leadType, LeadFeedData leadData, TouchType touchType, IProviderLeadFeedService providerLeadFeedService) throws LeadFeedException {
+		LeadResponseStatus responseStatus =  LeadResponseStatus.SUCCESS;;
+		if(providerLeadFeedService != null) {
+			responseStatus = providerLeadFeedService.process(leadType, leadData);
+			if (responseStatus == LeadResponseStatus.SUCCESS) {
+				leadFeedTouchService.recordTouch(touchType, leadData);
+			}
+			LOGGER.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));
+		}
+		return responseStatus;
 	}
 }

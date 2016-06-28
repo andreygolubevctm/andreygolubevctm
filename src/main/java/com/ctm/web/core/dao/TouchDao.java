@@ -6,6 +6,7 @@ import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.Touch.TouchType;
 import com.ctm.web.core.model.TouchProductProperty;
 import com.ctm.web.core.services.AccessTouchService;
+import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
 
@@ -13,6 +14,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class TouchDao {
 
 	private final SqlDao<Touch> sqlDao;
