@@ -491,7 +491,7 @@
 
 				// Show/hide membership number and authorisation checkbox questions for previous funds.
 				$('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').on('change', function(){
-					healthCoverDetails.displayHealthFunds();
+					meerkat.modules.healthCoverDetails.displayHealthFunds();
 				});
 
 				// Show/Hide simples messaging based on fund selection
@@ -560,15 +560,7 @@
 
 					// Update the state of the dependants object.
 					meerkat.modules.healthDependants.updateDependantConfiguration();
-
-					// Change min and max dates for start date picker based on current stored values from healthPaymentStep module which can change based on selected fund
-					//var min = meerkat.modules.healthPaymentStep.getSetting("minStartDateOffset");
-					//var max = meerkat.modules.healthPaymentStep.getSetting("maxStartDateOffset");
-					//$("#health_payment_details_start_calendar").datepicker("setStartDate", "+" + min + "d").datepicker("setEndDate", "+" + max + "d");
-					var min = meerkat.modules.healthPaymentStep.getSetting('minStartDate');
-					var max = meerkat.modules.healthPaymentStep.getSetting('maxStartDate');
-					$("#health_payment_details_start").datepicker('setStartDate', min).datepicker('setEndDate', max);
-
+					meerkat.modules.healthApplyStep.onBeforeEnter();
 					meerkat.modules.healthMedicare.updateMedicareLabel();
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
@@ -881,7 +873,7 @@
 			// in application stage
 			postData.primary_dob = $('#health_application_primary_dob').val();
 			postData.partner_dob = $('#health_application_partner_dob').val();
-			postData.primary_current = ( $('#clientFund').find(':selected').val() == 'NONE' )?'N':'Y';
+			postData.primary_current = (meerkat.modules.healthPreviousFund.getPrimaryFund() == 'NONE' )?'N':'Y';
 			postData.partner_current = ( $('#partnerFund').find(':selected').val() == 'NONE' )?'N':'Y';
 
 		}
