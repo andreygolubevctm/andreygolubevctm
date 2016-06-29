@@ -38,44 +38,52 @@
         }
     }
 
-    function setHealthFunds(initMode){
-        setHealthFundsForPerson(initMode, $('#health_healthCover_primaryCover') ,
-            $('#health-continuous-cover-primary'), $('#health_healthCover_primary_dob'), $('#primaryLHCRow'));
-        setHealthFundsForPerson(initMode, $('#health_healthCover_partnerCover') , $('#health-continuous-cover-partner'),
-            $('#health_healthCover_partner_dob'), $('#partnerLHCRow'));
-
+    function setHealthFunds(initMode) {
+        setHealthFundsForPerson(initMode,
+            $('#health_healthCover_primaryCover') ,
+            $('#health-continuous-cover-primary'),
+            $('#health_healthCover_primary_dob'),
+            $('#primaryLHCRow'));
+        setHealthFundsForPerson(initMode,
+            $('#health_healthCover_partnerCover') ,
+            $('#health-continuous-cover-partner'),
+            $('#health_healthCover_partner_dob'),
+            $('#partnerLHCRow'));
     }
 
     function setHealthFundsForPerson(initMode, $healthCover , $continuousCover, $dob, $lhcRow){
 
-        var isLessThan31Or31AndBeforeJuly1 = isLessThan31Or31AndBeforeJuly1($dob.val())
+        var isLessThan31Or31AndBeforeJuly1 = isLessThan31Or31AndBeforeJuly1($dob.val());
         //// Quick variables
         var healthCoverValue = $healthCover.find(':checked').val();
 
         //// Primary Specific
         if( healthCoverValue == 'Y' ) {
             if( isLessThan31Or31AndBeforeJuly1 ) {
-                hide(initMode , $continuousCover)
-            }else{
-                show(initMode , $continuousCover)
+                hide(initMode , $continuousCover);
+            } else{
+                show(initMode , $continuousCover);
             }
 
         } else {
             if( healthCoverValue == 'N'){
                 resetRadio($continuousCover,'N');
             }
-            hide(initMode , $continuousCover)
-
+            hide(initMode , $continuousCover);
         }
         if(meerkat.site.isCallCentreUser === true) {
-            var continuousCoverValue = $continuousCover.find(':checked').val() == 'Y';
-            if (isLessThan31Or31AndBeforeJuly1 || (healthCoverValue == 'Y' && continuousCoverValue == 'Y')) {
-                show(initMode , $lhcRow)
+            var continuousCover= $continuousCover.find(':checked').val() == 'Y';
+            var healthCover= healthCoverValue == 'Y';
+            if (isLessThan31Or31AndBeforeJuly1 || (healthCover && continuousCover)) {
+                show(initMode , $lhcRow);
             } else {
-                hide(initMode , $lhcRow)
+                hide(initMode , $lhcRow);
             }
         }
     }
+    
+    
+
     function show(initMode , $element) {
         if(initMode){
             $element.show();
@@ -86,13 +94,11 @@
 
     function hide(initMode , $element) {
         if(initMode){
-            $lhcRow.hide();
+            $element.hide();
         }else{
-            $lhcRow.slideUp();
+            $element.slideUp();
         }
     }
-
-
 
     meerkat.modules.register("healthCoverDetails", {
         init: initHealthCoverDetails,
