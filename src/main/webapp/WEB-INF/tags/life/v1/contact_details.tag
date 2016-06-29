@@ -73,21 +73,19 @@
 		</c:if>
 		<%-- COMPETITION END--%>
 
-		<form_v1:row label="" className="clear">
-			<field_v1:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from ${brandedName}" required="false" label="true"/>
-		</form_v1:row>
-
 		<form_v1:row label="" className="clear closer">
 			<c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${vertical}_privacyoptinInfoDialog.open()'>privacy statement</a>" />
+			<c:set var="termsOfUseLink" value="<a href='/static/legal/website_terms_of_use.pdf' target='_blank'>Website Terms of Use</a>" />
+			<c:set var="fsgLink" value="<a href='/static/legal/Life_FSG.pdf' target='_blank'>Financial Services Guide (Life Insurance products)</a>" />
 			<c:choose>
 				<c:when test="${vertical eq 'life'}">
 					<c:set var="label_text">
-						I understand ${brandedName} compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker and/or Auto and General Services, Compare the Market&#39;s trusted life insurance partners may contact me to further assist with my life insurance needs. I confirm that I have read the ${privacyLink}.
+						I understand and accept the ${termsOfUseLink}, ${fsgLink} and ${privacyLink}. I agree that ${brandedName} may contact me about the services it provides, and that Lifebroker or Auto & General Services, Compare the Market's trusted life insurance partners, may call or email me to discuss my life insurance needs.
 					</c:set>
 				</c:when>
 				<c:when test="${vertical eq 'ip'}">
 					<c:set var="label_text">
-						I understand ${brandedName} compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life insurance and income protection partner may contact me to further assist with my life insurance and income protection needs. I confirm that I have read the ${privacyLink}.
+						I understand and accept the ${termsOfUseLink}, ${fsgLink} and ${privacyLink}. I agree that ${brandedName} may contact me about the services it provides, and that Lifebroker, Compare the Market's trusted life insurance partners, may call or email me to discuss my life insurance needs.
 					</c:set>
 				</c:when>
 			</c:choose>
@@ -102,6 +100,8 @@
 					/>
 		</form_v1:row>
 
+
+		<field_v1:hidden xpath="${xpath}/optIn" />
 		<field_v1:hidden xpath="${xpath}/call" />
 		<field_v1:hidden xpath="${vertical}/splitTestingJourney" constantValue="${splitTestingJourney}" />
 
@@ -166,17 +166,30 @@
 		$("#${name}_call").buttonset();
 	});
 
-	$("#${name}_optIn").parent().css({marginRight:'-5px'});
-
 	${name}_original_phone_number = $('#${contactNumber}').val();
 
-	$('#${optIn}').val( $('#${contactNumber}').val().length ? 'Y' : 'N');
+	if($("#${vertical}_privacyoptin").is(":checked")) {
+		var $tel = $('#${contactNumber}input');
+		var tel = $tel.val();
+		$('#${optIn}').val(tel.length && tel != $tel.attr('placeholder') ? "Y" : "N");
+		var $eml = $('#${name}_email');
+		var eml = $eml.val();
+		$('#${name}_optIn').val(eml != '' ? 'Y' : 'N');
+	}
+
+	$("#${vertical}_privacyoptin").on("change", function(){
+		var $tel = $('#${contactNumber}input');
+		var tel = $tel.val();
+		var optin = $(this).is(":checked") && tel.length && tel != $tel.attr('placeholder') ? "Y" : "N";
+		$('#${optIn}').val(optin);
+		var $eml = $('#${name}_email');
+		var eml = $eml.val();
+		$('#${name}_optIn').val($(this).is(":checked") && eml != '' ? 'Y' : 'N');
+	});
 
 	$('#${contactNumber}input').on('update keypress blur', function(){
 
 		var tel = $(this).val();
-
-		$('#${optIn}').val( tel.length && tel != $(this).attr('placeholder') ? 'Y' : 'N' );
 
 		if(!tel.length || ${name}_original_phone_number != tel){
 			$('#${name}_call').find('label[aria-pressed="true"]').each(function(key, value){
@@ -220,11 +233,11 @@
 		}
 	});
 
-	$('#${name}_optIn').change(function() {
-		$(document).trigger(SaveQuote.setMarketingEvent, [$(this).attr('checked'), $('#${name}_email').val()]);
+	$('#${name}_privacyoptin').change(function() {
+		$(document).trigger(SaveQuote.setMarketingEvent, [$(this).is(':checked'), $('#${name}_email').val()]);
 	});
 	$('#${name}_email').change(function() {
-		$(document).trigger(SaveQuote.setMarketingEvent, [$('#${name}_optIn').attr('checked'), $(this).val()]);
+		$(document).trigger(SaveQuote.setMarketingEvent, [$('#${name}_optIn').val() === "Y", $(this).val()]);
 	});
 </go:script>
 
