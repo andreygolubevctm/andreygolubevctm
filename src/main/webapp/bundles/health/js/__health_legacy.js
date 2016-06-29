@@ -301,70 +301,7 @@ var healthCoverDetails = {
 			}
 		}
 	},
-
-	setHealthFunds: function(initMode){
-		//// Quick variables
-		var _primary = $('#health_healthCover_primaryCover').find(':checked').val();
-		var _partner = $('#health_healthCover_partnerCover').find(':checked').val();
-
-		//// Primary Specific
-		if( _primary == 'Y' ) {
-
-			if( isLessThan31Or31AndBeforeJuly1($('#health_healthCover_primary_dob').val()) ) {
-				if(initMode){
-					$('#health-continuous-cover-primary').hide();
-				}else{
-					$('#health-continuous-cover-primary').slideUp();
-				}
-			}else{
-				if(initMode){
-					$('#health-continuous-cover-primary').show();
-				}else{
-					$('#health-continuous-cover-primary').slideDown();
-				}
-			}
-
-		} else {
-			if( _primary == 'N'){
-				resetRadio($('#health-continuous-cover-primary'),'N');
-			}
-			if(initMode){
-				$('#health-continuous-cover-primary').hide();
-			}else{
-				$('#health-continuous-cover-primary').slideUp();
-			}
-
-		}
-
-		//// Partner Specific
-		if( _partner == 'Y' ) {
-
-			if( isLessThan31Or31AndBeforeJuly1($('#health_healthCover_partner_dob').val()) ) {
-				if(initMode){
-					$('#health-continuous-cover-partner').hide();
-				}else{
-					$('#health-continuous-cover-partner').slideUp();
-				}
-			}else{
-				if(initMode){
-					$('#health-continuous-cover-partner').show();
-				}else{
-					$('#health-continuous-cover-partner').slideDown();
-				}
-			}
-		} else {
-			if( _partner == 'N'){
-				resetRadio($('#health-continuous-cover-partner'),'N');
-			}
-			if(initMode){
-				$('#health-continuous-cover-partner').hide();
-			}else{
-				$('#health-continuous-cover-partner').slideUp();
-			}
-
-		}
-	},
-
+	
 	getAgeAsAtLastJuly1: function( dob )
 	{
 		var dob_pieces = dob.split("/");

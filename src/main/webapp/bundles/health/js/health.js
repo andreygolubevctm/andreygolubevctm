@@ -68,8 +68,7 @@
 							simplesUser: meerkat.site.isCallCentreUser
 						}
 					});
-				}
-
+			}
 		}
 	}
 
@@ -202,7 +201,7 @@
 			onInitialise:function onDetailsInit(event){
 
 				// Set initial state.
-				healthCoverDetails.setHealthFunds(true);
+				meerkat.modules.healthCoverDetails.setHealthFunds(true);
 				healthCoverDetails.setIncomeBase(true);
 
 				meerkat.modules.healthTiers.initHealthTiers();
@@ -226,37 +225,14 @@
 					});
 				}
 
-				$('#health_healthCover-selection').find(':input').on('change', function(event) {
-					var $this = $(this);
-
-					// Don't action on the DOB input fields; wait until it's serialised to the hidden field.
-					if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year')) return;
-
-					healthCoverDetails.setHealthFunds();
-
-					if(meerkat.site.isCallCentreUser === true){
-
-						// Get rates and show LHC inline.
-						loadRates(function(rates){
-
-							$('.health_cover_details_rebate .fieldrow_legend').html('Overall LHC ' + rates.loading + '%');
-
-							$('.health-cover_details .dialog-26-lhc').html(rates.loading);
-
-							if(hasPartner()){
-								$('#health_healthCover_primaryCover .fieldrow_legend').html('Individual LHC ' + rates.primaryLoading + '%, overall  LHC ' + rates.loading + '%');
-								$('#health_healthCover_partnerCover .fieldrow_legend').html('Individual LHC ' + rates.partnerLoading + '%, overall  LHC ' + rates.loading + '%');
-							} else {
-								$('#health_healthCover_primaryCover .fieldrow_legend').html('Overall  LHC ' + rates.loading + '%');
-							}
-
-							meerkat.modules.healthTiers.setTiers();
-
-						});
-					}
-
-				});
-
+				$('#health_healthCover-selection').find(':input').on('change',
+					function(event) {
+						var $this = $(this);
+                        // Don't action on the DOB input fields; wait until it's serialised to the hidden field.
+						if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year')) return;
+						meerkat.modules.healthLHC.displayLHC();
+					});
+                meerkat.modules.healthLHC.displayLHC();
 			},
 			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onBeforeLeave: function(event) {
@@ -270,6 +246,7 @@
 				}
 			}
 		};
+		
 
 
 		var benefitsStep = {
