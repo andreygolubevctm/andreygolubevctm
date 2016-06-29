@@ -175,6 +175,7 @@
 		var $eml = $('#${name}_email');
 		var eml = $eml.val();
 		$('#${name}_optIn').val(eml != '' ? 'Y' : 'N');
+		$(document).trigger(SaveQuote.setMarketingEvent, [true, eml]);
 	}
 
 	$("#${vertical}_privacyoptin").on("change", function(){
@@ -185,6 +186,7 @@
 		var $eml = $('#${name}_email');
 		var eml = $eml.val();
 		$('#${name}_optIn').val($(this).is(":checked") && eml != '' ? 'Y' : 'N');
+		$(document).trigger(SaveQuote.setMarketingEvent, [$(this).is(':checked'), eml]);
 	});
 
 	$('#${contactNumber}input').on('update keypress blur', function(){
@@ -233,9 +235,6 @@
 		}
 	});
 
-	$('#${name}_privacyoptin').change(function() {
-		$(document).trigger(SaveQuote.setMarketingEvent, [$(this).is(':checked'), $('#${name}_email').val()]);
-	});
 	$('#${name}_email').change(function() {
 		$(document).trigger(SaveQuote.setMarketingEvent, [$('#${name}_optIn').val() === "Y", $(this).val()]);
 	});
