@@ -244,6 +244,11 @@
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
+				if (meerkat.site.isCallCentreUser === true) {
+					$('#journeyEngineSlidesContainer .journeyEngineSlide')
+						.eq(meerkat.modules.journeyEngine.getCurrentStepIndex())
+						.find('.simples-dialogue').show();
+				}
 			}
 		};
 		
@@ -281,7 +286,9 @@
 				}
 				// Hide any Simples dialogues
 				if (meerkat.site.isCallCentreUser === true) {
-					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').hide();
+					$('#journeyEngineSlidesContainer .journeyEngineSlide')
+						.eq(meerkat.modules.journeyEngine.getCurrentStepIndex())
+						.find('.simples-dialogue').hide();
 				}
 
 				// Defer the open for next js cycle so that the navbar button is visible and we can read the dropdown's height
@@ -412,7 +419,8 @@
 			onBeforeEnter:function enterResultsStep(event){
 				meerkat.modules.sessionCamHelper.stop();
 				if(event.isForward && meerkat.site.isCallCentreUser) {
-					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
+					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex())
+						.find('.simples-dialogue').show();
 				} else {
 					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
 					meerkat.modules.healthResults.resetSelectedProduct();
