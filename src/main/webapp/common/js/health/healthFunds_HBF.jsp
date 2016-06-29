@@ -34,7 +34,7 @@ var healthFunds_HBF = {
 
                         <ul class="flexi-extras-icons">
                             <li class="flexi-icon HLTicon-general-dental" data-value="GDL"><field_v2:help_icon helpId="269" /><br />General Dental</li>
-                            <li class="flexi-icon HLTicon-major-dental"  data-value="MDL"><field_v2:help_icon helpId="555" /><br />Major Dental</li>
+                            <li class="flexi-icon HLTicon-major-dental"  data-value="MDL"><field_v2:help_icon helpId="555" /><br />Major Dental<span class="non-saver"> &amp; Orthodontics</span></li>
                             <li class="flexi-icon HLTicon-optical" data-value="OPT"><field_v2:help_icon helpId="273" /><br />Optical</li>
                             <li class="flexi-icon HLTicon-eye-therapy non-saver" data-value="EYT"><field_v2:help_icon helpId="294" /><br />Eye Therapy</li>
                             <li class="flexi-icon HLTicon-podiatry" data-value="POD"><field_v2:help_icon helpId="556" /><br />Podiatry</li>
