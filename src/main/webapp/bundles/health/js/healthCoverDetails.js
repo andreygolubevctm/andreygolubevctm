@@ -53,13 +53,10 @@
 
     function setHealthFundsForPerson(initMode, $healthCover , $continuousCover, $dob, $lhcRow){
 
-        var isLessThan31Or31AndBeforeJuly1 = isLessThan31Or31AndBeforeJuly1($dob.val());
-        //// Quick variables
+        var lessThan31Or31AndBeforeJuly1 = isLessThan31Or31AndBeforeJuly1($dob.val());
         var healthCoverValue = $healthCover.find(':checked').val();
-
-        //// Primary Specific
         if( healthCoverValue == 'Y' ) {
-            if( isLessThan31Or31AndBeforeJuly1 ) {
+            if( lessThan31Or31AndBeforeJuly1 ) {
                 hide(initMode , $continuousCover);
             } else{
                 show(initMode , $continuousCover);
@@ -72,9 +69,10 @@
             hide(initMode , $continuousCover);
         }
         if(meerkat.site.isCallCentreUser === true) {
-            var continuousCover= $continuousCover.find(':checked').val() == 'Y';
-            var healthCover= healthCoverValue == 'Y';
-            if (isLessThan31Or31AndBeforeJuly1 || (healthCover && continuousCover)) {
+            var noContinuousCover = $continuousCover.find(':checked').val() == 'N';
+            var noHealthCover = healthCoverValue == 'N';
+            // only show LHC override if LHC is being applied to the person
+            if (!lessThan31Or31AndBeforeJuly1 && (noContinuousCover || noHealthCover)) {
                 show(initMode , $lhcRow);
             } else {
                 hide(initMode , $lhcRow);
