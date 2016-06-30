@@ -33,22 +33,32 @@
 
     function coverChangePrimary(hasCover){
         coverChange( $primaryFund , hasCover, 'primary');
-
-        //$primaryFundContainer
-//            $partnerFundContainer,
     }
+
     function coverChangePartner(hasCover){
         coverChange($partnerFund , hasCover, 'partner');
     }
 
     function coverChange(element , hasCover, person){
+        var noneOption = element.find('option[value="' + noCurrentFund + '"]');
         // did this so i don't rely on the id's
         var $fundFields = person === 'primary' ? $primaryFundContainer : $partnerFundContainer;
 
         $fundFields.show();
-        if( hasCover == 'Y' && element.val() == noCurrentFund){
-            element.val('');
+        if( hasCover == 'Y') {
+            if( element.val() == noCurrentFund) {
+                element.val('');
+            }
+            noneOption.remove();
         } else if(hasCover == 'N'){
+            if (noneOption.length === 0) {
+                 element.append(
+                    $("<option/>",{
+                        value:	noCurrentFund,
+                        text:	"No current health fund"
+                    })
+                );
+            }
             element.val(noCurrentFund);
             $fundFields.hide();
         }
@@ -56,11 +66,11 @@
     }
 
     function getPrimaryFund(){
-        return $primaryFund.val();
+        return typeof $primaryFund !== 'undefined' ? $primaryFund.val() : '';
     }
 
     function getPartnerFund(){
-        return $partnerFund.val();
+        return typeof $partnerFund !== 'undefined' ? $partnerFund.val() : '';
     }
 
     meerkat.modules.register('healthPreviousFund', {
