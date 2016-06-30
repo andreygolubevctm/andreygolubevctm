@@ -68,8 +68,7 @@
 							simplesUser: meerkat.site.isCallCentreUser
 						}
 					});
-				}
-
+			}
 		}
 	}
 
@@ -202,7 +201,7 @@
 			onInitialise:function onDetailsInit(event){
 
 				// Set initial state.
-				healthCoverDetails.setHealthFunds(true);
+				meerkat.modules.healthCoverDetails.setHealthFunds(true);
 				healthCoverDetails.setIncomeBase(true);
 
 				meerkat.modules.healthTiers.initHealthTiers();
@@ -226,37 +225,14 @@
 					});
 				}
 
-				$('#health_healthCover-selection').find(':input').on('change', function(event) {
-					var $this = $(this);
-
-					// Don't action on the DOB input fields; wait until it's serialised to the hidden field.
-					if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year')) return;
-
-					healthCoverDetails.setHealthFunds();
-
-					if(meerkat.site.isCallCentreUser === true){
-
-						// Get rates and show LHC inline.
-						loadRates(function(rates){
-
-							$('.health_cover_details_rebate .fieldrow_legend').html('Overall LHC ' + rates.loading + '%');
-
-							$('.health-cover_details .dialog-26-lhc').html(rates.loading);
-
-							if(hasPartner()){
-								$('#health_healthCover_primaryCover .fieldrow_legend').html('Individual LHC ' + rates.primaryLoading + '%, overall  LHC ' + rates.loading + '%');
-								$('#health_healthCover_partnerCover .fieldrow_legend').html('Individual LHC ' + rates.partnerLoading + '%, overall  LHC ' + rates.loading + '%');
-							} else {
-								$('#health_healthCover_primaryCover .fieldrow_legend').html('Overall  LHC ' + rates.loading + '%');
-							}
-
-							meerkat.modules.healthTiers.setTiers();
-
-						});
-					}
-
-				});
-
+				$('#health_healthCover-selection').find(':input').on('change',
+					function(event) {
+						var $this = $(this);
+                        // Don't action on the DOB input fields; wait until it's serialised to the hidden field.
+						if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year')) return;
+						meerkat.modules.healthLHC.displayLHC();
+					});
+                meerkat.modules.healthLHC.displayLHC();
 			},
 			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onBeforeLeave: function(event) {
@@ -268,8 +244,14 @@
 				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
+				if (meerkat.site.isCallCentreUser === true) {
+					$('#journeyEngineSlidesContainer .journeyEngineSlide')
+						.eq(meerkat.modules.journeyEngine.getCurrentStepIndex())
+						.find('.simples-dialogue').show();
+				}
 			}
 		};
+		
 
 
 		var benefitsStep = {
@@ -304,7 +286,9 @@
 				}
 				// Hide any Simples dialogues
 				if (meerkat.site.isCallCentreUser === true) {
-					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').hide();
+					$('#journeyEngineSlidesContainer .journeyEngineSlide')
+						.eq(meerkat.modules.journeyEngine.getCurrentStepIndex())
+						.find('.simples-dialogue').hide();
 				}
 
 				// Defer the open for next js cycle so that the navbar button is visible and we can read the dropdown's height
@@ -435,7 +419,8 @@
 			onBeforeEnter:function enterResultsStep(event){
 				meerkat.modules.sessionCamHelper.stop();
 				if(event.isForward && meerkat.site.isCallCentreUser) {
-					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
+					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex())
+						.find('.simples-dialogue').show();
 				} else {
 					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
 					meerkat.modules.healthResults.resetSelectedProduct();
@@ -491,7 +476,7 @@
 
 				// Show/hide membership number and authorisation checkbox questions for previous funds.
 				$('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').on('change', function(){
-					healthCoverDetails.displayHealthFunds();
+					meerkat.modules.healthCoverDetails.displayHealthFunds();
 				});
 
 				// Show/Hide simples messaging based on fund selection
@@ -560,15 +545,7 @@
 
 					// Update the state of the dependants object.
 					meerkat.modules.healthDependants.updateDependantConfiguration();
-
-					// Change min and max dates for start date picker based on current stored values from healthPaymentStep module which can change based on selected fund
-					//var min = meerkat.modules.healthPaymentStep.getSetting("minStartDateOffset");
-					//var max = meerkat.modules.healthPaymentStep.getSetting("maxStartDateOffset");
-					//$("#health_payment_details_start_calendar").datepicker("setStartDate", "+" + min + "d").datepicker("setEndDate", "+" + max + "d");
-					var min = meerkat.modules.healthPaymentStep.getSetting('minStartDate');
-					var max = meerkat.modules.healthPaymentStep.getSetting('maxStartDate');
-					$("#health_payment_details_start").datepicker('setStartDate', min).datepicker('setEndDate', max);
-
+					meerkat.modules.healthApplyStep.onBeforeEnter();
 					meerkat.modules.healthMedicare.updateMedicareLabel();
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
@@ -881,7 +858,7 @@
 			// in application stage
 			postData.primary_dob = $('#health_application_primary_dob').val();
 			postData.partner_dob = $('#health_application_partner_dob').val();
-			postData.primary_current = ( $('#clientFund').find(':selected').val() == 'NONE' )?'N':'Y';
+			postData.primary_current = (meerkat.modules.healthPreviousFund.getPrimaryFund() == 'NONE' )?'N':'Y';
 			postData.partner_current = ( $('#partnerFund').find(':selected').val() == 'NONE' )?'N':'Y';
 
 		}
