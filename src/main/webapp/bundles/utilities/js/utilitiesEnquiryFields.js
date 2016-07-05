@@ -72,7 +72,6 @@
     }
     
     function setContent() {
-        _setTermsAndConditions();
         _setHiddenProductId();
         _toggleMoveInDate();
 
@@ -106,19 +105,6 @@
             $(prefix+"retailerName").val(product.retailerName);
             $(prefix+"planName").val(product.planName);
         }
-    }
-
-    /**
-     * Sets the terms and conditions text
-     * @private
-     */
-    function _setTermsAndConditions() {
-        // Set the terms and conditions text
-        var template = $("#terms-text-template").html(),
-            product = Results.getSelectedProduct(),
-            termsHTML = _.template(template, { variable: "data" });
-
-        $("#terms-text-container").html(termsHTML(product));
     }
 
     meerkat.modules.register("utilitiesEnquiryFields", {

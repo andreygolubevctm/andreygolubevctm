@@ -32,82 +32,83 @@ import static org.powermock.api.mockito.PowerMockito.*;
 public class LeadServiceTest {
 
     @Mock
-	ServiceConfiguration mockServiceConfig;
+    ServiceConfiguration mockServiceConfig;
     @Mock
-	HttpServletRequest mockRequest;
+    HttpServletRequest mockRequest;
     @Mock
-	Data mockData;
-	@Mock
-	IPAddressHandler ipAddressHandler;
+    Data mockData;
+    @Mock
+    IPAddressHandler ipAddressHandler;
 
-	LeadService leadService;
+    LeadService leadService;
 
-	@Before
-	public void setup() throws ServiceConfigurationException, DaoException {
-		initMocks(this);
+    @Before
+    public void setup() throws ServiceConfigurationException, DaoException {
+        initMocks(this);
 
-		leadService = new LeadService(ipAddressHandler) {
-			@Override
-			protected LeadRequest updatePayloadData(Data data) {
-				LeadRequest lr = new LeadRequest();
-				lr.setVerticalType("health");
-				lr.getPerson().setFirstName("Firstname");
-				lr.getPerson().setEmail("Email");
-				lr.getPerson().setMobile("Mobile");
-				lr.setMetadata(mock(LeadMetadata.class));
-				return lr;
-			}
-		};
+        leadService = new LeadService(ipAddressHandler) {
+            @Override
+            protected LeadRequest updatePayloadData(Data data) {
+                LeadRequest lr = new LeadRequest();
+                lr.setVerticalType("health");
+                lr.getPerson().setFirstName("Firstname");
+                lr.getPerson().setEmail("Email");
+                lr.getPerson().setMobile("Mobile");
+                lr.setMetadata(mock(LeadMetadata.class));
+                return lr;
+            }
+        };
 
-		mockStatic(SessionUtils.class);
-		when(SessionUtils.isCallCentre(any())).thenReturn(false);
+        mockStatic(SessionUtils.class);
+        when(SessionUtils.isCallCentre(any())).thenReturn(false);
 
-		when(mockRequest.getSession()).thenReturn(mock(HttpSession.class));
-		when(ipAddressHandler.getIPAddress(mockRequest)).thenReturn("1.1.1.1");
+        when(mockRequest.getSession()).thenReturn(mock(HttpSession.class));
+        when(ipAddressHandler.getIPAddress(mockRequest)).thenReturn("1.1.1.1");
 
-		when(mockData.getLong("current/rootId")).thenReturn(1111L);
-		when(mockData.getLong("current/transactionId")).thenReturn(1111L);
-		when(mockData.getString("current/brandCode")).thenReturn("ctm");
+        when(mockData.getLong("current/rootId")).thenReturn(1111L);
+        when(mockData.getLong("current/transactionId")).thenReturn(1111L);
+        when(mockData.getString("current/brandCode")).thenReturn("ctm");
+        when(mockData.getString("current/brandCode")).thenReturn("ctm");
 
-		mockStatic(ServiceConfigurationService.class);
-		when(ServiceConfigurationService.getServiceConfiguration("leadService", 4, 0)).thenReturn(mockServiceConfig);
+        mockStatic(ServiceConfigurationService.class);
+        when(ServiceConfigurationService.getServiceConfiguration("leadService", 4)).thenReturn(mockServiceConfig);
 
-		when(mockServiceConfig.getPropertyValueByKey("enabled", 0, 0, SERVICE)).thenReturn("true");
-		when(mockServiceConfig.getPropertyValueByKey("url", 0, 0, SERVICE)).thenReturn("url");
+        when(mockServiceConfig.getPropertyValueByKey("enabled", 0, 0, SERVICE)).thenReturn("true");
+        when(mockServiceConfig.getPropertyValueByKey("url", 0, 0, SERVICE)).thenReturn("url");
 
-		mockStatic(LeadServiceUtil.class);
-	}
+        mockStatic(LeadServiceUtil.class);
+    }
 
-	@Test
-	public void sendNormalLead() throws Exception {
-		leadService.sendLead(4, mockData, mockRequest, LeadStatus.OPEN.name());
-		verifyStatic(times(1));
-		LeadServiceUtil.sendRequest(any(), eq("url"));
-	}
+    @Test
+    public void sendNormalLead() throws Exception {
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.OPEN.name());
+        verifyStatic(times(1));
+        LeadServiceUtil.sendRequest(any(), eq("url"));
+    }
 
-	@Test
-	public void callcentreShouldNotSendLeads() throws Exception {
-		when(SessionUtils.isCallCentre(any())).thenReturn(true);
+    @Test
+    public void callcentreShouldNotSendLeads() throws Exception {
+        when(SessionUtils.isCallCentre(any())).thenReturn(true);
 
-		leadService.sendLead(4, mockData, mockRequest, LeadStatus.OPEN.name());
-		verifyStatic(times(0));
-		LeadServiceUtil.sendRequest(any(), any());
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.OPEN.name());
+        verifyStatic(times(0));
+        LeadServiceUtil.sendRequest(any(), any());
 
-		leadService.sendLead(4, mockData, mockRequest, LeadStatus.SOLD.name());
-		verifyStatic(times(0));
-		LeadServiceUtil.sendRequest(any(), any());
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.SOLD.name());
+        verifyStatic(times(0));
+        LeadServiceUtil.sendRequest(any(), any());
 
-		leadService.sendLead(4, mockData, mockRequest, LeadStatus.PENDING.name());
-		verifyStatic(times(0));
-		LeadServiceUtil.sendRequest(any(), any());
-	}
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.PENDING.name());
+        verifyStatic(times(0));
+        LeadServiceUtil.sendRequest(any(), any());
+    }
 
-	@Test
-	public void callcentreShouldSendInboundLead() throws Exception {
-		when(SessionUtils.isCallCentre(any())).thenReturn(true);
+    @Test
+    public void callcentreShouldSendInboundLead() throws Exception {
+        when(SessionUtils.isCallCentre(any())).thenReturn(true);
 
-		leadService.sendLead(4, mockData, mockRequest, LeadStatus.INBOUND_CALL.name());
-		verifyStatic(times(1));
-		LeadServiceUtil.sendRequest(any(), any());
-	}
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.INBOUND_CALL.name());
+        verifyStatic(times(1));
+        LeadServiceUtil.sendRequest(any(), any());
+    }
 }

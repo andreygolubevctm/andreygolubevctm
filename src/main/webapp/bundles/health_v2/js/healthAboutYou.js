@@ -24,7 +24,8 @@
 		$healthCoverIncomeMessage,
 		$partnersDetails,
 		$lhcContainers,
-		$medicare;
+		$medicare,
+        $healthSituation;
 
 	function init(){
 		$(document).ready(function () {
@@ -34,6 +35,7 @@
 			meerkat.modules.healthTiers.setTiers(true);
 
 			eventSubscriptions();
+            toggleMlsMessage();
 		});
 	}
 
@@ -59,7 +61,8 @@
 		$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend'),
 		$partnersDetails = $('#partnerFund, #partnerMemberID, #partnerContainer'),
 		$lhcContainers = $('#primary-health-cover, #partner-health-cover, #australian-government-rebate'),
-		$medicare = $('.health-medicare_details');
+		$medicare = $('.health-medicare_details'),
+        $healthSituation = $aboutYouContainer.find('input[name="health_situation_healthSitu"]');
 
 
 		if (!healthChoices.hasSpouse()) {
@@ -103,6 +106,8 @@
 				setRebate();
 			}
 		});
+
+        $healthSituation.add($healthCoverIncome).on('change', toggleMlsMessage);
 	}
 
 	function togglePrimaryContinuousCover(isInitMode) {
@@ -197,6 +202,10 @@
 	function getPrimaryCurrentCover() {
 		return $primaryCurrentCover.find(':checked').val();
 	}
+
+    function toggleMlsMessage () {
+        $('#health_healthCover_tier_row_legend_mls').toggleClass('hidden', ['CHC', 'ATP'].indexOf($healthSituation.filter(':checked').val()) < 0 || $healthCoverIncome.val() !== '0');
+    }
 
 	meerkat.modules.register('healthAboutYou', {
 		init: init,

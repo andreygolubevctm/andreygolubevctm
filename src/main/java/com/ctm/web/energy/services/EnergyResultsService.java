@@ -36,7 +36,7 @@ public class EnergyResultsService extends CommonRequestService<EnergyQuoteReques
         EnergyQuoteServiceResponseAdapter  energyQuoteServiceResponseAdapter= new EnergyQuoteServiceResponseAdapter();
         final EnergyQuoteRequest energyQuoteRequest = mapper.adapt(model);
         Response<EnergyQuote> energyResultsModel = sendRequest(brand, ENERGY, "quoteServiceBER", Endpoint.QUOTE, model, energyQuoteRequest,
-                       EnergyQuoteResponse.class);
+                EnergyQuoteResponse.class);
         return energyQuoteServiceResponseAdapter.adapt(energyResultsModel);
-	}
+    }
 }

@@ -2,8 +2,11 @@ package com.ctm.web.homecontents.model.form;
 
 import com.ctm.web.core.model.formData.RequestWithQuote;
 
+import javax.validation.Valid;
+
 public class HomeRequest extends RequestWithQuote<HomeQuote> {
 
+    @Valid
     private HomeQuote home;
 
     @Override

@@ -55,7 +55,7 @@
 	 * Param excludeWeekend, true to exclude weekend from the buffer, false for otherwise
 	 * Param isBank, true for bank payment, otherwise cc payment
 	 */
-	function populateFuturePaymentDays(euroDate, exclusion, excludeWeekend, isBank) {
+	function populateFuturePaymentDays(euroDate, exclusion, excludeWeekend, isBank, maxDayOfTheMonth) {
 		var startDate,
 			minimumDate,
 			$paymentDays;
@@ -86,17 +86,13 @@
 		} else {
 			minimumDate.setDate(minimumDate.getDate() + exclusion);
 		}
-        var html = meerkat.modules.healthPaymentDay.paymentDays( minimumDate );
+        var html;
+        if (_.isNumber(maxDayOfTheMonth)) {
+            html = meerkat.modules.healthPaymentDay.paymentDaysOfTheMonth(minimumDate, maxDayOfTheMonth);
+        } else {
+            html = meerkat.modules.healthPaymentDay.paymentDays( minimumDate );
+        }
 		$paymentDays.html(html);
-	}
-
-	function compareAndAddMonth(oldDate, minDate) {
-		if (oldDate < minDate){
-			var newDate = new Date(oldDate.setMonth(oldDate.getMonth() +  1 ));
-			return compareAndAddMonth(newDate, minDate);
-		}else{
-			return oldDate;
-		}
 	}
 
 	meerkat.modules.register("healthPaymentDate", {

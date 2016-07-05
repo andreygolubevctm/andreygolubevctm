@@ -52,13 +52,8 @@
 
         <c:set var="isHealthV2" value="${true}" scope="request" />
 
-        <c:set var="isTaxTime"><content:get key="taxTime"/></c:set>
-        <c:set var="taxTimeClass">
-            <c:if test="${taxTimeSplitTest eq true and data.health.currentJourney eq 31 or data.health.currentJourney eq 30}">taxTime${taxTimeSplitTest}</c:if>
-        </c:set>
-
         <%-- HTML --%>
-        <layout_v1:journey_engine_page title="Health Quote" body_class_name="${taxTimeClass}">
+        <layout_v1:journey_engine_page title="Health Quote">
 
         <jsp:attribute name="head">
         </jsp:attribute>

@@ -1,12 +1,17 @@
 package com.ctm.web.core.router;
 
+import com.ctm.commonlogging.context.LoggingVariables;
+import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
+import com.ctm.web.core.exceptions.ServiceRequestException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.formData.Request;
+import com.ctm.web.core.model.resultsData.Error;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.resultsData.model.Info;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
@@ -14,7 +19,9 @@ import com.ctm.web.core.services.IPCheckService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.services.tracking.TrackingKeyService;
+import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.validation.FormValidation;
+import com.ctm.web.core.validation.ValidationUtils;
 import com.ctm.web.core.web.go.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.ext.MessageContext;
@@ -22,41 +29,44 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
 
-public abstract class CommonQuoteRouter<REQUEST extends Request> {
+public abstract class CommonQuoteRouter<REQUEST extends Request> extends CommonRouter {
 
     protected final IPAddressHandler ipAddressHandler;
     protected SessionDataServiceBean sessionDataServiceBean;
+    private VerticalType verticalType = VerticalType.GENERIC;
 
-    public CommonQuoteRouter(SessionDataServiceBean sessionDataServiceBean,IPAddressHandler ipAddressHandler) {
+    public CommonQuoteRouter(SessionDataServiceBean sessionDataServiceBean, ApplicationService applicationService, IPAddressHandler ipAddressHandler) {
+        super(applicationService);
         this.sessionDataServiceBean = sessionDataServiceBean;
         this.ipAddressHandler = ipAddressHandler;
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteRouter.class);
 
+    public CommonQuoteRouter(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler) {
+        super(new ApplicationService());
+        this.sessionDataServiceBean = sessionDataServiceBean;
+        this.ipAddressHandler = ipAddressHandler;
+    }
+
     protected Brand initRouter(MessageContext context, Vertical.VerticalType vertical){
         return initRouter(context.getHttpServletRequest(), vertical);
     }
 
-    protected Brand initRouter(HttpServletRequest httpServletRequest, Vertical.VerticalType vertical){
-        // - Start common -- taken from Carlos' car branch
-        ApplicationService.setVerticalCodeOnRequest(httpServletRequest, vertical.getCode());
-
-        try {
-            return ApplicationService.getBrandFromRequest(httpServletRequest);
-
-        } catch (DaoException e) {
-            throw new RouterException(e);
-        }
-
+    protected Brand initRouter(HttpServletRequest request) {
+        return initRouter(request, Vertical.VerticalType.findByCode(getVerticalType().toString()));
     }
 
     protected SessionDataServiceBean getSessionDataServiceBean() {
@@ -148,7 +158,17 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
     }
 
 
-    @ExceptionHandler
+    @ExceptionHandler(BindException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Error handleValidationException(BindException e, HttpServletRequest request) {
+        LoggingVariables.setVerticalType(getVerticalType());
+        LOGGER.warn("Validation failure encountered", e);
+        return FormValidation.outputToObject(RequestUtils.getTransactionIdFromRequest(request), ValidationUtils.handleSpringValidationErrors(e));
+    }
+
+
+    @ExceptionHandler(RouterException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public com.ctm.web.core.model.resultsData.Error handleException(final RouterException e) {
         if(e.getValidationErrors() == null){
@@ -158,5 +178,19 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
         return FormValidation.outputToObject(e.getTransactionId(), e.getValidationErrors());
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorInfo handleException(final ServiceRequestException e) {
+        LOGGER.error("Failed to handle request", e);
+        ErrorInfo errorInfo = new ErrorInfo();
+        errorInfo.setTransactionId(e.getTransactionId());
+        errorInfo.setErrors(e.getErrors());
+        return errorInfo;
+    }
 
+
+
+    protected VerticalType getVerticalType() {
+        return verticalType;
+    }
 }
