@@ -11,7 +11,6 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumber" />
 <c:set var="optIn"	value="${go:nameFromXpath(xpath)}_call" />
-<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 
 <c:set var="vertical">
 	<c:choose>
@@ -74,22 +73,7 @@
 		<%-- COMPETITION END--%>
 
 		<form_v1:row label="" className="clear closer">
-			<c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${vertical}_privacyoptinInfoDialog.open()'>privacy statement</a>" />
-			<c:set var="termsOfUseLink" value="<a href='/static/legal/website_terms_of_use.pdf' target='_blank'>Website Terms of Use</a>" />
-			<c:set var="fsgLink" value="<a href='/static/legal/Life_FSG.pdf' target='_blank'>Financial Services Guide (Life Insurance products)</a>" />
-			<c:choose>
-				<c:when test="${vertical eq 'life'}">
-					<c:set var="label_text">
-						I understand and accept the ${termsOfUseLink}, ${fsgLink} and ${privacyLink}. I agree that ${brandedName} may contact me about the services it provides, and that Lifebroker or Auto & General Services, Compare the Market's trusted life insurance partners, may call or email me to discuss my life insurance needs.
-					</c:set>
-				</c:when>
-				<c:when test="${vertical eq 'ip'}">
-					<c:set var="label_text">
-						I understand and accept the ${termsOfUseLink}, ${fsgLink} and ${privacyLink}. I agree that ${brandedName} may contact me about the services it provides, and that Lifebroker, Compare the Market's trusted life insurance partners, may call or email me to discuss my life insurance needs.
-					</c:set>
-				</c:when>
-			</c:choose>
-
+			<c:set var="label_text"><content:get key="optinLabel" /></c:set>
 			<field_v1:checkbox
 					xpath="${vertical}_privacyoptin"
 					value="Y"
@@ -168,16 +152,6 @@
 
 	${name}_original_phone_number = $('#${contactNumber}').val();
 
-	if($("#${vertical}_privacyoptin").is(":checked")) {
-		var $tel = $('#${contactNumber}input');
-		var tel = $tel.val();
-		$('#${optIn}').val(tel.length && tel != $tel.attr('placeholder') ? "Y" : "N");
-		var $eml = $('#${name}_email');
-		var eml = $eml.val();
-		$('#${name}_optIn').val(eml != '' ? 'Y' : 'N');
-		$(document).trigger(SaveQuote.setMarketingEvent, [true, eml]);
-	}
-
 	$("#${vertical}_privacyoptin").on("change", function(){
 		var $tel = $('#${contactNumber}input');
 		var tel = $tel.val();
@@ -188,6 +162,8 @@
 		$('#${name}_optIn').val($(this).is(":checked") && eml != '' ? 'Y' : 'N');
 		$(document).trigger(SaveQuote.setMarketingEvent, [$(this).is(':checked'), eml]);
 	});
+
+	$("#${vertical}_privacyoptin").trigger("change");
 
 	$('#${contactNumber}input').on('update keypress blur', function(){
 
