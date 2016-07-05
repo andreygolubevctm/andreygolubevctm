@@ -64,5 +64,7 @@
 <c:set var="useElasticSearch" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 18)}" scope="request" />
 <%-- End HLT-2931 --%>
 
-<%-- HLT-3273 --%>
-<c:set var="taxTimeSplitTest" value="${data.health.currentJourney eq 30 or data.health.currentJourney eq 31}" scope="request" />
+<%-- HLT-3273 && HLT-3433 --%>
+<c:set var="isTaxTime"><content:get key="taxTime"/></c:set>
+<c:set var="taxTimeSplitTest" value="${isTaxTime eq 'Y' && (splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 30) or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 31) or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 32))}" scope="request" />
+<%-- END HLT-3273 && HLT-3433  --%>
