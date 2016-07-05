@@ -26,7 +26,10 @@
 </script>
 
 <%-- HTML --%>
+
 <form_v2:row label="${label}" className="clear select-tags-row" helpId="${helpId}">
+
+	<ul class="selected-tags col-xs-12 col-sm-12" data-selectlimit='${limit}'></ul>
 
 	<c:choose>
 		<c:when test="${fieldType eq 'autocomplete'}">
@@ -39,8 +42,4 @@
 
 
 	<field_v2:validatedHiddenField xpath="${xpathhidden}" className="" title="${title}" validationErrorPlacementSelector=".content ${validationErrorPlacementSelector}" additionalAttributes=" required " />
-</form_v2:row>
-
-<form_v2:row label="" className="selected-tags-row clear" hideHelpIconCol="true">
-	<ul class="selected-tags col-xs-12 col-sm-12" data-selectlimit='${limit}'></ul>
 </form_v2:row>

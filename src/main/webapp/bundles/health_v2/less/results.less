@@ -35,7 +35,8 @@
     padding: 5px;
     .user-select(none);
   }
-  .restrictedFund {
+  .restrictedFund,
+  .customHeaderContent {
     @media (@sm-only) {
       font-size: 12px;
     }
@@ -46,6 +47,10 @@
     color: #8A8A8A;
     text-align: center;
   }
+  .customHeaderContent {
+    background-color: #9EACD1;
+    color: @theme-tertiary;
+  }
   .remove-result {
     position: absolute;
     top: 2px;
@@ -53,6 +58,9 @@
     padding: 5px;
     color: #ccc;
     cursor: pointer;
+    &.hasCustomHeaderContent {
+      color: #fff;
+    }
     & .icon:hover {
       color: #555;
     }

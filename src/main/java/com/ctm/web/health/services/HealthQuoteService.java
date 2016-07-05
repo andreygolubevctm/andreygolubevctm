@@ -180,6 +180,9 @@ public class HealthQuoteService extends CommonQuoteService<HealthQuote, HealthQu
                 case "nhb_42694269":
                     providerFilter.setSingleProvider("17");
                     break;
+                case "hbf_89564575":
+                    providerFilter.setSingleProvider("18");
+                    break;
                 default:
                     throw new RouterException("Invalid providerKey");
             }

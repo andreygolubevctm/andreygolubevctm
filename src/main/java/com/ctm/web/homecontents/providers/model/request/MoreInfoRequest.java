@@ -1,5 +1,7 @@
 package com.ctm.web.homecontents.providers.model.request;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class MoreInfoRequest {
@@ -8,9 +10,13 @@ public class MoreInfoRequest {
 
     private String productId;
 
+    @NotNull
+    @Size(min=1)
     private String coverType;
 
     private LocalDateTime requestAt;
+
+    private Long transactionId;
 
     public String getBrandCode() {
         return brandCode;
@@ -42,5 +48,13 @@ public class MoreInfoRequest {
 
     public void setRequestAt(LocalDateTime requestAt) {
         this.requestAt = requestAt;
+    }
+
+    public Long getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(Long transactionId) {
+        this.transactionId = transactionId;
     }
 }
