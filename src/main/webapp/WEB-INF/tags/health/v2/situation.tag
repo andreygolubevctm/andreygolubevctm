@@ -87,6 +87,10 @@
 						<c:when test="${taxTimeSplitTest eq true and data.health.currentJourney eq 31}">
 							ORDER BY FIELD(code,'CHC', 'LC','LBC','CSF','ATP')
 						</c:when>
+                        <c:when test="${taxTimeSplitTest eq true and data.health.currentJourney eq 32}">
+                            AND code IN ('CHC', 'LC')
+                            ORDER BY code
+                        </c:when>
 						<c:otherwise>
 							ORDER BY orderSeq
 						</c:otherwise>
