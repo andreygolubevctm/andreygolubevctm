@@ -22,7 +22,7 @@
 	function init() {
 
 		$(document).ready(function ($) {
-			taxTimeIsActive = (meerkat.site.isTaxTime === 'Y' && (meerkat.modules.splitTest.isActive(30) || meerkat.modules.splitTest.isActive(31)));
+			taxTimeIsActive = (meerkat.site.isTaxTime === 'Y' && (meerkat.modules.splitTest.isActive(30) || meerkat.modules.splitTest.isActive(31) ||  meerkat.modules.splitTest.isActive(32)));
 			if (!taxTimeIsActive) {
 				doFastTrack = false;
 				return;
