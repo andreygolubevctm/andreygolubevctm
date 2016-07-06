@@ -6,21 +6,39 @@ Handling of the rebate tiers hidden field
 ;(function($, undefined) {
 
 	var meerkat = window.meerkat,
-		initialised = false;
+		initialised = false,
+		$income,
+		$healthCoverIncomeLabel;
+
+	function init(){
+		$(document).ready(function () {
+			initHealthTiers();
+		});
+	}
+
+
+	function initHealthTiers(){
+		if(!initialised) {
+			initialised = true;
+			$income = $('#health_healthCover_income');
+			$healthCoverIncomeLabel = $('#health_healthCover_incomelabel');
+		}
+	};
 
 
 	setIncomeLabel = function() {
 		// Store the text of the income question - for reports and audits.
-        var $selectedIncome = meerkat.modules.healthTiersView.getIncome().find(':selected');
+        var $selectedIncome = $income.find(':selected');
 		var incomeLabel = ($selectedIncome.val().length > 0) ? $selectedIncome.text() : '';
-		meerkat.modules.healthTiersView.getIncomeLabel().val( incomeLabel );
+		$healthCoverIncomeLabel.val( incomeLabel );
 	};
 
     clearIncomeLabel = function() {
-		meerkat.modules.healthTiersView.getIncomeLabel().val('');
+		$healthCoverIncomeLabel.val('');
     };
 
 	meerkat.modules.register("healthTiersLabel", {
+		init : init,
 		setIncomeLabel : setIncomeLabel,
         clearIncomeLabel : clearIncomeLabel
 	});

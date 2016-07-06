@@ -39,11 +39,10 @@ Handling of the rebate tiers based off situation
 		$income;
 
 	initHealthTiers =  function(){
-		meerkat.modules.healthTiersView.initHealthTiers();
 		$dependants = $('#health_healthCover_dependants');
 		$incomeMessage = $('#health_healthCover_incomeMessage');
 		$incomeBase = $('#health_healthCover_incomeBase');
-		$income = meerkat.modules.healthTiersView.getIncome();
+		$income = $('#health_healthCover_income');
 	};
 
 	// Manages the descriptive titles of the tier drop-down
