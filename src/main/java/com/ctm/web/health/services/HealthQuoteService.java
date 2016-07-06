@@ -192,4 +192,3 @@ public class HealthQuoteService extends CommonQuoteService<HealthQuote, HealthQu
     }
 
 }
-

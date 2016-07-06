@@ -24,7 +24,7 @@ public class SoapConfiguration {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SoapConfiguration.class);
 
 	public static void setUpConfigurationFromDatabase(String configDbKey , SoapAggregatorConfiguration configuration, Brand brand,
-			String verticalCode, String manuallySetProviderIds, String authToken, int localPort) {
+													  String verticalCode, String manuallySetProviderIds, String authToken, int localPort) {
 		// If the configDbKey is specified, attempt to load the config from the database and/or config xml.
 		if(configDbKey != null && !configDbKey.isEmpty()){
 			try {
@@ -34,7 +34,7 @@ public class SoapConfiguration {
 					return;
 				}
 
-				ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration(configDbKey, vertical.getId(), brand.getId());
+				ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration(configDbKey, vertical.getId());
 				configuration.setFromDb(serviceConfig, brand.getId(), 0);
 				setUpIsWriteToFile(serviceConfig, brand.getId(), 0, configuration);
 
@@ -79,7 +79,7 @@ public class SoapConfiguration {
 	}
 
 	private static void setUpIsWriteToFile(ServiceConfiguration config,
-			int styleCodeId, int providerId, SoapAggregatorConfiguration configuration) {
+										   int styleCodeId, int providerId, SoapAggregatorConfiguration configuration) {
 		String isWriteToFileValue = config.getPropertyValueByKey("isWriteToFile", styleCodeId, providerId, ServiceConfigurationProperty.Scope.GLOBAL);
 		if(isWriteToFileValue != null && !isWriteToFileValue.isEmpty()){
 			configuration.setIsWriteToFile(isWriteToFileValue.equals("Y"));

@@ -31,4 +31,11 @@ public class EnvironmentServiceTest {
 		assertEquals("ctm/", EnvironmentService.getContextPath());
 	}
 
+	@Test
+	public void testGetEnvironmentFromSpring() {
+		System.setProperty("spring.profiles.active", "nxi");
+		EnvironmentService.Environment environment = EnvironmentService.getEnvironmentFromSpring();
+		assertEquals(EnvironmentService.Environment.NXI, environment);
+	}
+
 }

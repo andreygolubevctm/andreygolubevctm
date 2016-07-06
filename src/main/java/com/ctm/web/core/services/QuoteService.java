@@ -1,15 +1,14 @@
 package com.ctm.web.core.services;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.HttpRequestHandler;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -21,11 +20,20 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 public class QuoteService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(QuoteService.class);
+	private final TransactionDetailsDao transactionDetailsDao;
+
 	/**
 	 * Constructor
 	 */
+	@Deprecated
 	public QuoteService() {
+		transactionDetailsDao = new TransactionDetailsDao();
 	}
+
+	public QuoteService(TransactionDetailsDao transactionDetailsDao) {
+		this.transactionDetailsDao = transactionDetailsDao;
+	}
+
 	/**
 	 * Write the lite version of the quote. This is only fields that have been changed since the last save.
 	 * @param request HttpServletRequest
@@ -39,8 +47,6 @@ public class QuoteService {
 		if(data != null) {
 			HttpRequestHandler.updateXmlNode(data, request, true, false);
 		}
-
-		TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
 		Boolean isSuccessful = transactionDetailsDao.insertOrUpdate(request, transactionId);
 
 		JSONObject json = new JSONObject();

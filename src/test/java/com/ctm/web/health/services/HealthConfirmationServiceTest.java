@@ -3,12 +3,9 @@ package com.ctm.web.health.services;
 import com.ctm.web.core.confirmation.model.Confirmation;
 import com.ctm.web.core.confirmation.services.ConfirmationService;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.health.apply.model.request.payment.details.Frequency;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
 import com.ctm.web.health.model.form.*;
 import com.ctm.web.health.model.providerInfo.ProviderInfo;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -16,12 +13,9 @@ import org.mockito.Mock;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
