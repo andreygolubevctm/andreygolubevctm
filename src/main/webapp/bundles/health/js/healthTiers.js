@@ -39,20 +39,17 @@
         $incomeBase,
         $income,
         $tier,
-        $medicare,
-        $healthCoverIncomeLabel;
+        $medicare;
 
     initHealthTiers =  function(){
         if(!initialised) {
-            meerkat.modules.healthTiersView.initHealthTiers();
             initialised = true;
             $dependants = $('#health_healthCover_dependants');
             $incomeMessage = $('#health_healthCover_incomeMessage');
             $incomeBase = $('#health_healthCover_incomeBase');
-            $income = meerkat.modules.healthTiersView.getIncome();
+            $income = $('#health_healthCover_income');
             $tier = $('#health_healthCover_tier');
             $medicare = $('.health-medicare_details');
-            $healthCoverIncomeLabel = $('#health_healthCover_incomelabel');
         }
     };
 
@@ -154,6 +151,8 @@
                 $medicare.show();
             }
         });
+
+
     };
 
     meerkat.modules.register("healthTiers", {
