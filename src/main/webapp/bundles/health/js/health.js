@@ -236,7 +236,7 @@
 			},
 			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onBeforeLeave: function(event) {
-				meerkat.modules.healthTiers.setIncomeLabel();
+				meerkat.modules.healthTiersLabel.setIncomeLabel();
 			},
 			onAfterEnter: function(event) {
 				if (event.isForward && meerkat.site.isCallCentreUser === true){

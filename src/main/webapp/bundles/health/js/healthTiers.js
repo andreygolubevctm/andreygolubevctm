@@ -44,11 +44,12 @@ Handling of the rebate tiers based off situation
 
 	initHealthTiers =  function(){
 		if(!initialised) {
-			initialised = true;
-			$dependants = $('#health_healthCover_dependants');
-			$incomeMessage = $('#health_healthCover_incomeMessage');
-			$incomeBase = $('#health_healthCover_incomeBase');
-			$income = $('#health_healthCover_income');
+            meerkat.modules.healthTiersView.initHealthTiers()
+            initialised = true;
+            $dependants = $('#health_healthCover_dependants');
+            $incomeMessage = $('#health_healthCover_incomeMessage');
+            $incomeBase = $('#health_healthCover_incomeBase');
+			$income = meerkat.modules.healthTiersView.getIncome();
 			$tier = $('#health_healthCover_tier');
 			$medicare = $('.health-medicare_details');
             $healthCoverIncomeLabel = $('#health_healthCover_incomelabel');
@@ -153,26 +154,11 @@ Handling of the rebate tiers based off situation
 				$medicare.show();
 			}
 		});
-
-	
 	};
-
-	setIncomeLabel = function() {
-		// Store the text of the income question - for reports and audits.
-        var $selectedIncome = $income.find(':selected');
-		var incomeLabel = ($selectedIncome.val().length > 0) ? $selectedIncome.text() : '';
-        $healthCoverIncomeLabel.val( incomeLabel );
-	};
-
-    clearIncomeLabel = function() {
-        $healthCoverIncomeLabel.val('');
-    };
 
 	meerkat.modules.register("healthTiers", {
 		initHealthTiers: initHealthTiers,
-		setTiers: setTiers,
-		setIncomeLabel : setIncomeLabel,
-        clearIncomeLabel : clearIncomeLabel
+		setTiers: setTiers
 	});
 
 })(jQuery);
