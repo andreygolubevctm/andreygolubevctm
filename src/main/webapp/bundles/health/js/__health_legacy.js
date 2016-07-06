@@ -266,7 +266,7 @@ var healthChoices = {
 		$('#health_healthCover_dependants option:selected').prop("selected", false);
 		$('#health_healthCover_income option').first().prop("selected", true);
 		$('#health_healthCover_income option:selected').prop("selected", false);
-		$('#health_healthCover_incomelabel').val('');
+		meerkat.modules.healthTiers.clearIncomeLabel();
 		healthCoverDetails.setIncomeBase();
 		healthChoices.dependants();
 		meerkat.modules.healthTiers.setTiers();

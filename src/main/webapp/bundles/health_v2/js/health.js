@@ -237,6 +237,7 @@
 			},
 			onBeforeLeave:function(event){
 				meerkat.modules.healthTaxTime.disableNewQuestion(true);
+				meerkat.modules.healthTiers.setIncomeLabel();
 			}
 		};
 
