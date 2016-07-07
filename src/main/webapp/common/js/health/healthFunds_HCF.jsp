@@ -21,8 +21,7 @@ var healthFunds_HCF = {
 
         var healthFundText = "By joining HCF, you authorise HCF to contact your previous fund in order to obtain a clearance certificate. This will mean that, where applicable, you don’t need to re-serve any hospital waiting periods you served with your previous fund.";
         $('#clientMemberID').parent().after('<span class="hcf-clearance-certificate">' + healthFundText + '</span>');
-        var partnerHealthFundText = "By joining HCF, you authorise HCF to contact your partner's previous fund in order to obtain a clearance certificate. This will mean that, where applicable, your partner doesn't need to re-serve any hospital waiting periods they served with their previous fund.";
-        $('#partnerMemberID').parent().after('<span class="hcf-clearance-certificate">' + partnerHealthFundText + '</span>');
+        $('#partnerMemberID').parent().after('<span class="hcf-clearance-certificate">' + healthFundText + '</span>');
   },
   unset: function(){
       $('.hcf-clearance-certificate').remove();
