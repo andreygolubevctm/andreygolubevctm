@@ -152,7 +152,7 @@ var healthChoices = {
 		//// Set the auxillary data
 		//Health.setRates();
 		if (typeof healthCoverDetails !== 'undefined') {
-			healthCoverDetails.displayHealthFunds();
+			meerkat.modules.healthCoverDetails.displayHealthFunds();
 		}
 		meerkat.modules.healthTiers.setTiers(initMode);
 	},
@@ -301,110 +301,7 @@ var healthCoverDetails = {
 			}
 		}
 	},
-
-	//// Previous funds, settings
-	displayHealthFunds: function(){
-		var $_previousFund = $('#mainform').find('.health-previous_fund');
-		var $_primaryFund = $('#clientFund').find('select');
-		var $_partnerFund = $('#partnerFund').find('select');
-
-		if( $_primaryFund.val() != 'NONE' && $_primaryFund.val() != ''){
-			$_previousFund.find('#clientMemberID').slideDown();
-			$_previousFund.find('.membership').addClass('onA');
-		} else {
-			$_previousFund.find('#clientMemberID').slideUp();
-			$_previousFund.find('.membership').removeClass('onA');
-		}
-
-		if( healthChoices.hasSpouse() && $_partnerFund.val() != 'NONE' && $_partnerFund.val() != ''){
-			$_previousFund.find('#partnerMemberID').slideDown();
-			$_previousFund.find('.membership').addClass('onB');
-		} else {
-			$_previousFund.find('#partnerMemberID').slideUp();
-			$_previousFund.find('.membership').removeClass('onB');
-		}
-	},
-
-	setHealthFunds: function(initMode){
-		//// Quick variables
-		var _primary = $('#health_healthCover_primaryCover').find(':checked').val();
-		var _partner = $('#health_healthCover_partnerCover').find(':checked').val();
-		var $_primaryFund = $('#clientFund').find('select');
-		var $_partnerFund = $('#partnerFund').find('select');
-
-		//// Primary Specific
-		if( _primary == 'Y' ) {
-
-			if( isLessThan31Or31AndBeforeJuly1($('#health_healthCover_primary_dob').val()) ) {
-				if(initMode){
-					$('#health-continuous-cover-primary').hide();
-				}else{
-					$('#health-continuous-cover-primary').slideUp();
-				}
-			}else{
-				if(initMode){
-					$('#health-continuous-cover-primary').show();
-				}else{
-					$('#health-continuous-cover-primary').slideDown();
-				}
-			}
-
-		} else {
-			if( _primary == 'N'){
-				resetRadio($('#health-continuous-cover-primary'),'N');
-			}
-			if(initMode){
-				$('#health-continuous-cover-primary').hide();
-			}else{
-				$('#health-continuous-cover-primary').slideUp();
-			}
-
-		}
-
-		if( _primary == 'Y' && $_primaryFund.val() == 'NONE'){
-			$_primaryFund.val('');
-		} else if(_primary == 'N'){
-			$_primaryFund.val('NONE');
-		}
-
-		//// Partner Specific
-		if( _partner == 'Y' ) {
-
-			if( isLessThan31Or31AndBeforeJuly1($('#health_healthCover_partner_dob').val()) ) {
-				if(initMode){
-					$('#health-continuous-cover-partner').hide();
-				}else{
-					$('#health-continuous-cover-partner').slideUp();
-				}
-			}else{
-				if(initMode){
-					$('#health-continuous-cover-partner').show();
-				}else{
-					$('#health-continuous-cover-partner').slideDown();
-				}
-			}
-		} else {
-			if( _partner == 'N'){
-				resetRadio($('#health-continuous-cover-partner'),'N');
-			}
-			if(initMode){
-				$('#health-continuous-cover-partner').hide();
-			}else{
-				$('#health-continuous-cover-partner').slideUp();
-			}
-
-		}
-
-			if( _partner == 'Y' && $_partnerFund.val() == 'NONE'){
-				$_partnerFund.val('');
-			} else if(_partner == 'N'){
-				$_partnerFund.val('NONE');
-			}
-
-		//// Adjust the questions further along
-		healthCoverDetails.displayHealthFunds();
-	},
-
+	
 	getAgeAsAtLastJuly1: function( dob )
 	{
 		var dob_pieces = dob.split("/");

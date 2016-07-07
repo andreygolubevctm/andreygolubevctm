@@ -19,7 +19,8 @@ public class LifeOccupationUtils {
 
     public static  List<Occupation> occupations(HttpServletRequest request) throws DaoException, IOException, ServiceConfigurationException {
         final WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
-        return applicationContext.getBean(LifeOccupationService.class).getOccupations( new ApplicationService().getBrand(request, LIFE));
+        ApplicationService applicationService = applicationContext.getBean(ApplicationService.class);
+        return applicationContext.getBean(LifeOccupationService.class).getOccupations( applicationService.getBrand(request, LIFE));
     }
 
     public static  String occupationsJSON(HttpServletRequest request) throws DaoException, IOException, ServiceConfigurationException {

@@ -16,6 +16,8 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -28,15 +30,32 @@ import java.util.List;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class ApplicationService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationService.class);
 
 	private static List<Brand> brands = new ArrayList<>(); // Note: always use the getBrands() method so the data is loaded from the DB
 	private static final String applicationDateSessionKey = "applicationDate";
+    private static BrandsDao brandsDao = new BrandsDao();
+    private static VerticalsDao verticalsDao = new VerticalsDao();
+    private static ConfigSettingsDao configSettingsDao = new ConfigSettingsDao();
+
+    @Autowired
+    public ApplicationService(BrandsDao brandsDao,
+                              VerticalsDao verticalsDao,
+                              ConfigSettingsDao configSettingsDao) {
+        this.brandsDao = brandsDao;
+        this.verticalsDao = verticalsDao;
+        this.configSettingsDao = configSettingsDao;
+    }
+
+    @Deprecated
+    public ApplicationService() {
+    }
 
 
-	/**
+    /**
 	 * Check if a vertical is enabled for the brand associated with the request.
 	 * @throws BrandException if there is no brand code
 	 **/
@@ -237,13 +256,8 @@ public class ApplicationService {
 		if(brands.size() == 0){
 
 			// Get data...
-			BrandsDao brandsDao = new BrandsDao();
 			ArrayList<Brand> brandsList = brandsDao.getBrands();
-
-			VerticalsDao verticalsDao = new VerticalsDao();
 			ArrayList<Vertical> verticalsList = verticalsDao.getVerticals();
-
-			ConfigSettingsDao configSettingsDao = new ConfigSettingsDao();
 			ArrayList<ConfigSetting> settingsList = configSettingsDao.getConfigSettings();
 
 			if(brandsList.size() == 0 || verticalsList.size() == 0 || settingsList.size() == 0){

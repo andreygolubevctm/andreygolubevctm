@@ -34,7 +34,7 @@ public class HandoverConfirmationService {
 
     public void confirm(final HandoverConfirmation handoverConfirmation) throws DaoException {
         if (!accessTouchService.hasTouch(handoverConfirmation.transactionId, SOLD)) {
-            accessTouchService.recordTouch(handoverConfirmation.transactionId, SOLD.getCode());
+            accessTouchService.recordTouchDeprecated(handoverConfirmation.transactionId, SOLD.getCode());
         } else {
             LOGGER.warn("Existing sold touch already recorded {}", kv("handoverConfirmation", handoverConfirmation));
         }

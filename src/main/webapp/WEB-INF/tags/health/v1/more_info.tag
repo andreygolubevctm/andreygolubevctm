@@ -246,6 +246,10 @@
 
 			{{ if(typeof extrasCover !== 'undefined') { }}
 			<div class="col-xs-12 col-md-6">
+                {{ if (custom.info && custom.info.content && custom.info.content.moreInfo && custom.info.content.moreInfo.extras) { }}
+                <h1 class="text-dark">{{= custom.info.content.moreInfo.extras.label}}</h1>
+                <p>{{= custom.info.content.moreInfo.extras.text}}</p>
+                {{ } }}
 				<h1 class="text-dark extrasCoverTitle">Extras cover</h1>
 				<p>Please note that the below amounts are individual limits for each benefit. Group limits may apply to restrict these individual limits, meaning that the more you claim on one benefit, the less you might be able to claim on another benefit in the same group. Please refer to the Policy Brochure or the previous page for details.</p>
 				<table class="extrasTable table table-bordered table-striped">

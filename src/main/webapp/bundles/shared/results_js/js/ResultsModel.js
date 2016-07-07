@@ -23,6 +23,20 @@ var ResultsModel = {
 		RESULTS_UPDATED_INFO_RECEIVED: 'RESULTS_UPDATED_INFO_RECEIVED'
 	},
 
+    handleValidationError: function(jsonResult) {
+		if (typeof Loading !== "undefined") {
+                    Loading.hide();
+                }
+
+		Results.model.hasValidationErrors = typeof( Object.byString(jsonResult, Results.settings.paths.results.errors) ) === 'object';
+
+		Results.reviseDetails();
+		meerkat.modules.serverSideValidationOutput.outputValidationErrors({
+			validationErrors: jsonResult.error.errorDetails.validationErrors,
+			startStage: 'start'
+		});
+	},
+
 	/* url and data are optional */
 	fetch: function( url, data ) {
 		Results.model.startResultsFetch();
@@ -124,18 +138,8 @@ var ResultsModel = {
 							});
 						}
 
-					}  else if(typeof jsonResult.error !== 'undefined' && jsonResult.error.type == "validation") {
-						if (typeof Loading !== "undefined") {
-							Loading.hide();
-						}
-
-						Results.model.hasValidationErrors = typeof( Object.byString( jsonResult, Results.settings.paths.results.errors ) ) === 'object';
-
-						Results.reviseDetails();
-						meerkat.modules.serverSideValidationOutput.outputValidationErrors({
-							validationErrors: jsonResult.error.errorDetails.validationErrors,
-							startStage: 'start'
-						});
+					}  else if(typeof meerkat.modules.serverSideValidationOutput !== 'undefined' && typeof jsonResult.error !== 'undefined' && jsonResult.error.type == "validation") {
+						Results.model.handleValidationError(jsonResult);
 					} else if(typeof jsonResult.error !== 'undefined') {
 						meerkat.modules.verificationToken.readIfTokenError(jsonResult.error);
 					} else if( !jsonResult || typeof( Object.byString( jsonResult, Results.settings.paths.results.rootElement ) ) == "undefined" ){
@@ -154,9 +158,16 @@ var ResultsModel = {
 
 			},
 			error: function(jqXHR, txt, errorThrown) {
-				Results.model.ajaxRequest = false;
+				var jsonResult = {};
+				try {
+					jsonResult = $.parseJSON(jqXHR.responseText);
+				} catch (error) {}
+                Results.model.ajaxRequest = false;
+                if(typeof meerkat.modules.serverSideValidationOutput !== 'undefined' && jsonResult.type == "validation") {
+                    Results.model.handleValidationError({error : jsonResult});
+                }
 				// status/readyState can be 0 if abort OR if timeout, so check for timeout only.
-				if (jqXHR.status === 429) {
+				else if (jqXHR.status === 429) {
 					Results.model.isBlockedQuote = true;
 				} else if ((jqXHR.status !== 0 && jqXHR.readyState !== 0) || txt == 'timeout') { // is an error or timeout
 					Results.model.handleFetchError( data, "AJAX request failed: " + txt + " " + errorThrown );

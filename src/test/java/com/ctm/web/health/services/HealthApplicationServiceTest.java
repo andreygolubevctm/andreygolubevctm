@@ -43,7 +43,7 @@ public class HealthApplicationServiceTest {
 	private HttpServletRequest request = mock(HttpServletRequest.class);
 	private Date changeOverDate;
 	private HttpSession session= mock(HttpSession.class);
-	private RequestService requestService  = mock(RequestService.class);;
+	private RequestService requestService  = mock(RequestService.class);
 	private String sessionId = "sessionId";
 	private Long transactionId= 1000L;
 	private String secretKey = "secretKey";

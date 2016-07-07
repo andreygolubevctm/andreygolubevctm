@@ -77,8 +77,15 @@ body{
 		.ausgovtrebateform em.AHM {
 			display:inline;
 		}
-		.health-credit_card_details .fieldrow {
-			display:none;
+		.health-credit_card_details .fieldrow.health_payment_credit-details_day_group,
+		.health-credit_card_details .fieldrow.health_credit-card_details_type_group,
+		.health-credit_card_details .fieldrow.health_credit-card-details_name,
+		.health-credit_card_details .fieldrow.health_credit-card-details_expiry_group,
+		.health-credit_card_details .fieldrow.health_credit-card-details_ccv,
+		.health-credit_card_details .fieldrow.health_credit-card-details_number_group,
+		.health-credit_card_details .fieldrow.nestedGroup,
+		.health-credit_card_details .payment_assurance_message {
+			display:none !important;
 		}
 		.health_payment_bank-details_paymentDay_group,
 		.health_payment_credit-details_paymentDay_group {
@@ -236,7 +243,14 @@ body{
 		}
 
 		.health_payment_credit-details_day_group,
-		.health_payment_bank-details_day-group {
+		.health_payment_bank-details_day-group,
+		.health-credit_card_details .fieldrow.health_credit-card_details_type_group,
+		.health-credit_card_details .fieldrow.health_credit-card-details_name,
+		.health-credit_card_details .fieldrow.health_credit-card-details_expiry_group,
+		.health-credit_card_details .fieldrow.health_credit-card-details_ccv,
+		.health-credit_card_details .fieldrow.health_credit-card-details_number_group,
+		.health-credit_card_details .fieldrow.nestedGroup,
+		.health-credit_card_details .payment_assurance_message {
 			display: block !important;
 	}
 		.health_contact_authority{
@@ -254,7 +268,7 @@ body{
 	.health-credit_card_details .fieldrow.health_credit-card-details_ccv,
 	.health-credit_card_details .fieldrow.health_credit-card-details_number_group,
 	.health-credit_card_details .fieldrow.nestedGroup,
-	.health-credit_card_details .fieldrow.payment_assurance_message {
+	.health-credit_card_details .payment_assurance_message {
 	  display: none !important;
 	}
 	#health_medicareDetails_message,
@@ -307,7 +321,9 @@ body{
 		.health_payment_credit-details_day-group,
 		.health_payment_credit-details_day_group,
 		.health_payment_bank-details_day-group,
+		.health_payment_credit-details_paymentDay_group,
 		.health_bank-details_claims_group,
+		.health-bank_claim_details,
 		.health_contact_authority{
 			display:none !important;
 		}
@@ -369,6 +385,7 @@ body{
 		.health_payment_credit-details_day_group,
 		.health_payment_credit-details_paymentDay_group,
 		.health_payment_bank-details_day-group,
+		.health-bank_claim_details,
 		#clientMemberID .clientMemberID,
 		#partnerMemberID .partnerMemberID,
 		.health-payment_details .definition,
@@ -427,7 +444,14 @@ body{
 
 		.health_payment_credit-details_day_group,
 		.health_payment_credit-details_day-group,
-		.health_payment_bank-details_day-group {
+		.health_payment_bank-details_day-group,
+		.health-credit_card_details .fieldrow.health_credit-card_details_type_group,
+		.health-credit_card_details .fieldrow.health_credit-card-details_name,
+		.health-credit_card_details .fieldrow.health_credit-card-details_expiry_group,
+		.health-credit_card_details .fieldrow.health_credit-card-details_ccv,
+		.health-credit_card_details .fieldrow.health_credit-card-details_number_group,
+		.health-credit_card_details .fieldrow.nestedGroup,
+		.health-credit_card_details .payment_assurance_message {
 			display: none !important;
 		}
 
@@ -590,6 +614,20 @@ body{
 	  		display:none !important;
 		}
   	}
+    &.HBF {
+        .health_payment_credit-details_paymentDay_group,
+        .health_payment_bank-details_paymentDay_group,
+        .health_payment_medicare_cardPosition-group {
+            display: block !important;;
+        }
+        .health_payment_bank-details_day-group,
+        .health_payment_bank-details_policyDay-group,
+        .health_payment_credit-details_day_group,
+        .health_payment_credit-details_policyDay-group,
+        .health_payment-day_message {
+           display:none !important;
+        }
+    }
 }
 
 .health_declaration {

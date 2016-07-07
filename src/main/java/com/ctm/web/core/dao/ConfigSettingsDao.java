@@ -5,6 +5,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.settings.ConfigSetting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +15,7 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.model.settings.ConfigSetting.ALL_ENVIRONMENTS;
 import static com.ctm.web.core.services.EnvironmentService.getEnvironmentAsString;
 
+@Repository
 public class ConfigSettingsDao {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigSettingsDao.class);

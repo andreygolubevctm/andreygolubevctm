@@ -18,6 +18,14 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> extends Commo
         super(providerFilterDAO, objectMapper);
     }
 
+
+    public CommonQuoteService(final ProviderFilterDao providerFilterDAO,
+                              final RestClient restClient,
+                              ServiceConfigurationServiceBean serviceConfigurationService,
+                              EnvironmentService.Environment environment,  ObjectMapper objectMapper) {
+        super( providerFilterDAO, restClient, serviceConfigurationService, environment,  objectMapper);
+    }
+
     public void validateRequest(RequestWithQuote<QUOTE> data, String verticalCode) {
         // Validate request
         if (data == null) {

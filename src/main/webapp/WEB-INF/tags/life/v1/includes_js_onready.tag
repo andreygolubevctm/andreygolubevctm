@@ -20,7 +20,7 @@
 			if(LifeQuote._vertical == "life") {
 				var $contactPanel = $('.lifebroker-contact-panel');
 				var primaryResult = Results.getPrimarySelectedProduct();
-				if(QuoteEngine._options.currentSlide == 2 && typeof primaryResult.company !== "undefined" && primaryResult.company == "ozicare") {
+				if(QuoteEngine._options.currentSlide == 2 && typeof primaryResult.company !== "undefined" && LifeQuote.isOzicare(primaryResult.company)) {
 					$contactPanel.find('.provider-phone-number').text(primaryResult.insurer_contact);
 					$contactPanel.find('.call-provider-message span').text(primaryResult.companyName);
 				} else {
@@ -31,7 +31,7 @@
 		}
 				
 				if(QuoteEngine._options.currentSlide == 3) {
-					if(primaryResult.company == "ozicare") {
+					if(LifeQuote.isOzicare(primaryResult.company)) {
 						$('#life-confirmation .column.left .inner.left .panel p:nth-child(2)').hide();
 					} else {
 						$('#life-confirmation .column.left .inner.left .panel p:nth-child(2)').show();

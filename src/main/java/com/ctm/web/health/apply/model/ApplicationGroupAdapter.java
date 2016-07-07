@@ -1,5 +1,6 @@
 package com.ctm.web.health.apply.model;
 
+import com.ctm.web.core.model.request.Gender;
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
 import com.ctm.web.health.apply.model.request.application.ApplicationGroup;
 import com.ctm.web.health.apply.model.request.application.Emigrate;

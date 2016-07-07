@@ -3,9 +3,7 @@ package com.ctm.web.core.exceptions;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by dkocovski on 14/12/2015.
- */
+
 public class ServiceRequestException extends RuntimeException {
     private Long transactionId;
 
@@ -16,6 +14,10 @@ public class ServiceRequestException extends RuntimeException {
 
     public ServiceRequestException(String message) {
         super(message);
+    }
+
+    public ServiceRequestException( String message, Throwable e) {
+        super(message, e);
     }
 
     public Long getTransactionId() {
