@@ -24,6 +24,7 @@
         <energy-apply-model.version>1.1.0-RC2</energy-apply-model.version>
         <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
         <life-quote-model.version>1.1.0-RC1</life-quote-model.version>
+        <fuel-quote-model.version>1.0.0-SNAPSHOT</fuel-quote-model.version>
 
         <!-- 3rd party -->
         <powermock.version>1.6.2</powermock.version>
@@ -522,6 +523,12 @@
             <groupId>com.ctm.energy</groupId>
             <artifactId>energy-apply-model</artifactId>
             <version>${energy-apply-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ctm.fuel</groupId>
+            <artifactId>fuel-quote-model</artifactId>
+            <version>${fuel-quote-model.version}</version>
         </dependency>
 
         <dependency>
