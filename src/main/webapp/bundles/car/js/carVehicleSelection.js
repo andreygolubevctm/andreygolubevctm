@@ -235,7 +235,7 @@
                     hasPopularModels = true;
                 }
 
-                var hasPopularColours = type == "colour";
+                var hasPopularColours = type == "colours";
 
                 if (type == 'makes' || hasPopularModels) {
                     var label = type.charAt(0).toUpperCase() + type.slice(1);

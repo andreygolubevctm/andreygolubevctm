@@ -28,13 +28,9 @@ public class CarColourDao {
 			dbSource = new SimpleDatabaseConnection();
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"(SELECT p.colourCode, p.colourDescription, '1' AS isTop " +
-						"FROM aggregator.vehicle_popular_colour AS p " +
-						" ) " +
-						"UNION ALL " +
-						"(SELECT DISTINCT vm.colourCode , vm.colourDescription, '0' AS isTop " +
-						"FROM aggregator.vehicle_colour AS vm " +
-						") ORDER BY isTop DESC, colourCode;");
+				"SELECT colourCode, colourDescription, isTop " +
+						"FROM aggregator.vehicle_colour " +
+						" ORDER BY isTop DESC, colourCode;");
 
 
 			ResultSet results = stmt.executeQuery();
@@ -63,7 +59,7 @@ public class CarColourDao {
 			dbSource = new SimpleDatabaseConnection();
 
 			stmt = dbSource.getConnection().prepareStatement(
-					"SELECT colourCode, colourDescription FROM aggregator.vehicle_colour where colourCode = ? or colourCode = 'other' ORDER BY vehicleColourId DESC LIMIT 1");
+					"SELECT colourCode, colourDescription, isTop FROM aggregator.vehicle_colour where colourCode = ? or colourCode = 'other' ORDER BY vehicleColourId DESC LIMIT 1");
 			stmt.setString(1, colourCode);
 
 			ResultSet results = stmt.executeQuery();
