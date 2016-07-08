@@ -79,7 +79,9 @@
 								<p>{{= personName }}
 								Your Application has been submitted to <span>{{= fundName }}</span> for processing.</p>
 
-								<p>Your transaction number is <span>{{= transID }}</span>.<br />Please remember to read your policy brochures so that you know exactly what you are covered for.</p>
+								<p>Your <content:get key="boldedBrandDisplayName"/> reference number is <span>{{= transID }}</span>.</p>
+
+								<p>Please remember to read your policy brochures so that you know exactly what you are covered for.</p>
 
 								<p>Thank you for comparing <span>Health Insurance</span> with <content:get key="boldedBrandDisplayName"/></p>
 							</div>
@@ -93,6 +95,9 @@
 							{{ if( whatsNext ) { }}
 							<div class="col-xs-12 nextSteps hidden-xs">
 								<h2 class="text-hospital">Next steps with {{= fundName}}</h2>
+								{{ if( policyNo && policyNo !== -1) { }}
+								<p><span>Your new health insurance policy number with {{= fundName}} is {{= policyNo }}.</span></p>
+								{{ } }}
 								{{= whatsNext }}
 							</div>
 							{{ } }}
