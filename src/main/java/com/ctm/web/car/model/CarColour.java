@@ -22,11 +22,11 @@ public class CarColour {
 		this.label = label;
 	}
 
-	public void setIsTopColour(boolean isTopColour) {
+	public void setIsTop(boolean isTopColour) {
 		this.isTop = isTopColour;
 	}
 
-	public boolean isTop() {
+	public boolean getIsTop() {
 		return isTop;
 	}
 }

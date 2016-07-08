@@ -85,7 +85,7 @@ public class CarColourDao {
 		CarColour carColour = new CarColour();
 		carColour.setCode(results.getString("colourCode"));
 		carColour.setLabel(results.getString("colourDescription"));
-		carColour.setIsTopColour(results.getBoolean("isTop"));
+		carColour.setIsTop(results.getBoolean("isTop"));
 		return carColour;
 	}
 }
