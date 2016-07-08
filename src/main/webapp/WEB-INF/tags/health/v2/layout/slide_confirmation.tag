@@ -95,7 +95,7 @@
 							{{ if( whatsNext ) { }}
 							<div class="col-xs-12 nextSteps hidden-xs">
 								<h2 class="text-hospital">Next steps with {{= fundName}}</h2>
-								{{ if( policyNo && policyNo !== -1) { }}
+								{{ if( fundName !== 'Bupa' && policyNo && policyNo !== -1) { }}
 								<p><span>Your new health insurance policy number with {{= fundName}} is {{= policyNo }}.</span></p>
 								{{ } }}
 								{{= whatsNext }}
