@@ -41,7 +41,7 @@
 
 				{{ if( whatsNext ) { }}
 				<form_v3:fieldset legend="" className="nextSteps visible-xs">
-					<h2 class="text-hospital">Next steps with {{= fundName}}</h2>
+					<health_v1_layout:next_steps_template />
 					{{= whatsNext }}
 					{{ if(typeof providerInfo !== 'undefined') { }}
 					<div class="row">
@@ -94,10 +94,7 @@
 
 							{{ if( whatsNext ) { }}
 							<div class="col-xs-12 nextSteps hidden-xs">
-								<h2 class="text-hospital">Next steps with {{= fundName}}</h2>
-								{{ if( fundName !== 'Bupa' && policyNo && policyNo !== -1) { }}
-								<p><span>Your new health insurance policy number with {{= fundName}} is {{= policyNo }}.</span></p>
-								{{ } }}
+								<health_v1_layout:next_steps_template />
 								{{= whatsNext }}
 							</div>
 							{{ } }}
