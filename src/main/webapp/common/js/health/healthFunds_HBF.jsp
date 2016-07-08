@@ -243,7 +243,7 @@ var healthFunds_HBF = {
         meerkat.modules.healthDependants.resetConfig();
 
         <%--Authority off--%>
-        healthFunds_HBF.$partnerAuthority.find('label').text(healthFunds_HBF.originalPartnerAuthorityLabelHtml);
+        healthFunds_HBF.$partnerAuthority.find('label').html(healthFunds_HBF.originalPartnerAuthorityLabelHtml);
         healthFunds._previousfund_authority(false);
 
         <%-- let set this back to its original state --%>
