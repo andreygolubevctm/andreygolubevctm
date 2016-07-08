@@ -231,9 +231,11 @@
                 }
 
                 var hasPopularModels = false;
-                if (type == "models" && selectorData[type][0].hasOwnProperty('isTopModel') && selectorData[type][0].isTopModel === true) {
+                if (type == "models" && selectorData[type][0].hasOwnProperty('isTop') && selectorData[type][0].isTop === true) {
                     hasPopularModels = true;
                 }
+
+                var hasPopularColours = type == "colour";
 
                 if (type == 'makes' || hasPopularModels) {
                     var label = type.charAt(0).toUpperCase() + type.slice(1);
@@ -242,6 +244,13 @@
                     );
                     options.push(
                         $('<optgroup/>', {label: "All " + label})
+                    );
+                } else if (hasPopularColours) {
+                    options.push(
+                        $('<optgroup/>', {label: "Frequently Selected"})
+                    );
+                    options.push(
+                        $('<optgroup/>', {label: "Other colours" })
                     );
                 } else if (!isRadioButtonField(type) && isIosXS && autoSelect !== true) {
                     options.push(
@@ -293,8 +302,8 @@
                             selected = true;
                         }
 
-                        if (type == 'makes' || (type == "models" && hasPopularModels)) {
-                            if (item[hasPopularModels ? 'isTopModel' : 'isTopMake'] === true) {
+                        if (type == 'makes' || (type == "models" && hasPopularModels) || hasPopularColours) {
+                            if (item['isTop'] === true) {
                                 option.appendTo(options[1], options[2]);
                             } else {
                                 options[2].append(option);
