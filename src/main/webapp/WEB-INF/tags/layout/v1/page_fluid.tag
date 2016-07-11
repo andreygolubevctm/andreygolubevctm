@@ -1,5 +1,5 @@
 <%-- TODO: FIX URLS FOR ALL REFERENCES TO ${assetUrl} -- They currently use ../ for scripts. We need to move scripts to the asset folder! --%>
-<%@ tag description="The Page" %>
+<%@ tag description="The Page - Full width" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
@@ -66,6 +66,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 
 	<c:if test="${pageSettings.getSetting('appleTouchIconsEnabled') eq 'Y'}">
 		<link rel="apple-touch-icon" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone.png">
@@ -143,7 +145,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 </c:set>
 </head>
 
-	<body class="jeinit ${bodyClass}">
+	<body class="jeinit  ${bodyClass}">
 
     <c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
         <c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
@@ -266,7 +268,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<c:if test="${isDev eq false}">
 			<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 		</c:if>
-		<script>window._ || document.write('<script src="${assetUrl}/libraries/underscore-1.8.3.min.js">\x3C/script>')</script>
+		<script>window._ || document.write('<script src="${assetUrl}libraries/underscore-1.8.3.min.js">\x3C/script>')</script>
 
 		<!--  Meerkat -->
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
@@ -310,6 +312,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 						vertical: '${pageSettings.getVerticalCode()}',
 						isDev: ${isDev}, <%-- boolean determined from conditions above in this tag --%>
                         isCallCentreUser: <c:out value="${not empty callCentre}"/>,
+						<c:if test="${pageSettings.hasSetting('inInEnabled')}">
+						inInEnabled: ${pageSettings.getSetting('inInEnabled')},
+						</c:if>
 						showLogging: <c:out value="${showLogging}" />,
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
 						serverDate: new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <c:out value="${serverMonth}" />, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>),
@@ -323,6 +328,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							exit: '${exitUrl}',
 							context: '${pageSettings.getContextFolder()}'
 						},
+						isTaxTime: '<content:get key="taxTime"/>',
 						watchedFields: '<content:get key="watchedFields"/>',
 						content:{
 							brandDisplayName: '<content:get key="brandDisplayName"/>'
