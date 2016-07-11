@@ -21,7 +21,9 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class CarQuoteServiceTest {
 
-    private CarQuoteService service = new CarQuoteService(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(), new SessionDataServiceBean());
+    private CarQuoteService service = new CarQuoteService(
+            new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper(),
+            new SessionDataServiceBean());
 
     @Mock
     private CarRequest carRequest;

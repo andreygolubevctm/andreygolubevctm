@@ -22,7 +22,8 @@
 		hasAutoPoped = false,
 		isAvailable = false,
         isPreload = false,
-		isCouponValidAndSubmitted = false;
+		isCouponValidAndSubmitted = false,
+        subscriptionHandles = {};
 
 	function init() {
 
@@ -148,17 +149,13 @@
             $('.callCentreHelp').hide();
 			$('.coupon-banner-container').html(currentCoupon.contentBanner);
             $('.coupon-tile-container').html(currentCoupon.contentTile);
-			if (currentCoupon.showPopup === true && hasAutoPoped === false) {
-				_.defer(function(){
-					$('.coupon-tile').click();
-					hasAutoPoped = true;
-				});
-			}
+            $('body').addClass('couponShown');
 		} else {
             $('#contactForm').find('.quoteSnapshot').show();
             $('.callCentreHelp').show();
             $('#contactForm').find('.callCentreHelp').hide();
             $('.coupon-banner-container, .coupon-tile-container').html('');
+            $('body').removeClass('couponShown');
         }
 	}
 
@@ -256,6 +253,28 @@
         }
 	}
 
+    function triggerPopup() {
+        // make sure we only subscribe one time
+        if (hasAutoPoped === false) {
+            if (isCurrentCouponValid() === true) {
+                if (currentCoupon.showPopup === true) {
+                    $('.coupon-tile:first').trigger('click');
+                    hasAutoPoped = true;
+                }
+            } else if (!subscriptionHandles['firstTimeAutoPopup']) {
+                // if no coupon available, waite for the event
+                subscriptionHandles['firstTimeAutoPopup'] = meerkat.messaging.subscribe(events.coupon.COUPON_LOADED, function autoPopupCoupon() {
+                    _.defer(function(){
+                        if (hasAutoPoped === false && isCurrentCouponValid() === true && currentCoupon.showPopup === true) {
+                            $('.coupon-tile:first').trigger('click');
+                            hasAutoPoped = true;
+                        }
+                    });
+                });
+            }
+        }
+    }
+
 	function getCurrentCoupon() {
 		return currentCoupon;
 	}
@@ -270,7 +289,8 @@
 		loadCoupon: loadCoupon,
 		getCurrentCoupon: getCurrentCoupon,
 		validateCouponCode: validateCouponCode,
-		renderCouponBanner: renderCouponBanner
+		renderCouponBanner: renderCouponBanner,
+        triggerPopup: triggerPopup
 	});
 
 })(jQuery);

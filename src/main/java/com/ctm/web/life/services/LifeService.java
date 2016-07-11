@@ -1,11 +1,11 @@
 package com.ctm.web.life.services;
 
-import com.ctm.web.life.model.request.LifeRequest;
 import com.ctm.web.core.services.RequestService;
-import com.ctm.web.life.utils.LifeRequestParser;
 import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.validation.SchemaValidationError;
+import com.ctm.web.core.web.DataParser;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.life.form.model.LifeQuote;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -15,10 +15,12 @@ import java.util.List;
  * @author lbuchanan
  *
  */
+@Deprecated
 public class LifeService {
 
 	private boolean valid = false;
 	private String vertical;
+
 	/**
 	 * Used by JSP
 	 * @param request
@@ -28,7 +30,7 @@ public class LifeService {
 		vertical = request.getParameter("vertical");
 		RequestService fromFormService = new RequestService(request, vertical, data);
 
-		LifeRequest lifeRequest = LifeRequestParser.parseRequest(data, vertical);
+		LifeQuote lifeRequest = DataParser.createObjectFromData(data,LifeQuote.class, vertical);
 		List<SchemaValidationError> errors = contactLead(lifeRequest, vertical);
 		if(!valid) {
 			return outputErrors(fromFormService, errors);
@@ -37,7 +39,7 @@ public class LifeService {
 	}
 
 
-	public List<SchemaValidationError> contactLead(LifeRequest lifeRequest, String vertical) {
+	public List<SchemaValidationError> contactLead(LifeQuote lifeRequest, String vertical) {
 		List<SchemaValidationError> errors = FormValidation.validate(lifeRequest, vertical);
 		valid = errors.isEmpty();
 		return errors;

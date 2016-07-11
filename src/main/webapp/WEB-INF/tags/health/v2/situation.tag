@@ -80,13 +80,17 @@
 
 				<sql:query var="result">
 					SELECT code, description FROM aggregator.general WHERE type = 'healthSitu' AND (status IS NULL OR status != 0)
-					<c:if test="${empty taxTimeSplitTest or  taxTimeSplitTest eq '1'}">
+					<c:if test="${not taxTimeSplitTest}">
 						and code != 'CHC'
 					</c:if>
 					<c:choose>
-						<c:when test="${taxTimeSplitTest eq 31}">
+						<c:when test="${taxTimeSplitTest eq true and data.health.currentJourney eq 31}">
 							ORDER BY FIELD(code,'CHC', 'LC','LBC','CSF','ATP')
 						</c:when>
+                        <c:when test="${taxTimeSplitTest eq true and data.health.currentJourney eq 32}">
+                            AND code IN ('CHC', 'LC')
+                            ORDER BY code
+                        </c:when>
 						<c:otherwise>
 							ORDER BY orderSeq
 						</c:otherwise>
@@ -111,7 +115,7 @@
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/addExtrasCover" />
-				<form_v3:row label="Do you wisth to add extras cover for services like Dental, Optical or Physio?" fieldXpath="${fieldXpath}" id="extrasCoverOptionContainer">
+				<form_v3:row label="Do you wish to add extras cover for services like Dental, Optical or Physio?" fieldXpath="${fieldXpath}" id="extrasCoverOptionContainer">
 					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="extras cover" required="true" />
 				</form_v3:row>
 
@@ -190,6 +194,9 @@
 					<span class="fieldrow_legend" id="${name}_incomeMessage"></span>
 					<c:set var="income_label_xpath" value="${xpath}/incomelabel" />
 					<div class="fieldrow_legend" id="health_healthCover_tier_row_legend"></div>
+                    <div class="hidden text-justify" id="health_healthCover_tier_row_legend_mls">
+                        If you earn under $90,000 (or $180,000 total, for couples or families) in any financial year, you won’t be liable to pay the Medicare Levy Surcharge in that financial year. For help or further information call us on ${callCentreNumber}.
+                    </div>
 					<input type="hidden" name="${go:nameFromXpath(xpath)}_incomelabel" id="${go:nameFromXpath(xpath)}_incomelabel" value="${data[income_label_xpath]}" />
 				</form_v3:row>
 

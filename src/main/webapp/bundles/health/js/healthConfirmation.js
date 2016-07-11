@@ -32,7 +32,7 @@
 					errorLevel: "warning"
 				});
 
-			// Handle normal display
+				// Handle normal display
 			} else {
 
 				// prepare data
@@ -52,9 +52,9 @@
 					$.extend(confirmationProduct, confirmationProduct.product);
 					delete confirmationProduct.product;
 
-				// if confirmationProduct.product does not exist, it might be a pending order.
-				// If the order has just been passed, this means we can find the product info in the session
-				// this should have been made available on the page by health-layout:slide_confirmation.tag
+					// if confirmationProduct.product does not exist, it might be a pending order.
+					// If the order has just been passed, this means we can find the product info in the session
+					// this should have been made available on the page by health-layout:slide_confirmation.tag
 
 				} else if( typeof sessionProduct === "object" ){
 
@@ -77,7 +77,7 @@
 
 				// prepare hospital and extras covers inclusions, exclusions and restrictions
 				meerkat.modules.moreInfo.setProduct(confirmationProduct);
-				
+
 				//Now prepare cover.
 				meerkat.modules.healthMoreInfo.prepareCover();
 
@@ -88,20 +88,36 @@
 				confirmationProduct._selectedFrequency = confirmationProduct.frequency;
 				meerkat.modules.healthPaymentStep.initFields(); // not sure why this works to allow the next call to work but it seems to be the only way to figure out what payment type they selected
 
-				if(!confirmationProduct.hasOwnProperty('premium')) {
-                    if (confirmationProduct.paymentType) {
-                        var paymentType;
-                        switch (confirmationProduct.paymentType) {
-                            case 'cc':
-                                paymentType = 'CreditCard';
-                                break;
-                            case 'ba':
-                                paymentType = 'BankAccount';
-                                break;
+				// prep the coverType since we can't access  meerkat.modules.health.getCoverType()
+				// info.ProductType doesn't exist if it's a failed join
+				if (!_.isEmpty(confirmationProduct.info.ProductType)) {
+					switch (confirmationProduct.info.ProductType.toLowerCase()) {
+						case 'combined':
+							confirmationProduct.promo.coverType = 'C';
+							break;
+						case 'hospital':
+							confirmationProduct.promo.coverType = 'H';
+							break;
+						default:
+							confirmationProduct.promo.coverType = 'E';
+							break;
+					}
+				}
 
-                        }
-                        confirmationProduct.premium = confirmationProduct.paymentTypePremiums[paymentType];
-                    }
+				if(!confirmationProduct.hasOwnProperty('premium')) {
+					if (confirmationProduct.paymentType) {
+						var paymentType;
+						switch (confirmationProduct.paymentType) {
+							case 'cc':
+								paymentType = 'CreditCard';
+								break;
+							case 'ba':
+								paymentType = 'BankAccount';
+								break;
+
+						}
+						confirmationProduct.premium = confirmationProduct.paymentTypePremiums[paymentType];
+					}
 				}
 
 				fillTemplate();
@@ -109,6 +125,12 @@
 
 				/// TODO: Fix this -why is it needed though?
 				//meerkat.modules.healthMoreInfo.applyEventListeners();
+
+				// add the brochure if it's not a failed join
+				if (!_.isEmpty(confirmationProduct.info.ProductType)) {
+					var brochureTemplate = meerkat.modules.templateCache.getTemplate($("#brochure-download-template"));
+					$('.brochurePlaceholder').html(brochureTemplate(confirmationProduct));
+				}
 
 				var tracking = {
 					productID: confirmationProduct.productId,
@@ -130,6 +152,16 @@
 
 	}
 
+	function adjustLayout() {
+		var $mainForm = $('#mainform');
+
+		// widen the side bars so we're now 12 cols across
+		$mainForm.find('.fieldset-column-side.col-sm-3').removeClass('col-sm-3').addClass('col-sm-4');
+
+		// move the footer to match design
+		$mainForm.find('.confirmation-other-products').appendTo('#confirmation');
+	}
+
 	function fillTemplate(){
 
 		var confirmationTemplate = $("#confirmation-template").html();
@@ -143,25 +175,7 @@
 			meerkat.modules.healthPriceComponent.updateProductSummaryDetails(confirmationProduct, confirmationProduct.startDate, false);
 		});
 
-		// if pending, it might not have the about fund info so let's get it
-		if(confirmationProduct.about === ''  || !confirmationProduct.hasOwnProperty('warningAlert') || confirmationProduct.warningAlert === '') {
-			meerkat.modules.healthMoreInfo.retrieveExternalCopy(confirmationProduct).then(function confirmationExternalCopySuccess() {
-				$(".aboutFund").html(confirmationProduct.aboutFund).parents(".displayNone").first().removeClass("displayNone");
-
-				if (confirmationProduct.hasOwnProperty('warningAlert') && confirmationProduct.warningAlert !== '') {
-					$("#health_confirmation-warning").find(".fundWarning").show().html(confirmationProduct.warningAlert);
-				} else {
-					$("#health_confirmation-warning").find(".fundWarning").hide().empty();
-				}
-
-				_.defer(function(){
-					// Backup in case warning contains html but no text
-					if(_.isEmpty($.trim($("#health_confirmation-warning").text()))) {
-						$("#health_confirmation-warning").find(".fundWarning").empty().hide();
-					}
-				});
-			});
-		}
+		adjustLayout();
 
 		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
 			// render dual pricing

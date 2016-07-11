@@ -2,6 +2,7 @@ package com.ctm.web.health.router;
 
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ServiceException;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.health.services.ProviderContentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,7 +49,7 @@ public class HealthRouter extends HttpServlet {
 		JSONObject json = new JSONObject();
 		try {
 			json.put("providerContentText", providerContentService.getProviderContentText(request));
-		} catch (final DaoException | JSONException | ConfigSettingException e) {
+		} catch (final ServiceException | JSONException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			objectMapper.writeValue(writer, errors(e));
 		}

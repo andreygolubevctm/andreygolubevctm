@@ -31,10 +31,6 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 							<form_v3:row label="ProductName" fieldXpath="${xpath}/productTitleSearch">
 								<field_v2:input required="false" className="form-control" title="Product Name" xpath="${xpath}/productTitleSearch" />
 							</form_v3:row>
-							<c:set var="fieldXpath" value="${xpath}/searchResults" />
-							<form_v3:row label="Number of results" fieldXpath="${fieldXpath}">
-								<field_v2:count_select max="36" xpath="${fieldXpath}" min="12" title="Number of Results" required="false" step="12"/>
-							</form_v3:row>
 
 						</form_v3:fieldset>
 					</jsp:body>
@@ -66,6 +62,10 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 				<form_v3:row label="Application/Cover Date" fieldXpath="${fieldXpath}">
 					<field_v2:calendar validateMinMax="false" xpath="${fieldXpath}" required="false" title="searchDate" startView="0" nonLegacy="true"/>
 					For testing future product searches
+				</form_v3:row>
+				<c:set var="fieldXpath" value="${xpath}/searchResults" />
+				<form_v3:row label="Number of results" fieldXpath="${fieldXpath}">
+					<field_v2:count_select max="36" xpath="${fieldXpath}" min="12" title="Number of Results" required="false" step="12"/>
 				</form_v3:row>
 			</form_v3:fieldset>
 		</jsp:body>

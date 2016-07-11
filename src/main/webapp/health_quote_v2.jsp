@@ -52,13 +52,8 @@
 
         <c:set var="isHealthV2" value="${true}" scope="request" />
 
-        <c:set var="isTaxTime"><content:get key="taxTime"/></c:set>
-        <c:set var="taxTimeClass">
-            <c:if test="${not empty isTaxTime and isTaxTime eq 'Y' and taxTimeSplitTest eq 31 or taxTimeSplitTest eq 30}">taxTime${taxTimeSplitTest}</c:if>
-        </c:set>
-
         <%-- HTML --%>
-        <layout_v1:journey_engine_page title="Health Quote" body_class_name="${taxTimeClass}">
+        <layout_v1:journey_engine_page title="Health Quote">
 
         <jsp:attribute name="head">
         </jsp:attribute>
@@ -228,6 +223,7 @@
                 <health_v3:payment_frequency_template />
 
                 <field_v1:hidden xpath="environmentOverride" />
+                <field_v1:hidden xpath="staticOverride" />
                 <field_v1:hidden xpath="environmentValidatorOverride" />
                 <input type="hidden" name="transcheck" id="transcheck" value="1" />
             </jsp:body>

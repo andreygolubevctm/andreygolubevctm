@@ -63,6 +63,10 @@
         return false;
     }
 
+    function hasStaticBranches() {
+        return true;
+    }
+
     function initEnvironmentMonitor(){
 
         // Build information bar
@@ -74,6 +78,7 @@
         '<li class="devService aggEngine"></li>' +
         '<li class="devService applyEngine"></li>' +
         '<li class="devService validatorEngine"></li>' +
+        '<li class="devService staticEngine"></li>' +
         '</ul></div>');
 
         // Populate information bar
@@ -85,10 +90,15 @@
         $environmentHolder.text(meerkat.site.environment).addClass(meerkat.site.environment);
         $revisionHolder.text(meerkat.site.revision);
 
+        var $aggEngineContainer = $('.devService.aggEngine').hide();
+        var $applicationEngineContainer = $('.devService.applyEngine').hide();
+        var $validatorEngineContainer = $('.devService.validatorEngine').hide();
+        var $staticBranchesContainer = $('.devService.staticEngine').hide();
+
         // Add aggregation service switcher (
         if(hasAggregationService() === true){
 
-            var $aggEngineContainer = $('.aggEngine');
+            $aggEngineContainer.show();
             $aggEngineContainer.html('Loading aggregators...');
 
             var aggregationBaseUrl = "http://taws01_ass3:8080"; // for NXI
@@ -146,7 +156,7 @@
         // Add application service switcher (
         if(hasApplicationService() === true){
 
-            var $applicationEngineContainer = $('.applyEngine');
+            $applicationEngineContainer.show();
             $applicationEngineContainer.html('Loading application services...');
 
             var applicationBaseUrl = "http://taws01_ass3:8080"; // for NXI
@@ -200,7 +210,7 @@
 
         if (hasValidatorService() === true){
 
-            var $validatorEngineContainer = $('.validatorEngine');
+            $validatorEngineContainer.show();
             $validatorEngineContainer.html('Loading Validator services...');
 
             var validatorBaseUrl = "http://taws01_ass3:8080"; // for NXI
@@ -247,6 +257,74 @@
                 }
             });
 
+        }
+
+        // Static Content
+        if(hasStaticBranches()) {
+            $staticBranchesContainer.show();
+            $staticBranchesContainer.html('Loading static content...');
+
+            var staticBaseUrl = "http://taws01_ass3:8080"; // for NXI
+
+
+            meerkat.modules.comms.get({
+                url: staticBaseUrl + "/launcher/wars",
+                cache: false,
+                useDefaultErrorHandling: false,
+                errorLevel: "fatal",
+                onSuccess: function onSubmitSuccess(resultData) {
+
+                    var select = '<label>Static Branches: <select id="developmentStaticBranches"><option value="">' + meerkat.site.environment.toUpperCase() + '</option>';
+
+                    for (var i = 0; i < resultData.NXI.length; i++) {
+                        var obj = resultData.NXI[i];
+
+                        var staticBranchPath = "/static_";
+                        if (obj.context.indexOf(staticBranchPath) !== -1 && (obj.context === staticBranchPath && meerkat.site.environment === 'nxi') === false) {
+
+                            var val = obj.context;
+                            var selected = '';
+                            if (val === localStorage.getItem("staticBranches_" + meerkat.site.vertical)) {
+                                selected = 'selected="true" ';
+                            }
+
+                            select += '<option value="' + val + '" ' + selected + '>NXI' + obj.context.toUpperCase() + '</option>';
+                        }
+                    }
+
+                    select += '</select></label>';
+                    $staticBranchesContainer.html(select);
+
+                    var changeEvent = function onDevEnvChange(eventObject) {
+                        localStorage.setItem("staticBranch_" + meerkat.site.vertical, $("#developmentStaticBranches").val());
+                        $('body').find('a').each(function(){
+                            $e = $(this);
+                            var href = $e.attr("href");
+                            if(href && !_.isEmpty(href)) {
+                                var branch = $("#developmentStaticBranches").val();
+                                var re = [
+                                    // Fix URLs with existing static path
+                                    new RegExp("\/static(((\_){1})([A-Z]{1,6})(-{1})([0-9]+))?\/",""),
+                                    // Fix health brochure links with existing static path
+                                    new RegExp("\&staticBranch\=\/static(((\_){1})([A-Z]{1,6})(-{1})([0-9]+))?","")
+                                ];
+                                href = href.replace(re[0], branch + "/").replace(re[1], "&staticBranch=" + branch);
+
+                                // Test for health brochures that don't have a static path
+                                if(/^health\_brochure\.jsp\?((\S)+)\.pdf$/.test(href)) {
+                                    href += "&staticBranch=" + branch;
+                                }
+
+                                // Apply amended HREF
+                                $e.attr("href", href);
+                            }
+                        });
+                    };
+
+                    $("#developmentStaticBranches").change(changeEvent);
+                    $('body').change(changeEvent);
+                }
+            });
         }
 
         meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateDevTransId(eventObject) {

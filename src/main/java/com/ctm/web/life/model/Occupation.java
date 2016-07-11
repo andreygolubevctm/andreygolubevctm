@@ -4,7 +4,7 @@ public class Occupation {
 
 	private String id;
 	private String title;
-	private String TALCode;
+	private String talCode;
 	
 	public String getId() {
 		return id;
@@ -22,12 +22,12 @@ public class Occupation {
 		this.title = title;
 	}
 	
-	public String getTALCode() {
-		return TALCode;
+	public String getTalCode() {
+		return talCode;
 	}
 	
-	public void setTALCode(String TALCode) {
-		this.TALCode = TALCode;
+	public void setTalCode(String talCode) {
+		this.talCode = talCode;
 	}
 	
 }

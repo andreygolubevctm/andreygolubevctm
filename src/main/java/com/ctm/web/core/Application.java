@@ -17,9 +17,9 @@ import javax.servlet.ServletException;
 
 @SpringBootApplication
 @ComponentScan({"com.ctm.web.core.connectivity", "com.ctm.web.energy", "com.ctm.web.simples",
-        "com.ctm.commonlogging", "com.ctm.web.core", "com.ctm.httpclient",
+        "com.ctm.commonlogging", "com.ctm.web.core","com.ctm.web.factory", "com.ctm.httpclient",
         "com.ctm.web.car", "com.ctm.web.homecontents",
-        "com.ctm.web.travel", "com.ctm.web.life"})
+        "com.ctm.web.travel", "com.ctm.web.life", "com.ctm.web.health.router"})
 @EnableAutoConfiguration(exclude = RabbitAutoConfiguration.class)
 @Configuration
 @EnableAsync

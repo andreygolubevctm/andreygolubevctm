@@ -294,6 +294,7 @@
 
             // Hide pagination
             $('.results-pagination').add('header a[data-results-pagination-control]').addClass('hidden');
+            meerkat.modules.coupon.triggerPopup();
         });
 
         // If error occurs, go back in the journey
@@ -379,6 +380,8 @@
 
             // Results are hidden in the CSS so we don't see the scaffolding after #benefits
             $(Results.settings.elements.page).show();
+
+            createDiscountPopOver();
         });
 
         $(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
@@ -549,6 +552,7 @@
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health2016').done(function () {
                 Results.updateAggregatorEnvironment();
+                Results.updateStaticBranch();
                 Results.get();
             });
         });
@@ -562,6 +566,7 @@
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {source: 'healthLoadRates'});
             meerkat.modules.resultsFeatures.fetchStructure('health2016').done(function () {
                 Results.updateAggregatorEnvironment();
+                Results.updateStaticBranch();
                 Results.get();
             });
         });
@@ -779,6 +784,35 @@
         if (meerkat.site.isCallCentreUser) {
             createPremiumsPopOver();
         }
+    }
+
+    function createDiscountPopOver(){
+        $('#resultsPage .price').each(function () {
+
+            var $this = $(this);
+            var productId = $this.parents(Results.settings.elements.rows).attr("data-productId");
+            var product = Results.getResultByProductId(productId);
+
+            if (product.hasOwnProperty('promo') && product.promo.hasOwnProperty('discountText') && !_.isEmpty(product.promo.discountText)) {
+
+                var position = meerkat.modules.deviceMediaState.get() === 'xs' ? 'top' : 'bottom';
+                var text = product.promo.discountText;
+                var $el = $this.parents(Results.settings.elements.rows).find('.discountPanel');
+                meerkat.modules.popovers.create({
+                    element: $el,
+                    contentValue: text,
+                    contentType: 'content',
+                    showEvent: 'click',
+                    position: {
+                        my: position +' left',
+                        at: 'top left'
+                    },
+                    style: {
+                        classes: 'priceTooltips discount'
+                    }
+                });
+            }
+        });
     }
 
     /*

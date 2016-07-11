@@ -253,7 +253,7 @@
 				</c:choose>
 			</c:when>
 			<c:otherwise>
-				${logger.warn('No content for email - not sending.')}
+				${logger.info('No content for email - not sending.')}
 			</c:otherwise>
 		</c:choose>
 	</c:otherwise>

@@ -7,6 +7,7 @@ import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.services.EmailDetailsService;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ServiceException;
 import com.ctm.web.core.model.CompetitionEntry;
 import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.session.AuthenticatedData;
@@ -24,6 +25,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ import java.util.stream.Collectors;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class CompetitionService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CompetitionService.class);
@@ -43,6 +47,7 @@ public class CompetitionService {
         this.sessionDataServiceBean = new SessionDataServiceBean();
     }
 
+	@Autowired
     public CompetitionService(SessionDataServiceBean sessionDataServiceBean) {
         this.sessionDataServiceBean = sessionDataServiceBean;
     }
@@ -76,13 +81,18 @@ public class CompetitionService {
 			return false;
 		}
 	}
+	public void addToCompetitionEntry(MessageContext context, Long transactionId, CompetitionEntry entry) throws ConfigSettingException, DaoException, EmailDetailsException {
+		addToCompetitionEntry(context.getHttpServletRequest(),  transactionId,  entry);
+	}
 
-
-    public void addToCompetitionEntry(MessageContext context, Long transactionId, CompetitionEntry entry) throws ConfigSettingException, DaoException, EmailDetailsException {
-
-		HttpServletRequest request = context.getHttpServletRequest();
-		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
-		String brandCode = pageSettings.getBrandCode();
+    public void addToCompetitionEntry(HttpServletRequest request, Long transactionId, CompetitionEntry entry) throws ServiceException {
+        PageSettings pageSettings;
+        try {
+            pageSettings = SettingsService.getPageSettingsForPage(request);
+        } catch (DaoException | ConfigSettingException e) {
+            throw new ServiceException("Failed to get page settings", e);
+        }
+        String brandCode = pageSettings.getBrandCode();
 		Integer brandId = pageSettings.getBrandId();
 		String verticalCode = pageSettings.getVerticalCode();
 
@@ -122,9 +132,14 @@ public class CompetitionService {
 			emailDetailsRequest.setLastName(entry.getLastName());
 			emailDetailsRequest.setOptedInMarketing(true, verticalCode);
 			emailDetailsRequest.setSource(entry.getSource());
-			EmailMaster emailMaster = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetailsRequest, operator, request.getRemoteAddr());
+            EmailMaster emailMaster = null;
+            try {
+                emailMaster = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetailsRequest, operator, request.getRemoteAddr());
+            } catch (EmailDetailsException e) {
+                throw new ServiceException("Failed to handleReadAndWriteEmailDetails", e);
+            }
 
-			if (emailMaster == null) {
+            if (emailMaster == null) {
 				SchemaValidationError e = new SchemaValidationError();
 				e.setMessage("Failed to retrieve the emailId to make the entry.");
 				errors.add(e);
