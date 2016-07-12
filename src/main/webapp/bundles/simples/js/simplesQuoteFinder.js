@@ -109,7 +109,7 @@
 			else if (results[i].hasOwnProperty('health')) {
 				id = results[i].id + " - Health";
 				obj[id] = {};
-				obj[id] = results[i].health;
+				obj[id] = getCustomHealth(results[i].health);
 			}
 			else if (results[i].hasOwnProperty('ip')) {
 				id = results[i].id + " - IP";
@@ -157,6 +157,59 @@
 			debug: false,
 			json: obj
 		});
+	}
+
+	/**
+	 * getCustomHealth - updates row object with verbose benefit data for
+	 * HBF's flexi-extras.
+	 * @param row
+	 * @returns {*}
+     */
+	function getCustomHealth(row) {
+		if(
+			// Only proceed if is a HBF application with flexi-extras defined
+			row.hasOwnProperty("application") &&
+			_.isObject(row.application) &&
+			row.application.provider=="HBF" &&
+			row.application.hasOwnProperty("hbf") &&
+			_.isObject(row.application.hbf) &&
+			row.application.hbf.hasOwnProperty("flexiextras") &&
+			!_.isEmpty(row.application.hbf.flexiextras)
+		) {
+			var benefits = row.application.hbf.flexiextras.split(",");
+			if(_.isArray(benefits) && benefits.length) {
+				var getBenefitMapping = function(ben) {
+					// Duplicate of benefit mappings from healthFunds_HBF.jsp
+					var mapping = {
+						GDL:"General Dental",
+						MDL:"Major Dental",
+						OPT:"Optical",
+						EYT:"Eye Therapy",
+						POD:"Podiatry",
+						PHY:"Physiotherapy",
+						EXP:"Exercise Physiology",
+						CHI:"Chiropractic",
+						OST:"Osteopathy",
+						PHA:"Pharmacy",
+						REM:"Remedial Massage",
+						SPT:"Speech Therapy",
+						OCT:"Occupational Therapy",
+						PSY:"Psychology",
+						NAT:"Natural Therapies",
+						NTN:"Nutritionist",
+						APP:"Appliances",
+						HLP:"Healthy living programs",
+						UAM:"Urgent Ambulance"
+					};
+					return _.isUndefined(mapping[ben]) ? "** Undefined **" : mapping[ben];
+				}
+				row.application.hbf.flexiextras = {};
+				for(var i=0; i<benefits.length; i++) {
+					row.application.hbf.flexiextras[benefits[i]] = getBenefitMapping(benefits[i]);
+				}
+			}
+		}
+		return row;
 	}
 
 	function updateModal(data) {
