@@ -278,9 +278,10 @@
                 // todo: just need something to set the color based on its range.
                 fillColor: fillColor,
                 fillOpacity: 1,
-                scale: 8,
+                scale: 12,
                 strokeColor: '#ffffff',
-                strokeWeight: 2
+                strokeWeight: 2,
+                optimized: false
             },
             map_icon_label: '<span class="icon icon-vert-fuel"></span>',
             animation: google.maps.Animation.DROP
