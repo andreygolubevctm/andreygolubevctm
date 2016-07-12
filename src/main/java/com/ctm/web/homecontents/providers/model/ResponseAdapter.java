@@ -1,12 +1,12 @@
 package com.ctm.web.homecontents.providers.model;
 
+import com.ctm.web.core.providers.model.AggregateIncomingResponse;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.homecontents.model.results.*;
 import com.ctm.web.homecontents.providers.model.request.HomeQuoteRequest;
 import com.ctm.web.homecontents.providers.model.response.HomeQuote;
 import com.ctm.web.homecontents.providers.model.response.HomeResponse;
 import com.ctm.web.homecontents.providers.model.response.MoreInfo;
-import com.ctm.web.core.providers.model.QuoteResponse;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +17,7 @@ public class ResponseAdapter {
     public static List<HomeResult> adapt(HomeQuoteRequest request, HomeResponse response) {
         
         List<HomeResult> results = new ArrayList<>();
-        final QuoteResponse<HomeQuote> quoteResponse = response.getPayload();
+        final AggregateIncomingResponse.Payload<HomeQuote> quoteResponse = response.getPayload();
         
         if (quoteResponse != null) {
             for (HomeQuote homeQuote : quoteResponse.getQuotes()) {
