@@ -33,6 +33,108 @@
      */
     var MarkerLabel;
     var markers = {};
+    var mapStyles = [
+        {
+            "featureType": "road.arterial",
+            "elementType": "geometry",
+            "stylers": [
+                { "visibility": "simplified" },
+                { "color": "#ffffff" }
+            ]
+        },{
+            "featureType": "road",
+            "stylers": [
+                { "visibility": "simplified" }
+            ]
+        },{
+            "featureType": "road.local",
+            "elementType": "geometry",
+            "stylers": [
+                { "visibility": "simplified" },
+                { "color": "#fbfaf8" }
+            ]
+        },{
+            "featureType": "road.highway",
+            "elementType": "geometry",
+            "stylers": [
+                { "visibility": "simplified" },
+                { "color": "#ffe15f" }
+            ]
+        },{
+            "featureType": "road",
+            "elementType": "labels.text.fill",
+            "stylers": [
+                { "color": "#808080" },
+                { "visibility": "on" }
+            ]
+        },{
+            "featureType": "transit",
+            "stylers": [
+                { "visibility": "off" }
+            ]
+        },{
+            "featureType": "administrative",
+            "elementType": "labels.text.fill",
+            "stylers": [
+                { "color": "#808080" }
+            ]
+        },{
+            "featureType": "water",
+            "stylers": [
+                { "visibility": "simplified" },
+                { "color": "#a2daf2" }
+            ]
+        },{
+            "featureType": "poi",
+            "stylers": [
+                { "visibility": "simplified" }
+            ]
+        },{
+            "featureType": "poi.business",
+            "elementType": "geometry",
+            "stylers": [
+                { "color": "#bde6ab" }
+            ]
+        },{
+            "featureType": "landscape",
+            "stylers": [
+                { "lightness": 75 },
+                { "color": "#f7f1df" }
+            ]
+        },{
+            "featureType": "poi.park",
+            "stylers": [
+                { "color": "#bde6ab" }
+            ]
+        },{
+            "featureType": "poi.sports_complex",
+            "stylers": [
+                { "color": "#bde6ab" }
+            ]
+        },{
+            "featureType": "poi",
+            "elementType": "labels",
+            "stylers": [
+                { "visibility": "off" }
+            ]
+        },{
+            "featureType": "poi.business",
+            "stylers": [
+                { "visibility": "off" }
+            ]
+        },{
+            "featureType": "poi.government",
+            "stylers": [
+                { "visibility": "off" }
+            ]
+        },{
+            "featureType": "poi.medical",
+            "elementType": "geometry",
+            "stylers": [
+                { "color": "#fbd3da" }
+            ]
+        }
+    ];
     /**
      * The current latitude or longitude from the clicked map.
      * @type {String|Number}
@@ -70,13 +172,15 @@
         try {
 
             initCustomMarkerLabel();
+            var styledMap = new google.maps.StyledMapType(mapStyles,
+                {name: "Fuel Map"});
             var mapOptions = {
                 mapTypeControl: false, // disable Map/Satellite dropdown
                 zoom: 15, // higher the number, closer to the ground.
                 minZoom: 11, // e.g. 0 is whole world
                 mapTypeId: google.maps.MapTypeId.ROAD,
                 mapTypeControlOptions: {
-                    style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+                    mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
                 }
             };
 
@@ -85,6 +189,11 @@
             // Initialise the Google Map
             map = new google.maps.Map(document.getElementById('map-canvas'),
                 mapOptions);
+
+            //Associate the styled map with the MapTypeId and set it to display.
+            map.mapTypes.set('map_style', styledMap);
+            map.setMapTypeId('map_style');
+
             // Initialise the info window
             infoWindow = new google.maps.InfoWindow({map: map});
 
