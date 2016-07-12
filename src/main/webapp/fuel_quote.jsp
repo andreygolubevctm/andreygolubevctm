@@ -99,6 +99,7 @@
 				<%-- Slides --%>
                 <div id="google-map-container">
                     <div id="map-canvas" style="width: 100%; height: 100%"></div>
+					<div class="resultsContainer"></div>
                 </div>
 
 				<div class="hiddenFields">

@@ -7,9 +7,7 @@
     "core",
     "shared/forms/v1",
     "shared/addressLookup",
-    "shared/showMoreQuotesPrompt",
     "shared/resultsRankings",
-    "shared/checkboxIE8",
     "shared/dropdownInteractive",
     "shared/ie8SelectMenuAutoExpand"
   ]

@@ -98,6 +98,8 @@
                     infoWindow.setPosition(pos);
                     infoWindow.setContent('Location found.'); // TODO: hook this up with backend
                     map.setCenter(pos);
+                    meerkat.modules.fuelResults.initPage();
+                    meerkat.modules.fuelResults.get();
                 }, function () {
                     _handleLocationError(true, infoWindow, map.getCenter());
                 });
@@ -107,7 +109,9 @@
             }
 
             // Plot all the markers for the current result set.
-            plotMarkers();
+            $(document).on("resultsLoaded", function() {
+                plotMarkers();
+            });
             //
         } catch (e) {
             _handleError(e, "fuel.js:initCallback");
@@ -173,7 +177,7 @@
         };
 
         // Create MarkerLabel Object
-        MarkerLabel.prototype = new google.maps.OverlayView;
+        MarkerLabel.prototype = new google.maps.OverlayView();
 
         // Marker Label onAdd
         MarkerLabel.prototype.onAdd = function () {
@@ -326,6 +330,7 @@
 
     function plotMarkers() {
         var results = Results.getFilteredResults();
+        console.log("we has results");
         if (!results) {
             log("plotMarkers: No Results Available to plot markers");
             return;
@@ -333,9 +338,9 @@
         var bounds = new google.maps.LatLngBounds();
 
         for (var i = 0; i < results.length; i++) {
-            var latLng = createLatLng(results[i].lat, results[i].long);
+            var latLng = createLatLng(results[i].lat, results[i].lng);
             var marker = createMarker(latLng, results[i]);
-            markers[results[i].siteid] = marker;
+            markers[results[i].id] = marker;
             bounds.extend(latLng);
         }
 
@@ -353,7 +358,6 @@
             // Init common stuff
             initJourneyEngine();
             setMapHeight();
-            initGoogleAPI();
 
             if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'latest' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
                 meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
@@ -385,25 +389,14 @@
             // Call initial supertag call
             var transaction_id = meerkat.modules.transactionId.get();
 
-            if (meerkat.site.isNewQuote === false) {
-                meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                    method: 'trackQuoteEvent',
-                    object: {
-                        action: 'Retrieve',
-                        transactionID: parseInt(transaction_id, 10),
-                        vertical: meerkat.site.vertical
-                    }
-                });
-            } else {
-                meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                    method: 'trackQuoteEvent',
-                    object: {
-                        action: 'Start',
-                        transactionID: parseInt(transaction_id, 10),
-                        vertical: meerkat.site.vertical
-                    }
-                });
-            }
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method: 'trackQuoteEvent',
+                object: {
+                    action: 'Start',
+                    transactionID: parseInt(transaction_id, 10),
+                    vertical: meerkat.site.vertical
+                }
+            });
         });
     }
 
@@ -421,6 +414,7 @@
             },
             onInitialise: function () {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
+                initGoogleAPI();
                 //meerkat.modules.fuelPrefill.initFuelPrefill();
             },
             onAfterEnter: function () {
@@ -451,11 +445,6 @@
         //    onAfterEnter: function afterEnterResults(event) {
         //        meerkat.modules.fuelResults.get();
         //        meerkat.modules.fuelResultsMap.resetMap();
-        //    },
-        //    onAfterLeave: function(event) {
-        //        if(event.isBackward) {
-        //            meerkat.modules.showMoreQuotesPrompt.disablePromptBar();
-        //        }
         //    }
         //};
 
