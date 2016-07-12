@@ -5,15 +5,15 @@
 
 package com.ctm.web.core.web.go.xml;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -25,6 +25,8 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 @SuppressWarnings("unchecked")
 public class XmlNode implements Map<Object, Object> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlNode.class);
 
 	/** The text value of the node. */
 	public static String TEXT = "text()";
@@ -160,7 +162,7 @@ public class XmlNode implements Map<Object, Object> {
 		this.setText(text);
 	}
 
-	protected synchronized ArrayList<XmlNode> getChildren() {
+	public synchronized ArrayList<XmlNode> getChildren() {
 		return children;
 	}
 
@@ -226,99 +228,101 @@ public class XmlNode implements Map<Object, Object> {
 	 * @see java.util.Map#get(java.lang.Object)
 	 */
 	public synchronized Object get(Object key) {
-		ArrayList<SearchTerm> chain = null;
-
 		// Check .. was an xpath given?
 		if (key instanceof String) {
-			chain = SearchTerm.makeSearchChain((String) key);
-
+			return getObject(SearchTerm.makeSearchChain((String) key));
 			// otherwise assume a search chain was passed
 		} else if (key instanceof ArrayList) {
-			chain = (ArrayList<SearchTerm>) key;
-		}
+            return getObject((ArrayList<SearchTerm>) key);
+		} else {
+            LOGGER.warn("key invalid type. {}", kv("key", key));
+            return null;
+        }
+    }
 
-		// Get the first search term
-		SearchTerm s = chain.get(0);
-		chain.remove(0);
+    private Object getObject(ArrayList<SearchTerm> chain) {
+        // Get the first search term
+        SearchTerm s = chain.get(0);
+        chain.remove(0);
 
-		// The search term is text() .. return this node's text
-		if (s.nodeName.equals(TEXT)) {
-			return this.getText();
+        // The search term is text() .. return this node's text
+        if (s.nodeName.equals(TEXT)) {
+            return this.getText();
 
-			// The search term is name() .. return this node's name
-		} else if (s.nodeName.equals(NODE_NAME)) {
-			return this.nodeName;
+            // The search term is name() .. return this node's name
+        } else if (s.nodeName.equals(NODE_NAME)) {
+            return this.nodeName;
 
-			// Searching for an attribute
-		} else if (s.nodeName.startsWith("@")) {
-			if (this.attributes != null) {
-				String attrName = s.nodeName.substring(1);
-				return this.attributes.get(attrName);
-			} else {
-				return "";
-			}
+            // Searching for an attribute
+        } else if (s.nodeName.startsWith("@")) {
+            if (this.attributes != null) {
+                String attrName = s.nodeName.substring(1);
+                return this.attributes.get(attrName);
+            } else {
+                return "";
+            }
 
-			// otherwise look for a child that matches the search term
-		} else if (this.children != null) {
+            // otherwise look for a child that matches the search term
+        } else if (this.children != null) {
 
-			// Create arraylist to hold any children that match
-			ArrayList<Object> matches = new ArrayList<Object>();
-			int idx = 0;
+            // Create arraylist to hold any children that match
+            ArrayList<Object> matches = new ArrayList<Object>();
+            int idx = 0;
 
-			// Iterate through the children looking for a match
-			// if we find one, we'll add it to the arraylist
-			for (XmlNode child : this.children) {
-				if (child.matches(s)) {
+            // Iterate through the children looking for a match
+            // if we find one, we'll add it to the arraylist
+            for (XmlNode child : this.children) {
+                if (child.matches(s)) {
 
-					// If the search term doesn't have a child index specified,
-					// or..
-					// If the child's index matches the one we're searching for.
-					if (s.childIdx == -1 || s.childIdx == idx) {
+                    // If the search term doesn't have a child index specified,
+                    // or..
+                    // If the child's index matches the one we're searching for.
+                    if (s.childIdx == -1 || s.childIdx == idx) {
 
-						// Are there any more levels on the chain?
-						// If there are, we need to pass the remainder of the
-						// chain down to all the children.
-						if (!chain.isEmpty()) {
-							Object childMatches = child.get(chain.clone());
+                        // Are there any more levels on the chain?
+                        // If there are, we need to pass the remainder of the
+                        // chain down to all the children.
+                        if (!chain.isEmpty()) {
+                            Object childMatches = child.get(chain.clone());
 
-							// We didn't match any children
-							if (childMatches == null) {
+                            // We didn't match any children
+                            if (childMatches == null) {
 
-							} else if (childMatches instanceof ArrayList) {
-								matches.addAll((ArrayList<Object>) childMatches);
+                            } else if (childMatches instanceof ArrayList) {
+                                matches.addAll((ArrayList<Object>) childMatches);
 
-							} else {
-								matches.add(childMatches);
-							}
+                            } else {
+                                matches.add(childMatches);
+                            }
 
-							// If this is the last level on the chain,
-							// And this node has children - add the node
-						} else if (child.hasChildren()) {
-							matches.add(child);
+                            // If this is the last level on the chain,
+                            // And this node has children - add the node
+                        } else if (child.hasChildren()) {
+                            matches.add(child);
 
-							// Otherwise add the child's text value
-						} else {
-							matches.add(child.getText());
-						}
+                            // Otherwise add the child's text value
+                        } else {
+                            matches.add(child.getText());
+                        }
 
-					}
+                    }
 
-					idx++;
-				}
-			}
+                    idx++;
+                }
+            }
 
-			// Check - did we only find a single match?
-			// If so, just return the single item.
-			if (matches.size() == 1) {
-				return matches.get(0);
-			} else if (matches.size() > 0) {
-				return matches;
-			}
-		}
-		return null;
-	}
+            // Check - did we only find a single match?
+            // If so, just return the single item.
+            if (matches.size() == 1) {
+                return matches.get(0);
+            } else if (matches.size() > 0) {
+                return matches;
+            }
+        }
+        return null;
+    }
 
-	/**
+    /**
 	 * Gets the attribute.
 	 *
 	 * @param attrName the attr name

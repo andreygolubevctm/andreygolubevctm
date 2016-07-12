@@ -146,7 +146,7 @@
         var templateHTML = $('#thank-you-template').html();
         var _template = _.template(templateHTML);
 
-        topProduct.consultantFrom = topProduct.service_provider === 'Ozicare' ? 'Auto &amp; General Services' : 'Lifebroker';
+        topProduct.consultantFrom = topProduct.service_provider.toLowerCase() === 'ozicare' ? 'Auto &amp; General Services' : 'Lifebroker';
 
         var $container = $('.resultsContainer');
         $container.html(_template(topProduct));

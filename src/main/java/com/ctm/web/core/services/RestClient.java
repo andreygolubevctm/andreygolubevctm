@@ -26,7 +26,7 @@ public class RestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestClient.class);
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public RestClient(ObjectMapper objectMapper) {
@@ -42,7 +42,7 @@ public class RestClient {
     }
 
     public <RESPONSE> RESPONSE sendPOSTRequest(QuoteServiceProperties serviceProperties, String endpoint, Class<RESPONSE> responseClass, Object requestObj)
-            throws ServiceConfigurationException, DaoException, IOException {
+            throws IOException {
 
         String jsonRequest = objectMapper.writeValueAsString(requestObj);
 
@@ -63,27 +63,8 @@ public class RestClient {
         return objectMapper.readValue(response, objectMapper.constructType(responseClass));
     }
 
-    public <RESPONSE> RESPONSE sendGETRequest(QuoteServiceProperties serviceProperties, Endpoint endpoint, Class<RESPONSE> responseClass, Map<String, String> params)
-            throws ServiceConfigurationException, DaoException, IOException {
-
-        // Log Request
-        LOGGER.info("Sending request {}",  kv("endpoint", endpoint));
-
-        String response = setupSimpleGETConnection(serviceProperties)
-                .get(createGETUrl(serviceProperties, endpoint, params));
-        if (response == null) {
-            throw new RouterException("Connection failed");
-        }
-
-        // Log response
-        LOGGER.info("Receiving response {}",  kv("endpoint", endpoint));
-        LOGGER.debug("Inbound message {}", kv("response", response));
-
-        return objectMapper.readValue(response, objectMapper.constructType(responseClass));
-    }
-
     public <RESPONSE> RESPONSE sendGETRequest(QuoteServiceProperties serviceProperties, Endpoint endpoint, TypeReference<RESPONSE> typeReference, Map<String, String> params)
-            throws ServiceConfigurationException, DaoException, IOException {
+            throws  IOException {
 
         // Log Request
         LOGGER.info("Sending request {}", kv("endpoint", endpoint));

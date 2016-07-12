@@ -75,7 +75,7 @@
 											<%-- enums are not will handled in jsp --%>
 											<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 											<c:catch var="error">
-												${emailService.send(pageContext.request, BEST_PRICE, data.life.contactDetails.email, tranId)}
+												${emailService.sendJsp(pageContext.request, BEST_PRICE, data.life.contactDetails.email, tranId)}
 												<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/emailSentBy" value="ozicare" />
 											</c:catch>
 										</c:if>

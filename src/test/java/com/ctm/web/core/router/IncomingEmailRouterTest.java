@@ -75,11 +75,11 @@ public class IncomingEmailRouterTest {
         when(incomingEmailService.getRedirectionUrl(notNull(IncomingEmail.class))).thenReturn("www.awesomeness.com.au");
 
         Mockito.doNothing().when(accessTouchService).setRequest(request);
-        Mockito.when(accessTouchService.recordTouchWithProductCode(anyLong(), anyString(), anyString())).thenReturn(true);
+        Mockito.when(accessTouchService.recordTouchWithProductCodeDeprecated(anyLong(), anyString(), anyString())).thenReturn(true);
 
         router.doGet(request, response);
 
-        verify(accessTouchService).recordTouchWithProductCode(12345678L, "EmlGateway", "");
+        verify(accessTouchService).recordTouchWithProductCodeDeprecated(12345678L, "EmlGateway", "");
         verify(response).sendRedirect("www.awesomeness.com.au");
     }
 
@@ -93,11 +93,11 @@ public class IncomingEmailRouterTest {
         when(incomingEmailService.getRedirectionUrl(notNull(IncomingEmail.class))).thenReturn("www.awesomeness.com.au");
 
         Mockito.doNothing().when(accessTouchService).setRequest(request);
-        Mockito.when(accessTouchService.recordTouchWithProductCode(anyLong(), anyString(), anyString())).thenReturn(true);
+        Mockito.when(accessTouchService.recordTouchWithProductCodeDeprecated(anyLong(), anyString(), anyString())).thenReturn(true);
 
         router.doGet(request, response);
 
-        verify(accessTouchService).recordTouchWithProductCode(12345678L, "EmlGateway", "");
+        verify(accessTouchService).recordTouchWithProductCodeDeprecated(12345678L, "EmlGateway", "");
         verify(response).sendRedirect("www.awesomeness.com.au");
     }
 

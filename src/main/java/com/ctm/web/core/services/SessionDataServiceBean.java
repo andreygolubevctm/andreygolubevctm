@@ -6,7 +6,7 @@ package com.ctm.web.core.services;
  *
  * This class is the handler for when using the session object. It contains the application logic for verifying session information.
  *
- * Note: This is should be application scoped (all methods should therefore be static)
+ * Note: This is should be application scoped (all methods should therefore have no side effects)
  *
  */
 

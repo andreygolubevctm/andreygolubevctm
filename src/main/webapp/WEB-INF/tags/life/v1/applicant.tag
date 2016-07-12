@@ -53,7 +53,7 @@
 			<jsp:useBean id="splitTests" class="com.ctm.web.core.services.tracking.SplitTestService" />
 			<c:choose>
 				<c:when test="${splitTests.isActive(pageContext.request, data.current.transactionId, 40)}">
-					<%-- <life_v1:occupation_select list="${life_util:occupations(pageContext.request)}" comboBox="true" xpath="${xpath}" required="true" title="${error_phrase}occupation"/> --%>
+					<life_v1:occupation_select list="${life_util:occupations(pageContext.request)}" comboBox="true" xpath="${xpath}" required="true" title="${error_phrase}occupation"/>
 				</c:when>
 				<c:otherwise>
 					<field_v1:general_select type="occupation" comboBox="true" xpath="${xpath}/occupation" hannoverXpath="${xpath}/hannover" required="true" title="${error_phrase}occupation"/>
