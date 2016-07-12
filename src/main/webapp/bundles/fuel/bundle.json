@@ -9,6 +9,7 @@
     "shared/addressLookup",
     "shared/resultsRankings",
     "shared/dropdownInteractive",
-    "shared/ie8SelectMenuAutoExpand"
+    "shared/ie8SelectMenuAutoExpand",
+    "shared/sidebarWidgets"
   ]
 }
