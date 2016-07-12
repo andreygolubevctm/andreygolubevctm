@@ -90,7 +90,7 @@
 		// Grab the current internal date objects
 		fromDateCurrent = $fromDateInput.datepicker("getDate"); //localized date object
 		//Make sure we have an actual date object in the right format before setting anything new
-		if (fromDateCurrent) {
+		if (fromDateCurrent !== null) {
 			//Initialise the to be the same
 			toDate_StartDateRange = new Date(fromDateCurrent.toString());
 
