@@ -6,6 +6,7 @@ public class CarColour {
 
 	private String code;
 	private String label;
+	private boolean isTop;
 
 	public String getCode() {
 		return code;
@@ -21,4 +22,11 @@ public class CarColour {
 		this.label = label;
 	}
 
+	public void setIsTop(boolean isTopColour) {
+		this.isTop = isTopColour;
+	}
+
+	public boolean getIsTop() {
+		return isTop;
+	}
 }
