@@ -108,6 +108,7 @@
 				</div>
 
 				<input type="hidden" name="transcheck" id="transcheck" value="1" />
+                <fuel:fuel_map />
 			</jsp:body>
 
 		</layout_v1:journey_engine_page_fluid>

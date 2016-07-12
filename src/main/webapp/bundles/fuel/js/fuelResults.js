@@ -22,7 +22,7 @@
                 paths: {
                     results: {
                         list: "results.sites",
-                        general: "results.bands"
+                        general: "results.info"
                     },
                     productId: "id",
                     productName: "name",

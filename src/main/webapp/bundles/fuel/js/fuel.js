@@ -248,6 +248,26 @@
      * @returns {google.maps.Marker}
      */
     function createMarker(latLng, info, markerOpts) {
+        var fillColor;
+        switch (info.bandId) {
+            case 1:
+                fillColor = '#A90001';
+                break;
+            case 2:
+                fillColor = '#F14E2D';
+                break;
+            case 3:
+                fillColor = '#F9928D';
+                break;
+            case 4:
+                fillColor = '#0AB449';
+                break;
+            case 5:
+                fillColor = '#077836';
+                break;
+            default:
+                fillColor = '#878787';
+        }
 
         var marker = new Marker({
             map: map,
@@ -255,7 +275,7 @@
             icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 // todo: just need something to set the color based on its range.
-                fillColor: '#00CCBB',
+                fillColor: fillColor,
                 fillOpacity: 1,
                 scale: 8,
                 strokeColor: '#ffffff',
@@ -295,6 +315,12 @@
         } else {
             _handleError("", 'An error occurred displaying information for this fuel provider.');
         }
+    }
+
+    function getBand(bandId) {
+        return Results.getReturnedGeneral().bands.filter(function(band){
+            return band.id === bandId;
+        })[0];
     }
 
     function _handleError(e, page) {
@@ -358,6 +384,7 @@
             // Init common stuff
             initJourneyEngine();
             setMapHeight();
+            markerTemplate = _.template($('#map-marker-template').html());
 
             if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'latest' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
                 meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
@@ -500,11 +527,16 @@
         }
     }
 
+    function getMap() {
+        return map;
+    }
 
     meerkat.modules.register("fuel", {
         init: initFuel,
         events: moduleEvents,
         initCallback: initCallback,
+        getMap: getMap,
+        getBand: getBand,
         getTrackingFieldsObject: getTrackingFieldsObject
     });
 })(jQuery);
