@@ -1,4 +1,4 @@
-(function($, undefined) {
+(function ($, undefined) {
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
@@ -24,6 +24,14 @@
      * @type {InfoWindow}
      */
     var infoWindow;
+    /**
+     * The custom Marker object that we use to generate the icon
+     */
+    var Marker;
+    /**
+     * The custom markerLabel object that extends google.maps.overlayView
+     */
+    var MarkerLabel;
     var markers = {};
     /**
      * The current latitude or longitude from the clicked map.
@@ -60,6 +68,8 @@
      */
     function initCallback() {
         try {
+
+            initCustomMarkerLabel();
             var mapOptions = {
                 zoom: 15, // higher the number, closer to the ground.
                 minZoom: 11, // e.g. 0 is whole world
@@ -70,7 +80,7 @@
             };
 
             // Create the modal so that map-canvas exists in the DOM.
-           // createModal();
+            // createModal();
             // Initialise the Google Map
             map = new google.maps.Map(document.getElementById('map-canvas'),
                 mapOptions);
@@ -79,7 +89,7 @@
 
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
+                navigator.geolocation.getCurrentPosition(function (position) {
                     var pos = {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
@@ -88,7 +98,7 @@
                     infoWindow.setPosition(pos);
                     infoWindow.setContent('Location found.'); // TODO: hook this up with backend
                     map.setCenter(pos);
-                }, function() {
+                }, function () {
                     _handleLocationError(true, infoWindow, map.getCenter());
                 });
             } else {
@@ -97,11 +107,116 @@
             }
 
             // Plot all the markers for the current result set.
-            //plotMarkers();
+            plotMarkers();
             //
         } catch (e) {
             _handleError(e, "fuel.js:initCallback");
         }
+    }
+
+    /**
+     * Map Icons created by Scott de Jonge
+     * @version 3.0.0
+     * @url http://map-icons.com
+     *
+     */
+    function initCustomMarkerLabel() {
+        // Function to do the inheritance properly
+        // Inspired by: http://stackoverflow.com/questions/9812783/cannot-inherit-google-maps-map-v3-in-my-custom-class-javascript
+        var inherits = function (childCtor, parentCtor) {
+            /** @constructor */
+            function tempCtor() {
+            }
+
+            tempCtor.prototype = parentCtor.prototype;
+            childCtor.superClass_ = parentCtor.prototype;
+            childCtor.prototype = new tempCtor();
+            childCtor.prototype.constructor = childCtor;
+        };
+
+        Marker = function (options) {
+            google.maps.Marker.apply(this, arguments);
+
+            if (options.map_icon_label) {
+                this.MarkerLabel = new MarkerLabel({
+                    map: this.map,
+                    marker: this,
+                    text: options.map_icon_label
+                });
+                this.MarkerLabel.bindTo('position', this, 'position');
+            }
+        };
+
+        // Apply the inheritance
+        inherits(Marker, google.maps.Marker);
+
+        // Custom Marker SetMap
+        Marker.prototype.setMap = function () {
+            google.maps.Marker.prototype.setMap.apply(this, arguments);
+            (this.MarkerLabel) && this.MarkerLabel.setMap.apply(this.MarkerLabel, arguments);
+        };
+
+        // Marker Label Overlay
+        MarkerLabel = function (options) {
+            var self = this;
+            this.setValues(options);
+
+            // Create the label container
+            this.div = document.createElement('div');
+            this.div.className = 'map-icon-label';
+
+            // Trigger the marker click handler if clicking on the label
+            google.maps.event.addDomListener(this.div, 'click', function (e) {
+                (e.stopPropagation) && e.stopPropagation();
+                google.maps.event.trigger(self.marker, 'click');
+            });
+        };
+
+        // Create MarkerLabel Object
+        MarkerLabel.prototype = new google.maps.OverlayView;
+
+        // Marker Label onAdd
+        MarkerLabel.prototype.onAdd = function () {
+            var pane = this.getPanes().overlayImage.appendChild(this.div);
+            var self = this;
+
+            this.listeners = [
+                google.maps.event.addListener(this, 'position_changed', function () {
+                    self.draw();
+                }),
+                google.maps.event.addListener(this, 'text_changed', function () {
+                    self.draw();
+                }),
+                google.maps.event.addListener(this, 'zindex_changed', function () {
+                    self.draw();
+                })
+            ];
+        };
+
+        // Marker Label onRemove
+        MarkerLabel.prototype.onRemove = function () {
+            this.div.parentNode.removeChild(this.div);
+
+            for (var i = 0, I = this.listeners.length; i < I; ++i) {
+                google.maps.event.removeListener(this.listeners[i]);
+            }
+        };
+
+        // Implement draw
+        MarkerLabel.prototype.draw = function () {
+            var projection = this.getProjection();
+            var position = projection.fromLatLngToDivPixel(this.get('position'));
+            var div = this.div;
+
+            this.div.innerHTML = this.get('text').toString();
+
+            div.style.zIndex = this.get('zIndex'); // Allow label to overlay marker
+            div.style.position = 'absolute';
+            div.style.display = 'block';
+            div.style.left = (position.x - 10) + 'px';
+            div.style.top = (position.y - 20) + 'px';
+
+        };
     }
 
     function centerMap(LatLng) {
@@ -130,10 +245,19 @@
      */
     function createMarker(latLng, info, markerOpts) {
 
-        var marker = new google.maps.Marker({
+        var marker = new Marker({
             map: map,
             position: latLng,
-            icon: "assets/brand/ctm/graphics/fuel/map-pin.png",
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                // todo: just need something to set the color based on its range.
+                fillColor: '#00CCBB',
+                fillOpacity: 1,
+                scale: 8,
+                strokeColor: '#ffffff',
+                strokeWeight: 2
+            },
+            map_icon_label: '<span class="icon icon-vert-fuel"></span>',
             animation: google.maps.Animation.DROP
         });
 
@@ -176,7 +300,8 @@
             page: page,
             description: "[Google Maps] Error Initialising Map",
             data: {
-                error: e.toString()
+                error: e.toString(),
+                exception: e
             },
             id: meerkat.modules.transactionId.get()
         });
@@ -193,13 +318,32 @@
         _.defer(function () {
             var isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false,
                 $header = $('header');
-            var heightToSet = isXS ? window.innerHeight - $header.height() /* TODO: minus price band and infoBox */  : window.innerHeight - $header.height(); /* TODO: minus footer signup box */
+            var heightToSet = isXS ? window.innerHeight - $header.height() /* TODO: minus price band and infoBox */ : window.innerHeight - $header.height();
+            /* TODO: minus footer signup box */
             $('#google-map-container').css('height', heightToSet);
         });
     }
 
+    function plotMarkers() {
+        var results = Results.getFilteredResults();
+        if (!results) {
+            log("plotMarkers: No Results Available to plot markers");
+            return;
+        }
+        var bounds = new google.maps.LatLngBounds();
+
+        for (var i = 0; i < results.length; i++) {
+            var latLng = createLatLng(results[i].lat, results[i].long);
+            var marker = createMarker(latLng, results[i]);
+            markers[results[i].siteid] = marker;
+            bounds.extend(latLng);
+        }
+
+        map.fitBounds(bounds);
+    }
+
     function initFuel() {
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Only init if fuel
             if (meerkat.site.vertical !== "fuel")
                 return false;
@@ -232,18 +376,18 @@
             startStepId = steps.startStep.navigationId;
         }
 
-        $(document).ready(function(){
+        $(document).ready(function () {
             meerkat.modules.journeyEngine.configure({
-                startStepId : startStepId,
-                steps : _.toArray(steps)
+                startStepId: startStepId,
+                steps: _.toArray(steps)
             });
 
             // Call initial supertag call
             var transaction_id = meerkat.modules.transactionId.get();
 
-            if(meerkat.site.isNewQuote === false){
+            if (meerkat.site.isNewQuote === false) {
                 meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                    method:'trackQuoteEvent',
+                    method: 'trackQuoteEvent',
                     object: {
                         action: 'Retrieve',
                         transactionID: parseInt(transaction_id, 10),
@@ -265,9 +409,9 @@
 
     function setJourneyEngineSteps() {
         var startStep = {
-            title : 'Fuel Details',
-            navigationId : 'start',
-            slideIndex : 0,
+            title: 'Fuel Details',
+            navigationId: 'start',
+            slideIndex: 0,
             validation: {
                 validate: true
             },
@@ -275,11 +419,11 @@
                 method: 'trackQuoteForms',
                 object: meerkat.modules.fuel.getTrackingFieldsObject
             },
-            onInitialise: function(){
+            onInitialise: function () {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
                 //meerkat.modules.fuelPrefill.initFuelPrefill();
             },
-            onAfterEnter: function() {
+            onAfterEnter: function () {
             }
         };
 
@@ -355,8 +499,8 @@
             // Push in values from 2nd slide only when have been beyond it
             if (furthest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
                 _.extend(response, {
-                    state: location[location.length-1],
-                    postcode: location[location.length-2]
+                    state: location[location.length - 1],
+                    postcode: location[location.length - 2]
                 });
             }
 
@@ -366,6 +510,7 @@
             return {};
         }
     }
+
 
     meerkat.modules.register("fuel", {
         init: initFuel,
