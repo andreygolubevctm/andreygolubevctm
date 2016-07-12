@@ -3,17 +3,18 @@
 	var meerkat = window.meerkat,
 	log = meerkat.logging.info;
 
-	var nativePickerDisable = false;
+	var nativePickerEnabled = false;
 
 	function init() {
 		var iOS = meerkat.modules.performanceProfiling.isIos();
+		var iOS5 = meerkat.modules.performanceProfiling.isIos5();
 
 		$(document).ready(function() {
 			// Decide whether to activate an HTML5 native date picker
 			// (This is also known as Impress The Bosses On Their iPads feature)
 			// Dropped native datepicker on Android due to default date and format issues
-			if (Modernizr.inputtypes.date && iOS) {
-				nativePickerDisable = true;
+			if (Modernizr.inputtypes.date && iOS && !iOS5) {
+				nativePickerEnabled = true;
 			}
 			// Set up each date input component
 			$('[data-provide=dateinput]').each(function initDateComponentFromDataAttribute() {
@@ -28,15 +29,20 @@
 	 */
 	function initDateComponent($component) {
 
-		$component.find('input.dateinput-day, input.dateinput-month, input.dateinput-year')
-			.on('input', moveToNextInput)
-			.on('change', serialise);
+		if (nativePickerEnabled) {
+			$component.attr('data-dateinput-type', 'native');
 
-		if (nativePickerDisable) {
+			$component.find('.dateinput-tripleField').addClass('hidden');
+			$component.find('.dateinput-nativePicker')
+				.removeClass('hidden')
+				.find('input')
+				.on('change', serialise)
+				.val(Date().split(' ').splice(1,3).join(' '));
+		}
+		else {
 			$component.find('input.dateinput-day, input.dateinput-month, input.dateinput-year')
-				.prop('readonly',true)
-				.css('background-color', '#ffffff')
-				.css('cursor', 'pointer');
+				.on('input', moveToNextInput)
+				.on('change', serialise);
 		}
 
 		// If the main form element changes, populate it back into the input fields
