@@ -36,16 +36,6 @@
 			</jsp:attribute>
 
 			<jsp:attribute name="header">
-				<div class="navbar-collapse header-collapse-contact collapse">
-					<ul class="nav navbar-nav navbar-right">
-						<li class="navbar-text push-top">
-							<div class="hidden-xs resultsSummaryContainer" data-livechat="target">
-								<h5 class="hidden-sm">Fuel prices for</h5>
-								<div id="resultsSummaryPlaceholder"></div>
-							</div>
-						</li>
-					</ul>
-				</div>
 			</jsp:attribute>
 
 			<jsp:attribute name="progress_bar">
@@ -54,10 +44,6 @@
 			<jsp:attribute name="navbar">
 				<ul class="nav navbar-nav" role="menu">
 					<core_v2:offcanvas_header />
-
-					<li class="slide-feature-back">
-						<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
-					</li>
 					<li class="dropdown dropdown-interactive slide-feature-emailquote" id="email-quote-dropdown">
 						<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;">
 							<span class="icon icon-envelope"></span>
@@ -98,8 +84,8 @@
 			<jsp:body>
 				<%-- Slides --%>
                 <div id="google-map-container">
+					<fuel:overlay_sidebar />
                     <div id="map-canvas" style="width: 100%; height: 100%"></div>
-					<div class="resultsContainer"></div>
                 </div>
 
 				<div class="hiddenFields">

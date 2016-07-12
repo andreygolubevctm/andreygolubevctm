@@ -71,6 +71,7 @@
 
             initCustomMarkerLabel();
             var mapOptions = {
+                mapTypeControl: false, // disable Map/Satellite dropdown
                 zoom: 15, // higher the number, closer to the ground.
                 minZoom: 11, // e.g. 0 is whole world
                 mapTypeId: google.maps.MapTypeId.ROAD,

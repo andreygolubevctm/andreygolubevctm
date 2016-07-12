@@ -1,50 +1,44 @@
-.no-heading-margin {
-  h2 {
-    margin-bottom: 0;
-  }
-
-  .error-field {
-    margin-top: 12px;
-
-    label {
-      margin-bottom: 0;
-    }
-  }
-}
-
-.resultsSummaryContainer {
-  margin-top: 10px;
-}
-
-#checkboxes-all h6 {
-  margin-top: 0;
-}
-
-.regionalFuelContainer {
-  border: 1px solid @results-border-color;
-  padding: 0px;
-
-  td, th {
-    text-align: center;
-  }
-  tr td:first-child,
-  tr th:first-child{
-    text-align:right;
-  }
-
-  tr th {
-    font-weight: normal;
-    font-family: @font-family-theme-bold;
-  }
-
-  .price {
-    line-height: @font-size-base;
-    font-size: @font-size-base;
-  }
-}
-
-.journeyEngineSlide  {
+.journeyEngineSlide {
   &.first {
     padding-top: 0;
   }
+}
+
+#results-sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  margin: 30px;
+
+}
+
+.cross-sell-widget {
+  background-color: @theme-tertiary;
+  color: #fff;
+  .cross-sell-text {
+    padding: 15px 20px;
+    .icon {
+      font-size: 76px;
+    }
+  }
+}
+.circle {
+  .icon {
+    margin-left: 4px;
+    margin-top: 3px;
+    color: #fff;
+  }
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: @gray-slight-dark;
+  display: inline-block;
+}
+
+.fuel-band {
+  .fuel-price {
+    margin-left: 5px;
+  }
+  margin-top: 10px;
 }
