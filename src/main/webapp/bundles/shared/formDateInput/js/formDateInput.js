@@ -36,8 +36,7 @@
 			$component.find('.dateinput-nativePicker')
 				.removeClass('hidden')
 				.find('input')
-				.on('change', serialise)
-				.val(Date().split(' ').splice(1,3).join(' '));
+				.on('change', serialise);
 		}
 		else {
 			$component.find('input.dateinput-day, input.dateinput-month, input.dateinput-year')
