@@ -26,16 +26,20 @@ public class FuelQuoteController {
                     method = RequestMethod.POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public QuoteResponse getQuote(final HttpServletRequest request) {
+        final String northWest = request.getParameter("fuel_map_northWest");
+        final String southEast = request.getParameter("fuel_map_southEast");
+        final Long fuelId = Long.valueOf(request.getParameter("fuel_type_id"));
+
         final QuoteRequest quoteRequest = QuoteRequest.newBuilder()
-                .initialPoint(Coordinate.newBuilder() // Top left
-                    .lat(-26.961234f)
-                    .lng(151.404197f)
+                .initialPoint(Coordinate.newBuilder()
+                    .lat(Float.valueOf(northWest.split(",")[0]))
+                    .lng(Float.valueOf(northWest.split(",")[1]))
                     .build())
-                .endPoint(Coordinate.newBuilder() // Bottom right
-                    .lat(-28.067122f)
-                    .lng(153.692100f)
+                .endPoint(Coordinate.newBuilder()
+                    .lat(Float.valueOf(southEast.split(",")[0]))
+                    .lng(Float.valueOf(southEast.split(",")[1]))
                     .build())
-                .fuelId(2L)
+                .fuelId(fuelId)
                 .build();
 
         return fuelQuoteClient.post(quoteRequest, QuoteResponse.class, fuelQuoteUrl + "/quote").toBlocking().first();
