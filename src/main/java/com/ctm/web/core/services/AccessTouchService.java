@@ -129,7 +129,7 @@ public class AccessTouchService {
 		return recordTouchDeprecated(touch);
 	}
 
-	public Boolean recordTouchWithComment(long transactionId, String type, String comment) {
+	public Boolean recordTouchWithCommentJSP(long transactionId, String type, String comment) {
 		return recordTouchWithComment(transactionId, type, null, comment);
 	}
 
