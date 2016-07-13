@@ -185,6 +185,10 @@
                 mapTypeId: google.maps.MapTypeId.ROAD,
                 streetViewControl: false,
                 zoomControl: true,
+                center: {
+                    lat: -33.8684511,
+                    lng: 151.1984322
+                },
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.RIGHT_TOP
                 },
@@ -193,8 +197,6 @@
                 }
             };
 
-            // Create the modal so that map-canvas exists in the DOM.
-            // createModal();
             // Initialise the Google Map
             map = new google.maps.Map(document.getElementById('map-canvas'),
                 mapOptions);
@@ -214,10 +216,7 @@
                         lng: position.coords.longitude
                     };
 
-                    infoWindow.setPosition(pos);
-                    infoWindow.setContent('Location found.'); // TODO: hook this up with backend
                     map.setCenter(pos);
-                    meerkat.modules.fuelResults.initPage();
                     meerkat.modules.fuelResults.get();
                 }, function () {
                     _handleLocationError(true, infoWindow, map.getCenter());
@@ -247,28 +246,6 @@
             parseFloat(lat),
             parseFloat(lng)
         );
-    }
-
-    /**
-     * Return the color hex code based on a provided bandId
-     * @param bandId
-     * @returns {*}
-     */
-    function getBandColor(bandId) {
-        switch (bandId) {
-            case 1:
-                return '#A90001';
-            case 2:
-                return '#F14E2D';
-            case 3:
-                return '#F9928D';
-            case 4:
-                return '#0AB449';
-            case 5:
-                return '#077836';
-            default:
-                return '#878787';
-        }
     }
 
     /**
@@ -317,9 +294,9 @@
             meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                 method: 'trackProductView',
                 object: {
-                    productID: info.productId || null,
-                    productBrandCode: info.provider || null,
-                    productName: (info.name || "") + " " + (info.fuelText || "")
+                    productID: info.id || null,
+                    productBrandCode: info.brandId || null,
+                    productName: info.name || ""
                 }
             });
 

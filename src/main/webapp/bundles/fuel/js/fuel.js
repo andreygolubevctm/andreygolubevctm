@@ -48,7 +48,6 @@
 
             // Call initial supertag call
             var transaction_id = meerkat.modules.transactionId.get();
-
             meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                 method: 'trackQuoteEvent',
                 object: {
@@ -75,9 +74,8 @@
             onInitialise: function () {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
                 meerkat.modules.fuelMap.initGoogleAPI();
+                meerkat.modules.fuelResults.initPage();
                 //meerkat.modules.fuelPrefill.initFuelPrefill();
-            },
-            onAfterEnter: function () {
             }
         };
 
@@ -97,10 +95,6 @@
         //    },
         //    onInitialise: function onResultsInit(event) {
         //        meerkat.modules.fuelResults.initPage();
-        //        meerkat.modules.showMoreQuotesPrompt.initPromptBar();
-        //        meerkat.modules.fuelSorting.initSorting();
-        //        meerkat.modules.fuelResultsMap.initFuelResultsMap();
-        //        meerkat.modules.fuelCharts.initFuelCharts();
         //    },
         //    onAfterEnter: function afterEnterResults(event) {
         //        meerkat.modules.fuelResults.get();
@@ -113,7 +107,6 @@
          */
         steps = {
             startStep: startStep
-            //,resultsStep: resultsStep
         };
     }
 
@@ -122,21 +115,12 @@
         try {
 
             var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
-            var furthest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
 
-            var location = $("#fuel_location").val().split(' '),
-                actionStep = '';
+            var actionStep = '';
 
             switch (current_step) {
                 case 0:
                     actionStep = "fuel details";
-                    break;
-                case 1:
-                    if (special_case === true) {
-                        actionStep = 'fuel more info';
-                    } else {
-                        actionStep = 'fuel results';
-                    }
                     break;
             }
 
@@ -144,14 +128,6 @@
                 actionStep: actionStep,
                 quoteReferenceNumber: meerkat.modules.transactionId.get()
             };
-
-            // Push in values from 2nd slide only when have been beyond it
-            if (furthest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
-                _.extend(response, {
-                    state: location[location.length - 1],
-                    postcode: location[location.length - 2]
-                });
-            }
 
             return response;
 
