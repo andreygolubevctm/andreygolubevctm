@@ -5,7 +5,7 @@
 <core_v1:js_template id="map-marker-template">
 
     {{ var urlHost = meerkat.modules.performanceProfiling.isIos() ? 'http://maps.apple.com' : 'https://maps.google.com'; }}
-    <div class="map-info-window">
+    <div id="iw_content" class="map-info-window">
 
         <div class="map-address-container">
             <h5>{{= obj.name }}</h5>
