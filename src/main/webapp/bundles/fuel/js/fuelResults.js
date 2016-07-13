@@ -112,7 +112,7 @@
 
     function _rankingCallback(product, position) {
         var data = {};
-        if (product.hasOwnProperty('bandId')) {
+        if (position < 21 && product.hasOwnProperty('bandId')) {
             data["rank_premium" + position] = product.bandId;
             data["rank_productId" + position] = product.id;
         }
@@ -133,6 +133,11 @@
             _updateDisclaimer();
         });
 
+        // Plot all the markers for the current result set.
+        $(document).on("resultsLoaded", function () {
+            meerkat.modules.fuel.plotMarkers();
+        });
+        
         // Start fetching results
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
             $('#resultsPage, .loadingDisclaimerText').removeClass('hidden');
@@ -220,7 +225,7 @@
     function getFormattedTimeAgo(date) {
         return "Last updated " + meerkat.modules.utils.getTimeAgo(date) + " ago";
     }
-    
+
 
     meerkat.modules.register("fuelResults", {
         init: init,

@@ -38,100 +38,100 @@
             "featureType": "road.arterial",
             "elementType": "geometry",
             "stylers": [
-                { "visibility": "simplified" },
-                { "color": "#ffffff" }
+                {"visibility": "simplified"},
+                {"color": "#ffffff"}
             ]
-        },{
+        }, {
             "featureType": "road",
             "stylers": [
-                { "visibility": "simplified" }
+                {"visibility": "simplified"}
             ]
-        },{
+        }, {
             "featureType": "road.local",
             "elementType": "geometry",
             "stylers": [
-                { "visibility": "simplified" },
-                { "color": "#fbfaf8" }
+                {"visibility": "simplified"},
+                {"color": "#fbfaf8"}
             ]
-        },{
+        }, {
             "featureType": "road.highway",
             "elementType": "geometry",
             "stylers": [
-                { "visibility": "simplified" },
-                { "color": "#ffe15f" }
+                {"visibility": "simplified"},
+                {"color": "#ffe15f"}
             ]
-        },{
+        }, {
             "featureType": "road",
             "elementType": "labels.text.fill",
             "stylers": [
-                { "color": "#808080" },
-                { "visibility": "on" }
+                {"color": "#808080"},
+                {"visibility": "on"}
             ]
-        },{
+        }, {
             "featureType": "transit",
             "stylers": [
-                { "visibility": "off" }
+                {"visibility": "off"}
             ]
-        },{
+        }, {
             "featureType": "administrative",
             "elementType": "labels.text.fill",
             "stylers": [
-                { "color": "#808080" }
+                {"color": "#808080"}
             ]
-        },{
+        }, {
             "featureType": "water",
             "stylers": [
-                { "visibility": "simplified" },
-                { "color": "#a2daf2" }
+                {"visibility": "simplified"},
+                {"color": "#a2daf2"}
             ]
-        },{
+        }, {
             "featureType": "poi",
             "stylers": [
-                { "visibility": "simplified" }
+                {"visibility": "simplified"}
             ]
-        },{
+        }, {
             "featureType": "poi.business",
             "elementType": "geometry",
             "stylers": [
-                { "color": "#bde6ab" }
+                {"color": "#bde6ab"}
             ]
-        },{
+        }, {
             "featureType": "landscape",
             "stylers": [
-                { "lightness": 75 },
-                { "color": "#f7f1df" }
+                {"lightness": 75},
+                {"color": "#f7f1df"}
             ]
-        },{
+        }, {
             "featureType": "poi.park",
             "stylers": [
-                { "color": "#bde6ab" }
+                {"color": "#bde6ab"}
             ]
-        },{
+        }, {
             "featureType": "poi.sports_complex",
             "stylers": [
-                { "color": "#bde6ab" }
+                {"color": "#bde6ab"}
             ]
-        },{
+        }, {
             "featureType": "poi",
             "elementType": "labels",
             "stylers": [
-                { "visibility": "off" }
+                {"visibility": "off"}
             ]
-        },{
+        }, {
             "featureType": "poi.business",
             "stylers": [
-                { "visibility": "off" }
+                {"visibility": "off"}
             ]
-        },{
+        }, {
             "featureType": "poi.government",
             "stylers": [
-                { "visibility": "off" }
+                {"visibility": "off"}
             ]
-        },{
+        }, {
             "featureType": "poi.medical",
             "elementType": "geometry",
             "stylers": [
-                { "color": "#fbd3da" }
+                {"color": "#fbd3da"}
             ]
         }
     ];
@@ -171,13 +171,12 @@
     function initCallback() {
         try {
 
-            initCustomMarkerLabel();
             var styledMap = new google.maps.StyledMapType(mapStyles,
                 {name: "Fuel Map"});
             var mapOptions = {
                 mapTypeControl: false, // disable Map/Satellite dropdown
-                zoom: 15, // higher the number, closer to the ground.
-                minZoom: 11, // e.g. 0 is whole world
+                zoom: 16, // higher the number, closer to the ground.
+                minZoom: 13, // e.g. 0 is whole world
                 mapTypeId: google.maps.MapTypeId.ROAD,
                 mapTypeControlOptions: {
                     mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
@@ -218,119 +217,9 @@
                 _handleLocationError(false, infoWindow, map.getCenter());
             }
 
-            // Plot all the markers for the current result set.
-            $(document).on("resultsLoaded", function() {
-                plotMarkers();
-            });
-            //
         } catch (e) {
             _handleError(e, "fuel.js:initCallback");
         }
-    }
-
-    /**
-     * Map Icons created by Scott de Jonge
-     * @version 3.0.0
-     * @url http://map-icons.com
-     *
-     */
-    function initCustomMarkerLabel() {
-        // Function to do the inheritance properly
-        // Inspired by: http://stackoverflow.com/questions/9812783/cannot-inherit-google-maps-map-v3-in-my-custom-class-javascript
-        var inherits = function (childCtor, parentCtor) {
-            /** @constructor */
-            function tempCtor() {
-            }
-
-            tempCtor.prototype = parentCtor.prototype;
-            childCtor.superClass_ = parentCtor.prototype;
-            childCtor.prototype = new tempCtor();
-            childCtor.prototype.constructor = childCtor;
-        };
-
-        Marker = function (options) {
-            google.maps.Marker.apply(this, arguments);
-
-            if (options.map_icon_label) {
-                this.MarkerLabel = new MarkerLabel({
-                    map: this.map,
-                    marker: this,
-                    text: options.map_icon_label
-                });
-                this.MarkerLabel.bindTo('position', this, 'position');
-            }
-        };
-
-        // Apply the inheritance
-        inherits(Marker, google.maps.Marker);
-
-        // Custom Marker SetMap
-        Marker.prototype.setMap = function () {
-            google.maps.Marker.prototype.setMap.apply(this, arguments);
-            (this.MarkerLabel) && this.MarkerLabel.setMap.apply(this.MarkerLabel, arguments);
-        };
-
-        // Marker Label Overlay
-        MarkerLabel = function (options) {
-            var self = this;
-            this.setValues(options);
-
-            // Create the label container
-            this.div = document.createElement('div');
-            this.div.className = 'map-icon-label';
-
-            // Trigger the marker click handler if clicking on the label
-            google.maps.event.addDomListener(this.div, 'click', function (e) {
-                (e.stopPropagation) && e.stopPropagation();
-                google.maps.event.trigger(self.marker, 'click');
-            });
-        };
-
-        // Create MarkerLabel Object
-        MarkerLabel.prototype = new google.maps.OverlayView();
-
-        // Marker Label onAdd
-        MarkerLabel.prototype.onAdd = function () {
-            var pane = this.getPanes().overlayImage.appendChild(this.div);
-            var self = this;
-
-            this.listeners = [
-                google.maps.event.addListener(this, 'position_changed', function () {
-                    self.draw();
-                }),
-                google.maps.event.addListener(this, 'text_changed', function () {
-                    self.draw();
-                }),
-                google.maps.event.addListener(this, 'zindex_changed', function () {
-                    self.draw();
-                })
-            ];
-        };
-
-        // Marker Label onRemove
-        MarkerLabel.prototype.onRemove = function () {
-            this.div.parentNode.removeChild(this.div);
-
-            for (var i = 0, I = this.listeners.length; i < I; ++i) {
-                google.maps.event.removeListener(this.listeners[i]);
-            }
-        };
-
-        // Implement draw
-        MarkerLabel.prototype.draw = function () {
-            var projection = this.getProjection();
-            var position = projection.fromLatLngToDivPixel(this.get('position'));
-            var div = this.div;
-
-            this.div.innerHTML = this.get('text').toString();
-
-            div.style.zIndex = this.get('zIndex'); // Allow label to overlay marker
-            div.style.position = 'absolute';
-            div.style.display = 'block';
-            div.style.left = (position.x - 10) + 'px';
-            div.style.top = (position.y - 20) + 'px';
-
-        };
     }
 
     function centerMap(LatLng) {
@@ -351,6 +240,28 @@
     }
 
     /**
+     * Return the color hex code based on a provided bandId
+     * @param bandId
+     * @returns {*}
+     */
+    function getBandColor(bandId) {
+        switch (bandId) {
+            case 1:
+                return '#A90001';
+            case 2:
+                return '#F14E2D';
+            case 3:
+                return '#F9928D';
+            case 4:
+                return '#0AB449';
+            case 5:
+                return '#077836';
+            default:
+                return '#878787';
+        }
+    }
+
+    /**
      * Create the marker objects and bind click events.
      * @param latLng
      * @param info
@@ -358,42 +269,21 @@
      * @returns {google.maps.Marker}
      */
     function createMarker(latLng, info, markerOpts) {
-        var fillColor;
-        switch (info.bandId) {
-            case 1:
-                fillColor = '#A90001';
-                break;
-            case 2:
-                fillColor = '#F14E2D';
-                break;
-            case 3:
-                fillColor = '#F9928D';
-                break;
-            case 4:
-                fillColor = '#0AB449';
-                break;
-            case 5:
-                fillColor = '#077836';
-                break;
-            default:
-                fillColor = '#878787';
-        }
 
-        var marker = new Marker({
-            map: map,
+        var bandId = info.hasOwnProperty('bandId') ? info.bandId : 0;
+
+        var marker = new google.maps.Marker({
             position: latLng,
+            title: info.name,
+            map: map,
+            animation: google.maps.Animation.DROP,
             icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                // todo: just need something to set the color based on its range.
-                fillColor: fillColor,
-                fillOpacity: 1,
-                scale: 12,
-                strokeColor: '#ffffff',
-                strokeWeight: 2,
-                optimized: false
-            },
-            map_icon_label: '<span class="icon icon-vert-fuel"></span>',
-            animation: google.maps.Animation.DROP
+                url: 'assets/brand/ctm/graphics/fuel/' + bandId + '@2x.png',
+                // base image is 52x52 px
+                size: new google.maps.Size(52, 52),
+                // we want to render @ 26x26 logical px (@2x dppx or 'Retina')
+                scaledSize: new google.maps.Size(26, 26)
+            }
         });
 
         google.maps.event.addListener(marker, 'click', function () {
@@ -429,7 +319,7 @@
     }
 
     function getBand(bandId) {
-        return Results.getReturnedGeneral().bands.filter(function(band){
+        return Results.getReturnedGeneral().bands.filter(function (band) {
             return band.id === bandId;
         })[0];
     }
@@ -647,6 +537,7 @@
         initCallback: initCallback,
         getMap: getMap,
         getBand: getBand,
+        plotMarkers: plotMarkers,
         getTrackingFieldsObject: getTrackingFieldsObject
     });
 })(jQuery);
