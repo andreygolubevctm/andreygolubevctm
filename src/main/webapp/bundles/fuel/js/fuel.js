@@ -25,6 +25,12 @@
         });
     }
 
+    function applyEventListeners() {
+        $(document).on('change', '#fuel_type_id', function () {
+            meerkat.modules.fuelResults.get();
+        });
+    }
+
     function initJourneyEngine() {
         setJourneyEngineSteps();
 
@@ -80,33 +86,6 @@
             onAfterEnter: function () {
             }
         };
-
-        //var resultsStep = {
-        //    title : 'Fuel Prices',
-        //    navigationId : 'results',
-        //    slideIndex : 1,
-        //    externalTracking: {
-        //        method: 'trackQuoteForms',
-        //        object: meerkat.modules.fuel.getTrackingFieldsObject
-        //    },
-        //    additionalHashInfo: function() {
-        //        var fuelTypes = $("#fuel_hidden").val(),
-        //            location = $("#fuel_location").val().replace(/\s/g, "+");
-        //
-        //        return location + "/" + fuelTypes;
-        //    },
-        //    onInitialise: function onResultsInit(event) {
-        //        meerkat.modules.fuelResults.initPage();
-        //        meerkat.modules.showMoreQuotesPrompt.initPromptBar();
-        //        meerkat.modules.fuelSorting.initSorting();
-        //        meerkat.modules.fuelResultsMap.initFuelResultsMap();
-        //        meerkat.modules.fuelCharts.initFuelCharts();
-        //    },
-        //    onAfterEnter: function afterEnterResults(event) {
-        //        meerkat.modules.fuelResults.get();
-        //        meerkat.modules.fuelResultsMap.resetMap();
-        //    }
-        //};
 
         /**
          * Add more steps as separate variables here

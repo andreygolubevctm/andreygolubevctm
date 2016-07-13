@@ -184,6 +184,7 @@
     }
 
     function get() {
+        Results.updateAggregatorEnvironment();
         Results.get();
         _updateSnapshot();
     }

@@ -43,7 +43,7 @@
 
     function hasAggregationService(){
         if(meerkat.site.vertical === 'travel' || meerkat.site.vertical === 'car' || meerkat.site.vertical === 'home' ||
-            meerkat.site.vertical === 'health' || meerkat.site.vertical === 'utilities'){
+            meerkat.site.vertical === 'health' || meerkat.site.vertical === 'utilities' || meerkat.site.vertical === 'fuel'){
             return true;
         }
         return false;
@@ -101,7 +101,7 @@
             $aggEngineContainer.show();
             $aggEngineContainer.html('Loading aggregators...');
 
-            var aggregationBaseUrl = "http://taws01_ass3:8080"; // for NXI
+            var aggregationBaseUrl = "http://nxi-vm-ken01-ctm-app-x1:8080"; // for NXI
 
 
             aggregationServicePromise = meerkat.modules.comms.get({

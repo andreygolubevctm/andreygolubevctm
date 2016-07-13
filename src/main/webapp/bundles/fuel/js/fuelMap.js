@@ -175,6 +175,7 @@
      */
     function initCallback() {
         try {
+            //var autoComplete =
 
             var styledMap = new google.maps.StyledMapType(mapStyles,
                 {name: "Fuel Map"});
@@ -214,11 +215,8 @@
                         lng: position.coords.longitude
                     };
 
-                    infoWindow.setPosition(pos);
-                    infoWindow.setContent('Location found.'); // TODO: hook this up with backend
                     map.setCenter(pos);
                     meerkat.modules.fuelResults.initPage();
-                    meerkat.modules.fuelResults.get();
                 }, function () {
                     _handleLocationError(true, infoWindow, map.getCenter());
                 });
@@ -226,6 +224,11 @@
                 // Browser doesn't support Geolocation
                 _handleLocationError(false, infoWindow, map.getCenter());
             }
+
+            google.maps.event.addListener(map, 'idle', function() {
+                getBoundsAndSetFields();
+                meerkat.modules.fuelResults.get();
+            });
 
         } catch (e) {
             _handleError(e, "fuel.js:initCallback");
@@ -378,6 +381,19 @@
 
     function getMap() {
         return map;
+    }
+
+    function getBoundsAndSetFields () {
+        if (map) {
+            var bounds = map.getBounds(),
+            ne = bounds.getNorthEast(),
+            sw = bounds.getSouthWest(),
+            nw = new google.maps.LatLng(ne.lat(), sw.lng()),
+            se = new google.maps.LatLng(sw.lat(), ne.lng());
+
+            $('#fuel_map_northWest').val(nw.lat() + ',' + nw.lng());
+            $('#fuel_map_southEast').val(se.lat() + ',' + se.lng());
+        }
     }
 
     function initFuelMap() {
