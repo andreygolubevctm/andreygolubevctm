@@ -104,7 +104,7 @@
 								<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 
 								<%-- Record lead feed touch event --%>
-								<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "CB", "lifebroker")}</c:set>
+								<c:set var="touchResponse">${accessTouchService.recordTouchWithCommentJSP(tranId, "CB", "lifebroker")}</c:set>
 							</c:otherwise>
 						</c:choose>
 

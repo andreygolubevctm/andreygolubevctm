@@ -72,7 +72,7 @@
 
 				<%-- Record lead feed touch event --%>
 				<jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
-				<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(data.current.transactionId, "C", "lifebroker")}</c:set>
+				<c:set var="touchResponse">${accessTouchService.recordTouchWithCommentJSP(data.current.transactionId, "C", "lifebroker")}</c:set>
 				
 				<x:parse xml="${newQuoteResults}" var="newQuoteResultsOutput" />
 				<c:set var="apiReference"><x:out select="$newQuoteResultsOutput/results/client/reference" /></c:set>
