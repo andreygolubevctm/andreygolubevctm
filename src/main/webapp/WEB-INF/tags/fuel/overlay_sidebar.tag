@@ -42,6 +42,9 @@
                     <span class="circle"><span class="icon icon-vert-fuel"></span> </span>
                     <span class="fuel-price">price unavailable</span>
                 </div>
+                <div id="provider-disclaimer" class="short-disclaimer">
+                    <p><span class="supplier">Data supplied by Motormouth</span></p>
+                </div>
             </div>
 
             <div class="col-sm-12 sidebar-widget sidebar-widget-contained cross-sell-widget">

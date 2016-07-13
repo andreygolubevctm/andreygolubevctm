@@ -467,7 +467,6 @@
 
     function plotMarkers() {
         var results = Results.getFilteredResults();
-        console.log("we has results");
         if (!results) {
             log("plotMarkers: No Results Available to plot markers");
             return;

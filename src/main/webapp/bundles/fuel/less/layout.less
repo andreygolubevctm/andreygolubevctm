@@ -1,11 +1,12 @@
-.header-wrap{
-  @media(@sm) {
+.header-wrap {
+  @media (@sm) {
     min-height: 80px; //SM
   }
-  @media(@md) {
+  @media (@md) {
     min-height: 120px; //MD and LG
   }
 }
+
 .container-fluid {
   &.no-padding {
     padding: 0;
@@ -17,14 +18,17 @@
   }
 }
 
-#results-sidebar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 9;
-  margin: 30px;
-
+/** Sidebar **/
+@media(@md) {
+  #results-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9;
+    margin: 30px;
+  }
 }
+
 
 .cross-sell-widget {
   background-color: @theme-tertiary;
@@ -36,6 +40,7 @@
     }
   }
 }
+
 .circle {
   .icon {
     margin: 5px;
@@ -53,4 +58,14 @@
     margin-left: 5px;
   }
   margin-top: 10px;
+}
+
+.short-disclaimer {
+  font-style: italic;
+  color: @time-ago-text-color;
+  font-size: @font-size-small;
+}
+
+#provider-disclaimer {
+  text-align: right;
 }

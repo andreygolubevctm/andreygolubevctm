@@ -1,4 +1,4 @@
-;(function($, undefined) {
+;(function ($, undefined) {
     var meerkat = window.meerkat,
         meerkatModules = meerkat.modules,
         meerkatEvents = meerkatModules.events,
@@ -6,7 +6,7 @@
 
     var events = {};
 
-    function initPage(){
+    function initPage() {
         _initResults();
         _registerEventListeners();
     }
@@ -86,58 +86,49 @@
                     }
                 },
                 elements: {
-                    features:{
+                    features: {
                         values: ".content",
                         extras: ".children"
                     }
                 },
-                templates:{
-                    pagination:{
+                templates: {
+                    pagination: {
                         pageText: 'Product {{=currentPage}} of {{=totalPages}}'
                     }
                 },
                 rankings: {
-                    triggers : ['RESULTS_DATA_READY'],
-                    callback : _rankingCallback,
-                    forceIdNumeric : false,
-                    filterUnavailableProducts : true
+                    triggers: ['RESULTS_DATA_READY'],
+                    callback: _rankingCallback,
+                    forceIdNumeric: false,
+                    filterUnavailableProducts: true
                 },
-                incrementTransactionId : false
+                incrementTransactionId: false
             });
         }
-        catch(e) {
+        catch (e) {
             Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.fuel.initResults(); ' + e.message, e);
         }
     }
 
     function _rankingCallback(product, position) {
         var data = {};
-
-        // If the is the first time sorting, send the prm as well
-        data["rank_premium" + position] = product.price;
-        data["rank_productId" + position] = product.productId;
-
+        if (product.hasOwnProperty('bandId')) {
+            data["rank_premium" + position] = product.bandId;
+            data["rank_productId" + position] = product.id;
+        }
         return data;
     }
 
     function _registerEventListeners() {
-   
-        // If error occurs, go back in the journey
-        meerkat.messaging.subscribe(events.RESULTS_ERROR, function() {
-            // Delayed to allow journey engine to unlock
-            _.delay(function() {
-                meerkat.modules.journeyEngine.gotoPath('previous');
-            }, 1000);
-        });
 
         // Run the show method even when there are no available products
         // This will render the unavailable combined template
-        $(Results.settings.elements.resultsContainer).on("noFilteredResults", function() {
+        $(Results.settings.elements.resultsContainer).on("noFilteredResults", function () {
             Results.view.show();
         });
 
         // Scroll to the top when results come back
-        $(document).on("resultsReturned", function() {
+        $(document).on("resultsReturned", function () {
             meerkat.modules.utils.scrollPageTo($("header"));
             _updateDisclaimer();
         });
@@ -155,8 +146,8 @@
 
             // If no providers opted to show results, display the no results modal.
             var availableCounts = 0;
-            $.each(Results.model.returnedProducts, function(){
-                if (this.available === 'Y' && this.productId !== 'CURR') {
+            $.each(Results.model.returnedProducts, function () {
+                if (this.hasOwnProperty('bandId')) {
                     availableCounts++;
                 }
             });
@@ -170,46 +161,20 @@
             // Check products length in case the reason for no results is an error e.g. 500
             if (availableCounts === 0 && _.isArray(Results.model.returnedProducts)) {
                 showNoResults();
-                _.delay(function() {
-                    meerkat.modules.journeyEngine.gotoPath('previous');
-                }, 1000);
                 return;
             }
-
-            if(Results.getReturnedGeneral().source == "regional") {
-                Results.view.showNoResults();
-                _openRegionalModal();
-                return;
-            }
-
-            // Results are hidden in the CSS so we don't see the scaffolding after #benefits
-            $(Results.settings.elements.page).show();
         });
 
-        $(Results.settings.elements.resultsContainer).on('click', '.result-row', _onResultRowClick);
-    }
-
-    function _onResultRowClick(event) {
-        // Ensure only in XS price mode
-        if ($(Results.settings.elements.resultsContainer).hasClass('priceMode') === false || meerkat.modules.deviceMediaState.get() !== 'xs') return;
-
-        var $resultrow = $(event.target);
-        if ($resultrow.hasClass('result-row') === false) {
-            $resultrow = $resultrow.parents('.result-row');
-        }
-
-        var $mapButton = $resultrow.find(".map-open");
-        meerkat.modules.fuelResultsMap.openMap($mapButton);
     }
 
     function get() {
-         Results.get();
+        Results.get();
         _updateSnapshot();
     }
 
     function _updateDisclaimer() {
         var general = Results.getReturnedGeneral();
-        if(typeof general.timeDiff !== "undefined") {
+        if (typeof general.timeDiff !== "undefined") {
             $("#provider-disclaimer .time").text(general.timeDiff);
         }
     }
@@ -238,30 +203,6 @@
     }
 
     function init() {
-        meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
-    }
-
-    function _openRegionalModal() {
-
-        var $tpl = $('#regional-results-template'),
-            htmlString = "";
-        if ($tpl.length > 0) {
-            var htmlTemplate = _.template($tpl.html());
-            Results.sortBy(Results.settings.sort.city, "asc");
-            htmlString = htmlTemplate(Results.getSortedResults());
-        }
-        if(htmlString.length) {
-            meerkat.modules.dialogs.show({
-                title: "Regional Price Average",
-                htmlContent: htmlString
-            });
-        } else {
-            showNoResults();
-        }
-        _.delay(function() {
-            meerkat.modules.journeyEngine.gotoPath('previous');
-        }, 1000);
-
     }
 
     function showNoResults() {
@@ -279,26 +220,12 @@
     function getFormattedTimeAgo(date) {
         return "Last updated " + meerkat.modules.utils.getTimeAgo(date) + " ago";
     }
-
-    /**
-     * This function has been refactored into calling a core resultsTracking module.
-     * It has remained here so verticals can run their own unique calls.
-     */
-    function publishExtraSuperTagEvents(additionalData) {
-        additionalData = typeof additionalData === 'undefined' ? {} : additionalData;
-        meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
-            additionalData: $.extend({
-                sortBy: Results.getSortBy() + '-' + Results.getSortDir()
-            }, additionalData),
-            onAfterEventMode: 'Refresh'
-        });
-    }
+    
 
     meerkat.modules.register("fuelResults", {
         init: init,
         initPage: initPage,
         events: events,
-        publishExtraSuperTagEvents: publishExtraSuperTagEvents,
         get: get,
         getFormattedTimeAgo: getFormattedTimeAgo
     });

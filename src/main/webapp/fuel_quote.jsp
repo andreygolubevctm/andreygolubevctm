@@ -86,6 +86,7 @@
                 <div id="google-map-container">
 					<fuel:overlay_sidebar />
                     <div id="map-canvas" style="width: 100%; height: 100%"></div>
+					<fuel:results_templates />
                 </div>
 
 				<div class="hiddenFields">
