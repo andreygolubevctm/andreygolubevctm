@@ -106,7 +106,7 @@
 
 			<%-- <div id="pageContentTop"></div> --%>
 
-			<article class="container-fluid">
+			<article class="container-fluid no-padding">
 
 				<div id="journeyEngineContainer">
 					<%--<div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">--%>

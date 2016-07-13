@@ -1,6 +1,19 @@
-.journeyEngineSlide {
-  &.first {
-    padding-top: 0;
+.header-wrap{
+  @media(@sm) {
+    min-height: 80px; //SM
+  }
+  @media(@md) {
+    min-height: 120px; //MD and LG
+  }
+}
+.container-fluid {
+  &.no-padding {
+    padding: 0;
+  }
+  .journeyEngineSlide {
+    &.first {
+      padding-top: 0;
+    }
   }
 }
 
