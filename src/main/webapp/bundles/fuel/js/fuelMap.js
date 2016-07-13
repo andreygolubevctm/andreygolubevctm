@@ -183,6 +183,11 @@
                 zoom: 16, // higher the number, closer to the ground.
                 minZoom: 13, // e.g. 0 is whole world
                 mapTypeId: google.maps.MapTypeId.ROAD,
+                streetViewControl: false,
+                zoomControl: true,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.RIGHT_TOP
+                },
                 mapTypeControlOptions: {
                     mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
                 }
