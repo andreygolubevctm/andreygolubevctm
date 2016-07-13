@@ -29,6 +29,11 @@
      * @type {InfoWindow}
      */
     var infoWindow;
+    /**
+     * The google map autocomplete object
+     * @type {{autocomplete}}
+     */
+    var autocomplete;
     var markers = {};
     var clickedMarker; // The marker when you click on a location or map point.
     var mapStyles = [
@@ -145,6 +150,10 @@
         modalTemplate,
         windowResizeListener;
 
+    var DEFAULT_ZOOM = 13,
+        MIN_ZOOM = 11;
+
+
     /**
      * Asynchronously load in the Google Maps API and then calls initCallback
      * Uses Google Developer Console API Key
@@ -156,7 +165,7 @@
         var script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = 'https://maps.googleapis.com/maps/api/js?key=' + googleAPIKey + '&v=3.exp' +
-            '&signed_in=false&callback=meerkat.modules.fuelMap.initCallback';
+            '&libraries=places&signed_in=false&callback=meerkat.modules.fuelMap.initCallback';
         script.onerror = function (msg, url, linenumber) {
             _handleError(msg + ':' + linenumber, "fuelMap.js:initGoogleAPI");
         };
@@ -174,8 +183,8 @@
                 {name: "Fuel Map"});
             var mapOptions = {
                 mapTypeControl: false, // disable Map/Satellite dropdown
-                zoom: 16, // higher the number, closer to the ground.
-                minZoom: 13, // e.g. 0 is whole world
+                zoom: DEFAULT_ZOOM, // higher the number, closer to the ground.
+                minZoom: MIN_ZOOM, // e.g. 0 is whole world
                 mapTypeId: google.maps.MapTypeId.ROAD,
                 streetViewControl: false,
                 zoomControl: true,
@@ -199,6 +208,7 @@
             map.mapTypes.set('map_style', styledMap);
             map.setMapTypeId('map_style');
 
+            initAutocomplete();
             initInfoWindowProperties();
 
             // Try HTML5 geolocation.
@@ -210,6 +220,7 @@
                     };
 
                     map.setCenter(pos);
+                    drawClickedMarker(pos);
                 }, function () {
                     _handleLocationError(true, infoWindow, map.getCenter());
                 });
@@ -226,6 +237,35 @@
         } catch (e) {
             _handleError(e, "fuel.js:initCallback");
         }
+    }
+
+    function initAutocomplete() {
+        var options = {
+            componentRestrictions: {
+                country: "au"
+            }
+        };
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('fuel_location'), options);
+        autocomplete.bindTo('bounds', map);
+
+        autocomplete.addListener('place_changed', function() {
+            infoWindow.close();
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+                // TODO: Handle this....
+                window.alert("Autocomplete's returned place contains no geometry");
+                return;
+            }
+
+            // If the place has a geometry, then present it on a map.
+            if (place.geometry.viewport) {
+                map.fitBounds(place.geometry.viewport);
+            } else {
+                map.setCenter(place.geometry.location);
+            }
+            map.setZoom(DEFAULT_ZOOM);
+            drawClickedMarker(place.geometry.location);
+        });
     }
 
     /**
@@ -392,7 +432,7 @@
             bounds.extend(latLng);
         }
 
-        map.fitBounds(bounds);
+        //map.fitBounds(bounds);
     }
 
     function getMap() {

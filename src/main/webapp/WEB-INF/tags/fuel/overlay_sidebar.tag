@@ -7,8 +7,7 @@
     <div class="hidden-xs col-sm-4 col-md-3 col-lg-2" id="results-sidebar">
         <div class="row">
             <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded sidebar-widget-dropshadow">
-                <field_v2:lookup_suburb_postcode xpath="${xpath}/location" placeholder="Address" required="true"
-                                                 extraDataAttributes=" data-rule-validateLocation='true' data-msg-validateLocation='Please select a valid postcode to compare fuel'"/>
+                <field_v2:input xpath="${xpath}/location" title="search location" required="true" placeHolder="Postcode / Location"/>
                 <field_v2:array_select xpath="${xpath}/type/id" required="true" title="Fuel type" items="2=Unleaded,3=Diesel,4=LPG,5=Premium Unleaded 95,7=Premium Unleaded 98,12=e10,14=Premium Diesel,999=e10/Unleaded,1000=Diesel/Premium Diesel"/>
             </div>
 
