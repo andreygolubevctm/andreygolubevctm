@@ -6,6 +6,8 @@
 
     var events = {};
 
+    var priceBandTemplate;
+
     function initPage() {
         _initResults();
         _registerEventListeners();
@@ -135,7 +137,8 @@
 
         // Plot all the markers for the current result set.
         $(document).on("resultsLoaded", function () {
-            meerkat.modules.fuel.plotMarkers();
+            //var results = Results.getFilteredResults();
+            //meerkat.modules.fuelMap.plotMarkers(results);
         });
         
         // Start fetching results
@@ -160,14 +163,22 @@
             // You've been blocked!
             if (availableCounts === 0 && !Results.model.hasValidationErrors && Results.model.isBlockedQuote) {
                 showBlockedResults();
+                updatePriceBand(false);
                 return;
             }
 
             // Check products length in case the reason for no results is an error e.g. 500
             if (availableCounts === 0 && _.isArray(Results.model.returnedProducts)) {
                 showNoResults();
+                updatePriceBand(false);
                 return;
             }
+
+            // Normal results
+            meerkat.modules.fuelMap.plotMarkers(Results.model.returnedProducts);
+
+            // Update price band
+            updatePriceBand(true);
         });
 
     }
@@ -208,6 +219,9 @@
     }
 
     function init() {
+        $(document).ready(function () {
+            priceBandTemplate = _.template($('#price-band-template').html());
+        });
     }
 
     function showNoResults() {
@@ -226,12 +240,23 @@
         return "Last updated " + meerkat.modules.utils.getTimeAgo(date) + " ago";
     }
 
+    function getBand(bandId) {
+        return Results.getReturnedGeneral().bands.filter(function (band) {
+            return band.id === bandId;
+        })[0];
+    }
+
+    function updatePriceBand(hasSite) {
+        var info = hasSite === true ? Results.getReturnedGeneral() : {error: true};
+        $('#price-band-container').html(priceBandTemplate(info));
+    }
 
     meerkat.modules.register("fuelResults", {
         init: init,
         initPage: initPage,
         events: events,
         get: get,
-        getFormattedTimeAgo: getFormattedTimeAgo
+        getFormattedTimeAgo: getFormattedTimeAgo,
+        getBand: getBand
     });
 })(jQuery);

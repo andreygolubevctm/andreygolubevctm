@@ -150,8 +150,9 @@
 		</div>
 
 
-        <jsp:invoke fragment="footer" />
-
+        <agg_v1:footer_outer>
+            <jsp:invoke fragment="footer" />
+        </agg_v1:footer_outer>
 
 	</jsp:body>
 

@@ -16,7 +16,7 @@
         {{ if(obj.bandId) { }}
         <div class="map-price-container">
             <span class="icon icon-vert-fuel band-{{= obj.bandId }}"></span>
-            {{ var band = meerkat.modules.fuel.getBand(obj.bandId); }}
+            {{ var band = meerkat.modules.fuelResults.getBand(obj.bandId); }}
             <span class="price">
             {{ if (!band.toPrice){ }}
             ≤ {{= band.fromPrice}}

@@ -12,39 +12,8 @@
                 <field_v2:array_select xpath="${xpath}/type" required="true" title="Fuel type" items="=Please choose...,2=Unleaded,3=Diesel,4=LPG,5=Premium Unleaded 95,7=Premium Unleaded 98,6=E10,8=Bio-Diesel 20,9=Premium Diesel"/>
             </div>
 
-            <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded sidebar-widget-dropshadow">
-                <p>Price bands based on <strong id="fuel-map-location">Brisbane</strong> prices</p>
-                <div class="fuel-band">
-                    <span class="circle"><span class="icon icon-vert-fuel"></span> </span>
-                    <span class="fuel-price">< 124.0</span>
-                </div>
-                <div class="fuel-band fuel-band-1">
-                    <span class="circle"><span class="icon icon-vert-fuel"></span> </span>
-                    <span class="fuel-price">< 124.0</span>
-                </div>
-                <div class="fuel-band fuel-band-2">
-                    <span class="circle"><span class="icon icon-vert-fuel"></span> </span>
-                    <span class="fuel-price">< 124.0</span>
-                </div>
-                <div class="fuel-band fuel-band-3">
-                    <span class="circle"><span class="icon icon-vert-fuel"></span> </span>
-                    <span class="fuel-price">< 124.0</span>
-                </div>
-                <div class="fuel-band fuel-band-4">
-                    <span class="circle"><span class="icon icon-vert-fuel"></span> </span>
-                    <span class="fuel-price">< 124.0</span>
-                </div>
-                <div class="fuel-band fuel-band-5">
-                    <span class="circle"><span class="icon icon-vert-fuel"></span> </span>
-                    <span class="fuel-price">< 124.0</span>
-                </div>
-                <div class="fuel-band fuel-band-unavailable">
-                    <span class="circle"><span class="icon icon-vert-fuel"></span> </span>
-                    <span class="fuel-price">price unavailable</span>
-                </div>
-                <div id="provider-disclaimer" class="short-disclaimer">
-                    <p><span class="supplier">Data supplied by Motormouth</span></p>
-                </div>
+            <div id="price-band-container" class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded sidebar-widget-dropshadow">
+                <fuel:price_band_template />
             </div>
 
             <div class="col-sm-12 sidebar-widget sidebar-widget-contained cross-sell-widget">
