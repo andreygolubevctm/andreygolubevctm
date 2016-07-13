@@ -36,7 +36,7 @@
                         product: "available"
                     },
                     sort: {
-                        city: "cityName"
+                        city: "cityId"
                     }
                 },
                 show: {
@@ -44,10 +44,7 @@
                     nonAvailableProducts: false, // This will apply the availability.product rule
                     unavailableCombined: true    // Whether or not to render a 'fake' product which is a placeholder for all unavailable products.
                 },
-                availability: {
-                    product: ["equals", "Y"],
-                    price: ["notEquals", -1] // As a filter this should never match, but is here due to inconsistent Car data model and work-around for Results.setFrequency
-                },
+                availability: {},
                 render: {
                     templateEngine: '_',
                     dockCompareBar: false
@@ -73,24 +70,13 @@
                         }
                     },
                     shuffle: {
-                        active: true,
-                        options: {
-                            easing: "swing", // animation easing type
-                            duration: 1000
-                        }
+                        active: false
                     },
                     filter: {
-                        reposition: {
-                            options: {
-                                easing: "swing" // animation easing type
-                            }
-                        }
-                    }
-                },
-                elements: {
+                        active: false
+                    },
                     features: {
-                        values: ".content",
-                        extras: ".children"
+                        active: false
                     }
                 },
                 templates: {
@@ -99,10 +85,6 @@
                     }
                 },
                 rankings: {
-                    triggers: ['RESULTS_DATA_READY'],
-                    callback: _rankingCallback,
-                    forceIdNumeric: false,
-                    filterUnavailableProducts: true
                 },
                 incrementTransactionId: false
             });
@@ -110,15 +92,6 @@
         catch (e) {
             Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.fuel.initResults(); ' + e.message, e);
         }
-    }
-
-    function _rankingCallback(product, position) {
-        var data = {};
-        if (position < 21 && product.hasOwnProperty('bandId')) {
-            data["rank_premium" + position] = product.bandId;
-            data["rank_productId" + position] = product.id;
-        }
-        return data;
     }
 
     function _registerEventListeners() {
@@ -135,12 +108,6 @@
             _updateDisclaimer();
         });
 
-        // Plot all the markers for the current result set.
-        $(document).on("resultsLoaded", function () {
-            //var results = Results.getFilteredResults();
-            //meerkat.modules.fuelMap.plotMarkers(results);
-        });
-        
         // Start fetching results
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
             $('#resultsPage, .loadingDisclaimerText').removeClass('hidden');
@@ -150,7 +117,7 @@
         $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
             $('.loadingDisclaimerText').addClass('hidden');
 
-            $(document.body).removeClass('priceMode').addClass('priceMode');
+            $(document.body).addClass('priceMode');
 
             // If no providers opted to show results, display the no results modal.
             var availableCounts = 0;

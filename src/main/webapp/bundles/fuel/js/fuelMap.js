@@ -29,15 +29,8 @@
      * @type {InfoWindow}
      */
     var infoWindow;
-    /**
-     * The custom Marker object that we use to generate the icon
-     */
-    var Marker;
-    /**
-     * The custom markerLabel object that extends google.maps.overlayView
-     */
-    var MarkerLabel;
     var markers = {};
+    var clickedMarker; // The marker when you click on a location or map point.
     var mapStyles = [
         {
             "featureType": "road.arterial",
@@ -186,6 +179,10 @@
                 mapTypeId: google.maps.MapTypeId.ROAD,
                 streetViewControl: false,
                 zoomControl: true,
+                center: {
+                    lat: -33.8684511,
+                    lng: 151.1984322
+                },
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.RIGHT_TOP
                 },
@@ -194,8 +191,6 @@
                 }
             };
 
-            // Create the modal so that map-canvas exists in the DOM.
-            // createModal();
             // Initialise the Google Map
             map = new google.maps.Map(document.getElementById('map-canvas'),
                 mapOptions);
@@ -204,8 +199,7 @@
             map.mapTypes.set('map_style', styledMap);
             map.setMapTypeId('map_style');
 
-            // Initialise the info window
-            infoWindow = new google.maps.InfoWindow({map: map});
+            initInfoWindowProperties();
 
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
@@ -216,7 +210,6 @@
                     };
 
                     map.setCenter(pos);
-                    meerkat.modules.fuelResults.initPage();
                 }, function () {
                     _handleLocationError(true, infoWindow, map.getCenter());
                 });
@@ -235,8 +228,54 @@
         }
     }
 
-    function centerMap(LatLng) {
-        map.panTo(LatLng);
+    /**
+     * Helper to initialise infoWindow properties.
+     */
+    function initInfoWindowProperties() {
+        // Initialise the info window
+        infoWindow = new google.maps.InfoWindow({
+            map: map,
+            pixelOffset: new google.maps.Size(-13, 8)
+        });
+
+        google.maps.event.addListener(infoWindow, 'closeclick', function () {
+            if (clickedMarker != null)
+                clickedMarker.setMap(null);
+        });
+
+        google.maps.event.addListener(infoWindow, 'domready', function () {
+            var el = document.getElementById('iw_content').parentNode.parentNode.parentNode;
+            el = el.previousElementSibling || el.previousSibling;
+            el.setAttribute('class', 'infoWindowBackground');
+            var arrow = el.children[2];
+            el.removeChild(arrow);
+        });
+
+    }
+    /**
+     * open the infoWindow inside a google map on marker click and by default.
+     * @param marker
+     * @param info
+     */
+    function openInfoWindow(marker, info) {
+        var htmlString = "";
+        if (markerTemplate) {
+            htmlString = markerTemplate(info);
+            infoWindow.setContent(htmlString);
+            infoWindow.open(map, marker);
+
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method: 'trackProductView',
+                object: {
+                    productID: info.id || null,
+                    productBrandCode: info.brandId || null,
+                    productName: info.name || ""
+                }
+            });
+
+        } else {
+            _handleError("", 'An error occurred displaying information for this fuel provider.');
+        }
     }
 
     /**
@@ -250,28 +289,6 @@
             parseFloat(lat),
             parseFloat(lng)
         );
-    }
-
-    /**
-     * Return the color hex code based on a provided bandId
-     * @param bandId
-     * @returns {*}
-     */
-    function getBandColor(bandId) {
-        switch (bandId) {
-            case 1:
-                return '#A90001';
-            case 2:
-                return '#F14E2D';
-            case 3:
-                return '#F9928D';
-            case 4:
-                return '#0AB449';
-            case 5:
-                return '#077836';
-            default:
-                return '#878787';
-        }
     }
 
     /**
@@ -294,41 +311,40 @@
                 url: 'assets/brand/ctm/graphics/fuel/' + bandId + '@2x.png',
                 // base image is 52x52 px
                 size: new google.maps.Size(52, 52),
+                anchor: new google.maps.Point(13, 13),
                 // we want to render @ 26x26 logical px (@2x dppx or 'Retina')
                 scaledSize: new google.maps.Size(26, 26)
             }
         });
 
-        google.maps.event.addListener(marker, 'click', function () {
+        google.maps.event.addListener(marker, 'click', function (event) {
             openInfoWindow(marker, info);
+            drawClickedMarker(event.latLng);
+
         });
         return marker;
     }
 
     /**
-     * open the infoWindow inside a google map on marker click and by default.
-     * @param marker
-     * @param info
+     * When we click on the map, draw this marker at location
+     * @param location LatLng
      */
-    function openInfoWindow(marker, info) {
-        var htmlString = "";
-        if (markerTemplate) {
-            htmlString = markerTemplate(info);
-            infoWindow.setContent(htmlString);
-            infoWindow.open(map, marker);
-
-            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                method: 'trackProductView',
-                object: {
-                    productID: info.productId || null,
-                    productBrandCode: info.provider || null,
-                    productName: (info.name || "") + " " + (info.fuelText || "")
-                }
-            });
-
-        } else {
-            _handleError("", 'An error occurred displaying information for this fuel provider.');
-        }
+    function drawClickedMarker(location) {
+        // clear previous markers
+        if (clickedMarker != null)
+            clickedMarker.setMap(null);
+        clickedMarker = new google.maps.Marker({
+            position: location,
+            icon: {
+                url: 'assets/brand/ctm/graphics/fuel/pin.png',
+                anchor: new google.maps.Point(13, 26),
+                size: new google.maps.Size(52, 52),
+                scaledSize: new google.maps.Size(26, 26)
+            },
+            map: map,
+            draggable: false,
+            optimized: false
+        });
     }
 
     function _handleError(e, page) {
