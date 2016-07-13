@@ -64,4 +64,20 @@ public class TransactionLockDao {
                 "DELETE FROM aggregator.transaction_locks " +
                 "WHERE TIMESTAMP(NOW() - INTERVAL 7 DAY ) > TIMESTAMP(lockDateTime);");
     }
+
+    public void unlock(final long transactionId) throws DaoException {
+        sqlDao.update(
+            new DatabaseUpdateMapping() {
+                @Override
+                protected void mapParams() throws SQLException {
+                    set(transactionId);
+                }
+
+                @Override
+                public String getStatement() {
+                    return "DELETE FROM aggregator.transaction_locks " +
+                            "WHERE transactionId = ?;";
+                }
+            });
+    }
 }

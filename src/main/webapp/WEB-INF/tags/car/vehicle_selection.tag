@@ -61,7 +61,7 @@
         <field_v1:hidden xpath="${xpath}/variant"></field_v1:hidden>
     </form_v2:row>
 
-    <form_v2:row label="What is the color of the car?" id="${name}_colourRow" className="hidden">
+    <form_v2:row label="What is the colour of the car?" id="${name}_colourRow" className="hidden">
         <field_v2:general_select xpath="${xpath}/colour" title="colour" required="true" initialText="&nbsp;"/>
     </form_v2:row>
 </form_v2:fieldset>

@@ -53,7 +53,7 @@
 
 				<c:if test="${callCentre}">
 					<c:set var="fieldXpath" value="${xpath}/primary/lhc" />
-					<form_v2:row label="Applicant's LHC" fieldXpath="${fieldXpath}" helpId="287">
+					<form_v2:row label="Applicant's LHC" fieldXpath="${fieldXpath}" helpId="287" id="primaryLHCRow">
 						<field_v1:input_numeric xpath="${fieldXpath}" minValue="0" maxValue="70" title="Applicant's LHC" required="false" id="${name}_primary_lhc" maxLength="2" className="primary-lhc"/>
 					</form_v2:row>
 				</c:if>
@@ -77,7 +77,7 @@
 
 				<c:if test="${callCentre}">
 					<c:set var="fieldXpath" value="${xpath}/partner/lhc" />
-					<form_v2:row label="Partner's LHC" fieldXpath="${fieldXpath}">
+					<form_v2:row label="Partner's LHC" fieldXpath="${fieldXpath}" id="partnerLHCRow">
 						<field_v1:input_numeric xpath="${fieldXpath}" minValue="0" maxValue="70" title="Partner's LHC" required="false" id="${name}_partner_lhc" maxLength="2" className="partner-lhc"/>
 					</form_v2:row>
 				</c:if>

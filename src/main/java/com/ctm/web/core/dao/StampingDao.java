@@ -3,12 +3,15 @@ package com.ctm.web.core.dao;
 import com.ctm.web.core.model.Stamping;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
+import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+
+@Repository
 public class StampingDao {
 
 	private int styleCodeId;

@@ -141,7 +141,7 @@
  	<c:when test="${touch_with_productId and not empty productId}">
 		<jsp:useBean id="touchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
 		<c:catch var="error">
-			<c:set var="ignore" value="${touchService.recordTouchWithProductCode(transactionId, touch , operator, productId)}" />
+			<c:set var="ignore" value="${touchService.recordTouchWithProductCodeDeprecated(transactionId, touch , operator, productId)}" />
 		</c:catch>
 		<c:if test="${not empty error}">
 			${logger.error('Failed to record touch. {},{}', log:kv('touch',touch ) , log:kv('productId',productId ), error)}

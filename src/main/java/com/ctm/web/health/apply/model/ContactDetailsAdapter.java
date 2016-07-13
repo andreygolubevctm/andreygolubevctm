@@ -40,7 +40,7 @@ public class ContactDetailsAdapter {
                     quote.map(HealthQuote::getApplication)
                             .map(Application::getContactPoint)
                             .filter(c -> c.equals("E") || c.equals("P"))
-                            .map(c -> c.equals("E") ? PreferredContact.EMAIL : PreferredContact.PHONE)
+                            .map(c -> c.equals("E") ? PreferredContact.EMAIL : PreferredContact.POST)
                             .orElse(null),
                     quote.map(HealthQuote::getContactAuthority)
                             .map(Contactable::valueOf)

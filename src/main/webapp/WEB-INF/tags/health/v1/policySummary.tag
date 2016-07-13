@@ -84,6 +84,9 @@
 			<p>
 				<strong>Co-payment / % Hospital Contribution:</strong> <span class="copayment">XXX</span>
 			</p>
+			<p class="brochurePlaceholder">
+
+			</p>
 			<div class="footer">
 				<a href="javascript:;" class="more-info">view more info</a>
 			</div>

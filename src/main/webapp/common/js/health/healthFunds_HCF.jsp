@@ -11,15 +11,20 @@ HCF (HCF is usually setting the default values)
 --%>
 
 var healthFunds_HCF = {
-  $paymentStartDate: $("#health_payment_details_start"),
-  set: function(){
-    <%--credit card & bank account frequency & day frequency--%>
-    meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
+    $paymentStartDate: $("#health_payment_details_start"),
+    set: function(){
+        <%--credit card & bank account frequency & day frequency--%>
+        meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
 
-    <%--allow weekend selection from the datepicker--%>
-    healthFunds_HCF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+        <%--allow weekend selection from the datepicker--%>
+        healthFunds_HCF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+
+        var healthFundText = "By joining HCF, you authorise HCF to contact your previous fund in order to obtain a clearance certificate. This will mean that, where applicable, you don’t need to re-serve any hospital waiting periods you served with your previous fund.";
+        $('#clientMemberID').parent().after('<span class="hcf-clearance-certificate">' + healthFundText + '</span>');
+        $('#partnerMemberID').parent().after('<span class="hcf-clearance-certificate">' + healthFundText + '</span>');
   },
   unset: function(){
+      $('.hcf-clearance-certificate').remove();
   }
 };
 </c:set>

@@ -1,21 +1,22 @@
 package com.ctm.web.core.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.naming.NamingException;
-
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import javax.naming.NamingException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Repository
 public class VerticalsDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(VerticalsDao.class);
 

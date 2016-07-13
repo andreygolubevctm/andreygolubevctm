@@ -16,7 +16,7 @@ public class CarMakeDao {
 	}
 
 	/**
-	 * Get all car makes. They will be grouped into isTopMake=true and isTopMake=false.
+	 * Get all car makes. They will be grouped into isTop=true and isTop=false.
 	 */
 	public ArrayList<CarMake> getAll() throws DaoException {
 
@@ -39,7 +39,7 @@ public class CarMakeDao {
 				CarMake carMake = new CarMake();
 				carMake.setCode(results.getString("code"));
 				carMake.setLabel(results.getString("description"));
-				carMake.setIsTopMake(results.getBoolean("isTop"));
+				carMake.setIsTop(results.getBoolean("isTop"));
 				carMakes.add(carMake);
 			}
 		}

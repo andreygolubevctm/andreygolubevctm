@@ -28,7 +28,6 @@
 <c:if test="${comboBox}">
    <input type="text" value="${value}" name="${name}" id="${name}_input" <c:if test="${required}">required data-msg-required="Please enter the ${title}"</c:if> />
 </c:if>
-${list}
 <c:set var="hannoverDefault" value="" />
 <select <c:if test="${!comboBox}">name="${name}"</c:if> id="${name}" class="form-control ${className}"<c:if test="${not empty tabIndex}"> tabindex="${tabIndex}"</c:if>>
    <%-- Write the initial "please choose" option --%>

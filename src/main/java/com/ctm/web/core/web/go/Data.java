@@ -8,6 +8,7 @@ import org.springframework.util.NumberUtils;
 import org.xml.sax.SAXException;
 
 import javax.annotation.Nullable;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -22,6 +23,8 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
  */
 
 public class Data extends XmlNode implements Comparable<Data> {
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Data.class.getName());
 

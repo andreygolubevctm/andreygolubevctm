@@ -417,7 +417,7 @@ var Compare = function( _config ) {
 			for(var i in list[data.type]) {
 				var product = list[data.type][i];
 				
-				if(product.company == "ozicare") {
+				if(LifeQuote.isOzicare(product.company)) {
 					nonLBProducts.push({
 						feature: product.features.features.feature,
 						id: product.product_id
@@ -787,7 +787,7 @@ var Compare = function( _config ) {
 		var flat = "";
 
 		for(var i in list[type]) {
-			if(list[type][i].company !== "ozicare") {
+			if(!LifeQuote.isOzicare(list[type][i].company)) {
 			if( flat.length ) {
 				flat += "," + i
 			} else {

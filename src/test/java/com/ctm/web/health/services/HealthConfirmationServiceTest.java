@@ -3,12 +3,9 @@ package com.ctm.web.health.services;
 import com.ctm.web.core.confirmation.model.Confirmation;
 import com.ctm.web.core.confirmation.services.ConfirmationService;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.health.apply.model.request.payment.details.Frequency;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
 import com.ctm.web.health.model.form.*;
 import com.ctm.web.health.model.providerInfo.ProviderInfo;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -16,12 +13,9 @@ import org.mockito.Mock;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -68,9 +62,11 @@ public class HealthConfirmationServiceTest {
         String expectedWebsite = "expectedWebsite";
         String expectedPhoneNumber = "expectedPhoneNumber";
         String expectedEmail = "expectedEmail";
+        String policyNo = "policyNo";
         data.getQuote().getApplication().getPrimary().setFirstname(expectedFirstName);
         data.getQuote().getApplication().getPrimary().setSurname(expectedLastName);
         HealthApplicationResponse response = new HealthApplicationResponse();
+        response.productId = policyNo;
         String confirmationId = "123456";
         Data dataBucket = new Data();
         ProviderInfo providerInfo = ProviderInfo.newProviderInfo()
@@ -79,14 +75,16 @@ public class HealthConfirmationServiceTest {
         when(providerContentService.getProviderInfo( request,  providerName)).thenReturn(providerInfo);
         healthConfirmationService.createAndSaveConfirmation( request,  data,  response,
                  confirmationId,  dataBucket);
-        String expectedData = "<data><transID>10000</transID><status>OK</status><vertical>CTMH</vertical><startDate>06/01/2016</startDate><frequency>M</frequency><about/>" +
+        String expectedData = "<data><transID>10000</transID><status>OK</status>" +
+                "<vertical>CTMH</vertical><startDate>06/01/2016</startDate>" +
+                "<frequency>M</frequency><about/>" +
                 "<firstName>"+ expectedFirstName + "</firstName>" +
                 "<lastName>" + expectedLastName + "</lastName>" +
                 "<providerInfo>" +
                 "<phoneNumber>" + expectedPhoneNumber + "</phoneNumber>" +
                 "<email>" + expectedEmail + "</email>" +
                 "<website>" + expectedWebsite + "</website>" +
-                "</providerInfo><whatsNext/><product/><policyNo/><paymentType/></data>";
+                "</providerInfo><whatsNext/><product/><policyNo>"+policyNo+"</policyNo><paymentType/></data>";
 
         ArgumentCaptor<Confirmation> argument = ArgumentCaptor.forClass(Confirmation.class);
         verify(confirmationService).addConfirmation(argument.capture());

@@ -19,9 +19,6 @@
 <c:set var="serviceResponse" value="${utilitiesApplicationService.validate(pageContext.request, data)}" />
 
 <c:choose>
-	<c:when test="${empty data.utilities.application.thingsToKnow.termsAndConditions != 'Y'}">
-		ERROR - NO TERMS AND CONDITIONS
-	</c:when>
 	<c:when test="${!utilitiesApplicationService.isValid()}">
 		<c:out value="${serviceResponse}" escapeXml="false" />
 	</c:when>

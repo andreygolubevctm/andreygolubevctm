@@ -1,13 +1,13 @@
 package com.ctm.web.life.leadfeed.services;
 
-import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
-import com.ctm.web.core.transaction.model.Transaction;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
+import com.ctm.web.core.leadfeed.services.LeadFeedService;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.leadfeed.services.LeadFeedService;
+import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.transaction.model.Transaction;
 import org.apache.taglibs.standard.tag.common.sql.ResultImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
