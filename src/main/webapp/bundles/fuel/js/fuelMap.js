@@ -455,6 +455,10 @@
         $(document).ready(function ($) {
             setMapHeight();
             markerTemplate = _.template($('#map-marker-template').html());
+            meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function () {
+                setMapHeight();
+            });
+
         });
 
     }

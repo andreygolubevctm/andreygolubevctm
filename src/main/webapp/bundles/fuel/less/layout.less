@@ -3,7 +3,7 @@
     min-height: 80px; //SM
   }
   @media (@md) {
-    min-height: 120px; //MD and LG
+    min-height: 110px; //MD and LG
   }
 }
 
@@ -19,7 +19,7 @@
 }
 
 /** Sidebar **/
-@media(@md) {
+@media (@sm) {
   #results-sidebar {
     position: absolute;
     top: 0;
@@ -30,9 +30,11 @@
     .fieldrow {
       margin: 0 0 15px;
     }
+    .fieldrow:last-child {
+      margin-bottom: 0;
+    }
   }
 }
-
 
 .cross-sell-widget {
   background-color: @theme-tertiary;
@@ -75,7 +77,9 @@
 
 #price-band-container {
   min-height: 245px;
+  padding-bottom: 0;
 }
+
 .fuel-band {
   .fuel-price {
     margin-left: 5px;
