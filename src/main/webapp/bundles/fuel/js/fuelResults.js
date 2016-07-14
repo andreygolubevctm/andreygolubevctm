@@ -84,8 +84,7 @@
                         pageText: 'Product {{=currentPage}} of {{=totalPages}}'
                     }
                 },
-                rankings: {
-                },
+                rankings: {},
                 incrementTransactionId: false
             });
         }
@@ -119,31 +118,24 @@
 
             $(document.body).addClass('priceMode');
 
+            // Normal results
+            meerkat.modules.fuelMap.plotMarkers(Results.model.returnedProducts);
+
             // If no providers opted to show results, display the no results modal.
-            var availableCounts = 0;
-            $.each(Results.model.returnedProducts, function () {
-                if (this.hasOwnProperty('bandId')) {
-                    availableCounts++;
-                }
-            });
+            var mapHasMarkers = meerkat.modules.fuelMap.getMarkers().length > 0;
 
             // You've been blocked!
-            if (availableCounts === 0 && !Results.model.hasValidationErrors && Results.model.isBlockedQuote) {
+            if (!mapHasMarkers && !Results.model.hasValidationErrors && Results.model.isBlockedQuote) {
                 showBlockedResults();
                 updatePriceBand(false);
                 return;
             }
 
             // Check products length in case the reason for no results is an error e.g. 500
-            if (availableCounts === 0 && _.isArray(Results.model.returnedProducts)) {
-                showNoResults();
+            if (!mapHasMarkers && _.isArray(Results.model.returnedProducts)) {
                 updatePriceBand(false);
                 return;
             }
-
-            // Normal results
-            meerkat.modules.fuelMap.plotMarkers(Results.model.returnedProducts);
-
             // Update price band
             updatePriceBand(true);
         });
@@ -189,12 +181,6 @@
     function init() {
         $(document).ready(function () {
             priceBandTemplate = _.template($('#price-band-template').html());
-        });
-    }
-
-    function showNoResults() {
-        meerkat.modules.dialogs.show({
-            htmlContent: $('#no-results-content')[0].outerHTML
         });
     }
 

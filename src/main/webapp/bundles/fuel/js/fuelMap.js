@@ -34,7 +34,7 @@
      * @type {{autocomplete}}
      */
     var autocomplete;
-    var markers = {};
+    var markers = [];
     var clickedMarker; // The marker when you click on a location or map point.
     var mapStyles = [
         {
@@ -230,6 +230,7 @@
 
             google.maps.event.addListener(map, 'idle', function () {
                 getBoundsAndSetFields();
+                // todo try and not fetch if zooming in?
                 meerkat.modules.fuelResults.get();
             });
 
@@ -319,31 +320,42 @@
         }
     }
 
-    /**
-     * Utility function to create a LatLng object from two values.
-     * @param lat
-     * @param lng
-     * @returns {google.maps.LatLng}
-     */
-    function createLatLng(lat, lng) {
-        return new google.maps.LatLng(
-            parseFloat(lat),
-            parseFloat(lng)
-        );
+    function plotMarkers(sites) {
+        if (!sites) {
+            log("plotMarkers: No Results Available to plot markers");
+            return;
+        }
+        //var bounds = new google.maps.LatLngBounds();
+        cleanupMarkers();
+        for (var i = 0; i < sites.length; i++) {
+            if(sites[i].hasOwnProperty('id')) {
+                markers.push(createMarker(sites[i]));
+            }
+        }
+
+    }
+
+    function cleanupMarkers() {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+        markers = [];
     }
 
     /**
      * Create the marker objects and bind click events.
-     * @param latLng
      * @param info
      * @returns {google.maps.Marker}
      */
-    function createMarker(latLng, info) {
+    function createMarker(info) {
 
         var bandId = info.hasOwnProperty('bandId') ? info.bandId : 0;
 
         var marker = new google.maps.Marker({
-            position: latLng,
+            position: new google.maps.LatLng(
+                parseFloat(info.lat),
+                parseFloat(info.lng)
+            ),
             title: info.name,
             map: map,
             icon: {
@@ -359,8 +371,8 @@
         google.maps.event.addListener(marker, 'click', function (event) {
             openInfoWindow(marker, info);
             drawClickedMarker(event.latLng);
-
         });
+
         return marker;
     }
 
@@ -372,6 +384,7 @@
         // clear previous markers
         if (clickedMarker != null)
             clickedMarker.setMap(null);
+
         clickedMarker = new google.maps.Marker({
             position: location,
             icon: {
@@ -417,57 +430,12 @@
         });
     }
 
-    function plotMarkers(sites) {
-        if (!sites) {
-            log("plotMarkers: No Results Available to plot markers");
-            return;
-        }
-        var bounds = new google.maps.LatLngBounds();
-        for (var i = 0; i < sites.length; i++) {
-            var marker;
-            var cachedMarker = markers[sites[i].id];
-            if (cachedMarker && cachedMarker instanceof google.maps.Marker
-                && cachedMarker.hasOwnProperty('bandId') && cachedMarker.bandId == sites[i].bandId) {
-                // do nothing?
-            } else {
-                var latLng = createLatLng(sites[i].lat, sites[i].lng);
-                marker = createMarker(latLng, sites[i]);
-                markers[sites[i].id] = marker;
-                bounds.extend(latLng);
-            }
-        }
-        cleanupMarkers();
-
-
-    }
-
-    /**
-     * Remove the markers
-     * Note: .setMap is asynchronous, so we cannot set the marker to null
-     * until after the for loop so its been garbage collected
-     */
-    function cleanupMarkers() {
-        var mapBounds = map.getBounds(),
-            siteIds = _.keys(markers),
-            markersToRemove = [];
-        for (var j = 0; j < siteIds.length; j++) {
-            var marker = markers[siteIds[j]];
-            if (!mapBounds.contains(marker.getPosition())) {
-                // remove from the map
-                marker.setMap(null);
-                // remove from the cache
-                markersToRemove.push(marker);
-            }
-        }
-        _.defer(function () {
-            for (var k = 0; k < markersToRemove.length; k++) {
-                markersToRemove[k] = null;
-            }
-        });
-    }
-
     function getMap() {
         return map;
+    }
+
+    function getMarkers() {
+        return markers;
     }
 
     function getBoundsAndSetFields() {
@@ -497,6 +465,7 @@
         initGoogleAPI: initGoogleAPI,
         initCallback: initCallback,
         getMap: getMap,
+        getMarkers: getMarkers,
         plotMarkers: plotMarkers
     });
 
