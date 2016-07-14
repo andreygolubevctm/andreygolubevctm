@@ -164,7 +164,7 @@
         }
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src = 'https://maps.googleapis.com/maps/api/js?key=' + googleAPIKey + '&v=3.exp' +
+        script.src = 'https://maps.googleapis.com/maps/api/js?key=' + googleAPIKey + '&v=3.24' +
             '&libraries=places&signed_in=false&callback=meerkat.modules.fuelMap.initCallback';
         script.onerror = function (msg, url, linenumber) {
             _handleError(msg + ':' + linenumber, "fuelMap.js:initGoogleAPI");
@@ -229,7 +229,7 @@
                 _handleLocationError(false, infoWindow, map.getCenter());
             }
 
-            google.maps.event.addListener(map, 'idle', function() {
+            google.maps.event.addListener(map, 'idle', function () {
                 getBoundsAndSetFields();
                 meerkat.modules.fuelResults.get();
             });
@@ -241,6 +241,7 @@
 
     function initAutocomplete() {
         var options = {
+            types: ['(regions)'],
             componentRestrictions: {
                 country: "au"
             }
@@ -248,7 +249,7 @@
         autocomplete = new google.maps.places.Autocomplete(document.getElementById('fuel_location'), options);
         autocomplete.bindTo('bounds', map);
 
-        autocomplete.addListener('place_changed', function() {
+        autocomplete.addListener('place_changed', function () {
             infoWindow.close();
             var place = autocomplete.getPlace();
             if (!place.geometry) {
@@ -292,6 +293,7 @@
         });
 
     }
+
     /**
      * open the infoWindow inside a google map on marker click and by default.
      * @param marker
@@ -346,7 +348,6 @@
             position: latLng,
             title: info.name,
             map: map,
-            animation: google.maps.Animation.DROP,
             icon: {
                 url: 'assets/brand/ctm/graphics/fuel/' + bandId + '@2x.png',
                 // base image is 52x52 px
@@ -424,14 +425,35 @@
             return;
         }
         var bounds = new google.maps.LatLngBounds();
-
+_.delay(function() {
         for (var i = 0; i < sites.length; i++) {
-            var latLng = createLatLng(sites[i].lat, sites[i].lng);
-            var marker = createMarker(latLng, sites[i]);
-            markers[sites[i].id] = marker;
-            bounds.extend(latLng);
-        }
+            var marker;
+            var cachedMarker = markers[sites[i].id];
+            if (cachedMarker && cachedMarker instanceof google.maps.Marker
+                && cachedMarker.hasOwnProperty('bandId') && cachedMarker.bandId == sites[i].bandId) {
+            } else {
+                var latLng = createLatLng(sites[i].lat, sites[i].lng);
+                marker = createMarker(latLng, sites[i]);
+                markers[sites[i].id] = marker;
+                bounds.extend(latLng);
+                console.log("Creating Marker", sites[i])
+            }
 
+        }
+        var mapBounds = map.getBounds();
+        var siteIds = _.keys(markers);
+        for (var j = 0; j < siteIds.length; j++) {
+            if (!mapBounds.contains(markers[siteIds[j]].getPosition())) {
+                // remove from the map
+                markers[siteIds[j]].setMap(null);
+                console.log("Removing Marker", siteIds[j]);
+                // remove from the cache
+                delete markers[siteIds[j]];
+            } else {
+                console.log("Not deleting", siteIds[j]);
+            }
+        }
+}, 5000);
         //map.fitBounds(bounds);
     }
 
@@ -439,13 +461,13 @@
         return map;
     }
 
-    function getBoundsAndSetFields () {
+    function getBoundsAndSetFields() {
         if (map) {
             var bounds = map.getBounds(),
-            ne = bounds.getNorthEast(),
-            sw = bounds.getSouthWest(),
-            nw = new google.maps.LatLng(ne.lat(), sw.lng()),
-            se = new google.maps.LatLng(sw.lat(), ne.lng());
+                ne = bounds.getNorthEast(),
+                sw = bounds.getSouthWest(),
+                nw = new google.maps.LatLng(ne.lat(), sw.lng()),
+                se = new google.maps.LatLng(sw.lat(), ne.lng());
 
             $('#fuel_map_northWest').val(nw.lat() + ',' + nw.lng());
             $('#fuel_map_southEast').val(se.lat() + ',' + se.lng());
