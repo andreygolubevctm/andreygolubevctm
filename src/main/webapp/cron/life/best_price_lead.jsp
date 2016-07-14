@@ -47,7 +47,7 @@
 			<c:set var="vertical" value="${fn:toLowerCase(result.ProductType)}" />
 
 			<%-- First, record CRON touch event --%>
-			<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "CRON", "best_price_lead.jsp")}</c:set>
+			<c:set var="touchResponse">${accessTouchService.recordTouchWithCommentJSP(result.transaction_id, "CRON", "best_price_lead.jsp")}</c:set>
 		
 			<%--
 				- Take each transaction ID
@@ -144,7 +144,7 @@
 												/>
 
 							<c:set var="leadSentTo" value="lifebroker" />
-							<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", leadSentTo)}</c:set>
+							<c:set var="touchResponse">${accessTouchService.recordTouchWithCommentJSP(result.transaction_id, "LF", leadSentTo)}</c:set>
 						</c:otherwise>
 					</c:choose>
 

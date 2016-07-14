@@ -77,7 +77,7 @@
 					<jsp:useBean id="configResolver" class="com.ctm.web.core.utils.ConfigResolver" scope="application" />
 					<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_contact_lead.xml')}" />
 
-					<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", "lifebroker")}</c:set>
+					<c:set var="touchResponse">${accessTouchService.recordTouchWithCommentJSP(result.transaction_id, "LF", "lifebroker")}</c:set>
 
 					<go:soapAggregator 	config = "${config}"
 										transactionId = "${result.transaction_id}"

@@ -53,7 +53,7 @@
 
 				<jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessTouchService" scope="request" />
 				<agg_v1:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data[vertical]}" />
-				<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "LF", "lifebroker")}</c:set>
+				<c:set var="touchResponse">${accessTouchService.recordTouchWithCommentJSP(tranId, "LF", "lifebroker")}</c:set>
 			</c:otherwise>
 		</c:choose>
 	</c:when>
