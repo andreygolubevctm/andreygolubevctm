@@ -3,13 +3,13 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <core_v1:js_template id="price-band-template">
-    {{ if(obj.error) { }}
-    <p>Price bands are not available for this location.</p>
-    {{ } else { }}
     <p>Price bands based on <strong id="fuel-map-location">{{= obj.cityName }}</strong> prices</p>
+    {{ if(obj.error) { }}
+    <p>Price unavailable</p>
+    {{ } else { }}
     {{ _.each(obj.bands, function(band) { }}
     <div class="fuel-band fuel-band-{{= band.id}}">
-        <span class="circle"><span class="icon icon-vert-fuel"></span> </span>
+        <span class="circle hidden-xs"><span class="icon icon-vert-fuel"></span> </span>
         <span class="fuel-price">
             {{ if (!band.toPrice){ }}
             ≤ {{= band.fromPrice}}
@@ -21,12 +21,12 @@
         </span>
     </div>
     {{ }); }}
-    <div class="fuel-band">
-        <span class="circle"><span class="icon icon-vert-fuel"></span> </span>
+    <div class="fuel-band hidden-xs">
+        <span class="circle "><span class="icon icon-vert-fuel"></span> </span>
         <span class="fuel-price">price unavailable</span>
     </div>
     {{ } }}
-    <div id="provider-disclaimer" class="short-disclaimer">
+    <div id="provider-disclaimer" class="short-disclaimer hidden-xs">
         <p><span class="supplier">Data supplied by Motormouth</span></p>
     </div>
 </core_v1:js_template>

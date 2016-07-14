@@ -6,7 +6,8 @@
 
     var events = {};
 
-    var priceBandTemplate;
+    var priceBandTemplate,
+        $priceBandsContainer;
 
     function initPage() {
         _initResults();
@@ -181,6 +182,7 @@
     function init() {
         $(document).ready(function () {
             priceBandTemplate = _.template($('#price-band-template').html());
+            $priceBandsContainer = $('.price-bands');
         });
     }
 
@@ -201,8 +203,8 @@
     }
 
     function updatePriceBand(hasSite) {
-        var info = hasSite === true ? Results.getReturnedGeneral() : {error: true};
-        $('#price-band-container').html(priceBandTemplate(info));
+        var info = hasSite === true ? Results.getReturnedGeneral() : {error: true, cityName: Results.getReturnedGeneral().cityName};
+        $priceBandsContainer.html(priceBandTemplate(info));
     }
 
     meerkat.modules.register("fuelResults", {

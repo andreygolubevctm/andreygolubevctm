@@ -85,7 +85,7 @@
 				<%-- Slides --%>
                 <div id="google-map-container">
 					<fuel:overlay_sidebar />
-                    <div id="map-canvas" style="width: 100%; height: 100%"></div>
+                    <div id="map-canvas" style="width: 100%;"></div>
 					<fuel:results_templates />
                 </div>
 
@@ -95,7 +95,10 @@
 				</div>
 
 				<input type="hidden" name="transcheck" id="transcheck" value="1" />
-                <fuel:fuel_map />
+                <fuel:fuel_infoWindow />
+                <div id="price-band-container-xs" class="price-bands visible-xs">
+                    <%--for poping up bands template--%>
+                </div>
 			</jsp:body>
 
 		</layout_v1:journey_engine_page_fluid>

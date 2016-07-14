@@ -424,9 +424,9 @@
         _.defer(function () {
             var isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false,
                 $header = $('header');
-            var heightToSet = isXS ? window.innerHeight - $header.height() /* TODO: minus price band and infoBox */ : window.innerHeight - $header.height();
+            var heightToSet = isXS ? window.innerHeight - $header.height() - $('#results-sidebar').height() - 36 /*fixed height...*/ : window.innerHeight - $header.height();
             /* TODO: minus footer signup box */
-            $('#google-map-container').css('height', heightToSet);
+            $('#map-canvas').css('height', heightToSet);
         });
     }
 

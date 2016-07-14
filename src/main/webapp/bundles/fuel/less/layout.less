@@ -36,6 +36,20 @@
   }
 }
 
+@media (@xs-only) {
+  .sidebar-widget {
+    border: none;
+    margin-bottom: 0;
+    padding: 15px;
+    background-color: #EDEDED;
+    z-index: 999;
+    .fieldrow {
+      margin: 0;
+      padding: 0 15px;
+    }
+  }
+}
+
 .cross-sell-widget {
   background-color: @theme-tertiary;
   color: #fff;
@@ -75,16 +89,51 @@
   }
 }
 
+.price-bands {
+  @media (@sm) {
+    .fuel-band {
+      .fuel-price {
+        margin-left: 5px;
+      }
+      margin-top: 10px;
+    }
+  }
+
+  @media (@xs-only) {
+    text-align: center;
+    color: white;
+    font-size: @font-size-small;
+    line-height: 1.5;
+    overflow: hidden;
+    p {
+      background-color: @gray-light;
+      margin:0;
+    }
+    .fuel-band {
+      width:20%;
+      float:left;
+      &.fuel-band-1 {
+        background-color: #A90001;
+      }
+      &.fuel-band-2 {
+        background-color: #F14E2D;
+      }
+      &.fuel-band-3 {
+        background-color: #F9928D;
+      }
+      &.fuel-band-4 {
+        background-color: #0AB449;
+      }
+      &.fuel-band-5 {
+        background-color: #077836;
+      }
+    }
+  }
+}
+
 #price-band-container {
   min-height: 245px;
   padding-bottom: 0;
-}
-
-.fuel-band {
-  .fuel-price {
-    margin-left: 5px;
-  }
-  margin-top: 10px;
 }
 
 .short-disclaimer {
