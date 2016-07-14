@@ -529,7 +529,6 @@
             <groupId>com.ctm.fuel</groupId>
             <artifactId>fuel-quote-model</artifactId>
             <version>${fuel-quote-model.version}</version>
-            <classifier>FUE-114</classifier>
         </dependency>
 
         <dependency>
