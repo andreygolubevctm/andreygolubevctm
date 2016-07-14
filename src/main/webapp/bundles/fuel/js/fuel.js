@@ -22,6 +22,7 @@
             if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'latest' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
                 meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
             }
+            applyEventListeners();
         });
     }
 
