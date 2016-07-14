@@ -127,7 +127,7 @@
 
 		</form_v1:form>
 		
-		<life:footer />
+		<life_v1:footer />
 		
 		<core_v1:closing_body>
 			<agg_v1:includes supertag="true" />
