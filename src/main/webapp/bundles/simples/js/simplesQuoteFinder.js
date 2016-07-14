@@ -202,7 +202,7 @@
 						UAM:"Urgent Ambulance"
 					};
 					return _.isUndefined(mapping[ben]) ? "** Undefined **" : mapping[ben];
-				}
+				};
 				row.application.hbf.flexiextras = {};
 				for(var i=0; i<benefits.length; i++) {
 					row.application.hbf.flexiextras[benefits[i]] = getBenefitMapping(benefits[i]);
