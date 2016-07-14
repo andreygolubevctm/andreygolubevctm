@@ -34,7 +34,7 @@
      * @type {{autocomplete}}
      */
     var autocomplete;
-    var markers = {};
+    var markers = [];
     var clickedMarker; // The marker when you click on a location or map point.
     var mapStyles = [
         {
@@ -145,14 +145,14 @@
     var currentLat,
         currentLng; //String/Number
     var markerTemplate,
-        modalId,
-        siteId,
-        modalTemplate,
         windowResizeListener;
 
+    /**
+     * Constants - Configuration for limiting zoom.
+     * @type {number}
+     */
     var DEFAULT_ZOOM = 13,
         MIN_ZOOM = 11;
-
 
     /**
      * Asynchronously load in the Google Maps API and then calls initCallback
@@ -177,7 +177,6 @@
      */
     function initCallback() {
         try {
-            //var autoComplete =
 
             var styledMap = new google.maps.StyledMapType(mapStyles,
                 {name: "Fuel Map"});
@@ -187,11 +186,11 @@
                 minZoom: MIN_ZOOM, // e.g. 0 is whole world
                 mapTypeId: google.maps.MapTypeId.ROAD,
                 streetViewControl: false,
-                zoomControl: true,
-                center: {
+                center: { // hard coding Sydney based off Google Analytics usage data as at 12/07/2016
                     lat: -33.8684511,
                     lng: 151.1984322
                 },
+                zoomControl: true,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.RIGHT_TOP
                 },
@@ -208,7 +207,7 @@
             map.mapTypes.set('map_style', styledMap);
             map.setMapTypeId('map_style');
 
-            initAutocomplete();
+            initAutoComplete();
             initInfoWindowProperties();
 
             // Try HTML5 geolocation.
@@ -231,6 +230,7 @@
 
             google.maps.event.addListener(map, 'idle', function () {
                 getBoundsAndSetFields();
+                // todo try and not fetch if zooming in?
                 meerkat.modules.fuelResults.get();
             });
 
@@ -239,7 +239,7 @@
         }
     }
 
-    function initAutocomplete() {
+    function initAutoComplete() {
         var options = {
             types: ['(regions)'],
             componentRestrictions: {
@@ -275,15 +275,16 @@
     function initInfoWindowProperties() {
         // Initialise the info window
         infoWindow = new google.maps.InfoWindow({
-            map: map,
             pixelOffset: new google.maps.Size(-13, 8)
         });
 
+        // Remove it from the map
         google.maps.event.addListener(infoWindow, 'closeclick', function () {
             if (clickedMarker != null)
                 clickedMarker.setMap(null);
         });
 
+        // Removes the pointer arrow on the infoWindow as per design.
         google.maps.event.addListener(infoWindow, 'domready', function () {
             var el = document.getElementById('iw_content').parentNode.parentNode.parentNode;
             el = el.previousElementSibling || el.previousSibling;
@@ -300,9 +301,8 @@
      * @param info
      */
     function openInfoWindow(marker, info) {
-        var htmlString = "";
         if (markerTemplate) {
-            htmlString = markerTemplate(info);
+            var htmlString = markerTemplate(info);
             infoWindow.setContent(htmlString);
             infoWindow.open(map, marker);
 
@@ -320,32 +320,42 @@
         }
     }
 
-    /**
-     * Utility function to create a LatLng object from two values.
-     * @param lat
-     * @param lng
-     * @returns {google.maps.LatLng}
-     */
-    function createLatLng(lat, lng) {
-        return new google.maps.LatLng(
-            parseFloat(lat),
-            parseFloat(lng)
-        );
+    function plotMarkers(sites) {
+        if (!sites) {
+            log("plotMarkers: No Results Available to plot markers");
+            return;
+        }
+        //var bounds = new google.maps.LatLngBounds();
+        cleanupMarkers();
+        for (var i = 0; i < sites.length; i++) {
+            if(sites[i].hasOwnProperty('id')) {
+                markers.push(createMarker(sites[i]));
+            }
+        }
+
+    }
+
+    function cleanupMarkers() {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+        markers = [];
     }
 
     /**
      * Create the marker objects and bind click events.
-     * @param latLng
      * @param info
-     * @param markerOpts
      * @returns {google.maps.Marker}
      */
-    function createMarker(latLng, info, markerOpts) {
+    function createMarker(info) {
 
         var bandId = info.hasOwnProperty('bandId') ? info.bandId : 0;
 
         var marker = new google.maps.Marker({
-            position: latLng,
+            position: new google.maps.LatLng(
+                parseFloat(info.lat),
+                parseFloat(info.lng)
+            ),
             title: info.name,
             map: map,
             icon: {
@@ -361,8 +371,8 @@
         google.maps.event.addListener(marker, 'click', function (event) {
             openInfoWindow(marker, info);
             drawClickedMarker(event.latLng);
-
         });
+
         return marker;
     }
 
@@ -374,6 +384,7 @@
         // clear previous markers
         if (clickedMarker != null)
             clickedMarker.setMap(null);
+
         clickedMarker = new google.maps.Marker({
             position: location,
             icon: {
@@ -413,52 +424,18 @@
         _.defer(function () {
             var isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false,
                 $header = $('header');
-            var heightToSet = isXS ? window.innerHeight - $header.height() /* TODO: minus price band and infoBox */ : window.innerHeight - $header.height();
+            var heightToSet = isXS ? window.innerHeight - $header.height() - $('#results-sidebar').height() - 36 /*fixed height...*/ : window.innerHeight - $header.height();
             /* TODO: minus footer signup box */
-            $('#google-map-container').css('height', heightToSet);
+            $('#map-canvas').css('height', heightToSet);
         });
-    }
-
-    function plotMarkers(sites) {
-        if (!sites) {
-            log("plotMarkers: No Results Available to plot markers");
-            return;
-        }
-        var bounds = new google.maps.LatLngBounds();
-_.delay(function() {
-        for (var i = 0; i < sites.length; i++) {
-            var marker;
-            var cachedMarker = markers[sites[i].id];
-            if (cachedMarker && cachedMarker instanceof google.maps.Marker
-                && cachedMarker.hasOwnProperty('bandId') && cachedMarker.bandId == sites[i].bandId) {
-            } else {
-                var latLng = createLatLng(sites[i].lat, sites[i].lng);
-                marker = createMarker(latLng, sites[i]);
-                markers[sites[i].id] = marker;
-                bounds.extend(latLng);
-                console.log("Creating Marker", sites[i])
-            }
-
-        }
-        var mapBounds = map.getBounds();
-        var siteIds = _.keys(markers);
-        for (var j = 0; j < siteIds.length; j++) {
-            if (!mapBounds.contains(markers[siteIds[j]].getPosition())) {
-                // remove from the map
-                markers[siteIds[j]].setMap(null);
-                console.log("Removing Marker", siteIds[j]);
-                // remove from the cache
-                delete markers[siteIds[j]];
-            } else {
-                console.log("Not deleting", siteIds[j]);
-            }
-        }
-}, 5000);
-        //map.fitBounds(bounds);
     }
 
     function getMap() {
         return map;
+    }
+
+    function getMarkers() {
+        return markers;
     }
 
     function getBoundsAndSetFields() {
@@ -478,6 +455,10 @@ _.delay(function() {
         $(document).ready(function ($) {
             setMapHeight();
             markerTemplate = _.template($('#map-marker-template').html());
+            meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function () {
+                setMapHeight();
+            });
+
         });
 
     }
@@ -488,6 +469,7 @@ _.delay(function() {
         initGoogleAPI: initGoogleAPI,
         initCallback: initCallback,
         getMap: getMap,
+        getMarkers: getMarkers,
         plotMarkers: plotMarkers
     });
 

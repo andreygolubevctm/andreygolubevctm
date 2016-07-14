@@ -4,10 +4,10 @@
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}"/>
 
 <div class="row">
-    <div class="hidden-xs col-sm-4 col-md-3 col-lg-2" id="results-sidebar">
+    <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2" id="results-sidebar">
         <div class="row">
             <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded sidebar-widget-dropshadow">
-                <div class="row fieldrow">
+                <div class="row fieldrow hidden-xs">
                     <field_v2:input xpath="${xpath}/location" title="search location" required="true" placeHolder="Postcode / Location"/>
                 </div>
                 <div class="row fieldrow">
@@ -15,11 +15,11 @@
                 </div>
             </div>
 
-            <div id="price-band-container" class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded sidebar-widget-dropshadow">
-                <fuel:price_band_template />
+            <div id="price-band-container" class="price-bands col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded sidebar-widget-dropshadow hidden-xs">
+                <fuel:price_bands_template />
             </div>
 
-            <div class="col-sm-12 sidebar-widget sidebar-widget-contained cross-sell-widget">
+            <div class="col-sm-12 sidebar-widget sidebar-widget-contained cross-sell-widget hidden-xs">
                 <div class="text-center cross-sell-text">
                     <span class="icon icon-vert-car"></span>
                     <p>Are you looking for Comprehensive Car Insurance?</p>
