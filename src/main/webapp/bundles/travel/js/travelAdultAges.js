@@ -34,7 +34,7 @@
 			var selected = $(this).find("input[type='radio']:checked").val();
 			if (selected === "S") {
 				$adult_dob_2_row[hideMethod]();
-				$children_row[hideMethod]();
+				$children_row[showMethod]();
 				$travel_adults.val(1);
 			} else if (selected === "C") {
 				$adult_dob_2_row[showMethod]();
@@ -48,6 +48,8 @@
 				$adult_dob_2.removeClass('validate').removeAttr('required');
 			}
 		});
+
+		$travel_party.trigger("change");
 	}
 
 	function updateHiddenField() {
