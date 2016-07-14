@@ -145,14 +145,14 @@
     var currentLat,
         currentLng; //String/Number
     var markerTemplate,
-        modalId,
-        siteId,
-        modalTemplate,
         windowResizeListener;
 
+    /**
+     * Constants - Configuration for limiting zoom.
+     * @type {number}
+     */
     var DEFAULT_ZOOM = 13,
         MIN_ZOOM = 11;
-
 
     /**
      * Asynchronously load in the Google Maps API and then calls initCallback
@@ -177,7 +177,6 @@
      */
     function initCallback() {
         try {
-            //var autoComplete =
 
             var styledMap = new google.maps.StyledMapType(mapStyles,
                 {name: "Fuel Map"});
@@ -187,11 +186,11 @@
                 minZoom: MIN_ZOOM, // e.g. 0 is whole world
                 mapTypeId: google.maps.MapTypeId.ROAD,
                 streetViewControl: false,
-                zoomControl: true,
-                center: {
+                center: { // hard coding Sydney based off Google Analytics usage data as at 12/07/2016
                     lat: -33.8684511,
                     lng: 151.1984322
                 },
+                zoomControl: true,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.RIGHT_TOP
                 },
@@ -208,7 +207,7 @@
             map.mapTypes.set('map_style', styledMap);
             map.setMapTypeId('map_style');
 
-            initAutocomplete();
+            initAutoComplete();
             initInfoWindowProperties();
 
             // Try HTML5 geolocation.
@@ -239,7 +238,7 @@
         }
     }
 
-    function initAutocomplete() {
+    function initAutoComplete() {
         var options = {
             types: ['(regions)'],
             componentRestrictions: {
@@ -275,15 +274,16 @@
     function initInfoWindowProperties() {
         // Initialise the info window
         infoWindow = new google.maps.InfoWindow({
-            map: map,
             pixelOffset: new google.maps.Size(-13, 8)
         });
 
+        // Remove it from the map
         google.maps.event.addListener(infoWindow, 'closeclick', function () {
             if (clickedMarker != null)
                 clickedMarker.setMap(null);
         });
 
+        // Removes the pointer arrow on the infoWindow as per design.
         google.maps.event.addListener(infoWindow, 'domready', function () {
             var el = document.getElementById('iw_content').parentNode.parentNode.parentNode;
             el = el.previousElementSibling || el.previousSibling;
@@ -300,9 +300,8 @@
      * @param info
      */
     function openInfoWindow(marker, info) {
-        var htmlString = "";
         if (markerTemplate) {
-            htmlString = markerTemplate(info);
+            var htmlString = markerTemplate(info);
             infoWindow.setContent(htmlString);
             infoWindow.open(map, marker);
 
@@ -337,10 +336,9 @@
      * Create the marker objects and bind click events.
      * @param latLng
      * @param info
-     * @param markerOpts
      * @returns {google.maps.Marker}
      */
-    function createMarker(latLng, info, markerOpts) {
+    function createMarker(latLng, info) {
 
         var bandId = info.hasOwnProperty('bandId') ? info.bandId : 0;
 
@@ -425,36 +423,47 @@
             return;
         }
         var bounds = new google.maps.LatLngBounds();
-_.delay(function() {
         for (var i = 0; i < sites.length; i++) {
             var marker;
             var cachedMarker = markers[sites[i].id];
             if (cachedMarker && cachedMarker instanceof google.maps.Marker
                 && cachedMarker.hasOwnProperty('bandId') && cachedMarker.bandId == sites[i].bandId) {
+                // do nothing?
             } else {
                 var latLng = createLatLng(sites[i].lat, sites[i].lng);
                 marker = createMarker(latLng, sites[i]);
                 markers[sites[i].id] = marker;
                 bounds.extend(latLng);
-                console.log("Creating Marker", sites[i])
             }
+        }
+        cleanupMarkers();
 
-        }
-        var mapBounds = map.getBounds();
-        var siteIds = _.keys(markers);
+
+    }
+
+    /**
+     * Remove the markers
+     * Note: .setMap is asynchronous, so we cannot set the marker to null
+     * until after the for loop so its been garbage collected
+     */
+    function cleanupMarkers() {
+        var mapBounds = map.getBounds(),
+            siteIds = _.keys(markers),
+            markersToRemove = [];
         for (var j = 0; j < siteIds.length; j++) {
-            if (!mapBounds.contains(markers[siteIds[j]].getPosition())) {
+            var marker = markers[siteIds[j]];
+            if (!mapBounds.contains(marker.getPosition())) {
                 // remove from the map
-                markers[siteIds[j]].setMap(null);
-                console.log("Removing Marker", siteIds[j]);
+                marker.setMap(null);
                 // remove from the cache
-                delete markers[siteIds[j]];
-            } else {
-                console.log("Not deleting", siteIds[j]);
+                markersToRemove.push(marker);
             }
         }
-}, 5000);
-        //map.fitBounds(bounds);
+        _.defer(function () {
+            for (var k = 0; k < markersToRemove.length; k++) {
+                markersToRemove[k] = null;
+            }
+        });
     }
 
     function getMap() {
