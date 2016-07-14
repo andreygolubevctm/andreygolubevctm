@@ -36,7 +36,7 @@
 
 		<form_v1:row label="Phone number">
 			<%--This should be cleaned up to use Flexi_contact_number when LIFE is refactored--%>
-			<field_v1:contact_telno xpath="${xpath}/contactNumber" required="false" title="phone number"  />
+			<field_v1:contact_telno xpath="${xpath}/contactNumber" required="${lif406SplitTest eq true}" title="phone number"  />
 		</form_v1:row>
 
 		<c:if test="${empty callCentre}">
