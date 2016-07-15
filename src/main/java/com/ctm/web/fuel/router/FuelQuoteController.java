@@ -4,6 +4,9 @@ import com.ctm.fuelquote.model.config.Coordinate;
 import com.ctm.fuelquote.model.request.QuoteRequest;
 import com.ctm.fuelquote.model.response.QuoteResponse;
 import com.ctm.httpclient.Client;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -13,9 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
+
 @RestController
 @RequestMapping("/rest/fuel")
 public class FuelQuoteController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FuelQuoteController.class);
+
     @Autowired
     private Client<QuoteRequest, QuoteResponse> fuelQuoteClient;
 
@@ -30,18 +37,24 @@ public class FuelQuoteController {
         final String southEast = request.getParameter("fuel_map_southEast");
         final Long fuelId = Long.valueOf(request.getParameter("fuel_type_id"));
 
-        final QuoteRequest quoteRequest = QuoteRequest.newBuilder()
-                .initialPoint(Coordinate.newBuilder()
-                    .lat(Float.valueOf(northWest.split(",")[0]))
-                    .lng(Float.valueOf(northWest.split(",")[1]))
-                    .build())
-                .endPoint(Coordinate.newBuilder()
-                    .lat(Float.valueOf(southEast.split(",")[0]))
-                    .lng(Float.valueOf(southEast.split(",")[1]))
-                    .build())
-                .fuelId(fuelId)
-                .build();
+        LOGGER.info("Fuel quote {}, {}, {}", kv("fuel_map_northWest", northWest), kv("fuel_map_southEast", southEast), kv("fuelId", fuelId));
 
-        return fuelQuoteClient.post(quoteRequest, QuoteResponse.class, fuelQuoteUrl + "/quote").toBlocking().first();
+        if(StringUtils.isNotBlank(northWest) && StringUtils.isNotBlank(southEast) && fuelId != null) {
+            final QuoteRequest quoteRequest = QuoteRequest.newBuilder()
+                    .initialPoint(Coordinate.newBuilder()
+                            .lat(Float.valueOf(northWest.split(",")[0]))
+                            .lng(Float.valueOf(northWest.split(",")[1]))
+                            .build())
+                    .endPoint(Coordinate.newBuilder()
+                            .lat(Float.valueOf(southEast.split(",")[0]))
+                            .lng(Float.valueOf(southEast.split(",")[1]))
+                            .build())
+                    .fuelId(fuelId)
+                    .build();
+
+            return fuelQuoteClient.post(quoteRequest, QuoteResponse.class, fuelQuoteUrl + "/quote").toBlocking().first();
+        } else {
+            return QuoteResponse.newBuilder().build();
+        }
     }
 }
