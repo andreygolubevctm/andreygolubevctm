@@ -208,24 +208,29 @@
             initAutoComplete();
             initInfoWindowProperties();
 
-            // Try HTML5 geolocation.
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
+            // Run when the mapobject is created and rendered otherwise on slow connections, we can get issues.
+            google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
 
-                    map.setCenter(pos);
-                    drawClickedMarker(pos);
-                    getResults();
-                }, function () {
-                    _handleLocationError(true, infoWindow, map.getCenter());
-                });
-            } else {
-                // Browser doesn't support Geolocation
-                _handleLocationError(false, infoWindow, map.getCenter());
-            }
+                // Try HTML5 geolocation.
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+
+                        map.setCenter(pos);
+                        drawClickedMarker(pos);
+                        getResults();
+                    }, function () {
+                        _handleLocationError(true, infoWindow, map.getCenter());
+                    });
+                } else {
+                    // Browser doesn't support Geolocation
+                    _handleLocationError(false, infoWindow, map.getCenter());
+                }
+            });
+
 
             google.maps.event.addListener(map, 'zoom_changed', function (event) {
                 var newZoom = map.getZoom();
@@ -462,9 +467,12 @@
     }
 
     function getBoundsAndSetFields() {
-        if (map) {
-            var bounds = map.getBounds(),
-                ne = bounds.getNorthEast(),
+        if (!map) {
+            return;
+        }
+        var bounds = map.getBounds();
+        if (bounds && _.isFunction(bounds.getNorthEast)) {
+            var ne = bounds.getNorthEast(),
                 sw = bounds.getSouthWest(),
                 nw = new google.maps.LatLng(ne.lat(), sw.lng()),
                 se = new google.maps.LatLng(sw.lat(), ne.lng());
