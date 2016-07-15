@@ -110,7 +110,10 @@
 						<field_v2:person_dob xpath="travel/travellers/traveller2DOB" title="the second traveller's" required="true" ageMin="16" ageMax="99" />
 					</form_v2:row>
 					<field_v1:hidden xpath="travel/travellers/travellersDOB" />
-					<form_v2:row label="How many children?"  className="smallWidth children_row" helpId="217">
+					<form_v2:row label="Will you be travelling with children?" className="single_parent_row" >
+						<field_v2:array_radio id="${name}_singleParent" xpath="${xpath}/singleParent" required="true" defaultValue="N" items="Y=Yes,N=No" className="single_parent" title="${title}whether you will be travelling with children" />
+					</form_v2:row>
+					<form_v2:row label="How many children?" className="smallWidth children_row" helpId="217">
 						<field_v2:array_select items="0=Select the number of children,1=1,2=2,3=3,4=4,5=5,6=6,7=7,8=8,9=9,10=10" xpath="travel/childrenSelect" title="how many children" required="true" className="thinner_input" />
 					</form_v2:row>
 
