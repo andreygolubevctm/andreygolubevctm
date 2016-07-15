@@ -139,7 +139,9 @@
         }
     ];
 
-    var markerTemplate;
+    var markerTemplate,
+        isXsInfoWindowShown = false,
+        $xsInfoWindow;
 
     /**
      * Constants - Configuration for limiting zoom.
@@ -313,8 +315,17 @@
     function openInfoWindow(marker, info) {
         if (markerTemplate) {
             var htmlString = markerTemplate(info);
-            infoWindow.setContent(htmlString);
-            infoWindow.open(map, marker);
+
+            if (meerkat.modules.deviceMediaState.get() === "xs") {
+                $xsInfoWindow.html(htmlString);
+                if (!isXsInfoWindowShown) {
+                    $('#map-canvas').animate({height:'+=-125'}, 'fast');
+                    isXsInfoWindowShown = true;
+                }
+            } else {
+                infoWindow.setContent(htmlString);
+                infoWindow.open(map, marker);
+            }
 
             meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                 method: 'trackProductView',
@@ -437,7 +448,7 @@
         _.defer(function () {
             var isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false,
                 $header = $('header');
-            var heightToSet = isXS ? window.innerHeight - $header.height() - $('#results-sidebar').height() - 36 /*fixed height...*/ : window.innerHeight - $header.height();
+            var heightToSet = isXS ? window.innerHeight - $header.height() - $('#results-sidebar').height() - 36 - $xsInfoWindow.height() : window.innerHeight - $header.height();
             /* TODO: minus footer signup box */
             $('#map-canvas').css('height', heightToSet);
         });
@@ -466,6 +477,7 @@
 
     function initFuelMap() {
         $(document).ready(function ($) {
+            $xsInfoWindow = $('#info-window-container-xs');
             setMapHeight();
             markerTemplate = _.template($('#map-marker-template').html());
             meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function () {

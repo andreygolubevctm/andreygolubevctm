@@ -1,5 +1,7 @@
 .map-info-window {
-  max-width: 300px;
+  @media (@sm) {
+    width: 300px;
+  }
   margin: 0;
   img {
     display: block;
@@ -17,12 +19,10 @@
       margin-left: 10px;
     }
   }
-  @media (@sm) {
-    > div {
-      padding:0;
-      &.fuel-site-logo {
-        padding:10px;
-      }
+  > div {
+    padding:0;
+    &.fuel-site-logo {
+      padding:10px;
     }
   }
 }
