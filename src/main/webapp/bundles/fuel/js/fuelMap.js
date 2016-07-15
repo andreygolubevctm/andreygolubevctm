@@ -138,21 +138,19 @@
             ]
         }
     ];
-    /**
-     * The current latitude or longitude from the clicked map.
-     * @type {String|Number}
-     */
-    var currentLat,
-        currentLng; //String/Number
-    var markerTemplate,
-        windowResizeListener;
+
+    var markerTemplate;
 
     /**
      * Constants - Configuration for limiting zoom.
      * @type {number}
      */
     var DEFAULT_ZOOM = 13,
-        MIN_ZOOM = 11;
+        MIN_ZOOM = 12,
+        MIN_MAP_HEIGHT = 735;
+
+    var currentZoom = DEFAULT_ZOOM,
+        fetchResultsTimeout;
 
     /**
      * Asynchronously load in the Google Maps API and then calls initCallback
@@ -210,33 +208,55 @@
             initAutoComplete();
             initInfoWindowProperties();
 
-            // Try HTML5 geolocation.
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
+            // Run when the mapobject is created and rendered otherwise on slow connections, we can get issues.
+            google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
 
-                    map.setCenter(pos);
-                    drawClickedMarker(pos);
-                }, function () {
-                    _handleLocationError(true, infoWindow, map.getCenter());
-                });
-            } else {
-                // Browser doesn't support Geolocation
-                _handleLocationError(false, infoWindow, map.getCenter());
-            }
+                // Try HTML5 geolocation.
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
 
-            google.maps.event.addListener(map, 'idle', function () {
-                getBoundsAndSetFields();
-                // todo try and not fetch if zooming in?
-                meerkat.modules.fuelResults.get();
+                        map.setCenter(pos);
+                        drawClickedMarker(pos);
+                        getResults();
+                    }, function () {
+                        _handleLocationError(true, infoWindow, map.getCenter());
+                    });
+                } else {
+                    // Browser doesn't support Geolocation
+                    _handleLocationError(false, infoWindow, map.getCenter());
+                }
+            });
+
+
+            google.maps.event.addListener(map, 'zoom_changed', function (event) {
+                var newZoom = map.getZoom();
+                if (currentZoom > newZoom) {
+                    getResults();
+                }
+                currentZoom = newZoom;
+            });
+            google.maps.event.addListener(map, 'dragend', function (event) {
+                getResults();
             });
 
         } catch (e) {
             _handleError(e, "fuel.js:initCallback");
         }
+    }
+
+    function getResults() {
+        getBoundsAndSetFields();
+        if (fetchResultsTimeout) {
+            clearTimeout(fetchResultsTimeout);
+        }
+        fetchResultsTimeout = setTimeout(function () {
+            meerkat.modules.fuelResults.get();
+        }, 400);
+
     }
 
     function initAutoComplete() {
@@ -261,6 +281,7 @@
             map.setCenter(place.geometry.location);
             map.setZoom(DEFAULT_ZOOM);
             drawClickedMarker(place.geometry.location);
+            getResults();
         });
     }
 
@@ -323,7 +344,7 @@
         //var bounds = new google.maps.LatLngBounds();
         cleanupMarkers();
         for (var i = 0; i < sites.length; i++) {
-            if(sites[i].hasOwnProperty('id')) {
+            if (sites[i].hasOwnProperty('id')) {
                 markers.push(createMarker(sites[i]));
             }
         }
@@ -346,6 +367,9 @@
 
         var bandId = info.hasOwnProperty('bandId') ? info.bandId : 0;
 
+        // de-emphasize unavailable
+        var scaledSize = bandId === 0 ? 16 : 26;
+
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(
                 parseFloat(info.lat),
@@ -359,13 +383,13 @@
                 size: new google.maps.Size(52, 52),
                 anchor: new google.maps.Point(13, 13),
                 // we want to render @ 26x26 logical px (@2x dppx or 'Retina')
-                scaledSize: new google.maps.Size(26, 26)
+                scaledSize: new google.maps.Size(scaledSize, scaledSize)
             }
         });
 
         google.maps.event.addListener(marker, 'click', function (event) {
             openInfoWindow(marker, info);
-            drawClickedMarker(event.latLng);
+            drawClickedMarker(event.latLng, bandId);
         });
 
         return marker;
@@ -374,23 +398,26 @@
     /**
      * When we click on the map, draw this marker at location
      * @param location LatLng
+     * @param bandId Integer
      */
-    function drawClickedMarker(location) {
+    function drawClickedMarker(location, bandId) {
         // clear previous markers
         if (clickedMarker != null)
             clickedMarker.setMap(null);
 
+        var anchorPoint = bandId === 0 ? new google.maps.Point(18, 30) : new google.maps.Point(13, 26);
         clickedMarker = new google.maps.Marker({
             position: location,
             icon: {
                 url: 'assets/brand/ctm/graphics/fuel/pin.png',
-                anchor: new google.maps.Point(13, 26),
+                anchor: anchorPoint,
                 size: new google.maps.Size(52, 52),
                 scaledSize: new google.maps.Size(26, 26)
             },
             map: map,
             draggable: false,
-            optimized: false
+            optimized: false,
+            zIndex: 999
         });
     }
 
@@ -418,8 +445,14 @@
     function setMapHeight() {
         _.defer(function () {
             var isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false,
-                $header = $('header');
-            var heightToSet = isXS ? window.innerHeight - $header.height() - $('#results-sidebar').height() - 36 /*fixed height...*/ : window.innerHeight - $header.height();
+                $header = $('header'),
+                heightToSet;
+            if (isXS) {
+                heightToSet = window.innerHeight - $header.height() - $('#results-sidebar').height() - 36;
+            } else {
+                heightToSet = window.innerHeight - $header.height();
+                heightToSet = heightToSet < MIN_MAP_HEIGHT ? MIN_MAP_HEIGHT : heightToSet;
+            }
             /* TODO: minus footer signup box */
             $('#map-canvas').css('height', heightToSet);
         });
@@ -434,9 +467,12 @@
     }
 
     function getBoundsAndSetFields() {
-        if (map) {
-            var bounds = map.getBounds(),
-                ne = bounds.getNorthEast(),
+        if (!map) {
+            return;
+        }
+        var bounds = map.getBounds();
+        if (bounds && _.isFunction(bounds.getNorthEast)) {
+            var ne = bounds.getNorthEast(),
                 sw = bounds.getSouthWest(),
                 nw = new google.maps.LatLng(ne.lat(), sw.lng()),
                 se = new google.maps.LatLng(sw.lat(), ne.lng());

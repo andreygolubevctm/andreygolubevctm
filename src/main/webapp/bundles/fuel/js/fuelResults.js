@@ -105,7 +105,6 @@
         // Scroll to the top when results come back
         $(document).on("resultsReturned", function () {
             meerkat.modules.utils.scrollPageTo($("header"));
-            _updateDisclaimer();
         });
 
         // Start fetching results
@@ -117,23 +116,25 @@
         $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
             $('.loadingDisclaimerText').addClass('hidden');
 
-            $(document.body).addClass('priceMode');
-
             // Normal results
             meerkat.modules.fuelMap.plotMarkers(Results.model.returnedProducts);
 
-            // If no providers opted to show results, display the no results modal.
-            var mapHasMarkers = meerkat.modules.fuelMap.getMarkers().length > 0;
-
+            // If no providers opted to show results, display the no results message.
+            var availableCounts = 0;
+            $.each(Results.model.returnedProducts, function () {
+                if (this.hasOwnProperty('bandId')) {
+                    availableCounts++;
+                }
+            });
             // You've been blocked!
-            if (!mapHasMarkers && !Results.model.hasValidationErrors && Results.model.isBlockedQuote) {
+            if (availableCounts === 0 && !Results.model.hasValidationErrors && Results.model.isBlockedQuote) {
                 showBlockedResults();
                 updatePriceBand(false);
                 return;
             }
 
             // Check products length in case the reason for no results is an error e.g. 500
-            if (!mapHasMarkers && _.isArray(Results.model.returnedProducts)) {
+            if (availableCounts === 0 && _.isArray(Results.model.returnedProducts)) {
                 updatePriceBand(false);
                 return;
             }
@@ -145,38 +146,14 @@
 
     function get() {
         Results.updateAggregatorEnvironment();
+
+        // Dequeue if ones already running. Have to do it this way as Results doesn't return a deferred promise.
+        if (Results.model.ajaxRequest && _.isFunction(Results.model.ajaxRequest.state) && Results.model.ajaxRequest.state() == 'pending') {
+            if (_.isFunction(Results.model.ajaxRequest.abort)) {
+                Results.model.ajaxRequest.abort();
+            }
+        }
         Results.get();
-        _updateSnapshot();
-    }
-
-    function _updateDisclaimer() {
-        var general = Results.getReturnedGeneral();
-        if (typeof general.timeDiff !== "undefined") {
-            $("#provider-disclaimer .time").text(general.timeDiff);
-        }
-    }
-
-    function _updateSnapshot() {
-        try {
-            var fuelTypeArray = [];
-
-            $("#checkboxes-all :checked").each(function () {
-                var pushValue = "<strong>" + $.trim($(this).next("label").text()) + "</strong>";
-                fuelTypeArray.push(pushValue);
-            });
-
-            var fuelTypes = fuelTypeArray.join(" &amp; "),
-                location = $("#fuel_location").val(),
-                data = {
-                    fuelTypes: fuelTypes,
-                    location: location
-                };
-
-            var htmlTemplate = _.template($("#snapshot-template").html(), {variable: "data"});
-            $("#resultsSummaryPlaceholder").html(htmlTemplate(data));
-        } catch (e) {
-
-        }
     }
 
     function init() {
@@ -196,14 +173,26 @@
         return "Last updated " + meerkat.modules.utils.getTimeAgo(date) + " ago";
     }
 
+    /**
+     *
+     * @param bandId
+     * @returns {*}
+     */
     function getBand(bandId) {
-        return Results.getReturnedGeneral().bands.filter(function (band) {
-            return band.id === bandId;
-        })[0];
+        var general = Results.getReturnedGeneral();
+        if (general && general.hasOwnProperty('bands')) {
+            return Results.getReturnedGeneral().bands.filter(function (band) {
+                return band.id === bandId;
+            })[0];
+        }
+        return {};
     }
 
     function updatePriceBand(hasSite) {
-        var info = hasSite === true ? Results.getReturnedGeneral() : {error: true, cityName: Results.getReturnedGeneral().cityName};
+        var info = hasSite === true ? Results.getReturnedGeneral() : {
+            error: true,
+            cityName: Results.getReturnedGeneral().cityName
+        };
         $priceBandsContainer.html(priceBandTemplate(info));
     }
 
