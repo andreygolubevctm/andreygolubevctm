@@ -15,9 +15,9 @@
         <span class="circle hidden-xs"><span class="icon icon-vert-fuel"></span> </span>
         <span class="fuel-price">
             {{ if (!band.toPrice){ }}
-            &le; {{= band.fromPrice}}
+            &ge; {{= band.fromPrice}}
             {{ } else if (!band.fromPrice){ }}
-            &ge; {{= band.toPrice}}
+            &le; {{= band.toPrice}}
             {{ } else { }}
             {{= band.fromPrice }} - {{= band.toPrice }}
             {{ } }}

@@ -384,7 +384,7 @@
 
         google.maps.event.addListener(marker, 'click', function (event) {
             openInfoWindow(marker, info);
-            drawClickedMarker(event.latLng);
+            drawClickedMarker(event.latLng, bandId);
         });
 
         return marker;
@@ -393,17 +393,19 @@
     /**
      * When we click on the map, draw this marker at location
      * @param location LatLng
+     * @param bandId Integer
      */
-    function drawClickedMarker(location) {
+    function drawClickedMarker(location, bandId) {
         // clear previous markers
         if (clickedMarker != null)
             clickedMarker.setMap(null);
 
+        var anchorPoint = bandId === 0 ? new google.maps.Point(18, 30) : new google.maps.Point(13, 26);
         clickedMarker = new google.maps.Marker({
             position: location,
             icon: {
                 url: 'assets/brand/ctm/graphics/fuel/pin.png',
-                anchor: new google.maps.Point(13, 26),
+                anchor: anchorPoint,
                 size: new google.maps.Size(52, 52),
                 scaledSize: new google.maps.Size(26, 26)
             },
@@ -444,7 +446,7 @@
                 heightToSet = window.innerHeight - $header.height() - $('#results-sidebar').height() - 36;
             } else {
                 heightToSet = window.innerHeight - $header.height();
-                heightToSet = heightToSet < MIN_MAP_HEIGHT ? MIN_MAP_HEIGHT : heightToSet
+                heightToSet = heightToSet < MIN_MAP_HEIGHT ? MIN_MAP_HEIGHT : heightToSet;
             }
             /* TODO: minus footer signup box */
             $('#map-canvas').css('height', heightToSet);
