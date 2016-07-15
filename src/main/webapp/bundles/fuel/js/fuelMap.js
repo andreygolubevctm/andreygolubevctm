@@ -148,7 +148,9 @@
     var DEFAULT_ZOOM = 13,
         MIN_ZOOM = 12;
 
-    var currentZoom = DEFAULT_ZOOM;
+    var currentZoom = DEFAULT_ZOOM,
+        fetchResultsTimeout;
+
     /**
      * Asynchronously load in the Google Maps API and then calls initCallback
      * Uses Google Developer Console API Key
@@ -226,7 +228,7 @@
 
             google.maps.event.addListener(map, 'zoom_changed', function (event) {
                 var newZoom = map.getZoom();
-                if(currentZoom > newZoom) {
+                if (currentZoom > newZoom) {
                     getResults();
                 }
                 currentZoom = newZoom;
@@ -241,9 +243,15 @@
     }
 
     function getResults() {
-        getBoundsAndSetFields();
-        // todo try and not fetch if zooming in?
-        meerkat.modules.fuelResults.get();
+
+        if (fetchResultsTimeout) {
+            clearTimeout(fetchResultsTimeout);
+        }
+        fetchResultsTimeout = setTimeout(function () {
+            getBoundsAndSetFields();
+            meerkat.modules.fuelResults.get();
+        }, 250);
+
     }
 
     function initAutoComplete() {

@@ -117,12 +117,11 @@
         $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
             $('.loadingDisclaimerText').addClass('hidden');
 
-            $(document.body).addClass('priceMode');
-
             // Normal results
             meerkat.modules.fuelMap.plotMarkers(Results.model.returnedProducts);
 
-            // If no providers opted to show results, display the no results modal.
+            // If no providers opted to show results, display the no results message.
+            //todo: test DOES THIS ACTUALLY WORK?
             var mapHasMarkers = meerkat.modules.fuelMap.getMarkers().length > 0;
 
             // You've been blocked!
@@ -144,43 +143,21 @@
     }
 
     function get() {
-
         Results.updateAggregatorEnvironment();
-        /*if(Results.model.ajaxRequest && _.isFunction(Results.model.ajaxRequest.state) && Results.model.ajaxRequest.state() == 'pending') {
-            return;
-        }*/
-        Results.get();
 
-        Results.model.ajaxRequest.done(_updateSnapshot);
+        // Dequeue if ones already running. Have to do it this way as Results doesn't return a deferred promise.
+        if (Results.model.ajaxRequest && _.isFunction(Results.model.ajaxRequest.state) && Results.model.ajaxRequest.state() == 'pending') {
+            if (_.isFunction(Results.model.ajaxRequest.abort)) {
+                Results.model.ajaxRequest.abort();
+            }
+        }
+        Results.get();
     }
 
     function _updateDisclaimer() {
         var general = Results.getReturnedGeneral();
         if (typeof general.timeDiff !== "undefined") {
             $("#provider-disclaimer .time").text(general.timeDiff);
-        }
-    }
-
-    function _updateSnapshot() {
-        try {
-            var fuelTypeArray = [];
-
-            $("#checkboxes-all :checked").each(function () {
-                var pushValue = "<strong>" + $.trim($(this).next("label").text()) + "</strong>";
-                fuelTypeArray.push(pushValue);
-            });
-
-            var fuelTypes = fuelTypeArray.join(" &amp; "),
-                location = $("#fuel_location").val(),
-                data = {
-                    fuelTypes: fuelTypes,
-                    location: location
-                };
-
-            var htmlTemplate = _.template($("#snapshot-template").html(), {variable: "data"});
-            $("#resultsSummaryPlaceholder").html(htmlTemplate(data));
-        } catch (e) {
-
         }
     }
 
@@ -208,7 +185,10 @@
     }
 
     function updatePriceBand(hasSite) {
-        var info = hasSite === true ? Results.getReturnedGeneral() : {error: true, cityName: Results.getReturnedGeneral().cityName};
+        var info = hasSite === true ? Results.getReturnedGeneral() : {
+            error: true,
+            cityName: Results.getReturnedGeneral().cityName
+        };
         $priceBandsContainer.html(priceBandTemplate(info));
     }
 
