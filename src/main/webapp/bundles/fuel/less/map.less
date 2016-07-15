@@ -1,6 +1,25 @@
 .map-info-window {
-  max-width: 275px;
-  height: 90px;
+  max-width: 300px;
+  margin: 0;
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+  h5 {
+    color: @theme-tertiary;
+  }
+  .map-price-container {
+    .price {
+      font-size: @font-size-xlarge;
+      font-family: @font-family-theme-bold;
+    }
+  }
+  @media (@sm) {
+    > div {
+      padding:0;
+    }
+  }
 }
 
 .map-icon-label {

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polylines</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="capture"></div>
+<script>
+
+    // This example creates a 2-pixel-wide red polyline showing the path of William
+    // Kingsford Smith's first trans-Pacific flight between Oakland, CA, and
+    // Brisbane, Australia.
+
+    function initMap() {
+        var CENTER = {lat: -27.564133603634033, lng: 153.22699809650885};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 9,
+            center: CENTER,
+            mapTypeId: google.maps.MapTypeId.TERRAIN
+        });
+
+        var cities = [
+            {
+                "C": 880,
+                "N": "Brisbane",
+                "G": [
+                    {
+                        "Lat": -27.836717,
+                        "Lng": 153.025362
+                    },
+                    {
+                        "Lat": -27.753104,
+                        "Lng": 153.187434
+                    },
+                    {
+                        "Lat": -27.583507,
+                        "Lng": 152.363335
+                    },
+                    {
+                        "Lat": -27.3913,
+                        "Lng": 152.863
+                    },
+                    {
+                        "Lat": -27.065683,
+                        "Lng": 153.112396
+                    },
+                    {
+                        "Lat": -27.007463,
+                        "Lng": 152.944431
+                    },
+                    {
+                        "Lat": -26.990742,
+                        "Lng": 152.802608
+                    }
+                ],
+                "S": true,
+                "color": "green"
+            },
+            {
+                "C": 867,
+                "N": "Toowoomba",
+                "G": [
+                    {
+                        "Lat": -27.5834,
+                        "Lng": 152.081
+                    },
+                    {
+                        "Lat": -27.555126,
+                        "Lng": 152.289899
+                    }
+                ],
+                "S": true,
+                "color": "red"
+            },
+            {
+                "C": 864,
+                "N": "Gold Coast",
+                "G": [
+                    {
+                        "Lat": -28.143615,
+                        "Lng": 153.493559
+                    },
+                    {
+                        "Lat": -28.016409,
+                        "Lng": 153.161723
+                    },
+                    {
+                        "Lat": -28.003,
+                        "Lng": 153.219
+                    },
+                    {
+                        "Lat": -27.904007,
+                        "Lng": 153.401829
+                    },
+                    {
+                        "Lat": -27.880189,
+                        "Lng": 153.129595
+                    },
+                    {
+                        "Lat": -27.752501,
+                        "Lng": 153.234207
+                    }
+                ],
+                "S": true,
+                "color": "blue"
+            }
+        ];
+
+        var polylines = [];
+
+
+
+        function createPolyline(currentPos) {
+            cleanAllPolylines();
+            for (var i = 0; i < cities.length; i++) {
+                for (var n = 0; n < cities[i].G.length; n++) {
+                    var path = [],
+                            latLng = {};
+                    latLng.lat = cities[i].G[n].Lat;
+                    latLng.lng = cities[i].G[n].Lng;
+
+                    path.push(currentPos);
+                    path.push(latLng);
+
+                    var polyline = new google.maps.Polyline({
+                        path: path,
+                        geodesic: true,
+                        strokeColor: cities[i].color,
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2
+                    });
+
+                    polylines.push(polyline);
+                    polyline.setMap(map);
+                }
+            }
+        }
+
+        function cleanAllPolylines(){
+            for (var i = 0; i < polylines.length; i++) {
+                polylines[i].setMap(null); //or line[i].setVisible(false);
+            }
+        }
+
+        google.maps.event.addListener(map, 'click', function( event ){
+            var latLng = {};
+            latLng.lat = event.latLng.lat();
+            latLng.lng = event.latLng.lng();
+            createPolyline(latLng);
+        });
+
+        createPolyline(CENTER);
+
+        map.setZoom(10);
+
+//        var flightPlanCoordinates = [
+//            {lat: 37.772, lng: -122.214},
+//            {lat: 21.291, lng: -157.821},
+//            {lat: -18.142, lng: 178.431},
+//            {lat: -27.467, lng: 153.027}
+//        ];
+//        var flightPath = new google.maps.Polyline({
+//            path: flightPlanCoordinates,
+//            geodesic: true,
+//            strokeColor: 'green',
+//            strokeOpacity: 1.0,
+//            strokeWeight: 2
+//        });
+//
+//        flightPath.setMap(map);
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8ygWPujOpSI1O-7jsiyG3_YIDlPoIP6U&callback=initMap">
+</script>
+</body>
+</html>

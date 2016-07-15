@@ -5,28 +5,35 @@
 <core_v1:js_template id="map-marker-template">
 
     {{ var urlHost = meerkat.modules.performanceProfiling.isIos() ? 'http://maps.apple.com' : 'https://maps.google.com'; }}
-    <div id="iw_content" class="map-info-window">
+    <div id="iw_content" class="map-info-window row">
 
-        <div class="map-address-container">
-            <h5>{{= obj.name }}</h5>
-            {{ var mapDirectionsUrl = urlHost + "/?saddr=Current%20Location&daddr=" + encodeURI(obj.address + " " + obj.cityName + " Australia"); }}
-            <a href="{{= mapDirectionsUrl }}" target="_blank" title="Get Directions to {{= obj.name }}">{{= obj.address }}</a>
-        </div>
-
-        {{ if(obj.bandId) { }}
-        <div class="map-price-container">
-            <span class="icon icon-vert-fuel band-{{= obj.bandId }}"></span>
-            {{ var band = meerkat.modules.fuelResults.getBand(obj.bandId); }}
-            <span class="price">
-            {{ if (!band.toPrice){ }}
-            ≤ {{= band.fromPrice}}
-            {{ } else if (!band.fromPrice){ }}
-            ≥ {{= band.toPrice}}
-            {{ } else { }}
-            {{= band.fromPrice }} - {{= band.toPrice }}
+        <div class="col-xs-3 col-sm-4">
+            {{ if (obj.brandId) { }}
+            <img src="assets/brand/ctm/graphics/fuel/brands/{{= obj.brandId}}@2x.png" />
             {{ } }}
-            </span>
         </div>
-        {{ } }}
+        <div class="col-xs-6 col-sm-8">
+            <div class="map-address-container">
+                <h5>{{= obj.name }}</h5>
+                {{ var mapDirectionsUrl = urlHost + "/?saddr=Current%20Location&daddr=" + encodeURI(obj.address + " " + obj.cityName + " Australia"); }}
+                <a href="{{= mapDirectionsUrl }}" target="_blank" title="Get Directions to {{= obj.name }}">{{= obj.address }}</a>
+            </div>
+
+            {{ if(obj.bandId) { }}
+            <div class="map-price-container fuel-band-{{= obj.bandId }}">
+                <span class="circle"><span class="icon icon-vert-fuel"></span></span>
+                {{ var band = meerkat.modules.fuelResults.getBand(obj.bandId); }}
+                <span class="price">
+                {{ if (!band.toPrice){ }}
+                ≤ {{= band.fromPrice}}
+                {{ } else if (!band.fromPrice){ }}
+                ≥ {{= band.toPrice}}
+                {{ } else { }}
+                {{= band.fromPrice }} - {{= band.toPrice }}
+                {{ } }}
+                </span>
+            </div>
+            {{ } }}
+        </div>
     </div>
 </core_v1:js_template>
