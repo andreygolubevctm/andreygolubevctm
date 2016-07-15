@@ -7,7 +7,7 @@
     {{ var urlHost = meerkat.modules.performanceProfiling.isIos() ? 'http://maps.apple.com' : 'https://maps.google.com'; }}
     <div id="iw_content" class="map-info-window row">
 
-        <div class="col-xs-3 col-sm-4">
+        <div class="col-xs-3 col-sm-4 fuel-site-logo">
             {{ if (obj.brandId) { }}
             <img src="assets/brand/ctm/graphics/fuel/brands/{{= obj.brandId}}@2x.png" />
             {{ } }}
