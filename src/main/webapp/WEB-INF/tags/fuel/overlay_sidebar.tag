@@ -23,7 +23,7 @@
                 <div class="text-center cross-sell-text">
                     <span class="icon icon-vert-car"></span>
                     <p>Are you looking for Comprehensive Car Insurance?</p>
-                    <a href="/${pageSettings.getContextFolder()}car_quote.jsp" class="btn btn-block btn-secondary">Compare Now</a>
+                    <a href="/${pageSettings.getContextFolder()}car_quote.jsp" class="btn btn-block btn-secondary" target="_blank">Compare Now</a>
                 </div>
             </div>
         </div>

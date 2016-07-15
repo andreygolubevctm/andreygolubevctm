@@ -144,9 +144,14 @@
     }
 
     function get() {
+
         Results.updateAggregatorEnvironment();
+        /*if(Results.model.ajaxRequest && _.isFunction(Results.model.ajaxRequest.state) && Results.model.ajaxRequest.state() == 'pending') {
+            return;
+        }*/
         Results.get();
-        _updateSnapshot();
+
+        Results.model.ajaxRequest.done(_updateSnapshot);
     }
 
     function _updateDisclaimer() {

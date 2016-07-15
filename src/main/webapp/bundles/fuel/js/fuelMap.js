@@ -138,22 +138,17 @@
             ]
         }
     ];
-    /**
-     * The current latitude or longitude from the clicked map.
-     * @type {String|Number}
-     */
-    var currentLat,
-        currentLng; //String/Number
-    var markerTemplate,
-        windowResizeListener;
+
+    var markerTemplate;
 
     /**
      * Constants - Configuration for limiting zoom.
      * @type {number}
      */
     var DEFAULT_ZOOM = 13,
-        MIN_ZOOM = 11;
+        MIN_ZOOM = 12;
 
+    var currentZoom = DEFAULT_ZOOM;
     /**
      * Asynchronously load in the Google Maps API and then calls initCallback
      * Uses Google Developer Console API Key
@@ -220,6 +215,7 @@
 
                     map.setCenter(pos);
                     drawClickedMarker(pos);
+                    getResults();
                 }, function () {
                     _handleLocationError(true, infoWindow, map.getCenter());
                 });
@@ -228,15 +224,26 @@
                 _handleLocationError(false, infoWindow, map.getCenter());
             }
 
-            google.maps.event.addListener(map, 'idle', function () {
-                getBoundsAndSetFields();
-                // todo try and not fetch if zooming in?
-                meerkat.modules.fuelResults.get();
+            google.maps.event.addListener(map, 'zoom_changed', function (event) {
+                var newZoom = map.getZoom();
+                if(currentZoom > newZoom) {
+                    getResults();
+                }
+                currentZoom = newZoom;
+            });
+            google.maps.event.addListener(map, 'dragend', function (event) {
+                getResults();
             });
 
         } catch (e) {
             _handleError(e, "fuel.js:initCallback");
         }
+    }
+
+    function getResults() {
+        getBoundsAndSetFields();
+        // todo try and not fetch if zooming in?
+        meerkat.modules.fuelResults.get();
     }
 
     function initAutoComplete() {
@@ -323,7 +330,7 @@
         //var bounds = new google.maps.LatLngBounds();
         cleanupMarkers();
         for (var i = 0; i < sites.length; i++) {
-            if(sites[i].hasOwnProperty('id')) {
+            if (sites[i].hasOwnProperty('id')) {
                 markers.push(createMarker(sites[i]));
             }
         }
@@ -346,6 +353,9 @@
 
         var bandId = info.hasOwnProperty('bandId') ? info.bandId : 0;
 
+        // de-emphasize unavailable
+        var scaledSize = bandId === 0 ? 16 : 26;
+
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(
                 parseFloat(info.lat),
@@ -359,7 +369,7 @@
                 size: new google.maps.Size(52, 52),
                 anchor: new google.maps.Point(13, 13),
                 // we want to render @ 26x26 logical px (@2x dppx or 'Retina')
-                scaledSize: new google.maps.Size(26, 26)
+                scaledSize: new google.maps.Size(scaledSize, scaledSize)
             }
         });
 
