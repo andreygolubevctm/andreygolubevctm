@@ -105,7 +105,6 @@
         // Scroll to the top when results come back
         $(document).on("resultsReturned", function () {
             meerkat.modules.utils.scrollPageTo($("header"));
-            _updateDisclaimer();
         });
 
         // Start fetching results
@@ -121,18 +120,21 @@
             meerkat.modules.fuelMap.plotMarkers(Results.model.returnedProducts);
 
             // If no providers opted to show results, display the no results message.
-            //todo: test DOES THIS ACTUALLY WORK?
-            var mapHasMarkers = meerkat.modules.fuelMap.getMarkers().length > 0;
-
+            var availableCounts = 0;
+            $.each(Results.model.returnedProducts, function () {
+                if (this.hasOwnProperty('bandId')) {
+                    availableCounts++;
+                }
+            });
             // You've been blocked!
-            if (!mapHasMarkers && !Results.model.hasValidationErrors && Results.model.isBlockedQuote) {
+            if (availableCounts === 0 && !Results.model.hasValidationErrors && Results.model.isBlockedQuote) {
                 showBlockedResults();
                 updatePriceBand(false);
                 return;
             }
 
             // Check products length in case the reason for no results is an error e.g. 500
-            if (!mapHasMarkers && _.isArray(Results.model.returnedProducts)) {
+            if (availableCounts === 0 && _.isArray(Results.model.returnedProducts)) {
                 updatePriceBand(false);
                 return;
             }
@@ -154,13 +156,6 @@
         Results.get();
     }
 
-    function _updateDisclaimer() {
-        var general = Results.getReturnedGeneral();
-        if (typeof general.timeDiff !== "undefined") {
-            $("#provider-disclaimer .time").text(general.timeDiff);
-        }
-    }
-
     function init() {
         $(document).ready(function () {
             priceBandTemplate = _.template($('#price-band-template').html());
@@ -178,10 +173,19 @@
         return "Last updated " + meerkat.modules.utils.getTimeAgo(date) + " ago";
     }
 
+    /**
+     *
+     * @param bandId
+     * @returns {*}
+     */
     function getBand(bandId) {
-        return Results.getReturnedGeneral().bands.filter(function (band) {
-            return band.id === bandId;
-        })[0];
+        var general = Results.getReturnedGeneral();
+        if (general && general.hasOwnProperty('bands')) {
+            return Results.getReturnedGeneral().bands.filter(function (band) {
+                return band.id === bandId;
+            })[0];
+        }
+        return {};
     }
 
     function updatePriceBand(hasSite) {

@@ -146,7 +146,8 @@
      * @type {number}
      */
     var DEFAULT_ZOOM = 13,
-        MIN_ZOOM = 12;
+        MIN_ZOOM = 12,
+        MIN_MAP_HEIGHT = 735;
 
     var currentZoom = DEFAULT_ZOOM,
         fetchResultsTimeout;
@@ -243,14 +244,13 @@
     }
 
     function getResults() {
-
+        getBoundsAndSetFields();
         if (fetchResultsTimeout) {
             clearTimeout(fetchResultsTimeout);
         }
         fetchResultsTimeout = setTimeout(function () {
-            getBoundsAndSetFields();
             meerkat.modules.fuelResults.get();
-        }, 250);
+        }, 400);
 
     }
 
@@ -276,6 +276,7 @@
             map.setCenter(place.geometry.location);
             map.setZoom(DEFAULT_ZOOM);
             drawClickedMarker(place.geometry.location);
+            getResults();
         });
     }
 
@@ -408,7 +409,8 @@
             },
             map: map,
             draggable: false,
-            optimized: false
+            optimized: false,
+            zIndex: 999
         });
     }
 
@@ -436,8 +438,14 @@
     function setMapHeight() {
         _.defer(function () {
             var isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false,
-                $header = $('header');
-            var heightToSet = isXS ? window.innerHeight - $header.height() - $('#results-sidebar').height() - 36 /*fixed height...*/ : window.innerHeight - $header.height();
+                $header = $('header'),
+                heightToSet;
+            if (isXS) {
+                heightToSet = window.innerHeight - $header.height() - $('#results-sidebar').height() - 36;
+            } else {
+                heightToSet = window.innerHeight - $header.height();
+                heightToSet = heightToSet < MIN_MAP_HEIGHT ? MIN_MAP_HEIGHT : heightToSet
+            }
             /* TODO: minus footer signup box */
             $('#map-canvas').css('height', heightToSet);
         });

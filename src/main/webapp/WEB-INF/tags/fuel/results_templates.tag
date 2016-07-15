@@ -5,7 +5,6 @@
 <%-- NO RESULTS --%>
 <div class="hidden">
     <agg_v2:no_quotes id="blocked-ip-address"/>
-    <agg_v2_results:results_none />
 </div>
 <%-- FETCH ERROR --%>
 <div class="resultsFetchError displayNone">
