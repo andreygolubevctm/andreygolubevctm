@@ -16,7 +16,7 @@
             </div>
 
             <div id="price-band-container" class="price-bands col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded sidebar-widget-dropshadow hidden-xs">
-                <fuel:price_bands_template />
+                <%--for poping up bands template--%>
             </div>
 
             <div class="col-sm-12 sidebar-widget sidebar-widget-contained cross-sell-widget hidden-xs">

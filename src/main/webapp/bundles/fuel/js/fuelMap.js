@@ -139,7 +139,10 @@
         }
     ];
 
-    var markerTemplate;
+    var markerTemplate,
+        isXsInfoWindowShown = false,
+        $xsInfoWindow,
+        $mapCanvas;
 
     /**
      * Constants - Configuration for limiting zoom.
@@ -270,7 +273,6 @@
         autocomplete.bindTo('bounds', map);
 
         autocomplete.addListener('place_changed', function () {
-            infoWindow.close();
             var place = autocomplete.getPlace();
             if (!place.geometry) {
                 // TODO: Handle this....
@@ -319,8 +321,20 @@
     function openInfoWindow(marker, info) {
         if (markerTemplate) {
             var htmlString = markerTemplate(info);
-            infoWindow.setContent(htmlString);
-            infoWindow.open(map, marker);
+
+            if (meerkat.modules.deviceMediaState.get() === "xs") {
+                var height = $xsInfoWindow.html(htmlString).height();
+                if (!isXsInfoWindowShown) {
+                    $mapCanvas.animate({height: '-=' + height}, 'fast');
+                    isXsInfoWindowShown = true;
+                }
+                $xsInfoWindow.find('.closeInfoWindow').on('click', function () {
+                    hideXsInfoWindow();
+                });
+            } else {
+                infoWindow.setContent(htmlString);
+                infoWindow.open(map, marker);
+            }
 
             meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                 method: 'trackProductView',
@@ -336,6 +350,15 @@
         }
     }
 
+    function hideXsInfoWindow() {
+        if (isXsInfoWindowShown === true) {
+            var height = $xsInfoWindow.height();
+            $xsInfoWindow.html('');
+            $mapCanvas.animate({height: '+=' + height}, 'fast');
+            isXsInfoWindowShown = false;
+        }
+    }
+
     function plotMarkers(sites) {
         if (!sites) {
             log("plotMarkers: No Results Available to plot markers");
@@ -343,6 +366,8 @@
         }
         //var bounds = new google.maps.LatLngBounds();
         cleanupMarkers();
+        // clear XsInfoWindow
+        hideXsInfoWindow();
         for (var i = 0; i < sites.length; i++) {
             if (sites[i].hasOwnProperty('id')) {
                 markers.push(createMarker(sites[i]));
@@ -448,13 +473,13 @@
                 $header = $('header'),
                 heightToSet;
             if (isXS) {
-                heightToSet = window.innerHeight - $header.height() - $('#results-sidebar').height() - 36;
+                heightToSet = window.innerHeight - $header.height() - $('#results-sidebar').height() - 36 - $xsInfoWindow.height();
             } else {
                 heightToSet = window.innerHeight - $header.height();
                 heightToSet = heightToSet < MIN_MAP_HEIGHT ? MIN_MAP_HEIGHT : heightToSet;
             }
             /* TODO: minus footer signup box */
-            $('#map-canvas').css('height', heightToSet);
+            $mapCanvas.css('height', heightToSet);
         });
     }
 
@@ -484,12 +509,14 @@
 
     function initFuelMap() {
         $(document).ready(function ($) {
+            $mapCanvas = $('#map-canvas');
+            $xsInfoWindow = $('#info-window-container-xs');
+
             setMapHeight();
             markerTemplate = _.template($('#map-marker-template').html());
             meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function () {
                 setMapHeight();
             });
-
         });
 
     }

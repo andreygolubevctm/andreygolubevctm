@@ -95,9 +95,12 @@
 				</div>
 
 				<input type="hidden" name="transcheck" id="transcheck" value="1" />
-                <fuel:fuel_infoWindow />
+                <div id="info-window-container-xs" class="visible-xs">
+                    <fuel:fuel_infoWindow />
+                </div>
+
                 <div id="price-band-container-xs" class="price-bands visible-xs">
-                    <%--for poping up bands template--%>
+                    <fuel:price_bands_template />
                 </div>
 			</jsp:body>
 
