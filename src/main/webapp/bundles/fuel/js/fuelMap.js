@@ -33,7 +33,6 @@
      * The google map autocomplete object
      * @type {{autocomplete}}
      */
-    var autocomplete;
     var markers = [];
     var clickedMarker; // The marker when you click on a location or map point.
     var mapStyles = [
@@ -269,22 +268,57 @@
                 country: "au"
             }
         };
-        autocomplete = new google.maps.places.Autocomplete(document.getElementById('fuel_location'), options);
-        autocomplete.bindTo('bounds', map);
+        var autocompleteService = new google.maps.places.AutocompleteService(),
+            placesService = new google.maps.places.PlacesService(map),
+            autocomplete = new google.maps.places.Autocomplete(document.getElementById('fuel_location'), options);
 
+        autocomplete.bindTo('bounds', map);
         autocomplete.addListener('place_changed', function () {
             var place = autocomplete.getPlace();
-            if (!place.geometry) {
-                // TODO: Handle this....
-                window.alert("Autocomplete's returned place contains no geometry");
+            // if user didn't type anything to start the search then there is not much we can do...
+            if (!place || !place.name || place.length === 0) {
                 return;
             }
 
-            map.setCenter(place.geometry.location);
-            map.setZoom(DEFAULT_ZOOM);
-            drawClickedMarker(place.geometry.location);
-            getResults();
+            if (!place.geometry) {
+                autocompleteService.getPlacePredictions({
+                    input: place.name,
+                    types: ['(regions)'],
+                    componentRestrictions: {
+                        country: "au"
+                    },
+                    bounds: map.getBounds()
+                }, function (predictions, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        // choose the first prediction assuming there are any returned...
+                        if (predictions[0]) {
+                            $('#fuel_location').val(predictions[0].description);
+                            // ...but we first need to get the details of the place so we get the actual place object that contains geometry
+                            placesService.getDetails(
+                                {
+                                    'placeId': predictions[0].place_id
+                                },
+                                function (placeDetails, placesServiceStatus) {
+                                    if (placesServiceStatus === google.maps.places.PlacesServiceStatus.OK) {
+                                        handleAutoCompleteLocationChange(placeDetails);
+                                    }
+                                }
+                            );
+                        }
+                    }
+                });
+                return;
+            }
+
+            handleAutoCompleteLocationChange(place);
         });
+    }
+
+    function handleAutoCompleteLocationChange(place) {
+        map.setCenter(place.geometry.location);
+        map.setZoom(DEFAULT_ZOOM);
+        drawClickedMarker(place.geometry.location);
+        getResults();
     }
 
     /**
@@ -379,7 +413,7 @@
     function cleanupMarkers() {
         for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
-        }
+            }
         markers = [];
     }
 
