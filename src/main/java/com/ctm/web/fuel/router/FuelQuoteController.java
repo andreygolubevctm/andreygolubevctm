@@ -37,7 +37,7 @@ public class FuelQuoteController {
         final String southEast = request.getParameter("fuel_map_southEast");
         final Long fuelId = Long.valueOf(request.getParameter("fuel_type_id"));
 
-        LOGGER.info("Fuel quote {}, {}, {}", kv("fuel_map_northWest", northWest), kv("fuel_map_southEast", southEast), kv("fuelId", fuelId));
+        LOGGER.debug("Fuel quote {}, {}, {}", kv("fuel_map_northWest", northWest), kv("fuel_map_southEast", southEast), kv("fuelId", fuelId));
 
         if(StringUtils.isNotBlank(northWest) && StringUtils.isNotBlank(southEast) && fuelId != null) {
             final QuoteRequest quoteRequest = QuoteRequest.newBuilder()
