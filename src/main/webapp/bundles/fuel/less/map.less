@@ -1,8 +1,19 @@
 .map-info-window {
+  margin: 0;
+  @media (@xs-only) {
+    padding-bottom: 10px;
+    img {
+      width: 50px;
+    }
+    .closeInfoWindow {
+      span {
+        padding-top: 10px;
+      }
+    }
+  }
   @media (@sm) {
     width: 300px;
   }
-  margin: 0;
   img {
     display: block;
     max-width: 100%;
