@@ -1,15 +1,14 @@
 package com.ctm.web.energy.apply.controller;
 
+import com.ctm.test.controller.BaseControllerTest;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
-import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.energy.apply.services.EnergyApplyService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
@@ -18,13 +17,9 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.Matchers.*;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.powermock.api.mockito.PowerMockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -34,28 +29,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringApplicationConfiguration(classes = MockServletContext.class)
 @WebAppConfiguration
 @PrepareForTest({ApplicationService.class})
-public class EnergyApplyControllerTest {
+public class EnergyApplyControllerTest extends BaseControllerTest {
 
     @Mock
     EnergyApplyService energyService;
     @Mock
-    SessionDataServiceBean sessionDataServiceBean;
-    @Mock
     IPAddressHandler ipAddressHandler;
+
+    @Mock
+    ApplicationService applicationService;
 
     @InjectMocks
     EnergyApplyController controllerUnderTest;
-    private MockMvc mvc;
-
-    @Mock
-    private com.ctm.web.core.web.go.Data value;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        when(sessionDataServiceBean.getDataForTransactionId(anyObject(), anyString(), anyBoolean())).thenReturn(value);
-        PowerMockito.mockStatic(ApplicationService.class);
-        mvc = MockMvcBuilders.standaloneSetup(controllerUnderTest).build();
+        setUp(controllerUnderTest);
     }
 
     @Test

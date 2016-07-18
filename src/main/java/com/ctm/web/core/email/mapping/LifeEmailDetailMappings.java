@@ -4,8 +4,8 @@ import com.ctm.web.core.web.go.Data;
 
 public class LifeEmailDetailMappings implements EmailDetailsMappings {
 
-	private static String FIRSTNAME_XPATH = "life/primary/firstName";
-	private static String SURNAME_XPATH = "life/primary/lastname";
+	private final static String FIRSTNAME_XPATH = "life/primary/firstName";
+	private final static String SURNAME_XPATH = "life/primary/lastname";
 
 	@Override
 	public String getFirstName(Data data) {

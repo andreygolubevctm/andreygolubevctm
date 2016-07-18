@@ -28,7 +28,10 @@ public class CarColourDao {
 			dbSource = new SimpleDatabaseConnection();
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT colourCode, colourDescription FROM aggregator.vehicle_colour ORDER BY colourCode");
+				"SELECT colourCode, colourDescription, isTop " +
+						"FROM aggregator.vehicle_colour " +
+						" ORDER BY isTop DESC, colourCode;");
+
 
 			ResultSet results = stmt.executeQuery();
 
@@ -56,7 +59,7 @@ public class CarColourDao {
 			dbSource = new SimpleDatabaseConnection();
 
 			stmt = dbSource.getConnection().prepareStatement(
-					"SELECT colourCode, colourDescription FROM aggregator.vehicle_colour where colourCode = ? or colourCode = 'other' ORDER BY vehicleColourId DESC LIMIT 1");
+					"SELECT colourCode, colourDescription, isTop FROM aggregator.vehicle_colour where colourCode = ? or colourCode = 'other' ORDER BY vehicleColourId DESC LIMIT 1");
 			stmt.setString(1, colourCode);
 
 			ResultSet results = stmt.executeQuery();
@@ -78,6 +81,7 @@ public class CarColourDao {
 		CarColour carColour = new CarColour();
 		carColour.setCode(results.getString("colourCode"));
 		carColour.setLabel(results.getString("colourDescription"));
+		carColour.setIsTop(results.getBoolean("isTop"));
 		return carColour;
 	}
 }

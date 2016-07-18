@@ -11,7 +11,6 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumber" />
 <c:set var="optIn"	value="${go:nameFromXpath(xpath)}_call" />
-<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 
 <c:set var="vertical">
 	<c:choose>
@@ -37,7 +36,7 @@
 
 		<form_v1:row label="Phone number">
 			<%--This should be cleaned up to use Flexi_contact_number when LIFE is refactored--%>
-			<field_v1:contact_telno xpath="${xpath}/contactNumber" required="false" title="phone number"  />
+			<field_v1:contact_telno xpath="${xpath}/contactNumber" required="${lif406SplitTest eq true}" title="phone number"  />
 		</form_v1:row>
 
 		<c:if test="${empty callCentre}">
@@ -73,43 +72,20 @@
 		</c:if>
 		<%-- COMPETITION END--%>
 
-		<form_v1:row label="" className="clear">
-			<field_v1:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from ${brandedName}" required="false" label="true"/>
-		</form_v1:row>
+		<c:if test="${lif406SplitTest eq false}">
+			<life_v1:contact_optin vertical="${vertical}" />
+		</c:if>
 
-		<form_v1:row label="" className="clear closer">
-			<c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${vertical}_privacyoptinInfoDialog.open()'>privacy statement</a>" />
-			<c:choose>
-				<c:when test="${vertical eq 'life'}">
-					<c:set var="label_text">
-						I understand ${brandedName} compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker and/or Auto and General Services, Compare the Market&#39;s trusted life insurance partners may contact me to further assist with my life insurance needs. I confirm that I have read the ${privacyLink}.
-					</c:set>
-				</c:when>
-				<c:when test="${vertical eq 'ip'}">
-					<c:set var="label_text">
-						I understand ${brandedName} compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life insurance and income protection partner may contact me to further assist with my life insurance and income protection needs. I confirm that I have read the ${privacyLink}.
-					</c:set>
-				</c:when>
-			</c:choose>
 
-			<field_v1:checkbox
-					xpath="${vertical}_privacyoptin"
-					value="Y"
-					title="${label_text}"
-					errorMsg="Please confirm you have read the privacy statement"
-					required="true"
-					label="true"
-					/>
-		</form_v1:row>
+            <field_v1:hidden xpath="${xpath}/optIn" />
+            <field_v1:hidden xpath="${xpath}/call" />
+            <field_v1:hidden xpath="${vertical}/splitTestingJourney" constantValue="${splitTestingJourney}" />
 
-		<field_v1:hidden xpath="${xpath}/call" />
-		<field_v1:hidden xpath="${vertical}/splitTestingJourney" constantValue="${splitTestingJourney}" />
+        </form_v1:fieldset>
 
-	</form_v1:fieldset>
+    </div>
 
-</div>
-
-<%-- CSS --%>
+    <%-- CSS --%>
 <go:style marker="css-head">
 	.state-right:after {
 		margin-top: 6px;
@@ -166,17 +142,24 @@
 		$("#${name}_call").buttonset();
 	});
 
-	$("#${name}_optIn").parent().css({marginRight:'-5px'});
-
 	${name}_original_phone_number = $('#${contactNumber}').val();
 
-	$('#${optIn}').val( $('#${contactNumber}').val().length ? 'Y' : 'N');
+	$("#${vertical}_privacyoptin").on("change", function(){
+		var $tel = $('#${contactNumber}input');
+		var tel = $tel.val();
+		var optin = $(this).is(":checked") && tel.length && tel != $tel.attr('placeholder') ? "Y" : "N";
+		$('#${optIn}').val(optin);
+		var $eml = $('#${name}_email');
+		var eml = $eml.val();
+		$('#${name}_optIn').val($(this).is(":checked") && eml != '' ? 'Y' : 'N');
+		$(document).trigger(SaveQuote.setMarketingEvent, [$(this).is(':checked'), eml]);
+	});
+
+	$("#${vertical}_privacyoptin").trigger("change");
 
 	$('#${contactNumber}input').on('update keypress blur', function(){
 
 		var tel = $(this).val();
-
-		$('#${optIn}').val( tel.length && tel != $(this).attr('placeholder') ? 'Y' : 'N' );
 
 		if(!tel.length || ${name}_original_phone_number != tel){
 			$('#${name}_call').find('label[aria-pressed="true"]').each(function(key, value){
@@ -220,11 +203,8 @@
 		}
 	});
 
-	$('#${name}_optIn').change(function() {
-		$(document).trigger(SaveQuote.setMarketingEvent, [$(this).attr('checked'), $('#${name}_email').val()]);
-	});
 	$('#${name}_email').change(function() {
-		$(document).trigger(SaveQuote.setMarketingEvent, [$('#${name}_optIn').attr('checked'), $(this).val()]);
+		$(document).trigger(SaveQuote.setMarketingEvent, [$('#${name}_optIn').val() === "Y", $(this).val()]);
 	});
 </go:script>
 

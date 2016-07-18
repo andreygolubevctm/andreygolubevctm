@@ -3,6 +3,7 @@ package com.ctm.web.life.leadfeed.model;
 import com.ctm.web.core.leadfeed.model.AGISLeadFeedRequest;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 
+
 public class AGISLifeLeadFeedRequest extends AGISLeadFeedRequest {
 
 	/**

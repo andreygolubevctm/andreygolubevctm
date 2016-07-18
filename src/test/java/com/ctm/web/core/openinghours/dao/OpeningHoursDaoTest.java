@@ -3,7 +3,6 @@ package com.ctm.web.core.openinghours.dao;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import javax.naming.NamingException;
 import java.sql.*;

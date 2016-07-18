@@ -792,10 +792,10 @@ Results = {
 					$('#results-mast-wrapper .premium-summary').find('.part').first().text('$' + Results._selectedProduct.partner.price);
 				}
 
-				var providerName = (Results._selectedProduct.primary.company !== "ozicare") ? Results._selectedProduct.primary.service_provider : Results._selectedProduct.primary.companyName;
+				var providerName = (!LifeQuote.isOzicare(Results._selectedProduct.primary.company)) ? Results._selectedProduct.primary.service_provider : Results._selectedProduct.primary.companyName;
 				$(".company_reference_replace").text(providerName);
 				
-				var referenceNumber = (Results._selectedProduct.primary.company !== "ozicare") ? Results._selectedProduct.primary.transaction_id : Results._selectedProduct.primary.lead_number;
+				var referenceNumber = (!LifeQuote.isOzicare(Results._selectedProduct.primary.company)) ? Results._selectedProduct.primary.transaction_id : Results._selectedProduct.primary.lead_number;
 				$('.reference_no_replace').text(referenceNumber);
 
 				switch( $('#${vertical}_primary_insurance_frequency').val() ) {
@@ -888,7 +888,7 @@ Results = {
 						var $callMeBack = $moreInfo.find(".call-me-back");
 
 						if(!$callMeBack.length) {
-							var refNo = product.company == "ozicare" ? product.lead_number : referenceNo.getTransactionID();
+							var refNo = LifeQuote.isOzicare(product.company) ? product.lead_number : referenceNo.getTransactionID();
 
 							var callMeBackHTML = [
 								"<p>",
@@ -921,7 +921,7 @@ Results = {
 						}});
 					};
 
-					if(product.company == "ozicare") {
+					if(LifeQuote.isOzicare(product.company)) {
 						Results.populateMoreDetails(product);
 						openDropdownInstance();
 					} else {
@@ -1296,7 +1296,7 @@ Results = {
 			qs += "&rank_productName" + i + "=" + product.name;
 			qs += "&rank_premium" + i + "=" + product.price;
 			
-			if(product.hasOwnProperty('companyName') && product.companyName == "Ozicare") {
+			if(product.hasOwnProperty('companyName') && LifeQuote.isOzicare(product.companyName)) {
 				qs += "&rank_callCentreHours" + i + "=" + product.call_centre_hours;
 				qs += "&rank_partnerBrand" + i + "=" + "OZIC";
 			}

@@ -6,6 +6,7 @@ import com.ctm.energy.quote.request.model.Gas;
 import com.ctm.energy.quote.request.model.preferences.*;
 import com.ctm.energy.quote.request.model.usage.*;
 import com.ctm.interfaces.common.types.TransactionId;
+import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
 import com.ctm.web.energy.form.model.Energy;
 import com.ctm.web.energy.form.model.*;
@@ -64,7 +65,7 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
                 return EnergyType.Gas;
             }
         }
-            return null;
+        return null;
     }
 
     private boolean hasGas(WhatToCompare whatToCompareValue) {
@@ -138,10 +139,10 @@ public class EnergyQuoteServiceRequestAdapter implements WebRequestAdapter<Energ
                 .map(BigDecimal::new)
                 .orElse(BigDecimal.ZERO),
                 gas
-                .map(Energy::getOffpeak)
-                .map(Rate::getAmount)
-                .map(BigDecimal::new)
-                .orElse(BigDecimal.ZERO));
+                        .map(Energy::getOffpeak)
+                        .map(Rate::getAmount)
+                        .map(BigDecimal::new)
+                        .orElse(BigDecimal.ZERO));
     }
 
     private static ElectricityUsageDetails  getElectricityUsageDetails(Optional<EstimateDetails> estimateDetailsMaybe, Optional<HouseHoldDetailsWebRequest> householdDetailsMaybe) {

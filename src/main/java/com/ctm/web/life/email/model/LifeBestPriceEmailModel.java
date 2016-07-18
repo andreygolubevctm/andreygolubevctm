@@ -5,8 +5,8 @@ import com.ctm.web.core.email.model.BestPriceEmailModel;
 public class LifeBestPriceEmailModel extends BestPriceEmailModel {
 
 	private String premium;
-	private String LifeCover;
-	private String TPDCover;
+	private String lifeCover;
+	private String tpdCover;
 	private String smoker;
 	private String traumaCover;
 	private String gender;
@@ -24,19 +24,19 @@ public class LifeBestPriceEmailModel extends BestPriceEmailModel {
 	}
 
 	public String getLifeCover() {
-		return LifeCover;
+		return lifeCover;
 	}
 
 	public void setLifeCover(String lifeCover) {
-		this.LifeCover = lifeCover;
+		this.lifeCover = lifeCover;
 	}
 
 	public String getTPDCover() {
-		return TPDCover;
+		return tpdCover;
 	}
 
-	public void setTPDCover(String tPDCover) {
-		this.TPDCover = tPDCover;
+	public void setTPDCover(String tpdCover) {
+		this.tpdCover = tpdCover;
 	}
 
 	public String getSmoker() {
@@ -99,8 +99,8 @@ public class LifeBestPriceEmailModel extends BestPriceEmailModel {
 	public String toString() {
 		return "LifeBestPriceEmailModel{" +
 				"premium='" + premium + '\'' +
-				", LifeCover='" + LifeCover + '\'' +
-				", TPDCover='" + TPDCover + '\'' +
+				", lifeCover='" + lifeCover + '\'' +
+				", tpdCover='" + tpdCover + '\'' +
 				", smoker='" + smoker + '\'' +
 				", traumaCover='" + traumaCover + '\'' +
 				", gender='" + gender + '\'' +

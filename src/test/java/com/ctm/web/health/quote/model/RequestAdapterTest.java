@@ -4,7 +4,6 @@ import com.ctm.web.health.model.form.Filter;
 import com.ctm.web.health.quote.model.request.Filters;
 import org.junit.Test;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 public class RequestAdapterTest {
