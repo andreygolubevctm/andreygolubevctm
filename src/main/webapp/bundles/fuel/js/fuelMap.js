@@ -217,6 +217,7 @@
                 timeout: 5000, // Wait 5 seconds
                 maximumAge: 0
             };
+
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {
@@ -225,9 +226,11 @@
                         lng: position.coords.longitude
                     };
 
-                    map.setCenter(pos);
-                    drawClickedMarker(pos);
-                    getResults();
+                    google.maps.event.addListenerOnce(map, 'idle', function () {
+                        map.setCenter(pos);
+                        drawClickedMarker(pos);
+                        getResults();
+                    });
                 }, function () {
                     // User refuses to provide location
                     _handleLocationError();

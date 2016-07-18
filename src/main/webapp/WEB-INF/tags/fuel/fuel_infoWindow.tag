@@ -15,7 +15,7 @@
         <div class="col-xs-8 col-sm-8">
             <div class="map-address-container">
                 <h5>{{= obj.name }}</h5>
-                {{ var mapDirectionsUrl = urlHost + "/?saddr=Current%20Location&daddr=" + encodeURI(obj.address + " " + obj.cityName + " Australia"); }}
+                {{ var mapDirectionsUrl = urlHost + "/?saddr=Current%20Location&daddr=" + encodeURI(obj.lat + "," + obj.lng); }}
                 <a href="{{= mapDirectionsUrl }}" target="_blank" title="Get Directions to {{= obj.name }}">{{= obj.address }}</a>
             </div>
 
