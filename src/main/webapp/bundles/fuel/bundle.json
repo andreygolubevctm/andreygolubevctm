@@ -6,7 +6,6 @@
     "shared/validation",
     "core",
     "shared/forms/v1",
-    "shared/addressLookup",
     "shared/resultsRankings",
     "shared/dropdownInteractive",
     "shared/ie8SelectMenuAutoExpand",

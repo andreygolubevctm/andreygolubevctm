@@ -72,7 +72,7 @@
             navigationId: 'start',
             slideIndex: 0,
             validation: {
-                validate: true
+                validate: false
             },
             externalTracking: {
                 method: 'trackQuoteForms',
