@@ -180,7 +180,7 @@
      */
     function getBand(bandId) {
         var general = Results.getReturnedGeneral();
-        if (general && general.hasOwnProperty('bands')) {
+        if (general && general.hasOwnProperty('bands') && general.bands.length > 0) {
             return Results.getReturnedGeneral().bands.filter(function (band) {
                 return band.id === bandId;
             })[0];

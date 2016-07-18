@@ -23,15 +23,17 @@
             <div class="map-price-container fuel-band-{{= obj.bandId }}">
                 <span class="circle"><span class="icon icon-vert-fuel"></span></span>
                 {{ var band = meerkat.modules.fuelResults.getBand(obj.bandId); }}
-                <span class="price">
-                {{ if (!band.toPrice){ }}
-                ≤ {{= band.fromPrice}}
-                {{ } else if (!band.fromPrice){ }}
-                ≥ {{= band.toPrice}}
-                {{ } else { }}
-                {{= band.fromPrice }} - {{= band.toPrice }}
+                {{ if (band.id) { }}
+                    <span class="price">
+                    {{ if (!band.toPrice){ }}
+                    ≤ {{= band.fromPrice}}
+                    {{ } else if (!band.fromPrice){ }}
+                    ≥ {{= band.toPrice}}
+                    {{ } else { }}
+                    {{= band.fromPrice }} - {{= band.toPrice }}
+                    {{ } }}
+                    </span>
                 {{ } }}
-                </span>
             </div>
             {{ } }}
         </div>
