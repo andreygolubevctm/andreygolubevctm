@@ -90,7 +90,7 @@
 		// Grab the current internal date objects
 		fromDateCurrent = $fromDateInput.datepicker("getDate"); //localized date object
 		//Make sure we have an actual date object in the right format before setting anything new
-		if (fromDateCurrent.toString() !== "Invalid Date") {
+		if (fromDateCurrent !== null) {
 			//Initialise the to be the same
 			toDate_StartDateRange = new Date(fromDateCurrent.toString());
 
@@ -124,15 +124,18 @@
 		fromDateCurrent = $fromDateInput.datepicker("getDate"); //localized date object
 		toDateCurrent = $toDateInput.datepicker("getDate"); //localized date object
 
-		// Increment by 1 year from Current to find the highest allowed toDate
-		fromDate_PlusYear = new Date(fromDateCurrent.toString());
-		fromDate_PlusYear.setYear(parseInt(fromDate_PlusYear.getFullYear()) + 1);
+		if (fromDateCurrent !== null) {
 
-		// When our 'to' return date has no longer falls within 1 year ahead of the 'from' depart date.... set it to the largest available date.
-		if (fromDate_PlusYear < toDateCurrent) {
-			//Set the toDateInput into the 3 separate fields
-			meerkat.modules.formDateInput.populate($toDateInput, stringDate(fromDate_PlusYear));
-			$toDateInput.datepicker("update", fromDate_PlusYear);
+			// Increment by 1 year from Current to find the highest allowed toDate
+			fromDate_PlusYear = new Date(fromDateCurrent.toString());
+			fromDate_PlusYear.setYear(parseInt(fromDate_PlusYear.getFullYear()) + 1);
+
+			// When our 'to' return date has no longer falls within 1 year ahead of the 'from' depart date.... set it to the largest available date.
+			if (fromDate_PlusYear < toDateCurrent) {
+				//Set the toDateInput into the 3 separate fields
+				meerkat.modules.formDateInput.populate($toDateInput, stringDate(fromDate_PlusYear));
+				$toDateInput.datepicker("update", fromDate_PlusYear);
+			}
 		}
 	}
 

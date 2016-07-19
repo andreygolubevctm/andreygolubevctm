@@ -6,6 +6,7 @@ import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.services.IProviderLeadFeedService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
+import com.ctm.web.core.leadfeed.services.LeadFeedTouchService;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.Touch.TouchType;
 import com.ctm.web.core.services.AccessTouchService;
@@ -16,12 +17,13 @@ import org.slf4j.LoggerFactory;
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 
+@Deprecated
 public class LifeLeadFeedService extends LeadFeedService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LifeLeadFeedService.class);
 
 	public LifeLeadFeedService(BestPriceLeadsDao bestPriceDao) {
-		super(bestPriceDao, new ContentService());
+		super(bestPriceDao, new ContentService(), new LeadFeedTouchService(new AccessTouchService()));
 	}
 
 	protected LeadResponseStatus process(LeadType leadType, LeadFeedData leadData, TouchType touchType) {
@@ -76,12 +78,13 @@ public class LifeLeadFeedService extends LeadFeedService {
 		return processGateway(LeadType.CALL_ME_BACK, leadData, TouchType.SOLD);
 	}
 
+	@Override
 	protected Boolean recordTouch(String touchType, LeadFeedData leadData) {
 		AccessTouchService touchService = new AccessTouchService();
 
 		if(!leadData.getProductId().isEmpty())
 			return touchService.recordTouchWithComment(leadData.getTransactionId(), touchType, Touch.ONLINE_USER, leadData.getProductId());
 		else
-			return touchService.recordTouch(leadData.getTransactionId(), touchType, Touch.ONLINE_USER);
+			return touchService.recordTouchDeprecated(leadData.getTransactionId(), touchType, Touch.ONLINE_USER);
 	}
 }

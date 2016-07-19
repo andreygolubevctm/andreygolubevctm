@@ -33,7 +33,6 @@
      * The google map autocomplete object
      * @type {{autocomplete}}
      */
-    var autocomplete;
     var markers = [];
     var clickedMarker; // The marker when you click on a location or map point.
     var mapStyles = [
@@ -150,7 +149,12 @@
      */
     var DEFAULT_ZOOM = 13,
         MIN_ZOOM = 12,
-        MIN_MAP_HEIGHT = 735;
+        MIN_MAP_HEIGHT = 735,
+        // hard coding Sydney based off Google Analytics usage data as at 12/07/2016
+        DEFAULT_LOCATION = {
+            lat: -33.8684511,
+            lng: 151.1984322
+        };
 
     var currentZoom = DEFAULT_ZOOM,
         fetchResultsTimeout;
@@ -187,10 +191,6 @@
                 minZoom: MIN_ZOOM, // e.g. 0 is whole world
                 mapTypeId: google.maps.MapTypeId.ROAD,
                 streetViewControl: false,
-                center: { // hard coding Sydney based off Google Analytics usage data as at 12/07/2016
-                    lat: -33.8684511,
-                    lng: 151.1984322
-                },
                 zoomControl: true,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.RIGHT_TOP
@@ -211,28 +211,34 @@
             initAutoComplete();
             initInfoWindowProperties();
 
-            // Run when the mapobject is created and rendered otherwise on slow connections, we can get issues.
-            google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
+            // set a timeout to prevent getting locations forever for slow connections
+            var geoOptions = {
+                enableHighAccuracy: false,
+                timeout: 5000, // Wait 5 seconds
+                maximumAge: 0
+            };
 
-                // Try HTML5 geolocation.
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function (position) {
-                        var pos = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
 
+                    google.maps.event.addListenerOnce(map, 'idle', function () {
                         map.setCenter(pos);
                         drawClickedMarker(pos);
                         getResults();
-                    }, function () {
-                        _handleLocationError(true, infoWindow, map.getCenter());
                     });
-                } else {
-                    // Browser doesn't support Geolocation
-                    _handleLocationError(false, infoWindow, map.getCenter());
-                }
-            });
+                }, function () {
+                    // User refuses to provide location
+                    _handleLocationError();
+                }, geoOptions);
+            } else {
+                // Browser doesn't support Geolocation
+                _handleLocationError();
+            }
 
 
             google.maps.event.addListener(map, 'zoom_changed', function (event) {
@@ -269,22 +275,57 @@
                 country: "au"
             }
         };
-        autocomplete = new google.maps.places.Autocomplete(document.getElementById('fuel_location'), options);
-        autocomplete.bindTo('bounds', map);
+        var autocompleteService = new google.maps.places.AutocompleteService(),
+            placesService = new google.maps.places.PlacesService(map),
+            autocomplete = new google.maps.places.Autocomplete(document.getElementById('fuel_location'), options);
 
+        autocomplete.bindTo('bounds', map);
         autocomplete.addListener('place_changed', function () {
             var place = autocomplete.getPlace();
-            if (!place.geometry) {
-                // TODO: Handle this....
-                window.alert("Autocomplete's returned place contains no geometry");
+            // if user didn't type anything to start the search then there is not much we can do...
+            if (!place || !place.name || place.length === 0) {
                 return;
             }
 
-            map.setCenter(place.geometry.location);
-            map.setZoom(DEFAULT_ZOOM);
-            drawClickedMarker(place.geometry.location);
-            getResults();
+            if (!place.geometry) {
+                autocompleteService.getPlacePredictions({
+                    input: place.name,
+                    types: ['(regions)'],
+                    componentRestrictions: {
+                        country: "au"
+                    },
+                    bounds: map.getBounds()
+                }, function (predictions, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        // choose the first prediction assuming there are any returned...
+                        if (predictions[0]) {
+                            $('#fuel_location').val(predictions[0].description);
+                            // ...but we first need to get the details of the place so we get the actual place object that contains geometry
+                            placesService.getDetails(
+                                {
+                                    'placeId': predictions[0].place_id
+                                },
+                                function (placeDetails, placesServiceStatus) {
+                                    if (placesServiceStatus === google.maps.places.PlacesServiceStatus.OK) {
+                                        handleAutoCompleteLocationChange(placeDetails);
+                                    }
+                                }
+                            );
+                        }
+                    }
+                });
+                return;
+            }
+
+            handleAutoCompleteLocationChange(place);
         });
+    }
+
+    function handleAutoCompleteLocationChange(place) {
+        map.setCenter(place.geometry.location);
+        map.setZoom(DEFAULT_ZOOM);
+        drawClickedMarker(place.geometry.location);
+        getResults();
     }
 
     /**
@@ -353,7 +394,7 @@
     function hideXsInfoWindow() {
         if (isXsInfoWindowShown === true) {
             var height = $xsInfoWindow.height();
-            $xsInfoWindow.html('');
+            $xsInfoWindow.empty();
             $mapCanvas.animate({height: '+=' + height}, 'fast');
             isXsInfoWindowShown = false;
         }
@@ -379,7 +420,7 @@
     function cleanupMarkers() {
         for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
-        }
+            }
         markers = [];
     }
 
@@ -460,11 +501,10 @@
         });
     }
 
-    function _handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-            'Error: The Geolocation service failed.' :
-            'Error: Your browser doesn\'t support geolocation.');
+    function _handleLocationError() {
+        map.setCenter(DEFAULT_LOCATION);
+        map.setZoom(DEFAULT_ZOOM);
+        drawClickedMarker(DEFAULT_LOCATION);
     }
 
     function setMapHeight() {
@@ -483,14 +523,10 @@
         });
     }
 
-    function getMap() {
-        return map;
-    }
-
-    function getMarkers() {
-        return markers;
-    }
-
+    /**
+     * Set the top-left(northWest), bottom-right(southEast) coordinates for fuel_quote service to use.
+     * Google map bounds only has coordinates for northEast and SourthWest, so we have to form the ones we want
+     */
     function getBoundsAndSetFields() {
         if (!map) {
             return;
@@ -507,6 +543,14 @@
         }
     }
 
+    function getMap() {
+        return map;
+    }
+
+    function getMarkers() {
+        return markers;
+    }
+
     function initFuelMap() {
         $(document).ready(function ($) {
             $mapCanvas = $('#map-canvas');
@@ -514,9 +558,7 @@
 
             setMapHeight();
             markerTemplate = _.template($('#map-marker-template').html());
-            meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function () {
-                setMapHeight();
-            });
+            meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, setMapHeight);
         });
 
     }

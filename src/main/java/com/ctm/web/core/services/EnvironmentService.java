@@ -90,6 +90,23 @@ public class EnvironmentService {
 		return currentEnvironment;
 	}
 
+	public static Environment getEnvironmentFromSpring() throws EnvironmentException{
+		String envVariable = getEnvironmentProperty();
+		Environment environment = null;
+		for (Environment env : Environment.values()) {
+			if(env.toString().equalsIgnoreCase(envVariable)){
+				environment = env;
+			}
+		}
+		if(environment == null) throw new EnvironmentException("Unknown environment code");
+		LOGGER.info("Environment set {}", kv("envCode", currentEnvironment));
+		return environment;
+	}
+
+	public static String getEnvironmentProperty() {
+		return System.getProperty("spring.profiles.active", "localhost");
+	}
+
 	public static String getEnvironmentAsString() throws EnvironmentException{
 		if(currentEnvironment == null) throw new EnvironmentException("Environment variable not set, check the environment.properties file.");
 		return currentEnvironment.toString();

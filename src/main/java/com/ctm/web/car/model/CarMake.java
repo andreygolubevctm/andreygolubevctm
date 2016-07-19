@@ -7,7 +7,7 @@ public class CarMake {
 
 	private String code;
 	private String label;
-	private boolean isTopMake;
+	private boolean isTop;
 
 	public String getCode() {
 		return code;
@@ -23,11 +23,11 @@ public class CarMake {
 		this.label = label;
 	}
 
-	public boolean getIsTopMake() {
-		return isTopMake;
+	public boolean getIsTop() {
+		return isTop;
 	}
-	public void setIsTopMake(boolean isTopMake) {
-		this.isTopMake = isTopMake;
+	public void setIsTop(boolean isTop) {
+		this.isTop = isTop;
 	}
 	
 }

@@ -310,10 +310,6 @@
 		<field_v1:ip_number ip="127.0.0.1" />
 	</form_v2:row>
 
-	<form_v2:row label="make_select">
-		<field_v1:make_select xpath="${xpath}/make" title="field:make_select" type="make" required="true" />
-	</form_v2:row>
-
 	<form_v2:row label="password">
 		<field_v1:password xpath="save/password" required="true" title="field:password" minLength="6" onKeyUp="getElementById(\"field_password_test\").innerText=this.value;" />
 		<span id="field_password_test" class="help-block">Type password; will appear here</span>

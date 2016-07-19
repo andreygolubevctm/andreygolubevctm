@@ -82,7 +82,7 @@ public class IncomingEmailRouter extends HttpServlet {
 
 			AccessTouchService touchService = new AccessTouchService();
 			touchService.setRequest(request);
-			touchService.recordTouchWithProductCode(emailData.getTransactionId(), TOUCH_TYPE, "");
+			touchService.recordTouchWithProductCodeDeprecated(emailData.getTransactionId(), TOUCH_TYPE, "");
 
 			// Validate the URL
 			if (emailUrl.length() == 0) {
