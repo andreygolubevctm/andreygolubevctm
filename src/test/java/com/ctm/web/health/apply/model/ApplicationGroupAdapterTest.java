@@ -28,7 +28,7 @@ public class ApplicationGroupAdapterTest {
         final Qch qch = mock(Qch.class);
         final com.ctm.web.health.model.form.PreviousFund previousFund = mock(com.ctm.web.health.model.form.PreviousFund.class);
         when(healthQuote.getApplication()).thenReturn(application);
-        when(healthQuote.getPreviousFund()).thenReturn(previousFund);
+        when(healthQuote.getPreviousfund()).thenReturn(previousFund);
         when(application.getHif()).thenReturn(hif);
         when(application.getQch()).thenReturn(qch);
         final ApplicationGroup applicationGroup = ApplicationGroupAdapter.createApplicationGroup(Optional.ofNullable(healthQuote));
@@ -116,7 +116,7 @@ public class ApplicationGroupAdapterTest {
         final com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund previousFund = ApplicationGroupAdapter.createPreviousFund(Optional.ofNullable(fund));
         assertNotNull(previousFund);
         verify(fund, times(1)).getFundName();
-        verify(fund, times(1)).getMemberId();
+        verify(fund, times(1)).getMemberID();
     }
 
     @Test

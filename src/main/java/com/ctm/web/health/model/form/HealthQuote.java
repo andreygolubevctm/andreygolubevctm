@@ -8,8 +8,6 @@ public class HealthQuote {
 
     private Double rebate;
 
-    private Double rebateChangeover;
-
     private Integer loading;
 
     private Integer primaryCAE;
@@ -44,7 +42,7 @@ public class HealthQuote {
 
     private String searchDate;
 
-    private PreviousFund previousFund;
+    private PreviousFund previousfund;
 
     private Payment payment;
 
@@ -76,14 +74,6 @@ public class HealthQuote {
 
     public void setRebate(Double rebate) {
         this.rebate = rebate;
-    }
-
-    public Double getRebateChangeover() {
-        return rebateChangeover;
-    }
-
-    public void setRebateChangeover(Double rebateChangeover) {
-        this.rebateChangeover = rebateChangeover;
     }
 
     public Integer getLoading() {
@@ -222,12 +212,12 @@ public class HealthQuote {
         this.searchDate = searchDate;
     }
 
-    public PreviousFund getPreviousFund() {
-        return previousFund;
+    public PreviousFund getPreviousfund() {
+        return previousfund;
     }
 
-    public void setPreviousFund(PreviousFund previousFund) {
-        this.previousFund = previousFund;
+    public void setPreviousfund(PreviousFund previousfund) {
+        this.previousfund = previousfund;
     }
 
     public Payment getPayment() {
