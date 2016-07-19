@@ -2,7 +2,7 @@ package com.ctm.web.core.providers.model;
 
 import java.util.List;
 
-public class AggregateIncomingResponse<T> {
+public class IncomingQuotesResponse<T> {
 
     private Payload<T> payload;
 

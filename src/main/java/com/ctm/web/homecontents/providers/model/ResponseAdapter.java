@@ -1,6 +1,6 @@
 package com.ctm.web.homecontents.providers.model;
 
-import com.ctm.web.core.providers.model.AggregateIncomingResponse;
+import com.ctm.web.core.providers.model.IncomingQuotesResponse;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.homecontents.model.results.*;
 import com.ctm.web.homecontents.providers.model.request.HomeQuoteRequest;
@@ -17,7 +17,7 @@ public class ResponseAdapter {
     public static List<HomeResult> adapt(HomeQuoteRequest request, HomeResponse response) {
         
         List<HomeResult> results = new ArrayList<>();
-        final AggregateIncomingResponse.Payload<HomeQuote> quoteResponse = response.getPayload();
+        final IncomingQuotesResponse.Payload<HomeQuote> quoteResponse = response.getPayload();
         
         if (quoteResponse != null) {
             for (HomeQuote homeQuote : quoteResponse.getQuotes()) {

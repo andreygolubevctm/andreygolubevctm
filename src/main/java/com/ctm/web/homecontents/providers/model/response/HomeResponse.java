@@ -1,6 +1,6 @@
 package com.ctm.web.homecontents.providers.model.response;
 
-import com.ctm.web.core.providers.model.AggregateIncomingResponse;
+import com.ctm.web.core.providers.model.IncomingQuotesResponse;
 
-public class HomeResponse extends AggregateIncomingResponse<HomeQuote> {
+public class HomeResponse extends IncomingQuotesResponse<HomeQuote> {
 }
