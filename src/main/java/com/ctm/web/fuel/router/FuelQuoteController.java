@@ -4,6 +4,7 @@ import com.ctm.fuelquote.model.config.Coordinate;
 import com.ctm.fuelquote.model.request.QuoteRequest;
 import com.ctm.fuelquote.model.response.QuoteResponse;
 import com.ctm.httpclient.Client;
+import com.ctm.httpclient.RestSettings;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +53,16 @@ public class FuelQuoteController {
                     .fuelId(fuelId)
                     .build();
 
-            return fuelQuoteClient.post(quoteRequest, QuoteResponse.class, fuelQuoteUrl + "/quote").toBlocking().first();
+            final RestSettings<QuoteRequest> restSettings = RestSettings.<QuoteRequest>builder()
+                    .url(fuelQuoteUrl + "/quote")
+                    .request(quoteRequest)
+                    .response(QuoteResponse.class)
+                    .timeout(20000) // 20 seconds
+                    .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                    .header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
+                    .build();
+
+            return fuelQuoteClient.post(restSettings).toBlocking().first();
         } else {
             return QuoteResponse.newBuilder().build();
         }
