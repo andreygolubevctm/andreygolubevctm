@@ -26,9 +26,9 @@
                 {{ if (band.id) { }}
                     <span class="price">
                     {{ if (!band.toPrice){ }}
-                    ≤ {{= band.fromPrice}}
+                    ≥ {{= band.fromPrice}}
                     {{ } else if (!band.fromPrice){ }}
-                    ≥ {{= band.toPrice}}
+                    ≤ {{= band.toPrice}}
                     {{ } else { }}
                     {{= band.fromPrice }} - {{= band.toPrice }}
                     {{ } }}

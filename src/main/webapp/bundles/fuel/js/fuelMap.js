@@ -199,7 +199,6 @@
     function initCallback() {
         try {
             initMap();
-            initGeoLocation();
             initAutoComplete();
             initInfoWindowProperties();
         } catch (e) {
@@ -257,14 +256,27 @@
                 getResults();
             }
             currentZoom = newZoom;
+            addToHistory();
         });
         google.maps.event.addListener(map, 'dragend', function (event) {
             getResults();
+            addToHistory();
         });
-    }
 
-    function handleHistory(event) {
-
+        if (meerkat.site.hasOwnProperty('formData')) {
+            $('#fuel_type_id').val(meerkat.site.formData.fuelType);
+            $('#fuel_location').val(meerkat.site.formData.location);
+            var mapMeta = meerkat.site.formData.coords.split(',');
+            map.setCenter(new google.maps.LatLng(
+                parseFloat(parseFloat(mapMeta[0])),
+                parseFloat(parseFloat(mapMeta[1]))
+            ));
+            map.setZoom(parseInt(mapMeta[2]));
+            getResults();
+            //todo: its not setting the hidden inputs i dont think
+        } else {
+            initGeoLocation();
+        }
     }
 
     /**
@@ -423,6 +435,12 @@
                 productName: info.name || ""
             }
         });
+    }
+
+    function addToHistory(event) {
+        var center = map.getCenter(),
+            baseUrl = meerkat.site.urls.base + 'fuel_quote.jsp';
+        window.history.pushState({}, "", baseUrl + '?map=' + center.lat() + ',' + center.lng() + ',' + map.getZoom() + '&fueltype=' + meerkat.modules.fuel.getFuelType());
     }
 
     function hideXsInfoWindow() {

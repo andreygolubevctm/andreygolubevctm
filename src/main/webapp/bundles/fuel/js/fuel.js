@@ -140,9 +140,14 @@
         }
     }
 
+    function getFuelType() {
+        return $('#fuel_type_id').val();
+    }
+
     meerkat.modules.register("fuel", {
         init: initFuel,
         events: moduleEvents,
-        getTrackingFieldsObject: getTrackingFieldsObject
+        getTrackingFieldsObject: getTrackingFieldsObject,
+        getFuelType: getFuelType
     });
 })(jQuery);
