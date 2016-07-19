@@ -1,7 +1,7 @@
 package com.ctm.web.health.quote.model;
 
 import com.ctm.web.core.content.model.Content;
-import com.ctm.web.core.providers.model.QuoteResponse;
+import com.ctm.web.core.providers.model.IncomingQuotesResponse;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.HealthRequest;
@@ -14,15 +14,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.ctm.web.health.quote.model.response.Price.DEFAULT_PRICE;
 import static java.util.Collections.emptyList;
@@ -31,17 +27,17 @@ public class ResponseAdapter {
 
     public static final String HEALTH_BROCHURE_URL = "health_brochure.jsp?pdf=";
 
-    public static Pair<Boolean, List<HealthQuoteResult>> adapt(HealthRequest request, HealthResponse healthResponse, Content alternatePricingContent) {
+    public static ResponseAdapterModel adapt(HealthRequest request, HealthResponse healthResponse, Content alternatePricingContent) {
         boolean hasPriceChanged = false;
         List<HealthQuoteResult> results = new ArrayList<>();
-        QuoteResponse<HealthQuote> quoteResponse = healthResponse.getPayload();
+        final IncomingQuotesResponse.Payload<HealthQuote> quoteResponse = healthResponse.getPayload();
 
         // Check if the response is unavailable
         if (quoteResponse.getQuotes()
                 .stream()
                 .allMatch(q -> !q.isAvailable())) {
 
-            return Pair.of(true, emptyList());
+            return new ResponseAdapterModel(true, emptyList());
 
         } else {
 
@@ -104,7 +100,9 @@ public class ResponseAdapter {
             }
 
 
-            return Pair.of(hasPriceChanged, results);
+            return new ResponseAdapterModel(hasPriceChanged, results,
+                    Optional.ofNullable(healthResponse.getSummary())
+                            .map(s -> SummaryResponseAdapter.adapt(request, s)));
         }
     }
 

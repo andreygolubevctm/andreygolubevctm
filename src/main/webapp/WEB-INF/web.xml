@@ -43,7 +43,6 @@
 		<init-param>
 			<param-name>jaxrs.serviceClasses</param-name>
 			<param-value>com.ctm.web.car.router.CarRouter,
-				com.ctm.web.health.router.HealthQuoteRouter,
 				com.ctm.web.health.router.HealthApplicationRouter,
 				com.ctm.web.health.router.HealthAuthorisePaymentRouter,
 				com.ctm.web.health.router.HealthRegisterPaymentRouter

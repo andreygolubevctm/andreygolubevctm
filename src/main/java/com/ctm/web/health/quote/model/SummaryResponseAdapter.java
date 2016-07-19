@@ -5,15 +5,13 @@ import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.results.PremiumRange;
 import com.ctm.web.health.model.results.Range;
 import com.ctm.web.health.price.PremiumCalculator;
-import com.ctm.web.health.quote.model.response.HealthSummaryResponse;
 import com.ctm.web.health.quote.model.response.PremiumsSummary;
 
 import java.math.BigDecimal;
 
 public class SummaryResponseAdapter {
 
-    public static PremiumRange adapt(HealthRequest request, HealthSummaryResponse summaryResponse) {
-        PremiumsSummary premiumsSummary = summaryResponse.getPayload().getQuotes().get(0);
+    public static PremiumRange adapt(HealthRequest request, PremiumsSummary premiumsSummary) {
         PremiumRange range = new PremiumRange();
         HealthQuote healthQuote = request.getQuote();
         range.setYearly(createRange(premiumsSummary.getYearlyPremiumRange(), healthQuote));

@@ -1,5 +1,7 @@
 package com.ctm.web.health.services;
 
+import com.ctm.httpclient.Client;
+import com.ctm.httpclient.RestSettings;
 import com.ctm.web.core.competition.services.CompetitionService;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
@@ -10,45 +12,73 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.model.CompetitionEntry;
 import com.ctm.web.core.model.ProviderFilter;
+import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.settings.Brand;
-import com.ctm.web.core.services.CommonQuoteService;
-import com.ctm.web.core.services.Endpoint;
+import com.ctm.web.core.providers.model.RatesheetOutgoingRequest;
+import com.ctm.web.core.services.CommonRequestServiceV2;
 import com.ctm.web.core.services.EnvironmentService;
-import com.ctm.web.core.services.SessionDataServiceBean;
-import com.ctm.web.core.utils.ObjectMapperUtil;
+import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.health.model.form.*;
-import com.ctm.web.health.model.results.HealthQuoteResult;
 import com.ctm.web.health.quote.model.RequestAdapter;
 import com.ctm.web.health.quote.model.ResponseAdapter;
+import com.ctm.web.health.quote.model.ResponseAdapterModel;
 import com.ctm.web.health.quote.model.request.HealthQuoteRequest;
 import com.ctm.web.health.quote.model.response.HealthResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.cxf.jaxrs.ext.MessageContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 
-public class HealthQuoteService extends CommonQuoteService<HealthQuote, HealthQuoteRequest, HealthResponse> {
+@Component
+public class HealthQuoteService extends CommonRequestServiceV2 {
 
-    private final CompetitionService competitionService;
+    @Autowired
+    private CompetitionService competitionService;
 
-    public HealthQuoteService() {
-        super(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
-        this.competitionService = new CompetitionService(new SessionDataServiceBean());
+    @Autowired
+    private Client<RatesheetOutgoingRequest<HealthQuoteRequest>, HealthResponse> clientQuotes;
+
+    @Autowired
+    public HealthQuoteService(ProviderFilterDao providerFilterDAO, ServiceConfigurationServiceBean serviceConfigurationServiceBean) {
+        super(providerFilterDAO, serviceConfigurationServiceBean);
     }
 
-    public Pair<Boolean, List<HealthQuoteResult>> getQuotes(Brand brand, HealthRequest data, Content alternatePricingContent, boolean isSimples) throws Exception {
+    public ResponseAdapterModel getQuotes(Brand brand, HealthRequest data, Content alternatePricingContent, boolean isSimples) throws Exception {
         setFilter(data.getQuote().getSituation());
         final HealthQuoteRequest quoteRequest = RequestAdapter.adapt(data, alternatePricingContent, isSimples);
-        final HealthResponse healthResponse = sendRequest(brand, HEALTH, "healthQuoteServiceBER", Endpoint.QUOTE, data, quoteRequest, HealthResponse.class);
+
+        final RatesheetOutgoingRequest<HealthQuoteRequest> request = RatesheetOutgoingRequest.<HealthQuoteRequest>newBuilder()
+                .transactionId(data.getTransactionId())
+                .brandCode(brand.getCode())
+                .requestAt(data.getRequestAt())
+                .payload(quoteRequest)
+                .build();
+
+        final QuoteServiceProperties properties = getQuoteServiceProperties("healthQuoteServiceBER", brand, HEALTH.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
+
+        final HealthResponse healthResponse = clientQuotes.post(RestSettings.<RatesheetOutgoingRequest<HealthQuoteRequest>>builder()
+                .request(request)
+                .jsonHeaders()
+                .url(properties.getServiceUrl()+"/quote")
+                .timeout(properties.getTimeout())
+                .responseType(MediaType.APPLICATION_JSON)
+                .response(HealthResponse.class)
+                .build())
+//                TODO: what to do on error
+                .doOnError(t -> t.printStackTrace())
+                .single().toBlocking().single();
+
         return ResponseAdapter.adapt(data, healthResponse, alternatePricingContent);
     }
 
-    public Data healthCompetitionEntry(MessageContext context, HealthRequest data, HealthQuote quote, boolean competitionEnabled, Data dataBucket) throws ConfigSettingException, DaoException, EmailDetailsException {
+    public Data healthCompetitionEntry(HttpServletRequest request, HealthRequest data, HealthQuote quote, boolean competitionEnabled, Data dataBucket) throws ConfigSettingException, DaoException, EmailDetailsException {
         ContactDetails contactDetails = quote.getContactDetails();
         String firstName = StringUtils.trim(contactDetails.getName());
         String email = StringUtils.trim(contactDetails.getEmail());
@@ -77,8 +107,8 @@ public class HealthQuoteService extends CommonQuoteService<HealthQuote, HealthQu
             entry.setFirstName(firstName);
             entry.setEmail(email);
             entry.setPhoneNumber(phoneNumber);
-            updateCompetitionEntry(context, entry);
-            competitionService.addToCompetitionEntry(context, data.getTransactionId(), entry);
+            updateCompetitionEntry(request, entry);
+            competitionService.addToCompetitionEntry(request, data.getTransactionId(), entry);
             // add to the data bucket competition/previous
 
             if (competitionNode == null) {
@@ -107,8 +137,8 @@ public class HealthQuoteService extends CommonQuoteService<HealthQuote, HealthQu
         return true;
     }
 
-    private void updateCompetitionEntry(MessageContext context, CompetitionEntry entry) throws ConfigSettingException, DaoException {
-        String competitionSecret = StringUtils.defaultIfEmpty(ContentService.getContentValue(context.getHttpServletRequest(), "competitionSecret"), "");
+    private void updateCompetitionEntry(HttpServletRequest request, CompetitionEntry entry) throws ConfigSettingException, DaoException {
+        String competitionSecret = StringUtils.defaultIfEmpty(ContentService.getContentValue(request, "competitionSecret"), "");
 
         switch (competitionSecret) {
             case "vU9CD4NjT3S6p7a83a4t":
