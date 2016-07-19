@@ -40,12 +40,6 @@
         if (meerkat.site.isFromBrochureSite === true && meerkat.modules.address.getWindowHashAsArray().length === 1) {
             startStepId = steps.startStep.navigationId;
         }
-        // Use the stage user was on when saving their quote
-        else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'latest') {
-            startStepId = steps.resultsStep.navigationId;
-        } else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
-            startStepId = steps.startStep.navigationId;
-        }
 
         $(document).ready(function () {
             meerkat.modules.journeyEngine.configure({
@@ -68,7 +62,7 @@
 
     function setJourneyEngineSteps() {
         var startStep = {
-            title: 'Fuel Details',
+            title: 'Fuel Prices',
             navigationId: 'start',
             slideIndex: 0,
             validation: {
@@ -82,6 +76,9 @@
                 meerkat.modules.jqueryValidate.initJourneyValidator();
                 meerkat.modules.fuelMap.initGoogleAPI();
                 meerkat.modules.fuelResults.initPage();
+                if(meerkat.site.isFromBrochureSite && meerkat.site.formData.location) {
+                    $('#fuel_location').val(meerkat.site.formData.location);
+                }
                 //meerkat.modules.fuelPrefill.initFuelPrefill();
             }
         };

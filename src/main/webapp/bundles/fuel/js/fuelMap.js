@@ -30,8 +30,8 @@
      */
     var infoWindow;
     /**
-     * The google map autocomplete object
-     * @type {{autocomplete}}
+     * Markers array to iterate through and remove
+     * @type {Array}
      */
     var markers = [];
     var clickedMarker; // The marker when you click on a location or map point.
@@ -149,15 +149,31 @@
      */
     var DEFAULT_ZOOM = 13,
         MIN_ZOOM = 12,
-        MIN_MAP_HEIGHT = 735,
-        // hard coding Sydney based off Google Analytics usage data as at 12/07/2016
-        DEFAULT_LOCATION = {
-            lat: -33.8684511,
-            lng: 151.1984322
-        };
+        MIN_MAP_HEIGHT = 735;
+    /**
+     * Hard coding Sydney based off Google Analytics usage data as at 12/07/2016
+     * @type {{lat: number, lng: number}}
+     */
+    var DEFAULT_LOCATION = {
+        lat: -33.8684511,
+        lng: 151.1984322
+    };
 
     var currentZoom = DEFAULT_ZOOM,
-        fetchResultsTimeout;
+        fetchResultsTimeout,
+        markerZIndexOrder = [0, 5, 4, 3, 2, 1];
+
+
+    function initFuelMap() {
+        $(document).ready(function ($) {
+            $mapCanvas = $('#map-canvas');
+            $xsInfoWindow = $('#info-window-container-xs');
+
+            setMapHeight();
+            markerTemplate = _.template($('#map-marker-template').html());
+            meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, setMapHeight);
+        });
+    }
 
     /**
      * Asynchronously load in the Google Maps API and then calls initCallback
@@ -182,81 +198,19 @@
      */
     function initCallback() {
         try {
-
-            var styledMap = new google.maps.StyledMapType(mapStyles,
-                {name: "Fuel Map"});
-            var mapOptions = {
-                mapTypeControl: false, // disable Map/Satellite dropdown
-                zoom: DEFAULT_ZOOM, // higher the number, closer to the ground.
-                minZoom: MIN_ZOOM, // e.g. 0 is whole world
-                mapTypeId: google.maps.MapTypeId.ROAD,
-                streetViewControl: false,
-                zoomControl: true,
-                zoomControlOptions: {
-                    position: google.maps.ControlPosition.RIGHT_TOP
-                },
-                mapTypeControlOptions: {
-                    mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
-                }
-            };
-
-            // Initialise the Google Map
-            map = new google.maps.Map(document.getElementById('map-canvas'),
-                mapOptions);
-
-            //Associate the styled map with the MapTypeId and set it to display.
-            map.mapTypes.set('map_style', styledMap);
-            map.setMapTypeId('map_style');
-
+            initMap();
+            initGeoLocation();
             initAutoComplete();
             initInfoWindowProperties();
-
-            // set a timeout to prevent getting locations forever for slow connections
-            var geoOptions = {
-                enableHighAccuracy: false,
-                timeout: 5000, // Wait 5 seconds
-                maximumAge: 0
-            };
-
-            // Try HTML5 geolocation.
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-
-                    google.maps.event.addListenerOnce(map, 'idle', function () {
-                        map.setCenter(pos);
-                        drawClickedMarker(pos);
-                        getResults();
-                    });
-                }, function () {
-                    // User refuses to provide location
-                    _handleLocationError();
-                }, geoOptions);
-            } else {
-                // Browser doesn't support Geolocation
-                _handleLocationError();
-            }
-
-
-            google.maps.event.addListener(map, 'zoom_changed', function (event) {
-                var newZoom = map.getZoom();
-                if (currentZoom > newZoom) {
-                    getResults();
-                }
-                currentZoom = newZoom;
-            });
-            google.maps.event.addListener(map, 'dragend', function (event) {
-                getResults();
-            });
-
         } catch (e) {
             _handleError(e, "fuel.js:initCallback");
         }
     }
 
+    /**
+     * Using a timeout to prevent so many requests even for when people are
+     * constantly moving the map around.
+     */
     function getResults() {
         getBoundsAndSetFields();
         if (fetchResultsTimeout) {
@@ -268,6 +222,89 @@
 
     }
 
+    /**
+     * Initialise map options and event listeners.
+     */
+    function initMap() {
+        var styledMap = new google.maps.StyledMapType(mapStyles,
+            {name: "Fuel Map"});
+        var mapOptions = {
+            mapTypeControl: false, // disable Map/Satellite dropdown
+            zoom: DEFAULT_ZOOM, // higher the number, closer to the ground.
+            minZoom: MIN_ZOOM, // e.g. 0 is whole world
+            mapTypeId: google.maps.MapTypeId.ROAD,
+            streetViewControl: false,
+            zoomControl: true,
+            zoomControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_TOP
+            },
+            mapTypeControlOptions: {
+                mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+            }
+        };
+
+        // Initialise the Google Map
+        map = new google.maps.Map(document.getElementById('map-canvas'),
+            mapOptions);
+
+        //Associate the styled map with the MapTypeId and set it to display.
+        map.mapTypes.set('map_style', styledMap);
+        map.setMapTypeId('map_style');
+
+        google.maps.event.addListener(map, 'zoom_changed', function (event) {
+            var newZoom = map.getZoom();
+            if (currentZoom > newZoom) {
+                getResults();
+            }
+            currentZoom = newZoom;
+        });
+        google.maps.event.addListener(map, 'dragend', function (event) {
+            getResults();
+        });
+    }
+
+    function handleHistory(event) {
+
+    }
+
+    /**
+     * Initialise geolocation
+     */
+    function initGeoLocation() {
+        // set a timeout to prevent getting locations forever for slow connections
+        var geoOptions = {
+            enableHighAccuracy: false,
+            timeout: 10000, // Wait 5 seconds
+            maximumAge: 0
+        };
+
+        // TODO: When preloading from bookmark we may not want geolocation?
+        // Except on mobile? Use case? Thoughts?
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                google.maps.event.addListenerOnce(map, 'idle', function () {
+                    map.setCenter(pos);
+                    drawClickedMarker(pos);
+                    getResults();
+                });
+            }, function () {
+                // User refuses to provide location
+                _handleLocationError();
+            }, geoOptions);
+        } else {
+            // Browser doesn't support Geolocation
+            _handleLocationError();
+        }
+
+    }
+
     function initAutoComplete() {
         var options = {
             types: ['(regions)'],
@@ -275,20 +312,20 @@
                 country: "au"
             }
         };
-        var autocompleteService = new google.maps.places.AutocompleteService(),
+        var autoCompleteService = new google.maps.places.AutocompleteService(),
             placesService = new google.maps.places.PlacesService(map),
-            autocomplete = new google.maps.places.Autocomplete(document.getElementById('fuel_location'), options);
+            autoComplete = new google.maps.places.Autocomplete(document.getElementById('fuel_location'), options);
 
-        autocomplete.bindTo('bounds', map);
-        autocomplete.addListener('place_changed', function () {
-            var place = autocomplete.getPlace();
+        autoComplete.bindTo('bounds', map);
+        autoComplete.addListener('place_changed', function () {
+            var place = autoComplete.getPlace();
             // if user didn't type anything to start the search then there is not much we can do...
             if (!place || !place.name || place.length === 0) {
                 return;
             }
 
             if (!place.geometry) {
-                autocompleteService.getPlacePredictions({
+                autoCompleteService.getPlacePredictions({
                     input: place.name,
                     types: ['(regions)'],
                     componentRestrictions: {
@@ -296,23 +333,24 @@
                     },
                     bounds: map.getBounds()
                 }, function (predictions, status) {
-                    if (status === google.maps.places.PlacesServiceStatus.OK) {
-                        // choose the first prediction assuming there are any returned...
-                        if (predictions[0]) {
-                            $('#fuel_location').val(predictions[0].description);
-                            // ...but we first need to get the details of the place so we get the actual place object that contains geometry
-                            placesService.getDetails(
-                                {
-                                    'placeId': predictions[0].place_id
-                                },
-                                function (placeDetails, placesServiceStatus) {
-                                    if (placesServiceStatus === google.maps.places.PlacesServiceStatus.OK) {
-                                        handleAutoCompleteLocationChange(placeDetails);
-                                    }
-                                }
-                            );
-                        }
+                    if (status !== google.maps.places.PlacesServiceStatus.OK) {
+                        return;
                     }
+                    // choose the first prediction assuming there are any returned...
+                    if (!predictions[0]) {
+                        return;
+                    }
+                    $('#fuel_location').val(predictions[0].description);
+                    // ...but we first need to get the details of the
+                    // place so we get the actual place object that contains geometry
+                    placesService.getDetails({
+                            'placeId': predictions[0].place_id
+                        }, function (placeDetails, placesServiceStatus) {
+                            if (placesServiceStatus === google.maps.places.PlacesServiceStatus.OK) {
+                                handleAutoCompleteLocationChange(placeDetails);
+                            }
+                        }
+                    );
                 });
                 return;
             }
@@ -338,10 +376,7 @@
         });
 
         // Remove it from the map
-        google.maps.event.addListener(infoWindow, 'closeclick', function () {
-            if (clickedMarker != null)
-                clickedMarker.setMap(null);
-        });
+        google.maps.event.addListener(infoWindow, 'closeclick', removeClickedMarker);
 
         // Removes the pointer arrow on the infoWindow as per design.
         google.maps.event.addListener(infoWindow, 'domready', function () {
@@ -360,44 +395,50 @@
      * @param info
      */
     function openInfoWindow(marker, info) {
-        if (markerTemplate) {
-            var htmlString = markerTemplate(info);
-
-            if (meerkat.modules.deviceMediaState.get() === "xs") {
-                var height = $xsInfoWindow.html(htmlString).height();
-                if (!isXsInfoWindowShown) {
-                    $mapCanvas.animate({height: '-=' + height}, 'fast');
-                    isXsInfoWindowShown = true;
-                }
-                $xsInfoWindow.find('.closeInfoWindow').on('click', function () {
-                    hideXsInfoWindow();
-                });
-            } else {
-                infoWindow.setContent(htmlString);
-                infoWindow.open(map, marker);
-            }
-
-            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                method: 'trackProductView',
-                object: {
-                    productID: info.id || null,
-                    productBrandCode: info.brandId || null,
-                    productName: info.name || ""
-                }
-            });
-
-        } else {
+        if (!markerTemplate) {
             _handleError("", 'An error occurred displaying information for this fuel provider.');
+            return;
         }
+        var htmlString = markerTemplate(info);
+
+        if (meerkat.modules.deviceMediaState.get() === "xs") {
+            var height = $xsInfoWindow.html(htmlString).height();
+            if (!isXsInfoWindowShown) {
+                $mapCanvas.animate({height: '-=' + height}, 'fast');
+                isXsInfoWindowShown = true;
+            }
+            $xsInfoWindow.find('.closeInfoWindow').on('click', function () {
+                hideXsInfoWindow();
+            });
+        } else {
+            infoWindow.setContent(htmlString);
+            infoWindow.open(map, marker);
+        }
+
+        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+            method: 'trackProductView',
+            object: {
+                productID: info.id || null,
+                productBrandCode: info.brandId || null,
+                productName: info.name || ""
+            }
+        });
     }
 
     function hideXsInfoWindow() {
-        if (isXsInfoWindowShown === true) {
-            var height = $xsInfoWindow.height();
-            $xsInfoWindow.empty();
-            $mapCanvas.animate({height: '+=' + height}, 'fast');
-            isXsInfoWindowShown = false;
+        if (isXsInfoWindowShown !== true) {
+            return;
         }
+        removeClickedMarker();
+        var height = $xsInfoWindow.height();
+        $xsInfoWindow.empty();
+        $mapCanvas.animate({height: '+=' + height}, 'fast');
+        isXsInfoWindowShown = false;
+    }
+
+    function removeClickedMarker() {
+        if (clickedMarker != null)
+            clickedMarker.setMap(null);
     }
 
     function plotMarkers(sites) {
@@ -405,7 +446,7 @@
             log("plotMarkers: No Results Available to plot markers");
             return;
         }
-        //var bounds = new google.maps.LatLngBounds();
+        removeClickedMarker();
         cleanupMarkers();
         // clear XsInfoWindow
         hideXsInfoWindow();
@@ -414,13 +455,12 @@
                 markers.push(createMarker(sites[i]));
             }
         }
-
     }
 
     function cleanupMarkers() {
         for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
-            }
+        }
         markers = [];
     }
 
@@ -450,7 +490,8 @@
                 anchor: new google.maps.Point(13, 13),
                 // we want to render @ 26x26 logical px (@2x dppx or 'Retina')
                 scaledSize: new google.maps.Size(scaledSize, scaledSize)
-            }
+            },
+            zIndex: markerZIndexOrder[bandId]
         });
 
         google.maps.event.addListener(marker, 'click', function (event) {
@@ -468,8 +509,7 @@
      */
     function drawClickedMarker(location, bandId) {
         // clear previous markers
-        if (clickedMarker != null)
-            clickedMarker.setMap(null);
+        removeClickedMarker();
 
         var anchorPoint = bandId === 0 ? new google.maps.Point(18, 30) : new google.maps.Point(13, 26);
         clickedMarker = new google.maps.Marker({
@@ -477,7 +517,7 @@
             icon: {
                 url: 'assets/brand/ctm/graphics/fuel/pin.png',
                 anchor: anchorPoint,
-                size: new google.maps.Size(52, 52),
+                size: new google.maps.Size(26, 26),
                 scaledSize: new google.maps.Size(26, 26)
             },
             map: map,
@@ -549,18 +589,6 @@
 
     function getMarkers() {
         return markers;
-    }
-
-    function initFuelMap() {
-        $(document).ready(function ($) {
-            $mapCanvas = $('#map-canvas');
-            $xsInfoWindow = $('#info-window-container-xs');
-
-            setMapHeight();
-            markerTemplate = _.template($('#map-marker-template').html());
-            meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, setMapHeight);
-        });
-
     }
 
     meerkat.modules.register("fuelMap", {
