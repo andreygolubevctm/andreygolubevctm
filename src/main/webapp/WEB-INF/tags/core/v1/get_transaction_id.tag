@@ -3,6 +3,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+<jsp:useBean id="apacheStringUtils" class="org.apache.commons.lang3.StringUtils" scope="request" />
+<c:set var="ipAddress" value="${ipAddressHandler.getIPAddress(pageContext.request)}"  />
 
 <c:set var="logger" value="${log:getLogger('tag.core.get_transaction_id')}" />
 
@@ -64,7 +66,7 @@
 			<c:param name="page" value="${pageContext.request.servletPath}" />
 			<c:param name="message" value="core:get_transaction_id VERTICAL EMPTY" />
 			<c:param name="description" value="${error}" />
-			<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType} emailAddress=${emailAddress} ipAddress=${ipAddressHandler.getIPAddress(pageContext.request)} serverAddress=${serverIp} dataNodes=${dataNodes} " />
+			<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType} emailAddress=${emailAddress} ipAddress=${ipAddress} serverAddress=${serverIp} dataNodes=${dataNodes} " />
 		</c:import>
 
 		${sessionDataUtils.setTransactionId(data, '' )}
@@ -104,7 +106,6 @@
 		<c:choose>
 			<c:when test="${not empty getTransaction and getTransaction.rowCount > 0 and rootId ne 0}">
 
-				<c:set var="ipAddress" 		value="${ipAddressHandler.getIPAddress(pageContext.request)}"  />
 				<c:set var="sessionId" 		value="${pageContext.session.id}" />
 				<c:set var="status" 		value="" />
 
@@ -130,7 +131,7 @@
 									<sql:param value="${getTransaction.rows[0].EmailAddress}" />
 								</c:otherwise>
 							</c:choose>
-							<sql:param value="${org.apache.commons.lang3.StringUtils.left(ipAddress,15)}" />
+							<sql:param value="${apacheStringUtils.left(ipAddress,15)}" />
 							<sql:param value="${getTransaction.rows[0].styleCodeId}" />
 							<sql:param value="${getTransaction.rows[0].styleCode}" />
 							<sql:param value="${sessionId}" />
@@ -238,7 +239,6 @@
 
 		<go:setData dataVar="data" xpath="save" value="*DELETE" />
 
-		<c:set var="ipAddress" 		value="${ipAddressHandler.getIPAddress(pageContext.request)}"  />
 		<c:set var="sessionId" 		value="${pageContext.session.id}" />
 		<c:set var="status" 		value="" />
 		<c:catch var="error">
@@ -258,7 +258,7 @@
 							<sql:param value=" " />
 						</c:otherwise>
 					</c:choose>
-					<sql:param value="${org.apache.commons.lang3.StringUtils.left(ipAddress,15)}" />
+					<sql:param value="${apacheStringUtils.left(ipAddress,15)}" />
 					<sql:param value="${styleCodeId}" />
 					<sql:param value="${styleCode}" />
 					<sql:param value="${sessionId}" />
@@ -274,6 +274,7 @@
 			<c:choose>
 				<c:when test="${results.rowCount == 0 || empty results.rows[0].transactionID}">
 					<c:set var="method" value="ERROR: NEW" />
+					${logger.error("core:get_transaction_id NEW. rowCount==0 or empty tranId.", error)}
 					<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 						<c:param name="transactionId" value="${transactionId}" />
 						<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -302,6 +303,7 @@
 		<c:choose>
 			<c:when test="${not empty error}">
 				<c:set var="method" value="ERROR: NEW" />
+				${logger.error("core:get_transaction_id NEW.", error)}
 
 				<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 					<c:param name="transactionId" value="${transactionId}" />
