@@ -236,6 +236,7 @@
             mapTypeId: google.maps.MapTypeId.ROAD,
             streetViewControl: false,
             zoomControl: true,
+            scrollwheel: false,
             zoomControlOptions: {
                 position: google.maps.ControlPosition.RIGHT_TOP
             },
@@ -288,12 +289,12 @@
             $('#fuel_type_id').val(_legacyMapFuelTypes(meerkat.site.formData.fuelType));
         }
         if (formData.location !== "") {
-            $('#fuel_location').val(meerkat.site.formData.location);
-
             if (!formData.coords) {
                 // @todo: Too much effort for MVP to figure out why we can't do a keypress
                 // .. to make autocomplete use the first suggestion to go to that location. Instead, will just geolocate.
                 initGeoLocation();
+            } else {
+                $('#fuel_location').val(meerkat.site.formData.location);
             }
         }
         if (!_.isUndefined(formData.coords) && formData.coords !== "") {
