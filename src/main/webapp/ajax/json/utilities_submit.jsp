@@ -22,11 +22,6 @@
     <go:setData dataVar="data" xpath="utilities/application/details/address/streetNum" value="0"/>
 </c:if>
 
-<c:choose>
-    <c:when test="${empty data.utilities.application.thingsToKnow.termsAndConditions != 'Y'}">
-        ERROR - NO TERMS AND CONDITIONS
-    </c:when>
-    <c:otherwise>
 
         <%-- REGISTER MARKETING OPTIN IF REQUIRED --%>
         <c:if test="${not empty data['utilities/application/details/email']}">
@@ -146,7 +141,5 @@
                     </c:otherwise>
                 </c:choose> <%-- / TESTING IF REQUEST FAILED --%>
                 <c:out value="${json}" escapeXml="false"/>
-            </c:otherwise>
-        </c:choose>
     </c:otherwise>
 </c:choose>

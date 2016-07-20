@@ -237,6 +237,7 @@
 			},
 			onBeforeLeave:function(event){
 				meerkat.modules.healthTaxTime.disableNewQuestion(true);
+				meerkat.modules.healthTiersLabel.setIncomeLabel();
 			}
 		};
 
@@ -507,7 +508,7 @@
 					meerkat.modules.healthMedicare.updateMedicareLabel();
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health"];
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF"];
 
 					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
@@ -814,7 +815,7 @@
 			rebate_choice: forceRebate === true ? 'Y' : $healthCoverDetails.find('input[name="health_healthCover_rebate"]:checked').val(),
 			primary_dob: $healthCoverDetails.find('#health_healthCover_primary_dob').val(),
 			primary_loading:$healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
-			primary_current: $healthCoverDetails.find('input[name="health_healthCover_primary_cover"]:checked').val(),
+			primary_current: meerkat.modules.healthAboutYou.getPrimaryCurrentCover(),
 			primary_loading_manual: $healthCoverDetails.find('.primary-lhc').val(),
 			cover: $healthCoverDetails.find(':input[name="health_situation_healthCvr"]').val()
 		};
@@ -826,7 +827,7 @@
 
 		if (hasPartner()) {
 			postData.partner_dob = $healthCoverDetails.find('input[name="health_healthCover_partner_dob"]').val();
-			postData.partner_current = $healthCoverDetails.find('input[name="health_healthCover_partner_cover"]:checked').val() || 'N';
+			postData.partner_current = meerkat.modules.healthAboutYou.getPartnerCurrentCover() || 'N';
 			postData.partner_loading = $healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val() || 'N';
 			postData.partner_loading_manual = $healthCoverDetails.find('input[name="health_healthCover_partner_lhc"]').val();
 		}
@@ -847,11 +848,11 @@
 			rebate_choice: $healthCoverDetails.find('input[name="health_healthCover_rebate"]:checked').val() || 'Y',
 			primary_dob: $healthCoverDetails.find('#health_healthCover_primary_dob').val(),
 			primary_loading:$healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
-			primary_current: $healthCoverDetails.find('input[name="health_healthCover_primary_cover"]:checked').val(),
+			primary_current: meerkat.modules.healthAboutYou.getPrimaryCurrentCover(),
 			primary_loading_manual: $healthCoverDetails.find('.primary-lhc').val(),
 			partner_dob: $healthCoverDetails.find('#health_healthCover_partner_dob').val(),
 			partner_loading:$healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),
-			partner_current:$healthCoverDetails.find('input[name="health_healthCover_partner_cover"]:checked').val(),
+			partner_current:meerkat.modules.healthAboutYou.getPartnerCurrentCover(),
 			partner_loading_manual: $healthCoverDetails.find('.partner-lhc').val(),
 			cover: $healthCoverDetails.find(':input[name="health_situation_healthCvr"]').val()
 		};
@@ -1436,7 +1437,8 @@
 		getRebate: getRebate,
 		fetchRates: fetchRates,
 		loadRates: loadRates,
-		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage
+		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage,
+        hasPartner: hasPartner
 	});
 
 })(jQuery);

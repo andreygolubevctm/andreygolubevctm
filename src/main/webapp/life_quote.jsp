@@ -33,6 +33,9 @@
 
 <life_v1:widget_values />
 
+<%-- Set global variable to flags for active split tests --%>
+<life_v1:splittest_helper />
+
 <core_v1:doctype />
 <go:html>
 	<core_v1:head quoteType="${xpath}" title="Life Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
@@ -59,6 +62,8 @@
 		<core_v1:transferring />
 
 		<form_v1:form action="health_quote_results.jsp" method="POST" id="mainform" name="frmMain">
+
+			<core_v2:journey_tracking />
 
 			<%-- Fields to store Lifebroker specific data --%>
 			<life_v1:lifebroker_ref label="life" />

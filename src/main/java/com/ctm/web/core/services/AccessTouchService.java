@@ -12,38 +12,56 @@ import com.ctm.web.core.router.IncomingEmailRouter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class AccessTouchService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(IncomingEmailRouter.class);
 
-	protected final SessionDataService sessionDataService;
+	private SessionDataServiceBean sessionDataServiceBean;
 
-	TouchDao dao;
+	protected SessionDataService sessionDataService;
+
+    private TouchDao dao;
 	private HttpServletRequest request;
 
+	@Autowired
+	public AccessTouchService(TouchDao dao, SessionDataServiceBean sessionDataServiceBean) {
+		this.dao = dao;
+		this.sessionDataServiceBean = sessionDataServiceBean;
+	}
+
+    @Deprecated
 	public AccessTouchService(TouchDao dao ,SessionDataService sessionDataService) {
 		this.dao = dao;
 		this.sessionDataService = sessionDataService;
 	}
 
+    @Deprecated
 	public AccessTouchService() {
 		dao = new TouchDao();
 		this.sessionDataService = new SessionDataService();
 	}
 
-	// Don't reorder any of the recordTouch(*) methods.
+	// Don't reorder any of the recordTouchDeprecated(*) methods.
 	// Doing so will cause hell to break loose.
 	// JSP tries to 'best match' calls to overloaded methods
 	// and does so on a first-come first-served basis. This results
 	// in the method with HttpServletRequest as the first parameter to
 	// complain.
-	public Boolean recordTouch(long transactionId, String type) {
-		return recordTouch(transactionId,  type , null);
+	public Boolean recordTouchDeprecated(long transactionId, String type) {
+		return recordTouchDeprecated(transactionId,  type , null);
+	}
+
+	public Boolean recordTouchDeprecated(long transactionId, String type , String operatorId) {
+		Touch touch = createTouchObject(transactionId, type, operatorId);
+		return recordTouchDeprecated(touch);
 	}
 
 	public Boolean recordTouch(long transactionId, String type , String operatorId) {
@@ -51,7 +69,7 @@ public class AccessTouchService {
 		return recordTouch(touch);
 	}
 
-	public Boolean recordTouch(Touch touch){
+	public Boolean recordTouchDeprecated(Touch touch){
 		if (request != null && request.getSession() != null) {
 			AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
 			if(authenticatedData != null) {
@@ -59,6 +77,10 @@ public class AccessTouchService {
 			}
 		}
 
+		return record(touch);
+	}
+
+	private Boolean record(Touch touch) {
 		try {
 			dao.record(touch);
 			return true;
@@ -69,8 +91,30 @@ public class AccessTouchService {
 		}
 	}
 
-	public Boolean recordTouchWithProductCode(long transactionId, String type, String productCode) {
-		return recordTouchWithProductCode(transactionId, type, null, productCode);
+	public Boolean recordTouch(Touch touch){
+		if (request != null && request.getSession() != null) {
+			AuthenticatedData authenticatedData = sessionDataServiceBean.getAuthenticatedSessionData(request);
+			if(authenticatedData != null) {
+				touch.setOperator(authenticatedData.getUid());
+			}
+		}
+		return record(touch);
+	}
+
+	public Boolean recordTouchWithProductCodeDeprecated(long transactionId, String type, String productCode) {
+		return recordTouchWithProductCodeDeprecated(transactionId, type, null, productCode);
+	}
+
+	public Boolean recordTouchWithProductCodeDeprecated(long transactionId, String type, String operatorId, String productCode) {
+		Touch touch = createTouchObject(transactionId, type, operatorId);
+
+		if (StringUtils.isNotBlank(productCode)) {
+			TouchProductProperty touchProductProperty = new TouchProductProperty();
+			touchProductProperty.setProductCode(productCode);
+			touch.setTouchProductProperty(touchProductProperty);
+		}
+
+		return recordTouchDeprecated(touch);
 	}
 
 	public Boolean recordTouchWithProductCode(long transactionId, String type, String operatorId, String productCode) {
@@ -82,12 +126,17 @@ public class AccessTouchService {
 			touch.setTouchProductProperty(touchProductProperty);
 		}
 
-		return recordTouch(touch);
+		return recordTouchDeprecated(touch);
 	}
 
-	public Boolean recordTouchWithComment(long transactionId, String type, String comment) {
+	public Boolean recordTouchWithCommentJSP(long transactionId, String type, String comment) {
 		return recordTouchWithComment(transactionId, type, null, comment);
 	}
+
+	public Boolean recordTouchWithComment(long transactionId, Touch.TouchType type, String comment) {
+		return recordTouchWithComment(transactionId, type.getCode(), null, comment);
+	}
+
 
 	public Boolean recordTouchWithComment(long transactionId, String type, String operatorId, String comment) {
 		Touch touch = createTouchObject(transactionId, type, operatorId);
@@ -98,7 +147,7 @@ public class AccessTouchService {
 			touch.setTouchCommentProperty(touchCommentProperty);
 		}
 
-		return recordTouch(touch);
+		return recordTouchDeprecated(touch);
 	}
 
 	public static Touch createTouchObject(Long transactionId, String type) {

@@ -33,6 +33,9 @@
 
 <ip_v1:widget_values />
 
+<%-- Set global variable to flags for active split tests --%>
+<ip_v1:splittest_helper />
+
 <core_v1:doctype />
 <go:html>
 	<core_v1:head quoteType="${xpath}" title="Income Protection Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
@@ -127,7 +130,7 @@
 
 		</form_v1:form>
 		
-		<life:footer />
+		<life_v1:footer />
 		
 		<core_v1:closing_body>
 			<agg_v1:includes supertag="true" />

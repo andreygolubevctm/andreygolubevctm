@@ -3,6 +3,8 @@ package com.ctm.web.core.router;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.EmailService;
 import org.json.JSONObject;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,7 +30,8 @@ public class SendEmailRouter extends HttpServlet {
 		EmailMode mode = null;
 		String emailAddress = null;
 
-		EmailService emailService = new EmailService();
+		final WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
+		EmailService emailService = applicationContext.getBean(EmailService.class);
 		if (uri.toLowerCase().contains(EmailMode.BEST_PRICE.toString())) {
 			emailAddress = request.getParameter("email");
 			mode = EmailMode.BEST_PRICE;

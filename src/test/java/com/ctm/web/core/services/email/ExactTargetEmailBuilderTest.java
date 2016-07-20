@@ -1,7 +1,6 @@
 package com.ctm.web.core.email.services;
 
 import com.ctm.commonlogging.context.LoggingVariables;
-import com.ctm.commonlogging.correlationid.CorrelationIdUtils;
 import com.ctm.interfaces.common.types.CorrelationId;
 import com.ctm.web.core.email.model.ExactTargetEmailModel;
 import com.exacttarget.wsdl.partnerapi.CreateRequest;

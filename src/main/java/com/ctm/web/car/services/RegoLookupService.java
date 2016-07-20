@@ -282,7 +282,7 @@ public class RegoLookupService {
                                                  JurisdictionEnum state) throws RegoLookupException {
         ServiceConfiguration serviceConfig;
         try {
-            serviceConfig = ServiceConfigurationService.getServiceConfiguration("motorwebRegoLookupService", 0, 0);
+            serviceConfig = ServiceConfigurationService.getServiceConfiguration("motorwebRegoLookupService", 0);
         } catch (DaoException | ServiceConfigurationException e) {
             LOGGER.debug("[rego lookup] Error getting motorweb rego serviceConfig {}", e);
             throw new RegoLookupException("Could not load the required configuration for the " + SERVICE_LABEL + " service", e);

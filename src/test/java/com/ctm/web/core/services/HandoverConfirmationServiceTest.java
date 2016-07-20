@@ -15,8 +15,6 @@ import java.util.Map;
 
 import static com.ctm.web.core.model.Touch.TouchType.SOLD;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class HandoverConfirmationServiceTest {
@@ -39,7 +37,7 @@ public class HandoverConfirmationServiceTest {
         when(dao.hasExistingConfirmationWithPolicy(confirm)).thenReturn(false);
 
         service.confirm(confirm);
-        verify(touchService, times(1)).recordTouch(anyInt(), anyString());
+        verify(touchService, times(1)).recordTouchDeprecated(anyInt(), anyString());
         verify(dao, times(1)).recordConfirmation(Mockito.<HandoverConfirmation>anyObject());
     }
 
@@ -49,7 +47,7 @@ public class HandoverConfirmationServiceTest {
         when(dao.hasExistingConfirmationWithPolicy(confirm)).thenReturn(true);
 
         service.confirm(confirm);
-        verify(touchService, times(1)).recordTouch(anyInt(), anyString());
+        verify(touchService, times(1)).recordTouchDeprecated(anyInt(), anyString());
         verify(dao, never()).recordConfirmation(Mockito.<HandoverConfirmation>anyObject());
     }
 
@@ -59,7 +57,7 @@ public class HandoverConfirmationServiceTest {
         when(dao.hasExistingConfirmationWithPolicy(confirm)).thenReturn(false);
 
         service.confirm(confirm);
-        verify(touchService, never()).recordTouch(anyInt(), anyString());
+        verify(touchService, never()).recordTouchDeprecated(anyInt(), anyString());
         verify(dao, times(1)).recordConfirmation(Mockito.<HandoverConfirmation>anyObject());
     }
 
@@ -69,7 +67,7 @@ public class HandoverConfirmationServiceTest {
         when(dao.hasExistingConfirmationWithPolicy(confirm)).thenReturn(true);
 
         service.confirm(confirm);
-        verify(touchService, never()).recordTouch(anyInt(), anyString());
+        verify(touchService, never()).recordTouchDeprecated(anyInt(), anyString());
         verify(dao, never()).recordConfirmation(Mockito.<HandoverConfirmation>anyObject());
     }
 

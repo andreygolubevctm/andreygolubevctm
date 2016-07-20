@@ -1716,8 +1716,9 @@ body.stage-0 #reference_number a {display:none;}
 
 .promo-image {
 	display: block;
-	width: 439px;
+	width: 437px;
 	height: 100px;
+	margin-left:1px;
 }
 
 .promo-image.ip-32 {
@@ -1728,14 +1729,16 @@ body.stage-0 #reference_number a {display:none;}
 	background-image: url("../brand/ctm/images/results_Life_IP/5000-LIFEcompetition.jpg");
 	height: 135px;
 }
-.promo-image.ip-33 {
+.promo-image.ip-33,
+.promo-image.ip-34{
 	background-image: url("../brand/ctm/images/results_Life_IP/10000-IPcompetition.jpg");
-	height: 210px;
+	height: 209px;
 }
 
-.promo-image.life-33 {
+.promo-image.life-33,
+.promo-image.life-34{
 	background-image: url("../brand/ctm/images/results_Life_IP/10000-LIFEcompetition.jpg");
-	height: 210px;
+	height: 209px;
 }
 
 .button-wrapper #next-step {

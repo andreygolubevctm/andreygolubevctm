@@ -4,10 +4,16 @@ import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.constants.PrivacyBlacklist;
 import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
+import com.ctm.web.core.dao.SqlDaoFactory;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.transaction.model.TransactionDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +24,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.transaction.utils.TransactionDetailsUtil.checkLengthTextValue;
@@ -26,23 +33,40 @@ import static com.ctm.web.core.transaction.utils.TransactionDetailsUtil.checkLen
  * Data Access Object to interface with the transaction_details table.
  * @author bthompson
  */
+@Repository
 public class TransactionDetailsDao {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionDetailsDao.class);
-	private final SqlDao sqlDao;
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionDetailsDao.class);
 
-	/**
+    private final NamedParameterJdbcTemplate jdbcTemplate;
+
+	private final SqlDaoFactory sqlDaoFactory;
+
+    /**
 	 * Constructor
 	 */
+	@Deprecated
 	public TransactionDetailsDao() {
-		sqlDao = new SqlDao();
+		sqlDaoFactory = new SqlDaoFactory(SimpleDatabaseConnection.getInstance());
+		jdbcTemplate = new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm());
 	}
-	/**
-	 * Handles all the parameters. Determines whether to insert a new transaction detail or update the existing one.
-	 * @param request HttpServletRequest
-	 * @param transactionId Long
-	 * @return
-	 */
+
+	public static final String DESCRIPTION = "infoDes";
+
+
+	@Autowired
+	@SuppressWarnings("SpringJavaAutowiringInspection")
+	public TransactionDetailsDao(final NamedParameterJdbcTemplate jdbcTemplate, SqlDaoFactory sqlDaoFactory) {
+        this.sqlDaoFactory = sqlDaoFactory;
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
+    /**
+     * Handles all the parameters. Determines whether to insert a new transaction detail or update the existing one.
+     * @param request HttpServletRequest
+     * @param transactionId Long
+     * @return
+     */
 	public Boolean insertOrUpdate(HttpServletRequest request, long transactionId) {
 
 		/**
@@ -251,6 +275,39 @@ public class TransactionDetailsDao {
 	}
 
 	/**
+	 * Retrieve a transaction detail based on the xpath and transaction id.
+	 * @param transactionId
+	 * @param xpath
+	 * @return
+	 * @throws DaoException
+	 */
+	public Optional<TransactionDetail> getTransactionDetailWhereXpathLike(long transactionId, String xpath) {
+
+
+		final MapSqlParameterSource map = new MapSqlParameterSource()
+				.addValue("transactionId", transactionId).addValue("xpath", xpath);
+		final String sql = "SELECT xpath, textValue"
+				+ " FROM aggregator.transaction_details"
+				+ " WHERE transactionId = (:transactionId)"
+				+ " AND xpath like (:xpath) "
+				+ " LIMIT 1";
+		try {
+			TransactionDetail result = jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> createTransactionDetail(rs));
+			return Optional.of(result);
+		}catch(EmptyResultDataAccessException e) {
+			// not an issue just means no rows found
+			return Optional.empty();
+		}
+	}
+
+	private TransactionDetail createTransactionDetail(ResultSet rs) throws SQLException {
+		TransactionDetail transactionDetail = new TransactionDetail();
+		transactionDetail.setXPath(rs.getString("xpath"));
+		transactionDetail.setTextValue(rs.getString("textValue"));
+		return transactionDetail;
+	}
+
+	/**
 	 * Retrieves the current highest sequence number to increment from
 	 * @param transactionId
 	 * @return
@@ -314,6 +371,7 @@ public class TransactionDetailsDao {
                         "(?,?,?,?,CURDATE());";
             }
         };
+		SqlDao sqlDao = sqlDaoFactory.createDao();
 		sqlDao.update(databaseMapping);
 		
 	}
@@ -338,16 +396,13 @@ public class TransactionDetailsDao {
 						"ON DUPLICATE KEY UPDATE xpath = VALUES(xpath), textValue = VALUES(textValue), dateValue=VALUES(dateValue);";
 			}
 		};
+		SqlDao sqlDao = sqlDaoFactory.createDao();
 		sqlDao.update(databaseMapping);
 
 	}
 
 	/** returns transaction details based off transactionId.
-	 * @param vertical
-	 * @param type
-	 * @param email
 	 * @param transactionId
-	 * @param transactionDetails
 	 * @throws DaoException
 	 */
 	public List<TransactionDetail> getTransactionDetails(long transactionId) throws DaoException {

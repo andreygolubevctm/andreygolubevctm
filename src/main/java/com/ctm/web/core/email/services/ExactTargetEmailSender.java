@@ -5,15 +5,11 @@ import com.ctm.web.core.email.formatter.ExactTargetFormatter;
 import com.ctm.web.core.email.model.EmailModel;
 import com.ctm.web.core.email.model.EmailResponse;
 import com.ctm.web.core.email.model.ExactTargetEmailModel;
-import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
-import com.ctm.web.core.model.settings.ConfigSetting;
-import com.ctm.web.core.model.settings.PageSettings;
-import com.ctm.web.core.model.settings.ServiceConfiguration;
-import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
+import com.ctm.web.core.model.settings.*;
 import com.ctm.web.core.security.StringEncryption;
-import com.ctm.web.core.services.ServiceConfigurationService;
+import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.webservice.WebServiceUtils;
 import com.exacttarget.wsdl.partnerapi.*;
 import org.apache.cxf.endpoint.Client;
@@ -36,6 +32,7 @@ import static java.lang.Integer.parseInt;
 
 public class ExactTargetEmailSender<T extends EmailModel> {
 
+    private ServiceConfigurationServiceBean serviceConfigurationService;
     private PageSettings pageSettings;
     private Client client;
     private Long transactionId;
@@ -47,30 +44,44 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExactTargetEmailSender.class);
 
+    @Deprecated
     public ExactTargetEmailSender(PageSettings pageSettings, Long transactionId) throws SendEmailException {
         this.pageSettings = pageSettings;
         this.transactionId = transactionId;
-        setWebserviceConfiguration(ConfigSetting.ALL_VERTICALS, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS);
+        this.serviceConfigurationService = new ServiceConfigurationServiceBean();
+        setWebserviceConfigurationDeprecated(ConfigSetting.ALL_VERTICALS, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS);
     }
 
-    public ExactTargetEmailSender(PageSettings pageSettings, Long transactionId, int verticalId, int brandId, int providerId) throws SendEmailException {
+    public ExactTargetEmailSender(PageSettings pageSettings,
+                                  Long transactionId,
+                                  Vertical vertical,
+                                  int brandId,
+                                  int providerId,
+                                  ServiceConfigurationServiceBean serviceConfigurationService) throws SendEmailException {
         this.pageSettings = pageSettings;
         this.transactionId = transactionId;
-        setWebserviceConfiguration(verticalId, brandId, providerId);
+        this.serviceConfigurationService = serviceConfigurationService;
+        setWebserviceConfiguration(vertical, brandId, providerId);
     }
 
-    private void setWebserviceConfiguration(int verticalId, int brandId, int providerId) throws SendEmailException {
+    private void setWebserviceConfiguration(Vertical vertical, int brandId, int providerId) throws SendEmailException {
+        ServiceConfiguration serviceConfig;
         try {
-            ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("exactTargetService", verticalId, brandId);
-            if (serviceConfig == null)
-                throw new SendEmailException("Unable to find service 'exactTarget'");
-
-            WEBSERVICE_URL = serviceConfig.getPropertyValueByKey("serviceUrl", brandId, providerId, ServiceConfigurationProperty.Scope.SERVICE);
-            WEBSERVICE_USER = serviceConfig.getPropertyValueByKey("serviceUser", brandId, providerId, ServiceConfigurationProperty.Scope.SERVICE);
-            WEBSERVICE_PASSWORD = serviceConfig.getPropertyValueByKey("servicePassword", brandId, providerId, ServiceConfigurationProperty.Scope.SERVICE);
+             serviceConfig = serviceConfigurationService.getServiceConfiguration("exactTargetService", vertical);
         } catch (DaoException | ServiceConfigurationException e1) {
             throw new SendEmailException("Could not successfully get default exact target service configuration from database", e1);
         }
+
+        populateServiceConfig(brandId, providerId, serviceConfig);
+    }
+
+    private void populateServiceConfig(int brandId, int providerId, ServiceConfiguration serviceConfig) throws SendEmailException {
+        if (serviceConfig == null)
+            throw new SendEmailException("Unable to find service 'exactTarget'");
+
+        WEBSERVICE_URL = serviceConfig.getPropertyValueByKey("serviceUrl", brandId, providerId, ServiceConfigurationProperty.Scope.SERVICE);
+        WEBSERVICE_USER = serviceConfig.getPropertyValueByKey("serviceUser", brandId, providerId, ServiceConfigurationProperty.Scope.SERVICE);
+        WEBSERVICE_PASSWORD = serviceConfig.getPropertyValueByKey("servicePassword", brandId, providerId, ServiceConfigurationProperty.Scope.SERVICE);
 
         if (WEBSERVICE_URL == null)
             throw new SendEmailException("Unable to find service property 'serviceUrl' for service 'exactTarget'");
@@ -89,9 +100,21 @@ public class ExactTargetEmailSender<T extends EmailModel> {
         }
     }
 
+    private void setWebserviceConfigurationDeprecated(int verticalId, int brandId, int providerId) throws SendEmailException {
+        ServiceConfiguration serviceConfig;
+        try {
+             serviceConfig = serviceConfigurationService.getServiceConfiguration("exactTargetService", verticalId);
+        } catch (DaoException | ServiceConfigurationException e1) {
+            throw new SendEmailException("Could not successfully get default exact target service configuration from database", e1);
+        }
+
+        populateServiceConfig(brandId, providerId, serviceConfig);
+    }
+
     public String sendToExactTarget(ExactTargetFormatter<T> formatter, T emailModel)
             throws SendEmailException {
         ExactTargetEmailModel exactTargetEmailModel = formatter.convertToExactTarget(emailModel);
+        EmailResponse response;
         try {
             exactTargetEmailModel.setClientId(parseInt(pageSettings.getSetting("sendClientId")));
             Soap stub = initWebserviceClient(transactionId);
@@ -100,22 +123,23 @@ public class ExactTargetEmailSender<T extends EmailModel> {
             ExactTargetEmailBuilder.createPayload(exactTargetEmailModel, createRequest);
 
             CreateResponse createResponse = stub.create(createRequest);
-            EmailResponse response = parseResponse(createResponse);
-            if (!response.isSuccessful()) {
-                SendEmailException exception = new SendEmailException("error returned from exact target error code:" + response.getErrorCode());
-                exception.setDescription("failed to call exact target message:" + response.getMessage() + " OverallStatus: " + response.getOverallStatus() + " requestID:" + response.getRequestID());
-                throw exception;
-            }
-            return response.getRequestID();
-        } catch (ConfigSettingException e) {
+            response = parseResponse(createResponse);
+        } catch (Exception e) {
             LOGGER.error("Failed to call exact target web service {}", kv("emailModel", emailModel), e);
             throw new SendEmailException("failed to call exact target web service", e);
         } finally {
             destroyWebserviceClient();
         }
+
+        if (!response.isSuccessful()) {
+            SendEmailException exception = new SendEmailException("error returned from exact target error code:" + response.getErrorCode());
+            exception.setDescription("failed to call exact target message:" + response.getMessage() + " OverallStatus: " + response.getOverallStatus() + " requestID:" + response.getRequestID());
+            throw exception;
+        }
+        return response.getRequestID();
     }
 
-    private Soap initWebserviceClient(Long transactionId) {
+    protected Soap initWebserviceClient(Long transactionId) {
         Service service = new PartnerAPI();
         Soap port = service.getPort(Soap.class);
         BindingProvider bp = (BindingProvider) port;
@@ -192,11 +216,9 @@ public class ExactTargetEmailSender<T extends EmailModel> {
         String errorDescription = result.getResultDetailXML();
         for (CreateResult r2 : result.getCreateResults()) {
             statusMessage += " subscriberFailuresErrorDescription:";
-            String separator = "";
             errorDescription += r2.getResultDetailXML();
             if (!errorDescription.isEmpty()) {
-                statusMessage += separator + errorDescription;
-                separator = ",";
+                statusMessage += errorDescription;
             }
         }
         response.setErrorCode(errorCode);

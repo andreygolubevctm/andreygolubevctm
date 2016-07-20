@@ -135,8 +135,39 @@
 				<c:when test="${row.xpath == 'health/application/paymentFreq'}">
 					<c:set var="premium"><c:out value="${go:formatCurrency(row.textValue, true, true)}" /></c:set>
 				</c:when>
+				<c:when test="${row.xpath == 'health/payment/details/frequency'}">
+					<c:set var="frequency"><c:out value="${row.textValue}" /></c:set>
+				</c:when>
+				<c:when test="${row.xpath == 'health/loadingAmt'}">
+					<c:set var="lhc">
+						<c:choose>
+							<c:when test="${frequency eq 'W' or frequency eq 'weekly'}">
+								<c:out value="${row.textValue / 52}" />
+							</c:when>
+							<c:when test="${frequency eq 'F' or frequency eq 'fortnightly'}">
+								<c:out value="${row.textValue / 26}" />
+							</c:when>
+							<c:when test="${frequency eq 'M' or frequency eq 'monthly'}">
+								<c:out value="${row.textValue / 12}" />
+							</c:when>
+							<c:when test="${frequency eq 'Q' or frequency eq 'quarterly'}">
+								<c:out value="${row.textValue / 4}" />
+							</c:when>
+							<c:when test="${frequency eq 'H' or frequency eq 'halfyearly'}">
+								<c:out value="${row.textValue / 2}" />
+							</c:when>
+							<c:otherwise><c:out value="${row.textValue}" /></c:otherwise>
+						</c:choose>
+					</c:set>
+					<c:set var="lhc" value=">${go:formatCurrency(lhc, true, true)}" />
+				</c:when>
+				<c:when test="${row.xpath == 'health/rebateAmt'}">
+					<c:set var="rebateAmount"><c:out value="${go:formatCurrency(row.textValue, true, true)}" /></c:set>
+				</c:when>
 			</c:choose>
 		</c:forEach>
+
+
 
 		<c:set var="xmlData">
 			<data>
@@ -151,21 +182,33 @@
 				<premium>
 					<weekly>
 						<text><c:out value="${premium}" /></text>
+						<lhcAmount><c:out value="${lhc}" /></lhcAmount>
+						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</weekly>
 					<fortnightly>
 						<text><c:out value="${premium}" /></text>
+						<lhcAmount><c:out value="${lhc}" /></lhcAmount>
+						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</fortnightly>
 					<monthly>
 						<text><c:out value="${premium}" /></text>
+						<lhcAmount><c:out value="${lhc}" /></lhcAmount>
+						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</monthly>
 					<quarterly>
 						<text><c:out value="${premium}" /></text>
+						<lhcAmount><c:out value="${lhc}" /></lhcAmount>
+						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</quarterly>
 					<halfyearly>
 						<text><c:out value="${premium}" /></text>
+						<lhcAmount><c:out value="${lhc}" /></lhcAmount>
+						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</halfyearly>
 					<annually>
 						<text><c:out value="${premium}" /></text>
+						<lhcAmount><c:out value="${lhc}" /></lhcAmount>
+						<rebateAmount><c:out value="${rebateAmount}" /></rebateAmount>
 					</annually>
 				</premium>
 				<promo>

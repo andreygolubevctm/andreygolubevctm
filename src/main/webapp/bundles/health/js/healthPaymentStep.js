@@ -429,36 +429,36 @@
 
 		var _type = getSelectedPaymentMethod();
 
-		if(_type == 'ba'){
-
-			// Show sub question?
-			if($bankAccountDetailsRadioGroup.find('input:checked').val() == 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
-				toggleClaimsBankSubQuestion(true);
-			}else{
-				toggleClaimsBankSubQuestion(false);
-			}
-
-			// Show form?
-			if($sameBankAccountRadioGroup.find("input:checked").val() == 'N'){
-				toggleClaimsBankAccountForm(true);
-			}else{
-				toggleClaimsBankAccountForm(false);
-			}
-
-		}else if(_type == 'cc'){
+		if(_type == 'cc'){
 
 			// Show sub question? (always no)
 			toggleClaimsBankSubQuestion(false);
 
 			// Show form?
-			if($bankAccountDetailsRadioGroup.find("input:checked").val() == 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
+			if($bankAccountDetailsRadioGroup.find("input:checked").val() === 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
 				toggleClaimsBankAccountForm(true);
 			}else{
 				toggleClaimsBankAccountForm(false);
 			}
 
-		}
+		} else {
 
+			// Show sub question?
+			if($bankAccountDetailsRadioGroup.find('input:checked').val() === 'Y' || (settings.creditBankQuestions === true && $bankAccountDetailsRadioGroup.is(':visible') === false)){
+				toggleClaimsBankSubQuestion(true);
+
+				// Show form?
+				if($sameBankAccountRadioGroup.find("input:checked").val() === 'N'){
+					toggleClaimsBankAccountForm(true);
+				}else{
+					toggleClaimsBankAccountForm(false);
+				}
+
+			}else{
+				toggleClaimsBankSubQuestion(false);
+				toggleClaimsBankAccountForm(false);
+			}
+		}
 	}
 
 	// What day would you like your payment deducted?

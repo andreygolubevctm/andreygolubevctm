@@ -2,6 +2,7 @@ package com.ctm.web.factory;
 
 import com.ctm.web.core.content.dao.ContentDao;
 import com.ctm.web.core.dao.EmailMasterDao;
+import com.ctm.web.core.dao.RankingDetailsDao;
 import com.ctm.web.core.dao.StampingDao;
 import com.ctm.web.core.dao.TouchDao;
 import com.ctm.web.core.email.exceptions.SendEmailException;
@@ -20,19 +21,41 @@ import com.ctm.web.core.exceptions.VerticalException;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.security.IPAddressHandler;
-import com.ctm.web.core.services.AccessTouchService;
-import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.*;
 import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
 import com.ctm.web.health.email.services.HealthEmailService;
+import com.ctm.web.life.dao.OccupationsDao;
+import com.ctm.web.life.email.services.LifeEmailDataService;
 import com.ctm.web.life.email.services.LifeEmailService;
 import com.ctm.web.travel.email.services.TravelEmailService;
 import com.ctm.web.travel.services.email.TravelEmailDetailMappings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EmailServiceFactory {
 
-	public static EmailServiceHandler newInstance(PageSettings pageSettings, EmailMode mode, Data data) throws SendEmailException{
+	private final OccupationsDao occupationsDao;
+    private final IPAddressHandler ipAddressHandler;
+    private final TransactionDetailsDao transactionDetailsDao;
+    private final ApplicationService applicationService;
+
+    @Autowired
+	EmailServiceFactory(OccupationsDao occupationsDao,
+                        IPAddressHandler ipAddressHandler,
+                        TransactionDetailsDao transactionDetailsDao,
+                        ApplicationService applicationService) {
+		this.occupationsDao = occupationsDao;
+        this.ipAddressHandler = ipAddressHandler;
+        this.transactionDetailsDao = transactionDetailsDao;
+        this.applicationService = applicationService;
+	}
+
+
+	public EmailServiceHandler newInstance(PageSettings pageSettings, EmailMode mode, Data data) throws SendEmailException{
 		VerticalType vertical = pageSettings.getVertical().getType();
 
 		EmailServiceHandler emailService = null;
@@ -84,10 +107,15 @@ public class EmailServiceFactory {
 		return new TravelEmailService(pageSettings, mode , emailDetailsService, urlService, data, urlServiceOld, IPAddressHandler.getInstance());
 	}
 	
-	private static EmailServiceHandler getLifeEmailService(PageSettings pageSettings, EmailMode mode, Data data, VerticalType vertical) throws SendEmailException {
+	private LifeEmailService getLifeEmailService(PageSettings pageSettings, EmailMode mode, Data data,
+														VerticalType vertical) throws SendEmailException {
 		EmailDetailsService emailDetailsService = createEmailDetailsService(pageSettings, data, vertical, new LifeEmailDetailMappings());
-		EmailUrlService urlService = createEmailUrlService(pageSettings, vertical);
-		return new LifeEmailService(pageSettings, mode, emailDetailsService, IPAddressHandler.getInstance());
+		LifeEmailDataService lifeEmailDataService = new LifeEmailDataService( new RankingDetailsDao(),
+                transactionDetailsDao, occupationsDao);
+		return new LifeEmailService(pageSettings, mode, emailDetailsService,
+				 lifeEmailDataService,
+				new ServiceConfigurationServiceBean(),
+                applicationService, ipAddressHandler);
 	}
 
 	private static EmailDetailsService createEmailDetailsService(
@@ -118,7 +146,6 @@ public class EmailServiceFactory {
 			throws SendEmailException {
 		EmailUrlServiceOld urlService;
 		try {
-			EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(pageSettings);
 			urlService = new EmailUrlServiceOld(vertical, pageSettings.getBaseUrl());
 		} catch (EnvironmentException | VerticalException
 				| ConfigSettingException e) {
