@@ -390,6 +390,7 @@
     }
 
     function handleAutoCompleteLocationChange(place) {
+        meerkat.modules.fuel.toggleCanSave(true);
         map.setCenter(place.geometry.location);
         map.setZoom(DEFAULT_ZOOM);
         drawClickedMarker(place.geometry.location);

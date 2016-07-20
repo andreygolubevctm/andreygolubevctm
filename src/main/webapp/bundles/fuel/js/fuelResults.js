@@ -116,6 +116,9 @@
         $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
             $('.loadingDisclaimerText').addClass('hidden');
 
+            // turn fuel/canSve to false
+            meerkat.modules.fuel.toggleCanSave(false);
+
             // Normal results
             meerkat.modules.fuelMap.plotMarkers(Results.model.returnedProducts);
 

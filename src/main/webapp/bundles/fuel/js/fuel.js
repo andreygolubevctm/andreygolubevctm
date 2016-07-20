@@ -28,6 +28,7 @@
 
     function applyEventListeners() {
         $(document).on('change', '#fuel_type_id', function () {
+            toggleCanSave(true);
             meerkat.modules.fuelResults.get();
         });
     }
@@ -144,10 +145,16 @@
         return $('#fuel_type_id').val();
     }
 
+    function toggleCanSave(canSave) {
+        var value = canSave === true ? 1 : 0;
+        $('#fuel_canSave').val(value);
+    }
+
     meerkat.modules.register("fuel", {
         init: initFuel,
         events: moduleEvents,
         getTrackingFieldsObject: getTrackingFieldsObject,
-        getFuelType: getFuelType
+        getFuelType: getFuelType,
+        toggleCanSave: toggleCanSave
     });
 })(jQuery);
