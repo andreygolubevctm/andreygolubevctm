@@ -29,6 +29,7 @@
     function applyEventListeners() {
         $(document).on('change', '#fuel_type_id', function () {
             toggleCanSave(true);
+            meerkat.modules.fuelMap.addToHistory();
             meerkat.modules.fuelResults.get();
         });
     }
@@ -43,6 +44,8 @@
         }
 
         $(document).ready(function () {
+
+            meerkat.modules.fuelMap.setInitialHash(meerkat.modules.address.getWindowHashAsArray());
             meerkat.modules.journeyEngine.configure({
                 startStepId: startStepId,
                 steps: _.toArray(steps)
