@@ -1,18 +1,21 @@
 package com.ctm.web.homecontents.services;
 
-import com.ctm.web.core.connectivity.SimpleConnection;
+import com.ctm.httpclient.Client;
+import com.ctm.httpclient.RestSettings;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.settings.Brand;
-import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.providers.model.AggregateOutgoingRequest;
 import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.web.core.services.*;
-import com.ctm.web.core.utils.ObjectMapperUtil;
+import com.ctm.web.core.services.CommonRequestServiceV2;
+import com.ctm.web.core.services.ResultsService;
+import com.ctm.web.core.services.ServiceConfigurationServiceBean;
+import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.validation.CommencementDateValidation;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
@@ -26,10 +29,10 @@ import com.ctm.web.homecontents.providers.model.request.HomeQuoteRequest;
 import com.ctm.web.homecontents.providers.model.request.MoreInfoRequest;
 import com.ctm.web.homecontents.providers.model.response.HomeResponse;
 import com.ctm.web.homecontents.providers.model.response.MoreInfo;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,14 +48,21 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @Component
-public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteRequest, HomeResponse> {
+public class HomeQuoteService extends CommonRequestServiceV2 {
     public static final List<String> HOLLARD_PROVIDERS = asList("REIN", "WOOL");
 
     private SessionDataServiceBean sessionDataServiceBean;
 
     @Autowired
-    public HomeQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, SessionDataServiceBean sessionDataServiceBean) {
-        super(providerFilterDAO, objectMapper);
+    private Client<AggregateOutgoingRequest<HomeQuoteRequest>, HomeResponse> clientQuotes;
+
+    @Autowired
+    private Client<MoreInfoRequest, MoreInfo> clientMoreInfo;
+
+    @Autowired
+    public HomeQuoteService(ProviderFilterDao providerFilterDAO, ServiceConfigurationServiceBean serviceConfigurationServiceBean,
+                            SessionDataServiceBean sessionDataServiceBean) {
+        super(providerFilterDAO, serviceConfigurationServiceBean);
         this.sessionDataServiceBean = sessionDataServiceBean;
     }
 
@@ -78,8 +88,28 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteReq
         }
 
         final HomeQuoteRequest homeQuoteRequest = RequestAdapter.adapt(data);
-        HomeResponse homeResponse = sendRequest(brand, Vertical.VerticalType.HOME, "homeQuoteServiceBER", Endpoint.QUOTE, data,
-                homeQuoteRequest, HomeResponse.class);
+
+        final AggregateOutgoingRequest<HomeQuoteRequest> request = AggregateOutgoingRequest.<HomeQuoteRequest>build()
+                .transactionId(data.getTransactionId())
+                .brandCode(brand.getCode())
+                .requestAt(data.getRequestAt())
+                .providerFilter(quote.getFilter().getProviders())
+                .payload(homeQuoteRequest)
+                .build();
+
+        final QuoteServiceProperties properties = getQuoteServiceProperties("homeQuoteServiceBER", brand, HOME.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
+
+        final HomeResponse homeResponse = clientQuotes.post(RestSettings.<AggregateOutgoingRequest<HomeQuoteRequest>>builder()
+                .request(request)
+                .jsonHeaders()
+                .url(properties.getServiceUrl()+"/quote")
+                .timeout(properties.getTimeout())
+                .responseType(MediaType.APPLICATION_JSON)
+                .response(HomeResponse.class)
+                .build())
+//                TODO: what to do on error
+//                .doOnError(t -> t.printStackTrace())
+                .single().toBlocking().single();
 
         final List<HomeResult> homeResults = ResponseAdapter.adapt(homeQuoteRequest, homeResponse);
 
@@ -126,22 +156,21 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteReq
 
     public HomeMoreInfo getMoreInfo(Brand brand, MoreInfoRequest moreInfoRequest, Optional<LocalDateTime> requestAt, Optional<String> environmentOverride) throws Exception {
 
-        QuoteServiceProperties serviceProperties = getQuoteServiceProperties("homeQuoteServiceBER", brand, HOME.getCode(), environmentOverride);
+        QuoteServiceProperties properties = getQuoteServiceProperties("homeQuoteServiceBER", brand, HOME.getCode(), environmentOverride);
 
-        ObjectMapper objectMapper = ObjectMapperUtil.getObjectMapper();
+        final MoreInfoRequest request = RequestAdapter.adapt(brand, moreInfoRequest, requestAt);
 
-        String jsonRequest = objectMapper.writeValueAsString(RequestAdapter.adapt(brand, moreInfoRequest, requestAt));
-
-        SimpleConnection connection = new SimpleConnection();
-        connection.setRequestMethod("POST");
-        connection.setConnectTimeout(serviceProperties.getTimeout());
-        connection.setReadTimeout(serviceProperties.getTimeout());
-        connection.setContentType("application/json");
-        connection.setPostBody(jsonRequest);
-
-        final String response = connection.get(serviceProperties.getServiceUrl() + "/data/moreInfo");
-
-        MoreInfo moreInfoResponse = objectMapper.readValue(response, MoreInfo.class);
+        final MoreInfo moreInfoResponse = clientMoreInfo.post(RestSettings.<MoreInfoRequest>builder()
+                .request(request)
+                .jsonHeaders()
+                .url(properties.getServiceUrl()+"/data/moreInfo")
+                .timeout(properties.getTimeout())
+                .responseType(MediaType.APPLICATION_JSON)
+                .response(MoreInfo.class)
+                .build())
+//                TODO: what to do on error
+//                .doOnError(t -> t.printStackTrace())
+                .single().toBlocking().single();
 
         return ResponseAdapter.adapt(moreInfoResponse);
     }
