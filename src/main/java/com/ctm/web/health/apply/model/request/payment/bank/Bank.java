@@ -20,4 +20,16 @@ public class Bank {
         this.refundAccount = refundAccount;
         this.claims = claims;
     }
+
+    public Account getPaymentAccount() {
+        return paymentAccount;
+    }
+
+    public Account getRefundAccount() {
+        return refundAccount;
+    }
+
+    public Claims getClaims() {
+        return claims;
+    }
 }

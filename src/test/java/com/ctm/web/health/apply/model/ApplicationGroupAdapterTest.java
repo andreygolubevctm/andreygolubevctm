@@ -6,6 +6,7 @@ import com.ctm.web.health.apply.model.request.application.situation.Situation;
 import com.ctm.web.health.model.form.*;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -136,7 +137,10 @@ public class ApplicationGroupAdapterTest {
     public void testCreateDependants1Dependant() throws Exception {
         final Dependants dependants = mock(Dependants.class);
         final Dependant dependant = mock(Dependant.class);
-        when(dependants.getDependant1()).thenReturn(dependant);
+        when(dependant.getLastname()).thenReturn("x");
+        List<Dependant> dependantList = new ArrayList<>();
+        when(dependants.getDependant()).thenReturn(dependantList);
+        dependantList.add(dependant);
         final List<com.ctm.web.health.apply.model.request.application.dependant.Dependant> result = ApplicationGroupAdapter.createDependants(Optional.of(dependants));
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -146,18 +150,21 @@ public class ApplicationGroupAdapterTest {
     public void testCreateDependants12Dependant() throws Exception {
         final Dependants dependants = mock(Dependants.class);
         final Dependant dependant = mock(Dependant.class);
-        when(dependants.getDependant1()).thenReturn(dependant);
-        when(dependants.getDependant2()).thenReturn(dependant);
-        when(dependants.getDependant3()).thenReturn(dependant);
-        when(dependants.getDependant4()).thenReturn(dependant);
-        when(dependants.getDependant5()).thenReturn(dependant);
-        when(dependants.getDependant6()).thenReturn(dependant);
-        when(dependants.getDependant7()).thenReturn(dependant);
-        when(dependants.getDependant8()).thenReturn(dependant);
-        when(dependants.getDependant9()).thenReturn(dependant);
-        when(dependants.getDependant10()).thenReturn(dependant);
-        when(dependants.getDependant11()).thenReturn(dependant);
-        when(dependants.getDependant12()).thenReturn(dependant);
+        when(dependant.getLastname()).thenReturn("x");
+        List<Dependant> dependantList = new ArrayList<>();
+        when(dependants.getDependant()).thenReturn(dependantList);
+        dependantList.add(dependant);
+        dependantList.add(dependant);
+        dependantList.add(dependant);
+        dependantList.add(dependant);
+        dependantList.add(dependant);
+        dependantList.add(dependant);
+        dependantList.add(dependant);
+        dependantList.add(dependant);
+        dependantList.add(dependant);
+        dependantList.add(dependant);
+        dependantList.add(dependant);
+        dependantList.add(dependant);
         final List<com.ctm.web.health.apply.model.request.application.dependant.Dependant> result = ApplicationGroupAdapter.createDependants(Optional.of(dependants));
         assertNotNull(result);
         assertEquals(12, result.size());
@@ -174,7 +181,7 @@ public class ApplicationGroupAdapterTest {
         assertNotNull(ApplicationGroupAdapter.createDependant(Optional.of(dependant)));
         // 2 times - title and gender
         verify(dependant, times(2)).getTitle();
-        verify(dependant, times(1)).getFirstname();
+        verify(dependant, times(1)).getFirstName();
         verify(dependant, times(1)).getLastname();
         verify(dependant, times(1)).getDob();
         verify(dependant, times(1)).getSchool();

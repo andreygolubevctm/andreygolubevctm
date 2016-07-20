@@ -7,8 +7,6 @@ import com.ctm.web.health.apply.model.request.payment.Payment;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -26,15 +24,27 @@ public class HealthApplicationRequest {
     @NotNull
     private final ApplicationGroup applicants;
 
-    @Size(min = 1, max = 1)
-    public final List<String> providerFilter;
-
     public HealthApplicationRequest(final ContactDetails contactDetails, final Payment payment, final FundData fundData,
-                                    final ApplicationGroup applicants, final List<String> providerFilter) {
+                                    final ApplicationGroup applicants) {
         this.contactDetails = contactDetails;
         this.payment = payment;
         this.fundData = fundData;
         this.applicants = applicants;
-        this.providerFilter = providerFilter;
+    }
+
+    public ContactDetails getContactDetails() {
+        return contactDetails;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public FundData getFundData() {
+        return fundData;
+    }
+
+    public ApplicationGroup getApplicants() {
+        return applicants;
     }
 }

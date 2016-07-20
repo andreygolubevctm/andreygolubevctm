@@ -236,7 +236,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 		HealthApplyResponse applicationResponse = (HealthApplyResponse)request.getAttribute("applicationResponse");
 
-		final HealthApplicationResponse response = applicationResponse.getPayload().getQuotes().get(0);
+		final HealthApplicationResponse response = applicationResponse.getPayload();
 
 		Optional<HealthRequest> data = Optional.ofNullable((HealthRequest) request.getAttribute("requestData"));
 
