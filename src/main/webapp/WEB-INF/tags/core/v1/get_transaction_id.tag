@@ -32,7 +32,7 @@
 <c:choose>
 	<c:when test="${not empty transactionId}">
 		<c:set var="hasTransId" value="${true}" />
-		${sessionDataUtils.setTransactionId(data,fn:trim(transactionId) )}
+		${sessionDataUtils.setTransactionId(data, fn:trim(transactionId) )}
 	</c:when>
 	<c:when test="${not empty data.current.transactionId}">
 		<c:set var="hasTransId" value="${true}" />
@@ -130,7 +130,7 @@
 									<sql:param value="${getTransaction.rows[0].EmailAddress}" />
 								</c:otherwise>
 							</c:choose>
-							<sql:param value="${ipAddress}" />
+							<sql:param value="${org.apache.commons.lang3.StringUtils.left(ipAddress,15)}" />
 							<sql:param value="${getTransaction.rows[0].styleCodeId}" />
 							<sql:param value="${getTransaction.rows[0].styleCode}" />
 							<sql:param value="${sessionId}" />
@@ -258,7 +258,7 @@
 							<sql:param value=" " />
 						</c:otherwise>
 					</c:choose>
-					<sql:param value="${ipAddress}" />
+					<sql:param value="${org.apache.commons.lang3.StringUtils.left(ipAddress,15)}" />
 					<sql:param value="${styleCodeId}" />
 					<sql:param value="${styleCode}" />
 					<sql:param value="${sessionId}" />
@@ -279,9 +279,9 @@
 						<c:param name="page" value="${pageContext.request.servletPath}" />
 						<c:param name="message" value="core:get_transaction_id NEW" />
 						<c:param name="description" value="${error}" />
-						<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType}" />
+						<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType} ipAddress=${ipAddress}" />
 					</c:import>
-					${sessionDataUtils.setTransactionId(data, '' )}
+					${sessionDataUtils.setTransactionId(data, '')}
 				</c:when>
 				<c:otherwise>
 					<c:set var="tranId" value="${results.rows[0].transactionID}" />
@@ -308,18 +308,22 @@
 					<c:param name="page" value="${pageContext.request.servletPath}" />
 					<c:param name="message" value="core:get_transaction_id NEW" />
 					<c:param name="description" value="${error}" />
-					<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType}" />
+					<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType} ipAddress=${ipAddress}" />
 				</c:import>
 
-				${sessionDataUtils.setTransactionId(data, '' )}
+				${sessionDataUtils.setTransactionId(data, '')}
 			</c:when>
 			<c:otherwise>
 				<c:set var="method" value="NEW" />
-				${sessionDataUtils.setTransactionId(data, tranId )}
+				${sessionDataUtils.setTransactionId(data, tranId)}
 			</c:otherwise>
 		</c:choose>
 	</c:otherwise>
 </c:choose>
+<c:if test="${empty sessionDataUtils.getTransactionId(data)}">
+	${logger.error("get_transaction_id failed to set transaction ID on the session")}
+	<% response.sendError(500, "Server error"); %>
+</c:if>
 ${logger.debug("Get transaction id complete. {},{}", log:kv('rootId',sessionDataUtils.getRootId(data)), log:kv('method',method ))}
 <c:set var="transactionIdResponse">{"transactionId":"${sessionDataUtils.getTransactionId(data)}","rootId":"${sessionDataUtils.getRootId(data)}","Method":"${method}"}</c:set>
 ${sessionDataService.updateTokenWithNewTransactionIdResponse(pageContext.request, transactionIdResponse, sessionDataUtils.getTransactionId(data))}
