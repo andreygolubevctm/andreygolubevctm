@@ -263,19 +263,41 @@
             addToHistory();
         });
 
+        // Preload From Widget
+
         if (meerkat.site.hasOwnProperty('formData')) {
-            $('#fuel_type_id').val(meerkat.site.formData.fuelType);
-            $('#fuel_location').val(meerkat.site.formData.location);
-            var mapMeta = meerkat.site.formData.coords.split(',');
-            map.setCenter(new google.maps.LatLng(
-                parseFloat(parseFloat(mapMeta[0])),
-                parseFloat(parseFloat(mapMeta[1]))
-            ));
-            map.setZoom(parseInt(mapMeta[2]));
-            getResults();
-            //todo: its not setting the hidden inputs i dont think
+            // if (meerkat.site.formData.coords !== "") {
+            bookmarkedPreload();
+            // } else if (meerkat.site.location !== "") {
+            //legacyPreload();
+            //  }
         } else {
             initGeoLocation();
+        }
+    }
+
+    function bookmarkedPreload() {
+        var formData = meerkat.site.formData;
+        if (formData.fuelType !== "") {
+            $('#fuel_type_id').val(meerkat.site.formData.fuelType);
+        }
+        if (formData.location !== "") {
+            $('#fuel_location').val(meerkat.site.formData.location);
+        }
+        if (formData.coords !== "") {
+            google.maps.event.addListenerOnce(map, 'idle', function () {
+                var mapMeta = meerkat.site.formData.coords.split(','),
+                    zoom = parseInt(mapMeta[2]) || DEFAULT_ZOOM;
+                var coords = {
+                    lat: parseFloat(mapMeta[0]),
+                    lng: parseFloat(mapMeta[1])
+                };
+                map.setCenter(coords);
+                map.setZoom(zoom);
+                getResults();
+            });
+        } else {
+            $('#fuel_location').change();
         }
     }
 
@@ -286,12 +308,9 @@
         // set a timeout to prevent getting locations forever for slow connections
         var geoOptions = {
             enableHighAccuracy: false,
-            timeout: 10000, // Wait 5 seconds
+            timeout: 10000, // Wait 10 seconds
             maximumAge: 0
         };
-
-        // TODO: When preloading from bookmark we may not want geolocation?
-        // Except on mobile? Use case? Thoughts?
 
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
@@ -300,10 +319,9 @@
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
-
+                // do this here in case they take a while to click 'allow' as no idle triggers in that case.
+                map.setCenter(pos);
                 google.maps.event.addListenerOnce(map, 'idle', function () {
-                    map.setCenter(pos);
-                    drawClickedMarker(pos);
                     getResults();
                 });
             }, function () {
