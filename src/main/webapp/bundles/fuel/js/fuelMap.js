@@ -141,7 +141,8 @@
     var markerTemplate,
         isXsInfoWindowShown = false,
         $xsInfoWindow,
-        $mapCanvas;
+        $mapCanvas,
+        autoComplete;
 
     /**
      * Constants - Configuration for limiting zoom.
@@ -201,6 +202,7 @@
             initMap();
             initAutoComplete();
             initInfoWindowProperties();
+            initPreload();
         } catch (e) {
             _handleError(e, "fuel.js:initCallback");
         }
@@ -263,6 +265,10 @@
             addToHistory();
         });
 
+
+    }
+
+    function initPreload() {
         // Preload From Widget
 
         if (meerkat.site.hasOwnProperty('formData')) {
@@ -279,12 +285,24 @@
     function bookmarkedPreload() {
         var formData = meerkat.site.formData;
         if (formData.fuelType !== "") {
-            $('#fuel_type_id').val(meerkat.site.formData.fuelType);
+            $('#fuel_type_id').val(_legacyMapFuelTypes(meerkat.site.formData.fuelType));
         }
         if (formData.location !== "") {
             $('#fuel_location').val(meerkat.site.formData.location);
+            if (formData.coords && formData.coords === "") {
+                //legacy bookmarks from the website. delay is because autocomplete may not be initialised, but not entirely sure.
+                _.delay(function () {
+                    if(autoComplete) {
+                        // todo: sadly this does not automatically select the first result and re-locate the map.
+                        var e = $.Event("keypress", {which: 13});
+                        $('#fuel_location').trigger(e);
+                    } else {
+                        initGeoLocation();
+                    }
+                }, 3000);
+            }
         }
-        if (formData.coords !== "") {
+        if (!_.isUndefined(formData.coords) && formData.coords !== "") {
             google.maps.event.addListenerOnce(map, 'idle', function () {
                 var mapMeta = meerkat.site.formData.coords.split(','),
                     zoom = parseInt(mapMeta[2]) || DEFAULT_ZOOM;
@@ -296,8 +314,6 @@
                 map.setZoom(zoom);
                 getResults();
             });
-        } else {
-            $('#fuel_location').change();
         }
     }
 
@@ -343,8 +359,9 @@
             }
         };
         var autoCompleteService = new google.maps.places.AutocompleteService(),
-            placesService = new google.maps.places.PlacesService(map),
-            autoComplete = new google.maps.places.Autocomplete(document.getElementById('fuel_location'), options);
+            placesService = new google.maps.places.PlacesService(map);
+
+        autoComplete = new google.maps.places.Autocomplete(document.getElementById('fuel_location'), options);
 
         autoComplete.bindTo('bounds', map);
         autoComplete.addListener('place_changed', function () {
@@ -627,6 +644,51 @@
         return markers;
     }
 
+    /**
+     * Preload the saved hashes into formData so we can prefill the data in the same format.
+     * @param hashArray
+     */
+    function setInitialHash(hashArray) {
+        if(hashArray && hashArray.length && hashArray[0] === 'results' && _.isString(hashArray[1])) {
+            meerkat.site.formData = {
+                location: decodeURIComponent(hashArray[1].replace(/\+/g, '%20')),
+                fuelType: decodeURIComponent(hashArray[2])
+            }
+        }
+    }
+
+    /**
+     * Mapping legacy fuel types to the new versions
+     * @param fuelType
+     * @returns {number}
+     * @private
+     */
+    function _legacyMapFuelTypes(fuelType) {
+        
+        switch(fuelType) {
+            case '6,2':
+            case '2,6':
+                return 999;
+            case '3,9':
+            case '9,3':
+                return 1000;
+            case '6':
+                return 12;
+            case '8':
+            case '9':
+                return 14;
+            case 'P':
+                return 2;
+            case 'L':
+                return 4;
+            case 'D':
+                return 3;
+            default:
+                return 2;
+        }
+        
+    }
+
     meerkat.modules.register("fuelMap", {
         init: initFuelMap,
         events: moduleEvents,
@@ -634,7 +696,9 @@
         initCallback: initCallback,
         getMap: getMap,
         getMarkers: getMarkers,
-        plotMarkers: plotMarkers
+        plotMarkers: plotMarkers,
+        addToHistory: addToHistory,
+        setInitialHash:setInitialHash
     });
 
 })(jQuery);
