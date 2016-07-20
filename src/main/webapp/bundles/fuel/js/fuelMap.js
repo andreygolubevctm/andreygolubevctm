@@ -289,17 +289,11 @@
         }
         if (formData.location !== "") {
             $('#fuel_location').val(meerkat.site.formData.location);
-            if (formData.coords && formData.coords === "") {
-                //legacy bookmarks from the website. delay is because autocomplete may not be initialised, but not entirely sure.
-                _.delay(function () {
-                    if(autoComplete) {
-                        // todo: sadly this does not automatically select the first result and re-locate the map.
-                        var e = $.Event("keypress", {which: 13});
-                        $('#fuel_location').trigger(e);
-                    } else {
-                        initGeoLocation();
-                    }
-                }, 3000);
+
+            if (!formData.coords) {
+                // @todo: Too much effort for MVP to figure out why we can't do a keypress
+                // .. to make autocomplete use the first suggestion to go to that location. Instead, will just geolocate.
+                initGeoLocation();
             }
         }
         if (!_.isUndefined(formData.coords) && formData.coords !== "") {
@@ -368,6 +362,7 @@
             var place = autoComplete.getPlace();
             // if user didn't type anything to start the search then there is not much we can do...
             if (!place || !place.name || place.length === 0) {
+                log("place_changed: No place returned");
                 return;
             }
 
@@ -614,7 +609,9 @@
             }
             /* TODO: minus footer signup box */
             $mapCanvas.css('height', heightToSet);
-            google.maps.event.trigger(map, 'resize');
+            if(google.maps) {
+                google.maps.event.trigger(map, 'resize');
+            }
         });
     }
 
@@ -651,11 +648,11 @@
      * @param hashArray
      */
     function setInitialHash(hashArray) {
-        if(hashArray && hashArray.length && hashArray[0] === 'results' && _.isString(hashArray[1])) {
+        if (hashArray && hashArray.length && hashArray[0] === 'results' && _.isString(hashArray[1])) {
             meerkat.site.formData = {
                 location: decodeURIComponent(hashArray[1].replace(/\+/g, '%20')),
                 fuelType: decodeURIComponent(hashArray[2])
-            }
+            };
         }
     }
 
@@ -666,8 +663,8 @@
      * @private
      */
     function _legacyMapFuelTypes(fuelType) {
-        
-        switch(fuelType) {
+
+        switch (fuelType) {
             case '6,2':
             case '2,6':
                 return 999;
@@ -688,7 +685,7 @@
             default:
                 return 2;
         }
-        
+
     }
 
     meerkat.modules.register("fuelMap", {
@@ -700,7 +697,7 @@
         getMarkers: getMarkers,
         plotMarkers: plotMarkers,
         addToHistory: addToHistory,
-        setInitialHash:setInitialHash
+        setInitialHash: setInitialHash
     });
 
 })(jQuery);
