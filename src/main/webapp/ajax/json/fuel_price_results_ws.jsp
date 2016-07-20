@@ -13,22 +13,20 @@
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="fuel" delete="false"/>
 
-<c:set var="fetch_count"><c:out value="${param.fetchcount}" escapeXml="true" /></c:set>
-
-<c:if test="${fetch_count > 0}">
-    <c:set var="ignoreme">
-        <core_v1:get_transaction_id
-                quoteType="fuel"
-                id_handler="increment_tranId"/>
-    </c:set>
-</c:if>
-
 <%-- Capture the Client IP and User Agent used later to check limits--%>
 <go:setData dataVar="data" xpath="fuel/clientIpAddress" value="${ipAddressHandler.getIPAddress(pageContext.request)}"/>
 <go:setData dataVar="data" xpath="fuel/clientUserAgent" value='<%=request.getHeader("user-agent")%>' />
+<c:set var="canSave" value="${data['fuel/canSave']}" />
 
-<%-- Save Client Data --%>
-<core_v1:transaction touch="R" noResponse="true" />
+<%-- R touch, plus save form data when we're told to --%>
+<c:choose>
+    <c:when test="${canSave eq '1'}">
+        <core_v1:transaction touch="R" noResponse="true" />
+    </c:when>
+    <c:otherwise>
+        <core_v1:transaction touch="R" noResponse="true" writeQuoteOverride="N" />
+    </c:otherwise>
+</c:choose>
 
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
