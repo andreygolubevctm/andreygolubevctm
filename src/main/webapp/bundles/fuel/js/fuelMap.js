@@ -596,6 +596,7 @@
             }
             /* TODO: minus footer signup box */
             $mapCanvas.css('height', heightToSet);
+            google.maps.event.trigger(map, 'resize');
         });
     }
 
