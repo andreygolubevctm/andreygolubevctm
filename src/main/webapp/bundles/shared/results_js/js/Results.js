@@ -183,6 +183,7 @@ var Results = {
 				}
 			},
 			show: {
+				resultsAsRows: true, // set to false if you don't want to render result-row's (either features or price mode)
 				featuresCategories: true,
 				topResult: true,
 				currentProduct: true,

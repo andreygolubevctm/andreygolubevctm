@@ -119,5 +119,5 @@
 </agg_v2_results:results>
 
 <fuel:regional_results />
-<fuel:fuel_map />
+<fuel:fuel_infoWindow />
 <fuel:chart />
