@@ -25,7 +25,7 @@
         <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
         <life-quote.version>1.1.0-RC1</life-quote.version>
         <life-apply.version>1.0.0-RC0</life-apply.version>
-        <fuel-quote-model.version>1.0.0-SNAPSHOT</fuel-quote-model.version>
+        <fuel-quote-model.version>1.0.0-RC0</fuel-quote-model.version>
 
         <!-- 3rd party -->
         <guava.version>18.0</guava.version>
