@@ -286,7 +286,7 @@
     function bookmarkedPreload() {
         var formData = meerkat.site.formData;
         if (formData.fuelType !== "") {
-            $('#fuel_type_id').val(_legacyMapFuelTypes(meerkat.site.formData.fuelType));
+            $('#fuel_type_id').val(_legacyMapFuelTypes(formData.fuelType));
         }
         if (formData.location !== "") {
             if (!formData.coords) {
@@ -294,12 +294,12 @@
                 // .. to make autocomplete use the first suggestion to go to that location. Instead, will just geolocate.
                 initGeoLocation();
             } else {
-                $('#fuel_location').val(meerkat.site.formData.location);
+                $('#fuel_location').val(formData.location);
             }
         }
         if (!_.isUndefined(formData.coords) && formData.coords !== "") {
             google.maps.event.addListenerOnce(map, 'idle', function () {
-                var mapMeta = meerkat.site.formData.coords.split(','),
+                var mapMeta = formData.coords.split(','),
                     zoom = parseInt(mapMeta[2]) || DEFAULT_ZOOM;
                 var coords = {
                     lat: parseFloat(mapMeta[0]),
@@ -684,7 +684,7 @@
             case 'D':
                 return 3;
             default:
-                return 2;
+                return fuelType;
         }
 
     }
