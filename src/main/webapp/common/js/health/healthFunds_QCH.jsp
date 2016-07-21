@@ -21,6 +21,7 @@ var healthFunds_QCH = {
 	$paymentType : $('#health_payment_details_type input'),
 	$paymentFrequency : $('#health_payment_details_frequency'),
 	$paymentStartDate: $("#health_payment_details_start"),
+	$claimsAccountOptin: $('#health_payment_bank_claims'),
 
 	set: function() {
 		<%-- HTML was already injected so unhide it --%>
@@ -106,6 +107,11 @@ var healthFunds_QCH = {
 			"resetValidationSelectors" : meerkat.modules.healthPaymentStep.resetValidationSelectorsPaymentGateway,
 			"paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
 			"getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
+		});
+
+		<%-- Unset the refund optin radio buttons --%>
+		healthFunds_QCH.$claimsAccountOptin.find("input:checked").each(function(){
+		  $(this).prop("checked",null).trigger("change");
 		});
 	},
 	renderPaymentDays: function() {

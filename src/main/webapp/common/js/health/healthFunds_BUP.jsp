@@ -13,6 +13,7 @@ var healthFunds_BUP = {
 	$paymentType : $('#health_payment_details_type input'),
 	$paymentFrequency : $('#health_payment_details_frequency'),
 	$paymentStartDate: $("#health_payment_details_start"),
+	$claimsAccountOptin: $('#health_payment_bank_claims'),
 set: function () {
 	"use strict";
 
@@ -56,6 +57,11 @@ set: function () {
 		healthFunds._dependants('Dependent child means a person who does not have a partner and is \(i\) aged under 21 or \(ii\) is receiving a full time education at a school, college or university recognised by the company and who is not aged 25 or over.');
 	meerkat.modules.healthDependants.setMaxAge(25);
 	meerkat.modules.healthDependants.updateConfig({showMiddleName: true});
+
+		<%-- Unset the refund optin radio buttons --%>
+		healthFunds_BUP.$claimsAccountOptin.find("input:checked").each(function(){
+		  $(this).prop("checked",null).trigger("change");
+		});
 
 	},
 	updateMessage: function() {

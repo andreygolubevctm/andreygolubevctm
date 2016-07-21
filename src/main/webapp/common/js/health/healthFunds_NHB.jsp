@@ -26,6 +26,7 @@
 			$paymentFrequency : $('#health_payment_details_frequency'),
 			$paymentStartDate: $("#health_payment_details_start"),
 			$paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
+			$claimsAccountOptin: $('#health_payment_bank_claims'),
 
           set: function() {
             $(".health_previous_fund_authority").removeClass("hidden");
@@ -271,6 +272,11 @@
               "paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
               "getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
             });
+
+			<%-- Unset the refund optin radio buttons --%>
+			healthFunds_NHB.$claimsAccountOptin.find("input:checked").each(function(){
+			  $(this).prop("checked",null).trigger("change");
+			});
           },
 		  renderPaymentDays: function() {
 			healthFunds_NHB.$paymentTypeContainer.text('*Navy Health offers a 2% discount on Half Yearly or a 4% discount on Annual payments').slideDown();
