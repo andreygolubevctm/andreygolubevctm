@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class IPAddressHandler {
 
-    private static final String GET_X_FORWARD_CONFIG_CODE = "getIPFromXForward";
-    public static final String FORWARD_FOR_HEADER= "X-FORWARDED-FOR";
+    protected static final String GET_X_FORWARD_CONFIG_CODE = "getIPFromXForward";
+    public static final String FORWARD_FOR_HEADER = "X-FORWARDED-FOR";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IPAddressHandler.class);
 
@@ -48,14 +48,16 @@ public class IPAddressHandler {
         return getIPAddress(request, returnFromXForward);
     }
 
-    public String getIPAddress(HttpServletRequest request, boolean returnFromXForward) {
-        if(returnFromXForward) {
+    public String getIPAddress(final HttpServletRequest request, final boolean returnFromXForward) {
+        if (returnFromXForward) {
             String headerForwardFor = request.getHeader(FORWARD_FOR_HEADER);
-            if(StringUtils.isBlank(headerForwardFor)){
-                LOGGER.warn("getIPFromXForward is enabled but X-FORWARDED-FOR is empty");
-                return request.getRemoteAddr();
+            if (StringUtils.isNotBlank(headerForwardFor)) {
+                // X-Forwarded-For can contain a list of IPs, with the first one being the one we want
+                final String[] ips = StringUtils.split(headerForwardFor, ",", 2);
+                return StringUtils.trim(ips[0]);
             } else {
-                return headerForwardFor;
+                LOGGER.warn("Config " + GET_X_FORWARD_CONFIG_CODE + " is enabled but " + FORWARD_FOR_HEADER + " is empty");
+                return request.getRemoteAddr();
             }
         } else {
             return request.getRemoteAddr();
@@ -66,7 +68,7 @@ public class IPAddressHandler {
         try {
             return configService.getConfigValueBoolean(request, GET_X_FORWARD_CONFIG_CODE);
         } catch(DaoException | ConfigSettingException e) {
-             handleFailure(e);
+            handleFailure(e);
             return false;
         }
     }
