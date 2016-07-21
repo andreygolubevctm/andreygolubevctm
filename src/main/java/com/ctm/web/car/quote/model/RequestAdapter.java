@@ -43,10 +43,7 @@ public class RequestAdapter {
             }
         }
 
-
-        if(carQuote.getFilter().getProviders() != null && !carQuote.getFilter().getProviders().isEmpty()){
-            quoteRequest.setProviderFilter(carQuote.getFilter().getProviders());
-        }
+        quoteRequest.setClientIp(carRequest.getClientIpAddress());
 
         return quoteRequest;
     }

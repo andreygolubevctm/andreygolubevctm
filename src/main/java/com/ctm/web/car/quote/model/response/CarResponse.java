@@ -1,7 +1,7 @@
 package com.ctm.web.car.quote.model.response;
 
-import com.ctm.web.core.providers.model.Response;
+import com.ctm.web.core.providers.model.IncomingQuotesResponse;
 
-public class CarResponse extends Response<CarQuote> {
+public class CarResponse extends IncomingQuotesResponse<CarQuote> {
 
 }

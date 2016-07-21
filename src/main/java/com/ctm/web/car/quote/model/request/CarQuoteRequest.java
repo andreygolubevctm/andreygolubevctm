@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CarQuoteRequest {
+
+    private String clientIp;
 
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate commencementDate;
@@ -24,7 +24,13 @@ public class CarQuoteRequest {
 
     private Vehicle vehicle;
 
-    private List<String> providerFilter = new ArrayList<String>();
+    public String getClientIp() {
+        return clientIp;
+    }
+
+    public void setClientIp(String clientIp) {
+        this.clientIp = clientIp;
+    }
 
     public LocalDate getCommencementDate() {
         return commencementDate;
@@ -82,11 +88,4 @@ public class CarQuoteRequest {
         this.vehicle = vehicle;
     }
 
-    public List<String> getProviderFilter() {
-        return providerFilter;
-    }
-
-    public void setProviderFilter(List<String> providerFilter) {
-        this.providerFilter = providerFilter;
-    }
 }

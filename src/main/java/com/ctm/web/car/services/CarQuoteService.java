@@ -1,5 +1,7 @@
 package com.ctm.web.car.services;
 
+import com.ctm.httpclient.Client;
+import com.ctm.httpclient.RestSettings;
 import com.ctm.web.car.model.form.CarQuote;
 import com.ctm.web.car.model.form.CarRequest;
 import com.ctm.web.car.model.results.CarResult;
@@ -11,39 +13,46 @@ import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.providers.model.AggregateOutgoingRequest;
 import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.web.core.services.CommonQuoteService;
-import com.ctm.web.core.services.Endpoint;
+import com.ctm.web.core.services.CommonRequestServiceV2;
 import com.ctm.web.core.services.ResultsService;
+import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.validation.CommencementDateValidation;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteRequest, CarResponse> {
+public class CarQuoteService extends CommonRequestServiceV2 {
 
     private SessionDataServiceBean sessionDataServiceBean;
 
     @Autowired
-    public CarQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, SessionDataServiceBean sessionDataServiceBean) {
-        super(providerFilterDAO, objectMapper);
+    private Client<AggregateOutgoingRequest<CarQuoteRequest>, CarResponse> clientQuotes;
+
+    @Autowired
+    public CarQuoteService(ProviderFilterDao providerFilterDAO, ServiceConfigurationServiceBean serviceConfigurationServiceBean,
+                           SessionDataServiceBean sessionDataServiceBean) {
+        super(providerFilterDAO, serviceConfigurationServiceBean);
         this.sessionDataServiceBean = sessionDataServiceBean;
     }
 
@@ -72,9 +81,29 @@ public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteReques
 
         final CarQuoteRequest carQuoteRequest = RequestAdapter.adapt(data);
 
-        final CarResponse carResponse = sendRequest(brand, CAR, "carQuoteServiceBER", Endpoint.QUOTE, data, carQuoteRequest, CarResponse.class);
+        final AggregateOutgoingRequest<CarQuoteRequest> request = AggregateOutgoingRequest.<CarQuoteRequest>build()
+                .transactionId(data.getTransactionId())
+                .brandCode(brand.getCode())
+                .requestAt(data.getRequestAt())
+                .providerFilter(quote.getFilter().getProviders())
+                .payload(carQuoteRequest)
+                .build();
 
-        final List<CarResult> carResults = ResponseAdapter.adapt(carResponse);
+        final QuoteServiceProperties properties = getQuoteServiceProperties("carQuoteServiceBER", brand, CAR.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
+
+        final CarResponse homeResponse = clientQuotes.post(RestSettings.<AggregateOutgoingRequest<CarQuoteRequest>>builder()
+                .request(request)
+                .jsonHeaders()
+                .url(properties.getServiceUrl()+"/quote")
+                .timeout(properties.getTimeout())
+                .responseType(MediaType.APPLICATION_JSON)
+                .response(CarResponse.class)
+                .build())
+//                TODO: what to do on error
+//                .doOnError(t -> t.printStackTrace())
+                .single().toBlocking().single();
+
+        final List<CarResult> carResults = ResponseAdapter.adapt(homeResponse);
 
         saveResults(data, carResults);
 
