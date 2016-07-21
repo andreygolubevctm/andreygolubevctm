@@ -275,55 +275,57 @@ var ResultsView = {
 		results = Results.model.sortedProducts;
 
 		// build the HTML results
-		$.each(results, function(index, result){
+		if(Results.settings.show.hasOwnProperty('resultsAsRows') && Results.settings.show.resultsAsRows === true) {
+			$.each(results, function (index, result) {
 
-			var productAvailability = null;
-			if( Results.settings.paths.availability.product && Results.settings.paths.availability.product !== "" ){
-				productAvailability = Object.byString(result, Results.settings.paths.availability.product);
-			}
-
-			if( typeof productAvailability !== "undefined" && productAvailability !== "Y" && !unavailableTemplate ){
-				countUnavailable++;
-				resultRow = $('<div></div>');
-
-			} else if( typeof productAvailability !== "undefined" && productAvailability === "E" ) {
-				countUnavailable++;
-				resultRow = $( Results.view.parseTemplate(Results.settings.elements.templates.error, result) ); // parsed error row
-			} else if( typeof productAvailability !== "undefined" && productAvailability !== "Y" ) {
-				countUnavailable++;
-				resultRow = $( Results.view.parseTemplate(Results.settings.elements.templates.unavailable, result) ); // parsed non available row
-			}else {
-				if(
-					Results.model.currentProduct && // current product has been set
-					Results.model.currentProduct.value == Object.byString(result, Results.model.currentProduct.path) // the user's current product = the currently checked product
-				){
-					// current product template parsing
-					resultRow = $( Results.view.parseTemplate(Results.settings.elements.templates.currentProduct, result) );
-				} else {
-					// default row template parsing
-					resultRow = $( Results.view.parseTemplate(Results.settings.elements.templates.result, result) );
+				var productAvailability = null;
+				if (Results.settings.paths.availability.product && Results.settings.paths.availability.product !== "") {
+					productAvailability = Object.byString(result, Results.settings.paths.availability.product);
 				}
-			}
 
-			// If the product is filtered, mark it as such.
-			if( $.inArray(result, Results.model.filteredProducts ) == -1 ){
-				var $row = $(resultRow);
-				$row.addClass("filtered");
-				$row.hide();
-				$row.attr("data-position", "undefined");
-			} else {
-				$(resultRow).addClass("notfiltered").attr("data-position", countVisible);
-				countVisible++;
-			}
-			$(resultRow).attr("id", "result-row-" + index).attr("data-sort", index);
+				if (typeof productAvailability !== "undefined" && productAvailability !== "Y" && !unavailableTemplate) {
+					countUnavailable++;
+					resultRow = $('<div></div>');
 
-			// if top result, add top result markup
-			if( result == topResult ){
-				topResultRow = "#result-row-" + index;
-			}
-			resultsHtml += $(resultRow)[0].outerHTML || new XMLSerializer().serializeToString($(resultRow)[0]); // add row HTML to final HTML (second part is for older browsers not supporting outerHTML)
+				} else if (typeof productAvailability !== "undefined" && productAvailability === "E") {
+					countUnavailable++;
+					resultRow = $(Results.view.parseTemplate(Results.settings.elements.templates.error, result)); // parsed error row
+				} else if (typeof productAvailability !== "undefined" && productAvailability !== "Y") {
+					countUnavailable++;
+					resultRow = $(Results.view.parseTemplate(Results.settings.elements.templates.unavailable, result)); // parsed non available row
+				} else {
+					if (
+						Results.model.currentProduct && // current product has been set
+						Results.model.currentProduct.value == Object.byString(result, Results.model.currentProduct.path) // the user's current product = the currently checked product
+					) {
+						// current product template parsing
+						resultRow = $(Results.view.parseTemplate(Results.settings.elements.templates.currentProduct, result));
+					} else {
+						// default row template parsing
+						resultRow = $(Results.view.parseTemplate(Results.settings.elements.templates.result, result));
+					}
+				}
 
-		});
+				// If the product is filtered, mark it as such.
+				if ($.inArray(result, Results.model.filteredProducts) == -1) {
+					var $row = $(resultRow);
+					$row.addClass("filtered");
+					$row.hide();
+					$row.attr("data-position", "undefined");
+				} else {
+					$(resultRow).addClass("notfiltered").attr("data-position", countVisible);
+					countVisible++;
+				}
+				$(resultRow).attr("id", "result-row-" + index).attr("data-sort", index);
+
+				// if top result, add top result markup
+				if (result == topResult) {
+					topResultRow = "#result-row-" + index;
+				}
+				resultsHtml += $(resultRow)[0].outerHTML || new XMLSerializer().serializeToString($(resultRow)[0]); // add row HTML to final HTML (second part is for older browsers not supporting outerHTML)
+
+			});
+		}
 
 		if (Results.settings.show.hasOwnProperty('unavailableCombined') && Results.settings.show.unavailableCombined === true && countUnavailable > 0 && unavailableCombinedTemplate !== "") {
 			resultRow = $( Results.view.parseTemplate(Results.settings.elements.templates.unavailableCombined, results) );

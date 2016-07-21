@@ -1,50 +1,151 @@
-.no-heading-margin {
-  h2 {
-    margin-bottom: 0;
+.header-wrap {
+  @media (@sm) {
+    min-height: 80px; //SM
   }
+  @media (@md) {
+    min-height: 110px; //MD and LG
+  }
+}
 
-  .error-field {
-    margin-top: 12px;
+.container-fluid {
+  &.no-padding {
+    padding: 0;
+  }
+  .journeyEngineSlide {
+    &.first {
+      padding-top: 0;
+    }
+  }
+}
 
-    label {
+/** Sidebar **/
+@media (@sm) {
+  #results-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9;
+    margin: 30px;
+
+    .fieldrow {
+      margin: 0 0 15px;
+    }
+    .fieldrow:last-child {
       margin-bottom: 0;
     }
   }
 }
 
-.resultsSummaryContainer {
-  margin-top: 10px;
+@media (@xs-only) {
+  #google-map-container {
+    #results-sidebar {
+      padding:0;
+    }
+    .row {
+      margin:0;
+    }
+  }
+  .sidebar-widget {
+    border: none;
+    margin-bottom: 0;
+    padding: 15px;
+    background-color: #EDEDED;
+    z-index: 999;
+  }
 }
 
-#checkboxes-all h6 {
-  margin-top: 0;
+.cross-sell-widget {
+  background-color: @theme-tertiary;
+  color: #fff;
+  .cross-sell-text {
+    padding: 15px 20px;
+    .icon {
+      font-size: 76px;
+    }
+  }
 }
 
-.regionalFuelContainer {
-  border: 1px solid @results-border-color;
-  padding: 0px;
+.circle {
+  .icon {
+    margin: 5px;
+    color: #fff;
+  }
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  background-color: @gray-slight-dark;
+  display: inline-block;
 
-  td, th {
+  .fuel-band-5 & {
+    background-color: #A90001;
+  }
+  .fuel-band-4 & {
+    background-color: #F14E2D;
+  }
+  .fuel-band-3 & {
+    background-color: #F9928D;
+  }
+  .fuel-band-2 & {
+    background-color: #0AB449;
+  }
+  .fuel-band-1 & {
+    background-color: #077836;
+  }
+}
+
+.price-bands {
+  @media (@sm) {
+    .fuel-band {
+      .fuel-price {
+        margin-left: 5px;
+      }
+      margin-top: 10px;
+    }
+  }
+
+  @media (@xs-only) {
     text-align: center;
-  }
-  tr td:first-child,
-  tr th:first-child{
-    text-align:right;
-  }
-
-  tr th {
-    font-weight: normal;
-    font-family: @font-family-theme-bold;
-  }
-
-  .price {
-    line-height: @font-size-base;
-    font-size: @font-size-base;
+    color: white;
+    font-size: @font-size-small;
+    line-height: 1.5;
+    overflow: hidden;
+    p {
+      background-color: @gray-light;
+      margin:0;
+    }
+    .fuel-band {
+      width:20%;
+      float:left;
+      &.fuel-band-5 {
+        background-color: #A90001;
+      }
+      &.fuel-band-4 {
+        background-color: #F14E2D;
+      }
+      &.fuel-band-3 {
+        background-color: #F9928D;
+      }
+      &.fuel-band-2 {
+        background-color: #0AB449;
+      }
+      &.fuel-band-1 {
+        background-color: #077836;
+      }
+    }
   }
 }
 
-.journeyEngineSlide  {
-  &.first {
-    padding-top: 0;
-  }
+#price-band-container {
+  min-height: 245px;
+  padding-bottom: 0;
+}
+
+.short-disclaimer {
+  font-style: italic;
+  color: @theme-default;
+  font-size: @font-size-small;
+}
+
+#provider-disclaimer {
+  text-align: right;
 }

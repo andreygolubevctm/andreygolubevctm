@@ -4,12 +4,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.util.Collections.emptyList;
 
 public class HomeQuoteRequest {
+
+    private String clientIp;
 
     private boolean homeCover;
 
@@ -50,7 +48,14 @@ public class HomeQuoteRequest {
 
     private boolean hadClaims;
 
-    private List<String> providerFilter = new ArrayList<String>();
+    public String getClientIp() {
+        return clientIp;
+    }
+
+    public HomeQuoteRequest setClientIp(String clientIp) {
+        this.clientIp = clientIp;
+        return this;
+    }
 
     public boolean isHomeCover() {
         return homeCover;
@@ -204,11 +209,4 @@ public class HomeQuoteRequest {
         this.hadClaims = hadClaims;
     }
 
-    public List<String> getProviderFilter() {
-        return providerFilter;
-    }
-
-    public void setProviderFilter(List<String> providerFilter) {
-        this.providerFilter = providerFilter;
-    }
 }

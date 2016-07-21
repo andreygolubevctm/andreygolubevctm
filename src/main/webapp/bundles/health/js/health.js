@@ -236,9 +236,7 @@
 			},
 			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onBeforeLeave: function(event) {
-				// Store the text of the income question - for reports and audits.
-				var incomelabel = ($('#health_healthCover_income :selected').val().length > 0) ? $('#health_healthCover_income :selected').text() : '';
-				$('#health_healthCover_incomelabel').val( incomelabel );
+				meerkat.modules.healthTiersLabel.setIncomeLabel();
 			},
 			onAfterEnter: function(event) {
 				if (event.isForward && meerkat.site.isCallCentreUser === true){

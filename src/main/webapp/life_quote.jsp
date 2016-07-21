@@ -33,6 +33,9 @@
 
 <life_v1:widget_values />
 
+<%-- Set global variable to flags for active split tests --%>
+<life_v1:splittest_helper />
+
 <core_v1:doctype />
 <go:html>
 	<core_v1:head quoteType="${xpath}" title="Life Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
