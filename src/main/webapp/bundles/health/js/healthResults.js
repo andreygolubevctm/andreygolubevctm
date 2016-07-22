@@ -238,11 +238,10 @@
         }
     }
 
+
     function eventSubscriptions() {
 
         var tStart = 0;
-
-    function eventSubscriptions() {
 
         $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function () {
             _resetSelectionsStructureObject();
