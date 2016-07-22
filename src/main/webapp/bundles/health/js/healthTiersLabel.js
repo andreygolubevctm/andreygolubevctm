@@ -22,10 +22,12 @@ Handling of the rebate tiers hidden field
 
 
 	function setIncomeLabel() {
+		$(document).ready(function () {
 		// Store the text of the income question - for reports and audits.
-        var $selectedIncome = $income.find(':selected');
-		var incomeLabel = ($selectedIncome.val().length > 0) ? $selectedIncome.text() : '';
-		$healthCoverIncomeLabel.val( incomeLabel );
+	        var $selectedIncome = $income.find(':selected');
+			var incomeLabel = ($selectedIncome.val().length > 0) ? $selectedIncome.text() : '';
+			$healthCoverIncomeLabel.val( incomeLabel );
+		});
 	}
 
 	meerkat.modules.register("healthTiersLabel", {
