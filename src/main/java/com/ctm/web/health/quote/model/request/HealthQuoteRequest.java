@@ -4,7 +4,6 @@ import com.ctm.web.health.model.HospitalSelection;
 import com.ctm.web.health.model.Membership;
 import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.ProductStatus;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
@@ -12,7 +11,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class HealthQuoteRequest
 {
 
