@@ -124,6 +124,8 @@ public class HealthQuoteController extends CommonQuoteRouter {
             PricesObj<HealthQuoteResult> results = new PricesObj<>();
             results.setResult(quotes.getResults());
             results.setInfo(info);
+
+            quotes.getPremiumRange().ifPresent(info::setPremiumRange);
             info.setPricesHaveChanged(quotes.isHasPriceChanged());
 
             if (!isShowAll) {

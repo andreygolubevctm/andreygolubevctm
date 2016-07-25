@@ -15,23 +15,29 @@ import com.ctm.web.core.model.ProviderFilter;
 import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.providers.model.RatesheetOutgoingRequest;
+import com.ctm.web.core.providers.model.Request;
 import com.ctm.web.core.services.CommonRequestServiceV2;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.health.model.form.*;
-import com.ctm.web.health.quote.model.RequestAdapter;
-import com.ctm.web.health.quote.model.ResponseAdapter;
-import com.ctm.web.health.quote.model.ResponseAdapterModel;
+import com.ctm.web.health.model.results.HealthQuoteResult;
+import com.ctm.web.health.model.results.PremiumRange;
+import com.ctm.web.health.quote.model.*;
 import com.ctm.web.health.quote.model.request.HealthQuoteRequest;
 import com.ctm.web.health.quote.model.response.HealthResponse;
+import com.ctm.web.health.quote.model.response.HealthResponseV2;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
@@ -39,11 +45,19 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 @Component
 public class HealthQuoteService extends CommonRequestServiceV2 {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(HealthQuoteService.class);
+
     @Autowired
     private CompetitionService competitionService;
 
     @Autowired
-    private Client<RatesheetOutgoingRequest<HealthQuoteRequest>, HealthResponse> clientQuotes;
+    private HealthQuoteSummaryService healthQuoteSummaryService;
+
+    @Autowired
+    private Client<RatesheetOutgoingRequest<HealthQuoteRequest>, HealthResponseV2> clientQuotesV2;
+
+    @Autowired
+    private Client<Request<HealthQuoteRequest>, HealthResponse> clientQuotes;
 
     @Autowired
     public HealthQuoteService(ProviderFilterDao providerFilterDAO, ServiceConfigurationServiceBean serviceConfigurationServiceBean) {
@@ -52,30 +66,69 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
 
     public ResponseAdapterModel getQuotes(Brand brand, HealthRequest data, Content alternatePricingContent, boolean isSimples) throws Exception {
         setFilter(data.getQuote().getSituation());
-        final HealthQuoteRequest quoteRequest = RequestAdapter.adapt(data, alternatePricingContent, isSimples);
-
-        final RatesheetOutgoingRequest<HealthQuoteRequest> request = RatesheetOutgoingRequest.<HealthQuoteRequest>newBuilder()
-                .transactionId(data.getTransactionId())
-                .brandCode(brand.getCode())
-                .requestAt(data.getRequestAt())
-                .payload(quoteRequest)
-                .build();
 
         final QuoteServiceProperties properties = getQuoteServiceProperties("healthQuoteServiceBER", brand, HEALTH.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
-        final HealthResponse healthResponse = clientQuotes.post(RestSettings.<RatesheetOutgoingRequest<HealthQuoteRequest>>builder()
-                .request(request)
-                .jsonHeaders()
-                .url(properties.getServiceUrl()+"/quote")
-                .timeout(properties.getTimeout())
-                .responseType(MediaType.APPLICATION_JSON)
-                .response(HealthResponse.class)
-                .build())
-//                TODO: what to do on error
-                .doOnError(t -> t.printStackTrace())
-                .single().toBlocking().single();
+        if (properties.getServiceUrl().contains("-v2/") || properties.getServiceUrl().startsWith("http://localhost")) {
+            LOGGER.info("Calling health-quote v2");
+            // Version 2
 
-        return ResponseAdapter.adapt(data, healthResponse, alternatePricingContent);
+            final HealthQuoteRequest quoteRequest = RequestAdapterV2.adapt(data, alternatePricingContent, isSimples);
+
+            final RatesheetOutgoingRequest<HealthQuoteRequest> request = RatesheetOutgoingRequest.<HealthQuoteRequest>newBuilder()
+                    .transactionId(data.getTransactionId())
+                    .brandCode(brand.getCode())
+                    .requestAt(data.getRequestAt())
+                    .payload(quoteRequest)
+                    .build();
+
+            final HealthResponseV2 healthResponse = clientQuotesV2.post(RestSettings.<RatesheetOutgoingRequest<HealthQuoteRequest>>builder()
+                    .request(request)
+                    .jsonHeaders()
+                    .url(properties.getServiceUrl()+"/quote")
+                    .timeout(properties.getTimeout())
+                    .responseType(MediaType.APPLICATION_JSON)
+                    .response(HealthResponseV2.class)
+                    .build())
+                    .single().toBlocking().single();
+
+            return ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent);
+        } else {
+            LOGGER.info("Calling health-quote v1");
+            // Version 1
+            final HealthQuote quote = data.getQuote();
+            boolean isShowAll = StringUtils.equals(quote.getShowAll(), "Y");
+            boolean isOnResultsPage = StringUtils.equals(quote.getOnResultsPage(), "Y");
+            Optional<PremiumRange> premiumRange = Optional.empty();
+            if (isShowAll && isOnResultsPage) {
+                premiumRange = Optional.ofNullable(healthQuoteSummaryService.getSummary(brand, data, isSimples));
+            }
+
+            final HealthQuoteRequest quoteRequest = RequestAdapter.adapt(data, alternatePricingContent, isSimples);
+
+            final Request<HealthQuoteRequest> request = new Request<>();
+            request.setPayload(quoteRequest);
+            request.setClientIp(data.getClientIpAddress());
+            request.setTransactionId(data.getTransactionId());
+            request.setBrandCode(brand.getCode());
+            request.setRequestAt(data.getRequestAt());
+
+            final HealthResponse healthResponse = clientQuotes.post(RestSettings.<Request<HealthQuoteRequest>>builder()
+                    .request(request)
+                    .jsonHeaders()
+                    .url(properties.getServiceUrl()+"/quote")
+                    .timeout(properties.getTimeout())
+                    .responseType(MediaType.APPLICATION_JSON)
+                    .response(HealthResponse.class)
+                    .build())
+                    .single().toBlocking().single();
+
+
+            final Pair<Boolean, List<HealthQuoteResult>> response = ResponseAdapter.adapt(data, healthResponse, alternatePricingContent);
+
+            return new ResponseAdapterModel(response.getLeft(), response.getRight(), premiumRange);
+        }
+
     }
 
     public Data healthCompetitionEntry(HttpServletRequest request, HealthRequest data, HealthQuote quote, boolean competitionEnabled, Data dataBucket) throws ConfigSettingException, DaoException, EmailDetailsException {
