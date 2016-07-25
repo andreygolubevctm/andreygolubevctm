@@ -168,7 +168,7 @@
             }
         } else {
             // Generate X number of dependants.
-            var hasChosenToApplyRebate = typeof healthCoverDetails !== 'undefined' ? healthCoverDetails.getRebateChoice() === 'Y' : meerkat.modules.healthCoverDetails.isRebateApplied();
+            var hasChosenToApplyRebate = meerkat.modules.healthCoverDetails.isRebateApplied();
             if (hasChosenToApplyRebate && dependantCountSpecified > 0) {
                 // Add to existing dependants
                 while (getNumberOfDependants() < dependantCountSpecified) {

@@ -807,7 +807,7 @@
 
 	function loadRatesBeforeResultsPage(forceRebate, callback) {
 
-		var $healthCoverDetails = $('#startForm');
+		var $healthCoverDetails = $('#contactForm');
 
 		var postData = {
 			dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
@@ -817,7 +817,7 @@
 			primary_loading:$healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
 			primary_current: meerkat.modules.healthAboutYou.getPrimaryCurrentCover(),
 			primary_loading_manual: $healthCoverDetails.find('.primary-lhc').val(),
-			cover: $healthCoverDetails.find(':input[name="health_situation_healthCvr"]').val()
+			cover: $('#startForm').find(':input[name="health_situation_healthCvr"]').val()
 		};
 
 		// If the customer answers Yes for current health insurance, assume 0% LHC
@@ -840,7 +840,7 @@
 	// Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
 	function loadRates(callback){
 
-		var $healthCoverDetails = $('#startForm');
+		var $healthCoverDetails = $('#contactForm');
 
 		var postData = {
 			dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
@@ -854,7 +854,7 @@
 			partner_loading:$healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),
 			partner_current:meerkat.modules.healthAboutYou.getPartnerCurrentCover(),
 			partner_loading_manual: $healthCoverDetails.find('.partner-lhc').val(),
-			cover: $healthCoverDetails.find(':input[name="health_situation_healthCvr"]').val()
+			cover: $('#startForm').find(':input[name="health_situation_healthCvr"]').val()
 		};
 
 		if( $('#health_application_provider, #health_application_productId').val() === '' ) {
@@ -1334,16 +1334,16 @@
 	}
 
 	function toggleRebate() {
-		if($('#health_healthCover_health_cover_rebate').find('input:checked').val() === 'N'){
-			$('#health_healthCover_tier').hide();
-			$('.health_cover_details_dependants').hide();
+		if(meerkat.modules.healthCoverDetails.isRebateApplied()){
+            $('#health_healthCover_tier').show();
+            if(getSituation() === 'F' || getSituation() === 'SPF'){
+                $('.health_cover_details_dependants').show();
+            }
 		} else {
-			$('#health_healthCover_tier').show();
-			var cover = $(':input[name="health_situation_healthCvr"]').val();
-			if(cover === 'F' || cover === 'SPF'){
-				$('.health_cover_details_dependants').show();
-			}
+            $('#health_healthCover_tier').hide();
+            $('.health_cover_details_dependants').hide();
 		}
+        meerkat.modules.healthCoverDetails.setIncomeBase();
 	}
 
 	function initHealth() {

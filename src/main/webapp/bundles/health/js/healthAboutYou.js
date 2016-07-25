@@ -3,7 +3,6 @@
 	// TODO: write unit test once DEVOPS-31 goes live
 
 	var meerkat = window.meerkat,
-		$aboutYouContainer,
 		$primaryCurrentCover,
 		$primaryContinuousCoverContainer,
 		$partnerContainer,
@@ -32,6 +31,7 @@
 			initFields();
 
 			meerkat.modules.healthTiers.initHealthTiers();
+            meerkat.modules.healthCoverDetails.setIncomeBase(true);
 			meerkat.modules.healthTiers.setTiers(true);
 
 			eventSubscriptions();
@@ -40,29 +40,28 @@
 	}
 
 	function initFields() {
-		$aboutYouContainer = $('#startForm'),
 			$healthCoverDetailsDependants = $('.health_cover_details_dependants'),
 			$healthCoverIncomeMessage = $('#health_healthCover_incomeMessage'),
-			$primaryCurrentCover = $aboutYouContainer.find('#health_healthCover_health_cover'),
-			$primaryContinuousCoverContainer = $aboutYouContainer.find('#health-continuous-cover-primary'),
-			$partnerContainer = $aboutYouContainer.find('#partner-health-cover'),
-			$partnerCurrentCover = $aboutYouContainer.find('#health_healthCover_partner_health_cover'),
-			$partnerContinuousCoverContainer = $aboutYouContainer.find('#health-continuous-cover-partner'),
-			$partnerHealthCoverHealthCoverLoading = $aboutYouContainer.find('input[name=health_healthCover_partner_healthCoverLoading]'),
-			$partnerDOB = $aboutYouContainer.find('#health_healthCover_partner_dob'),
-			$healthCoverDependants = $aboutYouContainer.find('#health_healthCover_dependants'),
-			$healthCoverRebate = $aboutYouContainer.find('.health_cover_details_rebate'),
-			$rebateDialogue = $aboutYouContainer.find('.simples-dialogue-37'),
-			$healthSituationHealthCvr = $aboutYouContainer.find('#health_situation_healthCvr'),
-			$healthCoverIncome = $aboutYouContainer.find('#health_healthCover_income'),
-			$healthCoverIncomeLabel = $aboutYouContainer.find('#health_healthCover_incomelabel'),
-			$tierDropdowns = $aboutYouContainer.find('#health_situation_healthCvr, #health_healthCover_dependants'),
-			$primaryDOB = $aboutYouContainer.find('#health_healthCover_primary_dob'),
-			$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend'),
+			$primaryCurrentCover = $('#health_healthCover_health_cover'),
+			$primaryContinuousCoverContainer = $('#health-continuous-cover-primary'),
+			$partnerContainer = $('#partner-health-cover'),
+			$partnerCurrentCover = $('#health_healthCover_partner_health_cover'),
+			$partnerContinuousCoverContainer = $('#health-continuous-cover-partner'),
+			$partnerHealthCoverHealthCoverLoading = $('input[name=health_healthCover_partner_healthCoverLoading]'),
+			$partnerDOB = $('#health_healthCover_partner_dob'),
+			$healthCoverDependants = $('#health_healthCover_dependants'),
+			$healthCoverRebate = $('.health_cover_details_rebate'),
+			$rebateDialogue = $('.simples-dialogue-37'),
+			$healthSituationHealthCvr = $('#health_situation_healthCvr'),
+			$healthCoverIncome = $('#health_healthCover_income'),
+			$healthCoverIncomeLabel = $('#health_healthCover_incomelabel'),
+			$tierDropdowns = $('#health_situation_healthCvr, #health_healthCover_dependants'),
+			$primaryDOB = $('#health_healthCover_primary_dob'),
+			$rebateLegend = $('#health_healthCover_tier_row_legend'),
 			$partnersDetails = $('#partnerFund, #partnerMemberID, #partnerContainer'),
-			$lhcContainers = $('#primary-health-cover, #partner-health-cover, #australian-government-rebate'),
+			$lhcContainers = $('#health-contact-fieldset, #partner-health-cover, #australian-government-rebate'),
 			$medicare = $('.health-medicare_details'),
-			$healthSituation = $aboutYouContainer.find('input[name="health_situation_healthSitu"]');
+			$healthSituation = $('input[name="health_situation_healthSitu"]');
 
 
 		if (!healthChoices.hasSpouse()) {
@@ -108,6 +107,13 @@
 		});
 
 		$healthSituation.add($healthCoverIncome).on('change', toggleMlsMessage);
+
+        if(meerkat.site.isCallCentreUser === true){
+            $('#health_healthCover_incomeBase').find('input').on('change', function(){
+                $healthCoverIncome.prop('selectedIndex',0);
+                meerkat.modules.healthTiers.setTiers();
+            });
+        }
 	}
 
 	function togglePrimaryContinuousCover(isInitMode) {
