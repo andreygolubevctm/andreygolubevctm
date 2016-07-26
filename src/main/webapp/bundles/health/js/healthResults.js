@@ -295,6 +295,14 @@
             // Hide pagination
             $('.results-pagination').add('header a[data-results-pagination-control]').addClass('hidden');
             meerkat.modules.coupon.triggerPopup();
+
+            meerkat.modules.dialogs.show({
+                htmlContent : $('.simples-dialogue-62')[0].outerHTML,
+                closeOnHashChange : true,
+                onOpen : function(modalId) {
+                    $('#' + modalId).find('.simples-dialogue').removeClass('hidden');
+                }
+            });
         });
 
         // If error occurs, go back in the journey
