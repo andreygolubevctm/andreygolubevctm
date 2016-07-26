@@ -278,7 +278,6 @@
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefitsStep.setDefaultCover();
-				meerkat.modules.healthBenefitsStep.disableFields();
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
 				incrementTranIdBeforeEnteringSlide();
 			},
@@ -299,9 +298,7 @@
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
 				meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
 			},
-			onBeforeLeave:function(event){
-				meerkat.modules.healthBenefitsStep.enableFields();
-			}
+			onBeforeLeave:function(event){}
 		};
 		var contactStep = {
 			title: 'Your Contact Details',
