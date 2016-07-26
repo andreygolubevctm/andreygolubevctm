@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- <health_content:xxx /> --%>
+<simples:snapshot />
 <health_v2_content:snapshot/>
 <coupon:promo_tile />
 <health_v1_content:call_centre_help />
