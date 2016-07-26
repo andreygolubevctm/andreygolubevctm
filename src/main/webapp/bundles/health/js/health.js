@@ -290,9 +290,6 @@
 				if (event.isForward && meerkat.site.isCallCentreUser === true) {
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
-
-				if(event.isForward)
-					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($("input[name=health_situation_healthSitu]").filter(":checked").val() === 'ATP'));
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
@@ -1029,7 +1026,7 @@
 					postCode:				$("#health_application_address_postCode").val(),
 					state:					state,
 					healthCoverType:		$("#health_situation_healthCvr").val(),
-					healthSituation:		$("input[name=health_situation_healthSitu]").filter(":checked").val(),
+					healthSituation:		$("input[name=health_situation_healthSitu]").val(),
 					contactType:			contactType
 				});
 			}

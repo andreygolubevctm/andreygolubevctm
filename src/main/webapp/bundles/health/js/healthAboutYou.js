@@ -210,7 +210,7 @@
 	}
 
 	function toggleMlsMessage () {
-		$('#health_healthCover_tier_row_legend_mls').toggleClass('hidden', ['CHC', 'ATP'].indexOf($healthSituation.filter(':checked').val()) < 0 || $healthCoverIncome.val() !== '0');
+		$('#health_healthCover_tier_row_legend_mls').toggleClass('hidden', ['CHC', 'ATP'].indexOf($healthSituation.val()) < 0 || $healthCoverIncome.val() !== '0');
 	}
 
 	meerkat.modules.register('healthAboutYou', {
