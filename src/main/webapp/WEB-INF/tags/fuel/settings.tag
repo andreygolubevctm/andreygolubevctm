@@ -4,7 +4,8 @@
 
 <c:set var="fuel"><c:out value="${param.fueltype}" escapeXml="true"/></c:set>
 <c:set var="location"><c:out value="${param.fuel_location}" escapeXml="true"/></c:set>
-<c:set var="isFromBrochureSite" value="${not empty fuel and not empty location}" />
+<c:set var="coords"><c:out value="${param.map}" escapeXml="true"/></c:set>
+<c:set var="isFromBrochureSite" value="${not empty fuel or not empty coords or not empty location}" />
 
 {
     journeyStage: "<c:out value="${data['fuel/journey/stage']}"/>",
@@ -20,7 +21,8 @@
     <c:if test="${isFromBrochureSite}">
         formData: {
             fuelType: "${fuel}",
-            location: "${location}"
+            location: "${location}",
+            coords: "${coords}"
         }
     </c:if>
 }

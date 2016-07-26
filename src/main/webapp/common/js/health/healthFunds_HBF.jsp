@@ -14,6 +14,7 @@ var healthFunds_HBF = {
     $paymentType : $('#health_payment_details_type input'),
     $paymentFrequency : $('#health_payment_details_frequency'),
     $paymentStartDate: $("#health_payment_details_start"),
+	$claimsAccountOptin: $('#health_payment_bank_claims'),
     set: function(){
         healthFunds_HBF.productType = meerkat.modules.healthResults.getSelectedProduct().info.ProductType;
         if (healthFunds_HBF.productType === 'GeneralHealth' || healthFunds_HBF.productType === 'Combined') {
@@ -205,6 +206,11 @@ var healthFunds_HBF = {
         healthFunds_HBF.$paymentStartDate.on("changeDate.HBF", function updatePaymentMsgCalendar(e) {
             healthFunds_HBF.updateMessage();
         });
+
+		<%-- Unset the refund optin radio buttons --%>
+		healthFunds_HBF.$claimsAccountOptin.find("input:checked").each(function(){
+		  $(this).prop("checked",null).trigger("change");
+		});
     },
     updateMessage: function() {
         var isBank = meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() !== 'cc';

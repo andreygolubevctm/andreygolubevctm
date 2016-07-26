@@ -32,6 +32,7 @@ public class HomeContentsLeadFeedService extends LeadFeedService {
 				case "BUDD":
 				case "VIRG":
 				case "EXDD":
+				case "EXPO":
 					LOGGER.info("[Lead feed] Prepare to send lead to AGIS brand {}", kv("leadType", leadType), kv("transactionId", leadData.getTransactionId()));
 					providerLeadFeedService = new AGISHomeContentsLeadFeedService();
 					break;
