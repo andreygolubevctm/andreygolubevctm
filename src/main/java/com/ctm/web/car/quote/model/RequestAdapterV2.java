@@ -12,7 +12,7 @@ import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDa
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
-public class RequestAdapter {
+public class RequestAdapterV2 {
 
     public static CarQuoteRequest adapt(CarRequest carRequest) {
 
@@ -43,10 +43,7 @@ public class RequestAdapter {
             }
         }
 
-
-        if(carQuote.getFilter().getProviders() != null && !carQuote.getFilter().getProviders().isEmpty()){
-            quoteRequest.setProviderFilter(carQuote.getFilter().getProviders());
-        }
+        quoteRequest.setClientIp(carRequest.getClientIpAddress());
 
         return quoteRequest;
     }
@@ -97,7 +94,7 @@ public class RequestAdapter {
                 .orElse(emptyList())
                 .stream()
                 .filter(acc -> StringUtils.isNotBlank(acc.getSel()))
-                .map(RequestAdapter::createAccessory)
+                .map(RequestAdapterV2::createAccessory)
                 .collect(toList());
     }
 

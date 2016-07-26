@@ -1,26 +1,20 @@
 package com.ctm.web.car.quote.model;
 
 import com.ctm.web.car.model.results.*;
-import com.ctm.web.car.model.results.AdditionalExcess;
-import com.ctm.web.car.model.results.Contact;
-import com.ctm.web.car.model.results.Feature;
-import com.ctm.web.car.model.results.Price;
-import com.ctm.web.car.model.results.ProductDisclosure;
-import com.ctm.web.car.model.results.Underwriter;
 import com.ctm.web.car.quote.model.response.CarQuote;
-import com.ctm.web.car.quote.model.response.CarResponse;
+import com.ctm.web.car.quote.model.response.CarResponseV2;
+import com.ctm.web.core.providers.model.IncomingQuotesResponse;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.web.core.providers.model.QuoteResponse;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ResponseAdapter {
+public class ResponseAdapterV2 {
 
-    public static List<CarResult> adapt(CarResponse response) {
+    public static List<CarResult> adapt(CarResponseV2 response) {
         List<CarResult> results = new ArrayList<>();
-        final QuoteResponse<CarQuote> quoteResponse = response.getPayload();
+        final IncomingQuotesResponse.Payload<CarQuote> quoteResponse = response.getPayload();
         if (quoteResponse != null) {
             for (CarQuote carQuote : quoteResponse.getQuotes()) {
                 CarResult result = new CarResult();

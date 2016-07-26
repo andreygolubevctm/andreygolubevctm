@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CarQuoteRequest {
 
@@ -23,6 +25,8 @@ public class CarQuoteRequest {
     private RiskAddress riskAddress;
 
     private Vehicle vehicle;
+
+    private List<String> providerFilter = new ArrayList<String>();
 
     public String getClientIp() {
         return clientIp;
@@ -88,4 +92,11 @@ public class CarQuoteRequest {
         this.vehicle = vehicle;
     }
 
+    public List<String> getProviderFilter() {
+        return providerFilter;
+    }
+
+    public void setProviderFilter(List<String> providerFilter) {
+        this.providerFilter = providerFilter;
+    }
 }

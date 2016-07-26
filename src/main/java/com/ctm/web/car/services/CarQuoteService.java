@@ -6,9 +6,12 @@ import com.ctm.web.car.model.form.CarQuote;
 import com.ctm.web.car.model.form.CarRequest;
 import com.ctm.web.car.model.results.CarResult;
 import com.ctm.web.car.quote.model.RequestAdapter;
+import com.ctm.web.car.quote.model.RequestAdapterV2;
 import com.ctm.web.car.quote.model.ResponseAdapter;
+import com.ctm.web.car.quote.model.ResponseAdapterV2;
 import com.ctm.web.car.quote.model.request.CarQuoteRequest;
 import com.ctm.web.car.quote.model.response.CarResponse;
+import com.ctm.web.car.quote.model.response.CarResponseV2;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
@@ -16,6 +19,7 @@ import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.providers.model.AggregateOutgoingRequest;
+import com.ctm.web.core.providers.model.Request;
 import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
@@ -47,7 +51,10 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     private SessionDataServiceBean sessionDataServiceBean;
 
     @Autowired
-    private Client<AggregateOutgoingRequest<CarQuoteRequest>, CarResponse> clientQuotes;
+    private Client<Request<CarQuoteRequest>, CarResponse> clientQuotes;
+
+    @Autowired
+    private Client<AggregateOutgoingRequest<CarQuoteRequest>, CarResponseV2> clientQuotesV2;
 
     @Autowired
     public CarQuoteService(ProviderFilterDao providerFilterDAO, ServiceConfigurationServiceBean serviceConfigurationServiceBean,
@@ -79,31 +86,55 @@ public class CarQuoteService extends CommonRequestServiceV2 {
             }
         }
 
-        final CarQuoteRequest carQuoteRequest = RequestAdapter.adapt(data);
-
-        final AggregateOutgoingRequest<CarQuoteRequest> request = AggregateOutgoingRequest.<CarQuoteRequest>build()
-                .transactionId(data.getTransactionId())
-                .brandCode(brand.getCode())
-                .requestAt(data.getRequestAt())
-                .providerFilter(quote.getFilter().getProviders())
-                .payload(carQuoteRequest)
-                .build();
-
         final QuoteServiceProperties properties = getQuoteServiceProperties("carQuoteServiceBER", brand, CAR.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
-        final CarResponse homeResponse = clientQuotes.post(RestSettings.<AggregateOutgoingRequest<CarQuoteRequest>>builder()
-                .request(request)
-                .jsonHeaders()
-                .url(properties.getServiceUrl()+"/quote")
-                .timeout(properties.getTimeout())
-                .responseType(MediaType.APPLICATION_JSON)
-                .response(CarResponse.class)
-                .build())
-//                TODO: what to do on error
-//                .doOnError(t -> t.printStackTrace())
-                .single().toBlocking().single();
+        final List<CarResult> carResults;
+        if (properties.getServiceUrl().contains("-v2/") || properties.getServiceUrl().startsWith("http://localhost")) {
+            final CarQuoteRequest carQuoteRequest = RequestAdapterV2.adapt(data);
 
-        final List<CarResult> carResults = ResponseAdapter.adapt(homeResponse);
+            final AggregateOutgoingRequest<CarQuoteRequest> request = AggregateOutgoingRequest.<CarQuoteRequest>build()
+                    .transactionId(data.getTransactionId())
+                    .brandCode(brand.getCode())
+                    .requestAt(data.getRequestAt())
+                    .providerFilter(quote.getFilter().getProviders())
+                    .payload(carQuoteRequest)
+                    .build();
+
+
+            final CarResponseV2 homeResponse = clientQuotesV2.post(RestSettings.<AggregateOutgoingRequest<CarQuoteRequest>>builder()
+                    .request(request)
+                    .jsonHeaders()
+                    .url(properties.getServiceUrl() + "/quote")
+                    .timeout(properties.getTimeout())
+                    .responseType(MediaType.APPLICATION_JSON)
+                    .response(CarResponseV2.class)
+                    .build())
+                    .single().toBlocking().single();
+
+            carResults = ResponseAdapterV2.adapt(homeResponse);
+        } else {
+
+            final CarQuoteRequest carQuoteRequest = RequestAdapter.adapt(data);
+
+            Request<CarQuoteRequest> request = new Request<>();
+            request.setTransactionId(data.getTransactionId());
+            request.setBrandCode(brand.getCode());
+            request.setRequestAt(data.getRequestAt());
+            request.setClientIp(data.getClientIpAddress());
+            request.setPayload(carQuoteRequest);
+
+            final CarResponse homeResponse = clientQuotes.post(RestSettings.<Request<CarQuoteRequest>>builder()
+                    .request(request)
+                    .jsonHeaders()
+                    .url(properties.getServiceUrl() + "/quote")
+                    .timeout(properties.getTimeout())
+                    .responseType(MediaType.APPLICATION_JSON)
+                    .response(CarResponse.class)
+                    .build())
+                    .single().toBlocking().single();
+
+            carResults = ResponseAdapter.adapt(homeResponse);
+        }
 
         saveResults(data, carResults);
 
