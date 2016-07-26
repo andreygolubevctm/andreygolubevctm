@@ -44,6 +44,8 @@
 
     <jsp:body>
 
+        <simples:dialogue id="52" vertical="health" />
+
         <form_v3:fieldset id="health-contact-fieldset" legend="Your details" postLegend="Enter your details below and we'll show you products that match your needs on the next page" className="primary">
 
             <c:set var="firstNamePlaceHolder">
@@ -139,6 +141,11 @@
             </c:if>
 
         </form_v3:fieldset>
+
+        <%--dynamic script--%>
+        <%--if customer has cover--%>
+        <simples:dialogue id="53" vertical="health" />
+
         <form_v3:fieldset id="partner-health-cover" legend="Your Partner's Details" className="partner">
             <c:set var="fieldXpath" value="${xpath}/partner/dob" />
             <form_v3:row label="Your partner's date of birth" fieldXpath="${fieldXpath}">
@@ -162,7 +169,13 @@
                 </form_v2:row>
             </c:if>
         </form_v3:fieldset>
+
+        <%--dynamic script--%>
+        <%--if customer has cover--%>
+        <simples:dialogue id="53" vertical="health" />
+        <simples:dialogue id="54" vertical="health" />
         <simples:dialogue id="26" vertical="health" mandatory="true" />
+
         <form_v3:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians can reduce their upfront health insurance costs by applying the Government Rebate.">
             <c:set var="fieldXpath" value="${xpath}/rebate" />
             <form_v3:row label="Would you like to reduce your upfront premium by applying the rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
@@ -194,6 +207,13 @@
             </form_v3:row>
 
         </form_v3:fieldset>
+
+        <%--dynamic scripts--%>
+        <%--if single cover--%>
+        <simples:dialogue id="55" vertical="health" />
+        <%--if couple/family cover--%>
+        <simples:dialogue id="56" vertical="health" />
+        <simples:dialogue id="37" vertical="health" mandatory="true" />
 
     </jsp:body>
 

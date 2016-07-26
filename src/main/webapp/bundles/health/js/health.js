@@ -179,6 +179,7 @@
 				$healthSitCoverType.on('change', function() {
 					var coverTypeVal = $(this).find('input:checked').val();
 					meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
+					meerkat.modules.healthBenefitsStep.toggleBenefitsSimples(coverTypeVal);
 				});
 
 				if($("#health_privacyoptin").val() === 'Y'){

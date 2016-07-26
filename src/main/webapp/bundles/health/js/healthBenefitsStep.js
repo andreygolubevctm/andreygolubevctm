@@ -131,6 +131,30 @@
         });
     }
 
+    function toggleBenefitsSimples(coverType) {
+        var $hospitalScripts = $('.simples-dialogue-hospital-cover'),
+            $extrasScripts = $('.simples-dialogue-extras-cover');
+
+        switch (coverType.toLowerCase()) {
+            case 'c':
+                $hospitalScripts.show();
+                $extrasScripts.show();
+                break;
+            case 'h':
+                $hospitalScripts.show();
+                $extrasScripts.hide();
+                break;
+            case 'e':
+                $hospitalScripts.hide();
+                $extrasScripts.show();
+                break;
+            default:
+                $hospitalScripts.hide();
+                $extrasScripts.hide();
+                break;
+        }
+    }
+
     function showModal() {
         var htmlTemplate = _.template($('#benefits-explanation').html()),
             htmlContent = htmlTemplate(),
@@ -411,7 +435,8 @@
         syncAccidentOnly: syncAccidentOnly,
         populateBenefitsSelection: populateBenefitsSelection,
         getHospitalBenefitsModel: getHospitalBenefitsModel,
-        getExtraBenefitsModel: getExtraBenefitsModel
+        getExtraBenefitsModel: getExtraBenefitsModel,
+        toggleBenefitsSimples: toggleBenefitsSimples
     });
 
 })(jQuery);
