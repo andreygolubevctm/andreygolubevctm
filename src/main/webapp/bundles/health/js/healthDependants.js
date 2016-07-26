@@ -338,7 +338,7 @@
             depCount = getNumberOfDependants();
 
         // Difference between health v1 and health v2 can be removed when v1 is removed.
-        var hasChosenToNotApplyRebate = typeof healthCoverDetails !== 'undefined' ? healthCoverDetails.getRebateChoice() == 'N' : !meerkat.modules.healthCoverDetails.isRebateApplied();
+        var hasChosenToNotApplyRebate = !meerkat.modules.healthCoverDetails.isRebateApplied();
         if (hasChosenToNotApplyRebate) {
             $applyPageIncomeTierMenu.slideUp();
         } else if (depCount > 0) {

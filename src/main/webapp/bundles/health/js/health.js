@@ -279,7 +279,6 @@
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefitsStep.setDefaultCover();
-				meerkat.modules.healthBenefitsStep.disableFields();
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
 				incrementTranIdBeforeEnteringSlide();
 			},
@@ -292,17 +291,12 @@
 				if (event.isForward && meerkat.site.isCallCentreUser === true) {
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
-
-				if(event.isForward)
-					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($("input[name=health_situation_healthSitu]").filter(":checked").val() === 'ATP'));
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
 				meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
 			},
-			onBeforeLeave:function(event){
-				meerkat.modules.healthBenefitsStep.enableFields();
-			}
+			onBeforeLeave:function(event){}
 		};
 		var contactStep = {
 			title: 'Your Contact Details',
@@ -1033,7 +1027,7 @@
 					postCode:				$("#health_application_address_postCode").val(),
 					state:					state,
 					healthCoverType:		$("#health_situation_healthCvr").val(),
-					healthSituation:		$("input[name=health_situation_healthSitu]").filter(":checked").val(),
+					healthSituation:		$("input[name=health_situation_healthSitu]").val(),
 					contactType:			contactType
 				});
 			}
@@ -1113,7 +1107,7 @@
 
 					meerkat.modules.leavePageWarning.disable();
 
-					var redirectURL = "health_confirmation_v2.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+"&token=";
+					var redirectURL = "health_confirmation.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+"&token=";
 					var extraParameters = "";
 
 					if (meerkat.site.utm_source !== '' && meerkat.site.utm_medium !== '' && meerkat.site.utm_campaign !== ''){
