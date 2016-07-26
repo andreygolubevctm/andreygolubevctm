@@ -3,10 +3,10 @@
 /* jshint -W041 *//* Use '!==' to compare with '' */
 /*
 
-	All this code is legacy and needs to be reviewed at some point (turned into modules etc).
-	The filename is prefixed with underscores to bring it to the top alphabetically for compilation.
+ All this code is legacy and needs to be reviewed at some point (turned into modules etc).
+ The filename is prefixed with underscores to bring it to the top alphabetically for compilation.
 
-*/
+ */
 
 /**
  * isLessThan31Or31AndBeforeJuly1() test whether the dob provided makes the user less than
@@ -33,7 +33,7 @@ function isLessThan31Or31AndBeforeJuly1(_dobString) {
 			return true;
 		}
 	} else if(age > 31){
-			return false;
+		return false;
 	} else {
 		return false;
 	}
@@ -301,7 +301,7 @@ var healthCoverDetails = {
 			}
 		}
 	},
-	
+
 	getAgeAsAtLastJuly1: function( dob )
 	{
 		var dob_pieces = dob.split("/");
@@ -525,45 +525,45 @@ var healthFunds = {
 	},
 	// Creates the earliest date based on any of the matching days (not including an exclusion date)
 	_earliestDays: function(euroDate, a_Match, _exclusion){
-			if( !$.isArray(a_Match) || euroDate == '' ){
-				return false;
-			}
-			// creating the base date from the exclusion
-			var _now = returnDate(euroDate);
-			// 2014-03-05 Leto: Why is this hardcoded when it's also a function argument?
-			_exclusion = 7;
-			var _date = new Date( _now.getTime() + (_exclusion * 24 * 60 * 60 * 1000));
-			var _html = '<option value="">No date has been selected for you</option>';
-			// Loop through 31 attempts to match the next date
-			for (var i=0; i < 31; i++) {
-				/*var*/ _date = new Date( _date.getTime() + (1 * 24 * 60 * 60 * 1000));
-				// Loop through the selected days and attempt a match
-				for(a=0; a < a_Match.length; a++) {
-					if(a_Match[a] == _date.getDate() ){
-						/*var*/ _html = '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'" selected="selected">'+ meerkat.modules.dateUtils.dateValueLongFormat(_date) +'</option>';
-						i = 99;
-						break;
-					}
+		if( !$.isArray(a_Match) || euroDate == '' ){
+			return false;
+		}
+		// creating the base date from the exclusion
+		var _now = returnDate(euroDate);
+		// 2014-03-05 Leto: Why is this hardcoded when it's also a function argument?
+		_exclusion = 7;
+		var _date = new Date( _now.getTime() + (_exclusion * 24 * 60 * 60 * 1000));
+		var _html = '<option value="">No date has been selected for you</option>';
+		// Loop through 31 attempts to match the next date
+		for (var i=0; i < 31; i++) {
+			/*var*/ _date = new Date( _date.getTime() + (1 * 24 * 60 * 60 * 1000));
+			// Loop through the selected days and attempt a match
+			for(a=0; a < a_Match.length; a++) {
+				if(a_Match[a] == _date.getDate() ){
+					/*var*/ _html = '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'" selected="selected">'+ meerkat.modules.dateUtils.dateValueLongFormat(_date) +'</option>';
+					i = 99;
+					break;
 				}
 			}
-			return _html;
+		}
+		return _html;
 	},
 
 	_setPolicyDate : function (dateObj, addDays) {
 
-			var dateSplit = dateObj.split('/');
-			var dateFormated = dateSplit[2]+'-'+dateSplit[1]+'-'+dateSplit[0];
+		var dateSplit = dateObj.split('/');
+		var dateFormated = dateSplit[2]+'-'+dateSplit[1]+'-'+dateSplit[0];
 
-			var newdate = new Date(dateFormated);
-			newdate.setDate(newdate.getDate() + addDays);
+		var newdate = new Date(dateFormated);
+		newdate.setDate(newdate.getDate() + addDays);
 
-			var dd = ("0" + newdate.getDate()).slice(-2);
-			var mm = ("0" + (newdate.getMonth() + 1)).slice(-2);
-			var y = newdate.getFullYear();
+		var dd = ("0" + newdate.getDate()).slice(-2);
+		var mm = ("0" + (newdate.getMonth() + 1)).slice(-2);
+		var y = newdate.getFullYear();
 
-			var newPolicyDate = y + '-' + mm + '-' + dd;
+		var newPolicyDate = y + '-' + mm + '-' + dd;
 
-			return newPolicyDate;
+		return newPolicyDate;
 	}
 };
 

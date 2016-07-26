@@ -112,12 +112,32 @@
 			<span class="icon-angle-up" title="icon-angle-up"></span>
 			<span class="icon-angle-down" title="icon-angle-down"></span>
 			<span class="icon-calendar" title="icon-calendar"></span>
-			<span class="icon-angle-down" title="icon-radio-empty"></span>
+			<span class="icon-radio-empty" title="icon-radio-empty"></span>
 			<span class="icon-radio-selected" title="icon-radio-selected"></span>
 			<span class="icon-arrow-thick-left" title="icon-arrow-thick-left"></span>
 			<span class="icon-arrow-thick-right" title="icon-arrow-thick-right"></span>
 			<span class="icon-arrow-thick-down" title="icon-arrow-thick-down"></span>
 			<span class="icon-arrow-thick-up" title="icon-arrow-thick-up"></span>
+			<span class="icon-single" title="icon-single"></span>
+			<span class="icon-couple" title="icon-couple"></span>
+			<span class="icon-family" title="icon-family"></span>
+			<span class="icon-single-family" title="icon-single-family"></span>
+			<span class="icon-group" title="icon-group"></span>
+			<span class="icon-dollar" title="icon-dollar"></span>
+			<span class="icon-plus" title="icon-plus"></span>
+			<span class="icon-minus" title="icon-minus"></span>
+			<span class="icon-vert-hnc" title="icon-vert-hnc"></span>
+			<span class="icon-vert-ctp" title="icon-vert-ctp"></span>
+			<span class="icon-vert-energy" title="icon-vert-energy"></span>
+			<span class="icon-vert-fuel" title="icon-vert-fuel"></span>
+			<span class="icon-vert-ip" title="icon-vert-ip"></span>
+			<span class="icon-vert-roadside" title="icon-vert-roadside"></span>
+			<span class="icon-vert-car" title="icon-vert-car"></span>
+			<span class="icon-vert-health" title="icon-vert-health"></span>
+			<span class="icon-vert-home" title="icon-vert-home"></span>
+			<span class="icon-vert-life" title="icon-vert-life"></span>
+			<span class="icon-vert-money" title="icon-vert-money"></span>
+			<span class="icon-vert-travel" title="icon-vert-travel"></span>
 		</div>
 		<div class="col-xs-12" style="font-size:200%">
 			<h3>Bigger!</h3>
@@ -163,6 +183,7 @@
 			<span class="icon-tag" title="icon-tag"></span>
 			<span class="icon-computer" title="icon-computer"></span>
 			<span class="icon-tick-hollow" title="icon-tick-hollow"></span>
+
 			<span class="icon-quote-start" title="icon-quote-start"></span>
 			<span class="icon-quote-end" title="icon-quote-end"></span>
 
@@ -192,6 +213,26 @@
 			<span class="icon-arrow-thick-right" title="icon-arrow-thick-right"></span>
 			<span class="icon-arrow-thick-down" title="icon-arrow-thick-down"></span>
 			<span class="icon-arrow-thick-up" title="icon-arrow-thick-up"></span>
+			<span class="icon-single" title="icon-single"></span>
+			<span class="icon-couple" title="icon-couple"></span>
+			<span class="icon-family" title="icon-family"></span>
+			<span class="icon-single-family" title="icon-single-family"></span>
+			<span class="icon-group" title="icon-group"></span>
+			<span class="icon-dollar" title="icon-dollar"></span>
+			<span class="icon-plus" title="icon-plus"></span>
+			<span class="icon-minus" title="icon-minus"></span>
+			<span class="icon-vert-hnc" title="icon-vert-hnc"></span>
+			<span class="icon-vert-ctp" title="icon-vert-ctp"></span>
+			<span class="icon-vert-energy" title="icon-vert-energy"></span>
+			<span class="icon-vert-fuel" title="icon-vert-fuel"></span>
+			<span class="icon-vert-ip" title="icon-vert-ip"></span>
+			<span class="icon-vert-roadside" title="icon-vert-roadside"></span>
+			<span class="icon-vert-car" title="icon-vert-car"></span>
+			<span class="icon-vert-health" title="icon-vert-health"></span>
+			<span class="icon-vert-home" title="icon-vert-home"></span>
+			<span class="icon-vert-life" title="icon-vert-life"></span>
+			<span class="icon-vert-money" title="icon-vert-money"></span>
+			<span class="icon-vert-travel" title="icon-vert-travel"></span>
 		</div>
 	</div>
 </form_v2:fieldset>
@@ -267,10 +308,6 @@
 
 	<form_v2:row label="ip_number">
 		<field_v1:ip_number ip="127.0.0.1" />
-	</form_v2:row>
-
-	<form_v2:row label="make_select">
-		<field_v1:make_select xpath="${xpath}/make" title="field:make_select" type="make" required="true" />
 	</form_v2:row>
 
 	<form_v2:row label="password">
