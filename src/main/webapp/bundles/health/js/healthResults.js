@@ -299,8 +299,20 @@
             meerkat.modules.dialogs.show({
                 htmlContent : $('.simples-dialogue-62')[0].outerHTML,
                 closeOnHashChange : true,
+                buttons: [{
+                    label: "Ok",
+                    className: 'btn-next',
+                    closeWindow:false
+                }],
                 onOpen : function(modalId) {
-                    $('#' + modalId).find('.simples-dialogue').removeClass('hidden');
+                    var $modal = $('#' + modalId);
+                    $modal.find('.simples-dialogue').removeClass('hidden');
+                    meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $modal.find('#complianceForm') );
+                    $modal.find('.btn-next').on('click', function() {
+                        if ($('#' + modalId).find('#complianceForm').valid()){
+                            meerkat.modules.dialogs.close(modalId);
+                        }
+                    });
                 }
             });
         });
