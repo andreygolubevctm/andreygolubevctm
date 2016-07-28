@@ -119,16 +119,20 @@
 	function togglePrimaryContinuousCover(isInitMode) {
 		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($primaryDOB.val())) {
 			$primaryContinuousCoverContainer.slideDown();
+			$('.simples-dialogue-primary-current-cover').show();
 		} else {
 			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
+			$('.simples-dialogue-primary-current-cover').hide();
 		}
 	}
 
 	function togglePartnerContinuousCover(isInitMode) {
 		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($partnerDOB.val())) {
 			$partnerContinuousCoverContainer.slideDown();
+			$('.simples-dialogue-partner-current-cover').show();
 		} else {
 			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
+			$('.simples-dialogue-partner-current-cover').hide();
 		}
 	}
 

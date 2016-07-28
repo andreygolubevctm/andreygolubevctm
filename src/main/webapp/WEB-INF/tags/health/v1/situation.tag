@@ -26,14 +26,13 @@
                     </div>
                 </div>
             </simples:dialogue>
-            <simples:dialogue id="19" vertical="health" />
-            <simples:dialogue id="20" vertical="health" />
+            <simples:dialogue id="19" vertical="health" className="simples-dialog-inbound"/>
+            <simples:dialogue id="20" vertical="health" className="simples-dialog-outbound"/>
             <simples:dialogue id="47" vertical="health" />
             <simples:dialogue id="48" vertical="health" />
             <simples:dialogue id="22" vertical="health" />
             <simples:dialogue id="21" vertical="health" mandatory="true" /> <%-- 3 Point Security Check --%>
-            <simples:dialogue id="36" vertical="health" mandatory="true" className="hidden simples-privacycheck-statement" /> <%-- Inbound --%>
-            <simples:dialogue id="25" vertical="health" mandatory="true" className="hidden follow-up-call" /> <%-- Follow up call --%>
+            <simples:dialogue id="36" vertical="health" mandatory="true" className="simples-dialog-inbound" />
 
             <form_v3:fieldset id="healthAboutYou" legend="About you" postLegend="Tell us about yourself, so we can find the right cover for you" className="health-about-you">
 

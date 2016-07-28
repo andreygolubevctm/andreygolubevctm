@@ -50,3 +50,17 @@
 		padding-top: 0;
 	}
 }
+
+.simples {
+	&.outbound {
+		.simples-dialog-inbound {
+			display: none;
+		}
+	}
+
+	&.inbound {
+		.simples-dialog-outbound {
+			display: none;
+		}
+	}
+}

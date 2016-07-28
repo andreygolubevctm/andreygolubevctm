@@ -129,7 +129,7 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/healthCoverLoading" />
-            <form_v3:row label="Have you had continuous hospital cover since 1 July ${continuousCoverYear} or 1 July following your 31st birthday?" fieldXpath="${fieldXpath}" id="health-continuous-cover-primary" className="health-your_details-opt-group" helpId="239">
+            <form_v3:row label="Have you had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-primary" className="health-your_details-opt-group text-danger" helpId="239">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your health cover loading" required="true" id="${name}_health_cover_loading" className="loading"/>
             </form_v3:row>
 
@@ -144,7 +144,7 @@
 
         <%--dynamic script--%>
         <%--if customer has cover--%>
-        <simples:dialogue id="53" vertical="health" />
+        <simples:dialogue id="53" vertical="health" className="simples-dialogue-primary-current-cover" />
 
         <form_v3:fieldset id="partner-health-cover" legend="Your Partner's Details" className="partner">
             <c:set var="fieldXpath" value="${xpath}/partner/dob" />
@@ -158,7 +158,7 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/healthCoverLoading" />
-            <form_v3:row label="Has your partner had continuous hospital cover since 1 July ${continuousCoverYear} or 1 July following their 31st birthday?" fieldXpath="${fieldXpath}" id="health-continuous-cover-partner" className="health-your_details-opt-group" helpId="239">
+            <form_v3:row label="Has your partner had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-partner" className="health-your_details-opt-group text-danger" helpId="239">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your partner's health cover loading" required="true" id="${name}_partner_health_cover_loading" className="loading"/>
             </form_v3:row>
 
@@ -172,7 +172,7 @@
 
         <%--dynamic script--%>
         <%--if customer has cover--%>
-        <simples:dialogue id="53" vertical="health" />
+        <simples:dialogue id="53" vertical="health" className="simples-dialogue-partner-current-cover" />
         <simples:dialogue id="54" vertical="health" />
         <simples:dialogue id="26" vertical="health" mandatory="true" />
 
@@ -210,9 +210,9 @@
 
         <%--dynamic scripts--%>
         <%--if single cover--%>
-        <simples:dialogue id="55" vertical="health" />
+        <simples:dialogue id="55" vertical="health" className="hidden" />
         <%--if couple/family cover--%>
-        <simples:dialogue id="56" vertical="health" />
+        <simples:dialogue id="56" vertical="health" className="hidden" />
         <simples:dialogue id="37" vertical="health" mandatory="true" />
 
     </jsp:body>

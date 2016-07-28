@@ -295,10 +295,12 @@
             // Hide pagination
             $('.results-pagination').add('header a[data-results-pagination-control]').addClass('hidden');
             meerkat.modules.coupon.triggerPopup();
+            var htmlTemplate = _.template($('#simples-dialogue-62-template').html());
 
             meerkat.modules.dialogs.show({
-                htmlContent : $('.simples-dialogue-62')[0].outerHTML,
+                htmlContent : htmlTemplate(),
                 closeOnHashChange : true,
+                showCloseBtn: false,
                 buttons: [{
                     label: "Ok",
                     className: 'btn-next',
