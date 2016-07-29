@@ -69,7 +69,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
 
         final QuoteServiceProperties properties = getQuoteServiceProperties("healthQuoteServiceBER", brand, HEALTH.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
-        if (properties.getServiceUrl().contains("-v2/") || properties.getServiceUrl().startsWith("http://localhost")) {
+        if (properties.getServiceUrl().matches(".*://.*/health-quote-v2.*") || properties.getServiceUrl().startsWith("http://localhost")) {
             LOGGER.info("Calling health-quote v2");
             // Version 2
 
