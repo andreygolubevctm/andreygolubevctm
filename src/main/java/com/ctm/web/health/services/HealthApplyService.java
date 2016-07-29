@@ -60,7 +60,8 @@ public class HealthApplyService extends CommonRequestServiceV2 {
 
         final QuoteServiceProperties properties = getQuoteServiceProperties("healthApplyService", brand, HEALTH.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
-        if (properties.getServiceUrl().contains("-v2/") || properties.getServiceUrl().startsWith("http://localhost")) {
+        if (properties.getServiceUrl().matches(".*://.*/health-apply-v2.*") || properties.getServiceUrl().startsWith("http://localhost")) {
+            LOGGER.info("Calling health-apply v2");
 
             String operator = null;
             AuthenticatedData authenticatedSessionData = sessionDataServiceBean.getAuthenticatedSessionData(httpServletRequest);
@@ -95,6 +96,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                     .single().toBlocking().single();
 
         } else {
+            LOGGER.info("Calling health-apply v1");
             // Version 1
             final com.ctm.web.core.providers.model.Request<HealthApplicationRequest> request = createRequest(brand, data, RequestAdapter.adapt(data));
 
