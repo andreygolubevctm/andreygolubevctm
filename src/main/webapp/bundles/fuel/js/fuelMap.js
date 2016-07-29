@@ -164,6 +164,7 @@
         fetchResultsTimeout,
         keyDownTimeout,
         fuelLocation,
+        $fuelLocation,
         preventLookup = true,
         markerZIndexOrder = [0, 5, 4, 3, 2, 1];
 
@@ -172,7 +173,8 @@
         $(document).ready(function ($) {
             $mapCanvas = $('#map-canvas');
             $xsInfoWindow = $('#info-window-container-xs');
-
+            $fuelLocation = $('#fuel_location');
+            fuelLocation = document.getElementById('fuel_location');
             setMapHeight();
             markerTemplate = _.template($('#map-marker-template').html());
             meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, setMapHeight);
@@ -290,7 +292,7 @@
         }
         var hasCoordinates = !_.isUndefined(formData.coords) && formData.coords !== "";
         if (formData.location !== "") {
-            $('#fuel_location').val(formData.location);
+            $fuelLocation.val(formData.location);
             if (!hasCoordinates) {
                 google.maps.event.addListenerOnce(map, 'idle', function () {
                     google.maps.event.trigger(fuelLocation, 'focus');
@@ -357,8 +359,8 @@
     }
 
     function initAutoComplete() {
-        fuelLocation = document.getElementById('fuel_location');
-        $('#fuel_location').on('keydown', function (e) {
+
+        $fuelLocation.on('keydown', function (e) {
 
             // Step 1: Stop it if its < 2 characters
             if ($(this).val().length < 2) {
@@ -425,7 +427,7 @@
                     if (!predictions[0]) {
                         return;
                     }
-                    $('#fuel_location').val(predictions[0].description);
+                    $fuelLocation.val(predictions[0].description);
                     // ...but we first need to get the details of the
                     // place so we get the actual place object that contains geometry
                     placesService.getDetails({
