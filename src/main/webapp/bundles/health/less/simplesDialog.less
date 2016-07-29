@@ -53,6 +53,38 @@
 
 .simples {
 	&.outbound {
+		&[data-step=start] {
+			#pageContent {
+				background-color: seagreen;
+			}
+		}
+
+		&[data-step=benefits] {
+			#pageContent {
+				background-color: steelblue;
+			}
+		}
+
+		&[data-step=contact],
+		&[data-step=apply] {
+			#pageContent {
+				background-color: darkgrey;
+			}
+		}
+
+		&[data-step=results] {
+			#pageContent {
+				background-color: darkorange;
+			}
+		}
+
+		&[data-step=results].moreInfoVisible,
+		&[data-step=payment] {
+			#pageContent {
+				background-color: indianred;
+			}
+		}
+
 		.simples-dialog-inbound {
 			display: none;
 		}
@@ -61,6 +93,14 @@
 	&.inbound {
 		.simples-dialog-outbound {
 			display: none;
+		}
+	}
+
+	.featuresMode {
+		.result-row.active {
+			.result {
+				border-color: @theme-tertiary;
+			}
 		}
 	}
 }

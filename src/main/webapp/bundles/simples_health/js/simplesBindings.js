@@ -1,61 +1,92 @@
 (function ($, undefined) {
     var meerkat = window.meerkat,
-        meerkatEvents = meerkat.modules.events,
-        $healthCoverRebate;
+        meerkatEvents = meerkat.modules.events;
 
     function init() {
         $(document).ready(function () {
-            $healthCoverRebate = $('input[name=health_healthCover_rebate]');
-
             // Handle pre-filled
             toggleInboundOutbound();
             toggleDialogueInChatCallback();
             meerkat.modules.provider_testing.setApplicationDateCalendar();
 
-            $('.follow-up-call input:checkbox, .simples-privacycheck-statement input:checkbox').on('change', function () {
-                toggleDialogueInChatCallback();
-            });
+            initDBDrivenCheckboxes();
+            applyEventListeners();
+            eventSubscriptions();
+        });
+    }
 
-            // Handle toggle inbound/outbound
-            $('input[name=health_simples_contactType]').on('change', function () {
-                toggleInboundOutbound();
-            });
+    // Check dynamic checkboxes on preload=true
+    function initDBDrivenCheckboxes() {
+        var simplesObj = meerkat.site.simplesCheckboxes.simples;
 
-            $healthCoverRebate.on('change', function () {
-                toggleRebateDialogue($(this).val());
-            });
+        if (!meerkat.site.hasOwnProperty('simplesCheckboxes')) return;
 
-            $('select[name=health_situation_healthCvr]').on('change', function toggleAboutYouFields() {
-                toggleRebateDialogue($healthCoverRebate.val());
-            });
+        if (meerkat.site.simplesCheckboxes.hasOwnProperty('simples')) {
+            if (_.isObject(simplesObj)) {
+                for (var key in simplesObj) {
+                    if($('#health_simples_' + key).attr('type') == 'checkbox') {
+                        $('#health_simples_' + key).prop('checked', simplesObj[key] === 'Y');
+                    }
+                }
+            }
+        }
+    }
 
-            $('.simples-dialogue.optionalDialogue h3.toggle').parent('.simples-dialogue').addClass('toggle').on('click', function () {
-                $(this).find('h3 + div').slideToggle(200);
-            });
+    function applyEventListeners() {
+        var $healthContactType = $('input[name=health_simples_contactType]'),
+            $healthCoverRebate = $('input[name=health_healthCover_rebate]'),
+            $healthSituationCvr = $('select[name=health_situation_healthCvr]');
 
-            meerkat.messaging.subscribe(meerkatEvents.moreInfo.bridgingPage.SHOW, function () {
-                $('.simples-dialogue-results').hide();
-                $('.simples-dialogue-more-info').show();
-            });
+        $('.follow-up-call input:checkbox, .simples-privacycheck-statement input:checkbox').on('change', function () {
+            toggleDialogueInChatCallback();
+        });
 
-            meerkat.messaging.subscribe(meerkatEvents.moreInfo.bridgingPage.HIDE, function () {
-                $('.simples-dialogue-more-info').hide();
-                $('.simples-dialogue-results').show();
-            });
+        // Handle toggle inbound/outbound
+        $healthContactType.on('change', function () {
+            toggleInboundOutbound();
+        });
+
+        $healthCoverRebate.on('change', function () {
+            toggleRebateDialogue($(this).val());
+        });
+
+        $healthSituationCvr.on('change', function() {
+            toggleRebateDialogue($healthCoverRebate.val());
+        });
+
+        $('.simples-dialogue.optionalDialogue h3.toggle').parent('.simples-dialogue').addClass('toggle').on('click', function () {
+            $(this).find('h3 + div').slideToggle(200);
+        });
+    }
+
+    function eventSubscriptions() {
+        var $simplesResults = $('.simples-dialogue-results'),
+            $simplesMoreInfo = $('.simples-dialogue-more-info');
+
+        meerkat.messaging.subscribe(meerkatEvents.moreInfo.bridgingPage.SHOW, function () {
+            $simplesResults.hide();
+            $simplesMoreInfo.show();
+        });
+
+        meerkat.messaging.subscribe(meerkatEvents.moreInfo.bridgingPage.HIDE, function () {
+            $simplesMoreInfo.hide();
+            $simplesResults.show();
         });
     }
 
     // Hide/show simple dialogues when toggle inbound/outbound in simples journey
     function toggleInboundOutbound() {
+        var $body = $('body');
+
         // Inbound
         if ($('#health_simples_contactType_inbound').is(':checked')) {
-            $('body')
+            $body
                 .removeClass('outbound')
                 .addClass('inbound');
         }
         // Outbound
         else {
-            $('body')
+            $body
                 .removeClass('inbound')
                 .addClass('outbound');
         }
@@ -63,8 +94,8 @@
 
     // Disable/enable follow up/New quote dialogue when the other checkbox ticked in Chat Callback sesction in simples
     function toggleDialogueInChatCallback() {
-        var $followUpCallField = $('.follow-up-call input:checkbox');
-        var $privacyCheckField = $('.simples-privacycheck-statement input:checkbox');
+        var $followUpCallField = $('.follow-up-call input:checkbox'),
+            $privacyCheckField = $('.simples-privacycheck-statement input:checkbox');
 
         if ($followUpCallField.is(':checked')) {
             $privacyCheckField.attr('checked', false);
@@ -83,23 +114,12 @@
     }
 
     function toggleRebateDialogue(reducePremium) {
-        var $dialogue55 = $('.simples-dialogue-55'),
-            $dialogue56 = $('.simples-dialogue-56');
+        var $dialogue56 = $('.simples-dialogue-56');
 
-        $dialogue55.addClass('hidden');
         $dialogue56.addClass('hidden');
 
         if (reducePremium === "Y") {
-            switch (meerkat.modules.health.getSituation()) {
-                case 'SM':
-                case 'SF':
-                    $dialogue55.removeClass('hidden');
-                    break;
-                case 'C':
-                case 'F':
-                    $dialogue56.removeClass('hidden');
-                    break;
-            }
+            $dialogue56.removeClass('hidden');
         }
     }
 

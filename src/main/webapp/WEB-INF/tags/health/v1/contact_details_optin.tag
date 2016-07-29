@@ -209,9 +209,6 @@
         </form_v3:fieldset>
 
         <%--dynamic scripts--%>
-        <%--if single cover--%>
-        <simples:dialogue id="55" vertical="health" className="hidden" />
-        <%--if couple/family cover--%>
         <simples:dialogue id="56" vertical="health" className="hidden" />
         <simples:dialogue id="37" vertical="health" mandatory="true" />
 

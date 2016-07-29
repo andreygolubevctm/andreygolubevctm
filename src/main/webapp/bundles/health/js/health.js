@@ -300,6 +300,15 @@
 			},
 			onInitialise: function onContactInit(event){
 				meerkat.modules.resultsFeatures.fetchStructure('health2016');
+				meerkat.modules.healthLHC.displayLHC();
+
+				$('#contactForm').find(':input').on('change',
+					function (event) {
+						var $this = $(this);
+						// Don't action on the DOB input fields; wait until it's serialised to the hidden field.
+						if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year')) return;
+						meerkat.modules.healthLHC.displayLHC();
+					});
 			},
             onBeforeEnter:function enterBenefitsStep(event) {
                 if (event.isForward) {

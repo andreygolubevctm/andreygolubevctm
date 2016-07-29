@@ -289,13 +289,14 @@
 
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
             tStart = new Date().getTime();
-            var waitMessageVal = $("#waitMessage").val();
+            var waitMessageVal = $("#waitMessage").val(),
+                htmlTemplate = _.template($('#simples-dialogue-62-template').html());
+
             meerkat.modules.journeyEngine.loadingShow(waitMessageVal);
 
             // Hide pagination
             $('.results-pagination').add('header a[data-results-pagination-control]').addClass('hidden');
             meerkat.modules.coupon.triggerPopup();
-            var htmlTemplate = _.template($('#simples-dialogue-62-template').html());
 
             meerkat.modules.dialogs.show({
                 htmlContent : htmlTemplate(),
@@ -315,6 +316,23 @@
                             meerkat.modules.dialogs.close(modalId);
                         }
                     });
+
+                    // Check dynamic checkboxes depending on hidden values
+                    $('#health_simples_dialogue-checkbox-62a-modal')
+                        .prop('checked', $('#health_simples_dialogue-checkbox-62a').val() === 'Y');
+                    $('#health_simples_dialogue-checkbox-62b-modal')
+                        .prop('checked', $('#health_simples_dialogue-checkbox-62b').val() === 'Y');
+                    $('#health_simples_dialogue-checkbox-62c-modal')
+                        .prop('checked', $('#health_simples_dialogue-checkbox-62c').val() === 'Y');
+                },
+                onClose: function() {
+                    // Save the checkbox values to hidden inputs as Y/N
+                    $('#health_simples_dialogue-checkbox-62a')
+                        .val($('#health_simples_dialogue-checkbox-62a-modal').prop('checked') ? 'Y' : 'N');
+                    $('#health_simples_dialogue-checkbox-62b')
+                        .val($('#health_simples_dialogue-checkbox-62b-modal').prop('checked') ? 'Y' : 'N');
+                    $('#health_simples_dialogue-checkbox-62b')
+                        .val($('#health_simples_dialogue-checkbox-62b-modal').prop('checked') ? 'Y' : 'N');
                 }
             });
         });
