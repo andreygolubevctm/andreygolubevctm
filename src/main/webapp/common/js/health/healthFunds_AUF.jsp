@@ -62,8 +62,6 @@ var healthFunds_AUF = {
     });
   },
   renderPaymentDay: function(){
-    healthFunds_AUF.$paymentTypeContainer.text('*Australian Unity offers a 4% discount for direct debit payments').slideDown();
-
     var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
