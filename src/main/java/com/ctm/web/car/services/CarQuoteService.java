@@ -32,6 +32,8 @@ import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -47,6 +49,8 @@ import static java.util.stream.Collectors.toList;
 
 @Component
 public class CarQuoteService extends CommonRequestServiceV2 {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarQuoteService.class);
 
     private SessionDataServiceBean sessionDataServiceBean;
 
@@ -89,7 +93,9 @@ public class CarQuoteService extends CommonRequestServiceV2 {
         final QuoteServiceProperties properties = getQuoteServiceProperties("carQuoteServiceBER", brand, CAR.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
         final List<CarResult> carResults;
-        if (properties.getServiceUrl().contains("-v2/") || properties.getServiceUrl().startsWith("http://localhost")) {
+        if (properties.getServiceUrl().matches(".*://.*/car-quote-v2.*") || properties.getServiceUrl().startsWith("http://localhost")) {
+            LOGGER.info("Calling car-quote v2");
+
             final CarQuoteRequest carQuoteRequest = RequestAdapterV2.adapt(data);
 
             final AggregateOutgoingRequest<CarQuoteRequest> request = AggregateOutgoingRequest.<CarQuoteRequest>build()
@@ -113,6 +119,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
 
             carResults = ResponseAdapterV2.adapt(homeResponse);
         } else {
+            LOGGER.info("Calling car-quote v1");
 
             final CarQuoteRequest carQuoteRequest = RequestAdapter.adapt(data);
 
