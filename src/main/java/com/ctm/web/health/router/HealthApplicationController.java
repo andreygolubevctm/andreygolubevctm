@@ -118,7 +118,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
         updateTransactionIdAndClientIP(request, data);
 
         // get the response
-        final HealthApplyResponse applyResponse = healthApplyService.apply(brand, data);
+        final HealthApplyResponse applyResponse = healthApplyService.apply(request, brand, data);
         // Should only be one payload response
         final HealthApplicationResponse response = applyResponse.getPayload();
 

@@ -14,15 +14,16 @@ public class RequestAdapter {
 
     public static HealthApplicationRequest adapt(HealthRequest healthRequest) {
         final Optional<HealthQuote> quote = Optional.ofNullable(healthRequest.getQuote());
-        return HealthApplicationRequest.instanceOf(
-                ContactDetailsAdapter.createContactDetails(quote),
-                PaymentAdapter.createPayment(quote),
-                FundDataAdapter.createFundData(quote),
-                ApplicationGroupAdapter.createApplicationGroup(quote),
-                quote.map(HealthQuote::getApplication)
+        return HealthApplicationRequest.newBuilder()
+                .contactDetails(ContactDetailsAdapter.createContactDetails(quote))
+                .payment(PaymentAdapter.createPayment(quote))
+                .fundData(FundDataAdapter.createFundData(quote))
+                .applicants(ApplicationGroupAdapter.createApplicationGroup(quote))
+                .providerFilter(quote.map(HealthQuote::getApplication)
                     .map(Application::getProvider)
                     .map(Collections::singletonList)
-                        .orElse(emptyList()));
+                        .orElse(emptyList()))
+                .build();
     }
 
 }
