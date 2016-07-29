@@ -162,6 +162,9 @@
 
     var currentZoom = DEFAULT_ZOOM,
         fetchResultsTimeout,
+        keyDownTimeout,
+        fuelLocation,
+        preventLookup = true,
         markerZIndexOrder = [0, 5, 4, 3, 2, 1];
 
 
@@ -271,33 +274,36 @@
 
     function initPreload() {
         // Preload From Widget
-
-        if (meerkat.site.hasOwnProperty('formData')) {
-            // if (meerkat.site.formData.coords !== "") {
-            bookmarkedPreload();
-            // } else if (meerkat.site.location !== "") {
-            //legacyPreload();
-            //  }
-        } else {
+        if (!bookmarkedPreload()) {
             initGeoLocation();
         }
     }
 
     function bookmarkedPreload() {
+        if (!meerkat.site.hasOwnProperty('formData')) {
+            return false;
+        }
         var formData = meerkat.site.formData;
-        if (formData.fuelType !== "") {
+        // it can be "select type of fuel" so we check if its a number.
+        if (formData.fuelType !== "" && !isNaN(parseInt(formData.fuelType))) {
             $('#fuel_type_id').val(_legacyMapFuelTypes(formData.fuelType));
         }
+        var hasCoordinates = !_.isUndefined(formData.coords) && formData.coords !== "";
         if (formData.location !== "") {
-            if (!formData.coords) {
-                // @todo: Too much effort for MVP to figure out why we can't do a keypress
-                // .. to make autocomplete use the first suggestion to go to that location. Instead, will just geolocate.
-                initGeoLocation();
+            $('#fuel_location').val(formData.location);
+            if (!hasCoordinates) {
+                google.maps.event.addListenerOnce(map, 'idle', function () {
+                    google.maps.event.trigger(fuelLocation, 'focus');
+                    google.maps.event.trigger(fuelLocation, 'keydown', {
+                        keyCode: 13
+                    });
+                });
+                return true;
             } else {
                 $('#fuel_location').val(formData.location);
             }
         }
-        if (!_.isUndefined(formData.coords) && formData.coords !== "") {
+        if (hasCoordinates) {
             google.maps.event.addListenerOnce(map, 'idle', function () {
                 var mapMeta = formData.coords.split(','),
                     zoom = parseInt(mapMeta[2]) || DEFAULT_ZOOM;
@@ -309,7 +315,11 @@
                 map.setZoom(zoom);
                 getResults();
             });
+        } else {
+            //geolocate instead
+            return false;
         }
+        return true;
     }
 
     /**
@@ -347,6 +357,38 @@
     }
 
     function initAutoComplete() {
+        fuelLocation = document.getElementById('fuel_location');
+        $('#fuel_location').on('keydown', function (e) {
+
+            // Step 1: Stop it if its < 2 characters
+            if ($(this).val().length < 2) {
+                e.stopImmediatePropagation();
+                preventLookup = true;
+                return;
+            }
+
+            // Step 2: Stop Propagation to Google Places API by default, unless its outside the 250ms
+            if (preventLookup) {
+                // prevent the event from bubbling up to google. This will also stop tracking.
+                e.stopImmediatePropagation();
+            }
+
+            var keypress = e.which;
+            if (keyDownTimeout) {
+                clearTimeout(keyDownTimeout);
+            }
+            // When this fires, preventLookup must be false, so that it bubbles.
+            keyDownTimeout = setTimeout(function () {
+                preventLookup = false;
+                google.maps.event.trigger(fuelLocation, 'focus');
+                google.maps.event.trigger(fuelLocation, 'keydown', {
+                    keyCode: keypress
+                });
+            }, 250);
+
+            preventLookup = true;
+
+        });
         var options = {
             types: ['(regions)'],
             componentRestrictions: {
@@ -356,7 +398,7 @@
         var autoCompleteService = new google.maps.places.AutocompleteService(),
             placesService = new google.maps.places.PlacesService(map);
 
-        autoComplete = new google.maps.places.Autocomplete(document.getElementById('fuel_location'), options);
+        autoComplete = new google.maps.places.Autocomplete(fuelLocation, options);
 
         autoComplete.bindTo('bounds', map);
         autoComplete.addListener('place_changed', function () {
@@ -472,7 +514,11 @@
     function addToHistory(event) {
         var center = map.getCenter(),
             baseUrl = meerkat.site.urls.base + 'fuel_quote.jsp';
-        window.history.pushState({}, "", baseUrl + '?map=' + center.lat() + ',' + center.lng() + ',' + map.getZoom() + '&fueltype=' + meerkat.modules.fuel.getFuelType());
+        // Fail silently. This is only an issue where baseurl doesn't match real url.
+        try {
+            window.history.pushState({}, "", baseUrl + '?map=' + center.lat() + ',' + center.lng() + ',' + map.getZoom() + '&fueltype=' + meerkat.modules.fuel.getFuelType());
+        } catch (e) {
+        }
     }
 
     function hideXsInfoWindow() {
@@ -610,7 +656,7 @@
             }
             /* TODO: minus footer signup box */
             $mapCanvas.css('height', heightToSet);
-            if(google.maps) {
+            if (google.maps) {
                 google.maps.event.trigger(map, 'resize');
             }
         });
