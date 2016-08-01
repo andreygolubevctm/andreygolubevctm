@@ -17,16 +17,14 @@
 
     // Check dynamic checkboxes on preload=true
     function initDBDrivenCheckboxes() {
-        var simplesObj = meerkat.site.simplesCheckboxes.simples;
-
         if (!meerkat.site.hasOwnProperty('simplesCheckboxes')) return;
 
-        if (meerkat.site.simplesCheckboxes.hasOwnProperty('simples')) {
-            if (_.isObject(simplesObj)) {
-                for (var key in simplesObj) {
-                    if($('#health_simples_' + key).attr('type') == 'checkbox') {
-                        $('#health_simples_' + key).prop('checked', simplesObj[key] === 'Y');
-                    }
+        var simplesObj = meerkat.site.simplesCheckboxes.simples;
+        if (!_.isEmpty(simplesObj)) {
+            for (var key in simplesObj) {
+                var $element = $('#health_simples_' + key);
+                if($element.is(':checkbox')) {
+                    $element.prop('checked', simplesObj[key] === 'Y');
                 }
             }
         }

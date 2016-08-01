@@ -271,10 +271,6 @@
 				//_.delay(function() {
 				//	meerkat.modules.healthSegment.filterSegments();
 				//}, 1000);
-
-				if (event.isForward && meerkat.site.isCallCentreUser === true) {
-					meerkat.modules.simplesCallInfo.fetchCallInfo();
-				}
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
