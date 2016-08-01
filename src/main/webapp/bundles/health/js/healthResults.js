@@ -331,8 +331,8 @@
                         .val($('#health_simples_dialogue-checkbox-62a-modal').prop('checked') ? 'Y' : 'N');
                     $('#health_simples_dialogue-checkbox-62b')
                         .val($('#health_simples_dialogue-checkbox-62b-modal').prop('checked') ? 'Y' : 'N');
-                    $('#health_simples_dialogue-checkbox-62b')
-                        .val($('#health_simples_dialogue-checkbox-62b-modal').prop('checked') ? 'Y' : 'N');
+                    $('#health_simples_dialogue-checkbox-62c')
+                        .val($('#health_simples_dialogue-checkbox-62c-modal').prop('checked') ? 'Y' : 'N');
                 }
             });
         });

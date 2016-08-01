@@ -57,6 +57,29 @@
         $healthCoverRebate.add($healthSituationCvr).on('change', toggleRebateDialogue);
         // Handle toggle benefitsDialogue
         $healthSitCoverType.on('change', toggleBenefitsDialogue);
+
+        // open bridging page
+        $('#resultsPage').on("click", ".btn-more-info", openBridgingPage);
+    }
+
+    function openBridgingPage(e) {
+        var i = 0,
+            needsValidation;
+
+        $('#resultsForm .simples-dialogue').find('input[type=checkbox]').each(function() {
+            if (!$(this).prop('checked')) {
+                i++;
+            }
+        });
+
+        needsValidation = i !== 0;
+
+        if (needsValidation) {
+            e.stopImmediatePropagation();
+            $('#resultsForm').valid();
+        }
+
+        return i === 0;
     }
 
     function eventSubscriptions() {
