@@ -20,6 +20,10 @@
 		modalId = null;
 
 	function initHealthDualPricing() {
+		if (meerkat.site.healthAlternatePricingActive !== true) {
+			return false;
+		}
+
 		$logoPriceTemplate = $('#logo-price-template'),
 		$dualPricingTemplate = $('#dual-pricing-template'),
 		$dualPricingTemplateSM = $('#dual-pricing-template-sm'),
@@ -149,10 +153,8 @@
 		product.showAltPremium = true;
 		htmlTemplate = _.template($logoPriceTemplate.html());
 		product.renderedAltPriceTemplate = htmlTemplate(product);
-
-		var today = new Date();
-		product.dropDeadDate = typeof product.dropDeadDate === 'string' ? new Date(product.dropDeadDate) : product.dropDeadDate;
-		product.dropDatePassed = today.getTime() > product.dropDeadDate.getTime();
+		product.dropDeadDate = meerkat.modules.healthDropDeadDate.getDropDeadDate(product);
+		product.dropDatePassed = meerkat.modules.healthDropDeadDate.getDropDatePassed(product);
 		$mainDualPricingTemplate = getTemplate(isForSidebar);
 
 		var dualPriceTemplate = _.template($mainDualPricingTemplate.html());

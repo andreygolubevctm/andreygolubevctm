@@ -25,14 +25,21 @@
 <c:set var="calcSequence" value="${data[calcSequence]}" />
 
 <c:if test="${empty transactionId}">
-	<%-- If the transactionId is empty, revert back to the param.transactionId otherwise it fails to write to the fatal_error_log table --%>
-	${fatalErrorService.logFatalError(0,  pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
-
-	<%-- Set the new transaction id so we can write to the ranking tables --%>
-	<c:set var="transactionId" value="${transactionId}" />
+	<jsp:useBean id="fatalError" class="com.ctm.web.core.model.FatalError" scope="page" />
+    ${fatalError.setStyleCodeId(pageSettings.getBrandId())}
+    ${fatalError.setPage(pageContext.request.servletPath)}
+    ${fatalError.setFatal("0")}
+    ${fatalError.setSessionId(pageContext.session.id)}
+    <%-- Set the new transaction id so we can write to the ranking tables --%>
+    <c:set var="transactionId" value="${param.transactionId}" />
+    <%-- If the param.transactionId is not empty, use param.transactionId --%>
+    <c:if test="${not empty transactionId}">
+		${fatalError.setTransactionId(param.transactionId)}
+	</c:if>
+	${fatalErrorService.logFatalError(fatalError)}
 </c:if>
 
-<c:if test="${calcSequence == null}">
+<c:if test="${empty calcSequence}">
 	<%-- Current bug where by after performing a comparison the calcSequence value is lost and causes an SQL exception below --%>
 	<c:set var="calcSequence" value="1" />
 </c:if>
@@ -118,7 +125,7 @@
 		</c:if>
 
 				<c:if test="${pageSettings.getVerticalCode() == 'life'}">
-					<life:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
+					<life_v1:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
 		</c:if>
 	
 			</c:if>
@@ -144,7 +151,7 @@
 					<%-- enums are not will handled in jsp --%>
 				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
-					${emailService.send(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
+					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
 				</c:catch>
 				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
 				<%--
@@ -160,11 +167,10 @@
 		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
 			<%-- Attempt to send email only once and only if not call centre user --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">
-				<%-- <jsp:useBean id="emailService" class="com.ctm.web.core.services.email.EmailService" scope="page" />--%>
 				<%-- enums are not will handled in jsp --%>
 				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
-					${emailService.send(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
+					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
 				</c:catch>
 				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
 				<%--

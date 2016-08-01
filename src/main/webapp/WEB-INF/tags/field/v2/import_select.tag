@@ -11,11 +11,17 @@
 <%@ attribute name="url" 		required="true"	 rtexprvalue="true"	 description="url of import file containing options" %>
 <%@ attribute name="omitPleaseChoose" required="false"	rtexprvalue="true"	 description="should 'please choose' be omitted?" %>
 <%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
-
+<%@ attribute name="placeHolder" required="false"	rtexprvalue="true"	 description="dropdown placeholder" %>
+<%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+
+<c:set var="placeholderText" value='Please choose...' />
+<c:if test="${not empty placeHolder}">
+	<c:set var="placeholderText" value='${placeHolder}' />
+</c:if>
 
 <%-- HTML --%>
 <%-- Import the file into a variable --%>
@@ -34,6 +40,9 @@
 	<c:set var="requiredAttribute" value=' required="required" '/>
 </c:if>
 
+<c:if test="${disableErrorContainer eq true}">
+	<c:set var="additionalAttributes" value='${additionalAttributes}  data-disable-error-container="true" '/>
+</c:if>
 
 <div class="select">
 	<span class=" input-group-addon">
@@ -44,10 +53,10 @@
 		<c:choose>
 			<c:when test="${omitPleaseChoose == 'Y'}"></c:when>
 			<c:when test="${value == ''}">
-				<option value="" selected="selected">Please choose...</option>
+				<option value="" selected="selected">${placeholderText}</option>
 			</c:when>
 			<c:otherwise>
-				<option value="">Please choose...</option>
+				<option value="">${placeholderText}</option>
 			</c:otherwise>
 		</c:choose>
 		${fn:replace(optionData,findVal,replaceVal)}

@@ -46,7 +46,7 @@ public class BlacklistController {
     public static final int DELAY = 500;
     public static final int ATTEMPTS = 2;
 
-    private SimplesBlacklistService simplesBlacklistService = new SimplesBlacklistService();
+    @Autowired private SimplesBlacklistService simplesBlacklistService;
 
     @Value("${ctm.web.simples.inin.blacklist.campaignName}")
     private String blacklistCampaignName;

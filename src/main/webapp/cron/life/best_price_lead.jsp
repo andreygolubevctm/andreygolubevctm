@@ -47,7 +47,7 @@
 			<c:set var="vertical" value="${fn:toLowerCase(result.ProductType)}" />
 
 			<%-- First, record CRON touch event --%>
-			<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "CRON", "best_price_lead.jsp")}</c:set>
+			<c:set var="touchResponse">${accessTouchService.recordTouchWithCommentJSP(result.transaction_id, "CRON", "best_price_lead.jsp")}</c:set>
 		
 			<%--
 				- Take each transaction ID
@@ -112,7 +112,7 @@
 								<%-- enums are not will handled in jsp --%>
 								<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 								<c:catch var="error">
-									${emailService.send(pageContext.request, BEST_PRICE, data.life.contactDetails.email, result.transaction_id)}
+									${emailService.sendJsp(pageContext.request, BEST_PRICE, data.life.contactDetails.email, result.transaction_id)}
 								</c:catch>
 							</c:if>
 
@@ -144,7 +144,7 @@
 												/>
 
 							<c:set var="leadSentTo" value="lifebroker" />
-							<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", leadSentTo)}</c:set>
+							<c:set var="touchResponse">${accessTouchService.recordTouchWithCommentJSP(result.transaction_id, "LF", leadSentTo)}</c:set>
 						</c:otherwise>
 					</c:choose>
 

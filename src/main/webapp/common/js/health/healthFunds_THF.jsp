@@ -29,6 +29,9 @@ var healthFunds_THF = {
 	familyMemberFld		: '',
 	areYouRelatedFld	: '',
 	ineligibleMessage 	: '',
+	$paymentType : $('#health_payment_details_type input'),
+	$paymentFrequency : $('#health_payment_details_frequency'),
+	$paymentStartDate: $("#health_payment_details_start"),
 
 	set: function () {
 		"use strict";
@@ -122,18 +125,16 @@ var healthFunds_THF = {
 		healthFunds_THF.ineligibleMessage 	= $('#thf_ineligible');
 
 
-		$('#update-premium').on('click.THF', function() {
-			healthFunds._payments = {
-							'minType':healthFunds.minType.FROM_EFFECTIVE_DATE,
-							'min':7,
-							'max':16,
-							'weekends':false,
-							'countFrom' : healthFunds.countFrom.EFFECTIVE_DATE
-							};
-			var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
-			healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-			$('.thf-payment-legend').remove();
-			$('#health_payment_bank_policyDay').parent().after('<span class="thf-payment-legend">Your account will be debited on or as close to the selected date possible.</span>');
+		healthFunds_THF.$paymentType.on('change.THF', function renderPaymentDaysPaymentType(){
+			healthFunds_THF.renderPaymentDays();
+		});
+
+		healthFunds_THF.$paymentFrequency.on('change.THF', function renderPaymentDaysFrequency(){
+			healthFunds_THF.renderPaymentDays();
+		});
+
+		healthFunds_THF.$paymentStartDate.on("changeDate.THF", function renderPaymentDaysCalendar(e) {
+			healthFunds_THF.renderPaymentDays();
 		});
 
 		if (healthFunds_THF.healthCvr === 'F' || healthFunds_THF.healthCvr === 'SPF' ) {
@@ -231,6 +232,20 @@ var healthFunds_THF = {
 		healthFunds_THF.familyMemberFld.setRequired(true);
 		healthFunds_THF.employmentFld.setRequired(true);
 	},
+	renderPaymentDays: function() {
+		healthFunds._payments = {
+			'minType':meerkat.modules.healthPaymentDay.FROM_EFFECTIVE_DATE,
+			'min':7,
+			'max':16,
+			'weekends':false,
+			'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE
+		};
+		healthFunds_THF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
+		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+		$('.thf-payment-legend').remove();
+		$('#health_payment_bank_policyDay').parent().after('<span class="thf-payment-legend">Your account will be debited on or as close to the selected date possible.</span>');
+	},
 	unset: function () {
 		"use strict";
 		healthFunds._reset();
@@ -256,6 +271,10 @@ var healthFunds_THF = {
 		$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').removeAttr('maxlength');
 
 		healthFunds._previousfund_authority(false);
+
+		healthFunds_THF.$paymentType.off('change.THF');
+		healthFunds_THF.$paymentFrequency.off('change.THF');
+		healthFunds_THF.$paymentStartDate.off("changeDate.THF");
 	}
 };
 </c:set>

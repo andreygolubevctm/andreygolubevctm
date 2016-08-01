@@ -5,6 +5,7 @@ import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.*;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
@@ -33,7 +34,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest( { ApplicationService.class, SettingsService.class, SessionUtils.class,
-        RequestService.class, ServiceConfigurationService.class, SimpleConnection.class, CommonRequestService.class})
+        RequestService.class, ServiceConfigurationService.class, SimpleConnection.class, CommonRequestService.class, RestClient.class})
 public class HealthQuoteRouterTest {
 
     private HealthQuoteRouter healthQuoteRouter;
@@ -57,6 +58,8 @@ public class HealthQuoteRouterTest {
     private com.ctm.web.core.model.settings.ServiceConfiguration serviceConfig;
     @Mock
     private com.ctm.web.core.connectivity.SimpleConnection simpleConnection;
+    @Mock
+    private IPAddressHandler ipAddressHandler;
 
     private HealthRequest data;
     private Long transactionId = 100000L;
@@ -78,13 +81,14 @@ public class HealthQuoteRouterTest {
 
         when(simpleConnection.get(anyString())).thenReturn("{" +
                 "\"payload\" : {" +
-                    "\"quotes\" : []" +
-                    "}" +
+                "\"quotes\" : []" +
+                "}" +
                 "}");
 
         PowerMockito.when(SettingsService.getPageSettingsByBrand(eq(brand), anyObject())).thenReturn(pageSettings);
         PowerMockito.when(SettingsService.getPageSettingsForPage(anyObject())).thenReturn(pageSettings);
-        PowerMockito.when(ServiceConfigurationService.getServiceConfiguration(anyString(), anyInt(),anyInt())).thenReturn(serviceConfig);
+        PowerMockito.when(ServiceConfigurationService.getServiceConfiguration(anyString(), anyInt())).thenReturn(serviceConfig);
+        PowerMockito.when(ServiceConfigurationService.getServiceConfiguration(anyString(), (Vertical) anyObject())).thenReturn(serviceConfig);
         when(pageSettings.getVertical()).thenReturn(vertical);
         when(pageSettings.getBrandId()).thenReturn(brandId);
         when(brand.getCode()).thenReturn(brandCode);
@@ -108,7 +112,7 @@ public class HealthQuoteRouterTest {
         when(context.getHttpServletRequest()).thenReturn(httpServletRequest);
         when(sessionDataServiceBean.getDataForTransactionId(httpServletRequest, transactionId.toString(), true)).thenReturn(dataB);
         when(httpServletRequest.getSession()).thenReturn(session);
-        healthQuoteRouter = new HealthQuoteRouter(sessionDataServiceBean, contentService);
+        healthQuoteRouter = new HealthQuoteRouter(sessionDataServiceBean, contentService,  ipAddressHandler);
 
     }
 
@@ -122,8 +126,10 @@ public class HealthQuoteRouterTest {
 
     @Test
     public void testValidateRequestValid() throws Exception {
+        EnvironmentService.setEnvironment("localhost");
         when(SessionUtils.isCallCentre(anyObject())).thenReturn(false);
         ResultsWrapper result = healthQuoteRouter.getHealthQuote(context,  data);
         assertNull(result.getError());
     }
+
 }

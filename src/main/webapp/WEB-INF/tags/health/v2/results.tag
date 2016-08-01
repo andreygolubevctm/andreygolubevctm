@@ -88,11 +88,12 @@
 		</div>
 	</c:if>
 	<health_v1:logo_price_template />
+	<health_v3:credit_card_template />
 
 	<%-- RESULTS TABLE --%>
 	<div class="moreInfoDropdown"></div>
 
-	<div class="affixOnScroll resultsContainer featuresMode v2 results-columns-xs-1 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
+	<div class="affixOnScroll resultsContainer featuresMode v2 results-columns-xs-1 results-columns-sm-3 results-columns-md-3 results-columns-lg-3 sessioncamignorechanges">
 
 		<div class="featuresHeaders featuresElements">
 			<div class="result headers">
@@ -172,7 +173,6 @@
 	<core_v1:js_template id="compare-basket-features-template">
 		<div class="compare-basket compareCheckbox">
 			{{ if(comparedResultsCount === 0) { }}
-            <coupon:promo_tile />
 			<p>
 				Click the <input type="checkbox" class="compare-tick" checked disabled><label></label> &nbsp; to add up to <span class="compare-max-count-label">{{= maxAllowable }} products</span> to your shortlist.
 			</p>

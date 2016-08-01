@@ -14,10 +14,10 @@ public class SessionDataUtilsTest {
         Data data = new Data();
         data.put("current/transactionId" , "10000");
         Long result = SessionDataUtils.getTransactionId(data);
-        assertEquals(Long.valueOf(10000L) , Long.valueOf(result));
+        assertEquals(Long.valueOf(10000L), result);
 
         data = new Data();
-        data.put("current/transactionId" , "meerkat");
+        data.put("current/transactionId", "meerkat");
         result = SessionDataUtils.getTransactionId(data);
         assertNull(result);
     }
@@ -28,6 +28,11 @@ public class SessionDataUtilsTest {
         String transactionId = "10000";
         SessionDataUtils.setTransactionId(data, transactionId);
         assertEquals(transactionId, data.get("current/transactionId"));
+
+        data = new Data();
+        String emptyTransactionId = "";
+        SessionDataUtils.setTransactionId(data, emptyTransactionId);
+        assertEquals(emptyTransactionId, data.get("current/transactionId"));
     }
 
     @Test
@@ -35,10 +40,10 @@ public class SessionDataUtilsTest {
         Data data = new Data();
         data.put("current/rootId", "10000");
         Long result = SessionDataUtils.getRootId(data);
-        assertEquals(Long.valueOf(10000L), Long.valueOf(result));
+        assertEquals(Long.valueOf(10000L), result);
 
         data = new Data();
-        data.put("current/rootId" , "meerkat");
+        data.put("current/rootId", "meerkat");
         result = SessionDataUtils.getRootId(data);
         assertNull(result);
     }

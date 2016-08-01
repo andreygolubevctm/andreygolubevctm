@@ -1,10 +1,12 @@
 package com.ctm.web.health.apply.model;
 
+import com.ctm.interfaces.common.types.address.UnitType;
 import com.ctm.web.health.apply.model.request.contactDetails.Address.*;
 import com.ctm.web.health.apply.model.request.contactDetails.*;
-import com.ctm.web.health.apply.model.request.contactDetails.Address.Address;
-import com.ctm.web.health.apply.model.request.contactDetails.ContactDetails;
-import com.ctm.web.health.model.form.*;
+import com.ctm.web.health.model.form.Application;
+import com.ctm.web.health.model.form.ContactNumber;
+import com.ctm.web.health.model.form.HealthQuote;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
 
@@ -38,7 +40,7 @@ public class ContactDetailsAdapter {
                     quote.map(HealthQuote::getApplication)
                             .map(Application::getContactPoint)
                             .filter(c -> c.equals("E") || c.equals("P"))
-                            .map(c -> c.equals("E") ? PreferredContact.EMAIL : PreferredContact.PHONE)
+                            .map(c -> c.equals("E") ? PreferredContact.EMAIL : PreferredContact.POST)
                             .orElse(null),
                     quote.map(HealthQuote::getContactAuthority)
                             .map(Contactable::valueOf)
@@ -96,12 +98,13 @@ public class ContactDetailsAdapter {
                             .map(Postcode::new)
                             .orElse(null),
                     address.map(com.ctm.web.health.model.form.Address::getFullAddressLineOne)
+                            .filter(StringUtils::isNotBlank)
                             .map(FullAddressOneLine::new)
-                            .orElse(null),
+                            .orElseGet(() -> createFullAddressOneLine(address)),
                     address.map(com.ctm.web.health.model.form.Address::getSuburbName)
                             .map(Suburb::new)
                             .orElse(null),
-                    address.map(com.ctm.web.health.model.form.Address::getStreetNum)
+                    address.map(com.ctm.web.health.model.form.Address::getHouseNoSel)
                             .map(StreetNumber::new)
                             .orElse(null),
                     address.map(com.ctm.web.health.model.form.Address::getDpId)
@@ -113,6 +116,30 @@ public class ContactDetailsAdapter {
         } else {
             return null;
         }
+    }
+
+    protected static FullAddressOneLine createFullAddressOneLine(Optional<com.ctm.web.health.model.form.Address> optionalAddress) {
+        if (optionalAddress.isPresent()) {
+            final com.ctm.web.health.model.form.Address address = optionalAddress.get();
+            StringBuilder sb = new StringBuilder();
+            if (StringUtils.isNotBlank(address.getUnitType())) {
+                sb.append(Optional.ofNullable(UnitType.findByCode(address.getUnitType()))
+                        .orElse(UnitType.OTHER).getLabel()).append(" ");
+            } else if (StringUtils.isNotBlank(address.getNonStdUnitType())) {
+                sb.append(Optional.ofNullable(UnitType.findByCode(address.getNonStdUnitType()))
+                        .orElse(UnitType.OTHER).getLabel()).append(" ");
+            }
+
+            if (StringUtils.isNotBlank(address.getUnitShop())) {
+                sb.append(address.getUnitShop()).append(" ");
+            }
+
+            String streetName = StringUtils.isNotBlank(address.getStreetName()) ? address.getStreetName() : address.getNonStdStreet();
+
+            sb.append(address.getStreetNum()).append(" ").append(streetName);
+            return new FullAddressOneLine(sb.toString());
+        }
+        return null;
     }
 
 }

@@ -8,6 +8,7 @@
 
 	var events = {
 		coupon: {
+			COUPON_LOADED : "COUPON_LOADED"
 		}
 	};
 
@@ -21,18 +22,19 @@
 		hasAutoPoped = false,
 		isAvailable = false,
         isPreload = false,
-		isCouponValidAndSubmitted = false;
+		isCouponValidAndSubmitted = false,
+        subscriptionHandles = {};
 
 	function init() {
 
 		$(document).ready(function() {
 
-			checkCouponsAvailability();
+			isAvailable = checkCouponsAvailability();
 
 			if (isAvailable === true) {
 				$couponIdField = $('.coupon-id-field'),
 				$couponCodeField = $('.coupon-code-field'),
-				$couponOptinField = $('.coupon-optin-field'),
+				$couponOptinField = $('.coupon-optin-field').find('input'),
 				$couponOptinGroup = $('.coupon-optin-group'),
 				$couponErrorContainer = $('.coupon-error-container'),
 				$couponSuccessContainer = $('.coupon-success-container');
@@ -50,21 +52,10 @@
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function() {
 			resetWhenChangeStep();
 		});
-
-        meerkat.messaging.subscribe(meerkatEvents.compare.RENDER_FINISHED, function() {
-            var $couponTileContainer = $('.featuresMode').find('.coupon-tile-container');
-            if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentTile')) {
-                $couponTileContainer.html(currentCoupon.contentTile).parent().addClass('tile-enabled');
-            } else {
-                $couponTileContainer.html('').parent().removeClass('tile-enabled');
-            }
-        });
 	}
 
 	function checkCouponsAvailability() {
-		if ($('.coupon-id-field').length > 0) {
-			isAvailable = true;
-		}
+		return $('.coupon-id-field').length > 0;
 	}
 
 	function preload() {
@@ -116,6 +107,7 @@
 		.done(function onSuccess(json) {
 			setCurrentCoupon(json);
 			populateFields();
+			meerkat.messaging.publish(events.coupon.COUPON_LOADED);
 			if (typeof successCallBack === 'function') {
 				successCallBack();
 			}
@@ -157,18 +149,13 @@
             $('.callCentreHelp').hide();
 			$('.coupon-banner-container').html(currentCoupon.contentBanner);
             $('.coupon-tile-container').html(currentCoupon.contentTile);
-			if (currentCoupon.showPopup === true && hasAutoPoped === false) {
-				_.defer(function(){
-					$('.coupon-tile').click();
-					hasAutoPoped = true;
-				});
-			}
+            $('body').addClass('couponShown');
 		} else {
             $('#contactForm').find('.quoteSnapshot').show();
             $('.callCentreHelp').show();
             $('#contactForm').find('.callCentreHelp').hide();
-            $('.coupon-banner-container').html('');
-            $('.coupon-tile-container').html('');
+            $('.coupon-banner-container, .coupon-tile-container').html('');
+            $('body').removeClass('couponShown');
         }
 	}
 
@@ -208,8 +195,7 @@
 		// hard rule validation fail
 		else if (currentCoupon.hasOwnProperty('errors') && currentCoupon.errors.length > 0) {
 			$couponCodeField.parent().addClass('has-custom-error');
-			$couponErrorContainer.find('label').html(currentCoupon.errors[0].message);
-			$couponErrorContainer.removeClass('hidden');
+			$couponErrorContainer.find('label').html(currentCoupon.errors[0].message).end().removeClass('hidden');
 			resetWhenError();
 		}
 		// valid coupon
@@ -222,13 +208,11 @@
 			$couponErrorContainer.addClass('hidden');
 
 			if (currentCoupon.hasOwnProperty('contentSuccess') && currentCoupon.contentSuccess !== '') {
-				$couponSuccessContainer.html(currentCoupon.contentSuccess);
-				$couponSuccessContainer.removeClass('hidden');
+				$couponSuccessContainer.html(currentCoupon.contentSuccess).removeClass('hidden');
 			}
 
 			if (currentCoupon.hasOwnProperty('contentCheckbox') && currentCoupon.contentCheckbox !== '') {
-				$couponOptinGroup.find('.checkbox label').html(currentCoupon.contentCheckbox);
-				$couponOptinGroup.removeClass('hidden');
+				$couponOptinGroup.find('.checkbox label').html(currentCoupon.contentCheckbox).end().removeClass('hidden');
 			}
 			else{
 				// if no checkbox required, still insert optin=Y in DB so we know it is a confirmed coupon
@@ -269,6 +253,28 @@
         }
 	}
 
+    function triggerPopup() {
+        // make sure we only subscribe one time
+        if (hasAutoPoped === false) {
+            if (isCurrentCouponValid() === true) {
+                if (currentCoupon.showPopup === true) {
+                    $('.coupon-tile:first').trigger('click');
+                    hasAutoPoped = true;
+                }
+            } else if (!subscriptionHandles['firstTimeAutoPopup']) {
+                // if no coupon available, waite for the event
+                subscriptionHandles['firstTimeAutoPopup'] = meerkat.messaging.subscribe(events.coupon.COUPON_LOADED, function autoPopupCoupon() {
+                    _.defer(function(){
+                        if (hasAutoPoped === false && isCurrentCouponValid() === true && currentCoupon.showPopup === true) {
+                            $('.coupon-tile:first').trigger('click');
+                            hasAutoPoped = true;
+                        }
+                    });
+                });
+            }
+        }
+    }
+
 	function getCurrentCoupon() {
 		return currentCoupon;
 	}
@@ -283,7 +289,8 @@
 		loadCoupon: loadCoupon,
 		getCurrentCoupon: getCurrentCoupon,
 		validateCouponCode: validateCouponCode,
-		renderCouponBanner: renderCouponBanner
+		renderCouponBanner: renderCouponBanner,
+        triggerPopup: triggerPopup
 	});
 
 })(jQuery);

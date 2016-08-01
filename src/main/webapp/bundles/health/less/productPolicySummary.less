@@ -62,7 +62,6 @@
 	  .frequencyTitle{
 		color: @frequency-color;
 		font-size: 10px;
-		font-family: @font-family-sans-serif;
 		font-weight: normal;
 		font-family: @font-family-theme-bold;
 		margin-left: -2px;
@@ -182,7 +181,7 @@
 		  margin-top: 10px;
 		  margin-left: 3%;
 
-		  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale);
+		  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale * 0.60);
 		}
 	  }
 
@@ -244,7 +243,6 @@
 		  .frequencyTitle{
 			color: @frequency-color;
 			font-size: 10px;
-			font-family: @font-family-sans-serif;
 			font-weight: normal;
 			font-family: @font-family-theme-bold;
 			margin-top: 5px;
@@ -262,7 +260,7 @@
 .policySummaryContainer{
   @media (@xs-only) {
 	position: relative;
-	padding:5px;
+	padding: 5px;
   }
   @media (@sm) {
 	&:not(.formMode){
@@ -291,7 +289,7 @@
 
   overflow: hidden;
 
-  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames);
+  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; @logo-compressed-scale);
 }
 
 body[data-step='results'] .product-details-container .companyLogo {

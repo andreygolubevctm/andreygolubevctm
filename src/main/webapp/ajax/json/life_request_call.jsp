@@ -1,5 +1,5 @@
 <%@ page import="com.ctm.web.core.email.model.EmailMode" %>
-<%@ page language="java" contentType="text/json; charset=UTF-8"
+<%@ page language="java" contentType="application/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
@@ -75,7 +75,7 @@
 											<%-- enums are not will handled in jsp --%>
 											<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 											<c:catch var="error">
-												${emailService.send(pageContext.request, BEST_PRICE, data.life.contactDetails.email, tranId)}
+												${emailService.sendJsp(pageContext.request, BEST_PRICE, data.life.contactDetails.email, tranId)}
 												<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/emailSentBy" value="ozicare" />
 											</c:catch>
 										</c:if>
@@ -104,7 +104,7 @@
 								<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 
 								<%-- Record lead feed touch event --%>
-								<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "CB", "lifebroker")}</c:set>
+								<c:set var="touchResponse">${accessTouchService.recordTouchWithCommentJSP(tranId, "CB", "lifebroker")}</c:set>
 							</c:otherwise>
 						</c:choose>
 

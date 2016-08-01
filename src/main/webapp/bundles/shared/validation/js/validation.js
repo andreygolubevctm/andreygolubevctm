@@ -143,21 +143,23 @@ var validation = false;
                  An error message placeholder will be injected above the form element, generally inside the parent .row-content
                  **/
                 var $referenceElement = $element;
-                if (typeof $element.attr('data-validation-placement') !== 'undefined' &&
-                    $element.attr('data-validation-placement') !== null && $element.attr('data-validation-placement') !== '') {
-                    $referenceElement = $($element.attr('data-validation-placement'));
-                }
-                var parent = $referenceElement.closest('.row-content, .fieldrow_value');
-                if (parent.length === 0) parent = $element.parent();
+                if ($element.data('disable-error-container') !== true) {
+                    if (typeof $element.attr('data-validation-placement') !== 'undefined' &&
+                        $element.attr('data-validation-placement') !== null && $element.attr('data-validation-placement') !== '') {
+                        $referenceElement = $($element.attr('data-validation-placement'));
+                    }
+                    var parent = $referenceElement.closest('.row-content, .fieldrow_value');
+                    if (parent.length === 0) parent = $element.parent();
 
-                var errorContainer = parent.children('.error-field');
+                    var errorContainer = parent.children('.error-field');
 
-                if (errorContainer.length === 0) {
-                    parent.prepend('<div class="error-field"></div>');
-                    errorContainer = parent.children('.error-field');
-                    errorContainer.hide().slideDown(100);
+                    if (errorContainer.length === 0) {
+                        parent.prepend('<div class="error-field"></div>');
+                        errorContainer = parent.children('.error-field');
+                        errorContainer.hide().slideDown(100);
+                    }
+                    errorContainer.append($error);
                 }
-                errorContainer.append($error);
             },
             onkeyup: function (element) {
                 var element_id = jQuery(element).attr('id');

@@ -104,6 +104,9 @@
 
                         <h5>Pricing Information</h5>
                         <div id="pricingInformation"></div>
+
+                        <h5>Next Steps</h5>
+                        <div id="nextSteps"><content:get key="nextSteps"/></div>
                     </div>
                     <div class="col-xs-12">
                         <div class="hidden-md hidden-lg">{{= termsDisclaimerHtml }}</div>

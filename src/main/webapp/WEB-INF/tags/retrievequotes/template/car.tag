@@ -16,13 +16,13 @@
         {{ if(typeof regularDriver.firstname != 'undefined' && typeof regularDriver.surname != 'undefined') { }}
         <div class="quote-detail">
             <strong>Regular Driver: </strong> {{= regularDriver.firstname }} {{= regularDriver.surname }}
-            ({{= meerkat.modules.utils.returnAge(regularDriver.dob, true) }} y/o {{= meerkat.modules.retrievequotesListQuotes.getGenderString(regularDriver.gender) }})
+            ({{= meerkat.modules.age.returnAge(regularDriver.dob, true) }} y/o {{= meerkat.modules.retrievequotesListQuotes.getGenderString(regularDriver.gender) }})
         </div>
         {{ } }}
 
         {{ if(youngDriver.exists == "Y") { }}
         <div class="quote-detail">
-            <strong>Youngest Driver: </strong> {{= meerkat.modules.utils.returnAge(youngDriver.dob, true) }} y/o {{= meerkat.modules.retrievequotesListQuotes.getGenderString(youngDriver.gender) }}
+            <strong>Youngest Driver: </strong> {{= meerkat.modules.age.returnAge(youngDriver.dob, true) }} y/o {{= meerkat.modules.retrievequotesListQuotes.getGenderString(youngDriver.gender) }}
         </div>
         {{ } }}
 

@@ -7,6 +7,9 @@
 <core_v2:quote_check quoteType="travel" />
 <core_v2:load_preload />
 
+<%-- Set global variable to flags for active split tests --%>
+<travel:splittest_helper />
+
 <%-- HTML --%>
 <layout_v1:journey_engine_page title="Travel Quote">
 
@@ -43,9 +46,7 @@
 
 	<jsp:attribute name="navbar">
 		<ul class="nav navbar-nav" role="menu">
-			<li class="visible-xs">
-				<span class="navbar-text-block navMenu-header">Menu</span>
-			</li>
+			<core_v2:offcanvas_header />
 			<li class="slide-feature-back visible-xs">
 				<a href="javascript:;" data-slide-control="previous" class="btn-back">
 					<span class="icon icon-arrow-left"></span> <span>Revise Your Details</span></a>
@@ -101,7 +102,7 @@
 	<jsp:attribute name="form_bottom"></jsp:attribute>
 			
 	<jsp:attribute name="footer">
-		<travel:footer />
+		<core_v1:whitelabeled_footer />
 	</jsp:attribute>
 			
 	<jsp:attribute name="vertical_settings">

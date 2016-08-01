@@ -18,7 +18,7 @@
         <form_v3:row>
             <div class="inlineHeadingWithButton">
                 <h5>Dependant {{= obj.dependantId }}</h5>{{ if(obj.dependantId != 1) { }}
-                <a href="javascript:void(0);" class="remove-dependent btn btn-danger" title="Remove last dependent"
+                <a href="javascript:void(0);" class="remove-dependent btn btn-danger" title="Remove last dependant"
                    data-id="{{= obj.dependantId }}">Remove Dependant</a>
                 {{ } }}
             </div>
@@ -28,13 +28,13 @@
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/title"/>
             <form_v3:row fieldXpath="${fieldXpath}" label="Title">
-                <field_v2:import_select xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s title" required="true" url="/WEB-INF/option_data/titles_pithy.html"/>
+                <field_v3:import_select xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s title" required="true" url="/WEB-INF/option_data/titles_pithy.html" disableErrorContainer="${true}" />
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/firstName"/>
             <form_v3:row fieldXpath="${fieldXpath}" label="First Name">
                 <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s first name" required="true" className="sessioncamexclude"
-                                 additionalAttributes=" data-rule-personName='true' " defaultValue="{{= obj.firstName }}" />
+                                 additionalAttributes=" data-rule-personName='true' " defaultValue="{{= obj.firstName }}" disableErrorContainer="${true}" />
             </form_v3:row>
 
             {{ if(providerConfig.showMiddleName === true) { }}
@@ -48,7 +48,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/lastname"/>
             <form_v3:row fieldXpath="${fieldXpath}" label="Last Name">
                 <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s last name" required="true" className="sessioncamexclude"
-                                 additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.lastname }}" />
+                                 additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.lastname }}" disableErrorContainer="${true}" />
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/dob"/>

@@ -29,6 +29,11 @@
 	font-family: 'ctm-health';
 }
 
+.health_situation_medicare {
+	label[for="health_situation_cover"] {
+    	color: @alert-danger-text;
+    }
+}
 .icon-hospital-extras:before {
 	content: "\e920";
 }
@@ -55,11 +60,6 @@
 			}
 		}
 	}
-}
-
-.healthBenefits .categoriesCell.CTM-plus label:before {
-	font-family: 'framework_font';
-	content: "\e929";
 }
 
 .styleBenefits(@labelClass) {
@@ -97,11 +97,15 @@
 	.benefitClass(HLTicon-dietetics, @labelClass, "\e92a");
 	.benefitClass(HLTicon-eye-therapy, @labelClass, "\e928");
 	.benefitClass(HLTicon-lifestyle-products, @labelClass, "\e925");
+    .benefitClass(HLTicon-osteopathy, @labelClass, "\e92d");
+    .benefitClass(HLTicon-ambulance, @labelClass, "\e933");
+    .benefitClass(HLTicon-exercise-physiology, @labelClass, "\e930");
+    .benefitClass(HLTicon-appliances, @labelClass, "\e931");
 }
 
 .benefitsIcons,
-.top-5-benefits,
-.healthBenefits{
+.healthBenefits,
+.flexi-extras-icons{
 	.styleBenefits('');
 }
 

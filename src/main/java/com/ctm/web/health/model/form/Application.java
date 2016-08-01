@@ -42,6 +42,10 @@ public class Application {
 
     private Qch qch;
 
+    private Nhb nhb;
+
+    private Hbf hbf;
+
     public Address getAddress() {
         return address;
     }
@@ -200,5 +204,22 @@ public class Application {
 
     public void setQch(Qch qch) {
         this.qch = qch;
+    }
+
+    public Nhb getNhb() {
+        return nhb;
+    }
+
+    public void setNhb(Nhb nhb) {
+        this.nhb = nhb;
+    }
+
+    public Hbf getHbf() {
+        return hbf;
+    }
+
+    public Application setHbf(Hbf hbf) {
+        this.hbf = hbf;
+        return this;
     }
 }

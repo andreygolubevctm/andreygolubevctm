@@ -1,5 +1,6 @@
 package com.ctm.web.health.apply.model.request.application.applicant;
 
+import com.ctm.web.core.model.request.Gender;
 import com.ctm.web.health.apply.helper.TypeSerializer;
 import com.ctm.web.health.apply.model.request.application.applicant.healthCover.HealthCover;
 import com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund;

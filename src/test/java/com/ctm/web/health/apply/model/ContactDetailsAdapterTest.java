@@ -65,11 +65,12 @@ public class ContactDetailsAdapterTest {
     @Test
     public void testCreateAddress() throws Exception {
         final Address address = mock(Address.class);
+        when(address.getFullAddressLineOne()).thenReturn("Address line");
         assertNotNull(ContactDetailsAdapter.createAddress(Optional.of(address)));
         verify(address, times(1)).getPostCode();
         verify(address, times(1)).getFullAddressLineOne();
         verify(address, times(1)).getSuburbName();
-        verify(address, times(1)).getStreetNum();
+        verify(address, never()).getStreetNum();
         verify(address, times(1)).getDpId();
         verify(address, times(1)).getState();
     }
@@ -163,6 +164,31 @@ public class ContactDetailsAdapterTest {
     public void testCreateOtherNumberEmpty() throws Exception {
         final HealthQuote healthQuote = mock(HealthQuote.class);
         assertNull(ContactDetailsAdapter.createOtherNumber(Optional.of(healthQuote)));
+    }
+
+    @Test
+    public void testCreateFullAddressOneLineEmpty() throws Exception {
+        assertNull(ContactDetailsAdapter.createFullAddressOneLine(Optional.empty()));
+    }
+
+    @Test
+    public void testCreateFullAddressOneLine() throws Exception {
+        final Address address = mock(Address.class);
+        when(address.getUnitType()).thenReturn("UN");
+        when(address.getUnitShop()).thenReturn("1");
+        when(address.getStreetNum()).thenReturn("35");
+        when(address.getStreetName()).thenReturn("William Street");
+        assertEquals("Unit 1 35 William Street", ContactDetailsAdapter.createFullAddressOneLine(Optional.of(address)).get());
+    }
+
+    @Test
+    public void testCreateFullAddressOneLineUnknownUnitType() throws Exception {
+        final Address address = mock(Address.class);
+        when(address.getUnitType()).thenReturn("XX");
+        when(address.getUnitShop()).thenReturn("1");
+        when(address.getStreetNum()).thenReturn("35");
+        when(address.getStreetName()).thenReturn("William Street");
+        assertEquals("Other 1 35 William Street", ContactDetailsAdapter.createFullAddressOneLine(Optional.of(address)).get());
     }
 
 }

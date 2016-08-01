@@ -5,11 +5,11 @@ import com.ctm.web.core.leadService.model.LeadRequest;
 import com.ctm.web.core.leadService.services.LeadService;
 import com.ctm.web.core.results.model.ResultsTemplateItem;
 import com.ctm.web.core.results.services.ResultsDisplayService;
+import com.ctm.web.core.security.IPAddressHandler;
+import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.model.leadservice.HealthMetadata;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HealthLeadService extends LeadService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HealthLeadService.class);
 
     private static final String CHARS_TO_REPLACE_PHONE_NUMBER[] = {"(", ")", " "};
     private static final String CHARS_TO_REPLACE_WITH_PHONE_NUMBER[] = {"", "", ""};
@@ -25,6 +24,17 @@ public class HealthLeadService extends LeadService {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private ResultsDisplayService resultsDisplayService = new ResultsDisplayService();
+
+    @Deprecated // used by write_quote.tag
+    @SuppressWarnings("unused")
+    public HealthLeadService() {
+        super(IPAddressHandler.getInstance());
+    }
+
+
+    public HealthLeadService(IPAddressHandler ipAddressHandler) {
+        super(ipAddressHandler);
+    }
 
     @Override
     protected LeadRequest updatePayloadData(final Data data) {

@@ -18,6 +18,8 @@
 <%@ attribute name="startView" 				required="false" rtexprvalue="true"	 description="The view either 0:Month|1:Year|2:Decade|"%>
 <%@ attribute name="mode"	 				required="false" rtexprvalue="true"	 description="Component: Display as input with a click bound calendar. Inline: embedded calendar (with hidden field). Separated: DD MM YYYY inputs with a calendar click bound button and hidden input."%>
 <%@ attribute name="nonLegacy" 				required="false" rtexprvalue="true"	 description="If the component is non legacy, format the dates as to be expected. So that Min/Max validation works."%>
+<%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
+<%@ attribute name="disableRowHack" 		required="false" 	rtexprvalue="true"    	 description="Disable the row-hack class" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -102,7 +104,7 @@
 	--%>
 	<c:when test="${mode eq 'inline'}">
 		<div id="${name}_calendar"></div>
-		<field_v2:validatedHiddenField xpath="${xpath}" className="${className}" title="Please enter the ${title}" validationErrorPlacementSelector="#${name}_calendar" additionalAttributes=" required ${dateEurRule} ${minDateEurRule} ${maxDateEurRule}" />
+		<field_v2:validatedHiddenField xpath="${xpath}" className="${className}" title="Please enter the ${title}" validationErrorPlacementSelector="#${name}_calendar" additionalAttributes=" required ${dateEurRule} ${minDateEurRule} ${maxDateEurRule}" disableErrorContainer="${disableErrorContainer}" />
 	</c:when>
 	<%--
 		The calendar input picker's default component mode:
@@ -111,6 +113,11 @@
 	<c:when test="${mode eq 'component'}">
 		<%-- This was the old usage in the platform --%>
 		<%-- Exposed some attributes here so the tag define a few JS settings --%>
+		<c:set var="disableErrorContainer">
+		<c:if test="${disableErrorContainer eq true}">
+			data-disable-error-container='true'
+		</c:if>
+		</c:set>
 		<div class="input-group date ${mobileClassName}" data-provide="datepicker" data-date-mode="${mode}"
 			${maxDateAttribute}
 			${minDateAttribute} data-date-start-view="${startView}">
@@ -120,7 +127,7 @@
 				id="${name}"
 				class="form-control dateinput-date ${className}"
 				value="${value}"
-				title="${title}" ${requiredAttribute} ${dateEurRule}>
+				title="${title}" ${requiredAttribute} ${dateEurRule} ${disableErrorContainer}>
 			<span class="input-group-addon">
 				<i class="icon-calendar"></i>
 			</span>
@@ -132,18 +139,23 @@
 		The datepicker module code is datepicker.js in core.
 	--%>
 	<c:when test="${mode eq 'separated'}">
+		<c:set var="yearCols" value="col-sm-5 col-md-4" />
+		<c:if test="${disableRowHack eq true}">
+			<c:set var="yearCols" value="col-sm-3" />
+		</c:if>
+
 		<div class="dateinput_container" data-provide="dateinput">
 			<div class="row dateinput-tripleField withDatePicker">
-				<div class="col-xs-4 col-sm-3 col-md-3 ">
+				<div class="col-xs-4 col-sm-3 ">
 					<field_v2:input type="text" size="2" className="dateinput-day dontSubmit ${className}"  xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="${required}" requiredMessage="Please enter the day" additionalAttributes=" data-rule-range='1,31' data-msg-range='Day must be between 1 and 31.'" />
 				</div>
-				<div class="col-xs-4 col-sm-3 col-md-3 row-hack"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
+				<div class="col-xs-4 col-sm-3 <c:if test="${not disableRowHack eq true}"> row-hack</c:if>"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
 					<field_v2:input size="2" type="text" className="dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="${required}" requiredMessage="Please enter the month" additionalAttributes=" data-rule-range='1,12' data-msg-range='Month must be between 1 and 12.'" />
 				</div>
-				<div class="col-xs-4 col-sm-5 col-md-4">
+				<div class="col-xs-4 ${yearCols}">
 					<field_v2:input size="4" type="text" className="dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="${required}" requiredMessage="Please enter the year" additionalAttributes=" data-rule-range='1000,9999' data-msg-range='Year must be four numbers e.g. 2014.'" />
 				</div>
-				<div class="hidden-xs col-sm-3 col-md-3 row-hack"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
+				<div class="hidden-xs col-sm-3 <c:if test="${not disableRowHack eq true}"> row-hack</c:if>"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
 					<button tabindex="-1" id="${name}_button" type="button" class="input-group-addon-button date form-control">
 						<i class="icon-calendar"></i>
 					</button>
@@ -153,7 +165,7 @@
 				<span class="input-group-addon"><i class="icon-calendar"></i></span>
 				<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" <c:if test="${not empty minDate}">min="${minDate}"</c:if> <c:if test="${not empty maxDate}">max="${maxDate}"</c:if> placeHolder="YYYY-MM-DD">
 			</div>
-			<field_v2:validatedHiddenField xpath="${xpath}" className="serialise hidden-datepicker" title="Please enter the ${title} date" additionalAttributes=" required ${calAdditionalAttributes} ${dateEurRule} ${minDateEurRule} ${maxDateEurRule} data-provide='datepicker' data-date-mode='${mode}' ${minDateAttribute} ${maxDateAttribute} " />
+			<field_v2:validatedHiddenField xpath="${xpath}" className="serialise hidden-datepicker" title="Please enter the ${title} date" additionalAttributes=" required ${calAdditionalAttributes} ${dateEurRule} ${minDateEurRule} ${maxDateEurRule} data-provide='datepicker' data-date-mode='${mode}' ${minDateAttribute} ${maxDateAttribute} " disableErrorContainer="${disableErrorContainer}" />
 		</div>
 	</c:when>
 	<%-- A fallback warning if someone typo'd the mode name --%>

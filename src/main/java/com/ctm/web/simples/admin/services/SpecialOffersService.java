@@ -1,5 +1,6 @@
 package com.ctm.web.simples.admin.services;
 
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.transaction.model.TransactionDetail;
@@ -22,7 +23,10 @@ public class SpecialOffersService {
 
 	private final SpecialOffersDao specialOffersDao = new SpecialOffersDao();
 	private final SpecialOffersHelper specialOffersHelper = new SpecialOffersHelper();
+	private final IPAddressHandler ipAddressHandler;
+
 	public SpecialOffersService() {
+		ipAddressHandler =  IPAddressHandler.getInstance();
 	}
 
 	public List<SpecialOffers> getAllOffers()  {
@@ -49,7 +53,7 @@ public class SpecialOffersService {
 	public SpecialOffers updateSpecialOffers(HttpServletRequest request,AuthenticatedData authenticatedData)  {
 		try {
 			SpecialOffers specialOffers = new SpecialOffers();
-			final String ipAddress = request.getRemoteAddr();
+			final String ipAddress = ipAddressHandler.getIPAddress(request);
 			specialOffers = RequestUtils.createObjectFromRequest(request, specialOffers);
 			final String userName = authenticatedData.getUid();
 			return specialOffersDao.updateSpecialOffers(specialOffers,userName,ipAddress);
@@ -63,7 +67,7 @@ public class SpecialOffersService {
 			SpecialOffers specialOffers = new SpecialOffers();
 			specialOffers = RequestUtils.createObjectFromRequest(request, specialOffers);
 			final String userName = authenticatedData.getUid();
-			final String ipAddress = request.getRemoteAddr();
+			final String ipAddress = ipAddressHandler.getIPAddress(request);
 			
 			return specialOffersDao.createSpecialOffers(specialOffers,userName,ipAddress);
 		} catch (DaoException d) {
@@ -76,8 +80,9 @@ public class SpecialOffersService {
 		PageSettings pageSettings = SettingsService.getPageSettings(styleCodeId, "HEALTH");
 		int verticalId = pageSettings.getVertical().getId();
 		TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
-		TransactionDetail transactionDetails = transactionDetailsDao.getTransactionDetailByXpath(healthPriceService.getTransactionId(), "health/situation/state");
-		return specialOffersDao.getSpecialOffers(providerId, styleCodeId, applicationDate, transactionDetails.getTextValue(), verticalId);
+		TransactionDetail transactionDetailsState = transactionDetailsDao.getTransactionDetailByXpath(healthPriceService.getTransactionId(), "health/situation/state");
+        TransactionDetail transactionDetailsCoverType = transactionDetailsDao.getTransactionDetailByXpath(healthPriceService.getTransactionId(), "health/situation/coverType");
+		return specialOffersDao.getSpecialOffers(providerId, styleCodeId, applicationDate, transactionDetailsState.getTextValue(), transactionDetailsCoverType.getTextValue(), verticalId);
 	}
 
 
@@ -86,7 +91,7 @@ public class SpecialOffersService {
 		try {
 			Date serverDate = ApplicationService.getApplicationDate(request);
 			final String userName = authenticatedData.getUid();
-			final String ipAddress = request.getRemoteAddr();
+			final String ipAddress = ipAddressHandler.getIPAddress(request);
 			return specialOffersDao.deleteSpecialOffers(request.getParameter("offerId"),serverDate,userName,ipAddress);
 		} catch (DaoException d) {
 			throw new RuntimeException(d);

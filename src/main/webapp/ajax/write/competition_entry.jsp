@@ -1,5 +1,5 @@
 <%@page import="java.util.Date"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="logger" value="${log:getLogger('jsp.competition_entry')}" />
@@ -43,11 +43,6 @@
 	<c:when test="${not empty param.secret and param.secret == 'C7F9FILY0qe02X98rXCH'}">
 		<c:set var="competition_id" value="${19}" />
 		<c:set var="source" value="MayHealthPromo2015$1000" />
-	</c:when>
-	<%-- PRJWHL-261 YAHOO --%>
-	<c:when test="${not empty param.secret and param.secret == '1NjmJ507mwUnX81Lj96b'}">
-		<c:set var="competition_id" value="${20}" />
-		<c:set var="source" value="YHOO-MayPromo2015$1000" />
 	</c:when>
 	<%-- HLT-1737 --%>
 	<c:when test="${not empty param.secret and param.secret == '1F6F87144375AD8BAED4D53F8CF5B'}">

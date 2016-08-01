@@ -4,7 +4,6 @@
 <%@ attribute name="item" required="true" type="com.ctm.web.core.results.model.ResultsTemplateItem" %>
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.benefits')}" />
 
-${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 <c:if test="${item.isShortlistable()}">
 
 	<%-- Get the correct cell width for sections v. categories --%>
@@ -12,14 +11,12 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 		<c:when test="${item.getType() == 'section'}">
 			<c:choose>
 				<c:when test="${item.getClassName() == 'hospitalCover'}">
-					<%--<c:set var="colWidthValue" value="custom-col-sm" />--%>
-					<c:set var="colContent">Hospital cover gives you the power to choose amongst a fund's participating hospitals, choose your own doctor and help you avoid public hospital waiting lists.</c:set>
+					<c:set var="colContent">Hospital cover gives you the power to choose your own doctor at any one of the fund's partner hospitals allowing you avoid public hospital waiting lists.</c:set>
 					<c:set var="coverType">Hospital</c:set>
 					<%-- Hospital needs to loop one more time because the first child of hospital is not shortListAable --%>
 					<c:set var="loopCount" value="5" />
 				</c:when>
 				<c:otherwise>
-					<%--<c:set var="colWidthValue" value="custom-col-lg" />--%>
 					<c:set var="colContent">Extras cover gives you money back for day to day services like dental, optical and physiotherapy.</c:set>
 					<c:set var="coverType">Extras</c:set>
 					<c:set var="loopCount" value="4" />
@@ -32,9 +29,9 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 	</c:choose>
 
 	<c:if test="${coverType == 'Hospital'}">
-	<form_v2:fieldset legend="" postLegend="" className="j13abtest hidden-sm hidden-md hidden-lg" >
+	<form_v2:fieldset legend="" postLegend="" className="tieredHospitalCover hidden-sm hidden-md hidden-lg" >
 		<div class="title">
-			<h3>Choose Your Hospital Cover</h3>
+			<h2 class="ignore">Choose Your Hospital Cover</h2>
 			<p>${colContent}</p>
 		</div>
 		<div class="Hospital_container">
@@ -46,16 +43,14 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 				</div>
 				<div class="nonComprehensiveCover">
 					or
-					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customised">Customise your cover</a>
+					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customise">Customise your cover</a>
 					<a href="javascript:;" class="benefit-category limited" data-category="limited">No thanks, I only want limited hospital cover</a>
 				</div>
 			</div>
 		</div>
 	</form_v2:fieldset>
 	</c:if>
-	<c:set var="fieldsetClass">
-		<c:if test='${newBenefitsLayoutSplitTest eq true}'>j13abtest</c:if>
-	</c:set>
+	<c:set var="fieldsetClass">tieredHospitalCover</c:set>
 	<form_v2:fieldset legend="" postLegend="" className="${fieldsetClass}" >
 		<div class="scrollable row">
 			<div class="benefits-list col-sm-12">
@@ -64,9 +59,12 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 						<c:set var="category">${item.getShortlistKey()}</c:set>
 						<c:choose>
 							<c:when test="${item.getType() == 'section'}">
-								<div class="title hidden-xs">
-									<h3>Choose Your ${item.getName()}</h3>
-									<p>${colContent}</p>
+								<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
+									<h2 class="ignore">Choose Your ${item.getName()}</h2>
+									<p class="hidden-xs">${colContent}</p>
+									<c:if test="${item.getName() eq 'Extras Cover'}">
+										<p><strong>Select the benefits below to add extras specific to your needs</strong></p>
+									</c:if>
 								</div>
 								<c:if test="${category eq 'Hospital'}">
 								<div class="hospitalCoverToggles row hidden-xs">
@@ -75,16 +73,24 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="top">top</a>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="medium">medium</a>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="basic">basic</a>
-                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="customised">customise</a>
+                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="customise">customise</a>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="limited">limited</a>
                                 </div>
 
                                     <div class="coverExplanationContainer">
                                     <c:set var="tieredBenefits" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "coverOptions")}' />
                                     <c:forEach items="${tieredBenefits.getSupplementary()}" var="tieredBenefitsContent" >
-                                        <div class="<c:if test="${tieredBenefitsContent.getSupplementaryKey() != 'midCover'}">hidden</c:if> coverExplanation ${tieredBenefitsContent.getSupplementaryKey()}">
-                                                ${tieredBenefitsContent.getSupplementaryValue()}
-                                        </div>
+										<c:if test="${!fn:endsWith(tieredBenefitsContent.getSupplementaryKey(), 'XS')}">
+											<div class="<c:if test="${tieredBenefitsContent.getSupplementaryKey() != 'midCover'}">hidden</c:if> coverExplanation ${tieredBenefitsContent.getSupplementaryKey()}">
+												<div class="hidden-xs">${tieredBenefitsContent.getSupplementaryValue()}</div>
+												<c:set var="xsLabel" value="${tieredBenefitsContent.getSupplementaryKey()}XS" />
+												<c:forEach items="${tieredBenefits.getSupplementary()}" var="tieredBenefitsContentXS" >
+													<c:if test="${tieredBenefitsContentXS.getSupplementaryKey() eq xsLabel}">
+														<div class="visible-xs">${tieredBenefitsContentXS.getSupplementaryValue()}</div>
+													</c:if>
+												</c:forEach>
+											</div>
+										</c:if>
                                     </c:forEach>
                                     </div>
                                     </c:if>
@@ -120,7 +126,7 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 
 											<%--<health_v3:benefitsItem item="${selectedValue}" />--%>
 											<div class="categoriesCell ${colWidthValue} short-list-item ${selectedValue.getClassString()} ${selectedValue.getShortlistKey()}_container">
-											<!-- This is a duplicate of the row above and needs to be cleaned up in the .less-->
+											<%-- This is a duplicate of the row above and needs to be cleaned up in the .less--%>
 											<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" customAttribute="data-attach=true" />
 											</div>
 										</c:if>
@@ -133,32 +139,5 @@ ${logger.warn('Item. {}',log:kv('item',item.getName() ), error)}
 			</div>
 		</div>
 	</form_v2:fieldset>
-
-		<%-- Hospital/Extra only side bar --%>
-		<c:if test="${item.getType() == 'section'}">
-			<div class="custom-col-sm benefits-side-bar sidebar${coverType} section">
-				<div class="sidebar-wrapper">
-					<div class="title">
-						<h4>Interested in ${coverType} cover?</h4>
-						<p>${colContent}</p>
-					</div>
-					<c:if test="${item.hasShortlistableChildren()}">
-						<ul class="top-5-benefits">
-							<c:forEach items="${item.getChildren()}" var="selectedValue" end="${loopCount}">
-								<c:if test="${selectedValue.isShortlistable()}">
-
-									<li class="${selectedValue.getClassString()}">${selectedValue.getName()}
-										<field_v2:help_icon helpId="${selectedValue.getHelpId()}" position="${helpPosition}" tooltipClassName="${helpClassName}" />
-									</li>
-								</c:if>
-							</c:forEach>
-						</ul>
-					</c:if>
-					<div class="footer">
-						<a class="btn btn-edit" href="javascript:;">Add ${coverType} Cover</a>
-					</div>
-				</div>
-			</div>
-		</c:if>
 
 </c:if>

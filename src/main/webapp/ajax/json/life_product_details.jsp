@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=UTF-8"
+<%@ page language="java" contentType="application/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
@@ -6,6 +6,7 @@
 
 <c:set var="tranId" value="${data.current.transactionId}" />
 <c:set var="continueOnValidationError" value="${false}" />
+<c:set var="vertical">${param.vertical}</c:set>
 
 <%-- Build XML required for Life Broker request --%>
 <c:set var="requestXML">

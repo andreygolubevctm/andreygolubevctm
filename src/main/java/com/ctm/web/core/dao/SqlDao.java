@@ -27,6 +27,11 @@ public class SqlDao<T> {
 		this.context = SimpleDatabaseConnection.JDBC_CTM;
 	}
 
+    public SqlDao(SimpleDatabaseConnection databaseConnection, String context) {
+        this.databaseConnection = databaseConnection;
+        this.context = context;
+    }
+
     /**
      * Run a sequence of updates in a single transaction
      * If any transactions fail all transactions will be rolled back

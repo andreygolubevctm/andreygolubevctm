@@ -43,12 +43,10 @@
 		<init-param>
 			<param-name>jaxrs.serviceClasses</param-name>
 			<param-value>com.ctm.web.car.router.CarRouter,
-				com.ctm.web.car.router.RegoLookupRouter,
 				com.ctm.web.health.router.HealthQuoteRouter,
 				com.ctm.web.health.router.HealthApplicationRouter,
 				com.ctm.web.health.router.HealthAuthorisePaymentRouter,
 				com.ctm.web.health.router.HealthRegisterPaymentRouter
-
 			</param-value>
 		</init-param>
 		<init-param>
@@ -119,7 +117,7 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
-	<!-- Error and Security Failure Handler Pages -->
+	<!-- Error and Security Failure Handler Pages  -->
 
 	<error-page>
 		<error-code>400</error-code>

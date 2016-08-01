@@ -1,10 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*" %>
+<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.write.setApplicationDate')}" />
 
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
-<c:set var="remoteAddr" value="${pageContext.request.remoteAddr}" />
+<c:set var="remoteAddr" value="${ipAddressHandler.getIPAddress(pageContext.request)}" />
 
 <c:if test="${environmentService.getEnvironmentAsString() == 'NXS' or remoteAddr == '127.0.0.1' or remoteAddr == '0.0.0.0' or remoteAddr == '0:0:0:0:0:0:0:1' or fn:startsWith(remoteAddr, '192.168.') or (not empty(param.bucket) and param.bucket == '1') or (not empty(param.preload) and param.preload == '2') }">
 
@@ -14,5 +16,5 @@
 
 	<c:set var="retrieveDate" value="${applicationService.getApplicationDateIfSet(pageContext.getRequest())}" />
 	${logger.debug('APPLICATION DATE CHANGED. {}',log:kv('retrieveDate',retrieveDate ) )}
-	${retrieveDate}
+{"activeApplicationDate":"${retrieveDate}"}
 </c:if>

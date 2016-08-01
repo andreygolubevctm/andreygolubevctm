@@ -369,7 +369,7 @@
 	function onAccessoriesFormRendered() {
 
 		$('.nonStandardAccessoryCheckbox').on('change', function(){
-			var $rowCheckbox = $(this),
+			var $rowCheckbox = $(this).find(":input").first(),
 				itemIndex = $rowCheckbox.attr('itemIndex'),
 				$relatedPriceSelect = $('select[itemIndex="'+itemIndex+'"]');
 
@@ -380,7 +380,7 @@
 				$relatedPriceSelect.prop('disabled', true);
 				$relatedPriceSelect.val('');
 			}
-				});
+		});
 
 		// Watch the dropdowns to remove any errors that may have been added previously, or add an error if the user selects nothing.
 		$('.nonStandardAccessorySelect').on('change', function() {
@@ -448,7 +448,7 @@
 		for(var i=0; i<data.length; i++) {
 			var obj = data[i];
 			var id = 'tmp_fact_' + i + '_chk';
-			var name = 'tmp_quote_opts_opt' + ("0" + i).slice(-2);
+			var name = 'tmp_quote_opts_opt' + ("00" + i).slice(-3);
 			var chkbox = $('<input/>',{
 					type:	'checkbox',
 					name:	name,
@@ -579,14 +579,14 @@
 					var pos = String(parseInt(i.substring(3), 10));
 					var name = "tmp_fact_" + pos + "_chk";
 					var fItem = getFactoryOptionByIndex(pos);
-					fItem.position = ("0" + pos).slice(-2);
+					fItem.position = ("00" + pos).slice(-3);
 
 					if(fItem !== false) {
 						savedSelections.factory.push("tmp_fact_" + pos + "_chk");
 						$(elements.factory.inputs).append(
 							getInputHTML({
 								id:		name.slice(4),
-								name:	"quote_opts_opt" + ("0" + pos).slice(-2),
+								name:	"quote_opts_opt" + ("00" + pos).slice(-3),
 								value:	fItem.code
 							})
 						);
@@ -733,7 +733,7 @@
 			var accessoriesToSave = [];
 			var validationPasses = true;
 			// Get all the selected items, validate then and create the accessory object.
-			$('.nonStandardAccessoryCheckbox:checked').each(function () {
+			$('.nonStandardAccessoryCheckbox input:checked').each(function () {
 				// We need to use this element as a jQuery object.
 				var checkedBox = $(this);
 				var itemIndex = checkedBox.attr('itemIndex');

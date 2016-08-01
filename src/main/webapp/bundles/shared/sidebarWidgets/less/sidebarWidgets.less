@@ -1,0 +1,83 @@
+/*---
+title:   Sidebar: Filters
+section: Results v4
+---
+
+This file contains styles for sidebar widgets. The sidebar widgets containers are controlled by bootstrap columns
+
+NOTE: The purpose is ONLY to style generic containers, not to get stuck into specific styles for specific verticals.
+ * sidebar-widget-contained: a box style widget with border, background color, inner padding and box shadow.
+ * sidebar-widget-uncontained: a container with no margins or padding to allow a full width image for example.
+
+#### Example HTML:
+
+<pre><code>
+&lt;div class="col-xs-12 sidebar-widget sidebar-widget-contained"&gt;
+
+&lt;/div&gt;
+</code></pre>
+*/
+
+/** Note: No padding or borders by default
+*/
+.sidebar-widget {
+  margin-bottom: 20px;
+  .sidebar-title {
+    font-family: @font-family-theme-bold;
+    font-size: @font-size-xlarge;
+    color: @theme-tertiary;
+  }
+
+  .sidebar-subtitle-container {
+    margin-top: 20px;
+    margin-bottom: 12px;
+    position: relative;
+
+    .heading-text {
+      font-family: @font-family-theme-bold;
+      float: left;
+      font-size: (@font-size-large - 2);
+      color: #000;
+    }
+    .helper-text {
+      float: right;
+      font-size: @font-size-small;
+      color: @gray-slight-dark;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+    .clearfix();
+  }
+}
+
+/** Optional Classes **/
+.sidebar-widget-padded {
+  padding: 20px 15px;
+}
+
+.sidebar-widget-small-pad {
+  padding: 5px 10px;
+}
+.sidebar-widget-dropshadow {
+  box-shadow: 1px 1px 0 0 #DBDBDC;
+}
+
+/**
+Contained sidebar box, with padding, border, box-shadow.
+*/
+.sidebar-widget-contained {
+  background-color: #fff;
+  border: 1px solid @border-color;
+}
+
+/**
+Uncontained widget: if its just a full width image for instance */
+.sidebar-widget-uncontained {
+  overflow: hidden;
+  width: 100%;
+}
+
+.sidebar-widget-attached {
+  margin-top: 0;
+}

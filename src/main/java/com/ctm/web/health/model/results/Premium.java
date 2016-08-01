@@ -1,5 +1,8 @@
 package com.ctm.web.health.model.results;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({"weekly", "fortnightly", "monthly", "quarterly", "halfyearly", "annually"})
 public class Premium {
 
     private Price fortnightly;

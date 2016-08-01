@@ -4,6 +4,8 @@ import com.ctm.web.core.resultsData.model.Result;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.Map;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class HealthQuoteResult extends Result {
 
@@ -12,6 +14,10 @@ public class HealthQuoteResult extends Result {
     private Premium premium;
 
     private Premium altPremium;
+
+    private Map<String, Premium> paymentTypePremiums;
+
+    private Map<String, Premium> paymentTypeAltPremiums;
 
     private JsonNode custom;
 
@@ -95,5 +101,21 @@ public class HealthQuoteResult extends Result {
 
     public void setInfo(Info info) {
         this.info = info;
+    }
+
+    public Map<String, Premium> getPaymentTypePremiums() {
+        return paymentTypePremiums;
+    }
+
+    public void setPaymentTypePremiums(Map<String, Premium> paymentTypePremiums) {
+        this.paymentTypePremiums = paymentTypePremiums;
+    }
+
+    public Map<String, Premium> getPaymentTypeAltPremiums() {
+        return paymentTypeAltPremiums;
+    }
+
+    public void setPaymentTypeAltPremiums(Map<String, Premium> paymentTypeAltPremiums) {
+        this.paymentTypeAltPremiums = paymentTypeAltPremiums;
     }
 }

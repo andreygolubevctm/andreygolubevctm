@@ -11,11 +11,11 @@
         $(document).ready(function () {
             $("[data-defer-src]").each(function allDeferSrcLoadLoop() {
                 var $this = $(this);
-                var targetSrc = $this.attr('data-defer-src');
+                var targetSrc = $this.attr('data-defer-src') || "";
 
                 // Little kludge to ensure that images are loaded absolutely.
                 // Used due to images previously being loaded relatively to subfolders and getting 404s
-                if(targetSrc.charAt(0) !== '/' && !targetSrc.startsWith('http')) {
+                if (targetSrc.charAt(0) !== '/' && targetSrc.indexOf('http',0) !== 0) {
                     targetSrc = '/' + meerkat.site.urls.context + targetSrc;
                 }
 

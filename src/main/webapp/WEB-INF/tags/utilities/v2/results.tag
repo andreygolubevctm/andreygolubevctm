@@ -40,7 +40,7 @@
             Costs and savings include GST & are effective as at <fmt:formatDate value="${now}" pattern="dd/MM/yyyy"/>.
         </p>
         <core_v1:clear/>
-        <a href="javascript:;" class="btn btn-primary btn-change-type"> Change fuel type</a>
+        <a href="javascript:;" class="btn btn-primary btn-change-type"> Change energy type</a>
         <utilities_v2:change_type />
 
         <div class="featuresFooterPusher"></div>
@@ -114,8 +114,8 @@
                                 {{ if (typeof obj.discountDetails !== 'undefined' && obj.discountDetails.length > 0) { }}
                                 <div class="promotion small">
                                     <strong>Discounts:</strong>
-                                    {{ if(obj.discountDetails.length > 190) { }}
-                                    {{= obj.discountDetails.substring(0, 190) }} <span title="Click More Info to see extra details">...</span>
+                                    {{ if(obj.discountDetails.length > 150) { }}
+                                    {{= obj.discountDetails.substring(0, 150) }}... <a class="dialogPop" data-content="{{= obj.discountDetails }}" >Show T&Cs</a>
                                     {{ } else { }}
                                     {{= obj.discountDetails }}
                                     {{ } }}
@@ -149,7 +149,7 @@
                                 <div class="promotion small">
                                     <strong>Discounts:</strong>
                                     {{ if(obj.discountDetails.length > 150) { }}
-                                    {{= obj.discountDetails.substring(0, 150) }} <span title="Click More Info to see extra details">...</span>
+                                    {{= obj.discountDetails.substring(0, 150) }}... <a class="dialogPop" data-content="{{= obj.discountDetails }}" >Show T&Cs</a>
                                     {{ } else { }}
                                     {{= obj.discountDetails }}
                                     {{ } }}

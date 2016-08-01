@@ -30,7 +30,7 @@
 		if (typeof euroDate === "undefined" || euroDate === "") {
 			earliestDate = new Date();
 		} else {
-			earliestDate = meerkat.modules.utils.returnDate(euroDate);
+			earliestDate = meerkat.modules.dateUtils.returnDate(euroDate);
 		}
 
 		// creating the base date from the exclusion
@@ -44,8 +44,8 @@
 			foundMatch = _.contains(daysMatch, earliestDate.getDate());
 			i++;
 		}
-		$policyDateHiddenField.val(meerkat.modules.utils.returnDateValue(earliestDate));
-		$message.text( 'Your payment will be deducted on: ' + healthFunds._getNiceDate(earliestDate) );
+		$policyDateHiddenField.val(meerkat.modules.dateUtils.dateValueServerFormat(earliestDate));
+		$message.text( 'Your payment will be deducted on: ' + meerkat.modules.dateUtils.dateValueLongFormat(earliestDate) );
 
 	}
 	/*
@@ -55,28 +55,30 @@
 	 * Param excludeWeekend, true to exclude weekend from the buffer, false for otherwise
 	 * Param isBank, true for bank payment, otherwise cc payment
 	 */
-	function populateFuturePaymentDays(euroDate, exclusion, excludeWeekend, isBank) {
+	function populateFuturePaymentDays(euroDate, exclusion, excludeWeekend, isBank, maxDayOfTheMonth) {
 		var startDate,
 			minimumDate,
-			childDateOriginal,
-			childDateNew,
 			$paymentDays;
 
 		if (typeof euroDate === "undefined" || euroDate === "") {
 			startDate = new Date(); // default to use today
 		} else {
-			startDate = meerkat.modules.utils.returnDate(euroDate);
+			startDate = meerkat.modules.dateUtils.returnDate(euroDate);
 			}
 
 		if (typeof exclusion === "undefined") exclusion = 7; // default a week buffer
 		if (typeof excludeWeekend === "undefined") excludeWeekend = false; // default not to exclude weekend
 		if (typeof isBank === "undefined") isBank = true; // default as bank payment
 
+        var baseId = "";
+
 		if (isBank) {
-			$paymentDays = $('#health_payment_bank_paymentDay');
+            baseId = '#health_payment_bank_paymentDay';
 		} else {
-			$paymentDays = $('#health_payment_credit_paymentDay');
-			}
+            baseId = '#health_payment_credit_paymentDay';
+        }
+
+        $paymentDays = $(baseId);
 
 		minimumDate = new Date(startDate);
 		if (excludeWeekend) {
@@ -84,23 +86,13 @@
 		} else {
 			minimumDate.setDate(minimumDate.getDate() + exclusion);
 		}
-		
-		$paymentDays.children().each(function playWithChildren () {
-			if ($(this).val() !== '') {
-				childDateOriginal = new Date($(this).val());
-				childDateNew = compareAndAddMonth(childDateOriginal, minimumDate);
-				$(this).val(meerkat.modules.utils.returnDateValue(childDateNew));
-			}
-		});
-	}
-
-	function compareAndAddMonth(oldDate, minDate) {
-		if (oldDate < minDate){
-			var newDate = new Date(oldDate.setMonth(oldDate.getMonth() +  1 ));
-			return compareAndAddMonth(newDate, minDate);
-		}else{
-			return oldDate;
-		}
+        var html;
+        if (_.isNumber(maxDayOfTheMonth)) {
+            html = meerkat.modules.healthPaymentDay.paymentDaysOfTheMonth(minimumDate, maxDayOfTheMonth);
+        } else {
+            html = meerkat.modules.healthPaymentDay.paymentDays( minimumDate );
+        }
+		$paymentDays.html(html);
 	}
 
 	meerkat.modules.register("healthPaymentDate", {

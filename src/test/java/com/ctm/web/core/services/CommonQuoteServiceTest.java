@@ -53,13 +53,21 @@ public class CommonQuoteServiceTest {
     @Mock
     private ServiceConfiguration serviceConfiguration;
 
+    @Mock
+    private RestClient restClient;
+    @Mock
+    private ServiceConfigurationServiceBean serviceConfigurationService;
+
+    private EnvironmentService.Environment environment = EnvironmentService.Environment.LOCALHOST;
+
     @Before
     public void setup() throws Exception {
         initMocks(this);
         PowerMockito.mockStatic(ProviderService.class);
 
         EnvironmentService.setEnvironment("localhost");
-        commonQuoteService = spy(new CommonQuoteService(providerFilterDao, objectMapper) {});
+        commonQuoteService = spy(new CommonQuoteService( providerFilterDao,
+        restClient, serviceConfigurationService, environment, objectMapper) {});
     }
 
     @Test(expected = RouterException.class)
@@ -159,10 +167,11 @@ public class CommonQuoteServiceTest {
 
     @Test(expected = RouterException.class)
     public void testSetFilterNXS() throws Exception {
+        commonQuoteService = spy(new CommonQuoteService( providerFilterDao,
+                restClient, serviceConfigurationService, EnvironmentService.Environment.NXS, objectMapper) {});
         ProviderFilter providerFilter = mock(ProviderFilter.class);
         when(providerFilter.getProviderKey()).thenReturn("");
         when(providerFilter.getAuthToken()).thenReturn("");
-        EnvironmentService.setEnvironment("nxs");
         commonQuoteService.setFilter(providerFilter);
     }
 
@@ -178,7 +187,7 @@ public class CommonQuoteServiceTest {
         when(simpleConnection.get(requestUrl)).thenReturn("response message");
         when(objectMapper.readValue(anyString(), any(JavaType.class))).thenReturn(responseObject);
 
-        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
+        doReturn(simpleConnection).when(restClient).setupSimplePOSTConnection(any(QuoteServiceProperties.class), anyString());
         doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
 
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);
@@ -201,7 +210,7 @@ public class CommonQuoteServiceTest {
         when(quoteServiceProperties.getServiceUrl()).thenReturn("http://anyURL");
         when(simpleConnection.get(anyString())).thenReturn(null);
 
-        doReturn(simpleConnection).when(commonQuoteService).setupSimpleConnection(any(QuoteServiceProperties.class), anyString());
+        doReturn(simpleConnection).when(restClient).setupSimplePOSTConnection(any(QuoteServiceProperties.class), anyString());
         doReturn(quoteServiceProperties).when(commonQuoteService).getQuoteServiceProperties("anyService", brand, verticalType.getCode(), Optional.empty());
 
         final Object response = commonQuoteService.sendRequest(brand, verticalType, "anyService", Endpoint.QUOTE, request, payload, Object.class);
@@ -256,6 +265,8 @@ public class CommonQuoteServiceTest {
 
     @Test
     public void testQuoteServicePropertiesWithNoEnvironmentOverride() throws Exception {
+        commonQuoteService = spy(new CommonQuoteService( providerFilterDao,
+                restClient, serviceConfigurationService, EnvironmentService.Environment.PRO, objectMapper) {});
         Brand brand = mock(Brand.class);
         Vertical.VerticalType verticalType = Vertical.VerticalType.TRAVEL;
         doReturn(serviceConfiguration).when(commonQuoteService).getServiceConfiguration("anyService", brand, verticalType.getCode());

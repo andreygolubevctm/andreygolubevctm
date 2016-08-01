@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.NoSuchElementException;
@@ -121,9 +122,12 @@ public class DateUtils {
         return new java.sql.Date(date.getTime());
     }
 
+    public static java.time.LocalDateTime toLocalDateTime(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
 
-    public static java.util.Date getUtilDate(java.sql.Date date) throws SQLException {
-        return date != null ? new java.util.Date(date.getTime()) : null;
+    public static java.time.LocalDate getUtilDate(java.sql.Date date) throws SQLException {
+        return date != null ? date.toLocalDate() : null;
     }
 
 

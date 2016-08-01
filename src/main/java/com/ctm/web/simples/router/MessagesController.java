@@ -8,6 +8,7 @@ import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.simples.model.Message;
@@ -40,10 +41,11 @@ public class MessagesController extends CommonQuoteRouter {
     private final SimplesMessageService simplesMessageService;
 
     @Autowired
-    public MessagesController(final SessionDataServiceBean sessionDataServiceBean, final InInScheduleService inInScheduleService) {
-        super(sessionDataServiceBean);
+    public MessagesController(final SessionDataServiceBean sessionDataServiceBean,
+                              final InInScheduleService inInScheduleService, IPAddressHandler ipAddressHandler) {
+        super(sessionDataServiceBean, ipAddressHandler);
         this.inInScheduleService = inInScheduleService;
-        this.simplesMessageService = new SimplesMessageService();
+        this.simplesMessageService = new SimplesMessageService(ipAddressHandler);
     }
 
     @RequestMapping(

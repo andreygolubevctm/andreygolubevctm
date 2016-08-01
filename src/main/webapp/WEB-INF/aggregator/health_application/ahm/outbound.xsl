@@ -26,6 +26,13 @@
 		<xsl:value-of select="$year" />
 	</xsl:template>
 
+	<xsl:variable name="todays_date">
+        <xsl:call-template name="format_date_to_slashes">
+            <xsl:with-param name="date" select="$today" />
+        </xsl:call-template>
+	</xsl:variable>
+
+
 	<xsl:template name="title_code">
 		<xsl:param name="title" />
 		<xsl:choose>
@@ -163,12 +170,15 @@
 		<xsl:value-of select="substring(/health/payment/details/start,4,2)" />
 		<xsl:value-of select="substring(/health/payment/details/start,1,2)" />
 	</xsl:variable>
-	<xsl:variable name="campaign_start">20160226</xsl:variable>
-	<xsl:variable name="campaign_end">20160306</xsl:variable>
 
+	<!-- Campaign Active Dates -->
+	<xsl:variable name="campaign_start">20160412</xsl:variable>
+	<xsl:variable name="campaign_end">20160430</xsl:variable>
+
+	<!-- Determine Campaign Code -->
 	<xsl:variable name="campaign_id">
 		<xsl:choose>
-			<xsl:when test="$valid_campaign_product = 1 and $start_date &gt;= $campaign_start and $start_date &lt;= $campaign_end">7107</xsl:when>
+			<xsl:when test="$valid_campaign_product = 1 and $start_date &gt;= $campaign_start and $start_date &lt;= $campaign_end">7445</xsl:when>
 			<xsl:otherwise>7000</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
@@ -488,7 +498,6 @@
 					<!-- WX01 – Fund control in Genero -->
 					<!-- Defaults to 1 -->
 					<b:FundId>1</b:FundId>
-
 					<!-- Income Tier. Data type: A string that represents Integer (2) -->
 					<!-- WX42 Rebate Definition in Genero: 0, 1, 2, 3 -->
 					<b:IncomeTier><xsl:value-of select="healthCover/income" /></b:IncomeTier>
@@ -595,8 +604,9 @@
 					<b:StreetPC><xsl:value-of select="$postCode" /></b:StreetPC>
 					<b:StreetState><xsl:value-of select="$state" /></b:StreetState>
 					<b:StreetSuburb><xsl:value-of select="$suburbName" /></b:StreetSuburb>
-					<SubFundId>1</SubFundId>
-					<RateCode>0</RateCode>
+					<b:RateCode>0</b:RateCode>
+					<b:SubFundId>1</b:SubFundId>
+					<b:TierEffDte><xsl:value-of select="$todays_date" /></b:TierEffDte>
 				</wsEnrolMemberRequest>
 				</EnrolMember>
 			</s:Body>

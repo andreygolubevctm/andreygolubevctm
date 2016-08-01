@@ -4,6 +4,7 @@ import com.ctm.web.core.leadService.model.LeadRequest;
 import com.ctm.web.core.leadService.model.LeadStatus;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
@@ -19,6 +20,11 @@ import static com.ctm.web.core.leadService.model.LeadStatus.INBOUND_CALL;
 public abstract class LeadService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LeadService.class);
     public static final String LAST_LEAD_SERVICE_VALUES = "LAST_LEAD_SERVICE_VALUES";
+    protected final IPAddressHandler ipAddressHandler;
+
+    public LeadService(IPAddressHandler ipAddressHandler) {
+        this.ipAddressHandler = ipAddressHandler;
+    }
 
     /**
      * Determines if we have the fields required for sending
@@ -67,7 +73,7 @@ public abstract class LeadService {
     public void sendLead(final int verticalId, final Data data, final HttpServletRequest request, final String transactionStatus) {
         if (!SessionUtils.isCallCentre(request.getSession()) || INBOUND_CALL.name().equals(transactionStatus)) {
             try {
-                ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", verticalId, 0);
+                ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", verticalId);
 
                 Boolean enabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
                 String url = serviceConfig.getPropertyValueByKey("url", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);
@@ -82,7 +88,7 @@ public abstract class LeadService {
 
                     leadData.setStatus(LeadStatus.valueOf(transactionStatus));
 
-                    leadData.setClientIP(request.getRemoteAddr());
+                    leadData.setClientIP(ipAddressHandler.getIPAddress(request));
 
                     String previousValues = (String) request.getSession().getAttribute(LAST_LEAD_SERVICE_VALUES);
                     String currentValues = leadData.getValues();

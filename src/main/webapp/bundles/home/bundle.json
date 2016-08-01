@@ -3,10 +3,12 @@
   "dependencies": [
     "shared/journeyEngine/v2",
     "plugins/scrollTo",
-    "shared/results",
+    "shared/results/v2",
+    "shared/results/v3",
     "shared/features",
     "shared/validation",
     "core",
+    "shared/forms/v1",
     "shared/addressLookup",
     "shared/placeholder",
     "shared/datepicker",
@@ -20,6 +22,7 @@
     "shared/saveQuote",
     "shared/resultsRankings",
     "shared/dropdownInteractive",
-    "shared/leadFeed"
+    "shared/leadFeed",
+    "shared/serverSideValidationOutput"
   ]
 }

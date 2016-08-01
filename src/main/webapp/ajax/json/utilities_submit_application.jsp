@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=UTF-8"
+<%@ page language="java" contentType="application/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
@@ -19,9 +19,6 @@
 <c:set var="serviceResponse" value="${utilitiesApplicationService.validate(pageContext.request, data)}" />
 
 <c:choose>
-	<c:when test="${empty data.utilities.application.thingsToKnow.termsAndConditions != 'Y'}">
-		ERROR - NO TERMS AND CONDITIONS
-	</c:when>
 	<c:when test="${!utilitiesApplicationService.isValid()}">
 		<c:out value="${serviceResponse}" escapeXml="false" />
 	</c:when>

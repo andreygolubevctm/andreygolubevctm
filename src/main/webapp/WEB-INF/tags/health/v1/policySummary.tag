@@ -11,7 +11,7 @@
 <jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 
-<div class="sidebar-box<c:if test="${healthAlternatePricingActive eq true}"> hasDualPricing hidden-xs</c:if>">
+<div class="sidebar-box<c:if test="${healthAlternatePricingActive eq true}"> hasDualPricing hidden-xs</c:if> policySummary-sidebar">
 	<c:if test="${healthAlternatePricingActive eq false}">
 	<div class="policySummaryContainer ${className}">
 		<c:choose>
@@ -83,6 +83,9 @@
 			</p>
 			<p>
 				<strong>Co-payment / % Hospital Contribution:</strong> <span class="copayment">XXX</span>
+			</p>
+			<p class="brochurePlaceholder">
+
 			</p>
 			<div class="footer">
 				<a href="javascript:;" class="more-info">view more info</a>

@@ -2,7 +2,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.Date"%>
-<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.retrieve_quotes')}" />
 <settings:setVertical verticalCode="GENERIC" />
@@ -213,7 +213,7 @@
 											pageContext.setAttribute("inPast" , "N");
 										}
 									%>
-									<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/quote/inPast" value="${inPast}" />
+									<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/quote/inPast" value="${pageContext.getAttribute('inPast')}" />
 								</c:if>
 
 								<c:if test="${fn:toLowerCase(row.productType) eq 'home' and fn:startsWith(row.xpath, 'home/')}">
@@ -236,7 +236,7 @@
 												pageContext.setAttribute("inPast" , "N");
 											}
 										%>
-										<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/home/inPast" value="${inPast}" />
+										<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/home/inPast" value="${pageContext.getAttribute('inPast')}" />
 									</c:if>
 								</c:if>
 

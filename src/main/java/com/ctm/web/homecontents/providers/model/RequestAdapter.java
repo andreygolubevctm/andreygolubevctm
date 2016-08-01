@@ -23,7 +23,7 @@ public class RequestAdapter {
     public static HomeQuoteRequest adapt(HomeRequest homeRequest) {
         HomeQuoteRequest quoteRequest = new HomeQuoteRequest();
         final HomeQuote quote = homeRequest.getQuote();
-        CoverTypeEnum coverType = CoverTypeEnum.fromCode(quote.getCoverType());
+        CoverTypeEnum coverType = CoverTypeEnum.fromDescription(quote.getCoverType());
         boolean isContentsCover = false;
         boolean isHomeCover = false;
         if (CoverTypeEnum.HOME_CONTENTS.equals(coverType)) {
@@ -85,9 +85,7 @@ public class RequestAdapter {
 
         quoteRequest.setHadClaims(convertToBoolean(quote.getDisclosures().getClaims()));
 
-        if(quote.getFilter().getProviders() != null && !quote.getFilter().getProviders().isEmpty()){
-            quoteRequest.setProviderFilter(quote.getFilter().getProviders());
-        }
+        quoteRequest.setClientIp(homeRequest.getClientIpAddress());
 
         return quoteRequest;
 
@@ -297,13 +295,10 @@ public class RequestAdapter {
         }
     }
 
-    public static MoreInfoRequest adapt(Brand brand, String productId, String coverType, Optional<LocalDateTime> requestAt) {
-        MoreInfoRequest request = new MoreInfoRequest();
-        request.setBrandCode(brand.getCode());
-        request.setProductId(productId);
-        request.setCoverType(coverType);
-        requestAt.ifPresent(v -> request.setRequestAt(v));
-        return request;
+    public static MoreInfoRequest adapt(Brand brand, MoreInfoRequest moreInfoRequest, Optional<LocalDateTime> requestAt) {
+        moreInfoRequest.setBrandCode(brand.getCode());
+        requestAt.ifPresent(v -> moreInfoRequest.setRequestAt(v));
+        return moreInfoRequest;
     }
 
 

@@ -28,15 +28,15 @@ public class CarColourDao {
 			dbSource = new SimpleDatabaseConnection();
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT colourCode, colourDescription FROM aggregator.vehicle_colour ORDER BY colourCode");
+				"SELECT colourCode, colourDescription, isTop " +
+						"FROM aggregator.vehicle_colour " +
+						" ORDER BY isTop DESC, colourCode;");
+
 
 			ResultSet results = stmt.executeQuery();
 
 			while (results.next()) {
-				CarColour carColour = new CarColour();
-				carColour.setCode(results.getString("colourCode"));
-				carColour.setLabel(results.getString("colourDescription"));
-				carColours.add(carColour);
+				carColours.add(createCarColour(results));
 			}
 		}
 		catch (SQLException | NamingException e) {
@@ -47,5 +47,41 @@ public class CarColourDao {
 		}
 
 		return carColours;
+	}
+
+	public CarColour getColourCode(String colourCode) throws DaoException {
+
+		SimpleDatabaseConnection dbSource = null;
+		ArrayList<CarColour> carColours = new ArrayList<>();
+
+		try {
+			PreparedStatement stmt;
+			dbSource = new SimpleDatabaseConnection();
+
+			stmt = dbSource.getConnection().prepareStatement(
+					"SELECT colourCode, colourDescription, isTop FROM aggregator.vehicle_colour where colourCode = ? or colourCode = 'other' ORDER BY vehicleColourId DESC LIMIT 1");
+			stmt.setString(1, colourCode);
+
+			ResultSet results = stmt.executeQuery();
+
+			if (results.next()) {
+				return createCarColour(results);
+			}
+			return null;
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+	}
+
+	private CarColour createCarColour(ResultSet results) throws SQLException {
+		CarColour carColour = new CarColour();
+		carColour.setCode(results.getString("colourCode"));
+		carColour.setLabel(results.getString("colourDescription"));
+		carColour.setIsTop(results.getBoolean("isTop"));
+		return carColour;
 	}
 }

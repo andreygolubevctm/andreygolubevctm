@@ -48,7 +48,6 @@ public class ResultsDisplayService {
             ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
-
                 ResultsTemplateItem item = new ResultsTemplateItem();
                 item.setId(result.getInt("id"));
                 item.setName(result.getString("name"));
@@ -64,8 +63,8 @@ public class ResultsDisplayService {
                 item.setExpanded(result.getBoolean("expanded"));
                 item.setHelpId(result.getInt("helpId"));
                 item.setShortlistKey(result.getString("shortlistKey"));
+                item.setFlag(result.getInt("flag"));
                 unorganisedList.add(item);
-
             }
 
         } finally {
@@ -151,8 +150,7 @@ public class ResultsDisplayService {
     public String getPageStructureAsJsonString(String vertical) throws SQLException, JsonProcessingException, JSONException {
         List<ResultsTemplateItem> results = getResultsPageStructure(vertical);
         ObjectMapper objectMapper = new ObjectMapper();
-        String string  = objectMapper.writeValueAsString(results);
-        return string;
+        return objectMapper.writeValueAsString(results);
     }
 
     public List<ResultsTemplateItem> getResultsTemplateItems(final String vertical) {
@@ -174,7 +172,6 @@ public class ResultsDisplayService {
             ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
-
                 ResultsTemplateItem item = new ResultsTemplateItem();
                 item.setId(result.getInt("id"));
                 item.setName(result.getString("name"));
@@ -190,8 +187,8 @@ public class ResultsDisplayService {
                 item.setExpanded(result.getBoolean("expanded"));
                 item.setHelpId(result.getInt("helpId"));
                 item.setShortlistKey(result.getString("shortlistKey"));
+                item.setFlag(result.getInt("flag"));
                 list.add(item);
-
             }
         } catch (SQLException e) {
             LOGGER.error("Error querying feature details", e);

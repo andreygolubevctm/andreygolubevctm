@@ -251,8 +251,7 @@
 
 	function applyEventListeners($this) {
 		var entryName = getEntryName ($this);
-
-		entryName.on("blur", function() {
+		entryName.on("keyup blur", function() {
 
 			// Strip out any non numbers
 			entryName.val( $.trim( entryName.val().replace(/[^\d.-]/g, '') ) );
@@ -267,7 +266,7 @@
 				$this.val('');
 			}
 
-			entryName.formatCurrency({symbol:'$',roundToDecimalPlace:-2});
+			entryName.formatCurrency({symbol:'$',roundToDecimalPlace:-2}).change();
 		});
 		entryName.on("focus", function() {
 			entryName.toNumber().setCursorPosition(entryName.val().length, entryName.val().length);

@@ -6,6 +6,7 @@ import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService;
@@ -17,9 +18,21 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+/**
+ * Use LifeApplyService instead
+ **/
+@Deprecated // TODO: Delete once life apply and life lead feed service has gone live
 public class AGISLeadFromRequest {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AGISLeadFromRequest.class);
+
+	private final IPAddressHandler ipAddressHandler;
+
+    @Deprecated
+    @SuppressWarnings("unused")
+    public AGISLeadFromRequest() {
+        this.ipAddressHandler = IPAddressHandler.getInstance();
+    }
 
 	public String newPolicySold(HttpServletRequest request, PageSettings pageSettings, String transactionId) {
 		return process(request, pageSettings, transactionId, true);
@@ -64,16 +77,15 @@ public class AGISLeadFromRequest {
 			lead.setState(data.get(vertical + "/primary/state") != null ? data.get(vertical + "/primary/state").toString() : "");
 			lead.setPartnerBrand(data.get("lead/brand").toString());
 			lead.setProductId(data.get("lead/company").toString().toLowerCase());
-			lead.setClientIpAddress(data.get(vertical + "/clientIpAddress") != null ? data.get(vertical + "/clientIpAddress").toString() : request.getRemoteAddr());
+			lead.setClientIpAddress(data.get(vertical + "/clientIpAddress") != null ? data.get(vertical + "/clientIpAddress").toString() : ipAddressHandler.getIPAddress(request));
 			lead.setPartnerReference(data.get("lead/leadNumber").toString());
 
 			// Call Lead Feed Service
-			LeadFeedData leadDataPack = lead;
 			LifeLeadFeedService service = new LifeLeadFeedService(new BestPriceLeadsDao());
-			if(policySold == true) {
-				output = service.policySold(leadDataPack);
+			if(policySold) {
+				output = service.policySold(lead);
 			} else {
-				output = service.callMeBack(leadDataPack);
+				output = service.callMeBack(lead);
 			}
 		} catch (Exception e) {
 			LOGGER.error("[lead feed] Failed creating new lead feed {}, {}, {}", kv("pageSettings", pageSettings),

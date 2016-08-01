@@ -10,9 +10,7 @@
 
 
 <%-- HTML --%>
-<div id="${name}-selection" class="health-bank_details">
-
-	<form_v2:fieldset legend="Bank Account Details" >
+<div id="${name}-selection" class="health-bank_details ${name}-selection">
 
 
 
@@ -20,21 +18,29 @@
 
 		<%-- Default payment day --%>
 		<c:set var="fieldXpath" value="${xpath}/day" />
-		<form_v3:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?" className="health_bank-details_day-group">
-			<field_v2:count_select xpath="${fieldXpath}" min="1" max="27" step="1" title="your chosen day" required="true" className="health-bank_details-day"/>
+		<form_v3:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?"
+					 className="${name}-details_day-group">
+			<field_v2:count_select xpath="${fieldXpath}" min="1" max="27" step="1"
+								   title="your chosen day" required="true" className="${name}_details-day"/>
 		</form_v3:row>
 
 		<%-- NIB based payment day --%>
 		<c:set var="fieldXpath" value="${xpath}/paymentDay" />
-		<form_v3:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?" className="health_bank-details_paymentDay_group">
-			<field_v1:payment_day xpath="${fieldXpath}" title="your chosen day" required="true" className="health_payment_day health-bank_details-paymentDay" messageClassName="health_payment-day_message" displayDatePattern="d" startOfMonth="true" days="28" message="It can take up to 6 days to set up your direct debit so your payment may not be deducted until the following month if you chose a date within this time frame"/>
+		<form_v3:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?"
+					 className="${name}-details_paymentDay_group">
+			<field_v1:payment_day xpath="${fieldXpath}" title="your chosen day"
+								  required="true"
+								  className="health_payment_day ${name}_details-paymentDay"
+								  messageClassName="health_payment-day_message"
+								  startOfMonth="true"
+								  message="It can take up to 6 days to set up your direct debit so your payment may not be deducted until the following month if you chose a date within this time frame"/>
 		</form_v3:row>
 
 		<%-- AUF based payment day --%>
 		<c:set var="fieldXpath" value="${xpath}/policyDay" />
-		<form_v3:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?" className="health_bank-details_policyDay-group">
-			<field_v2:array_select xpath="${fieldXpath}" required="true" className="health-bank_details-policyDay" items="=Please choose..." title="your chosen day" />
-			<p class="health_bank-details_policyDay-message"></p>
+		<form_v3:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?" className="health_payment_bank-details_policyDay-group">
+			<field_v2:array_select xpath="${fieldXpath}" required="true" className="${name}_details-policyDay" items="=Please choose..." title="your chosen day" />
+			<p class="${name}-details_policyDay-message"></p>
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/claims" />
@@ -42,12 +48,10 @@
 			<field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="would you like your claim refunds paid into the same account" required="true" className="health-bank_details-claims" id="${name}_claims"/>
 		</form_v3:row>
 
-	</form_v2:fieldset>
 
 </div>
 
 <div id="${name}_claim-selection" class="health-bank_claim_details">
-	<form_v2:fieldset legend="Please nominate a bank account for future claim payments">
-		<health_v2:bank_account_details xpath="${xpath}/claim" />
-	</form_v2:fieldset>
+	<h3>Please nominate a bank account for future claim payments</h3>
+	<health_v2:bank_account_details xpath="${xpath}/claim" />
 </div>

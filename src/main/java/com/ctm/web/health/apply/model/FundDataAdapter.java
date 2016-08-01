@@ -1,6 +1,7 @@
 package com.ctm.web.health.apply.model;
 
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
+import com.ctm.web.health.apply.model.request.application.common.Relationship;
 import com.ctm.web.health.apply.model.request.application.situation.HealthSituation;
 import com.ctm.web.health.apply.model.request.fundData.Declaration;
 import com.ctm.web.health.apply.model.request.fundData.FundData;
@@ -8,13 +9,17 @@ import com.ctm.web.health.apply.model.request.fundData.ProductId;
 import com.ctm.web.health.apply.model.request.fundData.Provider;
 import com.ctm.web.health.apply.model.request.fundData.benefits.Benefits;
 import com.ctm.web.health.apply.model.request.fundData.membership.*;
-import com.ctm.web.health.model.form.Application;
-import com.ctm.web.health.model.form.Cbh;
-import com.ctm.web.health.model.form.HealthQuote;
-import com.ctm.web.health.model.form.PaymentDetails;
+import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.Eligibility;
+import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.EligibilityReasonID;
+import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.EligibilitySubReasonID;
+import com.ctm.web.health.model.form.*;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+
+import static java.util.Collections.emptyList;
 
 public class FundDataAdapter {
 
@@ -35,15 +40,35 @@ public class FundDataAdapter {
                         .map(PaymentDetails::getStart)
                         .map(LocalDateUtils::parseAUSLocalDate)
                         .orElse(null),
-                quote.map(HealthQuote::getSituation)
-                        .map(com.ctm.web.health.model.form.Situation::getHealthSitu)
-                        .map(v -> new Benefits(HealthSituation.valueOf(v)))
-                        .orElse(null),
-                createMembership(quote.map(HealthQuote::getApplication)
-                        .map(Application::getCbh)));
+                createBenefits(quote),
+                quote.map(HealthQuote::getApplication)
+                    .map(Application::getCbh)
+                    .map(FundDataAdapter::createMembership)
+                    .orElseGet(() -> quote.map(HealthQuote::getApplication)
+                        .map(Application::getNhb)
+                        .map(FundDataAdapter::createMembership)
+                        .orElse(null)));
     }
 
-    protected static Membership createMembership(Optional<Cbh> cbh) {
+    protected static Benefits createBenefits(Optional<HealthQuote> quote) {
+        HealthSituation healthSitu = quote.map(HealthQuote::getSituation)
+                .map(com.ctm.web.health.model.form.Situation::getHealthSitu)
+                .map(HealthSituation::valueOf)
+                .orElse(null);
+        List<String> benefits = quote.map(HealthQuote::getApplication)
+                .map(Application::getHbf)
+                .map(Hbf::getFlexiextras)
+                .map(f -> Arrays.asList(StringUtils.split(f, ",")))
+                .orElse(emptyList());
+        if (healthSitu != null || !benefits.isEmpty()) {
+            return new Benefits(healthSitu, benefits);
+        } else {
+            return null;
+        }
+    }
+
+    protected static Membership createMembership(Cbh theCbh) {
+        Optional<Cbh> cbh = Optional.ofNullable(theCbh);
         if (cbh.isPresent()) {
             final RegisteredMember registeredMember;
             final CurrentMember currentMember;
@@ -94,16 +119,47 @@ public class FundDataAdapter {
                     currentMember,
                     membershipNumber,
                     membershipGroup,
-                    createPartnerDetails(cbh),
+                    createPartnerDetailsCBH(cbh),
                     cbh.map(Cbh::getRegister)
                             .map(RegisterForGroupServices::valueOf)
-                            .orElse(null));
+                            .orElse(null),
+                    null);
         } else {
             return null;
         }
     }
 
-    private static PartnerDetails createPartnerDetails(Optional<Cbh> cbh) {
+    protected static Membership createMembership(Nhb theNhb) {
+        Optional<Nhb> nhb = Optional.ofNullable(theNhb);
+        if (nhb.isPresent()) {
+            return new Membership(
+                    null,
+                    null,
+                    null,
+                    null,
+                    createPartnerDetailsNHB(nhb),
+                    null,
+                    createEligibility(nhb));
+        } else {
+            return null;
+        }
+    }
+
+    protected static Eligibility createEligibility(Optional<Nhb> nhb) {
+        if (nhb.isPresent()) {
+            return new Eligibility(
+                    nhb.map(Nhb::getEligibility)
+                        .map(EligibilityReasonID::fromValue)
+                        .orElse(null),
+                    nhb.map(Nhb::getSubreason)
+                        .map(EligibilitySubReasonID::fromValue)
+                        .orElse(null));
+        } else {
+            return null;
+        }
+    }
+
+    private static PartnerDetails createPartnerDetailsCBH(Optional<Cbh> cbh) {
         if (cbh.isPresent()) {
             return new PartnerDetails(
                     cbh.map(Cbh::getPartnerrel)
@@ -112,6 +168,20 @@ public class FundDataAdapter {
                     cbh.map(Cbh::getPartneremployee)
                             .map(SameGroupMember::valueOf)
                             .orElse(null));
+        } else {
+            return null;
+        }
+    }
+
+    private static PartnerDetails createPartnerDetailsNHB(Optional<Nhb> nhb) {
+        if (nhb.isPresent()) {
+            return new PartnerDetails(
+                    nhb.map(Nhb::getPartnerrel)
+                            .map(Relationship::fromCode)
+                            .map(Relationship::toString)
+                            .map(RelationshipToPrimary::new)
+                            .orElse(null),
+                    null);
         } else {
             return null;
         }

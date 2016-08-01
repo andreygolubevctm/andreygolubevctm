@@ -194,11 +194,13 @@
 		<health_v1_layout:slide_your_details />
 		<health_v1_layout:slide_your_contact />
 		<health_v1_layout:slide_results />
-		<health_v1_layout:slide_application_details />
+		<health_v2_layout:slide_application_details />
 		<health_v1_layout:slide_payment_details />
 		<health_v1:dual_pricing_templates />
+		<health_v3:payment_frequency_template />
 
 		<field_v1:hidden xpath="environmentOverride" />
+		<field_v1:hidden xpath="staticOverride" />
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 	</jsp:body>
 </layout_v1:journey_engine_page>

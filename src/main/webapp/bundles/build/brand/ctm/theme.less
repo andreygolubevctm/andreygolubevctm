@@ -127,16 +127,16 @@ ul.themed {
 }
 
 // Apply the mixin to the buttons
-.btn-default	{ .btn-styles(@btn-default-bg, contrast(@btn-default-bg), @theme-secondary);	}
-.btn-primary	{ .btn-styles(@theme-primary, contrast(@theme-primary), @theme-secondary);		}
-.btn-secondary	{ .btn-styles(@theme-secondary, contrast(@theme-secondary), @theme-primary);	}
+.btn-default	{ .btn-styles(@btn-default-bg, #fff, @theme-secondary);	}
+.btn-primary	{ .btn-styles(@theme-primary, #fff, @theme-secondary, #fff);		}
+.btn-secondary	{ .btn-styles(@theme-secondary, #fff, @theme-primary);	}
 //TODO - this is being mixed in and shouldn't be
-.btn-tertiary	{ .btn-styles(@theme-tertiary, contrast(@theme-tertiary), @theme-secondary);	}
+.btn-tertiary	{ .btn-styles(@theme-tertiary, #fff, @theme-secondary);	}
 //TODO - this is being mixed in and shouldn't be
 
-.btn-info		{ .btn-styles(@btn-info-bg, contrast(@btn-info-bg), @btn-success-bg);			}
-.btn-success	{ .btn-styles(@btn-success-bg, contrast(@btn-success-bg), @btn-info-bg);		}
-.btn-warning	{ .btn-styles(@btn-warning-bg, contrast(@btn-warning-bg), @btn-primary-bg);		}
+.btn-info		{ .btn-styles(@btn-info-bg, #fff, @btn-success-bg);			}
+.btn-success	{ .btn-styles(@btn-success-bg, #fff, @btn-info-bg);		}
+.btn-warning	{ .btn-styles(@btn-warning-bg, #fff, @btn-primary-bg);		}
 .btn-danger		{ .btn-styles(@btn-danger-bg, contrast(@btn-danger-bg), @btn-danger-bg);		}
 .btn-danger{ // Overrides for btn danger styles
 	border: @btn-border-width solid @btn-danger-border;
@@ -293,6 +293,12 @@ ul.themed {
 	@btn-call-inverse-hover-bg-color, @btn-call-inverse-hover-color,
 	@btn-call-inverse-border-color, @btn-call-inverse-active-border-color, @btn-call-inverse-hover-border-color, true); }
 
+.btn-add {
+  .btn-styles(@btn-add-bg-color, @btn-add-color,
+          @btn-add-active-bg-color, @btn-add-active-color,
+          @btn-add-hover-bg-color, @btn-add-hover-color,
+          @btn-add-border-color, @btn-add-active-border-color, @btn-add-hover-border-color, true); }
+
 //** Between pages, the journey nav button should have custom padding on XS.
 @media (@xs-only){
 	.journeyNavButton{
@@ -430,7 +436,7 @@ a{
 				}
 				&:active, &.active {
 					background-color: @btn-pagination-active-bg-color;
-					color: contrast(@btn-pagination-active-bg-color, @theme-dark, #FFF);
+					color: #fff;
 				}
 			}
 			&.btn-cta {
@@ -640,7 +646,7 @@ a{
 		width: 100%;
 		position: absolute;
 		text-align: center;
-		color: contrast(@btn-pagination-bg-color, #000, #fff, 46%);
+		color: #fff;
 	}
 	.spacer{
 		position: relative;
@@ -941,7 +947,7 @@ a{
 		}
 	}
 	a {
-		color: contrast(@well-bg-info, @link-color);
+		color: contrast(@link-color, @well-bg-info);
 		text-decoration: underline;
 		&.btn { text-decoration: none; }
 		}
@@ -1085,6 +1091,10 @@ fieldset h2 {
 	@btn-form-hover-bg-color, @btn-form-hover-color,
 	@btn-form-border-color, @btn-form-active-border-color, @btn-form-hover-border-color); }
 
+.btn-form {
+	display: inline-block;
+}
+
 [data-toggle="radio"] > .btn-form-inverse { //not sure why there was an attribute selector at work here... they are slower.
 	font-family: @font-family-sans-serif;
 	&.active, &:active {
@@ -1105,6 +1115,7 @@ fieldset h2 {
 	}
 }
 //Gets rid of the double border seen on button groups
+.btn-tile,
 .btn-group {
 	.btn {
 		word-wrap: break-word;
@@ -1238,6 +1249,7 @@ fieldset h2 {
 	@input-border-disabled;
 	@input-bg-disabled
 	);
+	.btn-tile > .btn,
 	.btn-group>.btn { //Fixes errors around this somehow.
 	  cursor: not-allowed;
 	}

@@ -2,14 +2,13 @@
   "brandCodes": ["ctm"],
   "dependencies": [
     "shared/journeyEngine/v2",
-    "shared/results",
+    "shared/results/v2",
     "shared/validation",
     "core",
-    "shared/addressLookup",
-    "shared/showMoreQuotesPrompt",
+    "shared/forms/v1",
     "shared/resultsRankings",
-    "shared/checkboxIE8",
     "shared/dropdownInteractive",
-    "shared/ie8SelectMenuAutoExpand"
+    "shared/ie8SelectMenuAutoExpand",
+    "shared/sidebarWidgets"
   ]
 }

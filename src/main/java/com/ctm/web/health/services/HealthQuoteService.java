@@ -7,11 +7,13 @@ import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.model.CompetitionEntry;
+import com.ctm.web.core.model.ProviderFilter;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.services.CommonQuoteService;
 import com.ctm.web.core.services.Endpoint;
+import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.ctm.web.core.web.go.Data;
@@ -26,7 +28,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 
-import java.io.IOException;
 import java.util.List;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
@@ -40,7 +41,8 @@ public class HealthQuoteService extends CommonQuoteService<HealthQuote, HealthQu
         this.competitionService = new CompetitionService(new SessionDataServiceBean());
     }
 
-    public Pair<Boolean, List<HealthQuoteResult>> getQuotes(Brand brand, HealthRequest data, Content alternatePricingContent, boolean isSimples) throws DaoException, IOException, ServiceConfigurationException {
+    public Pair<Boolean, List<HealthQuoteResult>> getQuotes(Brand brand, HealthRequest data, Content alternatePricingContent, boolean isSimples) throws Exception {
+        setFilter(data.getQuote().getSituation());
         final HealthQuoteRequest quoteRequest = RequestAdapter.adapt(data, alternatePricingContent, isSimples);
         final HealthResponse healthResponse = sendRequest(brand, HEALTH, "healthQuoteServiceBER", Endpoint.QUOTE, data, quoteRequest, HealthResponse.class);
         return ResponseAdapter.adapt(data, healthResponse, alternatePricingContent);
@@ -132,5 +134,61 @@ public class HealthQuoteService extends CommonQuoteService<HealthQuote, HealthQu
         }
     }
 
-}
+    // TODO: move providerKeys to the database and use CommonQuoteService.setFilter
+    protected void setFilter(ProviderFilter providerFilter) throws Exception {
+        if (providerFilter != null && StringUtils.isNotBlank(providerFilter.getProviderKey())) {
+            switch (providerFilter.getProviderKey()) {
+                case "au_74815263":
+                    providerFilter.setSingleProvider("1");
+                    break;
+                case "hcf_7895123":
+                    providerFilter.setSingleProvider("2");
+                    break;
+                case "nib_784512":
+                    providerFilter.setSingleProvider("3");
+                    break;
+                case "gmhba_74851253":
+                    providerFilter.setSingleProvider("5");
+                    break;
+                case "frank_7152463":
+                    providerFilter.setSingleProvider("8");
+                    break;
+                case "ahm_685347":
+                    providerFilter.setSingleProvider("9");
+                    break;
+                case "cbhs_597125":
+                    providerFilter.setSingleProvider("10");
+                    break;
+                case "hif_87364556":
+                    providerFilter.setSingleProvider("11");
+                    break;
+                case "cua_089105165":
+                    providerFilter.setSingleProvider("12");
+                    break;
+                case "ctm_123456789":
+                    providerFilter.setSingleProvider("14");
+                    break;
+                case "bup_744568719":
+                    providerFilter.setSingleProvider("15");
+                    break;
+                case "bud_296587056":
+                    providerFilter.setSingleProvider("54");
+                    break;
+                case "qchf_63422354":
+                    providerFilter.setSingleProvider("16");
+                    break;
+                case "nhb_42694269":
+                    providerFilter.setSingleProvider("17");
+                    break;
+                case "hbf_89564575":
+                    providerFilter.setSingleProvider("18");
+                    break;
+                default:
+                    throw new RouterException("Invalid providerKey");
+            }
+        } else if(EnvironmentService.getEnvironmentAsString().equalsIgnoreCase("nxs")) {
+            throw new RouterException("Provider Key required in '" + EnvironmentService.getEnvironmentAsString() + "' environment");
+        }
+    }
 
+}

@@ -46,10 +46,13 @@
 		tracking.brandXCode = settings.tracking.brandCode;
 		tracking = encodeURIComponent(decodeURIComponent(JSON.stringify(tracking)));
 
+        // split test Travel only for the new transferring page
+        var transferringPage = meerkat.site.vertical === 'travel' ? 'transferring_v2.jsp' : 'transferring.jsp';
+
 		try {
 
 			// build the initial url
-			url = "transferring.jsp?transactionId="+meerkat.modules.transactionId.get()+"&trackCode="+product.trackCode+"&brand="+brand+"&msg="+msg+"&vertical="+meerkat.site.vertical+"&productId="+product.productId+"&tracking=" + tracking;
+			url = transferringPage + "?transactionId="+meerkat.modules.transactionId.get()+"&trackCode="+product.trackCode+"&brand="+brand+"&msg="+msg+"&vertical="+meerkat.site.vertical+"&productId="+product.productId+"&tracking=" + tracking;
 
 			if (handoverType.toLowerCase() === "post")
 			{

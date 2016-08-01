@@ -72,6 +72,14 @@
 
 				<%-- COUNTRY SECTION --%>
 				<form_v2:fieldset showHelpText="true" legend="Where are you going?" className="travel_details_destinations" id="destinationsfs">
+                    <c:set var="labelText" value="What Country(ies) are you going to?" />
+                        <core_v1:js_template id="travel-popular-countries-template">
+                            <form_v2:row label="What Country(ies) are you going to?" className="popular-countries-container" hideHelpIconCol="true">
+                                {{ _.each(obj, function(country) { }}
+                                    <a href="javascript:;" class="icon-{{= country.isoCode }} base" data-country='{{= JSON.stringify(country) }}'>{{= country.countryName }}</a>
+                                {{ }) }}
+                            </form_v2:row>
+                        </core_v1:js_template>
 					<jsp:useBean id="locationsService" class="com.ctm.web.travel.services.TravelIsoLocationsService" scope="page" />
 					<core_v1:select_tags
 							variableListName="countrySelectionList"
@@ -79,7 +87,7 @@
 							variableListArray="${locationsService.getCountrySelectionList()}"
 							xpath="travel/destinations"
 							xpathhidden="travel/destination"
-							label="What Country(ies) are you going to?"
+							label="Your selected Countries"
 							title="Where are you travelling?"
 							validationErrorPlacementSelector=".travel_details_destinations"
 							helpId="213"
@@ -102,7 +110,10 @@
 						<field_v2:person_dob xpath="travel/travellers/traveller2DOB" title="the second traveller's" required="true" ageMin="16" ageMax="99" />
 					</form_v2:row>
 					<field_v1:hidden xpath="travel/travellers/travellersDOB" />
-					<form_v2:row label="How many children?"  className="smallWidth children_row" helpId="217">
+					<form_v2:row label="Will you be travelling with children?" className="single_parent_row" >
+						<field_v2:array_radio xpath="travel/singleParent" required="true" defaultValue="N" items="Y=Yes,N=No" className="single_parent" title="whether you will be travelling with children" />
+					</form_v2:row>
+					<form_v2:row label="How many children?" className="smallWidth children_row" helpId="217">
 						<field_v2:array_select items="0=Select the number of children,1=1,2=2,3=3,4=4,5=5,6=6,7=7,8=8,9=9,10=10" xpath="travel/childrenSelect" title="how many children" required="true" className="thinner_input" />
 					</form_v2:row>
 

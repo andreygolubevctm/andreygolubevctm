@@ -2,6 +2,7 @@ package com.ctm.web.health.router;
 
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
+import com.ctm.web.core.dao.GeneralDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
@@ -14,6 +15,7 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.tracking.TrackingKeyService;
@@ -40,6 +42,7 @@ import javax.ws.rs.core.Context;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 
@@ -52,13 +55,25 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
     private final ContentService contentService;
 
     public HealthQuoteRouter() throws ConfigSettingException, DaoException {
-        super(new SessionDataServiceBean());
+        super(new SessionDataServiceBean(), IPAddressHandler.getInstance());
         this.contentService =  ContentService.getInstance();
     }
 
-    public HealthQuoteRouter(SessionDataServiceBean sessionDataServiceBean, ContentService contentService) {
-        super(sessionDataServiceBean);
+    public HealthQuoteRouter(SessionDataServiceBean sessionDataServiceBean, ContentService contentService, IPAddressHandler ipAddressHandler) {
+        super(sessionDataServiceBean, ipAddressHandler);
         this.contentService = contentService;
+    }
+
+
+    @GET
+    @Path("/dropdown/list.json")
+    @Produces("application/json")
+    // call by rest/health/dropdown/list.json?type=X
+    public Map<String,String> getContent(@QueryParam("type") String type) {
+        final Map<String,String> result;
+        GeneralDao generalDao = new GeneralDao();
+        result = generalDao.getValuesOrdered(type);
+        return result;
     }
 
     @POST
@@ -72,7 +87,7 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
         // Initialise request
         Brand brand = initRouter(context, vertical);
         updateTransactionIdAndClientIP(context, data);
-        HealthQuoteEndpointService healthQuoteTokenService = new HealthQuoteEndpointService();
+        HealthQuoteEndpointService healthQuoteTokenService = new HealthQuoteEndpointService(ipAddressHandler);
         boolean isCallCentre = SessionUtils.isCallCentre(context.getHttpServletRequest().getSession());
         try{
             validateRequest(context.getHttpServletRequest(), vertical, brand, healthQuoteTokenService, data, isCallCentre);

@@ -1,44 +1,42 @@
 /* TODO: to read the src from DB so we don't have to set this up for each promo */
 .health100eftpos {
-	width: 280px;
-	height: 175px;
-	.highResImg('../graphics/coupon/100-eftpos-card.jpg'; '../graphics/coupon/100-eftpos-card@2x.jpg'; 280px; 175px);
+  width: 280px;
+  height: 175px;
+  .highResImg('../graphics/coupon/100-eftpos-card.jpg'; '../graphics/coupon/100-eftpos-card@2x.jpg'; 280px; 175px);
 }
 
 .health200eftpos {
-	width: 280px;
-	height: 177px;
-	.highResImg('../graphics/coupon/200-eftpos-card.png'; '../graphics/coupon/200-eftpos-card@2x.png'; 280px; 177px);
+  width: 280px;
+  height: 177px;
+  .highResImg('../graphics/coupon/200-eftpos-card.png'; '../graphics/coupon/200-eftpos-card@2x.png'; 280px; 177px);
 }
 
-.healthX00eftpos {
-	width: 280px;
-	height: 177px;
-	.highResImg('../graphics/coupon/blank-eftpos-card.png'; '../graphics/coupon/blank-eftpos-card@2x.png'; 280px; 177px);
+.healthBlankeftpos {
+  width: 280px;
+  height: 177px;
+  .highResImg('../graphics/coupon/blank-eftpos-card-modal.png'; '../graphics/coupon/blank-eftpos-card-modal@2x.png'; 264px; 167px);
 }
 
-
-img.affixed-tile{
-  display:none
-}
-
-.resultsContainer.featuresMode {
-  .compare-basket{
-    &.tile-enabled {
-      p {
-        display: none;
+.fieldset-column-side,
+#results-sidebar {
+  .coupon-tile-container {
+    padding: 0;
+    a {
+      display: block;
+      padding: 20px 15px;
+      margin-bottom: 1em;
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      background: @theme-tertiary;
+      img {
+        margin-bottom: 10px;
       }
-    }
-  }
-  &.affixed-compact{
-    .compare-basket{
-      &.tile-enabled {
-        bottom: 0;
-        .coupon-tile-container {
-          img.affixed-tile{
-            display:block;
-          }
-        }
+      p {
+        font-size: 16px;
+      }
+      .more-info {
+        text-decoration: underline;
       }
     }
   }
@@ -48,5 +46,69 @@ img.affixed-tile{
   h2 {
     font-family: @font-family-theme-bold;
     font-size: 24px;
+  }
+
+  .coupon-msg {
+    padding-top: 10px;
+  }
+
+  margin-top: 0px;
+
+  a {
+    text-decoration: underline;
+    font-size: 14px;
+  }
+}
+
+// hard code this for now unless we change the design.
+@coupon-banner-height: 40px;
+@media (@xs-only) {
+  body.couponShown {
+    &[data-step="results"] {
+      padding-top: @navbar-height + @coupon-banner-height;
+
+      .xs-results-pagination {
+        top: @navbar-height + @page-offset-xs + @coupon-banner-height;
+      }
+    }
+  }
+}
+
+.coupon-confirmation-image {
+  background-size: 305px 192px;
+  width: 305px;
+  height: 192px;
+}
+
+@media(@md-only) {
+  .coupon-confirmation-image {
+    background-size: 240px 150px;
+    width: 240px;
+    height: 150px;
+  }
+}
+
+@media(@sm-only) {
+  .coupon-confirmation-image {
+    background-size: 167px 105px;
+    width: 167px;
+    height: 105px;
+  }
+
+  .coupon-msg {
+    font-size: 16px;
+  }
+}
+
+@media(@xs-only) {
+  .coupon-confirmation {
+    text-align:center;
+  }
+
+  .coupon-confirmation-image {
+    background-size: 167px 105px;
+    width: 100%;
+    height: 105px;
+    background-position: center;
   }
 }

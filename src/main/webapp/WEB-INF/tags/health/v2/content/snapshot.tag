@@ -2,7 +2,7 @@
 <%@ tag description="Home & Contents Snapshot"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<fieldset class="quoteSnapshot sidebar-box hidden-sm <c:if test='${newBenefitsLayoutSplitTest eq true}'>j13abtest</c:if>">
+<fieldset class="quoteSnapshot sidebar-box hidden-sm tieredHospitalCover">
     <h4>Quote Summary</h4>
     <div class="default">
         <div>
@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-7">
             <span class="snapshot-items hidden-xs hidden-sm">
-                <span data-source="#health_situation_healthCvr"></span>
+                <span data-source="#health_situation_healthCvr"></span><a data-slide-control="start" href="javascript:;" class="btn btn-xs btn-edit"><span>Edit</span></a>
             </span>
         </div>
     </div>
@@ -37,7 +37,7 @@
         </div>
         <div class="col-md-7">
             <span class="snapshot-items hidden-xs hidden-sm">
-                <span data-source="#health_situation_healthSitu"></span>
+                <span data-source=".health-situation-healthSitu" data-type="radiogroup"></span>
             </span>
         </div>
     </div>
@@ -46,11 +46,7 @@
             <span class="snapshot-title">Cover type:</span>
         </div>
         <div class="col-md-7">
-            <span class="snapshot-items hidden-xs hidden-sm">
-                <c:if  test="${not newBenefitsLayoutSplitTest eq true}">
-                <span data-source="#health_situation_coverType"></span>
-                </c:if>
-            </span>
+            <span class="snapshot-items hidden-xs hidden-sm"><!-- empty --></span>
         </div>
     </div>
     <div class="row snapshot hospital">

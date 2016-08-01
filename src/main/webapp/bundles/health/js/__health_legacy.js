@@ -3,18 +3,10 @@
 /* jshint -W041 *//* Use '!==' to compare with '' */
 /*
 
-	All this code is legacy and needs to be reviewed at some point (turned into modules etc).
-	The filename is prefixed with underscores to bring it to the top alphabetically for compilation.
+ All this code is legacy and needs to be reviewed at some point (turned into modules etc).
+ The filename is prefixed with underscores to bring it to the top alphabetically for compilation.
 
-*/
-
-/* Utilities functions for health */
-function returnDate(_dateString){
-	if(_dateString === '') return null;
-	var dateComponents = _dateString.split('/');
-	if(dateComponents.length < 3) return null;
-	return new Date(dateComponents[2], dateComponents[1] - 1, dateComponents[0]);
-}
+ */
 
 /**
  * isLessThan31Or31AndBeforeJuly1() test whether the dob provided makes the user less than
@@ -25,12 +17,12 @@ function returnDate(_dateString){
  */
 function isLessThan31Or31AndBeforeJuly1(_dobString) {
 	if(_dobString === '') return false;
-	var age = Math.floor(meerkat.modules.utils.returnAge(_dobString));
+	var age = Math.floor(meerkat.modules.age.returnAge(_dobString));
 	if( age < 31 ) {
 		return true;
 	} else if( age == 31 ){
-		var dob = returnDate(_dobString);
-		var birthday = returnDate(_dobString);
+		var dob = meerkat.modules.dateUtils.returnDate(_dobString);
+		var birthday = meerkat.modules.dateUtils.returnDate(_dobString);
 		birthday.setFullYear(dob.getFullYear() + 31);
 		var now = new Date();
 		if ( dob.getMonth() + 1 < 7 && (now.getMonth() + 1 >= 7 || now.getFullYear() > birthday.getFullYear()) ) {
@@ -41,7 +33,7 @@ function isLessThan31Or31AndBeforeJuly1(_dobString) {
 			return true;
 		}
 	} else if(age > 31){
-			return false;
+		return false;
 	} else {
 		return false;
 	}
@@ -149,9 +141,9 @@ var healthChoices = {
 
 		if (!healthChoices.hasSpouse()) {
 			healthChoices.flushPartnerDetails();
-			$('#partner-health-cover, #partner, .health-person-details-partner, #partnerFund').hide();
+			$('#partner-health-cover, #partnerContainer, #partner, #partnerFund').hide();
 		} else {
-			$('#partner-health-cover, #partner, .health-person-details-partner, #partnerFund').show();
+			$('#partner-health-cover, #partnerContainer, #partner, #partnerFund').show();
 		}
 
 		//// See if Children should be on or off
@@ -160,7 +152,7 @@ var healthChoices = {
 		//// Set the auxillary data
 		//Health.setRates();
 		if (typeof healthCoverDetails !== 'undefined') {
-			healthCoverDetails.displayHealthFunds();
+			meerkat.modules.healthCoverDetails.displayHealthFunds();
 		}
 		meerkat.modules.healthTiers.setTiers(initMode);
 	},
@@ -310,109 +302,6 @@ var healthCoverDetails = {
 		}
 	},
 
-	//// Previous funds, settings
-	displayHealthFunds: function(){
-		var $_previousFund = $('#mainform').find('.health-previous_fund');
-		var $_primaryFund = $('#clientFund').find('select');
-		var $_partnerFund = $('#partnerFund').find('select');
-
-		if( $_primaryFund.val() != 'NONE' && $_primaryFund.val() != ''){
-			$_previousFund.find('#clientMemberID').slideDown();
-			$_previousFund.find('.membership').addClass('onA');
-		} else {
-			$_previousFund.find('#clientMemberID').slideUp();
-			$_previousFund.find('.membership').removeClass('onA');
-		}
-
-		if( healthChoices.hasSpouse() && $_partnerFund.val() != 'NONE' && $_partnerFund.val() != ''){
-			$_previousFund.find('#partnerMemberID').slideDown();
-			$_previousFund.find('.membership').addClass('onB');
-		} else {
-			$_previousFund.find('#partnerMemberID').slideUp();
-			$_previousFund.find('.membership').removeClass('onB');
-		}
-	},
-
-	setHealthFunds: function(initMode){
-		//// Quick variables
-		var _primary = $('#health_healthCover_primaryCover').find(':checked').val();
-		var _partner = $('#health_healthCover_partnerCover').find(':checked').val();
-		var $_primaryFund = $('#clientFund').find('select');
-		var $_partnerFund = $('#partnerFund').find('select');
-
-		//// Primary Specific
-		if( _primary == 'Y' ) {
-
-			if( isLessThan31Or31AndBeforeJuly1($('#health_healthCover_primary_dob').val()) ) {
-				if(initMode){
-					$('#health-continuous-cover-primary').hide();
-				}else{
-					$('#health-continuous-cover-primary').slideUp();
-				}
-			}else{
-				if(initMode){
-					$('#health-continuous-cover-primary').show();
-				}else{
-					$('#health-continuous-cover-primary').slideDown();
-				}
-			}
-
-		} else {
-			if( _primary == 'N'){
-				resetRadio($('#health-continuous-cover-primary'),'N');
-			}
-			if(initMode){
-				$('#health-continuous-cover-primary').hide();
-			}else{
-				$('#health-continuous-cover-primary').slideUp();
-			}
-
-		}
-
-		if( _primary == 'Y' && $_primaryFund.val() == 'NONE'){
-			$_primaryFund.val('');
-		} else if(_primary == 'N'){
-			$_primaryFund.val('NONE');
-		}
-
-		//// Partner Specific
-		if( _partner == 'Y' ) {
-
-			if( isLessThan31Or31AndBeforeJuly1($('#health_healthCover_partner_dob').val()) ) {
-				if(initMode){
-					$('#health-continuous-cover-partner').hide();
-				}else{
-					$('#health-continuous-cover-partner').slideUp();
-				}
-			}else{
-				if(initMode){
-					$('#health-continuous-cover-partner').show();
-				}else{
-					$('#health-continuous-cover-partner').slideDown();
-				}
-			}
-		} else {
-			if( _partner == 'N'){
-				resetRadio($('#health-continuous-cover-partner'),'N');
-			}
-			if(initMode){
-				$('#health-continuous-cover-partner').hide();
-			}else{
-				$('#health-continuous-cover-partner').slideUp();
-			}
-
-		}
-
-			if( _partner == 'Y' && $_partnerFund.val() == 'NONE'){
-				$_partnerFund.val('');
-			} else if(_partner == 'N'){
-				$_partnerFund.val('NONE');
-			}
-
-		//// Adjust the questions further along
-		healthCoverDetails.displayHealthFunds();
-	},
-
 	getAgeAsAtLastJuly1: function( dob )
 	{
 		var dob_pieces = dob.split("/");
@@ -436,10 +325,7 @@ var healthFunds = {
 	name: 'the fund',
 
 	countFrom : {
-		TODAY: 'today' , NOCOUNT: '' , EFFECTIVE_DATE: 'effectiveDate'
-	},
-	minType : {
-		FROM_TODAY: 'today' , FROM_EFFECTIVE_DATE: 'effectiveDate'
+		NOCOUNT: ''
 	},
 
 	// If retrieving a quote and a product had been selected, inject the fund's application set.
@@ -637,136 +523,47 @@ var healthFunds = {
 		healthFunds._memberIdRequired(true);
 		meerkat.modules.healthDependants.resetConfig();
 	},
-
-	// Create payment day options on the fly - min and max are in + days from the selected date;
-	//NOTE: max - min cannot be a negative number
-	_paymentDays: function( effectiveDateString ){
-		// main check for real value
-		if( effectiveDateString == ''){
-			return false;
-		}
-		var effectiveDate = returnDate(effectiveDateString);
-		var today = new Date();
-
-		var _baseDate = null;
-		if(healthFunds._payments.countFrom == healthFunds.countFrom.TODAY ) {
-			_baseDate = today;
-		} else {
-			_baseDate = effectiveDate;
-		}
-		var _count = 0;
-
-		var _days = 0;
-		var _limit = healthFunds._payments.max;
-		if(healthFunds._payments.minType == healthFunds.minType.FROM_TODAY ) {
-			var difference = Math.round((effectiveDate-today)/(1000*60*60*24));
-			if(difference < healthFunds._payments.min) {
-				_days = healthFunds._payments.min - difference;
-			}
-		} else {
-			_days = healthFunds._payments.min;
-			_limit -= healthFunds._payments.min;
-		}
-
-
-
-		var _html = '<option value="">Please choose...</option>';
-
-		// The loop to create the payment days
-		var continueCounting = true;
-		while (_count < _limit) {
-			var _date = new Date( _baseDate.getTime() + (_days * 24 * 60 * 60 * 1000));
-			var _day = _date.getDay();
-			// up to certain payment day
-			if( typeof(healthFunds._payments.maxDay) != 'undefined' && healthFunds._payments.maxDay < _date.getDate() ){
-				_days++;
-				// Parse out the weekends
-			} else if( !healthFunds._payments.weekends && ( _day == 0 || _day == 6 ) ){
-				_days++;
-			} else {
-				var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
-				var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
-				_html += '<option value="'+ _date.getFullYear() +'-'+ _monthString +'-'+ _dayString +'">'+ healthFunds._getNiceDate(_date) +'</option>';
-				_days++;
-				_count++;
-			}
-		}
-
-		// Return the html
-		return _html;
-	},
-
 	// Creates the earliest date based on any of the matching days (not including an exclusion date)
 	_earliestDays: function(euroDate, a_Match, _exclusion){
-			if( !$.isArray(a_Match) || euroDate == '' ){
-				return false;
-			}
-			// creating the base date from the exclusion
-			var _now = returnDate(euroDate);
-			// 2014-03-05 Leto: Why is this hardcoded when it's also a function argument?
-			_exclusion = 7;
-			var _date = new Date( _now.getTime() + (_exclusion * 24 * 60 * 60 * 1000));
-			var _html = '<option value="">No date has been selected for you</option>';
-			// Loop through 31 attempts to match the next date
-			for (var i=0; i < 31; i++) {
-				/*var*/ _date = new Date( _date.getTime() + (1 * 24 * 60 * 60 * 1000));
-				// Loop through the selected days and attempt a match
-				for(a=0; a < a_Match.length; a++) {
-					if(a_Match[a] == _date.getDate() ){
-						var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
-						var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
-						/*var*/ _html = '<option value="'+ _date.getFullYear() +'-'+ _monthString +'-'+ _dayString +'" selected="selected">'+ healthFunds._getNiceDate(_date) +'</option>';
-						i = 99;
-						break;
-					}
+		if( !$.isArray(a_Match) || euroDate == '' ){
+			return false;
+		}
+		// creating the base date from the exclusion
+		var _now = returnDate(euroDate);
+		// 2014-03-05 Leto: Why is this hardcoded when it's also a function argument?
+		_exclusion = 7;
+		var _date = new Date( _now.getTime() + (_exclusion * 24 * 60 * 60 * 1000));
+		var _html = '<option value="">No date has been selected for you</option>';
+		// Loop through 31 attempts to match the next date
+		for (var i=0; i < 31; i++) {
+			/*var*/ _date = new Date( _date.getTime() + (1 * 24 * 60 * 60 * 1000));
+			// Loop through the selected days and attempt a match
+			for(a=0; a < a_Match.length; a++) {
+				if(a_Match[a] == _date.getDate() ){
+					/*var*/ _html = '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'" selected="selected">'+ meerkat.modules.dateUtils.dateValueLongFormat(_date) +'</option>';
+					i = 99;
+					break;
 				}
 			}
-			return _html;
-	},
-
-	// Renders the payment days text
-	_paymentDaysRender: function($_object,_html){
-		if(_html === false){
-			healthFunds._payments = { 'min':0, 'max':5, 'weekends':false };
-			_html = '<option value="">Please choose...</option>';
 		}
-		$_object.html(_html);
-		$_object.parent().siblings('p').text( 'Your payment will be deducted on: ' + $_object.find('option').first().text() );
-		$('.health-bank_details-policyDay, .health-credit-card_details-policyDay').html(_html);
-	},
-
-
-	_getDayOfWeek: function( dateObj ) {
-		var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-		return  days[dateObj.getDay()];
-	},
-
-	_getMonth: function( dateObj ) {
-		var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-		return  months[dateObj.getMonth()];
-	},
-
-	_getNiceDate : function( dateObj ) {
-		var day = dateObj.getDate();
-		var year = dateObj.getFullYear();
-		return healthFunds._getDayOfWeek(dateObj) + ", " + day + " " + healthFunds._getMonth(dateObj) + " " + year;
+		return _html;
 	},
 
 	_setPolicyDate : function (dateObj, addDays) {
 
-			var dateSplit = dateObj.split('/');
-			var dateFormated = dateSplit[2]+'-'+dateSplit[1]+'-'+dateSplit[0];
+		var dateSplit = dateObj.split('/');
+		var dateFormated = dateSplit[2]+'-'+dateSplit[1]+'-'+dateSplit[0];
 
-			var newdate = new Date(dateFormated);
-			newdate.setDate(newdate.getDate() + addDays);
+		var newdate = new Date(dateFormated);
+		newdate.setDate(newdate.getDate() + addDays);
 
-			var dd = ("0" + newdate.getDate()).slice(-2);
-			var mm = ("0" + (newdate.getMonth() + 1)).slice(-2);
-			var y = newdate.getFullYear();
+		var dd = ("0" + newdate.getDate()).slice(-2);
+		var mm = ("0" + (newdate.getMonth() + 1)).slice(-2);
+		var y = newdate.getFullYear();
 
-			var newPolicyDate = y + '-' + mm + '-' + dd;
+		var newPolicyDate = y + '-' + mm + '-' + dd;
 
-			return newPolicyDate;
+		return newPolicyDate;
 	}
 };
 

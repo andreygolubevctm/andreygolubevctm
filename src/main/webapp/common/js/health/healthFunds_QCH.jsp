@@ -18,6 +18,10 @@ QCH
 --%>
 var healthFunds_QCH = {
 	processOnAmendQuote: true,
+	$paymentType : $('#health_payment_details_type input'),
+	$paymentFrequency : $('#health_payment_details_frequency'),
+	$paymentStartDate: $("#health_payment_details_start"),
+	$claimsAccountOptin: $('#health_payment_bank_claims'),
 
 	set: function() {
 		<%-- HTML was already injected so unhide it --%>
@@ -34,7 +38,7 @@ var healthFunds_QCH = {
 
 
 			<%-- Dependant definition --%>
-			healthFunds._dependants('Queensland Country Health Fund(QCHF) policies provide cover for all dependents up to the age of 21, including step and foster children. Adult dependents who are single, aged between 21 and 25 years and who are: studying full time at a school, college or university, or are training as an apprentice and earning no more than $30,000 p.a. may continue to be covered by QCHF policies.');
+			healthFunds._dependants('Queensland Country Health Fund(QCHF) policies provide cover for all dependants up to the age of 21, including step and foster children. Adult dependants who are single, aged between 21 and 25 years and who are: studying full time at a school, college or university, or are training as an apprentice and earning no more than $30,000 p.a. may continue to be covered by QCHF policies.');
 
 			meerkat.modules.healthDependants.updateConfig({ showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:false, showApprenticeField:true});
 			healthFunds_QCH.tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
@@ -66,39 +70,25 @@ var healthFunds_QCH = {
 			<%-- Calendar for start cover --%>
 			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
 
+			<%--allow weekend selection from the datepicker--%>
+			healthFunds_QCH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+
 			<%-- Payments --%>
 			meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':true, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 			meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':true, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 
-			<%--selections for payment date --%>
-			$('#update-premium').on('click.QCH', function() {
-				var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
-				healthFunds._payments = { 'min':0, 'max':1, 'weekends':true };
-				var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
-				healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-				healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
-
-				$('.health_bank-details_policyDay-message').html('');
-				$('.health_credit-card-details_policyDay-message').html('');
-
-
-
-
-				var startDate = $('#health_payment_details_start').val();
-				var policyStart = healthFunds._setPolicyDate(startDate, 0);
-
-				$('#health_payment_credit_policyDay option[value='+policyStart+']').attr('selected','selected');
-				$('#health_payment_bank_policyDay option[value='+policyStart+']').attr('selected','selected');
-
-				if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
-					$('.health_bank-details_policyDay-message').html('Your first premium payment will be deducted from your nominated bank account on receipt of your application by us, or from the actual start date of your policy');
-					$('#health_payment_bank_policyDay').attr('type','hidden').attr('data-attach', 'true');
-				}
-				else if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc') {
-					$('.health_credit-card-details_policyDay-message').html('Your first premium payment will be deducted from your credit card on receipt of your application by us, or from the actual start date of your policy');
-					$('#health_payment_credit_policyDay').attr('type','hidden').attr('data-attach', 'true');
-				}
+			healthFunds_QCH.$paymentType.on('change.QCH', function renderPaymentDaysPaymentType(){
+				healthFunds_QCH.renderPaymentDays();
 			});
+
+			healthFunds_QCH.$paymentFrequency.on('change.QCH', function renderPaymentDaysFrequency(){
+				healthFunds_QCH.renderPaymentDays();
+			});
+
+			healthFunds_QCH.$paymentStartDate.on("changeDate.QCH", function renderPaymentDaysCalendar(e) {
+				healthFunds_QCH.renderPaymentDays();
+			});
+
 			/*$('#health_payment_medicare_cover').rules('add', {required:true});*/
 
 		}<%-- not loading quote --%>
@@ -113,10 +103,42 @@ var healthFunds_QCH = {
 				"credit" : true,
 				"bank" : false
 			},
+			"updateValidationSelectors" : meerkat.modules.healthPaymentStep.updateValidationSelectorsPaymentGateway,
+			"resetValidationSelectors" : meerkat.modules.healthPaymentStep.resetValidationSelectorsPaymentGateway,
 			"paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
-			"clearValidationSelectors" : $('#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type'),
 			"getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
 		});
+
+		<%-- Unset the refund optin radio buttons --%>
+		healthFunds_QCH.$claimsAccountOptin.find("input:checked").each(function(){
+		  $(this).prop("checked",null).trigger("change");
+		});
+	},
+	renderPaymentDays: function() {
+		var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
+		healthFunds._payments = { 'min':0, 'max':1, 'weekends':true };
+		healthFunds_QCH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
+
+		$('.health_payment_bank-details_policyDay-message').html('');
+		$('.health_payment_credit-card_policyDay-message').html('');
+
+		var startDate = $('#health_payment_details_start').val();
+		var policyStart = healthFunds._setPolicyDate(startDate, 0);
+
+		$('#health_payment_credit_policyDay option[value='+policyStart+']').attr('selected','selected');
+		$('#health_payment_bank_policyDay option[value='+policyStart+']').attr('selected','selected');
+
+		if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
+			$('.health_payment_bank-details_policyDay-message').html('Your first premium payment will be deducted from your nominated bank account on receipt of your application by us, or from the actual start date of your policy');
+			$('#health_payment_bank_policyDay').attr('type','hidden').attr('data-attach', 'true');
+		}
+		else if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc') {
+			$('.health_payment_credit-details_policyDay-message').html('Your first premium payment will be deducted from your credit card on receipt of your application by us, or from the actual start date of your policy');
+			$('#health_payment_credit_policyDay').attr('type','hidden').attr('data-attach', 'true');
+		}
 	},
 	unset: function() {
 		$('#QCH_questionset').hide();
@@ -153,7 +175,9 @@ var healthFunds_QCH = {
 			$('#health_payment_bank_policyDay').attr('type','').attr('data-attach', '');
 			$('#health_payment_credit_policyDay').attr('type','').attr('data-attach', '');
 
-			$('#update-premium').off('click.QCH');
+			healthFunds_QCH.$paymentType.off('change.QCH');
+			healthFunds_QCH.$paymentFrequency.off('change.QCH');
+			healthFunds_QCH.$paymentStartDate.off("changeDate.QCH");
 			meerkat.modules.paymentGateway.reset();
 		}
 	}

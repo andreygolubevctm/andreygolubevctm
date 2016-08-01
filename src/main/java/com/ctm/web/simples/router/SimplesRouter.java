@@ -6,10 +6,8 @@ import com.ctm.web.core.model.Error;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
-import com.ctm.web.core.services.AccessCheckService;
-import com.ctm.web.core.services.FatalErrorService;
-import com.ctm.web.core.services.SessionDataService;
-import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.core.security.IPAddressHandler;
+import com.ctm.web.core.services.*;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.simples.admin.openinghours.services.OpeningHoursAdminService;
@@ -53,6 +51,7 @@ import static javax.servlet.http.HttpServletResponse.*;
         "/simples/messages/postponed.json",//anything in the future scheduled for the current user
         "/simples/tickle.json",
 		"/simples/transactions/lock.json",
+        "/simples/transactions/unlock.json",
 		"/simples/transactions/details.json",
 		"/simples/users/list_online.json",
 		"/simples/users/stats_today.json",
@@ -84,14 +83,16 @@ public class SimplesRouter extends HttpServlet {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesRouter.class);
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final SessionDataService sessionDataService;
+	private final IPAddressHandler ipAddressHandler;
 
 	@SuppressWarnings("UnusedDeclaration")
 	public SimplesRouter() {
-		this(new SessionDataService());
+		this(new SessionDataService(), IPAddressHandler.getInstance());
 	}
 
-	public SimplesRouter(SessionDataService sessionDataService) {
+	public SimplesRouter(SessionDataService sessionDataService , IPAddressHandler ipAddressHandler) {
 		this.sessionDataService = sessionDataService;
+		this.ipAddressHandler = ipAddressHandler;
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 	}
 
@@ -138,6 +139,8 @@ public class SimplesRouter extends HttpServlet {
 			doTickle(request, response, writer, transactionId, authenticatedData);
 		} else if (uri.endsWith("/simples/transactions/lock.json")) {
 			doLock(response, writer, transactionId, authenticatedData);
+        } else if (uri.endsWith("/simples/transactions/unlock.json")) {
+            doUnlock(response, writer, transactionId, authenticatedData);
 		} else if (uri.endsWith("/simples/transactions/details.json")) {
 			objectMapper.writeValue(writer, TransactionService.getMoreDetailsOfTransaction(RequestUtils.getTransactionIdFromRequest(request)));
 		} else if (uri.endsWith("/simples/users/list_online.json")) {
@@ -181,11 +184,11 @@ public class SimplesRouter extends HttpServlet {
 				}
 			}
 		} else if (uri.endsWith("/simples/admin/openinghours/getAllRecords.json")) {
-			objectMapper.writeValue(writer, new OpeningHoursAdminService().getAllHours(request));
+			objectMapper.writeValue(writer, new OpeningHoursAdminService(ipAddressHandler).getAllHours(request));
 		} else if (uri.endsWith("/simples/admin/offers/getAllRecords.json")) {
 			objectMapper.writeValue(writer, new SpecialOffersService().getAllOffers());
 		} else if(uri.contains("/simples/admin/")) {
-			AdminRouter adminRouter = new AdminRouter(request, response);
+			AdminRouter adminRouter = new AdminRouter(request, response,ipAddressHandler);
 			adminRouter.doGet(uri.split("/simples/admin/")[1]);
 		} else if(uri.contains("/simples/transaction/get.json")) {
 			getTransaction(writer, request, response, authenticatedData);
@@ -206,7 +209,7 @@ public class SimplesRouter extends HttpServlet {
 		}
 
 		if(uri.endsWith("/simples/admin/openinghours/update.json")){
-			OpeningHoursAdminService service = new OpeningHoursAdminService();
+			OpeningHoursAdminService service = new OpeningHoursAdminService(ipAddressHandler);
 			List<SchemaValidationError> errors = service.validateOpeningHoursData(request);
 			if(errors==null || errors.isEmpty()){
 				objectMapper.writeValue(writer,service.updateOpeningHours(request,authenticatedData));
@@ -215,7 +218,7 @@ public class SimplesRouter extends HttpServlet {
 				objectMapper.writeValue(writer,jsonObjectNode("error",errors));
 			}
 		}else if(uri.endsWith("/simples/admin/openinghours/create.json")){
-			OpeningHoursAdminService service = new OpeningHoursAdminService();
+			OpeningHoursAdminService service = new OpeningHoursAdminService(ipAddressHandler);
 			List<SchemaValidationError> errors = service.validateOpeningHoursData(request);
 			if(errors==null || errors.isEmpty()){
 				objectMapper.writeValue(writer,service.createOpeningHours(request,authenticatedData));
@@ -224,7 +227,7 @@ public class SimplesRouter extends HttpServlet {
 				objectMapper.writeValue(writer,jsonObjectNode("error",errors));
 			}
 		} else if(uri.endsWith("/simples/admin/openinghours/delete.json")){
-            String result = new OpeningHoursAdminService().deleteOpeningHours(request, authenticatedData);
+            String result = new OpeningHoursAdminService(ipAddressHandler).deleteOpeningHours(request, authenticatedData);
             if (!result.equalsIgnoreCase("success")) {
 				response.setStatus(400);
                 objectMapper.writeValue(writer, jsonObjectNode("error", result));
@@ -258,7 +261,7 @@ public class SimplesRouter extends HttpServlet {
                 objectMapper.writeValue(writer, jsonObjectNode("result", result));
             }
 		}else if(uri.contains("/simples/admin/")){
-			AdminRouter adminRouter = new AdminRouter(request, response);
+			AdminRouter adminRouter = new AdminRouter(request, response, ipAddressHandler);
 			adminRouter.doPost(uri.split("/simples/admin/")[1]);
         } else {
             response.sendError(SC_NOT_FOUND);
@@ -299,6 +302,16 @@ public class SimplesRouter extends HttpServlet {
 		}
 	}
 
+    private void doUnlock(HttpServletResponse response, PrintWriter writer, Long transactionId, AuthenticatedData authenticatedData) throws  ServletException, IOException {
+        setHeader(response);
+        try {
+            new AccessCheckService().deleteTransactionLock(transactionId, authenticatedData.getUid());
+            objectMapper.writeValue(writer, jsonObjectNode("status", "OK"));
+        } catch (DaoException e) {
+            throw new ServletException("failed to perform unlock");
+        }
+    }
+
 	private void setHeader(HttpServletResponse response) {
 		response.setHeader("Cache-Control", "no-cache, max-age=0");
 		response.setHeader("Pragma", "no-cache");
@@ -308,7 +321,7 @@ public class SimplesRouter extends HttpServlet {
 	private void postponedMessages(final PrintWriter writer, final AuthenticatedData authenticatedData) throws IOException {
 		try {
 			final int simplesUid = authenticatedData.getSimplesUid();
-			final SimplesMessageService simplesMessageService = new SimplesMessageService();
+			final SimplesMessageService simplesMessageService = new SimplesMessageService(ipAddressHandler);
 			final boolean inInEnabled = StringUtils.equalsIgnoreCase("true", settings().getSetting("inInEnabled"));
 			final List<Message> messages = inInEnabled ? simplesMessageService.scheduledCallbacks(simplesUid) : simplesMessageService.postponedMessages(simplesUid);
 			objectMapper.writeValue(writer, jsonObjectNode("messages", messages));
@@ -320,8 +333,8 @@ public class SimplesRouter extends HttpServlet {
 	private void getMessage(final PrintWriter writer, final HttpServletRequest request, final HttpServletResponse response) throws IOException {
 		try {
 			final int messageId = parseInt(request.getParameter("messageId"));
-			final SimplesMessageService simplesMessageService = new SimplesMessageService();
-			objectMapper.writeValue(writer, simplesMessageService.getMessage(request, messageId));
+			final SimplesMessageService simplesMessageService = new SimplesMessageService(ipAddressHandler);
+			objectMapper.writeValue(writer, simplesMessageService.getMessage(messageId));
         } catch (final DaoException e) {
 			response.setStatus(SC_INTERNAL_SERVER_ERROR);
 			objectMapper.writeValue(writer, errors(e));
@@ -336,8 +349,8 @@ public class SimplesRouter extends HttpServlet {
 		try {
 			SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.SIMPLES.getCode());
 
-			final SimplesMessageService simplesMessageService = new SimplesMessageService();
-			objectMapper.writeValue(writer, simplesMessageService.getNextMessageForUser(request, simplesUid, authenticatedData.getSimplesUserRoles(), authenticatedData.getGetNextMessageRules()));
+			final SimplesMessageService simplesMessageService = new SimplesMessageService(ipAddressHandler);
+			objectMapper.writeValue(writer, simplesMessageService.getNextMessageForUser(request, simplesUid, authenticatedData.getGetNextMessageRules()));
 		} catch (final DaoException | ConfigSettingException | ParseException e) {
 			LOGGER.error("Could not get next simples message {}", kv("simplesUid", simplesUid), e);
 			response.setStatus(SC_INTERNAL_SERVER_ERROR);

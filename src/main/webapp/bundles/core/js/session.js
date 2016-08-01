@@ -152,7 +152,9 @@
 	 * @param reload boolean If true, will reload the journey
 	 */
 	function redirect(reload) {
-		meerkat.modules.leavePageWarning.disable();
+		if(meerkat.modules.leavePageWarning) {
+			meerkat.modules.leavePageWarning.disable();
+		}
 		
 		hideModal();
 		meerkat.modules.utils.scrollPageTo("body");
