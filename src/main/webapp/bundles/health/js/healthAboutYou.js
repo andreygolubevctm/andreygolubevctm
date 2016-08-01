@@ -24,7 +24,9 @@
 		$partnersDetails,
 		$lhcContainers,
 		$medicare,
-		$healthSituation;
+		$healthSituation,
+		$simplesPrimaryCvr,
+		$simplesPartnerCvr;
 
 	function init(){
 		$(document).ready(function () {
@@ -40,28 +42,30 @@
 	}
 
 	function initFields() {
-			$healthCoverDetailsDependants = $('.health_cover_details_dependants'),
-			$healthCoverIncomeMessage = $('#health_healthCover_incomeMessage'),
-			$primaryCurrentCover = $('#health_healthCover_health_cover'),
-			$primaryContinuousCoverContainer = $('#health-continuous-cover-primary'),
-			$partnerContainer = $('#partner-health-cover'),
-			$partnerCurrentCover = $('#health_healthCover_partner_health_cover'),
-			$partnerContinuousCoverContainer = $('#health-continuous-cover-partner'),
-			$partnerHealthCoverHealthCoverLoading = $('input[name=health_healthCover_partner_healthCoverLoading]'),
-			$partnerDOB = $('#health_healthCover_partner_dob'),
-			$healthCoverDependants = $('#health_healthCover_dependants'),
-			$healthCoverRebate = $('.health_cover_details_rebate'),
-			$rebateDialogue = $('.simples-dialogue-37'),
-			$healthSituationHealthCvr = $('#health_situation_healthCvr'),
-			$healthCoverIncome = $('#health_healthCover_income'),
-			$healthCoverIncomeLabel = $('#health_healthCover_incomelabel'),
-			$tierDropdowns = $('#health_situation_healthCvr, #health_healthCover_dependants'),
-			$primaryDOB = $('#health_healthCover_primary_dob'),
-			$rebateLegend = $('#health_healthCover_tier_row_legend'),
-			$partnersDetails = $('#partnerFund, #partnerMemberID, #partnerContainer'),
-			$lhcContainers = $('#health-contact-fieldset, #partner-health-cover, #australian-government-rebate'),
-			$medicare = $('.health-medicare_details'),
-			$healthSituation = $('input[name="health_situation_healthSitu"]');
+		$healthCoverDetailsDependants = $('.health_cover_details_dependants'),
+		$healthCoverIncomeMessage = $('#health_healthCover_incomeMessage'),
+		$primaryCurrentCover = $('#health_healthCover_health_cover'),
+		$primaryContinuousCoverContainer = $('#health-continuous-cover-primary'),
+		$partnerContainer = $('#partner-health-cover'),
+		$partnerCurrentCover = $('#health_healthCover_partner_health_cover'),
+		$partnerContinuousCoverContainer = $('#health-continuous-cover-partner'),
+		$partnerHealthCoverHealthCoverLoading = $('input[name=health_healthCover_partner_healthCoverLoading]'),
+		$partnerDOB = $('#health_healthCover_partner_dob'),
+		$healthCoverDependants = $('#health_healthCover_dependants'),
+		$healthCoverRebate = $('.health_cover_details_rebate'),
+		$rebateDialogue = $('.simples-dialogue-37'),
+		$healthSituationHealthCvr = $('#health_situation_healthCvr'),
+		$healthCoverIncome = $('#health_healthCover_income'),
+		$healthCoverIncomeLabel = $('#health_healthCover_incomelabel'),
+		$tierDropdowns = $('#health_situation_healthCvr, #health_healthCover_dependants'),
+		$primaryDOB = $('#health_healthCover_primary_dob'),
+		$rebateLegend = $('#health_healthCover_tier_row_legend'),
+		$partnersDetails = $('#partnerFund, #partnerMemberID, #partnerContainer'),
+		$lhcContainers = $('#health-contact-fieldset, #partner-health-cover, #australian-government-rebate'),
+		$medicare = $('.health-medicare_details'),
+		$healthSituation = $('input[name="health_situation_healthSitu"]'),
+		$simplesPrimaryCvr = $('.simples-dialogue-primary-current-cover'),
+		$simplesPartnerCvr = $('.simples-dialogue-partner-current-cover');
 
 
 		if (!healthChoices.hasSpouse()) {
@@ -119,20 +123,20 @@
 	function togglePrimaryContinuousCover(isInitMode) {
 		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($primaryDOB.val())) {
 			$primaryContinuousCoverContainer.slideDown();
-			$('.simples-dialogue-primary-current-cover').show();
+			$simplesPrimaryCvr.show();
 		} else {
 			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
-			$('.simples-dialogue-primary-current-cover').hide();
+			$simplesPrimaryCvr.hide();
 		}
 	}
 
 	function togglePartnerContinuousCover(isInitMode) {
 		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($partnerDOB.val())) {
 			$partnerContinuousCoverContainer.slideDown();
-			$('.simples-dialogue-partner-current-cover').show();
+			$simplesPartnerCvr.show();
 		} else {
 			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
-			$('.simples-dialogue-partner-current-cover').hide();
+			$simplesPartnerCvr.hide();
 		}
 	}
 
