@@ -2,16 +2,27 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events;
 
+    var $healthContactType,
+        $healthCoverRebate,
+        $healthSituationCvr,
+        $healthSitCoverType;
+
     function init() {
         $(document).ready(function () {
+            // cache selectors
+            $healthContactType = $('input[name=health_simples_contactType]');
+            $healthCoverRebate = $('input[name=health_healthCover_rebate]');
+            $healthSituationCvr = $('select[name=health_situation_healthCvr]');
+            $healthSitCoverType = $('#health_situation_coverType');
+
             // Handle pre-filled
             toggleInboundOutbound();
-            toggleDialogueInChatCallback();
-            meerkat.modules.provider_testing.setApplicationDateCalendar();
-
+            toggleBenefitsDialogue();
             initDBDrivenCheckboxes();
             applyEventListeners();
             eventSubscriptions();
+
+            meerkat.modules.provider_testing.setApplicationDateCalendar();
         });
     }
 
@@ -31,13 +42,6 @@
     }
 
     function applyEventListeners() {
-        var $healthContactType = $('input[name=health_simples_contactType]'),
-            $healthCoverRebate = $('input[name=health_healthCover_rebate]'),
-            $healthSituationCvr = $('select[name=health_situation_healthCvr]');
-
-        $('.follow-up-call input:checkbox, .simples-privacycheck-statement input:checkbox').on('change', function () {
-            toggleDialogueInChatCallback();
-        });
 
         // Handle toggle inbound/outbound
         $healthContactType.on('change', function () {
@@ -55,6 +59,8 @@
         $('.simples-dialogue.optionalDialogue h3.toggle').parent('.simples-dialogue').addClass('toggle').on('click', function () {
             $(this).find('h3 + div').slideToggle(200);
         });
+
+        $healthSitCoverType.on('change', toggleBenefitsDialogue);
     }
 
     function eventSubscriptions() {
@@ -90,27 +96,6 @@
         }
     }
 
-    // Disable/enable follow up/New quote dialogue when the other checkbox ticked in Chat Callback sesction in simples
-    function toggleDialogueInChatCallback() {
-        var $followUpCallField = $('.follow-up-call input:checkbox'),
-            $privacyCheckField = $('.simples-privacycheck-statement input:checkbox');
-
-        if ($followUpCallField.is(':checked')) {
-            $privacyCheckField.attr('checked', false);
-            $privacyCheckField.prop('disabled', true);
-            $('.simples-privacycheck-statement .error-field').hide();
-        } else if ($privacyCheckField.is(':checked')) {
-            $followUpCallField.attr('checked', false);
-            $followUpCallField.prop('disabled', true);
-            $('.follow-up-call .error-field').hide();
-        } else {
-            $privacyCheckField.prop('disabled', false);
-            $followUpCallField.prop('disabled', false);
-            $('.simples-privacycheck-statement .error-field').show();
-            $('.follow-up-call .error-field').show();
-        }
-    }
-
     function toggleRebateDialogue(reducePremium) {
         var $dialogue56 = $('.simples-dialogue-56');
 
@@ -118,6 +103,30 @@
 
         if (reducePremium === "Y") {
             $dialogue56.removeClass('hidden');
+        }
+    }
+
+    function toggleBenefitsDialogue() {
+        var $hospitalScripts = $('.simples-dialogue-hospital-cover'),
+            $extrasScripts = $('.simples-dialogue-extras-cover');
+
+        switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
+            case 'c':
+                $hospitalScripts.show();
+                $extrasScripts.show();
+                break;
+            case 'h':
+                $hospitalScripts.show();
+                $extrasScripts.hide();
+                break;
+            case 'e':
+                $hospitalScripts.hide();
+                $extrasScripts.show();
+                break;
+            default:
+                $hospitalScripts.hide();
+                $extrasScripts.hide();
+                break;
         }
     }
 

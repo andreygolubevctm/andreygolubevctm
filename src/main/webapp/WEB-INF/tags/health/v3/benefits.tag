@@ -44,6 +44,7 @@
                                                   required="true"
                                                   className="health-situation-healthCvrType roundedCheckboxIcons"
                                                   items="${items}"
+                                                  defaultValue="C"
                                                   id="${go:nameFromXpath(fieldXPath)}"
                                                   title="your cover type" />
                         </form_v3:row>

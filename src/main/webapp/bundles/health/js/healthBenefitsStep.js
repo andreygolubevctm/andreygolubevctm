@@ -54,9 +54,6 @@
                 $hasIconsDiv.removeClass('hasIcons');
             }
 
-            // preselect hospital extras and hospital medium
-            $('#health_situation_coverType_C').trigger('click');
-
             setupPage();
             eventSubscriptions();
         });
@@ -64,7 +61,7 @@
 
     function eventSubscriptions() {
 
-        toggleBenefits();
+        $coverType.find('input').on('change', toggleBenefits);
         hospitalCoverToggleEvents();
 
         $(document).on('click', 'a.tieredLearnMore', function showBenefitsLearnMoreModel() {
@@ -99,60 +96,37 @@
     function toggleBenefits() {
         var $hospitalSection = $('.Hospital_container').closest('fieldset'),
             $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
-        $coverType.find('input').on('change', function selectCoverType() {
-            switch ($(this).val().toLowerCase()) {
-                case 'c':
-                    $hospitalSection.slideDown();
-                    $extrasSection.slideDown();
-                    setDefaultCover();
-                    break;
-                case 'h':
-                    $hospitalSection.slideDown();
-                    $extrasSection.slideUp();
-                    setDefaultCover();
 
-                    $extrasSection.find('input[type="checkbox"]').prop('checked', false);
-                    break;
-                case 'e':
-                    $hospitalSection.slideUp();
-                    $extrasSection.slideDown();
-                    $hospitalCoverToggles.prop("checked", false);
-                    $allHospitalButtons.prop('checked', false);
-                    break;
-                default:
-                    $hospitalSection.slideUp();
-                    $extrasSection.slideUp();
-                    $hospitalCoverToggles.prop("checked", false);
-                    $allHospitalButtons.prop('checked', false);
-                    $extrasSection.find('input[type="checkbox"]').prop('checked', false);
-                    break;
-            }
-        });
-    }
-
-    function toggleBenefitsSimples(coverType) {
-        var $hospitalScripts = $('.simples-dialogue-hospital-cover'),
-            $extrasScripts = $('.simples-dialogue-extras-cover');
-
-        switch (coverType.toLowerCase()) {
+        switch ($coverType.find('input:checked').val().toLowerCase()) {
             case 'c':
-                $hospitalScripts.show();
-                $extrasScripts.show();
+                $hospitalSection.slideDown();
+                $extrasSection.slideDown();
+                setDefaultCover();
                 break;
             case 'h':
-                $hospitalScripts.show();
-                $extrasScripts.hide();
+                $hospitalSection.slideDown();
+                $extrasSection.slideUp();
+                setDefaultCover();
+
+                $extrasSection.find('input[type="checkbox"]').prop('checked', false);
                 break;
             case 'e':
-                $hospitalScripts.hide();
-                $extrasScripts.show();
+                $hospitalSection.slideUp();
+                $extrasSection.slideDown();
+                $hospitalCoverToggles.prop("checked", false);
+                $allHospitalButtons.prop('checked', false);
                 break;
             default:
-                $hospitalScripts.hide();
-                $extrasScripts.hide();
+                $hospitalSection.slideUp();
+                $extrasSection.slideUp();
+                $hospitalCoverToggles.prop("checked", false);
+                $allHospitalButtons.prop('checked', false);
+                $extrasSection.find('input[type="checkbox"]').prop('checked', false);
                 break;
         }
     }
+
+
 
     function showModal() {
         var htmlTemplate = _.template($('#benefits-explanation').html()),
@@ -188,6 +162,8 @@
             hospitalBenefits = getBenefitsModelFromPage($benefitsForm.find('.hospitalCover'));
             extrasBenefits = getBenefitsModelFromPage($benefitsForm.find('.extrasCover'));
         });
+
+        toggleBenefits();
     }
 
     function getBenefitsModelFromPage($container) {
@@ -375,8 +351,7 @@
         syncAccidentOnly: syncAccidentOnly,
         populateBenefitsSelection: populateBenefitsSelection,
         getHospitalBenefitsModel: getHospitalBenefitsModel,
-        getExtraBenefitsModel: getExtraBenefitsModel,
-        toggleBenefitsSimples: toggleBenefitsSimples
+        getExtraBenefitsModel: getExtraBenefitsModel
     });
 
 })(jQuery);
