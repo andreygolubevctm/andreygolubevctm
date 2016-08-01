@@ -79,8 +79,6 @@
 
             </form_v3:fieldset>
 
-            <simples:dialogue id="37" vertical="health" mandatory="true" className="hidden" />
-
         </jsp:body>
     </form_v2:fieldset_columns>
 </div>
