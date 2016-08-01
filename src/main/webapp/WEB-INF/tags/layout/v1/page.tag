@@ -272,7 +272,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 		<%-- Additional Meerkat Scripts --%>
 		<jsp:invoke fragment="additional_meerkat_scripts" />
-		<!-- CouponId from either brochure site cookies or direct query string -->
+		<%-- CouponId from either brochure site cookies or direct query string --%>
 		<c:choose>
 			<c:when test="${not empty param.couponid}">
 				<c:set var="couponId" ><c:out value="${go:decodeUrl(param.couponid)}" escapeXml="true"/></c:set>
