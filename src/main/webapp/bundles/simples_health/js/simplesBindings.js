@@ -5,7 +5,8 @@
     var $healthContactType,
         $healthCoverRebate,
         $healthSituationCvr,
-        $healthSitCoverType;
+        $healthSitCoverType,
+        $dialogue56;
 
     function init() {
         $(document).ready(function () {
@@ -14,11 +15,13 @@
             $healthCoverRebate = $('input[name=health_healthCover_rebate]');
             $healthSituationCvr = $('select[name=health_situation_healthCvr]');
             $healthSitCoverType = $('#health_situation_coverType');
+            $dialogue56 = $('.simples-dialogue-56');
 
             // Handle pre-filled
             toggleInboundOutbound();
             toggleBenefitsDialogue();
             initDBDrivenCheckboxes();
+
             applyEventListeners();
             eventSubscriptions();
 
@@ -43,23 +46,16 @@
 
     function applyEventListeners() {
 
-        // Handle toggle inbound/outbound
-        $healthContactType.on('change', function () {
-            toggleInboundOutbound();
-        });
-
-        $healthCoverRebate.on('change', function () {
-            toggleRebateDialogue($(this).val());
-        });
-
-        $healthSituationCvr.on('change', function() {
-            toggleRebateDialogue($healthCoverRebate.val());
-        });
-
+        // General Toggle
         $('.simples-dialogue.optionalDialogue h3.toggle').parent('.simples-dialogue').addClass('toggle').on('click', function () {
             $(this).find('h3 + div').slideToggle(200);
         });
 
+        // Handle toggle inbound/outbound
+        $healthContactType.on('change', toggleInboundOutbound);
+        // Handle toggle rebateDialogue
+        $healthCoverRebate.add($healthSituationCvr).on('change', toggleRebateDialogue);
+        // Handle toggle benefitsDialogue
         $healthSitCoverType.on('change', toggleBenefitsDialogue);
     }
 
@@ -96,14 +92,8 @@
         }
     }
 
-    function toggleRebateDialogue(reducePremium) {
-        var $dialogue56 = $('.simples-dialogue-56');
-
-        $dialogue56.addClass('hidden');
-
-        if (reducePremium === "Y") {
-            $dialogue56.removeClass('hidden');
-        }
+    function toggleRebateDialogue() {
+        $dialogue56.toggleClass('hidden', $healthCoverRebate.val() !== "Y");
     }
 
     function toggleBenefitsDialogue() {
