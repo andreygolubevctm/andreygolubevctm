@@ -380,6 +380,48 @@
 
 				if(event.isForward === true){
 					meerkat.modules.healthResults.getBeforeResultsPage();
+
+                    // show the bulky text script to call centre
+                    var htmlTemplate = _.template($('#simples-dialogue-62-template').html());
+                    meerkat.modules.dialogs.show({
+                        htmlContent : htmlTemplate(),
+                        closeOnHashChange : true,
+                        showCloseBtn: false,
+                        buttons: [{
+                            label: "Ok",
+                            className: 'btn-next btn-simples-dialogue-62',
+                            closeWindow:false
+                        }],
+                        onOpen : function(modalId) {
+                            var $modal = $('#' + modalId);
+                            $modal.find('.simples-dialogue').removeClass('hidden');
+                            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $modal.find('#complianceForm') );
+                            $modal.find('.btn-simples-dialogue-62').off().on('click', function() {
+                                var $form = $('#' + modalId).find('#complianceForm');
+                                $form.data().validator.resetForm();
+                                if ($form.valid()){
+                                    meerkat.modules.dialogs.close(modalId);
+                                }
+                            });
+
+                            // Check dynamic checkboxes depending on hidden values
+                            $('#health_simples_dialogue-checkbox-62a-modal')
+                                .prop('checked', $('#health_simples_dialogue-checkbox-62a').val() === 'Y');
+                            $('#health_simples_dialogue-checkbox-62b-modal')
+                                .prop('checked', $('#health_simples_dialogue-checkbox-62b').val() === 'Y');
+                            $('#health_simples_dialogue-checkbox-62c-modal')
+                                .prop('checked', $('#health_simples_dialogue-checkbox-62c').val() === 'Y');
+                        },
+                        onClose: function(modalId) {
+                            // Save the checkbox values to hidden inputs as Y/N
+                            $('#health_simples_dialogue-checkbox-62a')
+                                .val($('#health_simples_dialogue-checkbox-62a-modal').prop('checked') ? 'Y' : 'N');
+                            $('#health_simples_dialogue-checkbox-62b')
+                                .val($('#health_simples_dialogue-checkbox-62b-modal').prop('checked') ? 'Y' : 'N');
+                            $('#health_simples_dialogue-checkbox-62c')
+                                .val($('#health_simples_dialogue-checkbox-62c-modal').prop('checked') ? 'Y' : 'N');
+                        }
+                    });
 				}
 
 				if (meerkat.modules.healthTaxTime.isFastTrack()) {
