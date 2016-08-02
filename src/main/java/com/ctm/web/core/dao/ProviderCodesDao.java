@@ -69,15 +69,16 @@ public class ProviderCodesDao {
 		int i = 0; // while loop index
 		int randomIndex = 0; // random number generated
 
-		while (i < this.maxProviders)
-		{
-			randomIndex = randomGenerator.nextInt(providerCodesSize); // generate a random number
-			element = providerCodes.get(randomIndex); // retrieve the element at this position
+		if (providerCodesSize > 0) {
+			while (i < this.maxProviders) {
+				randomIndex = randomGenerator.nextInt(providerCodesSize); // generate a random number
+				element = providerCodes.get(randomIndex); // retrieve the element at this position
 
-			if (!tempProviderCodes.contains(element) && element != null) // check if this element has already been added
-			{
-				tempProviderCodes.add(element);
-				i++;
+				if (!tempProviderCodes.contains(element) && element != null) // check if this element has already been added
+				{
+					tempProviderCodes.add(element);
+					i++;
+				}
 			}
 		}
 

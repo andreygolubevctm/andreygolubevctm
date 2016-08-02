@@ -25,7 +25,7 @@
 		$partnersDetails,
 		$lhcContainers,
 		$medicare,
-        $healthSituation;
+		$healthSituation;
 
 	function init(){
 		$(document).ready(function () {
@@ -35,34 +35,34 @@
 			meerkat.modules.healthTiers.setTiers(true);
 
 			eventSubscriptions();
-            toggleMlsMessage();
+			toggleMlsMessage();
 		});
 	}
 
 	function initFields() {
 		$aboutYouContainer = $('#startForm'),
-		$healthCoverDetailsDependants = $('.health_cover_details_dependants'),
-		$healthCoverIncomeMessage = $('#health_healthCover_incomeMessage'),
-		$primaryCurrentCover = $aboutYouContainer.find('#health_healthCover_health_cover'),
-		$primaryContinuousCoverContainer = $aboutYouContainer.find('#health-continuous-cover-primary'),
-		$partnerContainer = $aboutYouContainer.find('#partner-health-cover'),
-		$partnerCurrentCover = $aboutYouContainer.find('#health_healthCover_partner_health_cover'),
-		$partnerContinuousCoverContainer = $aboutYouContainer.find('#health-continuous-cover-partner'),
-		$partnerHealthCoverHealthCoverLoading = $aboutYouContainer.find('input[name=health_healthCover_partner_healthCoverLoading]'),
-		$partnerDOB = $aboutYouContainer.find('#health_healthCover_partner_dob'),
-		$healthCoverDependants = $aboutYouContainer.find('#health_healthCover_dependants'),
-		$healthCoverRebate = $aboutYouContainer.find('.health_cover_details_rebate'),
-		$rebateDialogue = $aboutYouContainer.find('.simples-dialogue-37'),
-		$healthSituationHealthCvr = $aboutYouContainer.find('#health_situation_healthCvr'),
-		$healthCoverIncome = $aboutYouContainer.find('#health_healthCover_income'),
-		$healthCoverIncomeLabel = $aboutYouContainer.find('#health_healthCover_incomelabel'),
-		$tierDropdowns = $aboutYouContainer.find('#health_situation_healthCvr, #health_healthCover_dependants'),
-		$primaryDOB = $aboutYouContainer.find('#health_healthCover_primary_dob'),
-		$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend'),
-		$partnersDetails = $('#partnerFund, #partnerMemberID, #partnerContainer'),
-		$lhcContainers = $('#primary-health-cover, #partner-health-cover, #australian-government-rebate'),
-		$medicare = $('.health-medicare_details'),
-        $healthSituation = $aboutYouContainer.find('input[name="health_situation_healthSitu"]');
+			$healthCoverDetailsDependants = $('.health_cover_details_dependants'),
+			$healthCoverIncomeMessage = $('#health_healthCover_incomeMessage'),
+			$primaryCurrentCover = $aboutYouContainer.find('#health_healthCover_health_cover'),
+			$primaryContinuousCoverContainer = $aboutYouContainer.find('#health-continuous-cover-primary'),
+			$partnerContainer = $aboutYouContainer.find('#partner-health-cover'),
+			$partnerCurrentCover = $aboutYouContainer.find('#health_healthCover_partner_health_cover'),
+			$partnerContinuousCoverContainer = $aboutYouContainer.find('#health-continuous-cover-partner'),
+			$partnerHealthCoverHealthCoverLoading = $aboutYouContainer.find('input[name=health_healthCover_partner_healthCoverLoading]'),
+			$partnerDOB = $aboutYouContainer.find('#health_healthCover_partner_dob'),
+			$healthCoverDependants = $aboutYouContainer.find('#health_healthCover_dependants'),
+			$healthCoverRebate = $aboutYouContainer.find('.health_cover_details_rebate'),
+			$rebateDialogue = $aboutYouContainer.find('.simples-dialogue-37'),
+			$healthSituationHealthCvr = $aboutYouContainer.find('#health_situation_healthCvr'),
+			$healthCoverIncome = $aboutYouContainer.find('#health_healthCover_income'),
+			$healthCoverIncomeLabel = $aboutYouContainer.find('#health_healthCover_incomelabel'),
+			$tierDropdowns = $aboutYouContainer.find('#health_situation_healthCvr, #health_healthCover_dependants'),
+			$primaryDOB = $aboutYouContainer.find('#health_healthCover_primary_dob'),
+			$rebateLegend = $aboutYouContainer.find('#health_healthCover_tier_row_legend'),
+			$partnersDetails = $('#partnerFund, #partnerMemberID, #partnerContainer'),
+			$lhcContainers = $('#primary-health-cover, #partner-health-cover, #australian-government-rebate'),
+			$medicare = $('.health-medicare_details'),
+			$healthSituation = $aboutYouContainer.find('input[name="health_situation_healthSitu"]');
 
 
 		if (!healthChoices.hasSpouse()) {
@@ -107,7 +107,7 @@
 			}
 		});
 
-        $healthSituation.add($healthCoverIncome).on('change', toggleMlsMessage);
+		$healthSituation.add($healthCoverIncome).on('change', toggleMlsMessage);
 	}
 
 	function togglePrimaryContinuousCover(isInitMode) {
@@ -128,38 +128,38 @@
 
 	function setupForm(isInitMode) {
 		switch($healthSituationHealthCvr.val())
-		 {
-		 case 'F':
-			$partnerContainer.slideDown();
-			$healthCoverIncomeMessage.show();
+		{
+			case 'F':
+				$partnerContainer.slideDown();
+				$healthCoverIncomeMessage.show();
 
-			if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
-				$healthCoverDetailsDependants.slideDown();
-			}
-			$partnerContainer.slideDown();
-			$partnersDetails.show();
-			break;
-		 case 'SPF':
-			$partnerContainer.slideUp();
+				if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
+					$healthCoverDetailsDependants.slideDown();
+				}
+				$partnerContainer.slideDown();
+				$partnersDetails.show();
+				break;
+			case 'SPF':
+				$partnerContainer.slideUp();
 
-			if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
-				$healthCoverDetailsDependants.slideDown();
-			}
-			$partnersDetails.hide();
-			break;
-		 case 'C':
-				 $healthCoverDetailsDependants.slideUp();
-				 $partnerContainer.slideDown();
-			 	 $partnersDetails.show();
-			 break;
+				if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
+					$healthCoverDetailsDependants.slideDown();
+				}
+				$partnersDetails.hide();
+				break;
+			case 'C':
+				$healthCoverDetailsDependants.slideUp();
+				$partnerContainer.slideDown();
+				$partnersDetails.show();
+				break;
 			default:
-				 isInitMode === true ? $partnerContainer.hide() : $partnerContainer.slideUp();
-			 	 isInitMode === true ? $healthCoverDetailsDependants.hide() : $healthCoverDetailsDependants.slideUp();
-				 resetPartnerDetails();
-				 $healthCoverIncomeMessage.hide();
-			 	 $partnersDetails.hide();
-			 break;
-		 }
+				isInitMode === true ? $partnerContainer.hide() : $partnerContainer.slideUp();
+				isInitMode === true ? $healthCoverDetailsDependants.hide() : $healthCoverDetailsDependants.slideUp();
+				resetPartnerDetails();
+				$healthCoverIncomeMessage.hide();
+				$partnersDetails.hide();
+				break;
+		}
 
 		togglePrimaryContinuousCover();
 		togglePartnerContinuousCover();
@@ -203,9 +203,9 @@
 		return $primaryCurrentCover.find(':checked').val();
 	}
 
-    function toggleMlsMessage () {
-        $('#health_healthCover_tier_row_legend_mls').toggleClass('hidden', ['CHC', 'ATP'].indexOf($healthSituation.filter(':checked').val()) < 0 || $healthCoverIncome.val() !== '0');
-    }
+	function toggleMlsMessage () {
+		$('#health_healthCover_tier_row_legend_mls').toggleClass('hidden', ['CHC', 'ATP'].indexOf($healthSituation.filter(':checked').val()) < 0 || $healthCoverIncome.val() !== '0');
+	}
 
 	meerkat.modules.register('healthAboutYou', {
 		init: init,

@@ -5,12 +5,10 @@ import com.ctm.web.core.email.formatter.ExactTargetFormatter;
 import com.ctm.web.core.email.model.EmailModel;
 import com.ctm.web.core.email.model.EmailResponse;
 import com.ctm.web.core.email.model.ExactTargetEmailModel;
-import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.settings.*;
 import com.ctm.web.core.security.StringEncryption;
-import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.webservice.WebServiceUtils;
 import com.exacttarget.wsdl.partnerapi.*;
@@ -116,6 +114,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
     public String sendToExactTarget(ExactTargetFormatter<T> formatter, T emailModel)
             throws SendEmailException {
         ExactTargetEmailModel exactTargetEmailModel = formatter.convertToExactTarget(emailModel);
+        EmailResponse response;
         try {
             exactTargetEmailModel.setClientId(parseInt(pageSettings.getSetting("sendClientId")));
             Soap stub = initWebserviceClient(transactionId);
@@ -124,22 +123,23 @@ public class ExactTargetEmailSender<T extends EmailModel> {
             ExactTargetEmailBuilder.createPayload(exactTargetEmailModel, createRequest);
 
             CreateResponse createResponse = stub.create(createRequest);
-            EmailResponse response = parseResponse(createResponse);
-            if (!response.isSuccessful()) {
-                SendEmailException exception = new SendEmailException("error returned from exact target error code:" + response.getErrorCode());
-                exception.setDescription("failed to call exact target message:" + response.getMessage() + " OverallStatus: " + response.getOverallStatus() + " requestID:" + response.getRequestID());
-                throw exception;
-            }
-            return response.getRequestID();
-        } catch (ConfigSettingException e) {
+            response = parseResponse(createResponse);
+        } catch (Exception e) {
             LOGGER.error("Failed to call exact target web service {}", kv("emailModel", emailModel), e);
             throw new SendEmailException("failed to call exact target web service", e);
         } finally {
             destroyWebserviceClient();
         }
+
+        if (!response.isSuccessful()) {
+            SendEmailException exception = new SendEmailException("error returned from exact target error code:" + response.getErrorCode());
+            exception.setDescription("failed to call exact target message:" + response.getMessage() + " OverallStatus: " + response.getOverallStatus() + " requestID:" + response.getRequestID());
+            throw exception;
+        }
+        return response.getRequestID();
     }
 
-    private Soap initWebserviceClient(Long transactionId) {
+    protected Soap initWebserviceClient(Long transactionId) {
         Service service = new PartnerAPI();
         Soap port = service.getPort(Soap.class);
         BindingProvider bp = (BindingProvider) port;
@@ -216,11 +216,9 @@ public class ExactTargetEmailSender<T extends EmailModel> {
         String errorDescription = result.getResultDetailXML();
         for (CreateResult r2 : result.getCreateResults()) {
             statusMessage += " subscriberFailuresErrorDescription:";
-            String separator = "";
             errorDescription += r2.getResultDetailXML();
             if (!errorDescription.isEmpty()) {
-                statusMessage += separator + errorDescription;
-                separator = ",";
+                statusMessage += errorDescription;
             }
         }
         response.setErrorCode(errorCode);
