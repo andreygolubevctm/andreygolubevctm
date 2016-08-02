@@ -268,6 +268,7 @@ ${newPage.init(pageContext.request, pageSettings)}
                         </c:otherwise>
                     </c:choose>
                 </c:if>
+
                 <%-- Additional Meerkat Scripts --%>
                 <jsp:invoke fragment="additional_meerkat_scripts"/>
                 <%-- CouponId from either brochure site cookies or direct query string --%>
