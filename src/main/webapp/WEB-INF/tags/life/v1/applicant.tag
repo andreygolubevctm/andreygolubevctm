@@ -56,7 +56,7 @@
 					<life_v1:occupation_select list="${life_util:occupations(pageContext.request)}" comboBox="true" xpath="${xpath}" required="true" title="${error_phrase}occupation"/>
 				</c:when>
 				<c:otherwise>
-					<field_v1:general_select type="occupation" comboBox="true" xpath="${xpath}/occupation" hannoverXpath="${xpath}/hannover" required="true" title="${error_phrase}occupation"/>
+					<life_v1:occupation_search xpath="${xpath}/occupation" hannoverXpath="${xpath}/hannover" required="true" title="${error_phrase}occupation"/>
 				</c:otherwise>
 			</c:choose>
 		</form_v1:row>
