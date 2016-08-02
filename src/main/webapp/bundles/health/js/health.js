@@ -469,24 +469,6 @@
 					meerkat.modules.healthCoverDetails.displayHealthFunds();
 				});
 
-				// Show/Hide simples messaging based on fund selection
-				if(meerkat.site.isCallCentreUser === true){
-
-					if( ($('#health_previousfund_primary_fundName').val() !== '' && $('#health_previousfund_primary_fundName').val() != 'NONE') || ($('#health_previousfund_partner_fundName').val() !== '' && $('#health_previousfund_partner_fundName').val() !== 'NONE') ){
-						$(".simples-dialogue-15").first().show();
-					}else{
-						$(".simples-dialogue-15").first().hide();
-					}
-
-					$('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').on('change', function(){
-						if( $(this).val() !== '' && $(this).val() !== 'NONE' ){
-							$(".simples-dialogue-15").first().show();
-						}else if( ($('#health_previousfund_primary_fundName').val() === '' || $('#health_previousfund_primary_fundName').val() == 'NONE') && ($('#health_previousfund_partner_fundName').val() === '' || $('#health_previousfund_partner_fundName').val() === 'NONE') ){
-							$(".simples-dialogue-15").first().hide();
-						}
-					});
-				}
-
 				// Check state selection
 				$('#health_application_address_postCode, #health_application_address_streetSearch, #health_application_address_suburb').on('change', function(){
 					healthApplicationDetails.testStatesParity();
