@@ -62,12 +62,12 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
-            <form_v3:row label="Your phone number" fieldXpath="${fieldXpath}" className="clear required_input">
+            <form_v3:row label="Your phone number" fieldXpath="${fieldXpath}" className="clear">
                 <field_v1:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/email" />
-            <form_v3:row label="Your email address" fieldXpath="${fieldXpath}" className="clear required_input">
+            <form_v3:row label="Your email address" fieldXpath="${fieldXpath}" className="clear">
                 <field_v2:email xpath="${fieldXpath}" title="your email address" required="${required}"  />
                 <field_v1:hidden xpath="${xpath}/emailsecondary" />
                 <field_v1:hidden xpath="${xpath}/emailhistory" />
@@ -110,10 +110,6 @@
                         errorMsg="Please agree to the Terms &amp; Conditions" />
             </form_v2:row>
 
-            <c:if test="${!pageSettings.getSetting('inInEnabled')}">
-                <simples:referral_tracking vertical="health" />
-            </c:if>
-
             <%-- Did it this way to prevent the snapshot from pushing the fields below up/down depending on the option selected with the health_situation_healthCvr field --%>
             <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
             <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
@@ -124,7 +120,7 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/cover" />
-            <form_v3:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
+            <form_v3:row label="Do you currently hold private Hospital insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover"/>
             </form_v3:row>
 
@@ -153,7 +149,7 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/cover" />
-            <form_v3:row label="Does your partner currently hold private health insurance?" fieldXpath="${fieldXpath}"  id="${name}_partnerCover">
+            <form_v3:row label="Does your partner currently hold private Hospital insurance?" fieldXpath="${fieldXpath}"  id="${name}_partnerCover">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_partner_health_cover"/>
             </form_v3:row>
 
