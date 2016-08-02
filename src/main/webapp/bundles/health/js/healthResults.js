@@ -304,15 +304,17 @@
                 showCloseBtn: false,
                 buttons: [{
                     label: "Ok",
-                    className: 'btn-next',
+                    className: 'btn-next btn-simples-dialogue-62',
                     closeWindow:false
                 }],
                 onOpen : function(modalId) {
                     var $modal = $('#' + modalId);
                     $modal.find('.simples-dialogue').removeClass('hidden');
                     meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $modal.find('#complianceForm') );
-                    $modal.find('.btn-next').on('click', function() {
-                        if ($('#' + modalId).find('#complianceForm').valid()){
+                    $modal.find('.btn-simples-dialogue-62').off().on('click', function() {
+                        var $form = $('#' + modalId).find('#complianceForm');
+                        $form.data().validator.resetForm();
+                        if ($form.valid()){
                             meerkat.modules.dialogs.close(modalId);
                         }
                     });
@@ -325,7 +327,7 @@
                     $('#health_simples_dialogue-checkbox-62c-modal')
                         .prop('checked', $('#health_simples_dialogue-checkbox-62c').val() === 'Y');
                 },
-                onClose: function() {
+                onClose: function(modalId) {
                     // Save the checkbox values to hidden inputs as Y/N
                     $('#health_simples_dialogue-checkbox-62a')
                         .val($('#health_simples_dialogue-checkbox-62a-modal').prop('checked') ? 'Y' : 'N');
