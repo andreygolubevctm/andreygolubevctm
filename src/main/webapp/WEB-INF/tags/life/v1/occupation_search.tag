@@ -17,7 +17,7 @@
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 
-	<input type="text" name="${name}_search-occupation" id="${name}_search-occupation" class="${name}_search" /><input type="button" value="Search" class="${name}_search-btn" />
+	<input type="text" name="${name}_search-occupation" id="${name}_search-occupation" class="${name}_search" /><input type="button" value="Search" class="${name}_search-btn standardButton greenButton" />
 	<div id="${name}_occupationPanel">
 	</div>
 
