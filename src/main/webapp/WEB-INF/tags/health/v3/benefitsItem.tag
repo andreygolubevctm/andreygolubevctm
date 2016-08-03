@@ -68,11 +68,13 @@
 								</div>
 								<c:if test="${category eq 'Hospital'}">
 								<div class="hospitalCoverToggles row hidden-xs">
+                                    <c:if test="${!callCentre}">
 									<div class="grouping-header">Comprehensive Cover</div>
 									<div class="grouping-border"></div>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="top">top</a>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="medium">medium</a>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="basic">basic</a>
+                                    </c:if>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="customise">customise</a>
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="limited">limited</a>
                                 </div>
@@ -140,4 +142,13 @@
 		</div>
 	</form_v2:fieldset>
 
+	<c:choose>
+        <c:when test="${coverType == 'Hospital'}">
+            <simples:dialogue id="45" className="simples-dialogue-hospital-cover" vertical="health" />
+            <simples:dialogue id="50" className="simples-dialogue-extras-cover" vertical="health" />
+        </c:when>
+        <c:otherwise>
+            <simples:dialogue id="51" className="simples-dialogue-extras-cover" vertical="health" />
+        </c:otherwise>
+    </c:choose>
 </c:if>

@@ -1,7 +1,3 @@
 {
-  "extends": "health",
-  "exclusions": [
-    "shared/results/v2",
-    "shared/bootstrapSwitch"
-  ]
+  "extends": "health"
 }

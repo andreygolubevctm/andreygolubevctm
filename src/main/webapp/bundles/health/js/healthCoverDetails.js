@@ -11,7 +11,7 @@
     }
 
     function isRebateApplied() {
-        var $el = $('#health_situation-selection').find('input[name="health_healthCover_rebate"]:checked');
+        var $el = $('#health_healthCover_health_cover_rebate').find('input[name="health_healthCover_rebate"]:checked');
         return !_.isEmpty($el) && $el.val() === 'Y';
     }
 
@@ -79,6 +79,15 @@
             }
         }
     }
+
+    function setIncomeBase (initMode){
+        var $incomeBase = $('#health_healthCover_incomeBase');
+        if((healthChoices._cover === 'S' || healthChoices._cover === 'SM' || healthChoices._cover === 'SF') && isRebateApplied()){
+            show(initMode , $incomeBase);
+        } else {
+            hide(initMode , $incomeBase);
+        }
+    }
     
     
 
@@ -102,7 +111,8 @@
         init: initHealthCoverDetails,
         isRebateApplied: isRebateApplied,
         displayHealthFunds: displayHealthFunds,
-        setHealthFunds : setHealthFunds
+        setHealthFunds: setHealthFunds,
+        setIncomeBase: setIncomeBase
     });
 
 })(jQuery);
