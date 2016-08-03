@@ -20,11 +20,11 @@
 
 
 	<input type="text" name="${name}_search-occupation" id="${name}_search-occupation" class="${name}_search" /><input type="button" value="Search" class="${name}_search-btn" />
-	<div id="${name}_occupationPanel"></div>
+	<div id="${name}_occupationPanel">
+	</div>
 
 	<go:script marker="js-href" href="common/js/pagination.min.js" />
 	<go:script marker="onready">
-	var occupations = [];
 
 	$('.${name}_search-btn').on('click', function() {
 		var searchText = $(this).siblings('.${name}_search').val();
@@ -35,25 +35,48 @@
 			cache: false,
 			success: function(json){
 				if(json) {
-					occupations = json;
-				}
+				    var output = ''
+				    var style = '';
+			        for (var i = 0, len = json.length; i < len; i++) {
+   			            if(i % 10 === 0 && i > 0) {
+   			            	style = 'style="display:none" ';
+							output += '</ul>';
+			            }
 
-			    $('#${name}_occupationPanel').pagination({
-			        dataSource: occupations,
-			        triggerPagingOnInit: false,
-			        pageSize: 10,
-			        formatResult: function(data) {
-				        var result = [];
-				        for (var i = 0, len = data.length; i < len; i++) {
-				            result.push('<label><input type="radio" name="${name}" value="'+ data[i].id + '" />' + data[i].title) + '</label>';
+   			            if(i % 10 === 0 && i > 0) {
+			               output += '<a href="javascript:void(0);" class="prev-occupation">< prev</a>';
+
+			            }
+
+	   			        if(i % 10 === 0 && i > 0) {
+							output += '<span>Page ' + i/10 + ' of ' + Math.ceil(json.length/10) + '</span>';
 				        }
-				        return result;
-				    },
-					callback: function(data, pagination) {
-			            var html = template(data);
-			            dataContainer.html(html);
+
+	   			        if(i % 10 === 0 && i > 0 && i < json.length) {
+							output += '<a href="javascript:void(0);" class="next-occupation">next ></a>';
+				        }
+
+   			            if(i % 10 === 0 && i > 0) {
+							output += '</div>';
+			            }
+
+			            if(i % 10 === 0) {
+			               output += '<div '+style+'class="page-'+(i/10)+'"><ul>';
+			            }
+                        
+			            output +='<li><label><input type="radio" name="${name}" value="'+ json[i].id + '" />' + json[i].title + '</label></li>';
 			        }
-			    });
+			        $('#${name}_occupationPanel').html(output);
+
+					$('#${name}_occupationPanel .prev-occupation').on('click', function(e) {
+						e.preventDefault();
+						$(this).parent().hide().prev().show();
+					});
+					$('#${name}_occupationPanel .next-occupation').on('click', function(e) {
+						e.preventDefault();
+						$(this).parent().hide().next().show();
+					});
+				}
 
 				return false;
 			},
