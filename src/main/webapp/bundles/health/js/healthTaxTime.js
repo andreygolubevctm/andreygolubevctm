@@ -49,7 +49,7 @@
 
 	function _applyEventListeners() {
 		$healthSituation.on('change.FT', function toggleFields() {
-			_toggleFastTrackFields($healthSituation.filter(':checked').val());
+			_toggleFastTrackFields($healthSituation.val());
 		});
 
 		$extrasCoverOptionContainer.on('change.FT', function setSectionsToSkip(){

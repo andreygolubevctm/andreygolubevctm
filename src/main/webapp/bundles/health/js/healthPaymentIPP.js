@@ -28,13 +28,7 @@ Process:
 				var $this = $(this);
 
 				$token = $this.find('.payment-ipp-tokenisation');
-
-				if (meerkat.site.isCallCentreUser === true) {
-					$cardtype = $('#health_payment_credit_type');
-				} else {
-					$cardtype = $('.health-credit_card_details-type input');
-				}
-
+                $cardtype = $('.health-credit_card_details-type input');
 				$maskedNumber = $this.find('.payment-ipp-maskedNumber');
 				$maskedNumber.prop('readonly', true);
 				$maskedNumber.css('cursor', 'pointer');
@@ -190,7 +184,7 @@ Process:
 	}
 
 	function cardType() {
-		var cardVal = meerkat.site.isCallCentreUser === true ? $cardtype.find('option:selected').val() : $cardtype.find(':checked').val();
+		var cardVal = $cardtype.find(':checked').val();
 		switch (cardVal)
 		{
 		case 'v':

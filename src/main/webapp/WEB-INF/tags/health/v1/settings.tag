@@ -81,7 +81,7 @@
 	isDefaultToHealthQuote: ${defaultToHealthQuote},
     isDefaultToHealthApply: ${defaultToHealthApply},
 	isTaxTime: '<content:get key="taxTime"/>',
-	healthAlternatePricingActive: ${healthAlternatePricingActive},<c:if test="${isHealthV2 eq true}">
+	healthAlternatePricingActive: ${healthAlternatePricingActive},
 	<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService"/>
 	<c:set var="providerList" value="${miscUtils:convertToJson(healthApplicationService.getAllProviders(pageSettings.getBrandId()))}"/>
 	navMenu: {
@@ -89,7 +89,7 @@
 		direction: 'right'
 	},
 	providerList: ${providerList},
-</c:if>liveChat: {
+    liveChat: {
 		config: {
 			lpServer			: "server.lon.liveperson.net",
 			lpTagSrv			: "sr1.liveperson.net",
@@ -120,6 +120,7 @@
 		state: '${state}',
 		performHealthChoicesUpdate: ${performHealthChoicesUpdate}
 	},
+	<c:if test="${not empty data.health.simples}">simplesCheckboxes: <c:out value="${go:XMLtoJSON(data.health.simples)}" escapeXml="false" />,</c:if>
 	<c:if test="${not empty data.health.application.dependants}">dependants:  <c:out value="${go:XMLtoJSON(data.health.application.dependants)}" escapeXml="false" />,</c:if>
 	alternatePricing: <health_v1:alternate_pricing_json />
 }

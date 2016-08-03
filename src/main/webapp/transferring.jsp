@@ -49,7 +49,7 @@
 			window.ResultsModel = { moduleEvents: { WEBAPP_LOCK: 'WEBAPP_LOCK' } };
 			window.ResultsView = { moduleEvents: { RESULTS_TOGGLE_MODE: 'RESULTS_TOGGLE_MODE' } };
 		</script>
-		<script src="${assetUrl}assets/js/bundles/transferring${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+
 	</jsp:attribute>
 
 	<jsp:attribute name="head_meta">
@@ -68,6 +68,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
+		<script src="${assetUrl}assets/js/bundles/transferring${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 	</jsp:attribute>
 
 	<jsp:body>
