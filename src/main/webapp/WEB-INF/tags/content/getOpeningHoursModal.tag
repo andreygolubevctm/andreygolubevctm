@@ -4,6 +4,7 @@
 <session:core />
 <jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
+<c:set var="callCentreAppNumber" scope="request"><content:get key="callCentreAppNumber"/></c:set>
 
 <div class="all-opening-hours">
 	<div class="row">
@@ -59,7 +60,7 @@
 				<div class="col-md-12 call-us">
 					<h4>Call us on </h4>
 					<h1>
-						<span class="callCentreNumber">${callCentreNumber}</span>
+						<span class="callCentreNumber">${callCentreNumber}</span><span class="callCentreAppNumber">${callCentreAppNumber}</span>
 					</h1>
 				</div>
 			</div>
