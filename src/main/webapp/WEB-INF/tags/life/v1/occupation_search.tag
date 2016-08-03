@@ -5,6 +5,7 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath"			required="true"	 rtexprvalue="true"		description="variable's xpath" %>
+<%@ attribute name="hannoverXpath"	required="false" rtexprvalue="true"		description="hannover xpath (for life/ip)" %>
 <%@ attribute name="required"		required="false" rtexprvalue="true"		description="is this field required?" %>
 <%@ attribute name="className"		required="false" rtexprvalue="true"		description="additional css class attribute" %>
 <%@ attribute name="title"			required="false" rtexprvalue="true"		description="subject of the select box" %>
@@ -17,7 +18,14 @@
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 
-	<input type="text" name="${name}_search-occupation" id="${name}_search-occupation" class="${name}_search" /><input type="button" value="Search" class="${name}_search-btn standardButton greenButton" />
+	<input type="text" name="${go:nameFromXpath(xpath)}Search" id="${go:nameFromXpath(xpath)}Search" class="${name}_search" /><input type="button" value="Search" class="${name}_search-btn greenButton" />
+
+	<c:set var="hannoverName" value="${go:nameFromXpath(hannoverXpath)}" />
+	<input type="hidden" value="${hannoverDefault}" name="${hannoverName}" id="${hannoverName}" />
+
+	<c:set var="occupationTitle" value="${go:nameFromXpath(xpath)}Title" />
+	<input type="hidden" value="${occupationTitleDefault}" name="${occupationTitle}" id="${occupationTitle}" />
+
 	<div id="${name}_occupationPanel">
 	</div>
 
@@ -30,6 +38,7 @@
 			display: inline-block;
 			width: 33%;
 			padding: 8px 0;
+			text-decoration: none;
 		}
 		.page-occupation {
 			text-align: center;
@@ -37,6 +46,10 @@
 		.next-occupation {
 			text-align: right;
 		}
+		body .greenButton {
+		    color: #ffffff;
+    		font-weight: 400;
+    	}
 		label input {
 		    margin-right: 8px !important;
 		}
@@ -61,7 +74,7 @@
 							output += '</ul>';
 			            }
 
-   			            if(i % 10 === 0 && i > 0) {
+   			            if((i % 10 === 0 && i > 0) || i === json.length - 1) {
 			               output += '<a href="javascript:void(0);" class="prev-occupation">< prev</a>';
 
 			            }
@@ -82,7 +95,7 @@
 			               output += '<div '+style+'class="page-'+(i/10)+'"><ul>';
 			            }
                         
-			            output +='<li><label><input type="radio" name="${name}" value="'+ json[i].id + '" />' + json[i].title + '</label></li>';
+			            output +='<li><label><input type="radio" id="${name}_input" name="${name}" data-hannovercode="'+ json[i].talCode + '" value="'+ json[i].id + '" /><span>' + json[i].title + '</span></label></li>';
 			        }
 			        $('#${name}_occupationPanel').html(output);
 
@@ -94,6 +107,13 @@
 						e.preventDefault();
 						$(this).parent().hide().next().show();
 					});
+					$('#${name}_occupationPanel input').on('click', function(e) {
+						hannover = $(this).attr('data-hannovercode');
+						title = $(this).siblings('span').text();
+						$('#${hannoverName}').val(hannover);
+						$('#${occupationTitle}').val(title);
+					});
+
 				}
 
 				return false;
