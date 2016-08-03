@@ -13,9 +13,12 @@
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
 <layout_v1:simples_page fullWidth="true">
-	<jsp:attribute name="head">
-		<script src="${assetUrl}js/bundles/plugins/trumbowyg.min.js?${revision}"></script>
+
+  <jsp:attribute name="head">
 	</jsp:attribute>
+  <jsp:attribute name="body_end">
+		<script src="${assetUrl}js/bundles/plugins/trumbowyg.min.js?${revision}"></script>
+  </jsp:attribute>
   <jsp:body>
     <div class="sortable-header data-sorter container-fluid" data-refreshcallback="meerkat.modules.adminProviderContent.refresh">
       <div class="container">
