@@ -60,7 +60,7 @@
 				<div class="col-md-12 call-us">
 					<h4>Call us on </h4>
 					<h1>
-						<span class="callCentreNumber">${callCentreNumber}</span><span class="callCentreAppNumber">${callCentreAppNumber}</span>
+						<span class="callCentreNumber">${callCentreNumber}</span><span class="callCentreAppNumber" style="display:none">${callCentreAppNumber}</span>
 					</h1>
 				</div>
 			</div>
