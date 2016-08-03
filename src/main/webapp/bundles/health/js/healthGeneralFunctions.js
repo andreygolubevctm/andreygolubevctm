@@ -90,13 +90,7 @@
     }
 
     function _getCardType() {
-        var creditCard;
-        if (meerkat.site.isCallCentreUser === true) {
-            creditCard = $('#health_payment_credit_type').find(':selected').val();
-        } else {
-            creditCard = $('.health-credit_card_details-type input').filter(":checked").val();
-        }
-
+        var creditCard = $('.health-credit_card_details-type input').filter(":checked").val();
         /** default to empty string which is what the old dropdown did */
         return _.isEmpty(creditCard) ? '' : creditCard;
     }

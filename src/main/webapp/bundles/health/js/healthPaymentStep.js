@@ -139,11 +139,7 @@
 
 	// Need this function because healthGeneralFunctions destroys the event bindings via renderFields() whereas the old version only updates the dropdown
 	function rebindCreditCardRules() {
-		if (meerkat.site.isCallCentreUser === true) {
-			$('#health_payment_credit_type').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
-		} else {
-			$('.health-credit_card_details-type input').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
-		}
+        $('.health-credit_card_details-type input').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
 	}
 
 	// Settings should be reset when the selected product changes.
