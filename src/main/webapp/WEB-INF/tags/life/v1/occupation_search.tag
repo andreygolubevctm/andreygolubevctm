@@ -1,17 +1,15 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
-<%@ tag description="Select box built from general table."%>
+<%@ tag description="Radio buttons built from search request."%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath"			required="true"	 rtexprvalue="true"		description="variable's xpath" %>
-<%@ attribute name="hannoverXpath"	required="false" rtexprvalue="true"		description="hannover xpath (for life/ip)" %>
 <%@ attribute name="required"		required="false" rtexprvalue="true"		description="is this field required?" %>
 <%@ attribute name="className"		required="false" rtexprvalue="true"		description="additional css class attribute" %>
 <%@ attribute name="title"			required="false" rtexprvalue="true"		description="subject of the select box" %>
 <%@ attribute name="type" 			required="false" rtexprvalue="true"		description="type code on general table" %>
 <%@ attribute name="initialText"	required="false" rtexprvalue="true"		description="Text used to invite selection" %>
-<%@ attribute name="comboBox"		required="false" rtexprvalue="true"		description="If the select should be a combobox or not" %>
 <%@ attribute name="tabIndex"		required="false" rtexprvalue="true"		description="additional tab index specification" %>
 
 <%-- VARIABLES --%>
@@ -23,7 +21,27 @@
 	<div id="${name}_occupationPanel">
 	</div>
 
-	<go:script marker="js-href" href="common/js/pagination.min.js" />
+	<go:style marker="css-href">
+	<style>
+		.next-occupation,
+		.prev-occupation,
+		.page-occupation {
+			color: #0c4da2;
+			display: inline-block;
+			width: 33%;
+			padding: 8px 0;
+		}
+		.page-occupation {
+			text-align: center;
+		}
+		.next-occupation {
+			text-align: right;
+		}
+		label input {
+		    margin-right: 8px !important;
+		}
+	</style>
+	</go:style>
 	<go:script marker="onready">
 
 	$('.${name}_search-btn').on('click', function() {
@@ -49,7 +67,7 @@
 			            }
 
 	   			        if(i % 10 === 0 && i > 0) {
-							output += '<span>Page ' + i/10 + ' of ' + Math.ceil(json.length/10) + '</span>';
+							output += '<span class="page-occupation">Page ' + i/10 + ' of ' + Math.ceil(json.length/10) + '</span>';
 				        }
 
 	   			        if(i % 10 === 0 && i > 0 && i < json.length) {
@@ -89,10 +107,4 @@
 	</go:script>
 
 <%-- VALIDATION --%>
-<c:set var="validationSelector">
-	<c:choose>
-		<c:when test="${comboBox}">${name}_input</c:when>
-		<c:otherwise>${name}</c:otherwise>
-	</c:choose>
-</c:set>
-<go:validate selector="${validationSelector}" rule="required" parm="${required}" message="Please enter the ${title}"/>
+<go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title}"/>
