@@ -18,12 +18,11 @@
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 
-	<input type="text" name="${go:nameFromXpath(xpath)}Search" id="${go:nameFromXpath(xpath)}Search" class="${name}_search" /><input type="button" value="Search" class="${name}_search-btn greenButton" />
-
+	<input type="text" name="${name}Search" id="${name}Search" class="${name}_search" /><input type="button" value="Search" class="${name}_search-btn greenButton" />
 	<c:set var="hannoverName" value="${go:nameFromXpath(hannoverXpath)}" />
 	<input type="hidden" value="${hannoverDefault}" name="${hannoverName}" id="${hannoverName}" />
 
-	<c:set var="occupationTitle" value="${go:nameFromXpath(xpath)}Title" />
+	<c:set var="occupationTitle" value="${name}Title" />
 	<input type="hidden" value="${occupationTitleDefault}" name="${occupationTitle}" id="${occupationTitle}" />
 
 	<div id="${name}_occupationPanel">
@@ -31,17 +30,34 @@
 
 	<go:style marker="css-href">
 	<style>
+		.${name}Group .help_icon {
+			position:absolute;
+			right:190px;
+		}
+		#${name}_occupationPanel li {
+			margin-bottom:3px;
+			clear:both;
+		}
+		#${name}_occupationPanel li label input,
+		#${name}_occupationPanel li label span{
+			float:left;
+		}
+		#${name}_occupationPanel li label span{
+			width:375px;
+			padding-top:3px;
+		}
 		.next-occupation,
 		.prev-occupation,
 		.page-occupation {
 			color: #0c4da2;
 			display: inline-block;
-			width: 33%;
+			width: 120px;
 			padding: 8px 0;
 			text-decoration: none;
 		}
 		.page-occupation {
 			text-align: center;
+			color:rgb(51, 51, 51);
 		}
 		.next-occupation {
 			text-align: right;
@@ -56,72 +72,101 @@
 	</style>
 	</go:style>
 	<go:script marker="onready">
-
+	window.occupationSearchData = {
+		lastSearch : false,
+		searching : false,
+		searchObj : null
+	};
 	$('.${name}_search-btn').on('click', function() {
-		var searchText = $(this).siblings('.${name}_search').val();
-		$.ajax({
-			url: "./rest/life/occupation/search.json",
-			data: {"search":searchText},
-			dataType: "json",
-			cache: false,
-			success: function(json){
-				if(json) {
-				    var output = ''
-				    var style = '';
-			        for (var i = 0, len = json.length; i < len; i++) {
-   			            if(i % 10 === 0 && i > 0) {
-   			            	style = 'style="display:none" ';
-							output += '</ul>';
-			            }
-
-   			            if((i % 10 === 0 && i > 0) || i === json.length - 1) {
-			               output += '<a href="javascript:void(0);" class="prev-occupation">< prev</a>';
-
-			            }
-
-	   			        if(i % 10 === 0 && i > 0) {
-							output += '<span class="page-occupation">Page ' + i/10 + ' of ' + Math.ceil(json.length/10) + '</span>';
-				        }
-
-	   			        if(i % 10 === 0 && i > 0 && i < json.length) {
-							output += '<a href="javascript:void(0);" class="next-occupation">next ></a>';
-				        }
-
-   			            if(i % 10 === 0 && i > 0) {
-							output += '</div>';
-			            }
-
-			            if(i % 10 === 0) {
-			               output += '<div '+style+'class="page-'+(i/10)+'"><ul>';
-			            }
-                        
-			            output +='<li><label><input type="radio" id="${name}_input" name="${name}" data-hannovercode="'+ json[i].talCode + '" value="'+ json[i].id + '" /><span>' + json[i].title + '</span></label></li>';
-			        }
-			        $('#${name}_occupationPanel').html(output);
-
-					$('#${name}_occupationPanel .prev-occupation').on('click', function(e) {
-						e.preventDefault();
-						$(this).parent().hide().prev().show();
-					});
-					$('#${name}_occupationPanel .next-occupation').on('click', function(e) {
-						e.preventDefault();
-						$(this).parent().hide().next().show();
-					});
-					$('#${name}_occupationPanel input').on('click', function(e) {
-						hannover = $(this).attr('data-hannovercode');
-						title = $(this).siblings('span').text();
-						$('#${hannoverName}').val(hannover);
-						$('#${occupationTitle}').val(title);
-					});
-
+		var flushOccupationSearch = function() {
+			occupationSearchData.searching = false;
+			occupationSearchData.searchObj = null;
+			$('#life_primary_occupationSearch').prop("disabled",false).removeClass("disabled");
+			$('.life_primary_occupation_search-btn').removeClass("disabled");
+		};
+		var searchText = $.trim($(this).siblings('.${name}_search').val());
+		if(occupationSearchData.lastSearch !== searchText) {
+			occupationSearchData.lastSearch = searchText
+			if(occupationSearchData.searching === true) {
+				try{
+					occupationSearchData.searchObj.abort();
+					flushOccupationSearch();
+				} catch(e) {
+					// ignore
 				}
+			}
+			occupationSearchData.searching = true;
+			$('#life_primary_occupationSearch').prop("disabled",true).addClass("disabled");
+			$('.life_primary_occupation_search-btn').addClass("disabled");
+			occupationSearchData.searchObj = $.ajax({
+				url: "./rest/life/occupation/search.json",
+				data: {"search":searchText},
+				dataType: "json",
+				cache: false,
+				success: function(json){
+					if(json) {
+						var output = ''
+						var style = '';
+						var len = json.length;
+						var pageSize = 10;
+						var pageCount = Math.ceil(len/pageSize);
+						var currentPage = false;
+						var pageStart = false;
+						for (var i = 0; i < len; i++) {
+							var page = Math.floor(i/pageSize);
+							var islastForPage = i % pageSize === pageSize - 1;
 
-				return false;
-			},
-			error: function(obj,txt){
-			},
-			timeout:30000
-		});
+							if(currentPage !== page) {
+								pageStart = true;
+								currentPage = page;
+							} else {
+								pageStart = false;
+							}
+
+							if(pageStart) {
+								output += '<div '+(currentPage > 0 ? 'style="display:none"' : '')+'class="page-'+(i/pageSize)+'"><ul>';
+							}
+
+							output +='<li><label><input type="radio" id="${name}_input" name="${name}" data-hannovercode="'+ json[i].talCode + '" value="'+ json[i].id + '" /><span>' + json[i].title + '</span></label></li>';
+
+							if(islastForPage) {
+								output += '</ul>';
+							}
+	
+							if(islastForPage) {
+								output += '<a href="javascript:void(0);" class="prev-occupation" style="visibility:' + (currentPage > 0 ? 'visible' : 'hidden') + '">< prev</a>';
+								output += '<span class="page-occupation" style="visibility:' + (pageCount > 0 ? 'visible' : 'hidden') + '">Page ' + (currentPage + 1) + ' of ' + pageCount + '</span>';
+								output += '<a href="javascript:void(0);" class="next-occupation" style="visibility:' + (currentPage < pageCount - 1 ? 'visible' : 'hidden') + '">next ></a>';
+							}
+
+							if(islastForPage) {
+								output += '</div>';
+							}
+						}
+						$('#${name}_occupationPanel').html(output);
+	
+						$('#${name}_occupationPanel .prev-occupation').on('click', function(e) {
+							e.preventDefault();
+							$(this).parent().hide().prev().show();
+						});
+						$('#${name}_occupationPanel .next-occupation').on('click', function(e) {
+							e.preventDefault();
+							$(this).parent().hide().next().show();
+						});
+						$('#${name}_occupationPanel input').on('click', function(e) {
+							hannover = $(this).attr('data-hannovercode');
+							title = $(this).siblings('span').text();
+							$('#${hannoverName}').val(hannover);
+							$('#${occupationTitle}').val(title);
+						});
+					}
+					return false;
+				},
+				complete:flushOccupationSearch,
+				error: flushOccupationSearch,
+				timeout:30000
+			});
+		}
 
 	});
 	</go:script>

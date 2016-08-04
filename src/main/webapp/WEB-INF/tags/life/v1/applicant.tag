@@ -51,7 +51,7 @@
 			<field_v1:array_radio  id="${name}_smoker" xpath="${xpath}/smoker" required="true" title="${error_phrase}smoker status" items="N=Non-Smoker,Y=Smoker" />
 		</form_v1:row>
 
-		<form_v1:row label="Occupation" helpId="525">
+		<form_v1:row label="Occupation" helpId="525" className="${name}_occupationGroup">
 			<jsp:useBean id="splitTests" class="com.ctm.web.core.services.tracking.SplitTestService" />
 			<c:choose>
 				<c:when test="${splitTests.isActive(pageContext.request, data.current.transactionId, 40)}">

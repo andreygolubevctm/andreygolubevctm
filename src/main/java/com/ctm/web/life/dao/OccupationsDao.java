@@ -57,7 +57,7 @@ public class OccupationsDao {
 			"JOIN ctm.tal_hannover_mappings ON lifebroker_occupations.talCode = tal_hannover_mappings.tal " +
 				"WHERE title LIKE (?)"
 			);
-			stmt.setString(1,"%"+searchText+"%");
+			stmt.setString(1,"%"+searchText.trim()+"%");
 
 			ResultSet results = stmt.executeQuery();
 
