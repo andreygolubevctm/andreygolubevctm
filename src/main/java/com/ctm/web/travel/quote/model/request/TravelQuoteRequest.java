@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class TravelQuoteRequest {
 
+    private String clientIp;
     private PolicyType policyType;
     private boolean mobileUrls = false;
     private int numberOfAdults;
@@ -29,6 +30,14 @@ public class TravelQuoteRequest {
     private SingleTripDetails singleTripDetails;
 
     public TravelQuoteRequest(){
+    }
+
+    public String getClientIp() {
+        return clientIp;
+    }
+
+    public void setClientIp(String clientIp) {
+        this.clientIp = clientIp;
     }
 
     public PolicyType getPolicyType() {
