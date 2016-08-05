@@ -93,7 +93,7 @@
 			$('#${name}Search').addClass('error');
 		} else {
 			if(${name}SearchData.lastSearch !== searchText) {
-				${name}SearchData.lastSearch = searchText
+				${name}SearchData.lastSearch = searchText;
 				if(${name}SearchData.searching === true) {
 					try{
 						${name}SearchData.searchObj.abort();
