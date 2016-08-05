@@ -103,8 +103,15 @@
 					}
 				}
 				${name}SearchData.searching = true;
+
+				// Disable the search fields while searching
 				$('#${name}Search').prop("disabled",true).addClass("disabled");
 				$('.${name}_search-btn').addClass("disabled");
+
+				// Flush previous occupation selections
+				$('#${hannoverName}').val("");
+				$('#${occupationTitle}').val("");
+
 				${name}SearchData.searchObj = $.ajax({
 					url: "./rest/life/occupation/search.json",
 					data: {"search":searchText},
@@ -122,7 +129,7 @@
 							for (var i = 0; i < len; i++) {
 								var item = json[i];
 								var page = Math.floor(i/pageSize);
-								var islastForPage = i % pageSize === pageSize - 1;
+								var islastForPage = (i === len - 1) || (i % pageSize === pageSize - 1);
 
 								if(currentPage !== page) {
 									pageStart = true;
