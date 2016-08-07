@@ -13,6 +13,22 @@ TUH
 var healthFunds_QTU = {
     $paymentStartDate: $("#health_payment_details_start"),
     set: function(){
+
+        <c:set var="html">
+            <c:set var="fieldXpath" value="health/application/qtu" />
+            <form_v2:fieldset id="qtu_eligibility" legend="Eligibility" className="primary">
+                <form_v2:row fieldXpath="${fieldXpath}/eligibility" label="Are you or any of your family a current or former union member?"  className="qtumain">
+                    <field_v2:general_select type="healthNavQuestion_eligibility" xpath="${fieldXpath}/eligibility" title="Eligibility reason" required="true" initialText="Please select" disableErrorContainer="${true}" />
+                </form_v2:row>
+
+                <form_v2:row label="Which union are you a member of?" id="unionId">
+                    <field_v2:general_select xpath="${fieldXpath}/union" title="Union" required="true" initialText="&nbsp;" />
+                </form_v2:row>
+            </form_v2:fieldset>
+        </c:set>
+
+        $('#health_application').prepend('<c:out value="${html}" escapeXml="false" />');
+
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
 
