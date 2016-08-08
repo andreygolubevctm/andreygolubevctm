@@ -1,7 +1,9 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description=""%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-
+<c:set var="mobileVariant" value="${pageSettings.getSetting('mobileVariant') eq 'Y'}" />
+<jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
+<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"		 rtexprvalue="true"	 description="data xpath" %>
@@ -49,11 +51,14 @@
 			<field_v1:array_radio  id="${name}_smoker" xpath="${xpath}/smoker" required="true" title="${error_phrase}smoker status" items="N=Non-Smoker,Y=Smoker" />
 		</form_v1:row>
 
-		<form_v1:row label="Occupation" helpId="525">
+		<form_v1:row label="Occupation" helpId="525" className="${name}_occupationGroup">
 			<jsp:useBean id="splitTests" class="com.ctm.web.core.services.tracking.SplitTestService" />
 			<c:choose>
 				<c:when test="${splitTests.isActive(pageContext.request, data.current.transactionId, 40)}">
 					<life_v1:occupation_select list="${life_util:occupations(pageContext.request)}" comboBox="true" xpath="${xpath}" required="true" title="${error_phrase}occupation"/>
+				</c:when>
+				<c:when test="${mobileVariant eq true or deviceType eq 'MOBILE'}">
+					<life_v1:occupation_search xpath="${xpath}/occupation" hannoverXpath="${xpath}/hannover" required="true" title="${error_phrase}occupation"/>
 				</c:when>
 				<c:otherwise>
 					<field_v1:general_select type="occupation" comboBox="true" xpath="${xpath}/occupation" hannoverXpath="${xpath}/hannover" required="true" title="${error_phrase}occupation"/>

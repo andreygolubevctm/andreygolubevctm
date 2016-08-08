@@ -6,6 +6,10 @@
         $healthCoverRebate,
         $healthSituationCvr,
         $healthSitCoverType,
+        $healthPrimaryCover,
+        $healthPartnerCover,
+        $dialoguePrimaryCover,
+        $dialoguePartnerCover,
         $dialogue56;
 
     function init() {
@@ -15,6 +19,10 @@
             $healthCoverRebate = $('input[name=health_healthCover_rebate]');
             $healthSituationCvr = $('select[name=health_situation_healthCvr]');
             $healthSitCoverType = $('#health_situation_coverType');
+            $healthPrimaryCover = $('input[name=health_healthCover_primary_cover]');
+            $healthPartnerCover = $('input[name=health_healthCover_partner_cover]');
+            $dialoguePrimaryCover = $('.simples-dialogue-primary-current-cover');
+            $dialoguePartnerCover = $('.simples-dialogue-partner-current-cover');
             $dialogue56 = $('.simples-dialogue-56');
 
             // Handle pre-filled
@@ -57,6 +65,10 @@
         $healthCoverRebate.add($healthSituationCvr).on('change', toggleRebateDialogue);
         // Handle toggle benefitsDialogue
         $healthSitCoverType.on('change', toggleBenefitsDialogue);
+        // Handle toggle primaryCoverDialogue
+        $healthPrimaryCover.on('change', togglePrimaryCoverDialogue);
+        // Handle toggle partnerCoverDialogue
+        $healthPartnerCover.on('change', togglePartnerCoverDialogue);
 
         // open bridging page
         $('#resultsPage').on("click", ".btn-more-info", openBridgingPage);
@@ -116,7 +128,7 @@
     }
 
     function toggleRebateDialogue() {
-        $dialogue56.toggleClass('hidden', $healthCoverRebate.val() !== "Y");
+        $dialogue56.toggleClass('hidden', $healthCoverRebate.filter(':checked').val() !== "Y");
     }
 
     function toggleBenefitsDialogue() {
@@ -141,6 +153,14 @@
                 $extrasScripts.hide();
                 break;
         }
+    }
+
+    function togglePrimaryCoverDialogue() {
+        $dialoguePrimaryCover.toggleClass('hidden', $healthPrimaryCover.filter(':checked').val() !== "Y");
+    }
+
+    function togglePartnerCoverDialogue() {
+        $dialoguePartnerCover.toggleClass('hidden', $healthPartnerCover.filter(':checked').val() !== "Y");
     }
 
     meerkat.modules.register("simplesBindings", {
