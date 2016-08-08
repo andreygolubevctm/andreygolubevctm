@@ -99,7 +99,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
     @ApiOperation(value = "apply/get.json", notes = "Submit an health application", produces = "application/json")
     @RequestMapping(value = "/apply/get.json",
             method = RequestMethod.POST,
-            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8", MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public HealthResultWrapper getHealthApply(@ModelAttribute final HealthRequest data,
                                               BindingResult bindingResult,

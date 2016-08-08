@@ -6,7 +6,7 @@ public class HealthRegisterPaymentRequest extends RequestImpl {
 
     private String sst;
 
-    private String cardType;
+    private String cardtype;
 
     private String token;
 
@@ -16,7 +16,7 @@ public class HealthRegisterPaymentRequest extends RequestImpl {
 
     private String responseresult;
 
-    private String sessionId;
+    private String sessionid;
 
     private String providerId;
 
@@ -28,12 +28,12 @@ public class HealthRegisterPaymentRequest extends RequestImpl {
         this.sst = sst;
     }
 
-    public String getCardType() {
-        return cardType;
+    public String getCardtype() {
+        return cardtype;
     }
 
-    public void setCardType(String cardType) {
-        this.cardType = cardType;
+    public void setCardtype(String cardtype) {
+        this.cardtype = cardtype;
     }
 
     public String getToken() {
@@ -68,12 +68,12 @@ public class HealthRegisterPaymentRequest extends RequestImpl {
         this.responseresult = responseresult;
     }
 
-    public String getSessionId() {
-        return sessionId;
+    public String getSessionid() {
+        return sessionid;
     }
 
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+    public void setSessionid(String sessionid) {
+        this.sessionid = sessionid;
     }
 
     public String getProviderId() {
@@ -90,12 +90,12 @@ public class HealthRegisterPaymentRequest extends RequestImpl {
                 "transactionId=" + getTransactionId() +
                 ", clientIpAddress='" + getClientIpAddress() + '\'' +
                 ", sst='" + sst + '\'' +
-                ", cardType='" + cardType + '\'' +
+                ", cardtype='" + cardtype + '\'' +
                 ", token='" + token + '\'' +
                 ", maskedcardno='" + maskedcardno + '\'' +
                 ", responsecode='" + responsecode + '\'' +
                 ", responseresult='" + responseresult + '\'' +
-                ", sessionId='" + sessionId + '\'' +
+                ", sessionid='" + sessionid + '\'' +
                 ", providerId='" + providerId + '\'' +
                 ", environmentOverride='" + getEnvironmentOverride() + '\'' +
                 ", requestAt='" +getRequestAt() + '\'' +
