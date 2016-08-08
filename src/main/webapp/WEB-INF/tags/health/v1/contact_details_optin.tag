@@ -140,7 +140,7 @@
 
         <%--dynamic script--%>
         <%--if customer has cover--%>
-        <simples:dialogue id="53" vertical="health" className="simples-dialogue-primary-current-cover" />
+        <simples:dialogue id="53" vertical="health" className="simples-dialogue-primary-current-cover hidden" />
 
         <form_v3:fieldset id="partner-health-cover" legend="Your Partner's Details" className="partner">
             <c:set var="fieldXpath" value="${xpath}/partner/dob" />
@@ -168,7 +168,7 @@
 
         <%--dynamic script--%>
         <%--if customer has cover--%>
-        <simples:dialogue id="53" vertical="health" className="simples-dialogue-partner-current-cover" />
+        <simples:dialogue id="53" vertical="health" className="simples-dialogue-partner-current-cover hidden" />
         <simples:dialogue id="54" vertical="health" />
         <simples:dialogue id="26" vertical="health" mandatory="true" />
 
