@@ -168,7 +168,7 @@
             }
         } else {
             // Generate X number of dependants.
-            var hasChosenToApplyRebate = typeof healthCoverDetails !== 'undefined' ? healthCoverDetails.getRebateChoice() === 'Y' : meerkat.modules.healthCoverDetails.isRebateApplied();
+            var hasChosenToApplyRebate = meerkat.modules.healthCoverDetails.isRebateApplied();
             if (hasChosenToApplyRebate && dependantCountSpecified > 0) {
                 // Add to existing dependants
                 while (getNumberOfDependants() < dependantCountSpecified) {
@@ -338,7 +338,7 @@
             depCount = getNumberOfDependants();
 
         // Difference between health v1 and health v2 can be removed when v1 is removed.
-        var hasChosenToNotApplyRebate = typeof healthCoverDetails !== 'undefined' ? healthCoverDetails.getRebateChoice() == 'N' : !meerkat.modules.healthCoverDetails.isRebateApplied();
+        var hasChosenToNotApplyRebate = !meerkat.modules.healthCoverDetails.isRebateApplied();
         if (hasChosenToNotApplyRebate) {
             $applyPageIncomeTierMenu.slideUp();
         } else if (depCount > 0) {

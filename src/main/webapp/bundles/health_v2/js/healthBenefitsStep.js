@@ -55,9 +55,6 @@
                 $hasIconsDiv.removeClass('hasIcons');
             }
 
-            // preselect hospital extras and hospital medium
-            $('#health_situation_coverType_C').trigger('click');
-
             setupPage();
             eventSubscriptions();
         });
@@ -65,7 +62,7 @@
 
     function eventSubscriptions() {
 
-        toggleBenefits();
+        $coverType.find('input').on('change', toggleBenefits);
         hospitalCoverToggleEvents();
 
         $(document).on('click', 'a.tieredLearnMore', function showBenefitsLearnMoreModel() {
@@ -100,35 +97,34 @@
     function toggleBenefits() {
         var $hospitalSection = $('.Hospital_container').closest('fieldset'),
             $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
-        $coverType.find('input').on('change', function selectCoverType() {
-            switch ($(this).val().toLowerCase()) {
-                case 'c':
-                    $hospitalSection.slideDown();
-                    $extrasSection.slideDown();
-                    setDefaultCover();
-                    break;
-                case 'h':
-                    $hospitalSection.slideDown();
-                    $extrasSection.slideUp();
-                    setDefaultCover();
 
-                    $extrasSection.find('input[type="checkbox"]').prop('checked', false);
-                    break;
-                case 'e':
-                    $hospitalSection.slideUp();
-                    $extrasSection.slideDown();
-                    $hospitalCoverToggles.prop("checked", false);
-                    $allHospitalButtons.prop('checked', false).prop('disabled', false);
-                    break;
-                default:
-                    $hospitalSection.slideUp();
-                    $extrasSection.slideUp();
-                    $hospitalCoverToggles.prop("checked", false);
-                    $allHospitalButtons.prop('checked', false).prop('disabled', false);
-                    $extrasSection.find('input[type="checkbox"]').prop('checked', false);
-                    break;
-            }
-        });
+        switch ($coverType.find('input:checked').val().toLowerCase()) {
+            case 'c':
+                $hospitalSection.slideDown();
+                $extrasSection.slideDown();
+                setDefaultCover();
+                break;
+            case 'h':
+                $hospitalSection.slideDown();
+                $extrasSection.slideUp();
+                setDefaultCover();
+
+                $extrasSection.find('input[type="checkbox"]').prop('checked', false);
+                break;
+            case 'e':
+                $hospitalSection.slideUp();
+                $extrasSection.slideDown();
+                $hospitalCoverToggles.prop("checked", false);
+                $allHospitalButtons.prop('checked', false).prop('disabled', false);
+                break;
+            default:
+                $hospitalSection.slideUp();
+                $extrasSection.slideUp();
+                $hospitalCoverToggles.prop("checked", false);
+                $allHospitalButtons.prop('checked', false).prop('disabled', false);
+                $extrasSection.find('input[type="checkbox"]').prop('checked', false);
+                break;
+        }
     }
 
     function showModal() {
@@ -165,6 +161,9 @@
             hospitalBenefits = getBenefitsModelFromPage($benefitsForm.find('.hospitalCover'));
             extrasBenefits = getBenefitsModelFromPage($benefitsForm.find('.extrasCover'));
         });
+
+        // For preload
+        toggleBenefits();
     }
 
     function getBenefitsModelFromPage($container) {

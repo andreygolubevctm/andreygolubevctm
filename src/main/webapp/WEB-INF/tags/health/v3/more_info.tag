@@ -237,7 +237,7 @@
 				<p><strong>Co-payment / % Hospital Contribution:</strong> {{= hospital.inclusions.copayment }}</p>
 				<p><strong>Hospital waiting period for pre-existing conditions:</strong> 12 months. For all other conditions: 2 months. See policy brochure for more details</p>
 				{{ } }}
-
+                <c:if test="${!callCentre}">
 				{{ if(hospitalCover.inclusions.length > 0) { }}
 				<h5>You will be covered for the following services</h5>
 
@@ -271,7 +271,7 @@
 				</ul>
 				<content:get key="hospitalExclusionsDisclaimer"/>
 				{{ } }}
-
+                </c:if>
 			</div>
 			{{ } }}
 			</c:if>
@@ -279,6 +279,12 @@
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 			{{ if(typeof extrasCover !== 'undefined') { }}
 			<div class="col-xs-12 col-md-6 extrasCover">
+            <c:choose>
+                <c:when test="${callCentre}">
+                <h2>Extras cover</h2>
+                <p>Please refer to the Policy Brochure or the previous page</p>
+                </c:when>
+                <c:otherwise>
                 {{ if (custom.info && custom.info.content && custom.info.content.moreInfo && custom.info.content.moreInfo.extras) { }}
                 <h2>{{= custom.info.content.moreInfo.extras.label}}</h2>
                 <p>{{= custom.info.content.moreInfo.extras.text}}</p>
@@ -306,6 +312,8 @@
 					</tbody>
 				</table>
 				{{ } }}
+                </c:otherwise>
+            </c:choose>
 			</div>
 			{{ } }}
 			</c:if>

@@ -11,7 +11,7 @@
 		},
 		moduleEvents = events.healthPriceComponent;
 
-	var logoPriceTemplate;
+	var priceTemplate, logoTemplate;
 
 	var $policySummaryContainer;
 	var $policySummaryTemplateHolder;
@@ -31,7 +31,8 @@
 
 			if(meerkat.site.vertical !== "health") return false;
 
-			logoPriceTemplate = $("#logo-price-template").html();
+			priceTemplate = $("#price-template").html();
+			logoTemplate = $('#logo-template').html();
 
 			$policySummaryContainer = $(".policySummaryContainer");
 			$policySummaryTemplateHolder = $(".policySummaryTemplateHolder");
@@ -49,10 +50,11 @@
 					onProductPremiumChange(selectedProduct, false);
 				});
 
-				meerkat.messaging.subscribe(meerkatEvents.healthResults.PREMIUM_UPDATED, function(selectedProduct){
-					// This should be called when the user updates their premium on the payment step.
+				meerkat.messaging.subscribe(meerkatEvents.healthResults.PREMIUM_UPDATED, function(selectedProduct, doNotShowIncPrice){
+					doNotShowIncPrice = doNotShowIncPrice || false;
 					premiumChangeEventFired = true;
-					onProductPremiumChange(selectedProduct, true);
+					// This should be called when the user updates their premium on the payment step.
+					onProductPremiumChange(selectedProduct, !doNotShowIncPrice);
 				});
 
 				meerkat.messaging.subscribe(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM, function(selectedProduct){
@@ -89,13 +91,13 @@
 		// Reset any settings for rendering
 		if(showIncPrice){
 			product.mode = 'lhcInc';
+			$policySummaryContainer.find('.footer').addClass('hidden');
 		}else{
 			product.mode = '';
 		}
 		product.showAltPremium = false;
-		product.displayLogo = true;
-
 		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true && premiumChangeEventFired === false) {
+			product.displayLogo = false;
 			if (typeof product.dropDeadDate === 'undefined') {
 				var selectedProduct = Results.getSelectedProduct();
 				product.dropDeadDate = selectedProduct.dropDeadDate;
@@ -104,19 +106,21 @@
 			}
 			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
 		} else {
-			var htmlTemplate = _.template(logoPriceTemplate);
-			var htmlString = htmlTemplate(product);
+			product.displayLogo = true;
+			var priceHtmlTemplate = _.template(priceTemplate);
+			var logoHtmlTemplate = _.template(logoTemplate);
+			var htmlString = logoHtmlTemplate(product) + priceHtmlTemplate(product);
+
 			$policySummaryTemplateHolder.html(htmlString);
 
 			$policySummaryDualPricing.find('.Premium').html(htmlString);
-
-			//		This is a deactivated split test as it is likely to be run again in the future
+//		This is a deactivated split test as it is likely to be run again in the future
 			// A/B testing price itemisation
-			//		if (meerkat.modules.splitTest.isActive(2)) {
-			//			var htmlTemplate_B = _.template($("#price-itemisation-template").html());
-			//			var htmlString_B = htmlTemplate_B(product);
-			//			$(".priceItemisationTemplateHolder").html(htmlString_B);
-			//		}
+//		if (meerkat.modules.splitTest.isActive(2)) {
+//			var htmlTemplate_B = _.template($("#price-itemisation-template").html());
+//			var htmlString_B = htmlTemplate_B(product);
+//			$(".priceItemisationTemplateHolder").html(htmlString_B);
+//		}
 
 			$policySummaryContainer.find(".policyPriceWarning").hide();
 

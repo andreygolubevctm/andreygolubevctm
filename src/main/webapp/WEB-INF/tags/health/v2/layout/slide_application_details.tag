@@ -13,6 +13,8 @@
 
 		<jsp:body>
 
+			<simples:dialogue id="61" vertical="health" />
+
 			<layout_v1:slide_content>
 
 				<health_v1:competition_jeep />
