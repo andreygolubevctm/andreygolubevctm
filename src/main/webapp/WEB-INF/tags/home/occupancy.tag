@@ -23,15 +23,19 @@
 
 <form_v2:fieldset legend="Occupancy Details">
 
-	<%-- Own the home --%>
-	<c:set var="fieldXpath" value="${xpath}/ownProperty" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Do you own the home?">
-		<field_v2:array_radio xpath="${fieldXpath}"
-			className="ownProperty pretty_buttons"
-			required="true"
-			items="Y=Yes,N=No"
-			title="if you own the home" />
-	</form_v2:row>
+	<c:if test="${not brochurewarePassedParams}">
+
+		<%-- Own the home --%>
+		<c:set var="fieldXpath" value="${xpath}/ownProperty" />
+		<form_v2:row fieldXpath="${fieldXpath}" label="Do you own the home?">
+			<field_v2:array_radio xpath="${fieldXpath}"
+				className="ownProperty pretty_buttons"
+				required="true"
+				items="Y=Yes,N=No"
+				title="if you own the home" />
+		</form_v2:row>
+
+	</c:if>
 
 	<%-- PPoR --%>
 	<c:set var="fieldXpath" value="${xpath}/principalResidence" />

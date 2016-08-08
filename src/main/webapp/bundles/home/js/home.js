@@ -118,7 +118,11 @@
 	 *            render
 	 */
 	function initProgressBar(render) {
-		setJourneyEngineSteps();
+		if(meerkat.modules.splitTest.isActive(11)) {
+			setJourneyEngineStepsVariation();
+		} else {
+			setJourneyEngineSteps();
+		}
 		configureProgressBar();
 		if (render) {
 			meerkat.modules.journeyProgressBar.render(true);
@@ -284,6 +288,183 @@
 
 		steps = {
 			startStep: startStep,
+			occupancyStep: occupancyStep,
+			propertyStep: propertyStep,
+			policyHoldersStep: policyHoldersStep,
+			historyStep: historyStep,
+			resultsStep: resultsStep
+		};
+	}
+
+	function setJourneyEngineStepsVariation() {
+
+		var externalTrackingSettings = {
+			method:'trackQuoteForms',
+			object:meerkat.modules.home.getTrackingFieldsObject
+		};
+
+		var startStep = {
+			title: 'Start',
+			navigationId: 'start',
+			slideIndex: 0,
+			externalTracking: externalTrackingSettings,
+			onInitialise: function onStartInit(event) {
+				meerkat.modules.jqueryValidate.initJourneyValidator();
+				meerkat.modules.homeCoverTypeWarning.initHomeCoverTypeWarning();
+			}
+		};
+
+		var coverStep = {
+			title: 'Cover Type',
+			navigationId: 'cover',
+			slideIndex: 1,
+			externalTracking: externalTrackingSettings,
+			onInitialise: function onStartInit(event) {
+				// Hook up privacy optin to Email Quote button
+				var $emailQuoteBtn = $(".slide-feature-emailquote");
+
+				// Initial value from preload/load quote
+				if ($("#home_privacyoptin").is(':checked')) {
+					$emailQuoteBtn.addClass("privacyOptinChecked");
+				}
+
+				$("#home_privacyoptin").on('change', function(event){
+					if ($(this).is(':checked')) {
+						$emailQuoteBtn.addClass("privacyOptinChecked");
+					} else {
+						$emailQuoteBtn.removeClass("privacyOptinChecked");
+					}
+				});
+				meerkat.modules.currencyField.initCurrency();
+			}
+		};
+
+		var occupancyStep = {
+			title: 'Occupancy',
+			navigationId: 'occupancy',
+			slideIndex: 2,
+			tracking: {
+				touchType: 'H',
+				touchComment: 'Occupancy',
+				includeFormData: true
+			},
+			validation: {
+				validate: true,
+				customValidation: function (callback) {
+					// prevent from jumping to the next step if the selections are incorrect
+					var doContinue = meerkat.modules.homeCoverTypeWarning.validateSelections();
+					callback(doContinue);
+				}
+			},
+			externalTracking: externalTrackingSettings,
+			onInitialise: function() {
+				meerkat.modules.homeOccupancy.initHomeOccupancy();
+				meerkat.modules.homeBusiness.initHomeBusiness();
+			}
+		};
+
+
+		var propertyStep = {
+			title: 'Property Details',
+			navigationId: 'property',
+			slideIndex: 3,
+			tracking: {
+				touchType: 'H',
+				touchComment: 'Property',
+				includeFormData: true
+			},
+			externalTracking: externalTrackingSettings,
+			onInitialise: function onInitialiseProperty() {
+				meerkat.modules.homePropertyDetails.initHomePropertyDetails();
+				meerkat.modules.homePropertyFeatures.initHomePropertyFeatures();
+				meerkat.modules.homeCoverAmounts.initHomeCoverAmounts();
+			},
+			onBeforeEnter: function onBeforeEnterProperty(event) {
+				meerkat.modules.homePropertyFeatures.toggleSecurityFeatures(0);
+				meerkat.modules.homeCoverAmounts.toggleCoverAmountsFields(0);
+				meerkat.modules.homePropertyDetails.validateYearBuilt();
+			}
+		};
+
+		var policyHoldersStep = {
+			title: 'Policy Holder',
+			navigationId: 'policyHolder',
+			slideIndex: 4,
+			tracking: {
+				touchType: 'H',
+				touchComment: 'PolicyHolder',
+				includeFormData: true
+			},
+			externalTracking: externalTrackingSettings,
+			onInitialise: function onInitialisePolicyHolder() {
+				// Init the results objects required for next step
+				meerkat.modules.homePolicyHolder.initHomePolicyHolder();
+			},
+			onBeforeEnter: function onBeforeEnterPolicyHolder(event) {
+				meerkat.modules.homePolicyHolder.togglePolicyHolderFields();
+			}
+		};
+
+		var historyStep = {
+			title: 'Cover',
+			navigationId: 'history',
+			slideIndex: 5,
+			tracking: {
+				touchType: 'H',
+				touchComment: 'History',
+				includeFormData: true
+			},
+			externalTracking: externalTrackingSettings,
+			onInitialise: function onInitialiseHistory(event){
+				// Init the results objects required for next step
+				meerkat.modules.homeResults.initPage();
+
+				meerkat.modules.homeHistory.initHomeHistory();
+				meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
+			}
+		};
+
+		var resultsStep = {
+			title: 'Results',
+			navigationId: 'results',
+			slideIndex: 6,
+			externalTracking: externalTrackingSettings,
+			onInitialise: function onResultsInit(event) {
+				meerkat.modules.homeMoreInfo.initMoreInfo();
+				meerkat.modules.homeEditDetails.initEditDetails();
+				meerkat.modules.homeFilters.initHomeFilters();
+			},
+			onBeforeEnter: function onBeforeEnterResults(event) {
+				meerkat.modules.journeyProgressBar.hide();
+				$('#resultsPage').addClass('hidden');
+
+				// Sync the filters to the results engine
+				meerkat.modules.homeFilters.updateFilters();
+			},
+			onAfterEnter: function onAfterEnterResults(event) {
+				if(event.isForward === true){
+					meerkat.modules.homeResults.get();
+				}
+				meerkat.modules.homeFilters.show();
+			},
+			onBeforeLeave: function onBeforeLeaveResults(event) {
+				// Increment the transactionId
+				if(event.isBackward === true) {
+					meerkat.modules.transactionId.getNew(3);
+				}
+			},
+			onAfterLeave: function onAfterLeaveResults(event) {
+				meerkat.modules.journeyProgressBar.show();
+
+				// Hide the filters bar
+				meerkat.modules.homeFilters.hide();
+				meerkat.modules.homeEditDetails.hide();
+			}
+		};
+
+		steps = {
+			startStep: startStep,
+			coverStep: coverStep,
 			occupancyStep: occupancyStep,
 			propertyStep: propertyStep,
 			policyHoldersStep: policyHoldersStep,

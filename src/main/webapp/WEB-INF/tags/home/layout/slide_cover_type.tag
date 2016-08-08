@@ -4,9 +4,6 @@
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" />
 
-<%-- Load in quicklaunch form values from brochure site --%>
-<home:quicklaunch_preload />
-
 <layout_v1:slide formId="startForm" firstSlide="true" nextLabel="Next Step">
 
 	<layout_v1:slide_columns sideHidden="false">
