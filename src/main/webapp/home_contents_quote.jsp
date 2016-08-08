@@ -175,10 +175,6 @@
 		</div>
 
 		<%-- Slides --%>
-		<c:if test="${brochurewarePassedParams}">
-			<home_layout:slide_passed_params />
-		</c:if>
-
 		<home_layout:slide_cover_type />
 		<home_layout:slide_occupancy />
 		<home_layout:slide_your_property />

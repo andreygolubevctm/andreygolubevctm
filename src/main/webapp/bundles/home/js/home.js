@@ -304,7 +304,7 @@
 		};
 
 		var startStep = {
-			title: 'Start',
+			title: 'Cover Type',
 			navigationId: 'start',
 			slideIndex: 0,
 			externalTracking: externalTrackingSettings,
@@ -314,12 +314,25 @@
 			}
 		};
 
-		var coverStep = {
-			title: 'Cover Type',
-			navigationId: 'cover',
+		var occupancyStep = {
+			title: 'Occupancy',
+			navigationId: 'occupancy',
 			slideIndex: 1,
+			tracking: {
+				touchType: 'H',
+				touchComment: 'Occupancy',
+				includeFormData: true
+			},
+			validation: {
+				validate: true,
+				customValidation: function (callback) {
+					// prevent from jumping to the next step if the selections are incorrect
+					var doContinue = meerkat.modules.homeCoverTypeWarning.validateSelections();
+					callback(doContinue);
+				}
+			},
 			externalTracking: externalTrackingSettings,
-			onInitialise: function onStartInit(event) {
+			onInitialise: function() {
 				// Hook up privacy optin to Email Quote button
 				var $emailQuoteBtn = $(".slide-feature-emailquote");
 
@@ -336,28 +349,7 @@
 					}
 				});
 				meerkat.modules.currencyField.initCurrency();
-			}
-		};
 
-		var occupancyStep = {
-			title: 'Occupancy',
-			navigationId: 'occupancy',
-			slideIndex: 2,
-			tracking: {
-				touchType: 'H',
-				touchComment: 'Occupancy',
-				includeFormData: true
-			},
-			validation: {
-				validate: true,
-				customValidation: function (callback) {
-					// prevent from jumping to the next step if the selections are incorrect
-					var doContinue = meerkat.modules.homeCoverTypeWarning.validateSelections();
-					callback(doContinue);
-				}
-			},
-			externalTracking: externalTrackingSettings,
-			onInitialise: function() {
 				meerkat.modules.homeOccupancy.initHomeOccupancy();
 				meerkat.modules.homeBusiness.initHomeBusiness();
 			}
@@ -367,7 +359,7 @@
 		var propertyStep = {
 			title: 'Property Details',
 			navigationId: 'property',
-			slideIndex: 3,
+			slideIndex: 2,
 			tracking: {
 				touchType: 'H',
 				touchComment: 'Property',
@@ -389,7 +381,7 @@
 		var policyHoldersStep = {
 			title: 'Policy Holder',
 			navigationId: 'policyHolder',
-			slideIndex: 4,
+			slideIndex: 3,
 			tracking: {
 				touchType: 'H',
 				touchComment: 'PolicyHolder',
@@ -408,7 +400,7 @@
 		var historyStep = {
 			title: 'Cover',
 			navigationId: 'history',
-			slideIndex: 5,
+			slideIndex: 4,
 			tracking: {
 				touchType: 'H',
 				touchComment: 'History',
@@ -427,7 +419,7 @@
 		var resultsStep = {
 			title: 'Results',
 			navigationId: 'results',
-			slideIndex: 6,
+			slideIndex: 5,
 			externalTracking: externalTrackingSettings,
 			onInitialise: function onResultsInit(event) {
 				meerkat.modules.homeMoreInfo.initMoreInfo();
@@ -464,7 +456,6 @@
 
 		steps = {
 			startStep: startStep,
-			coverStep: coverStep,
 			occupancyStep: occupancyStep,
 			propertyStep: propertyStep,
 			policyHoldersStep: policyHoldersStep,
