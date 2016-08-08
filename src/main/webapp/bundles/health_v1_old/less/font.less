@@ -1,0 +1,115 @@
+@font-face {
+	font-family: 'ctm-health';
+	src:url('../../../../assets/fonts/ctm-health.eot?20160303');
+	src:url('../../../../assets/fonts/ctm-health.eot?20160303#iefix') format('embedded-opentype'),
+	url('../../../../assets/fonts/ctm-health.woff2?20160303') format('woff2'),
+	url('../../../../assets/fonts/ctm-health.ttf?20160303') format('truetype'),
+	url('../../../../assets/fonts/ctm-health.woff?20160303') format('woff'),
+	url('../../../../assets/fonts/ctm-health.svg?20160303#ctm-health') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="hltIcons-"], [class*="hltIcon-"] {
+	font-family: 'ctm-health';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.healthBenefits input + label:before ,
+.health-situation-healthCvrType label:before {
+	font-family: 'ctm-health';
+}
+
+.health_situation_medicare {
+	label[for="health_situation_cover"] {
+    	color: @alert-danger-text;
+    }
+}
+.icon-hospital-extras:before {
+	content: "\e920";
+}
+
+.icon-hospital-only:before {
+	content: "\e905";
+}
+
+.icon-extras-only:before {
+	content: "\e904";
+}
+
+.benefitClass(@class, @labelClass, @content) {
+	.@{class} label,
+	li.@{class} {
+		& when not (@labelClass = '') {
+			.@{labelClass}:before {
+				content: @content;
+			}
+		}
+		& when (@labelClass = '') {
+			&:before {
+				content: @content;
+			}
+		}
+	}
+}
+
+.styleBenefits(@labelClass) {
+	.benefitClass(HLTicon-hospital, @labelClass, "\e906");
+	.benefitClass(HLTicon-heart-surgery, @labelClass, "\e910");
+	.benefitClass(HLTicon-birth-related, @labelClass, "\e91b");
+	.benefitClass(HLTicon-assisted-reproduction, @labelClass, "\e90e");
+	.benefitClass(HLTicon-major-eye-surgery, @labelClass, "\e913");
+	.benefitClass(HLTicon-joint-replacement, @labelClass, "\e911");
+	.benefitClass(HLTicon-cosmetic-surgery, @labelClass, "\e919");
+	.benefitClass(HLTicon-sterilisation, @labelClass, "\e91d");
+	.benefitClass(HLTicon-gastric-banding, @labelClass, "\e91e");
+	.benefitClass(HLTicon-dialysis, @labelClass, "\e90d");
+	.benefitClass(HLTicon-palliative-care, @labelClass, "\e917");
+	.benefitClass(HLTicon-in-hospital-rehabilitation, @labelClass, "\e91f");
+	.benefitClass(HLTicon-general-dental, @labelClass, "\e90f");
+	.benefitClass(HLTicon-major-dental, @labelClass, "\e912");
+	.benefitClass(HLTicon-optical, @labelClass, "\e916");
+	.benefitClass(HLTicon-physiotherapy, @labelClass, "\e918");
+	.benefitClass(HLTicon-chiropractor, @labelClass, "\e91c");
+	.benefitClass(HLTicon-podiatry, @labelClass, "\e91a");
+	.benefitClass(HLTicon-acupuncture, @labelClass, "\e90b");
+	.benefitClass(HLTicon-naturopathy, @labelClass, "\e915");
+	.benefitClass(HLTicon-remedial-massage, @labelClass, "\e914");
+	.benefitClass(HLTicon-in-hospital-psychiatry, @labelClass, "\e90c");
+	.benefitClass(HLTicon-endodontic, @labelClass, "\e929");
+	.benefitClass(HLTicon-orthodontic, @labelClass, "\e923");
+	.benefitClass(HLTicon-psychology, @labelClass, "\e92c");
+	.benefitClass(HLTicon-glucose-monitor, @labelClass, "\e927");
+	.benefitClass(HLTicon-hearing-aids, @labelClass, "\e926");
+	.benefitClass(HLTicon-non-pbs-pharm, @labelClass, "\e924");
+	.benefitClass(HLTicon-orthotics, @labelClass, "\e922");
+	.benefitClass(HLTicon-speech-therapy, @labelClass, "\e921");
+	.benefitClass(HLTicon-occupational-therapy, @labelClass, "\e92b");
+	.benefitClass(HLTicon-dietetics, @labelClass, "\e92a");
+	.benefitClass(HLTicon-eye-therapy, @labelClass, "\e928");
+	.benefitClass(HLTicon-lifestyle-products, @labelClass, "\e925");
+    .benefitClass(HLTicon-osteopathy, @labelClass, "\e92d");
+    .benefitClass(HLTicon-ambulance, @labelClass, "\e933");
+    .benefitClass(HLTicon-exercise-physiology, @labelClass, "\e930");
+    .benefitClass(HLTicon-appliances, @labelClass, "\e931");
+}
+
+.benefitsIcons,
+.healthBenefits,
+.flexi-extras-icons{
+	.styleBenefits('');
+}
+
+
+@media(@xs-only){
+	.styleBenefits(iconLabel);
+}

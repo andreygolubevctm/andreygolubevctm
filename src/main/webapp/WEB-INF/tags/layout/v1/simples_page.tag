@@ -5,6 +5,7 @@
 <%@ attribute name="fullWidth"	required="false"  rtexprvalue="true" description="If not set will wrap the page in a width container" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
+<%@ attribute fragment="true" required="false" name="body_end" %>
 
 <c:set var="classes">
 	<c:if test="${empty fullWidth}">
@@ -25,6 +26,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
+		<jsp:invoke fragment="body_end" />
 	</jsp:attribute>
 
 	<jsp:body>

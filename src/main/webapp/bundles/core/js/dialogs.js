@@ -57,6 +57,7 @@
                 className: '',
                 callback: null
             },
+            showCloseBtn: true,
             tabs: [],
             htmlHeaderContent: '',
             hashId: null,
@@ -68,10 +69,10 @@
                 dialogWindow: '<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true"{{ if(fullHeight===true){ }} data-fullheight="true"{{ } }}>' +
                 '<div class="modal-dialog {{= className }}">' +
 
-                '<div class="modal-content">' +
+                '<div class="modal-content">{{ if(showCloseBtn == true) { }}' +
                 '<div class="modal-closebar">' +
                 '	<a href="javascript:;" class="btn btn-close-dialog"><span class="icon icon-cross"></span></a>' +
-                '</div>' +
+                '</div>{{ } }}' +
                 '<div class="navbar navbar-default xs-results-pagination visible-xs">' +
                 '<div class="container">' +
                 '<ul class="nav navbar-nav">' +
