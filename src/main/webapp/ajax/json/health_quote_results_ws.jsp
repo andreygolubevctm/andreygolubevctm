@@ -41,4 +41,4 @@
 		<go:setData dataVar="data" xpath="health/transactionId" value="${data.current.transactionId}" />
 		<c:set var="tranId" value="${data.current.transactionId}" />
 
-<jsp:forward page="/rest/health/quote/get.json"/>
+<jsp:forward page="/spring/rest/health/quote/get.json"/>
