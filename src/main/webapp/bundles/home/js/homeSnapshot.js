@@ -11,9 +11,7 @@
 			homeSnapshot: {
 			}
 		},
-		$coverType = $('#home_coverType'),
-		$rebuildCost = $('#home_coverAmounts_rebuildCostentry'),
-        $replaceContentsCost = $('#home_coverAmounts_replaceContentsCostentry');
+		$coverType = $('#home_coverType');
 
 	function initHomeSnapshot() {
 
