@@ -122,7 +122,7 @@
               function populateDropdownOnKey(key,$dropDown,originalKey) {
                 _.defer(function() {
                   ajaxRequest = meerkat.modules.comms.get({
-                    url: "rest/health/dropdown/list.json",
+                    url: "spring/rest/health/dropdown/list.json",
                     data: {
                       type:key
                     },

@@ -8,6 +8,8 @@ public class HealthQuote {
 
     private Double rebate;
 
+    private Double rebateChangeover;
+
     private Integer loading;
 
     private Integer primaryCAE;
@@ -74,6 +76,14 @@ public class HealthQuote {
 
     public void setRebate(Double rebate) {
         this.rebate = rebate;
+    }
+
+    public Double getRebateChangeover() {
+        return rebateChangeover;
+    }
+
+    public void setRebateChangeover(Double rebateChangeover) {
+        this.rebateChangeover = rebateChangeover;
     }
 
     public Integer getLoading() {
