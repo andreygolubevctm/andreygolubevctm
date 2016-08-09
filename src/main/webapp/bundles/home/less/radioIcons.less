@@ -40,7 +40,7 @@ div.radioIcons {
 		cursor: pointer;
 		margin: 8px;
 		padding: 10px;
-		background-color: @icon-bg-color;
+		background-color: #ffffff;
 		border: 1px solid @icon-border-color !important;
 		border-radius: 5px !important;
 		text-align: center;
@@ -48,6 +48,7 @@ div.radioIcons {
 		width: 100px;
 
 		&:before {
+	        color: @icon-inactive-color;
 			display: block;
 			float: none;
 			padding: 0;
@@ -57,7 +58,11 @@ div.radioIcons {
 		&.active {
 			background-color: @icon-bg-checked-color;
 			border-color: @icon-border-checked-color;
-			color: #fff;
+			color: #ffffff;
+
+			&:before {
+		        color: #ffffff;
+		    }
 		}
 	}
 
