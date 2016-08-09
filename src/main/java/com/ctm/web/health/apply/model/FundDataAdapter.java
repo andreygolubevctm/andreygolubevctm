@@ -149,10 +149,10 @@ public class FundDataAdapter {
         if (nhb.isPresent()) {
             return new Eligibility(
                     nhb.map(Nhb::getEligibility)
-                        .map(EligibilityReasonID::fromValue)
+                        .map(EligibilityReasonID::new)
                         .orElse(null),
                     nhb.map(Nhb::getSubreason)
-                        .map(EligibilitySubReasonID::fromValue)
+                        .map(EligibilitySubReasonID::new)
                         .orElse(null));
         } else {
             return null;
