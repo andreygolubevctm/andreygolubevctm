@@ -26,7 +26,11 @@
 	<c:choose>
 		<c:when test="${brochurewarePassedParams}">
 
-			<home:cover_type />
+			<%-- Commencement Date --%>
+			<home:commencementDate xpath="${xpath}/startDate" />
+
+			<%-- Address --%>
+			<group_v2:elastic_address xpath="${xpath}/property/address" type="R" />
 
 		</c:when>
 		<c:otherwise>

@@ -309,6 +309,7 @@
 			slideIndex: 0,
 			externalTracking: externalTrackingSettings,
 			onInitialise: function onStartInit(event) {
+				initialiseOwner();
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 				meerkat.modules.homeCoverTypeWarning.initHomeCoverTypeWarning();
 			}
@@ -638,6 +639,15 @@
 		return '';
 	}
 
+	function initialiseOwner() {
+		$owner = $('.ownProperty');
+
+        $owner.find('label:nth-child(1)').addClass('icon-vert-home');
+        $owner.find('label:nth-child(2)').addClass('icon-vert-hnc');
+	}
+
+
+        
 	meerkat.modules.register("home", {
 		init: initHome,
 		events: moduleEvents,

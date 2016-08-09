@@ -30,9 +30,9 @@
 					<c:set var="fieldXpath" value="${xpath}/occupancy/ownProperty" />
 					<form_v2:row fieldXpath="${fieldXpath}" label="Are you the home owner or are you renting?">
 						<field_v2:array_radio xpath="${fieldXpath}"
-							className="ownProperty pretty_buttons"
+							className="ownProperty radioIcons"
 							required="true"
-							items="Y=Yes,N=No"
+							items="Y=Home Owner,N=Renting"
 							title="if you own the home" />
 					</form_v2:row>
 
