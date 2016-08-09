@@ -6,7 +6,7 @@
 			simplesSnapshot: {
 			}
 		},
-		$simplesSnapshot = $(".simplesSnapshot");
+		$simplesSnapshot;
 	var	elements = {
 				journeyName:			'#health_contactDetails_name',
 				journeySituation:		'#health_situation_healthCvr',
@@ -20,6 +20,7 @@
 
 	function applyEventListeners() {
 		$(document).ready(function() {
+            $simplesSnapshot = $(".simplesSnapshot");
 			//Initial render for existing quotes
 			renderSnapshot();
 
@@ -77,7 +78,7 @@
 			$('.snapshotApplicationPostcode').show();
 			$('.snapshotJourneyPostcode').hide();
 		}
-		meerkat.modules.contentPopulation.render('#navbar-main .transactionIdContainer .simplesSnapshot');
+		meerkat.modules.contentPopulation.render('.simplesSnapshot');
 	}
 
 	meerkat.modules.register('simplesSnapshot', {

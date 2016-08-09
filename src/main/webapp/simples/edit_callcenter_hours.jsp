@@ -8,9 +8,12 @@
 	<jsp:attribute name="head">
 	</jsp:attribute>
 
-	<jsp:body>
+	<jsp:attribute name="body_end">
 		<script src="/${pageSettings.getContextFolder()}framework/jquery/plugins/jquery.rowsorter.min.js"></script>
-	
+	</jsp:attribute>
+
+	<jsp:body>
+
 		<div id="opening-hours-container" class="container">
 			<div class="row">
 				<div class="col-sm-10">

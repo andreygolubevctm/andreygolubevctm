@@ -3,13 +3,6 @@
 		position: relative;
 	}
 }
-.callCentreNumberSection {
-  &.navbar-right {
-	.navbar-text {
-		text-align: right;
-  	}
-  }
-}
 .all-opening-hours{
 	.day_row{
 		margin-top: 5px;
@@ -27,7 +20,6 @@
 	}
 	.day-description{
 		text-align: right;
-		font-weight: bold;
 		font-family: @font-family-theme-bold;
 	}
 	.call-details div  .call-us {
@@ -71,9 +63,8 @@
 .header-collapse-contact {
 	> ul li {
 		.opening-hours{
-			color: @theme-tertiary;
+			color: @gray-base;
 			font-size: 91%;
-			font-weight: bold;
 			margin-top:-21px;
 
 			@media(@sm-only) {
@@ -86,6 +77,7 @@
 					color: #fff;
 				}
 			}
+
 			@media (max-width: 767px){
 				a{
 					color: @theme-tertiary !important;
@@ -93,4 +85,19 @@
 			}
 		}
 	}
+}
+
+.journeyEngineSlide {
+  .callCentreNumberSection {
+	.callCentreNumber {
+	  //This one picks white based on highest contrast
+	  color: #fff;
+	  font-size: 32px;
+	  @media (@xs-only) {
+		&.callCentreNumber {
+		  color: #ffffff;
+		}
+	  }
+	}
+  }
 }

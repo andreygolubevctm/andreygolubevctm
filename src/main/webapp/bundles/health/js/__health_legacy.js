@@ -3,10 +3,11 @@
 /* jshint -W041 *//* Use '!==' to compare with '' */
 /*
 
- All this code is legacy and needs to be reviewed at some point (turned into modules etc).
- The filename is prefixed with underscores to bring it to the top alphabetically for compilation.
+	All this code is legacy and needs to be reviewed at some point (turned into modules etc).
+	The filename is prefixed with underscores to bring it to the top alphabetically for compilation.
 
- */
+*/
+
 
 /**
  * isLessThan31Or31AndBeforeJuly1() test whether the dob provided makes the user less than
@@ -52,7 +53,7 @@ function resetRadio($_obj, value){
 		}
 	}
 
-}
+};
 
 //return a number with comma for thousands
 function formatMoney(value){
@@ -116,7 +117,7 @@ var healthChoices = {
 				return true;
 			default:
 				return false;
-		}
+		};
 	},
 
 	hasChildren : function() {
@@ -126,35 +127,11 @@ var healthChoices = {
 				return true;
 			default:
 				return false;
-		}
+		};
 	},
 
-	setCover : function(cover, ignore_rebate_reset, initMode) {
-		ignore_rebate_reset = ignore_rebate_reset || false;
-		initMode = initMode || false;
-
+	setCover : function(cover) {
 		healthChoices._cover = cover;
-
-		if (!ignore_rebate_reset) {
-			healthChoices.resetRebateForm();
-		}
-
-		if (!healthChoices.hasSpouse()) {
-			healthChoices.flushPartnerDetails();
-			$('#partner-health-cover, #partnerContainer, #partner, #partnerFund').hide();
-		} else {
-			$('#partner-health-cover, #partnerContainer, #partner, #partnerFund').show();
-		}
-
-		//// See if Children should be on or off
-		healthChoices.dependants(initMode);
-
-		//// Set the auxillary data
-		//Health.setRates();
-		if (typeof healthCoverDetails !== 'undefined') {
-			meerkat.modules.healthCoverDetails.displayHealthFunds();
-		}
-		meerkat.modules.healthTiers.setTiers(initMode);
 	},
 
 	setSituation: function(situation, performUpdate) {
@@ -164,9 +141,13 @@ var healthChoices = {
 		//// Change the message
 		if (situation != healthChoices._situation) {
 			healthChoices._situation = situation;
-		}
+		};
 
-		$('#health_benefits_healthSitu, #health_situation_healthSitu').val( situation );
+		$('#health_benefits_healthSitu').val( situation );
+
+		if (!_.isEmpty(situation)) {
+			$("input[name=health_situation_healthSitu]").filter('[value='+situation+']').prop('checked', true).trigger('change');
+		}
 
 	},
 
@@ -212,27 +193,6 @@ var healthChoices = {
 	setDob : function(value, $_obj) {
 		if(value != ''){
 			$_obj.val(value);
-		};
-	},
-
-	dependants: function(initMode) {
-
-		if( healthChoices.hasChildren() && $('.health_cover_details_rebate :checked').val() == 'Y' ) {
-			// Show the dependants questions
-			if(initMode === true){
-				$('.health_cover_details_dependants').show();
-			}else{
-				$('.health_cover_details_dependants').slideDown();
-			}
-		} else {
-			// Reset questions and hide
-			if(initMode === true){
-				$('.health_cover_details_dependants').hide();
-			}else{
-				$('#health_healthCover_dependants option:selected').prop("selected", false);
-				$('#health_healthCover_income option:selected').prop("selected", false);
-				$('.health_cover_details_dependants').slideUp();
-			}
 		}
 	},
 
@@ -243,79 +203,6 @@ var healthChoices = {
 
 	returnCoverCode: function() {
 		return this._cover;
-	},
-
-	flushPartnerDetails : function() {
-		$('#health_healthCover_partner_dob').val('').change();
-		$('#partner-health-cover input[name="health_healthCover_partner_cover"]:checked').each(function(){
-			$(this).checked = false;
-		});
-		resetRadio($('#health_healthCover_partnerCover'));
-		$('#partner-health-cover input[name="health_healthCover_partner_healthCoverLoading"]:checked').each(function(){
-			$(this).checked = false;
-		});
-		resetRadio($('#health-continuous-cover-partner'));
-	},
-
-	resetRebateForm : function() {
-		$('#health_healthCover_health_cover_rebate input[name="health_healthCover_rebate"]:checked').each(function(){
-			$(this).checked = false;
-		});
-		resetRadio($('#health_healthCover_health_cover_rebate'));
-		$('#health_healthCover_dependants option').first().prop("selected", true);
-		$('#health_healthCover_dependants option:selected').prop("selected", false);
-		$('#health_healthCover_income option').first().prop("selected", true);
-		$('#health_healthCover_income option:selected').prop("selected", false);
-		$('#health_healthCover_incomelabel').val('');
-		healthCoverDetails.setIncomeBase();
-		healthChoices.dependants();
-		meerkat.modules.healthTiers.setTiers();
-		$('.health_cover_details_dependants').hide();
-		$('#health_healthCover_tier').hide();
-		$('#health_rebates_group').hide();
-	}
-
-};
-
-
-var healthCoverDetails = {
-
-	//// //RESOLVE: this object was quickly constructed from an anon. function, and can be cleaner
-
-	getRebateChoice: function(){
-		return $('#health_healthCover-selection').find('.health_cover_details_rebate :checked').val();
-	},
-
-	setIncomeBase: function(initMode){
-		if((healthChoices._cover == 'S' || healthChoices._cover == 'SM' || healthChoices._cover == 'SF') && healthCoverDetails.getRebateChoice() == 'Y'){
-			if(initMode){
-				$('#health_healthCover-selection').find('.health_cover_details_incomeBasedOn').show();
-			}else{
-				$('#health_healthCover-selection').find('.health_cover_details_incomeBasedOn').slideDown();
-			}
-		} else {
-			if(initMode){
-				$('#health_healthCover-selection').find('.health_cover_details_incomeBasedOn').hide();
-			}else{
-				$('#health_healthCover-selection').find('.health_cover_details_incomeBasedOn').slideUp();
-			}
-		}
-	},
-
-	getAgeAsAtLastJuly1: function( dob )
-	{
-		var dob_pieces = dob.split("/");
-		var year = Number(dob_pieces[2]);
-		var month = Number(dob_pieces[1]) - 1;
-		var day = Number(dob_pieces[0]);
-		var today = new Date();
-		var age = today.getFullYear() - year;
-		if(6 < month || (6 == month && 1 < day))
-		{
-			age--;
-		}
-
-		return age;
 	}
 };
 
@@ -323,10 +210,6 @@ var healthCoverDetails = {
 var healthFunds = {
 	_fund: false,
 	name: 'the fund',
-
-	countFrom : {
-		NOCOUNT: ''
-	},
 
 	// If retrieving a quote and a product had been selected, inject the fund's application set.
 	// This is in case any custom form fields need access to the data bucket, because write_quote will erase the data when it's not present in the form.
@@ -453,7 +336,6 @@ var healthFunds = {
 	// Remove the main provider piece
 	unload: function(){
 		if(healthFunds._fund !== false){
-			$('.health-credit_card_details .fieldrow').show();
 			healthFunds.unset();
 			$('body').removeClass( healthFunds._fund );
 			healthFunds._fund = false;
@@ -490,7 +372,7 @@ var healthFunds = {
 			healthFunds.$_dependantDefinition.html( healthFunds.HTML_dependantDefinition );
 			healthFunds.$_dependantDefinition = undefined;
 			healthFunds.HTML_dependantDefinition = undefined;
-		}
+		};
 	},
 
 	_previousfund_authority: function(message) {
@@ -506,7 +388,7 @@ var healthFunds = {
 			healthFunds.$_authority = undefined;
 			healthFunds.$_authorityText = undefined;
 			$('.health_previous_fund_authority').addClass('hidden');
-		}
+		};
 	},
 
 	_partner_authority: function(display) {
@@ -523,30 +405,34 @@ var healthFunds = {
 		healthFunds._memberIdRequired(true);
 		meerkat.modules.healthDependants.resetConfig();
 	},
+
 	// Creates the earliest date based on any of the matching days (not including an exclusion date)
 	_earliestDays: function(euroDate, a_Match, _exclusion){
-		if( !$.isArray(a_Match) || euroDate == '' ){
-			return false;
-		}
-		// creating the base date from the exclusion
-		var _now = returnDate(euroDate);
-		// 2014-03-05 Leto: Why is this hardcoded when it's also a function argument?
-		_exclusion = 7;
-		var _date = new Date( _now.getTime() + (_exclusion * 24 * 60 * 60 * 1000));
-		var _html = '<option value="">No date has been selected for you</option>';
-		// Loop through 31 attempts to match the next date
-		for (var i=0; i < 31; i++) {
-			/*var*/ _date = new Date( _date.getTime() + (1 * 24 * 60 * 60 * 1000));
-			// Loop through the selected days and attempt a match
-			for(a=0; a < a_Match.length; a++) {
-				if(a_Match[a] == _date.getDate() ){
-					/*var*/ _html = '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'" selected="selected">'+ meerkat.modules.dateUtils.dateValueLongFormat(_date) +'</option>';
-					i = 99;
-					break;
-				}
-			}
-		}
-		return _html;
+			if( !$.isArray(a_Match) || euroDate == '' ){
+				return false;
+			};
+			// creating the base date from the exclusion
+			var _now = meerkat.modules.dateUtils.returnDate(euroDate);
+			// 2014-03-05 Leto: Why is this hardcoded when it's also a function argument?
+			_exclusion = 7;
+			var _date = new Date( _now.getTime() + (_exclusion * 24 * 60 * 60 * 1000));
+			var _html = '<option value="">No date has been selected for you</option>';
+			// Loop through 31 attempts to match the next date
+			for (var i=0; i < 31; i++) {
+				/*var*/ _date = new Date( _date.getTime() + (1 * 24 * 60 * 60 * 1000));
+				// Loop through the selected days and attempt a match
+				for(a=0; a < a_Match.length; a++) {
+					if(a_Match[a] == _date.getDate() ){
+						var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
+						var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
+						/*var*/ _html = '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'" selected="selected">' +
+							meerkat.modules.dateUtils.dateValueLongFormat(_date) +'</option>';
+						i = 99;
+						break;
+					};
+				};
+			};
+			return _html;
 	},
 
 	_setPolicyDate : function (dateObj, addDays) {
@@ -619,9 +505,3 @@ var healthApplicationDetails = {
 		return true;
 	}
 };
-// END FROM APPLICATION_DETAILS.TAG
-
-// from dependants.tag
-
-
-// end from dependants.tag

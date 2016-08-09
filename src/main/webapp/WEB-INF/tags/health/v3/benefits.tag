@@ -17,6 +17,8 @@
 
 	<jsp:body>
 
+		<simples:dialogue id="49" vertical="health" />
+
 		<form_v2:fieldset legend="Choose Your Cover" postLegend="">
 			<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="medium" />
 			<div class="scrollable row">
@@ -42,6 +44,7 @@
                                                   required="true"
                                                   className="health-situation-healthCvrType roundedCheckboxIcons"
                                                   items="${items}"
+                                                  defaultValue="C"
                                                   id="${go:nameFromXpath(fieldXPath)}"
                                                   title="your cover type" />
                         </form_v3:row>
@@ -49,6 +52,7 @@
 			</div>
 		</form_v2:fieldset>
 
+        <simples:dialogue id="46" className="simples-dialogue-hospital-cover" vertical="health" />
 
 		<%-- TEMPLATES --%>
 		<core_v1:js_template id="benefits-explanation">

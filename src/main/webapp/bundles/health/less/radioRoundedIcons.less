@@ -20,7 +20,7 @@
 	}
 }
 
-// ie8 fix
+// ie8 fix s
 html.ie8 body {
 	div.roundedCheckboxIcons {
 		label:before {
@@ -42,6 +42,7 @@ div.roundedCheckboxIcons {
 		background:transparent;
 		outline:0 !important;
 		color: @gray-dark;
+		vertical-align:top;
 
 		cursor: pointer;
 		padding: 0;
@@ -74,10 +75,10 @@ div.roundedCheckboxIcons {
 		.roundIconSize(50px, @font-size-base, 0, 15, label);
 	}
 	@media (@sm-only) {
-        .roundIconSize(40px, @font-size-small, 1, 15, label);
+		.roundIconSize(40px, @font-size-small, 1, 15, label);
 	}
 	@media (@md-only) {
-        .roundIconSize(50px, @font-size-small, -1, 15, label);
+		.roundIconSize(50px, @font-size-small, -1, 15, label);
 	}
 }
 
@@ -95,15 +96,5 @@ div.roundedCheckboxIcons {
 		}
 
 		.roundIconSize(60px, @font-size-base, 0, 15, label);
-	}
-}
-
-#utilities_householdDetails_whatToCompare,
-.electricity-usage.hidden-lg .roundedCheckboxIcons,
-.gas-usage.hidden-lg .roundedCheckboxIcons {
-	> label.btn {
-		&:before {
-			font-family: ctm-energy;
-		}
 	}
 }
