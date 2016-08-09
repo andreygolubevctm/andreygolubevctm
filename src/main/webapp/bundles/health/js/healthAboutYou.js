@@ -11,7 +11,6 @@
 		$partnerDOB,
 		$healthCoverDependants,
 		$healthCoverRebate,
-		$rebateDialogue,
 		$healthSituationHealthCvr,
 		$healthCoverIncome,
 		$healthCoverIncomeLabel,
@@ -24,9 +23,7 @@
 		$partnersDetails,
 		$lhcContainers,
 		$medicare,
-		$healthSituation,
-		$simplesPrimaryCvr,
-		$simplesPartnerCvr;
+		$healthSituation;
 
 	function init(){
 		$(document).ready(function () {
@@ -53,7 +50,6 @@
 		$partnerDOB = $('#health_healthCover_partner_dob'),
 		$healthCoverDependants = $('#health_healthCover_dependants'),
 		$healthCoverRebate = $('.health_cover_details_rebate'),
-		$rebateDialogue = $('.simples-dialogue-37'),
 		$healthSituationHealthCvr = $('#health_situation_healthCvr'),
 		$healthCoverIncome = $('#health_healthCover_income'),
 		$healthCoverIncomeLabel = $('#health_healthCover_incomelabel'),
@@ -63,9 +59,7 @@
 		$partnersDetails = $('#partnerFund, #partnerMemberID, #partnerContainer'),
 		$lhcContainers = $('#health-contact-fieldset, #partner-health-cover, #australian-government-rebate'),
 		$medicare = $('.health-medicare_details'),
-		$healthSituation = $('input[name="health_situation_healthSitu"]'),
-		$simplesPrimaryCvr = $('.simples-dialogue-primary-current-cover'),
-		$simplesPartnerCvr = $('.simples-dialogue-partner-current-cover');
+		$healthSituation = $('input[name="health_situation_healthSitu"]');
 
 
 		if (!healthChoices.hasSpouse()) {
@@ -123,20 +117,16 @@
 	function togglePrimaryContinuousCover(isInitMode) {
 		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($primaryDOB.val())) {
 			$primaryContinuousCoverContainer.slideDown();
-			$simplesPrimaryCvr.show();
 		} else {
 			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
-			$simplesPrimaryCvr.hide();
 		}
 	}
 
 	function togglePartnerContinuousCover(isInitMode) {
 		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($partnerDOB.val())) {
 			$partnerContinuousCoverContainer.slideDown();
-			$simplesPartnerCvr.show();
 		} else {
 			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
-			$simplesPartnerCvr.hide();
 		}
 	}
 
@@ -196,17 +186,6 @@
 		resetRadio($partnerCurrentCover);
 		$partnerContinuousCoverContainer.find(':checked').prop('checked', false);
 		resetRadio($partnerContinuousCoverContainer);
-	}
-
-	function toggleRebateDialogue() {
-		// apply rebate
-		if ($healthCoverRebate.find('input:checked"]').val() === 'Y') {
-			$rebateDialogue.removeClass('hidden');
-		}
-		// no rebate
-		else {
-			$rebateDialogue.addClass('hidden');
-		}
 	}
 
 	function getPartnerCurrentCover() {

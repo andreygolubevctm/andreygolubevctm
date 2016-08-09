@@ -15,6 +15,9 @@
                 if(meerkat.modules.health.hasPartner()){
                     $('#health_healthCover_primaryCover .fieldrow_legend')
                         .html(getLoadingText(rates.primaryLoading ,  rates.loading));
+
+                    $('#health_healthCover_partnerCover .fieldrow_legend')
+                        .html(getLoadingText(rates.partnerLoading ,  rates.loading));
                 } else {
                     $('#health_healthCover_primaryCover .fieldrow_legend').html(getOverallLoadingText(rates.loading));
                 }
