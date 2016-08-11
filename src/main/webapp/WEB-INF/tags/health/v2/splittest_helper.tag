@@ -70,9 +70,9 @@
 <%-- END HLT-3273 && HLT-3433  --%>
 
 <%-- HLT-3540 - Competition --%>
-<c:set var="worryFreePromo35" value="" />
-<c:set var="worryFreePromo36" value="" />
-<c:set var="worryFreePromo"><content:get key="worryFreePromo" /></c:set>
+<c:set var="worryFreePromo35" value="" scope="request" />
+<c:set var="worryFreePromo36" value="" scope="request" />
+<c:set var="worryFreePromo" scope="request"><content:get key="worryFreePromo" /></c:set>
 <c:if test="${not empty worryFreePromo and worryFreePromo eq 35}">
     <c:choose>
         <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 35)}">
