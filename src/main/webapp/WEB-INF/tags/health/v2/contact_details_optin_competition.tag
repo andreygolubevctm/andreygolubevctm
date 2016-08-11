@@ -35,6 +35,8 @@
 						<h5 class="custom-copy S"><content:get key="worryFreePromoCopyOutro_S" /></h5>
 						<h5 class="custom-copy C"><content:get key="worryFreePromoCopyIntro_C" /></h5>
 						<h5 class="custom-copy C"><content:get key="worryFreePromoCopyOutro_C" /></h5>
+						<h5 class="custom-copy SPF"><content:get key="worryFreePromoCopyIntro_SPF" /></h5>
+						<h5 class="custom-copy SPF"><content:get key="worryFreePromoCopyOutro_SPF" /></h5>
 						<h5 class="custom-copy F"><content:get key="worryFreePromoCopyIntro_F" /></h5>
 						<h5 class="custom-copy F"><content:get key="worryFreePromoCopyOutro_F" /></h5>
 					</div>
