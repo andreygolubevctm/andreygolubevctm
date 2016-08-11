@@ -322,7 +322,7 @@
 	function _goToStep(step, eventObject){
 		// added new publish call. This is for renderingMode.js to be able to update the hidden field as verticals like
 		// home loans update the transaction details before the STEP_CHANGED event is fired.
-		meerkat.messaging.publish(moduleEvents.BEFORE_STEP_CHANGED);
+		meerkat.messaging.publish(moduleEvents.BEFORE_STEP_CHANGED, step);
 
 		if(currentStep !== null && currentStep.onBeforeLeave !== null) currentStep.onBeforeLeave(eventObject);
 

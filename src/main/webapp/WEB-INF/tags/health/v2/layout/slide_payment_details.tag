@@ -26,6 +26,23 @@
 
 				<simples:dialogue id="31" vertical="health" mandatory="true" />
 
+				<c:if test="${not empty worryFreePromo35 or not empty worryFreePromo36}">
+					<div class="simples-dialogue row-content  optionalDialogue">
+						<c:set var="simplesCompCopy"><content:get key="worryFreePromoSimplesCopy_Body" /></c:set>
+						<h3><content:get key="worryFreePromoSimplesCopy_Title" /></h3>
+						<div>
+							<field_v2:checkbox
+									xpath="${pageSettings.getVerticalCode()}/competition/optin"
+									value="Y"
+									className="validate"
+									required="false"
+									label="${true}"
+									title="${simplesCompCopy}"
+									errorMsg="" />
+						</div>
+					</div>
+				</c:if>
+
 				<form_v2:row id="confirm-step" hideHelpIconCol="true">
 					<a href="javascript:void(0);" class="btn btn-next col-xs-12 col-sm-8 col-md-5 journeyNavButton" id="submit_btn">Submit Application <span class="icon icon-arrow-right"></span></a>
 				</form_v2:row>

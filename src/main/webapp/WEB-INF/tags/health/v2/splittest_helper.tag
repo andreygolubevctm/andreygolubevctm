@@ -68,3 +68,27 @@
 <c:set var="isTaxTime"><content:get key="taxTime"/></c:set>
 <c:set var="taxTimeSplitTest" value="${isTaxTime eq 'Y' && (splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 30) or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 31) or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 32))}" scope="request" />
 <%-- END HLT-3273 && HLT-3433  --%>
+
+<%-- HLT-3540 - Competition --%>
+<c:set var="worryFreePromo35" value="${false}" />
+<c:set var="worryFreePromo36" value="${false}" />
+<c:set var="worryFreePromo"><content:get key="worryFreePromo" /></c:set>
+<c:if test="${not empty worryFreePromo and worryFreePromo eq 35}">
+    <c:choose>
+        <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 35)}">
+            <c:set var="worryFreePromo35" value="${true}" scope="request" />
+            <%-- For the comp we need to ensure this is never true --%>
+            <c:set var="showOptInOnSlide3" value="${false}" scope="session" />
+        </c:when>
+        <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 36)}">
+            <c:set var="worryFreePromo36" value="${true}" scope="request" />
+            <%-- For the comp we need to ensure this is never true --%>
+            <c:set var="showOptInOnSlide3" value="${false}" scope="session" />
+        </c:when>
+        <c:otherwise>
+            <%-- ignore and proceed with defaults as set above --%>
+        </c:otherwise>
+    </c:choose>
+
+</c:if>
+<%-- END HLT-3540 - Competition --%>
