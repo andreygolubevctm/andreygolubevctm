@@ -70,8 +70,8 @@
 <%-- END HLT-3273 && HLT-3433  --%>
 
 <%-- HLT-3540 - Competition --%>
-<c:set var="worryFreePromo35" value="${false}" />
-<c:set var="worryFreePromo36" value="${false}" />
+<c:set var="worryFreePromo35" value="" />
+<c:set var="worryFreePromo36" value="" />
 <c:set var="worryFreePromo"><content:get key="worryFreePromo" /></c:set>
 <c:if test="${not empty worryFreePromo and worryFreePromo eq 35}">
     <c:choose>
