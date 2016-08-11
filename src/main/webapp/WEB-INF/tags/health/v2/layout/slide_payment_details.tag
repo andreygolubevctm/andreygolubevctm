@@ -26,7 +26,7 @@
 
 				<simples:dialogue id="31" vertical="health" mandatory="true" />
 
-				<c:if test="${not empty worryFreePromo and worryFreePromo eq '35'}">
+				<c:if test="${callCentre and not empty worryFreePromo and worryFreePromo eq '35'}">
 					<div class="simples-dialogue row-content  optionalDialogue">
 						<c:set var="simplesCompCopy"><content:get key="worryFreePromoSimplesCopy_Body" /></c:set>
 						<h3><content:get key="worryFreePromoSimplesCopy_Title" /></h3>
