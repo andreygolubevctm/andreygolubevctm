@@ -120,7 +120,7 @@
 						</div>
 					</div>
 				</div>
-				<c:if test="${not empty worryFreePromo35}">
+				<c:if test="${not empty worryFreePromo36}">
 					<div class="row no-thanks">
 						<a href="javascript:;">No thanks, just show me my quotes</a>
 						<p>(You won't go into the draw to win $10,000)</p>
