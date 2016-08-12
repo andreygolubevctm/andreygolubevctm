@@ -92,6 +92,7 @@
 									label="${true}"
 									title="${termsAndConditions}"
 									errorMsg="Please agree to the competition Terms &amp; Conditions" />
+							<field_v1:hidden xpath="${xpath}/competition/previous" />
 						</div>
 
 						<group_v3:contact_numbers_hidden xpath="${xpath}/contactNumber" />
