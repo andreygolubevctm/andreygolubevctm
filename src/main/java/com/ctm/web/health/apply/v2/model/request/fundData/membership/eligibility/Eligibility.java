@@ -1,14 +1,15 @@
 
-package com.ctm.web.health.apply.model.request.fundData.membership.eligibility;
+package com.ctm.web.health.apply.v2.model.request.fundData.membership.eligibility;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ctm.web.health.apply.helper.TypeSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class Eligibility {
 
-    @JsonProperty("EligibilityReasonID")
+    @JsonSerialize(using = TypeSerializer.class)
     private EligibilityReasonID eligibilityReasonID;
 
-    @JsonProperty("EligibilitySubReasonID")
+    @JsonSerialize(using = TypeSerializer.class)
     private EligibilitySubReasonID eligibilitySubReasonID;
 
     public Eligibility(final EligibilityReasonID eligibilityReasonID,

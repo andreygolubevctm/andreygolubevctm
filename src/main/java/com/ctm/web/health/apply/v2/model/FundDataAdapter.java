@@ -1,17 +1,17 @@
-package com.ctm.web.health.apply.model;
+package com.ctm.web.health.apply.v2.model;
 
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
-import com.ctm.web.health.apply.model.request.application.common.Relationship;
-import com.ctm.web.health.apply.model.request.application.situation.HealthSituation;
-import com.ctm.web.health.apply.model.request.fundData.Declaration;
-import com.ctm.web.health.apply.model.request.fundData.FundData;
-import com.ctm.web.health.apply.model.request.fundData.ProductId;
-import com.ctm.web.health.apply.model.request.fundData.Provider;
-import com.ctm.web.health.apply.model.request.fundData.benefits.Benefits;
-import com.ctm.web.health.apply.model.request.fundData.membership.*;
-import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.Eligibility;
-import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.EligibilityReasonID;
-import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.EligibilitySubReasonID;
+import com.ctm.web.health.apply.v2.model.request.application.common.Relationship;
+import com.ctm.web.health.apply.v2.model.request.application.situation.HealthSituation;
+import com.ctm.web.health.apply.v2.model.request.fundData.Declaration;
+import com.ctm.web.health.apply.v2.model.request.fundData.FundData;
+import com.ctm.web.health.apply.v2.model.request.fundData.ProductId;
+import com.ctm.web.health.apply.v2.model.request.fundData.Provider;
+import com.ctm.web.health.apply.v2.model.request.fundData.benefits.Benefits;
+import com.ctm.web.health.apply.v2.model.request.fundData.membership.*;
+import com.ctm.web.health.apply.v2.model.request.fundData.membership.eligibility.Eligibility;
+import com.ctm.web.health.apply.v2.model.request.fundData.membership.eligibility.EligibilityReasonID;
+import com.ctm.web.health.apply.v2.model.request.fundData.membership.eligibility.EligibilitySubReasonID;
 import com.ctm.web.health.model.form.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,7 +23,7 @@ import static java.util.Collections.emptyList;
 
 public class FundDataAdapter {
 
-    protected static FundData createFundData(Optional<HealthQuote> quote) {
+    protected static com.ctm.web.health.apply.v2.model.request.fundData.FundData createFundData(Optional<HealthQuote> quote) {
         return new FundData(
                 quote.map(HealthQuote::getApplication)
                         .map(Application::getProvider)
@@ -36,7 +36,7 @@ public class FundDataAdapter {
                         .orElse(null),
                 Declaration.Y,
                 quote.map(HealthQuote::getPayment)
-                        .map(com.ctm.web.health.model.form.Payment::getDetails)
+                        .map(Payment::getDetails)
                         .map(PaymentDetails::getStart)
                         .map(LocalDateUtils::parseAUSLocalDate)
                         .orElse(null),
@@ -50,9 +50,9 @@ public class FundDataAdapter {
                         .orElse(null)));
     }
 
-    protected static Benefits createBenefits(Optional<HealthQuote> quote) {
+    protected static com.ctm.web.health.apply.v2.model.request.fundData.benefits.Benefits createBenefits(Optional<HealthQuote> quote) {
         HealthSituation healthSitu = quote.map(HealthQuote::getSituation)
-                .map(com.ctm.web.health.model.form.Situation::getHealthSitu)
+                .map(Situation::getHealthSitu)
                 .map(HealthSituation::valueOf)
                 .orElse(null);
         List<String> benefits = quote.map(HealthQuote::getApplication)
@@ -149,10 +149,10 @@ public class FundDataAdapter {
         if (nhb.isPresent()) {
             return new Eligibility(
                     nhb.map(Nhb::getEligibility)
-                        .map(EligibilityReasonID::fromValue)
+                        .map(EligibilityReasonID::new)
                         .orElse(null),
                     nhb.map(Nhb::getSubreason)
-                        .map(EligibilitySubReasonID::fromValue)
+                        .map(EligibilitySubReasonID::new)
                         .orElse(null));
         } else {
             return null;

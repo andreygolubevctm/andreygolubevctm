@@ -1,6 +1,6 @@
-package com.ctm.web.health.apply.model;
+package com.ctm.web.health.apply.v2.model;
 
-import com.ctm.web.health.apply.model.request.HealthApplicationRequest;
+import com.ctm.web.health.apply.v2.model.request.HealthApplicationRequest;
 import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 
