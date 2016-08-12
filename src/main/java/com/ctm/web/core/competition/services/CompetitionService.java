@@ -151,7 +151,8 @@ public class CompetitionService {
 
 				List<Pair<String, String>> items = new ArrayList<>();
 				items.add(Pair.of("firstname", entry.getFirstName()));
-				items.add(Pair.of("lastname", entry.getLastName()));
+				String lastname = entry.getLastName();
+				items.add(Pair.of("lastname", StringUtils.isNotEmpty(lastname) ? lastname : ""));
 				items.add(Pair.of("phone", entry.getPhoneNumber()));
 
 				boolean added = CompetitionService.addCompetitionEntry(entry.getCompetitionId(), emailMaster.getEmailId(), items);
