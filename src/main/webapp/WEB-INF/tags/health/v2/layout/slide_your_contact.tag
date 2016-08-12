@@ -5,8 +5,14 @@
 <layout_v3:slide formId="contactForm" nextLabel="Get Prices" className="contactSlide">
 
 	<layout_v3:slide_content>
-
-		<health_v2:contact_details_optin xpath="${pageSettings.getVerticalCode()}/contactDetails" />
+		<c:choose>
+			<c:when test="${not empty worryFreePromo35 or not empty worryFreePromo36}">
+				<health_v2:contact_details_optin_competition xpath="${pageSettings.getVerticalCode()}/contactDetails" />
+			</c:when>
+			<c:otherwise>
+				<health_v2:contact_details_optin xpath="${pageSettings.getVerticalCode()}/contactDetails" />
+			</c:otherwise>
+		</c:choose>
 
 	</layout_v3:slide_content>
 

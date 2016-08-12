@@ -214,6 +214,10 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
                 entry.setCompetitionId(15);
                 entry.setSource("Feb2015HealthJEEPPromo");
                 break;
+            case "xX4525hUPPlooPmn1":
+                entry.setCompetitionId(35);
+                entry.setSource("1608Health$10000Promo");
+                break;
         }
     }
 

@@ -1,0 +1,120 @@
+#worryFreePromoContainer {
+	.competition-details {
+		background: #1C3F94;
+		padding:30px;
+		@media(@xs-only) {
+			padding:15px 0em;
+		}
+		@media(@md) {
+			padding-left:15px;
+		}
+		h4 {
+			font-size:34px;
+			@media(@md) {
+				margin-top:0px;
+			}
+		}
+		h5 {
+			font-family:@font-family-theme-regular;
+			font-size:18px;
+			margin-top:3.5em;
+			@media(@xs) {
+				margin-top:1.5em;
+			}
+			@media(@md) {
+				margin-top:3em;
+			}
+			@media(@lg) {
+				font-size:20px;
+			}
+			em {
+				font-family: @font-family-theme-bold;
+				font-style:normal;
+			}
+		}
+		h4,h5 {
+			color:#ffffff;
+		}
+		.custom-copy {
+			display:none;
+		}
+		#health-contact-fieldset {
+			border-radius:15px;
+			position: relative;
+			padding:1.5em 1em;
+			.fieldrow {
+				margin-bottom: 1em;
+			}
+			label {
+				display: block;
+			}
+			.badge {
+				display:none;
+				margin:0 auto;
+				background-size: contain;
+				/*background-image: url(../../../brand/ctm/competition/health/1608-Worry-Free-Promo/badge.png);*/
+				background-repeat:no-repeat;
+				@media(@sm-only) {
+					position:absolute;
+					top:40px;
+					left:290px;
+				}
+				@media(@xs) {
+					width: 200px;
+					height: 145px;
+					margin-bottom:1.5em;
+				}
+				@media(@sm) {
+					margin-bottom:0;
+				}
+				@media(@md) {
+					width: 190px;
+					height: 138px;
+				}
+				@media(@lg) {
+					width: 240px;
+					height: 174px;
+				}
+			}
+			.health-competition-optin-group {
+				margin:1.5em auto;
+				label {
+					padding-top:0px;
+					margin-top:-6px;
+					a {
+						@media (@xs) {
+							font-family:@font-family-theme-bold;
+							color:#ffffff;
+							text-decoration:underline;
+						}
+						@media (@md) {
+							color:#1c3e93;
+						}
+					}
+				}
+			}
+			@media(@xs) {
+				background:transparent;
+				border:none;
+				label {
+					color:#fff;
+				}
+			}
+			@media(@md) {
+				background:#ffffff;
+				border: 1px solid #666666;
+				label {
+					color:#333333;
+					&.has-error {
+						color:#ff5f5f;
+						text-align:right;
+					}
+				}
+			}
+		}
+	}
+	.no-thanks {
+		margin: 2em auto;
+		text-align: center;
+	}
+}
