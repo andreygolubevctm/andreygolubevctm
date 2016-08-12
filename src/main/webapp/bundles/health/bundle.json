@@ -3,7 +3,6 @@
   "dependencies": [
     "shared/journeyEngine/v2",
     "plugins/scrollTo",
-    "shared/results/v2",
     "shared/results/v4",
     "shared/features",
     "shared/validation",
@@ -24,7 +23,6 @@
     "shared/dropdownInteractive",
     "shared/paymentGateway",
     "shared/numberUtils",
-    "shared/bootstrapSwitch",
     "shared/leavePageWarning",
     "shared/popovers",
     "shared/moreInfo",
@@ -37,10 +35,5 @@
     "shared/sidebarWidgets",
     "shared/filters",
     "shared/radioGroupTile"
-  ],
-  "exclusions": [
-    "shared/results/v4",
-    "shared/sidebarWidgets",
-    "shared/filters"
   ]
 }

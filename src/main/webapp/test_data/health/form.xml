@@ -295,6 +295,16 @@
 		<dialogue-checkbox-28>Y</dialogue-checkbox-28>
         <dialogue-checkbox-37>Y</dialogue-checkbox-37>
         <dialogue-checkbox-38>Y</dialogue-checkbox-38>
+		<dialogue-checkbox-45>Y</dialogue-checkbox-45>
+		<dialogue-checkbox-51>Y</dialogue-checkbox-51>
+		<dialogue-checkbox-54>Y</dialogue-checkbox-54>
+		<dialogue-checkbox-62a>Y</dialogue-checkbox-62a>
+		<dialogue-checkbox-62b>Y</dialogue-checkbox-62b>
+		<dialogue-checkbox-62c>Y</dialogue-checkbox-62c>
+		<dialogue-checkbox-33>Y</dialogue-checkbox-33>
+		<dialogue-checkbox-58>Y</dialogue-checkbox-58>
+		<dialogue-checkbox-30>Y</dialogue-checkbox-30>
+
 		<contactType>outbound</contactType>
 	</simples>
 	<contactAuthority>Y</contactAuthority>

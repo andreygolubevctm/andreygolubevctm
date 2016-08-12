@@ -3,6 +3,7 @@ package com.ctm.web.health.apply.model.request.application.dependant;
 import com.ctm.web.core.model.request.Gender;
 import com.ctm.web.health.apply.helper.TypeSerializer;
 import com.ctm.web.health.apply.model.request.application.common.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -23,12 +24,14 @@ public class Dependant {
     private LastName lastName;
 
     @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
     @JsonSerialize(using = TypeSerializer.class)
     private School school;
 
     @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate schoolDate;
 
     @JsonSerialize(using = TypeSerializer.class)

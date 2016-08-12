@@ -19,16 +19,6 @@
 
 	<jsp:attribute name="head">
 		<link href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/kitchensink.css" rel="stylesheet">
-
-		<go:script>
-			<go:insertmarker format="SCRIPT" name="js-head"/>
-		</go:script>
-
-		<go:script>
-			$(document).ready(function(){
-				<go:insertmarker format="SCRIPT" name="onready"/>
-			});
-		</go:script>
 	</jsp:attribute>
 
 	<jsp:attribute name="head_meta">
@@ -54,6 +44,15 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
+		<go:script>
+			<go:insertmarker format="SCRIPT" name="js-head"/>
+		</go:script>
+
+		<go:script>
+			$(document).ready(function(){
+			<go:insertmarker format="SCRIPT" name="onready"/>
+			});
+		</go:script>
 		<script src="${assetUrl}js/bundles/kitchensink.js"></script>
 		<script src="${assetUrl}js/bundles/kitchensink.deferred.js"></script>
 		<script>

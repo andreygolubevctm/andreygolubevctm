@@ -111,7 +111,7 @@
                 ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, "")}
             </c:when>
             <c:otherwise>
-                <jsp:forward page="/rest/health/apply/get.json"/>
+                <jsp:forward page="/spring/rest/health/apply/get.json"/>
             </c:otherwise>
         </c:choose>
     </c:otherwise>

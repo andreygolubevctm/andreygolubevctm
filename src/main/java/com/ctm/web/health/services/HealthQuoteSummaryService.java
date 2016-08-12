@@ -14,11 +14,13 @@ import com.ctm.web.health.quote.model.RequestAdapter;
 import com.ctm.web.health.quote.model.SummaryResponseAdapter;
 import com.ctm.web.health.quote.model.request.HealthQuoteRequest;
 import com.ctm.web.health.quote.model.response.HealthSummaryResponse;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 
+@Component
 public class HealthQuoteSummaryService extends CommonQuoteService<HealthQuote, HealthQuoteRequest, HealthSummaryResponse> {
 
     public HealthQuoteSummaryService() {

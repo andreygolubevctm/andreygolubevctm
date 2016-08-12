@@ -3,8 +3,6 @@ package com.ctm.web.health.router;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.dao.GeneralDao;
-import com.ctm.web.core.exceptions.ConfigSettingException;
-import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.model.resultsData.NoResults;
 import com.ctm.web.core.model.resultsData.NoResultsObj;
@@ -27,75 +25,74 @@ import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.results.HealthQuoteResult;
 import com.ctm.web.health.model.results.InfoHealth;
-import com.ctm.web.health.model.results.PremiumRange;
+import com.ctm.web.health.quote.model.ResponseAdapterModel;
 import com.ctm.web.health.services.HealthQuoteEndpointService;
 import com.ctm.web.health.services.HealthQuoteService;
-import com.ctm.web.health.services.HealthQuoteSummaryService;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.cxf.jaxrs.ext.MessageContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.ws.rs.*;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.core.Context;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
-import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
+@Api(basePath = "/rest/health", value = "Health Quote")
+@RestController
+@RequestMapping("/rest/health")
+public class HealthQuoteController extends CommonQuoteRouter {
 
-@Path("/health")
-public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
+    private Vertical.VerticalType verticalType = Vertical.VerticalType.HEALTH;
 
-    private final HealthQuoteService healthQuoteService = new HealthQuoteService();
+    private HealthQuoteService healthQuoteService;
 
-    private final HealthQuoteSummaryService healthQuoteSummaryService = new HealthQuoteSummaryService();
-    private final ContentService contentService;
+    private ContentService contentService;
 
-    public HealthQuoteRouter() throws ConfigSettingException, DaoException {
-        super(new SessionDataServiceBean(), IPAddressHandler.getInstance());
-        this.contentService =  ContentService.getInstance();
-    }
-
-    public HealthQuoteRouter(SessionDataServiceBean sessionDataServiceBean, ContentService contentService, IPAddressHandler ipAddressHandler) {
+    @Autowired
+    public HealthQuoteController(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler,
+                                 ContentService contentService, HealthQuoteService healthQuoteService) {
         super(sessionDataServiceBean, ipAddressHandler);
         this.contentService = contentService;
+        this.healthQuoteService = healthQuoteService;
     }
 
-
-    @GET
-    @Path("/dropdown/list.json")
-    @Produces("application/json")
     // call by rest/health/dropdown/list.json?type=X
-    public Map<String,String> getContent(@QueryParam("type") String type) {
+    @RequestMapping(value = "/dropdown/list.json",
+            method= RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String,String> getContent(@RequestParam("type") String type) {
         final Map<String,String> result;
         GeneralDao generalDao = new GeneralDao();
         result = generalDao.getValuesOrdered(type);
         return result;
     }
 
-    @POST
-    @Path("/quote/get.json")
-    @Consumes({"multipart/form-data", "application/x-www-form-urlencoded"})
-    @Produces("application/json")
-    public ResultsWrapper getHealthQuote(@Context MessageContext context, @FormParam("") @Valid final HealthRequest data) throws Exception {
-
-        Vertical.VerticalType vertical = HEALTH;
+    @RequestMapping(value = "/quote/get.json",
+            method= RequestMethod.POST,
+            consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResultsWrapper getHealthQuote(@Valid final HealthRequest data, HttpServletRequest request) throws Exception {
 
         // Initialise request
-        Brand brand = initRouter(context, vertical);
-        updateTransactionIdAndClientIP(context, data);
+        Brand brand = initRouter(request);
+        updateTransactionIdAndClientIP(request, data);
         HealthQuoteEndpointService healthQuoteTokenService = new HealthQuoteEndpointService(ipAddressHandler);
-        boolean isCallCentre = SessionUtils.isCallCentre(context.getHttpServletRequest().getSession());
+        boolean isCallCentre = SessionUtils.isCallCentre(request.getSession());
         try{
-            validateRequest(context.getHttpServletRequest(), vertical, brand, healthQuoteTokenService, data, isCallCentre);
+            validateRequest(request, verticalType, brand, healthQuoteTokenService, data, isCallCentre);
         } catch(RouterException re) {
             if(re.getValidationErrors() == null){
                 throw re;
             }
-            return healthQuoteTokenService.createResultsWrapper(context.getHttpServletRequest(), data.getTransactionId(), handleException(re));
+            return healthQuoteTokenService.createResultsWrapper(request, data.getTransactionId(), handleException(re));
         }
 
         InfoHealth info = new InfoHealth();
@@ -105,36 +102,31 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
 
 
         boolean isShowAll = StringUtils.equals(quote.getShowAll(), "Y");
-        boolean isOnResultsPage = StringUtils.equals(quote.getOnResultsPage(), "Y");
-        if (isShowAll && isOnResultsPage) {
-            PremiumRange summary = healthQuoteSummaryService.getSummary(brand, data, isCallCentre);
-            info.setPremiumRange(summary);
-        }
 
-
-        final Date serverDate = ApplicationService.getApplicationDate(context.getHttpServletRequest());
-        final PageSettings pageSettings = getPageSettingsByCode(brand, vertical);
+        final Date serverDate = ApplicationService.getApplicationDate(request);
+        final PageSettings pageSettings = getPageSettingsByCode(brand, verticalType);
         final Content alternatePricingActive = contentService
                 .getContent("alternatePricingActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, true);
-        final boolean competitionEnabled = StringUtils.equalsIgnoreCase(contentService.getContentValueNonStatic(context.getHttpServletRequest(), "competitionEnabled"), "Y");
+        final boolean competitionEnabled = StringUtils.equalsIgnoreCase(contentService.getContentValueNonStatic(request, "competitionEnabled"), "Y");
 
-        final Pair<Boolean, List<HealthQuoteResult>> quotes = healthQuoteService.getQuotes(brand, data, alternatePricingActive, isCallCentre);
+        final ResponseAdapterModel quotes = healthQuoteService.getQuotes(brand, data, alternatePricingActive, isCallCentre);
 
-        if (quotes.getValue().isEmpty()) {
-            return handleEmptyResults(context, data, healthQuoteTokenService, info);
+        if (quotes.getResults().isEmpty()) {
+            return handleEmptyResults(request, data, healthQuoteTokenService, info);
         } else {
 
-            String trackingKey = TrackingKeyService.generate(
-                    context.getHttpServletRequest(), data.getTransactionId());
+            String trackingKey = TrackingKeyService.generate(request, data.getTransactionId());
             info.setTrackingKey(trackingKey);
 
-            Data dataBucket = getDataBucket(context, data.getTransactionId());
-            healthQuoteService.healthCompetitionEntry(context, data, quote, competitionEnabled, dataBucket);
+            Data dataBucket = getDataBucket(request, data.getTransactionId());
+            healthQuoteService.healthCompetitionEntry(request, data, quote, competitionEnabled, dataBucket);
 
             PricesObj<HealthQuoteResult> results = new PricesObj<>();
-            results.setResult(quotes.getRight());
+            results.setResult(quotes.getResults());
             results.setInfo(info);
-            info.setPricesHaveChanged(quotes.getLeft());
+
+            quotes.getPremiumRange().ifPresent(info::setPremiumRange);
+            info.setPricesHaveChanged(quotes.isHasPriceChanged());
 
             if (!isShowAll) {
 
@@ -151,11 +143,11 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
             }
 
             // create resultsWrapper with the token
-            return healthQuoteTokenService.createResultsWrapper(context.getHttpServletRequest(), data.getTransactionId(), results);
+            return healthQuoteTokenService.createResultsWrapper(request, data.getTransactionId(), results);
         }
     }
 
-    public ResultsWrapper handleEmptyResults(@Context MessageContext context, @FormParam("") @Valid HealthRequest data, HealthQuoteEndpointService healthQuoteTokenService, InfoHealth info) {
+    protected ResultsWrapper handleEmptyResults(HttpServletRequest request, @FormParam("") @Valid HealthRequest data, HealthQuoteEndpointService healthQuoteTokenService, InfoHealth info) {
         NoResultsObj results = new NoResultsObj();
 
         NoResults noResults = new NoResults();
@@ -167,7 +159,7 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
         results.setResult(Collections.singletonList(noResults));
 
         // create resultsWrapper with the token
-        return healthQuoteTokenService.createResultsWrapper(context.getHttpServletRequest(), data.getTransactionId(), results);
+        return healthQuoteTokenService.createResultsWrapper(request, data.getTransactionId(), results);
     }
 
     private void validateRequest(@Context HttpServletRequest httpServletRequest,

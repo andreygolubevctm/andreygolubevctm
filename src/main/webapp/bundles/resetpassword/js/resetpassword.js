@@ -31,7 +31,10 @@
             startStep: {
                 title: 'Reset Password',
                 navigationId: 'resetPassword',
-                slideIndex: 0
+                slideIndex: 0,
+                onInitialise: function() {
+                    meerkat.modules.jqueryValidate.initJourneyValidator();
+                }
             }
         };
     }

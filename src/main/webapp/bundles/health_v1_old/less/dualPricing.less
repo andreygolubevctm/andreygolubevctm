@@ -1,0 +1,652 @@
+// *** START: Why premiums rising popup
+
+@media(@xs) {
+	.modal-dialog.why-premiums-rising {
+		width: 100%;
+	}
+}
+
+@media(@sm) {
+	.modal-dialog.why-premiums-rising {
+		width: 60%;
+	}
+}
+
+
+.why-premiums-rising-wrapper {
+	> div {
+		margin-bottom: 15px;
+
+		.heading {
+			font-size: 38px;
+			font-family: @font-family-theme-bold;
+			display:inline-block;
+		}
+
+		> span { //
+			font-size: 20px;
+			display:inline-block;
+			padding-left: 30px;
+			.text-secondary {
+				font-size: 27px;
+			}
+		}
+	}
+
+	li {
+		margin-bottom: 15px;
+	}
+
+	.attention {
+		font-family: @font-family-theme-bold;
+	}
+}
+
+@media (@md-only) {
+	.why-premiums-rising-wrapper {
+		> div {
+			.heading {
+				font-size: 30px;
+			}
+			> span {
+				padding-left: 30px;
+				font-size: 17px;
+
+				.text-secondary {
+					font-size: 24px;
+				}
+			}
+		}
+
+		.attention {
+			font-size: 18px;
+		}
+	}
+}
+
+@media (@sm-only) {
+	.why-premiums-rising-wrapper {
+		> div {
+			margin-bottom: 15px;
+
+			.heading {
+				font-size: 20px;
+			}
+
+			> span {
+				font-size: 18px;
+
+				.text-secondary {
+					font-size: 20px;
+				}
+			}
+		}
+
+		.attention {
+			font-size: 16px;
+		}
+	}
+}
+
+
+@media (@xs-only) {
+	.why-premiums-rising-wrapper {
+		> div {
+			margin-bottom: 15px;
+
+			.heading {
+				font-size: 23px;
+			}
+
+			> span {
+				font-size: 15px;
+
+				.text-secondary {
+					font-size: 20px;
+				}
+			}
+		}
+
+		.attention {
+			font-size: 16px;
+		}
+	}
+}
+
+// *** END: Why premiums rising popup
+
+// *** START: More info dual pricing
+.more-info-content .fieldset-card.hasDualPricing {
+	padding-bottom: 0px;
+}
+
+.hasDualPricing {
+	.moreInfoTopLeftColumn {
+		.productDetails {
+			padding-left: 40px;
+		}
+
+		.insureNowContainer {
+			display: table;
+			.insureNow,
+			.text-dark {
+				display: table-cell;
+			}
+
+			.text-dark {
+				vertical-align: middle;
+			}
+		}
+	}
+
+	.moreInfoTopRightColumn {
+		margin-top: -54px;
+		padding-right: 0;
+	}
+
+	.dual-pricing-container {
+
+		.cents,
+		.dollarSign,
+		.frequencyTitle {
+			vertical-align: baseline;
+			position: relative;
+			top: -0.4em;
+			font-size: 0.6em;
+			font-family: @font-family-theme-regular;
+		}
+
+		.why-rising-premiums {
+			text-decoration: underline;
+		}
+
+		.current-pricing {
+			h2 {
+				font-size: 28px;
+				font-family: @font-family-theme-bold;
+				color: @more-info-header-text-color;
+				margin-top: 0px;
+			}
+
+			h3 {
+				font-family: @font-family-theme-regular;
+			}
+
+			// different style for XS/SM breakpoint
+			.frequencyAmount {
+				font-size: 55px;
+			}
+
+			.why-rising-premiums {
+				text-align: right;
+				display: inline-block;
+				width: 100%;
+				text-decoration: underline;
+			}
+		}
+
+		.april-pricing {
+			.frequencyAmount {
+				color: @dual-pricing-light-note-colour;
+			}
+
+			h3 {
+				margin-top: 0px;
+				margin-bottom: 0px;
+				font-family: @font-family-theme-regular;
+				color: @dual-pricing-light-note-colour;
+			}
+
+			.comingSoon {
+				font-size: 26px;
+				font-family: @font-family-theme-bold;
+				color: @dual-pricing-light-note-colour;
+			}
+
+		}
+
+		.april-pricing,
+		.current-pricing {
+			.note {
+				margin-top: 15px;
+			}
+		}
+	}
+}
+
+@media (@md) {
+	.hasDualPricing {
+		.dual-pricing-container {
+			border-left: 1px solid @border-color;
+
+			.frequencyAmount {
+				font-size: 55px;
+				.frequencyTitle {
+					top: -1.1em;
+					font-size: 0.3em;
+				}
+			}
+
+			.dual-pricing-border {
+				height: 10px;
+				background-image: url("../graphics/health/dual-pricing-border.gif");
+				background-color: @main-bg-colour;
+			}
+
+			.current-pricing {
+				background: @more-info-header-bg-color;
+				color: @more-info-header-text-color;
+				padding: 22px;
+				width: 100%;
+
+				h3 {
+					color: #FFF;
+					font-family: @font-family-theme-light;
+				}
+
+				.lhcText {
+					font-size: 17px;
+					color: #FFF;
+				}
+
+				.why-rising-premiums {
+					color: #FFF;
+				}
+
+				.note {
+					margin-top: 10px;
+					color: #FFF;
+				}
+			}
+
+			.april-pricing {
+				background: @main-bg-colour;
+				padding: 22px;
+
+				.lhcText {
+					font-size: 17px;
+				}
+			}
+
+			.insureNowContainer {
+				h3 {
+					padding-left: 20px;
+					font-size: 21px;
+				}
+
+				.text-secondary {
+					font-size: 25px;
+				}
+			}
+		}
+	}
+}
+
+@media(@sm-only) {
+	.hasDualPricing {
+		.dual-pricing-container {
+			border-top: 1px solid @dual-pricing-border-colour;
+			border-bottom: 1px solid @dual-pricing-border-colour;
+			padding-bottom: 20px;
+			padding-top: 10px;
+
+			.pricing-row {
+				display: table;
+				width: 100%;
+
+				.current-pricing {
+					display: table-cell;
+					width: 40%;
+
+					h3 {
+						color: @dual-pricing-dark-font-colour;
+						margin: 0;
+					}
+
+					.lhcText {
+						font-size: 15px;
+						color: @dual-pricing-dark-font-colour;
+					}
+				}
+
+				.icon {
+					display: table-cell;
+					font-size: 55px;
+					color: @dual-pricing-light-gray;
+					width: 100px;
+					text-align: center;
+					vertical-align: middle;
+				}
+
+				.april-pricing {
+					background: #FFF;
+					display: table-cell;
+				}
+			}
+
+			.heading-row {
+				h2 {
+					display: inline-block;
+					margin-right: 20px;
+					color: @dual-pricing-heading-color;
+					font-family: @font-family-theme-bold;
+					font-size: 28px;
+				}
+			}
+
+			// general styling. different style for XS/SM breakpoint
+			.april-pricing,
+			.current-pricing {
+				padding-top: 10px;
+			}
+			.lhcText {
+				font-size: 15px;
+			}
+
+			.note {
+				margin-top: 20px;
+				color: @dual-pricing-light-note-colour;
+			}
+
+			.why-rising-premiums {
+				color: @dual-pricing-heading-color;
+			}
+
+			.frequencyAmount {
+				font-size: 55px;
+				.frequencyTitle {
+					font-size: 0.3em;
+					top: -1.2em;
+				}
+			}
+		}
+	}
+}
+
+@media(@xs-only) {
+	.hasDualPricing {
+		.priceRow {
+			margin-top: 15px;
+		}
+
+		.dual-pricing-container {
+			text-align:center;
+
+			.current-pricing {
+				.frequencyTitle {
+					font-size: 0.3em;
+					top: -1.2em;
+				}
+
+				h3 {
+					font-size: 14px;
+					text-align: left;
+					color: @dual-pricing-dark-font-colour;
+					margin-bottom: 0px;
+				}
+
+				.price {
+					text-align: left;
+				}
+			}
+
+			.april-pricing {
+				*, .comingSoon {
+					font-size: 16px;
+				}
+
+				.frequency {
+					color: @dual-pricing-light-note-colour;
+				}
+				.frequencyAmount {
+					font-size: 18px;
+				}
+			}
+
+			.why-rising-premiums {
+				margin-top: 20px;
+				margin-bottom: 20px;
+				display: inline-block;
+			}
+
+			h2 {
+				font-family: @font-family-theme-bold;
+				color: @dual-pricing-heading-color;
+				font-size: 24px;
+			}
+
+			> h3 {
+				font-size: 18px;
+				font-family: @font-family-theme-bold;
+				color: #000;
+
+				.text-secondary {
+					font-size: 25px;
+				}
+			}
+
+			hr {
+				color: @dual-pricing-light-note-colour;
+			}
+
+			.note {
+				margin-top: 20px;
+			}
+
+			.promo {
+				h2 {
+					color:@headings-color;
+					font-family: @font-family-theme-regular;
+				}
+			}
+
+			.btn-more-info-apply {
+				margin-top: 15px;
+				margin-bottom: 15px;
+			}
+
+			.lhcText {
+				font-size: 16px;
+			}
+		}
+	}
+}
+
+// *** END: More info dual pricing
+
+// *** START: Passed drop dead date
+@media(@xs) {
+	.dropDatePassed {
+		.current-pricing h3,
+		hr,
+		hr + h2,
+		.april-pricing,
+		.note,
+		.why-rising-premiums {
+			display: none !important;
+		}
+	}
+}
+
+@media(@sm) {
+	.dropDatePassed {
+		.heading-row,
+		.pricing-row > .icon{
+			display: none !important;
+		}
+	}
+}
+
+@media(@md) {
+	.dropDatePassed {
+		border-left: none !important;
+		.current-pricing h2,
+		.dual-pricing-border {
+			display: none !important;
+		}
+	}
+
+	.more-info-content .fieldset-card.dropDatePassedContainer {
+		margin-top: 20px;
+	}
+
+	.dropDatePassedContainer {
+
+		.quoteRefContainer {
+			padding-top: 20px;
+		}
+
+		.moreInfoTopRightColumn {
+			padding-left: 0px;
+		}
+
+		.quoteRefContainer,
+		.moreInfoTopLeftColumn
+		{
+			background: #fff;
+		}
+	}
+}
+// *** END: Passed drop dead date
+
+
+// *** START: Dual pricing sidebar apply onwards
+.fieldset-column-side .sidebar-box.hasDualPricing {
+	padding: 0px;
+
+	.dualPricing {
+		margin-top: 0px;
+
+		.dual-pricing-container {
+			border-left: none;
+
+			.dual-pricing-border {
+				background-color: #fff;
+			}
+
+			.current-pricing,
+			.april-pricing {
+				padding: 10px;
+
+				h2 {
+					font-size: 20px;
+				}
+
+				h3 {
+					font-size: 16px;
+				}
+
+				.frequency .frequencyAmount {
+					font-size:50px;
+					font-family: @font-family-theme-bold;
+				}
+
+				.frequencyTitle {
+					font-size: 0.3em;
+					top: -1.2em;
+				}
+
+				.lhcText {
+					font-size: 13px;
+				}
+
+				.note {
+					font-size: 14px;
+				}
+			}
+
+			.current-pricing {
+				display:block;
+				width:100%;
+				background: @more-info-header-bg-color;
+				color: #FFF;
+
+				.why-rising-premiums {
+					display: none;
+				}
+
+				h3,
+				.lhcText,
+				.note{
+					color: #FFF;
+				}
+			}
+
+			.dual-pricing-border {
+				height: 10px;
+				background-image: url("../graphics/health/dual-pricing-border.gif");
+				background-color: #FFF;
+
+			}
+
+			.april-pricing {
+				background: #FFF;
+
+				color: @dual-pricing-light-note-colour;
+				.coming-soon {
+					font-size: 18px;
+				}
+			}
+
+			.why-rising-premiums-container {
+				display:block !important;
+				text-align: right;
+				margin-bottom: 10px;
+				margin-right: 10px;
+				font-size:12px;
+			}
+		}
+	}
+}
+
+@media (@md) {
+	.fieldset-column-side .sidebar-box.hasDualPricing {
+		.current-pricing,
+		.april-pricing {
+			.frequency .frequencyAmount {
+				font-size:38px;
+			}
+		}
+	}
+}
+
+@media (@sm) {
+	.fieldset-column-side .sidebar-box.hasDualPricing {
+		.dualPricing {
+			.dual-pricing-container {
+				.current-pricing {
+					margin-top: -10px;
+				}
+
+				.current-pricing,
+				.april-pricing {
+					.price.premium {
+						.frequencyAmount {
+							font-size: 28px;
+							margin-top: 10px;
+							margin-bottom: 10px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+// on payments page
+.sidebarFrequency {
+	.heading {
+		color: @price-component-header-text;
+	}
+
+	.title {
+		font-family: @font-family-theme-bold;
+	}
+
+	p {
+		font-size: 14px;
+	}
+}
+// *** END: Dual pricing sidebar apply onwards
+
+// DUAL PRICING END

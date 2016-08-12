@@ -44,7 +44,7 @@ public class HealthQuote {
 
     private String searchDate;
 
-    private PreviousFund previousFund;
+    private PreviousFund previousfund;
 
     private Payment payment;
 
@@ -222,12 +222,12 @@ public class HealthQuote {
         this.searchDate = searchDate;
     }
 
-    public PreviousFund getPreviousFund() {
-        return previousFund;
+    public PreviousFund getPreviousfund() {
+        return previousfund;
     }
 
-    public void setPreviousFund(PreviousFund previousFund) {
-        this.previousFund = previousFund;
+    public void setPreviousfund(PreviousFund previousfund) {
+        this.previousfund = previousfund;
     }
 
     public Payment getPayment() {
