@@ -1,26 +1,22 @@
-package com.ctm.web.health.apply.model;
+package com.ctm.web.health.apply.v2.model;
 
-import com.ctm.web.health.apply.model.request.fundData.Declaration;
-import com.ctm.web.health.apply.model.request.fundData.membership.Membership;
-import com.ctm.web.health.apply.model.request.fundData.membership.PartnerDetails;
-import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.Eligibility;
-import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.EligibilityReasonID;
-import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.EligibilitySubReasonID;
+import com.ctm.web.health.apply.v2.model.request.fundData.Declaration;
+import com.ctm.web.health.apply.v2.model.request.fundData.membership.Membership;
+import com.ctm.web.health.apply.v2.model.request.fundData.membership.PartnerDetails;
+import com.ctm.web.health.apply.v2.model.request.fundData.membership.eligibility.Eligibility;
 import com.ctm.web.health.model.form.*;
 import org.junit.Test;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class FundDataAdapterTest {
 
     @Test
     public void testCreateFundDataEmpty() throws Exception {
-        final com.ctm.web.health.apply.model.request.fundData.FundData result = FundDataAdapter.createFundData(Optional.empty());
+        final com.ctm.web.health.apply.v2.model.request.fundData.FundData result = FundDataAdapter.createFundData(Optional.empty());
         assertNotNull(result);
         assertNull(result.getProvider());
         assertNull(result.getProduct());
@@ -34,14 +30,14 @@ public class FundDataAdapterTest {
     public void testCreateFundData() throws Exception {
         final HealthQuote healthQuote = mock(HealthQuote.class);
         final Application application = mock(Application.class);
-        final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
+        final Payment payment = mock(Payment.class);
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
-        final com.ctm.web.health.model.form.Situation situation = mock(com.ctm.web.health.model.form.Situation.class);
+        final Situation situation = mock(Situation.class);
         when(healthQuote.getApplication()).thenReturn(application);
         when(healthQuote.getPayment()).thenReturn(payment);
         when(payment.getDetails()).thenReturn(paymentDetails);
         when(healthQuote.getSituation()).thenReturn(situation);
-        final com.ctm.web.health.apply.model.request.fundData.FundData result = FundDataAdapter.createFundData(Optional.ofNullable(healthQuote));
+        final com.ctm.web.health.apply.v2.model.request.fundData.FundData result = FundDataAdapter.createFundData(Optional.ofNullable(healthQuote));
         assertNotNull(result);
         verify(application, times(1)).getProvider();
         verify(application, times(1)).getProductId();
@@ -159,8 +155,8 @@ public class FundDataAdapterTest {
         when(nav.getSubreason()).thenReturn("DODEFam");
         final Membership membership = FundDataAdapter.createMembership(nav);
         final Eligibility eligibility = membership.getEligibility();
-        assertEquals(EligibilityReasonID.ContractorFamily, eligibility.getEligibilityReasonID());
-        assertEquals(EligibilitySubReasonID.ContractorFamilyDptDefence, eligibility.getEligibilitySubReasonID());
+        assertEquals("CF", eligibility.getEligibilityReasonID().get());
+        assertEquals("DODEFam", eligibility.getEligibilitySubReasonID().get());
         verify(nav, times(1)).getEligibility();
         verify(nav, times(1)).getSubreason();
         verify(nav, times(1)).getPartnerrel();
