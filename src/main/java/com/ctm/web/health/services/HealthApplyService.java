@@ -19,7 +19,7 @@ import com.ctm.web.health.apply.model.request.HealthApplicationRequest;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
 import com.ctm.web.health.apply.model.response.HealthApplyResponse;
 import com.ctm.web.health.apply.model.response.HealthApplyResponsePrev;
-import com.ctm.web.health.apply.v2.model.RequestAdapterV2;
+import com.ctm.web.health.apply.model.RequestAdapterV2;
 import com.ctm.web.health.model.form.HealthRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

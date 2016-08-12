@@ -4,8 +4,8 @@ import com.ctm.web.health.apply.model.request.fundData.Declaration;
 import com.ctm.web.health.apply.model.request.fundData.membership.Membership;
 import com.ctm.web.health.apply.model.request.fundData.membership.PartnerDetails;
 import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.Eligibility;
-import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.EligibilityReasonID;
-import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.EligibilitySubReasonID;
+import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.NhbEligibilityReasonID;
+import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.NhbEligibilitySubReasonID;
 import com.ctm.web.health.model.form.*;
 import org.junit.Test;
 
@@ -147,8 +147,8 @@ public class FundDataAdapterTest {
     public void testNav() throws Exception {
         Nhb nav = mock(Nhb.class);
         FundDataAdapter.createMembership(nav);
-        verify(nav, times(1)).getEligibility();
-        verify(nav, times(1)).getSubreason();
+        verify(nav, times(2)).getEligibility();
+        verify(nav, times(2)).getSubreason();
         verify(nav, times(1)).getPartnerrel();
     }
 
@@ -159,11 +159,10 @@ public class FundDataAdapterTest {
         when(nav.getSubreason()).thenReturn("DODEFam");
         final Membership membership = FundDataAdapter.createMembership(nav);
         final Eligibility eligibility = membership.getEligibility();
-        assertEquals(EligibilityReasonID.ContractorFamily, eligibility.getEligibilityReasonID());
-        assertEquals(EligibilitySubReasonID.ContractorFamilyDptDefence, eligibility.getEligibilitySubReasonID());
-        verify(nav, times(1)).getEligibility();
-        verify(nav, times(1)).getSubreason();
-        verify(nav, times(1)).getPartnerrel();
+        assertEquals(NhbEligibilityReasonID.ContractorFamily, eligibility.getNhbEligibilityReasonID());
+        assertEquals(NhbEligibilitySubReasonID.ContractorFamilyDptDefence, eligibility.getNhbEligibilitySubReasonID());
+        assertEquals("CF", eligibility.getEligibilityReasonID().get());
+        assertEquals("DODEFam", eligibility.getEligibilitySubReasonID().get());
     }
 
 }
