@@ -38,4 +38,32 @@ public class Payment {
         this.medicare = medicare;
         this.claims = claims;
     }
+
+    public Details getDetails() {
+        return details;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public IppCreditCard getIppCreditCard() {
+        return ippCreditCard;
+    }
+
+    public GatewayCreditCard getGatewayCreditCard() {
+        return gatewayCreditCard;
+    }
+
+    public Bank getBank() {
+        return bank;
+    }
+
+    public Medicare getMedicare() {
+        return medicare;
+    }
+
+    public Claims getClaims() {
+        return claims;
+    }
 }

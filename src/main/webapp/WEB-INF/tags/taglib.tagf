@@ -87,3 +87,4 @@
 <%@ taglib tagdir="/WEB-INF/tags/lmi" 	                prefix="lmi" %>
 <%@ taglib tagdir="/WEB-INF/tags/lmi/layout" 	        prefix="lmi_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/snippets"              prefix="snippets" %>
+<%@ taglib tagdir="/WEB-INF/tags/distil"                prefix="distil" %>

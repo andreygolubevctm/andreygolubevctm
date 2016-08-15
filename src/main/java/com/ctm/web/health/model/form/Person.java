@@ -12,10 +12,6 @@ public class Person {
 
     private String gender;
 
-    private String cover;
-
-    private String healthCoverLoading;
-
     private String authority;
 
     public String getTitle() {
@@ -56,22 +52,6 @@ public class Person {
 
     public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public String getCover() {
-        return cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
-    }
-
-    public String getHealthCoverLoading() {
-        return healthCoverLoading;
-    }
-
-    public void setHealthCoverLoading(String healthCoverLoading) {
-        this.healthCoverLoading = healthCoverLoading;
     }
 
     public String getAuthority() {

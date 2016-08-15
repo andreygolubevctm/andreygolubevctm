@@ -23,5 +23,11 @@ public class Expiry {
         this.cardExpiryYear = cardExpiryYear;
     }
 
+    public ExpiryMonth getCardExpiryMonth() {
+        return cardExpiryMonth;
+    }
 
+    public ExpiryYear getCardExpiryYear() {
+        return cardExpiryYear;
+    }
 }

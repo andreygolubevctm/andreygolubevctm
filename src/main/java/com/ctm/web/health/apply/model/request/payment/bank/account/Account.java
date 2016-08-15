@@ -21,6 +21,22 @@ public class Account {
     @JsonSerialize(using = TypeSerializer.class)
     private final AccountNumber accountNumber;
 
+    public BankName getBankName() {
+        return bankName;
+    }
+
+    public BSB getBsb() {
+        return bsb;
+    }
+
+    public AccountName getAccountName() {
+        return accountName;
+    }
+
+    public AccountNumber getAccountNumber() {
+        return accountNumber;
+    }
+
     public Account(final BankName bankName, final BSB bsb, final AccountName accountName, final AccountNumber accountNumber) {
         this.bankName = bankName;
         this.bsb = bsb;

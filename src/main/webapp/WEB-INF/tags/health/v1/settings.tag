@@ -113,6 +113,9 @@
 	emailBrochures: {
 		enabled: <c:out value="${pageSettings.getSetting('emailBrochuresEnabled') eq 'Y'}"/>
 	},
+	<c:if test="${not empty worryFreePromo35 or not empty worryFreePromo36}">
+	competitionActive : true,
+	</c:if>
 	choices: {
 		cover: '${healthCvr}',
 		situation: '${healthSitu}',
