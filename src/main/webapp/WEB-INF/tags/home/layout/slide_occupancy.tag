@@ -10,10 +10,12 @@
 		<jsp:attribute name="rightColumn">
 			<home:snapshot />
 
-			<ui:bubble variant="info">
-				<h4>Do you own the home?</h4>
-				<p>Even if you are still paying off the home, please select "yes" for the home ownership question.</p>
-			</ui:bubble>
+			<c:if test="${not brochurewarePassedParams}">
+				<ui:bubble variant="info">
+					<h4>Do you own the home?</h4>
+					<p>Even if you are still paying off the home, please select "yes" for the home ownership question.</p>
+				</ui:bubble>
+			</c:if>
 		</jsp:attribute>
 
 		<jsp:body>
