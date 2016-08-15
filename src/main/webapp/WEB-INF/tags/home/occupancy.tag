@@ -4,6 +4,7 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath"%>
+<%@ attribute name="baseXpath" required="true" rtexprvalue="true" description="base xpath"%>
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
@@ -27,10 +28,12 @@
 		<c:when test="${brochurewarePassedParams}">
 
 			<%-- Commencement Date --%>
-			<home:commencementDate xpath="${xpath}/startDate" />
+			<c:set var="fieldXpath" value="${baseXpath}/startDate" />
+			<home:commencementDate xpath="${fieldXpath}" />
 
 			<%-- Address --%>
-			<group_v2:elastic_address xpath="${xpath}/property/address" type="R" />
+			<c:set var="fieldXpath" value="${baseXpath}/property/address" />
+			<group_v2:elastic_address xpath="${fieldXpath}" type="R" />
 
 		</c:when>
 		<c:otherwise>

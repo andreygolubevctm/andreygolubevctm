@@ -27,7 +27,7 @@
 <!-- 					<p>Tell us about your home and/or contents to compare quotes from our participating providers.</p> -->
 <%-- 				</ui:bubble> --%>
 
-				<home:occupancy xpath="${xpath}/occupancy" />
+				<home:occupancy xpath="${xpath}/occupancy" baseXpath="${xpath}" />
 
 				<home:business_activity xpath="${xpath}/businessActivity" />
 

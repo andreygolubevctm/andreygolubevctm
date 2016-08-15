@@ -118,11 +118,7 @@
 	 *            render
 	 */
 	function initProgressBar(render) {
-		if(meerkat.modules.splitTest.isActive(11)) {
-			setJourneyEngineStepsVariation();
-		} else {
-			setJourneyEngineSteps();
-		}
+		setJourneyEngineSteps();
 		configureProgressBar();
 		if (render) {
 			meerkat.modules.journeyProgressBar.render(true);
@@ -158,6 +154,8 @@
 						$emailQuoteBtn.removeClass("privacyOptinChecked");
 					}
 				});
+				initialiseOwner();
+				meerkat.modules.homeCoverTypeWarning.initHomeCoverTypeWarning();
 				meerkat.modules.currencyField.initCurrency();
 			}
 		};
@@ -183,7 +181,6 @@
 			onInitialise: function() {
 				meerkat.modules.homeOccupancy.initHomeOccupancy();
 				meerkat.modules.homeBusiness.initHomeBusiness();
-				meerkat.modules.homeCoverTypeWarning.initHomeCoverTypeWarning();
 			}
 		};
 
@@ -312,6 +309,8 @@
 				initialiseOwner();
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 				meerkat.modules.homeCoverTypeWarning.initHomeCoverTypeWarning();
+				meerkat.modules.currencyField.initCurrency();
+
 			}
 		};
 
@@ -349,8 +348,6 @@
 						$emailQuoteBtn.removeClass("privacyOptinChecked");
 					}
 				});
-				meerkat.modules.currencyField.initCurrency();
-
 				meerkat.modules.homeOccupancy.initHomeOccupancy();
 				meerkat.modules.homeBusiness.initHomeBusiness();
 			}
