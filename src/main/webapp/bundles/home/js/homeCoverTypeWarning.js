@@ -26,6 +26,8 @@
 				$coverType.on("change.cover", function checkOwnership() {
 					_.defer(validateSelections);
 				});
+
+				_.defer(validateSelections);
 			}
 		}
 	}
