@@ -47,13 +47,11 @@
 				$('#travel_childrenSelect').val(0);
 				$single_parent_row[hideMethod]();
 				$travel_adults.val(2);
-				$adult_dob_2.addClass('validate').attr('required','required');
 			} else if (selected === "F") {
 				$adult_dob_2_row[showMethod]();
 				$children_row[showMethod]();
 				$single_parent_row[hideMethod]();
 				$travel_adults.val(2);
-				$adult_dob_2.removeClass('validate').removeAttr('required');
 			}
 		});
 
