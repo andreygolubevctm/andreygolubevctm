@@ -181,6 +181,14 @@
 					meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
 				});
 
+				if(meerkat.modules.performanceProfiling.isMobile()) {
+					var $callCentreNumber = $('.mobile-hours h1 .callCentreNumber');
+					var $callCentreAppNumber = $('.mobile-hours h1 .callCentreAppNumber');
+
+					$callCentreNumber.wrapInner('<a href="tel:' + $callCentreNumber.text().replace(/ /g, "") + '"></a>');
+					$callCentreAppNumber.wrapInner('<a href="tel:' + $callCentreAppNumber.text().replace(/ /g, "") + '"></a>');
+				}
+
 				if($("#health_privacyoptin").val() === 'Y'){
 					$(".slide-feature-emailquote").addClass("privacyOptinChecked");
 				}
