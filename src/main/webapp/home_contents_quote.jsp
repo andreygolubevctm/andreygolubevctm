@@ -156,7 +156,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<core_v1:footer_participatingsuppliers />
+		<home:footer />
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">
