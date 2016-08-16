@@ -137,6 +137,14 @@
 			navigationId: 'start',
 			slideIndex: 0,
 			externalTracking: externalTrackingSettings,
+			validation: {
+				validate: true,
+				customValidation: function (callback) {
+					// prevent from jumping to the next step if the selections are incorrect
+					var doContinue = meerkat.modules.homeCoverTypeWarning.validateSelections();
+					callback(doContinue);
+				}
+			},
 			onInitialise: function onStartInit(event) {
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 				// Hook up privacy optin to Email Quote button
