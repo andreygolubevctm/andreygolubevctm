@@ -17,6 +17,7 @@ var healthFunds_QTU = {
     $paymentStartDate: $('#health_payment_details_start'),
     $medicareFirstName: $('#health_payment_medicare_firstName'),
     $medicareSurname: $('#health_payment_medicare_surname'),
+    $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
     set: function() {
         <%-- Custom questions: Eligibility --%>
         if ($('#qtu_eligibility').length > 0) {
@@ -96,19 +97,16 @@ var healthFunds_QTU = {
 
         <%-- Authority Fund Name --%>
         healthFunds._previousfund_authority(true);
-        var healthFundText = "By joining TUH, you authorise TUH to contact your previous fund in order to obtain a clearance certificate. This will mean that, where applicable, you don’t need to re-serve any hospital waiting periods you served with your previous fund.";
-        $('#clientMemberID').parent().after('<span class="qtu-clearance-certificate">' + healthFundText + '</span>');
-        $('#partnerMemberID').parent().after('<span class="qtu-clearance-certificate">' + healthFundText + '</span>');
 
         <%-- Dependants --%>
         healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
-        meerkat.modules.healthDependants.updateConfig({showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':25, showSchoolIdField:false, showRelationship:false, showPreferredMethodOfContact:true });
+        meerkat.modules.healthDependants.updateConfig({showFullTimeField:true, showSchoolFields:false, 'schoolMinAge':21, 'schoolMaxAge':25 });
 
         <%--allow weekend selection from the datepicker--%>
         healthFunds_QTU.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
-        <%--set start date tomorrow's date +30days--%>
-        meerkat.modules.healthPaymentStep.setCoverStartRange(1, 30);
+        <%--set start date within the next 3 months--%>
+        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 90);
 
         healthFunds_QTU.$paymentType.on('change.QTU', function renderPaymentDaysPaymentType(){
             healthFunds_QTU.renderPaymentDays();
@@ -149,6 +147,12 @@ var healthFunds_QTU = {
         var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
+
+        if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
+            healthFunds_QTU.$paymentTypeContainer.slideUp();
+        } else {
+            healthFunds_QTU.$paymentTypeContainer.text('*' + Results.getSelectedProduct().promo.discountText).slideDown();
+        }
     },
     unset: function() {
         <%-- Custom questions - hide in case user comes back --%>
@@ -161,8 +165,6 @@ var healthFunds_QTU = {
         delete healthFunds_QTU.$_dobPrimary;
         delete healthFunds_QTU.$_dobPartner;
 
-        $('.qtu-clearance-certificate').remove();
-
         healthFunds._dependants(false);
         meerkat.modules.healthDependants.resetConfig();
         healthFunds._reset();
@@ -173,6 +175,8 @@ var healthFunds_QTU = {
 
         healthFunds_QTU.$medicareFirstName.setRequired(true);
         healthFunds_QTU.$medicareSurname.setRequired(true);
+
+        healthFunds_QTU.$paymentTypeContainer.text('').slideUp();
 
         meerkat.modules.paymentGateway.reset();
     }
