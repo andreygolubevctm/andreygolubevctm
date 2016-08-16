@@ -22,11 +22,23 @@
 			$ownsProperty.on("change.ownHome", function checkOwnership() {
 				_.defer(validateSelections);
 			});
+			if(meerkat.modules.splitTest.isActive(11)) {
+				$coverType.on("change.cover", function checkOwnership() {
+					_.defer(validateSelections);
+				});
+
+				_.defer(validateSelections);
+			}
 		}
 	}
 
 	function validateSelections() {
-		if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "occupancy" && $("input[name=home_occupancy_ownProperty]:checked").val() === 'N' && $coverType.val() !== 'Contents Cover Only') {
+		var navigation = "occupancy";
+		if(meerkat.modules.splitTest.isActive(11)) {
+			navigation = 'start';
+		}
+		if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === navigation && $("input[name=home_occupancy_ownProperty]:checked").val() === 'N'
+			&& ($coverType.val() === 'Home & Contents Cover' || $coverType.val() === 'Home Cover Only')) {
 
 			var homeLabel = "I own or am paying off the home",
 				dialogTitle = "Oops, did you want to get contents only insurance?";
