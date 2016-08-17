@@ -11,9 +11,9 @@ public class RequestAdapter {
         final RegisterPaymentRequest request = new RegisterPaymentRequest();
         request.setProviderFilter(Collections.singletonList(data.getProviderId()));
         request.setSst(data.getSst());
-        request.setReferenceId(data.getSessionId());
+        request.setReferenceId(data.getSessionid());
         request.setMaskedCardNumber(data.getMaskedcardno());
-        request.setCardType(data.getCardType());
+        request.setCardType(data.getCardtype());
         request.setToken(data.getToken());
         request.setResponseCode(data.getResponsecode());
         request.setResponseResult(data.getResponseresult());

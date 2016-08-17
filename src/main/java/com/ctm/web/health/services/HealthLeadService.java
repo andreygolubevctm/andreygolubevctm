@@ -6,16 +6,18 @@ import com.ctm.web.core.leadService.services.LeadService;
 import com.ctm.web.core.results.model.ResultsTemplateItem;
 import com.ctm.web.core.results.services.ResultsDisplayService;
 import com.ctm.web.core.security.IPAddressHandler;
-import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.model.leadservice.HealthMetadata;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class HealthLeadService extends LeadService {
 
     private static final String CHARS_TO_REPLACE_PHONE_NUMBER[] = {"(", ")", " "};
@@ -31,7 +33,7 @@ public class HealthLeadService extends LeadService {
         super(IPAddressHandler.getInstance());
     }
 
-
+    @Autowired
     public HealthLeadService(IPAddressHandler ipAddressHandler) {
         super(ipAddressHandler);
     }

@@ -15,26 +15,104 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 @JsonInclude(NON_EMPTY)
 public class HealthApplicationRequest {
 
-    private final ContactDetails contactDetails;
+    private ContactDetails contactDetails;
 
     @NotNull
-    private final Payment payment;
+    private Payment payment;
 
     @NotNull
-    private final FundData fundData;
+    private FundData fundData;
 
     @NotNull
-    private final ApplicationGroup applicants;
+    private ApplicationGroup applicants;
 
+    @Deprecated
     @Size(min = 1, max = 1)
-    public final List<String> providerFilter;
+    public List<String> providerFilter;
 
-    public HealthApplicationRequest(final ContactDetails contactDetails, final Payment payment, final FundData fundData,
-                                    final ApplicationGroup applicants, final List<String> providerFilter) {
-        this.contactDetails = contactDetails;
-        this.payment = payment;
-        this.fundData = fundData;
-        this.applicants = applicants;
-        this.providerFilter = providerFilter;
+    private String operator;
+
+    private HealthApplicationRequest(Builder builder) {
+        contactDetails = builder.contactDetails;
+        payment = builder.payment;
+        fundData = builder.fundData;
+        applicants = builder.applicants;
+        providerFilter = builder.providerFilter;
+        operator = builder.operator;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public ContactDetails getContactDetails() {
+        return contactDetails;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public FundData getFundData() {
+        return fundData;
+    }
+
+    public ApplicationGroup getApplicants() {
+        return applicants;
+    }
+
+    @Deprecated
+    public List<String> getProviderFilter() {
+        return providerFilter;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public static final class Builder {
+        private ContactDetails contactDetails;
+        private Payment payment;
+        private FundData fundData;
+        private ApplicationGroup applicants;
+        private List<String> providerFilter;
+        private String operator;
+
+        private Builder() {
+        }
+
+        public Builder contactDetails(ContactDetails val) {
+            contactDetails = val;
+            return this;
+        }
+
+        public Builder payment(Payment val) {
+            payment = val;
+            return this;
+        }
+
+        public Builder fundData(FundData val) {
+            fundData = val;
+            return this;
+        }
+
+        public Builder applicants(ApplicationGroup val) {
+            applicants = val;
+            return this;
+        }
+
+        public Builder providerFilter(List<String> val) {
+            providerFilter = val;
+            return this;
+        }
+
+        public Builder operator(String val) {
+            operator = val;
+            return this;
+        }
+
+        public HealthApplicationRequest build() {
+            return new HealthApplicationRequest(this);
+        }
     }
 }

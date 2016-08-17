@@ -2,8 +2,6 @@ package com.ctm.web.health.model.form;
 
 public class Gateway {
 
-    private String registered;
-
     private String number;
 
     private String type;
@@ -13,14 +11,6 @@ public class Gateway {
     private String name;
 
     private Nab nab;
-
-    public String getRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(String registered) {
-        this.registered = registered;
-    }
 
     public String getNumber() {
         return number;

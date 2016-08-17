@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.utils.common.utils.LocalDateUtils.AUS_FORMAT;
 
+@Component
 public class HealthConfirmationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthConfirmationService.class);
@@ -32,6 +33,7 @@ public class HealthConfirmationService {
     private final ProviderContentService providerContentService;
     private final ConfirmationService confirmationService;
 
+    @Autowired
     public HealthConfirmationService(ProviderContentService providerContentService, ConfirmationService confirmationService) {
         this.providerContentService = providerContentService;
         this.confirmationService = confirmationService;

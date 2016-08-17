@@ -4,9 +4,5 @@
 
 <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 
-<%--
- add any split test booleans here e.g.
-
-<c:set var="exampleSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 3)}" />
-
---%>
+<%-- HNC-405 Split Test J=11 --%>
+<c:set var="brochurewarePassedParams" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 11)}" />

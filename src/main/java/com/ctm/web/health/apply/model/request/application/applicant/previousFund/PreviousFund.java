@@ -27,4 +27,19 @@ public class PreviousFund {
         this.authority = authority;
     }
 
+    public HealthFund getFundName() {
+        return fundName;
+    }
+
+    public MemberId getMemberID() {
+        return memberID;
+    }
+
+    public ConfirmCover getConfirmCover() {
+        return confirmCover;
+    }
+
+    public Authority getAuthority() {
+        return authority;
+    }
 }
