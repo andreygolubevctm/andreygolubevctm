@@ -124,6 +124,9 @@ var healthFunds_QTU = {
         healthFunds_QTU.$medicareFirstName.setRequired(false);
         healthFunds_QTU.$medicareSurname.setRequired(false);
 
+        <%-- claims account --%>
+        meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
+
         meerkat.modules.paymentGateway.setup({
             "paymentEngine" : meerkat.modules.healthPaymentGatewayNAB,
             "name" : 'health_payment_gateway',
