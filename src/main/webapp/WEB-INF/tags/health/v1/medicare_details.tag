@@ -15,9 +15,9 @@
 	<simples:dialogue id="30" vertical="health" mandatory="true" />
 
 		<c:set var="fieldXpath" value="${xpath}/cover" />
-		<form_v2:row fieldXpath="${fieldXpath}" label="Are all people to be included on this policy covered by a green or blue Medicare card?" id="medicareCoveredRow" helpId="291" smRowOverride="5">
+		<form_v2:row fieldXpath="${fieldXpath}" label="Are all people to be included on this policy covered by a green, blue or yellow Medicare card?" id="medicareCoveredRow" helpId="291" smRowOverride="5">
 			<p id="health_medicareDetails_coverMessage"></p>
-			<field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes=" data-rule-isCheckedYes='true' data-msg-isCheckedYes='To proceed with this policy, you must have a blue or green medicare card' "/>
+			<field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="your Medicare card cover. To proceed with this policy, you must have a green, blue or yellow medicare card" required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes=" data-rule-isCheckedYes='true' data-msg-isCheckedYes='To proceed with this policy, you must have a green, blue or yellow medicare card' "/>
 		</form_v2:row>
 
 		<form_v2:row label="Medicare card number and expiry" hideHelpIconCol="true" className="row" isNestedStyleGroup="${true}">
