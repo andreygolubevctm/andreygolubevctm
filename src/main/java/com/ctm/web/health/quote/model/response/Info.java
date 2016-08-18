@@ -28,6 +28,8 @@ public class Info {
 
     private Map<String, String> otherInfoProperties;
 
+    private String situationFilter;
+
     public boolean isRestrictedFund() {
         return restrictedFund;
     }
@@ -114,5 +116,13 @@ public class Info {
 
     public void setOtherInfoProperties(Map<String, String> otherInfoProperties) {
         this.otherInfoProperties = otherInfoProperties;
+    }
+
+    public String getSituationFilter() {
+        return situationFilter;
+    }
+
+    public void setSituationFilter(String situationFilter) {
+        this.situationFilter = situationFilter;
     }
 }

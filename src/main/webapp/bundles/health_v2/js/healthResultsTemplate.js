@@ -283,8 +283,12 @@
             $('.featuresListExtrasSelections .children').html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9997"><div class="contentInner">No extras selected</div></div></div></div>');
         }
 
-        if(numberOfSelectedHospitals() === 0 && meerkat.modules.health.getHospitalCoverLevel() != 'limited') {
-            $('.featuresListHospitalSelections .children').html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9996"><div class="contentInner">No hospital cover selected</div></div></div></div>');
+        if(numberOfSelectedHospitals() === 0) {
+            $('.featuresListHospitalSelections .children').each(function(){
+                if ($.trim($(this).html()) === '') {
+                    $(this).html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9996"><div class="contentInner">No hospital cover selected</div></div></div></div>');
+                }
+            });
         }
 
     }
