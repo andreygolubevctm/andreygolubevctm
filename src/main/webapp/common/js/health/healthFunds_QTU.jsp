@@ -14,7 +14,6 @@ var healthFunds_QTU = {
     $paymentStartDate: $('#health_payment_details_start'),
     $paymentType : $('#health_payment_details_type input'),
     $paymentFrequency : $('#health_payment_details_frequency'),
-    $paymentStartDate: $('#health_payment_details_start'),
     $medicareFirstName: $('#health_payment_medicare_firstName'),
     $medicareSurname: $('#health_payment_medicare_surname'),
     $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
