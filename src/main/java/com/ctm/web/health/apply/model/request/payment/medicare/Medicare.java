@@ -43,4 +43,32 @@ public class Medicare {
         this.position = position;
         this.expiry = expiry;
     }
+
+    public Cover getCover() {
+        return cover;
+    }
+
+    public MedicareNumber getNumber() {
+        return number;
+    }
+
+    public FirstName getFirstName() {
+        return firstName;
+    }
+
+    public MiddleInitial getMiddleInitial() {
+        return middleInitial;
+    }
+
+    public LastName getLastName() {
+        return lastName;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public Expiry getExpiry() {
+        return expiry;
+    }
 }

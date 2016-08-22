@@ -4,35 +4,46 @@ import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.ProviderDao;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ServiceException;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.provider.model.Provider;
-import com.ctm.web.core.exceptions.ServiceException;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.dao.ProviderContentDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.NumberUtils;
 import com.ctm.web.health.dao.ProviderInfoDao;
 import com.ctm.web.health.model.providerInfo.ProviderInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.util.NumberUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Component
 public class ProviderContentService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
 
-    private final ProviderContentDao providerContentDao = new ProviderContentDao();
+    private final ProviderContentDao providerContentDao;
     private final ProviderDao providerDao;
     private final ProviderInfoDao providerInfoDao;
 
     public ProviderContentService() {
         providerDao = new ProviderDao();
         providerInfoDao = new ProviderInfoDao(new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm()));
+        providerContentDao = new ProviderContentDao();
+    }
+
+    @Autowired
+    public ProviderContentService(ProviderInfoDao providerInfoDao, ProviderDao providerDao, ProviderContentDao providerContentDao) {
+        this.providerInfoDao = providerInfoDao;
+        this.providerDao = providerDao;
+        this.providerContentDao = providerContentDao;
     }
 
     /**

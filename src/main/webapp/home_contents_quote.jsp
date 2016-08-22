@@ -7,15 +7,6 @@
 <session:new verticalCode="HOME" authenticated="true" />
 
 <fmt:setLocale value="en_AU" scope="session" />
-<%-- Import the data on QuickLaunch action --%>
-<c:if test="${not empty param.action && param.action == 'ql'}">
-	<c:if test="${not empty param.home_coverType}">
-		<go:setData dataVar="data" value="${param.home_coverType}" xpath="home/coverType" />
-	</c:if>
-	<c:if test="${not empty param.home_startDate}">
-		<go:setData dataVar="data" value="${param.home_startDate}" xpath="home/startDate" />
-	</c:if>
-</c:if>
 
 <core_v2:quote_check quoteType="home" />
 <core_v2:load_preload />
@@ -25,6 +16,11 @@
 
 <%-- Set global variable to flags for active split tests --%>
 <home:splittest_helper />
+
+<%-- Load in form values from brochure site --%>
+<c:if test="${brochurewarePassedParams}">
+	<home:passed_params />
+</c:if>
 
 <%-- HTML --%>
 <layout_v1:journey_engine_page title="Home & Contents Quote">
@@ -160,7 +156,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<core_v1:footer_participatingsuppliers />
+		<home:footer />
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">

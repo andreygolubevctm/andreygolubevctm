@@ -501,9 +501,9 @@
 					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF"];
 
 					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
-						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
+						$("#health_payment_medicare-selection > .nestedGroup").hide().attr("style", "display:none !important");
 					} else {
-						$("#health_payment_medicare-selection").removeAttr("style");
+						$("#health_payment_medicare-selection > .nestedGroup").removeAttr("style");
 					}
 				}
 			},
@@ -1256,23 +1256,20 @@
 			var $healthSitLocation = $('#health_situation_location'),
 				$healthSitHealthCvr = $('#health_situation_healthCvr');
 
-			if($healthSitHealthCvr.isValid()) {
-				$healthSitHealthCvr.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
-			}
+			var healthCvrValid = $healthSitHealthCvr.isValid();
+			var healthLocoValid = $healthSitLocation.isValid();
 
-			if($healthSitLocation.isValid(true)) {
-				$healthSitLocation.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
-			}
-
-			if($healthSitHealthCvr.val() !== '') {
+			if(healthCvrValid) {
+				$healthSitHealthCvr.attr('data-attach', 'true');
 				$('.health-cover').addClass('hidden');
 			}
 
-			if($healthSitLocation.val() !== '') {
+			if(healthLocoValid) {
+				$healthSitLocation.attr('data-attach', 'true');
 				$('.health-location').addClass('hidden');
 			}
 
-			if($healthSitHealthCvr.val() !== '' && $healthSitLocation.val() !== '') {
+			if(healthCvrValid && healthLocoValid) {
 				$('.health-about-you, .health-about-you-title').addClass('hidden');
 			}
 
