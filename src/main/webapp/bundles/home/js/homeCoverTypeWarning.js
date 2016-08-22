@@ -56,6 +56,7 @@
 					$coverType.val("Contents Cover Only");
 					meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(0) .snapshot'); // re-render the first step
 					meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(1) .snapshot'); // re-render the occupancy step
+					$coverType.trigger('blur');
 				}
 			},{
 				label : homeLabel,
