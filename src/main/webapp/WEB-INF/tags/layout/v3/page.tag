@@ -173,6 +173,12 @@ ${newPage.init(pageContext.request, pageSettings)}
 								<span class="sr-only">Toggle Navigation</span>
 								<span class="icon icon-reorder"></span>
 							</button>
+							<c:if test="${pageSettings.getVerticalCode() eq 'health'}">
+								<button type="button" class="navbar-toggle phone collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
+									<span class="sr-only">Contact Us</span>
+									<span class="icon icon-phone"></span>
+								</button>
+							</c:if>
 							<c:set var="exitUrl" value="" />
 							<c:if test="${pageSettings.hasSetting('exitUrl')}">
 							<c:set var="exitUrl" value="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}" />

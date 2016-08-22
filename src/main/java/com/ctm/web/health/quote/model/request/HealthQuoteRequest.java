@@ -37,6 +37,8 @@ public class HealthQuoteRequest
 
     private BigDecimal rebate;
 
+    private Boolean includeSummary;
+
     private List<PaymentType> paymentTypes;
 
     public String getState() {
@@ -133,5 +135,13 @@ public class HealthQuoteRequest
 
     public void setPaymentTypes(List<PaymentType> paymentTypes) {
         this.paymentTypes = paymentTypes;
+    }
+
+    public Boolean getIncludeSummary() {
+        return includeSummary;
+    }
+
+    public void setIncludeSummary(Boolean includeSummary) {
+        this.includeSummary = includeSummary;
     }
 }

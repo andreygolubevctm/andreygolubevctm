@@ -1,9 +1,10 @@
 package com.ctm.web.health.dao;
 
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.dao.AuditTableDao;
 import com.ctm.web.core.dao.DatabaseQueryMapping;
 import com.ctm.web.core.dao.DatabaseUpdateMapping;
-import com.ctm.web.core.dao.SqlDao;
+import com.ctm.web.core.dao.SqlDaoFactory;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.ProviderContent;
 import com.ctm.web.core.model.ProviderContentType;
@@ -11,6 +12,8 @@ import com.ctm.web.core.utils.common.utils.DateUtils;
 import com.ctm.web.health.helper.ProviderContentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,10 +21,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public class ProviderContentDao {
     private static final Logger logger = LoggerFactory.getLogger(ProviderContentDao.class.getName());
     private final ProviderContentHelper helper = new ProviderContentHelper();
-    private final SqlDao sqlDao = new SqlDao();
+    private final SqlDaoFactory sqlDaoFactory;
+
+    @Deprecated
+    public ProviderContentDao() {
+        sqlDaoFactory = new SqlDaoFactory(SimpleDatabaseConnection.getInstance());
+    }
+
+    @Autowired
+    public ProviderContentDao(SqlDaoFactory sqlDaoFactory) {
+        this.sqlDaoFactory = sqlDaoFactory;
+    }
 
     /**
      * This function finds provider content from database based on parameters passed.
@@ -60,7 +74,7 @@ public class ProviderContentDao {
                         "? between effectiveStart AND effectiveEnd order by providerId desc " +
                         "limit 1";
         //noinspection unchecked
-        return (String) sqlDao.get(mapping, sql);
+        return (String) sqlDaoFactory.createDao().get(mapping, sql);
     }
 
     /**
@@ -93,7 +107,7 @@ public class ProviderContentDao {
                     "WHERE providerContentId = ? ";
 
         //noinspection unchecked
-        return (ProviderContent) sqlDao.get(mapping, sql);
+        return (ProviderContent) sqlDaoFactory.createDao().get(mapping, sql);
     }
 
     /**
@@ -134,7 +148,7 @@ public class ProviderContentDao {
                         "WHERE pct.providerContentTypeCode = ? ";
 
             //noinspection unchecked
-            return (List<ProviderContent>) sqlDao.getAll(mapping, sql);
+            return (List<ProviderContent>) sqlDaoFactory.createDao().getAll(mapping, sql);
         } catch (DaoException e) {
             logger.error("Failed to retrieve Provider content Record", e);
             throw e;
@@ -167,7 +181,7 @@ public class ProviderContentDao {
                     set(providerContentId);
                 }
             };
-            sqlDao.executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.DELETE, "provider_contents", "providerContentId", providerContentId);
+            sqlDaoFactory.createDao().executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.DELETE, "provider_contents", "providerContentId", providerContentId);
             return "success";
         } catch (DaoException e) {
             logger.error("Failed to delete Provider Content Record", e);
@@ -219,7 +233,7 @@ public class ProviderContentDao {
                     set(finalProviderContentId);
                 }
             };
-            sqlDao.executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.UPDATE, "provider_contents", "providerContentId", providerContentId);
+            sqlDaoFactory.createDao().executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.UPDATE, "provider_contents", "providerContentId", providerContentId);
             return fetchSingleProviderContent(providerContentId);
         } catch (DaoException e) {
             logger.error("Failed to update Provider Content Record", e);
@@ -262,7 +276,7 @@ public class ProviderContentDao {
                     set(endDate);
                 }
             };
-            int id = sqlDao.executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.CREATE, "provider_contents", "providerContentId", 0);
+            int id = sqlDaoFactory.createDao().executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.CREATE, "provider_contents", "providerContentId", 0);
             return fetchSingleProviderContent(id);
         } catch (DaoException e) {
             logger.error("Failed to create Provider Content Record", e);
@@ -298,6 +312,6 @@ public class ProviderContentDao {
         String sql = "SELECT providerContentTypeId, providerContentTypeCode, description " +
                     "FROM ctm.provider_content_types ";
         //noinspection unchecked
-        return (List<ProviderContentType>) sqlDao.getAll(mapping, sql);
+        return (List<ProviderContentType>) sqlDaoFactory.createDao().getAll(mapping, sql);
     }
 }

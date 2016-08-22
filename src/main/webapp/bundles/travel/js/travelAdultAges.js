@@ -16,9 +16,9 @@
 	function initAdultAges() {
 		$(document).ready(function travelSortingInitDomready() {
 			$travel_party = $('.travel_party'),
-				$travel_adults = $('#travel_adults'),
-				$adult_dob_2_row = $('.second_traveller_age_row'),
-				$adult_dob_2 = $('#travel_travellers_traveller2DOB');
+			$travel_adults = $('#travel_adults'),
+			$adult_dob_2_row = $('.second_traveller_age_row'),
+			$adult_dob_2 = $('#travel_travellers_traveller2DOB');
 
 			$travel_party.find('label:nth-child(1)').addClass('icon-single');
 			$travel_party.find('label:nth-child(2)').addClass('icon-couple');
@@ -47,13 +47,11 @@
 				$('#travel_childrenSelect').val(0);
 				$single_parent_row[hideMethod]();
 				$travel_adults.val(2);
-				$adult_dob_2.addClass('validate').attr('required','required');
 			} else if (selected === "F") {
 				$adult_dob_2_row[showMethod]();
 				$children_row[showMethod]();
 				$single_parent_row[hideMethod]();
 				$travel_adults.val(2);
-				$adult_dob_2.removeClass('validate').removeAttr('required');
 			}
 		});
 
@@ -84,6 +82,10 @@
 				numAdults += 1;
 			}
 		}
+
+        if(isNaN(numChildren)) {
+        	numChildren = 0;
+        }
 
 		$('#travel_travellers_travellersDOB').val(adultDOBs.join(','));
 
