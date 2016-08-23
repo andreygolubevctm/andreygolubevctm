@@ -155,15 +155,11 @@
 
 									if(islastForPage) {
 										output += '</ul>';
-									}
 
-									if(islastForPage) {
 										output += '<a href="javascript:void(0);" class="prev-occupation" style="visibility:' + (currentPage > 0 ? 'visible' : 'hidden') + '">< prev</a>';
 										output += '<span class="page-occupation" style="visibility:' + (pageCount > 0 ? 'visible' : 'hidden') + '">Page ' + (currentPage + 1) + ' of ' + pageCount + '</span>';
 										output += '<a href="javascript:void(0);" class="next-occupation" style="visibility:' + (currentPage < pageCount - 1 ? 'visible' : 'hidden') + '">next ></a>';
-									}
 
-									if(islastForPage) {
 										output += '</div>';
 									}
 								}
