@@ -115,6 +115,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(CarResponseV2.class)
                     .build())
+                    .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
 
             carResults = ResponseAdapterV2.adapt(homeResponse);
@@ -138,6 +139,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(CarResponse.class)
                     .build())
+                    .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
 
             carResults = ResponseAdapter.adapt(homeResponse);
