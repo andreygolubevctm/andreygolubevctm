@@ -109,7 +109,7 @@ public class CommonRequestServiceV2 {
         return serviceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode));
     }
 
-    protected void logHttpClientError(Throwable t) {
+    public void logHttpClientError(Throwable t) {
         if (t instanceof HttpClientErrorException) {
             HttpClientErrorException exception = (HttpClientErrorException) t;
             LOGGER.error("Backend Exception thrown {} {} {} ",

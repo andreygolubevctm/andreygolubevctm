@@ -107,7 +107,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     .build();
 
 
-            final CarResponseV2 homeResponse = clientQuotesV2.post(RestSettings.<AggregateOutgoingRequest<CarQuoteRequest>>builder()
+            final CarResponseV2 carResponse = clientQuotesV2.post(RestSettings.<AggregateOutgoingRequest<CarQuoteRequest>>builder()
                     .request(request)
                     .jsonHeaders()
                     .url(properties.getServiceUrl() + "/quote")
@@ -118,7 +118,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
 
-            carResults = ResponseAdapterV2.adapt(homeResponse);
+            carResults = ResponseAdapterV2.adapt(carResponse);
         } else {
             LOGGER.info("Calling car-quote v1");
 
@@ -131,7 +131,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
             request.setClientIp(data.getClientIpAddress());
             request.setPayload(carQuoteRequest);
 
-            final CarResponse homeResponse = clientQuotes.post(RestSettings.<Request<CarQuoteRequest>>builder()
+            final CarResponse carResponse = clientQuotes.post(RestSettings.<Request<CarQuoteRequest>>builder()
                     .request(request)
                     .jsonHeaders()
                     .url(properties.getServiceUrl() + "/quote")
@@ -142,7 +142,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
 
-            carResults = ResponseAdapter.adapt(homeResponse);
+            carResults = ResponseAdapter.adapt(carResponse);
         }
 
         saveResults(data, carResults);
