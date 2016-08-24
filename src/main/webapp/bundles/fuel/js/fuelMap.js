@@ -188,7 +188,6 @@
      * Uses Google Developer Console API Key
      */
     function initGoogleAPI() {
-        // return;
         if (typeof map !== 'undefined') {
             return;
         }
@@ -598,6 +597,7 @@
         google.maps.event.addListener(marker, 'click', function (event) {
             openInfoWindow(marker, info);
             drawClickedMarker(event.latLng, bandId);
+            toggleFieldRows(false);
         });
 
         return marker;
@@ -741,7 +741,10 @@
     }
 
     function toggleFieldRows(state) {
-        $fuelFieldsWidget.toggleClass('show-fieldrows', state);
+        if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            $fuelFieldsWidget.toggleClass('show-fieldrows', state);
+            setMapHeight();
+        }
     }
 
     meerkat.modules.register("fuelMap", {
