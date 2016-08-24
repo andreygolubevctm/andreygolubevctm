@@ -32,6 +32,11 @@
             meerkat.modules.fuelMap.addToHistory();
             meerkat.modules.fuelResults.get();
         });
+
+        $('.change-location-fuel-text').on('click', function() {
+            // toggle form on mobile
+            $('#google-map-container .sidebar-widget:first-child').toggleClass('show-fieldrows', true);
+        });
     }
 
     function initJourneyEngine() {

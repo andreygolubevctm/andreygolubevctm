@@ -7,7 +7,12 @@
     <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2" id="results-sidebar">
         <div class="row">
             <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded sidebar-widget-dropshadow">
-                <div class="row fieldrow hidden-xs">
+                <div class="change-location-fuel-text">
+                    <span class="icon icon-angle-down"></span>
+                    CHANGE LOCATION/FUEL TYPE
+                    <span class="icon icon-angle-down"></span>
+                </div>
+                <div class="row fieldrow">
                     <field_v2:input xpath="${xpath}/location" title="search location" required="true" placeHolder="Postcode / Location"/>
                 </div>
                 <div class="row fieldrow">

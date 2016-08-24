@@ -186,6 +186,7 @@
      * Uses Google Developer Console API Key
      */
     function initGoogleAPI() {
+        // return;
         if (typeof map !== 'undefined') {
             return;
         }
@@ -265,10 +266,12 @@
             }
             currentZoom = newZoom;
             addToHistory();
+            $('#google-map-container .sidebar-widget:first').toggleClass('show-fieldrows', false);
         });
         google.maps.event.addListener(map, 'dragend', function (event) {
             getResults();
             addToHistory();
+            $('#google-map-container .sidebar-widget:first').toggleClass('show-fieldrows', false);
         });
 
 
