@@ -165,6 +165,7 @@
         keyDownTimeout,
         fuelLocation,
         $fuelLocation,
+        $fuelFieldsWidget,
         preventLookup = true,
         markerZIndexOrder = [0, 5, 4, 3, 2, 1];
 
@@ -175,6 +176,7 @@
             $xsInfoWindow = $('#info-window-container-xs');
             $fuelLocation = $('#fuel_location');
             fuelLocation = document.getElementById('fuel_location');
+            $fuelFieldsWidget = $('.fuel-fields-widget');
             setMapHeight();
             markerTemplate = _.template($('#map-marker-template').html());
             meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, setMapHeight);
@@ -266,15 +268,13 @@
             }
             currentZoom = newZoom;
             addToHistory();
-            $('#google-map-container .sidebar-widget:first').toggleClass('show-fieldrows', false);
+            toggleFieldRows(false);
         });
         google.maps.event.addListener(map, 'dragend', function (event) {
             getResults();
             addToHistory();
-            $('#google-map-container .sidebar-widget:first').toggleClass('show-fieldrows', false);
+            toggleFieldRows(false);
         });
-
-
     }
 
     function initPreload() {
@@ -740,6 +740,10 @@
 
     }
 
+    function toggleFieldRows(state) {
+        $fuelFieldsWidget.toggleClass('show-fieldrows', state);
+    }
+
     meerkat.modules.register("fuelMap", {
         init: initFuelMap,
         events: moduleEvents,
@@ -749,7 +753,8 @@
         getMarkers: getMarkers,
         plotMarkers: plotMarkers,
         addToHistory: addToHistory,
-        setInitialHash: setInitialHash
+        setInitialHash: setInitialHash,
+        toggleFieldRows: toggleFieldRows
     });
 
 })(jQuery);

@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2" id="results-sidebar">
         <div class="row">
-            <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded sidebar-widget-dropshadow">
+            <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded sidebar-widget-dropshadow fuel-fields-widget">
                 <div class="change-location-fuel-text">
                     <span class="icon icon-angle-down"></span>
                     CHANGE LOCATION/FUEL TYPE
