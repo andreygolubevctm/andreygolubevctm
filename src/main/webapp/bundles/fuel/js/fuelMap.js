@@ -595,9 +595,11 @@
         });
 
         google.maps.event.addListener(marker, 'click', function (event) {
-            openInfoWindow(marker, info);
-            drawClickedMarker(event.latLng, bandId);
             toggleFieldRows(false);
+            _.defer(function () {
+                openInfoWindow(marker, info);
+                drawClickedMarker(event.latLng, bandId);
+            });
         });
 
         return marker;
