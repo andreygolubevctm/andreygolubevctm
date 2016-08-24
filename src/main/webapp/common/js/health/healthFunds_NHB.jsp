@@ -122,7 +122,7 @@
               function populateDropdownOnKey(key,$dropDown,originalKey) {
                 _.defer(function() {
                   ajaxRequest = meerkat.modules.comms.get({
-                    url: "rest/health/dropdown/list.json",
+                    url: "spring/rest/health/dropdown/list.json",
                     data: {
                       type:key
                     },
@@ -223,7 +223,7 @@
               meerkat.modules.healthDependants.updateConfig({showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':25, showSchoolIdField:false,showRelationship:true,showPreferredMethodOfContact:true });
 
               <%-- Partner authority --%>
-              healthFunds._partner_authority(true);
+              healthFunds._partner_authority(false);
 
                 <%-- How to send information. Second argument = validation required --%>
                 healthApplicationDetails.showHowToSendInfo('Navy Health', true);

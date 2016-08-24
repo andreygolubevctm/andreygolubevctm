@@ -13,7 +13,8 @@ import com.ctm.web.health.model.form.Benefits;
 import com.ctm.web.health.model.form.HealthQuote;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.form.Simples;
-import org.apache.cxf.jaxrs.ext.MessageContext;
+import com.ctm.web.health.quote.model.ResponseAdapterModel;
+import com.ctm.web.health.services.HealthQuoteService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,7 @@ import java.util.Map;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -37,9 +39,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
         RequestService.class, ServiceConfigurationService.class, SimpleConnection.class, CommonRequestService.class, RestClient.class})
 public class HealthQuoteRouterTest {
 
-    private HealthQuoteRouter healthQuoteRouter;
-    @Mock
-    private MessageContext context;
+    private HealthQuoteController healthQuoteRouter;
     @Mock
     private HttpServletRequest httpServletRequest;
     @Mock
@@ -60,6 +60,8 @@ public class HealthQuoteRouterTest {
     private com.ctm.web.core.connectivity.SimpleConnection simpleConnection;
     @Mock
     private IPAddressHandler ipAddressHandler;
+    @Mock
+    private HealthQuoteService healthQuoteService;
 
     private HealthRequest data;
     private Long transactionId = 100000L;
@@ -109,10 +111,10 @@ public class HealthQuoteRouterTest {
         data.setHealth(health);
         dataB = new Data();
         PowerMockito.when(ApplicationService.getBrandFromRequest(eq(httpServletRequest))).thenReturn(brand);
-        when(context.getHttpServletRequest()).thenReturn(httpServletRequest);
         when(sessionDataServiceBean.getDataForTransactionId(httpServletRequest, transactionId.toString(), true)).thenReturn(dataB);
         when(httpServletRequest.getSession()).thenReturn(session);
-        healthQuoteRouter = new HealthQuoteRouter(sessionDataServiceBean, contentService,  ipAddressHandler);
+        when(healthQuoteService.getQuotes(any(), any(), any(), anyBoolean())).thenReturn(mock(ResponseAdapterModel.class));
+        healthQuoteRouter = new HealthQuoteController(sessionDataServiceBean, ipAddressHandler, contentService, healthQuoteService);
 
     }
 
@@ -120,7 +122,7 @@ public class HealthQuoteRouterTest {
     public void testValidateRequestInvalid() throws Exception {
         data.getHealth().setSimples(null);
         when(SessionUtils.isCallCentre(anyObject())).thenReturn(true);
-        ResultsWrapper result = healthQuoteRouter.getHealthQuote(context, data);
+        ResultsWrapper result = healthQuoteRouter.getHealthQuote(data, httpServletRequest);
         assertEquals("validation", result.getError().getType());
     }
 
@@ -128,7 +130,7 @@ public class HealthQuoteRouterTest {
     public void testValidateRequestValid() throws Exception {
         EnvironmentService.setEnvironment("localhost");
         when(SessionUtils.isCallCentre(anyObject())).thenReturn(false);
-        ResultsWrapper result = healthQuoteRouter.getHealthQuote(context,  data);
+        ResultsWrapper result = healthQuoteRouter.getHealthQuote(data, httpServletRequest);
         assertNull(result.getError());
     }
 

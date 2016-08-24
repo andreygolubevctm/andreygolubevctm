@@ -135,6 +135,9 @@
                     </div>
                 </div>
             </li>
+            <li>
+                <div class="mobile-hours">${callCentreHoursModal}</div>
+            </li>
         </ul>
 
         <div class="slide-feature-close-more-info">

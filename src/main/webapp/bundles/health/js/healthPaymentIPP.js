@@ -72,7 +72,7 @@ Process:
 
 		var authoriseUrl = '/' + meerkat.site.urls.context + "ajax/json/ipp/ipp_payment.jsp?ts=" + (new Date().getTime());
 		if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
-			authoriseUrl = '/' + meerkat.site.urls.context + "rest/health/payment/authorise.json";
+			authoriseUrl = '/' + meerkat.site.urls.context + "spring/rest/health/payment/authorise.json";
 		}
 
 		var authoriseJsonData = {
@@ -211,7 +211,7 @@ Process:
 
 		var registerUrl = '/' + meerkat.site.urls.context + "ajax/json/ipp/ipp_log.jsp?ts=" + (new Date().getTime());
 		if (meerkat.modules.splitTest.isActive(401) || meerkat.site.isDefaultToHealthApply) {
-			registerUrl = '/' + meerkat.site.urls.context + "rest/health/payment/register.json";
+			registerUrl = '/' + meerkat.site.urls.context + "spring/rest/health/payment/register.json";
 		}
 
 		meerkat.modules.comms.post({

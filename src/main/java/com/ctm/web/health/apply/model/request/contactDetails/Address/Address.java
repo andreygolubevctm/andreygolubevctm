@@ -35,4 +35,28 @@ public class Address {
         this.dpid = dpid;
         this.state = state;
     }
+
+    public Postcode getPostCode() {
+        return postCode;
+    }
+
+    public FullAddressOneLine getFullAddressOneLine() {
+        return fullAddressOneLine;
+    }
+
+    public Suburb getSuburb() {
+        return suburb;
+    }
+
+    public StreetNumber getStreetNum() {
+        return streetNum;
+    }
+
+    public DPID getDpid() {
+        return dpid;
+    }
+
+    public State getState() {
+        return state;
+    }
 }

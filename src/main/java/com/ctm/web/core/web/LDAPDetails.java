@@ -6,6 +6,8 @@
 
 package com.ctm.web.core.web;
 
+import com.ctm.web.core.services.EnvironmentService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,6 +70,10 @@ public class LDAPDetails {
 
 	private Hashtable<String, String> getUserBasicAttributes(final String userName, final LdapContext ctx) {
 		Hashtable<String, String> userDetails = null;
+
+		if(StringUtils.equalsIgnoreCase("browsertest", userName) && EnvironmentService.getEnvironment() == EnvironmentService.Environment.PRO) {
+			return null;
+		}
 
 		if ( ctx != null ) {
 				final SearchControls constraints = new SearchControls();
