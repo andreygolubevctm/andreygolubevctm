@@ -13,9 +13,8 @@
 <div class="health-payment ${className}" id="${id}">
 
 	<health_v1:payment_details xpath="${xpath}/details" />
-	<div class="update-content">
+	<fieldset class="fieldset update-content">
 	<health_v1:application_compliance xpath="${xpath}" />
-
-	</div>
+	</fieldset>
 	 
 </div>

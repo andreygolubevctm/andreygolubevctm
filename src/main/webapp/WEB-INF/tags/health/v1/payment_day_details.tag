@@ -7,7 +7,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-<div class="${name}-selection">
+<div class="${name}-selection content">
 
 		<%-- Default (HCF) payment day question --%>
 		<c:set var="fieldXpath" value="${xpath}/day" />
