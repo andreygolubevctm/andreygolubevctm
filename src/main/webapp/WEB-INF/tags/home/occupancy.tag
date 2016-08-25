@@ -4,6 +4,7 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath"%>
+<%@ attribute name="baseXpath" required="true" rtexprvalue="true" description="base xpath"%>
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
@@ -23,15 +24,32 @@
 
 <form_v2:fieldset legend="Occupancy Details">
 
-	<%-- Own the home --%>
-	<c:set var="fieldXpath" value="${xpath}/ownProperty" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Do you own the home?">
-		<field_v2:array_radio xpath="${fieldXpath}"
-			className="ownProperty pretty_buttons"
-			required="true"
-			items="Y=Yes,N=No"
-			title="if you own the home" />
-	</form_v2:row>
+	<c:choose>
+		<c:when test="${brochurewarePassedParams}">
+
+			<%-- Commencement Date --%>
+			<c:set var="fieldXpath" value="${baseXpath}/startDate" />
+			<home:commencementDate xpath="${fieldXpath}" />
+
+			<%-- Address --%>
+			<c:set var="fieldXpath" value="${baseXpath}/property/address" />
+			<group_v2:elastic_address xpath="${fieldXpath}" type="R" />
+
+		</c:when>
+		<c:otherwise>
+
+			<%-- Own the home --%>
+			<c:set var="fieldXpath" value="${xpath}/ownProperty" />
+			<form_v2:row fieldXpath="${fieldXpath}" label="Do you own the home?">
+				<field_v2:array_radio xpath="${fieldXpath}"
+					className="ownProperty pretty_buttons"
+					required="true"
+					items="Y=Yes,N=No"
+					title="if you own the home" />
+			</form_v2:row>
+
+		</c:otherwise>
+	</c:choose>
 
 	<%-- PPoR --%>
 	<c:set var="fieldXpath" value="${xpath}/principalResidence" />
