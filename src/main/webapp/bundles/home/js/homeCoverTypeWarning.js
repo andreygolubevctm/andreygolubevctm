@@ -27,7 +27,7 @@
 					_.defer(validateSelections);
 				});
 
-				_.defer(validateSelections,this,true);
+				_.defer(validateSelections);
 			}
 		}
 	}
