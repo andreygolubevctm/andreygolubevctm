@@ -164,7 +164,6 @@
 									}
 								}
 							} else {
-								$searchField.val('');
 								output += '<p>No match found. Please try again.</p>';
 							}
 
