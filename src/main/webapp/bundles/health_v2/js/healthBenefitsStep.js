@@ -95,6 +95,10 @@
         }
     }
 
+    function resetDefaultCover() {
+        $('.hospitalCoverToggles.' + (meerkat.modules.deviceMediaState.get() === 'xs' ? 'visible-xs' : 'hidden-xs') + ' a.benefit-category.active').trigger('click');
+    }
+
     function toggleBenefits() {
         var $hospitalSection = $('.Hospital_container').closest('fieldset'),
             $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
@@ -108,15 +112,14 @@
             case 'h':
                 $hospitalSection.slideDown();
                 $extrasSection.slideUp();
-                setDefaultCover();
-
-                $extrasSection.find('input[type="checkbox"]').prop('checked', false);
+                resetDefaultCover();
                 break;
             case 'e':
                 $hospitalSection.slideUp();
                 $extrasSection.slideDown();
                 $hospitalCoverToggles.prop("checked", false);
                 $allHospitalButtons.prop('checked', false).prop('disabled', false);
+                resetDefaultCover();
                 break;
             default:
                 $hospitalSection.slideUp();
