@@ -15,6 +15,7 @@ var healthFunds_BUD = {
 	$paymentType : $('#health_payment_details_type input'),
 	$paymentFrequency : $('#health_payment_details_frequency'),
 	$paymentStartDate: $("#health_payment_details_start"),
+	$claimsAccountOptin: $('#health_payment_bank_claims'),
 	set: function(){
 		<%-- dependant definition --%>
 		healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
@@ -59,6 +60,12 @@ var healthFunds_BUD = {
 
 		<%-- calendar for start cover --%>
 		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
+
+		<%-- Unset the refund optin radio buttons --%>
+		healthFunds_BUD.$claimsAccountOptin.find("input:checked").each(function(){
+		  $(this).prop("checked",null).trigger("change");
+		});
+
 	},
 	updateMessage: function() {
 		var messageField = null;
