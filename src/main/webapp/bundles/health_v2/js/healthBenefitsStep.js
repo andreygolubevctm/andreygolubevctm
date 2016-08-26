@@ -211,6 +211,9 @@
 
             // uncheck all tickboxes
             $allHospitalButtons.prop('disabled', false);
+            if(currentCover !== 'customise') {
+                $allHospitalButtons.prop('checked', false);
+            }
 
             switch (currentCover) {
                 case 'top':
