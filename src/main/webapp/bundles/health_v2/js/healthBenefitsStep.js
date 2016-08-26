@@ -118,7 +118,6 @@
                 $hospitalSection.slideUp();
                 $extrasSection.slideDown();
                 $hospitalCoverToggles.prop("checked", false);
-                $allHospitalButtons.prop('checked', false).prop('disabled', false);
                 resetDefaultCover();
                 break;
             default:
