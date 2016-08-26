@@ -203,6 +203,8 @@ var InsuranceHandler = {
 <go:script marker="onready">
 
 	InsuranceHandler.applyDefaults();
+	<%-- Force 'Benefit Amount' calculation coming from landing page widget. --%>
+	InsuranceHandler.calculateBenefit(true);
 
 	$(function() {
 		$("#${name}_partner").buttonset();
