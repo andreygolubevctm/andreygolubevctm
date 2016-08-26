@@ -25,9 +25,9 @@
 	<c:set var="occupationTitle" value="${name}Title" />
 	<input type="hidden" value="${occupationTitleDefault}" name="${occupationTitle}" id="${occupationTitle}" />
 
-	<div id="${name}_occupationPanel">
-	</div>
-
+	<div id="${name}_occupationPanel"></div>
+	<div class="hide-element"><input type="radio" id="${name}_input_0" class="${name}" name="${name}" data-hannovercode="" value="" /><span></span></div>
+	
 	<go:style marker="css-href">
 	<style>
 		.${name}Group .help_icon {
@@ -69,6 +69,12 @@
 		label input {
 		    margin-right: 8px !important;
 		}
+		.hide-element {
+			position:relative;
+			text-indent: 100%;
+			white-space: nowrap;
+			overflow: hidden;
+		}
 	</style>
 	</go:style>
 	<go:script marker="onready">
@@ -87,10 +93,11 @@
 			$('#${name}Search').prop("disabled",false).removeClass("disabled");
 			$('.${name}_search-btn').removeClass("disabled");
 		};
-		var searchText = $.trim($(this).siblings('.${name}_search').val());
+		var $searchField = $('#${name}Search');	
+		var searchText = $.trim($searchField.val());
 		if(searchText == "") {
 			// Empty searches return everything and make browser too sluggish
-			$('#${name}Search').addClass('error');
+			$searchField.addClass('error');
 		} else {
 			if(${name}SearchData.lastSearch !== searchText) {
 				${name}SearchData.lastSearch = searchText;
@@ -105,7 +112,7 @@
 				${name}SearchData.searching = true;
 
 				// Disable the search fields while searching
-				$('#${name}Search').prop("disabled",true).addClass("disabled");
+				$searchField.prop("disabled",true).addClass("disabled");
 				$('.${name}_search-btn').addClass("disabled");
 
 				// Flush previous occupation selections
@@ -126,38 +133,40 @@
 							var pageCount = Math.ceil(len/pageSize);
 							var currentPage = false;
 							var pageStart = false;
-							for (var i = 0; i < len; i++) {
-								var item = json[i];
-								var page = Math.floor(i/pageSize);
-								var islastForPage = (i === len - 1) || (i % pageSize === pageSize - 1);
 
-								if(currentPage !== page) {
-									pageStart = true;
-									currentPage = page;
-								} else {
-									pageStart = false;
+							if(len > 0) {
+								for (var i = 0; i < len; i++) {
+									var item = json[i];
+									var page = Math.floor(i/pageSize);
+									var islastForPage = (i === len - 1) || (i % pageSize === pageSize - 1);
+
+									if(currentPage !== page) {
+										pageStart = true;
+										currentPage = page;
+									} else {
+										pageStart = false;
+									}
+
+									if(pageStart) {
+										output += '<div '+(currentPage > 0 ? 'style="display:none"' : '')+'class="page-'+(i/pageSize)+'"><ul>';
+									}
+
+									output +='<li><label><input type="radio" id="${name}_input_' + i + '" class="${name}" name="${name}" data-hannovercode="'+ item.talCode + '" value="'+ item.id + '" /><span>' + item.title + '</span><div class="clear"></div></label></li>';
+
+									if(islastForPage) {
+										output += '</ul>';
+
+										output += '<a href="javascript:void(0);" class="prev-occupation" style="visibility:' + (currentPage > 0 ? 'visible' : 'hidden') + '">< prev</a>';
+										output += '<span class="page-occupation" style="visibility:' + (pageCount > 0 ? 'visible' : 'hidden') + '">Page ' + (currentPage + 1) + ' of ' + pageCount + '</span>';
+										output += '<a href="javascript:void(0);" class="next-occupation" style="visibility:' + (currentPage < pageCount - 1 ? 'visible' : 'hidden') + '">next ></a>';
+
+										output += '</div>';
+									}
 								}
-
-								if(pageStart) {
-									output += '<div '+(currentPage > 0 ? 'style="display:none"' : '')+'class="page-'+(i/pageSize)+'"><ul>';
-								}
-
-								output +='<li><label><input type="radio" id="${name}_input_' + i + '" name="${name}" data-hannovercode="'+ item.talCode + '" value="'+ item.id + '" /><span>' + item.title + '</span><div class="clear"></div></label></li>';
-
-								if(islastForPage) {
-									output += '</ul>';
-								}
-
-								if(islastForPage) {
-									output += '<a href="javascript:void(0);" class="prev-occupation" style="visibility:' + (currentPage > 0 ? 'visible' : 'hidden') + '">< prev</a>';
-									output += '<span class="page-occupation" style="visibility:' + (pageCount > 0 ? 'visible' : 'hidden') + '">Page ' + (currentPage + 1) + ' of ' + pageCount + '</span>';
-									output += '<a href="javascript:void(0);" class="next-occupation" style="visibility:' + (currentPage < pageCount - 1 ? 'visible' : 'hidden') + '">next ></a>';
-								}
-
-								if(islastForPage) {
-									output += '</div>';
-								}
+							} else {
+								output += '<p>No match found. Please try again.</p>';
 							}
+
 							$('#${name}_occupationPanel').html(output);
 
 							$('#${name}_occupationPanel .prev-occupation').on('click', function(e) {
@@ -188,5 +197,4 @@
 	</go:script>
 
 <%-- VALIDATION --%>
-<go:validate selector="${name}Search" rule="required" parm="${required}" message="Please search your ${title}"/>
-<go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title}"/>
+<go:validate selector="${name}" rule="required" parm="${required}" message="Please select the ${title}"/>
