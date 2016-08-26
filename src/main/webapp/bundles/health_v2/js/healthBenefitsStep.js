@@ -117,7 +117,6 @@
             case 'e':
                 $hospitalSection.slideUp();
                 $extrasSection.slideDown();
-                $hospitalCoverToggles.prop("checked", false);
                 resetDefaultCover();
                 break;
             default:
@@ -211,7 +210,7 @@
             $limitedCoverHidden.val('');
 
             // uncheck all tickboxes
-            $allHospitalButtons.prop('checked', false).prop('disabled', false);
+            $allHospitalButtons.prop('disabled', false);
 
             switch (currentCover) {
                 case 'top':
