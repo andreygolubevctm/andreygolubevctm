@@ -45,6 +45,7 @@
 
         <%-- Call centre numbers --%>
         <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
+        <c:set var="callCentreAppNumber" scope="request"><content:get key="callCentreAppNumber"/></c:set>
         <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber"/></c:set>
 
         <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours displayTodayOnly="true"/></c:set>
@@ -70,14 +71,14 @@
                             <h4>Do you need a hand?</h4>
                   <h1>
                       <a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">
-                          Call <span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                          Call <span class="noWrap callCentreNumber">${callCentreNumber}</span><span class="noWrap callCentreAppNumber" style="display:none">${callCentreAppNumber}</span>
                       </a>
                   </h1><br/>
                                 ${openingHoursHeader }
                         </div>
                         <div class="navbar-text hidden-xs" data-livechat="target">
                     <span class="icon-phone"></span>
-                    <h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
+                    <h1><span class="noWrap callCentreNumber">${callCentreNumber}</span><span class="noWrap callCentreAppNumber" style="display:none">${callCentreAppNumber}</span></h1>
                                 ${openingHoursHeader }
                         </div>
                         <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
@@ -133,6 +134,9 @@
 
                     </div>
                 </div>
+            </li>
+            <li>
+                <div class="mobile-hours">${callCentreHoursModal}</div>
             </li>
         </ul>
 

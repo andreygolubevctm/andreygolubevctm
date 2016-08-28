@@ -181,6 +181,18 @@
 					meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
 				});
 
+				if(meerkat.modules.performanceProfiling.isMobile()) {
+					var $callCentreNumber = $('.mobile-hours h1 .callCentreNumber');
+					var $callCentreAppNumber = $('.mobile-hours h1 .callCentreAppNumber');
+
+					$callCentreNumber.wrapInner('<a href="tel:' + $callCentreNumber.text().replace(/ /g, "") + '"></a>');
+					$callCentreAppNumber.wrapInner('<a href="tel:' + $callCentreAppNumber.text().replace(/ /g, "") + '"></a>');
+
+					var $callDetails = $('.mobile-hours .call-details');
+					var $callDetailsParent = $callDetails.parent();
+					$callDetailsParent.prepend($callDetails);
+				}
+
 				if($("#health_privacyoptin").val() === 'Y'){
 					$(".slide-feature-emailquote").addClass("privacyOptinChecked");
 				}
@@ -237,6 +249,7 @@
 			},
 			onBeforeLeave:function(event){
 				meerkat.modules.healthTaxTime.disableNewQuestion(true);
+				meerkat.modules.healthTiersLabel.setIncomeLabel();
 			}
 		};
 
@@ -286,10 +299,6 @@
 				//_.delay(function() {
 				//	meerkat.modules.healthSegment.filterSegments();
 				//}, 1000);
-
-				if (event.isForward && meerkat.site.isCallCentreUser === true) {
-					meerkat.modules.simplesCallInfo.fetchCallInfo();
-				}
 
 				if(event.isForward)
 					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($("input[name=health_situation_healthSitu]").filter(":checked").val() === 'ATP'));
@@ -443,24 +452,6 @@
 					meerkat.modules.healthCoverDetails.displayHealthFunds();
 				});
 
-				// Show/Hide simples messaging based on fund selection
-				if(meerkat.site.isCallCentreUser === true){
-
-					if( ($('#health_previousfund_primary_fundName').val() !== '' && $('#health_previousfund_primary_fundName').val() != 'NONE') || ($('#health_previousfund_partner_fundName').val() !== '' && $('#health_previousfund_partner_fundName').val() !== 'NONE') ){
-						$(".simples-dialogue-15").first().show();
-					}else{
-						$(".simples-dialogue-15").first().hide();
-					}
-
-					$('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').on('change', function(){
-						if( $(this).val() !== '' && $(this).val() !== 'NONE' ){
-							$(".simples-dialogue-15").first().show();
-						}else if( ($('#health_previousfund_primary_fundName').val() === '' || $('#health_previousfund_primary_fundName').val() == 'NONE') && ($('#health_previousfund_partner_fundName').val() === '' || $('#health_previousfund_partner_fundName').val() === 'NONE') ){
-							$(".simples-dialogue-15").first().hide();
-						}
-					});
-				}
-
 				// Check state selection
 				$('#health_application_address_postCode, #health_application_address_streetSearch, #health_application_address_suburb').on('change', function(){
 					healthApplicationDetails.testStatesParity();
@@ -510,9 +501,9 @@
 					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF"];
 
 					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
-						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
+						$("#health_payment_medicare-selection > .nestedGroup").hide().attr("style", "display:none !important");
 					} else {
-						$("#health_payment_medicare-selection").removeAttr("style");
+						$("#health_payment_medicare-selection > .nestedGroup").removeAttr("style");
 					}
 				}
 			},
@@ -750,6 +741,18 @@
 				{
 					$field: $("#health_application_mobileinput"),
 					$otherField: $("#health_application_otherinput")
+				}
+			],
+			flexiPhoneV2: [
+				// flexiPhone from details step
+				{
+					$field: $("#health_contactDetails_flexiContactNumber"),
+					$fieldInput: $("#health_contactDetails_flexiContactNumberinput")
+				},
+				// otherPhone and mobile from quote step
+				{
+					$field: $("#health_contactDetails_contactNumber_mobile"),
+					$otherField: $("#health_contactDetails_contactNumber_other")
 				}
 			],
 			postcode: [
@@ -1253,23 +1256,20 @@
 			var $healthSitLocation = $('#health_situation_location'),
 				$healthSitHealthCvr = $('#health_situation_healthCvr');
 
-			if($healthSitHealthCvr.isValid()) {
-				$healthSitHealthCvr.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
-			}
+			var healthCvrValid = $healthSitHealthCvr.isValid();
+			var healthLocoValid = $healthSitLocation.isValid();
 
-			if($healthSitLocation.isValid(true)) {
-				$healthSitLocation.attr('data-attach', 'true').blur()/*.parents('.fieldrow').hide()*/;
-			}
-
-			if($healthSitHealthCvr.val() !== '') {
+			if(healthCvrValid) {
+				$healthSitHealthCvr.attr('data-attach', 'true');
 				$('.health-cover').addClass('hidden');
 			}
 
-			if($healthSitLocation.val() !== '') {
+			if(healthLocoValid) {
+				$healthSitLocation.attr('data-attach', 'true');
 				$('.health-location').addClass('hidden');
 			}
 
-			if($healthSitHealthCvr.val() !== '' && $healthSitLocation.val() !== '') {
+			if(healthCvrValid && healthLocoValid) {
 				$('.health-about-you, .health-about-you-title').addClass('hidden');
 			}
 

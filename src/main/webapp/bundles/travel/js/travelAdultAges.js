@@ -9,20 +9,24 @@
 		$travel_adults,
 		$adult_dob_2_row,
 		$adult_dob_2,
+		$single_parent,
+		$single_parent_row,
 		$children_row;
 
 	function initAdultAges() {
 		$(document).ready(function travelSortingInitDomready() {
 			$travel_party = $('.travel_party'),
-				$travel_adults = $('#travel_adults'),
-				$adult_dob_2_row = $('.second_traveller_age_row'),
-				$adult_dob_2 = $('#travel_travellers_traveller2DOB');
+			$travel_adults = $('#travel_adults'),
+			$adult_dob_2_row = $('.second_traveller_age_row'),
+			$adult_dob_2 = $('#travel_travellers_traveller2DOB');
 
 			$travel_party.find('label:nth-child(1)').addClass('icon-single');
 			$travel_party.find('label:nth-child(2)').addClass('icon-couple');
 			$travel_party.find('label:nth-child(3)').addClass('icon-family');
-			$children_row = $('.children_row');
 
+			$single_parent = $('.single_parent');
+			$single_parent_row = $('.single_parent_row');
+			$children_row = $('.children_row');
 
 			initEventListeners();
 		});
@@ -34,20 +38,34 @@
 			var selected = $(this).find("input[type='radio']:checked").val();
 			if (selected === "S") {
 				$adult_dob_2_row[hideMethod]();
-				$children_row[hideMethod]();
+				$single_parent_row[showMethod]();
+				$single_parent.trigger("change");
 				$travel_adults.val(1);
 			} else if (selected === "C") {
 				$adult_dob_2_row[showMethod]();
 				$children_row[hideMethod]();
+				$('#travel_childrenSelect').val(0);
+				$single_parent_row[hideMethod]();
 				$travel_adults.val(2);
-				$adult_dob_2.addClass('validate').attr('required','required');
 			} else if (selected === "F") {
 				$adult_dob_2_row[showMethod]();
 				$children_row[showMethod]();
+				$single_parent_row[hideMethod]();
 				$travel_adults.val(2);
-				$adult_dob_2.removeClass('validate').removeAttr('required');
 			}
 		});
+
+		$travel_party.trigger("change");
+
+		$single_parent.off().on("change", function showSingleParent() {
+			var selected = $(this).find("input[type='radio']:checked").val();
+			if (selected === "Y") {
+				$children_row[showMethod]();
+			} else {
+				$children_row[hideMethod]();
+			}
+		});
+
 	}
 
 	function updateHiddenField() {
@@ -64,6 +82,10 @@
 				numAdults += 1;
 			}
 		}
+
+        if(isNaN(numChildren)) {
+        	numChildren = 0;
+        }
 
 		$('#travel_travellers_travellersDOB').val(adultDOBs.join(','));
 

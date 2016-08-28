@@ -62,9 +62,11 @@ public class HealthConfirmationServiceTest {
         String expectedWebsite = "expectedWebsite";
         String expectedPhoneNumber = "expectedPhoneNumber";
         String expectedEmail = "expectedEmail";
+        String policyNo = "policyNo";
         data.getQuote().getApplication().getPrimary().setFirstname(expectedFirstName);
         data.getQuote().getApplication().getPrimary().setSurname(expectedLastName);
         HealthApplicationResponse response = new HealthApplicationResponse();
+        response.productId = policyNo;
         String confirmationId = "123456";
         Data dataBucket = new Data();
         ProviderInfo providerInfo = ProviderInfo.newProviderInfo()
@@ -73,14 +75,16 @@ public class HealthConfirmationServiceTest {
         when(providerContentService.getProviderInfo( request,  providerName)).thenReturn(providerInfo);
         healthConfirmationService.createAndSaveConfirmation( request,  data,  response,
                  confirmationId,  dataBucket);
-        String expectedData = "<data><transID>10000</transID><status>OK</status><vertical>CTMH</vertical><startDate>06/01/2016</startDate><frequency>M</frequency><about/>" +
+        String expectedData = "<data><transID>10000</transID><status>OK</status>" +
+                "<vertical>CTMH</vertical><startDate>06/01/2016</startDate>" +
+                "<frequency>M</frequency><about/>" +
                 "<firstName>"+ expectedFirstName + "</firstName>" +
                 "<lastName>" + expectedLastName + "</lastName>" +
                 "<providerInfo>" +
                 "<phoneNumber>" + expectedPhoneNumber + "</phoneNumber>" +
                 "<email>" + expectedEmail + "</email>" +
                 "<website>" + expectedWebsite + "</website>" +
-                "</providerInfo><whatsNext/><product/><policyNo/><paymentType/></data>";
+                "</providerInfo><whatsNext/><product/><policyNo>"+policyNo+"</policyNo><paymentType/></data>";
 
         ArgumentCaptor<Confirmation> argument = ArgumentCaptor.forClass(Confirmation.class);
         verify(confirmationService).addConfirmation(argument.capture());

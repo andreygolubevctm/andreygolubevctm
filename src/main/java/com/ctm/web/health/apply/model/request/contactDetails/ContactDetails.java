@@ -49,4 +49,44 @@ public class ContactDetails {
         this.preferredContact = preferredContact;
         this.contactable = contactable;
     }
+
+    public Email getEmail() {
+        return email;
+    }
+
+    public OptInEmail getOptInEmail() {
+        return optInEmail;
+    }
+
+    public MobileNumber getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public OtherNumber getOtherNumber() {
+        return otherNumber;
+    }
+
+    public Call getCall() {
+        return call;
+    }
+
+    public PostalMatch getPostalMatch() {
+        return postalMatch;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public Address getPostal() {
+        return postal;
+    }
+
+    public PreferredContact getPreferredContact() {
+        return preferredContact;
+    }
+
+    public Contactable getContactable() {
+        return contactable;
+    }
 }

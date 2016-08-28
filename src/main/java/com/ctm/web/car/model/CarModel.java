@@ -7,7 +7,7 @@ public class CarModel {
 
 	private String code;
 	private String label;
-	private boolean isTopModel;
+	private boolean isTop;
 
 	public String getCode() {
 		return code;
@@ -23,11 +23,11 @@ public class CarModel {
 		this.label = label;
 	}
 
-	public boolean getIsTopModel() {
-		return isTopModel;
+	public boolean getIsTop() {
+		return isTop;
 	}
 	public void setIsTopModel(boolean isTopModel) {
-		this.isTopModel = isTopModel;
+		this.isTop = isTopModel;
 	}
 
 

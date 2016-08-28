@@ -30,6 +30,10 @@
 			flexiPhone:{
 				FIELD_CHANGED: "FLEXIPHONE_FIELD_CHANGED",
 				OPTIN_FIELD_CHANGED: "FLEXIPHONE_OPTIN_FIELD_CHANGED"
+			},
+			flexiPhoneV2:{
+				FIELD_CHANGED: "FLEXIPHONE_FIELD_CHANGED_V2",
+				OPTIN_FIELD_CHANGED: "FLEXIPHONE_OPTIN_FIELD_CHANGED_V2"
 			}
 		}
 	},
@@ -347,7 +351,7 @@
 			var laterFieldDetails = $.extend( fields[fieldDetails.type][i], {type: fieldDetails.type} );
 			var $fieldElement = getInputField( laterFieldDetails );
 
-			if(fieldDetails.type === "flexiPhone" && typeof laterFieldDetails.$otherField !== "undefined") {
+			if(fieldDetails.type.indexOf("flexiPhone") >= 0 && typeof laterFieldDetails.$otherField !== "undefined") {
 				var flexiNumber = updatedElementValue.replace(/\D/g, "");
 				var $elementToChange;
 				if (flexiNumber.match(/^(04|614|6104)/g)) { // Mobile

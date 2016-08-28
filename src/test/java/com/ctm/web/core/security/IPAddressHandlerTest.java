@@ -7,11 +7,11 @@ import org.mockito.Mock;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.ctm.web.core.security.IPAddressHandler.GET_X_FORWARD_CONFIG_CODE;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.powermock.api.mockito.PowerMockito.when;
-
 
 public class IPAddressHandlerTest {
 
@@ -22,7 +22,8 @@ public class IPAddressHandlerTest {
 
     private IPAddressHandler ipAddressHandler;
     private String remoteIP = "remote IP";
-    private String xForwardIP = "xForwardIP";
+    private String xForwardIP = "127.0.0.1";
+    private String xForwardIPMultiple = xForwardIP + ", 192.168.1.1, 192.168.2.2";
 
     @Before
     public void setUp() throws Exception {
@@ -38,16 +39,23 @@ public class IPAddressHandlerTest {
 
     @Test
     public void testShouldGetRemoteIPAddressIfForwardNotEnabled() throws Exception {
-        when(configService.getConfigValueBoolean( request, "getIPFromXForward")).thenReturn(false);
+        when(configService.getConfigValueBoolean(request, GET_X_FORWARD_CONFIG_CODE)).thenReturn(false);
         String result = ipAddressHandler.getIPAddress(request);
         assertEquals(remoteIP, result);
     }
 
-
     @Test
     public void testShouldGetForwardIPAddressIfEnabled() throws Exception {
         when(request.getHeader(IPAddressHandler.FORWARD_FOR_HEADER)).thenReturn(xForwardIP);
-        when(configService.getConfigValueBoolean( request, "getIPFromXForward")).thenReturn(true);
+        when(configService.getConfigValueBoolean(request, GET_X_FORWARD_CONFIG_CODE)).thenReturn(true);
+        String result = ipAddressHandler.getIPAddress(request);
+        assertEquals(xForwardIP, result);
+    }
+
+    @Test
+    public void getIPAddressFromXForwardChain() throws Exception {
+        when(request.getHeader(IPAddressHandler.FORWARD_FOR_HEADER)).thenReturn(xForwardIPMultiple);
+        when(configService.getConfigValueBoolean(request, GET_X_FORWARD_CONFIG_CODE)).thenReturn(true);
         String result = ipAddressHandler.getIPAddress(request);
         assertEquals(xForwardIP, result);
     }
@@ -55,7 +63,7 @@ public class IPAddressHandlerTest {
     @Test
     public void testShouldGetRemoteIPAddressIfGetForwardForEnabledButNoForwardFor() throws Exception {
         when(request.getHeader(IPAddressHandler.FORWARD_FOR_HEADER)).thenReturn(null);
-        when(configService.getConfigValueBoolean( request, "getIPFromXForward")).thenReturn(true);
+        when(configService.getConfigValueBoolean(request, GET_X_FORWARD_CONFIG_CODE)).thenReturn(true);
         String result = ipAddressHandler.getIPAddress(request);
         assertEquals(remoteIP, result);
     }

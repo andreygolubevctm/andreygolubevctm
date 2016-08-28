@@ -15,4 +15,12 @@ public class Situation {
         this.healthSituation = healthSituation;
         this.coverCategory = coverCategory;
     }
+
+    public HealthSituation getHealthSituation() {
+        return healthSituation;
+    }
+
+    public HealthCoverCategory getCoverCategory() {
+        return coverCategory;
+    }
 }

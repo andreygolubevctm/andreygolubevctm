@@ -4,7 +4,11 @@ import com.ctm.web.core.model.request.Gender;
 import com.ctm.web.health.apply.helper.TypeSerializer;
 import com.ctm.web.health.apply.model.request.application.applicant.healthCover.HealthCover;
 import com.ctm.web.health.apply.model.request.application.applicant.previousFund.PreviousFund;
-import com.ctm.web.health.apply.model.request.application.common.*;
+import com.ctm.web.health.apply.model.request.application.common.Authority;
+import com.ctm.web.health.apply.model.request.application.common.FirstName;
+import com.ctm.web.health.apply.model.request.application.common.LastName;
+import com.ctm.web.health.apply.model.request.application.common.Title;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -27,6 +31,7 @@ public class Applicant {
     private final Gender gender;
 
     @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private final LocalDate dateOfBirth;
 
     private final HealthCover healthCover;
@@ -87,4 +92,5 @@ public class Applicant {
     public Authority getAuthority() {
         return authority;
     }
+
 }

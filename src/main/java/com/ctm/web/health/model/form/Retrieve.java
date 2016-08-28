@@ -2,16 +2,16 @@ package com.ctm.web.health.model.form;
 
 public class Retrieve {
 
-    private String savedResults;
+    private String SavedResults;
 
     private Long transactionId;
 
     public String getSavedResults() {
-        return savedResults;
+        return SavedResults;
     }
 
     public void setSavedResults(String savedResults) {
-        this.savedResults = savedResults;
+        this.SavedResults = savedResults;
     }
 
     public Long getTransactionId() {

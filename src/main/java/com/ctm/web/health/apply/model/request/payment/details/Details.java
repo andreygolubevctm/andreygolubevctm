@@ -1,6 +1,7 @@
 package com.ctm.web.health.apply.model.request.payment.details;
 
 import com.ctm.web.health.apply.helper.TypeSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -13,6 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 public class Details {
 
     @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private final LocalDate startDate;
 
     private final PaymentType paymentType;
@@ -40,5 +42,33 @@ public class Details {
         this.rebatePercentage = rebatePercentage;
         this.income = income;
         this.lifetimeHealthCoverLoading = lifetimeHealthCoverLoading;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    public Frequency getFrequency() {
+        return frequency;
+    }
+
+    public Rebate getRebate() {
+        return rebate;
+    }
+
+    public RebatePercentage getRebatePercentage() {
+        return rebatePercentage;
+    }
+
+    public Income getIncome() {
+        return income;
+    }
+
+    public LifetimeHealthCoverLoading getLifetimeHealthCoverLoading() {
+        return lifetimeHealthCoverLoading;
     }
 }

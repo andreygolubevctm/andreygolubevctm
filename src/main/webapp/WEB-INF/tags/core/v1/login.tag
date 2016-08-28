@@ -49,9 +49,11 @@
 				</c:if>
 
 				<!-- Restricting 'browsertest' accessing simples in production environment. -->
-				<c:if test="${ sessionScope.userDetails['uid'] == 'browsertest' and com.ctm.web.core.services.EnvironmentService.getEnvironmentAsString() == 'PRO'}">
+				<c:if test="${userId == 'browsertest' and com.ctm.web.core.services.EnvironmentService.getEnvironmentAsString() == 'PRO'}">
 					<c:set var="callCentre" value="N" />
-					<c:set var="securityDescGroup" value="Call Centre" />
+					<c:set var="supervisor" value="N" />
+					<c:set var="IT" value="N" />
+					<c:set var="securityDescGroup" value="Unknown" />
 				</c:if>
 
 				<c:set var="securityDesc" value="${securityDescGroup} ${securityDescLevel}" />

@@ -20,4 +20,11 @@ public class Benefits {
         this.benefits = benefits;
     }
 
+    public HealthSituation getHealthSituation() {
+        return healthSituation;
+    }
+
+    public List<String> getBenefits() {
+        return benefits;
+    }
 }

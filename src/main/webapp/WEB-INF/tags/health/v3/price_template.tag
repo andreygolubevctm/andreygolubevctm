@@ -9,7 +9,9 @@
     {{ _.each(availableFrequencies, function(freqObj) { }}
     {{ var frequency = freqObj.key; }}
     {{ if (typeof availablePremiums[frequency] === "undefined") { return; } }}
-
+    <c:if test="${callCentre}">
+        {{ obj.mode = "lhcInc"; }}
+    </c:if>
     {{ var result = healthResultsTemplate.getPricePremium(frequency, availablePremiums, obj.mode); }}
 
     <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">

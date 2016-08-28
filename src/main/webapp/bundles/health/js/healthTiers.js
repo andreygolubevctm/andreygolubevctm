@@ -8,7 +8,6 @@ Handling of the rebate tiers based off situation
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info,
-		initialised = false,
 		rebateTiers = {
 			single:{
 				incomeBaseTier:90000,
@@ -37,27 +36,17 @@ Handling of the rebate tiers based off situation
 		$dependants,
 		$incomeMessage,
 		$incomeBase,
-		$income,
-		$tier,
-		$medicare;
+		$income;
 
 	initHealthTiers =  function(){
-		if(!initialised) {
-			initialised = true;
-			$dependants = $('#health_healthCover_dependants');
-			$incomeMessage = $('#health_healthCover_incomeMessage');
-			$incomeBase = $('#health_healthCover_incomeBase');
-			$income = $('#health_healthCover_income');
-			$tier = $('#health_healthCover_tier');
-			$medicare = $('.health-medicare_details');
-		}
+		$dependants = $('#health_healthCover_dependants');
+		$incomeMessage = $('#health_healthCover_incomeMessage');
+		$incomeBase = $('#health_healthCover_incomeBase');
+		$income = $('#health_healthCover_income');
 	};
 
 	// Manages the descriptive titles of the tier drop-down
 	setTiers =  function(initMode){
-		if(!initialised) {
-			initHealthTiers();
-		}
 		// Set the dependants allowance and income message
 		var _allowance = ($dependants.val() - 1);
 
@@ -95,20 +84,22 @@ Handling of the rebate tiers based off situation
 				// Single tiers
 				switch(_value) {
 					case '0':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeBaseTier + _allowance) +' or less';
+						_text = '$'+ formatMoney(rebateTiers.single.incomeBaseTier) +' or less';
 						break;
 					case '1':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeTier1.from + _allowance) +' - $'+ formatMoney(rebateTiers.single.incomeTier1.to + _allowance);
+						_text = '$'+ formatMoney(rebateTiers.single.incomeTier1.from) +' - $'+ formatMoney(rebateTiers.single.incomeTier1.to);
 						break;
 					case '2':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeTier2.from + _allowance) +' - $'+ formatMoney(rebateTiers.single.incomeTier2.to + _allowance);
+						_text = '$'+ formatMoney(rebateTiers.single.incomeTier2.from) +' - $'+ formatMoney(rebateTiers.single.incomeTier2.to);
 						break;
 					case '3':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeTier3 + _allowance) + '+ (no rebate)';
+						_text = '$'+ formatMoney(rebateTiers.single.incomeTier3) + '+ (no rebate)';
 						break;
 				}
 			} else {
 				// Family tiers
+				if(_cover === 'C') { _allowance = 0; }
+
 				switch(_value) {
 					case '0':
 						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeBaseTier + _allowance) +' or less';
@@ -128,27 +119,6 @@ Handling of the rebate tiers based off situation
 			// Set Description
 			if(_text !== ''){
 				$this.text(_text);
-			}
-
-			// Hide these questions as they are not required
-			if( healthCoverDetails.getRebateChoice() == 'N' || !healthCoverDetails.getRebateChoice() ) {
-				if(initMode){
-					$tier.hide();
-				}else{
-					$tier.slideUp();
-				}
-
-				$medicare.hide();
-				meerkat.modules.form.clearInitialFieldsAttribute($medicare);
-			} else {
-
-				if(initMode){
-					$tier.show();
-				}else{
-					$tier.slideDown();
-				}
-
-				$medicare.show();
 			}
 		});
 
