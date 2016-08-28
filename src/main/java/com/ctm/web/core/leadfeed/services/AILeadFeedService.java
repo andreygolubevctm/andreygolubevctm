@@ -103,6 +103,7 @@ public abstract class AILeadFeedService implements IProviderLeadFeedService {
 		request.setUsername(serviceConfig.getPropertyValueByKey("username", leadData.getBrandId(), provider.getId(), ServiceConfigurationProperty.Scope.SERVICE));
 		request.setPassword(serviceConfig.getPropertyValueByKey("password", leadData.getBrandId(), provider.getId(), ServiceConfigurationProperty.Scope.SERVICE));
 
+		quickLead.setPartnerCode(serviceConfig.getPropertyValueByKey("partnerCode", leadData.getBrandId(), provider.getId(), ServiceConfigurationProperty.Scope.SERVICE));
 		quickLead.setAgentCode(serviceConfig.getPropertyValueByKey("agentCode", leadData.getBrandId(), provider.getId(), ServiceConfigurationProperty.Scope.SERVICE));
 		quickLead.setSubPartnerCode(serviceConfig.getPropertyValueByKey("subPartnerCode", leadData.getBrandId(), provider.getId(), ServiceConfigurationProperty.Scope.SERVICE));
 		quickLead.setTransactionID(leadData.getTransactionId());
