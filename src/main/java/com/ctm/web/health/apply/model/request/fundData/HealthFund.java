@@ -4,10 +4,13 @@ public enum HealthFund {
 
     ACA ("ACA Health Benefits Fund"),
     AHM ("ahm - Aust Health Management Ins"),
+    ALLIANZ("Allianz Global Assistance"),
     AMA ("AMA Health Fund Limited"),
     API ("API Health Linx"),
+    AXA("AXA Australia Health Insurance Pty Ltd"),
     AUSTUN ("Australian Unity Health Insurance"),
     BHP ("Broken Hill Pty Limited"),
+    BUD("Budget Direct"),
     BUPA ("Bupa Australia"),
     CBHS ("CBHS Health Fund Limited"),
     CDH ("CDH - Cessnock District Health Benefits Fund"),
@@ -15,6 +18,7 @@ public enum HealthFund {
     CI ("Commercial Insurer"),
     CPS ("CPS Health Benefits Society"),
     CUA ("CUA Health Limited"),
+    DFORCE("Aust Armed Forces (for LHC)"),
     DHBS ("Defence Health Limited"),
     DOC ("The Doctors Health Fund"),
     DFS ("Druids Friendly Society"),
@@ -25,6 +29,7 @@ public enum HealthFund {
     HHBFL ("GMF - Healthguard Health Ben Fund"),
     GMHBA ("GMHBA - Geelong Med &amp; Hos Ben Assoc"),
     GU ("Grand United Corporate Health"),
+    HAMBS("HAMBS"),
     HBA ("HBA - Hospital Benefits Association"),
     HBF ("HBF Health Funds inc"),
     HCF ("HCF - Hospitals Contribution Fund"),
@@ -46,9 +51,11 @@ public enum HealthFund {
     NATMUT ("National Mutual Health Ins"),
     NHBS ("Navy Health"),
     NIB ("NIB Health Funds Limited"),
+    NIBNZ("NIB NZ"),
     NONE("None"),
     NRMA ("NRMA - Nat Roads &amp; Motorists Ass"),
     OTHER ("Other"),
+    OMF("Onemedifund"),
     LHMC ("Peoplecare (Lysaght)"),
     PWAL ("Phoenix Welfare Assoc Ltd"),
     SAPOL ("Police Health"),
@@ -58,10 +65,12 @@ public enum HealthFund {
     SGIC ("SGIC Health"),
     SGIO ("SGIO Health"),
     SLHI ("St Lukes Health"),
+    TBF("Transition Benefits Fund Pty Ltd"),
     TFHS ("Teachers Health Fund"),
     TFS ("Transport Health"),
     QTUHS ("TUH - Teachers Union Health (QLD)"),
-    WDHF ("Westfund Limited");
+    WDHF ("Westfund Limited"),
+    YMHS("Federation Health");
 
     private final String description;
 
