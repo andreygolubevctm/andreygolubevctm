@@ -149,3 +149,71 @@
 #provider-disclaimer {
   text-align: right;
 }
+
+#fuel-signup {
+  background-color: @theme-tertiary;
+  color: #fff;
+  padding: 15px 0;
+  h2 {
+    font-family: @font-family-sans-serif;
+    color: #fff;
+    margin-top: 0;
+    @media (@sm) {
+      font-size: 26px;
+    }
+    @media (@md) {
+      font-size: 29px;
+    }
+    @media (@lg) {
+      font-size: 32px;
+    }
+  }
+  p {
+    margin: 0;
+    &.fuel-signup-agree {
+      text-align: justify;
+      a {
+        color: #fff;
+        text-decoration: underline;
+      }
+      @media (@sm) {
+        font-size: 11px;
+      }
+    }
+  }
+  form {
+    .row {
+      > div {
+        margin: 15px 0;
+        @media (@sm) {
+          margin: 0 0 5px 0;
+        }
+        &.has-error {
+          margin: 0;
+        }
+      }
+    }
+    button {
+      width: 100%;
+    }
+    .alert {
+      display: none;
+      margin: 15px 0;
+      @media (@sm) {
+        margin: 0 0 5px 0;
+      }
+    }
+    &.fuel-signup-success {
+      .row,
+      .fuel-signup-agree {
+        display: none;
+      }
+      .alert {
+        display: block;
+      }
+    }
+  }
+  #fuel_signup_email-error {
+    margin: 5px 0 0 0;
+  }
+}

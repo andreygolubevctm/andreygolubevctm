@@ -8,6 +8,10 @@
         fuel: {}
     }, steps = null;
 
+    var $signupForm = $('#fuel-signup-form'),
+        $signupEmail = $('#fuel_signup_email'),
+        $signupBtn = $signupForm.find('button');
+
     function initFuel() {
         $(document).ready(function () {
             // Only init if fuel
@@ -31,6 +35,54 @@
             toggleCanSave(true);
             meerkat.modules.fuelMap.addToHistory();
             meerkat.modules.fuelResults.get();
+        });
+
+        $signupEmail.on('keydown', function(e) {
+            if (e.keyCode === 13) {
+                $signupBtn.trigger('click');
+                return false;
+            }
+        });
+
+        $signupBtn.on('click', function(e) {
+            e.preventDefault();
+
+            if(!$signupEmail.valid()) {
+                return false;
+            }
+
+            $signupForm.removeClass('fuel-signup-success');
+            $signupBtn.attr('disabled', true);
+            $signupBtn.find('span').hide();
+            meerkat.modules.loadingAnimation.showInside($signupBtn);
+
+            $.ajax({
+                url: "ajax/write/fuel_signup.jsp",
+                type: "POST",
+                data: $signupEmail.serialize() + '&transactionId=' + meerkat.modules.transactionId.get(),
+                dataType: 'json',
+                success: function (data) {
+                    $signupForm.addClass('fuel-signup-success');
+                },
+                error: function (err) {
+                    meerkat.modules.errorHandling.error({
+                        errorLevel: "warning",
+                        message: "Sorry, there was an error signing you up. Please try again later.",
+                        page: 'fuel.js',
+                        description: "[Fuel Signup] Error signing user",
+                        data: {
+                            error: err.toString(),
+                            exception: err
+                        },
+                        id: meerkat.modules.transactionId.get()
+                    });
+                },
+                complete: function () {
+                    $signupBtn.removeAttr('disabled');
+                    $signupBtn.find('span').show();
+                    meerkat.modules.loadingAnimation.hide($signupBtn);
+                }
+            });
         });
     }
 
@@ -77,7 +129,8 @@
                 object: meerkat.modules.fuel.getTrackingFieldsObject
             },
             onInitialise: function () {
-                meerkat.modules.jqueryValidate.initJourneyValidator();
+                // meerkat.modules.jqueryValidate.initJourneyValidator();
+                initJourneyValidator();
                 meerkat.modules.fuelMap.initGoogleAPI();
                 meerkat.modules.fuelResults.initPage();
                 if(meerkat.site.isFromBrochureSite && meerkat.site.formData.location) {
@@ -116,6 +169,10 @@
         steps = {
             startStep: startStep
         };
+    }
+
+    function initJourneyValidator() {
+        meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#fuel-signup-form'));
     }
 
     // Build an object to be sent by tracking.

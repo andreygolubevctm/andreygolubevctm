@@ -208,6 +208,7 @@
             initAutoComplete();
             initInfoWindowProperties();
             initPreload();
+            $('#fuel-signup').removeClass('hidden');
         } catch (e) {
             _handleError(e, "fuel.js:initCallback");
         }
