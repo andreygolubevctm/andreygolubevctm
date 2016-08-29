@@ -4,9 +4,6 @@
 <jsp:useBean id="data" class="com.ctm.web.core.web.go.Data" scope="request" />
 <session:get settings="true"/>
 <security:populateDataFromParams rootPath="fuel" />
-<c:set var="logger" value="${log:getLogger('jsp.ajax.json.signup')}" />
-
-${logger.info('data is {}', log:kv('data', data.fuel))}
 
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <c:set var="sessionid" value="${pageContext.session.id}" />

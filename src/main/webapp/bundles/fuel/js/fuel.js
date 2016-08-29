@@ -52,34 +52,24 @@
             }
 
             $signupForm.removeClass('fuel-signup-success');
-            $signupBtn.attr('disabled', true);
-            $signupBtn.find('span').hide();
+            $signupBtn
+                .attr('disabled', true)
+                .find('span').hide();
             meerkat.modules.loadingAnimation.showInside($signupBtn);
 
-            $.ajax({
+            return meerkat.modules.comms.post({
                 url: "ajax/write/fuel_signup.jsp",
-                type: "POST",
                 data: $signupEmail.serialize() + '&transactionId=' + meerkat.modules.transactionId.get(),
                 dataType: 'json',
-                success: function (data) {
+                cache: false,
+                errorLevel: "warning",
+                onSuccess: function onSubmitSuccess(resultData) {
                     $signupForm.addClass('fuel-signup-success');
                 },
-                error: function (err) {
-                    meerkat.modules.errorHandling.error({
-                        errorLevel: "warning",
-                        message: "Sorry, there was an error signing you up. Please try again later.",
-                        page: 'fuel.js',
-                        description: "[Fuel Signup] Error signing user",
-                        data: {
-                            error: err.toString(),
-                            exception: err
-                        },
-                        id: meerkat.modules.transactionId.get()
-                    });
-                },
-                complete: function () {
-                    $signupBtn.removeAttr('disabled');
-                    $signupBtn.find('span').show();
+                onComplete: function onSubmitComplete() {
+                    $signupBtn
+                        .removeAttr('disabled')
+                        .find('span').show();
                     meerkat.modules.loadingAnimation.hide($signupBtn);
                 }
             });
