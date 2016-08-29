@@ -30,7 +30,7 @@
 
     <c:if test="${callCentre}">
     	<c:set var="colContent" value="" />
-    </c:when>
+    </c:if>
 
 	<c:if test="${coverType == 'Hospital'}">
 	<form_v2:fieldset legend="" postLegend="" className="tieredHospitalCover hidden-sm hidden-md hidden-lg" >
