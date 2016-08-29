@@ -30,6 +30,6 @@
     </div>
     {{ } }}
     <div id="provider-disclaimer" class="short-disclaimer hidden-xs">
-        <p><span class="supplier">Data supplied by Motormouth</span></p>
+        <p><span class="supplier">Data supplied by Informed Sources</span></p>
     </div>
 </core_v1:js_template>
