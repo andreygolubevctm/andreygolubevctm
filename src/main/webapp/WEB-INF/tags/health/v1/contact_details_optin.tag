@@ -46,7 +46,12 @@
 
         <simples:dialogue id="52" vertical="health" />
 
-        <form_v3:fieldset id="health-contact-fieldset" legend="Your details" postLegend="Enter your details below and we'll show you products that match your needs on the next page" className="primary">
+        <c:set var="subText" value="" />
+        <c:if test="${not callCentre}">
+            <c:set var="subText" value="Enter your details below and we'll show you products that match your needs on the next page" />
+        </c:if>
+
+        <form_v3:fieldset id="health-contact-fieldset" legend="Your details" postLegend="${subText}" >
 
             <c:set var="firstNamePlaceHolder">
                 <content:get key="firstNamePlaceHolder"/>
