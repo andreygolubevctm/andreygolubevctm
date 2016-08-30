@@ -214,7 +214,9 @@ public class ResponseAdapter {
             if (StringUtils.isNotBlank(specialOffer.getTerms())) {
                 sb.append("<p>").append("<a class=\"dialogPop\" data-content=\"")
                         .append(StringEscapeUtils.escapeHtml4(specialOffer.getTerms()))
-                        .append("\" title=\"Conditions\">")
+                        .append("\" title=\"Conditions\"")
+                        .append(" data-analytics=\"view conditions\"")
+                        .append(">")
                         .append("^ Conditions")
                         .append("</a>")
                         .append("</p>");

@@ -11,7 +11,7 @@
         {{ if(ft.displayItem) { }}
         {{ if(ft.type == 'category') { }}<div class="labelInColumn {{= ft.classStringForInlineLabel }} " {{=ft.labelInColumnTitle }}>
             <div class="content {{= ft.labelInColumnContentClass }}" data-featureId="{{= ft.id }}">
-                <div class="contentInner">
+                <div class="contentInner" <field_v1:analytics_attr analVal="compare BL {{= ft.shortlistKey }}" quoteChar="\"" />>
                     <span class="health-icon {{= ft.iconClass }}"></span> {{= ft.safeName }} {{ if(ft.isRestricted) { }}<sup title="Restricted">#</sup>{{ } }} {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
                 </div>
             </div>

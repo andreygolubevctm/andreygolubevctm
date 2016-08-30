@@ -19,5 +19,5 @@
 
 <%-- HTML --%>
 <div ${idAttribute} class="health-filter-excess">
-	<field_v2:slider useDefaultOutputField="${useDefaultOutputField}" type="excess" value="4" range="1,4" markers="4" legend="$0,$1-$250,$251-$500,ALL" xpath="${xpath}" />
+	<field_v2:slider useDefaultOutputField="${useDefaultOutputField}" type="excess" value="4" range="1,4" markers="4" legend="$0,$1-$250,$251-$500,ALL" xpath="${xpath}" markerAttributeKey="data-analytics" markerAttributeValue="filter excess" />
 </div>
