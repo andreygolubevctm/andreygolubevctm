@@ -95,25 +95,27 @@
                 </c:otherwise>
             </c:choose>
 
-            <c:set var="termsAndConditions">
-                <%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
-                I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
-                <a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
-                By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
-                I confirm that I have read the <form_v1:link_privacy_statement />.
-            </c:set>
+            <c:if test="${not callCentre}">
+                <c:set var="termsAndConditions">
+                    <%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
+                    I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
+                    <a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
+                    By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
+                    I confirm that I have read the <form_v1:link_privacy_statement />.
+                </c:set>
 
-            <%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
-            <form_v2:row className="health-contact-details-optin-group" hideHelpIconCol="true">
-                <field_v2:checkbox
-                        xpath="${xpath}/optin"
-                        value="Y"
-                        className="validate"
-                        required="true"
-                        label="${true}"
-                        title="${termsAndConditions}"
-                        errorMsg="Please agree to the Terms &amp; Conditions" />
-            </form_v2:row>
+                <%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
+                <form_v2:row className="health-contact-details-optin-group" hideHelpIconCol="true">
+                    <field_v2:checkbox
+                            xpath="${xpath}/optin"
+                            value="Y"
+                            className="validate"
+                            required="true"
+                            label="${true}"
+                            title="${termsAndConditions}"
+                            errorMsg="Please agree to the Terms &amp; Conditions" />
+                </form_v2:row>
+            </c:if>
 
             <%-- Did it this way to prevent the snapshot from pushing the fields below up/down depending on the option selected with the health_situation_healthCvr field --%>
             <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
@@ -179,7 +181,13 @@
 
         <form_v3:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians can reduce their upfront health insurance costs by applying the Government Rebate.">
             <c:set var="fieldXpath" value="${xpath}/rebate" />
-            <form_v3:row label="Would you like to reduce your upfront premium by applying the rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
+            <c:set var="mandatory" value=""/>
+
+            <c:if test="${callCentre}">
+                <c:set var="mandatory" value=" text-danger"/>
+            </c:if>
+
+            <form_v3:row label="Would you like to reduce your upfront premium by applying the rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate${mandatory}">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate btn-group-wrap"/>
             </form_v3:row>
 
