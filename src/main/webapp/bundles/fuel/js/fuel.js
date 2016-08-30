@@ -37,6 +37,18 @@
             meerkat.modules.fuelResults.get();
         });
 
+        $('.fuel-signup-link').on('click', function(e) {
+            e.preventDefault();
+
+            $(this).fadeOut('fast', function() {
+                $(this).remove();
+            });
+
+            $('html,body').animate({
+                scrollTop: $('#fuel-signup').height()
+            }, 300);
+        });
+
         $signupEmail.on('keydown', function(e) {
             if (e.keyCode === 13) {
                 $signupBtn.trigger('click');

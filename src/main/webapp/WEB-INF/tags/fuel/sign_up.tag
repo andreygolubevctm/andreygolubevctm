@@ -7,7 +7,11 @@
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}/signup" />
 
 <%-- HTML --%>
-<div id="fuel-signup" class="hidden">
+<a href="#" class="fuel-signup-link visible-xs">
+	Newsletter Signup
+	<span class="icon icon-angle-down"></span>
+</a>
+<div id="fuel-signup" class="invisible">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-6">
@@ -28,7 +32,7 @@
 						</div>
 					</div>
 					<div class="alert alert-success text-center">Success! Your email address has been added to our database.</div>
-					<p class="fuel-signup-agree">I would like to sign up to receive new and offers from comparethemarket.com.au. I agree with the <form_v1:link_privacy_statement overrideLabel="privacy policy." useModalMessage="true" /></p>
+					<p class="fuel-signup-agree">I would like to sign up to receive news and offers from comparethemarket.com.au. I agree with the <form_v1:link_privacy_statement overrideLabel="privacy policy." useModalMessage="true" /></p>
 				</form>
 			</div>
 		</div>

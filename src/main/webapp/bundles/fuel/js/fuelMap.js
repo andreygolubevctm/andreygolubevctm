@@ -208,7 +208,7 @@
             initAutoComplete();
             initInfoWindowProperties();
             initPreload();
-            $('#fuel-signup').removeClass('hidden');
+            $('#fuel-signup').removeClass('invisible');
         } catch (e) {
             _handleError(e, "fuel.js:initCallback");
         }
@@ -652,9 +652,9 @@
                 $header = $('header'),
                 heightToSet;
             if (isXS) {
-                heightToSet = window.innerHeight - $header.height() - $('#results-sidebar').height() - 36 - $xsInfoWindow.height();
+                heightToSet = window.innerHeight - $header.height() - $('#results-sidebar').height() - 36 - $xsInfoWindow.height() - $('.fuel-signup-link').outerHeight();
             } else {
-                heightToSet = window.innerHeight - $header.height();
+                heightToSet = window.innerHeight - $header.height() - $('#fuel-signup').outerHeight();
                 heightToSet = heightToSet < MIN_MAP_HEIGHT ? MIN_MAP_HEIGHT : heightToSet;
             }
             /* TODO: minus footer signup box */
