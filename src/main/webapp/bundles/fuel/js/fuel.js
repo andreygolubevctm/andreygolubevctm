@@ -8,7 +8,9 @@
         fuel: {}
     }, steps = null;
 
-    var $signupForm = $('#fuel-signup-form'),
+    var $signup = $('#fuel-signup'),
+        $signupLink = $('.fuel-signup-link'),
+        $signupForm = $('#fuel-signup-form'),
         $signupEmail = $('#fuel_signup_email'),
         $signupBtn = $signupForm.find('button');
 
@@ -37,15 +39,13 @@
             meerkat.modules.fuelResults.get();
         });
 
-        $('.fuel-signup-link').on('click', function(e) {
+        $signupLink.on('click', function(e) {
             e.preventDefault();
 
-            $(this).fadeOut('fast', function() {
-                $(this).remove();
-            });
+            $signupLink.fadeOut('fast');
 
             $('html,body').animate({
-                scrollTop: $('#fuel-signup').height()
+                scrollTop: $signup.outerHeight() - $signupLink.outerHeight()
             }, 300);
         });
 

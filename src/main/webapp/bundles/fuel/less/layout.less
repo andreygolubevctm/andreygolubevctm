@@ -150,17 +150,19 @@
   text-align: right;
 }
 
-.fuel-signup-link {
-  background-color: @theme-tertiary;
-  color: #fff;
-  display: block;
-  padding: 5px 15px;
-}
 
 #fuel-signup {
   background-color: @theme-tertiary;
   color: #fff;
-  padding: 15px 0;
+  padding-bottom: 15px;
+  @media (@sm) {
+    padding-top: 15px;
+  }
+  .fuel-signup-link {
+    color: #fff;
+    display: block;
+    padding: 5px 0;
+  }
   h2 {
     font-family: @font-family-sans-serif;
     color: #fff;

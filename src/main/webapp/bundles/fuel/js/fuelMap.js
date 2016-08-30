@@ -650,11 +650,14 @@
         _.defer(function () {
             var isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false,
                 $header = $('header'),
+                $resultsSidebar = $('#results-sidebar'),
+                $fuelSignupLink = $('.fuel-signup-link'),
+                $fuelSignup = $('#fuel-signup'),
                 heightToSet;
             if (isXS) {
-                heightToSet = window.innerHeight - $header.height() - $('#results-sidebar').height() - 36 - $xsInfoWindow.height() - $('.fuel-signup-link').outerHeight();
+                heightToSet = window.innerHeight - $header.height() - $resultsSidebar.height() - 36 - $xsInfoWindow.height() - $fuelSignupLink.outerHeight();
             } else {
-                heightToSet = window.innerHeight - $header.height() - $('#fuel-signup').outerHeight();
+                heightToSet = window.innerHeight - $header.height() - $fuelSignup.outerHeight();
                 heightToSet = heightToSet < MIN_MAP_HEIGHT ? MIN_MAP_HEIGHT : heightToSet;
             }
             /* TODO: minus footer signup box */

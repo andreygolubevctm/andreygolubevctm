@@ -7,12 +7,12 @@
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}/signup" />
 
 <%-- HTML --%>
-<a href="#" class="fuel-signup-link visible-xs">
-	Newsletter Signup
-	<span class="icon icon-angle-down"></span>
-</a>
 <div id="fuel-signup" class="invisible">
 	<div class="container">
+		<a href="#" class="fuel-signup-link visible-xs">
+			Newsletter Sign up
+			<span class="icon icon-angle-down"></span>
+		</a>
 		<div class="row">
 			<div class="col-sm-6">
 				<h2>New ways to save every month.</h2>
