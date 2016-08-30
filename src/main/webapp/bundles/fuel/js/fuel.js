@@ -42,8 +42,6 @@
         $signupLink.on('click', function(e) {
             e.preventDefault();
 
-            $signupLink.fadeOut('fast');
-
             $('html,body').animate({
                 scrollTop: $signup.outerHeight() - $signupLink.outerHeight()
             }, 300);

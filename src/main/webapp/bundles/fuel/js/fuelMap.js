@@ -168,6 +168,8 @@
         preventLookup = true,
         markerZIndexOrder = [0, 5, 4, 3, 2, 1];
 
+    var resizeMessage,
+        $signupEmail = $('#fuel_signup_email');
 
     function initFuelMap() {
         $(document).ready(function ($) {
@@ -177,7 +179,16 @@
             fuelLocation = document.getElementById('fuel_location');
             setMapHeight();
             markerTemplate = _.template($('#map-marker-template').html());
-            meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, setMapHeight);
+            resizeMessage = meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, setMapHeight);
+
+            // fix for Android, stopping it from resizing the map when virtual keyboard is shown
+            if (meerkat.modules.performanceProfiling.isAndroid) {
+                $signupEmail.on('focus', function () {
+                    meerkat.messaging.unsubscribe(meerkatEvents.device.RESIZE_DEBOUNCED, resizeMessage);
+                }).on('blur', function () {
+                    resizeMessage = meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, setMapHeight);
+                });
+            }
         });
     }
 
