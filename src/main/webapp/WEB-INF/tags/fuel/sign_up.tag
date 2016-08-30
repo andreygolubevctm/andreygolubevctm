@@ -12,21 +12,19 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<h2>New ways to save every month.</h2>
-				<p class="text-justify">Sign up to our newsletter for exclusive deals, news and more on petrol and other products</p>
+				<p>Sign up to our newsletter for exclusive deals, news and more on petrol and other products</p>
 			</div>
 			<div class="col-sm-6">
 				<form id="fuel-signup-form">
-					<div class="row">
-						<div class="form-group row fieldrow">
-							<div class="col-sm-8 row-content">
-								<field_v2:email xpath="${xpath}/email" placeHolder="email@domain.com" title="Your email address" required="true" />
-								<div class="error-field"></div>
-							</div>
-							<div class="col-sm-4">
-								<button type="button" class="btn btn-secondary">
-									<span>Subscribe</span>
-								</button>
-							</div>
+					<div class="form-group row fieldrow">
+						<div class="col-sm-8 row-content">
+							<field_v2:email xpath="${xpath}/email" placeHolder="email@domain.com" title="Your email address" required="true" />
+							<div class="error-field"></div>
+						</div>
+						<div class="col-sm-4">
+							<button type="button" class="btn btn-secondary">
+								<span>Subscribe</span>
+							</button>
 						</div>
 					</div>
 					<div class="alert alert-success text-center">Success! Your email address has been added to our database.</div>

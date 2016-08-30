@@ -171,25 +171,22 @@
   p {
     margin: 0;
     &.fuel-signup-agree {
-      text-align: justify;
+      font-size: 11px;
       a {
         color: #fff;
         text-decoration: underline;
       }
-      @media (@sm) {
-        font-size: 11px;
-      }
     }
   }
   form {
-    .row {
+    .form-group {
       > div {
-        margin: 15px 0;
-        @media (@sm) {
-          margin: 0 0 5px 0;
-        }
-        &.has-error {
-          margin: 0;
+        margin-top: 15px;
+      }
+      @media (@sm) {
+        margin-bottom: 5px;
+        > div {
+          margin-top: 0;
         }
       }
     }
@@ -214,6 +211,7 @@
     }
   }
   #fuel_signup_email-error {
+    color: #f7dbdb;
     margin: 5px 0 0 0;
   }
 }
