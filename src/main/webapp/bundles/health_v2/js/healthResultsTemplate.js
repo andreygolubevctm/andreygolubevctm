@@ -81,7 +81,16 @@
      * @private
      */
     function _getHelpTooltip(ft) {
-        return ft.helpId !== '' && ft.helpId != '0' ? '<a href="javascript:void(0);" class="help-icon" data-content="helpid:' + ft.helpId + '" data-toggle="popover" data-my="right center" data-at="left center">(?)</a>' : '';
+        var attribute = '';
+        var analytics = {
+            "300" : "no COP",
+            "301" : "waiting period",
+            "303" : "excess waivers"
+        };
+        if(_.has(analytics, ft.helpId)) {
+            attribute = ' data-analytics="' + analytics[ft.helpId] + '"';
+        }
+        return ft.helpId !== '' && ft.helpId != '0' ? '<a href="javascript:void(0);" class="help-icon" data-content="helpid:' + ft.helpId + '" data-toggle="popover" data-my="right center" data-at="left center" ' + attribute + '>(?)</a>' : '';
     }
 
     /**

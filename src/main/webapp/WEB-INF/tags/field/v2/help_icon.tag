@@ -6,6 +6,7 @@
 <%@ attribute name="position" required="false" rtexprvalue="true"	 description="Help tooltip poisition" %>
 <%@ attribute name="tooltipClassName" required="false" rtexprvalue="true"	 description="Help tooltip classes" %>
 <%@ attribute name="showText" required="false" rtexprvalue="true"	 description="Toggle to display text instead of icon" %>
+<%@ attribute name="additionalAttributes"  	required="false" rtexprvalue="true"  description="Additional attributes" %>
 
 <c:set var="showText">
 	<c:choose>
@@ -35,5 +36,5 @@
 </c:if>
 
 <c:if test="${helpId != null && helpId != '' && helpId != '0'}">
-	<a href="javascript:void(0);" class="help-icon <c:choose><c:when test="${showText eq true}">icon-text</c:when><c:otherwise>icon-info</c:otherwise></c:choose>" data-content="helpid:${helpId}" data-toggle="popover"<c:out value="${dataPositionString}" escapeXml="false" /><c:out value="${tooltipClassName}" escapeXml="false" />><span class="<c:if test="${showText eq false}">text-hide</c:if>">Need Help?</span></a>
+	<a href="javascript:void(0);" class="help-icon <c:choose><c:when test="${showText eq true}">icon-text</c:when><c:otherwise>icon-info</c:otherwise></c:choose>" data-content="helpid:${helpId}" data-toggle="popover"<c:out value="${dataPositionString}" escapeXml="false" /><c:out value="${tooltipClassName}" escapeXml="false" /> ${additionalAttributes}><span class="<c:if test="${showText eq false}">text-hide</c:if>">Need Help?</span></a>
 </c:if>

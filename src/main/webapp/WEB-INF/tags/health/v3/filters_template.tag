@@ -18,7 +18,7 @@
                     {{ _.each(model.frequency.values, function(object) { }}
                     {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                     {{ var active = object.selected ? ' active' : ''; }}
-                    <label class="btn btn-form-inverse {{= active }}">
+                    <label class="btn btn-form-inverse {{= active }}" <field_v1:analytics_attr analVal="filter payment freq" quoteChar="\"" />>
                         <input type="radio" name="{{= model.frequency.name }}" id="{{= model.frequency.name }}_{{= object.value }}" value="{{= object.value }}" {{=checked }}
                                title="{{= object.label }}"/> {{= object.label }}</label>
                     {{ }) }}
@@ -30,14 +30,14 @@
     <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
-                <span class="helper-text"><a href="javascript:;" data-content="helpid:542" data-toggle="dialog" data-title="Hospital Cover Information" data-dialog-hash-id="hospitalCover" tabindex="-1" data-cache="true">Help ?</a></span>
+                <span class="helper-text"><a href="javascript:;" data-content="helpid:542" data-toggle="dialog" data-title="Hospital Cover Information" data-dialog-hash-id="hospitalCover" tabindex="-1" data-cache="true" <field_v1:analytics_attr analVal="filter help modal coverLevel" quoteChar="\"" />>Help ?</a></span>
                 <span class="heading-text">Hospital cover level</span>
             </div>
             <div class="filter-cover-level select">
                 <span class=" input-group-addon">
                     <i class="icon-sort"></i>
                 </span>
-                <select class="form-control array_select " id="health_filterBar_coverLevel" name="health_filterBar_coverLevel" data-msg-required="Please choose ">
+                <select class="form-control array_select " id="health_filterBar_coverLevel" name="health_filterBar_coverLevel" data-msg-required="Please choose " <field_v1:analytics_attr analVal="filter benefit category" quoteChar="\"" />>
                     {{ _.each(model.coverLevel.values, function(object) { }}
                     {{ var selected = object.selected ? ' selected="selected"' : ''; }}
                     <option id="health_filterBar_coverLevel_{{= object.value }}" value="{{= object.value }}" {{=selected }}>{{= object.label }}</option>
@@ -50,7 +50,7 @@
     <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
-                <span class="helper-text"><a data-content="helpid:299" data-toggle="popover" tabindex="-1">Help ?</a></span>
+                <span class="helper-text"><a data-content="helpid:299" data-toggle="popover" tabindex="-1" <field_v1:analytics_attr analVal="filter help modal excess" quoteChar="\"" />>Help ?</a></span>
                 <span class="heading-text">Hospital excess</span>
             </div>
             <div class="filter-excess">
@@ -63,7 +63,7 @@
     <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
-                <span class="helper-text"><a data-content="helpid:544" data-toggle="popover" tabindex="-1">Help ?</a></span>
+                <span class="helper-text"><a data-content="helpid:544" data-toggle="popover" tabindex="-1" <field_v1:analytics_attr analVal="filter help modal rebate" quoteChar="\"" />>Help ?</a></span>
                 <span class="heading-text">Government rebate</span>
             </div>
             <div class="filter-rebate-holder"></div>
@@ -81,7 +81,7 @@
                 {{ _.each(model.brands.values, function(object) { }}
                 {{ var checked = !object.selected ? ' checked="checked"' : ''; }}
                 {{ var active = !object.selected ? ' active' : ''; }}
-                <div class="checkbox">
+                <div class="checkbox" <field_v1:analytics_attr analVal="filter {{= object.value }}" quoteChar="\"" />>
                     <input type="checkbox" name="{{= model.brands.name }}" id="{{= model.brands.name }}_{{= object.value }}" value="{{= object.value }}" {{=checked }}
                            title="{{= object.label }}"/> <label for="{{= model.brands.name }}_{{= object.value }}">{{= object.label }}</label>
                 </div>

@@ -75,12 +75,12 @@
                                     <c:if test="${!callCentre}">
 									<div class="grouping-header">Comprehensive Cover</div>
 									<div class="grouping-border"></div>
-                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="top">top</a>
-                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="medium">medium</a>
-                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="basic">basic</a>
+                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="top" <field_v1:analytics_attr analVal="benefit category" quoteChar="\"" />>top</a>
+                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="medium" <field_v1:analytics_attr analVal="benefit category" quoteChar="\"" />>medium</a>
+                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="basic" <field_v1:analytics_attr analVal="benefit category" quoteChar="\"" />>basic</a>
                                     </c:if>
-                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="customise">customise</a>
-                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="limited">limited</a>
+                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="customise" <field_v1:analytics_attr analVal="custom cover" quoteChar="\"" />>customise</a>
+                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="limited" <field_v1:analytics_attr analVal="benefit category" quoteChar="\"" />>limited</a>
                                 </div>
 
                                     <div class="coverExplanationContainer">
@@ -102,7 +102,9 @@
                                     </c:if>
                                 </c:when>
                                 <c:otherwise>
-                                    <field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" />
+									<c:set var="analyticsLabelAttr"><field_v1:analytics_attr analVal="benefit ${item.getShortlistKey()}" quoteChar="\"" /></c:set>
+									<c:set var="analyticsHelpAttr"><field_v1:analytics_attr analVal="qtip ${item.getShortlistKey()}" quoteChar="\"" /></c:set>
+                                    <field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}"/>
                                 </c:otherwise>
                             </c:choose>
 
@@ -132,8 +134,11 @@
 
 											<%--<health_v3:benefitsItem item="${selectedValue}" />--%>
 											<div class="categoriesCell ${colWidthValue} short-list-item ${selectedValue.getClassString()} ${selectedValue.getShortlistKey()}_container">
+											<c:set var="analyticsLabelAttr"><field_v1:analytics_attr analVal="benefit ${selectedValue.getShortlistKey()}" quoteChar="\"" /></c:set>
+											<c:set var="analyticsHelpAttr"><field_v1:analytics_attr analVal="qtip ${selectedValue.getShortlistKey()}" quoteChar="\"" /></c:set>
+
 											<%-- This is a duplicate of the row above and needs to be cleaned up in the .less--%>
-											<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" customAttribute="data-attach=true" />
+											<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" customAttribute="data-attach=true"  additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}" />
 											</div>
 										</c:if>
 									</c:forEach>

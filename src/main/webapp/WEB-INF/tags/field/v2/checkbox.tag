@@ -17,6 +17,8 @@
 <%@ attribute name="helpPosition" 		required="false"	rtexprvalue="true"	%>
 <%@ attribute name="customAttribute"	required="false"	rtexprvalue="true" description="Add a custom attribute to the element." %>
 <%@ attribute name="checkBoxClassName" %>
+<%@ attribute name="additionalLabelAttributes"	required="false"	rtexprvalue="true" description="Add attributes to the label element." %>
+<%@ attribute name="additionalHelpAttributes"	required="false"	rtexprvalue="true" description="Add attributes to the help icon element." %>
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.benefits')}" />
 
@@ -69,10 +71,10 @@
 <div class="${className}">
 	<input type="checkbox" name="${name}" id="${id}" class="checkbox-custom ${checkBoxClassName}" value="${value}"${checked} ${customAttribute} ${requiredAttr} ${checkboxRule}>
 
-	<label for="${id}">
+	<label for="${id}" ${additionalLabelAttributes}>
 		<c:if test="${label!=null && not empty label}">${title}</c:if>
 		<c:if test="${not empty helpId}">
-		<field_v2:help_icon helpId="${helpId}" position="${helpPosition}" tooltipClassName="${helpClassName}" />
+		<field_v2:help_icon helpId="${helpId}" position="${helpPosition}" tooltipClassName="${helpClassName}" additionalAttributes="${additionalHelpAttributes}" />
 		</c:if>
 	</label>
 </div>

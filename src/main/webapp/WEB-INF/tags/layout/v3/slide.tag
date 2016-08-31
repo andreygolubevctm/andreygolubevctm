@@ -41,7 +41,7 @@
 			<div class="${offset}col-sm-9">
 				<div class="row slideAction">
 					<div class="col-sm-offset-3 col-xs-12 col-sm-6 col-md-4">
-						<a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton" data-slide-control="${nextStepId}" href="javascript:;" ><c:out value='${nextLabel} ' /> <span class="icon icon-arrow-right"></span></a>
+						<a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton" data-slide-control="${nextStepId}" href="javascript:;" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />><c:out value='${nextLabel} ' /> <span class="icon icon-arrow-right"></span></a>
 					</div>
 				</div>
 			</div>

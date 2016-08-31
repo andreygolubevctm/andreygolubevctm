@@ -113,7 +113,7 @@
 			if( isDisabled || isCurrentStep || foundCurrent ){
 				openTag = closeTag = 'div';
 			} else {
-				openTag = 'a href="javascript:;"' + tabindex + ' data-slide-control="' + progressBarStep.navigationId + '"';
+				openTag = 'a href="javascript:;"' + tabindex + ' data-slide-control="' + progressBarStep.navigationId + '" data-analytics="ribbon step"';
 				closeTag = 'a';
 			}
 
