@@ -35,7 +35,12 @@
             <simples:dialogue id="21" vertical="health" mandatory="true" /> <%-- 3 Point Security Check --%>
             <simples:dialogue id="36" vertical="health" mandatory="true" className="simples-dialog-inbound" />
 
-            <form_v3:fieldset id="healthAboutYou" legend="About you" postLegend="Tell us about yourself, so we can find the right cover for you" className="health-about-you">
+            <c:set var="subText" value="" />
+            <c:if test="${not callCentre}">
+                <c:set var="subText" value="Tell us about yourself, so we can find the right cover for you" />
+            </c:if>
+
+            <form_v3:fieldset id="healthAboutYou" legend="About you" postLegend="${subText}" className="health-about-you">
 
                 <c:set var="fieldXpath" value="${xpath}/healthCvr" />
                 <form_v3:row label="You are a" fieldXpath="${fieldXpath}" className="health-cover">
