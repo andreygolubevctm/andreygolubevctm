@@ -280,13 +280,13 @@
 
         // populate extras selections list with empty div
         if (numberOfSelectedExtras() === 0) {
-            $('.featuresListExtrasSelections .children').html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9997"><div class="contentInner">No extras selected</div></div></div></div>');
+            $('.featuresListExtrasSelections .children').html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9997"><div class="contentInner">No extras benefits selected</div></div></div></div>');
         }
 
         if(numberOfSelectedHospitals() === 0) {
             $('.featuresListHospitalSelections .children').each(function(){
                 if ($.trim($(this).html()) === '') {
-                    $(this).html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9996"><div class="contentInner">No hospital cover selected</div></div></div></div>');
+                    $(this).html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9996"><div class="contentInner">No hospital benefits selected</div></div></div></div>');
                 }
             });
         }
