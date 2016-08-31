@@ -1,7 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Render a data-analytics attribute string" %>
-<jsp:useBean id="now" class="java.util.Date"/>
-
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -14,4 +12,4 @@
 </c:if>
 
 <%-- Output the attribute string --%>
- data-analytics=${quoteChar}${analVal}${quoteChar}
+<c:out escapeXml="false" value=" data-analytics=${quoteChar}${analVal}${quoteChar}" />

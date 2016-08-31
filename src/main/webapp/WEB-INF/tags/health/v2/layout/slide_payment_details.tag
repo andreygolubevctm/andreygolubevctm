@@ -44,7 +44,7 @@
 				</c:if>
 
 				<form_v2:row id="confirm-step" hideHelpIconCol="true">
-					<a href="javascript:void(0);" class="btn btn-next col-xs-12 col-sm-8 col-md-5 journeyNavButton" id="submit_btn" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />Submit Application <span class="icon icon-arrow-right"></span>
+					<a href="javascript:void(0);" class="btn btn-next col-xs-12 col-sm-8 col-md-5 journeyNavButton" id="submit_btn" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Submit Application <span class="icon icon-arrow-right"></span>
 				</form_v2:row>
 
 			</layout_v1:slide_content>
