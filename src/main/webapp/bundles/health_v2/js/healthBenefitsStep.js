@@ -205,7 +205,7 @@
 
             // set the hidden field
             $coverType.val(currentCover);
-            $limitedCoverHidden.val('');
+            $limitedCoverHidden.val('N');
 
             // uncheck all tickboxes
             $allHospitalButtons.prop('checked', false).prop('disabled', false);
@@ -220,7 +220,7 @@
                         $(this).prop('checked', false);
                     });
 
-                    $limitedCoverHidden.val('Y');
+                    $limitedCoverHidden.val('');
                     break;
                 default:
                     $hospitalBenefitsSection.slideDown();
@@ -324,9 +324,9 @@
         var $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
 
         if ($('#accidentCover').is(":checked")) {
-            $limitedCoverHidden.val("Y");
-        } else {
             $limitedCoverHidden.val("");
+        } else {
+            $limitedCoverHidden.val("N");
         }
     }
 

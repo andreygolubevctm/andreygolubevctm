@@ -18,7 +18,7 @@
                     <a class="filter-remove hospital need-hospital {{=hiddenHospital }} {{=hiddenExtras }} btn btn-xs btn-danger" <field_v1:analytics_attr analVal="filter remove hospital" quoteChar="\"" />>remove <span class="icon icon-cross"></span></a>
                     <a class="filter-add hospital need-no-hospital {{=hiddenExtras }} {{=hiddenOnCombined }} btn btn-xs btn-add" <field_v1:analytics_attr analVal="filter add hospital" quoteChar="\"" />>add hospital <span class="icon icon-plus"></span></a>
                 </span>
-                <span class="heading-text">Hospital cover</span>
+                <span class="heading-text">Hospital selections</span>
             </div>
             <div class="sidebar-intro-text need-no-hospital {{=hiddenExtras }} {{=hiddenOnCombined }}">
                 <p>Hospital cover enables you to choose your own doctor at the fund's partner hospitals, allowing you to avoid public hospital waiting lists</p>
@@ -45,7 +45,7 @@
                     <a class="filter-remove extras need-extras {{=hiddenHospital }} {{=hiddenExtras }} btn btn-xs btn-danger" <field_v1:analytics_attr analVal="filter remove extras" quoteChar="\"" />>remove <span class="icon icon-cross"></span></a>
                     <a class="filter-add extras need-no-extras {{=hiddenHospital }} {{=hiddenOnCombined }} btn btn-xs btn-add" <field_v1:analytics_attr analVal="filter add extras" quoteChar="\"" />>add extras <span class="icon icon-plus"></span></a>
                 </span>
-                <span class="heading-text">Extras cover</span>
+                <span class="heading-text">Extras selections</span>
             </div>
             <div class="sidebar-intro-text need-no-extras {{=hiddenHospital }} {{=hiddenOnCombined }} ">
                 <p>Extras cover gives you money back for day to day services like dental, optical and physiotherapy.</p>

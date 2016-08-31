@@ -69,7 +69,7 @@
                                 <a href="javascript:;" class="restrictedBenefit hidden" data-content="helpid:543" data-toggle="dialog" data-title="" data-dialog-hash-id="hospitalCover" tabindex="-1" data-cache="true" <field_v1:analytics_attr analVal="view restricted {{= info.provider}}" quoteChar="\"" />># restricted benefit</a>
                             </div>
                         </div>
-                        {{ if(meerkat.modules.health.getHospitalCoverLevel() == 'limited') { }}
+                        {{ if(info.situationFilter == 'Y') { }}
                         <div class="featuresListHospitalSelections"><health_v3:limited_cover_label /></div>
                         {{ } else { }}<div class="featuresListHospitalSelections" data-feature-index="2"></div>{{ } }}
                     </div>
