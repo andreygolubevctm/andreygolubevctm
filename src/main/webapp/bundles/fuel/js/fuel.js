@@ -8,6 +8,12 @@
         fuel: {}
     }, steps = null;
 
+    var $signup = $('#fuel-signup'),
+        $signupLink = $('.fuel-signup-link'),
+        $signupForm = $('#fuel-signup-form'),
+        $signupEmail = $('#fuel_signup_email'),
+        $signupBtn = $signupForm.find('button');
+
     function initFuel() {
         $(document).ready(function () {
             // Only init if fuel
@@ -31,6 +37,52 @@
             toggleCanSave(true);
             meerkat.modules.fuelMap.addToHistory();
             meerkat.modules.fuelResults.get();
+        });
+
+        $signupLink.on('click', function(e) {
+            e.preventDefault();
+
+            $('html,body').animate({
+                scrollTop: $signup.outerHeight() - $signupLink.outerHeight()
+            }, 300);
+        });
+
+        $signupEmail.on('keydown', function(e) {
+            if (e.keyCode === 13) {
+                $signupBtn.trigger('click');
+                return false;
+            }
+        });
+
+        $signupBtn.on('click', function(e) {
+            e.preventDefault();
+
+            if(!$signupEmail.valid()) {
+                return false;
+            }
+
+            $signupForm.removeClass('fuel-signup-success');
+            $signupBtn
+                .attr('disabled', true)
+                .find('span').hide();
+            meerkat.modules.loadingAnimation.showInside($signupBtn);
+
+            return meerkat.modules.comms.post({
+                url: "ajax/write/fuel_signup.jsp",
+                data: $signupEmail.serialize() + '&transactionId=' + meerkat.modules.transactionId.get(),
+                dataType: 'json',
+                cache: false,
+                errorLevel: "warning",
+                onSuccess: function onSubmitSuccess(resultData) {
+                    $signupForm.addClass('fuel-signup-success');
+                },
+                onComplete: function onSubmitComplete() {
+                    $signupBtn
+                        .removeAttr('disabled')
+                        .find('span').show();
+                    meerkat.modules.loadingAnimation.hide($signupBtn);
+                }
+            });
         });
 
         $('.change-location-fuel-text').on('click', function() {
@@ -82,7 +134,8 @@
                 object: meerkat.modules.fuel.getTrackingFieldsObject
             },
             onInitialise: function () {
-                meerkat.modules.jqueryValidate.initJourneyValidator();
+                // meerkat.modules.jqueryValidate.initJourneyValidator();
+                initJourneyValidator();
                 meerkat.modules.fuelMap.initGoogleAPI();
                 meerkat.modules.fuelResults.initPage();
                 if(meerkat.site.isFromBrochureSite && meerkat.site.formData.location) {
@@ -121,6 +174,10 @@
         steps = {
             startStep: startStep
         };
+    }
+
+    function initJourneyValidator() {
+        meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#fuel-signup-form'));
     }
 
     // Build an object to be sent by tracking.

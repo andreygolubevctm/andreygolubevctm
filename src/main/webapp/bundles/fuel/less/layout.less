@@ -183,3 +183,78 @@
 #provider-disclaimer {
   text-align: right;
 }
+
+
+#fuel-signup {
+  background-color: @theme-tertiary;
+  color: #fff;
+  padding-bottom: 15px;
+  @media (@sm) {
+    padding-top: 15px;
+  }
+  .fuel-signup-link {
+    color: #fff;
+    display: block;
+    padding: 5px 0;
+  }
+  h2 {
+    font-family: @font-family-sans-serif;
+    color: #fff;
+    margin-top: 0;
+    @media (@sm) {
+      font-size: 26px;
+    }
+    @media (@md) {
+      font-size: 29px;
+    }
+    @media (@lg) {
+      font-size: 32px;
+    }
+  }
+  p {
+    margin: 0;
+    &.fuel-signup-agree {
+      font-size: 11px;
+      a {
+        color: #fff;
+        text-decoration: underline;
+      }
+    }
+  }
+  form {
+    .form-group {
+      > div {
+        margin-top: 15px;
+      }
+      @media (@sm) {
+        margin-bottom: 5px;
+        > div {
+          margin-top: 0;
+        }
+      }
+    }
+    button {
+      width: 100%;
+    }
+    .alert {
+      display: none;
+      margin: 15px 0;
+      @media (@sm) {
+        margin: 0 0 5px 0;
+      }
+    }
+    &.fuel-signup-success {
+      .row,
+      .fuel-signup-agree {
+        display: none;
+      }
+      .alert {
+        display: block;
+      }
+    }
+  }
+  #fuel_signup_email-error {
+    color: #f7dbdb;
+    margin: 5px 0 0 0;
+  }
+}
