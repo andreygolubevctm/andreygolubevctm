@@ -40,6 +40,8 @@ public class Info {
     @JsonProperty("OtherProductFeatures")
     private JsonNode otherProductFeatures;
 
+    private String situationFilter;
+
     public String getTrackCode() {
         return trackCode;
     }
@@ -158,5 +160,13 @@ public class Info {
 
     public void setOtherProductFeatures(JsonNode otherProductFeatures) {
         this.otherProductFeatures = otherProductFeatures;
+    }
+
+    public String getSituationFilter() {
+        return situationFilter;
+    }
+
+    public void setSituationFilter(String situationFilter) {
+        this.situationFilter = situationFilter;
     }
 }

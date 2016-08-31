@@ -303,7 +303,7 @@ public class RequestAdapterV2 {
     }
 
     protected static void addSituationFilter(Filters filters, Situation situation) {
-        if(situation != null) {
+        if(situation != null && StringUtils.isNotBlank(situation.getAccidentOnlyCover())) {
             filters.setSituationFilter(toBoolean(situation.getAccidentOnlyCover()));
         }
     }
@@ -375,6 +375,12 @@ public class RequestAdapterV2 {
                     break;
                 case "Naturopath":
                     preferences.add("Naturopathy");
+                    break;
+                case "PrHospital":
+                    preferences.add("PrivateHospital");
+                    break;
+                case "GeneralHealth":
+                case "Hospital":
                     break;
                 default:
                     preferences.add(key);
