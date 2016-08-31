@@ -60,10 +60,6 @@
 			</form_v3:row>
 		</c:if>
 
-		<div>
-			<health_v2:application_compliance xpath="${base_xpath}" />
-		</div>
 	</form_v3:fieldset>
 
 </div>
-
