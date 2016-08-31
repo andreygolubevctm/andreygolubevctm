@@ -104,7 +104,7 @@
             <core_v2:offcanvas_header />
 
             <li class="slide-feature-back">
-                <a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-angle-left"></span> <span>Go Back</span></a>
+                <a href="javascript:;" data-slide-control="previous" class="btn-back" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-angle-left"></span> <span>Go Back</span></a>
             </li>
             <li class="hidden-sm hidden-md hidden-lg dropdown dropdown-interactive slide-feature-emailquote" id="email-quote-dropdown">
                 <a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose><c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>

@@ -16,6 +16,8 @@
 <%@ attribute name="xpath" 					required="false" rtexprvalue="true"	 description="(optional) If set, a hidden field will be added using this xpath." %>
 <%@ attribute name="className" 				required="false" rtexprvalue="true"	 description="Additional css class attribute" %>
 <%@ attribute name="useDefaultOutputField" 	required="false" rtexprvalue="true"	 description="Whether to use the default output field to store values or use the hardcoded health output field" %>
+<%@ attribute name="markerAttributeKey" 	required="false" rtexprvalue="true"	 description="Attribute Label to be assigned to the slider-marker elements" %>
+<%@ attribute name="markerAttributeValue" 	required="false" rtexprvalue="true"	 description="Attribute Value to be assigned to the slider-marker elements" %>
 
 
 <%-- VARIABLES --%>
@@ -40,7 +42,7 @@
 <div class="slider-control ${className}">
 
 	<div class="selection"></div>
-	<div class="slider" data-use-default-output="${useDefaultOutputField}" data-value="${value}" data-range="${range}" data-markers="${markers}" data-step="${step}" data-legend="${legend}" data-type="${type}"></div>
+	<div class="slider" data-use-default-output="${useDefaultOutputField}" data-value="${value}" data-range="${range}" data-markers="${markers}" data-step="${step}" data-legend="${legend}" data-type="${type}" data-marker-attr-key="${markerAttributeKey}" data-marker-attr-value="${markerAttributeValue}"></div>
 	<div class="slider-legends"></div>
 
 	<%-- If xpath was defined, add a hidden field to store it --%>
