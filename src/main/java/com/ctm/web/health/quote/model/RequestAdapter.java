@@ -57,9 +57,9 @@ public class RequestAdapter {
         addSituationFilter(filters, situation);
 
         Map<String, String> benefitsExtras = Optional.ofNullable(quote)
-                                                .map(HealthQuote::getBenefits)
-                                                .map(Benefits::getBenefitsExtras)
-                                                .orElse(emptyMap());
+                .map(HealthQuote::getBenefits)
+                .map(Benefits::getBenefitsExtras)
+                .orElse(emptyMap());
         addProductType(quoteRequest, benefitsExtras);
         addHospitalSelection(quoteRequest, filters, benefitsExtras, situation);
         filters.setPreferencesFilter(getPreferences(benefitsExtras));
@@ -355,7 +355,7 @@ public class RequestAdapter {
     protected static Integer getProductId(Application application) {
         String productId = application.getProductId();
         if (StringUtils.startsWith(application.getProductId(), "PHIO-HEALTH-")) {
-             productId = StringUtils.remove(application.getProductId(), "PHIO-HEALTH-");
+            productId = StringUtils.remove(application.getProductId(), "PHIO-HEALTH-");
         }
         return Integer.parseInt(productId);
     }

@@ -84,6 +84,11 @@
                 }
             });
         });
+
+        $('.change-location-fuel-text').on('click', function() {
+            // toggle form on mobile
+            meerkat.modules.fuelMap.toggleFieldRows(true);
+        });
     }
 
     function initJourneyEngine() {

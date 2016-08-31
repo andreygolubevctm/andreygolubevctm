@@ -165,6 +165,7 @@
         keyDownTimeout,
         fuelLocation,
         $fuelLocation,
+        $fuelFieldsWidget,
         preventLookup = true,
         markerZIndexOrder = [0, 5, 4, 3, 2, 1];
 
@@ -177,6 +178,7 @@
             $xsInfoWindow = $('#info-window-container-xs');
             $fuelLocation = $('#fuel_location');
             fuelLocation = document.getElementById('fuel_location');
+            $fuelFieldsWidget = $('.fuel-fields-widget');
             setMapHeight();
             markerTemplate = _.template($('#map-marker-template').html());
             resizeMessage = meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, setMapHeight);
@@ -277,13 +279,13 @@
             }
             currentZoom = newZoom;
             addToHistory();
+            toggleFieldRows(false);
         });
         google.maps.event.addListener(map, 'dragend', function (event) {
             getResults();
             addToHistory();
+            toggleFieldRows(false);
         });
-
-
     }
 
     function initPreload() {
@@ -605,8 +607,11 @@
         });
 
         google.maps.event.addListener(marker, 'click', function (event) {
-            openInfoWindow(marker, info);
-            drawClickedMarker(event.latLng, bandId);
+            toggleFieldRows(false);
+            _.defer(function () {
+                openInfoWindow(marker, info);
+                drawClickedMarker(event.latLng, bandId);
+            });
         });
 
         return marker;
@@ -752,6 +757,13 @@
 
     }
 
+    function toggleFieldRows(state) {
+        if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            $fuelFieldsWidget.toggleClass('show-fieldrows', state);
+            setMapHeight();
+        }
+    }
+
     meerkat.modules.register("fuelMap", {
         init: initFuelMap,
         events: moduleEvents,
@@ -761,7 +773,8 @@
         getMarkers: getMarkers,
         plotMarkers: plotMarkers,
         addToHistory: addToHistory,
-        setInitialHash: setInitialHash
+        setInitialHash: setInitialHash,
+        toggleFieldRows: toggleFieldRows
     });
 
 })(jQuery);

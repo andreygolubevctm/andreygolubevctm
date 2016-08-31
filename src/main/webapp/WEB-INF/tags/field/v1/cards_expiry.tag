@@ -29,8 +29,7 @@
 <c:set var="year_list">
 	<c:forEach var="i" begin="1" end="${maxYears}" varStatus="theCount">
 		<fmt:formatDate value="${currentYear.time}" pattern="yy" var="basicYear" />
-		<fmt:formatDate value="${currentYear.time}" pattern="yyyy" var="fullYear" />
-		<c:out value="${basicYear}=${fullYear}"/>
+		<c:out value="${basicYear}=${basicYear}"/>
 		<c:if test="${theCount.count < maxYears}">
 			<c:out value=","/>
 		</c:if>
@@ -43,7 +42,7 @@
 <%-- HTML --%>
 <div class="row">
 	<div class="col-xs-6">
-		<field_v2:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"	title="expiry month" required="true" className="${className}" placeHolder="Month" disableErrorContainer="${disableErrorContainer}"/>
+		<field_v2:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"	title="expiry month" required="true" className="${className}" placeHolder="MM" disableErrorContainer="${disableErrorContainer}"/>
 	</div>
 	<div class="col-xs-6 row">
 		<field_v2:array_select
@@ -51,6 +50,6 @@
 			xpath="${xpath}/cardExpiryYear"
 			title="expiry year"
 			className="${className}"
-			required="true" extraDataAttributes="${validationAttributes}" placeHolder="Year"  disableErrorContainer="${disableErrorContainer}" />
+			required="true" extraDataAttributes="${validationAttributes}" placeHolder="YY"  disableErrorContainer="${disableErrorContainer}" />
 	</div>
 </div>

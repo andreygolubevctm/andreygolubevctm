@@ -1179,6 +1179,27 @@
                             </bindingFiles>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>ai_ws</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
+                            <packageName>com.ctm.ailead.ws</packageName>
+                            <wsdlDirectory>${project.basedir}/src/main/resources/webservice-api/ailead_ws/</wsdlDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>wsdl/SSGateway.asmx.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <wsdlLocation>/webservice-api/ailead_ws/wsdl/SSGateway.asmx.wsdl</wsdlLocation>
+                            <bindingFiles>
+                                <bindingFiles>${project.basedir}/src/main/resources/webservice-api/ailead_ws/bindings.xml</bindingFiles>
+                                <bindingFiles>${project.basedir}/src/main/resources/webservice-api/ailead_ws/wsdl_bindings.xml</bindingFiles>
+                            </bindingFiles>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.softsure.co.za/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://www.softsure.co.za/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.softsure.co.za/">
+      <s:element name="UploadQuickLead">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LeadDetails" type="tns:SSQuickLead" />
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SSQuickLead">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PartnerCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubPartnerCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AgentCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TransactionID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeadType" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteNumber" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PhoneNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CallBackDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="CallBackTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Comments" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UploadQuickLeadResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UploadQuickLeadResult" type="tns:SSResults" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SSResults">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="StatusCode" type="tns:SSStatus" />
+          <s:element minOccurs="0" maxOccurs="1" name="StatusResults" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReferenceNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Token" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ValidationResults" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="pdfDoc" type="s:base64Binary" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="SSStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Status_Info" />
+          <s:enumeration value="Status_Success" />
+          <s:enumeration value="Status_Failed" />
+          <s:enumeration value="Status_Referral" />
+          <s:enumeration value="Status_Knockout" />
+          <s:enumeration value="Status_MissingData" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="UploadQuickLeadSoapIn">
+    <wsdl:part name="parameters" element="tns:UploadQuickLead" />
+  </wsdl:message>
+  <wsdl:message name="UploadQuickLeadSoapOut">
+    <wsdl:part name="parameters" element="tns:UploadQuickLeadResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SSGatewaySoap">
+    <wsdl:operation name="UploadQuickLead">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Method will upload an insurance lead (call me back) to Softsure backend (Basic detail)</wsdl:documentation>
+      <wsdl:input message="tns:UploadQuickLeadSoapIn" />
+      <wsdl:output message="tns:UploadQuickLeadSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SSGatewaySoap" type="tns:SSGatewaySoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UploadQuickLead">
+      <soap:operation soapAction="http://www.softsure.co.za/UploadQuickLead" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SSGatewaySoap12" type="tns:SSGatewaySoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UploadQuickLead">
+      <soap12:operation soapAction="http://www.softsure.co.za/UploadQuickLead" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SSGateway">
+    <wsdl:port name="SSGatewaySoap" binding="tns:SSGatewaySoap">
+      <soap:address location="http://support.aiinsurance.com.au/SSGatewayTest/SSGateway.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SSGatewaySoap12" binding="tns:SSGatewaySoap12">
+      <soap12:address location="http://support.aiinsurance.com.au/SSGatewayTest/SSGateway.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

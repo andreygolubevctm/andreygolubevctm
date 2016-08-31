@@ -169,7 +169,9 @@ var minInsuranceSelected = function(type) {
 
 	for(var i = 0; i < InsuranceHandler.fields.length; i++) {
 		var field = InsuranceHandler.fields[i];
-		if( $('#${name}_' + type + '_insurance_' + field + 'entry').val() != '' ) {
+		var value = $('#${name}_' + type + '_insurance_' + field + 'entry').val();
+
+		if( value != '' && value != 0 ) {
 			is_valid = true;
 			break;
 		}
