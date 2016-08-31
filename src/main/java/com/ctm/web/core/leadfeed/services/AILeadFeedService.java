@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus.FAILURE;
@@ -60,11 +61,17 @@ public abstract class AILeadFeedService implements IProviderLeadFeedService {
 			final String serviceUrl = serviceConfig.getPropertyValueByKey("serviceUrl", leadData.getBrandId(), provider.getId(), ServiceConfigurationProperty.Scope.SERVICE);
 			UploadQuickLeadResponse response = sendRequest(pageSettings, leadModel, serviceUrl, leadData.getTransactionId());
 
-			if(response.getUploadQuickLeadResult().getStatusCode() == SSStatus.STATUS_SUCCESS){
+			final Optional<SSStatus> status = Optional.ofNullable(response)
+					.map(UploadQuickLeadResponse::getUploadQuickLeadResult)
+					.map(SSResults::getStatusCode);
+
+
+			if(status.filter(code -> code == SSStatus.STATUS_SUCCESS)
+					.isPresent()){
 				feedResponse = SUCCESS;
 			}
 
-			LOGGER.debug("[Lead feed] Response Status from AI {}", kv("status", response.getUploadQuickLeadResult().getStatusCode()));
+			LOGGER.debug("[Lead feed] Response Status from AI {}", kv("status", status.orElse(null)));
 
 		} catch (EnvironmentException | VerticalException | IOException | DaoException | ServiceConfigurationException e) {
 			LOGGER.error("[Lead feed] Failed adding lead feed message {}", kv("leadData", leadData), e);
