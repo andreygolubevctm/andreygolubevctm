@@ -393,9 +393,9 @@ var healthFunds = {
 
 	_partner_authority: function(display) {
 		if (display === true) {
-			$('.health_person-details_authority_group').removeClass('hidden');
+			$('#partnerContainer .health_previous_fund_authority').removeClass('hidden');
 		} else {
-			$('.health_person-details_authority_group').addClass('hidden');
+			$('#partnerContainer .health_previous_fund_authority').addClass('hidden');
 		}
 	},
 
