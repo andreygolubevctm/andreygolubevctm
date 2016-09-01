@@ -32,6 +32,7 @@
             $benefitsForm = $('#benefitsForm');
             $hiddenFields = $('#mainform').find('.hiddenFields');
 
+            $extrasCover = $('.GeneralHealth_container');
             $hospitalCover = $('.Hospital_container');
             $hospitalCoverToggles = $('.hospitalCoverToggles a'),
                 $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]'),
@@ -84,14 +85,18 @@
     function setDefaultCover() {
         if (meerkat.modules.deviceMediaState.get() === 'xs') {
             if (!$('.hospitalCoverToggles.visible-xs a.benefit-category').hasClass('active')) {
-                $('.hospitalCoverToggles.visible-xs a.benefit-category[data-category="medium"]').trigger('click');
+                $('.hospitalCoverToggles.visible-xs a.benefit-category[data-category="basic"]').trigger('click');
             }
         } else {
 
             if (!$('.hospitalCoverToggles.hidden-xs a.benefit-category').hasClass('active')) {
-                $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="medium"]').trigger('click');
+                $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="basic"]').trigger('click');
             }
         }
+    }
+
+    function resetDefaultCover() {
+        $('.hospitalCoverToggles.' + (meerkat.modules.deviceMediaState.get() === 'xs' ? 'visible-xs' : 'hidden-xs') + ' a.benefit-category.active').trigger('click');
     }
 
     function toggleBenefits() {
@@ -107,15 +112,12 @@
             case 'h':
                 $hospitalSection.slideDown();
                 $extrasSection.slideUp();
-                setDefaultCover();
-
-                $extrasSection.find('input[type="checkbox"]').prop('checked', false);
+                resetDefaultCover();
                 break;
             case 'e':
                 $hospitalSection.slideUp();
                 $extrasSection.slideDown();
-                $hospitalCoverToggles.prop("checked", false);
-                $allHospitalButtons.prop('checked', false).prop('disabled', false);
+                resetDefaultCover();
                 break;
             default:
                 $hospitalSection.slideUp();
@@ -208,7 +210,10 @@
             $limitedCoverHidden.val('N');
 
             // uncheck all tickboxes
-            $allHospitalButtons.prop('checked', false).prop('disabled', false);
+            $allHospitalButtons.prop('disabled', false);
+            if(currentCover !== 'customise') {
+                $allHospitalButtons.prop('checked', false);
+            }
 
             switch (currentCover) {
                 case 'top':
@@ -224,16 +229,20 @@
                     break;
                 default:
                     $hospitalBenefitsSection.slideDown();
-                    var $coverButtons = $hospitalCover.find('.' + currentCover + ' input[type="checkbox"]');
+                    var $hospitalCoverButtons = $hospitalCover.find('.' + currentCover + ' input[type="checkbox"]');
+                    var $extrasCoverButtons = $extrasCover.find('.' + currentCover + ' input[type="checkbox"]');
                     if (currentCover !== 'customise') {
-                        $allHospitalButtons.not($coverButtons);
+                        $allHospitalButtons.not($hospitalCoverButtons);
                     } else {
                         var classToSelect = previousCover === 'top' ? '' : '.' + previousCover;
-                        $coverButtons = $hospitalCover.find(classToSelect + ' input[type="checkbox"], .customise input[type="checkbox"]');
+                        $hospitalCoverButtons = $hospitalCover.find(classToSelect + ' input[type="checkbox"], .customise input[type="checkbox"]');
                     }
 
                     // setup for customised options to be completed later
-                    $coverButtons.each(function () {
+                    $hospitalCoverButtons.each(function () {
+                        $(this).prop('checked', true);
+                    });
+                    $extrasCoverButtons.each(function () {
                         $(this).prop('checked', true);
                     });
                     break;
