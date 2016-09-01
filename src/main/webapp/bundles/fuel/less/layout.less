@@ -68,28 +68,28 @@
 .circle {
   .icon {
     margin: 5px;
-    color: #fff;
+    color: #000;
   }
   border-radius: 50%;
   width: 24px;
   height: 24px;
-  background-color: @gray-slight-dark;
+  background-color: #c7c7c7;
   display: inline-block;
 
   .fuel-band-5 & {
-    background-color: #A90001;
+    background-color: #d10000;
   }
   .fuel-band-4 & {
-    background-color: #F14E2D;
+    background-color: #ee6840;
   }
   .fuel-band-3 & {
-    background-color: #F9928D;
+    background-color: #f9c477;
   }
   .fuel-band-2 & {
-    background-color: #0AB449;
+    background-color: #17de62;
   }
   .fuel-band-1 & {
-    background-color: #077836;
+    background-color: #008634;
   }
 }
 
@@ -105,31 +105,31 @@
 
   @media (@xs-only) {
     text-align: center;
-    color: white;
+    color: #000;
     font-size: @font-size-small;
     line-height: 1.5;
     overflow: hidden;
     p {
-      background-color: @gray-light;
+      background-color: #c7c7c7;
       margin:0;
     }
     .fuel-band {
       width:20%;
       float:left;
       &.fuel-band-5 {
-        background-color: #A90001;
+        background-color: #d10000;
       }
       &.fuel-band-4 {
-        background-color: #F14E2D;
+        background-color: #ee6840;
       }
       &.fuel-band-3 {
-        background-color: #F9928D;
+        background-color: #f9c477;
       }
       &.fuel-band-2 {
-        background-color: #0AB449;
+        background-color: #17de62;
       }
       &.fuel-band-1 {
-        background-color: #077836;
+        background-color: #008634;
       }
     }
   }
@@ -144,6 +144,7 @@
   font-style: italic;
   color: @theme-default;
   font-size: @font-size-small;
+  letter-spacing: -0.025em;
 }
 
 #provider-disclaimer {
