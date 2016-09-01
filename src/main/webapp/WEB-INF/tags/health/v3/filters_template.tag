@@ -81,9 +81,9 @@
                 {{ _.each(model.brands.values, function(object) { }}
                 {{ var checked = !object.selected ? ' checked="checked"' : ''; }}
                 {{ var active = !object.selected ? ' active' : ''; }}
-                <div class="checkbox" <field_v1:analytics_attr analVal="filter {{= object.value }}" quoteChar="\"" />>
+                <div class="checkbox">
                     <input type="checkbox" name="{{= model.brands.name }}" id="{{= model.brands.name }}_{{= object.value }}" value="{{= object.value }}" {{=checked }}
-                           title="{{= object.label }}"/> <label for="{{= model.brands.name }}_{{= object.value }}">{{= object.label }}</label>
+                           title="{{= object.label }}"/> <label for="{{= model.brands.name }}_{{= object.value }}" <field_v1:analytics_attr analVal="filter brands" quoteChar="\"" />>{{= object.label }}</label>
                 </div>
                 {{ }) }}
             </div>

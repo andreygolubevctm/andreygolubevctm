@@ -237,7 +237,6 @@
 								label="${true}"
 								title="${termsAndConditions}"
 								errorMsg="Please agree to the Terms &amp; Conditions"
-								customAttribute="${analyticsAttr}"
 								additionalLabelAttributes="${analyticsAttr}"
 						/>
 					</div>

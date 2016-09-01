@@ -27,12 +27,12 @@
                 {{ _.each(model.benefitsHospital.values, function(object) { }}
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                 {{ var hidden = !object.selected ? ' hidden' : ''; }}
-                <div class="checkbox {{=object.class }} {{=hidden }}" <field_v1:analytics_attr analVal="filter hospital" quoteChar="\"" />>
-                    <input type="checkbox" name="health_filterBar_benefitsHospital" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}">{{= object.label }}</label>
+                <div class="checkbox {{=object.class }} {{=hidden }}">
+                    <input type="checkbox" name="health_filterBar_benefitsHospital" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}" <field_v1:analytics_attr analVal="filter hospital" quoteChar="\"" />>{{= object.label }}</label>
                     <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1" <field_v1:analytics_attr analVal="filter qtip {{= object.value }}" quoteChar="\"" />><span class="text-hide">Need Help?</span></a>
                 </div>
                 {{ }) }}
-                <a href="javascript:void(0);" class="filter-toggle-all"><span class="text">add more selections</span> <span class="icon icon-angle-down"></span></a>
+                <a href="javascript:void(0);" class="filter-toggle-all"><span class="text"<field_v1:analytics_attr analVal="filter hospital" quoteChar="\"" />>add more selections</span> <span class="icon icon-angle-down"></span></a>
             </div>
 
         </div>
@@ -54,12 +54,12 @@
                 {{ _.each(model.benefitsExtras.values, function(object) { }}
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                 {{ var hidden = !object.selected ? ' hidden' : ''; }}
-                <div class="checkbox {{=object.class }} {{=hidden }}" <field_v1:analytics_attr analVal="filter extras" quoteChar="\"" />>
-                    <input type="checkbox" name="health_filterBar_benefitsExtras" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}">{{= object.label }}</label>
+                <div class="checkbox {{=object.class }} {{=hidden }}">
+                    <input type="checkbox" name="health_filterBar_benefitsExtras" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}" <field_v1:analytics_attr analVal="filter extras" quoteChar="\"" />>{{= object.label }}</label>
                     <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1" <field_v1:analytics_attr analVal="filter qtip {{= object.value }}" quoteChar="\"" />><span class="text-hide">Need Help?</span></a>
                 </div>
                 {{ }) }}
-                <a href="javascript:void(0);" class="filter-toggle-all"><span class="text">add more selections</span> <span class="icon icon-angle-down"></span></a>
+                <a href="javascript:void(0);" class="filter-toggle-all"><span class="text" <field_v1:analytics_attr analVal="filter extras" quoteChar="\"" />>add more selections</span> <span class="icon icon-angle-down"></span></a>
             </div>
         </div>
     </div>
