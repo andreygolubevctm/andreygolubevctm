@@ -13,5 +13,12 @@
 <div class="health-payment ${className}" id="${id}">
 
 	<health_v2:payment_details xpath="${xpath}/details" base_xpath="${xpath}" />
-	 
+
+	<div class="update-content">
+		<fieldset class="qe-window fieldset ">
+			<div class="content">
+				<health_v2:application_compliance xpath="${xpath}" />
+			</div>
+		</fieldset>
+	</div>
 </div>

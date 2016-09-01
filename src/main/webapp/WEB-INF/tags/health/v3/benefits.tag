@@ -39,14 +39,20 @@
 							</c:forEach>
                         </c:set>
 
-                        <form_v3:row label="What type of cover are you looking for?" fieldXpath="${fieldXPath}">
+	                    <c:set var="label" value="" />
+	                    <c:if test="${not callCentre}">
+	                        <c:set var="label" value="What type of cover are you looking for?" />
+	                    </c:if>
+					    <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="cover type" quoteChar="\"" /></c:set>
+	                    <form_v3:row label="${label}" fieldXpath="${fieldXpath}">
                             <field_v2:array_radio xpath="${fieldXPath}"
                                                   required="true"
                                                   className="health-situation-healthCvrType roundedCheckboxIcons"
                                                   items="${items}"
                                                   defaultValue="C"
                                                   id="${go:nameFromXpath(fieldXPath)}"
-                                                  title="your cover type" />
+                                                  title="your cover type"
+												  additionalLabelAttributes="${analyticsAttr}" />
                         </form_v3:row>
 				</div>
 			</div>

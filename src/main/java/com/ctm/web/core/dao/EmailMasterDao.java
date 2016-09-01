@@ -193,7 +193,7 @@ public class EmailMasterDao {
 			Connection conn = dbSource.getConnection();
 			if(conn != null) {
 				stmt = conn.prepareStatement(
-				"INSERT INTO aggregator.email_master " +
+				"INSERT IGNORE INTO aggregator.email_master " +
 				"(styleCodeId, emailAddress, emailPword, brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail) " +
 				"VALUES (?,?,?,?,?,?,?, ? ,CURRENT_DATE,?,?); ", java.sql.Statement.RETURN_GENERATED_KEYS
 				);

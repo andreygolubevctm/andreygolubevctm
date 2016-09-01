@@ -44,7 +44,12 @@
 
 		<jsp:body>
 
-			<form_v3:fieldset id="health-contact-fieldset" legend="Your details" postLegend="Enter your details below and we'll show you products that match your needs on the next page" >
+            <c:set var="subText" value="" />
+            <c:if test="${not callCentre}">
+                <c:set var="subText" value="Enter your details below and we'll show you products that match your needs on the next page" />
+            </c:if>
+
+			<form_v3:fieldset id="health-contact-fieldset" legend="Your details" postLegend="${subText}" >
 
 				<c:set var="firstNamePlaceHolder">
 					<content:get key="firstNamePlaceHolder"/>
@@ -100,6 +105,7 @@
 				
 					<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 					<form_v2:row className="health-contact-details-optin-group" hideHelpIconCol="true">
+					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="combined optin" quoteChar="\"" /></c:set>
 					<field_v2:checkbox
 						xpath="${xpath}/optin"
 						value="Y"
@@ -107,7 +113,10 @@
 						required="true"
 						label="${true}"
 						title="${termsAndConditions}"
-						errorMsg="Please agree to the Terms &amp; Conditions" />
+						errorMsg="Please agree to the Terms &amp; Conditions"
+						customAttribute="${analyticsAttr}"
+						additionalLabelAttributes="${analyticsAttr}"
+					/>
 					</form_v2:row>
 				</c:if>
 

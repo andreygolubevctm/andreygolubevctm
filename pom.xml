@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.31.3-RC9</version>
+    <version>1.32.0-RC0</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -1176,6 +1176,27 @@
                             <wsdlLocation>/webservice-api/aglead_ws/wsdl/messageCentreCreateMessage.wsdl</wsdlLocation>
                             <bindingFiles>
                                 <bindingFiles>${project.basedir}/src/main/resources/webservice-api/aglead_ws/bindings.xml</bindingFiles>
+                            </bindingFiles>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>ai_ws</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
+                            <packageName>com.ctm.ailead.ws</packageName>
+                            <wsdlDirectory>${project.basedir}/src/main/resources/webservice-api/ailead_ws/</wsdlDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>wsdl/SSGateway.asmx.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <wsdlLocation>/webservice-api/ailead_ws/wsdl/SSGateway.asmx.wsdl</wsdlLocation>
+                            <bindingFiles>
+                                <bindingFiles>${project.basedir}/src/main/resources/webservice-api/ailead_ws/bindings.xml</bindingFiles>
+                                <bindingFiles>${project.basedir}/src/main/resources/webservice-api/ailead_ws/wsdl_bindings.xml</bindingFiles>
                             </bindingFiles>
                         </configuration>
                     </execution>

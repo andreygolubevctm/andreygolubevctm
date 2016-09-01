@@ -6,6 +6,7 @@
     "shared/validation",
     "core",
     "shared/forms/v1",
+    "shared/placeholder",
     "shared/resultsRankings",
     "shared/dropdownInteractive",
     "shared/ie8SelectMenuAutoExpand",
