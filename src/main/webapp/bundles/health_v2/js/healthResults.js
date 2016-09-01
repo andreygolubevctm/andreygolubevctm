@@ -934,10 +934,6 @@
         selectedBenefitsList = selectedBenefits;
     }
 
-    function hideNavigationLink() {
-        $('.floated-next-arrow').addClass('hidden');
-    }
-
     meerkat.modules.register('healthResults', {
         init: init,
         events: moduleEvents,
