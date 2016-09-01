@@ -18,14 +18,25 @@ public class TravelQuoteRequest {
 
     private String clientIp;
     private PolicyType policyType;
-    private boolean mobileUrls = false;
-    private int numberOfAdults;
-    private int numberOfChildren;
+
     private String firstName;
     private String lastName;
 
+    private List<Traveller> travellers;
+
+    @Deprecated
+    private boolean mobileUrls = false;
+
+    @Deprecated
+    private int numberOfAdults;
+
+    @Deprecated
+    private int numberOfChildren;
+
+    @Deprecated
     @JsonSerialize(contentUsing = LocalDateSerializer.class)
     private List<LocalDate> travellersDOB;
+
     private ArrayList<String> providerFilter = new ArrayList<String>();
     private SingleTripDetails singleTripDetails;
 
@@ -46,6 +57,14 @@ public class TravelQuoteRequest {
 
     public void setPolicyType(PolicyType policyType) {
         this.policyType = policyType;
+    }
+
+    public List<Traveller> getTravellers() {
+        return travellers;
+    }
+
+    public void setTravellers(List<Traveller> travellers) {
+        this.travellers = travellers;
     }
 
     public boolean getMobileUrls() {

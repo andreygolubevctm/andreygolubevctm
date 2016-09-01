@@ -11,10 +11,7 @@ import com.ctm.web.travel.quote.model.response.Benefit;
 import com.ctm.web.travel.quote.model.response.TravelQuote;
 import com.ctm.web.travel.quote.model.response.TravelResponseV2;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ResponseAdapterV2 {
 
@@ -41,12 +38,17 @@ public class ResponseAdapterV2 {
                 result.setProductId(travelQuote.getProductId());
                 result.setTrackCode(String.valueOf(travelQuote.getTrackCode()));
 
+                results.add(result);
+
+                if (travelQuote.isAvailable()) {
+                    continue;
+                }
                 result.setName(travelQuote.getProduct().getShortTitle());
-                result.setPrice(travelQuote.getPrice());
-                result.setPriceText(travelQuote.getPriceText());
                 result.setInfoDes(travelQuote.getProduct().getDescription());
                 result.setSubTitle(travelQuote.getProduct().getPdsUrl());
 
+                result.setPrice(travelQuote.getPrice());
+                result.setPriceText(travelQuote.getPriceText());
                 result.setIsDomestic(travelQuote.getIsDomestic());
 
 
@@ -212,7 +214,6 @@ public class ResponseAdapterV2 {
 
                 result.setEncodeUrl(travelQuote.isEncodeQuoteUrl() ? "Y" : "N");
 
-                results.add(result);
             }
 
         }

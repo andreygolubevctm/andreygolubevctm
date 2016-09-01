@@ -2,9 +2,13 @@ package com.ctm.web.travel.quote.model;
 
 import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.form.TravelRequest;
-import com.ctm.web.travel.quote.model.request.PolicyType;
-import com.ctm.web.travel.quote.model.request.SingleTripDetails;
-import com.ctm.web.travel.quote.model.request.TravelQuoteRequest;
+import com.ctm.web.travel.quote.model.request.*;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static com.ctm.web.core.utils.common.utils.LocalDateUtils.parseAUSLocalDate;
 
@@ -25,9 +29,18 @@ public class RequestAdapterV2 {
         // Convert front end quote request to travel-quote request
         TravelQuoteRequest quoteRequest = new TravelQuoteRequest();
 
-        quoteRequest.setTravellersDOB(quote.getTravellers().getTravellersDOB());
-        quoteRequest.setNumberOfAdults(quote.getAdults());
-        quoteRequest.setNumberOfChildren(quote.getChildren());
+        final List<Traveller> travellers = new ArrayList<>();
+
+        quote.getTravellers().getTravellersDOB()
+                .stream()
+                .map(dob -> createTraveller(TravellerType.ADULT, Optional.of(dob)))
+                .forEach(travellers::add);
+
+        IntStream.range(0, quote.getChildren())
+                .mapToObj(i -> createTraveller(TravellerType.CHILD, Optional.empty()))
+                .forEach(travellers::add);
+
+        quoteRequest.setTravellers(travellers);
 
         if(quote.getPolicyType().equals("S")){
             quoteRequest.setPolicyType(PolicyType.SINGLE);
@@ -53,6 +66,13 @@ public class RequestAdapterV2 {
 
         return quoteRequest;
 
+    }
+
+    protected static Traveller createTraveller(TravellerType travellerType, Optional<LocalDate> dateOfBirth) {
+        final Traveller traveller = new Traveller();
+        traveller.setTravellerType(travellerType);
+        dateOfBirth.ifPresent(traveller::setDateOfBirth);
+        return traveller;
     }
 
 }
