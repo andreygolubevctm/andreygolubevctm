@@ -956,8 +956,7 @@
         publishExtraSuperTagEvents: publishExtraSuperTagEvents,
         setLhcApplicable: setLhcApplicable,
         resultsStepIndex: resultsStepIndex,
-        setSelectedBenefitsList: setSelectedBenefitsList,
-        hideNavigationLink: hideNavigationLink
+        setSelectedBenefitsList: setSelectedBenefitsList
     });
 
 })(jQuery);
