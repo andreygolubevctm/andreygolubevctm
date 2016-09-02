@@ -40,7 +40,7 @@ public class ResponseAdapterV2 {
 
                 results.add(result);
 
-                if (travelQuote.isAvailable()) {
+                if (!travelQuote.isAvailable()) {
                     continue;
                 }
                 result.setName(travelQuote.getProduct().getShortTitle());
