@@ -96,8 +96,7 @@
     }
 
     function flushHiddenBenefits() {
-        var $hospitalSection = $('.Hospital_container').closest('fieldset'),
-            $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
+        var $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
 
         $allHospitalButtons.not(':visible').each(function() {
             $(this).prop('checked', false).attr('checked', null).prop('disabled', false).change();
