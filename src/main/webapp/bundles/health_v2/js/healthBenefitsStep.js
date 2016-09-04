@@ -95,6 +95,17 @@
         }
     }
 
+    function flushHiddenBenefits() {
+        var $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
+
+        $allHospitalButtons.not(':visible').each(function() {
+            $(this).prop('checked', false).attr('checked', null).prop('disabled', false).change();
+        });
+        $extrasSection.find('input[type="checkbox"]').not(':visible').each(function() {
+            $(this).prop('checked', false).attr('checked', null).change();
+        });
+    };
+
     function resetDefaultCover() {
         $('.hospitalCoverToggles.' + (meerkat.modules.deviceMediaState.get() === 'xs' ? 'visible-xs' : 'hidden-xs') + ' a.benefit-category.active').trigger('click');
     }
@@ -419,7 +430,8 @@
         syncAccidentOnly: syncAccidentOnly,
         populateBenefitsSelection: populateBenefitsSelection,
         getHospitalBenefitsModel: getHospitalBenefitsModel,
-        getExtraBenefitsModel: getExtraBenefitsModel
+        getExtraBenefitsModel: getExtraBenefitsModel,
+        flushHiddenBenefits : flushHiddenBenefits
     });
 
 })(jQuery);
