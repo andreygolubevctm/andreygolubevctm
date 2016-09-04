@@ -102,9 +102,16 @@
                                     </c:if>
                                 </c:when>
                                 <c:otherwise>
-									<c:set var="analyticsLabelAttr"><field_v1:analytics_attr analVal="benefit ${item.getShortlistKey()}" quoteChar="\"" /></c:set>
+									<c:set var="resultPath" value="${item.getResultPath()}" />
+									<c:set var="benefitGroup">
+										<c:choose>
+											<c:when test="${not empty resultPath and fn:startsWith(resultPath,'hospital')}">hospital</c:when>
+											<c:when test="${not empty resultPath and fn:startsWith(resultPath,'extras')}">extras</c:when>
+										</c:choose>
+									</c:set>
+									<c:set var="analyticsLabelAttr"><field_v1:analytics_attr analVal="benefit ${benefitGroup}" quoteChar="\"" /></c:set>
 									<c:set var="analyticsHelpAttr"><field_v1:analytics_attr analVal="qtip ${item.getShortlistKey()}" quoteChar="\"" /></c:set>
-                                    <field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}"/>
+									<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true" title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}"/>
                                 </c:otherwise>
                             </c:choose>
 
@@ -134,7 +141,14 @@
 
 											<%--<health_v3:benefitsItem item="${selectedValue}" />--%>
 											<div class="categoriesCell ${colWidthValue} short-list-item ${selectedValue.getClassString()} ${selectedValue.getShortlistKey()}_container">
-											<c:set var="analyticsLabelAttr"><field_v1:analytics_attr analVal="benefit ${selectedValue.getShortlistKey()}" quoteChar="\"" /></c:set>
+											<c:set var="resultPath" value="${selectedValue.getResultPath()}" />
+											<c:set var="benefitGroup">
+												<c:choose>
+													<c:when test="${not empty resultPath and fn:startsWith(resultPath,'hospital')}">hospital</c:when>
+													<c:when test="${not empty resultPath and fn:startsWith(resultPath,'extras')}">extras</c:when>
+												</c:choose>
+											</c:set>
+											<c:set var="analyticsLabelAttr"><field_v1:analytics_attr analVal="benefit ${benefitGroup}" quoteChar="\"" /></c:set>
 											<c:set var="analyticsHelpAttr"><field_v1:analytics_attr analVal="qtip ${selectedValue.getShortlistKey()}" quoteChar="\"" /></c:set>
 
 											<%-- This is a duplicate of the row above and needs to be cleaned up in the .less--%>
