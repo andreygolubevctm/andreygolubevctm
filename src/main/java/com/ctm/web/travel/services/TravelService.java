@@ -90,6 +90,7 @@ public class TravelService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(TravelResponseV2.class)
                     .build())
+                    .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
 
             travelResults = ResponseAdapterV2.adapt(travelQuoteRequest, travelResponse);
@@ -116,6 +117,7 @@ public class TravelService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(TravelResponse.class)
                     .build())
+                    .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
 
             // Convert travel-quote java model to front end model ready for JSON conversion to the front end.
