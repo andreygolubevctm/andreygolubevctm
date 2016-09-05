@@ -5,7 +5,8 @@
     var events = {
             tracking: {
                 TOUCH: 'TRACKING_TOUCH',
-                EXTERNAL: 'TRACKING_EXTERNAL'
+                EXTERNAL: 'TRACKING_EXTERNAL',
+                STEP_VALIDATION_ERROR: 'STEP_VALIDATION_ERROR'
             }
         },
         moduleEvents = events.tracking;
@@ -201,6 +202,37 @@
 
         meerkat.messaging.subscribe(moduleEvents.EXTERNAL, runTrackingCall);
 
+        meerkat.messaging.subscribe(moduleEvents.STEP_VALIDATION_ERROR, function(step, errorList) {
+            console.log('STEP_VALIDATION_ERROR');
+            // console.log('errorList', errorList);
+            if (errorList.length) {
+                var filteredErrorList = errorList.filter(function(errorObj) {
+                    var $element = $(errorObj.element);
+
+                    return !$element.hasClass('dontSubmit') ? true : false;
+                });
+
+                var errorTrackingArr = [];
+
+                filteredErrorList.slice(0,5).forEach(function (errorObj) {
+                    var $element = $(errorObj.element),
+                        trackingObj = {
+                            method: 'errorTracking',
+                            object: {
+                                inputLabel: getInputLabel($element),
+                                validationMessage: errorObj.message,
+                                inputValue: getInputValue($element)
+                            }
+                        };
+                    runTrackingCall(trackingObj);
+
+                    errorTrackingArr.push(trackingObj);
+                });
+
+                console.log('ERROR_TRACKING', errorTrackingArr);
+            }
+        });
+
         $(document).ready(function () {
 
             initLastFieldTracking();
@@ -211,6 +243,56 @@
             }
         });
 
+    }
+
+    function getInputType($element) {
+        var inputType = $element.attr('type');
+
+        if ($element.is('select')) {
+            inputType = 'select';
+        } else if ($element[0].hasAttribute('data-rule-dateEUR')) {
+            inputType = 'date';
+        }
+
+        return inputType;
+        // return $element.is('select') ? 'select' : $element.attr('type');
+    }
+
+    function getInputLabel($element) {
+        var inputName = $element[0].name;
+        return $('label.control-label[for='+inputName+']').text();
+    }
+
+    function getInputValue($element) {
+        var inputType = getInputType($element),
+            value;
+
+        switch (inputType) {
+            case 'checkbox':
+            case 'radio':
+            case 'select':
+                value = $($element[0].name).is(':checked') === false ? 'no selection' : $element.val();
+                break;
+
+            case 'date':
+                value = getDateValue($element);
+                break;
+
+            default:
+                value = $element.val();
+                break;
+        }
+
+        return value;
+    }
+
+    function getDateValue($element) {
+        var inputId = $element[0].id,
+            day = $('#' + inputId + 'InputD').val() ? $('#' + inputId + 'InputD').val() : 'DD',
+            month = $('#' + inputId + 'InputM').val() ? $('#' + inputId + 'InputM').val() : 'MM',
+            year = $('#' + inputId + 'InputY').val() ? $('#' + inputId + 'InputY').val() : 'YYYY';
+
+        return day + ' ' + month + ' ' + year;
     }
 
     function runTrackingCall(eventObject, override) {

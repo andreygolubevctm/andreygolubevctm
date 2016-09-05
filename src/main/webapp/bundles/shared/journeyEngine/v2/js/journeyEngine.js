@@ -542,11 +542,13 @@
 				// Mark fields as visible
 				meerkat.modules.form.markFieldsAsVisible($slide);
 
-				var isValid = true;
+				var isValid = true,
+					errorList = [];
 				$slide.find( "form" ).each(function( index, element ) {
 					var $element = $(element);
 					var formValid = $element.valid();
 					if(formValid === false) isValid = false;
+					errorList = $.merge(errorList, $element.validate().errorList);
 				});
 
 				if(isAlreadyVisible === false) $slide.removeClass("active").addClass('hiddenSlide');
@@ -554,7 +556,7 @@
 					if(typeof failureCallback === 'function') {
 						failureCallback();
 					}
-					meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step);
+					meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step, errorList);
 					throw "Validation failed on "+step.navigationId;
 				}
 			}
@@ -568,7 +570,7 @@
 						if(typeof failureCallback === 'function') {
 							failureCallback();
 						}
-						meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step);
+						meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step, errorList);
 						throw "Custom validation failed on "+step.navigationId;
 					}
 				});
@@ -601,7 +603,6 @@
 	}
 
 	function onSlideControlClick(eventObject) {
-
 		var $target = $(eventObject.currentTarget);
 
 		// If button is disabled do not action it

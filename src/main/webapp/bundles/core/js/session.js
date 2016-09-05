@@ -11,8 +11,11 @@
 		countDownInterval = null,
 		// A counter for failed AJAX requests
 		// Lets us retry poking the server 3 times before calling it quits
-		ajaxRequestTimeoutCount = 0;	
-		firstPoke = true;
+		ajaxRequestTimeoutCount = 0,
+		firstPoke = true,
+		moduleEvents = {
+			EXTERNAL: 'TRACKING_EXTERNAL'
+		};
 	
 	function init() {
 		// Don't run the initial setup if Simples is present
@@ -21,7 +24,7 @@
 			// Initialize session poke for the first time using the default window timeout
 			// This ensures a failed first poke will still timeout after the default duration
 			updateTimeout(meerkat.site.session.windowTimeout);
-			
+
 			// Get the proper timeout as specified by the server
 			poke().done(function firstPokeDone(data) { 
 				firstPoke = false;
@@ -127,7 +130,7 @@
 	 * Can be done manually (as seen in init() and comms.js) or as part of poke()
 	 * @param timeout int
 	 */
-	function updateTimeout(timeout) {		
+	function updateTimeout(timeout) {
 		if(timeout > 0) {
 			lastClientPoke = getClientTimestamp();
 			window.clearTimeout(windowTimeout);
@@ -140,6 +143,7 @@
 			if (!firstPoke) {
 				if(isModalOpen) {
 					showModal(false);
+					meerkat.messaging.publish(moduleEvents.EXTERNAL, { method: 'quoteTimeout' });
 				} else {
 					showModal(true);
 				}

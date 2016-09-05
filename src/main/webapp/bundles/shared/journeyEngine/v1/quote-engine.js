@@ -304,7 +304,7 @@ QuoteEngine = {
         return $el.val() || "";
     },
     logValidationErrors: function () {
-        var data = [], i = 0;
+        var data = [], i = 0, errorList = [];
 
         data.push({
             name: 'stepId',
@@ -325,16 +325,32 @@ QuoteEngine = {
             if (typeof xpath === 'undefined') {
                 return;
             }
+            var value = QuoteEngine.getValueFromElement($(':input[name=' + xpath + ']')),
+                message = $(this).text();
             data.push({
                 name: xpath,
-                value: QuoteEngine.getValueFromElement($(':input[name=' + xpath + ']')) + "::" + $(this).text()
+                value: value + "::" + message
             });
+
+            if (i < 5) {
+                errorList.push({
+                    method: 'errorTracking',
+                    object: {
+                        validationMessage: message,
+                        inputValue: value
+                    }
+                });
+            }
+
             i++;
         });
 
         if (i === 0) {
             return false;
         }
+
+        // TODO: track validation error
+        console.log('track validation error', errorList);
 
         return $.ajax({
             type: 'POST',
