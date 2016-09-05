@@ -9,9 +9,19 @@
     {{ for(var i = 0; i < featureIterator.length; i++) { var ft = module.getItem(obj, featureIterator[i]); if(ft.doNotRender === true) { continue; } }}
     <div class="cell {{= ft.classString }}">
         {{ if(ft.displayItem) { }}
-        {{ if(ft.type == 'category') { }}<div class="labelInColumn {{= ft.classStringForInlineLabel }} " {{=ft.labelInColumnTitle }}>
+        {{ if(ft.type == 'category') { }}
+        {{ var resultPath = ft.resultPath; }}
+        {{ var benefitGroup = ''; }}
+        {{ if(!_.isEmpty(resultPath)) { }}
+        {{      if(resultPath.indexOf('hospital') === 0) { }}
+        {{          benefitGroup = 'hospital'; }}
+        {{      } else if (resultPath.indexOf('extras') === 0) { }}
+        {{          benefitGroup = 'extras'; }}
+        {{      } }}
+        {{ } }}
+        <div class="labelInColumn {{= ft.classStringForInlineLabel }} " {{=ft.labelInColumnTitle }}>
             <div class="content {{= ft.labelInColumnContentClass }}" data-featureId="{{= ft.id }}">
-                <div class="contentInner">
+                <div class="contentInner" data-analytics="compare BL {{= benefitGroup }}">
                     <span class="health-icon {{= ft.iconClass }}"></span> {{= ft.safeName }} {{ if(ft.isRestricted) { }}<sup title="Restricted">#</sup>{{ } }} {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
                 </div>
             </div>

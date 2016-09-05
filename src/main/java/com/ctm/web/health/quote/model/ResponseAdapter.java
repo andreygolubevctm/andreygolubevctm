@@ -212,9 +212,12 @@ public class ResponseAdapter {
         if (specialOffer != null) {
             sb.append(StringUtils.trimToEmpty(specialOffer.getSummary()));
             if (StringUtils.isNotBlank(specialOffer.getTerms())) {
-                sb.append("<p>").append("<a class=\"dialogPop\" data-content=\"")
-                        .append(StringEscapeUtils.escapeHtml4(specialOffer.getTerms()))
-                        .append("\" title=\"Conditions\">")
+                sb.append("<p>")
+                        .append("<a class=\"dialogPop\"")
+                        .append(" data-content=\"" + StringEscapeUtils.escapeHtml4(specialOffer.getTerms()) + "\"")
+                        .append(" title=\"Conditions\"")
+                        .append(" data-analytics=\"view conditions\"")
+                        .append(">")
                         .append("^ Conditions")
                         .append("</a>")
                         .append("</p>");

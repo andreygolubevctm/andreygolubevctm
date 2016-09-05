@@ -165,9 +165,12 @@
         keyDownTimeout,
         fuelLocation,
         $fuelLocation,
+        $fuelFieldsWidget,
         preventLookup = true,
         markerZIndexOrder = [0, 5, 4, 3, 2, 1];
 
+    var resizeMessage,
+        $signupEmail = $('#fuel_signup_email');
 
     function initFuelMap() {
         $(document).ready(function ($) {
@@ -175,9 +178,19 @@
             $xsInfoWindow = $('#info-window-container-xs');
             $fuelLocation = $('#fuel_location');
             fuelLocation = document.getElementById('fuel_location');
+            $fuelFieldsWidget = $('.fuel-fields-widget');
             setMapHeight();
             markerTemplate = _.template($('#map-marker-template').html());
-            meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, setMapHeight);
+            resizeMessage = meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, setMapHeight);
+
+            // fix for Android, stopping it from resizing the map when virtual keyboard is shown
+            if (meerkat.modules.performanceProfiling.isAndroid) {
+                $signupEmail.on('focus', function () {
+                    meerkat.messaging.unsubscribe(meerkatEvents.device.RESIZE_DEBOUNCED, resizeMessage);
+                }).on('blur', function () {
+                    resizeMessage = meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, setMapHeight);
+                });
+            }
         });
     }
 
@@ -208,6 +221,7 @@
             initAutoComplete();
             initInfoWindowProperties();
             initPreload();
+            $('#fuel-signup').removeClass('invisible');
         } catch (e) {
             _handleError(e, "fuel.js:initCallback");
         }
@@ -265,13 +279,13 @@
             }
             currentZoom = newZoom;
             addToHistory();
+            toggleFieldRows(false);
         });
         google.maps.event.addListener(map, 'dragend', function (event) {
             getResults();
             addToHistory();
+            toggleFieldRows(false);
         });
-
-
     }
 
     function initPreload() {
@@ -593,8 +607,11 @@
         });
 
         google.maps.event.addListener(marker, 'click', function (event) {
-            openInfoWindow(marker, info);
-            drawClickedMarker(event.latLng, bandId);
+            toggleFieldRows(false);
+            _.defer(function () {
+                openInfoWindow(marker, info);
+                drawClickedMarker(event.latLng, bandId);
+            });
         });
 
         return marker;
@@ -649,11 +666,14 @@
         _.defer(function () {
             var isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false,
                 $header = $('header'),
+                $resultsSidebar = $('#results-sidebar'),
+                $fuelSignupLink = $('.fuel-signup-link'),
+                $fuelSignup = $('#fuel-signup'),
                 heightToSet;
             if (isXS) {
-                heightToSet = window.innerHeight - $header.height() - $('#results-sidebar').height() - 36 - $xsInfoWindow.height();
+                heightToSet = window.innerHeight - $header.height() - $resultsSidebar.height() - 36 - $xsInfoWindow.height() - $fuelSignupLink.outerHeight();
             } else {
-                heightToSet = window.innerHeight - $header.height();
+                heightToSet = window.innerHeight - $header.height() - $fuelSignup.outerHeight();
                 heightToSet = heightToSet < MIN_MAP_HEIGHT ? MIN_MAP_HEIGHT : heightToSet;
             }
             /* TODO: minus footer signup box */
@@ -737,6 +757,13 @@
 
     }
 
+    function toggleFieldRows(state) {
+        if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            $fuelFieldsWidget.toggleClass('show-fieldrows', state);
+            setMapHeight();
+        }
+    }
+
     meerkat.modules.register("fuelMap", {
         init: initFuelMap,
         events: moduleEvents,
@@ -746,7 +773,8 @@
         getMarkers: getMarkers,
         plotMarkers: plotMarkers,
         addToHistory: addToHistory,
-        setInitialHash: setInitialHash
+        setInitialHash: setInitialHash,
+        toggleFieldRows: toggleFieldRows
     });
 
 })(jQuery);

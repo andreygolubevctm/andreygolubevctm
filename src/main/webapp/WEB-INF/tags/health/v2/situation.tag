@@ -40,8 +40,9 @@
             <form_v3:fieldset id="healthAboutYou" legend="About you" postLegend="${subText}" className="health-about-you">
 
 				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="about you" quoteChar="\"" /></c:set>
 				<form_v3:row label="You are a" fieldXpath="${fieldXpath}" className="health-cover">
-					<field_v2:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" />
+					<field_v2:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" additionalAttributes="${analyticsAttr}" />
 				</form_v3:row>
 
 				<%-- If the user is coming via a broucherware site where by a state is passed in instead of a postcode, then only show state selection --%>
@@ -108,6 +109,7 @@
 					</c:forEach>
 				</c:set>
 				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="looking for" quoteChar="\"" /></c:set>
 				<form_v3:row label="You're looking to" fieldXpath="${fieldXpath}">
 					<field_v2:array_radio xpath="${fieldXpath}"
 										  required="true"
@@ -115,7 +117,8 @@
 										  items="${items}"
 										  style="group-tile"
 										  id="${go:nameFromXpath(fieldXPath)}"
-										  title="reason you are looking to quote" />
+										  title="reason you are looking to quote"
+										  additionalLabelAttributes="${analyticsAttr}" />
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/addExtrasCover" />
@@ -133,13 +136,15 @@
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/primary/cover" />
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="health insurance status" quoteChar="\"" /></c:set>
 				<form_v3:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
-					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover"/>
+					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover" additionalLabelAttributes="${analyticsAttr}"/>
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/primary/healthCoverLoading" />
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="continuous cover" quoteChar="\"" /></c:set>
 				<form_v3:row label="Have you had continuous hospital cover since 1 July ${continuousCoverYear} or 1 July following your 31st birthday?" fieldXpath="${fieldXpath}" id="health-continuous-cover-primary" className="health-your_details-opt-group" helpId="239">
-					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your health cover loading" required="true" id="${name}_health_cover_loading" className="loading"/>
+					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your health cover loading" required="true" id="${name}_health_cover_loading" className="loading" additionalLabelAttributes="${analyticsAttr}"/>
 				</form_v3:row>
 
 				<c:if test="${callCentre}">
@@ -157,13 +162,15 @@
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/partner/cover" />
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="partner health insurance status" quoteChar="\"" /></c:set>
 				<form_v3:row label="Does your partner currently hold private health insurance?" fieldXpath="${fieldXpath}"  id="${name}_partnerCover">
-					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_partner_health_cover"/>
+					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_partner_health_cover" additionalLabelAttributes="${analyticsAttr}" />
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/partner/healthCoverLoading" />
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="partner continuous cover" quoteChar="\"" /></c:set>
 				<form_v3:row label="Has your partner had continuous hospital cover since 1 July ${continuousCoverYear} or 1 July following their 31st birthday?" fieldXpath="${fieldXpath}" id="health-continuous-cover-partner" className="health-your_details-opt-group" helpId="239">
-					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your partner's health cover loading" required="true" id="${name}_partner_health_cover_loading" className="loading"/>
+					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your partner's health cover loading" required="true" id="${name}_partner_health_cover_loading" className="loading" additionalLabelAttributes="${analyticsAttr}" />
 				</form_v3:row>
 
 				<c:if test="${callCentre}">
@@ -176,8 +183,9 @@
 			<simples:dialogue id="26" vertical="health" mandatory="true" />
 			<form_v3:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians can reduce their upfront health insurance costs by applying the Government Rebate.">
 				<c:set var="fieldXpath" value="${xpath}/rebate" />
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="rebate application" quoteChar="\"" /></c:set>
 				<form_v3:row label="Would you like to reduce your upfront premium by applying the rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
-					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate btn-group-wrap"/>
+					<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate btn-group-wrap" additionalLabelAttributes="${analyticsAttr}" />
 				</form_v3:row>
 
 				<c:if test="${callCentre}">
@@ -193,8 +201,9 @@
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/income" />
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="rebate income level" quoteChar="\"" /></c:set>
 				<form_v3:row label="To receive the correct rebate, please select your expected annual income?" fieldXpath="${fieldXpath}" id="${name}_tier">
-					<field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_cover_details_income"/>
+					<field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_cover_details_income" extraDataAttributes="${analyticsAttr}" />
 					<span class="fieldrow_legend" id="${name}_incomeMessage"></span>
 					<c:set var="income_label_xpath" value="${xpath}/incomelabel" />
 					<div class="fieldrow_legend" id="health_healthCover_tier_row_legend"></div>
@@ -219,6 +228,7 @@
 				<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 				<div class="health-contact-details-optin-group">
 					<div class="col-xs-12">
+						<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="combined optin" quoteChar="\"" /></c:set>
 						<field_v2:checkbox
 								xpath="${pageSettings.getVerticalCode()}/contactDetails/optin"
 								value="Y"
@@ -226,7 +236,9 @@
 								required="true"
 								label="${true}"
 								title="${termsAndConditions}"
-								errorMsg="Please agree to the Terms &amp; Conditions" />
+								errorMsg="Please agree to the Terms &amp; Conditions"
+								additionalLabelAttributes="${analyticsAttr}"
+						/>
 					</div>
 				</div>
 			</c:if>

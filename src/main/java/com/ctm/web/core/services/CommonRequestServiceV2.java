@@ -16,10 +16,12 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Optional;
 
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.model.settings.ConfigSetting.ALL_BRANDS;
 import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.ALL_PROVIDERS;
 import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope.SERVICE;
@@ -108,6 +110,18 @@ public class CommonRequestServiceV2 {
 
     protected ServiceConfiguration getServiceConfiguration(String service, Brand brand, String verticalCode) throws DaoException, ServiceConfigurationException {
         return serviceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode));
+    }
+
+    public void logHttpClientError(Throwable t) {
+        if (t instanceof HttpClientErrorException) {
+            HttpClientErrorException exception = (HttpClientErrorException) t;
+            LOGGER.error("Backend Exception thrown {} {} {} ",
+                    kv("httpStatusCode", exception.getStatusCode()),
+                    kv("httpStatusText", exception.getStatusText()),
+                    kv("message", exception.getResponseBodyAsString()));
+        } else {
+            LOGGER.error("Backend Exception thrown", t);
+        }
     }
 
     public <QUOTE> void validateRequest(RequestWithQuote<QUOTE> data, String verticalCode) {
