@@ -164,13 +164,16 @@ public class FundDataAdapter {
 
     protected static Eligibility createEligibilityQtu(Optional<Qtu> qtu) {
         if (qtu.isPresent()) {
-            return new Eligibility(
-                    qtu.map(Qtu::getEligibility)
+            return Eligibility.newBuilder()
+                    .eligibilityReasonID(
+                            qtu.map(Qtu::getEligibility)
                             .map(EligibilityReasonID::new)
-                            .orElse(null),
-                    qtu.map(Qtu::getUnion)
-                            .map(EligibilitySubReasonID::new)
-                            .orElse(null));
+                            .orElse(null))
+                    .eligibilitySubReasonID(
+                        qtu.map(Qtu::getUnion)
+                                .map(EligibilitySubReasonID::new)
+                                .orElse(null))
+                    .build();
         } else {
             return null;
         }
