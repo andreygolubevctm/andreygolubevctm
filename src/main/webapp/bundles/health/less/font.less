@@ -1,11 +1,10 @@
 @font-face {
 	font-family: 'ctm-health';
-	src:url('../../../../assets/fonts/ctm-health.eot?20160303');
-	src:url('../../../../assets/fonts/ctm-health.eot?20160303#iefix') format('embedded-opentype'),
-	url('../../../../assets/fonts/ctm-health.woff2?20160303') format('woff2'),
-	url('../../../../assets/fonts/ctm-health.ttf?20160303') format('truetype'),
-	url('../../../../assets/fonts/ctm-health.woff?20160303') format('woff'),
-	url('../../../../assets/fonts/ctm-health.svg?20160303#ctm-health') format('svg');
+	src:url('../../../../assets/fonts/ctm-health.eot?20160906');
+	src:url('../../../../assets/fonts/ctm-health.eot?20160906#iefix') format('embedded-opentype'),
+	url('../../../../assets/fonts/ctm-health.ttf?20160906') format('truetype'),
+	url('../../../../assets/fonts/ctm-health.woff?20160906') format('woff'),
+	url('../../../../assets/fonts/ctm-health.svg?20160906#ctm-health') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -56,6 +55,20 @@
 		}
 	}
 }
+
+/* TODO Temporarily descoped
+.setTileContent(".health-situation-healthCvr", 1, "\e939");
+.setTileContent(".health-situation-healthCvr", 2, "\e938");
+.setTileContent(".health-situation-healthCvr", 3, "\e93a");
+.setTileContent(".health-situation-healthCvr", 4, "\e93b");
+.setTileContent(".health-situation-healthCvr", 5, "\e93d");
+*/
+.setTileContent(".health-situation-healthSitu", 1, "\e934");
+.setTileContent(".health-situation-healthSitu", 2, "\e935");
+.setTileContent(".health-situation-healthSitu", 3, "\e93c");
+.setTileContent(".health-situation-healthSitu", 4, "\e937");
+.setTileContent(".health-situation-healthSitu", 5, "\e936");
+.setTileContent(".health-situation-healthSitu", 6, "\e93b");
 
 .styleBenefits(@labelClass) {
 	.benefitClass(HLTicon-hospital, @labelClass, "\e906");

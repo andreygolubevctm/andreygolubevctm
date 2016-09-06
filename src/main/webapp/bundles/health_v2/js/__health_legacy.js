@@ -132,8 +132,24 @@ var healthChoices = {
 
 	setCover : function(cover) {
 		healthChoices._cover = cover;
+
+		healthChoices.updateSituation();
 	},
 
+	updateSituation : function() {
+		var $familyTile = $('#health_situation_healthSitu_CSF').parent();
+		var html = $familyTile.html();
+
+		switch(this._cover) {
+			case 'F':
+			case 'SPF':
+   				html = html.replace('Start a family','Grow my family');
+				break;
+			default:
+				html = html.replace('Grow my family','Start a family');
+		};
+		$familyTile.html(html);
+	},
 	setSituation: function(situation, performUpdate) {
 		if (performUpdate !== false)
 			performUpdate = true;
