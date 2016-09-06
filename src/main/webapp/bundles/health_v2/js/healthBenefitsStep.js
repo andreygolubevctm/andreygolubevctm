@@ -95,6 +95,17 @@
         }
     }
 
+    function flushHiddenBenefits() {
+        var $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
+
+        $allHospitalButtons.not(':visible').each(function() {
+            $(this).prop('checked', false).attr('checked', null).prop('disabled', false).change();
+        });
+        $extrasSection.find('input[type="checkbox"]').not(':visible').each(function() {
+            $(this).prop('checked', false).attr('checked', null).change();
+        });
+    }
+
     function resetDefaultCover() {
         $('.hospitalCoverToggles.' + (meerkat.modules.deviceMediaState.get() === 'xs' ? 'visible-xs' : 'hidden-xs') + ' a.benefit-category.active').trigger('click');
     }
@@ -195,7 +206,7 @@
         var currentCover = 'customise',
             previousCover = 'customise',
             $hospitalBenefitsSection = $('.Hospital_container .children'),
-            $coverType = $('#health_benefits_covertype'),
+            $benefitsCoverType = $('#health_benefits_covertype'),
             $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
 
         $hospitalCoverToggles.on('click', function toggleHospitalCover() {
@@ -206,8 +217,8 @@
             $hospitalCoverToggles.removeClass('active').filter('[data-category="' + currentCover + '"]').addClass('active');
 
             // set the hidden field
-            $coverType.val(currentCover);
-            $limitedCoverHidden.val('');
+            $benefitsCoverType.val(currentCover);
+            $limitedCoverHidden.val('N');
 
             // uncheck all tickboxes
             $allHospitalButtons.prop('disabled', false);
@@ -225,7 +236,7 @@
                         $(this).prop('checked', false);
                     });
 
-                    $limitedCoverHidden.val('Y');
+                    $limitedCoverHidden.val('');
                     break;
                 default:
                     $hospitalBenefitsSection.slideDown();
@@ -242,9 +253,11 @@
                     $hospitalCoverButtons.each(function () {
                         $(this).prop('checked', true);
                     });
-                    $extrasCoverButtons.each(function () {
-                        $(this).prop('checked', true);
-                    });
+                    if(_.indexOf(['e','c'], $coverType.find('input:checked').val().toLowerCase()) >= 0) {
+                        $extrasCoverButtons.each(function () {
+                            $(this).prop('checked', true);
+                        });
+                    }
                     break;
             }
 
@@ -333,9 +346,9 @@
         var $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
 
         if ($('#accidentCover').is(":checked")) {
-            $limitedCoverHidden.val("Y");
-        } else {
             $limitedCoverHidden.val("");
+        } else {
+            $limitedCoverHidden.val("N");
         }
     }
 
@@ -419,7 +432,8 @@
         syncAccidentOnly: syncAccidentOnly,
         populateBenefitsSelection: populateBenefitsSelection,
         getHospitalBenefitsModel: getHospitalBenefitsModel,
-        getExtraBenefitsModel: getExtraBenefitsModel
+        getExtraBenefitsModel: getExtraBenefitsModel,
+        flushHiddenBenefits : flushHiddenBenefits
     });
 
 })(jQuery);

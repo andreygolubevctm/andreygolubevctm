@@ -41,24 +41,6 @@
 			<jsp:attribute name="progress_bar">
 			</jsp:attribute>
 
-			<jsp:attribute name="navbar">
-				<ul class="nav navbar-nav" role="menu">
-					<core_v2:offcanvas_header />
-					<li class="dropdown dropdown-interactive slide-feature-emailquote" id="email-quote-dropdown">
-						<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-							<span class="icon icon-envelope"></span>
-							<span>Sign Up for News and Offers!</span>
-							<b class="caret"></b>
-						</a>
-						<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-							<div class="dropdown-container">
-								<fuel:sign_up />
-							</div>
-						</div>
-					</li>
-				</ul>
-			</jsp:attribute>
-
 			<jsp:attribute name="navbar_additional"></jsp:attribute>
 
 			<jsp:attribute name="navbar_outer">
@@ -102,6 +84,8 @@
                 <div id="price-band-container-xs" class="price-bands visible-xs">
                     <fuel:price_bands_template />
                 </div>
+
+				<fuel:sign_up />
 			</jsp:body>
 
 		</layout_v1:journey_engine_page_fluid>

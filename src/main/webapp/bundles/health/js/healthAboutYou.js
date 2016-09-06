@@ -165,6 +165,21 @@
 				break;
 		}
 
+		if(meerkat.site.isCallCentreUser === true){
+			var $rebateLabel = $('.health_cover_details_rebate > label');
+
+			switch($healthSituationHealthCvr.val()) {
+				case 'C':
+				case 'F':
+				case 'SPF':
+					$rebateLabel.text('The Government provides a rebate which is based on your taxable income. So can I just confirm, do you earn below $180,000 a year as a household?');
+					break;
+				default:
+	                $rebateLabel.text('The Government provides a rebate which is based on your taxable income. So can I just confirm, do you earn below $90,000 a year?');
+					break;
+			}
+		}
+
 		togglePrimaryContinuousCover();
 		togglePartnerContinuousCover();
 	}

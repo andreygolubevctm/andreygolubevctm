@@ -117,7 +117,7 @@
 						</c:if>
 
 						<div class="rowAction">
-							<a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton" data-slide-control="next" href="javascript:;">Get Prices <span class="icon icon-arrow-right"></span></a>
+							<a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton" data-slide-control="next" href="javascript:;" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Prices <span class="icon icon-arrow-right"></span></a>
 						</div>
 					</div>
 				</div>

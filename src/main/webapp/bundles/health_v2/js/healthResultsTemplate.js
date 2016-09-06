@@ -81,7 +81,16 @@
      * @private
      */
     function _getHelpTooltip(ft) {
-        return ft.helpId !== '' && ft.helpId != '0' ? '<a href="javascript:void(0);" class="help-icon" data-content="helpid:' + ft.helpId + '" data-toggle="popover" data-my="right center" data-at="left center">(?)</a>' : '';
+        var attribute = '';
+        var analytics = {
+            "300" : "no COP",
+            "301" : "waiting period",
+            "303" : "excess waivers"
+        };
+        if(_.has(analytics, ft.helpId)) {
+            attribute = ' data-analytics="' + analytics[ft.helpId] + '"';
+        }
+        return ft.helpId !== '' && ft.helpId != '0' ? '<a href="javascript:void(0);" class="help-icon" data-content="helpid:' + ft.helpId + '" data-toggle="popover" data-my="right center" data-at="left center" ' + attribute + '>(?)</a>' : '';
     }
 
     /**
@@ -280,11 +289,15 @@
 
         // populate extras selections list with empty div
         if (numberOfSelectedExtras() === 0) {
-            $('.featuresListExtrasSelections .children').html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9997"><div class="contentInner">No extras selected</div></div></div></div>');
+            $('.featuresListExtrasSelections .children').html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9997"><div class="contentInner">No extras benefits selected</div></div></div></div>');
         }
 
-        if(numberOfSelectedHospitals() === 0 && meerkat.modules.health.getHospitalCoverLevel() != 'limited') {
-            $('.featuresListHospitalSelections .children').html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9996"><div class="contentInner">No hospital cover selected</div></div></div></div>');
+        if(numberOfSelectedHospitals() === 0) {
+            $('.featuresListHospitalSelections .children').each(function(){
+                if ($.trim($(this).html()) === '') {
+                    $(this).html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9996"><div class="contentInner">No hospital benefits selected</div></div></div></div>');
+                }
+            });
         }
 
     }
