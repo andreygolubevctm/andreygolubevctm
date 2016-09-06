@@ -24,7 +24,7 @@
             <div class="utility-bar-blank">&nbsp;</div>
             {{ } }}
             <div class="filter-component remove-result hidden-xs {{= hasCustomHeaderContent ? 'hasCustomHeaderContent' : ''}}" data-productId="{{= obj.productId }}">
-                <span class="icon icon-cross" title="Remove this product"></span>
+                <span class="icon icon-cross" title="Remove this product" <field_v1:analytics_attr analVal="remove {{= obj.info.provider }}" quoteChar="\"" />></span>
             </div>
         </div>
         <div class="results-header-inner-container">
@@ -36,7 +36,7 @@
                 {{= priceTemplate(obj) }}
             </div>
 
-            <a class="btn btn-cta btn-block btn-more-info more-info-showapply" href="javascript:;" data-productId="{{= productId }}">
+            <a class="btn btn-cta btn-block btn-more-info more-info-showapply" href="javascript:;" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>
                 <div class="more-info-text">More Info</div>
             </a>
             {{ var brochureTemplate = meerkat.modules.templateCache.getTemplate($("#brochure-download-template")); }}

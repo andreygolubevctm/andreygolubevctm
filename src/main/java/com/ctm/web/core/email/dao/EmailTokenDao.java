@@ -1,16 +1,13 @@
 package com.ctm.web.core.email.dao;
 
-
 import com.ctm.web.core.dao.DatabaseQueryMapping;
 import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.EmailMaster;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
 
 public class EmailTokenDao {
 
@@ -38,13 +35,7 @@ public class EmailTokenDao {
                     set(emailId);
                     set(emailTokenType);
                     set(action);
-                    set(0);
-                    set(new Date(System.currentTimeMillis()));
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(new java.util.Date());
-                    calendar.add(Calendar.DAY_OF_MONTH, expiryDays[0]);
-                    set(new Date(calendar.getTimeInMillis()));
+                    set(expiryDays[0]);
                 }
 
                 @Override
@@ -52,13 +43,16 @@ public class EmailTokenDao {
                     return null;
                 }
             }, "INSERT IGNORE INTO aggregator.email_token(`transactionId`, `emailId`, `emailTokenType`, `action`, `totalAttempts`, `effectiveStart`, `effectiveEnd`)" +
-                    " VALUES (?,?,?,?,?,?,?)");
+                    " VALUES (?,?,?,?, 0, CURDATE(), DATE_ADD(CURDATE(), INTERVAL ? DAY))" +
+                    " ON DUPLICATE KEY UPDATE totalAttempts=0, effectiveEnd=VALUES(effectiveEnd);"
+                    // When existing token found reset attempts and increase the expiry.
+            );
     }
 
     public EmailMaster getEmailDetails(Long transactionId, Long emailId, String emailTokenType, String action) throws DaoException {
         incrementTotalAttempts(transactionId, emailId, emailTokenType, action);
 
-        SqlDao<EmailMaster> sqlDao = new SqlDao();
+        SqlDao<EmailMaster> sqlDao = new SqlDao<>();
         return sqlDao.get(new DatabaseQueryMapping<EmailMaster>() {
             @Override
             protected void mapParams() throws SQLException {

@@ -15,10 +15,10 @@
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
                 <span class="helper-text">
-                    <a class="filter-remove hospital need-hospital {{=hiddenHospital }} {{=hiddenExtras }} btn btn-xs btn-danger">remove <span class="icon icon-cross"></span></a>
-                    <a class="filter-add hospital need-no-hospital {{=hiddenExtras }} {{=hiddenOnCombined }} btn btn-xs btn-add">add hospital <span class="icon icon-plus"></span></a>
+                    <a class="filter-remove hospital need-hospital {{=hiddenHospital }} {{=hiddenExtras }} btn btn-xs btn-danger" <field_v1:analytics_attr analVal="filter remove hospital" quoteChar="\"" />>remove <span class="icon icon-cross"></span></a>
+                    <a class="filter-add hospital need-no-hospital {{=hiddenExtras }} {{=hiddenOnCombined }} btn btn-xs btn-add" <field_v1:analytics_attr analVal="filter add hospital" quoteChar="\"" />>add hospital <span class="icon icon-plus"></span></a>
                 </span>
-                <span class="heading-text">Hospital cover</span>
+                <span class="heading-text">Hospital selections</span>
             </div>
             <div class="sidebar-intro-text need-no-hospital {{=hiddenExtras }} {{=hiddenOnCombined }}">
                 <p>Hospital cover enables you to choose your own doctor at the fund's partner hospitals, allowing you to avoid public hospital waiting lists</p>
@@ -28,11 +28,11 @@
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                 {{ var hidden = !object.selected ? ' hidden' : ''; }}
                 <div class="checkbox {{=object.class }} {{=hidden }}">
-                    <input type="checkbox" name="health_filterBar_benefitsHospital" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}">{{= object.label }}</label>
-                    <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1"><span class="text-hide">Need Help?</span></a>
+                    <input type="checkbox" name="health_filterBar_benefitsHospital" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}" <field_v1:analytics_attr analVal="filter hospital" quoteChar="\"" />>{{= object.label }}</label>
+                    <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1" <field_v1:analytics_attr analVal="filter qtip {{= object.value }}" quoteChar="\"" />><span class="text-hide">Need Help?</span></a>
                 </div>
                 {{ }) }}
-                <a href="javascript:void(0);" class="filter-toggle-all"><span class="text">add more selections</span> <span class="icon icon-angle-down"></span></a>
+                <a href="javascript:void(0);" class="filter-toggle-all"><span class="text"<field_v1:analytics_attr analVal="filter hospital" quoteChar="\"" />>add more selections</span> <span class="icon icon-angle-down"></span></a>
             </div>
 
         </div>
@@ -42,10 +42,10 @@
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
                 <span class="helper-text">
-                    <a class="filter-remove extras need-extras {{=hiddenHospital }} {{=hiddenExtras }} btn btn-xs btn-danger">remove <span class="icon icon-cross"></span></a>
-                    <a class="filter-add extras need-no-extras {{=hiddenHospital }} {{=hiddenOnCombined }} btn btn-xs btn-add">add extras <span class="icon icon-plus"></span></a>
+                    <a class="filter-remove extras need-extras {{=hiddenHospital }} {{=hiddenExtras }} btn btn-xs btn-danger" <field_v1:analytics_attr analVal="filter remove extras" quoteChar="\"" />>remove <span class="icon icon-cross"></span></a>
+                    <a class="filter-add extras need-no-extras {{=hiddenHospital }} {{=hiddenOnCombined }} btn btn-xs btn-add" <field_v1:analytics_attr analVal="filter add extras" quoteChar="\"" />>add extras <span class="icon icon-plus"></span></a>
                 </span>
-                <span class="heading-text">Extras cover</span>
+                <span class="heading-text">Extras selections</span>
             </div>
             <div class="sidebar-intro-text need-no-extras {{=hiddenHospital }} {{=hiddenOnCombined }} ">
                 <p>Extras cover gives you money back for day to day services like dental, optical and physiotherapy.</p>
@@ -55,11 +55,11 @@
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                 {{ var hidden = !object.selected ? ' hidden' : ''; }}
                 <div class="checkbox {{=object.class }} {{=hidden }}">
-                    <input type="checkbox" name="health_filterBar_benefitsExtras" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}">{{= object.label }}</label>
-                    <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1"><span class="text-hide">Need Help?</span></a>
+                    <input type="checkbox" name="health_filterBar_benefitsExtras" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}" <field_v1:analytics_attr analVal="filter extras" quoteChar="\"" />>{{= object.label }}</label>
+                    <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1" <field_v1:analytics_attr analVal="filter qtip {{= object.value }}" quoteChar="\"" />><span class="text-hide">Need Help?</span></a>
                 </div>
                 {{ }) }}
-                <a href="javascript:void(0);" class="filter-toggle-all"><span class="text">add more selections</span> <span class="icon icon-angle-down"></span></a>
+                <a href="javascript:void(0);" class="filter-toggle-all"><span class="text" <field_v1:analytics_attr analVal="filter extras" quoteChar="\"" />>add more selections</span> <span class="icon icon-angle-down"></span></a>
             </div>
         </div>
     </div>

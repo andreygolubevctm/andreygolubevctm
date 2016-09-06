@@ -22,6 +22,7 @@ import static com.ctm.web.health.model.HospitalSelection.BOTH;
 import static com.ctm.web.health.model.HospitalSelection.PRIVATE_HOSPITAL;
 import static com.ctm.web.health.model.ProductStatus.*;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 
 public class RequestAdapter {
@@ -55,7 +56,10 @@ public class RequestAdapter {
         addMembership(quoteRequest, situation);
         addSituationFilter(filters, situation);
 
-        Map<String, String> benefitsExtras = quote.getBenefits().getBenefitsExtras();
+        Map<String, String> benefitsExtras = Optional.ofNullable(quote)
+                .map(HealthQuote::getBenefits)
+                .map(Benefits::getBenefitsExtras)
+                .orElse(emptyMap());
         addProductType(quoteRequest, benefitsExtras);
         addHospitalSelection(quoteRequest, filters, benefitsExtras, situation);
         filters.setPreferencesFilter(getPreferences(benefitsExtras));
@@ -351,7 +355,7 @@ public class RequestAdapter {
     protected static Integer getProductId(Application application) {
         String productId = application.getProductId();
         if (StringUtils.startsWith(application.getProductId(), "PHIO-HEALTH-")) {
-             productId = StringUtils.remove(application.getProductId(), "PHIO-HEALTH-");
+            productId = StringUtils.remove(application.getProductId(), "PHIO-HEALTH-");
         }
         return Integer.parseInt(productId);
     }

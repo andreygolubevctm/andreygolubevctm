@@ -13,6 +13,7 @@
 <%@ attribute name="tabIndex" required="false" rtexprvalue="true" description="additional tab index specification" %>
 <%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
 <%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
+<%@ attribute name="additionalLabelAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}"/>

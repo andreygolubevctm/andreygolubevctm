@@ -178,7 +178,7 @@ var Results = {
 			},
 			templates:{
 				pagination:{
-					pageItem: '<li><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}">{{= label}}</a></li>',
+					pageItem: '<li><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>',
 					pageText: 'Page {{=currentPage}} of {{=totalPages}}'
 				}
 			},

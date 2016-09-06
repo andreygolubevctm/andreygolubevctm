@@ -15,11 +15,11 @@ import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.health.apply.model.RequestAdapter;
-import com.ctm.web.health.apply.model.RequestAdapterV2;
 import com.ctm.web.health.apply.model.request.HealthApplicationRequest;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
 import com.ctm.web.health.apply.model.response.HealthApplyResponse;
 import com.ctm.web.health.apply.model.response.HealthApplyResponsePrev;
+import com.ctm.web.health.apply.model.RequestAdapterV2;
 import com.ctm.web.health.model.form.HealthRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,6 +93,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(HealthApplyResponse.class)
                     .build())
+                    .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
 
         } else {
@@ -108,6 +109,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(HealthApplyResponsePrev.class)
                     .build())
+                    .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
             HealthApplyResponse healthApplyResponse = new HealthApplyResponse();
             healthApplyResponse.setTransactionId(response.getTransactionId());

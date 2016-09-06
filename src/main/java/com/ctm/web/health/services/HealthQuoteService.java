@@ -90,6 +90,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(HealthResponseV2.class)
                     .build())
+                    .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
 
             return ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent);
@@ -121,6 +122,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(HealthResponse.class)
                     .build())
+                    .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
 
 
@@ -213,6 +215,10 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
             case "1F6F87144375AD8BAED4D53F8CF5B":
                 entry.setCompetitionId(15);
                 entry.setSource("Feb2015HealthJEEPPromo");
+                break;
+            case "xX4525hUPPlooPmn1":
+                entry.setCompetitionId(35);
+                entry.setSource("1608Health$10000Promo");
                 break;
         }
     }

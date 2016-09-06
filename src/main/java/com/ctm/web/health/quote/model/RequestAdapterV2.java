@@ -22,6 +22,7 @@ import static com.ctm.web.health.model.HospitalSelection.BOTH;
 import static com.ctm.web.health.model.HospitalSelection.PRIVATE_HOSPITAL;
 import static com.ctm.web.health.model.ProductStatus.*;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 
 public class RequestAdapterV2 {
@@ -55,7 +56,10 @@ public class RequestAdapterV2 {
         addMembership(quoteRequest, situation);
         addSituationFilter(filters, situation);
 
-        Map<String, String> benefitsExtras = quote.getBenefits().getBenefitsExtras();
+        Map<String, String> benefitsExtras = Optional.ofNullable(quote)
+                                                .map(HealthQuote::getBenefits)
+                                                .map(Benefits::getBenefitsExtras)
+                                                .orElse(emptyMap());
         addProductType(quoteRequest, benefitsExtras);
         addHospitalSelection(quoteRequest, filters, benefitsExtras, situation);
         filters.setPreferencesFilter(getPreferences(benefitsExtras));
@@ -299,7 +303,7 @@ public class RequestAdapterV2 {
     }
 
     protected static void addSituationFilter(Filters filters, Situation situation) {
-        if(situation != null) {
+        if(situation != null && StringUtils.isNotBlank(situation.getAccidentOnlyCover())) {
             filters.setSituationFilter(toBoolean(situation.getAccidentOnlyCover()));
         }
     }
@@ -371,6 +375,12 @@ public class RequestAdapterV2 {
                     break;
                 case "Naturopath":
                     preferences.add("Naturopathy");
+                    break;
+                case "PrHospital":
+                    preferences.add("PrivateHospital");
+                    break;
+                case "GeneralHealth":
+                case "Hospital":
                     break;
                 default:
                     preferences.add(key);

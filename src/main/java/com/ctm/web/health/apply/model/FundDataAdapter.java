@@ -9,9 +9,7 @@ import com.ctm.web.health.apply.model.request.fundData.ProductId;
 import com.ctm.web.health.apply.model.request.fundData.Provider;
 import com.ctm.web.health.apply.model.request.fundData.benefits.Benefits;
 import com.ctm.web.health.apply.model.request.fundData.membership.*;
-import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.Eligibility;
-import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.EligibilityReasonID;
-import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.EligibilitySubReasonID;
+import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.*;
 import com.ctm.web.health.model.form.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -180,13 +178,26 @@ public class FundDataAdapter {
 
     protected static Eligibility createEligibility(Optional<Nhb> nhb) {
         if (nhb.isPresent()) {
-            return new Eligibility(
-                    nhb.map(Nhb::getEligibility)
-                        .map(EligibilityReasonID::new)
-                        .orElse(null),
-                    nhb.map(Nhb::getSubreason)
-                        .map(EligibilitySubReasonID::new)
-                        .orElse(null));
+            return Eligibility.newBuilder()
+                    // for v1
+                    .nhbEligibilityReasonID(
+                            nhb.map(Nhb::getEligibility)
+                            .map(NhbEligibilityReasonID::fromValue)
+                            .orElse(null))
+                    .nhbEligibilitySubReasonID(
+                            nhb.map(Nhb::getSubreason)
+                            .map(NhbEligibilitySubReasonID::fromValue)
+                            .orElse(null))
+                    // for v2
+                    .eligibilityReasonID(
+                            nhb.map(Nhb::getEligibility)
+                            .map(EligibilityReasonID::new)
+                            .orElse(null))
+                    .eligibilitySubReasonID(
+                            nhb.map(Nhb::getSubreason)
+                            .map(EligibilitySubReasonID::new)
+                            .orElse(null))
+                    .build();
         } else {
             return null;
         }

@@ -760,6 +760,18 @@
 					$otherField: $("#health_application_otherinput")
 				}
 			],
+			flexiPhoneV2: [
+				// flexiPhone from details step
+				{
+					$field: $("#health_contactDetails_flexiContactNumber"),
+					$fieldInput: $("#health_contactDetails_flexiContactNumberinput")
+				},
+				// otherPhone and mobile from quote step
+				{
+					$field: $("#health_contactDetails_contactNumber_mobile"),
+					$otherField: $("#health_contactDetails_contactNumber_other")
+				}
+			],
 			postcode: [
 				// postcode from details step
 				{ $field: $("#health_situation_postcode") },

@@ -24,7 +24,7 @@
         <core_v1:clear />
 
         <div id="provider-disclaimer" class="short-disclaimer">
-            <p><span class="hidden">Last updated <span class="time"></span> ago. </span><span class="supplier">Data supplied by Motormouth</span></p>
+            <p><span class="hidden">Last updated <span class="time"></span> ago. </span><span class="supplier">Data supplied by Informed Sources</span></p>
         </div>
 
         <div class="featuresFooterPusher"></div>
