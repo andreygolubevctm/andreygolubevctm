@@ -305,6 +305,15 @@
                 $benefitsList.find('.checkbox').removeClass('hidden').slideDown('fast');
             }
 
+            var $wrapper = $this.closest('.benefits-list');
+            var groupLabel = '';
+            if($wrapper.hasClass('need-hospital')) {
+                groupLabel = 'hospital';
+            } else if($wrapper.hasClass('need-extras')) {
+                groupLabel = 'extras';
+            }
+            $this.find('.text').attr('data-analytics','filter ' + groupLabel);
+
             $benefitsList.toggleClass('expanded');
             $this.find('.icon').toggleClass('icon-angle-up icon-angle-down');
             toggleBenefitsLink($benefitsList);
