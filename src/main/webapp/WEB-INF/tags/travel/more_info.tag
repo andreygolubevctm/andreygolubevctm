@@ -25,7 +25,7 @@
 				<table class="benefitsContainer">
 				<%-- loop through newly sorted alphabetical order. tag[1] returns medical, luggage etc... --%>
 				{{ $.each(obj.sorting, function(index, tag){ }}
-					{{ if((typeof obj.sorting[index] === 'object') && obj.sorting[index].value >= 0  ) { }}
+					{{ if((typeof obj.sorting[index] === 'object') && obj.sorting[index].hasOwnProperty('value') && obj.sorting[index].value >= 0  ) { }}
 						<tr>
 							<td class="col-xs-8 col-sm-6">{{= obj.sorting[index].desc }}</td>
 							<td class=" col-xs-4 col-sm-6">{{= obj.sorting[index].text }}</td>
