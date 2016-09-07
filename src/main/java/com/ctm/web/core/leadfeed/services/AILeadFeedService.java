@@ -19,6 +19,7 @@ import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.webservice.WebServiceUtils;
 import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.message.Message;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
@@ -89,6 +90,7 @@ public abstract class AILeadFeedService implements IProviderLeadFeedService {
 			final SSGatewaySoap ssGatewaySoap = ssGateway.getSSGatewaySoap();
 
 			Client client = (Client)ssGatewaySoap;
+			client.getRequestContext().put(Message.ENDPOINT_ADDRESS, serviceUrl);
 
 			WebServiceUtils.initProxy(client);
 			WebServiceUtils.setLogging(client, settings, transactionId, "AI_LEEDFEED");
