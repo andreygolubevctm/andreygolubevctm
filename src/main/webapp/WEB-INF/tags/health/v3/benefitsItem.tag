@@ -57,6 +57,8 @@
 	<c:set var="fieldsetClass">tieredHospitalCover</c:set>
 	<form_v2:fieldset legend="" postLegend="" className="${fieldsetClass}" >
 		<div class="scrollable row">
+			<field_v2:switch xpath="health/benefits/benefitsExtras/${coverType}" value="Y" className="switch-small" onText="&nbsp;" offText="" />
+
 			<div class="benefits-list col-sm-12">
 				<div class="row">
 					<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">
