@@ -1,45 +1,59 @@
+/**
+ * healthValidateBSB provides the functionality to validate
+ * BSB numbers entered for Simples users.
+ */
 ;(function($, undefined){
 
     var meerkat = window.meerkat,
         log = meerkat.logging.info,
         meerkatEvents = meerkat.modules.events;
 
-    var events = {},
-        moduleEvents = events;
-
-
+    /**
+     * Setup the page
+     */
     function initValidateBSB() {
         $(document).ready(function(){
             if (meerkat.site.isCallCentreUser) {
+                // Add listener to validate button
                 $('#bank-account-fields-group').find('.btn-validate').on('click', validate);
+                // Show/Hide rows depending if we have a BSB already
                 if (hasBSB()) {
                     showRows();
                 } else {
                     hideRows();
                 }
+            // Show hidden rows for non-Simples users
+            } else {
+                showRows();
             }
         });
     }
 
+    /**
+     * Make ajax call to service to validate BSB and update the
+     * view based on the response
+     */
     function validate() {
         if(hasBSB()) {
+            // Flush existing messages
             $('#bank-account-fields-group').find('.bsb-validator-messages').empty();
+            // Populate request data with BSB
             var data = {
-                bsb : $.trim($('#health_payment_bank_bsbinput').val())
+                bsbNumber : $.trim($('#health_payment_bank_bsbinput').val())
             };
-            meerkat.modules.comms.post({
-                /* TODO: update this url when known */
-                url: 'ajax/write/competition.jsp',
+            meerkat.modules.comms.get({
+                url: 'spring/bsbdetails',
                 data: data,
                 cache: false,
                 dataType: 'json',
                 useDefaultErrorHandling: false,
                 errorLevel: 'silent',
-                timeout: 30000,
+                timeout: 10000,
                 onSuccess: function onSubmitSuccess(resultData) {
-                    /* TODO: update response validation when structure known */
-                    if(resultData && _.isObject(resultData) && _.has(resultData,'success') && resultData.success) {
-                        $('#health_payment_bank_name').val(resultData.name);
+                    if(validateResponse(resultData)) {
+                        // Populate the form with validated values
+                        $('#health_payment_bank_bsb').val(resultData.bsbNumber);
+                        $('#health_payment_bank_name').val(resultData.branchName);
                         renderSuccess();
                     } else {
                         renderError();
@@ -48,20 +62,47 @@
                 onError: renderError
             });
         } else {
-            renderMessage("error","Please enter a BSB number");
+            renderMessage("error","Please enter a valid BSB number");
         }
     }
 
-    function renderSuccess(data) {
+    /**
+     * Verify the service response contains the min data to proceed
+     * @param response
+     * @returns {boolean}
+     */
+    function validateResponse(response) {
+        if(response && _.isObject(response)) {
+            if(_.has(response,'bsbNumber') && !_.isEmpty(response.bsbNumber)) {
+                if(_.has(response,'branchName') && !_.isEmpty(response.branchName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Render the SUCCESS message to the form
+     */
+    function renderSuccess() {
         renderMessage("success","This BSB matched successfully");
         showRows();
     }
 
+    /**
+     * Render the ERROR message to the form
+     */
     function renderError() {
         renderMessage("error", "The BSB wasn\'t recognised, please input manually");
         showRows();
     }
 
+    /**
+     * Common method for rendering messages to the page
+     * @param type
+     * @param copy
+     */
     function renderMessage(type,copy) {
         $('#bank-account-fields-group').find('.bsb-validator-messages').empty()
         .append(
@@ -69,16 +110,26 @@
         );
     }
 
+    /**
+     * Verify the BSB entered is valid
+     * @returns {boolean}
+     */
     function hasBSB() {
         var regex = new RegExp("^[0-9]{3}[- ]?[0-9]{3}$");
         var value = $('#health_payment_bank_bsbinput').val();
         return regex.test(value);
     }
 
+    /**
+     * Show hidden bank detail rows
+     */
     function showRows() {
         $('#bank-account-fields-group .bank-row').show();
     }
 
+    /**
+     * Hide bank detail rows
+     */
     function hideRows() {
         $('#bank-account-fields-group .bank-row').hide();
     }
