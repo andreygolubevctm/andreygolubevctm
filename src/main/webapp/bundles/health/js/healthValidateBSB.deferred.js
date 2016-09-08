@@ -56,7 +56,7 @@
             $('#bank-account-fields-group').find('.bsb-validator-messages').empty();
             // Populate request data with BSB
             var data = {
-                bsbNumber : $.trim($('#health_payment_bank_bsbinput').val())
+                bsbNumber : $.trim($('#health_payment_bank_bsb').val())
             };
             meerkat.modules.comms.get({
                 url: getServiceURL(),
@@ -69,7 +69,7 @@
                 onSuccess: function onSubmitSuccess(resultData) {
                     if(validateResponse(resultData)) {
                         // Populate the form with validated values
-                        $('#health_payment_bank_bsb').val(resultData.bsbNumber);
+                        $('#health_payment_bank_bsbinput').val(resultData.bsbNumber).trigger('blur');
                         $('#health_payment_bank_name').val(resultData.branchName);
                         renderSuccess();
                     } else {
