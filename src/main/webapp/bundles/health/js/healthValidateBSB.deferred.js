@@ -61,7 +61,7 @@
             meerkat.modules.comms.get({
                 url: getServiceURL(),
                 data: data,
-                cache: false,
+                cache: true,
                 dataType: 'json',
                 useDefaultErrorHandling: false,
                 errorLevel: 'silent',
@@ -69,6 +69,7 @@
                 onSuccess: function onSubmitSuccess(resultData) {
                     if(validateResponse(resultData)) {
                         // Populate the form with validated values
+                        meerkat.logger.debug(resultData);
                         $('#health_payment_bank_bsbinput').val(resultData.bsbNumber).trigger('blur');
                         $('#health_payment_bank_name').val(resultData.branchName);
                         renderSuccess();
