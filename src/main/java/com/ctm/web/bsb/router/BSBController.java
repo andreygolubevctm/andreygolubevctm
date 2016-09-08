@@ -1,15 +1,17 @@
-package com.ctm.web.simples.router;
+package com.ctm.web.bsb.router;
 
-import com.ctm.web.simples.model.BSBResponse;
+import com.ctm.web.bsb.services.BSBDetails;
+import com.ctm.web.bsb.services.BSBDetailsService;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * Created by akhurana on 8/09/2016.
@@ -18,9 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BSBController {
 
+    @Resource
+    private BSBDetailsService bsbDetailsService;
+
     @ApiOperation(value = "/bsbdetails", notes = "bsb", produces = "application/json")
     @RequestMapping(value = "/bsbdetails", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BSBResponse getBSBDetails(@RequestParam @NotNull final String bsbNumber) {
-        return new BSBResponse("032-639", "Greenhills Kiosk", "K123 Greenhills Shopping Cntre", "East Maitland", "2323", "NSW");
+    public BSBDetails getBSBDetails(@RequestParam @NotNull final String bsbNumber) {
+        return bsbDetailsService.getBsbDetailsByBsbNumber(bsbNumber);
     }
 }
