@@ -8,6 +8,8 @@
         log = meerkat.logging.info,
         meerkatEvents = meerkat.modules.events;
 
+    var serviceUrl = false;
+
     /**
      * Setup the page
      */
@@ -30,6 +32,21 @@
     }
 
     /**
+     * Returns the service URL and sets it if empty
+     * @returns {string}
+     */
+    function getServiceURL() {
+        if(serviceUrl === false) {
+            var url = 'spring/bsbdetails';
+            if (!_.isUndefined(meerkat.site.bsbServiceURL) && !_.isEmpty(meerkat.site.bsbServiceURL)) {
+                url = meerkat.site.bsbServiceURL;
+            }
+            serviceUrl = url;
+        }
+        return serviceUrl;
+    }
+
+    /**
      * Make ajax call to service to validate BSB and update the
      * view based on the response
      */
@@ -42,7 +59,7 @@
                 bsbNumber : $.trim($('#health_payment_bank_bsbinput').val())
             };
             meerkat.modules.comms.get({
-                url: 'spring/bsbdetails',
+                url: getServiceURL(),
                 data: data,
                 cache: false,
                 dataType: 'json',
