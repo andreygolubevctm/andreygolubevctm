@@ -35,7 +35,7 @@
     .header .logo {
         width:400px;
         height:55px;
-        background: #ffffff url('assets/brand/${pageSettings.getBrandCode()}/graphics/logo.png') center left no-repeat;
+        background: #ffffff url('${pageSettings.getBrandCode()}/assets/brand/${pageSettings.getBrandCode()}/graphics/logo.png') center left no-repeat;
     }
     .content { padding: 25px 50px 50px 50px; }
     .content h1 { color: #1C3F94; }
@@ -46,7 +46,7 @@
         }
         .header .logo {
             width:300px;
-            background-image: url('assets/brand/${pageSettings.getBrandCode()}/graphics/logo-xs.png')
+            background-image: url('${pageSettings.getBrandCode()}/assets/brand/${pageSettings.getBrandCode()}/graphics/logo-xs.png')
         }
         .content {
             padding:20px;
