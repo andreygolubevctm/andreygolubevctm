@@ -20,7 +20,7 @@
         height: 100%;
         width: 100%;
         min-height: 100%;
-        background: #b8b28b url('assets/brand/${pageSettings.getBrandCode()}/graphics/blocked.png') bottom right no-repeat;
+        background: #b8b28b url('${pageSettings.getBrandCode()}/assets/brand/${pageSettings.getBrandCode()}/graphics/blocked.png') bottom right no-repeat;
         background-size:contain;
         left: 0;
     }
