@@ -68,8 +68,7 @@
                 timeout: 10000,
                 onSuccess: function onSubmitSuccess(resultData) {
                     if(validateResponse(resultData)) {
-                        // Populate the form with validated values
-                        $('#health_payment_bank_bsbinput').val(resultData.bsbNumber).trigger('blur');
+                        // Update bank name field
                         $('#health_payment_bank_name').val(resultData.branchName);
                         renderSuccess();
                     } else {
