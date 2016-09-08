@@ -57,14 +57,14 @@
 	<c:set var="fieldsetClass">tieredHospitalCover</c:set>
 	<form_v2:fieldset legend="" postLegend="" className="${fieldsetClass}" >
 		<div class="scrollable row">
-			<field_v2:switch xpath="health/benefits/benefitsExtras/${coverType}" value="Y" className="switch-small" onText="&nbsp;" offText="" />
-
 			<div class="benefits-list col-sm-12">
 				<div class="row">
 					<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">
 						<c:set var="category">${item.getShortlistKey()}</c:set>
 						<c:choose>
 							<c:when test="${item.getType() == 'section'}">
+								Switch ${coverType} cover <field_v2:switch xpath="health/benefits/benefitsExtras/${coverType}" value="Y" className="switch-small" onText="&nbsp; On" offText="Off" />
+
 								<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
 									<h2 class="ignore">Choose Your ${item.getName()}</h2>
 									<p class="hidden-xs">${colContent}</p>
