@@ -75,9 +75,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<link rel="apple-touch-icon" sizes="180x180" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone@3x.png">
 	</c:if>
 
-	<%-- DISTIL - Comment for script injection --%>
-	<!-- <body><head><form><a></a><input /></form></head></body> -->
-
 	<c:if test="${empty skipJSCSS}">
 		<c:set var="browserName" value="${userAgentSniffer.getBrowserName(pageContext.getRequest().getHeader('user-agent'))}" />
 		<c:set var="browserVersion" value="${userAgentSniffer.getBrowserVersion(pageContext.getRequest().getHeader('user-agent'))}" />
