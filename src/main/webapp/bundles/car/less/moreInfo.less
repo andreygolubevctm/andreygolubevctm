@@ -223,3 +223,246 @@
 		display:none;
 	}
 }
+
+/** New Design **/
+.more-info-v2 {
+    .fieldset-card {
+		background-color: #fff;
+		border: 1px solid @border-color;
+		box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
+		padding: 15px;
+
+		&.price-card {
+			margin-bottom: 20px;
+			&.toggle-calldirect,
+			&.toggle-callback {
+				padding-bottom: 0;
+				.btn-call-actions {
+					border-bottom-left-radius: 0;
+					border-bottom-right-radius: 0;
+				}
+				@media (@sm) {
+					.btn-more-info-apply {
+						border-bottom-left-radius: 0;
+						border-bottom-right-radius: 0;
+					}
+				}
+			}
+			&.toggle-calldirect {
+				.callDirect {
+					display: block;
+				}
+			}
+			&.toggle-callback {
+				.callMeBack {
+					display: block;
+				}
+			}
+
+			.productName {
+				font-size: 30px;
+				font-family: @font-family-theme-bold;
+				margin-top: 0 !important;
+				@media (@sm) {
+					padding-top: 15px;
+				}
+			}
+		}
+
+		&.contentRow {
+			h5 {
+				color: @theme-tertiary;
+			}
+			.icon-angle-right {
+				&:before {
+					color: @theme-secondary;
+				}
+			}
+		}
+	}
+
+    .companyLogo {
+        float: none;
+        margin: 0 auto;
+		@media (@sm) {
+			margin: 15px auto;
+		}
+    }
+
+	.frequencyAmount {
+		color: #000;
+		font-family: @font-family-theme-bold;
+		.dollarSign {
+			font-size: 17px;
+			position: relative;
+			top: 0;
+			vertical-align: super;
+		}
+		.dollars {
+			font-size: 40px;
+		}
+		.cents {
+			font-size: 17px;
+			position: relative;
+			top: -3px;
+			vertical-align: super;
+		}
+		select {
+			font-size: 17px;
+			position: relative;
+			top: 2px;
+			vertical-align: super;
+		}
+		.monthlyBreakdown {
+			font-size: 11px;
+			color: #999;
+		}
+	}
+
+	.excessAmount {
+		font-family: @font-family-theme-bold;
+		margin-top: 0;
+	}
+
+	.excessTitle {
+		color: #000;
+		display: inline-block;
+		text-align: left;
+	}
+
+	.referenceNo {
+		text-align: right;
+		@media (@sm) {
+			&.hidden-xs {
+				text-align: center;
+			}
+		}
+		span {
+			font-weight: bold;
+		}
+	}
+
+	@media (@sm) {
+		.excessQuote {
+			display: none;
+		}
+	}
+
+	.promo {
+		margin: 15px 0;
+		@media (@sm) {
+			&:not(.hidden-xs) {
+				display: none;
+			}
+		}
+	}
+
+	.promoHeading {
+		color: #000;
+		font-family: @font-family-theme-bold;
+	}
+
+	.btn-cta {
+		margin-bottom: 15px;
+		@media (@sm) {
+			margin-bottom: 0;
+		}
+	}
+
+	.btn-download {
+		.btn-styles(@theme-tertiary, #fff, @theme-secondary);
+	}
+
+	.pds-price-promise {
+		background-color: #f1f1f1;
+		border: 1px solid @border-color;
+		border-top: none;
+		box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
+		padding: 15px;
+	}
+
+	.disclaimer {
+		padding: 15px;
+	}
+
+	.price-promise-panel {
+		.partition {
+			display: none !important;
+		}
+	}
+
+	.callDirect {
+		display: none;
+		border-top: #E7E7E7;
+		background-color: #f1f1f1;
+		padding: 15px 0;
+		text-align: center;
+
+		.callDirectDetails {
+			font-size: 24px;
+			@media (@md) {
+				//font-size: 18px;
+			}
+			.productName {
+				font-family: @font-family-theme-bold;
+			}
+			.contactPhoneNumber {
+				color: #0db14b;
+				font-family: @font-family-theme-bold;
+				font-size: 32px;
+				@media (@md) {
+					//font-size: 24px;
+				}
+			}
+			.callCentreHours {
+				display: block;
+				font-size: 12px;
+				@media (@md) {
+					display: inline-block;
+				}
+			}
+		}
+
+		.referenceNo {
+			padding-top: 15px;
+			text-align: center;
+			@media (@lg) {
+				padding-top: 0;
+			}
+			span {
+				color: #1c3e93;
+				display: block;
+				font-family: @font-family-theme-bold;
+				font-size: 24px;
+			}
+		}
+	}
+
+	.callMeBack {
+		display: none;
+		border-top: #E7E7E7;
+		background-color: #f1f1f1;
+		padding: 15px 0;
+		h2 {
+			font-family: @font-family-theme-bold;
+			margin-top: 0;
+			@media (@md) {
+				text-align: right;
+			}
+		}
+
+		input {
+			margin-bottom: 15px;
+		}
+
+		.has-error {
+			input {
+				margin-bottom: 5px;
+			}
+		}
+
+		button {
+			width: 100%;
+		}
+	}
+}

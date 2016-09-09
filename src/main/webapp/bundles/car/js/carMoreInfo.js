@@ -19,6 +19,8 @@
 		activeCallModal,
 		callDirectTrackingFlag = true; // used to flag when ok to call tracking on CallDirect (once per transaction)
 
+    var selectedFrequency = 'annual'; // selected payment frequency on the results step, default to 'annual'
+
 	/**
 	 * Specify the options within here to pass to meerkat.modules.moreInfo.
 	 */
@@ -44,7 +46,7 @@
 			onBeforeShowBridgingPage: onBeforeShowBridgingPage,
 			onBeforeShowTemplate: renderScrapes,
 			onBeforeShowModal: renderScrapes,
-			onAfterShowModal: requestTracking,
+			onAfterShowModal: onAfterShowTemplate,
 			onAfterShowTemplate: onAfterShowTemplate,
 			onBeforeHideTemplate: null,
 			onAfterHideTemplate: onAfterHideTemplate,
@@ -76,6 +78,8 @@
 		}).on('click', '.btn-submit-callback', function (event) {
 			var $el = $(this);
 			submitCallback(event, $el);
+		}).on('change', '.frequency-toggle', function() {
+			togglePremium($(this));
 		});
 
 		$('.slide-feature-closeMoreInfo a').off().on('click', function() {
@@ -285,6 +289,13 @@
 		meerkat.messaging.subscribe(meerkatEvents.carResults.FEATURES_SUBMIT_CALLBACK, function triggerSubmitCallback(obj) {
 			submitCallback(obj.event, obj.element);
 		});
+
+        meerkat.messaging.subscribe(meerkatEvents.carFilters.CHANGED, function onFilterChange(obj) {
+            if (meerkat.modules.splitTest.isActive(8) && !obj) {
+                selectedFrequency = Results.getFrequency();
+            }
+        });
+
 	}
 
 	function callActions(event, element) {
@@ -294,17 +305,22 @@
 		event.preventDefault();
 		event.stopPropagation();
 		var $el = element;
-
-		var $e = $('#car-call-modal-template');
-		if ($e.length > 0) {
-			templateCallback = _.template($e.html());
-		}
 		var obj = Results.getResultByProductId($el.attr('data-productId'));
 
 		// If its unavailable, don't do anything
 		// This is if someone tries to fake a bridging page for a "non quote" product.
 		if(obj.available !== "Y")
 			return;
+
+		if (meerkat.modules.splitTest.isActive(8)) {
+			callActionsToggle(event, $el, obj);
+			return;
+		}
+
+		var $e = $('#car-call-modal-template');
+		if ($e.length > 0) {
+			templateCallback = _.template($e.html());
+		}
 
 		activeCallModal = $el.attr('data-callback-toggle');
 		var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal);
@@ -402,6 +418,48 @@
 		return false;
 	}
 
+	function callActionsToggle(event, $el, obj) {
+		$('.more-info-v2 .price-card')
+			.removeClass('toggle-callback toggle-calldirect')
+			.addClass('toggle-' + $el.attr('data-callback-toggle'));
+
+		// if callback clicked, setup the form
+		if ($el.attr('data-callback-toggle') === 'callback') {
+			setupCallbackForm();
+			trackCallBack(obj);// Add CallBack request event to supertag
+		} else {
+			recordCallDirect(event, obj);
+		}
+	}
+
+	function togglePremium($el) {
+		var frequency = $el.val(),
+			obj = Results.getResultByProductId($el.attr('data-productId')),
+			monthlyFirstMonthSplit = obj.price.monthlyFirstMonth.toString().split('.'),
+			annualPremiumSplit = obj.price.annualPremium.toString().split('.'),
+			priceObj = {
+				monthly: {
+					dollars: monthlyFirstMonthSplit[0],
+					cents: monthlyFirstMonthSplit[1] ? monthlyFirstMonthSplit[1] : '00'
+				},
+				annual: {
+					dollars: annualPremiumSplit[0],
+					cents: annualPremiumSplit[1] ? annualPremiumSplit[1] : '00'
+				}
+			};
+
+		$('.frequencyAmount .dollars').text(priceObj[frequency].dollars);
+		$('.frequencyAmount .cents').text('.'+priceObj[frequency].cents);
+
+		if (frequency === 'monthly') {
+			$('.monthlyBreakdown')
+				.text('1st month $' + obj.price.monthlyFirstMonth.toFixed(2) + ' Total: $' + obj.price.annualisedMonthlyPremium.toFixed(2))
+				.show();
+		} else {
+			$('.monthlyBreakdown').hide();
+		}
+	}
+
 	/**
 	 * Set the current scroll position so that it can be used when modals are closed
 	 */
@@ -424,13 +482,19 @@
 	 * Called within meerkat.modules.moreInfo.showTemplate
 	 */
 	function onAfterShowTemplate() {
-
 		requestTracking();
 
 		if (meerkat.modules.deviceMediaState.get() == 'lg' || meerkat.modules.deviceMediaState.get() == 'md') {
 			fixSidebarHeight('.paragraphedContent', '.moreInfoRightColumn', $bridgingContainer);
 		}
+
+		if (meerkat.modules.splitTest.isActive(8)) {
+			$('.frequency-toggle')
+                .val(selectedFrequency)
+                .trigger('change');
+		}
 	}
+
 	/**
 	 * Restores the original state of the view from what you changed in onBeforeShowTemplate
 	 * or onBeforeShowBridgingPage (template only, not modal)

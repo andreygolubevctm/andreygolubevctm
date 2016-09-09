@@ -1,0 +1,254 @@
+<%@ tag language="java" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/tags/taglib.tagf"%>
+
+<core_v1:js_template id="promotion-offer-template">
+{{ obj.promotionText = (typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
+{{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms != null && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
+
+{{ if (promotionText.length > 0) { }}
+    <div class="promoHeading">Special offer</div>
+    {{= promotionText }}
+    {{ if (offerTermsContent.length > 0) { }}
+    <a class="small offerTerms" href="javascript:;">Offer terms</a>
+    <div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
+    {{ } }}
+{{ } }}
+
+</core_v1:js_template>
+
+<core_v1:js_template id="pds-template">
+	<h5>Product Disclosure Statement</h5>
+    <p>Download the PDS documents below for a full guide on policy limits, inclusions &amp; exclusions.</p>
+	{{ if (obj.productDisclosures != null) { }}
+		{{ if (obj.productDisclosures.hasOwnProperty('pdsb') === false) { }}
+			<a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure Statement</a>
+		{{ } else { }}
+			<a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure A</a>
+			<a href="{{= obj.productDisclosures.pdsb.url }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure B</a>
+			{{ if(obj.productDisclosures.hasOwnProperty('pdsc')) { }}
+				<a href="{{= obj.productDisclosures.pdsc.url }}" target="_blank" class="showDoc btn btn-sm btn-download btn-download-pds-c">Product Disclosure C</a>
+			{{ } }}
+		{{ } }}
+	{{ } }}
+</core_v1:js_template>
+
+<core_v1:js_template id="call-apply-template">
+    {{ var template = $("#call-direct-template").html(); }}
+    {{ var htmlTemplate = _.template(template); }}
+    {{ obj.callDirectHTML = htmlTemplate(obj); }}
+
+    {{ var template = $("#call-me-back-template").html(); }}
+    {{ var htmlTemplate = _.template(template); }}
+    {{ obj.callMeBackHTML = htmlTemplate(obj); }}
+
+    <div class="row">
+        {{ if(obj.availableOnline === true) { }}
+        <div class="col-xs-12 col-sm-4 col-sm-push-8 col-lg-3 col-lg-push-9">
+            <a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">
+                <span>Go to Insurer</span>
+            </a>
+        </div>
+        {{ } }}
+
+        {{ if(obj.contact.allowCallDirect === true) { }}
+            {{ if(obj.contact.allowCallMeBack === true) { }}
+            <div class="col-xs-6 col-sm-4 col-sm-pull-4 col-lg-3 col-lg-push-0">
+                <a class="btn btn-block btn-call btn-call-actions btn-calldirect" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-sm-pull-4 col-lg-3 col-lg-push-0">
+                <a class="btn btn-block btn-call btn-call-actions" data-callback-toggle="callback" data-productId="{{= obj.productId }}" href="javascript:;">Get a Call Back</a>
+            </div>
+            {{ } else { }}
+            <div class="col-xs-12 col-sm-4 col-lg-3 col-lg-push-3">
+                <a class="btn btn-block btn-call btn-call-actions btn-calldirect" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
+            </div>
+            {{ } }}
+        {{ } }}
+    </div>
+
+    {{ if(obj.contact.allowCallDirect === true) { }}
+        {{= callDirectHTML }}
+    {{ } }}
+
+    {{ if(obj.contact.allowCallMeBack === true) { }}
+        {{= callMeBackHTML }}
+    {{ } }}
+</core_v1:js_template>
+
+<core_v1:js_template id="call-direct-template">
+    <div class="callDirect row">
+        <div class="callDirectDetails col-xs-12 col-md-9">
+            Call <span class="productName">{{= productName }}</span> on <span class="contactPhoneNumber">{{= obj.contact.phoneNumber }}</span>
+            <span class="callCentreHours">{{= obj.contact.callCentreHours }}</span>
+        </div>
+        <div class="referenceNo col-xs-12 col-md-3">
+            Quote number: <span>{{= quoteNumber }}</span>
+        </div>
+    </div>
+</core_v1:js_template>
+
+<core_v1:js_template id="call-me-back-template">
+    <c:set var="xpath" value="quote" />
+    <div class="callMeBack row">
+        <div class="col-xs-12 col-md-4">
+            <h2>Enter your details and we'll get someone to call you</h2>
+        </div>
+        <div class="col-xs-12 col-md-8">
+            <div class="row">
+                <form id="getcallback" method="post">
+                    <div class="col-xs-12 col-sm-6 col-md-4 row-content">
+                        <c:set var="fieldXPath" value="${xpath}/CrClientName" />
+                        <field_v1:person_name xpath="${fieldXPath}" required="true" title="Your name" className="contactField" placeholder="Name" />
+                        <div class="error-field"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 row-content">
+                        <c:set var="fieldXPath" value="${xpath}/CrClientTel" />
+                        <field_v1:flexi_contact_number xpath="${fieldXPath}"
+                                                       maxLength="20"
+                                                       required="${true}"
+                                                       className="contactField"
+                                                       labelName="contact number"
+                                                       placeHolder="Phone number"/>
+                        <div class="error-field"></div>
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <a href="javascript:;" class="btn btn-form btn-block btn-submit-callback" data-productId="{{= obj.productId }}">Submit</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</core_v1:js_template>
+
+<core_v1:js_template id="more-info-template">
+	<%-- Set up Reusable Templates --%>
+	{{ var template = $("#promotion-offer-template").html(); }}
+	{{ var htmlTemplate = _.template(template); }}
+	{{ obj.promotionOfferHtml = htmlTemplate(obj); }}
+
+	{{ template = $("#pds-template").html(); }}
+	{{ htmlTemplate = _.template(template); }}
+	{{ obj.PdsHtml = htmlTemplate(obj); }}
+
+	{{ template = $("#call-apply-template").html(); }}
+	{{ htmlTemplate = _.template(template); }}
+	{{ obj.callApplyHtml = htmlTemplate(obj); }}
+
+	{{ var template = $("#provider-logo-template").html(); }}
+	{{ var htmlTemplate = _.template(template); }}
+	{{ obj.logoTemplate = htmlTemplate(obj); }}
+
+	<div class="displayNone more-info-content more-info-v2 {{= brandCode }}">
+		<div class="fieldset-card price-card">
+			<div class="row">
+				<div class="col-xs-3">
+					{{= logoTemplate }}
+                    <div class="referenceNo hidden-xs">Quote number: <span>{{= quoteNumber }}</span></div>
+				</div>
+				<div class="col-xs-9">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-8">
+                            <h1 class="productName">{{= productName }}</h1>
+                            <div class="promo hidden-xs">
+                                {{= promotionOfferHtml }}
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                            <div class="frequency">
+                                <div class="frequencyAmount">
+                                    <span class="dollarSign">$</span><span class="dollars"></span><span class="cents"></span>
+                                    <select class="frequency-toggle dontSend" name="frequency_toggle" data-productId="{{= obj.productId }}">
+                                        <option value="annual">Annual</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                    <div class="monthlyBreakdown"></div>
+                                    <div class="hidden-xs">
+                                        <span class="excessAmount">\${{= excess }}</span> <span class="excessTitle">EXCESS</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+					<div class="row excessQuote">
+						<div class="col-xs-6">
+							<span class="excessAmount">\${{= excess }}</span> <span class="excessTitle">EXCESS</span>
+						</div>
+						<div class="col-xs-6 referenceNo">
+							Quote number: <span>{{= quoteNumber }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="promo">
+                {{= promotionOfferHtml }}
+			</div>
+
+            {{= callApplyHtml }}
+		</div>
+
+        <div class="fieldset-card contentRow">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <h5>What's Included</h5>
+                    <div id="inclusions"></div>
+                    <h5>Further Benefits</h5>
+                    <div id="benefits"></div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    {{ if(specialConditions != null && typeof specialConditions != 'undefined' && typeof specialConditions.list != 'undefined' && specialConditions.list.length > 0) { }}
+                    <div id="car-special-conditions">
+                        <h5>Special Conditions</h5>
+                        <ul>
+                            {{ if(specialConditions.list instanceof Array) { }}
+                            {{ var ageBasedConditions = 0; }}
+                            {{ for(var i = 0; i < specialConditions.list.length; i++) { }}
+                            <li>{{= specialConditions.list[i] }}</li>
+                                <%-- If they have special conditions that contain "years old"... --%>
+                            {{ if(specialConditions.list[i].indexOf('years old') != -1) { }}
+                            {{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(true, specialConditions.list[i]); }}
+                            {{ ageBasedConditions++; }}
+                            {{ } }}
+                            {{ } }}
+                            {{ if(ageBasedConditions === 0) { }}
+                            {{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
+                            {{ } }}
+                            {{ } }}
+                        </ul>
+                    </div>
+                    {{ }  else { }}
+                    {{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
+                    {{ } }}
+                    {{ if (serviceName != 'REIN' && serviceName != 'WOOL') { }}
+                    {{ if(additionalExcesses != null && typeof additionalExcesses != 'undefined' && typeof additionalExcesses.list != 'undefined' && additionalExcesses.list.length > 0) { }}
+                    <div id="car-additional-excess-conditions">
+                        <h5>Additional Excess</h5>
+                        <ul>
+                            {{ for(var i = 0; i < additionalExcesses.list.length; i++) { }}
+                            <li>{{= additionalExcesses.list[i].description }} {{= additionalExcesses.list[i].amount }}</li> {{ } }}
+                        </ul>
+                    </div>
+                    {{ } }}
+                    {{ } }}
+                    <h5>Optional Extras</h5>
+                    <div id="extras"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pds-price-promise row">
+            <div class="col-sm-6">
+                {{= PdsHtml }}
+            </div>
+            <div class="col-sm-6">
+                <car:price_promise className="inverted" />
+            </div>
+        </div>
+
+        <div class="disclaimer">
+            <h5>Disclaimer</h5>
+            <p>{{= obj.disclaimer }}</p>
+        </div>
+	</div>
+</core_v1:js_template>

@@ -104,7 +104,7 @@
         $extrasSection.find('input[type="checkbox"]').not(':visible').each(function() {
             $(this).prop('checked', false).attr('checked', null).change();
         });
-    };
+    }
 
     function resetDefaultCover() {
         $('.hospitalCoverToggles.' + (meerkat.modules.deviceMediaState.get() === 'xs' ? 'visible-xs' : 'hidden-xs') + ' a.benefit-category.active').trigger('click');

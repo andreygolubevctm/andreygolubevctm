@@ -51,7 +51,6 @@
 			<div class="col-xs-12 col-sm-3 col-md-6 push-top-15">
 				<a class="btn btn-call btn-block btn-call-actions btn-callback" data-productId="{{= obj.productId }}" data-callback-toggle="callback" href="javascript:;">Get a Call Back</a>
 			</div>
-		{{ } else { }}
 			<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
 				<a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-productId="{{= obj.productId }}" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
 			</div>
