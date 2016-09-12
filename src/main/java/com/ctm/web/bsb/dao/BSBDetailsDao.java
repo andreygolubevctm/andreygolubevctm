@@ -2,6 +2,7 @@ package com.ctm.web.bsb.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
@@ -16,6 +17,8 @@ import java.sql.SQLException;
 public class BSBDetailsDao {
 
     private static final String GET_BSB_DETAILS_QUERY = "SELECT * from bsb_details where bsbNumber = ?";
+
+    @Cacheable(cacheNames = {"getBsbDetailsByBsbNumber"})
     public BSBDetails getBsbDetailsByBsbNumber(String bsbNumber) throws DaoException {
         SimpleDatabaseConnection dbSource = null;
         BSBDetails bsbDetails = new BSBDetails();
