@@ -21,11 +21,12 @@ public class BSBDetailsDao {
     @Cacheable(cacheNames = {"getBsbDetailsByBsbNumber"})
     public BSBDetails getBsbDetailsByBsbNumber(String bsbNumber) throws DaoException {
         SimpleDatabaseConnection dbSource = null;
+        PreparedStatement stmt = null;
         BSBDetails bsbDetails = new BSBDetails();
 
         try {
             dbSource = new SimpleDatabaseConnection();
-            PreparedStatement stmt =dbSource.getConnection().prepareStatement(GET_BSB_DETAILS_QUERY);
+            stmt = dbSource.getConnection().prepareStatement(GET_BSB_DETAILS_QUERY);
             stmt.setString(1,bsbNumber);
 
             ResultSet resultSet = stmt.executeQuery();
@@ -45,6 +46,7 @@ public class BSBDetailsDao {
         }
         finally{
             dbSource.closeConnection();
+            dbSource.closeStatement(stmt);
         }
         return bsbDetails;
     }
