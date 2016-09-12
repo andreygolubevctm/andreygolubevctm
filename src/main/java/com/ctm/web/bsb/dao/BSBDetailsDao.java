@@ -34,6 +34,7 @@ public class BSBDetailsDao {
                 bsbDetails.setSuburb(resultSet.getString("Suburb"));
                 bsbDetails.setBranchState(resultSet.getString("BranchState"));
                 bsbDetails.setPostCode(resultSet.getString("PostCode"));
+                bsbDetails.setFound(true);
             }
 
         } catch (SQLException | NamingException e) {

@@ -11,18 +11,9 @@ public class BSBDetails {
     private String suburb;
     private String branchState;
     private String postCode;
+    private boolean found;
 
     public BSBDetails() {
-    }
-
-    public BSBDetails(String bsbNumber, String bankCode, String branchName, String address, String suburb, String branchState, String postCode) {
-        this.bsbNumber = bsbNumber;
-        this.bankCode = bankCode;
-        this.branchName = branchName;
-        this.address = address;
-        this.suburb = suburb;
-        this.branchState = branchState;
-        this.postCode = postCode;
     }
 
     public String getBsbNumber() {
@@ -79,5 +70,14 @@ public class BSBDetails {
 
     public void setPostCode(String postCode) {
         this.postCode = postCode;
+    }
+
+
+    public boolean isFound() {
+        return found;
+    }
+
+    public void setFound(boolean found) {
+        this.found = found;
     }
 }
