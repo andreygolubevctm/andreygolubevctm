@@ -69,7 +69,7 @@
                 onSuccess: function onSubmitSuccess(resultData) {
                     if(validateResponse(resultData)) {
                         // Update bank name field
-                        $('#health_payment_bank_name').val(resultData.branchName);
+                        $('#health_payment_bank_name').val(resultData.bankCode);
                         renderSuccess();
                     } else {
                         renderError();
@@ -89,8 +89,8 @@
      */
     function validateResponse(response) {
         if(response && _.isObject(response)) {
-            if(_.has(response,'bsbNumber') && !_.isEmpty(response.bsbNumber)) {
-                if(_.has(response,'branchName') && !_.isEmpty(response.branchName)) {
+            if(_.has(response,'found') && response.found === true) {
+                if(_.has(response,'bankCode') && !_.isEmpty(response.bankCode)) {
                     return true;
                 }
             }
