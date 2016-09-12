@@ -464,10 +464,10 @@
 </go:style>
 
 <%-- JAVASCRIPT --%>
-<go:script marker="js-head">
+<go:script marker="onready">
 
-var Results = new Object(); 
-Results = {
+window.Results = new Object();
+window.Results = {
 	_currentPrices : new Object(), 
 	_priceCount : 0,
 	_initialSort : true, 
