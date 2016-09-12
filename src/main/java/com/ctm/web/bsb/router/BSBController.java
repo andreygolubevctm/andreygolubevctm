@@ -2,6 +2,7 @@ package com.ctm.web.bsb.router;
 
 import com.ctm.web.bsb.services.BSBDetails;
 import com.ctm.web.bsb.services.BSBDetailsService;
+import com.ctm.web.core.exceptions.DaoException;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +26,7 @@ public class BSBController {
 
     @ApiOperation(value = "/bsbdetails", notes = "bsb", produces = "application/json")
     @RequestMapping(value = "/bsbdetails", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BSBDetails getBSBDetails(@RequestParam @NotNull final String bsbNumber) {
+    public BSBDetails getBSBDetails(@RequestParam @NotNull final String bsbNumber) throws DaoException {
         return bsbDetailsService.getBsbDetailsByBsbNumber(bsbNumber);
     }
 }
