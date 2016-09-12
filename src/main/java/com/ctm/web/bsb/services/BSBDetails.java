@@ -17,14 +17,16 @@ public class BSBDetails {
     private String postCode;
     private String state;
     private boolean found;
+    private String bankCode;
 
-    public BSBDetails(String bsbNumber, String branchName, String address, String suburb, String postCode, String state, boolean found) {
+    public BSBDetails(String bsbNumber, String branchName, String address, String suburb, String postCode, String state, boolean found, String bankCode) {
         this.bsbNumber = bsbNumber;
         this.branchName = branchName;
         this.address = address;
         this.suburb = suburb;
         this.postCode = postCode;
         this.state = state;
+        this.bankCode = bankCode;
         this.found = found;
     }
 }
