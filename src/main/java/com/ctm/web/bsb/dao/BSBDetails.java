@@ -5,20 +5,24 @@ package com.ctm.web.bsb.dao;
  */
 public class BSBDetails {
     private String bsbNumber;
+    private String bankCode;
     private String branchName;
     private String address;
     private String suburb;
+    private String branchState;
     private String postCode;
-    private String state;
 
+    public BSBDetails() {
+    }
 
-    public BSBDetails(String bsbNumber, String branchName, String address, String suburb, String postCode, String state) {
+    public BSBDetails(String bsbNumber, String bankCode, String branchName, String address, String suburb, String branchState, String postCode) {
         this.bsbNumber = bsbNumber;
+        this.bankCode = bankCode;
         this.branchName = branchName;
         this.address = address;
         this.suburb = suburb;
+        this.branchState = branchState;
         this.postCode = postCode;
-        this.state = state;
     }
 
     public String getBsbNumber() {
@@ -27,6 +31,14 @@ public class BSBDetails {
 
     public void setBsbNumber(String bsbNumber) {
         this.bsbNumber = bsbNumber;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
     public String getBranchName() {
@@ -53,6 +65,14 @@ public class BSBDetails {
         this.suburb = suburb;
     }
 
+    public String getBranchState() {
+        return branchState;
+    }
+
+    public void setBranchState(String branchState) {
+        this.branchState = branchState;
+    }
+
     public String getPostCode() {
         return postCode;
     }
@@ -60,13 +80,4 @@ public class BSBDetails {
     public void setPostCode(String postCode) {
         this.postCode = postCode;
     }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
 }

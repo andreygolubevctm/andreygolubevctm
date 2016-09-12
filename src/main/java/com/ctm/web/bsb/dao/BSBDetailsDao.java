@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -13,26 +14,37 @@ import java.sql.SQLException;
 @Repository
 public class BSBDetailsDao {
 
-    private static final String GET_BSB_DETAILS_QUERY = "SELECT * from bsb_details where BsbNumber = ?";
-    /*public BSBDetails getBsbDetailsByBsbNumber(String bsbNumber){
+    private static final String GET_BSB_DETAILS_QUERY = "SELECT * from bsb_details where bsbNumber = ?";
+    public BSBDetails getBsbDetailsByBsbNumber(String bsbNumber){
         SimpleDatabaseConnection dbSource = null;
+        BSBDetails bsbDetails = new BSBDetails();
 
         try {
             dbSource = new SimpleDatabaseConnection();
             PreparedStatement stmt =dbSource.getConnection().prepareStatement(GET_BSB_DETAILS_QUERY);
             stmt.setString(1,bsbNumber);
 
+            ResultSet resultSet = stmt.executeQuery();
+            while(resultSet.next()){
+                bsbDetails.setBsbNumber(resultSet.getString("BsbNumber"));
+                bsbDetails.setBankCode(resultSet.getString("BankCode"));
+                bsbDetails.setBranchName(resultSet.getString("BranchName"));
+                bsbDetails.setAddress(resultSet.getString("Address"));
+                bsbDetails.setSuburb(resultSet.getString("Suburb"));
+                bsbDetails.setBranchState(resultSet.getString("BranchState"));
+                bsbDetails.setPostCode(resultSet.getString("PostCode"));
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (NamingException e) {
             e.printStackTrace();
         }
-        return null;
+        return bsbDetails;
     }
-*/
-    public BSBDetails getBsbDetailsByBsbNumber(String bsbNumber){
+    /*public BSBDetails getBsbDetailsByBsbNumber(String bsbNumber){
         return new BSBDetails("032-639", "Greenhills Kiosk", "K123 Greenhills Shopping Cntre", "East Maitland", "2323", "NSW");
-    }
+    }*/
 
 
 }
