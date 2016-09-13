@@ -144,7 +144,11 @@ var healthFunds_QTU = {
         });
     },
     renderPaymentDays: function() {
-        healthFunds._payments = { 'min':2, 'max':27, 'weekends':true };
+        if (meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'fortnightly') {
+            healthFunds._payments = {'min': 0, 'max': 14, 'weekends': true};
+        } else {
+            healthFunds._payments = {'min': 2, 'max': 27, 'weekends': true};
+        }
 
         var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
