@@ -18,8 +18,9 @@ public class BSBDetails {
     private String state;
     private boolean found;
     private String bankCode;
+    private String bankName;
 
-    public BSBDetails(String bsbNumber, String branchName, String address, String suburb, String postCode, String state, boolean found, String bankCode) {
+    public BSBDetails(String bsbNumber, String branchName, String address, String suburb, String postCode, String state, boolean found, String bankCode, String bankName) {
         this.bsbNumber = bsbNumber;
         this.branchName = branchName;
         this.address = address;
@@ -28,5 +29,6 @@ public class BSBDetails {
         this.state = state;
         this.bankCode = bankCode;
         this.found = found;
+        this.bankName = bankName;
     }
 }

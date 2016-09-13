@@ -52,7 +52,7 @@ public class EhCacheConfig implements CachingConfigurer {
         couponGetActiveCouponsCache.setMemoryStoreEvictionPolicyFromObject(LFU);
         couponGetActiveCouponsCache.setTransactionalMode("off");
 
-        final CacheConfiguration bsbCache = new CacheConfiguration("getBsbDetailsByBsbNumber", 1000);
+        final CacheConfiguration bsbCache = new CacheConfiguration("getBsbDetailsByBsbNumber", 100);
         bsbCache.setEternal(true);
         bsbCache.setMemoryStoreEvictionPolicyFromObject(LFU);
         bsbCache.setTransactionalMode("off");

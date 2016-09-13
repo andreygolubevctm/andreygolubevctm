@@ -19,7 +19,7 @@ public class BSBDetailsService {
         com.ctm.web.bsb.dao.BSBDetails bsbDetailsData = bsbDetailsDao.getBsbDetailsByBsbNumber(bsbNumber);
         BSBDetails bsbDetails = new BSBDetails(bsbDetailsData.getBsbNumber(),bsbDetailsData.getBranchName(),
                 bsbDetailsData.getAddress(),bsbDetailsData.getSuburb(),bsbDetailsData.getPostCode(),
-                bsbDetailsData.getBranchState(),bsbDetailsData.isFound(), bsbDetailsData.getBankCode());
+                bsbDetailsData.getBranchState(),bsbDetailsData.isFound(), bsbDetailsData.getBankCode(), bsbDetailsData.getBankName());
         return bsbDetails;
     }
 }

@@ -16,7 +16,7 @@ import java.sql.SQLException;
 @Repository
 public class BSBDetailsDao {
 
-    private static final String GET_BSB_DETAILS_QUERY = "SELECT * from bsb_details where bsbNumber = ?";
+    private static final String GET_BSB_DETAILS_QUERY = "SELECT * from ctm.bsb_details bd left join ctm.bank_code_names bcn on bd.BankCode = bcn.BankCode where bsbNumber = ?";
 
     @Cacheable(cacheNames = {"getBsbDetailsByBsbNumber"})
     public BSBDetails getBsbDetailsByBsbNumber(String bsbNumber) throws DaoException {
@@ -38,6 +38,7 @@ public class BSBDetailsDao {
                 bsbDetails.setSuburb(resultSet.getString("Suburb"));
                 bsbDetails.setBranchState(resultSet.getString("BranchState"));
                 bsbDetails.setPostCode(resultSet.getString("PostCode"));
+                bsbDetails.setBankName(resultSet.getString("BankName"));
                 bsbDetails.setFound(true);
             }
 

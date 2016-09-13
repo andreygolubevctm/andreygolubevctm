@@ -12,6 +12,7 @@ public class BSBDetails {
     private String branchState;
     private String postCode;
     private boolean found;
+    private String bankName;
 
     public BSBDetails() {
     }
@@ -72,7 +73,6 @@ public class BSBDetails {
         this.postCode = postCode;
     }
 
-
     public boolean isFound() {
         return found;
     }
@@ -80,4 +80,14 @@ public class BSBDetails {
     public void setFound(boolean found) {
         this.found = found;
     }
+
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
 }
