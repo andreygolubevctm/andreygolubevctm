@@ -434,30 +434,25 @@
 
 	function togglePremium($el) {
 		var frequency = $el.val(),
-			obj = Results.getResultByProductId($el.attr('data-productId')),
-			monthlyFirstMonthSplit = obj.price.monthlyFirstMonth.toString().split('.'),
-			annualPremiumSplit = obj.price.annualPremium.toString().split('.'),
+			prodId = $el.attr('data-productId'),
+			obj = Results.getResultByProductId(prodId),
+			monthlyPremiumSplit = obj.price.monthlyPremium.toString().split('.'),
+			annualPremiumSplit = obj.price.annualisedMonthlyPremium.toString().split('.'),
 			priceObj = {
 				monthly: {
-					dollars: monthlyFirstMonthSplit[0],
-					cents: monthlyFirstMonthSplit[1] ? monthlyFirstMonthSplit[1] : '00'
+					dollars: monthlyPremiumSplit[0],
+					cents: monthlyPremiumSplit[1] ? monthlyPremiumSplit[1] : '00'
 				},
 				annual: {
 					dollars: annualPremiumSplit[0],
 					cents: annualPremiumSplit[1] ? annualPremiumSplit[1] : '00'
 				}
-			};
+			},
+			$frequencyAmount = $('.frequencyAmount[data-productId=' + prodId + ']');
 
-		$('.frequencyAmount .dollars').text(priceObj[frequency].dollars);
-		$('.frequencyAmount .cents').text('.'+priceObj[frequency].cents);
-
-		if (frequency === 'monthly') {
-			$('.monthlyBreakdown')
-				.text('1st month $' + obj.price.monthlyFirstMonth.toFixed(2) + ' Total: $' + obj.price.annualisedMonthlyPremium.toFixed(2))
-				.show();
-		} else {
-			$('.monthlyBreakdown').hide();
-		}
+		$frequencyAmount.find('.dollars').text(priceObj[frequency].dollars);
+		$frequencyAmount.find('.cents').text('.' + priceObj[frequency].cents);
+		$frequencyAmount.find('.monthlyBreakdown').toggleClass('invisible', frequency === 'annual');
 	}
 
 	/**
@@ -489,6 +484,9 @@
 		}
 
 		if (meerkat.modules.splitTest.isActive(8)) {
+			// used to target elements for styling, ie. navbar and pageContent
+			$('body').addClass('moreInfoVisibleV2');
+
 			$('.frequency-toggle')
                 .val(selectedFrequency)
                 .trigger('change');
@@ -503,6 +501,10 @@
 	function onAfterHideTemplate() {
 		$('.resultsContainer, #navbar-filter, #navbar-compare').show();
 		$(window).scrollTop(scrollPosition);
+
+		if (meerkat.modules.splitTest.isActive(8)) {
+			$('body').removeClass('moreInfoVisibleV2');
+		}
 	}
 
 	/**

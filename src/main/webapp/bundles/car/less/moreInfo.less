@@ -225,6 +225,25 @@
 }
 
 /** New Design **/
+@media (@sm) {
+	.moreInfoVisibleV2 {
+		.navbar-default {
+			background-color: @theme-tertiary;
+			.navbar-nav {
+				border: none;
+				.btn-back {
+					.btn-styles(@theme-tertiary, #fff, @theme-secondary);
+					border: 1px solid #fff;
+					margin: 10px 0;
+				}
+			}
+		}
+		#pageContent {
+			background-color: @main-bg-colour;
+		}
+	}
+}
+
 .more-info-v2 {
     .fieldset-card {
 		background-color: #fff;
@@ -241,6 +260,9 @@
 					border-bottom-left-radius: 0;
 					border-bottom-right-radius: 0;
 				}
+                .btn-more-info-apply {
+                    background-color: #999;
+                }
 				@media (@sm) {
 					.btn-more-info-apply {
 						border-bottom-left-radius: 0;
@@ -252,10 +274,18 @@
 				.callDirect {
 					display: block;
 				}
+                .btn-call-actions[data-callback-toggle=callback] {
+					background-color: #999;
+					border-color: #999;
+                }
 			}
 			&.toggle-callback {
 				.callMeBack {
 					display: block;
+				}
+				.btn-call-actions[data-callback-toggle=calldirect] {
+					background-color: #999;
+					border-color: #999;
 				}
 			}
 
@@ -265,6 +295,16 @@
 				margin-top: 0 !important;
 				@media (@sm) {
 					padding-top: 15px;
+				}
+			}
+
+			.btn-more-info-apply {
+				padding: 12px 16px;
+			}
+
+			@media (@sm) {
+				.btn-call-actions {
+					margin-top: 8px;
 				}
 			}
 		}
@@ -292,20 +332,15 @@
 	.frequencyAmount {
 		color: #000;
 		font-family: @font-family-theme-bold;
-		.dollarSign {
-			font-size: 17px;
+		.dollarSign,
+		.cents {
+			font-size: 21px;
 			position: relative;
-			top: 0;
+			top: -5px;
 			vertical-align: super;
 		}
 		.dollars {
-			font-size: 40px;
-		}
-		.cents {
-			font-size: 17px;
-			position: relative;
-			top: -3px;
-			vertical-align: super;
+			font-size: 50px;
 		}
 		select {
 			font-size: 17px;
@@ -316,6 +351,10 @@
 		.monthlyBreakdown {
 			font-size: 11px;
 			color: #999;
+		}
+
+		@media (@sm) {
+			margin: 15px 0;
 		}
 	}
 
@@ -331,12 +370,8 @@
 	}
 
 	.referenceNo {
-		text-align: right;
-		@media (@sm) {
-			&.hidden-xs {
-				text-align: center;
-			}
-		}
+        font-size: 12px;
+		text-align: center;
 		span {
 			font-weight: bold;
 		}
@@ -350,16 +385,29 @@
 
 	.promo {
 		margin: 15px 0;
+        .promoHeading {
+            color: #000;
+            font-family: @font-family-theme-bold;
+        }
+        .promoText {
+            position: relative;
+            padding-left: 26px;
+            .icon {
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: block;
+                width: 26px;
+                height: 26px;
+                font-size: 22px;
+                line-height: 24px;
+            }
+        }
 		@media (@sm) {
 			&:not(.hidden-xs) {
 				display: none;
 			}
 		}
-	}
-
-	.promoHeading {
-		color: #000;
-		font-family: @font-family-theme-bold;
 	}
 
 	.btn-cta {
@@ -371,6 +419,7 @@
 
 	.btn-download {
 		.btn-styles(@theme-tertiary, #fff, @theme-secondary);
+		margin: 0 0 15px 0;
 	}
 
 	.pds-price-promise {
@@ -378,11 +427,9 @@
 		border: 1px solid @border-color;
 		border-top: none;
 		box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
-		padding: 15px;
-	}
-
-	.disclaimer {
-		padding: 15px;
+		@media (@md) {
+			padding: 15px;
+		}
 	}
 
 	.price-promise-panel {
@@ -391,13 +438,24 @@
 		}
 	}
 
+	.disclaimer {
+		padding: 15px;
+	}
+
+	.underwriter {
+		padding: 0 15px;
+	}
+
+	.callCentreHours {
+		font-size: 12px;
+	}
+
 	.callDirect {
 		display: none;
 		border-top: #E7E7E7;
 		background-color: #f1f1f1;
 		padding: 15px 0;
 		text-align: center;
-
 		.callDirectDetails {
 			font-size: 24px;
 			.productName {
@@ -410,13 +468,11 @@
 			}
 			.callCentreHours {
 				display: block;
-				font-size: 12px;
 				@media (@md) {
 					display: inline-block;
 				}
 			}
 		}
-
 		.referenceNo {
 			padding-top: 15px;
 			text-align: center;
@@ -440,23 +496,36 @@
 		h2 {
 			font-family: @font-family-theme-bold;
 			margin-top: 0;
+			text-align: center;
 			@media (@md) {
 				text-align: right;
 			}
 		}
-
+		.callCentreHours {
+			text-align: center;
+			margin-bottom: 10px;
+			@media (@md) {
+				margin-bottom: 0;
+				text-align: right;
+			}
+		}
 		input {
 			margin-bottom: 15px;
 		}
-
 		.has-error {
 			input {
 				margin-bottom: 5px;
 			}
 		}
 
-		button {
-			width: 100%;
+		@media (@md) {
+			input,
+			.btn-submit-callback {
+				margin-top: 10px;
+			}
+			.error-field label {
+				margin-bottom: 0;
+			}
 		}
 	}
 }

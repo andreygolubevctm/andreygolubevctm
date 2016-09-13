@@ -7,11 +7,13 @@
 
 {{ if (promotionText.length > 0) { }}
     <div class="promoHeading">Special offer</div>
-    {{= promotionText }}
-    {{ if (offerTermsContent.length > 0) { }}
-    <a class="small offerTerms" href="javascript:;">Offer terms</a>
-    <div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
-    {{ } }}
+    <div class="promoText">
+        <span class="icon icon-tag"></span> {{= promotionText }}
+        {{ if (offerTermsContent.length > 0) { }}
+        <a class="small offerTerms" href="javascript:;">Offer terms</a>
+        <div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
+        {{ } }}
+    </div>
 {{ } }}
 
 </core_v1:js_template>
@@ -20,15 +22,23 @@
 	<h5>Product Disclosure Statement</h5>
     <p>Download the PDS documents below for a full guide on policy limits, inclusions &amp; exclusions.</p>
 	{{ if (obj.productDisclosures != null) { }}
+        <div class="row">
 		{{ if (obj.productDisclosures.hasOwnProperty('pdsb') === false) { }}
-			<a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure Statement</a>
+            <div class="col-xs-12 col-md-6">
+			    <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-download">Product Disclosure Statement</a>
+            </div>
 		{{ } else { }}
-			<a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure A</a>
-			<a href="{{= obj.productDisclosures.pdsb.url }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure B</a>
-			{{ if(obj.productDisclosures.hasOwnProperty('pdsc')) { }}
-				<a href="{{= obj.productDisclosures.pdsc.url }}" target="_blank" class="showDoc btn btn-sm btn-download btn-download-pds-c">Product Disclosure C</a>
-			{{ } }}
+            <div class="col-xs-12 col-sm-6">
+			    <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-download">Product Disclosure A</a>
+                </div>
+            <div class="col-xs-12 col-sm-6">
+			    <a href="{{= obj.productDisclosures.pdsb.url }}" target="_blank" class="showDoc btn btn-download">Product Disclosure B</a>
+            </div>
+			<%--{{ if(obj.productDisclosures.hasOwnProperty('pdsc')) { }}--%>
+				<%--<a href="{{= obj.productDisclosures.pdsc.url }}" target="_blank" class="showDoc btn btn-sm btn-download btn-download-pds-c">Product Disclosure C</a>--%>
+			<%--{{ } }}--%>
 		{{ } }}
+        </div>
 	{{ } }}
 </core_v1:js_template>
 
@@ -44,23 +54,21 @@
     <div class="row">
         {{ if(obj.availableOnline === true) { }}
         <div class="col-xs-12 col-sm-4 col-sm-push-8 col-lg-3 col-lg-push-9">
-            <a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">
-                <span>Go to Insurer</span>
-            </a>
+            <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
         </div>
         {{ } }}
 
         {{ if(obj.contact.allowCallDirect === true) { }}
             {{ if(obj.contact.allowCallMeBack === true) { }}
-            <div class="col-xs-6 col-sm-4 col-sm-pull-4 col-lg-3 col-lg-push-0">
-                <a class="btn btn-block btn-call btn-call-actions btn-calldirect" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
+            <div class="col-xs-6 col-sm-3 col-sm-pull-2 col-lg-2 col-lg-push-2">
+                <a class="btn btn-block btn-call btn-call-actions" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
             </div>
-            <div class="col-xs-6 col-sm-4 col-sm-pull-4 col-lg-3 col-lg-push-0">
+            <div class="col-xs-6 col-sm-3 col-sm-pull-2 col-lg-2 col-lg-push-2">
                 <a class="btn btn-block btn-call btn-call-actions" data-callback-toggle="callback" data-productId="{{= obj.productId }}" href="javascript:;">Get a Call Back</a>
             </div>
             {{ } else { }}
-            <div class="col-xs-12 col-sm-4 col-lg-3 col-lg-push-3">
-                <a class="btn btn-block btn-call btn-call-actions btn-calldirect" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
+            <div class="col-xs-12 col-sm-3 col-sm-push-1 col-lg-2 col-lg-push-4">
+                <a class="btn btn-block btn-call btn-call-actions" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
             </div>
             {{ } }}
         {{ } }}
@@ -92,6 +100,7 @@
     <div class="callMeBack row">
         <div class="col-xs-12 col-md-4">
             <h2>Enter your details and we'll get someone to call you</h2>
+            <div class="callCentreHours">{{= obj.contact.callCentreHours }}</div>
         </div>
         <div class="col-xs-12 col-md-8">
             <div class="row">
@@ -139,6 +148,9 @@
 	{{ obj.logoTemplate = htmlTemplate(obj); }}
 
 	<div class="displayNone more-info-content more-info-v2 {{= brandCode }}">
+        <div class="modal-closebar">
+            <a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
+        </div>
 		<div class="fieldset-card price-card">
 			<div class="row">
 				<div class="col-xs-3">
@@ -147,21 +159,23 @@
 				</div>
 				<div class="col-xs-9">
                     <div class="row">
-                        <div class="col-sm-6 col-md-8">
+                        <div class="col-sm-6 col-md-7">
                             <h1 class="productName">{{= productName }}</h1>
                             <div class="promo hidden-xs">
                                 {{= promotionOfferHtml }}
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-4">
+                        <div class="col-sm-6 col-md-5">
                             <div class="frequency">
-                                <div class="frequencyAmount">
+                                <div class="frequencyAmount" data-productId="{{= obj.productId }}">
                                     <span class="dollarSign">$</span><span class="dollars"></span><span class="cents"></span>
                                     <select class="frequency-toggle dontSend" name="frequency_toggle" data-productId="{{= obj.productId }}">
                                         <option value="annual">Annual</option>
                                         <option value="monthly">Monthly</option>
                                     </select>
-                                    <div class="monthlyBreakdown"></div>
+                                    <div class="monthlyBreakdown">
+                                        1st month \${{= obj.price.monthlyFirstMonth.toFixed(2) }} Total: \${{= obj.price.annualisedMonthlyPremium.toFixed(2) }}
+                                    </div>
                                     <div class="hidden-xs">
                                         <span class="excessAmount">\${{= excess }}</span> <span class="excessTitle">EXCESS</span>
                                     </div>
@@ -171,11 +185,11 @@
                     </div>
 
 					<div class="row excessQuote">
-						<div class="col-xs-6">
+                        <div class="col-xs-6 referenceNo">
+                            Quote number: <span>{{= quoteNumber }}</span>
+                        </div>
+						<div class="col-xs-6 text-right">
 							<span class="excessAmount">\${{= excess }}</span> <span class="excessTitle">EXCESS</span>
-						</div>
-						<div class="col-xs-6 referenceNo">
-							Quote number: <span>{{= quoteNumber }}</span>
 						</div>
 					</div>
 				</div>
@@ -249,6 +263,10 @@
         <div class="disclaimer">
             <h5>Disclaimer</h5>
             <p>{{= obj.disclaimer }}</p>
+        </div>
+
+        <div class="underwriter">
+            <p>Underwriter: {{= underwriter.name }} AFS Licence No: {{= underwriter.afsLicenceNo }}</p>
         </div>
 	</div>
 </core_v1:js_template>
