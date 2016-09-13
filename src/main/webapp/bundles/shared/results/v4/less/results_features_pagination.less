@@ -120,3 +120,22 @@
   }
 
 }
+
+.affixed {
+  .results-pagination {
+    &.floated-next-arrow,
+    &.floated-previous-arrow {
+      position:fixed;
+      right:auto;
+      @media (@sm-only) {
+        margin-left: 478px;
+      }
+      @media (@md-only) {
+        margin-left: 710px;
+      }
+      @media (@lg) {
+        margin-left: 862px;
+      }
+    }
+  }
+}
