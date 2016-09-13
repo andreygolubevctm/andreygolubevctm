@@ -121,11 +121,15 @@
 	<c:set var="extrasSpecificDisabled" value="${benefitsContent.getSupplementaryValueByKey('extrasSpecificDisabled')}" />
 
 	<c:set var="extrasLimitedYoung" value="${benefitsContent.getSupplementaryValueByKey('extrasLimitedYoung')}" />
-	<c:set var="extrasLimitedcOlder" value="${benefitsContent.getSupplementaryValueByKey('extrasLimitedOlder')}" />
+	<c:set var="extrasLimitedOlder" value="${benefitsContent.getSupplementaryValueByKey('extrasLimitedOlder')}" />
 	<c:set var="extrasLimitedHelp" value="${benefitsContent.getSupplementaryValueByKey('extrasLimitedHelp')}" />
 	<c:set var="extrasLimitedDisabled" value="${benefitsContent.getSupplementaryValueByKey('extrasLimitedDisabled')}" />
 	
-
+	<c:set var="combinedNewHelp" value="${benefitsContent.getSupplementaryValueByKey('combinedNewHelp')}" />
+	<c:set var="combinedCompareHelp" value="${benefitsContent.getSupplementaryValueByKey('combinedCompareHelp')}" />
+	<c:set var="combinedFamilyHelp" value="${benefitsContent.getSupplementaryValueByKey('combinedFamilyHelp')}" />
+	<c:set var="combinedSettledFamilyHelp" value="${benefitsContent.getSupplementaryValueByKey('combinedSettledFamilyHelp')}" />
+	<c:set var="combinedSpecificHelp" value="${benefitsContent.getSupplementaryValueByKey('combinedSpecificHelp')}" />
 
 <jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
