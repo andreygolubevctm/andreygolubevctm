@@ -51,6 +51,8 @@
     {{ var htmlTemplate = _.template(template); }}
     {{ obj.callMeBackHTML = htmlTemplate(obj); }}
 
+    {{ console.info(obj); }}
+
     <div class="row">
         {{ if(obj.availableOnline === true) { }}
         <div class="col-xs-12 col-sm-4 col-sm-push-8 col-lg-3 col-lg-push-9">
@@ -74,19 +76,14 @@
         {{ } }}
     </div>
 
-    {{ if(obj.contact.allowCallDirect === true) { }}
-        {{= callDirectHTML }}
-    {{ } }}
-
-    {{ if(obj.contact.allowCallMeBack === true) { }}
-        {{= callMeBackHTML }}
-    {{ } }}
+    {{= callDirectHTML }}
+    {{= callMeBackHTML }}
 </core_v1:js_template>
 
 <core_v1:js_template id="call-direct-template">
     <div class="callDirect row">
         <div class="callDirectDetails col-xs-12 col-md-9">
-            Call <span class="productName">{{= productName }}</span> on <span class="contactPhoneNumber">{{= obj.contact.phoneNumber }}</span>
+            You may contact the insurer on <span class="contactPhoneNumber">{{= obj.contact.phoneNumber }}</span>
             <span class="callCentreHours">{{= obj.contact.callCentreHours }}</span>
         </div>
         <div class="referenceNo col-xs-12 col-md-3">

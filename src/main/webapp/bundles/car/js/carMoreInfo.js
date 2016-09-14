@@ -92,8 +92,9 @@
 	 * Also bind validation rules.
 	 */
 	function setupCallbackForm() {
-
-		meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $('#getcallback') );
+		if (!meerkat.modules.splitTest.isActive(8)) {
+			meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#getcallback'));
+		}
 		//$("#getcallback").validate();
 		var clientName = $('#quote_CrClientName');
 		// populate client name if empty
@@ -109,7 +110,6 @@
 			telNumInput.val($('#quote_contact_phoneinput').val()).blur();
 		}
 		telNum.attr('data-msg-required', "Please enter your contact number");
-
 	}
 
 	function resizeSidebarOnBreakpointChange(leftContainer, rightContainer, mainContainer) {
@@ -419,17 +419,22 @@
 	}
 
 	function callActionsToggle(event, $el, obj) {
+		var activeCall = $el.attr('data-callback-toggle'),
+			sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCall);
+
 		$('.more-info-v2 .price-card')
 			.removeClass('toggle-callback toggle-calldirect')
 			.addClass('toggle-' + $el.attr('data-callback-toggle'));
 
-		// if callback clicked, setup the form
-		if ($el.attr('data-callback-toggle') === 'callback') {
-			setupCallbackForm();
+		setupCallbackForm();
+
+		if (activeCall === 'callback') {
 			trackCallBack(obj);// Add CallBack request event to supertag
 		} else {
 			recordCallDirect(event, obj);
 		}
+
+		meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
 	}
 
 	function togglePremium($el) {
@@ -437,7 +442,7 @@
 			prodId = $el.attr('data-productId'),
 			obj = Results.getResultByProductId(prodId),
 			monthlyPremiumSplit = obj.price.monthlyPremium.toString().split('.'),
-			annualPremiumSplit = obj.price.annualisedMonthlyPremium.toString().split('.'),
+			annualPremiumSplit = obj.price.annualPremium.toString().split('.'),
 			priceObj = {
 				monthly: {
 					dollars: monthlyPremiumSplit[0],
@@ -449,6 +454,10 @@
 				}
 			},
 			$frequencyAmount = $('.frequencyAmount[data-productId=' + prodId + ']');
+
+		if (priceObj[frequency].cents.length === 1) {
+			priceObj[frequency].cents = priceObj[frequency].cents + '0';
+		}
 
 		$frequencyAmount.find('.dollars').text(priceObj[frequency].dollars);
 		$frequencyAmount.find('.cents').text('.' + priceObj[frequency].cents);
