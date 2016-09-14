@@ -124,7 +124,7 @@
     function toggleBenefits() {
         var $hospitalSection = $('.Hospital-wrapper'),
             $hospitalText = $('.tieredHospitalCover .hospitalCover .title'),
-            $extrasSection = $('.Extras-wrapper'),
+            $extrasSection = $('.GeneralHealth-wrapper'),
             $extrasText = $('.tieredHospitalCover .extrasCover .title'),
             $helpText = $('.benefits-help');
 
