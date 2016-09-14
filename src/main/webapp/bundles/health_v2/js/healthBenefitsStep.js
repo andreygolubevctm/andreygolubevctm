@@ -273,19 +273,16 @@
             case 'c':
                 $hospitalSection.slideDown();
                 $extrasSection.slideDown();
-                //setDefaultCover();
                 break;
             case 'h':
                 $hospitalSection.slideDown();
                 $extrasSection.slideUp();
-                //resetDefaultCover();
 
                 extrasContent = extrasDisabledContent;
                 break;
             case 'e':
                 $hospitalSection.slideUp();
                 $extrasSection.slideDown();
-                //resetDefaultCover();
 
                 hospitalContent = hospitalDisabledContent;
                 break;
