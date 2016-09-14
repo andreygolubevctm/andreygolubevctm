@@ -36,7 +36,7 @@
             $extrasCover = $('.GeneralHealth_container');
             $hospitalCover = $('.Hospital_container');
             $hospitalCoverToggles = $('.hospitalCoverToggles a'),
-                $allHospitalButtons = $hospitalCover.find('input[type="checkbox"]'),
+                $allHospitalButtons = $hospitalCover.find('.children input[type="checkbox"]'),
                 // done this way since it's an a/b test and
                 $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
 
@@ -67,8 +67,6 @@
         $coverType.find('input').on('change', toggleBenefits);
         hospitalCoverToggleEvents();
 
-        $('.has-switch').on('click', toggleBenefits);
-
         $(document).on('click', 'a.tieredLearnMore', function showBenefitsLearnMoreModel() {
             showModal();
         });
@@ -86,15 +84,25 @@
     }
 
     function setDefaultCover() {
-        if (meerkat.modules.deviceMediaState.get() === 'xs') {
-            if (!$('.hospitalCoverToggles.visible-xs a.benefit-category').hasClass('active')) {
-                $('.hospitalCoverToggles.visible-xs a.benefit-category[data-category="basic"]').trigger('click');
+        healthSitu = $('.health-situation-healthSitu input:checked').val();
+
+        if (!$('.hospitalCoverToggles.hidden-xs a.benefit-category').hasClass('active')) {
+            if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                $('.hospitalCoverToggles.visible-xs a.benefit-category[data-category="customise"]').trigger('click');
+            } else {
+
+                switch(healthSitu) {
+                    case 'ATP':
+                        $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="limited"]').trigger('click');
+                        break;
+    
+                    default:
+                        $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="customise"]').trigger('click');
+    
+                }
             }
         } else {
-
-            if (!$('.hospitalCoverToggles.hidden-xs a.benefit-category').hasClass('active')) {
-                $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="basic"]').trigger('click');
-            }
+            $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="customise"]').trigger('click');
         }
     }
 
@@ -110,19 +118,21 @@
     }
 
     function resetDefaultCover() {
-        //$('.hospitalCoverToggles.' + (meerkat.modules.deviceMediaState.get() === 'xs' ? 'visible-xs' : 'hidden-xs') + ' a.benefit-category.active').trigger('click');
+        $('.hospitalCoverToggles.' + (meerkat.modules.deviceMediaState.get() === 'xs' ? 'visible-xs' : 'hidden-xs') + ' a.benefit-category.active').trigger('click');
     }
 
     function toggleBenefits() {
         var $hospitalSection = $('.Hospital_container .healthBenefits, .Hospital_container .hospitalCoverToggles, .Hospital_container .coverExplanationContainer'),
             $hospitalText = $('.tieredHospitalCover .hospitalCover .title'),
             $extrasSection = $('.GeneralHealth_container .children'),
-            $extrasText = $('.tieredHospitalCover .extrasCover .title');
+            $extrasText = $('.tieredHospitalCover .extrasCover .title'),
+            $helpText = $('.benefits-help');
 
             hospitalContent = '';
             hospitalDisabledContent = '';
             extrasContent = '';
             extrasDisabledContent = '';
+            helpContent = '';
 
             healthCvr = $('#health_situation_healthCvr').val();
             healthSitu = $('.health-situation-healthSitu input:checked').val();
@@ -131,81 +141,151 @@
             primary_dob = $('#health_healthCover_primary_dob').val();
             age = meerkat.modules.age.returnAge(primary_dob, true);
 
+        $('.situation-wrapper').attr('class','situation-wrapper '+healthSitu);
+
+        var coverType = $coverType.find('input:checked').val().toLowerCase();
+
         switch(healthSitu) {
-            case 'F':
-                if(age > 40) {
+            case 'CSF':
+                if(age >= 40) {
                     hospitalContent = meerkat.site.content.hospitalFamilyOlder;
                     extrasContent = meerkat.site.content.extrasFamilyOlder;
                 } else {
                     hospitalContent = meerkat.site.content.hospitalFamilyYoung;
                     extrasContent = meerkat.site.content.extrasFamilyYoung;
                 }
+
+                switch (coverType) {
+                    case 'h':
+                        helpContent = meerkat.site.content.hospitalFamilyHelp;
+                        break;
+                    case 'e':
+                        helpContent = meerkat.site.content.extrasFamilyHelp;
+                        break;
+                    default:
+                        helpContent = meerkat.site.content.combinedFamilyHelp;
+                }
+
                 hospitalDisabledContent = meerkat.site.content.hospitalFamilyDisabled;
                 extrasDisabledContent = meerkat.site.content.extrasFamilyDisabled;
                 break;
             case 'SF':
-                if(age > 40) {
+                if(age >= 40) {
                     hospitalContent = meerkat.site.content.hospitalSettledFamilyOlder;
                     extrasContent = meerkat.site.content.extrasSettledFamilyOlder;
                 } else {
                     hospitalContent = meerkat.site.content.hospitalSettledFamilyYoung;
                     extrasContent = meerkat.site.content.extrasSettledFamilyYoung;
                 }
+
+                switch (coverType) {
+                    case 'h':
+                        helpContent = meerkat.site.content.hospitalSettledFamilyHelp;
+                        break;
+                    case 'e':
+                        helpContent = meerkat.site.content.extrasSettledFamilyHelp;
+                        break;
+                    default:
+                        helpContent = meerkat.site.content.combinedSettledFamilyHelp;
+                }
+
                 hospitalDisabledContent = meerkat.site.content.hospitalSettledFamilyDisabled;
                 extrasDisabledContent = meerkat.site.content.extrasSettledFamilyDisabled;
                 break;
             case 'N':
-                if(age > 40) {
+                if(age >= 40) {
                     hospitalContent = meerkat.site.content.hospitalNewOlder;
                     extrasContent = meerkat.site.content.extrasNewOlder;
                 } else {
                     hospitalContent = meerkat.site.content.hospitalNewYoung;
                     extrasContent = meerkat.site.content.extrasNewYoung;
                 }
+
+                switch (coverType) {
+                    case 'h':
+                        helpContent = meerkat.site.content.hospitalNewHelp;
+                        break;
+                    case 'e':
+                        helpContent = meerkat.site.content.extrasNewHelp;
+                        break;
+                    default:
+                        helpContent = meerkat.site.content.combinedNewHelp;
+                }
+
                 hospitalDisabledContent = meerkat.site.content.hospitalNewDisabled;
                 extrasDisabledContent = meerkat.site.content.extrasNewDisabled;
                 break;
             case 'LC':
-                if(age > 40) {
+                if(age >= 40) {
                     hospitalContent = meerkat.site.content.hospitalCompareOlder;
                     extrasContent = meerkat.site.content.extrasCompareOlder;
                 } else {
                     hospitalContent = meerkat.site.content.hospitalCompareYoung;
                     extrasContent = meerkat.site.content.extrasCompareYoung;
                 }
+
+                switch (coverType) {
+                    case 'h':
+                        helpContent = meerkat.site.content.hospitalCompareHelp;
+                        break;
+                    case 'e':
+                        helpContent = meerkat.site.content.extrasCompareHelp;
+                        break;
+                    default:
+                        helpContent = meerkat.site.content.combinedCompareHelp;
+                }
+
                 hospitalDisabledContent = meerkat.site.content.hospitalCompareDisabled;
                 extrasDisabledContent = meerkat.site.content.extrasCompareDisabled;
                 break;
             case 'SHN':
-                if(age > 40) {
+                if(age >= 40) {
                     hospitalContent = meerkat.site.content.hospitalSpecificOlder;
                     extrasContent = meerkat.site.content.extrasSpecificOlder;
                 } else {
                     hospitalContent = meerkat.site.content.hospitalSpecificYoung;
                     extrasContent = meerkat.site.content.extrasSpecificYoung;
                 }
+
+                switch (coverType) {
+                    case 'h':
+                        helpContent = meerkat.site.content.hospitalSpecificHelp;
+                        break;
+                    case 'e':
+                        helpContent = meerkat.site.content.extrasSpecificHelp;
+                        break;
+                    default:
+                        helpContent = meerkat.site.content.combinedSpecificHelp;
+                }
+
                 hospitalDisabledContent = meerkat.site.content.hospitalSpecificDisabled;
                 extrasDisabledContent = meerkat.site.content.extrasSpecificDisabled;
                 break;
+
+            case 'ATP':
+                hospitalContent = meerkat.site.content.hospitalLimitedYoung;
+                extrasDisabledContent = meerkat.site.content.extrasLimitedDisabled;
+                helpContent = meerkat.site.content.hospitalLimitedHelp;
+
         }
 
-        switch ($coverType.find('input:checked').val().toLowerCase()) {
+        switch (coverType) {
             case 'c':
                 $hospitalSection.slideDown();
                 $extrasSection.slideDown();
-                setDefaultCover();
+                //setDefaultCover();
                 break;
             case 'h':
                 $hospitalSection.slideDown();
                 $extrasSection.slideUp();
-                resetDefaultCover();
+                //resetDefaultCover();
 
                 extrasContent = extrasDisabledContent;
                 break;
             case 'e':
                 $hospitalSection.slideUp();
                 $extrasSection.slideDown();
-                resetDefaultCover();
+                //resetDefaultCover();
 
                 hospitalContent = hospitalDisabledContent;
                 break;
@@ -218,19 +298,11 @@
                 break;
         }
 
-        $hospitalSection.slideUp();
-        $extrasSection.slideUp();
-        if('.Hospital_container .has-switch input:checked') {
-            $hospitalSection.slideDown();
-        }
-        if('.Extras_container .has-switch input:checked') {
-            $extrasSection.slideDown();
-        }
-
-
+        setDefaultCover();
 
         $hospitalText.html('<h3>Hospital Cover for '+healthSituText+'</h3>'+hospitalContent);
         $extrasText.html('<h3>Extras Cover for '+healthSituText+'</h3>'+extrasContent);
+        $helpText.html(helpContent);
 
     }
 
@@ -307,6 +379,11 @@
             var $item = $(this);
             currentCover = $item.data('category');
 
+            var healthCvr = $('.health-situation-healthCvr').val();
+            var healthSitu = $('.health-situation-healthSitu input:checked').val();
+            var primary_dob = $('#health_healthCover_primary_dob').val();
+            var age = meerkat.modules.age.returnAge(primary_dob, true);
+
             // set the active  (not using $this here to addClass due to we have another sets of link for mobile...)
             $hospitalCoverToggles.removeClass('active').filter('[data-category="' + currentCover + '"]').addClass('active');
 
@@ -315,9 +392,47 @@
             $limitedCoverHidden.val('N');
 
             // uncheck all tickboxes
-            $allHospitalButtons.prop('disabled', false);
-            if(currentCover !== 'customise') {
-                $allHospitalButtons.prop('checked', false);
+            $allHospitalButtons.prop('disabled', false).prop('checked', false);
+            $extrasSection = $('.GeneralHealth_container .children').find('input[type="checkbox"]');
+            $extrasSection.prop('disabled', false).prop('checked', false);
+
+            if(healthSitu !== 'ATP') {
+                 $('.HLTicon-general-dental').addClass('customise');
+            }
+
+            $('.HLTicon-birth-related, .HLTicon-assisted-reproduction, .HLTicon-heart-surgery, .HLTicon-optical, .HLTicon-physiotherapy').removeClass('customise');
+
+            // New to health Insurance
+            if(healthSitu ==='N' && age >= 40) {
+                $('.HLTicon-heart-surgery, .HLTicon-optical, .HLTicon-physiotherapy').addClass('customise');
+            }
+
+            // Want to Compare
+            if(healthSitu ==='LC' && age >= 40) {
+                $('.HLTicon-heart-surgery, .HLTicon-optical, .HLTicon-physiotherapy').addClass('customise');
+            }
+
+            // Single Male Starting a Family
+            if(healthSitu ==='CSF' && healthCvr === 'SM' && age >= 40) {
+                $('.HLTicon-heart-surgery, .HLTicon-optical, .HLTicon-physiotherapy').addClass('customise');
+            }
+
+            // Single Female Starting a Family
+            if(healthSitu ==='CSF' && healthCvr === 'SF') {
+                $('.HLTicon-birth-related, .HLTicon-assisted-reproduction').addClass('customise');
+                if(age >= 40) {
+                    $('.HLTicon-heart-surgery, .HLTicon-optical, .HLTicon-physiotherapy').addClass('customise');
+                }
+            }
+
+            // Settled Family
+            if(healthSitu === 'SF' && age >= 40) {
+                $('.HLTicon-heart-surgery, .HLTicon-optical, .HLTicon-physiotherapy').addClass('customise');
+            }
+
+            // Specific Health Need
+            if(healthSitu === 'SHN' && age >= 40) {
+                $('.HLTicon-heart-surgery, .HLTicon-optical, .HLTicon-physiotherapy').addClass('customise');
             }
 
             switch (currentCover) {
@@ -334,14 +449,10 @@
                     break;
                 default:
                     $hospitalBenefitsSection.slideDown();
+
                     var $hospitalCoverButtons = $hospitalCover.find('.' + currentCover + ' input[type="checkbox"]');
                     var $extrasCoverButtons = $extrasCover.find('.' + currentCover + ' input[type="checkbox"]');
-                    if (currentCover !== 'customise') {
-                        $allHospitalButtons.not($hospitalCoverButtons);
-                    } else {
-                        var classToSelect = previousCover === 'top' ? '' : '.' + previousCover;
-                        $hospitalCoverButtons = $hospitalCover.find(classToSelect + ' input[type="checkbox"], .customise input[type="checkbox"]');
-                    }
+                    $allHospitalButtons.not($hospitalCoverButtons);
 
                     // setup for customised options to be completed later
                     $hospitalCoverButtons.each(function () {
@@ -514,6 +625,7 @@
     meerkat.modules.register('healthBenefitsStep', {
         init: init,
         events: events,
+        toggleBenefits: toggleBenefits,
         setDefaultCover: setDefaultCover,
         enableFields: enableFields,
         disableFields: disableFields,

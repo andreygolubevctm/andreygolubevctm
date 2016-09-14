@@ -56,7 +56,8 @@
 	</c:if>
 	<c:set var="fieldsetClass">tieredHospitalCover</c:set>
 	<form_v2:fieldset legend="" postLegend="" className="${fieldsetClass}" >
-		<div class="switch-wrapper right">Switch ${coverType} cover <field_v2:switch xpath="health/benefits/benefitsExtras/${coverType}" value="Y" className="switch-small" onText="On" offText="Off" /></div>
+		<%-- TODO in part 2 --%>
+		<%--<div class="switch-wrapper right">Switch ${coverType} cover <field_v2:switch xpath="health/benefits/benefitsExtras/${coverType}" value="Y" className="switch-small" onText="On" offText="Off" /></div>--%>
 		<div class="scrollable row">
 			<div class="benefits-list col-sm-12">
 				<div class="row">

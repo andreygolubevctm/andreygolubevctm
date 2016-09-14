@@ -289,7 +289,7 @@
 
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
-				meerkat.modules.healthBenefitsStep.setDefaultCover();
+				meerkat.modules.healthBenefitsStep.toggleBenefits();
 				meerkat.modules.healthBenefitsStep.disableFields();
 				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
 				incrementTranIdBeforeEnteringSlide();
