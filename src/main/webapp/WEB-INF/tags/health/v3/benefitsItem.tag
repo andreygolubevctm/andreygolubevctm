@@ -38,17 +38,19 @@
 			<h2 class="ignore">Choose Your Hospital Cover</h2>
 			<p>${colContent}</p>
 		</div>
-		<div class="Hospital_container">
-			<div class="hospitalCoverToggles visible-xs">
-				<div class="btn-group btn-group-justified btn-group-wrap">
-					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="basic">Basic</a>
-					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="medium">Medium</a>
-					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="top">Top</a>
-				</div>
-				<div class="nonComprehensiveCover">
-					or
-					<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customise">Customise your cover</a>
-					<a href="javascript:;" class="benefit-category limited" data-category="limited">No thanks, I only want limited hospital cover</a>
+		<div class="Hospital-wrapper">
+			<div class="Hospital_container">
+				<div class="hospitalCoverToggles visible-xs">
+					<div class="btn-group btn-group-justified btn-group-wrap">
+						<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="basic">Basic</a>
+						<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="medium">Medium</a>
+						<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="top">Top</a>
+					</div>
+					<div class="nonComprehensiveCover">
+						or
+						<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customise">Customise your cover</a>
+						<a href="javascript:;" class="benefit-category limited" data-category="limited">No thanks, I only want limited hospital cover</a>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -120,7 +120,7 @@
 				</c:set>
 				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
 				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="looking for" quoteChar="\"" /></c:set>
-				<form_v3:row label="You're looking to" fieldXpath="${fieldXpath}">
+				<form_v3:row label="Which situation describes you best?" fieldXpath="${fieldXpath}">
 					<field_v2:array_radio xpath="${fieldXpath}"
 										  required="true"
 										  className="health-situation-healthSitu"
